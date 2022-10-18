@@ -63,6 +63,7 @@ yarn-error.log
 .pnp/
 .pnp.js
 .pnp.*
+.yarn/*
 .yarn/cache
 .yarn/patches
 .yarn/plugins
