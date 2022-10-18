@@ -4,16 +4,16 @@ const description = "Designer, tech enthusiast and entrepreneur of sorts";
 const SEO = {
   title,
   description,
-  canonical: "https://www.website.garotogordo.codes",
+  canonical: "https://www.website.yuricunha.xyz",
   openGraph: {
     type: "website",
     locale: "en_IE",
-    url: "https://www.website.garotogordo.codes",
+    url: "https://www.website.yuricunha.xyz",
     title,
     description,
     images: [
       {
-        url: "https://www.website.garotogordo.codes/static/images/banner.jpg",
+        url: "https://www.website.yuricunha.xyz/static/images/banner.jpg",
         alt: title,
         width: 2240,
         height: 1260,

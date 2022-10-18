@@ -2,40 +2,40 @@
   <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
       <title>Blog - Yuri Cunha</title>
-      <link>https://www.website.garotogordo.codes/blog</link>
+      <link>https://www.website.yuricunha.xyz/blog</link>
       <description>Designer, developer and maker of things.</description>
       <language>en</language>
       <lastBuildDate>Thu, 23 Jun 2022 22:20:27 GMT</lastBuildDate>
-      <atom:link href="https://www.website.garotogordo.codes/rss.xml" rel="self" type="application/rss+xml"/>
+      <atom:link href="https://www.website.yuricunha.xyz/rss.xml" rel="self" type="application/rss+xml"/>
       
   <item>
-    <guid>https://www.website.garotogordo.codes/blog/testa-para-publicar-4</guid>
+    <guid>https://www.website.yuricunha.xyz/blog/testa-para-publicar-4</guid>
     <title>test</title>
-    <link>https://www.website.garotogordo.codes/blog/testa-para-publicar-4</link>
+    <link>https://www.website.yuricunha.xyz/blog/testa-para-publicar-4</link>
     <description>test</description>
     <pubDate>Thu, 23 Jun 2022 22:20:27 GMT</pubDate>
   </item>
 
   <item>
-    <guid>https://www.website.garotogordo.codes/blog/testa-para-publicar-3</guid>
+    <guid>https://www.website.yuricunha.xyz/blog/testa-para-publicar-3</guid>
     <title>test</title>
-    <link>https://www.website.garotogordo.codes/blog/testa-para-publicar-3</link>
+    <link>https://www.website.yuricunha.xyz/blog/testa-para-publicar-3</link>
     <description>test</description>
     <pubDate>Thu, 16 Jun 2022 12:01:41 GMT</pubDate>
   </item>
 
   <item>
-    <guid>https://www.website.garotogordo.codes/blog/testa-para-publicar-2</guid>
+    <guid>https://www.website.yuricunha.xyz/blog/testa-para-publicar-2</guid>
     <title>Testando publicação</title>
-    <link>https://www.website.garotogordo.codes/blog/testa-para-publicar-2</link>
+    <link>https://www.website.yuricunha.xyz/blog/testa-para-publicar-2</link>
     <description>summary</description>
     <pubDate>Thu, 16 Jun 2022 12:00:14 GMT</pubDate>
   </item>
 
   <item>
-    <guid>https://www.website.garotogordo.codes/blog/testa-para-publicar</guid>
+    <guid>https://www.website.yuricunha.xyz/blog/testa-para-publicar</guid>
     <title>Testando publicação</title>
-    <link>https://www.website.garotogordo.codes/blog/testa-para-publicar</link>
+    <link>https://www.website.yuricunha.xyz/blog/testa-para-publicar</link>
     <description>summary</description>
     <pubDate>Sun, 12 Jun 2022 09:52:45 GMT</pubDate>
   </item>

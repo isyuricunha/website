@@ -14,7 +14,7 @@ const App = ({ Component, pageProps }) => {
   return (
     <>
       <ChakraProvider theme={customTheme}>
-        <PlausibleProvider domain="www.website.garotogordo.codes">
+        <PlausibleProvider domain="www.website.yuricunha.xyz">
           <Head>
             <meta
               content="width=device-width, initial-scale=1"

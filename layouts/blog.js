@@ -42,7 +42,7 @@ class BlogLayout extends React.Component {
         <>
           <Section>
             <BlogSeo
-              url={`https://www.website.garotogordo.codes/blog/${this.props.frontMatter.slug}`}
+              url={`https://www.website.yuricunha.xyz/blog/${this.props.frontMatter.slug}`}
               image={this.props.frontMatter.banner[0].thumbnails.large.url}
               {...this.props.frontMatter}
             />
@@ -94,7 +94,7 @@ class BlogLayout extends React.Component {
                   <AuthorCard
                     publishedAt={this.props.frontMatter.publishDate}
                     url={
-                      "https://www.website.garotogordo.codes/blog/" +
+                      "https://www.website.yuricunha.xyz/blog/" +
                       this.props.frontMatter.slug
                     }
                     readingTime={this.props.frontMatter.readingTime.text}
