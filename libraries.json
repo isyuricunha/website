@@ -1,0 +1,22 @@
+{
+  "MySQL": {
+    "imports": ["com.mysql"],
+    "technologies": ["Databases", "MySQL"],
+    "description": "MySQL driver for Java"
+  },
+  "PostgreSQL": {
+    "imports": ["org.postgresql"],
+    "technologies": ["Databases", "PostgreSQL"],
+    "description": "PostgreSQL driver for Java"
+  },
+  "SQLite": {
+    "imports": ["org.sqlite"],
+    "technologies": ["Databases", "SQLite"],
+    "description": "SQLite driver for Java"
+  },
+  "mysql": {
+    "imports": ["mysql"],
+    "technologies": ["Databases", "MySQL"],
+    "description": "A pure node.js JavaScript Client implementing the MySQL protocol."
+  }
+}
