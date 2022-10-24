@@ -5,7 +5,7 @@ if (!admin.apps.length) {
     credential: admin.credential.cert({
       clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
       privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
-      projectId: 'personal-site-76e82',
+      projectId: 'blog-yuri-cunha',
     }),
     databaseURL:
       'https://blog-yuri-cunha-default-rtdb.firebaseio.com/',
