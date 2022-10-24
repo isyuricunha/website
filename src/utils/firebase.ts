@@ -8,7 +8,7 @@ if (!admin.apps.length) {
       projectId: 'personal-site-76e82',
     }),
     databaseURL:
-      'https://personal-site-76e82-default-rtdb.europe-west1.firebasedatabase.app/',
+      'https://blog-yuri-cunha-default-rtdb.firebaseio.com/',
   });
 }
 
