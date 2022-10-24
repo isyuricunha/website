@@ -1,5 +1,4 @@
 import { AppProps } from 'next/app';
-import Head from 'next/head';
 import { ChakraProvider } from '@chakra-ui/react';
 import '../src/styles/global.css';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -20,7 +19,7 @@ export default function MyApp({
 }: AppProps): React.ReactElement {
   const [loading, setLoading] = useState(false);
   useEffect(() => {
-    document.documentElement.lang = `en-US`;
+    document.documentElement.lang = `en-GB`;
     const start = () => {
       setLoading(true);
     };
@@ -39,12 +38,6 @@ export default function MyApp({
 
   return (
     <>
-      <Head>
-        <link
-          rel="shortcut icon"
-          href="https://www.website.yuricunha.xyz/static/images/icon.png"
-        />
-      </Head>
       <DefaultSeo
         defaultTitle="Yuri Cunha"
         titleTemplate="%s | Yuri Cunha"
@@ -54,20 +47,20 @@ export default function MyApp({
           site_name: `Yuri Cunha`,
           images: [
             {
-              url: `https://www.website.yuricunha.xyz/static/images/icon.png`,
-              alt: `Favicon Picture`,
+              url: `https://www.mikeroph.one/static/images/profile.jpeg`,
+              alt: `Profile Picture`,
             },
           ],
         }}
-        description="I'm a database administrator with over 3 years of experience, and a student who spends most all of his free time doing open source projects/websites/softwares."
+        description="The purpose of this site is for me to test things out & maybe show some things off."
       />
       <ChakraProvider theme={theme}>
         <PlausibleProvider
-          domain="website.yuricunha.xyz"
+          domain="mikeroph.one"
           selfHosted
           trackOutboundLinks
           enabled={process.env.NODE_ENV === 'production'}
-          customDomain={'https://stats.website.yuricunha.xyz'}
+          customDomain={'https://stats.mikeroph.one'}
         >
           <QueryClientProvider client={queryClient}>
             <MDXProvider components={MDXComponents}>

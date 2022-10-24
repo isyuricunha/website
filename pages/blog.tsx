@@ -43,48 +43,38 @@ function Blog({ posts }: { posts: any }): React.ReactElement {
   }
 
   return (
-    <Flex
-      direction="column"
-      alignItems="center"
-      width="full"
-      minH="100vh"
-      mx="auto"
-      maxW="5xl"
-    >
+    <Flex direction='column' alignItems='center' width='full' minH='100vh' mx='auto' maxW='5xl'>
       <LineHeading
-        mt="28"
+        mt='28'
         fontSize={{ base: `3xl`, sm: `4xl`, md: `5xl`, lg: `6xl` }}
-        textAlign="center"
+        textAlign='center'
       >
         Blog Posts
       </LineHeading>
       <Text mt={3} px={5}>
-        Here are a collection of my blog posts, with {posts.length} post
+        Here are a collection of my blog posts, with {posts.length} blog
         {posts.length > 1 && 's'} :).
       </Text>
-      <Box mt="16" width="full">
+      <Box mt='16' width='full'>
         <Flex
-          width="full"
+          width='full'
           direction={{ base: 'column', md: 'row' }}
           my={7}
           px={{ base: 5, sm: 2 }}
-          justifyContent="space-between"
+          justifyContent='space-between'
         >
-          <InputGroup
-            maxWidth={{ base: 'full', md: '200px' }}
-            mb={{ base: 5, md: 0 }}
-          >
-            <InputLeftElement pointerEvents="none">
-              <AiOutlineSearch color="gray.300" />
+          <InputGroup maxWidth={{ base: 'full', md: '200px' }} mb={{ base: 5, md: 0 }}>
+            <InputLeftElement pointerEvents='none'>
+              <AiOutlineSearch color='gray.300' />
             </InputLeftElement>
             <Input
-              variant="filled"
-              type="text"
-              placeholder="Search"
+              variant='filled'
+              type='text'
+              placeholder='Search'
               _placeholder={{
                 color: useColorModeValue('gray.800', 'whiteAlpha.800'),
               }}
-              onChange={(e) => setFilter(e.target.value.toLowerCase())}
+              onChange={e => setFilter(e.target.value.toLowerCase())}
             />
           </InputGroup>
 
@@ -100,18 +90,14 @@ function Blog({ posts }: { posts: any }): React.ReactElement {
               >
                 Recent
               </MenuItem>
-              <MenuItem
-                zIndex={999}
-                isDisabled={sort === 'old'}
-                onClick={() => setSort('old')}
-              >
+              <MenuItem zIndex={999} isDisabled={sort === 'old'} onClick={() => setSort('old')}>
                 Oldest
               </MenuItem>
             </MenuList>
           </Menu>
         </Flex>
         {filteredBlogPosts.length === 0 && (
-          <Text fontSize="2xl" textAlign="center">
+          <Text fontSize='2xl' textAlign='center'>
             No Results :(
           </Text>
         )}

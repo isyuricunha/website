@@ -111,10 +111,10 @@ export default function Home(): React.ReactElement {
                 <Link href="/blog" passHref>
                   <ChakraLink>blogs</ChakraLink>
                 </Link>
-                . I&apos;m a Database Administrator with over{' '}
-                {new Date().getFullYear() - 2020} years of experience, and a
-                student who spends most all of his free time doing open source
-                projects/websites/softwares.
+                . I am currently undertaking a research masters degree in
+                Computational Biology at the University of Kent; attempting to
+                predict a protein&apos;s function from its sequence using deep
+                learning.
               </chakra.p>
             </Flex>
           </Flex>

@@ -99,6 +99,7 @@ function Projects({ repos }: ProjectsProps): React.ReactElement {
           >
             View My Profile
           </Button>
+          {/* Flex ends before SimpleGrid. See Issue #1 https://github.com/isyuricunha/personal-web/issues/1 */}
         </Flex>
 
         <SimpleGrid
@@ -136,7 +137,8 @@ export async function getStaticProps(): Promise<{ props: ProjectsProps }> {
   try {
     response = await fetch(
       `${
-        process.env.NEXT_PUBLIC_HOST || `https://www.website.yuricunha.xyz`
+        process.env.NEXT_PUBLIC_HOST ||
+        `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
       }/api/github`
     );
     if (!response.ok) {
@@ -153,7 +155,7 @@ export async function getStaticProps(): Promise<{ props: ProjectsProps }> {
 
   const { stars, repos, followers } = await response.json();
 
-  return { props: { stars, repos, followers, revalidate: 1 } };
+  return { props: { stars, repos, followers, revalidate: 600 } };
 }
 
 export default Projects;

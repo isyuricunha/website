@@ -170,7 +170,7 @@ const AnimatedTitle = () => (
       left={'-15px'}
       transition={'all 0.2s'}
       transitionTimingFunction="spring(1 10 10 10)"
-      xmlns="https://www.w3.org/2000/svg"
+      xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 265 43"
       fill="none"
       stroke={useColorModeValue('brand.600', 'brand.300')}

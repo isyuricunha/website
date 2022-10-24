@@ -1,6 +1,6 @@
-# website.yuricunha.xyz
+# mikeroph.one
 
-This repository is home to my [website's](https://www.website.yuricunha.xyz) code.
+This repository is home to my [website's](https://www.mikeroph.one) code.
 
 The website itself uses NextJS, Chakra-UI, and TypeScript and is a place to show off my other projects. The core of the website is finished, but there are some changes I would like to make (see TODOs), additionally, it will constantly be updated with new projects, or pages if I want to add them :).
 
