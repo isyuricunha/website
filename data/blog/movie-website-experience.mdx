@@ -3,7 +3,7 @@ title: 'My experience making a movie rating website.'
 publishedAt: '2021-06-17'
 summary: 'I made a movie rating website for my friends and I to use over the holidays, but it kinda sucked... So here is how I improved it in version 2.0!'
 tags: ['Movie Rating', 'Web Development', 'Next.JS', 'Chakra-UI']
-by: { name: 'Michael Hall', avatar: '/static/images/profile.jpeg' }
+by: { name: 'Yuri Cunha', avatar: '/static/images/profile.jpeg' }
 image: '/static/images/blog/movie-website-experience/banner.png'
 published: true
 ---
@@ -24,7 +24,7 @@ published: true
 
 # The old website
 
-Last year, my friends and I started watching movies over [discord](https://discord.com) during the quarantine, and we would rate each movie in a discord channel. This worked well at the start but when we tried to look back at the ratings, it was a nightmare, so I decided to build a [movie rating website](https://github.com/mah51/movie-web/). Whilst it was very basic, it worked well until I accidentally deleted the database 😥. The lack of data in the database caused a 500 error during the <Definition term='SSR' definition='Server Side Render' link='https://www.freecodecamp.org/news/what-exactly-is-client-side-rendering-and-hows-it-different-from-server-side-rendering-bd5c786b340d/' />, and I couldn't be bothered to fix it for a while so we went back to using discord; until March of this year where I decided I would remake the site, and fix all of its quirks.
+Last year, my friends and I started watching movies over [discord](https://discord.com) during the quarantine, and we would rate each movie in a discord channel. This worked well at the start but when we tried to look back at the ratings, it was a nightmare, so I decided to build a [movie rating website](https://github.com/isyuricunha/movie-web/). Whilst it was very basic, it worked well until I accidentally deleted the database 😥. The lack of data in the database caused a 500 error during the <Definition term='SSR' definition='Server Side Render' link='https://www.freecodecamp.org/news/what-exactly-is-client-side-rendering-and-hows-it-different-from-server-side-rendering-bd5c786b340d/' />, and I couldn't be bothered to fix it for a while so we went back to using discord; until March of this year where I decided I would remake the site, and fix all of its quirks.
 
 ### Problems with the old website:
 
@@ -137,7 +137,7 @@ During the construction of the website I tried to focus on the design, which [Ch
   layout='responsive'
 />
 
-The card component looks like this, [link to repo](https://github.com/mah51/movie-web-typescript/blob/main/components/Card/Card.tsx):
+The card component looks like this, [link to repo](https://github.com/isyuricunha/movie-web-typescript/blob/main/components/Card/Card.tsx):
 
 ```jsx:components/Card/Card.tsx
 const { image, name, genres, rating, numReviews, tagLine } = movie;
@@ -257,4 +257,4 @@ const { toggleColorMode } = useColorMode();
   </Checkbox>
 </VStack>
 
-And that's it! I now have a functioning movie review site. There are a few more features that you can go and check out on [ScuffedMDB](https://smdb.mikeroph.one), and if you want to host it for your friend group there is a [guide](https://github.com/mah51/scuffedmdb).
+And that's it! I now have a functioning movie review site. There are a few more features that you can go and check out on [ScuffedMDB](https://smdb.mikeroph.one), and if you want to host it for your friend group there is a [guide](https://github.com/isyuricunha/scuffedmdb).

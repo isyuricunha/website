@@ -51,7 +51,7 @@ const BlogLayout = ({
         }}
         openGraph={{
           title: frontMatter.title,
-          site_name: 'Michael Hall',
+          site_name: 'Yuri Cunha',
           description: frontMatter.summary,
           url: `https://mikeroph.one${router.asPath}/`,
 
@@ -146,7 +146,7 @@ const BlogLayout = ({
           <HStack justifyContent="flex-start" mr="auto" mt={5}>
             <EditIcon />
             <Link
-              href={`https://github.com/mah51/mikeroph.one/edit/main/src/data/blog/${frontMatter.slug}.mdx`}
+              href={`https://github.com/isyuricunha/mikeroph.one/edit/main/src/data/blog/${frontMatter.slug}.mdx`}
               passHref
             >
               <ChakraLink

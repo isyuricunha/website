@@ -39,12 +39,12 @@ export default function MyApp({
   return (
     <>
       <DefaultSeo
-        defaultTitle="Michael Hall"
-        titleTemplate="%s | Michael Hall"
+        defaultTitle="Yuri Cunha"
+        titleTemplate="%s | Yuri Cunha"
         openGraph={{
-          title: `Michael Hall`,
+          title: `Yuri Cunha`,
           type: `website`,
-          site_name: `Michael Hall`,
+          site_name: `Yuri Cunha`,
           images: [
             {
               url: `https://www.mikeroph.one/static/images/profile.jpeg`,

@@ -90,7 +90,7 @@ function Projects({ repos }: ProjectsProps): React.ReactElement {
           </Text>
           <Button
             as="a"
-            href="https://github.com/mah51"
+            href="https://github.com/isyuricunha"
             variant="ghost"
             colorScheme="brand"
             size="lg"
@@ -99,7 +99,7 @@ function Projects({ repos }: ProjectsProps): React.ReactElement {
           >
             View My Profile
           </Button>
-          {/* Flex ends before SimpleGrid. See Issue #1 https://github.com/mah51/personal-web/issues/1 */}
+          {/* Flex ends before SimpleGrid. See Issue #1 https://github.com/isyuricunha/personal-web/issues/1 */}
         </Flex>
 
         <SimpleGrid

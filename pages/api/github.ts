@@ -14,7 +14,7 @@ export interface repoType {
 
 const excludedRepoNames = [
   'protein-links',
-  'mah51',
+  'isyuricunha',
   'create-typescript-component',
 ];
 
@@ -22,9 +22,9 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ): Promise<void> {
-  const userResponse = await fetch(`https://api.github.com/users/mah51`);
+  const userResponse = await fetch(`https://api.github.com/users/isyuricunha`);
   const userReposResponse = await fetch(
-    `https://api.github.com/users/mah51/repos?per_page=100`
+    `https://api.github.com/users/isyuricunha/repos?per_page=100`
   );
 
   const user = await userResponse.json();

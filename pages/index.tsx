@@ -56,7 +56,7 @@ export default function Home(): React.ReactElement {
                 boxSize="250px"
                 src="./static/images/profile.jpeg"
                 objectFit="cover"
-                alt="Michael Hall"
+                alt="Yuri Cunha"
                 onLoad={() => setImageLoad(true)}
               />
             </Skeleton>
@@ -80,7 +80,7 @@ export default function Home(): React.ReactElement {
                 fontSize={{ base: `5xl`, lg: `7xl` }}
                 textAlign={{ base: `center`, lg: `left` }}
               >
-                Hi, I&apos;m Michael!
+                Hi, I&apos;m Yuri!
               </Heading>
               <chakra.p
                 maxW="650px"

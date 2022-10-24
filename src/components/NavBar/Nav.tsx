@@ -137,7 +137,7 @@ function Nav(): JSX.Element {
                   }}
                   color={colorMode === 'light' ? 'gray.900' : 'white'}
                 >
-                  Michael Hall
+                  Yuri Cunha
                 </ChakraLink>
               )}
             </Link>
@@ -160,7 +160,7 @@ const AnimatedTitle = () => (
     fontWeight="semibold"
     textAlign="center"
   >
-    Michael Hall
+    Yuri Cunha
     {/* eslint-disable-next-line @next/next/no-img-element */}
     <chakra.svg
       className="path-under"

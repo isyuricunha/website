@@ -10,31 +10,31 @@ const info = (props: any): { input: string; return: string }[] => [
   },
   {
     input: 'self.currentLocation',
-    return: '"Kent, UK"',
+    return: '"São Paulo, BR"',
   },
 
   {
     input: 'self.interests',
-    return: '["web dev", "biology", "tennis"]',
+    return: '["database administrator", "web dev", "anime", "books"]',
   },
   {
     input: 'self.education',
-    return: '"B.Sc Biochemistry - University of Kent"',
+    return: '"Database - University of Estácio de Sá"',
   },
   {
     input: 'self.skills',
     return:
-      '[ "JavaScript", "Python", "React", "Next.JS", "Chakra-UI", "Tailwind", "SASS", "git"]',
+      '["Python", "MySQL", "SQL Server", "JavaScript", "Next.TS", "Tailwind", "git"]',
   },
   {
     input: 'self.contactMe()',
     return: `["<a style="${style(
       props
-    )}" rel="noopener" href="https://www.linkedin.com/in/michael-hall-86616b17b/">LinkedIn</a>", "<a style="${style(
+    )}" rel="noopener" href="https://www.linkedin.com/in/isyuricunha/">LinkedIn</a>", "<a style="${style(
       props
-    )}" rel="noopener" href="https://github.com/mah51">Github</a>", "<a rel="noopener" style="${style(
+      )}" rel="noopener" href="https://github.com/isyuricunha">Github</a>", "<a rel="noopener" style="${style(
       props
-    )}" href="mailto:michael.hall17@icloud.com">Email</a>"]`,
+      )}" href="mailto:isyuricunha@duck.com">Email</a>"]`,
   },
 ];
 

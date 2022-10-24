@@ -6,7 +6,7 @@ The website itself uses NextJS, Chakra-UI, and TypeScript and is a place to show
 
 The website is open source so feel free to use bits of code or to fork the whole thing if you want to use it as the base of your website! If you do fork the whole thing I would appreciate you leaving a link to this repo somewhere on the site or in the repo though. Thanks :).
 
-If you like this project, check out some of my other [ones](https://github.com/mah51)!
+If you like this project, check out some of my other [ones](https://github.com/isyuricunha)!
 
 ## If you want to setup this website yourself:
 
