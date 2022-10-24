@@ -37,3 +37,5 @@ yarn-error.log*
 /.idea
 dist/
 blg.json
+data/blog/exampleDemo (1).mdx
+data/blog/exampleDemo (2).mdx

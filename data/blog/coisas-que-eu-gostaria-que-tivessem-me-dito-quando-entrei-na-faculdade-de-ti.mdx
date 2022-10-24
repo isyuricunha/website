@@ -1,0 +1,54 @@
+---
+title: 'Coisas que eu gostaria que tivessem me dito quando entrei na faculdade de TI.'
+description: 'TI é tão vasto quanto medicina.'
+date: '2022-08-12'
+author:
+  name: Yuri Cunha
+  picture: '/autor/yuricunha.png'
+---
+
+Semestre começando na faculdade e vários calouros com dúvidas no grupo do Telegram. Isso lembrou-me das minhas próprias dúvidas quando comecei a minha primeira graduação e das coisas que gostaria de saber naquela época.
+
+**1 - Inglês**
+
+A esmagadora maioria das documentações está em inglês e um site de tradução nem sempre irá te ajudar, em alguns casos ele irá traduzir termos técnicos que não deveriam ser traduzidos ou possuem outro significado fora do contexto de informática.
+
+- Ler em inglês: Ter uma boa leitura em inglês já é 50% do necessário.
+- Escrever em inglês: Vai te ajudar muito a tirar dúvidas em fóruns especializados (_stackoverflow_, _slack_, _mailing lists_) e entrar em contato com suporte de outras empresas (_Red Hat_, _Amazon_ e etc)
+- Conversação: Com certeza te abrirá mais portas de emprego, no Brasil, no exterior ou em _Home Office_.
+
+Se ainda estiver cético, nesse pequeno trecho que leu, foram 9 palavras em inglês.
+
+**2 - TI é tão vasto quanto medicina**
+
+Redes, middleware, analise de requisitos, DBA, AD, Ops, QA, Linux, Front end, back end, Java, Ruby, governança ...
+
+Não se prenda apenas aos mais famosos, suporte e desenvolvimento (não há nenhum problema com esses dois, claro), experimente um pouco de tudo, identifique-se com algum e se especialize.
+
+**3 - TI não é uma ciência exata**
+
+A afirmação parece absurda, mas quem ficou horas tentando resolver algum problema sem nenhum - aparente - erro lógico, sabe do que estou falando. Isso vai causar frustração em alguns casos, mas o ponto principal aqui é saber decidir quando descobrir a causa do problema é mais importante do que de fato resolvê-lo.
+
+**4 - Use o tutorial, mas leia a documentação**
+
+- 'como instalar o git' : 3.020.00 resultados no google
+- 'CRUD no php' : 7.530.000 resultados no google
+- 'Configurar NGINX' : 355.000 resultados no google
+
+Esses tutoriais (how to) são úteis, mas entender para que serve e como funciona é essencial quando precisar consertar algo ou fazer uma melhoria.
+
+**5 - Não tenha medo**
+
+Quando eu comecei em TI, tinha medo de instalar o Linux e não saber configurar ou resolver um problema. Tinha medo de tentar fazer algo e errar. É clichê, largamente difundido e estudado, papo de coach, eu sei, mas errar é essencial para o aprendizado.
+
+Hoje quando instalo ou configuro um sistema, quando crio uma pipeline, um script ou executo qualquer outra coisa e funciona na primeira tentativa, fico com uma pulga atrás da orelha achando que fiz algo errado e o problema só vai aparecer no futuro (e isso é bom pois me faz revisar tudo que fiz).
+
+O medo sempre vai aparecer diante do novo, do inesperado e nesses momento eu penso em uma frase que escutei de um colega de trabalho alguns anos atrás:
+
+> Não sei fazer, mas se tiver tempo, posso aprender.
+
+OBS: Se estiver fazendo algo com grande possibilidade de erro, dê preferência ao ambiente de desenvolvimento, ok?
+
+**6 - TI é uma ferramenta, use-a.**
+
+Passe uma semana criando um código para automatizar uma tarefa, mas não gaste 2 dias fazendo essa mesma tarefa manualmente. O tempo gasto a mais é facilmente compensado pelo que se aprendeu e pela possibilidade de executar essa mesma tarefa no futuro.

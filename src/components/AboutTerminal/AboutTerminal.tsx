@@ -28,13 +28,20 @@ const AboutTerminal = (): JSX.Element => {
     }
   }, [visibleIndex, colorMode]);
   return (
-    <Flex direction='column' minH='300px' width='full' maxW='7xl' mx='auto' mt={16}>
+    <Flex
+      direction="column"
+      minH="300px"
+      width="full"
+      maxW="7xl"
+      mx="auto"
+      mt={16}
+    >
       <Flex
-        width='full'
-        position='relative'
-        justifyContent='flex-start'
-        alignItems='center'
-        height='36px'
+        width="full"
+        position="relative"
+        justifyContent="flex-start"
+        alignItems="center"
+        height="36px"
         borderTopRadius={'2xl'}
         bg={`${useColorModeValue('rgba(0, 0, 0, 0.15)', 'rgba(0, 0, 0, 0.4)')}`}
       >
@@ -45,34 +52,43 @@ const AboutTerminal = (): JSX.Element => {
         </Stack>
         <Flex
           mx={'auto'}
-          height='36px'
-          alignItems='center'
-          width='full'
-          position='absolute'
-          justifyContent='center'
+          height="36px"
+          alignItems="center"
+          width="full"
+          position="absolute"
+          justifyContent="center"
         >
-          <Text>{finished ? 'Executed' : 'Executing'}: introduceSelf.js</Text>
+          <Text>{finished ? 'Executed' : 'Executing'}: introduceSelf.tsx</Text>
         </Flex>
       </Flex>
       <Flex
-        width='full'
-        height='full'
-        position='relative'
-        borderBottomRadius='2xl'
-        overflow='hidden'
+        width="full"
+        height="full"
+        position="relative"
+        borderBottomRadius="2xl"
+        overflow="hidden"
         bg={'transparent'}
       >
         <Flex
-          borderBottomRadius='2xl'
-          width='full'
-          height='full'
-          bg={`${useColorModeValue('rgba(0, 0, 0, 0.4)', 'rgba(0, 0, 0, 0.8)')}`}
-          position='absolute'
+          borderBottomRadius="2xl"
+          width="full"
+          height="full"
+          bg={`${useColorModeValue(
+            'rgba(0, 0, 0, 0.4)',
+            'rgba(0, 0, 0, 0.8)'
+          )}`}
+          position="absolute"
           top={0}
           left={0}
-          zIndex='-5'
+          zIndex="-5"
         ></Flex>
-        <VStack width='full' spacing={3} alignItems='flex-start' p={5} direction='column'>
+        <VStack
+          width="full"
+          spacing={3}
+          alignItems="flex-start"
+          p={5}
+          direction="column"
+        >
           {content({ colorMode }).map((statement, i) => {
             return (
               <Statement

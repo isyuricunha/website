@@ -6,7 +6,7 @@ const handler = (req: NextApiRequest, res: NextApiResponse): void => {
   vCard.firstName = 'Yuri';
   vCard.lastName = 'Cunha';
   vCard.email = 'isyuricunha@duck.com';
-  vCard.birthday = new Date(2000, 5, 12);
+  vCard.birthday = new Date(1997, 7, 6);
   vCard.photo.attachFromUrl(
     'https://yuricunha.xyz/static/images/profile.jpeg',
     'JPEG'

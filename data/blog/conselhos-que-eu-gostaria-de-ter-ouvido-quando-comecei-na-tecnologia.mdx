@@ -1,0 +1,94 @@
+---
+title: 'Conselhos que eu gostaria de ter ouvido quando comecei na tecnologia.'
+description: 'As coisas não funcionam bem assim.'
+date: '2022-07-12'
+author:
+  name: Yuri Cunha
+  picture: '/autor/yuricunha.png'
+---
+
+![Photo by ThisisEngineering RAEng on Unsplash](https://miro.medium.com/max/1400/0*SQ9Qv2OQt7hZAHNq 'Photo by ThisisEngineering RAEng on Unsplash')<br>
+
+A procura por emprego pode ser incrivelmente frustrante.
+<br><br>
+
+**1 — A prática leva à perfeição.**<br>
+Não posso detalhar mais do que isso.
+<br><br>
+
+**2 — Não fique desapontado se vir códigos, sites e aplicativos que parecem bem complicados.**<br>
+Acredite, aqueles que elaboraram aplicativos como Instagram, WhatsApp ou Facebook praticaram décadas, talvez décadas, para elaborar esses aplicativos.<br>
+Você precisa de tempo. A diferença entre um mestre e um iniciante é o tempo. Afinal, o tempo traz a prática, e a experiência.
+<br><br>
+
+**3 — Você precisa de uma boa equipe.**<br>
+Uma boa equipe irá inspirá-lo e empurrá-lo para além dos seus limites. Claro que, uma boa equipe não se limita a trabalho, mas, amigos, colegas de faculdade, classe, e por ai vai.
+<br>
+
+**4 — Escreva códigos claros e legíveis.**<br>
+Escrever códigos legíveis o ajudará a ler seus próprios códigos depois de um certo tempo e permitirá que outros programadores saibam o que você fez.
+<br><br>
+
+**5 — A sintaxe deve ser escrita com o máximo de concentração.**<br>
+Porque, um pequeno erro de sintaxe pode gerar muitos problemas, como esquecer um ponto e vírgula ou escrever `fuction()` em vez de `function()` — e, às vezes isso dói no coração.
+<br><br>
+
+**6 — Escreva nomes simples e com significado.**<br>
+Isso até parece vago, mas, já pensou se uma variável ou função tem um nome nada a ver com nada?!
+
+`var textoMuitoLouco = 1 + 1`
+
+Agora, se eu quiser usar essa váriavel, mas ela não tem nada a ver com o valor armazenado, lascou-se.
+
+Ah, lembre-se que existem algumas convenções que você pode usar. Eu particularmente prefiro usar o **camelCase**
+<br><br>
+
+**7 — Programar não é tão complexo.**<br>
+Não existe um problema tão grande na programação, o que sempre existe, é um conjunto de pequenos problemas que formam esse grande problema, e, o maior problema, é que as pessoas parecem ter vergonha de pesquisar — ou perguntar nos fóruns.
+<br><br>
+
+**8 — Leia Livros e e-livros (e-books).**<br>
+Leia muitos livros, os livros sempre foram os melhores recursos para aprender qualquer coisa, fora que vão te ajudar muito na lógica e paciência.
+<br><br>
+
+**9 — Você não está entediado, apenas não está motivado.**<br>
+Não pense que você está entediado enquanto programa. A amarga verdade é que você não está entediado, apenas não está motivado.
+
+Lembro-me de quando eu ia elaborar algum site ou estruturar um banco de dados, e do nada eu parava e fica meio "meh, que chato". Mas, eu só estava desmotivado, porém, quando eu fazia algo que nem eu mesmo imagina que conseguiria, ficava sorrindo feito um bobo, com sorriso de orelha a orelha.
+<br><br>
+
+**10 — Nem sempre acredite em Youtubers.**<br>
+É sério! Nem sempre acredite em Youtubers, dizendo que as 10 melhores linguagens de programação para aprender em 2022 são aquelas que eles dizem, porque às vezes, Cobol vem em primeiro lugar na lista deles, — não que seja errado, mas se for para programar na época dos dinossauros, eu tentaria inventar uma máquina do tempo.
+<br><br>
+
+**11 — Não se preocupe com o tempo.**<br>
+Não se preocupe com o tempo para aprender a programar.
+
+Geralmente leva um tempo para dominar uma linguagem. Apenas se certifique de que você não está se desviando.
+
+Tudo que é bom precisa de tempo, não se apresse em fazer coisas da noite para o dia.
+<br><br>
+
+**12 — Escolha uma linguagem ou o conjunto dela.**<br>
+Muitas pessoas têm a mania de começar a aprender Python, largar quando começou a ver às variáveis e já partir para HTML misturado com Ruby on Rails, procurando PHP… Calma lá, Einstein.<br>
+Primeiro, tente achar qual área da programação quer seguir, seja dbA, front-end ou UI/UX. E, quando decidir, você pode achar vários [roadmaps](https://roadmap.sh/ 'roadmaps') na internet, mas mesmo que prefira não seguir um [roadmaps](https://roadmap.sh/ 'roadmaps'), veja a principal linguagem sendo usada e foque nela. E, pode ficar numa boa, porque uma linguagem vai te levar a outra que a completa (SQL 💚 Python, ops).<br><br>
+
+**Conclusão:**<br>
+Como disse Elon Musk:<br>
+
+> You don’t need college to learn stuff, the value is seeing whether somebody can work hard at something.
+
+Portanto, você precisa ter um plano para melhorar suas habilidades de codificação diariamente e não parar de aprender.
+
+Após anos de experiência você se tornará um especialista.
+<br><br>
+
+**Bônus:**
+
+Recomendarei um ótimo livro, para pessoas que decidiram começar a aprender a programar por conta própria.
+
+O conteúdo é apresentado de concisamente em etapas que gradualmente se complementam de uma forma que permite que você acompanhe sem problemas.
+<br>
+
+**Clique no link abaixo e adquira sua cópia:**<br>
+[The Self-Taught Programmer: The Definitive Guide to Programming Professionally](https://amzn.to/2HKwDRZ 'The Self-Taught Programmer: The Definitive Guide to Programming Professionally')
