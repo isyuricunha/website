@@ -47,7 +47,7 @@ export default function MyApp({
           site_name: `Yuri Cunha`,
           images: [
             {
-              url: `https://www.mikeroph.one/static/images/profile.jpeg`,
+              url: `https://www.isyuricunha.xyz/static/images/profile.jpeg`,
               alt: `Profile Picture`,
             },
           ],
@@ -56,11 +56,11 @@ export default function MyApp({
       />
       <ChakraProvider theme={theme}>
         <PlausibleProvider
-          domain="mikeroph.one"
+          domain="isyuricunha.xyz"
           selfHosted
           trackOutboundLinks
           enabled={process.env.NODE_ENV === 'production'}
-          customDomain={'https://stats.mikeroph.one'}
+          customDomain={'https://stats.isyuricunha.xyz'}
         >
           <QueryClientProvider client={queryClient}>
             <MDXProvider components={MDXComponents}>
