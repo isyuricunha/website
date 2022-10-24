@@ -54,12 +54,12 @@ export default function MyApp({
           site_name: `Yuri Cunha`,
           images: [
             {
-              url: `http://localhost:3000/static/images/profile.jpeg`,
-              alt: `Profile Picture`,
+              url: `http://localhost:3000/static/images/icon.png`,
+              alt: `Favicon Picture`,
             },
           ],
         }}
-        description="The purpose of this site is for me to test things out & maybe show some things off."
+        description="I'm a database administrator with over 3 years of experience, and a student who spends most all of his free time doing open source projects/websites/softwares."
       />
       <ChakraProvider theme={theme}>
         <PlausibleProvider
