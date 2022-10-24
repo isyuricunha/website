@@ -44,7 +44,7 @@ const BlogLayout = ({
       <NextSeo
         title={frontMatter.title}
         description={frontMatter.summary}
-        canonical={`https://isyuricunha.xyz${router.asPath}`}
+        canonical={`https://website.yuricunha.xyz${router.asPath}`}
         twitter={{
           cardType: 'summary_large_image',
           site: '@Mikerophone_',
@@ -53,7 +53,7 @@ const BlogLayout = ({
           title: frontMatter.title,
           site_name: 'Yuri Cunha',
           description: frontMatter.summary,
-          url: `https://isyuricunha.xyz${router.asPath}/`,
+          url: `https://website.yuricunha.xyz${router.asPath}/`,
 
           type: 'article',
           article: {
@@ -61,7 +61,7 @@ const BlogLayout = ({
           },
           images: [
             {
-              url: `https://isyuricunha.xyz${frontMatter.image}`,
+              url: `https://website.yuricunha.xyz${frontMatter.image}`,
             },
           ],
         }}
@@ -146,7 +146,7 @@ const BlogLayout = ({
           <HStack justifyContent="flex-start" mr="auto" mt={5}>
             <EditIcon />
             <Link
-              href={`https://github.com/isyuricunha/isyuricunha.xyz/edit/main/src/data/blog/${frontMatter.slug}.mdx`}
+              href={`https://github.com/isyuricunha/website.yuricunha.xyz/edit/main/src/data/blog/${frontMatter.slug}.mdx`}
               passHref
             >
               <ChakraLink
