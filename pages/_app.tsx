@@ -42,7 +42,7 @@ export default function MyApp({
       <Head>
         <link
           rel="shortcut icon"
-          href="http://localhost:3000/static/images/profile.jpeg"
+          href="http://localhost:3000/static/images/icon.png"
         />
       </Head>
       <DefaultSeo
