@@ -42,7 +42,7 @@ export default function MyApp({
       <Head>
         <link
           rel="shortcut icon"
-          href="https://website.yuricunha.xyz/static/images/icon.png"
+          href="https://www.website.yuricunha.xyz/static/images/icon.png"
         />
       </Head>
       <DefaultSeo
@@ -54,7 +54,7 @@ export default function MyApp({
           site_name: `Yuri Cunha`,
           images: [
             {
-              url: `https://website.yuricunha.xyz/static/images/icon.png`,
+              url: `https://www.website.yuricunha.xyz/static/images/icon.png`,
               alt: `Favicon Picture`,
             },
           ],
