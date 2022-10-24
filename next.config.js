@@ -1,6 +1,6 @@
 const ContentSecurityPolicy = `
   default-src 'self';
-  script-src 'self' unpkg.com 'unsafe-eval' 'unsafe-inline' *.mikeroph.one;
+  script-src 'self' unpkg.com 'unsafe-eval' 'unsafe-inline' *.yuricunha.xyz;
   child-src 'self' 'unsafe-inline' *.youtube.com *.google.com *.twitter.com;
   style-src 'self' unpkg.com 'unsafe-inline' *.googleapis.com;
   img-src * blob: data:;
