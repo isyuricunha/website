@@ -99,7 +99,6 @@ function Projects({ repos }: ProjectsProps): React.ReactElement {
           >
             View My Profile
           </Button>
-          {/* Flex ends before SimpleGrid. See Issue #1 https://github.com/isyuricunha/personal-web/issues/1 */}
         </Flex>
 
         <SimpleGrid

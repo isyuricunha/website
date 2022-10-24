@@ -1,4 +1,5 @@
 import { AppProps } from 'next/app';
+import Head from 'next/head';
 import { ChakraProvider } from '@chakra-ui/react';
 import '../src/styles/global.css';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -19,7 +20,7 @@ export default function MyApp({
 }: AppProps): React.ReactElement {
   const [loading, setLoading] = useState(false);
   useEffect(() => {
-    document.documentElement.lang = `en-GB`;
+    document.documentElement.lang = `en-US`;
     const start = () => {
       setLoading(true);
     };
@@ -38,6 +39,12 @@ export default function MyApp({
 
   return (
     <>
+      <Head>
+        <link
+          rel="shortcut icon"
+          href="http://localhost:3000/static/images/profile.jpeg"
+        />
+      </Head>
       <DefaultSeo
         defaultTitle="Yuri Cunha"
         titleTemplate="%s | Yuri Cunha"
@@ -47,7 +54,7 @@ export default function MyApp({
           site_name: `Yuri Cunha`,
           images: [
             {
-              url: `https://www.isyuricunha.xyz/static/images/profile.jpeg`,
+              url: `http://localhost:3000/static/images/profile.jpeg`,
               alt: `Profile Picture`,
             },
           ],
