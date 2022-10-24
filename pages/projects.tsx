@@ -136,8 +136,7 @@ export async function getStaticProps(): Promise<{ props: ProjectsProps }> {
   try {
     response = await fetch(
       `${
-        process.env.NEXT_PUBLIC_HOST ||
-        `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+        process.env.NEXT_PUBLIC_HOST || `https://www.website.yuricunha.xyz`
       }/api/github`
     );
     if (!response.ok) {
