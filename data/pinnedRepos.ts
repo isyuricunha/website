@@ -26,7 +26,7 @@ export const pinnedRepos: pinnedRepoType[] = [
     longDescription: `I was looking through Lee Rob's and Daniel Wirtz's websites one afternoon, and decided I need one for myself (you might see a few similarities 🙃 ). I learnt a lot about NextJS and Chakra, and had a great time making it.`,
   },
   {
-    id: `ssautomation`,
+    id: `solution-system-autmation`,
     stack: ['HTML', 'CSS', 'JavaScript'],
     name: `System Solution Automation`,
     deployedLink: 'https://www.ssautomation.com.br/',
