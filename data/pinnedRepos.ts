@@ -15,7 +15,7 @@ export const pinnedRepos: pinnedRepoType[] = [
     name: `My Website`,
     deployedLink: 'https://yuricunha.xyz',
     image:
-      '/data/image/website-demo.png',
+      'https://github.com/isyuricunha/website/blob/main/public/static/images/forDemo/website-demo.png?raw=true',
     longDescription: `I was looking through Lee Rob's and Daniel Wirtz's websites one afternoon, and decided I need one for myself (you might see a few similarities 🙃 ). I learnt a lot about NextJS and Chakra, and had a great time making it.`,
   },
   {
