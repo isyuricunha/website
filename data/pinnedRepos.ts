@@ -10,13 +10,6 @@ export const pinnedRepos: pinnedRepoType[] = [
       'A website for a massage therapist. It was built using HTML, CSS and JavaScript. It is fully responsive and has a contact form. No have a backend.',
   },
   {
-    id: `mikebot`,
-    name: `MikeBot`,
-    stack: ['Discord.JS', 'Node'],
-    longDescription: `I wanted to learn how to use JavaScript and this project helped me dive into it. MikeBot utilised the discord API via discord.js to perform a variety of tasks from moderation, games, and general fun. I spent ages over quarantine on this project, and is where I started learning JS.`,
-  },
-
-  {
     id: `yuricunha.xyz`,
     stack: ['Next.JS', 'Chakra-UI', 'MDX'],
     name: `My Website`,
