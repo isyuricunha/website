@@ -1,3 +1,4 @@
+import { NextSeo } from 'next-seo';
 import React, { useState } from 'react';
 import {
   Box,
@@ -43,7 +44,7 @@ function Blog({ posts }: { posts: any }): React.ReactElement {
   }
 
   return (
-    <Flex direction='column' alignItems='center' width='full' minH='100vh' mx='auto' maxW='5xl'>
+    <><NextSeo title="Blog" /><Flex direction='column' alignItems='center' width='full' minH='100vh' mx='auto' maxW='5xl'>
       <LineHeading
         mt='28'
         fontSize={{ base: `3xl`, sm: `4xl`, md: `5xl`, lg: `6xl` }}
@@ -74,8 +75,7 @@ function Blog({ posts }: { posts: any }): React.ReactElement {
               _placeholder={{
                 color: useColorModeValue('gray.800', 'whiteAlpha.800'),
               }}
-              onChange={e => setFilter(e.target.value.toLowerCase())}
-            />
+              onChange={e => setFilter(e.target.value.toLowerCase())} />
           </InputGroup>
 
           <Menu>
@@ -105,7 +105,7 @@ function Blog({ posts }: { posts: any }): React.ReactElement {
           <BlogPost key={frontMatter.title} {...frontMatter} />
         ))}
       </Box>
-    </Flex>
+    </Flex></>
   );
 }
 
