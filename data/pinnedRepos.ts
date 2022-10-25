@@ -1,12 +1,12 @@
 export const pinnedRepos: pinnedRepoType[] = [
   {
     image:
-      'https://user-images.githubusercontent.com/47287285/119244610-38467080-bb6a-11eb-8c0e-2e241a31dac8.png',
-    name: 'WormTracker',
-    stack: ['React', 'Semantic-UI'],
-    id: 'WormTracker',
+      'www.old-website-second-version.yuricunha.xyz/projects/massage-alternativa.png',
+    name: 'Massage Alternativa',
+    stack: ['HTML', 'CSS', 'JavaScript'],
+    id: 'massage-alternativa',
     longDescription:
-      'A quick tool I whipped up to help count worm tracks in grids on pictures of agar plates. Pretty weird, and super scuffed, but it worked well for the short time it was used.',
+      'A website for a massage therapist. It was built using HTML, CSS and JavaScript. It is fully responsive and has a contact form. No have a backend.',
   },
   {
     id: `mikebot`,
