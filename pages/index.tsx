@@ -104,7 +104,7 @@ export default function Home(): React.ReactElement {
                   <ChakraLink>websites</ChakraLink>
                 </Link>{' '}
                 &{' '}
-                <Link href="/links" passHref>
+                <Link href="/tools" passHref>
                   <ChakraLink>tools</ChakraLink>
                 </Link>{' '}
                 that I like. Sometimes I even write{' '}
