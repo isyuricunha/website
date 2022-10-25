@@ -10,12 +10,12 @@ export const pinnedRepos: pinnedRepoType[] = [
       'A website for a massage therapist. It was built using HTML, CSS and JavaScript. It is fully responsive and has a contact form. No have a backend.',
   },
   {
-    id: `yuricunha.xyz`,
+    id: `website`,
     stack: ['Next.JS', 'Chakra-UI', 'MDX'],
     name: `My Website`,
     deployedLink: 'https://yuricunha.xyz',
     image:
-      '',
+      'https://raw.githubusercontent.com/isyuricunha/website/0440c3664af19aeab8bcd67dac0263a895eea59f/public/static/images/forDemo/website-demo.png?token=A3SHBC65P5CEN5CPBTLBQDDDK66FC',
     longDescription: `I was looking through Lee Rob's and Daniel Wirtz's websites one afternoon, and decided I need one for myself (you might see a few similarities 🙃 ). I learnt a lot about NextJS and Chakra, and had a great time making it.`,
   },
   {
