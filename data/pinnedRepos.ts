@@ -1,7 +1,7 @@
 export const pinnedRepos: pinnedRepoType[] = [
   {
     image:
-      'https://raw.githubusercontent.com/isyuricunha/website/main/public/static/images/projects/massage-alternativa.png?token=GHSAT0AAAAAAB2JNOGD4VDO7XYJKKTP46HAY2XHT3A',
+      'https://raw.githubusercontent.com/isyuricunha/website/main/public/static/images/forDemo/massage-alternativa.png?token=GHSAT0AAAAAAB2JNOGCCZIUQ2SCYTP5KC76Y2XZ3EQ',
     name: 'Massage Alternativa',
     deployedLink: 'https://massagealternativa.com',
     stack: ['HTML', 'CSS', 'JavaScript'],
@@ -15,7 +15,7 @@ export const pinnedRepos: pinnedRepoType[] = [
     name: `My Website`,
     deployedLink: 'https://yuricunha.xyz',
     image:
-      'https://github.com/isyuricunha/website/blob/main/public/static/images/forDemo/website-demo.png?raw=true',
+      'https://raw.githubusercontent.com/isyuricunha/website/main/public/static/images/forDemo/website-demo.png?token=GHSAT0AAAAAAB2JNOGCCZIUQ2SCYTP5KC76Y2XZ3EQ',
     longDescription: `I was looking through Lee Rob's and Daniel Wirtz's websites one afternoon, and decided I need one for myself (you might see a few similarities 🙃 ). I learnt a lot about NextJS and Chakra, and had a great time making it.`,
   },
   {
