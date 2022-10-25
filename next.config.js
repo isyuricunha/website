@@ -83,6 +83,10 @@ module.exports = withMDX({
       'lh3.googleusercontent.com',
       'lh4.googleusercontent.com',
       'yuricunha.xyz',
+      'www.old-website-second-version.yuricunha.xyz',
+      '../*.yuricunha.xyz',
+      'www.yuricunha.xyz',
+      '../*',
     ],
   },
   async headers() {
