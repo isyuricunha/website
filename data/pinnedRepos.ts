@@ -24,7 +24,7 @@ export const pinnedRepos: pinnedRepoType[] = [
     name: `System Solution Automation`,
     deployedLink: 'https://www.ssautomation.com.br/',
     image:
-      'https://www.old-website-second-version.yuricunha.xyz/projects/ssautomation.png',
+      'https://raw.githubusercontent.com/isyuricunha/website/main/public/static/images/forDemo/ssautomation.png',
     longDescription: `A website for a ssautomation. It was built using HTML, CSS and JavaScript. It is fully responsive and has a contact form. No have a backend.`,
   },
 ];
