@@ -146,7 +146,7 @@ const BlogLayout = ({
           <HStack justifyContent="flex-start" mr="auto" mt={5}>
             <EditIcon />
             <Link
-              href={`https://github.com/isyuricunha/website/edit/main/src/data/blog/${frontMatter.slug}.mdx`}
+              href={`https://github.com/isyuricunha/website/tree/main/data/blog/${frontMatter.slug}.mdx`}
               passHref
             >
               <ChakraLink
