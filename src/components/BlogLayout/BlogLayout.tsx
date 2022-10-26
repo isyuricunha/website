@@ -47,7 +47,7 @@ const BlogLayout = ({
         canonical={`https://yuricunha.xyz${router.asPath}`}
         twitter={{
           cardType: 'summary_large_image',
-          site: '@Mikerophone_',
+          site: '@isyuricunha',
         }}
         openGraph={{
           title: frontMatter.title,
