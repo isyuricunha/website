@@ -19,7 +19,7 @@ export default function MyApp({
 }: AppProps): React.ReactElement {
   const [loading, setLoading] = useState(false);
   useEffect(() => {
-    document.documentElement.lang = `en-GB`;
+    document.documentElement.lang = `en-US`;
     const start = () => {
       setLoading(true);
     };

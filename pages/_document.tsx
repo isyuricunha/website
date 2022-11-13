@@ -1,5 +1,6 @@
 import { ColorModeScript } from '@chakra-ui/react';
 
+
 // eslint-disable-next-line @next/next/no-document-import-in-page
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 
@@ -8,6 +9,10 @@ export default class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
+          <link
+            rel="shortcut icon"
+            href="http://localhost:3000/static/images/profile2.png"
+          />
           <link
             href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap"
             rel="stylesheet"
