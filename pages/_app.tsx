@@ -42,7 +42,7 @@ export default function MyApp({
         defaultTitle="Yuri Cunha"
         titleTemplate="%s | Yuri Cunha"
         openGraph={{
-          title: `Yuri Cunha`,
+          title: `From my Desk`,
           type: `website`,
           site_name: `From my Desk`,
           images: [
