@@ -24,7 +24,7 @@ const info = (props: any): { input: string; return: string }[] => [
   {
     input: 'self.skills',
     return:
-      '[ "MySQL", "PL/SQL", "NoSQL", "Python", "React", "Next.TS", "Chakra-UI", "Tailwind", "git"]',
+      '[ "MySQL", "PL/SQL", "NoSQL", "Python", "React", "Next.TS", "Chakra-UI", "Tailwind", "Git"]',
   },
   {
     input: 'self.contactMe()',
