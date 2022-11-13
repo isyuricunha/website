@@ -44,7 +44,7 @@ export default function MyApp({
         openGraph={{
           title: `Yuri Cunha`,
           type: `website`,
-          site_name: `Yuri Cunha`,
+          site_name: `From my Desk`,
           images: [
             {
               url: `https://www.yuricunha.xyz/static/images/profile.jpeg`,
