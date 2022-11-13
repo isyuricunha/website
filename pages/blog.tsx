@@ -53,7 +53,7 @@ function Blog({ posts }: { posts: any }): React.ReactElement {
         Blog Posts
       </LineHeading>
       <Text mt={3} px={5}>
-        Here are a collection of my blog posts, with {posts.length} posts
+        Here are a collection of my blog posts, with {posts.length} blog
         {posts.length > 1 && 's'} :).
       </Text>
       <Box mt='16' width='full'>

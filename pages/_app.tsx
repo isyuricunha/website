@@ -11,7 +11,6 @@ import AppLayout from '@/components/AppLayout';
 import theme from '../src/theme';
 import MDXComponents from '@/components/MDXComponents';
 import { MDXProvider } from '@mdx-js/react';
-import Document, { Html, Head, Main, NextScript } from 'next/document';
 
 const queryClient = new QueryClient();
 export default function MyApp({
