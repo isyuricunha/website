@@ -13,7 +13,7 @@ export const pinnedRepos: pinnedRepoType[] = [
     id: `website`,
     stack: ['Next.JS', 'Chakra-UI', 'MDX'],
     name: `My Website`,
-    deployedLink: 'https://yuricunha.xyz',
+    deployedLink: 'https://http://localhost:3000/',
     image:
       'https://raw.githubusercontent.com/isyuricunha/website/main/public/static/images/forDemo/website-demo.png',
     longDescription: `I was looking through Lee Rob's and Daniel Wirtz's websites one afternoon, and decided I need one for myself (you might see a few similarities 🙃 ). I learnt a lot about NextJS and Chakra, and had a great time making it.`,

@@ -56,11 +56,11 @@ export default function MyApp({
       />
       <ChakraProvider theme={theme}>
         <PlausibleProvider
-          domain="yuricunha.xyz"
+          domain="http://localhost:3000/"
           selfHosted
           trackOutboundLinks
           enabled={process.env.NODE_ENV === 'production'}
-          customDomain={'https://stats.yuricunha.xyz'}
+          customDomain={'https://stats.http://localhost:3000/'}
         >
           <QueryClientProvider client={queryClient}>
             <MDXProvider components={MDXComponents}>
