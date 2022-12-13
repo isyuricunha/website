@@ -44,7 +44,7 @@ const BlogLayout = ({
       <NextSeo
         title={frontMatter.title}
         description={frontMatter.summary}
-        canonical={`https://http://localhost:3000/${router.asPath}`}
+        canonical={`https://yuricunha.xyz${router.asPath}`}
         twitter={{
           cardType: 'summary_large_image',
           site: '@isyuricunha',
@@ -53,7 +53,7 @@ const BlogLayout = ({
           title: frontMatter.title,
           site_name: 'Yuri Cunha',
           description: frontMatter.summary,
-          url: `https://http://localhost:3000/${router.asPath}/`,
+          url: `https://yuricunha.xyz${router.asPath}/`,
 
           type: 'article',
           article: {
@@ -61,7 +61,7 @@ const BlogLayout = ({
           },
           images: [
             {
-              url: `https://http://localhost:3000/${frontMatter.image}`,
+              url: `https://yuricunha.xyz${frontMatter.image}`,
             },
           ],
         }}

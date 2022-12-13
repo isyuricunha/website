@@ -1,6 +1,6 @@
 const ContentSecurityPolicy = `
   default-src 'self';
-  script-src 'self' unpkg.com 'unsafe-eval' 'unsafe-inline' *.http://localhost:3000/;
+  script-src 'self' unpkg.com 'unsafe-eval' 'unsafe-inline' *.yuricunha.xyz;
   child-src 'self' 'unsafe-inline' *.youtube.com *.google.com *.twitter.com;
   style-src 'self' unpkg.com 'unsafe-inline' *.googleapis.com;
   img-src * blob: data:;
@@ -82,10 +82,10 @@ module.exports = withMDX({
       'pbs.twimg.com',
       'lh3.googleusercontent.com',
       'lh4.googleusercontent.com',
-      'http://localhost:3000/',
-      'www.old-website-second-version.http://localhost:3000/',
-      '../*.http://localhost:3000/',
-      'www.http://localhost:3000/',
+      'yuricunha.xyz',
+      'www.old-website-second-version.yuricunha.xyz',
+      '../*.yuricunha.xyz',
+      'www.yuricunha.xyz',
       '../*',
     ],
   },
