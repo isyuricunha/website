@@ -77,6 +77,47 @@ DELETE FROM Customers WHERE ID = 1;
 <br />
 <br />
 
+# Complex example
+
+Here is a complex example and solution involving the SQL Server Database:
+
+> You are the database administrator for a large online retailer. The company has a database with several tables storing information about customers, orders, and products. The database is used to track customer information, process orders, and generate reports.
+
+> One of the company's sales managers has requested a report showing the total sales and number of orders for each customer, broken down by product category. The report should show the data for the past year, and should be sorted by total sales in descending order.
+
+<br />
+<br />
+
+## _Solution_ 
+
+<br />
+
+* To generate the requested report, you can use the following SQL query:
+
+```sql
+SELECT c.Name AS 'Customer',
+       SUM(o.Total) AS 'Total Sales',
+       COUNT(o.ID) AS 'Number of Orders',
+       p.Category AS 'Product Category'
+FROM Customers c
+INNER JOIN Orders o ON c.ID = o.CustomerID
+INNER JOIN Products p ON o.ProductID = p.ID
+WHERE o.Date BETWEEN '2022-01-01' AND '2022-12-31'
+GROUP BY c.Name, p.Category
+ORDER BY 'Total Sales' DESC;
+```
+
+<br />
+
+_This query will select the customer name, total sales, number of orders, and product category for all orders placed within the specified date range. It will then group the results by customer name and product category, and will sort the results by total sales in descending order. The resulting report will show the total sales and number of orders for each customer, broken down by product category._
+
+<br />
+
+> This complex example is just for you to train your mind a little.
+
+<br />
+<br />
+
 ###### _Here are some additional reference links that you might find helpful in learning more about SQL Server Database and the SQL language:_
 
 * The SQL Server homepage: https://www.microsoft.com/sql-server/
