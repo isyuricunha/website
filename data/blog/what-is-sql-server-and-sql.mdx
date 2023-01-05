@@ -2,7 +2,7 @@
 title: 'SQL Server and examples.'
 publishedAt: '2023-01-05T09:20:27.751-03:00'
 summary: 'What is the SQL Server Database?'
-tags: ['SQL Server', Technology', 'SQL Language']
+tags: ['SQL Server', 'Technology', 'SQL Language']
 by: { name: 'Yuri Cunha', avatar: '/static/images/profile.jpeg' }
 image: '/static/images/blog/50-days-of-meditation/50-days-of-meditation.jpg'
 published: true
@@ -29,20 +29,74 @@ There are several versions of SQL Server available, including SQL Server Express
 
 To work with SQL Server, it is necessary to know the Structured Query Language (SQL). SQL is the standard language for working with relational databases and is used to create, query, and modify the data stored in the database.
 
+<br />
+<br />
+
 # Examples of SQL Queries
 
-## Here are some examples of SQL queries that can be run on the SQL Server Database:
+Here are some examples of SQL queries that can be run on the SQL Server Database:
 
-### Select Query
-The following query selects all fields from the "Customers" table where the "City" field is equal to "São Paulo":
+## _Select Query_
+
+* The following query selects all fields from the "Customers" table where the "City" field is equal to "São Paulo":
 
 ```sql
 SELECT * FROM Customers WHERE City = 'São Paulo';
 ```
 
-### Insert Data
-The following query inserts a new record into the "Customers" table:
+<br />
+
+## _Insert Data_
+
+* The following query inserts a new record into the "Customers" table:
 
 ```sql 
 INSERT INTO Customers (Name, Address, City) VALUES ('João da Silva', 'Rua das Flores, 123', 'São Paulo');
 ```
+
+<br />
+
+## _Update Data_
+
+* The following query updates the "Address" field of the record with ID 1 in the "Customers" table:
+
+```sql
+UPDATE Customers SET Address = 'Rua das Oliveiras, 456' WHERE ID = 1;
+```
+
+<br />
+
+## _Delete Data_
+
+* The following query deletes the record with ID 1 from the "Customers" table:
+
+```sql
+DELETE FROM Customers WHERE ID = 1;
+```
+
+<br />
+<br />
+
+###### _Here are some additional reference links that you might find helpful in learning more about SQL Server Database and the SQL language:_
+
+* The SQL Server homepage: https://www.microsoft.com/sql-server/
+
+* The SQL Server documentation: https://docs.microsoft.com/sql/
+
+* The SQL tutorial: https://www.w3schools.com/sql/
+
+* The MySQL reference guide: https://dev.mysql.com/doc/refman/8.0/en/
+
+* The Oracle SQL tutorial: https://docs.oracle.com/en/database/oracle/oracle-database/19/lnpls/index.html
+
+
+> I hope these additional references and syntax are helpful to you.
+
+<br />
+<br />
+
+<Aside type={'positive'} title={'Thank you very much for reading!'}>
+  Whilst I do write these for myself, it's also great if it helps other people out! So thank you for
+  reading through and I hope I helped you out just a little bit. Become a 
+  <a href='https://github.com/sponsors/isyuricunha'> sponsor</a>.
+</Aside>
