@@ -77,6 +77,68 @@ DELETE FROM Customers WHERE ID = 1;
 <br />
 <br />
 
+# Two simple examples
+
+<br />
+
+## First example
+
+<br />
+
+> You are the database administrator for a small customer database. You need to add a new customer record with the following information:
+
+<br />
+
+* Name: "John Smith"
+* Address: "123 Main Street"
+* City: "New York"
+
+<br />
+<br />
+
+## _Solution_
+
+<br />
+
+* To add the new customer record, you can use the following SQL query:
+
+```sql
+INSERT INTO Customers (Name, Address, City) VALUES ('John Smith', '123 Main Street', 'New York');
+```
+
+<br />
+
+_This query will insert a new record into the "Customers" table with the specified name, address, and city._Delete_
+
+<br />
+<br />
+
+## Second example
+
+<br />
+
+> You are the database administrator for a product inventory database. You need to update the quantity of a product with the ID "12345" to 10.
+
+<br />
+<br />
+
+## _Solution_
+
+<br />
+
+* You are the database administrator for a product inventory database. You need to update the quantity of a product with the ID "12345" to 10.
+
+```sql
+UPDATE Products SET Quantity = 10 WHERE ID = 12345;
+```
+
+<br />
+
+_This query will update the "Quantity" field of the product with the ID "12345" to the value 10._
+
+<br />
+<br />
+
 # Complex example
 
 Here is a complex example and solution involving the SQL Server Database:
@@ -113,7 +175,7 @@ _This query will select the customer name, total sales, number of orders, and pr
 
 <br />
 
-> This complex example is just for you to train your mind a little.
+> I hope the examples have helped you..
 
 <br />
 <br />
