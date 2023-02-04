@@ -27,6 +27,15 @@ export const pinnedRepos: pinnedRepoType[] = [
       'https://raw.githubusercontent.com/isyuricunha/website/main/public/static/images/forDemo/ssautomation.png',
     longDescription: `A website for a ssautomation. It was built using HTML, CSS and JavaScript. It is fully responsive and has a contact form. No have a backend.`,
   },
+  {
+    id: `rain-for-relax`,
+    stack: ['HTML', 'CSS', 'JavaScript'],
+    name: `Rain for relax`,
+    deployedLink: 'https://www.rain-for-relax.yuricunha.xyz/',
+    image:
+      '../public/static/images/forDemo/rain-for-relax.png',
+    longDescription: `A simple website with rain sound to relax.`,
+  },
 ];
 
 export interface pinnedRepoType {
