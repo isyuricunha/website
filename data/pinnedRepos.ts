@@ -33,7 +33,7 @@ export const pinnedRepos: pinnedRepoType[] = [
     name: `Rain for relax`,
     deployedLink: 'https://www.rain-for-relax.yuricunha.xyz/',
     image:
-      'https://raw.githubusercontent.com/isyuricunha/website/main/public/static/images/forDemo/rain-for-relax.png',
+      'https://raw.githubusercontent.com/isyuricunha/website/42f264115965e0e0abbd4e19c28cb7873eb18382/public/static/images/forDemo/rain-for-relax.png',
     longDescription: `A simple website with rain sound to relax.`,
   },
 ];
