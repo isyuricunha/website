@@ -1,6 +1,5 @@
 const style = (props) =>
-  `color: var(--chakra-colors-brand-${
-    props.colorMode === 'light' ? '600' : '300'
+  `color: var(--chakra-colors-brand-${props.colorMode === 'light' ? '600' : '300'
   });font-weight: 500;`;
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const info = (props: any): { input: string; return: string }[] => [
@@ -32,15 +31,15 @@ const info = (props: any): { input: string; return: string }[] => [
       props
     )}" rel="noopener" href="https://www.linkedin.com/in/isyuricunha/">LinkedIn</a>", "<a style="${style(
       props
-      )}" rel="noopener" href="https://github.com/isyuricunha">Github</a>", "<a rel="noopener" style="${style(
+    )}" rel="noopener" href="https://github.com/isyuricunha">Github</a>", "<a rel="noopener" style="${style(
       props
-      )}" rel="noopener" href="https://twitter.com/isyuricunha">Twitter</a>", "<a rel="noopener" style="${style(
-        props
-      )}" rel="noopener" href="https://www.instagram.com/isyuricunha/">Instagram</a>", "<a rel="noopener" style="${style(
-        props
-      )}" rel="noopener" href="https://discordapp.com/users/1018988240151253002">Discord</a>", "<a rel="noopener" style="${style(
-        props
-      )}" href="mailto:isyuricunha@duck.com">Email</a>"]`,
+    )}" rel="noopener" href="https://twitter.com/isyuricunha">Twitter</a>", "<a rel="noopener" style="${style(
+      props
+    )}" rel="noopener" href="https://www.instagram.com/isyuricunha/">Instagram</a>", "<a rel="noopener" style="${style(
+      props
+    )}" rel="noopener" href="https://discordapp.com/users/1018988240151253002">Discord</a>", "<a rel="noopener" style="${style(
+      props
+    )}" href="mailto:isyuricunha@duck.com">Email</a>"]`,
   },
 ];
 
