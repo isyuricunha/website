@@ -17,6 +17,7 @@ import {
   FaLinkedin,
   FaTwitter,
   FaTelegram,
+  FaDiscord,
 } from 'react-icons/fa';
 import { useQuery } from 'react-query';
 import { BsPauseFill } from 'react-icons/bs';
@@ -132,9 +133,16 @@ const Footer = (): JSX.Element => {
           <SocialIcons label="Twitter" href="https://twitter.com/isyuricunha">
             <FaTwitter />
           </SocialIcons>
+
+          <SocialIcons
+            label="Discord"
+            href="https://discordapp.com/users/1018988240151253002"
+          >
+            <FaDiscord />
+          </SocialIcons>
         </Stack>
       </SimpleGrid>
     </Box>
   );
 };
-export default Footer
+export default Footer;
