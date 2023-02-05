@@ -18,7 +18,7 @@ const info = (props: any): { input: string; return: string }[] => [
   },
   {
     input: 'self.education',
-    return: '"Database - Estácio de Sá"',
+    return: '"Database Administrator, 2019-2023 && Physics, 2015-2019"',
   },
   {
     input: 'self.skills',
@@ -38,6 +38,8 @@ const info = (props: any): { input: string; return: string }[] => [
     )}" rel="noopener" href="https://www.instagram.com/isyuricunha/">Instagram</a>", "<a rel="noopener" style="${style(
       props
     )}" rel="noopener" href="https://discordapp.com/users/1018988240151253002">Discord</a>", "<a rel="noopener" style="${style(
+      props
+    )}" rel="noopener" href="https://t.me/isyuricunha">Telegram</a>", "<a rel="noopener" style="${style(
       props
     )}" href="mailto:isyuricunha@duck.com">Email</a>"]`,
   },
