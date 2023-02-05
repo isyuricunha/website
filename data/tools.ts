@@ -1,4 +1,4 @@
-export type categories = `windows` | `web` | `mac` | 'ios' | 'chrome';
+export type categories = `windows` | `web` | `mac` | 'ios' | 'chrome' | 'android';
 
 export interface ToolType {
   link: string;
@@ -178,6 +178,14 @@ const Tools: ToolType[] = [
     labels: [`Pomodoro Timer`],
     name: `Flow`,
     description: `A simple app to make use of your time.`,
+  },
+  {
+    id: `dashlane`,
+    category: [`windows`, `ios`, `chrome`, `android`],
+    link: `https://www.dashlane.com/`,
+    labels: [`Password Manager`],
+    name: `Dashlane`,
+    description: `A simple extension to organise your passwords.`,
   },
 ];
 export default Tools;
