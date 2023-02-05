@@ -24,7 +24,7 @@ export async function getStaticPaths(): Promise<any> {
   const posts = await getFiles(`blog`);
 
   return {
-    paths: posts.map(p => ({
+    paths: posts.map((p) => ({
       params: {
         slug: p.replace(/\.mdx/, ``),
       },
@@ -33,7 +33,11 @@ export async function getStaticPaths(): Promise<any> {
   };
 }
 
-export async function getStaticProps({ params }: { params: any }): Promise<any> {
+export async function getStaticProps({
+  params,
+}: {
+  params: any;
+}): Promise<any> {
   const post = await getFileBySlug(`blog`, params.slug);
 
   return { props: { ...post } };

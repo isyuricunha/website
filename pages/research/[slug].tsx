@@ -13,29 +13,35 @@ interface Props {
 
 export default function ResearchLayout({ item }: Props): ReactElement {
   return (
-    <Box py='20' minHeight='100vh' width='full'>
-      <VStack mx='auto' my='10' maxWidth={{ base: '97%', md: '70%' }}>
-        <Flex flexWrap='wrap'>
+    <Box py="20" minHeight="100vh" width="full">
+      <VStack mx="auto" my="10" maxWidth={{ base: '97%', md: '70%' }}>
+        <Flex flexWrap="wrap">
           {item.tags.map((tag, i) => (
-            <BlogBadge tag={tag} key={i.toString()} mr='2' mt='2' />
+            <BlogBadge tag={tag} key={i.toString()} mr="2" mt="2" />
           ))}
         </Flex>
         <LineHeading>{item.title}</LineHeading>
-        <Flex py='2' justifyContent='space-between' w='full'>
+        <Flex py="2" justifyContent="space-between" w="full">
           <HStack>
-            {item.authors.map(author => (
+            {item.authors.map((author) => (
               <Tag
                 key={`${author.name}${title[0]}`}
-                size='lg'
-                colorScheme='brand'
-                borderRadius='full'
+                size="lg"
+                colorScheme="brand"
+                borderRadius="full"
               >
-                <Avatar name={author.name} size='xs' ml={-2} mr={2} src={author.avatar} />
+                <Avatar
+                  name={author.name}
+                  size="xs"
+                  ml={-2}
+                  mr={2}
+                  src={author.avatar}
+                />
                 {author.name}
               </Tag>
             ))}
           </HStack>
-          <Text fontSize='lg' fontWeight='bold'>
+          <Text fontSize="lg" fontWeight="bold">
             {item.date}
           </Text>
         </Flex>
@@ -46,7 +52,11 @@ export default function ResearchLayout({ item }: Props): ReactElement {
         type={item.pdf}
         style={{ height: '80vh', width: '96%', margin: '0 auto' }}
       >
-        <embed src={item.pdf} style={{ height: '80vh', width: '100%' }} type='application/pdf' />
+        <embed
+          src={item.pdf}
+          style={{ height: '80vh', width: '100%' }}
+          type="application/pdf"
+        />
       </object>
     </Box>
   );
@@ -54,7 +64,7 @@ export default function ResearchLayout({ item }: Props): ReactElement {
 
 export async function getStaticPaths(): Promise<any> {
   return {
-    paths: researchItems.map(p => ({
+    paths: researchItems.map((p) => ({
       params: {
         slug: p.id,
       },
@@ -68,5 +78,5 @@ export async function getStaticProps({
 }: {
   params: any;
 }): Promise<{ props: { item: ResearchItem } }> {
-  return { props: { item: researchItems.find(p => p.id === params.slug) } };
+  return { props: { item: researchItems.find((p) => p.id === params.slug) } };
 }
