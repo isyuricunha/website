@@ -40,10 +40,9 @@ function Blog({ posts }: { posts: any }): React.ReactElement {
       } else if (sort === 'old') {
         return new Date(a.publishedAt).getTime() - new Date(b.publishedAt).getTime();
       } else {
-        return 0; // Caso a opção de classificação não seja "recent" nem "old"
+        return 0;
       }
     });
-
 
 
   if (sort === 'old') {
