@@ -18,6 +18,7 @@ import {
   FaTwitter,
   FaTelegram,
   FaDiscord,
+  FaMailBulk,
 } from 'react-icons/fa';
 import { useQuery } from 'react-query';
 import { BsPauseFill } from 'react-icons/bs';
@@ -139,6 +140,13 @@ const Footer = (): JSX.Element => {
             href="https://discordapp.com/users/1018988240151253002"
           >
             <FaDiscord />
+          </SocialIcons>
+
+          <SocialIcons
+            label="E-mail"
+            href="mailto:isyuricunha@duck.com"
+          >
+            <FaMailBulk />
           </SocialIcons>
         </Stack>
       </SimpleGrid>
