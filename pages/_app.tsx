@@ -19,20 +19,20 @@ export default function MyApp({
 }: AppProps): React.ReactElement {
   const [loading, setLoading] = useState(false);
   useEffect(() => {
-    document.documentElement.lang = `en-US`;
+    document.documentElement.lang = "en-US";
     const start = () => {
       setLoading(true);
     };
     const end = () => {
       setLoading(false);
     };
-    Router.events.on(`routeChangeStart`, start);
-    Router.events.on(`routeChangeComplete`, end);
-    Router.events.on(`routeChangeError`, end);
+    Router.events.on("routeChangeStart", start);
+    Router.events.on("routeChangeComplete", end);
+    Router.events.on("routeChangeError", end);
     return () => {
-      Router.events.off(`routeChangeStart`, start);
-      Router.events.off(`routeChangeComplete`, end);
-      Router.events.off(`routeChangeError`, end);
+      Router.events.off("routeChangeStart", start);
+      Router.events.off("routeChangeComplete", end);
+      Router.events.off("routeChangeError", end);
     };
   }, []);
 
@@ -42,13 +42,13 @@ export default function MyApp({
         defaultTitle="Yuri Cunha"
         titleTemplate="%s | Yuri Cunha"
         openGraph={{
-          title: `From my Desk`,
-          type: `website`,
-          site_name: `From my Desk`,
+          title: "From my Desk",
+          type: "website",
+          site_name: "From my Desk",
           images: [
             {
-              url: `http://localhost:3000/static/images/profile2.png`,
-              alt: `Profile Picture`,
+              url: "http://localhost:3000/static/images/profile2.png",
+              alt: "Profile Picture",
             },
           ],
         }}

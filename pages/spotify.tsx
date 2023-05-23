@@ -57,8 +57,8 @@ interface SpotifyProps {
 
 function Spotify({ data, error }: SpotifyProps): React.ReactElement {
   const { error: currentError, data: currentlyPlaying } = useQuery(
-    `currentlyPlaying`,
-    () => fetch(`/api/get-now-playing`).then((res) => res.json()),
+    "currentlyPlaying",
+    () => fetch("/api/get-now-playing").then((res) => res.json()),
     { refetchOnMount: true }
   );
   if (error || currentError) {
@@ -68,10 +68,10 @@ function Spotify({ data, error }: SpotifyProps): React.ReactElement {
   return (
     <>
       <NextSeo title="Music" />
-      {` `}
+      {" "}
       <Box
         width="full"
-        maxW={{ base: `full`, lg: `7xl`, xl: `8xl` }}
+        maxW={{ base: "full", lg: "7xl", xl: "8xl" }}
         px={{ base: 2, md: 5 }}
         pb={{ base: 16, md: 28 }}
         mx="auto"
@@ -79,7 +79,7 @@ function Spotify({ data, error }: SpotifyProps): React.ReactElement {
         <HeadingFade>
           <Heading
             pt="28"
-            fontSize={{ base: `3xl`, sm: `4xl`, md: `5xl`, lg: `6xl` }}
+            fontSize={{ base: "3xl", sm: "4xl", md: "5xl", lg: "6xl" }}
             textAlign="center"
           >
             Here&apos;s what I&apos;m listening to at the moment

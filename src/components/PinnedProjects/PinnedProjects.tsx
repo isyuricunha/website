@@ -37,13 +37,13 @@ const PinnedProjects = ({
   return (
     <Box h="full" w="full" my={5}>
       <VStack
-        bg={colorMode === 'light' ? `white` : `gray.900`}
+        bg={colorMode === 'light' ? "white" : "gray.900"}
         px={{ base: 4, md: 8 }}
         py={4}
         height="100%"
         width="100%"
         border="1px solid"
-        borderColor={colorMode === 'light' ? `gray.200` : `gray.700`}
+        borderColor={colorMode === 'light' ? "gray.200" : "gray.700"}
         borderRadius="2xl"
         boxShadow="xl"
         textAlign="left"
@@ -63,7 +63,7 @@ const PinnedProjects = ({
         >
           <Flex width="full" justifyContent="space-between">
             <Text
-              fontSize={{ base: `2xl`, md: `4xl` }}
+              fontSize={{ base: "2xl", md: "4xl" }}
               fontWeight="bold"
               isTruncated
               maxW="100%"
@@ -96,7 +96,7 @@ const PinnedProjects = ({
         </Flex>
         <Tags tags={projectData?.stack} />
         <Text
-          color={colorMode === 'light' ? `gray.600` : `gray.300`}
+          color={colorMode === 'light' ? "gray.600" : "gray.300"}
           justifySelf="center"
           height="100%"
           width="100%"

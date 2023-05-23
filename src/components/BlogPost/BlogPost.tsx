@@ -38,7 +38,7 @@ const BlogPost = ({
   const views = data?.total;
   return (
     <Link href={`/blog/${slug}`} passHref>
-      <ChakraLink _hover={{ textDecoration: `none` }} width="full">
+      <ChakraLink _hover={{ textDecoration: "none" }} width="full">
         <Flex
           mb={8}
           px={5}
@@ -48,15 +48,15 @@ const BlogPost = ({
           width="calc(100% -10px)"
           mx={'5px'}
           border="1px solid"
-          bg={useColorModeValue(`white`, `gray.900`)}
-          borderColor={useColorModeValue(`gray.200`, `gray.700`)}
+          bg={useColorModeValue("white", "gray.900")}
+          borderColor={useColorModeValue("gray.200", "gray.700")}
           boxShadow="lg"
           transition="all 0.25s"
           borderRadius="2xl"
           borderTopLeftRadius={featured ? '0' : '2xl'}
           position="relative"
           transitionTimingFunction="spring(1 100 10 10)"
-          _hover={{ transform: `translateY(-4px)`, shadow: `xl` }}
+          _hover={{ transform: "translateY(-4px)", shadow: "xl" }}
         >
           {featured && (
             <Tag
@@ -78,7 +78,7 @@ const BlogPost = ({
           <Flex
             width="full"
             alignItems={{ base: 'flex-start', sm: 'flex-end' }}
-            flexDirection={{ base: `column`, sm: `row` }}
+            flexDirection={{ base: "column", sm: "row" }}
             justifyContent="space-between"
             maxW="full"
             mb={2}

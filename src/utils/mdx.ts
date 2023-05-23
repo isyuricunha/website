@@ -9,15 +9,15 @@ import remarkAutoLinkHeadings from 'remark-autolink-headings';
 import remarkCodeTitles from 'remark-code-titles';
 
 export const getFiles = (type: string): string[] =>
-  fs.readdirSync(path.join(process.cwd(), `data`, type));
+  fs.readdirSync(path.join(process.cwd(), "data", type));
 
 export async function getFileBySlug(type: string, slug: number): Promise<any> {
   const source = slug
     ? fs.readFileSync(
-        path.join(process.cwd(), `data`, type, `${slug}.mdx`),
-        `utf8`
+        path.join(process.cwd(), "data", type, `${slug}.mdx`),
+        "utf8"
       )
-    : fs.readFileSync(path.join(process.cwd(), `data`, `${type}.mdx`), `utf8`);
+    : fs.readFileSync(path.join(process.cwd(), "data", `${type}.mdx`), "utf8");
 
   const { data, content } = matter(source);
   const mdxSource = await serialize(content, {
@@ -39,19 +39,19 @@ export async function getFileBySlug(type: string, slug: number): Promise<any> {
 }
 
 export async function getAllFilesFrontMatter(): Promise<any> {
-  const files = fs.readdirSync(path.join(process.cwd(), `data`, `blog`));
+  const files = fs.readdirSync(path.join(process.cwd(), "data", "blog"));
 
   return files.reduce((allPosts: any, postSlug: string) => {
     const source = fs.readFileSync(
-      path.join(process.cwd(), `data`, `blog`, postSlug),
-      `utf8`
+      path.join(process.cwd(), "data", "blog", postSlug),
+      "utf8"
     );
     const { data } = matter(source);
 
     return [
       {
         ...data,
-        slug: postSlug.replace(`.mdx`, ``),
+        slug: postSlug.replace(".mdx", ""),
       },
       ...allPosts,
     ];

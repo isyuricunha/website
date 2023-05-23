@@ -27,17 +27,17 @@ export const ToolCard = ({
   return (
     <Box as="a" href={link} height="100%">
       <SimpleGrid
-        bg={useColorModeValue(`white`, `gray.900`)}
+        bg={useColorModeValue("white", "gray.900")}
         p={3}
         height="100%"
         gridTemplateColumns="85px 1fr"
         border="1px solid"
-        borderColor={useColorModeValue(`gray.200`, `gray.700`)}
+        borderColor={useColorModeValue("gray.200", "gray.700")}
         borderRadius="2xl"
         boxShadow="lg"
         transition="all 0.25s"
         transitionTimingFunction="spring(1 100 10 10)"
-        _hover={{ transform: `translateY(-4px)`, shadow: `xl` }}
+        _hover={{ transform: "translateY(-4px)", shadow: "xl" }}
       >
         <AspectRatio ratio={1} boxSize="85px">
           <Box
@@ -67,7 +67,7 @@ export const ToolCard = ({
               transform="translate(-50%, -50%)"
               position="absolute"
               src={
-                id === `biorender`
+                id === "biorender"
                   ? colorMode === 'light'
                     ? `./static/images/toolImages/${id}.png`
                     : `./static/images/toolImages/${id}dark.png`
@@ -111,7 +111,7 @@ export const ToolCard = ({
           </Stack>
 
           <Text
-            color={useColorModeValue(`gray.600`, `gray.400`)}
+            color={useColorModeValue("gray.600", "gray.400")}
             whiteSpace="normal"
             width="100%"
           >

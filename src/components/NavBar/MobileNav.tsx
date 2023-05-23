@@ -16,7 +16,7 @@ import ToggleTheme from './ToggleTheme';
 function MobileNav({ links }: { links: any }): JSX.Element {
   const mobileNav = useDisclosure();
   return (
-    <Box display={{ md: `none` }}>
+    <Box display={{ md: "none" }}>
       <ToggleTheme />
 
       <IconButton
@@ -39,13 +39,13 @@ function MobileNav({ links }: { links: any }): JSX.Element {
         width="100vw"
         height="100vh"
         css={{
-          backdropFilter: `saturate(180%) blur(5px)`,
+          backdropFilter: "saturate(180%) blur(5px)",
           backgroundColor: useColorModeValue(
-            `rgba(255, 255, 255, 0.9)`,
-            `rgba(26, 32, 44, 0.9)`
+            "rgba(255, 255, 255, 0.9)",
+            "rgba(26, 32, 44, 0.9)"
           ),
         }}
-        display={mobileNav.isOpen ? `flex` : `none`}
+        display={mobileNav.isOpen ? "flex" : "none"}
         flexDirection="column"
         spacing={3}
         rounded="sm"
@@ -58,7 +58,7 @@ function MobileNav({ links }: { links: any }): JSX.Element {
         </Link>
 
         {links.map((link: any, index: number) => {
-          if (link.type === `dropdown`) {
+          if (link.type === "dropdown") {
             return link.links.map((item: any, i: number) => (
               <Link href={item.link} key={`${i.toString()}link`} passHref>
                 <Button

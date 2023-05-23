@@ -14,11 +14,11 @@ const UpDown = ({ children, type }: UpDownProps): JSX.Element => {
       position="absolute"
       className={
         // eslint-disable-next-line no-nested-ternary
-        type === `wide`
-          ? `UpDownWideAnimation`
-          : type === `slow`
-          ? `UpDownSlowAnimation`
-          : `UpDownAnimation`
+        type === "wide"
+          ? "UpDownWideAnimation"
+          : type === "slow"
+          ? "UpDownSlowAnimation"
+          : "UpDownAnimation"
       }
       top={0}
       left={0}

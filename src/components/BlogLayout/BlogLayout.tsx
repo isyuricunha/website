@@ -129,9 +129,9 @@ const BlogLayout = ({
           </Flex>
           <Text color={useColorModeValue('gray.700', 'gray.300')}>
             {frontMatter.wordCount.toLocaleString() + ' words'}
-            {` • `}
+            {" • "}
             {frontMatter.readingTime?.text}
-            {` • `}
+            {" • "}
             <ViewCounter slug={frontMatter.slug} />
           </Text>
         </Flex>
