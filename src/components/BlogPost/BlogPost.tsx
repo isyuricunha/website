@@ -101,7 +101,7 @@ const BlogPost = ({
                 addSuffix: true,
               })}{' '}
               {'•'}{' '}
-              {`${views ? new Number(views).toLocaleString() : '–––'} views`}
+              {`${views ?  Number(views).toLocaleString() : '–––'} views`}
             </Text>
           </Flex>
           <Heading

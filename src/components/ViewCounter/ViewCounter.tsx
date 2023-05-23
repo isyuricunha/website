@@ -5,7 +5,7 @@ const ViewCounter = ({ slug }: { slug: string | null }): JSX.Element => {
   const { data } = useQuery(`views${slug}`, () => {
     return fetch(`/api/views/${slug}`).then((res) => res.json());
   });
-  const views = new Number(data?.total);
+  const views =  Number(data?.total);
 
   useEffect(() => {
     const registerView = () =>
