@@ -81,7 +81,7 @@ const AboutTerminal = (): JSX.Element => {
           top={0}
           left={0}
           zIndex="-5"
-        ></Flex>
+         />
         <VStack
           width="full"
           spacing={3}
