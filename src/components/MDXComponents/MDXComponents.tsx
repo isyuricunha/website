@@ -34,13 +34,13 @@ export const CustomLink = (props: CustomLinkProps): JSX.Element => {
     return (
       <Link href={href} passHref>
         <ChakraLink
-          width='calc(100% + 28px)'
-          position='absolute'
+          width="calc(100% + 28px)"
+          position="absolute"
           ml={'-0.7em'}
-          height='full'
-          maxW='700px'
+          height="full"
+          maxW="700px"
           {...props}
-          cursor='pointer'
+          cursor="pointer"
           _after={{
             content: "'#'",
             visibility: 'hidden',
@@ -63,8 +63,8 @@ export const CustomLink = (props: CustomLinkProps): JSX.Element => {
     <ChakraLink
       _hover={{ textDecoration: 'none' }}
       color={colorMode === 'light' ? 'blue.600' : 'blue.200'}
-      target='_blank'
-      rel='noopener noreferrer'
+      target="_blank"
+      rel="noopener noreferrer"
       {...props}
     />
   );
@@ -85,7 +85,7 @@ export const CustomImage = ({
   ...props
 }: ImageProps & CustomImageProps): JSX.Element => {
   return (
-    <Flex direction='column' my={7}>
+    <Flex direction="column" my={7}>
       {ratio ? (
         <AspectRatio width={chakraWidth || 'full'} mx={'auto'} ratio={ratio}>
           <Image
@@ -109,7 +109,7 @@ export const CustomImage = ({
         }
       `}</style>
       <Text
-        textAlign='center'
+        textAlign="center"
         fontWeight={'semibold'}
         mt={2}
         color={useColorModeValue('gray.600', 'gray.400')}
@@ -121,7 +121,9 @@ export const CustomImage = ({
   ``;
 };
 
-export const CustomTitle = (props: { children: JSX.Element[] }): JSX.Element => {
+export const CustomTitle = (props: {
+  children: JSX.Element[];
+}): JSX.Element => {
   const title = props.children[0].props.parentName;
   const titleSize = {
     h1: ['2xl', '4xl'],
@@ -141,7 +143,11 @@ export const CustomTitle = (props: { children: JSX.Element[] }): JSX.Element => 
   );
 };
 
-export const CustomText = ({ children }: { children: React.ReactNode }): JSX.Element => {
+export const CustomText = ({
+  children,
+}: {
+  children: React.ReactNode;
+}): JSX.Element => {
   return (
     <Text fontSize={'lg'} mt={4}>
       {children}
@@ -149,24 +155,34 @@ export const CustomText = ({ children }: { children: React.ReactNode }): JSX.Ele
   );
 };
 
-export const CustomUnorderedList = ({ children }: { children: React.ReactNode }): JSX.Element => {
+export const CustomUnorderedList = ({
+  children,
+}: {
+  children: React.ReactNode;
+}): JSX.Element => {
   return (
-    <UnorderedList fontSize='lg' spacing={'4px'} mt={3}>
+    <UnorderedList fontSize="lg" spacing={'4px'} mt={3}>
       {children}
     </UnorderedList>
   );
 };
 
-export const CustomListItem = ({ children }: { children: React.ReactNode }): JSX.Element => {
+export const CustomListItem = ({
+  children,
+}: {
+  children: React.ReactNode;
+}): JSX.Element => {
   return (
     <ListItem color={useColorModeValue('brand.500', 'brand.300')}>
-      <chakra.span color={useColorModeValue('black', 'white')}>{children}</chakra.span>
+      <chakra.span color={useColorModeValue('black', 'white')}>
+        {children}
+      </chakra.span>
     </ListItem>
   );
 };
 
 export const Padding = (props: BoxProps): JSX.Element => {
-  return <Box width='full' height='1px' {...props} />;
+  return <Box width="full" height="1px" {...props} />;
 };
 
 export const RemarkTitle = (props: BoxProps): JSX.Element => {
@@ -179,9 +195,9 @@ export const RemarkTitle = (props: BoxProps): JSX.Element => {
       color={useColorModeValue('gray.800', 'gray.200')}
       borderTopRadius={'xl'}
       bg={useColorModeValue('gray.200', 'gray.700')}
-      fontSize='sm'
+      fontSize="sm"
       fontFamily={'mono'}
-      fontWeight='bold'
+      fontWeight="bold"
       {...props}
     />
   );
@@ -199,7 +215,7 @@ export const CustomPre = (props: ChakraProps): JSX.Element => {
   return (
     <chakra.pre
       {...props}
-      borderRadius='xl'
+      borderRadius="xl"
       mt={8}
       mx={'-20px'}
       pt={5}

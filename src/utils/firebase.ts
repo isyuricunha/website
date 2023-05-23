@@ -7,8 +7,7 @@ if (!admin.apps.length) {
       privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
       projectId: 'blog-yuri-cunha',
     }),
-    databaseURL:
-      'https://blog-yuri-cunha-default-rtdb.firebaseio.com/',
+    databaseURL: 'https://blog-yuri-cunha-default-rtdb.firebaseio.com/',
   });
 }
 

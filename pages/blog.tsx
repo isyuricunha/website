@@ -36,14 +36,17 @@ function Blog({ posts }: { posts: any }): React.ReactElement {
 
     .sort((a: any, b: any) => {
       if (sort === 'recent') {
-        return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime();
+        return (
+          new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+        );
       } else if (sort === 'old') {
-        return new Date(a.publishedAt).getTime() - new Date(b.publishedAt).getTime();
+        return (
+          new Date(a.publishedAt).getTime() - new Date(b.publishedAt).getTime()
+        );
       } else {
         return 0;
       }
     });
-
 
   if (sort === 'old') {
     filteredBlogPosts.reverse();
