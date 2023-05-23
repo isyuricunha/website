@@ -27,19 +27,19 @@ import SocialIcons from './SocialIcons';
 const Footer = (): JSX.Element => {
   const { colorMode } = useColorMode();
   const { error, data: currentlyPlaying } = useQuery(
-    `currentlyPlaying`,
-    () => fetch(`/api/get-now-playing`).then((res) => res.json()),
+    'currentlyPlaying',
+    () => fetch('/api/get-now-playing').then((res) => res.json()),
     { refetchOnMount: true }
   );
 
   return (
     <Box
-      bg={useColorModeValue(`gray.50`, `gray.900`)}
-      color={useColorModeValue(`gray.700`, `gray.200`)}
+      bg={useColorModeValue('gray.50', 'gray.900')}
+      color={useColorModeValue('gray.700', 'gray.200')}
     >
       <SimpleGrid
         columns={{ base: 1, md: 3 }}
-        gridTemplate={{ base: `1fr`, md: `1fr 1fr 1fr` }}
+        gridTemplate={{ base: '1fr', md: '1fr 1fr 1fr' }}
         mx="auto"
         maxW="7xl"
         py={4}
@@ -50,7 +50,7 @@ const Footer = (): JSX.Element => {
         <Flex
           direction="row"
           maxW="full"
-          mx={{ base: `auto`, md: 5 }}
+          mx={{ base: 'auto', md: 5 }}
           alignItems="center"
         >
           {currentlyPlaying?.isPlaying ? (
@@ -67,7 +67,7 @@ const Footer = (): JSX.Element => {
           <Flex ml={2} isTruncated>
             {currentlyPlaying?.songUrl ? (
               <chakra.a
-                color={colorMode === 'light' ? `gray.900` : `gray.200`}
+                color={colorMode === 'light' ? 'gray.900' : 'gray.200'}
                 fontSize="md"
                 fontWeight="semibold"
                 maxW="60%"
@@ -80,24 +80,24 @@ const Footer = (): JSX.Element => {
               </chakra.a>
             ) : (
               <chakra.p
-                color={colorMode === 'light' ? `gray.900` : `gray.200`}
+                color={colorMode === 'light' ? 'gray.900' : 'gray.200'}
                 fontSize="md"
                 maxW="60%"
                 isTruncated
                 fontWeight="semibold"
               >
-                {error ? `There was an error` : `Not Playing`}
+                {error ? 'There was an error' : 'Not Playing'}
               </chakra.p>
             )}
             <chakra.span
               mx={2}
-              color={useColorModeValue(`gray.600`, `gray.300`)}
-              display={{ base: `hidden`, sm: `block` }}
+              color={useColorModeValue('gray.600', 'gray.300')}
+              display={{ base: 'hidden', sm: 'block' }}
             >
-              {` – `}
+              {' – '}
             </chakra.span>
             <chakra.p color="gray.600" isTruncated maxW="full">
-              {currentlyPlaying?.artist ?? `Spotify`}
+              {currentlyPlaying?.artist ?? 'Spotify'}
             </chakra.p>
           </Flex>
         </Flex>
@@ -108,7 +108,7 @@ const Footer = (): JSX.Element => {
           direction="row"
           spacing={6}
           ml="auto"
-          mr={{ base: `auto`, md: 5 }}
+          mr={{ base: 'auto', md: 5 }}
         >
           <SocialIcons label="GitHub" href="https://github.com/isyuricunha/">
             <FaGithub />

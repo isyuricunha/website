@@ -118,7 +118,7 @@ export const CustomImage = ({
       </Text>
     </Flex>
   );
-  ``;
+  ('');
 };
 
 export const CustomTitle = (props: {

@@ -88,7 +88,7 @@ const ImageCard = ({ projectData, repo }: ImageCardProps): JSX.Element => {
           height="100%"
           width="100%"
           textAlign="left"
-          color={useColorModeValue(`gray.500`, `gray.500`)}
+          color={useColorModeValue('gray.500', 'gray.500')}
         >
           <Tags tags={projectData?.stack} />
         </Box>

@@ -19,7 +19,7 @@ function Links(): React.ReactElement {
         py="28"
       >
         <LineHeading
-          fontSize={{ base: `3xl`, sm: `4xl`, md: `5xl`, lg: `6xl` }}
+          fontSize={{ base: '3xl', sm: '4xl', md: '5xl', lg: '6xl' }}
           textAlign="center"
         >
           Links

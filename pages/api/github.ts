@@ -22,9 +22,9 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ): Promise<void> {
-  const userResponse = await fetch(`https://api.github.com/users/isyuricunha`);
+  const userResponse = await fetch('https://api.github.com/users/isyuricunha');
   const userReposResponse = await fetch(
-    `https://api.github.com/users/isyuricunha/repos?per_page=100`
+    'https://api.github.com/users/isyuricunha/repos?per_page=100'
   );
 
   const user = await userResponse.json();
@@ -41,8 +41,8 @@ export default async function handler(
     ) || null;
 
   res.setHeader(
-    `Cache-Control`,
-    `public, s-maxage=1200, stale-while-revalidate=600`
+    'Cache-Control',
+    'public, s-maxage=1200, stale-while-revalidate=600'
   );
 
   const sendRepos = notForked.map(

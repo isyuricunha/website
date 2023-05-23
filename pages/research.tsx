@@ -24,7 +24,7 @@ export default function Research(): ReactElement {
         mx="auto"
       >
         <LineHeading
-          fontSize={{ base: `5xl`, md: `6xl` }}
+          fontSize={{ base: '5xl', md: '6xl' }}
           mx="auto"
           textAlign="center"
         >

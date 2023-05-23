@@ -38,7 +38,7 @@ function Projects({ repos }: ProjectsProps): React.ReactElement {
           mx="auto"
         >
           <LineHeading
-            fontSize={{ base: `5xl`, md: `6xl` }}
+            fontSize={{ base: '5xl', md: '6xl' }}
             mx="auto"
             textAlign="center"
           >
@@ -82,7 +82,7 @@ function Projects({ repos }: ProjectsProps): React.ReactElement {
                 />
               ))}
           </VStack>
-          <LineHeading fontSize={{ base: `5xl`, lg: `5xl` }} textAlign="center">
+          <LineHeading fontSize={{ base: '5xl', lg: '5xl' }} textAlign="center">
             Repositories
           </LineHeading>
           <Text mt={3}>
