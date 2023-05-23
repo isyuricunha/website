@@ -10,16 +10,16 @@ const BlogBadge = (props: BlogBadgeProps & BoxProps): JSX.Element => {
     <Badge
       colorScheme={
         [
-          "gray",
-          "brand",
-          "teal",
-          "blue",
-          "green",
-          "pink",
-          "orange",
-          "red",
-          "purple",
-          "yellow",
+          'gray',
+          'brand',
+          'teal',
+          'blue',
+          'green',
+          'pink',
+          'orange',
+          'red',
+          'purple',
+          'yellow',
         ][(tag.charCodeAt(0) + tag.charCodeAt(1)) % 10]
       }
       py={1}

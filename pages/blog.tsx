@@ -65,7 +65,7 @@ function Blog({ posts }: { posts: any }): React.ReactElement {
       >
         <LineHeading
           mt="28"
-          fontSize={{ base: "3xl", sm: "4xl", md: "5xl", lg: "6xl" }}
+          fontSize={{ base: '3xl', sm: '4xl', md: '5xl', lg: '6xl' }}
           textAlign="center"
         >
           Blog Posts

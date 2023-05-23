@@ -36,7 +36,7 @@ function Tools(): React.ReactElement {
       >
         <LineHeading
           mt="28"
-          fontSize={{ base: "3xl", sm: "4xl", md: "5xl", lg: "6xl" }}
+          fontSize={{ base: '3xl', sm: '4xl', md: '5xl', lg: '6xl' }}
           textAlign="center"
         >
           Tools
@@ -52,11 +52,11 @@ function Tools(): React.ReactElement {
         >
           <TabList display="flex" flexWrap="wrap">
             <Tab
-              bg={useColorModeValue("white.100", "gray.800")}
-              color={useColorModeValue("gray.600", "gray.500")}
+              bg={useColorModeValue('white.100', 'gray.800')}
+              color={useColorModeValue('gray.600', 'gray.500')}
               _selected={{
-                color: "red.800",
-                bg: "red.100",
+                color: 'red.800',
+                bg: 'red.100',
               }}
               mr={2}
               mt={2}
@@ -67,11 +67,11 @@ function Tools(): React.ReactElement {
               </HStack>
             </Tab>
             <Tab
-              bg={useColorModeValue("white", "gray.800")}
-              color={useColorModeValue("gray.600", "gray.500")}
+              bg={useColorModeValue('white', 'gray.800')}
+              color={useColorModeValue('gray.600', 'gray.500')}
               _selected={{
-                color: "pink.800",
-                bg: "pink.100",
+                color: 'pink.800',
+                bg: 'pink.100',
               }}
               mr={2}
               mt={2}
@@ -82,11 +82,11 @@ function Tools(): React.ReactElement {
               </HStack>
             </Tab>
             <Tab
-              bg={useColorModeValue("white", "gray.800")}
-              color={useColorModeValue("gray.600", "gray.500")}
+              bg={useColorModeValue('white', 'gray.800')}
+              color={useColorModeValue('gray.600', 'gray.500')}
               _selected={{
-                color: "purple.800",
-                bg: "purple.100",
+                color: 'purple.800',
+                bg: 'purple.100',
               }}
               mr={2}
               mt={2}
@@ -97,11 +97,11 @@ function Tools(): React.ReactElement {
               </HStack>
             </Tab>
             <Tab
-              bg={useColorModeValue("white", "gray.800")}
-              color={useColorModeValue("gray.600", "gray.500")}
+              bg={useColorModeValue('white', 'gray.800')}
+              color={useColorModeValue('gray.600', 'gray.500')}
               _selected={{
-                color: "blue.800",
-                bg: "blue.100",
+                color: 'blue.800',
+                bg: 'blue.100',
               }}
               mr={2}
               mt={2}
@@ -112,11 +112,11 @@ function Tools(): React.ReactElement {
               </HStack>
             </Tab>
             <Tab
-              bg={useColorModeValue("white", "gray.800")}
-              color={useColorModeValue("gray.600", "gray.500")}
+              bg={useColorModeValue('white', 'gray.800')}
+              color={useColorModeValue('gray.600', 'gray.500')}
               _selected={{
-                color: "teal.800",
-                bg: "teal.100",
+                color: 'teal.800',
+                bg: 'teal.100',
               }}
               mr={2}
               mt={2}

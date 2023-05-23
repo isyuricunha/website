@@ -21,12 +21,12 @@ export default function Blog({
 }
 
 export async function getStaticPaths(): Promise<any> {
-  const posts = await getFiles("blog");
+  const posts = await getFiles('blog');
 
   return {
     paths: posts.map((p) => ({
       params: {
-        slug: p.replace(/\.mdx/, ""),
+        slug: p.replace(/\.mdx/, ''),
       },
     })),
     fallback: false,
@@ -38,7 +38,7 @@ export async function getStaticProps({
 }: {
   params: any;
 }): Promise<any> {
-  const post = await getFileBySlug("blog", params.slug);
+  const post = await getFileBySlug('blog', params.slug);
 
   return { props: { ...post } };
 }

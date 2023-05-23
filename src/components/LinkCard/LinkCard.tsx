@@ -17,17 +17,17 @@ const LinkCard = ({ name, link, date, label }: LinkType): JSX.Element => {
     <Box as="a" href={link} height="100%">
       <VStack
         w="100%"
-        bg={useColorModeValue("white", "gray.900")}
+        bg={useColorModeValue('white', 'gray.900')}
         rounded="xl"
         border="1px solid"
-        borderColor={useColorModeValue("gray.100", "gray.700")}
+        borderColor={useColorModeValue('gray.100', 'gray.700')}
         transition="all 0.25s"
         transitionTimingFunction="spring(1 100 10 10)"
         boxShadow="lg"
         _hover={{
-          transform: "translateY(-4px)",
-          shadow: "xl",
-          textDecoration: "none",
+          transform: 'translateY(-4px)',
+          shadow: 'xl',
+          textDecoration: 'none',
         }}
         overflow="hidden"
         align="start"
@@ -52,7 +52,7 @@ const LinkCard = ({ name, link, date, label }: LinkType): JSX.Element => {
             maxW="400px"
             w="100%"
             borderBottomWidth="1px"
-            borderColor={useColorModeValue("gray.100", "gray.700")}
+            borderColor={useColorModeValue('gray.100', 'gray.700')}
           >
             <Image
               src={`https://rdl.ink/render/${encodeURIComponent(link)}`}
@@ -64,7 +64,7 @@ const LinkCard = ({ name, link, date, label }: LinkType): JSX.Element => {
                   position="relative"
                   width="100%"
                   height="100%"
-                  bg={useColorModeValue("gray.100", "gray.700")}
+                  bg={useColorModeValue('gray.100', 'gray.700')}
                 >
                   <Text
                     position="absolute"
@@ -96,7 +96,7 @@ const LinkCard = ({ name, link, date, label }: LinkType): JSX.Element => {
             </Text>
             <Text
               fontSize="sm"
-              color={useColorModeValue("gray.600", "gray.400")}
+              color={useColorModeValue('gray.600', 'gray.400')}
             >
               {formatDistance(date, new Date(), { addSuffix: true })}
             </Text>

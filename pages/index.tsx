@@ -39,7 +39,7 @@ export default function Home(): React.ReactElement {
           p={{ base: 0, sm: 16 }}
         >
           <Flex
-            direction={{ base: "column", lg: "row" }}
+            direction={{ base: 'column', lg: 'row' }}
             alignItems="center"
             mx="auto"
             my={{ xl: '16' }}
@@ -69,22 +69,22 @@ export default function Home(): React.ReactElement {
             >
               <Heading
                 bgGradient={`linear(to-r, ${useColorModeValue(
-                  "brand.600",
-                  "brand.400"
+                  'brand.600',
+                  'brand.400'
                 )}, ${useColorModeValue(
-                  "teal.600",
-                  "teal.400"
-                )}, ${useColorModeValue("blue.600", "blue.300")})`}
+                  'teal.600',
+                  'teal.400'
+                )}, ${useColorModeValue('blue.600', 'blue.300')})`}
                 className="moving-grad"
                 bgClip="text"
-                fontSize={{ base: "5xl", lg: "7xl" }}
-                textAlign={{ base: "center", lg: "left" }}
+                fontSize={{ base: '5xl', lg: '7xl' }}
+                textAlign={{ base: 'center', lg: 'left' }}
               >
                 Hi, I&apos;m Yuri!
               </Heading>
               <chakra.p
                 maxW="650px"
-                textAlign={{ base: "center", lg: "left" }}
+                textAlign={{ base: 'center', lg: 'left' }}
                 fontSize="xl"
                 mt={2}
               >

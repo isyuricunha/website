@@ -32,17 +32,17 @@ const PinnedImageProjects = ({
   left,
 }: PinnedImageProjectsProps): JSX.Element => {
   const { colorMode } = useColorMode();
-  const bp = useBreakpointValue({ base: "base", lg: "lg" });
-  if (bp === "lg") {
+  const bp = useBreakpointValue({ base: 'base', lg: 'lg' });
+  if (bp === 'lg') {
     return (
       <Box position="relative" width="100%" py={5}>
-        <Box maxWidth={{ lg: "83%", xl: "90%" }} ml={left ? "auto" : 0}>
+        <Box maxWidth={{ lg: '83%', xl: '90%' }} ml={left ? 'auto' : 0}>
           <AspectRatio ratio={16 / 9}>
             <Box
               boxShadow="xl"
               borderRadius="2xl"
               border="1px solid"
-              borderColor={colorMode === 'light' ? "gray.200" : "gray.600"}
+              borderColor={colorMode === 'light' ? 'gray.200' : 'gray.600'}
             >
               <Image
                 alt={projectData?.name + 'screenshot'}
@@ -56,19 +56,19 @@ const PinnedImageProjects = ({
           maxHeight="full"
           boxShadow="lg"
           position="absolute"
-          left={left ? { lg: "0", xl: "-10%" } : ""}
-          right={left ? "" : { lg: "0", xl: "-10%" }}
+          left={left ? { lg: '0', xl: '-10%' } : ''}
+          right={left ? '' : { lg: '0', xl: '-10%' }}
           top="50%"
           transform="translate(0, -50%)"
           borderRadius="2xl"
-          bg={colorMode === 'light' ? "white" : "gray.900"}
+          bg={colorMode === 'light' ? 'white' : 'gray.900'}
           p={5}
           width="45%"
           maxWidth="600px"
           whiteSpace="normal"
           minHeight="35%"
           border="1px solid"
-          borderColor={colorMode === 'light' ? "gray.200" : "gray.700"}
+          borderColor={colorMode === 'light' ? 'gray.200' : 'gray.700'}
         >
           <VStack maxHeight="full" height="full" width="full" maxWidth="full">
             <Stack width="full">
