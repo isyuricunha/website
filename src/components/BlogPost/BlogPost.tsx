@@ -100,8 +100,7 @@ const BlogPost = ({
               {formatDistance(new Date(publishedAt), new Date(), {
                 addSuffix: true,
               })}{' '}
-              {'•'}{' '}
-              {`${views ?  Number(views).toLocaleString() : '–––'} views`}
+              {'•'} {`${views ? Number(views).toLocaleString() : '–––'} views`}
             </Text>
           </Flex>
           <Heading
