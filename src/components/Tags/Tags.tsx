@@ -51,7 +51,7 @@ const Tags = ({ tags }: TagsProps): JSX.Element => {
           }`}
           size={isLargerThan800 ? 'md' : 'sm'}
         >
-          <TagLeftIcon marginInlineEnd={'6px'} as={tagDict[tag]}></TagLeftIcon>
+          <TagLeftIcon marginInlineEnd={'6px'} as={tagDict[tag]} />
 
           <TagLabel fontWeight={'600'}>{tag}</TagLabel>
         </Tag>
