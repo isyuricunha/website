@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import {
   HStack,
   Icon,
@@ -8,14 +8,14 @@ import {
   MenuList,
   useColorMode,
   Link as ChakraLink,
-} from '@chakra-ui/react'
-import { transparentize } from '@chakra-ui/theme-tools'
-import Link from 'next/link'
-import { ChevronDownIcon } from '@chakra-ui/icons'
-import ToggleTheme from './ToggleTheme'
+} from '@chakra-ui/react';
+import { transparentize } from '@chakra-ui/theme-tools';
+import Link from 'next/link';
+import { ChevronDownIcon } from '@chakra-ui/icons';
+import ToggleTheme from './ToggleTheme';
 
 function DesktopNav({ links }: { links: any }): JSX.Element {
-  const { colorMode } = useColorMode()
+  const { colorMode } = useColorMode();
 
   return (
     <HStack spacing={8} display={{ base: `none`, md: `flex` }}>
@@ -26,10 +26,10 @@ function DesktopNav({ links }: { links: any }): JSX.Element {
               <ChakraLink
                 key={index.toString()}
                 color={colorMode === 'light' ? `gray.800` : `white`}
-                fontSize='lg'
-                fontWeight='semibold'
-                position='relative'
-                textTransform='capitalize'
+                fontSize="lg"
+                fontWeight="semibold"
+                position="relative"
+                textTransform="capitalize"
                 _after={{
                   transition: `all 0.25s ease-in-out`,
                   content: `''`,
@@ -55,7 +55,7 @@ function DesktopNav({ links }: { links: any }): JSX.Element {
                 {linkItem.name}
               </ChakraLink>
             </Link>
-          )
+          );
         }
         if (linkItem.type === `dropdown`) {
           return (
@@ -63,10 +63,10 @@ function DesktopNav({ links }: { links: any }): JSX.Element {
               <MenuButton
                 key={index.toString()}
                 color={colorMode === 'light' ? `gray.800` : `white`}
-                fontSize='lg'
-                fontWeight='semibold'
-                position='relative'
-                textTransform='capitalize'
+                fontSize="lg"
+                fontWeight="semibold"
+                position="relative"
+                textTransform="capitalize"
                 _after={{
                   transition: `all 0.25s ease-in-out`,
                   content: `''`,
@@ -95,23 +95,31 @@ function DesktopNav({ links }: { links: any }): JSX.Element {
               </MenuButton>
               <MenuList>
                 {linkItem.links.map((item: any, i: number) => (
-                  <Link href={item.link} key={`${i.toString()}MenuLink`} passHref>
-                    <MenuItem as='a' sx={{ cursor: `pointer` }} key={i.toString()}>
+                  <Link
+                    href={item.link}
+                    key={`${i.toString()}MenuLink`}
+                    passHref
+                  >
+                    <MenuItem
+                      as="a"
+                      sx={{ cursor: `pointer` }}
+                      key={i.toString()}
+                    >
                       {item.name}
                     </MenuItem>
                   </Link>
                 ))}
               </MenuList>
             </Menu>
-          )
+          );
         }
-        return null
+        return null;
       })}
       <HStack spacing={2}>
         <ToggleTheme />
       </HStack>
     </HStack>
-  )
+  );
 }
 
-export default DesktopNav
+export default DesktopNav;

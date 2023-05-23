@@ -1,5 +1,6 @@
 const style = (props) =>
-  `color: var(--chakra-colors-brand-${props.colorMode === 'light' ? '600' : '300'
+  `color: var(--chakra-colors-brand-${
+    props.colorMode === 'light' ? '600' : '300'
   });font-weight: 500;`;
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const info = (props: any): { input: string; return: string }[] => [

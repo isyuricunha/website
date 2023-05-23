@@ -1,5 +1,11 @@
 import { getTotalCharCode } from '@/utils/utils';
-import { Stack, Tag, TagLeftIcon, TagLabel, useMediaQuery } from '@chakra-ui/react';
+import {
+  Stack,
+  Tag,
+  TagLeftIcon,
+  TagLabel,
+  useMediaQuery,
+} from '@chakra-ui/react';
 import React from 'react';
 import { BsFillLightningFill } from 'react-icons/bs';
 import { FaDiscord, FaReact } from 'react-icons/fa';
@@ -25,14 +31,23 @@ interface TagsProps {
 const Tags = ({ tags }: TagsProps): JSX.Element => {
   const [isLargerThan800] = useMediaQuery('(min-width: 800px)');
   return (
-    <Stack height='25px' isInline>
-      {tags?.map(tag => (
+    <Stack height="25px" isInline>
+      {tags?.map((tag) => (
         <Tag
           key={tag}
           colorScheme={`${
-            ['red', 'orange', 'yellow', 'green', 'brand', 'teal', 'blue', 'cyan', 'pink', 'purple'][
-              getTotalCharCode(tag) % 10
-            ]
+            [
+              'red',
+              'orange',
+              'yellow',
+              'green',
+              'brand',
+              'teal',
+              'blue',
+              'cyan',
+              'pink',
+              'purple',
+            ][getTotalCharCode(tag) % 10]
           }`}
           size={isLargerThan800 ? 'md' : 'sm'}
         >

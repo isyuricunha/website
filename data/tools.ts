@@ -1,4 +1,10 @@
-export type categories = `windows` | `web` | `mac` | 'ios' | 'chrome' | 'android';
+export type categories =
+  | `windows`
+  | `web`
+  | `mac`
+  | 'ios'
+  | 'chrome'
+  | 'android';
 
 export interface ToolType {
   link: string;

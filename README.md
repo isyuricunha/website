@@ -40,14 +40,14 @@ yarn dev
 
 👤 **https://www.github.com/isyuricunha**
 
-* Website: https://www.yuricunha.xyz/
-* Twitter: [@isyuricunha](https://twitter.com/isyuricunha)
-* Github: [@isyuricunha](https://github.com/isyuricunha)
-* LinkedIn: [@isyuricunha](https://linkedin.com/in/isyuricunha)
+- Website: https://www.yuricunha.xyz/
+- Twitter: [@isyuricunha](https://twitter.com/isyuricunha)
+- Github: [@isyuricunha](https://github.com/isyuricunha)
+- LinkedIn: [@isyuricunha](https://linkedin.com/in/isyuricunha)
 
 ## 🤝 Contributing
 
-Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/isyuricunha/website/issues). 
+Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/isyuricunha/website/issues).
 
 ## Show your support
 
@@ -62,5 +62,6 @@ Give a ⭐️ if this project helped you!
 Copyright © 2023 [https://www.github.com/isyuricunha](https://github.com/isyuricunha).<br />
 This project is [Personal License](https://github.com/isyuricunha/website/blob/main/license.md) licensed.
 
-***
+---
+
 _This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_

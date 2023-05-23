@@ -7,7 +7,7 @@ const ToolGrid = ({ filter }: { filter: categories }): JSX.Element => {
   return (
     <SimpleGrid pt={10} columns={{ base: 1, md: 2 }} spacingX={10} spacingY={5}>
       {tools
-        .filter(x => x.category.includes(filter))
+        .filter((x) => x.category.includes(filter))
         .sort((a, b) => {
           if (a.name < b.name) {
             return -1;

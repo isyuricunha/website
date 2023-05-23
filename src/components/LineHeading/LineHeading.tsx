@@ -1,9 +1,9 @@
-import { Heading, HeadingProps, useColorModeValue } from '@chakra-ui/react'
-import React from 'react'
+import { Heading, HeadingProps, useColorModeValue } from '@chakra-ui/react';
+import React from 'react';
 
 const LineHeading = ({ children, ...props }: HeadingProps): JSX.Element => (
   <Heading
-    position='relative'
+    position="relative"
     _before={{
       content: `''`,
       position: `absolute`,
@@ -19,6 +19,6 @@ const LineHeading = ({ children, ...props }: HeadingProps): JSX.Element => (
   >
     {children}
   </Heading>
-)
+);
 
-export default LineHeading
+export default LineHeading;
