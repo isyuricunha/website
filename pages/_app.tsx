@@ -60,7 +60,7 @@ export default function MyApp({
           selfHosted
           trackOutboundLinks
           enabled={process.env.NODE_ENV === 'production'}
-          customDomain={'https://stats.yuricunha.xyz'}
+          customDomain={'https://www.yuricunha.xyz/'}
         >
           <QueryClientProvider client={queryClient}>
             <MDXProvider components={MDXComponents}>
