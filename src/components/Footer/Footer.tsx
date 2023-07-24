@@ -30,7 +30,7 @@ const Footer = (): JSX.Element => {
   const { error, data: currentlyPlaying } = useQuery(
     'currentlyPlaying',
     () => fetch('/api/get-now-playing').then((res) => res.json()),
-    { refetchOnMount: true }
+    { refetchOnMount: true },
   );
 
   return (
