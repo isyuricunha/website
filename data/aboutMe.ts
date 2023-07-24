@@ -29,21 +29,21 @@ const info = (props: any): { input: string; return: string }[] => [
   {
     input: 'self.contactMe()',
     return: `["<a style="${style(
-      props
+      props,
     )}" rel="noopener" href="https://www.linkedin.com/in/isyuricunha/">LinkedIn</a>", "<a style="${style(
-      props
+      props,
     )}" rel="noopener" href="https://github.com/isyuricunha">Github</a>", "<a rel="noopener" style="${style(
-      props
+      props,
     )}" rel="noopener" href="https://twitter.com/isyuricunha">Twitter</a>", "<a rel="noopener" style="${style(
-      props
+      props,
     )}" rel="noopener" href="https://www.instagram.com/isyuricunha/">Instagram</a>", "<a rel="noopener" style="${style(
-      props
+      props,
     )}" rel="noopener" href="https://discordapp.com/users/1018988240151253002">Discord</a>", "<a rel="noopener" style="${style(
-      props
+      props,
     )}" rel="noopener" href="https://t.me/isyuricunha">Telegram</a>", "<a rel="noopener" style="${style(
-      props
+      props,
     )}" href="mailto:isyuricunha@duck.com">Email</a>", "<a rel="noopener" style="${style(
-      props
+      props,
     )}" href="https://mastodon.social/@isyuricunha">Mastodon</a>"]`,
   },
 ];
