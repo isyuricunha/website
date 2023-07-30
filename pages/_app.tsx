@@ -47,7 +47,7 @@ export default function MyApp({
           site_name: 'From my Desk',
           images: [
             {
-              url: 'http://localhost:3000/static/images/profile2.png',
+              url: 'http://www.yuricunha.xyz/static/images/profile2.png',
               alt: 'Profile Picture',
             },
           ],
