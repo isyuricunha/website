@@ -25,6 +25,14 @@ const Tools: ToolType[] = [
     description: 'A great mobile banking app.',
   },
   {
+    id: 'dAppling',
+    category: ['windows', 'mac', 'web'],
+    link: 'https://www.dappling.network',
+    labels: ['Web Development'],
+    name: 'dAppling Network',
+    description: 'Decentralized Frontend Hosting.',
+  },
+  {
     id: 'telegram',
     category: ['windows', 'mac', 'ios', 'web'],
     link: 'https://telegram.org/',
