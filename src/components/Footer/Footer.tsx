@@ -146,13 +146,6 @@ const Footer = (): JSX.Element => {
           <SocialIcons label="E-mail" href="mailto:isyuricunha@duck.com">
             <FaMailBulk />
           </SocialIcons>
-
-          <SocialIcons
-            label="Mastodon"
-            href="https://mastodon.social/@isyuricunha"
-          >
-            <FaMastodon />
-          </SocialIcons>
         </Stack>
       </SimpleGrid>
     </Box>
