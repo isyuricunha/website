@@ -19,7 +19,6 @@ import {
   FaTelegram,
   FaDiscord,
   FaMailBulk,
-  FaMastodon,
 } from 'react-icons/fa';
 import { useQuery } from 'react-query';
 import { BsPauseFill } from 'react-icons/bs';
