@@ -8392,8 +8392,8 @@ shebang-regex@^3.0.0:
 
 shelljs@^0.6.0:
   version "0.6.1"
-  resolved "https://registry.npmjs.org/shelljs/-/shelljs-0.6.1.tgz"
-  integrity sha1-7GIRvtGSBEIIj+D3Cyg3Iy7SyKg=
+  resolved "https://registry.yarnpkg.com/shelljs/-/shelljs-0.6.1.tgz#ec6211bed1920442088fe0f70b2837232ed2c8a8"
+  integrity sha512-B1vvzXQlJ77SURr3SIUQ/afh+LwecDKAVKE1wqkBlr2PCHoZDaF6MFD+YX1u9ddQjR4z2CKx1tdqvS2Xfs5h1A==
 
 side-channel@^1.0.4:
   version "1.0.4"
