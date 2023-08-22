@@ -10,7 +10,7 @@ export default class MyDocument extends Document {
         <Head>
           <link
             rel="shortcut icon"
-            href="https://www.yuricunha.xyz/static/images/profile2.png"
+            href="https://www.yuricunha.com/static/images/profile2.png"
           />
           <link
             href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap"

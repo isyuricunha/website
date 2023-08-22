@@ -14,9 +14,9 @@
 
 > I use this to show some of my projects off, and test things out. You can see the websites & tools that I like. Sometimes I even write blogs.
 
-### 🏠 [Homepage](https://www.yuricunha.xyz/)
+### 🏠 [Homepage](https://www.yuricunha.com/)
 
-### ✨ [Demo](https://www.yuricunha.xyz/)
+### ✨ [Demo](https://www.yuricunha.com/)
 
 ## Install
 
@@ -40,7 +40,7 @@ yarn dev
 
 👤 **https://www.github.com/isyuricunha**
 
-- Website: https://www.yuricunha.xyz/
+- Website: https://www.yuricunha.com/
 - Twitter: [@isyuricunha](https://twitter.com/isyuricunha)
 - Github: [@isyuricunha](https://github.com/isyuricunha)
 - LinkedIn: [@isyuricunha](https://linkedin.com/in/isyuricunha)

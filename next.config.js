@@ -1,6 +1,6 @@
 const ContentSecurityPolicy = `
   default-src 'self';
-  script-src 'self' unpkg.com 'unsafe-eval' 'unsafe-inline' *.yuricunha.xyz;
+  script-src 'self' unpkg.com 'unsafe-eval' 'unsafe-inline' *.yuricunha.com;
   child-src 'self' 'unsafe-inline' *.youtube.com *.google.com *.twitter.com;
   style-src 'self' unpkg.com 'unsafe-inline' *.googleapis.com;
   img-src * blob: data:;
@@ -82,10 +82,10 @@ module.exports = withMDX({
       'pbs.twimg.com',
       'lh3.googleusercontent.com',
       'lh4.googleusercontent.com',
-      'yuricunha.xyz',
-      'www.old-website-second-version.yuricunha.xyz',
-      '../*.yuricunha.xyz',
-      'www.yuricunha.xyz',
+      'yuricunha.com',
+      'www.old-website-second-version.yuricunha.com',
+      '../*.yuricunha.com',
+      'www.yuricunha.com',
       '../*',
     ],
   },

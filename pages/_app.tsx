@@ -47,7 +47,7 @@ export default function MyApp({
           site_name: 'From my Desk',
           images: [
             {
-              url: 'https://www.yuricunha.xyz/static/images/profile.jpeg',
+              url: 'https://www.yuricunha.com/static/images/profile.jpeg',
               alt: 'Profile Picture',
             },
           ],
@@ -56,11 +56,11 @@ export default function MyApp({
       />
       <ChakraProvider theme={theme}>
         <PlausibleProvider
-          domain="yuricunha.xyz"
+          domain="yuricunha.com"
           selfHosted
           trackOutboundLinks
           enabled={process.env.NODE_ENV === 'production'}
-          customDomain={'https://www.yuricunha.xyz/'}
+          customDomain={'https://www.yuricunha.com/'}
         >
           <QueryClientProvider client={queryClient}>
             <MDXProvider components={MDXComponents}>

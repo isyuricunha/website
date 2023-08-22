@@ -13,7 +13,7 @@ export const pinnedRepos: pinnedRepoType[] = [
     id: 'website',
     stack: ['Next.JS', 'Chakra-UI', 'MDX'],
     name: 'My Website',
-    deployedLink: 'https://yuricunha.xyz',
+    deployedLink: 'https://yuricunha.com',
     image:
       'https://raw.githubusercontent.com/isyuricunha/website/main/public/static/images/forDemo/website-demo.png',
     longDescription:
@@ -33,7 +33,7 @@ export const pinnedRepos: pinnedRepoType[] = [
     id: 'rain-for-relax',
     stack: ['HTML', 'CSS', 'JavaScript'],
     name: 'Rain for relax',
-    deployedLink: 'https://www.rain-for-relax.yuricunha.xyz/',
+    deployedLink: 'https://www.rain-for-relax.yuricunha.com/',
     image:
       'https://raw.githubusercontent.com/isyuricunha/website/42f264115965e0e0abbd4e19c28cb7873eb18382/public/static/images/forDemo/rain-for-relax.png',
     longDescription: 'A simple website with rain sound to relax.',
