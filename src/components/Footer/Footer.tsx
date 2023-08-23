@@ -135,13 +135,6 @@ const Footer = (): JSX.Element => {
             <FaTwitter />
           </SocialIcons>
 
-          <SocialIcons
-            label="Discord"
-            href="https://discordapp.com/users/1018988240151253002"
-          >
-            <FaDiscord />
-          </SocialIcons>
-
           <SocialIcons label="E-mail" href="mailto:me@yuricunha.com">
             <FaMailBulk />
           </SocialIcons>
