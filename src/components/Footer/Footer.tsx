@@ -142,7 +142,7 @@ const Footer = (): JSX.Element => {
             <FaDiscord />
           </SocialIcons>
 
-          <SocialIcons label="E-mail" href="mailto:isyuricunha@duck.com">
+          <SocialIcons label="E-mail" href="mailto:me@yuricunha.com">
             <FaMailBulk />
           </SocialIcons>
         </Stack>
