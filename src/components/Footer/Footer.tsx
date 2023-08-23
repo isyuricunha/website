@@ -17,7 +17,6 @@ import {
   FaLinkedin,
   FaTwitter,
   FaTelegram,
-  FaDiscord,
   FaMailBulk,
 } from 'react-icons/fa';
 import { useQuery } from 'react-query';
