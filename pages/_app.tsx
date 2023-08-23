@@ -47,7 +47,7 @@ export default function MyApp({
           site_name: 'From my Desk',
           images: [
             {
-              url: 'https://www.yuricunha.com/static/images/profile.jpeg',
+              url: 'https://www.yuricunha.com/static/images/yuricunha-logo.png',
               alt: 'Profile Picture',
             },
           ],
