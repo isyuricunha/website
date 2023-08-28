@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/react';
 import { NextSeo } from 'next-seo';
 import React, { useState } from 'react';
 import {
@@ -132,6 +133,7 @@ function Blog({ posts }: { posts: any }): React.ReactElement {
           ))}
         </Box>
       </Flex>
+      <Analytics />
     </>
   );
 }

@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/react';
 import React from 'react';
 import { Box, Button, Flex, SimpleGrid, Text, VStack } from '@chakra-ui/react';
 import { FaGithub } from 'react-icons/fa';
@@ -126,6 +127,7 @@ function Projects({ repos }: ProjectsProps): React.ReactElement {
               <RepoCard key={index.toString()} repo={repo} i={index} />
             ))}
         </SimpleGrid>
+        <Analytics />
       </Box>
     </>
   );

@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/react';
 import React from 'react';
 import {
   Flex,
@@ -147,6 +148,7 @@ function Tools(): React.ReactElement {
           </TabPanels>
         </Tabs>
       </Flex>
+      <Analytics />
     </>
   );
 }
