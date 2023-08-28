@@ -28,6 +28,7 @@
     "@mapbox/rehype-prism": "0.7.0",
     "@mdx-js/loader": "2.1.5",
     "@next/mdx": "11.1.2",
+    "@vercel/analytics": "1.0.2",
     "cross-env": "7.0.3",
     "date-fns": "2.23.0",
     "firebase-admin": "11.10.1",

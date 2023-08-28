@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/react';
 import { AppProps } from 'next/app';
 import { ChakraProvider } from '@chakra-ui/react';
 import '../src/styles/global.css';
@@ -75,6 +76,7 @@ export default function MyApp({
           </QueryClientProvider>
         </PlausibleProvider>
       </ChakraProvider>
+      <Analytics />
     </>
   );
 }

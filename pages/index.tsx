@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/react';
 import {
   Box,
   Flex,
@@ -59,6 +60,7 @@ export default function Home(): React.ReactElement {
                 alt="Yuri Cunha"
                 onLoad={() => setImageLoad(true)}
               />
+              <Analytics />
             </Skeleton>
             <Flex
               alignSelf="center"
