@@ -46,7 +46,7 @@ export default function MyApp({
         openGraph={{
           title: 'Yuri Cunha',
           type: 'website',
-          site_name: 'Yuri Cunha"',
+          site_name: 'Yuri Cunha',
           images: [
             {
               url: 'https://www.yuricunha.com/static/images/yuricunha-logo.png',
@@ -54,8 +54,9 @@ export default function MyApp({
             },
           ],
         }}
-        description="The purpose of this site is for me to test things out & maybe show some things off."
+        description="The purpose of this site is for me to test things out and perhaps showcase some achievements."
       />
+
       <ChakraProvider theme={theme}>
         <PlausibleProvider
           domain="yuricunha.com"
