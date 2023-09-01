@@ -26,7 +26,7 @@ export default function Home(): React.ReactElement {
 
   return (
     <>
-      <NextSeo title="Home" />
+      <NextSeo title="" />
 
       <Box
         minH="100vh"
