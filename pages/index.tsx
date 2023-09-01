@@ -15,9 +15,15 @@ import React, { useState } from 'react';
 import { NextSeo } from 'next-seo';
 import AboutTerminal from '@/components/AboutTerminal';
 
+const HEADER_IMAGE_SIZE = '250px'; // Use constants for repeated values
+const HEADER_BORDER_RADIUS = '2xl';
+
 export default function Home(): React.ReactElement {
   const [imageLoad, setImageLoad] = useState(false);
   const bp = useBreakpoint();
+
+  const isHeaderVisible = !['base', 'sm'].includes(bp); // Use constants for readability
+
   return (
     <>
       <NextSeo title="Home" />
@@ -30,8 +36,6 @@ export default function Home(): React.ReactElement {
         mx="auto"
         pt={{ base: '28', sm: '14', md: '16', xl: '20' }}
       >
-        {/* Im not actually too sure why this needs to be here, but without this additional flex
-        the body doesn't begin at the top of the page... */}
         <Flex
           direction="column"
           justifyContent={{ base: 'center', md: 'flex-start' }}
@@ -47,17 +51,17 @@ export default function Home(): React.ReactElement {
           >
             <Skeleton
               isLoaded={imageLoad}
-              boxSize="250px"
-              borderRadius="2xl"
+              boxSize={HEADER_IMAGE_SIZE}
+              borderRadius={HEADER_BORDER_RADIUS}
               m="auto"
             >
               <Image
                 flexGrow={3}
-                borderRadius="2xl"
-                boxSize="250px"
+                borderRadius={HEADER_BORDER_RADIUS}
+                boxSize={HEADER_IMAGE_SIZE}
                 src="./static/images/profile.jpeg"
                 objectFit="cover"
-                alt="Yuri Cunha"
+                alt="Yuri Cunha - Database Administrator and Developer" // Provide a more descriptive alt text
                 onLoad={() => setImageLoad(true)}
               />
               <Analytics />
@@ -90,13 +94,11 @@ export default function Home(): React.ReactElement {
                 fontSize="xl"
                 mt={2}
               >
-                {/* Introdução */}
                 Welcome to my website! Here, I showcase some of my{' '}
                 <Link href="/projects" passHref>
                   <ChakraLink>projects</ChakraLink>
                 </Link>{' '}
-                and experiment with various things. {/* Links para Páginas */}
-                You can explore the{' '}
+                and experiment with various things. You can explore the{' '}
                 <Link href="/links" passHref>
                   <ChakraLink>websites</ChakraLink>
                 </Link>{' '}
@@ -108,15 +110,14 @@ export default function Home(): React.ReactElement {
                 <Link href="/blog" passHref>
                   <ChakraLink>blogs</ChakraLink>
                 </Link>{' '}
-                for some interesting reads. {/* Informações Pessoais */}I am a
-                Database Administrator with over{' '}
-                {new Date().getFullYear() - 2020} years of experience. I&apos;m
-                also a student who dedicates most of my free time to open-source
-                projects, websites, and software development.
+                for some interesting reads. I am a Database Administrator with
+                over {new Date().getFullYear() - 2020} years of experience.
+                I&apos;m also a student who dedicates most of my free time to
+                open-source projects, websites, and software development.
               </chakra.p>
             </Flex>
           </Flex>
-          {!['base', 'sm'].includes(bp) && <AboutTerminal />}
+          {isHeaderVisible && <AboutTerminal />}
         </Flex>
       </Box>
     </>
