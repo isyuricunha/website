@@ -85,39 +85,36 @@ export default function Home(): React.ReactElement {
                 Hi, I&apos;m Yuri!
               </Heading>
               <chakra.p
-                maxW="650px"
-                textAlign={{ base: 'center', lg: 'left' }}
-                fontSize="xl"
-                mt={2}
-              >
-                Welcome to my website! I use this to show some of my{' '}
-                <Link href="/projects" passHref>
-                  <ChakraLink>projects</ChakraLink>
-                </Link>{' '}
-                off, and test things out.
-                {/* You can see what music I am listening
-                to on the{' '}
-                <Link href="/music" passHref>
-                  <ChakraLink>music page</ChakraLink>
-                </Link>{' '}
-                or the{' '} */}{' '}
-                You can see the{' '}
-                <Link href="/links" passHref>
-                  <ChakraLink>websites</ChakraLink>
-                </Link>{' '}
-                &{' '}
-                <Link href="/tools" passHref>
-                  <ChakraLink>tools</ChakraLink>
-                </Link>{' '}
-                that I like. Sometimes I even write{' '}
-                <Link href="/blog" passHref>
-                  <ChakraLink>blogs</ChakraLink>
-                </Link>
-                . I&apos;m a Database Administrator with over{' '}
-                {new Date().getFullYear() - 2020} years of experience, and a
-                student who spends most all of his free time doing open source
-                projects/websites/softwares.
-              </chakra.p>
+  maxW="650px"
+  textAlign={{ base: 'center', lg: 'left' }}
+  fontSize="xl"
+  mt={2}
+>
+  {/* Introdução */}
+  Welcome to my website! Here, I showcase some of my{' '}
+  <Link href="/projects" passHref>
+    <ChakraLink>projects</ChakraLink>
+  </Link>{' '}
+  and experiment with various things.
+
+  {/* Links para Páginas */}
+  You can explore the{' '}
+  <Link href="/links" passHref>
+    <ChakraLink>websites</ChakraLink>
+  </Link>{' '}
+  I enjoy, and discover useful{' '}
+  <Link href="/tools" passHref>
+    <ChakraLink>tools</ChakraLink>
+  </Link>. Additionally, check out my{' '}
+  <Link href="/blog" passHref>
+    <ChakraLink>blogs</ChakraLink>
+  </Link> for some interesting reads.
+
+  {/* Informações Pessoais */}
+  I am a Database Administrator with over{' '}
+  {new Date().getFullYear() - 2020} years of experience. I'm also a student who dedicates most of my free time to open-source projects, websites, and software development.
+</chakra.p>
+
             </Flex>
           </Flex>
           {!['base', 'sm'].includes(bp) && <AboutTerminal />}
