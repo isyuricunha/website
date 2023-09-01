@@ -18,7 +18,6 @@ const queryClient = new QueryClient();
 export default function MyApp({
   Component,
   pageProps,
-  router,
 }: AppProps): React.ReactElement {
   const [loading, setLoading] = useState(false);
 
