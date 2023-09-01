@@ -1,35 +1,36 @@
-import { Analytics } from '@vercel/analytics/react';
-import { AppProps } from 'next/app';
-import { ChakraProvider } from '@chakra-ui/react';
-import '../src/styles/global.css';
-import { QueryClient, QueryClientProvider } from 'react-query';
 import React, { useState, useEffect } from 'react';
-import Router from 'next/router';
-import Loader from '@/components/Loader';
+import { AppProps } from 'next/app';
 import { DefaultSeo } from 'next-seo';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import Router from 'next/router';
+import { ChakraProvider } from '@chakra-ui/react';
+import { MDXProvider } from '@mdx-js/react';
+import { Analytics } from '@vercel/analytics/react';
 import PlausibleProvider from 'next-plausible';
-import AppLayout from '@/components/AppLayout';
+
 import theme from '../src/theme';
 import MDXComponents from '@/components/MDXComponents';
-import { MDXProvider } from '@mdx-js/react';
+import AppLayout from '@/components/AppLayout';
+import Loader from '@/components/Loader';
 
 const queryClient = new QueryClient();
+
 export default function MyApp({
   Component,
   pageProps,
 }: AppProps): React.ReactElement {
   const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     document.documentElement.lang = 'en-US';
-    const start = () => {
-      setLoading(true);
-    };
-    const end = () => {
-      setLoading(false);
-    };
+
+    const start = () => setLoading(true);
+    const end = () => setLoading(false);
+
     Router.events.on('routeChangeStart', start);
     Router.events.on('routeChangeComplete', end);
     Router.events.on('routeChangeError', end);
+
     return () => {
       Router.events.off('routeChangeStart', start);
       Router.events.off('routeChangeComplete', end);
@@ -37,16 +38,18 @@ export default function MyApp({
     };
   }, []);
 
+  const pageTitle = 'Yuri Cunha';
+
   return (
     <>
       <DefaultSeo
-        defaultTitle="Yuri Cunha"
-        title="Yuri Cunha"
+        defaultTitle={pageTitle}
+        title={pageTitle}
         titleTemplate="%s | Yuri Cunha"
         openGraph={{
-          title: 'Yuri Cunha',
+          title: pageTitle,
           type: 'website',
-          site_name: 'Yuri Cunha',
+          site_name: pageTitle,
           images: [
             {
               url: 'https://www.yuricunha.com/static/images/yuricunha-logo.png',
@@ -70,9 +73,7 @@ export default function MyApp({
               {loading ? (
                 <Loader />
               ) : (
-                <AppLayout>
-                  <Component {...pageProps} />
-                </AppLayout>
+                <AppLayout>{<Component {...pageProps} />}</AppLayout>
               )}
             </MDXProvider>
           </QueryClientProvider>
