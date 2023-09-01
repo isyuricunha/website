@@ -15,7 +15,7 @@ const info = (props: any): { input: string; return: string }[] => [
 
   {
     input: 'self.interests',
-    return: '["database", "mysql", "sql server", "web dev", "anime", "book"]',
+    return: '["database", "mysql", "sql server", "anime", "book"]',
   },
   {
     input: 'self.education',
