@@ -1,6 +1,5 @@
-import { Analytics } from '@vercel/analytics/react';
-import { NextSeo } from 'next-seo';
 import React, { useState } from 'react';
+import { NextSeo } from 'next-seo';
 import {
   Box,
   Button,
@@ -15,11 +14,12 @@ import {
   Text,
   useColorModeValue,
 } from '@chakra-ui/react';
-import { getAllFilesFrontMatter } from '@/utils/mdx';
-import BlogPost from '@/components/BlogPost';
-import LineHeading from '@/components/LineHeading';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { BiChevronDown } from 'react-icons/bi';
+import { Analytics } from '@vercel/analytics/react';
+import BlogPost from '@/components/BlogPost';
+import LineHeading from '@/components/LineHeading';
+import { getAllFilesFrontMatter } from '@/utils/mdx';
 
 function Blog({ posts }: { posts: any }): React.ReactElement {
   const [filter, setFilter] = useState('');
@@ -30,11 +30,10 @@ function Blog({ posts }: { posts: any }): React.ReactElement {
 
   const filteredBlogPosts = posts
     .filter(
-      (frontMatter: any) =>
-        frontMatter.title.toLowerCase().includes(filter) &&
-        (frontMatter.published || process.env.NODE_ENV === 'development')
+      ({ title, published }: any) =>
+        title.toLowerCase().includes(filter) &&
+        (published || process.env.NODE_ENV === 'development')
     )
-
     .sort((a: any, b: any) => {
       if (sort === 'recent') {
         return (
@@ -72,9 +71,11 @@ function Blog({ posts }: { posts: any }): React.ReactElement {
           Blog Posts
         </LineHeading>
         <Text mt={3} px={5}>
-          Here are a collection of my blog posts, with {posts.length} blog
-          {posts.length > 1 && 's'} :).
+          {`Here ${
+            posts.length === 1 ? 'is' : 'are'
+          } a collection of my blog post${posts.length > 1 ? 's' : ''} :).`}
         </Text>
+
         <Box mt="16" width="full">
           <Flex
             width="full"
