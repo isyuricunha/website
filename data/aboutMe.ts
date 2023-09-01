@@ -34,7 +34,7 @@ const info = (props: any): { input: string; return: string }[] => [
       props
     )}" rel="noopener" href="https://github.com/isyuricunha">Github</a>", "<a rel="noopener" style="${style(
       props
-    )}" rel="noopener" href="https://twitter.com/isyuricunha">Twitter</a>", "<a rel="noopener" style="${style(
+    )}" rel="noopener" href="https://twitter.com/isyuricunha">Twitter/X</a>", "<a rel="noopener" style="${style(
       props
     )}" rel="noopener" href="https://www.instagram.com/isyuricunha/">Instagram</a>", "<a rel="noopener" style="${style(
       props
