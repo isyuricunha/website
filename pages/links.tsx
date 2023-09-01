@@ -9,7 +9,7 @@ import links, { LinkType } from '@/data/links';
 function Links(): React.ReactElement {
   return (
     <>
-      <NextSeo title="Links - Yuri Cunha" />
+      <NextSeo title="Links | Yuri Cunha" />
       <Flex
         direction="column"
         alignItems="center"

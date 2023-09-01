@@ -20,7 +20,7 @@ interface ProjectsProps {
 function Projects({ repos }: ProjectsProps): React.ReactElement {
   return (
     <>
-      <NextSeo title="Projects - Yuri Cunha" />
+      <NextSeo title="Projects | Yuri Cunha" />
       <Box
         width="full"
         px={3}
