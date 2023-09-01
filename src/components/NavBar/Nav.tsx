@@ -42,10 +42,10 @@ const links = [
         name: 'Links',
         link: '/links',
       },
-      //   {
-      //     name: `Music`,
-      //     link: `/spotify`,
-      //   },
+      {
+        name: 'Music',
+        link: '/spotify',
+      },
     ],
   },
 ];
