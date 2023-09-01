@@ -41,6 +41,7 @@ export default function MyApp({
     <>
       <DefaultSeo
         defaultTitle="Yuri Cunha"
+        title="Yuri Cunha"
         titleTemplate="%s | Yuri Cunha"
         openGraph={{
           title: 'Yuri Cunha',
@@ -49,7 +50,7 @@ export default function MyApp({
           images: [
             {
               url: 'https://www.yuricunha.com/static/images/yuricunha-logo.png',
-              alt: 'Profile Picture',
+              alt: 'Yuri Cunha Logo Picture',
             },
           ],
         }}
