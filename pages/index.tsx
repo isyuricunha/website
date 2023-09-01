@@ -12,6 +12,7 @@ import {
 } from '@chakra-ui/react';
 import Link from 'next/link';
 import React, { useState } from 'react';
+import { NextSeo } from 'next-seo';
 import AboutTerminal from '@/components/AboutTerminal';
 
 export default function Home(): React.ReactElement {
@@ -19,6 +20,8 @@ export default function Home(): React.ReactElement {
   const bp = useBreakpoint();
   return (
     <>
+      <NextSeo title="Home" />
+
       <Box
         minH="100vh"
         height="full"

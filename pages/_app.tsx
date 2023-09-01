@@ -45,7 +45,7 @@ export default function MyApp({
       <DefaultSeo
         defaultTitle={pageTitle}
         title={pageTitle}
-        titleTemplate="%s | Yuri Cunha"
+        titleTemplate="%s - Yuri Cunha"
         openGraph={{
           title: pageTitle,
           type: 'website',
