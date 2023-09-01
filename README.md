@@ -62,6 +62,10 @@ Give a ⭐️ if this project helped you!
 Copyright © 2023 [https://www.github.com/isyuricunha](https://github.com/isyuricunha).<br />
 This project is [Personal License](https://github.com/isyuricunha/website/blob/main/license.md) licensed.
 
+## Acknowledgements
+
+- This project was inspired by [michael-hall](https://github.com/mah51/).
+
 ---
 
 _This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
