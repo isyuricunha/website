@@ -26,7 +26,7 @@ import { NextSeo } from 'next-seo';
 function Tools(): React.ReactElement {
   return (
     <>
-      <NextSeo title="Tools" />
+      <NextSeo title="Tools - Yuri Cunha" />
       <Flex
         direction="column"
         alignItems="center"

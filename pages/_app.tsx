@@ -39,9 +39,7 @@ export default function MyApp({
     };
   }, []);
 
-  const isHomePage = router.pathname === '/'; // Check if the current route is the homepage
-
-  const pageTitle = isHomePage ? 'Yuri Cunha' : 'Yuri Cunha | Home'; // Set the title accordingly
+  const pageTitle = 'Yuri Cunha'; // Set the title accordingly
 
   return (
     <>

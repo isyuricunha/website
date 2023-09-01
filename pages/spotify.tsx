@@ -66,7 +66,7 @@ function Spotify({ data, error }: SpotifyProps): React.ReactElement {
 
   return (
     <>
-      <NextSeo title="Music" />
+      <NextSeo title="Music - Yuri Cunha" />
       {` `}
       <Box
         width="full"

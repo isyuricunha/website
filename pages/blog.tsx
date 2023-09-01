@@ -55,7 +55,7 @@ function Blog({ posts }: { posts: any }): React.ReactElement {
 
   return (
     <>
-      <NextSeo title="Blog" />
+      <NextSeo title="Blog - Yuri Cunha" />
       <Flex
         direction="column"
         alignItems="center"
