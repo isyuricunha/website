@@ -43,9 +43,9 @@ export default function MyApp({
         defaultTitle="Yuri Cunha"
         titleTemplate="%s | Yuri Cunha"
         openGraph={{
-          title: 'From my Desk',
+          title: 'Yuri Cunha',
           type: 'website',
-          site_name: 'From my Desk',
+          site_name: 'Yuri Cunha"',
           images: [
             {
               url: 'https://www.yuricunha.com/static/images/yuricunha-logo.png',
