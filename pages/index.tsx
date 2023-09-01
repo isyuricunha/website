@@ -14,7 +14,6 @@ import Link from 'next/link';
 import React, { useState } from 'react';
 import { NextSeo } from 'next-seo';
 import AboutTerminal from '@/components/AboutTerminal';
-import { Bubble } from '@typebot.io/nextjs';
 
 const HEADER_IMAGE_SIZE = '250px'; // Use constants for repeated values
 const HEADER_BORDER_RADIUS = '2xl';
@@ -66,12 +65,6 @@ export default function Home(): React.ReactElement {
                 onLoad={() => setImageLoad(true)}
               />
               <Analytics />
-              <Bubble
-                typebot="chat-gpt-personas-vg2ybv4"
-                theme={{
-                  button: { backgroundColor: '#050505', size: 'medium' },
-                }}
-              />
             </Skeleton>
             <Flex
               alignSelf="center"
