@@ -22,24 +22,24 @@ import LineHeading from '@/components/LineHeading';
 import { getAllFilesFrontMatter } from '@/utils/mdx';
 
 function Blog({ posts }: { posts: any }): React.ReactElement {
-  const [filter, setFilter] = useState('');
-  const [sort, setSort] = useState('recent');
+  const [searchFilter, setFilter] = useState('');
+  const [sortBy, setSort] = useState('recent');
   posts[0].featured =
     Date.now() - new Date(posts[0].publishedAt).getTime() <
     1000 * 60 * 60 * 24 * 14;
 
   const filteredBlogPosts = posts
-    .filter(
+    .searchFilter(
       ({ title, published }: any) =>
-        title.toLowerCase().includes(filter) &&
+        title.toLowerCase().includes(searchFilter) &&
         (published || process.env.NODE_ENV === 'development')
     )
-    .sort((a: any, b: any) => {
-      if (sort === 'recent') {
+    .sortBy((a: any, b: any) => {
+      if (sortBy === 'recent') {
         return (
           new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
         );
-      } else if (sort === 'old') {
+      } else if (sortBy === 'old') {
         return (
           new Date(a.publishedAt).getTime() - new Date(b.publishedAt).getTime()
         );
@@ -48,7 +48,7 @@ function Blog({ posts }: { posts: any }): React.ReactElement {
       }
     });
 
-  if (sort === 'old') {
+  if (sortBy === 'old') {
     filteredBlogPosts.reverse();
   }
 
@@ -109,14 +109,14 @@ function Blog({ posts }: { posts: any }): React.ReactElement {
               <MenuList zIndex={998}>
                 <MenuItem
                   zIndex={999}
-                  isDisabled={sort === 'recent'}
+                  isDisabled={sortBy === 'recent'}
                   onClick={() => setSort('recent')}
                 >
                   Recent
                 </MenuItem>
                 <MenuItem
                   zIndex={999}
-                  isDisabled={sort === 'old'}
+                  isDisabled={sortBy === 'old'}
                   onClick={() => setSort('old')}
                 >
                   Oldest
