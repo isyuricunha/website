@@ -18,6 +18,7 @@ const queryClient = new QueryClient();
 export default function MyApp({
   Component,
   pageProps,
+  router,
 }: AppProps): React.ReactElement {
   const [loading, setLoading] = useState(false);
 
@@ -38,7 +39,9 @@ export default function MyApp({
     };
   }, []);
 
-  const pageTitle = 'Yuri Cunha';
+  const isHomePage = router.pathname === '/'; // Check if the current route is the homepage
+
+  const pageTitle = isHomePage ? 'Yuri Cunha' : 'Yuri Cunha | Home'; // Set the title accordingly
 
   return (
     <>
