@@ -111,9 +111,10 @@ export default function Home(): React.ReactElement {
                   <ChakraLink>blogs</ChakraLink>
                 </Link>{' '}
                 for some interesting reads. I am a Database Administrator with
-                over {new Date().getFullYear() - 2020} years of experience.
-                I&apos;m also a student who dedicates most of my free time to
-                open-source projects, websites, and software development.
+                over 5{/*new Date().getFullYear() - 2020 */} years of
+                experience. I&apos;m also a student who dedicates most of my
+                free time to open-source projects, websites, and software
+                development.
               </chakra.p>
             </Flex>
           </Flex>
