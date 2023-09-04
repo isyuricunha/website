@@ -53,7 +53,7 @@ export default function MyApp({
           site_name: pageTitle,
           images: [
             {
-              url: 'https://www.yuricunha.com/static/images/yuricunha-logo.png',
+              url: './static/images/yuricunha-logo.png',
               alt: 'Yuri Cunha Logo Picture',
             },
           ],
