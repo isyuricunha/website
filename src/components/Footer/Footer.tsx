@@ -22,6 +22,8 @@ import {
 import { useQuery } from 'react-query';
 import { BsPauseFill } from 'react-icons/bs';
 import SocialIcons from './SocialIcons';
+import React from 'react';
+import InstallPwaButton from '../InstallWPA/InstallPwaButton';
 
 const Footer = (): JSX.Element => {
   const { colorMode } = useColorMode();
@@ -137,6 +139,7 @@ const Footer = (): JSX.Element => {
           <SocialIcons label="E-mail" href="mailto:me@yuricunha.com">
             <FaMailBulk />
           </SocialIcons>
+          <InstallPwaButton />
         </Stack>
       </SimpleGrid>
     </Box>

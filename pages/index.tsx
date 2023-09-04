@@ -14,6 +14,7 @@ import Link from 'next/link';
 import React, { useState } from 'react';
 import { NextSeo } from 'next-seo';
 import AboutTerminal from '@/components/AboutTerminal';
+import InstallPwaButton from '@/components/InstallWPA/InstallPwaButton';
 
 const HEADER_IMAGE_SIZE = '250px'; // Use constants for repeated values
 const HEADER_BORDER_RADIUS = '2xl';
@@ -65,6 +66,7 @@ export default function Home(): React.ReactElement {
                 onLoad={() => setImageLoad(true)}
               />
               <Analytics />
+              <InstallPwaButton />
             </Skeleton>
             <Flex
               alignSelf="center"

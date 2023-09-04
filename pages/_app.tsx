@@ -7,6 +7,7 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { MDXProvider } from '@mdx-js/react';
 import { Analytics } from '@vercel/analytics/react';
 import PlausibleProvider from 'next-plausible';
+import InstallPwaButton from '@/components/InstallWPA/InstallPwaButton';
 
 import theme from '../src/theme';
 import MDXComponents from '@/components/MDXComponents';
@@ -73,7 +74,10 @@ export default function MyApp({
               {loading ? (
                 <Loader />
               ) : (
-                <AppLayout>{<Component {...pageProps} />}</AppLayout>
+                <AppLayout>
+                  <InstallPwaButton />
+                  {<Component {...pageProps} />}
+                </AppLayout>
               )}
             </MDXProvider>
           </QueryClientProvider>
