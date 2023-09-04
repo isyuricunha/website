@@ -54,7 +54,8 @@
     "remark-slug": "7.0.0",
     "sitemap": "7.1.1",
     "stream-to-promise": "3.0.0",
-    "vcards-js": "2.10.0"
+    "vcards-js": "2.10.0",
+    "workbox-webpack-plugin": "7.0.0"
   },
   "devDependencies": {
     "@babel/core": "7.15.5",
