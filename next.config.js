@@ -44,7 +44,7 @@ const securityHeaders = [
   // Opt-out of Google FLoC: https://amifloced.org/
   {
     key: 'Permissions-Policy',
-    value: 'camera=(), microphone=(), geolocation=(), interest-cohort=()',
+    value: 'camera=(), microphone=(), geolocation=()',
   },
 ];
 
