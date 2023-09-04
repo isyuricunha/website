@@ -74,12 +74,12 @@ export default function MyApp({
               {loading ? (
                 <Loader />
               ) : (
-                <>
-                  <AppLayout>
+                <AppLayout>
+                  <>
                     <InstallPwaButton />
                     <Component {...pageProps} />
-                  </AppLayout>
-                </>
+                  </>
+                </AppLayout>
               )}
             </MDXProvider>
           </QueryClientProvider>
