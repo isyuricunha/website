@@ -1,8 +1,7 @@
-// components/InstallPwaButton.tsx
 import React, { useEffect, useState } from 'react';
 
-const InstallPwaButton: React.FC = () => {
-  const [deferredPrompt, setDeferredPrompt] = useState<any | null>(null);
+const InstallPwaButton = () => {
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
 
   useEffect(() => {
     window.addEventListener('beforeinstallprompt', (e) => {
@@ -14,9 +13,10 @@ const InstallPwaButton: React.FC = () => {
   const handleInstallClick = () => {
     if (deferredPrompt) {
       deferredPrompt.prompt();
-      deferredPrompt.userChoice.then((choiceResult: any) => {
+      deferredPrompt.userChoice.then((choiceResult) => {
         if (choiceResult.outcome === 'accepted') {
-          console.log('User accepted the install prompt');
+          // Removed the console.log statement
+          // console.log('User accepted the install prompt');
         }
         setDeferredPrompt(null);
       });
