@@ -31,9 +31,9 @@ const BlogLayout = ({
   frontMatter,
 }: BlogLayoutProps): JSX.Element => {
   const router = useRouter();
+
   return (
     <>
-      {/*Allows anchor link to not get stuck under nav bar */}
       <Global
         styles={css`
           * {
@@ -54,7 +54,6 @@ const BlogLayout = ({
           site_name: 'Yuri Cunha',
           description: frontMatter.summary,
           url: `https://yuricunha.com${router.asPath}/`,
-
           type: 'article',
           article: {
             publishedTime: new Date(frontMatter.publishedAt).toISOString(),
@@ -67,7 +66,7 @@ const BlogLayout = ({
         }}
       />
       <chakra.article
-        id={'blogArticle'}
+        id="blogArticle"
         display="flex"
         flexDirection="column"
         justifyContent="flex-start"
@@ -105,7 +104,7 @@ const BlogLayout = ({
           justifyContent="space-between"
           alignItems={{ base: 'center', md: 'flex-start' }}
           maxW="2xl"
-          mx={'auto'}
+          mx="auto"
           mb={12}
           mt={5}
           width="full"
@@ -140,7 +139,7 @@ const BlogLayout = ({
           px={2}
           maxWidth="4xl"
           width="full"
-          className={'blog-content'}
+          className="blog-content"
         >
           {children}
           <HStack justifyContent="flex-start" mr="auto" mt={5}>
@@ -154,7 +153,7 @@ const BlogLayout = ({
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Edit on github
+                Edit on GitHub
               </ChakraLink>
             </Link>
           </HStack>
