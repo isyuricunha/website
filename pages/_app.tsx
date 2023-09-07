@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import '../src/styles/global.css';
 import { AppProps } from 'next/app';
 import { DefaultSeo } from 'next-seo';
 import { QueryClient, QueryClientProvider } from 'react-query';
