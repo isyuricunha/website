@@ -64,7 +64,6 @@ export default function Home(): React.ReactElement {
                 onLoad={() => setImageLoad(true)}
               />
               <Analytics />
-              <InstallPwaButton />
             </Skeleton>
             <Flex
               alignSelf="center"
@@ -94,13 +93,11 @@ export default function Home(): React.ReactElement {
                 fontSize="xl"
                 mt={2}
               >
-                {/* Introdução */}
                 Welcome to my website! Here, I showcase some of my{' '}
                 <Link href="/projects" passHref>
                   <ChakraLink>projects</ChakraLink>
                 </Link>{' '}
-                and experiment with various things. {/* Links para Páginas */}
-                You can explore the{' '}
+                and experiment with various things. You can explore the{' '}
                 <Link href="/links" passHref>
                   <ChakraLink>websites</ChakraLink>
                 </Link>{' '}
@@ -113,9 +110,10 @@ export default function Home(): React.ReactElement {
                   <ChakraLink>blogs</ChakraLink>
                 </Link>{' '}
                 for some interesting reads. I am a Database Administrator with
-                over {new Date().getFullYear() - 2020} years of experience.
-                I&apos;m also a student who dedicates most of my free time to
-                open-source projects, websites, and software development.
+                over 5{/*new Date().getFullYear() - 2020 */} years of
+                experience. I&apos;m also a student who dedicates most of my
+                free time to open-source projects, websites, and software
+                development.
               </chakra.p>
             </Flex>
           </Flex>
