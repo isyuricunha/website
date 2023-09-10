@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import React, { useState } from 'react';
 import { NextSeo } from 'next-seo';
 import {
@@ -54,6 +55,9 @@ function Blog({ posts }: { posts: any }): React.ReactElement {
 
   return (
     <>
+      <Head>
+        <link rel="canonical" href="https://www.yuricunha.com/blog" />
+      </Head>
       <NextSeo title="Blog | Yuri Cunha" />
       <Flex
         direction="column"
