@@ -18,7 +18,7 @@ import {
 } from '@/components/MusicLayouts';
 import { NextSeo } from 'next-seo';
 import { useQuery } from 'react-query';
-import { Head } from 'next/document';
+import Head from 'next/head';
 
 interface ListFadeProps {
   children: any;
@@ -70,7 +70,10 @@ function Spotify({ data, error }: SpotifyProps): React.ReactElement {
       <Head>
         <link rel="canonical" href="https://www.yuricunha.com/spotify" />
       </Head>
-      <NextSeo title="Music | Yuri Cunha" />
+      <NextSeo
+        title="Spotify | Yuri Cunha"
+        canonical="https://www.yuricunha.com/spotify"
+      />
       {` `}
       <Box
         width="full"

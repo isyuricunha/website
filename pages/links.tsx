@@ -5,7 +5,7 @@ import LineHeading from '@/components/LineHeading';
 import LinkCard from '@/components/LinkCard';
 import { NextSeo } from 'next-seo';
 import links, { LinkType } from '@/data/links';
-import { Head } from 'next/document';
+import Head from 'next/head';
 
 function Links(): React.ReactElement {
   return (
@@ -13,7 +13,10 @@ function Links(): React.ReactElement {
       <Head>
         <link rel="canonical" href="https://www.yuricunha.com/links" />
       </Head>
-      <NextSeo title="Links | Yuri Cunha" />
+      <NextSeo
+        title="Links | Yuri Cunha"
+        canonical="https://www.yuricunha.com/links"
+      />
       <Flex
         direction="column"
         alignItems="center"

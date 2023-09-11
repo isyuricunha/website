@@ -22,7 +22,7 @@ import {
 } from 'react-icons/ai';
 import { BsPhone } from 'react-icons/bs';
 import { NextSeo } from 'next-seo';
-import { Head } from 'next/document';
+import Head from 'next/head';
 
 function Tools(): React.ReactElement {
   return (
@@ -30,7 +30,10 @@ function Tools(): React.ReactElement {
       <Head>
         <link rel="canonical" href="https://www.yuricunha.com/tools" />
       </Head>
-      <NextSeo title="Tools | Yuri Cunha" />
+      <NextSeo
+        title="Tools | Yuri Cunha"
+        canonical="https://www.yuricunha.com/tools"
+      />
       <Flex
         direction="column"
         alignItems="center"

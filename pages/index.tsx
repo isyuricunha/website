@@ -14,7 +14,7 @@ import Link from 'next/link';
 import React, { useState } from 'react';
 import { NextSeo } from 'next-seo';
 import AboutTerminal from '@/components/AboutTerminal';
-import { Head } from 'next/document';
+import Head from 'next/head';
 
 export default function Home(): React.ReactElement {
   const [imageLoad, setImageLoad] = useState(false);
@@ -24,7 +24,7 @@ export default function Home(): React.ReactElement {
       <Head>
         <link rel="canonical" href="https://www.yuricunha.com/" />
       </Head>
-      <NextSeo title="" />
+      <NextSeo title="" canonical="https://www.yuricunha.com/" />
 
       <Box
         minH="100vh"
