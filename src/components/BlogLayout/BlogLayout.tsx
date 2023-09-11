@@ -21,6 +21,14 @@ import { NextSeo } from 'next-seo';
 import { useRouter } from 'next/router';
 import { Global, css } from '@emotion/react';
 
+import {
+  FaWhatsapp, // Icon WhatsApp
+  FaTwitter, // Icon Twitter
+  FaFacebook, // Icon Facebook
+  FaLinkedin, // Icon LinkedIn
+  FaReddit, // Icon Reddit
+} from 'react-icons/fa';
+
 interface BlogLayoutProps {
   children: React.ReactNode;
   frontMatter: frontMatterType;
@@ -142,7 +150,93 @@ const BlogLayout = ({
           className="blog-content"
         >
           {children}
-          <HStack justifyContent="flex-start" mr="auto" mt={5}>
+          {/* Adicione o parágrafo de texto aqui */}
+          <Text
+            mb={2}
+            fontSize="lg"
+            color={useColorModeValue('gray.700', 'gray.300')}
+          >
+            Share this article with your friends:
+          </Text>
+          <HStack justifyContent="flex-start" mr="auto" mt={1}>
+            <a
+              href={`https://wa.me/?text=${encodeURIComponent(
+                `Check out the article: ${frontMatter.title} - https://yuricunha.com${router.asPath}`
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FaWhatsapp
+                size={24}
+                style={{
+                  color: 'white',
+                }}
+              />
+            </a>
+            <a
+              href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
+                `Check out the article: ${frontMatter.title} - https://yuricunha.com${router.asPath}`
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FaTwitter
+                size={24}
+                style={{
+                  color: 'white',
+                }}
+              />
+            </a>
+            <a
+              href={`https://www.facebook.com/sharer/sharer.php?u=https://yuricunha.com${
+                router.asPath
+              }&quote=${encodeURIComponent(
+                `Check out the article: ${frontMatter.title}`
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FaFacebook
+                size={24}
+                style={{
+                  color: 'white',
+                }}
+              />
+            </a>
+            <a
+              href={`https://www.linkedin.com/shareArticle?mini=true&url=https://yuricunha.com${
+                router.asPath
+              }&title=${encodeURIComponent(
+                `Check out the article: ${frontMatter.title}`
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FaLinkedin
+                size={24}
+                style={{
+                  color: 'white',
+                }}
+              />
+            </a>
+            <a
+              href={`https://www.reddit.com/submit?url=https://yuricunha.com${
+                router.asPath
+              }&title=${encodeURIComponent(
+                `Check out the article: ${frontMatter.title}`
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FaReddit
+                size={24}
+                style={{
+                  color: 'white',
+                }}
+              />
+            </a>
+          </HStack>
+          <HStack justifyContent="flex-start" mr="auto" mt={2}>
             <EditIcon />
             <Link
               href={`https://github.com/isyuricunha/website/tree/main/data/blog/${frontMatter.slug}.mdx`}
