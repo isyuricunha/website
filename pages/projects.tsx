@@ -8,6 +8,7 @@ import RepoCard from '@/components/RepoCard';
 import PinnedProjects from '@/components/PinnedProjects';
 import { pinnedRepos, pinnedRepoType } from '@/data/pinnedRepos';
 import { repoType } from '@/pages/api/github';
+import Head from 'next/head';
 
 interface ProjectsProps {
   stars: number;
@@ -20,6 +21,9 @@ interface ProjectsProps {
 function Projects({ repos }: ProjectsProps): React.ReactElement {
   return (
     <>
+      <Head>
+        <link rel="canonical" href="https://www.yuricunha.com/projects" />
+      </Head>
       <NextSeo title="Projects | Yuri Cunha" />
       <Box
         width="full"
