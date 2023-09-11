@@ -13,11 +13,11 @@ published: true
   src={'/static/images/blog/what-is-sql-server-and-sql/sql-example.png'}
   width={1905 / 2}
   height={957 / 2}
-  layout='responsive'
+  layout="responsive"
   blurDataURL={
     'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAACCAIAAADwyuo0AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAIklEQVQImWNgYBDnFZCxsfc0tvJkCI/O+vP/f0tdhZK8CgBLPAfARKUieAAAAABJRU5ErkJggg=='
   }
-  placeholder='blur'
+  placeholder="blur"
 />
 
 # What is the SQL Server Database?
@@ -52,7 +52,7 @@ Here are some examples of SQL queries that can be run on the SQL Server Database
 
 ## _Select Query_
 
-* The following query selects all fields from the "Customers" table where the "City" field is equal to "São Paulo":
+- The following query selects all fields from the "Customers" table where the "City" field is equal to "São Paulo":
 
 ```sql
 SELECT * FROM Customers WHERE City = 'São Paulo';
@@ -62,9 +62,9 @@ SELECT * FROM Customers WHERE City = 'São Paulo';
 
 ## _Insert Data_
 
-* The following query inserts a new record into the "Customers" table:
+- The following query inserts a new record into the "Customers" table:
 
-```sql 
+```sql
 INSERT INTO Customers (Name, Address, City) VALUES ('João da Silva', 'Rua das Flores, 123', 'São Paulo');
 ```
 
@@ -72,7 +72,7 @@ INSERT INTO Customers (Name, Address, City) VALUES ('João da Silva', 'Rua das F
 
 ## _Update Data_
 
-* The following query updates the "Address" field of the record with ID 1 in the "Customers" table:
+- The following query updates the "Address" field of the record with ID 1 in the "Customers" table:
 
 ```sql
 UPDATE Customers SET Address = 'Rua das Oliveiras, 456' WHERE ID = 1;
@@ -82,7 +82,7 @@ UPDATE Customers SET Address = 'Rua das Oliveiras, 456' WHERE ID = 1;
 
 ## _Delete Data_
 
-* The following query deletes the record with ID 1 from the "Customers" table:
+- The following query deletes the record with ID 1 from the "Customers" table:
 
 ```sql
 DELETE FROM Customers WHERE ID = 1;
@@ -103,9 +103,9 @@ DELETE FROM Customers WHERE ID = 1;
 
 <br />
 
-* Name: "John Smith"
-* Address: "123 Main Street"
-* City: "New York"
+- Name: "John Smith"
+- Address: "123 Main Street"
+- City: "New York"
 
 <br />
 <br />
@@ -114,7 +114,7 @@ DELETE FROM Customers WHERE ID = 1;
 
 <br />
 
-* To add the new customer record, you can use the following SQL query:
+- To add the new customer record, you can use the following SQL query:
 
 ```sql
 INSERT INTO Customers (Name, Address, City) VALUES ('John Smith', '123 Main Street', 'New York');
@@ -140,7 +140,7 @@ _This query will insert a new record into the "Customers" table with the specifi
 
 <br />
 
-* You are the database administrator for a product inventory database. You need to update the quantity of a product with the ID "12345" to 10.
+- You are the database administrator for a product inventory database. You need to update the quantity of a product with the ID "12345" to 10.
 
 ```sql
 UPDATE Products SET Quantity = 10 WHERE ID = 12345;
@@ -164,11 +164,11 @@ Here is a complex example and solution involving the SQL Server Database:
 <br />
 <br />
 
-## _Solution_ 
+## _Solution_
 
 <br />
 
-* To generate the requested report, you can use the following SQL query:
+- To generate the requested report, you can use the following SQL query:
 
 ```sql
 SELECT c.Name AS 'Customer',
@@ -196,16 +196,15 @@ _This query will select the customer name, total sales, number of orders, and pr
 
 ###### _Here are some additional reference links that you might find helpful in learning more about SQL Server Database and the SQL language:_
 
-* The SQL Server homepage: https://www.microsoft.com/sql-server/
+- The SQL Server homepage: https://www.microsoft.com/sql-server/
 
-* The SQL Server documentation: https://docs.microsoft.com/sql/
+- The SQL Server documentation: https://docs.microsoft.com/sql/
 
-* The SQL tutorial: https://www.w3schools.com/sql/
+- The SQL tutorial: https://www.w3schools.com/sql/
 
-* The MySQL reference guide: https://dev.mysql.com/doc/refman/8.0/en/
+- The MySQL reference guide: https://dev.mysql.com/doc/refman/8.0/en/
 
-* The Oracle SQL tutorial: https://docs.oracle.com/en/database/oracle/oracle-database/19/lnpls/index.html
-
+- The Oracle SQL tutorial: https://docs.oracle.com/en/database/oracle/oracle-database/19/lnpls/index.html
 
 > I hope these additional references and syntax are helpful to you.
 
@@ -213,7 +212,8 @@ _This query will select the customer name, total sales, number of orders, and pr
 <br />
 
 <Aside type={'positive'} title={'Thank you very much for reading!'}>
-  Whilst I do write these for myself, it's also great if it helps other people out! So thank you for
-  reading through and I hope I helped you out just a little bit. Become a 
-  <a href='https://github.com/sponsors/isyuricunha'> sponsor</a>.
+  Whilst I do write these for myself, it's also great if it helps other people
+  out! So thank you for reading through and I hope I helped you out just a
+  little bit. Become a
+  <a href="https://github.com/sponsors/isyuricunha"> sponsor</a>.
 </Aside>
