@@ -5,10 +5,14 @@ import LineHeading from '@/components/LineHeading';
 import LinkCard from '@/components/LinkCard';
 import { NextSeo } from 'next-seo';
 import links, { LinkType } from '@/data/links';
+import { Head } from 'next/document';
 
 function Links(): React.ReactElement {
   return (
     <>
+      <Head>
+        <link rel="canonical" href="https://www.yuricunha.com/links" />
+      </Head>
       <NextSeo title="Links | Yuri Cunha" />
       <Flex
         direction="column"

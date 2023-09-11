@@ -14,12 +14,16 @@ import Link from 'next/link';
 import React, { useState } from 'react';
 import { NextSeo } from 'next-seo';
 import AboutTerminal from '@/components/AboutTerminal';
+import { Head } from 'next/document';
 
 export default function Home(): React.ReactElement {
   const [imageLoad, setImageLoad] = useState(false);
   const bp = useBreakpoint();
   return (
     <>
+      <Head>
+        <link rel="canonical" href="https://www.yuricunha.com/" />
+      </Head>
       <NextSeo title="" />
 
       <Box

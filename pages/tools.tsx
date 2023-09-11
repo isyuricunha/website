@@ -22,10 +22,14 @@ import {
 } from 'react-icons/ai';
 import { BsPhone } from 'react-icons/bs';
 import { NextSeo } from 'next-seo';
+import { Head } from 'next/document';
 
 function Tools(): React.ReactElement {
   return (
     <>
+      <Head>
+        <link rel="canonical" href="https://www.yuricunha.com/tools" />
+      </Head>
       <NextSeo title="Tools | Yuri Cunha" />
       <Flex
         direction="column"
