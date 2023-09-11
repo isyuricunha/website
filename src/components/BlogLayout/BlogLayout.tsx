@@ -150,12 +150,12 @@ const BlogLayout = ({
           className="blog-content"
         >
           {children}
-          {/* Adicione o parágrafo de texto aqui */}
           <Text
             mb={2}
             fontSize="lg"
             color={useColorModeValue('gray.700', 'gray.300')}
           >
+            <br />
             Share this article with your friends:
           </Text>
           <HStack justifyContent="flex-start" mr="auto" mt={1}>
