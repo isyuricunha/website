@@ -77,7 +77,6 @@ export default function MyApp({
               ) : (
                 <AppLayout>
                   <>
-                    <InstallPwaButton />
                     <Component {...pageProps} />
                   </>
                 </AppLayout>
@@ -87,6 +86,7 @@ export default function MyApp({
         </PlausibleProvider>
       </ChakraProvider>
       <Analytics />
+      <InstallPwaButton />
     </>
   );
 }
