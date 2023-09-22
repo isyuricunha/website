@@ -49,7 +49,7 @@ function Tools(): React.ReactElement {
         >
           Tools
         </LineHeading>
-        <Text mt={3}>Some tools that I find useful :).</Text>
+        <Text mt={3}>Some tools that I find useful, :).</Text>
         <Tabs
           variant="soft-rounded"
           colorScheme="blue"
