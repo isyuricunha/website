@@ -4,7 +4,7 @@ import { ColorModeScript } from '@chakra-ui/react';
 // eslint-disable-next-line @next/next/no-document-import-in-page
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 import React from 'react';
-import InstallPwaButton from '@/components/InstallWPA/InstallPwaButton';
+import InstallPwaButton from '@/components/InstallWPA';
 
 export default class MyDocument extends Document {
   render(): React.ReactElement {

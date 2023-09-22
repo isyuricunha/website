@@ -15,6 +15,7 @@ import React, { useState } from 'react';
 import { NextSeo } from 'next-seo';
 import AboutTerminal from '@/components/AboutTerminal';
 import Head from 'next/head';
+import InstallPwaButton from '@/components/InstallWPA';
 
 export default function Home(): React.ReactElement {
   const [imageLoad, setImageLoad] = useState(false);
@@ -65,6 +66,7 @@ export default function Home(): React.ReactElement {
                 onLoad={() => setImageLoad(true)}
               />
               <Analytics />
+              <InstallPwaButton />
             </Skeleton>
             <Flex
               alignSelf="center"
