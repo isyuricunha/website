@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const InstallPwaButton = () => {
+const InstallPwaButton = (): JSX.Element => {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
 
   useEffect(() => {
@@ -26,7 +26,7 @@ const InstallPwaButton = () => {
       deferredPrompt.userChoice.then((choiceResult) => {
         if (choiceResult.outcome === 'accepted') {
           // A instalação foi aceita pelo usuário, você pode adicionar lógica adicional aqui se necessário
-          console.log('O usuário aceitou a instalação da PWA.');
+          // console.log('O usuário aceitou a instalação da PWA.');
         }
 
         // Reinicialize deferredPrompt após o prompt
