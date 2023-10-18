@@ -50,7 +50,7 @@ const BlogLayout = ({
         `}
       />
       <NextSeo
-        title={frontMatter.title}
+        title={`${frontMatter.title} | Yuri Cunha | isyuricunha`}
         description={frontMatter.summary}
         canonical={`https://yuricunha.com${router.asPath}`}
         twitter={{
@@ -58,7 +58,7 @@ const BlogLayout = ({
           site: '@isyuricunha',
         }}
         openGraph={{
-          title: frontMatter.title,
+          title: `${frontMatter.title} | Yuri Cunha | isyuricunha`,
           site_name: 'Yuri Cunha',
           description: frontMatter.summary,
           url: `https://yuricunha.com${router.asPath}/`,
