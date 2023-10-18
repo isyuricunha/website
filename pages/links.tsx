@@ -14,7 +14,7 @@ function Links(): React.ReactElement {
         <link rel="canonical" href="https://www.yuricunha.com/links" />
       </Head>
       <NextSeo
-        title="Links | Yuri Cunha"
+        title="Links | Yuri Cunha | isyuricunha"
         canonical="https://www.yuricunha.com/links"
       />
       <Flex

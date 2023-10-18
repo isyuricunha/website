@@ -58,7 +58,7 @@ function Blog({ posts }: { posts: any }): React.ReactElement {
       <Head>
         <link rel="canonical" href="https://www.yuricunha.com/blog" />
       </Head>
-      <NextSeo title="Blog | Yuri Cunha" />
+      <NextSeo title="Blog | Yuri Cunha | isyuricunha | isyuricunha" />
       <Flex
         direction="column"
         alignItems="center"
