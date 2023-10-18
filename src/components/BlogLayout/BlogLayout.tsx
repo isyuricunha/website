@@ -40,6 +40,14 @@ const BlogLayout = ({
 }: BlogLayoutProps): JSX.Element => {
   const router = useRouter();
 
+  const translatePage = (languageCode) => {
+    const currentURL = window.location.href;
+    const translatedURL = `https://translate.google.com/translate?hl=${languageCode}&sl=auto&tl=${languageCode}&u=${encodeURIComponent(
+      currentURL
+    )}`;
+    window.open(translatedURL, '_blank');
+  };
+
   return (
     <>
       <Global
@@ -250,7 +258,16 @@ const BlogLayout = ({
                 Edit on GitHub
               </ChakraLink>
             </Link>
-          </HStack>
+            <br />
+            <ChakraLink
+              color={useColorModeValue('gray.900', 'white')}
+              onClick={() => translatePage('en')} // Altere 'en' para o idioma desejado
+              style={{ cursor: 'pointer' }}
+            >
+              Translate to English
+            </ChakraLink>
+            {/* Adicione links semelhantes para outros idiomas, se desejar */}
+          </HStack>{' '}
         </Box>
       </chakra.article>
     </>
