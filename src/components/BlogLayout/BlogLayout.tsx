@@ -244,7 +244,7 @@ const BlogLayout = ({
               />
             </a>
           </HStack>
-          <HStack justifyContent="flex-start" mr="auto" mt={2}>
+          {/* <HStack justifyContent="flex-start" mr="auto" mt={2}>
             <EditIcon />
             <Link
               href={`https://github.com/isyuricunha/website/tree/main/data/blog/${frontMatter.slug}.mdx`}
@@ -258,15 +258,17 @@ const BlogLayout = ({
                 Edit on GitHub
               </ChakraLink>
             </Link>
-            <br />
+          </HStack> */}
+          <HStack justifyContent="flex-start" mr="auto" mt={2}>
             <ChakraLink
               color={useColorModeValue('gray.900', 'white')}
-              onClick={() => translatePage('en')} // Altere 'en' para o idioma desejado
+              onClick={() => translatePage('pt')}
               style={{ cursor: 'pointer' }}
             >
-              Translate to English
+              Auto Translate - Goolge Translate.
+              <br />
+              Traduzir automaticamente - Google Tradutor.
             </ChakraLink>
-            {/* Adicione links semelhantes para outros idiomas, se desejar */}
           </HStack>{' '}
         </Box>
       </chakra.article>
