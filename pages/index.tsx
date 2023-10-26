@@ -116,7 +116,12 @@ export default function Home(): React.ReactElement {
                 with over 5{/*new Date().getFullYear() - 2020 */} years of
                 experience. I&apos;m also a student who dedicates most of my
                 free time to open-source projects, websites, and software
-                development.
+                development. You can find all my social media links and contact
+                information in the{' '}
+                <Link href="https://links.yuricunha.com" passHref>
+                  <ChakraLink>my website links</ChakraLink>
+                </Link>
+                , or check the footer.
               </chakra.p>
             </Flex>
           </Flex>
