@@ -113,10 +113,11 @@ export default function Home(): React.ReactElement {
                   <ChakraLink>blogs</ChakraLink>
                 </Link>{' '}
                 for some interesting reads. I am a Senior Database Administrator
-                with over 5{/*new Date().getFullYear() - 2020 */} years of
-                experience. I&apos;m also a student who dedicates most of my
-                free time to open-source projects, websites, and software
-                development. You can find all my social media links and contact
+                with over {new Date().getFullYear() - 2019} years of experience.
+                In my role, I manage and optimize complex databases, ensure data
+                security, and maintain high-performance database systems. I also
+                provide expertise in data modeling , SQL query and NoSQL
+                optimization. You can find all my social media links and contact
                 information in the{' '}
                 <Link href="https://links.yuricunha.com" passHref>
                   <ChakraLink>my website links</ChakraLink>
