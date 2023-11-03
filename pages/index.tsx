@@ -60,7 +60,7 @@ export default function Home(): React.ReactElement {
                 flexGrow={3}
                 borderRadius="2xl"
                 boxSize="250px"
-                src="./static/images/yuricunha-memoji.png"
+                src="./static/images/IMG_20230903_092527.jpg"
                 objectFit="cover"
                 alt="Yuri Cunha"
                 onLoad={() => setImageLoad(true)}
@@ -114,11 +114,8 @@ export default function Home(): React.ReactElement {
                 </Link>{' '}
                 for some interesting reads. I am a Senior Database Administrator
                 with over {new Date().getFullYear() - 2018} years of experience.
-                In my role, I manage and optimize complex databases, ensure data
-                security, and maintain high-performance database systems. I also
-                provide expertise in data modeling , SQL query and NoSQL
-                optimization. You can find all my social media links and contact
-                information in the{' '}
+                You can find all my social media links and contact information
+                in the{' '}
                 <Link href="https://links.yuricunha.com" passHref>
                   <ChakraLink>my website links</ChakraLink>
                 </Link>
