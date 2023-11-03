@@ -7,7 +7,7 @@ export const pinnedRepos: pinnedRepoType[] = [
     stack: ['HTML', 'CSS', 'JavaScript'],
     id: 'massage-alternativa',
     longDescription:
-      'A website for a massage therapist. It was built using HTML, CSS and JavaScript. It is fully responsive and has a contact form. No have a backend.',
+      'A website for a massage therapist. It was built using HTML, CSS and JavaScript. It is fully responsive and has a contact form. SQL Server, Linux and Firebase in backend.',
   },
   {
     id: 'website',
@@ -27,7 +27,7 @@ export const pinnedRepos: pinnedRepoType[] = [
     image:
       'https://raw.githubusercontent.com/isyuricunha/website/main/public/static/images/forDemo/ssautomation.png',
     longDescription:
-      'A website for a ssautomation. It was built using HTML, CSS and JavaScript. It is fully responsive and has a contact form. No have a backend.',
+      'A website for a ssautomation. It was built using HTML, CSS and JavaScript. It is fully responsive and has a contact form. SQL Server, Linux and Firebase in backend.',
   },
   {
     id: 'rain-for-relax',
