@@ -119,6 +119,10 @@ export default function Home(): React.ReactElement {
                 <Link href="https://links.yuricunha.com" passHref>
                   <ChakraLink>my website links</ChakraLink>
                 </Link>
+                , book a{' '}
+                <Link href="https://cal.com/isyuricunha" passHref>
+                  <ChakraLink>meeting with me</ChakraLink>
+                </Link>
                 , or check the footer.
               </chakra.p>
             </Flex>
