@@ -8,7 +8,7 @@ const handler = (req: NextApiRequest, res: NextApiResponse): void => {
   vCard.email = 'me@yuricunha.com';
   vCard.birthday = new Date(1997, 7, 6);
   vCard.photo.attachFromUrl(
-    'https://yuricunha.com/static/images/profile.jpeg',
+    'https://yuricunha.com/static/images/yuricunha-memoji.png',
     'JPEG'
   );
   vCard.socialUrls['github'] = 'https://github.com/isyuricunha';
