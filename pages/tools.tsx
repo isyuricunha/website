@@ -31,7 +31,7 @@ function Tools(): React.ReactElement {
         <link rel="canonical" href="https://www.yuricunha.com/tools" />
       </Head>
       <NextSeo
-        title="Tools | Yuri Cunha"
+        title="Tools / Yuri Cunha"
         canonical="https://www.yuricunha.com/tools"
       />
       <Flex
