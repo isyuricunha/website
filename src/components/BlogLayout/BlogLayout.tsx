@@ -152,24 +152,6 @@ const BlogLayout = ({
             <ViewCounter slug={frontMatter.slug} />
           </Text>
         </Flex>
-
-                {/* Embed MailerLite scripts and form */}
-        <div dangerouslySetInnerHTML={{ __html: `
-          <!-- MailerLite Universal -->
-          <script>
-            (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
-            .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
-            n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})
-            (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
-            ml('account', '581732');
-          </script>
-          <!-- End MailerLite Universal -->
-
-          <!-- MailerLite Form -->
-          <!-- Your MailerLite form embed code goes here -->
-          <!-- End MailerLite Form -->
-        ` }} />
-        
         <Box
           mb={16}
           px={2}
@@ -289,6 +271,15 @@ const BlogLayout = ({
               <br />
               Traduzir automaticamente - Google Tradutor.
             </ChakraLink>
+          </HStack>{' '}
+          <HStack justifyContent="flex-start" mr="auto" mt={2}>
+          <a
+            href={`https://dashboard.mailerlite.com/forms/581732/107807976844166224/share`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Subscribe to my newsletter
+          </a>
           </HStack>{' '}
         </Box>
     </chakra.article>
