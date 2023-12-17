@@ -270,6 +270,9 @@ const BlogLayout = ({
               Traduzir automaticamente - Google Tradutor.
             </ChakraLink>
           </HStack>{' '}
+          <HStack justifyContent="flex-start" mr="auto" mt={2}>
+            <div class="ml-embedded" data-form="75RWCl"></div>
+          </HStack>{' '}
         </Box>
       </chakra.article>
     </>
