@@ -261,6 +261,7 @@ const BlogLayout = ({
               </ChakraLink>
             </Link>
           </HStack> */}
+          <br />
           <HStack justifyContent="flex-start" mr="auto" mt={2}>
             <ChakraLink
               color={useColorModeValue('gray.900', 'white')}
@@ -278,7 +279,7 @@ const BlogLayout = ({
             target="_blank"
             rel="noopener noreferrer"
           >
-            Subscribe to my newsletter
+            Click here to subscribe to my newsletter.
           </a>
           </HStack>{' '}
         </Box>
