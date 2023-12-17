@@ -29,6 +29,8 @@ import {
   FaReddit, // Icon Reddit
 } from 'react-icons/fa';
 
+
+
 interface BlogLayoutProps {
   children: React.ReactNode;
   frontMatter: frontMatterType;
@@ -47,32 +49,6 @@ const BlogLayout = ({
     )}`;
     window.open(translatedURL, '_blank');
   };
-
-  const NewsletterForm: React.FC = () => {
-  return (
-    <div>
-      {/* Adicione o seguinte código do MailerLite */}
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `
-            (function(w,d,e,u,f,l,n){
-              w[f]=w[f]||function(){
-                (w[f].q=w[f].q||[]).push(arguments);
-              };
-              l=d.createElement(e);
-              l.async=1;
-              l.src=u;
-              n=d.getElementsByTagName(e)[0];
-              n.parentNode.insertBefore(l,n);
-            })(window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
-            ml('account', '581732');
-          `,
-        }}
-      />
-      <div className="ml-embedded" data-form="75RWCl"></div>
-    </div>
-  );
-};
 
   return (
     <>
@@ -176,7 +152,6 @@ const BlogLayout = ({
             <ViewCounter slug={frontMatter.slug} />
           </Text>
         </Flex>
-                <NewsletterForm />
         <Box
           mb={16}
           px={2}
@@ -296,6 +271,9 @@ const BlogLayout = ({
               <br />
               Traduzir automaticamente - Google Tradutor.
             </ChakraLink>
+          </HStack>{' '}
+          <HStack justifyContent="flex-start" mr="auto" mt={2}>
+            <button class="ml-onclick-form" onclick="ml('show', '75RWCl', true)">Click here to show form</button>
           </HStack>{' '}
         </Box>
     </chakra.article>
