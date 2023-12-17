@@ -176,6 +176,7 @@ const BlogLayout = ({
             <ViewCounter slug={frontMatter.slug} />
           </Text>
         </Flex>
+                <NewsletterForm />
         <Box
           mb={16}
           px={2}
@@ -297,7 +298,6 @@ const BlogLayout = ({
             </ChakraLink>
           </HStack>{' '}
         </Box>
-      <NewsletterForm />
     </chakra.article>
     </>
   );
