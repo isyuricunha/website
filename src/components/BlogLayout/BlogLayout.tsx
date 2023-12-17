@@ -296,11 +296,9 @@ const BlogLayout = ({
               Traduzir automaticamente - Google Tradutor.
             </ChakraLink>
           </HStack>{' '}
-          <HStack justifyContent="flex-start" mr="auto" mt={2}>
-            <NewsletterForm />
-          </HStack>{' '}
         </Box>
-      </chakra.article>
+      <NewsletterForm />
+    </chakra.article>
     </>
   );
 };
