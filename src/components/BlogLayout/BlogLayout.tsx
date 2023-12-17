@@ -272,9 +272,6 @@ const BlogLayout = ({
               Traduzir automaticamente - Google Tradutor.
             </ChakraLink>
           </HStack>{' '}
-          <HStack justifyContent="flex-start" mr="auto" mt={2}>
-            <button class="ml-onclick-form" onclick="ml('show', '75RWCl', true)">Click here to show form</button>
-          </HStack>{' '}
         </Box>
     </chakra.article>
     </>
