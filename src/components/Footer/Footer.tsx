@@ -17,7 +17,7 @@ import {
   FaLinkedin,
   FaXTwitter,
   FaTelegram,
-  FaMailBulk,
+  MdMarkEmailUnread,
 } from 'react-icons/fa';
 import { useQuery } from 'react-query';
 import { BsPauseFill } from 'react-icons/bs';
@@ -137,7 +137,7 @@ const Footer = (): JSX.Element => {
           </SocialIcons>
 
           <SocialIcons label="E-mail" href="mailto:me@yuricunha.com">
-            <FaMailBulk />
+            <MdMarkEmailUnread />
           </SocialIcons>
           <InstallPwaButton />
         </Stack>
