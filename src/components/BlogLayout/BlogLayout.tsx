@@ -23,7 +23,7 @@ import { Global, css } from '@emotion/react';
 
 import {
   FaWhatsapp, // Icon WhatsApp
-  FaXTwitter, // Icon Twitter
+  FaTwitter, // Icon Twitter
   FaFacebook, // Icon Facebook
   FaLinkedin, // Icon LinkedIn
   FaReddit, // Icon Reddit
@@ -190,7 +190,7 @@ const BlogLayout = ({
               target="_blank"
               rel="noopener noreferrer"
             >
-              <FaXTwitter
+              <FaTwitter
                 size={24}
                 style={{
                   color: 'white',
