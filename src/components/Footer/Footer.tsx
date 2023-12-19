@@ -114,18 +114,12 @@ const Footer = (): JSX.Element => {
           <SocialIcons label="GitHub" href="https://github.com/isyuricunha/">
             <FaGithub />
           </SocialIcons>
+          
           <SocialIcons
             label="LinkedIn"
             href="https://www.linkedin.com/in/isyuricunha/"
           >
             <FaLinkedin />
-          </SocialIcons>
-
-          <SocialIcons
-            label="Instagram"
-            href="https://www.instagram.com/isyuricunha/"
-          >
-            <FaInstagram />
           </SocialIcons>
 
           <SocialIcons label="Telegram" href="https://t.me/isyuricunha">
@@ -139,6 +133,7 @@ const Footer = (): JSX.Element => {
           <SocialIcons label="E-mail" href="mailto:me@yuricunha.com">
             <MdMarkEmailUnread />
           </SocialIcons>
+
           <InstallPwaButton />
         </Stack>
       </SimpleGrid>
