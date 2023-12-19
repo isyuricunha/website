@@ -13,7 +13,6 @@ import {
 } from '@chakra-ui/react';
 import {
   FaGithub,
-  FaInstagram,
   FaLinkedin,
   FaXTwitter,
   FaTelegram,
@@ -114,7 +113,7 @@ const Footer = (): JSX.Element => {
           <SocialIcons label="GitHub" href="https://github.com/isyuricunha/">
             <FaGithub />
           </SocialIcons>
-          
+
           <SocialIcons
             label="LinkedIn"
             href="https://www.linkedin.com/in/isyuricunha/"
