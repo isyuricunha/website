@@ -15,7 +15,7 @@ import {
   FaGithub,
   FaInstagram,
   FaLinkedin,
-  FaTwitter,
+  FaXTwitter,
   FaTelegram,
   FaMailBulk,
 } from 'react-icons/fa';
@@ -133,7 +133,7 @@ const Footer = (): JSX.Element => {
           </SocialIcons>
 
           <SocialIcons label="Twitter" href="https://twitter.com/isyuricunha">
-            <FaTwitter />
+            <FaXTwitter />
           </SocialIcons>
 
           <SocialIcons label="E-mail" href="mailto:me@yuricunha.com">
