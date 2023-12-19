@@ -29,29 +29,27 @@ function Blog({ posts }: { posts: any }): React.ReactElement {
     Date.now() - new Date(posts[0].publishedAt).getTime() <
     1000 * 60 * 60 * 24 * 14;
 
-  const filteredBlogPosts = posts
-    .filter(
-      ({ title, published }: any) =>
-        title.toLowerCase().includes(filter) &&
-        (published || process.env.NODE_ENV === 'development')
-    )
-    .sort((a: any, b: any) => {
-      if (sort === 'recent') {
-        return (
-          new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
-        );
-      } else if (sort === 'old') {
-        return (
-          new Date(a.publishedAt).getTime() - new Date(b.publishedAt).getTime()
-        );
-      } else {
-        return 0;
-      }
-    });
+const filteredBlogPosts = posts
+  .filter(({ title, published }: any) =>
+    title.toLowerCase().includes(filter) &&
+    (published || process.env.NODE_ENV === 'development')
+  )
+  .sort((a: any, b: any) => {
+    const dateA = new Date(a.publishedAt).getTime();
+    const dateB = new Date(b.publishedAt).getTime();
 
-  if (sort === 'old') {
-    filteredBlogPosts.reverse();
-  }
+    if (sort === 'recent') {
+      return dateB - dateA;
+    } else if (sort === 'old') {
+      return dateA - dateB;
+    } else {
+      return 0;
+    }
+  });
+
+if (sort === 'old') {
+  filteredBlogPosts.reverse();
+}
 
   return (
     <>
