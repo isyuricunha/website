@@ -268,7 +268,7 @@ const BlogLayout = ({
               onClick={() => translatePage('pt')}
               style={{ cursor: 'pointer' }}
             >
-              Auto Translate - Goolge Translate.
+              Auto Translate - Google Translate.
               <br />
               Traduzir automaticamente - Google Tradutor.
             </ChakraLink>
