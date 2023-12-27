@@ -122,6 +122,9 @@ export default function Home(): React.ReactElement {
                 , schedule a{' '}
                 <Link href="https://cal.com/isyuricunha" passHref>
                   <ChakraLink>meeting with me</ChakraLink>
+                  , listen my{' '}
+                <Link href="https://cal.com/isyuricunha" passHref>
+                  <ChakraLink>podcast on spotify</ChakraLink>
                 </Link>
                 , or check the footer.
               </chakra.p>
