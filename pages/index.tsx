@@ -128,7 +128,7 @@ export default function Home(): React.ReactElement {
                   href="https://open.spotify.com/show/2XRQ2mpUbtT0ZqxFVrl0KK"
                   passHref
                 >
-                  <ChakraLink>podcast on spoify</ChakraLink>
+                  <ChakraLink>podcast on spotify</ChakraLink>
                 </Link>
                 , or check the footer.
               </chakra.p>
