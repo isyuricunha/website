@@ -11,7 +11,10 @@ export default class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          <link rel="shortcut icon" href="./static/images/yuricunha-logo.png" />
+          <link
+            rel="shortcut icon"
+            href="./static/images/toMe/yuricunha-logo.png"
+          />
           <link rel="canonical" href="https://www.yuricunha.com/" />
           <link
             href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap"
