@@ -123,6 +123,13 @@ export default function Home(): React.ReactElement {
                 <Link href="https://cal.com/isyuricunha" passHref>
                   <ChakraLink>meeting with me</ChakraLink>
                 </Link>
+                , listen my{' '}
+                <Link
+                  href="https://open.spotify.com/show/2XRQ2mpUbtT0ZqxFVrl0KK"
+                  passHref
+                >
+                  <ChakraLink>podcast on spoify</ChakraLink>
+                </Link>
                 , or check the footer.
               </chakra.p>
             </Flex>
