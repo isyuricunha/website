@@ -7,6 +7,9 @@ const routes = [
   '/',
   '/blog',
   '/projects', // Add more routes as needed
+  '/tools', // Add more routes as needed
+  '/links', // Add more routes as needed
+  '/spotify', // Add more routes as needed
 ];
 
 // Function to generate the sitemap
