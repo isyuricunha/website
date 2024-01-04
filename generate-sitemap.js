@@ -14,7 +14,7 @@ const routes = [
 
 // Function to generate the sitemap
 async function generateSitemap() {
-  const sitemap = new SitemapStream({ hostname: 'https://www.yuricunha.com/' }); // Replace with your website URL
+  const sitemap = new SitemapStream({ hostname: 'https://yuricunha.com/' }); // Replace with your website URL
 
   // Add each route to the sitemap
   routes.forEach((route) => {
