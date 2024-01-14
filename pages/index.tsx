@@ -98,59 +98,59 @@ export default function Home(): React.ReactElement {
               >
                 links to contact or follow me:{' '}
             <Link href="https://signup.boo.world/jejk" passHref>
-              <ChakraLink>boo,</ChakraLink>
+              <ChakraLink>boo</ChakraLink>,
             </Link>{' '}
                             
             <Link href="/blog" passHref>
-              <ChakraLink>blog,</ChakraLink>
+              <ChakraLink>blog</ChakraLink>,
             </Link>{' '}
                             
             <Link href="https://github.com/isyuricunha" passHref>
-              <ChakraLink>gitHub,</ChakraLink>
+              <ChakraLink>gitHub</ChakraLink>,
             </Link>{' '}
                                                         
             <Link href="https://instagram.com/isyuricunha" passHref>
-              <ChakraLink>instagram,</ChakraLink>
+              <ChakraLink>instagram</ChakraLink>,
             </Link>{' '}
                             
             <Link href="https://cal.com/isyuricunha" passHref>
-              <ChakraLink>meeting,</ChakraLink>
+              <ChakraLink>meeting</ChakraLink>,
             </Link>{' '}
                             
             <Link href="https://www.linkedin.com/in/isyuricunha/" passHref>
-              <ChakraLink>linkedIn,</ChakraLink>
+              <ChakraLink>linkedIn</ChakraLink>,
             </Link>{' '}
                             
             <Link href="/links" passHref>
-              <ChakraLink>links,</ChakraLink>
+              <ChakraLink>links</ChakraLink>,
             </Link>{' '}
                                                    
             <Link href="mailto:me@yuricunha.com" passHref>
-              <ChakraLink>email,</ChakraLink>
+              <ChakraLink>email</ChakraLink>,
             </Link>{' '}
                             
             <Link href="https://t.me/isyuricunha" passHref>
-              <ChakraLink>telegram,</ChakraLink>
+              <ChakraLink>telegram</ChakraLink>,
             </Link>{' '}
                             
             <Link href="https://read.cv/isyuricunha" passHref>
-              <ChakraLink>readcv,</ChakraLink>
+              <ChakraLink>readcv</ChakraLink>,
             </Link>{' '}
                             
             <Link href="/projects" passHref>
-              <ChakraLink>projects,</ChakraLink>
+              <ChakraLink>projects</ChakraLink>,
             </Link>{' '}
                             
             <Link href="https://twitter.com/isyuricunha" passHref>
-              <ChakraLink>x/twitter,</ChakraLink>
+              <ChakraLink>x/twitter</ChakraLink>,
             </Link>{' '}
                             
             <Link href="/spotify" passHref>
-              <ChakraLink>spotify,</ChakraLink>
+              <ChakraLink>spotify</ChakraLink>,
             </Link>{' '}
                             
             <Link href="/tools" passHref>
-              <ChakraLink>tools,</ChakraLink>
+              <ChakraLink>tools</ChakraLink>,
             </Link>{' '}
 
               </chakra.p>
