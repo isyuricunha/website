@@ -121,7 +121,7 @@ export default function Home(): React.ReactElement {
             </Link>{' '},
                                                    
             <Link href="mailto:me@yuricunha.com" passHref>
-              <ChakraLink>mail</ChakraLink>
+              <ChakraLink>email</ChakraLink>
             </Link>{' '},
                             
             <Link href="https://t.me/isyuricunha" passHref>
