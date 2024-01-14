@@ -96,41 +96,37 @@ export default function Home(): React.ReactElement {
                 fontSize="xl"
                 mt={2}
               >
-                Welcome to my website! Here, I showcase some of my{' '}
-                <Link href="/projects" passHref>
-                  <ChakraLink>projects</ChakraLink>
-                </Link>{' '}
-                and experiment with various things. You can explore the{' '}
-                <Link href="/links" passHref>
-                  <ChakraLink>websites</ChakraLink>
-                </Link>{' '}
-                I enjoy, and discover useful{' '}
-                <Link href="/tools" passHref>
-                  <ChakraLink>tools</ChakraLink>
-                </Link>
-                . Additionally, check out my{' '}
-                <Link href="/blog" passHref>
-                  <ChakraLink>blogs</ChakraLink>
-                </Link>{' '}
-                for some interesting reads. I am a Senior Database Administrator
-                with over {new Date().getFullYear() - 2018} years of experience.
-                You can find all my social media links and contact information
-                in the{' '}
-                <Link href="https://links.yuricunha.com" passHref>
-                  <ChakraLink>my website links</ChakraLink>
-                </Link>
-                , schedule a{' '}
-                <Link href="https://cal.com/isyuricunha" passHref>
-                  <ChakraLink>meeting with me</ChakraLink>
-                </Link>
-                , listen my{' '}
                 <Link
                   href="https://open.spotify.com/show/2XRQ2mpUbtT0ZqxFVrl0KK"
                   passHref
                 >
                   <ChakraLink>podcast on spotify</ChakraLink>
-                </Link>
-                , or check the footer.
+                </Link>,
+                                <Link
+                  href="https://open.spotify.com/show/2XRQ2mpUbtT0ZqxFVrl0KK"
+                  passHref
+                >
+                  <ChakraLink>podcast on spotify</ChakraLink>
+                </Link>,
+                                <Link
+                  href="https://open.spotify.com/show/2XRQ2mpUbtT0ZqxFVrl0KK"
+                  passHref
+                >
+                  <ChakraLink>podcast on spotify</ChakraLink>
+                </Link>,
+                                <Link
+                  href="https://open.spotify.com/show/2XRQ2mpUbtT0ZqxFVrl0KK"
+                  passHref
+                >
+                  <ChakraLink>podcast on spotify</ChakraLink>
+                </Link>,
+                                <Link
+                  href="https://open.spotify.com/show/2XRQ2mpUbtT0ZqxFVrl0KK"
+                  passHref
+                >
+                  <ChakraLink>podcast on spotify</ChakraLink>
+                </Link>,
+                
               </chakra.p>
             </Flex>
           </Flex>
