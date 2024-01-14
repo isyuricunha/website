@@ -106,7 +106,7 @@ export default function Home(): React.ReactElement {
             </Link>,{' '}
                             
             <Link href="https://github.com/isyuricunha" passHref>
-              <ChakraLink>gitHub</ChakraLink>
+              <ChakraLink>github</ChakraLink>
             </Link>,{' '}
                                                         
             <Link href="https://instagram.com/isyuricunha" passHref>
@@ -151,7 +151,7 @@ export default function Home(): React.ReactElement {
                             
             <Link href="/tools" passHref>
               <ChakraLink>tools</ChakraLink>
-            </Link>{' '}
+            </Link>.{' '}
 
               </chakra.p>
             </Flex>
