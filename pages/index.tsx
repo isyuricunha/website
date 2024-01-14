@@ -96,37 +96,54 @@ export default function Home(): React.ReactElement {
                 fontSize="xl"
                 mt={2}
               >
-                <Link
-                  href="https://open.spotify.com/show/2XRQ2mpUbtT0ZqxFVrl0KK"
-                  passHref
-                >
-                  <ChakraLink>podcast on spotify</ChakraLink>
-                </Link>,
-                                <Link
-                  href="https://open.spotify.com/show/2XRQ2mpUbtT0ZqxFVrl0KK"
-                  passHref
-                >
-                  <ChakraLink>podcast on spotify</ChakraLink>
-                </Link>,
-                                <Link
-                  href="https://open.spotify.com/show/2XRQ2mpUbtT0ZqxFVrl0KK"
-                  passHref
-                >
-                  <ChakraLink>podcast on spotify</ChakraLink>
-                </Link>,
-                                <Link
-                  href="https://open.spotify.com/show/2XRQ2mpUbtT0ZqxFVrl0KK"
-                  passHref
-                >
-                  <ChakraLink>podcast on spotify</ChakraLink>
-                </Link>,
-                                <Link
-                  href="https://open.spotify.com/show/2XRQ2mpUbtT0ZqxFVrl0KK"
-                  passHref
-                >
-                  <ChakraLink>podcast on spotify</ChakraLink>
-                </Link>,
-                
+            <Link href="https://signup.boo.world/jejk" passHref>
+              <ChakraLink>boo</ChakraLink>
+            </Link>{' '},
+                            
+            <Link href="/blog" passHref>
+              <ChakraLink>blog</ChakraLink>
+            </Link>{' '},
+                            
+            <Link href="https://github.com/isyuricunha" passHref>
+              <ChakraLink>gitHub</ChakraLink>
+            </Link>{' '},
+                            
+            <Link href="https://cal.com/isyuricunha" passHref>
+              <ChakraLink>meeting</ChakraLink>
+            </Link>{' '},
+                            
+            <Link href="https://www.linkedin.com/in/isyuricunha/" passHref>
+              <ChakraLink>linkedIn</ChakraLink>
+            </Link>{' '},
+                            
+            <Link href="/links" passHref>
+              <ChakraLink>links</ChakraLink>
+            </Link>{' '},
+                            
+            <Link href="https://t.me/isyuricunha" passHref>
+              <ChakraLink>telegram</ChakraLink>
+            </Link>{' '},
+                            
+            <Link href="https://read.cv/isyuricunha" passHref>
+              <ChakraLink>readcv</ChakraLink>
+            </Link>{' '},
+                            
+            <Link href="/projects" passHref>
+              <ChakraLink>projects</ChakraLink>
+            </Link>{' '},
+                            
+            <Link href="https://twitter.com/isyuricunha" passHref>
+              <ChakraLink>x/twitter</ChakraLink>
+            </Link>{' '},
+                            
+            <Link href="/spotify" passHref>
+              <ChakraLink>spotify</ChakraLink>
+            </Link>{' '},
+                            
+            <Link href="/tools" passHref>
+              <ChakraLink>tools</ChakraLink>
+            </Link>{' '},
+
               </chakra.p>
             </Flex>
           </Flex>
