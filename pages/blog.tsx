@@ -54,7 +54,7 @@ if (sort === 'old') {
   return (
     <>
       <Head>
-        <link rel="canonical" href="https://www.yuricunha.com/blog" />
+        <link rel="canonical" href="https://yuricunha.com/blog" />
       </Head>
       <NextSeo title="Blog / Yuri Cunha" />
       <Flex

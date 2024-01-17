@@ -11,7 +11,7 @@ function Links(): React.ReactElement {
   return (
     <>
       <Head>
-        <link rel="canonical" href="https://www.yuricunha.com/links" />
+        <link rel="canonical" href="https://yuricunha.com/links" />
       </Head>
       <NextSeo
         title="Links / Yuri Cunha"

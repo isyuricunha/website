@@ -15,7 +15,7 @@ export default class MyDocument extends Document {
             rel="shortcut icon"
             href="./static/images/toMe/yuricunha-logo.png"
           />
-          <link rel="canonical" href="https://www.yuricunha.com/" />
+          <link rel="canonical" href="https://yuricunha.com/" />
           <a rel="me" href="https://mastodon.social/@isyuricunha">Mastodon</a>
           <link
             href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap"

@@ -68,7 +68,7 @@ function Spotify({ data, error }: SpotifyProps): React.ReactElement {
   return (
     <>
       <Head>
-        <link rel="canonical" href="https://www.yuricunha.com/spotify" />
+        <link rel="canonical" href="https://yuricunha.com/spotify" />
       </Head>
       <NextSeo
         title="Music / Yuri Cunha"

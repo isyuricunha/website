@@ -28,7 +28,7 @@ function Tools(): React.ReactElement {
   return (
     <>
       <Head>
-        <link rel="canonical" href="https://www.yuricunha.com/tools" />
+        <link rel="canonical" href="https://yuricunha.com/tools" />
       </Head>
       <NextSeo
         title="Tools / Yuri Cunha"

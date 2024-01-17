@@ -23,7 +23,7 @@ export default function Home(): React.ReactElement {
   return (
     <>
       <Head>
-        <link rel="canonical" href="https://www.yuricunha.com/" />
+        <link rel="canonical" href="https://yuricunha.com/" />
       </Head>
       <NextSeo title="" canonical="https://www.yuricunha.com/" />
 

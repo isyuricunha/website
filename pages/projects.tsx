@@ -22,7 +22,7 @@ function Projects({ repos }: ProjectsProps): React.ReactElement {
   return (
     <>
       <Head>
-        <link rel="canonical" href="https://www.yuricunha.com/projects" />
+        <link rel="canonical" href="https://yuricunha.com/projects" />
       </Head>
       <NextSeo
         title="Projects / Yuri Cunha"
