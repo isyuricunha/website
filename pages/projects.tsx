@@ -26,7 +26,7 @@ function Projects({ repos }: ProjectsProps): React.ReactElement {
       </Head>
       <NextSeo
         title="Projects / Yuri Cunha"
-        canonical="https://www.yuricunha.com/projects"
+        canonical="https://yuricunha.com/projects"
       />
       <Box
         width="full"

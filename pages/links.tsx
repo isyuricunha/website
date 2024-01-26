@@ -15,7 +15,7 @@ function Links(): React.ReactElement {
       </Head>
       <NextSeo
         title="Links / Yuri Cunha"
-        canonical="https://www.yuricunha.com/links"
+        canonical="https://yuricunha.com/links"
       />
       <Flex
         direction="column"

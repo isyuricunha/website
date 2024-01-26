@@ -85,7 +85,7 @@ module.exports = withMDX({
       'yuricunha.com',
       'www.old-website-second-version.yuricunha.com',
       '../*.yuricunha.com',
-      'www.yuricunha.com',
+      'yuricunha.com',
       '../*',
     ],
   },
