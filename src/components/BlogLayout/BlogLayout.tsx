@@ -20,6 +20,7 @@ import BlogBadge from '../BlogBadge';
 import { NextSeo } from 'next-seo';
 import { useRouter } from 'next/router';
 import { Global, css } from '@emotion/react';
+import Head from 'next/head';
 
 import {
   FaWhatsapp, // Icon WhatsApp
@@ -28,8 +29,6 @@ import {
   FaLinkedin, // Icon LinkedIn
   FaReddit, // Icon Reddit
 } from 'react-icons/fa';
-
-
 
 interface BlogLayoutProps {
   children: React.ReactNode;
@@ -59,6 +58,34 @@ const BlogLayout = ({
           }
         `}
       />
+
+      <Head>
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="./static/images/toMe/favicon-32x32.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="./static/images/toMe/favicon-16x16.png"
+        />
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="./static/images/toMe/apple-touch-icon.png"
+        />
+        <link rel="manifest" href="./static/images/toMe/site.webmanifest" />
+        <link
+          rel="mask-icon"
+          href="./static/images/toMe/safari-pinned-tab.svg"
+          color="#5bbad5"
+        />
+        <meta name="theme-color" content="#ffffff" />
+      </Head>
+
       <NextSeo
         title={`${frontMatter.title} / Yuri Cunha`}
         description={frontMatter.summary}
@@ -274,16 +301,16 @@ const BlogLayout = ({
             </ChakraLink>
           </HStack>{' '}
           <HStack justifyContent="flex-start" mr="auto" mt={2}>
-          <a
-            href={`https://dashboard.mailerlite.com/forms/581732/107807976844166224/share`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Click here to subscribe to my newsletter.
-          </a>
+            <a
+              href={`https://dashboard.mailerlite.com/forms/581732/107807976844166224/share`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Click here to subscribe to my newsletter.
+            </a>
           </HStack>{' '}
         </Box>
-    </chakra.article>
+      </chakra.article>
     </>
   );
 };
