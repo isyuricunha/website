@@ -45,21 +45,27 @@ export default function MyApp({
   return (
     <>
       <DefaultSeo
-        defaultTitle={pageTitle}
         title={pageTitle}
+        defaultTitle={pageTitle}
         titleTemplate="%s"
+        description="Not just a DBA, but a data craftsman building digital legacies."
         openGraph={{
+          url: 'https://yuricunha.com/',
           title: pageTitle,
           type: 'website',
           site_name: pageTitle,
           images: [
             {
-              url: './static/images/toMe/yuricunha-logo.png',
+              url: './static/images/toMe/me.png',
               alt: 'Yuri Cunha Logo Picture',
             },
           ],
         }}
-        description="The purpose of this site is for me to test things out and perhaps showcase some achievements."
+        twitter={{
+          handle: '@isyuriunha',
+          site: 'https://twitter.com/isyuricunha',
+          cardType: 'summary_large_image',
+        }}
       />
 
       <ChakraProvider theme={theme}>
