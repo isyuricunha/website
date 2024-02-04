@@ -56,7 +56,7 @@ export default function MyApp({
           site_name: pageTitle,
           images: [
             {
-              url: './static/images/toMe/me.png',
+              url: './static/images/toMe/me.jpg',
               alt: 'Yuri Cunha Logo Picture',
             },
           ],
