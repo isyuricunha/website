@@ -14,7 +14,6 @@ import Link from 'next/link';
 import React, { useState } from 'react';
 import { NextSeo } from 'next-seo';
 import AboutTerminal from '@/components/AboutTerminal';
-import Head from 'next/head';
 import InstallPwaButton from '@/components/InstallWPA';
 
 export default function Home(): React.ReactElement {
@@ -22,9 +21,11 @@ export default function Home(): React.ReactElement {
   const bp = useBreakpoint();
   return (
     <>
-      <Head>
-        <link rel="canonical" href="https://www.yuricunha.com/" />
-      </Head>
+      <NextSeo
+        title="Yuri Cunha"
+        description="Not just a DBA, but a data craftsman building digital legacies."
+        canonical="https://yuricunha.com/"
+      />
       <Box
         minH="100vh"
         height="full"
@@ -58,7 +59,7 @@ export default function Home(): React.ReactElement {
                 flexGrow={3}
                 borderRadius="2xl"
                 boxSize="250px"
-                src="./static/images/toMe/my-cat.png"
+                src="./static/images/toMe/me.png"
                 objectFit="cover"
                 alt="Yuri Cunha"
                 onLoad={() => setImageLoad(true)}
