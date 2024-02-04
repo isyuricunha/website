@@ -26,8 +26,8 @@ module.exports = {
   additionalPaths: async (config) => [
     await config.transform(
       config,
-      '/tools',
       '/blog',
+      '/tools',
       '/music',
       '/links',
       '/projects'

@@ -2,6 +2,18 @@
 User-agent: *
 Allow: /
 
+# test-bot
+User-agent: test-bot
+Allow: /tools
+Allow: /blog
+Allow: /music
+Allow: /links
+Allow: /projects
+
+# black-listed-bot
+User-agent: black-listed-bot
+Disallow: 
+
 # Host
 Host: https://yuricunha.com
 
