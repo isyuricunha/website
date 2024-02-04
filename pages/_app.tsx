@@ -10,6 +10,8 @@ import { Analytics } from '@vercel/analytics/react';
 import PlausibleProvider from 'next-plausible';
 import InstallPwaButton from '@/components/InstallWPA/InstallPwaButton';
 
+import Head from 'next/head';
+
 import theme from '../src/theme';
 import MDXComponents from '@/components/MDXComponents';
 import AppLayout from '@/components/AppLayout';
@@ -44,6 +46,33 @@ export default function MyApp({
 
   return (
     <>
+      <Head>
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="./static/images/toMe/favicon-32x32.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="./static/images/toMe/favicon-16x16.png"
+        />
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="./static/images/toMe/apple-touch-icon.png"
+        />
+        <link rel="manifest" href="./static/images/toMe/site.webmanifest" />
+        <link
+          rel="mask-icon"
+          href="./static/images/toMe/safari-pinned-tab.svg"
+          color="#5bbad5"
+        />
+        <meta name="theme-color" content="#ffffff" />
+      </Head>
+
       <DefaultSeo
         title={pageTitle}
         defaultTitle={pageTitle}
@@ -56,7 +85,7 @@ export default function MyApp({
           site_name: pageTitle,
           images: [
             {
-              url: './static/images/toMe/me.jpg',
+              url: 'https://www.yuricunha.com/static/images/toMe/me.jpg',
               alt: 'Yuri Cunha Logo Picture',
             },
           ],
