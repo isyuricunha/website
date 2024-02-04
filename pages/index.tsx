@@ -25,8 +25,6 @@ export default function Home(): React.ReactElement {
       <Head>
         <link rel="canonical" href="https://www.yuricunha.com/" />
       </Head>
-      <NextSeo title="" canonical="https://www.yuricunha.com/" />
-
       <Box
         minH="100vh"
         height="full"
