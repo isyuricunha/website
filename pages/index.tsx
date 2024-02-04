@@ -23,9 +23,9 @@ export default function Home(): React.ReactElement {
   return (
     <>
       <Head>
-        <link rel="canonical" href="https://yuricunha.com/" />
+        <link rel="canonical" href="https://www.yuricunha.com/" />
       </Head>
-      <NextSeo title="" canonical="https://yuricunha.com/" />
+      <NextSeo title="" canonical="https://www.yuricunha.com/" />
 
       <Box
         minH="100vh"
@@ -60,7 +60,7 @@ export default function Home(): React.ReactElement {
                 flexGrow={3}
                 borderRadius="2xl"
                 boxSize="250px"
-                src="./static/images/toMe/me.jpg"
+                src="./static/images/toMe/my-cat.png"
                 objectFit="cover"
                 alt="Yuri Cunha"
                 onLoad={() => setImageLoad(true)}
@@ -96,63 +96,37 @@ export default function Home(): React.ReactElement {
                 fontSize="xl"
                 mt={2}
               >
-                links to contact or follow me:{' '}
-                <Link href="https://signup.boo.world/jejk" passHref>
-                  <ChakraLink>boo</ChakraLink>
-                </Link>
-                ,{' '}
-                <Link href="/blog" passHref>
-                  <ChakraLink>blog</ChakraLink>
-                </Link>
-                ,{' '}
-                <Link href="https://github.com/isyuricunha" passHref>
-                  <ChakraLink>github</ChakraLink>
-                </Link>
-                ,{' '}
-                <Link href="https://instagram.com/isyuricunha" passHref>
-                  <ChakraLink>instagram</ChakraLink>
-                </Link>
-                ,{' '}
-                <Link href="https://cal.com/isyuricunha" passHref>
-                  <ChakraLink>meeting</ChakraLink>
-                </Link>
-                ,{' '}
-                <Link href="https://www.linkedin.com/in/isyuricunha/" passHref>
-                  <ChakraLink>linkedIn</ChakraLink>
-                </Link>
-                ,{' '}
-                <Link href="/links" passHref>
-                  <ChakraLink>links</ChakraLink>
-                </Link>
-                ,{' '}
-                <Link href="mailto:me@yuricunha.com" passHref>
-                  <ChakraLink>email</ChakraLink>
-                </Link>
-                ,{' '}
-                <Link href="https://t.me/isyuricunha" passHref>
-                  <ChakraLink>telegram</ChakraLink>
-                </Link>
-                ,{' '}
-                <Link href="https://read.cv/isyuricunha" passHref>
-                  <ChakraLink>readcv</ChakraLink>
-                </Link>
-                ,{' '}
+                Welcome to my website! Here, I showcase some of my{' '}
                 <Link href="/projects" passHref>
                   <ChakraLink>projects</ChakraLink>
-                </Link>
-                ,{' '}
-                <Link href="https://twitter.com/isyuricunha" passHref>
-                  <ChakraLink>x/twitter</ChakraLink>
-                </Link>
-                ,{' '}
-                <Link href="/spotify" passHref>
-                  <ChakraLink>spotify</ChakraLink>
-                </Link>
-                ,{' '}
+                </Link>{' '}
+                and experiment with various things. You can explore the{' '}
+                <Link href="/links" passHref>
+                  <ChakraLink>websites</ChakraLink>
+                </Link>{' '}
+                I enjoy, and discover useful{' '}
                 <Link href="/tools" passHref>
                   <ChakraLink>tools</ChakraLink>
                 </Link>
-                .{' '}
+                . Additionally, check out my{' '}
+                <Link href="/blog" passHref>
+                  <ChakraLink>blogs</ChakraLink>
+                </Link>{' '}
+                for some interesting reads. I am a Senior Database Administrator
+                with over {new Date().getFullYear() - 2018} years of experience.
+                You can find all my social media links and contact information
+                in the{' '}
+                <Link href="https://links.yuricunha.com" passHref>
+                  <ChakraLink>my website links</ChakraLink>
+                </Link>
+                , schedule a{' '}
+                <Link href="https://cal.com/isyuricunha" passHref>
+                  <ChakraLink>meeting with me</ChakraLink>
+                  , listen my{' '}
+                <Link href="https://open.spotify.com/show/2XRQ2mpUbtT0ZqxFVrl0KK" passHref>
+                  <ChakraLink>podcast on spotify</ChakraLink>
+                </Link>
+                , or check the footer.
               </chakra.p>
             </Flex>
           </Flex>
