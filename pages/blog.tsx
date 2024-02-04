@@ -29,32 +29,59 @@ function Blog({ posts }: { posts: any }): React.ReactElement {
     Date.now() - new Date(posts[0].publishedAt).getTime() <
     1000 * 60 * 60 * 24 * 14;
 
-const filteredBlogPosts = posts
-  .filter(({ title, published }: any) =>
-    title.toLowerCase().includes(filter) &&
-    (published || process.env.NODE_ENV === 'development')
-  )
-  .sort((a: any, b: any) => {
-    const dateA = new Date(a.publishedAt).getTime();
-    const dateB = new Date(b.publishedAt).getTime();
+  const filteredBlogPosts = posts
+    .filter(
+      ({ title, published }: any) =>
+        title.toLowerCase().includes(filter) &&
+        (published || process.env.NODE_ENV === 'development')
+    )
+    .sort((a: any, b: any) => {
+      const dateA = new Date(a.publishedAt).getTime();
+      const dateB = new Date(b.publishedAt).getTime();
 
-    if (sort === 'recent') {
-      return dateB - dateA;
-    } else if (sort === 'old') {
-      return dateA - dateB;
-    } else {
-      return 0;
-    }
-  });
+      if (sort === 'recent') {
+        return dateB - dateA;
+      } else if (sort === 'old') {
+        return dateA - dateB;
+      } else {
+        return 0;
+      }
+    });
 
-if (sort === 'old') {
-  filteredBlogPosts.reverse();
-}
+  if (sort === 'old') {
+    filteredBlogPosts.reverse();
+  }
 
   return (
     <>
       <Head>
         <link rel="canonical" href="https://yuricunha.com/blog" />
+        <Head>
+          <link
+            rel="icon"
+            type="image/png"
+            sizes="32x32"
+            href="./static/images/toMe/favicon-32x32.png"
+          />
+          <link
+            rel="icon"
+            type="image/png"
+            sizes="16x16"
+            href="./static/images/toMe/favicon-16x16.png"
+          />
+          <link
+            rel="apple-touch-icon"
+            sizes="180x180"
+            href="./static/images/toMe/apple-touch-icon.png"
+          />
+          <link rel="manifest" href="./static/images/toMe/site.webmanifest" />
+          <link
+            rel="mask-icon"
+            href="./static/images/toMe/safari-pinned-tab.svg"
+            color="#5bbad5"
+          />
+          <meta name="theme-color" content="#ffffff" />
+        </Head>
       </Head>
       <NextSeo title="Blog / Yuri Cunha" />
       <Flex
