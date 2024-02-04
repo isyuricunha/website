@@ -81,6 +81,7 @@
     "eslint-plugin-react-hooks": "4.2.0",
     "husky": "7.0.2",
     "next": "12.1.0",
+    "next-sitemap": "4.2.3",
     "prettier": "2.4.1",
     "rehype": "12.0.0",
     "typescript": "4.4.3"
