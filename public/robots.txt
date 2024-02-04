@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://yuricunha.com
+
+# Sitemaps
+Sitemap: https://yuricunha.com/sitemap.xml
