@@ -85,7 +85,7 @@ export default function MyApp({
           site_name: pageTitle,
           images: [
             {
-              url: 'https://www.yuricunha.com/static/images/toMe/me.jpg',
+              url: 'https://www.yuricunha.com/static/images/toMe/me-database-room.png',
               alt: 'Yuri Cunha Logo Picture',
             },
           ],
