@@ -1,6 +1,6 @@
 ---
 title: "Work, Travel, Cultures & Decisions"
-publishedAt: '2024-3-3T18:15:00-03:00'
+publishedAt: '2024-03-03T18:20:00-03:00'
 summary: "Exploring work, travel, cultural encounters, and personal decisions."
 tags: ['Reflections', 'Decisions']
 by: { name: 'Yuri Cunha', avatar: '/static/images/toMe/me-database-room.png' }
