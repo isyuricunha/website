@@ -40,8 +40,6 @@ const info = (props: any): { input: string; return: string }[] => [
       props
     )}" rel="noopener" href="https://discordapp.com/users/1018988240151253002">Discord</a>", "<a rel="noopener" style="${style(
       props
-    )}" rel="noopener" href="https://t.me/isyuricunha">Telegram</a>", "<a rel="noopener" style="${style(
-      props
     )}" href="mailto:me@yuricunha.com">Email</a>", "<a rel="noopener" style="${style(
       props
     )}" href="https://mastodon.social/@isyuricunha">Mastodon</a>"]`,

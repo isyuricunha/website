@@ -121,10 +121,6 @@ const Footer = (): JSX.Element => {
             <FaLinkedin />
           </SocialIcons>
 
-          <SocialIcons label="Telegram" href="https://t.me/isyuricunha">
-            <FaTelegram />
-          </SocialIcons>
-
           <SocialIcons label="Twitter" href="https://twitter.com/isyuricunha">
             <FaTwitter />
           </SocialIcons>
