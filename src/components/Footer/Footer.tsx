@@ -15,7 +15,6 @@ import {
   FaGithub,
   FaLinkedin,
   FaTwitter,
-  FaTelegram,
   FaMailBulk,
 } from 'react-icons/fa';
 import { useQuery } from 'react-query';
