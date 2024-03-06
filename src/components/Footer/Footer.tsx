@@ -125,7 +125,7 @@ const Footer = (): JSX.Element => {
             <FaTwitter />
           </SocialIcons>
 
-          <SocialIcons label="Email" href="mailto:me@yuricunha.com">
+          <SocialIcons label="Email" href="mailto:isyuricunha@duck.com">
             <FaMailBulk />
           </SocialIcons>
 
