@@ -24,11 +24,11 @@ import Head from 'next/head';
 
 import {
   FaWhatsapp, // Icon WhatsApp
-  FaTwitter, // Icon Twitter
+  FaXTwitter, // Icon Twitter
   FaFacebook, // Icon Facebook
   FaLinkedin, // Icon LinkedIn
   FaReddit, // Icon Reddit
-} from 'react-icons/fa';
+} from 'react-icons/fa6';
 
 interface BlogLayoutProps {
   children: React.ReactNode;
@@ -217,7 +217,7 @@ const BlogLayout = ({
               target="_blank"
               rel="noopener noreferrer"
             >
-              <FaTwitter
+              <FaXTwitter
                 size={24}
                 style={{
                   color: 'white',
