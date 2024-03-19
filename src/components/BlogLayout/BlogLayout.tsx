@@ -218,7 +218,7 @@ const BlogLayout = ({
             <HStack justifyContent="flex-start" mr="auto" mt={1}>
               <a
                 href={`https://wa.me/?text=${encodeURIComponent(
-                  `Check out the article: ${frontMatter.title} - https://yuricunha.com${router.asPath}`
+                  `Check out the article: ${frontMatter.title} - https://yuricunha.com${router.asPath}?utm_source=yuricunha.com`
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -232,7 +232,7 @@ const BlogLayout = ({
               </a>
               <a
                 href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
-                  `Check out the article: ${frontMatter.title} - https://yuricunha.com${router.asPath}`
+                  `Check out the article: ${frontMatter.title} - https://yuricunha.com${router.asPath}?utm_source=yuricunha.com`
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -247,7 +247,7 @@ const BlogLayout = ({
               <a
                 href={`https://www.facebook.com/sharer/sharer.php?u=https://yuricunha.com${
                   router.asPath
-                }&quote=${encodeURIComponent(
+                }?utm_source=yuricunha.com&quote=${encodeURIComponent(
                   `Check out the article: ${frontMatter.title}`
                 )}`}
                 target="_blank"
@@ -263,7 +263,7 @@ const BlogLayout = ({
               <a
                 href={`https://www.linkedin.com/shareArticle?mini=true&url=https://yuricunha.com${
                   router.asPath
-                }&title=${encodeURIComponent(
+                }?utm_source=yuricunha.com&title=${encodeURIComponent(
                   `Check out the article: ${frontMatter.title}`
                 )}`}
                 target="_blank"
@@ -279,7 +279,7 @@ const BlogLayout = ({
               <a
                 href={`https://www.reddit.com/submit?url=https://yuricunha.com${
                   router.asPath
-                }&title=${encodeURIComponent(
+                }?utm_source=yuricunha.com&title=${encodeURIComponent(
                   `Check out the article: ${frontMatter.title}`
                 )}`}
                 target="_blank"
