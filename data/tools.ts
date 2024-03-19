@@ -19,7 +19,7 @@ const Tools: ToolType[] = [
   {
     id: 'monzo',
     category: ['ios'],
-    link: 'https://monzo.com/',
+    link: 'https://monzo.com/?utm_source=yuricunha.com',
     labels: ['Banking'],
     name: 'Monzo',
     description: 'A great mobile banking app.',
@@ -27,7 +27,7 @@ const Tools: ToolType[] = [
   {
     id: 'dAppling',
     category: ['windows', 'mac', 'web'],
-    link: 'https://www.dappling.network',
+    link: 'https://www.dappling.network?utm_source=yuricunha.com',
     labels: ['Web Development'],
     name: 'dAppling Network',
     description: 'Decentralized Frontend Hosting.',
@@ -35,7 +35,7 @@ const Tools: ToolType[] = [
   {
     id: 'telegram',
     category: ['windows', 'mac', 'ios', 'web'],
-    link: 'https://telegram.org/',
+    link: 'https://telegram.org/?utm_source=yuricunha.com',
     labels: ['Messaging'],
     name: 'Telegram',
     description: 'Instant messaging app with lots of functionality.',
@@ -43,7 +43,7 @@ const Tools: ToolType[] = [
   {
     id: 'vscode',
     category: ['windows', 'mac'],
-    link: 'https://code.visualstudio.com/',
+    link: 'https://code.visualstudio.com/?utm_source=yuricunha.com',
     labels: ['Editor'],
     name: 'Visual Studio Code',
     description: 'A lightweight code editor with plenty of plugins.',
@@ -51,7 +51,7 @@ const Tools: ToolType[] = [
   {
     id: 'discord',
     category: ['windows', 'mac', 'ios', 'web'],
-    link: 'https://discord.com',
+    link: 'https://discord.com?utm_source=yuricunha.com',
     labels: ['Voice Chat'],
     name: 'Discord',
     description: 'A voice chat app.',
@@ -59,7 +59,7 @@ const Tools: ToolType[] = [
   {
     id: 'webstorm',
     category: ['windows', 'mac'],
-    link: 'https://www.jetbrains.com/webstorm/',
+    link: 'https://www.jetbrains.com/webstorm/?utm_source=yuricunha.com',
     labels: ['Editor'],
     name: 'WebStorm',
     description: 'A JS IDE that works great.',
@@ -67,7 +67,7 @@ const Tools: ToolType[] = [
   {
     id: 'fluent',
     category: ['chrome'],
-    link: 'https://www.usefluent.co',
+    link: 'https://www.usefluent.co?utm_source=yuricunha.com',
     labels: ['Language'],
     name: 'Fluent',
     description: 'Learn a language in a unique way.',
@@ -75,7 +75,7 @@ const Tools: ToolType[] = [
   {
     id: 'biorender',
     category: ['web'],
-    link: 'https://biorender.com',
+    link: 'https://biorender.com?utm_source=yuricunha.com',
     labels: ['Diagram Creation'],
     name: 'BioRender',
     description:
@@ -84,7 +84,7 @@ const Tools: ToolType[] = [
   {
     id: 'appcleaner',
     category: ['mac'],
-    link: 'https://freemacsoft.net/appcleaner/',
+    link: 'https://freemacsoft.net/appcleaner/?utm_source=yuricunha.com',
     labels: ['Utility'],
     name: 'AppCleaner',
     description: 'Uninstalls all the files associated with an app.',
@@ -92,7 +92,7 @@ const Tools: ToolType[] = [
   {
     id: 'bartender',
     category: ['mac'],
-    link: 'https://www.macbartender.com/',
+    link: 'https://www.macbartender.com/?utm_source=yuricunha.com',
     labels: ['Menu Management'],
     name: 'BarTender',
     description: 'Hides items in the menu bar.',
@@ -100,7 +100,7 @@ const Tools: ToolType[] = [
   {
     id: 'kap',
     category: ['mac'],
-    link: 'https://getkap.co/',
+    link: 'https://getkap.co/?utm_source=yuricunha.com',
     labels: ['Screen Recording'],
     name: 'Kap',
     description: 'A superior open source screen recorder.',
@@ -108,7 +108,7 @@ const Tools: ToolType[] = [
   {
     id: 'rocket',
     category: ['mac'],
-    link: 'https://matthewpalmer.net/rocket/',
+    link: 'https://matthewpalmer.net/rocket/?utm_source=yuricunha.com',
     labels: ['Emoji'],
     name: 'Rocket',
     description: 'Globally search emojis.',
@@ -116,7 +116,7 @@ const Tools: ToolType[] = [
   {
     id: 'aldente',
     category: ['mac'],
-    link: 'https://github.com/davidwernhart/AlDente',
+    link: 'https://github.com/davidwernhart/AlDente?utm_source=yuricunha.com',
     labels: ['Battery Management'],
     name: 'AlDente',
     description: 'Prevents overcooking of your battery!',
@@ -124,7 +124,7 @@ const Tools: ToolType[] = [
   {
     id: 'voicemeeter',
     category: ['windows'],
-    link: 'https://vb-audio.com/Voicemeeter/banana.htm',
+    link: 'https://vb-audio.com/Voicemeeter/banana.htm?utm_source=yuricunha.com',
     labels: ['Audio'],
     name: 'VoiceMeeter',
     description: 'An advanced virtual audio mixer.',
@@ -132,7 +132,7 @@ const Tools: ToolType[] = [
   {
     id: 'obs',
     category: ['windows'],
-    link: 'https://obsproject.com/',
+    link: 'https://obsproject.com/?utm_source=yuricunha.com',
     labels: ['Screen Recording'],
     name: 'OBS',
     description: 'Open source software for screen recording.',
@@ -140,7 +140,7 @@ const Tools: ToolType[] = [
   {
     id: 'spark',
     category: ['mac', 'ios'],
-    link: 'https://sparkmailapp.com/',
+    link: 'https://sparkmailapp.com/?utm_source=yuricunha.com',
     labels: ['E-Mail'],
     name: 'Spark',
     description: 'The best email client.',
@@ -148,7 +148,7 @@ const Tools: ToolType[] = [
   {
     id: 'pock',
     category: ['mac'],
-    link: 'https://pock.dev/',
+    link: 'https://pock.dev/?utm_source=yuricunha.com',
     labels: ['TouchBar'],
     name: 'Pock',
     description: 'TouchBar customisation.',
@@ -156,7 +156,7 @@ const Tools: ToolType[] = [
   {
     id: 'zotero',
     category: ['windows', 'mac', 'chrome'],
-    link: 'https://www.zotero.org/',
+    link: 'https://www.zotero.org/?utm_source=yuricunha.com',
     labels: ['Citation Manager'],
     name: 'Zotero',
     description: 'An open source citation manager that focuses on simplicity.',
@@ -165,7 +165,7 @@ const Tools: ToolType[] = [
   {
     id: 'raycast',
     category: ['mac'],
-    link: 'https://raycast.com/',
+    link: 'https://raycast.com/?utm_source=yuricunha.com',
     labels: ['Spotlight Replacement'],
     name: 'Raycast',
     description: 'Spotlight, but its good.',
@@ -173,7 +173,7 @@ const Tools: ToolType[] = [
   {
     id: 'cleanshotx',
     category: ['mac'],
-    link: 'https://cleanshot.com/',
+    link: 'https://cleanshot.com/?utm_source=yuricunha.com',
     labels: ['Screenshots'],
     name: 'CleanShotX',
     description: 'A better screenshot tool.',
@@ -181,7 +181,7 @@ const Tools: ToolType[] = [
   {
     id: 'iina',
     category: ['mac'],
-    link: 'https://iina.io/',
+    link: 'https://iina.io/?utm_source=yuricunha.com',
     labels: ['Playback'],
     name: 'IINA',
     description: 'An intuitive media player.',
@@ -189,7 +189,7 @@ const Tools: ToolType[] = [
   {
     id: 'flow',
     category: ['mac', 'ios'],
-    link: 'https://flowapp.info/',
+    link: 'https://flowapp.info/?utm_source=yuricunha.com',
     labels: ['Pomodoro Timer'],
     name: 'Flow',
     description: 'A simple app to make use of your time.',
@@ -197,7 +197,7 @@ const Tools: ToolType[] = [
   {
     id: 'dashlane',
     category: ['windows', 'ios', 'chrome', 'android'],
-    link: 'https://www.dashlane.com/',
+    link: 'https://www.dashlane.com/?utm_source=yuricunha.com',
     labels: ['Password Manager'],
     name: 'Dashlane',
     description: 'A simple extension to organise your passwords.',
