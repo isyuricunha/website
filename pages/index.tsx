@@ -115,16 +115,22 @@ export default function Home(): React.ReactElement {
                 with over {new Date().getFullYear() - 2018} years of experience.
                 You can find all my social media links and contact information
                 in the{' '}
-                <Link href="https://links.yuricunha.com" passHref>
+                <Link
+                  href="https://links.yuricunha.com?utm_source=yuricunha.com"
+                  passHref
+                >
                   <ChakraLink>my website links</ChakraLink>
                 </Link>
                 , schedule a{' '}
-                <Link href="https://cal.com/isyuricunha" passHref>
+                <Link
+                  href="https://cal.com/isyuricunha?utm_source=yuricunha.com"
+                  passHref
+                >
                   <ChakraLink>meeting with me</ChakraLink>
                 </Link>
                 , listen my{' '}
                 <Link
-                  href="https://open.spotify.com/show/2XRQ2mpUbtT0ZqxFVrl0KK"
+                  href="https://open.spotify.com/show/2XRQ2mpUbtT0ZqxFVrl0KK?utm_source=yuricunha.com"
                   passHref
                 >
                   <ChakraLink>podcast on spotify</ChakraLink>
