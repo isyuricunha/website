@@ -10,7 +10,7 @@ module.exports = {
   alternateRefs: [
     {
       href: 'https://www.yuricunha.com',
-      hreflang: 'es',
+      hreflang: 'en',
     },
   ],
   // Default transformation function
