@@ -26,7 +26,7 @@ import {
   FaWhatsapp, // Icon WhatsApp
   FaXTwitter, // Icon Twitter
   FaFacebook, // Icon Facebook
-  FaLinkedin, // Icon LinkedIn
+  FaLinkedinIn, // Icon LinkedIn
   FaReddit, // Icon Reddit
 } from 'react-icons/fa6';
 
@@ -249,7 +249,7 @@ const BlogLayout = ({
               target="_blank"
               rel="noopener noreferrer"
             >
-              <FaLinkedin
+              <FaLinkedinIn
                 size={24}
                 style={{
                   color: 'white',
