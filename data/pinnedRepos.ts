@@ -3,7 +3,7 @@ export const pinnedRepos: pinnedRepoType[] = [
     image:
       'https://raw.githubusercontent.com/isyuricunha/website/main/public/static/images/forDemo/massage-alternativa.png',
     name: 'Massage Alternativa',
-    deployedLink: 'https://massagealternativa.com',
+    deployedLink: 'https://massagealternativa.com?utm_source=yuricunha.com',
     stack: ['HTML', 'CSS', 'JavaScript'],
     id: 'massage-alternativa',
     longDescription:
@@ -13,7 +13,7 @@ export const pinnedRepos: pinnedRepoType[] = [
     id: 'website',
     stack: ['Next.JS', 'Chakra-UI', 'MDX'],
     name: 'My Website',
-    deployedLink: 'https://yuricunha.com',
+    deployedLink: 'https://yuricunha.com?utm_source=yuricunha.com',
     image:
       'https://raw.githubusercontent.com/isyuricunha/website/main/public/static/images/forDemo/website-demo.png',
     longDescription:
@@ -23,7 +23,7 @@ export const pinnedRepos: pinnedRepoType[] = [
     id: 'solution-system-autmation',
     stack: ['HTML', 'CSS', 'JavaScript'],
     name: 'System Solution Automation',
-    deployedLink: 'https://www.ssautomation.com.br/',
+    deployedLink: 'https://www.ssautomation.com.br/?utm_source=yuricunha.com',
     image:
       'https://raw.githubusercontent.com/isyuricunha/website/main/public/static/images/forDemo/ssautomation.png',
     longDescription:
