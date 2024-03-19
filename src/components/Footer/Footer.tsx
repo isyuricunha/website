@@ -119,22 +119,31 @@ const Footer = (): JSX.Element => {
           ml="auto"
           mr={{ base: 'auto', md: 5 }}
         >
-          <SocialIcons label="GitHub" href="https://github.com/isyuricunha/">
+          <SocialIcons
+            label="GitHub"
+            href="https://github.com/isyuricunha/?utm_source=yuricunha.com"
+          >
             <FaGithub />
           </SocialIcons>
 
           <SocialIcons
             label="LinkedIn"
-            href="https://www.linkedin.com/in/isyuricunha/"
+            href="https://www.linkedin.com/in/isyuricunha/?utm_source=yuricunha.com"
           >
             <FaLinkedinIn />
           </SocialIcons>
 
-          <SocialIcons label="Twitter" href="https://twitter.com/isyuricunha">
+          <SocialIcons
+            label="Twitter"
+            href="https://twitter.com/isyuricunha?utm_source=yuricunha.com"
+          >
             <FaXTwitter />
           </SocialIcons>
 
-          <SocialIcons label="Email" href="mailto:isyuricunha@duck.com">
+          <SocialIcons
+            label="Email"
+            href="mailto:isyuricunha@duck.com?utm_source=yuricunha.com"
+          >
             <FaEnvelopeCircleCheck />
           </SocialIcons>
 
