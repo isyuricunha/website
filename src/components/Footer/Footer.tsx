@@ -14,9 +14,9 @@ import {
 import {
   FaGithub,
   FaLinkedin,
-  FaTwitter,
-  FaMailBulk,
-} from 'react-icons/fa';
+  FaXTwitter,
+  FaEnvelopeCircleCheck,
+} from 'react-icons/fa6';
 import { useQuery } from 'react-query';
 import { BsPauseFill } from 'react-icons/bs';
 import SocialIcons from './SocialIcons';
@@ -121,11 +121,11 @@ const Footer = (): JSX.Element => {
           </SocialIcons>
 
           <SocialIcons label="Twitter" href="https://twitter.com/isyuricunha">
-            <FaTwitter />
+            <FaXTwitter />
           </SocialIcons>
 
           <SocialIcons label="Email" href="mailto:isyuricunha@duck.com">
-            <FaMailBulk />
+            <FaEnvelopeCircleCheck />
           </SocialIcons>
 
           <InstallPwaButton />
