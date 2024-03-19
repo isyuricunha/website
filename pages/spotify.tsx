@@ -122,7 +122,7 @@ function Spotify({ data, error }: SpotifyProps): React.ReactElement {
           <Flex justifyContent="center">
             <Button
               as="a"
-              href="https://open.spotify.com/user/22wrcoowop6hb63heywvtaypy"
+              href="https://open.spotify.com/user/22wrcoowop6hb63heywvtaypy?utm_source=yuricunha.com"
               variant="ghost"
               colorScheme="brand"
               size="lg"
