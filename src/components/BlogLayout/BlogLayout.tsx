@@ -300,15 +300,6 @@ const BlogLayout = ({
               Traduzir automaticamente - Google Tradutor.
             </ChakraLink>
           </HStack>{' '}
-          <HStack justifyContent="flex-start" mr="auto" mt={2}>
-            <a
-              href={`https://dashboard.mailerlite.com/forms/581732/107807976844166224/share`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Click here to subscribe to my newsletter.
-            </a>
-          </HStack>{' '}
         </Box>
       </chakra.article>
     </>
