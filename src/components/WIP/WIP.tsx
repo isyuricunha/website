@@ -11,7 +11,7 @@ const WIP = (): JSX.Element => {
       width="full"
     >
       <Heading>This page is currently a work in progress</Heading>
-      <Text color="gray.500">Check back later "😁"</Text>
+      <Text color="gray.500">Check back later 😁</Text>
     </Flex>
   );
 };
