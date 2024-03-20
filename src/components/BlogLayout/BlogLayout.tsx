@@ -31,6 +31,8 @@ import {
   FaHackerNews,
 } from 'react-icons/fa6';
 
+import { BsSubstack } from 'react-icons/bs';
+
 import { SiGoogletranslate } from 'react-icons/si';
 
 import { Aside } from '@/components/MDXComponents/Aside'; // Importe o componente Aside
@@ -45,6 +47,10 @@ const BlogLayout = ({
   frontMatter,
 }: BlogLayoutProps): JSX.Element => {
   const router = useRouter();
+
+  const cleanTitle = (title) => {
+    return title.replace(/[-,;&]/g, ' ').trim();
+  };
 
   const translatePage = (languageCode) => {
     const currentURL = window.location.href;
@@ -294,15 +300,11 @@ const BlogLayout = ({
                 />
               </a>
               <a
-                href={`https://news.ycombinator.com/submitlink?u=https://yuricunha.com${
-                  router.asPath
-                }?utm_source=yuricunha.com&t=${encodeURIComponent(
-                  frontMatter.title + ' / Yuri Cunha'
-                )}`}
+                href={`https://isyuricunha.substack.com${router.asPath}?source_url=yuricunh.com`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <FaHackerNews
+                <BsSubstack
                   size={24}
                   style={{
                     color: 'gray.900',
