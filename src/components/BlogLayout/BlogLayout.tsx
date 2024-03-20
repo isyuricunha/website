@@ -28,6 +28,7 @@ import {
   FaFacebook, // Icon Facebook
   FaLinkedinIn, // Icon LinkedIn
   FaReddit, // Icon Reddit
+  FaHackerNews,
 } from 'react-icons/fa6';
 
 import { SiGoogletranslate } from 'react-icons/si';
@@ -226,7 +227,7 @@ const BlogLayout = ({
                 <FaWhatsapp
                   size={24}
                   style={{
-                    color: 'white',
+                    color: 'gray.900',
                   }}
                 />
               </a>
@@ -240,7 +241,7 @@ const BlogLayout = ({
                 <FaXTwitter
                   size={24}
                   style={{
-                    color: 'white',
+                    color: 'gray.900',
                   }}
                 />
               </a>
@@ -256,7 +257,7 @@ const BlogLayout = ({
                 <FaFacebook
                   size={24}
                   style={{
-                    color: 'white',
+                    color: 'gray.900',
                   }}
                 />
               </a>
@@ -272,7 +273,7 @@ const BlogLayout = ({
                 <FaLinkedinIn
                   size={24}
                   style={{
-                    color: 'white',
+                    color: 'gray.900',
                   }}
                 />
               </a>
@@ -286,6 +287,22 @@ const BlogLayout = ({
                 rel="noopener noreferrer"
               >
                 <FaReddit
+                  size={24}
+                  style={{
+                    color: 'gray.900',
+                  }}
+                />
+              </a>
+              <a
+                href={`https://news.ycombinator.com/submitlink?u=https://yuricunha.com${
+                  router.asPath
+                }?utm_source=yuricunha.com&t=${encodeURIComponent(
+                  frontMatter.title + ' / Yuri Cunha'
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <FaHackerNews
                   size={24}
                   style={{
                     color: 'gray.900',
