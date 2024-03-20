@@ -28,7 +28,6 @@ import {
   FaFacebook, // Icon Facebook
   FaLinkedinIn, // Icon LinkedIn
   FaReddit, // Icon Reddit
-  FaHackerNews,
 } from 'react-icons/fa6';
 
 import { BsSubstack } from 'react-icons/bs';
@@ -47,10 +46,6 @@ const BlogLayout = ({
   frontMatter,
 }: BlogLayoutProps): JSX.Element => {
   const router = useRouter();
-
-  const cleanTitle = (title) => {
-    return title.replace(/[-,;&]/g, ' ').trim();
-  };
 
   const translatePage = (languageCode) => {
     const currentURL = window.location.href;
