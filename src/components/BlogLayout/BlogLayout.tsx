@@ -228,6 +228,7 @@ const BlogLayout = ({
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
+                title="WhatsApp"
               >
                 <FaWhatsapp
                   size={24}
@@ -242,6 +243,7 @@ const BlogLayout = ({
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
+                title="Twitter/X"
               >
                 <FaXTwitter
                   size={24}
@@ -258,6 +260,7 @@ const BlogLayout = ({
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
+                title="Facebook"
               >
                 <FaFacebook
                   size={24}
@@ -274,6 +277,7 @@ const BlogLayout = ({
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
+                title="LinkedIn"
               >
                 <FaLinkedinIn
                   size={24}
@@ -290,6 +294,7 @@ const BlogLayout = ({
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
+                title="Reddit"
               >
                 <FaReddit
                   size={24}
@@ -302,6 +307,7 @@ const BlogLayout = ({
                 href={`https://isyuricunha.substack.com${router.asPath}?source_url=yuricunh.com`}
                 target="_blank"
                 rel="noopener noreferrer"
+                title="Substack"
               >
                 <BsSubstack
                   size={24}
@@ -314,6 +320,7 @@ const BlogLayout = ({
                 href={`https://yuricunha.bearblog.dev/${pageTitle}?source_url=yuricunh.com`}
                 target="_blank"
                 rel="noopener noreferrer"
+                title="BearBlog"
               >
                 <GiBearFace
                   size={24}
