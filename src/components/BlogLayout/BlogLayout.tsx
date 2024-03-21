@@ -30,6 +30,8 @@ import {
   FaReddit, // Icon Reddit
 } from 'react-icons/fa6';
 
+import { GiBearFace } from 'react-icons/gi';
+
 import { BsSubstack } from 'react-icons/bs';
 
 import { SiGoogletranslate } from 'react-icons/si';
@@ -300,6 +302,18 @@ const BlogLayout = ({
                 rel="noopener noreferrer"
               >
                 <BsSubstack
+                  size={24}
+                  style={{
+                    color: 'gray.900',
+                  }}
+                />
+              </a>
+              <a
+                href={`https://yuricunha.bearblog.dev/${router.asPath}?source_url=yuricunh.com`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <GiBearFace
                   size={24}
                   style={{
                     color: 'gray.900',
