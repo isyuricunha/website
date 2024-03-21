@@ -30,7 +30,8 @@ module.exports = {
       '/tools',
       '/music',
       '/links',
-      '/projects'
+      '/projects',
+      '/feed.xml'
     ),
   ],
   robotsTxtOptions: {
