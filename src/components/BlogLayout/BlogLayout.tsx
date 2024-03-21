@@ -32,7 +32,7 @@ import {
 
 import { GiBearFace } from 'react-icons/gi';
 
-import { BsSubstack } from 'react-icons/bs';
+import { BsSubstack, BsSpotify } from 'react-icons/bs';
 
 import { SiGoogletranslate } from 'react-icons/si';
 
@@ -323,6 +323,19 @@ const BlogLayout = ({
                 title="BearBlog"
               >
                 <GiBearFace
+                  size={24}
+                  style={{
+                    color: 'gray.900',
+                  }}
+                />
+              </a>
+              <a
+                href={`https://open.spotify.com/show/2XRQ2mpUbtT0ZqxFVrl0KK`}
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Spotify Blog Speech"
+              >
+                <BsSpotify
                   size={24}
                   style={{
                     color: 'gray.900',
