@@ -46,6 +46,10 @@ const links = [
         name: 'Music',
         link: '/spotify',
       },
+      {
+        name: 'Feed/RSS',
+        link: '/feed.xml',
+      },
     ],
   },
 ];
