@@ -57,6 +57,8 @@ const BlogLayout = ({
     window.open(translatedURL, '_blank');
   };
 
+  const pageTitle = router.asPath.split('/blog/')[1];
+
   return (
     <>
       <Global
@@ -309,7 +311,7 @@ const BlogLayout = ({
                 />
               </a>
               <a
-                href={`https://yuricunha.bearblog.dev${router.asPath}?source_url=yuricunh.com`}
+                href={`https://yuricunha.bearblog.dev/${pageTitle}?source_url=yuricunh.com`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
