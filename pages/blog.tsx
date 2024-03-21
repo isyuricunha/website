@@ -22,6 +22,8 @@ import BlogPost from '@/components/BlogPost';
 import LineHeading from '@/components/LineHeading';
 import { getAllFilesFrontMatter } from '@/utils/mdx';
 
+import generateRSS from '@/utils/generateRssFeed';
+
 function Blog({ posts }: { posts: any }): React.ReactElement {
   const [filter, setFilter] = useState('');
   const [sort, setSort] = useState('recent');
@@ -159,7 +161,9 @@ function Blog({ posts }: { posts: any }): React.ReactElement {
             </Text>
           )}
           {filteredBlogPosts.map((frontMatter: any) => (
-            <BlogPost key={frontMatter.title} {...frontMatter} />
+            <BlogPost key={frontMatter.title} {...frontMatter}>
+              {frontMatter.content}
+            </BlogPost>
           ))}
         </Box>
       </Flex>
@@ -169,7 +173,10 @@ function Blog({ posts }: { posts: any }): React.ReactElement {
 }
 
 export async function getStaticProps(): Promise<{ props: { posts: any } }> {
+  await generateRSS(); // calling to generate the feed
+
   const posts = await getAllFilesFrontMatter();
   return { props: { posts } };
 }
+
 export default Blog;

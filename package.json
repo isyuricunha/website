@@ -32,6 +32,7 @@
     "@vercel/analytics": "1.0.2",
     "cross-env": "7.0.3",
     "date-fns": "2.23.0",
+    "feed": "4.2.2",
     "firebase-admin": "11.10.1",
     "framer-motion": "^4.1.17",
     "fs": "0.0.1-security",

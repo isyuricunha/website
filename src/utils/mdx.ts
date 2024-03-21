@@ -46,10 +46,11 @@ export async function getAllFilesFrontMatter(): Promise<any> {
       path.join(process.cwd(), 'data', 'blog', postSlug),
       'utf8'
     );
-    const { data } = matter(source);
+    const { data, content } = matter(source);
 
     return [
       {
+        content,
         ...data,
         slug: postSlug.replace('.mdx', ''),
       },
