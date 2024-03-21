@@ -53,6 +53,7 @@
     "remark-autolink-headings": "7.0.1",
     "remark-code-titles": "0.1.2",
     "remark-slug": "7.0.0",
+    "rss": "1.2.2",
     "sitemap": "7.1.1",
     "stream-to-promise": "3.0.0",
     "vcards-js": "2.10.0",
