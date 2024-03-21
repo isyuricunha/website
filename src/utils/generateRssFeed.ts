@@ -30,7 +30,9 @@ export default async function generateRSS() {
         { id: `${siteURL}/blogs/${post.slug}` },
         { updated: post.publishedAt },
         { description: post.summary },
-        { image: post.image },
+        {
+          image: `${siteURL}/static/images/blogs/${post.slug}/${post.slug}.png`,
+        },
         { 'content:encoded': post.content },
         { author: [{ name: 'Yuri Cunha' }, { email: 'hidden' }] },
       ],

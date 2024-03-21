@@ -42,3 +42,4 @@ data/blog/exampleDemo (2).mdx
 example/exampleDemo (1).mdx
 example/exampleDemo (2).mdx
 yarn.lock
+public/feed.xml
