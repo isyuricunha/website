@@ -1,6 +1,10 @@
 import { IconButton, useColorMode, useColorModeValue } from '@chakra-ui/react';
 import { BiMoon, BiSun } from 'react-icons/bi';
 
+/**
+ * Renders a toggle theme button.
+ * @returns The toggle theme button component.
+ */
 const ToggleTheme = (): JSX.Element => {
   const text = useColorModeValue('dark', 'light');
   const SwitchIcon = useColorModeValue(BiMoon, BiSun);
