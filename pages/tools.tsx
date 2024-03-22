@@ -58,6 +58,7 @@ function Tools(): React.ReactElement {
       </Head>
       <NextSeo
         title="Tools / Yuri Cunha"
+        description="Good tool. Good work."
         canonical="https://yuricunha.com/tools"
       />
       <Flex
