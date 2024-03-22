@@ -52,6 +52,7 @@ function Projects({ repos }: ProjectsProps): React.ReactElement {
       </Head>
       <NextSeo
         title="Projects / Yuri Cunha"
+        description="In my spare time, I like to be god with data. It's like a board game, but with more lines of code."
         canonical="https://yuricunha.com/projects"
       />
       <Box

@@ -98,6 +98,7 @@ function Spotify({ data, error }: SpotifyProps): React.ReactElement {
       </Head>
       <NextSeo
         title="Music / Yuri Cunha"
+        description="Let's get down! See if our musical tastes are a match made in audio heaven."
         canonical="https://yuricunha.com/spotify"
       />
       {` `}
