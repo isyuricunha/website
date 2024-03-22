@@ -3,17 +3,25 @@ import {
   extendTheme,
   ThemeComponentProps,
 } from '@chakra-ui/react';
-import { transparentize, mode } from '@chakra-ui/theme-tools';
+import {
+  transparentize,
+  mode,
+  StyleFunctionProps,
+} from '@chakra-ui/theme-tools';
+import { Dict } from '@chakra-ui/utils';
 
 // 2. Call `extendTheme` and pass your custom values
 
+/**
+ * The theme object that defines the styling configurations for the application.
+ */
 const theme = extendTheme({
   config: {
     useSystemColorMode: true,
   },
   components: {
     Link: {
-      baseStyle: (props) => ({
+      baseStyle: (props: Dict<any> | StyleFunctionProps) => ({
         color: mode('brand.600', 'brand.300')(props),
       }),
     },
