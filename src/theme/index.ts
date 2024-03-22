@@ -15,6 +15,25 @@ import { Dict } from '@chakra-ui/utils';
 /**
  * The theme object that defines the styling configurations for the application.
  */
+
+const yellowDarkTheme = {
+  colors: {
+    brand: {
+      primary: '#FFD700',
+      50: '#FFFAEB',
+      100: '#FFF1BF',
+      200: '#FFE894',
+      300: '#FFDF69',
+      400: '#FFD23E',
+      500: '#FFC511',
+      600: '#CC9E0D',
+      700: '#99740A',
+      800: '#664909',
+      900: '#332504',
+    },
+  },
+};
+
 const theme = extendTheme({
   config: {
     useSystemColorMode: true,
@@ -94,6 +113,10 @@ const theme = extendTheme({
       800: '#1d7444',
       900: '#155733',
     },
+    ...(extendTheme({
+      colors: {},
+    }).colors || {}),
+    ...yellowDarkTheme.colors,
   },
 });
 
