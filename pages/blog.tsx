@@ -85,7 +85,11 @@ function Blog({ posts }: { posts: any }): React.ReactElement {
           <meta name="theme-color" content="#ffffff" />
         </Head>
       </Head>
-      <NextSeo title="Blog / Yuri Cunha" />
+      <NextSeo
+        title="Blog / Yuri Cunha"
+        description="I'm the DBA that'll make you laugh, cry, and learn about technology."
+        canonical="https://yuricunha.com/blog"
+      />
       <Flex
         direction="column"
         alignItems="center"
