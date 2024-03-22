@@ -50,6 +50,10 @@ const links = [
         name: 'Feed/RSS',
         link: '/feed.xml',
       },
+      {
+        name: 'Research',
+        link: '/research',
+      },
     ],
   },
 ];
