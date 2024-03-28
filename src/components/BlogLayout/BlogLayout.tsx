@@ -304,7 +304,7 @@ const BlogLayout = ({
                 />
               </a>
               <a
-                href={`https://isyuricunha.substack.com${router.asPath}?source_url=yuricunh.com`}
+                href={`https://isyuricunha.substack.com${router.asPath}?source_url=yuricunha.com`}
                 target="_blank"
                 rel="noopener noreferrer"
                 title="Substack"
@@ -317,7 +317,7 @@ const BlogLayout = ({
                 />
               </a>
               <a
-                href={`https://yuricunha.bearblog.dev/${pageTitle}?source_url=yuricunh.com`}
+                href={`https://yuricunha.bearblog.dev/${pageTitle}?source_url=yuricunha.com`}
                 target="_blank"
                 rel="noopener noreferrer"
                 title="BearBlog"
