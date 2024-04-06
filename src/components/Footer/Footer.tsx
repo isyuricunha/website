@@ -111,7 +111,7 @@ const Footer = (): JSX.Element => {
           </Flex>
         </Flex>
         <Text display="flex" alignSelf="center" mx="auto">
-          Built with 💙
+          Yuri Cunha
         </Text>
         <Stack
           direction="row"
