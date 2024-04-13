@@ -10,12 +10,12 @@ const info = (props: any): { input: string; return: string }[] => [
   },
   {
     input: 'self.currentLocation',
-    return: '"São Paulo, BR"',
+    return: '"Brazil"',
   },
 
   {
     input: 'self.interests',
-    return: '["database", "mysql", "sql server", "anime", "book"]',
+    return: '["database-sql-nosql", "anime", "book", "home-cloud]',
   },
   {
     input: 'self.education',
@@ -23,8 +23,7 @@ const info = (props: any): { input: string; return: string }[] => [
   },
   {
     input: 'self.skills',
-    return:
-      '[ "MySQL", "PL/SQL", "NoSQL", "Python", "React", "Next.TS", "Chakra-UI", "Tailwind", "Git"]',
+    return: '[ "SQL", "PL/SQL", "NoSQL", "Python", "Home Cloud", "Docker"]',
   },
   {
     input: 'self.contactMe()',
@@ -38,7 +37,7 @@ const info = (props: any): { input: string; return: string }[] => [
       props
     )}" rel="noopener" href="https://www.instagram.com/isyuricunha/">Instagram</a>", "<a rel="noopener" style="${style(
       props
-    )}" rel="noopener" href="https://discordapp.com/users/1018988240151253002">Discord</a>", "<a rel="noopener" style="${style(
+    )}" rel="noopener" href="https://discordapp.com/channels/@me/1018988240151253002/">Discord</a>", "<a rel="noopener" style="${style(
       props
     )}" href="mailto:isyuricunha@duck.com">Email</a>", "<a rel="noopener" style="${style(
       props
