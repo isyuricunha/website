@@ -107,6 +107,13 @@ export const links: LinkType[] = [
     label: 'Web Development',
     date: new Date('2022-10-22'),
   },
+  {
+    id: 'dAppling',
+    link: 'https://www.dappling.network?utm_source=yuricunha.com',
+    name: 'dAppling Network',
+    label: 'Web Development',
+    date: new Date('2024-04-13'),
+  },
 ];
 
 export default links;
