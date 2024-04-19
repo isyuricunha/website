@@ -53,11 +53,7 @@ export default function MyApp({
           sizes="32x32"
           href="./static/images/toMe/favicon-32x32.png"
         />
-        <script
-          defer
-          src="https://umami.yuricunha.com/script.js"
-          data-website-id="a44fe16d-82a3-4a29-8ef2-9d6b78ae7fa6"
-        ></script>
+<script defer src="https://umami.yuricunha.com/script.js" data-website-id="ae078a6c-02fb-45c2-96d3-3274da991093"></script>
         <link
           rel="icon"
           type="image/png"
