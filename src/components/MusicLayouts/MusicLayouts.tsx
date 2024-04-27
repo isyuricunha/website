@@ -95,7 +95,7 @@ export const CurrentlyPlaying = ({
   return (
     <Flex direction="column" alignItems="center" width="full" mx="auto">
       <LineHeading mb="4">
-        Hacking mind's mainframe, rewiring rhythm.
+        Hacking mind&aposs mainframe, rewiring rhythm.
       </LineHeading>
       {song?.isPlaying ? (
         <SongCard song={song} titleCard isPlaying={song.isPlaying} />
