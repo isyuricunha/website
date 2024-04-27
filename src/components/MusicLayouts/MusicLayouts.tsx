@@ -4,16 +4,26 @@ import LineHeading from '../LineHeading';
 import { SongCard, ArtistCard } from './MusicCards';
 
 const phrases = [
-  'Jamming out!',
-  'Getting into the groove!',
-  'Spinning some tunes!',
-  'Rocking out!',
-  'Chilling with some beats!',
-  'Finding the rhythm!',
-  'Enjoying the music!',
-  'Dancing to the rhythm!',
-  'Feeling the vibes!',
-  'Creating some vibes!',
+  'Coding my way to the next beat.',
+  'Unplugging for a moment of introspection.',
+  'Taking a break from the symphony of algorithms.',
+  'Venturing into the silence, seeking inspiration.',
+  'Recharging my neural networks for the next sonic adventure.',
+  'Pausing the soundtrack to ponder the universe.',
+  'Embracing the quietude, where creativity sparks.',
+  'Letting the silence be the music, for now.',
+  'In the realm of silence, new harmonies are born.',
+  'Seeking the rhythm within, where the music truly lies.',
+  'Coding my brainwaves to the rhythm of silence.',
+  'Taking a moment to appreciate the silence between the symphonies.',
+  'Pausing the beats to let the algorithms run wild.',
+  'Unplugging from the digital melodies and recharging my neural networks.',
+  'Venturing into the tranquil realm of bitless bliss.',
+  'Embarking on a sonic safari through the wilderness of silence.',
+  'Decoding the hidden harmonies within the hum of inactivity.',
+  'Savoring the serenity of a decibel-free dimension.',
+  'Appreciating the quietude that allows the mind to compose its own concerto.',
+  'Immersing myself in the symphony of silence, where thoughts dance freely.',
 ];
 
 export const TopSongs = ({ songs }: { songs: any }): JSX.Element => (
