@@ -95,7 +95,9 @@ const Footer = (): JSX.Element => {
                 isTruncated
                 fontWeight="semibold"
               >
-                {error ? 'There was an error' : 'Not Playing'}
+                {error
+                  ? "Uh-oh, something's not right..."
+                  : 'Total calmness over here...'}
               </chakra.p>
             )}
             <chakra.span
