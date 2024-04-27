@@ -43,7 +43,7 @@ const links = [
         link: '/links',
       },
       {
-        name: 'Music',
+        name: 'Spotify',
         link: '/spotify',
       },
       {

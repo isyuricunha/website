@@ -28,7 +28,7 @@ module.exports = {
       config,
       '/blog',
       '/tools',
-      '/music',
+      '/spotify',
       '/links',
       '/projects',
       '/feed.xml'
@@ -42,7 +42,7 @@ module.exports = {
       },
       {
         userAgent: 'test-bot',
-        allow: ['/tools', '/blog', '/music', '/links', '/projects'],
+        allow: ['/tools', '/blog', '/spotify', '/links', '/projects'],
       },
       {
         userAgent: 'black-listed-bot',

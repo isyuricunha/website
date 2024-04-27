@@ -6,7 +6,7 @@ Allow: /
 User-agent: test-bot
 Allow: /tools
 Allow: /blog
-Allow: /music
+Allow: /spotify
 Allow: /links
 Allow: /projects
 
