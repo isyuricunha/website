@@ -3,6 +3,19 @@ import React from 'react';
 import LineHeading from '../LineHeading';
 import { SongCard, ArtistCard } from './MusicCards';
 
+const phrases = [
+  'Jamming out!',
+  'Getting into the groove!',
+  'Spinning some tunes!',
+  'Rocking out!',
+  'Chilling with some beats!',
+  'Finding the rhythm!',
+  'Enjoying the music!',
+  'Dancing to the rhythm!',
+  'Feeling the vibes!',
+  'Creating some vibes!',
+];
+
 export const TopSongs = ({ songs }: { songs: any }): JSX.Element => (
   <Flex
     direction="column"
@@ -65,13 +78,18 @@ interface CurrentlyPlayingProps {
 
 export const CurrentlyPlaying = ({
   song,
-}: CurrentlyPlayingProps): JSX.Element => (
-  <Flex direction="column" alignItems="center" width="full" mx="auto">
-    <LineHeading mb="4">Currently playing</LineHeading>
-    {song?.isPlaying ? (
-      <SongCard song={song} titleCard isPlaying={song.isPlaying} />
-    ) : (
-      <Text>Nothing playing</Text>
-    )}
-  </Flex>
-);
+}: CurrentlyPlayingProps): JSX.Element => {
+  const randomIndex = Math.floor(Math.random() * phrases.length);
+  const randomPhrase = phrases[randomIndex];
+
+  return (
+    <Flex direction="column" alignItems="center" width="full" mx="auto">
+      <LineHeading mb="4">Currently playing</LineHeading>
+      {song?.isPlaying ? (
+        <SongCard song={song} titleCard isPlaying={song.isPlaying} />
+      ) : (
+        <Text>{randomPhrase}</Text>
+      )}
+    </Flex>
+  );
+};
