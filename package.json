@@ -11,7 +11,7 @@
     "typescript"
   ],
   "scripts": {
-    "release": "git --tag HEAD && git push && npm version patch",
+    "release": "git --tags HEAD && git push && npm version patch",
     "dev": "next",
     "debug": "cross-env NODE_OPTIONS='--inspect' next dev",
     "build": "next build",
