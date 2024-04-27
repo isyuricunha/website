@@ -11,7 +11,7 @@
     "typescript"
   ],
   "scripts": {
-    "release": "npm version patch --annotate && git push && git push --tags",
+    "release": "npm version patch --annotate && git push --tags",
     "dev": "next",
     "debug": "cross-env NODE_OPTIONS='--inspect' next dev",
     "build": "next build",
