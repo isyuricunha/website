@@ -1,7 +1,7 @@
 {
   "name": "yuricunha",
   "description": "A website to show off some of my projects",
-  "version": "2.1.7",
+  "version": "2.1.4",
   "private": true,
   "author": "https://www.github.com/isyuricunha",
   "license": "MIT",
@@ -11,7 +11,7 @@
     "typescript"
   ],
   "scripts": {
-    "release": "npm version patch --annotate && git push --tags",
+    "release": "npm version patch && git tag HEAD && git push && git push --tags",
     "dev": "next",
     "debug": "cross-env NODE_OPTIONS='--inspect' next dev",
     "build": "next build",
