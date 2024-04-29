@@ -342,6 +342,15 @@ const BlogLayout = ({
                   }}
                 />
               </a>
+              <br />
+              <a
+                href="https://memo.yuricunha.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Memo Yuricunha"
+              >
+                Click here and enjoy my privacy-first social media.
+              </a>
             </HStack>
           </Aside>
           {/* <HStack justifyContent="flex-start" mr="auto" mt={2}>
