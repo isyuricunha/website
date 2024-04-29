@@ -54,6 +54,12 @@ jobs:
           BRANCH_HISTORY: compare
           TAG_NAME: 'v${{ steps.taggerFinal.outputs.new_tag }}'
 
+      - name: Generate release notes
+        id: release_notes
+        run: |
+          notes=$(git log --oneline --decorate --no-merges "${{ steps.taggerFinal.outputs.tag }}..${{ steps.taggerFinal.outputs.new_tag }}")
+          echo "::set-output name=notes::${notes}"
+
       - name: 'Generate tag and create release'
         id: create_release
         uses: actions/create-release@v1
@@ -62,6 +68,7 @@ jobs:
         with:
           tag_name: ${{ steps.taggerFinal.outputs.new_tag }}
           release_name: Release ${{ steps.taggerFinal.outputs.new_tag }}
+          body: ${{ steps.release_notes.outputs.notes }}
           draft: false
 
       - name: 'Generate changelog and create release'
