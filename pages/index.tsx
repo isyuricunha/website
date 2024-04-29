@@ -135,6 +135,13 @@ export default function Home(): React.ReactElement {
                 >
                   <ChakraLink>podcast on spotify</ChakraLink>
                 </Link>
+                , enjoy my{' '}
+                <Link
+                  href="https://open.spotify.com/show/2XRQ2mpUbtT0ZqxFVrl0KK?utm_source=yuricunha.com"
+                  passHref
+                >
+                  <ChakraLink>privacy-first social media</ChakraLink>
+                </Link>
                 , or check the footer.
               </chakra.p>
             </Flex>
