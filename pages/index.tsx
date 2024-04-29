@@ -137,7 +137,7 @@ export default function Home(): React.ReactElement {
                 </Link>
                 , enjoy my{' '}
                 <Link
-                  href="https://open.spotify.com/show/2XRQ2mpUbtT0ZqxFVrl0KK?utm_source=yuricunha.com"
+                  href="https://memo.yuricunha.com/?utm_source=yuricunha.com"
                   passHref
                 >
                   <ChakraLink>privacy-first social media</ChakraLink>
