@@ -73,4 +73,3 @@ jobs:
           title: 'Last build: ${{ steps.taggerFinal.outputs.new_tag }}'
           files: |
             *
-            *.*
