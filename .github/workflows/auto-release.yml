@@ -30,7 +30,7 @@ jobs:
           DRY_RUN: true
           DEFAULT_BUMP: patch
           BRANCH_HISTORY: compare
-          TAG_NAME: "v${{ steps.taggerDryRun.outputs.new_tag }}"
+          TAG_NAME: 'v${{ steps.taggerDryRun.outputs.new_tag }}'
 
       - name: echo new tag
         run: |
@@ -41,9 +41,8 @@ jobs:
       - name: echo part
         run: |
           echo "The version increment was: ${{ steps.taggerDryRun.outputs.part }}"
-    # DO MY BUILD HERE
-    # IN CASE OF FAILURE, THE STEP BELOW WILL NOT RUN.
-    
+      # DO MY BUILD HERE
+      # IN CASE OF FAILURE, THE STEP BELOW WILL NOT RUN.
 
       - name: Minor version for each merge
         id: taggerFinal
@@ -53,9 +52,9 @@ jobs:
           WITH_V: true
           DEFAULT_BUMP: patch
           BRANCH_HISTORY: compare
-          TAG_NAME: "v${{ steps.taggerFinal.outputs.new_tag }}"
+          TAG_NAME: 'v${{ steps.taggerFinal.outputs.new_tag }}'
 
-      - name: "Generate tag and create release"
+      - name: 'Generate tag and create release'
         id: create_release
         uses: actions/create-release@v1
         env:
@@ -64,13 +63,16 @@ jobs:
           tag_name: ${{ steps.taggerFinal.outputs.new_tag }}
           release_name: Release ${{ steps.taggerFinal.outputs.new_tag }}
           draft: false
-          
-      - name: "Generate changelog and create release"
+
+      - name: 'Generate changelog and create release'
         uses: marvinpinto/action-automatic-releases@latest
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "${{ steps.taggerFinal.outputs.new_tag }}"
+          repo_token: '${{ secrets.GITHUB_TOKEN }}'
+          automatic_release_tag: '${{ steps.taggerFinal.outputs.new_tag }}'
           prerelease: false
-          title: "Last build: ${{ steps.taggerFinal.outputs.new_tag }}"
+          title: 'Last build: ${{ steps.taggerFinal.outputs.new_tag }}'
           files: |
             *
+            *.*
+            /*
+            ./*
