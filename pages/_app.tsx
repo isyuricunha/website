@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import Router from 'next/router';
 import { ChakraProvider } from '@chakra-ui/react';
 import { MDXProvider } from '@mdx-js/react';
-import { Analytics } from '@vercel/analytics/react';
+
 import PlausibleProvider from 'next-plausible';
 import InstallPwaButton from '@/components/InstallWPA/InstallPwaButton';
 
@@ -53,7 +53,11 @@ export default function MyApp({
           sizes="32x32"
           href="./static/images/toMe/favicon-32x32.png"
         />
-<script defer src="https://umami.yuricunha.com/script.js" data-website-id="ae078a6c-02fb-45c2-96d3-3274da991093"></script>
+        <script
+          defer
+          src="https://umami.yuricunha.com/script.js"
+          data-website-id="ae078a6c-02fb-45c2-96d3-3274da991093"
+        ></script>
         <link
           rel="icon"
           type="image/png"

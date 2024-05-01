@@ -1,4 +1,3 @@
-import { Analytics } from '@vercel/analytics/react';
 import React from 'react';
 import { Flex, SimpleGrid, Text } from '@chakra-ui/react';
 import LineHeading from '@/components/LineHeading';

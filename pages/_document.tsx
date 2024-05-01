@@ -1,4 +1,3 @@
-import { Analytics } from '@vercel/analytics/react';
 import { ColorModeScript } from '@chakra-ui/react';
 
 // eslint-disable-next-line @next/next/no-document-import-in-page

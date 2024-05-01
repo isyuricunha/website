@@ -1,4 +1,3 @@
-import { Analytics } from '@vercel/analytics/react';
 import React from 'react';
 import { Box, Button, Flex, SimpleGrid, Text, VStack } from '@chakra-ui/react';
 import { FaGithub } from 'react-icons/fa';

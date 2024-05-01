@@ -17,7 +17,7 @@ import {
 } from '@chakra-ui/react';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { BiChevronDown } from 'react-icons/bi';
-import { Analytics } from '@vercel/analytics/react';
+
 import BlogPost from '@/components/BlogPost';
 import LineHeading from '@/components/LineHeading';
 import { getAllFilesFrontMatter } from '@/utils/mdx';
