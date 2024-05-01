@@ -76,7 +76,6 @@ function Links(): React.ReactElement {
             ))}
         </SimpleGrid>
       </Flex>
-      <Analytics />
     </>
   );
 }

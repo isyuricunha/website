@@ -63,7 +63,7 @@ export default function Home(): React.ReactElement {
                 alt="Yuri Cunha"
                 onLoad={() => setImageLoad(true)}
               />
-              <Analytics />
+
               <InstallPwaButton />
             </Skeleton>
             <Flex

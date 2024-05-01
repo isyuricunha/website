@@ -31,7 +31,7 @@ export default class MyDocument extends Document {
         <body id={'de_body'}>
           <ColorModeScript />
           <Main />
-          <Analytics />
+
           <NextScript />
           <InstallPwaButton />
         </body>

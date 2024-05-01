@@ -160,7 +160,6 @@ function Projects({ repos }: ProjectsProps): React.ReactElement {
               <RepoCard key={index.toString()} repo={repo} i={index} />
             ))}
         </SimpleGrid>
-        <Analytics />
       </Box>
     </>
   );

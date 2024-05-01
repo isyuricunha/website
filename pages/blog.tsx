@@ -171,7 +171,6 @@ function Blog({ posts }: { posts: any }): React.ReactElement {
           ))}
         </Box>
       </Flex>
-      <Analytics />
     </>
   );
 }

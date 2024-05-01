@@ -125,7 +125,7 @@ export default function MyApp({
           </QueryClientProvider>
         </PlausibleProvider>
       </ChakraProvider>
-      <Analytics />
+
       <InstallPwaButton />
     </>
   );

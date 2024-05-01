@@ -181,7 +181,6 @@ function Tools(): React.ReactElement {
           </TabPanels>
         </Tabs>
       </Flex>
-      <Analytics />
     </>
   );
 }
