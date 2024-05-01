@@ -7,7 +7,6 @@ import Router from 'next/router';
 import { ChakraProvider } from '@chakra-ui/react';
 import { MDXProvider } from '@mdx-js/react';
 
-import PlausibleProvider from 'next-plausible';
 import InstallPwaButton from '@/components/InstallWPA/InstallPwaButton';
 
 import Head from 'next/head';
@@ -103,27 +102,19 @@ export default function MyApp({
       />
 
       <ChakraProvider theme={theme}>
-        <PlausibleProvider
-          domain="yuricunha.com/"
-          selfHosted
-          trackOutboundLinks
-          enabled={process.env.NODE_ENV === 'production'}
-          customDomain={'https://yuricunha.com'}
-        >
-          <QueryClientProvider client={queryClient}>
-            <MDXProvider components={MDXComponents}>
-              {loading ? (
-                <Loader />
-              ) : (
-                <AppLayout>
-                  <>
-                    <Component {...pageProps} />
-                  </>
-                </AppLayout>
-              )}
-            </MDXProvider>
-          </QueryClientProvider>
-        </PlausibleProvider>
+        <QueryClientProvider client={queryClient}>
+          <MDXProvider components={MDXComponents}>
+            {loading ? (
+              <Loader />
+            ) : (
+              <AppLayout>
+                <>
+                  <Component {...pageProps} />
+                </>
+              </AppLayout>
+            )}
+          </MDXProvider>
+        </QueryClientProvider>
       </ChakraProvider>
 
       <InstallPwaButton />
