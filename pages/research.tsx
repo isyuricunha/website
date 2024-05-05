@@ -31,7 +31,7 @@ export default function Research(): ReactElement {
           My research
         </LineHeading>
         <Text mt={3}>
-          A very small selection of things I have googled about a lot.
+          A very small selection of things I have duckducked about a lot.
         </Text>
       </Flex>
       <VStack>
