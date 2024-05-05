@@ -22,10 +22,12 @@ import {
 import { BsPhone } from 'react-icons/bs';
 import { NextSeo } from 'next-seo';
 import Head from 'next/head';
+import { t } from 'i18next';
 
 function Tools(): React.ReactElement {
   return (
     <>
+      const {t} = useTranslation();
       <Head>
         <link rel="canonical" href="https://yuricunha.com/tools" />
         <Head>
@@ -56,7 +58,7 @@ function Tools(): React.ReactElement {
         </Head>
       </Head>
       <NextSeo
-        title="Tools / Yuri Cunha"
+        title={t('titleTools') + ' / Yuri Cunha'}
         description="Good tool. Good work."
         canonical="https://yuricunha.com/tools"
       />

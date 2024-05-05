@@ -6,6 +6,8 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import Router from 'next/router';
 import { ChakraProvider } from '@chakra-ui/react';
 import { MDXProvider } from '@mdx-js/react';
+import { I18nextProvider } from 'react-i18next';
+import i18n from '../src/components/i18n';
 
 import InstallPwaButton from '@/components/InstallWPA/InstallPwaButton';
 
@@ -109,7 +111,9 @@ export default function MyApp({
             ) : (
               <AppLayout>
                 <>
-                  <Component {...pageProps} />
+                  <I18nextProvider i18n={i18n}>
+                    <Component {...pageProps} />
+                  </I18nextProvider>
                 </>
               </AppLayout>
             )}

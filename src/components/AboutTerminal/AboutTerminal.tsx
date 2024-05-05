@@ -12,6 +12,8 @@ import content from '@/data/aboutMe';
 import styled from '@emotion/styled';
 import Statement from '../Statement';
 
+import { useTranslation } from 'react-i18next';
+
 const StatusButton = styled(chakra.span)`
   height: 12px;
   width: 12px;
@@ -22,6 +24,10 @@ const AboutTerminal = (): JSX.Element => {
   const [visibleIndex, setVisibleIndex] = React.useState(0);
   const [finished, setFinished] = React.useState(false);
   const { colorMode } = useColorMode();
+
+  // Use a função useTranslation() para obter a função t()
+  const { t } = useTranslation();
+
   useEffect(() => {
     if (visibleIndex === content({ colorMode }).length) {
       setFinished(true);
@@ -58,7 +64,9 @@ const AboutTerminal = (): JSX.Element => {
           position="absolute"
           justifyContent="center"
         >
-          <Text>{finished ? 'Executed' : 'Executing'}: introduceSelf.tsx</Text>
+          <Text>
+            {finished ? t('executed') : t('executing')}: {t('introduceSelf')}
+          </Text>
         </Flex>
       </Flex>
       <Flex

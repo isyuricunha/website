@@ -1,0 +1,11 @@
+{
+  "hello": "Hello",
+  "welcome": "Welcome to my website",
+  "executed": "Executed",
+  "executing": "Executing",
+  "learnAboutMe": "Learn about me",
+  "loadedData": "Loaded data",
+  "introduceSelf": "introduceSelf.tsx",
+  "titleTools": "Tools",
+  "titleProjects": "Projects"
+}

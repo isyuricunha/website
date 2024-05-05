@@ -8,6 +8,7 @@ import PinnedProjects from '@/components/PinnedProjects';
 import { pinnedRepos, pinnedRepoType } from '@/data/pinnedRepos';
 import { repoType } from '@/pages/api/github';
 import Head from 'next/head';
+import { t } from 'i18next';
 
 interface ProjectsProps {
   stars: number;
@@ -20,6 +21,7 @@ interface ProjectsProps {
 function Projects({ repos }: ProjectsProps): React.ReactElement {
   return (
     <>
+      const {t} = useTranslation();
       <Head>
         <link rel="canonical" href="https://yuricunha.com/projects" />
         <Head>
@@ -50,7 +52,7 @@ function Projects({ repos }: ProjectsProps): React.ReactElement {
         </Head>
       </Head>
       <NextSeo
-        title="Projects / Yuri Cunha"
+        title={t('titleProjects') + ' / Yuri Cunha'}
         description="In my spare time, I like to be god with data. It's like a board game, but with more lines of code."
         canonical="https://yuricunha.com/projects"
       />
