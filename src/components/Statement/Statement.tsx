@@ -8,6 +8,8 @@ import {
 } from '@chakra-ui/react';
 import { useHotkeys } from 'react-hotkeys-hook';
 
+import { t } from 'i18next';
+
 interface StatementProps {
   input: string;
   return: string;
@@ -100,7 +102,7 @@ const Statement = ({
           alignSelf="flex-start"
           dangerouslySetInnerHTML={{
             __html: initialState
-              ? 'Press enter to see what I am about'
+              ? t('press enter to see what I am about')
               : result,
           }}
         />

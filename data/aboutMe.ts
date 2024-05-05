@@ -1,3 +1,5 @@
+import { t } from 'i18next';
+
 const style = (props) =>
   `color: var(--chakra-colors-brand-${
     props.colorMode === 'light' ? '600' : '300'
@@ -5,28 +7,28 @@ const style = (props) =>
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const info = (props: any): { input: string; return: string }[] => [
   {
-    input: 'self.learnAboutMe()',
-    return: 'Loaded data...',
+    input: t('self.learnAboutMe'),
+    return: t('loadedData'),
   },
   {
-    input: 'self.currentLocation',
+    input: t('self.currentLocation'),
     return: '"Brazil"',
   },
 
   {
-    input: 'self.interests',
+    input: t('self.interests'),
     return: '["database-sql-nosql", "anime", "book", "home-cloud]',
   },
   {
-    input: 'self.education',
+    input: t('self.education'),
     return: '"Database Administrator, 2019-2023 && Physics, 2015-2019"',
   },
   {
-    input: 'self.skills',
+    input: t('self.skills'),
     return: '[ "SQL", "PL/SQL", "NoSQL", "Python", "Home Cloud", "Docker"]',
   },
   {
-    input: 'self.contactMe()',
+    input: t('self.contactMe'),
     return: `["<a style="${style(
       props
     )}" rel="noopener" href="https://www.linkedin.com/in/isyuricunha/">LinkedIn</a>", "<a style="${style(

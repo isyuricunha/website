@@ -15,6 +15,8 @@ import { NextSeo } from 'next-seo';
 import AboutTerminal from '@/components/AboutTerminal';
 import InstallPwaButton from '@/components/InstallWPA';
 
+import { t } from 'i18next';
+
 export default function Home(): React.ReactElement {
   const [imageLoad, setImageLoad] = useState(false);
   const bp = useBreakpoint();
@@ -86,7 +88,7 @@ export default function Home(): React.ReactElement {
                 fontSize={{ base: '5xl', lg: '7xl' }}
                 textAlign={{ base: 'center', lg: 'left' }}
               >
-                Hi, I&apos;m Yuri!
+                {t('hello')}
               </Heading>
               <chakra.p
                 maxW="650px"
@@ -94,54 +96,52 @@ export default function Home(): React.ReactElement {
                 fontSize="xl"
                 mt={2}
               >
-                Welcome to my website! Here, I showcase some of my{' '}
+                {t('welcomeMessage')}{' '}
                 <Link href="/projects" passHref>
-                  <ChakraLink>projects</ChakraLink>
+                  <ChakraLink>{t('projects')}</ChakraLink>
                 </Link>{' '}
-                and experiment with various things. You can explore the{' '}
+                {t('welcomeMessage1')}{' '}
                 <Link href="/links" passHref>
-                  <ChakraLink>websites</ChakraLink>
+                  <ChakraLink>{t('websites')}</ChakraLink>
                 </Link>{' '}
-                I enjoy, and discover useful{' '}
+                {t('welcomeMessage2')}{' '}
                 <Link href="/tools" passHref>
-                  <ChakraLink>tools</ChakraLink>
+                  <ChakraLink>{t('tools')}</ChakraLink>
                 </Link>
-                . Additionally, check out my{' '}
+                {t('welcomeMessage3')}{' '}
                 <Link href="/blog" passHref>
-                  <ChakraLink>blogs</ChakraLink>
+                  <ChakraLink>{t('blog')}</ChakraLink>
                 </Link>{' '}
-                for some interesting reads. I am a Senior Database Administrator
-                with over {new Date().getFullYear() - 2018} years of experience.
-                You can find all my social media links and contact information
-                in the{' '}
+                {t('welcomeMessage4')} {new Date().getFullYear() - 2018}{' '}
+                {t('welcomeMessage5')}{' '}
                 <Link
                   href="https://links.yuricunha.com?utm_source=yuricunha.com"
                   passHref
                 >
-                  <ChakraLink>my website links</ChakraLink>
+                  <ChakraLink>{t('my website links')}</ChakraLink>
                 </Link>
-                , schedule a{' '}
+                {t('welcomeMessage6')}{' '}
                 <Link
                   href="https://cal.com/isyuricunha?utm_source=yuricunha.com"
                   passHref
                 >
-                  <ChakraLink>meeting with me</ChakraLink>
+                  <ChakraLink>{t('meeting with me')}</ChakraLink>
                 </Link>
-                , listen my{' '}
+                , {t('welcomeMessage7')}{' '}
                 <Link
                   href="https://open.spotify.com/show/2XRQ2mpUbtT0ZqxFVrl0KK?utm_source=yuricunha.com"
                   passHref
                 >
-                  <ChakraLink>podcast on spotify</ChakraLink>
+                  <ChakraLink>{t('podcast on Spotify')}</ChakraLink>
                 </Link>
-                , enjoy my{' '}
+                , {t('welcomeMessage8')}
                 <Link
                   href="https://memo.yuricunha.com/?utm_source=yuricunha.com"
                   passHref
                 >
-                  <ChakraLink>privacy-first social media</ChakraLink>
+                  <ChakraLink>{t('privacy-first social media')}</ChakraLink>
                 </Link>
-                , or check the footer.
+                , {t('welcomeMessage9')}
               </chakra.p>
             </Flex>
           </Flex>
