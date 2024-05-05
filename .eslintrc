@@ -30,6 +30,7 @@
   "rules": {
     "react/no-unescaped-entities": "off",
     "@next/next/no-page-custom-font": "off",
+    "no-unused-vars": "off",
     "no-case-declarations": "off",
     "@typescript-eslint/ban-ts-comment": "off",
     "react/react-in-jsx-scope": 0,
@@ -46,7 +47,8 @@
       2,
       {
         "argsIgnorePattern": "^_"
-      }
+      },
+      ["error"]
     ],
     "no-console": [
       2,
