@@ -17,25 +17,23 @@ import styled from '@emotion/styled';
 import useScrollPosition from '@/hooks/useScrollPosition.hook';
 import { useEffect } from 'react';
 
+import { t } from 'i18next';
+
 const links = [
   {
     name: 'Blog',
     link: '/blog',
   },
   {
-    name: 'Projects',
+    name: t('titleProjects'),
     link: '/projects',
   },
-  //   {
-  //     name: `Research`,
-  //     link: `/research`,
-  //   },
   {
     type: 'dropdown',
-    name: 'Other',
+    name: t('titleOthers'),
     links: [
       {
-        name: 'Tools',
+        name: t('titleTools'),
         link: '/tools',
       },
       {
@@ -51,7 +49,7 @@ const links = [
         link: '/feed.xml',
       },
       {
-        name: 'Research',
+        name: t('titleResearch'),
         link: '/research',
       },
     ],
@@ -203,3 +201,6 @@ const CustomChakraLink = styled(ChakraLink)`
     transform: translateY(6px);
   }
 `;
+function useTranslation(): { t: any } {
+  throw new Error('Function not implemented.');
+}

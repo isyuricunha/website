@@ -7,5 +7,8 @@
   "loadedData": "Loaded data",
   "introduceSelf": "introduceSelf.tsx",
   "titleTools": "Tools",
-  "titleProjects": "Projects"
+  "titleProjects": "Projects",
+  "titleResearch": "Research",
+  "titleHome": "Home",
+  "titleOthers": "Others"
 }

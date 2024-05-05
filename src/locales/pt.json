@@ -7,5 +7,8 @@
   "loadedData": "Dados carregados...",
   "introduceSelf": "apresentarSe.tsx",
   "titleTools": "Ferramentas",
-  "titleProjects": "Projetos"
+  "titleProjects": "Projetos",
+  "titleResearch": "Pesquisas",
+  "titleHome": "Início",
+  "titleOthers": "Outros"
 }
