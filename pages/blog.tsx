@@ -22,6 +22,8 @@ import BlogPost from '@/components/BlogPost';
 import LineHeading from '@/components/LineHeading';
 import { getAllFilesFrontMatter } from '@/utils/mdx';
 
+import { t } from 'i18next';
+
 import generateRSS from '@/utils/generateRssFeed';
 
 function Blog({ posts }: { posts: any }): React.ReactElement {
@@ -106,9 +108,7 @@ function Blog({ posts }: { posts: any }): React.ReactElement {
           Blog Posts
         </LineHeading>
         <Text mt={3} px={5}>
-          {`Here ${
-            posts.length === 1 ? 'is' : 'are'
-          } a collection of my blog post${posts.length > 1 ? 's' : ''} :).`}
+          {t('collectionBlogPost')}
         </Text>
 
         <Box mt="16" width="full">
