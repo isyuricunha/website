@@ -42,5 +42,11 @@
   "blogSortBy": "Sort by...",
   "blogSortRecent": "Recent",
   "blogSortOld": "Old",
-  "blogSearchResult": "No Results :("
+  "blogSearchResult": "No Results :(",
+
+  "myProjects": "My Projects",
+  "projectsQuickCollection": "A quick collection of my projects.",
+  "projectRepositories": "Repositories",
+  "projectsFullList": "A list of all of the public repositories on my GitHub.",
+  "projectViewMyProfile": "View My Profile"
 }

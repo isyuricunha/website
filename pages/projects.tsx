@@ -78,9 +78,9 @@ function Projects({ repos }: ProjectsProps): React.ReactElement {
             mx="auto"
             textAlign="center"
           >
-            My projects
+            {t('myProjects')}
           </LineHeading>
-          <Text mt={3}>A quick collection of my projects.</Text>
+          <Text mt={3}>{t('projectsQuickCollection')}</Text>
           <VStack
             direction="column"
             my={16}
@@ -119,11 +119,9 @@ function Projects({ repos }: ProjectsProps): React.ReactElement {
               ))}
           </VStack>
           <LineHeading fontSize={{ base: '5xl', lg: '5xl' }} textAlign="center">
-            Repositories
+            {t('projectRepositories')}
           </LineHeading>
-          <Text mt={3}>
-            A list of all of the public repositories on my GitHub.
-          </Text>
+          <Text mt={3}>{t('projectsFullList')}</Text>
           <Button
             as="a"
             href="https://github.com/isyuricunha"
@@ -133,7 +131,7 @@ function Projects({ repos }: ProjectsProps): React.ReactElement {
             mt={5}
             leftIcon={<FaGithub />}
           >
-            View My Profile
+            {t('projectViewMyProfile')}
           </Button>
           {/* Flex ends before SimpleGrid. See Issue #1 https://github.com/isyuricunha/personal-web/issues/1 */}
         </Flex>
