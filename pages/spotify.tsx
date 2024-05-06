@@ -119,7 +119,7 @@ function Spotify({ data, error }: SpotifyProps): React.ReactElement {
             {t('spotifyWhatListening')}
           </Heading>
           <Text textAlign="center" pt="5">
-            {t('topSongsArtists')}
+            {t('spotifytopSongsArtists')}
           </Text>
           <Flex justifyContent="center">
             <Button
