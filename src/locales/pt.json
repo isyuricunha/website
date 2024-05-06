@@ -51,5 +51,8 @@
   "projectViewMyProfile": "Ver Meu Perfil",
 
   "links": "Links",
-  "linksMyFav": "Minhas partes favoritas da web."
+  "linksMyFav": "Minhas partes favoritas da web.",
+
+  "research": "Minha pesquisa",
+  "researchDescription": "Uma pequena seleção de coisas sobre as quais duckducked (pesquisei) muito. Estou sempre aprendendo e pesquisando coisas novas."
 }

@@ -3,6 +3,7 @@ import { Box, Flex, Text, VStack } from '@chakra-ui/react';
 import LineHeading from '@/components/LineHeading';
 import { researchItems } from '@/data/researchItems';
 import ResearchCard from '@/components/ResearchCard';
+import { t } from 'i18next';
 
 export default function Research(): ReactElement {
   return (
@@ -28,11 +29,9 @@ export default function Research(): ReactElement {
           mx="auto"
           textAlign="center"
         >
-          My research
+          {t('research')}
         </LineHeading>
-        <Text mt={3}>
-          A very small selection of things I have duckducked about a lot.
-        </Text>
+        <Text mt={3}>{t('researchDescription')}</Text>
       </Flex>
       <VStack>
         {researchItems.map((item) => (
