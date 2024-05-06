@@ -48,5 +48,8 @@
   "projectsQuickCollection": "Uma rápida coleção dos meus projetos.",
   "projectRepositories": "Repositórios",
   "projectsFullList": "Uma lista de todos os repositórios públicos no meu GitHub.",
-  "projectViewMyProfile": "Ver Meu Perfil"
+  "projectViewMyProfile": "Ver Meu Perfil",
+
+  "links": "Links",
+  "linksMyFav": "Minhas partes favoritas da web."
 }

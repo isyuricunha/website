@@ -5,6 +5,7 @@ import LinkCard from '@/components/LinkCard';
 import { NextSeo } from 'next-seo';
 import links, { LinkType } from '@/data/links';
 import Head from 'next/head';
+import { t } from 'i18next';
 
 function Links(): React.ReactElement {
   return (
@@ -56,9 +57,9 @@ function Links(): React.ReactElement {
           fontSize={{ base: '3xl', sm: '4xl', md: '5xl', lg: '6xl' }}
           textAlign="center"
         >
-          Links
+          {t('links')}
         </LineHeading>
-        <Text mt={3}>My favourite parts of the web.</Text>
+        <Text mt={3}>{t('linksMyFav')}</Text>
         <SimpleGrid
           width="100%"
           pt={10}
