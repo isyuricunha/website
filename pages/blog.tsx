@@ -105,7 +105,7 @@ function Blog({ posts }: { posts: any }): React.ReactElement {
           fontSize={{ base: '3xl', sm: '4xl', md: '5xl', lg: '6xl' }}
           textAlign="center"
         >
-          Blog Posts
+          {t('blogPosts')}
         </LineHeading>
         <Text mt={3} px={5}>
           {t('collectionBlogPost')}
@@ -129,7 +129,7 @@ function Blog({ posts }: { posts: any }): React.ReactElement {
               <Input
                 variant="filled"
                 type="text"
-                placeholder="Search"
+                placeholder={t('blogSearch')}
                 _placeholder={{
                   color: useColorModeValue('gray.800', 'whiteAlpha.800'),
                 }}
@@ -139,7 +139,7 @@ function Blog({ posts }: { posts: any }): React.ReactElement {
 
             <Menu>
               <MenuButton as={Button} rightIcon={<BiChevronDown />}>
-                Sort by...
+                {t('blogSortBy')}
               </MenuButton>
               <MenuList zIndex={998}>
                 <MenuItem
@@ -147,21 +147,21 @@ function Blog({ posts }: { posts: any }): React.ReactElement {
                   isDisabled={sort === 'recent'}
                   onClick={() => setSort('recent')}
                 >
-                  Recent
+                  {t('blogSortRecent')}
                 </MenuItem>
                 <MenuItem
                   zIndex={999}
                   isDisabled={sort === 'old'}
                   onClick={() => setSort('old')}
                 >
-                  Oldest
+                  {t('blogSortOld')}
                 </MenuItem>
               </MenuList>
             </Menu>
           </Flex>
           {filteredBlogPosts.length === 0 && (
             <Text fontSize="2xl" textAlign="center">
-              No Results :(
+              {t('blogPosts')}
             </Text>
           )}
           {filteredBlogPosts.map((frontMatter: any) => (

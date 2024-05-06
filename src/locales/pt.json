@@ -35,5 +35,11 @@
   "welcomeMessage8": "desfrutar da minha",
   "privacy-first social media": " mídia social com foco na privacidade",
   "welcomeMessage9": "ou verificar o rodapé.",
-  "collectionBlogPost": "Aqui estão uma coleção dos meus posts no blog :)."
+  "collectionBlogPost": "Aqui estão uma coleção dos meus posts no blog :).",
+  "blogPosts": "Postagens do blog",
+  "blogSearch": "Pesquisar",
+  "blogSortBy": "Ordenar por...",
+  "blogSortRecent": "Mais recente",
+  "blogSortOld": "Mais antigo",
+  "blogSearchResult": "Sem resultados :("
 }
