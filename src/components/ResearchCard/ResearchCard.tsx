@@ -13,6 +13,7 @@ import {
 import React from 'react';
 import { AiOutlineEye } from 'react-icons/ai';
 import BlogBadge from '../BlogBadge';
+import { t } from 'i18next';
 
 const ResearchCard = ({
   title,
@@ -90,7 +91,7 @@ const ResearchCard = ({
           mt="10px!important"
           leftIcon={<AiOutlineEye />}
         >
-          View Paper
+          {t('viewPaper')}
         </Button>
       </VStack>
     </Box>
