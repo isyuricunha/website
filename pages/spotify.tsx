@@ -19,6 +19,7 @@ import {
 import { NextSeo } from 'next-seo';
 import { useQuery } from 'react-query';
 import Head from 'next/head';
+import { t } from 'i18next';
 
 interface ListFadeProps {
   children: any;
@@ -115,10 +116,10 @@ function Spotify({ data, error }: SpotifyProps): React.ReactElement {
             fontSize={{ base: `3xl`, sm: `4xl`, md: `5xl`, lg: `6xl` }}
             textAlign="center"
           >
-            Here&apos;s what I&apos;m listening to at the moment
+            {t('spotifyWhatListening')}
           </Heading>
           <Text textAlign="center" pt="5">
-            *Top Songs and Artists over the past 6 months
+            {t('topSongsArtists')}
           </Text>
           <Flex justifyContent="center">
             <Button
@@ -137,7 +138,7 @@ function Spotify({ data, error }: SpotifyProps): React.ReactElement {
                 </Icon>
               }
             >
-              View My Profile
+              {t('spotifyViewProfile')}
             </Button>
           </Flex>
         </HeadingFade>

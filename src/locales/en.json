@@ -55,5 +55,9 @@
 
   "research": "My research",
   "researchDescription": "A very small selection of things I have duckducked about a lot. I am always learning and researching new things.",
-  "viewPaper": "View Paper"
+  "viewPaper": "View Paper",
+
+  "spotifyWhatListening": "Here's what I'm listening to at the moment",
+  "spotifytopSongsArtists": "*Top Songs and Artists over the past 6 months",
+  "spotifyViewProfile": "View My Profile on Spotify"
 }
