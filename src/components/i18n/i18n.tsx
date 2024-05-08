@@ -6,6 +6,7 @@ import LanguageDetector from 'i18next-browser-languagedetector'; // Importe o de
 
 import enTranslation from '../../../src/locales/en.json';
 import ptTranslation from '../../../src/locales/pt.json';
+import zhTranslation from '../../../src/locales/zh.json';
 
 i18n
   .use(LanguageDetector) // Use o detector de idioma
@@ -14,6 +15,7 @@ i18n
     resources: {
       en: { translation: enTranslation },
       pt: { translation: ptTranslation },
+      zh: { translation: zhTranslation },
     },
     fallbackLng: 'en', // idioma de fallback
     detection: {
