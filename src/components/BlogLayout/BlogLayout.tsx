@@ -217,144 +217,6 @@ const BlogLayout = ({
         >
           {children}
           <br />
-          <Aside
-            type={'positive'}
-            title={'Share this article with your friends:'}
-          >
-            <HStack justifyContent="flex-start" mr="auto" mt={1}>
-              <a
-                href={`https://wa.me/?text=${encodeURIComponent(
-                  `Check out the article: ${frontMatter.title} - https://yuricunha.com${router.asPath}?utm_source=yuricunha.com`
-                )}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                title="WhatsApp"
-              >
-                <FaWhatsapp
-                  size={24}
-                  style={{
-                    color: 'gray.900',
-                  }}
-                />
-              </a>
-              <a
-                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
-                  `Check out the article: ${frontMatter.title} - https://yuricunha.com${router.asPath}?utm_source=yuricunha.com`
-                )}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                title="Twitter/X"
-              >
-                <FaXTwitter
-                  size={24}
-                  style={{
-                    color: 'gray.900',
-                  }}
-                />
-              </a>
-              <a
-                href={`https://www.facebook.com/sharer/sharer.php?u=https://yuricunha.com${
-                  router.asPath
-                }?utm_source=yuricunha.com&quote=${encodeURIComponent(
-                  `Check out the article: ${frontMatter.title}`
-                )}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                title="Facebook"
-              >
-                <FaFacebook
-                  size={24}
-                  style={{
-                    color: 'gray.900',
-                  }}
-                />
-              </a>
-              <a
-                href={`https://www.linkedin.com/shareArticle?mini=true&url=https://yuricunha.com${
-                  router.asPath
-                }?utm_source=yuricunha.com&title=${encodeURIComponent(
-                  `Check out the article: ${frontMatter.title}`
-                )}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                title="LinkedIn"
-              >
-                <FaLinkedinIn
-                  size={24}
-                  style={{
-                    color: 'gray.900',
-                  }}
-                />
-              </a>
-              <a
-                href={`https://www.reddit.com/submit?url=https://yuricunha.com${
-                  router.asPath
-                }?utm_source=yuricunha.com&title=${encodeURIComponent(
-                  `Check out the article: ${frontMatter.title}`
-                )}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                title="Reddit"
-              >
-                <FaReddit
-                  size={24}
-                  style={{
-                    color: 'gray.900',
-                  }}
-                />
-              </a>
-              <a
-                href={`https://isyuricunha.substack.com${router.asPath}?source_url=yuricunha.com`}
-                target="_blank"
-                rel="noopener noreferrer"
-                title="Substack"
-              >
-                <BsSubstack
-                  size={24}
-                  style={{
-                    color: 'gray.900',
-                  }}
-                />
-              </a>
-              <a
-                href={`https://yuricunha.bearblog.dev/${pageTitle}?source_url=yuricunha.com`}
-                target="_blank"
-                rel="noopener noreferrer"
-                title="BearBlog"
-              >
-                <GiBearFace
-                  size={24}
-                  style={{
-                    color: 'gray.900',
-                  }}
-                />
-              </a>
-              <a
-                href={`https://open.spotify.com/show/2XRQ2mpUbtT0ZqxFVrl0KK`}
-                target="_blank"
-                rel="noopener noreferrer"
-                title="Spotify Blog Speech"
-              >
-                <BsSpotify
-                  size={24}
-                  style={{
-                    color: 'gray.900',
-                  }}
-                />
-              </a>
-              <br />
-              <a
-                href="https://memo.yuricunha.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                title="Memo Yuricunha"
-              >
-                {' '}
-                <br />
-                Click here and enjoy my privacy-first social media.
-              </a>
-            </HStack>
-          </Aside>
           {/* <HStack justifyContent="flex-start" mr="auto" mt={2}>
             <EditIcon />
             <Link
@@ -371,6 +233,144 @@ const BlogLayout = ({
             </Link>
           </HStack> */}
         </Box>
+
+        <Aside
+          type={'positive'}
+          title={'Share this article with your friends:'}
+        >
+          <HStack justifyContent="flex-start" mr="auto" mt={1}>
+            <a
+              href={`https://wa.me/?text=${encodeURIComponent(
+                `Check out the article: ${frontMatter.title} - https://yuricunha.com${router.asPath}?utm_source=yuricunha.com`
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              title="WhatsApp"
+            >
+              <FaWhatsapp
+                size={24}
+                style={{
+                  color: 'gray.900',
+                }}
+              />
+            </a>
+            <a
+              href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
+                `Check out the article: ${frontMatter.title} - https://yuricunha.com${router.asPath}?utm_source=yuricunha.com`
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Twitter/X"
+            >
+              <FaXTwitter
+                size={24}
+                style={{
+                  color: 'gray.900',
+                }}
+              />
+            </a>
+            <a
+              href={`https://www.facebook.com/sharer/sharer.php?u=https://yuricunha.com${
+                router.asPath
+              }?utm_source=yuricunha.com&quote=${encodeURIComponent(
+                `Check out the article: ${frontMatter.title}`
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Facebook"
+            >
+              <FaFacebook
+                size={24}
+                style={{
+                  color: 'gray.900',
+                }}
+              />
+            </a>
+            <a
+              href={`https://www.linkedin.com/shareArticle?mini=true&url=https://yuricunha.com${
+                router.asPath
+              }?utm_source=yuricunha.com&title=${encodeURIComponent(
+                `Check out the article: ${frontMatter.title}`
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              title="LinkedIn"
+            >
+              <FaLinkedinIn
+                size={24}
+                style={{
+                  color: 'gray.900',
+                }}
+              />
+            </a>
+            <a
+              href={`https://www.reddit.com/submit?url=https://yuricunha.com${
+                router.asPath
+              }?utm_source=yuricunha.com&title=${encodeURIComponent(
+                `Check out the article: ${frontMatter.title}`
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Reddit"
+            >
+              <FaReddit
+                size={24}
+                style={{
+                  color: 'gray.900',
+                }}
+              />
+            </a>
+            <a
+              href={`https://isyuricunha.substack.com${router.asPath}?source_url=yuricunha.com`}
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Substack"
+            >
+              <BsSubstack
+                size={24}
+                style={{
+                  color: 'gray.900',
+                }}
+              />
+            </a>
+            <a
+              href={`https://yuricunha.bearblog.dev/${pageTitle}?source_url=yuricunha.com`}
+              target="_blank"
+              rel="noopener noreferrer"
+              title="BearBlog"
+            >
+              <GiBearFace
+                size={24}
+                style={{
+                  color: 'gray.900',
+                }}
+              />
+            </a>
+            <a
+              href={`https://open.spotify.com/show/2XRQ2mpUbtT0ZqxFVrl0KK`}
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Spotify Blog Speech"
+            >
+              <BsSpotify
+                size={24}
+                style={{
+                  color: 'gray.900',
+                }}
+              />
+            </a>
+          </HStack>
+        </Aside>
+
+        <a
+          href="https://memo.yuricunha.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+          title="Memo Yuricunha"
+        >
+          <br />
+          Click here and enjoy my privacy-first social media.
+        </a>
       </chakra.article>
     </>
   );
