@@ -238,7 +238,7 @@ const BlogLayout = ({
           type={'positive'}
           title={'Share this article with your friends:'}
         >
-          <HStack justifyContent="flex-start" mr="auto" mt={1}>
+          <HStack justifyContent="center" mr="auto" mt={1}>
             <a
               href={`https://wa.me/?text=${encodeURIComponent(
                 `Check out the article: ${frontMatter.title} - https://yuricunha.com${router.asPath}?utm_source=yuricunha.com`
@@ -371,6 +371,7 @@ const BlogLayout = ({
           <br />
           Click here and enjoy my privacy-first social media.
         </a>
+        <br />
       </chakra.article>
     </>
   );
