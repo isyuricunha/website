@@ -24,16 +24,18 @@ export const Aside = ({
   return (
     <chakra.aside
       position="relative"
-      py={'24px'}
+      py={['16px', '24px']} // Ajuste a altura do padding responsivamente
       mt={4}
-      mx={'-32px'}
+      mx={['-16px', '-32px']} // Ajuste as margens responsivamente
       borderRadius="6px 6px 6px 3px"
-      px={'32px'}
-      borderLeft={'4px solid'}
+      px={['16px', '32px']} // Ajuste o padding horizontal responsivamente
+      borderLeft={['4px solid', 'none']} // Remova a borda esquerda em telas menores
       borderColor={useColorModeValue(
         `${colors[type]}.500`,
         `${colors[type]}.400`
       )}
+      maxWidth={['100%', '600px']} // Limita a largura do aside em telas menores
+      margin="auto" // Centraliza o aside horizontalmente
       //@ts-expect-error transparentize tools return string, but types are not applicable.
       bg={useColorModeValue(
         `${colors[type]}.100`,
