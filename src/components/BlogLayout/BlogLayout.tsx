@@ -349,6 +349,8 @@ const BlogLayout = ({
                 rel="noopener noreferrer"
                 title="Memo Yuricunha"
               >
+                {' '}
+                <br />
                 Click here and enjoy my privacy-first social media.
               </a>
             </HStack>
