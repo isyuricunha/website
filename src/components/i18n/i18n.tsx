@@ -10,6 +10,7 @@ import zhTranslation from '../../../src/locales/zh.json';
 import frTranslation from '../../../src/locales/fr.json';
 import itTranslation from '../../../src/locales/it.json';
 import jaTranslation from '../../../src/locales/ja.json';
+import hiTranslation from '../../../src/locales/hi.json';
 
 i18n
   .use(LanguageDetector) // Use o detector de idioma
@@ -22,6 +23,7 @@ i18n
       fr: { translation: frTranslation },
       it: { translation: itTranslation },
       ja: { translation: jaTranslation },
+      hi: { translation: hiTranslation },
     },
     fallbackLng: 'en', // idioma de fallback
     detection: {

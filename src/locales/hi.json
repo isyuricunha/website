@@ -1,0 +1,69 @@
+यहाँ आपके लिए हिंदी में अनुवाद किया गया है:
+
+```json
+{
+  "hello": "नमस्ते, मैं यूरी हूँ!",
+  "welcome": "मेरी वेबसाइट में आपका स्वागत है",
+  "executed": "क्रियान्वित",
+  "executing": "क्रियान्वित हो रहा है",
+  "introduceSelf": "introduceSelf.tsx",
+  "press enter to see what I am about": "मुझसे क्या संबंधित है देखने के लिए एंटर दबाएं",
+  "self.learnAboutMe": "self.learnAboutMe()",
+  "loadedData": "डेटा लोड हो रहा है...",
+  "self.currentLocation": "self.currentLocation",
+  "self.interests": "self.interests",
+  "self.education": "self.education",
+  "self.skills": "self.skills",
+  "self.contactMe": "self.contactMe",
+  "titleTools": "उपकरण",
+  "titleProjects": "परियोजनाएँ",
+  "titleResearch": "अनुसंधान",
+  "titleHome": "होम",
+  "titleOthers": "अन्य",
+  "welcomeMessage": "मेरी वेबसाइट में आपका स्वागत है! यहाँ, मैं अपने कुछ",
+  "projects": "परियोजनाएँ",
+  "welcomeMessage1": " प्रदर्शित करता हूँ और विभिन्न चीज़ों का प्रयोग करता हूँ। आप",
+  "websites": "वेबसाइट",
+  "welcomeMessage2": " और उपयोगी चीज़ों का खोज कर सकते हैं। साथ ही, मेरे",
+  "tools": "उपकरण",
+  "welcomeMessage3": " की भी जाँच करें। कुछ रोचक पढ़ाई के लिए मेरे",
+  "blogs": "ब्लॉग",
+  "welcomeMessage4": " देखें। मैं एक वरिष्ठ डेटाबेस प्रशासक हूँ और",
+  "welcomeMessage5": " वर्षों का अनुभव है। आप मेरे सभी सोशल मीडिया लिंक और संपर्क जानकारी",
+  "my website links": "मेरे वेबसाइट लिंक",
+  "welcomeMessage6": " पर देख सकते हैं। साथ ही, ",
+  "meeting with me": "मेरे साथ मिलने का समय निर्धारित करें",
+  "welcomeMessage7": "मेरी सुनें",
+  "podcast on Spotify": "Spotify पर पॉडकास्ट",
+  "welcomeMessage8": "अपने का आनंद लें",
+  "privacy-first social media": "गोपनीयता पहले का सोशल मीडिया",
+  "welcomeMessage9": " या फिर फुटर की जाँच करें।",
+
+  "collectionBlogPost": "यहाँ मेरे ब्लॉग पोस्टों का एक संग्रह है :).",
+  "blogPosts": "ब्लॉग पोस्ट",
+  "blogSearch": "खोज",
+  "blogSortBy": "क्रमबद्ध करें...",
+  "blogSortRecent": "हाल का",
+  "blogSortOld": "पुराना",
+  "blogSearchResult": "कोई परिणाम नहीं :(",
+
+  "myProjects": "मेरे परियोजनाएँ",
+  "projectsQuickCollection": "मेरी परियोजनाओं का एक त्वरित संग्रह।",
+  "projectRepositories": "रिपॉजिटरी",
+  "projectsFullList": "मेरे GitHub पर सभी सार्वजनिक रिपॉजिटरीज की सूची।",
+  "projectViewMyProfile": "मेरा प्रोफ़ाइल देखें",
+
+  "links": "लिंक",
+  "linksMyFav": "मेरे पसंदीदा वेब के हिस्से।",
+
+  "research": "मेरे अनुसंधान",
+  "researchDescription": "यहाँ कुछ ऐसी चीज़ों का छोटा सा चयन है जिनके बारे में मैंने बहुत कुछ जाना। मैं हमेशा सी
+
+ख रहा हूँ और नई चीज़ों का अनुसंधान कर रहा हूँ।",
+  "viewPaper": "पेपर देखें",
+
+  "spotifyWhatListening": "यहाँ वह है जिसे मैं अभी सुन रहा हूँ",
+  "spotifyTopSongsArtists": "*पिछले 6 महीनों में टॉप गाने और कलाकार",
+  "spotifyViewProfile": "Spotify पर मेरा प्रोफ़ाइल देखें"
+}
+```
