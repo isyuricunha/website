@@ -1,6 +1,3 @@
-Aquí tienes la traducción al español:
-
-```json
 {
   "hello": "¡Hola, soy Yuri!",
   "welcome": "Bienvenido a mi sitio web",
@@ -64,4 +61,3 @@ Aquí tienes la traducción al español:
   "spotifyTopSongsArtists": "*Principales Canciones y Artistas en los últimos 6 meses",
   "spotifyViewProfile": "Ver Mi Perfil en Spotify"
 }
-```
