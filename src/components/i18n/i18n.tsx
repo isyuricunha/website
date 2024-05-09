@@ -9,6 +9,7 @@ import ptTranslation from '../../../src/locales/pt.json';
 import zhTranslation from '../../../src/locales/zh.json';
 import frTranslation from '../../../src/locales/fr.json';
 import itTranslation from '../../../src/locales/it.json';
+import jaTranslation from '../../../src/locales/ja.json';
 
 i18n
   .use(LanguageDetector) // Use o detector de idioma
@@ -20,6 +21,7 @@ i18n
       zh: { translation: zhTranslation },
       fr: { translation: frTranslation },
       it: { translation: itTranslation },
+      ja: { translation: jaTranslation },
     },
     fallbackLng: 'en', // idioma de fallback
     detection: {
