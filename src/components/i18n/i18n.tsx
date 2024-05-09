@@ -11,6 +11,7 @@ import frTranslation from '../../../src/locales/fr.json';
 import itTranslation from '../../../src/locales/it.json';
 import jaTranslation from '../../../src/locales/ja.json';
 import hiTranslation from '../../../src/locales/hi.json';
+import ruTranslation from '../../../src/locales/ru.json';
 
 i18n
   .use(LanguageDetector) // Use o detector de idioma
@@ -24,6 +25,7 @@ i18n
       it: { translation: itTranslation },
       ja: { translation: jaTranslation },
       hi: { translation: hiTranslation },
+      ru: { translation: ruTranslation },
     },
     fallbackLng: 'en', // idioma de fallback
     detection: {
