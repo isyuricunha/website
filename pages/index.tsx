@@ -120,7 +120,7 @@ export default function Home(): React.ReactElement {
                 >
                   <ChakraLink>{t('my website links')}</ChakraLink>
                 </Link>
-                {t('welcomeMessage6')}{' '}
+                ,{t('welcomeMessage6')}{' '}
                 <Link
                   href="https://cal.com/isyuricunha?utm_source=yuricunha.com"
                   passHref
@@ -139,7 +139,7 @@ export default function Home(): React.ReactElement {
                   href="https://memo.yuricunha.com/?utm_source=yuricunha.com"
                   passHref
                 >
-                  , <ChakraLink>{t('privacy-first social media')}</ChakraLink>
+                  <ChakraLink>{t('privacy-first social media')}</ChakraLink>
                 </Link>
                 , {t('welcomeMessage9')}
               </chakra.p>
