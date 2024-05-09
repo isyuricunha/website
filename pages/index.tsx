@@ -139,7 +139,7 @@ export default function Home(): React.ReactElement {
                   href="https://memo.yuricunha.com/?utm_source=yuricunha.com"
                   passHref
                 >
-                  <ChakraLink>{t('privacy-first social media')}</ChakraLink>
+                  , <ChakraLink>{t('privacy-first social media')}</ChakraLink>
                 </Link>
                 , {t('welcomeMessage9')}
               </chakra.p>
