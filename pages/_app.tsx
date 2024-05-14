@@ -8,6 +8,7 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { MDXProvider } from '@mdx-js/react';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '../src/components/i18n';
+import Script from 'next/script';
 
 import InstallPwaButton from '@/components/InstallWPA/InstallPwaButton';
 
@@ -54,11 +55,13 @@ export default function MyApp({
           sizes="32x32"
           href="./static/images/toMe/favicon-32x32.png"
         />
-        <script
+
+        <Script
           defer
           src="https://umami.yuricunha.com/script.js"
           data-website-id="ae078a6c-02fb-45c2-96d3-3274da991093"
-        ></script>
+        />
+
         <link
           rel="icon"
           type="image/png"
