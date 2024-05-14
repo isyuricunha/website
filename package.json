@@ -90,7 +90,7 @@
     "next-sitemap": "4.2.3",
     "prettier": "2.4.1",
     "rehype": "12.0.0",
-    "typescript": "4.7.4"
+    "typescript": "4.9.5"
   },
   "husky": {
     "hooks": {
