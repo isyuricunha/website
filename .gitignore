@@ -43,3 +43,5 @@ example/exampleDemo (1).mdx
 example/exampleDemo (2).mdx
 yarn.lock
 public/feed.xml
+pnpm-lock.yaml
+4.9.5
