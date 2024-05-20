@@ -59,5 +59,12 @@
 
   "spotifyWhatListening": "Esto es lo que estoy escuchando en este momento",
   "spotifyTopSongsArtists": "*Principales Canciones y Artistas en los últimos 6 meses",
-  "spotifyViewProfile": "Ver Mi Perfil en Spotify"
+  "spotifyViewProfile": "Ver Mi Perfil en Spotify",
+
+  "titleAboutMe": "Sobre mí",
+  "aboutOne": "¡Hola! Soy Yuri, un administrador de bases de datos con pasión por la integridad de datos y por hacer que las aplicaciones funcionen sin problemas. Cuando no estoy ocupado con los servidores, me encontrarás recorriendo las calles (o senderos) - estoy obsesionado con la magia de dar un paso tras otro y ver cómo avanza el mundo.",
+  "aboutTwo": "Actualmente trabajo en Laryssa Costa, donde me aseguro de que la columna vertebral de nuestros datos funcione correctamente (donde dirijo un equipo de TI). Antes de eso, perfeccioné mis habilidades en Divinobit (actualmente llamado Bairon), optimizando bases de datos para un rendimiento óptimo.",
+  "aboutThree": "¿Qué es lo que más me emociona? Sumergirme en consultas complejas, crear esquemas eficientes y ver cómo las bases de datos se transforman en motores potentes. Es como la fontanería para la era digital, pero con más líneas de código que tuberías.",
+  "aboutFour": "Aunque São Bernardo do Campo, en Brasil, es mi ciudad natal, mi espíritu aventurero a menudo me lleva solo a nuevos rincones del mundo. Recorriendo ruinas antiguas, disfrutando de bulliciosos paisajes urbanos o escapando a paisajes serenos: viajar solo alimenta mi alma e inspira nuevas perspectivas.",
+  "aboutFive": "Así que, ya sea optimizando bases de datos o superando mis límites en una carrera, estoy centrado en construir, explorar y encontrar el ritmo en las cosas. ¡Veamos a dónde nos llevan los datos (o el camino)!"
 }
