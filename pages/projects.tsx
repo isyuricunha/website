@@ -21,7 +21,6 @@ interface ProjectsProps {
 function Projects({ repos }: ProjectsProps): React.ReactElement {
   return (
     <>
-      const {t} = useTranslation();
       <Head>
         <link rel="canonical" href="https://yuricunha.com/projects" />
         <Head>

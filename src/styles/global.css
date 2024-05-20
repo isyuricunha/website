@@ -257,3 +257,18 @@ body,
 .hover-link-dark:hover {
   color: var(--chakra-colors-green-300);
 }
+
+/* Custom styles for the About page */
+
+.about-heading {
+  animation: fadeIn 2s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

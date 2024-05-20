@@ -27,7 +27,6 @@ import { t } from 'i18next';
 function Tools(): React.ReactElement {
   return (
     <>
-      const {t} = useTranslation();
       <Head>
         <link rel="canonical" href="https://yuricunha.com/tools" />
         <Head>

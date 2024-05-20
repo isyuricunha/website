@@ -21,6 +21,10 @@ import { t } from 'i18next';
 
 const links = [
   {
+    name: 'About',
+    link: '/about',
+  },
+  {
     name: 'Blog',
     link: '/blog',
   },
