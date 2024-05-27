@@ -10,6 +10,7 @@ import {
   useColorModeValue,
   HStack,
   Tag,
+  VStack,
 } from '@chakra-ui/react';
 import { format, parseISO } from 'date-fns';
 import ViewCounter from '../ViewCounter';
@@ -37,6 +38,7 @@ import { BsSubstack, BsSpotify, BsYoutube } from 'react-icons/bs';
 import { SiGoogletranslate } from 'react-icons/si';
 
 import { Aside } from '@/components/MDXComponents/Aside'; // Importe o componente Aside
+import NewsletterInput from '@/data/NewsletterInput';
 
 interface BlogLayoutProps {
   children: React.ReactNode;
@@ -374,6 +376,20 @@ const BlogLayout = ({
             </a>
           </HStack>
         </Aside>
+
+        <br />
+
+        <VStack spacing={4} align="center" width="full" bg="transparent" p={0}>
+          <Heading
+            as="h3"
+            size="md"
+            textAlign="center"
+            color={useColorModeValue('teal.500', 'teal.300')}
+          >
+            Subscribe
+          </Heading>
+          <NewsletterInput />
+        </VStack>
 
         <a
           href="https://memo.yuricunha.com/"
