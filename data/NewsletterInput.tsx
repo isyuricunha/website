@@ -6,8 +6,9 @@ import {
   IconButton,
   FormControl,
   FormErrorMessage,
+  Spinner,
 } from '@chakra-ui/react';
-import { CheckIcon, ArrowForwardIcon, Spinner } from '@chakra-ui/icons';
+import { CheckIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 
 export default function NewsletterInput() {
   const [value, setValue] = useState('');
