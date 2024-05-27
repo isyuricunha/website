@@ -32,7 +32,7 @@ import {
 
 import { GiBearFace } from 'react-icons/gi';
 
-import { BsSubstack, BsSpotify } from 'react-icons/bs';
+import { BsSubstack, BsSpotify, BsYoutube } from 'react-icons/bs';
 
 import { SiGoogletranslate } from 'react-icons/si';
 
@@ -353,6 +353,19 @@ const BlogLayout = ({
               title="Spotify Blog Speech"
             >
               <BsSpotify
+                size={24}
+                style={{
+                  color: 'gray.900',
+                }}
+              />
+            </a>
+            <a
+              href={`https://www.youtube.com/@isyuricunha/videos`}
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Youtube Channel"
+            >
+              <BsYoutube
                 size={24}
                 style={{
                   color: 'gray.900',
