@@ -25,7 +25,7 @@ import Head from 'next/head';
 
 import {
   FaWhatsapp, // Icon WhatsApp
-  FaXTwitter, // Icon Twitter
+  FaXTwitter, // Icon Twitter/X
   FaFacebook, // Icon Facebook
   FaLinkedinIn, // Icon LinkedIn
   FaReddit, // Icon Reddit

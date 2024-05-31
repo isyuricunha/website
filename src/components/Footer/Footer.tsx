@@ -136,7 +136,7 @@ const Footer = (): JSX.Element => {
           </SocialIcons>
 
           <SocialIcons
-            label="Twitter"
+            label="Twitter/X"
             href="https://twitter.com/isyuricunha?utm_source=yuricunha.com"
           >
             <FaXTwitter />
