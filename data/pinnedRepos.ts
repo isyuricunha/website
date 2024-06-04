@@ -23,7 +23,8 @@ export const pinnedRepos: pinnedRepoType[] = [
     id: 'solution-system-autmation',
     stack: ['HTML', 'CSS', 'JavaScript'],
     name: 'System Solution Automation',
-    deployedLink: 'https://www.ssautomation.com.br/?utm_source=yuricunha.com',
+    deployedLink:
+      'https://www.ssautomation.yuricunha.com/?utm_source=yuricunha.com',
     image:
       'https://raw.githubusercontent.com/isyuricunha/website/main/public/static/images/forDemo/ssautomation.png',
     longDescription:
