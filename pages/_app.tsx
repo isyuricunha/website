@@ -59,7 +59,7 @@ export default function MyApp({
         <Script
           defer
           src="https://umami.yuricunha.com/script.js"
-          data-website-id="ae078a6c-02fb-45c2-96d3-3274da991093"
+          data-website-id="ff874ecd-2ec3-48c5-abd3-10aabcf82036"
         />
 
         <link
