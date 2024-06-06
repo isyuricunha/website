@@ -26,6 +26,8 @@ import { t } from 'i18next';
 
 import generateRSS from '@/utils/generateRssFeed';
 
+import Script from 'next/script';
+
 function Blog({ posts }: { posts: any }): React.ReactElement {
   const [filter, setFilter] = useState('');
   const [sort, setSort] = useState('recent');
@@ -85,6 +87,12 @@ function Blog({ posts }: { posts: any }): React.ReactElement {
             color="#5bbad5"
           />
           <meta name="theme-color" content="#ffffff" />
+
+          <Script
+            defer
+            src="https://umami.yuricunha.com/script.js"
+            data-website-id="ff874ecd-2ec3-48c5-abd3-10aabcf82036"
+          />
         </Head>
       </Head>
       <NextSeo

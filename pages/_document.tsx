@@ -5,6 +5,8 @@ import Document, { Html, Head, Main, NextScript } from 'next/document';
 import React from 'react';
 import InstallPwaButton from '@/components/InstallWPA';
 
+import Script from 'next/script';
+
 export default class MyDocument extends Document {
   render(): React.ReactElement {
     return (
@@ -26,6 +28,12 @@ export default class MyDocument extends Document {
           <link
             href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
             rel="stylesheet"
+          />
+
+          <Script
+            defer
+            src="https://umami.yuricunha.com/script.js"
+            data-website-id="ff874ecd-2ec3-48c5-abd3-10aabcf82036"
           />
         </Head>
         <body id={'de_body'}>
