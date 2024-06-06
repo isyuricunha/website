@@ -94,6 +94,11 @@ function Spotify({ data, error }: SpotifyProps): React.ReactElement {
             href="./static/images/toMe/safari-pinned-tab.svg"
             color="#5bbad5"
           />
+          <script
+            defer
+            src="https://umami.yuricunha.com/script.js"
+            data-website-id="ff874ecd-2ec3-48c5-abd3-10aabcf82036"
+          ></script>
           <meta name="theme-color" content="#ffffff" />
         </Head>
       </Head>

@@ -88,11 +88,11 @@ function Blog({ posts }: { posts: any }): React.ReactElement {
           />
           <meta name="theme-color" content="#ffffff" />
 
-          <Script
+          <script
             defer
             src="https://umami.yuricunha.com/script.js"
             data-website-id="ff874ecd-2ec3-48c5-abd3-10aabcf82036"
-          />
+          ></script>
         </Head>
       </Head>
       <NextSeo
