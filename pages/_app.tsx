@@ -56,11 +56,11 @@ export default function MyApp({
           href="./static/images/toMe/favicon-32x32.png"
         />
 
-        <Script
+        <script
           defer
           src="https://umami.yuricunha.com/script.js"
           data-website-id="ff874ecd-2ec3-48c5-abd3-10aabcf82036"
-        />
+        ></script>
 
         <link
           rel="icon"
