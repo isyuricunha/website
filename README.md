@@ -33,3 +33,5 @@ The repository/site/project is active under my [personal license](https://github
 You can reach out to me via email at [me@yuricunha.com](mailto:me@yuricunha.com) or ping me on [Twitter/X](x.com/isyuricunha) if you need help, have questions, or just want to chat.
 
 I believe I've said all I had to say. Cheers!
+
+PS: Project versions work like this: V1.2.3: The 1 represents Design, the 2 represents a significant technology change, and the 3 represents a minor change or alteration (maybe just a bug fix).
