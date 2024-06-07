@@ -13,6 +13,8 @@ import Link from 'next/link';
 import { AiOutlineMenu } from 'react-icons/ai';
 import ToggleTheme from './ToggleTheme';
 
+import { t } from 'i18next';
+
 function MobileNav({ links }: { links: any }): JSX.Element {
   const mobileNav = useDisclosure();
   return (
@@ -53,7 +55,7 @@ function MobileNav({ links }: { links: any }): JSX.Element {
       >
         <Link href="/" passHref>
           <Button as={ChakraLink} w="full" mt={16} variant="ghost">
-            Home
+            {t('titleHome')}
           </Button>
         </Link>
 

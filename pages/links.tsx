@@ -45,7 +45,7 @@ function Links(): React.ReactElement {
         </Head>
       </Head>
       <NextSeo
-        title="Links / Yuri Cunha"
+        title={t('titleProjects') + ' / Yuri Cunha'}
         description="Good links (not than me)."
         canonical="https://yuricunha.com/links"
       />

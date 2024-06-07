@@ -37,7 +37,7 @@ const links = [
         link: '/tools',
       },
       {
-        name: 'Links',
+        name: t('links'),
         link: '/links',
       },
       {
