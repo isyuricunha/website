@@ -1,67 +1,35 @@
-<h1 align="center">Welcome to Personal Website 👋</h1>
-<p>
-  <img alt="Version" src="https://img.shields.io/badge/version-2.1-blue.svg?cacheSeconds=2592000" />
-  <a href="https://github.com/isyuricunha/website" target="_blank">
-    <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" />
-  </a>
-  <a href="https://github.com/isyuricunha/website/blob/main/license.md" target="_blank">
-    <img alt="License: Personal License" src="https://img.shields.io/badge/License-Personal License-yellow.svg" />
-  </a>
-  <a href="https://twitter.com/isyuricunha" target="_blank">
-    <img alt="Twitter: isyuricunha" src="https://img.shields.io/twitter/follow/isyuricunha.svg?style=social" />
-  </a>
-</p>
+Hey there,
 
-> I use this to show some of my projects off, and test things out. You can see the websites & tools that I like. Sometimes I even write blogs.
+This is my current website project, meaning when you access it, you're diving into my portfolio (you can click here to see it online).
 
-### 🏠 [Homepage](https://yuricunha.com/)
+Originally, it was ported/inspired by [Michael's site](https://github.com/mah51), but it's gone through several changes and alterations, incorporating various new and different technologies.
 
-### ✨ [Demo](https://yuricunha.com/)
+Here on my site/project, there are some new or improved things, as well as tools or technologies. And some of them include:
 
-## Install
+- Internationalization with i18n.
+- Updated/revised GitHub API to fetch my public repositories.
+- ConvertKit Newsletter API integration (also functional with Mailerlit).
+- Comments section (currently deactivated).
+- Enhanced Spotify API.
+- Feed/RSS for my posts (thanks to all who subscribed!).
+- Now section (what I'm up to) and About Me (the title says it all) sections, currently deactivated.
+- Updated various packages.
+- Design improvements like new icons, responsiveness, conventional routes, and APIs.
+- Privacy-focused metrics/analytics (thanks, [Umami](https://github.com/umami-software/umami)).
+- Proxy running on DuckDuckGo for more privacy and no tracking.
+- Improved and/or added Robots, crawler URLs, and dynamic page titles for better indexing on search engines I don't like (Google, Bing, and others non-private) and those I do (DuckDuck, Qwarty, and similar).
+- Updated Firebase API routes.
+- Updated Spotify API routes.
+- Page with the music I listen to on Spotify (artists, top tracks, along with a music history).
+- Redesigned blog and blog layout, with dynamic routes for sharing ((WhatsApp)[https://api.whatsapp.com/], (Twitter/X)[https://x.com/], (Facebook)[https://www.facebook.com/], and (LinkedIn)[https://www.linkedin.com/]) and reading on other platforms ([Bear Blog](https://bearblog.dev/), (Substack)[https://substack.com/], and (Reddit)[https://www.reddit.com/]). Plus direct links to my podcasts (it's just my blog but with AI-generated voice).
+- Various other tools/technologies added or being added.
 
-```sh
-yarn
-```
+I have other versions that were just ideas thrown on the internet, and there's also a beta version, testing packages that might break functionality; they're public in my repositories here on [GitHub](https://github.com/isyuricunha?tab=repositories). But you'll have to find them yourself, right?
 
-## Usage
+Currently, my site is translated into 9 (nine) different languages, but not all are complete. And this repository has a [GitHub action](https://github.com/isyuricunha/website/tree/main/.github/workflows) that automatically generates new [releases](https://github.com/isyuricunha/website/releases) every time I commit to it, but it doesn't matter if you download it directly from the release or via SSH Clone or Git Clone. However, if you download from the releases, make sure to use the zipped (.zip) or tarred (tar.gz) file labeled "source code."
 
-```sh
-yarn dev
-```
+The repository/site/project is active under my [personal license](https://github.com/isyuricunha/website/blob/main/license.md), and it's quite flexible, as long as you give proper credit and don't use it commercially, but I encourage you to read the license.
 
-## Run tests
+You can reach out to me via email at [me@yuricunha.com](mailto:me@yuricunha.com) or ping me on [Twitter/X](x.com/isyuricunha) if you need help, have questions, or just want to chat.
 
-```sh
-yarn dev
-```
-
-## Author
-
-👤 **https://www.github.com/isyuricunha**
-
-- Website: https://yuricunha.com/
-- Twitter: [@isyuricunha](https://twitter.com/isyuricunha)
-- Github: [@isyuricunha](https://github.com/isyuricunha)
-- LinkedIn: [@isyuricunha](https://linkedin.com/in/isyuricunha)
-
-## 🤝 Contributing
-
-Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/isyuricunha/website/issues).
-
-## Show your support
-
-Give a ⭐️ if this project helped you!
-
-<a href="https://www.patreon.com/isyuricunha">
-  <img src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" width="160">
-</a>
-
-## 📝 License
-
-Copyright © 2023 [https://www.github.com/isyuricunha](https://github.com/isyuricunha).<br />
-This project is [Personal License](https://github.com/isyuricunha/website/blob/main/license.md) licensed.
-
----
-
-_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
+I believe I've said all I had to say. Cheers!
