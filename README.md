@@ -45,7 +45,7 @@ To develop or see on your browser:
 Run `yarn dev`.
 
 You don't need build to put it on Vercel or Netlify (I only know this hosts).
-Remember to set-up env and environment variable, or it won't wok.
+Remember to set-up env and environment variable, or it won't work.
 
 I believe I've said all I had to say. Cheers!
 
