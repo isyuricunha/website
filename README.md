@@ -1,6 +1,6 @@
 Hey there,
 
-This is my current website project, meaning when you access it, you're diving into my portfolio ((you can click here to see it online)[https://yuricunha.com/]).
+This is my current website project, meaning when you access it, you're diving into my portfolio ([you can click here to see it online](https://yuricunha.com/)).
 
 Originally, it was ported/inspired by [Michael's site](https://github.com/mah51), but it's gone through several changes and alterations, incorporating various new and different technologies.
 
