@@ -22,6 +22,7 @@ Here on my site/project, there are some new or improved things, as well as tools
 - Updated Spotify API routes.
 - Page with the music I listen to on Spotify (artists, top tracks, along with a music history).
 - Redesigned blog and blog layout, with dynamic routes for sharing ((WhatsApp)[https://api.whatsapp.com/], (Twitter/X)[https://x.com/], (Facebook)[https://www.facebook.com/], and (LinkedIn)[https://www.linkedin.com/]) and reading on other platforms ([Bear Blog](https://bearblog.dev/), (Substack)[https://substack.com/], and (Reddit)[https://www.reddit.com/]). Plus direct links to my podcasts (it's just my blog but with AI-generated voice).
+- The blog has a link/icon for Google Translate, where it automatically opens translated into the language of your browser/device or the one you choose (I'm programming it to be translated directly on the blog, privately, to avoid using Google).
 - Various other tools/technologies added or being added.
 
 I have other versions that were just ideas thrown on the internet, and there's also a beta version, testing packages that might break functionality; they're public in my repositories here on [GitHub](https://github.com/isyuricunha?tab=repositories). But you'll have to find them yourself, right?
