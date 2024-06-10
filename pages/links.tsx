@@ -39,7 +39,7 @@ function Links(): React.ReactElement {
           <script
             defer
             src="https://umami.yuricunha.com/script.js"
-            data-website-id="ff874ecd-2ec3-48c5-abd3-10aabcf82036"
+            data-website-id="960d10df-ce06-4987-8ad1-b97bf2b09aa7"
           ></script>
           <meta name="theme-color" content="#ffffff" />
         </Head>
