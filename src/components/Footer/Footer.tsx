@@ -144,7 +144,7 @@ const Footer = (): JSX.Element => {
 
           <SocialIcons
             label="Email"
-            href="mailto:isyuricunha@duck.com?utm_source=yuricunha.com"
+            href="mailto:me@yuricunha.com?utm_source=yuricunha.com"
           >
             <FaEnvelopeCircleCheck />
           </SocialIcons>
