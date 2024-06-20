@@ -27,11 +27,11 @@ export default async function generateRSS() {
     feed.item({
       title: post.title,
       custom_elements: [
-        { id: `${siteURL}/blogs/${post.slug}` },
+        { id: `${siteURL}/blog/${post.slug}` },
         { updated: post.publishedAt },
         { description: post.summary },
         {
-          image: `${siteURL}/static/images/blogs/${post.slug}/${post.slug}.png`,
+          image: `${siteURL}/static/images/blog/${post.slug}/${post.slug}.png`,
         },
         { 'content:encoded': post.content },
         { author: [{ name: 'Yuri Cunha' }, { email: 'hidden' }] },
