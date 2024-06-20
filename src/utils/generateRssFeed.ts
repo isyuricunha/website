@@ -4,10 +4,10 @@ import RSS from 'rss';
 
 export default async function generateRSS() {
   const siteURL = 'https://yuricunha.com';
-  let allBlogs = await getAllFilesFrontMatter();
+  let allBlog = await getAllFilesFrontMatter();
 
-  // Sort the allBlogs array by publishedAt in descending order
-  allBlogs = allBlogs.sort(
+  // Sort the allBlog array by publishedAt in descending order
+  allBlog = allBlog.sort(
     (a, b) =>
       new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
   );
@@ -23,7 +23,7 @@ export default async function generateRSS() {
     copyright: `All rights reserved ${new Date().getFullYear()}, Yuri Cunha`,
   });
 
-  allBlogs.map((post) => {
+  allBlog.map((post) => {
     feed.item({
       title: post.title,
       custom_elements: [
