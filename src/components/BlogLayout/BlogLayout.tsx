@@ -392,7 +392,7 @@ const BlogLayout = ({
         </VStack>
 
         <a
-          href="https://memo.yuricunha.com/"
+          href="https://memos.yuricunha.com/"
           target="_blank"
           rel="noopener noreferrer"
           title="Memo Yuricunha"
