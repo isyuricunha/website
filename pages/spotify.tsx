@@ -97,7 +97,7 @@ function Spotify({ data, error }: SpotifyProps): React.ReactElement {
           <script
             defer
             src="https://umami.yuricunha.com/script.js"
-            data-website-id="e1afacb0-dafe-47e6-bcc7-a59108cf3880""
+            data-website-id="e1afacb0-dafe-47e6-bcc7-a59108cf3880"
           ></script>
           <meta name="theme-color" content="#ffffff" />
         </Head>
