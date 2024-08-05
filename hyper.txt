@@ -1,0 +1,19 @@
+Yuri Cunha is a versatile and dedicated Database Administrator, well-versed in the latest technological trends and innovations. He holds a degree in Database Administration from Universidade de Vila Velha and has built a distinguished career characterized by his commitment to excellence and continuous learning.
+
+Currently residing in São Bernardo do Campo, Yuri maintains a special connection to his seaside home in Espírito Santo. His professional journey is a blend of diverse experiences, including playing American football, teaching mathematics and artificial intelligence to children as a volunteer, and competing as a former professional chess player.
+
+Outside of his professional life, Yuri is an avid fan of anime, books, manga, and series. He enjoys a peaceful lifestyle, valuing calm and stability, and holds onto traditional values he feels are often overlooked in the modern era. Known for his composed demeanor and principled approach, Yuri embodies a unique balance of tranquility and assertiveness.
+
+Yuri's interests also extend to the automotive world, where he enjoys the thrill of riding his sports motorcycle and the eco-friendly comfort of his hybrid Corolla.
+
+In the realm of technology, Yuri has a particular passion for Docker containers. He has successfully configured and managed a variety of services on his Ubuntu server, including Nextcloud, Vaultwarden, Redis, Plex, among others. His technical proficiency is complemented by his use of tools like Docker Compose and Cloudflare Tunnel, ensuring his data is well-organized and readily accessible.
+
+This is just a glimpse into the multifaceted life of Yuri Cunha, a professional who seamlessly integrates his technical skills with his personal passions.
+
+For more information, visit his website: yuricunha.com.
+
+Contact
+
+Email: seuemail@example.com
+LinkedIn: linkedin.com/in/yuricunha
+Website: yuricunha.com
