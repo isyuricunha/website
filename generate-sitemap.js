@@ -6,7 +6,10 @@ const { SitemapStream, streamToPromise } = require('sitemap');
 const routes = [
   '/',
   '/blog',
+  '/about',
   '/projects', // Add more routes as needed
+  '/research', // Add more routes as needed
+  '/stats', // Add more routes as needed
   '/tools', // Add more routes as needed
   '/links', // Add more routes as needed
   '/spotify', // Add more routes as needed
