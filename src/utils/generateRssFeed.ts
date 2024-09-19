@@ -34,7 +34,9 @@ export default async function generateRSS() {
           image: `${siteURL}/static/images/blog/${post.slug}/${post.slug}.png`,
         },
         { 'content:encoded': post.content },
-        { author: [{ name: 'Yuri Cunha' }, { email: 'me@yuricunha.com' }] },
+        {
+          author: [{ name: 'Yuri Cunha' }, { email: 'contact@yuricunha.com' }],
+        },
       ],
     });
   });

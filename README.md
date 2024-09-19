@@ -31,7 +31,7 @@ Currently, my site is translated into 9 (nine) different languages, but not all 
 
 The repository/site/project is active under my [personal license](https://github.com/isyuricunha/website/blob/main/license.md), and it's quite flexible, as long as you give proper credit and don't use it commercially, but I encourage you to read the license.
 
-You can reach out to me via email at [me@yuricunha.com](mailto:me@yuricunha.com) or ping me on [Twitter/X](x.com/isyuricunha) if you need help, have questions, or just want to chat.
+You can reach out to me via email at [contact@yuricunha.com](mailto:contact@yuricunha.com) or ping me on [Twitter/X](x.com/isyuricunha) if you need help, have questions, or just want to chat.
 
 To develop this project you need [Node.js](https://nodejs.org/) and [NPM](https://www.npmjs.com/) or [Yarn](https://yarnpkg.com/) (I use Yarn and will show how to build/develop on Yarn).
 
