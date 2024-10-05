@@ -8,8 +8,8 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 import { BsFillLightningFill } from 'react-icons/bs';
-import { FaDiscord, FaReact } from 'react-icons/fa';
-import { IoLogoNodejs } from 'react-icons/io';
+import { FaDiscord, FaReact, FaHtml5, FaCss3 } from 'react-icons/fa';
+import { IoLogoNodejs, IoLogoJavascript } from 'react-icons/io';
 import { SiMarkdown } from 'react-icons/si';
 import { NextJSIcon, SemanticIcon, TypeScriptIcon } from '../Icons';
 
@@ -21,7 +21,9 @@ const tagDict = {
   'Chakra-UI': BsFillLightningFill,
   MDX: SiMarkdown,
   'Discord.JS': FaDiscord,
-  'Semantic-UI': SemanticIcon,
+  HTML: FaHtml5,
+  CSS: FaCss3,
+  'Semantic-UI': IoLogoJavascript,
 };
 
 interface TagsProps {
