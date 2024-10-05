@@ -23,7 +23,8 @@ const tagDict = {
   'Discord.JS': FaDiscord,
   HTML: FaHtml5,
   CSS: FaCss3,
-  'Semantic-UI': IoLogoJavascript,
+  JavaScript: IoLogoJavascript,
+  'Semantic-UI': SemanticIcon,
 };
 
 interface TagsProps {
