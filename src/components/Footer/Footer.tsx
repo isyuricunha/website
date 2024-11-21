@@ -147,7 +147,7 @@ const Footer = (): JSX.Element => {
             <FaEnvelopeCircleCheck />
           </SocialIcons>
 
-          < />
+          
         </Stack>
       </SimpleGrid>
     </Box>

@@ -66,7 +66,7 @@ export default function Home(): React.ReactElement {
                 onLoad={() => setImageLoad(true)}
               />
 
-              < />
+              
             </Skeleton>
             <Flex
               alignSelf="center"
