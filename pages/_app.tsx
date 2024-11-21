@@ -10,7 +10,6 @@ import { I18nextProvider } from 'react-i18next';
 import i18n from '../src/components/i18n';
 import Script from 'next/script';
 
-import InstallPwaButton from '@/components/InstallWPA/InstallPwaButton';
 
 import Head from 'next/head';
 
@@ -124,7 +123,6 @@ export default function MyApp({
         </QueryClientProvider>
       </ChakraProvider>
 
-      <InstallPwaButton />
     </>
   );
 }

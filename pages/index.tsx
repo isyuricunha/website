@@ -13,7 +13,7 @@ import Link from 'next/link';
 import React, { useState } from 'react';
 import { NextSeo } from 'next-seo';
 import AboutTerminal from '@/components/AboutTerminal';
-import InstallPwaButton from '@/components/InstallWPA';
+import  from '@/components/InstallWPA';
 
 import { t } from 'i18next';
 
@@ -66,7 +66,7 @@ export default function Home(): React.ReactElement {
                 onLoad={() => setImageLoad(true)}
               />
 
-              <InstallPwaButton />
+              < />
             </Skeleton>
             <Flex
               alignSelf="center"

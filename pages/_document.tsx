@@ -3,7 +3,6 @@ import { ColorModeScript } from '@chakra-ui/react';
 // eslint-disable-next-line @next/next/no-document-import-in-page
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 import React from 'react';
-import InstallPwaButton from '@/components/InstallWPA';
 
 import Script from 'next/script';
 
@@ -41,7 +40,6 @@ export default class MyDocument extends Document {
           <Main />
 
           <NextScript />
-          <InstallPwaButton />
         </body>
       </Html>
     );

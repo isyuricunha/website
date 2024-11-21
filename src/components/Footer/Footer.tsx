@@ -21,7 +21,7 @@ import { useQuery } from 'react-query';
 // import { BsPauseFill } from 'react-icons/bs';
 import SocialIcons from './SocialIcons';
 import React from 'react';
-import InstallPwaButton from '../InstallWPA/InstallPwaButton';
+import  from '../InstallWPA/';
 import {
   MdOutlineMotionPhotosPause,
   MdOutlinePlayCircleOutline,
@@ -147,7 +147,7 @@ const Footer = (): JSX.Element => {
             <FaEnvelopeCircleCheck />
           </SocialIcons>
 
-          <InstallPwaButton />
+          < />
         </Stack>
       </SimpleGrid>
     </Box>
