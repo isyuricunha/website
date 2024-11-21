@@ -6,7 +6,7 @@ export const researchItems: ResearchItem[] = [
     authors: [
       {
         name: 'Yuri Cunha',
-        avatar: '/static/images/toMe/me-hide1.png',
+        avatar: '/static/images/toMe/look-me.png',
       },
     ],
     abstract:

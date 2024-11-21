@@ -60,7 +60,7 @@ export default function Home(): React.ReactElement {
                 flexGrow={3}
                 borderRadius="2xl"
                 boxSize="250px"
-                src="./static/images/toMe/me-hide1.png"
+                src="./static/images/toMe/look-me.png"
                 objectFit="cover"
                 alt="Yuri Cunha"
                 onLoad={() => setImageLoad(true)}
