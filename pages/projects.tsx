@@ -50,7 +50,7 @@ function Projects({ repos }: ProjectsProps): React.ReactElement {
           <script
             defer
             src="https://umami.yuricunha.com/script.js"
-            data-website-id="e1afacb0-dafe-47e6-bcc7-a59108cf3880"
+            data-website-id="a458a3e8-e59e-4872-8b2b-fea74fc1755a"
           ></script>
           <meta name="theme-color" content="#ffffff" />
         </Head>
