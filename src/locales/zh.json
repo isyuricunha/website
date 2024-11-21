@@ -60,6 +60,10 @@
   "spotifyWhatListening": "这是我现在在听的歌曲",
   "spotifyTopSongsArtists": "*过去6个月的热门歌曲和艺术家",
   "spotifyViewProfile": "在Spotify上查看我的个人资料",
+  "spotifyTopSongs": "热门歌曲",
+  "spotifyTopArtists": "热门艺术家",
+  "spotifyRecentSongs": "最近听的歌曲",
+  "spotifyOneQuote": "正在收听",
 
   "titleAboutMe": "关于我",
   "aboutOne": "大家好！我是尤里，一名数据库管理员，热衷于数据完整性和使应用程序顺畅运行。当我不在管理服务器时，你会发现我在跑步（或在小径上）——我沉迷于脚踏实地并观看世界变化的魔力。",

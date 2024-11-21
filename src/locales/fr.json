@@ -60,6 +60,10 @@
   "spotifyWhatListening": "Voici ce que j'écoute en ce moment",
   "spotifyTopSongsArtists": "*Top Chansons et Artistes au cours des 6 derniers mois",
   "spotifyViewProfile": "Voir Mon Profil sur Spotify",
+  "spotifyTopSongs": "Top Chansons",
+  "spotifyTopArtists": "Top Artistes",
+  "spotifyRecentSongs": "Chansons récentes",
+  "spotifyOneQuote": "Écoute en cours",
 
   "titleAboutMe": "À propos de moi",
   "aboutOne": "Bonjour ! Je suis Yuri, un administrateur de bases de données passionné par l'intégrité des données et le bon fonctionnement des applications. Quand je ne suis pas en train de gérer des serveurs, vous me trouverez à courir sur le trottoir ou les sentiers; je suis obsédé par la magie de mettre un pied devant l'autre et de voir le monde défiler.",

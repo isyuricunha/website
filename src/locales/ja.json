@@ -60,6 +60,10 @@
   "spotifyWhatListening": "現在私が聞いているものです",
   "spotifyTopSongsArtists": "*過去6ヶ月間のトップ曲とアーティスト",
   "spotifyViewProfile": "Spotifyでの私のプロフィールを見る",
+  "spotifyTopSongs": "トップソング",
+  "spotifyTopArtists": "トップアーティスト",
+  "spotifyRecentSongs": "最近聴いた曲",
+  "spotifyOneQuote": "今聴いている",
 
   "titleAboutMe": "私について",
   "aboutOne": "こんにちは！私はユリです。データの整合性とアプリケーションの円滑な動作に情熱を持つデータベース管理者です。サーバーを扱っていないときは、ランニングしていることが多いです（またはトレイルを走っています）-一歩一歩を踏み出し、世界を見渡す魔法に夢中です。",
