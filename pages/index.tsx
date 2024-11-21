@@ -13,7 +13,7 @@ import Link from 'next/link';
 import React, { useState } from 'react';
 import { NextSeo } from 'next-seo';
 import AboutTerminal from '@/components/AboutTerminal';
-import  from '@/components/InstallWPA';
+import  from '@/components/';
 
 import { t } from 'i18next';
 

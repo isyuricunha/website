@@ -21,7 +21,7 @@ import { useQuery } from 'react-query';
 // import { BsPauseFill } from 'react-icons/bs';
 import SocialIcons from './SocialIcons';
 import React from 'react';
-import  from '../InstallWPA/';
+import  from '..//';
 import {
   MdOutlineMotionPhotosPause,
   MdOutlinePlayCircleOutline,
