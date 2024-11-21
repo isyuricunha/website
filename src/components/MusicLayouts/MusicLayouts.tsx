@@ -2,6 +2,7 @@ import { Flex, SimpleGrid, Text } from '@chakra-ui/react';
 import React from 'react';
 import LineHeading from '../LineHeading';
 import { SongCard, ArtistCard } from './MusicCards';
+import { t } from 'i18next';
 
 const phrases = [
   'Coding my way to the next beat.',
@@ -37,7 +38,7 @@ export const TopSongs = ({ songs }: { songs: any }): JSX.Element => (
     overflow="visible"
   >
     <LineHeading alignSelf="center" mb={5}>
-      Top Songs
+      {t('spotifyTopSongs')}
     </LineHeading>
     {songs.map((song: any) => (
       <SongCard song={song} key={song.id} />
@@ -52,7 +53,7 @@ export const TopArtists = ({
 }): React.ReactElement => (
   <Flex direction="column" maxW="xl" width="full" mx="auto" overflow="visible">
     <LineHeading alignSelf="center" mb="4">
-      Top Artists
+      {t('spotifyTopArtists')}
     </LineHeading>
     <SimpleGrid
       bg="transparent"
@@ -74,7 +75,7 @@ export const TopArtists = ({
 export const RecentSongs = ({ songs }: { songs: any }): JSX.Element => (
   <Flex direction="column" width="full" maxW="2xl" mx="auto" overflow="visible">
     <LineHeading alignSelf="center" mb={5}>
-      Recently Played Songs
+      {t('spotifyRecentSongs')}
     </LineHeading>
     {songs.map((song: any, index: number) => (
       <SongCard song={song.track} key={index.toString() + song.track.id} />
@@ -95,7 +96,7 @@ export const CurrentlyPlaying = ({
   return (
     <Flex direction="column" alignItems="center" width="full" mx="auto">
       <LineHeading mb="4">
-        <Text>Hacking mind&apos;s mainframe, rewiring rhythm.</Text>
+        <Text>{t('spotifyOneQuote')}</Text>
       </LineHeading>
       {song?.isPlaying ? (
         <SongCard song={song} titleCard isPlaying={song.isPlaying} />
