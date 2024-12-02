@@ -10,7 +10,6 @@ import { I18nextProvider } from 'react-i18next';
 import i18n from '../src/components/i18n';
 import Script from 'next/script';
 
-
 import Head from 'next/head';
 
 import theme from '../src/theme';
@@ -93,7 +92,7 @@ export default function MyApp({
           site_name: pageTitle,
           images: [
             {
-              url: 'https://www.yuricunha.com/static/images/toMe/look-me.png',
+              url: 'https://www.yuricunha.com/static/images/toMe/me.png',
               alt: 'Yuri Cunha Logo Picture',
             },
           ],
@@ -122,7 +121,6 @@ export default function MyApp({
           </MDXProvider>
         </QueryClientProvider>
       </ChakraProvider>
-
     </>
   );
 }

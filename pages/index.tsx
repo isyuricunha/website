@@ -14,7 +14,6 @@ import React, { useState } from 'react';
 import { NextSeo } from 'next-seo';
 import AboutTerminal from '@/components/AboutTerminal';
 
-
 import { t } from 'i18next';
 
 export default function Home(): React.ReactElement {
@@ -60,13 +59,11 @@ export default function Home(): React.ReactElement {
                 flexGrow={3}
                 borderRadius="2xl"
                 boxSize="250px"
-                src="./static/images/toMe/look-me.png"
+                src="./static/images/toMe/me.png"
                 objectFit="cover"
                 alt="Yuri Cunha"
                 onLoad={() => setImageLoad(true)}
               />
-
-              
             </Skeleton>
             <Flex
               alignSelf="center"
