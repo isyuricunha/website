@@ -32,7 +32,7 @@ export default class MyDocument extends Document {
           <script
             defer
             src="https://umami.yuricunha.com/script.js"
-            data-website-id="a458a3e8-e59e-4872-8b2b-fea74fc1755a"
+            data-website-id="375937c3-9c42-404f-b8de-442b2542fc5e"
           ></script>
         </Head>
         <body id={'de_body'}>
