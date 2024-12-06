@@ -79,4 +79,4 @@ jobs:
           prerelease: false
           title: 'Last build: ${{ steps.taggerFinal.outputs.new_tag }}'
           files: |
-            *
+            *.zip
