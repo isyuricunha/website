@@ -8,9 +8,6 @@
     "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
     "next",
-
-    // Uncomment the following lines to enable eslint-config-prettier
-    // Is not enabled right now to avoid issues with the Next.js repo
     "prettier"
   ],
 
@@ -44,11 +41,8 @@
     "@typescript-eslint/no-var-requires": 0,
     "@typescript-eslint/no-use-before-define": 0,
     "@typescript-eslint/no-unused-vars": [
-      2,
-      {
-        "argsIgnorePattern": "^_"
-      },
-      ["error"]
+      "error",
+      { "argsIgnorePattern": "^_" }
     ],
     "no-console": [
       2,
@@ -61,11 +55,9 @@
   "overrides": [
     {
       "files": ["*.test.js*"],
-
       "env": {
         "jest": true
       },
-
       "rules": {
         "jest/no-disabled-tests": "error",
         "jest/no-focused-tests": "error",
