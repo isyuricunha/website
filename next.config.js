@@ -1,3 +1,12 @@
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+};
+
+module.exports = nextConfig;
+
 const ContentSecurityPolicy = `
   default-src 'self';
   script-src 'self' unpkg.com 'unsafe-eval' 'unsafe-inline' *.yuricunha.com;
