@@ -49,3 +49,10 @@ Remember to set-up env and environment variable, or it won't work.
 I believe I've said all I had to say. Cheers!
 
 PS: Project versions work like this: V1.2.3: The 1 represents Design, the 2 represents a significant technology change, and the 3 represents a minor change or alteration (maybe just a bug fix).
+
+This is the website design:
+
+![desktop](https://i.imgur.com/lB9KLgw.png)
+
+![mobile](https://i.imgur.com/2iBdfJk.png)
+
