@@ -91,7 +91,7 @@ function Blog({ posts }: { posts: any }): React.ReactElement {
           <script
             defer
             src="https://umami.yuricunha.com/script.js"
-            data-website-id="375937c3-9c42-404f-b8de-442b2542fc5e"
+            data-website-id="bc1f95d3-382b-4a26-bfc7-2ca34d2c64a5"
           ></script>
         </Head>
       </Head>
