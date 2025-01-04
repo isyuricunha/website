@@ -1,9 +1,9 @@
 // src/i18n.ts
-// src/i18n.ts
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import LanguageDetector from 'i18next-browser-languagedetector'; // Importe o detector de idioma
+import LanguageDetector from 'i18next-browser-languagedetector'; // Import language detector
 
+// Import translation files for different languages
 import csTranslation from '../../../src/locales/cs.json';
 import deTranslation from '../../../src/locales/de.json';
 import enTranslation from '../../../src/locales/en.json';
@@ -22,8 +22,8 @@ import srTranslation from '../../../src/locales/sr.json';
 import zhTranslation from '../../../src/locales/zh.json';
 
 i18n
-  .use(LanguageDetector) // Use o detector de idioma
-  .use(initReactI18next)
+  .use(LanguageDetector) // Use the language detector to automatically detect user language
+  .use(initReactI18next) // Initialize react-i18next integration
   .init({
     resources: {
       cs: { translation: csTranslation },
@@ -43,13 +43,13 @@ i18n
       sr: { translation: srTranslation },
       zh: { translation: zhTranslation },
     },
-    fallbackLng: 'en', // idioma de fallback
+    fallbackLng: 'en', // Fallback language in case the detected language is not available
     detection: {
-      order: ['navigator', 'htmlTag', 'path', 'subdomain'], // ordem de detecção
-      caches: ['localStorage', 'cookie'], // onde armazenar o idioma detectado
-      excludeCacheFor: ['cimode'], // não use o cache se o idioma for 'cimode'
+      order: ['navigator', 'htmlTag', 'path', 'subdomain'], // Detection order (navigator, HTML tag, URL path, subdomain)
+      caches: ['localStorage', 'cookie'], // Where to store the detected language (localStorage and cookies)
+      excludeCacheFor: ['cimode'], // Do not cache language for 'cimode'
     },
-    interpolation: { escapeValue: false },
+    interpolation: { escapeValue: false }, // Disable escaping of values to avoid issues with HTML rendering
   });
 
 export default i18n;
