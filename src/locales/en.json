@@ -35,7 +35,6 @@
   "welcomeMessage8": "explore my ",
   "privacy-first social media": "privacy-first social media",
   "welcomeMessage9": " or check the footer.",
-
   "collectionBlogPost": "Explore a collection of my blog posts on technology and infrastructure.",
   "blogPosts": "Blog Posts",
   "blogSearch": "Search",
@@ -43,20 +42,16 @@
   "blogSortRecent": "Recent",
   "blogSortOld": "Old",
   "blogSearchResult": "No Results :(",
-
   "myProjects": "My Projects",
   "projectsQuickCollection": "A quick collection of my projects.",
   "projectRepositories": "Repositories",
   "projectsFullList": "A list of all of the public repositories on my GitHub.",
   "projectViewMyProfile": "View My Profile",
-
   "links": "Links",
   "linksMyFav": "My favourite parts of the web.",
-
   "research": "My research",
   "researchDescription": "A curated selection of my deep dives into server optimization, database management, and cloud solutions. Always exploring and refining.",
   "viewPaper": "View Paper",
-
   "spotifyWhatListening": "Here's what I'm listening to at the moment",
   "spotifyTopSongsArtists": "*Top Songs and Artists over the past 6 months",
   "spotifyViewProfile": "View My Profile on Spotify",
@@ -64,7 +59,6 @@
   "spotifyTopArtists": "Top Artists",
   "spotifyRecentSongs": "Recently Played Songs",
   "spotifyOneQuote": "Listening now",
-
   "titleAboutMe": "About me",
   "aboutOne": "Hi there! I'm Yuri, a Senior Cloud and Infrastructure Specialist passionate about building resilient systems and ensuring seamless performance. My expertise spans server optimization, database management, and deploying scalable cloud solutions.",
   "aboutTwo": "Currently, I'm exploring new opportunities to apply my skills in designing efficient infrastructures and optimizing IT operations. In my previous roles, I mastered fine-tuning databases and creating reliable architectures at companies like Divinobit (now Bairon).",
