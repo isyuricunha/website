@@ -1,11 +1,10 @@
-name: update readme and deploy new release
+name: deploy release and notes / change logs
 
 on:
   push:
     branches: main
     tags:
-      - "[0-9]+.*"
-
+      - '[0-9]+.*'
 
 jobs:
   build:
@@ -17,27 +16,10 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: config python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python-version }}
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-
-      - name: readme update
-        run: python update_readme.py
-
-      - name: commit readme
+      - name: config git user
         run: |
           git config user.name "${GITHUB_ACTOR}"
           git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-
-      - name: "Build & test"
-        run: |
-          echo "done!"
 
       - name: Minor version for each merge
         id: taggerDryRun
@@ -48,7 +30,7 @@ jobs:
           DRY_RUN: true
           DEFAULT_BUMP: patch
           BRANCH_HISTORY: compare
-          TAG_NAME: "v${{ steps.taggerDryRun.outputs.new_tag }}"
+          TAG_NAME: 'v${{ steps.taggerDryRun.outputs.new_tag }}'
 
       - name: echo new tag
         run: |
@@ -69,18 +51,16 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: true
           DEFAULT_BUMP: patch
-          BRANCH_HISTORY: full
-          TAG_NAME: "v${{ steps.taggerFinal.outputs.new_tag }}"
+          BRANCH_HISTORY: compare
+          TAG_NAME: 'v${{ steps.taggerFinal.outputs.new_tag }}'
 
-      - name: commit readme
+      - name: Generate release notes
+        id: release_notes
         run: |
-          git config user.name "${GITHUB_ACTOR}"
-          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-          git add README.md
-          git commit -am "update info/link/quote, idk"
-          git push --all -f https://${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git
+          notes=$(git log --oneline --decorate --no-merges "${{ steps.taggerFinal.outputs.tag }}..${{ steps.taggerFinal.outputs.new_tag }}")
+          echo "::set-output name=notes::${notes}"
 
-      - name: "Generate tag and create release"
+      - name: 'Generate tag and create release'
         id: create_release
         uses: actions/create-release@v1
         env:
@@ -88,14 +68,15 @@ jobs:
         with:
           tag_name: ${{ steps.taggerFinal.outputs.new_tag }}
           release_name: Release ${{ steps.taggerFinal.outputs.new_tag }}
+          body: ${{ steps.release_notes.outputs.notes }}
           draft: false
 
-      - name: "Generate changelog and create release"
+      - name: 'Generate changelog and create release'
         uses: marvinpinto/action-automatic-releases@latest
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "${{ steps.taggerFinal.outputs.new_tag }}"
+          repo_token: '${{ secrets.GITHUB_TOKEN }}'
+          automatic_release_tag: '${{ steps.taggerFinal.outputs.new_tag }}'
           prerelease: false
-          title: "Last build: ${{ steps.taggerFinal.outputs.new_tag }}"
+          title: 'Last build: ${{ steps.taggerFinal.outputs.new_tag }}'
           files: |
             *.zip
