@@ -1,58 +1,92 @@
-Hey there,
 
-This is my current website project, meaning when you access it, you're diving into my portfolio ([you can click here to see it online](https://yuricunha.com/)).
+Welcome to my personal portfolio site! Explore my work by visiting [yuricunha.com](https://yuricha.com/).
 
-Originally, it was ported/inspired by [Michael's site](https://github.com/mah51), but it's gone through several changes and alterations, incorporating various new and different technologies.
+Project Overview
 
-Here on my site/project, there are some new or improved things, as well as tools or technologies. And some of them include:
+This project began as an adaptation of [Michael's site](https://github.com/mah51) but has evolved significantly with the integration of new technologies and design philosophies.
 
-- Internationalization with i18n.
-- Updated/revised GitHub API to fetch my public repositories.
-- ConvertKit Newsletter API integration (also functional with Mailerlit).
-- Comments section (currently deactivated).
-- Enhanced Spotify API.
-- Feed/RSS for my posts (thanks to all who subscribed!).
-- Now section (what I'm up to) and About Me (the title says it all) sections, currently deactivated.
-- Updated various packages.
-- Design improvements like new icons, responsiveness, conventional routes, and APIs.
-- Privacy-focused metrics/analytics (thanks, [Umami](https://github.com/umami-software/umami)).
-- Proxy running on DuckDuckGo for more privacy and no tracking.
-- Improved and/or added Robots, crawler URLs, and dynamic page titles for better indexing on search engines I don't like (Google, Bing, and others non-private) and those I do (DuckDuck, Qwarty, and similar).
-- Updated Firebase API routes.
-- Updated Spotify API routes.
-- Page with the music I listen to on Spotify (artists, top tracks, along with a music history).
-- Redesigned blog and blog layout, with dynamic routes for sharing ([WhatsApp](https://api.whatsapp.com/), [Twitter/X](https://x.com/), [Facebook](https://www.facebook.com/), and [LinkedIn](https://www.linkedin.com/)) and reading on other platforms ([Bear Blog](https://bearblog.dev/), [Substack](https://substack.com/), and [Reddit](https://www.reddit.com/)). Plus direct links to my podcasts (it's just my blog but with AI-generated voice).
-- The blog has a link/icon for Google Translate, where it automatically opens translated into the language of your browser/device or the one you choose (I'm programming it to be translated directly on the blog, privately, to avoid using Google).
-- Various other tools/technologies added or being added.
+Key Features
 
-I have other versions that were just ideas thrown on the internet, and there's also a beta version, testing packages that might break functionality; they're public in my repositories here on [GitHub](https://github.com/isyuricunha?tab=repositories). But you'll have to find them yourself, right?
+- Internationalization: Implemented using i18n for multiple language support.
+- API Integrations:
+  - GitHub API: Updated for fetching public repositories.
+  - ConvertKit Newsletter API: With compatibility for Mailerlite.
+  - Spotify API: Enhanced functionality for music-related features.
+- User Interaction:
+  - Comments Section (currently deactivated).
+  - Now Section & About Me (deactivated but planned for reactivation).
+- SEO & Privacy:
+  - Privacy-focused Metrics: Utilizes [Umami](https://github.com/umami-software/umami) for analytics.
+  - DuckDuckGo Proxy: For enhanced privacy.
+  - SEO Improvements: Updated robots.txt, dynamic page titles, and crawler URLs.
+- Content Distribution:
+  - RSS Feed for blog posts.
+  - Blog Redesign: With dynamic sharing routes for social media and reading platforms.
+  - Spotify Music Page: Showcases artists, top tracks, and listening history.
+- Translation: Google Translate integration for automatic page translation (working on in-site translation for privacy).
 
-Currently, my site is translated into 15+ different languages, but not all are complete. And this repository has a [GitHub action](https://github.com/isyuricunha/website/tree/main/.github/workflows) that automatically generates new [releases](https://github.com/isyuricunha/website/releases) every time I commit to it, but it doesn't matter if you download it directly from the release or via SSH Clone or Git Clone. However, if you download from the releases, make sure to use the zipped (.zip) or targzed (tar.gz) file labeled "source code."
+Technologies Used
 
-The repository/site/project is active under my [personal license](https://github.com/isyuricunha/website/blob/main/license.md), and it's quite flexible, as long as you give proper credit and don't use it commercially, but I encourage you to read the license.
+- Node.js
+- Yarn (or NPM)
+- Firebase for API routes
+- Various packages for enhanced functionality
 
-You can reach out to me via email at [contact@yuricunha.com](mailto:contact@yuricunha.com) or ping me on [Twitter/X](x.com/isyuricunha) if you need help, have questions, or just want to chat.
+Development Setup
 
-To develop this project you need [Node.js](https://nodejs.org/) and [NPM](https://www.npmjs.com/) or [Yarn](https://yarnpkg.com/) (I use Yarn and will show how to build/develop on Yarn).
+To get started with development:
 
-To install packages:
+1. Install Dependencies:
+   ```
+   yarn install
+   ```
 
-Run `yarn`.
+2. Run Development Server:
+   ```
+   yarn dev
+   ```
 
-To develop or see on your browser:
+Note: Environmental setup is crucial; ensure all environment variables are configured correctly.
 
-Run `yarn dev`.
+Deployment
 
-You don't need build to put it on Vercel or Netlify (I only know this hosts).
-Remember to set-up env and environment variable, or it won't work.
+This project can be deployed on platforms like Vercel or Netlify without needing a build step. Just remember to configure your environment variables.
 
-I believe I've said all I had to say. Cheers!
+Versioning
 
-PS: Project versions work like this: V1.2.3: The 1 represents Design, the 2 represents a significant technology change, and the 3 represents a minor change or alteration (maybe just a bug fix).
+- V1.2.3: 
+  - 1 for Design changes
+  - 2 for Major tech updates
+  - 3 for Minor changes or bug fixes
 
-This is the website design:
+Translations
 
+Currently, the site supports over 15 languages, though translations are not fully complete for all languages.
+
+GitHub Actions
+
+- Automated Releases: New releases are generated automatically with each commit, using GitHub Actions. Download either the `.zip` or `tar.gz` labeled "source code" from [releases](https://github.com/isyuricunha/website/releases).
+
+License
+
+This project is under a [personal license](https://github.com/isyuricunha/website/blob/main/license.md) which allows for non-commercial use with proper credit.
+
+Contact
+
+Feel free to reach out via:
+- Email: [contact@yuricunha.com](mailto:contact@yuricunha.com)
+- X (Twitter): [x.com/isyuricunha](x.com/isyuricunha)
+
+Project Screenshots
+
+Desktop View:
 ![desktop](https://i.imgur.com/lB9KLgw.png)
 
+Mobile View:
 ![mobile](https://i.imgur.com/2iBdfJk.png)
 
+Beta Versions & Experiments
+
+Check out my GitHub repositories for beta versions or experimental features at [isyuricunha's GitHub](https://github.com/isyuricunha?tab=repositories).
+
+Thanks for checking out my project! Cheers!
