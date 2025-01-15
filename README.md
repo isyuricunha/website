@@ -27,7 +27,7 @@ Here on my site/project, there are some new or improved things, as well as tools
 
 I have other versions that were just ideas thrown on the internet, and there's also a beta version, testing packages that might break functionality; they're public in my repositories here on [GitHub](https://github.com/isyuricunha?tab=repositories). But you'll have to find them yourself, right?
 
-Currently, my site is translated into 9 (nine) different languages, but not all are complete. And this repository has a [GitHub action](https://github.com/isyuricunha/website/tree/main/.github/workflows) that automatically generates new [releases](https://github.com/isyuricunha/website/releases) every time I commit to it, but it doesn't matter if you download it directly from the release or via SSH Clone or Git Clone. However, if you download from the releases, make sure to use the zipped (.zip) or targzed (tar.gz) file labeled "source code."
+Currently, my site is translated into 15+ different languages, but not all are complete. And this repository has a [GitHub action](https://github.com/isyuricunha/website/tree/main/.github/workflows) that automatically generates new [releases](https://github.com/isyuricunha/website/releases) every time I commit to it, but it doesn't matter if you download it directly from the release or via SSH Clone or Git Clone. However, if you download from the releases, make sure to use the zipped (.zip) or targzed (tar.gz) file labeled "source code."
 
 The repository/site/project is active under my [personal license](https://github.com/isyuricunha/website/blob/main/license.md), and it's quite flexible, as long as you give proper credit and don't use it commercially, but I encourage you to read the license.
 
