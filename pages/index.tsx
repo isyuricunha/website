@@ -59,7 +59,7 @@ export default function Home(): React.ReactElement {
                 flexGrow={3}
                 borderRadius="2xl"
                 boxSize="250px"
-                src="./static/images/toMe/avatar-cyan.png"
+                src="./static/images/toMe/me-face.png"
                 objectFit="cover"
                 alt="Yuri Cunha"
                 onLoad={() => setImageLoad(true)}
