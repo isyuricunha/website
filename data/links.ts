@@ -80,13 +80,6 @@ export const links: LinkType[] = [
     date: new Date('2022-10-22'),
   },
   {
-    id: 'isometric',
-    link: 'https://isometric.online/?utm_source=yuricunha.com',
-    name: 'Isometric',
-    label: 'Free Illustrations',
-    date: new Date('2022-10-22'),
-  },
-  {
     id: 'undraw',
     link: 'https://undraw.co/illustrations?utm_source=yuricunha.com',
     name: 'unDraw',
