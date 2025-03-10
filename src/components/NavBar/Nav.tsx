@@ -29,7 +29,7 @@ const links = [
     link: '/blog',
   },
   {
-    name: t('titleProjects'),
+    name: t('titleLinks'),
     link: '/projects',
   },
   {
