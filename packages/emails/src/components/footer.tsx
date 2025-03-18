@@ -7,14 +7,14 @@ const Footer = () => {
       <Section>
         <Row className='mt-4' align='left' width='auto'>
           <Column className='pr-6 align-middle'>
-            <Link href='https://twitter.com/tszhong0411' className='text-xl text-black'>
-              <Img src='https://honghong.me/images/email/x.png' alt='X' width={22} height={22} />
+            <Link href='https://twitter.com/isyuricunha' className='text-xl text-black'>
+              <Img src='https://yuricunha.com/images/email/x.png' alt='X' width={22} height={22} />
             </Link>
           </Column>
           <Column className='align-middle'>
-            <Link href='https://github.com/tszhong0411/honghong.me' className='text-xl text-black'>
+            <Link href='https://github.com/isyuricunha/website' className='text-xl text-black'>
               <Img
-                src='https://honghong.me/images/email/github.png'
+                src='https://yuricunha.com/images/email/github.png'
                 alt='GitHub'
                 width={22}
                 height={22}

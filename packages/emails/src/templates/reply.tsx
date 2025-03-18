@@ -50,7 +50,7 @@ const Reply = (props: ReplyProps) => {
           fontStyle='normal'
         />
       </Head>
-      <Preview>New reply on the post "{post.title}" on honghong.me</Preview>
+      <Preview>New reply on the post "{post.title}" on yuricunha.com</Preview>
       <Tailwind>
         <Body className='m-auto bg-white p-1'>
           <Container className='mx-auto w-full max-w-[660px] rounded-lg border border-solid border-[#e5e5e5] bg-white p-8 shadow-sm'>
@@ -108,7 +108,7 @@ Reply.PreviewProps = {
     "Thank you for your kind words! I'm glad you found the article helpful. Let me know if you have any questions!",
   replier: {
     name: 'John Smith',
-    image: 'https://honghong.me/api/avatar/john-doe'
+    image: 'https://yuricunha.com/api/avatar/john-doe'
   },
   comment:
     'This is exactly what I needed! The explanations are clear and concise. Thanks for sharing! 👏',
