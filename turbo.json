@@ -1,0 +1,110 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": [".env.*local"],
+  "globalEnv": [
+    "NODE_ENV",
+    "CI",
+    "ANALYZE",
+    "PORT",
+    "SPOTIFY_CLIENT_ID",
+    "SPOTIFY_CLIENT_SECRET",
+    "SPOTIFY_REFRESH_TOKEN",
+    "GOOGLE_API_KEY",
+    "GITHUB_TOKEN",
+    "WAKATIME_API_KEY",
+    "BETTER_AUTH_SECRET",
+    "BETTER_AUTH_URL",
+    "GOOGLE_CLIENT_ID",
+    "GOOGLE_CLIENT_SECRET",
+    "GITHUB_CLIENT_ID",
+    "GITHUB_CLIENT_SECRET",
+    "DATABASE_URL",
+    "UPSTASH_REDIS_REST_URL",
+    "UPSTASH_REDIS_REST_TOKEN",
+    "IP_ADDRESS_SALT",
+    "DISCORD_WEBHOOK_URL",
+    "NEXT_PUBLIC_UMAMI_URL",
+    "NEXT_PUBLIC_UMAMI_WEBSITE_ID",
+    "RESEND_API_KEY",
+    "AUTHOR_EMAIL",
+    "REACT_SCAN_MONITOR_API_KEY",
+    "NEXT_PUBLIC_FLAG_COMMENT",
+    "NEXT_PUBLIC_FLAG_AUTH",
+    "NEXT_PUBLIC_FLAG_STATS",
+    "NEXT_PUBLIC_FLAG_SPOTIFY",
+    "NEXT_PUBLIC_FLAG_ANALYTICS",
+    "NEXT_PUBLIC_FLAG_GUESTBOOK_NOTIFICATION",
+    "NEXT_PUBLIC_FLAG_LIKE_BUTTON",
+    "NEXT_RUNTIME",
+    "NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA",
+    "NEXT_PUBLIC_VERCEL_GIT_COMMIT_REF"
+  ],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": [".next/**", "!.next/cache/**", "dist/**", ".content-collections/**"]
+    },
+    "build:apps": {
+      "dependsOn": ["^build:apps"],
+      "outputs": [".next/**", "!.next/cache/**", ".content-collections/**"]
+    },
+    "build:mdx": {
+      "outputs": [".content-collections/**"]
+    },
+    "build:packages": {
+      "dependsOn": ["^build:packages"],
+      "outputs": ["dist/**"]
+    },
+    "clean": {
+      "cache": false
+    },
+    "db:check": {
+      "cache": false
+    },
+    "db:generate": {
+      "cache": false
+    },
+    "db:migrate": {
+      "cache": false
+    },
+    "db:push": {
+      "cache": false
+    },
+    "db:seed": {
+      "cache": false
+    },
+    "db:studio": {
+      "cache": false,
+      "persistent": true
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "dev:docs": {
+      "cache": false,
+      "persistent": true
+    },
+    "dev:packages": {
+      "cache": false,
+      "persistent": true
+    },
+    "dev:web": {
+      "cache": false,
+      "persistent": true
+    },
+    "lint": {},
+    "lint:fix": {},
+    "test:e2e": {
+      "outputs": ["playwright-report/**", "test-results/**"]
+    },
+    "test:e2e:inspector": {
+      "outputs": ["playwright-report/**", "test-results/**"]
+    },
+    "test:e2e:ui": {
+      "outputs": ["playwright-report/**", "test-results/**"]
+    },
+    "type-check": {}
+  },
+  "ui": "stream"
+}

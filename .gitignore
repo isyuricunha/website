@@ -1,47 +1,44 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# Dependencies
+node_modules/
+.pnp/
+.pnp.*
 
-# dependencies
-/node_modules
-/.pnp
-.pnp.js
+# Local env files
+.env*.local
+.env
 
-# testing
-/coverage
+# Turbo
+.turbo/
 
-# next.js
-/.next/
-/out/
+# Vercel
+.vercel/
 
-# production
-/build
-
-# misc
-.DS_Store
-*.pem
-
-# debug
+# Debug
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+.pnpm-debug.log*
 
-# local env files
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+# Misc
+.DS_Store
+*.pem
 
-# vercel
-.vercel
-
-/.idea
+# Build outputs
+.next/
+out/
+build/
 dist/
-blg.json
-data/blog/exampleDemo (1).mdx
-data/blog/exampleDemo (2).mdx
-example/exampleDemo (1).mdx
-example/exampleDemo (2).mdx
-yarn.lock
-public/feed.xml
-pnpm-lock.yaml
-4.9.5
+.eslint-config-inspector/
+
+# Content Collections
+.content-collections
+
+# Testing
+playwright-report/
+test-results/
+coverage/
+**/src/e2e/.auth/
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts

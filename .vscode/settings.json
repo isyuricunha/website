@@ -1,4 +1,56 @@
 {
-  "cSpell.words": ["biorender"],
-  "typescript.tsdk": "node_modules\\typescript\\lib"
+  "cSpell.diagnosticLevel": "Warning",
+  "cSpell.enabled": true,
+
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "never"
+  },
+
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
+
+  "eslint.runtime": "node",
+  "eslint.useFlatConfig": true,
+  "eslint.workingDirectories": [{ "mode": "auto" }],
+
+  "files.associations": {
+    "*.css": "tailwindcss",
+    ".env*": "properties"
+  },
+
+  "i18n-ally.enabledFrameworks": ["react", "next-intl", "general"],
+  "i18n-ally.extract.autoDetect": true,
+  "i18n-ally.keysInUse": [
+    "homepage.hero.amazing",
+    "homepage.hero.attractive",
+    "homepage.hero.fantastic",
+    "homepage.hero.stunning",
+    "layout.about",
+    "layout.blog",
+    "layout.dashboard",
+    "layout.facebook",
+    "layout.github",
+    "layout.guestbook",
+    "layout.instagram",
+    "layout.links",
+    "layout.projects",
+    "layout.uses",
+    "layout.youtube",
+    "admin.nav.comments",
+    "admin.nav.dashboard",
+    "admin.nav.general",
+    "admin.nav.users"
+  ],
+  "i18n-ally.keystyle": "nested",
+  "i18n-ally.localesPaths": ["packages/i18n/src/messages"],
+
+  "tailwindCSS.experimental.classRegex": [
+    ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
+    ["cn\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
+  ],
+
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "typescript.preferences.preferTypeOnlyAutoImports": true,
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

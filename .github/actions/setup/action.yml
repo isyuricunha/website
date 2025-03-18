@@ -1,0 +1,51 @@
+name: Check setup
+
+runs:
+  using: composite
+  steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version-file: '.nvmrc'
+
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        run_install: false
+
+    - name: Get pnpm store directory
+      shell: bash
+      run: |
+        echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+    - name: Setup pnpm cache
+      uses: actions/cache@v4
+      with:
+        path: ${{ env.STORE_PATH }}
+        key: ${{ runner.os }}-pnpm-store-${{ hashFiles('pnpm-lock.yaml') }}
+        restore-keys: |
+          ${{ runner.os }}-pnpm-store-
+
+    - name: Cache for Turbo
+      uses: rharkor/caching-for-turbo@v1.5
+
+    - name: Install dependencies
+      shell: bash
+      run: pnpm install
+
+    - name: Create environment variables file
+      shell: bash
+      run: |
+        cat << EOF > .env.local
+        DATABASE_URL=postgres://postgres:postgres@localhost:5432/honghongme
+        RESEND_API_KEY=re_fake_api_key
+        UPSTASH_REDIS_REST_URL=http://127.0.0.1:8079
+        UPSTASH_REDIS_REST_TOKEN=honghongme
+        BETTER_AUTH_SECRET=1234567890
+        BETTER_AUTH_URL=http://localhost:3000
+        NEXT_PUBLIC_FLAG_COMMENT=true
+        NEXT_PUBLIC_FLAG_AUTH=true
+        NEXT_PUBLIC_FLAG_STATS=true
+        NEXT_PUBLIC_FLAG_SPOTIFY=true
+        NEXT_PUBLIC_FLAG_LIKE_BUTTON=true
+        EOF

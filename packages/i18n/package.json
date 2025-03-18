@@ -1,0 +1,38 @@
+{
+  "private": true,
+  "name": "@tszhong0411/i18n",
+  "version": "0.0.0",
+  "description": "The internationalization package for tszhong0411's projects",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    "./client": "./src/client.ts",
+    "./config": "./src/config.ts",
+    "./middleware": "./src/middleware.ts",
+    "./request": "./src/request.ts",
+    "./routing": "./src/routing.ts",
+    "./server": "./src/server.ts",
+    "./messages/*.json": "./src/messages/*.json"
+  },
+  "scripts": {
+    "clean": "rm -rf .turbo",
+    "lint": "eslint . --max-warnings 0",
+    "lint:fix": "eslint --fix .",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "next-intl": "^3.26.5"
+  },
+  "peerDependencies": {
+    "next": "^15"
+  },
+  "devDependencies": {
+    "@tszhong0411/eslint-config": "workspace:*",
+    "@tszhong0411/tsconfig": "workspace:*",
+    "@types/react": "19.0.10",
+    "next": "^15.2.0"
+  },
+  "lint-staged": {
+    "*.{cjs,mjs,js,jsx,cts,mts,ts,tsx,json}": "eslint --fix"
+  }
+}
