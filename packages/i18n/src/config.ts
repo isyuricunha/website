@@ -5,6 +5,10 @@ export const supportedLanguages = [
     default: true
   },
   {
+    code: 'pt',
+    label: 'Português'
+  },
+  {
     code: 'zh-TW',
     label: '繁體中文'
   },
