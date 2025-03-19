@@ -1,0 +1,261 @@
+{
+    "about": {
+        "title": "Sobre",
+        "description": "👋 Olá! Eu sou Yuri Cunha, apenas um humano que ama infraestrutura de servidores."
+    },
+    "admin": {
+        "nav": {
+            "comments": "Comentários",
+            "dashboard": "Dashboard",
+            "general": "Geral",
+            "users": "Usuários"
+        },
+        "page-header": {
+            "comments": {
+                "description": "Gerencie os comentários dos usuários",
+                "title": "Comentários"
+            },
+            "users": {
+                "description": "Gerencie os usuários do sistema",
+                "title": "Usuários"
+            }
+        },
+        "table": {
+            "comments": {
+                "body": "Corpo",
+                "createdAt": "Criado em",
+                "failed-to-fetch-comments-data": "Falha ao buscar os dados dos comentários. Por favor, atualize a página.",
+                "filter-body": "Filtrar corpo...",
+                "filter-userId": "Filtrar ID do usuário...",
+                "type": "Tipo",
+                "userId": "ID do usuário"
+            },
+            "users": {
+                "email": "Email",
+                "failed-to-fetch-users-data": "Falha ao buscar os dados dos usuários. Por favor, atualize a página.",
+                "filter-names": "Filtrar nomes...",
+                "name": "Nome",
+                "role": "Função"
+            }
+        }
+    },
+    "blog": {
+        "comments": {
+            "author": "Autor",
+            "comment-cannot-be-empty": "O comentário não pode estar vazio",
+            "comment-posted": "Comentário postado",
+            "comments": "{count, plural, =1 {comentário} other {comentários}}",
+            "confirm-delete-comment": "Tem certeza de que deseja excluir este comentário? Esta ação não pode ser desfeita.",
+            "copy-link": "Copiar Link",
+            "delete-a-comment": "Excluir um comentário",
+            "deleted-a-comment": "Comentário excluído",
+            "dislike": "Descurtir",
+            "failed-to-load-comments": "Falha ao carregar os comentários. Por favor, atualize a página.",
+            "failed-to-load-replies": "Falha ao carregar as respostas. Por favor, atualize a página.",
+            "like": "Curtir",
+            "link-copied": "Link copiado para a área de transferência",
+            "need-logged-in-to-rate": "Você precisa estar logado para avaliar os comentários",
+            "newest": "Mais recentes",
+            "no-comments": "Sem comentários",
+            "oldest": "Mais antigos",
+            "open-menu": "Abrir menu",
+            "placeholder": "Deixe um comentário",
+            "replies": "{count, plural, =1 {resposta} other {respostas}}",
+            "reply": "Responder",
+            "reply-cannot-be-empty": "A resposta não pode estar vazia",
+            "reply-to-comment": "Responder ao comentário",
+            "send-comment": "Enviar comentário",
+            "sort-by": "Ordenar por",
+            "this-comment-has-been-deleted": "[Este comentário foi excluído]",
+            "toggle-bold": "Alternar negrito",
+            "toggle-italic": "Alternar itálico",
+            "toggle-strikethrough": "Alternar tachado"
+        },
+        "description": "Meu site pessoal e blog onde compartilho meus pensamentos sobre vários tópicos, incluindo tutoriais, anotações e experiências pessoais. Como engenheiro full-stack de Hong Kong, comecei a aprender desenvolvimento web como hobby em dezembro de 2020. Utilizo Next.js para construir sites, GitHub para hospedagem de código e Vercel para implantação. Explore meu site para saber mais sobre minha jornada e descobrir alguns dos recursos de desenvolvimento web que me inspiraram.",
+        "footer": {
+            "edit-on-github": "Editar no GitHub",
+            "last-updated": "Última atualização: {date}"
+        },
+        "header": {
+            "comments": "Comentários",
+            "published-on": "Publicado em",
+            "views": "Visualizações",
+            "written-by": "Escrito por"
+        },
+        "like": "Curtir",
+        "like-limit-reached": "Você só pode curtir 3 vezes por postagem",
+        "like-this-post": "Curta esta postagem",
+        "on-this-page": "Nesta página",
+        "title": "Blog"
+    },
+    "command-menu": {
+        "actions": {
+            "copy-link": "Copiar link",
+            "source-code": "Código fonte"
+        },
+        "groups": {
+            "account": "Conta",
+            "general": "Geral",
+            "social": "Social"
+        },
+        "no-results": "Nenhum resultado encontrado.",
+        "open-menu": "Abrir menu de comandos",
+        "placeholder": "Digite um comando ou pesquise",
+        "trigger": {
+            "open-command": "Abrir Comando",
+            "open-link": "Abrir Link"
+        }
+    },
+    "common": {
+        "cancel": "Cancelar",
+        "delete": "Excluir",
+        "error": "Erro",
+        "likes": "{count, plural, =1 {# curtida} other {# curtidas}}",
+        "sign-in": "Entrar",
+        "sign-in-error": "Falha ao entrar. Por favor, tente novamente.",
+        "sign-out": "Sair",
+        "views": "{count, plural, =1 {# visualização} other {# visualizações}}"
+    },
+    "component": {
+        "filtered-posts": {
+            "no-posts-found": "Nenhuma postagem encontrada",
+            "placeholder": "Pesquisar artigos"
+        },
+        "go-to-homepage": "Ir para a página inicial"
+    },
+    "dashboard": {
+        "description": "Este é o meu painel pessoal, construído com rotas de API do Next.js implantadas como funções serverless. Eu uso este painel para acompanhar várias métricas em plataformas como YouTube, GitHub e mais.",
+        "metric": {
+            "blog-total-likes": "Curtidas Totais do Blog",
+            "blog-total-views": "Visualizações Totais do Blog",
+            "coding-hours": "Horas de Codificação",
+            "github-followers": "Seguidores do GitHub",
+            "github-stars": "Estrelas no GitHub",
+            "youtube-subscribers": "Inscritos no YouTube",
+            "youtube-views": "Visualizações no YouTube"
+        },
+        "title": "Painel"
+    },
+    "dialog": {
+        "sign-in": {
+            "continue-with": "Continuar com {provider}",
+            "description": "para continuar para honghong.me"
+        }
+    },
+    "error": {
+        "something-went-wrong": "Algo deu errado!",
+        "try-again": "Tente novamente"
+    },
+    "guestbook": {
+        "create-message-successfully": "Mensagem criada com sucesso",
+        "delete-dialog": {
+            "description": "Tem certeza de que deseja excluir este comentário? Esta ação não pode ser desfeita.",
+            "title": "Excluir um comentário"
+        },
+        "delete-message-successfully": "Mensagem excluída com sucesso",
+        "description": "Assine meu livro de visitas e compartilhe sua ideia. Você pode me contar qualquer coisa aqui!",
+        "failed-to-load-messages": "Falha ao carregar as mensagens. Por favor, atualize a página.",
+        "message-cannot-be-empty": "A mensagem não pode estar vazia",
+        "no-messages": "Nenhuma mensagem. Seja o primeiro a deixar uma mensagem!",
+        "pinned": {
+            "description": "Obrigado por visitar meu site. Se você tiver um momento, adoraria ouvir sua opinião sobre meu trabalho. Por favor, faça login com sua conta para deixar um comentário. Obrigado!",
+            "greeting": "Olá! 👋"
+        },
+        "placeholder": "Deixe uma mensagem",
+        "signin": {
+            "description": "para deixar uma mensagem"
+        },
+        "submit": "Enviar",
+        "title": "Livro de Visitas"
+    },
+    "homepage": {
+        "about-me": {
+            "coding-hours": "Horas de codificação",
+            "connect": "Conectar",
+            "fav-framework": "Servidor Favorito",
+            "location": "São Paulo",
+            "more": "Saiba mais sobre mim",
+            "stacks": "Stacks",
+            "title": "Sobre Mim"
+        },
+        "get-in-touch": {
+            "description": "Sinta-se à vontade para entrar em contato comigo!",
+            "image-alt": "Eu sentado em frente à minha mesa programando",
+            "title": "Tem dúvidas sobre servidores?"
+        },
+        "hero": {
+            "amazing": "nativo da nuvem",
+            "attractive": "zero confiança",
+            "fantastic": "criptografado",
+            "location-timezone": "Brasil • UTC/GMT -3",
+            "stunning": "imutável",
+            "title-bottom": "sistemas distribuídos",
+            "title-middle-left": "projetando",
+            "title-middle-right": "soluções",
+            "title-top": "Eu sou Yuri, especialista em servidores"
+        },
+        "latest-articles": {
+            "card": "Artigo",
+            "more": "Ver todos os artigos",
+            "title": "Últimos Artigos"
+        },
+        "selectedProjects": {
+            "card": "Projeto",
+            "more": "Ver todos os projetos",
+            "title": "Projetos Selecionados"
+        }
+    },
+    "hook": {
+        "copy-to-clipboard": {
+            "copied": "Copiado para a área de transferência!",
+            "error": "Não foi possível copiar para a área de transferência. Por favor, tente novamente!"
+        }
+    },
+    "layout": {
+        "about": "Sobre",
+        "blog": "Blog",
+        "change-language": "Mudar idioma",
+        "dashboard": "Painel",
+        "facebook": "Facebook",
+        "github": "GitHub",
+        "guestbook": "Livro de Visitas",
+        "home": "Início",
+        "instagram": "Instagram",
+        "links": "Links",
+        "now-playing": {
+            "error": "Falha ao buscar dados do Spotify",
+            "loading": "Carregando ...",
+            "not-listening": "Não está ouvindo - Spotify"
+        },
+        "projects": "Projetos",
+        "skip-to-main-content": "Pular para o conteúdo principal",
+        "toggle-menu": "Alternar menu",
+        "uses": "Usos",
+        "youtube": "YouTube"
+    },
+    "mdx": {
+        "link-to-section": "Link para seção"
+    },
+    "metadata": {
+        "site-description": "Arquiteto de Nuvem e Infraestrutura",
+        "site-title": "Yuri Cunha"
+    },
+    "not-found": "Página não encontrada!",
+    "projects": {
+        "description": "A lista dos meus projetos. Tudo foi feito com ❤️.",
+        "title": "Projetos",
+        "visit-website": "Visitar Site"
+    },
+    "theme-toggle": {
+        "options": {
+            "dark": "Escuro",
+            "light": "Claro",
+            "system": "Sistema"
+        },
+        "toggle-theme": "Alternar tema"
+    },
+    "uses": {
+        "description": "Estes são os equipamentos que eu utilizo atualmente para jogos, programação, produção de vídeos e no dia a dia.",
+        "title": "Equipamentos"
+    }
+}
