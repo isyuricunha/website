@@ -71,7 +71,7 @@ const LikeButton = (props: LikeButtonProps) => {
         y: targetY / clientHeight,
         x: targetCenterX / clientWidth
       },
-      shapes: [confetti.shapeFromText({ text: '❤️', scalar: 2 })]
+      shapes: [confetti.shapeFromText({ text: '💙', scalar: 2 })]
     })
   }
 

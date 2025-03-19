@@ -1,7 +1,7 @@
 {
     "about": {
         "title": "Sobre",
-        "description": "👋 Olá! Eu sou Yuri Cunha, apenas um humano que ama infraestrutura de servidores."
+        "description": "Coé! Eu sou Yuri, um cara aleatório na internet."
     },
     "admin": {
         "nav": {
@@ -100,7 +100,7 @@
         },
         "no-results": "Nenhum resultado encontrado.",
         "open-menu": "Abrir menu de comandos",
-        "placeholder": "Digite um comando ou pesquise",
+        "placeholder": "Digite um comando ou pesquisar",
         "trigger": {
             "open-command": "Abrir Comando",
             "open-link": "Abrir Link"
@@ -129,7 +129,7 @@
             "blog-total-likes": "Curtidas Totais do Blog",
             "blog-total-views": "Visualizações Totais do Blog",
             "coding-hours": "Horas de Codificação",
-            "github-followers": "Seguidores do GitHub",
+            "github-followers": "Seguidores no GitHub",
             "github-stars": "Estrelas no GitHub",
             "youtube-subscribers": "Inscritos no YouTube",
             "youtube-views": "Visualizações no YouTube"
@@ -139,7 +139,7 @@
     "dialog": {
         "sign-in": {
             "continue-with": "Continuar com {provider}",
-            "description": "para continuar para honghong.me"
+            "description": "para continuar para yuricunha.com"
         }
     },
     "error": {
@@ -153,12 +153,12 @@
             "title": "Excluir um comentário"
         },
         "delete-message-successfully": "Mensagem excluída com sucesso",
-        "description": "Assine meu livro de visitas e compartilhe sua ideia. Você pode me contar qualquer coisa aqui!",
+        "description": "Assine meu livro de visitas. Você pode me contar/dizer qualquer coisa aqui!",
         "failed-to-load-messages": "Falha ao carregar as mensagens. Por favor, atualize a página.",
         "message-cannot-be-empty": "A mensagem não pode estar vazia",
         "no-messages": "Nenhuma mensagem. Seja o primeiro a deixar uma mensagem!",
         "pinned": {
-            "description": "Obrigado por visitar meu site. Se você tiver um momento, adoraria ouvir sua opinião sobre meu trabalho. Por favor, faça login com sua conta para deixar um comentário. Obrigado!",
+            "description": "Obrigado por visitar meu site. Se você tiver um momento, adoraria ler uma mensagem sua. Por favor, faça login com sua conta para deixar um comentário. Valeu!",
             "greeting": "Olá! 👋"
         },
         "placeholder": "Deixe uma mensagem",
@@ -171,7 +171,7 @@
     "homepage": {
         "about-me": {
             "coding-hours": "Horas de codificação",
-            "connect": "Conectar",
+            "connect": "Me encontre na web!",
             "fav-framework": "Servidor Favorito",
             "location": "São Paulo",
             "more": "Saiba mais sobre mim",
@@ -184,15 +184,15 @@
             "title": "Tem dúvidas sobre servidores?"
         },
         "hero": {
-            "amazing": "nativo da nuvem",
-            "attractive": "zero confiança",
-            "fantastic": "criptografado",
-            "location-timezone": "Brasil • UTC/GMT -3",
-            "stunning": "imutável",
+            "title-top": "Eu sou Yuri, especialista em servidores,",
+            "title-middle-left": "e projeto soluções",
+            "amazing": "nativas da nuvem",
+            "attractive": "de zero confiança",
+            "fantastic": "criptografadas",
+            "stunning": "imutáveis",
+            "title-middle-right": "para",
             "title-bottom": "sistemas distribuídos",
-            "title-middle-left": "projetando",
-            "title-middle-right": "soluções",
-            "title-top": "Eu sou Yuri, especialista em servidores"
+            "location-timezone": "Brasil • UTC/GMT -3"
         },
         "latest-articles": {
             "card": "Artigo",
@@ -225,7 +225,7 @@
         "now-playing": {
             "error": "Falha ao buscar dados do Spotify",
             "loading": "Carregando ...",
-            "not-listening": "Não está ouvindo - Spotify"
+            "not-listening": "Não estou ouvindo nada - Spotify"
         },
         "projects": "Projetos",
         "skip-to-main-content": "Pular para o conteúdo principal",
@@ -242,7 +242,7 @@
     },
     "not-found": "Página não encontrada!",
     "projects": {
-        "description": "A lista dos meus projetos. Tudo foi feito com ❤️.",
+        "description": "A lista dos meus projetos. Tudo foi feito com 💙.",
         "title": "Projetos",
         "visit-website": "Visitar Site"
     },
@@ -255,7 +255,7 @@
         "toggle-theme": "Alternar tema"
     },
     "uses": {
-        "description": "Estes são os equipamentos que eu utilizo atualmente para jogos, programação, produção de vídeos e no dia a dia.",
+        "description": "Estes são os equipamentos que eu utilizo atualmente para jogos, programação e no dia a dia.",
         "title": "Equipamentos"
     }
 }
