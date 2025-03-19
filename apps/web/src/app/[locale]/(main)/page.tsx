@@ -10,7 +10,7 @@ import Hero from '@/components/home/hero'
 import LatestArticles from '@/components/home/latest-articles'
 import SelectedProjects from '@/components/home/selected-projects'
 import {
-  SITE_FACEBOOK_URL,
+  // SITE_FACEBOOK_URL,
   SITE_GITHUB_URL,
   SITE_INSTAGRAM_URL,
   SITE_KEYWORDS,
@@ -59,7 +59,7 @@ const Page = async (props: PageProps) => {
       '@type': 'Person',
       name: SITE_NAME,
       url: SITE_URL,
-      sameAs: [SITE_FACEBOOK_URL, SITE_INSTAGRAM_URL, SITE_X_URL, SITE_GITHUB_URL, SITE_YOUTUBE_URL]
+      sameAs: [SITE_INSTAGRAM_URL, SITE_X_URL, SITE_GITHUB_URL, SITE_YOUTUBE_URL]
     },
     mainEntityOfPage: {
       '@type': 'WebPage',

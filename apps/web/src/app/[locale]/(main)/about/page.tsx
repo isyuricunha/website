@@ -9,7 +9,7 @@ import { notFound } from 'next/navigation'
 import Mdx from '@/components/mdx'
 import PageTitle from '@/components/page-title'
 import {
-  SITE_FACEBOOK_URL,
+  // SITE_FACEBOOK_URL,
   SITE_GITHUB_URL,
   SITE_INSTAGRAM_URL,
   SITE_NAME,
@@ -83,7 +83,7 @@ const Page = async (props: PageProps) => {
       name: SITE_NAME,
       description: t('metadata.site-description'),
       url: SITE_URL,
-      sameAs: [SITE_FACEBOOK_URL, SITE_INSTAGRAM_URL, SITE_X_URL, SITE_GITHUB_URL, SITE_YOUTUBE_URL]
+      sameAs: [SITE_INSTAGRAM_URL, SITE_X_URL, SITE_GITHUB_URL, SITE_YOUTUBE_URL]
     }
   }
 
