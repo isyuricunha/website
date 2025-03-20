@@ -1,43 +1,43 @@
 ---
-title: 'What is the SQL Server Database?'
+title: 'Was ist die SQL Server-Datenbank?'
 date: '2023-01-05T09:20:27.751-03:00'
 modifiedTime: "2023-01-05T09:20:27.751-03:00"
-summary: 'Lets talk about my favorite database.'
+summary: 'Lass uns über meine Lieblingsdatenbank sprechen.'
 ---
 
-# What is the SQL Server Database?
+# Was ist die SQL Server-Datenbank?
 
-The SQL Server Database is a relational database management system produced by Microsoft. It is used to store and manage large amounts of data, including structured and unstructured data. SQL Server offers a wide range of features to ensure the security, availability, and integrity of stored data, as well as to ensure system performance and scalability.
+Die SQL Server-Datenbank ist ein von Microsoft entwickeltes relationales Datenbankmanagementsystem. Sie wird verwendet, um große Mengen an Daten – sowohl strukturierte als auch unstrukturierte – zu speichern und zu verwalten. SQL Server bietet eine Vielzahl von Funktionen, um die Sicherheit, Verfügbarkeit und Integrität der gespeicherten Daten zu gewährleisten sowie die Systemleistung und Skalierbarkeit sicherzustellen.
 
-There are several versions of SQL Server available, including SQL Server Express, SQL Server Standard, and SQL Server Enterprise. Each of these versions offers a different set of features and is suitable for different types of use.
+Es gibt verschiedene Versionen von SQL Server, darunter SQL Server Express, SQL Server Standard und SQL Server Enterprise. Jede dieser Versionen bietet unterschiedliche Funktionen und eignet sich für verschiedene Anwendungsbereiche.
 
-To work with SQL Server, it is necessary to know the Structured Query Language (SQL). SQL is the standard language for working with relational databases and is used to create, query, and modify the data stored in the database.
-
-<br />
-<br />
-
-# What is the Structured Query Language (famous SQL)?
-
-Structured Query Language (SQL) is a programming language used to manage and manipulate data stored in relational databases. It is the standard language for working with relational databases and is used to create, query, and modify the data stored in the database.
-
-SQL is a declarative language, which means that it is used to describe what needs to be done, rather than specifying how it should be done. This allows the database management system (DBMS) to optimize the execution of SQL queries and ensure efficient use of system resources.
-
-SQL is used to perform a wide range of tasks, including creating and modifying tables and indices, inserting and updating data, and retrieving data from the database. It is also used to define the structure and relationships of the data within the database, as well as to set permissions and controls for users.
-
-SQL is a powerful and versatile language that is widely used in a variety of industries, including business, finance, healthcare, and government. It is an essential tool for database administrators and developers, and is also used by data analysts and data scientists to extract, transform, and load data for analysis and reporting purposes.
-
-There are several dialects of SQL, including MySQL, Oracle, and Microsoft SQL Server, each with its own unique features and syntax. However, the core concepts and principles of SQL are the same across all dialects, making it a language that is easy to learn and widely applicable.
+Um mit SQL Server zu arbeiten, ist es notwendig, die Structured Query Language (SQL) zu beherrschen. SQL ist die Standard-Sprache für den Umgang mit relationalen Datenbanken und wird verwendet, um Daten in der Datenbank zu erstellen, abzufragen und zu verändern.
 
 <br />
 <br />
 
-# Examples of SQL Queries
+# Was ist die Structured Query Language (bekannt als SQL)?
 
-Here are some examples of SQL queries that can be run on the SQL Server Database:
+Structured Query Language (SQL) ist eine Programmiersprache, die zur Verwaltung und Manipulation von Daten in relationalen Datenbanken eingesetzt wird. Sie ist die Standard-Sprache im Umgang mit solchen Datenbanken und wird verwendet, um die in der Datenbank gespeicherten Daten zu erstellen, abzufragen und zu ändern.
 
-## _Select Query_
+SQL ist eine deklarative Sprache, was bedeutet, dass sie beschreibt, was getan werden soll, anstatt zu spezifizieren, wie es getan werden muss. Dadurch kann das Datenbankverwaltungssystem (DBMS) die Ausführung von SQL-Abfragen optimieren und eine effiziente Nutzung der Systemressourcen sicherstellen.
 
-- The following query selects all fields from the "Customers" table where the "City" field is equal to "São Paulo":
+SQL kommt bei einer Vielzahl von Aufgaben zum Einsatz – von der Erstellung und Veränderung von Tabellen und Indizes über das Einfügen und Aktualisieren von Daten bis hin zum Abrufen von Informationen aus der Datenbank. Außerdem wird es genutzt, um die Struktur und Beziehungen der in der Datenbank gespeicherten Daten zu definieren und Benutzerberechtigungen sowie Zugriffskontrollen festzulegen.
+
+SQL ist eine leistungsstarke und vielseitige Sprache, die in zahlreichen Branchen Anwendung findet, darunter Wirtschaft, Finanzen, Gesundheitswesen und öffentliche Verwaltung. Sie ist ein unverzichtbares Werkzeug für Datenbankadministratoren und Entwickler und wird auch von Datenanalysten und Data Scientists genutzt, um Daten für Analyse- und Berichtszwecke zu extrahieren, zu transformieren und zu laden.
+
+Es gibt verschiedene SQL-Dialekte, wie MySQL, Oracle und Microsoft SQL Server, die jeweils ihre eigenen Besonderheiten und Syntax haben. Dennoch bleiben die grundlegenden Konzepte und Prinzipien von SQL in allen Dialekten gleich, was die Sprache leicht erlernbar und breit anwendbar macht.
+
+<br />
+<br />
+
+# Beispiele für SQL-Abfragen
+
+Hier sind einige Beispiele für SQL-Abfragen, die in der SQL Server-Datenbank ausgeführt werden können:
+
+## _Select-Abfrage_
+
+- Die folgende Abfrage wählt alle Felder aus der Tabelle "Customers" aus, bei denen das Feld "City" gleich "São Paulo" ist:
 
 ```sql
 SELECT * FROM Customers WHERE City = 'São Paulo';
@@ -45,9 +45,9 @@ SELECT * FROM Customers WHERE City = 'São Paulo';
 
 <br />
 
-## _Insert Data_
+## _Daten einfügen_
 
-- The following query inserts a new record into the "Customers" table:
+- Die folgende Abfrage fügt einen neuen Datensatz in die Tabelle "Customers" ein:
 
 ```sql
 INSERT INTO Customers (Name, Address, City) VALUES ('João da Silva', 'Rua das Flores, 123', 'São Paulo');
@@ -55,9 +55,9 @@ INSERT INTO Customers (Name, Address, City) VALUES ('João da Silva', 'Rua das F
 
 <br />
 
-## _Update Data_
+## _Daten aktualisieren_
 
-- The following query updates the "Address" field of the record with ID 1 in the "Customers" table:
+- Die folgende Abfrage aktualisiert das Feld "Address" des Datensatzes mit der ID 1 in der Tabelle "Customers":
 
 ```sql
 UPDATE Customers SET Address = 'Rua das Oliveiras, 456' WHERE ID = 1;
@@ -65,9 +65,9 @@ UPDATE Customers SET Address = 'Rua das Oliveiras, 456' WHERE ID = 1;
 
 <br />
 
-## _Delete Data_
+## _Daten löschen_
 
-- The following query deletes the record with ID 1 from the "Customers" table:
+- Die folgende Abfrage löscht den Datensatz mit der ID 1 aus der Tabelle "Customers":
 
 ```sql
 DELETE FROM Customers WHERE ID = 1;
@@ -76,30 +76,30 @@ DELETE FROM Customers WHERE ID = 1;
 <br />
 <br />
 
-# Two simple examples
+# Zwei einfache Beispiele
 
 <br />
 
-## First example
+## Erstes Beispiel
 
 <br />
 
-> You are the database administrator for a small customer database. You need to add a new customer record with the following information:
+> Sie sind der Datenbankadministrator für eine kleine Kundendatenbank. Sie müssen einen neuen Kundendatensatz mit den folgenden Informationen hinzufügen:
 
 <br />
 
-- Name: "John Smith"
-- Address: "123 Main Street"
+- Name: "John Smith"  
+- Address: "123 Main Street"  
 - City: "New York"
 
 <br />
 <br />
 
-## _Solution_
+## _Lösung_
 
 <br />
 
-- To add the new customer record, you can use the following SQL query:
+- Um den neuen Kundendatensatz hinzuzufügen, können Sie die folgende SQL-Abfrage verwenden:
 
 ```sql
 INSERT INTO Customers (Name, Address, City) VALUES ('John Smith', '123 Main Street', 'New York');
@@ -107,25 +107,25 @@ INSERT INTO Customers (Name, Address, City) VALUES ('John Smith', '123 Main Stre
 
 <br />
 
-_This query will insert a new record into the "Customers" table with the specified name, address, and city._
+_Diese Abfrage fügt einen neuen Datensatz in die Tabelle "Customers" mit dem angegebenen Namen, der Adresse und der Stadt ein._
 
 <br />
 <br />
 
-## Second example
+## Zweites Beispiel
 
 <br />
 
-> You are the database administrator for a product inventory database. You need to update the quantity of a product with the ID "12345" to 10.
+> Sie sind der Datenbankadministrator für eine Produktinventurdatenbank. Sie müssen die Menge eines Produkts mit der ID "12345" auf 10 aktualisieren.
 
 <br />
 <br />
 
-## _Solution_
+## _Lösung_
 
 <br />
 
-- You are the database administrator for a product inventory database. You need to update the quantity of a product with the ID "12345" to 10.
+- Um die Menge des Produkts mit der ID "12345" auf 10 zu aktualisieren, verwenden Sie die folgende SQL-Abfrage:
 
 ```sql
 UPDATE Products SET Quantity = 10 WHERE ID = 12345;
@@ -133,27 +133,25 @@ UPDATE Products SET Quantity = 10 WHERE ID = 12345;
 
 <br />
 
-_This query will update the "Quantity" field of the product with the ID "12345" to the value 10._
+_Diese Abfrage aktualisiert das Feld "Quantity" des Produkts mit der ID "12345" auf den Wert 10._
 
 <br />
 <br />
 
-# Complex example
+# Komplexes Beispiel
 
-Here is a complex example and solution involving the SQL Server Database:
+> Sie sind der Datenbankadministrator für einen großen Online-Händler. Das Unternehmen verfügt über eine Datenbank mit mehreren Tabellen, in denen Informationen zu Kunden, Bestellungen und Produkten gespeichert sind. Die Datenbank dient der Nachverfolgung von Kundeninformationen, der Bearbeitung von Bestellungen und der Erstellung von Berichten.
 
-> You are the database administrator for a large online retailer. The company has a database with several tables storing information about customers, orders, and products. The database is used to track customer information, process orders, and generate reports.
-
-> One of the company's sales managers has requested a report showing the total sales and number of orders for each customer, broken down by product category. The report should show the data for the past year, and should be sorted by total sales in descending order.
+> Einer der Vertriebsleiter des Unternehmens hat einen Bericht angefordert, der den Gesamtumsatz und die Anzahl der Bestellungen für jeden Kunden, aufgeschlüsselt nach Produktkategorien, zeigt. Der Bericht soll die Daten des vergangenen Jahres umfassen und nach dem Gesamtumsatz in absteigender Reihenfolge sortiert sein.
 
 <br />
 <br />
 
-## _Solution_
+## _Lösung_
 
 <br />
 
-- To generate the requested report, you can use the following SQL query:
+- Um den angeforderten Bericht zu erstellen, können Sie die folgende SQL-Abfrage verwenden:
 
 ```sql
 SELECT c.Name AS 'Customer',
@@ -170,29 +168,21 @@ ORDER BY 'Total Sales' DESC;
 
 <br />
 
-_This query will select the customer name, total sales, number of orders, and product category for all orders placed within the specified date range. It will then group the results by customer name and product category, and will sort the results by total sales in descending order. The resulting report will show the total sales and number of orders for each customer, broken down by product category._
+_Diese Abfrage wählt den Kundennamen, den Gesamtumsatz, die Anzahl der Bestellungen und die Produktkategorie für alle Bestellungen im angegebenen Datumsbereich aus. Anschließend gruppiert sie die Ergebnisse nach Kundennamen und Produktkategorie und sortiert sie nach dem Gesamtumsatz in absteigender Reihenfolge. Der resultierende Bericht zeigt den Gesamtumsatz und die Anzahl der Bestellungen für jeden Kunden, aufgeschlüsselt nach Produktkategorie._
 
 <br />
 
-> I hope the examples have helped you.
-
-<br />
-<br />
-
-###### _Here are some additional reference links that you might find helpful in learning more about SQL Server Database and the SQL language:_
-
-- The SQL Server homepage: https://www.microsoft.com/sql-server/
-
-- The SQL Server documentation: https://docs.microsoft.com/sql/
-
-- The SQL tutorial: https://www.w3schools.com/sql/
-
-- The MySQL reference guide: https://dev.mysql.com/doc/refman/8.0/en/
-
-- The Oracle SQL tutorial: https://docs.oracle.com/en/database/oracle/oracle-database/19/lnpls/index.html
-
-> I hope these additional references and syntax are helpful to you.
+> Ich hoffe, die Beispiele haben Ihnen geholfen.
 
 <br />
 <br />
 
+###### _Hier sind einige zusätzliche Referenzlinks, die Ihnen beim Erlernen von SQL Server-Datenbanken und der SQL-Sprache hilfreich sein könnten:_
+
+- Die SQL Server-Homepage: https://www.microsoft.com/sql-server/
+- Die SQL Server-Dokumentation: https://docs.microsoft.com/sql/
+- Das SQL-Tutorial: https://www.w3schools.com/sql/
+- Der MySQL-Referenzleitfaden: https://dev.mysql.com/doc/refman/8.0/en/
+- Das Oracle SQL-Tutorial: https://docs.oracle.com/en/database/oracle/oracle-database/19/lnpls/index.html
+
+> Ich hoffe, diese zusätzlichen Referenzen und Syntaxbeispiele sind hilfreich für Sie.

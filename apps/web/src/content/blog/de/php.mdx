@@ -1,19 +1,19 @@
 ---
-title: PHP study notes
-date: '2021-02-18T00:00:00Z'
-modifiedTime: '2023-04-09T00:00:00Z'
-summary: Basics about PHP such as comments, Echo, variables, arithmetic operators
+title: "PHP-Lernnotizen"
+date: "2021-02-18T00:00:00Z"
+modifiedTime: "2023-04-09T00:00:00Z"
+summary: "Grundlagen zu PHP wie Kommentare, Echo, Variablen und arithmetische Operatoren"
 ---
 
-## Introduction of PHP
+## Einführung in PHP
 
-PHP (full name: PHP: _Hypertext Preprocessor_) is an open source general-purpose computer scripting language, especially suitable for web development and embedded in HTML. The syntax of PHP draws on the characteristics of popular computer languages such as C language, Java and Perl, and is easy for general programmers to learn. The main goal of PHP is to allow web developers to quickly write dynamic pages, but PHP is also used in many other areas.
+PHP (vollständiger Name: PHP: _Hypertext Preprocessor_) ist eine quelloffene, universelle Skriptsprache, die sich besonders für die Webentwicklung eignet und in HTML eingebettet werden kann. Die Syntax von PHP lehnt sich an bekannte Programmiersprachen wie C, Java und Perl an, sodass sie für viele Programmierer leicht zu erlernen ist. Das Hauptziel von PHP ist es, Webentwicklern zu ermöglichen, dynamische Seiten schnell zu erstellen – PHP wird jedoch auch in vielen anderen Bereichen eingesetzt.
 
-The PHP file extension is `.php`, E.g `index.php`. As mentioned above, `PHP` can directly embed `HTML`.
+Die Dateiendung für PHP-Dateien lautet `.php`, z.B. `index.php`. Wie oben erwähnt, kann PHP direkt in HTML eingebettet werden.
 
-## Usage
+## Verwendung
 
-When the browser reads `<?php` from top to bottom, it executes `PHP` and ends with `?>`. Such as:
+Wenn der Browser `<?php` von oben nach unten liest, wird der PHP-Code ausgeführt, bis er auf `?>` trifft. Zum Beispiel:
 
 ```php
 <!DOCTYPE html>
@@ -23,86 +23,86 @@ When the browser reads `<?php` from top to bottom, it executes `PHP` and ends wi
     </head>
     <body>
         <?php
-            echo "This is a sentence."
+            echo "Dies ist ein Satz.";
         ?>
     </body>
 </html>
 ```
 
-## Precautions
+## Hinweise
 
-In `PHP`, there is no other `HTML` after the `PHP` directive is completed. It is recommended not to end with `?>`. It will cause trouble if it is closed.
+In PHP sollte nach Abschluss der PHP-Direktive kein weiterer HTML-Code mehr folgen. Es wird empfohlen, das PHP-Skript nicht mit `?>` zu beenden, da dies Probleme verursachen kann.
 
 ```php
 <?php
-    echo "No HTML after PHP ends";
+    echo "Kein HTML nach PHP-Ende";
 ```
 
-## PHP comments
+## PHP-Kommentare
 
-Almost most web programming languages can comment, and the **single-line** way of `PHP` is `//` and the **multi-line** way is `/* Some text here */`.
+Wie die meisten Webprogrammiersprachen erlaubt auch PHP Kommentare. Einzeilige Kommentare werden mit `//` eingeleitet, mehrzeilige Kommentare beginnen mit `/*` und enden mit `*/`.
 
 ```php
 <?php
-    echo = "This is a single line comment"; // I am a single line comment
-    echo = "This is a multi-line comment";
+    echo "Dies ist ein Einzeiler"; // Ich bin ein einzeiliger Kommentar
+    echo "Dies ist ein Mehrzeiler";
     /*
-        I am a multi-line comment
-        Second line
+        Ich bin ein
+        mehrzeiliger Kommentar
     */
 ?>
 ```
 
 ## Echo
 
-The simplest syntax in `PHP` is `Echo`. The content of `Echo` must be enclosed in double quotes `""` or single quotes `''`. Each syntax must end with a semicolon `;`.
+Die einfachste Syntax in PHP ist `echo`. Der Inhalt, der mit `echo` ausgegeben wird, muss in doppelte (`""`) oder einfache (`''`) Anführungszeichen gesetzt werden. Jede Anweisung muss mit einem Semikolon `;` enden.
 
 ```php
 <?php
-    echo "This is the example of using double quotes.";
-    echo 'This is the example of using single quotes.';
+    echo "Dies ist ein Beispiel für doppelte Anführungszeichen.";
+    echo 'Dies ist ein Beispiel für einfache Anführungszeichen.';
 ?>
 ```
 
-Content in `Echo` can also use `HTML` syntax. For example, I used `<br/>` here, so that the line can be broken.
+Inhalt, der mit `echo` ausgegeben wird, kann auch HTML enthalten. Zum Beispiel verwende ich hier `<br/>`, um einen Zeilenumbruch zu erzeugen.
 
 ```php
 <?php
-    echo "This is the first sentence<br/>";
-    echo "This is the second sentence";
-    echo "<a href=\"https://example.com\">here is a link</a>";
+    echo "Dies ist der erste Satz<br/>";
+    echo "Dies ist der zweite Satz";
+    echo "<a href=\"https://example.com\">Hier ist ein Link</a>";
 ?>
 ```
 
 ## Variable
 
-We can assign a value to a variable to make it easier for us to write `PHP`, similar to `Javascript`. We will use the Dollar sign `$`.
+Wir können einer Variablen einen Wert zuweisen, um uns das Schreiben in PHP zu erleichtern – ähnlich wie in JavaScript. Dazu verwenden wir das Dollarzeichen `$`.
 
 ```php
 <?php
-    $value = "I am a value";
+    $value = "Ich bin ein Wert";
 ?>
 ```
 
-There are some rules to follow when we name variables.
+Beim Benennen von Variablen sind einige Regeln zu beachten:
 
 <Table
-  headers={['Example', 'Description', 'Rules']}
+  headers={['Beispiel', 'Beschreibung', 'Regeln']}
   rows={[
-    ['$value', 'Lowercase', '✅'],
-    ['$Value', 'Uppercase', '✅'],
-    ['$_value', 'Underscore', '✅'],
-    ['$1value', 'Start from number', '❌']
+    ['$value', 'Kleinbuchstaben', '✅'],
+    ['$Value', 'Großbuchstaben', '✅'],
+    ['$_value', 'Unterstrich', '✅'],
+    ['$1value', 'Beginnt mit einer Zahl', '❌']
   ]}
 />
 
-There is a difference between `uppercase` and `lowercase` in variable names. Uppercase variables are not equal to lowercase variables.
+Zwischen Groß- und Kleinschreibung bei Variablennamen besteht ein Unterschied. Variablen mit Großbuchstaben sind nicht gleichbedeutend mit denen in Kleinbuchstaben.
 
-## Variable Naming Tips
+## Tipps zur Variablennamengebung
 
-### Camel case
+### Camel Case
 
-When a variable name and a function name are linked together by two or more words to form a unique identification word, the use of "camel case" to represent, can increase the readability of variables and functions. Because we can't have `spaces` in variables.
+Wenn ein Variablen- oder Funktionsname aus zwei oder mehr Wörtern besteht, empfiehlt es sich, die Schreibweise "Camel Case" zu verwenden. Dadurch wird die Lesbarkeit verbessert, da in Variablennamen keine Leerzeichen enthalten sein können.
 
 ```php
 <?php
@@ -111,9 +111,9 @@ When a variable name and a function name are linked together by two or more word
 ?>
 ```
 
-### Snake case
+### Snake Case
 
-Snake case (like snake_case) refers to a writing style in which every space is replaced with an underscore ( \_ ) character and the first letter of every word is written in lowercase.
+Snake Case (z.B. snake_case) bezeichnet eine Schreibweise, bei der jedes Leerzeichen durch einen Unterstrich (`_`) ersetzt wird und alle Buchstaben klein geschrieben werden.
 
 ```php
 <?php
@@ -122,33 +122,33 @@ Snake case (like snake_case) refers to a writing style in which every space is r
 ?>
 ```
 
-## String operator
+## String-Operator
 
-There are two string operators. The first is the concatenation operator ("."), which returns the concatenated string of its left and right arguments. The second is the concatenation assignment operator (".="), which appends the right-hand argument to the left-hand argument.
-
-```php
-<?php
-    echo "This" . " " . "is" . " " . "String" . " " . "operators" . ".";
-?>
-```
-
-## Arithmetic operator
+Es gibt zwei String-Operatoren. Der erste ist der Verkettungsoperator `"."`, der die beiden Operanden zu einem String zusammenfügt. Der zweite ist der Verkettungszuweisungsoperator `".="`, der den rechten Wert an den linken anhängt.
 
 ```php
 <?php
-    $value0 = 1.5 // Float
-    $value1 = 1 + 1 // Plus
-    $value2 = 1 - 1 // Minus
-    $value3 = 1 * 1 // Times
-    $value4 = 1 / 1 // Divide
-    $value5 = 12 / 5 // Divide | Incomplete division will become float, which is different from other programming languages, php will calculate the remainder
-    $value6 = 3 % 5 // take the remainder
+    echo "Dies" . " " . "ist" . " " . "ein" . " " . "Beispiel" . " " . "für" . " " . "String-Operatoren" . ".";
 ?>
 ```
 
-## References
+## Arithmetische Operatoren
 
-- [PHP - Wikipedia, the free encyclopedia](https://en.wikipedia.org/wiki/PHP)
-- [Camel case - Wikipedia, the free encyclopedia](https://en.wikipedia.org/wiki/Camel_case)
-- [Snake case - Wikipedia, the free encyclopedia](https://en.wikipedia.org/wiki/Snake_case)
+```php
+<?php
+    $value0 = 1.5; // Float
+    $value1 = 1 + 1; // Addition
+    $value2 = 1 - 1; // Subtraktion
+    $value3 = 1 * 1; // Multiplikation
+    $value4 = 1 / 1; // Division
+    $value5 = 12 / 5; // Division – unvollständige Division ergibt einen Float, was sich von anderen Programmiersprachen unterscheidet; PHP berechnet auch den Rest
+    $value6 = 3 % 5; // Modulo: Rest der Division
+?>
+```
+
+## Referenzen
+
+- [PHP – Wikipedia, die freie Enzyklopädie](https://en.wikipedia.org/wiki/PHP)
+- [Camel Case – Wikipedia, die freie Enzyklopädie](https://en.wikipedia.org/wiki/Camel_case)
+- [Snake Case – Wikipedia, die freie Enzyklopädie](https://en.wikipedia.org/wiki/Snake_case)
 - [String Operators](https://www.php.net/manual/en/language.operators.string.php)
