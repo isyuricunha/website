@@ -13,6 +13,10 @@ export const supportedLanguages = [
     label: '中文'
   },
   {
+    code: 'de',
+    label: 'Deutsch'
+  },
+  {
     code: 'fr',
     label: 'Français'
   }

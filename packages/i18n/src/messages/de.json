@@ -1,0 +1,261 @@
+{
+    "about": {
+        "title": "Über",
+        "description": "👋 Hallo! Ich bin Yuri Cunha, ein Mensch, der Serverinfrastruktur liebt."
+    },
+    "admin": {
+        "nav": {
+            "comments": "Kommentare",
+            "dashboard": "Dashboard",
+            "general": "Allgemein",
+            "users": "Benutzer"
+        },
+        "page-header": {
+            "comments": {
+                "description": "Kommentare der Benutzer verwalten",
+                "title": "Kommentare"
+            },
+            "users": {
+                "description": "Benutzer des Systems verwalten",
+                "title": "Benutzer"
+            }
+        },
+        "table": {
+            "comments": {
+                "body": "Text",
+                "createdAt": "Erstellt am",
+                "failed-to-fetch-comments-data": "Kommentare konnten nicht geladen werden. Bitte aktualisieren Sie die Seite.",
+                "filter-body": "Text filtern...",
+                "filter-userId": "Benutzer-ID filtern...",
+                "type": "Typ",
+                "userId": "Benutzer-ID"
+            },
+            "users": {
+                "email": "E-Mail",
+                "failed-to-fetch-users-data": "Benutzerdaten konnten nicht geladen werden. Bitte aktualisieren Sie die Seite.",
+                "filter-names": "Namen filtern...",
+                "name": "Name",
+                "role": "Rolle"
+            }
+        }
+    },
+    "blog": {
+        "comments": {
+            "author": "Autor",
+            "comment-cannot-be-empty": "Kommentar darf nicht leer sein",
+            "comment-posted": "Kommentar veröffentlicht",
+            "comments": "{count, plural, =1 {Kommentar} other {Kommentare}}",
+            "confirm-delete-comment": "Sind Sie sicher, dass Sie diesen Kommentar löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
+            "copy-link": "Link kopieren",
+            "delete-a-comment": "Kommentar löschen",
+            "deleted-a-comment": "Kommentar gelöscht",
+            "dislike": "Gefällt mir nicht",
+            "failed-to-load-comments": "Kommentare konnten nicht geladen werden. Bitte aktualisieren Sie die Seite.",
+            "failed-to-load-replies": "Antworten konnten nicht geladen werden. Bitte aktualisieren Sie die Seite.",
+            "like": "Gefällt mir",
+            "link-copied": "Link in die Zwischenablage kopiert",
+            "need-logged-in-to-rate": "Sie müssen eingeloggt sein, um Kommentare zu bewerten",
+            "newest": "Neueste",
+            "no-comments": "Keine Kommentare",
+            "oldest": "Älteste",
+            "open-menu": "Menü öffnen",
+            "placeholder": "Einen Kommentar hinterlassen",
+            "replies": "{count, plural, =1 {Antwort} other {Antworten}}",
+            "reply": "Antworten",
+            "reply-cannot-be-empty": "Antwort darf nicht leer sein",
+            "reply-to-comment": "Auf Kommentar antworten",
+            "send-comment": "Kommentar senden",
+            "sort-by": "Sortieren nach",
+            "this-comment-has-been-deleted": "[Dieser Kommentar wurde gelöscht]",
+            "toggle-bold": "Fett umschalten",
+            "toggle-italic": "Kursiv umschalten",
+            "toggle-strikethrough": "Durchgestrichen umschalten"
+        },
+        "description": "Meine persönliche Webseite und mein Blog, in denen ich meine Gedanken zu verschiedenen Themen wie Tutorials, Notizen und persönlichen Erfahrungen teile. Als Full-Stack-Ingenieur aus Hongkong begann ich im Dezember 2020 aus Hobby Webentwicklung zu lernen. Ich verwende Next.js zum Erstellen von Webseiten, GitHub für das Hosting des Codes und Vercel für die Bereitstellung. Erkunden Sie meine Seite, um mehr über meine Reise zu erfahren und einige der Webentwicklungsressourcen zu entdecken, die mich inspiriert haben.",
+        "footer": {
+            "edit-on-github": "Auf GitHub bearbeiten",
+            "last-updated": "Zuletzt aktualisiert: {date}"
+        },
+        "header": {
+            "comments": "Kommentare",
+            "published-on": "Veröffentlicht am",
+            "views": "Aufrufe",
+            "written-by": "Geschrieben von"
+        },
+        "like": "Gefällt mir",
+        "like-limit-reached": "Sie können pro Beitrag nur 3 Mal liken",
+        "like-this-post": "Diesen Beitrag liken",
+        "on-this-page": "Auf dieser Seite",
+        "title": "Blog"
+    },
+    "command-menu": {
+        "actions": {
+            "copy-link": "Link kopieren",
+            "source-code": "Quellcode"
+        },
+        "groups": {
+            "account": "Konto",
+            "general": "Allgemein",
+            "social": "Soziales"
+        },
+        "no-results": "Keine Ergebnisse gefunden.",
+        "open-menu": "Befehlsmenü öffnen",
+        "placeholder": "Befehl eingeben oder suchen",
+        "trigger": {
+            "open-command": "Befehl öffnen",
+            "open-link": "Link öffnen"
+        }
+    },
+    "common": {
+        "cancel": "Abbrechen",
+        "delete": "Löschen",
+        "error": "Fehler",
+        "likes": "{count, plural, =1 {# Gefällt mir} other {# Gefällt mir}}",
+        "sign-in": "Anmelden",
+        "sign-in-error": "Anmeldung fehlgeschlagen. Bitte versuchen Sie es erneut.",
+        "sign-out": "Abmelden",
+        "views": "{count, plural, =1 {# Aufruf} other {# Aufrufe}}"
+    },
+    "component": {
+        "filtered-posts": {
+            "no-posts-found": "Keine Beiträge gefunden",
+            "placeholder": "Artikel suchen"
+        },
+        "go-to-homepage": "Zur Startseite"
+    },
+    "dashboard": {
+        "description": "Dies ist mein persönliches Dashboard, gebaut mit Next.js API-Routen, die als serverlose Funktionen bereitgestellt werden. Ich nutze dieses Dashboard, um verschiedene Metriken über Plattformen wie YouTube, GitHub und mehr zu verfolgen.",
+        "metric": {
+            "blog-total-likes": "Gesamtanzahl Likes im Blog",
+            "blog-total-views": "Gesamtanzahl Aufrufe im Blog",
+            "coding-hours": "Programmierstunden",
+            "github-followers": "GitHub-Follower",
+            "github-stars": "GitHub-Sterne",
+            "youtube-subscribers": "YouTube-Abonnenten",
+            "youtube-views": "YouTube-Aufrufe"
+        },
+        "title": "Dashboard"
+    },
+    "dialog": {
+        "sign-in": {
+            "continue-with": "Weiter mit {provider}",
+            "description": "um zu honghong.me fortzufahren"
+        }
+    },
+    "error": {
+        "something-went-wrong": "Etwas ist schiefgelaufen!",
+        "try-again": "Erneut versuchen"
+    },
+    "guestbook": {
+        "create-message-successfully": "Nachricht erfolgreich erstellt",
+        "delete-dialog": {
+            "description": "Sind Sie sicher, dass Sie diesen Kommentar löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
+            "title": "Kommentar löschen"
+        },
+        "delete-message-successfully": "Nachricht erfolgreich gelöscht",
+        "description": "Hinterlassen Sie einen Eintrag in meinem Gästebuch und teilen Sie Ihre Gedanken. Sie können mir hier alles erzählen!",
+        "failed-to-load-messages": "Nachrichten konnten nicht geladen werden. Bitte aktualisieren Sie die Seite.",
+        "message-cannot-be-empty": "Nachricht darf nicht leer sein",
+        "no-messages": "Keine Nachrichten. Seien Sie der Erste, der eine Nachricht hinterlässt!",
+        "pinned": {
+            "description": "Danke für Ihren Besuch auf meiner Webseite. Wenn Sie einen Moment Zeit haben, würde ich mich über Ihr Feedback zu meiner Arbeit freuen. Bitte melden Sie sich an, um einen Kommentar zu hinterlassen. Danke!",
+            "greeting": "Hallo! 👋"
+        },
+        "placeholder": "Nachricht hinterlassen",
+        "signin": {
+            "description": "um eine Nachricht zu hinterlassen"
+        },
+        "submit": "Absenden",
+        "title": "Gästebuch"
+    },
+    "homepage": {
+        "about-me": {
+            "coding-hours": "Programmierstunden",
+            "connect": "Verbinden",
+            "fav-framework": "Bevorzugter Server",
+            "location": "São Paulo",
+            "more": "Mehr über mich erfahren",
+            "stacks": "Technologien",
+            "title": "Über mich"
+        },
+        "get-in-touch": {
+            "description": "Kontaktieren Sie mich gerne!",
+            "image-alt": "Ich sitze an meinem Schreibtisch und programmiere",
+            "title": "Fragen zum Server?"
+        },
+        "hero": {
+            "amazing": "cloud-native",
+            "attractive": "zero-trust",
+            "fantastic": "verschlüsselt",
+            "location-timezone": "Brasilien • UTC/GMT -3",
+            "stunning": "unveränderlich",
+            "title-bottom": "verteilte Systeme",
+            "title-middle-left": "Lösungen",
+            "title-middle-right": "gestalten",
+            "title-top": "Ich bin Yuri, Serverspezialist"
+        },
+        "latest-articles": {
+            "card": "Artikel",
+            "more": "Alle Artikel ansehen",
+            "title": "Neueste Artikel"
+        },
+        "selectedProjects": {
+            "card": "Projekt",
+            "more": "Alle Projekte ansehen",
+            "title": "Ausgewählte Projekte"
+        }
+    },
+    "hook": {
+        "copy-to-clipboard": {
+            "copied": "In die Zwischenablage kopiert!",
+            "error": "Kopieren in die Zwischenablage fehlgeschlagen. Bitte versuchen Sie es erneut!"
+        }
+    },
+    "layout": {
+        "about": "Über",
+        "blog": "Blog",
+        "change-language": "Sprache ändern",
+        "dashboard": "Dashboard",
+        "facebook": "Facebook",
+        "github": "GitHub",
+        "guestbook": "Gästebuch",
+        "home": "Startseite",
+        "instagram": "Instagram",
+        "links": "Links",
+        "now-playing": {
+            "error": "Spotify-Daten konnten nicht abgerufen werden",
+            "loading": "Lädt ...",
+            "not-listening": "Nicht aktiv – Spotify"
+        },
+        "projects": "Projekte",
+        "skip-to-main-content": "Zum Hauptinhalt springen",
+        "toggle-menu": "Menü umschalten",
+        "uses": "Tools",
+        "youtube": "YouTube"
+    },
+    "mdx": {
+        "link-to-section": "Link zu Abschnitt"
+    },
+    "metadata": {
+        "site-description": "Cloud- und Infrastrukturarchitekt",
+        "site-title": "Yuri Cunha"
+    },
+    "not-found": "Seite nicht gefunden!",
+    "projects": {
+        "description": "Die Liste meiner Projekte. Alles wurde mit 💙 erstellt.",
+        "title": "Projekte",
+        "visit-website": "Webseite besuchen"
+    },
+    "theme-toggle": {
+        "options": {
+            "dark": "Dunkel",
+            "light": "Hell",
+            "system": "System"
+        },
+        "toggle-theme": "Thema wechseln"
+    },
+    "uses": {
+        "description": "Dies ist die Ausrüstung, die ich derzeit zum Spielen, Programmieren, Videomachen und für den Alltag benutze.",
+        "title": "Tools"
+    }
+}
