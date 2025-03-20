@@ -95,7 +95,7 @@ const Metrics = () => {
     },
     {
       title: t('dashboard.metric.blog-total-views'),
-      link: 'https://yuricunha.com',
+      link: 'https://yuricunha.com/blog',
       value: viewsQuery.data?.views,
       icon: <PencilIcon className='size-6 text-[#ff0f7b]' />,
       linkText: 'Blog',
@@ -106,7 +106,7 @@ const Metrics = () => {
     },
     {
       title: t('dashboard.metric.blog-total-likes'),
-      link: 'https://yuricunha.com',
+      link: 'https://yuricunha.com/blog',
       value: likesQuery.data?.likes,
       icon: <PencilIcon className='size-6 text-[#ff0f7b]' />,
       linkText: 'Blog',
