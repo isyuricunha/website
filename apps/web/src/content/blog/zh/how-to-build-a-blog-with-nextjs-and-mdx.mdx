@@ -1,25 +1,25 @@
 ---
-title: 如何使用 Next.js 和 MDX 建立博客
+title: "如何使用 Next.js 和 MDX 构建博客"
 date: '2022-08-22T00:00:00Z'
 modifiedTime: '2024-02-24T00:00:00Z'
-summary: 使用 Next.js 建立博客非常简单！
+summary: "使用 Next.js 构建博客非常简单！"
 ---
 
 ## 前言
 
-将使用的套件：
+将要使用的包：
 
-- [next](https://github.com/vercel/next.js) Next.js 框架
-- [next-mdx-remote](https://github.com/hashicorp/next-mdx-remote) 处理和载入 MDX 内容
-- [gray-matter](https://github.com/jonschlinkert/gray-matter) 解析 Markdown 的前置资料
+- [next](https://github.com/vercel/next.js) —— Next.js 框架
+- [next-mdx-remote](https://github.com/hashicorp/next-mdx-remote) —— 用于处理和加载 MDX 内容
+- [gray-matter](https://github.com/jonschlinkert/gray-matter) —— 解析 Markdown 文件中的 Front Matter
 
-本教学的源代码库：
+本教程的仓库：
 
 https://github.com/tszhong0411/nextjs-mdx-blog
 
-## 示例
+## 演示
 
-[线上示例](https://hong-nextjs-mdx-blog.vercel.app)
+[在线演示](https://hong-nextjs-mdx-blog.vercel.app)
 
 <Video
   src='/videos/blog/how-to-build-a-blog-with-nextjs-and-mdx/demo.mp4'
@@ -27,20 +27,20 @@ https://github.com/tszhong0411/nextjs-mdx-blog
   height={1080}
 />
 
-## 如何建立博客
+## 如何创建博客
 
-首先，我们使用以下指令建立 Next.js 项目：
+首先，我们使用以下命令创建一个 Next.js 项目：
 
-```bash title='Terminal'
+```bash title='终端'
 yarn create next-app nextjs-mdx-blog
 ```
 
-接着，建立以下档案：
+接下来，创建以下文件：
 
-- `components/layout.jsx` - 将所有组件包装在容器中（可选，用于样式）
-- `data/blog/*.mdx` - 博客文章
-- `lib/format-date.js` - 将日期格式化为 `MM DD, YYYY`
-- `pages/blog/[slug].jsx` - 文章页面，使用 [动态路由](https://nextjs.org/docs/routing/dynamic-routes)
+- `components/layout.jsx` —— 用于包裹所有组件的容器（可选，仅用于样式）
+- `data/blog/*.mdx` —— 博客文章
+- `lib/format-date.js` —— 将日期格式化为 `MM DD, YYYY`
+- `pages/blog/[slug].jsx` —— 文章页面，采用 [动态路由](https://nextjs.org/docs/routing/dynamic-routes)
 
 <TreeView
   defaultExpandedValue={['components', 'data', 'data/blog', 'lib', 'pages', 'pages/blog']}
@@ -91,61 +91,61 @@ yarn create next-app nextjs-mdx-blog
   }}
 />
 
-### 如何处理 Markdown 档案
+### 如何处理 Markdown 文件
 
-首先建立变数 `const root{:js}`，其值为根目录，`process.cwd(){:js}` 方法返回当前 Node.js 进程的工作目录。
+首先，声明 `const root` —— 表示根目录，`process.cwd()` 方法返回 Node.js 进程当前的工作目录。
 
 ```js title='lib/mdx.js'
 const root = process.cwd()
 ```
 
-接着定义变数 `POSTS_PATH`，用于储存文章档案的路径。
+接下来，定义变量 `POSTS_PATH`，表示文章文件存放的路径。
 
 ```js title='lib/mdx.js'
 import path from 'path'
 
 const POSTS_PATH = path.join(root, 'data', 'blog') // [!code highlight]
-// 输出: A:/nextjs-mdx-blog/data/blog
+// 输出示例：A:/nextjs-mdx-blog/data/blog
 ```
 
-使用 `fs` 读取该目录下的内容，即 `data/blog` 下的所有档案名。
+然后使用 `fs` 读取该目录下的所有文件名，也就是 `data/blog` 下的所有文件。
 
 ```js title='lib/mdx.js'
 import fs from 'fs'
 
 export const allSlugs = fs.readdirSync(POSTS_PATH)
-// 输出: ['markdown.mdx', 'nextjs.mdx', 'react.mdx']
+// 输出示例：['markdown.mdx', 'nextjs.mdx', 'react.mdx']
 ```
 
-然后撰写一个函数移除档案后缀名，稍后会用到。
+接下来编写一个函数，用于移除文件扩展名，后续会使用到。
 
 ```js title='lib/mdx.js'
 export const formatSlug = (slug) => slug.replace(/\.mdx$/, '')
 /**
- * 示例: formatSlug('markdown.mdx')
- * 输出: 'markdown'
+ * 示例：formatSlug('markdown.mdx')
+ * 输出：'markdown'
  */
 ```
 
-接着根据 slug 获取文章内容。
+下一步是通过 slug 获取文章内容。
 
 ```js title='lib/mdx.js'
 export const getPostBySlug = async (slug) => {
   const postFilePath = path.join(POSTS_PATH, `${slug}.mdx`)
-  // 输出: A:/nextjs-mdx-blog/data/blog/slug.mdx
+  // 输出示例：A:/nextjs-mdx-blog/data/blog/slug.mdx
   const source = fs.readFileSync(postFilePath)
-  // 返回档案内容
+  // 返回文件内容
 
   const { content, data } = matter(source)
   /*
-   * 示例:
+   * 示例：
    *  ---
    *  title: Hello
    *  slug: home
    *  ---
    *  <h1>Hello world!</h1>
    *
-   * 返回:
+   * 返回：
    *  {
    *    content: '<h1>Hello world!</h1>',
    *    data: {
@@ -156,13 +156,13 @@ export const getPostBySlug = async (slug) => {
    */
 
   const mdxSource = await serialize(content)
-  // 使用 serialize (next-mdx-remote) 处理内容
+  // 对内容进行序列化处理（使用 next-mdx-remote）
 
   const frontMatter = {
     ...data,
     slug
   }
-  // 将 slug 加入前置资料，稍后会用到
+  // 同时将 slug 放入 front matter，后续会使用到
 
   return {
     source: mdxSource,
@@ -171,7 +171,7 @@ export const getPostBySlug = async (slug) => {
 }
 ```
 
-接下来可以获取所有文章，以显示在首页。
+然后，你可以获取所有文章，以便在首页展示。
 
 ```js title='lib/mdx.js'
 export const getAllPosts = () => {
@@ -201,7 +201,7 @@ const dateSortDesc = (a, b) => {
 }
 ```
 
-### 格式化日期
+### 日期格式化
 
 ```js title='lib/format-date.js'
 export const formatDate = (date) =>
@@ -211,8 +211,8 @@ export const formatDate = (date) =>
     day: 'numeric'
   })
 /*
- * formatDate('2022-08-21T00:00:00Z')
- * 输出: 'August 21, 2022'
+ * 示例：formatDate('2022-08-21T00:00:00Z')
+ * 输出：'August 21, 2022'
  */
 ```
 
@@ -227,7 +227,7 @@ import Link from 'next/link'
 export default function Home({ posts }) {
   return (
     <>
-      <h1 className='mb-8 text-6xl font-bold'>博客</h1>
+      <h1 className='mb-8 text-6xl font-bold'>Blog</h1>
       <hr className='my-8' />
       <ul className='flex flex-col gap-3'>
         {posts.map(({ slug, title, summary, date }) => (
@@ -302,7 +302,7 @@ export const getStaticPaths = async () => {
     }
   }))
   /*
-   * paths 输出:
+   * paths 输出示例：
    *   [
    *     { params: { slug: 'markdown' } },
    *     { params: { slug: 'nextjs' } },
@@ -319,7 +319,7 @@ export const getStaticPaths = async () => {
 
 这样，一个简单的博客就完成了。
 
-## 相关连结
+## 有用的链接
 
 - [getStaticPaths](https://nextjs.org/docs/basic-features/data-fetching/get-static-paths)
 - [getStaticProps](https://nextjs.org/docs/basic-features/data-fetching/get-static-props)
