@@ -39,7 +39,7 @@ const Footer = () => {
       <div className='mt-20 flex items-center justify-between text-sm'>
         <div>&copy; {new Date().getFullYear()} Yuri Cunha</div>
         <Link
-          href='https://git.new/isyuricunha-web'
+          href='https://github.com/isyuricunha/website'
           className='flex items-center justify-center overflow-hidden rounded-md border'
         >
           <div className='bg-muted flex h-8 items-center gap-2 border-r px-2'>
