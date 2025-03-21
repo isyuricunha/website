@@ -14,7 +14,7 @@ Welcome to the honghong.me repository! We're glad you're interested in contribut
 
 ## Issues
 
-If you encounter any issues, have suggestions, or want to report a bug, feel free to [create an issue](https://github.com/tszhong0411/honghong.me/issues). When creating an issue, please include a clear and descriptive title, along with relevant details about the problem or suggestion. This will help us understand and address the issue more effectively.
+If you encounter any issues, have suggestions, or want to report a bug, feel free to [create an issue](https://github.com/isyuricunha/website/issues). When creating an issue, please include a clear and descriptive title, along with relevant details about the problem or suggestion. This will help us understand and address the issue more effectively.
 
 ## Pull Requests
 

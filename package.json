@@ -1,10 +1,10 @@
 {
   "private": true,
-  "name": "honghong-me",
-  "author": "tszhong0411 <me@honghong.me> (https://github.com/tszhong0411/)",
+  "name": "website",
+  "author": "isyuricunha <me@yuricunha.com> (https://github.com/isyuricunha/)",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tszhong0411/honghong.me.git"
+    "url": "git+https://github.com/isyuricunha/website.git"
   },
   "type": "module",
   "scripts": {
