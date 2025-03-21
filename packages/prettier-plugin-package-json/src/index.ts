@@ -12,7 +12,8 @@ const plugin: Plugin = {
     'json-stringify': {
       ...parser,
       preprocess: (text, options: ParserOptions & Options) => {
-        const regex = /package.*json$/u
+        // Regex optimized
+        const regex = /^package[^/]*\.json$/u
 
         const formatOptions: Options = {
           useTabs: options.useTabs,
