@@ -1,5 +1,5 @@
 
-Welcome to my personal portfolio site! Explore my work by visiting [yuricunha.com](https://yuricha.com/).
+Welcome to my personal portfolio site! Explore my work by visiting [yuricunha.com](https://yuricunha.com/).
 
 Project Overview
 
