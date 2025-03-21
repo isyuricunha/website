@@ -95,5 +95,8 @@
   "simple-git-hooks": {
     "pre-commit": "pnpm lint-staged",
     "commit-msg": "pnpm commitlint --edit $1 && pnpm check:spelling $1"
+  },
+  "dependencies": {
+    "better-auth": "^1.2.4"
   }
 }
