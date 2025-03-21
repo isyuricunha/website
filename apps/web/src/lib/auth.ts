@@ -2,6 +2,7 @@ import { db } from '@tszhong0411/db'
 import { env } from '@tszhong0411/env'
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
+import { username } from 'better-auth/plugins'
 import { headers } from 'next/headers'
 
 export const auth = betterAuth({
@@ -9,6 +10,12 @@ export const auth = betterAuth({
     provider: 'pg',
     usePlural: true
   }),
+  plugins: [
+    username({ minUsernameLength: 3 }) // Permite login por username
+  ],
+  emailAndPassword: {
+    enabled: true
+  },
   socialProviders: {
     google: {
       clientId: env.GOOGLE_CLIENT_ID,
