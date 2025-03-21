@@ -11,11 +11,12 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
+  Input,
   toast
 } from '@tszhong0411/ui'
 import { useEffect, useState } from 'react'
 
-import { signIn } from '@/lib/auth-client'
+import { signIn, useSession } from '@/lib/auth-client'
 import { useDialogsStore } from '@/store/dialogs'
 
 type Provider = 'github' | 'google'
@@ -53,8 +54,11 @@ const SignInDialog = () => {
   const { isSignInOpen, setIsSignInOpen } = useDialogsStore()
   const [isPending, setIsPending] = useState(false)
   const [lastUsedProvider, setLastUsedProvider] = useState<Provider | null>(null)
+  const [username, setUsername] = useState('')
+  const [setIsUsernameSet] = useState(false)
   const t = useTranslations()
   const pathname = usePathname()
+  const { data: session } = useSession()
 
   useEffect(() => {
     if (typeof globalThis !== 'undefined') {
@@ -63,24 +67,69 @@ const SignInDialog = () => {
     }
   }, [])
 
+  // Login social (GitHub e Google)
   const handleSignIn = async (provider: Provider) => {
     localStorage.setItem('last-used-provider', provider)
-    await signIn.social({
-      provider,
-      callbackURL: pathname,
-      fetchOptions: {
-        onSuccess: () => {
-          setIsPending(false)
-        },
-        onError: () => {
-          setIsPending(false)
-          toast.error(t('common.sign-in-error'))
-        },
-        onRequest: () => {
-          setIsPending(true)
+    try {
+      await signIn.social({
+        provider,
+        callbackURL: pathname,
+        fetchOptions: {
+          onSuccess: () => {
+            setIsPending(false)
+          },
+          onError: () => {
+            setIsPending(false)
+            toast.error(t('common.sign-in-error'))
+          },
+          onRequest: () => {
+            setIsPending(true)
+          }
         }
-      }
-    })
+      })
+    } catch {
+      setIsPending(false)
+      toast.error(t('common.sign-in-error'))
+    }
+  }
+
+  // Login anônimo
+  const handleAnonymousLogin = async () => {
+    try {
+      await signIn.anonymous({
+        callbackURL: pathname,
+        fetchOptions: {
+          onSuccess: () => {
+            setIsPending(false)
+          },
+          onError: () => {
+            setIsPending(false)
+            toast.error(t('common.sign-in-error'))
+          },
+          onRequest: () => {
+            setIsPending(true)
+          }
+        }
+      })
+    } catch {
+      setIsPending(false)
+      toast.error(t('common.sign-in-error'))
+    }
+  }
+
+  // Atualiza o username para usuários anônimos
+  const handleSetUsername = async () => {
+    if (!username) {
+      toast.error('Informe um nome de usuário.')
+      return
+    }
+    try {
+      await signIn.updateUser({ username })
+      setIsUsernameSet(true)
+      toast.success('Nome de usuário definido com sucesso!')
+    } catch {
+      toast.error('Erro ao definir nome de usuário.')
+    }
   }
 
   return (
@@ -117,7 +166,27 @@ const SignInDialog = () => {
             {t('dialog.sign-in.continue-with', { provider: 'Google' })}
             {lastUsedProvider === 'google' && <LastUsed />}
           </Button>
+          <Button
+            className='relative h-10 rounded-xl border font-semibold'
+            variant='outline'
+            onClick={handleAnonymousLogin}
+            isPending={isPending}
+          >
+            {t('dialog.sign-in.anonymous')}
+          </Button>
         </div>
+        {/* Se o usuário está logado de forma anônima e ainda não definiu o username, exibe o input */}
+        {session?.user.isAnonymous && !session.user.username && (
+          <div className='mt-4 flex flex-col gap-2'>
+            <p className='text-left'>Escolha um nome de usuário:</p>
+            <Input
+              placeholder='Seu nome de usuário'
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <Button onClick={handleSetUsername}>Definir nome de usuário</Button>
+          </div>
+        )}
       </DialogContent>
     </Dialog>
   )
