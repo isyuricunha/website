@@ -244,7 +244,8 @@
   "projects": {
     "description": "我的项目列表。所有项目均由💙完成。",
     "title": "项目",
-    "visit-website": "访问网站"
+    "visit-website": "访问网站",
+    "all-repos": "我的公开 GitHub 代码库"
   },
   "theme-toggle": {
     "options": {

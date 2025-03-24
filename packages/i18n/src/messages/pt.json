@@ -244,7 +244,8 @@
     "projects": {
         "description": "A lista dos meus projetos. Tudo foi feito com 💙.",
         "title": "Projetos",
-        "visit-website": "Visitar Site"
+        "visit-website": "Visitar Site",
+        "all-repos": "Meus repositórios públicos no GitHub"
     },
     "theme-toggle": {
         "options": {

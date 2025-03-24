@@ -105,7 +105,7 @@ const Page = async (props: PageProps) => {
       <ProjectCards projects={projects} />
 
       <section className='mt-12'>
-        <h2 className='mb-4 text-3xl font-bold'>Meus Repositórios no GitHub</h2>
+        <h2 className='mb-4 text-3xl font-bold'>{t('projects.all-repos')}</h2>
         {repos.length === 0 ? <p>Nenhum repositório encontrado.</p> : <GithubRepos repos={repos} />}
       </section>
     </>

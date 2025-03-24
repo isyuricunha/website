@@ -31,7 +31,6 @@ const GithubRepoCard = ({ repo }: { repo: Repo }) => {
       rel='noopener noreferrer'
       className='group rounded-xl border border-gray-200 px-2 py-4 transition-shadow hover:shadow-lg dark:border-zinc-700'
     >
-      {/* Se futuramente tiver uma imagem para o repositório, pode inserir aqui um componente similar ao BlurImage */}
       <div className='flex-1 px-2 py-4'>
         <div className='space-y-2'>
           <h2 className='text-2xl font-semibold'>{repo.name}</h2>
