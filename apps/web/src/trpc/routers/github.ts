@@ -13,14 +13,10 @@ const getKey = (id: string) => `github:${id}`
 export const githubRouter = createTRPCRouter({
   get: publicProcedure.query(async ({ ctx }) => {
     const ip = getIp(ctx.headers)
-
     const { success } = await ratelimit.limit(getKey(ip))
-
     if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
 
-    const octokit = new Octokit({
-      auth: env.GITHUB_TOKEN
-    })
+    const octokit = new Octokit({ auth: env.GITHUB_TOKEN })
 
     const { data: repos } = await octokit.request('GET /users/{username}/repos', {
       username: GITHUB_USERNAME
@@ -31,35 +27,47 @@ export const githubRouter = createTRPCRouter({
     })
 
     const stars = repos
-      .filter((repo) => {
-        return !repo.fork
-      })
-      .reduce((acc, repo) => {
-        return acc + (repo.stargazers_count ?? 0)
-      }, 0)
+      .filter((repo) => !repo.fork)
+      .reduce((acc, repo) => acc + (repo.stargazers_count ?? 0), 0)
 
     const followers = user.followers
 
-    return {
-      stars,
-      followers
-    }
+    return { stars, followers }
   }),
+
   getRepoStars: publicProcedure.query(async ({ ctx }) => {
     const ip = getIp(ctx.headers)
-
     const { success } = await ratelimit.limit(getKey(ip))
-
     if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
 
-    const octokit = new Octokit({
-      auth: env.GITHUB_TOKEN
-    })
+    const octokit = new Octokit({ auth: env.GITHUB_TOKEN })
 
     const { data: repos } = await octokit.request('GET /users/{username}/repos', {
       username: GITHUB_USERNAME
     })
 
     return repos.find((repo) => repo.name === 'website')?.stargazers_count ?? 0
+  }),
+
+  getRepos: publicProcedure.query(async ({ ctx }) => {
+    const ip = getIp(ctx.headers)
+    const { success } = await ratelimit.limit(getKey(ip))
+    if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+
+    const octokit = new Octokit({ auth: env.GITHUB_TOKEN })
+
+    const { data: repos } = await octokit.request('GET /users/{username}/repos', {
+      username: GITHUB_USERNAME
+    })
+
+    return repos
+      .filter((repo) => !repo.fork && !repo.private)
+      .map((repo) => ({
+        name: repo.name,
+        description: repo.description,
+        url: repo.html_url,
+        stargazersCount: repo.stargazers_count,
+        language: repo.language
+      }))
   })
 })

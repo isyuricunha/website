@@ -4,10 +4,14 @@ import type { CollectionPage, WithContext } from 'schema-dts'
 import { i18n } from '@tszhong0411/i18n/config'
 import { getTranslations, setRequestLocale } from '@tszhong0411/i18n/server'
 import { allProjects } from 'content-collections'
+import { headers } from 'next/headers'
 
+import GithubRepos from '@/components/github-repos'
 import PageTitle from '@/components/page-title'
 import ProjectCards from '@/components/project-cards'
 import { SITE_URL } from '@/lib/constants'
+import { appRouter } from '@/trpc/root'
+import { createTRPCContext } from '@/trpc/trpc'
 import { getLocalizedPath } from '@/utils/get-localized-path'
 
 type PageProps = {
@@ -61,6 +65,13 @@ const Page = async (props: PageProps) => {
   const description = t('projects.description')
   const url = `${SITE_URL}${getLocalizedPath({ slug: '/projects', locale })}`
 
+  const trpcContext = await createTRPCContext({ headers: headers() as unknown as Headers })
+  // eslint-disable-next-line sonarjs/deprecation,@typescript-eslint/no-deprecated -- Temporarily disabled while I migrate to a new caller API.
+  const caller = appRouter.createCaller(trpcContext)
+  const repos = (await caller.github.getRepos()).map((repo) => ({
+    ...repo,
+    stargazersCount: repo.stargazersCount ?? 0
+  }))
   const projects = allProjects.filter((project) => project.locale === locale)
 
   const jsonLd: WithContext<CollectionPage> = {
@@ -92,6 +103,11 @@ const Page = async (props: PageProps) => {
       />
       <PageTitle title={title} description={description} />
       <ProjectCards projects={projects} />
+
+      <section className='mt-12'>
+        <h2 className='mb-4 text-3xl font-bold'>Meus Repositórios no GitHub</h2>
+        {repos.length === 0 ? <p>Nenhum repositório encontrado.</p> : <GithubRepos repos={repos} />}
+      </section>
     </>
   )
 }
