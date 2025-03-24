@@ -139,6 +139,7 @@
   "dialog": {
     "sign-in": {
       "continue-with": "Continue with {provider}",
+      "or": "or",
       "description": "to continue to yuricunha.com"
     }
   },

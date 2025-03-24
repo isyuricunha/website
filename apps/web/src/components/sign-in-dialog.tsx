@@ -11,6 +11,7 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
+  Input, // Certifique-se de que o Input está disponível no seu UI
   toast
 } from '@tszhong0411/ui'
 import { useEffect, useState } from 'react'
@@ -53,6 +54,9 @@ const SignInDialog = () => {
   const { isSignInOpen, setIsSignInOpen } = useDialogsStore()
   const [isPending, setIsPending] = useState(false)
   const [lastUsedProvider, setLastUsedProvider] = useState<Provider | null>(null)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [isEmailPending, setIsEmailPending] = useState(false)
   const t = useTranslations()
   const pathname = usePathname()
 
@@ -63,24 +67,58 @@ const SignInDialog = () => {
     }
   }, [])
 
-  const handleSignIn = async (provider: Provider) => {
+  const handleSocialSignIn = async (provider: Provider) => {
     localStorage.setItem('last-used-provider', provider)
     await signIn.social({
       provider,
       callbackURL: pathname,
       fetchOptions: {
+        onRequest: () => {
+          setIsPending(true)
+        },
         onSuccess: () => {
           setIsPending(false)
         },
         onError: () => {
           setIsPending(false)
           toast.error(t('common.sign-in-error'))
-        },
-        onRequest: () => {
-          setIsPending(true)
         }
       }
     })
+  }
+
+  const handleEmailSignIn = async () => {
+    setIsEmailPending(true)
+    try {
+      const { error } = await signIn.email(
+        {
+          email,
+          password,
+          callbackURL: pathname
+        },
+        {
+          onRequest: () => {
+            setIsEmailPending(true)
+          },
+          onSuccess: () => {
+            setIsEmailPending(false)
+          },
+          onError: () => {
+            setIsEmailPending(false)
+            toast.error(t('common.sign-in-error'))
+          }
+        }
+      )
+
+      if (error) {
+        toast.error(error.message)
+      }
+    } catch (error: unknown) {
+      const errorMsg = error instanceof Error ? error.message : 'Erro desconhecido'
+      toast.error(errorMsg)
+    } finally {
+      setIsEmailPending(false)
+    }
   }
 
   return (
@@ -97,10 +135,12 @@ const SignInDialog = () => {
             {t('dialog.sign-in.description')}
           </DialogDescription>
         </DialogHeader>
+
+        {/* Social Sign In */}
         <div className='my-6 flex flex-col gap-4'>
           <Button
             className='relative h-10 rounded-xl font-semibold'
-            onClick={() => handleSignIn('github')}
+            onClick={() => handleSocialSignIn('github')}
             isPending={isPending}
           >
             {isPending ? null : <SiGithub className='mr-3' />}
@@ -110,12 +150,44 @@ const SignInDialog = () => {
           <Button
             className='relative h-10 rounded-xl border font-semibold'
             variant='ghost'
-            onClick={() => handleSignIn('google')}
+            onClick={() => handleSocialSignIn('google')}
             isPending={isPending}
           >
             {isPending ? null : <GoogleIcon />}
             {t('dialog.sign-in.continue-with', { provider: 'Google' })}
             {lastUsedProvider === 'google' && <LastUsed />}
+          </Button>
+        </div>
+
+        {/* Divider */}
+        <div className='flex items-center gap-2'>
+          <div className='h-px flex-1 bg-gray-300' />
+          <span className='text-sm text-gray-500'>{t('dialog.sign-in.or')}</span>
+          <div className='h-px flex-1 bg-gray-300' />
+        </div>
+
+        {/* Email and Password Sign In */}
+        <div className='my-6 flex flex-col gap-4'>
+          <Input
+            placeholder='Email'
+            type='email'
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className='w-full'
+          />
+          <Input
+            placeholder='Password'
+            type='password'
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className='w-full'
+          />
+          <Button
+            className='relative h-10 rounded-xl font-semibold'
+            onClick={handleEmailSignIn}
+            isPending={isEmailPending}
+          >
+            {t('dialog.sign-in.continue-with', { provider: 'Email' })}
           </Button>
         </div>
       </DialogContent>
