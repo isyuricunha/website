@@ -20,6 +20,7 @@ const authClient: ReturnType<typeof createAuthClient> = createAuthClient({
 })
 
 export const signIn: typeof authClient.signIn = authClient.signIn
+export const signUp: typeof authClient.signUp = authClient.signUp
 export const signOut: typeof authClient.signOut = authClient.signOut
 export const useSession: typeof authClient.useSession = authClient.useSession
 

@@ -140,8 +140,21 @@
     "sign-in": {
       "continue-with": "Continue with {provider}",
       "or": "or",
-      "description": "to continue to yuricunha.com"
-    }
+      "description": "to continue to yuricunha.com",
+      "here": "Sign in here"
+    },
+    "sign-up": {
+      "description": "to create your account on yuricunha.com",
+      "here": "Sign up here"
+    },
+    "already-have-account": "Already have an account?",
+    "dont-have-account": "Don't have an account?"
+  },
+  "common": {
+    "sign-in": "Sign in",
+    "sign-up": "Sign up",
+    "sign-in-error": "Failed to sign in. Please try again.",
+    "sign-up-error": "Failed to sign up. Please try again."
   },
   "error": {
     "something-went-wrong": "Something went wrong!",

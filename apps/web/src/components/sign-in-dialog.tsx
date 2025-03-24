@@ -11,12 +11,12 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  Input, // Certifique-se de que o Input está disponível no seu UI
+  Input,
   toast
 } from '@tszhong0411/ui'
 import { useEffect, useState } from 'react'
 
-import { signIn } from '@/lib/auth-client'
+import { signIn, signUp } from '@/lib/auth-client'
 import { useDialogsStore } from '@/store/dialogs'
 
 type Provider = 'github' | 'google'
@@ -56,7 +56,9 @@ const SignInDialog = () => {
   const [lastUsedProvider, setLastUsedProvider] = useState<Provider | null>(null)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [name, setName] = useState('') // campo para o nome do usuário no cadastro
   const [isEmailPending, setIsEmailPending] = useState(false)
+  const [isSignup, setIsSignup] = useState(false) // alterna entre login e cadastro
   const t = useTranslations()
   const pathname = usePathname()
 
@@ -97,19 +99,44 @@ const SignInDialog = () => {
           callbackURL: pathname
         },
         {
-          onRequest: () => {
-            setIsEmailPending(true)
-          },
-          onSuccess: () => {
-            setIsEmailPending(false)
-          },
+          onRequest: () => setIsEmailPending(true),
+          onSuccess: () => setIsEmailPending(false),
           onError: () => {
             setIsEmailPending(false)
             toast.error(t('common.sign-in-error'))
           }
         }
       )
+      if (error) {
+        toast.error(error.message)
+      }
+    } catch (error: unknown) {
+      const errorMsg = error instanceof Error ? error.message : 'Erro desconhecido'
+      toast.error(errorMsg)
+    } finally {
+      setIsEmailPending(false)
+    }
+  }
 
+  const handleEmailSignUp = async () => {
+    setIsEmailPending(true)
+    try {
+      const { error } = await signUp.email(
+        {
+          email,
+          password,
+          name,
+          callbackURL: pathname
+        },
+        {
+          onRequest: () => setIsEmailPending(true),
+          onSuccess: () => setIsEmailPending(false),
+          onError: () => {
+            setIsEmailPending(false)
+            toast.error(t('common.sign-up-error'))
+          }
+        }
+      )
       if (error) {
         toast.error(error.message)
       }
@@ -130,34 +157,38 @@ const SignInDialog = () => {
     >
       <DialogContent className='sm:max-w-[425px]'>
         <DialogHeader>
-          <DialogTitle className='text-left text-2xl'>{t('common.sign-in')}</DialogTitle>
+          <DialogTitle className='text-left text-2xl'>
+            {isSignup ? t('common.sign-up') : t('common.sign-in')}
+          </DialogTitle>
           <DialogDescription className='text-left'>
-            {t('dialog.sign-in.description')}
+            {isSignup ? t('dialog.sign-up.description') : t('dialog.sign-in.description')}
           </DialogDescription>
         </DialogHeader>
 
-        {/* Social Sign In */}
-        <div className='my-6 flex flex-col gap-4'>
-          <Button
-            className='relative h-10 rounded-xl font-semibold'
-            onClick={() => handleSocialSignIn('github')}
-            isPending={isPending}
-          >
-            {isPending ? null : <SiGithub className='mr-3' />}
-            {t('dialog.sign-in.continue-with', { provider: 'GitHub' })}
-            {lastUsedProvider === 'github' && <LastUsed />}
-          </Button>
-          <Button
-            className='relative h-10 rounded-xl border font-semibold'
-            variant='ghost'
-            onClick={() => handleSocialSignIn('google')}
-            isPending={isPending}
-          >
-            {isPending ? null : <GoogleIcon />}
-            {t('dialog.sign-in.continue-with', { provider: 'Google' })}
-            {lastUsedProvider === 'google' && <LastUsed />}
-          </Button>
-        </div>
+        {/* Social Sign In (somente para login) */}
+        {!isSignup && (
+          <div className='my-6 flex flex-col gap-4'>
+            <Button
+              className='relative h-10 rounded-xl font-semibold'
+              onClick={() => handleSocialSignIn('github')}
+              isPending={isPending}
+            >
+              {isPending ? null : <SiGithub className='mr-3' />}
+              {t('dialog.sign-in.continue-with', { provider: 'GitHub' })}
+              {lastUsedProvider === 'github' && <LastUsed />}
+            </Button>
+            <Button
+              className='relative h-10 rounded-xl border font-semibold'
+              variant='ghost'
+              onClick={() => handleSocialSignIn('google')}
+              isPending={isPending}
+            >
+              {isPending ? null : <GoogleIcon />}
+              {t('dialog.sign-in.continue-with', { provider: 'Google' })}
+              {lastUsedProvider === 'google' && <LastUsed />}
+            </Button>
+          </div>
+        )}
 
         {/* Divider */}
         <div className='flex items-center gap-2'>
@@ -166,8 +197,17 @@ const SignInDialog = () => {
           <div className='h-px flex-1 bg-gray-300' />
         </div>
 
-        {/* Email and Password Sign In */}
+        {/* Formulário de Email & Senha */}
         <div className='my-6 flex flex-col gap-4'>
+          {isSignup && (
+            <Input
+              placeholder='Name'
+              type='text'
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className='w-full'
+            />
+          )}
           <Input
             placeholder='Email'
             type='email'
@@ -184,11 +224,30 @@ const SignInDialog = () => {
           />
           <Button
             className='relative h-10 rounded-xl font-semibold'
-            onClick={handleEmailSignIn}
+            onClick={isSignup ? handleEmailSignUp : handleEmailSignIn}
             isPending={isEmailPending}
           >
-            {t('dialog.sign-in.continue-with', { provider: 'Email' })}
+            {t('dialog.sign-in.continue-with', { provider: isSignup ? 'Sign Up' : 'Email' })}
           </Button>
+        </div>
+
+        {/* Alternar entre Login e Cadastro */}
+        <div className='mt-4 text-center'>
+          {isSignup ? (
+            <span>
+              {t('dialog.already-have-account')}{' '}
+              <Button variant='link' onClick={() => setIsSignup(false)}>
+                {t('dialog.sign-in.here')}
+              </Button>
+            </span>
+          ) : (
+            <span>
+              {t('dialog.dont-have-account')}{' '}
+              <Button variant='link' onClick={() => setIsSignup(true)}>
+                {t('dialog.sign-up.here')}
+              </Button>
+            </span>
+          )}
         </div>
       </DialogContent>
     </Dialog>
