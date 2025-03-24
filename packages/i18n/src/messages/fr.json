@@ -71,7 +71,7 @@
             "toggle-italic": "Basculer en italique",
             "toggle-strikethrough": "Basculer barré"
         },
-        "description": "Mon site personnel et blog où je partage mes réflexions sur divers sujets incluant tutoriels, notes et expériences personnelles. En tant qu'ingénieur full-stack basé à Hong Kong, j'ai commencé à apprendre le développement web par passion en décembre 2020. J'utilise Next.js pour créer des sites, GitHub pour héberger mon code, et Vercel pour le déploiement. Explorez mon site pour en savoir plus sur mon parcours et découvrir certaines ressources en développement web qui m'ont inspiré.",
+        "description": "Mon blog personnel où je partage mes pensées sur la technologie, les serveurs, le cloud et un peu de mon quotidien. J'ai commencé mon parcours en 2018 et depuis, j'explore et j'apprends en permanence. Si vous aimez l'infrastructure, l'automatisation ou simplement lire des réflexions sur la tech et la vie, jetez-y un œil !",
         "footer": {
             "edit-on-github": "Modifier sur GitHub",
             "last-updated": "Dernière mise à jour : {date}"

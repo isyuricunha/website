@@ -71,7 +71,7 @@
             "toggle-italic": "Kursiv umschalten",
             "toggle-strikethrough": "Durchgestrichen umschalten"
         },
-        "description": "Meine persönliche Webseite und mein Blog, in denen ich meine Gedanken zu verschiedenen Themen wie Tutorials, Notizen und persönlichen Erfahrungen teile. Als Full-Stack-Ingenieur aus Hongkong begann ich im Dezember 2020 aus Hobby Webentwicklung zu lernen. Ich verwende Next.js zum Erstellen von Webseiten, GitHub für das Hosting des Codes und Vercel für die Bereitstellung. Erkunden Sie meine Seite, um mehr über meine Reise zu erfahren und einige der Webentwicklungsressourcen zu entdecken, die mich inspiriert haben.",
+        "description": "Mein persönlicher Blog, in dem ich Gedanken über Technologie, Server, Cloud und ein bisschen über mein tägliches Leben teile. Ich habe meine Reise 2018 begonnen und lerne und erkunde seitdem ständig weiter. Wenn du dich für Infrastruktur, Automatisierung oder einfach Gedanken über Technik und das Leben interessierst, schau mal rein!",
         "footer": {
             "edit-on-github": "Auf GitHub bearbeiten",
             "last-updated": "Zuletzt aktualisiert: {date}"
