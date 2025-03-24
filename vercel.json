@@ -1,0 +1,22 @@
+{
+  "projects": [
+    {
+      "buildCommand": "pnpm build:apps",
+      "name": "web",
+      "outputDirectory": "apps/web/.next",
+      "src": "apps/web"
+    },
+    {
+      "buildCommand": "pnpm build:apps",
+      "name": "docs",
+      "outputDirectory": "apps/docs/.next",
+      "src": "apps/docs"
+    }
+  ],
+  "rewrites": [
+    {
+      "destination": "/docs/:path*",
+      "source": "/docs/:path*"
+    }
+  ]
+}
