@@ -64,7 +64,7 @@ export const githubRouter = createTRPCRouter({
     })
 
     return repos
-      .filter((repo) => !repo.fork && !repo.private)
+      .filter((repo) => !repo.private)
       .map((repo) => ({
         name: repo.name,
         description: repo.description,
