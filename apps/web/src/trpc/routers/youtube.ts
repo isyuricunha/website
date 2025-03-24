@@ -17,7 +17,7 @@ export const youtubeRouter = createTRPCRouter({
     if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
 
     const res = await fetch(
-      `https://www.googleapis.com/youtube/v3/channels?id=UC2hMWOaOlk9vrkvFVaGmn0Q&part=statistics&key=${env.GOOGLE_API_KEY}`
+      `https://www.googleapis.com/youtube/v3/channels?id=UCHnkvuxhC6ufNxgIQrQnYSQ&part=statistics&key=${env.GOOGLE_API_KEY}`
     )
     const data = await res.json()
 
