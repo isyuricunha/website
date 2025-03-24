@@ -8,7 +8,7 @@
   "ignore": [
     "@tszhong0411/mdx-plugins",
     "@tszhong0411/db",
-    "@tszhong0411/docs",
+    "@isyuricunha/docs",
     "@tszhong0411/emails",
     "@tszhong0411/env",
     "@tszhong0411/i18n",

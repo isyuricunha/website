@@ -13,7 +13,7 @@ const Header = () => {
         <div className='flex items-center gap-2 font-semibold md:gap-6'>
           <MobileNav />
           <Link href='/' className='tracking-tighter max-md:hidden'>
-            @tszhong0411/docs
+            @isyuricunha/docs
           </Link>
           <nav>
             <ul className='flex gap-4 text-sm lg:gap-6'>

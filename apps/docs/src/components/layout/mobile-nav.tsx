@@ -34,7 +34,7 @@ const MobileNav = () => {
           <SheetDescription>Navigation menu of the documentation site</SheetDescription>
         </VisuallyHidden>
         <Link href='/' className='font-semibold tracking-tighter'>
-          @tszhong0411/docs
+          @isyuricunha/docs
         </Link>
         <ScrollArea className='max-h-[calc(100vh-3.5rem)]'>
           {SIDEBAR_LINKS.map((section) => (
