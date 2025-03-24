@@ -114,7 +114,9 @@
     "sign-in": "Sign in",
     "sign-in-error": "Failed to sign in. Please try again.",
     "sign-out": "Sign out",
-    "views": "{count, plural, =1 {# view} other {# views}}"
+    "views": "{count, plural, =1 {# view} other {# views}}",
+    "sign-up": "Sign up",
+    "sign-up-error": "Failed to sign up. Please try again."
   },
   "component": {
     "filtered-posts": {
@@ -149,12 +151,6 @@
     },
     "already-have-account": "Already have an account?",
     "dont-have-account": "Don't have an account?"
-  },
-  "common": {
-    "sign-in": "Sign in",
-    "sign-up": "Sign up",
-    "sign-in-error": "Failed to sign in. Please try again.",
-    "sign-up-error": "Failed to sign up. Please try again."
   },
   "error": {
     "something-went-wrong": "Something went wrong!",
