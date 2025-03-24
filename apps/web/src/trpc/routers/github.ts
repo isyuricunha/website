@@ -19,7 +19,8 @@ export const githubRouter = createTRPCRouter({
     const octokit = new Octokit({ auth: env.GITHUB_TOKEN })
 
     const { data: repos } = await octokit.request('GET /users/{username}/repos', {
-      username: GITHUB_USERNAME
+      username: GITHUB_USERNAME,
+      per_page: 100
     })
 
     const { data: user } = await octokit.request('GET /users/{username}', {
@@ -43,7 +44,8 @@ export const githubRouter = createTRPCRouter({
     const octokit = new Octokit({ auth: env.GITHUB_TOKEN })
 
     const { data: repos } = await octokit.request('GET /users/{username}/repos', {
-      username: GITHUB_USERNAME
+      username: GITHUB_USERNAME,
+      per_page: 100
     })
 
     return repos.find((repo) => repo.name === 'website')?.stargazers_count ?? 0
@@ -57,7 +59,8 @@ export const githubRouter = createTRPCRouter({
     const octokit = new Octokit({ auth: env.GITHUB_TOKEN })
 
     const { data: repos } = await octokit.request('GET /users/{username}/repos', {
-      username: GITHUB_USERNAME
+      username: GITHUB_USERNAME,
+      per_page: 100
     })
 
     return repos
