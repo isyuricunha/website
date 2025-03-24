@@ -130,7 +130,11 @@ const SignInDialog = () => {
         },
         {
           onRequest: () => setIsEmailPending(true),
-          onSuccess: () => setIsEmailPending(false),
+          onSuccess: () => {
+            setIsEmailPending(false)
+            toast.success('Conta criada com sucesso!') // Mensagem de sucesso
+            setIsSignup(false) // Retorna para a tela de login
+          },
           onError: () => {
             setIsEmailPending(false)
             toast.error(t('common.sign-up-error'))
@@ -141,7 +145,7 @@ const SignInDialog = () => {
         toast.error(error.message)
       }
     } catch (error: unknown) {
-      const errorMsg = error instanceof Error ? error.message : 'Erro desconhecido'
+      const errorMsg = error instanceof Error ? error.message : 'Unknow Error'
       toast.error(errorMsg)
     } finally {
       setIsEmailPending(false)
