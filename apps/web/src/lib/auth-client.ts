@@ -1,15 +1,12 @@
 import type { auth } from './auth'
 
 import { toast } from '@tszhong0411/ui'
-import { inferAdditionalFields, usernameClient } from 'better-auth/client/plugins'
+import { adminClient, inferAdditionalFields, usernameClient } from 'better-auth/client/plugins'
 import { createAuthClient } from 'better-auth/react'
 
 // @see https://github.com/better-auth/better-auth/issues/1391
 const authClient: ReturnType<typeof createAuthClient> = createAuthClient({
-  plugins: [
-    inferAdditionalFields<typeof auth>(),
-    usernameClient() // Login with username
-  ],
+  plugins: [inferAdditionalFields<typeof auth>(), usernameClient(), adminClient()],
   fetchOptions: {
     onError(e) {
       if (e.error.status === 429) {
