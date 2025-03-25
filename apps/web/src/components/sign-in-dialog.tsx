@@ -214,7 +214,7 @@ const SignInDialog = () => {
           )}
           <Input
             placeholder='Email'
-            type='email'
+            type='text'
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className='w-full'
