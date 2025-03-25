@@ -242,7 +242,7 @@ const SignInDialog = () => {
               isPending={isPending}
             >
               {isPending ? null : <AnonIcon />}
-              {'Anonimo'}
+              {t('dialog.sign-in.anonymous')}
             </Button>
           </div>
         )}

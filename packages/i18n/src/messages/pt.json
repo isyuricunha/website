@@ -144,7 +144,8 @@
             "continue-with": "Continuar com {provider}",
             "or": "ou",
             "description": "para continuar para yuricunha.com",
-            "here": "Faça login aqui"
+            "here": "Faça login aqui",
+            "anonymous": "Anônimo"
         },
         "sign-up": {
             "description": "para criar sua conta em yuricunha.com",

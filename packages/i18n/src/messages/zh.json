@@ -144,7 +144,8 @@
       "continue-with": "使用 {provider} 继续",
       "or": "或",
       "description": "继续到 yuricunha.com",
-      "here": "在此登录"
+      "here": "在此登录",
+      "anonymous": "匿名的"
     },
     "sign-up": {
       "description": "在 yuricunha.com 创建您的账户",
