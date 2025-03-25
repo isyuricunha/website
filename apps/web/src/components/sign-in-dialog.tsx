@@ -3,7 +3,6 @@
 import { SiGithub } from '@icons-pack/react-simple-icons'
 import { useTranslations } from '@tszhong0411/i18n/client'
 import { usePathname } from '@tszhong0411/i18n/routing'
-// import { useRouter } from 'next/navigation'
 import {
   Badge,
   Button,
@@ -70,12 +69,11 @@ const SignInDialog = () => {
   const [lastUsedProvider, setLastUsedProvider] = useState<Provider | null>(null)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [name, setName] = useState('') // campo para o nome do usuário no cadastro
+  const [name, setName] = useState('')
   const [isEmailPending, setIsEmailPending] = useState(false)
-  const [isSignup, setIsSignup] = useState(false) // alterna entre login e cadastro
+  const [isSignup, setIsSignup] = useState(false)
   const t = useTranslations()
   const pathname = usePathname()
-  // const router = useRouter()
 
   useEffect(() => {
     if (typeof globalThis !== 'undefined') {
@@ -95,6 +93,7 @@ const SignInDialog = () => {
         },
         onSuccess: () => {
           setIsPending(false)
+          toast.success(t('common.sign-in-success'))
         },
         onError: () => {
           setIsPending(false)
@@ -116,6 +115,8 @@ const SignInDialog = () => {
             },
             onSuccess: () => {
               setIsPending(false)
+              toast.success(t('common.sign-in-success'))
+              setIsSignInOpen(false)
             },
             onError: () => {
               setIsPending(false)
@@ -123,9 +124,9 @@ const SignInDialog = () => {
             }
           }
         })
-      console.log('Usuário anônimo autenticado:', user)
+      console.log('Anonymous user:', user)
     } catch (error: unknown) {
-      const errorMsg = error instanceof Error ? error.message : 'Erro desconhecido'
+      const errorMsg = error instanceof Error ? error.message : 'Unknow error'
       toast.error(errorMsg)
       setIsPending(false)
     }
@@ -142,7 +143,10 @@ const SignInDialog = () => {
         },
         {
           onRequest: () => setIsEmailPending(true),
-          onSuccess: () => setIsEmailPending(false),
+          onSuccess: () => {
+            setIsEmailPending(false)
+            toast.success(t('common.sign-in-success'))
+          },
           onError: () => {
             setIsEmailPending(false)
             toast.error(t('common.sign-in-error'))
@@ -153,7 +157,7 @@ const SignInDialog = () => {
         toast.error(error.message)
       }
     } catch (error: unknown) {
-      const errorMsg = error instanceof Error ? error.message : 'Erro desconhecido'
+      const errorMsg = error instanceof Error ? error.message : 'Unknow error'
       toast.error(errorMsg)
     } finally {
       setIsEmailPending(false)
@@ -174,7 +178,7 @@ const SignInDialog = () => {
           onRequest: () => setIsEmailPending(true),
           onSuccess: () => {
             setIsEmailPending(false)
-            toast.success('Conta criada com sucesso!')
+            toast.success(t('common.sign-in-success'))
             setIsSignup(false)
           },
           onError: () => {
@@ -211,7 +215,6 @@ const SignInDialog = () => {
           </DialogDescription>
         </DialogHeader>
 
-        {/* Social Sign In (somente para login) */}
         {!isSignup && (
           <div className='my-6 flex flex-col gap-4'>
             <Button

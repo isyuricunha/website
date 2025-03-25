@@ -2,7 +2,7 @@ import { db } from '@tszhong0411/db'
 import { env } from '@tszhong0411/env'
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
-import { admin, anonymous, username } from 'better-auth/plugins' // Importando o anonymous
+import { admin, anonymous, username } from 'better-auth/plugins'
 import { headers } from 'next/headers'
 
 export const auth = betterAuth({

@@ -113,6 +113,7 @@
     "likes": "{count, plural, =1 {# like} other {# likes}}",
     "sign-in": "Sign in",
     "sign-in-error": "Failed to sign in. Please try again.",
+    "sign-in-success": "Login successful!",
     "sign-out": "Sign out",
     "views": "{count, plural, =1 {# view} other {# views}}",
     "sign-up": "Sign up",

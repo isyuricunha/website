@@ -9,7 +9,6 @@ import {
 } from 'better-auth/client/plugins'
 import { createAuthClient } from 'better-auth/react'
 
-// Adicione o anonymousClient() à lista de plugins
 const authClient: ReturnType<typeof createAuthClient> = createAuthClient({
   plugins: [
     inferAdditionalFields<typeof auth>(),

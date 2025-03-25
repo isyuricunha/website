@@ -1,7 +1,7 @@
 {
     "about": {
         "title": "À propos",
-        "description": "👋 Bonjour ! Je suis Yuri Cunha, un simple humain passionné par l'infrastructure des serveurs."
+        "description": "👋 Bonjour ! Je suis Yuri Cunha, juste un humain qui aime l'infrastructure des serveurs."
     },
     "admin": {
         "nav": {
@@ -24,16 +24,16 @@
             "comments": {
                 "body": "Contenu",
                 "createdAt": "Créé le",
-                "failed-to-fetch-comments-data": "Échec de la récupération des données des commentaires. Veuillez rafraîchir la page.",
+                "failed-to-fetch-comments-data": "Échec du chargement des données des commentaires. Veuillez rafraîchir la page.",
                 "filter-body": "Filtrer le contenu...",
-                "filter-userId": "Filtrer l'ID utilisateur...",
+                "filter-userId": "Filtrer par ID utilisateur...",
                 "type": "Type",
-                "userId": "ID Utilisateur"
+                "userId": "ID utilisateur"
             },
             "users": {
                 "email": "Email",
-                "failed-to-fetch-users-data": "Échec de la récupération des données des utilisateurs. Veuillez rafraîchir la page.",
-                "filter-names": "Filtrer les noms...",
+                "failed-to-fetch-users-data": "Échec du chargement des données des utilisateurs. Veuillez rafraîchir la page.",
+                "filter-names": "Filtrer par nom...",
                 "name": "Nom",
                 "role": "Rôle"
             }
@@ -52,9 +52,9 @@
             "dislike": "Ne pas aimer",
             "failed-to-load-comments": "Échec du chargement des commentaires. Veuillez rafraîchir la page.",
             "failed-to-load-replies": "Échec du chargement des réponses. Veuillez rafraîchir la page.",
-            "like": "Aimer",
+            "like": "J'aime",
             "link-copied": "Lien copié dans le presse-papiers",
-            "need-logged-in-to-rate": "Vous devez être connecté pour évaluer les commentaires",
+            "need-logged-in-to-rate": "Vous devez être connecté pour noter les commentaires",
             "newest": "Les plus récents",
             "no-comments": "Aucun commentaire",
             "oldest": "Les plus anciens",
@@ -69,9 +69,9 @@
             "this-comment-has-been-deleted": "[Ce commentaire a été supprimé]",
             "toggle-bold": "Basculer en gras",
             "toggle-italic": "Basculer en italique",
-            "toggle-strikethrough": "Basculer barré"
+            "toggle-strikethrough": "Basculer en barré"
         },
-        "description": "Mon blog personnel où je partage mes pensées sur la technologie, les serveurs, le cloud et un peu de mon quotidien. J'ai commencé mon parcours en 2018 et depuis, j'explore et j'apprends en permanence. Si vous aimez l'infrastructure, l'automatisation ou simplement lire des réflexions sur la tech et la vie, jetez-y un œil !",
+        "description": "Mon blog personnel où je partage mes réflexions sur la technologie, les serveurs, le cloud, et un peu de ma vie quotidienne. J'ai commencé mon parcours en 2018 et je n'ai cessé d'explorer et d'apprendre depuis. Si vous êtes passionné d'infrastructure, d'automatisation, ou simplement curieux de lire quelques pensées sur la technologie et la vie, jetez-y un œil !",
         "footer": {
             "edit-on-github": "Modifier sur GitHub",
             "last-updated": "Dernière mise à jour : {date}"
@@ -82,9 +82,9 @@
             "views": "Vues",
             "written-by": "Écrit par"
         },
-        "like": "Aimer",
-        "like-limit-reached": "Vous ne pouvez aimer cet article que 3 fois",
-        "like-this-post": "Aimer cet article",
+        "like": "J'aime",
+        "like-limit-reached": "Vous ne pouvez aimer un post que 3 fois",
+        "like-this-post": "Aimer ce post",
         "on-this-page": "Sur cette page",
         "title": "Blog"
     },
@@ -113,8 +113,11 @@
         "likes": "{count, plural, =1 {# j'aime} other {# j'aime}}",
         "sign-in": "Se connecter",
         "sign-in-error": "Échec de la connexion. Veuillez réessayer.",
+        "sign-in-success": "Connexion réussie !",
         "sign-out": "Se déconnecter",
-        "views": "{count, plural, =1 {# vue} other {# vues}}"
+        "views": "{count, plural, =1 {# vue} other {# vues}}",
+        "sign-up": "S'inscrire",
+        "sign-up-error": "Échec de l'inscription. Veuillez réessayer."
     },
     "component": {
         "filtered-posts": {
@@ -124,9 +127,9 @@
         "go-to-homepage": "Aller à la page d'accueil"
     },
     "dashboard": {
-        "description": "Ceci est mon tableau de bord personnel, construit avec des routes API Next.js déployées en tant que fonctions sans serveur. J'utilise ce tableau de bord pour suivre diverses métriques sur des plateformes telles que YouTube, GitHub, et plus encore.",
+        "description": "Voici mon tableau de bord personnel, construit avec des routes API Next.js déployées en tant que fonctions sans serveur. J'utilise ce tableau de bord pour suivre diverses métriques sur des plateformes comme YouTube, GitHub, et plus encore.",
         "metric": {
-            "blog-total-likes": "Total des j'aime du blog",
+            "blog-total-likes": "Total des likes du blog",
             "blog-total-views": "Total des vues du blog",
             "coding-hours": "Heures de codage",
             "github-followers": "Abonnés GitHub",
@@ -139,11 +142,19 @@
     "dialog": {
         "sign-in": {
             "continue-with": "Continuer avec {provider}",
-            "description": "pour continuer vers yuricunha.com"
-        }
+            "or": "ou",
+            "description": "pour continuer vers yuricunha.com",
+            "here": "Connectez-vous ici"
+        },
+        "sign-up": {
+            "description": "pour créer votre compte sur yuricunha.com",
+            "here": "Inscrivez-vous ici"
+        },
+        "already-have-account": "Vous avez déjà un compte ?",
+        "dont-have-account": "Vous n'avez pas de compte ?"
     },
     "error": {
-        "something-went-wrong": "Une erreur s'est produite !",
+        "something-went-wrong": "Quelque chose s'est mal passé !",
         "try-again": "Réessayez"
     },
     "guestbook": {
@@ -153,12 +164,12 @@
             "title": "Supprimer un commentaire"
         },
         "delete-message-successfully": "Message supprimé avec succès",
-        "description": "Signez mon livre d'or et partagez vos idées. Vous pouvez tout me dire ici !",
+        "description": "Signez mon livre d'or et partagez votre idée. Vous pouvez tout me dire ici !",
         "failed-to-load-messages": "Échec du chargement des messages. Veuillez rafraîchir la page.",
         "message-cannot-be-empty": "Le message ne peut pas être vide",
-        "no-messages": "Aucun message. Soyez le premier à en laisser un !",
+        "no-messages": "Aucun message. Soyez le premier à laisser un message !",
         "pinned": {
-            "description": "Merci de visiter mon site. Si vous avez un moment, j'aimerais connaître votre avis sur mon travail. Veuillez vous connecter pour laisser un commentaire. Merci !",
+            "description": "Merci de visiter mon site. Si vous avez un moment, j'aimerais connaître votre avis sur mon travail. Veuillez vous connecter avec votre compte pour laisser un commentaire. Merci !",
             "greeting": "Salut ! 👋"
         },
         "placeholder": "Laisser un message",
@@ -172,26 +183,26 @@
         "about-me": {
             "coding-hours": "Heures de codage",
             "connect": "Contactez-moi",
-            "fav-framework": "Serveur préféré",
+            "fav-framework": "Serveur favori",
             "location": "São Paulo",
             "more": "En savoir plus sur moi",
-            "stacks": "Technologies",
+            "stacks": "Stacks",
             "title": "À propos de moi"
         },
         "get-in-touch": {
             "description": "N'hésitez pas à me contacter !",
-            "image-alt": "Moi, assis devant mon bureau en train de coder",
-            "title": "Vous avez des questions sur les serveurs ?"
+            "image-alt": "Moi assis devant mon bureau en train de coder",
+            "title": "Vous avez des questions sur le serveur ?"
         },
         "hero": {
             "amazing": "cloud-native",
-            "attractive": "zero-trust",
-            "fantastic": "chiffré",
+            "attractive": "zéro confiance",
+            "fantastic": "crypté",
             "location-timezone": "Brésil • UTC/GMT -3",
             "stunning": "immuable",
             "title-bottom": "systèmes distribués",
-            "title-middle-left": "conception",
-            "title-middle-right": "solutions",
+            "title-middle-left": "concevoir",
+            "title-middle-right": "des solutions",
             "title-top": "Je suis Yuri, spécialiste des serveurs"
         },
         "latest-articles": {
@@ -223,13 +234,13 @@
         "instagram": "Instagram",
         "links": "Liens",
         "now-playing": {
-            "error": "Échec de la récupération des données Spotify",
+            "error": "Échec du chargement des données Spotify",
             "loading": "Chargement ...",
             "not-listening": "Pas d'écoute - Spotify"
         },
         "projects": "Projets",
         "skip-to-main-content": "Aller au contenu principal",
-        "toggle-menu": "Afficher/masquer le menu",
+        "toggle-menu": "Basculer le menu",
         "uses": "Outils",
         "youtube": "YouTube"
     },
@@ -253,7 +264,7 @@
             "light": "Clair",
             "system": "Système"
         },
-        "toggle-theme": "Changer le thème"
+        "toggle-theme": "Changer de thème"
     },
     "uses": {
         "description": "Voici l'équipement que j'utilise actuellement pour jouer, programmer, réaliser des vidéos et au quotidien.",

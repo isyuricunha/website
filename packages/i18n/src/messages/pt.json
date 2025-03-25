@@ -113,8 +113,11 @@
         "likes": "{count, plural, =1 {# curtida} other {# curtidas}}",
         "sign-in": "Entrar",
         "sign-in-error": "Falha ao entrar. Por favor, tente novamente.",
+        "sign-in-success": "Login feito com sucesso!",
         "sign-out": "Sair",
-        "views": "{count, plural, =1 {# visualização} other {# visualizações}}"
+        "views": "{count, plural, =1 {# visualização} other {# visualizações}}",
+        "sign-up": "Cadastro",
+        "sign-up-error": "O cadastro falhou. Por favor, tente novamente."
     },
     "component": {
         "filtered-posts": {
@@ -139,8 +142,16 @@
     "dialog": {
         "sign-in": {
             "continue-with": "Continuar com {provider}",
-            "description": "para continuar para yuricunha.com"
-        }
+            "or": "ou",
+            "description": "para continuar para yuricunha.com",
+            "here": "Faça login aqui"
+        },
+        "sign-up": {
+            "description": "para criar sua conta em yuricunha.com",
+            "here": "Inscreva-se aqui"
+        },
+        "already-have-account": "Já tem uma conta?",
+        "dont-have-account": "Não tem uma conta?"
     },
     "error": {
         "something-went-wrong": "Algo deu errado!",
