@@ -2,7 +2,7 @@ import { db } from '@tszhong0411/db'
 import { env } from '@tszhong0411/env'
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
-import { admin, username } from 'better-auth/plugins'
+import { admin, anonymous, username } from 'better-auth/plugins' // Importando o anonymous
 import { headers } from 'next/headers'
 
 export const auth = betterAuth({
@@ -10,7 +10,16 @@ export const auth = betterAuth({
     provider: 'pg',
     usePlural: true
   }),
-  plugins: [username({ minUsernameLength: 3 }), admin()],
+  plugins: [
+    username({ minUsernameLength: 3 }),
+    admin(),
+    anonymous({
+      emailDomainName: 'yuricunha.com',
+      onLinkAccount: () => {
+        return
+      }
+    })
+  ],
   emailAndPassword: {
     enabled: true
   },

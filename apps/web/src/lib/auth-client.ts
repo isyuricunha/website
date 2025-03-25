@@ -1,12 +1,22 @@
 import type { auth } from './auth'
 
 import { toast } from '@tszhong0411/ui'
-import { adminClient, inferAdditionalFields, usernameClient } from 'better-auth/client/plugins'
+import {
+  adminClient,
+  anonymousClient,
+  inferAdditionalFields,
+  usernameClient
+} from 'better-auth/client/plugins'
 import { createAuthClient } from 'better-auth/react'
 
-// @see https://github.com/better-auth/better-auth/issues/1391
+// Adicione o anonymousClient() à lista de plugins
 const authClient: ReturnType<typeof createAuthClient> = createAuthClient({
-  plugins: [inferAdditionalFields<typeof auth>(), usernameClient(), adminClient()],
+  plugins: [
+    inferAdditionalFields<typeof auth>(),
+    usernameClient(),
+    adminClient(),
+    anonymousClient()
+  ],
   fetchOptions: {
     onError(e) {
       if (e.error.status === 429) {
