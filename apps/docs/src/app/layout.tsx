@@ -58,7 +58,7 @@ export const metadata: Metadata = {
     title: SITE_TITLE,
     siteName: SITE_TITLE,
     description: SITE_DESCRIPTION,
-    locale: 'en',
+    locale: 'en-US',
     images: [
       {
         url: 'https://docs.yuricunha.com/images/og.png',
@@ -107,7 +107,11 @@ const Layout = (props: LayoutProps) => {
   const { children } = props
 
   return (
-    <html lang='en' className={cn(GeistSans.variable, GeistMono.variable)} suppressHydrationWarning>
+    <html
+      lang='en-US'
+      className={cn(GeistSans.variable, GeistMono.variable)}
+      suppressHydrationWarning
+    >
       <body>
         <Providers>
           {/* eslint-disable-next-line @eslint-react/dom/no-unknown-property -- custom attribute */}

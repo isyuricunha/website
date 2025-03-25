@@ -14,7 +14,7 @@ export const GET = async () => {
     description: t('metadata.site-description'),
     site_url: SITE_URL,
     feed_url: `${SITE_URL}/rss.xml`,
-    language: 'en',
+    language: 'en-US',
     image_url: `${SITE_URL}/images/og.png`
   })
 
