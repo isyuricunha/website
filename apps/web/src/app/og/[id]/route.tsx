@@ -1,3 +1,5 @@
+// src/app/[locale]/blog/[id]/og/route.ts
+
 import fs from 'node:fs'
 import path from 'node:path'
 
@@ -9,26 +11,18 @@ import { NextResponse } from 'next/server'
 
 import { SITE_URL } from '@/lib/constants'
 
-type OGRouteProps = {
-  params: Promise<{
-    id: string
-  }>
-}
-
-export const GET = async (_: Request, props: OGRouteProps) => {
+export const GET = async (
+  _request: Request,
+  { params }: { params: { locale: string; id: string } }
+) => {
   try {
-    const { id } = await props.params
-    const postMetadata = allPosts.find((p) => p.slug === id)
+    const { locale, id } = params
+
+    // Filtra usando locale + slug
+    const postMetadata = allPosts.find((p) => p.locale === locale && p.slug === id)
 
     if (!postMetadata) {
-      return NextResponse.json(
-        {
-          error: 'Post not found'
-        },
-        {
-          status: 404
-        }
-      )
+      return NextResponse.json({ error: 'Post not found' }, { status: 404 })
     }
 
     const { title, date } = postMetadata
