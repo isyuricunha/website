@@ -2,7 +2,7 @@ import { db } from '@tszhong0411/db'
 import { env } from '@tszhong0411/env'
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
-import { anonymous, username } from 'better-auth/plugins'
+import { username } from 'better-auth/plugins'
 import { headers } from 'next/headers'
 
 export const auth = betterAuth({
@@ -11,12 +11,7 @@ export const auth = betterAuth({
     usePlural: true
   }),
   plugins: [
-    username({ minUsernameLength: 3 }), // Permite login por username
-    anonymous({
-      onLinkAccount: ({ anonymousUser, newUser }) => {
-        console.log('Linking anonymous user to new account', { anonymousUser, newUser })
-      }
-    })
+    username({ minUsernameLength: 3 }) // Permite login por username
   ],
   emailAndPassword: {
     enabled: true
@@ -33,8 +28,7 @@ export const auth = betterAuth({
   },
   user: {
     additionalFields: {
-      role: { type: 'string', required: true, input: false, defaultValue: 'user' },
-      isAnonymous: { type: 'boolean', required: false, input: false, defaultValue: false }
+      role: { type: 'string', required: true, input: false, defaultValue: 'user' }
     }
   }
 })
