@@ -18,7 +18,8 @@ type OGRouteProps = {
 export const GET = async (_: Request, props: OGRouteProps) => {
   try {
     const { id } = await props.params
-    const postMetadata = allPosts.find((p) => p.slug === id)
+    const [locale, slug] = id.split('/')
+    const postMetadata = allPosts.find((p) => p.slug === slug && p.locale === locale)
 
     if (!postMetadata) {
       return NextResponse.json(
