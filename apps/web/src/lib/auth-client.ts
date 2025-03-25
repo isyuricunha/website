@@ -1,14 +1,15 @@
 import type { auth } from './auth'
 
 import { toast } from '@tszhong0411/ui'
-import { inferAdditionalFields, usernameClient } from 'better-auth/client/plugins'
+import { anonymousClient, inferAdditionalFields, usernameClient } from 'better-auth/client/plugins'
 import { createAuthClient } from 'better-auth/react'
 
 // @see https://github.com/better-auth/better-auth/issues/1391
 const authClient: ReturnType<typeof createAuthClient> = createAuthClient({
   plugins: [
     inferAdditionalFields<typeof auth>(),
-    usernameClient() // Login with username
+    usernameClient(), // Login with username
+    anonymousClient() // Suporte ao login anônimo
   ],
   fetchOptions: {
     onError(e) {
@@ -25,3 +26,4 @@ export const signOut: typeof authClient.signOut = authClient.signOut
 export const useSession: typeof authClient.useSession = authClient.useSession
 
 export type User = (typeof authClient.$Infer.Session)['user']
+export { anonymousClient }

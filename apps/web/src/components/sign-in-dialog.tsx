@@ -16,7 +16,7 @@ import {
 } from '@tszhong0411/ui'
 import { useEffect, useState } from 'react'
 
-import { signIn, signUp } from '@/lib/auth-client'
+import { anonymousClient, signIn, signUp } from '@/lib/auth-client'
 import { useDialogsStore } from '@/store/dialogs'
 
 type Provider = 'github' | 'google'
@@ -152,6 +152,19 @@ const SignInDialog = () => {
     }
   }
 
+  const handleAnonymousSignIn = async () => {
+    try {
+      const user = await anonymousClient.signIn()
+      if (user) {
+        toast.success('Você entrou anonimamente.')
+        setIsSignInOpen(false)
+      }
+    } catch (error: unknown) {
+      const errorMsg = error instanceof Error ? error.message : 'Erro desconhecido'
+      toast.error(errorMsg)
+    }
+  }
+
   return (
     <Dialog
       open={isSignInOpen}
@@ -193,6 +206,10 @@ const SignInDialog = () => {
             </Button>
           </div>
         )}
+
+        <Button onClick={handleAnonymousSignIn} className='w-full' disabled={isPending}>
+          Entrar Anonimamente
+        </Button>
 
         {/* Divider */}
         <div className='flex items-center gap-2'>
