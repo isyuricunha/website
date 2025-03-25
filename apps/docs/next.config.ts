@@ -28,7 +28,7 @@ const config: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'honghong.me'
+        hostname: 'yuricunha.com'
       }
     ]
   },
