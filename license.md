@@ -41,3 +41,6 @@ This License Agreement is effective as of the date of code use and is subject to
 By using the code, the User acknowledges that they have read and understood this Agreement and agree to be bound by its terms and conditions.
 
 For any inquiries or concerns, please contact the Author via Twitter.
+
+// Note: This project uses portions of the code from the project 'honghong.me', developed by Nelson Lai (Hong Hong), under the MIT License.
+// See the CREDITS.md file for more information.
