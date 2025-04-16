@@ -1,12 +1,12 @@
 {
     "about": {
         "title": "Sobre",
-        "description": "Coé! Eu sou Yuri, um cara aleatório na internet."
+        "description": "👋 E aí! Eu sou Yuri Cunha, apenas um cara aleatório na Internet.."
     },
     "admin": {
         "nav": {
             "comments": "Comentários",
-            "dashboard": "Dashboard",
+            "dashboard": "Painel",
             "general": "Geral",
             "users": "Usuários"
         },
@@ -24,15 +24,15 @@
             "comments": {
                 "body": "Corpo",
                 "createdAt": "Criado em",
-                "failed-to-fetch-comments-data": "Falha ao buscar os dados dos comentários. Por favor, atualize a página.",
+                "failed-to-fetch-comments-data": "Falha ao buscar dados dos comentários. Por favor, atualize a página.",
                 "filter-body": "Filtrar corpo...",
                 "filter-userId": "Filtrar ID do usuário...",
                 "type": "Tipo",
-                "userId": "ID do usuário"
+                "userId": "ID do Usuário"
             },
             "users": {
                 "email": "Email",
-                "failed-to-fetch-users-data": "Falha ao buscar os dados dos usuários. Por favor, atualize a página.",
+                "failed-to-fetch-users-data": "Falha ao buscar dados dos usuários. Por favor, atualize a página.",
                 "filter-names": "Filtrar nomes...",
                 "name": "Nome",
                 "role": "Função"
@@ -54,9 +54,9 @@
             "failed-to-load-replies": "Falha ao carregar as respostas. Por favor, atualize a página.",
             "like": "Curtir",
             "link-copied": "Link copiado para a área de transferência",
-            "need-logged-in-to-rate": "Você precisa estar logado para avaliar os comentários",
+            "need-logged-in-to-rate": "Você precisa estar logado para avaliar comentários",
             "newest": "Mais recentes",
-            "no-comments": "Sem comentários",
+            "no-comments": "Nenhum comentário",
             "oldest": "Mais antigos",
             "open-menu": "Abrir menu",
             "placeholder": "Deixe um comentário",
@@ -71,7 +71,7 @@
             "toggle-italic": "Alternar itálico",
             "toggle-strikethrough": "Alternar tachado"
         },
-        "description": "Meu blog pessoal onde compartilho ideias sobre tecnologia, servidores, cloud e também um pouco do meu dia a dia. Comecei minha jornada em 2018 e desde então sigo explorando e aprendendo. Se curte infra, automação ou apenas quer ver uns devaneios sobre tecnologia e vida, dá uma olhada!",
+        "description": "Meu blog pessoal onde compartilho pensamentos sobre tecnologia, servidores, cloud e um pouco da minha vida diária. Comecei minha jornada em 2018 e, desde então, venho explorando e aprendendo. Se você curte bancos de dados, corrida ou apenas quer ler algumas reflexões sobre tecnologia e vida, confira!",
         "footer": {
             "edit-on-github": "Editar no GitHub",
             "last-updated": "Última atualização: {date}"
@@ -84,7 +84,7 @@
         },
         "like": "Curtir",
         "like-limit-reached": "Você só pode curtir 3 vezes por postagem",
-        "like-this-post": "Curta esta postagem",
+        "like-this-post": "Curtir esta postagem",
         "on-this-page": "Nesta página",
         "title": "Blog"
     },
@@ -100,7 +100,7 @@
         },
         "no-results": "Nenhum resultado encontrado.",
         "open-menu": "Abrir menu de comandos",
-        "placeholder": "Digite um comando ou pesquisar",
+        "placeholder": "Digite um comando ou pesquise",
         "trigger": {
             "open-command": "Abrir Comando",
             "open-link": "Abrir Link"
@@ -113,11 +113,11 @@
         "likes": "{count, plural, =1 {# curtida} other {# curtidas}}",
         "sign-in": "Entrar",
         "sign-in-error": "Falha ao entrar. Por favor, tente novamente.",
-        "sign-in-success": "Login feito com sucesso!",
+        "sign-in-success": "Login realizado com sucesso!",
         "sign-out": "Sair",
         "views": "{count, plural, =1 {# visualização} other {# visualizações}}",
-        "sign-up": "Cadastro",
-        "sign-up-error": "O cadastro falhou. Por favor, tente novamente."
+        "sign-up": "Cadastrar-se",
+        "sign-up-error": "Falha ao cadastrar. Por favor, tente novamente."
     },
     "component": {
         "filtered-posts": {
@@ -127,12 +127,12 @@
         "go-to-homepage": "Ir para a página inicial"
     },
     "dashboard": {
-        "description": "Este é o meu painel pessoal, construído com rotas de API do Next.js implantadas como funções serverless. Eu uso este painel para acompanhar várias métricas em plataformas como YouTube, GitHub e mais.",
+        "description": "Este é meu painel pessoal, construído com rotas de API do Next.js implantadas como funções serverless. Uso este painel para rastrear várias métricas em plataformas como YouTube, GitHub e outras. Mas, isto é apenas para referência.",
         "metric": {
             "blog-total-likes": "Curtidas Totais do Blog",
             "blog-total-views": "Visualizações Totais do Blog",
             "coding-hours": "Horas de Codificação",
-            "github-followers": "Seguidores no GitHub",
+            "github-followers": "Seguidores do GitHub",
             "github-stars": "Estrelas no GitHub",
             "youtube-subscribers": "Inscritos no YouTube",
             "youtube-views": "Visualizações no YouTube"
@@ -143,16 +143,16 @@
         "sign-in": {
             "continue-with": "Continuar com {provider}",
             "or": "ou",
-            "description": "para continuar para yuricunha.com",
-            "here": "Faça login aqui",
+            "description": "para continuar no yuricunha.com",
+            "here": "Entre aqui",
             "anonymous": "Anônimo"
         },
         "sign-up": {
-            "description": "para criar sua conta em yuricunha.com",
-            "here": "Inscreva-se aqui"
+            "description": "para criar sua conta no yuricunha.com",
+            "here": "Cadastre-se aqui"
         },
-        "already-have-account": "Já tem uma conta?",
-        "dont-have-account": "Não tem uma conta?"
+        "already-have-account": "Já possui uma conta?",
+        "dont-have-account": "Não possui uma conta?"
     },
     "error": {
         "something-went-wrong": "Algo deu errado!",
@@ -165,12 +165,12 @@
             "title": "Excluir um comentário"
         },
         "delete-message-successfully": "Mensagem excluída com sucesso",
-        "description": "Assine meu livro de visitas. Você pode me contar/dizer qualquer coisa aqui!",
+        "description": "Assine meu livro de visitas e compartilhe sua ideia. Você pode me dizer qualquer coisa aqui!",
         "failed-to-load-messages": "Falha ao carregar as mensagens. Por favor, atualize a página.",
-        "message-cannot-be-empty": "A mensagem não pode estar vazia",
+        "message-cannot-be-empty": "A mensagem não pode estar vazia. Minha culpa ou sua culpa?",
         "no-messages": "Nenhuma mensagem. Seja o primeiro a deixar uma mensagem!",
         "pinned": {
-            "description": "Obrigado por visitar meu site. Se você tiver um momento, adoraria ler uma mensagem sua. Por favor, faça login com sua conta para deixar um comentário. Valeu!",
+            "description": "Se você tiver um momento, por favor, entre com sua conta para deixar um comentário. Obrigado!",
             "greeting": "Olá! 👋"
         },
         "placeholder": "Deixe uma mensagem",
@@ -182,8 +182,8 @@
     },
     "homepage": {
         "about-me": {
-            "coding-hours": "Horas de codificação",
-            "connect": "Me encontre na web!",
+            "coding-hours": "Horas de Codificação",
+            "connect": "Conectar",
             "fav-framework": "Servidor Favorito",
             "location": "São Paulo",
             "more": "Saiba mais sobre mim",
@@ -192,19 +192,19 @@
         },
         "get-in-touch": {
             "description": "Sinta-se à vontade para entrar em contato comigo!",
-            "image-alt": "Eu sentado em frente à minha mesa programando",
-            "title": "Quer bater um papo?"
+            "image-alt": "Eu ou não eu",
+            "title": "Precisa conversar?"
         },
         "hero": {
-            "title-top": "Yuri, especialista em servidores",
-            "title-middle-left": "projeta soluções",
-            "amazing": "nativas da nuvem",
-            "attractive": "seguras",
-            "fantastic": "criptografadas",
-            "stunning": "imutáveis",
-            "title-middle-right": "para",
-            "title-bottom": "sistemas distribuídos",
-            "location-timezone": "Brasil • UTC/GMT -3"
+            "amazing": "orientado a dados",
+            "attractive": "escalável",
+            "fantastic": "resiliente",
+            "stunning": "seguro",
+            "location-timezone": "Brasil • UTC/GMT -3",
+            "title-top": "Eu sou Yuri, especialista em banco de dados",
+            "title-middle-left": "otimizando",
+            "title-middle-right": "soluções em dados",
+            "title-bottom": "para infraestruturas modernas"
         },
         "latest-articles": {
             "card": "Artigo",
@@ -237,26 +237,26 @@
         "now-playing": {
             "error": "Falha ao buscar dados do Spotify",
             "loading": "Carregando ...",
-            "not-listening": "Não estou ouvindo nada - Spotify"
+            "not-listening": "Não está ouvindo - Spotify"
         },
         "projects": "Projetos",
-        "skip-to-main-content": "Pular para o conteúdo principal",
+        "skip-to-main-content": "Ir para o conteúdo principal",
         "toggle-menu": "Alternar menu",
-        "uses": "Coisas",
+        "uses": "Ferramentas",
         "youtube": "YouTube"
     },
     "mdx": {
-        "link-to-section": "Link para seção"
+        "link-to-section": "Link para a seção"
     },
     "metadata": {
-        "site-description": "Arquiteto de Nuvem e Infraestrutura",
+        "site-description": "DBA Sênior",
         "site-title": "Yuri Cunha"
     },
-    "not-found": "Página não encontrada!",
+    "not-found": "Nenhuma página encontrada hoje!",
     "projects": {
-        "description": "A lista dos meus projetos. Tudo foi feito com 💙.",
+        "description": "A lista dos meus projetos. Tudo foi feito com 💙 (esta página ainda está em desenvolvimento).",
         "title": "Projetos",
-        "visit-website": "Visitar Site",
+        "visit-website": "Visitar site",
         "all-repos": "Meus repositórios públicos no GitHub"
     },
     "theme-toggle": {
@@ -268,7 +268,7 @@
         "toggle-theme": "Alternar tema"
     },
     "uses": {
-        "description": "Estes são os equipamentos que eu utilizo atualmente para jogos, programação e no dia a dia.",
-        "title": "Equipamentos"
+        "description": "Estes são os equipamentos que uso atualmente para jogar, programar, fazer vídeos e no dia a dia.",
+        "title": "Usos"
     }
 }
