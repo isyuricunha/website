@@ -1,7 +1,7 @@
 {
     "about": {
         "title": "Über",
-        "description": "👋 Hallo! Ich bin Yuri Cunha, nur ein Mensch, der Serverinfrastruktur liebt."
+        "description": "👋 Hey! Ich bin Yuri Cunha, einfach ein zufälliger Kerl im Internet.."
     },
     "admin": {
         "nav": {
@@ -12,11 +12,11 @@
         },
         "page-header": {
             "comments": {
-                "description": "Verwalte Kommentare von Benutzern",
+                "description": "Kommentare von Benutzern verwalten",
                 "title": "Kommentare"
             },
             "users": {
-                "description": "Verwalte die Benutzer des Systems",
+                "description": "Benutzer des Systems verwalten",
                 "title": "Benutzer"
             }
         },
@@ -24,16 +24,16 @@
             "comments": {
                 "body": "Inhalt",
                 "createdAt": "Erstellt am",
-                "failed-to-fetch-comments-data": "Abrufen der Kommentardaten fehlgeschlagen. Bitte aktualisieren Sie die Seite.",
-                "filter-body": "Filtere Inhalt...",
-                "filter-userId": "Filtere Benutzer-ID...",
+                "failed-to-fetch-comments-data": "Beim Abrufen der Kommentardaten ist ein Fehler aufgetreten. Bitte aktualisieren Sie die Seite.",
+                "filter-body": "Inhalt filtern...",
+                "filter-userId": "Benutzer-ID filtern...",
                 "type": "Typ",
                 "userId": "Benutzer-ID"
             },
             "users": {
                 "email": "E-Mail",
-                "failed-to-fetch-users-data": "Abrufen der Benutzerdaten fehlgeschlagen. Bitte aktualisieren Sie die Seite.",
-                "filter-names": "Filtere Namen...",
+                "failed-to-fetch-users-data": "Beim Abrufen der Benutzerdaten ist ein Fehler aufgetreten. Bitte aktualisieren Sie die Seite.",
+                "filter-names": "Namen filtern...",
                 "name": "Name",
                 "role": "Rolle"
             }
@@ -49,9 +49,9 @@
             "copy-link": "Link kopieren",
             "delete-a-comment": "Einen Kommentar löschen",
             "deleted-a-comment": "Kommentar gelöscht",
-            "dislike": "Gefällt nicht",
-            "failed-to-load-comments": "Laden der Kommentare fehlgeschlagen. Bitte aktualisieren Sie die Seite.",
-            "failed-to-load-replies": "Laden der Antworten fehlgeschlagen. Bitte aktualisieren Sie die Seite.",
+            "dislike": "Gefällt mir nicht",
+            "failed-to-load-comments": "Kommentare konnten nicht geladen werden. Bitte aktualisieren Sie die Seite.",
+            "failed-to-load-replies": "Antworten konnten nicht geladen werden. Bitte aktualisieren Sie die Seite.",
             "like": "Gefällt mir",
             "link-copied": "Link in die Zwischenablage kopiert",
             "need-logged-in-to-rate": "Sie müssen eingeloggt sein, um Kommentare zu bewerten",
@@ -59,7 +59,7 @@
             "no-comments": "Keine Kommentare",
             "oldest": "Älteste",
             "open-menu": "Menü öffnen",
-            "placeholder": "Einen Kommentar hinterlassen",
+            "placeholder": "Hinterlasse einen Kommentar",
             "replies": "{count, plural, =1 {Antwort} other {Antworten}}",
             "reply": "Antworten",
             "reply-cannot-be-empty": "Antwort darf nicht leer sein",
@@ -71,7 +71,7 @@
             "toggle-italic": "Kursiv umschalten",
             "toggle-strikethrough": "Durchgestrichen umschalten"
         },
-        "description": "Mein persönlicher Blog, in dem ich Gedanken über Technologie, Server, Cloud und ein wenig mein tägliches Leben teile. Ich begann meine Reise im Jahr 2018 und lerne und erkunde seither. Wenn Sie an Infrastruktur, Automatisierung oder einfach an Tech- und Lebensgedanken interessiert sind, schauen Sie vorbei!",
+        "description": "Mein persönlicher Blog, in dem ich Gedanken zu Technologie, Servern, Cloud und ein bisschen meinem Alltag teile. Ich begann meine Reise im Jahr 2018 und lerne seither unentwegt dazu. Wenn du auf Datenbanken, Läufer oder einfach nur Gedanken zu Technik und Leben stehst, schau mal vorbei!",
         "footer": {
             "edit-on-github": "Auf GitHub bearbeiten",
             "last-updated": "Zuletzt aktualisiert: {date}"
@@ -83,7 +83,7 @@
             "written-by": "Geschrieben von"
         },
         "like": "Gefällt mir",
-        "like-limit-reached": "Sie können einen Beitrag nur 3 Mal liken",
+        "like-limit-reached": "Du kannst einen Beitrag nur dreimal liken",
         "like-this-post": "Diesen Beitrag liken",
         "on-this-page": "Auf dieser Seite",
         "title": "Blog"
@@ -96,11 +96,11 @@
         "groups": {
             "account": "Konto",
             "general": "Allgemein",
-            "social": "Sozial"
+            "social": "Soziale"
         },
         "no-results": "Keine Ergebnisse gefunden.",
-        "open-menu": "Befehlmenü öffnen",
-        "placeholder": "Befehl eingeben oder suchen",
+        "open-menu": "Befehlsmenü öffnen",
+        "placeholder": "Geben Sie einen Befehl oder eine Suche ein",
         "trigger": {
             "open-command": "Befehl öffnen",
             "open-link": "Link öffnen"
@@ -110,10 +110,10 @@
         "cancel": "Abbrechen",
         "delete": "Löschen",
         "error": "Fehler",
-        "likes": "{count, plural, =1 {# Like} other {# Likes}}",
+        "likes": "{count, plural, =1 {# Gefällt mir} other {# Gefällt mir}}",
         "sign-in": "Anmelden",
         "sign-in-error": "Anmeldung fehlgeschlagen. Bitte versuchen Sie es erneut.",
-        "sign-in-success": "Erfolgreich angemeldet!",
+        "sign-in-success": "Erfolgreich eingeloggt!",
         "sign-out": "Abmelden",
         "views": "{count, plural, =1 {# Ansicht} other {# Ansichten}}",
         "sign-up": "Registrieren",
@@ -124,26 +124,26 @@
             "no-posts-found": "Keine Beiträge gefunden",
             "placeholder": "Artikel suchen"
         },
-        "go-to-homepage": "Zur Startseite"
+        "go-to-homepage": "Zur Startseite gehen"
     },
     "dashboard": {
-        "description": "Dies ist mein persönliches Dashboard, erstellt mit Next.js API-Routen, die als serverlose Funktionen bereitgestellt werden. Ich nutze dieses Dashboard, um verschiedene Metriken von Plattformen wie YouTube, GitHub und mehr zu verfolgen.",
+        "description": "Dies ist mein persönliches Dashboard, erstellt mit Next.js API-Routen, die als serverlose Funktionen bereitgestellt werden. Ich nutze dieses Dashboard, um verschiedene Metriken über Plattformen wie YouTube, GitHub und mehr zu verfolgen. Aber dies dient nur als Referenz",
         "metric": {
-            "blog-total-likes": "Gesamte Blog-Likes",
-            "blog-total-views": "Gesamte Blog-Aufrufe",
+            "blog-total-likes": "Gesamtanzahl Blog Likes",
+            "blog-total-views": "Gesamtanzahl Blog Aufrufe",
             "coding-hours": "Programmierstunden",
-            "github-followers": "GitHub-Follower",
-            "github-stars": "GitHub-Sterne",
-            "youtube-subscribers": "YouTube-Abonnenten",
-            "youtube-views": "YouTube-Aufrufe"
+            "github-followers": "GitHub Follower",
+            "github-stars": "GitHub Sterne",
+            "youtube-subscribers": "YouTube Abonnenten",
+            "youtube-views": "YouTube Aufrufe"
         },
         "title": "Dashboard"
     },
     "dialog": {
         "sign-in": {
-            "continue-with": "Mit {provider} fortfahren",
+            "continue-with": "Fortfahren mit {provider}",
             "or": "oder",
-            "description": "um zu yuricunha.com weiterzugehen",
+            "description": "um zu yuricunha.com fortzufahren",
             "here": "Hier anmelden",
             "anonymous": "Anonym"
         },
@@ -151,11 +151,11 @@
             "description": "um Ihr Konto auf yuricunha.com zu erstellen",
             "here": "Hier registrieren"
         },
-        "already-have-account": "Bereits ein Konto?",
+        "already-have-account": "Haben Sie bereits ein Konto?",
         "dont-have-account": "Kein Konto?"
     },
     "error": {
-        "something-went-wrong": "Etwas ist schief gelaufen!",
+        "something-went-wrong": "Etwas ist schiefgelaufen!",
         "try-again": "Versuchen Sie es erneut"
     },
     "guestbook": {
@@ -165,46 +165,46 @@
             "title": "Einen Kommentar löschen"
         },
         "delete-message-successfully": "Nachricht erfolgreich gelöscht",
-        "description": "Tragen Sie in mein Gästebuch ein und teilen Sie Ihre Meinung. Sie können mir hier alles erzählen!",
-        "failed-to-load-messages": "Laden der Nachrichten fehlgeschlagen. Bitte aktualisieren Sie die Seite.",
-        "message-cannot-be-empty": "Nachricht darf nicht leer sein",
+        "description": "Tragen Sie sich in mein Gästebuch ein und teilen Sie Ihre Gedanken. Sie können mir hier alles erzählen!",
+        "failed-to-load-messages": "Nachrichten konnten nicht geladen werden. Bitte aktualisieren Sie die Seite.",
+        "message-cannot-be-empty": "Nachricht darf nicht leer sein. Mein Fehler oder Ihr Fehler?",
         "no-messages": "Keine Nachrichten. Seien Sie der Erste, der eine Nachricht hinterlässt!",
         "pinned": {
-            "description": "Danke für Ihren Besuch auf meiner Website. Wenn Sie einen Moment Zeit haben, würde ich gerne Ihre Meinung zu meiner Arbeit hören. Bitte melden Sie sich mit Ihrem Konto an, um einen Kommentar zu hinterlassen. Danke!",
-            "greeting": "Hallo! 👋"
+            "description": "Wenn Sie einen Moment Zeit haben, melden Sie sich bitte mit Ihrem Konto an, um einen Kommentar zu hinterlassen. Danke!",
+            "greeting": "Hey! 👋"
         },
-        "placeholder": "Eine Nachricht hinterlassen",
+        "placeholder": "Hinterlassen Sie eine Nachricht",
         "signin": {
             "description": "um eine Nachricht zu hinterlassen"
         },
-        "submit": "Senden",
+        "submit": "Absenden",
         "title": "Gästebuch"
     },
     "homepage": {
         "about-me": {
             "coding-hours": "Programmierstunden",
             "connect": "Verbinden",
-            "fav-framework": "Lieblingsserver",
+            "fav-framework": "Lieblings-Server",
             "location": "São Paulo",
-            "more": "Mehr über mich",
-            "stacks": "Technologien",
+            "more": "Mehr über mich erfahren",
+            "stacks": "Stacks",
             "title": "Über mich"
         },
         "get-in-touch": {
-            "description": "Kontaktieren Sie mich gerne!",
-            "image-alt": "Ich sitze vor meinem Schreibtisch und programmiere",
-            "title": "Haben Sie Fragen zu Servern?"
+            "description": "Zögern Sie nicht, mich zu kontaktieren!",
+            "image-alt": "Ich oder nicht ich",
+            "title": "Möchten Sie sprechen?"
         },
         "hero": {
-            "amazing": "cloud-native",
-            "attractive": "zero-trust",
-            "fantastic": "verschlüsselt",
+            "amazing": "datengetrieben",
+            "attractive": "skalierbar",
+            "fantastic": "widerstandsfähig",
+            "stunning": "sicher",
             "location-timezone": "Brasilien • UTC/GMT -3",
-            "stunning": "unveränderlich",
-            "title-bottom": "verteilte Systeme",
-            "title-middle-left": "gestalte",
-            "title-middle-right": "Lösungen",
-            "title-top": "Ich bin Yuri, Server-Spezialist"
+            "title-top": "Ich bin Yuri, Datenbankspezialist",
+            "title-middle-left": "optimiere",
+            "title-middle-right": "Datenlösungen",
+            "title-bottom": "für moderne Infrastrukturen"
         },
         "latest-articles": {
             "card": "Artikel",
@@ -219,8 +219,8 @@
     },
     "hook": {
         "copy-to-clipboard": {
-            "copied": "In Zwischenablage kopiert!",
-            "error": "Konnte nicht in die Zwischenablage kopieren. Bitte versuchen Sie es erneut!"
+            "copied": "In die Zwischenablage kopiert!",
+            "error": "Konnte nicht in die Zwischenablage kopiert werden. Bitte versuchen Sie es erneut!"
         }
     },
     "layout": {
@@ -235,8 +235,8 @@
         "instagram": "Instagram",
         "links": "Links",
         "now-playing": {
-            "error": "Abrufen der Spotify-Daten fehlgeschlagen",
-            "loading": "Lädt ...",
+            "error": "Spotify-Daten konnten nicht abgerufen werden",
+            "loading": "Laden ...",
             "not-listening": "Nicht am Hören - Spotify"
         },
         "projects": "Projekte",
@@ -249,12 +249,12 @@
         "link-to-section": "Link zum Abschnitt"
     },
     "metadata": {
-        "site-description": "Cloud & Infrastructure Architekt",
+        "site-description": "Senior DBA",
         "site-title": "Yuri Cunha"
     },
-    "not-found": "Seite nicht gefunden!",
+    "not-found": "Heute keine Seiten gefunden!",
     "projects": {
-        "description": "Die Liste meiner Projekte. Alles wurde mit 💙 erstellt.",
+        "description": "Die Liste meiner Projekte. Alles wurde mit 💙 erstellt (diese Seite ist noch in Entwicklung).",
         "title": "Projekte",
         "visit-website": "Website besuchen",
         "all-repos": "Meine öffentlichen GitHub-Repositories"
@@ -268,7 +268,7 @@
         "toggle-theme": "Thema umschalten"
     },
     "uses": {
-        "description": "Dies ist die Ausrüstung, die ich derzeit für Gaming, Programmierung, Videoerstellung und den Alltag benutze.",
+        "description": "Dies ist die Ausrüstung, die ich derzeit für Gaming, Programmierung, Videoproduktion und den Alltag nutze.",
         "title": "Ausstattung"
     }
 }
