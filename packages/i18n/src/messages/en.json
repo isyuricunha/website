@@ -71,7 +71,7 @@
       "toggle-italic": "Toggle italic",
       "toggle-strikethrough": "Toggle strikethrough"
     },
-    "description": "My personal blog where I share thoughts on technology, servers, cloud, and a bit of my daily life. I started my journey in 2018 and have been exploring and learning ever since. If you’re into infrastructure, automation, or just want to read some thoughts on tech and life, check it out!",
+    "description": "My personal blog where I share thoughts on technology, servers, cloud, and a bit of my daily life. I started my journey in 2018 and have been exploring and learning ever since. If you’re into database, runners, or just want to read some thoughts on tech and life, check it out!",
     "footer": {
       "edit-on-github": "Edit on GitHub",
       "last-updated": "Last updated: {date}"
@@ -127,7 +127,7 @@
     "go-to-homepage": "Go to homepage"
   },
   "dashboard": {
-    "description": "This is my personal dashboard, built with Next.js API routes deployed as serverless functions. I use this dashboard to track various metrics across platforms like YouTube, GitHub, and more.",
+    "description": "This is my personal dashboard, built with Next.js API routes deployed as serverless functions. I use this dashboard to track various metrics across platforms like YouTube, GitHub, and more. But, this is only for reference",
     "metric": {
       "blog-total-likes": "Blog Total Likes",
       "blog-total-views": "Blog Total Views",
@@ -167,11 +167,11 @@
     "delete-message-successfully": "Delete message successfully",
     "description": "Sign my guestbook and share your idea. You can tell me anything here!",
     "failed-to-load-messages": "Failed to load messages. Please refresh the page.",
-    "message-cannot-be-empty": "Message cannot be empty",
+    "message-cannot-be-empty": "Message cannot be empty. My bad or your bad?",
     "no-messages": "No messages. Be the first to leave a message!",
     "pinned": {
-      "description": "Thanks for visiting my website. If you have a moment, I'd love to hear your thoughts on my work. Please log in with your account to leave a comment. Thanks!",
-      "greeting": "Hey there! 👋"
+      "description": "If you have a moment, please log in with your account to leave a comment. Thanks!",
+      "greeting": "Hey! 👋"
     },
     "placeholder": "Leave a message",
     "signin": {
@@ -192,19 +192,19 @@
     },
     "get-in-touch": {
       "description": "Feel free to reach out to me!",
-      "image-alt": "Me sit in front of my desk and coding",
+      "image-alt": "Me or not me",
       "title": "Need to talk?"
     },
     "hero": {
-      "amazing": "cloud-native",
-      "attractive": "zero-trust",
-      "fantastic": "encrypted",
+      "amazing": "data-driven",
+      "attractive": "scalable",
+      "fantastic": "resilient",
+      "stunning": "secure",
       "location-timezone": "Brazil • UTC/GMT -3",
-      "stunning": "immutable",
-      "title-bottom": "distributed systems",
-      "title-middle-left": "designing",
-      "title-middle-right": "solutions",
-      "title-top": "I'm Yuri, server specialist"
+      "title-top": "I'm Yuri, database specialist",
+      "title-middle-left": "optimizing",
+      "title-middle-right": "data solutions",
+      "title-bottom": "for modern infrastructures"
     },
     "latest-articles": {
       "card": "Article",
@@ -249,10 +249,10 @@
     "link-to-section": "Link to section"
   },
   "metadata": {
-    "site-description": "Cloud & Infrastructure Architect",
+    "site-description": "Senior DBA",
     "site-title": "Yuri Cunha"
   },
-  "not-found": "Page Not Found!",
+  "not-found": "No pages here today!",
   "projects": {
     "description": "The list of my projects. Everything was made with 💙 (this page still in development).",
     "title": "Projects",
