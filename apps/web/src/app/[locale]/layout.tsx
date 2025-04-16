@@ -7,7 +7,6 @@ import { NextIntlClientProvider } from '@tszhong0411/i18n/client'
 import { i18n } from '@tszhong0411/i18n/config'
 import { getMessages, getTranslations, setRequestLocale } from '@tszhong0411/i18n/server'
 import { cn } from '@tszhong0411/utils'
-import { SpeedInsights } from '@vercel/speed-insights/next'
 import { GeistMono } from 'geist/font/mono'
 import { GeistSans } from 'geist/font/sans'
 import Script from 'next/script'
@@ -163,7 +162,6 @@ const Layout = async (props: LayoutProps) => {
             </NextIntlClientProvider>
           </Providers>
         </NuqsAdapter>
-        <SpeedInsights />
       </body>
     </html>
   )
