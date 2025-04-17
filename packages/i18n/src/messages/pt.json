@@ -196,15 +196,15 @@
             "title": "Precisa conversar?"
         },
         "hero": {
-            "amazing": "orientado a dados",
-            "attractive": "escalável",
-            "fantastic": "resiliente",
-            "stunning": "seguro",
-            "location-timezone": "Brasil • UTC/GMT -3",
             "title-top": "Eu sou Yuri, especialista em banco de dados",
             "title-middle-left": "otimizando",
             "title-middle-right": "soluções em dados",
-            "title-bottom": "para infraestruturas modernas"
+            "amazing": "ágeis",
+            "attractive": "rápidas",
+            "fantastic": "fortes",
+            "stunning": "seguras",
+            "title-bottom": "para infraestruturas modernas",
+            "location-timezone": "Brasil • UTC/GMT -3"
         },
         "latest-articles": {
             "card": "Artigo",
