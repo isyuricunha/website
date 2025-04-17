@@ -196,15 +196,15 @@
             "title": "Besoin de parler ?"
         },
         "hero": {
-            "amazing": "axé sur les données",
-            "attractive": "évolutif",
-            "fantastic": "résilient",
-            "stunning": "sécurisé",
-            "location-timezone": "Brésil • UTC/GMT -3",
-            "title-top": "Je suis Yuri, spécialiste des bases de données",
-            "title-middle-left": "optimiser",
-            "title-middle-right": "les solutions de données",
-            "title-bottom": "pour des infrastructures modernes"
+            "title-top": "Je suis Yuri, spécialiste en bases de données",
+            "title-middle-left": "optimisant",
+            "title-middle-right": "solutions de données",
+            "amazing": "agiles",
+            "attractive": "rapides",
+            "fantastic": "fortes",
+            "stunning": "sûres",
+            "title-bottom": "pour infrastructures modernes",
+            "location-timezone": "Brésil • UTC/GMT -3"
         },
         "latest-articles": {
             "card": "Article",

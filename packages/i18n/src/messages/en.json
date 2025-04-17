@@ -196,15 +196,15 @@
       "title": "Need to talk?"
     },
     "hero": {
-      "amazing": "data-driven",
-      "attractive": "scalable",
-      "fantastic": "resilient",
-      "stunning": "secure",
-      "location-timezone": "Brazil • UTC/GMT -3",
-      "title-top": "I'm Yuri, database specialist",
+      "title-top": "I’m Yuri, a database specialist",
       "title-middle-left": "optimizing",
       "title-middle-right": "data solutions",
-      "title-bottom": "for modern infrastructures"
+      "amazing": "agile",
+      "attractive": "fast",
+      "fantastic": "robust",
+      "stunning": "secure",
+      "title-bottom": "for modern infrastructures",
+      "location-timezone": "Brazil • UTC/GMT -3"
     },
     "latest-articles": {
       "card": "Article",

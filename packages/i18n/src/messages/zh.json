@@ -196,15 +196,15 @@
       "title": "需要交流？"
     },
     "hero": {
-      "amazing": "数据驱动",
-      "attractive": "可扩展",
-      "fantastic": "弹性强",
-      "stunning": "安全",
-      "location-timezone": "巴西 • UTC/GMT -3",
       "title-top": "我是 Yuri，数据库专家",
       "title-middle-left": "优化",
       "title-middle-right": "数据解决方案",
-      "title-bottom": "为现代基础设施"
+      "amazing": "敏捷",
+      "attractive": "快速",
+      "fantastic": "强大",
+      "stunning": "安全",
+      "title-bottom": "用于现代基础设施",
+      "location-timezone": "巴西 • UTC/GMT -3"
     },
     "latest-articles": {
       "card": "文章",

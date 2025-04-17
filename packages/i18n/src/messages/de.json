@@ -196,15 +196,15 @@
             "title": "Möchten Sie sprechen?"
         },
         "hero": {
-            "amazing": "datengetrieben",
-            "attractive": "skalierbar",
-            "fantastic": "widerstandsfähig",
-            "stunning": "sicher",
-            "location-timezone": "Brasilien • UTC/GMT -3",
             "title-top": "Ich bin Yuri, Datenbankspezialist",
             "title-middle-left": "optimiere",
             "title-middle-right": "Datenlösungen",
-            "title-bottom": "für moderne Infrastrukturen"
+            "amazing": "agil",
+            "attractive": "schnell",
+            "fantastic": "robust",
+            "stunning": "sicher",
+            "title-bottom": "für moderne Infrastrukturen",
+            "location-timezone": "Brasilien • UTC/GMT -3"
         },
         "latest-articles": {
             "card": "Artikel",
