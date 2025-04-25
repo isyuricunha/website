@@ -8,10 +8,11 @@ test.describe('views', () => {
   test('should be able to view a post', async ({ page }) => {
     const viewCount = page.getByTestId('view-count')
 
-    // @ts-expect-error -- internal property
+    await expect(async () => {
+      // @ts-expect-error -- internal property
 
-    const ariaLabel = await viewCount.evaluate((flow) => flow._internals.ariaLabel)
-
-    expect(ariaLabel).toBe('1')
+      const ariaLabel = await viewCount.evaluate((flow) => flow._internals.ariaLabel)
+      expect(ariaLabel).toBe('1')
+    }).toPass({ timeout: 5000 })
   })
 })
