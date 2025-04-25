@@ -20,5 +20,11 @@ export default tszhong0411(
         }
       ]
     }
+  },
+  {
+    rules: {
+      '@typescript-eslint/no-unsafe-argument': 'off',
+      '@typescript-eslint/no-unsafe-return': 'off'
+    }
   }
 )
