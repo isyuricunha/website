@@ -18,7 +18,7 @@ if [ "$CI" ]; then
 fi
 
 rm -rf eslint-config-inspector
-git clone --depth 1 --single-branch --branch main https://github.com/tszhong0411/eslint-config-inspector.git
+git clone --depth 1 --single-branch --branch main https://github.com/isyuricunha/eslint-config-inspector.git
 
 cd eslint-config-inspector
 pnpm eslint-config-inspector build

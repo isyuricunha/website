@@ -3,7 +3,7 @@
   "version": "0.0.4",
   "description": "A prettier plugin using prettier-package-json",
   "license": "MIT",
-  "author": "isyuricunha <me@yuricunha.com> (https://github.com/tszhong0411)",
+  "author": "isyuricunha <me@yuricunha.com> (https://github.com/isyuricunha)",
   "homepage": "https://github.com/isyuricunha/website#readme",
   "repository": {
     "type": "git",
