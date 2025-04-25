@@ -4,7 +4,7 @@ import { ratelimit } from '@tszhong0411/kv'
 
 import { getIp } from '@/utils/get-ip'
 
-import { createTRPCRouter, publicProcedure } from '../trpc'
+import { createTRPCRouter, publicProcedure } from '../init'
 
 const getKey = (id: string) => `youtube:${id}`
 
@@ -17,7 +17,7 @@ export const youtubeRouter = createTRPCRouter({
     if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
 
     const res = await fetch(
-      `https://www.googleapis.com/youtube/v3/channels?id=UCHnkvuxhC6ufNxgIQrQnYSQ&part=statistics&key=${env.GOOGLE_API_KEY}`
+      `https://www.googleapis.com/youtube/v3/channels?id=UC2hMWOaOlk9vrkvFVaGmn0Q&part=statistics&key=${env.GOOGLE_API_KEY}`
     )
     const data = await res.json()
 

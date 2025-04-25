@@ -4,12 +4,13 @@
 'use client'
 
 import { SiGithub, SiWakatime, SiYoutube } from '@icons-pack/react-simple-icons'
+import { useQuery } from '@tanstack/react-query'
 import { useTranslations } from '@tszhong0411/i18n/client'
 import { ArrowRightIcon, PencilIcon, StarIcon } from 'lucide-react'
 
 import Counter from '@/components/counter'
 import Link from '@/components/link'
-import { api } from '@/trpc/react'
+import { useTRPC } from '@/trpc/client'
 
 type Card = {
   icon: React.ReactNode
@@ -25,19 +26,20 @@ type Card = {
 }
 
 const Metrics = () => {
-  const youtubeQuery = api.youtube.get.useQuery()
-  const githubQuery = api.github.get.useQuery()
+  const trpc = useTRPC()
 
-  const likesQuery = api.likes.getCount.useQuery()
-  const viewsQuery = api.views.getCount.useQuery()
-  const wakatimeQuery = api.wakatime.get.useQuery()
+  const youtubeQuery = useQuery(trpc.youtube.get.queryOptions())
+  const githubQuery = useQuery(trpc.github.get.queryOptions())
+  const likesQuery = useQuery(trpc.likes.getCount.queryOptions())
+  const viewsQuery = useQuery(trpc.views.getCount.queryOptions())
+  const wakatimeQuery = useQuery(trpc.wakatime.get.queryOptions())
 
   const t = useTranslations()
 
   const data: Card[] = [
     {
       title: t('dashboard.metric.coding-hours'),
-      link: 'https://wakatime.com/@isyuricunha',
+      link: 'https://wakatime.com/@tszhong0411',
       value: wakatimeQuery.data?.seconds
         ? Math.round(wakatimeQuery.data.seconds / 60 / 60)
         : undefined,
@@ -51,7 +53,7 @@ const Metrics = () => {
     },
     {
       title: t('dashboard.metric.youtube-subscribers'),
-      link: 'https://youtube.com/@isyuricunha',
+      link: 'https://youtube.com/@tszhong0411',
       value: youtubeQuery.data?.subscribers,
       icon: <SiYoutube className='text-[#ff0000]' />,
       linkText: 'YouTube',
@@ -62,7 +64,7 @@ const Metrics = () => {
     },
     {
       title: t('dashboard.metric.youtube-views'),
-      link: 'https://youtube.com/@isyuricunha',
+      link: 'https://youtube.com/@tszhong0411',
       value: youtubeQuery.data?.views,
       icon: <SiYoutube className='text-[#ff0000]' />,
       linkText: 'YouTube',
@@ -73,7 +75,7 @@ const Metrics = () => {
     },
     {
       title: t('dashboard.metric.github-followers'),
-      link: 'https://github.com/isyuricunha',
+      link: 'https://github.com/tszhong0411',
       value: githubQuery.data?.followers,
       icon: <SiGithub className='text-[#fee000]' />,
       linkText: 'GitHub',
@@ -84,7 +86,7 @@ const Metrics = () => {
     },
     {
       title: t('dashboard.metric.github-stars'),
-      link: 'https://github.com/isyuricunha',
+      link: 'https://github.com/tszhong0411',
       value: githubQuery.data?.stars,
       icon: <StarIcon className='size-6 text-[#fee000]' />,
       linkText: 'GitHub',
@@ -95,7 +97,7 @@ const Metrics = () => {
     },
     {
       title: t('dashboard.metric.blog-total-views'),
-      link: 'https://yuricunha.com/blog',
+      link: 'https://honghong.me',
       value: viewsQuery.data?.views,
       icon: <PencilIcon className='size-6 text-[#ff0f7b]' />,
       linkText: 'Blog',
@@ -106,7 +108,7 @@ const Metrics = () => {
     },
     {
       title: t('dashboard.metric.blog-total-likes'),
-      link: 'https://yuricunha.com/blog',
+      link: 'https://honghong.me',
       value: likesQuery.data?.likes,
       icon: <PencilIcon className='size-6 text-[#ff0f7b]' />,
       linkText: 'Blog',

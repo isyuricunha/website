@@ -1,4 +1,4 @@
-import type { RouterInputs, RouterOutputs } from '../react'
+import type { RouterInputs, RouterOutputs } from '../client'
 
 import { createId } from '@paralleldrive/cuid2'
 import { TRPCError } from '@trpc/server'
@@ -27,7 +27,7 @@ import { resend } from '@/lib/resend'
 import { getDefaultImage } from '@/utils/get-default-image'
 import { getIp } from '@/utils/get-ip'
 
-import { adminProcedure, createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc'
+import { adminProcedure, createTRPCRouter, protectedProcedure, publicProcedure } from '../init'
 
 const getKey = (id: string) => `comments:${id}`
 
@@ -280,7 +280,7 @@ export const commentsRouter = createTRPCRouter({
 
       const post = {
         title,
-        url: `https://yuricunha.com/blog/${input.slug}`
+        url: `https://honghong.me/blog/${input.slug}`
       }
 
       await ctx.db.transaction(async (tx) => {
@@ -297,7 +297,7 @@ export const commentsRouter = createTRPCRouter({
           if (!isProduction || !resend) return
 
           await resend.emails.send({
-            from: 'yuricunha.com <me@yuricunha.com>',
+            from: 'Nelson Lai <me@honghong.me>',
             to: env.AUTHOR_EMAIL,
             subject: 'New comment on your blog post',
             react: Comment({
@@ -323,7 +323,7 @@ export const commentsRouter = createTRPCRouter({
 
           if (parentComment && parentComment.user.email !== user.email) {
             await resend.emails.send({
-              from: 'yuricunha.com <me@yuricunha.com>',
+              from: 'Nelson Lai <me@honghong.me>',
               to: parentComment.user.email,
               subject: 'New reply to your comment',
               react: Reply({
