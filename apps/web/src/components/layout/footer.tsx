@@ -1,21 +1,21 @@
 'use client'
 
-import { useQuery } from '@tanstack/react-query'
 import { flags } from '@tszhong0411/env'
 import { useTranslations } from '@tszhong0411/i18n/client'
 import { linkVariants } from '@tszhong0411/ui'
 import { StarIcon } from 'lucide-react'
 
 import { FOOTER_LINKS } from '@/config/links'
-import { useTRPC } from '@/trpc/client'
+import { api } from '@/trpc/react'
 
 import Link from '../link'
 
 import NowPlaying from './now-playing'
 
 const Footer = () => {
-  const trpc = useTRPC()
-  const { status, data } = useQuery(trpc.github.getRepoStars.queryOptions())
+  const { status, data } = api.github.getRepoStars.useQuery(undefined, {
+    staleTime: 1000 * 60 * 60
+  })
   const t = useTranslations()
 
   return (
@@ -37,9 +37,9 @@ const Footer = () => {
         ))}
       </div>
       <div className='mt-20 flex items-center justify-between text-sm'>
-        <div>&copy; {new Date().getFullYear()} Yuri Cunha</div>
+        <div>Yuri Cunha | &copy; {new Date().getFullYear()}</div>
         <Link
-          href='https://git.new/honghong-me'
+          href='https://github.com/isyuricunha/website'
           className='flex items-center justify-center overflow-hidden rounded-md border'
         >
           <div className='bg-muted flex h-8 items-center gap-2 border-r px-2'>

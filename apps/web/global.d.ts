@@ -1,9 +1,8 @@
-import type messages from '@tszhong0411/i18n/messages/en.json'
-import type { routing } from '@tszhong0411/i18n/routing'
+import type en from '@tszhong0411/i18n/messages/en.json'
 
-declare module 'next-intl' {
-  interface AppConfig {
-    Locale: (typeof routing.locales)[number]
-    Messages: typeof messages
-  }
+type Messages = typeof en
+
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type -- interface is necessary for declaration merging
+  interface IntlMessages extends Messages {}
 }

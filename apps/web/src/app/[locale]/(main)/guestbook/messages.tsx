@@ -2,7 +2,7 @@
 
 import type { GetInfiniteMessagesOutput } from '@/trpc/routers/guestbook'
 
-import { keepPreviousData, useInfiniteQuery } from '@tanstack/react-query'
+import { keepPreviousData } from '@tanstack/react-query'
 import { useTranslations } from '@tszhong0411/i18n/client'
 import { Avatar, AvatarFallback, AvatarImage, Skeleton } from '@tszhong0411/ui'
 import { useEffect, useMemo } from 'react'
@@ -11,7 +11,7 @@ import { useInView } from 'react-intersection-observer'
 import { type MessageContext, MessageProvider } from '@/contexts/message'
 import { useFormattedDate } from '@/hooks/use-formatted-date'
 import { useSession } from '@/lib/auth-client'
-import { useTRPC } from '@/trpc/client'
+import { api } from '@/trpc/react'
 
 import DeleteButton from './delete-button'
 import MessagesLoader from './messages-loader'
@@ -43,16 +43,14 @@ const UpdatedDate = (props: UpdatedDateProps) => {
 }
 
 const Messages = () => {
-  const trpc = useTRPC()
-  const { status, data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery(
-    trpc.guestbook.getInfiniteMessages.infiniteQueryOptions(
+  const { status, data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    api.guestbook.getInfiniteMessages.useInfiniteQuery(
       {},
       {
         getNextPageParam: (lastPage) => lastPage.nextCursor,
         placeholderData: keepPreviousData
       }
     )
-  )
   const t = useTranslations()
 
   const { ref, inView } = useInView()
@@ -113,10 +111,7 @@ const Message = (props: MessageProps) => {
 
   return (
     <MessageProvider value={context}>
-      <div
-        className='shadow-xs rounded-lg border p-4 dark:bg-zinc-900/30'
-        data-testid={`message-${id}`}
-      >
+      <div className='shadow-xs rounded-lg border p-4 dark:bg-zinc-900/30' id={`message-${id}`}>
         <div className='mb-3 flex gap-3'>
           <Avatar>
             <AvatarImage src={image} className='size-10 rounded-full' alt={name} />

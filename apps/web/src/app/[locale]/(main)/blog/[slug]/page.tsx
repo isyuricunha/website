@@ -7,7 +7,7 @@ import { allPosts } from 'content-collections'
 import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
 
-import Comment from '@/components/comment'
+import Comments from '@/components/comments'
 import Mdx from '@/components/mdx'
 import { SITE_NAME, SITE_URL } from '@/lib/constants'
 import { getLocalizedPath } from '@/utils/get-localized-path'
@@ -159,7 +159,7 @@ const Page = async (props: PageProps) => {
 
       {flags.comment ? (
         <Suspense>
-          <Comment slug={slug} />
+          <Comments slug={slug} />
         </Suspense>
       ) : null}
     </>

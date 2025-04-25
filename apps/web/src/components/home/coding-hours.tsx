@@ -1,16 +1,13 @@
 'use client'
 
-import { useQuery } from '@tanstack/react-query'
 import { flags } from '@tszhong0411/env'
 import { useTranslations } from '@tszhong0411/i18n/client'
 import { ClockIcon } from 'lucide-react'
 
-import { useTRPC } from '@/trpc/client'
+import { api } from '@/trpc/react'
 
 const CodingHours = () => {
-  const trpc = useTRPC()
-  const { status, data } = useQuery({
-    ...trpc.wakatime.get.queryOptions(),
+  const { status, data } = api.wakatime.get.useQuery(undefined, {
     enabled: flags.stats
   })
   const t = useTranslations()

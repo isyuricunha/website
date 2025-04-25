@@ -3,15 +3,14 @@
 /**
  * Inspired by: https://framer.university/resources/like-button-component
  */
-import NumberFlow from '@number-flow/react'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import NumberFlow, { continuous } from '@number-flow/react'
 import { useTranslations } from '@tszhong0411/i18n/client'
 import { Separator, toast } from '@tszhong0411/ui'
 import { motion } from 'motion/react'
 import { useRef, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
 
-import { useTRPC } from '@/trpc/client'
+import { api } from '@/trpc/react'
 
 type LikeButtonProps = {
   slug: string
@@ -21,43 +20,37 @@ const LikeButton = (props: LikeButtonProps) => {
   const { slug } = props
   const [cacheCount, setCacheCount] = useState(0)
   const buttonRef = useRef<HTMLButtonElement>(null)
-  const trpc = useTRPC()
-  const queryClient = useQueryClient()
+  const utils = api.useUtils()
   const t = useTranslations()
 
   const queryKey = { slug }
 
-  const { status, data } = useQuery(trpc.likes.get.queryOptions(queryKey))
-  const likesMutation = useMutation(
-    trpc.likes.patch.mutationOptions({
-      onMutate: async (newData) => {
-        await queryClient.cancelQueries({
-          queryKey: trpc.likes.get.queryKey(queryKey)
-        })
+  const { status, data } = api.likes.get.useQuery(queryKey)
+  const likesMutation = api.likes.patch.useMutation({
+    onMutate: async (newData) => {
+      await utils.likes.get.cancel(queryKey)
 
-        const previousData = queryClient.getQueryData(trpc.likes.get.queryKey(queryKey))
+      const previousData = utils.likes.get.getData(queryKey)
 
-        queryClient.setQueryData(trpc.likes.get.queryKey(queryKey), (old) => {
-          if (!old) return old
-          return {
-            ...old,
-            likes: old.likes + newData.value,
-            currentUserLikes: old.currentUserLikes + newData.value
-          }
-        })
-        return { previousData }
-      },
-      onError: (_, __, ctx) => {
-        if (ctx?.previousData) {
-          queryClient.setQueryData(trpc.likes.get.queryKey(queryKey), ctx.previousData)
+      utils.likes.get.setData(queryKey, (old) => {
+        if (!old) return old
+
+        return {
+          ...old,
+          likes: old.likes + newData.value,
+          currentUserLikes: old.currentUserLikes + newData.value
         }
-      },
-      onSettled: () =>
-        queryClient.invalidateQueries({
-          queryKey: trpc.likes.get.queryKey(queryKey)
-        })
-    })
-  )
+      })
+
+      return { previousData }
+    },
+    onError: (_, __, ctx) => {
+      if (ctx?.previousData) {
+        utils.likes.get.setData(queryKey, ctx.previousData)
+      }
+    },
+    onSettled: () => utils.likes.get.invalidate()
+  })
 
   const showConfettiAnimation = async () => {
     const { clientWidth, clientHeight } = document.documentElement
@@ -78,7 +71,7 @@ const LikeButton = (props: LikeButtonProps) => {
         y: targetY / clientHeight,
         x: targetCenterX / clientWidth
       },
-      shapes: [confetti.shapeFromText({ text: '❤️', scalar: 2 })]
+      shapes: [confetti.shapeFromText({ text: '💙', scalar: 2 })]
     })
   }
 
@@ -113,7 +106,6 @@ const LikeButton = (props: LikeButtonProps) => {
         aria-label={t('blog.like-this-post')}
         whileTap={{ scale: 0.96 }}
         type='button'
-        data-testid='like-button'
       >
         <svg
           xmlns='http://www.w3.org/2000/svg'
@@ -154,7 +146,7 @@ const LikeButton = (props: LikeButtonProps) => {
         {status === 'pending' ? <div>--</div> : null}
         {status === 'error' ? <div>{t('common.error')}</div> : null}
         {status === 'success' ? (
-          <NumberFlow value={data.likes + cacheCount} data-testid='like-count' />
+          <NumberFlow willChange plugins={[continuous]} value={data.likes + cacheCount} />
         ) : null}
       </motion.button>
     </div>

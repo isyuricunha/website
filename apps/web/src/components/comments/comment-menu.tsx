@@ -59,7 +59,6 @@ const CommentMenu = () => {
             size='icon'
             className='size-8'
             aria-label={t('blog.comments.open-menu')}
-            data-testid='comment-menu-button'
           >
             <MoreVerticalIcon className='size-5' />
           </Button>
@@ -81,7 +80,6 @@ const CommentMenu = () => {
                 className='text-red-600 focus:text-red-500'
                 disabled={deleteCommentMutation.isPending}
                 aria-disabled={deleteCommentMutation.isPending}
-                data-testid='comment-delete-button'
               >
                 {t('common.delete')}
               </DropdownMenuItem>
@@ -89,7 +87,7 @@ const CommentMenu = () => {
           </AlertDialogTrigger>
         </DropdownMenuContent>
       </DropdownMenu>
-      <AlertDialogContent data-testid='comment-dialog'>
+      <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>{t('blog.comments.delete-a-comment')}</AlertDialogTitle>
           <AlertDialogDescription>
@@ -101,7 +99,6 @@ const CommentMenu = () => {
           <AlertDialogAction
             onClick={() => deleteCommentMutation.mutate({ id })}
             className={buttonVariants({ variant: 'destructive' })}
-            data-testid='comment-dialog-delete-button'
           >
             {t('common.delete')}
           </AlertDialogAction>

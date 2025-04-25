@@ -2,17 +2,16 @@ import type { Metadata, Viewport } from 'next'
 
 import '@/styles/globals.css'
 
-import { flags } from '@tszhong0411/env'
-import { hasLocale, NextIntlClientProvider } from '@tszhong0411/i18n/client'
+import { env, flags } from '@tszhong0411/env'
+import { NextIntlClientProvider } from '@tszhong0411/i18n/client'
 import { i18n } from '@tszhong0411/i18n/config'
-import { routing } from '@tszhong0411/i18n/routing'
-import { getTranslations, setRequestLocale } from '@tszhong0411/i18n/server'
+import { getMessages, getTranslations, setRequestLocale } from '@tszhong0411/i18n/server'
 import { cn } from '@tszhong0411/utils'
-import { SpeedInsights } from '@vercel/speed-insights/next'
 import { GeistMono } from 'geist/font/mono'
 import { GeistSans } from 'geist/font/sans'
-import { notFound } from 'next/navigation'
+import Script from 'next/script'
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
+import { Monitoring } from 'react-scan/monitoring/next'
 
 import Analytics from '@/components/analytics'
 import Hello from '@/components/hello'
@@ -73,7 +72,7 @@ export const generateMetadata = async (props: LayoutProps): Promise<Metadata> =>
       ]
     },
     keywords: SITE_KEYWORDS,
-    creator: 'tszhong0411',
+    creator: 'isyuricunha',
     openGraph: {
       url: SITE_URL,
       type: 'website',
@@ -129,12 +128,9 @@ export const viewport: Viewport = {
 const Layout = async (props: LayoutProps) => {
   const { children } = props
   const { locale } = await props.params
-
-  if (!hasLocale(routing.locales, locale)) {
-    notFound()
-  }
-
   setRequestLocale(locale)
+
+  const messages = await getMessages()
 
   return (
     <html
@@ -142,10 +138,23 @@ const Layout = async (props: LayoutProps) => {
       className={cn(GeistSans.variable, GeistMono.variable)}
       suppressHydrationWarning
     >
+      <head>
+        {env.NODE_ENV === 'development' ? (
+          <Script src='https://unpkg.com/react-scan/dist/auto.global.js' />
+        ) : null}
+      </head>
       <body className='relative flex min-h-screen flex-col'>
+        {env.REACT_SCAN_MONITOR_API_KEY ? (
+          <Monitoring
+            apiKey={env.REACT_SCAN_MONITOR_API_KEY}
+            url='https://monitoring.react-scan.com/api/v1/ingest'
+            commit={env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA}
+            branch={env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_REF}
+          />
+        ) : null}
         <NuqsAdapter>
           <Providers>
-            <NextIntlClientProvider>
+            <NextIntlClientProvider messages={messages}>
               <Hello />
               {children}
               {flags.analytics ? <Analytics /> : null}
@@ -153,7 +162,6 @@ const Layout = async (props: LayoutProps) => {
             </NextIntlClientProvider>
           </Providers>
         </NuqsAdapter>
-        <SpeedInsights />
       </body>
     </html>
   )

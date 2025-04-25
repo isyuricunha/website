@@ -2,12 +2,11 @@
 
 import type { Post } from 'content-collections'
 
-import { useQuery } from '@tanstack/react-query'
 import { useTranslations } from '@tszhong0411/i18n/client'
 import { BlurImage } from '@tszhong0411/ui'
 
 import { useFormattedDate } from '@/hooks/use-formatted-date'
-import { useTRPC } from '@/trpc/client'
+import { api } from '@/trpc/react'
 
 import Link from './link'
 
@@ -32,11 +31,15 @@ const PostCards = (props: PostCardsProps) => {
 const PostCard = (props: PostCardProps) => {
   const { slug, title, summary, date } = props
   const formattedDate = useFormattedDate(date)
-  const trpc = useTRPC()
   const t = useTranslations()
 
-  const viewsQuery = useQuery(trpc.views.get.queryOptions({ slug }))
-  const likesQuery = useQuery(trpc.likes.get.queryOptions({ slug }))
+  const viewsQuery = api.views.get.useQuery({
+    slug
+  })
+
+  const likesQuery = api.likes.get.useQuery({
+    slug
+  })
 
   return (
     <Link href={`/blog/${slug}`} className='shadow-feature-card group rounded-xl px-2 py-4'>

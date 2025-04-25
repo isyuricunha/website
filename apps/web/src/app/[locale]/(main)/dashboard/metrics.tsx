@@ -4,13 +4,12 @@
 'use client'
 
 import { SiGithub, SiWakatime, SiYoutube } from '@icons-pack/react-simple-icons'
-import { useQuery } from '@tanstack/react-query'
 import { useTranslations } from '@tszhong0411/i18n/client'
 import { ArrowRightIcon, PencilIcon, StarIcon } from 'lucide-react'
 
 import Counter from '@/components/counter'
 import Link from '@/components/link'
-import { useTRPC } from '@/trpc/client'
+import { api } from '@/trpc/react'
 
 type Card = {
   icon: React.ReactNode
@@ -26,13 +25,12 @@ type Card = {
 }
 
 const Metrics = () => {
-  const trpc = useTRPC()
+  const youtubeQuery = api.youtube.get.useQuery()
+  const githubQuery = api.github.get.useQuery()
 
-  const youtubeQuery = useQuery(trpc.youtube.get.queryOptions())
-  const githubQuery = useQuery(trpc.github.get.queryOptions())
-  const likesQuery = useQuery(trpc.likes.getCount.queryOptions())
-  const viewsQuery = useQuery(trpc.views.getCount.queryOptions())
-  const wakatimeQuery = useQuery(trpc.wakatime.get.queryOptions())
+  const likesQuery = api.likes.getCount.useQuery()
+  const viewsQuery = api.views.getCount.useQuery()
+  const wakatimeQuery = api.wakatime.get.useQuery()
 
   const t = useTranslations()
 
@@ -97,7 +95,7 @@ const Metrics = () => {
     },
     {
       title: t('dashboard.metric.blog-total-views'),
-      link: 'https://yuricunha.com',
+      link: 'https://yuricunha.com/blog',
       value: viewsQuery.data?.views,
       icon: <PencilIcon className='size-6 text-[#ff0f7b]' />,
       linkText: 'Blog',
@@ -108,7 +106,7 @@ const Metrics = () => {
     },
     {
       title: t('dashboard.metric.blog-total-likes'),
-      link: 'https://yuricunha.com',
+      link: 'https://yuricunha.com/blog',
       value: likesQuery.data?.likes,
       icon: <PencilIcon className='size-6 text-[#ff0f7b]' />,
       linkText: 'Blog',

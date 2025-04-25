@@ -3,7 +3,7 @@
 import { Toaster, TooltipProvider } from '@tszhong0411/ui'
 import { ThemeProvider } from 'next-themes'
 
-import { TRPCReactProvider } from '@/trpc/client'
+import { TRPCReactProvider } from '@/trpc/react'
 
 type ProvidesProps = {
   children: React.ReactNode
