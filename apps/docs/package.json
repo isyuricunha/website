@@ -1,8 +1,8 @@
 {
   "private": true,
-  "name": "@isyuricunha/docs",
+  "name": "@tszhong0411/docs",
   "version": "0.0.0",
-  "description": "The documentation for isyuricunha's projects",
+  "description": "The documentation for tszhong0411's projects",
   "license": "MIT",
   "type": "module",
   "scripts": {
