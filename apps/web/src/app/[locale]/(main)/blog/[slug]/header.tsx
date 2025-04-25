@@ -55,9 +55,9 @@ const Header = () => {
                 className='rounded-full'
                 width={24}
                 height={24}
-                alt='Nelson Lai'
+                alt='Yuri Cunha'
               />
-              Nelson Lai
+              Yuri Cunha
             </Link>
           </div>
           <div className='space-y-1 md:mx-auto'>

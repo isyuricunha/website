@@ -37,7 +37,7 @@ const Footer = () => {
         ))}
       </div>
       <div className='mt-20 flex items-center justify-between text-sm'>
-        <div>&copy; {new Date().getFullYear()} Nelson Lai</div>
+        <div>&copy; {new Date().getFullYear()} Yuri Cunha</div>
         <Link
           href='https://git.new/honghong-me'
           className='flex items-center justify-center overflow-hidden rounded-md border'

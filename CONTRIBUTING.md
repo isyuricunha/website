@@ -1,6 +1,6 @@
-# Contributing to honghong.me
+# Contributing to yuricunha.com
 
-Welcome to the honghong.me repository! We're glad you're interested in contributing to our Next.js blog project. By contributing, you help make our project better and more useful for everyone. Below are some guidelines to get you started.
+Welcome to the yuricunha.com repository! We're glad you're interested in contributing to our Next.js blog project. By contributing, you help make our project better and more useful for everyone. Below are some guidelines to get you started.
 
 ## Table of Contents
 
@@ -37,7 +37,7 @@ To set up the project locally, follow these steps:
 
 ```bash
 git clone <your-forked-repo-url>
-cd honghong.me
+cd yuricunha.com
 ```
 
 3. Copy the `.env.example` file to `.env.local`:
@@ -142,4 +142,4 @@ pnpm lint:fix
 pnpm check
 ```
 
-Make sure your changes are well-tested and your code follows best practices. Thank you for contributing to honghong.me!
+Make sure your changes are well-tested and your code follows best practices. Thank you for contributing to yuricunha.com!

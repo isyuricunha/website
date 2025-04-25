@@ -3,14 +3,14 @@
   "version": "0.0.15",
   "description": "The prettier config for tszhong0411's projects",
   "license": "MIT",
-  "author": "tszhong0411 <me@honghong.me> (https://github.com/tszhong0411/)",
-  "homepage": "https://github.com/tszhong0411/honghong.me#readme",
+  "author": "isyuricunha <me@yuricunha.com> (https://github.com/isyuricunha/)",
+  "homepage": "https://github.com/isyuricunha/website#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/isyuricunha/website.git"
   },
   "bugs": {
-    "url": "https://github.com/tszhong0411/honghong.me/issues"
+    "url": "https://github.com/isyuricunha/website/issues"
   },
   "type": "module",
   "main": "./dist/index.js",
