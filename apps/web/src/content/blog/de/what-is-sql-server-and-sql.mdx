@@ -1,0 +1,188 @@
+---
+title: 'Was ist die SQL Server-Datenbank?'
+date: '2023-01-05T09:20:27.751-03:00'
+modifiedTime: "2023-01-05T09:20:27.751-03:00"
+summary: 'Lass uns über meine Lieblingsdatenbank sprechen.'
+---
+
+# Was ist die SQL Server-Datenbank?
+
+Die SQL Server-Datenbank ist ein von Microsoft entwickeltes relationales Datenbankmanagementsystem. Sie wird verwendet, um große Mengen an Daten – sowohl strukturierte als auch unstrukturierte – zu speichern und zu verwalten. SQL Server bietet eine Vielzahl von Funktionen, um die Sicherheit, Verfügbarkeit und Integrität der gespeicherten Daten zu gewährleisten sowie die Systemleistung und Skalierbarkeit sicherzustellen.
+
+Es gibt verschiedene Versionen von SQL Server, darunter SQL Server Express, SQL Server Standard und SQL Server Enterprise. Jede dieser Versionen bietet unterschiedliche Funktionen und eignet sich für verschiedene Anwendungsbereiche.
+
+Um mit SQL Server zu arbeiten, ist es notwendig, die Structured Query Language (SQL) zu beherrschen. SQL ist die Standard-Sprache für den Umgang mit relationalen Datenbanken und wird verwendet, um Daten in der Datenbank zu erstellen, abzufragen und zu verändern.
+
+<br />
+<br />
+
+# Was ist die Structured Query Language (bekannt als SQL)?
+
+Structured Query Language (SQL) ist eine Programmiersprache, die zur Verwaltung und Manipulation von Daten in relationalen Datenbanken eingesetzt wird. Sie ist die Standard-Sprache im Umgang mit solchen Datenbanken und wird verwendet, um die in der Datenbank gespeicherten Daten zu erstellen, abzufragen und zu ändern.
+
+SQL ist eine deklarative Sprache, was bedeutet, dass sie beschreibt, was getan werden soll, anstatt zu spezifizieren, wie es getan werden muss. Dadurch kann das Datenbankverwaltungssystem (DBMS) die Ausführung von SQL-Abfragen optimieren und eine effiziente Nutzung der Systemressourcen sicherstellen.
+
+SQL kommt bei einer Vielzahl von Aufgaben zum Einsatz – von der Erstellung und Veränderung von Tabellen und Indizes über das Einfügen und Aktualisieren von Daten bis hin zum Abrufen von Informationen aus der Datenbank. Außerdem wird es genutzt, um die Struktur und Beziehungen der in der Datenbank gespeicherten Daten zu definieren und Benutzerberechtigungen sowie Zugriffskontrollen festzulegen.
+
+SQL ist eine leistungsstarke und vielseitige Sprache, die in zahlreichen Branchen Anwendung findet, darunter Wirtschaft, Finanzen, Gesundheitswesen und öffentliche Verwaltung. Sie ist ein unverzichtbares Werkzeug für Datenbankadministratoren und Entwickler und wird auch von Datenanalysten und Data Scientists genutzt, um Daten für Analyse- und Berichtszwecke zu extrahieren, zu transformieren und zu laden.
+
+Es gibt verschiedene SQL-Dialekte, wie MySQL, Oracle und Microsoft SQL Server, die jeweils ihre eigenen Besonderheiten und Syntax haben. Dennoch bleiben die grundlegenden Konzepte und Prinzipien von SQL in allen Dialekten gleich, was die Sprache leicht erlernbar und breit anwendbar macht.
+
+<br />
+<br />
+
+# Beispiele für SQL-Abfragen
+
+Hier sind einige Beispiele für SQL-Abfragen, die in der SQL Server-Datenbank ausgeführt werden können:
+
+## _Select-Abfrage_
+
+- Die folgende Abfrage wählt alle Felder aus der Tabelle "Customers" aus, bei denen das Feld "City" gleich "São Paulo" ist:
+
+```sql
+SELECT * FROM Customers WHERE City = 'São Paulo';
+```
+
+<br />
+
+## _Daten einfügen_
+
+- Die folgende Abfrage fügt einen neuen Datensatz in die Tabelle "Customers" ein:
+
+```sql
+INSERT INTO Customers (Name, Address, City) VALUES ('João da Silva', 'Rua das Flores, 123', 'São Paulo');
+```
+
+<br />
+
+## _Daten aktualisieren_
+
+- Die folgende Abfrage aktualisiert das Feld "Address" des Datensatzes mit der ID 1 in der Tabelle "Customers":
+
+```sql
+UPDATE Customers SET Address = 'Rua das Oliveiras, 456' WHERE ID = 1;
+```
+
+<br />
+
+## _Daten löschen_
+
+- Die folgende Abfrage löscht den Datensatz mit der ID 1 aus der Tabelle "Customers":
+
+```sql
+DELETE FROM Customers WHERE ID = 1;
+```
+
+<br />
+<br />
+
+# Zwei einfache Beispiele
+
+<br />
+
+## Erstes Beispiel
+
+<br />
+
+> Sie sind der Datenbankadministrator für eine kleine Kundendatenbank. Sie müssen einen neuen Kundendatensatz mit den folgenden Informationen hinzufügen:
+
+<br />
+
+- Name: "John Smith"  
+- Address: "123 Main Street"  
+- City: "New York"
+
+<br />
+<br />
+
+## _Lösung_
+
+<br />
+
+- Um den neuen Kundendatensatz hinzuzufügen, können Sie die folgende SQL-Abfrage verwenden:
+
+```sql
+INSERT INTO Customers (Name, Address, City) VALUES ('John Smith', '123 Main Street', 'New York');
+```
+
+<br />
+
+_Diese Abfrage fügt einen neuen Datensatz in die Tabelle "Customers" mit dem angegebenen Namen, der Adresse und der Stadt ein._
+
+<br />
+<br />
+
+## Zweites Beispiel
+
+<br />
+
+> Sie sind der Datenbankadministrator für eine Produktinventurdatenbank. Sie müssen die Menge eines Produkts mit der ID "12345" auf 10 aktualisieren.
+
+<br />
+<br />
+
+## _Lösung_
+
+<br />
+
+- Um die Menge des Produkts mit der ID "12345" auf 10 zu aktualisieren, verwenden Sie die folgende SQL-Abfrage:
+
+```sql
+UPDATE Products SET Quantity = 10 WHERE ID = 12345;
+```
+
+<br />
+
+_Diese Abfrage aktualisiert das Feld "Quantity" des Produkts mit der ID "12345" auf den Wert 10._
+
+<br />
+<br />
+
+# Komplexes Beispiel
+
+> Sie sind der Datenbankadministrator für einen großen Online-Händler. Das Unternehmen verfügt über eine Datenbank mit mehreren Tabellen, in denen Informationen zu Kunden, Bestellungen und Produkten gespeichert sind. Die Datenbank dient der Nachverfolgung von Kundeninformationen, der Bearbeitung von Bestellungen und der Erstellung von Berichten.
+
+> Einer der Vertriebsleiter des Unternehmens hat einen Bericht angefordert, der den Gesamtumsatz und die Anzahl der Bestellungen für jeden Kunden, aufgeschlüsselt nach Produktkategorien, zeigt. Der Bericht soll die Daten des vergangenen Jahres umfassen und nach dem Gesamtumsatz in absteigender Reihenfolge sortiert sein.
+
+<br />
+<br />
+
+## _Lösung_
+
+<br />
+
+- Um den angeforderten Bericht zu erstellen, können Sie die folgende SQL-Abfrage verwenden:
+
+```sql
+SELECT c.Name AS 'Customer',
+       SUM(o.Total) AS 'Total Sales',
+       COUNT(o.ID) AS 'Number of Orders',
+       p.Category AS 'Product Category'
+FROM Customers c
+INNER JOIN Orders o ON c.ID = o.CustomerID
+INNER JOIN Products p ON o.ProductID = p.ID
+WHERE o.Date BETWEEN '2022-01-01' AND '2022-12-31'
+GROUP BY c.Name, p.Category
+ORDER BY 'Total Sales' DESC;
+```
+
+<br />
+
+_Diese Abfrage wählt den Kundennamen, den Gesamtumsatz, die Anzahl der Bestellungen und die Produktkategorie für alle Bestellungen im angegebenen Datumsbereich aus. Anschließend gruppiert sie die Ergebnisse nach Kundennamen und Produktkategorie und sortiert sie nach dem Gesamtumsatz in absteigender Reihenfolge. Der resultierende Bericht zeigt den Gesamtumsatz und die Anzahl der Bestellungen für jeden Kunden, aufgeschlüsselt nach Produktkategorie._
+
+<br />
+
+> Ich hoffe, die Beispiele haben Ihnen geholfen.
+
+<br />
+<br />
+
+###### _Hier sind einige zusätzliche Referenzlinks, die Ihnen beim Erlernen von SQL Server-Datenbanken und der SQL-Sprache hilfreich sein könnten:_
+
+- Die SQL Server-Homepage: https://www.microsoft.com/sql-server/
+- Die SQL Server-Dokumentation: https://docs.microsoft.com/sql/
+- Das SQL-Tutorial: https://www.w3schools.com/sql/
+- Der MySQL-Referenzleitfaden: https://dev.mysql.com/doc/refman/8.0/en/
+- Das Oracle SQL-Tutorial: https://docs.oracle.com/en/database/oracle/oracle-database/19/lnpls/index.html
+
+> Ich hoffe, diese zusätzlichen Referenzen und Syntaxbeispiele sind hilfreich für Sie.

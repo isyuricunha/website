@@ -1,0 +1,102 @@
+{
+  "private": true,
+  "name": "website",
+  "author": "isyuricunha <me@yuricunha.com> (https://github.com/isyuricunha/)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/isyuricunha/website.git"
+  },
+  "type": "module",
+  "scripts": {
+    "build": "turbo build",
+    "build:apps": "turbo build --filter=./apps/*",
+    "build:mdx": "turbo build:mdx",
+    "build:packages": "turbo build --filter=./packages/*",
+    "check": "turbo lint && turbo type-check && pnpm format:check && pnpm check:spelling && pnpm check:knip",
+    "check:knip": "dotenv -e .env.local -- knip",
+    "check:spelling": "cspell -c .cspell.json --no-progress --no-summary --no-must-find-files --unique",
+    "clean": "turbo clean && rm -rf .turbo coverage",
+    "commit": "cz",
+    "db:check": "turbo db:check",
+    "db:generate": "turbo db:generate",
+    "db:migrate": "turbo db:migrate",
+    "db:push": "turbo db:push",
+    "db:seed": "turbo db:seed",
+    "db:studio": "turbo db:studio",
+    "dev": "turbo dev",
+    "dev:docs": "turbo dev --filter=@isyuricunha/docs",
+    "dev:packages": "turbo dev --filter=./packages/*",
+    "dev:web": "turbo dev --filter=@tszhong0411/web",
+    "format:check": "prettier --cache --check --ignore-path .gitignore --ignore-path .prettierignore .",
+    "format:write": "prettier --cache --write --list-different --ignore-path .gitignore --ignore-path .prettierignore .",
+    "preinstall": "npx --yes only-allow pnpm",
+    "lint": "turbo lint && eslint . --max-warnings 0",
+    "lint:fix": "turbo lint:fix && eslint --fix .",
+    "prepare": "simple-git-hooks && pnpm build:packages",
+    "release": "changeset publish",
+    "test:e2e": "turbo test:e2e",
+    "test:e2e:inspector": "turbo test:e2e:inspector",
+    "test:e2e:install": "playwright install",
+    "test:e2e:ui": "turbo test:e2e:ui",
+    "test:unit": "vitest run",
+    "test:unit:coverage": "vitest --coverage --ui",
+    "test:unit:ui": "vitest --ui",
+    "type-check": "turbo type-check",
+    "version": "changeset version"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-git"
+    }
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.28.1",
+    "@commitlint/cli": "^19.7.1",
+    "@commitlint/config-conventional": "^19.7.1",
+    "@playwright/test": "^1.50.1",
+    "@tszhong0411/eslint-config": "workspace:*",
+    "@tszhong0411/prettier-config": "workspace:*",
+    "@tszhong0411/tsconfig": "workspace:*",
+    "@turbo/gen": "^2.4.4",
+    "@types/node": "^22.13.5",
+    "@vitest/coverage-v8": "^3.0.7",
+    "@vitest/ui": "^3.0.7",
+    "commitizen": "^4.3.1",
+    "concurrently": "^9.1.2",
+    "cross-env": "^7.0.3",
+    "cspell": "^8.17.5",
+    "cz-git": "^1.11.0",
+    "dotenv-cli": "^8.0.0",
+    "eslint": "^9.21.0",
+    "jsdom": "^26.0.0",
+    "knip": "^5.45.0",
+    "lint-staged": "^15.4.3",
+    "next": "^15.2.0",
+    "prettier": "^3.5.2",
+    "simple-git-hooks": "^2.11.1",
+    "ts-morph": "^25.0.1",
+    "tsup": "8.3.0",
+    "tsx": "^4.19.3",
+    "turbo": "^2.4.4",
+    "typescript": "5.7.3",
+    "vitest": "^3.0.7"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "lint-staged": {
+    "*.{cjs,mjs,js,jsx,cts,mts,ts,tsx,json}": "eslint --fix",
+    "**/*": [
+      "prettier --write --ignore-unknown",
+      "pnpm check:spelling"
+    ]
+  },
+  "packageManager": "pnpm@9.15.6",
+  "simple-git-hooks": {
+    "pre-commit": "pnpm lint-staged",
+    "commit-msg": "pnpm commitlint --edit $1 && pnpm check:spelling $1"
+  },
+  "dependencies": {
+    "better-auth": "^1.2.4"
+  }
+}

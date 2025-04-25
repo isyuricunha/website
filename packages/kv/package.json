@@ -1,0 +1,27 @@
+{
+  "private": true,
+  "name": "@tszhong0411/kv",
+  "version": "0.0.0",
+  "description": "The key-value store for tszhong0411's projects",
+  "license": "MIT",
+  "type": "module",
+  "main": "./src/index.ts",
+  "scripts": {
+    "clean": "rm -rf .turbo",
+    "lint": "eslint . --max-warnings 0",
+    "lint:fix": "eslint --fix .",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@upstash/ratelimit": "^2.0.5",
+    "@upstash/redis": "^1.34.4"
+  },
+  "devDependencies": {
+    "@tszhong0411/env": "workspace:*",
+    "@tszhong0411/eslint-config": "workspace:*",
+    "@tszhong0411/tsconfig": "workspace:*"
+  },
+  "lint-staged": {
+    "*.{cjs,mjs,js,jsx,cts,mts,ts,tsx,json}": "eslint --fix"
+  }
+}

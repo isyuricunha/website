@@ -1,0 +1,156 @@
+---
+title: PHP 学习笔记
+date: '2021-02-18T00:00:00Z'
+modifiedTime: '2023-04-09T00:00:00Z'
+summary: PHP基础知识，如注释、Echo、变量、算术运算符等
+---
+
+## PHP 简介
+
+PHP（全称：PHP: _Hypertext Preprocessor_）是一种开源的通用计算机脚本语言，尤其适用于网络开发并可嵌入HTML。PHP的语法借鉴了C语言、Java和Perl等流行计算机语言的特点，易于程序员学习。PHP的主要目标是让网络开发人员快速编写动态页面，但也广泛应用于其他领域。
+
+PHP文件扩展名为`.php`，例如`index.php`。如上述，PHP可直接嵌入`HTML`。
+
+## 基本用法
+
+当浏览器从上到下读取`<?php`时开始执行PHP代码，直至遇到`?>`结束。例如：
+
+```php
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>PHP</title>
+    </head>
+    <body>
+        <?php
+            echo "这是一句话。"
+        ?>
+    </body>
+</html>
+```
+
+## 注意事项
+
+PHP代码结束后不应包含其他HTML内容，建议不要以`?>`结尾，否则可能导致问题。
+
+```php
+<?php
+    echo "PHP结束后无后续HTML内容";
+```
+
+## PHP 注释
+
+多数编程语言都支持注释，PHP的**单行注释**使用`//`，**多行注释**使用`/* 注释内容 */`。
+
+```php
+<?php
+    echo "这是单行注释示例"; // 单行注释
+    echo "这是多行注释示例";
+    /*
+        多行注释
+        第二行注释
+    */
+?>
+```
+
+## Echo 语句
+
+PHP中最简单的语法是`Echo`，内容需用双引号`""`或单引号`''`包裹，每条语句需以分号`;`结尾。
+
+```php
+<?php
+    echo "这是使用双引号的示例。";
+    echo '这是使用单引号的示例。';
+?>
+```
+
+Echo内容可包含HTML语法。例如使用`<br/>`实现换行：
+
+```php
+<?php
+    echo "这是第一句话<br/>";
+    echo "这是第二句话";
+    echo "<a href=\"https://example.com\">这是一个链接</a>";
+?>
+```
+
+## 变量
+
+使用美元符号`$`为变量赋值，类似JavaScript：
+
+```php
+<?php
+    $value = "我是一个变量值";
+?>
+```
+
+变量命名需遵循以下规则：
+
+<Table
+  headers={['示例', '描述', '规则']}
+  rows={[
+    ['$value', '小写字母开头', '✅'],
+    ['$Value', '大写字母开头', '✅'],
+    ['$_value', '下划线开头', '✅'],
+    ['$1value', '数字开头', '❌']
+  ]}
+/>
+
+变量名区分大小写，例如`$Value`与`$value`是不同的变量。
+
+## 变量命名技巧
+
+### 驼峰式命名法
+
+当变量名或函数名由多个单词连接时，使用驼峰式命名法（如`$onePlusOneAnswer`）可增强可读性，因变量名中不能包含空格。
+
+```php
+<?php
+    $onePlusOneAnswer = 1 + 1;
+    echo $onePlusOneAnswer;
+?>
+```
+
+### 蛇形命名法
+
+蛇形命名法（如`$one_plus_one_answer`）指用下划线`_`替代空格，且所有字母小写的书写风格。
+
+```php
+<?php
+    $one_plus_one_answer = 1 + 1;
+    echo $one_plus_one_answer;
+?>
+```
+
+## 字符串运算符
+
+PHP有两种字符串运算符：  
+1. 连接运算符`.`：返回左右参数拼接后的字符串  
+2. 连接赋值运算符`.=`：将右侧参数追加到左侧变量  
+
+```php
+<?php
+    echo "This" . " " . "is" . " " . "String" . " " . "operators" . ".";
+?>
+```
+
+## 算术运算符
+
+```php
+<?php
+    $value0 = 1.5 // 浮点数
+    $value1 = 1 + 1 // 加法
+    $value2 = 1 - 1 // 减法
+    $value3 = 1 * 1 // 乘法
+    $value4 = 1 / 1 // 除法
+    $value5 = 12 / 5 // 除法 | 结果自动转为浮点数（与其他语言不同）
+    $value6 = 3 % 5 // 取余
+?>
+```
+
+## 参考资料
+
+- [PHP - 维基百科，自由的百科全书](https://en.wikipedia.org/wiki/PHP)
+- [驼峰式命名法 - 维基百科](https://en.wikipedia.org/wiki/Camel_case)
+- [蛇形命名法 - 维基百科](https://en.wikipedia.org/wiki/Snake_case)
+- [PHP字符串运算符文档](https://www.php.net/manual/en/language.operators.string.php)

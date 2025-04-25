@@ -1,0 +1,274 @@
+{
+  "about": {
+    "title": "关于",
+    "description": "👋 嗨！我是 Yuri Cunha，只是网络上的一个普通人.."
+  },
+  "admin": {
+    "nav": {
+      "comments": "评论",
+      "dashboard": "仪表盘",
+      "general": "常规",
+      "users": "用户"
+    },
+    "page-header": {
+      "comments": {
+        "description": "管理用户评论",
+        "title": "评论"
+      },
+      "users": {
+        "description": "管理系统用户",
+        "title": "用户"
+      }
+    },
+    "table": {
+      "comments": {
+        "body": "内容",
+        "createdAt": "创建于",
+        "failed-to-fetch-comments-data": "获取评论数据失败。请刷新页面。",
+        "filter-body": "过滤内容...",
+        "filter-userId": "过滤用户ID...",
+        "type": "类型",
+        "userId": "用户ID"
+      },
+      "users": {
+        "email": "邮箱",
+        "failed-to-fetch-users-data": "获取用户数据失败。请刷新页面。",
+        "filter-names": "过滤名称...",
+        "name": "名称",
+        "role": "角色"
+      }
+    }
+  },
+  "blog": {
+    "comments": {
+      "author": "作者",
+      "comment-cannot-be-empty": "评论不能为空",
+      "comment-posted": "评论已发布",
+      "comments": "{count, plural, =1 {评论} other {评论}}",
+      "confirm-delete-comment": "确定要删除此评论吗？此操作无法撤销。",
+      "copy-link": "复制链接",
+      "delete-a-comment": "删除评论",
+      "deleted-a-comment": "评论已删除",
+      "dislike": "不喜欢",
+      "failed-to-load-comments": "加载评论失败。请刷新页面。",
+      "failed-to-load-replies": "加载回复失败。请刷新页面。",
+      "like": "喜欢",
+      "link-copied": "链接已复制到剪贴板",
+      "need-logged-in-to-rate": "您需要登录才能对评论评分",
+      "newest": "最新",
+      "no-comments": "没有评论",
+      "oldest": "最旧",
+      "open-menu": "打开菜单",
+      "placeholder": "留下评论",
+      "replies": "{count, plural, =1 {回复} other {回复}}",
+      "reply": "回复",
+      "reply-cannot-be-empty": "回复不能为空",
+      "reply-to-comment": "回复评论",
+      "send-comment": "发送评论",
+      "sort-by": "排序方式",
+      "this-comment-has-been-deleted": "[该评论已被删除]",
+      "toggle-bold": "切换粗体",
+      "toggle-italic": "切换斜体",
+      "toggle-strikethrough": "切换删除线"
+    },
+    "description": "我的个人博客，在这里我分享技术、服务器、云计算以及我的日常生活。我的旅程始于 2018 年，从那时起一直在探索和学习。如果你对数据库、跑步者或者只是想阅读一些关于技术和生活的思考，请来看看！",
+    "footer": {
+      "edit-on-github": "在 GitHub 上编辑",
+      "last-updated": "最后更新：{date}"
+    },
+    "header": {
+      "comments": "评论",
+      "published-on": "发表于",
+      "views": "浏览量",
+      "written-by": "作者"
+    },
+    "like": "喜欢",
+    "like-limit-reached": "每篇文章最多只能点赞 3 次",
+    "like-this-post": "给这篇文章点赞",
+    "on-this-page": "本页内容",
+    "title": "博客"
+  },
+  "command-menu": {
+    "actions": {
+      "copy-link": "复制链接",
+      "source-code": "源码"
+    },
+    "groups": {
+      "account": "账户",
+      "general": "常规",
+      "social": "社交"
+    },
+    "no-results": "未找到结果。",
+    "open-menu": "打开命令菜单",
+    "placeholder": "输入命令或搜索",
+    "trigger": {
+      "open-command": "打开命令",
+      "open-link": "打开链接"
+    }
+  },
+  "common": {
+    "cancel": "取消",
+    "delete": "删除",
+    "error": "错误",
+    "likes": "{count, plural, =1 {# 点赞} other {# 点赞}}",
+    "sign-in": "登录",
+    "sign-in-error": "登录失败。请重试。",
+    "sign-in-success": "登录成功！",
+    "sign-out": "登出",
+    "views": "{count, plural, =1 {# 次浏览} other {# 次浏览}}",
+    "sign-up": "注册",
+    "sign-up-error": "注册失败。请重试。"
+  },
+  "component": {
+    "filtered-posts": {
+      "no-posts-found": "未找到文章",
+      "placeholder": "搜索文章"
+    },
+    "go-to-homepage": "返回主页"
+  },
+  "dashboard": {
+    "description": "这是我的个人仪表盘，使用 Next.js API 路由构建并以无服务器功能部署。我使用此仪表盘跟踪 YouTube、GitHub 等平台上的各种指标。但这仅供参考",
+    "metric": {
+      "blog-total-likes": "博客总点赞数",
+      "blog-total-views": "博客总浏览量",
+      "coding-hours": "编程时长",
+      "github-followers": "GitHub 关注者",
+      "github-stars": "GitHub 星标",
+      "youtube-subscribers": "YouTube 订阅者",
+      "youtube-views": "YouTube 浏览量"
+    },
+    "title": "仪表盘"
+  },
+  "dialog": {
+    "sign-in": {
+      "continue-with": "使用 {provider} 继续",
+      "or": "或",
+      "description": "继续访问 yuricunha.com",
+      "here": "在此登录",
+      "anonymous": "匿名"
+    },
+    "sign-up": {
+      "description": "在 yuricunha.com 上创建您的账户",
+      "here": "在此注册"
+    },
+    "already-have-account": "已经有账户？",
+    "dont-have-account": "没有账户？"
+  },
+  "error": {
+    "something-went-wrong": "出了点问题！",
+    "try-again": "请再试一次"
+  },
+  "guestbook": {
+    "create-message-successfully": "留言创建成功",
+    "delete-dialog": {
+      "description": "确定要删除此评论吗？此操作无法撤销。",
+      "title": "删除评论"
+    },
+    "delete-message-successfully": "留言删除成功",
+    "description": "在我的留言簿上签名并分享你的想法。你可以在这里告诉我任何事情！",
+    "failed-to-load-messages": "加载留言失败。请刷新页面。",
+    "message-cannot-be-empty": "留言不能为空。是我的错还是你的错？",
+    "no-messages": "还没有留言。成为第一个留言的人吧！",
+    "pinned": {
+      "description": "如果您有时间，请登录账户留言。谢谢！",
+      "greeting": "嗨！👋"
+    },
+    "placeholder": "留下留言",
+    "signin": {
+      "description": "以便留言"
+    },
+    "submit": "提交",
+    "title": "留言簿"
+  },
+  "homepage": {
+    "about-me": {
+      "coding-hours": "编程时长",
+      "connect": "联系",
+      "fav-framework": "喜爱的服务器",
+      "location": "圣保罗",
+      "more": "了解更多关于我的信息",
+      "stacks": "技术栈",
+      "title": "关于我"
+    },
+    "get-in-touch": {
+      "description": "随时与我联系！",
+      "image-alt": "是我或不是我",
+      "title": "需要交流？"
+    },
+    "hero": {
+      "title-top": "我是 Yuri，数据库专家",
+      "title-middle-left": "优化",
+      "title-middle-right": "数据解决方案",
+      "amazing": "敏捷",
+      "attractive": "快速",
+      "fantastic": "强大",
+      "stunning": "安全",
+      "title-bottom": "用于现代基础设施",
+      "location-timezone": "巴西 • UTC/GMT -3"
+    },
+    "latest-articles": {
+      "card": "文章",
+      "more": "查看所有文章",
+      "title": "最新文章"
+    },
+    "selectedProjects": {
+      "card": "项目",
+      "more": "查看所有项目",
+      "title": "精选项目"
+    }
+  },
+  "hook": {
+    "copy-to-clipboard": {
+      "copied": "已复制到剪贴板！",
+      "error": "无法复制到剪贴板。请重试！"
+    }
+  },
+  "layout": {
+    "about": "关于",
+    "blog": "博客",
+    "change-language": "切换语言",
+    "dashboard": "仪表盘",
+    "facebook": "Facebook",
+    "github": "GitHub",
+    "guestbook": "留言簿",
+    "home": "主页",
+    "instagram": "Instagram",
+    "links": "链接",
+    "now-playing": {
+      "error": "获取 Spotify 数据失败",
+      "loading": "加载中 ...",
+      "not-listening": "未播放 - Spotify"
+    },
+    "projects": "项目",
+    "skip-to-main-content": "跳至主要内容",
+    "toggle-menu": "切换菜单",
+    "uses": "工具",
+    "youtube": "YouTube"
+  },
+  "mdx": {
+    "link-to-section": "链接到本节"
+  },
+  "metadata": {
+    "site-description": "高级数据库管理员",
+    "site-title": "Yuri Cunha"
+  },
+  "not-found": "今天没有页面！",
+  "projects": {
+    "description": "我的项目列表。所有内容都是用 💙 制作的（该页面仍在开发中）。",
+    "title": "项目",
+    "visit-website": "访问网站",
+    "all-repos": "我的 GitHub 公开仓库"
+  },
+  "theme-toggle": {
+    "options": {
+      "dark": "暗黑",
+      "light": "明亮",
+      "system": "系统"
+    },
+    "toggle-theme": "切换主题"
+  },
+  "uses": {
+    "description": "这是我当前用于游戏、编程、制作视频和日常使用的设备。",
+    "title": "使用设备"
+  }
+}

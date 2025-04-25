@@ -1,0 +1,44 @@
+# Dependencies
+node_modules/
+.pnp/
+.pnp.*
+
+# Local env files
+.env*.local
+.env
+
+# Turbo
+.turbo/
+
+# Vercel
+.vercel/
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Misc
+.DS_Store
+*.pem
+
+# Build outputs
+.next/
+out/
+build/
+dist/
+.eslint-config-inspector/
+
+# Content Collections
+.content-collections
+
+# Testing
+playwright-report/
+test-results/
+coverage/
+**/src/e2e/.auth/
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts

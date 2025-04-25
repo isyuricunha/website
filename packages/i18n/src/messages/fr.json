@@ -1,0 +1,274 @@
+{
+    "about": {
+        "title": "À propos",
+        "description": "👋 Salut ! Je suis Yuri Cunha, juste un gars au hasard sur Internet..."
+    },
+    "admin": {
+        "nav": {
+            "comments": "Commentaires",
+            "dashboard": "Tableau de bord",
+            "general": "Général",
+            "users": "Utilisateurs"
+        },
+        "page-header": {
+            "comments": {
+                "description": "Gérer les commentaires des utilisateurs",
+                "title": "Commentaires"
+            },
+            "users": {
+                "description": "Gérer les utilisateurs du système",
+                "title": "Utilisateurs"
+            }
+        },
+        "table": {
+            "comments": {
+                "body": "Contenu",
+                "createdAt": "Créé le",
+                "failed-to-fetch-comments-data": "Échec du chargement des données de commentaires. Veuillez actualiser la page.",
+                "filter-body": "Filtrer le contenu...",
+                "filter-userId": "Filtrer l'ID d'utilisateur...",
+                "type": "Type",
+                "userId": "ID d'utilisateur"
+            },
+            "users": {
+                "email": "Email",
+                "failed-to-fetch-users-data": "Échec du chargement des données des utilisateurs. Veuillez actualiser la page.",
+                "filter-names": "Filtrer les noms...",
+                "name": "Nom",
+                "role": "Rôle"
+            }
+        }
+    },
+    "blog": {
+        "comments": {
+            "author": "Auteur",
+            "comment-cannot-be-empty": "Le commentaire ne peut pas être vide",
+            "comment-posted": "Commentaire publié",
+            "comments": "{count, plural, =1 {commentaire} other {commentaires}}",
+            "confirm-delete-comment": "Êtes-vous sûr de vouloir supprimer ce commentaire ? Cette action est irréversible.",
+            "copy-link": "Copier le lien",
+            "delete-a-comment": "Supprimer un commentaire",
+            "deleted-a-comment": "Commentaire supprimé",
+            "dislike": "Ne pas aimer",
+            "failed-to-load-comments": "Échec du chargement des commentaires. Veuillez actualiser la page.",
+            "failed-to-load-replies": "Échec du chargement des réponses. Veuillez actualiser la page.",
+            "like": "J'aime",
+            "link-copied": "Lien copié dans le presse-papiers",
+            "need-logged-in-to-rate": "Vous devez être connecté pour évaluer les commentaires",
+            "newest": "Les plus récents",
+            "no-comments": "Aucun commentaire",
+            "oldest": "Les plus anciens",
+            "open-menu": "Ouvrir le menu",
+            "placeholder": "Laisser un commentaire",
+            "replies": "{count, plural, =1 {réponse} other {réponses}}",
+            "reply": "Répondre",
+            "reply-cannot-be-empty": "La réponse ne peut pas être vide",
+            "reply-to-comment": "Répondre au commentaire",
+            "send-comment": "Envoyer le commentaire",
+            "sort-by": "Trier par",
+            "this-comment-has-been-deleted": "[Ce commentaire a été supprimé]",
+            "toggle-bold": "Basculer en gras",
+            "toggle-italic": "Basculer en italique",
+            "toggle-strikethrough": "Basculer le barré"
+        },
+        "description": "Mon blog personnel où je partage mes réflexions sur la technologie, les serveurs, le cloud, et un peu sur ma vie quotidienne. J'ai commencé cette aventure en 2018 et je n'ai cessé d'explorer et d'apprendre depuis. Si vous aimez les bases de données, le running ou si vous souhaitez simplement lire quelques réflexions sur la tech et la vie, venez jeter un œil !",
+        "footer": {
+            "edit-on-github": "Modifier sur GitHub",
+            "last-updated": "Dernière mise à jour : {date}"
+        },
+        "header": {
+            "comments": "Commentaires",
+            "published-on": "Publié le",
+            "views": "Vues",
+            "written-by": "Écrit par"
+        },
+        "like": "J'aime",
+        "like-limit-reached": "Vous ne pouvez aimer que 3 fois par publication",
+        "like-this-post": "Aimer cette publication",
+        "on-this-page": "Sur cette page",
+        "title": "Blog"
+    },
+    "command-menu": {
+        "actions": {
+            "copy-link": "Copier le lien",
+            "source-code": "Code source"
+        },
+        "groups": {
+            "account": "Compte",
+            "general": "Général",
+            "social": "Social"
+        },
+        "no-results": "Aucun résultat trouvé.",
+        "open-menu": "Ouvrir le menu des commandes",
+        "placeholder": "Tapez une commande ou une recherche",
+        "trigger": {
+            "open-command": "Ouvrir la commande",
+            "open-link": "Ouvrir le lien"
+        }
+    },
+    "common": {
+        "cancel": "Annuler",
+        "delete": "Supprimer",
+        "error": "Erreur",
+        "likes": "{count, plural, =1 {# j'aime} other {# j'aime}}",
+        "sign-in": "Se connecter",
+        "sign-in-error": "Échec de la connexion. Veuillez réessayer.",
+        "sign-in-success": "Connexion réussie !",
+        "sign-out": "Se déconnecter",
+        "views": "{count, plural, =1 {# vue} other {# vues}}",
+        "sign-up": "S'inscrire",
+        "sign-up-error": "Échec de l'inscription. Veuillez réessayer."
+    },
+    "component": {
+        "filtered-posts": {
+            "no-posts-found": "Aucun article trouvé",
+            "placeholder": "Rechercher des articles"
+        },
+        "go-to-homepage": "Aller à la page d'accueil"
+    },
+    "dashboard": {
+        "description": "Ceci est mon tableau de bord personnel, construit avec les routes API de Next.js déployées en tant que fonctions serverless. J'utilise ce tableau de bord pour suivre diverses métriques sur des plateformes comme YouTube, GitHub, et plus encore. Mais, ceci est uniquement à titre de référence",
+        "metric": {
+            "blog-total-likes": "Total des J'aime du blog",
+            "blog-total-views": "Total des Vues du blog",
+            "coding-hours": "Heures de codage",
+            "github-followers": "Abonnés GitHub",
+            "github-stars": "Étoiles GitHub",
+            "youtube-subscribers": "Abonnés YouTube",
+            "youtube-views": "Vues YouTube"
+        },
+        "title": "Tableau de bord"
+    },
+    "dialog": {
+        "sign-in": {
+            "continue-with": "Continuer avec {provider}",
+            "or": "ou",
+            "description": "pour continuer sur yuricunha.com",
+            "here": "Se connecter ici",
+            "anonymous": "Anonyme"
+        },
+        "sign-up": {
+            "description": "pour créer votre compte sur yuricunha.com",
+            "here": "Inscrivez-vous ici"
+        },
+        "already-have-account": "Vous avez déjà un compte ?",
+        "dont-have-account": "Vous n'avez pas de compte ?"
+    },
+    "error": {
+        "something-went-wrong": "Quelque chose a mal tourné !",
+        "try-again": "Réessayez"
+    },
+    "guestbook": {
+        "create-message-successfully": "Message créé avec succès",
+        "delete-dialog": {
+            "description": "Êtes-vous sûr de vouloir supprimer ce commentaire ? Cette action est irréversible.",
+            "title": "Supprimer un commentaire"
+        },
+        "delete-message-successfully": "Message supprimé avec succès",
+        "description": "Signez mon livre d'or et partagez vos idées. Vous pouvez me dire n'importe quoi ici !",
+        "failed-to-load-messages": "Échec du chargement des messages. Veuillez actualiser la page.",
+        "message-cannot-be-empty": "Le message ne peut pas être vide. Est-ce de ma faute ou de la vôtre ?",
+        "no-messages": "Aucun message. Soyez le premier à laisser un message !",
+        "pinned": {
+            "description": "Si vous avez un moment, veuillez vous connecter avec votre compte pour laisser un commentaire. Merci !",
+            "greeting": "Salut ! 👋"
+        },
+        "placeholder": "Laissez un message",
+        "signin": {
+            "description": "pour laisser un message"
+        },
+        "submit": "Envoyer",
+        "title": "Livre d'or"
+    },
+    "homepage": {
+        "about-me": {
+            "coding-hours": "Heures de codage",
+            "connect": "Se connecter",
+            "fav-framework": "Serveur favori",
+            "location": "São Paulo",
+            "more": "En savoir plus sur moi",
+            "stacks": "Technologies",
+            "title": "À propos de moi"
+        },
+        "get-in-touch": {
+            "description": "N'hésitez pas à me contacter !",
+            "image-alt": "Moi ou pas moi",
+            "title": "Besoin de parler ?"
+        },
+        "hero": {
+            "title-top": "Je suis Yuri, spécialiste en bases de données",
+            "title-middle-left": "optimisant",
+            "title-middle-right": "solutions de données",
+            "amazing": "agiles",
+            "attractive": "rapides",
+            "fantastic": "fortes",
+            "stunning": "sûres",
+            "title-bottom": "pour infrastructures modernes",
+            "location-timezone": "Brésil • UTC/GMT -3"
+        },
+        "latest-articles": {
+            "card": "Article",
+            "more": "Voir tous les articles",
+            "title": "Derniers articles"
+        },
+        "selectedProjects": {
+            "card": "Projet",
+            "more": "Voir tous les projets",
+            "title": "Projets sélectionnés"
+        }
+    },
+    "hook": {
+        "copy-to-clipboard": {
+            "copied": "Copié dans le presse-papiers !",
+            "error": "Impossible de copier dans le presse-papiers. Veuillez réessayer !"
+        }
+    },
+    "layout": {
+        "about": "À propos",
+        "blog": "Blog",
+        "change-language": "Changer de langue",
+        "dashboard": "Tableau de bord",
+        "facebook": "Facebook",
+        "github": "GitHub",
+        "guestbook": "Livre d'or",
+        "home": "Accueil",
+        "instagram": "Instagram",
+        "links": "Liens",
+        "now-playing": {
+            "error": "Échec du chargement des données Spotify",
+            "loading": "Chargement ...",
+            "not-listening": "Aucune écoute - Spotify"
+        },
+        "projects": "Projets",
+        "skip-to-main-content": "Aller au contenu principal",
+        "toggle-menu": "Basculer le menu",
+        "uses": "Outils",
+        "youtube": "YouTube"
+    },
+    "mdx": {
+        "link-to-section": "Lien vers la section"
+    },
+    "metadata": {
+        "site-description": "DBA Senior",
+        "site-title": "Yuri Cunha"
+    },
+    "not-found": "Aucune page ici aujourd'hui !",
+    "projects": {
+        "description": "La liste de mes projets. Tout a été réalisé avec 💙 (cette page est encore en développement).",
+        "title": "Projets",
+        "visit-website": "Visiter le site",
+        "all-repos": "Mes dépôts GitHub publics"
+    },
+    "theme-toggle": {
+        "options": {
+            "dark": "Sombre",
+            "light": "Clair",
+            "system": "Système"
+        },
+        "toggle-theme": "Basculer le thème"
+    },
+    "uses": {
+        "description": "Voici le matériel que j'utilise actuellement pour jouer, programmer, faire des vidéos, et au quotidien.",
+        "title": "Outils"
+    }
+}
