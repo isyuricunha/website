@@ -6,7 +6,7 @@
 
 - 61405bb: Upgrade dependencies
 
-  - Upgrade next from `^15.1.3` to `^15.2.0`
+  - Upgrade next from `^15.1.3` to `^15.2.3`
 
 ## 0.0.10
 

@@ -8,7 +8,7 @@
 
   - Upgrade @eslint-react/eslint-plugin from `^1.22.1` to `^1.28.0`
   - Upgrade @eslint/js from `^9.17.0` to `^9.21.0`
-  - Upgrade @next/eslint-plugin-next from `^15.1.5` to `^15.2.0`
+  - Upgrade @next/eslint-plugin-next from `^15.1.5` to `^15.2.3`
   - Upgrade @typescript-eslint/eslint-plugin from `^8.19.0` to `^8.25.0`
   - Upgrade @typescript-eslint/parser from `^8.18.2` to `^8.25.0`
   - Upgrade eslint-config-flat-gitignore from `^1.0.0` to `^2.1.0`
