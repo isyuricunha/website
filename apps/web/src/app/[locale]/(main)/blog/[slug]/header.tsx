@@ -13,7 +13,7 @@ import { api } from '@/trpc/react'
 
 const Header = () => {
   const { date, title, slug } = usePostContext()
-  const formattedDate = useFormattedDate(date)
+  const formattedDate = useFormattedDate(date as string | Date)
   const utils = api.useUtils()
   const t = useTranslations()
 
@@ -67,7 +67,12 @@ const Header = () => {
             {viewsCountQuery.status === 'pending' ? '--' : null}
             {viewsCountQuery.status === 'error' ? t('common.error') : null}
             {viewsCountQuery.status === 'success' ? (
-              <NumberFlow willChange plugins={[continuous]} value={viewsCountQuery.data.views} />
+              <NumberFlow
+                willChange
+                plugins={[continuous]}
+                value={viewsCountQuery.data.views}
+                data-testid='view-count'
+              />
             ) : null}
           </div>
           <div className='space-y-1 md:mx-auto'>
@@ -79,6 +84,7 @@ const Header = () => {
                 willChange
                 plugins={[continuous]}
                 value={commentsCountQuery.data.comments}
+                data-testid='comment-count'
               />
             ) : null}
           </div>
