@@ -63,6 +63,7 @@
       "replies": "{count, plural, =1 {回复} other {回复}}",
       "reply": "回复",
       "reply-cannot-be-empty": "回复不能为空",
+      "reply-posted": "Reply posted",
       "reply-to-comment": "回复评论",
       "send-comment": "发送评论",
       "sort-by": "排序方式",

@@ -63,6 +63,7 @@
             "replies": "{count, plural, =1 {Antwort} other {Antworten}}",
             "reply": "Antworten",
             "reply-cannot-be-empty": "Antwort darf nicht leer sein",
+            "reply-posted": "Reply posted",
             "reply-to-comment": "Auf Kommentar antworten",
             "send-comment": "Kommentar senden",
             "sort-by": "Sortieren nach",
