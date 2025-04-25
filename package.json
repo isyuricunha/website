@@ -1,10 +1,10 @@
 {
   "private": true,
-  "name": "website",
-  "author": "isyuricunha <me@yuricunha.com> (https://github.com/isyuricunha/)",
+  "name": "honghong-me",
+  "author": "tszhong0411 <me@honghong.me> (https://github.com/tszhong0411/)",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/isyuricunha/website.git"
+    "url": "git+https://github.com/tszhong0411/honghong.me.git"
   },
   "type": "module",
   "scripts": {
@@ -24,7 +24,7 @@
     "db:seed": "turbo db:seed",
     "db:studio": "turbo db:studio",
     "dev": "turbo dev",
-    "dev:docs": "turbo dev --filter=@isyuricunha/docs",
+    "dev:docs": "turbo dev --filter=@tszhong0411/docs",
     "dev:packages": "turbo dev --filter=./packages/*",
     "dev:web": "turbo dev --filter=@tszhong0411/web",
     "format:check": "prettier --cache --check --ignore-path .gitignore --ignore-path .prettierignore .",
@@ -59,7 +59,7 @@
     "@tszhong0411/prettier-config": "workspace:*",
     "@tszhong0411/tsconfig": "workspace:*",
     "@turbo/gen": "^2.4.4",
-    "@types/node": "^22.13.5",
+    "@types/node": "^22.14.0",
     "@vitest/coverage-v8": "^3.1.1",
     "@vitest/ui": "^3.1.1",
     "commitizen": "^4.3.1",
