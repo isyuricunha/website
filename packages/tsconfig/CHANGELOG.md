@@ -1,12 +1,24 @@
 # @tszhong0411/tsconfig
 
+## 0.0.13
+
+### Patch Changes
+
+- 91a2da5: Move next to dev dependencies
+
+## 0.0.12
+
+### Patch Changes
+
+- 10ccc18: Upgrade next from ^15.2.0 to ^15.2.3
+
 ## 0.0.11
 
 ### Patch Changes
 
 - 61405bb: Upgrade dependencies
 
-  - Upgrade next from `^15.1.3` to `^15.2.3`
+  - Upgrade next from `^15.1.3` to `^15.2.0`
 
 ## 0.0.10
 
