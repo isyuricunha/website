@@ -1,41 +1,42 @@
-Yuri Cunha - Personal License
-
-Version 2.1
+Yuri Cunha – Personal License  
+Version 2.1 – July 2025  
 
 License Agreement
 
-This license agreement (the "Agreement") governs the terms and conditions for the use of code authored by Yuri Cunha (the "Author"). By utilizing or referencing this code, you (the "User") agree to comply with the following terms:
+This License Agreement (the “Agreement”) governs your use of code authored by Yuri Cunha (the “Author”). By using, modifying, or redistributing this code or any derivative work (the “Work”), you (the “User”) agree to be bound by the following terms:
 
-1. Permission for Inspirational Use
-The User is granted the freedom to use this code as a source of inspiration for their own projects and to learn from its structure and design principles.
+1. Permission to Use and Modify  
+   1.1. The User may use, modify, and reuse the Work for personal or project purposes, provided that proper credit is given to the Author each time the Work (or any substantial portion thereof) is used or distributed.  
+   1.2. Credit must appear in documentation, source headers, or any medium where the Work is presented, clearly stating:  
+       “Original code by Yuri Cunha (https://twitter.com/YuriCunha)”.
 
-2. Restrictions on Direct Copying
-While the User is encouraged to learn from the code, direct copying of substantial portions of the codebase is prohibited. Small code snippets may be extracted for use, but wholesale replication is not permitted. If you copy substantial parts, proper credit to the Author is mandatory.
+2. Redistribution  
+   2.1. Redistribution of the Work—whether modified or unmodified—is permitted only if this Agreement remains intact and the required attribution (see Section 1) is clearly visible.  
+   2.2. Wholesale copying of substantial portions without modification is allowed only under these same conditions.
 
-3. Crediting the Author
-The User acknowledges the importance of giving credit to the Author for their original work. Whenever feasible, the User agrees to provide clear and appropriate attribution to the Author within their project, acknowledging the influence of the original code.
+3. Prohibitions  
+   3.1. Claiming the Work (or any part of it) as your original creation is strictly forbidden.  
+   3.2. Using the Work, in whole or in part, for training or development of artificial intelligence or machine-learning systems is expressly prohibited.
 
-4. Modification and Distribution
-The User may modify the code to suit their project’s needs. Distribution of modified code is allowed, provided this license’s terms are maintained and appropriate credit to the original Author is given.
+4. Permitted Public Media Usage  
+   4.1. You may incorporate the Work in any public audiovisual media—such as videos, live streams, podcasts, tutorials, or similar—so long as you include the required attribution (Section 1) visibly in the content or its description.
 
-5. Content Usage Rules
-- Use in videos and streaming is permitted.
-- Modification, redistribution, and claiming original authorship are NOT permitted.
-- AI training or learning use is NOT permitted.
+5. Limitation of Liability  
+   The Work is provided “as is,” without warranty of any kind. To the maximum extent permitted by law, the Author shall not be liable for any damages or losses arising from or related to your use, inability to use, or redistribution of the Work.
 
-6. Limited Liability
-The Author shall not be held responsible for any misuse of the provided code. The Author is exempt from liability arising from defects, malfunctions, or any undesirable consequences caused by the code’s implementation by the User or third parties.
+6. Contact and Support  
+   If you have questions about correct implementation, proper attribution, or this Agreement, please reach out:  
+   • Twitter: @YuriCunha  
+   • Email: yuri.cunha@example.com  
 
-7. Seeking Guidance
-If the User is uncertain about proper implementation or application of the code, they are encouraged to contact the Author via Twitter for guidance and clarification.
+7. Governing Law  
+   This Agreement is governed by the laws of the Author’s jurisdiction, without regard to conflict-of-law principles.
 
-8. Governing Law
-This Agreement shall be governed by and construed in accordance with the laws of the jurisdiction of the Author's location.
+8. Updates to This Agreement  
+   8.1. The Author may revise this Agreement at any time. Continued use or redistribution of the Work after any update signifies your acceptance of the new version.  
+   8.2. The latest version will always be available at:  
+       https://github.com/YuriCunha/personal-license  
 
-By utilizing the code, the User agrees to abide by the terms and conditions set forth in this Agreement. Failure to comply may result in termination of rights granted by this license.
+---
 
-This Agreement is effective as of the date of code use and may be updated by the Author. It is the User’s responsibility to stay informed of the most current version.
-
-By using the code, the User acknowledges that they have read, understood, and agree to be bound by this Agreement.
-
-For any inquiries or concerns, please contact the Author via Twitter.
+By using, modifying, or redistributing the Work, you acknowledge that you have read, understood, and agree to the terms of this Agreement. Failure to comply will result in immediate termination of your rights under this License.  
