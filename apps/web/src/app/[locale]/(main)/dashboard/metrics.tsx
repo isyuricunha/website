@@ -51,7 +51,7 @@ const Metrics = () => {
     },
     {
       title: t('dashboard.metric.youtube-subscribers'),
-      link: 'https://youtube.com/@isyuricunha',
+      link: '',
       value: youtubeQuery.data?.subscribers,
       icon: <SiYoutube className='text-[#ff0000]' />,
       linkText: 'YouTube',
@@ -62,7 +62,7 @@ const Metrics = () => {
     },
     {
       title: t('dashboard.metric.youtube-views'),
-      link: 'https://youtube.com/@isyuricunha',
+      link: '',
       value: youtubeQuery.data?.views,
       icon: <SiYoutube className='text-[#ff0000]' />,
       linkText: 'YouTube',

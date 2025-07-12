@@ -18,7 +18,7 @@ import {
   // SITE_FACEBOOK_URL,
   SITE_GITHUB_URL,
   SITE_INSTAGRAM_URL,
-  SITE_X_URL,
+  SITE_MASTODON_URL,
   SITE_YOUTUBE_URL
 } from '@/lib/constants'
 
@@ -84,7 +84,7 @@ export const FOOTER_LINKS = [
     id: 3,
     links: [
       // { href: SITE_FACEBOOK_URL, key: 'facebook' },
-      { href: SITE_INSTAGRAM_URL, key: 'instagram' },
+      { href: SITE_INSTAGRAM_URL, key: 'pixelfed' },
       { href: SITE_GITHUB_URL, key: 'github' },
       { href: SITE_YOUTUBE_URL, key: 'youtube' }
     ]
@@ -104,11 +104,11 @@ export const SOCIAL_LINKS: SocialLinks = [
   // },
   {
     href: SITE_INSTAGRAM_URL,
-    title: 'Instagram',
+    title: 'Pixelfed',
     icon: SiInstagram
   },
   {
-    href: SITE_X_URL,
+    href: SITE_MASTODON_URL,
     title: 'X',
     icon: SiX
   },
