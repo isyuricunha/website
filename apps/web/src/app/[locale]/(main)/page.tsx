@@ -12,7 +12,7 @@ import SelectedProjects from '@/components/home/selected-projects'
 import {
   // SITE_FACEBOOK_URL,
   SITE_GITHUB_URL,
-  SITE_INSTAGRAM_URL,
+  SITE_PIXELFED_URL,
   SITE_KEYWORDS,
   SITE_NAME,
   SITE_URL,
@@ -59,7 +59,7 @@ const Page = async (props: PageProps) => {
       '@type': 'Person',
       name: SITE_NAME,
       url: SITE_URL,
-      sameAs: [SITE_INSTAGRAM_URL, SITE_MASTODON_URL, SITE_GITHUB_URL, SITE_YOUTUBE_URL]
+      sameAs: [SITE_PIXELFED_URL, SITE_MASTODON_URL, SITE_GITHUB_URL, SITE_YOUTUBE_URL]
     },
     mainEntityOfPage: {
       '@type': 'WebPage',

@@ -1,6 +1,6 @@
 'use client'
 
-import { SiGithub, SiInstagram, SiX, SiYoutube } from '@icons-pack/react-simple-icons'
+import { SiGithub, SiPixelfed, SiMastodon, SiYoutube } from '@icons-pack/react-simple-icons'
 import { useTranslations } from '@tszhong0411/i18n/client'
 import { useRouter } from '@tszhong0411/i18n/routing'
 import {
@@ -25,7 +25,7 @@ import { signOut, useSession } from '@/lib/auth-client'
 import {
   // SITE_FACEBOOK_URL,
   SITE_GITHUB_URL,
-  SITE_INSTAGRAM_URL,
+  SITE_PIXELFED_URL,
   SITE_MASTODON_URL,
   SITE_YOUTUBE_URL
 } from '@/lib/constants'
@@ -137,12 +137,12 @@ const CommandMenu = () => {
         // },
         {
           title: 'Pixelfed',
-          icon: <SiInstagram className='mr-3 size-4' />,
-          onSelect: () => openLink(SITE_INSTAGRAM_URL)
+          icon: <SiPixelfed className='mr-3 size-4' />,
+          onSelect: () => openLink(SITE_PIXELFED_URL)
         },
         {
           title: 'X',
-          icon: <SiX className='mr-3 size-4' />,
+          icon: <SiMastodon className='mr-3 size-4' />,
           onSelect: () => openLink(SITE_MASTODON_URL)
         },
         {
