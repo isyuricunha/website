@@ -36,11 +36,11 @@ function Links(): React.ReactElement {
             href="./static/images/toMe/safari-pinned-tab.svg"
             color="#5bbad5"
           />
-          <Script
+          <script
+            defer
             src="https://umami.yuricunha.com/script.js"
             data-website-id="bc1f95d3-382b-4a26-bfc7-2ca34d2c64a5"
-            strategy="afterInteractive"
-          />
+          ></script>
           <meta name="theme-color" content="#ffffff" />
         </Head>
       </Head>

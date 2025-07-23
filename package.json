@@ -19,7 +19,8 @@
     "start": "next start",
     "type-check": "tsc",
     "lint": "eslint --ignore-path .gitignore \"src/**/*.+(ts|js|tsx)\"",
-    "format": "prettier --ignore-path .gitignore \"src/**/*.+(ts|js|tsx)\" --write"
+    "format": "prettier --ignore-path .gitignore \"src/**/*.+(ts|js|tsx)\" --write",
+    "postinstall": "husky install"
   },
   "dependencies": {
     "@chakra-ui/icons": "1.0.15",
@@ -84,6 +85,7 @@
     "eslint-plugin-prettier": "4.0.0",
     "eslint-plugin-react": "^7.37.2",
     "eslint-plugin-react-hooks": "4.2.0",
+    "husky": "7.0.2",
     "next": "12.1.0",
     "next-plausible": "3.12.4",
     "next-sitemap": "4.2.3",

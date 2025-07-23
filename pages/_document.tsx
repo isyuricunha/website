@@ -29,11 +29,11 @@ export default class MyDocument extends Document {
             rel="stylesheet"
           />
 
-          <Script
+          <script
+            defer
             src="https://umami.yuricunha.com/script.js"
             data-website-id="bc1f95d3-382b-4a26-bfc7-2ca34d2c64a5"
-            strategy="afterInteractive"
-          />
+          ></script>
         </Head>
         <body id={'de_body'}>
           <ColorModeScript />
