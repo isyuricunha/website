@@ -75,7 +75,7 @@ Contact
 
 Feel free to reach out via:
 - Email: [contact@yuricunha.com](mailto:contact@yuricunha.com)
-- Mastodon: [mastodon.social/@isyuricunha](mastodon.social/@isyuricunha)
+- X (Twitter): [x.com/isyuricunha](x.com/isyuricunha)
 
 Project Screenshots
 

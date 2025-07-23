@@ -1,8 +1,8 @@
 import {
   type IconType,
   SiGithub,
-  SiPixelfed,
-  SiMastodon,
+  SiInstagram,
+  SiX,
   SiYoutube
 } from '@icons-pack/react-simple-icons'
 import {
@@ -17,7 +17,7 @@ import {
 import {
   // SITE_FACEBOOK_URL,
   SITE_GITHUB_URL,
-  SITE_PIXELFED_URL,
+  SITE_INSTAGRAM_URL,
   SITE_MASTODON_URL,
   SITE_YOUTUBE_URL
 } from '@/lib/constants'
@@ -84,7 +84,7 @@ export const FOOTER_LINKS = [
     id: 3,
     links: [
       // { href: SITE_FACEBOOK_URL, key: 'facebook' },
-      { href: SITE_PIXELFED_URL, key: 'pixelfed' },
+      { href: SITE_INSTAGRAM_URL, key: 'pixelfed' },
       { href: SITE_GITHUB_URL, key: 'github' },
       { href: SITE_YOUTUBE_URL, key: 'youtube' }
     ]
@@ -103,14 +103,14 @@ export const SOCIAL_LINKS: SocialLinks = [
   //   icon: SiFacebook
   // },
   {
-    href: SITE_PIXELFED_URL,
+    href: SITE_INSTAGRAM_URL,
     title: 'Pixelfed',
-    icon: SiPixelfed
+    icon: SiInstagram
   },
   {
     href: SITE_MASTODON_URL,
     title: 'X',
-    icon: SiMastodon
+    icon: SiX
   },
   {
     href: SITE_YOUTUBE_URL,
