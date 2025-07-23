@@ -44,6 +44,17 @@ export default function MyApp({
 
   const pageTitle = 'Yuri Cunha'; // Set the title accordingly
 
+  const Content = loading ? (
+    <Loader />
+  ) : (
+    <AppLayout>
+      <I18nextProvider i18n={i18n}>
+        <Component {...pageProps} />
+      </I18nextProvider>
+    </AppLayout>
+  );
+
+
   return (
     <>
       <Head>
@@ -107,17 +118,8 @@ export default function MyApp({
       <ChakraProvider theme={theme}>
         <QueryClientProvider client={queryClient}>
           <MDXProvider components={MDXComponents}>
-            {loading ? (
-              <Loader />
-            ) : (
-              <AppLayout>
-                <I18nextProvider i18n={i18n}>
-                  <Component {...pageProps} />
-                </I18nextProvider>
-              </AppLayout>
-            )}
+            {Content}
           </MDXProvider>
-
         </QueryClientProvider>
       </ChakraProvider>
     </>
