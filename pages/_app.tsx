@@ -111,14 +111,13 @@ export default function MyApp({
               <Loader />
             ) : (
               <AppLayout>
-                <>
-                  <I18nextProvider i18n={i18n}>
-                    <Component {...pageProps} />
-                  </I18nextProvider>
-                </>
+                <I18nextProvider i18n={i18n}>
+                  <Component {...pageProps} />
+                </I18nextProvider>
               </AppLayout>
             )}
           </MDXProvider>
+
         </QueryClientProvider>
       </ChakraProvider>
     </>
