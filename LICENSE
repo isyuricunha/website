@@ -1,44 +1,55 @@
-Yuri Cunha – Personal License  
-Version 2.2 – July 2025  
+Yuri Cunha – Personal License
+Version 2.2 – July 2025
 
 License Agreement
 
-This License Agreement (the “Agreement”) governs your use of code authored by Yuri Cunha (the “Author”). By using, modifying, or redistributing this code or any derivative work (the “Work”), you (the “User”) agree to be bound by the following terms:
+This License Agreement (the “Agreement”) governs your use of software and code authored by Yuri Cunha (the “Author”). By using, modifying, or redistributing this Work (as defined below), you (the “Licensee”) agree to be bound by the terms of this Agreement.
 
-1. Permission to Use and Modify  
-   1.1. The User may use, modify, and reuse the Work for personal or project purposes, provided that proper credit is given to the Author each time the Work (or any substantial portion thereof) is used or distributed.  
-   1.2. Credit must appear in documentation, source headers, or any medium where the Work is presented, clearly stating:  
-       “Original code by Yuri Cunha (https://github.com/isyuricunha)”.
+**1. Definitions**
 
-2. Redistribution  
-   2.1. Redistribution of the Work—whether modified or unmodified—is permitted only if this Agreement remains intact and the required attribution (see Section 1) is clearly visible.  
-   2.2. Wholesale copying of substantial portions without modification is allowed only under these same conditions.
+* **“Work”** means the original code, documentation, and any modifications or derivative works thereof distributed under this Agreement.
+* **“Distribute”** means any act of providing the Work to third parties, including sale, rental, lending, or any other form of transfer.
 
-3. Prohibitions  
-   3.1. Claiming the Work (or any part of it) as your original creation is strictly forbidden.  
-   3.2. Using the Work, in whole or in part, for training or development of artificial intelligence or machine-learning systems is expressly prohibited.  
-       This includes (but is not limited to) training foundation models, fine-tuning models, embedding analysis, automated dataset collection, or synthetic content generation.
+**2. Grant of Rights**
+2.1. **Use and Modification.** You may use, reproduce, and modify the Work for any purpose, including commercial use, provided that you comply with all conditions of this Agreement.
 
-4. Permitted Public Media Usage  
-   4.1. You may incorporate the Work in any public audiovisual media—such as videos, live streams, podcasts, tutorials, or similar—so long as you include the required attribution (Section 1) visibly in the content or its description.
+2.2. **Distribution of Unmodified Work.** You may distribute the unmodified Work, provided that this Agreement remains intact and all attributions are preserved.
 
-5. Limitation of Liability  
-   The Work is provided “as is,” without warranty of any kind. To the maximum extent permitted by law, the Author shall not be liable for any damages or losses arising from or related to your use, inability to use, or redistribution of the Work.
+**3. Strong Copyleft**
+3.1. **Redistribution of Modified Work.** Any distribution of a modified version of the Work (the “Modified Work”) must be licensed **as a whole** under this Agreement. You must provide or offer the complete corresponding source code of the Modified Work under the terms of this Agreement.
 
-6. Contact and Support  
-   If you have questions about correct implementation, proper attribution, or this Agreement, please reach out:  
-   • Twitter: @isyuricunha  
-   • Email: me@yuricunha.com  
+3.2. **Public Availability of Source.** If you distribute the Modified Work in any form (binary, object code, or otherwise), you must make the complete source code publicly available, under the same conditions and at no additional charge.
 
-7. Governing Law  
-   This Agreement is governed by the laws of the Author’s jurisdiction, without regard to conflict-of-law principles.
+**4. Attribution**
+4.1. You must retain the following notice in all copies or substantial portions of the Work (modified or unmodified):
 
-8. Updates to This Agreement  
-   8.1. The Author may revise this Agreement at any time. Continued use or redistribution of the Work after any update signifies your acceptance of the new version.  
-   8.2. The latest version will always be available at:  
-       https://github.com/isyuricunha/personal-license
+> Original code by Yuri Cunha ([https://github.com/isyuricunha](https://github.com/isyuricunha))
+
+4.2. You may add your own attribution to further modifications, provided it is clearly distinguished from the original Author’s attribution.
+
+**5. Prohibited Uses**
+5.1. **Claim of Authorship.** You may not claim the Work or any portion thereof as your original creation.
+
+5.2. **AI/ML Use Restriction.** You may not use, reproduce, or distribute the Work, in whole or in part, for training, fine‑tuning, or developing artificial intelligence or machine learning models, including foundation models, embeddings analysis, or automated dataset creation.
+
+**6. Permitted Use in Public Media**
+You may use the Work in public audiovisual media (videos, streams, podcasts, tutorials, etc.), provided that the attribution required by Section 4 is visibly included in the content or its description.
+
+**7. Disclaimer of Warranty**
+The Work is provided “AS IS,” without warranty of any kind, express or implied. The Author disclaims all WARRANTIES, including but not limited to MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, and NON-INFRINGEMENT.
+
+**8. Limitation of Liability**
+To the fullest extent permitted by law, the Author shall not be liable for any direct, indirect, incidental, special, or consequential damages arising from or in connection with your use of the Work.
+
+**9. Termination**
+Your rights under this Agreement will terminate automatically if you fail to comply with any term of this Agreement. Upon termination, you must cease all use and distribution of the Work and destroy all copies.
+
+**10. Governing Law**
+This Agreement shall be governed by and construed in accordance with the laws of the Author’s jurisdiction, without regard to conflict-of-law principles.
+
+**11. Updates**
+The Author may revise this Agreement at any time by updating the version at [https://github.com/isyuricunha/personal-license](https://github.com/isyuricunha/personal-license). Continued use after any such update constitutes acceptance of the new terms.
 
 ---
 
-By using, modifying, or redistributing the Work, you acknowledge that you have read, understood, and agree to the terms of this Agreement.  
-Failure to comply with any term of this Agreement automatically and immediately terminates the rights granted herein. Upon termination, the User must cease all use, reproduction, and distribution of the Work.
+By using, modifying, or distributing the Work, you acknowledge that you have read, understood, and agree to be bound by this Agreement.
