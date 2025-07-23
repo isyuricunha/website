@@ -26,7 +26,7 @@ import {
   // SITE_FACEBOOK_URL,
   SITE_GITHUB_URL,
   SITE_INSTAGRAM_URL,
-  SITE_MASTODON_URL,
+  SITE_X_URL,
   SITE_YOUTUBE_URL
 } from '@/lib/constants'
 import { useDialogsStore } from '@/store/dialogs'
@@ -77,30 +77,30 @@ const CommandMenu = () => {
       actions: [
         ...(session
           ? [
-            {
-              title: t('common.sign-out'),
-              icon: <LogOutIcon className='mr-3 size-4' />,
-              onSelect: async () => {
-                await signOut({
-                  fetchOptions: {
-                    onSuccess: () => {
-                      router.refresh()
+              {
+                title: t('common.sign-out'),
+                icon: <LogOutIcon className='mr-3 size-4' />,
+                onSelect: async () => {
+                  await signOut({
+                    fetchOptions: {
+                      onSuccess: () => {
+                        router.refresh()
+                      }
                     }
-                  }
-                })
+                  })
+                }
               }
-            }
-          ]
+            ]
           : [
-            {
-              title: t('common.sign-in'),
-              icon: <LogInIcon className='mr-3 size-4' />,
-              onSelect: () => {
-                setIsOpen(false)
-                setIsSignInOpen(true)
+              {
+                title: t('common.sign-in'),
+                icon: <LogInIcon className='mr-3 size-4' />,
+                onSelect: () => {
+                  setIsOpen(false)
+                  setIsSignInOpen(true)
+                }
               }
-            }
-          ])
+            ])
       ]
     },
     {
@@ -136,14 +136,14 @@ const CommandMenu = () => {
         //   onSelect: () => openLink(SITE_FACEBOOK_URL)
         // },
         {
-          title: 'Pixelfed',
+          title: 'Instagram',
           icon: <SiInstagram className='mr-3 size-4' />,
           onSelect: () => openLink(SITE_INSTAGRAM_URL)
         },
         {
           title: 'X',
           icon: <SiX className='mr-3 size-4' />,
-          onSelect: () => openLink(SITE_MASTODON_URL)
+          onSelect: () => openLink(SITE_X_URL)
         },
         {
           title: 'YouTube',

@@ -16,7 +16,7 @@ import {
   SITE_KEYWORDS,
   SITE_NAME,
   SITE_URL,
-  SITE_MASTODON_URL,
+  SITE_X_URL,
   SITE_YOUTUBE_URL
 } from '@/lib/constants'
 import { getLocalizedPath } from '@/utils/get-localized-path'
@@ -59,7 +59,7 @@ const Page = async (props: PageProps) => {
       '@type': 'Person',
       name: SITE_NAME,
       url: SITE_URL,
-      sameAs: [SITE_INSTAGRAM_URL, SITE_MASTODON_URL, SITE_GITHUB_URL, SITE_YOUTUBE_URL]
+      sameAs: [SITE_INSTAGRAM_URL, SITE_X_URL, SITE_GITHUB_URL, SITE_YOUTUBE_URL]
     },
     mainEntityOfPage: {
       '@type': 'WebPage',
