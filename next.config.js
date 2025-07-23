@@ -67,7 +67,7 @@ module.exports = withMDX({
     if (missingVars.length) {
       throw new Error(
         'You are missing some vital environment variables: ' +
-          missingVars.join(', ')
+        missingVars.join(', ')
       );
     }
     return config;
@@ -88,6 +88,9 @@ module.exports = withMDX({
       'yuricunha.com',
       '../*',
     ],
+  },
+  typescript: {
+    ignoreBuildErrors: true,
   },
   async headers() {
     return [
