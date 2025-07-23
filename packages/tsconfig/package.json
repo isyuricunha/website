@@ -19,7 +19,7 @@
     "react-library.json"
   ],
   "dependencies": {
-    "next": "^15.3.5"
+    "next": "^15.4.1"
   },
   "peerDependencies": {
     "typescript": "5.x"
