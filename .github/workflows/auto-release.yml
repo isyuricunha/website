@@ -1,5 +1,9 @@
 name: deploy release and notes / change logs
 
+permissions:
+  contents: write
+  actions: read
+
 on:
   push:
     branches: main
