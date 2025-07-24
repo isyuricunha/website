@@ -5,6 +5,9 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+
 jobs:
   tests:
     name: Tests
@@ -98,6 +101,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     needs: [tests, eslint, types]
+    permissions:
+      contents: read
+      actions: write
     steps:
       - name: Checkout branch
         uses: actions/checkout@v4
