@@ -12,10 +12,10 @@ export const supportedLanguages = [
     code: 'zh',
     label: '中文'
   },
-  {
-    code: 'de',
-    label: 'Deutsch'
-  },
+  // {
+  //   code: 'de',
+  //   label: 'Deutsch'
+  // },
   {
     code: 'fr',
     label: 'Français'
