@@ -5,14 +5,7 @@ import {
   SiX,
   SiYoutube
 } from '@icons-pack/react-simple-icons'
-import {
-  BarChartIcon,
-  FlameIcon,
-  MessageCircleIcon,
-  MonitorIcon,
-  PencilIcon,
-  UserCircleIcon
-} from 'lucide-react'
+import { FlameIcon, MessageCircleIcon, MonitorIcon, PencilIcon, UserCircleIcon } from 'lucide-react'
 
 import {
   // SITE_FACEBOOK_URL,
@@ -39,11 +32,11 @@ export const HEADER_LINKS = [
     href: '/guestbook',
     key: 'guestbook'
   },
-  {
-    icon: <BarChartIcon className='size-3.5' />,
-    href: '/dashboard',
-    key: 'dashboard'
-  },
+  // {
+  //   icon: <BarChartIcon className='size-3.5' />,
+  //   href: '/dashboard',
+  //   key: 'dashboard'
+  // },
   {
     icon: <FlameIcon className='size-3.5' />,
     href: '/projects',
