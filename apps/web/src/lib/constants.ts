@@ -9,4 +9,3 @@ export const SITE_KEYWORDS = ['isyuricunha', 'Next.js', 'React', 'TypeScript', '
 
 export const SITE_GITHUB_URL = 'https://github.com/isyuricunha'
 export const SITE_X_URL = 'https://x.com/isyuricunha'
-export const SITE_YOUTUBE_URL = 'https://www.youtube.com/@isyuricunha'

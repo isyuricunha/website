@@ -31,16 +31,13 @@
     "homepage.hero.stunning",
     "layout.about",
     "layout.blog",
-
     "layout.github",
     "layout.guestbook",
     "layout.pixelfed",
     "layout.links",
     "layout.projects",
     "layout.uses",
-    "layout.youtube",
     "admin.nav.comments",
-
     "admin.nav.general",
     "admin.nav.users"
   ],

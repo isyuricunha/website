@@ -64,7 +64,7 @@ export const generateMetadata = async (props: LayoutProps): Promise<Metadata> =>
       creatorId: '1152256803746377730',
       images: [
         {
-          url: '/images/og.png',
+          url: `${SITE_URL}/og?locale=${locale}`,
           width: 1200,
           height: 630,
           alt: t('site-description')
@@ -82,7 +82,7 @@ export const generateMetadata = async (props: LayoutProps): Promise<Metadata> =>
       locale,
       images: [
         {
-          url: '/images/og.png',
+          url: `${SITE_URL}/og?locale=${locale}`,
           width: 1200,
           height: 630,
           alt: t('site-description'),

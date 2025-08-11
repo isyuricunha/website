@@ -7,12 +7,10 @@ import { spotifyRouter } from './routers/spotify'
 import { usersRouter } from './routers/users'
 import { viewsRouter } from './routers/views'
 import { wakatimeRouter } from './routers/wakatime'
-import { youtubeRouter } from './routers/youtube'
 import { createTRPCRouter } from './trpc'
 
 export const appRouter = createTRPCRouter({
   github: githubRouter,
-  youtube: youtubeRouter,
   wakatime: wakatimeRouter,
   views: viewsRouter,
   likes: likesRouter,

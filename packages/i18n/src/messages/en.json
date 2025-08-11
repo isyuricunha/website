@@ -125,7 +125,6 @@
     },
     "go-to-homepage": "Go to homepage"
   },
-
   "dialog": {
     "sign-in": {
       "continue-with": "Continue with {provider}",
@@ -226,8 +225,7 @@
     "projects": "Projects",
     "skip-to-main-content": "Skip to main content",
     "toggle-menu": "Toggle menu",
-    "uses": "Tools",
-    "youtube": "YouTube"
+    "uses": "Tools"
   },
   "mdx": {
     "link-to-section": "Link to section"

@@ -1,15 +1,13 @@
 import {
   type IconType,
   SiGithub,
-  SiX,
-  SiYoutube
+  SiX
 } from '@icons-pack/react-simple-icons'
 import { FlameIcon, MessageCircleIcon, MonitorIcon, PencilIcon, UserCircleIcon } from 'lucide-react'
 
 import {
   SITE_GITHUB_URL,
-  SITE_X_URL,
-  SITE_YOUTUBE_URL
+  SITE_X_URL
 } from '@/lib/constants'
 
 type SocialLinks = Array<{
@@ -68,8 +66,7 @@ export const FOOTER_LINKS = [
   {
     id: 3,
     links: [
-      { href: SITE_GITHUB_URL, key: 'github' },
-      { href: SITE_YOUTUBE_URL, key: 'youtube' }
+      { href: SITE_GITHUB_URL, key: 'github' }
     ]
   }
 ] as const
@@ -84,10 +81,5 @@ export const SOCIAL_LINKS: SocialLinks = [
     href: SITE_X_URL,
     title: 'X',
     icon: SiX
-  },
-  {
-    href: SITE_YOUTUBE_URL,
-    title: 'YouTube',
-    icon: SiYoutube
   }
 ]

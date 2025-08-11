@@ -1,6 +1,6 @@
 'use client'
 
-import { SiGithub, SiX, SiYoutube } from '@icons-pack/react-simple-icons'
+import { SiGithub, SiX } from '@icons-pack/react-simple-icons'
 import { useTranslations } from '@tszhong0411/i18n/client'
 import { useRouter } from '@tszhong0411/i18n/routing'
 import {
@@ -24,8 +24,7 @@ import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
 import { signOut, useSession } from '@/lib/auth-client'
 import {
   SITE_GITHUB_URL,
-  SITE_X_URL,
-  SITE_YOUTUBE_URL
+  SITE_X_URL
 } from '@/lib/constants'
 import { useDialogsStore } from '@/store/dialogs'
 
@@ -75,30 +74,30 @@ const CommandMenu = () => {
       actions: [
         ...(session
           ? [
-              {
-                title: t('common.sign-out'),
-                icon: <LogOutIcon className='mr-3 size-4' />,
-                onSelect: async () => {
-                  await signOut({
-                    fetchOptions: {
-                      onSuccess: () => {
-                        router.refresh()
-                      }
+            {
+              title: t('common.sign-out'),
+              icon: <LogOutIcon className='mr-3 size-4' />,
+              onSelect: async () => {
+                await signOut({
+                  fetchOptions: {
+                    onSuccess: () => {
+                      router.refresh()
                     }
-                  })
-                }
+                  }
+                })
               }
-            ]
+            }
+          ]
           : [
-              {
-                title: t('common.sign-in'),
-                icon: <LogInIcon className='mr-3 size-4' />,
-                onSelect: () => {
-                  setIsOpen(false)
-                  setIsSignInOpen(true)
-                }
+            {
+              title: t('common.sign-in'),
+              icon: <LogInIcon className='mr-3 size-4' />,
+              onSelect: () => {
+                setIsOpen(false)
+                setIsSignInOpen(true)
               }
-            ])
+            }
+          ])
       ]
     },
     {
@@ -132,11 +131,6 @@ const CommandMenu = () => {
           title: 'X',
           icon: <SiX className='mr-3 size-4' />,
           onSelect: () => openLink(SITE_X_URL)
-        },
-        {
-          title: 'YouTube',
-          icon: <SiYoutube className='mr-3 size-4' />,
-          onSelect: () => openLink(SITE_YOUTUBE_URL)
         }
       ]
     }
