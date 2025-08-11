@@ -18,6 +18,8 @@ export const GET = async (req: NextRequest, props: OGRouteProps) => {
     const type = searchParams.get('type')
     const title = searchParams.get('title')
     const date = searchParams.get('date')
+    const summary = searchParams.get('summary')
+    const locale = searchParams.get('locale') || 'en'
     
     if (type === 'post' && title && date) {
       // Generate blog post specific OG image
@@ -76,7 +78,7 @@ export const GET = async (req: NextRequest, props: OGRouteProps) => {
                   lineHeight: 1.4
                 }}
               >
-                Read this article on yuricunha.com
+                {summary || 'Read this article on yuricunha.com'}
               </div>
             </div>
             <div
