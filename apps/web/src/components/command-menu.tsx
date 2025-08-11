@@ -1,6 +1,6 @@
 'use client'
 
-import { SiGithub, SiInstagram, SiX, SiYoutube } from '@icons-pack/react-simple-icons'
+import { SiGithub, SiX, SiYoutube } from '@icons-pack/react-simple-icons'
 import { useTranslations } from '@tszhong0411/i18n/client'
 import { useRouter } from '@tszhong0411/i18n/routing'
 import {
@@ -23,9 +23,7 @@ import { Fragment, useCallback, useEffect, useState } from 'react'
 import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
 import { signOut, useSession } from '@/lib/auth-client'
 import {
-  // SITE_FACEBOOK_URL,
   SITE_GITHUB_URL,
-  SITE_INSTAGRAM_URL,
   SITE_X_URL,
   SITE_YOUTUBE_URL
 } from '@/lib/constants'
@@ -129,16 +127,6 @@ const CommandMenu = () => {
           title: 'GitHub',
           icon: <SiGithub className='mr-3 size-4' />,
           onSelect: () => openLink(SITE_GITHUB_URL)
-        },
-        // {
-        //   title: 'Facebook',
-        //   icon: <SiFacebook className='mr-3 size-4' />,
-        //   onSelect: () => openLink(SITE_FACEBOOK_URL)
-        // },
-        {
-          title: 'Instagram',
-          icon: <SiInstagram className='mr-3 size-4' />,
-          onSelect: () => openLink(SITE_INSTAGRAM_URL)
         },
         {
           title: 'X',

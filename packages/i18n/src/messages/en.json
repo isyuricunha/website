@@ -214,11 +214,9 @@
     "about": "About",
     "blog": "Blog",
     "change-language": "Change language",
-    "facebook": "Facebook",
     "github": "GitHub",
     "guestbook": "Guestbook",
     "home": "Home",
-    "instagram": "Instagram",
     "links": "Links",
     "now-playing": {
       "error": "Failed to fetch Spotify data",

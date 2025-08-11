@@ -1,16 +1,13 @@
 import {
   type IconType,
   SiGithub,
-  SiInstagram,
   SiX,
   SiYoutube
 } from '@icons-pack/react-simple-icons'
 import { FlameIcon, MessageCircleIcon, MonitorIcon, PencilIcon, UserCircleIcon } from 'lucide-react'
 
 import {
-  // SITE_FACEBOOK_URL,
   SITE_GITHUB_URL,
-  SITE_INSTAGRAM_URL,
   SITE_X_URL,
   SITE_YOUTUBE_URL
 } from '@/lib/constants'
@@ -71,8 +68,6 @@ export const FOOTER_LINKS = [
   {
     id: 3,
     links: [
-      // { href: SITE_FACEBOOK_URL, key: 'facebook' },
-      { href: SITE_INSTAGRAM_URL, key: 'instagram' },
       { href: SITE_GITHUB_URL, key: 'github' },
       { href: SITE_YOUTUBE_URL, key: 'youtube' }
     ]
@@ -84,16 +79,6 @@ export const SOCIAL_LINKS: SocialLinks = [
     href: SITE_GITHUB_URL,
     title: 'GitHub',
     icon: SiGithub
-  },
-  // {
-  //   href: SITE_FACEBOOK_URL,
-  //   title: 'Facebook',
-  //   icon: SiFacebook
-  // },
-  {
-    href: SITE_INSTAGRAM_URL,
-    title: 'Instagram',
-    icon: SiInstagram
   },
   {
     href: SITE_X_URL,
