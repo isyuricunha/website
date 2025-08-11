@@ -6,7 +6,6 @@
     "admin": {
         "nav": {
             "comments": "Kommentare",
-            "dashboard": "Dashboard",
             "general": "Allgemein",
             "users": "Benutzer"
         },
@@ -126,19 +125,6 @@
         },
         "go-to-homepage": "Zur Startseite gehen"
     },
-    "dashboard": {
-        "description": "Dies ist mein persönliches Dashboard, erstellt mit Next.js API-Routen, die als serverlose Funktionen bereitgestellt werden. Ich nutze dieses Dashboard, um verschiedene Metriken über Plattformen wie YouTube, GitHub und mehr zu verfolgen. Aber dies dient nur als Referenz",
-        "metric": {
-            "blog-total-likes": "Gesamtanzahl Blog Likes",
-            "blog-total-views": "Gesamtanzahl Blog Aufrufe",
-            "coding-hours": "Programmierstunden",
-            "github-followers": "GitHub Follower",
-            "github-stars": "GitHub Sterne",
-            "youtube-subscribers": "YouTube Abonnenten",
-            "youtube-views": "YouTube Aufrufe"
-        },
-        "title": "Dashboard"
-    },
     "dialog": {
         "sign-in": {
             "continue-with": "Fortfahren mit {provider}",
@@ -227,7 +213,6 @@
         "about": "Über",
         "blog": "Blog",
         "change-language": "Sprache wechseln",
-        "dashboard": "Dashboard",
         "facebook": "Facebook",
         "github": "GitHub",
         "guestbook": "Gästebuch",

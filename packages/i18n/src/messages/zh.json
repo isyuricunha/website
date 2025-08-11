@@ -6,7 +6,6 @@
   "admin": {
     "nav": {
       "comments": "评论",
-      "dashboard": "仪表盘",
       "general": "常规",
       "users": "用户"
     },
@@ -126,19 +125,6 @@
     },
     "go-to-homepage": "返回主页"
   },
-  "dashboard": {
-    "description": "这是我的个人仪表盘，使用 Next.js API 路由构建并以无服务器功能部署。我使用此仪表盘跟踪 YouTube、GitHub 等平台上的各种指标。但这仅供参考",
-    "metric": {
-      "blog-total-likes": "博客总点赞数",
-      "blog-total-views": "博客总浏览量",
-      "coding-hours": "编程时长",
-      "github-followers": "GitHub 关注者",
-      "github-stars": "GitHub 星标",
-      "youtube-subscribers": "YouTube 订阅者",
-      "youtube-views": "YouTube 浏览量"
-    },
-    "title": "仪表盘"
-  },
   "dialog": {
     "sign-in": {
       "continue-with": "使用 {provider} 继续",
@@ -227,7 +213,6 @@
     "about": "关于",
     "blog": "博客",
     "change-language": "切换语言",
-    "dashboard": "仪表盘",
     "facebook": "Facebook",
     "github": "GitHub",
     "guestbook": "留言簿",

@@ -6,7 +6,6 @@
     "admin": {
         "nav": {
             "comments": "Comentários",
-            "dashboard": "Painel",
             "general": "Geral",
             "users": "Usuários"
         },
@@ -126,19 +125,6 @@
         },
         "go-to-homepage": "Ir para a página inicial"
     },
-    "dashboard": {
-        "description": "Este é meu painel pessoal, construído com rotas de API do Next.js implantadas como funções serverless. Uso este painel para rastrear várias métricas em plataformas como YouTube, GitHub e outras. Mas, isto é apenas para referência.",
-        "metric": {
-            "blog-total-likes": "Curtidas Totais do Blog",
-            "blog-total-views": "Visualizações Totais do Blog",
-            "coding-hours": "Horas de Codificação",
-            "github-followers": "Seguidores do GitHub",
-            "github-stars": "Estrelas no GitHub",
-            "youtube-subscribers": "Inscritos no YouTube",
-            "youtube-views": "Visualizações no YouTube"
-        },
-        "title": "Painel"
-    },
     "dialog": {
         "sign-in": {
             "continue-with": "Continuar com {provider}",
@@ -227,7 +213,6 @@
         "about": "Sobre",
         "blog": "Blog",
         "change-language": "Mudar idioma",
-        "dashboard": "Painel",
         "facebook": "Facebook",
         "github": "GitHub",
         "guestbook": "Livro de Visitas",

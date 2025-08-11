@@ -1,14 +1,9 @@
-import { LayoutDashboardIcon, MessagesSquareIcon, UsersIcon } from 'lucide-react'
+import { MessagesSquareIcon, UsersIcon } from 'lucide-react'
 
 export const ADMIN_SIDEBAR_LINKS = [
   {
     titleKey: 'general',
     links: [
-      {
-        titleKey: 'dashboard',
-        url: '/admin',
-        icon: LayoutDashboardIcon
-      },
       {
         titleKey: 'users',
         url: '/admin/users',

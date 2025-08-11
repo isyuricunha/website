@@ -31,7 +31,7 @@
     "homepage.hero.stunning",
     "layout.about",
     "layout.blog",
-    "layout.dashboard",
+
     "layout.facebook",
     "layout.github",
     "layout.guestbook",
@@ -41,7 +41,7 @@
     "layout.uses",
     "layout.youtube",
     "admin.nav.comments",
-    "admin.nav.dashboard",
+
     "admin.nav.general",
     "admin.nav.users"
   ],

@@ -6,7 +6,6 @@
     "admin": {
         "nav": {
             "comments": "Commentaires",
-            "dashboard": "Tableau de bord",
             "general": "Général",
             "users": "Utilisateurs"
         },
@@ -126,19 +125,6 @@
         },
         "go-to-homepage": "Aller à la page d'accueil"
     },
-    "dashboard": {
-        "description": "Ceci est mon tableau de bord personnel, construit avec les routes API de Next.js déployées en tant que fonctions serverless. J'utilise ce tableau de bord pour suivre diverses métriques sur des plateformes comme YouTube, GitHub, et plus encore. Mais, ceci est uniquement à titre de référence",
-        "metric": {
-            "blog-total-likes": "Total des J'aime du blog",
-            "blog-total-views": "Total des Vues du blog",
-            "coding-hours": "Heures de codage",
-            "github-followers": "Abonnés GitHub",
-            "github-stars": "Étoiles GitHub",
-            "youtube-subscribers": "Abonnés YouTube",
-            "youtube-views": "Vues YouTube"
-        },
-        "title": "Tableau de bord"
-    },
     "dialog": {
         "sign-in": {
             "continue-with": "Continuer avec {provider}",
@@ -227,7 +213,6 @@
         "about": "À propos",
         "blog": "Blog",
         "change-language": "Changer de langue",
-        "dashboard": "Tableau de bord",
         "facebook": "Facebook",
         "github": "GitHub",
         "guestbook": "Livre d'or",

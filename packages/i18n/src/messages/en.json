@@ -6,7 +6,6 @@
   "admin": {
     "nav": {
       "comments": "Comments",
-      "dashboard": "Dashboard",
       "general": "General",
       "users": "Users"
     },
@@ -126,19 +125,7 @@
     },
     "go-to-homepage": "Go to homepage"
   },
-  "dashboard": {
-    "description": "This is my personal dashboard, built with Next.js API routes deployed as serverless functions. I use this dashboard to track various metrics across platforms like YouTube, GitHub, and more. But, this is only for reference",
-    "metric": {
-      "blog-total-likes": "Blog Total Likes",
-      "blog-total-views": "Blog Total Views",
-      "coding-hours": "Coding Hours",
-      "github-followers": "GitHub Followers",
-      "github-stars": "GitHub Stars",
-      "youtube-subscribers": "YouTube Subscribers",
-      "youtube-views": "YouTube Views"
-    },
-    "title": "Dashboard"
-  },
+
   "dialog": {
     "sign-in": {
       "continue-with": "Continue with {provider}",
@@ -227,7 +214,6 @@
     "about": "About",
     "blog": "Blog",
     "change-language": "Change language",
-    "dashboard": "Dashboard",
     "facebook": "Facebook",
     "github": "GitHub",
     "guestbook": "Guestbook",

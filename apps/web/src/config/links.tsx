@@ -32,11 +32,7 @@ export const HEADER_LINKS = [
     href: '/guestbook',
     key: 'guestbook'
   },
-  // {
-  //   icon: <BarChartIcon className='size-3.5' />,
-  //   href: '/dashboard',
-  //   key: 'dashboard'
-  // },
+
   {
     icon: <FlameIcon className='size-3.5' />,
     href: '/projects',
@@ -60,8 +56,7 @@ export const FOOTER_LINKS = [
     links: [
       { href: '/', key: 'home' },
       { href: '/blog', key: 'blog' },
-      { href: '/about', key: 'about' },
-      { href: '/dashboard', key: 'dashboard' }
+      { href: '/about', key: 'about' }
     ]
   },
   {
