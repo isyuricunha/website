@@ -70,7 +70,7 @@ export const generateMetadata = async (
       authors: SITE_URL,
       images: [
         {
-          url: `/og/${slug}`,
+          url: `/og/${slug}?title=${encodeURIComponent(title)}&date=${encodeURIComponent(date.split('T')[0])}&type=post`,
           width: 1200,
           height: 630,
           alt: title,
@@ -84,7 +84,7 @@ export const generateMetadata = async (
       description: summary,
       images: [
         {
-          url: `/og/${slug}`,
+          url: `/og/${slug}?title=${encodeURIComponent(title)}&date=${encodeURIComponent(date.split('T')[0])}&type=post`,
           width: 1200,
           height: 630,
           alt: title
@@ -117,7 +117,7 @@ const Page = async (props: PageProps) => {
     url,
     datePublished: date,
     dateModified: modifiedTime,
-    image: `${SITE_URL}/og/${slug}`,
+    image: `${SITE_URL}/og/${slug}?title=${encodeURIComponent(title)}&date=${encodeURIComponent(date.split('T')[0])}&type=post`,
     author: {
       '@type': 'Person',
       name: SITE_NAME,

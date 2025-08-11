@@ -1,13 +1,7 @@
-import fs from 'node:fs'
-import path from 'node:path'
-
-import { db, eq, posts } from '@tszhong0411/db'
-import { getErrorMessage } from '@tszhong0411/utils'
-import { allPosts } from 'content-collections'
 import { ImageResponse } from 'next/og'
-import { NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 
-import { SITE_URL } from '@/lib/constants'
+export const runtime = 'edge'
 
 type OGRouteProps = {
   params: Promise<{
@@ -15,49 +9,116 @@ type OGRouteProps = {
   }>
 }
 
-export const GET = async (_: Request, props: OGRouteProps) => {
+export const GET = async (req: NextRequest, props: OGRouteProps) => {
   try {
     const { id } = await props.params
-    const postMetadata = allPosts.find((p) => p.slug === id)
-
-    if (!postMetadata) {
-      return NextResponse.json(
+    const { searchParams } = new URL(req.url)
+    
+    // Check if this is a blog post request
+    const type = searchParams.get('type')
+    const title = searchParams.get('title')
+    const date = searchParams.get('date')
+    
+    if (type === 'post' && title && date) {
+      // Generate blog post specific OG image
+      return new ImageResponse(
+        (
+          <div
+            style={{
+              background: 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)',
+              width: '100%',
+              height: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              padding: '48px 56px',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              fontFamily: 'Inter, system-ui, sans-serif',
+              fontWeight: 700
+            }}
+          >
+            <div
+              style={{
+                color: '#e2e8f0',
+                fontSize: 30
+              }}
+            >
+              {date}
+            </div>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                textAlign: 'center'
+              }}
+            >
+              <div
+                style={{
+                  fontSize: title.length > 50 ? 36 : title.length > 40 ? 48 : 64,
+                  background: 'linear-gradient(91.52deg, #FF4D4D 0.79%, #FFCCCC 109.05%)',
+                  backgroundClip: 'text',
+                  WebkitBackgroundClip: 'text',
+                  letterSpacing: '-0.03em',
+                  color: 'transparent',
+                  marginBottom: 24,
+                  maxWidth: '1000px',
+                  lineHeight: 1.2
+                }}
+              >
+                {title}
+              </div>
+              <div
+                style={{
+                  fontSize: 24,
+                  color: '#e2e8f0',
+                  maxWidth: '800px',
+                  lineHeight: 1.4
+                }}
+              >
+                Read this article on yuricunha.com
+              </div>
+            </div>
+            <div
+              style={{
+                color: '#e2e8f0',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                width: '100%'
+              }}
+            >
+              <div
+                style={{
+                  width: '33px',
+                  height: '48px',
+                  background: 'linear-gradient(135deg, #FF4D4D 0%, #FFCCCC 100%)',
+                  borderRadius: '8px'
+                }}
+              />
+              <div
+                style={{
+                  fontSize: 30
+                }}
+              >
+                yuricunha.com
+              </div>
+            </div>
+          </div>
+        ),
         {
-          error: 'Post not found'
-        },
-        {
-          status: 404
+          width: 1200,
+          height: 630
         }
       )
     }
-
-    const { title, date } = postMetadata
-
-    const getTitleFontSize = () => {
-      if (title.length > 50) return 36
-      if (title.length > 40) return 48
-      return 64
-    }
-
-    const roboto = fs.readFileSync(
-      path.join(process.cwd(), 'src/app/og/[id]/RobotoCondensed-Bold.ttf')
-    )
-
-    const post = await db
-      .select({
-        views: posts.views,
-        likes: posts.likes
-      })
-      .from(posts)
-      .where(eq(posts.slug, id))
-
-    const textColor = 'hsl(0 0% 90%)'
-
+    
+    // Fallback for other cases
     return new ImageResponse(
       (
         <div
           style={{
-            backgroundImage: `url(${SITE_URL}/images/og-background.png)`,
+            background: 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)',
             width: '100%',
             height: '100%',
             display: 'flex',
@@ -65,70 +126,67 @@ export const GET = async (_: Request, props: OGRouteProps) => {
             padding: '48px 56px',
             justifyContent: 'space-between',
             alignItems: 'center',
-            fontFamily: 'Roboto Condensed',
+            fontFamily: 'Inter, system-ui, sans-serif',
             fontWeight: 700
           }}
         >
           <div
             style={{
-              color: textColor,
+              color: '#e2e8f0',
               fontSize: 30
             }}
           >
-            {date.split('T')[0]}
+            Blog Post
           </div>
           <div
             style={{
               display: 'flex',
-              flexDirection: 'column'
+              flexDirection: 'column',
+              alignItems: 'center',
+              textAlign: 'center'
             }}
           >
             <div
               style={{
-                fontSize: getTitleFontSize(),
+                fontSize: 48,
+                background: 'linear-gradient(91.52deg, #FF4D4D 0.79%, #FFCCCC 109.05%)',
                 backgroundClip: 'text',
                 WebkitBackgroundClip: 'text',
                 letterSpacing: '-0.03em',
                 color: 'transparent',
-                backgroundImage: 'linear-gradient(91.52deg, #FF4D4D 0.79%, #FFCCCC 109.05%)',
                 marginBottom: 24
               }}
             >
-              {title}
+              {id}
             </div>
             <div
               style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
                 fontSize: 24,
-                gap: 16,
-                color: textColor
+                color: '#e2e8f0',
+                maxWidth: '800px',
+                lineHeight: 1.4
               }}
             >
-              <span>{post[0]?.likes ?? 0} likes</span>
-              <span>·</span>
-              <span>{post[0]?.views ?? 0} views</span>
+              Read this article on yuricunha.com
             </div>
           </div>
           <div
             style={{
-              color: textColor,
+              color: '#e2e8f0',
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
               width: '100%'
             }}
           >
-            <svg
-              width='33'
-              height='48'
-              viewBox='0 0 33 48'
-              fill='currentColor'
-              xmlns='http://www.w3.org/2000/svg'
-            >
-              <path d='M0 0 C3.96142049 3.59868801 5.72377752 6.23685959 6.62109375 11.47265625 C6.11320313 11.89675781 5.6053125 12.32085937 5.08203125 12.7578125 C-10.32392334 25.88460901 -16.38036155 42.52860819 -18.37890625 62.47265625 C-19.55564432 86.97640058 -17.65926963 111.06256486 -14.74981689 135.36523438 C-13.3931156 146.73143093 -12.07391665 158.10214487 -10.75390625 169.47265625 C-10.67636864 170.1399173 -10.59883102 170.80717834 -10.51894379 171.49465942 C-5.95585085 210.79826248 -5.95585085 210.79826248 -5.37890625 230.47265625 C-5.3418457 231.643125 -5.30478516 232.81359375 -5.26660156 234.01953125 C-4.11446424 276.54594636 -8.27205663 320.56754045 -36.37890625 354.47265625 C-37.075 355.32085937 -37.77109375 356.1690625 -38.48828125 357.04296875 C-56.01008707 377.44244341 -81.91573113 392.27452144 -109.06640625 394.3828125 C-135.81535367 395.42204525 -160.14445102 389.58345596 -180.37890625 371.47265625 C-196.25674946 356.31550947 -207.00956206 335.00799813 -207.546875 312.8359375 C-207.56177359 311.15239708 -207.56800694 309.46876183 -207.56640625 307.78515625 C-207.56519775 306.46765381 -207.56519775 306.46765381 -207.56396484 305.12353516 C-207.3985811 287.4923311 -207.3985811 287.4923311 -203.37890625 283.47265625 C-202.37923828 284.65021484 -202.37923828 284.65021484 -201.359375 285.8515625 C-190.75419563 298.06735972 -179.76905488 304.92831407 -163.3984375 306.81640625 C-150.25095018 307.27173049 -137.79757564 302.44326853 -127.6171875 294.25 C-99.75178465 268.0061673 -91.88715296 220.40754351 -90.2265625 184.14599609 C-89.75222381 168.18212757 -90.82990735 152.35401466 -92.37890625 136.47265625 C-93.36890625 136.47265625 -94.35890625 136.47265625 -95.37890625 136.47265625 C-95.50845703 138.02146484 -95.50845703 138.02146484 -95.640625 139.6015625 C-98.90837803 174.93106322 -108.55970865 216.32018844 -135.37890625 241.47265625 C-138.57441006 244.08200256 -141.84383666 246.35042223 -145.37890625 248.47265625 C-146.00925781 248.8696875 -146.63960938 249.26671875 -147.2890625 249.67578125 C-160.12662821 256.9803834 -176.40562173 256.90311556 -190.37890625 253.47265625 C-205.78907253 248.58022557 -216.10815063 239.41433918 -224.09375 225.48046875 C-227.20464816 219.25867243 -229.30490705 212.84973429 -231.12890625 206.16015625 C-231.42716309 205.0781897 -231.42716309 205.0781897 -231.73144531 203.97436523 C-235.08920742 190.76361594 -235.76216267 177.2876453 -235.69140625 163.72265625 C-235.6892511 162.96842377 -235.68709595 162.21419128 -235.68487549 161.43710327 C-235.45323032 110.34461578 -222.50746754 58.20644863 -204.06640625 10.72265625 C-203.77773682 9.96210937 -203.48906738 9.2015625 -203.19165039 8.41796875 C-200.77940044 2.50362565 -197.44307804 -2.59364311 -191.96484375 -6.05078125 C-191.23523438 -6.33179688 -190.505625 -6.6128125 -189.75390625 -6.90234375 C-189.01914063 -7.19882812 -188.284375 -7.4953125 -187.52734375 -7.80078125 C-173.26815458 -12.62297977 -156.76336054 -10.19496764 -143.36328125 -4.171875 C-137.4243379 -1.21034309 -133.10919899 1.96603363 -129.37890625 7.47265625 C-128.76015625 8.33890625 -128.14140625 9.20515625 -127.50390625 10.09765625 C-124.11313411 20.26997267 -126.95388696 29.69320323 -130.87890625 39.22265625 C-131.80499897 41.59992375 -132.72678596 43.97887252 -133.64453125 46.359375 C-134.10666016 47.54837402 -134.56878906 48.73737305 -135.04492188 49.96240234 C-141.78803628 67.70627112 -146.51450543 85.91224941 -150.37890625 104.47265625 C-150.55824707 105.29282227 -150.73758789 106.11298828 -150.92236328 106.95800781 C-152.99319168 116.52864867 -153.66475568 125.86703733 -153.75390625 135.66015625 C-153.7679248 136.72435791 -153.78194336 137.78855957 -153.79638672 138.88500977 C-153.75931418 144.85796543 -153.20670342 149.18362821 -150.37890625 154.47265625 C-147.57716955 154.76436533 -147.57716955 154.76436533 -144.37890625 153.47265625 C-141.81428521 150.44114266 -140.13183183 147.01969888 -138.37890625 143.47265625 C-137.89550781 142.50457031 -137.41210938 141.53648437 -136.9140625 140.5390625 C-129.25547729 123.94207546 -125.42024389 105.78102134 -121.08721924 88.10421753 C-103.25709128 15.44994272 -103.25709128 15.44994272 -71.9921875 -3.51171875 C-51.19063326 -15.51155687 -18.98350257 -15.43149585 0 0 Z ' />
-            </svg>
+            <div
+              style={{
+                width: '33px',
+                height: '48px',
+                background: 'linear-gradient(135deg, #FF4D4D 0%, #FFCCCC 100%)',
+                borderRadius: '8px'
+              }}
+            />
             <div
               style={{
                 fontSize: 30
@@ -141,25 +199,10 @@ export const GET = async (_: Request, props: OGRouteProps) => {
       ),
       {
         width: 1200,
-        height: 630,
-        fonts: [
-          {
-            name: 'Roboto Condensed',
-            data: roboto,
-            weight: 700,
-            style: 'normal'
-          }
-        ]
+        height: 630
       }
     )
   } catch (error) {
-    return NextResponse.json(
-      {
-        error: 'Failed to generate image: ' + getErrorMessage(error)
-      },
-      {
-        status: 500
-      }
-    )
+    return new Response('Failed to generate image', { status: 500 })
   }
 }
