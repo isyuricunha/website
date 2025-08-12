@@ -17,8 +17,7 @@ export const users = pgTable('users', {
   updatedAt: timestamp('updated_at').notNull(),
   // Custom
   isAnonymous: boolean('isAnonymous').default(false),
-  role: roleEnum('role').default('user').notNull(),
-  banned: boolean('banned').default(false)
+  role: roleEnum('role').default('user').notNull()
 })
 
 

@@ -148,24 +148,6 @@ const UsersTable = (props: UsersTableProps) => {
       )
     },
     {
-      accessorKey: 'banned',
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Status" />
-      ),
-      cell: ({ row }) => {
-        const isBanned = row.original.banned
-        return (
-          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-            isBanned 
-              ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200' 
-              : 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
-          }`}>
-            {isBanned ? 'Banned' : 'Active'}
-          </span>
-        )
-      }
-    },
-    {
       accessorKey: 'createdAt',
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={t('admin.table.users.createdAt')} />
@@ -197,17 +179,14 @@ const UsersTable = (props: UsersTableProps) => {
                 <MailIcon className="mr-2 h-4 w-4" />
                 {t('admin.table.users.reset-password')}
               </DropdownMenuItem>
-              {user.banned ? (
-                <DropdownMenuItem onClick={() => handleUnbanUser(user.id)}>
-                  <BanIcon className="mr-2 h-4 w-4" />
-                  {t('admin.table.users.unban')}
-                </DropdownMenuItem>
-              ) : (
-                <DropdownMenuItem onClick={() => handleBanUser(user.id)}>
-                  <BanIcon className="mr-2 h-4 w-4" />
-                  {t('admin.table.users.ban')}
-                </DropdownMenuItem>
-              )}
+              <DropdownMenuItem onClick={() => handleBanUser(user.id)}>
+                <BanIcon className="mr-2 h-4 w-4" />
+                {t('admin.table.users.ban')}
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleUnbanUser(user.id)}>
+                <BanIcon className="mr-2 h-4 w-4" />
+                {t('admin.table.users.unban')}
+              </DropdownMenuItem>
               <AlertDialog>
                 <AlertDialogTrigger asChild>
                   <DropdownMenuItem onSelect={(e) => e.preventDefault()}>

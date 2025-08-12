@@ -3,7 +3,7 @@
 import type { GetUsersOutput } from '@/trpc/routers/users'
 
 import { useTranslations } from '@tszhong0411/i18n/client'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
@@ -56,19 +56,6 @@ const UserEditModal = ({ user, open, onOpenChange }: UserEditModalProps) => {
     })
 
     const [errors, setErrors] = useState<Record<string, string>>({})
-
-    // Update form data when user changes
-    React.useEffect(() => {
-        if (user) {
-            setFormData({
-                name: user.name || '',
-                username: user.username || '',
-                email: user.email || '',
-                role: user.role || 'user',
-                image: user.image || ''
-            })
-        }
-    }, [user])
 
     const updateUserMutation = api.users.updateUser.useMutation({
         onSuccess: () => {
