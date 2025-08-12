@@ -35,6 +35,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   const [showGame, setShowGame] = useState(false)
   const [isKonamiMode, setIsKonamiMode] = useState(false)
   const [konamiSequence, setKonamiSequence] = useState<number[]>([])
+  const [autoShowMessage, setAutoShowMessage] = useState(false)
   const [preferences, setPreferences] = useState<MascotPreferences>({
     animations: true,
     soundEffects: false,
@@ -133,10 +134,28 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
                   currentPath.startsWith('/spotify') ? 'spotify' :
                   currentPath.startsWith('/guestbook') ? 'guestbook' : 'home'
 
-  // Reset message index when page changes
+  // Reset message index and show automatic message when page changes
   useEffect(() => {
     setMessageIndex(0)
-  }, [pageKey])
+
+    // Show automatic page-specific message after a short delay
+    if (preferences.speechBubbles) {
+      const timer = setTimeout(() => {
+        setAutoShowMessage(true)
+        setShowBubble(true)
+
+        // Hide the message after 5 seconds
+        const hideTimer = setTimeout(() => {
+          setShowBubble(false)
+          setAutoShowMessage(false)
+        }, 5000)
+
+        return () => clearTimeout(hideTimer)
+      }, 1000) // 1 second delay after page load
+
+      return () => clearTimeout(timer)
+    }
+  }, [pageKey, preferences.speechBubbles])
 
   // Build message list from i18n with time-based greetings and context
   const messages: string[] = useMemo(() => {
@@ -205,6 +224,13 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     try {
       localStorage.setItem(PREFERENCES_KEY, JSON.stringify(newPrefs))
     } catch {}
+  }
+
+  const handleBubbleInteraction = () => {
+    if (!autoShowMessage) {
+      pickNextMessage()
+      setShowBubble(true)
+    }
   }
 
   if (hidden || isDismissed || isHiddenPref) return null
@@ -340,19 +366,25 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
           }`}
           onClick={handleMascotClick}
           onMouseEnter={() => {
-            if (preferences.speechBubbles) {
-              pickNextMessage()
-              setShowBubble(true)
+            if (preferences.speechBubbles && !autoShowMessage) {
+              handleBubbleInteraction()
             }
           }}
           onFocus={() => {
-            if (preferences.speechBubbles) {
-              pickNextMessage()
-              setShowBubble(true)
+            if (preferences.speechBubbles && !autoShowMessage) {
+              handleBubbleInteraction()
             }
           }}
-          onBlur={() => setShowBubble(false)}
-          onMouseLeave={() => setShowBubble(false)}
+          onBlur={() => {
+            if (!autoShowMessage) {
+              setShowBubble(false)
+            }
+          }}
+          onMouseLeave={() => {
+            if (!autoShowMessage) {
+              setShowBubble(false)
+            }
+          }}
         >
           <Image
             src='/images/mascote.png'

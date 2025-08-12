@@ -324,65 +324,65 @@
       "clickTarget": "Click target"
     },
     "messages": {
-      "0": "Hi! I'm Yue! Need help navigating?",
+      "0": "Hi! I'm Yue, your virtual assistant! Need help navigating?",
       "1": "Did you know you can activate the retro mode with the Konami Code?",
       "2": "Time for a coffee break! ☕",
       "3": "Hey, I found a hidden easter egg! Want to see?",
-      "4": "Don't forget to check out my latest projects!",
-      "5": "Welcome to my website! How can I help you today?",
+      "4": "Don't forget to check out the latest projects!",
+      "5": "Welcome to the website! How can I help you today?",
       "6": "Feel free to explore around! There's lots to discover.",
       "7": "Need to get in touch? Check out the contact section!",
       "8": "Did you know this site is built with Next.js and TypeScript?",
       "9": "Thanks for visiting! Hope you're having a great day!",
-      "10": "Want to see what I'm working on? Check out my projects!",
-      "11": "I love coding and sharing knowledge. What about you?",
+      "10": "Want to see what's being worked on? Check out the projects!",
+      "11": "I love helping visitors and sharing knowledge. What about you?",
       "12": "Dark mode or light mode? I support both!",
       "13": "This website is fully responsive. Try resizing your browser!",
-      "14": "Found any bugs? Let me know and I'll fix them!",
+      "14": "Found any bugs? Let me know and I'll help report them!",
       "15": "I'm always learning new things. What's your latest discovery?"
     },
     "pageMessages": {
       "home": {
-        "0": "Welcome to my homepage! 👋 I'm Yue!",
+        "0": "Welcome to the homepage! 👋 I'm Yue, your virtual assistant!",
         "1": "This is where it all begins. Ready to explore?",
-        "2": "I'm a database specialist. Want to know more?",
-        "3": "Check out my latest articles and projects below!"
+        "2": "The site owner is a database specialist. Want to know more?",
+        "3": "Check out the latest articles and projects below!"
       },
       "blog": {
-        "0": "Welcome to my blog! 📝 I'm Yue!",
-        "1": "I write about tech, databases, and sometimes life.",
+        "0": "Welcome to the blog! 📝 I'm Yue, your virtual assistant!",
+        "1": "The site owner writes about tech, databases, and sometimes life.",
         "2": "Feel free to leave comments on the articles!",
-        "3": "What topics would you like me to write about?"
+        "3": "What topics would you like to read about?"
       },
       "projects": {
-        "0": "Here are my projects! 🚀 I'm Yue!",
+        "0": "Here are the projects! 🚀 I'm Yue, your virtual assistant!",
         "1": "Everything is built with love and lots of coffee ☕",
         "2": "Want to collaborate? Let's build something amazing!",
-        "3": "Each project taught me something new."
+        "3": "Each project taught something new."
       },
       "about": {
-        "0": "Want to know more about me? 🤔 I'm Yue!",
-        "1": "I'm just a guy who loves databases and coding.",
-        "2": "Feel free to ask me anything!",
-        "3": "My journey started in 2018. Still learning every day!"
+        "0": "Want to know more about the site owner? 🤔 I'm Yue, your virtual assistant!",
+        "1": "The site owner is just a person who loves databases and coding.",
+        "2": "Feel free to ask questions!",
+        "3": "The journey started in 2018. Still learning every day!"
       },
       "uses": {
-        "0": "This is my setup! 💻 I'm Yue!",
-        "1": "Pretty cool setup, no? I love my gear!",
-        "2": "Want to know what I use for development?",
+        "0": "This is the setup! 💻 I'm Yue, your virtual assistant!",
+        "1": "Pretty cool setup, no? The site owner loves their gear!",
+        "2": "Want to know what's used for development?",
         "3": "Good tools make all the difference!"
       },
       "spotify": {
-        "0": "Welcome to my music corner! 🎵 I'm Yue!",
-        "1": "Good or bad music? I don't know, but I like it!",
-        "2": "Music helps me focus while coding.",
+        "0": "Welcome to the music corner! 🎵 I'm Yue, your virtual assistant!",
+        "1": "Good or bad music? I don't know, but the site owner likes it!",
+        "2": "Music helps focus while coding.",
         "3": "What are you listening to these days?"
       },
       "guestbook": {
-        "0": "Leave a message in my guestbook! 📖 I'm Yue!",
-        "1": "I love reading messages from visitors!",
+        "0": "Leave a message in the guestbook! 📖 I'm Yue, your virtual assistant!",
+        "1": "The site owner loves reading messages from visitors!",
         "2": "Feel free to say hello or ask questions!",
-        "3": "Your message will make my day!"
+        "3": "Your message will make their day!"
       }
     }
   }

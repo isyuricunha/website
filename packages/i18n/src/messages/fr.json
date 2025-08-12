@@ -311,65 +311,65 @@
       "night": "Bonne nuit ! Je suis Yue ! 🌙"
     },
     "messages": {
-      "0": "Salut ! Je suis Yue ! Besoin d'aide pour naviguer ?",
+      "0": "Salut ! Je suis Yue, votre assistante virtuelle ! Besoin d'aide pour naviguer ?",
       "1": "Saviez-vous que vous pouvez activer le mode rétro avec le code Konami ?",
       "2": "C'est l'heure d'une pause café ! ☕",
       "3": "Hé, j'ai trouvé un easter egg caché ! Vous voulez voir ?",
-      "4": "N'oubliez pas de jeter un œil à mes derniers projets !",
-      "5": "Bienvenue sur mon site ! Comment puis-je vous aider aujourd'hui ?",
+      "4": "N'oubliez pas de jeter un œil aux derniers projets !",
+      "5": "Bienvenue sur le site ! Comment puis-je vous aider aujourd'hui ?",
       "6": "N'hésitez pas à explorer ! Il y a beaucoup à découvrir.",
-      "7": "Besoin de me contacter ? Consultez la section contact !",
+      "7": "Besoin de contacter ? Consultez la section contact !",
       "8": "Saviez-vous que ce site est construit avec Next.js et TypeScript ?",
       "9": "Merci de votre visite ! J'espère que vous passez une excellente journée !",
-      "10": "Voulez-vous voir sur quoi je travaille ? Consultez mes projets !",
-      "11": "J'aime coder et partager des connaissances. Et vous ?",
+      "10": "Voulez-vous voir sur quoi on travaille ? Consultez les projets !",
+      "11": "J'aime aider les visiteurs et partager des connaissances. Et vous ?",
       "12": "Mode sombre ou clair ? Je supporte les deux !",
       "13": "Ce site est entièrement responsive. Essayez de redimensionner votre navigateur !",
-      "14": "Trouvé des bugs ? Dites-le moi et je les corrigerai !",
+      "14": "Trouvé des bugs ? Dites-le moi et je vous aiderai à les signaler !",
       "15": "J'apprends toujours de nouvelles choses. Quelle est votre dernière découverte ?"
     },
     "pageMessages": {
       "home": {
-        "0": "Bienvenue sur ma page d'accueil ! 👋 Je suis Yue !",
+        "0": "Bienvenue sur la page d'accueil ! 👋 Je suis Yue, votre assistante virtuelle !",
         "1": "C'est ici que tout commence. Prêt à explorer ?",
-        "2": "Je suis spécialiste en bases de données. Voulez-vous en savoir plus ?",
-        "3": "Consultez mes derniers articles et projets ci-dessous !"
+        "2": "Le propriétaire du site est spécialiste en bases de données. Voulez-vous en savoir plus ?",
+        "3": "Consultez les derniers articles et projets ci-dessous !"
       },
       "blog": {
-        "0": "Bienvenue sur mon blog ! 📝 Je suis Yue !",
-        "1": "J'écris sur la tech, les bases de données et parfois la vie.",
+        "0": "Bienvenue sur le blog ! 📝 Je suis Yue, votre assistante virtuelle !",
+        "1": "Le propriétaire du site écrit sur la tech, les bases de données et parfois la vie.",
         "2": "N'hésitez pas à laisser des commentaires sur les articles !",
-        "3": "Sur quels sujets aimeriez-vous que j'écrive ?"
+        "3": "Sur quels sujets aimeriez-vous lire ?"
       },
       "projects": {
-        "0": "Voici mes projets ! 🚀 Je suis Yue !",
+        "0": "Voici les projets ! 🚀 Je suis Yue, votre assistante virtuelle !",
         "1": "Tout est construit avec amour et beaucoup de café ☕",
         "2": "Voulez-vous collaborer ? Construisons quelque chose d'incroyable !",
-        "3": "Chaque projet m'a appris quelque chose de nouveau."
+        "3": "Chaque projet a appris quelque chose de nouveau."
       },
       "about": {
-        "0": "Voulez-vous en savoir plus sur moi ? 🤔 Je suis Yue !",
-        "1": "Je ne suis qu'un gars qui aime les bases de données et le code.",
-        "2": "N'hésitez pas à me poser n'importe quelle question !",
-        "3": "Mon voyage a commencé en 2018. J'apprends encore tous les jours !"
+        "0": "Voulez-vous en savoir plus sur le propriétaire du site ? 🤔 Je suis Yue, votre assistante virtuelle !",
+        "1": "Le propriétaire du site n'est qu'une personne qui aime les bases de données et le code.",
+        "2": "N'hésitez pas à poser des questions !",
+        "3": "Le voyage a commencé en 2018. On apprend encore tous les jours !"
       },
       "uses": {
-        "0": "Voici ma configuration ! 💻 Je suis Yue !",
-        "1": "Configuration assez cool, non ? J'aime mon équipement !",
-        "2": "Voulez-vous savoir ce que j'utilise pour le développement ?",
+        "0": "Voici la configuration ! 💻 Je suis Yue, votre assistante virtuelle !",
+        "1": "Configuration assez cool, non ? Le propriétaire du site aime son équipement !",
+        "2": "Voulez-vous savoir ce qui est utilisé pour le développement ?",
         "3": "Les bons outils font toute la différence !"
       },
       "spotify": {
-        "0": "Bienvenue dans mon coin musique ! 🎵 Je suis Yue !",
-        "1": "Bonne ou mauvaise musique ? Je ne sais pas, mais j'aime !",
-        "2": "La musique m'aide à me concentrer pendant que je code.",
+        "0": "Bienvenue dans le coin musique ! 🎵 Je suis Yue, votre assistante virtuelle !",
+        "1": "Bonne ou mauvaise musique ? Je ne sais pas, mais le propriétaire du site aime !",
+        "2": "La musique aide à se concentrer pendant qu'on code.",
         "3": "Qu'écoutez-vous ces jours-ci ?"
       },
       "guestbook": {
-        "0": "Laissez un message dans mon livre d'or ! 📖 Je suis Yue !",
-        "1": "J'aime lire les messages des visiteurs !",
+        "0": "Laissez un message dans le livre d'or ! 📖 Je suis Yue, votre assistante virtuelle !",
+        "1": "Le propriétaire du site aime lire les messages des visiteurs !",
         "2": "N'hésitez pas à dire bonjour ou poser des questions !",
-        "3": "Votre message fera ma journée !"
+        "3": "Votre message fera sa journée !"
       }
     }
   }

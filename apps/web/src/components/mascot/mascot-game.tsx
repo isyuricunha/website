@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { XIcon, TrophyIcon, RefreshCwIcon } from 'lucide-react'
+import { useState, useEffect, useCallback } from 'react'
+import { XIcon, TrophyIcon } from 'lucide-react'
 import { useTranslations } from '@tszhong0411/i18n/client'
 
 interface MascotGameProps {
@@ -25,7 +25,7 @@ const MascotGame = ({ isOpen, onClose }: MascotGameProps) => {
     } catch {}
   }, [])
 
-  // Game timer
+  // Game timer - Fixed to run continuously
   useEffect(() => {
     if (!isPlaying || timeLeft <= 0) return
 
@@ -47,26 +47,26 @@ const MascotGame = ({ isOpen, onClose }: MascotGameProps) => {
     }, 1000)
 
     return () => clearInterval(timer)
-  }, [isPlaying, timeLeft, score, highScore])
+  }, [isPlaying, score, highScore]) // Removed timeLeft from dependencies to prevent timer freezing
 
-  const startGame = () => {
+  const startGame = useCallback(() => {
     setScore(0)
     setTimeLeft(30)
     setIsPlaying(true)
     moveTarget()
-  }
+  }, [])
 
-  const moveTarget = () => {
+  const moveTarget = useCallback(() => {
     const x = Math.random() * 80 + 10 // 10% to 90%
     const y = Math.random() * 80 + 10 // 10% to 90%
     setTargetPosition({ x, y })
-  }
+  }, [])
 
-  const handleTargetClick = () => {
+  const handleTargetClick = useCallback(() => {
     if (!isPlaying) return
     setScore(prev => prev + 1)
     moveTarget()
-  }
+  }, [isPlaying, moveTarget])
 
   if (!isOpen) return null
 
