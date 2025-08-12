@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react'
 import Image from 'next/image'
-import { XIcon, SettingsIcon, GamepadIcon, EyeIcon } from 'lucide-react'
+import { XIcon, SettingsIcon, GamepadIcon, EyeIcon, MenuIcon, BugIcon, GithubIcon, CopyIcon } from 'lucide-react'
 import { useTranslations } from '@tszhong0411/i18n/client'
 import MascotGame from './mascot-game'
 
@@ -35,12 +35,16 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   const [isWaving, setIsWaving] = useState(false)
   const [showSettings, setShowSettings] = useState(false)
   const [showGame, setShowGame] = useState(false)
+  const [showMenu, setShowMenu] = useState(false)
+  const [showContact, setShowContact] = useState(false)
   const [isKonamiMode, setIsKonamiMode] = useState(false)
   const [konamiSequence, setKonamiSequence] = useState<number[]>([])
   const [autoShowMessage, setAutoShowMessage] = useState(false)
   const [isHovering, setIsHovering] = useState(false)
   const [currentMessage, setCurrentMessage] = useState<string>('')
   const [idleTimer, setIdleTimer] = useState<NodeJS.Timeout | null>(null)
+  const [isPinned, setIsPinned] = useState(false)
+  const [lastMessageIndex, setLastMessageIndex] = useState(-1)
   const [preferences, setPreferences] = useState<MascotPreferences>({
     animations: true,
     soundEffects: false,
@@ -82,6 +86,16 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     return idleMessages[Math.floor(Math.random() * idleMessages.length)]
   }
 
+  // Copy email to clipboard
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText('yuri@yuricunha.com')
+      // Could add a toast notification here
+    } catch (err) {
+      console.error('Failed to copy email:', err)
+    }
+  }
+
   // Read dismissal state and preferences once per session
   useEffect(() => {
     try {
@@ -108,8 +122,10 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     const handleKeyDown = (event: KeyboardEvent) => {
       // Keyboard shortcut to restore Yue (Shift+Y)
       if (event.shiftKey && event.key.toLowerCase() === 'y') {
+        setIsDismissed(false)
         setIsHiddenPref(false)
         try {
+          sessionStorage.removeItem(STORAGE_KEY)
           localStorage.removeItem(HIDE_KEY)
         } catch {}
         return
@@ -154,16 +170,18 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
   // Idle timer for fun facts
   useEffect(() => {
-    if (!preferences.speechBubbles || showBubble || autoShowMessage) return
+    if (!preferences.speechBubbles || showBubble || autoShowMessage || isPinned) return
 
     const timer = setTimeout(() => {
-      if (!showBubble && !autoShowMessage) {
+      if (!showBubble && !autoShowMessage && !isPinned) {
         setCurrentMessage(getIdleMessage())
         setShowBubble(true)
 
         // Hide idle message after 4 seconds
         setTimeout(() => {
-          setShowBubble(false)
+          if (!isPinned) {
+            setShowBubble(false)
+          }
         }, 4000)
       }
     }, 25000) // 25 seconds idle
@@ -172,21 +190,31 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     return () => {
       if (timer) clearTimeout(timer)
     }
-  }, [preferences.speechBubbles, showBubble, autoShowMessage])
+  }, [preferences.speechBubbles, showBubble, autoShowMessage, isPinned])
 
-  // Get current page path for contextual messages
+  // Get current page path for contextual messages (language-aware)
   const currentPath = typeof window !== 'undefined' ? window.location.pathname : ''
-  const pageKey = currentPath === '/' ? 'home' :
-                  currentPath.startsWith('/blog') ? 'blog' :
-                  currentPath.startsWith('/projects') ? 'projects' :
-                  currentPath.startsWith('/about') ? 'about' :
-                  currentPath.startsWith('/uses') ? 'uses' :
-                  currentPath.startsWith('/spotify') ? 'spotify' :
-                  currentPath.startsWith('/guestbook') ? 'guestbook' : 'home'
+  const getPageKey = (path: string) => {
+    // Remove locale prefix if present
+    const pathWithoutLocale = path.replace(/^\/(en|pt|fr|de|zh)\//, '/')
+
+    if (pathWithoutLocale === '/' || pathWithoutLocale === '') return 'home'
+    if (pathWithoutLocale.startsWith('/blog')) return 'blog'
+    if (pathWithoutLocale.startsWith('/projects')) return 'projects'
+    if (pathWithoutLocale.startsWith('/about')) return 'about'
+    if (pathWithoutLocale.startsWith('/uses')) return 'uses'
+    if (pathWithoutLocale.startsWith('/spotify')) return 'spotify'
+    if (pathWithoutLocale.startsWith('/guestbook')) return 'guestbook'
+    return 'home'
+  }
+
+  const pageKey = getPageKey(currentPath)
 
   // Reset message index and show automatic message when page changes
   useEffect(() => {
     setMessageIndex(0)
+    setLastMessageIndex(-1)
+    setIsPinned(false)
 
     // Show automatic page-specific message after a short delay
     if (preferences.speechBubbles) {
@@ -195,10 +223,12 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         setShowBubble(true)
         setCurrentMessage(messages[0] || '')
 
-        // Hide the message after configured duration
+        // Hide the message after configured duration (unless pinned)
         const hideTimer = setTimeout(() => {
-          setShowBubble(false)
-          setAutoShowMessage(false)
+          if (!isPinned) {
+            setShowBubble(false)
+            setAutoShowMessage(false)
+          }
         }, preferences.messageDuration)
 
         return () => clearTimeout(hideTimer)
@@ -234,7 +264,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     }
 
     // Then add general messages
-    for (let i = 0; i < 16; i += 1) {
+    for (let i = 0; i < 20; i += 1) {
       const key = `mascot.messages.${i}`
       try {
         const value = t(key as any)
@@ -248,10 +278,21 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     return list
   }, [t, pageKey])
 
+  // Get random message index (avoiding last message)
+  const getRandomMessageIndex = () => {
+    if (messages.length <= 1) return 0
+    let newIndex
+    do {
+      newIndex = Math.floor(Math.random() * messages.length)
+    } while (newIndex === lastMessageIndex && messages.length > 1)
+    return newIndex
+  }
+
   const pickNextMessage = () => {
     if (messages.length === 0) return
-    const newIndex = (messageIndex + 1) % messages.length
+    const newIndex = getRandomMessageIndex()
     setMessageIndex(newIndex)
+    setLastMessageIndex(newIndex)
     setCurrentMessage(messages[newIndex])
   }
 
@@ -290,7 +331,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
   const handleMouseEnter = () => {
     setIsHovering(true)
-    if (preferences.speechBubbles && !autoShowMessage) {
+    if (preferences.speechBubbles && !autoShowMessage && !isPinned) {
       if (!currentMessage) {
         setCurrentMessage(messages[messageIndex] || '')
       }
@@ -300,7 +341,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
   const handleMouseLeave = () => {
     setIsHovering(false)
-    if (!autoShowMessage) {
+    if (!autoShowMessage && !isPinned) {
       setShowBubble(false)
     }
   }
@@ -313,10 +354,41 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   }
 
   const handleRestoreMascot = () => {
+    setIsDismissed(false)
     setIsHiddenPref(false)
     try {
+      sessionStorage.removeItem(STORAGE_KEY)
       localStorage.removeItem(HIDE_KEY)
     } catch {}
+  }
+
+  const handleTogglePin = () => {
+    setIsPinned(!isPinned)
+    if (!isPinned) {
+      setShowBubble(true)
+    }
+  }
+
+  const handleMenuAction = (action: string) => {
+    setShowMenu(false)
+    setShowBubble(false)
+
+    switch (action) {
+      case 'contact':
+        setShowContact(true)
+        setShowBubble(true)
+        break
+      case 'projects':
+        window.open('https://github.com/isyuricunha', '_blank')
+        break
+      case 'game':
+        setShowGame(true)
+        break
+      case 'settings':
+        setShowSettings(true)
+        setShowBubble(true)
+        break
+    }
   }
 
   // Get position classes based on preference
@@ -333,10 +405,10 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     }
   }
 
-  if (hidden || isDismissed) return null
+  if (hidden) return null
 
-  // Show restore button when hidden
-  if (isHiddenPref) {
+  // Show restore button when hidden or dismissed
+  if (isHiddenPref || isDismissed) {
     return (
       <div className={getPositionClasses()}>
         <button
@@ -439,6 +511,78 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
           </div>
         )}
 
+        {/* Contact Panel */}
+        {showContact && (
+          <div className='absolute bottom-full right-0 mb-2 w-80 rounded-lg border bg-popover p-4 text-sm text-popover-foreground shadow-lg'>
+            <div className='flex items-center justify-between mb-3'>
+              <h3 className='font-medium'>{t('mascot.contact.title')}</h3>
+              <button
+                type='button'
+                aria-label={t('mascot.contact.close')}
+                className='rounded p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
+                onClick={() => setShowContact(false)}
+              >
+                <XIcon className='h-4 w-4' />
+              </button>
+            </div>
+
+            <div className='space-y-3'>
+              <p className='text-sm'>{t('mascot.contact.description')}</p>
+              <div className='flex items-center gap-2'>
+                <code className='flex-1 rounded bg-muted px-2 py-1 text-xs'>yuri@yuricunha.com</code>
+                <button
+                  type='button'
+                  aria-label={t('mascot.contact.copy')}
+                  className='rounded p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
+                  onClick={copyEmail}
+                >
+                  <CopyIcon className='h-4 w-4' />
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Menu Panel */}
+        {showMenu && (
+          <div className='absolute bottom-full right-0 mb-2 w-48 rounded-lg border bg-popover p-2 text-sm text-popover-foreground shadow-lg'>
+            <div className='space-y-1'>
+              <button
+                type='button'
+                className='flex w-full items-center gap-2 rounded px-3 py-2 text-left transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
+                onClick={() => handleMenuAction('contact')}
+              >
+                <BugIcon className='h-4 w-4' />
+                {t('mascot.menu.reportBug')}
+              </button>
+              <button
+                type='button'
+                className='flex w-full items-center gap-2 rounded px-3 py-2 text-left transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
+                onClick={() => handleMenuAction('projects')}
+              >
+                <GithubIcon className='h-4 w-4' />
+                {t('mascot.menu.viewProjects')}
+              </button>
+              <button
+                type='button'
+                className='flex w-full items-center gap-2 rounded px-3 py-2 text-left transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
+                onClick={() => handleMenuAction('game')}
+              >
+                <GamepadIcon className='h-4 w-4' />
+                {t('mascot.menu.miniGame')}
+              </button>
+              <button
+                type='button'
+                className='flex w-full items-center gap-2 rounded px-3 py-2 text-left transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
+                onClick={() => handleMenuAction('settings')}
+              >
+                <SettingsIcon className='h-4 w-4' />
+                {t('mascot.menu.settings')}
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* Speech Bubble */}
         {preferences.speechBubbles && (
           <div
@@ -460,19 +604,19 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
               <div className='flex items-center gap-1'>
                 <button
                   type='button'
-                  aria-label={t('mascot.game.open')}
+                  aria-label={isPinned ? t('mascot.unpin') : t('mascot.pin')}
                   className='rounded px-2 py-1 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
-                  onClick={() => setShowGame(true)}
+                  onClick={handleTogglePin}
                 >
-                  <GamepadIcon className='h-3 w-3' />
+                  {isPinned ? '📌' : '📍'}
                 </button>
                 <button
                   type='button'
-                  aria-label={t('mascot.settings.open')}
+                  aria-label={t('mascot.menu.open')}
                   className='rounded px-2 py-1 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
-                  onClick={() => setShowSettings(true)}
+                  onClick={() => setShowMenu(!showMenu)}
                 >
-                  <SettingsIcon className='h-3 w-3' />
+                  <MenuIcon className='h-3 w-3' />
                 </button>
                 <button
                   type='button'
@@ -508,7 +652,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
           onClick={handleMascotClick}
           onMouseEnter={handleMouseEnter}
           onFocus={() => {
-            if (preferences.speechBubbles && !autoShowMessage) {
+            if (preferences.speechBubbles && !autoShowMessage && !isPinned) {
               if (!currentMessage) {
                 setCurrentMessage(messages[messageIndex] || '')
               }
@@ -516,7 +660,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
             }
           }}
           onBlur={() => {
-            if (!autoShowMessage && !isHovering) {
+            if (!autoShowMessage && !isHovering && !isPinned) {
               setShowBubble(false)
             }
           }}

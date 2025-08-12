@@ -313,12 +313,27 @@
       "retroMode": "Retro mode activated! 🎮"
     },
     "restore": "Bring Yue back",
+    "pin": "Pin message",
+    "unpin": "Unpin message",
     "idle": {
       "tip1": "💡 Did you know? You can use Shift+Y to bring me back if I'm hidden!",
       "tip2": "🎮 Try the mini-game! Click the gamepad icon in my speech bubble.",
       "tip3": "⚙️ Customize my behavior in the settings panel.",
       "tip4": "🎯 I'm here to help! Feel free to ask questions or explore the site.",
       "tip5": "🌟 Found any bugs? Let me know and I'll help report them!"
+    },
+    "menu": {
+      "open": "Open menu",
+      "reportBug": "Report a bug / Contact",
+      "viewProjects": "View Projects",
+      "miniGame": "Mini-game",
+      "settings": "Settings"
+    },
+    "contact": {
+      "title": "Contact my creator, Yuri",
+      "close": "Close contact",
+      "description": "Found a bug or want to get in touch? Here's my creator's email:",
+      "copy": "Copy email"
     },
     "greetings": {
       "morning": "Good morning! I'm Yue! ☀️",
@@ -344,29 +359,53 @@
       "1": "Did you know you can activate the retro mode with the Konami Code?",
       "2": "Time for a coffee break! ☕",
       "3": "Hey, I found a hidden easter egg! Want to see?",
-      "4": "Don't forget to check out the latest projects!",
+      "4": "Don't forget to check out my creator, Yuri's latest projects!",
       "5": "Welcome to the website! How can I help you today?",
       "6": "Feel free to explore around! There's lots to discover.",
       "7": "Need to get in touch? Check out the contact section!",
       "8": "Did you know this site is built with Next.js and TypeScript?",
       "9": "Thanks for visiting! Hope you're having a great day!",
-      "10": "Want to see what's being worked on? Check out the projects!",
+      "10": "Want to see what my creator, Yuri is working on? Check out the projects!",
       "11": "I love helping visitors and sharing knowledge. What about you?",
       "12": "Dark mode or light mode? I support both!",
       "13": "This website is fully responsive. Try resizing your browser!",
       "14": "Found any bugs? Let me know and I'll help report them!",
-      "15": "I'm always learning new things. What's your latest discovery?"
+      "15": "I'm always learning new things from my creator, Yuri. What's your latest discovery?",
+      "16": "My creator, Yuri, is a database specialist. Pretty cool, right?",
+      "17": "I can help you find anything on the site!",
+      "18": "Did you know my creator, Yuri started this journey in 2018?",
+      "19": "The mini-game is a great way to take a break!",
+      "20": "I'm here to make your visit more enjoyable!",
+      "21": "My creator, Yuri writes about tech and life on the blog.",
+      "22": "Have you seen the projects section? My creator's work is amazing!",
+      "23": "I love when visitors explore different pages!",
+      "24": "The guestbook is a great place to leave a message!",
+      "25": "My creator, Yuri is always working on something new!",
+      "26": "Did you know you can customize my behavior in settings?",
+      "27": "I'm here to help make your experience better!",
+      "28": "My creator, Yuri loves sharing knowledge through the blog.",
+      "29": "The site is designed to be accessible to everyone!",
+      "30": "I'm learning new things every day from my creator, Yuri!",
+      "31": "Have you checked out the uses page? My creator's setup is impressive!",
+      "32": "I'm here to guide you through the site!",
+      "33": "My creator, Yuri believes in the power of open source!",
+      "34": "The Spotify page shows what my creator is listening to!",
+      "35": "I'm always excited to meet new visitors!",
+      "36": "My creator, Yuri loves helping others learn!",
+      "37": "Did you know you can pin messages to keep them visible?",
+      "38": "I'm here to make your browsing experience more fun!",
+      "39": "My creator, Yuri is passionate about technology!"
     },
     "pageMessages": {
       "home": {
         "0": "Welcome to the homepage! 👋 I'm Yue, your virtual assistant!",
         "1": "This is where it all begins. Ready to explore?",
-        "2": "The site owner is a database specialist. Want to know more?",
+        "2": "My creator, Yuri is a database specialist. Want to know more?",
         "3": "Check out the latest articles and projects below!"
       },
       "blog": {
         "0": "Welcome to the blog! 📝",
-        "1": "The site owner writes about tech, databases, and sometimes life.",
+        "1": "My creator, Yuri writes about tech, databases, and sometimes life.",
         "2": "Feel free to leave comments on the articles!",
         "3": "What topics would you like to read about?"
       },
@@ -374,29 +413,29 @@
         "0": "Here are the projects! 🚀",
         "1": "Everything is built with love and lots of coffee ☕",
         "2": "Want to collaborate? Let's build something amazing!",
-        "3": "Each project taught something new."
+        "3": "Each project taught my creator, Yuri something new."
       },
       "about": {
-        "0": "Want to know more about the site owner? 🤔",
-        "1": "The site owner is just a person who loves databases and coding.",
+        "0": "Want to know more about my creator, Yuri? 🤔",
+        "1": "My creator, Yuri is just a person who loves databases and coding.",
         "2": "Feel free to ask questions!",
         "3": "The journey started in 2018. Still learning every day!"
       },
       "uses": {
         "0": "This is the setup! 💻",
-        "1": "Pretty cool setup, no? The site owner loves their gear!",
+        "1": "Pretty cool setup, no? My creator, Yuri loves their gear!",
         "2": "Want to know what's used for development?",
         "3": "Good tools make all the difference!"
       },
       "spotify": {
         "0": "Welcome to the music corner! 🎵",
-        "1": "Good or bad music? I don't know, but the site owner likes it!",
+        "1": "Good or bad music? I don't know, but my creator, Yuri likes it!",
         "2": "Music helps focus while coding.",
         "3": "What are you listening to these days?"
       },
       "guestbook": {
         "0": "Leave a message in the guestbook! 📖",
-        "1": "The site owner loves reading messages from visitors!",
+        "1": "My creator, Yuri loves reading messages from visitors!",
         "2": "Feel free to say hello or ask questions!",
         "3": "Your message will make their day!"
       }

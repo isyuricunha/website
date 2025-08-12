@@ -299,10 +299,41 @@
       "open": "Ouvrir les paramètres",
       "animations": "Animations",
       "speechBubbles": "Bulles de dialogue",
-      "soundEffects": "Effets sonores"
+      "soundEffects": "Effets sonores",
+      "messageDuration": "Durée du message",
+      "bubblePosition": "Position de la bulle",
+      "positions": {
+        "bottomRight": "Bas Droite",
+        "bottomLeft": "Bas Gauche",
+        "topRight": "Haut Droite",
+        "topLeft": "Haut Gauche"
+      }
     },
     "easterEgg": {
       "retroMode": "Mode rétro activé ! 🎮"
+    },
+    "restore": "Ramener Yue",
+    "pin": "Épingler le message",
+    "unpin": "Désépingler le message",
+    "idle": {
+      "tip1": "💡 Saviez-vous ? Vous pouvez utiliser Shift+Y pour me ramener si je suis cachée !",
+      "tip2": "🎮 Essayez le mini-jeu ! Cliquez sur l'icône de manette dans ma bulle de dialogue.",
+      "tip3": "⚙️ Personnalisez mon comportement dans le panneau des paramètres.",
+      "tip4": "🎯 Je suis là pour aider ! N'hésitez pas à poser des questions ou explorer le site.",
+      "tip5": "🌟 Trouvé des bugs ? Dites-le moi et je vous aiderai à les signaler !"
+    },
+    "menu": {
+      "open": "Ouvrir le menu",
+      "reportBug": "Signaler un bug / Contact",
+      "viewProjects": "Voir les Projets",
+      "miniGame": "Mini-jeu",
+      "settings": "Paramètres"
+    },
+    "contact": {
+      "title": "Contacter mon créateur, Yuri",
+      "close": "Fermer le contact",
+      "description": "Trouvé un bug ou envie de contacter ? Voici l'email de mon créateur :",
+      "copy": "Copier l'email"
     },
     "greetings": {
       "morning": "Bonjour ! Je suis Yue ! ☀️",
@@ -310,64 +341,101 @@
       "evening": "Bonsoir ! Je suis Yue ! 🌅",
       "night": "Bonne nuit ! Je suis Yue ! 🌙"
     },
+    "game": {
+      "title": "Mini-Jeu de Yue",
+      "close": "Fermer le jeu",
+      "open": "Ouvrir le jeu",
+      "score": "Score",
+      "time": "Temps",
+      "highScore": "Meilleur Score",
+      "instructions": "Cliquez sur la cible autant de fois que possible en 30 secondes !",
+      "start": "Commencer le Jeu",
+      "playAgain": "Rejouer",
+      "gameOver": "Fin de partie ! Votre score : {score}",
+      "clickTarget": "Cliquer sur la cible"
+    },
     "messages": {
       "0": "Salut ! Je suis Yue, votre assistante virtuelle ! Besoin d'aide pour naviguer ?",
       "1": "Saviez-vous que vous pouvez activer le mode rétro avec le code Konami ?",
       "2": "C'est l'heure d'une pause café ! ☕",
       "3": "Hé, j'ai trouvé un easter egg caché ! Vous voulez voir ?",
-      "4": "N'oubliez pas de jeter un œil aux derniers projets !",
+      "4": "N'oubliez pas de jeter un œil aux derniers projets de mon créateur, Yuri !",
       "5": "Bienvenue sur le site ! Comment puis-je vous aider aujourd'hui ?",
       "6": "N'hésitez pas à explorer ! Il y a beaucoup à découvrir.",
       "7": "Besoin de contacter ? Consultez la section contact !",
       "8": "Saviez-vous que ce site est construit avec Next.js et TypeScript ?",
       "9": "Merci de votre visite ! J'espère que vous passez une excellente journée !",
-      "10": "Voulez-vous voir sur quoi on travaille ? Consultez les projets !",
+      "10": "Voulez-vous voir sur quoi mon créateur, Yuri travaille ? Consultez les projets !",
       "11": "J'aime aider les visiteurs et partager des connaissances. Et vous ?",
       "12": "Mode sombre ou clair ? Je supporte les deux !",
       "13": "Ce site est entièrement responsive. Essayez de redimensionner votre navigateur !",
       "14": "Trouvé des bugs ? Dites-le moi et je vous aiderai à les signaler !",
-      "15": "J'apprends toujours de nouvelles choses. Quelle est votre dernière découverte ?"
+      "15": "J'apprends toujours de nouvelles choses de mon créateur, Yuri. Quelle est votre dernière découverte ?",
+      "16": "Mon créateur, Yuri, est spécialiste en bases de données. Assez cool, non ?",
+      "17": "Je peux vous aider à trouver n'importe quoi sur le site !",
+      "18": "Saviez-vous que mon créateur, Yuri a commencé ce voyage en 2018 ?",
+      "19": "Le mini-jeu est un excellent moyen de faire une pause !",
+      "20": "Je suis là pour rendre votre visite plus agréable !",
+      "21": "Mon créateur, Yuri écrit sur la tech et la vie sur le blog.",
+      "22": "Avez-vous vu la section projets ? Le travail de mon créateur est incroyable !",
+      "23": "J'aime quand les visiteurs explorent différentes pages !",
+      "24": "Le livre d'or est un excellent endroit pour laisser un message !",
+      "25": "Mon créateur, Yuri travaille toujours sur quelque chose de nouveau !",
+      "26": "Saviez-vous que vous pouvez personnaliser mon comportement dans les paramètres ?",
+      "27": "Je suis là pour aider à améliorer votre expérience !",
+      "28": "Mon créateur, Yuri aime partager des connaissances à travers le blog.",
+      "29": "Le site est conçu pour être accessible à tous !",
+      "30": "J'apprends de nouvelles choses tous les jours de mon créateur, Yuri !",
+      "31": "Avez-vous consulté la page uses ? La configuration de mon créateur est impressionnante !",
+      "32": "Je suis là pour vous guider à travers le site !",
+      "33": "Mon créateur, Yuri croit au pouvoir de l'open source !",
+      "34": "La page Spotify montre ce que mon créateur écoute !",
+      "35": "Je suis toujours excitée de rencontrer de nouveaux visiteurs !",
+      "36": "Mon créateur, Yuri aime aider les autres à apprendre !",
+      "37": "Saviez-vous que vous pouvez épingler des messages pour les garder visibles ?",
+      "38": "Je suis là pour rendre votre expérience de navigation plus amusante !",
+      "39": "Mon créateur, Yuri est passionné par la technologie !"
     },
     "pageMessages": {
       "home": {
         "0": "Bienvenue sur la page d'accueil ! 👋 Je suis Yue, votre assistante virtuelle !",
         "1": "C'est ici que tout commence. Prêt à explorer ?",
-        "2": "Le propriétaire du site est spécialiste en bases de données. Voulez-vous en savoir plus ?",
+        "2": "Mon créateur, Yuri est spécialiste en bases de données. Voulez-vous en savoir plus ?",
         "3": "Consultez les derniers articles et projets ci-dessous !"
       },
       "blog": {
-        "0": "Bienvenue sur le blog ! 📝 Je suis Yue, votre assistante virtuelle !",
-        "1": "Le propriétaire du site écrit sur la tech, les bases de données et parfois la vie.",
+        "0": "Bienvenue sur le blog ! 📝",
+        "1": "Mon créateur, Yuri écrit sur la tech, les bases de données et parfois la vie.",
         "2": "N'hésitez pas à laisser des commentaires sur les articles !",
         "3": "Sur quels sujets aimeriez-vous lire ?"
       },
       "projects": {
-        "0": "Voici les projets ! 🚀 Je suis Yue, votre assistante virtuelle !",
+        "0": "Voici les projets ! 🚀",
         "1": "Tout est construit avec amour et beaucoup de café ☕",
         "2": "Voulez-vous collaborer ? Construisons quelque chose d'incroyable !",
-        "3": "Chaque projet a appris quelque chose de nouveau."
+        "3": "Chaque projet a appris quelque chose de nouveau à mon créateur, Yuri."
       },
       "about": {
-        "0": "Voulez-vous en savoir plus sur le propriétaire du site ? 🤔 Je suis Yue, votre assistante virtuelle !",
-        "1": "Le propriétaire du site n'est qu'une personne qui aime les bases de données et le code.",
+        "0": "Voulez-vous en savoir plus sur mon créateur, Yuri ? 🤔",
+        "1": "Mon créateur, Yuri n'est qu'une personne qui aime les bases de données et le code.",
         "2": "N'hésitez pas à poser des questions !",
         "3": "Le voyage a commencé en 2018. On apprend encore tous les jours !"
       },
       "uses": {
-        "0": "Voici la configuration ! 💻 Je suis Yue, votre assistante virtuelle !",
-        "1": "Configuration assez cool, non ? Le propriétaire du site aime son équipement !",
+        "0": "Voici la configuration ! 💻",
+        "1": "Configuration assez cool, non ? Mon créateur, Yuri aime son équipement !",
         "2": "Voulez-vous savoir ce qui est utilisé pour le développement ?",
         "3": "Les bons outils font toute la différence !"
       },
       "spotify": {
-        "0": "Bienvenue dans le coin musique ! 🎵 Je suis Yue, votre assistante virtuelle !",
-        "1": "Bonne ou mauvaise musique ? Je ne sais pas, mais le propriétaire du site aime !",
+        "0": "Bienvenue dans le coin musique ! 🎵",
+        "1": "Bonne ou mauvaise musique ? Je ne sais pas, mais mon créateur, Yuri aime !",
         "2": "La musique aide à se concentrer pendant qu'on code.",
         "3": "Qu'écoutez-vous ces jours-ci ?"
       },
       "guestbook": {
-        "0": "Laissez un message dans le livre d'or ! 📖 Je suis Yue, votre assistante virtuelle !",
-        "1": "Le propriétaire du site aime lire les messages des visiteurs !",
+        "0": "Laissez un message dans le livre d'or ! 📖",
+        "1": "Mon créateur, Yuri aime lire les messages des visiteurs !",
         "2": "N'hésitez pas à dire bonjour ou poser des questions !",
         "3": "Votre message fera sa journée !"
       }
