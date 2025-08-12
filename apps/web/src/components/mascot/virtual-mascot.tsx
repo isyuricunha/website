@@ -34,17 +34,15 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   // Build message list from i18n. Expect keys mascot.messages.0, .1, ... up to a small count
   const messages: string[] = useMemo(() => {
     const list: string[] = []
-    for (let i = 0; i < 12; i += 1) {
+    for (let i = 0; i < 5; i += 1) {
       const key = `mascot.messages.${i}`
-      const value = t.optional?.(key as any) ?? ((): string | null => {
-        try {
-          return t(key as any)
-        } catch {
-          return null
-        }
-      })()
-      if (!value) break
-      list.push(value)
+      try {
+        const value = t(key as any)
+        if (value) list.push(value)
+      } catch {
+        // Stop when we can't find more messages
+        break
+      }
     }
     return list
   }, [t])
@@ -65,17 +63,14 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   if (hidden || isDismissed || isHiddenPref) return null
 
   return (
-    <div
-      aria-hidden='true'
-      className='pointer-events-none fixed bottom-5 right-5 z-40 hidden sm:block'
-    >
+    <div className='fixed bottom-5 right-5 z-40 hidden sm:block'>
       {/* Bubble */}
       {showBubble && messages.length > 0 && (
         <div
           ref={bubbleRef}
           role='dialog'
           aria-live='polite'
-          className='pointer-events-auto mb-2 max-w-xs rounded-lg border bg-popover p-3 text-sm text-popover-foreground shadow-lg outline-none ring-0 transition-all duration-200 ease-out animate-[fadeInUp_200ms_ease-out]'
+          className='mb-2 max-w-xs rounded-lg border bg-popover p-3 text-sm text-popover-foreground shadow-lg outline-none ring-0 transition-all duration-200 ease-out animate-[fadeInUp_200ms_ease-out]'
         >
           <div className='flex items-start gap-3'>
             <div className='min-w-0 flex-1'>{messages[messageIndex]}</div>
@@ -110,7 +105,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       <button
         type='button'
         aria-label={t('mascot.ariaLabel')}
-        className={`pointer-events-auto inline-flex h-[120px] w-[120px] items-center justify-center rounded-full border transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
+        className={`inline-flex h-[120px] w-[120px] items-center justify-center rounded-full border transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
           isActive ? 'border-primary shadow-lg shadow-primary/20' : 'border-border shadow'
         }`}
         onClick={() => setIsActive((v) => !v)}
@@ -126,7 +121,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         onMouseLeave={() => setShowBubble(false)}
       >
         <Image
-          src='/images/mascote.png'
+          src='/images/avatar.png'
           alt=''
           role='presentation'
           width={120}
@@ -136,13 +131,6 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         />
       </button>
 
-      {/* CSS keyframes for fade-in up */}
-      <style jsx global>{`
-        @keyframes fadeInUp {
-          from { opacity: 0; transform: translateY(6px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-      `}</style>
     </div>
   )
 }
