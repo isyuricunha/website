@@ -3,33 +3,6 @@
     "title": "About",
     "description": "👋 Hey! I am Yuri Cunha, just a random guy on the internet.."
   },
-  "pen": {
-    "title": "Pen",
-    "description": "A code playground for experimenting with snippets and ideas",
-    "editor": {
-      "placeholder": "Write your code here...",
-      "run": "Run Code",
-      "clear": "Clear",
-      "copy": "Copy",
-      "download": "Download",
-      "language": "Language"
-    },
-    "output": {
-      "title": "Output",
-      "console": "Console",
-      "result": "Result"
-    },
-    "languages": {
-      "javascript": "JavaScript",
-      "typescript": "TypeScript",
-      "python": "Python",
-      "html": "HTML",
-      "css": "CSS",
-      "json": "JSON",
-      "sql": "SQL",
-      "bash": "Bash"
-    }
-  },
   "admin": {
     "nav": {
       "comments": "Comments",
@@ -419,128 +392,50 @@
       "36": "My creator, Yuri loves helping others learn!",
       "37": "Did you know you can pin messages to keep them visible?",
       "38": "I'm here to make your browsing experience more fun!",
-      "39": "My creator, Yuri is passionate about technology!",
-      "40": "Have you tried the new pen page? It's a great place to experiment with code!",
-      "41": "I love watching people code! The pen page is perfect for that!",
-      "42": "Need to test some code quickly? The pen page has got you covered!",
-      "43": "My creator, Yuri added a code playground just for you!",
-      "44": "The pen page supports multiple programming languages!",
-      "45": "You can run JavaScript and TypeScript directly in the pen!",
-      "46": "The pen page is perfect for quick code experiments!",
-      "47": "Did you know you can download your code from the pen page?",
-      "48": "The pen page has a beautiful code editor!",
-      "49": "You can copy and share code snippets easily from the pen!",
-      "50": "The pen page is one of my favorite features!",
-      "51": "Need to validate some JSON? Try the pen page!",
-      "52": "The pen page is great for learning new programming languages!",
-      "53": "You can see console output in real-time on the pen page!",
-      "54": "The pen page is perfect for debugging small code snippets!",
-      "55": "My creator, Yuri loves coding, just like you!",
-      "56": "The pen page supports HTML, CSS, JavaScript, and more!",
-      "57": "You can experiment with different languages on the pen page!",
-      "58": "The pen page is a great tool for developers!",
-      "59": "I'm always here to help you explore the site!",
-      "60": "The pen page is perfect for quick prototyping!",
-      "61": "You can save your code snippets for later!",
-      "62": "The pen page has a clean and modern interface!",
-      "63": "My creator, Yuri made the pen page with love!",
-      "64": "The pen page is great for teaching and learning!",
-      "65": "You can run code without leaving the browser!",
-      "66": "The pen page supports syntax highlighting!",
-      "67": "My creator, Yuri is always adding new features!",
-      "68": "The pen page is perfect for code reviews!",
-      "69": "You can share your code with others easily!",
-      "70": "The pen page is a developer's best friend!",
-      "71": "My creator, Yuri believes in the power of experimentation!",
-      "72": "The pen page is great for testing ideas quickly!",
-      "73": "You can learn new programming concepts on the pen page!",
-      "74": "The pen page is perfect for code demos!",
-      "75": "My creator, Yuri loves creating useful tools!",
-      "76": "The pen page is great for collaborative coding!",
-      "77": "You can export your code in different formats!",
-      "78": "The pen page has a responsive design!",
-      "79": "My creator, Yuri is passionate about developer experience!"
+      "39": "My creator, Yuri is passionate about technology!"
     },
     "pageMessages": {
       "home": {
         "0": "Welcome to the homepage! 👋 I'm Yue, your virtual assistant!",
         "1": "This is where it all begins. Ready to explore?",
         "2": "My creator, Yuri is a database specialist. Want to know more?",
-        "3": "Check out the latest articles and projects below!",
-        "4": "There's so much to discover on this website!",
-        "5": "I'm here to help you navigate and find what you need!",
-        "6": "Feel free to explore all the different sections!",
-        "7": "My creator, Yuri put a lot of love into this site!"
+        "3": "Check out the latest articles and projects below!"
       },
       "blog": {
         "0": "Welcome to the blog! 📝",
         "1": "My creator, Yuri writes about tech, databases, and sometimes life.",
         "2": "Feel free to leave comments on the articles!",
-        "3": "What topics would you like to read about?",
-        "4": "The blog is updated regularly with fresh content!",
-        "5": "You can learn a lot from my creator's experiences!",
-        "6": "Don't forget to like the posts you enjoy!",
-        "7": "The blog covers everything from tech to personal stories!"
+        "3": "What topics would you like to read about?"
       },
       "projects": {
         "0": "Here are the projects! 🚀",
         "1": "Everything is built with love and lots of coffee ☕",
         "2": "Want to collaborate? Let's build something amazing!",
-        "3": "Each project taught my creator, Yuri something new.",
-        "4": "These projects showcase different technologies!",
-        "5": "My creator loves open source and sharing knowledge!",
-        "6": "You can find the source code on GitHub!",
-        "7": "Every project has a story behind it!"
+        "3": "Each project taught my creator, Yuri something new."
       },
       "about": {
         "0": "Want to know more about my creator, Yuri? 🤔",
         "1": "My creator, Yuri is just a person who loves databases and coding.",
         "2": "Feel free to ask questions!",
-        "3": "The journey started in 2018. Still learning every day!",
-        "4": "My creator is passionate about helping others learn!",
-        "5": "There's always something new to discover!",
-        "6": "My creator believes in continuous improvement!",
-        "7": "The about page tells the full story!"
+        "3": "The journey started in 2018. Still learning every day!"
       },
       "uses": {
         "0": "This is the setup! 💻",
         "1": "Pretty cool setup, no? My creator, Yuri loves their gear!",
         "2": "Want to know what's used for development?",
-        "3": "Good tools make all the difference!",
-        "4": "The setup is constantly evolving!",
-        "5": "My creator loves trying new technologies!",
-        "6": "You can see what tools are used daily!",
-        "7": "The right tools can boost productivity!"
+        "3": "Good tools make all the difference!"
       },
       "spotify": {
         "0": "Welcome to the music corner! 🎵",
         "1": "Good or bad music? I don't know, but my creator, Yuri likes it!",
         "2": "Music helps focus while coding.",
-        "3": "What are you listening to these days?",
-        "4": "The music taste is quite eclectic!",
-        "5": "My creator listens to music while working!",
-        "6": "You can see what's currently playing!",
-        "7": "Music is a big part of the creative process!"
+        "3": "What are you listening to these days?"
       },
       "guestbook": {
         "0": "Leave a message in the guestbook! 📖",
         "1": "My creator, Yuri loves reading messages from visitors!",
         "2": "Feel free to say hello or ask questions!",
-        "3": "Your message will make their day!",
-        "4": "The guestbook is a great way to connect!",
-        "5": "You can see messages from other visitors!",
-        "6": "My creator responds to messages personally!",
-        "7": "It's like a digital guestbook from the old days!"
-      },
-      "pen": {
-        "0": "Welcome to the code playground! 💻",
-        "1": "Here you can write and test code snippets!",
-        "2": "Perfect for experimenting with new ideas!",
-        "3": "What are you coding today?",
-        "4": "The pen supports multiple programming languages!",
-        "5": "You can run JavaScript and TypeScript directly!",
-        "6": "Perfect for quick code experiments!",
-        "7": "My creator added this feature just for developers!"
+        "3": "Your message will make their day!"
       }
     }
   }

@@ -202,7 +202,6 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     if (pathWithoutLocale.startsWith('/uses')) return 'uses'
     if (pathWithoutLocale.startsWith('/spotify')) return 'spotify'
     if (pathWithoutLocale.startsWith('/guestbook')) return 'guestbook'
-    if (pathWithoutLocale.startsWith('/pen')) return 'pen'
     return 'home'
   }
 
@@ -247,7 +246,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     }
 
     // First try to get page-specific messages
-    for (let i = 0; i < 8; i += 1) {
+    for (let i = 0; i < 4; i += 1) {
       const key = `mascot.pageMessages.${pageKey}.${i}`
       try {
         const value = t(key as any)
@@ -259,7 +258,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     }
 
     // Then add general messages
-    for (let i = 0; i < 80; i += 1) {
+    for (let i = 0; i < 40; i += 1) {
       const key = `mascot.messages.${i}`
       try {
         const value = t(key as any)

@@ -3,33 +3,6 @@
         "title": "À propos",
         "description": "👋 Salut ! Je suis Yuri Cunha, juste un gars au hasard sur Internet..."
     },
-    "pen": {
-        "title": "Pen",
-        "description": "Un terrain de jeu de code pour expérimenter avec des snippets et des idées",
-        "editor": {
-            "placeholder": "Écrivez votre code ici...",
-            "run": "Exécuter le Code",
-            "clear": "Effacer",
-            "copy": "Copier",
-            "download": "Télécharger",
-            "language": "Langage"
-        },
-        "output": {
-            "title": "Sortie",
-            "console": "Console",
-            "result": "Résultat"
-        },
-        "languages": {
-            "javascript": "JavaScript",
-            "typescript": "TypeScript",
-            "python": "Python",
-            "html": "HTML",
-            "css": "CSS",
-            "json": "JSON",
-            "sql": "SQL",
-            "bash": "Bash"
-        }
-    },
     "admin": {
         "nav": {
             "comments": "Commentaires",
@@ -463,12 +436,6 @@
         "1": "Mon créateur, Yuri aime lire les messages des visiteurs !",
         "2": "N'hésitez pas à dire bonjour ou poser des questions !",
         "3": "Votre message fera sa journée !"
-      },
-      "pen": {
-        "0": "Bienvenue sur le terrain de jeu de code ! 💻",
-        "1": "Ici vous pouvez écrire et tester des snippets de code !",
-        "2": "Parfait pour expérimenter de nouvelles idées !",
-        "3": "Que codez-vous aujourd'hui ?"
       }
     }
   }
