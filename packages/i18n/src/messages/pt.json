@@ -27,14 +27,62 @@
                 "filter-body": "Filtrar corpo...",
                 "filter-userId": "Filtrar ID do usuário...",
                 "type": "Tipo",
-                "userId": "ID do Usuário"
+                "userId": "ID do Usuário",
+                "actions": "Ações",
+                "delete": "Excluir",
+                "edit": "Editar",
+                "view": "Visualizar",
+                "confirm-delete": "Tem certeza de que deseja excluir este comentário?",
+                "delete-success": "Comentário excluído com sucesso",
+                "delete-error": "Falha ao excluir comentário"
             },
             "users": {
                 "email": "Email",
                 "failed-to-fetch-users-data": "Falha ao buscar dados dos usuários. Por favor, atualize a página.",
                 "filter-names": "Filtrar nomes...",
                 "name": "Nome",
-                "role": "Função"
+                "role": "Função",
+                "username": "Nome de usuário",
+                "image": "Imagem",
+                "createdAt": "Criado em",
+                "actions": "Ações",
+                "delete": "Excluir Usuário",
+                "ban": "Banir Usuário",
+                "unban": "Desbanir Usuário",
+                "edit": "Editar Usuário",
+                "reset-password": "Enviar Redefinição de Senha",
+                "change-role": "Alterar Função",
+                "confirm-delete": "Tem certeza de que deseja excluir este usuário?",
+                "confirm-ban": "Tem certeza de que deseja banir este usuário?",
+                "confirm-unban": "Tem certeza de que deseja desbanir este usuário?",
+                "delete-success": "Usuário excluído com sucesso",
+                "delete-error": "Falha ao excluir usuário",
+                "ban-success": "Usuário banido com sucesso",
+                "ban-error": "Falha ao banir usuário",
+                "unban-success": "Usuário desbanido com sucesso",
+                "unban-error": "Falha ao desbanir usuário",
+                "reset-password-success": "Email de redefinição de senha enviado",
+                "reset-password-error": "Falha ao enviar email de redefinição de senha",
+                "update-success": "Usuário atualizado com sucesso",
+                "update-error": "Falha ao atualizar usuário"
+            }
+        },
+        "modals": {
+            "edit-user": {
+                "title": "Editar Usuário",
+                "name": "Nome",
+                "username": "Nome de usuário",
+                "email": "Email",
+                "role": "Função",
+                "image": "URL da Imagem",
+                "save": "Salvar Alterações",
+                "cancel": "Cancelar"
+            },
+            "delete-confirmation": {
+                "title": "Confirmar Exclusão",
+                "message": "Esta ação não pode ser desfeita. Tem certeza de que deseja continuar?",
+                "confirm": "Excluir",
+                "cancel": "Cancelar"
             }
         }
     },
@@ -287,143 +335,191 @@
         "song": "Música",
         "tracks": "faixas",
         "listeners": "ouvintes"
-  },
-  "mascot": {
-    "ariaLabel": "Yue - Assistente virtual",
-    "close": "Fechar",
-    "hide": "Ocultar",
-    "speechBubble": "Mensagem da Yue",
-    "settings": {
-      "title": "Configurações da Yue",
-      "close": "Fechar configurações",
-      "open": "Abrir configurações",
-      "animations": "Animações",
-      "speechBubbles": "Balões de fala",
-      "soundEffects": "Efeitos sonoros",
-      "messageDuration": "Duração da mensagem",
-      "bubblePosition": "Posição do balão",
-      "positions": {
-        "bottomRight": "Inferior Direito",
-        "bottomLeft": "Inferior Esquerdo",
-        "topRight": "Superior Direito",
-        "topLeft": "Superior Esquerdo"
-      }
     },
-    "easterEgg": {
-      "retroMode": "Modo retrô ativado! 🎮"
-    },
-    "restore": "Trazer Yue de volta",
-    "idle": {
-      "tip1": "💡 Sabia? Você pode usar Shift+Y para me trazer de volta se eu estiver oculta!",
-      "tip2": "🎮 Experimente o mini-jogo! Clique no ícone do gamepad no meu balão de fala.",
-      "tip3": "⚙️ Personalize meu comportamento no painel de configurações.",
-      "tip4": "🎯 Estou aqui para ajudar! Sinta-se à vontade para fazer perguntas ou explorar o site.",
-      "tip5": "🌟 Encontrou algum bug? Me avise que eu ajudo a reportar!"
-    },
-    "menu": {
-      "open": "Abrir menu",
-      "reportBug": "Reportar bug / Contato",
-      "viewProjects": "Ver Projetos",
-      "miniGame": "Mini-jogo",
-      "settings": "Configurações"
-    },
-    "contact": {
-      "title": "Contatar meu criador, Yuri",
-      "close": "Fechar contato",
-      "description": "Encontrou um bug ou quer entrar em contato? Aqui está o email do meu criador:",
-      "copy": "Copiar email"
-    },
-    "greetings": {
-      "morning": "Bom dia! Eu sou a Yue! ☀️",
-      "afternoon": "Boa tarde! Eu sou a Yue! 🌤️",
-      "evening": "Boa noite! Eu sou a Yue! 🌅",
-      "night": "Boa noite! Eu sou a Yue! 🌙"
-    },
-    "messages": {
-      "0": "Oi! Eu sou a Yue, sua assistente virtual! Precisa de ajuda para navegar?",
-      "1": "Sabia que dá para ativar o modo retrô com o Código Konami?",
-      "2": "Hora de um café! ☕",
-      "3": "Ei, achei um easter egg escondido! Quer ver?",
-      "4": "Não esqueça de conferir os projetos mais recentes do meu criador, Yuri!",
-      "5": "Bem-vindo ao site! Como posso ajudar você hoje?",
-      "6": "Sinta-se à vontade para explorar! Tem muita coisa para descobrir.",
-      "7": "Precisa entrar em contato? Confira a seção de contato!",
-      "8": "Sabia que este site é construído com Next.js e TypeScript?",
-      "9": "Obrigado por visitar! Espero que esteja tendo um ótimo dia!",
-      "10": "Quer ver no que meu criador, Yuri está trabalhando? Confira os projetos!",
-      "11": "Eu amo ajudar visitantes e compartilhar conhecimento. E você?",
-      "12": "Modo escuro ou claro? Eu suporto ambos!",
-      "13": "Este site é totalmente responsivo. Tente redimensionar seu navegador!",
-      "14": "Encontrou algum bug? Me avise que eu ajudo a reportar!",
-      "15": "Estou sempre aprendendo coisas novas do meu criador, Yuri. Qual foi sua última descoberta?",
-      "16": "Meu criador, Yuri, é especialista em banco de dados. Legal, né?",
-      "17": "Posso ajudar você a encontrar qualquer coisa no site!",
-      "18": "Sabia que meu criador, Yuri começou esta jornada em 2018?",
-      "19": "O mini-jogo é uma ótima forma de fazer uma pausa!",
-      "20": "Estou aqui para tornar sua visita mais agradável!",
-      "21": "Meu criador, Yuri escreve sobre tecnologia e vida no blog.",
-      "22": "Já viu a seção de projetos? O trabalho do meu criador é incrível!",
-      "23": "Eu amo quando visitantes exploram páginas diferentes!",
-      "24": "O livro de visitas é um ótimo lugar para deixar uma mensagem!",
-      "25": "Meu criador, Yuri está sempre trabalhando em algo novo!",
-      "26": "Sabia que você pode personalizar meu comportamento nas configurações?",
-      "27": "Estou aqui para ajudar a melhorar sua experiência!",
-      "28": "Meu criador, Yuri ama compartilhar conhecimento através do blog.",
-      "29": "O site é projetado para ser acessível a todos!",
-      "30": "Estou aprendendo coisas novas todos os dias com meu criador, Yuri!",
-      "31": "Já conferiu a página de uses? O setup do meu criador é impressionante!",
-      "32": "Estou aqui para guiá-lo pelo site!",
-      "33": "Meu criador, Yuri acredita no poder do código aberto!",
-      "34": "A página do Spotify mostra o que meu criador está ouvindo!",
-      "35": "Sempre fico animada para conhecer novos visitantes!",
-      "36": "Meu criador, Yuri ama ajudar outros a aprender!",
-      "37": "Sabia que você pode fixar mensagens para mantê-las visíveis?",
-      "38": "Estou aqui para tornar sua experiência de navegação mais divertida!",
-      "39": "Meu criador, Yuri é apaixonado por tecnologia!"
-    },
-    "pageMessages": {
-      "home": {
-        "0": "Bem-vindo à página inicial! 👋 Eu sou a Yue, sua assistente virtual!",
-        "1": "É aqui que tudo começa. Pronto para explorar?",
-        "2": "Meu criador, Yuri é especialista em banco de dados. Quer saber mais?",
-        "3": "Confira os artigos e projetos mais recentes abaixo!"
-      },
-      "blog": {
-        "0": "Bem-vindo ao blog! 📝",
-        "1": "Meu criador, Yuri escreve sobre tecnologia, bancos de dados e às vezes sobre a vida.",
-        "2": "Sinta-se à vontade para deixar comentários nos artigos!",
-        "3": "Sobre quais tópicos você gostaria de ler?"
-      },
-      "projects": {
-        "0": "Aqui estão os projetos! 🚀",
-        "1": "Tudo é construído com amor e muito café ☕",
-        "2": "Quer colaborar? Vamos construir algo incrível!",
-        "3": "Cada projeto ensinou algo novo ao meu criador, Yuri."
-      },
-      "about": {
-        "0": "Quer saber mais sobre meu criador, Yuri? 🤔",
-        "1": "Meu criador, Yuri é apenas uma pessoa que ama bancos de dados e programação.",
-        "2": "Sinta-se à vontade para fazer perguntas!",
-        "3": "A jornada começou em 2018. Ainda aprendendo todos os dias!"
-      },
-      "uses": {
-        "0": "Este é o setup! 💻",
-        "1": "Setup bem legal, né? Meu criador, Yuri ama o equipamento!",
-        "2": "Quer saber o que é usado para desenvolvimento?",
-        "3": "Boa ferramentas fazem toda a diferença!"
-      },
-      "spotify": {
-        "0": "Bem-vindo ao cantinho da música! 🎵",
-        "1": "Música boa ou ruim? Não sei, mas meu criador, Yuri gosta!",
-        "2": "Música ajuda a focar enquanto programa.",
-        "3": "O que você está ouvindo ultimamente?"
-      },
-      "guestbook": {
-        "0": "Deixe uma mensagem no livro de visitas! 📖",
-        "1": "Meu criador, Yuri adora ler mensagens dos visitantes!",
-        "2": "Sinta-se à vontade para dizer olá ou fazer perguntas!",
-        "3": "Sua mensagem vai alegrar o dia dele!"
-      }
+    "mascot": {
+        "ariaLabel": "Yue - Assistente virtual",
+        "close": "Fechar",
+        "hide": "Ocultar",
+        "speechBubble": "Mensagem da Yue",
+        "settings": {
+            "title": "Configurações da Yue",
+            "close": "Fechar configurações",
+            "open": "Abrir configurações",
+            "animations": "Animações",
+            "speechBubbles": "Balões de fala",
+            "soundEffects": "Efeitos sonoros",
+            "messageDuration": "Duração da mensagem",
+            "bubblePosition": "Posição do balão",
+            "positions": {
+                "bottomRight": "Inferior Direito",
+                "bottomLeft": "Inferior Esquerdo",
+                "topRight": "Superior Direito",
+                "topLeft": "Superior Esquerdo"
+            }
+        },
+        "easterEgg": {
+            "retroMode": "Modo retrô ativado! 🎮"
+        },
+        "restore": "Trazer Yue de volta",
+        "idle": {
+            "tip1": "💡 Sabia? Você pode usar Shift+Y para me trazer de volta se eu estiver oculta!",
+            "tip2": "🎮 Experimente o mini-jogo! Clique no ícone do gamepad no meu balão de fala.",
+            "tip3": "⚙️ Personalize meu comportamento no painel de configurações.",
+            "tip4": "🎯 Estou aqui para ajudar! Sinta-se à vontade para fazer perguntas ou explorar o site.",
+            "tip5": "🌟 Encontrou algum bug? Me avise que eu ajudo a reportar!"
+        },
+        "menu": {
+            "open": "Abrir menu",
+            "reportBug": "Reportar bug / Contato",
+            "viewProjects": "Ver Projetos",
+            "miniGame": "Mini-jogo",
+            "settings": "Configurações"
+        },
+        "contact": {
+            "title": "Contatar meu criador, Yuri",
+            "close": "Fechar contato",
+            "description": "Encontrou um bug ou quer entrar em contato? Aqui está o email do meu criador:",
+            "copy": "Copiar email"
+        },
+        "greetings": {
+            "morning": "Bom dia! Eu sou a Yue! ☀️",
+            "afternoon": "Boa tarde! Eu sou a Yue! 🌤️",
+            "evening": "Boa noite! Eu sou a Yue! 🌅",
+            "night": "Boa noite! Eu sou a Yue! 🌙"
+        },
+        "messages": {
+            "0": "Oi! Eu sou a Yue, sua assistente virtual! Precisa de ajuda para navegar?",
+            "1": "Sabia que dá para ativar o modo retrô com o Código Konami?",
+            "2": "Hora de um café! ☕",
+            "3": "Ei, achei um easter egg escondido! Quer ver?",
+            "4": "Não esqueça de conferir os projetos mais recentes do meu criador, Yuri!",
+            "5": "Bem-vindo ao site! Como posso ajudar você hoje?",
+            "6": "Sinta-se à vontade para explorar! Tem muita coisa para descobrir.",
+            "7": "Precisa entrar em contato? Confira a seção de contato!",
+            "8": "Sabia que este site é construído com Next.js e TypeScript?",
+            "9": "Obrigado por visitar! Espero que esteja tendo um ótimo dia!",
+            "10": "Quer ver no que meu criador, Yuri está trabalhando? Confira os projetos!",
+            "11": "Eu amo ajudar visitantes e compartilhar conhecimento. E você?",
+            "12": "Modo escuro ou claro? Eu suporto ambos!",
+            "13": "Este site é totalmente responsivo. Tente redimensionar seu navegador!",
+            "14": "Encontrou algum bug? Me avise que eu ajudo a reportar!",
+            "15": "Estou sempre aprendendo coisas novas do meu criador, Yuri. Qual foi sua última descoberta?",
+            "16": "Meu criador, Yuri, é especialista em banco de dados. Legal, né?",
+            "17": "Posso ajudar você a encontrar qualquer coisa no site!",
+            "18": "Sabia que meu criador, Yuri começou esta jornada em 2018?",
+            "19": "O mini-jogo é uma ótima forma de fazer uma pausa!",
+            "20": "Estou aqui para tornar sua visita mais agradável!",
+            "21": "Meu criador, Yuri escreve sobre tecnologia e vida no blog.",
+            "22": "Já viu a seção de projetos? O trabalho do meu criador é incrível!",
+            "23": "Eu amo quando visitantes exploram páginas diferentes!",
+            "24": "O livro de visitas é um ótimo lugar para deixar uma mensagem!",
+            "25": "Meu criador, Yuri está sempre trabalhando em algo novo!",
+            "26": "Sabia que você pode personalizar meu comportamento nas configurações?",
+            "27": "Estou aqui para ajudar a melhorar sua experiência!",
+            "28": "Meu criador, Yuri ama compartilhar conhecimento através do blog.",
+            "29": "O site é projetado para ser acessível a todos!",
+            "30": "Estou aprendendo coisas novas todos os dias com meu criador, Yuri!",
+            "31": "Já conferiu a página de uses? O setup do meu criador é impressionante!",
+            "32": "Estou aqui para guiá-lo pelo site!",
+            "33": "Meu criador, Yuri acredita no poder do código aberto!",
+            "34": "A página do Spotify mostra o que meu criador está ouvindo!",
+            "35": "Sempre fico animada para conhecer novos visitantes!",
+            "36": "Meu criador, Yuri ama ajudar outros a aprender!",
+            "37": "Sabia que você pode fixar mensagens para mantê-las visíveis?",
+            "38": "Estou aqui para tornar sua experiência de navegação mais divertida!",
+            "39": "Meu criador, Yuri é apaixonado por tecnologia!",
+            "40": "O recurso de busca pode ajudar você a encontrar qualquer coisa rapidamente!",
+            "41": "Meu criador, Yuri está sempre aberto a feedback e sugestões!",
+            "42": "O painel admin ajuda a gerenciar o site de forma eficiente!",
+            "43": "Eu amo ver novos comentários e interações no site!",
+            "44": "Meu criador, Yuri acredita em construir coisas que importam!",
+            "45": "O site está constantemente evoluindo com novos recursos!",
+            "46": "Estou aqui para tornar a tecnologia mais acessível a todos!",
+            "47": "Meu criador, Yuri ama resolver problemas complexos!",
+            "48": "A comunidade ao redor deste site é incrível!",
+            "49": "Estou sempre pronta para ajudar com qualquer pergunta que você tenha!"
+        },
+        "pageMessages": {
+            "home": {
+                "0": "Bem-vindo à página inicial! 👋 Eu sou a Yue, sua assistente virtual!",
+                "1": "É aqui que tudo começa. Pronto para explorar?",
+                "2": "Meu criador, Yuri é especialista em banco de dados. Quer saber mais?",
+                "3": "Confira os artigos e projetos mais recentes abaixo!",
+                "4": "Sinta-se à vontade para explorar qualquer seção que te interesse!",
+                "5": "O menu de navegação pode ajudar você a encontrar o que procura!"
+            },
+            "blog": {
+                "0": "Bem-vindo ao blog! 📝",
+                "1": "Meu criador, Yuri escreve sobre tecnologia, bancos de dados e às vezes sobre a vida.",
+                "2": "Sinta-se à vontade para deixar comentários nos artigos!",
+                "3": "Sobre quais tópicos você gostaria de ler?",
+                "4": "O blog é atualizado regularmente com conteúdo fresco!",
+                "5": "Você pode filtrar artigos por tags e categorias!"
+            },
+            "projects": {
+                "0": "Aqui estão os projetos! 🚀",
+                "1": "Tudo é construído com amor e muito café ☕",
+                "2": "Quer colaborar? Vamos construir algo incrível!",
+                "3": "Cada projeto ensinou algo novo ao meu criador, Yuri.",
+                "4": "Todos os projetos são open source e disponíveis no GitHub!",
+                "5": "Sinta-se à vontade para contribuir ou sugerir melhorias!"
+            },
+            "about": {
+                "0": "Quer saber mais sobre meu criador, Yuri? 🤔",
+                "1": "Meu criador, Yuri é apenas uma pessoa que ama bancos de dados e programação.",
+                "2": "Sinta-se à vontade para fazer perguntas!",
+                "3": "A jornada começou em 2018. Ainda aprendendo todos os dias!",
+                "4": "Meu criador, Yuri ama compartilhar conhecimento e ajudar outros!",
+                "5": "A página sobre tem todos os detalhes sobre a jornada!"
+            },
+            "uses": {
+                "0": "Este é o setup! 💻",
+                "1": "Setup bem legal, né? Meu criador, Yuri ama o equipamento!",
+                "2": "Quer saber o que é usado para desenvolvimento?",
+                "3": "Boa ferramentas fazem toda a diferença!",
+                "4": "O setup está constantemente evoluindo com novas ferramentas!",
+                "5": "Sinta-se à vontade para perguntar sobre qualquer ferramenta ou setup específico!"
+            },
+            "spotify": {
+                "0": "Bem-vindo ao cantinho da música! 🎵",
+                "1": "Música boa ou ruim? Não sei, mas meu criador, Yuri gosta!",
+                "2": "Música ajuda a focar enquanto programa.",
+                "3": "O que você está ouvindo ultimamente?",
+                "4": "A playlist é atualizada regularmente com novas descobertas!",
+                "5": "Música é uma ótima forma de se manter motivado enquanto trabalha!"
+            },
+            "guestbook": {
+                "0": "Deixe uma mensagem no livro de visitas! 📖",
+                "1": "Meu criador, Yuri adora ler mensagens dos visitantes!",
+                "2": "Sinta-se à vontade para dizer olá ou fazer perguntas!",
+                "3": "Sua mensagem vai alegrar o dia dele!",
+                "4": "O livro de visitas é uma ótima forma de se conectar com a comunidade!",
+                "5": "Todas as mensagens são moderadas para manter o espaço amigável!"
+            },
+            "admin": {
+                "0": "Bem-vindo ao painel admin! 🔧",
+                "1": "Esta área é para gerenciamento e moderação do site.",
+                "2": "Meu criador, Yuri usa isso para manter o site funcionando suavemente.",
+                "3": "Ferramentas admin ajudam a gerenciar usuários, comentários e conteúdo.",
+                "4": "O painel admin está constantemente sendo melhorado!",
+                "5": "Segurança e moderação são prioridades máximas aqui!"
+            },
+            "search": {
+                "0": "Procurando algo específico? 🔍",
+                "1": "O recurso de busca pode ajudar você a encontrar qualquer coisa rapidamente!",
+                "2": "Tente diferentes palavras-chave para obter melhores resultados.",
+                "3": "A busca funciona em todo o conteúdo do site!",
+                "4": "A busca é alimentada por algoritmos avançados!",
+                "5": "Não consegue encontrar o que procura? Me avise!"
+            },
+            "404": {
+                "0": "Ops! Parece que você está perdido! 🗺️",
+                "1": "Não se preocupe, posso ajudar você a encontrar o caminho de volta!",
+                "2": "Tente usar o menu de navegação ou o recurso de busca.",
+                "3": "A página inicial é sempre um bom lugar para começar!",
+                "4": "Meu criador, Yuri está trabalhando para tornar a navegação ainda melhor!",
+                "5": "Sinta-se à vontade para reportar qualquer link quebrado que encontrar!"
+            }
+        }
     }
-  }
 }

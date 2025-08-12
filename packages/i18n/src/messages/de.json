@@ -27,14 +27,62 @@
                 "filter-body": "Inhalt filtern...",
                 "filter-userId": "Benutzer-ID filtern...",
                 "type": "Typ",
-                "userId": "Benutzer-ID"
+                "userId": "Benutzer-ID",
+                "actions": "Aktionen",
+                "delete": "Löschen",
+                "edit": "Bearbeiten",
+                "view": "Anzeigen",
+                "confirm-delete": "Sind Sie sicher, dass Sie diesen Kommentar löschen möchten?",
+                "delete-success": "Kommentar erfolgreich gelöscht",
+                "delete-error": "Fehler beim Löschen des Kommentars"
             },
             "users": {
                 "email": "E-Mail",
                 "failed-to-fetch-users-data": "Beim Abrufen der Benutzerdaten ist ein Fehler aufgetreten. Bitte aktualisieren Sie die Seite.",
                 "filter-names": "Namen filtern...",
                 "name": "Name",
-                "role": "Rolle"
+                "role": "Rolle",
+                "username": "Benutzername",
+                "image": "Bild",
+                "createdAt": "Erstellt am",
+                "actions": "Aktionen",
+                "delete": "Benutzer löschen",
+                "ban": "Benutzer sperren",
+                "unban": "Benutzer entsperren",
+                "edit": "Benutzer bearbeiten",
+                "reset-password": "Passwort-Reset senden",
+                "change-role": "Rolle ändern",
+                "confirm-delete": "Sind Sie sicher, dass Sie diesen Benutzer löschen möchten?",
+                "confirm-ban": "Sind Sie sicher, dass Sie diesen Benutzer sperren möchten?",
+                "confirm-unban": "Sind Sie sicher, dass Sie diesen Benutzer entsperren möchten?",
+                "delete-success": "Benutzer erfolgreich gelöscht",
+                "delete-error": "Fehler beim Löschen des Benutzers",
+                "ban-success": "Benutzer erfolgreich gesperrt",
+                "ban-error": "Fehler beim Sperren des Benutzers",
+                "unban-success": "Benutzer erfolgreich entsperrt",
+                "unban-error": "Fehler beim Entsperren des Benutzers",
+                "reset-password-success": "Passwort-Reset-E-Mail gesendet",
+                "reset-password-error": "Fehler beim Senden der Passwort-Reset-E-Mail",
+                "update-success": "Benutzer erfolgreich aktualisiert",
+                "update-error": "Fehler beim Aktualisieren des Benutzers"
+            }
+        },
+        "modals": {
+            "edit-user": {
+                "title": "Benutzer bearbeiten",
+                "name": "Name",
+                "username": "Benutzername",
+                "email": "E-Mail",
+                "role": "Rolle",
+                "image": "Bild-URL",
+                "save": "Änderungen speichern",
+                "cancel": "Abbrechen"
+            },
+            "delete-confirmation": {
+                "title": "Löschung bestätigen",
+                "message": "Diese Aktion kann nicht rückgängig gemacht werden. Sind Sie sicher, dass Sie fortfahren möchten?",
+                "confirm": "Löschen",
+                "cancel": "Abbrechen"
             }
         }
     },
@@ -392,50 +440,98 @@
             "36": "Mein Schöpfer, Yuri liebt es, anderen beim Lernen zu helfen!",
             "37": "Wusstest du, dass du Nachrichten anheften kannst, um sie sichtbar zu halten?",
             "38": "Ich bin hier, um deine Browsing-Erfahrung unterhaltsamer zu gestalten!",
-            "39": "Mein Schöpfer, Yuri ist leidenschaftlich für Technologie!"
+            "39": "Mein Schöpfer, Yuri ist leidenschaftlich für Technologie!",
+            "40": "Die Suchfunktion kann dir helfen, alles schnell zu finden!",
+            "41": "Mein Schöpfer, Yuri ist immer offen für Feedback und Vorschläge!",
+            "42": "Das Admin-Panel hilft dabei, die Website effizient zu verwalten!",
+            "43": "Ich liebe es, neue Kommentare und Interaktionen auf der Website zu sehen!",
+            "44": "Mein Schöpfer, Yuri glaubt daran, Dinge zu bauen, die wichtig sind!",
+            "45": "Die Website entwickelt sich ständig mit neuen Funktionen!",
+            "46": "Ich bin hier, um Technologie für alle zugänglicher zu machen!",
+            "47": "Mein Schöpfer, Yuri liebt es, komplexe Probleme zu lösen!",
+            "48": "Die Community rund um diese Website ist unglaublich!",
+            "49": "Ich bin immer bereit, bei allen Fragen zu helfen, die du haben könntest!"
         },
         "pageMessages": {
             "home": {
                 "0": "Willkommen auf der Startseite! 👋 Ich bin Yue, deine virtuelle Assistentin!",
                 "1": "Hier beginnt alles. Bereit zu erkunden?",
                 "2": "Mein Schöpfer, Yuri ist Datenbankspezialist. Willst du mehr wissen?",
-                "3": "Schau dir die neuesten Artikel und Projekte unten an!"
+                "3": "Schau dir die neuesten Artikel und Projekte unten an!",
+                "4": "Fühl dich frei, jeden Bereich zu erkunden, der dich interessiert!",
+                "5": "Das Navigationsmenü kann dir helfen, das zu finden, was du suchst!"
             },
             "blog": {
                 "0": "Willkommen im Blog! 📝",
                 "1": "Mein Schöpfer, Yuri schreibt über Tech, Datenbanken und manchmal das Leben.",
                 "2": "Fühl dich frei, Kommentare zu den Artikeln zu hinterlassen!",
-                "3": "Über welche Themen möchtest du lesen?"
+                "3": "Über welche Themen möchtest du lesen?",
+                "4": "Der Blog wird regelmäßig mit frischem Inhalt aktualisiert!",
+                "5": "Du kannst Artikel nach Tags und Kategorien filtern!"
             },
             "projects": {
                 "0": "Hier sind die Projekte! 🚀",
                 "1": "Alles ist mit Liebe und viel Kaffee gebaut ☕",
                 "2": "Willst du zusammenarbeiten? Lass uns etwas Unglaubliches bauen!",
-                "3": "Jedes Projekt hat meinem Schöpfer, Yuri etwas Neues beigebracht."
+                "3": "Jedes Projekt hat meinem Schöpfer, Yuri etwas Neues beigebracht.",
+                "4": "Alle Projekte sind Open Source und auf GitHub verfügbar!",
+                "5": "Fühl dich frei, beizutragen oder Verbesserungen vorzuschlagen!"
             },
             "about": {
                 "0": "Willst du mehr über meinen Schöpfer, Yuri wissen? 🤔",
                 "1": "Mein Schöpfer, Yuri ist nur eine Person, die Datenbanken und Programmierung liebt.",
                 "2": "Fühl dich frei, Fragen zu stellen!",
-                "3": "Die Reise begann 2018. Lernen noch jeden Tag!"
+                "3": "Die Reise begann 2018. Lernen noch jeden Tag!",
+                "4": "Mein Schöpfer, Yuri liebt es, Wissen zu teilen und anderen zu helfen!",
+                "5": "Die Über-Seite hat alle Details über die Reise!"
             },
             "uses": {
                 "0": "Das ist das Setup! 💻",
                 "1": "Ziemlich cooles Setup, oder? Mein Schöpfer, Yuri liebt die Ausrüstung!",
                 "2": "Willst du wissen, was für die Entwicklung verwendet wird?",
-                "3": "Gute Werkzeuge machen den Unterschied!"
+                "3": "Gute Werkzeuge machen den Unterschied!",
+                "4": "Das Setup entwickelt sich ständig mit neuen Werkzeugen!",
+                "5": "Fühl dich frei, nach einem bestimmten Werkzeug oder Setup zu fragen!"
             },
             "spotify": {
                 "0": "Willkommen in der Musikecke! 🎵",
                 "1": "Gute oder schlechte Musik? Ich weiß es nicht, aber mein Schöpfer, Yuri mag es!",
                 "2": "Musik hilft beim Programmieren zu fokussieren.",
-                "3": "Was hörst du in letzter Zeit?"
+                "3": "Was hörst du in letzter Zeit?",
+                "4": "Die Playlist wird regelmäßig mit neuen Entdeckungen aktualisiert!",
+                "5": "Musik ist eine großartige Möglichkeit, während der Arbeit motiviert zu bleiben!"
             },
             "guestbook": {
                 "0": "Hinterlasse eine Nachricht im Gästebuch! 📖",
                 "1": "Mein Schöpfer, Yuri liebt es, Nachrichten von Besuchern zu lesen!",
                 "2": "Fühl dich frei, hallo zu sagen oder Fragen zu stellen!",
-                "3": "Deine Nachricht wird seinen Tag machen!"
+                "3": "Deine Nachricht wird seinen Tag machen!",
+                "4": "Das Gästebuch ist eine großartige Möglichkeit, sich mit der Community zu verbinden!",
+                "5": "Alle Nachrichten werden moderiert, um den Raum freundlich zu halten!"
+            },
+            "admin": {
+                "0": "Willkommen im Admin-Panel! 🔧",
+                "1": "Dieser Bereich ist für Website-Verwaltung und Moderation.",
+                "2": "Mein Schöpfer, Yuri verwendet dies, um die Website reibungslos zu halten.",
+                "3": "Admin-Tools helfen dabei, Benutzer, Kommentare und Inhalte zu verwalten.",
+                "4": "Das Admin-Panel wird ständig verbessert!",
+                "5": "Sicherheit und Moderation haben hier höchste Priorität!"
+            },
+            "search": {
+                "0": "Suchst du etwas Bestimmtes? 🔍",
+                "1": "Die Suchfunktion kann dir helfen, alles schnell zu finden!",
+                "2": "Versuche verschiedene Schlüsselwörter für bessere Ergebnisse.",
+                "3": "Die Suche funktioniert über alle Inhalte der Website!",
+                "4": "Die Suche wird von fortschrittlichen Algorithmen angetrieben!",
+                "5": "Kannst du nicht finden, was du suchst? Lass es mich wissen!"
+            },
+            "404": {
+                "0": "Ups! Es scheint, als wärst du verloren! 🗺️",
+                "1": "Keine Sorge, ich kann dir helfen, den Weg zurück zu finden!",
+                "2": "Versuche, das Navigationsmenü oder die Suchfunktion zu verwenden.",
+                "3": "Die Startseite ist immer ein guter Ort zum Anfangen!",
+                "4": "Mein Schöpfer, Yuri arbeitet daran, die Navigation noch besser zu machen!",
+                "5": "Fühl dich frei, defekte Links zu melden, die du findest!"
             }
         }
     }

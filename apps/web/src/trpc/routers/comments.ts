@@ -52,6 +52,20 @@ export const commentsRouter = createTRPCRouter({
       comments: result
     }
   }),
+
+  deleteComment: adminProcedure
+    .input(z.object({ commentId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      try {
+        await ctx.db.delete(comments).where(eq(comments.id, input.commentId))
+        return { success: true }
+      } catch (error) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to delete comment'
+        })
+      }
+    }),
   getInfiniteComments: publicProcedure
     .input(
       z.object({

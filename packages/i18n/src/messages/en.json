@@ -27,14 +27,62 @@
         "filter-body": "Filter body...",
         "filter-userId": "Filter user ID...",
         "type": "Type",
-        "userId": "User ID"
+        "userId": "User ID",
+        "actions": "Actions",
+        "delete": "Delete",
+        "edit": "Edit",
+        "view": "View",
+        "confirm-delete": "Are you sure you want to delete this comment?",
+        "delete-success": "Comment deleted successfully",
+        "delete-error": "Failed to delete comment"
       },
       "users": {
         "email": "Email",
         "failed-to-fetch-users-data": "Failed to fetch users data. Please refresh the page.",
         "filter-names": "Filter names...",
         "name": "Name",
-        "role": "Role"
+        "role": "Role",
+        "username": "Username",
+        "image": "Image",
+        "createdAt": "Created At",
+        "actions": "Actions",
+        "delete": "Delete User",
+        "ban": "Ban User",
+        "unban": "Unban User",
+        "edit": "Edit User",
+        "reset-password": "Send Password Reset",
+        "change-role": "Change Role",
+        "confirm-delete": "Are you sure you want to delete this user?",
+        "confirm-ban": "Are you sure you want to ban this user?",
+        "confirm-unban": "Are you sure you want to unban this user?",
+        "delete-success": "User deleted successfully",
+        "delete-error": "Failed to delete user",
+        "ban-success": "User banned successfully",
+        "ban-error": "Failed to ban user",
+        "unban-success": "User unbanned successfully",
+        "unban-error": "Failed to unban user",
+        "reset-password-success": "Password reset email sent",
+        "reset-password-error": "Failed to send password reset email",
+        "update-success": "User updated successfully",
+        "update-error": "Failed to update user"
+      }
+    },
+    "modals": {
+      "edit-user": {
+        "title": "Edit User",
+        "name": "Name",
+        "username": "Username",
+        "email": "Email",
+        "role": "Role",
+        "image": "Image URL",
+        "save": "Save Changes",
+        "cancel": "Cancel"
+      },
+      "delete-confirmation": {
+        "title": "Confirm Deletion",
+        "message": "This action cannot be undone. Are you sure you want to proceed?",
+        "confirm": "Delete",
+        "cancel": "Cancel"
       }
     }
   },
@@ -392,50 +440,98 @@
       "36": "My creator, Yuri loves helping others learn!",
       "37": "Did you know you can pin messages to keep them visible?",
       "38": "I'm here to make your browsing experience more fun!",
-      "39": "My creator, Yuri is passionate about technology!"
+      "39": "My creator, Yuri is passionate about technology!",
+      "40": "The search feature can help you find anything quickly!",
+      "41": "My creator, Yuri is always open to feedback and suggestions!",
+      "42": "The admin panel helps manage the site efficiently!",
+      "43": "I love seeing new comments and interactions on the site!",
+      "44": "My creator, Yuri believes in building things that matter!",
+      "45": "The site is constantly evolving with new features!",
+      "46": "I'm here to make technology more accessible to everyone!",
+      "47": "My creator, Yuri loves solving complex problems!",
+      "48": "The community around this site is amazing!",
+      "49": "I'm always ready to help with any questions you might have!"
     },
     "pageMessages": {
       "home": {
         "0": "Welcome to the homepage! 👋 I'm Yue, your virtual assistant!",
         "1": "This is where it all begins. Ready to explore?",
         "2": "My creator, Yuri is a database specialist. Want to know more?",
-        "3": "Check out the latest articles and projects below!"
+        "3": "Check out the latest articles and projects below!",
+        "4": "Feel free to explore any section that interests you!",
+        "5": "The navigation menu can help you find what you're looking for!"
       },
       "blog": {
         "0": "Welcome to the blog! 📝",
         "1": "My creator, Yuri writes about tech, databases, and sometimes life.",
         "2": "Feel free to leave comments on the articles!",
-        "3": "What topics would you like to read about?"
+        "3": "What topics would you like to read about?",
+        "4": "The blog is updated regularly with fresh content!",
+        "5": "You can filter articles by tags and categories!"
       },
       "projects": {
         "0": "Here are the projects! 🚀",
         "1": "Everything is built with love and lots of coffee ☕",
         "2": "Want to collaborate? Let's build something amazing!",
-        "3": "Each project taught my creator, Yuri something new."
+        "3": "Each project taught my creator, Yuri something new.",
+        "4": "All projects are open source and available on GitHub!",
+        "5": "Feel free to contribute or suggest improvements!"
       },
       "about": {
         "0": "Want to know more about my creator, Yuri? 🤔",
         "1": "My creator, Yuri is just a person who loves databases and coding.",
         "2": "Feel free to ask questions!",
-        "3": "The journey started in 2018. Still learning every day!"
+        "3": "The journey started in 2018. Still learning every day!",
+        "4": "My creator, Yuri loves sharing knowledge and helping others!",
+        "5": "The about page has all the details about the journey!"
       },
       "uses": {
         "0": "This is the setup! 💻",
         "1": "Pretty cool setup, no? My creator, Yuri loves their gear!",
         "2": "Want to know what's used for development?",
-        "3": "Good tools make all the difference!"
+        "3": "Good tools make all the difference!",
+        "4": "The setup is constantly evolving with new tools!",
+        "5": "Feel free to ask about any specific tool or setup!"
       },
       "spotify": {
         "0": "Welcome to the music corner! 🎵",
         "1": "Good or bad music? I don't know, but my creator, Yuri likes it!",
         "2": "Music helps focus while coding.",
-        "3": "What are you listening to these days?"
+        "3": "What are you listening to these days?",
+        "4": "The playlist is updated regularly with new discoveries!",
+        "5": "Music is a great way to stay motivated while working!"
       },
       "guestbook": {
         "0": "Leave a message in the guestbook! 📖",
         "1": "My creator, Yuri loves reading messages from visitors!",
         "2": "Feel free to say hello or ask questions!",
-        "3": "Your message will make their day!"
+        "3": "Your message will make their day!",
+        "4": "The guestbook is a great way to connect with the community!",
+        "5": "All messages are moderated to keep the space friendly!"
+      },
+      "admin": {
+        "0": "Welcome to the admin panel! 🔧",
+        "1": "This area is for site management and moderation.",
+        "2": "My creator, Yuri uses this to keep the site running smoothly.",
+        "3": "Admin tools help manage users, comments, and content.",
+        "4": "The admin panel is constantly being improved!",
+        "5": "Security and moderation are top priorities here!"
+      },
+      "search": {
+        "0": "Looking for something specific? 🔍",
+        "1": "The search feature can help you find anything quickly!",
+        "2": "Try different keywords to get better results.",
+        "3": "Search works across all content on the site!",
+        "4": "The search is powered by advanced algorithms!",
+        "5": "Can't find what you're looking for? Let me know!"
+      },
+      "404": {
+        "0": "Oops! Looks like you're lost! 🗺️",
+        "1": "Don't worry, I can help you find your way back!",
+        "2": "Try using the navigation menu or search feature.",
+        "3": "The homepage is always a good place to start!",
+        "4": "My creator, Yuri is working on making navigation even better!",
+        "5": "Feel free to report any broken links you find!"
       }
     }
   }

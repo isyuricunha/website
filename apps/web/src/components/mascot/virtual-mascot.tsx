@@ -202,6 +202,9 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     if (pathWithoutLocale.startsWith('/uses')) return 'uses'
     if (pathWithoutLocale.startsWith('/spotify')) return 'spotify'
     if (pathWithoutLocale.startsWith('/guestbook')) return 'guestbook'
+    if (pathWithoutLocale.startsWith('/admin')) return 'admin'
+    if (pathWithoutLocale.includes('search') || pathWithoutLocale.includes('?q=')) return 'search'
+    if (pathWithoutLocale === '/404' || pathWithoutLocale.includes('not-found')) return '404'
     return 'home'
   }
 
@@ -574,8 +577,8 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         {preferences.speechBubbles && (
           <div
             className={`absolute bottom-full right-0 mb-2 w-80 rounded-lg border bg-popover p-3 text-sm text-popover-foreground shadow-lg outline-none ring-0 transition-all duration-200 ease-out ${showBubble && (currentMessage || messages[messageIndex])
-                ? 'opacity-100 translate-y-0'
-                : 'opacity-0 translate-y-2 pointer-events-none'
+              ? 'opacity-100 translate-y-0'
+              : 'opacity-0 translate-y-2 pointer-events-none'
               }`}
             role='dialog'
             aria-label={t('mascot.speechBubble')}
