@@ -3,6 +3,33 @@
         "title": "Über",
         "description": "👋 Hey! Ich bin Yuri Cunha, einfach ein zufälliger Kerl im Internet.."
     },
+    "pen": {
+        "title": "Pen",
+        "description": "Ein Code-Spielplatz zum Experimentieren mit Snippets und Ideen",
+        "editor": {
+            "placeholder": "Schreiben Sie Ihren Code hier...",
+            "run": "Code ausführen",
+            "clear": "Löschen",
+            "copy": "Kopieren",
+            "download": "Herunterladen",
+            "language": "Sprache"
+        },
+        "output": {
+            "title": "Ausgabe",
+            "console": "Konsole",
+            "result": "Ergebnis"
+        },
+        "languages": {
+            "javascript": "JavaScript",
+            "typescript": "TypeScript",
+            "python": "Python",
+            "html": "HTML",
+            "css": "CSS",
+            "json": "JSON",
+            "sql": "SQL",
+            "bash": "Bash"
+        }
+    },
     "admin": {
         "nav": {
             "comments": "Kommentare",
@@ -436,6 +463,12 @@
                 "1": "Mein Schöpfer, Yuri liebt es, Nachrichten von Besuchern zu lesen!",
                 "2": "Fühl dich frei, hallo zu sagen oder Fragen zu stellen!",
                 "3": "Deine Nachricht wird seinen Tag machen!"
+            },
+            "pen": {
+                "0": "Willkommen auf dem Code-Spielplatz! 💻",
+                "1": "Hier kannst du Code-Snippets schreiben und testen!",
+                "2": "Perfekt zum Experimentieren mit neuen Ideen!",
+                "3": "Was programmierst du heute?"
             }
         }
     }
