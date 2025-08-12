@@ -313,8 +313,6 @@
       "retroMode": "Mode rétro activé ! 🎮"
     },
     "restore": "Ramener Yue",
-    "pin": "Épingler le message",
-    "unpin": "Désépingler le message",
     "idle": {
       "tip1": "💡 Saviez-vous ? Vous pouvez utiliser Shift+Y pour me ramener si je suis cachée !",
       "tip2": "🎮 Essayez le mini-jeu ! Cliquez sur l'icône de manette dans ma bulle de dialogue.",

@@ -313,8 +313,6 @@
       "retroMode": "Retro mode activated! 🎮"
     },
     "restore": "Bring Yue back",
-    "pin": "Pin message",
-    "unpin": "Unpin message",
     "idle": {
       "tip1": "💡 Did you know? You can use Shift+Y to bring me back if I'm hidden!",
       "tip2": "🎮 Try the mini-game! Click the gamepad icon in my speech bubble.",

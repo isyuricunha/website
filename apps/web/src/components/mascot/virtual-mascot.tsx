@@ -43,7 +43,6 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   const [isHovering, setIsHovering] = useState(false)
   const [currentMessage, setCurrentMessage] = useState<string>('')
   const [idleTimer, setIdleTimer] = useState<NodeJS.Timeout | null>(null)
-  const [isPinned, setIsPinned] = useState(false)
   const [lastMessageIndex, setLastMessageIndex] = useState(-1)
   const [preferences, setPreferences] = useState<MascotPreferences>({
     animations: true,
@@ -170,18 +169,16 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
   // Idle timer for fun facts
   useEffect(() => {
-    if (!preferences.speechBubbles || showBubble || autoShowMessage || isPinned) return
+    if (!preferences.speechBubbles || showBubble || autoShowMessage) return
 
     const timer = setTimeout(() => {
-      if (!showBubble && !autoShowMessage && !isPinned) {
+      if (!showBubble && !autoShowMessage) {
         setCurrentMessage(getIdleMessage())
         setShowBubble(true)
 
         // Hide idle message after 4 seconds
         setTimeout(() => {
-          if (!isPinned) {
-            setShowBubble(false)
-          }
+          setShowBubble(false)
         }, 4000)
       }
     }, 25000) // 25 seconds idle
@@ -190,7 +187,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     return () => {
       if (timer) clearTimeout(timer)
     }
-  }, [preferences.speechBubbles, showBubble, autoShowMessage, isPinned])
+  }, [preferences.speechBubbles, showBubble, autoShowMessage])
 
   // Get current page path for contextual messages (language-aware)
   const currentPath = typeof window !== 'undefined' ? window.location.pathname : ''
@@ -214,7 +211,6 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   useEffect(() => {
     setMessageIndex(0)
     setLastMessageIndex(-1)
-    setIsPinned(false)
 
     // Show automatic page-specific message after a short delay
     if (preferences.speechBubbles) {
@@ -223,12 +219,10 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         setShowBubble(true)
         setCurrentMessage(messages[0] || '')
 
-        // Hide the message after configured duration (unless pinned)
+        // Hide the message after configured duration
         const hideTimer = setTimeout(() => {
-          if (!isPinned) {
-            setShowBubble(false)
-            setAutoShowMessage(false)
-          }
+          setShowBubble(false)
+          setAutoShowMessage(false)
         }, preferences.messageDuration)
 
         return () => clearTimeout(hideTimer)
@@ -264,7 +258,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     }
 
     // Then add general messages
-    for (let i = 0; i < 20; i += 1) {
+    for (let i = 0; i < 40; i += 1) {
       const key = `mascot.messages.${i}`
       try {
         const value = t(key as any)
@@ -331,7 +325,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
   const handleMouseEnter = () => {
     setIsHovering(true)
-    if (preferences.speechBubbles && !autoShowMessage && !isPinned) {
+    if (preferences.speechBubbles && !autoShowMessage) {
       if (!currentMessage) {
         setCurrentMessage(messages[messageIndex] || '')
       }
@@ -341,7 +335,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
   const handleMouseLeave = () => {
     setIsHovering(false)
-    if (!autoShowMessage && !isPinned) {
+    if (!autoShowMessage) {
       setShowBubble(false)
     }
   }
@@ -360,13 +354,6 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       sessionStorage.removeItem(STORAGE_KEY)
       localStorage.removeItem(HIDE_KEY)
     } catch {}
-  }
-
-  const handleTogglePin = () => {
-    setIsPinned(!isPinned)
-    if (!isPinned) {
-      setShowBubble(true)
-    }
   }
 
   const handleMenuAction = (action: string) => {
@@ -604,14 +591,6 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
               <div className='flex items-center gap-1'>
                 <button
                   type='button'
-                  aria-label={isPinned ? t('mascot.unpin') : t('mascot.pin')}
-                  className='rounded px-2 py-1 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
-                  onClick={handleTogglePin}
-                >
-                  {isPinned ? '📌' : '📍'}
-                </button>
-                <button
-                  type='button'
                   aria-label={t('mascot.menu.open')}
                   className='rounded px-2 py-1 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
                   onClick={() => setShowMenu(!showMenu)}
@@ -652,7 +631,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
           onClick={handleMascotClick}
           onMouseEnter={handleMouseEnter}
           onFocus={() => {
-            if (preferences.speechBubbles && !autoShowMessage && !isPinned) {
+            if (preferences.speechBubbles && !autoShowMessage) {
               if (!currentMessage) {
                 setCurrentMessage(messages[messageIndex] || '')
               }
@@ -660,7 +639,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
             }
           }}
           onBlur={() => {
-            if (!autoShowMessage && !isHovering && !isPinned) {
+            if (!autoShowMessage && !isHovering) {
               setShowBubble(false)
             }
           }}
