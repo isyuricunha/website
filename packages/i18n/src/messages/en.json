@@ -289,11 +289,11 @@
     "listeners": "listeners"
   },
   "mascot": {
-    "ariaLabel": "Virtual assistant",
+    "ariaLabel": "Yue - Virtual assistant",
     "close": "Close",
     "hide": "Hide",
     "messages": {
-      "0": "Hello! Need help navigating?",
+      "0": "Hi! I'm Yue! Need help navigating?",
       "1": "Did you know you can activate the retro mode with the Konami Code?",
       "2": "Time for a coffee break! ☕",
       "3": "Hey, I found a hidden easter egg! Want to see?",
@@ -312,43 +312,43 @@
     },
     "pageMessages": {
       "home": {
-        "0": "Welcome to my homepage! 👋",
+        "0": "Welcome to my homepage! 👋 I'm Yue!",
         "1": "This is where it all begins. Ready to explore?",
         "2": "I'm a database specialist. Want to know more?",
         "3": "Check out my latest articles and projects below!"
       },
       "blog": {
-        "0": "Welcome to my blog! 📝",
+        "0": "Welcome to my blog! 📝 I'm Yue!",
         "1": "I write about tech, databases, and sometimes life.",
         "2": "Feel free to leave comments on the articles!",
         "3": "What topics would you like me to write about?"
       },
       "projects": {
-        "0": "Here are my projects! 🚀",
+        "0": "Here are my projects! 🚀 I'm Yue!",
         "1": "Everything is built with love and lots of coffee ☕",
         "2": "Want to collaborate? Let's build something amazing!",
         "3": "Each project taught me something new."
       },
       "about": {
-        "0": "Want to know more about me? 🤔",
+        "0": "Want to know more about me? 🤔 I'm Yue!",
         "1": "I'm just a guy who loves databases and coding.",
         "2": "Feel free to ask me anything!",
         "3": "My journey started in 2018. Still learning every day!"
       },
       "uses": {
-        "0": "This is my setup! 💻",
+        "0": "This is my setup! 💻 I'm Yue!",
         "1": "Pretty cool setup, no? I love my gear!",
         "2": "Want to know what I use for development?",
         "3": "Good tools make all the difference!"
       },
       "spotify": {
-        "0": "Welcome to my music corner! 🎵",
+        "0": "Welcome to my music corner! 🎵 I'm Yue!",
         "1": "Good or bad music? I don't know, but I like it!",
         "2": "Music helps me focus while coding.",
         "3": "What are you listening to these days?"
       },
       "guestbook": {
-        "0": "Leave a message in my guestbook! 📖",
+        "0": "Leave a message in my guestbook! 📖 I'm Yue!",
         "1": "I love reading messages from visitors!",
         "2": "Feel free to say hello or ask questions!",
         "3": "Your message will make my day!"

@@ -41,6 +41,11 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
                   currentPath.startsWith('/spotify') ? 'spotify' :
                   currentPath.startsWith('/guestbook') ? 'guestbook' : 'home'
 
+  // Reset message index when page changes
+  useEffect(() => {
+    setMessageIndex(0)
+  }, [pageKey])
+
   // Build message list from i18n. Expect keys mascot.messages.0, .1, ... up to a small count
   const messages: string[] = useMemo(() => {
     const list: string[] = []
@@ -88,7 +93,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   if (hidden || isDismissed || isHiddenPref) return null
 
   return (
-    <div className='fixed bottom-5 right-5 z-40 hidden sm:block'>
+    <div className='fixed bottom-5 right-5 z-40'>
       {/* Bubble */}
       <div
         className={`absolute bottom-full right-0 mb-2 w-80 rounded-lg border bg-popover p-3 text-sm text-popover-foreground shadow-lg outline-none ring-0 transition-all duration-200 ease-out ${

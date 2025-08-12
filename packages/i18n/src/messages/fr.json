@@ -289,11 +289,11 @@
         "listeners": "auditeurs"
   },
   "mascot": {
-    "ariaLabel": "Assistant virtuel",
+    "ariaLabel": "Yue - Assistant virtuel",
     "close": "Fermer",
     "hide": "Masquer",
     "messages": {
-      "0": "Bonjour ! Besoin d'aide pour naviguer ?",
+      "0": "Salut ! Je suis Yue ! Besoin d'aide pour naviguer ?",
       "1": "Saviez-vous que vous pouvez activer le mode rétro avec le code Konami ?",
       "2": "C'est l'heure d'une pause café ! ☕",
       "3": "Hé, j'ai trouvé un easter egg caché ! Vous voulez voir ?",
@@ -312,43 +312,43 @@
     },
     "pageMessages": {
       "home": {
-        "0": "Bienvenue sur ma page d'accueil ! 👋",
+        "0": "Bienvenue sur ma page d'accueil ! 👋 Je suis Yue !",
         "1": "C'est ici que tout commence. Prêt à explorer ?",
         "2": "Je suis spécialiste en bases de données. Voulez-vous en savoir plus ?",
         "3": "Consultez mes derniers articles et projets ci-dessous !"
       },
       "blog": {
-        "0": "Bienvenue sur mon blog ! 📝",
+        "0": "Bienvenue sur mon blog ! 📝 Je suis Yue !",
         "1": "J'écris sur la tech, les bases de données et parfois la vie.",
         "2": "N'hésitez pas à laisser des commentaires sur les articles !",
         "3": "Sur quels sujets aimeriez-vous que j'écrive ?"
       },
       "projects": {
-        "0": "Voici mes projets ! 🚀",
+        "0": "Voici mes projets ! 🚀 Je suis Yue !",
         "1": "Tout est construit avec amour et beaucoup de café ☕",
         "2": "Voulez-vous collaborer ? Construisons quelque chose d'incroyable !",
         "3": "Chaque projet m'a appris quelque chose de nouveau."
       },
       "about": {
-        "0": "Voulez-vous en savoir plus sur moi ? 🤔",
+        "0": "Voulez-vous en savoir plus sur moi ? 🤔 Je suis Yue !",
         "1": "Je ne suis qu'un gars qui aime les bases de données et le code.",
         "2": "N'hésitez pas à me poser n'importe quelle question !",
         "3": "Mon voyage a commencé en 2018. J'apprends encore tous les jours !"
       },
       "uses": {
-        "0": "Voici ma configuration ! 💻",
+        "0": "Voici ma configuration ! 💻 Je suis Yue !",
         "1": "Configuration assez cool, non ? J'aime mon équipement !",
         "2": "Voulez-vous savoir ce que j'utilise pour le développement ?",
         "3": "Les bons outils font toute la différence !"
       },
       "spotify": {
-        "0": "Bienvenue dans mon coin musique ! 🎵",
+        "0": "Bienvenue dans mon coin musique ! 🎵 Je suis Yue !",
         "1": "Bonne ou mauvaise musique ? Je ne sais pas, mais j'aime !",
         "2": "La musique m'aide à me concentrer pendant que je code.",
         "3": "Qu'écoutez-vous ces jours-ci ?"
       },
       "guestbook": {
-        "0": "Laissez un message dans mon livre d'or ! 📖",
+        "0": "Laissez un message dans mon livre d'or ! 📖 Je suis Yue !",
         "1": "J'aime lire les messages des visiteurs !",
         "2": "N'hésitez pas à dire bonjour ou poser des questions !",
         "3": "Votre message fera ma journée !"

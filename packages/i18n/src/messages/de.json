@@ -289,11 +289,11 @@
         "listeners": "Hörer"
     },
     "mascot": {
-        "ariaLabel": "Virtueller Assistent",
+        "ariaLabel": "Yue - Virtueller Assistent",
         "close": "Schließen",
         "hide": "Ausblenden",
         "messages": {
-            "0": "Hallo! Brauchst du Hilfe bei der Navigation?",
+            "0": "Hallo! Ich bin Yue! Brauchst du Hilfe bei der Navigation?",
             "1": "Wusstest du, dass du den Retro-Modus mit dem Konami-Code aktivieren kannst?",
             "2": "Zeit für eine Kaffeepause! ☕",
             "3": "Hey, ich habe ein verstecktes Easter Egg gefunden! Willst du es sehen?",
@@ -312,43 +312,43 @@
         },
         "pageMessages": {
             "home": {
-                "0": "Willkommen auf meiner Startseite! 👋",
+                "0": "Willkommen auf meiner Startseite! 👋 Ich bin Yue!",
                 "1": "Hier beginnt alles. Bereit zu erkunden?",
                 "2": "Ich bin Datenbankspezialist. Willst du mehr wissen?",
                 "3": "Schau dir meine neuesten Artikel und Projekte unten an!"
             },
             "blog": {
-                "0": "Willkommen in meinem Blog! 📝",
+                "0": "Willkommen in meinem Blog! 📝 Ich bin Yue!",
                 "1": "Ich schreibe über Tech, Datenbanken und manchmal das Leben.",
                 "2": "Fühl dich frei, Kommentare zu den Artikeln zu hinterlassen!",
                 "3": "Über welche Themen möchtest du, dass ich schreibe?"
             },
             "projects": {
-                "0": "Hier sind meine Projekte! 🚀",
+                "0": "Hier sind meine Projekte! 🚀 Ich bin Yue!",
                 "1": "Alles ist mit Liebe und viel Kaffee gebaut ☕",
                 "2": "Willst du zusammenarbeiten? Lass uns etwas Unglaubliches bauen!",
                 "3": "Jedes Projekt hat mir etwas Neues beigebracht."
             },
             "about": {
-                "0": "Willst du mehr über mich wissen? 🤔",
+                "0": "Willst du mehr über mich wissen? 🤔 Ich bin Yue!",
                 "1": "Ich bin nur ein Typ, der Datenbanken und Programmierung liebt.",
                 "2": "Fühl dich frei, mir alles zu fragen!",
                 "3": "Meine Reise begann 2018. Lerne noch jeden Tag!"
             },
             "uses": {
-                "0": "Das ist mein Setup! 💻",
+                "0": "Das ist mein Setup! 💻 Ich bin Yue!",
                 "1": "Ziemlich cooles Setup, oder? Ich liebe meine Ausrüstung!",
                 "2": "Willst du wissen, was ich für die Entwicklung verwende?",
                 "3": "Gute Werkzeuge machen den Unterschied!"
             },
             "spotify": {
-                "0": "Willkommen in meiner Musikecke! 🎵",
+                "0": "Willkommen in meiner Musikecke! 🎵 Ich bin Yue!",
                 "1": "Gute oder schlechte Musik? Ich weiß es nicht, aber ich mag es!",
                 "2": "Musik hilft mir beim Programmieren zu fokussieren.",
                 "3": "Was hörst du in letzter Zeit?"
             },
             "guestbook": {
-                "0": "Hinterlasse eine Nachricht in meinem Gästebuch! 📖",
+                "0": "Hinterlasse eine Nachricht in meinem Gästebuch! 📖 Ich bin Yue!",
                 "1": "Ich liebe es, Nachrichten von Besuchern zu lesen!",
                 "2": "Fühl dich frei, hallo zu sagen oder Fragen zu stellen!",
                 "3": "Deine Nachricht wird meinen Tag machen!"
