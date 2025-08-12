@@ -225,7 +225,8 @@
     "projects": "Projects",
     "skip-to-main-content": "Skip to main content",
     "toggle-menu": "Toggle menu",
-    "uses": "Tools"
+    "uses": "Tools",
+    "spotify": "Music"
   },
   "mdx": {
     "link-to-section": "Link to section"
@@ -252,5 +253,39 @@
   "uses": {
     "description": "This is the equipment I currently use for gaming, programming, making videos, and every day.",
     "title": "Uses"
+  },
+  "spotify": {
+    "title": "Music",
+    "description": "Here's what I'm listening to at the moment - top songs and artists over the past 6 months.",
+    "now-listening": {
+      "title": "Now Listening",
+      "subtitle": "Currently playing on Spotify",
+      "not-playing": "Not currently listening to anything",
+      "by": "by"
+    },
+    "top-artists": {
+      "title": "Top Artists",
+      "subtitle": "Most listened to artists in the last 6 months",
+      "no-data": "No artist data available"
+    },
+    "top-songs": {
+      "title": "Top Songs",
+      "subtitle": "Most played tracks in the last 6 months",
+      "no-data": "No song data available"
+    },
+    "recently-played": {
+      "title": "Recently Played",
+      "subtitle": "Tracks I've listened to recently",
+      "no-data": "No recently played tracks available"
+    },
+    "loading": "Loading music data...",
+    "error": "Failed to load music data. Please try again.",
+    "refresh": "Refresh data",
+    "album": "Album",
+    "artist": "Artist",
+    "artists": "Artists",
+    "song": "Song",
+    "tracks": "tracks",
+    "listeners": "listeners"
   }
 }

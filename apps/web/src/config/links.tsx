@@ -3,7 +3,7 @@ import {
   SiGithub,
   SiX
 } from '@icons-pack/react-simple-icons'
-import { FlameIcon, MessageCircleIcon, MonitorIcon, PencilIcon, UserCircleIcon } from 'lucide-react'
+import { FlameIcon, MessageCircleIcon, MonitorIcon, MusicIcon, PencilIcon, UserCircleIcon } from 'lucide-react'
 
 import {
   SITE_GITHUB_URL,
@@ -42,6 +42,11 @@ export const HEADER_LINKS = [
     icon: <MonitorIcon className='size-3.5' />,
     href: '/uses',
     key: 'uses'
+  },
+  {
+    icon: <MusicIcon className='size-3.5' />,
+    href: '/spotify',
+    key: 'spotify'
   }
 ] as const
 
@@ -60,6 +65,7 @@ export const FOOTER_LINKS = [
       { href: '/guestbook', key: 'guestbook' },
       { href: '/uses', key: 'uses' },
       { href: '/projects', key: 'projects' },
+      { href: '/spotify', key: 'spotify' },
       { href: 'https://links.yuricunha.com', key: 'links' }
     ]
   },

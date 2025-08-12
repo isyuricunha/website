@@ -212,9 +212,9 @@
     "layout": {
         "about": "Sobre",
         "blog": "Blog",
-        "change-language": "Mudar idioma",
+        "change-language": "Alterar idioma",
         "github": "GitHub",
-        "guestbook": "Livro de Visitas",
+        "guestbook": "Livro de visitas",
         "home": "Início",
         "links": "Links",
         "now-playing": {
@@ -223,9 +223,10 @@
             "not-listening": "Não está ouvindo - Spotify"
         },
         "projects": "Projetos",
-        "skip-to-main-content": "Ir para o conteúdo principal",
+        "skip-to-main-content": "Pular para o conteúdo principal",
         "toggle-menu": "Alternar menu",
-        "uses": "Ferramentas"
+        "uses": "Ferramentas",
+        "spotify": "Música"
     },
     "mdx": {
         "link-to-section": "Link para a seção"
@@ -250,7 +251,41 @@
         "toggle-theme": "Alternar tema"
     },
     "uses": {
-        "description": "Estes são os equipamentos que uso atualmente para jogar, programar, fazer vídeos e no dia a dia.",
-        "title": "Usos"
+        "description": "Este é o equipamento que uso atualmente para jogos, programação, produção de vídeos e no dia a dia.",
+        "title": "Ferramentas"
+    },
+    "spotify": {
+        "title": "Música",
+        "description": "Aqui está o que estou ouvindo no momento - músicas e artistas favoritos dos últimos 6 meses.",
+        "now-listening": {
+            "title": "Ouvindo Agora",
+            "subtitle": "Atualmente tocando no Spotify",
+            "not-playing": "Não estou ouvindo nada no momento",
+            "by": "por"
+        },
+        "top-artists": {
+            "title": "Artistas Favoritos",
+            "subtitle": "Artistas mais ouvidos nos últimos 6 meses",
+            "no-data": "Nenhum dado de artista disponível"
+        },
+        "top-songs": {
+            "title": "Músicas Favoritas",
+            "subtitle": "Faixas mais tocadas nos últimos 6 meses",
+            "no-data": "Nenhum dado de música disponível"
+        },
+        "recently-played": {
+            "title": "Ouvido Recentemente",
+            "subtitle": "Faixas que ouvi recentemente",
+            "no-data": "Nenhuma faixa ouvida recentemente disponível"
+        },
+        "loading": "Carregando dados musicais...",
+        "error": "Falha ao carregar dados musicais. Tente novamente.",
+        "refresh": "Atualizar dados",
+        "album": "Álbum",
+        "artist": "Artista",
+        "artists": "Artistas",
+        "song": "Música",
+        "tracks": "faixas",
+        "listeners": "ouvintes"
     }
 }

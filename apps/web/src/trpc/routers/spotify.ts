@@ -12,6 +12,9 @@ const REFRESH_TOKEN = env.SPOTIFY_REFRESH_TOKEN
 
 const BASIC = Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64')
 const NOW_PLAYING_ENDPOINT = 'https://api.spotify.com/v1/me/player/currently-playing'
+const TOP_ARTISTS_ENDPOINT = 'https://api.spotify.com/v1/me/top/artists'
+const TOP_TRACKS_ENDPOINT = 'https://api.spotify.com/v1/me/top/tracks'
+const RECENTLY_PLAYED_ENDPOINT = 'https://api.spotify.com/v1/me/player/recently-played'
 const TOKEN_ENDPOINT = 'https://accounts.spotify.com/api/token'
 
 const getAccessToken = async () => {
@@ -67,5 +70,134 @@ export const spotifyRouter = createTRPCRouter({
       name: song.item.name as string,
       artist: song.item.artists.map((artist: { name: string }) => artist.name).join(', ') as string
     }
+  }),
+
+  getCurrentlyPlaying: publicProcedure.query(async ({ ctx }) => {
+    const ip = getIp(ctx.headers)
+
+    const { success } = await ratelimit.limit(getKey(ip))
+
+    if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+
+    const accessToken = await getAccessToken()
+
+    const response = await fetch(NOW_PLAYING_ENDPOINT, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      }
+    })
+
+    if (response.status === 204) {
+      return null
+    }
+
+    const song = await response.json()
+
+    return {
+      isPlaying: song.is_playing as boolean,
+      songUrl: song.item.external_urls.spotify as string,
+      name: song.item.name as string,
+      artist: song.item.artists.map((artist: { name: string }) => artist.name).join(', '),
+      album: song.item.album.name as string,
+      albumImage: song.item.album.images[0]?.url as string,
+      duration: song.item.duration_ms as number,
+      progress: song.progress_ms as number
+    }
+  }),
+
+  getTopArtists: publicProcedure.query(async ({ ctx }) => {
+    const ip = getIp(ctx.headers)
+
+    const { success } = await ratelimit.limit(getKey(ip))
+
+    if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+
+    const accessToken = await getAccessToken()
+
+    const response = await fetch(`${TOP_ARTISTS_ENDPOINT}?limit=20&time_range=short_term`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      }
+    })
+
+    if (!response.ok) {
+      throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' })
+    }
+
+    const data = await response.json()
+
+    return data.items.map((artist: any) => ({
+      id: artist.id as string,
+      name: artist.name as string,
+      image: artist.images[0]?.url as string,
+      url: artist.external_urls.spotify as string,
+      followers: artist.followers.total as number,
+      genres: artist.genres as string[]
+    }))
+  }),
+
+  getTopTracks: publicProcedure.query(async ({ ctx }) => {
+    const ip = getIp(ctx.headers)
+
+    const { success } = await ratelimit.limit(getKey(ip))
+
+    if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+
+    const accessToken = await getAccessToken()
+
+    const response = await fetch(`${TOP_TRACKS_ENDPOINT}?limit=20&time_range=short_term`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      }
+    })
+
+    if (!response.ok) {
+      throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' })
+    }
+
+    const data = await response.json()
+
+    return data.items.map((track: any) => ({
+      id: track.id as string,
+      name: track.name as string,
+      artist: track.artists.map((artist: { name: string }) => artist.name).join(', '),
+      album: track.album.name as string,
+      albumImage: track.album.images[0]?.url as string,
+      url: track.external_urls.spotify as string,
+      duration: track.duration_ms as number,
+      popularity: track.popularity as number
+    }))
+  }),
+
+  getRecentlyPlayed: publicProcedure.query(async ({ ctx }) => {
+    const ip = getIp(ctx.headers)
+
+    const { success } = await ratelimit.limit(getKey(ip))
+
+    if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+
+    const accessToken = await getAccessToken()
+
+    const response = await fetch(`${RECENTLY_PLAYED_ENDPOINT}?limit=20`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      }
+    })
+
+    if (!response.ok) {
+      throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' })
+    }
+
+    const data = await response.json()
+
+    return data.items.map((item: any) => ({
+      id: item.track.id as string,
+      name: item.track.name as string,
+      artist: item.track.artists.map((artist: { name: string }) => artist.name).join(', '),
+      album: item.track.album.name as string,
+      albumImage: item.track.album.images[0]?.url as string,
+      url: item.track.external_urls.spotify as string,
+      playedAt: item.played_at as string
+    }))
   })
 })

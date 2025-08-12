@@ -225,7 +225,8 @@
         "projects": "Projets",
         "skip-to-main-content": "Aller au contenu principal",
         "toggle-menu": "Basculer le menu",
-        "uses": "Outils"
+        "uses": "Outils",
+        "spotify": "Musique"
     },
     "mdx": {
         "link-to-section": "Lien vers la section"
@@ -252,5 +253,39 @@
     "uses": {
         "description": "Voici le matériel que j'utilise actuellement pour jouer, programmer, faire des vidéos, et au quotidien.",
         "title": "Outils"
+    },
+    "spotify": {
+        "title": "Musique",
+        "description": "Voici ce que j'écoute en ce moment - chansons et artistes préférés des 6 derniers mois.",
+        "now-listening": {
+            "title": "En cours d'écoute",
+            "subtitle": "Actuellement en lecture sur Spotify",
+            "not-playing": "N'écoute actuellement rien",
+            "by": "par"
+        },
+        "top-artists": {
+            "title": "Artistes préférés",
+            "subtitle": "Artistes les plus écoutés des 6 derniers mois",
+            "no-data": "Aucune donnée d'artiste disponible"
+        },
+        "top-songs": {
+            "title": "Chansons préférées",
+            "subtitle": "Morceaux les plus écoutés des 6 derniers mois",
+            "no-data": "Aucune donnée de chanson disponible"
+        },
+        "recently-played": {
+            "title": "Écouté récemment",
+            "subtitle": "Morceaux que j'ai écoutés récemment",
+            "no-data": "Aucun morceau écouté récemment disponible"
+        },
+        "loading": "Chargement des données musicales...",
+        "error": "Échec du chargement des données musicales. Veuillez réessayer.",
+        "refresh": "Actualiser les données",
+        "album": "Album",
+        "artist": "Artiste",
+        "artists": "Artistes",
+        "song": "Chanson",
+        "tracks": "morceaux",
+        "listeners": "auditeurs"
     }
 }

@@ -212,20 +212,21 @@
     "layout": {
         "about": "Über",
         "blog": "Blog",
-        "change-language": "Sprache wechseln",
+        "change-language": "Sprache ändern",
         "github": "GitHub",
         "guestbook": "Gästebuch",
         "home": "Startseite",
         "links": "Links",
         "now-playing": {
             "error": "Spotify-Daten konnten nicht abgerufen werden",
-            "loading": "Laden ...",
+            "loading": "Lädt ...",
             "not-listening": "Nicht am Hören - Spotify"
         },
         "projects": "Projekte",
         "skip-to-main-content": "Zum Hauptinhalt springen",
         "toggle-menu": "Menü umschalten",
-        "uses": "Tools"
+        "uses": "Tools",
+        "spotify": "Musik"
     },
     "mdx": {
         "link-to-section": "Link zum Abschnitt"
@@ -250,7 +251,41 @@
         "toggle-theme": "Thema umschalten"
     },
     "uses": {
-        "description": "Dies ist die Ausrüstung, die ich derzeit für Gaming, Programmierung, Videoproduktion und den Alltag nutze.",
-        "title": "Ausstattung"
+        "description": "Das ist die Ausrüstung, die ich derzeit für Gaming, Programmierung, Videoproduktion und den Alltag verwende.",
+        "title": "Tools"
+    },
+    "spotify": {
+        "title": "Musik",
+        "description": "Das höre ich gerade - Top-Songs und Künstler der letzten 6 Monate.",
+        "now-listening": {
+            "title": "Gerade am Hören",
+            "subtitle": "Aktuell auf Spotify abgespielt",
+            "not-playing": "Höre gerade nichts",
+            "by": "von"
+        },
+        "top-artists": {
+            "title": "Top-Künstler",
+            "subtitle": "Am meisten gehörte Künstler in den letzten 6 Monaten",
+            "no-data": "Keine Künstlerdaten verfügbar"
+        },
+        "top-songs": {
+            "title": "Top-Songs",
+            "subtitle": "Am meisten abgespielte Tracks in den letzten 6 Monaten",
+            "no-data": "Keine Songdaten verfügbar"
+        },
+        "recently-played": {
+            "title": "Kürzlich gehört",
+            "subtitle": "Tracks, die ich kürzlich gehört habe",
+            "no-data": "Keine kürzlich gehörten Tracks verfügbar"
+        },
+        "loading": "Musikdaten werden geladen...",
+        "error": "Musikdaten konnten nicht geladen werden. Bitte versuchen Sie es erneut.",
+        "refresh": "Daten aktualisieren",
+        "album": "Album",
+        "artist": "Künstler",
+        "artists": "Künstler",
+        "song": "Song",
+        "tracks": "Tracks",
+        "listeners": "Hörer"
     }
 }
