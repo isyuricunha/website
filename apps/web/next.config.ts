@@ -37,6 +37,42 @@ const config: NextConfig = {
       {
         protocol: 'https',
         hostname: '**.googleusercontent.com'
+      },
+      {
+        protocol: 'https',
+        hostname: 'i.scdn.co'
+      },
+      {
+        protocol: 'https',
+        hostname: 'mosaic.scdn.co'
+      },
+      {
+        protocol: 'https',
+        hostname: 'wrapped-images.spotifycdn.com'
+      },
+      {
+        protocol: 'https',
+        hostname: 'seeded-session-images.scdn.co'
+      },
+      {
+        protocol: 'https',
+        hostname: 'thisis-images.spotifycdn.com'
+      },
+      {
+        protocol: 'https',
+        hostname: 'image-cdn-fa.spotifycdn.com'
+      },
+      {
+        protocol: 'https',
+        hostname: 'image-cdn-*.spotifycdn.com'
+      },
+      {
+        protocol: 'https',
+        hostname: '*.spotifycdn.com'
+      },
+      {
+        protocol: 'https',
+        hostname: '*.scdn.co'
       }
     ]
   },

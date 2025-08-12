@@ -93,13 +93,23 @@ export const spotifyRouter = createTRPCRouter({
 
     const song = await response.json()
 
+    // Log the album images for debugging
+    console.log('Album images:', song.item.album.images)
+    console.log('Album images length:', song.item.album.images?.length)
+
+    // Try to get the best quality image (usually the first one is the highest quality)
+    const albumImage = song.item.album.images?.[0]?.url ||
+                      song.item.album.images?.[1]?.url ||
+                      song.item.album.images?.[2]?.url ||
+                      null
+
     return {
       isPlaying: song.is_playing as boolean,
       songUrl: song.item.external_urls.spotify as string,
       name: song.item.name as string,
       artist: song.item.artists.map((artist: { name: string }) => artist.name).join(', '),
       album: song.item.album.name as string,
-      albumImage: song.item.album.images[0]?.url as string,
+      albumImage,
       duration: song.item.duration_ms as number,
       progress: song.progress_ms as number
     }
@@ -126,14 +136,28 @@ export const spotifyRouter = createTRPCRouter({
 
     const data = await response.json()
 
-    return data.items.map((artist: any) => ({
-      id: artist.id as string,
-      name: artist.name as string,
-      image: artist.images[0]?.url as string,
-      url: artist.external_urls.spotify as string,
-      followers: artist.followers.total as number,
-      genres: artist.genres as string[]
-    }))
+    // Log the first artist images for debugging
+    if (data.items.length > 0) {
+      console.log('Artist images:', data.items[0].images)
+      console.log('Artist images length:', data.items[0].images?.length)
+    }
+
+    return data.items.map((artist: any) => {
+      // Try to get the best quality image
+      const image = artist.images?.[0]?.url ||
+                   artist.images?.[1]?.url ||
+                   artist.images?.[2]?.url ||
+                   null
+
+      return {
+        id: artist.id as string,
+        name: artist.name as string,
+        image,
+        url: artist.external_urls.spotify as string,
+        followers: artist.followers.total as number,
+        genres: artist.genres as string[]
+      }
+    })
   }),
 
   getTopTracks: publicProcedure.query(async ({ ctx }) => {
@@ -157,16 +181,30 @@ export const spotifyRouter = createTRPCRouter({
 
     const data = await response.json()
 
-    return data.items.map((track: any) => ({
-      id: track.id as string,
-      name: track.name as string,
-      artist: track.artists.map((artist: { name: string }) => artist.name).join(', '),
-      album: track.album.name as string,
-      albumImage: track.album.images[0]?.url as string,
-      url: track.external_urls.spotify as string,
-      duration: track.duration_ms as number,
-      popularity: track.popularity as number
-    }))
+    // Log the first track album images for debugging
+    if (data.items.length > 0) {
+      console.log('Track album images:', data.items[0].album.images)
+      console.log('Track album images length:', data.items[0].album.images?.length)
+    }
+
+    return data.items.map((track: any) => {
+      // Try to get the best quality image
+      const albumImage = track.album.images?.[0]?.url ||
+                        track.album.images?.[1]?.url ||
+                        track.album.images?.[2]?.url ||
+                        null
+
+      return {
+        id: track.id as string,
+        name: track.name as string,
+        artist: track.artists.map((artist: { name: string }) => artist.name).join(', '),
+        album: track.album.name as string,
+        albumImage,
+        url: track.external_urls.spotify as string,
+        duration: track.duration_ms as number,
+        popularity: track.popularity as number
+      }
+    })
   }),
 
   getRecentlyPlayed: publicProcedure.query(async ({ ctx }) => {
@@ -190,14 +228,28 @@ export const spotifyRouter = createTRPCRouter({
 
     const data = await response.json()
 
-    return data.items.map((item: any) => ({
-      id: item.track.id as string,
-      name: item.track.name as string,
-      artist: item.track.artists.map((artist: { name: string }) => artist.name).join(', '),
-      album: item.track.album.name as string,
-      albumImage: item.track.album.images[0]?.url as string,
-      url: item.track.external_urls.spotify as string,
-      playedAt: item.played_at as string
-    }))
+    // Log the first recently played track album images for debugging
+    if (data.items.length > 0) {
+      console.log('Recently played album images:', data.items[0].track.album.images)
+      console.log('Recently played album images length:', data.items[0].track.album.images?.length)
+    }
+
+    return data.items.map((item: any) => {
+      // Try to get the best quality image
+      const albumImage = item.track.album.images?.[0]?.url ||
+                        item.track.album.images?.[1]?.url ||
+                        item.track.album.images?.[2]?.url ||
+                        null
+
+      return {
+        id: item.track.id as string,
+        name: item.track.name as string,
+        artist: item.track.artists.map((artist: { name: string }) => artist.name).join(', '),
+        album: item.track.album.name as string,
+        albumImage,
+        url: item.track.external_urls.spotify as string,
+        playedAt: item.played_at as string
+      }
+    })
   })
 })

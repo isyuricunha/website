@@ -3,12 +3,12 @@
 import { useTranslations } from '@tszhong0411/i18n/client'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@tszhong0411/ui'
 import { UserIcon } from 'lucide-react'
-import Image from 'next/image'
 import { useState } from 'react'
 
 import { api } from '@/trpc/react'
 
 import Link from '../link'
+import SpotifyImage from './spotify-image'
 
 const TopArtistsSection = () => {
   const t = useTranslations()
@@ -120,20 +120,13 @@ const TopArtistsSection = () => {
               className='group flex flex-col items-center space-y-2 rounded-lg p-2 transition-colors hover:bg-muted/50'
             >
               <div className='relative h-16 w-16 overflow-hidden rounded-full'>
-                {artist.image ? (
-                  <Image
-                    src={artist.image}
-                    alt={`${artist.name} artist photo`}
-                    fill
-                    className='object-cover'
-                    sizes='64px'
-                    loading='lazy'
-                  />
-                ) : (
-                  <div className='flex h-full w-full items-center justify-center bg-muted'>
-                    <UserIcon className='h-6 w-6 text-muted-foreground' />
-                  </div>
-                )}
+                <SpotifyImage
+                  src={artist.image}
+                  alt={`${artist.name} artist photo`}
+                  fallbackIcon={<UserIcon className='h-6 w-6 text-muted-foreground' />}
+                  className='h-full w-full'
+                  sizes='64px'
+                />
               </div>
               <div className='text-center'>
                 <h3 className='truncate text-sm font-medium group-hover:text-primary'>

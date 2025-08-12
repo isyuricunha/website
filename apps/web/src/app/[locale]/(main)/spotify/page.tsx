@@ -8,6 +8,8 @@ import NowListeningSection from '@/components/spotify/now-listening-section'
 import RecentlyPlayedSection from '@/components/spotify/recently-played-section'
 import TopArtistsSection from '@/components/spotify/top-artists-section'
 import TopSongsSection from '@/components/spotify/top-songs-section'
+import DebugImages from '@/components/spotify/debug-images'
+import ImageTest from '@/components/spotify/image-test'
 import PageTitle from '@/components/page-title'
 import {
   SITE_NAME,
@@ -89,12 +91,14 @@ const Page = async (props: PageProps) => {
       />
       <PageTitle title={title} description={description} />
 
-      <div className='space-y-12'>
-        <NowListeningSection />
-        <TopArtistsSection />
-        <TopSongsSection />
-        <RecentlyPlayedSection />
-      </div>
+                   <div className='space-y-12'>
+               <DebugImages />
+               <ImageTest />
+               <NowListeningSection />
+               <TopArtistsSection />
+               <TopSongsSection />
+               <RecentlyPlayedSection />
+             </div>
     </>
   )
 }

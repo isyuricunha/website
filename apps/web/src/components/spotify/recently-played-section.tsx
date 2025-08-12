@@ -3,12 +3,12 @@
 import { useTranslations } from '@tszhong0411/i18n/client'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@tszhong0411/ui'
 import { PlayIcon, ClockIcon } from 'lucide-react'
-import Image from 'next/image'
 import { useState } from 'react'
 
 import { api } from '@/trpc/react'
 
 import Link from '../link'
+import SpotifyImage from './spotify-image'
 
 const RecentlyPlayedSection = () => {
   const t = useTranslations()
@@ -141,20 +141,13 @@ const RecentlyPlayedSection = () => {
               className='group flex items-center space-x-4 rounded-lg p-2 transition-colors hover:bg-muted/50'
             >
               <div className='relative h-12 w-12 flex-shrink-0 overflow-hidden rounded-lg'>
-                {track.albumImage ? (
-                  <Image
-                    src={track.albumImage}
-                    alt={`${track.album} album cover`}
-                    fill
-                    className='object-cover'
-                    sizes='48px'
-                    loading='lazy'
-                  />
-                ) : (
-                  <div className='flex h-full w-full items-center justify-center bg-muted'>
-                    <PlayIcon className='h-4 w-4 text-muted-foreground' />
-                  </div>
-                )}
+                <SpotifyImage
+                  src={track.albumImage}
+                  alt={`${track.album} album cover`}
+                  fallbackIcon={<PlayIcon className='h-4 w-4 text-muted-foreground' />}
+                  className='h-full w-full'
+                  sizes='48px'
+                />
               </div>
 
               <div className='min-w-0 flex-1'>

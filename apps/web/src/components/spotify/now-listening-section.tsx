@@ -3,12 +3,12 @@
 import { useTranslations } from '@tszhong0411/i18n/client'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@tszhong0411/ui'
 import { PlayIcon } from 'lucide-react'
-import Image from 'next/image'
 import { useEffect, useState } from 'react'
 
 import { api } from '@/trpc/react'
 
 import Link from '../link'
+import SpotifyImage from './spotify-image'
 
 const NowListeningSection = () => {
   const t = useTranslations()
@@ -126,20 +126,13 @@ const NowListeningSection = () => {
           className='group flex items-center space-x-4 rounded-lg p-4 transition-colors hover:bg-muted/50'
         >
           <div className='relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg'>
-            {currentTrack.albumImage ? (
-              <Image
-                src={currentTrack.albumImage}
-                alt={`${currentTrack.album} album cover`}
-                fill
-                className='object-cover'
-                sizes='64px'
-                loading='lazy'
-              />
-            ) : (
-              <div className='flex h-full w-full items-center justify-center bg-muted'>
-                <PlayIcon className='h-6 w-6 text-muted-foreground' />
-              </div>
-            )}
+            <SpotifyImage
+              src={currentTrack.albumImage}
+              alt={`${currentTrack.album} album cover`}
+              fallbackIcon={<PlayIcon className='h-6 w-6 text-muted-foreground' />}
+              className='h-full w-full'
+              sizes='64px'
+            />
             {currentTrack.isPlaying && (
               <div className='absolute inset-0 flex items-center justify-center bg-black/20'>
                 <div className='flex space-x-1'>
