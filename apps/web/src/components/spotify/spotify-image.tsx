@@ -53,10 +53,8 @@ const SpotifyImage = ({
         loading="lazy"
         onLoad={() => {
           setIsLoading(false)
-          console.log('Spotify image loaded successfully:', src)
         }}
-        onError={(e) => {
-          console.error('Spotify image failed to load:', src, e)
+        onError={() => {
           setHasError(true)
           setIsLoading(false)
         }}
