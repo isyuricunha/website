@@ -124,7 +124,8 @@ const TopArtistsSection = () => {
                   src={artist.image}
                   alt={`${artist.name} artist photo`}
                   fallbackIcon={<UserIcon className='h-6 w-6 text-muted-foreground' />}
-                  className='h-full w-full'
+                  width={64}
+                  height={64}
                   sizes='64px'
                 />
               </div>

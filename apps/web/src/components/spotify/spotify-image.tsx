@@ -35,20 +35,48 @@ const SpotifyImage = ({
     )
   }
 
+  // If we have explicit width and height, use them instead of fill
+  if (width && height) {
+    return (
+      <div className={`relative ${className}`}>
+        {isLoading && (
+          <div className="absolute inset-0 flex items-center justify-center bg-muted animate-pulse">
+            {fallbackIcon}
+          </div>
+        )}
+        <Image
+          src={src}
+          alt={alt}
+          width={width}
+          height={height}
+          className={`object-cover transition-opacity duration-200 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
+          sizes={sizes}
+          loading="lazy"
+          onLoad={() => {
+            setIsLoading(false)
+          }}
+          onError={() => {
+            setHasError(true)
+            setIsLoading(false)
+          }}
+        />
+      </div>
+    )
+  }
+
+  // Use fill for responsive images
   return (
-    <div className="relative">
+    <div className={`relative ${className}`}>
       {isLoading && (
-        <div className={`absolute inset-0 flex items-center justify-center bg-muted animate-pulse ${className}`}>
+        <div className="absolute inset-0 flex items-center justify-center bg-muted animate-pulse">
           {fallbackIcon}
         </div>
       )}
       <Image
         src={src}
         alt={alt}
-        fill={fill}
-        width={width}
-        height={height}
-        className={`object-cover ${className} ${isLoading ? 'opacity-0' : 'opacity-100'}`}
+        fill={true}
+        className={`object-cover transition-opacity duration-200 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
         sizes={sizes}
         loading="lazy"
         onLoad={() => {

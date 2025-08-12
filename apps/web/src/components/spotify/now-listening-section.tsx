@@ -130,7 +130,8 @@ const NowListeningSection = () => {
               src={currentTrack.albumImage}
               alt={`${currentTrack.album} album cover`}
               fallbackIcon={<PlayIcon className='h-6 w-6 text-muted-foreground' />}
-              className='h-full w-full'
+              width={64}
+              height={64}
               sizes='64px'
             />
             {currentTrack.isPlaying && (

@@ -145,7 +145,8 @@ const RecentlyPlayedSection = () => {
                   src={track.albumImage}
                   alt={`${track.album} album cover`}
                   fallbackIcon={<PlayIcon className='h-4 w-4 text-muted-foreground' />}
-                  className='h-full w-full'
+                  width={48}
+                  height={48}
                   sizes='48px'
                 />
               </div>
