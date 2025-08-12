@@ -299,10 +299,26 @@
       "open": "Open settings",
       "animations": "Animations",
       "speechBubbles": "Speech bubbles",
-      "soundEffects": "Sound effects"
+      "soundEffects": "Sound effects",
+      "messageDuration": "Message duration",
+      "bubblePosition": "Bubble position",
+      "positions": {
+        "bottomRight": "Bottom Right",
+        "bottomLeft": "Bottom Left",
+        "topRight": "Top Right",
+        "topLeft": "Top Left"
+      }
     },
     "easterEgg": {
       "retroMode": "Retro mode activated! 🎮"
+    },
+    "restore": "Bring Yue back",
+    "idle": {
+      "tip1": "💡 Did you know? You can use Shift+Y to bring me back if I'm hidden!",
+      "tip2": "🎮 Try the mini-game! Click the gamepad icon in my speech bubble.",
+      "tip3": "⚙️ Customize my behavior in the settings panel.",
+      "tip4": "🎯 I'm here to help! Feel free to ask questions or explore the site.",
+      "tip5": "🌟 Found any bugs? Let me know and I'll help report them!"
     },
     "greetings": {
       "morning": "Good morning! I'm Yue! ☀️",
@@ -349,37 +365,37 @@
         "3": "Check out the latest articles and projects below!"
       },
       "blog": {
-        "0": "Welcome to the blog! 📝 I'm Yue, your virtual assistant!",
+        "0": "Welcome to the blog! 📝",
         "1": "The site owner writes about tech, databases, and sometimes life.",
         "2": "Feel free to leave comments on the articles!",
         "3": "What topics would you like to read about?"
       },
       "projects": {
-        "0": "Here are the projects! 🚀 I'm Yue, your virtual assistant!",
+        "0": "Here are the projects! 🚀",
         "1": "Everything is built with love and lots of coffee ☕",
         "2": "Want to collaborate? Let's build something amazing!",
         "3": "Each project taught something new."
       },
       "about": {
-        "0": "Want to know more about the site owner? 🤔 I'm Yue, your virtual assistant!",
+        "0": "Want to know more about the site owner? 🤔",
         "1": "The site owner is just a person who loves databases and coding.",
         "2": "Feel free to ask questions!",
         "3": "The journey started in 2018. Still learning every day!"
       },
       "uses": {
-        "0": "This is the setup! 💻 I'm Yue, your virtual assistant!",
+        "0": "This is the setup! 💻",
         "1": "Pretty cool setup, no? The site owner loves their gear!",
         "2": "Want to know what's used for development?",
         "3": "Good tools make all the difference!"
       },
       "spotify": {
-        "0": "Welcome to the music corner! 🎵 I'm Yue, your virtual assistant!",
+        "0": "Welcome to the music corner! 🎵",
         "1": "Good or bad music? I don't know, but the site owner likes it!",
         "2": "Music helps focus while coding.",
         "3": "What are you listening to these days?"
       },
       "guestbook": {
-        "0": "Leave a message in the guestbook! 📖 I'm Yue, your virtual assistant!",
+        "0": "Leave a message in the guestbook! 📖",
         "1": "The site owner loves reading messages from visitors!",
         "2": "Feel free to say hello or ask questions!",
         "3": "Your message will make their day!"

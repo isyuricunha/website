@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react'
 import Image from 'next/image'
-import { XIcon, SettingsIcon, GamepadIcon } from 'lucide-react'
+import { XIcon, SettingsIcon, GamepadIcon, EyeIcon } from 'lucide-react'
 import { useTranslations } from '@tszhong0411/i18n/client'
 import MascotGame from './mascot-game'
 
@@ -20,6 +20,8 @@ interface MascotPreferences {
   soundEffects: boolean
   speechBubbles: boolean
   skin: string
+  messageDuration: number
+  bubblePosition: 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left'
 }
 
 const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
@@ -37,11 +39,15 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   const [konamiSequence, setKonamiSequence] = useState<number[]>([])
   const [autoShowMessage, setAutoShowMessage] = useState(false)
   const [isHovering, setIsHovering] = useState(false)
+  const [currentMessage, setCurrentMessage] = useState<string>('')
+  const [idleTimer, setIdleTimer] = useState<NodeJS.Timeout | null>(null)
   const [preferences, setPreferences] = useState<MascotPreferences>({
     animations: true,
     soundEffects: false,
     speechBubbles: true,
-    skin: 'default'
+    skin: 'default',
+    messageDuration: 7000, // 7 seconds default
+    bubblePosition: 'bottom-right'
   })
   const bubbleRef = useRef<HTMLDivElement | null>(null)
   const mascotRef = useRef<HTMLButtonElement | null>(null)
@@ -62,6 +68,18 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     if (hour < 17) return t('mascot.greetings.afternoon')
     if (hour < 21) return t('mascot.greetings.evening')
     return t('mascot.greetings.night')
+  }
+
+  // Get idle message
+  const getIdleMessage = () => {
+    const idleMessages = [
+      t('mascot.idle.tip1'),
+      t('mascot.idle.tip2'),
+      t('mascot.idle.tip3'),
+      t('mascot.idle.tip4'),
+      t('mascot.idle.tip5')
+    ]
+    return idleMessages[Math.floor(Math.random() * idleMessages.length)]
   }
 
   // Read dismissal state and preferences once per session
@@ -88,6 +106,15 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   // Konami Code detection
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
+      // Keyboard shortcut to restore Yue (Shift+Y)
+      if (event.shiftKey && event.key.toLowerCase() === 'y') {
+        setIsHiddenPref(false)
+        try {
+          localStorage.removeItem(HIDE_KEY)
+        } catch {}
+        return
+      }
+
       const newSequence = [...konamiSequence, event.keyCode]
       setKonamiSequence(newSequence)
 
@@ -125,6 +152,28 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     return () => clearInterval(blinkInterval)
   }, [preferences.animations, prefersReducedMotion])
 
+  // Idle timer for fun facts
+  useEffect(() => {
+    if (!preferences.speechBubbles || showBubble || autoShowMessage) return
+
+    const timer = setTimeout(() => {
+      if (!showBubble && !autoShowMessage) {
+        setCurrentMessage(getIdleMessage())
+        setShowBubble(true)
+
+        // Hide idle message after 4 seconds
+        setTimeout(() => {
+          setShowBubble(false)
+        }, 4000)
+      }
+    }, 25000) // 25 seconds idle
+
+    setIdleTimer(timer)
+    return () => {
+      if (timer) clearTimeout(timer)
+    }
+  }, [preferences.speechBubbles, showBubble, autoShowMessage])
+
   // Get current page path for contextual messages
   const currentPath = typeof window !== 'undefined' ? window.location.pathname : ''
   const pageKey = currentPath === '/' ? 'home' :
@@ -144,19 +193,20 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       const timer = setTimeout(() => {
         setAutoShowMessage(true)
         setShowBubble(true)
+        setCurrentMessage(messages[0] || '')
 
-        // Hide the message after 5 seconds
+        // Hide the message after configured duration
         const hideTimer = setTimeout(() => {
           setShowBubble(false)
           setAutoShowMessage(false)
-        }, 5000)
+        }, preferences.messageDuration)
 
         return () => clearTimeout(hideTimer)
       }, 1000) // 1 second delay after page load
 
       return () => clearTimeout(timer)
     }
-  }, [pageKey, preferences.speechBubbles])
+  }, [pageKey, preferences.speechBubbles, preferences.messageDuration])
 
   // Build message list from i18n with time-based greetings and context
   const messages: string[] = useMemo(() => {
@@ -200,7 +250,9 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
   const pickNextMessage = () => {
     if (messages.length === 0) return
-    setMessageIndex((prev) => (prev + 1) % messages.length)
+    const newIndex = (messageIndex + 1) % messages.length
+    setMessageIndex(newIndex)
+    setCurrentMessage(messages[newIndex])
   }
 
   const handleDismiss = () => {
@@ -239,7 +291,10 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   const handleMouseEnter = () => {
     setIsHovering(true)
     if (preferences.speechBubbles && !autoShowMessage) {
-      handleBubbleInteraction()
+      if (!currentMessage) {
+        setCurrentMessage(messages[messageIndex] || '')
+      }
+      setShowBubble(true)
     }
   }
 
@@ -250,11 +305,55 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     }
   }
 
-  if (hidden || isDismissed || isHiddenPref) return null
+  const handleHideMascot = () => {
+    setIsHiddenPref(true)
+    try {
+      localStorage.setItem(HIDE_KEY, '1')
+    } catch {}
+  }
+
+  const handleRestoreMascot = () => {
+    setIsHiddenPref(false)
+    try {
+      localStorage.removeItem(HIDE_KEY)
+    } catch {}
+  }
+
+  // Get position classes based on preference
+  const getPositionClasses = () => {
+    switch (preferences.bubblePosition) {
+      case 'bottom-left':
+        return 'fixed bottom-5 left-5'
+      case 'top-right':
+        return 'fixed top-5 right-5'
+      case 'top-left':
+        return 'fixed top-5 left-5'
+      default:
+        return 'fixed bottom-5 right-5'
+    }
+  }
+
+  if (hidden || isDismissed) return null
+
+  // Show restore button when hidden
+  if (isHiddenPref) {
+    return (
+      <div className={getPositionClasses()}>
+        <button
+          type='button'
+          aria-label={t('mascot.restore')}
+          className='rounded-full bg-primary p-3 text-primary-foreground shadow-lg transition-all hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
+          onClick={handleRestoreMascot}
+        >
+          <EyeIcon className='h-6 w-6' />
+        </button>
+      </div>
+    )
+  }
 
   return (
     <>
-      <div className='fixed bottom-5 right-5 z-40'>
+      <div className={getPositionClasses()}>
         {/* Settings Panel */}
         {showSettings && (
           <div className='absolute bottom-full right-0 mb-2 w-80 rounded-lg border bg-popover p-4 text-sm text-popover-foreground shadow-lg'>
@@ -301,6 +400,34 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
                 />
               </label>
 
+              <label className='flex items-center justify-between'>
+                <span>{t('mascot.settings.messageDuration')}</span>
+                <select
+                  value={preferences.messageDuration}
+                  onChange={(e) => handlePreferencesChange('messageDuration', parseInt(e.target.value))}
+                  className='rounded border-gray-300 text-xs'
+                >
+                  <option value={3000}>3s</option>
+                  <option value={5000}>5s</option>
+                  <option value={7000}>7s</option>
+                  <option value={10000}>10s</option>
+                </select>
+              </label>
+
+              <label className='flex items-center justify-between'>
+                <span>{t('mascot.settings.bubblePosition')}</span>
+                <select
+                  value={preferences.bubblePosition}
+                  onChange={(e) => handlePreferencesChange('bubblePosition', e.target.value)}
+                  className='rounded border-gray-300 text-xs'
+                >
+                  <option value='bottom-right'>{t('mascot.settings.positions.bottomRight')}</option>
+                  <option value='bottom-left'>{t('mascot.settings.positions.bottomLeft')}</option>
+                  <option value='top-right'>{t('mascot.settings.positions.topRight')}</option>
+                  <option value='top-left'>{t('mascot.settings.positions.topLeft')}</option>
+                </select>
+              </label>
+
               {isKonamiMode && (
                 <div className='pt-2 border-t'>
                   <p className='text-xs text-muted-foreground'>
@@ -316,7 +443,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         {preferences.speechBubbles && (
           <div
             className={`absolute bottom-full right-0 mb-2 w-80 rounded-lg border bg-popover p-3 text-sm text-popover-foreground shadow-lg outline-none ring-0 transition-all duration-200 ease-out ${
-              showBubble && messages.length > 0
+              showBubble && (currentMessage || messages[messageIndex])
                 ? 'opacity-100 translate-y-0'
                 : 'opacity-0 translate-y-2 pointer-events-none'
             }`}
@@ -328,7 +455,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
           >
             <div className='flex items-start gap-3'>
               <div className='min-w-0 flex-1' id='mascot-message'>
-                {messages[messageIndex]}
+                {currentMessage || messages[messageIndex]}
               </div>
               <div className='flex items-center gap-1'>
                 <button
@@ -351,12 +478,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
                   type='button'
                   aria-label={t('mascot.hide')}
                   className='rounded px-2 py-1 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
-                  onClick={() => {
-                    try {
-                      localStorage.setItem(HIDE_KEY, '1')
-                    } catch {}
-                    setIsHiddenPref(true)
-                  }}
+                  onClick={handleHideMascot}
                 >
                   {t('mascot.hide')}
                 </button>
@@ -387,7 +509,10 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
           onMouseEnter={handleMouseEnter}
           onFocus={() => {
             if (preferences.speechBubbles && !autoShowMessage) {
-              handleBubbleInteraction()
+              if (!currentMessage) {
+                setCurrentMessage(messages[messageIndex] || '')
+              }
+              setShowBubble(true)
             }
           }}
           onBlur={() => {

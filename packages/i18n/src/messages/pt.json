@@ -299,10 +299,26 @@
       "open": "Abrir configurações",
       "animations": "Animações",
       "speechBubbles": "Balões de fala",
-      "soundEffects": "Efeitos sonoros"
+      "soundEffects": "Efeitos sonoros",
+      "messageDuration": "Duração da mensagem",
+      "bubblePosition": "Posição do balão",
+      "positions": {
+        "bottomRight": "Inferior Direito",
+        "bottomLeft": "Inferior Esquerdo",
+        "topRight": "Superior Direito",
+        "topLeft": "Superior Esquerdo"
+      }
     },
     "easterEgg": {
       "retroMode": "Modo retrô ativado! 🎮"
+    },
+    "restore": "Trazer Yue de volta",
+    "idle": {
+      "tip1": "💡 Sabia? Você pode usar Shift+Y para me trazer de volta se eu estiver oculta!",
+      "tip2": "🎮 Experimente o mini-jogo! Clique no ícone do gamepad no meu balão de fala.",
+      "tip3": "⚙️ Personalize meu comportamento no painel de configurações.",
+      "tip4": "🎯 Estou aqui para ajudar! Sinta-se à vontade para fazer perguntas ou explorar o site.",
+      "tip5": "🌟 Encontrou algum bug? Me avise que eu ajudo a reportar!"
     },
     "greetings": {
       "morning": "Bom dia! Eu sou a Yue! ☀️",
@@ -336,37 +352,37 @@
         "3": "Confira os artigos e projetos mais recentes abaixo!"
       },
       "blog": {
-        "0": "Bem-vindo ao blog! 📝 Eu sou a Yue, sua assistente virtual!",
+        "0": "Bem-vindo ao blog! 📝",
         "1": "O dono do site escreve sobre tecnologia, bancos de dados e às vezes sobre a vida.",
         "2": "Sinta-se à vontade para deixar comentários nos artigos!",
         "3": "Sobre quais tópicos você gostaria de ler?"
       },
       "projects": {
-        "0": "Aqui estão os projetos! 🚀 Eu sou a Yue, sua assistente virtual!",
+        "0": "Aqui estão os projetos! 🚀",
         "1": "Tudo é construído com amor e muito café ☕",
         "2": "Quer colaborar? Vamos construir algo incrível!",
         "3": "Cada projeto ensinou algo novo."
       },
       "about": {
-        "0": "Quer saber mais sobre o dono do site? 🤔 Eu sou a Yue, sua assistente virtual!",
+        "0": "Quer saber mais sobre o dono do site? 🤔",
         "1": "O dono do site é apenas uma pessoa que ama bancos de dados e programação.",
         "2": "Sinta-se à vontade para fazer perguntas!",
         "3": "A jornada começou em 2018. Ainda aprendendo todos os dias!"
       },
       "uses": {
-        "0": "Este é o setup! 💻 Eu sou a Yue, sua assistente virtual!",
+        "0": "Este é o setup! 💻",
         "1": "Setup bem legal, né? O dono do site ama o equipamento!",
         "2": "Quer saber o que é usado para desenvolvimento?",
         "3": "Boa ferramentas fazem toda a diferença!"
       },
       "spotify": {
-        "0": "Bem-vindo ao cantinho da música! 🎵 Eu sou a Yue, sua assistente virtual!",
+        "0": "Bem-vindo ao cantinho da música! 🎵",
         "1": "Música boa ou ruim? Não sei, mas o dono do site gosta!",
         "2": "Música ajuda a focar enquanto programa.",
         "3": "O que você está ouvindo ultimamente?"
       },
       "guestbook": {
-        "0": "Deixe uma mensagem no livro de visitas! 📖 Eu sou a Yue, sua assistente virtual!",
+        "0": "Deixe uma mensagem no livro de visitas! 📖",
         "1": "O dono do site adora ler mensagens dos visitantes!",
         "2": "Sinta-se à vontade para dizer olá ou fazer perguntas!",
         "3": "Sua mensagem vai alegrar o dia dele!"
