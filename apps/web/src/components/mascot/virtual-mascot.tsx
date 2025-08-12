@@ -2,10 +2,9 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react'
 import Image from 'next/image'
-import { XIcon, SettingsIcon, GamepadIcon, EyeIcon, MenuIcon, BugIcon, GithubIcon, CopyIcon, BarChart3Icon } from 'lucide-react'
+import { XIcon, SettingsIcon, GamepadIcon, EyeIcon, MenuIcon, BugIcon, GithubIcon, CopyIcon } from 'lucide-react'
 import { useTranslations } from '@tszhong0411/i18n/client'
 import MascotGame from './mascot-game'
-import MascotStats from './mascot-stats'
 
 type VirtualMascotProps = {
   hidden?: boolean
@@ -36,7 +35,6 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   const [isWaving, setIsWaving] = useState(false)
   const [showSettings, setShowSettings] = useState(false)
   const [showGame, setShowGame] = useState(false)
-  const [showStats, setShowStats] = useState(false)
   const [showMenu, setShowMenu] = useState(false)
   const [showContact, setShowContact] = useState(false)
   const [isKonamiMode, setIsKonamiMode] = useState(false)
@@ -46,8 +44,6 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   const [currentMessage, setCurrentMessage] = useState<string>('')
   const [idleTimer, setIdleTimer] = useState<NodeJS.Timeout | null>(null)
   const [lastMessageIndex, setLastMessageIndex] = useState(-1)
-  const [isAdminMode, setIsAdminMode] = useState(false)
-  const [showAdminFeatures, setShowAdminFeatures] = useState(false)
   const [preferences, setPreferences] = useState<MascotPreferences>({
     animations: true,
     soundEffects: false,
@@ -79,17 +75,6 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
   // Get idle message
   const getIdleMessage = () => {
-    if (isAdminMode) {
-      const adminIdleMessages = [
-        t('mascot.admin.idle.tip1') || '💼 Remember to check for pending comments!',
-        t('mascot.admin.idle.tip2') || '👥 Review user submissions regularly.',
-        t('mascot.admin.idle.tip3') || '🔧 Admin tools are at your disposal.',
-        t('mascot.admin.idle.tip4') || '📊 Keep an eye on site statistics.',
-        t('mascot.admin.idle.tip5') || '🛡️ Maintain site security and quality.'
-      ]
-      return adminIdleMessages[Math.floor(Math.random() * adminIdleMessages.length)]
-    }
-
     const idleMessages = [
       t('mascot.idle.tip1'),
       t('mascot.idle.tip2'),
@@ -128,13 +113,8 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       // Load Konami mode state
       const konami = localStorage.getItem(KONAMI_MODE_KEY)
       if (konami === '1') setIsKonamiMode(true)
-
-      // Check if we're in admin mode
-      const isAdmin = pageKey === 'admin'
-      setIsAdminMode(isAdmin)
-      setShowAdminFeatures(isAdmin)
-    } catch { }
-  }, [pageKey])
+    } catch {}
+  }, [])
 
   // Konami Code detection
   useEffect(() => {
@@ -146,7 +126,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         try {
           sessionStorage.removeItem(STORAGE_KEY)
           localStorage.removeItem(HIDE_KEY)
-        } catch { }
+        } catch {}
         return
       }
 
@@ -161,7 +141,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
             const newMode = !prev
             try {
               localStorage.setItem(KONAMI_MODE_KEY, newMode ? '1' : '0')
-            } catch { }
+            } catch {}
             return newMode
           })
         }
@@ -214,9 +194,6 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   const getPageKey = (path: string) => {
     // Remove locale prefix if present
     const pathWithoutLocale = path.replace(/^\/(en|pt|fr|de|zh)\//, '/')
-
-    // Check for admin pages first
-    if (pathWithoutLocale.startsWith('/admin')) return 'admin'
 
     if (pathWithoutLocale === '/' || pathWithoutLocale === '') return 'home'
     if (pathWithoutLocale.startsWith('/blog')) return 'blog'
@@ -318,7 +295,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     setIsDismissed(true)
     try {
       sessionStorage.setItem(STORAGE_KEY, '1')
-    } catch { }
+    } catch {}
   }
 
   const handleMascotClick = () => {
@@ -336,7 +313,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     setPreferences(newPrefs)
     try {
       localStorage.setItem(PREFERENCES_KEY, JSON.stringify(newPrefs))
-    } catch { }
+    } catch {}
   }
 
   const handleBubbleInteraction = () => {
@@ -367,7 +344,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     setIsHiddenPref(true)
     try {
       localStorage.setItem(HIDE_KEY, '1')
-    } catch { }
+    } catch {}
   }
 
   const handleRestoreMascot = () => {
@@ -376,7 +353,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     try {
       sessionStorage.removeItem(STORAGE_KEY)
       localStorage.removeItem(HIDE_KEY)
-    } catch { }
+    } catch {}
   }
 
   const handleMenuAction = (action: string) => {
@@ -397,18 +374,6 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       case 'settings':
         setShowSettings(true)
         setShowBubble(true)
-        break
-      case 'admin-dashboard':
-        window.location.href = '/admin'
-        break
-      case 'admin-users':
-        window.location.href = '/admin/users'
-        break
-      case 'admin-comments':
-        window.location.href = '/admin/comments'
-        break
-      case 'admin-stats':
-        setShowStats(true)
         break
     }
   }
@@ -569,46 +534,6 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         {showMenu && (
           <div className='absolute bottom-full right-0 mb-2 w-48 rounded-lg border bg-popover p-2 text-sm text-popover-foreground shadow-lg'>
             <div className='space-y-1'>
-              {isAdminMode && (
-                <>
-                  <div className='px-3 py-1 text-xs font-medium text-muted-foreground border-b border-border mb-1'>
-                    {t('mascot.admin.adminTools') || 'Admin Tools'}
-                  </div>
-                  <button
-                    type='button'
-                    className='flex w-full items-center gap-2 rounded px-3 py-2 text-left transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
-                    onClick={() => handleMenuAction('admin-dashboard')}
-                  >
-                    <SettingsIcon className='h-4 w-4' />
-                    {t('mascot.admin.dashboard') || 'Dashboard'}
-                  </button>
-                  <button
-                    type='button'
-                    className='flex w-full items-center gap-2 rounded px-3 py-2 text-left transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
-                    onClick={() => handleMenuAction('admin-users')}
-                  >
-                    <GithubIcon className='h-4 w-4' />
-                    {t('mascot.admin.users') || 'Users'}
-                  </button>
-                  <button
-                    type='button'
-                    className='flex w-full items-center gap-2 rounded px-3 py-2 text-left transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
-                    onClick={() => handleMenuAction('admin-comments')}
-                  >
-                    <BugIcon className='h-4 w-4' />
-                    {t('mascot.admin.comments') || 'Comments'}
-                  </button>
-                  <button
-                    type='button'
-                    className='flex w-full items-center gap-2 rounded px-3 py-2 text-left transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
-                    onClick={() => handleMenuAction('admin-stats')}
-                  >
-                    <BarChart3Icon className='h-4 w-4' />
-                    {t('mascot.admin.stats') || 'Statistics'}
-                  </button>
-                  <div className='border-t border-border my-1'></div>
-                </>
-              )}
               <button
                 type='button'
                 className='flex w-full items-center gap-2 rounded px-3 py-2 text-left transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
@@ -648,10 +573,11 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         {/* Speech Bubble */}
         {preferences.speechBubbles && (
           <div
-            className={`absolute bottom-full right-0 mb-2 w-80 rounded-lg border bg-popover p-3 text-sm text-popover-foreground shadow-lg outline-none ring-0 transition-all duration-200 ease-out ${showBubble && (currentMessage || messages[messageIndex])
+            className={`absolute bottom-full right-0 mb-2 w-80 rounded-lg border bg-popover p-3 text-sm text-popover-foreground shadow-lg outline-none ring-0 transition-all duration-200 ease-out ${
+              showBubble && (currentMessage || messages[messageIndex])
                 ? 'opacity-100 translate-y-0'
                 : 'opacity-0 translate-y-2 pointer-events-none'
-              }`}
+            }`}
             role='dialog'
             aria-label={t('mascot.speechBubble')}
             aria-describedby='mascot-message'
@@ -697,9 +623,11 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
           ref={mascotRef}
           type='button'
           aria-label={t('mascot.ariaLabel')}
-          className={`relative inline-flex h-[120px] w-[120px] items-center justify-center rounded-full border transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${isActive ? 'border-primary shadow-lg shadow-primary/20' : 'border-border shadow'
-            } ${isWaving ? 'animate-bounce' : ''} ${prefersReducedMotion ? '' : 'hover:scale-105'} ${isKonamiMode ? 'animate-pulse border-yellow-400 shadow-yellow-400/20' : ''
-            } ${isAdminMode ? 'border-red-400 shadow-red-400/20' : ''}`}
+          className={`relative inline-flex h-[120px] w-[120px] items-center justify-center rounded-full border transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
+            isActive ? 'border-primary shadow-lg shadow-primary/20' : 'border-border shadow'
+          } ${isWaving ? 'animate-bounce' : ''} ${prefersReducedMotion ? '' : 'hover:scale-105'} ${
+            isKonamiMode ? 'animate-pulse border-yellow-400 shadow-yellow-400/20' : ''
+          }`}
           onClick={handleMascotClick}
           onMouseEnter={handleMouseEnter}
           onFocus={() => {
@@ -722,28 +650,16 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
             role='presentation'
             width={120}
             height={120}
-            className={`rounded-full object-cover transition-all duration-200 ${isBlinking ? 'animate-pulse' : ''
-              } ${isKonamiMode ? 'filter sepia hue-rotate-180' : ''} ${isAdminMode ? 'filter brightness-110 contrast-110' : ''
-              }`}
+            className={`rounded-full object-cover transition-all duration-200 ${
+              isBlinking ? 'animate-pulse' : ''
+            } ${isKonamiMode ? 'filter sepia hue-rotate-180' : ''}`}
             priority={false}
           />
-          {isAdminMode && (
-            <div className='absolute -top-1 -right-1 h-6 w-6 rounded-full bg-red-500 flex items-center justify-center text-white text-xs font-bold shadow-lg'>
-              A
-            </div>
-          )}
         </button>
       </div>
 
       {/* Mini Game */}
       <MascotGame isOpen={showGame} onClose={() => setShowGame(false)} />
-
-      {/* Statistics */}
-      <MascotStats
-        isOpen={showStats}
-        onClose={() => setShowStats(false)}
-        isAdminMode={isAdminMode}
-      />
     </>
   )
 }
