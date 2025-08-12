@@ -352,6 +352,18 @@
       "gameOver": "Game Over! Your score: {score}",
       "clickTarget": "Click target"
     },
+    "stats": {
+      "title": "Site Statistics",
+      "adminTitle": "Admin Statistics",
+      "close": "Close statistics",
+      "totalUsers": "Total Users",
+      "totalComments": "Total Comments",
+      "totalViews": "Total Views",
+      "activeUsers": "Active Users",
+      "pendingComments": "Pending Comments",
+      "reviewNeeded": "Review needed",
+      "lastUpdated": "Last updated: Just now"
+    },
     "messages": {
       "0": "Hi! I'm Yue, your virtual assistant! Need help navigating?",
       "1": "Did you know you can activate the retro mode with the Konami Code?",
@@ -436,6 +448,32 @@
         "1": "My creator, Yuri loves reading messages from visitors!",
         "2": "Feel free to say hello or ask questions!",
         "3": "Your message will make their day!"
+      },
+      "admin": {
+        "0": "Welcome to the admin panel! 🔧 I'm here to help you manage the site.",
+        "1": "You have admin privileges. Use them wisely!",
+        "2": "Need help with moderation? I can guide you through the tools.",
+        "3": "The admin panel gives you full control over the website.",
+        "4": "Remember to review comments and user submissions regularly.",
+        "5": "You can manage users, comments, and site content from here.",
+        "6": "The admin interface is designed to be efficient and user-friendly.",
+        "7": "Don't forget to check for any pending moderation tasks!",
+        "8": "You're doing a great job keeping the site running smoothly!",
+        "9": "The admin tools are powerful - use them to maintain quality.",
+        "10": "Need a break? Try the mini-game in my menu! 🎮",
+        "adminTools": "Admin Tools",
+        "dashboard": "Dashboard",
+        "users": "Users",
+        "comments": "Comments",
+        "stats": "Statistics",
+        "statsMessage": "Admin statistics and analytics coming soon! 📊",
+        "idle": {
+          "tip1": "💼 Remember to check for pending comments!",
+          "tip2": "👥 Review user submissions regularly.",
+          "tip3": "🔧 Admin tools are at your disposal.",
+          "tip4": "📊 Keep an eye on site statistics.",
+          "tip5": "🛡️ Maintain site security and quality."
+        }
       }
     }
   }
