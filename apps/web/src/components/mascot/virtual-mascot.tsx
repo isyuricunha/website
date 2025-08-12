@@ -65,47 +65,46 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   return (
     <div className='fixed bottom-5 right-5 z-40 hidden sm:block'>
       {/* Bubble */}
-      {showBubble && messages.length > 0 && (
-        <div
-          ref={bubbleRef}
-          role='dialog'
-          aria-live='polite'
-          className='mb-2 max-w-xs rounded-lg border bg-popover p-3 text-sm text-popover-foreground shadow-lg outline-none ring-0 transition-all duration-200 ease-out animate-[fadeInUp_200ms_ease-out]'
-        >
-          <div className='flex items-start gap-3'>
-            <div className='min-w-0 flex-1'>{messages[messageIndex]}</div>
-            <div className='flex items-center gap-1'>
-              <button
-                type='button'
-                aria-label={t('mascot.hide')}
-                className='rounded px-2 py-1 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
-                onClick={() => {
-                  try {
-                    localStorage.setItem(HIDE_KEY, '1')
-                  } catch {}
-                  setIsHiddenPref(true)
-                }}
-              >
-                {t('mascot.hide')}
-              </button>
-              <button
-                type='button'
-                aria-label={t('mascot.close')}
-                className='rounded p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
-                onClick={handleDismiss}
-              >
-                <XIcon className='h-4 w-4' />
-              </button>
-            </div>
+      <div
+        className={`absolute bottom-full right-0 mb-2 max-w-xs rounded-lg border bg-popover p-3 text-sm text-popover-foreground shadow-lg outline-none ring-0 transition-all duration-200 ease-out ${
+          showBubble && messages.length > 0
+            ? 'opacity-100 translate-y-0'
+            : 'opacity-0 translate-y-2 pointer-events-none'
+        }`}
+      >
+        <div className='flex items-start gap-3'>
+          <div className='min-w-0 flex-1'>{messages[messageIndex]}</div>
+          <div className='flex items-center gap-1'>
+            <button
+              type='button'
+              aria-label={t('mascot.hide')}
+              className='rounded px-2 py-1 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
+              onClick={() => {
+                try {
+                  localStorage.setItem(HIDE_KEY, '1')
+                } catch {}
+                setIsHiddenPref(true)
+              }}
+            >
+              {t('mascot.hide')}
+            </button>
+            <button
+              type='button'
+              aria-label={t('mascot.close')}
+              className='rounded p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
+              onClick={handleDismiss}
+            >
+              <XIcon className='h-4 w-4' />
+            </button>
           </div>
         </div>
-      )}
+      </div>
 
       {/* Mascot button */}
       <button
         type='button'
         aria-label={t('mascot.ariaLabel')}
-        className={`inline-flex h-[120px] w-[120px] items-center justify-center rounded-full border transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
+        className={`relative inline-flex h-[120px] w-[120px] items-center justify-center rounded-full border transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
           isActive ? 'border-primary shadow-lg shadow-primary/20' : 'border-border shadow'
         }`}
         onClick={() => setIsActive((v) => !v)}
@@ -121,7 +120,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         onMouseLeave={() => setShowBubble(false)}
       >
         <Image
-          src='/images/avatar.png'
+          src='/images/mascote.png'
           alt=''
           role='presentation'
           width={120}
@@ -130,7 +129,6 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
           priority={false}
         />
       </button>
-
     </div>
   )
 }
