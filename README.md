@@ -320,7 +320,7 @@ This project is under a [personal license](https://github.com/isyuricunha/websit
 ## 📞 Contact
 
 Feel free to reach out via:
-- **Email**: [yuri@yuricunha.com](mailto:yuri@yuricunha.com)
+- **Email**: [me@yuricunha.com](mailto:me@yuricunha.com)
 - **GitHub**: [@isyuricunha](https://github.com/isyuricunha)
 - **Website**: [yuricunha.com](https://yuricunha.com)
 

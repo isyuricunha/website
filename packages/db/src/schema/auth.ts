@@ -6,9 +6,9 @@ import { guestbook } from './guestbook'
 
 export const roleEnum = pgEnum('role', ['user', 'admin'])
 
-export const users = pgTable('user', {
+export const users = pgTable('users', {
   id: text('id').primaryKey(),
-  username: text('username').notNull().unique(),  // <-- ADICIONE ESSA LINHA AQUI
+  username: text('username').unique(),
   name: text('name').notNull(),
   email: text('email').notNull().unique(),
   emailVerified: boolean('email_verified').notNull(),

@@ -88,7 +88,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   // Copy email to clipboard
   const copyEmail = async () => {
     try {
-      await navigator.clipboard.writeText('yuri@yuricunha.com')
+      await navigator.clipboard.writeText('me@yuricunha.com')
       // Could add a toast notification here
     } catch (err) {
       console.error('Failed to copy email:', err)
@@ -113,7 +113,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       // Load Konami mode state
       const konami = localStorage.getItem(KONAMI_MODE_KEY)
       if (konami === '1') setIsKonamiMode(true)
-    } catch {}
+    } catch { }
   }, [])
 
   // Konami Code detection
@@ -126,7 +126,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         try {
           sessionStorage.removeItem(STORAGE_KEY)
           localStorage.removeItem(HIDE_KEY)
-        } catch {}
+        } catch { }
         return
       }
 
@@ -141,7 +141,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
             const newMode = !prev
             try {
               localStorage.setItem(KONAMI_MODE_KEY, newMode ? '1' : '0')
-            } catch {}
+            } catch { }
             return newMode
           })
         }
@@ -295,7 +295,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     setIsDismissed(true)
     try {
       sessionStorage.setItem(STORAGE_KEY, '1')
-    } catch {}
+    } catch { }
   }
 
   const handleMascotClick = () => {
@@ -313,7 +313,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     setPreferences(newPrefs)
     try {
       localStorage.setItem(PREFERENCES_KEY, JSON.stringify(newPrefs))
-    } catch {}
+    } catch { }
   }
 
   const handleBubbleInteraction = () => {
@@ -344,7 +344,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     setIsHiddenPref(true)
     try {
       localStorage.setItem(HIDE_KEY, '1')
-    } catch {}
+    } catch { }
   }
 
   const handleRestoreMascot = () => {
@@ -353,7 +353,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     try {
       sessionStorage.removeItem(STORAGE_KEY)
       localStorage.removeItem(HIDE_KEY)
-    } catch {}
+    } catch { }
   }
 
   const handleMenuAction = (action: string) => {
@@ -516,7 +516,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
             <div className='space-y-3'>
               <p className='text-sm'>{t('mascot.contact.description')}</p>
               <div className='flex items-center gap-2'>
-                <code className='flex-1 rounded bg-muted px-2 py-1 text-xs'>yuri@yuricunha.com</code>
+                <code className='flex-1 rounded bg-muted px-2 py-1 text-xs'>me@yuricunha.com</code>
                 <button
                   type='button'
                   aria-label={t('mascot.contact.copy')}
@@ -573,11 +573,10 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         {/* Speech Bubble */}
         {preferences.speechBubbles && (
           <div
-            className={`absolute bottom-full right-0 mb-2 w-80 rounded-lg border bg-popover p-3 text-sm text-popover-foreground shadow-lg outline-none ring-0 transition-all duration-200 ease-out ${
-              showBubble && (currentMessage || messages[messageIndex])
+            className={`absolute bottom-full right-0 mb-2 w-80 rounded-lg border bg-popover p-3 text-sm text-popover-foreground shadow-lg outline-none ring-0 transition-all duration-200 ease-out ${showBubble && (currentMessage || messages[messageIndex])
                 ? 'opacity-100 translate-y-0'
                 : 'opacity-0 translate-y-2 pointer-events-none'
-            }`}
+              }`}
             role='dialog'
             aria-label={t('mascot.speechBubble')}
             aria-describedby='mascot-message'
@@ -623,11 +622,9 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
           ref={mascotRef}
           type='button'
           aria-label={t('mascot.ariaLabel')}
-          className={`relative inline-flex h-[120px] w-[120px] items-center justify-center rounded-full border transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
-            isActive ? 'border-primary shadow-lg shadow-primary/20' : 'border-border shadow'
-          } ${isWaving ? 'animate-bounce' : ''} ${prefersReducedMotion ? '' : 'hover:scale-105'} ${
-            isKonamiMode ? 'animate-pulse border-yellow-400 shadow-yellow-400/20' : ''
-          }`}
+          className={`relative inline-flex h-[120px] w-[120px] items-center justify-center rounded-full border transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${isActive ? 'border-primary shadow-lg shadow-primary/20' : 'border-border shadow'
+            } ${isWaving ? 'animate-bounce' : ''} ${prefersReducedMotion ? '' : 'hover:scale-105'} ${isKonamiMode ? 'animate-pulse border-yellow-400 shadow-yellow-400/20' : ''
+            }`}
           onClick={handleMascotClick}
           onMouseEnter={handleMouseEnter}
           onFocus={() => {
@@ -650,9 +647,8 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
             role='presentation'
             width={120}
             height={120}
-            className={`rounded-full object-cover transition-all duration-200 ${
-              isBlinking ? 'animate-pulse' : ''
-            } ${isKonamiMode ? 'filter sepia hue-rotate-180' : ''}`}
+            className={`rounded-full object-cover transition-all duration-200 ${isBlinking ? 'animate-pulse' : ''
+              } ${isKonamiMode ? 'filter sepia hue-rotate-180' : ''}`}
             priority={false}
           />
         </button>
