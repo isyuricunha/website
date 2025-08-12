@@ -36,6 +36,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   const [isKonamiMode, setIsKonamiMode] = useState(false)
   const [konamiSequence, setKonamiSequence] = useState<number[]>([])
   const [autoShowMessage, setAutoShowMessage] = useState(false)
+  const [isHovering, setIsHovering] = useState(false)
   const [preferences, setPreferences] = useState<MascotPreferences>({
     animations: true,
     soundEffects: false,
@@ -161,11 +162,13 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   const messages: string[] = useMemo(() => {
     const list: string[] = []
 
-    // Add time-based greeting first
-    try {
-      list.push(getTimeBasedGreeting())
-    } catch {
-      // Fallback if greeting translation is missing
+    // Only add time-based greeting on the root path (/)
+    if (pageKey === 'home') {
+      try {
+        list.push(getTimeBasedGreeting())
+      } catch {
+        // Fallback if greeting translation is missing
+      }
     }
 
     // First try to get page-specific messages
@@ -230,6 +233,20 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     if (!autoShowMessage) {
       pickNextMessage()
       setShowBubble(true)
+    }
+  }
+
+  const handleMouseEnter = () => {
+    setIsHovering(true)
+    if (preferences.speechBubbles && !autoShowMessage) {
+      handleBubbleInteraction()
+    }
+  }
+
+  const handleMouseLeave = () => {
+    setIsHovering(false)
+    if (!autoShowMessage) {
+      setShowBubble(false)
     }
   }
 
@@ -306,6 +323,8 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
             role='dialog'
             aria-label={t('mascot.speechBubble')}
             aria-describedby='mascot-message'
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
           >
             <div className='flex items-start gap-3'>
               <div className='min-w-0 flex-1' id='mascot-message'>
@@ -365,23 +384,14 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
             isKonamiMode ? 'animate-pulse border-yellow-400 shadow-yellow-400/20' : ''
           }`}
           onClick={handleMascotClick}
-          onMouseEnter={() => {
-            if (preferences.speechBubbles && !autoShowMessage) {
-              handleBubbleInteraction()
-            }
-          }}
+          onMouseEnter={handleMouseEnter}
           onFocus={() => {
             if (preferences.speechBubbles && !autoShowMessage) {
               handleBubbleInteraction()
             }
           }}
           onBlur={() => {
-            if (!autoShowMessage) {
-              setShowBubble(false)
-            }
-          }}
-          onMouseLeave={() => {
-            if (!autoShowMessage) {
+            if (!autoShowMessage && !isHovering) {
               setShowBubble(false)
             }
           }}
