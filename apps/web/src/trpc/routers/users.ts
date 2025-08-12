@@ -1,7 +1,7 @@
 import type { RouterOutputs } from '../react'
 
 import { TRPCError } from '@trpc/server'
-import { eq } from '@tszhong0411/db'
+import { eq, users } from '@tszhong0411/db'
 import { z } from 'zod'
 
 import { adminProcedure, createTRPCRouter } from '../trpc'
@@ -17,7 +17,8 @@ export const usersRouter = createTRPCRouter({
         username: true,
         image: true,
         createdAt: true,
-        updatedAt: true
+        updatedAt: true,
+        banned: true
       }
     })
 
@@ -30,7 +31,7 @@ export const usersRouter = createTRPCRouter({
     .input(z.object({ userId: z.string() }))
     .mutation(async ({ ctx, input }) => {
       try {
-        await ctx.db.delete(ctx.db.schema.users).where(eq(ctx.db.schema.users.id, input.userId))
+        await ctx.db.delete(users).where(eq(users.id, input.userId))
         return { success: true }
       } catch (error) {
         throw new TRPCError({
@@ -40,17 +41,15 @@ export const usersRouter = createTRPCRouter({
       }
     }),
 
-  banUser: adminProcedure
+    banUser: adminProcedure
     .input(z.object({ userId: z.string() }))
     .mutation(async ({ ctx, input }) => {
       try {
-        // For now, we'll use a simple approach by updating a custom field
-        // In a real implementation, you might want to add a 'banned' field to the users table
         await ctx.db
-          .update(ctx.db.schema.users)
-          .set({ role: 'user' }) // You could add a 'banned' field to the schema
-          .where(eq(ctx.db.schema.users.id, input.userId))
-
+          .update(users)
+          .set({ banned: true })
+          .where(eq(users.id, input.userId))
+ 
         return { success: true }
       } catch (error) {
         throw new TRPCError({
@@ -60,16 +59,15 @@ export const usersRouter = createTRPCRouter({
       }
     }),
 
-  unbanUser: adminProcedure
+    unbanUser: adminProcedure
     .input(z.object({ userId: z.string() }))
     .mutation(async ({ ctx, input }) => {
       try {
-        // Similar to ban, but restore user privileges
         await ctx.db
-          .update(ctx.db.schema.users)
-          .set({ role: 'user' })
-          .where(eq(ctx.db.schema.users.id, input.userId))
-
+          .update(users)
+          .set({ banned: false })
+          .where(eq(users.id, input.userId))
+ 
         return { success: true }
       } catch (error) {
         throw new TRPCError({
@@ -92,9 +90,9 @@ export const usersRouter = createTRPCRouter({
       try {
         const { userId, ...updateData } = input
         await ctx.db
-          .update(ctx.db.schema.users)
+          .update(users)
           .set(updateData)
-          .where(eq(ctx.db.schema.users.id, userId))
+          .where(eq(users.id, userId))
 
         return { success: true }
       } catch (error) {
@@ -111,7 +109,7 @@ export const usersRouter = createTRPCRouter({
       try {
         // Get user email
         const user = await ctx.db.query.users.findFirst({
-          where: eq(ctx.db.schema.users.id, input.userId),
+          where: eq(users.id, input.userId),
           columns: { email: true }
         })
 
