@@ -292,6 +292,24 @@
         "ariaLabel": "Yue - Virtueller Assistent",
         "close": "Schließen",
         "hide": "Ausblenden",
+        "speechBubble": "Yues Nachricht",
+        "settings": {
+            "title": "Yues Einstellungen",
+            "close": "Einstellungen schließen",
+            "open": "Einstellungen öffnen",
+            "animations": "Animationen",
+            "speechBubbles": "Sprechblasen",
+            "soundEffects": "Soundeffekte"
+        },
+        "easterEgg": {
+            "retroMode": "Retro-Modus aktiviert! 🎮"
+        },
+        "greetings": {
+            "morning": "Guten Morgen! Ich bin Yue! ☀️",
+            "afternoon": "Guten Tag! Ich bin Yue! 🌤️",
+            "evening": "Guten Abend! Ich bin Yue! 🌅",
+            "night": "Gute Nacht! Ich bin Yue! 🌙"
+        },
         "messages": {
             "0": "Hallo! Ich bin Yue! Brauchst du Hilfe bei der Navigation?",
             "1": "Wusstest du, dass du den Retro-Modus mit dem Konami-Code aktivieren kannst?",

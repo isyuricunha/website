@@ -292,6 +292,37 @@
     "ariaLabel": "Yue - Virtual assistant",
     "close": "Close",
     "hide": "Hide",
+    "speechBubble": "Yue's message",
+    "settings": {
+      "title": "Yue's Settings",
+      "close": "Close settings",
+      "open": "Open settings",
+      "animations": "Animations",
+      "speechBubbles": "Speech bubbles",
+      "soundEffects": "Sound effects"
+    },
+    "easterEgg": {
+      "retroMode": "Retro mode activated! 🎮"
+    },
+    "greetings": {
+      "morning": "Good morning! I'm Yue! ☀️",
+      "afternoon": "Good afternoon! I'm Yue! 🌤️",
+      "evening": "Good evening! I'm Yue! 🌅",
+      "night": "Good night! I'm Yue! 🌙"
+    },
+    "game": {
+      "title": "Yue's Mini Game",
+      "close": "Close game",
+      "open": "Open game",
+      "score": "Score",
+      "time": "Time",
+      "highScore": "High Score",
+      "instructions": "Click the target as many times as you can in 30 seconds!",
+      "start": "Start Game",
+      "playAgain": "Play Again",
+      "gameOver": "Game Over! Your score: {score}",
+      "clickTarget": "Click target"
+    },
     "messages": {
       "0": "Hi! I'm Yue! Need help navigating?",
       "1": "Did you know you can activate the retro mode with the Konami Code?",
