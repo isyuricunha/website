@@ -287,5 +287,17 @@
         "song": "Chanson",
         "tracks": "morceaux",
         "listeners": "auditeurs"
+  },
+  "mascot": {
+    "ariaLabel": "Assistant virtuel",
+    "close": "Fermer",
+    "hide": "Masquer",
+    "messages": {
+      "0": "Bonjour ! Besoin d'aide pour naviguer ?",
+      "1": "Saviez-vous que vous pouvez activer le mode rétro avec le code Konami ?",
+      "2": "C'est l'heure d'une pause café ! ☕",
+      "3": "Hé, j'ai trouvé un easter egg caché ! Vous voulez voir ?",
+      "4": "N'oubliez pas de jeter un œil à mes derniers projets !"
     }
+  }
 }

@@ -287,5 +287,17 @@
         "song": "Música",
         "tracks": "faixas",
         "listeners": "ouvintes"
+  },
+  "mascot": {
+    "ariaLabel": "Assistente virtual",
+    "close": "Fechar",
+    "hide": "Ocultar",
+    "messages": {
+      "0": "Olá! Precisa de ajuda para navegar?",
+      "1": "Sabia que dá para ativar o modo retrô com o Código Konami?",
+      "2": "Hora de um café! ☕",
+      "3": "Ei, achei um easter egg escondido! Quer ver?",
+      "4": "Não esqueça de conferir meus projetos mais recentes!"
     }
+  }
 }

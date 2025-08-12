@@ -2,6 +2,7 @@ import Image from 'next/image'
 
 import Footer from './layout/footer'
 import Header from './layout/header'
+import VirtualMascot from './mascot/virtual-mascot'
 
 type MainLayoutProps = {
   children: React.ReactNode
@@ -17,6 +18,7 @@ const MainLayout = (props: MainLayoutProps) => {
         {children}
       </main>
       <Footer />
+      <VirtualMascot />
       <Image
         width={1512}
         height={550}

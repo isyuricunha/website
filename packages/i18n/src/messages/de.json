@@ -287,5 +287,17 @@
         "song": "Song",
         "tracks": "Tracks",
         "listeners": "Hörer"
+    },
+    "mascot": {
+        "ariaLabel": "Virtueller Assistent",
+        "close": "Schließen",
+        "hide": "Ausblenden",
+        "messages": {
+            "0": "Hallo! Brauchst du Hilfe bei der Navigation?",
+            "1": "Wusstest du, dass du den Retro-Modus mit dem Konami-Code aktivieren kannst?",
+            "2": "Zeit für eine Kaffeepause! ☕",
+            "3": "Hey, ich habe ein verstecktes Easter Egg gefunden! Willst du es sehen?",
+            "4": "Vergiss nicht, meine neuesten Projekte anzuschauen!"
+        }
     }
 }
