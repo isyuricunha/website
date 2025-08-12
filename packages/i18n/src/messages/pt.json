@@ -297,7 +297,62 @@
       "1": "Sabia que dá para ativar o modo retrô com o Código Konami?",
       "2": "Hora de um café! ☕",
       "3": "Ei, achei um easter egg escondido! Quer ver?",
-      "4": "Não esqueça de conferir meus projetos mais recentes!"
+      "4": "Não esqueça de conferir meus projetos mais recentes!",
+      "5": "Bem-vindo ao meu site! Como posso ajudar você hoje?",
+      "6": "Sinta-se à vontade para explorar! Tem muita coisa para descobrir.",
+      "7": "Precisa entrar em contato? Confira a seção de contato!",
+      "8": "Sabia que este site é construído com Next.js e TypeScript?",
+      "9": "Obrigado por visitar! Espero que esteja tendo um ótimo dia!",
+      "10": "Quer ver no que estou trabalhando? Confira meus projetos!",
+      "11": "Eu amo programar e compartilhar conhecimento. E você?",
+      "12": "Modo escuro ou claro? Eu suporto ambos!",
+      "13": "Este site é totalmente responsivo. Tente redimensionar seu navegador!",
+      "14": "Encontrou algum bug? Me avise que eu corrijo!",
+      "15": "Estou sempre aprendendo coisas novas. Qual foi sua última descoberta?"
+    },
+    "pageMessages": {
+      "home": {
+        "0": "Bem-vindo à minha página inicial! 👋",
+        "1": "É aqui que tudo começa. Pronto para explorar?",
+        "2": "Sou especialista em banco de dados. Quer saber mais?",
+        "3": "Confira meus artigos e projetos mais recentes abaixo!"
+      },
+      "blog": {
+        "0": "Bem-vindo ao meu blog! 📝",
+        "1": "Escrevo sobre tecnologia, bancos de dados e às vezes sobre a vida.",
+        "2": "Sinta-se à vontade para deixar comentários nos artigos!",
+        "3": "Sobre quais tópicos você gostaria que eu escrevesse?"
+      },
+      "projects": {
+        "0": "Aqui estão meus projetos! 🚀",
+        "1": "Tudo é construído com amor e muito café ☕",
+        "2": "Quer colaborar? Vamos construir algo incrível!",
+        "3": "Cada projeto me ensinou algo novo."
+      },
+      "about": {
+        "0": "Quer saber mais sobre mim? 🤔",
+        "1": "Sou apenas um cara que ama bancos de dados e programação.",
+        "2": "Sinta-se à vontade para me perguntar qualquer coisa!",
+        "3": "Minha jornada começou em 2018. Ainda aprendendo todos os dias!"
+      },
+      "uses": {
+        "0": "Este é meu setup! 💻",
+        "1": "Setup bem legal, né? Eu amo meu equipamento!",
+        "2": "Quer saber o que eu uso para desenvolvimento?",
+        "3": "Boa ferramentas fazem toda a diferença!"
+      },
+      "spotify": {
+        "0": "Bem-vindo ao meu cantinho da música! 🎵",
+        "1": "Música boa ou ruim? Não sei, mas eu gosto!",
+        "2": "Música me ajuda a focar enquanto programo.",
+        "3": "O que você está ouvindo ultimamente?"
+      },
+      "guestbook": {
+        "0": "Deixe uma mensagem no meu livro de visitas! 📖",
+        "1": "Adoro ler mensagens dos visitantes!",
+        "2": "Sinta-se à vontade para dizer olá ou fazer perguntas!",
+        "3": "Sua mensagem vai alegrar meu dia!"
+      }
     }
   }
 }

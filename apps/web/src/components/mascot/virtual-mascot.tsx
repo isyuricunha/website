@@ -31,10 +31,34 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     } catch {}
   }, [])
 
+  // Get current page path for contextual messages
+  const currentPath = typeof window !== 'undefined' ? window.location.pathname : ''
+  const pageKey = currentPath === '/' ? 'home' :
+                  currentPath.startsWith('/blog') ? 'blog' :
+                  currentPath.startsWith('/projects') ? 'projects' :
+                  currentPath.startsWith('/about') ? 'about' :
+                  currentPath.startsWith('/uses') ? 'uses' :
+                  currentPath.startsWith('/spotify') ? 'spotify' :
+                  currentPath.startsWith('/guestbook') ? 'guestbook' : 'home'
+
   // Build message list from i18n. Expect keys mascot.messages.0, .1, ... up to a small count
   const messages: string[] = useMemo(() => {
     const list: string[] = []
-    for (let i = 0; i < 5; i += 1) {
+
+    // First try to get page-specific messages
+    for (let i = 0; i < 4; i += 1) {
+      const key = `mascot.pageMessages.${pageKey}.${i}`
+      try {
+        const value = t(key as any)
+        if (value) list.push(value)
+      } catch {
+        // Stop when we can't find more page-specific messages
+        break
+      }
+    }
+
+    // Then add general messages
+    for (let i = 0; i < 16; i += 1) {
       const key = `mascot.messages.${i}`
       try {
         const value = t(key as any)
@@ -44,8 +68,9 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         break
       }
     }
+
     return list
-  }, [t])
+  }, [t, pageKey])
 
   const pickNextMessage = () => {
     if (messages.length === 0) return
@@ -66,7 +91,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     <div className='fixed bottom-5 right-5 z-40 hidden sm:block'>
       {/* Bubble */}
       <div
-        className={`absolute bottom-full right-0 mb-2 max-w-xs rounded-lg border bg-popover p-3 text-sm text-popover-foreground shadow-lg outline-none ring-0 transition-all duration-200 ease-out ${
+        className={`absolute bottom-full right-0 mb-2 w-80 rounded-lg border bg-popover p-3 text-sm text-popover-foreground shadow-lg outline-none ring-0 transition-all duration-200 ease-out ${
           showBubble && messages.length > 0
             ? 'opacity-100 translate-y-0'
             : 'opacity-0 translate-y-2 pointer-events-none'
