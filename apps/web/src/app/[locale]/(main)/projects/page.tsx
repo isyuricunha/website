@@ -65,7 +65,8 @@ const Page = async (props: PageProps) => {
   const description = t('projects.description')
   const url = `${SITE_URL}${getLocalizedPath({ slug: '/projects', locale })}`
 
-  const trpcContext = await createTRPCContext({ headers: headers() as unknown as Headers })
+  const reqHeaders = await headers()
+  const trpcContext = await createTRPCContext({ headers: reqHeaders as unknown as Headers })
   // eslint-disable-next-line sonarjs/deprecation,@typescript-eslint/no-deprecated -- Temporarily disabled while I migrate to a new caller API.
   const caller = appRouter.createCaller(trpcContext)
   const repos = (await caller.github.getRepos()).map((repo) => ({

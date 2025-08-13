@@ -285,9 +285,20 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
     if (pathWithoutLocale === '/' || pathWithoutLocale === '') return 'home'
 
-    // Check for individual blog post first (more specific)
+    // Check for detail pages first (more specific)
+    // Blog post detail
     const blogPostMatch = pathWithoutLocale.match(/^\/blog\/([^\/]+)$/)
     if (blogPostMatch) return 'blogPost'
+
+    // Generic detail handling for known segments (e.g., /projects/[slug])
+    const DETAIL_SEGMENTS = new Set(['projects'])
+    const detailMatch = pathWithoutLocale.match(/^\/(\w+)\/([^\/]+)$/)
+    if (detailMatch) {
+      const seg = detailMatch[1]
+      if (DETAIL_SEGMENTS.has(seg)) {
+        return `${seg}Detail`
+      }
+    }
 
     if (pathWithoutLocale.startsWith('/blog')) return 'blog'
     if (pathWithoutLocale.startsWith('/projects')) return 'projects'
@@ -307,6 +318,36 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   const isOnBlogPost = useMemo(() => {
     return pageKey === 'blogPost'
   }, [pageKey])
+
+  // Helper: fetch page-specific messages with graceful fallbacks
+  const fetchPageMessages = (key: string, max: number = 6): string[] => {
+    const tryKey = (k: string): string[] => {
+      const res: string[] = []
+      for (let i = 0; i < max; i += 1) {
+        try {
+          const value = t(`mascot.pageMessages.${k}.${i}` as any)
+          if (value) res.push(value)
+        } catch {
+          break
+        }
+      }
+      return res
+    }
+
+    // Avoid calling i18n on potentially missing detail keys to prevent console warnings
+    const isDetail = /Detail$/.test(key)
+    const baseKey = isDetail ? key.replace(/Detail$/, '') : key
+
+    // Prefer base key directly (e.g., projects) to avoid missing `projectsDetail` logs
+    let msgs = tryKey(baseKey)
+
+    // Final fallback to home so we never show empty bubbles
+    if (msgs.length === 0 && baseKey !== 'home') {
+      msgs = tryKey('home')
+    }
+
+    return msgs
+  }
 
   // Get current blog post slug for tracking visits
   const currentBlogPostSlug = useMemo(() => {
@@ -344,16 +385,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
           }
         } else {
           // Show regular page message for non-blog-post pages
-          const pageMessages = []
-          for (let i = 0; i < 6; i += 1) {
-            const key = `mascot.pageMessages.${pageKey}.${i}`
-            try {
-              const value = t(key as any)
-              if (value) pageMessages.push(value)
-            } catch {
-              break
-            }
-          }
+          const pageMessages = fetchPageMessages(pageKey, 6)
           updateState({ currentMessage: pageMessages[0] || '' })
         }
 
@@ -382,22 +414,15 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       }
     }
 
-    // For blog posts, don't include any page-specific messages
-    // Only show blog post specific messages on first visit (handled in useEffect above)
+    // For blog posts, include blogPost page-specific messages in the pool so hover/click can show them.
+    // Auto-show on first visit is still handled separately in the effect above.
     if (pageKey === 'blogPost') {
-      // Skip all page-specific messages for blog posts
+      const blogSpecific = fetchPageMessages('blogPost', 10)
+      list.push(...blogSpecific)
     } else {
       // First try to get page-specific messages for non-blog-post pages
-      for (let i = 0; i < 6; i += 1) {
-        const key = `mascot.pageMessages.${pageKey}.${i}`
-        try {
-          const value = t(key as any)
-          if (value) list.push(value)
-        } catch {
-          // Stop when we can't find more page-specific messages
-          break
-        }
-      }
+      const pageSpecific = fetchPageMessages(pageKey, 6)
+      list.push(...pageSpecific)
     }
 
     // Then add general messages
