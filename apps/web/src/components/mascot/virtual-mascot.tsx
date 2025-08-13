@@ -563,6 +563,25 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     }
   }
 
+  // Get bubble positioning classes based on mascot position
+  const getBubblePositionClasses = (): string => {
+    switch (state.preferences.bubblePosition) {
+      case 'bottom-left':
+        // Bubbles appear above and to the right of mascot
+        return 'absolute bottom-full left-0 mb-2'
+      case 'top-right':
+        // Bubbles appear below and to the left of mascot
+        return 'absolute top-full right-0 mt-2'
+      case 'top-left':
+        // Bubbles appear below and to the right of mascot
+        return 'absolute top-full left-0 mt-2'
+      case 'bottom-right':
+      default:
+        // Bubbles appear above and to the left of mascot (original behavior)
+        return 'absolute bottom-full right-0 mb-2'
+    }
+  }
+
   if (hidden) return null
 
   // Show restore button when hidden or dismissed
@@ -586,7 +605,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       <div className={getPositionClasses()}>
         {/* Settings Panel */}
         {state.showSettings && (
-          <div className='absolute bottom-full right-0 mb-2 w-80 rounded-lg border bg-popover p-4 text-sm text-popover-foreground shadow-lg'>
+          <div className={`${getBubblePositionClasses()} w-80 rounded-lg border bg-popover p-4 text-sm text-popover-foreground shadow-lg`}>
             <div className='flex items-center justify-between mb-3'>
               <h3 className='font-medium'>{t('mascot.settings.title')}</h3>
               <button
@@ -671,7 +690,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
         {/* Contact Panel */}
         {state.showContact && (
-          <div className='absolute bottom-full right-0 mb-2 w-80 rounded-lg border bg-popover p-4 text-sm text-popover-foreground shadow-lg'>
+          <div className={`${getBubblePositionClasses()} w-80 rounded-lg border bg-popover p-4 text-sm text-popover-foreground shadow-lg`}>
             <div className='flex items-center justify-between mb-3'>
               <h3 className='font-medium'>{t('mascot.contact.title')}</h3>
               <button
@@ -703,7 +722,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
         {/* Menu Panel */}
         {state.showMenu && (
-          <div className='absolute bottom-full right-0 mb-2 w-48 rounded-lg border bg-popover p-2 text-sm text-popover-foreground shadow-lg'>
+          <div className={`${getBubblePositionClasses()} w-48 rounded-lg border bg-popover p-2 text-sm text-popover-foreground shadow-lg`}>
             <div className='space-y-1'>
               <button
                 type='button'
@@ -743,7 +762,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
         {/* Speech Bubbles (Queued) */}
         {state.preferences.speechBubbles && !state.showContact && !state.showSettings && !state.showMenu && (
-          <div className='absolute bottom-full right-0 mb-2 flex w-80 flex-col gap-2'>
+          <div className={`${getBubblePositionClasses()} flex w-80 flex-col gap-2`}>
             {state.messageQueue.map((item, idx) => {
               const isExiting = state.exitingIds.has(item.id)
               return (
