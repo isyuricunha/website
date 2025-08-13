@@ -478,8 +478,15 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   // (Removed dismiss handler; per-bubble close and Hide button cover behavior)
 
   const handleMascotClick = () => {
-    updateState({ isActive: !state.isActive })
-    // Remove the waving animation - no more bounce effect
+    // Toggle menu visibility when clicking on mascot
+    updateState({ 
+      isActive: !state.isActive,
+      showMenu: !state.showMenu,
+      // Close other panels when opening menu
+      showContact: false,
+      showSettings: false,
+      showGame: false
+    })
   }
 
   const handleMouseEnter = () => {
