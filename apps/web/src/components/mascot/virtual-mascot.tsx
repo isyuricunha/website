@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react'
 import Image from 'next/image'
-import { XIcon, SettingsIcon, GamepadIcon, EyeIcon, MenuIcon, BugIcon, GithubIcon, CopyIcon } from 'lucide-react'
+import { XIcon, SettingsIcon, GamepadIcon, EyeIcon, MenuIcon, BugIcon, GithubIcon, CopyIcon, MessageCircleIcon } from 'lucide-react'
 import { useTranslations } from '@tszhong0411/i18n/client'
 import MascotGame from './mascot-game'
 
@@ -14,6 +14,8 @@ const STORAGE_KEY = 'vc_mascot_dismissed'
 const HIDE_KEY = 'vc_mascot_hidden'
 const PREFERENCES_KEY = 'vc_mascot_preferences'
 const KONAMI_MODE_KEY = 'vc_mascot_konami_mode'
+const BLOG_POST_VISITED_KEY = 'vc_mascot_blog_posts_visited'
+const MASCOT_IMAGE_KEY = 'vc_mascot_current_image'
 
 interface MascotPreferences {
   animations: boolean
@@ -37,6 +39,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   const [showGame, setShowGame] = useState(false)
   const [showMenu, setShowMenu] = useState(false)
   const [showContact, setShowContact] = useState(false)
+  const [showChatbot, setShowChatbot] = useState(false)
   const [isKonamiMode, setIsKonamiMode] = useState(false)
   const [konamiSequence, setKonamiSequence] = useState<number[]>([])
   const [autoShowMessage, setAutoShowMessage] = useState(false)
@@ -44,6 +47,8 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   const [currentMessage, setCurrentMessage] = useState<string>('')
   const [idleTimer, setIdleTimer] = useState<NodeJS.Timeout | null>(null)
   const [lastMessageIndex, setLastMessageIndex] = useState(-1)
+  const [currentMascotImage, setCurrentMascotImage] = useState(1)
+  const [blogPostsVisited, setBlogPostsVisited] = useState<Set<string>>(new Set())
   const [preferences, setPreferences] = useState<MascotPreferences>({
     animations: true,
     soundEffects: false,
@@ -85,6 +90,21 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     return idleMessages[Math.floor(Math.random() * idleMessages.length)]
   }
 
+  // Get blog post specific message
+  const getBlogPostMessage = () => {
+    const blogPostMessages = []
+    for (let i = 0; i < 10; i += 1) {
+      try {
+        const key = `mascot.pageMessages.blogPost.${i}`
+        const value = t(key as any)
+        if (value) blogPostMessages.push(value)
+      } catch {
+        break
+      }
+    }
+    return blogPostMessages[Math.floor(Math.random() * blogPostMessages.length)] || t('mascot.pageMessages.blogPost.0')
+  }
+
   // Copy email to clipboard
   const copyEmail = async () => {
     try {
@@ -113,6 +133,22 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       // Load Konami mode state
       const konami = localStorage.getItem(KONAMI_MODE_KEY)
       if (konami === '1') setIsKonamiMode(true)
+
+      // Load visited blog posts
+      const visited = localStorage.getItem(BLOG_POST_VISITED_KEY)
+      if (visited) {
+        setBlogPostsVisited(new Set(JSON.parse(visited)))
+      }
+
+      // Load or set random mascot image
+      const savedImage = sessionStorage.getItem(MASCOT_IMAGE_KEY)
+      if (savedImage) {
+        setCurrentMascotImage(parseInt(savedImage))
+      } else {
+        const randomImage = Math.floor(Math.random() * 5) + 1
+        setCurrentMascotImage(randomImage)
+        sessionStorage.setItem(MASCOT_IMAGE_KEY, randomImage.toString())
+      }
     } catch { }
   }, [])
 
@@ -210,6 +246,22 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
   const pageKey = getPageKey(currentPath)
 
+  // Check if we're on a specific blog post
+  const isOnBlogPost = useMemo(() => {
+    if (pageKey !== 'blog') return false
+    const pathWithoutLocale = currentPath.replace(/^\/(en|pt|fr|de|zh)\//, '/')
+    const blogPostMatch = pathWithoutLocale.match(/^\/blog\/([^\/]+)$/)
+    return blogPostMatch !== null
+  }, [currentPath, pageKey])
+
+  // Get current blog post slug for tracking visits
+  const currentBlogPostSlug = useMemo(() => {
+    if (!isOnBlogPost) return null
+    const pathWithoutLocale = currentPath.replace(/^\/(en|pt|fr|de|zh)\//, '/')
+    const blogPostMatch = pathWithoutLocale.match(/^\/blog\/([^\/]+)$/)
+    return blogPostMatch ? blogPostMatch[1] : null
+  }, [currentPath, isOnBlogPost])
+
   // Reset message index and show automatic message when page changes
   useEffect(() => {
     setMessageIndex(0)
@@ -220,7 +272,27 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       const timer = setTimeout(() => {
         setAutoShowMessage(true)
         setShowBubble(true)
-        setCurrentMessage(messages[0] || '')
+
+        // Check if we're on a blog post and haven't visited it before
+        if (isOnBlogPost && currentBlogPostSlug) {
+          if (!blogPostsVisited.has(currentBlogPostSlug)) {
+            // Show blog post specific message
+            setCurrentMessage(getBlogPostMessage())
+            // Mark this blog post as visited
+            const newVisited = new Set(blogPostsVisited)
+            newVisited.add(currentBlogPostSlug)
+            setBlogPostsVisited(newVisited)
+            try {
+              localStorage.setItem(BLOG_POST_VISITED_KEY, JSON.stringify([...newVisited]))
+            } catch { }
+          } else {
+            // Show regular page message
+            setCurrentMessage(messages[0] || '')
+          }
+        } else {
+          // Show regular page message
+          setCurrentMessage(messages[0] || '')
+        }
 
         // Hide the message after configured duration
         const hideTimer = setTimeout(() => {
@@ -233,7 +305,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
       return () => clearTimeout(timer)
     }
-  }, [pageKey, preferences.speechBubbles, preferences.messageDuration])
+  }, [pageKey, preferences.speechBubbles, preferences.messageDuration, isOnBlogPost, currentBlogPostSlug, blogPostsVisited])
 
   // Build message list from i18n with time-based greetings and context
   const messages: string[] = useMemo(() => {
@@ -249,7 +321,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     }
 
     // First try to get page-specific messages
-    for (let i = 0; i < 4; i += 1) {
+    for (let i = 0; i < 6; i += 1) {
       const key = `mascot.pageMessages.${pageKey}.${i}`
       try {
         const value = t(key as any)
@@ -261,7 +333,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     }
 
     // Then add general messages
-    for (let i = 0; i < 40; i += 1) {
+    for (let i = 0; i < 50; i += 1) {
       const key = `mascot.messages.${i}`
       try {
         const value = t(key as any)
@@ -368,6 +440,10 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         setShowContact(true)
         setShowBubble(true)
         break
+      case 'chatbot':
+        setShowChatbot(true)
+        setShowBubble(true)
+        break
       case 'projects':
         window.open('https://github.com/isyuricunha', '_blank')
         break
@@ -378,6 +454,17 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         setShowSettings(true)
         setShowBubble(true)
         break
+    }
+  }
+
+  const handleChatbotOption = (option: string) => {
+    setShowChatbot(false)
+    setShowBubble(true)
+    try {
+      const response = t(`mascot.chatbot.responses.${option}` as any)
+      setCurrentMessage(response)
+    } catch {
+      setCurrentMessage(t('mascot.chatbot.responses.general'))
     }
   }
 
@@ -533,6 +620,40 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
           </div>
         )}
 
+        {/* Chatbot Panel */}
+        {showChatbot && (
+          <div className='absolute bottom-full right-0 mb-2 w-80 rounded-lg border bg-popover p-4 text-sm text-popover-foreground shadow-lg'>
+            <div className='flex items-center justify-between mb-3'>
+              <h3 className='font-medium'>{t('mascot.chatbot.title')}</h3>
+              <button
+                type='button'
+                aria-label={t('mascot.chatbot.close')}
+                className='rounded p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
+                onClick={() => setShowChatbot(false)}
+              >
+                <XIcon className='h-4 w-4' />
+              </button>
+            </div>
+
+            <div className='space-y-3'>
+              <p className='text-sm'>{t('mascot.chatbot.description')}</p>
+              <div className='space-y-2'>
+                {['contact', 'feedback', 'help', 'bug', 'feature', 'general'].map((option) => (
+                  <button
+                    key={option}
+                    type='button'
+                    className='flex w-full items-center gap-2 rounded px-3 py-2 text-left transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
+                    onClick={() => handleChatbotOption(option)}
+                  >
+                    <MessageCircleIcon className='h-4 w-4' />
+                    {t(`mascot.chatbot.options.${option}` as any)}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Menu Panel */}
         {showMenu && (
           <div className='absolute bottom-full right-0 mb-2 w-48 rounded-lg border bg-popover p-2 text-sm text-popover-foreground shadow-lg'>
@@ -544,6 +665,14 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
               >
                 <BugIcon className='h-4 w-4' />
                 {t('mascot.menu.reportBug')}
+              </button>
+              <button
+                type='button'
+                className='flex w-full items-center gap-2 rounded px-3 py-2 text-left transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
+                onClick={() => handleMenuAction('chatbot')}
+              >
+                <MessageCircleIcon className='h-4 w-4' />
+                {t('mascot.chatbot.title')}
               </button>
               <button
                 type='button'
@@ -645,7 +774,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
           }}
         >
           <Image
-            src='/images/mascote.png'
+            src={`/images/mascote-${currentMascotImage}.png`}
             alt=''
             role='presentation'
             width={120}

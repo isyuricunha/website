@@ -381,6 +381,27 @@
             "description": "Einen Bug gefunden oder Kontakt aufnehmen? Hier ist die E-Mail meines Schöpfers:",
             "copy": "E-Mail kopieren"
         },
+        "chatbot": {
+            "title": "Mit Yue chatten",
+            "close": "Chat schließen",
+            "description": "Wähle ein Thema zum Chatten:",
+            "options": {
+                "contact": "Ich möchte Kontakt aufnehmen",
+                "feedback": "Ich habe Feedback",
+                "help": "Ich brauche Hilfe",
+                "bug": "Ich habe einen Bug gefunden",
+                "feature": "Ich habe eine Feature-Anfrage",
+                "general": "Ich möchte nur chatten"
+            },
+            "responses": {
+                "contact": "Großartig! Du kannst meinen Schöpfer, Yuri, unter me@yuricunha.com erreichen. Sie lieben es, von Besuchern zu hören!",
+                "feedback": "Danke für dein Feedback! Es hilft dabei, diese Website für alle zu verbessern. Fühl dich frei, Details an me@yuricunha.com zu senden.",
+                "help": "Ich bin hier, um zu helfen! Was möchtest du wissen? Du kannst die Website erkunden oder mir spezifische Fragen stellen.",
+                "bug": "Danke für das Melden! Bitte sende Details über das, was du gefunden hast, an me@yuricunha.com. Jeder Bericht hilft dabei, die Website zu verbessern!",
+                "feature": "Das ist aufregend! Mein Schöpfer, Yuri liebt es, neue Ideen zu hören. Bitte sende deinen Vorschlag an me@yuricunha.com.",
+                "general": "Ich liebe es, mit Besuchern zu chatten! Wie läuft dein Tag? Fühl dich frei, die Website zu erkunden oder mir alles zu fragen!"
+            }
+        },
         "greetings": {
             "morning": "Guten Morgen! Ich bin Yue! ☀️",
             "afternoon": "Guten Tag! Ich bin Yue! 🌤️",
@@ -468,6 +489,18 @@
                 "3": "Über welche Themen möchtest du lesen?",
                 "4": "Der Blog wird regelmäßig mit frischem Inhalt aktualisiert!",
                 "5": "Du kannst Artikel nach Tags und Kategorien filtern!"
+            },
+            "blogPost": {
+                "0": "Das ist eine gute Lektüre! 📖",
+                "1": "Das lässt mich nachdenken... 🤔",
+                "2": "Interessante Perspektive zu diesem Thema!",
+                "3": "Mein Schöpfer, Yuri hat sich viel Gedanken über diesen Artikel gemacht.",
+                "4": "Ich hoffe, dir gefällt dieser Artikel!",
+                "5": "Fühl dich frei, deine Gedanken in den Kommentaren zu teilen!",
+                "6": "Dieser Inhalt ist es wert, sich Zeit dafür zu nehmen.",
+                "7": "Ich liebe es, wenn Menschen tief in Themen wie dieses eintauchen!",
+                "8": "Die Erkenntnisse hier sind wirklich wertvoll.",
+                "9": "Das ist die Art von Inhalt, die das Lernen Spaß macht!"
             },
             "projects": {
                 "0": "Hier sind die Projekte! 🚀",

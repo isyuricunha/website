@@ -381,6 +381,27 @@
             "description": "Encontrou um bug ou quer entrar em contato? Aqui está o email do meu criador:",
             "copy": "Copiar email"
         },
+        "chatbot": {
+            "title": "Conversar com Yue",
+            "close": "Fechar chat",
+            "description": "Escolha um tópico para conversar:",
+            "options": {
+                "contact": "Quero entrar em contato",
+                "feedback": "Tenho feedback",
+                "help": "Preciso de ajuda",
+                "bug": "Encontrei um bug",
+                "feature": "Tenho uma sugestão de recurso",
+                "general": "Só quero conversar"
+            },
+            "responses": {
+                "contact": "Ótimo! Você pode entrar em contato com meu criador, Yuri, em me@yuricunha.com. Eles adoram ouvir dos visitantes!",
+                "feedback": "Obrigado pelo seu feedback! Isso ajuda a tornar este site melhor para todos. Sinta-se à vontade para enviar detalhes para me@yuricunha.com.",
+                "help": "Estou aqui para ajudar! O que você gostaria de saber? Você pode explorar o site ou me fazer perguntas específicas.",
+                "bug": "Obrigado por reportar! Por favor, envie detalhes sobre o que você encontrou para me@yuricunha.com. Cada reporte ajuda a melhorar o site!",
+                "feature": "Isso é emocionante! Meu criador, Yuri adora ouvir novas ideias. Por favor, envie sua sugestão para me@yuricunha.com.",
+                "general": "Eu adoro conversar com visitantes! Como está seu dia? Sinta-se à vontade para explorar o site ou me perguntar qualquer coisa!"
+            }
+        },
         "greetings": {
             "morning": "Bom dia! Eu sou a Yue! ☀️",
             "afternoon": "Boa tarde! Eu sou a Yue! 🌤️",
@@ -455,6 +476,18 @@
                 "3": "Sobre quais tópicos você gostaria de ler?",
                 "4": "O blog é atualizado regularmente com conteúdo fresco!",
                 "5": "Você pode filtrar artigos por tags e categorias!"
+            },
+            "blogPost": {
+                "0": "Esta é uma boa leitura! 📖",
+                "1": "Isso me faz pensar... 🤔",
+                "2": "Perspectiva interessante sobre este tópico!",
+                "3": "Meu criador, Yuri colocou muito pensamento neste artigo.",
+                "4": "Espero que você esteja gostando deste artigo!",
+                "5": "Sinta-se à vontade para compartilhar seus pensamentos nos comentários!",
+                "6": "Este conteúdo vale a pena dedicar tempo.",
+                "7": "Eu amo quando as pessoas mergulham fundo em tópicos como este!",
+                "8": "Os insights aqui são realmente valiosos.",
+                "9": "Este é o tipo de conteúdo que torna o aprendizado divertido!"
             },
             "projects": {
                 "0": "Aqui estão os projetos! 🚀",

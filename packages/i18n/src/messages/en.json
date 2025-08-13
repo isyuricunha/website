@@ -381,6 +381,27 @@
       "description": "Found a bug or want to get in touch? Here's my creator's email:",
       "copy": "Copy email"
     },
+    "chatbot": {
+      "title": "Chat with Yue",
+      "close": "Close chat",
+      "description": "Choose a topic to chat about:",
+      "options": {
+        "contact": "I want to get in touch",
+        "feedback": "I have feedback",
+        "help": "I need help",
+        "bug": "I found a bug",
+        "feature": "I have a feature request",
+        "general": "Just want to chat"
+      },
+      "responses": {
+        "contact": "Great! You can reach my creator, Yuri, at me@yuricunha.com. They love hearing from visitors!",
+        "feedback": "Thank you for your feedback! It helps make this site better for everyone. Feel free to email me@yuricunha.com with details.",
+        "help": "I'm here to help! What would you like to know about? You can explore the site or ask me specific questions.",
+        "bug": "Thanks for reporting! Please email me@yuricunha.com with details about what you found. Every report helps improve the site!",
+        "feature": "That's exciting! My creator, Yuri loves hearing new ideas. Please email me@yuricunha.com with your suggestion.",
+        "general": "I love chatting with visitors! How's your day going? Feel free to explore the site or ask me anything!"
+      }
+    },
     "greetings": {
       "morning": "Good morning! I'm Yue! ☀️",
       "afternoon": "Good afternoon! I'm Yue! 🌤️",
@@ -468,6 +489,18 @@
         "3": "What topics would you like to read about?",
         "4": "The blog is updated regularly with fresh content!",
         "5": "You can filter articles by tags and categories!"
+      },
+      "blogPost": {
+        "0": "This is a good read! 📖",
+        "1": "This makes me think... 🤔",
+        "2": "Interesting perspective on this topic!",
+        "3": "My creator, Yuri put a lot of thought into this one.",
+        "4": "Hope you're enjoying this article!",
+        "5": "Feel free to share your thoughts in the comments!",
+        "6": "This content is worth taking your time with.",
+        "7": "I love when people dive deep into topics like this!",
+        "8": "The insights here are really valuable.",
+        "9": "This is the kind of content that makes learning fun!"
       },
       "projects": {
         "0": "Here are the projects! 🚀",

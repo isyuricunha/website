@@ -381,6 +381,27 @@
             "description": "Trouvé un bug ou envie de contacter ? Voici l'email de mon créateur :",
             "copy": "Copier l'email"
         },
+        "chatbot": {
+            "title": "Discuter avec Yue",
+            "close": "Fermer le chat",
+            "description": "Choisissez un sujet de discussion :",
+            "options": {
+                "contact": "Je veux prendre contact",
+                "feedback": "J'ai des commentaires",
+                "help": "J'ai besoin d'aide",
+                "bug": "J'ai trouvé un bug",
+                "feature": "J'ai une suggestion de fonctionnalité",
+                "general": "Je veux juste discuter"
+            },
+            "responses": {
+                "contact": "Super ! Vous pouvez contacter mon créateur, Yuri, à me@yuricunha.com. Ils aiment entendre parler des visiteurs !",
+                "feedback": "Merci pour vos commentaires ! Cela aide à améliorer ce site pour tout le monde. N'hésitez pas à envoyer des détails à me@yuricunha.com.",
+                "help": "Je suis là pour aider ! Que voulez-vous savoir ? Vous pouvez explorer le site ou me poser des questions spécifiques.",
+                "bug": "Merci de signaler ! Veuillez envoyer des détails sur ce que vous avez trouvé à me@yuricunha.com. Chaque signalement aide à améliorer le site !",
+                "feature": "C'est passionnant ! Mon créateur, Yuri aime entendre de nouvelles idées. Veuillez envoyer votre suggestion à me@yuricunha.com.",
+                "general": "J'aime discuter avec les visiteurs ! Comment se passe votre journée ? N'hésitez pas à explorer le site ou à me poser n'importe quelle question !"
+            }
+        },
         "greetings": {
             "morning": "Bonjour ! Je suis Yue ! ☀️",
             "afternoon": "Bon après-midi ! Je suis Yue ! 🌤️",
@@ -461,14 +482,26 @@
                 "4": "N'hésitez pas à explorer n'importe quelle section qui vous intéresse !",
                 "5": "Le menu de navigation peut vous aider à trouver ce que vous cherchez !"
             },
-            "blog": {
-                "0": "Bienvenue sur le blog ! 📝",
-                "1": "Mon créateur, Yuri écrit sur la tech, les bases de données et parfois la vie.",
-                "2": "N'hésitez pas à laisser des commentaires sur les articles !",
-                "3": "Sur quels sujets aimeriez-vous lire ?",
-                "4": "Le blog est mis à jour régulièrement avec du contenu frais !",
-                "5": "Vous pouvez filtrer les articles par tags et catégories !"
-            },
+                  "blog": {
+        "0": "Bienvenue sur le blog ! 📝",
+        "1": "Mon créateur, Yuri écrit sur la tech, les bases de données et parfois la vie.",
+        "2": "N'hésitez pas à laisser des commentaires sur les articles !",
+        "3": "Sur quels sujets aimeriez-vous lire ?",
+        "4": "Le blog est mis à jour régulièrement avec du contenu frais !",
+        "5": "Vous pouvez filtrer les articles par tags et catégories !"
+      },
+      "blogPost": {
+        "0": "C'est une bonne lecture ! 📖",
+        "1": "Cela me fait réfléchir... 🤔",
+        "2": "Perspective intéressante sur ce sujet !",
+        "3": "Mon créateur, Yuri a beaucoup réfléchi à cet article.",
+        "4": "J'espère que vous appréciez cet article !",
+        "5": "N'hésitez pas à partager vos réflexions dans les commentaires !",
+        "6": "Ce contenu mérite qu'on y consacre du temps.",
+        "7": "J'aime quand les gens plongent profondément dans des sujets comme celui-ci !",
+        "8": "Les insights ici sont vraiment précieux.",
+        "9": "C'est le genre de contenu qui rend l'apprentissage amusant !"
+      },
             "projects": {
                 "0": "Voici les projets ! 🚀",
                 "1": "Tout est construit avec amour et beaucoup de café ☕",
