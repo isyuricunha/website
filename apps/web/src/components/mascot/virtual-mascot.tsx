@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react'
 import Image from 'next/image'
-import { XIcon, SettingsIcon, GamepadIcon, EyeIcon, MenuIcon, BugIcon, GithubIcon, CopyIcon, MessageCircleIcon } from 'lucide-react'
+import { X as XIcon, Settings as SettingsIcon, Gamepad as GamepadIcon, Eye as EyeIcon, Menu as MenuIcon, Bug as BugIcon, Github as GithubIcon, Copy as CopyIcon } from 'lucide-react'
 import { useTranslations } from '@tszhong0411/i18n/client'
 import MascotGame from './mascot-game'
 
@@ -17,6 +17,15 @@ const KONAMI_MODE_KEY = 'vc_mascot_konami_mode'
 const BLOG_POST_VISITED_KEY = 'vc_mascot_blog_posts_visited'
 const MASCOT_IMAGE_KEY = 'vc_mascot_current_image'
 
+const DEFAULT_PREFERENCES: MascotPreferences = {
+  animations: true,
+  soundEffects: false,
+  speechBubbles: true,
+  skin: 'default',
+  messageDuration: 7000,
+  bubblePosition: 'bottom-right'
+}
+
 interface MascotPreferences {
   animations: boolean
   soundEffects: boolean
@@ -28,36 +37,57 @@ interface MascotPreferences {
 
 const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   const t = useTranslations()
-  const [isDismissed, setIsDismissed] = useState(false)
-  const [isHiddenPref, setIsHiddenPref] = useState(false)
-  const [isActive, setIsActive] = useState(false)
-  const [showBubble, setShowBubble] = useState(false)
-  const [messageIndex, setMessageIndex] = useState(0)
-  const [isBlinking, setIsBlinking] = useState(false)
-  const [showSettings, setShowSettings] = useState(false)
-  const [showGame, setShowGame] = useState(false)
-  const [showMenu, setShowMenu] = useState(false)
-  const [showContact, setShowContact] = useState(false)
-  const [showChatbot, setShowChatbot] = useState(false)
-  const [isKonamiMode, setIsKonamiMode] = useState(false)
-  const [konamiSequence, setKonamiSequence] = useState<number[]>([])
-  const [autoShowMessage, setAutoShowMessage] = useState(false)
-  const [isHovering, setIsHovering] = useState(false)
-  const [currentMessage, setCurrentMessage] = useState<string>('')
-  const [idleTimer, setIdleTimer] = useState<NodeJS.Timeout | null>(null)
-  const [lastMessageIndex, setLastMessageIndex] = useState(-1)
-  const [currentMascotImage, setCurrentMascotImage] = useState(1)
-  const [blogPostsVisited, setBlogPostsVisited] = useState<Set<string>>(new Set())
-  const [preferences, setPreferences] = useState<MascotPreferences>({
-    animations: true,
-    soundEffects: false,
-    speechBubbles: true,
-    skin: 'default',
-    messageDuration: 7000, // 7 seconds default
-    bubblePosition: 'bottom-right'
+  const [state, setState] = useState({
+    isDismissed: false,
+    isHiddenPref: false,
+    isActive: false,
+    showBubble: false,
+    messageIndex: 0,
+    isBlinking: false,
+    showSettings: false,
+    showGame: false,
+    showMenu: false,
+    showContact: false,
+    isKonamiMode: false,
+    konamiSequence: [] as number[],
+    isHovering: false,
+    currentMessage: null as string | null,
+    autoShowMessage: false,
+    lastMessageIndex: -1,
+    currentMascotImage: 1,
+    blogPostsVisited: new Set<string>(),
+    preferences: { ...DEFAULT_PREFERENCES }
   })
-  const bubbleRef = useRef<HTMLDivElement | null>(null)
+
   const mascotRef = useRef<HTMLButtonElement | null>(null)
+
+  // Helper functions to update state
+  const updateState = (updates: Partial<typeof state>) => {
+    setState(prev => ({ ...prev, ...updates }))
+  }
+
+  const updatePreferences = (updates: Partial<MascotPreferences>) => {
+    const newPrefs = { ...state.preferences, ...updates }
+    updateState({ preferences: newPrefs })
+    try {
+      localStorage.setItem(PREFERENCES_KEY, JSON.stringify(newPrefs))
+    } catch (error) {
+      console.error('Error saving preferences:', error)
+    }
+  }
+
+  // Load preferences from localStorage
+  const loadPreferences = (): MascotPreferences => {
+    try {
+      const saved = localStorage.getItem(PREFERENCES_KEY)
+      if (saved) {
+        return { ...DEFAULT_PREFERENCES, ...JSON.parse(saved) }
+      }
+    } catch (error) {
+      console.error('Error loading preferences:', error)
+    }
+    return { ...DEFAULT_PREFERENCES }
+  }
 
   // Konami Code sequence: ↑↑↓↓←→←→BA
   const KONAMI_CODE = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65]
@@ -109,47 +139,41 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   }
 
   // Copy email to clipboard
-  const copyEmail = async () => {
-    try {
-      await navigator.clipboard.writeText('me@yuricunha.com')
-      // Could add a toast notification here
-    } catch (err) {
-      console.error('Failed to copy email:', err)
-    }
+  const copyEmail = (): void => {
+    navigator.clipboard.writeText('me@yuricunha.com')
+      .catch((err) => console.error('Failed to copy email:', err))
+    updateState({
+      currentMessage: 'Email copied to clipboard!',
+      showBubble: true
+    })
+    setTimeout(() => updateState({ showBubble: false }), 2000)
   }
 
   // Read dismissal state and preferences once per session
   useEffect(() => {
     try {
       const v = sessionStorage.getItem(STORAGE_KEY)
-      if (v === '1') setIsDismissed(true)
-      const h = localStorage.getItem(HIDE_KEY)
-      if (h === '1') setIsHiddenPref(true)
-
-      // Load preferences
-      const prefs = localStorage.getItem(PREFERENCES_KEY)
-      if (prefs) {
-        const parsed = JSON.parse(prefs)
-        setPreferences(prev => ({ ...prev, ...parsed }))
-      }
+      if (v === '1') updateState({ isDismissed: true })
+      const prefs = loadPreferences()
+      updateState({ preferences: prefs })
 
       // Load Konami mode state
       const konami = localStorage.getItem(KONAMI_MODE_KEY)
-      if (konami === '1') setIsKonamiMode(true)
+      if (konami === '1') updateState({ isKonamiMode: true })
 
       // Load visited blog posts
       const visited = localStorage.getItem(BLOG_POST_VISITED_KEY)
       if (visited) {
-        setBlogPostsVisited(new Set(JSON.parse(visited)))
+        updateState({ blogPostsVisited: new Set(JSON.parse(visited)) })
       }
 
       // Load or set random mascot image
       const savedImage = sessionStorage.getItem(MASCOT_IMAGE_KEY)
       if (savedImage) {
-        setCurrentMascotImage(parseInt(savedImage))
+        updateState({ currentMascotImage: parseInt(savedImage) })
       } else {
         const randomImage = Math.floor(Math.random() * 5) + 1
-        setCurrentMascotImage(randomImage)
+        updateState({ currentMascotImage: randomImage })
         sessionStorage.setItem(MASCOT_IMAGE_KEY, randomImage.toString())
       }
     } catch { }
@@ -160,8 +184,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     const handleKeyDown = (event: KeyboardEvent) => {
       // Keyboard shortcut to restore Yue (Shift+Y)
       if (event.shiftKey && event.key.toLowerCase() === 'y') {
-        setIsDismissed(false)
-        setIsHiddenPref(false)
+        updateState({ isDismissed: false, isHiddenPref: false })
         try {
           sessionStorage.removeItem(STORAGE_KEY)
           localStorage.removeItem(HIDE_KEY)
@@ -169,64 +192,59 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         return
       }
 
-      const newSequence = [...konamiSequence, event.keyCode]
-      setKonamiSequence(newSequence)
+      const newSequence = [...state.konamiSequence, event.keyCode]
+      updateState({ konamiSequence: newSequence })
 
       // Check if the sequence matches Konami Code
       if (newSequence.length === KONAMI_CODE.length) {
         const isKonami = newSequence.every((key, index) => key === KONAMI_CODE[index])
         if (isKonami) {
-          setIsKonamiMode(prev => {
-            const newMode = !prev
-            try {
-              localStorage.setItem(KONAMI_MODE_KEY, newMode ? '1' : '0')
-            } catch { }
-            return newMode
-          })
+          updateState({ isKonamiMode: !state.isKonamiMode })
+          try {
+            localStorage.setItem(KONAMI_MODE_KEY, state.isKonamiMode ? '1' : '0')
+          } catch { }
         }
-        setKonamiSequence([])
+        updateState({ konamiSequence: [] })
       } else if (newSequence.length > KONAMI_CODE.length) {
-        setKonamiSequence([])
+        updateState({ konamiSequence: [] })
       }
     }
 
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [konamiSequence])
+  }, [state.konamiSequence])
 
   // Blinking animation
   useEffect(() => {
-    if (!preferences.animations || prefersReducedMotion) return
+    if (!state.preferences.animations || prefersReducedMotion) return
 
     const blinkInterval = setInterval(() => {
-      setIsBlinking(true)
-      setTimeout(() => setIsBlinking(false), 150)
+      updateState({ isBlinking: true })
+      setTimeout(() => updateState({ isBlinking: false }), 150)
     }, 3000 + Math.random() * 2000) // Random interval between 3-5 seconds
 
     return () => clearInterval(blinkInterval)
-  }, [preferences.animations, prefersReducedMotion])
+  }, [state.preferences.animations, prefersReducedMotion])
 
   // Idle timer for fun facts
   useEffect(() => {
-    if (!preferences.speechBubbles || showBubble || autoShowMessage || showContact || showChatbot || showSettings || showMenu) return
+    if (!state.preferences.speechBubbles || state.showBubble || state.autoShowMessage || state.showContact || state.showGame || state.showSettings || state.showMenu) return
 
     const timer = setTimeout(() => {
-      if (!showBubble && !autoShowMessage && !showContact && !showChatbot && !showSettings && !showMenu) {
-        setCurrentMessage(getIdleMessage())
-        setShowBubble(true)
+      if (!state.showBubble && !state.autoShowMessage && !state.showContact && !state.showGame && !state.showSettings && !state.showMenu) {
+        updateState({ currentMessage: getIdleMessage(), showBubble: true })
 
         // Hide idle message after 4 seconds
         setTimeout(() => {
-          setShowBubble(false)
+          updateState({ showBubble: false })
         }, 4000)
       }
     }, 25000) // 25 seconds idle
 
-    setIdleTimer(timer)
     return () => {
       if (timer) clearTimeout(timer)
     }
-  }, [preferences.speechBubbles, showBubble, autoShowMessage, showContact, showChatbot, showSettings, showMenu])
+  }, [state.preferences.speechBubbles, state.showBubble, state.autoShowMessage, state.showContact, state.showGame, state.showSettings, state.showMenu])
 
   // Get current page path for contextual messages (language-aware)
   const currentPath = typeof window !== 'undefined' ? window.location.pathname : ''
@@ -269,31 +287,28 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
   // Reset message index and show automatic message when page changes
   useEffect(() => {
-    setMessageIndex(0)
-    setLastMessageIndex(-1)
+    updateState({ messageIndex: 0, lastMessageIndex: -1 })
 
     // Show automatic page-specific message after a short delay
-    if (preferences.speechBubbles) {
+    if (state.preferences.speechBubbles) {
       const timer = setTimeout(() => {
-        setAutoShowMessage(true)
-        setShowBubble(true)
+        updateState({ autoShowMessage: true, showBubble: true })
 
         // Check if we're on a blog post and haven't visited it before
         if (isOnBlogPost && currentBlogPostSlug) {
-          if (!blogPostsVisited.has(currentBlogPostSlug)) {
+          if (!state.blogPostsVisited.has(currentBlogPostSlug)) {
             // Show blog post specific message only
-            setCurrentMessage(getBlogPostMessage())
+            updateState({ currentMessage: getBlogPostMessage() })
             // Mark this blog post as visited
-            const newVisited = new Set(blogPostsVisited)
+            const newVisited = new Set(state.blogPostsVisited)
             newVisited.add(currentBlogPostSlug)
-            setBlogPostsVisited(newVisited)
+            updateState({ blogPostsVisited: newVisited })
             try {
               localStorage.setItem(BLOG_POST_VISITED_KEY, JSON.stringify([...newVisited]))
             } catch { }
           } else {
             // Don't show any message for visited blog posts
-            setShowBubble(false)
-            setAutoShowMessage(false)
+            updateState({ showBubble: false, autoShowMessage: false })
             return
           }
         } else {
@@ -308,27 +323,26 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
               break
             }
           }
-          setCurrentMessage(pageMessages[0] || messages[0] || '')
+          updateState({ currentMessage: pageMessages[0] || '' })
         }
 
         // Hide the message after configured duration
         const hideTimer = setTimeout(() => {
-          setShowBubble(false)
-          setAutoShowMessage(false)
-        }, preferences.messageDuration)
+          updateState({ showBubble: false, autoShowMessage: false })
+        }, state.preferences.messageDuration)
 
         return () => clearTimeout(hideTimer)
       }, 1000) // 1 second delay after page load
 
       return () => clearTimeout(timer)
     }
-  }, [pageKey, preferences.speechBubbles, preferences.messageDuration, isOnBlogPost, currentBlogPostSlug, blogPostsVisited, t])
+  }, [pageKey, state.preferences.speechBubbles, state.preferences.messageDuration, isOnBlogPost, currentBlogPostSlug, state.blogPostsVisited, t])
 
   // Build message list from i18n with time-based greetings and context
   const messages: string[] = useMemo(() => {
     const list: string[] = []
 
-    // Only add time-based greeting on the root path (/)
+    // Only add time-based greeting on the home page
     if (pageKey === 'home') {
       try {
         list.push(getTimeBasedGreeting())
@@ -368,81 +382,63 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     }
 
     return list
-  }, [t, pageKey, currentBlogPostSlug, blogPostsVisited])
+  }, [t, pageKey, currentBlogPostSlug, state.blogPostsVisited])
 
   // Get random message index (avoiding last message)
-  const getRandomMessageIndex = () => {
+  const getRandomMessageIndex = (): number => {
     if (messages.length <= 1) return 0
-    let newIndex
+    let newIndex: number
     do {
       newIndex = Math.floor(Math.random() * messages.length)
-    } while (newIndex === lastMessageIndex && messages.length > 1)
+    } while (newIndex === state.lastMessageIndex && messages.length > 1)
     return newIndex
   }
 
-  const pickNextMessage = () => {
-    if (messages.length === 0) return
+  const pickNextMessage = (): number => {
+    if (messages.length === 0) return 0
     const newIndex = getRandomMessageIndex()
-    setMessageIndex(newIndex)
-    setLastMessageIndex(newIndex)
-    setCurrentMessage(messages[newIndex])
+    updateState({ messageIndex: newIndex, lastMessageIndex: newIndex })
+    return newIndex
   }
 
   const handleDismiss = () => {
-    setShowBubble(false)
-    setIsDismissed(true)
+    updateState({ showBubble: false, isDismissed: true })
     try {
       sessionStorage.setItem(STORAGE_KEY, '1')
     } catch { }
   }
 
   const handleMascotClick = () => {
-    setIsActive((v) => !v)
+    updateState({ isActive: !state.isActive })
     // Remove the waving animation - no more bounce effect
   }
 
-  const handlePreferencesChange = (key: keyof MascotPreferences, value: any) => {
-    const newPrefs = { ...preferences, [key]: value }
-    setPreferences(newPrefs)
-    try {
-      localStorage.setItem(PREFERENCES_KEY, JSON.stringify(newPrefs))
-    } catch { }
-  }
-
-  const handleBubbleInteraction = () => {
-    if (!autoShowMessage) {
-      pickNextMessage()
-      setShowBubble(true)
-    }
-  }
-
   const handleMouseEnter = () => {
-    setIsHovering(true)
-    if (preferences.speechBubbles && !autoShowMessage && !showContact && !showChatbot && !showSettings && !showMenu) {
-      if (!currentMessage) {
-        setCurrentMessage(messages[messageIndex] || '')
+    updateState({ isHovering: true })
+    if (state.preferences.speechBubbles && !state.autoShowMessage && !state.showContact && !state.showSettings && !state.showMenu) {
+      if (!state.currentMessage) {
+        updateState({ currentMessage: messages[state.messageIndex] || '' })
       }
-      setShowBubble(true)
+      updateState({ showBubble: true })
     }
   }
 
   const handleMouseLeave = () => {
-    setIsHovering(false)
-    if (!autoShowMessage && !showContact && !showChatbot && !showSettings && !showMenu) {
-      setShowBubble(false)
+    updateState({ isHovering: false })
+    if (!state.autoShowMessage && !state.showContact && !state.showSettings && !state.showMenu) {
+      updateState({ showBubble: false })
     }
   }
 
   const handleHideMascot = () => {
-    setIsHiddenPref(true)
+    updateState({ isHiddenPref: true })
     try {
       localStorage.setItem(HIDE_KEY, '1')
     } catch { }
   }
 
   const handleRestoreMascot = () => {
-    setIsDismissed(false)
-    setIsHiddenPref(false)
+    updateState({ isDismissed: false, isHiddenPref: false })
     try {
       sessionStorage.removeItem(STORAGE_KEY)
       localStorage.removeItem(HIDE_KEY)
@@ -450,51 +446,36 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   }
 
   const handleMenuAction = (action: string) => {
-    setShowMenu(false)
-    // Hide all other panels and bubbles when opening a new one
-    setShowBubble(false)
-    setShowContact(false)
-    setShowChatbot(false)
-    setShowSettings(false)
+    // First hide all UI elements
+    updateState({
+      showBubble: false,
+      showContact: false,
+      showSettings: false,
+      showMenu: false
+    })
 
-    switch (action) {
-      case 'contact':
-        setShowContact(true)
-        break
-      case 'chatbot':
-        setShowChatbot(true)
-        break
-      case 'projects':
-        window.open('https://github.com/isyuricunha', '_blank')
-        break
-      case 'game':
-        setShowGame(true)
-        break
-      case 'settings':
-        setShowSettings(true)
-        break
-    }
-  }
-
-  const handleChatbotOption = (option: string) => {
-    setShowChatbot(false)
-    setShowBubble(true)
-    try {
-      const response = t(`mascot.chatbot.responses.${option}` as any)
-      setCurrentMessage(response)
-    } catch {
-      setCurrentMessage(t('mascot.chatbot.responses.general'))
-    }
-
-    // Hide the chatbot response after a few seconds
+    // Use a small timeout to ensure the hide animation completes before showing new content
     setTimeout(() => {
-      setShowBubble(false)
-    }, 5000)
+      switch (action) {
+        case 'contact':
+          updateState({ showContact: true })
+          break
+        case 'projects':
+          window.open('https://github.com/isyuricunha', '_blank')
+          break
+        case 'game':
+          updateState({ showGame: true })
+          break
+        case 'settings':
+          updateState({ showSettings: true })
+          break
+      }
+    }, 50) // Small delay to ensure clean transition
   }
 
   // Get position classes based on preference
   const getPositionClasses = () => {
-    switch (preferences.bubblePosition) {
+    switch (state.preferences.bubblePosition) {
       case 'bottom-left':
         return 'fixed bottom-5 left-5'
       case 'top-right':
@@ -509,14 +490,14 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   if (hidden) return null
 
   // Show restore button when hidden or dismissed
-  if (isHiddenPref || isDismissed) {
+  if (state.isHiddenPref || state.isDismissed) {
     return (
       <div className={getPositionClasses()}>
         <button
           type='button'
           aria-label={t('mascot.restore')}
           className='rounded-full bg-primary p-3 text-primary-foreground shadow-lg transition-all hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
-          onClick={handleRestoreMascot}
+          onClick={() => updateState({ isDismissed: false, isHiddenPref: false })}
         >
           <EyeIcon className='h-6 w-6' />
         </button>
@@ -528,7 +509,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     <>
       <div className={getPositionClasses()}>
         {/* Settings Panel */}
-        {showSettings && (
+        {state.showSettings && (
           <div className='absolute bottom-full right-0 mb-2 w-80 rounded-lg border bg-popover p-4 text-sm text-popover-foreground shadow-lg'>
             <div className='flex items-center justify-between mb-3'>
               <h3 className='font-medium'>{t('mascot.settings.title')}</h3>
@@ -536,10 +517,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
                 type='button'
                 aria-label={t('mascot.settings.close')}
                 className='rounded p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
-                onClick={() => {
-                  setShowSettings(false)
-                  setShowBubble(false)
-                }}
+                onClick={() => updateState({ showSettings: false, showBubble: false })}
               >
                 <XIcon className='h-4 w-4' />
               </button>
@@ -550,8 +528,8 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
                 <span>{t('mascot.settings.animations')}</span>
                 <input
                   type='checkbox'
-                  checked={preferences.animations}
-                  onChange={(e) => handlePreferencesChange('animations', e.target.checked)}
+                  checked={state.preferences.animations}
+                  onChange={(e) => updatePreferences({ animations: e.target.checked })}
                   className='rounded border-gray-300'
                 />
               </label>
@@ -560,8 +538,8 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
                 <span>{t('mascot.settings.speechBubbles')}</span>
                 <input
                   type='checkbox'
-                  checked={preferences.speechBubbles}
-                  onChange={(e) => handlePreferencesChange('speechBubbles', e.target.checked)}
+                  checked={state.preferences.speechBubbles}
+                  onChange={(e) => updatePreferences({ speechBubbles: e.target.checked })}
                   className='rounded border-gray-300'
                 />
               </label>
@@ -570,8 +548,8 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
                 <span>{t('mascot.settings.soundEffects')}</span>
                 <input
                   type='checkbox'
-                  checked={preferences.soundEffects}
-                  onChange={(e) => handlePreferencesChange('soundEffects', e.target.checked)}
+                  checked={state.preferences.soundEffects}
+                  onChange={(e) => updatePreferences({ soundEffects: e.target.checked })}
                   className='rounded border-gray-300'
                 />
               </label>
@@ -579,8 +557,8 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
               <label className='flex items-center justify-between'>
                 <span>{t('mascot.settings.messageDuration')}</span>
                 <select
-                  value={preferences.messageDuration}
-                  onChange={(e) => handlePreferencesChange('messageDuration', parseInt(e.target.value))}
+                  value={state.preferences.messageDuration}
+                  onChange={(e) => updatePreferences({ messageDuration: parseInt(e.target.value) })}
                   className='rounded border-gray-300 text-xs'
                 >
                   <option value={3000}>3s</option>
@@ -593,8 +571,8 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
               <label className='flex items-center justify-between'>
                 <span>{t('mascot.settings.bubblePosition')}</span>
                 <select
-                  value={preferences.bubblePosition}
-                  onChange={(e) => handlePreferencesChange('bubblePosition', e.target.value)}
+                  value={state.preferences.bubblePosition}
+                  onChange={(e) => updatePreferences({ bubblePosition: e.target.value as MascotPreferences['bubblePosition'] })}
                   className='rounded border-gray-300 text-xs'
                 >
                   <option value='bottom-right'>{t('mascot.settings.positions.bottomRight')}</option>
@@ -604,10 +582,10 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
                 </select>
               </label>
 
-              {isKonamiMode && (
+              {state.isKonamiMode && (
                 <div className='pt-2 border-t'>
                   <p className='text-xs text-muted-foreground'>
-                    🎮 {t('mascot.easterEgg.retroMode')}
+                    {t('mascot.easterEgg.retroMode')}
                   </p>
                 </div>
               )}
@@ -616,7 +594,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         )}
 
         {/* Contact Panel */}
-        {showContact && (
+        {state.showContact && (
           <div className='absolute bottom-full right-0 mb-2 w-80 rounded-lg border bg-popover p-4 text-sm text-popover-foreground shadow-lg'>
             <div className='flex items-center justify-between mb-3'>
               <h3 className='font-medium'>{t('mascot.contact.title')}</h3>
@@ -624,10 +602,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
                 type='button'
                 aria-label={t('mascot.contact.close')}
                 className='rounded p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
-                onClick={() => {
-                  setShowContact(false)
-                  setShowBubble(false)
-                }}
+                onClick={() => updateState({ showContact: false, showBubble: false })}
               >
                 <XIcon className='h-4 w-4' />
               </button>
@@ -650,45 +625,8 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
           </div>
         )}
 
-        {/* Chatbot Panel */}
-        {showChatbot && (
-          <div className='absolute bottom-full right-0 mb-2 w-80 rounded-lg border bg-popover p-4 text-sm text-popover-foreground shadow-lg'>
-            <div className='flex items-center justify-between mb-3'>
-              <h3 className='font-medium'>{t('mascot.chatbot.title')}</h3>
-              <button
-                type='button'
-                aria-label={t('mascot.chatbot.close')}
-                className='rounded p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
-                onClick={() => {
-                  setShowChatbot(false)
-                  setShowBubble(false)
-                }}
-              >
-                <XIcon className='h-4 w-4' />
-              </button>
-            </div>
-
-            <div className='space-y-3'>
-              <p className='text-sm'>{t('mascot.chatbot.description')}</p>
-              <div className='space-y-2'>
-                {['contact', 'feedback', 'help', 'bug', 'feature', 'general'].map((option) => (
-                  <button
-                    key={option}
-                    type='button'
-                    className='flex w-full items-center gap-2 rounded px-3 py-2 text-left transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
-                    onClick={() => handleChatbotOption(option)}
-                  >
-                    <MessageCircleIcon className='h-4 w-4' />
-                    {t(`mascot.chatbot.options.${option}` as any)}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-
         {/* Menu Panel */}
-        {showMenu && (
+        {state.showMenu && (
           <div className='absolute bottom-full right-0 mb-2 w-48 rounded-lg border bg-popover p-2 text-sm text-popover-foreground shadow-lg'>
             <div className='space-y-1'>
               <button
@@ -698,14 +636,6 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
               >
                 <BugIcon className='h-4 w-4' />
                 {t('mascot.menu.reportBug')}
-              </button>
-              <button
-                type='button'
-                className='flex w-full items-center gap-2 rounded px-3 py-2 text-left transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
-                onClick={() => handleMenuAction('chatbot')}
-              >
-                <MessageCircleIcon className='h-4 w-4' />
-                {t('mascot.chatbot.title')}
               </button>
               <button
                 type='button'
@@ -736,9 +666,9 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         )}
 
         {/* Speech Bubble */}
-        {preferences.speechBubbles && !showContact && !showChatbot && !showSettings && !showMenu && (
+        {state.preferences.speechBubbles && !state.showContact && !state.showSettings && !state.showMenu && (
           <div
-            className={`absolute bottom-full right-0 mb-2 w-80 rounded-lg border bg-popover p-3 text-sm text-popover-foreground shadow-lg outline-none ring-0 transition-all duration-200 ease-out ${showBubble && (currentMessage || messages[messageIndex])
+            className={`absolute bottom-full right-0 mb-2 w-80 rounded-lg border bg-popover p-3 text-sm text-popover-foreground shadow-lg outline-none ring-0 transition-all duration-200 ease-out ${state.showBubble && (state.currentMessage || messages[state.messageIndex])
               ? 'opacity-100 translate-y-0'
               : 'opacity-0 translate-y-2 pointer-events-none'
               }`}
@@ -750,14 +680,14 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
           >
             <div className='flex items-start gap-3'>
               <div className='min-w-0 flex-1' id='mascot-message'>
-                {currentMessage || messages[messageIndex]}
+                {state.currentMessage || messages[state.messageIndex]}
               </div>
               <div className='flex items-center gap-1'>
                 <button
                   type='button'
                   aria-label={t('mascot.menu.open')}
                   className='rounded px-2 py-1 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
-                  onClick={() => setShowMenu(!showMenu)}
+                  onClick={() => updateState({ showMenu: !state.showMenu })}
                 >
                   <MenuIcon className='h-3 w-3' />
                 </button>
@@ -787,40 +717,40 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
           ref={mascotRef}
           type='button'
           aria-label={t('mascot.ariaLabel')}
-          className={`relative inline-flex h-[120px] w-[120px] items-center justify-center rounded-full border transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${isActive ? 'border-primary shadow-lg shadow-primary/20' : 'border-border shadow'
-            } ${prefersReducedMotion ? '' : 'hover:scale-105'} ${isKonamiMode ? 'animate-pulse border-yellow-400 shadow-yellow-400/20' : ''
+          className={`relative inline-flex h-[120px] w-[120px] items-center justify-center rounded-full border transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${state.isActive ? 'border-primary shadow-lg shadow-primary/20' : 'border-border shadow'
+            } ${state.preferences.animations ? 'hover:scale-105' : ''} ${state.isKonamiMode ? 'animate-pulse border-yellow-400 shadow-yellow-400/20' : ''
             }`}
           onClick={handleMascotClick}
           onMouseEnter={handleMouseEnter}
           onFocus={() => {
-            if (preferences.speechBubbles && !autoShowMessage && !showContact && !showChatbot && !showSettings && !showMenu) {
-              if (!currentMessage) {
-                setCurrentMessage(messages[messageIndex] || '')
+            if (state.preferences.speechBubbles && !state.autoShowMessage && !state.showContact && !state.showSettings && !state.showMenu) {
+              if (!state.currentMessage) {
+                updateState({ currentMessage: messages[state.messageIndex] || '' })
               }
-              setShowBubble(true)
+              updateState({ showBubble: true })
             }
           }}
           onBlur={() => {
-            if (!autoShowMessage && !isHovering && !showContact && !showChatbot && !showSettings && !showMenu) {
-              setShowBubble(false)
+            if (!state.autoShowMessage && !state.isHovering && !state.showContact && !state.showSettings && !state.showMenu) {
+              updateState({ showBubble: false })
             }
           }}
         >
           <Image
-            src={`/images/mascote-${currentMascotImage}.png`}
+            src={`/images/mascote-${state.currentMascotImage}.png`}
             alt=''
             role='presentation'
             width={120}
             height={120}
-            className={`rounded-full object-cover transition-all duration-200 ${isBlinking ? 'animate-pulse' : ''
-              } ${isKonamiMode ? 'filter sepia hue-rotate-180' : ''}`}
+            className={`rounded-full object-cover transition-all duration-200 ${state.isBlinking ? 'animate-pulse' : ''
+              } ${state.isKonamiMode ? 'filter sepia hue-rotate-180' : ''}`}
             priority={false}
           />
         </button>
       </div>
 
       {/* Mini Game */}
-      <MascotGame isOpen={showGame} onClose={() => setShowGame(false)} />
+      <MascotGame isOpen={state.showGame} onClose={() => updateState({ showGame: false })} />
     </>
   )
 }
