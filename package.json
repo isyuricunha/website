@@ -16,7 +16,6 @@
     "check:knip": "dotenv -e .env.local -- knip",
     "check:spelling": "cspell -c .cspell.json --no-progress --no-summary --no-must-find-files --unique",
     "clean": "turbo clean && rm -rf .turbo coverage",
-    "commit": "cz",
     "db:check": "turbo db:check",
     "db:generate": "turbo db:generate",
     "db:migrate": "turbo db:migrate",
@@ -44,15 +43,8 @@
     "type-check": "turbo type-check",
     "version": "changeset version"
   },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-git"
-    }
-  },
   "devDependencies": {
     "@changesets/cli": "^2.28.1",
-    "@commitlint/cli": "^19.7.1",
-    "@commitlint/config-conventional": "^19.7.1",
     "@playwright/test": "^1.50.1",
     "@tszhong0411/eslint-config": "workspace:*",
     "@tszhong0411/prettier-config": "workspace:*",
@@ -61,11 +53,9 @@
     "@types/node": "^22.13.5",
     "@vitest/coverage-v8": "^3.0.7",
     "@vitest/ui": "^3.0.7",
-    "commitizen": "^4.3.1",
     "concurrently": "^9.1.2",
     "cross-env": "^7.0.3",
     "cspell": "^8.17.5",
-    "cz-git": "^1.11.0",
     "dotenv-cli": "^8.0.0",
     "eslint": "^9.21.0",
     "jsdom": "^26.0.0",
@@ -84,17 +74,10 @@
   "engines": {
     "node": ">=22"
   },
-  "lint-staged": {
-    "*.{cjs,mjs,js,jsx,cts,mts,ts,tsx,json}": "eslint --fix",
-    "**/*": [
-      "prettier --write --ignore-unknown",
-      "pnpm check:spelling"
-    ]
-  },
   "packageManager": "pnpm@10.14.0",
   "simple-git-hooks": {
-    "pre-commit": "pnpm lint-staged",
-    "commit-msg": "pnpm commitlint --edit $1 && pnpm check:spelling $1"
+    "pre-commit": "pnpm format:write",
+    "commit-msg": "pnpm check:spelling $1"
   },
   "dependencies": {
     "better-auth": "^1.2.10"
