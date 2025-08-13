@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { X as XIcon, Settings as SettingsIcon, Gamepad as GamepadIcon, Eye as EyeIcon, Menu as MenuIcon, Bug as BugIcon, Github as GithubIcon, Copy as CopyIcon } from 'lucide-react'
-import { useTranslations } from '@tszhong0411/i18n/client'
+import { useTranslations, useLocale, useMessages } from '@tszhong0411/i18n/client'
 import MascotGame from './mascot-game'
 
 type VirtualMascotProps = {
@@ -38,6 +38,7 @@ interface MascotPreferences {
 
 const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   const t = useTranslations()
+  const allMessages = useMessages() as any
   const [state, setState] = useState(() => ({
     isDismissed: false,
     isHiddenPref: false,
@@ -53,6 +54,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     konamiSequence: [] as number[],
     isHovering: false,
     currentMessage: null as string | null,
+    messageQueue: [] as { id: number; text: string; expiresAt: number }[],
     autoShowMessage: false,
     lastMessageIndex: -1,
     // 0 means "not chosen yet"; we will choose after mount to avoid SSR mismatch
@@ -67,6 +69,32 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   // Helper functions to update state
   const updateState = (updates: Partial<typeof state>) => {
     setState(prev => ({ ...prev, ...updates }))
+  }
+
+  // Queue helpers
+  const enqueueMessage = (text: string, duration?: number) => {
+    if (!text) return
+    const d = duration ?? state.preferences.messageDuration
+    const id = Date.now() + Math.floor(Math.random() * 1000)
+    const expiresAt = Date.now() + d
+    setState(prev => ({
+      ...prev,
+      messageQueue: [...prev.messageQueue, { id, text, expiresAt }]
+    }))
+    // schedule removal
+    setTimeout(() => {
+      setState(prev => ({
+        ...prev,
+        messageQueue: prev.messageQueue.filter(item => item.id !== id)
+      }))
+    }, d)
+  }
+
+  const removeMessage = (id: number) => {
+    setState(prev => ({
+      ...prev,
+      messageQueue: prev.messageQueue.filter(item => item.id !== id)
+    }))
   }
 
   const updatePreferences = (updates: Partial<MascotPreferences>) => {
@@ -125,50 +153,45 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
   // Get idle message - use all available messages instead of just first 5
   const getIdleMessage = () => {
-    const idleMessages = []
-    // Use general messages for idle tips instead of just the 5 idle tips
-    for (let i = 0; i < 50; i += 1) {
-      try {
-        const key = `mascot.messages.${i}`
-        const value = t(key as any)
-        if (value) idleMessages.push(value)
-      } catch {
-        break
+    const list: string[] = []
+    try {
+      const base = (allMessages?.mascot?.messages ?? {}) as Record<string, unknown>
+      const keys = Object.keys(base)
+        .filter((k) => /^\d+$/.test(k))
+        .map((k) => Number(k))
+        .sort((a, b) => a - b)
+      for (const idx of keys) {
+        const v = (base as any)[String(idx)]
+        if (typeof v === 'string' && v) list.push(v)
       }
-    }
-    // Use a consistent message during SSR and initial render
-    if (typeof window === 'undefined') return t('mascot.messages.0')
-    return idleMessages[Math.floor(Math.random() * idleMessages.length)] || t('mascot.messages.0')
+    } catch {}
+    if (list.length === 0) return t('mascot.messages.0')
+    return list[Math.floor(Math.random() * list.length)]
   }
 
   // Get blog post specific message
   const getBlogPostMessage = () => {
-    const blogPostMessages = []
-    for (let i = 0; i < 10; i += 1) {
-      try {
-        const key = `mascot.pageMessages.blogPost.${i}`
-        const value = t(key as any)
-        if (value) blogPostMessages.push(value)
-      } catch {
-        break
+    const list: string[] = []
+    try {
+      const base = (allMessages?.mascot?.pageMessages?.blogPost ?? {}) as Record<string, unknown>
+      const keys = Object.keys(base)
+        .filter((k) => /^\d+$/.test(k))
+        .map((k) => Number(k))
+        .sort((a, b) => a - b)
+      for (const idx of keys) {
+        const v = (base as any)[String(idx)]
+        if (typeof v === 'string' && v) list.push(v)
       }
-    }
-    // Use a consistent message during SSR and initial render
-    if (typeof window === 'undefined' || blogPostMessages.length === 0) {
-      return t('mascot.pageMessages.blogPost.0')
-    }
-    return blogPostMessages[Math.floor(Math.random() * blogPostMessages.length)]
+    } catch {}
+    if (list.length === 0) return t('mascot.messages.0')
+    return list[Math.floor(Math.random() * list.length)]
   }
 
   // Copy email to clipboard
   const copyEmail = (): void => {
     navigator.clipboard.writeText('me@yuricunha.com')
       .catch((err) => console.error('Failed to copy email:', err))
-    updateState({
-      currentMessage: 'Email copied to clipboard!',
-      showBubble: true
-    })
-    setTimeout(() => updateState({ showBubble: false }), 2000)
+    enqueueMessage('Email copied to clipboard!', 2000)
   }
 
   // Mount flag to coordinate client-only behaviors and select session image
@@ -259,23 +282,18 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
   // Idle timer for fun facts
   useEffect(() => {
-    if (!state.preferences.speechBubbles || state.showBubble || state.autoShowMessage || state.showContact || state.showGame || state.showSettings || state.showMenu) return
+    if (!state.preferences.speechBubbles || state.autoShowMessage || state.showContact || state.showGame || state.showSettings || state.showMenu) return
 
     const timer = setTimeout(() => {
-      if (!state.showBubble && !state.autoShowMessage && !state.showContact && !state.showGame && !state.showSettings && !state.showMenu) {
-        updateState({ currentMessage: getIdleMessage(), showBubble: true })
-
-        // Hide idle message after 4 seconds
-        setTimeout(() => {
-          updateState({ showBubble: false })
-        }, 4000)
+      if (!state.autoShowMessage && !state.showContact && !state.showGame && !state.showSettings && !state.showMenu) {
+        enqueueMessage(getIdleMessage(), 4000)
       }
     }, 25000) // 25 seconds idle
 
     return () => {
       if (timer) clearTimeout(timer)
     }
-  }, [state.preferences.speechBubbles, state.showBubble, state.autoShowMessage, state.showContact, state.showGame, state.showSettings, state.showMenu])
+  }, [state.preferences.speechBubbles, state.autoShowMessage, state.showContact, state.showGame, state.showSettings, state.showMenu])
 
   // Track current page path for contextual messages (language-aware)
   const pathname = usePathname()
@@ -320,17 +338,20 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   }, [pageKey])
 
   // Helper: fetch page-specific messages with graceful fallbacks
-  const fetchPageMessages = (key: string, max: number = 6): string[] => {
+  const fetchPageMessages = (key: string): string[] => {
     const tryKey = (k: string): string[] => {
       const res: string[] = []
-      for (let i = 0; i < max; i += 1) {
-        try {
-          const value = t(`mascot.pageMessages.${k}.${i}` as any)
-          if (value) res.push(value)
-        } catch {
-          break
+      try {
+        const base = (allMessages?.mascot?.pageMessages?.[k] ?? {}) as Record<string, unknown>
+        const keys = Object.keys(base)
+          .filter((kk) => /^\d+$/.test(kk))
+          .map((kk) => Number(kk))
+          .sort((a, b) => a - b)
+        for (const idx of keys) {
+          const v = (base as any)[String(idx)]
+          if (typeof v === 'string' && v) res.push(v)
         }
-      }
+      } catch {}
       return res
     }
 
@@ -367,37 +388,35 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     // Show automatic page-specific message after a short delay
     if (state.preferences.speechBubbles) {
       const timer = setTimeout(() => {
-        updateState({ autoShowMessage: true, showBubble: true })
+        updateState({ autoShowMessage: true })
 
         // Check if we're on a blog post and haven't visited it before
         if (isOnBlogPost && currentBlogPostSlug) {
+          // Always show a randomized blog post message on visit
+          const msg = getBlogPostMessage()
+          enqueueMessage(msg)
+          // Track visited slug (kept for future logic)
           if (!state.blogPostsVisited.has(currentBlogPostSlug)) {
-            // Show blog post specific message only
-            updateState({ currentMessage: getBlogPostMessage() })
-            // Mark this blog post as visited
             const newVisited = new Set(state.blogPostsVisited)
             newVisited.add(currentBlogPostSlug)
             updateState({ blogPostsVisited: newVisited })
             try {
               localStorage.setItem(BLOG_POST_VISITED_KEY, JSON.stringify([...newVisited]))
             } catch { }
-          } else {
-            // Don't show any message for visited blog posts
-            updateState({ showBubble: false, autoShowMessage: false })
-            return
           }
         } else {
-          // Show regular page message for non-blog-post pages
-          const pageMessages = fetchPageMessages(pageKey, 6)
-          updateState({ currentMessage: pageMessages[0] || '' })
+          // Show randomized page message for non-blog-post pages
+          const pageMessages = fetchPageMessages(pageKey)
+          const randomized = pageMessages.length
+            ? pageMessages[Math.floor(Math.random() * pageMessages.length)]
+            : ''
+          if (randomized) enqueueMessage(randomized)
         }
 
-        // Hide the message after configured duration
+        // Reset auto show flag after duration
         const hideTimer = setTimeout(() => {
-          updateState({ showBubble: false, autoShowMessage: false })
+          updateState({ autoShowMessage: false })
         }, state.preferences.messageDuration)
-
-        return () => clearTimeout(hideTimer)
       }, 1000) // 1 second delay after page load
 
       return () => clearTimeout(timer)
@@ -420,7 +439,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     // For blog posts, include blogPost page-specific messages in the pool so hover/click can show them.
     // Auto-show on first visit is still handled separately in the effect above.
     if (pageKey === 'blogPost') {
-      const blogSpecific = fetchPageMessages('blogPost', 10)
+      const blogSpecific = fetchPageMessages('blogPost')
       list.push(...blogSpecific)
     } else {
       // First try to get page-specific messages for non-blog-post pages
@@ -443,35 +462,9 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     return list
   }, [mounted, t, pageKey, currentBlogPostSlug, state.blogPostsVisited])
 
-  // Get random message index (avoiding last message)
-  const getRandomMessageIndex = (): number => {
-    if (messages.length <= 1) return 0
-    let newIndex: number
-    do {
-      newIndex = Math.floor(Math.random() * messages.length)
-    } while (newIndex === state.lastMessageIndex && messages.length > 1)
-    return newIndex
-  }
+  // (Removed unused random picker helpers after introducing message queue)
 
-  // Pick next message and update state
-  const pickNextMessage = (): number => {
-    if (messages.length === 0) return 0
-    const newIndex = getRandomMessageIndex()
-    const nextMessage = messages[newIndex] || ''
-    updateState({ 
-      messageIndex: newIndex, 
-      lastMessageIndex: newIndex,
-      currentMessage: nextMessage
-    })
-    return newIndex
-  }
-
-  const handleDismiss = () => {
-    updateState({ showBubble: false, isDismissed: true })
-    try {
-      sessionStorage.setItem(STORAGE_KEY, '1')
-    } catch { }
-  }
+  // (Removed dismiss handler; per-bubble close and Hide button cover behavior)
 
   const handleMascotClick = () => {
     updateState({ isActive: !state.isActive })
@@ -480,20 +473,10 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
   const handleMouseEnter = () => {
     updateState({ isHovering: true })
-    if (state.preferences.speechBubbles && !state.autoShowMessage && !state.showContact && !state.showSettings && !state.showMenu) {
-      if (!state.currentMessage) {
-        updateState({ currentMessage: messages[state.messageIndex] || '' })
-      }
-      updateState({ showBubble: true })
-    }
+    // Do not auto-enqueue on hover to avoid spam; only show if queue already has messages
   }
 
-  const handleMouseLeave = () => {
-    updateState({ isHovering: false })
-    if (!state.autoShowMessage && !state.showContact && !state.showSettings && !state.showMenu) {
-      updateState({ showBubble: false })
-    }
-  }
+  // (Removed unused hover leave handler; visibility handled by queue existence)
 
   const handleHideMascot = () => {
     updateState({ isHiddenPref: true })
@@ -504,21 +487,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     }
   }
 
-  // Handle restoring the mascot (used in the restore button click handler)
-  const handleRestoreMascot = () => {
-    updateState({ 
-      isDismissed: false, 
-      isHiddenPref: false,
-      showBubble: true,
-      currentMessage: messages[0] || t('mascot.messages.0')
-    })
-    try {
-      sessionStorage.removeItem(STORAGE_KEY)
-      localStorage.removeItem(HIDE_KEY)
-    } catch (error) {
-      console.error('Error restoring mascot:', error)
-    }
-  }
+  // (Removed restore handler; Eye button toggles state directly)
 
   const handleMenuAction = (action: string) => {
     // First hide all UI elements
@@ -754,50 +723,51 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
           </div>
         )}
 
-        {/* Speech Bubble */}
+        {/* Speech Bubbles (Queued) */}
         {state.preferences.speechBubbles && !state.showContact && !state.showSettings && !state.showMenu && (
-          <div
-            className={`absolute bottom-full right-0 mb-2 w-80 rounded-lg border bg-popover p-3 text-sm text-popover-foreground shadow-lg outline-none ring-0 transition-all duration-200 ease-out ${state.showBubble && (state.currentMessage || messages[state.messageIndex])
-              ? 'opacity-100 translate-y-0'
-              : 'opacity-0 translate-y-2 pointer-events-none'
-              }`}
-            role='dialog'
-            aria-label={t('mascot.speechBubble')}
-            aria-describedby='mascot-message'
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-          >
-            <div className='flex items-start gap-3'>
-              <div className='min-w-0 flex-1' id='mascot-message'>
-                {state.currentMessage || messages[state.messageIndex]}
+          <div className='absolute bottom-full right-0 mb-2 flex w-80 flex-col gap-2'>
+            {state.messageQueue.map((item, idx) => (
+              <div
+                key={item.id}
+                className={`rounded-lg border bg-popover p-3 text-sm text-popover-foreground shadow-lg outline-none ring-0 transition-all duration-200 ease-out ${idx === state.messageQueue.length - 1 ? 'opacity-100 translate-y-0' : 'opacity-95'} `}
+                role='dialog'
+                aria-label={t('mascot.speechBubble')}
+              >
+                <div className='flex items-start gap-3'>
+                  <div className='min-w-0 flex-1'>{item.text}</div>
+                  <div className='flex items-center gap-1'>
+                    {idx === state.messageQueue.length - 1 && (
+                      <button
+                        type='button'
+                        aria-label={t('mascot.menu.open')}
+                        className='rounded px-2 py-1 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
+                        onClick={() => updateState({ showMenu: !state.showMenu })}
+                      >
+                        <MenuIcon className='h-3 w-3' />
+                      </button>
+                    )}
+                    {idx === state.messageQueue.length - 1 && (
+                      <button
+                        type='button'
+                        aria-label={t('mascot.hide')}
+                        className='rounded px-2 py-1 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
+                        onClick={handleHideMascot}
+                      >
+                        {t('mascot.hide')}
+                      </button>
+                    )}
+                    <button
+                      type='button'
+                      aria-label={t('mascot.close')}
+                      className='rounded p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
+                      onClick={() => removeMessage(item.id)}
+                    >
+                      <XIcon className='h-4 w-4' />
+                    </button>
+                  </div>
+                </div>
               </div>
-              <div className='flex items-center gap-1'>
-                <button
-                  type='button'
-                  aria-label={t('mascot.menu.open')}
-                  className='rounded px-2 py-1 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
-                  onClick={() => updateState({ showMenu: !state.showMenu })}
-                >
-                  <MenuIcon className='h-3 w-3' />
-                </button>
-                <button
-                  type='button'
-                  aria-label={t('mascot.hide')}
-                  className='rounded px-2 py-1 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
-                  onClick={handleHideMascot}
-                >
-                  {t('mascot.hide')}
-                </button>
-                <button
-                  type='button'
-                  aria-label={t('mascot.close')}
-                  className='rounded p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
-                  onClick={handleDismiss}
-                >
-                  <XIcon className='h-4 w-4' />
-                </button>
-              </div>
-            </div>
+            ))}
           </div>
         )}
 
