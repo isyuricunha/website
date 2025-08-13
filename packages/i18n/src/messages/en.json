@@ -480,7 +480,17 @@
         "2": "My creator, Yuri is a database specialist. Want to know more?",
         "3": "Check out the latest articles and projects below!",
         "4": "Feel free to explore any section that interests you!",
-        "5": "The navigation menu can help you find what you're looking for!"
+        "5": "The navigation menu can help you find what you're looking for!",
+        "6": "Home sweet home! This is where all the magic happens ✨",
+        "7": "Looking for something specific? I can help you navigate!",
+        "8": "Did you know you can change my position in the settings? 📍",
+        "9": "I love meeting new visitors! Thanks for stopping by! 😊",
+        "10": "The latest updates and content are always featured here first!",
+        "11": "Feeling curious? Every section has something unique to offer!",
+        "12": "Pro tip: Use the search feature to find exactly what you need! 🔍",
+        "13": "This site is constantly evolving with new features and content!",
+        "14": "Want to stay updated? Check back regularly for fresh content!",
+        "15": "I'm here 24/7 to help you explore and discover new things!"
       },
       "blog": {
         "0": "Welcome to the blog! 📝",
@@ -488,7 +498,17 @@
         "2": "Feel free to leave comments on the articles!",
         "3": "What topics would you like to read about?",
         "4": "The blog is updated regularly with fresh content!",
-        "5": "You can filter articles by tags and categories!"
+        "5": "You can filter articles by tags and categories!",
+        "6": "So many interesting articles to dive into! 📚",
+        "7": "Each post is crafted with care and real-world experience!",
+        "8": "Don't forget to share articles you find valuable! 🔗",
+        "9": "The comment section is where the real discussions happen!",
+        "10": "Looking for something specific? Try the search or tags!",
+        "11": "New articles drop regularly - bookmark your favorites! ⭐",
+        "12": "From beginner tips to advanced concepts, there's something for everyone!",
+        "13": "Love reading about databases, web dev, and tech insights? You're in the right place!",
+        "14": "The blog reflects years of learning and real project experiences!",
+        "15": "Got questions about an article? The comments are perfect for that!"
       },
       "blogPost": {
         "0": "This is a good read! 📖",
@@ -508,7 +528,17 @@
         "2": "Want to collaborate? Let's build something amazing!",
         "3": "Each project taught my creator, Yuri something new.",
         "4": "All projects are open source and available on GitHub!",
-        "5": "Feel free to contribute or suggest improvements!"
+        "5": "Feel free to contribute or suggest improvements!",
+        "6": "From small utilities to full-stack applications - diversity is key! 🛠️",
+        "7": "Every project solves a real problem or explores new technology!",
+        "8": "Check out the tech stacks - always experimenting with the latest tools!",
+        "9": "Live demos are available for most projects - try them out! 🌐",
+        "10": "The source code is clean, documented, and ready for contributions!",
+        "11": "Found a bug or have an idea? Issues and PRs are always welcome!",
+        "12": "These projects represent years of learning and experimentation!",
+        "13": "Star the repos you like - it really motivates the creator! ⭐",
+        "14": "From databases to web apps, each project has its own story!",
+        "15": "Want to build something together? Collaboration makes everything better!"
       },
       "projectsDetail": {
         "0": "Nice project! 🔧",
@@ -528,7 +558,17 @@
         "2": "Feel free to ask questions!",
         "3": "The journey started in 2018. Still learning every day!",
         "4": "My creator, Yuri loves sharing knowledge and helping others!",
-        "5": "The about page has all the details about the journey!"
+        "5": "The about page has all the details about the journey!",
+        "6": "A database specialist with a passion for clean, efficient code! 💾",
+        "7": "From Brazil to the world - technology connects us all! 🌎",
+        "8": "Always learning, always growing, always curious about new tech!",
+        "9": "Believes in open source, knowledge sharing, and helping others succeed!",
+        "10": "Coffee-fueled coding sessions and late-night problem solving! ☕",
+        "11": "The story includes failures, successes, and everything in between!",
+        "12": "A firm believer that the best way to learn is by building and teaching!",
+        "13": "Databases might be the specialty, but full-stack is the playground!",
+        "14": "Every project is a learning opportunity and a chance to help others!",
+        "15": "Want to connect? The contact info is right here on this page!"
       },
       "uses": {
         "0": "This is the setup! 💻",
@@ -536,7 +576,17 @@
         "2": "Want to know what's used for development?",
         "3": "Good tools make all the difference!",
         "4": "The setup is constantly evolving with new tools!",
-        "5": "Feel free to ask about any specific tool or setup!"
+        "5": "Feel free to ask about any specific tool or setup!",
+        "6": "From hardware to software - every tool has been carefully chosen! ⚙️",
+        "7": "The perfect balance of performance, productivity, and aesthetics!",
+        "8": "Always experimenting with new tools and workflows!",
+        "9": "These tools have powered countless projects and late-night coding sessions!",
+        "10": "Curious about a specific setup choice? Each one has a story!",
+        "11": "The setup evolves with new discoveries and changing needs!",
+        "12": "From code editors to database tools - everything optimized for efficiency!",
+        "13": "Good tools don't make you a better developer, but they sure help! 🛠️",
+        "14": "The setup reflects years of trying different tools and finding what works!",
+        "15": "Want recommendations? These tools have been battle-tested in real projects!"
       },
       "spotify": {
         "0": "Welcome to the music corner! 🎵",
@@ -544,7 +594,17 @@
         "2": "Music helps focus while coding.",
         "3": "What are you listening to these days?",
         "4": "The playlist is updated regularly with new discoveries!",
-        "5": "Music is a great way to stay motivated while working!"
+        "5": "Music is a great way to stay motivated while working!",
+        "6": "The soundtrack to countless coding sessions and creative breakthroughs! 🎧",
+        "7": "From lo-fi beats to energetic tracks - music for every coding mood!",
+        "8": "These playlists have powered through debugging sessions and feature builds!",
+        "9": "Music and code go together like coffee and late nights! ☕",
+        "10": "Discover new artists and genres that fuel creativity and focus!",
+        "11": "The perfect background for deep work and problem-solving sessions!",
+        "12": "Each playlist is curated for different types of work and energy levels!",
+        "13": "Music taste evolves just like coding skills - always discovering something new!",
+        "14": "What's your coding soundtrack? Music can make or break a productive session!",
+        "15": "From ambient to upbeat - find the perfect rhythm for your workflow! 🎶"
       },
       "guestbook": {
         "0": "Leave a message in the guestbook! 📖",
@@ -552,7 +612,17 @@
         "2": "Feel free to say hello or ask questions!",
         "3": "Your message will make their day!",
         "4": "The guestbook is a great way to connect with the community!",
-        "5": "All messages are moderated to keep the space friendly!"
+        "5": "All messages are moderated to keep the space friendly!",
+        "6": "A digital guestbook for the modern web - how cool is that? ✨",
+        "7": "Every message is read and appreciated - you're part of the community!",
+        "8": "Share your thoughts, feedback, or just say hi - all are welcome!",
+        "9": "The guestbook connects visitors from around the world! 🌍",
+        "10": "Your message might inspire the next blog post or project!",
+        "11": "From quick hellos to detailed feedback - every message matters!",
+        "12": "The guestbook is a reminder that behind every website are real people!",
+        "13": "Join the conversation and become part of this growing community!",
+        "14": "Messages here have led to collaborations, friendships, and new ideas!",
+        "15": "Don't be shy - your voice adds value to this space! 💬"
       },
       "admin": {
         "0": "Welcome to the admin panel! 🔧",
@@ -568,7 +638,17 @@
         "2": "Try different keywords to get better results.",
         "3": "Search works across all content on the site!",
         "4": "The search is powered by advanced algorithms!",
-        "5": "Can't find what you're looking for? Let me know!"
+        "5": "Can't find what you're looking for? Let me know!",
+        "6": "Smart search that understands context and finds relevant content! 🧠",
+        "7": "Search through articles, projects, and pages all in one place!",
+        "8": "Pro tip: Use specific terms for more targeted results!",
+        "9": "The search index is constantly updated with new content!",
+        "10": "Found something interesting? Bookmark it for later reference!",
+        "11": "Search results are ranked by relevance and freshness!",
+        "12": "Can't remember the exact title? Try searching by topic or keyword!",
+        "13": "The search feature learns and improves with every query!",
+        "14": "From technical articles to project details - find it all here!",
+        "15": "Search is your friend for navigating large amounts of content! 🗂️"
       },
       "404": {
         "0": "Oops! Looks like you're lost! 🗺️",
@@ -576,7 +656,17 @@
         "2": "Try using the navigation menu or search feature.",
         "3": "The homepage is always a good place to start!",
         "4": "My creator, Yuri is working on making navigation even better!",
-        "5": "Feel free to report any broken links you find!"
+        "5": "Feel free to report any broken links you find!",
+        "6": "Even the best explorers get lost sometimes! 🧭",
+        "7": "This page might have moved or doesn't exist yet!",
+        "8": "Use the search to find what you were looking for!",
+        "9": "The navigation menu has all the main sections organized!",
+        "10": "Sometimes getting lost leads to discovering something even better!",
+        "11": "Check the URL for typos - that's often the culprit!",
+        "12": "The site is constantly growing, so new content appears regularly!",
+        "13": "Broken links happen - thanks for helping improve the site!",
+        "14": "Every 404 is a chance to explore something new instead!",
+        "15": "When in doubt, the homepage has links to everything important! 🏠"
       }
     }
   }
