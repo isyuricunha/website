@@ -78,6 +78,8 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
   // Load preferences from localStorage
   const loadPreferences = (): MascotPreferences => {
+    if (typeof window === 'undefined') return { ...DEFAULT_PREFERENCES }
+    
     try {
       const saved = localStorage.getItem(PREFERENCES_KEY)
       if (saved) {
@@ -92,14 +94,25 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   // Konami Code sequence: ↑↑↓↓←→←→BA
   const KONAMI_CODE = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65]
 
-  // Check for reduced motion preference
-  const prefersReducedMotion = useMemo(() => {
-    if (typeof window === 'undefined') return false
-    return window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  // Check for reduced motion preference (client-side only)
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
+  
+  useEffect(() => {
+    // This will only run on the client side
+    setPrefersReducedMotion(
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    )
+    
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const handleChange = () => setPrefersReducedMotion(mediaQuery.matches)
+    
+    mediaQuery.addEventListener('change', handleChange)
+    return () => mediaQuery.removeEventListener('change', handleChange)
   }, [])
 
-  // Get time-based greeting
+  // Get time-based greeting (client-side only)
   const getTimeBasedGreeting = () => {
+    if (typeof window === 'undefined') return t('mascot.greetings.afternoon') // Default for SSR
     const hour = new Date().getHours()
     if (hour < 12) return t('mascot.greetings.morning')
     if (hour < 17) return t('mascot.greetings.afternoon')
@@ -120,6 +133,8 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         break
       }
     }
+    // Use a consistent message during SSR and initial render
+    if (typeof window === 'undefined') return t('mascot.messages.0')
     return idleMessages[Math.floor(Math.random() * idleMessages.length)] || t('mascot.messages.0')
   }
 
@@ -135,7 +150,11 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         break
       }
     }
-    return blogPostMessages[Math.floor(Math.random() * blogPostMessages.length)] || t('mascot.pageMessages.blogPost.0')
+    // Use a consistent message during SSR and initial render
+    if (typeof window === 'undefined' || blogPostMessages.length === 0) {
+      return t('mascot.pageMessages.blogPost.0')
+    }
+    return blogPostMessages[Math.floor(Math.random() * blogPostMessages.length)]
   }
 
   // Copy email to clipboard
@@ -247,7 +266,21 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   }, [state.preferences.speechBubbles, state.showBubble, state.autoShowMessage, state.showContact, state.showGame, state.showSettings, state.showMenu])
 
   // Get current page path for contextual messages (language-aware)
-  const currentPath = typeof window !== 'undefined' ? window.location.pathname : ''
+  const [currentPath, setCurrentPath] = useState('')
+  
+  useEffect(() => {
+    // This will only run on the client side
+    if (typeof window !== 'undefined') {
+      setCurrentPath(window.location.pathname)
+      
+      // Call pickNextMessage on initial load to set the first message
+      if (state.preferences.speechBubbles && messages.length > 0 && !state.currentMessage) {
+        pickNextMessage()
+      }
+    }
+    // We only want this to run once on mount, so we don't include dependencies
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   const getPageKey = (path: string) => {
     // Remove locale prefix if present
     const pathWithoutLocale = path.replace(/^\/(en|pt|fr|de|zh)\//, '/')
@@ -394,10 +427,16 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     return newIndex
   }
 
+  // Pick next message and update state
   const pickNextMessage = (): number => {
     if (messages.length === 0) return 0
     const newIndex = getRandomMessageIndex()
-    updateState({ messageIndex: newIndex, lastMessageIndex: newIndex })
+    const nextMessage = messages[newIndex] || ''
+    updateState({ 
+      messageIndex: newIndex, 
+      lastMessageIndex: newIndex,
+      currentMessage: nextMessage
+    })
     return newIndex
   }
 
@@ -434,15 +473,25 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     updateState({ isHiddenPref: true })
     try {
       localStorage.setItem(HIDE_KEY, '1')
-    } catch { }
+    } catch (error) {
+      console.error('Error hiding mascot:', error)
+    }
   }
 
+  // Handle restoring the mascot (used in the restore button click handler)
   const handleRestoreMascot = () => {
-    updateState({ isDismissed: false, isHiddenPref: false })
+    updateState({ 
+      isDismissed: false, 
+      isHiddenPref: false,
+      showBubble: true,
+      currentMessage: messages[0] || t('mascot.messages.0')
+    })
     try {
       sessionStorage.removeItem(STORAGE_KEY)
       localStorage.removeItem(HIDE_KEY)
-    } catch { }
+    } catch (error) {
+      console.error('Error restoring mascot:', error)
+    }
   }
 
   const handleMenuAction = (action: string) => {
@@ -451,30 +500,43 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       showBubble: false,
       showContact: false,
       showSettings: false,
-      showMenu: false
+      showMenu: false,
+      showGame: false
     })
 
     // Use a small timeout to ensure the hide animation completes before showing new content
     setTimeout(() => {
       switch (action) {
         case 'contact':
-          updateState({ showContact: true })
+          updateState({ 
+            showContact: true,
+            showBubble: true
+          })
           break
         case 'projects':
           window.open('https://github.com/isyuricunha', '_blank')
           break
         case 'game':
-          updateState({ showGame: true })
+          updateState({ 
+            showGame: true,
+            showBubble: true
+          })
           break
         case 'settings':
-          updateState({ showSettings: true })
+          updateState({ 
+            showSettings: true,
+            showBubble: true
+          })
+          break
+        default:
+          // No action needed for unknown actions
           break
       }
     }, 50) // Small delay to ensure clean transition
   }
 
   // Get position classes based on preference
-  const getPositionClasses = () => {
+  const getPositionClasses = (): string => {
     switch (state.preferences.bubblePosition) {
       case 'bottom-left':
         return 'fixed bottom-5 left-5'
@@ -482,6 +544,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         return 'fixed top-5 right-5'
       case 'top-left':
         return 'fixed top-5 left-5'
+      case 'bottom-right':
       default:
         return 'fixed bottom-5 right-5'
     }
