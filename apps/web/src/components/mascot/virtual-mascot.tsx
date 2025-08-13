@@ -625,7 +625,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
                   type='checkbox'
                   checked={state.preferences.animations}
                   onChange={(e) => updatePreferences({ animations: e.target.checked })}
-                  className='rounded border-gray-300'
+                  className='rounded border-input bg-background text-foreground accent-primary focus:ring-2 focus:ring-ring focus:ring-offset-2'
                 />
               </label>
 
@@ -635,7 +635,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
                   type='checkbox'
                   checked={state.preferences.speechBubbles}
                   onChange={(e) => updatePreferences({ speechBubbles: e.target.checked })}
-                  className='rounded border-gray-300'
+                  className='rounded border-input bg-background text-foreground accent-primary focus:ring-2 focus:ring-ring focus:ring-offset-2'
                 />
               </label>
 
@@ -645,7 +645,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
                   type='checkbox'
                   checked={state.preferences.soundEffects}
                   onChange={(e) => updatePreferences({ soundEffects: e.target.checked })}
-                  className='rounded border-gray-300'
+                  className='rounded border-input bg-background text-foreground accent-primary focus:ring-2 focus:ring-ring focus:ring-offset-2'
                 />
               </label>
 
@@ -654,12 +654,12 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
                 <select
                   value={state.preferences.messageDuration}
                   onChange={(e) => updatePreferences({ messageDuration: parseInt(e.target.value) })}
-                  className='rounded border-gray-300 text-xs'
+                  className='rounded-lg border border-input bg-background text-foreground text-xs px-3 py-2 shadow-sm transition-all duration-200 hover:border-ring focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-none focus:border-ring cursor-pointer'
                 >
-                  <option value={3000}>3s</option>
-                  <option value={5000}>5s</option>
-                  <option value={7000}>7s</option>
-                  <option value={10000}>10s</option>
+                  <option value={3000} className='bg-background text-foreground py-2 px-3 hover:bg-muted border-b border-border/50 last:border-b-0'>3s</option>
+                  <option value={5000} className='bg-background text-foreground py-2 px-3 hover:bg-muted border-b border-border/50 last:border-b-0'>5s</option>
+                  <option value={7000} className='bg-background text-foreground py-2 px-3 hover:bg-muted border-b border-border/50 last:border-b-0'>7s</option>
+                  <option value={10000} className='bg-background text-foreground py-2 px-3 hover:bg-muted border-b border-border/50 last:border-b-0'>10s</option>
                 </select>
               </label>
 
@@ -668,12 +668,12 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
                 <select
                   value={state.preferences.bubblePosition}
                   onChange={(e) => updatePreferences({ bubblePosition: e.target.value as MascotPreferences['bubblePosition'] })}
-                  className='rounded border-gray-300 text-xs'
+                  className='rounded-lg border border-input bg-background text-foreground text-xs px-3 py-2 shadow-sm transition-all duration-200 hover:border-ring focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-none focus:border-ring cursor-pointer'
                 >
-                  <option value='bottom-right'>{t('mascot.settings.positions.bottomRight')}</option>
-                  <option value='bottom-left'>{t('mascot.settings.positions.bottomLeft')}</option>
-                  <option value='top-right'>{t('mascot.settings.positions.topRight')}</option>
-                  <option value='top-left'>{t('mascot.settings.positions.topLeft')}</option>
+                  <option value='bottom-right' className='bg-background text-foreground py-2 px-3 hover:bg-muted border-b border-border/50 last:border-b-0'>{t('mascot.settings.positions.bottomRight')}</option>
+                  <option value='bottom-left' className='bg-background text-foreground py-2 px-3 hover:bg-muted border-b border-border/50 last:border-b-0'>{t('mascot.settings.positions.bottomLeft')}</option>
+                  <option value='top-right' className='bg-background text-foreground py-2 px-3 hover:bg-muted border-b border-border/50 last:border-b-0'>{t('mascot.settings.positions.topRight')}</option>
+                  <option value='top-left' className='bg-background text-foreground py-2 px-3 hover:bg-muted border-b border-border/50 last:border-b-0'>{t('mascot.settings.positions.topLeft')}</option>
                 </select>
               </label>
 
