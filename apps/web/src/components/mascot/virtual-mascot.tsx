@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react'
 import Image from 'next/image'
-import { XIcon, SettingsIcon, GamepadIcon, EyeIcon, MenuIcon, BugIcon, GithubIcon, CopyIcon, MessageCircleIcon } from 'lucide-react'
+import { XIcon, SettingsIcon, GamepadIcon, EyeIcon, MenuIcon, BugIcon, GithubIcon, CopyIcon } from 'lucide-react'
 import { useTranslations } from '@tszhong0411/i18n/client'
 import MascotGame from './mascot-game'
 
@@ -39,7 +39,6 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   const [showGame, setShowGame] = useState(false)
   const [showMenu, setShowMenu] = useState(false)
   const [showContact, setShowContact] = useState(false)
-  const [showChatbot, setShowChatbot] = useState(false)
   const [isKonamiMode, setIsKonamiMode] = useState(false)
   const [konamiSequence, setKonamiSequence] = useState<number[]>([])
   const [autoShowMessage, setAutoShowMessage] = useState(false)
@@ -205,10 +204,10 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
   // Idle timer for fun facts
   useEffect(() => {
-    if (!preferences.speechBubbles || showBubble || autoShowMessage || showContact || showChatbot || showSettings) return
+    if (!preferences.speechBubbles || showBubble || autoShowMessage || showContact || showSettings) return
 
     const timer = setTimeout(() => {
-      if (!showBubble && !autoShowMessage && !showContact && !showChatbot && !showSettings) {
+      if (!showBubble && !autoShowMessage && !showContact && !showSettings) {
         setCurrentMessage(getIdleMessage())
         setShowBubble(true)
 
@@ -223,7 +222,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     return () => {
       if (timer) clearTimeout(timer)
     }
-  }, [preferences.speechBubbles, showBubble, autoShowMessage, showContact, showChatbot, showSettings])
+  }, [preferences.speechBubbles, showBubble, autoShowMessage, showContact, showSettings])
 
   // Get current page path for contextual messages (language-aware)
   const currentPath = typeof window !== 'undefined' ? window.location.pathname : ''
@@ -232,11 +231,11 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     const pathWithoutLocale = path.replace(/^\/(en|pt|fr|de|zh)\//, '/')
 
     if (pathWithoutLocale === '/' || pathWithoutLocale === '') return 'home'
-    
+
     // Check for individual blog post first (more specific)
     const blogPostMatch = pathWithoutLocale.match(/^\/blog\/([^\/]+)$/)
     if (blogPostMatch) return 'blogPost'
-    
+
     if (pathWithoutLocale.startsWith('/blog')) return 'blog'
     if (pathWithoutLocale.startsWith('/projects')) return 'projects'
     if (pathWithoutLocale.startsWith('/about')) return 'about'
@@ -418,7 +417,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
   const handleMouseEnter = () => {
     setIsHovering(true)
-    if (preferences.speechBubbles && !autoShowMessage && !showContact && !showChatbot && !showSettings) {
+    if (preferences.speechBubbles && !autoShowMessage && !showContact && !showSettings) {
       if (!currentMessage) {
         setCurrentMessage(messages[messageIndex] || '')
       }
@@ -428,7 +427,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
   const handleMouseLeave = () => {
     setIsHovering(false)
-    if (!autoShowMessage && !showContact && !showChatbot && !showSettings) {
+    if (!autoShowMessage && !showContact && !showSettings) {
       setShowBubble(false)
     }
   }
@@ -450,47 +449,33 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   }
 
   const handleMenuAction = (action: string) => {
+    // Hide all panels and bubbles first
     setShowMenu(false)
-    // Hide all other panels and bubbles when opening a new one
     setShowBubble(false)
     setShowContact(false)
     setShowChatbot(false)
     setShowSettings(false)
 
-    switch (action) {
-      case 'contact':
-        setShowContact(true)
-        break
-      case 'chatbot':
-        setShowChatbot(true)
-        break
-      case 'projects':
-        window.open('https://github.com/isyuricunha', '_blank')
-        break
-      case 'game':
-        setShowGame(true)
-        break
-      case 'settings':
-        setShowSettings(true)
-        break
-    }
+    // Small delay to ensure smooth transition
+    setTimeout(() => {
+      switch (action) {
+        case 'contact':
+          setShowContact(true)
+          break
+        case 'projects':
+          window.open('https://github.com/isyuricunha', '_blank')
+          break
+        case 'game':
+          setShowGame(true)
+          break
+        case 'settings':
+          setShowSettings(true)
+          break
+      }
+    }, 100)
   }
 
-  const handleChatbotOption = (option: string) => {
-    setShowChatbot(false)
-    setShowBubble(true)
-    try {
-      const response = t(`mascot.chatbot.responses.${option}` as any)
-      setCurrentMessage(response)
-    } catch {
-      setCurrentMessage(t('mascot.chatbot.responses.general'))
-    }
-    
-    // Hide the chatbot response after a few seconds
-    setTimeout(() => {
-      setShowBubble(false)
-    }, 5000)
-  }
+
 
   // Get position classes based on preference
   const getPositionClasses = () => {
@@ -650,42 +635,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
           </div>
         )}
 
-        {/* Chatbot Panel */}
-        {showChatbot && (
-          <div className='absolute bottom-full right-0 mb-2 w-80 rounded-lg border bg-popover p-4 text-sm text-popover-foreground shadow-lg'>
-            <div className='flex items-center justify-between mb-3'>
-              <h3 className='font-medium'>{t('mascot.chatbot.title')}</h3>
-              <button
-                type='button'
-                aria-label={t('mascot.chatbot.close')}
-                className='rounded p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
-                onClick={() => {
-                  setShowChatbot(false)
-                  setShowBubble(false)
-                }}
-              >
-                <XIcon className='h-4 w-4' />
-              </button>
-            </div>
 
-            <div className='space-y-3'>
-              <p className='text-sm'>{t('mascot.chatbot.description')}</p>
-              <div className='space-y-2'>
-                {['contact', 'feedback', 'help', 'bug', 'feature', 'general'].map((option) => (
-                  <button
-                    key={option}
-                    type='button'
-                    className='flex w-full items-center gap-2 rounded px-3 py-2 text-left transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
-                    onClick={() => handleChatbotOption(option)}
-                  >
-                    <MessageCircleIcon className='h-4 w-4' />
-                    {t(`mascot.chatbot.options.${option}` as any)}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
 
         {/* Menu Panel */}
         {showMenu && (
@@ -699,14 +649,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
                 <BugIcon className='h-4 w-4' />
                 {t('mascot.menu.reportBug')}
               </button>
-              <button
-                type='button'
-                className='flex w-full items-center gap-2 rounded px-3 py-2 text-left transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
-                onClick={() => handleMenuAction('chatbot')}
-              >
-                <MessageCircleIcon className='h-4 w-4' />
-                {t('mascot.chatbot.title')}
-              </button>
+
               <button
                 type='button'
                 className='flex w-full items-center gap-2 rounded px-3 py-2 text-left transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
@@ -736,7 +679,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         )}
 
         {/* Speech Bubble */}
-        {preferences.speechBubbles && !showContact && !showChatbot && !showSettings && (
+        {preferences.speechBubbles && !showContact && !showSettings && (
           <div
             className={`absolute bottom-full right-0 mb-2 w-80 rounded-lg border bg-popover p-3 text-sm text-popover-foreground shadow-lg outline-none ring-0 transition-all duration-200 ease-out ${showBubble && (currentMessage || messages[messageIndex])
               ? 'opacity-100 translate-y-0'
@@ -793,7 +736,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
           onClick={handleMascotClick}
           onMouseEnter={handleMouseEnter}
           onFocus={() => {
-            if (preferences.speechBubbles && !autoShowMessage && !showContact && !showChatbot && !showSettings) {
+            if (preferences.speechBubbles && !autoShowMessage && !showContact && !showSettings) {
               if (!currentMessage) {
                 setCurrentMessage(messages[messageIndex] || '')
               }
@@ -801,7 +744,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
             }
           }}
           onBlur={() => {
-            if (!autoShowMessage && !isHovering && !showContact && !showChatbot && !showSettings) {
+            if (!autoShowMessage && !isHovering && !showContact && !showSettings) {
               setShowBubble(false)
             }
           }}
@@ -826,5 +769,4 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 }
 
 export default VirtualMascot
-
 
