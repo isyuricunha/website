@@ -136,6 +136,7 @@ const Layout = async (props: LayoutProps) => {
     <html
       lang={locale}
       className={cn(GeistSans.variable, GeistMono.variable)}
+      data-scroll-behavior="smooth"
       suppressHydrationWarning
     >
       <head>
