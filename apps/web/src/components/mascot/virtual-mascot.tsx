@@ -34,7 +34,6 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   const [showBubble, setShowBubble] = useState(false)
   const [messageIndex, setMessageIndex] = useState(0)
   const [isBlinking, setIsBlinking] = useState(false)
-  const [isWaving, setIsWaving] = useState(false)
   const [showSettings, setShowSettings] = useState(false)
   const [showGame, setShowGame] = useState(false)
   const [showMenu, setShowMenu] = useState(false)
@@ -78,16 +77,20 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     return t('mascot.greetings.night')
   }
 
-  // Get idle message
+  // Get idle message - use all available messages instead of just first 5
   const getIdleMessage = () => {
-    const idleMessages = [
-      t('mascot.idle.tip1'),
-      t('mascot.idle.tip2'),
-      t('mascot.idle.tip3'),
-      t('mascot.idle.tip4'),
-      t('mascot.idle.tip5')
-    ]
-    return idleMessages[Math.floor(Math.random() * idleMessages.length)]
+    const idleMessages = []
+    // Use general messages for idle tips instead of just the 5 idle tips
+    for (let i = 0; i < 50; i += 1) {
+      try {
+        const key = `mascot.messages.${i}`
+        const value = t(key as any)
+        if (value) idleMessages.push(value)
+      } catch {
+        break
+      }
+    }
+    return idleMessages[Math.floor(Math.random() * idleMessages.length)] || t('mascot.messages.0')
   }
 
   // Get blog post specific message
@@ -205,10 +208,10 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
   // Idle timer for fun facts
   useEffect(() => {
-    if (!preferences.speechBubbles || showBubble || autoShowMessage || showContact || showChatbot || showSettings) return
+    if (!preferences.speechBubbles || showBubble || autoShowMessage || showContact || showChatbot || showSettings || showMenu) return
 
     const timer = setTimeout(() => {
-      if (!showBubble && !autoShowMessage && !showContact && !showChatbot && !showSettings) {
+      if (!showBubble && !autoShowMessage && !showContact && !showChatbot && !showSettings && !showMenu) {
         setCurrentMessage(getIdleMessage())
         setShowBubble(true)
 
@@ -223,7 +226,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     return () => {
       if (timer) clearTimeout(timer)
     }
-  }, [preferences.speechBubbles, showBubble, autoShowMessage, showContact, showChatbot, showSettings])
+  }, [preferences.speechBubbles, showBubble, autoShowMessage, showContact, showChatbot, showSettings, showMenu])
 
   // Get current page path for contextual messages (language-aware)
   const currentPath = typeof window !== 'undefined' ? window.location.pathname : ''
@@ -232,11 +235,11 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     const pathWithoutLocale = path.replace(/^\/(en|pt|fr|de|zh)\//, '/')
 
     if (pathWithoutLocale === '/' || pathWithoutLocale === '') return 'home'
-    
+
     // Check for individual blog post first (more specific)
     const blogPostMatch = pathWithoutLocale.match(/^\/blog\/([^\/]+)$/)
     if (blogPostMatch) return 'blogPost'
-    
+
     if (pathWithoutLocale.startsWith('/blog')) return 'blog'
     if (pathWithoutLocale.startsWith('/projects')) return 'projects'
     if (pathWithoutLocale.startsWith('/about')) return 'about'
@@ -278,7 +281,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         // Check if we're on a blog post and haven't visited it before
         if (isOnBlogPost && currentBlogPostSlug) {
           if (!blogPostsVisited.has(currentBlogPostSlug)) {
-            // Show blog post specific message
+            // Show blog post specific message only
             setCurrentMessage(getBlogPostMessage())
             // Mark this blog post as visited
             const newVisited = new Set(blogPostsVisited)
@@ -288,22 +291,24 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
               localStorage.setItem(BLOG_POST_VISITED_KEY, JSON.stringify([...newVisited]))
             } catch { }
           } else {
-            // Show regular page message (but not blog post specific)
-            const pageMessages = []
-            for (let i = 0; i < 6; i += 1) {
-              const key = `mascot.pageMessages.${pageKey}.${i}`
-              try {
-                const value = t(key as any)
-                if (value) pageMessages.push(value)
-              } catch {
-                break
-              }
-            }
-            setCurrentMessage(pageMessages[0] || messages[0] || '')
+            // Don't show any message for visited blog posts
+            setShowBubble(false)
+            setAutoShowMessage(false)
+            return
           }
         } else {
-          // Show regular page message
-          setCurrentMessage(messages[0] || '')
+          // Show regular page message for non-blog-post pages
+          const pageMessages = []
+          for (let i = 0; i < 6; i += 1) {
+            const key = `mascot.pageMessages.${pageKey}.${i}`
+            try {
+              const value = t(key as any)
+              if (value) pageMessages.push(value)
+            } catch {
+              break
+            }
+          }
+          setCurrentMessage(pageMessages[0] || messages[0] || '')
         }
 
         // Hide the message after configured duration
@@ -332,12 +337,12 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       }
     }
 
-    // For blog posts, don't include the general blog messages
-    // Only include blog post specific messages if this is the first visit
-    if (pageKey === 'blogPost' && currentBlogPostSlug && blogPostsVisited.has(currentBlogPostSlug)) {
-      // Skip page-specific messages for visited blog posts
+    // For blog posts, don't include any page-specific messages
+    // Only show blog post specific messages on first visit (handled in useEffect above)
+    if (pageKey === 'blogPost') {
+      // Skip all page-specific messages for blog posts
     } else {
-      // First try to get page-specific messages
+      // First try to get page-specific messages for non-blog-post pages
       for (let i = 0; i < 6; i += 1) {
         const key = `mascot.pageMessages.${pageKey}.${i}`
         try {
@@ -393,12 +398,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
   const handleMascotClick = () => {
     setIsActive((v) => !v)
-
-    // Trigger waving animation
-    if (preferences.animations && !prefersReducedMotion) {
-      setIsWaving(true)
-      setTimeout(() => setIsWaving(false), 600)
-    }
+    // Remove the waving animation - no more bounce effect
   }
 
   const handlePreferencesChange = (key: keyof MascotPreferences, value: any) => {
@@ -418,7 +418,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
   const handleMouseEnter = () => {
     setIsHovering(true)
-    if (preferences.speechBubbles && !autoShowMessage && !showContact && !showChatbot && !showSettings) {
+    if (preferences.speechBubbles && !autoShowMessage && !showContact && !showChatbot && !showSettings && !showMenu) {
       if (!currentMessage) {
         setCurrentMessage(messages[messageIndex] || '')
       }
@@ -428,7 +428,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
   const handleMouseLeave = () => {
     setIsHovering(false)
-    if (!autoShowMessage && !showContact && !showChatbot && !showSettings) {
+    if (!autoShowMessage && !showContact && !showChatbot && !showSettings && !showMenu) {
       setShowBubble(false)
     }
   }
@@ -485,7 +485,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     } catch {
       setCurrentMessage(t('mascot.chatbot.responses.general'))
     }
-    
+
     // Hide the chatbot response after a few seconds
     setTimeout(() => {
       setShowBubble(false)
@@ -736,7 +736,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         )}
 
         {/* Speech Bubble */}
-        {preferences.speechBubbles && !showContact && !showChatbot && !showSettings && (
+        {preferences.speechBubbles && !showContact && !showChatbot && !showSettings && !showMenu && (
           <div
             className={`absolute bottom-full right-0 mb-2 w-80 rounded-lg border bg-popover p-3 text-sm text-popover-foreground shadow-lg outline-none ring-0 transition-all duration-200 ease-out ${showBubble && (currentMessage || messages[messageIndex])
               ? 'opacity-100 translate-y-0'
@@ -788,12 +788,12 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
           type='button'
           aria-label={t('mascot.ariaLabel')}
           className={`relative inline-flex h-[120px] w-[120px] items-center justify-center rounded-full border transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${isActive ? 'border-primary shadow-lg shadow-primary/20' : 'border-border shadow'
-            } ${isWaving ? 'animate-bounce' : ''} ${prefersReducedMotion ? '' : 'hover:scale-105'} ${isKonamiMode ? 'animate-pulse border-yellow-400 shadow-yellow-400/20' : ''
+            } ${prefersReducedMotion ? '' : 'hover:scale-105'} ${isKonamiMode ? 'animate-pulse border-yellow-400 shadow-yellow-400/20' : ''
             }`}
           onClick={handleMascotClick}
           onMouseEnter={handleMouseEnter}
           onFocus={() => {
-            if (preferences.speechBubbles && !autoShowMessage && !showContact && !showChatbot && !showSettings) {
+            if (preferences.speechBubbles && !autoShowMessage && !showContact && !showChatbot && !showSettings && !showMenu) {
               if (!currentMessage) {
                 setCurrentMessage(messages[messageIndex] || '')
               }
@@ -801,7 +801,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
             }
           }}
           onBlur={() => {
-            if (!autoShowMessage && !isHovering && !showContact && !showChatbot && !showSettings) {
+            if (!autoShowMessage && !isHovering && !showContact && !showChatbot && !showSettings && !showMenu) {
               setShowBubble(false)
             }
           }}
