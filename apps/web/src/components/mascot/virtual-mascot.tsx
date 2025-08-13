@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react'
 import Image from 'next/image'
+import { usePathname } from 'next/navigation'
 import { X as XIcon, Settings as SettingsIcon, Gamepad as GamepadIcon, Eye as EyeIcon, Menu as MenuIcon, Bug as BugIcon, Github as GithubIcon, Copy as CopyIcon } from 'lucide-react'
 import { useTranslations } from '@tszhong0411/i18n/client'
 import MascotGame from './mascot-game'
@@ -37,7 +38,7 @@ interface MascotPreferences {
 
 const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   const t = useTranslations()
-  const [state, setState] = useState({
+  const [state, setState] = useState(() => ({
     isDismissed: false,
     isHiddenPref: false,
     isActive: false,
@@ -54,12 +55,14 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     currentMessage: null as string | null,
     autoShowMessage: false,
     lastMessageIndex: -1,
-    currentMascotImage: 1,
+    // 0 means "not chosen yet"; we will choose after mount to avoid SSR mismatch
+    currentMascotImage: 0,
     blogPostsVisited: new Set<string>(),
     preferences: { ...DEFAULT_PREFERENCES }
-  })
+  }))
 
   const mascotRef = useRef<HTMLButtonElement | null>(null)
+  const [mounted, setMounted] = useState(false)
 
   // Helper functions to update state
   const updateState = (updates: Partial<typeof state>) => {
@@ -110,9 +113,9 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     return () => mediaQuery.removeEventListener('change', handleChange)
   }, [])
 
-  // Get time-based greeting (client-side only)
+  // Get time-based greeting (only after mount to avoid SSR/client mismatch)
   const getTimeBasedGreeting = () => {
-    if (typeof window === 'undefined') return t('mascot.greetings.afternoon') // Default for SSR
+    if (!mounted) return ''
     const hour = new Date().getHours()
     if (hour < 12) return t('mascot.greetings.morning')
     if (hour < 17) return t('mascot.greetings.afternoon')
@@ -168,11 +171,30 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     setTimeout(() => updateState({ showBubble: false }), 2000)
   }
 
+  // Mount flag to coordinate client-only behaviors and select session image
+  useEffect(() => {
+    setMounted(true)
+    // Choose persistent session image only on client after mount
+    try {
+      const saved = sessionStorage.getItem(MASCOT_IMAGE_KEY)
+      if (saved) {
+        updateState({ currentMascotImage: parseInt(saved) })
+      } else {
+        const chosen = Math.floor(Math.random() * 5) + 1
+        sessionStorage.setItem(MASCOT_IMAGE_KEY, String(chosen))
+        updateState({ currentMascotImage: chosen })
+      }
+    } catch {}
+  }, [])
+
   // Read dismissal state and preferences once per session
   useEffect(() => {
     try {
       const v = sessionStorage.getItem(STORAGE_KEY)
       if (v === '1') updateState({ isDismissed: true })
+      const hiddenPref = localStorage.getItem(HIDE_KEY)
+      if (hiddenPref === '1') updateState({ isHiddenPref: true })
+
       const prefs = loadPreferences()
       updateState({ preferences: prefs })
 
@@ -184,16 +206,6 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       const visited = localStorage.getItem(BLOG_POST_VISITED_KEY)
       if (visited) {
         updateState({ blogPostsVisited: new Set(JSON.parse(visited)) })
-      }
-
-      // Load or set random mascot image
-      const savedImage = sessionStorage.getItem(MASCOT_IMAGE_KEY)
-      if (savedImage) {
-        updateState({ currentMascotImage: parseInt(savedImage) })
-      } else {
-        const randomImage = Math.floor(Math.random() * 5) + 1
-        updateState({ currentMascotImage: randomImage })
-        sessionStorage.setItem(MASCOT_IMAGE_KEY, randomImage.toString())
       }
     } catch { }
   }, [])
@@ -265,22 +277,8 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     }
   }, [state.preferences.speechBubbles, state.showBubble, state.autoShowMessage, state.showContact, state.showGame, state.showSettings, state.showMenu])
 
-  // Get current page path for contextual messages (language-aware)
-  const [currentPath, setCurrentPath] = useState('')
-  
-  useEffect(() => {
-    // This will only run on the client side
-    if (typeof window !== 'undefined') {
-      setCurrentPath(window.location.pathname)
-      
-      // Call pickNextMessage on initial load to set the first message
-      if (state.preferences.speechBubbles && messages.length > 0 && !state.currentMessage) {
-        pickNextMessage()
-      }
-    }
-    // We only want this to run once on mount, so we don't include dependencies
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  // Track current page path for contextual messages (language-aware)
+  const pathname = usePathname()
   const getPageKey = (path: string) => {
     // Remove locale prefix if present
     const pathWithoutLocale = path.replace(/^\/(en|pt|fr|de|zh)\//, '/')
@@ -303,7 +301,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     return 'home'
   }
 
-  const pageKey = getPageKey(currentPath)
+  const pageKey = getPageKey(pathname || '/')
 
   // Check if we're on a specific blog post
   const isOnBlogPost = useMemo(() => {
@@ -313,10 +311,10 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   // Get current blog post slug for tracking visits
   const currentBlogPostSlug = useMemo(() => {
     if (!isOnBlogPost) return null
-    const pathWithoutLocale = currentPath.replace(/^\/(en|pt|fr|de|zh)\//, '/')
+    const pathWithoutLocale = (pathname || '/').replace(/^\/(en|pt|fr|de|zh)\//, '/')
     const blogPostMatch = pathWithoutLocale.match(/^\/blog\/([^\/]+)$/)
     return blogPostMatch ? blogPostMatch[1] : null
-  }, [currentPath, isOnBlogPost])
+  }, [pathname, isOnBlogPost])
 
   // Reset message index and show automatic message when page changes
   useEffect(() => {
@@ -375,8 +373,8 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   const messages: string[] = useMemo(() => {
     const list: string[] = []
 
-    // Only add time-based greeting on the home page
-    if (pageKey === 'home') {
+    // Only add time-based greeting on the home page, after mount
+    if (mounted && pageKey === 'home') {
       try {
         list.push(getTimeBasedGreeting())
       } catch {
@@ -415,7 +413,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     }
 
     return list
-  }, [t, pageKey, currentBlogPostSlug, state.blogPostsVisited])
+  }, [mounted, t, pageKey, currentBlogPostSlug, state.blogPostsVisited])
 
   // Get random message index (avoiding last message)
   const getRandomMessageIndex = (): number => {
@@ -780,9 +778,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
           ref={mascotRef}
           type='button'
           aria-label={t('mascot.ariaLabel')}
-          className={`relative inline-flex h-[120px] w-[120px] items-center justify-center rounded-full border transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${state.isActive ? 'border-primary shadow-lg shadow-primary/20' : 'border-border shadow'
-            } ${state.preferences.animations ? 'hover:scale-105' : ''} ${state.isKonamiMode ? 'animate-pulse border-yellow-400 shadow-yellow-400/20' : ''
-            }`}
+          className={`relative inline-flex h-[120px] w-[120px] items-center justify-center rounded-full border transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${state.isActive ? 'border-primary shadow-lg shadow-primary/20' : 'border-border shadow'} ${state.preferences.animations ? 'hover:scale-105' : ''} ${state.isKonamiMode ? 'animate-pulse border-yellow-400 shadow-yellow-400/20' : ''}`}
           onClick={handleMascotClick}
           onMouseEnter={handleMouseEnter}
           onFocus={() => {
@@ -799,16 +795,19 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
             }
           }}
         >
-          <Image
-            src={`/images/mascote-${state.currentMascotImage}.png`}
-            alt=''
-            role='presentation'
-            width={120}
-            height={120}
-            className={`rounded-full object-cover transition-all duration-200 ${state.isBlinking ? 'animate-pulse' : ''
-              } ${state.isKonamiMode ? 'filter sepia hue-rotate-180' : ''}`}
-            priority={false}
-          />
+          {mounted && state.currentMascotImage > 0 ? (
+            <Image
+              src={`/images/mascote-${state.currentMascotImage}.png`}
+              alt=''
+              role='presentation'
+              width={120}
+              height={120}
+              className={`rounded-full object-cover transition-all duration-200 ${state.isBlinking ? 'animate-pulse' : ''} ${state.isKonamiMode ? 'filter sepia hue-rotate-180' : ''}`}
+              priority={false}
+            />
+          ) : (
+            <div aria-hidden className='h-[120px] w-[120px] rounded-full bg-muted/40' />)
+          }
         </button>
       </div>
 
@@ -819,5 +818,3 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 }
 
 export default VirtualMascot
-
-
