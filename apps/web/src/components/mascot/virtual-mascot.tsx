@@ -334,12 +334,15 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       return res
     }
 
-    // Avoid calling i18n on potentially missing detail keys to prevent console warnings
+    // Prefer detail-specific messages when available, then fallback to base and home
     const isDetail = /Detail$/.test(key)
     const baseKey = isDetail ? key.replace(/Detail$/, '') : key
-
-    // Prefer base key directly (e.g., projects) to avoid missing `projectsDetail` logs
-    let msgs = tryKey(baseKey)
+    let msgs: string[] = []
+    if (isDetail) {
+      msgs = tryKey(key)
+      if (msgs.length > 0) return msgs
+    }
+    msgs = tryKey(baseKey)
 
     // Final fallback to home so we never show empty bubbles
     if (msgs.length === 0 && baseKey !== 'home') {

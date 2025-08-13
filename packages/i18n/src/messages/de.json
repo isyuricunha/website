@@ -510,6 +510,18 @@
                 "4": "Alle Projekte sind Open Source und auf GitHub verfügbar!",
                 "5": "Fühl dich frei, beizutragen oder Verbesserungen vorzuschlagen!"
             },
+            "projectsDetail": {
+                "0": "Hier sind die Details zum Projekt! 🔎",
+                "1": "Cooles Projekt – lass uns tiefer eintauchen.",
+                "2": "Jedes Detail erzählt eine Geschichte.",
+                "3": "Gefällt dir dieses Projekt? ⭐",
+                "4": "Schau dir den Tech-Stack und die Features unten an!",
+                "5": "Feedback? Ideen? Immer willkommen!",
+                "6": "Open Source? Beiträge sind gern gesehen!",
+                "7": "Dieses Projekt hat meinem Schöpfer, Yuri viel beigebracht.",
+                "8": "Ich liebe gut dokumentierte Projekte!",
+                "9": "Bereit, den Code auf GitHub zu erkunden?"
+            },
             "about": {
                 "0": "Willst du mehr über meinen Schöpfer, Yuri wissen? 🤔",
                 "1": "Mein Schöpfer, Yuri ist nur eine Person, die Datenbanken und Programmierung liebt.",

@@ -510,6 +510,18 @@
         "4": "All projects are open source and available on GitHub!",
         "5": "Feel free to contribute or suggest improvements!"
       },
+      "projectsDetail": {
+        "0": "Nice project! 🔧",
+        "1": "Curious about the tech stack behind this?",
+        "2": "You can usually find the source code on GitHub.",
+        "3": "If there's a live demo, give it a try!",
+        "4": "Open source means your ideas are welcome.",
+        "5": "Found something to improve? Issues and PRs are appreciated!",
+        "6": "Reading code can be as fun as using the app.",
+        "7": "This project reflects real-world learnings.",
+        "8": "Star the repo if you like it! ⭐",
+        "9": "What would you build on top of this?"
+      },
       "about": {
         "0": "Want to know more about my creator, Yuri? 🤔",
         "1": "My creator, Yuri is just a person who loves databases and coding.",

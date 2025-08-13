@@ -482,37 +482,45 @@
                 "4": "N'hésitez pas à explorer n'importe quelle section qui vous intéresse !",
                 "5": "Le menu de navigation peut vous aider à trouver ce que vous cherchez !"
             },
-                  "blog": {
-        "0": "Bienvenue sur le blog ! 📝",
-        "1": "Mon créateur, Yuri écrit sur la tech, les bases de données et parfois la vie.",
-        "2": "N'hésitez pas à laisser des commentaires sur les articles !",
-        "3": "Sur quels sujets aimeriez-vous lire ?",
-        "4": "Le blog est mis à jour régulièrement avec du contenu frais !",
-        "5": "Vous pouvez filtrer les articles par tags et catégories !"
-      },
-      "blogPost": {
-        "0": "C'est une bonne lecture ! 📖",
-        "1": "Cela me fait réfléchir... 🤔",
-        "2": "Perspective intéressante sur ce sujet !",
-        "3": "Mon créateur, Yuri a beaucoup réfléchi à cet article.",
-        "4": "J'espère que vous appréciez cet article !",
-        "5": "N'hésitez pas à partager vos réflexions dans les commentaires !",
-        "6": "Ce contenu mérite qu'on y consacre du temps.",
-        "7": "J'aime quand les gens plongent profondément dans des sujets comme celui-ci !",
-        "8": "Les insights ici sont vraiment précieux.",
-        "9": "C'est le genre de contenu qui rend l'apprentissage amusant !"
-      },
+            "blog": {
+                "0": "Bienvenue sur le blog ! 📝",
+                "1": "Mon créateur, Yuri écrit sur la tech, les bases de données et parfois la vie.",
+                "2": "N'hésitez pas à laisser des commentaires sur les articles !",
+                "3": "Sur quels sujets aimeriez-vous lire ?",
+                "4": "Le blog est mis à jour régulièrement avec du contenu frais !",
+                "5": "Vous pouvez filtrer les articles par tags et catégories !"
+            },
+            "blogPost": {
+                "0": "C'est une bonne lecture ! 📖",
+                "1": "Cela me fait réfléchir... 🤔",
+                "2": "Perspective intéressante sur ce sujet !",
+                "3": "Mon créateur, Yuri a beaucoup réfléchi à cet article.",
+                "4": "J'espère que vous appréciez cet article !",
+                "5": "N'hésitez pas à partager vos réflexions dans les commentaires !"
+            },
             "projects": {
                 "0": "Voici les projets ! 🚀",
                 "1": "Tout est construit avec amour et beaucoup de café ☕",
-                "2": "Voulez-vous collaborer ? Construisons quelque chose d'incroyable !",
+                "2": "Envie de collaborer ? Construisons quelque chose d'incroyable !",
                 "3": "Chaque projet a appris quelque chose de nouveau à mon créateur, Yuri.",
                 "4": "Tous les projets sont open source et disponibles sur GitHub !",
-                "5": "N'hésitez pas à contribuer ou suggérer des améliorations !"
+                "5": "N'hésitez pas à contribuer ou à suggérer des améliorations !"
+            },
+            "projectsDetail": {
+                "0": "Beau projet ! 🔧",
+                "1": "Curieux de la stack derrière ?",
+                "2": "Vous pouvez généralement trouver le code source sur GitHub.",
+                "3": "S'il y a une démo en ligne, essayez-la !",
+                "4": "L'open source signifie que vos idées sont les bienvenues.",
+                "5": "Vous avez trouvé quelque chose à améliorer ? Issues et PR bienvenues !",
+                "6": "Lire du code peut être aussi amusant qu'utiliser l'app.",
+                "7": "Ce projet reflète des apprentissages concrets.",
+                "8": "Mettez une étoile au repo si vous aimez ! ⭐",
+                "9": "Que construiriez-vous par-dessus ?"
             },
             "about": {
-                "0": "Voulez-vous en savoir plus sur mon créateur, Yuri ? 🤔",
-                "1": "Mon créateur, Yuri n'est qu'une personne qui aime les bases de données et le code.",
+                "0": "Vous voulez en savoir plus sur mon créateur, Yuri ? 🤔",
+                "1": "Mon créateur, Yuri est juste une personne qui aime les bases de données et coder.",
                 "2": "N'hésitez pas à poser des questions !",
                 "3": "Le voyage a commencé en 2018. On apprend encore tous les jours !",
                 "4": "Mon créateur, Yuri aime partager des connaissances et aider les autres !",

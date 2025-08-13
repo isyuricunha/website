@@ -497,6 +497,18 @@
                 "4": "Todos os projetos são open source e disponíveis no GitHub!",
                 "5": "Sinta-se à vontade para contribuir ou sugerir melhorias!"
             },
+            "projectsDetail": {
+                "0": "Belo projeto! 🔧",
+                "1": "Curioso sobre a stack por trás disso?",
+                "2": "Você geralmente encontra o código no GitHub.",
+                "3": "Se houver demo ao vivo, experimente!",
+                "4": "Open source significa que suas ideias são bem-vindas.",
+                "5": "Achou algo para melhorar? Issues e PRs são bem-vindos!",
+                "6": "Ler código pode ser tão divertido quanto usar o app.",
+                "7": "Este projeto reflete aprendizados do mundo real.",
+                "8": "Dê uma estrela no repositório se gostou! ⭐",
+                "9": "O que você construiria em cima disso?"
+            },
             "about": {
                 "0": "Quer saber mais sobre meu criador, Yuri? 🤔",
                 "1": "Meu criador, Yuri é apenas uma pessoa que ama bancos de dados e programação.",
