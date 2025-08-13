@@ -63,3 +63,26 @@
     transform: translateY(0);
   }
 }
+
+/* Subtle floating animation for speech bubbles */
+@keyframes bubbleFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+@layer utilities {
+  .bubble-float {
+    animation: bubbleFloat 3s ease-in-out infinite;
+  }
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .bubble-float {
+    animation: none !important;
+  }
+}

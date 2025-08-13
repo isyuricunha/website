@@ -55,6 +55,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     isHovering: false,
     currentMessage: null as string | null,
     messageQueue: [] as { id: number; text: string; expiresAt: number }[],
+    exitingIds: new Set<number>(),
     autoShowMessage: false,
     lastMessageIndex: -1,
     // 0 means "not chosen yet"; we will choose after mount to avoid SSR mismatch
@@ -81,20 +82,30 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       ...prev,
       messageQueue: [...prev.messageQueue, { id, text, expiresAt }]
     }))
-    // schedule removal
+    // schedule exit animation then removal
     setTimeout(() => {
-      setState(prev => ({
-        ...prev,
-        messageQueue: prev.messageQueue.filter(item => item.id !== id)
-      }))
+      startExit(id)
     }, d)
   }
 
-  const removeMessage = (id: number) => {
+  const startExit = (id: number) => {
+    // Mark as exiting to trigger fade-out animation
     setState(prev => ({
       ...prev,
-      messageQueue: prev.messageQueue.filter(item => item.id !== id)
+      exitingIds: new Set(prev.exitingIds).add(id)
     }))
+    // After animation completes, remove from queue
+    setTimeout(() => {
+      setState(prev => {
+        const newExitingIds = new Set(prev.exitingIds)
+        newExitingIds.delete(id)
+        return {
+          ...prev,
+          messageQueue: prev.messageQueue.filter(item => item.id !== id),
+          exitingIds: newExitingIds
+        }
+      })
+    }, 200) // Match CSS transition duration
   }
 
   const updatePreferences = (updates: Partial<MascotPreferences>) => {
@@ -726,48 +737,58 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         {/* Speech Bubbles (Queued) */}
         {state.preferences.speechBubbles && !state.showContact && !state.showSettings && !state.showMenu && (
           <div className='absolute bottom-full right-0 mb-2 flex w-80 flex-col gap-2'>
-            {state.messageQueue.map((item, idx) => (
-              <div
-                key={item.id}
-                className={`rounded-lg border bg-popover p-3 text-sm text-popover-foreground shadow-lg outline-none ring-0 transition-all duration-200 ease-out ${idx === state.messageQueue.length - 1 ? 'opacity-100 translate-y-0' : 'opacity-95'} `}
-                role='dialog'
-                aria-label={t('mascot.speechBubble')}
-              >
-                <div className='flex items-start gap-3'>
-                  <div className='min-w-0 flex-1'>{item.text}</div>
-                  <div className='flex items-center gap-1'>
-                    {idx === state.messageQueue.length - 1 && (
-                      <button
-                        type='button'
-                        aria-label={t('mascot.menu.open')}
-                        className='rounded px-2 py-1 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
-                        onClick={() => updateState({ showMenu: !state.showMenu })}
-                      >
-                        <MenuIcon className='h-3 w-3' />
-                      </button>
-                    )}
-                    {idx === state.messageQueue.length - 1 && (
-                      <button
-                        type='button'
-                        aria-label={t('mascot.hide')}
-                        className='rounded px-2 py-1 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
-                        onClick={handleHideMascot}
-                      >
-                        {t('mascot.hide')}
-                      </button>
-                    )}
-                    <button
-                      type='button'
-                      aria-label={t('mascot.close')}
-                      className='rounded p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
-                      onClick={() => removeMessage(item.id)}
-                    >
-                      <XIcon className='h-4 w-4' />
-                    </button>
+            {state.messageQueue.map((item, idx) => {
+              const isExiting = state.exitingIds.has(item.id)
+              return (
+                <div
+                  key={item.id}
+                  className={`rounded-lg border bg-popover/95 backdrop-blur-sm text-popover-foreground shadow-lg outline-none ring-0 transition-all duration-200 ease-in-out ${
+                    isExiting ? 'opacity-0 translate-y-1 scale-95' : 'opacity-100 translate-y-0 scale-100'
+                  }`}
+                  role='dialog'
+                  aria-label={t('mascot.speechBubble')}
+                  style={!prefersReducedMotion ? { animation: 'fadeInUp 300ms ease-out' } : undefined}
+                >
+                  <div className='bubble-float p-3'>
+                    <div className='flex items-start gap-3'>
+                      <div className='min-w-0 flex-1 whitespace-pre-wrap break-words leading-relaxed'>
+                        {item.text}
+                      </div>
+                      <div className='flex items-center gap-1 flex-shrink-0'>
+                        {idx === state.messageQueue.length - 1 && (
+                          <button
+                            type='button'
+                            aria-label={t('mascot.menu.open')}
+                            className='rounded px-2 py-1 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
+                            onClick={() => updateState({ showMenu: !state.showMenu })}
+                          >
+                            <MenuIcon className='h-3 w-3' />
+                          </button>
+                        )}
+                        {idx === state.messageQueue.length - 1 && (
+                          <button
+                            type='button'
+                            aria-label={t('mascot.hide')}
+                            className='rounded px-2 py-1 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
+                            onClick={handleHideMascot}
+                          >
+                            {t('mascot.hide')}
+                          </button>
+                        )}
+                        <button
+                          type='button'
+                          aria-label={t('mascot.close')}
+                          className='rounded p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
+                          onClick={() => startExit(item.id)}
+                        >
+                          <XIcon className='h-4 w-4' />
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         )}
 
