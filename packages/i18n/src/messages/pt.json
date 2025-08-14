@@ -7,7 +7,19 @@
         "nav": {
             "comments": "Comentários",
             "general": "Geral",
-            "users": "Usuários"
+            "users": "Usuários",
+            "dashboard": "Painel",
+            "security": "Segurança",
+            "security_management": "Gerenciamento de Segurança",
+            "communication": "Comunicação",
+            "communication_management": "Gerenciamento de Comunicação",
+            "email_marketing": "Marketing por Email",
+            "announcements": "Anúncios",
+            "notifications": "Notificações",
+            "monitoring": "Monitoramento",
+            "monitoring_dashboard": "Painel de Monitoramento",
+            "data": "Gerenciamento de Dados",
+            "data_management": "Gerenciamento de Dados"
         },
         "page-header": {
             "comments": {

@@ -53,6 +53,13 @@ export const generateMetadata = async (
   const previousOpenGraph = (await parent).openGraph ?? {}
   const url = getLocalizedPath({ slug: `/blog/${slug}`, locale })
 
+  // Precompute safe values to avoid passing undefined to encodeURIComponent
+  const safeTitle = title ?? ''
+  const safeSummary = summary ?? ''
+  const safeLocale = locale ?? ''
+  const safeDate = date?.split('T')[0] ?? new Date().toISOString().split('T')[0]
+  const ogImageUrl = `/og/${slug}?title=${encodeURIComponent(String(safeTitle))}&date=${encodeURIComponent(String(safeDate))}&summary=${encodeURIComponent(String(safeSummary))}&locale=${safeLocale}&type=post`
+
   return {
     title: title,
     description: summary,
@@ -70,7 +77,7 @@ export const generateMetadata = async (
       authors: SITE_URL,
       images: [
         {
-          url: `/og/${slug}?title=${encodeURIComponent(title)}&date=${encodeURIComponent(date.split('T')[0])}&summary=${encodeURIComponent(summary)}&locale=${locale}&type=post`,
+          url: ogImageUrl,
           width: 1200,
           height: 630,
           alt: title,
@@ -84,7 +91,7 @@ export const generateMetadata = async (
       description: summary,
       images: [
         {
-          url: `/og/${slug}?title=${encodeURIComponent(title)}&date=${encodeURIComponent(date.split('T')[0])}&summary=${encodeURIComponent(summary)}&locale=${locale}&type=post`,
+          url: ogImageUrl,
           width: 1200,
           height: 630,
           alt: title
@@ -108,6 +115,13 @@ const Page = async (props: PageProps) => {
 
   const { title, summary, date, modifiedTime, code, toc } = post
 
+  // Precompute safe values for JSON-LD as well
+  const safeTitle = title ?? ''
+  const safeSummary = summary ?? ''
+  const safeLocale = locale ?? ''
+  const safeDate = date?.split('T')[0] ?? new Date().toISOString().split('T')[0]
+  const ogImageUrl = `/og/${slug}?title=${encodeURIComponent(String(safeTitle))}&date=${encodeURIComponent(String(safeDate))}&summary=${encodeURIComponent(String(safeSummary))}&locale=${safeLocale}&type=post`
+
   const jsonLd: WithContext<Article> = {
     '@context': 'https://schema.org',
     '@type': 'Article',
@@ -117,7 +131,7 @@ const Page = async (props: PageProps) => {
     url,
     datePublished: date,
     dateModified: modifiedTime,
-    image: `${SITE_URL}/og/${slug}?title=${encodeURIComponent(title)}&date=${encodeURIComponent(date.split('T')[0])}&summary=${encodeURIComponent(summary)}&locale=${locale}&type=post`,
+    image: `${SITE_URL}${ogImageUrl}`,
     author: {
       '@type': 'Person',
       name: SITE_NAME,

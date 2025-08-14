@@ -35,9 +35,24 @@ const posts = defineCollection({
     title: z.string(),
     date: z.string(),
     modifiedTime: z.string(),
-    summary: z.string()
+    summary: z.string(),
+    category: z.string().optional(),
+    tags: z.array(z.string()).optional().default([]),
+    readingTime: z.number().optional(),
+    featured: z.boolean().optional().default(false)
   }),
-  transform
+  transform: async (document, context) => {
+    const baseTransform = await transform(document, context)
+    
+    // Calculate reading time (average 200 words per minute)
+    const wordCount = document.content.split(/\s+/).length
+    const readingTime = Math.ceil(wordCount / 200)
+    
+    return {
+      ...baseTransform,
+      readingTime
+    }
+  }
 })
 
 const projects = defineCollection({
@@ -49,10 +64,23 @@ const projects = defineCollection({
     description: z.string(),
     homepage: z.string().optional(),
     github: z.string(),
+    repository: z.string().optional(), // For compatibility
     techstack: z.array(z.string()),
-    selected: z.boolean().optional().default(false)
+    selected: z.boolean().optional().default(false),
+    status: z.enum(['active', 'archived', 'beta', 'completed']).optional().default('active'),
+    category: z.string().optional(),
+    featured: z.boolean().optional().default(false),
+    startDate: z.string().optional(),
+    endDate: z.string().optional()
   }),
-  transform
+  transform: async (document, context) => {
+    const baseTransform = await transform(document, context)
+    
+    return {
+      ...baseTransform,
+      repository: document.github || document.repository // Ensure compatibility
+    }
+  }
 })
 
 const pages = defineCollection({

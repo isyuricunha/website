@@ -7,7 +7,19 @@
         "nav": {
             "comments": "Commentaires",
             "general": "Général",
-            "users": "Utilisateurs"
+            "users": "Utilisateurs",
+            "dashboard": "Tableau de bord",
+            "security": "Sécurité",
+            "security_management": "Gestion de la sécurité",
+            "communication": "Communication",
+            "communication_management": "Gestion de la communication",
+            "email_marketing": "Marketing par e-mail",
+            "announcements": "Annonces",
+            "notifications": "Notifications",
+            "monitoring": "Surveillance",
+            "monitoring_dashboard": "Tableau de bord de surveillance",
+            "data": "Gestion des données",
+            "data_management": "Gestion des données"
         },
         "page-header": {
             "comments": {
@@ -498,7 +510,17 @@
                 "2": "N'hésitez pas à laisser des commentaires sur les articles !",
                 "3": "Sur quels sujets aimeriez-vous lire ?",
                 "4": "Le blog est mis à jour régulièrement avec du contenu frais !",
-                "5": "Vous pouvez filtrer les articles par tags et catégories !"
+                "5": "Vous pouvez filtrer les articles par tags et catégories !",
+                "6": "Tant d'articles intéressants à découvrir ! 📚",
+                "7": "Chaque article est rédigé avec soin et expérience du monde réel !",
+                "8": "N'oubliez pas de partager les articles que vous trouvez utiles ! 🔗",
+                "9": "La section commentaires est là où se déroulent les vraies discussions !",
+                "10": "Vous cherchez quelque chose de spécifique ? Essayez la recherche ou les tags !",
+                "11": "De nouveaux articles sortent régulièrement - marquez vos favoris ! ⭐",
+                "12": "Des conseils pour débutants aux concepts avancés, il y en a pour tous !",
+                "13": "Vous aimez lire sur les bases de données, le dév web et les insights tech ? Vous êtes au bon endroit !",
+                "14": "Le blog reflète des années d'apprentissage et d'expériences de projets réels !",
+                "15": "Des questions sur un article ? Les commentaires sont parfaits pour ça !"
             },
             "blogPost": {
                 "0": "C'est une bonne lecture ! 📖",
@@ -506,7 +528,11 @@
                 "2": "Perspective intéressante sur ce sujet !",
                 "3": "Mon créateur, Yuri a beaucoup réfléchi à cet article.",
                 "4": "J'espère que vous appréciez cet article !",
-                "5": "N'hésitez pas à partager vos réflexions dans les commentaires !"
+                "5": "N'hésitez pas à partager vos réflexions dans les commentaires !",
+                "6": "Cet article contient des insights précieux tirés de l'expérience ! 💡",
+                "7": "Parfait pour approfondir vos connaissances sur le sujet !",
+                "8": "Les exemples pratiques rendent les concepts complexes plus clairs !",
+                "9": "Prenez votre temps pour digérer toutes ces informations utiles ! ☕"
             },
             "projects": {
                 "0": "Voici les projets ! 🚀",
@@ -514,7 +540,17 @@
                 "2": "Envie de collaborer ? Construisons quelque chose d'incroyable !",
                 "3": "Chaque projet a appris quelque chose de nouveau à mon créateur, Yuri.",
                 "4": "Tous les projets sont open source et disponibles sur GitHub !",
-                "5": "N'hésitez pas à contribuer ou à suggérer des améliorations !"
+                "5": "N'hésitez pas à contribuer ou à suggérer des améliorations !",
+                "6": "Une vitrine de créativité, d'innovation et de résolution de problèmes ! 🎨",
+                "7": "Chaque projet raconte une histoire de défis surmontés et de leçons apprises !",
+                "8": "De l'idée à la réalisation - voyez le processus de développement en action !",
+                "9": "Ces projets alimentent la passion pour la technologie et l'innovation !",
+                "10": "Explorez différentes technologies et approches à travers chaque projet !",
+                "11": "Parfait pour l'inspiration ou pour apprendre de nouvelles techniques !",
+                "12": "Chaque repo est une opportunité d'apprendre et de contribuer à la communauté !",
+                "13": "Des projets personnels aux solutions d'entreprise - diversité garantie !",
+                "14": "Vous voulez collaborer ? Les contributions et idées sont toujours bienvenues !",
+                "15": "Ces projets représentent des années de croissance et d'apprentissage continu ! 🌱"
             },
             "projectsDetail": {
                 "0": "Beau projet ! 🔧",
@@ -525,32 +561,62 @@
                 "5": "Vous avez trouvé quelque chose à améliorer ? Issues et PR bienvenues !",
                 "6": "Lire du code peut être aussi amusant qu'utiliser l'app.",
                 "7": "Ce projet reflète des apprentissages concrets.",
-                "8": "Mettez une étoile au repo si vous aimez ! ⭐",
+                "8": "Mettez une étoile au repo si vous aimez ! ",
                 "9": "Que construiriez-vous par-dessus ?"
             },
             "about": {
-                "0": "Vous voulez en savoir plus sur mon créateur, Yuri ? 🤔",
+                "0": "Vous voulez en savoir plus sur mon créateur, Yuri ? ",
                 "1": "Mon créateur, Yuri est juste une personne qui aime les bases de données et coder.",
                 "2": "N'hésitez pas à poser des questions !",
                 "3": "Le voyage a commencé en 2018. On apprend encore tous les jours !",
                 "4": "Mon créateur, Yuri aime partager des connaissances et aider les autres !",
-                "5": "La page à propos a tous les détails sur le voyage !"
+                "5": "La page à propos a tous les détails sur le voyage !",
+                "6": "Un spécialiste des bases de données avec une passion pour le code propre et efficace ! ",
+                "7": "Du Brésil au monde - la technologie nous connecte tous ! ",
+                "8": "Toujours en train d'apprendre, toujours en croissance, toujours curieux des nouvelles technologies !",
+                "9": "Croit en l'open source, au partage de connaissances et à aider les autres à réussir !",
+                "10": "Sessions de codage alimentées par le café et résolution de problèmes tard le soir ! ",
+                "11": "L'histoire inclut des échecs, des succès et tout ce qui se trouve entre les deux !",
+                "12": "Fermement convaincu que la meilleure façon d'apprendre est de construire et d'enseigner !",
+                "13": "Les bases de données peuvent être la spécialité, mais le full-stack est le terrain de jeu !",
+                "14": "Chaque projet est une opportunité d'apprentissage et une chance d'aider les autres !",
+                "15": "Vous voulez vous connecter ? Les informations de contact sont ici sur cette page !"
             },
             "uses": {
-                "0": "Voici la configuration ! 💻",
+                "0": "Voici la configuration ! ",
                 "1": "Configuration assez cool, non ? Mon créateur, Yuri aime son équipement !",
                 "2": "Voulez-vous savoir ce qui est utilisé pour le développement ?",
                 "3": "Les bons outils font toute la différence !",
                 "4": "La configuration évolue constamment avec de nouveaux outils !",
-                "5": "N'hésitez pas à demander sur n'importe quel outil ou configuration spécifique !"
+                "5": "N'hésitez pas à demander sur n'importe quel outil ou configuration spécifique !",
+                "6": "Du matériel au logiciel - chaque outil a été soigneusement choisi ! ",
+                "7": "L'équilibre parfait entre performance, productivité et esthétique !",
+                "8": "Toujours en train d'expérimenter avec de nouveaux outils et workflows !",
+                "9": "Ces outils ont alimenté d'innombrables projets et sessions de codage nocturnes !",
+                "10": "Curieux d'un choix de configuration spécifique ? Chacun a une histoire !",
+                "11": "La configuration évolue avec de nouvelles découvertes et des besoins changeants !",
+                "12": "Des éditeurs de code aux outils de base de données - tout optimisé pour l'efficacité !",
+                "13": "Les bons outils ne font pas de vous un meilleur développeur, mais ils aident certainement ! ",
+                "14": "La configuration reflète des années d'essais d'outils différents et de découverte de ce qui fonctionne !",
+                "15": "Vous voulez des recommandations ? Ces outils ont été testés au combat dans de vrais projets !"
             },
             "spotify": {
-                "0": "Bienvenue dans le coin musique ! 🎵",
+                "0": "Bienvenue dans le coin musique ! ",
                 "1": "Bonne ou mauvaise musique ? Je ne sais pas, mais mon créateur, Yuri aime !",
                 "2": "La musique aide à se concentrer pendant qu'on code.",
                 "3": "Qu'écoutez-vous ces jours-ci ?",
                 "4": "La playlist est mise à jour régulièrement avec de nouvelles découvertes !",
-                "5": "La musique est un excellent moyen de rester motivé pendant le travail !"
+                "5": "La musique est un excellent moyen de rester motivé pendant le travail !",
+                "6": "La bande sonore d'innombrables sessions de codage et percées créatives ! ",
+                "7": "Des beats lo-fi aux morceaux énergiques - de la musique pour chaque humeur de codage !",
+                "8": "Ces playlists ont alimenté les sessions de débogage et la construction de fonctionnalités !",
+                "9": "La musique et le code vont ensemble comme le café et les nuits tardives ! ",
+                "10": "Découvrez de nouveaux artistes et genres qui alimentent la créativité et la concentration !",
+                "11": "L'arrière-plan parfait pour le travail profond et les sessions de résolution de problèmes !",
+                "12": "Chaque playlist est organisée pour différents types de travail et niveaux d'énergie !",
+                "13": "Le goût musical évolue comme les compétences de codage - toujours en train de découvrir quelque chose de nouveau !",
+                "14": "Quelle est votre bande sonore de codage ? La musique peut faire ou défaire une session productive !",
+                "15": "De l'ambiant à l'entraînant - trouvez le rythme parfait pour votre workflow ! "
             },
             "guestbook": {
                 "0": "Laissez un message dans le livre d'or ! 📖",
@@ -558,7 +624,17 @@
                 "2": "N'hésitez pas à dire bonjour ou poser des questions !",
                 "3": "Votre message fera sa journée !",
                 "4": "Le livre d'or est un excellent moyen de se connecter avec la communauté !",
-                "5": "Tous les messages sont modérés pour garder l'espace amical !"
+                "5": "Tous les messages sont modérés pour garder l'espace amical !",
+                "6": "Chaque message est une chance de créer des connexions significatives ! 💬",
+                "7": "Le livre d'or grandit avec chaque contribution de la communauté !",
+                "8": "Partagez vos pensées, idées ou simplement dites bonjour !",
+                "9": "Mon créateur, Yuri lit personnellement chaque message avec attention !",
+                "10": "Votre perspective unique ajoute de la valeur à cette communauté !",
+                "11": "Le livre d'or est un espace sûr pour l'expression et le partage !",
+                "12": "Des messages réfléchis inspirent d'autres à participer et s'engager !",
+                "13": "Chaque entrée contribue à construire une communauté plus forte !",
+                "14": "Merci de prendre le temps de laisser votre marque ici !",
+                "15": "Votre message pourrait inspirer ou aider quelqu'un d'autre qui le lit ! ✨"
             },
             "admin": {
                 "0": "Bienvenue dans le panneau admin ! 🔧",
@@ -574,7 +650,17 @@
                 "2": "Essayez différents mots-clés pour obtenir de meilleurs résultats.",
                 "3": "La recherche fonctionne sur tout le contenu du site !",
                 "4": "La recherche est alimentée par des algorithmes avancés !",
-                "5": "Vous ne trouvez pas ce que vous cherchez ? Dites-le moi !"
+                "5": "Vous ne trouvez pas ce que vous cherchez ? Dites-le moi !",
+                "6": "La recherche intelligente comprend le contexte et les synonymes ! 🧠",
+                "7": "Filtrez par type de contenu pour des résultats plus précis !",
+                "8": "Les résultats sont classés par pertinence pour vous faire gagner du temps !",
+                "9": "Utilisez des guillemets pour rechercher des phrases exactes !",
+                "10": "La recherche couvre les articles, projets, et toutes les pages du site !",
+                "11": "Des résultats instantanés pendant que vous tapez - magie moderne ! ✨",
+                "12": "Pas de résultats ? Essayez des termes plus généraux ou des synonymes !",
+                "13": "La recherche s'améliore constamment avec de nouveaux contenus indexés !",
+                "14": "Trouvez exactement ce dont vous avez besoin en quelques secondes !",
+                "15": "La recherche est votre raccourci vers toutes les informations du site ! 🗺️"
             },
             "404": {
                 "0": "Oups ! Il semble que vous soyez perdu ! 🗺️",
@@ -588,7 +674,11 @@
                 "8": "Le site grandit constamment, donc du nouveau contenu apparaît régulièrement !",
                 "9": "Les liens cassés arrivent - merci d'aider à améliorer le site !",
                 "10": "Chaque 404 est une chance d'explorer quelque chose de nouveau à la place !",
-                "11": "En cas de doute, la page d'accueil a des liens vers tout ce qui est important ! 🏠"
+                "11": "En cas de doute, la page d'accueil a des liens vers tout ce qui est important ! 🏠",
+                "12": "Cette page n'existe peut-être pas encore, mais elle pourrait bientôt ! 🚀",
+                "13": "Utilisez le plan du site ou la navigation pour explorer les zones disponibles !",
+                "14": "Chaque erreur 404 nous aide à améliorer l'expérience utilisateur !",
+                "15": "Perdu mais pas oublié - explorons ensemble ce qui est disponible ! 🧭"
             }
         }
     },

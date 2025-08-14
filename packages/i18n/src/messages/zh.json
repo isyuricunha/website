@@ -7,7 +7,19 @@
     "nav": {
       "comments": "评论",
       "general": "常规",
-      "users": "用户"
+      "users": "用户",
+      "dashboard": "仪表板",
+      "security": "安全",
+      "security_management": "安全管理",
+      "communication": "通信",
+      "communication_management": "通信管理",
+      "email_marketing": "邮件营销",
+      "announcements": "公告",
+      "notifications": "通知",
+      "monitoring": "监控",
+      "monitoring_dashboard": "监控仪表板",
+      "data": "数据管理",
+      "data_management": "数据管理"
     },
     "page-header": {
       "comments": {
