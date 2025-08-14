@@ -1,7 +1,7 @@
 import type { RouterOutputs } from '../react'
 
 import { TRPCError } from '@trpc/server'
-import { eq, and } from '@tszhong0411/db'
+import { eq, and, passwordResetTokens } from '@tszhong0411/db'
 import { z } from 'zod'
 import { render } from '@react-email/render'
 import { randomBytes } from 'crypto'
@@ -175,7 +175,7 @@ export const usersRouter = createTRPCRouter({
         const expiresAt = new Date(Date.now() + 60 * 60 * 1000) // 1 hour from now
 
         // Store reset token in database
-        await ctx.db.insert(ctx.db.schema.passwordResetTokens).values({
+        await ctx.db.insert(passwordResetTokens).values({
           id: tokenId,
           token,
           userId: input.userId,
@@ -184,29 +184,41 @@ export const usersRouter = createTRPCRouter({
           used: false
         })
 
-        // Create reset URL
-        const resetUrl = `${env.NEXT_PUBLIC_WEBSITE_URL}/reset-password?token=${token}`
+        // Create reset URL with fallback for development
+        const baseUrl = env.NEXT_PUBLIC_WEBSITE_URL || 'http://localhost:3000'
+        const resetUrl = `${baseUrl}/reset-password?token=${token}`
 
-        // Send email if resend is configured
-        if (resend) {
-          const emailHtml = render(
-            PasswordResetEmail({
-              name: user.name,
-              resetUrl
+        // Initialize Resend for password reset (independent of comment flag)
+        const passwordResetResend = env.RESEND_API_KEY ? new (await import('resend')).Resend(env.RESEND_API_KEY) : null
+
+        // Send email if Resend API key is configured
+        if (passwordResetResend) {
+          try {
+            const emailHtml = render(
+              PasswordResetEmail({
+                name: user.name,
+                resetUrl
+              })
+            )
+
+            await passwordResetResend.emails.send({
+              from: 'noreply@yuricunha.com',
+              to: user.email,
+              subject: 'Reset your password',
+              html: emailHtml
             })
-          )
 
-          await resend.emails.send({
-            from: 'noreply@yuricunha.com',
-            to: user.email,
-            subject: 'Reset your password',
-            html: emailHtml
-          })
-
-          console.log(`Password reset email sent to: ${user.email}`)
+            console.log(`Password reset email sent to: ${user.email}`)
+            console.log(`Reset URL: ${resetUrl}`)
+          } catch (emailError) {
+            console.error('Failed to send password reset email:', emailError)
+            console.log(`Password reset email failed for: ${user.email}`)
+            console.log(`Reset URL: ${resetUrl}`)
+          }
         } else {
           console.log(`Password reset email would be sent to: ${user.email}`)
           console.log(`Reset URL: ${resetUrl}`)
+          console.log('Note: RESEND_API_KEY not configured - email delivery disabled')
         }
 
         return { success: true }
@@ -262,9 +274,9 @@ export const usersRouter = createTRPCRouter({
 
         // Mark token as used
         await ctx.db
-          .update(ctx.db.schema.passwordResetTokens)
+          .update(passwordResetTokens)
           .set({ used: true })
-          .where(eq(ctx.db.schema.passwordResetTokens.id, resetToken.id))
+          .where(eq(passwordResetTokens.id, resetToken.id))
 
         return { success: true }
       } catch (error) {
