@@ -61,10 +61,10 @@ export function debounce<T extends (...args: any[]) => any>(
 /**
  * Lazy load component with intersection observer
  */
-export function createLazyComponent<T>(
+export function createLazyComponent<T extends Record<string, any>>(
   importFn: () => Promise<{ default: React.ComponentType<T> }>,
   fallback?: React.ComponentType
-) {
+): React.ComponentType<T> {
   const LazyComponent = React.lazy(importFn)
   
   return function LazyWrapper(props: T) {

@@ -572,6 +572,13 @@ export const communicationRouter = createTRPCRouter({
       try {
         // For authenticated users, store dismissal in database
         if (ctx.session?.user) {
+          // Get dismissed announcements for this user
+          const dismissedInteractions = await ctx.db.query.announcementInteractions.findMany({
+            where: eq(announcementInteractions.userId, ctx.session.user.id),
+            columns: { announcementId: true }
+          })
+          const dismissedIds = dismissedInteractions.map(i => i.announcementId)
+
           // Check if interaction already exists
           const existing = await ctx.db.query.announcementInteractions.findFirst({
             where: and(
@@ -736,9 +743,10 @@ export const communicationRouter = createTRPCRouter({
             userId: input.userId,
             title: input.title,
             message: input.content,
-            type: input.type === 'info' ? 'system' : 
-                  input.type === 'warning' ? 'security' : 
-                  input.type === 'success' ? 'user_action' : 'system',
+            type: input.type === 'info' ? 'content' : 
+                  input.type === 'warning' ? 'system' : 
+                  input.type === 'success' ? 'user_action' : 
+                  input.type === 'error' ? 'security' : 'content',
             expiresAt: input.expiresAt
           })
         } else {
@@ -747,17 +755,21 @@ export const communicationRouter = createTRPCRouter({
             columns: { id: true }
           })
 
-          const notificationRecords = allUsers.map(user => ({
+          // Create notifications for eligible users
+          const notificationsList = allUsers.map(user => ({
             id: randomBytes(16).toString('hex'),
             userId: user.id,
             title: input.title,
             message: input.content,
-            type: input.type,
-            expiresAt: input.expiresAt
+            type: input.type === 'info' ? 'content' : 
+                  input.type === 'warning' ? 'system' : 
+                  input.type === 'success' ? 'user_action' : 
+                  input.type === 'error' ? 'security' : 'content',
+            expiresAt: input.endDate ? new Date(input.endDate) : undefined
           }))
 
-          if (notificationRecords.length > 0) {
-            await ctx.db.insert(notifications).values(notificationRecords)
+          if (notificationsList.length > 0) {
+            await ctx.db.insert(notifications).values(notificationsList)
           }
         }
 

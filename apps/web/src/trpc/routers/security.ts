@@ -1,14 +1,13 @@
 import { TRPCError } from '@trpc/server'
 import {
-  users,
-  sessions,
-  twoFactorAuth,
   securityEvents,
   loginAttempts,
   ipAccessControl,
+  twoFactorTokens,
+  accountLockouts,
   securitySettings
 } from '@tszhong0411/db'
-import { and, desc, eq, gte, inArray } from 'drizzle-orm'
+import { and, desc, eq, gte, lte } from 'drizzle-orm'
 import { randomBytes } from 'crypto'
 const speakeasy = require('speakeasy')
 import { z } from 'zod'
@@ -38,18 +37,18 @@ function isIpInRange(ip: string, range: string): boolean {
 export const securityRouter = createTRPCRouter({
   // Two-Factor Authentication
   enable2FA: protectedProcedure
-    .mutation(async ({ ctx }) => {
+    .mutation(async ({ ctx, input }) => {
       try {
         const auditLogger = new AuditLogger(ctx.db)
         const ipAddress = getIpFromHeaders(ctx.headers)
         const userAgent = getUserAgentFromHeaders(ctx.headers)
 
         // Check if 2FA is already enabled
-        const existing = await ctx.db.query.twoFactorTokens.findFirst({
+        const token = await ctx.db.query.twoFactorTokens.findFirst({
           where: eq(twoFactorTokens.userId, ctx.session.user.id)
         })
 
-        if (existing) {
+        if (token) {
           throw new TRPCError({
             code: 'BAD_REQUEST',
             message: '2FA is already enabled'
@@ -65,26 +64,13 @@ export const securityRouter = createTRPCRouter({
         const backupCodes = generateBackupCodes()
         const tokenId = randomBytes(16).toString('hex')
 
-        if (existing) {
-          // Update existing record
-          await ctx.db
-            .update(twoFactorTokens)
-            .set({
-              secret: secret.base32,
-              backupCodes: JSON.stringify(backupCodes),
-              isEnabled: false // Will be enabled after verification
-            })
-            .where(eq(twoFactorTokens.userId, ctx.session.user.id))
-        } else {
-          // Create new record
-          await ctx.db.insert(twoFactorTokens).values({
-            id: tokenId,
-            userId: ctx.session.user.id,
-            secret: secret.base32,
-            backupCodes: JSON.stringify(backupCodes),
-            isEnabled: false
-          })
-        }
+        await ctx.db.insert(twoFactorTokens).values({
+          id: tokenId,
+          userId: ctx.session.user.id,
+          secret: secret.base32,
+          backupCodes: JSON.stringify(backupCodes),
+          isEnabled: false
+        })
 
         // Log security event
         await auditLogger.logSystemAction(
@@ -151,12 +137,8 @@ export const securityRouter = createTRPCRouter({
         }
 
         // Enable 2FA
-        await ctx.db
-          .update(twoFactorTokens)
-          .set({
-            isEnabled: true,
-            lastUsedAt: new Date()
-          })
+        await ctx.db.update(twoFactorTokens)
+          .set({ isEnabled: true, lastUsedAt: new Date() })
           .where(eq(twoFactorTokens.userId, ctx.session.user.id))
 
         // Log security event
@@ -196,11 +178,8 @@ export const securityRouter = createTRPCRouter({
         // In a real app, verify the password here
         // For now, we'll just disable 2FA
 
-        await ctx.db
-          .update(twoFactorTokens)
-          .set({
-            isEnabled: false
-          })
+        await ctx.db.update(twoFactorTokens)
+          .set({ backupCodes: JSON.stringify(generateBackupCodes()) })
           .where(eq(twoFactorTokens.userId, ctx.session.user.id))
 
         // Log security event
@@ -483,27 +462,12 @@ export const securityRouter = createTRPCRouter({
 
   // Account Lockouts
   getAccountLockouts: adminProcedure
-    .query(async ({ ctx }) => {
+    .input(z.object({ userId: z.string() }))
+    .query(async ({ ctx, input }) => {
       try {
         const lockouts = await ctx.db.query.accountLockouts.findMany({
-          where: eq(accountLockouts.unlocked, false),
-          orderBy: desc(accountLockouts.lockedAt),
-          with: {
-            user: {
-              columns: {
-                id: true,
-                name: true,
-                email: true
-              }
-            },
-            lockedByUser: {
-              columns: {
-                id: true,
-                name: true,
-                email: true
-              }
-            }
-          }
+          where: eq(accountLockouts.userId, input.userId),
+          orderBy: desc(accountLockouts.lockedAt)
         })
 
         return { lockouts }
@@ -516,6 +480,48 @@ export const securityRouter = createTRPCRouter({
       }
     }),
 
+  lockAccount: adminProcedure
+    .input(z.object({
+      userId: z.string(),
+      reason: z.string(),
+      duration: z.number().optional()
+    }))
+    .mutation(async ({ ctx, input }) => {
+      try {
+        const auditLogger = new AuditLogger(ctx.db)
+        const ipAddress = getIpFromHeaders(ctx.headers)
+        const userAgent = getUserAgentFromHeaders(ctx.headers)
+
+        const lockoutId = randomBytes(16).toString('hex')
+        await ctx.db.insert(accountLockouts).values({
+          id: lockoutId,
+          userId: input.userId,
+          reason: input.reason,
+          lockedBy: ctx.session.user.id,
+          lockedUntil: input.duration ? new Date(Date.now() + input.duration * 60 * 1000) : null
+        })
+
+        // Log security event
+        await auditLogger.logSystemAction(
+          ctx.session.user.id,
+          'user_ban',
+          'security',
+          'account_locked',
+          { lockoutId, userId: input.userId },
+          ipAddress,
+          userAgent
+        )
+
+        return { success: true }
+      } catch (error) {
+        console.error('Error locking account:', error)
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to lock account'
+        })
+      }
+    }),
+
   unlockAccount: adminProcedure
     .input(z.object({ lockoutId: z.string() }))
     .mutation(async ({ ctx, input }) => {
@@ -524,8 +530,18 @@ export const securityRouter = createTRPCRouter({
         const ipAddress = getIpFromHeaders(ctx.headers)
         const userAgent = getUserAgentFromHeaders(ctx.headers)
 
-        await ctx.db
-          .update(accountLockouts)
+        const lockout = await ctx.db.query.accountLockouts.findFirst({
+          where: eq(accountLockouts.id, input.lockoutId)
+        })
+
+        if (!lockout) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Lockout not found'
+          })
+        }
+
+        await ctx.db.update(accountLockouts)
           .set({
             unlocked: true,
             unlockedAt: new Date(),
@@ -608,10 +624,16 @@ export const securityRouter = createTRPCRouter({
           where: eq(securitySettings.key, input.key)
         })
 
+        if (!existingSetting) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Security setting not found'
+          })
+        }
+
         if (existingSetting) {
           // Update existing
-          await ctx.db
-            .update(securitySettings)
+          await ctx.db.update(securitySettings)
             .set({
               value: input.value,
               description: input.description || existingSetting.description,

@@ -10,7 +10,7 @@ import {
   alertInstances,
   userActivity
 } from '@tszhong0411/db'
-import { and, desc, eq, gte } from 'drizzle-orm'
+import { and, desc, eq, gte, lte, avg, count, sum, max, min } from 'drizzle-orm'
 import { randomBytes } from 'crypto'
 import { z } from 'zod'
 
@@ -116,11 +116,11 @@ export const monitoringRouter = createTRPCRouter({
 
         await ctx.db.insert(performanceMetrics).values({
           id: metricId,
-          metricType: input.metricType,
+          metricName: input.metricType,
           value: input.value,
           unit: input.unit,
           tags: input.tags ? JSON.stringify(input.tags) : null,
-          timestamp: new Date()
+          createdAt: new Date(),
         })
 
         return { success: true, metricId }
@@ -202,17 +202,17 @@ export const monitoringRouter = createTRPCRouter({
           conditions.push(eq(resourceUsage.type, input.resourceType))
         }
 
-        const usage = await ctx.db.query.resourceUsage.findMany({
-          where: and(...conditions),
+        const resourceUsageData = await ctx.db.query.resourceUsage.findMany({
+          where: eq(resourceUsage.type, input.resourceType as 'cpu' | 'memory' | 'disk' | 'network' | 'database_connections' | 'cache_hit_rate'),
           orderBy: desc(resourceUsage.createdAt),
           limit: 1000
         })
 
         // Group by resource type and calculate statistics
         const groupedUsage: Record<string, any> = {}
-        usage.forEach(item => {
-          if (!groupedUsage[item.resourceType]) {
-            groupedUsage[item.resourceType] = {
+        resourceUsageData.forEach(item => {
+          if (!groupedUsage[item.type]) {
+            groupedUsage[item.type] = {
               data: [],
               avgUsage: 0,
               maxUsage: 0,
@@ -221,21 +221,21 @@ export const monitoringRouter = createTRPCRouter({
             }
           }
           
-          const group = groupedUsage[item.resourceType]
+          const group = groupedUsage[item.type]
           group.data.push({
-            timestamp: item.timestamp,
-            usage: item.usage,
+            timestamp: item.createdAt,
+            usage: item.value,
             limit: item.maxValue
           })
           
-          group.maxUsage = Math.max(group.maxUsage, item.usage)
+          group.maxUsage = Math.max(group.maxUsage, item.value)
           
-          if (!group.currentUsage || item.timestamp > group.currentUsage) {
-            group.currentUsage = item.usage
+          if (!group.currentUsage || item.createdAt > group.currentUsage) {
+            group.currentUsage = item.value
           }
           
           // Count threshold breaches as alerts
-          if (item.maxValue && item.usage > item.maxValue * 0.8) {
+          if (item.value > (item.maxValue || 100)) {
             group.alerts++
           }
         })
@@ -313,7 +313,7 @@ export const monitoringRouter = createTRPCRouter({
         return {
           usage: usage.map(item => ({
             ...item,
-            headers: item.headers ? JSON.parse(item.headers) : {}
+            headers: JSON.parse(item.metadata || '{}'),
           })),
           stats,
           timeRange: input.timeRange
@@ -433,7 +433,7 @@ export const monitoringRouter = createTRPCRouter({
             errorGroups[fingerprint] = {
               fingerprint,
               message: error.message,
-              resourceType: error.resourceType,
+              resourceType: error.component,
               count: 0,
               firstSeen: error.firstSeen,
               lastSeen: error.lastSeen,
@@ -456,7 +456,7 @@ export const monitoringRouter = createTRPCRouter({
         return {
           errors: errors.map(error => ({
             ...error,
-            context: error.context,
+            context: JSON.parse(error.metadata || '{}'),
             timestamp: error.firstSeen,
             stackTrace: error.stack
           })),
@@ -684,7 +684,7 @@ export const monitoringRouter = createTRPCRouter({
         // Get recent performance metrics
         const recentMetrics = await ctx.db.query.performanceMetrics.findMany({
           where: gte(performanceMetrics.createdAt, oneHourAgo),
-          columns: { id: true, metricType: true, value: true }
+          columns: { id: true, metricName: true, value: true }
         })
 
         // Get recent errors
@@ -712,10 +712,12 @@ export const monitoringRouter = createTRPCRouter({
         return {
           performance: {
             totalMetrics: recentMetrics.length,
-            avgResponseTime: recentMetrics
-              .filter(m => m.metricType === 'response_time')
+            avgResponseTime: recentMetrics.filter(m => m.metricName === 'response_time')
               .reduce((sum, m) => sum + m.value, 0) / 
-              Math.max(recentMetrics.filter(m => m.metricType === 'response_time').length, 1)
+              Math.max(recentMetrics.filter(m => m.metricName === 'response_time').length, 1),
+            throughput: recentMetrics.filter(m => m.metricName === 'throughput')
+              .reduce((sum, m) => sum + m.value, 0) / 
+              Math.max(recentMetrics.filter(m => m.metricName === 'throughput').length, 1)
           },
           errors: {
             total: totalErrors,
