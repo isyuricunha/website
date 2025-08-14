@@ -215,18 +215,21 @@ export class ResendService {
     reply_to?: string
   }): Promise<ResendBroadcast | null> {
     try {
+      await this.rateLimitDelay()
+      console.log('🔍 Creating Resend broadcast:', { audienceId: broadcast.audience_id, from: broadcast.from, subject: broadcast.subject })
+      
+      // Resend API only expects: audienceId, from, subject, html
       const response = await resend.broadcasts.create({
-        name: broadcast.name,
         audienceId: broadcast.audience_id,
         from: broadcast.from,
         subject: broadcast.subject,
-        html: broadcast.html,
-        text: broadcast.text,
-        replyTo: broadcast.reply_to
+        html: broadcast.html || broadcast.text || '<p>No content provided</p>'
       })
+      
+      console.log('✅ Resend broadcast created:', response.data)
       return response.data as ResendBroadcast
     } catch (error) {
-      console.error('Error creating Resend broadcast:', error)
+      console.error('❌ Error creating Resend broadcast:', error)
       return null
     }
   }
@@ -256,10 +259,34 @@ export class ResendService {
   // Get broadcast
   async getBroadcast(broadcastId: string): Promise<ResendBroadcast | null> {
     try {
+      await this.rateLimitDelay()
+      console.log('🔍 Fetching broadcast:', broadcastId)
       const response = await resend.broadcasts.get(broadcastId)
+      console.log('✅ Broadcast retrieved:', response.data)
       return response.data as ResendBroadcast
     } catch (error) {
-      console.error('Error getting Resend broadcast:', error)
+      console.error('❌ Error getting Resend broadcast:', error)
+      return null
+    }
+  }
+
+  // Update broadcast
+  async updateBroadcast(broadcastId: string, updates: {
+    html?: string
+    subject?: string
+  }): Promise<ResendBroadcast | null> {
+    try {
+      await this.rateLimitDelay()
+      console.log('🔍 Updating broadcast:', broadcastId, updates)
+      const response = await resend.broadcasts.update({
+        id: broadcastId,
+        html: updates.html,
+        subject: updates.subject
+      })
+      console.log('✅ Broadcast updated:', response.data)
+      return response.data as ResendBroadcast
+    } catch (error) {
+      console.error('❌ Error updating Resend broadcast:', error)
       return null
     }
   }

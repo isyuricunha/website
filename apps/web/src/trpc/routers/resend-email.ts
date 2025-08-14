@@ -388,6 +388,80 @@ export const resendEmailRouter = createTRPCRouter({
       }
     }),
 
+  // Get single broadcast
+  getBroadcast: adminProcedure
+    .input(z.object({
+      broadcastId: z.string()
+    }))
+    .query(async ({ input }) => {
+      try {
+        const broadcast = await resendService.getBroadcast(input.broadcastId)
+        
+        if (!broadcast) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Broadcast not found'
+          })
+        }
+
+        return { broadcast }
+      } catch (error) {
+        console.error('Error fetching Resend broadcast:', error)
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to fetch broadcast'
+        })
+      }
+    }),
+
+  // Update broadcast
+  updateBroadcast: adminProcedure
+    .input(z.object({
+      broadcastId: z.string(),
+      html: z.string().optional(),
+      subject: z.string().optional()
+    }))
+    .mutation(async ({ ctx, input }) => {
+      try {
+        const auditLogger = new AuditLogger(ctx.db)
+
+        const broadcast = await resendService.updateBroadcast(input.broadcastId, {
+          html: input.html,
+          subject: input.subject
+        })
+
+        if (!broadcast) {
+          throw new TRPCError({
+            code: 'INTERNAL_SERVER_ERROR',
+            message: 'Failed to update broadcast'
+          })
+        }
+
+        // Log audit trail
+        await auditLogger.logSystemAction(
+          ctx.session.user.id,
+          'content_management',
+          'email_broadcast',
+          input.broadcastId,
+          {
+            action: 'broadcast_updated',
+            updates: {
+              html: !!input.html,
+              subject: !!input.subject
+            }
+          }
+        )
+
+        return { success: true, broadcast }
+      } catch (error) {
+        console.error('Error updating Resend broadcast:', error)
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to update broadcast'
+        })
+      }
+    }),
+
   // Delete broadcast
   deleteBroadcast: adminProcedure
     .input(z.object({
