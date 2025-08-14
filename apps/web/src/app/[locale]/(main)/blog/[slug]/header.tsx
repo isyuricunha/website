@@ -3,7 +3,7 @@
 import NumberFlow, { continuous } from '@number-flow/react'
 import { useTranslations } from '@tszhong0411/i18n/client'
 import { BlurImage } from '@tszhong0411/ui'
-import { useEffect, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 
 import ImageZoom from '@/components/image-zoom'
 import Link from '@/components/link'
@@ -12,7 +12,7 @@ import { useFormattedDate } from '@/hooks/use-formatted-date'
 import { api } from '@/trpc/react'
 
 const Header = () => {
-  const { date, title, slug } = usePostContext()
+  const { date, title, slug, content } = usePostContext()
   const formattedDate = useFormattedDate(date)
   const utils = api.useUtils()
   const t = useTranslations()
@@ -31,6 +31,13 @@ const Header = () => {
 
   const incremented = useRef(false)
 
+  const readingTime = useMemo(() => {
+    if (!content) return null
+    const words = content.trim().split(/\s+/).length
+    const minutes = Math.max(1, Math.round(words / 200))
+    return minutes
+  }, [content])
+
   useEffect(() => {
     if (!incremented.current) {
       incrementMutation.mutate({ slug })
@@ -44,7 +51,7 @@ const Header = () => {
         <h1 className='bg-linear-to-b from-black via-black/90 to-black/70 to-90% bg-clip-text text-center text-4xl font-bold text-transparent md:text-5xl md:leading-[64px] dark:from-white dark:via-white/90 dark:to-white/70'>
           {title}
         </h1>
-        <div className='grid grid-cols-2 text-sm max-md:gap-4 md:grid-cols-4'>
+        <div className='grid grid-cols-2 text-sm max-md:gap-4 md:grid-cols-5 items-start'>
           <div className='space-y-1 md:mx-auto'>
             <div className='text-muted-foreground'>{t('blog.header.written-by')}</div>
             <Link href='https://github.com/isyuricunha' className='flex items-center gap-2'>
@@ -63,8 +70,20 @@ const Header = () => {
             <div>{formattedDate}</div>
           </div>
           <div className='space-y-1 md:mx-auto'>
+            <div className='text-muted-foreground'>Reading time</div>
+            <div>
+              {readingTime ? (
+                <span>{readingTime} min</span>
+              ) : (
+                <span className='inline-block h-4 w-10 animate-pulse rounded bg-muted' />
+              )}
+            </div>
+          </div>
+          <div className='space-y-1 md:mx-auto'>
             <div className='text-muted-foreground'>{t('blog.header.views')}</div>
-            {viewsCountQuery.status === 'pending' ? '--' : null}
+            {viewsCountQuery.status === 'pending' ? (
+              <span className='inline-block h-4 w-10 animate-pulse rounded bg-muted' />
+            ) : null}
             {viewsCountQuery.status === 'error' ? t('common.error') : null}
             {viewsCountQuery.status === 'success' ? (
               <NumberFlow willChange plugins={[continuous]} value={viewsCountQuery.data.views} />
@@ -72,7 +91,9 @@ const Header = () => {
           </div>
           <div className='space-y-1 md:mx-auto'>
             <div className='text-muted-foreground'>{t('blog.header.comments')}</div>
-            {commentsCountQuery.status === 'pending' ? '--' : null}
+            {commentsCountQuery.status === 'pending' ? (
+              <span className='inline-block h-4 w-10 animate-pulse rounded bg-muted' />
+            ) : null}
             {commentsCountQuery.status === 'error' ? t('common.error') : null}
             {commentsCountQuery.status === 'success' ? (
               <NumberFlow

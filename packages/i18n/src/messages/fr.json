@@ -171,7 +171,18 @@
             "no-posts-found": "Aucun article trouvé",
             "placeholder": "Rechercher des articles"
         },
-        "go-to-homepage": "Aller à la page d'accueil"
+        "go-to-homepage": "Aller à la page d'accueil",
+        "featured-post-card": {
+            "featured": "Mis en avant",
+            "read-more": "Lire la suite"
+        },
+        "share-buttons": {
+            "copy": "Copier",
+            "copied": "Copié",
+            "share-on-x": "Partager sur X",
+            "share-on-linkedin": "Partager sur LinkedIn",
+            "copy-link-aria": "Copier le lien"
+        }
     },
     "dialog": {
         "sign-in": {

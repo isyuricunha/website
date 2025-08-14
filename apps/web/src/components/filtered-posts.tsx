@@ -5,7 +5,8 @@ import type { Post } from 'content-collections'
 import { useTranslations } from '@tszhong0411/i18n/client'
 import { Input, Label } from '@tszhong0411/ui'
 import { SearchIcon } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useRef, useState, KeyboardEvent } from 'react'
+import { parseAsString, useQueryState } from 'nuqs'
 
 import PostCards from './post-cards'
 
@@ -15,11 +16,49 @@ type FilteredPostsProps = {
 
 const FilteredPosts = (props: FilteredPostsProps) => {
   const { posts } = props
-  const [searchValue, setSearchValue] = useState('')
+  // URL-synced search query (?q=)
+  const [query, setQuery] = useQueryState('q', parseAsString.withDefault(''))
+  const [searchValue, setSearchValue] = useState(query)
   const t = useTranslations()
+  const inputRef = useRef<HTMLInputElement | null>(null)
+
+  // Only sync URL when it changes externally (back/forward, link nav)
+  // Typing updates local state; URL is updated on blur/Enter
+
+  // reflect external URL changes (e.g., back/forward) into input
+  useEffect(() => {
+    setSearchValue(query)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query])
+
+  const commitSearchToUrl = () => {
+    const next = searchValue?.trim() || null
+    setQuery(next, { startTransition: true })
+  }
+
+  const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      commitSearchToUrl()
+    }
+  }
+
+  // keyboard shortcuts: '/' to focus, 'Esc' to clear
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === '/' && document.activeElement !== inputRef.current) {
+        e.preventDefault()
+        inputRef.current?.focus()
+      }
+      if (e.key === 'Escape') {
+        setSearchValue('')
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
 
   const filteredPosts = posts.filter((post) =>
-    post.title.toLowerCase().includes(searchValue.toLowerCase())
+    post.title.toLowerCase().includes((searchValue ?? '').toLowerCase())
   )
 
   return (
@@ -28,10 +67,13 @@ const FilteredPosts = (props: FilteredPostsProps) => {
         <div className='relative'>
           <Input
             type='text'
+            ref={inputRef}
             value={searchValue}
             onChange={(e) => {
               setSearchValue(e.target.value)
             }}
+            onBlur={commitSearchToUrl}
+            onKeyDown={onKeyDown}
             placeholder={t('component.filtered-posts.placeholder')}
             aria-label={t('component.filtered-posts.placeholder')}
             className='w-full pl-12 h-12 text-base border-2 focus:border-primary/50 transition-colors'
@@ -43,7 +85,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
         </div>
         
         {/* Search results count */}
-        <div className='flex items-center justify-between text-sm text-muted-foreground'>
+        <div className='flex items-center justify-between text-sm text-muted-foreground' aria-live='polite'>
           <span>
             {searchValue ? (
               <>

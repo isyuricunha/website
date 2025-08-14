@@ -19,6 +19,7 @@ import MobileTableOfContents from './mobile-table-of-contents'
 import ProgressBar from './progress-bar'
 import Providers from './providers'
 import TableOfContents from './table-of-contents'
+import ShareButtons from './share-buttons'
 
 type PageProps = {
   params: Promise<{
@@ -139,6 +140,7 @@ const Page = async (props: PageProps) => {
 
       <Providers post={post}>
         <Header />
+        <ShareButtons url={url} title={title} className='mt-4 flex justify-center md:justify-end' />
 
         <div className='mt-8 flex flex-col justify-between lg:flex-row'>
           <article className='w-full lg:w-[670px]'>

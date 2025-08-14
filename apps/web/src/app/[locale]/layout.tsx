@@ -153,7 +153,7 @@ const Layout = async (props: LayoutProps) => {
             branch={env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_REF}
           />
         ) : null}
-        <NuqsAdapter>
+        <NuqsAdapter throttleMs={1000}>
           <Providers>
             <NextIntlClientProvider messages={messages}>
               <Hello />
