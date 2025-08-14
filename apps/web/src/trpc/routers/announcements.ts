@@ -142,6 +142,7 @@ export const announcementsRouter = createTRPCRouter({
           type: input.type,
           priority: input.priority,
           isDismissible: input.isDismissible,
+          isActive: true, // Explicitly set new announcements as active
           targetAudience: input.targetAudience ? JSON.stringify(input.targetAudience) : null,
           startDate: input.startDate,
           endDate: input.endDate,

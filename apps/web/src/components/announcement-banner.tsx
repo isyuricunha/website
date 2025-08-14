@@ -115,14 +115,6 @@ export default function AnnouncementBanner() {
               <div className="flex-1 space-y-1">
                 <div className="flex items-center gap-2">
                   <h4 className="font-medium">{announcement.title}</h4>
-                  <Badge variant="outline" className="text-xs">
-                    {announcement.type}
-                  </Badge>
-                  {announcement.priority > 0 && (
-                    <Badge variant="secondary" className="text-xs">
-                      Priority: {announcement.priority}
-                    </Badge>
-                  )}
                 </div>
                 <p className="text-sm opacity-90">
                   {announcement.content}
