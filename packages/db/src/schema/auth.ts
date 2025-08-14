@@ -61,11 +61,23 @@ export const verifications = pgTable('verification', {
   updatedAt: timestamp('updated_at')
 })
 
+export const passwordResetTokens = pgTable('password_reset_tokens', {
+  id: text('id').primaryKey(),
+  token: text('token').notNull().unique(),
+  userId: text('user_id')
+    .notNull()
+    .references(() => users.id, { onDelete: 'cascade' }),
+  expiresAt: timestamp('expires_at').notNull(),
+  createdAt: timestamp('created_at').notNull(),
+  used: boolean('used').default(false).notNull()
+})
+
 export const usersRelations = relations(users, ({ many }) => ({
   accounts: many(accounts),
   sessions: many(sessions),
   comments: many(comments),
-  guestbook: many(guestbook)
+  guestbook: many(guestbook),
+  passwordResetTokens: many(passwordResetTokens)
 }))
 
 export const accountsRelations = relations(accounts, ({ one }) => ({
@@ -78,6 +90,13 @@ export const accountsRelations = relations(accounts, ({ one }) => ({
 export const sessionsRelations = relations(sessions, ({ one }) => ({
   user: one(users, {
     fields: [sessions.userId],
+    references: [users.id]
+  })
+}))
+
+export const passwordResetTokensRelations = relations(passwordResetTokens, ({ one }) => ({
+  user: one(users, {
+    fields: [passwordResetTokens.userId],
     references: [users.id]
   })
 }))

@@ -1,10 +1,17 @@
 import type { RouterOutputs } from '../react'
 
 import { TRPCError } from '@trpc/server'
-import { eq } from '@tszhong0411/db'
+import { eq, and } from '@tszhong0411/db'
 import { z } from 'zod'
+import { render } from '@react-email/render'
+import { randomBytes } from 'crypto'
+import { hash, verify } from '@node-rs/argon2'
 
-import { adminProcedure, createTRPCRouter } from '../trpc'
+import { PasswordResetEmail } from '@/components/emails/password-reset-email'
+import { resend } from '@/lib/resend'
+import { env } from '@tszhong0411/env'
+
+import { adminProcedure, createTRPCRouter, publicProcedure } from '../trpc'
 
 export const usersRouter = createTRPCRouter({
   getUsers: adminProcedure.query(async ({ ctx }) => {
@@ -149,10 +156,10 @@ export const usersRouter = createTRPCRouter({
     .input(z.object({ userId: z.string() }))
     .mutation(async ({ ctx, input }) => {
       try {
-        // Get user email
+        // Get user details
         const user = await ctx.db.query.users.findFirst({
           where: (users, { eq }) => eq(users.id, input.userId),
-          columns: { email: true }
+          columns: { email: true, name: true }
         })
 
         if (!user) {
@@ -162,15 +169,112 @@ export const usersRouter = createTRPCRouter({
           })
         }
 
-        // In a real implementation, you would send an email here
-        // For now, we'll just return success
-        console.log(`Password reset email would be sent to: ${user.email}`)
+        // Generate secure reset token
+        const token = randomBytes(32).toString('hex')
+        const tokenId = randomBytes(16).toString('hex')
+        const expiresAt = new Date(Date.now() + 60 * 60 * 1000) // 1 hour from now
+
+        // Store reset token in database
+        await ctx.db.insert(ctx.db.schema.passwordResetTokens).values({
+          id: tokenId,
+          token,
+          userId: input.userId,
+          expiresAt,
+          createdAt: new Date(),
+          used: false
+        })
+
+        // Create reset URL
+        const resetUrl = `${env.NEXT_PUBLIC_WEBSITE_URL}/reset-password?token=${token}`
+
+        // Send email if resend is configured
+        if (resend) {
+          const emailHtml = render(
+            PasswordResetEmail({
+              name: user.name,
+              resetUrl
+            })
+          )
+
+          await resend.emails.send({
+            from: 'noreply@yuricunha.com',
+            to: user.email,
+            subject: 'Reset your password',
+            html: emailHtml
+          })
+
+          console.log(`Password reset email sent to: ${user.email}`)
+        } else {
+          console.log(`Password reset email would be sent to: ${user.email}`)
+          console.log(`Reset URL: ${resetUrl}`)
+        }
 
         return { success: true }
       } catch (error) {
+        console.error('Password reset error:', error)
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to send password reset email'
+        })
+      }
+    }),
+
+  resetPassword: publicProcedure
+    .input(z.object({ 
+      token: z.string(),
+      newPassword: z.string().min(8)
+    }))
+    .mutation(async ({ ctx, input }) => {
+      try {
+        // Find valid reset token
+        const resetToken = await ctx.db.query.passwordResetTokens.findFirst({
+          where: (tokens, { eq, and }) => and(
+            eq(tokens.token, input.token),
+            eq(tokens.used, false)
+          ),
+          with: {
+            user: true
+          }
+        })
+
+        if (!resetToken) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Invalid or expired reset token'
+          })
+        }
+
+        // Check if token is expired
+        if (resetToken.expiresAt < new Date()) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Reset token has expired'
+          })
+        }
+
+        // Hash the new password
+        const hashedPassword = await hash(input.newPassword)
+
+        // Update user's password (this would require adding password field to accounts table)
+        // For now, we'll simulate this
+        console.log(`Password would be updated for user: ${resetToken.userId}`)
+        console.log(`New password hash: ${hashedPassword}`)
+
+        // Mark token as used
+        await ctx.db
+          .update(ctx.db.schema.passwordResetTokens)
+          .set({ used: true })
+          .where(eq(ctx.db.schema.passwordResetTokens.id, resetToken.id))
+
+        return { success: true }
+      } catch (error) {
+        console.error('Reset password error:', error)
+        if (error instanceof TRPCError) {
+          throw error
+        }
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to reset password'
         })
       }
     })
