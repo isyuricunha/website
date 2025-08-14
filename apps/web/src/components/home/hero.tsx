@@ -5,6 +5,8 @@ import { BlurImage } from '@tszhong0411/ui'
 import { AnimatePresence, motion } from 'motion/react'
 import { useEffect, useState } from 'react'
 
+import Link from '../link'
+
 const TEXTS = [
   {
     key: 'amazing',
@@ -128,6 +130,26 @@ const Hero = () => {
             className='text-muted-foreground text-sm'
           >
             {t('homepage.hero.location-timezone')}
+          </motion.div>
+          
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ ease: 'easeOut', delay: 0.4 }}
+            className='flex flex-col gap-3 pt-4 sm:flex-row sm:gap-4'
+          >
+            <Link
+              href='/projects'
+              className='inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-all duration-200 hover:bg-primary/90 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
+            >
+              {t('homepage.hero.view-projects')}
+            </Link>
+            <Link
+              href='/blog'
+              className='inline-flex items-center justify-center rounded-lg border border-input bg-background px-6 py-3 text-sm font-medium transition-all duration-200 hover:bg-accent hover:text-accent-foreground hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
+            >
+              {t('homepage.hero.read-blog')}
+            </Link>
           </motion.div>
         </div>
         <motion.div

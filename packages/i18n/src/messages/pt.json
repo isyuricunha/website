@@ -273,7 +273,7 @@
         "projects": "Projetos",
         "skip-to-main-content": "Pular para o conteúdo principal",
         "toggle-menu": "Alternar menu",
-        "uses": "Ferramentas",
+        "uses": "Setup",
         "spotify": "Música"
     },
     "mdx": {
@@ -300,7 +300,7 @@
     },
     "uses": {
         "description": "Este é o equipamento que uso atualmente para jogos, programação, produção de vídeos e no dia a dia.",
-        "title": "Ferramentas"
+        "title": "Setup"
     },
     "spotify": {
         "title": "Música",
@@ -607,67 +607,121 @@
                 "15": "Do ambiente ao animado - encontre o ritmo perfeito para seu fluxo de trabalho! 🎶"
             },
             "guestbook": {
-            "0": "Deixe uma mensagem no livro de visitas! ",
-            "1": "Meu criador, Yuri adora ler mensagens dos visitantes!",
-            "2": "Sinta-se à vontade para dizer olá ou fazer perguntas!",
-            "3": "Sua mensagem vai alegrar o dia dele!",
-            "4": "O livro de visitas é uma ótima maneira de se conectar com a comunidade!",
-            "5": "Todas as mensagens são moderadas para manter o espaço amigável!",
-            "6": "Um livro de visitas digital para a web moderna - que legal é isso? ",
-            "7": "Cada mensagem é lida e apreciada - você faz parte da comunidade!",
-            "8": "Compartilhe seus pensamentos, feedback ou apenas diga oi - todos são bem-vindos!",
-            "9": "O livro de visitas conecta visitantes de todo o mundo! ",
-            "10": "Sua mensagem pode inspirar o próximo post do blog ou projeto!",
-            "11": "De olás rápidos a feedback detalhado - cada mensagem importa!",
-            "12": "O livro de visitas é um lembrete de que por trás de cada site há pessoas reais!",
-            "13": "Junte-se à conversa e torne-se parte desta comunidade em crescimento!",
-            "14": "Mensagens aqui levaram a colaborações, amizades e novas ideias!",
-            "15": "Não seja tímido - sua voz agrega valor a este espaço! "
-        },
-        "admin": {
-            "0": "Bem-vindo ao painel admin! ",
-            "1": "Esta área é para gerenciamento e moderação do site.",
-            "2": "Meu criador, Yuri usa isso para manter o site funcionando suavemente.",
-            "3": "Ferramentas admin ajudam a gerenciar usuários, comentários e conteúdo.",
-            "4": "O painel admin está constantemente sendo melhorado!",
-            "5": "Segurança e moderação são prioridades máximas aqui!"
-        },
-        "search": {
-            "0": "Procurando algo específico? ",
-            "1": "O recurso de busca pode ajudá-lo a encontrar qualquer coisa rapidamente!",
-            "2": "Tente palavras-chave diferentes para obter melhores resultados.",
-            "3": "A busca funciona em todo o conteúdo do site!",
-            "4": "A busca é alimentada por algoritmos avançados!",
-            "5": "Não consegue encontrar o que procura? Me avise!",
-            "6": "Busca inteligente que entende contexto e encontra conteúdo relevante! ",
-            "7": "Pesquise artigos, projetos e páginas tudo em um lugar!",
-            "8": "Dica profissional: Use termos específicos para resultados mais direcionados!",
-            "9": "O índice de busca é constantemente atualizado com novo conteúdo!",
-            "10": "Encontrou algo interessante? Marque para referência posterior!",
-            "11": "Os resultados da busca são classificados por relevância e atualidade!",
-            "12": "Não consegue lembrar o título exato? Tente buscar por tópico ou palavra-chave!",
-            "13": "O recurso de busca aprende e melhora a cada consulta!",
-            "14": "De artigos técnicos a detalhes de projetos - encontre tudo aqui!",
-            "15": "A busca é sua amiga para navegar grandes quantidades de conteúdo! "
-        },
-        "404": {
-            "0": "Ops! Parece que você se perdeu! ",
-            "1": "Não se preocupe, posso ajudá-lo a encontrar o caminho de volta!",
-            "2": "Tente usar o menu de navegação ou o recurso de busca.",
-            "3": "A página inicial é sempre um bom lugar para começar!",
-            "4": "Meu criador, Yuri está trabalhando para tornar a navegação ainda melhor!",
-            "5": "Sinta-se à vontade para relatar quaisquer links quebrados que encontrar!",
-            "6": "Até os melhores exploradores se perdem às vezes! ",
-            "7": "Esta página pode ter sido movida ou ainda não existe!",
-            "8": "Use a busca para encontrar o que estava procurando!",
-            "9": "O menu de navegação tem todas as seções principais organizadas!",
-            "10": "Às vezes se perder leva a descobrir algo ainda melhor!",
-            "11": "Verifique a URL por erros de digitação - isso é frequentemente o culpado!",
-            "12": "O site está constantemente crescendo, então novo conteúdo aparece regularmente!",
-            "13": "Links quebrados acontecem - obrigada por ajudar a melhorar o site!",
-            "14": "Cada 404 é uma chance de explorar algo novo em vez disso!",
-            "15": "Na dúvida, a página inicial tem links para tudo importante! 🏠"
+                "0": "Deixe uma mensagem no livro de visitas! ",
+                "1": "Meu criador, Yuri adora ler mensagens dos visitantes!",
+                "2": "Sinta-se à vontade para dizer olá ou fazer perguntas!",
+                "3": "Sua mensagem vai alegrar o dia dele!",
+                "4": "O livro de visitas é uma ótima maneira de se conectar com a comunidade!",
+                "5": "Todas as mensagens são moderadas para manter o espaço amigável!",
+                "6": "Um livro de visitas digital para a web moderna - que legal é isso? ",
+                "7": "Cada mensagem é lida e apreciada - você faz parte da comunidade!",
+                "8": "Compartilhe seus pensamentos, feedback ou apenas diga oi - todos são bem-vindos!",
+                "9": "O livro de visitas conecta visitantes de todo o mundo! ",
+                "10": "Sua mensagem pode inspirar o próximo post do blog ou projeto!",
+                "11": "De olás rápidos a feedback detalhado - cada mensagem importa!",
+                "12": "O livro de visitas é um lembrete de que por trás de cada site há pessoas reais!",
+                "13": "Junte-se à conversa e torne-se parte desta comunidade em crescimento!",
+                "14": "Mensagens aqui levaram a colaborações, amizades e novas ideias!",
+                "15": "Não seja tímido - sua voz agrega valor a este espaço! "
+            },
+            "admin": {
+                "0": "Bem-vindo ao painel admin! ",
+                "1": "Esta área é para gerenciamento e moderação do site.",
+                "2": "Meu criador, Yuri usa isso para manter o site funcionando suavemente.",
+                "3": "Ferramentas admin ajudam a gerenciar usuários, comentários e conteúdo.",
+                "4": "O painel admin está constantemente sendo melhorado!",
+                "5": "Segurança e moderação são prioridades máximas aqui!"
+            },
+            "search": {
+                "0": "Procurando algo específico? ",
+                "1": "O recurso de busca pode ajudá-lo a encontrar qualquer coisa rapidamente!",
+                "2": "Tente palavras-chave diferentes para obter melhores resultados.",
+                "3": "A busca funciona em todo o conteúdo do site!",
+                "4": "A busca é alimentada por algoritmos avançados!",
+                "5": "Não consegue encontrar o que procura? Me avise!",
+                "6": "Busca inteligente que entende contexto e encontra conteúdo relevante! ",
+                "7": "Pesquise artigos, projetos e páginas tudo em um lugar!",
+                "8": "Dica profissional: Use termos específicos para resultados mais direcionados!",
+                "9": "O índice de busca é constantemente atualizado com novo conteúdo!",
+                "10": "Encontrou algo interessante? Marque para referência posterior!",
+                "11": "Os resultados da busca são classificados por relevância e atualidade!",
+                "12": "Não consegue lembrar o título exato? Tente buscar por tópico ou palavra-chave!",
+                "13": "O recurso de busca aprende e melhora a cada consulta!",
+                "14": "De artigos técnicos a detalhes de projetos - encontre tudo aqui!",
+                "15": "A busca é sua amiga para navegar grandes quantidades de conteúdo! "
+            },
+            "404": {
+                "0": "Ops! Parece que você se perdeu! ",
+                "1": "Não se preocupe, posso ajudá-lo a encontrar o caminho de volta!",
+                "2": "Tente usar o menu de navegação ou o recurso de busca.",
+                "3": "A página inicial é sempre um bom lugar para começar!",
+                "4": "Meu criador, Yuri está trabalhando para tornar a navegação ainda melhor!",
+                "5": "Sinta-se à vontade para relatar quaisquer links quebrados que encontrar!",
+                "6": "Até os melhores exploradores se perdem às vezes! ",
+                "7": "Esta página pode ter sido movida ou ainda não existe!",
+                "8": "Use a busca para encontrar o que estava procurando!",
+                "9": "O menu de navegação tem todas as seções principais organizadas!",
+                "10": "Às vezes se perder leva a descobrir algo ainda melhor!",
+                "11": "Verifique a URL por erros de digitação - isso é frequentemente o culpado!",
+                "12": "O site está constantemente crescendo, então novo conteúdo aparece regularmente!",
+                "13": "Links quebrados acontecem - obrigada por ajudar a melhorar o site!",
+                "14": "Cada 404 é uma chance de explorar algo novo em vez disso!",
+                "15": "Na dúvida, a página inicial tem links para tudo importante! 🏠"
             }
+        }
+    },
+    "layout": {
+        "navigation": "Navegação",
+        "home": "Início",
+        "blog": "Blog",
+        "projects": "Projetos",
+        "about": "Sobre",
+        "guestbook": "Livro de visitas",
+        "uses": "Setup",
+        "spotify": "Spotify",
+        "skip-to-main-content": "Pular para o conteúdo principal",
+        "toggle-menu": "Alternar menu",
+        "change-language": "Mudar idioma",
+        "links": "Links",
+        "github": "GitHub"
+    },
+    "homepage": {
+        "hero": {
+            "view-projects": "Ver projetos",
+            "read-blog": "Ler blog",
+            "title-top": "Oi, eu sou Yuri Cunha",
+            "title-middle-left": "Eu desenvolvo",
+            "title-middle-right": "aplicações",
+            "title-bottom": "e amo bancos de dados",
+            "location-timezone": "São Paulo, Brasil (UTC-3)",
+            "amazing": "incríveis",
+            "stunning": "deslumbrantes",
+            "fantastic": "fantásticas",
+            "attractive": "atrativas"
+        },
+        "selectedProjects": {
+            "title": "Projetos Selecionados",
+            "more": "Ver todos os projetos",
+            "card": "Projeto em Destaque"
+        },
+        "about-me": {
+            "title": "Sobre Mim",
+            "more": "Saiba mais sobre mim",
+            "location": "Localização",
+            "stacks": "Stack Técnico",
+            "connect": "Conectar",
+            "coding-hours": "Horas de Código",
+            "fav-framework": "Framework Favorito"
+        },
+        "latest-articles": {
+            "title": "Últimos Artigos",
+            "more": "Ver todos os artigos",
+            "card": "Último Artigo"
+        },
+        "get-in-touch": {
+            "title": "Vamos trabalhar juntos",
+            "description": "Estou sempre interessado em novas oportunidades e colaborações.",
+            "image-alt": "Ilustração de contato"
         }
     }
 }

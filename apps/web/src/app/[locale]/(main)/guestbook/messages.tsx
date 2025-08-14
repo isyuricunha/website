@@ -5,6 +5,8 @@ import type { GetInfiniteMessagesOutput } from '@/trpc/routers/guestbook'
 import { keepPreviousData } from '@tanstack/react-query'
 import { useTranslations } from '@tszhong0411/i18n/client'
 import { Avatar, AvatarFallback, AvatarImage, Skeleton } from '@tszhong0411/ui'
+import { MessageCircle } from 'lucide-react'
+import { motion } from 'motion/react'
 import { useEffect, useMemo } from 'react'
 import { useInView } from 'react-intersection-observer'
 
@@ -65,21 +67,47 @@ const Messages = () => {
   const noMessages = status === 'success' && data.pages[0]?.messages.length === 0
 
   return (
-    <div className='flex flex-col gap-4' data-testid='guestbook-messages-list'>
+    <div className='flex flex-col gap-6' data-testid='guestbook-messages-list'>
       {isSuccess
-        ? data.pages.map((page) =>
-            page.messages.map((message) => <Message key={message.id} message={message} />)
+        ? data.pages.map((page, pageIndex) =>
+            page.messages.map((message, messageIndex) => (
+              <motion.div
+                key={message.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ 
+                  delay: (pageIndex * page.messages.length + messageIndex) * 0.05,
+                  duration: 0.4 
+                }}
+              >
+                <Message message={message} />
+              </motion.div>
+            ))
           )
         : null}
       {noMessages ? (
-        <div className='flex min-h-24 items-center justify-center'>
-          <p className='text-muted-foreground text-sm'>{t('guestbook.no-messages')}</p>
-        </div>
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className='flex min-h-32 flex-col items-center justify-center space-y-3 rounded-lg border-2 border-dashed border-muted-foreground/25 p-8'
+        >
+          <MessageCircle className='h-8 w-8 text-muted-foreground/50' />
+          <p className='text-center text-muted-foreground'>
+            {t('guestbook.no-messages')}
+          </p>
+          <p className='text-center text-sm text-muted-foreground/75'>
+            Be the first to leave a message!
+          </p>
+        </motion.div>
       ) : null}
       {isError ? (
-        <div className='flex min-h-24 items-center justify-center'>
-          <p className='text-muted-foreground text-sm'>{t('guestbook.failed-to-load-messages')}</p>
-        </div>
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className='flex min-h-24 items-center justify-center rounded-lg border border-destructive/20 bg-destructive/5 p-4'
+        >
+          <p className='text-destructive text-sm'>{t('guestbook.failed-to-load-messages')}</p>
+        </motion.div>
       ) : null}
       {isLoading ? <MessagesLoader /> : null}
       <span ref={ref} className='invisible' />
@@ -111,21 +139,45 @@ const Message = (props: MessageProps) => {
 
   return (
     <MessageProvider value={context}>
-      <div className='shadow-xs rounded-lg border p-4 dark:bg-zinc-900/30' id={`message-${id}`}>
-        <div className='mb-3 flex gap-3'>
-          <Avatar>
-            <AvatarImage src={image} className='size-10 rounded-full' alt={name} />
-            <AvatarFallback className='bg-transparent'>
-              <Skeleton className='size-10 rounded-full' />
-            </AvatarFallback>
-          </Avatar>
-          <div className='flex flex-col justify-center gap-px text-sm'>
-            <div>{name}</div>
-            <UpdatedDate date={updatedAt} />
+      <div 
+        className='group relative rounded-xl border bg-card p-6 shadow-sm transition-all duration-300 hover:shadow-md hover:shadow-primary/5 dark:bg-zinc-900/30' 
+        id={`message-${id}`}
+      >
+        {/* Subtle gradient overlay on hover */}
+        <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+        
+        <div className='relative z-10'>
+          <div className='mb-4 flex items-start gap-4'>
+            <div className="relative">
+              <Avatar className="h-12 w-12">
+                <AvatarImage src={image} alt={name} />
+                <AvatarFallback className='bg-primary/10 text-primary font-semibold'>
+                  {name?.charAt(0)?.toUpperCase() || '?'}
+                </AvatarFallback>
+              </Avatar>
+              {/* Online indicator (optional enhancement) */}
+              <div className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-background bg-green-500" />
+            </div>
+            
+            <div className='flex-1 min-w-0'>
+              <div className='flex items-center justify-between'>
+                <div className='flex flex-col gap-1'>
+                  <h4 className='font-semibold text-foreground truncate'>{name}</h4>
+                  <UpdatedDate date={updatedAt} />
+                </div>
+                {isAuthor && (
+                  <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                    <DeleteButton />
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+          
+          <div className='prose prose-sm max-w-none break-words text-muted-foreground leading-relaxed'>
+            {body}
           </div>
         </div>
-        <div className='break-words pl-[52px]'>{body}</div>
-        {isAuthor ? <DeleteButton /> : null}
       </div>
     </MessageProvider>
   )

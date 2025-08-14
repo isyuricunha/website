@@ -582,8 +582,68 @@
                 "2": "Essayez d'utiliser le menu de navigation ou la fonction de recherche.",
                 "3": "La page d'accueil est toujours un bon endroit pour commencer !",
                 "4": "Mon créateur, Yuri travaille à rendre la navigation encore meilleure !",
-                "5": "N'hésitez pas à signaler tout lien cassé que vous trouvez !"
+                "5": "N'hésitez pas à signaler tout lien cassé que vous trouvez !",
+                "6": "Parfois, se perdre mène à découvrir quelque chose d'encore mieux !",
+                "7": "Vérifiez l'URL pour les fautes de frappe - c'est souvent le coupable !",
+                "8": "Le site grandit constamment, donc du nouveau contenu apparaît régulièrement !",
+                "9": "Les liens cassés arrivent - merci d'aider à améliorer le site !",
+                "10": "Chaque 404 est une chance d'explorer quelque chose de nouveau à la place !",
+                "11": "En cas de doute, la page d'accueil a des liens vers tout ce qui est important ! 🏠"
             }
+        }
+    },
+    "layout": {
+        "navigation": "Navigation",
+        "home": "Accueil",
+        "blog": "Blog",
+        "projects": "Projets",
+        "about": "À propos",
+        "guestbook": "Livre d'or",
+        "uses": "Utilise",
+        "spotify": "Spotify",
+        "skip-to-main-content": "Aller au contenu principal",
+        "toggle-menu": "Basculer le menu",
+        "change-language": "Changer de langue",
+        "links": "Liens",
+        "github": "GitHub"
+    },
+    "homepage": {
+        "hero": {
+            "view-projects": "Voir les projets",
+            "read-blog": "Lire le blog",
+            "title-top": "Salut, je suis Yuri Cunha",
+            "title-middle-left": "Je développe",
+            "title-middle-right": "des applications",
+            "title-bottom": "et j'adore les bases de données",
+            "location-timezone": "São Paulo, Brésil (UTC-3)",
+            "amazing": "incroyables",
+            "stunning": "époustouflantes",
+            "fantastic": "fantastiques",
+            "attractive": "attrayantes"
+        },
+        "selectedProjects": {
+            "title": "Projets sélectionnés",
+            "more": "Voir tous les projets",
+            "card": "Projet en vedette"
+        },
+        "about-me": {
+            "title": "À propos de moi",
+            "more": "En savoir plus sur moi",
+            "location": "Localisation",
+            "stacks": "Stack technique",
+            "connect": "Se connecter",
+            "coding-hours": "Heures de codage",
+            "fav-framework": "Framework préféré"
+        },
+        "latest-articles": {
+            "title": "Derniers articles",
+            "more": "Voir tous les articles",
+            "card": "Dernier article"
+        },
+        "get-in-touch": {
+            "title": "Travaillons ensemble",
+            "description": "Je suis toujours intéressé par de nouvelles opportunités et collaborations.",
+            "image-alt": "Illustration de contact"
         }
     }
 }

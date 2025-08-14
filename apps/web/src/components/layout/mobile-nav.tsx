@@ -1,25 +1,36 @@
 'use client'
 
 import { useTranslations } from '@tszhong0411/i18n/client'
+import { usePathname } from '@tszhong0411/i18n/routing'
 import {
   Button,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger
 } from '@tszhong0411/ui'
-import { MenuIcon } from 'lucide-react'
+import { cn } from '@tszhong0411/utils'
+import { MenuIcon, X } from 'lucide-react'
+import { motion } from 'motion/react'
+import { useState } from 'react'
 
 import { HEADER_LINKS } from '@/config/links'
 
 import Link from '../link'
 
 const MobileNav = () => {
+  const [isOpen, setIsOpen] = useState(false)
+  const pathname = usePathname()
   const t = useTranslations()
 
+  const handleLinkClick = () => {
+    setIsOpen(false)
+  }
+
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
+    <Sheet open={isOpen} onOpenChange={setIsOpen}>
+      <SheetTrigger asChild>
         <Button
           className='flex size-9 items-center justify-center p-0 md:hidden'
           aria-label={t('layout.toggle-menu')}
@@ -27,18 +38,56 @@ const MobileNav = () => {
         >
           <MenuIcon className='size-4' />
         </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align='end' sideOffset={20} className='min-w-40'>
-        {HEADER_LINKS.map((link) => (
-          <DropdownMenuItem key={link.key} asChild>
-            <Link href={link.href} className='flex items-center gap-4'>
-              {link.icon}
-              <div>{t(`layout.${link.key}`)}</div>
-            </Link>
-          </DropdownMenuItem>
-        ))}
-      </DropdownMenuContent>
-    </DropdownMenu>
+      </SheetTrigger>
+      <SheetContent side="right" className="w-80 p-0">
+        <SheetHeader className="border-b p-6">
+          <SheetTitle className="text-left">{t('layout.navigation')}</SheetTitle>
+        </SheetHeader>
+
+        <nav className="flex flex-col p-6">
+          <ul className="space-y-2">
+            {HEADER_LINKS.map((link, index) => {
+              const isActive = link.href === pathname
+
+              return (
+                <motion.li
+                  key={link.key}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.1, duration: 0.3 }}
+                >
+                  <Link
+                    href={link.href}
+                    onClick={handleLinkClick}
+                    className={cn(
+                      'flex items-center gap-4 rounded-lg px-4 py-3 text-sm font-medium transition-all duration-200',
+                      'hover:bg-accent hover:text-accent-foreground',
+                      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+                      {
+                        'bg-accent text-accent-foreground': isActive,
+                        'text-muted-foreground': !isActive
+                      }
+                    )}
+                  >
+                    <span className="flex h-5 w-5 items-center justify-center">
+                      {link.icon}
+                    </span>
+                    <span className="flex-1">{t(`layout.${link.key}`)}</span>
+                    {isActive && (
+                      <motion.div
+                        layoutId="mobile-nav-indicator"
+                        className="h-2 w-2 rounded-full bg-primary"
+                        transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                      />
+                    )}
+                  </Link>
+                </motion.li>
+              )
+            })}
+          </ul>
+        </nav>
+      </SheetContent>
+    </Sheet>
   )
 }
 

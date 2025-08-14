@@ -666,8 +666,62 @@
                 "12": "Die Website wächst ständig, also tauchen regelmäßig neue Inhalte auf!",
                 "13": "Kaputte Links passieren - danke, dass du hilfst, die Seite zu verbessern!",
                 "14": "Jeder 404 ist eine Chance, stattdessen etwas Neues zu erkunden!",
-                "15": "Im Zweifel hat die Startseite Links zu allem Wichtigen! "
+                "15": "Im Zweifel hat die Startseite Links zu allem Wichtigen! 🏠"
             }
+        }
+    },
+    "layout": {
+        "navigation": "Navigation",
+        "home": "Startseite",
+        "blog": "Blog",
+        "projects": "Projekte",
+        "about": "Über mich",
+        "guestbook": "Gästebuch",
+        "uses": "Verwendet",
+        "spotify": "Spotify",
+        "skip-to-main-content": "Zum Hauptinhalt springen",
+        "toggle-menu": "Menü umschalten",
+        "change-language": "Sprache ändern",
+        "links": "Links",
+        "github": "GitHub"
+    },
+    "homepage": {
+        "hero": {
+            "view-projects": "Projekte ansehen",
+            "read-blog": "Blog lesen",
+            "title-top": "Hi, ich bin Yuri Cunha",
+            "title-middle-left": "Ich entwickle",
+            "title-middle-right": "Anwendungen",
+            "title-bottom": "und liebe Datenbanken",
+            "location-timezone": "São Paulo, Brasilien (UTC-3)",
+            "amazing": "erstaunliche",
+            "stunning": "atemberaubende",
+            "fantastic": "fantastische",
+            "attractive": "attraktive"
+        },
+        "selectedProjects": {
+            "title": "Ausgewählte Projekte",
+            "more": "Alle Projekte anzeigen",
+            "card": "Vorgestelltes Projekt"
+        },
+        "about-me": {
+            "title": "Über mich",
+            "more": "Mehr über mich erfahren",
+            "location": "Standort",
+            "stacks": "Tech-Stack",
+            "connect": "Verbinden",
+            "coding-hours": "Programmierzeit",
+            "fav-framework": "Lieblings-Framework"
+        },
+        "latest-articles": {
+            "title": "Neueste Artikel",
+            "more": "Alle Artikel anzeigen",
+            "card": "Neuester Artikel"
+        },
+        "get-in-touch": {
+            "title": "Lass uns zusammenarbeiten",
+            "description": "Ich bin immer an neuen Möglichkeiten und Kooperationen interessiert.",
+            "image-alt": "Kontakt-Illustration"
         }
     }
 }

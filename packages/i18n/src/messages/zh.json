@@ -669,5 +669,59 @@
         "15": "如有疑问，主页有所有重要内容的链接！🏠"
       }
     }
+  },
+  "layout": {
+    "navigation": "导航",
+    "home": "首页",
+    "blog": "博客",
+    "projects": "项目",
+    "about": "关于",
+    "guestbook": "留言簿",
+    "uses": "使用",
+    "spotify": "Spotify",
+    "skip-to-main-content": "跳转到主要内容",
+    "toggle-menu": "切换菜单",
+    "change-language": "更改语言",
+    "links": "链接",
+    "github": "GitHub"
+  },
+  "homepage": {
+    "hero": {
+      "view-projects": "查看项目",
+      "read-blog": "阅读博客",
+      "title-top": "你好，我是Yuri Cunha",
+      "title-middle-left": "我开发",
+      "title-middle-right": "应用程序",
+      "title-bottom": "并热爱数据库",
+      "location-timezone": "圣保罗，巴西 (UTC-3)",
+      "amazing": "令人惊叹的",
+      "stunning": "绝美的",
+      "fantastic": "奇妙的",
+      "attractive": "吸引人的"
+    },
+    "selectedProjects": {
+      "title": "精选项目",
+      "more": "查看所有项目",
+      "card": "特色项目"
+    },
+    "about-me": {
+      "title": "关于我",
+      "more": "了解更多关于我",
+      "location": "位置",
+      "stacks": "技术栈",
+      "connect": "联系",
+      "coding-hours": "编程时间",
+      "fav-framework": "最喜欢的框架"
+    },
+    "latest-articles": {
+      "title": "最新文章",
+      "more": "查看所有文章",
+      "card": "最新文章"
+    },
+    "get-in-touch": {
+      "title": "让我们一起工作",
+      "description": "我总是对新的机会和合作感兴趣。",
+      "image-alt": "联系插图"
+    }
   }
 }
