@@ -8,7 +8,7 @@ import { Input } from '@tszhong0411/ui'
 import { Label } from '@tszhong0411/ui'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@tszhong0411/ui'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@tszhong0411/ui'
-import { AlertTriangle, Shield, Users, Lock, Activity, Settings } from 'lucide-react'
+import { AlertTriangle, Shield, Users, Lock } from 'lucide-react'
 import { toast } from 'sonner'
 
 import { api } from '@/trpc/react'
@@ -32,8 +32,8 @@ export default function SecurityManagement() {
     timeRange: '24h'
   })
 
-  // Account lockouts query
-  const { data: lockouts, isLoading: lockoutsLoading } = api.security.getAccountLockouts.useQuery()
+  // Account lockouts query - get all active lockouts for admin view
+  const { data: lockouts, isLoading: lockoutsLoading } = api.security.getAccountLockouts.useQuery({})
 
   // Mutations
   const addIpRuleMutation = api.security.addIpAccessRule.useMutation({
@@ -386,12 +386,12 @@ export default function SecurityManagement() {
                 <div>Loading account lockouts...</div>
               ) : (
                 <div className="space-y-4">
-                  {lockouts?.lockouts.map((lockout) => (
+                  {lockouts?.lockouts.map((lockout: any) => (
                     <div key={lockout.id} className="border rounded-lg p-4">
                       <div className="flex items-center justify-between">
                         <div>
-                          <div className="font-medium">{lockout.user?.name}</div>
-                          <div className="text-sm text-muted-foreground">{lockout.user?.email}</div>
+                          <div className="font-medium">User ID: {lockout.userId}</div>
+                          <div className="text-sm text-muted-foreground">Lockout ID: {lockout.id}</div>
                           <div className="text-sm text-muted-foreground">
                             Locked: {new Date(lockout.lockedAt).toLocaleString()}
                           </div>

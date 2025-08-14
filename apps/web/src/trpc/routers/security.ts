@@ -462,11 +462,21 @@ export const securityRouter = createTRPCRouter({
 
   // Account Lockouts
   getAccountLockouts: adminProcedure
-    .input(z.object({ userId: z.string() }))
+    .input(z.object({ userId: z.string().optional() }))
     .query(async ({ ctx, input }) => {
       try {
+        const conditions = []
+        
+        // If userId is provided and not empty, filter by user
+        if (input.userId && input.userId.trim() !== '') {
+          conditions.push(eq(accountLockouts.userId, input.userId))
+        }
+        
+        // Only show active (unlocked = false) lockouts for admin view
+        conditions.push(eq(accountLockouts.unlocked, false))
+
         const lockouts = await ctx.db.query.accountLockouts.findMany({
-          where: eq(accountLockouts.userId, input.userId),
+          where: conditions.length > 0 ? and(...conditions) : eq(accountLockouts.unlocked, false),
           orderBy: desc(accountLockouts.lockedAt)
         })
 
@@ -479,6 +489,7 @@ export const securityRouter = createTRPCRouter({
         })
       }
     }),
+
 
   lockAccount: adminProcedure
     .input(z.object({
