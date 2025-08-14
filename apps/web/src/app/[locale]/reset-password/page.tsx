@@ -1,14 +1,14 @@
 'use client'
 
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Button } from '@tszhong0411/ui'
 import { Input } from '@tszhong0411/ui'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@tszhong0411/ui'
 import { toast } from 'sonner'
-import { trpc } from '@/trpc/react'
+import { api } from '@/trpc/react'
 
-export default function ResetPasswordPage() {
+function ResetPasswordForm() {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -16,7 +16,7 @@ export default function ResetPasswordPage() {
   const searchParams = useSearchParams()
   const token = searchParams.get('token')
 
-  const resetPasswordMutation = trpc.users.resetPassword.useMutation({
+  const resetPasswordMutation = api.users.resetPassword.useMutation({
     onSuccess: () => {
       toast.success('Password reset successfully! You can now sign in with your new password.')
       router.push('/sign-in')
@@ -129,5 +129,13 @@ export default function ResetPasswordPage() {
         </CardContent>
       </Card>
     </div>
+  )
+}
+
+export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={<div className="flex items-center justify-center min-h-screen">Loading...</div>}>
+      <ResetPasswordForm />
+    </Suspense>
   )
 }
