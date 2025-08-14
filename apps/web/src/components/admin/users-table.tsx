@@ -229,28 +229,10 @@ const UsersTable = (props: UsersTableProps) => {
                 <BanIcon className="mr-2 h-4 w-4" />
                 {t('admin.table.users.unban')}
               </DropdownMenuItem>
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                    <TrashIcon className="mr-2 h-4 w-4" />
-                    {t('admin.table.users.delete')}
-                  </DropdownMenuItem>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>{t('admin.modals.delete-confirmation.title')}</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      {t('admin.table.users.confirm-delete')}
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>{t('admin.modals.delete-confirmation.cancel')}</AlertDialogCancel>
-                    <AlertDialogAction onClick={() => handleDeleteUser(user.id, user.name || 'Unknown')}>
-                      {t('admin.modals.delete-confirmation.confirm')}
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
+              <DropdownMenuItem onClick={() => handleDeleteUser(user.id, user.name || 'Unknown')}>
+                <TrashIcon className="mr-2 h-4 w-4" />
+                {t('admin.table.users.delete')}
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         )
