@@ -408,6 +408,19 @@
             "evening": "Boa noite! Eu sou a Yue! 🌅",
             "night": "Boa noite! Eu sou a Yue! 🌙"
         },
+        "game": {
+            "title": "Mini Jogo da Yue",
+            "close": "Fechar jogo",
+            "open": "Abrir jogo",
+            "score": "Pontuação",
+            "time": "Tempo",
+            "highScore": "Recorde",
+            "instructions": "Clique no alvo o máximo de vezes que conseguir em 30 segundos!",
+            "start": "Iniciar Jogo",
+            "playAgain": "Jogar Novamente",
+            "gameOver": "Fim de Jogo! Sua pontuação: {score}",
+            "clickTarget": "Clique no alvo"
+        },
         "messages": {
             "0": "Oi! Eu sou a Yue, sua assistente virtual! Precisa de ajuda para navegar?",
             "1": "Sabia que dá para ativar o modo retrô com o Código Konami?",
@@ -456,7 +469,9 @@
             "44": "Meu criador, Yuri acredita em construir coisas que importam!",
             "45": "O site está constantemente evoluindo com novos recursos!",
             "46": "Estou aqui para tornar a tecnologia mais acessível a todos!",
-            "47": "Meu criador, Yuri ama resolver problemas complexos!"
+            "47": "Meu criador, Yuri ama resolver problemas complexos!",
+            "48": "A comunidade em torno deste site é incrível!",
+            "49": "Estou sempre pronta para ajudar com qualquer pergunta que você possa ter!"
         },
         "pageMessages": {
             "home": {
