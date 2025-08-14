@@ -372,8 +372,8 @@ export default function AnnouncementManagement() {
                           className={cn(
                             "min-h-[36px] px-2 sm:px-3 text-xs sm:text-sm",
                             announcement.isActive 
-                              ? "text-green-600 hover:text-green-800 border-green-300" 
-                              : "text-gray-600 hover:text-gray-900 border-gray-300"
+                              ? "text-emerald-600 hover:text-emerald-800 border-emerald-300 hover:border-emerald-400" 
+                              : "text-slate-600 hover:text-slate-900 border-slate-300 hover:border-slate-400"
                           )}
                         >
                           {announcement.isActive ? (
