@@ -6,6 +6,7 @@ import { communicationRouter } from './routers/communication'
 import { contentRouter } from './routers/content'
 import { dataManagementRouter } from './routers/data-management'
 import { emailManagementRouter } from './routers/email-management'
+import { resendEmailRouter } from './routers/resend-email'
 import { githubRouter } from './routers/github'
 import { guestbookRouter } from './routers/guestbook'
 import { likesRouter } from './routers/likes'
@@ -27,6 +28,7 @@ export const appRouter = createTRPCRouter({
   content: contentRouter,
   dataManagement: dataManagementRouter,
   emailManagement: emailManagementRouter,
+  resendEmail: resendEmailRouter,
   monitoring: monitoringRouter,
   security: securityRouter,
   system: systemRouter,

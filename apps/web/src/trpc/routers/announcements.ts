@@ -172,41 +172,46 @@ export const announcementsRouter = createTRPCRouter({
       }
     }),
 
-  // Dismiss announcement (authenticated users only)
-  dismissAnnouncement: protectedProcedure
+  // Dismiss announcement (works for both authenticated and guest users)
+  dismissAnnouncement: publicProcedure
     .input(z.object({ announcementId: z.string() }))
     .mutation(async ({ ctx, input }) => {
       try {
-        // Check if interaction already exists
-        const existing = await ctx.db.query.announcementInteractions.findFirst({
-          where: and(
-            eq(announcementInteractions.announcementId, input.announcementId),
-            eq(announcementInteractions.userId, ctx.session.user.id)
-          )
-        })
+        // For authenticated users, store dismissal in database
+        if (ctx.session?.user) {
+          // Check if interaction already exists
+          const existing = await ctx.db.query.announcementInteractions.findFirst({
+            where: and(
+              eq(announcementInteractions.announcementId, input.announcementId),
+              eq(announcementInteractions.userId, ctx.session.user.id)
+            )
+          })
 
-        if (existing) {
-          // Update existing interaction
-          await ctx.db
-            .update(announcementInteractions)
-            .set({
+          if (existing) {
+            // Update existing interaction
+            await ctx.db
+              .update(announcementInteractions)
+              .set({
+                dismissed: true,
+                dismissedAt: new Date()
+              })
+              .where(eq(announcementInteractions.id, existing.id))
+          } else {
+            // Create new interaction
+            const interactionId = randomBytes(16).toString('hex')
+            await ctx.db.insert(announcementInteractions).values({
+              id: interactionId,
+              announcementId: input.announcementId,
+              userId: ctx.session.user.id,
+              viewed: true,
               dismissed: true,
+              viewedAt: new Date(),
               dismissedAt: new Date()
             })
-            .where(eq(announcementInteractions.id, existing.id))
-        } else {
-          // Create new interaction
-          const interactionId = randomBytes(16).toString('hex')
-          await ctx.db.insert(announcementInteractions).values({
-            id: interactionId,
-            announcementId: input.announcementId,
-            userId: ctx.session.user.id,
-            viewed: true,
-            dismissed: true,
-            viewedAt: new Date(),
-            dismissedAt: new Date()
-          })
+          }
         }
+        // For guest users, dismissal is handled client-side via localStorage
+        // No server-side action needed, just return success
 
         return { success: true }
       } catch (error) {

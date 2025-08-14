@@ -16,6 +16,12 @@ export type AuditAction =
   | 'admin_logout'
   | 'settings_update'
   | 'bulk_operation'
+  | 'content_management'
+  | 'email_marketing'
+  | 'audience_create'
+  | 'audience_sync'
+  | 'broadcast_create'
+  | 'broadcast_send'
 
 export interface AuditLogEntry {
   adminUserId: string
