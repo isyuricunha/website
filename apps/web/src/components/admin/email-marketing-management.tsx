@@ -95,6 +95,7 @@ export default function EmailMarketingManagement() {
       }, 1000)
       return () => clearTimeout(timeoutId)
     }
+    return undefined
   }, [audiencesLoading, audiences, loadingStage])
 
   useEffect(() => {
@@ -105,6 +106,7 @@ export default function EmailMarketingManagement() {
       }, 1000)
       return () => clearTimeout(timeoutId)
     }
+    return undefined
   }, [broadcastsLoading, broadcasts, loadingStage])
 
   useEffect(() => {
@@ -115,6 +117,7 @@ export default function EmailMarketingManagement() {
       }, 1000)
       return () => clearTimeout(timeoutId)
     }
+    return undefined
   }, [templatesLoading, templates, loadingStage])
 
   useEffect(() => {
@@ -207,7 +210,7 @@ export default function EmailMarketingManagement() {
     const name = formData.get('name') as string
     const subject = formData.get('subject') as string
     const html = formData.get('html') as string
-    const text = formData.get('text') as string
+    // const text = formData.get('text') as string // Unused variable
 
     createTemplateMutation.mutate({
       name,
@@ -231,8 +234,8 @@ export default function EmailMarketingManagement() {
     const html = formData.get('html') as string
     const text = formData.get('text') as string
     const from = formData.get('from') as string
-    const scheduleOption = formData.get('scheduleOption') as string
-    const scheduledAt = formData.get('scheduledAt') as string
+    // const scheduleOption = formData.get('scheduleOption') as string // Unused variable
+    // const scheduledAt = formData.get('scheduledAt') as string // Unused variable
 
     createBroadcastMutation.mutate({
       audienceId,
@@ -278,7 +281,7 @@ export default function EmailMarketingManagement() {
 
     const subject = formData.get('subject') as string
     const html = formData.get('html') as string
-    const text = formData.get('text') as string
+    // const text = formData.get('text') as string // Unused variable
 
     updateBroadcastMutation.mutate({
       broadcastId: selectedBroadcast.id,
@@ -901,36 +904,36 @@ export default function EmailMarketingManagement() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <Label className="text-sm font-medium">Name</Label>
-                  <p className="text-sm">{selectedBroadcastData?.name || 'N/A'}</p>
+                  <p className="text-sm">{selectedBroadcastData?.broadcast?.name || 'N/A'}</p>
                 </div>
                 <div>
                   <Label className="text-sm font-medium">Status</Label>
-                  <Badge className={getBroadcastStatusColor(selectedBroadcastData?.status || 'draft')}>
-                    {selectedBroadcastData?.status || 'draft'}
+                  <Badge className={getBroadcastStatusColor(selectedBroadcastData?.broadcast?.status || 'draft')}>
+                    {selectedBroadcastData?.broadcast?.status || 'draft'}
                   </Badge>
                 </div>
                 <div>
                   <Label className="text-sm font-medium">Subject</Label>
-                  <p className="text-sm">{selectedBroadcastData?.subject || 'N/A'}</p>
+                  <p className="text-sm">{selectedBroadcastData?.broadcast?.subject || 'N/A'}</p>
                 </div>
                 <div>
                   <Label className="text-sm font-medium">From</Label>
-                  <p className="text-sm">{selectedBroadcastData?.from || 'N/A'}</p>
+                  <p className="text-sm">{selectedBroadcastData?.broadcast?.from || 'N/A'}</p>
                 </div>
               </div>
               
               <div>
                 <Label className="text-sm font-medium">HTML Content</Label>
                 <div className="mt-2 p-4 bg-muted rounded-lg max-h-64 overflow-y-auto">
-                  <pre className="text-xs whitespace-pre-wrap">{selectedBroadcastData?.html || 'No content'}</pre>
+                  <pre className="text-xs whitespace-pre-wrap">{selectedBroadcastData?.broadcast?.html || 'No content'}</pre>
                 </div>
               </div>
               
-              {selectedBroadcastData?.text && (
+              {selectedBroadcastData?.broadcast?.text && (
                 <div>
                   <Label className="text-sm font-medium">Plain Text Content</Label>
                   <div className="mt-2 p-4 bg-muted rounded-lg max-h-64 overflow-y-auto">
-                    <pre className="text-xs whitespace-pre-wrap">{selectedBroadcastData.text}</pre>
+                    <pre className="text-xs whitespace-pre-wrap">{selectedBroadcastData.broadcast.text}</pre>
                   </div>
                 </div>
               )}
