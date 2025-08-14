@@ -63,20 +63,20 @@ const PostCard = (props: PostCardProps) => {
       />
       
       <div className='flex items-center justify-between gap-2 px-2 pt-4 text-sm text-muted-foreground'>
-        <div className='flex items-center gap-3'>
+        <div className='flex items-center gap-2 sm:gap-3'>
           <div className='flex items-center gap-1'>
             <Calendar className='h-3 w-3' />
-            {formattedDate}
+            <span className='text-xs sm:text-sm'>{formattedDate}</span>
           </div>
           {readingTime && (
             <div className='flex items-center gap-1'>
               <Clock className='h-3 w-3' />
-              {readingTime} min read
+              <span className='text-xs sm:text-sm'>{readingTime} min read</span>
             </div>
           )}
         </div>
         
-        <div className='flex gap-2'>
+        <div className='flex gap-2 text-xs sm:text-sm'>
           {likesQuery.status === 'pending' ? '--' : null}
           {likesQuery.status === 'error' ? t('common.error') : null}
           {likesQuery.status === 'success' ? (
@@ -93,7 +93,7 @@ const PostCard = (props: PostCardProps) => {
       
       <div className='flex flex-col px-2 py-4'>
         <div className='flex items-start justify-between gap-2 mb-2'>
-          <h3 className='text-2xl font-semibold group-hover:text-primary transition-colors'>{title}</h3>
+          <h3 className='text-lg sm:text-xl font-semibold group-hover:text-primary transition-colors'>{title}</h3>
           {category && (
             <Badge variant='outline' className='text-xs shrink-0'>
               {category}
@@ -101,7 +101,7 @@ const PostCard = (props: PostCardProps) => {
           )}
         </div>
         
-        <p className='text-muted-foreground mt-2 line-clamp-2'>{summary}</p>
+        <p className='text-muted-foreground mt-2 line-clamp-2 text-sm'>{summary}</p>
         
         {tags && tags.length > 0 && (
           <div className='flex flex-wrap gap-1 mt-3'>
