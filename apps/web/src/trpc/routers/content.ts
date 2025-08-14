@@ -1,5 +1,5 @@
 import { TRPCError } from '@trpc/server'
-import { posts, siteConfig } from '@tszhong0411/db'
+import { posts } from '@tszhong0411/db'
 import { and, desc, eq, ilike, or } from 'drizzle-orm'
 import { randomBytes } from 'crypto'
 import { z } from 'zod'
