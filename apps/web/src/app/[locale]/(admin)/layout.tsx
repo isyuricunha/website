@@ -2,6 +2,7 @@ import { redirect } from '@tszhong0411/i18n/routing'
 import { SidebarProvider } from '@tszhong0411/ui'
 
 import AdminBreadcrumb from '@/components/admin/admin-breadcrumb'
+import AdminErrorBoundary from '@/components/admin/admin-error-boundary'
 import AdminHeader from '@/components/admin/admin-header'
 import AdminSidebar from '@/components/admin/admin-sidebar'
 import { getSession } from '@/lib/auth'
@@ -33,7 +34,9 @@ const Layout = async (props: LayoutProps) => {
         <AdminHeader />
         <main className='py-6'>
           <AdminBreadcrumb />
-          {children}
+          <AdminErrorBoundary>
+            {children}
+          </AdminErrorBoundary>
         </main>
       </div>
     </SidebarProvider>

@@ -72,12 +72,43 @@ export const passwordResetTokens = pgTable('password_reset_tokens', {
   used: boolean('used').default(false).notNull()
 })
 
+export const auditLogActionEnum = pgEnum('audit_log_action', [
+  'user_create',
+  'user_update', 
+  'user_delete',
+  'user_ban',
+  'user_unban',
+  'user_password_reset',
+  'comment_delete',
+  'comment_approve',
+  'comment_reject',
+  'admin_login',
+  'admin_logout',
+  'settings_update',
+  'bulk_operation'
+])
+
+export const auditLogs = pgTable('audit_logs', {
+  id: text('id').primaryKey(),
+  adminUserId: text('admin_user_id')
+    .notNull()
+    .references(() => users.id, { onDelete: 'cascade' }),
+  action: auditLogActionEnum('action').notNull(),
+  targetType: text('target_type'), // 'user', 'comment', 'settings', etc.
+  targetId: text('target_id'), // ID of the affected resource
+  details: text('details'), // JSON string with additional details
+  ipAddress: text('ip_address'),
+  userAgent: text('user_agent'),
+  createdAt: timestamp('created_at').notNull().defaultNow()
+})
+
 export const usersRelations = relations(users, ({ many }) => ({
   accounts: many(accounts),
   sessions: many(sessions),
   comments: many(comments),
   guestbook: many(guestbook),
-  passwordResetTokens: many(passwordResetTokens)
+  passwordResetTokens: many(passwordResetTokens),
+  auditLogs: many(auditLogs)
 }))
 
 export const accountsRelations = relations(accounts, ({ one }) => ({
@@ -97,6 +128,13 @@ export const sessionsRelations = relations(sessions, ({ one }) => ({
 export const passwordResetTokensRelations = relations(passwordResetTokens, ({ one }) => ({
   user: one(users, {
     fields: [passwordResetTokens.userId],
+    references: [users.id]
+  })
+}))
+
+export const auditLogsRelations = relations(auditLogs, ({ one }) => ({
+  adminUser: one(users, {
+    fields: [auditLogs.adminUserId],
     references: [users.id]
   })
 }))

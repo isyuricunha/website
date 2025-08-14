@@ -1,3 +1,5 @@
+import { auditLogs } from '@tszhong0411/db'
+import { desc, gte, count, sql } from 'drizzle-orm'
 import { adminProcedure, createTRPCRouter } from '../trpc'
 
 export const adminRouter = createTRPCRouter({
@@ -5,9 +7,10 @@ export const adminRouter = createTRPCRouter({
     const now = new Date()
     const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000)
     const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000)
+    const oneYearAgo = new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000)
 
     try {
-      // Get all users
+      // Get all users with creation dates
       const allUsers = await ctx.db.query.users.findMany({
         columns: {
           id: true,
@@ -16,7 +19,7 @@ export const adminRouter = createTRPCRouter({
         }
       })
 
-      // Get all comments
+      // Get all comments with creation dates
       const allComments = await ctx.db.query.comments.findMany({
         columns: {
           id: true,
@@ -32,7 +35,7 @@ export const adminRouter = createTRPCRouter({
         }
       })
 
-      // Calculate stats
+      // Calculate basic stats
       const totalUsers = allUsers.length
       const totalComments = allComments.length
       const totalGuestbookEntries = allGuestbookEntries.length
@@ -56,6 +59,49 @@ export const adminRouter = createTRPCRouter({
         comment.createdAt && new Date(comment.createdAt) >= sevenDaysAgo
       ).length
 
+      // Calculate user growth trends (monthly data for the past year)
+      const userGrowthData = []
+      for (let i = 11; i >= 0; i--) {
+        const monthStart = new Date(now.getFullYear(), now.getMonth() - i, 1)
+        const monthEnd = new Date(now.getFullYear(), now.getMonth() - i + 1, 0)
+        
+        const monthlyUsers = allUsers.filter(user => 
+          user.createdAt && 
+          new Date(user.createdAt) >= monthStart && 
+          new Date(user.createdAt) <= monthEnd
+        ).length
+
+        userGrowthData.push({
+          month: monthStart.toISOString().slice(0, 7), // YYYY-MM format
+          users: monthlyUsers,
+          cumulative: allUsers.filter(user => 
+            user.createdAt && new Date(user.createdAt) <= monthEnd
+          ).length
+        })
+      }
+
+      // Calculate engagement metrics
+      const activeUsers = allUsers.filter(user => 
+        user.createdAt && new Date(user.createdAt) >= thirtyDaysAgo
+      ).length
+
+      const engagementRate = totalUsers > 0 ? (totalComments / totalUsers) : 0
+
+      // Get recent audit logs for admin activity
+      const recentAuditLogs = await ctx.db.query.auditLogs.findMany({
+        where: gte(auditLogs.createdAt, sevenDaysAgo),
+        orderBy: desc(auditLogs.createdAt),
+        limit: 10,
+        with: {
+          adminUser: {
+            columns: {
+              name: true,
+              email: true
+            }
+          }
+        }
+      })
+
       return {
         totals: {
           users: totalUsers,
@@ -65,12 +111,26 @@ export const adminRouter = createTRPCRouter({
         },
         recent: {
           users: recentUsers,
-          comments: recentComments
+          comments: recentComments,
+          activeUsers
         },
         weekly: {
           users: weeklyUsers,
           comments: weeklyComments
-        }
+        },
+        growth: {
+          userGrowthData,
+          engagementRate: Math.round(engagementRate * 100) / 100
+        },
+        recentActivity: recentAuditLogs.map(log => ({
+          id: log.id,
+          action: log.action,
+          targetType: log.targetType,
+          targetId: log.targetId,
+          adminName: log.adminUser.name,
+          createdAt: log.createdAt,
+          details: log.details ? JSON.parse(log.details) : null
+        }))
       }
     } catch (error) {
       console.error('Error fetching admin stats:', error)
@@ -83,13 +143,58 @@ export const adminRouter = createTRPCRouter({
         },
         recent: {
           users: 0,
-          comments: 0
+          comments: 0,
+          activeUsers: 0
         },
         weekly: {
           users: 0,
           comments: 0
-        }
+        },
+        growth: {
+          userGrowthData: [],
+          engagementRate: 0
+        },
+        recentActivity: []
       }
+    }
+  }),
+
+  getAuditLogs: adminProcedure.query(async ({ ctx }) => {
+    try {
+      const auditLogs = await ctx.db.query.auditLogs.findMany({
+        orderBy: desc(auditLogs.createdAt),
+        limit: 100,
+        with: {
+          adminUser: {
+            columns: {
+              name: true,
+              email: true,
+              image: true
+            }
+          }
+        }
+      })
+
+      return {
+        logs: auditLogs.map(log => ({
+          id: log.id,
+          action: log.action,
+          targetType: log.targetType,
+          targetId: log.targetId,
+          adminUser: {
+            name: log.adminUser.name,
+            email: log.adminUser.email,
+            image: log.adminUser.image
+          },
+          details: log.details ? JSON.parse(log.details) : null,
+          ipAddress: log.ipAddress,
+          userAgent: log.userAgent,
+          createdAt: log.createdAt
+        }))
+      }
+    } catch (error) {
+      console.error('Error fetching audit logs:', error)
+      return { logs: [] }
     }
   })
 })
