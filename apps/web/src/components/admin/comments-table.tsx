@@ -16,31 +16,22 @@ import {
   DataTable,
   DataTableColumnHeader,
   type DataTableFilterField,
-  DataTableToolbar
-} from '@tszhong0411/ui'
-import { useState } from 'react'
-import { toast } from 'sonner'
-import { MoreHorizontalIcon, TrashIcon } from 'lucide-react'
-
-import { api } from '@/trpc/react'
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger
-} from '@tszhong0411/ui'
-import {
+  DataTableToolbar,
+  Button,
+  Input,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger
 } from '@tszhong0411/ui'
-import { Button } from '@tszhong0411/ui'
+import { useState, useMemo } from 'react'
+import { toast } from 'sonner'
+import { MoreHorizontalIcon, TrashIcon, Download, Search, X } from 'lucide-react'
+
+import { api } from '@/trpc/react'
+import { useDebounceSearch } from '@/hooks/use-debounced-search'
+import { exportToCSV, COMMENT_EXPORT_COLUMNS } from '@/utils/csv-export'
+import ConfirmationDialog from './confirmation-dialog'
 
 type Comment = GetCommentsOutput['comments'][number]
 
@@ -53,6 +44,15 @@ const CommentsTable = (props: CommentsTableProps) => {
   const t = useTranslations()
   const [sorting, setSorting] = useState<SortingState>([{ id: 'createdAt', desc: true }])
   const utils = api.useUtils()
+  const [confirmDialog, setConfirmDialog] = useState<{
+    open: boolean
+    title: string
+    description: string
+    action: () => void
+    variant?: 'default' | 'destructive'
+  }>({ open: false, title: '', description: '', action: () => {} })
+  
+  const { searchTerm, debouncedSearchTerm, updateSearchTerm, clearSearch } = useDebounceSearch()
 
   const deleteCommentMutation = api.comments.deleteComment.useMutation({
     onSuccess: () => {
@@ -64,8 +64,34 @@ const CommentsTable = (props: CommentsTableProps) => {
     }
   })
 
-  const handleDeleteComment = (commentId: string) => {
-    deleteCommentMutation.mutate({ commentId })
+  // Filter data based on search term
+  const filteredData = useMemo(() => {
+    if (!debouncedSearchTerm) return data
+    
+    return data.filter(comment => 
+      comment.body?.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
+      comment.userId?.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
+      comment.type?.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
+    )
+  }, [data, debouncedSearchTerm])
+
+  const handleDeleteComment = (commentId: string, commentBody: string) => {
+    const truncatedBody = commentBody.length > 50 ? commentBody.substring(0, 50) + '...' : commentBody
+    setConfirmDialog({
+      open: true,
+      title: 'Delete Comment',
+      description: `Are you sure you want to delete this comment: "${truncatedBody}"? This action cannot be undone.`,
+      variant: 'destructive',
+      action: () => {
+        deleteCommentMutation.mutate({ commentId })
+        setConfirmDialog(prev => ({ ...prev, open: false }))
+      }
+    })
+  }
+
+  const handleExportCSV = () => {
+    exportToCSV(filteredData, `comments-${new Date().toISOString().split('T')[0]}`, COMMENT_EXPORT_COLUMNS)
+    toast.success('Comments exported to CSV successfully')
   }
 
   const columns: Array<ColumnDef<Comment>> = [
@@ -127,7 +153,7 @@ const CommentsTable = (props: CommentsTableProps) => {
                   </AlertDialogHeader>
                   <AlertDialogFooter>
                     <AlertDialogCancel>{t('admin.modals.delete-confirmation.cancel')}</AlertDialogCancel>
-                    <AlertDialogAction onClick={() => handleDeleteComment(comment.id)}>
+                    <AlertDialogAction onClick={() => handleDeleteComment(comment.id, comment.body)}>
                       {t('admin.modals.delete-confirmation.confirm')}
                     </AlertDialogAction>
                   </AlertDialogFooter>
@@ -154,7 +180,7 @@ const CommentsTable = (props: CommentsTableProps) => {
   ]
 
   const table = useReactTable({
-    data,
+    data: filteredData,
     columns,
     state: {
       sorting
@@ -167,9 +193,51 @@ const CommentsTable = (props: CommentsTableProps) => {
   })
 
   return (
-    <DataTable table={table}>
-      <DataTableToolbar table={table} filterFields={filterFields} />
-    </DataTable>
+    <>
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <div className="relative">
+              <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search comments..."
+                value={searchTerm}
+                onChange={(e) => updateSearchTerm(e.target.value)}
+                className="pl-8 w-64"
+              />
+              {searchTerm && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="absolute right-1 top-1 h-6 w-6 p-0"
+                  onClick={clearSearch}
+                >
+                  <X className="h-3 w-3" />
+                </Button>
+              )}
+            </div>
+          </div>
+          <Button onClick={handleExportCSV} variant="outline" size="sm">
+            <Download className="mr-2 h-4 w-4" />
+            Export CSV
+          </Button>
+        </div>
+        
+        <DataTable table={table}>
+          <DataTableToolbar table={table} filterFields={filterFields} />
+        </DataTable>
+      </div>
+
+      <ConfirmationDialog
+        open={confirmDialog.open}
+        onOpenChange={(open) => setConfirmDialog(prev => ({ ...prev, open }))}
+        title={confirmDialog.title}
+        description={confirmDialog.description}
+        variant={confirmDialog.variant}
+        onConfirm={confirmDialog.action}
+        loading={deleteCommentMutation.isPending}
+      />
+    </>
   )
 }
 

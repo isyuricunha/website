@@ -1,3 +1,4 @@
+import { adminRouter } from './routers/admin'
 import { commentsRouter } from './routers/comments'
 import { githubRouter } from './routers/github'
 import { guestbookRouter } from './routers/guestbook'
@@ -10,6 +11,7 @@ import { wakatimeRouter } from './routers/wakatime'
 import { createTRPCRouter } from './trpc'
 
 export const appRouter = createTRPCRouter({
+  admin: adminRouter,
   github: githubRouter,
   wakatime: wakatimeRouter,
   views: viewsRouter,

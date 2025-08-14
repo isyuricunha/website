@@ -25,21 +25,14 @@ const MascotGame = ({ isOpen, onClose }: MascotGameProps) => {
     } catch {}
   }, [])
 
-  // Game timer - Fixed to run continuously
+  // Game timer - Runs continuously without restarting on score changes
   useEffect(() => {
-    if (!isPlaying || timeLeft <= 0) return
+    if (!isPlaying) return
 
     const timer = setInterval(() => {
       setTimeLeft(prev => {
         if (prev <= 1) {
           setIsPlaying(false)
-          // Save high score
-          if (score > highScore) {
-            setHighScore(score)
-            try {
-              localStorage.setItem('vc_mascot_game_high_score', score.toString())
-            } catch {}
-          }
           return 0
         }
         return prev - 1
@@ -47,7 +40,20 @@ const MascotGame = ({ isOpen, onClose }: MascotGameProps) => {
     }, 1000)
 
     return () => clearInterval(timer)
-  }, [isPlaying, score, highScore]) // Removed timeLeft from dependencies to prevent timer freezing
+  }, [isPlaying]) // Only depend on isPlaying to prevent timer restarts
+
+  // Handle game end and high score saving separately
+  useEffect(() => {
+    if (!isPlaying && timeLeft === 0) {
+      // Game ended, check and save high score
+      if (score > highScore) {
+        setHighScore(score)
+        try {
+          localStorage.setItem('vc_mascot_game_high_score', score.toString())
+        } catch {}
+      }
+    }
+  }, [isPlaying, timeLeft, score, highScore])
 
   const startGame = useCallback(() => {
     setScore(0)

@@ -15,32 +15,22 @@ import {
   DataTable,
   DataTableColumnHeader,
   type DataTableFilterField,
-  DataTableToolbar
-} from '@tszhong0411/ui'
-import { UserCogIcon, UserIcon, MoreHorizontalIcon, TrashIcon, BanIcon, EditIcon, MailIcon } from 'lucide-react'
-import { useState } from 'react'
-import { toast } from 'sonner'
-
-import { api } from '@/trpc/react'
-import UserEditModal from './user-edit-modal'
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger
-} from '@tszhong0411/ui'
-import {
+  DataTableToolbar,
+  Button,
+  Input,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger
 } from '@tszhong0411/ui'
-import { Button } from '@tszhong0411/ui'
+import { UserCogIcon, UserIcon, MoreHorizontalIcon, TrashIcon, BanIcon, EditIcon, MailIcon, Download, Search, X } from 'lucide-react'
+import { useState, useMemo } from 'react'
+import { toast } from 'sonner'
+
+import { api } from '@/trpc/react'
+import { useDebounceSearch } from '@/hooks/use-debounced-search'
+import { exportToCSV, USER_EXPORT_COLUMNS } from '@/utils/csv-export'
+import ConfirmationDialog from './confirmation-dialog'
 
 type User = GetUsersOutput['users'][number]
 
@@ -67,6 +57,15 @@ const UsersTable = (props: UsersTableProps) => {
   const utils = api.useUtils()
   const [editingUser, setEditingUser] = useState<User | null>(null)
   const [editModalOpen, setEditModalOpen] = useState(false)
+  const [confirmDialog, setConfirmDialog] = useState<{
+    open: boolean
+    title: string
+    description: string
+    action: () => void
+    variant?: 'default' | 'destructive'
+  }>({ open: false, title: '', description: '', action: () => {} })
+  
+  const { searchTerm, debouncedSearchTerm, updateSearchTerm, clearSearch } = useDebounceSearch()
 
   const deleteUserMutation = api.users.deleteUser.useMutation({
     onSuccess: () => {
@@ -107,16 +106,54 @@ const UsersTable = (props: UsersTableProps) => {
     }
   })
 
-  const handleDeleteUser = (userId: string) => {
-    deleteUserMutation.mutate({ userId })
+  // Filter data based on search term
+  const filteredData = useMemo(() => {
+    if (!debouncedSearchTerm) return data
+    
+    return data.filter(user => 
+      user.name?.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
+      user.email?.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
+      user.username?.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
+      user.role?.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
+    )
+  }, [data, debouncedSearchTerm])
+
+  const handleDeleteUser = (userId: string, userName: string) => {
+    setConfirmDialog({
+      open: true,
+      title: 'Delete User',
+      description: `Are you sure you want to delete user "${userName}"? This action cannot be undone.`,
+      variant: 'destructive',
+      action: () => {
+        deleteUserMutation.mutate({ userId })
+        setConfirmDialog(prev => ({ ...prev, open: false }))
+      }
+    })
   }
 
-  const handleBanUser = (userId: string) => {
-    banUserMutation.mutate({ userId })
+  const handleBanUser = (userId: string, userName: string) => {
+    setConfirmDialog({
+      open: true,
+      title: 'Ban User',
+      description: `Are you sure you want to ban user "${userName}"?`,
+      variant: 'destructive',
+      action: () => {
+        banUserMutation.mutate({ userId })
+        setConfirmDialog(prev => ({ ...prev, open: false }))
+      }
+    })
   }
 
-  const handleUnbanUser = (userId: string) => {
-    unbanUserMutation.mutate({ userId })
+  const handleUnbanUser = (userId: string, userName: string) => {
+    setConfirmDialog({
+      open: true,
+      title: 'Unban User',
+      description: `Are you sure you want to unban user "${userName}"?`,
+      action: () => {
+        unbanUserMutation.mutate({ userId })
+        setConfirmDialog(prev => ({ ...prev, open: false }))
+      }
+    })
   }
 
   const handleResetPassword = (userId: string) => {
@@ -126,6 +163,11 @@ const UsersTable = (props: UsersTableProps) => {
   const handleEditUser = (user: User) => {
     setEditingUser(user)
     setEditModalOpen(true)
+  }
+
+  const handleExportCSV = () => {
+    exportToCSV(filteredData, `users-${new Date().toISOString().split('T')[0]}`, USER_EXPORT_COLUMNS)
+    toast.success('Users exported to CSV successfully')
   }
 
   const columns: Array<ColumnDef<User>> = [
@@ -179,11 +221,11 @@ const UsersTable = (props: UsersTableProps) => {
                 <MailIcon className="mr-2 h-4 w-4" />
                 {t('admin.table.users.reset-password')}
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleBanUser(user.id)}>
+              <DropdownMenuItem onClick={() => handleBanUser(user.id, user.name || 'Unknown')}>
                 <BanIcon className="mr-2 h-4 w-4" />
                 {t('admin.table.users.ban')}
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleUnbanUser(user.id)}>
+              <DropdownMenuItem onClick={() => handleUnbanUser(user.id, user.name || 'Unknown')}>
                 <BanIcon className="mr-2 h-4 w-4" />
                 {t('admin.table.users.unban')}
               </DropdownMenuItem>
@@ -203,7 +245,7 @@ const UsersTable = (props: UsersTableProps) => {
                   </AlertDialogHeader>
                   <AlertDialogFooter>
                     <AlertDialogCancel>{t('admin.modals.delete-confirmation.cancel')}</AlertDialogCancel>
-                    <AlertDialogAction onClick={() => handleDeleteUser(user.id)}>
+                    <AlertDialogAction onClick={() => handleDeleteUser(user.id, user.name || 'Unknown')}>
                       {t('admin.modals.delete-confirmation.confirm')}
                     </AlertDialogAction>
                   </AlertDialogFooter>
@@ -230,7 +272,7 @@ const UsersTable = (props: UsersTableProps) => {
   ]
 
   const table = useReactTable({
-    data,
+    data: filteredData,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -240,14 +282,48 @@ const UsersTable = (props: UsersTableProps) => {
 
   return (
     <>
-      <DataTable table={table}>
-        <DataTableToolbar table={table} filterFields={filterFields} />
-      </DataTable>
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <div className="relative">
+              <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search users..."
+                value={searchTerm}
+                onChange={(e) => updateSearchTerm(e.target.value)}
+                className="pl-8 w-64"
+              />
+              {searchTerm && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="absolute right-1 top-1 h-6 w-6 p-0"
+                  onClick={clearSearch}
+                >
+                  <X className="h-3 w-3" />
+                </Button>
+              )}
+            </div>
+          </div>
+          <Button onClick={handleExportCSV} variant="outline" size="sm">
+            <Download className="mr-2 h-4 w-4" />
+            Export CSV
+          </Button>
+        </div>
+        
+        <DataTable table={table}>
+          <DataTableToolbar table={table} filterFields={filterFields} />
+        </DataTable>
+      </div>
 
-      <UserEditModal
-        user={editingUser}
-        open={editModalOpen}
-        onOpenChange={setEditModalOpen}
+      <ConfirmationDialog
+        open={confirmDialog.open}
+        onOpenChange={(open) => setConfirmDialog(prev => ({ ...prev, open }))}
+        title={confirmDialog.title}
+        description={confirmDialog.description}
+        variant={confirmDialog.variant}
+        onConfirm={confirmDialog.action}
+        loading={deleteUserMutation.isPending || banUserMutation.isPending || unbanUserMutation.isPending}
       />
     </>
   )
