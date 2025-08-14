@@ -230,6 +230,8 @@
             "title": "Precisa conversar?"
         },
         "hero": {
+            "view-projects": "Ver projetos",
+            "read-blog": "Ler blog",
             "title-top": "Eu sou Yuri, especialista em banco de dados",
             "title-middle-left": "otimizando",
             "title-middle-right": "soluções em dados",
@@ -258,6 +260,7 @@
         }
     },
     "layout": {
+        "navigation": "Navegação",
         "about": "Sobre",
         "blog": "Blog",
         "change-language": "Alterar idioma",
@@ -668,60 +671,6 @@
                 "14": "Cada 404 é uma chance de explorar algo novo em vez disso!",
                 "15": "Na dúvida, a página inicial tem links para tudo importante! 🏠"
             }
-        }
-    },
-    "layout": {
-        "navigation": "Navegação",
-        "home": "Início",
-        "blog": "Blog",
-        "projects": "Projetos",
-        "about": "Sobre",
-        "guestbook": "Livro de visitas",
-        "uses": "Setup",
-        "spotify": "Spotify",
-        "skip-to-main-content": "Pular para o conteúdo principal",
-        "toggle-menu": "Alternar menu",
-        "change-language": "Mudar idioma",
-        "links": "Links",
-        "github": "GitHub"
-    },
-    "homepage": {
-        "hero": {
-            "view-projects": "Ver projetos",
-            "read-blog": "Ler blog",
-            "title-top": "Oi, eu sou Yuri Cunha",
-            "title-middle-left": "Eu desenvolvo",
-            "title-middle-right": "aplicações",
-            "title-bottom": "e amo bancos de dados",
-            "location-timezone": "São Paulo, Brasil (UTC-3)",
-            "amazing": "incríveis",
-            "stunning": "deslumbrantes",
-            "fantastic": "fantásticas",
-            "attractive": "atrativas"
-        },
-        "selectedProjects": {
-            "title": "Projetos Selecionados",
-            "more": "Ver todos os projetos",
-            "card": "Projeto em Destaque"
-        },
-        "about-me": {
-            "title": "Sobre Mim",
-            "more": "Saiba mais sobre mim",
-            "location": "Localização",
-            "stacks": "Stack Técnico",
-            "connect": "Conectar",
-            "coding-hours": "Horas de Código",
-            "fav-framework": "Framework Favorito"
-        },
-        "latest-articles": {
-            "title": "Últimos Artigos",
-            "more": "Ver todos os artigos",
-            "card": "Último Artigo"
-        },
-        "get-in-touch": {
-            "title": "Vamos trabalhar juntos",
-            "description": "Estou sempre interessado em novas oportunidades e colaborações.",
-            "image-alt": "Ilustração de contato"
         }
     }
 }
