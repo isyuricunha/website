@@ -10,7 +10,6 @@ import { Textarea } from '@tszhong0411/ui'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@tszhong0411/ui'
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@tszhong0411/ui'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@tszhong0411/ui'
-import { Switch } from '@tszhong0411/ui'
 import { ScrollArea } from '@tszhong0411/ui'
 import { 
   Megaphone, 
@@ -335,11 +334,11 @@ export default function AnnouncementManagement() {
                             <h3 className="font-semibold truncate">{announcement.title}</h3>
                           </div>
                           <div className="flex flex-wrap gap-1">
-                            <Badge className={getPriorityColor(announcement.priority)} size="sm">
+                            <Badge className={getPriorityColor(announcement.priority)}>
                               Priority {announcement.priority}
                             </Badge>
                             {!announcement.isActive && (
-                              <Badge variant="secondary" size="sm">Inactive</Badge>
+                              <Badge variant="secondary">Inactive</Badge>
                             )}
                           </div>
                         </div>
@@ -372,8 +371,8 @@ export default function AnnouncementManagement() {
                           className={cn(
                             "min-h-[36px] px-2 sm:px-3 text-xs sm:text-sm",
                             announcement.isActive 
-                              ? "text-emerald-600 hover:text-emerald-800 border-emerald-300 hover:border-emerald-400" 
-                              : "text-slate-600 hover:text-slate-900 border-slate-300 hover:border-slate-400"
+                              ? "text-green-600 hover:text-green-700 border-green-300 hover:border-green-400" 
+                              : "text-gray-600 hover:text-gray-700 border-gray-300 hover:border-gray-400"
                           )}
                         >
                           {announcement.isActive ? (
