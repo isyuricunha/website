@@ -4,20 +4,9 @@ import { useState, useEffect } from 'react'
 import { X, AlertCircle, Info, CheckCircle, AlertTriangle } from 'lucide-react'
 import { Button } from '@tszhong0411/ui'
 import { Card, CardContent } from '@tszhong0411/ui'
-import { Badge } from '@tszhong0411/ui'
 
 import { api } from '@/trpc/react'
 
-interface Announcement {
-  id: string
-  title: string
-  content: string
-  type: 'info' | 'warning' | 'success' | 'error'
-  priority: number
-  isDismissible: boolean
-  startDate?: Date
-  endDate?: Date
-}
 
 const getAnnouncementIcon = (type: string) => {
   switch (type) {
@@ -58,7 +47,7 @@ export default function AnnouncementBanner() {
 
   // Dismiss announcement mutation
   const dismissMutation = api.announcements.dismissAnnouncement.useMutation({
-    onSuccess: (data, variables) => {
+    onSuccess: (_, variables) => {
       setDismissedAnnouncements(prev => [...prev, variables.announcementId])
     }
   })
@@ -126,7 +115,7 @@ export default function AnnouncementBanner() {
                   size="sm"
                   className="h-6 w-6 p-0 hover:bg-black/10 dark:hover:bg-white/10"
                   onClick={() => handleDismiss(announcement.id)}
-                  disabled={dismissMutation.isLoading}
+                  disabled={dismissMutation.isPending}
                 >
                   <X className="h-3 w-3" />
                   <span className="sr-only">Dismiss announcement</span>
