@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@tszh
 import { Badge } from '@tszhong0411/ui'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@tszhong0411/ui'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@tszhong0411/ui'
-import { Activity, AlertTriangle, BarChart3, Clock, Database, Zap } from 'lucide-react'
+import { Activity, AlertTriangle, Zap } from 'lucide-react'
 import { toast } from 'sonner'
 
 import { api } from '@/trpc/react'
@@ -218,7 +218,7 @@ export default function MonitoringDashboard() {
                           <span className="text-sm">{event.user?.name || 'System'}</span>
                         </div>
                         <span className="text-xs text-muted-foreground">
-                          {new Date(event.timestamp).toLocaleString()}
+                          {new Date(event.createdAt).toLocaleString()}
                         </span>
                       </div>
                     )) || <div className="text-sm text-muted-foreground">No recent activity</div>}
@@ -386,14 +386,14 @@ export default function MonitoringDashboard() {
                     <div key={error.id} className="border rounded-lg p-4">
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center space-x-2">
-                          <Badge variant={getSeverityColor(error.severity) as any}>
-                            {error.severity}
+                          <Badge variant={getSeverityColor(error.errorType || 'unknown') as any}>
+                            {error.errorType || 'unknown'}
                           </Badge>
                           <span className="font-medium">{error.message}</span>
                         </div>
                         <div className="flex items-center space-x-2">
                           <span className="text-sm text-muted-foreground">
-                            {new Date(error.timestamp).toLocaleString()}
+                            {new Date(error.firstSeen).toLocaleString()}
                           </span>
                           {!error.resolved && (
                             <Button
@@ -406,9 +406,9 @@ export default function MonitoringDashboard() {
                           )}
                         </div>
                       </div>
-                      {error.source && (
+                      {error.errorType && (
                         <div className="text-sm text-muted-foreground mb-1">
-                          Source: {error.source}
+                          Type: {error.errorType}
                         </div>
                       )}
                       {error.user && (
@@ -534,7 +534,7 @@ export default function MonitoringDashboard() {
                           <span className="text-sm">{event.user?.name || 'Anonymous'}</span>
                         </div>
                         <span className="text-xs text-muted-foreground">
-                          {new Date(event.timestamp).toLocaleString()}
+                          {new Date(event.createdAt).toLocaleString()}
                         </span>
                       </div>
                     )) || <div className="text-center text-muted-foreground">No recent events</div>}
