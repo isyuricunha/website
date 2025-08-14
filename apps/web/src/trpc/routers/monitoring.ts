@@ -10,7 +10,7 @@ import {
   alertInstances,
   userActivity
 } from '@tszhong0411/db'
-import { and, desc, eq, gte, lte, avg, count, sum, max, min } from 'drizzle-orm'
+import { and, desc, eq, gte, lte } from 'drizzle-orm'
 import { randomBytes } from 'crypto'
 import { z } from 'zod'
 
@@ -55,8 +55,8 @@ export const monitoringRouter = createTRPCRouter({
         // Group metrics by type and calculate aggregates
         const groupedMetrics: Record<string, any> = {}
         metrics.forEach(metric => {
-          if (!groupedMetrics[metric.metricType]) {
-            groupedMetrics[metric.metricType] = {
+          if (!groupedMetrics[metric.metricName]) {
+            groupedMetrics[metric.metricName] = {
               data: [],
               avg: 0,
               min: Infinity,
@@ -65,9 +65,9 @@ export const monitoringRouter = createTRPCRouter({
             }
           }
           
-          const group = groupedMetrics[metric.metricType]
+          const group = groupedMetrics[metric.metricName]
           group.data.push({
-            timestamp: metric.timestamp,
+            timestamp: metric.createdAt,
             value: metric.value,
             tags: metric.metadata ? JSON.parse(metric.metadata) : []
           })
@@ -75,10 +75,10 @@ export const monitoringRouter = createTRPCRouter({
           group.min = Math.min(group.min, metric.value)
           group.max = Math.max(group.max, metric.value)
           
-          if (!group.latest || metric.timestamp > group.latest.timestamp) {
+          if (!group.latest || metric.createdAt > group.latest.timestamp) {
             group.latest = {
-              timestamp: metric.timestamp,
-              value: metric.value
+              value: metric.value,
+              timestamp: metric.createdAt
             }
           }
         })
@@ -118,9 +118,9 @@ export const monitoringRouter = createTRPCRouter({
           id: metricId,
           metricName: input.metricType,
           value: input.value,
-          unit: input.unit,
-          tags: input.tags ? JSON.stringify(input.tags) : null,
-          createdAt: new Date(),
+          unit: input.unit || 'count',
+          metadata: input.tags ? JSON.stringify(input.tags) : null,
+          createdAt: new Date()
         })
 
         return { success: true, metricId }
@@ -203,7 +203,7 @@ export const monitoringRouter = createTRPCRouter({
         }
 
         const resourceUsageData = await ctx.db.query.resourceUsage.findMany({
-          where: eq(resourceUsage.type, input.resourceType as 'cpu' | 'memory' | 'disk' | 'network' | 'database_connections' | 'cache_hit_rate'),
+          where: input.resourceType ? eq(resourceUsage.type, input.resourceType as 'cpu' | 'memory' | 'disk' | 'network' | 'database_connections' | 'cache_hit_rate') : undefined,
           orderBy: desc(resourceUsage.createdAt),
           limit: 1000
         })
@@ -313,7 +313,7 @@ export const monitoringRouter = createTRPCRouter({
         return {
           usage: usage.map(item => ({
             ...item,
-            headers: JSON.parse(item.metadata || '{}'),
+            headers: JSON.parse(item.responseHeaders || '{}'),
           })),
           stats,
           timeRange: input.timeRange
@@ -361,7 +361,7 @@ export const monitoringRouter = createTRPCRouter({
             .map(q => ({
               query: q.queryType.substring(0, 100) + '...',
               executionTime: q.executionTime,
-              timestamp: q.timestamp
+              timestamp: q.createdAt
             }))
         }
 
@@ -433,7 +433,7 @@ export const monitoringRouter = createTRPCRouter({
             errorGroups[fingerprint] = {
               fingerprint,
               message: error.message,
-              resourceType: error.component,
+              resourceType: error.source || 'unknown',
               count: 0,
               firstSeen: error.firstSeen,
               lastSeen: error.lastSeen,
@@ -456,7 +456,7 @@ export const monitoringRouter = createTRPCRouter({
         return {
           errors: errors.map(error => ({
             ...error,
-            context: JSON.parse(error.metadata || '{}'),
+            context: JSON.parse(error.breadcrumbs || '{}'),
             timestamp: error.firstSeen,
             stackTrace: error.stack
           })),
@@ -654,7 +654,7 @@ export const monitoringRouter = createTRPCRouter({
         activities.forEach(activity => {
           stats.activityTypes[activity.action] = (stats.activityTypes[activity.action] || 0) + 1
           
-          const hour = activity.timestamp.getHours()
+          const hour = activity.createdAt.getHours()
           stats.hourlyDistribution[hour] = (stats.hourlyDistribution[hour] || 0) + 1
         })
 
@@ -729,7 +729,7 @@ export const monitoringRouter = createTRPCRouter({
           alerts: {
             total: activeAlerts.length,
             critical: activeAlerts.filter(a => a.severity === 'critical').length,
-            high: activeAlerts.filter(a => a.severity === 'high').length
+            warning: activeAlerts.filter(a => a.severity === 'warning').length
           },
           api: {
             totalRequests: recentApiCalls.length,
