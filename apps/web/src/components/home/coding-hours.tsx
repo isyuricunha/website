@@ -13,12 +13,12 @@ const CodingHours = () => {
   const t = useTranslations()
 
   return (
-    <div className='shadow-feature-card flex flex-col gap-6 rounded-xl p-4 lg:p-6'>
+    <div className='shadow-feature-card flex flex-col gap-4 sm:gap-6 rounded-xl p-4 sm:p-5 lg:p-6'>
       <div className='flex items-center gap-2'>
         <ClockIcon className='size-[18px]' />
-        <h2 className='text-sm'>{t('homepage.about-me.coding-hours')}</h2>
+        <h2 className='text-sm sm:text-base'>{t('homepage.about-me.coding-hours')}</h2>
       </div>
-      <div className='flex grow items-center justify-center text-4xl font-semibold'>
+      <div className='flex grow items-center justify-center text-3xl sm:text-4xl font-semibold'>
         {status === 'pending' ? '--' : null}
         {status === 'error' ? t('common.error') : null}
         {status === 'success' ? Math.round(data.seconds / 60 / 60) : null} hrs

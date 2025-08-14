@@ -552,14 +552,14 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   const getPositionClasses = (): string => {
     switch (state.preferences.bubblePosition) {
       case 'bottom-left':
-        return 'fixed bottom-5 left-5'
+        return 'fixed bottom-3 left-3 sm:bottom-5 sm:left-5'
       case 'top-right':
-        return 'fixed top-5 right-5'
+        return 'fixed top-16 right-3 sm:top-5 sm:right-5'
       case 'top-left':
-        return 'fixed top-5 left-5'
+        return 'fixed top-16 left-3 sm:top-5 sm:left-5'
       case 'bottom-right':
       default:
-        return 'fixed bottom-5 right-5'
+        return 'fixed bottom-3 right-3 sm:bottom-5 sm:right-5'
     }
   }
 
@@ -568,17 +568,17 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     switch (state.preferences.bubblePosition) {
       case 'bottom-left':
         // Bubbles appear above and to the right of mascot
-        return 'absolute bottom-full left-0 mb-2'
+        return 'absolute bottom-full left-0 mb-2 max-w-[calc(100vw-2rem)] sm:max-w-none'
       case 'top-right':
         // Bubbles appear below and to the left of mascot
-        return 'absolute top-full right-0 mt-2'
+        return 'absolute top-full right-0 mt-2 max-w-[calc(100vw-2rem)] sm:max-w-none'
       case 'top-left':
         // Bubbles appear below and to the right of mascot
-        return 'absolute top-full left-0 mt-2'
+        return 'absolute top-full left-0 mt-2 max-w-[calc(100vw-2rem)] sm:max-w-none'
       case 'bottom-right':
       default:
         // Bubbles appear above and to the left of mascot (original behavior)
-        return 'absolute bottom-full right-0 mb-2'
+        return 'absolute bottom-full right-0 mb-2 max-w-[calc(100vw-2rem)] sm:max-w-none'
     }
   }
 
@@ -591,10 +591,10 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         <button
           type='button'
           aria-label={t('mascot.restore')}
-          className='rounded-full bg-primary p-3 text-primary-foreground shadow-lg transition-all hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
+          className='rounded-full bg-primary p-2 sm:p-3 text-primary-foreground shadow-lg transition-all hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring min-h-[44px] min-w-[44px]'
           onClick={() => updateState({ isDismissed: false, isHiddenPref: false })}
         >
-          <EyeIcon className='h-6 w-6' />
+          <EyeIcon className='h-5 w-5 sm:h-6 sm:w-6' />
         </button>
       </div>
     )
@@ -605,7 +605,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       <div className={getPositionClasses()}>
         {/* Settings Panel */}
         {state.showSettings && (
-          <div className={`${getBubblePositionClasses()} w-80 rounded-lg border bg-popover p-4 text-sm text-popover-foreground shadow-lg`}>
+          <div className={`${getBubblePositionClasses()} w-72 sm:w-80 rounded-lg border bg-popover p-3 sm:p-4 text-sm text-popover-foreground shadow-lg`}>
             <div className='flex items-center justify-between mb-3'>
               <h3 className='font-medium'>{t('mascot.settings.title')}</h3>
               <button
@@ -690,7 +690,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
         {/* Contact Panel */}
         {state.showContact && (
-          <div className={`${getBubblePositionClasses()} w-80 rounded-lg border bg-popover p-4 text-sm text-popover-foreground shadow-lg`}>
+          <div className={`${getBubblePositionClasses()} w-72 sm:w-80 rounded-lg border bg-popover p-3 sm:p-4 text-sm text-popover-foreground shadow-lg`}>
             <div className='flex items-center justify-between mb-3'>
               <h3 className='font-medium'>{t('mascot.contact.title')}</h3>
               <button
@@ -722,7 +722,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
         {/* Menu Panel */}
         {state.showMenu && (
-          <div className={`${getBubblePositionClasses()} w-48 rounded-lg border bg-popover p-2 text-sm text-popover-foreground shadow-lg`}>
+          <div className={`${getBubblePositionClasses()} w-44 sm:w-48 rounded-lg border bg-popover p-2 text-sm text-popover-foreground shadow-lg`}>
             <div className='space-y-1'>
               <button
                 type='button'
@@ -762,7 +762,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
         {/* Speech Bubbles (Queued) */}
         {state.preferences.speechBubbles && !state.showContact && !state.showSettings && !state.showMenu && (
-          <div className={`${getBubblePositionClasses()} flex w-80 flex-col gap-2`}>
+          <div className={`${getBubblePositionClasses()} flex w-72 sm:w-80 flex-col gap-2`}>
             {state.messageQueue.map((item, idx) => {
               const isExiting = state.exitingIds.has(item.id)
               return (
@@ -823,7 +823,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
           ref={mascotRef}
           type='button'
           aria-label={t('mascot.ariaLabel')}
-          className={`relative inline-flex h-[120px] w-[120px] items-center justify-center rounded-full border transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${state.isActive ? 'border-primary shadow-lg shadow-primary/20' : 'border-border shadow'} ${state.preferences.animations ? 'hover:scale-105' : ''} ${state.isKonamiMode ? 'animate-pulse border-yellow-400 shadow-yellow-400/20' : ''}`}
+          className={`relative inline-flex h-16 w-16 sm:h-20 sm:w-20 lg:h-[120px] lg:w-[120px] items-center justify-center rounded-full border transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${state.isActive ? 'border-primary shadow-lg shadow-primary/20' : 'border-border shadow'} ${state.preferences.animations ? 'hover:scale-105' : ''} ${state.isKonamiMode ? 'animate-pulse border-yellow-400 shadow-yellow-400/20' : ''}`}
           onClick={handleMascotClick}
           onMouseEnter={handleMouseEnter}
           onFocus={() => {
@@ -847,11 +847,11 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
               role='presentation'
               width={120}
               height={120}
-              className={`rounded-full object-cover transition-all duration-200 ${state.isBlinking ? 'animate-pulse' : ''} ${state.isKonamiMode ? 'filter sepia hue-rotate-180' : ''}`}
+              className={`rounded-full object-cover transition-all duration-200 w-full h-full ${state.isBlinking ? 'animate-pulse' : ''} ${state.isKonamiMode ? 'filter sepia hue-rotate-180' : ''}`}
               priority={false}
             />
           ) : (
-            <div aria-hidden className='h-[120px] w-[120px] rounded-full bg-muted/40' />)
+            <div aria-hidden className='w-full h-full rounded-full bg-muted/40' />)
           }
         </button>
       </div>

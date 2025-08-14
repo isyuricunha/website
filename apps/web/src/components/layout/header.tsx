@@ -36,7 +36,7 @@ const Header = () => {
   return (
     <motion.header
       className={cn(
-        'bg-background/30 shadow-xs fixed inset-x-0 top-4 z-40 mx-auto flex h-[60px] max-w-5xl items-center justify-between rounded-2xl px-8 saturate-100 backdrop-blur-[10px] transition-colors',
+        'bg-background/30 shadow-xs fixed inset-x-0 top-2 sm:top-4 z-40 mx-2 sm:mx-auto flex h-[56px] sm:h-[60px] max-w-5xl items-center justify-between rounded-xl sm:rounded-2xl px-4 sm:px-6 lg:px-8 saturate-100 backdrop-blur-[10px] transition-colors',
         isScrolled && 'bg-background/80'
       )}
       initial={{
@@ -57,12 +57,12 @@ const Header = () => {
       </a>
       <Link
         href='/'
-        className='flex items-center justify-center gap-1'
+        className='flex items-center justify-center gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-lg p-1'
         aria-label={t('layout.home')}
       >
-        <Logo width={28} height={28} aria-hidden='true' />
+        <Logo width={24} height={24} className='sm:w-7 sm:h-7' aria-hidden='true' />
       </Link>
-      <div className='flex items-center gap-2'>
+      <div className='flex items-center gap-1 sm:gap-2'>
         <Navbar />
         <ThemeSwitcher />
         <LocaleSwitcher />

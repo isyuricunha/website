@@ -43,10 +43,10 @@ const SelectedProjects = () => {
       transition={{
         duration: 0.5
       }}
-      className='relative my-24'
+      className='relative my-12 sm:my-16 lg:my-24'
     >
       <motion.h2
-        className='text-center text-3xl font-semibold'
+        className='text-center text-2xl sm:text-3xl lg:text-4xl font-semibold px-4'
         initial={{
           y: 30,
           opacity: 0
@@ -62,7 +62,7 @@ const SelectedProjects = () => {
         {t('homepage.selectedProjects.title')}
       </motion.h2>
       <motion.div
-        className='mt-12 grid gap-4 md:grid-cols-2'
+        className='mt-8 sm:mt-12 grid gap-4 sm:gap-6 md:grid-cols-2 px-4'
         initial={{
           y: 40,
           opacity: 0
@@ -79,14 +79,14 @@ const SelectedProjects = () => {
           <Card key={project.slug} project={project} />
         ))}
       </motion.div>
-      <div className='my-8 flex items-center justify-center'>
+      <div className='my-8 flex items-center justify-center px-4'>
         <Link
           href='/projects'
           className={cn(
             buttonVariants({
               variant: 'outline'
             }),
-            'rounded-xl'
+            'rounded-xl min-h-[44px] px-6 py-3 text-sm sm:text-base'
           )}
         >
           {t('homepage.selectedProjects.more')}
@@ -105,25 +105,25 @@ const Card = (props: CardProps) => {
     <Link
       key={slug}
       href={`/projects/${slug}`}
-      className='shadow-feature-card group relative rounded-xl p-2'
+      className='shadow-feature-card group relative rounded-xl p-2 transition-transform hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
     >
-      <div className='flex items-center justify-between p-4'>
-        <div className='flex items-center gap-3'>
-          <LightbulbIcon className='size-[18px]' />
-          <h2>{t('homepage.selectedProjects.card')}</h2>
+      <div className='flex items-center justify-between p-3 sm:p-4'>
+        <div className='flex items-center gap-2 sm:gap-3'>
+          <LightbulbIcon className='size-4 sm:size-[18px]' />
+          <h2 className='text-sm sm:text-base'>{t('homepage.selectedProjects.card')}</h2>
         </div>
-        <ArrowUpRightIcon className='size-[18px] opacity-0 transition-opacity group-hover:opacity-100' />
+        <ArrowUpRightIcon className='size-4 sm:size-[18px] opacity-0 transition-opacity group-hover:opacity-100' />
       </div>
       <BlurImage
         width={1280}
         height={832}
         src={`/images/projects/${slug}/cover.png`}
         alt={description}
-        className='rounded-lg'
+        className='rounded-lg w-full h-auto'
       />
-      <div className='absolute bottom-6 left-7 flex flex-col transition-[left] ease-out group-hover:left-[30px]'>
-        <h3 className='text-2xl font-semibold text-white'>{name}</h3>
-        <p className='dark:text-muted-foreground mt-2 text-zinc-100'>{description}</p>
+      <div className='absolute bottom-4 sm:bottom-6 left-4 sm:left-7 flex flex-col transition-[left] ease-out group-hover:left-[20px] sm:group-hover:left-[30px] max-w-[calc(100%-2rem)] sm:max-w-[calc(100%-3.5rem)]'>
+        <h3 className='text-lg sm:text-xl lg:text-2xl font-semibold text-white truncate'>{name}</h3>
+        <p className='dark:text-muted-foreground mt-1 sm:mt-2 text-zinc-100 text-sm sm:text-base line-clamp-2'>{description}</p>
       </div>
     </Link>
   )

@@ -39,13 +39,13 @@ const MobileNav = () => {
           <MenuIcon className='size-4' />
         </Button>
       </SheetTrigger>
-      <SheetContent side="right" className="w-80 p-0">
-        <SheetHeader className="border-b p-6">
-          <SheetTitle className="text-left">{t('layout.navigation')}</SheetTitle>
+      <SheetContent side="right" className="w-[85vw] max-w-80 p-0">
+        <SheetHeader className="border-b p-4 sm:p-6">
+          <SheetTitle className="text-left text-lg font-semibold">{t('layout.navigation')}</SheetTitle>
         </SheetHeader>
 
-        <nav className="flex flex-col p-6">
-          <ul className="space-y-2">
+        <nav className="flex flex-col p-4 sm:p-6">
+          <ul className="space-y-1">
             {HEADER_LINKS.map((link, index) => {
               const isActive = link.href === pathname
 
@@ -60,7 +60,7 @@ const MobileNav = () => {
                     href={link.href}
                     onClick={handleLinkClick}
                     className={cn(
-                      'flex items-center gap-4 rounded-lg px-4 py-3 text-sm font-medium transition-all duration-200',
+                      'flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium transition-all duration-200 min-h-[44px]',
                       'hover:bg-accent hover:text-accent-foreground',
                       'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
                       {
@@ -69,7 +69,7 @@ const MobileNav = () => {
                       }
                     )}
                   >
-                    <span className="flex h-5 w-5 items-center justify-center">
+                    <span className="flex h-5 w-5 items-center justify-center flex-shrink-0">
                       {link.icon}
                     </span>
                     <span className="flex-1">{t(`layout.${link.key}`)}</span>

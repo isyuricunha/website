@@ -607,6 +607,7 @@ export default function EmailMarketingManagement() {
                           name="name" 
                           defaultValue={selectedBroadcast?.name || ''}
                           placeholder="Internal name for this broadcast" 
+                          className="min-h-[44px] h-11 text-sm sm:text-base px-3 py-2"
                           required 
                         />
                       </div>
@@ -614,7 +615,7 @@ export default function EmailMarketingManagement() {
                       <div>
                         <Label htmlFor="audienceId">Target Audience</Label>
                         <Select name="audienceId" defaultValue={selectedBroadcast?.audienceId || ''} required>
-                          <SelectTrigger>
+                          <SelectTrigger className="min-h-[44px] h-11 text-sm sm:text-base px-3 py-2">
                             <SelectValue placeholder="Select an audience" />
                           </SelectTrigger>
                           <SelectContent>
@@ -635,6 +636,7 @@ export default function EmailMarketingManagement() {
                           type="email" 
                           defaultValue={selectedBroadcast?.from || ''}
                           placeholder="noreply@yourdomain.com" 
+                          className="min-h-[44px] h-11 text-sm sm:text-base px-3 py-2"
                           required 
                         />
                       </div>
@@ -646,6 +648,7 @@ export default function EmailMarketingManagement() {
                           name="subject" 
                           defaultValue={selectedBroadcast?.subject || ''}
                           placeholder="Email subject" 
+                          className="min-h-[44px] h-11 text-sm sm:text-base px-3 py-2"
                           required 
                         />
                       </div>
@@ -657,6 +660,7 @@ export default function EmailMarketingManagement() {
                           name="html" 
                           defaultValue={selectedBroadcast?.html || ''}
                           placeholder="Email HTML content" 
+                          className="min-h-[120px] text-sm sm:text-base px-3 py-2"
                           rows={8} 
                         />
                       </div>
@@ -668,16 +672,17 @@ export default function EmailMarketingManagement() {
                           name="text" 
                           defaultValue={selectedBroadcast?.text || ''}
                           placeholder="Plain text version" 
+                          className="min-h-[80px] text-sm sm:text-base px-3 py-2"
                           rows={4} 
                         />
                       </div>
                     </div>
                     
                     <DialogFooter className="mt-6">
-                      <Button type="button" variant="outline" onClick={() => setIsCreateCampaignDialogOpen(false)}>
+                      <Button type="button" variant="outline" className="min-h-[44px] text-sm sm:text-base" onClick={() => setIsCreateCampaignDialogOpen(false)}>
                         Cancel
                       </Button>
-                      <Button type="submit" className="bg-purple-600 hover:bg-purple-700 dark:bg-purple-700 dark:hover:bg-purple-600">
+                      <Button type="submit" className="bg-purple-600 hover:bg-purple-700 dark:bg-purple-700 dark:hover:bg-purple-600 min-h-[44px] text-sm sm:text-base">
                         Create Broadcast
                       </Button>
                     </DialogFooter>

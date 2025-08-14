@@ -196,25 +196,25 @@ export default function AnnouncementManagement() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6 p-4 sm:p-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold flex items-center gap-2">
-            <Megaphone className="h-8 w-8 text-orange-600 dark:text-orange-400" />
-            Announcements
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="min-w-0 flex-1">
+          <h1 className="text-2xl sm:text-3xl font-bold flex items-center gap-2">
+            <Megaphone className="h-6 w-6 sm:h-8 sm:w-8 text-orange-600 dark:text-orange-400 flex-shrink-0" />
+            <span className="truncate">Announcements</span>
           </h1>
-          <p className="text-muted-foreground">Manage site-wide announcements and notifications</p>
+          <p className="text-muted-foreground text-sm sm:text-base mt-1">Manage site-wide announcements and notifications</p>
         </div>
         
         <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
           <DialogTrigger asChild>
-            <Button className="bg-orange-600 hover:bg-orange-700 dark:bg-orange-700 dark:hover:bg-orange-600">
-              <Plus className="h-4 w-4 mr-2" />
-              Create Announcement
+            <Button className="bg-orange-600 hover:bg-orange-700 dark:bg-orange-700 dark:hover:bg-orange-600 min-h-[44px] px-4 sm:px-6 text-sm sm:text-base w-full sm:w-auto">
+              <Plus className="h-4 w-4 mr-2 flex-shrink-0" />
+              <span className="truncate">Create Announcement</span>
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-2xl">
+          <DialogContent className="max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>Create New Announcement</DialogTitle>
               <DialogDescription>
@@ -276,7 +276,7 @@ export default function AnnouncementManagement() {
 
       {/* Analytics Cards */}
       {analytics && (
-        <div className="grid gap-4 md:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <Card className="border-orange-200 dark:border-orange-800">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Total Views</CardTitle>
@@ -316,30 +316,34 @@ export default function AnnouncementManagement() {
 
       {/* Announcements List */}
       <Card>
-        <CardHeader>
-          <CardTitle>All Announcements</CardTitle>
-          <CardDescription>Manage your site announcements</CardDescription>
+        <CardHeader className="p-4 sm:p-6">
+          <CardTitle className="text-lg sm:text-xl">All Announcements</CardTitle>
+          <CardDescription className="text-sm sm:text-base">Manage your site announcements</CardDescription>
         </CardHeader>
-        <CardContent>
-          <ScrollArea className="h-[600px]">
-            <div className="space-y-4">
+        <CardContent className="p-4 sm:p-6">
+          <ScrollArea className="h-[400px] sm:h-[500px] lg:h-[600px]">
+            <div className="space-y-3 sm:space-y-4">
               {announcements?.announcements?.map((announcement) => (
                 <Card key={announcement.id} className={`${getAnnouncementTypeColor(announcement.type)} border-2`}>
-                  <CardContent className="p-4">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-2">
-                          {getAnnouncementIcon(announcement.type)}
-                          <h3 className="font-semibold">{announcement.title}</h3>
-                          <Badge className={getPriorityColor(announcement.priority)}>
-                            Priority {announcement.priority}
-                          </Badge>
-                          {!announcement.isActive && (
-                            <Badge variant="secondary">Inactive</Badge>
-                          )}
+                  <CardContent className="p-3 sm:p-4">
+                    <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex flex-wrap items-center gap-2 mb-2">
+                          <div className="flex items-center gap-2 min-w-0">
+                            {getAnnouncementIcon(announcement.type)}
+                            <h3 className="font-semibold truncate">{announcement.title}</h3>
+                          </div>
+                          <div className="flex flex-wrap gap-1">
+                            <Badge className={getPriorityColor(announcement.priority)} size="sm">
+                              Priority {announcement.priority}
+                            </Badge>
+                            {!announcement.isActive && (
+                              <Badge variant="secondary" size="sm">Inactive</Badge>
+                            )}
+                          </div>
                         </div>
                         
-                        <p className="text-sm mb-3">{announcement.content}</p>
+                        <p className="text-sm mb-3 line-clamp-2">{announcement.content}</p>
                         
                         <div className="flex items-center gap-4 text-xs text-muted-foreground">
                           <span className="flex items-center gap-1">
@@ -358,26 +362,28 @@ export default function AnnouncementManagement() {
                         </div>
                       </div>
                       
-                      <div className="flex items-center gap-2 ml-4">
+                      <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 sm:ml-4">
                         {/* Toggle Active/Inactive */}
                         <Button
                           variant="outline"
                           size="sm"
                           onClick={() => handleToggleActive(announcement)}
-                          className={announcement.isActive 
-                            ? "text-green-600 hover:text-green-700 border-green-300" 
-                            : "text-gray-600 hover:text-gray-700 border-gray-300"
-                          }
+                          className={cn(
+                            "min-h-[36px] px-2 sm:px-3 text-xs sm:text-sm",
+                            announcement.isActive 
+                              ? "text-green-600 hover:text-green-800 border-green-300" 
+                              : "text-gray-600 hover:text-gray-900 border-gray-300"
+                          )}
                         >
                           {announcement.isActive ? (
                             <>
-                              <Eye className="h-4 w-4 mr-1" />
-                              Active
+                              <Eye className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-1" />
+                              <span className="hidden sm:inline">Active</span>
                             </>
                           ) : (
                             <>
-                              <EyeOff className="h-4 w-4 mr-1" />
-                              Inactive
+                              <EyeOff className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-1" />
+                              <span className="hidden sm:inline">Inactive</span>
                             </>
                           )}
                         </Button>
@@ -387,9 +393,10 @@ export default function AnnouncementManagement() {
                           variant="outline"
                           size="sm"
                           onClick={() => openEditDialog(announcement)}
-                          className="text-orange-600 hover:text-orange-700 border-orange-300 hover:border-orange-400"
+                          className="text-orange-600 hover:text-orange-700 border-orange-300 hover:border-orange-400 min-h-[36px] px-2 sm:px-3"
+                          aria-label="Edit announcement"
                         >
-                          <Edit className="h-4 w-4" />
+                          <Edit className="h-3 w-3 sm:h-4 sm:w-4" />
                         </Button>
                         
                         {/* Delete Button */}
@@ -398,9 +405,10 @@ export default function AnnouncementManagement() {
                             <Button
                               variant="outline"
                               size="sm"
-                              className="text-red-600 hover:text-red-700 border-red-300 hover:border-red-400"
+                              className="text-red-600 hover:text-red-700 border-red-300 hover:border-red-400 min-h-[36px] px-2 sm:px-3"
+                              aria-label="Delete announcement"
                             >
-                              <Trash2 className="h-4 w-4" />
+                              <Trash2 className="h-3 w-3 sm:h-4 sm:w-4" />
                             </Button>
                           </AlertDialogTrigger>
                           <AlertDialogContent>
@@ -428,9 +436,9 @@ export default function AnnouncementManagement() {
               ))}
               
               {!announcements?.announcements?.length && (
-                <div className="text-center py-8 text-muted-foreground">
-                  <Megaphone className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                  <p>No announcements yet. Create your first announcement to get started!</p>
+                <div className="text-center py-8 sm:py-12 text-muted-foreground">
+                  <Megaphone className="h-8 w-8 sm:h-12 sm:w-12 mx-auto mb-4 opacity-50" />
+                  <p className="text-sm sm:text-base px-4">No announcements yet. Create your first announcement to get started!</p>
                 </div>
               )}
             </div>

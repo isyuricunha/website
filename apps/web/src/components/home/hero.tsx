@@ -64,10 +64,10 @@ const Hero = () => {
   if (!textItem) return null
 
   return (
-    <div className='my-16 space-y-6'>
-      <div className='flex justify-between gap-8'>
-        <div className='flex flex-col gap-4'>
-          <h1 className='flex flex-col flex-wrap gap-2 text-xl font-bold sm:text-3xl'>
+    <div className='my-8 sm:my-12 lg:my-16 space-y-4 sm:space-y-6'>
+      <div className='flex flex-col lg:flex-row lg:justify-between gap-6 lg:gap-8'>
+        <div className='flex flex-col gap-4 flex-1'>
+          <h1 className='flex flex-col flex-wrap gap-2 text-2xl font-bold sm:text-3xl lg:text-4xl xl:text-5xl'>
             <motion.div
               initial={{ x: 20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
@@ -127,7 +127,7 @@ const Hero = () => {
             initial={{ x: 50, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ ease: 'easeOut' }}
-            className='text-muted-foreground text-sm'
+            className='text-muted-foreground text-sm sm:text-base max-w-md'
           >
             {t('homepage.hero.location-timezone')}
           </motion.div>
@@ -136,24 +136,24 @@ const Hero = () => {
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ ease: 'easeOut', delay: 0.4 }}
-            className='flex flex-col gap-3 pt-4 sm:flex-row sm:gap-4'
+            className='flex flex-col gap-3 pt-4 sm:flex-row sm:gap-4 max-w-md'
           >
             <Link
               href='/projects'
-              className='inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-all duration-200 hover:bg-primary/90 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
+              className='inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 text-sm sm:text-base font-medium text-primary-foreground transition-all duration-200 hover:bg-primary/90 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 min-h-[44px]'
             >
               {t('homepage.hero.view-projects')}
             </Link>
             <Link
               href='/blog'
-              className='inline-flex items-center justify-center rounded-lg border border-input bg-background px-6 py-3 text-sm font-medium transition-all duration-200 hover:bg-accent hover:text-accent-foreground hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
+              className='inline-flex items-center justify-center rounded-lg border border-input bg-background px-6 py-3 text-sm sm:text-base font-medium transition-all duration-200 hover:bg-accent hover:text-accent-foreground hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 min-h-[44px]'
             >
               {t('homepage.hero.read-blog')}
             </Link>
           </motion.div>
         </div>
         <motion.div
-          className='relative hidden size-28 md:block'
+          className='relative size-24 sm:size-28 lg:size-32 xl:size-36 mx-auto lg:mx-0 flex-shrink-0'
           initial={{
             scale: 0
           }}
@@ -166,9 +166,9 @@ const Hero = () => {
         >
           <BlurImage
             src='/images/avatar.png'
-            className='rounded-full'
-            width={112}
-            height={112}
+            className='rounded-full w-full h-full object-cover'
+            width={144}
+            height={144}
             alt='Yuri Cunha'
             lazy={false}
           />

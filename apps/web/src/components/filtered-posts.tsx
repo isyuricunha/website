@@ -101,7 +101,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
 
   return (
     <>
-      <div className='mb-8 space-y-4'>
+      <div className='mb-6 sm:mb-8 space-y-4 px-4 sm:px-0'>
         {/* Search Bar */}
         <div className='relative'>
           <Input
@@ -110,29 +110,29 @@ const FilteredPosts = (props: FilteredPostsProps) => {
             onChange={(e) => setSearchValue(e.target.value)}
             placeholder={t('component.filtered-posts.placeholder')}
             aria-label={t('component.filtered-posts.placeholder')}
-            className='w-full pl-12 h-12 text-base border-2 focus:border-primary/50 transition-colors'
+            className='w-full pl-10 sm:pl-12 h-11 sm:h-12 text-sm sm:text-base border-2 focus:border-primary/50 transition-colors'
             id='search'
           />
           <Label htmlFor='search'>
-            <SearchIcon className='absolute left-4 top-1/2 size-5 -translate-y-1/2 text-muted-foreground' />
+            <SearchIcon className='absolute left-3 sm:left-4 top-1/2 size-4 sm:size-5 -translate-y-1/2 text-muted-foreground' />
           </Label>
         </div>
 
         {/* Filter Toggle */}
-        <div className='flex items-center justify-between'>
+        <div className='flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0'>
           <button
             onClick={() => setShowFilters(!showFilters)}
-            className='flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors'
+            className='flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors min-h-[44px] px-3 py-2 rounded-lg hover:bg-accent self-start'
           >
-            <SlidersHorizontal className='h-4 w-4' />
-            {showFilters ? 'Hide Filters' : 'Show Filters'}
+            <SlidersHorizontal className='h-4 w-4 flex-shrink-0' />
+            <span>{showFilters ? 'Hide Filters' : 'Show Filters'}</span>
           </button>
           
           {/* Sort Dropdown */}
-          <div className='flex items-center gap-2'>
-            <span className='text-sm text-muted-foreground'>Sort by:</span>
+          <div className='flex flex-col sm:flex-row sm:items-center gap-2'>
+            <span className='text-sm text-muted-foreground whitespace-nowrap'>Sort by:</span>
             <Select value={sortBy} onValueChange={(value: SortOption) => setSortBy(value)}>
-              <SelectTrigger className='w-40'>
+              <SelectTrigger className='w-full sm:w-40 min-h-[44px]'>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -163,13 +163,13 @@ const FilteredPosts = (props: FilteredPostsProps) => {
 
         {/* Advanced Filters */}
         {showFilters && (
-          <div className='grid grid-cols-1 md:grid-cols-2 gap-4 p-4 border rounded-lg bg-muted/20'>
+          <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 border rounded-lg bg-muted/20'>
             {/* Category Filter */}
             {categories.length > 0 && (
               <div>
                 <Label className='text-sm font-medium mb-2 block'>Category</Label>
                 <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                  <SelectTrigger>
+                  <SelectTrigger className='min-h-[44px]'>
                     <SelectValue placeholder='All Categories' />
                   </SelectTrigger>
                   <SelectContent>
@@ -189,7 +189,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
               <div>
                 <Label className='text-sm font-medium mb-2 block'>Tag</Label>
                 <Select value={selectedTag} onValueChange={setSelectedTag}>
-                  <SelectTrigger>
+                  <SelectTrigger className='min-h-[44px]'>
                     <SelectValue placeholder='All Tags' />
                   </SelectTrigger>
                   <SelectContent>
@@ -207,8 +207,8 @@ const FilteredPosts = (props: FilteredPostsProps) => {
         )}
         
         {/* Results Summary */}
-        <div className='flex items-center justify-between text-sm text-muted-foreground'>
-          <span>
+        <div className='flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-sm text-muted-foreground'>
+          <span className='flex-1'>
             {isSearching ? (
               'Searching...'
             ) : searchValue || selectedCategory !== 'all' || selectedTag !== 'all' ? (
@@ -223,7 +223,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
           {(searchValue || selectedCategory !== 'all' || selectedTag !== 'all') && (
             <button
               onClick={clearAllFilters}
-              className='text-primary hover:text-primary/80 transition-colors'
+              className='text-primary hover:text-primary/80 transition-colors min-h-[44px] px-3 py-2 rounded-lg hover:bg-accent self-start sm:self-auto'
             >
               Clear all filters
             </button>
@@ -232,17 +232,17 @@ const FilteredPosts = (props: FilteredPostsProps) => {
       </div>
       
       {filteredAndSortedPosts.length === 0 ? (
-        <div className='my-24 text-center space-y-4'>
-          <div className='text-6xl'>📝</div>
-          <h3 className='text-xl font-semibold'>
+        <div className='my-12 sm:my-16 lg:my-24 text-center space-y-4 px-4'>
+          <div className='text-4xl sm:text-6xl'>📝</div>
+          <h3 className='text-lg sm:text-xl font-semibold'>
             {t('component.filtered-posts.no-posts-found')}
           </h3>
-          <p className='text-muted-foreground max-w-md mx-auto'>
+          <p className='text-muted-foreground max-w-md mx-auto text-sm sm:text-base'>
             Try adjusting your search terms or filters, or browse all posts below.
           </p>
           <button
             onClick={clearAllFilters}
-            className='inline-flex items-center justify-center rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90'
+            className='inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 text-sm sm:text-base font-medium text-primary-foreground transition-colors hover:bg-primary/90 min-h-[44px]'
           >
             Show all posts
           </button>

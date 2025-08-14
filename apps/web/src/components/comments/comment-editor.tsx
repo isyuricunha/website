@@ -140,19 +140,19 @@ const CommentEditor = (props: CommentEditorProps) => {
         }}
         ref={textareaRef}
         defaultValue={initialValue}
-        className='min-h-10 resize-none border-none focus-visible:ring-0 focus-visible:ring-offset-0'
+        className='min-h-[44px] sm:min-h-10 resize-none border-none focus-visible:ring-0 focus-visible:ring-offset-0 text-sm sm:text-base px-3 py-2'
         autoComplete='off'
         autoCorrect='off'
         autoCapitalize='off'
         spellCheck='false'
         {...rest}
       />
-      <div className='flex flex-row items-center gap-0.5 px-1.5'>
+      <div className='flex flex-row items-center gap-1 px-2 sm:px-1.5 py-1'>
         <Button
           aria-label={t('blog.comments.toggle-bold')}
           variant='ghost'
           size='icon'
-          className='size-7'
+          className='size-8 sm:size-7 min-h-[32px] min-w-[32px]'
           onClick={() => decorateText(textareaRef.current, 'bold')}
         >
           <BoldIcon className='size-4' />
@@ -161,7 +161,7 @@ const CommentEditor = (props: CommentEditorProps) => {
           aria-label={t('blog.comments.toggle-strikethrough')}
           variant='ghost'
           size='icon'
-          className='size-7'
+          className='size-8 sm:size-7 min-h-[32px] min-w-[32px]'
           onClick={() => decorateText(textareaRef.current, 'strikethrough')}
         >
           <StrikethroughIcon className='size-4' />
@@ -170,7 +170,7 @@ const CommentEditor = (props: CommentEditorProps) => {
           aria-label={t('blog.comments.toggle-italic')}
           variant='ghost'
           size='icon'
-          className='size-7'
+          className='size-8 sm:size-7 min-h-[32px] min-w-[32px]'
           onClick={() => decorateText(textareaRef.current, 'italic')}
         >
           <ItalicIcon className='size-4' />

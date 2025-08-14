@@ -218,7 +218,7 @@ const SignInDialog = () => {
         {!isSignup && (
           <div className='my-6 flex flex-col gap-4'>
             <Button
-              className='relative h-10 rounded-xl font-semibold'
+              className='relative min-h-[44px] h-10 rounded-xl font-semibold text-sm sm:text-base'
               onClick={() => handleSocialSignIn('github')}
               isPending={isPending}
             >
@@ -227,7 +227,7 @@ const SignInDialog = () => {
               {lastUsedProvider === 'github' && <LastUsed />}
             </Button>
             <Button
-              className='relative h-10 rounded-xl border font-semibold'
+              className='relative min-h-[44px] h-10 rounded-xl border font-semibold text-sm sm:text-base'
               variant='ghost'
               onClick={() => handleSocialSignIn('google')}
               isPending={isPending}
@@ -237,7 +237,7 @@ const SignInDialog = () => {
               {lastUsedProvider === 'google' && <LastUsed />}
             </Button>
             <Button
-              className='relative h-10 w-full rounded-xl border font-semibold'
+              className='relative min-h-[44px] h-10 w-full rounded-xl border font-semibold text-sm sm:text-base'
               onClick={handleAnonymousSignIn}
               isPending={isPending}
             >
@@ -262,7 +262,7 @@ const SignInDialog = () => {
               type='text'
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className='w-full'
+              className='w-full min-h-[44px] h-11 text-sm sm:text-base px-3 py-2'
             />
           )}
           <Input
@@ -270,17 +270,17 @@ const SignInDialog = () => {
             type='email'
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className='w-full'
+            className='w-full min-h-[44px] h-11 text-sm sm:text-base px-3 py-2'
           />
           <Input
             placeholder='Password'
             type='password'
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className='w-full'
+            className='w-full min-h-[44px] h-11 text-sm sm:text-base px-3 py-2'
           />
           <Button
-            className='relative h-10 rounded-xl font-semibold'
+            className='relative min-h-[44px] h-10 rounded-xl font-semibold text-sm sm:text-base'
             onClick={isSignup ? handleEmailSignUp : handleEmailSignIn}
             isPending={isEmailPending}
           >
@@ -293,14 +293,14 @@ const SignInDialog = () => {
           {isSignup ? (
             <span>
               {t('dialog.already-have-account')}{' '}
-              <Button variant='link' onClick={() => setIsSignup(false)}>
+              <Button variant='link' className='min-h-[32px] text-sm sm:text-base p-1' onClick={() => setIsSignup(false)}>
                 {t('dialog.sign-in.here')}
               </Button>
             </span>
           ) : (
             <span>
               {t('dialog.dont-have-account')}{' '}
-              <Button variant='link' onClick={() => setIsSignup(true)}>
+              <Button variant='link' className='min-h-[32px] text-sm sm:text-base p-1' onClick={() => setIsSignup(true)}>
                 {t('dialog.sign-up.here')}
               </Button>
             </span>
