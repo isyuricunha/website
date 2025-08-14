@@ -11,33 +11,13 @@ import {
   Eye, 
   Star,
   Calendar,
-  User,
   FileText,
   BarChart3
 } from 'lucide-react'
 import { api } from '@/trpc/react'
 import { toast } from 'sonner'
 
-interface Post {
-  id: string
-  title: string
-  slug: string
-  description?: string
-  status: 'draft' | 'published' | 'archived'
-  featured: boolean
-  views: number
-  likes: number
-  publishedAt?: Date
-  createdAt: Date
-  updatedAt: Date
-  author: {
-    id: string
-    name: string
-    email: string
-    image?: string
-  }
-  tags: string[]
-}
+// Post interface is now inferred from tRPC response
 
 export const ContentManagement = () => {
   const [searchTerm, setSearchTerm] = useState('')
@@ -82,7 +62,7 @@ export const ContentManagement = () => {
     toast.info(`Bulk ${action} for ${selectedPosts.length} posts (coming soon)`)
   }
 
-  const formatDate = (date: Date | string | undefined) => {
+  const formatDate = (date: Date | string | null | undefined) => {
     if (!date) return 'Never'
     return new Date(date).toLocaleDateString('en-US', {
       year: 'numeric',
@@ -304,7 +284,7 @@ export const ContentManagement = () => {
                         </div>
                         {post.tags.length > 0 && (
                           <div className="flex gap-1 mt-1">
-                            {post.tags.slice(0, 3).map((tag) => (
+                            {post.tags.slice(0, 3).map((tag: string) => (
                               <span
                                 key={tag}
                                 className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300"
