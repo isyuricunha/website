@@ -32,22 +32,17 @@ const TableOfContents = (props: TableOfContentsProps) => {
         }}
         className='text-sm'
       >
-        {toc.map((item) => {
-          const isActive = activeId === item.url
-          return (
-            <SegmentGroupItem
-              key={item.url}
-              value={item.url}
-              aria-current={isActive ? 'true' : undefined}
-              className={isActive ? 'font-medium text-foreground border-l-2 border-primary pl-3' : 'text-muted-foreground hover:text-foreground border-l-2 border-transparent pl-3'}
-              style={{
-                paddingLeft: (item.depth - 1) * 12 + 12
-              }}
-            >
-              {item.title}
-            </SegmentGroupItem>
-          )
-        })}
+        {toc.map((item) => (
+          <SegmentGroupItem
+            key={item.url}
+            value={item.url}
+            style={{
+              paddingLeft: (item.depth - 1) * 12
+            }}
+          >
+            {item.title}
+          </SegmentGroupItem>
+        ))}
       </SegmentGroup>
     </div>
   )

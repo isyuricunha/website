@@ -183,18 +183,7 @@
       "no-posts-found": "No posts found",
       "placeholder": "Search articles"
     },
-    "go-to-homepage": "Go to homepage",
-    "featured-post-card": {
-      "featured": "Featured",
-      "read-more": "Read more"
-    },
-    "share-buttons": {
-      "copy": "Copy",
-      "copied": "Copied",
-      "share-on-x": "Share on X",
-      "share-on-linkedin": "Share on LinkedIn",
-      "copy-link-aria": "Copy link"
-    }
+    "go-to-homepage": "Go to homepage"
   },
   "dialog": {
     "sign-in": {

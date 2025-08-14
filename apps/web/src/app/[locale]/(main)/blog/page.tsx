@@ -5,7 +5,6 @@ import { i18n } from '@tszhong0411/i18n/config'
 import { getTranslations, setRequestLocale } from '@tszhong0411/i18n/server'
 import { allPosts } from 'content-collections'
 
-import FeaturedPostCard from '@/components/featured-post-card'
 import FilteredPosts from '@/components/filtered-posts'
 import PageTitle from '@/components/page-title'
 import { SITE_NAME, SITE_URL } from '@/lib/constants'
@@ -68,8 +67,6 @@ const Page = async (props: PageProps) => {
     })
     .filter((post) => post.locale === locale)
 
-  const [featured, ...rest] = posts
-
   const jsonLd: WithContext<Blog> = {
     '@context': 'https://schema.org',
     '@type': 'Blog',
@@ -98,12 +95,7 @@ const Page = async (props: PageProps) => {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <PageTitle title={title} description={description} />
-      {featured ? (
-        <div className='mb-10'>
-          <FeaturedPostCard {...featured} />
-        </div>
-      ) : null}
-      <FilteredPosts posts={rest} />
+      <FilteredPosts posts={posts} />
     </>
   )
 }
