@@ -1,7 +1,8 @@
 /**
  * Inspired by: https://jahir.dev/uses
  */
-import { BlurImage } from '@tszhong0411/ui'
+import { BlurImage, Badge } from '@tszhong0411/ui'
+import { ExternalLink } from 'lucide-react'
 
 import Link from '../link'
 
@@ -10,6 +11,7 @@ type Items = Array<{
   name: string
   description: string
   url: string
+  isAffiliate?: boolean
 }>
 
 type ItemGridProps = {
@@ -25,19 +27,30 @@ const ItemGrid = (props: ItemGridProps) => {
         <Link
           key={item.name}
           href={item.url}
-          className='shadow-xs flex gap-6 rounded-lg border p-4 no-underline transition-colors hover:bg-zinc-100 sm:flex-col sm:gap-3 dark:bg-zinc-900 dark:hover:bg-zinc-800'
+          className='shadow-xs flex gap-6 rounded-lg border p-4 no-underline transition-all hover:bg-zinc-100 hover:shadow-md sm:flex-col sm:gap-3 dark:bg-zinc-900 dark:hover:bg-zinc-800 relative group'
         >
+          {item.isAffiliate && (
+            <Badge 
+              variant='secondary' 
+              className='absolute top-2 right-2 text-xs bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
+            >
+              Affiliate
+            </Badge>
+          )}
           <BlurImage
             src={item.image}
             width={256}
             height={256}
             alt={item.name}
             className='shrink-0'
-            imageClassName='m-0 size-24 sm:h-full sm:w-full'
+            imageClassName='m-0 size-24 sm:h-full sm:w-full transition-transform group-hover:scale-105'
           />
           <div className='flex flex-col justify-center gap-2'>
-            <div className='text-lg font-extrabold'>{item.name}</div>
-            <div className='text-muted-foreground text-sm'>{item.description}</div>
+            <div className='text-sm sm:text-base font-semibold flex items-center gap-2'>
+              {item.name}
+              <ExternalLink className='h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity' />
+            </div>
+            <div className='text-muted-foreground text-xs sm:text-sm'>{item.description}</div>
           </div>
         </Link>
       ))}
