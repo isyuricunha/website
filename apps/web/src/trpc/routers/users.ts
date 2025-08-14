@@ -1,16 +1,15 @@
 import type { RouterOutputs } from '../react'
 
 import { TRPCError } from '@trpc/server'
-import { eq, and, passwordResetTokens } from '@tszhong0411/db'
-import { z } from 'zod'
-import { render } from '@react-email/render'
+import { passwordResetTokens } from '@tszhong0411/db'
+import { and, eq } from 'drizzle-orm'
 import { randomBytes } from 'crypto'
 import { hash, verify } from '@node-rs/argon2'
+import { z } from 'zod'
+import { PasswordReset } from '@tszhong0411/emails'
 
-import { PasswordResetEmail } from '@/components/emails/password-reset-email'
 import { resend } from '@/lib/resend'
 import { env } from '@tszhong0411/env'
-
 import { adminProcedure, createTRPCRouter, publicProcedure } from '../trpc'
 
 export const usersRouter = createTRPCRouter({
@@ -188,24 +187,17 @@ export const usersRouter = createTRPCRouter({
         const baseUrl = env.NEXT_PUBLIC_WEBSITE_URL || 'http://localhost:3000'
         const resetUrl = `${baseUrl}/reset-password?token=${token}`
 
-        // Initialize Resend for password reset (independent of comment flag)
-        const passwordResetResend = env.RESEND_API_KEY ? new (await import('resend')).Resend(env.RESEND_API_KEY) : null
-
-        // Send email if Resend API key is configured
-        if (passwordResetResend) {
+        // Send email if Resend is configured
+        if (resend) {
           try {
-            const emailHtml = render(
-              PasswordResetEmail({
+            await resend.emails.send({
+              from: 'yuricunha.com <noreply@yuricunha.com>',
+              to: user.email,
+              subject: 'Reset your password',
+              react: PasswordReset({
                 name: user.name,
                 resetUrl
               })
-            )
-
-            await passwordResetResend.emails.send({
-              from: 'noreply@yuricunha.com',
-              to: user.email,
-              subject: 'Reset your password',
-              html: emailHtml
             })
 
             console.log(`Password reset email sent to: ${user.email}`)
