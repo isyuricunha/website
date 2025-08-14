@@ -250,7 +250,9 @@
       "fantastic": "robust",
       "stunning": "secure",
       "title-bottom": "for modern infrastructures",
-      "location-timezone": "Brazil • UTC/GMT -3"
+      "location-timezone": "Brazil • UTC/GMT -3",
+      "view-projects": "View Projects",
+      "read-blog": "Read Blog"
     },
     "latest-articles": {
       "card": "Article",
@@ -270,23 +272,24 @@
     }
   },
   "layout": {
-    "about": "About",
-    "blog": "Blog",
-    "change-language": "Change language",
-    "github": "GitHub",
-    "guestbook": "Guestbook",
+    "navigation": "Navigation",
     "home": "Home",
+    "blog": "Blog",
+    "projects": "Projects",
+    "about": "About",
+    "guestbook": "Guestbook",
+    "uses": "Tools",
+    "spotify": "Music",
+    "skip-to-main-content": "Skip to main content",
+    "toggle-menu": "Toggle menu",
+    "change-language": "Change language",
     "links": "Links",
+    "github": "GitHub",
     "now-playing": {
       "error": "Failed to fetch Spotify data",
       "loading": "Loading ...",
       "not-listening": "Not Listening - Spotify"
-    },
-    "projects": "Projects",
-    "skip-to-main-content": "Skip to main content",
-    "toggle-menu": "Toggle menu",
-    "uses": "Tools",
-    "spotify": "Music"
+    }
   },
   "mdx": {
     "link-to-section": "Link to section"
@@ -680,60 +683,6 @@
         "14": "Every 404 is a chance to explore something new instead!",
         "15": "When in doubt, the homepage has links to everything important! 🏠"
       }
-    }
-  },
-  "layout": {
-    "navigation": "Navigation",
-    "home": "Home",
-    "blog": "Blog",
-    "projects": "Projects",
-    "about": "About",
-    "guestbook": "Guestbook",
-    "uses": "Uses",
-    "spotify": "Spotify",
-    "skip-to-main-content": "Skip to main content",
-    "toggle-menu": "Toggle menu",
-    "change-language": "Change language",
-    "links": "Links",
-    "github": "GitHub"
-  },
-  "homepage": {
-    "hero": {
-      "view-projects": "View Projects",
-      "read-blog": "Read Blog",
-      "title-top": "Hi, I'm Yuri Cunha",
-      "title-middle-left": "I build",
-      "title-middle-right": "applications",
-      "title-bottom": "and love databases",
-      "location-timezone": "São Paulo, Brazil (UTC-3)",
-      "amazing": "amazing",
-      "stunning": "stunning",
-      "fantastic": "fantastic",
-      "attractive": "attractive"
-    },
-    "selectedProjects": {
-      "title": "Selected Projects",
-      "more": "View all projects",
-      "card": "Featured Project"
-    },
-    "about-me": {
-      "title": "About Me",
-      "more": "Learn more about me",
-      "location": "Location",
-      "stacks": "Tech Stack",
-      "connect": "Connect",
-      "coding-hours": "Coding Hours",
-      "fav-framework": "Favorite Framework"
-    },
-    "latest-articles": {
-      "title": "Latest Articles",
-      "more": "View all articles",
-      "card": "Latest Article"
-    },
-    "get-in-touch": {
-      "title": "Let's work together",
-      "description": "I'm always interested in new opportunities and collaborations.",
-      "image-alt": "Contact illustration"
     }
   }
 }

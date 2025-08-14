@@ -1,7 +1,7 @@
 {
     "about": {
         "title": "Sobre",
-        "description": "👋 E aí! Eu sou Yuri Cunha, apenas um cara aleatório na Internet.."
+        "description": "👋 Oi! Eu sou Yuri Cunha, apenas um cara aleatório na internet.."
     },
     "admin": {
         "nav": {
@@ -13,17 +13,17 @@
             "security_management": "Gerenciamento de Segurança",
             "communication": "Comunicação",
             "communication_management": "Gerenciamento de Comunicação",
-            "email_marketing": "Marketing por Email",
+            "email_marketing": "Email Marketing",
             "announcements": "Anúncios",
             "notifications": "Notificações",
             "monitoring": "Monitoramento",
             "monitoring_dashboard": "Painel de Monitoramento",
-            "data": "Gerenciamento de Dados",
+            "data": "Dados",
             "data_management": "Gerenciamento de Dados"
         },
         "page-header": {
             "comments": {
-                "description": "Gerencie os comentários dos usuários",
+                "description": "Gerencie comentários dos usuários",
                 "title": "Comentários"
             },
             "users": {
@@ -33,10 +33,10 @@
         },
         "table": {
             "comments": {
-                "body": "Corpo",
+                "body": "Conteúdo",
                 "createdAt": "Criado em",
                 "failed-to-fetch-comments-data": "Falha ao buscar dados dos comentários. Por favor, atualize a página.",
-                "filter-body": "Filtrar corpo...",
+                "filter-body": "Filtrar conteúdo...",
                 "filter-userId": "Filtrar ID do usuário...",
                 "type": "Tipo",
                 "userId": "ID do Usuário",
@@ -46,10 +46,10 @@
                 "view": "Visualizar",
                 "confirm-delete": "Tem certeza de que deseja excluir este comentário?",
                 "delete-success": "Comentário excluído com sucesso",
-                "delete-error": "Falha ao excluir comentário"
+                "delete-error": "Falha ao excluir o comentário"
             },
             "users": {
-                "email": "Email",
+                "email": "E-mail",
                 "failed-to-fetch-users-data": "Falha ao buscar dados dos usuários. Por favor, atualize a página.",
                 "filter-names": "Filtrar nomes...",
                 "name": "Nome",
@@ -68,11 +68,11 @@
                 "confirm-ban": "Tem certeza de que deseja banir este usuário?",
                 "confirm-unban": "Tem certeza de que deseja desbanir este usuário?",
                 "delete-success": "Usuário excluído com sucesso",
-                "delete-error": "Falha ao excluir usuário",
+                "delete-error": "Falha ao excluir o usuário",
                 "ban-success": "Usuário banido com sucesso",
-                "ban-error": "Falha ao banir usuário",
+                "ban-error": "Falha ao banir o usuário",
                 "unban-success": "Usuário desbanido com sucesso",
-                "unban-error": "Falha ao desbanir usuário",
+                "unban-error": "Falha ao desbanir o usuário",
                 "reset-password-success": "Email de redefinição de senha enviado",
                 "reset-password-error": "Falha ao enviar email de redefinição de senha",
                 "update-success": "Usuário atualizado com sucesso",
@@ -84,7 +84,7 @@
                 "title": "Editar Usuário",
                 "name": "Nome",
                 "username": "Nome de usuário",
-                "email": "Email",
+                "email": "E-mail",
                 "role": "Função",
                 "image": "URL da Imagem",
                 "save": "Salvar Alterações",
@@ -92,7 +92,7 @@
             },
             "delete-confirmation": {
                 "title": "Confirmar Exclusão",
-                "message": "Esta ação não pode ser desfeita. Tem certeza de que deseja continuar?",
+                "message": "Esta ação não pode ser desfeita. Tem certeza que deseja prosseguir?",
                 "confirm": "Excluir",
                 "cancel": "Cancelar"
             }
@@ -101,27 +101,27 @@
     "blog": {
         "comments": {
             "author": "Autor",
-            "comment-cannot-be-empty": "O comentário não pode estar vazio",
-            "comment-posted": "Comentário postado",
+            "comment-cannot-be-empty": "O comentário não pode ficar vazio",
+            "comment-posted": "Comentário publicado",
             "comments": "{count, plural, =1 {comentário} other {comentários}}",
             "confirm-delete-comment": "Tem certeza de que deseja excluir este comentário? Esta ação não pode ser desfeita.",
-            "copy-link": "Copiar Link",
+            "copy-link": "Copiar link",
             "delete-a-comment": "Excluir um comentário",
             "deleted-a-comment": "Comentário excluído",
-            "dislike": "Descurtir",
-            "failed-to-load-comments": "Falha ao carregar os comentários. Por favor, atualize a página.",
-            "failed-to-load-replies": "Falha ao carregar as respostas. Por favor, atualize a página.",
+            "dislike": "Não curtir",
+            "failed-to-load-comments": "Falha ao carregar comentários. Por favor, atualize a página.",
+            "failed-to-load-replies": "Falha ao carregar respostas. Por favor, atualize a página.",
             "like": "Curtir",
             "link-copied": "Link copiado para a área de transferência",
             "need-logged-in-to-rate": "Você precisa estar logado para avaliar comentários",
             "newest": "Mais recentes",
-            "no-comments": "Nenhum comentário",
+            "no-comments": "Sem comentários",
             "oldest": "Mais antigos",
             "open-menu": "Abrir menu",
             "placeholder": "Deixe um comentário",
             "replies": "{count, plural, =1 {resposta} other {respostas}}",
             "reply": "Responder",
-            "reply-cannot-be-empty": "A resposta não pode estar vazia",
+            "reply-cannot-be-empty": "A resposta não pode ficar vazia",
             "reply-to-comment": "Responder ao comentário",
             "send-comment": "Enviar comentário",
             "sort-by": "Ordenar por",
@@ -130,7 +130,7 @@
             "toggle-italic": "Alternar itálico",
             "toggle-strikethrough": "Alternar tachado"
         },
-        "description": "Meu blog pessoal onde compartilho pensamentos sobre tecnologia, servidores, cloud e um pouco da minha vida diária. Comecei minha jornada em 2018 e, desde então, venho explorando e aprendendo. Se você curte bancos de dados, corrida ou apenas quer ler algumas reflexões sobre tecnologia e vida, confira!",
+        "description": "Meu blog pessoal onde compartilho pensamentos sobre tecnologia, servidores, nuvem e um pouco do meu dia a dia. Comecei minha jornada em 2018 e venho explorando e aprendendo desde então. Se você curte bancos de dados, runners, ou só quer ler algumas reflexões sobre tecnologia e vida, dá uma olhada!",
         "footer": {
             "edit-on-github": "Editar no GitHub",
             "last-updated": "Última atualização: {date}"
@@ -150,7 +150,7 @@
     "command-menu": {
         "actions": {
             "copy-link": "Copiar link",
-            "source-code": "Código fonte"
+            "source-code": "Código-fonte"
         },
         "groups": {
             "account": "Conta",
@@ -175,12 +175,12 @@
         "sign-in-success": "Login realizado com sucesso!",
         "sign-out": "Sair",
         "views": "{count, plural, =1 {# visualização} other {# visualizações}}",
-        "sign-up": "Cadastrar-se",
-        "sign-up-error": "Falha ao cadastrar. Por favor, tente novamente."
+        "sign-up": "Criar conta",
+        "sign-up-error": "Falha ao criar conta. Por favor, tente novamente."
     },
     "component": {
         "filtered-posts": {
-            "no-posts-found": "Nenhuma postagem encontrada",
+            "no-posts-found": "Nenhum artigo encontrado",
             "placeholder": "Pesquisar artigos"
         },
         "go-to-homepage": "Ir para a página inicial"
@@ -189,16 +189,16 @@
         "sign-in": {
             "continue-with": "Continuar com {provider}",
             "or": "ou",
-            "description": "para continuar no yuricunha.com",
-            "here": "Entre aqui",
+            "description": "para continuar em yuricunha.com",
+            "here": "Entrar aqui",
             "anonymous": "Anônimo"
         },
         "sign-up": {
-            "description": "para criar sua conta no yuricunha.com",
-            "here": "Cadastre-se aqui"
+            "description": "para criar sua conta em yuricunha.com",
+            "here": "Criar conta aqui"
         },
-        "already-have-account": "Já possui uma conta?",
-        "dont-have-account": "Não possui uma conta?"
+        "already-have-account": "Já tem uma conta?",
+        "dont-have-account": "Não tem uma conta?"
     },
     "error": {
         "something-went-wrong": "Algo deu errado!",
@@ -211,13 +211,13 @@
             "title": "Excluir um comentário"
         },
         "delete-message-successfully": "Mensagem excluída com sucesso",
-        "description": "Assine meu livro de visitas e compartilhe sua ideia. Você pode me dizer qualquer coisa aqui!",
-        "failed-to-load-messages": "Falha ao carregar as mensagens. Por favor, atualize a página.",
-        "message-cannot-be-empty": "A mensagem não pode estar vazia. Minha culpa ou sua culpa?",
-        "no-messages": "Nenhuma mensagem. Seja o primeiro a deixar uma mensagem!",
+        "description": "Assine meu livro de visitas e compartilhe sua ideia. Você pode me contar qualquer coisa aqui!",
+        "failed-to-load-messages": "Falha ao carregar mensagens. Por favor, atualize a página.",
+        "message-cannot-be-empty": "A mensagem não pode ficar vazia. Minha culpa ou sua culpa?",
+        "no-messages": "Sem mensagens. Seja o primeiro a deixar uma!",
         "pinned": {
-            "description": "Se você tiver um momento, por favor, entre com sua conta para deixar um comentário. Obrigado!",
-            "greeting": "Olá! 👋"
+            "description": "Se tiver um momento, por favor faça login com sua conta para deixar um comentário. Obrigado!",
+            "greeting": "Ei! 👋"
         },
         "placeholder": "Deixe uma mensagem",
         "signin": {
@@ -228,9 +228,9 @@
     },
     "homepage": {
         "about-me": {
-            "coding-hours": "Horas de Codificação",
+            "coding-hours": "Horas de programação",
             "connect": "Conectar",
-            "fav-framework": "Servidor Favorito",
+            "fav-framework": "Fav. Servidor",
             "location": "São Paulo",
             "more": "Saiba mais sobre mim",
             "stacks": "Stacks",
@@ -239,18 +239,20 @@
         "get-in-touch": {
             "description": "Sinta-se à vontade para entrar em contato comigo!",
             "image-alt": "Eu ou não eu",
-            "title": "Precisa conversar?"
+            "title": "Precisando falar?"
         },
         "hero": {
-            "title-top": "Eu sou Yuri, especialista em banco de dados",
+            "title-top": "Sou Yuri, especialista em bancos de dados",
             "title-middle-left": "otimizando",
-            "title-middle-right": "soluções em dados",
-            "amazing": "ágeis",
-            "attractive": "rápidas",
-            "fantastic": "fortes",
-            "stunning": "seguras",
+            "title-middle-right": "soluções de dados",
+            "amazing": "ágil",
+            "attractive": "rápido",
+            "fantastic": "robusto",
+            "stunning": "seguro",
             "title-bottom": "para infraestruturas modernas",
-            "location-timezone": "Brasil • UTC/GMT -3"
+            "location-timezone": "Brasil • UTC/GMT -3",
+            "view-projects": "Ver Projetos",
+            "read-blog": "Ler Blog"
         },
         "latest-articles": {
             "card": "Artigo",
@@ -270,23 +272,24 @@
         }
     },
     "layout": {
-        "about": "Sobre",
-        "blog": "Blog",
-        "change-language": "Alterar idioma",
-        "github": "GitHub",
-        "guestbook": "Livro de visitas",
+        "navigation": "Navegação",
         "home": "Início",
+        "blog": "Blog",
+        "projects": "Projetos",
+        "about": "Sobre",
+        "guestbook": "Livro de Visitas",
+        "uses": "Equipamentos",
+        "spotify": "Música",
+        "skip-to-main-content": "Ir para o conteúdo principal",
+        "toggle-menu": "Alternar menu",
+        "change-language": "Mudar idioma",
         "links": "Links",
+        "github": "GitHub",
         "now-playing": {
             "error": "Falha ao buscar dados do Spotify",
             "loading": "Carregando ...",
-            "not-listening": "Não está ouvindo - Spotify"
-        },
-        "projects": "Projetos",
-        "skip-to-main-content": "Pular para o conteúdo principal",
-        "toggle-menu": "Alternar menu",
-        "uses": "Setup",
-        "spotify": "Música"
+            "not-listening": "Não ouvindo - Spotify"
+        }
     },
     "mdx": {
         "link-to-section": "Link para a seção"
@@ -295,11 +298,11 @@
         "site-description": "DBA Sênior",
         "site-title": "Yuri Cunha"
     },
-    "not-found": "Nenhuma página encontrada hoje!",
+    "not-found": "Nenhuma página por aqui hoje!",
     "projects": {
-        "description": "A lista dos meus projetos. Tudo foi feito com 💙 (esta página ainda está em desenvolvimento).",
+        "description": "A lista dos meus projetos. Tudo foi feito com 💙 (esta página ainda em desenvolvimento).",
         "title": "Projetos",
-        "visit-website": "Visitar site",
+        "visit-website": "Visitar Site",
         "all-repos": "Meus repositórios públicos no GitHub"
     },
     "theme-toggle": {
@@ -311,35 +314,35 @@
         "toggle-theme": "Alternar tema"
     },
     "uses": {
-        "description": "Este é o equipamento que uso atualmente para jogos, programação, produção de vídeos e no dia a dia.",
-        "title": "Setup"
+        "description": "Este é o equipamento que eu uso atualmente para jogar, programar, fazer vídeos e no dia a dia.",
+        "title": "Equipamentos"
     },
     "spotify": {
         "title": "Música",
-        "description": "Aqui está o que estou ouvindo no momento - músicas e artistas favoritos dos últimos 6 meses.",
+        "description": "O que estou ouvindo no momento — músicas e artistas mais ouvidos nos últimos 6 meses.",
         "now-listening": {
-            "title": "Ouvindo Agora",
-            "subtitle": "Atualmente tocando no Spotify",
-            "not-playing": "Não estou ouvindo nada no momento",
+            "title": "Agora Tocando",
+            "subtitle": "Tocando atualmente no Spotify",
+            "not-playing": "Não está tocando nada no momento",
             "by": "por"
         },
         "top-artists": {
-            "title": "Artistas Favoritos",
+            "title": "Principais Artistas",
             "subtitle": "Artistas mais ouvidos nos últimos 6 meses",
             "no-data": "Nenhum dado de artista disponível"
         },
         "top-songs": {
-            "title": "Músicas Favoritas",
+            "title": "Principais Músicas",
             "subtitle": "Faixas mais tocadas nos últimos 6 meses",
-            "no-data": "Nenhum dado de música disponível"
+            "no-data": "Nenhuma música disponível"
         },
         "recently-played": {
-            "title": "Ouvido Recentemente",
+            "title": "Tocados Recentemente",
             "subtitle": "Faixas que ouvi recentemente",
-            "no-data": "Nenhuma faixa ouvida recentemente disponível"
+            "no-data": "Nenhuma faixa tocada recentemente disponível"
         },
-        "loading": "Carregando dados musicais...",
-        "error": "Falha ao carregar dados musicais. Tente novamente.",
+        "loading": "Carregando dados de música...",
+        "error": "Falha ao carregar dados de música. Por favor, tente novamente.",
         "refresh": "Atualizar dados",
         "album": "Álbum",
         "artist": "Artista",
@@ -363,55 +366,55 @@
             "messageDuration": "Duração da mensagem",
             "bubblePosition": "Posição do balão",
             "positions": {
-                "bottomRight": "Inferior Direito",
-                "bottomLeft": "Inferior Esquerdo",
-                "topRight": "Superior Direito",
-                "topLeft": "Superior Esquerdo"
+                "bottomRight": "Canto Inferior Direito",
+                "bottomLeft": "Canto Inferior Esquerdo",
+                "topRight": "Canto Superior Direito",
+                "topLeft": "Canto Superior Esquerdo"
             }
         },
         "easterEgg": {
             "retroMode": "Modo retrô ativado! 🎮"
         },
-        "restore": "Trazer Yue de volta",
+        "restore": "Trazer a Yue de volta",
         "idle": {
-            "tip1": "💡 Sabia? Você pode usar Shift+Y para me trazer de volta se eu estiver oculta!",
-            "tip2": "🎮 Experimente o mini-jogo! Clique no ícone do gamepad no meu balão de fala.",
+            "tip1": "💡 Sabia que você pode usar Shift+Y para me trazer de volta se eu estiver oculto?",
+            "tip2": "🎮 Experimente o minigame! Clique no ícone do controle no meu balão de fala.",
             "tip3": "⚙️ Personalize meu comportamento no painel de configurações.",
-            "tip4": "🎯 Estou aqui para ajudar! Sinta-se à vontade para fazer perguntas ou explorar o site.",
+            "tip4": "🎯 Estou aqui para ajudar! Fique à vontade para fazer perguntas ou explorar o site.",
             "tip5": "🌟 Encontrou algum bug? Me avise que eu ajudo a reportar!"
         },
         "menu": {
             "open": "Abrir menu",
             "reportBug": "Reportar bug / Contato",
             "viewProjects": "Ver Projetos",
-            "miniGame": "Mini-jogo",
+            "miniGame": "Minigame",
             "settings": "Configurações"
         },
         "contact": {
             "title": "Contatar meu criador, Yuri",
             "close": "Fechar contato",
-            "description": "Encontrou um bug ou quer entrar em contato? Aqui está o email do meu criador:",
-            "copy": "Copiar email"
+            "description": "Encontrou um bug ou quer entrar em contato? Aqui está o e-mail do meu criador:",
+            "copy": "Copiar e-mail"
         },
         "chatbot": {
-            "title": "Conversar com Yue",
+            "title": "Conversar com a Yue",
             "close": "Fechar chat",
             "description": "Escolha um tópico para conversar:",
             "options": {
                 "contact": "Quero entrar em contato",
-                "feedback": "Tenho feedback",
+                "feedback": "Tenho um feedback",
                 "help": "Preciso de ajuda",
                 "bug": "Encontrei um bug",
                 "feature": "Tenho uma sugestão de recurso",
                 "general": "Só quero conversar"
             },
             "responses": {
-                "contact": "Ótimo! Você pode entrar em contato com meu criador, Yuri, em me@yuricunha.com. Eles adoram ouvir dos visitantes!",
-                "feedback": "Obrigado pelo seu feedback! Isso ajuda a tornar este site melhor para todos. Sinta-se à vontade para enviar detalhes para me@yuricunha.com.",
-                "help": "Estou aqui para ajudar! O que você gostaria de saber? Você pode explorar o site ou me fazer perguntas específicas.",
-                "bug": "Obrigado por reportar! Por favor, envie detalhes sobre o que você encontrou para me@yuricunha.com. Cada reporte ajuda a melhorar o site!",
-                "feature": "Isso é emocionante! Meu criador, Yuri adora ouvir novas ideias. Por favor, envie sua sugestão para me@yuricunha.com.",
-                "general": "Eu adoro conversar com visitantes! Como está seu dia? Sinta-se à vontade para explorar o site ou me perguntar qualquer coisa!"
+                "contact": "Ótimo! Você pode contatar meu criador, Yuri, em [me@yuricunha.com](mailto:me@yuricunha.com). Ele adora ouvir os visitantes!",
+                "feedback": "Obrigado pelo seu feedback! Ele ajuda a melhorar o site para todo mundo. Sinta-se à vontade para enviar detalhes para [me@yuricunha.com](mailto:me@yuricunha.com).",
+                "help": "Estou aqui para ajudar! Sobre o que você quer saber? Explore o site ou me pergunte algo específico.",
+                "bug": "Obrigado por reportar! Por favor, envie um e-mail para [me@yuricunha.com](mailto:me@yuricunha.com) com os detalhes do que você encontrou. Todo relato ajuda a melhorar o site!",
+                "feature": "Isso é empolgante! Meu criador, Yuri, adora ouvir novas ideias. Envie sua sugestão para [me@yuricunha.com](mailto:me@yuricunha.com).",
+                "general": "Adoro conversar com visitantes! Como está seu dia? Fique à vontade para explorar o site ou me perguntar qualquer coisa!"
             }
         },
         "greetings": {
@@ -421,319 +424,263 @@
             "night": "Boa noite! Eu sou a Yue! 🌙"
         },
         "game": {
-            "title": "Mini Jogo da Yue",
+            "title": "Minigame da Yue",
             "close": "Fechar jogo",
             "open": "Abrir jogo",
             "score": "Pontuação",
             "time": "Tempo",
             "highScore": "Recorde",
-            "instructions": "Clique no alvo o máximo de vezes que conseguir em 30 segundos!",
+            "instructions": "Clique no alvo quantas vezes conseguir em 30 segundos!",
             "start": "Iniciar Jogo",
             "playAgain": "Jogar Novamente",
-            "gameOver": "Fim de Jogo! Sua pontuação: {score}",
+            "gameOver": "Fim de jogo! Sua pontuação: {score}",
             "clickTarget": "Clique no alvo"
         },
         "messages": {
             "0": "Oi! Eu sou a Yue, sua assistente virtual! Precisa de ajuda para navegar?",
-            "1": "Sabia que dá para ativar o modo retrô com o Código Konami?",
-            "2": "Hora de um café! ☕",
-            "3": "Ei, achei um easter egg escondido! Quer ver?",
+            "1": "Sabia que você pode ativar o modo retrô com o Código Konami?",
+            "2": "Hora de fazer uma pausa para um café! ☕",
+            "3": "Ei, encontrei um easter egg escondido! Quer ver?",
             "4": "Não esqueça de conferir os projetos mais recentes do meu criador, Yuri!",
-            "5": "Bem-vindo ao site! Como posso ajudar você hoje?",
-            "6": "Sinta-se à vontade para explorar! Tem muita coisa para descobrir.",
-            "7": "Precisa entrar em contato? Confira a seção de contato!",
-            "8": "Sabia que este site é construído com Next.js e TypeScript?",
-            "9": "Obrigado por visitar! Espero que esteja tendo um ótimo dia!",
-            "10": "Quer ver no que meu criador, Yuri está trabalhando? Confira os projetos!",
-            "11": "Eu amo ajudar visitantes e compartilhar conhecimento. E você?",
-            "12": "Modo escuro ou claro? Eu suporto ambos!",
-            "13": "Este site é totalmente responsivo. Tente redimensionar seu navegador!",
+            "5": "Bem-vindo ao site! Como posso ajudar hoje?",
+            "6": "Fique à vontade para explorar! Tem muita coisa para descobrir.",
+            "7": "Precisa entrar em contato? Veja a seção de contato!",
+            "8": "Sabia que este site foi feito com Next.js e TypeScript?",
+            "9": "Obrigado pela visita! Espero que você esteja tendo um ótimo dia!",
+            "10": "Quer ver no que meu criador, Yuri, está trabalhando? Confira os projetos!",
+            "11": "Adoro ajudar visitantes e compartilhar conhecimento. E você?",
+            "12": "Modo escuro ou claro? Eu suporte ambos!",
+            "13": "Este site é totalmente responsivo. Tente redimensionar o navegador!",
             "14": "Encontrou algum bug? Me avise que eu ajudo a reportar!",
-            "15": "Estou sempre aprendendo coisas novas do meu criador, Yuri. Qual foi sua última descoberta?",
-            "16": "Meu criador, Yuri, é especialista em banco de dados. Legal, né?",
-            "17": "Posso ajudar você a encontrar qualquer coisa no site!",
-            "18": "Sabia que meu criador, Yuri começou esta jornada em 2018?",
-            "19": "O mini-jogo é uma ótima forma de fazer uma pausa!",
+            "15": "Estou sempre aprendendo coisas novas com meu criador, Yuri. Qual sua descoberta mais recente?",
+            "16": "Meu criador, Yuri, é especialista em bancos de dados. Legal, né?",
+            "17": "Posso te ajudar a encontrar qualquer coisa no site!",
+            "18": "Sabia que meu criador, Yuri, começou essa jornada em 2018?",
+            "19": "O minigame é uma ótima maneira de fazer uma pausa!",
             "20": "Estou aqui para tornar sua visita mais agradável!",
-            "21": "Meu criador, Yuri escreve sobre tecnologia e vida no blog.",
+            "21": "Meu criador, Yuri, escreve sobre tecnologia e vida no blog.",
             "22": "Já viu a seção de projetos? O trabalho do meu criador é incrível!",
-            "23": "Eu amo quando visitantes exploram páginas diferentes!",
+            "23": "Adoro quando visitantes exploram diferentes páginas!",
             "24": "O livro de visitas é um ótimo lugar para deixar uma mensagem!",
-            "25": "Meu criador, Yuri está sempre trabalhando em algo novo!",
+            "25": "Meu criador, Yuri, está sempre trabalhando em algo novo!",
             "26": "Sabia que você pode personalizar meu comportamento nas configurações?",
             "27": "Estou aqui para ajudar a melhorar sua experiência!",
-            "28": "Meu criador, Yuri ama compartilhar conhecimento através do blog.",
-            "29": "O site é projetado para ser acessível a todos!",
+            "28": "Meu criador, Yuri, adora compartilhar conhecimento pelo blog.",
+            "29": "O site foi projetado para ser acessível a todos!",
             "30": "Estou aprendendo coisas novas todos os dias com meu criador, Yuri!",
-            "31": "Já conferiu a página de uses? O setup do meu criador é impressionante!",
-            "32": "Estou aqui para guiá-lo pelo site!",
-            "33": "Meu criador, Yuri acredita no poder do código aberto!",
-            "34": "A página do Spotify mostra o que meu criador está ouvindo!",
-            "35": "Sempre fico animada para conhecer novos visitantes!",
-            "36": "Meu criador, Yuri ama ajudar outros a aprender!",
+            "31": "Já conferiu a página de equipamentos? A configuração do meu criador é impressionante!",
+            "32": "Estou aqui para te guiar pelo site!",
+            "33": "Meu criador, Yuri, acredita no poder do código aberto!",
+            "34": "A página do Spotify mostra o que estou ouvindo!",
+            "35": "Estou sempre empolgada para conhecer novos visitantes!",
+            "36": "Meu criador, Yuri, adora ajudar outras pessoas a aprender!",
             "37": "Sabia que você pode fixar mensagens para mantê-las visíveis?",
-            "38": "Estou aqui para tornar sua experiência de navegação mais divertida!",
-            "39": "Meu criador, Yuri é apaixonado por tecnologia!",
-            "40": "O recurso de busca pode ajudar você a encontrar qualquer coisa rapidamente!",
-            "41": "Meu criador, Yuri está sempre aberto a feedback e sugestões!",
-            "42": "O painel admin ajuda a gerenciar o site de forma eficiente!",
-            "43": "Eu amo ver novos comentários e interações no site!",
-            "44": "Meu criador, Yuri acredita em construir coisas que importam!",
-            "45": "O site está constantemente evoluindo com novos recursos!",
+            "38": "Estou aqui para tornar a navegação mais divertida!",
+            "39": "Meu criador, Yuri, é apaixonado por tecnologia!",
+            "40": "A busca pode te ajudar a encontrar qualquer coisa rapidamente!",
+            "41": "Meu criador, Yuri, está sempre aberto a feedbacks e sugestões!",
+            "42": "O painel admin ajuda a gerenciar o site com eficiência!",
+            "43": "Adoro ver novos comentários e interações no site!",
+            "44": "Meu criador, Yuri, acredita em construir coisas que importam!",
+            "45": "O site está em constante evolução com novos recursos!",
             "46": "Estou aqui para tornar a tecnologia mais acessível a todos!",
-            "47": "Meu criador, Yuri ama resolver problemas complexos!",
-            "48": "A comunidade em torno deste site é incrível!",
-            "49": "Estou sempre pronta para ajudar com qualquer pergunta que você possa ter!"
+            "47": "Meu criador, Yuri, adora resolver problemas complexos!",
+            "48": "A comunidade ao redor deste site é incrível!",
+            "49": "Estou sempre pronta para ajudar com qualquer dúvida que você tiver!"
         },
         "pageMessages": {
             "home": {
-                "0": "Bem-vindo à página inicial! 👋 Eu sou Yue, sua assistente virtual!",
-                "1": "É aqui que tudo começa. Pronto para explorar?",
-                "2": "Meu criador, Yuri é especialista em bancos de dados. Quer saber mais?",
+                "0": "Bem-vindo à página inicial! 👋 Eu sou a Yue, sua assistente virtual!",
+                "1": "Aqui é onde tudo começa. Pronto para explorar?",
+                "2": "Meu criador, Yuri, é especialista em bancos de dados. Quer saber mais?",
                 "3": "Confira os artigos e projetos mais recentes abaixo!",
-                "4": "Sinta-se à vontade para explorar qualquer seção que lhe interesse!",
-                "5": "O menu de navegação pode ajudá-lo a encontrar o que procura!",
-                "6": "Lar doce lar! É aqui que toda a magia acontece ✨",
-                "7": "Procurando algo específico? Posso ajudá-lo a navegar!",
-                "8": "Sabia que pode mudar minha posição nas configurações? 📍",
+                "4": "Sinta-se à vontade para explorar qualquer seção que te interesse!",
+                "5": "O menu de navegação pode te ajudar a encontrar o que procura!",
+                "6": "Lar doce lar! É aqui que a mágica acontece ✨",
+                "7": "Procurando algo específico? Posso te ajudar a navegar!",
+                "8": "Dica: Você pode mudar minha posição nas configurações 📍",
                 "9": "Adoro conhecer novos visitantes! Obrigada por passar por aqui! 😊",
-                "10": "As últimas atualizações e conteúdos são sempre destacados aqui primeiro!",
-                "11": "Sentindo curiosidade? Cada seção tem algo único para oferecer!",
-                "12": "Dica profissional: Use a busca para encontrar exatamente o que precisa! 🔍",
-                "13": "Este site está em constante evolução com novos recursos e conteúdos!",
-                "14": "Quer ficar atualizado? Volte regularmente para conteúdo fresco!",
-                "15": "Estou aqui 24/7 para ajudá-lo a explorar e descobrir coisas novas!"
+                "10": "As últimas atualizações e conteúdos sempre aparecem aqui primeiro!",
+                "11": "Com curiosidade? Cada seção tem algo único pra oferecer!",
+                "12": "Dica pro: Use a busca para encontrar exatamente o que precisa! 🔍",
+                "13": "Este site está sempre evoluindo com novos recursos e conteúdo!",
+                "14": "Quer ficar por dentro? Volte sempre para conteúdo novo!",
+                "15": "Estou aqui 24/7 para te ajudar a explorar e descobrir novidades!"
             },
             "blog": {
                 "0": "Bem-vindo ao blog! 📝",
-                "1": "Meu criador, Yuri escreve sobre tecnologia, bancos de dados e às vezes sobre a vida.",
-                "2": "Sinta-se à vontade para deixar comentários nos artigos!",
-                "3": "Sobre quais tópicos você gostaria de ler?",
-                "4": "O blog é atualizado regularmente com conteúdo fresco!",
+                "1": "Meu criador, Yuri, escreve sobre tecnologia, bancos de dados, e às vezes sobre a vida.",
+                "2": "Sinta-se à vontade para deixar comentários nas postagens!",
+                "3": "Que tópicos você gostaria de ler?",
+                "4": "O blog é atualizado regularmente com conteúdo novo!",
                 "5": "Você pode filtrar artigos por tags e categorias!",
-                "6": "Tantos artigos interessantes para explorar! 📚",
-                "7": "Cada post é criado com cuidado e experiência do mundo real!",
-                "8": "Não esqueça de compartilhar artigos que considera valiosos! 🔗",
-                "9": "A seção de comentários é onde as discussões reais acontecem!",
+                "6": "Tantos artigos interessantes para mergulhar! 📚",
+                "7": "Cada post é feito com cuidado e experiência prática!",
+                "8": "Não esqueça de compartilhar artigos que achar valiosos! 🔗",
+                "9": "A seção de comentários é onde as discussões acontecem!",
                 "10": "Procurando algo específico? Tente a busca ou as tags!",
-                "11": "Novos artigos são publicados regularmente - marque seus favoritos! ⭐",
-                "12": "De dicas para iniciantes a conceitos avançados, há algo para todos!",
-                "13": "Adora ler sobre bancos de dados, desenvolvimento web e insights de tecnologia? Você está no lugar certo!",
-                "14": "O blog reflete anos de aprendizado e experiências de projetos reais!",
-                "15": "Tem perguntas sobre um artigo? Os comentários são perfeitos para isso!"
+                "11": "Novos artigos aparecem regularmente - marque seus favoritos! ⭐",
+                "12": "De dicas para iniciantes a conceitos avançados, tem conteúdo pra todo mundo!",
+                "13": "Curte bancos de dados, desenvolvimento web e insights de tecnologia? Você está no lugar certo!",
+                "14": "O blog reflete anos de aprendizado e experiências reais de projeto!",
+                "15": "Tem dúvidas sobre um artigo? Os comentários são perfeitos pra isso!"
             },
             "blogPost": {
-                "0": "Esta é uma boa leitura! 📖",
-                "1": "Isso me faz pensar... 🤔",
-                "2": "Perspectiva interessante sobre este tópico!",
-                "3": "Meu criador, Yuri colocou muito pensamento neste artigo.",
-                "4": "Espero que você esteja gostando deste artigo!",
-                "5": "Sinta-se à vontade para compartilhar seus pensamentos nos comentários!",
-                "6": "Este conteúdo vale a pena dedicar tempo.",
-                "7": "Eu amo quando as pessoas mergulham fundo em tópicos como este!",
+                "0": "Vale a pena a leitura! 📖",
+                "1": "Isso me fez pensar... 🤔",
+                "2": "Perspectiva interessante sobre o tema!",
+                "3": "Meu criador, Yuri, colocou muito pensamento nisso.",
+                "4": "Espero que esteja gostando deste artigo!",
+                "5": "Sinta-se à vontade para compartilhar suas ideias nos comentários!",
+                "6": "Este conteúdo vale a pena dedicar um tempo para ler.",
+                "7": "Adoro quando as pessoas se aprofundam em tópicos assim!",
                 "8": "Os insights aqui são realmente valiosos.",
-                "9": "Este é o tipo de conteúdo que torna o aprendizado divertido!"
+                "9": "Este tipo de conteúdo torna o aprendizado divertido!"
             },
             "projects": {
                 "0": "Aqui estão os projetos! 🚀",
-                "1": "Tudo é construído com amor e muito café ☕",
+                "1": "Tudo foi feito com amor e muito café ☕",
                 "2": "Quer colaborar? Vamos construir algo incrível!",
                 "3": "Cada projeto ensinou algo novo ao meu criador, Yuri.",
                 "4": "Todos os projetos são open source e disponíveis no GitHub!",
                 "5": "Sinta-se à vontade para contribuir ou sugerir melhorias!",
-                "6": "De pequenos utilitários a aplicações full-stack - diversidade é fundamental! 🛠️",
+                "6": "De pequenas utilidades a aplicações full-stack - diversidade é chave! 🛠️",
                 "7": "Cada projeto resolve um problema real ou explora nova tecnologia!",
-                "8": "Confira as stacks tecnológicas - sempre experimentando com as ferramentas mais recentes!",
-                "9": "Demos ao vivo estão disponíveis para a maioria dos projetos - experimente! 🌐",
-                "10": "O código fonte é limpo, documentado e pronto para contribuições!",
-                "11": "Encontrou um bug ou tem uma ideia? Issues e PRs são sempre bem-vindos!",
-                "12": "Estes projetos representam anos de aprendizado e experimentação!",
-                "13": "Dê estrelas nos repositórios que gostar - isso realmente motiva o criador! ⭐",
-                "14": "De bancos de dados a aplicações web, cada projeto tem sua própria história!",
-                "15": "Quer construir algo juntos? Colaboração torna tudo melhor!"
+                "8": "Confira as stacks - sempre experimentando as ferramentas mais recentes!",
+                "9": "Demos ao vivo estão disponíveis na maioria dos projetos - experimente! 🌐",
+                "10": "O código-fonte é limpo, documentado e pronto para contribuições!",
+                "11": "Encontrou um bug ou tem uma ideia? Issues e PRs são bem-vindos!",
+                "12": "Esses projetos representam anos de aprendizado e experimentação!",
+                "13": "Dê uma estrela nos repositórios que você gosta - isso motiva muito! ⭐",
+                "14": "De bancos de dados a apps web, cada projeto tem sua história!",
+                "15": "Quer construir algo junto? Colaboração torna tudo melhor!"
             },
             "projectsDetail": {
                 "0": "Belo projeto! 🔧",
                 "1": "Curioso sobre a stack por trás disso?",
-                "2": "Você geralmente encontra o código no GitHub.",
-                "3": "Se houver demo ao vivo, experimente!",
+                "2": "Normalmente você encontra o código-fonte no GitHub.",
+                "3": "Se houver uma demo ao vivo, experimente!",
                 "4": "Open source significa que suas ideias são bem-vindas.",
-                "5": "Achou algo para melhorar? Issues e PRs são bem-vindos!",
+                "5": "Encontrar algo para melhorar? Issues e PRs são apreciados!",
                 "6": "Ler código pode ser tão divertido quanto usar o app.",
                 "7": "Este projeto reflete aprendizados do mundo real.",
-                "8": "Dê uma estrela no repositório se gostou! ⭐",
+                "8": "Dê uma estrela no repo se você gostou! ⭐",
                 "9": "O que você construiria em cima disso?"
             },
             "about": {
                 "0": "Quer saber mais sobre meu criador, Yuri? 🤔",
-                "1": "Meu criador, Yuri é apenas uma pessoa que ama bancos de dados e programação.",
-                "2": "Sinta-se à vontade para fazer perguntas!",
-                "3": "A jornada começou em 2018. Ainda aprendendo todos os dias!",
-                "4": "Meu criador, Yuri ama compartilhar conhecimento e ajudar outros!",
-                "5": "A página sobre tem todos os detalhes sobre a jornada!",
+                "1": "Meu criador, Yuri, é apenas uma pessoa que ama bancos de dados e programação.",
+                "2": "Fique à vontade para fazer perguntas!",
+                "3": "A jornada começou em 2018. Ainda aprendendo todo dia!",
+                "4": "Meu criador, Yuri, adora compartilhar conhecimento e ajudar os outros!",
+                "5": "A página sobre traz todos os detalhes da jornada!",
                 "6": "Um especialista em bancos de dados com paixão por código limpo e eficiente! 💾",
-                "7": "Do Brasil para o mundo - a tecnologia nos conecta a todos! 🌎",
-                "8": "Sempre aprendendo, sempre crescendo, sempre curioso sobre novas tecnologias!",
-                "9": "Acredita em código aberto, compartilhamento de conhecimento e ajudar outros a ter sucesso!",
-                "10": "Sessões de programação alimentadas por café e resolução de problemas até tarde! ☕",
-                "11": "A história inclui fracassos, sucessos e tudo no meio!",
-                "12": "Acredita firmemente que a melhor maneira de aprender é construindo e ensinando!",
-                "13": "Bancos de dados podem ser a especialidade, mas full-stack é o playground!",
-                "14": "Cada projeto é uma oportunidade de aprendizado e uma chance de ajudar outros!",
-                "15": "Quer se conectar? As informações de contato estão bem aqui nesta página!"
+                "7": "Do Brasil para o mundo - tecnologia nos conecta! 🌎",
+                "8": "Sempre aprendendo, sempre crescendo, sempre curioso por novas tecnologias!",
+                "9": "Acredita em open source, compartilhamento de conhecimento e ajudar os outros a vencer!",
+                "10": "Sessões de programação com cafeína e resolução de problemas até tarde! ☕",
+                "11": "A história inclui falhas, sucessos e tudo mais!",
+                "12": "Acredita que a melhor forma de aprender é construindo e ensinando!",
+                "13": "Bancos de dados são a especialidade, mas full-stack é o playground!",
+                "14": "Cada projeto é uma oportunidade de aprendizado e ajudar outras pessoas!",
+                "15": "Quer se conectar? As informações de contato estão nesta página!"
             },
             "uses": {
                 "0": "Esta é a configuração! 💻",
-                "1": "Configuração bem legal, não? Meu criador, Yuri ama seus equipamentos!",
+                "1": "Configuração bem legal, né? Meu criador, Yuri, ama seus equipamentos!",
                 "2": "Quer saber o que é usado para desenvolvimento?",
                 "3": "Boas ferramentas fazem toda a diferença!",
-                "4": "A configuração está constantemente evoluindo com novas ferramentas!",
-                "5": "Sinta-se à vontade para perguntar sobre qualquer ferramenta ou configuração específica!",
-                "6": "Do hardware ao software - cada ferramenta foi cuidadosamente escolhida! ⚙️",
-                "7": "O equilíbrio perfeito entre performance, produtividade e estética!",
-                "8": "Sempre experimentando com novas ferramentas e fluxos de trabalho!",
-                "9": "Essas ferramentas alimentaram inúmeros projetos e sessões de programação noturnas!",
-                "10": "Curioso sobre uma escolha específica de configuração? Cada uma tem uma história!",
-                "11": "A configuração evolui com novas descobertas e necessidades em mudança!",
-                "12": "De editores de código a ferramentas de banco de dados - tudo otimizado para eficiência!",
-                "13": "Boas ferramentas não fazem você um desenvolvedor melhor, mas certamente ajudam! 🛠️",
+                "4": "A configuração está em constante evolução com novas ferramentas!",
+                "5": "Sinta-se à vontade para perguntar sobre qualquer ferramenta ou setup!",
+                "6": "De hardware a software - cada ferramenta foi escolhida com cuidado! ⚙️",
+                "7": "O equilíbrio perfeito entre desempenho, produtividade e estética!",
+                "8": "Sempre experimentando novas ferramentas e fluxos de trabalho!",
+                "9": "Essas ferramentas impulsionaram inúmeros projetos e maratonas de debugging!",
+                "10": "Curioso sobre uma escolha específica? Cada uma tem uma história!",
+                "11": "A configuração evolui com novas descobertas e necessidades!",
+                "12": "De editores a ferramentas de banco de dados - tudo otimizado para eficiência!",
+                "13": "Boas ferramentas não tornam você um dev melhor, mas ajudam muito! 🛠️",
                 "14": "A configuração reflete anos tentando diferentes ferramentas e encontrando o que funciona!",
-                "15": "Quer recomendações? Essas ferramentas foram testadas em batalha em projetos reais!"
+                "15": "Quer recomendações? Essas ferramentas foram testadas em projetos reais!"
             },
             "spotify": {
                 "0": "Bem-vindo ao cantinho da música! 🎵",
-                "1": "Música boa ou ruim? Não sei, mas meu criador, Yuri gosta!",
-                "2": "A música ajuda a focar enquanto programa.",
+                "1": "Música boa ou ruim? Não sei, mas meu criador, Yuri, gosta!",
+                "2": "Música ajuda a focar enquanto código roda.",
                 "3": "O que você está ouvindo ultimamente?",
                 "4": "A playlist é atualizada regularmente com novas descobertas!",
-                "5": "A música é uma ótima maneira de se manter motivado enquanto trabalha!",
-                "6": "A trilha sonora de inúmeras sessões de programação e descobertas criativas! 🎧",
-                "7": "De batidas lo-fi a faixas energéticas - música para cada humor de programação!",
-                "8": "Essas playlists alimentaram sessões de debugging e construção de recursos!",
-                "9": "Música e código combinam como café e noites tardias! ☕",
+                "5": "Música é uma ótima forma de se manter motivado durante o trabalho!",
+                "6": "A trilha sonora de muitas sessões de programação e insights criativos! 🎧",
+                "7": "De lo-fi a faixas energéticas - música para todo humor de codar!",
+                "8": "Essas playlists ajudaram a passar por sessões de debugging e builds!",
+                "9": "Música e código combinam como café e noites longas! ☕",
                 "10": "Descubra novos artistas e gêneros que alimentam criatividade e foco!",
-                "11": "O fundo perfeito para trabalho profundo e sessões de resolução de problemas!",
-                "12": "Cada playlist é curada para diferentes tipos de trabalho e níveis de energia!",
-                "13": "O gosto musical evolui assim como habilidades de programação - sempre descobrindo algo novo!",
-                "14": "Qual é sua trilha sonora de programação? A música pode fazer ou quebrar uma sessão produtiva!",
-                "15": "Do ambiente ao animado - encontre o ritmo perfeito para seu fluxo de trabalho! 🎶"
+                "11": "A playlist ideal para diferentes tipos de trabalho e níveis de energia!",
+                "12": "O gosto musical evolui assim como as habilidades de programação - sempre descobrindo!",
+                "13": "Qual é sua trilha sonora para codar? Música pode definir uma sessão produtiva!",
+                "14": "De ambient a animado - encontre o ritmo perfeito para seu fluxo! 🎶"
             },
             "guestbook": {
-                "0": "Deixe uma mensagem no livro de visitas! ",
-                "1": "Meu criador, Yuri adora ler mensagens dos visitantes!",
-                "2": "Sinta-se à vontade para dizer olá ou fazer perguntas!",
+                "0": "Deixe uma mensagem no livro de visitas! 📖",
+                "1": "Meu criador, Yuri, adora ler mensagens dos visitantes!",
+                "2": "Sinta-se à vontade para dizer oi ou fazer perguntas!",
                 "3": "Sua mensagem vai alegrar o dia dele!",
                 "4": "O livro de visitas é uma ótima maneira de se conectar com a comunidade!",
                 "5": "Todas as mensagens são moderadas para manter o espaço amigável!",
-                "6": "Um livro de visitas digital para a web moderna - que legal é isso? ",
-                "7": "Cada mensagem é lida e apreciada - você faz parte da comunidade!",
-                "8": "Compartilhe seus pensamentos, feedback ou apenas diga oi - todos são bem-vindos!",
-                "9": "O livro de visitas conecta visitantes de todo o mundo! ",
-                "10": "Sua mensagem pode inspirar o próximo post do blog ou projeto!",
-                "11": "De olás rápidos a feedback detalhado - cada mensagem importa!",
-                "12": "O livro de visitas é um lembrete de que por trás de cada site há pessoas reais!",
-                "13": "Junte-se à conversa e torne-se parte desta comunidade em crescimento!",
-                "14": "Mensagens aqui levaram a colaborações, amizades e novas ideias!",
-                "15": "Não seja tímido - sua voz agrega valor a este espaço! "
+                "6": "Um livro de visitas digital para a web moderna - que legal é isso? ✨",
+                "7": "Toda mensagem é lida e apreciada - você faz parte da comunidade!",
+                "8": "Compartilhe suas ideias, feedbacks ou só diga oi - tudo bem vindo!",
+                "9": "O livro conecta visitantes do mundo inteiro! 🌍",
+                "10": "Sua mensagem pode inspirar o próximo post ou projeto!",
+                "11": "De cumprimentos rápidos a feedbacks detalhados - toda mensagem conta!",
+                "12": "O livro de visitas lembra que por trás de cada site existem pessoas reais!",
+                "13": "Participe da conversa e faça parte desta comunidade em crescimento!",
+                "14": "Mensagens aqui já geraram colaborações, amizades e novas ideias!",
+                "15": "Não seja tímido - sua voz agrega muito a este espaço! 💬"
             },
             "admin": {
-                "0": "Bem-vindo ao painel admin! ",
-                "1": "Esta área é para gerenciamento e moderação do site.",
-                "2": "Meu criador, Yuri usa isso para manter o site funcionando suavemente.",
-                "3": "Ferramentas admin ajudam a gerenciar usuários, comentários e conteúdo.",
-                "4": "O painel admin está constantemente sendo melhorado!",
-                "5": "Segurança e moderação são prioridades máximas aqui!"
+                "0": "Bem-vindo ao painel admin! 🔧",
+                "1": "Esta área é para gestão do site e moderação.",
+                "2": "Meu criador, Yuri, usa isso para manter o site funcionando bem.",
+                "3": "Ferramentas de admin ajudam a gerenciar usuários, comentários e conteúdo.",
+                "4": "O painel admin está em constante melhoria!"
             },
             "search": {
-                "0": "Procurando algo específico? ",
-                "1": "O recurso de busca pode ajudá-lo a encontrar qualquer coisa rapidamente!",
-                "2": "Tente palavras-chave diferentes para obter melhores resultados.",
+                "0": "Procurando algo específico? 🔍",
+                "1": "A busca pode te ajudar a encontrar qualquer coisa rapidamente!",
+                "2": "Tente palavras-chave diferentes para obter resultados melhores.",
                 "3": "A busca funciona em todo o conteúdo do site!",
                 "4": "A busca é alimentada por algoritmos avançados!",
-                "5": "Não consegue encontrar o que procura? Me avise!",
-                "6": "Busca inteligente que entende contexto e encontra conteúdo relevante! ",
-                "7": "Pesquise artigos, projetos e páginas tudo em um lugar!",
-                "8": "Dica profissional: Use termos específicos para resultados mais direcionados!",
-                "9": "O índice de busca é constantemente atualizado com novo conteúdo!",
-                "10": "Encontrou algo interessante? Marque para referência posterior!",
-                "11": "Os resultados da busca são classificados por relevância e atualidade!",
-                "12": "Não consegue lembrar o título exato? Tente buscar por tópico ou palavra-chave!",
-                "13": "O recurso de busca aprende e melhora a cada consulta!",
+                "5": "Não consegue achar? Me avise!",
+                "6": "Busca inteligente que entende contexto e encontra conteúdo relevante! 🧠",
+                "7": "Pesquise artigos, projetos e páginas em um só lugar!",
+                "8": "Dica: Use termos específicos para resultados mais precisos!",
+                "9": "O índice de busca é atualizado com novos conteúdos constantemente!",
+                "10": "Achou algo interessante? Salve para consultar depois!",
+                "11": "Resultados são ranqueados por relevância e atualidade!",
+                "12": "Não lembra o título exato? Tente buscar por tópico ou palavra-chave!",
+                "13": "A busca aprende e melhora a cada consulta!",
                 "14": "De artigos técnicos a detalhes de projetos - encontre tudo aqui!",
-                "15": "A busca é sua amiga para navegar grandes quantidades de conteúdo! "
+                "15": "A busca é sua aliada para navegar volumes grandes de conteúdo! 🗂️"
             },
             "404": {
-                "0": "Ops! Parece que você se perdeu! ",
-                "1": "Não se preocupe, posso ajudá-lo a encontrar o caminho de volta!",
-                "2": "Tente usar o menu de navegação ou o recurso de busca.",
-                "3": "A página inicial é sempre um bom lugar para começar!",
-                "4": "Meu criador, Yuri está trabalhando para tornar a navegação ainda melhor!",
-                "5": "Sinta-se à vontade para relatar quaisquer links quebrados que encontrar!",
-                "6": "Até os melhores exploradores se perdem às vezes! ",
+                "0": "Opa! Parece que você se perdeu! 🗺️",
+                "1": "Não se preocupe, eu posso ajudar a voltar ao caminho!",
+                "2": "Tente usar o menu de navegação ou a busca.",
+                "3": "A página inicial é sempre um bom ponto de partida!",
+                "4": "Meu criador, Yuri, está trabalhando para melhorar a navegação!",
+                "5": "Sinta-se à vontade para reportar links quebrados que encontrar!",
+                "6": "Até os melhores exploradores se perdem às vezes! 🧭",
                 "7": "Esta página pode ter sido movida ou ainda não existe!",
                 "8": "Use a busca para encontrar o que estava procurando!",
-                "9": "O menu de navegação tem todas as seções principais organizadas!",
-                "10": "Às vezes se perder leva a descobrir algo ainda melhor!",
-                "11": "Verifique a URL por erros de digitação - isso é frequentemente o culpado!",
-                "12": "O site está constantemente crescendo, então novo conteúdo aparece regularmente!",
-                "13": "Links quebrados acontecem - obrigada por ajudar a melhorar o site!",
-                "14": "Cada 404 é uma chance de explorar algo novo em vez disso!",
-                "15": "Na dúvida, a página inicial tem links para tudo importante! 🏠"
+                "9": "O menu de navegação contém todas as seções principais organizadas!",
+                "10": "Às vezes se perder leva a descobrir algo melhor!",
+                "11": "Verifique a URL para erros de digitação - é um motivo comum!",
+                "12": "O site está em constante crescimento, então novos conteúdos aparecem regularmente!",
+                "13": "Links quebrados acontecem - obrigado por ajudar a melhorar o site!",
+                "14": "Cada 404 é uma chance de explorar algo novo!",
+                "15": "Em caso de dúvida, a página inicial tem links para tudo importante! 🏠"
             }
-        }
-    },
-    "layout": {
-        "navigation": "Navegação",
-        "home": "Início",
-        "blog": "Blog",
-        "projects": "Projetos",
-        "about": "Sobre",
-        "guestbook": "Livro de visitas",
-        "uses": "Setup",
-        "spotify": "Spotify",
-        "skip-to-main-content": "Pular para o conteúdo principal",
-        "toggle-menu": "Alternar menu",
-        "change-language": "Mudar idioma",
-        "links": "Links",
-        "github": "GitHub"
-    },
-    "homepage": {
-        "hero": {
-            "view-projects": "Ver projetos",
-            "read-blog": "Ler blog",
-            "title-top": "Oi, eu sou Yuri Cunha",
-            "title-middle-left": "Eu desenvolvo",
-            "title-middle-right": "aplicações",
-            "title-bottom": "e amo bancos de dados",
-            "location-timezone": "São Paulo, Brasil (UTC-3)",
-            "amazing": "incríveis",
-            "stunning": "deslumbrantes",
-            "fantastic": "fantásticas",
-            "attractive": "atrativas"
-        },
-        "selectedProjects": {
-            "title": "Projetos Selecionados",
-            "more": "Ver todos os projetos",
-            "card": "Projeto em Destaque"
-        },
-        "about-me": {
-            "title": "Sobre Mim",
-            "more": "Saiba mais sobre mim",
-            "location": "Localização",
-            "stacks": "Stack Técnico",
-            "connect": "Conectar",
-            "coding-hours": "Horas de Código",
-            "fav-framework": "Framework Favorito"
-        },
-        "latest-articles": {
-            "title": "Últimos Artigos",
-            "more": "Ver todos os artigos",
-            "card": "Último Artigo"
-        },
-        "get-in-touch": {
-            "title": "Vamos trabalhar juntos",
-            "description": "Estou sempre interessado em novas oportunidades e colaborações.",
-            "image-alt": "Ilustração de contato"
         }
     }
 }
