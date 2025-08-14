@@ -21,7 +21,7 @@ import {
 import { api } from '@/trpc/react'
 import { toast } from 'sonner'
 
-interface BulkOperation {
+interface BulkOperationStatus {
   id: string
   type: string
   status: 'pending' | 'running' | 'completed' | 'failed' | 'cancelled'
@@ -55,7 +55,7 @@ export const BulkOperations = () => {
   })
 
   // Fetch bulk operations history
-  const { data: operationsData, isLoading: operationsLoading, refetch: refetchOperations } = api.bulk.getBulkOperations.useQuery({
+  const { data: operationsData, refetch: refetchOperations } = api.bulk.getBulkOperationStatus.useQuery({
     limit: 20
   })
 
@@ -357,7 +357,7 @@ export const BulkOperations = () => {
           <h3 className="text-lg font-medium text-gray-900 dark:text-white">Recent Operations</h3>
         </div>
         <div className="divide-y divide-gray-200 dark:divide-gray-700">
-          {operationsData?.operations.map((operation) => (
+          {operationsData?.operations.map((operation: BulkOperationStatus) => (
             <div key={operation.id} className="p-6">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
@@ -365,7 +365,7 @@ export const BulkOperations = () => {
                   <div>
                     <div className="flex items-center gap-2">
                       <span className="text-sm font-medium text-gray-900 dark:text-white">
-                        {operation.type.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                        {operation.type.replace('_', ' ').replace(/\b\w/g, (l: string) => l.toUpperCase())}
                       </span>
                       <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(operation.status)}`}>
                         {operation.status}
