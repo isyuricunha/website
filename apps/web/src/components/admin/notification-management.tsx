@@ -17,8 +17,6 @@ import {
   X, 
   Clock, 
   User, 
-  Users,
-  Settings,
   BarChart3
 } from 'lucide-react'
 import { toast } from 'sonner'
@@ -38,16 +36,16 @@ export default function NotificationManagement() {
       setIsCreateDialogOpen(false)
       refetch()
     },
-    onError: (error) => {
+    onError: (error: any) => {
       toast.error(`Failed to create notification: ${error.message}`)
     }
   })
 
-  const markAsReadMutation = api.communication.markNotificationAsRead.useMutation({
+  const markAsReadMutation = api.communication.markNotificationRead.useMutation({
     onSuccess: () => {
       refetch()
     },
-    onError: (error) => {
+    onError: (error: any) => {
       toast.error(`Failed to mark as read: ${error.message}`)
     }
   })
@@ -246,7 +244,7 @@ export default function NotificationManagement() {
                           )}
                         </div>
                         
-                        <p className="text-sm mb-3">{notification.content}</p>
+                        <p className="text-sm mb-3">{notification.message}</p>
                         
                         <div className="flex items-center gap-4 text-xs text-muted-foreground">
                           <span className="flex items-center gap-1">
