@@ -84,17 +84,11 @@ export const viewsRouter = createTRPCRouter({
       if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
 
       const views = await ctx.db
-        .insert(posts)
-        .values({
-          slug: input.slug,
-          views: 1
+        .update(posts)
+        .set({
+          views: sql<number>`${posts.views} + 1`
         })
-        .onConflictDoUpdate({
-          target: posts.slug,
-          set: {
-            views: sql<number>`${posts.views} + 1`
-          }
-        })
+        .where(eq(posts.slug, input.slug))
         .returning()
 
       await redis.set(redisKeys.postViews(input.slug), views[0]?.views)

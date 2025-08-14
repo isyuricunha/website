@@ -126,17 +126,11 @@ export const likesRouter = createTRPCRouter({
       }
 
       const likes = await ctx.db
-        .insert(posts)
-        .values({
-          slug: input.slug,
-          likes: input.value
+        .update(posts)
+        .set({
+          likes: sql<number>`${posts.likes} + ${input.value}`
         })
-        .onConflictDoUpdate({
-          target: posts.slug,
-          set: {
-            likes: sql<number>`${posts.likes} + ${input.value}`
-          }
-        })
+        .where(eq(posts.slug, input.slug))
         .returning()
 
       const currentUserLikes = await ctx.db
