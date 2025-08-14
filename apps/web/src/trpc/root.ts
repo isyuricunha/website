@@ -1,9 +1,11 @@
 import { adminRouter } from './routers/admin'
+import { announcementsRouter } from './routers/announcements'
 import { bulkRouter } from './routers/bulk'
 import { commentsRouter } from './routers/comments'
 import { communicationRouter } from './routers/communication'
 import { contentRouter } from './routers/content'
 import { dataManagementRouter } from './routers/data-management'
+import { emailManagementRouter } from './routers/email-management'
 import { githubRouter } from './routers/github'
 import { guestbookRouter } from './routers/guestbook'
 import { likesRouter } from './routers/likes'
@@ -19,10 +21,12 @@ import { createTRPCRouter } from './trpc'
 
 export const appRouter = createTRPCRouter({
   admin: adminRouter,
+  announcements: announcementsRouter,
   bulk: bulkRouter,
   communication: communicationRouter,
   content: contentRouter,
   dataManagement: dataManagementRouter,
+  emailManagement: emailManagementRouter,
   monitoring: monitoringRouter,
   security: securityRouter,
   system: systemRouter,

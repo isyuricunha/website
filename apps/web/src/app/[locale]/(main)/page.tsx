@@ -9,6 +9,7 @@ import GetInTouch from '@/components/home/get-in-touch'
 import Hero from '@/components/home/hero'
 import LatestArticles from '@/components/home/latest-articles'
 import SelectedProjects from '@/components/home/selected-projects'
+import AnnouncementBanner from '@/components/announcement-banner'
 import {
   SITE_GITHUB_URL,
   SITE_KEYWORDS,
@@ -75,6 +76,9 @@ const Page = async (props: PageProps) => {
         type='application/ld+json'
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      <div className="mb-6">
+        <AnnouncementBanner />
+      </div>
       <Hero />
       <SelectedProjects />
       <AboutMe />

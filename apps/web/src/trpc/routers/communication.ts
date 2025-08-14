@@ -15,7 +15,7 @@ import { z } from 'zod'
 import { Resend } from 'resend'
 
 import { AuditLogger, getIpFromHeaders, getUserAgentFromHeaders } from '@/lib/audit-logger'
-import { adminProcedure, protectedProcedure, createTRPCRouter } from '../trpc'
+import { adminProcedure, protectedProcedure, publicProcedure, createTRPCRouter } from '../trpc'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
@@ -402,7 +402,7 @@ export const communicationRouter = createTRPCRouter({
     }),
 
   // Announcements
-  getAnnouncements: protectedProcedure
+  getAnnouncements: publicProcedure
     .input(z.object({
       active: z.boolean().optional(),
       adminView: z.boolean().default(false)
@@ -415,8 +415,8 @@ export const communicationRouter = createTRPCRouter({
           conditions.push(eq(announcements.isActive, input.active))
         }
 
-        // For non-admin users, only show current announcements
-        if (!input.adminView && ctx.session.user.role !== 'admin') {
+        // For non-admin users or unauthenticated users, only show current announcements
+        if (!input.adminView && (!ctx.session?.user || ctx.session.user.role !== 'admin')) {
           const now = new Date()
           conditions.push(
             or(
@@ -448,13 +448,46 @@ export const communicationRouter = createTRPCRouter({
           } : {}
         })
 
-        // Get user interactions for non-admin view
+        // Filter announcements based on user targeting
+        const filteredAnnouncements = announcementList.filter(announcement => {
+          if (!announcement.targetAudience || input.adminView) {
+            return true // Show all if no targeting or admin view
+          }
+
+          // If user is not authenticated, only show announcements with no specific targeting
+          if (!ctx.session?.user) {
+            return true // Show to unauthenticated users if no specific targeting
+          }
+
+          try {
+            const targetAudience = JSON.parse(announcement.targetAudience)
+            const userRole = ctx.session.user.role
+
+            // Check role-based targeting
+            if (targetAudience.roles && Array.isArray(targetAudience.roles)) {
+              return targetAudience.roles.includes(userRole)
+            }
+
+            // Check user-specific targeting
+            if (targetAudience.userIds && Array.isArray(targetAudience.userIds)) {
+              return targetAudience.userIds.includes(ctx.session.user.id)
+            }
+
+            // If no specific targeting, show to all
+            return true
+          } catch (error) {
+            // If JSON parsing fails, show to all users
+            return true
+          }
+        })
+
+        // Get user interactions for non-admin view (only for authenticated users)
         let userInteractions: any = {}
-        if (!input.adminView) {
+        if (!input.adminView && ctx.session?.user) {
           const interactions = await ctx.db.query.announcementInteractions.findMany({
             where: and(
               eq(announcementInteractions.userId, ctx.session.user.id),
-              inArray(announcementInteractions.announcementId, announcementList.map(a => a.id))
+              inArray(announcementInteractions.announcementId, filteredAnnouncements.map(a => a.id))
             )
           })
           
@@ -465,7 +498,7 @@ export const communicationRouter = createTRPCRouter({
         }
 
         return {
-          announcements: announcementList.map(announcement => ({
+          announcements: filteredAnnouncements.map(announcement => ({
             ...announcement,
             targetAudience: announcement.targetAudience ? JSON.parse(announcement.targetAudience) : null,
             userInteraction: userInteractions[announcement.id] || null

@@ -4,6 +4,7 @@ import { BarChart3, MessageSquare, Shield, Users } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@tszhong0411/ui'
 
 import { api } from '@/trpc/react'
+import AnnouncementWidget from '../announcement-widget'
 
 const AdminDashboard = () => {
   const { data: stats, isLoading, error } = api.admin.getStats.useQuery()
@@ -105,7 +106,7 @@ const AdminDashboard = () => {
         })}
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <Card>
           <CardHeader>
             <CardTitle>Recent Activity (7 days)</CardTitle>
@@ -151,6 +152,8 @@ const AdminDashboard = () => {
             </a>
           </CardContent>
         </Card>
+
+        <AnnouncementWidget className="lg:col-span-1" maxItems={3} />
       </div>
     </div>
   )
