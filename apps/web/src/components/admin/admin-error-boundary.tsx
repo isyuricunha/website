@@ -28,7 +28,7 @@ class AdminErrorBoundary extends React.Component<AdminErrorBoundaryProps, AdminE
     }
   }
 
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+  override componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     console.error('Admin Error Boundary caught an error:', error, errorInfo)
     this.setState({
       error,
@@ -40,7 +40,7 @@ class AdminErrorBoundary extends React.Component<AdminErrorBoundaryProps, AdminE
     this.setState({ hasError: false, error: undefined, errorInfo: undefined })
   }
 
-  render() {
+  override render() {
     if (this.state.hasError) {
       if (this.props.fallback) {
         const FallbackComponent = this.props.fallback
