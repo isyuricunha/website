@@ -1,11 +1,15 @@
 import { adminRouter } from './routers/admin'
 import { bulkRouter } from './routers/bulk'
 import { commentsRouter } from './routers/comments'
+import { communicationRouter } from './routers/communication'
 import { contentRouter } from './routers/content'
+import { dataManagementRouter } from './routers/data-management'
 import { githubRouter } from './routers/github'
 import { guestbookRouter } from './routers/guestbook'
 import { likesRouter } from './routers/likes'
+import { monitoringRouter } from './routers/monitoring'
 import { ratesRouter } from './routers/rates'
+import { securityRouter } from './routers/security'
 import { spotifyRouter } from './routers/spotify'
 import { systemRouter } from './routers/system'
 import { usersRouter } from './routers/users'
@@ -16,7 +20,11 @@ import { createTRPCRouter } from './trpc'
 export const appRouter = createTRPCRouter({
   admin: adminRouter,
   bulk: bulkRouter,
+  communication: communicationRouter,
   content: contentRouter,
+  dataManagement: dataManagementRouter,
+  monitoring: monitoringRouter,
+  security: securityRouter,
   system: systemRouter,
   github: githubRouter,
   wakatime: wakatimeRouter,

@@ -97,6 +97,10 @@
     "commit-msg": "pnpm commitlint --edit $1 && pnpm check:spelling $1"
   },
   "dependencies": {
-    "better-auth": "^1.2.10"
+    "better-auth": "^1.2.10",
+    "drizzle-orm": "^0.40.0",
+    "resend": "^4.1.2",
+    "sonner": "2.0.1",
+    "speakeasy": "^2.0.0"
   }
 }

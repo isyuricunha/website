@@ -1,0 +1,743 @@
+-- WARNING: This schema is for context only and is not meant to be run.
+-- Table order and constraints may not be valid for execution.
+
+CREATE TABLE public.account (
+  id text NOT NULL,
+  account_id text NOT NULL,
+  provider_id text NOT NULL,
+  user_id text NOT NULL,
+  access_token text,
+  refresh_token text,
+  id_token text,
+  access_token_expires_at timestamp without time zone,
+  refresh_token_expires_at timestamp without time zone,
+  scope text,
+  password text,
+  created_at timestamp without time zone NOT NULL,
+  updated_at timestamp without time zone NOT NULL,
+  CONSTRAINT account_pkey PRIMARY KEY (id),
+  CONSTRAINT account_user_id_user_id_fk FOREIGN KEY (user_id) REFERENCES public.users(id)
+);
+CREATE TABLE public.account_lockouts (
+  id text NOT NULL,
+  user_id text NOT NULL,
+  reason text NOT NULL,
+  locked_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  locked_until timestamp without time zone,
+  locked_by text,
+  unlocked boolean NOT NULL DEFAULT false,
+  unlocked_at timestamp without time zone,
+  unlocked_by text,
+  CONSTRAINT account_lockouts_pkey PRIMARY KEY (id),
+  CONSTRAINT account_lockouts_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id),
+  CONSTRAINT account_lockouts_locked_by_fkey FOREIGN KEY (locked_by) REFERENCES public.users(id),
+  CONSTRAINT account_lockouts_unlocked_by_fkey FOREIGN KEY (unlocked_by) REFERENCES public.users(id)
+);
+CREATE TABLE public.alert_instances (
+  id text NOT NULL,
+  alert_id text NOT NULL,
+  triggered_value real,
+  message text NOT NULL,
+  metadata text,
+  resolved boolean NOT NULL DEFAULT false,
+  resolved_by text,
+  resolved_at timestamp without time zone,
+  notifications_sent text,
+  triggered_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT alert_instances_pkey PRIMARY KEY (id),
+  CONSTRAINT alert_instances_alert_id_fkey FOREIGN KEY (alert_id) REFERENCES public.alerts(id),
+  CONSTRAINT alert_instances_resolved_by_fkey FOREIGN KEY (resolved_by) REFERENCES public.users(id)
+);
+CREATE TABLE public.alerts (
+  id text NOT NULL,
+  name text NOT NULL,
+  description text,
+  type USER-DEFINED NOT NULL,
+  severity USER-DEFINED NOT NULL DEFAULT 'warning'::alert_severity,
+  conditions text NOT NULL,
+  is_active boolean NOT NULL DEFAULT true,
+  notification_channels text,
+  created_by text NOT NULL,
+  created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT alerts_pkey PRIMARY KEY (id),
+  CONSTRAINT alerts_created_by_fkey FOREIGN KEY (created_by) REFERENCES public.users(id)
+);
+CREATE TABLE public.analytics_events (
+  id text NOT NULL,
+  event_type text NOT NULL,
+  event_name text,
+  user_id text,
+  session_id text NOT NULL,
+  page text,
+  referrer text,
+  user_agent text,
+  ip_address text,
+  country text,
+  city text,
+  device text,
+  browser text,
+  os text,
+  properties text,
+  created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT analytics_events_pkey PRIMARY KEY (id),
+  CONSTRAINT analytics_events_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id)
+);
+CREATE TABLE public.announcement_interactions (
+  id text NOT NULL,
+  announcement_id text NOT NULL,
+  user_id text NOT NULL,
+  viewed boolean NOT NULL DEFAULT false,
+  dismissed boolean NOT NULL DEFAULT false,
+  viewed_at timestamp without time zone,
+  dismissed_at timestamp without time zone,
+  CONSTRAINT announcement_interactions_pkey PRIMARY KEY (id),
+  CONSTRAINT announcement_interactions_announcement_id_fkey FOREIGN KEY (announcement_id) REFERENCES public.announcements(id),
+  CONSTRAINT announcement_interactions_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id)
+);
+CREATE TABLE public.announcements (
+  id text NOT NULL,
+  title text NOT NULL,
+  content text NOT NULL,
+  type USER-DEFINED NOT NULL DEFAULT 'info'::announcement_type,
+  priority integer NOT NULL DEFAULT 0,
+  is_active boolean NOT NULL DEFAULT true,
+  is_dismissible boolean NOT NULL DEFAULT true,
+  target_audience text,
+  start_date timestamp without time zone,
+  end_date timestamp without time zone,
+  created_by text NOT NULL,
+  created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT announcements_pkey PRIMARY KEY (id),
+  CONSTRAINT announcements_created_by_fkey FOREIGN KEY (created_by) REFERENCES public.users(id)
+);
+CREATE TABLE public.api_rate_limits (
+  id text NOT NULL,
+  identifier text NOT NULL,
+  identifier_type text NOT NULL,
+  endpoint text,
+  request_count integer NOT NULL DEFAULT 0,
+  window_start timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  window_end timestamp without time zone NOT NULL,
+  blocked boolean NOT NULL DEFAULT false,
+  blocked_until timestamp without time zone,
+  CONSTRAINT api_rate_limits_pkey PRIMARY KEY (id)
+);
+CREATE TABLE public.api_usage (
+  id text NOT NULL,
+  endpoint text NOT NULL,
+  method text NOT NULL,
+  status_code integer NOT NULL,
+  response_time integer NOT NULL,
+  request_size integer,
+  response_size integer,
+  user_id text,
+  ip_address text,
+  user_agent text,
+  api_key text,
+  error_message text,
+  created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT api_usage_pkey PRIMARY KEY (id),
+  CONSTRAINT api_usage_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id)
+);
+CREATE TABLE public.audit_logs (
+  id text NOT NULL,
+  admin_user_id text NOT NULL,
+  action USER-DEFINED NOT NULL,
+  target_type text,
+  target_id text,
+  details text,
+  ip_address text,
+  user_agent text,
+  created_at timestamp without time zone NOT NULL DEFAULT now(),
+  CONSTRAINT audit_logs_pkey PRIMARY KEY (id),
+  CONSTRAINT audit_logs_admin_user_id_users_id_fk FOREIGN KEY (admin_user_id) REFERENCES public.users(id)
+);
+CREATE TABLE public.bulk_operations (
+  id text NOT NULL,
+  type text NOT NULL,
+  status USER-DEFINED NOT NULL DEFAULT 'pending'::bulk_operation_status,
+  total_items integer NOT NULL,
+  processed_items integer NOT NULL DEFAULT 0,
+  successful_items integer NOT NULL DEFAULT 0,
+  failed_items integer NOT NULL DEFAULT 0,
+  parameters text,
+  results text,
+  error_message text,
+  started_at timestamp without time zone,
+  completed_at timestamp without time zone,
+  created_by text NOT NULL,
+  created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT bulk_operations_pkey PRIMARY KEY (id),
+  CONSTRAINT bulk_operations_created_by_fkey FOREIGN KEY (created_by) REFERENCES public.users(id)
+);
+CREATE TABLE public.comment (
+  id text NOT NULL,
+  body text NOT NULL,
+  user_id text NOT NULL,
+  created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+  updated_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+  post_id text NOT NULL,
+  parent_id text,
+  is_deleted boolean NOT NULL DEFAULT false,
+  CONSTRAINT comment_pkey PRIMARY KEY (id),
+  CONSTRAINT comment_user_id_user_id_fk FOREIGN KEY (user_id) REFERENCES public.users(id),
+  CONSTRAINT comment_post_id_post_slug_fk FOREIGN KEY (post_id) REFERENCES public.post(slug)
+);
+CREATE TABLE public.custom_metrics (
+  id text NOT NULL,
+  name text NOT NULL,
+  description text,
+  value real NOT NULL,
+  unit text,
+  category text,
+  dimensions text,
+  created_by text,
+  created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT custom_metrics_pkey PRIMARY KEY (id),
+  CONSTRAINT custom_metrics_created_by_fkey FOREIGN KEY (created_by) REFERENCES public.users(id)
+);
+CREATE TABLE public.data_exports (
+  id text NOT NULL,
+  name text NOT NULL,
+  description text,
+  format USER-DEFINED NOT NULL DEFAULT 'csv'::export_format,
+  status USER-DEFINED NOT NULL DEFAULT 'pending'::export_status,
+  query text,
+  tables text,
+  filters text,
+  file_path text,
+  file_size integer,
+  record_count integer,
+  started_at timestamp without time zone,
+  completed_at timestamp without time zone,
+  duration integer,
+  error_message text,
+  download_url text,
+  expires_at timestamp without time zone,
+  metadata text,
+  created_by text NOT NULL,
+  created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT data_exports_pkey PRIMARY KEY (id),
+  CONSTRAINT data_exports_created_by_fkey FOREIGN KEY (created_by) REFERENCES public.users(id)
+);
+CREATE TABLE public.data_imports (
+  id text NOT NULL,
+  name text NOT NULL,
+  description text,
+  format USER-DEFINED NOT NULL DEFAULT 'csv'::export_format,
+  status USER-DEFINED NOT NULL DEFAULT 'pending'::import_status,
+  file_path text NOT NULL,
+  file_size integer,
+  target_table text NOT NULL,
+  mapping text,
+  validation_rules text,
+  duplicate_handling text NOT NULL DEFAULT 'skip'::text,
+  total_records integer,
+  processed_records integer NOT NULL DEFAULT 0,
+  successful_records integer NOT NULL DEFAULT 0,
+  failed_records integer NOT NULL DEFAULT 0,
+  validation_errors text,
+  started_at timestamp without time zone,
+  completed_at timestamp without time zone,
+  duration integer,
+  error_message text,
+  metadata text,
+  created_by text NOT NULL,
+  created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT data_imports_pkey PRIMARY KEY (id),
+  CONSTRAINT data_imports_created_by_fkey FOREIGN KEY (created_by) REFERENCES public.users(id)
+);
+CREATE TABLE public.data_migrations (
+  id text NOT NULL,
+  name text NOT NULL,
+  description text,
+  version text NOT NULL,
+  status USER-DEFINED NOT NULL DEFAULT 'pending'::migration_status,
+  migration_script text,
+  rollback_script text,
+  checksum text,
+  dependencies text,
+  affected_tables text,
+  started_at timestamp without time zone,
+  completed_at timestamp without time zone,
+  duration integer,
+  error_message text,
+  rollback_reason text,
+  metadata text,
+  created_by text NOT NULL,
+  created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT data_migrations_pkey PRIMARY KEY (id),
+  CONSTRAINT data_migrations_created_by_fkey FOREIGN KEY (created_by) REFERENCES public.users(id)
+);
+CREATE TABLE public.data_quality_check_results (
+  id text NOT NULL,
+  check_id text NOT NULL,
+  total_records integer NOT NULL,
+  passed_records integer NOT NULL,
+  failed_records integer NOT NULL,
+  success_rate integer NOT NULL,
+  details text,
+  issues text,
+  run_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT data_quality_check_results_pkey PRIMARY KEY (id),
+  CONSTRAINT data_quality_check_results_check_id_fkey FOREIGN KEY (check_id) REFERENCES public.data_quality_checks(id)
+);
+CREATE TABLE public.data_quality_checks (
+  id text NOT NULL,
+  name text NOT NULL,
+  description text,
+  type USER-DEFINED NOT NULL,
+  table_name text NOT NULL,
+  column_name text,
+  rules text NOT NULL,
+  threshold integer,
+  is_active boolean NOT NULL DEFAULT true,
+  schedule text,
+  last_run_at timestamp without time zone,
+  next_run_at timestamp without time zone,
+  created_by text NOT NULL,
+  created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT data_quality_checks_pkey PRIMARY KEY (id),
+  CONSTRAINT data_quality_checks_created_by_fkey FOREIGN KEY (created_by) REFERENCES public.users(id)
+);
+CREATE TABLE public.data_synchronization (
+  id text NOT NULL,
+  name text NOT NULL,
+  description text,
+  source_type text NOT NULL,
+  source_config text NOT NULL,
+  target_type text NOT NULL,
+  target_config text NOT NULL,
+  direction USER-DEFINED NOT NULL DEFAULT 'pull'::sync_direction,
+  status USER-DEFINED NOT NULL DEFAULT 'pending'::sync_status,
+  schedule text,
+  mapping text,
+  filters text,
+  last_sync_at timestamp without time zone,
+  next_sync_at timestamp without time zone,
+  synced_records integer NOT NULL DEFAULT 0,
+  error_count integer NOT NULL DEFAULT 0,
+  is_active boolean NOT NULL DEFAULT true,
+  metadata text,
+  created_by text NOT NULL,
+  created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT data_synchronization_pkey PRIMARY KEY (id),
+  CONSTRAINT data_synchronization_created_by_fkey FOREIGN KEY (created_by) REFERENCES public.users(id)
+);
+CREATE TABLE public.database_backups (
+  id text NOT NULL,
+  name text NOT NULL,
+  type USER-DEFINED NOT NULL DEFAULT 'full'::backup_type,
+  status USER-DEFINED NOT NULL DEFAULT 'pending'::backup_status,
+  file_path text,
+  file_size integer,
+  compression_type text,
+  checksum text,
+  tables text,
+  excluded_tables text,
+  started_at timestamp without time zone,
+  completed_at timestamp without time zone,
+  duration integer,
+  error_message text,
+  metadata text,
+  is_automatic boolean NOT NULL DEFAULT false,
+  retention_days integer DEFAULT 30,
+  created_by text NOT NULL,
+  created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT database_backups_pkey PRIMARY KEY (id),
+  CONSTRAINT database_backups_created_by_fkey FOREIGN KEY (created_by) REFERENCES public.users(id)
+);
+CREATE TABLE public.database_restores (
+  id text NOT NULL,
+  backup_id text NOT NULL,
+  status USER-DEFINED NOT NULL DEFAULT 'pending'::restore_status,
+  target_database text,
+  restore_point timestamp without time zone,
+  tables text,
+  data_only boolean NOT NULL DEFAULT false,
+  schema_only boolean NOT NULL DEFAULT false,
+  started_at timestamp without time zone,
+  completed_at timestamp without time zone,
+  duration integer,
+  error_message text,
+  metadata text,
+  created_by text NOT NULL,
+  created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT database_restores_pkey PRIMARY KEY (id),
+  CONSTRAINT database_restores_backup_id_fkey FOREIGN KEY (backup_id) REFERENCES public.database_backups(id),
+  CONSTRAINT database_restores_created_by_fkey FOREIGN KEY (created_by) REFERENCES public.users(id)
+);
+CREATE TABLE public.email_campaign_recipients (
+  id text NOT NULL,
+  campaign_id text NOT NULL,
+  user_id text,
+  email text NOT NULL,
+  status text NOT NULL DEFAULT 'pending'::text,
+  sent_at timestamp without time zone,
+  delivered_at timestamp without time zone,
+  opened_at timestamp without time zone,
+  clicked_at timestamp without time zone,
+  unsubscribed_at timestamp without time zone,
+  error_message text,
+  CONSTRAINT email_campaign_recipients_pkey PRIMARY KEY (id),
+  CONSTRAINT email_campaign_recipients_campaign_id_fkey FOREIGN KEY (campaign_id) REFERENCES public.email_campaigns(id),
+  CONSTRAINT email_campaign_recipients_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id)
+);
+CREATE TABLE public.email_campaigns (
+  id text NOT NULL,
+  name text NOT NULL,
+  subject text NOT NULL,
+  template_id text,
+  html_content text,
+  text_content text,
+  status USER-DEFINED NOT NULL DEFAULT 'draft'::email_campaign_status,
+  target_audience text,
+  total_recipients integer NOT NULL DEFAULT 0,
+  sent_count integer NOT NULL DEFAULT 0,
+  delivered_count integer NOT NULL DEFAULT 0,
+  opened_count integer NOT NULL DEFAULT 0,
+  clicked_count integer NOT NULL DEFAULT 0,
+  bounced_count integer NOT NULL DEFAULT 0,
+  unsubscribed_count integer NOT NULL DEFAULT 0,
+  scheduled_at timestamp without time zone,
+  started_at timestamp without time zone,
+  completed_at timestamp without time zone,
+  created_by text NOT NULL,
+  created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT email_campaigns_pkey PRIMARY KEY (id),
+  CONSTRAINT email_campaigns_template_id_fkey FOREIGN KEY (template_id) REFERENCES public.email_templates(id),
+  CONSTRAINT email_campaigns_created_by_fkey FOREIGN KEY (created_by) REFERENCES public.users(id)
+);
+CREATE TABLE public.email_subscriptions (
+  id text NOT NULL,
+  email text NOT NULL UNIQUE,
+  user_id text,
+  subscription_types text,
+  is_active boolean NOT NULL DEFAULT true,
+  unsubscribe_token text NOT NULL UNIQUE,
+  subscribed_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  unsubscribed_at timestamp without time zone,
+  CONSTRAINT email_subscriptions_pkey PRIMARY KEY (id),
+  CONSTRAINT email_subscriptions_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id)
+);
+CREATE TABLE public.email_templates (
+  id text NOT NULL,
+  name text NOT NULL,
+  type USER-DEFINED NOT NULL,
+  subject text NOT NULL,
+  html_content text NOT NULL,
+  text_content text,
+  variables text,
+  is_active boolean NOT NULL DEFAULT true,
+  created_by text NOT NULL,
+  created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT email_templates_pkey PRIMARY KEY (id),
+  CONSTRAINT email_templates_created_by_fkey FOREIGN KEY (created_by) REFERENCES public.users(id)
+);
+CREATE TABLE public.error_logs (
+  id text NOT NULL,
+  level text NOT NULL,
+  message text NOT NULL,
+  stack text,
+  url text,
+  user_agent text,
+  user_id text,
+  ip_address text,
+  metadata text,
+  resolved boolean NOT NULL DEFAULT false,
+  resolved_by text,
+  resolved_at timestamp without time zone,
+  created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT error_logs_pkey PRIMARY KEY (id),
+  CONSTRAINT error_logs_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id),
+  CONSTRAINT error_logs_resolved_by_fkey FOREIGN KEY (resolved_by) REFERENCES public.users(id)
+);
+CREATE TABLE public.error_tracking (
+  id text NOT NULL,
+  error_type text NOT NULL,
+  error_name text NOT NULL,
+  message text NOT NULL,
+  stack text,
+  filename text,
+  line_number integer,
+  column_number integer,
+  user_id text,
+  session_id text,
+  url text,
+  user_agent text,
+  ip_address text,
+  breadcrumbs text,
+  tags text,
+  fingerprint text,
+  count integer NOT NULL DEFAULT 1,
+  first_seen timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  last_seen timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  resolved boolean NOT NULL DEFAULT false,
+  resolved_by text,
+  resolved_at timestamp without time zone,
+  CONSTRAINT error_tracking_pkey PRIMARY KEY (id),
+  CONSTRAINT error_tracking_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id),
+  CONSTRAINT error_tracking_resolved_by_fkey FOREIGN KEY (resolved_by) REFERENCES public.users(id)
+);
+CREATE TABLE public.guestbook (
+  id text NOT NULL,
+  body text NOT NULL,
+  user_id text NOT NULL,
+  created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+  updated_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+  CONSTRAINT guestbook_pkey PRIMARY KEY (id),
+  CONSTRAINT guestbook_user_id_user_id_fk FOREIGN KEY (user_id) REFERENCES public.users(id)
+);
+CREATE TABLE public.ip_access_control (
+  id text NOT NULL,
+  ip_address text NOT NULL,
+  ip_range text,
+  type USER-DEFINED NOT NULL,
+  description text,
+  is_active boolean NOT NULL DEFAULT true,
+  created_by text NOT NULL,
+  created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT ip_access_control_pkey PRIMARY KEY (id),
+  CONSTRAINT ip_access_control_created_by_fkey FOREIGN KEY (created_by) REFERENCES public.users(id)
+);
+CREATE TABLE public.likes_session (
+  id text NOT NULL,
+  created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+  likes integer NOT NULL DEFAULT 0,
+  CONSTRAINT likes_session_pkey PRIMARY KEY (id)
+);
+CREATE TABLE public.login_attempts (
+  id text NOT NULL,
+  email text NOT NULL,
+  ip_address text NOT NULL,
+  user_agent text,
+  success boolean NOT NULL,
+  failure_reason text,
+  two_factor_required boolean NOT NULL DEFAULT false,
+  two_factor_success boolean,
+  created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT login_attempts_pkey PRIMARY KEY (id)
+);
+CREATE TABLE public.notification_preferences (
+  id text NOT NULL,
+  user_id text NOT NULL,
+  notification_type USER-DEFINED NOT NULL,
+  channel USER-DEFINED NOT NULL,
+  enabled boolean NOT NULL DEFAULT true,
+  created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT notification_preferences_pkey PRIMARY KEY (id),
+  CONSTRAINT notification_preferences_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id)
+);
+CREATE TABLE public.notifications (
+  id text NOT NULL,
+  user_id text NOT NULL,
+  title text NOT NULL,
+  message text NOT NULL,
+  type USER-DEFINED NOT NULL DEFAULT 'system'::notification_type,
+  data text,
+  read boolean NOT NULL DEFAULT false,
+  read_at timestamp without time zone,
+  action_url text,
+  expires_at timestamp without time zone,
+  created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT notifications_pkey PRIMARY KEY (id),
+  CONSTRAINT notifications_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id)
+);
+CREATE TABLE public.password_reset_tokens (
+  id text NOT NULL,
+  token text NOT NULL UNIQUE,
+  user_id text NOT NULL,
+  expires_at timestamp without time zone NOT NULL,
+  created_at timestamp without time zone NOT NULL,
+  used boolean NOT NULL DEFAULT false,
+  CONSTRAINT password_reset_tokens_pkey PRIMARY KEY (id),
+  CONSTRAINT password_reset_tokens_user_id_users_id_fk FOREIGN KEY (user_id) REFERENCES public.users(id)
+);
+CREATE TABLE public.performance_metrics (
+  id text NOT NULL,
+  metric_name text NOT NULL,
+  value real NOT NULL,
+  unit text NOT NULL,
+  endpoint text,
+  user_id text,
+  session_id text,
+  user_agent text,
+  ip_address text,
+  metadata text,
+  created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT performance_metrics_pkey PRIMARY KEY (id),
+  CONSTRAINT performance_metrics_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id)
+);
+CREATE TABLE public.post (
+  created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+  slug text NOT NULL UNIQUE,
+  likes integer NOT NULL DEFAULT 0,
+  views integer NOT NULL DEFAULT 0,
+  id text NOT NULL,
+  title text,
+  description text,
+  content text,
+  excerpt text,
+  cover_image text,
+  tags text,
+  status USER-DEFINED DEFAULT 'draft'::post_status,
+  featured boolean DEFAULT false,
+  author_id text,
+  published_at timestamp without time zone,
+  updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT post_pkey PRIMARY KEY (id),
+  CONSTRAINT fk_post_author FOREIGN KEY (author_id) REFERENCES public.users(id)
+);
+CREATE TABLE public.query_performance (
+  id text NOT NULL,
+  query_type text NOT NULL,
+  table_name text NOT NULL,
+  execution_time real NOT NULL,
+  rows_affected integer,
+  query_hash text,
+  endpoint text,
+  user_id text,
+  slow boolean NOT NULL DEFAULT false,
+  created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT query_performance_pkey PRIMARY KEY (id),
+  CONSTRAINT query_performance_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id)
+);
+CREATE TABLE public.rate (
+  user_id text NOT NULL,
+  comment_id text NOT NULL,
+  like boolean NOT NULL,
+  CONSTRAINT rate_pkey PRIMARY KEY (user_id, comment_id),
+  CONSTRAINT rate_user_id_user_id_fk FOREIGN KEY (user_id) REFERENCES public.users(id),
+  CONSTRAINT rate_comment_id_comment_id_fk FOREIGN KEY (comment_id) REFERENCES public.comment(id)
+);
+CREATE TABLE public.resource_usage (
+  id text NOT NULL,
+  type USER-DEFINED NOT NULL,
+  value real NOT NULL,
+  max_value real,
+  unit text NOT NULL,
+  hostname text,
+  service text,
+  metadata text,
+  created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT resource_usage_pkey PRIMARY KEY (id)
+);
+CREATE TABLE public.security_events (
+  id text NOT NULL,
+  event_type USER-DEFINED NOT NULL,
+  severity USER-DEFINED NOT NULL DEFAULT 'low'::security_event_severity,
+  user_id text,
+  ip_address text,
+  user_agent text,
+  location text,
+  details text,
+  resolved boolean NOT NULL DEFAULT false,
+  resolved_by text,
+  resolved_at timestamp without time zone,
+  created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT security_events_pkey PRIMARY KEY (id),
+  CONSTRAINT security_events_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id),
+  CONSTRAINT security_events_resolved_by_fkey FOREIGN KEY (resolved_by) REFERENCES public.users(id)
+);
+CREATE TABLE public.security_settings (
+  id text NOT NULL,
+  key text NOT NULL UNIQUE,
+  value text NOT NULL,
+  description text,
+  category text NOT NULL DEFAULT 'general'::text,
+  updated_by text NOT NULL,
+  created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT security_settings_pkey PRIMARY KEY (id),
+  CONSTRAINT security_settings_updated_by_fkey FOREIGN KEY (updated_by) REFERENCES public.users(id)
+);
+CREATE TABLE public.session (
+  id text NOT NULL,
+  expires_at timestamp without time zone NOT NULL,
+  token text NOT NULL UNIQUE,
+  created_at timestamp without time zone NOT NULL,
+  updated_at timestamp without time zone NOT NULL,
+  ip_address text,
+  user_agent text,
+  user_id text NOT NULL,
+  CONSTRAINT session_pkey PRIMARY KEY (id),
+  CONSTRAINT session_user_id_user_id_fk FOREIGN KEY (user_id) REFERENCES public.users(id)
+);
+CREATE TABLE public.site_config (
+  id text NOT NULL,
+  key text NOT NULL UNIQUE,
+  value text,
+  type USER-DEFINED NOT NULL DEFAULT 'general'::site_config_type,
+  description text,
+  is_public boolean NOT NULL DEFAULT false,
+  updated_by text NOT NULL,
+  created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT site_config_pkey PRIMARY KEY (id),
+  CONSTRAINT site_config_updated_by_fkey FOREIGN KEY (updated_by) REFERENCES public.users(id)
+);
+CREATE TABLE public.system_health_logs (
+  id text NOT NULL,
+  check_type USER-DEFINED NOT NULL,
+  status USER-DEFINED NOT NULL,
+  response_time integer,
+  message text,
+  details text,
+  created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT system_health_logs_pkey PRIMARY KEY (id)
+);
+CREATE TABLE public.two_factor_tokens (
+  id text NOT NULL,
+  user_id text NOT NULL,
+  secret text NOT NULL,
+  backup_codes text,
+  is_enabled boolean NOT NULL DEFAULT false,
+  created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  last_used_at timestamp without time zone,
+  CONSTRAINT two_factor_tokens_pkey PRIMARY KEY (id),
+  CONSTRAINT two_factor_tokens_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id)
+);
+CREATE TABLE public.user_activity (
+  id text NOT NULL,
+  user_id text NOT NULL,
+  action text NOT NULL,
+  resource text,
+  details text,
+  ip_address text,
+  user_agent text,
+  session_id text,
+  duration integer,
+  created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT user_activity_pkey PRIMARY KEY (id),
+  CONSTRAINT user_activity_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id)
+);
+CREATE TABLE public.users (
+  id text NOT NULL,
+  name text NOT NULL,
+  email text NOT NULL UNIQUE,
+  email_verified boolean NOT NULL,
+  image text,
+  created_at timestamp without time zone NOT NULL,
+  updated_at timestamp without time zone NOT NULL,
+  role USER-DEFINED NOT NULL DEFAULT 'user'::role,
+  isAnonymous boolean DEFAULT false,
+  username text UNIQUE,
+  CONSTRAINT users_pkey PRIMARY KEY (id)
+);
+CREATE TABLE public.verification (
+  id text NOT NULL,
+  identifier text NOT NULL,
+  value text NOT NULL,
+  expires_at timestamp without time zone NOT NULL,
+  created_at timestamp without time zone,
+  updated_at timestamp without time zone,
+  CONSTRAINT verification_pkey PRIMARY KEY (id)
+);

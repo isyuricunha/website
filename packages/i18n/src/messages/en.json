@@ -7,7 +7,16 @@
     "nav": {
       "comments": "Comments",
       "general": "General",
-      "users": "Users"
+      "users": "Users",
+      "dashboard": "Dashboard",
+      "security": "Security",
+      "security_management": "Security Management",
+      "communication": "Communication",
+      "communication_management": "Communication Management",
+      "monitoring": "Monitoring",
+      "monitoring_dashboard": "Monitoring Dashboard",
+      "data": "Data Management",
+      "data_management": "Data Management"
     },
     "page-header": {
       "comments": {
