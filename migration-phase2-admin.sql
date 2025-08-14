@@ -22,16 +22,32 @@ EXCEPTION
     WHEN duplicate_object THEN null;
 END $$;
 
--- Update posts table to use enum
+-- Update posts table to use enum (drop default first, then change type, then add default back)
+ALTER TABLE post ALTER COLUMN status DROP DEFAULT;
 ALTER TABLE post ALTER COLUMN status TYPE post_status USING status::post_status;
+ALTER TABLE post ALTER COLUMN status SET DEFAULT 'draft'::post_status;
+
+-- Populate id column for existing rows (use slug as basis for id generation)
+UPDATE post SET id = gen_random_uuid()::text WHERE id IS NULL;
+
+-- Make id column NOT NULL now that all rows have values
+ALTER TABLE post ALTER COLUMN id SET NOT NULL;
 
 -- Add foreign key constraint for author
-ALTER TABLE post ADD CONSTRAINT fk_post_author FOREIGN KEY (author_id) REFERENCES "user"(id) ON DELETE CASCADE;
+ALTER TABLE post ADD CONSTRAINT fk_post_author FOREIGN KEY (author_id) REFERENCES "users"(id) ON DELETE CASCADE;
 
--- Make slug unique instead of primary key (if needed)
+-- Handle primary key change carefully due to foreign key dependencies
+-- First, drop the foreign key constraint from comment table
+ALTER TABLE comment DROP CONSTRAINT IF EXISTS comment_post_id_post_slug_fk;
+
+-- Now we can safely change the primary key
 ALTER TABLE post DROP CONSTRAINT IF EXISTS post_pkey;
 ALTER TABLE post ADD PRIMARY KEY (id);
 ALTER TABLE post ADD CONSTRAINT unique_post_slug UNIQUE (slug);
+
+-- Recreate the foreign key constraint (comments still reference slug, not id)
+ALTER TABLE comment ADD CONSTRAINT comment_post_id_post_slug_fk 
+    FOREIGN KEY (post_id) REFERENCES post(slug) ON DELETE CASCADE;
 
 -- System Health Monitoring Tables
 CREATE TYPE health_check_type AS ENUM ('database', 'email', 'api', 'storage', 'external_service');
@@ -55,11 +71,11 @@ CREATE TABLE IF NOT EXISTS error_logs (
     stack TEXT,
     url TEXT,
     user_agent TEXT,
-    user_id TEXT REFERENCES "user"(id),
+    user_id TEXT REFERENCES "users"(id),
     ip_address TEXT,
     metadata TEXT,
     resolved BOOLEAN NOT NULL DEFAULT false,
-    resolved_by TEXT REFERENCES "user"(id),
+    resolved_by TEXT REFERENCES "users"(id),
     resolved_at TIMESTAMP,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
@@ -74,7 +90,7 @@ CREATE TABLE IF NOT EXISTS site_config (
     type site_config_type NOT NULL DEFAULT 'general',
     description TEXT,
     is_public BOOLEAN NOT NULL DEFAULT false,
-    updated_by TEXT NOT NULL REFERENCES "user"(id),
+    updated_by TEXT NOT NULL REFERENCES "users"(id),
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
@@ -95,7 +111,7 @@ CREATE TABLE IF NOT EXISTS bulk_operations (
     error_message TEXT,
     started_at TIMESTAMP,
     completed_at TIMESTAMP,
-    created_by TEXT NOT NULL REFERENCES "user"(id),
+    created_by TEXT NOT NULL REFERENCES "users"(id),
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -115,10 +131,10 @@ CREATE INDEX IF NOT EXISTS idx_post_published_at ON post(published_at);
 -- Insert some default site configuration
 INSERT INTO site_config (id, key, value, type, description, is_public, updated_by) 
 VALUES 
-    (gen_random_uuid()::text, 'site_name', 'My Website', 'general', 'The name of the website', true, (SELECT id FROM "user" WHERE role = 'admin' LIMIT 1)),
-    (gen_random_uuid()::text, 'site_description', 'A modern web application', 'seo', 'Default site description for SEO', true, (SELECT id FROM "user" WHERE role = 'admin' LIMIT 1)),
-    (gen_random_uuid()::text, 'posts_per_page', '10', 'general', 'Number of posts to show per page', false, (SELECT id FROM "user" WHERE role = 'admin' LIMIT 1)),
-    (gen_random_uuid()::text, 'enable_comments', 'true', 'features', 'Enable comments on blog posts', false, (SELECT id FROM "user" WHERE role = 'admin' LIMIT 1))
+    (gen_random_uuid()::text, 'site_name', 'My Website', 'general', 'The name of the website', true, (SELECT id FROM "users" WHERE role = 'admin' LIMIT 1)),
+    (gen_random_uuid()::text, 'site_description', 'A modern web application', 'seo', 'Default site description for SEO', true, (SELECT id FROM "users" WHERE role = 'admin' LIMIT 1)),
+    (gen_random_uuid()::text, 'posts_per_page', '10', 'general', 'Number of posts to show per page', false, (SELECT id FROM "users" WHERE role = 'admin' LIMIT 1)),
+    (gen_random_uuid()::text, 'enable_comments', 'true', 'features', 'Enable comments on blog posts', false, (SELECT id FROM "users" WHERE role = 'admin' LIMIT 1))
 ON CONFLICT (key) DO NOTHING;
 
 COMMIT;
