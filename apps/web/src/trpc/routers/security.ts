@@ -1,16 +1,16 @@
 import { TRPCError } from '@trpc/server'
-import { 
-  twoFactorTokens,
-  ipAccessControl,
+import {
+  users,
+  sessions,
+  twoFactorAuth,
   securityEvents,
   loginAttempts,
-  accountLockouts,
-  apiRateLimits,
+  ipAccessControl,
   securitySettings
 } from '@tszhong0411/db'
-import { and, desc, eq, gte, lte, or, count } from 'drizzle-orm'
+import { and, desc, eq, gte, inArray } from 'drizzle-orm'
 import { randomBytes } from 'crypto'
-import * as speakeasy from 'speakeasy'
+const speakeasy = require('speakeasy')
 import { z } from 'zod'
 
 import { AuditLogger, getIpFromHeaders, getUserAgentFromHeaders } from '@/lib/audit-logger'
@@ -49,7 +49,7 @@ export const securityRouter = createTRPCRouter({
           where: eq(twoFactorTokens.userId, ctx.session.user.id)
         })
 
-        if (existing?.isEnabled) {
+        if (existing) {
           throw new TRPCError({
             code: 'BAD_REQUEST',
             message: '2FA is already enabled'
@@ -447,27 +447,23 @@ export const securityRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       try {
         const now = new Date()
-        const timeRanges = {
-          '1h': new Date(now.getTime() - 60 * 60 * 1000),
-          '24h': new Date(now.getTime() - 24 * 60 * 60 * 1000),
-          '7d': new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000),
-          '30d': new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000)
-        }
+        const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000)
+        const oneWeekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000)
 
-        const attempts = await ctx.db.query.loginAttempts.findMany({
-          where: gte(loginAttempts.createdAt, timeRanges[input.timeRange]),
-          orderBy: desc(loginAttempts.createdAt),
-          limit: input.limit
+        // Get recent login attempts
+        const recentAttempts = await ctx.db.query.loginAttempts.findMany({
+          where: gte(loginAttempts.createdAt, oneDayAgo),
+          columns: { id: true, success: true }
         })
 
         // Get summary statistics
-        const totalAttempts = attempts.length
-        const successfulAttempts = attempts.filter(a => a.success).length
+        const totalAttempts = recentAttempts.length
+        const successfulAttempts = recentAttempts.filter(a => a.success).length
         const failedAttempts = totalAttempts - successfulAttempts
-        const uniqueIPs = new Set(attempts.map(a => a.ipAddress)).size
+        const uniqueIPs = new Set(recentAttempts.map(a => a.ipAddress)).size
 
         return {
-          attempts,
+          attempts: recentAttempts,
           summary: {
             total: totalAttempts,
             successful: successfulAttempts,
@@ -668,7 +664,6 @@ export const securityRouter = createTRPCRouter({
       try {
         const now = new Date()
         const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000)
-        const oneWeekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000)
 
         // Get recent security events
         const recentEvents = await ctx.db.query.securityEvents.findMany({

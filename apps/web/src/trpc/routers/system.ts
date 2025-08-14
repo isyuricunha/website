@@ -2,11 +2,10 @@ import { TRPCError } from '@trpc/server'
 import { 
   systemHealthLogs, 
   errorLogs, 
-  siteConfig, 
-  bulkOperations,
-  users
+  siteConfig,
+  bulkOperations
 } from '@tszhong0411/db'
-import { desc, eq, gte, and, count } from 'drizzle-orm'
+import { and, desc, eq, gte } from 'drizzle-orm'
 import { randomBytes } from 'crypto'
 import { z } from 'zod'
 
@@ -294,7 +293,10 @@ export const systemRouter = createTRPCRouter({
         if (!groupedConfig[item.type]) {
           groupedConfig[item.type] = []
         }
-        groupedConfig[item.type].push(item)
+        groupedConfig[item.type].push({
+          ...item,
+          value: item.value ? JSON.parse(item.value) : null
+        })
       })
 
       return { config: groupedConfig }

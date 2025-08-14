@@ -2,9 +2,9 @@ import type { RouterOutputs } from '../react'
 
 import { TRPCError } from '@trpc/server'
 import { passwordResetTokens, users, sessions } from '@tszhong0411/db'
-import { and, eq } from 'drizzle-orm'
+import { eq } from 'drizzle-orm'
 import { randomBytes } from 'crypto'
-import { hash, verify } from '@node-rs/argon2'
+import { hash } from '@node-rs/argon2'
 import { z } from 'zod'
 import { PasswordReset } from '@tszhong0411/emails'
 
@@ -237,7 +237,7 @@ export const usersRouter = createTRPCRouter({
         // Check for email uniqueness if email is being updated
         if (updateData.email && updateData.email !== user.email) {
           const existingUser = await ctx.db.query.users.findFirst({
-            where: (users, { eq }) => eq(users.email, updateData.email)
+            where: eq(users.email, updateData.email)
           })
           if (existingUser) {
             throw new TRPCError({
@@ -250,7 +250,7 @@ export const usersRouter = createTRPCRouter({
         // Check for username uniqueness if username is being updated
         if (updateData.username && updateData.username !== user.username) {
           const existingUser = await ctx.db.query.users.findFirst({
-            where: (users, { eq }) => eq(users.username, updateData.username)
+            where: eq(users.username, updateData.username)
           })
           if (existingUser) {
             throw new TRPCError({
@@ -340,7 +340,7 @@ export const usersRouter = createTRPCRouter({
         })
 
         // Create reset URL with fallback for development
-        const baseUrl = env.NEXT_PUBLIC_WEBSITE_URL || 'http://localhost:3000'
+        const baseUrl = process.env.NEXT_PUBLIC_WEBSITE_URL || 'http://localhost:3000'
         const resetUrl = `${baseUrl}/reset-password?token=${token}`
 
         // Send email if Resend is configured

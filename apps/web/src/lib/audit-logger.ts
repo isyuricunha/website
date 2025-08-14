@@ -1,6 +1,6 @@
 import { randomBytes } from 'crypto'
 import { auditLogs } from '@tszhong0411/db'
-import type { Database } from '@tszhong0411/db'
+import type { NodePgDatabase } from 'drizzle-orm/node-postgres'
 
 export type AuditAction = 
   | 'user_create'
@@ -16,12 +16,6 @@ export type AuditAction =
   | 'admin_logout'
   | 'settings_update'
   | 'bulk_operation'
-  | 'content_management'
-  | 'email_marketing'
-  | 'audience_create'
-  | 'audience_sync'
-  | 'broadcast_create'
-  | 'broadcast_send'
 
 export interface AuditLogEntry {
   adminUserId: string
@@ -34,7 +28,7 @@ export interface AuditLogEntry {
 }
 
 export class AuditLogger {
-  constructor(private db: Database) {}
+  constructor(private db: NodePgDatabase<any>) {}
 
   async log(entry: AuditLogEntry): Promise<void> {
     try {
@@ -78,22 +72,6 @@ export class AuditLogger {
   }
 
   // Helper method for bulk operations
-  async logBulkOperation(
-    adminUserId: string,
-    details: Record<string, any>,
-    ipAddress?: string,
-    userAgent?: string
-  ) {
-    return this.log({
-      adminUserId,
-      action: 'bulk_operation',
-      targetType: 'bulk_operation',
-      targetId: details.operationId,
-      details,
-      ipAddress,
-      userAgent
-    })
-  }
 
   // Helper method for content-related actions
   async logContentAction(
@@ -178,6 +156,8 @@ export class AuditLogger {
     await this.log({
       adminUserId,
       action: 'bulk_operation',
+      targetType: 'bulk_operation',
+      targetId: details.operationId,
       details,
       ipAddress,
       userAgent

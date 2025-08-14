@@ -1,22 +1,21 @@
 import { TRPCError } from '@trpc/server'
-import { 
+import {
   performanceMetrics,
   analyticsEvents,
   resourceUsage,
   apiUsage,
   queryPerformance,
   errorTracking,
-  customMetrics,
   alerts,
   alertInstances,
   userActivity
 } from '@tszhong0411/db'
-import { and, desc, eq, gte, lte, avg, count, sum, max, min } from 'drizzle-orm'
+import { and, desc, eq, gte } from 'drizzle-orm'
 import { randomBytes } from 'crypto'
 import { z } from 'zod'
 
 import { AuditLogger, getIpFromHeaders, getUserAgentFromHeaders } from '@/lib/audit-logger'
-import { adminProcedure, protectedProcedure, createTRPCRouter } from '../trpc'
+import { adminProcedure, createTRPCRouter } from '../trpc'
 
 // Helper function to get time range
 function getTimeRange(range: string): Date {
@@ -44,7 +43,7 @@ export const monitoringRouter = createTRPCRouter({
         const conditions = [gte(performanceMetrics.createdAt, startTime)]
         
         if (input.metricType) {
-          conditions.push(eq(performanceMetrics.metricType, input.metricType))
+          conditions.push(eq(performanceMetrics.metricName, input.metricType))
         }
 
         const metrics = await ctx.db.query.performanceMetrics.findMany({
@@ -70,7 +69,7 @@ export const monitoringRouter = createTRPCRouter({
           group.data.push({
             timestamp: metric.timestamp,
             value: metric.value,
-            tags: metric.tags ? JSON.parse(metric.tags) : null
+            tags: metric.metadata ? JSON.parse(metric.metadata) : []
           })
           
           group.min = Math.min(group.min, metric.value)
@@ -200,7 +199,7 @@ export const monitoringRouter = createTRPCRouter({
         const conditions = [gte(resourceUsage.createdAt, startTime)]
         
         if (input.resourceType) {
-          conditions.push(eq(resourceUsage.resourceType, input.resourceType))
+          conditions.push(eq(resourceUsage.type, input.resourceType))
         }
 
         const usage = await ctx.db.query.resourceUsage.findMany({
@@ -226,7 +225,7 @@ export const monitoringRouter = createTRPCRouter({
           group.data.push({
             timestamp: item.timestamp,
             usage: item.usage,
-            limit: item.limit
+            limit: item.maxValue
           })
           
           group.maxUsage = Math.max(group.maxUsage, item.usage)
@@ -236,7 +235,7 @@ export const monitoringRouter = createTRPCRouter({
           }
           
           // Count threshold breaches as alerts
-          if (item.limit && item.usage > item.limit * 0.8) {
+          if (item.maxValue && item.usage > item.maxValue * 0.8) {
             group.alerts++
           }
         })
@@ -314,7 +313,7 @@ export const monitoringRouter = createTRPCRouter({
         return {
           usage: usage.map(item => ({
             ...item,
-            headers: item.headers ? JSON.parse(item.headers) : null
+            headers: item.headers ? JSON.parse(item.headers) : {}
           })),
           stats,
           timeRange: input.timeRange
@@ -337,8 +336,8 @@ export const monitoringRouter = createTRPCRouter({
     }))
     .query(async ({ ctx, input }) => {
       try {
-        const startTime = getTimeRange(input.timeRange)
-        const conditions = [gte(queryPerformance.timestamp, startTime)]
+        const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+        const conditions = [lte(queryPerformance.createdAt, thirtyDaysAgo)]
         
         if (input.slowQueriesOnly) {
           // Consider queries > 1000ms as slow
@@ -360,7 +359,7 @@ export const monitoringRouter = createTRPCRouter({
             .filter(q => q.executionTime > 1000)
             .slice(0, 10)
             .map(q => ({
-              query: q.query.substring(0, 100) + '...',
+              query: q.queryType.substring(0, 100) + '...',
               executionTime: q.executionTime,
               timestamp: q.timestamp
             }))
@@ -369,7 +368,7 @@ export const monitoringRouter = createTRPCRouter({
         return {
           queries: queries.map(query => ({
             ...query,
-            parameters: query.parameters ? JSON.parse(query.parameters) : null
+            parameters: query.queryHash
           })),
           stats,
           timeRange: input.timeRange
@@ -434,7 +433,7 @@ export const monitoringRouter = createTRPCRouter({
             errorGroups[fingerprint] = {
               fingerprint,
               message: error.message,
-              errorType: error.errorType,
+              resourceType: error.resourceType,
               count: 0,
               firstSeen: error.firstSeen,
               lastSeen: error.lastSeen,
@@ -515,7 +514,7 @@ export const monitoringRouter = createTRPCRouter({
   getAlerts: adminProcedure
     .input(z.object({
       active: z.boolean().optional(),
-      severity: z.enum(['low', 'medium', 'high', 'critical']).optional()
+      severity: z.enum(['info', 'warning', 'critical']).optional()
     }))
     .query(async ({ ctx, input }) => {
       try {
@@ -587,8 +586,7 @@ export const monitoringRouter = createTRPCRouter({
               columns: {
                 id: true,
                 name: true,
-                severity: true,
-                errorType: true
+                severity: true
               }
             }
           }
@@ -597,7 +595,7 @@ export const monitoringRouter = createTRPCRouter({
         return {
           instances: instances.map(instance => ({
             ...instance,
-            triggerData: instance.triggerData ? JSON.parse(instance.triggerData) : null
+            triggerData: instance.metadata ? JSON.parse(instance.metadata) : null
           }))
         }
       } catch (error) {
@@ -620,19 +618,19 @@ export const monitoringRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       try {
         const startTime = getTimeRange(input.timeRange)
-        const conditions = [gte(userActivity.timestamp, startTime)]
+        const conditions = [gte(userActivity.createdAt, startTime)]
         
         if (input.userId) {
           conditions.push(eq(userActivity.userId, input.userId))
         }
         
         if (input.activityType) {
-          conditions.push(eq(userActivity.activityType, input.activityType))
+          conditions.push(eq(userActivity.action, input.activityType))
         }
 
         const activities = await ctx.db.query.userActivity.findMany({
           where: and(...conditions),
-          orderBy: desc(userActivity.timestamp),
+          orderBy: desc(userActivity.createdAt),
           limit: input.limit,
           with: {
             user: {
@@ -654,7 +652,7 @@ export const monitoringRouter = createTRPCRouter({
         }
 
         activities.forEach(activity => {
-          stats.activityTypes[activity.activityType] = (stats.activityTypes[activity.activityType] || 0) + 1
+          stats.activityTypes[activity.action] = (stats.activityTypes[activity.action] || 0) + 1
           
           const hour = activity.timestamp.getHours()
           stats.hourlyDistribution[hour] = (stats.hourlyDistribution[hour] || 0) + 1
@@ -663,7 +661,7 @@ export const monitoringRouter = createTRPCRouter({
         return {
           activities: activities.map(activity => ({
             ...activity,
-            metadata: activity.metadata ? JSON.parse(activity.metadata) : null
+            metadata: activity.details ? JSON.parse(activity.details) : null
           })),
           stats
         }
@@ -682,7 +680,6 @@ export const monitoringRouter = createTRPCRouter({
       try {
         const now = new Date()
         const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000)
-        const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000)
 
         // Get recent performance metrics
         const recentMetrics = await ctx.db.query.performanceMetrics.findMany({

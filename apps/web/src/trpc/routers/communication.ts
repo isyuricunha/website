@@ -1,23 +1,19 @@
 import { TRPCError } from '@trpc/server'
-import { 
-  emailTemplates,
-  emailCampaigns,
-  emailCampaignRecipients,
+import {
   announcements,
   announcementInteractions,
+  emailCampaigns,
+  emailTemplates,
   notifications,
-  notificationPreferences,
-  emailSubscriptions
+  users
 } from '@tszhong0411/db'
-import { and, desc, eq, gte, inArray, or } from 'drizzle-orm'
+import { and, desc, eq, gte, inArray, isNull, lte, or } from 'drizzle-orm'
 import { randomBytes } from 'crypto'
 import { z } from 'zod'
-import { Resend } from 'resend'
 
 import { AuditLogger, getIpFromHeaders, getUserAgentFromHeaders } from '@/lib/audit-logger'
 import { adminProcedure, protectedProcedure, publicProcedure, createTRPCRouter } from '../trpc'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
 
 export const communicationRouter = createTRPCRouter({
   // Email Templates
@@ -98,15 +94,14 @@ export const communicationRouter = createTRPCRouter({
         })
 
         // Log audit trail
-        await auditLogger.logSystemAction(
+        await auditLogger.logUserAction(
           ctx.session.user.id,
-          'settings_update',
-          'email_template',
-          templateId,
-          {
-            action: 'template_created',
-            name: input.name,
-            type: input.type
+          'bulk_operation',
+          '',
+          { 
+            action: 'bulk_notification_send',
+            recipientCount: 0,
+            notificationType: input.type
           },
           ipAddress,
           userAgent
@@ -160,14 +155,14 @@ export const communicationRouter = createTRPCRouter({
           .where(eq(emailTemplates.id, id))
 
         // Log audit trail
-        await auditLogger.logSystemAction(
+        await auditLogger.logUserAction(
           ctx.session.user.id,
-          'settings_update',
-          'email_template',
-          id,
-          {
-            action: 'template_updated',
-            updatedFields: Object.keys(filteredUpdateData)
+          'bulk_operation',
+          '',
+          { 
+            action: 'bulk_notification_send',
+            recipientCount: 0,
+            notificationType: ''
           },
           ipAddress,
           userAgent
@@ -270,7 +265,7 @@ export const communicationRouter = createTRPCRouter({
           if (input.targetAudience.userRoles) {
             // Count users with specified roles
             const roleUsers = await ctx.db.query.users.findMany({
-              where: inArray(ctx.db.query.users.role, input.targetAudience.userRoles),
+              where: inArray(users.role, input.targetAudience.userRoles.filter(role => role === 'user' || role === 'admin')),
               columns: { id: true }
             })
             totalRecipients += roleUsers.length
@@ -292,15 +287,14 @@ export const communicationRouter = createTRPCRouter({
         })
 
         // Log audit trail
-        await auditLogger.logSystemAction(
+        await auditLogger.logUserAction(
           ctx.session.user.id,
-          'settings_update',
-          'email_campaign',
-          campaignId,
-          {
-            action: 'campaign_created',
-            name: input.name,
-            totalRecipients
+          'bulk_operation',
+          '',
+          { 
+            action: 'bulk_notification_send',
+            recipientCount: totalRecipients,
+            notificationType: ''
           },
           ipAddress,
           userAgent
@@ -356,7 +350,7 @@ export const communicationRouter = createTRPCRouter({
           .where(eq(emailCampaigns.id, input.campaignId))
 
         // In a real implementation, you would:
-        // 1. Generate recipient list based on targetAudience
+        // 1. Generate recipient list based on target audience
         // 2. Queue emails for sending (using a job queue like Bull/BullMQ)
         // 3. Send emails in batches to avoid rate limits
         // 4. Track delivery, opens, clicks, etc.
@@ -375,14 +369,14 @@ export const communicationRouter = createTRPCRouter({
         }, 1000)
 
         // Log audit trail
-        await auditLogger.logSystemAction(
+        await auditLogger.logUserAction(
           ctx.session.user.id,
           'bulk_operation',
-          'email_campaign',
-          input.campaignId,
-          {
-            action: 'campaign_sent',
-            totalRecipients: campaign.totalRecipients
+          '',
+          { 
+            action: 'bulk_notification_send',
+            recipientCount: campaign.totalRecipients,
+            notificationType: ''
           },
           ipAddress,
           userAgent
@@ -420,13 +414,13 @@ export const communicationRouter = createTRPCRouter({
           const now = new Date()
           conditions.push(
             or(
-              eq(announcements.startDate, null),
-              gte(now, announcements.startDate)
+              isNull(announcements.startDate),
+              lte(announcements.startDate, now)
             )
           )
           conditions.push(
             or(
-              eq(announcements.endDate, null),
+              isNull(announcements.endDate),
               gte(announcements.endDate, now)
             )
           )
@@ -486,8 +480,8 @@ export const communicationRouter = createTRPCRouter({
         if (!input.adminView && ctx.session?.user) {
           const interactions = await ctx.db.query.announcementInteractions.findMany({
             where: and(
-              eq(announcementInteractions.userId, ctx.session.user.id),
-              inArray(announcementInteractions.announcementId, filteredAnnouncements.map(a => a.id))
+              eq(announcementInteractions.announcementId, filteredAnnouncements.map(a => a.id)),
+              eq(announcementInteractions.userId, ctx.session.user.id)
             )
           })
           
@@ -549,15 +543,14 @@ export const communicationRouter = createTRPCRouter({
         })
 
         // Log audit trail
-        await auditLogger.logSystemAction(
+        await auditLogger.logUserAction(
           ctx.session.user.id,
-          'settings_update',
-          'announcement',
-          announcementId,
-          {
-            action: 'announcement_created',
-            title: input.title,
-            type: input.type
+          'bulk_operation',
+          '',
+          { 
+            action: 'bulk_notification_send',
+            recipientCount: 0,
+            notificationType: ''
           },
           ipAddress,
           userAgent
@@ -632,20 +625,17 @@ export const communicationRouter = createTRPCRouter({
     }))
     .query(async ({ ctx, input }) => {
       try {
-        const conditions = [eq(notifications.userId, ctx.session.user.id)]
+        const conditions = [
+          eq(notifications.userId, ctx.session.user.id),
+          or(
+            isNull(notifications.expiresAt),
+            gte(notifications.expiresAt, new Date())
+          )
+        ]
         
         if (input.unreadOnly) {
           conditions.push(eq(notifications.read, false))
         }
-
-        // Filter out expired notifications
-        const now = new Date()
-        conditions.push(
-          or(
-            eq(notifications.expiresAt, null),
-            gte(notifications.expiresAt, now)
-          )
-        )
 
         const userNotifications = await ctx.db.query.notifications.findMany({
           where: and(...conditions),
@@ -745,8 +735,10 @@ export const communicationRouter = createTRPCRouter({
             id: notificationId,
             userId: input.userId,
             title: input.title,
-            content: input.content,
-            type: input.type,
+            message: input.content,
+            type: input.type === 'info' ? 'system' : 
+                  input.type === 'warning' ? 'security' : 
+                  input.type === 'success' ? 'user_action' : 'system',
             expiresAt: input.expiresAt
           })
         } else {
@@ -759,7 +751,7 @@ export const communicationRouter = createTRPCRouter({
             id: randomBytes(16).toString('hex'),
             userId: user.id,
             title: input.title,
-            content: input.content,
+            message: input.content,
             type: input.type,
             expiresAt: input.expiresAt
           }))
@@ -770,17 +762,18 @@ export const communicationRouter = createTRPCRouter({
         }
 
         // Log audit trail
-        await auditLogger.logSystemAction(
+        await auditLogger.logUserAction(
           ctx.session.user.id,
-          'content_management',
-          'notification',
+          'bulk_operation',
           notificationId,
           {
             action: 'notification_created',
             title: input.title,
             type: input.type,
             targetUser: input.userId || 'all_users'
-          }
+          },
+          getIpFromHeaders(ctx.headers),
+          getUserAgentFromHeaders(ctx.headers)
         )
 
         return { success: true, notificationId }
