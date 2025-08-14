@@ -1,10 +1,9 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Button } from '@tszhong0411/ui'
 import { 
   Settings, 
-  Save, 
   RefreshCw, 
   Search,
   Eye,
@@ -15,8 +14,7 @@ import {
   Shield,
   Zap,
   Edit,
-  Plus,
-  Trash2
+  Plus
 } from 'lucide-react'
 import { api } from '@/trpc/react'
 import { toast } from 'sonner'
@@ -355,9 +353,9 @@ export const ConfigurationPanel = () => {
                         {config.key}
                       </h4>
                       {config.isPublic ? (
-                        <Eye className="w-4 h-4 text-green-500" title="Public" />
+                        <Eye className="w-4 h-4 text-green-500" />
                       ) : (
-                        <EyeOff className="w-4 h-4 text-gray-400" title="Private" />
+                        <EyeOff className="w-4 h-4 text-gray-400" />
                       )}
                     </div>
                     
