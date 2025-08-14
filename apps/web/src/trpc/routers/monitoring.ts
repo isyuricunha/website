@@ -388,25 +388,25 @@ export const monitoringRouter = createTRPCRouter({
     .input(z.object({
       timeRange: z.enum(['1h', '6h', '24h', '7d', '30d']).default('24h'),
       resolved: z.boolean().optional(),
-      severity: z.enum(['low', 'medium', 'high', 'critical']).optional(),
+      errorType: z.enum(['javascript', 'server', 'database', 'network']).optional(),
       limit: z.number().min(1).max(100).default(50)
     }))
     .query(async ({ ctx, input }) => {
       try {
         const startTime = getTimeRange(input.timeRange)
-        const conditions = [gte(errorTracking.createdAt, startTime)]
+        const conditions = [gte(errorTracking.firstSeen, startTime)]
         
         if (input.resolved !== undefined) {
           conditions.push(eq(errorTracking.resolved, input.resolved))
         }
         
-        if (input.severity) {
-          conditions.push(eq(errorTracking.severity, input.severity))
+        if (input.errorType) {
+          conditions.push(eq(errorTracking.errorType, input.errorType))
         }
 
         const errors = await ctx.db.query.errorTracking.findMany({
           where: and(...conditions),
-          orderBy: desc(errorTracking.createdAt),
+          orderBy: desc(errorTracking.firstSeen),
           limit: input.limit,
           with: {
             user: {
@@ -419,6 +419,13 @@ export const monitoringRouter = createTRPCRouter({
           }
         })
 
+        // Group by error type
+        const errorTypeStats: Record<string, number> = {}
+        errors.forEach(error => {
+          const errorType = error.errorType || 'unknown'
+          errorTypeStats[errorType] = (errorTypeStats[errorType] || 0) + 1
+        })
+
         // Group by fingerprint to show error frequency
         const errorGroups: Record<string, any> = {}
         errors.forEach(error => {
@@ -427,10 +434,10 @@ export const monitoringRouter = createTRPCRouter({
             errorGroups[fingerprint] = {
               fingerprint,
               message: error.message,
-              severity: error.severity,
+              errorType: error.errorType,
               count: 0,
-              firstSeen: error.timestamp,
-              lastSeen: error.timestamp,
+              firstSeen: error.firstSeen,
+              lastSeen: error.lastSeen,
               resolved: error.resolved
             }
           }
@@ -438,22 +445,24 @@ export const monitoringRouter = createTRPCRouter({
           const group = errorGroups[fingerprint]
           group.count++
           
-          if (error.timestamp < group.firstSeen) {
-            group.firstSeen = error.timestamp
+          if (error.firstSeen < group.firstSeen) {
+            group.firstSeen = error.firstSeen
           }
           
-          if (error.timestamp > group.lastSeen) {
-            group.lastSeen = error.timestamp
+          if (error.lastSeen > group.lastSeen) {
+            group.lastSeen = error.lastSeen
           }
         })
 
         return {
           errors: errors.map(error => ({
             ...error,
-            context: error.context ? JSON.parse(error.context) : null,
-            stackTrace: error.stackTrace ? JSON.parse(error.stackTrace) : null
+            context: error.context,
+            timestamp: error.firstSeen,
+            stackTrace: error.stack
           })),
           errorGroups: Object.values(errorGroups),
+          errorTypeStats,
           totalErrors: errors.length
         }
       } catch (error) {
@@ -578,7 +587,8 @@ export const monitoringRouter = createTRPCRouter({
               columns: {
                 id: true,
                 name: true,
-                severity: true
+                severity: true,
+                errorType: true
               }
             }
           }
@@ -682,8 +692,8 @@ export const monitoringRouter = createTRPCRouter({
 
         // Get recent errors
         const recentErrors = await ctx.db.query.errorTracking.findMany({
-          where: gte(errorTracking.createdAt, oneHourAgo),
-          columns: { id: true, severity: true, resolved: true }
+          where: gte(errorTracking.firstSeen, oneHourAgo),
+          columns: { id: true, errorType: true, resolved: true }
         })
 
         // Get active alerts
@@ -698,6 +708,10 @@ export const monitoringRouter = createTRPCRouter({
           columns: { id: true, statusCode: true, responseTime: true }
         })
 
+        const totalErrors = recentErrors.length
+        const resolvedErrors = recentErrors.filter(e => e.resolved).length
+        const serverErrors = recentErrors.filter(e => e.errorType === 'server').length
+
         return {
           performance: {
             totalMetrics: recentMetrics.length,
@@ -707,10 +721,11 @@ export const monitoringRouter = createTRPCRouter({
               Math.max(recentMetrics.filter(m => m.metricType === 'response_time').length, 1)
           },
           errors: {
-            total: recentErrors.length,
-            unresolved: recentErrors.filter(e => !e.resolved).length,
-            critical: recentErrors.filter(e => e.severity === 'critical').length,
-            high: recentErrors.filter(e => e.severity === 'high').length
+            total: totalErrors,
+            unresolved: totalErrors - resolvedErrors,
+            javascript: recentErrors.filter(e => e.errorType === 'javascript').length,
+            database: recentErrors.filter(e => e.errorType === 'database').length,
+            server: serverErrors
           },
           alerts: {
             total: activeAlerts.length,
@@ -718,11 +733,11 @@ export const monitoringRouter = createTRPCRouter({
             high: activeAlerts.filter(a => a.severity === 'high').length
           },
           api: {
-            totalRequests: recentApiUsage.length,
-            errorRate: recentApiUsage.length > 0 ? 
-              (recentApiUsage.filter(u => u.statusCode >= 400).length / recentApiUsage.length) * 100 : 0,
-            avgResponseTime: recentApiUsage.length > 0 ?
-              recentApiUsage.reduce((sum, u) => sum + (u.responseTime || 0), 0) / recentApiUsage.length : 0
+            totalRequests: recentApiCalls.length,
+            errorRate: recentApiCalls.length > 0 ? 
+              (recentApiCalls.filter(u => u.statusCode >= 400).length / recentApiCalls.length) * 100 : 0,
+            avgResponseTime: recentApiCalls.length > 0 ?
+              recentApiCalls.reduce((sum, u) => sum + (u.responseTime || 0), 0) / recentApiCalls.length : 0
           }
         }
       } catch (error) {

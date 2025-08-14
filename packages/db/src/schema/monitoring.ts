@@ -114,7 +114,8 @@ export const errorTracking = pgTable('error_tracking', {
   lastSeen: timestamp('last_seen').notNull().defaultNow(),
   resolved: boolean('resolved').notNull().default(false),
   resolvedBy: text('resolved_by').references(() => users.id),
-  resolvedAt: timestamp('resolved_at')
+  resolvedAt: timestamp('resolved_at'),
+  createdAt: timestamp('created_at').notNull().defaultNow()
 })
 
 // Custom Metrics/KPIs
