@@ -100,7 +100,10 @@ export default function DataManagement() {
         field: field?.trim(),
         rule: ruleType?.trim() as 'not_null' | 'unique' | 'format' | 'range'
       }
-    }).filter(rule => rule.field && rule.rule)
+    }).filter(rule => rule.field && rule.rule).map(rule => ({
+      field: rule.field!,
+      rule: rule.rule
+    }))
 
     if (rules.length === 0) {
       toast.error('Please provide valid rules in format: field:rule_type')
@@ -346,9 +349,9 @@ export default function DataManagement() {
                             {backup.status}
                           </Badge>
                         </div>
-                        {backup.description && (
+                        {backup.name && (
                           <div className="text-sm text-muted-foreground mb-2">
-                            {backup.description}
+                            {backup.name}
                           </div>
                         )}
                         <div className="flex items-center justify-between text-sm">
