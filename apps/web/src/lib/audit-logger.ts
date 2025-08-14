@@ -51,20 +51,79 @@ export class AuditLogger {
     }
   }
 
-  // Helper methods for common audit actions
+  // Helper method for user-related actions
   async logUserAction(
     adminUserId: string,
-    action: 'user_create' | 'user_update' | 'user_delete' | 'user_ban' | 'user_unban',
+    action: AuditAction,
     targetUserId: string,
-    details?: Record<string, any>,
+    details: Record<string, any>,
     ipAddress?: string,
     userAgent?: string
   ) {
-    await this.log({
+    return this.log({
       adminUserId,
       action,
       targetType: 'user',
       targetId: targetUserId,
+      details,
+      ipAddress,
+      userAgent
+    })
+  }
+
+  // Helper method for bulk operations
+  async logBulkOperation(
+    adminUserId: string,
+    details: Record<string, any>,
+    ipAddress?: string,
+    userAgent?: string
+  ) {
+    return this.log({
+      adminUserId,
+      action: 'bulk_operation',
+      targetType: 'bulk_operation',
+      targetId: details.operationId,
+      details,
+      ipAddress,
+      userAgent
+    })
+  }
+
+  // Helper method for content-related actions
+  async logContentAction(
+    adminUserId: string,
+    action: AuditAction,
+    targetId: string,
+    details: Record<string, any>,
+    ipAddress?: string,
+    userAgent?: string
+  ) {
+    return this.log({
+      adminUserId,
+      action,
+      targetType: 'post',
+      targetId,
+      details,
+      ipAddress,
+      userAgent
+    })
+  }
+
+  // Helper method for system-related actions
+  async logSystemAction(
+    adminUserId: string,
+    action: AuditAction,
+    targetType: string,
+    targetId: string,
+    details: Record<string, any>,
+    ipAddress?: string,
+    userAgent?: string
+  ) {
+    return this.log({
+      adminUserId,
+      action,
+      targetType,
+      targetId,
       details,
       ipAddress,
       userAgent
