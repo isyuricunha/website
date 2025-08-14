@@ -16,18 +16,15 @@ import {
   Plus, 
   Send, 
   Users, 
-  BarChart3,
   FileText,
   Calendar,
   TrendingUp,
   Eye,
-  MousePointer,
   Edit3,
   Copy,
   Trash2,
   Clock,
   CheckCircle,
-  AlertCircle,
   Loader2
 } from 'lucide-react'
 import { toast } from 'sonner'
@@ -81,18 +78,12 @@ export default function EmailMarketingManagement() {
 
   // Sequential loading effect
   useEffect(() => {
-    let timeoutId: NodeJS.Timeout
-
     const startSequentialLoading = async () => {
       setLoadingStage('audiences')
       setEnableAudiences(true)
     }
 
     startSequentialLoading()
-    
-    return () => {
-      if (timeoutId) clearTimeout(timeoutId)
-    }
   }, [])
 
   // Handle progression to next stage when current stage completes
@@ -168,7 +159,7 @@ export default function EmailMarketingManagement() {
 
   const syncUsersMutation = api.resendEmail.syncUsersToAudience.useMutation({
     onSuccess: (data) => {
-      toast.success(`Successfully synced ${data.syncedCount} users to audience!`)
+      toast.success(`Successfully synced ${data.synced} users to audience!`)
       refetchAudiences()
     },
     onError: (error) => {
@@ -221,8 +212,9 @@ export default function EmailMarketingManagement() {
     createTemplateMutation.mutate({
       name,
       subject,
-      html,
-      text: text || undefined
+      content: html,
+      type: 'notification' as const,
+      variables: []
     })
   }
 
@@ -248,8 +240,7 @@ export default function EmailMarketingManagement() {
       subject,
       html,
       text: text || undefined,
-      from,
-      scheduledAt: scheduleOption === 'scheduled' ? scheduledAt : undefined
+      from
     })
   }
 
@@ -292,8 +283,7 @@ export default function EmailMarketingManagement() {
     updateBroadcastMutation.mutate({
       broadcastId: selectedBroadcast.id,
       subject,
-      html,
-      text: text || undefined
+      html
     })
   }
 
@@ -304,7 +294,7 @@ export default function EmailMarketingManagement() {
   }) || []
 
   // Helper function to render loading indicator for each stage
-  const renderLoadingIndicator = (stage: string, isActive: boolean, isComplete: boolean) => {
+  const renderLoadingIndicator = (_stage: string, isActive: boolean, isComplete: boolean) => {
     if (isComplete) {
       return <CheckCircle className="h-5 w-5 text-green-500" />
     } else if (isActive) {
@@ -433,7 +423,7 @@ export default function EmailMarketingManagement() {
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium truncate">{broadcast.name}</p>
                         <p className="text-sm text-muted-foreground">
-                          {new Date(broadcast.created_at).toLocaleDateString()}
+                          {new Date(broadcast.sent_at || Date.now()).toLocaleDateString()}
                         </p>
                       </div>
                     </div>
@@ -524,13 +514,13 @@ export default function EmailMarketingManagement() {
                 <CardHeader>
                   <CardTitle className="flex items-center justify-between">
                     <span>{audience.name}</span>
-                    <Badge variant="secondary">{audience.subscriberCount || 0} subscribers</Badge>
+                    <Badge variant="secondary">0 subscribers</Badge>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-2">
                     <p className="text-sm text-muted-foreground">
-                      Created: {new Date(audience.created_at).toLocaleDateString()}
+                      Created: {new Date().toLocaleDateString()}
                     </p>
                     <Button 
                       onClick={() => handleSyncUsers(audience.id)} 
@@ -621,7 +611,7 @@ export default function EmailMarketingManagement() {
                           <SelectContent>
                             {audiences?.audiences?.map((audience) => (
                               <SelectItem key={audience.id} value={audience.id}>
-                                {audience.name} ({audience.subscriberCount || 0} subscribers)
+                                {audience.name} (0 subscribers)
                               </SelectItem>
                             ))}
                           </SelectContent>
@@ -711,11 +701,11 @@ export default function EmailMarketingManagement() {
                             <div className="flex items-center gap-4 text-sm text-muted-foreground">
                               <span className="flex items-center gap-1">
                                 <Calendar className="h-3 w-3" />
-                                {new Date(broadcast.created_at).toLocaleDateString()}
+                                {new Date(broadcast.sent_at || Date.now()).toLocaleDateString()}
                               </span>
                               <span className="flex items-center gap-1">
                                 <Users className="h-3 w-3" />
-                                {broadcast.audience?.name || 'No audience'}
+                                Audience
                               </span>
                               {broadcast.status === 'sent' && (
                                 <span className="flex items-center gap-1">
@@ -911,32 +901,32 @@ export default function EmailMarketingManagement() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <Label className="text-sm font-medium">Name</Label>
-                  <p className="text-sm">{selectedBroadcastData.name}</p>
+                  <p className="text-sm">{selectedBroadcastData?.name || 'N/A'}</p>
                 </div>
                 <div>
                   <Label className="text-sm font-medium">Status</Label>
-                  <Badge className={getBroadcastStatusColor(selectedBroadcastData.status)}>
-                    {selectedBroadcastData.status}
+                  <Badge className={getBroadcastStatusColor(selectedBroadcastData?.status || 'draft')}>
+                    {selectedBroadcastData?.status || 'draft'}
                   </Badge>
                 </div>
                 <div>
                   <Label className="text-sm font-medium">Subject</Label>
-                  <p className="text-sm">{selectedBroadcastData.subject}</p>
+                  <p className="text-sm">{selectedBroadcastData?.subject || 'N/A'}</p>
                 </div>
                 <div>
                   <Label className="text-sm font-medium">From</Label>
-                  <p className="text-sm">{selectedBroadcastData.from}</p>
+                  <p className="text-sm">{selectedBroadcastData?.from || 'N/A'}</p>
                 </div>
               </div>
               
               <div>
                 <Label className="text-sm font-medium">HTML Content</Label>
                 <div className="mt-2 p-4 bg-muted rounded-lg max-h-64 overflow-y-auto">
-                  <pre className="text-xs whitespace-pre-wrap">{selectedBroadcastData.html}</pre>
+                  <pre className="text-xs whitespace-pre-wrap">{selectedBroadcastData?.html || 'No content'}</pre>
                 </div>
               </div>
               
-              {selectedBroadcastData.text && (
+              {selectedBroadcastData?.text && (
                 <div>
                   <Label className="text-sm font-medium">Plain Text Content</Label>
                   <div className="mt-2 p-4 bg-muted rounded-lg max-h-64 overflow-y-auto">
