@@ -46,7 +46,7 @@ export default function AnnouncementWidget({ className, maxItems = 5 }: Announce
   const [dismissedItems, setDismissedItems] = useState<string[]>([])
 
   // Get active announcements
-  const { data: announcementsData } = api.announcements.getAnnouncements.useQuery({
+  const { data: announcementsData, isLoading } = api.announcements.getAnnouncements.useQuery({
     adminView: true
   })
 

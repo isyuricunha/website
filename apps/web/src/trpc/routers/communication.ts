@@ -720,6 +720,74 @@ export const communicationRouter = createTRPCRouter({
       }
     }),
 
+  // Create notification (admin only)
+  createNotification: adminProcedure
+    .input(z.object({
+      title: z.string().min(1),
+      content: z.string().min(1),
+      type: z.enum(['info', 'success', 'warning', 'error']).default('info'),
+      userId: z.string().optional(),
+      expiresAt: z.date().optional()
+    }))
+    .mutation(async ({ ctx, input }) => {
+      try {
+        const auditLogger = new AuditLogger(ctx.db)
+        const notificationId = randomBytes(16).toString('hex')
+
+        // If userId is provided, send to specific user, otherwise send to all users
+        if (input.userId) {
+          await ctx.db.insert(notifications).values({
+            id: notificationId,
+            userId: input.userId,
+            title: input.title,
+            content: input.content,
+            type: input.type,
+            expiresAt: input.expiresAt
+          })
+        } else {
+          // Send to all users - get all user IDs
+          const allUsers = await ctx.db.query.users.findMany({
+            columns: { id: true }
+          })
+
+          const notificationRecords = allUsers.map(user => ({
+            id: randomBytes(16).toString('hex'),
+            userId: user.id,
+            title: input.title,
+            content: input.content,
+            type: input.type,
+            expiresAt: input.expiresAt
+          }))
+
+          if (notificationRecords.length > 0) {
+            await ctx.db.insert(notifications).values(notificationRecords)
+          }
+        }
+
+        // Log audit trail
+        await auditLogger.logSystemAction(
+          ctx.session.user.id,
+          'content_management',
+          'notification',
+          notificationId,
+          {
+            action: 'notification_created',
+            title: input.title,
+            type: input.type,
+            targetUser: input.userId || 'all_users'
+          }
+        )
+
+        return { success: true, notificationId }
+      } catch (error) {
+        console.error('Error creating notification:', error)
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to create notification'
+        })
+      }
+    }),
+
   // Communication Stats
   getCommunicationStats: adminProcedure
     .query(async ({ ctx }) => {

@@ -6,7 +6,10 @@ import {
   ActivityIcon, 
   DatabaseIcon,
   BarChart3Icon,
-  SettingsIcon
+  SettingsIcon,
+  MegaphoneIcon,
+  BellIcon,
+  SendIcon
 } from 'lucide-react'
 
 export const ADMIN_SIDEBAR_LINKS = [
@@ -44,9 +47,19 @@ export const ADMIN_SIDEBAR_LINKS = [
     titleKey: 'communication',
     links: [
       {
-        titleKey: 'communication_management',
-        url: '/admin/communication',
-        icon: MailIcon
+        titleKey: 'email_marketing',
+        url: '/admin/email-marketing',
+        icon: SendIcon
+      },
+      {
+        titleKey: 'announcements',
+        url: '/admin/announcements',
+        icon: MegaphoneIcon
+      },
+      {
+        titleKey: 'notifications',
+        url: '/admin/notifications',
+        icon: BellIcon
       }
     ]
   },
