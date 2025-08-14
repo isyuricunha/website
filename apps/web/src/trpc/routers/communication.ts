@@ -480,7 +480,7 @@ export const communicationRouter = createTRPCRouter({
         if (!input.adminView && ctx.session?.user) {
           const interactions = await ctx.db.query.announcementInteractions.findMany({
             where: and(
-              eq(announcementInteractions.announcementId, filteredAnnouncements.map(a => a.id)),
+              inArray(announcementInteractions.announcementId, filteredAnnouncements.map(a => a.id)),
               eq(announcementInteractions.userId, ctx.session.user.id)
             )
           })
@@ -577,7 +577,6 @@ export const communicationRouter = createTRPCRouter({
             where: eq(announcementInteractions.userId, ctx.session.user.id),
             columns: { announcementId: true }
           })
-          const dismissedIds = dismissedInteractions.map(i => i.announcementId)
 
           // Check if interaction already exists
           const existing = await ctx.db.query.announcementInteractions.findFirst({
@@ -743,10 +742,10 @@ export const communicationRouter = createTRPCRouter({
             userId: input.userId,
             title: input.title,
             message: input.content,
-            type: input.type === 'info' ? 'content' : 
-                  input.type === 'warning' ? 'system' : 
-                  input.type === 'success' ? 'user_action' : 
-                  input.type === 'error' ? 'security' : 'content',
+            type: input.type === 'info' ? 'content' as const : 
+                  input.type === 'warning' ? 'system' as const : 
+                  input.type === 'success' ? 'user_action' as const : 
+                  input.type === 'error' ? 'security' as const : 'content' as const,
             expiresAt: input.expiresAt
           })
         } else {
@@ -761,11 +760,11 @@ export const communicationRouter = createTRPCRouter({
             userId: user.id,
             title: input.title,
             message: input.content,
-            type: input.type === 'info' ? 'content' : 
-                  input.type === 'warning' ? 'system' : 
-                  input.type === 'success' ? 'user_action' : 
-                  input.type === 'error' ? 'security' : 'content',
-            expiresAt: input.endDate ? new Date(input.endDate) : undefined
+            type: input.type === 'info' ? 'content' as const : 
+                  input.type === 'warning' ? 'system' as const : 
+                  input.type === 'success' ? 'user_action' as const : 
+                  input.type === 'error' ? 'security' as const : 'content' as const,
+            expiresAt: input.expiresAt
           }))
 
           if (notificationsList.length > 0) {
