@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, useMemo } from 'react'
 import { flags } from '@tszhong0411/env'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
