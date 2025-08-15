@@ -83,7 +83,7 @@ const Hero = () => {
               className='mb-1'
             >
               <span>{t('homepage.hero.title-middle-left')} </span>
-              <div className='inline-block relative overflow-hidden min-w-[60px] align-baseline'>
+              <div className='inline-block relative min-w-[60px] align-baseline'>
                 <AnimatePresence mode='popLayout'>
                   <motion.div
                     key={currentIndex}
