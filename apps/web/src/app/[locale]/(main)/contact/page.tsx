@@ -2,11 +2,12 @@ import type { Metadata, ResolvingMetadata } from 'next'
 
 import { i18n } from '@tszhong0411/i18n/config'
 import { setRequestLocale } from '@tszhong0411/i18n/server'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, Input, Button, Textarea } from '@tszhong0411/ui'
-import { Mail, Send, MessageSquare, User, Github, Twitter, Linkedin } from 'lucide-react'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@tszhong0411/ui'
+import { Mail, User, Github, Twitter, Linkedin } from 'lucide-react'
 
 import PageTitle from '@/components/page-title'
 import Link from '@/components/link'
+import ContactForm from '@/components/contact-form'
 import { getLocalizedPath } from '@/utils/get-localized-path'
 
 type PageProps = {
@@ -58,19 +59,19 @@ const ContactPage = async (props: PageProps) => {
   const socialLinks = [
     {
       name: 'GitHub',
-      href: 'https://github.com/tszhong0411',
+      href: 'https://github.com/isyuricunha',
       icon: <Github className='h-5 w-5' />,
       description: 'Follow my code and open source projects'
     },
     {
       name: 'Twitter',
-      href: 'https://twitter.com/tszhong0411',
+      href: 'https://twitter.com/isyuricunha',
       icon: <Twitter className='h-5 w-5' />,
       description: 'Connect with me on Twitter'
     },
     {
       name: 'LinkedIn',
-      href: 'https://linkedin.com/in/tszhong0411',
+      href: 'https://linkedin.com/in/isyuricunha',
       icon: <Linkedin className='h-5 w-5' />,
       description: 'Professional networking and career updates'
     }
@@ -78,85 +79,14 @@ const ContactPage = async (props: PageProps) => {
 
   return (
     <>
-      <PageTitle 
-        title="Contact" 
+      <PageTitle
+        title="Contact"
         description="Let's connect! Reach out for collaborations, questions, or just to say hello"
       />
 
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
         {/* Contact Form */}
-        <Card>
-          <CardHeader>
-            <CardTitle className='text-base sm:text-lg flex items-center gap-2'>
-              <MessageSquare className='h-5 w-5' />
-              Send a Message
-            </CardTitle>
-            <CardDescription className='text-xs sm:text-sm'>
-              Fill out the form below and I'll get back to you soon
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form className='space-y-4'>
-              <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
-                <div>
-                  <label htmlFor='name' className='block text-xs sm:text-sm font-medium mb-2'>
-                    Name
-                  </label>
-                  <Input
-                    id='name'
-                    type='text'
-                    placeholder='Your name'
-                    required
-                    className='text-sm'
-                  />
-                </div>
-                <div>
-                  <label htmlFor='email' className='block text-xs sm:text-sm font-medium mb-2'>
-                    Email
-                  </label>
-                  <Input
-                    id='email'
-                    type='email'
-                    placeholder='your@email.com'
-                    required
-                    className='text-sm'
-                  />
-                </div>
-              </div>
-              
-              <div>
-                <label htmlFor='subject' className='block text-xs sm:text-sm font-medium mb-2'>
-                  Subject
-                </label>
-                <Input
-                  id='subject'
-                  type='text'
-                  placeholder='What is this about?'
-                  required
-                  className='text-sm'
-                />
-              </div>
-              
-              <div>
-                <label htmlFor='message' className='block text-xs sm:text-sm font-medium mb-2'>
-                  Message
-                </label>
-                <Textarea
-                  id='message'
-                  placeholder='Tell me more about your project, question, or idea...'
-                  rows={6}
-                  required
-                  className='text-sm resize-none'
-                />
-              </div>
-              
-              <Button type='submit' className='w-full flex items-center justify-center gap-2 text-sm'>
-                <Send className='h-4 w-4' />
-                Send Message
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
+        <ContactForm />
 
         {/* Contact Info & Social */}
         <div className='space-y-6'>
@@ -177,15 +107,15 @@ const ContactPage = async (props: PageProps) => {
                   <Mail className='h-4 w-4 text-muted-foreground' />
                   <div>
                     <p className='text-sm font-medium'>Email</p>
-                    <Link 
-                      href='mailto:contact@example.com'
+                    <Link
+                      href='mailto:me@yuricunha.com'
                       className='text-xs sm:text-sm text-primary hover:underline'
                     >
-                      contact@example.com
+                      me@yuricunha.com
                     </Link>
                   </div>
                 </div>
-                
+
                 <div className='text-xs sm:text-sm text-muted-foreground'>
                   <p className='mb-2'>I typically respond within 24-48 hours.</p>
                   <p>For urgent matters, please mention it in the subject line.</p>
