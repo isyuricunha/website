@@ -402,25 +402,35 @@
             "description": "Bug gefunden oder möchtest du in Kontakt treten? Hier ist die E-Mail meines Erstellers:",
             "copy": "E-Mail kopieren"
         },
+        "aiChat": {
+            "title": "Mit Yue chatten",
+            "clear": "Löschen",
+            "welcomeMessage": "Hallo! Ich bin Yue, deine KI-Assistentin! 🤖 Frag mich alles über die Website, Tech-Themen, oder lass uns einfach chatten!",
+            "errorMessage": "Entschuldigung, ich habe gerade Probleme. Bitte versuche es später noch einmal! 😅",
+            "thinking": "Yue denkt nach...",
+            "placeholder": "Frag mich alles...",
+            "connectionError": "Verbindungsprobleme. Bitte versuche es erneut.",
+            "footer": "Angetrieben von Gemini AI • Drücke Enter zum Senden"
+        },
         "chatbot": {
             "title": "Mit Yue chatten",
             "close": "Chat schließen",
-            "description": "Wähle ein Thema zum Chatten:",
+            "description": "Wählen Sie ein Gesprächsthema:",
             "options": {
-                "contact": "Ich möchte in Kontakt treten",
+                "contact": "Ich möchte Kontakt aufnehmen",
                 "feedback": "Ich habe Feedback",
                 "help": "Ich brauche Hilfe",
                 "bug": "Ich habe einen Bug gefunden",
-                "feature": "Ich habe einen Funktionswunsch",
-                "general": "Einfach nur plaudern"
+                "feature": "Ich habe eine Feature-Anfrage",
+                "general": "Ich möchte nur chatten"
             },
             "responses": {
-                "contact": "Super! Du kannst meinen Ersteller Yuri unter me@yuricunha.com erreichen. Er freut sich über Nachrichten!",
-                "feedback": "Danke für dein Feedback! Es hilft, die Seite für alle zu verbessern. Schick gern Details an me@yuricunha.com.",
-                "help": "Ich bin hier, um zu helfen! Worüber möchtest du mehr wissen? Du kannst die Seite durchsuchen oder mir eine konkrete Frage stellen.",
-                "bug": "Danke fürs Melden! Bitte sende eine E-Mail mit Details an me@yuricunha.com. Jeder Bericht hilft, die Seite zu verbessern!",
-                "feature": "Das klingt spannend! Mein Ersteller Yuri hört gern neue Ideen. Schick deine Vorschläge an me@yuricunha.com.",
-                "general": "Ich plaudere gern mit Besuchern! Wie läuft dein Tag? Schau dich um oder frag mich irgendwas!"
+                "contact": "Großartig! Sie können meinen Schöpfer Yuri unter [me@yuricunha.com](mailto:me@yuricunha.com) erreichen. Er liebt es, von Besuchern zu hören!",
+                "feedback": "Danke für Ihr Feedback! Es hilft dabei, diese Seite für alle zu verbessern. Zögern Sie nicht, Details an [me@yuricunha.com](mailto:me@yuricunha.com) zu senden.",
+                "help": "Ich bin hier, um zu helfen! Was möchten Sie wissen? Sie können die Seite erkunden oder mir spezifische Fragen stellen.",
+                "bug": "Danke fürs Melden! Bitte senden Sie eine E-Mail an [me@yuricunha.com](mailto:me@yuricunha.com) mit Details über das, was Sie gefunden haben. Jeder Bericht hilft dabei, die Seite zu verbessern!",
+                "feature": "Das ist aufregend! Mein Schöpfer Yuri liebt es, neue Ideen zu hören. Bitte senden Sie Ihren Vorschlag an [me@yuricunha.com](mailto:me@yuricunha.com).",
+                "general": "Ich liebe es, mit Besuchern zu chatten! Wie läuft Ihr Tag? Zögern Sie nicht, die Seite zu erkunden oder mir alles zu fragen!"
             }
         },
         "greetings": {

@@ -1,7 +1,8 @@
 import { GoogleGenerativeAI } from '@google/generative-ai'
-import { NextRequest, NextResponse } from 'next/server'
 import { Ratelimit } from '@upstash/ratelimit'
 import { Redis } from '@upstash/redis'
+import { NextRequest, NextResponse } from 'next/server'
+import { flags } from '@tszhong0411/env'
 
 // Rate limiting for Gemini API calls
 const redis = Redis.fromEnv()
@@ -13,10 +14,18 @@ const ratelimit = new Ratelimit({
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!)
 
-export async function POST(request: NextRequest) {
+export async function POST(req: NextRequest) {
+  // Check if Gemini AI is enabled
+  if (!flags.gemini) {
+    return NextResponse.json(
+      { error: 'AI chat is currently disabled.' },
+      { status: 503 }
+    )
+  }
+
   try {
     // Rate limiting
-    const ip = request.ip ?? '127.0.0.1'
+    const ip = req.ip ?? '127.0.0.1'
     const { success } = await ratelimit.limit(`mascot_chat_${ip}`)
     
     if (!success) {
@@ -26,7 +35,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { message, context } = await request.json()
+    const { message, context } = await req.json()
 
     if (!message || typeof message !== 'string') {
       return NextResponse.json(

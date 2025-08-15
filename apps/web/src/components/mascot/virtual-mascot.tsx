@@ -1,6 +1,7 @@
 'use client'
 
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { flags } from '@tszhong0411/env'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { X as XIcon, Settings as SettingsIcon, Gamepad as GamepadIcon, Eye as EyeIcon, Menu as MenuIcon, Bug as BugIcon, Github as GithubIcon, Copy as CopyIcon, MessageCircle as MessageCircleIcon } from 'lucide-react'
@@ -750,14 +751,16 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
                 <GithubIcon className='h-4 w-4' />
                 {t('mascot.menu.viewProjects')}
               </button>
-              <button
-                type='button'
-                className='flex w-full items-center gap-2 rounded px-3 py-2 text-left transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
-                onClick={() => handleMenuAction('chat')}
-              >
-                <MessageCircleIcon className='h-4 w-4' />
-                Chat with AI
-              </button>
+              {flags.gemini && (
+                <button
+                  type='button'
+                  className='flex w-full items-center gap-2 rounded px-3 py-2 text-left transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
+                  onClick={() => handleMenuAction('chat')}
+                >
+                  <MessageCircleIcon className='h-4 w-4' />
+                  Chat with AI
+                </button>
+              )}
               <button
                 type='button'
                 className='flex w-full items-center gap-2 rounded px-3 py-2 text-left transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'

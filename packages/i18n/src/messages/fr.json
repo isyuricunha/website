@@ -402,25 +402,35 @@
             "description": "Vous avez trouvé un bug ou souhaitez me contacter ? Voici l'email de mon créateur :",
             "copy": "Copier l'email"
         },
+        "aiChat": {
+            "title": "Discuter avec Yue",
+            "clear": "Effacer",
+            "welcomeMessage": "Salut ! Je suis Yue, votre assistante IA ! 🤖 Demandez-moi n'importe quoi sur le site, des sujets tech, ou discutons !",
+            "errorMessage": "Désolée, j'ai des problèmes en ce moment. Réessayez plus tard ! 😅",
+            "thinking": "Yue réfléchit...",
+            "placeholder": "Demandez-moi n'importe quoi...",
+            "connectionError": "Problème de connexion. Veuillez réessayer.",
+            "footer": "Alimenté par Gemini AI • Appuyez sur Entrée pour envoyer"
+        },
         "chatbot": {
             "title": "Discuter avec Yue",
             "close": "Fermer le chat",
-            "description": "Choisissez un sujet pour discuter :",
+            "description": "Choisissez un sujet de conversation :",
             "options": {
-                "contact": "Je veux prendre contact",
+                "contact": "Je veux entrer en contact",
                 "feedback": "J'ai un retour",
                 "help": "J'ai besoin d'aide",
                 "bug": "J'ai trouvé un bug",
                 "feature": "J'ai une demande de fonctionnalité",
-                "general": "Juste discuter"
+                "general": "Je veux juste discuter"
             },
             "responses": {
-                "contact": "Super ! Vous pouvez joindre mon créateur, Yuri, à me@yuricunha.com. Il adore recevoir des nouvelles des visiteurs !",
-                "feedback": "Merci pour votre retour ! Cela aide à améliorer le site pour tout le monde. N'hésitez pas à envoyer les détails à me@yuricunha.com.",
-                "help": "Je suis là pour aider ! Que souhaitez-vous savoir ? Vous pouvez parcourir le site ou me poser des questions précises.",
-                "bug": "Merci pour le signalement ! Veuillez envoyer les détails à me@yuricunha.com. Chaque rapport aide à améliorer le site !",
-                "feature": "C'est excitant ! Mon créateur, Yuri, aime recevoir de nouvelles idées. Envoyez votre suggestion à me@yuricunha.com.",
-                "general": "J'aime discuter avec les visiteurs ! Comment se passe votre journée ? N'hésitez pas à explorer le site ou à me poser une question !"
+                "contact": "Super ! Vous pouvez contacter mon créateur, Yuri, à [me@yuricunha.com](mailto:me@yuricunha.com). Il adore entendre les visiteurs !",
+                "feedback": "Merci pour votre retour ! Cela aide à améliorer ce site pour tout le monde. N'hésitez pas à envoyer des détails à [me@yuricunha.com](mailto:me@yuricunha.com).",
+                "help": "Je suis là pour aider ! Que voulez-vous savoir ? Vous pouvez explorer le site ou me poser des questions spécifiques.",
+                "bug": "Merci de signaler ! Veuillez envoyer un e-mail à [me@yuricunha.com](mailto:me@yuricunha.com) avec les détails de ce que vous avez trouvé. Chaque rapport aide à améliorer le site !",
+                "feature": "C'est excitant ! Mon créateur, Yuri, adore entendre de nouvelles idées. Veuillez envoyer votre suggestion à [me@yuricunha.com](mailto:me@yuricunha.com).",
+                "general": "J'adore discuter avec les visiteurs ! Comment se passe votre journée ? N'hésitez pas à explorer le site ou à me demander quoi que ce soit !"
             }
         },
         "greetings": {

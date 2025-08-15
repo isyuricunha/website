@@ -402,6 +402,16 @@
       "description": "Found a bug or want to get in touch? Here's my creator's email:",
       "copy": "Copy email"
     },
+    "aiChat": {
+      "title": "Chat with Yue",
+      "clear": "Clear",
+      "welcomeMessage": "Hi! I'm Yue, your AI assistant! 🤖 Ask me anything about the website, tech topics, or just chat!",
+      "errorMessage": "Sorry, I'm having trouble right now. Please try again later! 😅",
+      "thinking": "Yue is thinking...",
+      "placeholder": "Ask me anything...",
+      "connectionError": "Having trouble connecting. Please try again.",
+      "footer": "Powered by Gemini AI • Press Enter to send"
+    },
     "chatbot": {
       "title": "Chat with Yue",
       "close": "Close chat",

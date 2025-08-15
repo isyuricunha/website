@@ -50,13 +50,13 @@ export default function AIChatInterface({
     if (isOpen && messages.length === 0) {
       const welcomeMessage: ChatMessage = {
         id: 'welcome',
-        text: "Hi! I'm Yue, your AI assistant! 🤖 Ask me anything about the website, tech topics, or just chat!",
+        text: t('mascot.aiChat.welcomeMessage'),
         isUser: false,
         timestamp: new Date().toISOString()
       }
       setMessages([welcomeMessage])
     }
-  }, [isOpen, messages.length])
+  }, [isOpen, messages.length, t])
 
   const sendMessage = async () => {
     if (!inputValue.trim() || isLoading) return
@@ -110,7 +110,7 @@ export default function AIChatInterface({
       
       const errorMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
-        text: "Sorry, I'm having trouble right now. Please try again later! 😅",
+        text: t('mascot.aiChat.errorMessage'),
         isUser: false,
         timestamp: new Date().toISOString(),
         isError: true
@@ -142,7 +142,7 @@ export default function AIChatInterface({
       <div className="flex items-center justify-between p-3 border-b bg-muted/50">
         <div className="flex items-center gap-2">
           <MessageCircle className="h-4 w-4 text-primary" />
-          <span className="font-medium text-sm">Chat with Yue</span>
+          <span className="font-medium text-sm">{t('mascot.aiChat.title')}</span>
         </div>
         <div className="flex items-center gap-1">
           {messages.length > 1 && (
@@ -150,7 +150,7 @@ export default function AIChatInterface({
               onClick={clearChat}
               className="text-xs text-muted-foreground hover:text-foreground px-2 py-1 rounded transition-colors"
             >
-              Clear
+              {t('mascot.aiChat.clear')}
             </button>
           )}
           <button
@@ -187,7 +187,7 @@ export default function AIChatInterface({
           <div className="flex justify-start">
             <div className="bg-muted text-foreground p-2 rounded-lg flex items-center gap-2">
               <Loader2 className="h-3 w-3 animate-spin" />
-              <span className="text-xs">Yue is thinking...</span>
+              <span className="text-xs">{t('mascot.aiChat.thinking')}</span>
             </div>
           </div>
         )}
@@ -204,7 +204,7 @@ export default function AIChatInterface({
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyPress={handleKeyPress}
-            placeholder="Ask me anything..."
+            placeholder={t('mascot.aiChat.placeholder')}
             className="flex-1 px-3 py-2 text-xs bg-background border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
             disabled={isLoading}
             maxLength={500}
@@ -224,12 +224,12 @@ export default function AIChatInterface({
         
         {hasError && (
           <p className="text-xs text-destructive mt-2">
-            Having trouble connecting. Please try again.
+            {t('mascot.aiChat.connectionError')}
           </p>
         )}
         
         <p className="text-xs text-muted-foreground mt-2">
-          Powered by Gemini AI • Press Enter to send
+          {t('mascot.aiChat.footer')}
         </p>
       </div>
     </div>

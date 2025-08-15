@@ -402,6 +402,16 @@
             "description": "Encontrou um bug ou quer entrar em contato? Aqui está o e-mail do meu criador:",
             "copy": "Copiar e-mail"
         },
+        "aiChat": {
+            "title": "Conversar com a Yue",
+            "clear": "Limpar",
+            "welcomeMessage": "Oi! Eu sou a Yue, sua assistente de IA! 🤖 Me pergunte qualquer coisa sobre o site, tópicos de tecnologia, ou apenas converse!",
+            "errorMessage": "Desculpe, estou com problemas agora. Tente novamente mais tarde! 😅",
+            "thinking": "Yue está pensando...",
+            "placeholder": "Me pergunte qualquer coisa...",
+            "connectionError": "Problemas de conexão. Tente novamente.",
+            "footer": "Alimentado por Gemini AI • Pressione Enter para enviar"
+        },
         "chatbot": {
             "title": "Conversar com a Yue",
             "close": "Fechar chat",

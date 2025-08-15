@@ -7,6 +7,7 @@ export const flags = {
   auth: process.env.NEXT_PUBLIC_FLAG_AUTH === 'true',
   stats: process.env.NEXT_PUBLIC_FLAG_STATS === 'true',
   spotify: process.env.NEXT_PUBLIC_FLAG_SPOTIFY === 'true',
+  gemini: process.env.NEXT_PUBLIC_FLAG_GEMINI === 'true',
   analytics: process.env.NEXT_PUBLIC_FLAG_ANALYTICS === 'true',
   guestbookNotification: process.env.NEXT_PUBLIC_FLAG_GUESTBOOK_NOTIFICATION === 'true',
   likeButton: process.env.NEXT_PUBLIC_FLAG_LIKE_BUTTON === 'true'
@@ -64,6 +65,12 @@ export const env = createEnv({
         }
       : {}),
 
+    ...(flags.gemini
+      ? {
+          GEMINI_API_KEY: z.string().min(1)
+        }
+      : {}),
+
     DATABASE_URL: z.string().url(),
     UPSTASH_REDIS_REST_URL: z.string().url(),
     UPSTASH_REDIS_REST_TOKEN: z.string().min(1),
@@ -81,6 +88,7 @@ export const env = createEnv({
     NEXT_PUBLIC_FLAG_AUTH: z.string().min(1).optional(),
     NEXT_PUBLIC_FLAG_STATS: z.string().min(1).optional(),
     NEXT_PUBLIC_FLAG_SPOTIFY: z.string().min(1).optional(),
+    NEXT_PUBLIC_FLAG_GEMINI: z.string().min(1).optional(),
     NEXT_PUBLIC_FLAG_ANALYTICS: z.string().min(1).optional(),
     NEXT_PUBLIC_FLAG_GUESTBOOK_NOTIFICATION: z.string().min(1).optional(),
     NEXT_PUBLIC_FLAG_LIKE_BUTTON: z.string().min(1).optional(),
@@ -98,6 +106,7 @@ export const env = createEnv({
     NEXT_PUBLIC_FLAG_AUTH: process.env.NEXT_PUBLIC_FLAG_AUTH,
     NEXT_PUBLIC_FLAG_STATS: process.env.NEXT_PUBLIC_FLAG_STATS,
     NEXT_PUBLIC_FLAG_SPOTIFY: process.env.NEXT_PUBLIC_FLAG_SPOTIFY,
+    NEXT_PUBLIC_FLAG_GEMINI: process.env.NEXT_PUBLIC_FLAG_GEMINI,
     NEXT_PUBLIC_FLAG_ANALYTICS: process.env.NEXT_PUBLIC_FLAG_ANALYTICS,
     NEXT_PUBLIC_FLAG_GUESTBOOK_NOTIFICATION: process.env.NEXT_PUBLIC_FLAG_GUESTBOOK_NOTIFICATION,
     NEXT_PUBLIC_FLAG_LIKE_BUTTON: process.env.NEXT_PUBLIC_FLAG_LIKE_BUTTON,
