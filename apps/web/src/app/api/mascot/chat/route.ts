@@ -70,7 +70,7 @@ About Yuri:
 - Blog: https://yuricunha.com/blog
 - PC/Setup/Stacks: https://yuricunha.com/
 - Guestbook: https://yuricunha.com/guestbook
-- Projects: https://yuricunha.com/projects (in development)
+- Projects: https://yuricunha.com/projects (already existe and is functional and have api integration with github, BUT in development)
 - About: https://yuricunha.com/about (may not be up to date)
 - Email: me@yuricunha.com
 - Music he listens to: https://yuricunha.com/spotify
