@@ -343,6 +343,10 @@
       "subtitle": "Tracks I've listened to recently",
       "no-data": "No recently played tracks available"
     },
+    "stats": {
+      "title": "Music Statistics",
+      "subtitle": "Your listening habits and preferences"
+    },
     "loading": "Loading music data...",
     "error": "Failed to load music data. Please try again.",
     "refresh": "Refresh data",

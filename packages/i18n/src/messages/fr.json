@@ -343,6 +343,10 @@
             "subtitle": "Titres que j'ai écoutés récemment",
             "no-data": "Aucun titre récemment écouté disponible"
         },
+        "stats": {
+            "title": "Statistiques musicales",
+            "subtitle": "Vos habitudes d'écoute et préférences"
+        },
         "loading": "Chargement des données musicales...",
         "error": "Échec du chargement des données musicales. Veuillez réessayer.",
         "refresh": "Actualiser les données",

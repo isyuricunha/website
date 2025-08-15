@@ -1,6 +1,6 @@
 'use client'
 
-import { useTranslations } from '@tszhong0411/i18n/client'
+import { useLocale, useTranslations } from '@tszhong0411/i18n/client'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@tszhong0411/ui'
 import { Clock, FileText, Code, Calendar } from 'lucide-react'
 import { useMemo } from 'react'
@@ -21,50 +21,55 @@ type UpdatedItem = {
 
 const RecentlyUpdated = () => {
   const t = useTranslations()
+  const locale = useLocale()
 
   const recentlyUpdated = useMemo(() => {
     const items: UpdatedItem[] = []
     const seenIds = new Set<string>()
 
-    // Add blog posts
-    allPosts.forEach(post => {
-      const id = `post-${post.slug}`
-      if (!seenIds.has(id)) {
-        seenIds.add(id)
-        items.push({
-          id,
-          title: post.title,
-          description: post.summary,
-          href: `/blog/${post.slug}`,
-          type: 'post',
-          date: post.modifiedTime || post.date,
-          icon: <FileText className='h-4 w-4' />
-        })
-      }
-    })
+    // Add blog posts filtered by current locale
+    allPosts
+      .filter(post => post.locale === locale)
+      .forEach(post => {
+        const id = `post-${post.slug}`
+        if (!seenIds.has(id)) {
+          seenIds.add(id)
+          items.push({
+            id,
+            title: post.title,
+            description: post.summary,
+            href: `/blog/${post.slug}`,
+            type: 'post',
+            date: post.modifiedTime || post.date,
+            icon: <FileText className='h-4 w-4' />
+          })
+        }
+      })
 
-    // Add projects (using a fallback date if no modified time)
-    allProjects.forEach(project => {
-      const id = `project-${project.slug}`
-      if (!seenIds.has(id)) {
-        seenIds.add(id)
-        items.push({
-          id,
-          title: project.name,
-          description: project.description,
-          href: `/projects#${project.slug}`,
-          type: 'project',
-          date: project.modifiedTime || new Date('2024-01-01').toISOString(),
-          icon: <Code className='h-4 w-4' />
-        })
-      }
-    })
+    // Add projects filtered by current locale (using a fallback date if no modified time)
+    allProjects
+      .filter(project => project.locale === locale)
+      .forEach(project => {
+        const id = `project-${project.slug}`
+        if (!seenIds.has(id)) {
+          seenIds.add(id)
+          items.push({
+            id,
+            title: project.name,
+            description: project.description,
+            href: `/projects#${project.slug}`,
+            type: 'project',
+            date: project.modifiedTime || new Date('2024-01-01').toISOString(),
+            icon: <Code className='h-4 w-4' />
+          })
+        }
+      })
 
     // Sort by date and take top 3
     return items
       .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
       .slice(0, 3)
-  }, [])
+  }, [locale])
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)

@@ -18,21 +18,62 @@ const RECENTLY_PLAYED_ENDPOINT = 'https://api.spotify.com/v1/me/player/recently-
 const TOKEN_ENDPOINT = 'https://accounts.spotify.com/api/token'
 
 const getAccessToken = async () => {
-  const response = await fetch(TOKEN_ENDPOINT, {
-    method: 'POST',
-    headers: {
-      Authorization: `Basic ${BASIC}`,
-      'Content-Type': 'application/x-www-form-urlencoded'
-    },
-    body: new URLSearchParams({
-      grant_type: 'refresh_token',
-      refresh_token: REFRESH_TOKEN
+  try {
+    // Validate environment variables
+    if (!CLIENT_ID || !CLIENT_SECRET || !REFRESH_TOKEN) {
+      console.error('Missing Spotify environment variables:', {
+        CLIENT_ID: !!CLIENT_ID,
+        CLIENT_SECRET: !!CLIENT_SECRET,
+        REFRESH_TOKEN: !!REFRESH_TOKEN
+      })
+      console.error('Make sure NEXT_PUBLIC_FLAG_SPOTIFY=true is set in your .env.local file')
+      throw new Error('Missing required Spotify environment variables')
+    }
+
+    console.log('Attempting token refresh with CLIENT_ID:', CLIENT_ID.substring(0, 8) + '...')
+
+    const response = await fetch(TOKEN_ENDPOINT, {
+      method: 'POST',
+      headers: {
+        Authorization: `Basic ${BASIC}`,
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: new URLSearchParams({
+        grant_type: 'refresh_token',
+        refresh_token: REFRESH_TOKEN
+      }),
+      signal: AbortSignal.timeout(10000) // 10 second timeout
     })
-  })
 
-  const data = await response.json()
+    if (!response.ok) {
+      console.error('Spotify token refresh failed:', response.status, response.statusText)
+      const errorText = await response.text()
+      console.error('Token refresh error response:', errorText)
+      
+      // Try to parse the error as JSON for more details
+      try {
+        const errorJson = JSON.parse(errorText)
+        console.error('Parsed error details:', errorJson)
+      } catch (e) {
+        console.error('Could not parse error response as JSON')
+      }
+      
+      throw new Error(`Token refresh failed: ${response.status} - ${errorText}`)
+    }
 
-  return data.access_token as string
+    const data = await response.json()
+
+    if (!data.access_token) {
+      console.error('No access token in response:', data)
+      throw new Error('No access token received')
+    }
+
+    console.log('Successfully obtained access token')
+    return data.access_token as string
+  } catch (error) {
+    console.error('Error getting Spotify access token:', error)
+    throw error
+  }
 }
 
 const getKey = (id: string) => `spotify:${id}`
@@ -84,7 +125,8 @@ export const spotifyRouter = createTRPCRouter({
     const response = await fetch(NOW_PLAYING_ENDPOINT, {
       headers: {
         Authorization: `Bearer ${accessToken}`
-      }
+      },
+      signal: AbortSignal.timeout(10000) // 10 second timeout
     })
 
     if (response.status === 204) {
@@ -93,18 +135,23 @@ export const spotifyRouter = createTRPCRouter({
 
     const song = await response.json()
 
+    // Check if song.item exists to prevent undefined errors
+    if (!song.item) {
+      return null
+    }
+
     // Try to get the best quality image (usually the first one is the highest quality)
-    const albumImage = song.item.album.images?.[0]?.url ||
-                      song.item.album.images?.[1]?.url ||
-                      song.item.album.images?.[2]?.url ||
+    const albumImage = song.item.album?.images?.[0]?.url ||
+                      song.item.album?.images?.[1]?.url ||
+                      song.item.album?.images?.[2]?.url ||
                       null
 
     return {
       isPlaying: song.is_playing as boolean,
-      songUrl: song.item.external_urls.spotify as string,
+      songUrl: song.item.external_urls?.spotify as string,
       name: song.item.name as string,
-      artist: song.item.artists.map((artist: { name: string }) => artist.name).join(', '),
-      album: song.item.album.name as string,
+      artist: song.item.artists?.map((artist: { name: string }) => artist.name).join(', ') || 'Unknown Artist',
+      album: song.item.album?.name as string || 'Unknown Album',
       albumImage,
       duration: song.item.duration_ms as number,
       progress: song.progress_ms as number
@@ -118,36 +165,50 @@ export const spotifyRouter = createTRPCRouter({
 
     if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
 
-    const accessToken = await getAccessToken()
+    try {
+      const accessToken = await getAccessToken()
 
-    const response = await fetch(`${TOP_ARTISTS_ENDPOINT}?limit=20&time_range=short_term`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`
+      const response = await fetch(`${TOP_ARTISTS_ENDPOINT}?limit=20&time_range=short_term`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`
+        },
+        signal: AbortSignal.timeout(10000) // 10 second timeout
+      })
+
+      if (!response.ok) {
+        console.error('Spotify API error for top artists:', response.status, response.statusText)
+        const errorText = await response.text()
+        console.error('Error response:', errorText)
+        throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: `Failed to fetch top artists: ${response.status}` })
       }
-    })
 
-    if (!response.ok) {
-      throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' })
+      const data = await response.json()
+
+      if (!data.items || !Array.isArray(data.items)) {
+        console.warn('No items in top artists response:', data)
+        return []
+      }
+
+      return data.items.map((artist: any) => {
+        // Try to get the best quality image
+        const image = artist.images?.[0]?.url ||
+                     artist.images?.[1]?.url ||
+                     artist.images?.[2]?.url ||
+                     null
+
+        return {
+          id: artist.id as string,
+          name: artist.name as string,
+          image,
+          url: artist.external_urls.spotify as string,
+          followers: artist.followers.total as number,
+          genres: artist.genres as string[]
+        }
+      })
+    } catch (error) {
+      console.error('Error in getTopArtists:', error)
+      throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Failed to fetch top artists' })
     }
-
-    const data = await response.json()
-
-    return data.items.map((artist: any) => {
-      // Try to get the best quality image
-      const image = artist.images?.[0]?.url ||
-                   artist.images?.[1]?.url ||
-                   artist.images?.[2]?.url ||
-                   null
-
-      return {
-        id: artist.id as string,
-        name: artist.name as string,
-        image,
-        url: artist.external_urls.spotify as string,
-        followers: artist.followers.total as number,
-        genres: artist.genres as string[]
-      }
-    })
   }),
 
   getTopTracks: publicProcedure.query(async ({ ctx }) => {
@@ -157,38 +218,52 @@ export const spotifyRouter = createTRPCRouter({
 
     if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
 
-    const accessToken = await getAccessToken()
+    try {
+      const accessToken = await getAccessToken()
 
-    const response = await fetch(`${TOP_TRACKS_ENDPOINT}?limit=20&time_range=short_term`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`
+      const response = await fetch(`${TOP_TRACKS_ENDPOINT}?limit=20&time_range=short_term`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`
+        },
+        signal: AbortSignal.timeout(10000) // 10 second timeout
+      })
+
+      if (!response.ok) {
+        console.error('Spotify API error for top tracks:', response.status, response.statusText)
+        const errorText = await response.text()
+        console.error('Error response:', errorText)
+        throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: `Failed to fetch top tracks: ${response.status}` })
       }
-    })
 
-    if (!response.ok) {
-      throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' })
+      const data = await response.json()
+
+      if (!data.items || !Array.isArray(data.items)) {
+        console.warn('No items in top tracks response:', data)
+        return []
+      }
+
+      return data.items.map((track: any) => {
+        // Try to get the best quality image
+        const albumImage = track.album.images?.[0]?.url ||
+                          track.album.images?.[1]?.url ||
+                          track.album.images?.[2]?.url ||
+                          null
+
+        return {
+          id: track.id as string,
+          name: track.name as string,
+          artist: track.artists.map((artist: { name: string }) => artist.name).join(', '),
+          album: track.album.name as string,
+          albumImage,
+          url: track.external_urls.spotify as string,
+          duration: track.duration_ms as number,
+          popularity: track.popularity as number
+        }
+      })
+    } catch (error) {
+      console.error('Error in getTopTracks:', error)
+      throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Failed to fetch top tracks' })
     }
-
-    const data = await response.json()
-
-    return data.items.map((track: any) => {
-      // Try to get the best quality image
-      const albumImage = track.album.images?.[0]?.url ||
-                        track.album.images?.[1]?.url ||
-                        track.album.images?.[2]?.url ||
-                        null
-
-      return {
-        id: track.id as string,
-        name: track.name as string,
-        artist: track.artists.map((artist: { name: string }) => artist.name).join(', '),
-        album: track.album.name as string,
-        albumImage,
-        url: track.external_urls.spotify as string,
-        duration: track.duration_ms as number,
-        popularity: track.popularity as number
-      }
-    })
   }),
 
   getRecentlyPlayed: publicProcedure.query(async ({ ctx }) => {
@@ -198,36 +273,50 @@ export const spotifyRouter = createTRPCRouter({
 
     if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
 
-    const accessToken = await getAccessToken()
+    try {
+      const accessToken = await getAccessToken()
 
-    const response = await fetch(`${RECENTLY_PLAYED_ENDPOINT}?limit=20`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`
+      const response = await fetch(`${RECENTLY_PLAYED_ENDPOINT}?limit=20`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`
+        },
+        signal: AbortSignal.timeout(10000) // 10 second timeout
+      })
+
+      if (!response.ok) {
+        console.error('Spotify API error for recently played:', response.status, response.statusText)
+        const errorText = await response.text()
+        console.error('Error response:', errorText)
+        throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: `Failed to fetch recently played tracks: ${response.status}` })
       }
-    })
 
-    if (!response.ok) {
-      throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' })
+      const data = await response.json()
+
+      if (!data.items || !Array.isArray(data.items)) {
+        console.warn('No items in recently played response:', data)
+        return []
+      }
+
+      return data.items.map((item: any) => {
+        // Try to get the best quality image
+        const albumImage = item.track.album.images?.[0]?.url ||
+                          item.track.album.images?.[1]?.url ||
+                          item.track.album.images?.[2]?.url ||
+                          null
+
+        return {
+          id: item.track.id as string,
+          name: item.track.name as string,
+          artist: item.track.artists.map((artist: { name: string }) => artist.name).join(', '),
+          album: item.track.album.name as string,
+          albumImage,
+          url: item.track.external_urls.spotify as string,
+          playedAt: item.played_at as string
+        }
+      })
+    } catch (error) {
+      console.error('Error in getRecentlyPlayed:', error)
+      throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Failed to fetch recently played tracks' })
     }
-
-    const data = await response.json()
-
-    return data.items.map((item: any) => {
-      // Try to get the best quality image
-      const albumImage = item.track.album.images?.[0]?.url ||
-                        item.track.album.images?.[1]?.url ||
-                        item.track.album.images?.[2]?.url ||
-                        null
-
-      return {
-        id: item.track.id as string,
-        name: item.track.name as string,
-        artist: item.track.artists.map((artist: { name: string }) => artist.name).join(', '),
-        album: item.track.album.name as string,
-        albumImage,
-        url: item.track.external_urls.spotify as string,
-        playedAt: item.played_at as string
-      }
-    })
   })
 })

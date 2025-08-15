@@ -343,6 +343,10 @@
             "subtitle": "Tracks, die ich kürzlich gehört habe",
             "no-data": "Keine kürzlich gespielten Tracks verfügbar"
         },
+        "stats": {
+            "title": "Musikstatistiken",
+            "subtitle": "Ihre Hörgewohnheiten und Vorlieben"
+        },
         "loading": "Musikdaten werden geladen...",
         "error": "Fehler beim Laden der Musikdaten. Bitte versuche es erneut.",
         "refresh": "Daten aktualisieren",

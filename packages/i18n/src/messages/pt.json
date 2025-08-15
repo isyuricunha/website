@@ -343,6 +343,10 @@
             "subtitle": "Faixas que ouvi recentemente",
             "no-data": "Nenhuma faixa tocada recentemente disponível"
         },
+        "stats": {
+            "title": "Estatísticas Musicais",
+            "subtitle": "Seus hábitos e preferências de escuta"
+        },
         "loading": "Carregando dados de música...",
         "error": "Falha ao carregar dados de música. Por favor, tente novamente.",
         "refresh": "Atualizar dados",

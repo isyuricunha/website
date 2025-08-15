@@ -10,7 +10,6 @@ import TopArtistsSection from '@/components/spotify/top-artists-section'
 import TopSongsSection from '@/components/spotify/top-songs-section'
 import MusicStatsSection from '@/components/spotify/music-stats-section'
 import MusicTasteAnalysis from '@/components/spotify/music-taste-analysis'
-import SocialSharing from '@/components/spotify/social-sharing'
 import MusicTimeline from '@/components/spotify/music-timeline'
 import PageTitle from '@/components/page-title'
 import {
@@ -96,10 +95,7 @@ const Page = async (props: PageProps) => {
                    <div className='space-y-8'>
                <NowListeningSection />
                
-               <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
-                 <MusicStatsSection />
-                 <SocialSharing />
-               </div>
+               <MusicStatsSection />
                
                <MusicTasteAnalysis />
                

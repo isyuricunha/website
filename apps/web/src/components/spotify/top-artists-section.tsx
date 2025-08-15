@@ -2,8 +2,8 @@
 
 import { useTranslations } from '@tszhong0411/i18n/client'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@tszhong0411/ui'
-import { UserIcon } from 'lucide-react'
-import { useState } from 'react'
+import { UserIcon, Grid3X3, List, Shuffle } from 'lucide-react'
+import { useState, useMemo } from 'react'
 
 import { api } from '@/trpc/react'
 
@@ -13,6 +13,8 @@ import SpotifyImage from './spotify-image'
 const TopArtistsSection = () => {
   const t = useTranslations()
   const [isRefreshing, setIsRefreshing] = useState(false)
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('list')
+  const [isShuffled, setIsShuffled] = useState(true)
 
   const { data: artists, refetch, isLoading, error } = api.spotify.getTopArtists.useQuery(
     undefined,
@@ -20,6 +22,15 @@ const TopArtistsSection = () => {
       staleTime: 300000 // 5 minutes
     }
   )
+
+  // Shuffle artists when requested
+  const displayedArtists = useMemo(() => {
+    if (!artists) return []
+    if (isShuffled) {
+      return [...artists].sort(() => Math.random() - 0.5)
+    }
+    return artists
+  }, [artists, isShuffled])
 
   const handleRefresh = async () => {
     setIsRefreshing(true)
@@ -102,46 +113,106 @@ const TopArtistsSection = () => {
             <CardTitle className='text-base sm:text-lg'>{t('spotify.top-artists.title')}</CardTitle>
             <CardDescription className='text-xs sm:text-sm'>{t('spotify.top-artists.subtitle')}</CardDescription>
           </div>
-          <button
-            onClick={handleRefresh}
-            disabled={isRefreshing}
-            className='text-sm text-muted-foreground hover:text-foreground disabled:opacity-50'
-          >
-            {t('spotify.refresh')}
-          </button>
+          <div className='flex items-center gap-2'>
+            <button
+              onClick={() => setIsShuffled(!isShuffled)}
+              className={`p-1.5 rounded-md transition-colors ${
+                isShuffled
+                  ? 'bg-primary text-primary-foreground'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+              }`}
+              title={isShuffled ? 'Show original order' : 'Shuffle artists'}
+            >
+              <Shuffle className='h-4 w-4' />
+            </button>
+            <button
+              onClick={() => setViewMode(viewMode === 'grid' ? 'list' : 'grid')}
+              className='p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors'
+              title={viewMode === 'grid' ? 'Switch to list view' : 'Switch to grid view'}
+            >
+              {viewMode === 'grid' ? <List className='h-4 w-4' /> : <Grid3X3 className='h-4 w-4' />}
+            </button>
+            <button
+              onClick={handleRefresh}
+              disabled={isRefreshing}
+              className='text-sm text-muted-foreground hover:text-foreground disabled:opacity-50'
+            >
+              {t('spotify.refresh')}
+            </button>
+          </div>
         </div>
       </CardHeader>
       <CardContent>
-        <div className='grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5'>
-          {artists.map((artist) => (
-            <Link
-              key={artist.id}
-              href={artist.url}
-              className='group flex flex-col items-center space-y-2 rounded-lg p-2 transition-colors hover:bg-muted/50'
-            >
-              <div className='relative h-16 w-16 overflow-hidden rounded-full'>
-                <SpotifyImage
-                  src={artist.image}
-                  alt={`${artist.name} artist photo`}
-                  fallbackIcon={<UserIcon className='h-6 w-6 text-muted-foreground' />}
-                  width={64}
-                  height={64}
-                  sizes='64px'
-                />
-              </div>
-              <div className='text-center'>
-                <h3 className='truncate text-xs sm:text-sm font-medium group-hover:text-primary'>
-                  {artist.name}
-                </h3>
-                {artist.genres && artist.genres.length > 0 && (
-                  <p className='truncate text-[10px] sm:text-xs text-muted-foreground'>
-                    {artist.genres.slice(0, 2).join(', ')}
-                  </p>
-                )}
-              </div>
-            </Link>
-          ))}
-        </div>
+        {viewMode === 'grid' ? (
+          <div className='grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5'>
+            {displayedArtists.map((artist) => (
+              <Link
+                key={artist.id}
+                href={artist.url}
+                className='group flex flex-col items-center space-y-2 rounded-lg p-2 transition-colors hover:bg-muted/50 min-w-0'
+              >
+                <div className='relative h-16 w-16 overflow-hidden rounded-full'>
+                  <SpotifyImage
+                    src={artist.image}
+                    alt={`${artist.name} artist photo`}
+                    fallbackIcon={<UserIcon className='h-6 w-6 text-muted-foreground' />}
+                    width={64}
+                    height={64}
+                    sizes='64px'
+                  />
+                </div>
+                <div className='text-center w-full min-w-0'>
+                  <h3 className='truncate text-xs sm:text-sm font-medium group-hover:text-primary w-full'>
+                    {artist.name}
+                  </h3>
+                  {artist.genres && artist.genres.length > 0 && (
+                    <p className='truncate text-[10px] sm:text-xs text-muted-foreground w-full'>
+                      {artist.genres.slice(0, 2).join(', ')}
+                    </p>
+                  )}
+                </div>
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <div className='space-y-3'>
+            {displayedArtists.map((artist) => (
+              <Link
+                key={artist.id}
+                href={artist.url}
+                className='group flex items-center gap-4 rounded-lg p-3 transition-colors hover:bg-muted/50'
+              >
+                <div className='flex items-center gap-4 flex-1 min-w-0'>
+                  <div className='relative h-12 w-12 overflow-hidden rounded-full flex-shrink-0'>
+                    <SpotifyImage
+                      src={artist.image}
+                      alt={`${artist.name} artist photo`}
+                      fallbackIcon={<UserIcon className='h-4 w-4 text-muted-foreground' />}
+                      width={48}
+                      height={48}
+                      sizes='48px'
+                    />
+                  </div>
+                  <div className='flex-1 min-w-0'>
+                    <h3 className='truncate text-sm font-medium group-hover:text-primary'>
+                      {artist.name}
+                    </h3>
+                    {artist.genres && artist.genres.length > 0 && (
+                      <p className='truncate text-xs text-muted-foreground'>
+                        {artist.genres.slice(0, 3).join(', ')}
+                      </p>
+                    )}
+                  </div>
+                  <div className='text-right flex-shrink-0'>
+                    <p className='text-xs text-muted-foreground'>
+                      {artist.followers.toLocaleString()} followers
+                    </p>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        )}
       </CardContent>
     </Card>
   )
