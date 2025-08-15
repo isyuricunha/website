@@ -2,7 +2,7 @@
 
 import { useTranslations } from '@tszhong0411/i18n/client'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, Input, Button } from '@tszhong0411/ui'
-import { Mail, Send, CheckCircle } from 'lucide-react'
+import { Mail, Send, CheckCircle, AlertCircle } from 'lucide-react'
 import { useState } from 'react'
 
 const NewsletterSignup = () => {
@@ -10,19 +10,37 @@ const NewsletterSignup = () => {
   const [email, setEmail] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [isSubscribed, setIsSubscribed] = useState(false)
+  const [error, setError] = useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!email.trim()) return
 
     setIsLoading(true)
+    setError('')
     
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    
-    setIsSubscribed(true)
-    setIsLoading(false)
-    setEmail('')
+    try {
+      const response = await fetch('/api/newsletter/subscribe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: email.trim() }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to subscribe')
+      }
+
+      setIsSubscribed(true)
+      setEmail('')
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to subscribe')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   if (isSubscribed) {
@@ -52,6 +70,12 @@ const NewsletterSignup = () => {
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className='space-y-4'>
+          {error && (
+            <div className='flex items-center gap-2 p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md'>
+              <AlertCircle className='h-4 w-4 flex-shrink-0' />
+              <span>{error}</span>
+            </div>
+          )}
           <div className='flex flex-col sm:flex-row gap-2'>
             <Input
               type='email'
