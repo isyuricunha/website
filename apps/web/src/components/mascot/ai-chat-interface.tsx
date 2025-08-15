@@ -1,9 +1,8 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { Send, Loader2, MessageCircle, X, Mic } from 'lucide-react'
+import { Send, Loader2, MessageCircle, X } from 'lucide-react'
 import { useTranslations } from '@tszhong0411/i18n/client'
-import VoiceInterface from './voice-interface'
 
 interface ChatMessage {
   id: string
@@ -31,7 +30,6 @@ export default function AIChatInterface({
   const [inputValue, setInputValue] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [hasError, setHasError] = useState(false)
-  const [voiceEnabled, setVoiceEnabled] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -60,22 +58,21 @@ export default function AIChatInterface({
     }
   }, [isOpen, messages.length, t])
 
-  const sendMessage = async (messageText?: string) => {
-    const textToSend = messageText || inputValue
-    if (!textToSend.trim() || isLoading) return
+  const sendMessage = async () => {
+    if (!inputValue.trim() || isLoading) return
 
     const userMessage: ChatMessage = {
       id: Date.now().toString(),
-      text: textToSend,
+      text: inputValue,
       isUser: true,
       timestamp: new Date().toISOString()
     }
 
     setMessages(prev => [...prev, userMessage])
-    if (!messageText) setInputValue('')
+    setInputValue('')
     setIsLoading(true)
     setHasError(false)
-    onMessageSent?.(textToSend)
+    onMessageSent?.(inputValue)
 
     try {
       const response = await fetch('/api/mascot/chat', {
@@ -84,7 +81,7 @@ export default function AIChatInterface({
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          message: textToSend,
+          message: inputValue,
           context: {
             currentPage,
             previousMessages: messages.slice(-5).map(m => m.text)
@@ -107,7 +104,6 @@ export default function AIChatInterface({
       }
 
       setMessages(prev => [...prev, aiMessage])
-      return data.message // Return response for voice synthesis
     } catch (error) {
       console.error('Chat error:', error)
       setHasError(true)
@@ -121,7 +117,6 @@ export default function AIChatInterface({
       }
 
       setMessages(prev => [...prev, errorMessage])
-      throw error // Re-throw for voice interface error handling
     } finally {
       setIsLoading(false)
     }
@@ -148,12 +143,6 @@ export default function AIChatInterface({
         <div className="flex items-center gap-2">
           <MessageCircle className="h-4 w-4 text-primary" />
           <span className="font-medium text-sm">{t('mascot.aiChat.title')}</span>
-          {voiceEnabled && (
-            <div className="flex items-center gap-1">
-              <Mic className="h-3 w-3 text-primary" />
-              <span className="text-xs text-muted-foreground">Voice</span>
-            </div>
-          )}
         </div>
         <div className="flex items-center gap-1">
           {messages.length > 1 && (
@@ -206,18 +195,6 @@ export default function AIChatInterface({
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Voice Interface */}
-      {voiceEnabled && (
-        <div className="p-3 border-t bg-muted/30">
-          <VoiceInterface
-            onVoiceMessage={sendMessage}
-            isEnabled={voiceEnabled}
-            onToggle={() => setVoiceEnabled(false)}
-            className="w-full"
-          />
-        </div>
-      )}
-
       {/* Input */}
       <div className="p-3 border-t bg-muted/50">
         <div className="flex gap-2">
@@ -227,22 +204,13 @@ export default function AIChatInterface({
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyPress={handleKeyPress}
-            placeholder={voiceEnabled ? "Type or speak your message..." : t('mascot.aiChat.placeholder')}
+            placeholder={t('mascot.aiChat.placeholder')}
             className="flex-1 px-3 py-2 text-xs bg-background border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
             disabled={isLoading}
             maxLength={500}
           />
-          {!voiceEnabled && (
-            <button
-              onClick={() => setVoiceEnabled(true)}
-              className="px-3 py-2 bg-muted hover:bg-muted/80 text-muted-foreground rounded-lg transition-colors"
-              title="Enable voice interaction"
-            >
-              <Mic className="h-4 w-4" />
-            </button>
-          )}
           <button
-            onClick={() => sendMessage()}
+            onClick={sendMessage}
             disabled={!inputValue.trim() || isLoading}
             className="px-3 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
@@ -261,7 +229,7 @@ export default function AIChatInterface({
         )}
         
         <p className="text-xs text-muted-foreground mt-2">
-          {voiceEnabled ? "Voice interaction enabled - click mic to speak" : t('mascot.aiChat.footer')}
+          {t('mascot.aiChat.footer')}
         </p>
       </div>
     </div>
