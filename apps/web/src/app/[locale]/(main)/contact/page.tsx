@@ -1,7 +1,7 @@
 import type { Metadata, ResolvingMetadata } from 'next'
 
 import { i18n } from '@tszhong0411/i18n/config'
-import { getTranslations, setRequestLocale } from '@tszhong0411/i18n/server'
+import { setRequestLocale } from '@tszhong0411/i18n/server'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, Input, Button, Textarea } from '@tszhong0411/ui'
 import { Mail, Send, MessageSquare, User, Github, Twitter, Linkedin } from 'lucide-react'
 
