@@ -3,9 +3,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { X as XIcon, Settings as SettingsIcon, Gamepad as GamepadIcon, Eye as EyeIcon, Menu as MenuIcon, Bug as BugIcon, Github as GithubIcon, Copy as CopyIcon } from 'lucide-react'
+import { X as XIcon, Settings as SettingsIcon, Gamepad as GamepadIcon, Eye as EyeIcon, Menu as MenuIcon, Bug as BugIcon, Github as GithubIcon, Copy as CopyIcon, MessageCircle as MessageCircleIcon } from 'lucide-react'
 import { useTranslations, useLocale, useMessages } from '@tszhong0411/i18n/client'
 import MascotGame from './mascot-game'
+import AIChatInterface from './ai-chat-interface'
 
 type VirtualMascotProps = {
   hidden?: boolean
@@ -50,6 +51,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     showGame: false,
     showMenu: false,
     showContact: false,
+    showAIChat: false,
     isKonamiMode: false,
     konamiSequence: [] as number[],
     isHovering: false,
@@ -293,10 +295,10 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
   // Idle timer for fun facts
   useEffect(() => {
-    if (!state.preferences.speechBubbles || state.autoShowMessage || state.showContact || state.showGame || state.showSettings || state.showMenu) return
+    if (!state.preferences.speechBubbles || state.autoShowMessage || state.showContact || state.showGame || state.showSettings || state.showMenu || state.showAIChat) return
 
     const timer = setTimeout(() => {
-      if (!state.autoShowMessage && !state.showContact && !state.showGame && !state.showSettings && !state.showMenu) {
+      if (!state.autoShowMessage && !state.showContact && !state.showGame && !state.showSettings && !state.showMenu && !state.showAIChat) {
         enqueueMessage(getIdleMessage(), 4000)
       }
     }, 25000) // 25 seconds idle
@@ -304,7 +306,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     return () => {
       if (timer) clearTimeout(timer)
     }
-  }, [state.preferences.speechBubbles, state.autoShowMessage, state.showContact, state.showGame, state.showSettings, state.showMenu])
+  }, [state.preferences.speechBubbles, state.autoShowMessage, state.showContact, state.showGame, state.showSettings, state.showMenu, state.showAIChat])
 
   // Track current page path for contextual messages (language-aware)
   const pathname = usePathname()
@@ -485,7 +487,8 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       // Close other panels when opening menu
       showContact: false,
       showSettings: false,
-      showGame: false
+      showGame: false,
+      showAIChat: false
     })
   }
 
@@ -514,7 +517,8 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       showContact: false,
       showSettings: false,
       showMenu: false,
-      showGame: false
+      showGame: false,
+      showAIChat: false
     })
 
     // Use a small timeout to ensure the hide animation completes before showing new content
@@ -532,6 +536,12 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         case 'game':
           updateState({ 
             showGame: true,
+            showBubble: true
+          })
+          break
+        case 'chat':
+          updateState({ 
+            showAIChat: true,
             showBubble: true
           })
           break
@@ -743,6 +753,14 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
               <button
                 type='button'
                 className='flex w-full items-center gap-2 rounded px-3 py-2 text-left transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
+                onClick={() => handleMenuAction('chat')}
+              >
+                <MessageCircleIcon className='h-4 w-4' />
+                Chat with AI
+              </button>
+              <button
+                type='button'
+                className='flex w-full items-center gap-2 rounded px-3 py-2 text-left transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
                 onClick={() => handleMenuAction('game')}
               >
                 <GamepadIcon className='h-4 w-4' />
@@ -760,8 +778,21 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
           </div>
         )}
 
+        {/* AI Chat Interface */}
+        {state.showAIChat && (
+          <AIChatInterface
+            isOpen={state.showAIChat}
+            onClose={() => updateState({ showAIChat: false, showBubble: false })}
+            currentPage={pageKey}
+            onMessageSent={(message) => {
+              // Optional: track AI chat usage or show feedback
+              console.log('AI message sent:', message)
+            }}
+          />
+        )}
+
         {/* Speech Bubbles (Queued) */}
-        {state.preferences.speechBubbles && !state.showContact && !state.showSettings && !state.showMenu && (
+        {state.preferences.speechBubbles && !state.showContact && !state.showSettings && !state.showMenu && !state.showAIChat && (
           <div className={`${getBubblePositionClasses()} flex w-56 sm:w-60 flex-col gap-2`}>
             {state.messageQueue.map((item, idx) => {
               const isExiting = state.exitingIds.has(item.id)
