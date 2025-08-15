@@ -587,7 +587,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   // Show restore button when hidden or dismissed
   if (state.isHiddenPref || state.isDismissed) {
     return (
-      <div className={getPositionClasses()}>
+      <div className={`${getPositionClasses()} z-50`}>
         <button
           type='button'
           aria-label={t('mascot.restore')}
@@ -602,7 +602,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
   return (
     <>
-      <div className={getPositionClasses()}>
+      <div className={`${getPositionClasses()} z-50`}>
         {/* Settings Panel */}
         {state.showSettings && (
           <div className={`${getBubblePositionClasses()} w-60 sm:w-64 rounded-2xl border bg-popover p-2 sm:p-3 text-xs text-popover-foreground shadow-lg`}>
