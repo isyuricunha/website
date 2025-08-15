@@ -605,7 +605,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       <div className={getPositionClasses()}>
         {/* Settings Panel */}
         {state.showSettings && (
-          <div className={`${getBubblePositionClasses()} w-72 sm:w-80 rounded-lg border bg-popover p-3 sm:p-4 text-sm text-popover-foreground shadow-lg`}>
+          <div className={`${getBubblePositionClasses()} w-60 sm:w-64 rounded-2xl border bg-popover p-2 sm:p-3 text-xs text-popover-foreground shadow-lg`}>
             <div className='flex items-center justify-between mb-3'>
               <h3 className='font-medium'>{t('mascot.settings.title')}</h3>
               <button
@@ -690,7 +690,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
         {/* Contact Panel */}
         {state.showContact && (
-          <div className={`${getBubblePositionClasses()} w-72 sm:w-80 rounded-lg border bg-popover p-3 sm:p-4 text-sm text-popover-foreground shadow-lg`}>
+          <div className={`${getBubblePositionClasses()} w-60 sm:w-64 rounded-2xl border bg-popover p-2 sm:p-3 text-xs text-popover-foreground shadow-lg`}>
             <div className='flex items-center justify-between mb-3'>
               <h3 className='font-medium'>{t('mascot.contact.title')}</h3>
               <button
@@ -722,7 +722,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
         {/* Menu Panel */}
         {state.showMenu && (
-          <div className={`${getBubblePositionClasses()} w-44 sm:w-48 rounded-lg border bg-popover p-2 text-sm text-popover-foreground shadow-lg`}>
+          <div className={`${getBubblePositionClasses()} w-36 sm:w-40 rounded-2xl border bg-popover p-2 text-xs text-popover-foreground shadow-lg`}>
             <div className='space-y-1'>
               <button
                 type='button'
@@ -762,22 +762,22 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
         {/* Speech Bubbles (Queued) */}
         {state.preferences.speechBubbles && !state.showContact && !state.showSettings && !state.showMenu && (
-          <div className={`${getBubblePositionClasses()} flex w-72 sm:w-80 flex-col gap-2`}>
+          <div className={`${getBubblePositionClasses()} flex w-56 sm:w-60 flex-col gap-2`}>
             {state.messageQueue.map((item, idx) => {
               const isExiting = state.exitingIds.has(item.id)
               return (
                 <div
                   key={item.id}
-                  className={`rounded-lg border bg-popover/95 backdrop-blur-sm text-popover-foreground shadow-lg outline-none ring-0 transition-all duration-200 ease-in-out ${
+                  className={`rounded-2xl border bg-popover/95 backdrop-blur-sm text-popover-foreground shadow-lg outline-none ring-0 transition-all duration-200 ease-in-out ${
                     isExiting ? 'opacity-0 translate-y-1 scale-95' : 'opacity-100 translate-y-0 scale-100'
                   }`}
                   role='dialog'
                   aria-label={t('mascot.speechBubble')}
                   style={!prefersReducedMotion ? { animation: 'fadeInUp 300ms ease-out' } : undefined}
                 >
-                  <div className='bubble-float p-3'>
-                    <div className='flex items-start gap-3'>
-                      <div className='min-w-0 flex-1 whitespace-pre-wrap break-words leading-relaxed'>
+                  <div className='bubble-float p-2'>
+                    <div className='flex items-start gap-2'>
+                      <div className='min-w-0 flex-1 whitespace-pre-wrap break-words leading-relaxed text-xs'>
                         {item.text}
                       </div>
                       <div className='flex items-center gap-1 flex-shrink-0'>
@@ -823,7 +823,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
           ref={mascotRef}
           type='button'
           aria-label={t('mascot.ariaLabel')}
-          className={`relative inline-flex h-16 w-16 sm:h-20 sm:w-20 lg:h-[120px] lg:w-[120px] items-center justify-center rounded-full border transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${state.isActive ? 'border-primary shadow-lg shadow-primary/20' : 'border-border shadow'} ${state.preferences.animations ? 'hover:scale-105' : ''} ${state.isKonamiMode ? 'animate-pulse border-yellow-400 shadow-yellow-400/20' : ''}`}
+          className={`relative inline-flex h-12 w-12 sm:h-14 sm:w-14 lg:h-16 lg:w-16 items-center justify-center rounded-full border transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${state.isActive ? 'border-primary shadow-lg shadow-primary/20' : 'border-border shadow'} ${state.preferences.animations ? 'hover:scale-105' : ''} ${state.isKonamiMode ? 'animate-pulse border-yellow-400 shadow-yellow-400/20' : ''}`}
           onClick={handleMascotClick}
           onMouseEnter={handleMouseEnter}
           onFocus={() => {
@@ -845,8 +845,8 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
               src={`/images/mascote-${state.currentMascotImage}.png`}
               alt=''
               role='presentation'
-              width={120}
-              height={120}
+              width={64}
+              height={64}
               className={`rounded-full object-cover transition-all duration-200 w-full h-full ${state.isBlinking ? 'animate-pulse' : ''} ${state.isKonamiMode ? 'filter sepia hue-rotate-180' : ''}`}
               priority={false}
             />

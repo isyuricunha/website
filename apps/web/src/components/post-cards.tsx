@@ -43,11 +43,11 @@ const PostCard = (props: PostCardProps) => {
   })
 
   return (
-    <Link href={`/blog/${slug}`} className='shadow-feature-card group rounded-xl px-2 py-4 relative overflow-hidden'>
+    <Link href={`/blog/${slug}`} className='shadow-feature-card group rounded-2xl px-1.5 py-2 relative overflow-hidden'>
       {featured && (
-        <div className='absolute top-3 right-3 z-10'>
-          <Badge variant='secondary' className='bg-yellow-100 text-yellow-800 border-yellow-200'>
-            <Star className='h-3 w-3 mr-1' />
+        <div className='absolute top-2 right-2 z-10'>
+          <Badge variant='secondary' className='bg-yellow-100 text-yellow-800 border-yellow-200 text-[10px] px-1.5 py-0.5'>
+            <Star className='h-2 w-2 mr-0.5' />
             Featured
           </Badge>
         </div>
@@ -62,61 +62,25 @@ const PostCard = (props: PostCardProps) => {
         alt={title}
       />
       
-      <div className='flex items-center justify-between gap-2 px-2 pt-4 text-sm text-muted-foreground'>
-        <div className='flex items-center gap-2 sm:gap-3'>
-          <div className='flex items-center gap-1'>
-            <Calendar className='h-3 w-3' />
-            <span className='text-xs sm:text-sm'>{formattedDate}</span>
+      <div className='px-2 py-2'>
+        <div className='flex items-center justify-between gap-1.5 text-[10px] text-zinc-500 mb-1.5'>
+          {formattedDate}
+          <div className='flex gap-1.5'>
+            {likesQuery.status === 'pending' ? '--' : null}
+            {likesQuery.status === 'error' ? t('common.error') : null}
+            {likesQuery.status === 'success' ? (
+              <div>{t('common.likes', { count: likesQuery.data.likes })}</div>
+            ) : null}
+            <div>&middot;</div>
+            {viewsQuery.status === 'pending' ? '--' : null}
+            {viewsQuery.status === 'error' ? t('common.error') : null}
+            {viewsQuery.status === 'success' ? (
+              <div>{t('common.views', { count: viewsQuery.data.views })}</div>
+            ) : null}
           </div>
-          {readingTime && (
-            <div className='flex items-center gap-1'>
-              <Clock className='h-3 w-3' />
-              <span className='text-xs sm:text-sm'>{readingTime} min read</span>
-            </div>
-          )}
         </div>
-        
-        <div className='flex gap-2 text-xs sm:text-sm'>
-          {likesQuery.status === 'pending' ? '--' : null}
-          {likesQuery.status === 'error' ? t('common.error') : null}
-          {likesQuery.status === 'success' ? (
-            <div>{t('common.likes', { count: likesQuery.data.likes })}</div>
-          ) : null}
-          <div>&middot;</div>
-          {viewsQuery.status === 'pending' ? '--' : null}
-          {viewsQuery.status === 'error' ? t('common.error') : null}
-          {viewsQuery.status === 'success' ? (
-            <div>{t('common.views', { count: viewsQuery.data.views })}</div>
-          ) : null}
-        </div>
-      </div>
-      
-      <div className='flex flex-col px-2 py-4'>
-        <div className='flex items-start justify-between gap-2 mb-2'>
-          <h3 className='text-lg sm:text-xl font-semibold group-hover:text-primary transition-colors'>{title}</h3>
-          {category && (
-            <Badge variant='outline' className='text-xs shrink-0'>
-              {category}
-            </Badge>
-          )}
-        </div>
-        
-        <p className='text-muted-foreground mt-2 line-clamp-2 text-sm'>{summary}</p>
-        
-        {tags && tags.length > 0 && (
-          <div className='flex flex-wrap gap-1 mt-3'>
-            {tags.slice(0, 3).map(tag => (
-              <Badge key={tag} variant='secondary' className='text-xs'>
-                {tag}
-              </Badge>
-            ))}
-            {tags.length > 3 && (
-              <Badge variant='secondary' className='text-xs'>
-                +{tags.length - 3}
-              </Badge>
-            )}
-          </div>
-        )}
+        <h3 className='text-sm font-medium mb-1 group-hover:text-primary transition-colors duration-200'>{title}</h3>
+        <p className='text-muted-foreground text-xs line-clamp-2'>{summary}</p>
       </div>
     </Link>
   )

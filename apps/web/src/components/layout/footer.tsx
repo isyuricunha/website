@@ -28,7 +28,7 @@ const Footer = () => {
               const { href, key } = link
 
               return (
-                <Link key={href} href={href} className={linkVariants({ variant: 'muted' })}>
+                <Link key={href} href={href} className={linkVariants({ variant: 'muted', size: 'sm' })}>
                   {t(`layout.${key}`)}
                 </Link>
               )
@@ -36,7 +36,7 @@ const Footer = () => {
           </div>
         ))}
       </div>
-      <div className='mt-20 flex items-center justify-between text-sm'>
+      <div className='mt-20 flex items-center justify-between text-xs sm:text-sm'>
         <div>Yuri Cunha | &copy; {new Date().getFullYear()}</div>
         <Link
           href='https://github.com/isyuricunha/website'

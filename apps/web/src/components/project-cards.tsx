@@ -151,7 +151,7 @@ const ProjectCards = (props: ProjectCardsProps) => {
           
           <button
             onClick={() => setShowFilters(!showFilters)}
-            className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-muted/50 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 border rounded-2xl hover:bg-muted/50 transition-colors"
           >
             <SlidersHorizontal className="h-4 w-4" />
             {showFilters ? 'Hide Filters' : 'Show Filters'}
@@ -160,7 +160,7 @@ const ProjectCards = (props: ProjectCardsProps) => {
 
         {/* Advanced Filters */}
         {showFilters && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 border rounded-lg bg-muted/20">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 border rounded-2xl bg-muted/20">
             {/* Category Filter */}
             {categories.length > 0 && (
               <div>
@@ -258,7 +258,7 @@ const ProjectCards = (props: ProjectCardsProps) => {
             {hasActiveFilters && (
               <button
                 onClick={clearFilters}
-                className="inline-flex items-center justify-center rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+                className="inline-flex items-center justify-center rounded-2xl bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
               >
                 Show all projects
               </button>

@@ -43,37 +43,37 @@ const StacksCard = () => {
         <ZapIcon className='size-[18px]' />
         <h2 className='text-sm'>{t('homepage.about-me.stacks')}</h2>
       </div>
-      <Marquee gap='20px' className='py-4' fade pauseOnHover>
-        <SiDocker className='size-10' />
-        <SiKubernetes className='size-10' />
-        <SiNginx className='size-10' />
-        <SiApache className='size-10' />
-        <SiAmazon className='size-10' />
-        <SiGooglecloud className='size-10' />
-        <SiDigitalocean className='size-10' />
-        <SiUbuntu className='size-10' />
-        <SiDebian className='size-10' />
-        <SiCentos className='size-10' />
-        <SiRedhat className='size-10' />
-        <SiMongodb className='size-10' />
-        <SiMysql className='size-10' />
-        <SiMariadb className='size-10' />
+      <Marquee gap='12px' className='py-2' fade pauseOnHover>
+        <SiDocker className='size-6' />
+        <SiKubernetes className='size-6' />
+        <SiNginx className='size-6' />
+        <SiApache className='size-6' />
+        <SiAmazon className='size-6' />
+        <SiGooglecloud className='size-6' />
+        <SiDigitalocean className='size-6' />
+        <SiUbuntu className='size-6' />
+        <SiDebian className='size-6' />
+        <SiCentos className='size-6' />
+        <SiRedhat className='size-6' />
+        <SiMongodb className='size-6' />
+        <SiMysql className='size-6' />
+        <SiMariadb className='size-6' />
       </Marquee>
-      <Marquee gap='20px' className='py-4' reverse fade pauseOnHover>
-        <SiApachecassandra className='size-10' />
-        <SiHeroku className='size-10' />
-        <SiOpenstack className='size-10' />
-        <SiTerraform className='size-10' />
-        <SiPuppet className='size-10' />
-        <SiAnsible className='size-10' />
-        <SiCloudflare className='size-10' />
-        <SiVmware className='size-10' />
-        <SiJenkins className='size-10' />
-        <SiFirebase className='size-10' />
-        <SiPostgresql className='size-10' />
-        <SiRedis className='size-10' />
-        <SiPrisma className='size-10' />
-        <SiPrometheus className='size-10' />
+      <Marquee gap='12px' className='py-2' reverse fade pauseOnHover>
+        <SiApachecassandra className='size-6' />
+        <SiHeroku className='size-6' />
+        <SiOpenstack className='size-6' />
+        <SiTerraform className='size-6' />
+        <SiPuppet className='size-6' />
+        <SiAnsible className='size-6' />
+        <SiCloudflare className='size-6' />
+        <SiVmware className='size-6' />
+        <SiJenkins className='size-6' />
+        <SiFirebase className='size-6' />
+        <SiPostgresql className='size-6' />
+        <SiRedis className='size-6' />
+        <SiPrisma className='size-6' />
+        <SiPrometheus className='size-6' />
       </Marquee>
     </div>
   )

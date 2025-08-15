@@ -24,53 +24,56 @@ const RecentlyUpdated = () => {
 
   const recentlyUpdated = useMemo(() => {
     const items: UpdatedItem[] = []
+    const seenIds = new Set<string>()
 
     // Add blog posts
     allPosts.forEach(post => {
-      items.push({
-        id: post.slug,
-        title: post.title,
-        description: post.summary,
-        href: `/blog/${post.slug}`,
-        type: 'post',
-        date: post.modifiedTime || post.date,
-        icon: <FileText className='h-4 w-4' />
-      })
+      const id = `post-${post.slug}`
+      if (!seenIds.has(id)) {
+        seenIds.add(id)
+        items.push({
+          id,
+          title: post.title,
+          description: post.summary,
+          href: `/blog/${post.slug}`,
+          type: 'post',
+          date: post.modifiedTime || post.date,
+          icon: <FileText className='h-4 w-4' />
+        })
+      }
     })
 
     // Add projects (using a fallback date if no modified time)
     allProjects.forEach(project => {
-      items.push({
-        id: project.slug,
-        title: project.name,
-        description: project.description,
-        href: `/projects#${project.slug}`,
-        type: 'project',
-        date: project.modifiedTime || new Date().toISOString(),
-        icon: <Code className='h-4 w-4' />
-      })
+      const id = `project-${project.slug}`
+      if (!seenIds.has(id)) {
+        seenIds.add(id)
+        items.push({
+          id,
+          title: project.name,
+          description: project.description,
+          href: `/projects#${project.slug}`,
+          type: 'project',
+          date: project.modifiedTime || new Date('2024-01-01').toISOString(),
+          icon: <Code className='h-4 w-4' />
+        })
+      }
     })
 
-    // Sort by date and take top 6
+    // Sort by date and take top 3
     return items
       .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-      .slice(0, 6)
+      .slice(0, 3)
   }, [])
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
-    const now = new Date()
-    const diffInDays = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24))
-
-    if (diffInDays === 0) return 'Today'
-    if (diffInDays === 1) return 'Yesterday'
-    if (diffInDays < 7) return `${diffInDays} days ago`
-    if (diffInDays < 30) return `${Math.floor(diffInDays / 7)} weeks ago`
     
-    return date.toLocaleDateString([], { 
+    // Use a consistent format to avoid hydration mismatches
+    return date.toLocaleDateString('en-US', { 
       month: 'short', 
       day: 'numeric',
-      year: date.getFullYear() !== now.getFullYear() ? 'numeric' : undefined
+      year: 'numeric'
     })
   }
 

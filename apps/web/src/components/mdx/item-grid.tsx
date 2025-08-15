@@ -43,7 +43,7 @@ const ItemGrid = (props: ItemGridProps) => {
             height={256}
             alt={item.name}
             className='shrink-0'
-            imageClassName='m-0 size-24 sm:h-full sm:w-full transition-transform group-hover:scale-105'
+            imageClassName='m-0 size-24 sm:size-32 object-contain transition-transform group-hover:scale-105'
           />
           <div className='flex flex-col justify-center gap-2'>
             <div className='text-sm sm:text-base font-semibold flex items-center gap-2'>

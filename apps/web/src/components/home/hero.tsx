@@ -64,14 +64,15 @@ const Hero = () => {
   if (!textItem) return null
 
   return (
-    <div className='my-8 sm:my-12 lg:my-16 space-y-4 sm:space-y-6'>
+    <div className='my-6 sm:my-8 lg:my-10 space-y-3 sm:space-y-4'>
       <div className='flex flex-col lg:flex-row lg:justify-between gap-6 lg:gap-8'>
-        <div className='flex flex-col gap-4 flex-1'>
-          <h1 className='flex flex-col flex-wrap gap-2 text-2xl font-bold sm:text-3xl lg:text-4xl xl:text-5xl'>
+        <div className='flex flex-col gap-4 flex-1 text-center lg:text-left'>
+          <h1 className='text-base font-medium sm:text-lg lg:text-xl xl:text-2xl leading-relaxed max-w-2xl'>
             <motion.div
               initial={{ x: 20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ ease: 'easeOut' }}
+              className='mb-1'
             >
               {t('homepage.hero.title-top')}
             </motion.div>
@@ -79,16 +80,10 @@ const Hero = () => {
               initial={{ x: 30, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ ease: 'easeOut' }}
-              className='flex gap-2'
+              className='mb-1'
             >
-              <motion.div
-                layout
-                key='title-middle-left'
-                className='leading-[30px] sm:leading-[45px]'
-              >
-                {t('homepage.hero.title-middle-left')}
-              </motion.div>
-              <div className='relative overflow-hidden'>
+              <span>{t('homepage.hero.title-middle-left')} </span>
+              <div className='inline-block relative overflow-hidden min-w-[60px] align-baseline'>
                 <AnimatePresence mode='popLayout'>
                   <motion.div
                     key={currentIndex}
@@ -96,24 +91,17 @@ const Hero = () => {
                     initial='enter'
                     animate='center'
                     exit='exit'
-                    layout
                     transition={{
                       type: 'tween',
                       duration: 0.3
                     }}
-                    className='inline-flex items-center justify-center leading-[30px] sm:leading-[45px]'
+                    className='inline-block align-baseline'
                   >
                     <span className={textItem.className}>{t(`homepage.hero.${textItem.key}`)}</span>
                   </motion.div>
                 </AnimatePresence>
               </div>
-              <motion.div
-                layout
-                key='title-middle-right'
-                className='leading-[30px] sm:leading-[45px]'
-              >
-                {t('homepage.hero.title-middle-right')}
-              </motion.div>
+              <span> {t('homepage.hero.title-middle-right')}</span>
             </motion.div>
             <motion.div
               initial={{ x: 40, opacity: 0 }}
@@ -136,24 +124,24 @@ const Hero = () => {
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ ease: 'easeOut', delay: 0.4 }}
-            className='flex flex-col gap-3 pt-4 sm:flex-row sm:gap-4 max-w-md'
+            className='flex flex-col gap-2 pt-3 sm:flex-row sm:gap-3 max-w-sm mx-auto lg:mx-0'
           >
             <Link
               href='/projects'
-              className='inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 text-sm sm:text-base font-medium text-primary-foreground transition-all duration-200 hover:bg-primary/90 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 min-h-[44px]'
+              className='inline-flex items-center justify-center rounded-full bg-primary px-4 py-2 text-xs sm:text-sm font-medium text-primary-foreground transition-all duration-200 hover:bg-primary/90 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 min-h-[36px]'
             >
               {t('homepage.hero.view-projects')}
             </Link>
             <Link
               href='/blog'
-              className='inline-flex items-center justify-center rounded-lg border border-input bg-background px-6 py-3 text-sm sm:text-base font-medium transition-all duration-200 hover:bg-accent hover:text-accent-foreground hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 min-h-[44px]'
+              className='inline-flex items-center justify-center rounded-full border border-input bg-background px-4 py-2 text-xs sm:text-sm font-medium transition-all duration-200 hover:bg-accent hover:text-accent-foreground hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 min-h-[36px]'
             >
               {t('homepage.hero.read-blog')}
             </Link>
           </motion.div>
         </div>
         <motion.div
-          className='relative size-24 sm:size-28 lg:size-32 xl:size-36 mx-auto lg:mx-0 flex-shrink-0'
+          className='relative size-16 sm:size-20 lg:size-24 xl:size-28 mx-auto lg:mx-0 flex-shrink-0'
           initial={{
             scale: 0
           }}

@@ -43,10 +43,10 @@ const SelectedProjects = () => {
       transition={{
         duration: 0.5
       }}
-      className='relative my-12 sm:my-16 lg:my-24'
+      className='relative my-8 sm:my-10 lg:my-12'
     >
       <motion.h2
-        className='text-center text-2xl sm:text-3xl lg:text-4xl font-semibold px-4'
+        className='text-center text-lg sm:text-xl lg:text-2xl font-medium px-4'
         initial={{
           y: 30,
           opacity: 0
@@ -86,7 +86,7 @@ const SelectedProjects = () => {
             buttonVariants({
               variant: 'outline'
             }),
-            'rounded-xl min-h-[44px] px-6 py-3 text-sm sm:text-base'
+            'rounded-full min-h-[36px] px-4 py-2 text-xs sm:text-sm'
           )}
         >
           {t('homepage.selectedProjects.more')}
@@ -105,14 +105,14 @@ const Card = (props: CardProps) => {
     <Link
       key={slug}
       href={`/projects/${slug}`}
-      className='shadow-feature-card group relative rounded-xl p-2 transition-transform hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
+      className='shadow-feature-card group relative rounded-2xl p-1.5 transition-transform hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
     >
-      <div className='flex items-center justify-between p-3 sm:p-4'>
-        <div className='flex items-center gap-2 sm:gap-3'>
-          <LightbulbIcon className='size-4 sm:size-[18px]' />
-          <h2 className='text-sm sm:text-base'>{t('homepage.selectedProjects.card')}</h2>
+      <div className='flex items-center justify-between p-2'>
+        <div className='flex items-center gap-1.5'>
+          <LightbulbIcon className='size-3' />
+          <h2 className='text-[10px] sm:text-xs'>{t('homepage.selectedProjects.card')}</h2>
         </div>
-        <ArrowUpRightIcon className='size-4 sm:size-[18px] opacity-0 transition-opacity group-hover:opacity-100' />
+        <ArrowUpRightIcon className='size-3 opacity-0 transition-opacity group-hover:opacity-100' />
       </div>
       <BlurImage
         width={1280}
@@ -121,9 +121,9 @@ const Card = (props: CardProps) => {
         alt={description}
         className='rounded-lg w-full h-auto'
       />
-      <div className='absolute bottom-4 sm:bottom-6 left-4 sm:left-7 flex flex-col transition-[left] ease-out group-hover:left-[20px] sm:group-hover:left-[30px] max-w-[calc(100%-2rem)] sm:max-w-[calc(100%-3.5rem)]'>
-        <h3 className='text-lg sm:text-xl lg:text-2xl font-semibold text-white truncate'>{name}</h3>
-        <p className='dark:text-muted-foreground mt-1 sm:mt-2 text-zinc-100 text-sm sm:text-base line-clamp-2'>{description}</p>
+      <div className='absolute bottom-2 sm:bottom-3 left-2 sm:left-3 flex flex-col transition-[left] ease-out group-hover:left-[12px] sm:group-hover:left-[16px] max-w-[calc(100%-1rem)] sm:max-w-[calc(100%-1.5rem)]'>
+        <h3 className='text-sm sm:text-base font-semibold text-white truncate'>{name}</h3>
+        <p className='text-xs sm:text-sm text-white/80 truncate'>{description}</p>
       </div>
     </Link>
   )

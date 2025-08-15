@@ -2,7 +2,6 @@ import Image from 'next/image'
 
 import Footer from './layout/footer'
 import Header from './layout/header'
-import Breadcrumb from './layout/breadcrumb'
 import Breadcrumbs from './breadcrumbs'
 import VirtualMascot from './mascot/virtual-mascot'
 import AnnouncementToast from './announcement-toast'

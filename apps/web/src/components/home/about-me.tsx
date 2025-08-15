@@ -39,10 +39,10 @@ const AboutMe = () => {
       transition={{
         duration: 0.5
       }}
-      className='relative my-24'
+      className='relative my-8 sm:my-10 lg:my-12'
     >
       <motion.h2
-        className='text-center text-3xl font-semibold'
+        className='text-center text-lg sm:text-xl lg:text-2xl font-medium'
         initial={{
           y: 30,
           opacity: 0
@@ -84,7 +84,7 @@ const AboutMe = () => {
         </div>
       </motion.div>
       <div className='my-8 flex items-center justify-center'>
-        <Link href='/about' className={cn(buttonVariants({ variant: 'outline' }), 'rounded-xl')}>
+        <Link href='/about' className={cn(buttonVariants({ variant: 'outline' }), 'rounded-full min-h-[36px] px-4 py-2 text-xs sm:text-sm')}>
           {t('homepage.about-me.more')}
         </Link>
       </div>

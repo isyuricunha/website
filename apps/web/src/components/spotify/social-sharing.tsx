@@ -7,6 +7,7 @@ import { useState } from 'react'
 
 import { api } from '@/trpc/react'
 import Link from '../link'
+import SocialShare from '../social-share'
 import SpotifyImage from './spotify-image'
 
 const SocialSharing = () => {
@@ -174,32 +175,14 @@ const SocialSharing = () => {
         {/* Share Profile */}
         <div className='pt-4 border-t'>
           <h4 className='text-sm sm:text-base font-semibold mb-3'>Share Your Music Profile</h4>
-          <div className='flex items-center gap-2'>
-            <button
-              onClick={() => {
-                const profileText = "🎵 Check out my music taste and what I'm currently listening to!"
-                const profileUrl = window.location.href
-                navigator.clipboard.writeText(`${profileText} ${profileUrl}`)
-              }}
-              className='flex-1 flex items-center justify-center gap-2 p-3 border rounded-lg hover:bg-muted/50 transition-colors'
-            >
-              <Copy className='h-4 w-4' />
-              <span className='text-xs sm:text-sm'>Copy Profile Link</span>
-            </button>
-            <button
-              onClick={() => {
-                const profileText = "🎵 Check out my music taste and what I'm currently listening to!"
-                const profileUrl = window.location.href
-                window.open(
-                  `https://twitter.com/intent/tweet?text=${encodeURIComponent(profileText)}&url=${encodeURIComponent(profileUrl)}`,
-                  '_blank'
-                )
-              }}
-              className='flex items-center justify-center gap-2 p-3 border rounded-lg hover:bg-muted/50 transition-colors'
-            >
-              <Twitter className='h-4 w-4' />
-              <span className='text-xs sm:text-sm'>Tweet</span>
-            </button>
+          <div className='flex justify-center'>
+            <SocialShare
+              title="🎵 Check out my music taste and what I'm currently listening to!"
+              url="/spotify"
+              description="Discover my music preferences and current listening activity"
+              hashtags={['music', 'spotify', 'nowplaying']}
+              className='w-full'
+            />
           </div>
         </div>
       </CardContent>

@@ -129,8 +129,8 @@ const FilteredPosts = (props: FilteredPostsProps) => {
       {/* RSS Feed Link */}
       <div className='mb-6 flex justify-end px-4 sm:px-0'>
         <Link 
-          href='/blog/rss.xml' 
-          className='inline-flex items-center gap-2 text-xs sm:text-sm text-muted-foreground hover:text-foreground transition-colors px-3 py-2 rounded-lg hover:bg-accent'
+          href='/rss.xml' 
+          className='inline-flex items-center gap-2 text-xs sm:text-sm text-muted-foreground hover:text-foreground transition-colors px-3 py-2 rounded-2xl hover:bg-accent'
         >
           <Rss className='h-4 w-4' />
           RSS Feed
@@ -169,7 +169,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
         <div className='flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0'>
           <button
             onClick={() => setShowFilters(!showFilters)}
-            className='flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors min-h-[44px] px-3 py-2 rounded-lg hover:bg-accent self-start'
+            className='flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors min-h-[44px] px-3 py-2 rounded-2xl hover:bg-accent self-start'
           >
             <SlidersHorizontal className='h-4 w-4 flex-shrink-0' />
             <span className='text-sm'>{showFilters ? 'Hide Filters' : 'Show Filters'}</span>
@@ -210,7 +210,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
 
         {/* Advanced Filters */}
         {showFilters && (
-          <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 border rounded-lg bg-muted/20'>
+          <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 border rounded-2xl bg-muted/20'>
             {/* Category Filter */}
             {categories.length > 0 && (
               <div>
@@ -274,7 +274,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
           {(searchValue || selectedCategory !== 'all' || selectedTag !== 'all') && (
             <button
               onClick={clearAllFilters}
-              className='text-primary hover:text-primary/80 transition-colors min-h-[44px] px-3 py-2 rounded-lg hover:bg-accent self-start sm:self-auto'
+              className='text-primary hover:text-primary/80 transition-colors min-h-[44px] px-3 py-2 rounded-2xl hover:bg-accent self-start sm:self-auto'
             >
               Clear all filters
             </button>
@@ -293,7 +293,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
           </p>
           <button
             onClick={clearAllFilters}
-            className='inline-flex items-center justify-center rounded-lg bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 min-h-[44px]'
+            className='inline-flex items-center justify-center rounded-2xl bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 min-h-[44px]'
           >
             Show all posts
           </button>
@@ -314,7 +314,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
               <button
                 onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                 disabled={currentPage === 1}
-                className='flex items-center gap-1 px-3 py-2 text-sm border rounded-lg hover:bg-accent disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]'
+                className='flex items-center gap-1 px-3 py-2 text-sm border rounded-2xl hover:bg-accent disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]'
               >
                 <ChevronLeft className='h-4 w-4' />
                 Previous
@@ -325,7 +325,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
                   <button
                     key={page}
                     onClick={() => setCurrentPage(page)}
-                    className={`px-3 py-2 text-sm border rounded-lg min-h-[44px] min-w-[44px] ${
+                    className={`px-3 py-2 text-sm border rounded-2xl min-h-[44px] min-w-[44px] ${
                       currentPage === page 
                         ? 'bg-primary text-primary-foreground border-primary' 
                         : 'hover:bg-accent'
@@ -339,7 +339,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
               <button
                 onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                 disabled={currentPage === totalPages}
-                className='flex items-center gap-1 px-3 py-2 text-sm border rounded-lg hover:bg-accent disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]'
+                className='flex items-center gap-1 px-3 py-2 text-sm border rounded-2xl hover:bg-accent disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]'
               >
                 Next
                 <ChevronRight className='h-4 w-4' />

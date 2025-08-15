@@ -45,10 +45,10 @@ const LatestArticles = () => {
       transition={{
         duration: 0.5
       }}
-      className='my-24'
+      className='my-8 sm:my-10 lg:my-12'
     >
       <motion.h2
-        className='text-center text-3xl font-semibold'
+        className='text-center text-lg sm:text-xl lg:text-2xl font-medium'
         initial={{
           y: 30,
           opacity: 0
@@ -88,7 +88,7 @@ const LatestArticles = () => {
             buttonVariants({
               variant: 'outline'
             }),
-            'rounded-xl'
+            'rounded-full min-h-[36px] px-4 py-2 text-xs sm:text-sm'
           )}
         >
           {t('homepage.latest-articles.more')}
@@ -117,13 +117,13 @@ const Card = (props: CardProps) => {
   })
 
   return (
-    <Link href={`/blog/${slug}`} className='shadow-feature-card group relative rounded-xl p-2'>
-      <div className='flex items-center justify-between p-4'>
-        <div className='flex items-center gap-3'>
-          <PencilIcon className='size-[18px]' />
-          <h2>{t('homepage.latest-articles.card')}</h2>
+    <Link href={`/blog/${slug}`} className='shadow-feature-card group relative rounded-2xl p-1.5'>
+      <div className='flex items-center justify-between p-2'>
+        <div className='flex items-center gap-1.5'>
+          <PencilIcon className='size-3' />
+          <h2 className='text-[10px] sm:text-xs'>{t('homepage.latest-articles.card')}</h2>
         </div>
-        <ArrowUpRightIcon className='size-[18px] opacity-0 transition-opacity group-hover:opacity-100' />
+        <ArrowUpRightIcon className='size-3 opacity-0 transition-opacity group-hover:opacity-100' />
       </div>
       <BlurImage
         width={1200}
@@ -132,9 +132,9 @@ const Card = (props: CardProps) => {
         alt={title}
         className='rounded-lg'
       />
-      <div className='flex items-center justify-between gap-2 px-2 pt-4 text-sm text-zinc-500'>
+      <div className='flex items-center justify-between gap-1.5 px-1.5 pt-2 text-[10px] text-zinc-500'>
         {formattedDate}
-        <div className='flex gap-2'>
+        <div className='flex gap-1.5'>
           {likesQuery.status === 'pending' ? '--' : null}
           {likesQuery.status === 'error' ? t('common.error') : null}
           {likesQuery.status === 'success' ? (
@@ -148,9 +148,9 @@ const Card = (props: CardProps) => {
           ) : null}
         </div>
       </div>
-      <div className='flex flex-col px-2 py-4 transition-transform ease-out group-hover:translate-x-0.5'>
-        <h3 className='text-2xl font-semibold'>{title}</h3>
-        <p className='text-muted-foreground mt-2'>{summary}</p>
+      <div className='flex flex-col px-1.5 py-2 transition-transform ease-out group-hover:translate-x-0.5'>
+        <h3 className='text-sm sm:text-base font-medium'>{title}</h3>
+        <p className='text-muted-foreground mt-0.5 text-xs'>{summary}</p>
       </div>
     </Link>
   )

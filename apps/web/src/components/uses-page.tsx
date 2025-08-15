@@ -200,7 +200,7 @@ const UsesPage = ({ content, lastUpdated }: UsesPageProps) => {
           <img
             src='/images/uses/ideapad-3i.png'
             alt='Ideapad Gaming 3 R7'
-            className='w-full max-w-2xl mx-auto rounded-lg shadow-lg'
+            className='w-full max-w-xs mx-auto rounded-lg shadow-lg object-contain h-48'
           />
         </div>
         <div className='bg-muted/20 p-4 rounded-lg'>
