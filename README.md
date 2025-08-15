@@ -8,7 +8,7 @@ Welcome to my personal portfolio website! Explore my work by visiting [yuricunha
 
 ## 📋 Project Overview
 
-This project began as an adaptation of [Michael's site](https://github.com/mah51) but has evolved significantly into a comprehensive, modern web application with advanced features, integrations, and a robust tech stack.
+This project began as an adaptation of [Nelson Lai site](https://github.com/tszhong0411) but has evolved significantly into a comprehensive, modern web application with advanced features, integrations, and a robust tech stack.
 
 ## 🏗️ Architecture & Tech Stack
 
