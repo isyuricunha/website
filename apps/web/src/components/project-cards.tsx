@@ -95,9 +95,46 @@ const ProjectCards = (props: ProjectCardsProps) => {
   const hasActiveFilters = filters.search !== '' || filters.category !== 'all' || 
                           filters.status !== 'all' || filters.techStack !== 'all'
 
+  // Separate featured and regular projects
+  const featuredProjects = useMemo(() => {
+    return filteredProjects.filter(project => project.featured)
+  }, [filteredProjects])
+
+  const regularProjects = useMemo(() => {
+    return filteredProjects.filter(project => !project.featured)
+  }, [filteredProjects])
+
   return (
-    <div className="space-y-6">
-      {/* Filter Controls */}
+    <div className="space-y-8">
+      {/* Featured Projects Section */}
+      {featuredProjects.length > 0 && (
+        <div className="space-y-6">
+          <div className="flex items-center gap-2">
+            <Star className="h-5 w-5 text-yellow-500" />
+            <h2 className="text-lg sm:text-xl font-semibold">Featured Projects</h2>
+          </div>
+          <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
+            {featuredProjects.map((project, index) => (
+              <motion.div
+                key={project.slug}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1, duration: 0.5 }}
+              >
+                <ProjectCard {...project} />
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* All Projects Section */}
+      <div className="space-y-6">
+        {featuredProjects.length > 0 && (
+          <h2 className="text-lg sm:text-xl font-semibold">All Projects</h2>
+        )}
+        
+        {/* Filter Controls */}
       <div className="space-y-4">
         {/* Search and Filter Toggle */}
         <div className="flex flex-col sm:flex-row gap-4">
@@ -127,7 +164,7 @@ const ProjectCards = (props: ProjectCardsProps) => {
             {/* Category Filter */}
             {categories.length > 0 && (
               <div>
-                <Label className="text-sm font-medium mb-2 block">Category</Label>
+                <Label className="text-xs sm:text-sm font-medium mb-2 block">Category</Label>
                 <Select value={filters.category} onValueChange={(value) => setFilters(prev => ({ ...prev, category: value }))}>
                   <SelectTrigger>
                     <SelectValue placeholder="All Categories" />
@@ -146,7 +183,7 @@ const ProjectCards = (props: ProjectCardsProps) => {
 
             {/* Status Filter */}
             <div>
-              <Label className="text-sm font-medium mb-2 block">Status</Label>
+              <Label className="text-xs sm:text-sm font-medium mb-2 block">Status</Label>
               <Select value={filters.status} onValueChange={(value) => setFilters(prev => ({ ...prev, status: value }))}>
                 <SelectTrigger>
                   <SelectValue placeholder="All Statuses" />
@@ -170,7 +207,7 @@ const ProjectCards = (props: ProjectCardsProps) => {
 
             {/* Tech Stack Filter */}
             <div>
-              <Label className="text-sm font-medium mb-2 block">Technology</Label>
+              <Label className="text-xs sm:text-sm font-medium mb-2 block">Technology</Label>
               <Select value={filters.techStack} onValueChange={(value) => setFilters(prev => ({ ...prev, techStack: value }))}>
                 <SelectTrigger>
                   <SelectValue placeholder="All Technologies" />
@@ -189,14 +226,14 @@ const ProjectCards = (props: ProjectCardsProps) => {
         )}
 
         {/* Results Summary */}
-        <div className="flex items-center justify-between text-sm text-muted-foreground">
+        <div className="flex items-center justify-between text-xs sm:text-sm text-muted-foreground">
           <span>
             {hasActiveFilters ? (
               <>
                 {filteredProjects.length} {filteredProjects.length === 1 ? 'project' : 'projects'} found
               </>
             ) : (
-              <>Showing {projects.length} {projects.length === 1 ? 'project' : 'projects'}</>
+              <>Showing {regularProjects.length} {regularProjects.length === 1 ? 'project' : 'projects'}</>
             )}
           </span>
           {hasActiveFilters && (
@@ -210,37 +247,38 @@ const ProjectCards = (props: ProjectCardsProps) => {
         </div>
       </div>
 
-      {/* Projects Grid */}
-      {filteredProjects.length === 0 ? (
-        <div className="text-center py-12">
-          <div className="text-6xl mb-4">🔍</div>
-          <h3 className="text-xl font-semibold mb-2">No projects found</h3>
-          <p className="text-muted-foreground mb-4">
-            Try adjusting your filters or search terms.
-          </p>
-          {hasActiveFilters && (
-            <button
-              onClick={clearFilters}
-              className="inline-flex items-center justify-center rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-            >
-              Show all projects
-            </button>
-          )}
-        </div>
-      ) : (
-        <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
-          {filteredProjects.map((project, index) => (
-            <motion.div
-              key={project.slug}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1, duration: 0.5 }}
-            >
-              <ProjectCard {...project} />
-            </motion.div>
-          ))}
-        </div>
-      )}
+        {/* Projects Grid */}
+        {regularProjects.length === 0 ? (
+          <div className="text-center py-12">
+            <div className="text-6xl mb-4">🔍</div>
+            <h3 className="text-base sm:text-lg font-semibold mb-2">No projects found</h3>
+            <p className="text-xs sm:text-sm text-muted-foreground mb-4">
+              Try adjusting your filters or search terms.
+            </p>
+            {hasActiveFilters && (
+              <button
+                onClick={clearFilters}
+                className="inline-flex items-center justify-center rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+              >
+                Show all projects
+              </button>
+            )}
+          </div>
+        ) : (
+          <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
+            {regularProjects.map((project, index) => (
+              <motion.div
+                key={project.slug}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1, duration: 0.5 }}
+              >
+                <ProjectCard {...project} />
+              </motion.div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   )
 }
@@ -307,7 +345,7 @@ const ProjectCard = (props: ProjectCardProps) => {
         <div className="space-y-2">
           <div className="flex items-start justify-between gap-2">
             <Link href={`/projects/${slug}`}>
-              <h3 className='text-xl font-semibold transition-colors group-hover:text-primary'>
+              <h3 className='text-base sm:text-lg font-semibold transition-colors group-hover:text-primary'>
                 {name}
               </h3>
             </Link>
@@ -318,16 +356,16 @@ const ProjectCard = (props: ProjectCardProps) => {
             )}
           </div>
           
-          <p className='text-sm text-muted-foreground line-clamp-2'>
+          <p className='text-xs sm:text-sm text-muted-foreground line-clamp-2'>
             {description}
           </p>
 
           {/* Project Timeline */}
           {(startDate || endDate) && (
-            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+            <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
               <Clock className="h-3 w-3" />
               {startDate && (
-                <span>
+                <span className='text-xs'>
                   Started {new Date(startDate).getFullYear()}
                   {endDate && ` - ${new Date(endDate).getFullYear()}`}
                 </span>
@@ -340,7 +378,7 @@ const ProjectCard = (props: ProjectCardProps) => {
           {techstack.slice(0, 4).map((label) => (
             <span
               key={label}
-              className='inline-flex items-center rounded-full bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary transition-colors hover:bg-primary/20'
+              className='inline-flex items-center rounded-full bg-primary/10 px-2 py-1 text-xs font-medium text-primary transition-colors hover:bg-primary/20'
             >
               {label}
             </span>

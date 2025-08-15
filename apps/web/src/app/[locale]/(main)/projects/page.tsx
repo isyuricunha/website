@@ -106,8 +106,12 @@ const Page = async (props: PageProps) => {
       <ProjectCards projects={projects} />
 
       <section className='mt-12'>
-        <h2 className='mb-4 text-3xl font-bold'>{t('projects.all-repos')}</h2>
-        {repos.length === 0 ? <p>Nenhum repositório encontrado.</p> : <GithubRepos repos={repos} />}
+        <h2 className='mb-6 text-xl sm:text-2xl font-bold'>{t('projects.all-repos')}</h2>
+        {repos.length === 0 ? (
+          <p className='text-sm sm:text-base text-muted-foreground'>No repositories found.</p>
+        ) : (
+          <GithubRepos repos={repos} />
+        )}
       </section>
     </>
   )

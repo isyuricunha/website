@@ -1,12 +1,18 @@
 'use client'
 import React from 'react'
+import { Star, GitFork, AlertCircle, ExternalLink } from 'lucide-react'
+import { Badge } from '@tszhong0411/ui'
+import Link from './link'
 
 type Repo = {
   name: string
   description?: string | null
   stargazersCount: number
+  forksCount?: number
+  openIssuesCount?: number
   language?: string | null
   url: string
+  updatedAt?: string
 }
 
 type GithubReposProps = {
@@ -24,30 +30,73 @@ const GithubRepos = ({ repos }: GithubReposProps) => {
 }
 
 const GithubRepoCard = ({ repo }: { repo: Repo }) => {
+  const formatDate = (dateString?: string) => {
+    if (!dateString) return null
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short'
+    })
+  }
+
   return (
-    <a
+    <Link
       href={repo.url}
-      target='_blank'
-      rel='noopener noreferrer'
-      className='group rounded-xl border border-gray-200 px-2 py-4 transition-shadow hover:shadow-lg dark:border-zinc-700'
+      className='group rounded-xl border border-gray-200 p-4 transition-all hover:shadow-lg hover:border-primary/20 dark:border-zinc-700 dark:hover:border-primary/20 relative overflow-hidden'
     >
-      <div className='flex-1 px-2 py-4'>
+      {/* External link indicator */}
+      <div className='absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity'>
+        <ExternalLink className='h-4 w-4 text-muted-foreground' />
+      </div>
+      
+      <div className='space-y-3'>
         <div className='space-y-2'>
-          <h2 className='text-2xl font-semibold'>{repo.name}</h2>
-          {repo.description && <p className='text-muted-foreground'>{repo.description}</p>}
+          <h3 className='text-base sm:text-lg font-semibold group-hover:text-primary transition-colors pr-8'>
+            {repo.name}
+          </h3>
+          {repo.description && (
+            <p className='text-xs sm:text-sm text-muted-foreground line-clamp-2'>
+              {repo.description}
+            </p>
+          )}
         </div>
-        <div className='mt-4 flex flex-wrap gap-2'>
-          {repo.language && (
-            <span className='rounded-full border bg-zinc-50 px-3 py-2 text-xs leading-4 dark:bg-zinc-900'>
-              {repo.language}
+        
+        {/* GitHub Stats */}
+        <div className='flex items-center gap-4 text-xs text-muted-foreground'>
+          <div className='flex items-center gap-1'>
+            <Star className='h-3 w-3' />
+            <span>{repo.stargazersCount}</span>
+          </div>
+          {repo.forksCount !== undefined && (
+            <div className='flex items-center gap-1'>
+              <GitFork className='h-3 w-3' />
+              <span>{repo.forksCount}</span>
+            </div>
+          )}
+          {repo.openIssuesCount !== undefined && (
+            <div className='flex items-center gap-1'>
+              <AlertCircle className='h-3 w-3' />
+              <span>{repo.openIssuesCount}</span>
+            </div>
+          )}
+        </div>
+        
+        {/* Language and Last Updated */}
+        <div className='flex items-center justify-between'>
+          <div className='flex gap-2'>
+            {repo.language && (
+              <Badge variant='secondary' className='text-xs'>
+                {repo.language}
+              </Badge>
+            )}
+          </div>
+          {repo.updatedAt && (
+            <span className='text-xs text-muted-foreground'>
+              Updated {formatDate(repo.updatedAt)}
             </span>
           )}
-          <span className='rounded-full border bg-zinc-50 px-3 py-2 text-xs leading-4 dark:bg-zinc-900'>
-            ⭐ {repo.stargazersCount}
-          </span>
         </div>
       </div>
-    </a>
+    </Link>
   )
 }
 
