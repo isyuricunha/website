@@ -56,7 +56,8 @@ export const FOOTER_LINKS = [
     links: [
       { href: '/', key: 'home' },
       { href: '/blog', key: 'blog' },
-      { href: '/about', key: 'about' }
+      { href: '/about', key: 'about' },
+      { href: '/contact', key: 'contact' }
     ]
   },
   {
@@ -66,13 +67,14 @@ export const FOOTER_LINKS = [
       { href: '/uses', key: 'uses' },
       { href: '/projects', key: 'projects' },
       { href: '/spotify', key: 'spotify' },
-      { href: 'https://links.yuricunha.com', key: 'links' }
+      { href: '/sitemap', key: 'sitemap' }
     ]
   },
   {
     id: 3,
     links: [
-      { href: SITE_GITHUB_URL, key: 'github' }
+      { href: SITE_GITHUB_URL, key: 'github' },
+      { href: 'https://links.yuricunha.com', key: 'links' }
     ]
   }
 ] as const

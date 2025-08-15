@@ -1,0 +1,135 @@
+'use client'
+
+import { useTranslations } from '@tszhong0411/i18n/client'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@tszhong0411/ui'
+import { Clock, FileText, Code, Calendar } from 'lucide-react'
+import { useMemo } from 'react'
+
+import { allPosts } from 'content-collections'
+import { allProjects } from 'content-collections'
+import Link from './link'
+
+type UpdatedItem = {
+  id: string
+  title: string
+  description: string
+  href: string
+  type: 'post' | 'project'
+  date: string
+  icon: React.ReactNode
+}
+
+const RecentlyUpdated = () => {
+  const t = useTranslations()
+
+  const recentlyUpdated = useMemo(() => {
+    const items: UpdatedItem[] = []
+
+    // Add blog posts
+    allPosts.forEach(post => {
+      items.push({
+        id: post.slug,
+        title: post.title,
+        description: post.summary,
+        href: `/blog/${post.slug}`,
+        type: 'post',
+        date: post.modifiedTime || post.date,
+        icon: <FileText className='h-4 w-4' />
+      })
+    })
+
+    // Add projects (using a fallback date if no modified time)
+    allProjects.forEach(project => {
+      items.push({
+        id: project.slug,
+        title: project.name,
+        description: project.description,
+        href: `/projects#${project.slug}`,
+        type: 'project',
+        date: project.modifiedTime || new Date().toISOString(),
+        icon: <Code className='h-4 w-4' />
+      })
+    })
+
+    // Sort by date and take top 6
+    return items
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+      .slice(0, 6)
+  }, [])
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString)
+    const now = new Date()
+    const diffInDays = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24))
+
+    if (diffInDays === 0) return 'Today'
+    if (diffInDays === 1) return 'Yesterday'
+    if (diffInDays < 7) return `${diffInDays} days ago`
+    if (diffInDays < 30) return `${Math.floor(diffInDays / 7)} weeks ago`
+    
+    return date.toLocaleDateString([], { 
+      month: 'short', 
+      day: 'numeric',
+      year: date.getFullYear() !== now.getFullYear() ? 'numeric' : undefined
+    })
+  }
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className='text-base sm:text-lg flex items-center gap-2'>
+          <Clock className='h-5 w-5' />
+          Recently Updated
+        </CardTitle>
+        <CardDescription className='text-xs sm:text-sm'>
+          Latest content updates and additions
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className='space-y-4'>
+          {recentlyUpdated.map((item) => (
+            <Link
+              key={item.id}
+              href={item.href}
+              className='group block p-3 rounded-lg hover:bg-muted/50 transition-colors'
+            >
+              <div className='flex items-start gap-3'>
+                <div className='flex-shrink-0 mt-0.5 text-muted-foreground group-hover:text-foreground'>
+                  {item.icon}
+                </div>
+                <div className='flex-1 min-w-0'>
+                  <div className='flex items-center gap-2 mb-1'>
+                    <h4 className='text-sm sm:text-base font-medium truncate group-hover:text-primary'>
+                      {item.title}
+                    </h4>
+                    <span className='text-xs text-muted-foreground px-2 py-0.5 bg-muted rounded-full'>
+                      {item.type}
+                    </span>
+                  </div>
+                  <p className='text-xs sm:text-sm text-muted-foreground line-clamp-2 mb-2'>
+                    {item.description}
+                  </p>
+                  <div className='flex items-center gap-1'>
+                    <Calendar className='h-3 w-3 text-muted-foreground' />
+                    <span className='text-xs text-muted-foreground'>
+                      Updated {formatDate(item.date)}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+        
+        {recentlyUpdated.length === 0 && (
+          <div className='text-center py-8'>
+            <Clock className='h-12 w-12 mx-auto text-muted-foreground mb-4' />
+            <p className='text-sm text-muted-foreground'>No recent updates available</p>
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  )
+}
+
+export default RecentlyUpdated

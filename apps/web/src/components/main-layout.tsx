@@ -3,6 +3,7 @@ import Image from 'next/image'
 import Footer from './layout/footer'
 import Header from './layout/header'
 import Breadcrumb from './layout/breadcrumb'
+import Breadcrumbs from './breadcrumbs'
 import VirtualMascot from './mascot/virtual-mascot'
 import AnnouncementToast from './announcement-toast'
 
@@ -17,7 +18,7 @@ const MainLayout = (props: MainLayoutProps) => {
     <>
       <Header />
       <main id='skip-nav' className='mx-auto mb-16 w-full max-w-5xl flex-1 px-4 py-24 sm:px-8'>
-        <Breadcrumb />
+        <Breadcrumbs />
         {children}
       </main>
       <Footer />

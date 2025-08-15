@@ -10,6 +10,8 @@ import Hero from '@/components/home/hero'
 import LatestArticles from '@/components/home/latest-articles'
 import SelectedProjects from '@/components/home/selected-projects'
 import AnnouncementBanner from '@/components/announcement-banner'
+import RecentlyUpdated from '@/components/recently-updated'
+import NewsletterSignup from '@/components/newsletter-signup'
 import {
   SITE_GITHUB_URL,
   SITE_KEYWORDS,
@@ -83,6 +85,12 @@ const Page = async (props: PageProps) => {
       <SelectedProjects />
       <AboutMe />
       <LatestArticles />
+      
+      <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16'>
+        <RecentlyUpdated />
+        <NewsletterSignup />
+      </div>
+      
       <GetInTouch />
     </>
   )

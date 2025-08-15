@@ -7,6 +7,7 @@ import { motion } from 'motion/react'
 import { useEffect, useState } from 'react'
 
 import CommandMenu from '@/components/command-menu'
+import SiteSearch from '@/components/site-search'
 
 import Link from '../link'
 
@@ -63,6 +64,9 @@ const Header = () => {
         <Logo width={24} height={24} className='sm:w-7 sm:h-7' aria-hidden='true' />
       </Link>
       <div className='flex items-center gap-1 sm:gap-2'>
+        <div className='hidden md:block w-64'>
+          <SiteSearch />
+        </div>
         <Navbar />
         <ThemeSwitcher />
         <LocaleSwitcher />
