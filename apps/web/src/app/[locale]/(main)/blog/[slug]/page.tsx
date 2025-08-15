@@ -9,6 +9,7 @@ import { Suspense } from 'react'
 
 import Comments from '@/components/comments'
 import Mdx from '@/components/mdx'
+import NewsletterSignup from '@/components/newsletter-signup'
 import { SITE_NAME, SITE_URL } from '@/lib/constants'
 import { getLocalizedPath } from '@/utils/get-localized-path'
 
@@ -159,7 +160,7 @@ const Page = async (props: PageProps) => {
             <Mdx code={code} />
           </article>
           <aside className='lg:min-w-[270px] lg:max-w-[270px]'>
-            <div className='sticky top-24'>
+            <div className='sticky top-24 space-y-6'>
               {toc.length > 0 ? <TableOfContents toc={toc} /> : null}
               {flags.likeButton ? <LikeButton slug={slug} /> : null}
             </div>

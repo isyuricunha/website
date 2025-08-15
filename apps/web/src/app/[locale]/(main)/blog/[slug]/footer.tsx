@@ -5,6 +5,7 @@ import { i18n } from '@tszhong0411/i18n/config'
 import { linkVariants } from '@tszhong0411/ui'
 
 import Link from '@/components/link'
+import NewsletterSignupCompact from '@/components/newsletter-signup-compact'
 import SocialShare from '@/components/social-share'
 import { usePostContext } from '@/contexts/post'
 import { useFormattedDate } from '@/hooks/use-formatted-date'
@@ -27,14 +28,15 @@ const Footer = () => {
   const formattedDate = useFormattedDate(modifiedTime)
 
   return (
-    <div className='my-8 space-y-4'>
-      <div className='flex justify-center border-t pt-6'>
+    <div className='my-8 space-y-6'>
+      <div className='flex flex-col sm:flex-row items-center justify-center gap-6 border-t pt-6'>
         <SocialShare
           title={title}
           url={`/blog/${slug}`}
           description={`Read "${title}" on Yuri Cunha's blog`}
           hashtags={['blog', 'tech', 'development']}
         />
+        <NewsletterSignupCompact />
       </div>
       
       <div className='flex w-full items-center justify-between py-4 text-sm'>

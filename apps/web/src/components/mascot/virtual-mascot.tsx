@@ -125,7 +125,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   // Load preferences from localStorage
   const loadPreferences = (): MascotPreferences => {
     if (typeof window === 'undefined') return { ...DEFAULT_PREFERENCES }
-    
+
     try {
       const saved = localStorage.getItem(PREFERENCES_KEY)
       if (saved) {
@@ -142,16 +142,16 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
   // Check for reduced motion preference (client-side only)
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
-  
+
   useEffect(() => {
     // This will only run on the client side
     setPrefersReducedMotion(
       window.matchMedia('(prefers-reduced-motion: reduce)').matches
     )
-    
+
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
     const handleChange = () => setPrefersReducedMotion(mediaQuery.matches)
-    
+
     mediaQuery.addEventListener('change', handleChange)
     return () => mediaQuery.removeEventListener('change', handleChange)
   }, [])
@@ -179,7 +179,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         const v = (base as any)[String(idx)]
         if (typeof v === 'string' && v) list.push(v)
       }
-    } catch {}
+    } catch { }
     if (list.length === 0) return t('mascot.messages.0')
     return list[Math.floor(Math.random() * list.length)]
   }
@@ -197,7 +197,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         const v = (base as any)[String(idx)]
         if (typeof v === 'string' && v) list.push(v)
       }
-    } catch {}
+    } catch { }
     if (list.length === 0) return t('mascot.messages.0')
     return list[Math.floor(Math.random() * list.length)]
   }
@@ -222,7 +222,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         sessionStorage.setItem(MASCOT_IMAGE_KEY, String(chosen))
         updateState({ currentMascotImage: chosen })
       }
-    } catch {}
+    } catch { }
   }, [])
 
   // Read dismissal state and preferences once per session
@@ -366,7 +366,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
           const v = (base as any)[String(idx)]
           if (typeof v === 'string' && v) res.push(v)
         }
-      } catch {}
+      } catch { }
       return res
     }
 
@@ -483,7 +483,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
   const handleMascotClick = () => {
     // Toggle menu visibility when clicking on mascot
-    updateState({ 
+    updateState({
       isActive: !state.isActive,
       showMenu: !state.showMenu,
       // Close other panels when opening menu
@@ -527,7 +527,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     setTimeout(() => {
       switch (action) {
         case 'contact':
-          updateState({ 
+          updateState({
             showContact: true,
             showBubble: true
           })
@@ -536,19 +536,19 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
           window.open('https://github.com/isyuricunha', '_blank')
           break
         case 'game':
-          updateState({ 
+          updateState({
             showGame: true,
             showBubble: true
           })
           break
         case 'chat':
-          updateState({ 
+          updateState({
             showAIChat: true,
             showBubble: true
           })
           break
         case 'settings':
-          updateState({ 
+          updateState({
             showSettings: true,
             showBubble: true
           })
@@ -759,7 +759,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
                   onClick={() => handleMenuAction('chat')}
                 >
                   <MessageCircleIcon className='h-4 w-4' />
-                  Chat with AI
+                  AI Chat
                 </button>
               )}
               <button
@@ -803,9 +803,8 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
               return (
                 <div
                   key={item.id}
-                  className={`rounded-2xl border bg-popover/95 backdrop-blur-sm text-popover-foreground shadow-lg outline-none ring-0 transition-all duration-200 ease-in-out ${
-                    isExiting ? 'opacity-0 translate-y-1 scale-95' : 'opacity-100 translate-y-0 scale-100'
-                  }`}
+                  className={`rounded-2xl border bg-popover/95 backdrop-blur-sm text-popover-foreground shadow-lg outline-none ring-0 transition-all duration-200 ease-in-out ${isExiting ? 'opacity-0 translate-y-1 scale-95' : 'opacity-100 translate-y-0 scale-100'
+                    }`}
                   role='dialog'
                   aria-label={t('mascot.speechBubble')}
                   style={!prefersReducedMotion ? { animation: 'fadeInUp 300ms ease-out' } : undefined}
