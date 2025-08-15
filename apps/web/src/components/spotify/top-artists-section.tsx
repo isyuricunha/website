@@ -99,8 +99,8 @@ const TopArtistsSection = () => {
       <CardHeader>
         <div className='flex items-center justify-between'>
           <div>
-            <CardTitle>{t('spotify.top-artists.title')}</CardTitle>
-            <CardDescription>{t('spotify.top-artists.subtitle')}</CardDescription>
+            <CardTitle className='text-base sm:text-lg'>{t('spotify.top-artists.title')}</CardTitle>
+            <CardDescription className='text-xs sm:text-sm'>{t('spotify.top-artists.subtitle')}</CardDescription>
           </div>
           <button
             onClick={handleRefresh}
@@ -130,11 +130,11 @@ const TopArtistsSection = () => {
                 />
               </div>
               <div className='text-center'>
-                <h3 className='truncate text-sm font-medium group-hover:text-primary'>
+                <h3 className='truncate text-xs sm:text-sm font-medium group-hover:text-primary'>
                   {artist.name}
                 </h3>
                 {artist.genres && artist.genres.length > 0 && (
-                  <p className='truncate text-xs text-muted-foreground'>
+                  <p className='truncate text-[10px] sm:text-xs text-muted-foreground'>
                     {artist.genres.slice(0, 2).join(', ')}
                   </p>
                 )}

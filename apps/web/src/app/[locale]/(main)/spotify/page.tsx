@@ -8,6 +8,10 @@ import NowListeningSection from '@/components/spotify/now-listening-section'
 import RecentlyPlayedSection from '@/components/spotify/recently-played-section'
 import TopArtistsSection from '@/components/spotify/top-artists-section'
 import TopSongsSection from '@/components/spotify/top-songs-section'
+import MusicStatsSection from '@/components/spotify/music-stats-section'
+import MusicTasteAnalysis from '@/components/spotify/music-taste-analysis'
+import SocialSharing from '@/components/spotify/social-sharing'
+import MusicTimeline from '@/components/spotify/music-timeline'
 import PageTitle from '@/components/page-title'
 import {
   SITE_NAME,
@@ -89,11 +93,25 @@ const Page = async (props: PageProps) => {
       />
       <PageTitle title={title} description={description} />
 
-                   <div className='space-y-12'>
+                   <div className='space-y-8'>
                <NowListeningSection />
-               <TopArtistsSection />
-               <TopSongsSection />
-               <RecentlyPlayedSection />
+               
+               <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
+                 <MusicStatsSection />
+                 <SocialSharing />
+               </div>
+               
+               <MusicTasteAnalysis />
+               
+               <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
+                 <TopArtistsSection />
+                 <TopSongsSection />
+               </div>
+               
+               <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
+                 <RecentlyPlayedSection />
+                 <MusicTimeline />
+               </div>
              </div>
     </>
   )

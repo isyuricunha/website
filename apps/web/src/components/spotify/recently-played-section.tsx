@@ -120,8 +120,8 @@ const RecentlyPlayedSection = () => {
       <CardHeader>
         <div className='flex items-center justify-between'>
           <div>
-            <CardTitle>{t('spotify.recently-played.title')}</CardTitle>
-            <CardDescription>{t('spotify.recently-played.subtitle')}</CardDescription>
+            <CardTitle className='text-base sm:text-lg'>{t('spotify.recently-played.title')}</CardTitle>
+            <CardDescription className='text-xs sm:text-sm'>{t('spotify.recently-played.subtitle')}</CardDescription>
           </div>
           <button
             onClick={handleRefresh}
@@ -152,17 +152,17 @@ const RecentlyPlayedSection = () => {
               </div>
 
               <div className='min-w-0 flex-1'>
-                <h3 className='truncate font-medium group-hover:text-primary'>
+                <h3 className='truncate text-sm sm:text-base font-medium group-hover:text-primary'>
                   {track.name}
                 </h3>
-                <p className='truncate text-sm text-muted-foreground'>
+                <p className='truncate text-xs sm:text-sm text-muted-foreground'>
                   {track.artist} • {track.album}
                 </p>
               </div>
 
               <div className='flex flex-shrink-0 items-center space-x-2 text-right'>
                 <ClockIcon className='h-4 w-4 text-muted-foreground' />
-                <p className='text-sm text-muted-foreground'>
+                <p className='text-xs sm:text-sm text-muted-foreground'>
                   {formatTimeAgo(track.playedAt)}
                 </p>
               </div>

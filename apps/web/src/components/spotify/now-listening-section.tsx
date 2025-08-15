@@ -108,13 +108,13 @@ const NowListeningSection = () => {
       <CardHeader>
         <div className='flex items-center justify-between'>
           <div>
-            <CardTitle>{t('spotify.now-listening.title')}</CardTitle>
-            <CardDescription>{t('spotify.now-listening.subtitle')}</CardDescription>
+            <CardTitle className='text-base sm:text-lg'>{t('spotify.now-listening.title')}</CardTitle>
+            <CardDescription className='text-xs sm:text-sm'>{t('spotify.now-listening.subtitle')}</CardDescription>
           </div>
           <button
             onClick={handleRefresh}
             disabled={isRefreshing}
-            className='text-sm text-muted-foreground hover:text-foreground disabled:opacity-50'
+            className='text-xs sm:text-sm text-muted-foreground hover:text-foreground disabled:opacity-50'
           >
             {t('spotify.refresh')}
           </button>
@@ -146,10 +146,10 @@ const NowListeningSection = () => {
           </div>
 
           <div className='min-w-0 flex-1'>
-            <h3 className='truncate font-medium group-hover:text-primary'>
+            <h3 className='truncate text-sm sm:text-base font-medium group-hover:text-primary'>
               {currentTrack.name}
             </h3>
-            <p className='truncate text-sm text-muted-foreground'>
+            <p className='truncate text-xs sm:text-sm text-muted-foreground'>
               {currentTrack.artist} {t('spotify.now-listening.by')} {currentTrack.album}
             </p>
           </div>
