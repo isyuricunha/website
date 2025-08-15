@@ -3,6 +3,8 @@ import { Button } from '@tszhong0411/ui'
 import { WifiOff, RefreshCw, Home } from 'lucide-react'
 import Link from 'next/link'
 
+import RefreshButton from './refresh-button'
+
 export const metadata: Metadata = {
   title: 'Offline - Yuri Cunha',
   description: 'You are currently offline. Please check your internet connection.',
@@ -23,13 +25,7 @@ export default function OfflinePage() {
         </div>
 
         <div className='space-y-3'>
-          <Button
-            onClick={() => window.location.reload()}
-            className='w-full gap-2'
-          >
-            <RefreshCw className='size-4' />
-            Try Again
-          </Button>
+          <RefreshButton />
           
           <Button
             asChild
