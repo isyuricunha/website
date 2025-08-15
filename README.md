@@ -118,6 +118,7 @@ This project began as an adaptation of [Michael's site](https://github.com/mah51
 - **Contact Forms** - Email integration
 - **Social Sharing** - Dynamic meta tags
 - **Confetti Effects** - Celebration animations
+- **Mascot & AI** - Mascot with quotes (lang and page based) & integrated AI (Ollama/LLama/Gemini/Claude)
 
 ### **SEO & Performance**
 - **Dynamic Meta Tags** - SEO optimization
@@ -327,10 +328,10 @@ Feel free to reach out via:
 ## 📸 Screenshots
 
 ### Desktop View
-![Desktop](https://i.imgur.com/lB9KLgw.png)
+![Desktop](https://i.imgur.com/VQMeHTt.png)
 
 ### Mobile View
-![Mobile](https://i.imgur.com/2iBdfJk.png)
+![Mobile](https://i.imgur.com/LCtrCGV.png)
 
 ## 🧪 Beta Features & Experiments
 
