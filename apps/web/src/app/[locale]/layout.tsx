@@ -16,6 +16,8 @@ import { Monitoring } from 'react-scan/monitoring/next'
 import Analytics from '@/components/analytics'
 import Hello from '@/components/hello'
 import SignInDialog from '@/components/sign-in-dialog'
+import OfflineIndicator from '@/components/offline-indicator'
+import ErrorBoundary from '@/components/ui/error-boundary'
 import { SITE_KEYWORDS, SITE_NAME, SITE_URL } from '@/lib/constants'
 
 import Providers from '../providers'
@@ -140,9 +142,29 @@ const Layout = async (props: LayoutProps) => {
       suppressHydrationWarning
     >
       <head>
+        <link rel="manifest" href="/favicon/site.webmanifest" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="Yuri Cunha" />
         {env.NODE_ENV === 'development' ? (
           <Script src='https://unpkg.com/react-scan/dist/auto.global.js' />
         ) : null}
+        <Script id="sw-register" strategy="afterInteractive">
+          {`
+            if ('serviceWorker' in navigator) {
+              window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js')
+                  .then(function(registration) {
+                    console.log('SW registered: ', registration);
+                  })
+                  .catch(function(registrationError) {
+                    console.log('SW registration failed: ', registrationError);
+                  });
+              });
+            }
+          `}
+        </Script>
       </head>
       <body className='relative flex min-h-screen flex-col'>
         {env.REACT_SCAN_MONITOR_API_KEY ? (
@@ -156,10 +178,13 @@ const Layout = async (props: LayoutProps) => {
         <NuqsAdapter>
           <Providers>
             <NextIntlClientProvider messages={messages}>
-              <Hello />
-              {children}
-              {flags.analytics ? <Analytics /> : null}
-              <SignInDialog />
+              <ErrorBoundary>
+                <Hello />
+                {children}
+                {flags.analytics ? <Analytics /> : null}
+                <SignInDialog />
+                <OfflineIndicator />
+              </ErrorBoundary>
             </NextIntlClientProvider>
           </Providers>
         </NuqsAdapter>

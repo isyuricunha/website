@@ -7,6 +7,7 @@ import { useEffect, useRef } from 'react'
 
 import ImageZoom from '@/components/image-zoom'
 import Link from '@/components/link'
+import SocialShare from '@/components/social-share'
 import { usePostContext } from '@/contexts/post'
 import { useFormattedDate } from '@/hooks/use-formatted-date'
 import { api } from '@/trpc/react'
@@ -41,7 +42,7 @@ const Header = () => {
   return (
     <div className='space-y-16 py-16'>
       <div className='space-y-16 sm:px-8'>
-        <h1 className='bg-linear-to-b from-black via-black/90 to-black/70 to-90% bg-clip-text text-center text-4xl font-bold text-transparent md:text-5xl md:leading-[64px] dark:from-white dark:via-white/90 dark:to-white/70'>
+        <h1 className='bg-linear-to-b from-black via-black/90 to-black/70 to-90% bg-clip-text text-center text-2xl font-bold text-transparent sm:text-3xl md:text-4xl md:leading-[48px] dark:from-white dark:via-white/90 dark:to-white/70'>
           {title}
         </h1>
         <div className='grid grid-cols-2 text-sm max-md:gap-4 md:grid-cols-4'>
@@ -82,6 +83,15 @@ const Header = () => {
               />
             ) : null}
           </div>
+        </div>
+        
+        <div className='flex justify-center'>
+          <SocialShare
+            title={title}
+            url={`/blog/${slug}`}
+            description={`Read "${title}" on Yuri Cunha's blog`}
+            hashtags={['blog', 'tech', 'development']}
+          />
         </div>
       </div>
       <ImageZoom

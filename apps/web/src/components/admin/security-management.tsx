@@ -101,8 +101,8 @@ export default function SecurityManagement() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Security Management</h1>
-          <p className="text-muted-foreground">Monitor and manage system security</p>
+          <h1 className="text-xl sm:text-2xl font-bold">Security Management</h1>
+          <p className="text-sm text-muted-foreground">Monitor and manage system security</p>
         </div>
       </div>
 

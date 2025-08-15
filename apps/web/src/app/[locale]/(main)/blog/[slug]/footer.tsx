@@ -5,6 +5,7 @@ import { i18n } from '@tszhong0411/i18n/config'
 import { linkVariants } from '@tszhong0411/ui'
 
 import Link from '@/components/link'
+import SocialShare from '@/components/social-share'
 import { usePostContext } from '@/contexts/post'
 import { useFormattedDate } from '@/hooks/use-formatted-date'
 
@@ -20,18 +21,29 @@ function getEditURL(postSlug: string, postLocale: string) {
 }
 
 const Footer = () => {
-  const { slug, modifiedTime } = usePostContext()
+  const { slug, modifiedTime, title } = usePostContext()
   const t = useTranslations()
   const locale = useLocale()
   const formattedDate = useFormattedDate(modifiedTime)
 
   return (
-    <div className='my-8 flex w-full items-center justify-between py-4 text-sm'>
-      <Link href={getEditURL(slug, locale)} className={linkVariants({ variant: 'muted' })}>
-        {t('blog.footer.edit-on-github')}
-      </Link>
-      <div className='text-muted-foreground'>
-        {t('blog.footer.last-updated', { date: formattedDate })}
+    <div className='my-8 space-y-4'>
+      <div className='flex justify-center border-t pt-6'>
+        <SocialShare
+          title={title}
+          url={`/blog/${slug}`}
+          description={`Read "${title}" on Yuri Cunha's blog`}
+          hashtags={['blog', 'tech', 'development']}
+        />
+      </div>
+      
+      <div className='flex w-full items-center justify-between py-4 text-sm'>
+        <Link href={getEditURL(slug, locale)} className={linkVariants({ variant: 'muted' })}>
+          {t('blog.footer.edit-on-github')}
+        </Link>
+        <div className='text-muted-foreground'>
+          {t('blog.footer.last-updated', { date: formattedDate })}
+        </div>
       </div>
     </div>
   )
