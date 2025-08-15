@@ -226,7 +226,8 @@ const SitemapPage = async (props: PageProps) => {
                           <Link
                             href={project.homepage}
                             className='text-xs text-primary hover:underline'
-                            onClick={(e) => e.stopPropagation()}
+                            target="_blank"
+                            rel="noopener noreferrer"
                           >
                             Live Demo
                           </Link>
@@ -235,7 +236,8 @@ const SitemapPage = async (props: PageProps) => {
                           <Link
                             href={project.repository}
                             className='text-xs text-muted-foreground hover:text-foreground'
-                            onClick={(e) => e.stopPropagation()}
+                            target="_blank"
+                            rel="noopener noreferrer"
                           >
                             GitHub
                           </Link>
