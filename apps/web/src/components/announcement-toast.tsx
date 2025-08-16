@@ -5,7 +5,6 @@ import { toast } from 'sonner'
 import { AlertCircle, Info, CheckCircle, AlertTriangle, X } from 'lucide-react'
 
 import { api } from '@/trpc/react'
-import { useNotificationSound } from '@/hooks/use-notification-sound'
 
 const getAnnouncementIcon = (type: string) => {
   switch (type) {
@@ -30,18 +29,6 @@ export default function AnnouncementToast() {
 
   // Dismiss announcement mutation
   const dismissMutation = api.announcements.dismissAnnouncement.useMutation()
-
-  // Sound functionality
-  const { playSound, preloadSound } = useNotificationSound({
-    volume: 0.6,
-    enabled: true,
-    type: 'toast'
-  })
-
-  // Preload sound on component mount
-  useEffect(() => {
-    preloadSound()
-  }, [preloadSound])
 
   useEffect(() => {
     if (!announcementsData?.announcements) return
@@ -72,9 +59,6 @@ export default function AnnouncementToast() {
       )
       
       if (!shownToasts.includes(announcement.id)) {
-        // Play notification sound for new announcements
-        playSound()
-        
         toast.custom(
           (t) => (
             <div className="flex items-start gap-3 p-4 bg-background border rounded-lg shadow-lg max-w-md">
