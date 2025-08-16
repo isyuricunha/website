@@ -9,11 +9,24 @@ declare global {
   interface Window {
     puter?: {
       ai: {
-        chat: (message: string, options: { model: string, stream?: boolean }) => Promise<{
-          message: {
-            content: Array<{ text: string }>
+        chat: (
+          prompt: string | Array<any>,
+          options?: {
+            model?: string
+            stream?: boolean
+            max_tokens?: number
+            temperature?: number
+            tools?: Array<any>
           }
-        }> | AsyncIterable<{ text?: string }>
+        ) => Promise<any> | AsyncIterable<{ text?: string }>
+        txt2img: (prompt: string, options?: { model?: string }) => Promise<{ url: string }>
+        img2txt: (imageUrl: string, prompt?: string, options?: { model?: string }) => Promise<{ text: string }>
+        txt2speech: (text: string, options?: { voice?: string }) => Promise<{ url: string }>
+      }
+      auth?: {
+        signIn: () => Promise<void>
+        isSignedIn: () => boolean
+        getUser: () => Promise<{ username: string }>
       }
     }
   }

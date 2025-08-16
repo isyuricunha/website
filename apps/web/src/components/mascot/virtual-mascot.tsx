@@ -9,7 +9,7 @@ import { X as XIcon, Settings as SettingsIcon, Gamepad as GamepadIcon, Eye as Ey
 import { useTranslations, useLocale, useMessages } from '@tszhong0411/i18n/client'
 import MascotGame from './mascot-game'
 import AIChatInterface from './ai-chat-interface'
-import ClaudePlayground from './claude-playground'
+import PuterAIPlayground from './puter-ai-playground'
 
 type VirtualMascotProps = {
   hidden?: boolean
@@ -55,7 +55,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     showMenu: false,
     showContact: false,
     showAIChat: false,
-    showClaudePlayground: false,
+    showPuterAIPlayground: false,
     isKonamiMode: false,
     konamiSequence: [] as number[],
     isHovering: false,
@@ -71,6 +71,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   }))
 
   const mascotRef = useRef<HTMLButtonElement | null>(null)
+  const [showPuterAIPlayground, setShowPuterAIPlayground] = useState(false)
   const [mounted, setMounted] = useState(false)
 
   // Helper functions to update state
@@ -299,10 +300,10 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
   // Idle timer for fun facts
   useEffect(() => {
-    if (!state.preferences.speechBubbles || state.autoShowMessage || state.showContact || state.showGame || state.showSettings || state.showMenu || state.showAIChat || state.showClaudePlayground) return
+    if (!state.preferences.speechBubbles || state.autoShowMessage || state.showContact || state.showGame || state.showSettings || state.showMenu || state.showAIChat || state.showPuterAIPlayground) return
 
     const timer = setTimeout(() => {
-      if (!state.autoShowMessage && !state.showContact && !state.showGame && !state.showSettings && !state.showMenu && !state.showAIChat && !state.showClaudePlayground) {
+      if (!state.autoShowMessage && !state.showContact && !state.showGame && !state.showSettings && !state.showMenu && !state.showAIChat && !state.showPuterAIPlayground) {
         enqueueMessage(getIdleMessage(), 4000)
       }
     }, 25000) // 25 seconds idle
@@ -310,7 +311,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     return () => {
       if (timer) clearTimeout(timer)
     }
-  }, [state.preferences.speechBubbles, state.autoShowMessage, state.showContact, state.showGame, state.showSettings, state.showMenu, state.showAIChat, state.showClaudePlayground])
+  }, [state.preferences.speechBubbles, state.autoShowMessage, state.showContact, state.showGame, state.showSettings, state.showMenu, state.showAIChat, state.showPuterAIPlayground])
 
   // Track current page path for contextual messages (language-aware)
   const pathname = usePathname()
@@ -493,7 +494,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       showSettings: false,
       showGame: false,
       showAIChat: false,
-      showClaudePlayground: false
+      showPuterAIPlayground: false
     })
   }
 
@@ -524,7 +525,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       showMenu: false,
       showGame: false,
       showAIChat: false,
-      showClaudePlayground: false
+      showPuterAIPlayground: false
     })
 
     // Use a small timeout to ensure the hide animation completes before showing new content
@@ -553,7 +554,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
           break
         case 'claude':
           updateState({
-            showClaudePlayground: true,
+            showPuterAIPlayground: true,
             showBubble: false
           })
           break
@@ -778,7 +779,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
                     onClick={() => handleMenuAction('claude')}
                   >
                     <Code className='h-4 w-4' />
-                    Claude API
+                    Puter AI
                   </button>
                 </>
               )}
@@ -913,8 +914,8 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       {/* Mini Game */}
       <MascotGame isOpen={state.showGame} onClose={() => updateState({ showGame: false })} />
       
-      {/* Claude Playground */}
-      <ClaudePlayground isOpen={state.showClaudePlayground} onClose={() => updateState({ showClaudePlayground: false })} />
+      {/* Puter AI Playground */}
+      <PuterAIPlayground isOpen={state.showPuterAIPlayground} onClose={() => updateState({ showPuterAIPlayground: false })} />
     </>
   )
 }
