@@ -1,37 +1,52 @@
 ---
+lastUpdated: '2025-01-14'
 ---
 
-## 笔记本电脑
+<ExpandableSection title='笔记本电脑' icon='Monitor'>
+  <div className='mb-6'>
+    <Image
+      src='/images/uses/ideapad-3i.png'
+      alt='Ideapad Gaming 3 R7'
+      width={1920}
+      height={1080}
+      lazy={false}
+      priority
+      className='w-full max-w-xs mx-auto rounded-lg shadow-lg object-contain h-48'
+    />
+  </div>
+  <div className='bg-muted/20 p-4 rounded-lg'>
+    <h3 className='text-sm sm:text-base font-semibold mb-2'>为什么选择这款笔记本电脑：</h3>
+    <ul className='text-xs sm:text-sm text-muted-foreground space-y-1'>
+      <li>• 性能与便携性的完美平衡</li>
+      <li>• 非常适合开发和偶尔游戏</li>
+      <li>• 出色的性价比</li>
+    </ul>
+  </div>
+</ExpandableSection>
 
-<Image
-  src='/images/uses/ideapad-3i.png'
-  alt='Ideapad Gaming 3 R7'
-  width={1920}
-  height={1080}
-  lazy={false}
-  priority
-/>
+<ExpandableSection title='配件' icon='Smartphone'>
 
-## 配件
+  <ItemGrid
+    items={[
+      {
+        image: '/images/uses/accessories/s10.png',
+        name: 'S10 5G',
+        description: '黑色，512GB',
+        url: 'https://www.samsung.com/uk/smartphones/galaxy-s10.../',
+        isAffiliate: false
+      },
+      {
+        image: '/images/uses/accessories/quietcontrol30.png',
+        name: 'Bose Quiet Control 30',
+        description: '耳机',
+        url: 'https://www.boselatam.com/en_ar/products/headphones/earbuds/quietcontrol-30.html',
+        isAffiliate: true
+      }
+    ]}
+  />
+</ExpandableSection>
 
-<ItemGrid
-  items={[
-    {
-      image: '/images/uses/accessories/s10.png',
-      name: 'S10 5G',
-      description: '黑色，512GB',
-      url: 'https://www.samsung.com/uk/smartphones/galaxy-s10.../'
-    },
-    {
-      image: '/images/uses/accessories/quietcontrol30.png',
-      name: 'Bose Quiet Control 30',
-      description: '耳机',
-      url: 'https://www.boselatam.com/en_ar/products/headphones/earbuds/quietcontrol-30.html'
-    }
-  ]}
-/>
-
-## 游戏电脑 - 硬件
+<ExpandableSection title='游戏电脑 - 硬件' icon='Zap'>
 
 <ItemGrid
   items={[
@@ -98,7 +113,18 @@
   ]}
 />
 
-## 基础设施
+  <div className='mt-6 p-4 bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800 rounded-lg'>
+    <h3 className='text-sm font-semibold text-green-900 dark:text-green-100 mb-2'>
+      💡 专业提示
+    </h3>
+    <div className='text-xs sm:text-sm text-green-800 dark:text-green-200'>
+      组装游戏电脑时，首先投资GPU和CPU。您可以稍后升级外设，
+      但主要组件决定了您的整体性能。
+    </div>
+  </div>
+</ExpandableSection>
+
+<ExpandableSection title='基础设施' icon='Shield'>
 
 <ItemGrid
   items={[
@@ -231,39 +257,72 @@
   ]}
 />
 
-## 技术栈
+  <ComparisonTable 
+    items={[
+      {
+        name: 'Docker',
+        pros: ['容器化简单', '非常适合开发', '生态系统广泛'],
+        cons: ['资源密集', '学习曲线'],
+        price: '免费',
+        rating: 5
+      },
+      {
+        name: 'Kubernetes',
+        pros: ['出色的编排', '自动扩展', '生产就绪'],
+        cons: ['配置复杂', '学习曲线陡峭'],
+        price: '免费',
+        rating: 4
+      },
+      {
+        name: 'Terraform',
+        pros: ['基础设施即代码', '多云支持', '出色的规划'],
+        cons: ['状态管理', '可能很复杂'],
+        price: '免费/付费',
+        rating: 4
+      }
+    ]}
+    title='基础设施工具比较'
+  />
+</ExpandableSection>
 
-<ItemGrid
-  items={[
-    {
-      image: '/images/uses/software/elk.png',
-      name: 'ELK Stack',
-      description: '用于日志分析的 Elasticsearch、Logstash 与 Kibana',
-      url: 'https://www.elastic.co/what-is/elk-stack'
-    },
-    {
-      image: '/images/uses/software/lamp.png',
-      name: 'LAMP Stack',
-      description: 'Linux、Apache、MySQL 与 PHP',
-      url: 'https://en.wikipedia.org/wiki/LAMP_(software_bundle)'
-    },
-    {
-      image: '/images/uses/software/mean.png',
-      name: 'MEAN Stack',
-      description: 'MongoDB、Express、Angular 与 Node.js',
-      url: 'https://en.wikipedia.org/wiki/MEAN_stack'
-    },
-    {
-      image: '/images/uses/software/mern.png',
-      name: 'MERN Stack',
-      description: 'MongoDB、Express、React 与 Node.js',
-      url: 'https://en.wikipedia.org/wiki/MERN_stack'
-    },
-    {
-      image: '/images/uses/software/jam.png',
-      name: 'JAM Stack',
-      description: 'JavaScript、API 与标记语言',
-      url: 'https://jamstack.org/'
-    }
-  ]}
-/>
+<ExpandableSection title='技术栈' icon='Code'>
+  <ItemGrid
+    items={[
+      {
+        image: '/images/uses/software/elk.png',
+        name: 'ELK Stack',
+        description: '用于日志分析的 Elasticsearch、Logstash 与 Kibana',
+        url: 'https://www.elastic.co/what-is/elk-stack',
+        isAffiliate: false
+      },
+      {
+        image: '/images/uses/software/lamp.png',
+        name: 'LAMP Stack',
+        description: 'Linux、Apache、MySQL 与 PHP',
+        url: 'https://en.wikipedia.org/wiki/LAMP_(software_bundle)',
+        isAffiliate: false
+      },
+      {
+        image: '/images/uses/software/mean.png',
+        name: 'MEAN Stack',
+        description: 'MongoDB、Express、Angular 与 Node.js',
+        url: 'https://en.wikipedia.org/wiki/MEAN_stack',
+        isAffiliate: false
+      },
+      {
+        image: '/images/uses/software/mern.png',
+        name: 'MERN Stack',
+        description: 'MongoDB、Express、React 与 Node.js',
+        url: 'https://en.wikipedia.org/wiki/MERN_stack',
+        isAffiliate: false
+      },
+      {
+        image: '/images/uses/software/jam.png',
+        name: 'JAM Stack',
+        description: 'JavaScript、APIs 与 Markup',
+        url: 'https://jamstack.org/',
+        isAffiliate: false
+      }
+    ]}
+  />
+</ExpandableSection>

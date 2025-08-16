@@ -1,37 +1,51 @@
 ---
+lastUpdated: '2025-01-14'
 ---
 
-## Notebook
+<ExpandableSection title='Notebook' icon='Monitor'>
+  <div className='mb-6'>
+    <Image
+      src='/images/uses/ideapad-3i.png'
+      alt='Ideapad Gaming 3 R7'
+      width={1920}
+      height={1080}
+      lazy={false}
+      priority
+      className='w-full max-w-xs mx-auto rounded-lg shadow-lg object-contain h-48'
+    />
+  </div>
+  <div className='bg-muted/20 p-4 rounded-lg'>
+    <h3 className='text-sm sm:text-base font-semibold mb-2'>Por que escolhi este notebook:</h3>
+    <ul className='text-xs sm:text-sm text-muted-foreground space-y-1'>
+      <li>• Equilíbrio perfeito entre desempenho e portabilidade</li>
+      <li>• Ótimo para desenvolvimento e jogos ocasionais</li>
+      <li>• Excelente custo-benefício</li>
+    </ul>
+  </div>
+</ExpandableSection>
 
-<Image
-  src='/images/uses/ideapad-3i.png'
-  alt='Ideapad Gaming 3 R7'
-  width={1920}
-  height={1080}
-  lazy={false}
-  priority
-/>
+<ExpandableSection title='Acessórios' icon='Smartphone'>
+  <ItemGrid
+    items={[
+      {
+        image: '/images/uses/accessories/s10.png',
+        name: 'S10 5G',
+        description: 'Preto, 512GB',
+        url: 'https://www.samsung.com/uk/smartphones/galaxy-s10.../',
+        isAffiliate: false
+      },
+      {
+        image: '/images/uses/accessories/quietcontrol30.png',
+        name: 'Bose Quiet Control 30',
+        description: 'Fone de ouvido',
+        url: 'https://www.boselatam.com/en_ar/products/headphones/earbuds/quietcontrol-30.html',
+        isAffiliate: true
+      }
+    ]}
+  />
+</ExpandableSection>
 
-## Acessórios
-
-<ItemGrid
-  items={[
-    {
-      image: '/images/uses/accessories/s10.png',
-      name: 'S10 5G',
-      description: 'Preto, 512GB',
-      url: 'https://www.samsung.com/uk/smartphones/galaxy-s10.../'
-    },
-    {
-      image: '/images/uses/accessories/quietcontrol30.png',
-      name: 'Bose Quiet Control 30',
-      description: 'Fone de ouvido',
-      url: 'https://www.boselatam.com/en_ar/products/headphones/earbuds/quietcontrol-30.html'
-    }
-  ]}
-/>
-
-## PC Gamer - Hardware
+<ExpandableSection title='PC Gamer - Hardware' icon='Zap'>
 
 <ItemGrid
   items={[
@@ -98,7 +112,18 @@
   ]}
 />
 
-## Infraestrutura
+  <div className='mt-6 p-4 bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800 rounded-lg'>
+    <h3 className='text-sm font-semibold text-green-900 dark:text-green-100 mb-2'>
+      💡 Dica Pro
+    </h3>
+    <div className='text-xs sm:text-sm text-green-800 dark:text-green-200'>
+      Ao montar um PC gamer, invista mais na GPU e CPU primeiro. Você sempre pode atualizar 
+      os periféricos depois, mas os componentes principais determinam seu desempenho geral.
+    </div>
+  </div>
+</ExpandableSection>
+
+<ExpandableSection title='Infraestrutura' icon='Shield'>
 
 <ItemGrid
   items={[
@@ -231,39 +256,72 @@
   ]}
 />
 
-## Stacks
+  <ComparisonTable 
+    items={[
+      {
+        name: 'Docker',
+        pros: ['Containerização fácil', 'Ótimo para desenvolvimento', 'Amplo ecossistema'],
+        cons: ['Uso intensivo de recursos', 'Curva de aprendizado'],
+        price: 'Gratuito',
+        rating: 5
+      },
+      {
+        name: 'Kubernetes',
+        pros: ['Excelente orquestração', 'Auto-scaling', 'Pronto para produção'],
+        cons: ['Configuração complexa', 'Curva de aprendizado íngreme'],
+        price: 'Gratuito',
+        rating: 4
+      },
+      {
+        name: 'Terraform',
+        pros: ['Infraestrutura como código', 'Multi-cloud', 'Ótimo planejamento'],
+        cons: ['Gerenciamento de estado', 'Pode ser complexo'],
+        price: 'Gratuito/Pago',
+        rating: 4
+      }
+    ]}
+    title='Comparação de Ferramentas de Infraestrutura'
+  />
+</ExpandableSection>
 
-<ItemGrid
-  items={[
-    {
-      image: '/images/uses/software/elk.png',
-      name: 'ELK Stack',
-      description: 'Elasticsearch, Logstash & Kibana para análise de logs',
-      url: 'https://www.elastic.co/what-is/elk-stack'
-    },
-    {
-      image: '/images/uses/software/lamp.png',
-      name: 'LAMP Stack',
-      description: 'Linux, Apache, MySQL & PHP',
-      url: 'https://en.wikipedia.org/wiki/LAMP_(software_bundle)'
-    },
-    {
-      image: '/images/uses/software/mean.png',
-      name: 'MEAN Stack',
-      description: 'MongoDB, Express, Angular & Node.js',
-      url: 'https://en.wikipedia.org/wiki/MEAN_stack'
-    },
-    {
-      image: '/images/uses/software/mern.png',
-      name: 'MERN Stack',
-      description: 'MongoDB, Express, React & Node.js',
-      url: 'https://en.wikipedia.org/wiki/MERN_stack'
-    },
-    {
-      image: '/images/uses/software/jam.png',
-      name: 'JAM Stack',
-      description: 'JavaScript, APIs & Markup',
-      url: 'https://jamstack.org/'
-    }
-  ]}
-/>
+<ExpandableSection title='Stacks' icon='Code'>
+  <ItemGrid
+    items={[
+      {
+        image: '/images/uses/software/elk.png',
+        name: 'ELK Stack',
+        description: 'Elasticsearch, Logstash & Kibana para análise de logs',
+        url: 'https://www.elastic.co/what-is/elk-stack',
+        isAffiliate: false
+      },
+      {
+        image: '/images/uses/software/lamp.png',
+        name: 'LAMP Stack',
+        description: 'Linux, Apache, MySQL & PHP',
+        url: 'https://en.wikipedia.org/wiki/LAMP_(software_bundle)',
+        isAffiliate: false
+      },
+      {
+        image: '/images/uses/software/mean.png',
+        name: 'MEAN Stack',
+        description: 'MongoDB, Express, Angular & Node.js',
+        url: 'https://en.wikipedia.org/wiki/MEAN_stack',
+        isAffiliate: false
+      },
+      {
+        image: '/images/uses/software/mern.png',
+        name: 'MERN Stack',
+        description: 'MongoDB, Express, React & Node.js',
+        url: 'https://en.wikipedia.org/wiki/MERN_stack',
+        isAffiliate: false
+      },
+      {
+        image: '/images/uses/software/jam.png',
+        name: 'JAM Stack',
+        description: 'JavaScript, APIs & Markup',
+        url: 'https://jamstack.org/',
+        isAffiliate: false
+      }
+    ]}
+  />
+</ExpandableSection>

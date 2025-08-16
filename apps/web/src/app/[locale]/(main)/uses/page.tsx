@@ -7,7 +7,7 @@ import { allPages } from 'content-collections'
 import { notFound } from 'next/navigation'
 
 import Mdx from '@/components/mdx'
-import PageTitle from '@/components/page-title'
+import UsesPageClient from '@/components/uses-page-client'
 import { SITE_URL } from '@/lib/constants'
 import { getLocalizedPath } from '@/utils/get-localized-path'
 
@@ -89,8 +89,11 @@ const Page = async (props: PageProps) => {
         type='application/ld+json'
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <PageTitle title={title} description={description} />
-      <Mdx code={code} />
+      <UsesPageClient 
+        title={title}
+        description={description}
+        mdxContent={<Mdx code={code} />}
+      />
     </>
   )
 }

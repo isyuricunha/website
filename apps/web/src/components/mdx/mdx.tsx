@@ -4,7 +4,7 @@ import { BlurImage, CodeBlock, Kbd } from '@tszhong0411/ui'
 
 import ImageZoom from '../image-zoom'
 import Link from '../link'
-import UsesPage from '../uses-page'
+import { ExpandableSection, ComparisonTable, AffiliateDisclosure } from '../uses-page-client'
 
 import Heading from './heading'
 import ItemGrid from './item-grid'
@@ -55,7 +55,9 @@ const components = {
   Logo,
   TreeView,
   Kbd,
-  UsesPage
+  ExpandableSection,
+  ComparisonTable,
+  AffiliateDisclosure
 }
 
 const Mdx = (props: MdxProps) => {
