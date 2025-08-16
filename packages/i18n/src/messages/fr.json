@@ -410,7 +410,7 @@
             "thinking": "Yue réfléchit...",
             "placeholder": "Demandez-moi n'importe quoi...",
             "connectionError": "Problèmes de connexion. Veuillez réessayer.",
-            "footer": "Powered by Yue AI by Yuri & Puter.js",
+            "footer": "Powered by Yue AI by Yuri & Gemini AI",
             "modes": {
                 "chat": "Discuter",
                 "imageGen": "Générer",
