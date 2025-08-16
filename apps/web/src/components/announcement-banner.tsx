@@ -6,6 +6,7 @@ import { Button } from '@tszhong0411/ui'
 import { Card, CardContent } from '@tszhong0411/ui'
 
 import { api } from '@/trpc/react'
+import { useNotificationSound } from '@/hooks/use-notification-sound'
 
 
 const getAnnouncementIcon = (type: string) => {
@@ -38,6 +39,7 @@ const getAnnouncementColors = (type: string) => {
 
 export default function AnnouncementBanner() {
   const [dismissedAnnouncements, setDismissedAnnouncements] = useState<string[]>([])
+  const [previousAnnouncementIds, setPreviousAnnouncementIds] = useState<string[]>([])
 
   // Get active announcements
   const { data: announcementsData } = api.announcements.getAnnouncements.useQuery({
@@ -51,6 +53,18 @@ export default function AnnouncementBanner() {
       setDismissedAnnouncements(prev => [...prev, variables.announcementId])
     }
   })
+
+  // Sound functionality
+  const { playSound, preloadSound } = useNotificationSound({
+    volume: 0.4, // Slightly lower volume for banner notifications
+    enabled: true,
+    type: 'banner'
+  })
+
+  // Preload sound on component mount
+  useEffect(() => {
+    preloadSound()
+  }, [preloadSound])
 
   // Load dismissed announcements from localStorage
   useEffect(() => {
@@ -72,6 +86,36 @@ export default function AnnouncementBanner() {
   const handleDismiss = (announcementId: string) => {
     dismissMutation.mutate({ announcementId })
   }
+
+  // Check for new announcements and play sound
+  useEffect(() => {
+    if (!announcementsData?.announcements) return
+
+    const currentActiveAnnouncements = announcementsData.announcements
+      .filter(announcement => 
+        announcement.isActive && 
+        !dismissedAnnouncements.includes(announcement.id) &&
+        (!announcement.startDate || new Date(announcement.startDate) <= new Date()) &&
+        (!announcement.endDate || new Date(announcement.endDate) >= new Date())
+      )
+      .map(a => a.id)
+
+    // Check if there are new announcements (not in previous list)
+    if (previousAnnouncementIds.length > 0) {
+      const newAnnouncements = currentActiveAnnouncements.filter(
+        id => !previousAnnouncementIds.includes(id)
+      )
+      
+      if (newAnnouncements.length > 0) {
+        playSound()
+      }
+    }
+
+    // Only update if the arrays are actually different
+    if (JSON.stringify(currentActiveAnnouncements) !== JSON.stringify(previousAnnouncementIds)) {
+      setPreviousAnnouncementIds(currentActiveAnnouncements)
+    }
+  }, [announcementsData, dismissedAnnouncements, playSound])
 
   if (!announcementsData?.announcements) {
     return null
