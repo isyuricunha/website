@@ -9,7 +9,6 @@ import { X as XIcon, Settings as SettingsIcon, Gamepad as GamepadIcon, Eye as Ey
 import { useTranslations, useLocale, useMessages } from '@tszhong0411/i18n/client'
 import MascotGame from './mascot-game'
 import AIChatInterface from './ai-chat-interface'
-import PuterAIPlayground from './puter-ai-playground'
 
 type VirtualMascotProps = {
   hidden?: boolean
@@ -55,7 +54,6 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     showMenu: false,
     showContact: false,
     showAIChat: false,
-    showPuterAIPlayground: false,
     isKonamiMode: false,
     konamiSequence: [] as number[],
     isHovering: false,
@@ -71,7 +69,6 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   }))
 
   const mascotRef = useRef<HTMLButtonElement | null>(null)
-  const [showPuterAIPlayground, setShowPuterAIPlayground] = useState(false)
   const [mounted, setMounted] = useState(false)
 
   // Helper functions to update state
@@ -300,10 +297,10 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
   // Idle timer for fun facts
   useEffect(() => {
-    if (!state.preferences.speechBubbles || state.autoShowMessage || state.showContact || state.showGame || state.showSettings || state.showMenu || state.showAIChat || state.showPuterAIPlayground) return
+    if (!state.preferences.speechBubbles || state.autoShowMessage || state.showContact || state.showGame || state.showSettings || state.showMenu || state.showAIChat) return
 
     const timer = setTimeout(() => {
-      if (!state.autoShowMessage && !state.showContact && !state.showGame && !state.showSettings && !state.showMenu && !state.showAIChat && !state.showPuterAIPlayground) {
+      if (!state.autoShowMessage && !state.showContact && !state.showGame && !state.showSettings && !state.showMenu && !state.showAIChat) {
         enqueueMessage(getIdleMessage(), 4000)
       }
     }, 25000) // 25 seconds idle
@@ -311,7 +308,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     return () => {
       if (timer) clearTimeout(timer)
     }
-  }, [state.preferences.speechBubbles, state.autoShowMessage, state.showContact, state.showGame, state.showSettings, state.showMenu, state.showAIChat, state.showPuterAIPlayground])
+  }, [state.preferences.speechBubbles, state.autoShowMessage, state.showContact, state.showGame, state.showSettings, state.showMenu, state.showAIChat])
 
   // Track current page path for contextual messages (language-aware)
   const pathname = usePathname()
@@ -494,7 +491,6 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       showSettings: false,
       showGame: false,
       showAIChat: false,
-      showPuterAIPlayground: false
     })
   }
 
@@ -525,7 +521,6 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       showMenu: false,
       showGame: false,
       showAIChat: false,
-      showPuterAIPlayground: false
     })
 
     // Use a small timeout to ensure the hide animation completes before showing new content
