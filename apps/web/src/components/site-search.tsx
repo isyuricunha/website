@@ -3,12 +3,13 @@
 import { useTranslations } from '@tszhong0411/i18n/client'
 import { Card, CardContent, Input } from '@tszhong0411/ui'
 import { Search, FileText, User, Music, Code, Calendar } from 'lucide-react'
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useMemo, useCallback, useEffect } from 'react'
 import { useRouter } from '@tszhong0411/i18n/routing'
 
 import { allPosts } from 'content-collections'
 import { allProjects } from 'content-collections'
 import Link from './link'
+import { HighlightText } from './ui/highlight-text'
 
 type SearchResult = {
   id: string
@@ -20,9 +21,14 @@ type SearchResult = {
   date?: string
 }
 
+const RECENT_SEARCHES_KEY = 'site_search_recent'
+const MAX_RECENT_SEARCHES = 5
+
 const SiteSearch = () => {
   const [query, setQuery] = useState('')
   const [isOpen, setIsOpen] = useState(false)
+  const [recentSearches, setRecentSearches] = useState<string[]>([])
+  const [selectedIndex, setSelectedIndex] = useState(-1)
   const t = useTranslations()
   const router = useRouter()
 
@@ -87,6 +93,32 @@ const SiteSearch = () => {
     return results
   }, [t])
 
+  // Load recent searches from localStorage
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(RECENT_SEARCHES_KEY)
+      if (saved) {
+        setRecentSearches(JSON.parse(saved))
+      }
+    } catch (error) {
+      console.error('Error loading recent searches:', error)
+    }
+  }, [])
+
+  // Save search to recent searches
+  const saveRecentSearch = useCallback((searchTerm: string) => {
+    if (!searchTerm.trim()) return
+    
+    try {
+      const updated = [searchTerm, ...recentSearches.filter(s => s !== searchTerm)]
+        .slice(0, MAX_RECENT_SEARCHES)
+      setRecentSearches(updated)
+      localStorage.setItem(RECENT_SEARCHES_KEY, JSON.stringify(updated))
+    } catch (error) {
+      console.error('Error saving recent search:', error)
+    }
+  }, [recentSearches])
+
   // Filter results based on query
   const filteredResults = useMemo(() => {
     if (!query.trim()) return []
@@ -100,18 +132,57 @@ const SiteSearch = () => {
       .slice(0, 8) // Limit results
   }, [query, searchableContent])
 
-  const handleResultClick = useCallback((href: string) => {
+  // Show recent searches when no query
+  const showRecentSearches = !query.trim() && recentSearches.length > 0
+  const allResults = showRecentSearches ? [] : filteredResults
+  const totalItems = showRecentSearches ? recentSearches.length : allResults.length
+
+  const handleResultClick = useCallback((href: string, searchTerm?: string) => {
+    if (searchTerm) {
+      saveRecentSearch(searchTerm)
+    }
     setIsOpen(false)
     setQuery('')
+    setSelectedIndex(-1)
     router.push(href)
-  }, [router])
+  }, [router, saveRecentSearch])
+
+  const handleRecentSearchClick = useCallback((searchTerm: string) => {
+    setQuery(searchTerm)
+    setSelectedIndex(-1)
+    // Don't close dropdown, let user see results
+  }, [])
 
   const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
     if (e.key === 'Escape') {
       setIsOpen(false)
       setQuery('')
+      setSelectedIndex(-1)
+      return
     }
-  }, [])
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault()
+      setSelectedIndex(prev => 
+        prev < totalItems - 1 ? prev + 1 : prev
+      )
+    }
+
+    if (e.key === 'ArrowUp') {
+      e.preventDefault()
+      setSelectedIndex(prev => prev > -1 ? prev - 1 : -1)
+    }
+
+    if (e.key === 'Enter' && selectedIndex >= 0) {
+      e.preventDefault()
+      if (showRecentSearches) {
+        handleRecentSearchClick(recentSearches[selectedIndex])
+      } else {
+        const result = allResults[selectedIndex]
+        handleResultClick(result.href, query)
+      }
+    }
+  }, [totalItems, selectedIndex, showRecentSearches, recentSearches, allResults, handleRecentSearchClick, handleResultClick, query])
 
   return (
     <div className='relative'>
@@ -123,28 +194,58 @@ const SiteSearch = () => {
           value={query}
           onChange={(e) => {
             setQuery(e.target.value)
-            setIsOpen(e.target.value.length > 0)
+            setSelectedIndex(-1)
+            setIsOpen(e.target.value.length > 0 || recentSearches.length > 0)
           }}
-          onFocus={() => setIsOpen(query.length > 0)}
+          onFocus={() => setIsOpen(query.length > 0 || recentSearches.length > 0)}
           onKeyDown={handleKeyDown}
           className='pl-10 text-sm'
         />
       </div>
 
-      {isOpen && filteredResults.length > 0 && (
+      {isOpen && (showRecentSearches || filteredResults.length > 0) && (
         <>
           <div 
             className='fixed inset-0 z-40' 
-            onClick={() => setIsOpen(false)}
+            onClick={() => {
+              setIsOpen(false)
+              setSelectedIndex(-1)
+            }}
           />
           <Card className='absolute top-full mt-2 w-full z-50 max-h-96 overflow-y-auto'>
             <CardContent className='p-2'>
               <div className='space-y-1'>
-                {filteredResults.map((result) => (
+                {/* Recent Searches */}
+                {showRecentSearches && (
+                  <>
+                    <div className='px-3 py-2 text-xs font-medium text-muted-foreground border-b'>
+                      Recent Searches
+                    </div>
+                    {recentSearches.map((searchTerm, index) => (
+                      <button
+                        key={`recent-${searchTerm}-${index}`}
+                        onClick={() => handleRecentSearchClick(searchTerm)}
+                        className={`w-full text-left p-3 rounded-lg transition-colors group ${
+                          selectedIndex === index ? 'bg-accent' : 'hover:bg-muted/50'
+                        }`}
+                      >
+                        <div className='flex items-center gap-3'>
+                          <Search className='h-4 w-4 text-muted-foreground' />
+                          <span className='text-sm'>{searchTerm}</span>
+                        </div>
+                      </button>
+                    ))}
+                  </>
+                )}
+                
+                {/* Search Results */}
+                {filteredResults.map((result, index) => (
                   <button
-                    key={result.id}
-                    onClick={() => handleResultClick(result.href)}
-                    className='w-full text-left p-3 rounded-lg hover:bg-muted/50 transition-colors group'
+                    key={`result-${result.id}-${result.type}`}
+                    onClick={() => handleResultClick(result.href, query)}
+                    className={`w-full text-left p-3 rounded-lg transition-colors group ${
+                      selectedIndex === index ? 'bg-accent' : 'hover:bg-muted/50'
+                    }`}
                   >
                     <div className='flex items-start gap-3'>
                       <div className='flex-shrink-0 mt-0.5 text-muted-foreground group-hover:text-foreground'>
@@ -153,14 +254,14 @@ const SiteSearch = () => {
                       <div className='flex-1 min-w-0'>
                         <div className='flex items-center gap-2 mb-1'>
                           <h4 className='text-sm font-medium truncate group-hover:text-primary'>
-                            {result.title}
+                            <HighlightText text={result.title} searchTerm={query} />
                           </h4>
                           <span className='text-xs text-muted-foreground px-2 py-0.5 bg-muted rounded-full'>
                             {result.type}
                           </span>
                         </div>
                         <p className='text-xs text-muted-foreground line-clamp-2'>
-                          {result.description}
+                          <HighlightText text={result.description} searchTerm={query} />
                         </p>
                         {result.date && (
                           <div className='flex items-center gap-1 mt-1'>
@@ -180,11 +281,14 @@ const SiteSearch = () => {
         </>
       )}
 
-      {isOpen && query.length > 0 && filteredResults.length === 0 && (
+      {isOpen && query.length > 0 && filteredResults.length === 0 && !showRecentSearches && (
         <>
           <div 
             className='fixed inset-0 z-40' 
-            onClick={() => setIsOpen(false)}
+            onClick={() => {
+              setIsOpen(false)
+              setSelectedIndex(-1)
+            }}
           />
           <Card className='absolute top-full mt-2 w-full z-50'>
             <CardContent className='p-4 text-center'>
