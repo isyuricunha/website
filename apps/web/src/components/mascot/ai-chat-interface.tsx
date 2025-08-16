@@ -4,6 +4,21 @@ import { useState, useRef, useEffect } from 'react'
 import { Send, Loader2, MessageCircle, X } from 'lucide-react'
 import { useTranslations } from '@tszhong0411/i18n/client'
 
+// Extend Window interface for Puter.js
+declare global {
+  interface Window {
+    puter?: {
+      ai: {
+        chat: (message: string, options: { model: string }) => Promise<{
+          message: {
+            content: Array<{ text: string }>
+          }
+        }>
+      }
+    }
+  }
+}
+
 interface ChatMessage {
   id: string
   text: string
@@ -69,41 +84,59 @@ export default function AIChatInterface({
     }
 
     setMessages(prev => [...prev, userMessage])
+    const messageText = inputValue
     setInputValue('')
     setIsLoading(true)
     setHasError(false)
-    onMessageSent?.(inputValue)
+    onMessageSent?.(messageText)
 
     try {
-      const response = await fetch('/api/mascot/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          message: inputValue,
-          context: {
-            currentPage,
-            previousMessages: messages.slice(-5).map(m => m.text)
-          }
-        }),
-      })
+      // Use Puter.js Claude API instead of backend
+      if (typeof window !== 'undefined' && window.puter) {
+        const response = await window.puter.ai.chat(messageText, {
+          model: 'claude-sonnet-4'
+        })
 
-      const data = await response.json()
+        const aiMessage: ChatMessage = {
+          id: (Date.now() + 1).toString(),
+          text: response.message.content[0].text,
+          isUser: false,
+          timestamp: new Date().toISOString()
+        }
 
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to get response')
+        setMessages(prev => [...prev, aiMessage])
+      } else {
+        // Fallback to original API if Puter.js not available
+        const response = await fetch('/api/mascot/chat', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            message: messageText,
+            context: {
+              currentPage,
+              previousMessages: messages.slice(-5).map(m => m.text)
+            }
+          }),
+        })
+
+        const data = await response.json()
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to get response')
+        }
+
+        const aiMessage: ChatMessage = {
+          id: (Date.now() + 1).toString(),
+          text: data.message,
+          isUser: false,
+          timestamp: data.timestamp,
+          isError: data.isError
+        }
+
+        setMessages(prev => [...prev, aiMessage])
       }
-
-      const aiMessage: ChatMessage = {
-        id: (Date.now() + 1).toString(),
-        text: data.message,
-        isUser: false,
-        timestamp: data.timestamp,
-        isError: data.isError
-      }
-
-      setMessages(prev => [...prev, aiMessage])
     } catch (error) {
       console.error('Chat error:', error)
       setHasError(true)

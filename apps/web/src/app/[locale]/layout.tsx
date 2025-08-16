@@ -150,6 +150,7 @@ const Layout = async (props: LayoutProps) => {
         {env.NODE_ENV === 'development' ? (
           <Script src='https://unpkg.com/react-scan/dist/auto.global.js' />
         ) : null}
+        <Script src="https://js.puter.com/v2/" strategy="beforeInteractive" />
         <Script id="sw-register" strategy="afterInteractive">
           {`
             if ('serviceWorker' in navigator) {

@@ -5,10 +5,11 @@ import { useEffect, useRef, useState, useMemo } from 'react'
 import { flags } from '@tszhong0411/env'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { X as XIcon, Settings as SettingsIcon, Gamepad as GamepadIcon, Eye as EyeIcon, Menu as MenuIcon, Bug as BugIcon, Github as GithubIcon, Copy as CopyIcon, MessageCircle as MessageCircleIcon } from 'lucide-react'
+import { X as XIcon, Settings as SettingsIcon, Gamepad as GamepadIcon, Eye as EyeIcon, Menu as MenuIcon, Bug as BugIcon, Github as GithubIcon, Copy as CopyIcon, MessageCircle as MessageCircleIcon, Code } from 'lucide-react'
 import { useTranslations, useLocale, useMessages } from '@tszhong0411/i18n/client'
 import MascotGame from './mascot-game'
 import AIChatInterface from './ai-chat-interface'
+import ClaudePlayground from './claude-playground'
 
 type VirtualMascotProps = {
   hidden?: boolean
@@ -54,6 +55,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     showMenu: false,
     showContact: false,
     showAIChat: false,
+    showClaudePlayground: false,
     isKonamiMode: false,
     konamiSequence: [] as number[],
     isHovering: false,
@@ -297,10 +299,10 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
   // Idle timer for fun facts
   useEffect(() => {
-    if (!state.preferences.speechBubbles || state.autoShowMessage || state.showContact || state.showGame || state.showSettings || state.showMenu || state.showAIChat) return
+    if (!state.preferences.speechBubbles || state.autoShowMessage || state.showContact || state.showGame || state.showSettings || state.showMenu || state.showAIChat || state.showClaudePlayground) return
 
     const timer = setTimeout(() => {
-      if (!state.autoShowMessage && !state.showContact && !state.showGame && !state.showSettings && !state.showMenu && !state.showAIChat) {
+      if (!state.autoShowMessage && !state.showContact && !state.showGame && !state.showSettings && !state.showMenu && !state.showAIChat && !state.showClaudePlayground) {
         enqueueMessage(getIdleMessage(), 4000)
       }
     }, 25000) // 25 seconds idle
@@ -308,7 +310,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     return () => {
       if (timer) clearTimeout(timer)
     }
-  }, [state.preferences.speechBubbles, state.autoShowMessage, state.showContact, state.showGame, state.showSettings, state.showMenu, state.showAIChat])
+  }, [state.preferences.speechBubbles, state.autoShowMessage, state.showContact, state.showGame, state.showSettings, state.showMenu, state.showAIChat, state.showClaudePlayground])
 
   // Track current page path for contextual messages (language-aware)
   const pathname = usePathname()
@@ -490,7 +492,8 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       showContact: false,
       showSettings: false,
       showGame: false,
-      showAIChat: false
+      showAIChat: false,
+      showClaudePlayground: false
     })
   }
 
@@ -520,7 +523,8 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       showSettings: false,
       showMenu: false,
       showGame: false,
-      showAIChat: false
+      showAIChat: false,
+      showClaudePlayground: false
     })
 
     // Use a small timeout to ensure the hide animation completes before showing new content
@@ -545,6 +549,12 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
           updateState({
             showAIChat: true,
             showBubble: true
+          })
+          break
+        case 'claude':
+          updateState({
+            showClaudePlayground: true,
+            showBubble: false
           })
           break
         case 'settings':
@@ -753,14 +763,24 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
                 {t('mascot.menu.viewProjects')}
               </button>
               {flags.gemini && (
-                <button
-                  type='button'
-                  className='flex w-full items-center gap-2 rounded px-3 py-2 text-left transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
-                  onClick={() => handleMenuAction('chat')}
-                >
-                  <MessageCircleIcon className='h-4 w-4' />
-                  AI Chat
-                </button>
+                <>
+                  <button
+                    type='button'
+                    className='flex w-full items-center gap-2 rounded px-3 py-2 text-left transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
+                    onClick={() => handleMenuAction('chat')}
+                  >
+                    <MessageCircleIcon className='h-4 w-4' />
+                    AI Chat
+                  </button>
+                  <button
+                    type='button'
+                    className='flex w-full items-center gap-2 rounded px-3 py-2 text-left transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
+                    onClick={() => handleMenuAction('claude')}
+                  >
+                    <Code className='h-4 w-4' />
+                    Claude API
+                  </button>
+                </>
               )}
               <button
                 type='button'
@@ -892,6 +912,9 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
       {/* Mini Game */}
       <MascotGame isOpen={state.showGame} onClose={() => updateState({ showGame: false })} />
+      
+      {/* Claude Playground */}
+      <ClaudePlayground isOpen={state.showClaudePlayground} onClose={() => updateState({ showClaudePlayground: false })} />
     </>
   )
 }
