@@ -403,14 +403,46 @@
             "copy": "Copiar e-mail"
         },
         "aiChat": {
-            "title": "Conversar com a Yue",
+            "title": "Conversar com Yue",
             "clear": "Limpar",
             "welcomeMessage": "Oi! Eu sou a Yue, sua assistente de IA! 🤖 Me pergunte qualquer coisa sobre o site, tópicos de tecnologia, ou apenas converse!",
-            "errorMessage": "Desculpe, estou com problemas agora. Tente novamente mais tarde! 😅",
+            "errorMessage": "Desculpe, estou tendo problemas agora. Tente novamente mais tarde! 😅",
             "thinking": "Yue está pensando...",
             "placeholder": "Me pergunte qualquer coisa...",
             "connectionError": "Problemas de conexão. Tente novamente.",
-            "footer": "Alimentado por Gemini AI • Pressione Enter para enviar"
+            "footer": "Powered by Yue AI by Yuri & Puter.js",
+            "modes": {
+                "chat": "Conversar",
+                "imageGen": "Gerar",
+                "imageAnalyze": "Analisar",
+                "speech": "Fala"
+            },
+            "descriptions": {
+                "chat": "Conversa de texto com IA",
+                "imageGen": "Criar imagens a partir de prompts de texto",
+                "imageAnalyze": "Analisar e descrever imagens",
+                "speech": "Converter texto em fala"
+            },
+            "placeholders": {
+                "chat": "Digite sua mensagem...",
+                "imageGen": "Descreva a imagem que você quer gerar...",
+                "imageAnalyze": "Pergunte sobre a imagem enviada...",
+                "speech": "Digite o texto para converter em fala..."
+            },
+            "titles": {
+                "chat": "Chat IA",
+                "imageGen": "Gerador de Imagens",
+                "imageAnalyze": "Analisador de Imagens",
+                "speech": "Texto para Fala"
+            },
+            "upload": "Enviar imagem para analisar",
+            "selected": "Selecionado: {filename}",
+            "generatedImage": "Imagem gerada:",
+            "generatedAudio": "Áudio gerado:",
+            "switchModel": "Trocar Modelo de IA",
+            "availableFeatures": "Recursos disponíveis para {model}",
+            "featureNotAvailable": "{feature} não disponível para este modelo",
+            "online": "Online"
         },
         "chatbot": {
             "title": "Conversar com a Yue",

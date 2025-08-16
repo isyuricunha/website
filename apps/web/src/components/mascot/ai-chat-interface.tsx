@@ -70,12 +70,12 @@ const AI_MODELS = [
 ]
 
 // AI Feature compatibility - Puter.js supports all features across models
-const AI_FEATURES = {
-  chat: { icon: MessageCircle, label: 'Chat', description: 'Text conversation with AI' },
-  'image-gen': { icon: Image, label: 'Generate', description: 'Create images from text prompts' },
-  'image-analyze': { icon: Eye, label: 'Analyze', description: 'Analyze and describe images' },
-  speech: { icon: Mic, label: 'Speech', description: 'Convert text to speech' }
-}
+const getAIFeatures = (t: any) => ({
+  chat: { icon: MessageCircle, label: t('mascot.aiChat.modes.chat'), description: t('mascot.aiChat.descriptions.chat') },
+  'image-gen': { icon: Image, label: t('mascot.aiChat.modes.imageGen'), description: t('mascot.aiChat.descriptions.imageGen') },
+  'image-analyze': { icon: Eye, label: t('mascot.aiChat.modes.imageAnalyze'), description: t('mascot.aiChat.descriptions.imageAnalyze') },
+  speech: { icon: Mic, label: t('mascot.aiChat.modes.speech'), description: t('mascot.aiChat.descriptions.speech') }
+})
 
 export default function AIChatInterface({ 
   isOpen, 
@@ -210,7 +210,7 @@ User message: ${userMessage}`
             const imageElement = await window.puter.ai.txt2img(messageText)
             aiMessage = {
               id: (Date.now() + 1).toString(),
-              text: 'Generated image:',
+              text: t('mascot.aiChat.generatedImage'),
               isUser: false,
               timestamp: new Date().toISOString(),
               type: 'image',
@@ -240,7 +240,7 @@ User message: ${userMessage}`
             })
             aiMessage = {
               id: (Date.now() + 1).toString(),
-              text: 'Generated audio:',
+              text: t('mascot.aiChat.generatedAudio'),
               isUser: false,
               timestamp: new Date().toISOString(),
               type: 'audio',
@@ -321,6 +321,7 @@ User message: ${userMessage}`
   if (!isOpen) return null
 
   const getModeIcon = () => {
+    const AI_FEATURES = getAIFeatures(t)
     const feature = AI_FEATURES[chatMode]
     return feature ? <feature.icon className="h-4 w-4" /> : <MessageCircle className="h-4 w-4" />
   }
@@ -331,20 +332,21 @@ User message: ${userMessage}`
 
   const getPlaceholder = () => {
     switch (chatMode) {
-      case 'image-gen': return 'Describe the image you want to generate...'
-      case 'image-analyze': return 'Ask about the uploaded image...'
-      case 'speech': return 'Enter text to convert to speech...'
-      default: return 'Type your message...'
+      case 'image-gen': return t('mascot.aiChat.placeholders.imageGen')
+      case 'image-analyze': return t('mascot.aiChat.placeholders.imageAnalyze')
+      case 'speech': return t('mascot.aiChat.placeholders.speech')
+      default: return t('mascot.aiChat.placeholders.chat')
     }
   }
 
   const getModeTitle = () => {
+    const AI_FEATURES = getAIFeatures(t)
     const feature = AI_FEATURES[chatMode]
-    return feature?.label || 'AI Chat'
+    return feature?.label || t('mascot.aiChat.titles.chat')
   }
 
   return (
-    <div className="absolute bottom-full right-0 mb-2 w-80 sm:w-96 max-h-[500px] bg-popover/95 backdrop-blur-sm border rounded-2xl shadow-2xl overflow-hidden">
+    <div className="absolute bottom-full right-0 mb-2 w-96 sm:w-[28rem] max-h-[600px] bg-popover/95 backdrop-blur-sm border rounded-2xl shadow-2xl overflow-hidden">
       {/* Header */}
       <div className="flex items-center justify-between p-3 border-b bg-gradient-to-r from-primary/10 to-primary/5">
         <div className="flex items-center gap-2">
@@ -356,14 +358,14 @@ User message: ${userMessage}`
               {getModeTitle()}
             </span>
             <span className="text-xs text-muted-foreground">
-              {AI_MODELS.find(m => m.value === selectedModel)?.label || 'AI Model'}
+              {AI_MODELS.find(m => m.value === selectedModel)?.label || t('mascot.aiChat.switchModel')}
             </span>
           </div>
         </div>
         <div className="flex items-center gap-1">
           {/* Quick Mode Switcher */}
           <div className="flex items-center gap-0.5 bg-muted/30 rounded-lg p-0.5">
-            {Object.entries(AI_FEATURES).map(([featureKey, feature]) => {
+            {Object.entries(getAIFeatures(t)).map(([featureKey, feature]) => {
               const isAvailable = isFeatureAvailable(featureKey)
               const isActive = chatMode === featureKey
               return (
@@ -378,7 +380,7 @@ User message: ${userMessage}`
                       ? 'hover:bg-muted/60 text-muted-foreground hover:text-foreground'
                       : 'text-muted-foreground/30 cursor-not-allowed'
                   }`}
-                  title={isAvailable ? feature.description : `${feature.label} not available`}
+                  title={isAvailable ? feature.description : t('mascot.aiChat.featureNotAvailable', { feature: feature.label })}
                 >
                   <feature.icon className="h-3 w-3" />
                   {!isAvailable && (
@@ -400,7 +402,7 @@ User message: ${userMessage}`
               onClick={clearChat}
               className="text-xs text-muted-foreground hover:text-foreground px-2 py-1 rounded transition-colors"
             >
-              Clear
+              {t('mascot.aiChat.clear')}
             </button>
           )}
           <button
@@ -416,7 +418,7 @@ User message: ${userMessage}`
       {showSettings && (
         <div className="p-3 border-b bg-gradient-to-r from-muted/30 to-muted/10 space-y-3">
           <div>
-            <label className="text-xs font-semibold text-foreground mb-2 block">AI Model</label>
+            <label className="text-xs font-semibold text-foreground mb-2 block">{t('mascot.aiChat.switchModel')}</label>
             <select
               value={selectedModel}
               onChange={(e) => setSelectedModel(e.target.value)}
@@ -430,9 +432,9 @@ User message: ${userMessage}`
             </select>
           </div>
           <div>
-            <label className="text-xs font-semibold text-foreground mb-2 block">AI Mode</label>
+            <label className="text-xs font-semibold text-foreground mb-2 block">{t('mascot.aiChat.modes.chat')}</label>
             <div className="grid grid-cols-2 gap-1.5">
-              {Object.entries(AI_FEATURES).map(([featureKey, feature]) => {
+              {Object.entries(getAIFeatures(t)).map(([featureKey, feature]) => {
                 const isAvailable = isFeatureAvailable(featureKey)
                 const isActive = chatMode === featureKey
                 return (
@@ -447,7 +449,7 @@ User message: ${userMessage}`
                         ? 'bg-muted/60 hover:bg-muted/80 text-muted-foreground hover:text-foreground'
                         : 'bg-muted/30 text-muted-foreground/50 cursor-not-allowed'
                     }`}
-                    title={isAvailable ? feature.description : `${feature.label} not available for this model`}
+                    title={isAvailable ? feature.description : t('mascot.aiChat.featureNotAvailable', { feature: feature.label })}
                   >
                     <feature.icon className="h-3.5 w-3.5" />
                     {feature.label}
@@ -461,7 +463,7 @@ User message: ${userMessage}`
             <div className="mt-2 text-xs text-muted-foreground/80">
               <div className="flex items-center gap-1">
                 <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                <span>Available features for {getCurrentModel()?.label}</span>
+                <span>{t('mascot.aiChat.availableFeatures', { model: getCurrentModel()?.label })}</span>
               </div>
             </div>
           </div>
@@ -469,7 +471,7 @@ User message: ${userMessage}`
       )}
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 max-h-64 bg-gradient-to-b from-background/50 to-background/80">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 max-h-80 bg-gradient-to-b from-background/50 to-background/80">
         {messages.map((message) => (
           <div
             key={message.id}
@@ -527,7 +529,7 @@ User message: ${userMessage}`
               </div>
               <div className="flex items-center gap-2">
                 <Loader2 className="h-4 w-4 animate-spin text-primary" />
-                <span className="text-xs">Thinking...</span>
+                <span className="text-xs">{t('mascot.aiChat.thinking')}</span>
               </div>
             </div>
           </div>
@@ -553,7 +555,7 @@ User message: ${userMessage}`
             >
               <Upload className="h-4 w-4 text-primary" />
               <span className={imageFile ? 'text-foreground' : 'text-muted-foreground'}>
-                {imageFile ? `Selected: ${imageFile.name}` : 'Upload image to analyze'}
+                {imageFile ? t('mascot.aiChat.selected', { filename: imageFile.name }) : t('mascot.aiChat.upload')}
               </span>
             </button>
           </div>
@@ -567,9 +569,24 @@ User message: ${userMessage}`
               onChange={(e) => setInputValue(e.target.value)}
               onKeyPress={handleKeyPress}
               placeholder={getPlaceholder()}
-              className="w-full px-4 py-3 text-sm bg-background/80 border border-border/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-200 placeholder:text-muted-foreground/60"
+              className="w-full px-4 py-3 pr-20 text-sm bg-background/80 border border-border/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-200 placeholder:text-muted-foreground/60"
               disabled={isLoading}
             />
+            {/* AI Model Switcher in Input */}
+            <div className="absolute right-2 top-1/2 transform -translate-y-1/2">
+              <select
+                value={selectedModel}
+                onChange={(e) => setSelectedModel(e.target.value)}
+                className="text-xs bg-transparent border-none focus:outline-none text-muted-foreground hover:text-foreground cursor-pointer pr-1"
+                title="Switch AI Model"
+              >
+                {AI_MODELS.map((model) => (
+                  <option key={model.value} value={model.value} className="bg-popover text-foreground">
+                    {model.label.split(' ')[0]}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
           <button
             onClick={sendMessage}
@@ -584,22 +601,12 @@ User message: ${userMessage}`
           </button>
         </div>
         <div className="flex items-center justify-between mt-3">
-          <div className="flex items-center gap-2">
-            <p className="text-xs text-muted-foreground/80">
-              Powered by Puter.js • Free unlimited AI access
-            </p>
-            <div className="flex items-center gap-1">
-              {getAvailableFeatures().map((feature) => {
-                const featureInfo = AI_FEATURES[feature]
-                return (
-                  <div key={feature} className="w-1.5 h-1.5 rounded-full bg-green-500" title={`${featureInfo?.label} available`} />
-                )
-              })}
-            </div>
-          </div>
+          <p className="text-xs text-muted-foreground/80">
+            {t('mascot.aiChat.footer')}
+          </p>
           <div className="flex items-center gap-1 text-xs text-muted-foreground/60">
             <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-            <span>Online</span>
+            <span>{t('mascot.aiChat.online')}</span>
           </div>
         </div>
       </div>

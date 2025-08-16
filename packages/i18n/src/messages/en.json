@@ -410,7 +410,39 @@
       "thinking": "Yue is thinking...",
       "placeholder": "Ask me anything...",
       "connectionError": "Having trouble connecting. Please try again.",
-      "footer": "Powered by Gemini AI • Press Enter to send"
+      "footer": "Powered by Yue AI by Yuri & Puter.js",
+      "modes": {
+        "chat": "Chat",
+        "imageGen": "Generate",
+        "imageAnalyze": "Analyze",
+        "speech": "Speech"
+      },
+      "descriptions": {
+        "chat": "Text conversation with AI",
+        "imageGen": "Create images from text prompts",
+        "imageAnalyze": "Analyze and describe images",
+        "speech": "Convert text to speech"
+      },
+      "placeholders": {
+        "chat": "Type your message...",
+        "imageGen": "Describe the image you want to generate...",
+        "imageAnalyze": "Ask about the uploaded image...",
+        "speech": "Enter text to convert to speech..."
+      },
+      "titles": {
+        "chat": "AI Chat",
+        "imageGen": "Image Generator",
+        "imageAnalyze": "Image Analyzer",
+        "speech": "Text to Speech"
+      },
+      "upload": "Upload image to analyze",
+      "selected": "Selected: {filename}",
+      "generatedImage": "Generated image:",
+      "generatedAudio": "Generated audio:",
+      "switchModel": "Switch AI Model",
+      "availableFeatures": "Available features for {model}",
+      "featureNotAvailable": "{feature} not available for this model",
+      "online": "Online"
     },
     "chatbot": {
       "title": "Chat with Yue",
