@@ -58,16 +58,24 @@ interface AIChatInterfaceProps {
 }
 
 const AI_MODELS = [
-  { value: 'gpt-4o', label: 'GPT-4o (OpenAI)' },
-  { value: 'gpt-4o-mini', label: 'GPT-4o Mini (OpenAI)' },
-  { value: 'claude-sonnet-4', label: 'Claude Sonnet 4 (Anthropic)' },
-  { value: 'claude-opus-4', label: 'Claude Opus 4 (Anthropic)' },
-  { value: 'claude-3-5-sonnet', label: 'Claude 3.5 Sonnet (Anthropic)' },
-  { value: 'gemini-2.0-flash', label: 'Gemini 2.0 Flash (Google)' },
-  { value: 'gemini-1.5-flash', label: 'Gemini 1.5 Flash (Google)' },
-  { value: 'deepseek-chat', label: 'DeepSeek Chat' },
-  { value: 'grok-beta', label: 'Grok Beta (xAI)' }
+  { value: 'gpt-4o', label: 'GPT-4o (OpenAI)', features: ['chat', 'image-gen', 'image-analyze', 'speech'] },
+  { value: 'gpt-4o-mini', label: 'GPT-4o Mini (OpenAI)', features: ['chat', 'image-gen', 'image-analyze', 'speech'] },
+  { value: 'claude-sonnet-4', label: 'Claude Sonnet 4 (Anthropic)', features: ['chat', 'image-gen', 'image-analyze', 'speech'] },
+  { value: 'claude-opus-4', label: 'Claude Opus 4 (Anthropic)', features: ['chat', 'image-gen', 'image-analyze', 'speech'] },
+  { value: 'claude-3-5-sonnet', label: 'Claude 3.5 Sonnet (Anthropic)', features: ['chat', 'image-gen', 'image-analyze', 'speech'] },
+  { value: 'gemini-2.0-flash', label: 'Gemini 2.0 Flash (Google)', features: ['chat', 'image-gen', 'image-analyze', 'speech'] },
+  { value: 'gemini-1.5-flash', label: 'Gemini 1.5 Flash (Google)', features: ['chat', 'image-gen', 'image-analyze', 'speech'] },
+  { value: 'deepseek-chat', label: 'DeepSeek Chat', features: ['chat', 'image-gen', 'image-analyze', 'speech'] },
+  { value: 'grok-beta', label: 'Grok Beta (xAI)', features: ['chat', 'image-gen', 'image-analyze', 'speech'] }
 ]
+
+// AI Feature compatibility - Puter.js supports all features across models
+const AI_FEATURES = {
+  chat: { icon: MessageCircle, label: 'Chat', description: 'Text conversation with AI' },
+  'image-gen': { icon: Image, label: 'Generate', description: 'Create images from text prompts' },
+  'image-analyze': { icon: Eye, label: 'Analyze', description: 'Analyze and describe images' },
+  speech: { icon: Mic, label: 'Speech', description: 'Convert text to speech' }
+}
 
 export default function AIChatInterface({ 
   isOpen, 
@@ -81,7 +89,7 @@ export default function AIChatInterface({
   const [isLoading, setIsLoading] = useState(false)
   const [hasError, setHasError] = useState(false)
   const [selectedModel, setSelectedModel] = useState('claude-sonnet-4')
-  const [chatMode, setChatMode] = useState<'text' | 'image-gen' | 'image-analyze' | 'speech'>('text')
+  const [chatMode, setChatMode] = useState<'chat' | 'image-gen' | 'image-analyze' | 'speech'>('chat')
   const [showSettings, setShowSettings] = useState(false)
   const [imageFile, setImageFile] = useState<File | null>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
@@ -121,6 +129,45 @@ export default function AIChatInterface({
     }
   }
 
+  const createSystemPrompt = (userMessage: string) => {
+    return `You are Yue, the friendly virtual mascot made by Yuri Cunha for his personal website.
+
+Personality:
+- Friendly, helpful, and enthusiastic
+- Knowledgeable about web development, databases, and technology
+- Speaks in a casual, approachable tone
+- Sometimes uses emojis to be more expressive
+- You can talk in any language
+- Reply in the same language the user speaks to you
+
+Context about the website:
+- Owner: Yuri Cunha, a database and server specialist from Brazil
+- Focus: Modern web development, server/warehouse infrastructure, database optimization, and tech projects
+- Current page: ${currentPage || 'unknown'}
+- User's previous interactions: ${messages.slice(-3).map(m => m.text).join(', ') || 'none'}
+
+About Yuri:
+- Yuri is a Database Administrator (DBA) and Server Infrastructure Specialist
+- He has participated in projects using Go programming language, profile ranking via GitHub API, and has helped fix bugs alongside the GitHub team
+- Blog: https://yuricunha.com/blog
+- PC/Setup/Stacks: https://yuricunha.com/
+- Guestbook: https://yuricunha.com/guestbook
+- Projects: https://yuricunha.com/projects (functional with GitHub API integration, in development)
+- About: https://yuricunha.com/about (may not be up to date)
+- Email: me@yuricunha.com
+- Music he listens to: https://yuricunha.com/spotify
+- His GitHub: https://github.com/isyuricunha
+
+Guidelines:
+- If asked about technical topics, provide helpful but brief explanations
+- If asked about Yuri or the website, share relevant information
+- For general questions, be helpful but stay in character as the website mascot
+- Don't provide very long explanations unless specifically requested
+- Be concise and engaging
+
+User message: ${userMessage}`
+  }
+
   const sendMessage = async () => {
     if ((!inputValue.trim() && !imageFile) || isLoading) return
 
@@ -145,8 +192,9 @@ export default function AIChatInterface({
         let aiMessage: ChatMessage
 
         switch (chatMode) {
-          case 'text':
-            const response = await window.puter.ai.chat(messageText, {
+          case 'chat':
+            const systemPrompt = createSystemPrompt(messageText)
+            const response = await window.puter.ai.chat(systemPrompt, {
               model: selectedModel
             })
             aiMessage = {
@@ -181,7 +229,7 @@ export default function AIChatInterface({
               type: 'text'
             }
             setImageFile(null)
-            setChatMode('text')
+            setChatMode('chat')
             break
 
           case 'speech':
@@ -273,13 +321,13 @@ export default function AIChatInterface({
   if (!isOpen) return null
 
   const getModeIcon = () => {
-    switch (chatMode) {
-      case 'image-gen': return <Image className="h-4 w-4" />
-      case 'image-analyze': return <Eye className="h-4 w-4" />
-      case 'speech': return <Mic className="h-4 w-4" />
-      default: return <MessageCircle className="h-4 w-4" />
-    }
+    const feature = AI_FEATURES[chatMode]
+    return feature ? <feature.icon className="h-4 w-4" /> : <MessageCircle className="h-4 w-4" />
   }
+
+  const getCurrentModel = () => AI_MODELS.find(m => m.value === selectedModel)
+  const getAvailableFeatures = () => getCurrentModel()?.features || ['chat']
+  const isFeatureAvailable = (feature: string) => getAvailableFeatures().includes(feature)
 
   const getPlaceholder = () => {
     switch (chatMode) {
@@ -290,23 +338,56 @@ export default function AIChatInterface({
     }
   }
 
+  const getModeTitle = () => {
+    const feature = AI_FEATURES[chatMode]
+    return feature?.label || 'AI Chat'
+  }
+
   return (
-    <div className="absolute bottom-full right-0 mb-2 w-80 sm:w-96 max-h-[500px] bg-popover border rounded-2xl shadow-lg overflow-hidden">
+    <div className="absolute bottom-full right-0 mb-2 w-80 sm:w-96 max-h-[500px] bg-popover/95 backdrop-blur-sm border rounded-2xl shadow-2xl overflow-hidden">
       {/* Header */}
-      <div className="flex items-center justify-between p-3 border-b bg-muted/50">
+      <div className="flex items-center justify-between p-3 border-b bg-gradient-to-r from-primary/10 to-primary/5">
         <div className="flex items-center gap-2">
-          {getModeIcon()}
-          <span className="font-medium text-sm">
-            {chatMode === 'text' && 'AI Chat'}
-            {chatMode === 'image-gen' && 'Image Generator'}
-            {chatMode === 'image-analyze' && 'Image Analyzer'}
-            {chatMode === 'speech' && 'Text to Speech'}
-          </span>
-          <span className="text-xs bg-primary/10 text-primary px-1.5 py-0.5 rounded">
-            {AI_MODELS.find(m => m.value === selectedModel)?.label.split(' ')[0] || 'AI'}
-          </span>
+          <div className="p-1.5 bg-primary/10 rounded-lg">
+            {getModeIcon()}
+          </div>
+          <div className="flex flex-col">
+            <span className="font-semibold text-sm leading-none">
+              {getModeTitle()}
+            </span>
+            <span className="text-xs text-muted-foreground">
+              {AI_MODELS.find(m => m.value === selectedModel)?.label || 'AI Model'}
+            </span>
+          </div>
         </div>
         <div className="flex items-center gap-1">
+          {/* Quick Mode Switcher */}
+          <div className="flex items-center gap-0.5 bg-muted/30 rounded-lg p-0.5">
+            {Object.entries(AI_FEATURES).map(([featureKey, feature]) => {
+              const isAvailable = isFeatureAvailable(featureKey)
+              const isActive = chatMode === featureKey
+              return (
+                <button
+                  key={featureKey}
+                  onClick={() => isAvailable && setChatMode(featureKey as any)}
+                  disabled={!isAvailable}
+                  className={`p-1 rounded transition-all relative ${
+                    isActive
+                      ? 'bg-primary text-primary-foreground shadow-sm' 
+                      : isAvailable
+                      ? 'hover:bg-muted/60 text-muted-foreground hover:text-foreground'
+                      : 'text-muted-foreground/30 cursor-not-allowed'
+                  }`}
+                  title={isAvailable ? feature.description : `${feature.label} not available`}
+                >
+                  <feature.icon className="h-3 w-3" />
+                  {!isAvailable && (
+                    <div className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-orange-500 rounded-full" />
+                  )}
+                </button>
+              )
+            })}
+          </div>
           <button
             onClick={() => setShowSettings(!showSettings)}
             className="p-1 hover:bg-muted rounded transition-colors"
@@ -333,13 +414,13 @@ export default function AIChatInterface({
 
       {/* Settings Panel */}
       {showSettings && (
-        <div className="p-3 border-b bg-muted/20 space-y-3">
+        <div className="p-3 border-b bg-gradient-to-r from-muted/30 to-muted/10 space-y-3">
           <div>
-            <label className="text-xs font-medium text-muted-foreground">AI Model</label>
+            <label className="text-xs font-semibold text-foreground mb-2 block">AI Model</label>
             <select
               value={selectedModel}
               onChange={(e) => setSelectedModel(e.target.value)}
-              className="w-full mt-1 px-2 py-1 text-xs bg-background border rounded"
+              className="w-full px-3 py-2 text-xs bg-background/80 border border-border/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
             >
               {AI_MODELS.map((model) => (
                 <option key={model.value} value={model.value}>
@@ -349,89 +430,105 @@ export default function AIChatInterface({
             </select>
           </div>
           <div>
-            <label className="text-xs font-medium text-muted-foreground">Mode</label>
-            <div className="flex gap-1 mt-1">
-              <button
-                onClick={() => setChatMode('text')}
-                className={`flex items-center gap-1 px-2 py-1 text-xs rounded transition-colors ${
-                  chatMode === 'text' ? 'bg-primary text-primary-foreground' : 'bg-muted hover:bg-muted/80'
-                }`}
-              >
-                <MessageCircle className="h-3 w-3" />
-                Chat
-              </button>
-              <button
-                onClick={() => setChatMode('image-gen')}
-                className={`flex items-center gap-1 px-2 py-1 text-xs rounded transition-colors ${
-                  chatMode === 'image-gen' ? 'bg-primary text-primary-foreground' : 'bg-muted hover:bg-muted/80'
-                }`}
-              >
-                <Image className="h-3 w-3" />
-                Generate
-              </button>
-              <button
-                onClick={() => setChatMode('image-analyze')}
-                className={`flex items-center gap-1 px-2 py-1 text-xs rounded transition-colors ${
-                  chatMode === 'image-analyze' ? 'bg-primary text-primary-foreground' : 'bg-muted hover:bg-muted/80'
-                }`}
-              >
-                <Eye className="h-3 w-3" />
-                Analyze
-              </button>
-              <button
-                onClick={() => setChatMode('speech')}
-                className={`flex items-center gap-1 px-2 py-1 text-xs rounded transition-colors ${
-                  chatMode === 'speech' ? 'bg-primary text-primary-foreground' : 'bg-muted hover:bg-muted/80'
-                }`}
-              >
-                <Mic className="h-3 w-3" />
-                Speech
-              </button>
+            <label className="text-xs font-semibold text-foreground mb-2 block">AI Mode</label>
+            <div className="grid grid-cols-2 gap-1.5">
+              {Object.entries(AI_FEATURES).map(([featureKey, feature]) => {
+                const isAvailable = isFeatureAvailable(featureKey)
+                const isActive = chatMode === featureKey
+                return (
+                  <button
+                    key={featureKey}
+                    onClick={() => isAvailable && setChatMode(featureKey as any)}
+                    disabled={!isAvailable}
+                    className={`flex items-center gap-1.5 px-3 py-2 text-xs rounded-lg transition-all font-medium relative ${
+                      isActive
+                        ? 'bg-primary text-primary-foreground shadow-sm' 
+                        : isAvailable
+                        ? 'bg-muted/60 hover:bg-muted/80 text-muted-foreground hover:text-foreground'
+                        : 'bg-muted/30 text-muted-foreground/50 cursor-not-allowed'
+                    }`}
+                    title={isAvailable ? feature.description : `${feature.label} not available for this model`}
+                  >
+                    <feature.icon className="h-3.5 w-3.5" />
+                    {feature.label}
+                    {!isAvailable && (
+                      <div className="absolute top-0 right-0 w-2 h-2 bg-orange-500 rounded-full transform translate-x-1 -translate-y-1" />
+                    )}
+                  </button>
+                )
+              })}
+            </div>
+            <div className="mt-2 text-xs text-muted-foreground/80">
+              <div className="flex items-center gap-1">
+                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                <span>Available features for {getCurrentModel()?.label}</span>
+              </div>
             </div>
           </div>
         </div>
       )}
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-3 space-y-3 max-h-64">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 max-h-64 bg-gradient-to-b from-background/50 to-background/80">
         {messages.map((message) => (
           <div
             key={message.id}
-            className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}
+            className={`flex ${message.isUser ? 'justify-end' : 'justify-start'} animate-in slide-in-from-bottom-2 duration-300`}
           >
             <div
-              className={`max-w-[80%] p-2 rounded-lg text-xs ${
+              className={`max-w-[85%] p-3 rounded-2xl text-xs shadow-sm ${
                 message.isUser
-                  ? 'bg-primary text-primary-foreground'
+                  ? 'bg-gradient-to-br from-primary to-primary/90 text-primary-foreground rounded-br-md'
                   : message.isError
-                  ? 'bg-destructive/10 text-destructive border border-destructive/20'
-                  : 'bg-muted text-foreground'
+                  ? 'bg-gradient-to-br from-destructive/10 to-destructive/5 text-destructive border border-destructive/20 rounded-bl-md'
+                  : 'bg-gradient-to-br from-muted/80 to-muted/60 text-foreground border border-border/30 rounded-bl-md'
               }`}
             >
-              <p className="whitespace-pre-wrap">{message.text}</p>
+              {!message.isUser && (
+                <div className="flex items-center gap-2 mb-2 pb-2 border-b border-border/20">
+                  <div className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center">
+                    <span className="text-xs font-bold text-primary">Y</span>
+                  </div>
+                  <span className="text-xs font-medium text-muted-foreground">Yue</span>
+                </div>
+              )}
+              <p className="whitespace-pre-wrap leading-relaxed">{message.text}</p>
               {message.imageUrl && (
                 <img 
                   src={message.imageUrl} 
                   alt="Shared image" 
-                  className="mt-2 max-w-full rounded border"
+                  className="mt-3 max-w-full rounded-lg border border-border/30 shadow-sm"
                   style={{ maxHeight: '150px' }}
                 />
               )}
               {message.audioUrl && (
-                <audio controls className="mt-2 w-full">
+                <audio controls className="mt-3 w-full">
                   <source src={message.audioUrl} type="audio/mpeg" />
                   Your browser does not support the audio element.
                 </audio>
+              )}
+              {!message.isUser && (
+                <div className="text-xs text-muted-foreground/60 mt-2 text-right">
+                  {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                </div>
               )}
             </div>
           </div>
         ))}
         
         {isLoading && (
-          <div className="flex justify-start">
-            <div className="bg-muted text-foreground p-2 rounded-lg flex items-center gap-2">
-              <Loader2 className="h-3 w-3 animate-spin" />
-              <span className="text-xs">{t('mascot.aiChat.thinking')}</span>
+          <div className="flex justify-start animate-in slide-in-from-bottom-2 duration-300">
+            <div className="bg-gradient-to-br from-muted/80 to-muted/60 text-foreground p-3 rounded-2xl rounded-bl-md flex items-center gap-2 border border-border/30">
+              <div className="flex items-center gap-2 mb-2 pb-2 border-b border-border/20 w-full">
+                <div className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center">
+                  <span className="text-xs font-bold text-primary">Y</span>
+                </div>
+                <span className="text-xs font-medium text-muted-foreground">Yue</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Loader2 className="h-4 w-4 animate-spin text-primary" />
+                <span className="text-xs">Thinking...</span>
+              </div>
             </div>
           </div>
         )}
@@ -440,9 +537,9 @@ export default function AIChatInterface({
       </div>
 
       {/* Input */}
-      <div className="p-3 border-t bg-muted/50">
+      <div className="p-4 border-t bg-gradient-to-r from-background/80 to-background/60 backdrop-blur-sm">
         {chatMode === 'image-analyze' && (
-          <div className="mb-2">
+          <div className="mb-3">
             <input
               ref={fileInputRef}
               type="file"
@@ -452,28 +549,32 @@ export default function AIChatInterface({
             />
             <button
               onClick={() => fileInputRef.current?.click()}
-              className="flex items-center gap-2 w-full p-2 text-xs bg-muted hover:bg-muted/80 rounded border transition-colors"
+              className="flex items-center gap-2 w-full p-3 text-xs bg-gradient-to-r from-muted/60 to-muted/40 hover:from-muted/80 hover:to-muted/60 rounded-xl border border-border/30 transition-all duration-200 font-medium"
             >
-              <Upload className="h-3 w-3" />
-              {imageFile ? `Selected: ${imageFile.name}` : 'Upload image to analyze'}
+              <Upload className="h-4 w-4 text-primary" />
+              <span className={imageFile ? 'text-foreground' : 'text-muted-foreground'}>
+                {imageFile ? `Selected: ${imageFile.name}` : 'Upload image to analyze'}
+              </span>
             </button>
           </div>
         )}
         <div className="flex gap-2">
-          <input
-            ref={inputRef}
-            type="text"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            onKeyPress={handleKeyPress}
-            placeholder={getPlaceholder()}
-            className="flex-1 px-3 py-2 text-xs bg-background border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
-            disabled={isLoading}
-          />
+          <div className="flex-1 relative">
+            <input
+              ref={inputRef}
+              type="text"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyPress={handleKeyPress}
+              placeholder={getPlaceholder()}
+              className="w-full px-4 py-3 text-sm bg-background/80 border border-border/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-200 placeholder:text-muted-foreground/60"
+              disabled={isLoading}
+            />
+          </div>
           <button
             onClick={sendMessage}
             disabled={(!inputValue.trim() && !imageFile) || isLoading}
-            className="px-3 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="px-4 py-3 bg-gradient-to-r from-primary to-primary/90 text-primary-foreground rounded-xl hover:from-primary/90 hover:to-primary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-sm hover:shadow-md disabled:shadow-none"
           >
             {isLoading ? (
               <Loader2 className="h-4 w-4 animate-spin" />
@@ -482,9 +583,25 @@ export default function AIChatInterface({
             )}
           </button>
         </div>
-        <p className="text-xs text-muted-foreground mt-2">
-          Powered by Puter.js - Free unlimited AI access
-        </p>
+        <div className="flex items-center justify-between mt-3">
+          <div className="flex items-center gap-2">
+            <p className="text-xs text-muted-foreground/80">
+              Powered by Puter.js • Free unlimited AI access
+            </p>
+            <div className="flex items-center gap-1">
+              {getAvailableFeatures().map((feature) => {
+                const featureInfo = AI_FEATURES[feature]
+                return (
+                  <div key={feature} className="w-1.5 h-1.5 rounded-full bg-green-500" title={`${featureInfo?.label} available`} />
+                )
+              })}
+            </div>
+          </div>
+          <div className="flex items-center gap-1 text-xs text-muted-foreground/60">
+            <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+            <span>Online</span>
+          </div>
+        </div>
       </div>
     </div>
   )

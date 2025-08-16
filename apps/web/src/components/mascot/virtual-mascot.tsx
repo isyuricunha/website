@@ -552,12 +552,6 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
             showBubble: true
           })
           break
-        case 'claude':
-          updateState({
-            showPuterAIPlayground: true,
-            showBubble: false
-          })
-          break
         case 'settings':
           updateState({
             showSettings: true,
@@ -773,14 +767,6 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
                     <MessageCircleIcon className='h-4 w-4' />
                     AI Chat
                   </button>
-                  <button
-                    type='button'
-                    className='flex w-full items-center gap-2 rounded px-3 py-2 text-left transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
-                    onClick={() => handleMenuAction('claude')}
-                  >
-                    <Code className='h-4 w-4' />
-                    Puter AI
-                  </button>
                 </>
               )}
               <button
@@ -914,8 +900,6 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       {/* Mini Game */}
       <MascotGame isOpen={state.showGame} onClose={() => updateState({ showGame: false })} />
       
-      {/* Puter AI Playground */}
-      <PuterAIPlayground isOpen={state.showPuterAIPlayground} onClose={() => updateState({ showPuterAIPlayground: false })} />
     </>
   )
 }
