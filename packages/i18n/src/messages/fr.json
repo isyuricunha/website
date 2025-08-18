@@ -324,6 +324,34 @@
     "site-title": "Yuri Cunha"
   },
   "not-found": "Aucune page ici aujourd'hui !",
+  "sitemap": {
+    "title": "Plan du site",
+    "description": "Vue d’ensemble complète de tous les contenus et de la navigation du site",
+    "main-pages": {
+      "title": "Pages principales",
+      "description": "Navigation centrale et fonctionnalités du site",
+      "items": {
+        "home": { "description": "Page d’accueil avec aperçu des projets et articles" },
+        "blog": { "description": "Articles techniques et réflexions sur le développement" },
+        "projects": { "description": "Portfolio de projets de développement et dépôts GitHub" },
+        "uses": { "description": "Outils, matériel et logiciels que j’utilise pour développer" },
+        "spotify": { "description": "Goûts musicaux, activité d’écoute et statistiques" },
+        "about": { "title": "À propos", "description": "En savoir plus sur moi et mon parcours" }
+      }
+    },
+    "blog-posts": {
+      "title": "Articles du blog",
+      "description": "Tous les articles publiés et contenus techniques"
+    },
+    "projects": {
+      "title": "Projets",
+      "description": "Projets de développement et contributions open source"
+    },
+    "labels": {
+      "live-demo": "Démo en ligne",
+      "github": "GitHub"
+    }
+  },
   "projects": {
     "description": "La liste de mes projets. Tout a été fait avec 💙 (cette page est encore en développement).",
     "title": "Projets",

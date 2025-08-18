@@ -28,8 +28,9 @@ export const generateMetadata = async (
   const { locale } = await props.params
   const previousOpenGraph = (await parent).openGraph ?? {}
   const previousTwitter = (await parent).twitter ?? {}
-  const title = 'Sitemap'
-  const description = 'Complete site navigation and content overview'
+  const t = await getTranslations({ locale, namespace: 'sitemap' })
+  const title = t('title')
+  const description = t('description')
   const url = getLocalizedPath({ slug: '/sitemap', locale })
 
   return {
@@ -56,42 +57,43 @@ export const generateMetadata = async (
 const SitemapPage = async (props: PageProps) => {
   const { locale } = await props.params
   setRequestLocale(locale)
-  const t = await getTranslations()
+  const t = await getTranslations('sitemap')
+  const tCommon = await getTranslations()
 
   const mainPages = [
     {
-      title: t('layout.home'),
-      description: 'Welcome page with overview of projects and articles',
+      title: tCommon('layout.home'),
+      description: t('main-pages.items.home.description'),
       href: '/',
       icon: <Home className='h-4 w-4' />
     },
     {
-      title: t('layout.blog'),
-      description: 'Technical articles and thoughts on development',
+      title: tCommon('layout.blog'),
+      description: t('main-pages.items.blog.description'),
       href: '/blog',
       icon: <FileText className='h-4 w-4' />
     },
     {
-      title: t('layout.projects'),
-      description: 'Portfolio of development projects and GitHub repositories',
+      title: tCommon('layout.projects'),
+      description: t('main-pages.items.projects.description'),
       href: '/projects',
       icon: <Code className='h-4 w-4' />
     },
     {
-      title: t('layout.uses'),
-      description: 'Tools, equipment, and software I use for development',
+      title: tCommon('layout.uses'),
+      description: t('main-pages.items.uses.description'),
       href: '/uses',
       icon: <Code className='h-4 w-4' />
     },
     {
-      title: t('layout.spotify'),
-      description: 'Music taste, listening activity, and statistics',
+      title: tCommon('layout.spotify'),
+      description: t('main-pages.items.spotify.description'),
       href: '/spotify',
       icon: <Music className='h-4 w-4' />
     },
     {
-      title: 'About',
-      description: 'Learn more about me and my background',
+      title: t('main-pages.items.about.title'),
+      description: t('main-pages.items.about.description'),
       href: '/about',
       icon: <User className='h-4 w-4' />
     }
@@ -108,8 +110,8 @@ const SitemapPage = async (props: PageProps) => {
   return (
     <>
       <PageTitle 
-        title="Sitemap" 
-        description="Complete overview of all site content and navigation"
+        title={t('title')} 
+        description={t('description')}
       />
 
       <div className='space-y-8'>
@@ -118,10 +120,10 @@ const SitemapPage = async (props: PageProps) => {
           <CardHeader>
             <CardTitle className='text-base sm:text-lg flex items-center gap-2'>
               <MapIcon className='h-5 w-5' />
-              Main Pages
+              {t('main-pages.title')}
             </CardTitle>
             <CardDescription className='text-xs sm:text-sm'>
-              Core site navigation and features
+              {t('main-pages.description')}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -156,10 +158,10 @@ const SitemapPage = async (props: PageProps) => {
           <CardHeader>
             <CardTitle className='text-base sm:text-lg flex items-center gap-2'>
               <FileText className='h-5 w-5' />
-              Blog Posts ({sortedPosts.length})
+              {t('blog-posts.title')} ({sortedPosts.length})
             </CardTitle>
             <CardDescription className='text-xs sm:text-sm'>
-              All published articles and technical content
+              {t('blog-posts.description')}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -200,10 +202,10 @@ const SitemapPage = async (props: PageProps) => {
           <CardHeader>
             <CardTitle className='text-base sm:text-lg flex items-center gap-2'>
               <Code className='h-5 w-5' />
-              Projects ({uniqueProjects.length})
+              {t('projects.title')} ({uniqueProjects.length})
             </CardTitle>
             <CardDescription className='text-xs sm:text-sm'>
-              Development projects and open source contributions
+              {t('projects.description')}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -232,7 +234,7 @@ const SitemapPage = async (props: PageProps) => {
                             target="_blank"
                             rel="noopener noreferrer"
                           >
-                            Live Demo
+                            {t('labels.live-demo')}
                           </Link>
                         )}
                         {project.repository && (
@@ -242,7 +244,7 @@ const SitemapPage = async (props: PageProps) => {
                             target="_blank"
                             rel="noopener noreferrer"
                           >
-                            GitHub
+                            {t('labels.github')}
                           </Link>
                         )}
                       </div>
