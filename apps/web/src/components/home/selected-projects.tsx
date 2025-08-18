@@ -105,7 +105,7 @@ const Card = (props: CardProps) => {
     <Link
       key={slug}
       href={`/projects/${slug}`}
-      className='shadow-feature-card group relative rounded-2xl p-1.5 transition-transform hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
+      className='shadow-feature-card group relative rounded-2xl p-1.5 transition-transform hover:scale-[1.01] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
     >
       <div className='flex items-center justify-between p-2'>
         <div className='flex items-center gap-1.5'>
@@ -122,13 +122,12 @@ const Card = (props: CardProps) => {
           alt={description}
           className='rounded-lg w-full h-auto aspect-[16/10] object-cover'
         />
-        <div className='pointer-events-none absolute inset-x-0 bottom-0 h-1/2 rounded-b-lg bg-gradient-to-t from-black/70 via-black/30 to-transparent' />
       </div>
-      <div className='absolute bottom-2 sm:bottom-3 left-2 sm:left-3 flex flex-col transition-[left] ease-out group-hover:left-[12px] sm:group-hover:left-[16px] max-w-[calc(100%-1rem)] sm:max-w-[calc(100%-1.5rem)] bg-black/50 backdrop-blur-sm rounded-md p-2'>
-        <h3 className='text-sm sm:text-base font-semibold text-white truncate'>
+      <div className='mt-3 px-2 pb-2'>
+        <h3 className='text-sm sm:text-base font-semibold truncate'>
           {name}
         </h3>
-        <p className='text-xs sm:text-sm text-white/85 truncate'>
+        <p className='text-xs sm:text-sm text-muted-foreground line-clamp-2'>
           {description}
         </p>
       </div>
