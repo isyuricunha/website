@@ -105,7 +105,7 @@ const Card = (props: CardProps) => {
     <Link
       key={slug}
       href={`/projects/${slug}`}
-      className='shadow-feature-card group relative rounded-2xl p-1.5 transition-transform hover:scale-[1.01] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
+      className='shadow-feature-card group relative rounded-2xl p-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
     >
       <div className='flex items-center justify-between p-2'>
         <div className='flex items-center gap-1.5'>
@@ -114,13 +114,13 @@ const Card = (props: CardProps) => {
         </div>
         <ArrowUpRightIcon className='size-3 opacity-0 transition-opacity group-hover:opacity-100' />
       </div>
-      <div className='relative overflow-hidden rounded-lg ring-1 ring-border'>
+      <div className='relative overflow-hidden rounded-lg ring-1 ring-border shadow-sm'>
         <BlurImage
           width={1280}
           height={832}
           src={`/images/projects/${slug}/cover.png`}
           alt={description}
-          className='w-full h-auto aspect-[16/10] object-cover'
+          className='w-full h-auto aspect-[4/3] object-cover'
         />
       </div>
       <div className='mt-3 px-2 pb-2'>
@@ -131,9 +131,10 @@ const Card = (props: CardProps) => {
           className='text-xs sm:text-sm text-muted-foreground'
           style={{
             display: '-webkit-box',
-            WebkitLineClamp: 2,
+            WebkitLineClamp: 3,
             WebkitBoxOrient: 'vertical',
-            overflow: 'hidden'
+            overflow: 'hidden',
+            minHeight: '60px'
           }}
         >
           {description}
