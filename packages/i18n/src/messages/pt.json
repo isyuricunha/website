@@ -337,12 +337,25 @@
       "title": "Páginas Principais",
       "description": "Navegação e recursos centrais do site",
       "items": {
-        "home": { "description": "Página de boas-vindas com visão geral de projetos e artigos" },
-        "blog": { "description": "Artigos técnicos e pensamentos sobre desenvolvimento" },
-        "projects": { "description": "Portfólio de projetos de desenvolvimento e repositórios do GitHub" },
-        "uses": { "description": "Ferramentas, equipamentos e softwares que uso para desenvolvimento" },
-        "spotify": { "description": "Gostos musicais, atividade de escuta e estatísticas" },
-        "about": { "title": "Sobre", "description": "Saiba mais sobre mim e minha trajetória" }
+        "home": {
+          "description": "Página de boas-vindas com visão geral de projetos e artigos"
+        },
+        "blog": {
+          "description": "Artigos técnicos e pensamentos sobre desenvolvimento"
+        },
+        "projects": {
+          "description": "Portfólio de projetos de desenvolvimento e repositórios do GitHub"
+        },
+        "uses": {
+          "description": "Ferramentas, equipamentos e softwares que uso para desenvolvimento"
+        },
+        "spotify": {
+          "description": "Gostos musicais, atividade de escuta e estatísticas"
+        },
+        "about": {
+          "title": "Sobre",
+          "description": "Saiba mais sobre mim e minha trajetória"
+        }
       }
     },
     "blog-posts": {
@@ -354,7 +367,7 @@
       "description": "Projetos de desenvolvimento e contribuições open source"
     },
     "labels": {
-      "live-demo": "Demo ao vivo",
+      "live-demo": "Demo",
       "github": "GitHub"
     }
   },
@@ -362,7 +375,55 @@
     "description": "A lista dos meus projetos. Tudo foi feito com 💙 (esta página ainda em desenvolvimento).",
     "title": "Projetos",
     "visit-website": "Visitar Site",
-    "all-repos": "Meus repositórios públicos no GitHub"
+    "all-repos": "Meus repositórios públicos no GitHub",
+    "featured": "Projetos em Destaque",
+    "all": "Todos os Projetos",
+    "search": {
+      "placeholder": "Pesquisar projetos..."
+    },
+    "filters": {
+      "show": "Mostrar Filtros",
+      "hide": "Ocultar Filtros",
+      "category": "Categoria",
+      "all-categories": "Todas as Categorias",
+      "status": "Status",
+      "all-statuses": "Todos os Status",
+      "technology": "Tecnologia",
+      "all-technologies": "Todas as Tecnologias",
+      "clear": "Limpar filtros"
+    },
+    "results": {
+      "found": "{count, plural, =1 {# projeto encontrado} other {# projetos encontrados}}",
+      "showing": "Mostrando {count, plural, =1 {# projeto} other {# projetos}}"
+    },
+    "empty": {
+      "title": "Nenhum projeto encontrado",
+      "description": "Tente ajustar seus filtros ou termos de pesquisa.",
+      "show-all": "Mostrar todos os projetos"
+    },
+    "card": {
+      "open": "Abrir {name}",
+      "open-aria": "Abrir página do projeto {name}",
+      "featured": "Em destaque",
+      "github": {
+        "title": "Ver código no GitHub",
+        "aria": "Ver código no GitHub (abre em uma nova aba)"
+      },
+      "live": {
+        "title": "Abrir demo ao vivo",
+        "aria": "Abrir demo ao vivo (abre em uma nova aba)"
+      },
+      "started-label": "Iniciado em"
+    },
+    "status": {
+      "active": "Ativo",
+      "archived": "Arquivado",
+      "beta": "Beta",
+      "completed": "Concluído"
+    },
+    "repos": {
+      "empty": "Nenhum repositório encontrado."
+    }
   },
   "theme-toggle": {
     "options": {

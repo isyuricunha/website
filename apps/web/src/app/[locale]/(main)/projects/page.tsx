@@ -108,7 +108,7 @@ const Page = async (props: PageProps) => {
       <section className='mt-12'>
         <h2 className='mb-6 text-lg sm:text-xl font-semibold'>{t('projects.all-repos')}</h2>
         {repos.length === 0 ? (
-          <p className='text-sm sm:text-base text-muted-foreground'>No repositories found.</p>
+          <p className='text-sm sm:text-base text-muted-foreground'>{t('projects.repos.empty')}</p>
         ) : (
           <GithubRepos repos={repos} />
         )}

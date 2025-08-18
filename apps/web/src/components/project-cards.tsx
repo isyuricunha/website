@@ -6,6 +6,7 @@ import { BlurImage, Badge, Input, Label, Select, SelectContent, SelectItem, Sele
 import { ExternalLink, Github, Search, SlidersHorizontal, Star, Clock, CheckCircle, Archive, Beaker } from 'lucide-react'
 import { motion } from 'motion/react'
 import { useState, useMemo } from 'react'
+import { useTranslations } from '@tszhong0411/i18n/client'
 
 import Link from './link'
 import { EnhancedCard, EnhancedCardContent, EnhancedCardHeader } from './ui/enhanced-card'
@@ -23,14 +24,15 @@ type FilterOptions = {
 }
 
 const statusConfig = {
-  active: { label: 'Active', icon: CheckCircle, color: 'bg-green-100 text-green-800 border-green-200' },
-  archived: { label: 'Archived', icon: Archive, color: 'bg-gray-100 text-gray-800 border-gray-200' },
-  beta: { label: 'Beta', icon: Beaker, color: 'bg-blue-100 text-blue-800 border-blue-200' },
-  completed: { label: 'Completed', icon: CheckCircle, color: 'bg-purple-100 text-purple-800 border-purple-200' }
-}
+  active: { labelKey: 'projects.status.active', icon: CheckCircle, color: 'bg-green-100 text-green-800 border-green-200' },
+  archived: { labelKey: 'projects.status.archived', icon: Archive, color: 'bg-gray-100 text-gray-800 border-gray-200' },
+  beta: { labelKey: 'projects.status.beta', icon: Beaker, color: 'bg-blue-100 text-blue-800 border-blue-200' },
+  completed: { labelKey: 'projects.status.completed', icon: CheckCircle, color: 'bg-purple-100 text-purple-800 border-purple-200' }
+} as const
 
 const ProjectCards = (props: ProjectCardsProps) => {
   const { projects } = props
+  const t = useTranslations()
   const [filters, setFilters] = useState<FilterOptions>({
     search: '',
     category: 'all',
@@ -111,7 +113,7 @@ const ProjectCards = (props: ProjectCardsProps) => {
         <div className="space-y-6">
           <div className="flex items-center gap-2">
             <Star className="h-5 w-5 text-yellow-500" />
-            <h2 className="text-lg sm:text-xl font-semibold">Featured Projects</h2>
+            <h2 className="text-lg sm:text-xl font-semibold">{t('projects.featured')}</h2>
           </div>
           <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
             {featuredProjects.map((project, index) => (
@@ -131,7 +133,7 @@ const ProjectCards = (props: ProjectCardsProps) => {
       {/* All Projects Section */}
       <div className="space-y-6">
         {featuredProjects.length > 0 && (
-          <h2 className="text-lg sm:text-xl font-semibold">All Projects</h2>
+          <h2 className="text-lg sm:text-xl font-semibold">{t('projects.all')}</h2>
         )}
         
         {/* Filter Controls */}
@@ -141,7 +143,7 @@ const ProjectCards = (props: ProjectCardsProps) => {
           <div className="relative flex-1">
             <Input
               type="text"
-              placeholder="Search projects..."
+              placeholder={t('projects.search.placeholder')}
               value={filters.search}
               onChange={(e) => setFilters(prev => ({ ...prev, search: e.target.value }))}
               className="pl-10"
@@ -154,7 +156,7 @@ const ProjectCards = (props: ProjectCardsProps) => {
             className="flex items-center gap-2 px-4 py-2 border rounded-2xl hover:bg-muted/50 transition-colors"
           >
             <SlidersHorizontal className="h-4 w-4" />
-            {showFilters ? 'Hide Filters' : 'Show Filters'}
+            {showFilters ? t('projects.filters.hide') : t('projects.filters.show')}
           </button>
         </div>
 
@@ -164,13 +166,13 @@ const ProjectCards = (props: ProjectCardsProps) => {
             {/* Category Filter */}
             {categories.length > 0 && (
               <div>
-                <Label className="text-xs sm:text-sm font-medium mb-2 block">Category</Label>
+                <Label className="text-xs sm:text-sm font-medium mb-2 block">{t('projects.filters.category')}</Label>
                 <Select value={filters.category} onValueChange={(value) => setFilters(prev => ({ ...prev, category: value }))}>
                   <SelectTrigger>
-                    <SelectValue placeholder="All Categories" />
+                    <SelectValue placeholder={t('projects.filters.all-categories')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">All Categories</SelectItem>
+                    <SelectItem value="all">{t('projects.filters.all-categories')}</SelectItem>
                     {categories.map(category => (
                       <SelectItem key={category} value={category}>
                         {category}
@@ -183,20 +185,20 @@ const ProjectCards = (props: ProjectCardsProps) => {
 
             {/* Status Filter */}
             <div>
-              <Label className="text-xs sm:text-sm font-medium mb-2 block">Status</Label>
+              <Label className="text-xs sm:text-sm font-medium mb-2 block">{t('projects.filters.status')}</Label>
               <Select value={filters.status} onValueChange={(value) => setFilters(prev => ({ ...prev, status: value }))}>
                 <SelectTrigger>
-                  <SelectValue placeholder="All Statuses" />
+                  <SelectValue placeholder={t('projects.filters.all-statuses')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Statuses</SelectItem>
+                  <SelectItem value="all">{t('projects.filters.all-statuses')}</SelectItem>
                   {statuses.map(status => {
                     const config = statusConfig[status as keyof typeof statusConfig]
                     return (
                       <SelectItem key={status} value={status}>
                         <div className="flex items-center gap-2">
                           {config && <config.icon className="h-4 w-4" />}
-                          {config?.label || status}
+                          {config ? t(config.labelKey as any) : status}
                         </div>
                       </SelectItem>
                     )
@@ -207,13 +209,13 @@ const ProjectCards = (props: ProjectCardsProps) => {
 
             {/* Tech Stack Filter */}
             <div>
-              <Label className="text-xs sm:text-sm font-medium mb-2 block">Technology</Label>
+              <Label className="text-xs sm:text-sm font-medium mb-2 block">{t('projects.filters.technology')}</Label>
               <Select value={filters.techStack} onValueChange={(value) => setFilters(prev => ({ ...prev, techStack: value }))}>
                 <SelectTrigger>
-                  <SelectValue placeholder="All Technologies" />
+                  <SelectValue placeholder={t('projects.filters.all-technologies')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Technologies</SelectItem>
+                  <SelectItem value="all">{t('projects.filters.all-technologies')}</SelectItem>
                   {techStacks.map(tech => (
                     <SelectItem key={tech} value={tech}>
                       {tech}
@@ -230,10 +232,10 @@ const ProjectCards = (props: ProjectCardsProps) => {
           <span>
             {hasActiveFilters ? (
               <>
-                {filteredProjects.length} {filteredProjects.length === 1 ? 'project' : 'projects'} found
+                {t('projects.results.found', { count: filteredProjects.length })}
               </>
             ) : (
-              <>Showing {regularProjects.length} {regularProjects.length === 1 ? 'project' : 'projects'}</>
+              <>{t('projects.results.showing', { count: regularProjects.length })}</>
             )}
           </span>
           {hasActiveFilters && (
@@ -241,7 +243,7 @@ const ProjectCards = (props: ProjectCardsProps) => {
               onClick={clearFilters}
               className="text-primary hover:text-primary/80 transition-colors"
             >
-              Clear filters
+              {t('projects.filters.clear')}
             </button>
           )}
         </div>
@@ -251,16 +253,16 @@ const ProjectCards = (props: ProjectCardsProps) => {
         {regularProjects.length === 0 ? (
           <div className="text-center py-12">
             <div className="text-6xl mb-4">🔍</div>
-            <h3 className="text-base sm:text-lg font-semibold mb-2">No projects found</h3>
+            <h3 className="text-base sm:text-lg font-semibold mb-2">{t('projects.empty.title')}</h3>
             <p className="text-xs sm:text-sm text-muted-foreground mb-4">
-              Try adjusting your filters or search terms.
+              {t('projects.empty.description')}
             </p>
             {hasActiveFilters && (
               <button
                 onClick={clearFilters}
                 className="inline-flex items-center justify-center rounded-2xl bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
               >
-                Show all projects
+                {t('projects.empty.show-all')}
               </button>
             )}
           </div>
@@ -286,29 +288,30 @@ const ProjectCards = (props: ProjectCardsProps) => {
 const ProjectCard = (props: ProjectCardProps) => {
   const { name, description, techstack, slug, homepage, repository, status = 'active', category, featured, startDate, endDate } = props
   const statusInfo = statusConfig[status as keyof typeof statusConfig]
+  const t = useTranslations()
 
   return (
     <EnhancedCard className="group overflow-hidden relative" gradient>
       {/* Make the whole card clickable to the in-site project page */}
       <Link
         href={`/projects/${slug}`}
-        aria-label={`Open ${name} project page`}
+        aria-label={t('projects.card.open-aria', { name })}
         className="absolute inset-0 z-[5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 rounded-2xl"
       >
-        <span className="sr-only">Open {name}</span>
+        <span className="sr-only">{t('projects.card.open', { name })}</span>
       </Link>
       {/* Status and Featured Badges */}
       <div className="absolute top-3 left-3 z-10 flex gap-2">
         {featured && (
           <Badge variant="secondary" className="bg-yellow-100 text-yellow-800 border-yellow-200">
             <Star className="h-3 w-3 mr-1" />
-            Featured
+            {t('projects.card.featured')}
           </Badge>
         )}
         {statusInfo && (
           <Badge variant="secondary" className={statusInfo.color}>
             <statusInfo.icon className="h-3 w-3 mr-1" />
-            {statusInfo.label}
+            {t(statusInfo.labelKey as any)}
           </Badge>
         )}
       </div>
@@ -336,14 +339,14 @@ const ProjectCard = (props: ProjectCardProps) => {
                 href={repository || props.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                title="View source on GitHub"
-                aria-label="View source on GitHub (opens in a new tab)"
+                title={t('projects.card.github.title')}
+                aria-label={t('projects.card.github.aria')}
                 className="inline-flex h-9 items-center gap-2 rounded-full bg-muted px-2 md:px-3 text-foreground border border-border shadow-sm transition-all hover:bg-muted/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
                 onClick={(e) => e.stopPropagation()}
               >
                 <Github className="h-4 w-4" />
                 <span className="hidden md:inline-block text-xs font-medium overflow-hidden md:max-w-0 md:opacity-0 md:group-hover:max-w-[64px] md:group-hover:opacity-100 md:transition-all">
-                  GitHub
+                  {t('sitemap.labels.github')}
                 </span>
               </Link>
             )}
@@ -352,14 +355,14 @@ const ProjectCard = (props: ProjectCardProps) => {
                 href={homepage}
                 target="_blank"
                 rel="noopener noreferrer"
-                title="Open live demo"
-                aria-label="Open live demo (opens in a new tab)"
+                title={t('projects.card.live.title')}
+                aria-label={t('projects.card.live.aria')}
                 className="inline-flex h-9 items-center gap-2 rounded-full bg-primary px-2 md:px-3 text-primary-foreground border border-primary/60 shadow-sm transition-all hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
                 onClick={(e) => e.stopPropagation()}
               >
                 <ExternalLink className="h-4 w-4" />
                 <span className="hidden md:inline-block text-xs font-medium overflow-hidden md:max-w-0 md:opacity-0 md:group-hover:max-w-[40px] md:group-hover:opacity-100 md:transition-all">
-                  Live
+                  {t('sitemap.labels.live-demo')}
                 </span>
               </Link>
             )}
@@ -387,7 +390,7 @@ const ProjectCard = (props: ProjectCardProps) => {
               <Clock className="h-3 w-3" />
               {startDate && (
                 <span className='text-xs'>
-                  Started {new Date(startDate).getFullYear()}
+                  {t('projects.card.started-label')} {new Date(startDate).getFullYear()}
                   {endDate && ` - ${new Date(endDate).getFullYear()}`}
                 </span>
               )}

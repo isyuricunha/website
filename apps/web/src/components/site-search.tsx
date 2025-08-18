@@ -111,7 +111,7 @@ const SiteSearch = () => {
   // Save search to recent searches
   const saveRecentSearch = useCallback((searchTerm: string) => {
     if (!searchTerm.trim()) return
-    
+
     try {
       const updated = [searchTerm, ...recentSearches.filter(s => s !== searchTerm)]
         .slice(0, MAX_RECENT_SEARCHES)
@@ -128,7 +128,7 @@ const SiteSearch = () => {
 
     const searchTerm = query.toLowerCase()
     return searchableContent
-      .filter(item => 
+      .filter(item =>
         item.title.toLowerCase().includes(searchTerm) ||
         item.description.toLowerCase().includes(searchTerm)
       )
@@ -166,7 +166,7 @@ const SiteSearch = () => {
 
     if (e.key === 'ArrowDown') {
       e.preventDefault()
-      setSelectedIndex(prev => 
+      setSelectedIndex(prev =>
         prev < totalItems - 1 ? prev + 1 : prev
       )
     }
@@ -208,8 +208,8 @@ const SiteSearch = () => {
 
       {isOpen && (showRecentSearches || filteredResults.length > 0) && (
         <>
-          <div 
-            className='fixed inset-0 z-40' 
+          <div
+            className='fixed inset-0 z-40'
             onClick={() => {
               setIsOpen(false)
               setSelectedIndex(-1)
@@ -228,9 +228,8 @@ const SiteSearch = () => {
                       <button
                         key={`recent-${searchTerm}-${index}`}
                         onClick={() => handleRecentSearchClick(searchTerm)}
-                        className={`w-full text-left p-3 rounded-lg transition-colors group ${
-                          selectedIndex === index ? 'bg-accent' : 'hover:bg-muted/50'
-                        }`}
+                        className={`w-full text-left p-3 rounded-lg transition-colors group ${selectedIndex === index ? 'bg-accent' : 'hover:bg-muted/50'
+                          }`}
                       >
                         <div className='flex items-center gap-3'>
                           <Search className='h-4 w-4 text-muted-foreground' />
@@ -240,15 +239,14 @@ const SiteSearch = () => {
                     ))}
                   </>
                 )}
-                
+
                 {/* Search Results */}
                 {filteredResults.map((result, index) => (
                   <button
                     key={`result-${result.href}`}
                     onClick={() => handleResultClick(result.href, query)}
-                    className={`w-full text-left p-3 rounded-lg transition-colors group ${
-                      selectedIndex === index ? 'bg-accent' : 'hover:bg-muted/50'
-                    }`}
+                    className={`w-full text-left p-3 rounded-lg transition-colors group ${selectedIndex === index ? 'bg-accent' : 'hover:bg-muted/50'
+                      }`}
                   >
                     <div className='flex items-start gap-3'>
                       <div className='flex-shrink-0 mt-0.5 text-muted-foreground group-hover:text-foreground'>
@@ -286,8 +284,8 @@ const SiteSearch = () => {
 
       {isOpen && query.length > 0 && filteredResults.length === 0 && !showRecentSearches && (
         <>
-          <div 
-            className='fixed inset-0 z-40' 
+          <div
+            className='fixed inset-0 z-40'
             onClick={() => {
               setIsOpen(false)
               setSelectedIndex(-1)

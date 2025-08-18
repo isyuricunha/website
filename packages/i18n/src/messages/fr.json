@@ -337,12 +337,25 @@
       "title": "Pages principales",
       "description": "Navigation centrale et fonctionnalités du site",
       "items": {
-        "home": { "description": "Page d’accueil avec aperçu des projets et articles" },
-        "blog": { "description": "Articles techniques et réflexions sur le développement" },
-        "projects": { "description": "Portfolio de projets de développement et dépôts GitHub" },
-        "uses": { "description": "Outils, matériel et logiciels que j’utilise pour développer" },
-        "spotify": { "description": "Goûts musicaux, activité d’écoute et statistiques" },
-        "about": { "title": "À propos", "description": "En savoir plus sur moi et mon parcours" }
+        "home": {
+          "description": "Page d’accueil avec aperçu des projets et articles"
+        },
+        "blog": {
+          "description": "Articles techniques et réflexions sur le développement"
+        },
+        "projects": {
+          "description": "Portfolio de projets de développement et dépôts GitHub"
+        },
+        "uses": {
+          "description": "Outils, matériel et logiciels que j’utilise pour développer"
+        },
+        "spotify": {
+          "description": "Goûts musicaux, activité d’écoute et statistiques"
+        },
+        "about": {
+          "title": "À propos",
+          "description": "En savoir plus sur moi et mon parcours"
+        }
       }
     },
     "blog-posts": {
@@ -362,7 +375,55 @@
     "description": "La liste de mes projets. Tout a été fait avec 💙 (cette page est encore en développement).",
     "title": "Projets",
     "visit-website": "Visiter le site",
-    "all-repos": "Mes dépôts GitHub publics"
+    "all-repos": "Mes dépôts GitHub publics",
+    "featured": "Projets mis en avant",
+    "all": "Tous les projets",
+    "search": {
+      "placeholder": "Rechercher des projets..."
+    },
+    "filters": {
+      "show": "Afficher les filtres",
+      "hide": "Masquer les filtres",
+      "category": "Catégorie",
+      "all-categories": "Toutes les catégories",
+      "status": "Statut",
+      "all-statuses": "Tous les statuts",
+      "technology": "Technologie",
+      "all-technologies": "Toutes les technologies",
+      "clear": "Réinitialiser les filtres"
+    },
+    "results": {
+      "found": "{count, plural, =1 {# projet trouvé} other {# projets trouvés}}",
+      "showing": "Affichage de {count, plural, =1 {# projet} other {# projets}}"
+    },
+    "empty": {
+      "title": "Aucun projet trouvé",
+      "description": "Ajustez vos filtres ou vos termes de recherche.",
+      "show-all": "Afficher tous les projets"
+    },
+    "card": {
+      "open": "Ouvrir {name}",
+      "open-aria": "Ouvrir la page du projet {name}",
+      "featured": "Mis en avant",
+      "github": {
+        "title": "Voir le code source sur GitHub",
+        "aria": "Voir le code source sur GitHub (ouvre dans un nouvel onglet)"
+      },
+      "live": {
+        "title": "Ouvrir la démo en ligne",
+        "aria": "Ouvrir la démo en ligne (ouvre dans un nouvel onglet)"
+      },
+      "started-label": "Commencé"
+    },
+    "status": {
+      "active": "Actif",
+      "archived": "Archivé",
+      "beta": "Bêta",
+      "completed": "Terminé"
+    },
+    "repos": {
+      "empty": "Aucun dépôt trouvé."
+    }
   },
   "theme-toggle": {
     "options": {

@@ -362,7 +362,55 @@
     "description": "The list of my projects. Everything was made with 💙 (this page still in development).",
     "title": "Projects",
     "visit-website": "Visit Website",
-    "all-repos": "My public GitHub repositories"
+    "all-repos": "My public GitHub repositories",
+    "featured": "Featured Projects",
+    "all": "All Projects",
+    "search": {
+      "placeholder": "Search projects..."
+    },
+    "filters": {
+      "show": "Show Filters",
+      "hide": "Hide Filters",
+      "category": "Category",
+      "all-categories": "All Categories",
+      "status": "Status",
+      "all-statuses": "All Statuses",
+      "technology": "Technology",
+      "all-technologies": "All Technologies",
+      "clear": "Clear filters"
+    },
+    "results": {
+      "found": "{count, plural, =1 {# project found} other {# projects found}}",
+      "showing": "Showing {count, plural, =1 {# project} other {# projects}}"
+    },
+    "empty": {
+      "title": "No projects found",
+      "description": "Try adjusting your filters or search terms.",
+      "show-all": "Show all projects"
+    },
+    "card": {
+      "open": "Open {name}",
+      "open-aria": "Open {name} project page",
+      "featured": "Featured",
+      "github": {
+        "title": "View source on GitHub",
+        "aria": "View source on GitHub (opens in a new tab)"
+      },
+      "live": {
+        "title": "Open live demo",
+        "aria": "Open live demo (opens in a new tab)"
+      },
+      "started-label": "Started"
+    },
+    "status": {
+      "active": "Active",
+      "archived": "Archived",
+      "beta": "Beta",
+      "completed": "Completed"
+    },
+    "repos": {
+      "empty": "No repositories found."
+    }
   },
   "theme-toggle": {
     "options": {
