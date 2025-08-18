@@ -90,7 +90,10 @@ const SiteSearch = () => {
     ]
 
     results.push(...staticPages)
-    return results
+
+    // Deduplicate by href to avoid duplicate keys/entries across locales or sources
+    const uniqueByHref = Array.from(new Map(results.map(r => [r.href, r])).values())
+    return uniqueByHref
   }, [t])
 
   // Load recent searches from localStorage
@@ -241,7 +244,7 @@ const SiteSearch = () => {
                 {/* Search Results */}
                 {filteredResults.map((result, index) => (
                   <button
-                    key={`result-${result.id}-${result.type}`}
+                    key={`result-${result.href}`}
                     onClick={() => handleResultClick(result.href, query)}
                     className={`w-full text-left p-3 rounded-lg transition-colors group ${
                       selectedIndex === index ? 'bg-accent' : 'hover:bg-muted/50'
