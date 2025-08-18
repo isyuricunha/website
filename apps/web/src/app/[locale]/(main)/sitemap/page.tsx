@@ -3,7 +3,7 @@ import type { Metadata, ResolvingMetadata } from 'next'
 import { i18n } from '@tszhong0411/i18n/config'
 import { getTranslations, setRequestLocale } from '@tszhong0411/i18n/server'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@tszhong0411/ui'
-import { FileText, Code, Music, User, Home, Map } from 'lucide-react'
+import { FileText, Code, Music, User, Home, Map as MapIcon } from 'lucide-react'
 
 import { allPosts } from 'content-collections'
 import { allProjects } from 'content-collections'
@@ -102,6 +102,9 @@ const SitemapPage = async (props: PageProps) => {
     new Date(b.date).getTime() - new Date(a.date).getTime()
   )
 
+  // Deduplicate projects by slug to avoid duplicate keys in render
+  const uniqueProjects = Array.from(new Map(allProjects.map(p => [p.slug, p])).values())
+
   return (
     <>
       <PageTitle 
@@ -114,7 +117,7 @@ const SitemapPage = async (props: PageProps) => {
         <Card>
           <CardHeader>
             <CardTitle className='text-base sm:text-lg flex items-center gap-2'>
-              <Map className='h-5 w-5' />
+              <MapIcon className='h-5 w-5' />
               Main Pages
             </CardTitle>
             <CardDescription className='text-xs sm:text-sm'>
@@ -197,7 +200,7 @@ const SitemapPage = async (props: PageProps) => {
           <CardHeader>
             <CardTitle className='text-base sm:text-lg flex items-center gap-2'>
               <Code className='h-5 w-5' />
-              Projects ({allProjects.length})
+              Projects ({uniqueProjects.length})
             </CardTitle>
             <CardDescription className='text-xs sm:text-sm'>
               Development projects and open source contributions
@@ -205,7 +208,7 @@ const SitemapPage = async (props: PageProps) => {
           </CardHeader>
           <CardContent>
             <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-              {allProjects.map((project) => (
+              {uniqueProjects.map((project) => (
                 <div
                   key={project.slug}
                   className='group block p-4 rounded-lg border hover:bg-muted/50 transition-colors'
