@@ -145,6 +145,9 @@
     "like-limit-reached": "You can only like 3 times per post",
     "like-this-post": "Like this post",
     "on-this-page": "On this page",
+    "share": {
+      "description": "Read \"{title}\" on {site}'s blog"
+    },
     "title": "Blog"
   },
   "command-menu": {
@@ -181,7 +184,54 @@
   "component": {
     "filtered-posts": {
       "no-posts-found": "No posts found",
-      "placeholder": "Search articles"
+      "placeholder": "Search articles",
+      "rss": "RSS Feed",
+      "featured": "Featured Posts",
+      "toggle-filters": {
+        "show": "Show Filters",
+        "hide": "Hide Filters"
+      },
+      "sort": {
+        "label": "Sort by:",
+        "options": {
+          "date-desc": "Newest First",
+          "date-asc": "Oldest First",
+          "title-asc": "A-Z",
+          "title-desc": "Z-A",
+          "reading-time": "Reading Time"
+        }
+      },
+      "filters": {
+        "category": {
+          "label": "Category",
+          "all": "All Categories"
+        },
+        "tag": {
+          "label": "Tag",
+          "all": "All Tags"
+        }
+      },
+      "searching": "Searching...",
+      "results": {
+        "count": "{count, plural, =0 {0 results} =1 {1 result} other {# results}}",
+        "for": " for \"{search}\""
+      },
+      "showing": {
+        "count": "Showing {count, plural, =0 {0 posts} =1 {1 post} other {# posts}}"
+      },
+      "pagination": {
+        "page-of": " (page {current} of {total})",
+        "previous": "Previous",
+        "next": "Next"
+      },
+      "clear-all": "Clear all filters",
+      "empty": {
+        "description": "Try adjusting your search terms or filters, or browse all posts below.",
+        "show-all": "Show all posts"
+      },
+      "posts": {
+        "all": "All Posts"
+      }
     },
     "go-to-homepage": "Go to homepage",
     "announcement-banner": {

@@ -145,6 +145,9 @@
     "like-limit-reached": "每篇文章最多只能点赞 3 次",
     "like-this-post": "为这篇文章点赞",
     "on-this-page": "在本页",
+    "share": {
+      "description": "在{site}的博客上阅读《{title}》"
+    },
     "title": "博客"
   },
   "command-menu": {
@@ -181,9 +184,56 @@
   "component": {
     "filtered-posts": {
       "no-posts-found": "未找到文章",
-      "placeholder": "搜索文章"
+      "placeholder": "搜索文章",
+      "rss": "RSS 订阅",
+      "featured": "精选文章",
+      "toggle-filters": {
+        "show": "显示筛选",
+        "hide": "隐藏筛选"
+      },
+      "sort": {
+        "label": "排序：",
+        "options": {
+          "date-desc": "最新优先",
+          "date-asc": "最旧优先",
+          "title-asc": "A-Z",
+          "title-desc": "Z-A",
+          "reading-time": "阅读时长"
+        }
+      },
+      "filters": {
+        "category": {
+          "label": "分类",
+          "all": "所有分类"
+        },
+        "tag": {
+          "label": "标签",
+          "all": "所有标签"
+        }
+      },
+      "searching": "搜索中...",
+      "results": {
+        "count": "{count, plural, =0 {0 条结果} =1 {1 条结果} other {# 条结果}}",
+        "for": "，关键词：\"{search}\""
+      },
+      "showing": {
+        "count": "显示 {count, plural, =0 {0 篇文章} =1 {1 篇文章} other {# 篇文章}}"
+      },
+      "pagination": {
+        "page-of": "（第 {current} 页，共 {total} 页）",
+        "previous": "上一页",
+        "next": "下一页"
+      },
+      "clear-all": "清除所有筛选",
+      "empty": {
+        "description": "请尝试调整搜索词或筛选条件，或浏览下方的所有文章。",
+        "show-all": "显示所有文章"
+      },
+      "posts": {
+        "all": "所有文章"
+      }
     },
-    "go-to-homepage": "前往首页",
+    "go-to-homepage": "返回首页",
     "announcement-banner": {
       "dismiss": "关闭公告"
     }

@@ -148,7 +148,11 @@ const Layout = async (props: LayoutProps) => {
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="Yuri Cunha" />
         {env.NODE_ENV === 'development' ? (
-          <Script src='https://unpkg.com/react-scan/dist/auto.global.js' />
+          <Script
+            id='react-scan-auto'
+            src='https://unpkg.com/react-scan/dist/auto.global.js'
+            strategy='beforeInteractive'
+          />
         ) : null}
         <Script id="sw-register" strategy="afterInteractive">
           {`

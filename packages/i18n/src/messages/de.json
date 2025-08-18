@@ -145,6 +145,9 @@
     "like-limit-reached": "Du kannst pro Beitrag nur 3 Mal liken",
     "like-this-post": "Diesen Beitrag liken",
     "on-this-page": "Auf dieser Seite",
+    "share": {
+      "description": "Lies \"{title}\" auf dem {site}-Blog"
+    },
     "title": "Blog"
   },
   "command-menu": {
@@ -181,7 +184,54 @@
   "component": {
     "filtered-posts": {
       "no-posts-found": "Keine Beiträge gefunden",
-      "placeholder": "Artikel suchen"
+      "placeholder": "Artikel suchen",
+      "rss": "RSS-Feed",
+      "featured": "Ausgewählte Beiträge",
+      "toggle-filters": {
+        "show": "Filter anzeigen",
+        "hide": "Filter ausblenden"
+      },
+      "sort": {
+        "label": "Sortieren nach:",
+        "options": {
+          "date-desc": "Neueste zuerst",
+          "date-asc": "Älteste zuerst",
+          "title-asc": "A-Z",
+          "title-desc": "Z-A",
+          "reading-time": "Lesezeit"
+        }
+      },
+      "filters": {
+        "category": {
+          "label": "Kategorie",
+          "all": "Alle Kategorien"
+        },
+        "tag": {
+          "label": "Tag",
+          "all": "Alle Tags"
+        }
+      },
+      "searching": "Suche...",
+      "results": {
+        "count": "{count, plural, =0 {0 Ergebnisse} =1 {1 Ergebnis} other {# Ergebnisse}}",
+        "for": " für \"{search}\""
+      },
+      "showing": {
+        "count": "Zeige {count, plural, =0 {0 Beiträge} =1 {1 Beitrag} other {# Beiträge}}"
+      },
+      "pagination": {
+        "page-of": " (Seite {current} von {total})",
+        "previous": "Zurück",
+        "next": "Weiter"
+      },
+      "clear-all": "Alle Filter löschen",
+      "empty": {
+        "description": "Versuche, deine Suchbegriffe oder Filter anzupassen, oder stöbere unten durch alle Beiträge.",
+        "show-all": "Alle Beiträge anzeigen"
+      },
+      "posts": {
+        "all": "Alle Beiträge"
+      }
     },
     "go-to-homepage": "Zur Startseite",
     "announcement-banner": {

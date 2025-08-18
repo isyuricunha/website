@@ -89,7 +89,10 @@ const Header = () => {
           <SocialShare
             title={title}
             url={`/blog/${slug}`}
-            description={`Read "${title}" on Yuri Cunha's blog`}
+            description={t('blog.share.description', {
+              title,
+              site: t('metadata.site-title')
+            })}
             hashtags={['blog', 'tech', 'development']}
           />
         </div>

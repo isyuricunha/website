@@ -145,6 +145,9 @@
     "like-limit-reached": "Vous ne pouvez aimer qu'à 3 reprises par article",
     "like-this-post": "Aimer cet article",
     "on-this-page": "Sur cette page",
+    "share": {
+      "description": "Lisez \"{title}\" sur le blog de {site}"
+    },
     "title": "Blog"
   },
   "command-menu": {
@@ -181,11 +184,58 @@
   "component": {
     "filtered-posts": {
       "no-posts-found": "Aucun article trouvé",
-      "placeholder": "Rechercher des articles"
+      "placeholder": "Rechercher des articles",
+      "rss": "Flux RSS",
+      "featured": "Articles en vedette",
+      "toggle-filters": {
+        "show": "Afficher les filtres",
+        "hide": "Masquer les filtres"
+      },
+      "sort": {
+        "label": "Trier par :",
+        "options": {
+          "date-desc": "Plus récents",
+          "date-asc": "Plus anciens",
+          "title-asc": "A-Z",
+          "title-desc": "Z-A",
+          "reading-time": "Temps de lecture"
+        }
+      },
+      "filters": {
+        "category": {
+          "label": "Catégorie",
+          "all": "Toutes les catégories"
+        },
+        "tag": {
+          "label": "Tag",
+          "all": "Tous les tags"
+        }
+      },
+      "searching": "Recherche...",
+      "results": {
+        "count": "{count, plural, =0 {0 résultats} =1 {1 résultat} other {# résultats}}",
+        "for": " pour \"{search}\""
+      },
+      "showing": {
+        "count": "Affichage de {count, plural, =0 {0 articles} =1 {1 article} other {# articles}}"
+      },
+      "pagination": {
+        "page-of": " (page {current} sur {total})",
+        "previous": "Précédent",
+        "next": "Suivant"
+      },
+      "clear-all": "Effacer tous les filtres",
+      "empty": {
+        "description": "Essayez d'ajuster vos termes de recherche ou vos filtres, ou parcourez tous les articles ci-dessous.",
+        "show-all": "Afficher tous les articles"
+      },
+      "posts": {
+        "all": "Tous les articles"
+      }
     },
-    "go-to-homepage": "Aller à l'accueil",
+    "go-to-homepage": "Aller à la page d'accueil",
     "announcement-banner": {
-      "dismiss": "Fermer l'annonce"
+      "dismiss": "Ignorer l'annonce"
     }
   },
   "site-search": {

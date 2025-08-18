@@ -133,7 +133,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
           className='inline-flex items-center gap-2 text-xs sm:text-sm text-muted-foreground hover:text-foreground transition-colors px-3 py-2 rounded-2xl hover:bg-accent'
         >
           <Rss className='h-4 w-4' />
-          RSS Feed
+          {t('component.filtered-posts.rss')}
         </Link>
       </div>
 
@@ -142,7 +142,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
         <div className='mb-8 sm:mb-12 px-4 sm:px-0'>
           <div className='flex items-center gap-2 mb-6'>
             <Star className='h-5 w-5 text-yellow-500' />
-            <h2 className='text-lg sm:text-xl font-semibold'>Featured Posts</h2>
+            <h2 className='text-lg sm:text-xl font-semibold'>{t('component.filtered-posts.featured')}</h2>
           </div>
           <PostCards posts={featuredPosts} />
         </div>
@@ -172,12 +172,18 @@ const FilteredPosts = (props: FilteredPostsProps) => {
             className='flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors min-h-[44px] px-3 py-2 rounded-2xl hover:bg-accent self-start'
           >
             <SlidersHorizontal className='h-4 w-4 flex-shrink-0' />
-            <span className='text-sm'>{showFilters ? 'Hide Filters' : 'Show Filters'}</span>
+            <span className='text-sm'>
+              {showFilters
+                ? t('component.filtered-posts.toggle-filters.hide')
+                : t('component.filtered-posts.toggle-filters.show')}
+            </span>
           </button>
           
           {/* Sort Dropdown */}
           <div className='flex flex-col sm:flex-row sm:items-center gap-2'>
-            <span className='text-xs sm:text-sm text-muted-foreground whitespace-nowrap'>Sort by:</span>
+            <span className='text-xs sm:text-sm text-muted-foreground whitespace-nowrap'>
+              {t('component.filtered-posts.sort.label')}
+            </span>
             <Select value={sortBy} onValueChange={(value: SortOption) => setSortBy(value)}>
               <SelectTrigger className='w-full sm:w-40 min-h-[44px]'>
                 <SelectValue />
@@ -186,21 +192,21 @@ const FilteredPosts = (props: FilteredPostsProps) => {
                 <SelectItem value='date-desc'>
                   <div className='flex items-center gap-2'>
                     <Calendar className='h-4 w-4' />
-                    Newest First
+                    {t('component.filtered-posts.sort.options.date-desc')}
                   </div>
                 </SelectItem>
                 <SelectItem value='date-asc'>
                   <div className='flex items-center gap-2'>
                     <Calendar className='h-4 w-4' />
-                    Oldest First
+                    {t('component.filtered-posts.sort.options.date-asc')}
                   </div>
                 </SelectItem>
-                <SelectItem value='title-asc'>A-Z</SelectItem>
-                <SelectItem value='title-desc'>Z-A</SelectItem>
+                <SelectItem value='title-asc'>{t('component.filtered-posts.sort.options.title-asc')}</SelectItem>
+                <SelectItem value='title-desc'>{t('component.filtered-posts.sort.options.title-desc')}</SelectItem>
                 <SelectItem value='reading-time'>
                   <div className='flex items-center gap-2'>
                     <Clock className='h-4 w-4' />
-                    Reading Time
+                    {t('component.filtered-posts.sort.options.reading-time')}
                   </div>
                 </SelectItem>
               </SelectContent>
@@ -214,13 +220,17 @@ const FilteredPosts = (props: FilteredPostsProps) => {
             {/* Category Filter */}
             {categories.length > 0 && (
               <div>
-                <Label className='text-xs sm:text-sm font-medium mb-2 block'>Category</Label>
+                <Label className='text-xs sm:text-sm font-medium mb-2 block'>
+                  {t('component.filtered-posts.filters.category.label')}
+                </Label>
                 <Select value={selectedCategory} onValueChange={setSelectedCategory}>
                   <SelectTrigger className='min-h-[44px]'>
-                    <SelectValue placeholder='All Categories' />
+                    <SelectValue placeholder={t('component.filtered-posts.filters.category.all')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value='all'>All Categories</SelectItem>
+                    <SelectItem value='all'>
+                      {t('component.filtered-posts.filters.category.all')}
+                    </SelectItem>
                     {categories.map(category => (
                       <SelectItem key={category} value={category}>
                         {category}
@@ -234,13 +244,17 @@ const FilteredPosts = (props: FilteredPostsProps) => {
             {/* Tag Filter */}
             {tags.length > 0 && (
               <div>
-                <Label className='text-xs sm:text-sm font-medium mb-2 block'>Tag</Label>
+                <Label className='text-xs sm:text-sm font-medium mb-2 block'>
+                  {t('component.filtered-posts.filters.tag.label')}
+                </Label>
                 <Select value={selectedTag} onValueChange={setSelectedTag}>
                   <SelectTrigger className='min-h-[44px]'>
-                    <SelectValue placeholder='All Tags' />
+                    <SelectValue placeholder={t('component.filtered-posts.filters.tag.all')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value='all'>All Tags</SelectItem>
+                    <SelectItem value='all'>
+                      {t('component.filtered-posts.filters.tag.all')}
+                    </SelectItem>
                     {tags.map(tag => (
                       <SelectItem key={tag} value={tag}>
                         {tag}
@@ -257,17 +271,29 @@ const FilteredPosts = (props: FilteredPostsProps) => {
         <div className='flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs sm:text-sm text-muted-foreground'>
           <span className='flex-1'>
             {isSearching ? (
-              'Searching...'
+              t('component.filtered-posts.searching')
             ) : searchValue || selectedCategory !== 'all' || selectedTag !== 'all' ? (
               <>
-                {regularPosts.length} {regularPosts.length === 1 ? 'result' : 'results'}
-                {searchValue && ` for "${searchValue}"`}
-                {totalPages > 1 && ` (page ${currentPage} of ${totalPages})`}
+                {t('component.filtered-posts.results.count', { count: regularPosts.length })}
+                {searchValue
+                  ? t('component.filtered-posts.results.for', { search: searchValue })
+                  : ''}
+                {totalPages > 1
+                  ? t('component.filtered-posts.pagination.page-of', {
+                      current: currentPage,
+                      total: totalPages
+                    })
+                  : ''}
               </>
             ) : (
               <>
-                Showing {regularPosts.length} {regularPosts.length === 1 ? 'post' : 'posts'}
-                {totalPages > 1 && ` (page ${currentPage} of ${totalPages})`}
+                {t('component.filtered-posts.showing.count', { count: regularPosts.length })}
+                {totalPages > 1
+                  ? t('component.filtered-posts.pagination.page-of', {
+                      current: currentPage,
+                      total: totalPages
+                    })
+                  : ''}
               </>
             )}
           </span>
@@ -276,7 +302,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
               onClick={clearAllFilters}
               className='text-primary hover:text-primary/80 transition-colors min-h-[44px] px-3 py-2 rounded-2xl hover:bg-accent self-start sm:self-auto'
             >
-              Clear all filters
+              {t('component.filtered-posts.clear-all')}
             </button>
           )}
         </div>
@@ -289,13 +315,13 @@ const FilteredPosts = (props: FilteredPostsProps) => {
             {t('component.filtered-posts.no-posts-found')}
           </h3>
           <p className='text-muted-foreground max-w-md mx-auto text-xs sm:text-sm'>
-            Try adjusting your search terms or filters, or browse all posts below.
+            {t('component.filtered-posts.empty.description')}
           </p>
           <button
             onClick={clearAllFilters}
             className='inline-flex items-center justify-center rounded-2xl bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 min-h-[44px]'
           >
-            Show all posts
+            {t('component.filtered-posts.empty.show-all')}
           </button>
         </div>
       ) : null}
@@ -304,7 +330,9 @@ const FilteredPosts = (props: FilteredPostsProps) => {
       {regularPosts.length > 0 && (
         <div className='px-4 sm:px-0'>
           {featuredPosts.length > 0 && (
-            <h2 className='text-lg sm:text-xl font-semibold mb-6'>All Posts</h2>
+            <h2 className='text-lg sm:text-xl font-semibold mb-6'>
+              {t('component.filtered-posts.posts.all')}
+            </h2>
           )}
           <PostCards posts={paginatedPosts} />
           
@@ -317,7 +345,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
                 className='flex items-center gap-1 px-3 py-2 text-sm border rounded-2xl hover:bg-accent disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]'
               >
                 <ChevronLeft className='h-4 w-4' />
-                Previous
+                {t('component.filtered-posts.pagination.previous')}
               </button>
               
               <div className='flex items-center gap-1'>
@@ -341,7 +369,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
                 disabled={currentPage === totalPages}
                 className='flex items-center gap-1 px-3 py-2 text-sm border rounded-2xl hover:bg-accent disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]'
               >
-                Next
+                {t('component.filtered-posts.pagination.next')}
                 <ChevronRight className='h-4 w-4' />
               </button>
             </div>
