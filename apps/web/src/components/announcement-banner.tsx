@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useTranslations } from '@tszhong0411/i18n/client'
 import { X, AlertCircle, Info, CheckCircle, AlertTriangle } from 'lucide-react'
 import { Button } from '@tszhong0411/ui'
 import { Card, CardContent } from '@tszhong0411/ui'
@@ -37,6 +38,7 @@ const getAnnouncementColors = (type: string) => {
 }
 
 export default function AnnouncementBanner() {
+  const t = useTranslations()
   const [dismissedAnnouncements, setDismissedAnnouncements] = useState<string[]>([])
 
   // Get active announcements
@@ -118,7 +120,7 @@ export default function AnnouncementBanner() {
                   disabled={dismissMutation.isPending}
                 >
                   <X className="h-3 w-3" />
-                  <span className="sr-only">Dismiss announcement</span>
+                  <span className="sr-only">{t('component.announcement-banner.dismiss')}</span>
                 </Button>
               )}
             </div>

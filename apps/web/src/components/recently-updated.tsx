@@ -75,7 +75,7 @@ const RecentlyUpdated = () => {
     const date = new Date(dateString)
     
     // Use a consistent format to avoid hydration mismatches
-    return date.toLocaleDateString('en-US', { 
+    return date.toLocaleDateString(locale, { 
       month: 'short', 
       day: 'numeric',
       year: 'numeric'
@@ -87,10 +87,10 @@ const RecentlyUpdated = () => {
       <CardHeader>
         <CardTitle className='text-base sm:text-lg flex items-center gap-2'>
           <Clock className='h-5 w-5' />
-          Recently Updated
+          {t('homepage.recently-updated.title')}
         </CardTitle>
         <CardDescription className='text-xs sm:text-sm'>
-          Latest content updates and additions
+          {t('homepage.recently-updated.description')}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -111,7 +111,9 @@ const RecentlyUpdated = () => {
                       {item.title}
                     </h4>
                     <span className='text-xs text-muted-foreground px-2 py-0.5 bg-muted rounded-full'>
-                      {item.type}
+                      {item.type === 'post'
+                        ? t('homepage.recently-updated.type.post')
+                        : t('homepage.recently-updated.type.project')}
                     </span>
                   </div>
                   <p className='text-xs sm:text-sm text-muted-foreground line-clamp-2 mb-2'>
@@ -120,7 +122,7 @@ const RecentlyUpdated = () => {
                   <div className='flex items-center gap-1'>
                     <Calendar className='h-3 w-3 text-muted-foreground' />
                     <span className='text-xs text-muted-foreground'>
-                      Updated {formatDate(item.date)}
+                      {t('homepage.recently-updated.updated-on', { date: formatDate(item.date) })}
                     </span>
                   </div>
                 </div>
@@ -132,7 +134,7 @@ const RecentlyUpdated = () => {
         {recentlyUpdated.length === 0 && (
           <div className='text-center py-8'>
             <Clock className='h-12 w-12 mx-auto text-muted-foreground mb-4' />
-            <p className='text-sm text-muted-foreground'>No recent updates available</p>
+            <p className='text-sm text-muted-foreground'>{t('homepage.recently-updated.empty')}</p>
           </div>
         )}
       </CardContent>

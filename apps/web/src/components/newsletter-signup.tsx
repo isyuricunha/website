@@ -31,13 +31,13 @@ const NewsletterSignup = () => {
       const data = await response.json()
 
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to subscribe')
+        throw new Error(data.error || t('homepage.newsletter.error-default'))
       }
 
       setIsSubscribed(true)
       setEmail('')
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to subscribe')
+      setError(err instanceof Error ? err.message : t('homepage.newsletter.error-default'))
     } finally {
       setIsLoading(false)
     }
@@ -48,9 +48,9 @@ const NewsletterSignup = () => {
       <Card>
         <CardContent className='p-6 text-center'>
           <CheckCircle className='h-12 w-12 mx-auto text-green-500 mb-4' />
-          <h3 className='text-base sm:text-lg font-semibold mb-2'>Thanks for subscribing!</h3>
+          <h3 className='text-base sm:text-lg font-semibold mb-2'>{t('homepage.newsletter.success-title')}</h3>
           <p className='text-xs sm:text-sm text-muted-foreground'>
-            You'll receive updates about new posts and projects.
+            {t('homepage.newsletter.success-description')}
           </p>
         </CardContent>
       </Card>
@@ -62,10 +62,10 @@ const NewsletterSignup = () => {
       <CardHeader>
         <CardTitle className='text-base sm:text-lg flex items-center gap-2'>
           <Mail className='h-5 w-5' />
-          Stay Updated
+          {t('homepage.newsletter.title')}
         </CardTitle>
         <CardDescription className='text-xs sm:text-sm'>
-          Get notified about new blog posts and project updates
+          {t('homepage.newsletter.description')}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -79,7 +79,7 @@ const NewsletterSignup = () => {
           <div className='flex flex-col sm:flex-row gap-2'>
             <Input
               type='email'
-              placeholder='Enter your email'
+              placeholder={t('homepage.newsletter.placeholder')}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -96,11 +96,11 @@ const NewsletterSignup = () => {
               ) : (
                 <Send className='h-4 w-4' />
               )}
-              Subscribe
+              {t('homepage.newsletter.cta')}
             </Button>
           </div>
           <p className='text-xs text-muted-foreground'>
-            No spam, unsubscribe at any time. Privacy policy applies.
+            {t('homepage.newsletter.disclaimer')}
           </p>
         </form>
       </CardContent>

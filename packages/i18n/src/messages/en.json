@@ -183,7 +183,10 @@
       "no-posts-found": "No posts found",
       "placeholder": "Search articles"
     },
-    "go-to-homepage": "Go to homepage"
+    "go-to-homepage": "Go to homepage",
+    "announcement-banner": {
+      "dismiss": "Dismiss announcement"
+    }
   },
   "dialog": {
     "sign-in": {
@@ -263,6 +266,26 @@
       "card": "Project",
       "more": "See all project",
       "title": "Selected Projects"
+    },
+    "recently-updated": {
+      "title": "Recently Updated",
+      "description": "Latest content updates and additions",
+      "type": {
+        "post": "Post",
+        "project": "Project"
+      },
+      "updated-on": "Updated {date}",
+      "empty": "No recent updates available"
+    },
+    "newsletter": {
+      "title": "Stay Updated",
+      "description": "Get notified about new blog posts and project updates",
+      "placeholder": "Enter your email",
+      "cta": "Subscribe",
+      "disclaimer": "No spam, unsubscribe at any time. Privacy policy applies.",
+      "success-title": "Thanks for subscribing!",
+      "success-description": "You'll receive updates about new posts and projects.",
+      "error-default": "Failed to subscribe"
     }
   },
   "hook": {
