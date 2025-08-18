@@ -1,0 +1,53 @@
+---
+name: YuPomo
+description: 基于 React TypeScript Vite 和 Tauri 的精美番茄钟 适用于网页与桌面 设计简洁 支持统计 通知 与本地化。
+homepage: https://yupomo.yuricunha.com/
+github: https://github.com/isyuricunha/YuPomo
+techstack:
+  - React
+  - TypeScript
+  - Vite
+  - Tauri
+  - TailwindCSS
+  - Chart.js
+  - Rust
+selected: true
+---
+
+## 项目介绍
+
+YuPomo 是一款专注的番茄钟 帮助你以专注与休息的节奏高效工作。它既可以作为快速的网页应用运行 也可以通过 Tauri 作为原生桌面应用运行 支持 Windows macOS 与 Linux。界面简洁直接 便于迅速开始专注。设置与统计全部本地保存 数据仅存放在你的设备上。
+
+YuPomo 遵循经典番茄工作法 默认工作二十五分钟 短休五分钟 长休十五分钟。你可以自由调整所有时长 打开声音提醒与通知 并在浅色与深色主题之间切换。统计页面提供按日 按周 与按月的图表 用于查看趋势并改进你的节奏。
+
+## 主要功能
+
+完整的工作 短休 长休流程。深色主题支持纯黑。时长 声音 通知均可配置。偏好与历史本地持久化。图表展示专注时长与会话数量。桌面与移动端自适应布局。多语言界面 支持运行时即时切换。桌面端可选的更新提示 在有新版本时提醒你。
+
+## 平台与安装
+
+网页版本可直接通过演示链接访问。桌面应用通过 GitHub Releases 提供 Windows macOS 与 Linux 安装包。Windows 可使用 exe 或 msi 安装。macOS 使用适合芯片的 dmg 安装。Linux 可选择 deb 或 rpm 包 或使用 AppImage。桌面端可检查更新并引导下载与安装最新版本。
+
+## 开发与构建
+
+项目使用 React 与 TypeScript 配合 Vite 构建网页客户端 并通过 Tauri 提供桌面外壳。你可以克隆仓库 安装依赖 运行网页开发服务器 或运行 Tauri 开发流程生成桌面应用。提供用于网页部署与各操作系统桌面打包的脚本。版本脚本保持网页与 Tauri 版本一致 发布流程会构建并上传产物到 GitHub Releases。
+
+## 桌面自动更新
+
+桌面版本支持 Tauri Updater。应用可以检查 GitHub 最新发布 在界面中显示提示 并下载和安装新版本。更新产物经过签名并会被验证。配置使用 Tauri 配置文件中的公钥 并通过发布中的 latest json 文件指向产物。你可以在桌面端设置中启用启动时自动安装。
+
+## 隐私
+
+YuPomo 不收集个人数据。偏好与统计在本地保存。网页端使用 localStorage。桌面端使用 Tauri 文件系统保存在应用数据目录。通知与声音均在本地生成。可选的更新检查仅调用 GitHub Releases 公共 API。
+
+## 联系与链接
+
+**演示**: https://yupomo.yuricunha.com
+
+**仓库**: https://github.com/isyuricunha/YuPomo
+
+**动态**: https://x.com/isyuricunha
+
+**邮箱**: me@yuricunha.com
+
+**网站**: https://yuricunha.com
