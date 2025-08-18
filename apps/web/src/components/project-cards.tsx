@@ -289,6 +289,14 @@ const ProjectCard = (props: ProjectCardProps) => {
 
   return (
     <EnhancedCard className="group overflow-hidden relative" gradient>
+      {/* Make the whole card clickable to the in-site project page */}
+      <Link
+        href={`/projects/${slug}`}
+        aria-label={`Open ${name} project page`}
+        className="absolute inset-0 z-[5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 rounded-2xl"
+      >
+        <span className="sr-only">Open {name}</span>
+      </Link>
       {/* Status and Featured Badges */}
       <div className="absolute top-3 left-3 z-10 flex gap-2">
         {featured && (
@@ -315,40 +323,53 @@ const ProjectCard = (props: ProjectCardProps) => {
             alt={name}
             className='aspect-video w-full object-cover'
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-          
-          {/* Action buttons overlay */}
-          <div className="absolute bottom-4 right-4 flex gap-2 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0 translate-y-2">
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+        </div>
+      </EnhancedCardHeader>
+      
+      <EnhancedCardContent className="space-y-4">
+        {/* Action buttons moved out of image; always visible and readable */}
+        {(homepage || repository || props.github) && (
+          <div className="relative z-20 -mt-2 flex items-center justify-start gap-2">
             {(repository || props.github) && (
               <Link
                 href={repository || props.github}
-                className="flex h-8 w-8 items-center justify-center rounded-full bg-black/20 backdrop-blur-sm transition-colors hover:bg-black/40"
+                target="_blank"
+                rel="noopener noreferrer"
+                title="View source on GitHub"
+                aria-label="View source on GitHub (opens in a new tab)"
+                className="inline-flex h-9 items-center gap-2 rounded-full bg-muted px-2 md:px-3 text-foreground border border-border shadow-sm transition-all hover:bg-muted/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
                 onClick={(e) => e.stopPropagation()}
               >
-                <Github className="h-4 w-4 text-white" />
+                <Github className="h-4 w-4" />
+                <span className="hidden md:inline-block text-xs font-medium overflow-hidden md:max-w-0 md:opacity-0 md:group-hover:max-w-[64px] md:group-hover:opacity-100 md:transition-all">
+                  GitHub
+                </span>
               </Link>
             )}
             {homepage && (
               <Link
                 href={homepage}
-                className="flex h-8 w-8 items-center justify-center rounded-full bg-black/20 backdrop-blur-sm transition-colors hover:bg-black/40"
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Open live demo"
+                aria-label="Open live demo (opens in a new tab)"
+                className="inline-flex h-9 items-center gap-2 rounded-full bg-primary px-2 md:px-3 text-primary-foreground border border-primary/60 shadow-sm transition-all hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
                 onClick={(e) => e.stopPropagation()}
               >
-                <ExternalLink className="h-4 w-4 text-white" />
+                <ExternalLink className="h-4 w-4" />
+                <span className="hidden md:inline-block text-xs font-medium overflow-hidden md:max-w-0 md:opacity-0 md:group-hover:max-w-[40px] md:group-hover:opacity-100 md:transition-all">
+                  Live
+                </span>
               </Link>
             )}
           </div>
-        </div>
-      </EnhancedCardHeader>
-      
-      <EnhancedCardContent className="space-y-4">
+        )}
         <div className="space-y-2">
           <div className="flex items-start justify-between gap-2">
-            <Link href={`/projects/${slug}`}>
-              <h3 className='text-base sm:text-lg font-semibold transition-colors group-hover:text-primary'>
-                {name}
-              </h3>
-            </Link>
+            <h3 className='text-base sm:text-lg font-semibold transition-colors group-hover:text-primary'>
+              {name}
+            </h3>
             {category && (
               <Badge variant="outline" className="text-xs shrink-0">
                 {category}
