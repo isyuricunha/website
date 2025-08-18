@@ -236,12 +236,87 @@
     "go-to-homepage": "Ir para a página inicial",
     "announcement-banner": {
       "dismiss": "Dispensar anúncio"
+    },
+    "uses-page": {
+      "badge": {
+        "updated-recently": "Atualizado recentemente"
+      },
+      "affiliate": {
+        "title": "Divulgação de Afiliados",
+        "description": "Alguns links nesta página são links de afiliados. Isso significa que posso ganhar uma pequena comissão se você comprar por meio deles, sem custo adicional para você. Eu só recomendo produtos que uso pessoalmente e em que confio."
+      },
+      "table": {
+        "headers": {
+          "tool": "Ferramenta",
+          "pros": "Prós",
+          "cons": "Contras",
+          "price": "Preço",
+          "rating": "Avaliação"
+        },
+        "rating-out-of": "({rating}/5)"
+      },
+      "tools": {
+        "common": {
+          "price": {
+            "free": "Grátis",
+            "free-paid": "Grátis/Pago"
+          }
+        },
+        "docker": {
+          "pros": {
+            "0": "Containerização fácil",
+            "1": "Ótimo para desenvolvimento",
+            "2": "Ecossistema amplo"
+          },
+          "cons": {
+            "0": "Consome recursos",
+            "1": "Curva de aprendizado"
+          }
+        },
+        "kubernetes": {
+          "pros": {
+            "0": "Orquestração excelente",
+            "1": "Autoescalonamento",
+            "2": "Pronto para produção"
+          },
+          "cons": {
+            "0": "Configuração complexa",
+            "1": "Curva de aprendizado acentuada"
+          }
+        },
+        "terraform": {
+          "pros": {
+            "0": "Infraestrutura como código",
+            "1": "Multicloud",
+            "2": "Ótimo planejamento"
+          },
+          "cons": {
+            "0": "Gerenciamento de estado",
+            "1": "Pode ser complexo"
+          }
+        }
+      },
+      "sections": {
+        "laptop": {
+          "title": "Laptop",
+          "why-title": "Por que escolhi este laptop:",
+          "reasons": {
+            "0": "Equilíbrio perfeito entre desempenho e portabilidade",
+            "1": "Ótimo para desenvolvimento e jogos ocasionais",
+            "2": "Excelente custo-benefício"
+          }
+        },
+        "infra-devops": {
+          "title": "Infraestrutura & DevOps",
+          "comparison-title": "Comparação de Ferramentas de Infraestrutura"
+        }
+      }
     }
   },
   "site-search": {
     "placeholder": "Pesquisar no site...",
     "recent-searches": "Pesquisas recentes",
-    "no-results": "Sem resultados para"
+    "no-results": "Nenhum resultado para"
   },
   "dialog": {
     "sign-in": {

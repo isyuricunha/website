@@ -35,7 +35,7 @@ function main() {
   const en = readJson(enPath)
   const files = fs
     .readdirSync(messagesDir)
-    .filter((f) => f.endsWith('.json') && f !== 'en.json' && f !== 'zh.json') // exclude Chinese
+    .filter((f) => f.endsWith('.json') && f !== 'en.json')
 
   const updated = []
   for (const file of files) {

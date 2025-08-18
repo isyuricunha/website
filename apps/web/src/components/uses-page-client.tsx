@@ -5,6 +5,7 @@ import { ChevronDown, ChevronUp, ExternalLink, Info, Calendar, Star, Zap, Shield
 import { Badge } from '@tszhong0411/ui'
 import Link from './link'
 import ItemGrid from './mdx/item-grid'
+import { useTranslations } from '@tszhong0411/i18n/client'
 
 type CategoryIcon = {
   [key: string]: React.ComponentType<{ className?: string }>
@@ -27,6 +28,7 @@ type ComparisonItem = {
 }
 
 const ComparisonTable = ({ items, title }: { items: ComparisonItem[], title: string }) => {
+  const t = useTranslations('component.uses-page')
   return (
     <div className='my-8 overflow-hidden rounded-lg border'>
       <div className='bg-muted/50 px-4 py-3 border-b'>
@@ -39,11 +41,21 @@ const ComparisonTable = ({ items, title }: { items: ComparisonItem[], title: str
         <table className='w-full min-w-[1100px] table-fixed border-separate border-spacing-0'>
           <thead className='bg-muted/20'>
             <tr>
-              <th className='px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider w-[16%]'>Tool</th>
-              <th className='px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider w-[34%]'>Pros</th>
-              <th className='px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider w-[34%]'>Cons</th>
-              <th className='px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider w-[10%]'>Price</th>
-              <th className='px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider w-[6%]'>Rating</th>
+              <th className='px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider w-[16%]'>
+                {t('table.headers.tool')}
+              </th>
+              <th className='px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider w-[34%]'>
+                {t('table.headers.pros')}
+              </th>
+              <th className='px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider w-[34%]'>
+                {t('table.headers.cons')}
+              </th>
+              <th className='px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider w-[10%]'>
+                {t('table.headers.price')}
+              </th>
+              <th className='px-6 py-4 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider w-[6%]'>
+                {t('table.headers.rating')}
+              </th>
             </tr>
           </thead>
           <tbody className='divide-y divide-border'>
@@ -81,7 +93,9 @@ const ComparisonTable = ({ items, title }: { items: ComparisonItem[], title: str
                         />
                       ))}
                     </div>
-                    <span className='text-xs text-muted-foreground whitespace-nowrap'>({item.rating}/5)</span>
+                    <span className='text-xs text-muted-foreground whitespace-nowrap'>
+                      {t('table.rating-out-of', { rating: item.rating })}
+                    </span>
                   </div>
                 </td>
               </tr>
@@ -134,23 +148,24 @@ const ExpandableSection = ({
   )
 }
 
-const AffiliateDisclosure = () => (
-  <div className='mb-8 p-4 bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 rounded-lg'>
-    <div className='flex items-start gap-3'>
-      <Info className='h-5 w-5 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0' />
-      <div>
-        <h3 className='text-sm font-semibold text-blue-900 dark:text-blue-100 mb-1'>
-          Affiliate Disclosure
-        </h3>
-        <p className='text-xs sm:text-sm text-blue-800 dark:text-blue-200'>
-          Some links on this page are affiliate links. This means I may earn a small commission 
-          if you purchase through these links, at no additional cost to you. I only recommend 
-          products I personally use and believe in.
-        </p>
+const AffiliateDisclosure = () => {
+  const t = useTranslations('component.uses-page')
+  return (
+    <div className='mb-8 p-4 bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 rounded-lg'>
+      <div className='flex items-start gap-3'>
+        <Info className='h-5 w-5 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0' />
+        <div>
+          <h3 className='text-sm font-semibold text-blue-900 dark:text-blue-100 mb-1'>
+            {t('affiliate.title')}
+          </h3>
+          <p className='text-xs sm:text-sm text-blue-800 dark:text-blue-200'>
+            {t('affiliate.description')}
+          </p>
+        </div>
       </div>
     </div>
-  </div>
-)
+  )
+}
 
 type UsesPageClientProps = {
   title: string
@@ -159,27 +174,28 @@ type UsesPageClientProps = {
 }
 
 const UsesPageClient = ({ title, description, mdxContent }: UsesPageClientProps) => {
+  const t = useTranslations('component.uses-page')
   // Sample comparison data for development tools
   const devToolsComparison: ComparisonItem[] = [
     {
       name: 'Docker',
-      pros: ['Easy containerization', 'Great for development', 'Wide ecosystem'],
-      cons: ['Resource intensive', 'Learning curve'],
-      price: 'Free',
+      pros: [t('tools.docker.pros.0'), t('tools.docker.pros.1'), t('tools.docker.pros.2')],
+      cons: [t('tools.docker.cons.0'), t('tools.docker.cons.1')],
+      price: t('tools.common.price.free'),
       rating: 5
     },
     {
       name: 'Kubernetes',
-      pros: ['Excellent orchestration', 'Auto-scaling', 'Production ready'],
-      cons: ['Complex setup', 'Steep learning curve'],
-      price: 'Free',
+      pros: [t('tools.kubernetes.pros.0'), t('tools.kubernetes.pros.1'), t('tools.kubernetes.pros.2')],
+      cons: [t('tools.kubernetes.cons.0'), t('tools.kubernetes.cons.1')],
+      price: t('tools.common.price.free'),
       rating: 4
     },
     {
       name: 'Terraform',
-      pros: ['Infrastructure as code', 'Multi-cloud', 'Great planning'],
-      cons: ['State management', 'Can be complex'],
-      price: 'Free/Paid',
+      pros: [t('tools.terraform.pros.0'), t('tools.terraform.pros.1'), t('tools.terraform.pros.2')],
+      cons: [t('tools.terraform.cons.0'), t('tools.terraform.cons.1')],
+      price: t('tools.common.price.free-paid'),
       rating: 4
     }
   ]
@@ -196,7 +212,7 @@ const UsesPageClient = ({ title, description, mdxContent }: UsesPageClientProps)
         </div>
         <Badge variant='outline' className='self-start sm:self-auto'>
           <Calendar className='h-3 w-3 mr-1' />
-          Updated recently
+          {t('badge.updated-recently')}
         </Badge>
       </div>
 
@@ -213,7 +229,7 @@ const UsesPageClient = ({ title, description, mdxContent }: UsesPageClientProps)
       {!mdxContent && (
         <>
           {/* Laptop Section */}
-          <ExpandableSection title='Laptop' icon={categoryIcons['Laptop']}>
+          <ExpandableSection title={t('sections.laptop.title')} icon={categoryIcons['Laptop']}>
             <div className='mb-6'>
               <img
                 src='/images/uses/ideapad-3i.png'
@@ -222,20 +238,20 @@ const UsesPageClient = ({ title, description, mdxContent }: UsesPageClientProps)
               />
             </div>
             <div className='bg-muted/20 p-4 rounded-lg'>
-              <h3 className='text-sm sm:text-base font-semibold mb-2'>Why I chose this laptop:</h3>
+              <h3 className='text-sm sm:text-base font-semibold mb-2'>{t('sections.laptop.why-title')}</h3>
               <ul className='text-xs sm:text-sm text-muted-foreground space-y-1'>
-                <li>• Perfect balance of performance and portability</li>
-                <li>• Great for development and occasional gaming</li>
-                <li>• Excellent value for money</li>
+                <li>• {t('sections.laptop.reasons.0')}</li>
+                <li>• {t('sections.laptop.reasons.1')}</li>
+                <li>• {t('sections.laptop.reasons.2')}</li>
               </ul>
             </div>
           </ExpandableSection>
 
           {/* Infrastructure Tools Section with Comparison Table */}
-          <ExpandableSection title='Infrastructure & DevOps' icon={categoryIcons['Infra']}>
+          <ExpandableSection title={t('sections.infra-devops.title')} icon={categoryIcons['Infra']}>
             <ComparisonTable 
               items={devToolsComparison}
-              title='Infrastructure Tools Comparison'
+              title={t('sections.infra-devops.comparison-title')}
             />
           </ExpandableSection>
         </>

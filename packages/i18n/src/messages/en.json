@@ -182,6 +182,81 @@
     "sign-up-error": "Failed to sign up. Please try again."
   },
   "component": {
+    "uses-page": {
+      "badge": {
+        "updated-recently": "Updated recently"
+      },
+      "affiliate": {
+        "title": "Affiliate Disclosure",
+        "description": "Some links on this page are affiliate links. This means I may earn a small commission if you purchase through these links, at no additional cost to you. I only recommend products I personally use and believe in."
+      },
+      "table": {
+        "headers": {
+          "tool": "Tool",
+          "pros": "Pros",
+          "cons": "Cons",
+          "price": "Price",
+          "rating": "Rating"
+        },
+        "rating-out-of": "({rating}/5)"
+      },
+      "tools": {
+        "common": {
+          "price": {
+            "free": "Free",
+            "free-paid": "Free/Paid"
+          }
+        },
+        "docker": {
+          "pros": {
+            "0": "Easy containerization",
+            "1": "Great for development",
+            "2": "Wide ecosystem"
+          },
+          "cons": {
+            "0": "Resource intensive",
+            "1": "Learning curve"
+          }
+        },
+        "kubernetes": {
+          "pros": {
+            "0": "Excellent orchestration",
+            "1": "Auto-scaling",
+            "2": "Production ready"
+          },
+          "cons": {
+            "0": "Complex setup",
+            "1": "Steep learning curve"
+          }
+        },
+        "terraform": {
+          "pros": {
+            "0": "Infrastructure as code",
+            "1": "Multi-cloud",
+            "2": "Great planning"
+          },
+          "cons": {
+            "0": "State management",
+            "1": "Can be complex"
+          }
+        }
+      },
+      "sections": {
+        "laptop": {
+          "title": "Laptop",
+          "why-title": "Why I chose this laptop:",
+          "reasons": {
+            "0": "Perfect balance of performance and portability",
+            "1": "Great for development and occasional gaming",
+            "2": "Excellent value for money"
+          }
+        },
+        "infra-devops": {
+          "title": "Infrastructure & DevOps",
+          "comparison-title": "Infrastructure Tools Comparison"
+        }
+      }
+    },
     "filtered-posts": {
       "no-posts-found": "No posts found",
       "placeholder": "Search articles",
