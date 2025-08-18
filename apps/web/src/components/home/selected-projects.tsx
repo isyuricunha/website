@@ -114,13 +114,13 @@ const Card = (props: CardProps) => {
         </div>
         <ArrowUpRightIcon className='size-3 opacity-0 transition-opacity group-hover:opacity-100' />
       </div>
-      <div className='relative overflow-hidden rounded-lg ring-1 ring-border shadow-sm'>
+      <div className='relative overflow-hidden rounded-lg ring-1 ring-border shadow-sm w-full aspect-[16/9]'>
         <BlurImage
           width={1280}
           height={832}
           src={`/images/projects/${slug}/cover.png`}
           alt={description}
-          className='w-full h-auto aspect-[4/3] object-cover'
+          className='absolute inset-0 h-full w-full object-cover'
         />
       </div>
       <div className='mt-3 px-2 pb-2'>
