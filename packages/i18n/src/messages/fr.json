@@ -185,8 +185,13 @@
     },
     "go-to-homepage": "Aller à l'accueil",
     "announcement-banner": {
-      "dismiss": "Dismiss announcement"
+      "dismiss": "Fermer l'annonce"
     }
+  },
+  "site-search": {
+    "placeholder": "Rechercher sur le site...",
+    "recent-searches": "Recherches récentes",
+    "no-results": "Aucun résultat pour"
   },
   "dialog": {
     "sign-in": {
@@ -272,7 +277,8 @@
       "description": "Dernières mises à jour et ajouts de contenu",
       "type": {
         "post": "Article",
-        "project": "Projet"
+        "project": "Projet",
+        "page": "Page"
       },
       "updated-on": "Mis à jour le {date}",
       "empty": "Aucune mise à jour récente disponible"

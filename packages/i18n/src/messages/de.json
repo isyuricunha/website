@@ -185,8 +185,13 @@
     },
     "go-to-homepage": "Zur Startseite",
     "announcement-banner": {
-      "dismiss": "Dismiss announcement"
+      "dismiss": "Ankündigung schließen"
     }
+  },
+  "site-search": {
+    "placeholder": "Website durchsuchen...",
+    "recent-searches": "Letzte Suchanfragen",
+    "no-results": "Keine Ergebnisse für"
   },
   "dialog": {
     "sign-in": {
@@ -272,7 +277,8 @@
       "description": "Neueste Inhaltsaktualisierungen und Ergänzungen",
       "type": {
         "post": "Beitrag",
-        "project": "Projekt"
+        "project": "Projekt",
+        "page": "Seite"
       },
       "updated-on": "Aktualisiert am {date}",
       "empty": "Keine aktuellen Aktualisierungen verfügbar"

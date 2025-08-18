@@ -188,6 +188,11 @@
       "dismiss": "Dismiss announcement"
     }
   },
+  "site-search": {
+    "placeholder": "Search the site...",
+    "recent-searches": "Recent searches",
+    "no-results": "No results for"
+  },
   "dialog": {
     "sign-in": {
       "continue-with": "Continue with {provider}",
@@ -272,7 +277,8 @@
       "description": "Latest content updates and additions",
       "type": {
         "post": "Post",
-        "project": "Project"
+        "project": "Project",
+        "page": "Page"
       },
       "updated-on": "Updated {date}",
       "empty": "No recent updates available"

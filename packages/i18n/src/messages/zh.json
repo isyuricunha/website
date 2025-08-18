@@ -188,6 +188,11 @@
       "dismiss": "关闭公告"
     }
   },
+  "site-search": {
+    "placeholder": "搜索本站...",
+    "recent-searches": "最近搜索",
+    "no-results": "未找到与"
+  },
   "dialog": {
     "sign-in": {
       "continue-with": "使用 {provider} 继续",
@@ -272,7 +277,8 @@
       "description": "最新内容更新与新增",
       "type": {
         "post": "文章",
-        "project": "项目"
+        "project": "项目",
+        "page": "页面"
       },
       "updated-on": "于 {date} 更新",
       "empty": "暂无近期更新"

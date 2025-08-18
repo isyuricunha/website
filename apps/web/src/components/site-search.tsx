@@ -65,8 +65,8 @@ const SiteSearch = () => {
     const staticPages = [
       {
         id: 'about',
-        title: 'About',
-        description: 'Learn more about me and my background',
+        title: t('layout.about'),
+        description: t('about.description'),
         href: '/about',
         type: 'page' as const,
         icon: <User className='h-4 w-4' />
@@ -74,7 +74,7 @@ const SiteSearch = () => {
       {
         id: 'uses',
         title: t('layout.uses'),
-        description: 'Tools and equipment I use for development',
+        description: t('uses.description'),
         href: '/uses',
         type: 'page' as const,
         icon: <Code className='h-4 w-4' />
@@ -82,7 +82,7 @@ const SiteSearch = () => {
       {
         id: 'spotify',
         title: t('layout.spotify'),
-        description: 'My music taste and listening activity',
+        description: t('spotify.description'),
         href: '/spotify',
         type: 'page' as const,
         icon: <Music className='h-4 w-4' />
@@ -193,7 +193,7 @@ const SiteSearch = () => {
         <Search className='absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground' />
         <Input
           type='text'
-          placeholder='Search site...'
+          placeholder={t('site-search.placeholder')}
           value={query}
           onChange={(e) => {
             setQuery(e.target.value)
@@ -222,7 +222,7 @@ const SiteSearch = () => {
                 {showRecentSearches && (
                   <>
                     <div className='px-3 py-2 text-xs font-medium text-muted-foreground border-b'>
-                      Recent Searches
+                      {t('site-search.recent-searches')}
                     </div>
                     {recentSearches.map((searchTerm, index) => (
                       <button
@@ -260,7 +260,7 @@ const SiteSearch = () => {
                             <HighlightText text={result.title} searchTerm={query} />
                           </h4>
                           <span className='text-xs text-muted-foreground px-2 py-0.5 bg-muted rounded-full'>
-                            {result.type}
+                            {t(`homepage.recently-updated.type.${result.type}`)}
                           </span>
                         </div>
                         <p className='text-xs text-muted-foreground line-clamp-2'>
@@ -297,7 +297,7 @@ const SiteSearch = () => {
             <CardContent className='p-4 text-center'>
               <Search className='h-8 w-8 mx-auto text-muted-foreground mb-2' />
               <p className='text-sm text-muted-foreground'>
-                No results found for "{query}"
+                {t('site-search.no-results')} "{query}"
               </p>
             </CardContent>
           </Card>
