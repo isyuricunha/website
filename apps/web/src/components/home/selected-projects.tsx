@@ -114,20 +114,28 @@ const Card = (props: CardProps) => {
         </div>
         <ArrowUpRightIcon className='size-3 opacity-0 transition-opacity group-hover:opacity-100' />
       </div>
-      <div className='relative'>
+      <div className='relative overflow-hidden rounded-lg ring-1 ring-border'>
         <BlurImage
           width={1280}
           height={832}
           src={`/images/projects/${slug}/cover.png`}
           alt={description}
-          className='rounded-lg w-full h-auto aspect-[16/10] object-cover'
+          className='w-full h-auto aspect-[16/10] object-cover'
         />
       </div>
       <div className='mt-3 px-2 pb-2'>
-        <h3 className='text-sm sm:text-base font-semibold truncate'>
+        <h3 className='text-sm sm:text-base font-semibold truncate text-foreground'>
           {name}
         </h3>
-        <p className='text-xs sm:text-sm text-muted-foreground line-clamp-2'>
+        <p
+          className='text-xs sm:text-sm text-muted-foreground'
+          style={{
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden'
+          }}
+        >
           {description}
         </p>
       </div>
