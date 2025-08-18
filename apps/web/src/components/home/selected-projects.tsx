@@ -114,16 +114,23 @@ const Card = (props: CardProps) => {
         </div>
         <ArrowUpRightIcon className='size-3 opacity-0 transition-opacity group-hover:opacity-100' />
       </div>
-      <BlurImage
-        width={1280}
-        height={832}
-        src={`/images/projects/${slug}/cover.png`}
-        alt={description}
-        className='rounded-lg w-full h-auto'
-      />
-      <div className='absolute bottom-2 sm:bottom-3 left-2 sm:left-3 flex flex-col transition-[left] ease-out group-hover:left-[12px] sm:group-hover:left-[16px] max-w-[calc(100%-1rem)] sm:max-w-[calc(100%-1.5rem)]'>
-        <h3 className='text-sm sm:text-base font-semibold text-white truncate'>{name}</h3>
-        <p className='text-xs sm:text-sm text-white/80 truncate'>{description}</p>
+      <div className='relative'>
+        <BlurImage
+          width={1280}
+          height={832}
+          src={`/images/projects/${slug}/cover.png`}
+          alt={description}
+          className='rounded-lg w-full h-auto aspect-[16/10] object-cover'
+        />
+        <div className='pointer-events-none absolute inset-x-0 bottom-0 h-1/2 rounded-b-lg bg-gradient-to-t from-black/70 via-black/30 to-transparent' />
+      </div>
+      <div className='absolute bottom-2 sm:bottom-3 left-2 sm:left-3 flex flex-col transition-[left] ease-out group-hover:left-[12px] sm:group-hover:left-[16px] max-w-[calc(100%-1rem)] sm:max-w-[calc(100%-1.5rem)] bg-black/50 backdrop-blur-sm rounded-md p-2'>
+        <h3 className='text-sm sm:text-base font-semibold text-white truncate'>
+          {name}
+        </h3>
+        <p className='text-xs sm:text-sm text-white/85 truncate'>
+          {description}
+        </p>
       </div>
     </Link>
   )
