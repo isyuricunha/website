@@ -193,7 +193,7 @@ const SiteSearch = () => {
         <Search className='absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground' />
         <Input
           type='text'
-          placeholder={t('site-search.placeholder')}
+          placeholder={t('site-search.placeholder', { default: 'Search the site...' })}
           value={query}
           onChange={(e) => {
             setQuery(e.target.value)
@@ -222,7 +222,7 @@ const SiteSearch = () => {
                 {showRecentSearches && (
                   <>
                     <div className='px-3 py-2 text-xs font-medium text-muted-foreground border-b'>
-                      {t('site-search.recent-searches')}
+                      {t('site-search.recent-searches', { default: 'Recent searches' })}
                     </div>
                     {recentSearches.map((searchTerm, index) => (
                       <button
@@ -297,7 +297,7 @@ const SiteSearch = () => {
             <CardContent className='p-4 text-center'>
               <Search className='h-8 w-8 mx-auto text-muted-foreground mb-2' />
               <p className='text-sm text-muted-foreground'>
-                {t('site-search.no-results')} "{query}"
+                {t('site-search.no-results', { default: 'No results for' })} "{query}"
               </p>
             </CardContent>
           </Card>
