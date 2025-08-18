@@ -268,24 +268,24 @@
       "title": "Ausgewählte Projekte"
     },
     "recently-updated": {
-      "title": "Recently Updated",
-      "description": "Latest content updates and additions",
+      "title": "Kürzlich aktualisiert",
+      "description": "Neueste Inhaltsaktualisierungen und Ergänzungen",
       "type": {
-        "post": "Post",
-        "project": "Project"
+        "post": "Beitrag",
+        "project": "Projekt"
       },
-      "updated-on": "Updated {date}",
-      "empty": "No recent updates available"
+      "updated-on": "Aktualisiert am {date}",
+      "empty": "Keine aktuellen Aktualisierungen verfügbar"
     },
     "newsletter": {
-      "title": "Stay Updated",
-      "description": "Get notified about new blog posts and project updates",
-      "placeholder": "Enter your email",
-      "cta": "Subscribe",
-      "disclaimer": "No spam, unsubscribe at any time. Privacy policy applies.",
-      "success-title": "Thanks for subscribing!",
-      "success-description": "You'll receive updates about new posts and projects.",
-      "error-default": "Failed to subscribe"
+      "title": "Bleiben Sie auf dem Laufenden",
+      "description": "Erhalten Sie Benachrichtigungen über neue Blogbeiträge und Projekt-Updates",
+      "placeholder": "Geben Sie Ihre E-Mail ein",
+      "cta": "Abonnieren",
+      "disclaimer": "Kein Spam, Abmeldung jederzeit möglich. Es gilt die Datenschutzerklärung.",
+      "success-title": "Danke für Ihr Abonnement!",
+      "success-description": "Sie erhalten Updates über neue Beiträge und Projekte.",
+      "error-default": "Abonnement fehlgeschlagen"
     }
   },
   "hook": {
