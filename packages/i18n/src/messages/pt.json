@@ -727,7 +727,11 @@
     },
     "heatmap": {
       "title": "Mapa de calor de audição",
-      "subtitle": "Quando você mais ouve"
+      "subtitle": "Quando você mais ouve",
+      "legend": {
+        "low": "Baixo",
+        "high": "Alto"
+      }
     },
     "import": {
       "title": "Importar histórico local",

@@ -649,7 +649,11 @@
     },
     "heatmap": {
       "title": "Listening Heatmap",
-      "subtitle": "When you listen the most"
+      "subtitle": "When you listen the most",
+      "legend": {
+        "low": "Low",
+        "high": "High"
+      }
     },
     "import": {
       "title": "Import Local History",

@@ -5,15 +5,17 @@ import { useTranslations } from '@tszhong0411/i18n/client'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@tszhong0411/ui'
 import { api } from '@/trpc/react'
 
+// Short day labels; keep concise for compact layout
 const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
 const cellColors = (v: number, max: number) => {
+  // Opacity-based scale on a single hue looks cleaner and more consistent
   const ratio = max === 0 ? 0 : v / max
-  if (ratio === 0) return 'bg-muted'
-  if (ratio < 0.25) return 'bg-emerald-200 dark:bg-emerald-900/50'
-  if (ratio < 0.5) return 'bg-emerald-300 dark:bg-emerald-800/60'
-  if (ratio < 0.75) return 'bg-emerald-400 dark:bg-emerald-700/70'
-  return 'bg-emerald-500 dark:bg-emerald-600'
+  if (ratio === 0) return 'bg-muted/40'
+  if (ratio < 0.25) return 'bg-emerald-500/25'
+  if (ratio < 0.5) return 'bg-emerald-500/45'
+  if (ratio < 0.75) return 'bg-emerald-500/65'
+  return 'bg-emerald-500/85'
 }
 
 const ListeningHeatmap = () => {
@@ -62,22 +64,53 @@ const ListeningHeatmap = () => {
         ) : !tracks?.length ? (
           <p className="text-sm text-muted-foreground">{t('spotify.no-data') || 'No data'}</p>
         ) : (
-          <div className="overflow-x-auto">
-            <div className="min-w-[700px]">
-              <div className="grid grid-cols-[48px_repeat(24,1fr)] gap-1">
+          // Compact, aesthetically improved grid: small rounded cells, subtle border, hover feedback,
+          // selective hour labels to reduce clutter, and a tiny legend for context.
+          <div className="space-y-3 overflow-x-auto">
+            <div>
+              {/* 32px day label column + 24 fixed-width columns */}
+              <div className="grid grid-cols-[32px_repeat(24,12px)] gap-0.5">
+                {/* Hour labels row */}
                 <div />
                 {Array.from({ length: 24 }).map((_, h) => (
-                  <div key={h} className="text-center text-[10px] text-muted-foreground">{h}</div>
+                  <div key={h} className="flex items-center justify-center">
+                    {/* Show major labels at 0,6,12,18; small ticks otherwise */}
+                    {([0, 6, 12, 18] as number[]).includes(h) ? (
+                      <span className="text-[9px] leading-none text-muted-foreground">{h}</span>
+                    ) : (
+                      <span className="block h-[6px] w-px bg-muted-foreground/30" />
+                    )}
+                  </div>
                 ))}
+
+                {/* Day rows */}
                 {grid.map((row, dayIdx) => (
                   <Fragment key={`row-${dayIdx}`}>
-                    <div key={`d-${dayIdx}`} className="text-xs text-muted-foreground pt-1">{days[dayIdx]}</div>
+                    <div key={`d-${dayIdx}`} className="text-[10px] text-muted-foreground pt-0.5">{days[dayIdx]}</div>
                     {row.map((v, h) => (
-                      <div key={`${dayIdx}-${h}`} className={`h-4 rounded ${cellColors(v, max)}`} title={`${days[dayIdx]} ${h}:00 — ${v}`} />
+                      <div
+                        key={`${dayIdx}-${h}`}
+                        className={`h-3 w-3 rounded-[3px] ${cellColors(v, max)} ring-1 ring-black/5 dark:ring-white/5 transition-transform duration-150 hover:scale-110`}
+                        title={`${days[dayIdx]} ${String(h).padStart(2, '0')}:00 — ${v}`}
+                      />
                     ))}
                   </Fragment>
                 ))}
               </div>
+            </div>
+
+            {/* Legend: communicates scale without taking much space */}
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] text-muted-foreground">{t('spotify.heatmap.legend.low') || 'Low'}</span>
+              <div className="flex items-center gap-0.5">
+                {[0, 1, 2, 3, 4].map((i) => (
+                  <div
+                    key={i}
+                    className={`h-3 w-3 rounded-[3px] ${['bg-muted/40','bg-emerald-500/25','bg-emerald-500/45','bg-emerald-500/65','bg-emerald-500/85'][i]} ring-1 ring-black/5 dark:ring-white/5`}
+                  />
+                ))}
+              </div>
+              <span className="text-[10px] text-muted-foreground">{t('spotify.heatmap.legend.high') || 'High'}</span>
             </div>
           </div>
         )}

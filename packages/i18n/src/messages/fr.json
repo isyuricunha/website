@@ -727,7 +727,11 @@
     },
     "heatmap": {
       "title": "Heatmap d'écoute",
-      "subtitle": "Quand vous écoutez le plus"
+      "subtitle": "Quand vous écoutez le plus",
+      "legend": {
+        "low": "Faible",
+        "high": "Élevé"
+      }
     },
     "import": {
       "title": "Importer l'historique local",

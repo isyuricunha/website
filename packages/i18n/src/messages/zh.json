@@ -727,7 +727,11 @@
     },
     "heatmap": {
       "title": "收听热力图",
-      "subtitle": "你何时收听最多"
+      "subtitle": "你何时收听最多",
+      "legend": {
+        "low": "低",
+        "high": "高"
+      }
     },
     "import": {
       "title": "导入本地历史",

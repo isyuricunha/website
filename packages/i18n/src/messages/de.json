@@ -727,7 +727,11 @@
     },
     "heatmap": {
       "title": "Hör-Heatmap",
-      "subtitle": "Wann du am meisten hörst"
+      "subtitle": "Wann du am meisten hörst",
+      "legend": {
+        "low": "Niedrig",
+        "high": "Hoch"
+      }
     },
     "import": {
       "title": "Lokale Historie importieren",
