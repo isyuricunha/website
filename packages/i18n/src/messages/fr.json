@@ -239,76 +239,76 @@
     },
     "uses-page": {
       "badge": {
-        "updated-recently": "Updated recently"
+        "updated-recently": "Mis à jour récemment"
       },
       "affiliate": {
-        "title": "Affiliate Disclosure",
-        "description": "Some links on this page are affiliate links. This means I may earn a small commission if you purchase through these links, at no additional cost to you. I only recommend products I personally use and believe in."
+        "title": "Divulgation d’affiliation",
+        "description": "Certains liens sur cette page sont des liens affiliés. Cela signifie que je peux recevoir une petite commission si tu achètes via ces liens, sans coût supplémentaire pour toi. Je recommande uniquement des produits que j’utilise personnellement et en lesquels j’ai confiance."
       },
       "table": {
         "headers": {
-          "tool": "Tool",
-          "pros": "Pros",
-          "cons": "Cons",
-          "price": "Price",
-          "rating": "Rating"
+          "tool": "Outil",
+          "pros": "Avantages",
+          "cons": "Inconvénients",
+          "price": "Prix",
+          "rating": "Évaluation"
         },
         "rating-out-of": "({rating}/5)"
       },
       "tools": {
         "common": {
           "price": {
-            "free": "Free",
-            "free-paid": "Free/Paid"
+            "free": "Gratuit",
+            "free-paid": "Gratuit/Payant"
           }
         },
         "docker": {
           "pros": {
-            "0": "Easy containerization",
-            "1": "Great for development",
-            "2": "Wide ecosystem"
+            "0": "Conteneurisation facile",
+            "1": "Excellent pour le développement",
+            "2": "Écosystème vaste"
           },
           "cons": {
-            "0": "Resource intensive",
-            "1": "Learning curve"
+            "0": "Consomme beaucoup de ressources",
+            "1": "Courbe d’apprentissage"
           }
         },
         "kubernetes": {
           "pros": {
-            "0": "Excellent orchestration",
-            "1": "Auto-scaling",
-            "2": "Production ready"
+            "0": "Orchestration excellente",
+            "1": "Mise à l’échelle automatique",
+            "2": "Prêt pour la production"
           },
           "cons": {
-            "0": "Complex setup",
-            "1": "Steep learning curve"
+            "0": "Configuration complexe",
+            "1": "Courbe d’apprentissage raide"
           }
         },
         "terraform": {
           "pros": {
-            "0": "Infrastructure as code",
+            "0": "Infrastructure en tant que code",
             "1": "Multi-cloud",
-            "2": "Great planning"
+            "2": "Excellente planification"
           },
           "cons": {
-            "0": "State management",
-            "1": "Can be complex"
+            "0": "Gestion des états",
+            "1": "Peut être complexe"
           }
         }
       },
       "sections": {
         "laptop": {
-          "title": "Laptop",
-          "why-title": "Why I chose this laptop:",
+          "title": "Ordinateur portable",
+          "why-title": "Pourquoi j’ai choisi cet ordinateur portable :",
           "reasons": {
-            "0": "Perfect balance of performance and portability",
-            "1": "Great for development and occasional gaming",
-            "2": "Excellent value for money"
+            "0": "Équilibre parfait entre performance et portabilité",
+            "1": "Idéal pour le développement et le jeu occasionnel",
+            "2": "Excellent rapport qualité-prix"
           }
         },
         "infra-devops": {
           "title": "Infrastructure & DevOps",
-          "comparison-title": "Infrastructure Tools Comparison"
+          "comparison-title": "Comparaison des outils d’infrastructure"
         }
       }
     }
@@ -588,7 +588,14 @@
     },
     "stats": {
       "title": "Statistiques musicales",
-      "subtitle": "Vos habitudes d'écoute et préférences"
+      "subtitle": "Vos habitudes d'écoute et préférences",
+      "labels": {
+        "total-hours": "Heures totales",
+        "diversity": "Diversité",
+        "avg-popularity": "Popularité moyenne",
+        "top-artists": "Meilleurs artistes",
+        "top-genres": "Meilleurs genres"
+      }
     },
     "loading": "Chargement des données musicales...",
     "error": "Échec du chargement des données musicales. Veuillez réessayer.",
@@ -598,7 +605,52 @@
     "artists": "Artistes",
     "song": "Titre",
     "tracks": "pistes",
-    "listeners": "auditeurs"
+    "listeners": "auditeurs",
+    "followers": "Abonnés",
+    "timeline": {
+      "title": "Chronologie musicale",
+      "subtitle": "Visualisation de ton historique d'écoute",
+      "empty": "Aucun historique d'écoute récent disponible",
+      "periods": {
+        "last-hour": "Dernière heure",
+        "today": "Aujourd'hui",
+        "yesterday": "Hier",
+        "this-week": "Cette semaine",
+        "earlier": "Plus tôt"
+      },
+      "more-tracks": "+{count} morceaux supplémentaires",
+      "count": "({count} {label})",
+      "labels": {
+        "total-tracks": "Morceaux totaux",
+        "unique-artists": "Artistes uniques",
+        "track": "morceau",
+        "tracks": "morceaux"
+      }
+    },
+    "social": {
+      "title": "Partage ta musique",
+      "subtitle": "Partage tes morceaux préférés avec tes amis",
+      "now-playing": "En cours de lecture",
+      "top-tracks": "Meilleurs morceaux à partager",
+      "share-text": "🎵 J’écoute actuellement \"{name}\" de {artist} sur Spotify !",
+      "buttons": {
+        "twitter": "Partager sur Twitter",
+        "facebook": "Partager sur Facebook",
+        "copy": "Copier le lien",
+        "open": "Ouvrir dans Spotify"
+      },
+      "profile": {
+        "title": "Partage ton profil musical",
+        "share-title": "🎵 Découvre mes goûts musicaux et ce que j’écoute actuellement !",
+        "share-description": "Découvre mes préférences musicales et mon activité d’écoute"
+      }
+    },
+    "time-ago": {
+      "just-now": "À l’instant",
+      "minutes": "il y a {count} min",
+      "hours": "il y a {count} h",
+      "days": "il y a {count} j"
+    }
   },
   "mascot": {
     "ariaLabel": "Yue - Assistant virtuel",

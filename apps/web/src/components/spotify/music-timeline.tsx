@@ -26,11 +26,11 @@ const MusicTimeline = () => {
 
     const now = new Date()
     const groups: { [key: string]: any[] } = {
-      'Last Hour': [],
-      'Today': [],
-      'Yesterday': [],
-      'This Week': [],
-      'Earlier': []
+      'last-hour': [],
+      'today': [],
+      'yesterday': [],
+      'this-week': [],
+      'earlier': []
     }
 
     recentTracks.forEach(track => {
@@ -39,15 +39,15 @@ const MusicTimeline = () => {
       const diffInDays = diffInHours / 24
 
       if (diffInHours < 1) {
-        groups['Last Hour'].push(track)
+        groups['last-hour'].push(track)
       } else if (diffInDays < 1) {
-        groups['Today'].push(track)
+        groups['today'].push(track)
       } else if (diffInDays < 2) {
-        groups['Yesterday'].push(track)
+        groups['yesterday'].push(track)
       } else if (diffInDays < 7) {
-        groups['This Week'].push(track)
+        groups['this-week'].push(track)
       } else {
-        groups['Earlier'].push(track)
+        groups['earlier'].push(track)
       }
     })
 
@@ -72,16 +72,16 @@ const MusicTimeline = () => {
         <CardHeader>
           <CardTitle className='text-base sm:text-lg flex items-center gap-2'>
             <Clock className='h-5 w-5' />
-            Music Timeline
+            {t('spotify.timeline.title')}
           </CardTitle>
           <CardDescription className='text-xs sm:text-sm'>
-            Your listening history visualization
+            {t('spotify.timeline.subtitle')}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className='text-center py-8'>
             <Music className='h-12 w-12 mx-auto text-muted-foreground mb-4' />
-            <p className='text-sm text-muted-foreground'>No recent listening history available</p>
+            <p className='text-sm text-muted-foreground'>{t('spotify.timeline.empty')}</p>
           </div>
         </CardContent>
       </Card>
@@ -95,10 +95,10 @@ const MusicTimeline = () => {
           <div>
             <CardTitle className='text-base sm:text-lg flex items-center gap-2'>
               <Clock className='h-5 w-5' />
-              Music Timeline
+              {t('spotify.timeline.title')}
             </CardTitle>
             <CardDescription className='text-xs sm:text-sm'>
-              Your listening journey over time
+              {t('spotify.timeline.subtitle')}
             </CardDescription>
           </div>
           <button
@@ -106,7 +106,7 @@ const MusicTimeline = () => {
             disabled={isRefreshing}
             className='text-xs sm:text-sm text-muted-foreground hover:text-foreground disabled:opacity-50'
           >
-            Refresh
+            {t('spotify.refresh')}
           </button>
         </div>
       </CardHeader>
@@ -117,15 +117,15 @@ const MusicTimeline = () => {
               {/* Timeline Header */}
               <div className='flex items-center gap-2 mb-4'>
                 <div className='flex items-center justify-center w-8 h-8 rounded-full bg-primary/10'>
-                  {period === 'Last Hour' ? (
+                  {period === 'last-hour' ? (
                     <Clock className='h-4 w-4 text-primary' />
                   ) : (
                     <Calendar className='h-4 w-4 text-primary' />
                   )}
                 </div>
-                <h3 className='text-sm sm:text-base font-semibold'>{period}</h3>
+                <h3 className='text-sm sm:text-base font-semibold'>{t(`spotify.timeline.periods.${period}`)}</h3>
                 <span className='text-xs sm:text-sm text-muted-foreground'>
-                  ({tracks.length} {tracks.length === 1 ? 'track' : 'tracks'})
+                  {t('spotify.timeline.count', { count: tracks.length, label: t(`spotify.timeline.labels.${tracks.length === 1 ? 'track' : 'tracks'}`) })}
                 </span>
               </div>
 
@@ -176,7 +176,7 @@ const MusicTimeline = () => {
                     <div className='absolute -left-[1.75rem] top-2 w-3 h-3 rounded-full bg-muted border-2 border-background' />
                     <div className='p-3 text-center'>
                       <p className='text-xs sm:text-sm text-muted-foreground'>
-                        +{tracks.length - 5} more tracks
+                        {t('spotify.timeline.more-tracks', { count: tracks.length - 5 })}
                       </p>
                     </div>
                   </div>
@@ -192,14 +192,14 @@ const MusicTimeline = () => {
             <div className='text-center'>
               <div className='flex items-center justify-center gap-2 mb-1'>
                 <TrendingUp className='h-4 w-4 text-muted-foreground' />
-                <span className='text-xs sm:text-sm text-muted-foreground'>Total Tracks</span>
+                <span className='text-xs sm:text-sm text-muted-foreground'>{t('spotify.timeline.labels.total-tracks')}</span>
               </div>
               <p className='text-lg sm:text-xl font-bold'>{recentTracks.length}</p>
             </div>
             <div className='text-center'>
               <div className='flex items-center justify-center gap-2 mb-1'>
                 <Music className='h-4 w-4 text-muted-foreground' />
-                <span className='text-xs sm:text-sm text-muted-foreground'>Unique Artists</span>
+                <span className='text-xs sm:text-sm text-muted-foreground'>{t('spotify.timeline.labels.unique-artists')}</span>
               </div>
               <p className='text-lg sm:text-xl font-bold'>
                 {new Set(recentTracks.map(track => track.artist)).size}

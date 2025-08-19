@@ -239,76 +239,76 @@
     },
     "uses-page": {
       "badge": {
-        "updated-recently": "Updated recently"
+        "updated-recently": "最近更新"
       },
       "affiliate": {
-        "title": "Affiliate Disclosure",
-        "description": "Some links on this page are affiliate links. This means I may earn a small commission if you purchase through these links, at no additional cost to you. I only recommend products I personally use and believe in."
+        "title": "联盟披露",
+        "description": "本页中的一些链接是联盟链接。这意味着如果你通过这些链接购买，我可能会获得一小笔佣金，对你没有额外费用。我只推荐我亲自使用并认可的产品。"
       },
       "table": {
         "headers": {
-          "tool": "Tool",
-          "pros": "Pros",
-          "cons": "Cons",
-          "price": "Price",
-          "rating": "Rating"
+          "tool": "工具",
+          "pros": "优点",
+          "cons": "缺点",
+          "price": "价格",
+          "rating": "评分"
         },
         "rating-out-of": "({rating}/5)"
       },
       "tools": {
         "common": {
           "price": {
-            "free": "Free",
-            "free-paid": "Free/Paid"
+            "free": "免费",
+            "free-paid": "免费/付费"
           }
         },
         "docker": {
           "pros": {
-            "0": "Easy containerization",
-            "1": "Great for development",
-            "2": "Wide ecosystem"
+            "0": "容器化简单",
+            "1": "适合开发",
+            "2": "生态系统广泛"
           },
           "cons": {
-            "0": "Resource intensive",
-            "1": "Learning curve"
+            "0": "资源消耗大",
+            "1": "学习曲线"
           }
         },
         "kubernetes": {
           "pros": {
-            "0": "Excellent orchestration",
-            "1": "Auto-scaling",
-            "2": "Production ready"
+            "0": "优秀的编排功能",
+            "1": "自动扩展",
+            "2": "生产就绪"
           },
           "cons": {
-            "0": "Complex setup",
-            "1": "Steep learning curve"
+            "0": "配置复杂",
+            "1": "学习曲线陡峭"
           }
         },
         "terraform": {
           "pros": {
-            "0": "Infrastructure as code",
-            "1": "Multi-cloud",
-            "2": "Great planning"
+            "0": "基础设施即代码",
+            "1": "多云支持",
+            "2": "良好的规划"
           },
           "cons": {
-            "0": "State management",
-            "1": "Can be complex"
+            "0": "状态管理",
+            "1": "可能比较复杂"
           }
         }
       },
       "sections": {
         "laptop": {
-          "title": "Laptop",
-          "why-title": "Why I chose this laptop:",
+          "title": "笔记本电脑",
+          "why-title": "我为什么选择这台笔记本：",
           "reasons": {
-            "0": "Perfect balance of performance and portability",
-            "1": "Great for development and occasional gaming",
-            "2": "Excellent value for money"
+            "0": "性能与便携性的完美平衡",
+            "1": "适合开发和偶尔游戏",
+            "2": "性价比极高"
           }
         },
         "infra-devops": {
-          "title": "Infrastructure & DevOps",
-          "comparison-title": "Infrastructure Tools Comparison"
+          "title": "基础设施与 DevOps",
+          "comparison-title": "基础设施工具对比"
         }
       }
     }
@@ -588,7 +588,14 @@
     },
     "stats": {
       "title": "音乐统计",
-      "subtitle": "你的收听习惯和偏好"
+      "subtitle": "你的收听习惯和偏好",
+      "labels": {
+        "total-hours": "总时长",
+        "diversity": "多样性",
+        "avg-popularity": "平均流行度",
+        "top-artists": "热门艺人",
+        "top-genres": "热门流派"
+      }
     },
     "loading": "正在加载音乐数据...",
     "error": "加载音乐数据失败。请重试。",
@@ -598,7 +605,52 @@
     "artists": "艺术家",
     "song": "歌曲",
     "tracks": "曲目",
-    "listeners": "听众"
+    "listeners": "听众",
+    "followers": "关注者",
+    "timeline": {
+      "title": "音乐时间线",
+      "subtitle": "你的收听历史可视化",
+      "empty": "暂无最近的收听记录",
+      "periods": {
+        "last-hour": "过去一小时",
+        "today": "今天",
+        "yesterday": "昨天",
+        "this-week": "本周",
+        "earlier": "更早"
+      },
+      "more-tracks": "再有 +{count} 首歌曲",
+      "count": "({count} {label})",
+      "labels": {
+        "total-tracks": "总曲目",
+        "unique-artists": "独特艺人",
+        "track": "曲目",
+        "tracks": "曲目"
+      }
+    },
+    "social": {
+      "title": "分享你的音乐",
+      "subtitle": "与朋友分享你喜欢的歌曲",
+      "now-playing": "正在播放",
+      "top-tracks": "热门分享曲目",
+      "share-text": "🎵 我正在 Spotify 上听 \"{name}\"，演唱者 {artist}！",
+      "buttons": {
+        "twitter": "分享到 Twitter",
+        "facebook": "分享到 Facebook",
+        "copy": "复制链接",
+        "open": "在 Spotify 中打开"
+      },
+      "profile": {
+        "title": "分享你的音乐档案",
+        "share-title": "🎵 来看看我的音乐喜好和正在听的歌曲！",
+        "share-description": "发现我的音乐偏好和当前的收听活动"
+      }
+    },
+    "time-ago": {
+      "just-now": "刚刚",
+      "minutes": "{count} 分钟前",
+      "hours": "{count} 小时前",
+      "days": "{count} 天前"
+    }
   },
   "mascot": {
     "ariaLabel": "Yue - 虚拟助手",

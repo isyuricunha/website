@@ -97,10 +97,10 @@ const MusicStatsSection = () => {
           <div>
             <CardTitle className='text-base sm:text-lg flex items-center gap-2'>
               <BarChart3 className='h-5 w-5' />
-              Music Statistics
+              {t('spotify.stats.title')}
             </CardTitle>
             <CardDescription className='text-xs sm:text-sm'>
-              Your listening insights and patterns
+              {t('spotify.stats.subtitle')}
             </CardDescription>
           </div>
           <button
@@ -108,7 +108,7 @@ const MusicStatsSection = () => {
             disabled={isRefreshing}
             className='text-xs sm:text-sm text-muted-foreground hover:text-foreground disabled:opacity-50'
           >
-            Refresh
+            {t('spotify.refresh')}
           </button>
         </div>
       </CardHeader>
@@ -121,7 +121,7 @@ const MusicStatsSection = () => {
             </div>
             <div>
               <p className='text-lg sm:text-xl font-bold'>{stats.totalHours}h</p>
-              <p className='text-xs sm:text-sm text-muted-foreground'>Total Hours</p>
+              <p className='text-xs sm:text-sm text-muted-foreground'>{t('spotify.stats.labels.total-hours')}</p>
             </div>
           </div>
 
@@ -132,7 +132,7 @@ const MusicStatsSection = () => {
             </div>
             <div>
               <p className='text-lg sm:text-xl font-bold'>{stats.diversityScore}%</p>
-              <p className='text-xs sm:text-sm text-muted-foreground'>Diversity</p>
+              <p className='text-xs sm:text-sm text-muted-foreground'>{t('spotify.stats.labels.diversity')}</p>
             </div>
           </div>
 
@@ -143,7 +143,7 @@ const MusicStatsSection = () => {
             </div>
             <div>
               <p className='text-lg sm:text-xl font-bold'>{stats.avgPopularity}%</p>
-              <p className='text-xs sm:text-sm text-muted-foreground'>Avg Popularity</p>
+              <p className='text-xs sm:text-sm text-muted-foreground'>{t('spotify.stats.labels.avg-popularity')}</p>
             </div>
           </div>
 
@@ -154,7 +154,7 @@ const MusicStatsSection = () => {
             </div>
             <div>
               <p className='text-lg sm:text-xl font-bold'>{stats.totalArtists}</p>
-              <p className='text-xs sm:text-sm text-muted-foreground'>Top Artists</p>
+              <p className='text-xs sm:text-sm text-muted-foreground'>{t('spotify.stats.labels.top-artists')}</p>
             </div>
           </div>
         </div>
@@ -164,7 +164,7 @@ const MusicStatsSection = () => {
           <div className='mt-6 pt-6 border-t'>
             <h4 className='text-sm sm:text-base font-semibold mb-3 flex items-center gap-2'>
               <Calendar className='h-4 w-4' />
-              Top Genres
+              {t('spotify.stats.labels.top-genres')}
             </h4>
             <div className='flex flex-wrap gap-2'>
               {stats.topGenres.map((genre, index) => (

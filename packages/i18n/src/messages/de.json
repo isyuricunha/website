@@ -239,76 +239,76 @@
     },
     "uses-page": {
       "badge": {
-        "updated-recently": "Updated recently"
+        "updated-recently": "Kürzlich aktualisiert"
       },
       "affiliate": {
-        "title": "Affiliate Disclosure",
-        "description": "Some links on this page are affiliate links. This means I may earn a small commission if you purchase through these links, at no additional cost to you. I only recommend products I personally use and believe in."
+        "title": "Affiliate-Hinweis",
+        "description": "Einige Links auf dieser Seite sind Affiliate-Links. Das bedeutet, dass ich eine kleine Provision verdienen kann, wenn du über diese Links kaufst – ohne zusätzliche Kosten für dich. Ich empfehle nur Produkte, die ich selbst benutze und an die ich glaube."
       },
       "table": {
         "headers": {
-          "tool": "Tool",
-          "pros": "Pros",
-          "cons": "Cons",
-          "price": "Price",
-          "rating": "Rating"
+          "tool": "Werkzeug",
+          "pros": "Vorteile",
+          "cons": "Nachteile",
+          "price": "Preis",
+          "rating": "Bewertung"
         },
         "rating-out-of": "({rating}/5)"
       },
       "tools": {
         "common": {
           "price": {
-            "free": "Free",
-            "free-paid": "Free/Paid"
+            "free": "Kostenlos",
+            "free-paid": "Kostenlos/Bezahlt"
           }
         },
         "docker": {
           "pros": {
-            "0": "Easy containerization",
-            "1": "Great for development",
-            "2": "Wide ecosystem"
+            "0": "Einfache Containerisierung",
+            "1": "Ideal für Entwicklung",
+            "2": "Breites Ökosystem"
           },
           "cons": {
-            "0": "Resource intensive",
-            "1": "Learning curve"
+            "0": "Ressourcenintensiv",
+            "1": "Lernkurve"
           }
         },
         "kubernetes": {
           "pros": {
-            "0": "Excellent orchestration",
-            "1": "Auto-scaling",
-            "2": "Production ready"
+            "0": "Exzellente Orchestrierung",
+            "1": "Automatisches Skalieren",
+            "2": "Produktionsreif"
           },
           "cons": {
-            "0": "Complex setup",
-            "1": "Steep learning curve"
+            "0": "Komplexe Einrichtung",
+            "1": "Steile Lernkurve"
           }
         },
         "terraform": {
           "pros": {
-            "0": "Infrastructure as code",
-            "1": "Multi-cloud",
-            "2": "Great planning"
+            "0": "Infrastruktur als Code",
+            "1": "Multi-Cloud",
+            "2": "Hervorragende Planung"
           },
           "cons": {
-            "0": "State management",
-            "1": "Can be complex"
+            "0": "Zustandsverwaltung",
+            "1": "Kann komplex sein"
           }
         }
       },
       "sections": {
         "laptop": {
           "title": "Laptop",
-          "why-title": "Why I chose this laptop:",
+          "why-title": "Warum ich diesen Laptop gewählt habe:",
           "reasons": {
-            "0": "Perfect balance of performance and portability",
-            "1": "Great for development and occasional gaming",
-            "2": "Excellent value for money"
+            "0": "Perfektes Gleichgewicht zwischen Leistung und Mobilität",
+            "1": "Ideal für Entwicklung und gelegentliches Gaming",
+            "2": "Hervorragendes Preis-Leistungs-Verhältnis"
           }
         },
         "infra-devops": {
-          "title": "Infrastructure & DevOps",
-          "comparison-title": "Infrastructure Tools Comparison"
+          "title": "Infrastruktur & DevOps",
+          "comparison-title": "Vergleich von Infrastruktur-Tools"
         }
       }
     }
@@ -588,7 +588,14 @@
     },
     "stats": {
       "title": "Musikstatistiken",
-      "subtitle": "Deine Hörgewohnheiten und Vorlieben"
+      "subtitle": "Deine Hörgewohnheiten und Vorlieben",
+      "labels": {
+        "total-hours": "Gesamte Stunden",
+        "diversity": "Vielfalt",
+        "avg-popularity": "Durchschnittliche Beliebtheit",
+        "top-artists": "Top-Künstler",
+        "top-genres": "Top-Genres"
+      }
     },
     "loading": "Musikdaten werden geladen...",
     "error": "Musikdaten konnten nicht geladen werden. Bitte versuche es erneut.",
@@ -598,7 +605,52 @@
     "artists": "Künstler",
     "song": "Song",
     "tracks": "Tracks",
-    "listeners": "Hörer"
+    "listeners": "Hörer",
+    "followers": "Follower",
+    "timeline": {
+      "title": "Musik-Zeitachse",
+      "subtitle": "Visualisierung deiner Hörhistorie",
+      "empty": "Keine aktuelle Hörhistorie verfügbar",
+      "periods": {
+        "last-hour": "Letzte Stunde",
+        "today": "Heute",
+        "yesterday": "Gestern",
+        "this-week": "Diese Woche",
+        "earlier": "Früher"
+      },
+      "more-tracks": "+{count} weitere Titel",
+      "count": "({count} {label})",
+      "labels": {
+        "total-tracks": "Gesamte Titel",
+        "unique-artists": "Einzigartige Künstler",
+        "track": "Titel",
+        "tracks": "Titel"
+      }
+    },
+    "social": {
+      "title": "Teile deine Musik",
+      "subtitle": "Teile deine Lieblingstitel mit Freunden",
+      "now-playing": "Gerade läuft",
+      "top-tracks": "Top-Titel zum Teilen",
+      "share-text": "🎵 Höre gerade „{name}“ von {artist} auf Spotify!",
+      "buttons": {
+        "twitter": "Auf Twitter teilen",
+        "facebook": "Auf Facebook teilen",
+        "copy": "Link kopieren",
+        "open": "In Spotify öffnen"
+      },
+      "profile": {
+        "title": "Teile dein Musikprofil",
+        "share-title": "🎵 Sieh dir meinen Musikgeschmack und meine aktuellen Songs an!",
+        "share-description": "Entdecke meine Musikvorlieben und aktuelle Höraktivität"
+      }
+    },
+    "time-ago": {
+      "just-now": "Gerade eben",
+      "minutes": "vor {count} Min.",
+      "hours": "vor {count} Std.",
+      "days": "vor {count} Tg."
+    }
   },
   "mascot": {
     "ariaLabel": "Yue - Virtueller Assistent",

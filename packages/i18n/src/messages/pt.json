@@ -243,7 +243,7 @@
       },
       "affiliate": {
         "title": "Divulgação de Afiliados",
-        "description": "Alguns links nesta página são links de afiliados. Isso significa que posso ganhar uma pequena comissão se você comprar por meio deles, sem custo adicional para você. Eu só recomendo produtos que uso pessoalmente e em que confio."
+        "description": "Alguns links nesta página são links de afiliados. Isso significa que posso ganhar uma pequena comissão se você comprar através desses links, sem custo adicional para você. Eu só recomendo produtos que uso pessoalmente e nos quais acredito."
       },
       "table": {
         "headers": {
@@ -266,28 +266,28 @@
           "pros": {
             "0": "Containerização fácil",
             "1": "Ótimo para desenvolvimento",
-            "2": "Ecossistema amplo"
+            "2": "Grande ecossistema"
           },
           "cons": {
-            "0": "Consome recursos",
+            "0": "Intensivo em recursos",
             "1": "Curva de aprendizado"
           }
         },
         "kubernetes": {
           "pros": {
-            "0": "Orquestração excelente",
-            "1": "Autoescalonamento",
+            "0": "Excelente orquestração",
+            "1": "Auto-escalonamento",
             "2": "Pronto para produção"
           },
           "cons": {
             "0": "Configuração complexa",
-            "1": "Curva de aprendizado acentuada"
+            "1": "Curva de aprendizado íngreme"
           }
         },
         "terraform": {
           "pros": {
             "0": "Infraestrutura como código",
-            "1": "Multicloud",
+            "1": "Multi-cloud",
             "2": "Ótimo planejamento"
           },
           "cons": {
@@ -298,8 +298,8 @@
       },
       "sections": {
         "laptop": {
-          "title": "Laptop",
-          "why-title": "Por que escolhi este laptop:",
+          "title": "Notebook",
+          "why-title": "Por que escolhi este notebook:",
           "reasons": {
             "0": "Equilíbrio perfeito entre desempenho e portabilidade",
             "1": "Ótimo para desenvolvimento e jogos ocasionais",
@@ -588,7 +588,14 @@
     },
     "stats": {
       "title": "Estatísticas Musicais",
-      "subtitle": "Seus hábitos e preferências de escuta"
+      "subtitle": "Seus hábitos e preferências de escuta",
+      "labels": {
+        "total-hours": "Horas Totais",
+        "diversity": "Diversidade",
+        "avg-popularity": "Popularidade Média",
+        "top-artists": "Artistas Principais",
+        "top-genres": "Gêneros Principais"
+      }
     },
     "loading": "Carregando dados de música...",
     "error": "Falha ao carregar dados de música. Por favor, tente novamente.",
@@ -598,7 +605,52 @@
     "artists": "Artistas",
     "song": "Música",
     "tracks": "faixas",
-    "listeners": "ouvintes"
+    "listeners": "ouvintes",
+    "followers": "Seguidores",
+    "timeline": {
+      "title": "Linha do Tempo Musical",
+      "subtitle": "Visualização do seu histórico de audição",
+      "empty": "Nenhum histórico de audição recente disponível",
+      "periods": {
+        "last-hour": "Última hora",
+        "today": "Hoje",
+        "yesterday": "Ontem",
+        "this-week": "Esta semana",
+        "earlier": "Anterior"
+      },
+      "more-tracks": "+{count} faixas a mais",
+      "count": "({count} {label})",
+      "labels": {
+        "total-tracks": "Total de faixas",
+        "unique-artists": "Artistas únicos",
+        "track": "faixa",
+        "tracks": "faixas"
+      }
+    },
+    "social": {
+      "title": "Compartilhe sua música",
+      "subtitle": "Compartilhe suas faixas favoritas com amigos",
+      "now-playing": "Reproduzindo agora",
+      "top-tracks": "Principais faixas para compartilhar",
+      "share-text": "🎵 Estou curtindo agora \"{name}\" de {artist} no Spotify!",
+      "buttons": {
+        "twitter": "Compartilhar no Twitter",
+        "facebook": "Compartilhar no Facebook",
+        "copy": "Copiar link",
+        "open": "Abrir no Spotify"
+      },
+      "profile": {
+        "title": "Compartilhe seu perfil musical",
+        "share-title": "🎵 Confira meu gosto musical e o que estou ouvindo agora!",
+        "share-description": "Descubra minhas preferências musicais e atividade de audição"
+      }
+    },
+    "time-ago": {
+      "just-now": "Agora mesmo",
+      "minutes": "há {count}min",
+      "hours": "há {count}h",
+      "days": "há {count}d"
+    }
   },
   "mascot": {
     "ariaLabel": "Yue - Assistente virtual",

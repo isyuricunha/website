@@ -575,17 +575,69 @@
     },
     "stats": {
       "title": "Music Statistics",
-      "subtitle": "Your listening habits and preferences"
+      "subtitle": "Your listening habits and preferences",
+      "labels": {
+        "total-hours": "Total Hours",
+        "diversity": "Diversity",
+        "avg-popularity": "Avg Popularity",
+        "top-artists": "Top Artists",
+        "top-genres": "Top Genres"
+      }
     },
     "loading": "Loading music data...",
     "error": "Failed to load music data. Please try again.",
-    "refresh": "Refresh data",
+    "refresh": "Refresh",
     "album": "Album",
     "artist": "Artist",
     "artists": "Artists",
     "song": "Song",
     "tracks": "tracks",
-    "listeners": "listeners"
+    "listeners": "listeners",
+    "followers": "followers",
+    "timeline": {
+      "title": "Music Timeline",
+      "subtitle": "Your listening history visualization",
+      "empty": "No recent listening history available",
+      "periods": {
+        "last-hour": "Last Hour",
+        "today": "Today",
+        "yesterday": "Yesterday",
+        "this-week": "This Week",
+        "earlier": "Earlier"
+      },
+      "more-tracks": "+{count} more tracks",
+      "count": "({count} {label})",
+      "labels": {
+        "total-tracks": "Total Tracks",
+        "unique-artists": "Unique Artists",
+        "track": "track",
+        "tracks": "tracks"
+      }
+    },
+    "social": {
+      "title": "Share Your Music",
+      "subtitle": "Share your favorite tracks with friends",
+      "now-playing": "Now Playing",
+      "top-tracks": "Top Tracks to Share",
+      "share-text": "🎵 Currently vibing to \"{name}\" by {artist} on Spotify!",
+      "buttons": {
+        "twitter": "Share on Twitter",
+        "facebook": "Share on Facebook",
+        "copy": "Copy link",
+        "open": "Open in Spotify"
+      },
+      "profile": {
+        "title": "Share Your Music Profile",
+        "share-title": "🎵 Check out my music taste and what I'm currently listening to!",
+        "share-description": "Discover my music preferences and current listening activity"
+      }
+    },
+    "time-ago": {
+      "just-now": "Just now",
+      "minutes": "{count}m ago",
+      "hours": "{count}h ago",
+      "days": "{count}d ago"
+    }
   },
   "mascot": {
     "ariaLabel": "Yue - Virtual assistant",
