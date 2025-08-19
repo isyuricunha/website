@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo } from 'react'
+import { useMemo, Fragment } from 'react'
 import { useTranslations } from '@tszhong0411/i18n/client'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@tszhong0411/ui'
 import { api } from '@/trpc/react'
@@ -68,12 +68,12 @@ const ListeningHeatmap = () => {
                   <div key={h} className="text-center text-[10px] text-muted-foreground">{h}</div>
                 ))}
                 {grid.map((row, dayIdx) => (
-                  <>
+                  <Fragment key={`row-${dayIdx}`}>
                     <div key={`d-${dayIdx}`} className="text-xs text-muted-foreground pt-1">{days[dayIdx]}</div>
                     {row.map((v, h) => (
                       <div key={`${dayIdx}-${h}`} className={`h-4 rounded ${cellColors(v, max)}`} title={`${days[dayIdx]} ${h}:00 — ${v}`} />
                     ))}
-                  </>
+                  </Fragment>
                 ))}
               </div>
             </div>
