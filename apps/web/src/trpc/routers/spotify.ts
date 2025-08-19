@@ -15,7 +15,6 @@ const NOW_PLAYING_ENDPOINT = 'https://api.spotify.com/v1/me/player/currently-pla
 const TOP_ARTISTS_ENDPOINT = 'https://api.spotify.com/v1/me/top/artists'
 const TOP_TRACKS_ENDPOINT = 'https://api.spotify.com/v1/me/top/tracks'
 const RECENTLY_PLAYED_ENDPOINT = 'https://api.spotify.com/v1/me/player/recently-played'
-const AUDIO_FEATURES_ENDPOINT = 'https://api.spotify.com/v1/audio-features'
 const TOKEN_ENDPOINT = 'https://accounts.spotify.com/api/token'
 
 const getAccessToken = async () => {
@@ -409,113 +408,6 @@ export const spotifyRouter = createTRPCRouter({
       } catch (error) {
         console.error('Error in getTopTracksByRange:', error)
         throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Failed to fetch top tracks by range' })
-      }
-    }),
-
-  // New: Fetch audio features for given track IDs (up to 100)
-  getAudioFeaturesForTracks: publicProcedure
-    .input((val: unknown) => {
-      const input = val as { ids: string[] }
-      const ids = Array.isArray(input?.ids) ? input.ids.slice(0, 100).filter(Boolean) : []
-      return { ids }
-    })
-    .query(async ({ ctx, input }) => {
-      const ip = getIp(ctx.headers)
-      const { success } = await ratelimit.limit(getKey(ip))
-      if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
-
-      if (!input.ids.length) return []
-      try {
-        const accessToken = await getAccessToken()
-        const url = `${AUDIO_FEATURES_ENDPOINT}?ids=${encodeURIComponent(input.ids.join(','))}`
-        const response = await fetch(url, {
-          headers: { Authorization: `Bearer ${accessToken}` },
-          signal: AbortSignal.timeout(10000)
-        })
-        if (!response.ok) {
-          const errorText = await response.text()
-          console.error('Error audio features:', response.status, errorText)
-          throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: `Failed to fetch audio features (${response.status})` })
-        }
-        const data = await response.json()
-        return (data.audio_features || []).filter(Boolean).map((f: any) => ({
-          id: f.id as string,
-          danceability: f.danceability as number,
-          energy: f.energy as number,
-          valence: f.valence as number,
-          tempo: f.tempo as number,
-          acousticness: f.acousticness as number,
-          instrumentalness: f.instrumentalness as number
-        }))
-      } catch (error) {
-        console.error('Error in getAudioFeaturesForTracks:', error)
-        throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Failed to fetch audio features' })
-      }
-    }),
-
-  // New: Convenience endpoint to fetch audio features for current top tracks
-  getAudioFeaturesForTopTracks: publicProcedure
-    .input((val: unknown) => {
-      const input = val as { time_range?: 'short_term' | 'medium_term' | 'long_term', limit?: number }
-      return {
-        time_range: (input?.time_range ?? 'short_term') as 'short_term' | 'medium_term' | 'long_term',
-        limit: Math.min(Math.max(input?.limit ?? 20, 1), 50)
-      }
-    })
-    .query(async ({ ctx, input }) => {
-      const ip = getIp(ctx.headers)
-      const { success } = await ratelimit.limit(getKey(ip))
-      if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
-
-      try {
-        const accessToken = await getAccessToken()
-        const tracksRes = await fetch(`${TOP_TRACKS_ENDPOINT}?limit=${input.limit}&time_range=${input.time_range}`, {
-          headers: { Authorization: `Bearer ${accessToken}` },
-          signal: AbortSignal.timeout(10000)
-        })
-        if (!tracksRes.ok) {
-          const errorText = await tracksRes.text()
-          console.error('Error fetching top tracks for features:', tracksRes.status, errorText)
-          throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Failed to fetch top tracks' })
-        }
-        const tracksData = await tracksRes.json()
-        const ids: string[] = (tracksData.items || []).map((t: any) => t.id).filter(Boolean)
-        if (!ids.length) return { features: [], aggregates: null }
-
-        const featuresRes = await fetch(`${AUDIO_FEATURES_ENDPOINT}?ids=${encodeURIComponent(ids.join(','))}`, {
-          headers: { Authorization: `Bearer ${accessToken}` },
-          signal: AbortSignal.timeout(10000)
-        })
-        if (!featuresRes.ok) {
-          const errorText = await featuresRes.text()
-          console.error('Error fetching audio features for top tracks:', featuresRes.status, errorText)
-          throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Failed to fetch audio features for top tracks' })
-        }
-        const featuresData = await featuresRes.json()
-        const features = (featuresData.audio_features || []).filter(Boolean).map((f: any) => ({
-          id: f.id as string,
-          danceability: f.danceability as number,
-          energy: f.energy as number,
-          valence: f.valence as number,
-          tempo: f.tempo as number,
-          acousticness: f.acousticness as number,
-          instrumentalness: f.instrumentalness as number
-        }))
-
-        const n = features.length || 1
-        const avg = (key: keyof typeof features[number]) => features.reduce((a, b) => a + (b[key] as number), 0) / n
-        const aggregates = {
-          danceability: Number(avg('danceability').toFixed(2)),
-          energy: Number(avg('energy').toFixed(2)),
-          valence: Number(avg('valence').toFixed(2)),
-          tempo: Number(avg('tempo').toFixed(0)),
-          acousticness: Number(avg('acousticness').toFixed(2)),
-          instrumentalness: Number(avg('instrumentalness').toFixed(2))
-        }
-        return { features, aggregates }
-      } catch (error) {
-        console.error('Error in getAudioFeaturesForTopTracks:', error)
-        throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Failed to fetch audio features for top tracks' })
       }
     })
 })

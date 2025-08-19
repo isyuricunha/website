@@ -11,7 +11,6 @@ import TopSongsSection from '@/components/spotify/top-songs-section'
 import MusicStatsSection from '@/components/spotify/music-stats-section'
 import MusicTasteAnalysis from '@/components/spotify/music-taste-analysis'
 import MusicTimeline from '@/components/spotify/music-timeline'
-import AudioFeaturesSummary from '@/components/spotify/audio-features-summary'
 import GenreDistribution from '@/components/spotify/genre-distribution'
 import ListeningHeatmap from '@/components/spotify/listening-heatmap'
 import LocalHistoryImport from '@/components/spotify/local-history-import'
@@ -108,7 +107,6 @@ const Page = async (props: PageProps) => {
           <TopSongsSection />
         </div>
 
-        <AudioFeaturesSummary />
 
         <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
           <GenreDistribution />
