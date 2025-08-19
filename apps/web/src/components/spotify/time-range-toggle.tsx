@@ -11,8 +11,8 @@ type Props = {
 const TimeRangeToggle = ({ value, onChange, className }: Props) => {
   const t = useTranslations()
   const opts: Array<{ key: 'short_term' | 'medium_term' | 'long_term'; label: string }> = [
-    { key: 'short_term', label: t('spotify.range.short') || '4 weeks' },
-    { key: 'medium_term', label: t('spotify.range.medium') || '6 months' },
+    { key: 'short_term', label: t('spotify.range.short') || 'Last 4 weeks' },
+    { key: 'medium_term', label: t('spotify.range.medium') || 'Last 6 months' },
     { key: 'long_term', label: t('spotify.range.long') || 'All time' }
   ]
   return (

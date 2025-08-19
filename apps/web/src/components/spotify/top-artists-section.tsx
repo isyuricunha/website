@@ -117,46 +117,75 @@ const TopArtistsSection = () => {
   return (
     <Card>
       <CardHeader>
-        <div className='flex items-center justify-between'>
-          <div>
-            <CardTitle className='text-base sm:text-lg'>{t('spotify.top-artists.title')}</CardTitle>
-            <CardDescription className='text-xs sm:text-sm'>{t('spotify.top-artists.subtitle')}</CardDescription>
-          </div>
-          <div className='flex items-center gap-2'>
-            <TimeRangeToggle value={timeRange} onChange={setTimeRange} />
+        {/* Title and subtitle */}
+        <div>
+          <CardTitle className='text-base sm:text-lg'>{t('spotify.top-artists.title')}</CardTitle>
+          <CardDescription className='text-xs sm:text-sm'>{t('spotify.top-artists.subtitle')}</CardDescription>
+        </div>
+        {/* Controls row beneath title, wraps on small screens */}
+        <div className='mt-3 flex flex-wrap items-center gap-2'>
+          <TimeRangeToggle value={timeRange} onChange={setTimeRange} />
+          {/* View mode toggle: list vs grid */}
+          <div className='inline-flex items-center gap-1 rounded-md bg-muted p-1 text-xs'>
             <button
-              onClick={() => setIsShuffled(!isShuffled)}
+              onClick={() => setViewMode('list')}
               className={`p-1.5 rounded-md transition-colors ${
-                isShuffled
-                  ? 'bg-primary text-primary-foreground'
-                  : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+                viewMode === 'list'
+                  ? 'bg-background shadow text-foreground'
+                  : 'text-muted-foreground hover:text-foreground'
               }`}
-              title={isShuffled ? t('spotify.top-artists.tooltips.shuffle-on') : t('spotify.top-artists.tooltips.shuffle-off')}
+              title={t('spotify.top-artists.tooltips.view-list')}
+              aria-label={t('spotify.top-artists.tooltips.view-list')}
+              aria-pressed={viewMode === 'list'}
             >
-              <Shuffle className='h-4 w-4' />
+              <List className='h-4 w-4' />
             </button>
             <button
-              onClick={handleExportCsv}
-              className='px-2 py-1 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors'
-              title={t('spotify.export.csv') || 'Export CSV'}
+              onClick={() => setViewMode('grid')}
+              className={`p-1.5 rounded-md transition-colors ${
+                viewMode === 'grid'
+                  ? 'bg-background shadow text-foreground'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+              title={t('spotify.top-artists.tooltips.view-grid')}
+              aria-label={t('spotify.top-artists.tooltips.view-grid')}
+              aria-pressed={viewMode === 'grid'}
             >
-              CSV
-            </button>
-            <button
-              onClick={handleExportJson}
-              className='px-2 py-1 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors'
-              title={t('spotify.export.json') || 'Export JSON'}
-            >
-              JSON
-            </button>
-            <button
-              onClick={handleRefresh}
-              disabled={isRefreshing}
-              className='text-sm text-muted-foreground hover:text-foreground disabled:opacity-50'
-            >
-              {t('spotify.refresh')}
+              <Grid3X3 className='h-4 w-4' />
             </button>
           </div>
+          <button
+            onClick={() => setIsShuffled(!isShuffled)}
+            className={`p-1.5 rounded-md transition-colors ${
+              isShuffled
+                ? 'bg-primary text-primary-foreground'
+                : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+            }`}
+            title={isShuffled ? t('spotify.top-artists.tooltips.shuffle-on') : t('spotify.top-artists.tooltips.shuffle-off')}
+          >
+            <Shuffle className='h-4 w-4' />
+          </button>
+          <button
+            onClick={handleExportCsv}
+            className='px-2 py-1 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors'
+            title={t('spotify.export.csv') || 'Export CSV'}
+          >
+            CSV
+          </button>
+          <button
+            onClick={handleExportJson}
+            className='px-2 py-1 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors'
+            title={t('spotify.export.json') || 'Export JSON'}
+          >
+            JSON
+          </button>
+          <button
+            onClick={handleRefresh}
+            disabled={isRefreshing}
+            className='text-sm text-muted-foreground hover:text-foreground disabled:opacity-50'
+          >
+            {t('spotify.refresh')}
+          </button>
         </div>
       </CardHeader>
       <CardContent>
