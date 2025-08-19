@@ -311,6 +311,16 @@
           "comparison-title": "Comparação de Ferramentas de Infraestrutura"
         }
       }
+    },
+    "offline-indicator": {
+      "toast": {
+        "restored": "Conexão restabelecida!",
+        "offline": "Você está offline. Alguns recursos podem não funcionar."
+      },
+      "status": {
+        "online": "De volta online",
+        "offline": "Sem conexão com a internet"
+      }
     }
   },
   "site-search": {
@@ -700,6 +710,42 @@
           "mainstream": "Você acompanha a música popular e sabe o que está em alta!"
         }
       }
+    },
+    "audio": {
+      "title": "Recursos de áudio",
+      "subtitle": "Características das suas faixas favoritas",
+      "danceability": "Dançabilidade",
+      "energy": "Energia",
+      "valence": "Valência",
+      "tempo": "Tempo",
+      "acousticness": "Acústica",
+      "instrumentalness": "Instrumentalidade"
+    },
+    "genre": {
+      "title": "Distribuição de gêneros",
+      "subtitle": "Divisão dos seus principais gêneros"
+    },
+    "heatmap": {
+      "title": "Mapa de calor de audição",
+      "subtitle": "Quando você mais ouve"
+    },
+    "import": {
+      "title": "Importar histórico local",
+      "subtitle": "Envie um CSV do seu histórico de audição",
+      "choose": "Escolher arquivo",
+      "plays": "Reproduções",
+      "artists": "Artistas",
+      "duration": "Duração"
+    },
+    "no-data": "Nenhum dado disponível",
+    "export": {
+      "csv": "Exportar CSV",
+      "json": "Exportar JSON"
+    },
+    "range": {
+      "short": "Últimas 4 semanas",
+      "medium": "Últimos 6 meses",
+      "long": "Todo o período"
     }
   },
   "mascot": {

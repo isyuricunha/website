@@ -311,6 +311,16 @@
           "comparison-title": "Comparaison des outils d’infrastructure"
         }
       }
+    },
+    "offline-indicator": {
+      "toast": {
+        "restored": "Connexion rétablie !",
+        "offline": "Vous êtes hors ligne. Certaines fonctionnalités peuvent ne pas fonctionner."
+      },
+      "status": {
+        "online": "De nouveau en ligne",
+        "offline": "Pas de connexion Internet"
+      }
     }
   },
   "site-search": {
@@ -700,6 +710,42 @@
           "mainstream": "Tu suis la musique populaire et sais ce qui est tendance !"
         }
       }
+    },
+    "audio": {
+      "title": "Caractéristiques audio",
+      "subtitle": "Caractéristiques de vos titres préférés",
+      "danceability": "Dansabilité",
+      "energy": "Énergie",
+      "valence": "Valence",
+      "tempo": "Tempo",
+      "acousticness": "Acoustique",
+      "instrumentalness": "Instrumentalité"
+    },
+    "genre": {
+      "title": "Répartition par genre",
+      "subtitle": "Répartition de vos principaux genres"
+    },
+    "heatmap": {
+      "title": "Heatmap d'écoute",
+      "subtitle": "Quand vous écoutez le plus"
+    },
+    "import": {
+      "title": "Importer l'historique local",
+      "subtitle": "Téléchargez un CSV de votre historique d'écoute",
+      "choose": "Choisir le fichier",
+      "plays": "Lectures",
+      "artists": "Artistes",
+      "duration": "Durée"
+    },
+    "no-data": "Aucune donnée disponible",
+    "export": {
+      "csv": "Exporter CSV",
+      "json": "Exporter JSON"
+    },
+    "range": {
+      "short": "4 dernières semaines",
+      "medium": "6 derniers mois",
+      "long": "Tout le temps"
     }
   },
   "mascot": {

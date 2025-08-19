@@ -4,23 +4,25 @@ import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { WifiOff, Wifi } from 'lucide-react'
 import { toast } from 'sonner'
+import { useTranslations } from '@tszhong0411/i18n/client'
 
 export default function OfflineIndicator() {
   const [isOnline, setIsOnline] = useState(true)
   const [showIndicator, setShowIndicator] = useState(false)
+  const t = useTranslations('component.offline-indicator')
 
   useEffect(() => {
     const handleOnline = () => {
       setIsOnline(true)
       setShowIndicator(true)
-      toast.success('Connection restored!')
+      toast.success(t('toast.restored'))
       setTimeout(() => setShowIndicator(false), 3000)
     }
 
     const handleOffline = () => {
       setIsOnline(false)
       setShowIndicator(true)
-      toast.error('You are offline. Some features may not work.')
+      toast.error(t('toast.offline'))
     }
 
     // Set initial state
@@ -54,10 +56,11 @@ export default function OfflineIndicator() {
             <WifiOff className='size-4' />
           )}
           <span className='text-sm font-medium'>
-            {isOnline ? 'Back online' : 'No internet connection'}
+            {isOnline ? t('status.online') : t('status.offline')}
           </span>
         </motion.div>
       )}
     </AnimatePresence>
   )
 }
+

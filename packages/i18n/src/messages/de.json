@@ -311,6 +311,16 @@
           "comparison-title": "Vergleich von Infrastruktur-Tools"
         }
       }
+    },
+    "offline-indicator": {
+      "toast": {
+        "restored": "Verbindung wiederhergestellt!",
+        "offline": "Du bist offline. Einige Funktionen funktionieren möglicherweise nicht."
+      },
+      "status": {
+        "online": "Wieder online",
+        "offline": "Keine Internetverbindung"
+      }
     }
   },
   "site-search": {
@@ -700,6 +710,42 @@
           "mainstream": "Du bleibst bei aktueller Popmusik und weißt, was gerade angesagt ist!"
         }
       }
+    },
+    "audio": {
+      "title": "Audioeigenschaften",
+      "subtitle": "Eigenschaften deiner Lieblingstitel",
+      "danceability": "Tanzbarkeit",
+      "energy": "Energie",
+      "valence": "Valenz",
+      "tempo": "Tempo",
+      "acousticness": "Akustikanteil",
+      "instrumentalness": "Instrumentalanteil"
+    },
+    "genre": {
+      "title": "Genreverteilung",
+      "subtitle": "Aufschlüsselung deiner Top-Genres"
+    },
+    "heatmap": {
+      "title": "Hör-Heatmap",
+      "subtitle": "Wann du am meisten hörst"
+    },
+    "import": {
+      "title": "Lokale Historie importieren",
+      "subtitle": "Lade eine CSV deines Hörverlaufs hoch",
+      "choose": "Datei auswählen",
+      "plays": "Wiedergaben",
+      "artists": "Künstler",
+      "duration": "Dauer"
+    },
+    "no-data": "Keine Daten verfügbar",
+    "export": {
+      "csv": "CSV exportieren",
+      "json": "JSON exportieren"
+    },
+    "range": {
+      "short": "Letzte 4 Wochen",
+      "medium": "Letzte 6 Monate",
+      "long": "Gesamte Zeit"
     }
   },
   "mascot": {

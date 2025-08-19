@@ -6,6 +6,8 @@ import { UserIcon, Grid3X3, List, Shuffle } from 'lucide-react'
 import { useState, useMemo } from 'react'
 
 import { api } from '@/trpc/react'
+import TimeRangeToggle from './time-range-toggle'
+import { exportJson, exportTopArtistsCsv } from '@/utils/exporters/spotify'
 
 import Link from '../link'
 import SpotifyImage from './spotify-image'
@@ -15,12 +17,11 @@ const TopArtistsSection = () => {
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('list')
   const [isShuffled, setIsShuffled] = useState(true)
+  const [timeRange, setTimeRange] = useState<'short_term' | 'medium_term' | 'long_term'>('short_term')
 
-  const { data: artists, refetch, isLoading, error } = api.spotify.getTopArtists.useQuery(
-    undefined,
-    {
-      staleTime: 300000 // 5 minutes
-    }
+  const { data: artists, refetch, isLoading, error } = api.spotify.getTopArtistsByRange.useQuery(
+    { time_range: timeRange },
+    { staleTime: 300000 }
   )
 
   // Shuffle artists when requested
@@ -36,6 +37,14 @@ const TopArtistsSection = () => {
     setIsRefreshing(true)
     await refetch()
     setIsRefreshing(false)
+  }
+
+  const handleExportCsv = () => {
+    if (artists && artists.length) exportTopArtistsCsv(artists as any)
+  }
+
+  const handleExportJson = () => {
+    if (artists) exportJson('top-artists.json', artists)
   }
 
   if (isLoading) {
@@ -114,6 +123,7 @@ const TopArtistsSection = () => {
             <CardDescription className='text-xs sm:text-sm'>{t('spotify.top-artists.subtitle')}</CardDescription>
           </div>
           <div className='flex items-center gap-2'>
+            <TimeRangeToggle value={timeRange} onChange={setTimeRange} />
             <button
               onClick={() => setIsShuffled(!isShuffled)}
               className={`p-1.5 rounded-md transition-colors ${
@@ -126,11 +136,18 @@ const TopArtistsSection = () => {
               <Shuffle className='h-4 w-4' />
             </button>
             <button
-              onClick={() => setViewMode(viewMode === 'grid' ? 'list' : 'grid')}
-              className='p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors'
-              title={viewMode === 'grid' ? t('spotify.top-artists.tooltips.view-list') : t('spotify.top-artists.tooltips.view-grid')}
+              onClick={handleExportCsv}
+              className='px-2 py-1 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors'
+              title={t('spotify.export.csv') || 'Export CSV'}
             >
-              {viewMode === 'grid' ? <List className='h-4 w-4' /> : <Grid3X3 className='h-4 w-4' />}
+              CSV
+            </button>
+            <button
+              onClick={handleExportJson}
+              className='px-2 py-1 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors'
+              title={t('spotify.export.json') || 'Export JSON'}
+            >
+              JSON
             </button>
             <button
               onClick={handleRefresh}

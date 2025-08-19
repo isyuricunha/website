@@ -6,6 +6,8 @@ import { PlayIcon } from 'lucide-react'
 import { useState } from 'react'
 
 import { api } from '@/trpc/react'
+import TimeRangeToggle from './time-range-toggle'
+import { exportJson, exportTopTracksCsv } from '@/utils/exporters/spotify'
 
 import Link from '../link'
 import SpotifyImage from './spotify-image'
@@ -13,12 +15,11 @@ import SpotifyImage from './spotify-image'
 const TopSongsSection = () => {
   const t = useTranslations()
   const [isRefreshing, setIsRefreshing] = useState(false)
+  const [timeRange, setTimeRange] = useState<'short_term' | 'medium_term' | 'long_term'>('short_term')
 
-  const { data: tracks, refetch, isLoading, error } = api.spotify.getTopTracks.useQuery(
-    undefined,
-    {
-      staleTime: 300000 // 5 minutes
-    }
+  const { data: tracks, refetch, isLoading, error } = api.spotify.getTopTracksByRange.useQuery(
+    { time_range: timeRange },
+    { staleTime: 300000 }
   )
 
   const handleRefresh = async () => {
@@ -31,6 +32,14 @@ const TopSongsSection = () => {
     const minutes = Math.floor(ms / 60000)
     const seconds = Math.floor((ms % 60000) / 1000)
     return `${minutes}:${seconds.toString().padStart(2, '0')}`
+  }
+
+  const handleExportCsv = () => {
+    if (tracks && tracks.length) exportTopTracksCsv(tracks as any)
+  }
+
+  const handleExportJson = () => {
+    if (tracks) exportJson('top-tracks.json', tracks)
   }
 
   if (isLoading) {
@@ -111,13 +120,30 @@ const TopSongsSection = () => {
             <CardTitle className='text-base sm:text-lg'>{t('spotify.top-songs.title')}</CardTitle>
             <CardDescription className='text-xs sm:text-sm'>{t('spotify.top-songs.subtitle')}</CardDescription>
           </div>
-          <button
-            onClick={handleRefresh}
-            disabled={isRefreshing}
-            className='text-sm text-muted-foreground hover:text-foreground disabled:opacity-50'
-          >
-            {t('spotify.refresh')}
-          </button>
+          <div className='flex items-center gap-2'>
+            <TimeRangeToggle value={timeRange} onChange={setTimeRange} />
+            <button
+              onClick={handleExportCsv}
+              className='px-2 py-1 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors'
+              title={t('spotify.export.csv')}
+            >
+              CSV
+            </button>
+            <button
+              onClick={handleExportJson}
+              className='px-2 py-1 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors'
+              title={t('spotify.export.json')}
+            >
+              JSON
+            </button>
+            <button
+              onClick={handleRefresh}
+              disabled={isRefreshing}
+              className='text-sm text-muted-foreground hover:text-foreground disabled:opacity-50'
+            >
+              {t('spotify.refresh')}
+            </button>
+          </div>
         </div>
       </CardHeader>
       <CardContent>

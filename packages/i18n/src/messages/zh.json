@@ -311,6 +311,16 @@
           "comparison-title": "基础设施工具对比"
         }
       }
+    },
+    "offline-indicator": {
+      "toast": {
+        "restored": "连接已恢复！",
+        "offline": "你处于离线状态。某些功能可能无法使用。"
+      },
+      "status": {
+        "online": "已重新在线",
+        "offline": "无网络连接"
+      }
     }
   },
   "site-search": {
@@ -700,6 +710,42 @@
           "mainstream": "你紧跟流行音乐，知道什么最火！"
         }
       }
+    },
+    "audio": {
+      "title": "音频特征",
+      "subtitle": "你最喜欢曲目的特征",
+      "danceability": "舞动性",
+      "energy": "能量",
+      "valence": "愉悦度",
+      "tempo": "节奏",
+      "acousticness": "原声性",
+      "instrumentalness": "器乐性"
+    },
+    "genre": {
+      "title": "流派分布",
+      "subtitle": "你的热门流派占比"
+    },
+    "heatmap": {
+      "title": "收听热力图",
+      "subtitle": "你何时收听最多"
+    },
+    "import": {
+      "title": "导入本地历史",
+      "subtitle": "上传你的收听历史 CSV",
+      "choose": "选择文件",
+      "plays": "播放次数",
+      "artists": "艺术家",
+      "duration": "时长"
+    },
+    "no-data": "无可用数据",
+    "export": {
+      "csv": "导出 CSV",
+      "json": "导出 JSON"
+    },
+    "range": {
+      "short": "最近 4 周",
+      "medium": "最近 6 个月",
+      "long": "全部时间"
     }
   },
   "mascot": {

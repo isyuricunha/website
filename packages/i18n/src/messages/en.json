@@ -311,6 +311,16 @@
     "go-to-homepage": "Go to homepage",
     "announcement-banner": {
       "dismiss": "Dismiss announcement"
+    },
+    "offline-indicator": {
+      "toast": {
+        "restored": "Connection restored!",
+        "offline": "You are offline. Some features may not work."
+      },
+      "status": {
+        "online": "Back online",
+        "offline": "No internet connection"
+      }
     }
   },
   "site-search": {
@@ -623,6 +633,32 @@
       "subtitle": "Tracks I've listened to recently",
       "no-data": "No recently played tracks available"
     },
+    "audio": {
+      "title": "Audio Features",
+      "subtitle": "Characteristics of your favorite tracks",
+      "danceability": "Danceability",
+      "energy": "Energy",
+      "valence": "Valence",
+      "tempo": "Tempo",
+      "acousticness": "Acousticness",
+      "instrumentalness": "Instrumentalness"
+    },
+    "genre": {
+      "title": "Genre Distribution",
+      "subtitle": "Breakdown of your top genres"
+    },
+    "heatmap": {
+      "title": "Listening Heatmap",
+      "subtitle": "When you listen the most"
+    },
+    "import": {
+      "title": "Import Local History",
+      "subtitle": "Upload a CSV of your listening history",
+      "choose": "Choose file",
+      "plays": "Plays",
+      "artists": "Artists",
+      "duration": "Duration"
+    },
     "stats": {
       "title": "Music Statistics",
       "subtitle": "Your listening habits and preferences",
@@ -636,7 +672,17 @@
     },
     "loading": "Loading music data...",
     "error": "Failed to load music data. Please try again.",
+    "no-data": "No data available",
     "refresh": "Refresh",
+    "export": {
+      "csv": "Export CSV",
+      "json": "Export JSON"
+    },
+    "range": {
+      "short": "Last 4 weeks",
+      "medium": "Last 6 months",
+      "long": "All time"
+    },
     "album": "Album",
     "artist": "Artist",
     "artists": "Artists",

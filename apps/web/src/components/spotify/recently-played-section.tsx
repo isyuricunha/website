@@ -6,6 +6,7 @@ import { PlayIcon, ClockIcon } from 'lucide-react'
 import { useState } from 'react'
 
 import { api } from '@/trpc/react'
+import { exportJson, exportRecentlyPlayedCsv } from '@/utils/exporters/spotify'
 
 import Link from '../link'
 import SpotifyImage from './spotify-image'
@@ -25,6 +26,14 @@ const RecentlyPlayedSection = () => {
     setIsRefreshing(true)
     await refetch()
     setIsRefreshing(false)
+  }
+
+  const handleExportCsv = () => {
+    if (tracks && tracks.length) exportRecentlyPlayedCsv(tracks as any)
+  }
+
+  const handleExportJson = () => {
+    if (tracks) exportJson('recently-played.json', tracks)
   }
 
   const formatTimeAgo = (playedAt: string) => {
@@ -123,13 +132,29 @@ const RecentlyPlayedSection = () => {
             <CardTitle className='text-base sm:text-lg'>{t('spotify.recently-played.title')}</CardTitle>
             <CardDescription className='text-xs sm:text-sm'>{t('spotify.recently-played.subtitle')}</CardDescription>
           </div>
-          <button
-            onClick={handleRefresh}
-            disabled={isRefreshing}
-            className='text-sm text-muted-foreground hover:text-foreground disabled:opacity-50'
-          >
-            {t('spotify.refresh')}
-          </button>
+          <div className='flex items-center gap-2'>
+            <button
+              onClick={handleExportCsv}
+              className='px-2 py-1 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors'
+              title={t('spotify.export.csv')}
+            >
+              CSV
+            </button>
+            <button
+              onClick={handleExportJson}
+              className='px-2 py-1 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors'
+              title={t('spotify.export.json')}
+            >
+              JSON
+            </button>
+            <button
+              onClick={handleRefresh}
+              disabled={isRefreshing}
+              className='text-sm text-muted-foreground hover:text-foreground disabled:opacity-50'
+            >
+              {t('spotify.refresh')}
+            </button>
+          </div>
         </div>
       </CardHeader>
       <CardContent>
