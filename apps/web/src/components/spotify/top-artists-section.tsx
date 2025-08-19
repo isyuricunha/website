@@ -121,14 +121,14 @@ const TopArtistsSection = () => {
                   ? 'bg-primary text-primary-foreground'
                   : 'text-muted-foreground hover:text-foreground hover:bg-muted'
               }`}
-              title={isShuffled ? 'Show original order' : 'Shuffle artists'}
+              title={isShuffled ? t('spotify.top-artists.tooltips.shuffle-on') : t('spotify.top-artists.tooltips.shuffle-off')}
             >
               <Shuffle className='h-4 w-4' />
             </button>
             <button
               onClick={() => setViewMode(viewMode === 'grid' ? 'list' : 'grid')}
               className='p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors'
-              title={viewMode === 'grid' ? 'Switch to list view' : 'Switch to grid view'}
+              title={viewMode === 'grid' ? t('spotify.top-artists.tooltips.view-list') : t('spotify.top-artists.tooltips.view-grid')}
             >
               {viewMode === 'grid' ? <List className='h-4 w-4' /> : <Grid3X3 className='h-4 w-4' />}
             </button>
@@ -205,7 +205,7 @@ const TopArtistsSection = () => {
                   </div>
                   <div className='text-right flex-shrink-0'>
                     <p className='text-xs text-muted-foreground'>
-                      {artist.followers.toLocaleString()} followers
+                      {artist.followers.toLocaleString()} {t('spotify.followers')}
                     </p>
                   </div>
                 </div>

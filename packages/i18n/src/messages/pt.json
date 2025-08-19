@@ -574,7 +574,13 @@
     "top-artists": {
       "title": "Principais Artistas",
       "subtitle": "Artistas mais ouvidos nos últimos 6 meses",
-      "no-data": "Nenhum dado de artista disponível"
+      "no-data": "Nenhum dado de artista disponível",
+      "tooltips": {
+        "shuffle-on": "Mostrar ordem original",
+        "shuffle-off": "Embaralhar artistas",
+        "view-list": "Mudar para visualização em lista",
+        "view-grid": "Mudar para visualização em grade"
+      }
     },
     "top-songs": {
       "title": "Principais Músicas",
@@ -650,6 +656,50 @@
       "minutes": "há {count}min",
       "hours": "há {count}h",
       "days": "há {count}d"
+    },
+    "taste": {
+      "title": "Análise do seu gosto musical",
+      "subtitle": "Insights com IA sobre a sua personalidade musical",
+      "loading": "Analisando suas preferências musicais...",
+      "labels": {
+        "energy": "Nível de energia",
+        "diversity": "Diversidade",
+        "profile": "Perfil"
+      },
+      "energy-levels": {
+        "high": "Alto",
+        "medium": "Médio",
+        "low": "Baixo"
+      },
+      "diversity-levels": {
+        "eclectic": "Eclético",
+        "diverse": "Diversificado",
+        "focused": "Focado"
+      },
+      "taste-profiles": {
+        "mainstream": "Mainstream",
+        "balanced": "Equilibrado",
+        "underground": "Underground"
+      },
+      "metrics": {
+        "mainstream-score": "Pontuação Mainstream",
+        "genres-explored": "Gêneros explorados"
+      },
+      "insights": {
+        "title": "Sua personalidade musical",
+        "energy": {
+          "high": "Você tende a ouvir faixas populares e cheias de energia que fazem todo mundo se mexer!",
+          "low": "Você valoriza músicas mais íntimas e menos conhecidas — um verdadeiro conhecedor!"
+        },
+        "diversity": {
+          "eclectic": "Seu gosto abrange muitos gêneros — você é musicalmente aventureiro!",
+          "focused": "Você tem um gosto refinado por gêneros específicos — qualidade acima de quantidade!"
+        },
+        "profile": {
+          "underground": "Você é um formador de tendências que descobre artistas antes que virem mainstream!",
+          "mainstream": "Você acompanha a música popular e sabe o que está em alta!"
+        }
+      }
     }
   },
   "mascot": {

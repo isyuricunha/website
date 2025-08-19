@@ -558,10 +558,60 @@
       "not-playing": "Not currently listening to anything",
       "by": "by"
     },
+    "taste": {
+      "title": "Music Taste Analysis",
+      "subtitle": "AI-powered insights into your musical personality",
+      "loading": "Analyzing your musical preferences...",
+      "labels": {
+        "energy": "Energy Level",
+        "diversity": "Diversity",
+        "profile": "Profile"
+      },
+      "energy-levels": {
+        "high": "High",
+        "medium": "Medium",
+        "low": "Low"
+      },
+      "diversity-levels": {
+        "eclectic": "Eclectic",
+        "diverse": "Diverse",
+        "focused": "Focused"
+      },
+      "taste-profiles": {
+        "mainstream": "Mainstream",
+        "balanced": "Balanced",
+        "underground": "Underground"
+      },
+      "metrics": {
+        "mainstream-score": "Mainstream Score",
+        "genres-explored": "Genres Explored"
+      },
+      "insights": {
+        "title": "Your Musical Personality",
+        "energy": {
+          "high": "You gravitate toward popular, high-energy tracks that get people moving!",
+          "low": "You appreciate more intimate, lesser-known gems - a true music connoisseur!"
+        },
+        "diversity": {
+          "eclectic": "Your taste spans across many genres - you're musically adventurous!",
+          "focused": "You have refined taste in specific genres - quality over quantity!"
+        },
+        "profile": {
+          "underground": "You're a trendsetter who discovers artists before they hit the mainstream!",
+          "mainstream": "You stay current with popular music and know what's trending!"
+        }
+      }
+    },
     "top-artists": {
       "title": "Top Artists",
       "subtitle": "Most listened to artists in the last 6 months",
-      "no-data": "No artist data available"
+      "no-data": "No artist data available",
+      "tooltips": {
+        "shuffle-on": "Show original order",
+        "shuffle-off": "Shuffle artists",
+        "view-list": "Switch to list view",
+        "view-grid": "Switch to grid view"
+      }
     },
     "top-songs": {
       "title": "Top Songs",

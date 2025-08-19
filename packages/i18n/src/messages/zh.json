@@ -574,7 +574,13 @@
     "top-artists": {
       "title": "热门艺术家",
       "subtitle": "过去 6 个月最常听的艺术家",
-      "no-data": "没有艺术家数据可用"
+      "no-data": "没有艺术家数据可用",
+      "tooltips": {
+        "shuffle-on": "显示原始顺序",
+        "shuffle-off": "随机艺术家",
+        "view-list": "切换到列表视图",
+        "view-grid": "切换到网格视图"
+      }
     },
     "top-songs": {
       "title": "热门歌曲",
@@ -650,6 +656,50 @@
       "minutes": "{count} 分钟前",
       "hours": "{count} 小时前",
       "days": "{count} 天前"
+    },
+    "taste": {
+      "title": "音乐品味分析",
+      "subtitle": "由 AI 提供的关于你的音乐个性的洞察",
+      "loading": "正在分析你的音乐偏好...",
+      "labels": {
+        "energy": "能量值",
+        "diversity": "多样性",
+        "profile": "风格"
+      },
+      "energy-levels": {
+        "high": "高",
+        "medium": "中等",
+        "low": "低"
+      },
+      "diversity-levels": {
+        "eclectic": "兼收并蓄",
+        "diverse": "多样化",
+        "focused": "专注"
+      },
+      "taste-profiles": {
+        "mainstream": "主流",
+        "balanced": "平衡",
+        "underground": "小众"
+      },
+      "metrics": {
+        "mainstream-score": "主流得分",
+        "genres-explored": "探索的流派"
+      },
+      "insights": {
+        "title": "你的音乐个性",
+        "energy": {
+          "high": "你偏好流行且充满能量的曲目，能让人跟着动起来！",
+          "low": "你更欣赏私密且鲜为人知的珍品——真正的音乐鉴赏家！"
+        },
+        "diversity": {
+          "eclectic": "你的口味跨越多种流派——你在音乐上很有冒险精神！",
+          "focused": "你在特定流派上有精致的品味——重质不重量！"
+        },
+        "profile": {
+          "underground": "你是潮流的风向标，总能在艺术家走红前发现他们！",
+          "mainstream": "你紧跟流行音乐，知道什么最火！"
+        }
+      }
     }
   },
   "mascot": {

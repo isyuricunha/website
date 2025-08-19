@@ -44,21 +44,21 @@ const MusicTasteAnalysis = () => {
     const insights = []
     
     if (energyLevel === 'high') {
-      insights.push("You gravitate toward popular, high-energy tracks that get people moving!")
+      insights.push(t('spotify.taste.insights.energy.high'))
     } else if (energyLevel === 'low') {
-      insights.push("You appreciate more intimate, lesser-known gems - a true music connoisseur!")
+      insights.push(t('spotify.taste.insights.energy.low'))
     }
 
     if (diversityLevel === 'eclectic') {
-      insights.push("Your taste spans across many genres - you're musically adventurous!")
+      insights.push(t('spotify.taste.insights.diversity.eclectic'))
     } else if (diversityLevel === 'focused') {
-      insights.push("You have refined taste in specific genres - quality over quantity!")
+      insights.push(t('spotify.taste.insights.diversity.focused'))
     }
 
     if (tasteProfile === 'underground') {
-      insights.push("You're a trendsetter who discovers artists before they hit the mainstream!")
+      insights.push(t('spotify.taste.insights.profile.underground'))
     } else if (tasteProfile === 'mainstream') {
-      insights.push("You stay current with popular music and know what's trending!")
+      insights.push(t('spotify.taste.insights.profile.mainstream'))
     }
 
     return {
@@ -78,10 +78,10 @@ const MusicTasteAnalysis = () => {
         <CardHeader>
           <CardTitle className='text-base sm:text-lg flex items-center gap-2'>
             <Brain className='h-5 w-5' />
-            Music Taste Analysis
+            {t('spotify.taste.title')}
           </CardTitle>
           <CardDescription className='text-xs sm:text-sm'>
-            Analyzing your musical preferences...
+            {t('spotify.taste.loading')}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -129,10 +129,10 @@ const MusicTasteAnalysis = () => {
           <div>
             <CardTitle className='text-base sm:text-lg flex items-center gap-2'>
               <Brain className='h-5 w-5' />
-              Music Taste Analysis
+              {t('spotify.taste.title')}
             </CardTitle>
             <CardDescription className='text-xs sm:text-sm'>
-              AI-powered insights into your musical personality
+              {t('spotify.taste.subtitle')}
             </CardDescription>
           </div>
           <button
@@ -140,7 +140,7 @@ const MusicTasteAnalysis = () => {
             disabled={isRefreshing}
             className='text-xs sm:text-sm text-muted-foreground hover:text-foreground disabled:opacity-50'
           >
-            Refresh
+            {t('spotify.refresh')}
           </button>
         </div>
       </CardHeader>
@@ -150,25 +150,25 @@ const MusicTasteAnalysis = () => {
           <div className={`p-4 rounded-lg ${getEnergyColor(analysis.energyLevel)}`}>
             <div className='flex items-center gap-2 mb-2'>
               <Zap className='h-4 w-4' />
-              <span className='text-xs sm:text-sm font-medium'>Energy Level</span>
+              <span className='text-xs sm:text-sm font-medium'>{t('spotify.taste.labels.energy')}</span>
             </div>
-            <p className='text-sm sm:text-base font-bold capitalize'>{analysis.energyLevel}</p>
+            <p className='text-sm sm:text-base font-bold capitalize'>{t(`spotify.taste.energy-levels.${analysis.energyLevel}`)}</p>
           </div>
 
           <div className={`p-4 rounded-lg ${getDiversityColor(analysis.diversityLevel)}`}>
             <div className='flex items-center gap-2 mb-2'>
               <Heart className='h-4 w-4' />
-              <span className='text-xs sm:text-sm font-medium'>Diversity</span>
+              <span className='text-xs sm:text-sm font-medium'>{t('spotify.taste.labels.diversity')}</span>
             </div>
-            <p className='text-sm sm:text-base font-bold capitalize'>{analysis.diversityLevel}</p>
+            <p className='text-sm sm:text-base font-bold capitalize'>{t(`spotify.taste.diversity-levels.${analysis.diversityLevel}`)}</p>
           </div>
 
           <div className={`p-4 rounded-lg ${getTasteColor(analysis.tasteProfile)}`}>
             <div className='flex items-center gap-2 mb-2'>
               <Star className='h-4 w-4' />
-              <span className='text-xs sm:text-sm font-medium'>Profile</span>
+              <span className='text-xs sm:text-sm font-medium'>{t('spotify.taste.labels.profile')}</span>
             </div>
-            <p className='text-sm sm:text-base font-bold capitalize'>{analysis.tasteProfile}</p>
+            <p className='text-sm sm:text-base font-bold capitalize'>{t(`spotify.taste.taste-profiles.${analysis.tasteProfile}`)}</p>
           </div>
         </div>
 
@@ -177,14 +177,14 @@ const MusicTasteAnalysis = () => {
           <div className='text-center'>
             <div className='flex items-center justify-center gap-2 mb-1'>
               <Volume2 className='h-4 w-4 text-muted-foreground' />
-              <span className='text-xs sm:text-sm text-muted-foreground'>Mainstream Score</span>
+              <span className='text-xs sm:text-sm text-muted-foreground'>{t('spotify.taste.metrics.mainstream-score')}</span>
             </div>
             <p className='text-lg sm:text-xl font-bold'>{analysis.mainstreamScore}%</p>
           </div>
           <div className='text-center'>
             <div className='flex items-center justify-center gap-2 mb-1'>
               <TrendingUp className='h-4 w-4 text-muted-foreground' />
-              <span className='text-xs sm:text-sm text-muted-foreground'>Genres Explored</span>
+              <span className='text-xs sm:text-sm text-muted-foreground'>{t('spotify.taste.metrics.genres-explored')}</span>
             </div>
             <p className='text-lg sm:text-xl font-bold'>{analysis.genreCount}</p>
           </div>
@@ -192,7 +192,7 @@ const MusicTasteAnalysis = () => {
 
         {/* Insights */}
         <div className='pt-4 border-t'>
-          <h4 className='text-sm sm:text-base font-semibold mb-3'>Your Musical Personality</h4>
+          <h4 className='text-sm sm:text-base font-semibold mb-3'>{t('spotify.taste.insights.title')}</h4>
           <div className='space-y-2'>
             {analysis.insights.map((insight, index) => (
               <div key={index} className='flex items-start gap-2 p-3 rounded-lg bg-muted/50'>

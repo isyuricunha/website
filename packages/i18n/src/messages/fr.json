@@ -574,7 +574,13 @@
     "top-artists": {
       "title": "Artistes principaux",
       "subtitle": "Artistes les plus écoutés au cours des 6 derniers mois",
-      "no-data": "Aucune donnée artiste disponible"
+      "no-data": "Aucune donnée artiste disponible",
+      "tooltips": {
+        "shuffle-on": "Afficher l’ordre original",
+        "shuffle-off": "Mélanger les artistes",
+        "view-list": "Passer en vue liste",
+        "view-grid": "Passer en vue grille"
+      }
     },
     "top-songs": {
       "title": "Titres principaux",
@@ -650,6 +656,50 @@
       "minutes": "il y a {count} min",
       "hours": "il y a {count} h",
       "days": "il y a {count} j"
+    },
+    "taste": {
+      "title": "Analyse de ton goût musical",
+      "subtitle": "Insights pilotés par l'IA sur ta personnalité musicale",
+      "loading": "Analyse de tes préférences musicales...",
+      "labels": {
+        "energy": "Niveau d'énergie",
+        "diversity": "Diversité",
+        "profile": "Profil"
+      },
+      "energy-levels": {
+        "high": "Élevé",
+        "medium": "Moyen",
+        "low": "Faible"
+      },
+      "diversity-levels": {
+        "eclectic": "Éclectique",
+        "diverse": "Diversifié",
+        "focused": "Ciblé"
+      },
+      "taste-profiles": {
+        "mainstream": "Mainstream",
+        "balanced": "Équilibré",
+        "underground": "Underground"
+      },
+      "metrics": {
+        "mainstream-score": "Score Mainstream",
+        "genres-explored": "Genres explorés"
+      },
+      "insights": {
+        "title": "Ta personnalité musicale",
+        "energy": {
+          "high": "Tu es attiré par des titres populaires et énergiques qui font bouger les gens !",
+          "low": "Tu apprécies les morceaux plus intimistes et moins connus — un vrai connaisseur !"
+        },
+        "diversity": {
+          "eclectic": "Ton goût couvre de nombreux genres — tu es aventurier musical !",
+          "focused": "Tu as un goût affiné pour des genres spécifiques — qualité plutôt que quantité !"
+        },
+        "profile": {
+          "underground": "Tu es un défricheur qui découvre des artistes avant qu’ils deviennent mainstream !",
+          "mainstream": "Tu suis la musique populaire et sais ce qui est tendance !"
+        }
+      }
     }
   },
   "mascot": {

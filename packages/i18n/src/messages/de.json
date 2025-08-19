@@ -574,7 +574,13 @@
     "top-artists": {
       "title": "Top-Künstler",
       "subtitle": "Meistgehörte Künstler der letzten 6 Monate",
-      "no-data": "Keine Künstlerdaten verfügbar"
+      "no-data": "Keine Künstlerdaten verfügbar",
+      "tooltips": {
+        "shuffle-on": "Originalreihenfolge anzeigen",
+        "shuffle-off": "Künstler mischen",
+        "view-list": "Zur Listenansicht wechseln",
+        "view-grid": "Zur Rasteransicht wechseln"
+      }
     },
     "top-songs": {
       "title": "Top-Songs",
@@ -650,6 +656,50 @@
       "minutes": "vor {count} Min.",
       "hours": "vor {count} Std.",
       "days": "vor {count} Tg."
+    },
+    "taste": {
+      "title": "Analyse deines Musikgeschmacks",
+      "subtitle": "KI-gestützte Einblicke in deine musikalische Persönlichkeit",
+      "loading": "Analysiere deine musikalischen Vorlieben...",
+      "labels": {
+        "energy": "Energielevel",
+        "diversity": "Vielfalt",
+        "profile": "Profil"
+      },
+      "energy-levels": {
+        "high": "Hoch",
+        "medium": "Mittel",
+        "low": "Niedrig"
+      },
+      "diversity-levels": {
+        "eclectic": "Eklektisch",
+        "diverse": "Vielfältig",
+        "focused": "Fokussiert"
+      },
+      "taste-profiles": {
+        "mainstream": "Mainstream",
+        "balanced": "Ausgewogen",
+        "underground": "Underground"
+      },
+      "metrics": {
+        "mainstream-score": "Mainstream-Score",
+        "genres-explored": "Entdeckte Genres"
+      },
+      "insights": {
+        "title": "Deine musikalische Persönlichkeit",
+        "energy": {
+          "high": "Du neigst zu populären, energiegeladenen Tracks, die Leute in Bewegung bringen!",
+          "low": "Du schätzt intimere, weniger bekannte Perlen – ein echter Musikkenner!"
+        },
+        "diversity": {
+          "eclectic": "Dein Geschmack erstreckt sich über viele Genres – du bist musikalisch abenteuerlustig!",
+          "focused": "Du hast einen ausgeprägten Geschmack für bestimmte Genres – Qualität vor Quantität!"
+        },
+        "profile": {
+          "underground": "Du setzt Trends und entdeckst Künstler, bevor sie mainstream werden!",
+          "mainstream": "Du bleibst bei aktueller Popmusik und weißt, was gerade angesagt ist!"
+        }
+      }
     }
   },
   "mascot": {
