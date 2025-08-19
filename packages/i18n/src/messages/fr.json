@@ -731,6 +731,15 @@
       "legend": {
         "low": "Faible",
         "high": "Élevé"
+      },
+      "days": {
+        "sun": "Dim",
+        "mon": "Lun",
+        "tue": "Mar",
+        "wed": "Mer",
+        "thu": "Jeu",
+        "fri": "Ven",
+        "sat": "Sam"
       }
     },
     "import": {

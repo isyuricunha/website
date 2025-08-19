@@ -1,21 +1,21 @@
 "use client"
 
-import { useMemo, Fragment } from 'react'
+import { useMemo } from 'react'
 import { useTranslations } from '@tszhong0411/i18n/client'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@tszhong0411/ui'
 import { api } from '@/trpc/react'
 
-// Short day labels; keep concise for compact layout
-const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+// Day keys for i18n lookups (Sun..Sat)
+const dayKeys: Array<'sun' | 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat'> = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
 
 const cellColors = (v: number, max: number) => {
-  // Opacity-based scale on a single hue looks cleaner and more consistent
+  // Opacity-based single hue (orange) for a cleaner look
   const ratio = max === 0 ? 0 : v / max
   if (ratio === 0) return 'bg-muted/40'
-  if (ratio < 0.25) return 'bg-emerald-500/25'
-  if (ratio < 0.5) return 'bg-emerald-500/45'
-  if (ratio < 0.75) return 'bg-emerald-500/65'
-  return 'bg-emerald-500/85'
+  if (ratio < 0.25) return 'bg-orange-500/25'
+  if (ratio < 0.5) return 'bg-orange-500/45'
+  if (ratio < 0.75) return 'bg-orange-500/65'
+  return 'bg-orange-500/85'
 }
 
 const ListeningHeatmap = () => {
@@ -25,16 +25,15 @@ const ListeningHeatmap = () => {
     { staleTime: 300000 }
   )
 
-  const { grid, max } = useMemo(() => {
-    const grid = Array.from({ length: 7 }, () => Array(24).fill(0)) as number[][]
+  // Aggregate plays per weekday (0=Sun..6=Sat) for a simpler, compact heatmap
+  const { byDay, max } = useMemo(() => {
+    const byDay = Array(7).fill(0) as number[]
     for (const tr of tracks ?? []) {
       const d = new Date(tr.playedAt)
-      const day = d.getDay()
-      const hour = d.getHours()
-      grid[day][hour] += 1
+      byDay[d.getDay()] += 1
     }
-    const max = grid.reduce((m, row) => Math.max(m, ...row), 0)
-    return { grid, max }
+    const max = byDay.reduce((m, v) => Math.max(m, v), 0)
+    return { byDay, max }
   }, [tracks])
 
   return (
@@ -45,8 +44,8 @@ const ListeningHeatmap = () => {
           <CardTitle className="text-base sm:text-lg">{t('spotify.heatmap.title') || 'Listening Heatmap'}</CardTitle>
           <CardDescription className="text-xs sm:text-sm">{t('spotify.heatmap.subtitle') || 'Hourly activity by day (recent plays)'}</CardDescription>
         </div>
-        {/* Controls row beneath title, wraps on small screens */}
-        <div className="mt-3 flex flex-wrap items-center gap-2">
+        {/* Controls row beneath title, wraps on small screens; extra spacing for clarity */}
+        <div className="mt-6 flex flex-wrap items-center gap-5 sm:gap-7">
           <button onClick={() => refetch()} disabled={isRefetching} className="text-sm text-muted-foreground hover:text-foreground disabled:opacity-50">
             {t('spotify.refresh')}
           </button>
@@ -64,39 +63,23 @@ const ListeningHeatmap = () => {
         ) : !tracks?.length ? (
           <p className="text-sm text-muted-foreground">{t('spotify.no-data') || 'No data'}</p>
         ) : (
-          // Compact, aesthetically improved grid: small rounded cells, subtle border, hover feedback,
-          // selective hour labels to reduce clutter, and a tiny legend for context.
-          <div className="space-y-3 overflow-x-auto">
-            <div>
-              {/* 32px day label column + 24 fixed-width columns */}
-              <div className="grid grid-cols-[32px_repeat(24,12px)] gap-0.5">
-                {/* Hour labels row */}
-                <div />
-                {Array.from({ length: 24 }).map((_, h) => (
-                  <div key={h} className="flex items-center justify-center">
-                    {/* Show major labels at 0,6,12,18; small ticks otherwise */}
-                    {([0, 6, 12, 18] as number[]).includes(h) ? (
-                      <span className="text-[9px] leading-none text-muted-foreground">{h}</span>
-                    ) : (
-                      <span className="block h-[6px] w-px bg-muted-foreground/30" />
-                    )}
+          // Per-day compact heatmap: horizontal row of 7 cells with labels below
+          <div className="space-y-6">
+            {/* Cells + labels aligned per column with a subtle background track */}
+            <div className="relative grid w-full grid-cols-7 gap-3 sm:gap-4">
+              {/* background track (height adapts roughly to cell size) */}
+              <div aria-hidden className="pointer-events-none absolute inset-x-0 top-[38%] sm:top-[40%] h-9 sm:h-11 -translate-y-1/2 rounded-md bg-muted/25 -z-10" />
+              {byDay.map((v, dayIdx) => (
+                <div key={`col-${dayIdx}`} className="flex flex-col items-center gap-2">
+                  <div
+                    className={`w-full aspect-square rounded-md ${cellColors(v, max)} ring-1 ring-black/5 dark:ring-white/5 transition duration-150 hover:scale-[1.04] hover:shadow-[0_0_0_4px_rgba(249,115,22,0.25)]`}
+                    title={`${t(`spotify.heatmap.days.${dayKeys[dayIdx]}`) || dayKeys[dayIdx].toUpperCase()} — ${v}`}
+                  />
+                  <div className="text-center text-[11px] leading-none text-muted-foreground">
+                    {t(`spotify.heatmap.days.${dayKeys[dayIdx]}`) || dayKeys[dayIdx].slice(0, 3).toUpperCase()}
                   </div>
-                ))}
-
-                {/* Day rows */}
-                {grid.map((row, dayIdx) => (
-                  <Fragment key={`row-${dayIdx}`}>
-                    <div key={`d-${dayIdx}`} className="text-[10px] text-muted-foreground pt-0.5">{days[dayIdx]}</div>
-                    {row.map((v, h) => (
-                      <div
-                        key={`${dayIdx}-${h}`}
-                        className={`h-3 w-3 rounded-[3px] ${cellColors(v, max)} ring-1 ring-black/5 dark:ring-white/5 transition-transform duration-150 hover:scale-110`}
-                        title={`${days[dayIdx]} ${String(h).padStart(2, '0')}:00 — ${v}`}
-                      />
-                    ))}
-                  </Fragment>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
 
             {/* Legend: communicates scale without taking much space */}
@@ -106,7 +89,7 @@ const ListeningHeatmap = () => {
                 {[0, 1, 2, 3, 4].map((i) => (
                   <div
                     key={i}
-                    className={`h-3 w-3 rounded-[3px] ${['bg-muted/40','bg-emerald-500/25','bg-emerald-500/45','bg-emerald-500/65','bg-emerald-500/85'][i]} ring-1 ring-black/5 dark:ring-white/5`}
+                    className={`h-3 w-3 rounded-[3px] ${['bg-muted/40','bg-orange-500/25','bg-orange-500/45','bg-orange-500/65','bg-orange-500/85'][i]} ring-1 ring-black/5 dark:ring-white/5`}
                   />
                 ))}
               </div>

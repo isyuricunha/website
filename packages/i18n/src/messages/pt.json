@@ -731,6 +731,15 @@
       "legend": {
         "low": "Baixo",
         "high": "Alto"
+      },
+      "days": {
+        "sun": "Dom",
+        "mon": "Seg",
+        "tue": "Ter",
+        "wed": "Qua",
+        "thu": "Qui",
+        "fri": "Sex",
+        "sat": "Sáb"
       }
     },
     "import": {

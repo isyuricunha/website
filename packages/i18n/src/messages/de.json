@@ -731,6 +731,15 @@
       "legend": {
         "low": "Niedrig",
         "high": "Hoch"
+      },
+      "days": {
+        "sun": "So",
+        "mon": "Mo",
+        "tue": "Di",
+        "wed": "Mi",
+        "thu": "Do",
+        "fri": "Fr",
+        "sat": "Sa"
       }
     },
     "import": {

@@ -649,7 +649,16 @@
     },
     "heatmap": {
       "title": "Listening Heatmap",
-      "subtitle": "When you listen the most",
+      "subtitle": "Daily listening activity (recent plays)",
+      "days": {
+        "sun": "Sun",
+        "mon": "Mon",
+        "tue": "Tue",
+        "wed": "Wed",
+        "thu": "Thu",
+        "fri": "Fri",
+        "sat": "Sat"
+      },
       "legend": {
         "low": "Low",
         "high": "High"
