@@ -17,9 +17,17 @@ export const supportedLanguages = [
     label: 'Deutsch'
   },
   {
+    code: 'ja',
+    label: '日本語'
+  },
+  {
     code: 'fr',
     label: 'Français'
-  }
+  },
+  // {
+  //   code: 'ko',
+  //   label: '한국어'
+  // }
 ]
 
 export const i18n = {
