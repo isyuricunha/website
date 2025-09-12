@@ -182,7 +182,7 @@ export function generatePersonJsonLd() {
       'https://twitter.com/isyuricunha',
       'https://linkedin.com/in/isyuricunha'
     ],
-    jobTitle: 'Full Stack Developer',
+    jobTitle: 'Senior Cloud & Infrastructure Architect',
     worksFor: {
       '@type': 'Organization',
       name: 'Freelancer'
