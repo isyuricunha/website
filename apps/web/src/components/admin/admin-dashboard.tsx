@@ -14,7 +14,11 @@ import {
   CheckCircle,
   MegaphoneIcon,
   BellIcon,
-  SendIcon
+  SendIcon,
+  FileText,
+  PlusIcon,
+  Languages,
+  Wand2
 } from 'lucide-react'
 import { 
   Card, 
@@ -239,6 +243,17 @@ const AdminDashboard = () => {
           <CardContent className="space-y-3">
             <Button
               variant="ghost"
+              className="w-full justify-start h-auto p-3 hover:bg-indigo-50 dark:hover:bg-indigo-950"
+              onClick={() => window.location.href = '/admin/posts/new'}
+            >
+              <PlusIcon className="mr-3 h-4 w-4 text-indigo-600" />
+              <div className="text-left">
+                <div className="font-medium">Create Blog Post</div>
+                <div className="text-xs text-muted-foreground">Write with AI assistance</div>
+              </div>
+            </Button>
+            <Button
+              variant="ghost"
               className="w-full justify-start h-auto p-3 hover:bg-blue-50 dark:hover:bg-blue-950"
               onClick={() => window.location.href = '/admin/users'}
             >
@@ -265,46 +280,46 @@ const AdminDashboard = () => {
         <Card className="md:col-span-2 lg:col-span-1">
           <CardHeader>
             <CardTitle className="flex items-center">
-              <Activity className="mr-2 h-4 w-4 text-orange-600" />
-              Communication Hub
+              <Wand2 className="mr-2 h-4 w-4 text-indigo-600" />
+              Blog Management
             </CardTitle>
-            <CardDescription>Manage announcements and notifications</CardDescription>
+            <CardDescription>AI-powered content creation and management</CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
             <Button
               variant="ghost"
               size="sm"
-              className="w-full justify-start hover:bg-orange-50 dark:hover:bg-orange-950"
-              onClick={() => window.location.href = '/admin/announcements'}
+              className="w-full justify-start hover:bg-indigo-50 dark:hover:bg-indigo-950"
+              onClick={() => window.location.href = '/admin/posts'}
             >
-              <MegaphoneIcon className="mr-2 h-4 w-4 text-orange-600" />
-              <span className="text-sm">Announcements</span>
+              <FileText className="mr-2 h-4 w-4 text-indigo-600" />
+              <span className="text-sm">Manage Posts</span>
               <Badge variant="secondary" className="ml-auto text-xs">
-                {communicationStats?.announcements?.active ?? 0}
+                36
               </Badge>
             </Button>
             <Button
               variant="ghost"
               size="sm"
-              className="w-full justify-start hover:bg-blue-50 dark:hover:bg-blue-950"
-              onClick={() => window.location.href = '/admin/notifications'}
+              className="w-full justify-start hover:bg-green-50 dark:hover:bg-green-950"
+              onClick={() => window.location.href = '/admin/posts/new'}
             >
-              <BellIcon className="mr-2 h-4 w-4 text-blue-600" />
-              <span className="text-sm">Notifications</span>
+              <PlusIcon className="mr-2 h-4 w-4 text-green-600" />
+              <span className="text-sm">Create New Post</span>
               <Badge variant="secondary" className="ml-auto text-xs">
-                {communicationStats?.notifications?.unread ?? 0}
+                AI
               </Badge>
             </Button>
             <Button
               variant="ghost"
               size="sm"
               className="w-full justify-start hover:bg-purple-50 dark:hover:bg-purple-950"
-              onClick={() => window.location.href = '/admin/email-marketing'}
+              onClick={() => window.location.href = '/admin/translate'}
             >
-              <SendIcon className="mr-2 h-4 w-4 text-purple-600" />
-              <span className="text-sm">Email Marketing</span>
+              <Languages className="mr-2 h-4 w-4 text-purple-600" />
+              <span className="text-sm">Auto-Translate</span>
               <Badge variant="secondary" className="ml-auto text-xs">
-                {communicationStats?.campaigns?.sent ?? 0}
+                6 langs
               </Badge>
             </Button>
           </CardContent>
