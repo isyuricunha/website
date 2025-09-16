@@ -9,8 +9,12 @@ export const supportedLanguages = [
     label: 'Português'
   },
   {
-    code: 'zh',
-    label: '中文'
+    code: 'es',
+    label: 'Español'
+  },
+  {
+    code: 'fr',
+    label: 'Français'
   },
   {
     code: 'de',
@@ -21,13 +25,29 @@ export const supportedLanguages = [
     label: '日本語'
   },
   {
-    code: 'fr',
-    label: 'Français'
+    code: 'zh',
+    label: '中文'
   },
-  // {
-  //   code: 'ko',
-  //   label: '한국어'
-  // }
+  {
+    code: 'ar',
+    label: 'العربية'
+  },
+  {
+    code: 'hi',
+    label: 'हिन्दी'
+  },
+  {
+    code: 'bn',
+    label: 'বাংলা'
+  },
+  {
+    code: 'ru',
+    label: 'Русский'
+  },
+  {
+    code: 'ur',
+    label: 'اردو'
+  }
 ]
 
 export const i18n = {

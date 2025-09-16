@@ -7,6 +7,7 @@ import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { X as XIcon, Settings as SettingsIcon, Gamepad as GamepadIcon, Eye as EyeIcon, Menu as MenuIcon, Bug as BugIcon, Github as GithubIcon, Copy as CopyIcon, MessageCircle as MessageCircleIcon, Code } from 'lucide-react'
 import { useTranslations, useLocale, useMessages } from '@tszhong0411/i18n/client'
+import { i18n } from '@tszhong0411/i18n/config'
 import MascotGame from './mascot-game'
 import AIChatInterface from './ai-chat-interface'
 
@@ -314,7 +315,8 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   const pathname = usePathname()
   const getPageKey = (path: string) => {
     // Remove locale prefix if present
-    const pathWithoutLocale = path.replace(/^\/(en|pt|fr|de|zh)\//, '/')
+    const localePattern = new RegExp(`^/(${i18n.locales.join('|')})/`, '')
+    const pathWithoutLocale = path.replace(localePattern, '/')
 
     if (pathWithoutLocale === '/' || pathWithoutLocale === '') return 'home'
 
