@@ -172,14 +172,14 @@
     "cancel": "يلغي",
     "delete": "يمسح",
     "error": "خطأ",
-    "likes": "{العد ، الجمع ، = 1 {",
+    "likes": "{count, plural, =1 {# إعجاب} other {# إعجابات}}",
     "sign-in": "تسجيل الدخول",
     "sign-in-error": "فشل في تسجيل الدخول. يرجى المحاولة مرة أخرى.",
     "sign-in-success": "تسجيل الدخول ناجح!",
     "sign-out": "تسجيل الخروج",
     "sign-up": "اشتراك",
     "sign-up-error": "فشل في التسجيل. \nمن فضلك حاول مرة أخرى.",
-    "views": "{العد ، الجمع ، = 1 {"
+    "views": "{count, plural, =1 {# مشاهدة} other {# مشاهدات}}"
   },
   "component": {
     "announcement-banner": {

@@ -172,14 +172,14 @@
     "cancel": "বাতিল",
     "delete": "মুছুন",
     "error": "ত্রুটি",
-    "likes": "{গণনা, বহুবচন, = 1 {",
+    "likes": "{count, plural, =1 {# পছন্দ} other {# পছন্দ}}",
     "sign-in": "সাইন ইন",
     "sign-in-error": "সাইন ইন করতে ব্যর্থ। দয়া করে আবার চেষ্টা করুন।",
     "sign-in-success": "লগইন সফল!",
     "sign-out": "সাইন আউট",
     "sign-up": "সাইন আপ করুন",
     "sign-up-error": "সাইন আপ করতে ব্যর্থ। \nআবার চেষ্টা করুন।",
-    "views": "{গণনা, বহুবচন, = 1 {"
+    "views": "{count, plural, =1 {# দেখা} other {# দেখা}}"
   },
   "component": {
     "announcement-banner": {

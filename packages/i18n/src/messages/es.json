@@ -103,7 +103,7 @@
       "author": "Autor",
       "comment-cannot-be-empty": "El comentario no puede estar vacío",
       "comment-posted": "Comentario publicado",
-      "comments": "{Count, Plural, = 1 {comentario} Otros {comentarios}}",
+      "comments": "{count, plural, =1 {comentario} other {comentarios}}",
       "confirm-delete-comment": "¿Estás seguro de que quieres eliminar este comentario? \nEsta acción no se puede deshacer.",
       "copy-link": "Enlace de copia",
       "delete-a-comment": "Eliminar un comentario",
@@ -119,7 +119,7 @@
       "oldest": "Mayor",
       "open-menu": "Menú abierto",
       "placeholder": "Deja un comentario",
-      "replies": "{Count, Plural, = 1 {Respuesta} Otras {respuestas}}",
+      "replies": "{count, plural, =1 {respuesta} other {respuestas}}",
       "reply": "Responder",
       "reply-cannot-be-empty": "La respuesta no puede estar vacía",
       "reply-to-comment": "Responder al comentario",
@@ -172,14 +172,14 @@
     "cancel": "Cancelar",
     "delete": "Borrar",
     "error": "Error",
-    "likes": "{Count, Plural, = 1 {",
+    "likes": "{count, plural, =1 {# me gusta} other {# me gusta}}",
     "sign-in": "Iniciar sesión",
     "sign-in-error": "No se pudo iniciar sesión. Vuelva a intentarlo.",
     "sign-in-success": "¡Inicie sesión exitosa!",
     "sign-out": "desconectar",
     "sign-up": "Inscribirse",
     "sign-up-error": "No se registró. \nPor favor intente de nuevo.",
-    "views": "{Count, Plural, = 1 {"
+    "views": "{count, plural, =1 {# vista} other {# vistas}}"
   },
   "component": {
     "announcement-banner": {
@@ -213,13 +213,13 @@
         "all": "Todas las publicaciones"
       },
       "results": {
-        "count": "{Count, Plural, = 0 {0 Resultados} = 1 {1 resultado} otro {",
+        "count": "{count, plural, =0 {0 resultados} =1 {1 resultado} other {# resultados}}",
         "for": "para \"{Search}\""
       },
       "rss": "Alimento RSS",
       "searching": "Búsqueda...",
       "showing": {
-        "count": "Mostrando {Count, Plural, = 0 {0 Posts} = 1 {1 Post} Otro {"
+        "count": "Mostrando {count, plural, =0 {0 posts} =1 {1 post} other {# posts}}"
       },
       "sort": {
         "label": "Ordenar por:",
