@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Save the post
-    const success = await BlogService.savePost({
+    const saveSuccess = await BlogService.savePost({
       slug,
       title,
       summary: summary || '',
@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
       modifiedTime: modifiedTime || new Date().toISOString()
     })
 
-    if (!success) {
+    if (!saveSuccess) {
       return NextResponse.json(
         { error: 'Failed to save post' },
         { status: 500 }
