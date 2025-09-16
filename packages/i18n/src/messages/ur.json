@@ -328,7 +328,7 @@
     "dont-have-account": "کوئی اکاؤنٹ نہیں ہے؟",
     "sign-in": {
       "anonymous": "گمنام",
-      "continue-with": "{فراہم کنندہ} کے ساتھ جاری رکھیں",
+      "continue-with": "{provider} کے ساتھ جاری رکھیں",
       "description": "یوریکونا ڈاٹ کام کو جاری رکھنے کے لئے",
       "here": "یہاں سائن ان کریں",
       "or": "یا"

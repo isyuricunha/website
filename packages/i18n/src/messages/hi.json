@@ -328,7 +328,7 @@
     "dont-have-account": "कोई खाता नहीं है?",
     "sign-in": {
       "anonymous": "गुमनाम",
-      "continue-with": "{प्रदाता} के साथ जारी रखें",
+      "continue-with": "{provider} के साथ जारी रखें",
       "description": "yuricunha.com पर जारी रखने के लिए",
       "here": "यहां साइन इन करो",
       "or": "या"

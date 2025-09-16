@@ -328,7 +328,7 @@
     "dont-have-account": "ليس لديك حساب؟",
     "sign-in": {
       "anonymous": "مجهول",
-      "continue-with": "تابع مع {Provider}",
+      "continue-with": "تابع مع {provider}",
       "description": "لمواصلة yuricunha.com",
       "here": "تسجيل الدخول هنا",
       "or": "أو"

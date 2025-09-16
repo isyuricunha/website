@@ -328,7 +328,7 @@
     "dont-have-account": "У вас нет учетной записи?",
     "sign-in": {
       "anonymous": "Анонимный",
-      "continue-with": "Продолжить с {провайдером}",
+      "continue-with": "Продолжить с {provider}",
       "description": "чтобы продолжить yuricunha.com",
       "here": "Войдите здесь",
       "or": "или"

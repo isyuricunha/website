@@ -328,7 +328,7 @@
     "dont-have-account": "অ্যাকাউন্ট নেই?",
     "sign-in": {
       "anonymous": "বেনামে",
-      "continue-with": "{সরবরাহকারী} দিয়ে চালিয়ে যান",
+      "continue-with": "{provider} দিয়ে চালিয়ে যান",
       "description": "ইউরিকুনহা ডটকম চালিয়ে যেতে",
       "here": "এখানে সাইন ইন",
       "or": "বা"

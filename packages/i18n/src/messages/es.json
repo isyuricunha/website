@@ -328,7 +328,7 @@
     "dont-have-account": "¿No tienes una cuenta?",
     "sign-in": {
       "anonymous": "Anónimo",
-      "continue-with": "Continuar con {proveedor}",
+      "continue-with": "Continuar con {provider}",
       "description": "para continuar a yuricunha.com",
       "here": "Iniciar sesión aquí",
       "or": "o"
