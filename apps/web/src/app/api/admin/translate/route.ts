@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { BlogService } from '@/lib/blog/blog-service'
-import { AIService } from '@/lib/ai/ai-service'
+import { aiService } from '@/lib/ai/ai-service'
 import { ratelimit } from '@/lib/ratelimit'
 
 const SUPPORTED_LOCALES = ['en', 'pt', 'fr', 'de', 'ja', 'zh']
@@ -57,45 +57,27 @@ export async function POST(request: NextRequest) {
         }
 
         // Translate title
-        const translatedTitle = await AIService.generateContent(
-          `Translate this title to ${getLanguageName(targetLocale)}: "${sourcePost.title}"`,
-          { 
-            provider, 
-            model: provider === 'ollama' ? 'yue-f' : undefined 
-          },
-          {
-            currentPage: 'admin',
-            userAgent: 'Admin Translation System',
-            language: targetLocale
-          }
+        const translatedTitle = await aiService.translateContent(
+          sourcePost.title,
+          sourceLocale,
+          targetLocale,
+          provider
         )
 
         // Translate summary
-        const translatedSummary = await AIService.generateContent(
-          `Translate this summary to ${getLanguageName(targetLocale)}: "${sourcePost.summary}"`,
-          { 
-            provider, 
-            model: provider === 'ollama' ? 'yue-f' : undefined 
-          },
-          {
-            currentPage: 'admin',
-            userAgent: 'Admin Translation System',
-            language: targetLocale
-          }
+        const translatedSummary = await aiService.translateContent(
+          sourcePost.summary,
+          sourceLocale,
+          targetLocale,
+          provider
         )
 
         // Translate content
-        const translatedContent = await AIService.generateContent(
-          `Translate this blog post content to ${getLanguageName(targetLocale)}. Maintain all markdown formatting, links, and structure:\n\n${sourcePost.content}`,
-          { 
-            provider, 
-            model: provider === 'ollama' ? 'yue-f' : undefined 
-          },
-          {
-            currentPage: 'admin',
-            userAgent: 'Admin Translation System',
-            language: targetLocale
-          }
+        const translatedContent = await aiService.translateContent(
+          sourcePost.content,
+          sourceLocale,
+          targetLocale,
+          provider
         )
 
         // Save translated post
