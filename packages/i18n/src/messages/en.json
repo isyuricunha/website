@@ -1121,6 +1121,104 @@
         "13": "Broken links happen - thanks for helping improve the site!",
         "14": "Every 404 is a chance to explore something new instead!",
         "15": "When in doubt, the homepage has links to everything important! 🏠"
+      },
+      "contact": {
+        "0": "Want to get in touch? 📧",
+        "1": "My creator, Yuri loves hearing from visitors!",
+        "2": "Feel free to reach out for collaborations or questions!",
+        "3": "The contact form makes it easy to send a message!",
+        "4": "My creator, Yuri usually responds within 24-48 hours!",
+        "5": "You can also connect on social media platforms!",
+        "6": "From freelance inquiries to speaking opportunities - all welcome! 💼",
+        "7": "Every message is read personally - you're not just sending to a bot!",
+        "8": "Whether it's a question, collaboration, or just saying hi - reach out!",
+        "9": "The contact channels are open and welcoming to everyone!",
+        "10": "Found a bug or have feedback? This is the place to share it!",
+        "11": "Collaborations have led to some of the best projects!",
+        "12": "Professional inquiries are always welcome and appreciated!",
+        "13": "Your message might be the start of something amazing!",
+        "14": "Don't hesitate - my creator, Yuri is friendly and responsive!",
+        "15": "The best connections start with a simple message! 🤝"
+      }
+    }
+  },
+  "contact": {
+    "title": "Contact",
+    "description": "Get in touch for collaborations, questions, or just to say hello",
+    "page-title": "Contact",
+    "page-description": "Let's connect! Reach out for collaborations, questions, or just to say hello",
+    "form": {
+      "title": "Send a Message",
+      "description": "Fill out the form below and I'll get back to you soon",
+      "name": {
+        "label": "Name",
+        "placeholder": "Your name",
+        "required": "Name is required",
+        "max-length": "Name must be less than 100 characters"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "your@email.com",
+        "required": "Email is required",
+        "invalid": "Please enter a valid email address"
+      },
+      "subject": {
+        "label": "Subject",
+        "placeholder": "What is this about?",
+        "required": "Subject is required",
+        "max-length": "Subject must be less than 200 characters"
+      },
+      "message": {
+        "label": "Message",
+        "placeholder": "Tell me more about your project, question, or idea...",
+        "required": "Message is required",
+        "min-length": "Message must be at least 10 characters",
+        "max-length": "Message must be less than 2000 characters",
+        "character-count": "{count}/2000 characters"
+      },
+      "submit": "Send Message",
+      "submitting": "Sending...",
+      "success": "Message sent successfully!",
+      "error": "Failed to send message. Please try again.",
+      "network-error": "Network error. Please check your connection and try again."
+    },
+    "direct": {
+      "title": "Direct Contact",
+      "description": "Prefer email? Reach out directly",
+      "email-label": "Email",
+      "response-time": "I typically respond within 24-48 hours.",
+      "urgent": "For urgent matters, please mention it in the subject line."
+    },
+    "social": {
+      "title": "Connect on Social",
+      "description": "Follow me on various platforms",
+      "github": {
+        "name": "GitHub",
+        "description": "Follow my code and open source projects"
+      },
+      "twitter": {
+        "name": "Twitter",
+        "description": "Connect with me on Twitter"
+      },
+      "linkedin": {
+        "name": "LinkedIn",
+        "description": "Professional networking and career updates"
+      }
+    },
+    "faq": {
+      "title": "Quick Questions",
+      "description": "Common inquiries and responses",
+      "freelance": {
+        "question": "Available for freelance work?",
+        "answer": "Currently open to interesting projects. Let's discuss your needs!"
+      },
+      "collaborations": {
+        "question": "Open to collaborations?",
+        "answer": "Always interested in working with other developers on cool projects."
+      },
+      "speaking": {
+        "question": "Speaking opportunities?",
+        "answer": "Happy to speak at events about web development and open source."
       }
     }
   }

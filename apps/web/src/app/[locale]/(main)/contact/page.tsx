@@ -1,7 +1,7 @@
 import type { Metadata, ResolvingMetadata } from 'next'
 
 import { i18n } from '@tszhong0411/i18n/config'
-import { setRequestLocale } from '@tszhong0411/i18n/server'
+import { getTranslations, setRequestLocale } from '@tszhong0411/i18n/server'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@tszhong0411/ui'
 import { Mail, User, Github, Twitter, Linkedin } from 'lucide-react'
 
@@ -25,10 +25,11 @@ export const generateMetadata = async (
   parent: ResolvingMetadata
 ): Promise<Metadata> => {
   const { locale } = await props.params
+  const t = await getTranslations({ locale })
   const previousOpenGraph = (await parent).openGraph ?? {}
   const previousTwitter = (await parent).twitter ?? {}
-  const title = 'Contact'
-  const description = 'Get in touch for collaborations, questions, or just to say hello'
+  const title = t('contact.title')
+  const description = t('contact.description')
   const url = getLocalizedPath({ slug: '/contact', locale })
 
   return {
@@ -55,33 +56,34 @@ export const generateMetadata = async (
 const ContactPage = async (props: PageProps) => {
   const { locale } = await props.params
   setRequestLocale(locale)
+  const t = await getTranslations({ locale })
 
   const socialLinks = [
     {
-      name: 'GitHub',
+      name: t('contact.social.github.name'),
       href: 'https://github.com/isyuricunha',
       icon: <Github className='h-5 w-5' />,
-      description: 'Follow my code and open source projects'
+      description: t('contact.social.github.description')
     },
     {
-      name: 'Twitter',
+      name: t('contact.social.twitter.name'),
       href: 'https://twitter.com/isyuricunha',
       icon: <Twitter className='h-5 w-5' />,
-      description: 'Connect with me on Twitter'
+      description: t('contact.social.twitter.description')
     },
     {
-      name: 'LinkedIn',
+      name: t('contact.social.linkedin.name'),
       href: 'https://linkedin.com/in/isyuricunha',
       icon: <Linkedin className='h-5 w-5' />,
-      description: 'Professional networking and career updates'
+      description: t('contact.social.linkedin.description')
     }
   ]
 
   return (
     <>
       <PageTitle
-        title="Contact"
-        description="Let's connect! Reach out for collaborations, questions, or just to say hello"
+        title={t('contact.page-title')}
+        description={t('contact.page-description')}
       />
 
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
@@ -95,10 +97,10 @@ const ContactPage = async (props: PageProps) => {
             <CardHeader>
               <CardTitle className='text-base sm:text-lg flex items-center gap-2'>
                 <Mail className='h-5 w-5' />
-                Direct Contact
+                {t('contact.direct.title')}
               </CardTitle>
               <CardDescription className='text-xs sm:text-sm'>
-                Prefer email? Reach out directly
+                {t('contact.direct.description')}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -106,7 +108,7 @@ const ContactPage = async (props: PageProps) => {
                 <div className='flex items-center gap-3 p-3 rounded-lg bg-muted/50'>
                   <Mail className='h-4 w-4 text-muted-foreground' />
                   <div>
-                    <p className='text-sm font-medium'>Email</p>
+                    <p className='text-sm font-medium'>{t('contact.direct.email-label')}</p>
                     <Link
                       href='mailto:me@yuricunha.com'
                       className='text-xs sm:text-sm text-primary hover:underline'
@@ -117,8 +119,8 @@ const ContactPage = async (props: PageProps) => {
                 </div>
 
                 <div className='text-xs sm:text-sm text-muted-foreground'>
-                  <p className='mb-2'>I typically respond within 24-48 hours.</p>
-                  <p>For urgent matters, please mention it in the subject line.</p>
+                  <p className='mb-2'>{t('contact.direct.response-time')}</p>
+                  <p>{t('contact.direct.urgent')}</p>
                 </div>
               </div>
             </CardContent>
@@ -129,10 +131,10 @@ const ContactPage = async (props: PageProps) => {
             <CardHeader>
               <CardTitle className='text-base sm:text-lg flex items-center gap-2'>
                 <User className='h-5 w-5' />
-                Connect on Social
+                {t('contact.social.title')}
               </CardTitle>
               <CardDescription className='text-xs sm:text-sm'>
-                Follow me on various platforms
+                {t('contact.social.description')}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -164,30 +166,30 @@ const ContactPage = async (props: PageProps) => {
           <Card>
             <CardHeader>
               <CardTitle className='text-base sm:text-lg'>
-                Quick Questions
+                {t('contact.faq.title')}
               </CardTitle>
               <CardDescription className='text-xs sm:text-sm'>
-                Common inquiries and responses
+                {t('contact.faq.description')}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className='space-y-4'>
                 <div>
-                  <h4 className='text-sm font-medium mb-1'>Available for freelance work?</h4>
+                  <h4 className='text-sm font-medium mb-1'>{t('contact.faq.freelance.question')}</h4>
                   <p className='text-xs sm:text-sm text-muted-foreground'>
-                    Currently open to interesting projects. Let's discuss your needs!
+                    {t('contact.faq.freelance.answer')}
                   </p>
                 </div>
                 <div>
-                  <h4 className='text-sm font-medium mb-1'>Open to collaborations?</h4>
+                  <h4 className='text-sm font-medium mb-1'>{t('contact.faq.collaborations.question')}</h4>
                   <p className='text-xs sm:text-sm text-muted-foreground'>
-                    Always interested in working with other developers on cool projects.
+                    {t('contact.faq.collaborations.answer')}
                   </p>
                 </div>
                 <div>
-                  <h4 className='text-sm font-medium mb-1'>Speaking opportunities?</h4>
+                  <h4 className='text-sm font-medium mb-1'>{t('contact.faq.speaking.question')}</h4>
                   <p className='text-xs sm:text-sm text-muted-foreground'>
-                    Happy to speak at events about web development and open source.
+                    {t('contact.faq.speaking.answer')}
                   </p>
                 </div>
               </div>

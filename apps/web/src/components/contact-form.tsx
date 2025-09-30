@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useTranslations } from '@tszhong0411/i18n/client'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, Input, Button, Textarea } from '@tszhong0411/ui'
 import { Send, MessageSquare, Loader2, CheckCircle, AlertCircle } from 'lucide-react'
 
@@ -20,6 +21,7 @@ interface FormErrors {
 }
 
 export default function ContactForm() {
+  const t = useTranslations()
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
@@ -36,29 +38,29 @@ export default function ContactForm() {
     const newErrors: FormErrors = {}
 
     if (!formData.name.trim()) {
-      newErrors.name = 'Name is required'
+      newErrors.name = t('contact.form.name.required')
     } else if (formData.name.length > 100) {
-      newErrors.name = 'Name must be less than 100 characters'
+      newErrors.name = t('contact.form.name.max-length')
     }
 
     if (!formData.email.trim()) {
-      newErrors.email = 'Email is required'
+      newErrors.email = t('contact.form.email.required')
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email address'
+      newErrors.email = t('contact.form.email.invalid')
     }
 
     if (!formData.subject.trim()) {
-      newErrors.subject = 'Subject is required'
+      newErrors.subject = t('contact.form.subject.required')
     } else if (formData.subject.length > 200) {
-      newErrors.subject = 'Subject must be less than 200 characters'
+      newErrors.subject = t('contact.form.subject.max-length')
     }
 
     if (!formData.message.trim()) {
-      newErrors.message = 'Message is required'
+      newErrors.message = t('contact.form.message.required')
     } else if (formData.message.length < 10) {
-      newErrors.message = 'Message must be at least 10 characters'
+      newErrors.message = t('contact.form.message.min-length')
     } else if (formData.message.length > 2000) {
-      newErrors.message = 'Message must be less than 2000 characters'
+      newErrors.message = t('contact.form.message.max-length')
     }
 
     setErrors(newErrors)
@@ -89,7 +91,7 @@ export default function ContactForm() {
 
       if (response.ok) {
         setSubmitStatus('success')
-        setSubmitMessage(result.message || 'Message sent successfully!')
+        setSubmitMessage(result.message || t('contact.form.success'))
         setFormData({ name: '', email: '', subject: '', message: '' })
       } else {
         setSubmitStatus('error')
@@ -103,13 +105,13 @@ export default function ContactForm() {
           })
           setErrors(serverErrors)
         } else {
-          setSubmitMessage(result.error || 'Failed to send message. Please try again.')
+          setSubmitMessage(result.error || t('contact.form.error'))
         }
       }
     } catch (error) {
       console.error('Contact form error:', error)
       setSubmitStatus('error')
-      setSubmitMessage('Network error. Please check your connection and try again.')
+      setSubmitMessage(t('contact.form.network-error'))
     } finally {
       setIsSubmitting(false)
     }
@@ -133,10 +135,10 @@ export default function ContactForm() {
       <CardHeader>
         <CardTitle className='text-base sm:text-lg flex items-center gap-2'>
           <MessageSquare className='h-5 w-5' />
-          Send a Message
+          {t('contact.form.title')}
         </CardTitle>
         <CardDescription className='text-xs sm:text-sm'>
-          Fill out the form below and I'll get back to you soon
+          {t('contact.form.description')}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -158,12 +160,12 @@ export default function ContactForm() {
           <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
             <div>
               <label htmlFor='name' className='block text-xs sm:text-sm font-medium mb-2'>
-                Name *
+                {t('contact.form.name.label')} *
               </label>
               <Input
                 id='name'
                 type='text'
-                placeholder='Your name'
+                placeholder={t('contact.form.name.placeholder')}
                 value={formData.name}
                 onChange={(e) => handleInputChange('name', e.target.value)}
                 className={`text-sm ${errors.name ? 'border-red-500' : ''}`}
@@ -175,12 +177,12 @@ export default function ContactForm() {
             </div>
             <div>
               <label htmlFor='email' className='block text-xs sm:text-sm font-medium mb-2'>
-                Email *
+                {t('contact.form.email.label')} *
               </label>
               <Input
                 id='email'
                 type='email'
-                placeholder='your@email.com'
+                placeholder={t('contact.form.email.placeholder')}
                 value={formData.email}
                 onChange={(e) => handleInputChange('email', e.target.value)}
                 className={`text-sm ${errors.email ? 'border-red-500' : ''}`}
@@ -194,12 +196,12 @@ export default function ContactForm() {
 
           <div>
             <label htmlFor='subject' className='block text-xs sm:text-sm font-medium mb-2'>
-              Subject *
+              {t('contact.form.subject.label')} *
             </label>
             <Input
               id='subject'
               type='text'
-              placeholder='What is this about?'
+              placeholder={t('contact.form.subject.placeholder')}
               value={formData.subject}
               onChange={(e) => handleInputChange('subject', e.target.value)}
               className={`text-sm ${errors.subject ? 'border-red-500' : ''}`}
@@ -212,11 +214,11 @@ export default function ContactForm() {
 
           <div>
             <label htmlFor='message' className='block text-xs sm:text-sm font-medium mb-2'>
-              Message *
+              {t('contact.form.message.label')} *
             </label>
             <Textarea
               id='message'
-              placeholder='Tell me more about your project, question, or idea...'
+              placeholder={t('contact.form.message.placeholder')}
               rows={6}
               value={formData.message}
               onChange={(e) => handleInputChange('message', e.target.value)}
@@ -227,7 +229,7 @@ export default function ContactForm() {
               <p className='text-xs text-red-600 mt-1'>{errors.message}</p>
             )}
             <p className='text-xs text-gray-500 mt-1'>
-              {formData.message.length}/2000 characters
+              {t('contact.form.message.character-count', { count: formData.message.length })}
             </p>
           </div>
 
@@ -239,12 +241,12 @@ export default function ContactForm() {
             {isSubmitting ? (
               <>
                 <Loader2 className='h-4 w-4 animate-spin' />
-                Sending...
+                {t('contact.form.submitting')}
               </>
             ) : (
               <>
                 <Send className='h-4 w-4' />
-                Send Message
+                {t('contact.form.submit')}
               </>
             )}
           </Button>

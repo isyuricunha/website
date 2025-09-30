@@ -1136,5 +1136,85 @@
   "uses": {
     "description": "Este es el equipo que uso actualmente para juegos, programación, fabricación de videos y todos los días.",
     "title": "Usos"
+  },
+  "contact": {
+    "title": "Contacto",
+    "description": "Ponte en contacto para colaboraciones, preguntas o simplemente para saludar",
+    "page-title": "Contacto",
+    "page-description": "¡Conectémonos! Ponte en contacto para colaboraciones, preguntas o simplemente para saludar",
+    "form": {
+      "title": "Enviar un Mensaje",
+      "description": "Completa el formulario a continuación y te responderé pronto",
+      "name": {
+        "label": "Nombre",
+        "placeholder": "Tu nombre",
+        "required": "El nombre es obligatorio",
+        "max-length": "El nombre debe tener menos de 100 caracteres"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "tu@email.com",
+        "required": "El email es obligatorio",
+        "invalid": "Por favor, introduce una dirección de email válida"
+      },
+      "subject": {
+        "label": "Asunto",
+        "placeholder": "¿De qué se trata?",
+        "required": "El asunto es obligatorio",
+        "max-length": "El asunto debe tener menos de 200 caracteres"
+      },
+      "message": {
+        "label": "Mensaje",
+        "placeholder": "Cuéntame más sobre tu proyecto, pregunta o idea...",
+        "required": "El mensaje es obligatorio",
+        "min-length": "El mensaje debe tener al menos 10 caracteres",
+        "max-length": "El mensaje debe tener menos de 2000 caracteres",
+        "character-count": "{count}/2000 caracteres"
+      },
+      "submit": "Enviar Mensaje",
+      "submitting": "Enviando...",
+      "success": "¡Mensaje enviado con éxito!",
+      "error": "Error al enviar el mensaje. Por favor, inténtalo de nuevo.",
+      "network-error": "Error de red. Por favor, verifica tu conexión e inténtalo de nuevo."
+    },
+    "direct": {
+      "title": "Contacto Directo",
+      "description": "¿Prefieres email? Contáctame directamente",
+      "email-label": "Email",
+      "response-time": "Normalmente respondo en 24-48 horas.",
+      "urgent": "Para asuntos urgentes, por favor menciónalo en el asunto."
+    },
+    "social": {
+      "title": "Conecta en Redes Sociales",
+      "description": "Sígueme en varias plataformas",
+      "github": {
+        "name": "GitHub",
+        "description": "Sigue mi código y proyectos de código abierto"
+      },
+      "twitter": {
+        "name": "Twitter",
+        "description": "Conéctate conmigo en Twitter"
+      },
+      "linkedin": {
+        "name": "LinkedIn",
+        "description": "Networking profesional y actualizaciones de carrera"
+      }
+    },
+    "faq": {
+      "title": "Preguntas Rápidas",
+      "description": "Consultas comunes y respuestas",
+      "freelance": {
+        "question": "¿Disponible para trabajo freelance?",
+        "answer": "Actualmente abierto a proyectos interesantes. ¡Hablemos de tus necesidades!"
+      },
+      "collaborations": {
+        "question": "¿Abierto a colaboraciones?",
+        "answer": "Siempre interesado en trabajar con otros desarrolladores en proyectos geniales."
+      },
+      "speaking": {
+        "question": "¿Oportunidades para hablar?",
+        "answer": "Encantado de hablar en eventos sobre desarrollo web y código abierto."
+      }
+    }
   }
 }

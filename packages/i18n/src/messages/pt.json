@@ -1134,6 +1134,104 @@
         "13": "A busca aprende e melhora a cada consulta!",
         "14": "De artigos técnicos a detalhes de projetos - encontre tudo aqui!",
         "15": "A busca é sua aliada para navegar volumes grandes de conteúdo! 🗂️"
+      },
+      "contact": {
+        "0": "Quer entrar em contato? 📧",
+        "1": "Meu criador, Yuri, adora ouvir dos visitantes!",
+        "2": "Sinta-se à vontade para entrar em contato para colaborações ou perguntas!",
+        "3": "O formulário de contato facilita o envio de mensagens!",
+        "4": "Meu criador, Yuri, geralmente responde em 24-48 horas!",
+        "5": "Você também pode se conectar nas redes sociais!",
+        "6": "De propostas freelance a oportunidades de palestras - tudo bem-vindo! 💼",
+        "7": "Toda mensagem é lida pessoalmente - você não está enviando para um bot!",
+        "8": "Seja uma pergunta, colaboração ou só um oi - entre em contato!",
+        "9": "Os canais de contato estão abertos e receptivos a todos!",
+        "10": "Encontrou um bug ou tem feedback? Este é o lugar para compartilhar!",
+        "11": "Colaborações levaram a alguns dos melhores projetos!",
+        "12": "Propostas profissionais são sempre bem-vindas e apreciadas!",
+        "13": "Sua mensagem pode ser o início de algo incrível!",
+        "14": "Não hesite - meu criador, Yuri, é amigável e responsivo!",
+        "15": "As melhores conexões começam com uma mensagem simples! 🤝"
+      }
+    }
+  },
+  "contact": {
+    "title": "Contato",
+    "description": "Entre em contato para colaborações, perguntas ou apenas para dizer olá",
+    "page-title": "Contato",
+    "page-description": "Vamos nos conectar! Entre em contato para colaborações, perguntas ou apenas para dizer olá",
+    "form": {
+      "title": "Enviar uma Mensagem",
+      "description": "Preencha o formulário abaixo e eu retornarei em breve",
+      "name": {
+        "label": "Nome",
+        "placeholder": "Seu nome",
+        "required": "Nome é obrigatório",
+        "max-length": "Nome deve ter menos de 100 caracteres"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "seu@email.com",
+        "required": "Email é obrigatório",
+        "invalid": "Por favor, insira um endereço de email válido"
+      },
+      "subject": {
+        "label": "Assunto",
+        "placeholder": "Sobre o que é?",
+        "required": "Assunto é obrigatório",
+        "max-length": "Assunto deve ter menos de 200 caracteres"
+      },
+      "message": {
+        "label": "Mensagem",
+        "placeholder": "Conte-me mais sobre seu projeto, pergunta ou ideia...",
+        "required": "Mensagem é obrigatória",
+        "min-length": "Mensagem deve ter pelo menos 10 caracteres",
+        "max-length": "Mensagem deve ter menos de 2000 caracteres",
+        "character-count": "{count}/2000 caracteres"
+      },
+      "submit": "Enviar Mensagem",
+      "submitting": "Enviando...",
+      "success": "Mensagem enviada com sucesso!",
+      "error": "Falha ao enviar mensagem. Por favor, tente novamente.",
+      "network-error": "Erro de rede. Por favor, verifique sua conexão e tente novamente."
+    },
+    "direct": {
+      "title": "Contato Direto",
+      "description": "Prefere email? Entre em contato diretamente",
+      "email-label": "Email",
+      "response-time": "Geralmente respondo em 24-48 horas.",
+      "urgent": "Para assuntos urgentes, por favor mencione na linha de assunto."
+    },
+    "social": {
+      "title": "Conecte-se nas Redes Sociais",
+      "description": "Me siga em várias plataformas",
+      "github": {
+        "name": "GitHub",
+        "description": "Acompanhe meu código e projetos open source"
+      },
+      "twitter": {
+        "name": "Twitter",
+        "description": "Conecte-se comigo no Twitter"
+      },
+      "linkedin": {
+        "name": "LinkedIn",
+        "description": "Networking profissional e atualizações de carreira"
+      }
+    },
+    "faq": {
+      "title": "Perguntas Rápidas",
+      "description": "Dúvidas comuns e respostas",
+      "freelance": {
+        "question": "Disponível para trabalho freelance?",
+        "answer": "Atualmente aberto a projetos interessantes. Vamos discutir suas necessidades!"
+      },
+      "collaborations": {
+        "question": "Aberto a colaborações?",
+        "answer": "Sempre interessado em trabalhar com outros desenvolvedores em projetos legais."
+      },
+      "speaking": {
+        "question": "Oportunidades de palestras?",
+        "answer": "Feliz em palestrar em eventos sobre desenvolvimento web e open source."
       }
     }
   }

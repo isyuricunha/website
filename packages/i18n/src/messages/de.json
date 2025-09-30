@@ -1136,5 +1136,85 @@
         "15": "Die Suche ist dein Freund beim Navigieren großer Inhalte! 🗂️"
       }
     }
+  },
+  "contact": {
+    "title": "Kontakt",
+    "description": "Kontaktieren Sie mich für Zusammenarbeit, Fragen oder einfach zum Hallo sagen",
+    "page-title": "Kontakt",
+    "page-description": "Lass uns verbinden! Kontaktieren Sie mich für Zusammenarbeit, Fragen oder einfach zum Hallo sagen",
+    "form": {
+      "title": "Eine Nachricht senden",
+      "description": "Fülle das Formular aus und ich melde mich bald",
+      "name": {
+        "label": "Name",
+        "placeholder": "Dein Name",
+        "required": "Name ist erforderlich",
+        "max-length": "Name muss weniger als 100 Zeichen haben"
+      },
+      "email": {
+        "label": "E-Mail",
+        "placeholder": "deine@email.com",
+        "required": "E-Mail ist erforderlich",
+        "invalid": "Bitte gib eine gültige E-Mail-Adresse ein"
+      },
+      "subject": {
+        "label": "Betreff",
+        "placeholder": "Worum geht es?",
+        "required": "Betreff ist erforderlich",
+        "max-length": "Betreff muss weniger als 200 Zeichen haben"
+      },
+      "message": {
+        "label": "Nachricht",
+        "placeholder": "Erzähl mir mehr über dein Projekt, deine Frage oder Idee...",
+        "required": "Nachricht ist erforderlich",
+        "min-length": "Nachricht muss mindestens 10 Zeichen haben",
+        "max-length": "Nachricht muss weniger als 2000 Zeichen haben",
+        "character-count": "{count}/2000 Zeichen"
+      },
+      "submit": "Nachricht senden",
+      "submitting": "Wird gesendet...",
+      "success": "Nachricht erfolgreich gesendet!",
+      "error": "Fehler beim Senden der Nachricht. Bitte versuche es erneut.",
+      "network-error": "Netzwerkfehler. Bitte überprüfe deine Verbindung und versuche es erneut."
+    },
+    "direct": {
+      "title": "Direkter Kontakt",
+      "description": "Bevorzugst du E-Mail? Kontaktiere mich direkt",
+      "email-label": "E-Mail",
+      "response-time": "Ich antworte normalerweise innerhalb von 24-48 Stunden.",
+      "urgent": "Bei dringenden Angelegenheiten bitte in der Betreffzeile erwähnen."
+    },
+    "social": {
+      "title": "Auf Social Media verbinden",
+      "description": "Folge mir auf verschiedenen Plattformen",
+      "github": {
+        "name": "GitHub",
+        "description": "Folge meinem Code und Open-Source-Projekten"
+      },
+      "twitter": {
+        "name": "Twitter",
+        "description": "Verbinde dich mit mir auf Twitter"
+      },
+      "linkedin": {
+        "name": "LinkedIn",
+        "description": "Professionelles Networking und Karriere-Updates"
+      }
+    },
+    "faq": {
+      "title": "Schnelle Fragen",
+      "description": "Häufige Anfragen und Antworten",
+      "freelance": {
+        "question": "Verfügbar für Freelance-Arbeit?",
+        "answer": "Derzeit offen für interessante Projekte. Lass uns über deine Bedürfnisse sprechen!"
+      },
+      "collaborations": {
+        "question": "Offen für Zusammenarbeit?",
+        "answer": "Immer interessiert, mit anderen Entwicklern an coolen Projekten zu arbeiten."
+      },
+      "speaking": {
+        "question": "Vortrags-Möglichkeiten?",
+        "answer": "Gerne bereit, bei Events über Webentwicklung und Open Source zu sprechen."
+      }
+    }
   }
 }
