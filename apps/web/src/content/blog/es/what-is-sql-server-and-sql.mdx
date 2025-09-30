@@ -1,0 +1,195 @@
+---
+title: "¿Cuál es la base de datos de SQL Server?"
+date: "2023-01-05T09:20:27.751-03:00"
+modifiedTime: "2023-01-05T09:20:27.751-03:00"
+summary: "Hablemos de mi base de datos favorita."
+---
+
+# ¿Cuál es la base de datos de SQL Server?
+
+La base de datos de SQL Server es un sistema de gestión de la base de datos relacional producido por Microsoft. Se utiliza para almacenar y administrar grandes cantidades de datos, incluidos datos estructurados y no estructurados. SQL Server ofrece una amplia gama de características para garantizar la seguridad, la disponibilidad y la integridad de los datos almacenados, así como para garantizar el rendimiento del sistema y la escalabilidad.
+
+Hay varias versiones de SQL Server disponibles, incluidos SQL Server Express, SQL Server Standard y SQL Server Enterprise. Cada una de estas versiones ofrece un conjunto diferente de características y es adecuado para diferentes tipos de uso.
+
+Para trabajar con SQL Server, es necesario conocer el lenguaje de consulta estructurado (SQL). SQL es el lenguaje estándar para trabajar con bases de datos relacionales y se utiliza para crear, consultar y modificar los datos almacenados en la base de datos.
+
+<Br />
+<Br />
+
+# ¿Cuál es el lenguaje de consulta estructurado (SQL famoso)?
+
+El lenguaje de consulta estructurada (SQL) es un lenguaje de programación utilizado para administrar y manipular datos almacenados en bases de datos relacionales. Es el lenguaje estándar para trabajar con bases de datos relacionales y se utiliza para crear, consultar y modificar los datos almacenados en la base de datos.
+
+SQL es un lenguaje declarativo, lo que significa que se usa para describir lo que debe hacerse, en lugar de especificar cómo se debe hacer. Esto permite que el sistema de gestión de bases de datos (DBMS) optimice la ejecución de consultas SQL y garantice un uso eficiente de los recursos del sistema.
+
+SQL se utiliza para realizar una amplia gama de tareas, incluida la creación y modificación de tablas e índices, insertar y actualizar datos, y recuperar datos de la base de datos. También se usa para definir la estructura y las relaciones de los datos dentro de la base de datos, así como para establecer permisos y controles para los usuarios.
+SQL es un lenguaje poderoso y versátil que se usa ampliamente en una variedad de industrias, incluidas las empresas, las finanzas, la atención médica y el gobierno. Es una herramienta esencial para los administradores y desarrolladores de bases de datos, y también es utilizada por analistas de datos y científicos de datos para extraer, transformar y cargar datos para fines de análisis e informes.
+
+Hay varios dialectos de SQL, incluidos MySQL, Oracle y Microsoft SQL Server, cada uno con sus propias características y sintaxis únicas. Sin embargo, los conceptos y principios básicos de SQL son los mismos en todos los dialectos, por lo que es un lenguaje que es fácil de aprender y ampliamente aplicable.
+
+<Br />
+<Br />
+
+# Ejemplos de consultas SQL
+
+Aquí hay algunos ejemplos de consultas SQL que se pueden ejecutar en la base de datos de SQL Server:
+
+## _Select Query_
+
+- La siguiente consulta selecciona todos los campos de la tabla "clientes" donde el campo "Ciudad" es igual a "São Paulo":
+
+`` `SQL
+Seleccionar * de los clientes donde City = 'São Paulo';
+`` `` ``
+
+<Br />
+
+## _sint data_
+
+- La siguiente consulta inserta un nuevo registro en la tabla "Clientes":
+
+`` `SQL
+Insertar en los valores de los clientes (nombre, dirección, ciudad) ('João da Silva', 'Rua Das Flores, 123', 'São Paulo');
+`` `` ``
+
+<Br />
+
+## _Update data_
+
+- La siguiente consulta actualiza el campo "Dirección" del registro con ID 1 en la tabla "Clientes":
+
+`` `SQL
+Actualizar a los clientes la dirección establecida = 'rua das oliveiras, 456' donde id = 1;
+`` `` ``
+
+<Br />
+
+## _delete data_
+
+- La siguiente consulta elimina el registro con ID 1 de la tabla "Clientes":
+
+`` `SQL
+Eliminar de los clientes donde id = 1;
+`` `` ``
+
+<Br />
+<Br />
+
+# Dos ejemplos simples
+
+<Br />
+
+## Primer ejemplo
+
+<Br />
+
+> Usted es el administrador de la base de datos para una pequeña base de datos de clientes. Debe agregar un nuevo registro del cliente con la siguiente información:
+
+<Br />
+
+- Nombre: "John Smith"
+- Dirección: "123 Main Street"
+- Ciudad: "Nueva York"
+
+<Br />
+<Br />
+
+## _Solución_
+
+<Br />
+
+- Para agregar el nuevo registro del cliente, puede usar la siguiente consulta SQL:
+
+`` `SQL
+Inserte en los clientes (nombre, dirección, ciudad) valores ('John Smith', '123 Main Street', 'Nueva York');
+`` `` ``
+
+<Br />
+
+_ Esta consulta insertará un nuevo registro en la tabla "clientes" con el nombre, la dirección y la ciudad especificados.
+
+<Br />
+<Br />
+
+## Segundo ejemplo
+
+<Br />
+
+> Usted es el administrador de la base de datos para una base de datos de inventario de productos. Debe actualizar la cantidad de un producto con la ID "12345" a 10.
+
+<Br />
+<Br />
+
+## _Solución_
+
+<Br />
+
+- Usted es el administrador de la base de datos para una base de datos de inventario de productos. Debe actualizar la cantidad de un producto con la ID "12345" a 10.
+
+`` `SQL
+Actualización de productos establecidos Cantidad = 10 donde id = 12345;
+`` `` ``
+
+<Br />
+
+_ Esta consulta actualizará el campo "cantidad" del producto con la ID "12345" al valor 10._
+
+<Br />
+<Br />
+
+# Ejemplo complejo
+
+Aquí hay un ejemplo y una solución complejos que involucra la base de datos de SQL Server:
+
+> Usted es el administrador de la base de datos para un gran minorista en línea. La compañía tiene una base de datos con varias tablas que almacenan información sobre clientes, pedidos y productos. La base de datos se utiliza para rastrear la información del cliente, los pedidos de procesos y generar informes.
+
+> Uno de los gerentes de ventas de la compañía ha solicitado un informe que muestre las ventas totales y el número de pedidos para cada cliente, desglosados ​​por categoría de productos. El informe debe mostrar los datos del año pasado, y debe clasificarse por ventas totales en orden descendente.
+
+<Br />
+<Br />
+
+## _Solución_
+
+<Br />
+
+- Para generar el informe solicitado, puede usar la siguiente consulta SQL:
+
+`` `SQL
+Seleccione C.Name como 'Cliente',
+       Suma (o.total) como 'ventas totales',
+       Contar (o.id) como 'número de órdenes',
+       P.Category como 'categoría de productos'
+De los clientes c
+Órdenes de unión internas o en c.id = o.customerid
+Productos de unión interno P en O.Productid = P.ID
+Donde O. Date entre '2022-01-01' y '2022-12-31'
+Grupo de C.Name, P.Category
+Pedido por 'ventas totales' Desc;
+`` `` ``
+
+<Br />
+_ Esta consulta seleccionará el nombre del cliente, las ventas totales, el número de pedidos y la categoría de productos para todos los pedidos realizados dentro del rango de fecha especificado. Luego agrupará los resultados por nombre del cliente y categoría de producto, y ordenará los resultados por ventas totales en orden descendente. El informe resultante mostrará las ventas totales y el número de pedidos para cada cliente, desglosados ​​por la categoría de producto.
+
+<Br />
+
+> Espero que los ejemplos te hayan ayudado.
+
+<Br />
+<Br />
+
+#####.
+
+- La página de inicio del servidor SQL: https://www.microsoft.com/sql-server/
+
+- La documentación del servidor SQL: https://docs.microsoft.com/sql/
+
+- El tutorial SQL: https://www.w3schools.com/sql/
+
+- La Guía de referencia de MySQL: https://dev.mysql.com/doc/refman/8.0/en/
+
+- El tutorial de Oracle SQL: https://docs.oracle.com/en/database/oracle/oracle-database/19/lnpls/index.html
+
+> Espero que estas referencias y sintaxis adicionales sean útiles para usted.
+
+<Br />
+<Br />
