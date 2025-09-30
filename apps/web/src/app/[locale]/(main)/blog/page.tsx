@@ -56,9 +56,9 @@ export const generateMetadata = async (
 const Page = async (props: PageProps) => {
   const { locale } = await props.params
   setRequestLocale(locale)
-  const t = await getTranslations({ locale })
-  const title = t('blog.title')
-  const description = t('blog.description')
+  const t = await getTranslations('blog')
+  const title = t('title')
+  const description = t('description')
   const url = `${SITE_URL}${getLocalizedPath({ slug: '/blog', locale })}`
 
   const posts = allPosts
