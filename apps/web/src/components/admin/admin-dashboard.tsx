@@ -295,7 +295,7 @@ const AdminDashboard = () => {
               <FileText className="mr-2 h-4 w-4 text-indigo-600" />
               <span className="text-sm">Manage Posts</span>
               <Badge variant="secondary" className="ml-auto text-xs">
-                36
+                {stats?.totals.posts ?? 0}
               </Badge>
             </Button>
             <Button
@@ -319,7 +319,7 @@ const AdminDashboard = () => {
               <Languages className="mr-2 h-4 w-4 text-purple-600" />
               <span className="text-sm">Auto-Translate</span>
               <Badge variant="secondary" className="ml-auto text-xs">
-                6 langs
+                12 langs
               </Badge>
             </Button>
           </CardContent>

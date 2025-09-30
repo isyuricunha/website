@@ -11,6 +11,7 @@ export interface BlogPost {
   content: string
   locale: string
   filePath: string
+  tags?: string[]
 }
 
 export interface BlogPostMetadata {
@@ -21,10 +22,11 @@ export interface BlogPostMetadata {
   summary: string
   locale: string
   filePath: string
+  tags?: string[]
 }
 
 const CONTENT_DIR = path.join(process.cwd(), 'src/content/blog')
-const SUPPORTED_LOCALES = ['en', 'pt', 'fr', 'de', 'ja', 'zh']
+const SUPPORTED_LOCALES = ['en', 'pt', 'es', 'fr', 'de', 'ja', 'zh', 'ar', 'hi', 'bn', 'ru', 'ur']
 
 export class BlogService {
   /**
@@ -34,28 +36,45 @@ export class BlogService {
     const localeDir = path.join(CONTENT_DIR, locale)
     
     try {
+      // Check if directory exists first
+      try {
+        await fs.access(localeDir)
+      } catch {
+        // Directory doesn't exist, return empty array silently
+        return []
+      }
+
       const files = await fs.readdir(localeDir)
       const mdxFiles = files.filter(file => file.endsWith('.mdx'))
       
       const posts = await Promise.all(
         mdxFiles.map(async (file) => {
           const filePath = path.join(localeDir, file)
-          const fileContent = await fs.readFile(filePath, 'utf8')
-          const { data } = matter(fileContent)
-          
-          return {
-            slug: file.replace('.mdx', ''),
-            title: data.title || 'Untitled',
-            date: data.date || new Date().toISOString(),
-            modifiedTime: data.modifiedTime,
-            summary: data.summary || '',
-            locale,
-            filePath
+          try {
+            const fileContent = await fs.readFile(filePath, 'utf8')
+            const { data } = matter(fileContent)
+            
+            return {
+              slug: file.replace('.mdx', ''),
+              title: data.title || 'Untitled',
+              date: data.date || new Date().toISOString(),
+              modifiedTime: data.modifiedTime,
+              summary: data.summary || '',
+              locale,
+              filePath,
+              tags: data.tags || []
+            }
+          } catch (error) {
+            console.error(`Error parsing ${filePath}:`, error)
+            return null
           }
         })
       )
       
-      return posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+      // Filter out null values from failed parses
+      const validPosts = posts.filter((post): post is BlogPostMetadata => post !== null)
+      
+      return validPosts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     } catch (error) {
       console.error(`Error reading posts for locale ${locale}:`, error)
       return []
@@ -94,7 +113,8 @@ export class BlogService {
         summary: data.summary || '',
         content,
         locale,
-        filePath
+        filePath,
+        tags: data.tags || []
       }
     } catch (error) {
       console.error(`Error reading post ${slug} for locale ${locale}:`, error)
@@ -103,10 +123,25 @@ export class BlogService {
   }
 
   /**
+   * Check if a post exists
+   */
+  static async postExists(slug: string, locale: string): Promise<boolean> {
+    const localeDir = path.join(CONTENT_DIR, locale)
+    const filePath = path.join(localeDir, `${slug}.mdx`)
+    
+    try {
+      await fs.access(filePath)
+      return true
+    } catch {
+      return false
+    }
+  }
+
+  /**
    * Save a blog post to file system
    */
   static async savePost(post: Omit<BlogPost, 'filePath'>): Promise<boolean> {
-    const { slug, title, date, modifiedTime, summary, content, locale } = post
+    const { slug, title, date, modifiedTime, summary, content, locale, tags } = post
     const localeDir = path.join(CONTENT_DIR, locale)
     const filePath = path.join(localeDir, `${slug}.mdx`)
     
@@ -118,7 +153,8 @@ export class BlogService {
       title,
       date,
       ...(modifiedTime && { modifiedTime }),
-      summary
+      summary,
+      ...(tags && tags.length > 0 && { tags })
     }
     
     // Combine frontmatter and content

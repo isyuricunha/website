@@ -1,6 +1,7 @@
 import { auditLogs } from '@tszhong0411/db'
 import { desc, gte, count, sql } from 'drizzle-orm'
 import { adminProcedure, createTRPCRouter } from '../trpc'
+import { BlogService } from '@/lib/blog/blog-service'
 
 export const adminRouter = createTRPCRouter({
   getStats: adminProcedure.query(async ({ ctx }) => {
@@ -34,6 +35,10 @@ export const adminRouter = createTRPCRouter({
           createdAt: true
         }
       })
+
+      // Get blog posts count
+      const postsBySlug = await BlogService.getPostsBySlug()
+      const totalPosts = Object.keys(postsBySlug).length
 
       // Calculate basic stats
       const totalUsers = allUsers.length
@@ -107,7 +112,8 @@ export const adminRouter = createTRPCRouter({
           users: totalUsers,
           comments: totalComments,
           guestbookEntries: totalGuestbookEntries,
-          admins: adminUsers
+          admins: adminUsers,
+          posts: totalPosts
         },
         recent: {
           users: recentUsers,
@@ -139,7 +145,8 @@ export const adminRouter = createTRPCRouter({
           users: 0,
           comments: 0,
           guestbookEntries: 0,
-          admins: 0
+          admins: 0,
+          posts: 0
         },
         recent: {
           users: 0,

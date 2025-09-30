@@ -35,12 +35,12 @@ export default async function PostsPage(props: Props) {
             Manage all your blog posts and translations
           </p>
         </div>
-        <Button asChild>
-          <Link href={`/admin/posts/new`}>
+        <Link href={`/admin/posts/new`}>
+          <Button>
             <PlusIcon className="mr-2 h-4 w-4" />
             New Post
-          </Link>
-        </Button>
+          </Button>
+        </Link>
       </div>
 
       {/* Posts List */}
@@ -53,12 +53,12 @@ export default async function PostsPage(props: Props) {
                 <p className="text-muted-foreground mb-4">
                   Create your first blog post to get started
                 </p>
-                <Button asChild>
-                  <Link href={`/admin/posts/new`}>
+                <Link href={`/admin/posts/new`}>
+                  <Button>
                     <PlusIcon className="mr-2 h-4 w-4" />
                     Create First Post
-                  </Link>
-                </Button>
+                  </Button>
+                </Link>
               </div>
             </CardContent>
           </Card>
@@ -81,27 +81,27 @@ export default async function PostsPage(props: Props) {
                         <span>{new Date(mainPost.date).toLocaleDateString()}</span>
                         <Badge variant="secondary">
                           <LanguagesIcon className="mr-1 h-3 w-3" />
-                          {languageCount}/6 languages
+                          {languageCount}/12 languages
                         </Badge>
                       </div>
                     </div>
                     
                     <div className="flex items-center gap-2 ml-4">
-                      <Button variant="ghost" size="sm" asChild>
-                        <Link href={`/${locale}/blog/${slug}`}>
+                      <Link href={`/${locale}/blog/${slug}`}>
+                        <Button variant="ghost" size="sm">
                           <EyeIcon className="h-4 w-4" />
-                        </Link>
-                      </Button>
-                      <Button variant="ghost" size="sm" asChild>
-                        <Link href={`/admin/posts/edit/${slug}`}>
+                        </Button>
+                      </Link>
+                      <Link href={`/admin/posts/edit/${slug}`}>
+                        <Button variant="ghost" size="sm">
                           <EditIcon className="h-4 w-4" />
-                        </Link>
-                      </Button>
-                      <Button variant="ghost" size="sm" asChild>
-                        <Link href={`/admin/posts/translate/${slug}`}>
+                        </Button>
+                      </Link>
+                      <Link href={`/admin/posts/translate/${slug}`}>
+                        <Button variant="ghost" size="sm">
                           <LanguagesIcon className="h-4 w-4" />
-                        </Link>
-                      </Button>
+                        </Button>
+                      </Link>
                     </div>
                   </div>
                 </CardHeader>
@@ -109,7 +109,7 @@ export default async function PostsPage(props: Props) {
                 {/* Language Status */}
                 <CardContent className="pt-0">
                   <div className="flex flex-wrap gap-2">
-                    {['en', 'pt', 'fr', 'de', 'ja', 'zh'].map((lang) => {
+                    {['en', 'pt', 'es', 'fr', 'de', 'ja', 'zh', 'ar', 'hi', 'bn', 'ru', 'ur'].map((lang) => {
                       const hasTranslation = posts.some(p => p.locale === lang)
                       return (
                         <Badge 

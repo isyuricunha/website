@@ -5,6 +5,9 @@ node_modules/
 
 # Local env files
 .env*.local
+
+# Translation jobs cache
+.translation-jobs.json
 .env
 
 # Turbo

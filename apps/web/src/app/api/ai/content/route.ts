@@ -3,6 +3,10 @@ import { z } from 'zod'
 import { aiService, type AIProvider } from '@/lib/ai/ai-service'
 import { flags } from '@tszhong0411/env'
 
+// Increase timeout for AI content generation
+export const maxDuration = 300 // 5 minutes
+export const dynamic = 'force-dynamic'
+
 const ContentGenerationSchema = z.object({
   action: z.enum(['tags', 'summary', 'meta', 'translate']),
   content: z.string().min(1),
