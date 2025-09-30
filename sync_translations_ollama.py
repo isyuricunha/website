@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Script para sincronizar traduções usando Ollama API com modelo yue-f
-Traduz apenas posts que ainda não existem nas línguas de destino
+Script to sync translations using Ollama API with yue-f model
+Translates only posts that don't exist in target languages
 """
 
 import os
@@ -34,7 +34,7 @@ LANG_NAMES = {
 }
 
 def extract_frontmatter_and_content(file_path):
-    """Extrai frontmatter e conteúdo do arquivo MDX"""
+    """Extract frontmatter and content from MDX file"""
     with open(file_path, 'r', encoding='utf-8') as f:
         content = f.read()
     
@@ -48,7 +48,7 @@ def extract_frontmatter_and_content(file_path):
     return None, content
 
 def parse_frontmatter(frontmatter_text):
-    """Parse frontmatter em dicionário"""
+    """Parse frontmatter into dictionary"""
     lines = frontmatter_text.split('\n')
     data = {}
     
@@ -60,7 +60,7 @@ def parse_frontmatter(frontmatter_text):
     return data
 
 def translate_with_ollama(text, target_lang, max_retries=3):
-    """Traduz texto usando Ollama API"""
+    """Translate text using Ollama API"""
     lang_name = LANG_NAMES.get(target_lang, target_lang)
     
     prompt = f"""Translate the following text from English to {lang_name}. 
@@ -90,22 +90,22 @@ Translation:"""
                 time.sleep(0.5)
                 return translation
             else:
-                print(f"        Erro HTTP {response.status_code}")
+                print(f"        HTTP Error {response.status_code}")
                 if attempt < max_retries - 1:
                     time.sleep(2)
         
         except Exception as e:
             if attempt < max_retries - 1:
-                print(f"        Tentativa {attempt + 1} falhou: {e}")
+                print(f"        Attempt {attempt + 1} failed: {e}")
                 time.sleep(2)
             else:
-                print(f"        ERRO após {max_retries} tentativas: {e}")
+                print(f"        ERROR after {max_retries} attempts: {e}")
                 return text
     
     return text
 
 def translate_text_robust(text, target_lang):
-    """Traduz texto de forma robusta usando Ollama"""
+    """Translate text robustly using Ollama"""
     if not text or text.strip() == '':
         return text
     
@@ -127,11 +127,11 @@ def translate_text_robust(text, target_lang):
     return '\n\n'.join(translated_paragraphs)
 
 def translate_post(source_file, target_lang):
-    """Traduz um post completo"""
+    """Translate a complete post"""
     frontmatter_text, body = extract_frontmatter_and_content(source_file)
     
     if not frontmatter_text:
-        print(f"        ERRO: Não foi possível extrair frontmatter")
+        print(f"        ERROR: Could not extract frontmatter")
         return None
     
     frontmatter_data = parse_frontmatter(frontmatter_text)
@@ -139,17 +139,17 @@ def translate_post(source_file, target_lang):
     # Traduz title
     if 'title' in frontmatter_data:
         title_clean = frontmatter_data['title'].strip('"\'')
-        print(f"        Traduzindo título...")
+        print(f"        Translating title...")
         frontmatter_data['title'] = translate_with_ollama(title_clean, target_lang)
     
     # Traduz summary
     if 'summary' in frontmatter_data:
         summary_clean = frontmatter_data['summary'].strip('"\'')
-        print(f"        Traduzindo resumo...")
+        print(f"        Translating summary...")
         frontmatter_data['summary'] = translate_with_ollama(summary_clean, target_lang)
     
     # Traduz corpo
-    print(f"        Traduzindo corpo ({len(body)} chars)...")
+    print(f"        Translating body ({len(body)} chars)...")
     translated_body = translate_text_robust(body.strip(), target_lang)
     
     # Reconstrói arquivo
@@ -162,11 +162,11 @@ def translate_post(source_file, target_lang):
     return new_frontmatter + translated_body
 
 def check_missing_translations():
-    """Verifica quais traduções estão faltando"""
+    """Check which translations are missing"""
     source_path = Path(SOURCE_DIR)
     
     if not source_path.exists():
-        print(f"ERRO: Diretório fonte não encontrado: {source_path}")
+        print(f"ERROR: Source directory not found: {source_path}")
         return {}
     
     en_files = set([f.name for f in source_path.glob('*.mdx')])
@@ -190,7 +190,7 @@ def check_missing_translations():
     return missing
 
 def test_ollama_connection():
-    """Testa conexão com Ollama"""
+    """Test connection with Ollama"""
     try:
         response = requests.post(
             OLLAMA_API_URL,
@@ -203,36 +203,36 @@ def test_ollama_connection():
         )
         return response.status_code == 200
     except Exception as e:
-        print(f"ERRO: Não foi possível conectar ao Ollama: {e}")
+        print(f"ERROR: Could not connect to Ollama: {e}")
         return False
 
 def main():
     print("="*60)
-    print("SINCRONIZAÇÃO DE TRADUÇÕES - OLLAMA (yue-f)")
+    print("TRANSLATION SYNC - OLLAMA (yue-f)")
     print("="*60)
     
-    # Testa conexão com Ollama
-    print("\n🔌 Testando conexão com Ollama...")
+    # Test Ollama connection
+    print("\n🔌 Testing Ollama connection...")
     if not test_ollama_connection():
-        print("❌ Falha ao conectar com Ollama")
-        print("   Certifique-se de que o Ollama está rodando e o modelo yue-f está instalado")
+        print("❌ Failed to connect to Ollama")
+        print("   Make sure Ollama is running and yue-f model is installed")
         return
-    print("✅ Conexão com Ollama estabelecida\n")
+    print("✅ Ollama connection established\n")
     
     missing = check_missing_translations()
     
     if not missing:
-        print("✅ Todas as traduções estão sincronizadas!")
+        print("✅ All translations are synced!")
         return
     
     total_missing = sum(len(files) for files in missing.values())
-    print(f"📊 Encontradas {total_missing} traduções faltantes em {len(missing)} línguas\n")
+    print(f"📊 Found {total_missing} missing translations in {len(missing)} languages\n")
     
     for lang, files in missing.items():
-        print(f"  {lang.upper()}: {len(files)} posts faltando")
+        print(f"  {lang.upper()}: {len(files)} posts missing")
     
     print("\n" + "="*60)
-    print("INICIANDO TRADUÇÕES")
+    print("STARTING TRANSLATIONS")
     print("="*60 + "\n")
     
     source_path = Path(SOURCE_DIR)
@@ -254,12 +254,12 @@ def main():
             if translated_content:
                 with open(target_file, 'w', encoding='utf-8') as f:
                     f.write(translated_content)
-                print(f"    ✅ Traduzido com sucesso!\n")
+                print(f"    ✅ Translated successfully!\n")
             else:
-                print(f"    ❌ Falha na tradução\n")
+                print(f"    ❌ Translation failed\n")
     
     print("="*60)
-    print("SINCRONIZAÇÃO CONCLUÍDA!")
+    print("SYNC COMPLETED!")
     print("="*60)
 
 if __name__ == '__main__':

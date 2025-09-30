@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Script para sincronizar traduções usando Google Translator
-Traduz apenas posts que ainda não existem nas línguas de destino
+Script to sync translations using Google Translator
+Translates only posts that don't exist in target languages
 """
 
 import os
@@ -29,7 +29,7 @@ LANG_MAP = {
 }
 
 def extract_frontmatter_and_content(file_path):
-    """Extrai frontmatter e conteúdo do arquivo MDX"""
+    """Extract frontmatter and content from MDX file"""
     with open(file_path, 'r', encoding='utf-8') as f:
         content = f.read()
     
@@ -43,7 +43,7 @@ def extract_frontmatter_and_content(file_path):
     return None, content
 
 def parse_frontmatter(frontmatter_text):
-    """Parse frontmatter em dicionário"""
+    """Parse frontmatter into dictionary"""
     lines = frontmatter_text.split('\n')
     data = {}
     
@@ -55,7 +55,7 @@ def parse_frontmatter(frontmatter_text):
     return data
 
 def translate_chunk(text, target_lang, max_retries=3):
-    """Traduz um chunk com retry"""
+    """Translate a chunk with retry"""
     for attempt in range(max_retries):
         try:
             translator = GoogleTranslator(source='en', target=target_lang)
@@ -64,15 +64,15 @@ def translate_chunk(text, target_lang, max_retries=3):
             return result
         except Exception as e:
             if attempt < max_retries - 1:
-                print(f"        Tentativa {attempt + 1} falhou, tentando novamente...")
+                print(f"        Attempt {attempt + 1} failed, retrying...")
                 time.sleep(1)
             else:
-                print(f"        ERRO após {max_retries} tentativas: {e}")
+                print(f"        ERROR after {max_retries} attempts: {e}")
                 return text
     return text
 
 def translate_text_robust(text, target_lang):
-    """Traduz texto de forma robusta"""
+    """Translate text robustly"""
     if not text or text.strip() == '':
         return text
     
@@ -109,11 +109,11 @@ def translate_text_robust(text, target_lang):
     return '\n'.join(translated_lines)
 
 def translate_post(source_file, target_lang):
-    """Traduz um post completo"""
+    """Translate a complete post"""
     frontmatter_text, body = extract_frontmatter_and_content(source_file)
     
     if not frontmatter_text:
-        print(f"        ERRO: Não foi possível extrair frontmatter")
+        print(f"        ERROR: Could not extract frontmatter")
         return None
     
     frontmatter_data = parse_frontmatter(frontmatter_text)
@@ -137,11 +137,11 @@ def translate_post(source_file, target_lang):
     return new_frontmatter + translated_body
 
 def check_missing_translations():
-    """Verifica quais traduções estão faltando"""
+    """Check which translations are missing"""
     source_path = Path(SOURCE_DIR)
     
     if not source_path.exists():
-        print(f"ERRO: Diretório fonte não encontrado: {source_path}")
+        print(f"ERROR: Source directory not found: {source_path}")
         return {}
     
     en_files = set([f.name for f in source_path.glob('*.mdx')])
@@ -166,23 +166,23 @@ def check_missing_translations():
 
 def main():
     print("="*60)
-    print("SINCRONIZAÇÃO DE TRADUÇÕES - GOOGLE TRANSLATOR")
+    print("TRANSLATION SYNC - GOOGLE TRANSLATOR")
     print("="*60)
     
     missing = check_missing_translations()
     
     if not missing:
-        print("\n✅ Todas as traduções estão sincronizadas!")
+        print("\n✅ All translations are synced!")
         return
     
     total_missing = sum(len(files) for files in missing.values())
-    print(f"\n📊 Encontradas {total_missing} traduções faltantes em {len(missing)} línguas\n")
+    print(f"\n📊 Found {total_missing} missing translations in {len(missing)} languages\n")
     
     for lang, files in missing.items():
-        print(f"  {lang.upper()}: {len(files)} posts faltando")
+        print(f"  {lang.upper()}: {len(files)} posts missing")
     
     print("\n" + "="*60)
-    print("INICIANDO TRADUÇÕES")
+    print("STARTING TRANSLATIONS")
     print("="*60 + "\n")
     
     source_path = Path(SOURCE_DIR)
@@ -206,12 +206,12 @@ def main():
             if translated_content:
                 with open(target_file, 'w', encoding='utf-8') as f:
                     f.write(translated_content)
-                print(f"    ✅ Traduzido com sucesso!\n")
+                print(f"    ✅ Translated successfully!\n")
             else:
-                print(f"    ❌ Falha na tradução\n")
+                print(f"    ❌ Translation failed\n")
     
     print("="*60)
-    print("SINCRONIZAÇÃO CONCLUÍDA!")
+    print("SYNC COMPLETED!")
     print("="*60)
 
 if __name__ == '__main__':

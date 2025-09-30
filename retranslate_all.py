@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Script para deletar e recriar todas as traduções com melhor qualidade
+Script to delete and recreate all translations with better quality
 """
 
 import os
@@ -20,7 +20,7 @@ TARGET_LANGUAGES = {
     'ur': 'ur'
 }
 
-# Posts já traduzidos manualmente - NÃO DELETAR
+# Manually translated posts - DO NOT DELETE
 MANUAL_TRANSLATIONS = [
     'im-proud-of-you.mdx',
     'one-day-at-a-time.mdx',
@@ -55,7 +55,7 @@ def parse_frontmatter(frontmatter_text):
     return data
 
 def translate_chunk(text, target_lang, max_retries=3):
-    """Traduz um chunk com retry"""
+    """Translate a chunk with retry"""
     for attempt in range(max_retries):
         try:
             translator = GoogleTranslator(source='en', target=target_lang)
@@ -64,15 +64,15 @@ def translate_chunk(text, target_lang, max_retries=3):
             return result
         except Exception as e:
             if attempt < max_retries - 1:
-                print(f"      Tentativa {attempt + 1} falhou, tentando novamente...")
+                print(f"      Attempt {attempt + 1} failed, retrying...")
                 time.sleep(1)
             else:
-                print(f"      ERRO após {max_retries} tentativas: {e}")
+                print(f"      ERROR after {max_retries} attempts: {e}")
                 return text
     return text
 
 def translate_text_robust(text, target_lang):
-    """Traduz texto de forma robusta, linha por linha para textos longos"""
+    """Translate text robustly, line by line for long texts"""
     if not text or text.strip() == '':
         return text
     
@@ -115,11 +115,11 @@ def translate_text_robust(text, target_lang):
     return '\n'.join(translated_lines)
 
 def translate_post(source_file, target_lang):
-    """Traduz um post completo"""
+    """Translate a complete post"""
     frontmatter_text, body = extract_frontmatter_and_content(source_file)
     
     if not frontmatter_text:
-        print(f"      ERRO: Não foi possível extrair frontmatter")
+        print(f"      ERROR: Could not extract frontmatter")
         return None
     
     frontmatter_data = parse_frontmatter(frontmatter_text)
@@ -134,7 +134,7 @@ def translate_post(source_file, target_lang):
         frontmatter_data['summary'] = translate_chunk(summary_clean, target_lang)
     
     # Traduz o corpo
-    print(f"      Traduzindo corpo ({len(body)} chars)...")
+    print(f"      Translating body ({len(body)} chars)...")
     translated_body = translate_text_robust(body.strip(), target_lang)
     
     # Reconstrói o arquivo
@@ -156,10 +156,10 @@ def main():
     mdx_files = sorted(source_path.glob('*.mdx'))
     
     print("="*60)
-    print("DELETANDO TRADUÇÕES AUTOMÁTICAS ANTIGAS")
+    print("DELETING OLD AUTOMATIC TRANSLATIONS")
     print("="*60)
     
-    # Deleta traduções automáticas antigas (exceto as manuais)
+    # Delete old automatic translations (except manual ones)
     for lang_code in TARGET_LANGUAGES.keys():
         lang_dir = source_path.parent / lang_code
         if lang_dir.exists():
@@ -168,10 +168,10 @@ def main():
                     target_file = lang_dir / mdx_file.name
                     if target_file.exists():
                         target_file.unlink()
-                        print(f"  ❌ Deletado: {lang_code}/{mdx_file.name}")
+                        print(f"  ❌ Deleted: {lang_code}/{mdx_file.name}")
     
     print("\n" + "="*60)
-    print("RECRIANDO TRADUÇÕES COM MELHOR QUALIDADE")
+    print("RECREATING TRANSLATIONS WITH BETTER QUALITY")
     print("="*60)
     
     total_files = len([f for f in mdx_files if f.name not in MANUAL_TRANSLATIONS])
@@ -179,14 +179,14 @@ def main():
     
     for mdx_file in mdx_files:
         if mdx_file.name in MANUAL_TRANSLATIONS:
-            print(f"\n⏭️  Pulando {mdx_file.name} (tradução manual)")
+            print(f"\n⏭️  Skipping {mdx_file.name} (manual translation)")
             continue
         
         current += 1
         print(f"\n📄 [{current}/{total_files}] {mdx_file.name}")
         
         for lang_code, lang_target in TARGET_LANGUAGES.items():
-            print(f"  🌐 Traduzindo para {lang_code.upper()}...")
+            print(f"  🌐 Translating to {lang_code.upper()}...")
             
             target_dir = source_path.parent / lang_code
             target_dir.mkdir(exist_ok=True)
@@ -197,12 +197,12 @@ def main():
             if translated_content:
                 with open(target_file, 'w', encoding='utf-8') as f:
                     f.write(translated_content)
-                print(f"      ✅ Criado com sucesso!")
+                print(f"      ✅ Created successfully!")
             else:
-                print(f"      ❌ Falha na tradução")
+                print(f"      ❌ Translation failed")
     
     print("\n" + "="*60)
-    print("CONCLUÍDO!")
+    print("COMPLETED!")
     print("="*60)
 
 if __name__ == '__main__':

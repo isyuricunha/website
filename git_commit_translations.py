@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Script para fazer commit automático das traduções com --no-verify
+Script to automatically commit translations with --no-verify
 """
 
 import subprocess
@@ -8,7 +8,7 @@ from pathlib import Path
 from datetime import datetime
 
 def run_git_command(command, cwd=None):
-    """Executa comando git e retorna resultado"""
+    """Execute git command and return result"""
     try:
         result = subprocess.run(
             command,
@@ -23,7 +23,7 @@ def run_git_command(command, cwd=None):
         return False, "", str(e)
 
 def get_translation_stats():
-    """Obtém estatísticas das traduções"""
+    """Get translation statistics"""
     blog_dir = Path("apps/web/src/content/blog")
     stats = {}
     
@@ -36,76 +36,76 @@ def get_translation_stats():
 
 def main():
     print("="*60)
-    print("GIT COMMIT - TRADUÇÕES")
+    print("GIT COMMIT - TRANSLATIONS")
     print("="*60 + "\n")
     
-    # Verifica se estamos em um repositório git
+    # Check if we're in a git repository
     success, _, _ = run_git_command("git status")
     if not success:
-        print("❌ ERRO: Não é um repositório git ou git não está instalado")
+        print("❌ ERROR: Not a git repository or git is not installed")
         return
     
-    print("✅ Repositório git detectado\n")
+    print("✅ Git repository detected\n")
     
-    # Obtém estatísticas
+    # Get statistics
     stats = get_translation_stats()
-    print("📊 Estatísticas das traduções:")
+    print("📊 Translation statistics:")
     for lang, count in sorted(stats.items()):
         print(f"  {lang.upper()}: {count} posts")
     
     total_posts = sum(stats.values())
     total_langs = len(stats)
-    print(f"\n  Total: {total_posts} posts em {total_langs} línguas\n")
+    print(f"\n  Total: {total_posts} posts in {total_langs} languages\n")
     
-    # Adiciona arquivos ao staging
-    print("📦 Adicionando arquivos ao staging...")
+    # Add files to staging
+    print("📦 Adding files to staging...")
     success, stdout, stderr = run_git_command("git add apps/web/src/content/blog/")
     
     if not success:
-        print(f"❌ ERRO ao adicionar arquivos: {stderr}")
+        print(f"❌ ERROR adding files: {stderr}")
         return
     
-    print("✅ Arquivos adicionados ao staging\n")
+    print("✅ Files added to staging\n")
     
-    # Verifica se há mudanças para commitar
+    # Check if there are changes to commit
     success, stdout, _ = run_git_command("git diff --cached --name-only")
     
     if not stdout.strip():
-        print("ℹ️  Nenhuma mudança para commitar")
+        print("ℹ️  No changes to commit")
         return
     
     changed_files = stdout.strip().split('\n')
-    print(f"📝 {len(changed_files)} arquivos modificados\n")
+    print(f"📝 {len(changed_files)} files modified\n")
     
-    # Cria mensagem de commit
+    # Create commit message
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     commit_message = f"chore: sync blog translations ({total_posts} posts in {total_langs} languages) - {timestamp}"
     
-    print(f"💬 Mensagem do commit:\n   {commit_message}\n")
+    print(f"💬 Commit message:\n   {commit_message}\n")
     
-    # Faz o commit com --no-verify
-    print("🚀 Fazendo commit...")
+    # Make commit with --no-verify
+    print("🚀 Committing...")
     success, stdout, stderr = run_git_command(f'git commit --no-verify -m "{commit_message}"')
     
     if not success:
         if "nothing to commit" in stderr.lower():
-            print("ℹ️  Nenhuma mudança para commitar")
+            print("ℹ️  No changes to commit")
         else:
-            print(f"❌ ERRO ao fazer commit: {stderr}")
+            print(f"❌ ERROR committing: {stderr}")
         return
     
-    print("✅ Commit realizado com sucesso!\n")
+    print("✅ Commit successful!\n")
     print(stdout)
     
-    # Mostra status
-    print("\n📋 Status do repositório:")
+    # Show status
+    print("\n📋 Repository status:")
     success, stdout, _ = run_git_command("git status")
     print(stdout)
     
     print("\n" + "="*60)
-    print("COMMIT CONCLUÍDO!")
+    print("COMMIT COMPLETED!")
     print("="*60)
-    print("\n💡 Para fazer push, execute: git push")
+    print("\n💡 To push, run: git push")
 
 if __name__ == '__main__':
     main()
