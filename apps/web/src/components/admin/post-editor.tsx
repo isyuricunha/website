@@ -80,11 +80,8 @@ export function PostEditor({ initialData, mode, locale }: PostEditorProps) {
       const result = await response.json()
       
       if (action === 'tags') {
-        const newTags = result.result.split(',').map((tag: string) => tag.trim()).filter((tag: string) => tag.length > 0)
-        setPostData(prev => ({ 
-          ...prev, 
-          tags: [...(prev.tags || []), ...newTags]
-        }))
+        const tags = result.result.split(',').map((tag: string) => tag.trim())
+        setPostData(prev => ({ ...prev, tags }))
       } else if (action === 'summary') {
         setPostData(prev => ({ ...prev, summary: result.result }))
       }
@@ -245,7 +242,6 @@ export function PostEditor({ initialData, mode, locale }: PostEditorProps) {
                 variant="outline"
                 className="w-full justify-start"
                 disabled={!postData.slug}
-                onClick={() => router.push(`/admin/posts/translate/${postData.slug}`)}
               >
                 <Languages className="mr-2 h-4 w-4" />
                 Auto-Translate
@@ -276,34 +272,19 @@ export function PostEditor({ initialData, mode, locale }: PostEditorProps) {
             <CardContent>
               <div className="space-y-3">
                 <div className="flex flex-wrap gap-2">
-                  {postData.tags && postData.tags.length > 0 ? (
-                    postData.tags.map((tag, index) => (
-                      <Badge 
-                        key={index} 
-                        variant="secondary" 
-                        className="cursor-pointer hover:bg-destructive hover:text-destructive-foreground"
-                        onClick={() => {
-                          setPostData(prev => ({
-                            ...prev,
-                            tags: prev.tags?.filter((_, i) => i !== index) || []
-                          }))
-                        }}
-                      >
-                        {tag} ×
-                      </Badge>
-                    ))
-                  ) : (
-                    <p className="text-sm text-muted-foreground">No tags yet. Add tags below or use AI to generate.</p>
-                  )}
+                  {postData.tags?.map((tag, index) => (
+                    <Badge key={index} variant="secondary" className="cursor-pointer">
+                      {tag}
+                    </Badge>
+                  ))}
                 </div>
                 <Input
-                  placeholder="Add tags (comma separated, press Enter)"
+                  placeholder="Add tags (comma separated)"
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') {
-                      e.preventDefault()
                       const value = e.currentTarget.value.trim()
                       if (value) {
-                        const newTags = value.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0)
+                        const newTags = value.split(',').map(tag => tag.trim())
                         setPostData(prev => ({
                           ...prev,
                           tags: [...(prev.tags || []), ...newTags]

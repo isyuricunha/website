@@ -81,43 +81,29 @@ class AIService {
     const systemPrompt = this.buildSystemPrompt(context, message)
     const fullPrompt = `${systemPrompt}\n\nUser: ${message}`
 
-    try {
-      // Usando endpoint nativo do Ollama
-      const controller = new AbortController()
-      
-      const response = await fetch(`${ollamaUrl}/api/generate`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          model: ollamaModel,
-          prompt: fullPrompt,
-          stream: false,
-          options: {
-            temperature: config.temperature || 0.7,
-            num_predict: config.maxTokens || 500
-          }
-        }),
-        signal: controller.signal,
-        // Remove timeout - wait indefinitely
-        // @ts-ignore - Next.js specific
-        cache: 'no-store'
+    // Usando endpoint nativo do Ollama
+    const response = await fetch(`${ollamaUrl}/api/generate`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        model: ollamaModel,
+        prompt: fullPrompt,
+        stream: false,
+        options: {
+          temperature: config.temperature || 0.7,
+          num_predict: config.maxTokens || 500
+        }
       })
+    })
 
-      if (!response.ok) {
-        const errorText = await response.text().catch(() => 'Unknown error')
-        throw new Error(`Ollama API error (${response.status}): ${errorText || response.statusText}`)
-      }
-
-      const data = await response.json()
-      return data.response || 'Desculpe, não consegui gerar uma resposta.'
-    } catch (error) {
-      if (error instanceof TypeError && error.message.includes('fetch')) {
-        throw new Error(`Cannot connect to Ollama at ${ollamaUrl}. Make sure Ollama is running locally. Run: ollama serve`)
-      }
-      throw error
+    if (!response.ok) {
+      throw new Error(`Ollama API error: ${response.statusText}`)
     }
+
+    const data = await response.json()
+    return data.response || 'Desculpe, não consegui gerar uma resposta.'
   }
 
   private buildSystemPrompt(context: SiteContext, message: string): string {
@@ -260,16 +246,9 @@ Meta description:`
     const langNames = {
       'en': 'English',
       'pt': 'Portuguese (Brazilian)',
-      'es': 'Spanish',
       'fr': 'French',
       'de': 'German',
-      'ja': 'Japanese',
-      'zh': 'Chinese (Simplified)',
-      'ar': 'Arabic',
-      'hi': 'Hindi',
-      'bn': 'Bengali',
-      'ru': 'Russian',
-      'ur': 'Urdu'
+      'zh': 'Chinese (Simplified)'
     }
 
     const prompt = `Translate this content from ${langNames[fromLang as keyof typeof langNames]} to ${langNames[toLang as keyof typeof langNames]}:
