@@ -213,7 +213,7 @@
         "all": "جميع المشاركات"
       },
       "results": {
-        "count": "{count ، الجمع ، = 0 {0 النتائج} = 1 {1 result} آخر {",
+        "count": "{count, plural, =0 {0 نتائج} =1 {1 نتيجة} other {# نتائج}}",
         "for": "لـ \"{search}\""
       },
       "rss": "تغذية RSS",
