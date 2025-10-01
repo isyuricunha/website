@@ -205,7 +205,7 @@
       "no-posts-found": "কোনও পোস্ট পাওয়া যায় নি",
       "pagination": {
         "next": "পরবর্তী",
-        "page-of": "(পৃষ্ঠা {বর্তমান} {মোট})",
+        "page-of": "(পৃষ্ঠা {current} {total})",
         "previous": "পূর্ববর্তী"
       },
       "placeholder": "নিবন্ধ অনুসন্ধান",
@@ -416,7 +416,7 @@
         "post": "পোস্ট",
         "project": "প্রকল্প"
       },
-      "updated-on": "আপডেট {তারিখ}"
+      "updated-on": "আপডেট {date}"
     },
     "selectedProjects": {
       "card": "প্রকল্প",

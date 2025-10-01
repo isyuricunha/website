@@ -205,7 +205,7 @@
       "no-posts-found": "No se encontraron publicaciones",
       "pagination": {
         "next": "Próximo",
-        "page-of": "(página {actual} de {total})",
+        "page-of": "(página {current} de {total})",
         "previous": "Anterior"
       },
       "placeholder": "Artículos de búsqueda",

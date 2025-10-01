@@ -416,7 +416,7 @@
         "post": "Почта",
         "project": "Проект"
       },
-      "updated-on": "Обновлено {дата}"
+      "updated-on": "Обновлено {date}"
     },
     "selectedProjects": {
       "card": "Проект",

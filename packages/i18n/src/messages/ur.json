@@ -416,7 +416,7 @@
         "post": "پوسٹ",
         "project": "پروجیکٹ"
       },
-      "updated-on": "تازہ کاری {تاریخ}"
+      "updated-on": "تازہ کاری {date}"
     },
     "selectedProjects": {
       "card": "پروجیکٹ",

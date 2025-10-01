@@ -205,7 +205,7 @@
       "no-posts-found": "कोई पोस्ट नहीं मिला",
       "pagination": {
         "next": "अगला",
-        "page-of": "(पृष्ठ {वर्तमान} {कुल} का)",
+        "page-of": "(पृष्ठ {current} {total} का)",
         "previous": "पहले का"
       },
       "placeholder": "खोज लेख",
@@ -416,7 +416,7 @@
         "post": "डाक",
         "project": "परियोजना"
       },
-      "updated-on": "अद्यतन {दिनांक}"
+      "updated-on": "अद्यतन {date}"
     },
     "selectedProjects": {
       "card": "परियोजना",
