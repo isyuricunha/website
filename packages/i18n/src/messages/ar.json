@@ -219,7 +219,7 @@
       "rss": "تغذية RSS",
       "searching": "البحث ...",
       "showing": {
-        "count": "إظهار {count ، الجمع ، = 0 {0 posts} = 1 {1 post} آخر {"
+        "count": "عرض {count, plural, =0 {0 منشورات} =1 {1 منشور} other {# منشورات}}"
       },
       "sort": {
         "label": "فرز بواسطة:",
@@ -875,8 +875,8 @@
       "empty": "لم يتم العثور على مستودعات."
     },
     "results": {
-      "found": "{العد ، الجمع ، = 1 {",
-      "showing": "عرض {count ، الجمع ، = 1 {"
+      "found": "{count, plural, =1 {1 مشروع} other {# مشاريع}}",
+      "showing": "عرض {count, plural, =1 {1 مشروع} other {# مشاريع}}"
     },
     "search": {
       "placeholder": "مشاريع البحث ..."
