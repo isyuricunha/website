@@ -2,7 +2,7 @@
 
 import type { Post } from 'content-collections'
 
-import { useTranslations } from '@tszhong0411/i18n/client'
+import { useLocale, useTranslations } from '@tszhong0411/i18n/client'
 import { Input, Label, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@tszhong0411/ui'
 import { SearchIcon, SlidersHorizontal, Clock, Calendar, Star, Rss, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useState, useMemo, useCallback, useEffect } from 'react'
@@ -20,6 +20,7 @@ type SortOption = 'date-desc' | 'date-asc' | 'title-asc' | 'title-desc' | 'readi
 
 const FilteredPosts = (props: FilteredPostsProps) => {
   const { posts } = props
+  const locale = useLocale()
   const [searchValue, setSearchValue] = useState('')
   const [debouncedSearchValue, setDebouncedSearchValue] = useState('')
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
@@ -129,7 +130,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
       {/* RSS Feed Link */}
       <div className='mb-6 flex justify-end px-4 sm:px-0'>
         <Link 
-          href='/rss.xml' 
+          href={`/${locale}/rss.xml`}
           className='inline-flex items-center gap-2 text-xs sm:text-sm text-muted-foreground hover:text-foreground transition-colors px-3 py-2 rounded-2xl hover:bg-accent'
         >
           <Rss className='h-4 w-4' />
