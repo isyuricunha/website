@@ -1,4 +1,3 @@
 export * from './db'
-export * from './migrations/schema'
-export * from './migrations/relations'
+export * from './schema'
 export * from 'drizzle-orm'
