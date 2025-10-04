@@ -50,6 +50,164 @@ This project began as an adaptation of [Nelson Lai site](https://github.com/tszh
 - **CSpell** - Spell checking
 - **Commitizen** - Conventional commits
 
+## 📁 Project Structure
+
+```
+website-apps/
+├── apps/
+│   ├── docs/                    # Documentation site
+│   │   ├── src/
+│   │   │   ├── components/      # UI components & demos
+│   │   │   ├── content/         # MDX documentation files
+│   │   │   └── app/             # Next.js App Router pages
+│   │   └── content-collections.ts
+│   │
+│   └── web/                     # Main web application
+│       ├── src/
+│       │   ├── app/             # Next.js App Router
+│       │   │   ├── [locale]/   # Internationalized routes
+│       │   │   └── api/         # API routes
+│       │   ├── components/      # React components
+│       │   ├── lib/             # Utilities & services
+│       │   │   ├── ai/          # AI service (Gemini/Ollama)
+│       │   │   ├── audit-logger.ts
+│       │   │   ├── logger.ts    # 🆕 Structured logger
+│       │   │   ├── resend-service.ts
+│       │   │   └── auth.ts
+│       │   ├── trpc/            # tRPC API routers
+│       │   │   ├── routers/     # API endpoints
+│       │   │   └── trpc.ts
+│       │   ├── hooks/           # React hooks
+│       │   ├── utils/           # Helper functions
+│       │   └── examples/        # Code examples
+│       ├── messages/            # i18n translation files
+│       └── public/              # Static assets
+│
+├── packages/
+│   ├── db/                      # Database package
+│   │   ├── src/
+│   │   │   ├── schema/          # Drizzle schemas
+│   │   │   ├── migrations/      # SQL migrations
+│   │   │   ├── index.ts         # Database exports
+│   │   │   └── seed.ts          # Database seeding
+│   │   └── drizzle.config.ts
+│   │
+│   ├── env/                     # Environment validation
+│   │   └── src/index.ts         # Zod schemas for env vars
+│   │
+│   ├── emails/                  # Email templates (React Email)
+│   │   └── src/                 # Email components
+│   │
+│   ├── eslint-config/           # Shared ESLint config
+│   ├── prettier-config/         # Shared Prettier config
+│   ├── tsconfig/                # Shared TypeScript config
+│   ├── ui/                      # Shared UI components
+│   └── kv/                      # Redis/KV storage
+│
+├── fresh-install-sql/           # Database setup scripts
+│   └── complete-fresh-install.sql
+│
+├── fix-error-tracking-column.sql
+├── sample-announcements.sql
+├── SQL_QUERIES_REFERENCE.md     # 🆕 SQL documentation
+├── .env.example                 # Environment template
+├── turbo.json                   # Turborepo config
+├── package.json                 # Root dependencies
+└── pnpm-workspace.yaml          # PNPM workspace config
+```
+
+### **Key Directories Explained**
+
+#### **apps/web/src/lib/**
+- `logger.ts` - **NEW**: Structured logger with automatic PII sanitization
+- `audit-logger.ts` - Tracks admin actions and system events
+- `resend-service.ts` - Email campaign and newsletter management
+- `ai/ai-service.ts` - AI integration (Gemini/Ollama support)
+
+#### **apps/web/src/trpc/routers/**
+API endpoints organized by domain:
+- `users.ts` - User management (CRUD, password reset)
+- `spotify.ts` - Spotify API integration
+- `github.ts` - GitHub API integration
+- `resend-email.ts` - Email campaigns & broadcasts
+- `monitoring.ts` - Performance & error tracking
+- `system.ts` - System health & configuration
+
+#### **packages/db/**
+Database layer with Drizzle ORM:
+- Complete schema definitions
+- Type-safe queries
+- Migration management
+- Seeding utilities
+
+## 🔒 Security Features
+
+### **Structured Logging System** 🆕
+New secure logging implementation:
+
+```typescript
+import { logger } from '@/lib/logger'
+
+// Automatic PII redaction
+logger.info('User action', { 
+  userId: '123', 
+  email: 'user@example.com' // Automatically redacted as [REDACTED]
+})
+
+// API call tracking
+logger.apiCall('POST', '/api/users', 145)
+
+// Security events
+logger.securityEvent('Failed login attempt', { ip: '192.168.1.1' })
+```
+
+**Features:**
+- ✅ Automatic sanitization of passwords, secrets, tokens, emails, hashes
+- ✅ Environment-aware (dev/production)
+- ✅ Structured context logging
+- ✅ Timestamp support
+- ✅ Type-safe with TypeScript
+
+### **Security Improvements** 🆕
+Recent security audit completed:
+- ❌ Removed console.log exposing user emails, reset tokens, password hashes
+- ✅ Cleaned up 26+ debug logs in production code
+- ✅ Implemented structured logger with PII protection
+- ✅ All API keys properly secured via environment variables
+
+### **Authentication & Authorization**
+- Better Auth integration
+- Session management
+- Role-based access control (RBAC)
+- Password reset with secure tokens
+- IP-based access control
+- Login attempt tracking
+
+## 🗄️ Database & SQL
+
+### **Database Architecture**
+- **Primary:** PostgreSQL
+- **ORM:** Drizzle ORM 0.44.4
+- **Migrations:** Automated via drizzle-kit
+- **Seeding:** Custom seed scripts
+
+### **SQL Documentation** 🆕
+Complete SQL reference available in `SQL_QUERIES_REFERENCE.md`:
+- All table schemas with ENUMs
+- Common queries for users, posts, security, monitoring
+- Performance indexes
+- Maintenance commands
+- Backup/restore procedures
+
+### **Database Tables**
+Core tables:
+- `users`, `session`, `account` - Authentication
+- `post`, `comment`, `rate` - Content
+- `security_events`, `login_attempts` - Security
+- `error_tracking`, `api_usage` - Monitoring
+- `announcements`, `notifications` - Communication
+- `email_campaigns`, `email_templates` - Marketing
+
 ## 🌍 Internationalization (i18n)
 
 ### **Supported Languages**
