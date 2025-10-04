@@ -157,7 +157,7 @@ export const passwordResetTokens = pgTable("password_reset_tokens", {
 
 export const post = pgTable("post", {
 	createdAt: timestamp("created_at", { mode: 'string' }).default(sql`CURRENT_TIMESTAMP(3)`).notNull(),
-	slug: text().notNull(),
+	slug: text().notNull().unique("unique_post_slug"),
 	likes: integer().default(0).notNull(),
 	views: integer().default(0).notNull(),
 	id: text().primaryKey().notNull(),
@@ -181,7 +181,6 @@ export const post = pgTable("post", {
 			foreignColumns: [users.id],
 			name: "fk_post_author"
 		}).onDelete("cascade"),
-	unique("unique_post_slug").on(table.slug),
 ]);
 
 export const auditLogs = pgTable("audit_logs", {
