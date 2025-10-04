@@ -1,78 +1,78 @@
-# 📊 Schema Completo do Banco de Dados
+# 📊 Complete Database Schema
 
-Schema unificado extraído do Supabase e organizado para fácil execução e manutenção.
+Unified schema extracted from Supabase and organized for easy execution and maintenance.
 
-## 📁 Arquivos Disponíveis
+## 📁 Available Files
 
-### **Execução Modular** (Recomendado)
-Execute os arquivos na ordem para criar o schema completo:
+### **Modular Execution** (Recommended)
+Execute files in order to create the complete schema:
 
-1. **`database-schema-enums.sql`** - Todos os tipos ENUM
-2. **`database-schema-tables.sql`** - Tabelas principais (users, posts, comments)
-3. **`database-schema-security.sql`** - Tabelas de segurança (2FA, IP control, eventos)
-4. **`database-schema-monitoring.sql`** - Tabelas de monitoramento (métricas, erros, analytics)
-5. **`database-schema-communication.sql`** - Tabelas de comunicação (emails, anúncios, notificações)
-6. **`database-schema-data-management.sql`** - Gestão de dados (backups, exports, migrations)
-7. **`database-schema-indexes.sql`** - Índices de performance
+1. **`database-schema-enums.sql`** - All ENUM types
+2. **`database-schema-tables.sql`** - Core tables (users, posts, comments)
+3. **`database-schema-security.sql`** - Security tables (2FA, IP control, events)
+4. **`database-schema-monitoring.sql`** - Monitoring tables (metrics, errors, analytics)
+5. **`database-schema-communication.sql`** - Communication tables (emails, announcements, notifications)
+6. **`database-schema-data-management.sql`** - Data management (backups, exports, migrations)
+7. **`database-schema-indexes.sql`** - Performance indexes
 
-### **Arquivo Legado**
-- **`database-full-schema.sql`** - Schema antigo (manter para referência)
-- **`fresh-install-sql/complete-fresh-install.sql`** - Instalação completa original
+### **Legacy Files**
+- **`database-full-schema.sql`** - Old schema (keep for reference)
+- **`fresh-install-sql/complete-fresh-install.sql`** - Original complete installation
 
-## 🚀 Como Executar
+## 🚀 How to Execute
 
-### **Opção 1: Execução Modular (Recomendado)**
+### **Option 1: Modular Execution (Recommended)**
 
 ```bash
 # 1. ENUMs
-psql -h localhost -U postgres -d sua_database < database-schema-enums.sql
+psql -h localhost -U postgres -d your_database < database-schema-enums.sql
 
-# 2. Tabelas principais
-psql -h localhost -U postgres -d sua_database < database-schema-tables.sql
+# 2. Core tables
+psql -h localhost -U postgres -d your_database < database-schema-tables.sql
 
-# 3. Segurança
-psql -h localhost -U postgres -d sua_database < database-schema-security.sql
+# 3. Security
+psql -h localhost -U postgres -d your_database < database-schema-security.sql
 
-# 4. Monitoramento
-psql -h localhost -U postgres -d sua_database < database-schema-monitoring.sql
+# 4. Monitoring
+psql -h localhost -U postgres -d your_database < database-schema-monitoring.sql
 
-# 5. Comunicação
-psql -h localhost -U postgres -d sua_database < database-schema-communication.sql
+# 5. Communication
+psql -h localhost -U postgres -d your_database < database-schema-communication.sql
 
-# 6. Gestão de dados
-psql -h localhost -U postgres -d sua_database < database-schema-data-management.sql
+# 6. Data management
+psql -h localhost -U postgres -d your_database < database-schema-data-management.sql
 
-# 7. Índices
-psql -h localhost -U postgres -d sua_database < database-schema-indexes.sql
+# 7. Indexes
+psql -h localhost -U postgres -d your_database < database-schema-indexes.sql
 ```
 
-### **Opção 2: Executar tudo de uma vez**
+### **Option 2: Execute everything at once**
 
 ```bash
-# Concatenar todos os arquivos e executar
-cat database-schema-*.sql | psql -h localhost -U postgres -d sua_database
+# Concatenate all files and execute
+cat database-schema-*.sql | psql -h localhost -U postgres -d your_database
 ```
 
-### **Opção 3: Via Supabase Dashboard**
+### **Option 3: Via Supabase Dashboard**
 
-1. Acesse o **SQL Editor** no Supabase
-2. Cole o conteúdo de cada arquivo
-3. Execute na ordem especificada
+1. Access **SQL Editor** in Supabase
+2. Paste the content of each file
+3. Execute in the specified order
 
-## 🔧 Diferenças do Schema Original
+## 🔧 Differences from Original Schema
 
-### ✅ Melhorias Implementadas
+### ✅ Implemented Improvements
 
-1. **IF NOT EXISTS** - Todos os `CREATE TABLE` e `CREATE INDEX` usam `IF NOT EXISTS` para execução segura
-2. **DROP TYPE CASCADE** - ENUMs podem ser recriados sem erros
-3. **Organização Modular** - Schema dividido por domínio para manutenção mais fácil
-4. **Comentários em Português** - Melhor legibilidade para o time
+1. **IF NOT EXISTS** - All `CREATE TABLE` and `CREATE INDEX` use `IF NOT EXISTS` for safe execution
+2. **DROP TYPE CASCADE** - ENUMs can be recreated without errors
+3. **Modular Organization** - Schema divided by domain for easier maintenance
+4. **English Comments** - Better readability for international teams
 
-### 📋 Tabelas Confirmadas do Supabase
+### 📋 Confirmed Supabase Tables
 
-Baseado no export do Schema Visualizer, as seguintes tabelas existem:
+Based on Schema Visualizer export, the following tables exist:
 
-**Core (11 tabelas)**
+**Core (11 tables)**
 - ✅ users
 - ✅ account
 - ✅ session
@@ -85,7 +85,7 @@ Baseado no export do Schema Visualizer, as seguintes tabelas existem:
 - ✅ likes_session
 - ✅ audit_logs
 
-**Segurança (6 tabelas)**
+**Security (6 tables)**
 - ✅ two_factor_tokens
 - ✅ ip_access_control
 - ✅ security_events
@@ -94,7 +94,7 @@ Baseado no export do Schema Visualizer, as seguintes tabelas existem:
 - ✅ security_settings
 - ✅ api_rate_limits
 
-**Monitoramento (10 tabelas)**
+**Monitoring (10 tables)**
 - ✅ performance_metrics
 - ✅ analytics_events
 - ✅ resource_usage
@@ -108,7 +108,7 @@ Baseado no export do Schema Visualizer, as seguintes tabelas existem:
 - ✅ user_activity
 - ✅ system_health_logs
 
-**Comunicação (7 tabelas)**
+**Communication (7 tables)**
 - ✅ email_templates
 - ✅ email_campaigns
 - ✅ email_campaign_recipients
@@ -118,7 +118,7 @@ Baseado no export do Schema Visualizer, as seguintes tabelas existem:
 - ✅ notifications
 - ✅ notification_preferences
 
-**Gestão de Dados (9 tabelas)**
+**Data Management (9 tables)**
 - ✅ database_backups
 - ✅ database_restores
 - ✅ data_exports
@@ -130,43 +130,43 @@ Baseado no export do Schema Visualizer, as seguintes tabelas existem:
 - ✅ bulk_operations
 - ✅ site_config
 
-**Total: 54 tabelas**
+**Total: 54 tables**
 
-## 🔄 Próximos Passos: Drizzle ORM
+## 🔄 Next Steps: Drizzle ORM
 
-Para sincronizar com o Drizzle ORM:
+To synchronize with Drizzle ORM:
 
-### 1. **Gerar Schema do Drizzle**
+### 1. **Generate Drizzle Schema**
 
 ```bash
 cd packages/db
-pnpm db:pull  # Puxa schema do banco
-pnpm db:generate  # Gera migrations
+pnpm db:pull  # Pull schema from database
+pnpm db:generate  # Generate migrations
 ```
 
-### 2. **Validar Diferenças**
+### 2. **Validate Differences**
 
-Compare o schema atual (`packages/db/src/schema/`) com o banco:
+Compare current schema (`packages/db/src/schema/`) with database:
 
 ```bash
 pnpm db:check
 ```
 
-### 3. **Aplicar Mudanças**
+### 3. **Apply Changes**
 
-Se houver diferenças:
+If there are differences:
 
 ```bash
-pnpm db:push  # Força atualização (desenvolvimento)
-# OU
-pnpm db:migrate  # Aplica migrations (produção)
+pnpm db:push  # Force update (development)
+# OR
+pnpm db:migrate  # Apply migrations (production)
 ```
 
-## ⚠️ Observações Importantes
+## ⚠️ Important Notes
 
-### **ENUMs "USER-DEFINED"**
+### **"USER-DEFINED" ENUMs**
 
-No export do Supabase, alguns tipos aparecem como `USER-DEFINED`. São ENUMs criados no `database-schema-enums.sql`:
+In Supabase export, some types appear as `USER-DEFINED`. These are ENUMs created in `database-schema-enums.sql`:
 
 - `role`
 - `post_status`
@@ -177,49 +177,49 @@ No export do Supabase, alguns tipos aparecem como `USER-DEFINED`. São ENUMs cri
 
 ### **Timestamps**
 
-Algumas tabelas usam `CURRENT_TIMESTAMP(3)` (com milissegundos), outras usam `CURRENT_TIMESTAMP`:
+Some tables use `CURRENT_TIMESTAMP(3)` (with milliseconds), others use `CURRENT_TIMESTAMP`:
 
-- **Com milissegundos**: `comment`, `guestbook`, `likes_session`
-- **Sem milissegundos**: Demais tabelas
+- **With milliseconds**: `comment`, `guestbook`, `likes_session`
+- **Without milliseconds**: Other tables
 
 ### **Foreign Keys CASCADE**
 
-A maioria das foreign keys usa `ON DELETE CASCADE` para deleção automática de registros relacionados.
+Most foreign keys use `ON DELETE CASCADE` for automatic deletion of related records.
 
-## 📚 Documentação Relacionada
+## 📚 Related Documentation
 
-- **`SQL_QUERIES_REFERENCE.md`** - Queries comuns e exemplos
-- **`SECURITY_AUDIT.md`** - Auditoria de segurança (se existir)
-- **`README.md`** - Documentação geral do projeto
+- **`SQL_QUERIES_REFERENCE.md`** - Common queries and examples
+- **`CRITICAL_SCHEMA_ANALYSIS.md`** - Schema analysis and sync status
+- **`README.md`** - General project documentation
 
-## 🛠️ Comandos Úteis
+## 🛠️ Useful Commands
 
-### **Backup do Schema Atual**
+### **Backup Current Schema**
 
 ```bash
-pg_dump -h localhost -U postgres -d sua_database --schema-only > backup-schema.sql
+pg_dump -h localhost -U postgres -d your_database --schema-only > backup-schema.sql
 ```
 
-### **Comparar Schemas**
+### **Compare Schemas**
 
 ```bash
-# Exportar schema do Supabase
-# Comparar com arquivos locais usando diff
+# Export schema from Supabase
+# Compare with local files using diff
 diff backup-schema.sql database-schema-tables.sql
 ```
 
-### **Resetar Banco (CUIDADO!)**
+### **Reset Database (CAREFUL!)**
 
 ```bash
-# Deletar todas as tabelas
+# Delete all tables
 DROP SCHEMA public CASCADE;
 CREATE SCHEMA public;
 
-# Recriar tudo
-cat database-schema-*.sql | psql -h localhost -U postgres -d sua_database
+# Recreate everything
+cat database-schema-*.sql | psql -h localhost -U postgres -d your_database
 ```
 
 ---
 
-**Última atualização:** 2025-10-03  
-**Baseado em:** Schema Visualizer do Supabase
+**Last updated:** 2025-10-03  
+**Based on:** Supabase Schema Visualizer

@@ -2,7 +2,7 @@
 -- PARTE 2: TABELAS PRINCIPAIS
 -- =====================================================
 
--- Tabela de usuários
+-- Users table
 CREATE TABLE IF NOT EXISTS users (
   id text PRIMARY KEY,
   name text NOT NULL,
@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS users (
   updated_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Tabela de contas (OAuth)
+-- Accounts table (OAuth)
 CREATE TABLE IF NOT EXISTS account (
   id text PRIMARY KEY,
   account_id text NOT NULL,
@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS account (
   updated_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Tabela de sessões
+-- Sessions table
 CREATE TABLE IF NOT EXISTS session (
   id text PRIMARY KEY,
   user_id text NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS session (
   updated_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Tabela de verificação
+-- Verification table
 CREATE TABLE IF NOT EXISTS verification (
   id text PRIMARY KEY,
   identifier text NOT NULL,
@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS verification (
   updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP
 );
 
--- Tokens de reset de senha
+-- Password reset tokens
 CREATE TABLE IF NOT EXISTS password_reset_tokens (
   id text PRIMARY KEY,
   user_id text NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS password_reset_tokens (
   created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Posts/Artigos
+-- Posts
 CREATE TABLE IF NOT EXISTS post (
   id text PRIMARY KEY,
   slug text NOT NULL UNIQUE,
@@ -87,7 +87,7 @@ CREATE TABLE IF NOT EXISTS post (
   updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP
 );
 
--- Comentários
+-- Comments
 CREATE TABLE IF NOT EXISTS comment (
   id text PRIMARY KEY,
   body text NOT NULL,
@@ -99,7 +99,7 @@ CREATE TABLE IF NOT EXISTS comment (
   updated_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Avaliações de comentários
+-- Comment ratings
 CREATE TABLE IF NOT EXISTS rate (
   user_id text NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   comment_id text NOT NULL REFERENCES comment(id) ON DELETE CASCADE,
@@ -107,7 +107,7 @@ CREATE TABLE IF NOT EXISTS rate (
   PRIMARY KEY (user_id, comment_id)
 );
 
--- Livro de visitas
+-- Guestbook
 CREATE TABLE IF NOT EXISTS guestbook (
   id text PRIMARY KEY,
   body text NOT NULL,
@@ -116,14 +116,14 @@ CREATE TABLE IF NOT EXISTS guestbook (
   updated_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Sessões de curtidas
+-- Like sessions
 CREATE TABLE IF NOT EXISTS likes_session (
   id text PRIMARY KEY,
   likes integer NOT NULL DEFAULT 0,
   created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Logs de auditoria
+-- Audit logs
 CREATE TABLE IF NOT EXISTS audit_logs (
   id text PRIMARY KEY,
   admin_user_id text NOT NULL REFERENCES users(id),

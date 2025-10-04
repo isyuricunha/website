@@ -5,7 +5,7 @@
 -- PARTE 1: ENUMS
 -- =====================================================
 
--- Drop existing types if they exist (para re-execução)
+-- Drop existing types if they exist (for re-execution)
 DROP TYPE IF EXISTS role CASCADE;
 DROP TYPE IF EXISTS post_status CASCADE;
 DROP TYPE IF EXISTS audit_log_action CASCADE;
@@ -35,13 +35,13 @@ DROP TYPE IF EXISTS announcement_type CASCADE;
 DROP TYPE IF EXISTS notification_type CASCADE;
 DROP TYPE IF EXISTS notification_channel CASCADE;
 
--- Papéis de usuário
+-- User roles
 CREATE TYPE role AS ENUM ('user', 'admin');
 
--- Status de posts
+-- Post status
 CREATE TYPE post_status AS ENUM ('draft', 'published', 'archived');
 
--- Ações de auditoria
+-- Audit actions
 CREATE TYPE audit_log_action AS ENUM (
   'user_created', 'user_updated', 'user_deleted', 'user_banned', 'user_unbanned',
   'post_created', 'post_updated', 'post_deleted', 'post_published',
@@ -50,17 +50,17 @@ CREATE TYPE audit_log_action AS ENUM (
   'security_event_created', 'alert_created', 'bulk_operation_executed'
 );
 
--- Status de operações em massa
+-- Bulk operation status
 CREATE TYPE bulk_operation_status AS ENUM ('pending', 'running', 'completed', 'failed', 'cancelled');
 
--- Tipo de verificação de saúde
+-- Health check type
 CREATE TYPE health_check_type AS ENUM ('database', 'api', 'storage', 'email', 'cache', 'external_service');
 CREATE TYPE health_status AS ENUM ('healthy', 'degraded', 'unhealthy', 'unknown');
 
--- Tipo de configuração do site
+-- Site configuration type
 CREATE TYPE site_config_type AS ENUM ('general', 'security', 'email', 'storage', 'api', 'ui');
 
--- Eventos de segurança
+-- Security events
 CREATE TYPE security_event_type AS ENUM (
   'login_attempt', 'failed_login', 'suspicious_activity', 'brute_force',
   'account_lockout', 'password_change', 'email_change', 'two_factor_enabled',
@@ -70,12 +70,12 @@ CREATE TYPE security_event_type AS ENUM (
 CREATE TYPE security_event_severity AS ENUM ('low', 'medium', 'high', 'critical');
 CREATE TYPE ip_access_type AS ENUM ('whitelist', 'blacklist');
 
--- Monitoramento e alertas
+-- Monitoring and alerts
 CREATE TYPE alert_type AS ENUM ('threshold', 'anomaly', 'health_check', 'security', 'custom');
 CREATE TYPE alert_severity AS ENUM ('info', 'warning', 'error', 'critical');
 CREATE TYPE resource_type AS ENUM ('cpu', 'memory', 'disk', 'network', 'database');
 
--- Gestão de dados
+-- Data management
 CREATE TYPE backup_type AS ENUM ('full', 'incremental', 'differential');
 CREATE TYPE backup_status AS ENUM ('pending', 'running', 'completed', 'failed');
 CREATE TYPE restore_status AS ENUM ('pending', 'running', 'completed', 'failed');
@@ -87,7 +87,7 @@ CREATE TYPE sync_direction AS ENUM ('pull', 'push', 'bidirectional');
 CREATE TYPE sync_status AS ENUM ('pending', 'running', 'completed', 'failed');
 CREATE TYPE data_quality_check_type AS ENUM ('completeness', 'accuracy', 'consistency', 'validity', 'uniqueness');
 
--- Comunicação
+-- Communication
 CREATE TYPE email_template_type AS ENUM ('welcome', 'password_reset', 'notification', 'marketing', 'system');
 CREATE TYPE email_campaign_status AS ENUM ('draft', 'scheduled', 'sending', 'sent', 'paused', 'cancelled');
 CREATE TYPE announcement_type AS ENUM ('info', 'warning', 'success', 'error', 'maintenance');

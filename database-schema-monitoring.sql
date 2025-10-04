@@ -2,7 +2,7 @@
 -- PARTE 4: TABELAS DE MONITORAMENTO
 -- =====================================================
 
--- Métricas de performance
+-- Performance metrics
 CREATE TABLE IF NOT EXISTS performance_metrics (
   id text PRIMARY KEY,
   metric_name text NOT NULL,
@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS performance_metrics (
   created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Eventos analíticos
+-- Analytics events
 CREATE TABLE IF NOT EXISTS analytics_events (
   id text PRIMARY KEY,
   event_type text NOT NULL,
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS analytics_events (
   created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Uso de recursos
+-- Resource usage
 CREATE TABLE IF NOT EXISTS resource_usage (
   id text PRIMARY KEY,
   type resource_type NOT NULL,
@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS resource_usage (
   created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Uso de API
+-- API usage
 CREATE TABLE IF NOT EXISTS api_usage (
   id text PRIMARY KEY,
   endpoint text NOT NULL,
@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS api_usage (
   created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Performance de queries
+-- Query performance
 CREATE TABLE IF NOT EXISTS query_performance (
   id text PRIMARY KEY,
   query_type text NOT NULL,
@@ -81,7 +81,7 @@ CREATE TABLE IF NOT EXISTS query_performance (
   created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Rastreamento de erros
+-- Error tracking
 CREATE TABLE IF NOT EXISTS error_tracking (
   id text PRIMARY KEY,
   error_type text NOT NULL,
@@ -108,7 +108,7 @@ CREATE TABLE IF NOT EXISTS error_tracking (
   created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Logs de erro
+-- Error logs
 CREATE TABLE IF NOT EXISTS error_logs (
   id text PRIMARY KEY,
   level text NOT NULL,
@@ -125,7 +125,7 @@ CREATE TABLE IF NOT EXISTS error_logs (
   created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Métricas customizadas
+-- Custom metrics
 CREATE TABLE IF NOT EXISTS custom_metrics (
   id text PRIMARY KEY,
   name text NOT NULL,
@@ -153,7 +153,7 @@ CREATE TABLE IF NOT EXISTS alerts (
   updated_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Instâncias de alertas
+-- Alert instances
 CREATE TABLE IF NOT EXISTS alert_instances (
   id text PRIMARY KEY,
   alert_id text NOT NULL REFERENCES alerts(id),
@@ -167,7 +167,7 @@ CREATE TABLE IF NOT EXISTS alert_instances (
   triggered_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Atividade de usuários
+-- User activity
 CREATE TABLE IF NOT EXISTS user_activity (
   id text PRIMARY KEY,
   user_id text NOT NULL REFERENCES users(id),
@@ -181,7 +181,7 @@ CREATE TABLE IF NOT EXISTS user_activity (
   created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Logs de saúde do sistema
+-- System health logs
 CREATE TABLE IF NOT EXISTS system_health_logs (
   id text PRIMARY KEY,
   check_type health_check_type NOT NULL,

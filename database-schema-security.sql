@@ -2,7 +2,7 @@
 -- PARTE 3: TABELAS DE SEGURANÇA
 -- =====================================================
 
--- Tokens 2FA
+-- 2FA tokens
 CREATE TABLE IF NOT EXISTS two_factor_tokens (
   id text PRIMARY KEY,
   user_id text NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS two_factor_tokens (
   last_used_at timestamp without time zone
 );
 
--- Controle de acesso por IP
+-- IP access control
 CREATE TABLE IF NOT EXISTS ip_access_control (
   id text PRIMARY KEY,
   ip_address text NOT NULL,
@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS ip_access_control (
   updated_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Eventos de segurança
+-- Security events
 CREATE TABLE IF NOT EXISTS security_events (
   id text PRIMARY KEY,
   event_type security_event_type NOT NULL,
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS security_events (
   created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Tentativas de login
+-- Login attempts
 CREATE TABLE IF NOT EXISTS login_attempts (
   id text PRIMARY KEY,
   email text NOT NULL,
@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS login_attempts (
   created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Bloqueios de conta
+-- Account lockouts
 CREATE TABLE IF NOT EXISTS account_lockouts (
   id text PRIMARY KEY,
   user_id text NOT NULL REFERENCES users(id),
@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS account_lockouts (
   unlocked_by text REFERENCES users(id)
 );
 
--- Configurações de segurança
+-- Security settings
 CREATE TABLE IF NOT EXISTS security_settings (
   id text PRIMARY KEY,
   key text NOT NULL UNIQUE,

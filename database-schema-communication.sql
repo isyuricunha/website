@@ -2,7 +2,7 @@
 -- PARTE 5: TABELAS DE COMUNICAÇÃO
 -- =====================================================
 
--- Templates de email
+-- Email templates
 CREATE TABLE IF NOT EXISTS email_templates (
   id text PRIMARY KEY,
   name text NOT NULL,
@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS email_templates (
   updated_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Campanhas de email
+-- Email campaigns
 CREATE TABLE IF NOT EXISTS email_campaigns (
   id text PRIMARY KEY,
   name text NOT NULL,
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS email_campaigns (
   updated_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Destinatários de campanhas
+-- Campaign recipients
 CREATE TABLE IF NOT EXISTS email_campaign_recipients (
   id text PRIMARY KEY,
   campaign_id text NOT NULL REFERENCES email_campaigns(id),
@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS email_campaign_recipients (
   error_message text
 );
 
--- Assinaturas de email
+-- Email subscriptions
 CREATE TABLE IF NOT EXISTS email_subscriptions (
   id text PRIMARY KEY,
   email text NOT NULL UNIQUE,
@@ -69,7 +69,7 @@ CREATE TABLE IF NOT EXISTS email_subscriptions (
   unsubscribed_at timestamp without time zone
 );
 
--- Anúncios
+-- Announcements
 CREATE TABLE IF NOT EXISTS announcements (
   id text PRIMARY KEY,
   title text NOT NULL,
@@ -86,7 +86,7 @@ CREATE TABLE IF NOT EXISTS announcements (
   updated_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Interações com anúncios
+-- Announcement interactions
 CREATE TABLE IF NOT EXISTS announcement_interactions (
   id text PRIMARY KEY,
   announcement_id text NOT NULL REFERENCES announcements(id),
@@ -97,7 +97,7 @@ CREATE TABLE IF NOT EXISTS announcement_interactions (
   dismissed_at timestamp without time zone
 );
 
--- Notificações
+-- Notifications
 CREATE TABLE IF NOT EXISTS notifications (
   id text PRIMARY KEY,
   user_id text NOT NULL REFERENCES users(id),
@@ -112,7 +112,7 @@ CREATE TABLE IF NOT EXISTS notifications (
   created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Preferências de notificação
+-- Notification preferences
 CREATE TABLE IF NOT EXISTS notification_preferences (
   id text PRIMARY KEY,
   user_id text NOT NULL REFERENCES users(id),

@@ -1,16 +1,16 @@
-# 📊 Referência de Queries SQL
+# 📊 SQL Queries Reference
 
-Documentação completa de todas as queries SQL utilizadas no projeto.
+Complete documentation of all SQL queries used in the project.
 
-## 📁 Arquivos SQL Existentes
+## 📁 Existing SQL Files
 
-### 1. **Arquivos de Migration** (`packages/db/src/migrations/`)
-Migrations gerenciadas pelo Drizzle ORM que definem o schema do banco.
+### 1. **Migration Files** (`packages/db/src/migrations/`)
+Migrations managed by Drizzle ORM that define the database schema.
 
-### 2. **Scripts SQL Utilitários**
+### 2. **Utility SQL Scripts**
 
 #### `fix-error-tracking-column.sql`
-**Propósito:** Corrige tabela `error_tracking` adicionando coluna `created_at` faltante.
+**Purpose:** Fixes `error_tracking` table by adding missing `created_at` column.
 
 ```sql
 ALTER TABLE error_tracking 
@@ -21,12 +21,12 @@ SET created_at = first_seen
 WHERE created_at IS NULL;
 ```
 
-**Quando usar:** Quando houver erro de coluna faltante no monitoring router.
+**When to use:** When there's a missing column error in the monitoring router.
 
 ---
 
 #### `sample-announcements.sql`
-**Propósito:** Insere anúncios de exemplo para teste do sistema de anúncios.
+**Purpose:** Inserts sample announcements for testing the announcements system.
 
 ```sql
 INSERT INTO announcements (
@@ -49,31 +49,31 @@ INSERT INTO announcements (
    NOW(), NOW());
 ```
 
-**Tipos de anúncios:**
-- `info` - Informação geral
-- `warning` - Aviso importante
-- `success` - Sucesso/novidade
-- `error` - Erro crítico
-- `maintenance` - Manutenção
+**Announcement types:**
+- `info` - General information
+- `warning` - Important warning
+- `success` - Success/new feature
+- `error` - Critical error
+- `maintenance` - Maintenance
 
-**Prioridades:** 1 (baixa) a 5 (crítica)
+**Priorities:** 1 (low) to 5 (critical)
 
 ---
 
-### 3. **Instalação Completa** (`fresh-install-sql/complete-fresh-install.sql`)
+### 3. **Complete Fresh Install** (`fresh-install-sql/complete-fresh-install.sql`)
 
-Script completo de instalação com todas as tabelas do sistema (659 linhas).
+Complete installation script with all system tables (659 lines).
 
-#### **ENUMs Criados**
+#### **Created ENUMs**
 
 ```sql
--- Papéis de usuário
+-- User roles
 CREATE TYPE role AS ENUM ('user', 'admin');
 
--- Status de posts
+-- Post status
 CREATE TYPE post_status AS ENUM ('draft', 'published', 'archived');
 
--- Ações de auditoria
+-- Audit actions
 CREATE TYPE audit_log_action AS ENUM (
   'user_created', 'user_updated', 'user_deleted', 
   'user_banned', 'user_unbanned',
@@ -83,7 +83,7 @@ CREATE TYPE audit_log_action AS ENUM (
   'security_event_created', 'alert_created', 'bulk_operation_executed'
 );
 
--- Segurança
+-- Security
 CREATE TYPE security_event_type AS ENUM (
   'login_attempt', 'failed_login', 'suspicious_activity', 
   'brute_force', 'account_lockout', 'password_change', 
@@ -94,10 +94,10 @@ CREATE TYPE security_event_type AS ENUM (
 CREATE TYPE security_event_severity AS ENUM ('low', 'medium', 'high', 'critical');
 ```
 
-#### **Tabelas Principais**
+#### **Core Tables**
 
 ```sql
--- Usuários
+-- Users
 CREATE TABLE users (
   id TEXT PRIMARY KEY,
   name TEXT NOT NULL,
@@ -111,7 +111,7 @@ CREATE TABLE users (
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Sessões
+-- Sessions
 CREATE TABLE session (
   id TEXT PRIMARY KEY,
   user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -123,7 +123,7 @@ CREATE TABLE session (
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Posts/Artigos
+-- Posts
 CREATE TABLE post (
   id TEXT PRIMARY KEY,
   slug TEXT NOT NULL UNIQUE,
@@ -140,7 +140,7 @@ CREATE TABLE post (
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Comentários
+-- Comments
 CREATE TABLE comment (
   id TEXT PRIMARY KEY,
   body TEXT NOT NULL,
@@ -153,10 +153,10 @@ CREATE TABLE comment (
 );
 ```
 
-#### **Tabelas de Segurança**
+#### **Security Tables**
 
 ```sql
--- Tokens 2FA (Autenticação Dois Fatores)
+-- 2FA Tokens
 CREATE TABLE two_factor_tokens (
   id TEXT PRIMARY KEY,
   user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -167,12 +167,12 @@ CREATE TABLE two_factor_tokens (
   last_used_at TIMESTAMP
 );
 
--- Controle de Acesso por IP
+-- IP Access Control
 CREATE TABLE ip_access_control (
   id TEXT PRIMARY KEY,
   ip_address TEXT NOT NULL,
   ip_range TEXT,
-  type ip_access_type NOT NULL, -- 'whitelist' ou 'blacklist'
+  type ip_access_type NOT NULL, -- 'whitelist' or 'blacklist'
   description TEXT,
   is_active BOOLEAN NOT NULL DEFAULT TRUE,
   created_by TEXT NOT NULL REFERENCES users(id),
@@ -180,7 +180,7 @@ CREATE TABLE ip_access_control (
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Eventos de Segurança
+-- Security Events
 CREATE TABLE security_events (
   id TEXT PRIMARY KEY,
   event_type security_event_type NOT NULL,
@@ -196,7 +196,7 @@ CREATE TABLE security_events (
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Tentativas de Login
+-- Login Attempts
 CREATE TABLE login_attempts (
   id TEXT PRIMARY KEY,
   email TEXT NOT NULL,
@@ -210,10 +210,10 @@ CREATE TABLE login_attempts (
 );
 ```
 
-#### **Tabelas de Monitoramento**
+#### **Monitoring Tables**
 
 ```sql
--- Métricas de Performance
+-- Performance Metrics
 CREATE TABLE performance_metrics (
   id TEXT PRIMARY KEY,
   metric_name TEXT NOT NULL,
@@ -226,7 +226,7 @@ CREATE TABLE performance_metrics (
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Rastreamento de Erros
+-- Error Tracking
 CREATE TABLE error_tracking (
   id TEXT PRIMARY KEY,
   error_type TEXT NOT NULL,
@@ -247,7 +247,7 @@ CREATE TABLE error_tracking (
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Uso de API
+-- API Usage
 CREATE TABLE api_usage (
   id TEXT PRIMARY KEY,
   endpoint TEXT NOT NULL,
@@ -263,10 +263,10 @@ CREATE TABLE api_usage (
 );
 ```
 
-#### **Tabelas de Comunicação**
+#### **Communication Tables**
 
 ```sql
--- Templates de Email
+-- Email Templates
 CREATE TABLE email_templates (
   id TEXT PRIMARY KEY,
   name TEXT NOT NULL,
@@ -281,7 +281,7 @@ CREATE TABLE email_templates (
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Campanhas de Email
+-- Email Campaigns
 CREATE TABLE email_campaigns (
   id TEXT PRIMARY KEY,
   name TEXT NOT NULL,
@@ -302,7 +302,7 @@ CREATE TABLE email_campaigns (
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Anúncios
+-- Announcements
 CREATE TABLE announcements (
   id TEXT PRIMARY KEY,
   title TEXT NOT NULL,
@@ -319,7 +319,7 @@ CREATE TABLE announcements (
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Notificações
+-- Notifications
 CREATE TABLE notifications (
   id TEXT PRIMARY KEY,
   user_id TEXT NOT NULL REFERENCES users(id),
@@ -335,10 +335,10 @@ CREATE TABLE notifications (
 );
 ```
 
-#### **Índices para Performance**
+#### **Performance Indexes**
 
 ```sql
--- Índices principais
+-- Core indexes
 CREATE INDEX idx_users_email ON users(email);
 CREATE INDEX idx_users_role ON users(role);
 CREATE INDEX idx_session_user_id ON session(user_id);
@@ -347,19 +347,19 @@ CREATE INDEX idx_post_slug ON post(slug);
 CREATE INDEX idx_post_status ON post(status);
 CREATE INDEX idx_comment_post_id ON comment(post_id);
 
--- Índices de segurança
+-- Security indexes
 CREATE INDEX idx_security_events_user_id ON security_events(user_id);
 CREATE INDEX idx_security_events_created_at ON security_events(created_at);
 CREATE INDEX idx_login_attempts_email ON login_attempts(email);
 CREATE INDEX idx_login_attempts_ip_address ON login_attempts(ip_address);
 
--- Índices de monitoramento
+-- Monitoring indexes
 CREATE INDEX idx_performance_metrics_created_at ON performance_metrics(created_at);
 CREATE INDEX idx_error_tracking_fingerprint ON error_tracking(fingerprint);
 CREATE INDEX idx_error_tracking_resolved ON error_tracking(resolved);
 CREATE INDEX idx_api_usage_endpoint ON api_usage(endpoint);
 
--- Índices de comunicação
+-- Communication indexes
 CREATE INDEX idx_email_campaigns_status ON email_campaigns(status);
 CREATE INDEX idx_announcements_is_active ON announcements(is_active);
 CREATE INDEX idx_notifications_user_id ON notifications(user_id);
@@ -368,34 +368,34 @@ CREATE INDEX idx_notifications_read ON notifications(read);
 
 ---
 
-## 🔍 Queries Comuns
+## 🔍 Common Queries
 
-### Usuários
+### Users
 
 ```sql
--- Buscar todos os administradores
+-- Find all admins
 SELECT * FROM users WHERE role = 'admin';
 
--- Contar usuários por role
+-- Count users by role
 SELECT role, COUNT(*) FROM users GROUP BY role;
 
--- Usuários criados nos últimos 7 dias
+-- Users created in last 7 days
 SELECT * FROM users 
 WHERE created_at >= NOW() - INTERVAL '7 days'
 ORDER BY created_at DESC;
 ```
 
-### Posts/Artigos
+### Posts
 
 ```sql
--- Posts publicados mais visualizados
+-- Most viewed published posts
 SELECT slug, title, views, likes 
 FROM post 
 WHERE status = 'published' 
 ORDER BY views DESC 
 LIMIT 10;
 
--- Posts com mais comentários
+-- Posts with most comments
 SELECT p.slug, p.title, COUNT(c.id) as comment_count
 FROM post p
 LEFT JOIN comment c ON p.slug = c.post_id
@@ -404,10 +404,10 @@ GROUP BY p.slug, p.title
 ORDER BY comment_count DESC;
 ```
 
-### Segurança
+### Security
 
 ```sql
--- Tentativas de login falhadas nas últimas 24h
+-- Failed login attempts in last 24h
 SELECT email, ip_address, COUNT(*) as attempts
 FROM login_attempts
 WHERE success = false 
@@ -416,17 +416,17 @@ GROUP BY email, ip_address
 HAVING COUNT(*) > 3
 ORDER BY attempts DESC;
 
--- Eventos de segurança críticos não resolvidos
+-- Unresolved critical security events
 SELECT * FROM security_events
 WHERE severity = 'critical' 
   AND resolved = false
 ORDER BY created_at DESC;
 ```
 
-### Monitoramento
+### Monitoring
 
 ```sql
--- Erros mais frequentes
+-- Most frequent errors
 SELECT error_name, error_type, COUNT(*) as occurrences
 FROM error_tracking
 WHERE created_at >= NOW() - INTERVAL '7 days'
@@ -435,7 +435,7 @@ GROUP BY error_name, error_type
 ORDER BY occurrences DESC
 LIMIT 20;
 
--- API endpoints mais lentos
+-- Slowest API endpoints
 SELECT endpoint, AVG(response_time) as avg_time, COUNT(*) as requests
 FROM api_usage
 WHERE created_at >= NOW() - INTERVAL '24 hours'
@@ -444,24 +444,24 @@ HAVING AVG(response_time) > 1000
 ORDER BY avg_time DESC;
 ```
 
-### Comunicação
+### Communication
 
 ```sql
--- Anúncios ativos
+-- Active announcements
 SELECT * FROM announcements
 WHERE is_active = true
   AND (start_date IS NULL OR start_date <= NOW())
   AND (end_date IS NULL OR end_date >= NOW())
 ORDER BY priority DESC, created_at DESC;
 
--- Notificações não lidas por usuário
+-- Unread notifications per user
 SELECT user_id, COUNT(*) as unread_count
 FROM notifications
 WHERE read = false
 GROUP BY user_id
 ORDER BY unread_count DESC;
 
--- Desempenho de campanhas de email
+-- Email campaign performance
 SELECT 
   name,
   status,
@@ -478,29 +478,29 @@ ORDER BY created_at DESC;
 
 ---
 
-## 🛠️ Comandos de Manutenção
+## 🛠️ Maintenance Commands
 
-### Limpeza de Dados Antigos
+### Cleanup Old Data
 
 ```sql
--- Limpar sessões expiradas
+-- Clean expired sessions
 DELETE FROM session 
 WHERE expires_at < NOW();
 
--- Limpar notificações antigas já lidas
+-- Clean old read notifications
 DELETE FROM notifications 
 WHERE read = true 
   AND read_at < NOW() - INTERVAL '30 days';
 
--- Limpar tentativas de login antigas
+-- Clean old login attempts
 DELETE FROM login_attempts 
 WHERE created_at < NOW() - INTERVAL '90 days';
 ```
 
-### Análise de Performance
+### Performance Analysis
 
 ```sql
--- Tamanho das tabelas
+-- Table sizes
 SELECT 
   schemaname,
   tablename,
@@ -509,7 +509,7 @@ FROM pg_tables
 WHERE schemaname = 'public'
 ORDER BY pg_total_relation_size(schemaname||'.'||tablename) DESC;
 
--- Índices não utilizados
+-- Unused indexes
 SELECT 
   schemaname,
   tablename,
@@ -523,34 +523,34 @@ ORDER BY pg_relation_size(indexrelid) DESC;
 
 ---
 
-## 📦 Backup e Restauração
+## 📦 Backup and Restore
 
 ```sql
--- Backup via pg_dump (executar no terminal)
+-- Backup via pg_dump (run in terminal)
 pg_dump -h localhost -U postgres -d database_name > backup_$(date +%Y%m%d).sql
 
--- Restaurar backup
+-- Restore backup
 psql -h localhost -U postgres -d database_name < backup_20250103.sql
 
--- Backup de tabela específica
+-- Backup specific table
 pg_dump -h localhost -U postgres -d database_name -t users > users_backup.sql
 ```
 
 ---
 
-## ⚠️ Notas Importantes
+## ⚠️ Important Notes
 
-1. **Sempre use transações** para operações críticas:
+1. **Always use transactions** for critical operations:
    ```sql
    BEGIN;
-   -- suas queries aqui
-   COMMIT; -- ou ROLLBACK em caso de erro
+   -- your queries here
+   COMMIT; -- or ROLLBACK on error
    ```
 
-2. **Índices:** Certifique-se de que índices existem para queries frequentes.
+2. **Indexes:** Ensure indexes exist for frequently-used queries.
 
-3. **Performance:** Use `EXPLAIN ANALYZE` para analisar queries lentas.
+3. **Performance:** Use `EXPLAIN ANALYZE` to analyze slow queries.
 
-4. **Segurança:** Nunca exponha dados sensíveis nos logs.
+4. **Security:** Never expose sensitive data in logs.
 
-5. **Backups:** Mantenha backups regulares e teste restaurações periodicamente.
+5. **Backups:** Maintain regular backups and test restores periodically.

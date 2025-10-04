@@ -2,7 +2,7 @@
 -- PARTE 6: TABELAS DE GESTÃO DE DADOS
 -- =====================================================
 
--- Backups de banco de dados
+-- Database backups
 CREATE TABLE IF NOT EXISTS database_backups (
   id text PRIMARY KEY,
   name text NOT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS database_backups (
   created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Restaurações de banco
+-- Database restores
 CREATE TABLE IF NOT EXISTS database_restores (
   id text PRIMARY KEY,
   backup_id text NOT NULL REFERENCES database_backups(id),
@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS database_restores (
   created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Exportações de dados
+-- Data exports
 CREATE TABLE IF NOT EXISTS data_exports (
   id text PRIMARY KEY,
   name text NOT NULL,
@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS data_exports (
   created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Importações de dados
+-- Data imports
 CREATE TABLE IF NOT EXISTS data_imports (
   id text PRIMARY KEY,
   name text NOT NULL,
@@ -95,7 +95,7 @@ CREATE TABLE IF NOT EXISTS data_imports (
   created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Migrações de dados
+-- Data migrations
 CREATE TABLE IF NOT EXISTS data_migrations (
   id text PRIMARY KEY,
   name text NOT NULL,
@@ -117,7 +117,7 @@ CREATE TABLE IF NOT EXISTS data_migrations (
   created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Verificações de qualidade de dados
+-- Data quality checks
 CREATE TABLE IF NOT EXISTS data_quality_checks (
   id text PRIMARY KEY,
   name text NOT NULL,
@@ -136,7 +136,7 @@ CREATE TABLE IF NOT EXISTS data_quality_checks (
   updated_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Resultados de verificações de qualidade
+-- Data quality check results
 CREATE TABLE IF NOT EXISTS data_quality_check_results (
   id text PRIMARY KEY,
   check_id text NOT NULL REFERENCES data_quality_checks(id),
@@ -149,7 +149,7 @@ CREATE TABLE IF NOT EXISTS data_quality_check_results (
   run_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Sincronização de dados
+-- Data synchronization
 CREATE TABLE IF NOT EXISTS data_synchronization (
   id text PRIMARY KEY,
   name text NOT NULL,
@@ -174,7 +174,7 @@ CREATE TABLE IF NOT EXISTS data_synchronization (
   updated_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Operações em massa
+-- Bulk operations
 CREATE TABLE IF NOT EXISTS bulk_operations (
   id text PRIMARY KEY,
   type text NOT NULL,
@@ -192,7 +192,7 @@ CREATE TABLE IF NOT EXISTS bulk_operations (
   created_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Configurações do site
+-- Site configuration
 CREATE TABLE IF NOT EXISTS site_config (
   id text PRIMARY KEY,
   key text NOT NULL UNIQUE,
