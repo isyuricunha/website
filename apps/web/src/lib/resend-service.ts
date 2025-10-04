@@ -65,14 +65,11 @@ export class ResendService {
   async listAudiences(): Promise<ResendAudience[]> {
     try {
       await this.rateLimitDelay()
-      console.log('🔍 Fetching audiences from Resend API...')
       const response = await resend.audiences.list()
-      console.log('📊 Resend audiences response:', JSON.stringify(response, null, 2))
       const audiences = response.data?.data || []
-      console.log('✅ Parsed audiences:', audiences.length, 'found')
       return audiences
     } catch (error) {
-      console.error('❌ Error listing Resend audiences:', error)
+      console.error('Error listing Resend audiences:', error)
       throw new Error('Failed to list audiences')
     }
   }
@@ -164,13 +161,11 @@ export class ResendService {
   async listContacts(audienceId: string): Promise<ResendContact[]> {
     try {
       await this.rateLimitDelay()
-      console.log('🔍 Fetching contacts from Resend audience:', audienceId)
       const response = await resend.contacts.list({ audienceId })
       const contacts = response.data?.data || []
-      console.log('📊 Resend contacts response:', contacts.length, 'contacts found')
       return contacts
     } catch (error) {
-      console.error('❌ Error listing contacts in Resend audience:', error)
+      console.error('Error listing contacts in Resend audience:', error)
       return []
     }
   }
@@ -181,10 +176,9 @@ export class ResendService {
       const contacts = await this.listContacts(audienceId)
       // Count only active subscribers (not unsubscribed)
       const activeSubscribers = contacts.filter(contact => !contact.unsubscribed)
-      console.log('✅ Active subscribers in audience:', activeSubscribers.length, 'out of', contacts.length, 'total contacts')
       return activeSubscribers.length
     } catch (error) {
-      console.error('❌ Error getting subscriber count for audience:', error)
+      console.error('Error getting subscriber count for audience:', error)
       return 0
     }
   }
@@ -216,7 +210,6 @@ export class ResendService {
   }): Promise<ResendBroadcast | null> {
     try {
       await this.rateLimitDelay()
-      console.log('🔍 Creating Resend broadcast:', { audienceId: broadcast.audience_id, from: broadcast.from, subject: broadcast.subject })
       
       // Resend API only expects: audienceId, from, subject, html
       const response = await resend.broadcasts.create({
@@ -226,10 +219,9 @@ export class ResendService {
         html: broadcast.html || broadcast.text || '<p>No content provided</p>'
       })
       
-      console.log('✅ Resend broadcast created:', response.data)
       return response.data as ResendBroadcast
     } catch (error) {
-      console.error('❌ Error creating Resend broadcast:', error)
+      console.error('Error creating Resend broadcast:', error)
       return null
     }
   }
@@ -260,12 +252,10 @@ export class ResendService {
   async getBroadcast(broadcastId: string): Promise<ResendBroadcast | null> {
     try {
       await this.rateLimitDelay()
-      console.log('🔍 Fetching broadcast:', broadcastId)
       const response = await resend.broadcasts.get(broadcastId)
-      console.log('✅ Broadcast retrieved:', response.data)
       return response.data as ResendBroadcast
     } catch (error) {
-      console.error('❌ Error getting Resend broadcast:', error)
+      console.error('Error getting Resend broadcast:', error)
       return null
     }
   }
@@ -277,16 +267,14 @@ export class ResendService {
   }): Promise<ResendBroadcast | null> {
     try {
       await this.rateLimitDelay()
-      console.log('🔍 Updating broadcast:', broadcastId, updates)
       const response = await resend.broadcasts.update({
         id: broadcastId,
         html: updates.html,
         subject: updates.subject
       })
-      console.log('✅ Broadcast updated:', response.data)
       return response.data as ResendBroadcast
     } catch (error) {
-      console.error('❌ Error updating Resend broadcast:', error)
+      console.error('Error updating Resend broadcast:', error)
       return null
     }
   }
@@ -295,14 +283,11 @@ export class ResendService {
   async listBroadcasts(): Promise<ResendBroadcast[]> {
     try {
       await this.rateLimitDelay()
-      console.log('🔍 Fetching broadcasts from Resend API...')
       const response = await resend.broadcasts.list()
-      console.log('📊 Resend broadcasts response:', JSON.stringify(response, null, 2))
       const broadcasts = response.data?.data || []
-      console.log('✅ Parsed broadcasts:', broadcasts.length, 'found')
       return broadcasts
     } catch (error) {
-      console.error('❌ Error listing Resend broadcasts:', error)
+      console.error('Error listing Resend broadcasts:', error)
       return []
     }
   }

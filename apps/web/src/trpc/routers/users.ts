@@ -355,18 +355,9 @@ export const usersRouter = createTRPCRouter({
                 resetUrl
               })
             })
-
-            console.log(`Password reset email sent to: ${user.email}`)
-            console.log(`Reset URL: ${resetUrl}`)
           } catch (emailError) {
             console.error('Failed to send password reset email:', emailError)
-            console.log(`Password reset email failed for: ${user.email}`)
-            console.log(`Reset URL: ${resetUrl}`)
           }
-        } else {
-          console.log(`Password reset email would be sent to: ${user.email}`)
-          console.log(`Reset URL: ${resetUrl}`)
-          console.log('Note: RESEND_API_KEY not configured - email delivery disabled')
         }
 
         // Log the audit trail for password reset initiation
@@ -433,8 +424,7 @@ export const usersRouter = createTRPCRouter({
 
         // Update user's password (this would require adding password field to accounts table)
         // For now, we'll simulate this
-        console.log(`Password would be updated for user: ${resetToken.userId}`)
-        console.log(`New password hash: ${hashedPassword}`)
+        // Password update logic would go here
 
         // Mark token as used
         await ctx.db

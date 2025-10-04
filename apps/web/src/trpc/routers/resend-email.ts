@@ -16,12 +16,10 @@ export const resendEmailRouter = createTRPCRouter({
   getAudiences: adminProcedure
     .query(async () => {
       try {
-        console.log('🚀 TRPC: Getting audiences...')
         const audiences = await resendService.listAudiences()
-        console.log('📋 TRPC: Audiences received:', audiences.length)
         return { audiences }
       } catch (error) {
-        console.error('❌ TRPC: Error fetching Resend audiences:', error)
+        console.error('Error fetching Resend audiences:', error)
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to fetch audiences'
@@ -200,12 +198,10 @@ export const resendEmailRouter = createTRPCRouter({
   getBroadcasts: adminProcedure
     .query(async () => {
       try {
-        console.log('🚀 TRPC: Getting broadcasts...')
         const broadcasts = await resendService.listBroadcasts()
-        console.log('📋 TRPC: Broadcasts received:', broadcasts.length)
         return { broadcasts }
       } catch (error) {
-        console.error('❌ TRPC: Error fetching Resend broadcasts:', error)
+        console.error('Error fetching Resend broadcasts:', error)
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to fetch broadcasts'
