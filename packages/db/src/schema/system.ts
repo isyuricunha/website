@@ -100,7 +100,7 @@ export const bulkOperations = pgTable('bulk_operations', {
 })
 
 // Relations
-export const systemHealthLogsRelations = relations(systemHealthLogs, ({ one }) => ({
+export const systemHealthLogsRelations = relations(systemHealthLogs, () => ({
   // No relations needed for health logs
 }))
 
