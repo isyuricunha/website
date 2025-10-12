@@ -13,6 +13,7 @@
     "build:mdx": "turbo build:mdx",
     "build:packages": "turbo build --filter=./packages/*",
     "check": "turbo lint && turbo type-check && pnpm format:check && pnpm check:spelling && pnpm check:knip",
+    "check:all": "concurrently --raw \"turbo lint\" \"turbo type-check\" \"pnpm format:check\" \"pnpm check:spelling\" \"pnpm check:knip\"",
     "check:knip": "dotenv -e .env.local -- knip",
     "check:spelling": "cspell -c .cspell.json --no-progress --no-summary --no-must-find-files --unique",
     "clean": "turbo clean && rm -rf .turbo coverage",
