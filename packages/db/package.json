@@ -23,7 +23,8 @@
   },
   "dependencies": {
     "@tszhong0411/env": "workspace:*",
-    "drizzle-orm": "^0.44.4"
+    "drizzle-orm": "^0.44.4",
+    "nanoid": "^5.1.6"
   },
   "peerDependencies": {
     "pg": "^8"

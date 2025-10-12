@@ -21,6 +21,7 @@
     "with-env": "dotenv -e ../../.env.local --"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "@hookform/resolvers": "^4.1.2",
     "@icons-pack/react-simple-icons": "12.0.0",
     "@node-rs/argon2": "^2.0.2",
@@ -43,7 +44,6 @@
     "@tszhong0411/utils": "workspace:*",
     "@upstash/ratelimit": "^2.0.3",
     "@upstash/redis": "^1.34.3",
-    "@google/generative-ai": "^0.24.1",
     "@vercel/speed-insights": "^1.2.0",
     "better-auth": "^1.3.26",
     "better-call": "^1.0.12",
@@ -53,6 +53,7 @@
     "dayjs": "^1.11.13",
     "fast-xml-parser": "^5.0.8",
     "geist": "^1.3.1",
+    "gray-matter": "^4.0.3",
     "js-sha512": "^0.9.0",
     "lucide-react": "^0.476.0",
     "markdown-to-jsx": "^7.7.4",
