@@ -33,6 +33,7 @@
     "@tszhong0411/eslint-config": "workspace:*",
     "@tszhong0411/tsconfig": "workspace:*",
     "@types/node": "^22.13.5",
+    "@types/pg": "^8.15.5",
     "drizzle-kit": "^0.30.5",
     "pg": "^8.13.3"
   },
