@@ -39,7 +39,13 @@ const getAnnouncementColors = (type: string) => {
 
 export default function AnnouncementBanner() {
   const t = useTranslations()
-  const [dismissedAnnouncements, setDismissedAnnouncements] = useState<string[]>([])
+  const [dismissedAnnouncements, setDismissedAnnouncements] = useState<string[]>(() => {
+    if (typeof window !== 'undefined') {
+      const dismissed = sessionStorage.getItem('dismissedAnnouncements')
+      return dismissed ? JSON.parse(dismissed) : []
+    }
+    return []
+  })
 
   // Get active announcements
   const { data: announcementsData } = api.announcements.getAnnouncements.useQuery({
@@ -50,26 +56,13 @@ export default function AnnouncementBanner() {
   // Dismiss announcement mutation
   const dismissMutation = api.announcements.dismissAnnouncement.useMutation({
     onSuccess: (_, variables) => {
-      setDismissedAnnouncements(prev => [...prev, variables.announcementId])
-    }
-  })
-
-  // Load dismissed announcements from localStorage
-  useEffect(() => {
-    const dismissed = localStorage.getItem('dismissedAnnouncements')
-    if (dismissed) {
-      try {
-        setDismissedAnnouncements(JSON.parse(dismissed))
-      } catch (error) {
-        console.error('Error parsing dismissed announcements:', error)
+      const newDismissed = [...dismissedAnnouncements, variables.announcementId]
+      setDismissedAnnouncements(newDismissed)
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem('dismissedAnnouncements', JSON.stringify(newDismissed))
       }
     }
-  }, [])
-
-  // Save dismissed announcements to localStorage
-  useEffect(() => {
-    localStorage.setItem('dismissedAnnouncements', JSON.stringify(dismissedAnnouncements))
-  }, [dismissedAnnouncements])
+  })
 
   const handleDismiss = (announcementId: string) => {
     dismissMutation.mutate({ announcementId })
@@ -79,15 +72,9 @@ export default function AnnouncementBanner() {
     return null
   }
 
-  // Filter active announcements that haven't been dismissed
+  // Filter announcements that haven't been dismissed (date filtering and sorting are done server-side)
   const activeAnnouncements = announcementsData.announcements
-    .filter(announcement => 
-      announcement.isActive && 
-      !dismissedAnnouncements.includes(announcement.id) &&
-      (!announcement.startDate || new Date(announcement.startDate) <= new Date()) &&
-      (!announcement.endDate || new Date(announcement.endDate) >= new Date())
-    )
-    .sort((a, b) => b.priority - a.priority) // Sort by priority (highest first)
+    .filter(announcement => !dismissedAnnouncements.includes(announcement.id))
 
   if (activeAnnouncements.length === 0) {
     return null

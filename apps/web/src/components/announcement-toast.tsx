@@ -33,21 +33,17 @@ export default function AnnouncementToast() {
   useEffect(() => {
     if (!announcementsData?.announcements) return
 
-    // Get dismissed announcements from localStorage
+    // Get dismissed announcements from sessionStorage
     const dismissedAnnouncements = JSON.parse(
-      localStorage.getItem('dismissedAnnouncements') || '[]'
+      sessionStorage.getItem('dismissedAnnouncements') || '[]'
     )
 
-    // Filter urgent announcements that haven't been dismissed
+    // Filter urgent announcements that haven't been dismissed (date filtering is done server-side)
     const urgentAnnouncements = announcementsData.announcements
       .filter(announcement => 
-        announcement.isActive && 
         announcement.priority >= 3 && // Only urgent announcements
-        !dismissedAnnouncements.includes(announcement.id) &&
-        (!announcement.startDate || new Date(announcement.startDate) <= new Date()) &&
-        (!announcement.endDate || new Date(announcement.endDate) >= new Date())
+        !dismissedAnnouncements.includes(announcement.id)
       )
-      .sort((a, b) => b.priority - a.priority)
 
     // Show toast for each urgent announcement
     urgentAnnouncements.forEach((announcement) => {
@@ -73,12 +69,12 @@ export default function AnnouncementToast() {
                     <button
                       onClick={() => {
                         dismissMutation.mutate({ announcementId: announcement.id })
-                        // Add to dismissed list
+                        // Add to dismissed list in sessionStorage
                         const dismissed = JSON.parse(
-                          localStorage.getItem('dismissedAnnouncements') || '[]'
+                          sessionStorage.getItem('dismissedAnnouncements') || '[]'
                         )
                         dismissed.push(announcement.id)
-                        localStorage.setItem('dismissedAnnouncements', JSON.stringify(dismissed))
+                        sessionStorage.setItem('dismissedAnnouncements', JSON.stringify(dismissed))
                         toast.dismiss(t)
                       }}
                       className="text-xs text-muted-foreground hover:text-foreground underline"

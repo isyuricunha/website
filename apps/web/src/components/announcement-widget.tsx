@@ -43,16 +43,27 @@ interface AnnouncementWidgetProps {
 }
 
 export default function AnnouncementWidget({ className, maxItems = 5 }: AnnouncementWidgetProps) {
-  const [dismissedItems, setDismissedItems] = useState<string[]>([])
+  const [dismissedItems, setDismissedItems] = useState<string[]>(() => {
+    if (typeof window !== 'undefined') {
+      const dismissed = sessionStorage.getItem('dismissedAnnouncements')
+      return dismissed ? JSON.parse(dismissed) : []
+    }
+    return []
+  })
 
   // Get active announcements
   const { data: announcementsData, isLoading } = api.announcements.getAnnouncements.useQuery({
-    adminView: true
+    active: true,
+    adminView: false
   })
 
   const dismissMutation = api.announcements.dismissAnnouncement.useMutation({
     onSuccess: (data, variables) => {
-      setDismissedItems(prev => [...prev, variables.announcementId])
+      const newDismissed = [...dismissedItems, variables.announcementId]
+      setDismissedItems(newDismissed)
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem('dismissedAnnouncements', JSON.stringify(newDismissed))
+      }
     }
   })
 
@@ -81,15 +92,9 @@ export default function AnnouncementWidget({ className, maxItems = 5 }: Announce
     return null
   }
 
-  // Filter active announcements that haven't been dismissed
+  // Filter announcements that haven't been dismissed (date filtering is done server-side)
   const activeAnnouncements = announcementsData.announcements
-    .filter(announcement => 
-      announcement.isActive && 
-      !dismissedItems.includes(announcement.id) &&
-      (!announcement.startDate || new Date(announcement.startDate) <= new Date()) &&
-      (!announcement.endDate || new Date(announcement.endDate) >= new Date())
-    )
-    .sort((a, b) => b.priority - a.priority)
+    .filter(announcement => !dismissedItems.includes(announcement.id))
     .slice(0, maxItems)
 
   if (activeAnnouncements.length === 0) {

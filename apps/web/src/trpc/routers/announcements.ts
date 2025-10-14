@@ -27,22 +27,8 @@ export const announcementsRouter = createTRPCRouter({
           conditions.push(eq(announcements.isActive, input.active))
         }
 
-        // For non-admin users or unauthenticated users, only show current announcements
-        if (!input.adminView && (!ctx.session?.user || ctx.session.user.role !== 'admin')) {
-          const now = new Date()
-          conditions.push(
-            or(
-              eq(announcements.startDate, null),
-              gte(now, announcements.startDate)
-            )
-          )
-          conditions.push(
-            or(
-              eq(announcements.endDate, null),
-              gte(announcements.endDate, now)
-            )
-          )
-        }
+        // No date filtering - if is_active is true, announcement should appear
+        // Date fields (startDate/endDate) are kept for reference only
 
         const whereClause = conditions.length > 0 ? and(...conditions) : undefined
 
