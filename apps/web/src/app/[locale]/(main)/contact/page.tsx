@@ -67,7 +67,7 @@ const ContactPage = async (props: PageProps) => {
     },
     {
       name: t('contact.social.twitter.name'),
-      href: 'https://twitter.com/isyuricunha',
+      href: 'https://x.com/isyuricunha',
       icon: <Twitter className='h-5 w-5' />,
       description: t('contact.social.twitter.description')
     },

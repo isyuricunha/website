@@ -179,7 +179,7 @@ export function generatePersonJsonLd() {
     url: SITE_URL,
     sameAs: [
       'https://github.com/isyuricunha',
-      'https://twitter.com/isyuricunha',
+      'https://x.com/isyuricunha',
       'https://linkedin.com/in/isyuricunha'
     ],
     jobTitle: 'Senior Cloud & Infrastructure Architect',
