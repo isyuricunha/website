@@ -1,39 +1,65 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useTranslations } from '@tszhong0411/i18n/client'
-import { X, AlertCircle, Info, CheckCircle, AlertTriangle } from 'lucide-react'
-import { Button } from '@tszhong0411/ui'
-import { Card, CardContent } from '@tszhong0411/ui'
+import { X, AlertCircle, Info, CheckCircle, AlertTriangle, Sparkles } from 'lucide-react'
 
 import { api } from '@/trpc/react'
-
 
 const getAnnouncementIcon = (type: string) => {
   switch (type) {
     case 'error':
-      return <AlertCircle className="h-4 w-4" />
+      return <AlertCircle className="h-5 w-5" />
     case 'warning':
-      return <AlertTriangle className="h-4 w-4" />
+      return <AlertTriangle className="h-5 w-5" />
     case 'success':
-      return <CheckCircle className="h-4 w-4" />
+      return <CheckCircle className="h-5 w-5" />
+    case 'feature':
+      return <Sparkles className="h-5 w-5" />
     case 'info':
     default:
-      return <Info className="h-4 w-4" />
+      return <Info className="h-5 w-5" />
   }
 }
 
-const getAnnouncementColors = (type: string) => {
+const getAnnouncementStyles = (type: string) => {
   switch (type) {
     case 'error':
-      return 'border-red-200 bg-red-50 text-red-900 dark:border-red-800 dark:bg-red-950 dark:text-red-100'
+      return {
+        container: 'bg-red-500/5 border-red-500/20 dark:bg-red-500/10 dark:border-red-500/30',
+        icon: 'text-red-600 dark:text-red-400',
+        title: 'text-red-900 dark:text-red-100',
+        content: 'text-red-800/80 dark:text-red-200/80'
+      }
     case 'warning':
-      return 'border-yellow-200 bg-yellow-50 text-yellow-900 dark:border-yellow-800 dark:bg-yellow-950 dark:text-yellow-100'
+      return {
+        container: 'bg-amber-500/5 border-amber-500/20 dark:bg-amber-500/10 dark:border-amber-500/30',
+        icon: 'text-amber-600 dark:text-amber-400',
+        title: 'text-amber-900 dark:text-amber-100',
+        content: 'text-amber-800/80 dark:text-amber-200/80'
+      }
     case 'success':
-      return 'border-green-200 bg-green-50 text-green-900 dark:border-green-800 dark:bg-green-950 dark:text-green-100'
+      return {
+        container: 'bg-emerald-500/5 border-emerald-500/20 dark:bg-emerald-500/10 dark:border-emerald-500/30',
+        icon: 'text-emerald-600 dark:text-emerald-400',
+        title: 'text-emerald-900 dark:text-emerald-100',
+        content: 'text-emerald-800/80 dark:text-emerald-200/80'
+      }
+    case 'feature':
+      return {
+        container: 'bg-purple-500/5 border-purple-500/20 dark:bg-purple-500/10 dark:border-purple-500/30',
+        icon: 'text-purple-600 dark:text-purple-400',
+        title: 'text-purple-900 dark:text-purple-100',
+        content: 'text-purple-800/80 dark:text-purple-200/80'
+      }
     case 'info':
     default:
-      return 'border-blue-200 bg-blue-50 text-blue-900 dark:border-blue-800 dark:bg-blue-950 dark:text-blue-100'
+      return {
+        container: 'bg-blue-500/5 border-blue-500/20 dark:bg-blue-500/10 dark:border-blue-500/30',
+        icon: 'text-blue-600 dark:text-blue-400',
+        title: 'text-blue-900 dark:text-blue-100',
+        content: 'text-blue-800/80 dark:text-blue-200/80'
+      }
   }
 }
 
@@ -81,39 +107,51 @@ export default function AnnouncementBanner() {
   }
 
   return (
-    <div className="space-y-2">
-      {activeAnnouncements.map((announcement) => (
-        <Card 
-          key={announcement.id} 
-          className={`relative border ${getAnnouncementColors(announcement.type)}`}
-        >
-          <CardContent className="p-4">
-            <div className="flex items-start gap-3">
-              {getAnnouncementIcon(announcement.type)}
-              <div className="flex-1 space-y-1">
-                <div className="flex items-center gap-2">
-                  <h4 className="font-medium">{announcement.title}</h4>
+    <div className="space-y-3">
+      {activeAnnouncements.map((announcement) => {
+        const styles = getAnnouncementStyles(announcement.type)
+        return (
+          <div
+            key={announcement.id}
+            className={`group relative overflow-hidden rounded-xl border backdrop-blur-sm transition-all duration-300 hover:shadow-lg ${styles.container}`}
+          >
+            <div className="relative p-4">
+              <div className="flex items-start gap-4">
+                <div className={`flex-shrink-0 transition-transform duration-300 group-hover:scale-110 ${styles.icon}`}>
+                  {getAnnouncementIcon(announcement.type)}
                 </div>
-                <p className="text-sm opacity-90">
-                  {announcement.content}
-                </p>
+                
+                <div className="flex-1 min-w-0 space-y-1.5">
+                  <div className="flex items-center gap-2">
+                    <h4 className={`font-semibold text-base leading-tight ${styles.title}`}>
+                      {announcement.title}
+                    </h4>
+                    {announcement.priority > 5 && (
+                      <span className="inline-flex items-center rounded-full bg-current/10 px-2 py-0.5 text-xs font-medium">
+                        High Priority
+                      </span>
+                    )}
+                  </div>
+                  <p className={`text-sm leading-relaxed ${styles.content}`}>
+                    {announcement.content}
+                  </p>
+                </div>
+
+                {announcement.isDismissible && (
+                  <button
+                    onClick={() => handleDismiss(announcement.id)}
+                    disabled={dismissMutation.isPending}
+                    className="flex-shrink-0 rounded-lg p-1.5 transition-colors hover:bg-black/5 dark:hover:bg-white/5 disabled:opacity-50"
+                    aria-label={t('component.announcement-banner.dismiss')}
+                  >
+                    <X className="h-4 w-4 opacity-60 hover:opacity-100 transition-opacity" />
+                  </button>
+                )}
               </div>
-              {announcement.isDismissible && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="h-6 w-6 p-0 hover:bg-black/10 dark:hover:bg-white/10"
-                  onClick={() => handleDismiss(announcement.id)}
-                  disabled={dismissMutation.isPending}
-                >
-                  <X className="h-3 w-3" />
-                  <span className="sr-only">{t('component.announcement-banner.dismiss')}</span>
-                </Button>
-              )}
             </div>
-          </CardContent>
-        </Card>
-      ))}
+          </div>
+        )
+      })}
     </div>
   )
 }
