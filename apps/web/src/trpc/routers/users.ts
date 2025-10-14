@@ -303,6 +303,65 @@ export const usersRouter = createTRPCRouter({
       }
     }),
 
+  requestPasswordReset: publicProcedure
+    .input(z.object({ email: z.string().email() }))
+    .mutation(async ({ ctx, input }) => {
+      try {
+        // Get user by email
+        const user = await ctx.db.query.users.findFirst({
+          where: eq(users.email, input.email),
+          columns: { id: true, email: true, name: true }
+        })
+
+        // Always return success to prevent email enumeration
+        if (!user) {
+          return { success: true }
+        }
+
+        // Generate secure reset token
+        const token = randomBytes(32).toString('hex')
+        const tokenId = randomBytes(16).toString('hex')
+        const expiresAt = new Date(Date.now() + 60 * 60 * 1000) // 1 hour from now
+
+        // Store reset token in database
+        await ctx.db.insert(passwordResetTokens).values({
+          id: tokenId,
+          token,
+          userId: user.id,
+          expiresAt,
+          createdAt: new Date(),
+          used: false
+        })
+
+        // Create reset URL
+        const baseUrl = env.NEXT_PUBLIC_WEBSITE_URL || 'http://localhost:3000'
+        const resetUrl = `${baseUrl}/reset-password?token=${token}`
+
+        // Send email if Resend is configured
+        if (resend) {
+          try {
+            await resend.emails.send({
+              from: 'yuricunha.com <noreply@yuricunha.com>',
+              to: user.email,
+              subject: 'Reset your password',
+              react: PasswordReset({
+                name: user.name,
+                resetUrl
+              })
+            })
+          } catch (emailError) {
+            console.error('Failed to send password reset email:', emailError)
+          }
+        }
+
+        return { success: true }
+      } catch (error) {
+        console.error('Request password reset error:', error)
+        // Always return success to prevent email enumeration
+        return { success: true }
+      }
+    }),
+
   sendPasswordReset: adminProcedure
     .input(z.object({ userId: z.string() }))
     .mutation(async ({ ctx, input }) => {

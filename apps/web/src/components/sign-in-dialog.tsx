@@ -18,6 +18,7 @@ import { useEffect, useState } from 'react'
 
 import { signIn, signUp } from '@/lib/auth-client'
 import { useDialogsStore } from '@/store/dialogs'
+import ForgotPasswordDialog from '@/components/forgot-password-dialog'
 
 type Provider = 'github' | 'google'
 
@@ -72,6 +73,7 @@ const SignInDialog = () => {
   const [name, setName] = useState('')
   const [isEmailPending, setIsEmailPending] = useState(false)
   const [isSignup, setIsSignup] = useState(false)
+  const [isForgotPasswordOpen, setIsForgotPasswordOpen] = useState(false)
   const t = useTranslations()
   const pathname = usePathname()
 
@@ -199,6 +201,7 @@ const SignInDialog = () => {
   }
 
   return (
+    <>
     <Dialog
       open={isSignInOpen}
       onOpenChange={(v) => {
@@ -272,13 +275,29 @@ const SignInDialog = () => {
             onChange={(e) => setEmail(e.target.value)}
             className='w-full min-h-[44px] h-11 text-sm sm:text-base px-3 py-2'
           />
-          <Input
-            placeholder='Password'
-            type='password'
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className='w-full min-h-[44px] h-11 text-sm sm:text-base px-3 py-2'
-          />
+          <div className="space-y-2">
+            <Input
+              placeholder='Password'
+              type='password'
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className='w-full min-h-[44px] h-11 text-sm sm:text-base px-3 py-2'
+            />
+            {!isSignup && (
+              <div className="text-right">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsSignInOpen(false)
+                    setIsForgotPasswordOpen(true)
+                  }}
+                  className="text-xs font-medium text-primary hover:underline"
+                >
+                  Forgot password?
+                </button>
+              </div>
+            )}
+          </div>
           <Button
             className='relative min-h-[44px] h-10 rounded-xl font-semibold text-sm sm:text-base'
             onClick={isSignup ? handleEmailSignUp : handleEmailSignIn}
@@ -308,6 +327,11 @@ const SignInDialog = () => {
         </div>
       </DialogContent>
     </Dialog>
+    <ForgotPasswordDialog 
+      open={isForgotPasswordOpen} 
+      onOpenChange={setIsForgotPasswordOpen}
+    />
+    </>
   )
 }
 
