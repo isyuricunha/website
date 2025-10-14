@@ -139,15 +139,17 @@ const AdminDashboard = () => {
   ]
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Admin Dashboard</h1>
-          <p className="text-muted-foreground">Monitor your site's performance and manage content</p>
+        <div className="space-y-1">
+          <h1 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+            Admin Dashboard
+          </h1>
+          <p className="text-muted-foreground text-base">Monitor your site's performance and manage content</p>
         </div>
-        <div className="flex items-center space-x-2">
-          <Badge variant="outline" className="text-xs">
-            <Activity className="mr-1 h-3 w-3" />
+        <div className="flex items-center gap-3">
+          <Badge variant="outline" className="text-xs font-medium px-3 py-1.5 border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300">
+            <Activity className="mr-1.5 h-3.5 w-3.5" />
             Live
           </Badge>
           <Button 
@@ -155,7 +157,7 @@ const AdminDashboard = () => {
             size="sm" 
             onClick={handleRefresh}
             disabled={refreshing}
-            className="transition-all duration-200"
+            className="transition-all duration-200 hover:shadow-md"
           >
             <RefreshCw className={`mr-2 h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} />
             Refresh
@@ -163,28 +165,35 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
         {statCards.map((stat) => {
           const Icon = stat.icon
           return (
-            <Card key={stat.title} className="group cursor-pointer transition-all duration-200 hover:shadow-md hover:-translate-y-1" onClick={() => window.location.href = stat.href}>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium group-hover:text-primary transition-colors">{stat.title}</CardTitle>
-                <div className={`p-2 rounded-lg ${stat.bgColor}`}>
-                  <Icon className={`h-4 w-4 ${stat.color}`} />
+            <Card 
+              key={stat.title} 
+              className="group relative cursor-pointer overflow-hidden border-border/50 bg-gradient-to-br from-background to-background/50 backdrop-blur-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:border-primary/30"
+              onClick={() => window.location.href = stat.href}
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+                <CardTitle className="text-sm font-semibold text-muted-foreground group-hover:text-foreground transition-colors">
+                  {stat.title}
+                </CardTitle>
+                <div className={`p-2.5 rounded-xl ${stat.bgColor} transition-transform duration-300 group-hover:scale-110`}>
+                  <Icon className={`h-5 w-5 ${stat.color}`} />
                 </div>
               </CardHeader>
-              <CardContent>
+              <CardContent className="space-y-3">
                 <div className="flex items-baseline justify-between">
-                  <div className="text-2xl font-bold">{stat.value.toLocaleString()}</div>
-                  <div className="flex items-center text-xs text-green-600">
-                    <TrendingUp className="mr-1 h-3 w-3" />
+                  <div className="text-3xl font-bold tracking-tight">{stat.value.toLocaleString()}</div>
+                  <div className="flex items-center gap-1 text-xs font-medium text-emerald-600 dark:text-emerald-400">
+                    <TrendingUp className="h-3.5 w-3.5" />
                     {stat.trend}
                   </div>
                 </div>
-                <p className="text-xs text-muted-foreground mt-1">{stat.description}</p>
-                <div className="mt-2">
-                  <Progress value={Math.min((stat.value / 1000) * 100, 100)} className="h-1" />
+                <p className="text-xs text-muted-foreground leading-relaxed">{stat.description}</p>
+                <div className="pt-1">
+                  <Progress value={Math.min((stat.value / 1000) * 100, 100)} className="h-1.5" />
                 </div>
               </CardContent>
             </Card>
@@ -193,178 +202,196 @@ const AdminDashboard = () => {
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <Card className="md:col-span-1">
+        <Card className="md:col-span-1 border-border/50 bg-gradient-to-br from-background to-background/80 backdrop-blur-sm">
           <CardHeader>
             <div className="flex items-center justify-between">
-              <div>
-                <CardTitle className="flex items-center">
-                  <Clock className="mr-2 h-4 w-4 text-blue-600" />
+              <div className="space-y-1">
+                <CardTitle className="flex items-center gap-2 text-base">
+                  <div className="p-2 rounded-lg bg-blue-500/10">
+                    <Clock className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                  </div>
                   Recent Activity
                 </CardTitle>
-                <CardDescription>Last 7 days performance</CardDescription>
+                <CardDescription className="text-xs">Last 7 days performance</CardDescription>
               </div>
-              <Badge variant="secondary" className="text-xs">
+              <Badge variant="secondary" className="text-xs font-medium px-2.5 py-1">
                 Weekly
               </Badge>
             </div>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex items-center justify-between p-2 rounded-lg bg-blue-50 dark:bg-blue-950">
-              <div className="flex items-center space-x-2">
-                <Users className="h-4 w-4 text-blue-600" />
-                <span className="text-sm font-medium">New Users</span>
+          <CardContent className="space-y-3">
+            <div className="flex items-center justify-between p-3 rounded-xl border border-blue-500/20 bg-blue-500/5 backdrop-blur-sm transition-all duration-200 hover:shadow-sm">
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-lg bg-blue-500/10">
+                  <Users className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                </div>
+                <span className="text-sm font-semibold">New Users</span>
               </div>
-              <div className="flex items-center space-x-2">
-                <span className="font-semibold">{stats?.weekly.users ?? 0}</span>
-                <CheckCircle className="h-3 w-3 text-green-600" />
+              <div className="flex items-center gap-2">
+                <span className="text-lg font-bold">{stats?.weekly.users ?? 0}</span>
+                <CheckCircle className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
               </div>
             </div>
-            <div className="flex items-center justify-between p-2 rounded-lg bg-green-50 dark:bg-green-950">
-              <div className="flex items-center space-x-2">
-                <MessageSquare className="h-4 w-4 text-green-600" />
-                <span className="text-sm font-medium">New Comments</span>
+            <div className="flex items-center justify-between p-3 rounded-xl border border-emerald-500/20 bg-emerald-500/5 backdrop-blur-sm transition-all duration-200 hover:shadow-sm">
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-lg bg-emerald-500/10">
+                  <MessageSquare className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+                </div>
+                <span className="text-sm font-semibold">New Comments</span>
               </div>
-              <div className="flex items-center space-x-2">
-                <span className="font-semibold">{stats?.weekly.comments ?? 0}</span>
-                <CheckCircle className="h-3 w-3 text-green-600" />
+              <div className="flex items-center gap-2">
+                <span className="text-lg font-bold">{stats?.weekly.comments ?? 0}</span>
+                <CheckCircle className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="md:col-span-1">
+        <Card className="md:col-span-1 border-border/50 bg-gradient-to-br from-background to-background/80 backdrop-blur-sm">
           <CardHeader>
-            <CardTitle className="flex items-center">
-              <ArrowRight className="mr-2 h-4 w-4 text-purple-600" />
-              Quick Actions
-            </CardTitle>
-            <CardDescription>Jump to common tasks</CardDescription>
+            <div className="flex items-center gap-2 mb-1">
+              <div className="p-2 rounded-lg bg-purple-500/10">
+                <ArrowRight className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+              </div>
+              <CardTitle className="text-base">Quick Actions</CardTitle>
+            </div>
+            <CardDescription className="text-xs">Jump to common tasks</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-3">
-            <Button
-              variant="ghost"
-              className="w-full justify-start h-auto p-3 hover:bg-indigo-50 dark:hover:bg-indigo-950"
+          <CardContent className="space-y-2">
+            <button
+              className="w-full group flex items-start gap-3 p-3 rounded-xl border border-indigo-500/20 bg-indigo-500/5 backdrop-blur-sm transition-all duration-200 hover:shadow-md hover:border-indigo-500/30 hover:-translate-y-0.5"
               onClick={() => window.location.href = '/admin/posts/new'}
             >
-              <PlusIcon className="mr-3 h-4 w-4 text-indigo-600" />
-              <div className="text-left">
-                <div className="font-medium">Create Blog Post</div>
+              <div className="p-2 rounded-lg bg-indigo-500/10 transition-transform duration-200 group-hover:scale-110">
+                <PlusIcon className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+              </div>
+              <div className="flex-1 text-left space-y-0.5">
+                <div className="font-semibold text-sm">Create Blog Post</div>
                 <div className="text-xs text-muted-foreground">Write with AI assistance</div>
               </div>
-            </Button>
-            <Button
-              variant="ghost"
-              className="w-full justify-start h-auto p-3 hover:bg-blue-50 dark:hover:bg-blue-950"
+            </button>
+            <button
+              className="w-full group flex items-start gap-3 p-3 rounded-xl border border-blue-500/20 bg-blue-500/5 backdrop-blur-sm transition-all duration-200 hover:shadow-md hover:border-blue-500/30 hover:-translate-y-0.5"
               onClick={() => window.location.href = '/admin/users'}
             >
-              <Users className="mr-3 h-4 w-4 text-blue-600" />
-              <div className="text-left">
-                <div className="font-medium">Manage Users</div>
+              <div className="p-2 rounded-lg bg-blue-500/10 transition-transform duration-200 group-hover:scale-110">
+                <Users className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+              </div>
+              <div className="flex-1 text-left space-y-0.5">
+                <div className="font-semibold text-sm">Manage Users</div>
                 <div className="text-xs text-muted-foreground">View and edit user accounts</div>
               </div>
-            </Button>
-            <Button
-              variant="ghost"
-              className="w-full justify-start h-auto p-3 hover:bg-green-50 dark:hover:bg-green-950"
+            </button>
+            <button
+              className="w-full group flex items-start gap-3 p-3 rounded-xl border border-emerald-500/20 bg-emerald-500/5 backdrop-blur-sm transition-all duration-200 hover:shadow-md hover:border-emerald-500/30 hover:-translate-y-0.5"
               onClick={() => window.location.href = '/admin/comments'}
             >
-              <MessageSquare className="mr-3 h-4 w-4 text-green-600" />
-              <div className="text-left">
-                <div className="font-medium">Moderate Comments</div>
+              <div className="p-2 rounded-lg bg-emerald-500/10 transition-transform duration-200 group-hover:scale-110">
+                <MessageSquare className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+              </div>
+              <div className="flex-1 text-left space-y-0.5">
+                <div className="font-semibold text-sm">Moderate Comments</div>
                 <div className="text-xs text-muted-foreground">Review and manage comments</div>
               </div>
-            </Button>
+            </button>
           </CardContent>
         </Card>
 
-        <Card className="md:col-span-2 lg:col-span-1">
+        <Card className="md:col-span-2 lg:col-span-1 border-border/50 bg-gradient-to-br from-background to-background/80 backdrop-blur-sm">
           <CardHeader>
-            <CardTitle className="flex items-center">
-              <Wand2 className="mr-2 h-4 w-4 text-indigo-600" />
-              Blog Management
-            </CardTitle>
-            <CardDescription>AI-powered content creation and management</CardDescription>
+            <div className="flex items-center gap-2 mb-1">
+              <div className="p-2 rounded-lg bg-indigo-500/10">
+                <Wand2 className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+              </div>
+              <CardTitle className="text-base">Blog Management</CardTitle>
+            </div>
+            <CardDescription className="text-xs">AI-powered content creation</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-3">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="w-full justify-start hover:bg-indigo-50 dark:hover:bg-indigo-950"
+          <CardContent className="space-y-2">
+            <button
+              className="w-full group flex items-center justify-between p-3 rounded-xl border border-indigo-500/20 bg-indigo-500/5 backdrop-blur-sm transition-all duration-200 hover:shadow-md hover:border-indigo-500/30"
               onClick={() => window.location.href = '/admin/posts'}
             >
-              <FileText className="mr-2 h-4 w-4 text-indigo-600" />
-              <span className="text-sm">Manage Posts</span>
-              <Badge variant="secondary" className="ml-auto text-xs">
+              <div className="flex items-center gap-2">
+                <FileText className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+                <span className="text-sm font-semibold">Manage Posts</span>
+              </div>
+              <Badge variant="secondary" className="text-xs font-medium px-2 py-0.5">
                 36
               </Badge>
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="w-full justify-start hover:bg-green-50 dark:hover:bg-green-950"
+            </button>
+            <button
+              className="w-full group flex items-center justify-between p-3 rounded-xl border border-emerald-500/20 bg-emerald-500/5 backdrop-blur-sm transition-all duration-200 hover:shadow-md hover:border-emerald-500/30"
               onClick={() => window.location.href = '/admin/posts/new'}
             >
-              <PlusIcon className="mr-2 h-4 w-4 text-green-600" />
-              <span className="text-sm">Create New Post</span>
-              <Badge variant="secondary" className="ml-auto text-xs">
+              <div className="flex items-center gap-2">
+                <PlusIcon className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+                <span className="text-sm font-semibold">Create New Post</span>
+              </div>
+              <Badge variant="secondary" className="text-xs font-medium px-2 py-0.5 bg-indigo-500/10 text-indigo-700 dark:text-indigo-300">
                 AI
               </Badge>
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="w-full justify-start hover:bg-purple-50 dark:hover:bg-purple-950"
+            </button>
+            <button
+              className="w-full group flex items-center justify-between p-3 rounded-xl border border-purple-500/20 bg-purple-500/5 backdrop-blur-sm transition-all duration-200 hover:shadow-md hover:border-purple-500/30"
               onClick={() => window.location.href = '/admin/translate'}
             >
-              <Languages className="mr-2 h-4 w-4 text-purple-600" />
-              <span className="text-sm">Auto-Translate</span>
-              <Badge variant="secondary" className="ml-auto text-xs">
+              <div className="flex items-center gap-2">
+                <Languages className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+                <span className="text-sm font-semibold">Auto-Translate</span>
+              </div>
+              <Badge variant="secondary" className="text-xs font-medium px-2 py-0.5">
                 6 langs
               </Badge>
-            </Button>
+            </button>
           </CardContent>
         </Card>
       </div>
 
-      <Separator className="my-6" />
+      <Separator className="my-8" />
       
       <div className="grid gap-6 lg:grid-cols-2">
         <AnnouncementWidget className="lg:col-span-1" maxItems={5} />
         
-        <Card>
+        <Card className="border-border/50 bg-gradient-to-br from-background to-background/80 backdrop-blur-sm">
           <CardHeader>
-            <CardTitle className="flex items-center">
-              <BarChart3 className="mr-2 h-4 w-4 text-indigo-600" />
-              System Health
-            </CardTitle>
-            <CardDescription>Overall system performance metrics</CardDescription>
+            <div className="flex items-center gap-2 mb-1">
+              <div className="p-2 rounded-lg bg-indigo-500/10">
+                <BarChart3 className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+              </div>
+              <CardTitle className="text-base">System Health</CardTitle>
+            </div>
+            <CardDescription className="text-xs">Overall system performance metrics</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="space-y-2">
+            <div className="space-y-2.5">
               <div className="flex justify-between text-sm">
-                <span>Database Performance</span>
-                <span className="text-green-600 font-medium">Excellent</span>
+                <span className="font-medium">Database Performance</span>
+                <span className="text-emerald-600 dark:text-emerald-400 font-semibold text-xs">Excellent</span>
               </div>
               <Progress value={95} className="h-2" />
             </div>
-            <div className="space-y-2">
+            <div className="space-y-2.5">
               <div className="flex justify-between text-sm">
-                <span>API Response Time</span>
-                <span className="text-green-600 font-medium">Fast</span>
+                <span className="font-medium">API Response Time</span>
+                <span className="text-emerald-600 dark:text-emerald-400 font-semibold text-xs">Fast</span>
               </div>
               <Progress value={88} className="h-2" />
             </div>
-            <div className="space-y-2">
+            <div className="space-y-2.5">
               <div className="flex justify-between text-sm">
-                <span>Storage Usage</span>
-                <span className="text-yellow-600 font-medium">Moderate</span>
+                <span className="font-medium">Storage Usage</span>
+                <span className="text-amber-600 dark:text-amber-400 font-semibold text-xs">Moderate</span>
               </div>
               <Progress value={65} className="h-2" />
             </div>
-            <div className="pt-2 border-t">
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-muted-foreground">Last updated</span>
-                <span className="font-medium">Just now</span>
+            <div className="pt-3 mt-2 border-t border-border/50">
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-muted-foreground">Last updated</span>
+                <div className="flex items-center gap-1.5">
+                  <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+                  <span className="text-xs font-medium">Just now</span>
+                </div>
               </div>
             </div>
           </CardContent>

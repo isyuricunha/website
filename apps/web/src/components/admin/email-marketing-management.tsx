@@ -308,20 +308,25 @@ export default function EmailMarketingManagement() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold">Email Marketing</h1>
-          <p className="text-muted-foreground">Manage your email campaigns, audiences, and templates</p>
+        <div className="space-y-1">
+          <h1 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent flex items-center gap-3">
+            <div className="p-2.5 rounded-xl bg-purple-500/10">
+              <Mail className="h-8 w-8 text-purple-600 dark:text-purple-400" />
+            </div>
+            Email Marketing
+          </h1>
+          <p className="text-muted-foreground text-base">Manage your email campaigns, audiences, and templates</p>
         </div>
       </div>
 
       {/* Sequential Loading Progress */}
       {loadingStage !== 'complete' && (
-        <Card>
+        <Card className="border-border/50 bg-gradient-to-br from-background to-background/80 backdrop-blur-sm">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Loader2 className="h-5 w-5 animate-spin" />
+            <CardTitle className="flex items-center gap-2 text-base">
+              <Loader2 className="h-5 w-5 animate-spin text-purple-600 dark:text-purple-400" />
               Loading Email Marketing Data...
             </CardTitle>
           </CardHeader>
@@ -358,61 +363,74 @@ export default function EmailMarketingManagement() {
 
         {/* Overview Tab */}
         <TabsContent value="overview" className="space-y-6">
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Total Audiences</CardTitle>
-                <Users className="h-4 w-4 text-muted-foreground" />
+          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+            <Card className="border-border/50 bg-gradient-to-br from-background to-background/50 backdrop-blur-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+                <CardTitle className="text-sm font-semibold text-muted-foreground">Total Audiences</CardTitle>
+                <div className="p-2 rounded-lg bg-purple-500/10">
+                  <Users className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+                </div>
               </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{analytics?.totalAudiences || 0}</div>
-                <p className="text-xs text-muted-foreground">
+              <CardContent className="space-y-2">
+                <div className="text-3xl font-bold tracking-tight">{analytics?.totalAudiences || 0}</div>
+                <p className="text-xs text-muted-foreground leading-relaxed">
                   Active audience segments
                 </p>
               </CardContent>
             </Card>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Total Broadcasts</CardTitle>
-                <Mail className="h-4 w-4 text-muted-foreground" />
+            <Card className="border-border/50 bg-gradient-to-br from-background to-background/50 backdrop-blur-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+                <CardTitle className="text-sm font-semibold text-muted-foreground">Total Broadcasts</CardTitle>
+                <div className="p-2 rounded-lg bg-purple-500/10">
+                  <Mail className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+                </div>
               </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{analytics?.totalBroadcasts || 0}</div>
-                <p className="text-xs text-muted-foreground">
+              <CardContent className="space-y-2">
+                <div className="text-3xl font-bold tracking-tight">{analytics?.totalBroadcasts || 0}</div>
+                <p className="text-xs text-muted-foreground leading-relaxed">
                   Email campaigns created
                 </p>
               </CardContent>
             </Card>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Subscribers</CardTitle>
-                <TrendingUp className="h-4 w-4 text-muted-foreground" />
+            <Card className="border-border/50 bg-gradient-to-br from-background to-background/50 backdrop-blur-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+                <CardTitle className="text-sm font-semibold text-muted-foreground">Subscribers</CardTitle>
+                <div className="p-2 rounded-lg bg-purple-500/10">
+                  <TrendingUp className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+                </div>
               </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{analytics?.totalSubscribers || 0}</div>
-                <p className="text-xs text-muted-foreground">
+              <CardContent className="space-y-2">
+                <div className="text-3xl font-bold tracking-tight">{analytics?.totalSubscribers || 0}</div>
+                <p className="text-xs text-muted-foreground leading-relaxed">
                   {analytics?.subscriptionRate || 0}% subscription rate
                 </p>
               </CardContent>
             </Card>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Sent Broadcasts</CardTitle>
-                <Send className="h-4 w-4 text-muted-foreground" />
+            <Card className="border-border/50 bg-gradient-to-br from-background to-background/50 backdrop-blur-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+                <CardTitle className="text-sm font-semibold text-muted-foreground">Sent Broadcasts</CardTitle>
+                <div className="p-2 rounded-lg bg-purple-500/10">
+                  <Send className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+                </div>
               </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{analytics?.broadcasts?.sent || 0}</div>
-                <p className="text-xs text-muted-foreground">
+              <CardContent className="space-y-2">
+                <div className="text-3xl font-bold tracking-tight">{analytics?.broadcasts?.sent || 0}</div>
+                <p className="text-xs text-muted-foreground leading-relaxed">
                   Successfully delivered
                 </p>
               </CardContent>
             </Card>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-2">
-            <Card>
+          <div className="grid gap-6 md:grid-cols-2">
+            <Card className="border-border/50 bg-gradient-to-br from-background to-background/80 backdrop-blur-sm">
               <CardHeader>
-                <CardTitle>Recent Activity</CardTitle>
+                <div className="flex items-center gap-2 mb-1">
+                  <div className="p-2 rounded-lg bg-purple-500/10">
+                    <Clock className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+                  </div>
+                  <CardTitle className="text-base">Recent Activity</CardTitle>
+                </div>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -437,9 +455,14 @@ export default function EmailMarketingManagement() {
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="border-border/50 bg-gradient-to-br from-background to-background/80 backdrop-blur-sm">
               <CardHeader>
-                <CardTitle>Quick Actions</CardTitle>
+                <div className="flex items-center gap-2 mb-1">
+                  <div className="p-2 rounded-lg bg-purple-500/10">
+                    <Send className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+                  </div>
+                  <CardTitle className="text-base">Quick Actions</CardTitle>
+                </div>
               </CardHeader>
               <CardContent className="space-y-3">
                 <Button 
@@ -511,13 +534,13 @@ export default function EmailMarketingManagement() {
             </Dialog>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
             {audiences?.audiences?.map((audience) => (
-              <Card key={audience.id}>
+              <Card key={audience.id} className="border-border/50 bg-gradient-to-br from-background to-background/80 backdrop-blur-sm transition-all duration-200 hover:shadow-md">
                 <CardHeader>
-                  <CardTitle className="flex items-center justify-between">
-                    <span>{audience.name}</span>
-                    <Badge variant="secondary">0 subscribers</Badge>
+                  <CardTitle className="flex items-center justify-between text-base">
+                    <span className="font-semibold">{audience.name}</span>
+                    <Badge variant="secondary" className="text-xs">0 subscribers</Badge>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -685,12 +708,12 @@ export default function EmailMarketingManagement() {
             </div>
           </div>
 
-          <Card>
+          <Card className="border-border/50 bg-gradient-to-br from-background to-background/80 backdrop-blur-sm">
             <CardContent className="p-0">
               <ScrollArea className="h-[500px]">
                 <div className="space-y-4 p-4">
                   {filteredBroadcasts.map((broadcast) => (
-                    <Card key={broadcast.id} className="border-2">
+                    <Card key={broadcast.id} className="border-2 transition-all duration-200 hover:shadow-md">
                       <CardContent className="p-4">
                         <div className="flex items-start justify-between">
                           <div className="flex-1">

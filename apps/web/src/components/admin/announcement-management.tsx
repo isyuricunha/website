@@ -196,15 +196,17 @@ export default function AnnouncementManagement() {
   }
 
   return (
-    <div className="space-y-4 sm:space-y-6 p-4 sm:p-6">
+    <div className="space-y-8 p-4 sm:p-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="min-w-0 flex-1">
-          <h1 className="text-2xl sm:text-3xl font-bold flex items-center gap-2">
-            <Megaphone className="h-6 w-6 sm:h-8 sm:w-8 text-orange-600 dark:text-orange-400 flex-shrink-0" />
+        <div className="min-w-0 flex-1 space-y-1">
+          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent flex items-center gap-3">
+            <div className="flex-shrink-0 p-2.5 rounded-xl bg-orange-500/10">
+              <Megaphone className="h-7 w-7 sm:h-8 sm:w-8 text-orange-600 dark:text-orange-400" />
+            </div>
             <span className="truncate">Announcements</span>
           </h1>
-          <p className="text-muted-foreground text-sm sm:text-base mt-1">Manage site-wide announcements and notifications</p>
+          <p className="text-muted-foreground text-sm sm:text-base">Manage site-wide announcements and notifications</p>
         </div>
         
         <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
@@ -276,139 +278,156 @@ export default function AnnouncementManagement() {
 
       {/* Analytics Cards */}
       {analytics && (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <Card className="border-orange-200 dark:border-orange-800">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Views</CardTitle>
-              <BarChart3 className="h-4 w-4 text-orange-600 dark:text-orange-400" />
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <Card className="border-border/50 bg-gradient-to-br from-background to-background/50 backdrop-blur-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+              <CardTitle className="text-sm font-semibold text-muted-foreground">Total Views</CardTitle>
+              <div className="p-2 rounded-lg bg-orange-500/10">
+                <BarChart3 className="h-5 w-5 text-orange-600 dark:text-orange-400" />
+              </div>
             </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">{analytics.totalViews}</div>
-              <p className="text-xs text-muted-foreground">Across all announcements</p>
+            <CardContent className="space-y-2">
+              <div className="text-3xl font-bold tracking-tight text-orange-600 dark:text-orange-400">{analytics.totalViews}</div>
+              <p className="text-xs text-muted-foreground leading-relaxed">Across all announcements</p>
             </CardContent>
           </Card>
           
-          <Card className="border-orange-200 dark:border-orange-800">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Dismissal Rate</CardTitle>
-              <Users className="h-4 w-4 text-orange-600 dark:text-orange-400" />
+          <Card className="border-border/50 bg-gradient-to-br from-background to-background/50 backdrop-blur-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+              <CardTitle className="text-sm font-semibold text-muted-foreground">Dismissal Rate</CardTitle>
+              <div className="p-2 rounded-lg bg-orange-500/10">
+                <Users className="h-5 w-5 text-orange-600 dark:text-orange-400" />
+              </div>
             </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">{analytics.dismissalRate.toFixed(1)}%</div>
-              <p className="text-xs text-muted-foreground">{analytics.totalDismissals} total dismissals</p>
+            <CardContent className="space-y-2">
+              <div className="text-3xl font-bold tracking-tight text-orange-600 dark:text-orange-400">{analytics.dismissalRate.toFixed(1)}%</div>
+              <p className="text-xs text-muted-foreground leading-relaxed">{analytics.totalDismissals} total dismissals</p>
             </CardContent>
           </Card>
           
-          <Card className="border-orange-200 dark:border-orange-800">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Active Announcements</CardTitle>
-              <Megaphone className="h-4 w-4 text-orange-600 dark:text-orange-400" />
+          <Card className="border-border/50 bg-gradient-to-br from-background to-background/50 backdrop-blur-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+              <CardTitle className="text-sm font-semibold text-muted-foreground">Active Announcements</CardTitle>
+              <div className="p-2 rounded-lg bg-orange-500/10">
+                <Megaphone className="h-5 w-5 text-orange-600 dark:text-orange-400" />
+              </div>
             </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">
+            <CardContent className="space-y-2">
+              <div className="text-3xl font-bold tracking-tight text-orange-600 dark:text-orange-400">
                 {announcements?.announcements?.filter(a => a.isActive).length || 0}
               </div>
-              <p className="text-xs text-muted-foreground">Currently visible to users</p>
+              <p className="text-xs text-muted-foreground leading-relaxed">Currently visible to users</p>
             </CardContent>
           </Card>
         </div>
       )}
 
       {/* Announcements List */}
-      <Card>
+      <Card className="border-border/50 bg-gradient-to-br from-background to-background/80 backdrop-blur-sm">
         <CardHeader className="p-4 sm:p-6">
-          <CardTitle className="text-lg sm:text-xl">All Announcements</CardTitle>
-          <CardDescription className="text-sm sm:text-base">Manage your site announcements</CardDescription>
+          <div className="flex items-center gap-2 mb-1">
+            <div className="p-2 rounded-lg bg-orange-500/10">
+              <Megaphone className="h-4 w-4 text-orange-600 dark:text-orange-400" />
+            </div>
+            <CardTitle className="text-lg sm:text-xl font-semibold">All Announcements</CardTitle>
+          </div>
+          <CardDescription className="text-xs sm:text-sm">Manage your site announcements</CardDescription>
         </CardHeader>
         <CardContent className="p-4 sm:p-6">
           <ScrollArea className="h-[400px] sm:h-[500px] lg:h-[600px]">
-            <div className="space-y-3 sm:space-y-4">
+            <div className="space-y-4">
               {announcements?.announcements?.map((announcement) => (
-                <Card key={announcement.id} className={`${getAnnouncementTypeColor(announcement.type)} border-2`}>
-                  <CardContent className="p-3 sm:p-4">
-                    <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
-                      <div className="flex-1 min-w-0">
-                        <div className="flex flex-wrap items-center gap-2 mb-2">
-                          <div className="flex items-center gap-2 min-w-0">
+                <Card key={announcement.id} className="group border-border/40 bg-card hover:border-orange-500/30 transition-all duration-300 hover:shadow-lg">
+                  <CardContent className="p-5">
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="flex-1 min-w-0 space-y-3">
+                        {/* Header */}
+                        <div className="flex items-start gap-3">
+                          <div className={cn(
+                            "p-2.5 rounded-xl transition-transform duration-200 group-hover:scale-110",
+                            announcement.type === 'error' && "bg-red-500/10",
+                            announcement.type === 'warning' && "bg-yellow-500/10",
+                            announcement.type === 'success' && "bg-emerald-500/10",
+                            announcement.type === 'info' && "bg-blue-500/10"
+                          )}>
                             {getAnnouncementIcon(announcement.type)}
-                            <h3 className="font-semibold truncate">{announcement.title}</h3>
                           </div>
-                          <div className="flex flex-wrap gap-1">
-                            <Badge className={getPriorityColor(announcement.priority)}>
-                              Priority {announcement.priority}
-                            </Badge>
-                            {!announcement.isActive && (
-                              <Badge variant="secondary">Inactive</Badge>
-                            )}
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2 mb-1.5">
+                              <h3 className="text-lg font-semibold truncate group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">
+                                {announcement.title}
+                              </h3>
+                              {!announcement.isActive && (
+                                <Badge variant="secondary" className="text-xs">Inactive</Badge>
+                              )}
+                            </div>
+                            <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2">
+                              {announcement.content}
+                            </p>
                           </div>
                         </div>
                         
-                        <p className="text-sm mb-3 line-clamp-2">{announcement.content}</p>
-                        
-                        <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                          <span className="flex items-center gap-1">
-                            <Calendar className="h-3 w-3" />
+                        {/* Footer Info */}
+                        <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground pl-14">
+                          <span className="flex items-center gap-1.5">
+                            <Calendar className="h-3.5 w-3.5" />
                             {new Date(announcement.createdAt).toLocaleDateString()}
                           </span>
+                          <Badge variant="outline" className="text-xs font-medium">
+                            Priority {announcement.priority}
+                          </Badge>
                           {announcement.targetAudience && (
-                            <span className="flex items-center gap-1">
-                              <Users className="h-3 w-3" />
+                            <span className="flex items-center gap-1.5">
+                              <Users className="h-3.5 w-3.5" />
                               Targeted
                             </span>
                           )}
                           <span>
-                            {announcement.isDismissible ? 'Dismissible' : 'Non-dismissible'}
+                            {announcement.isDismissible ? '✓ Dismissible' : '✗ Not dismissible'}
                           </span>
                         </div>
                       </div>
                       
-                      <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 sm:ml-4">
-                        {/* Toggle Active/Inactive */}
+                      {/* Action Buttons */}
+                      <div className="flex items-center gap-2">
                         <Button
-                          variant="outline"
+                          variant="ghost"
                           size="sm"
                           onClick={() => handleToggleActive(announcement)}
                           className={cn(
-                            "min-h-[36px] px-2 sm:px-3 text-xs sm:text-sm",
+                            "h-9 w-9 p-0 transition-all duration-200",
                             announcement.isActive 
-                              ? "text-emerald-600 hover:text-emerald-700 border-emerald-300 hover:bg-emerald-50" 
-                              : "text-slate-600 hover:text-slate-700 border-slate-300 hover:bg-slate-50"
+                              ? "text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 dark:hover:bg-emerald-950" 
+                              : "text-muted-foreground hover:text-foreground hover:bg-muted"
                           )}
+                          aria-label={announcement.isActive ? "Deactivate" : "Activate"}
                         >
                           {announcement.isActive ? (
-                            <>
-                              <Eye className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-1" />
-                              <span className="hidden sm:inline">Active</span>
-                            </>
+                            <Eye className="h-4 w-4" />
                           ) : (
-                            <>
-                              <EyeOff className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-1" />
-                              <span className="hidden sm:inline">Inactive</span>
-                            </>
+                            <EyeOff className="h-4 w-4" />
                           )}
                         </Button>
                         
-                        {/* Edit Button */}
                         <Button
-                          variant="outline"
+                          variant="ghost"
                           size="sm"
                           onClick={() => openEditDialog(announcement)}
-                          className="text-orange-600 hover:text-orange-700 border-orange-300 hover:border-orange-400 min-h-[36px] px-2 sm:px-3"
+                          className="h-9 w-9 p-0 text-orange-600 hover:text-orange-700 hover:bg-orange-50 dark:hover:bg-orange-950 transition-all duration-200"
                           aria-label="Edit announcement"
                         >
-                          <Edit className="h-3 w-3 sm:h-4 sm:w-4" />
+                          <Edit className="h-4 w-4" />
                         </Button>
                         
-                        {/* Delete Button */}
                         <AlertDialog>
                           <AlertDialogTrigger asChild>
                             <Button
-                              variant="outline"
+                              variant="ghost"
                               size="sm"
-                              className="text-red-600 hover:text-red-700 border-red-300 hover:border-red-400 min-h-[36px] px-2 sm:px-3"
+                              className="h-9 w-9 p-0 text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950 transition-all duration-200"
                               aria-label="Delete announcement"
                             >
-                              <Trash2 className="h-3 w-3 sm:h-4 sm:w-4" />
+                              <Trash2 className="h-4 w-4" />
                             </Button>
                           </AlertDialogTrigger>
                           <AlertDialogContent>

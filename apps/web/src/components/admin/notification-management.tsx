@@ -103,15 +103,17 @@ export default function NotificationManagement() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold flex items-center gap-2">
-            <Bell className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+        <div className="space-y-1">
+          <h1 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent flex items-center gap-3">
+            <div className="p-2.5 rounded-xl bg-blue-500/10">
+              <Bell className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+            </div>
             Notifications
           </h1>
-          <p className="text-muted-foreground">Manage user notifications and system alerts</p>
+          <p className="text-muted-foreground text-base">Manage user notifications and system alerts</p>
         </div>
         
         <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
@@ -177,60 +179,71 @@ export default function NotificationManagement() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid gap-4 md:grid-cols-3">
-        <Card className="border-blue-200 dark:border-blue-800">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Notifications</CardTitle>
-            <Bell className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+      <div className="grid gap-5 md:grid-cols-3">
+        <Card className="border-border/50 bg-gradient-to-br from-background to-background/50 backdrop-blur-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+            <CardTitle className="text-sm font-semibold text-muted-foreground">Total Notifications</CardTitle>
+            <div className="p-2 rounded-lg bg-blue-500/10">
+              <Bell className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+            </div>
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+          <CardContent className="space-y-2">
+            <div className="text-3xl font-bold tracking-tight text-blue-600 dark:text-blue-400">
               {notifications?.notifications?.length || 0}
             </div>
-            <p className="text-xs text-muted-foreground">All notifications</p>
+            <p className="text-xs text-muted-foreground leading-relaxed">All notifications</p>
           </CardContent>
         </Card>
         
-        <Card className="border-blue-200 dark:border-blue-800">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Unread</CardTitle>
-            <Clock className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+        <Card className="border-border/50 bg-gradient-to-br from-background to-background/50 backdrop-blur-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+            <CardTitle className="text-sm font-semibold text-muted-foreground">Unread</CardTitle>
+            <div className="p-2 rounded-lg bg-blue-500/10">
+              <Clock className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+            </div>
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+          <CardContent className="space-y-2">
+            <div className="text-3xl font-bold tracking-tight text-blue-600 dark:text-blue-400">
               {notifications?.notifications?.filter(n => !n.read).length || 0}
             </div>
-            <p className="text-xs text-muted-foreground">Pending notifications</p>
+            <p className="text-xs text-muted-foreground leading-relaxed">Pending notifications</p>
           </CardContent>
         </Card>
         
-        <Card className="border-blue-200 dark:border-blue-800">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Read Rate</CardTitle>
-            <BarChart3 className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+        <Card className="border-border/50 bg-gradient-to-br from-background to-background/50 backdrop-blur-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+            <CardTitle className="text-sm font-semibold text-muted-foreground">Read Rate</CardTitle>
+            <div className="p-2 rounded-lg bg-blue-500/10">
+              <BarChart3 className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+            </div>
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+          <CardContent className="space-y-2">
+            <div className="text-3xl font-bold tracking-tight text-blue-600 dark:text-blue-400">
               {notifications?.notifications?.length 
                 ? Math.round((notifications.notifications.filter(n => n.read).length / notifications.notifications.length) * 100)
                 : 0}%
             </div>
-            <p className="text-xs text-muted-foreground">Notifications read</p>
+            <p className="text-xs text-muted-foreground leading-relaxed">Notifications read</p>
           </CardContent>
         </Card>
       </div>
 
       {/* Notifications List */}
-      <Card>
+      <Card className="border-border/50 bg-gradient-to-br from-background to-background/80 backdrop-blur-sm">
         <CardHeader>
-          <CardTitle>Recent Notifications</CardTitle>
-          <CardDescription>Manage user notifications and system alerts</CardDescription>
+          <div className="flex items-center gap-2 mb-1">
+            <div className="p-2 rounded-lg bg-blue-500/10">
+              <Bell className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+            </div>
+            <CardTitle className="text-base font-semibold">Recent Notifications</CardTitle>
+          </div>
+          <CardDescription className="text-xs">Manage user notifications and system alerts</CardDescription>
         </CardHeader>
         <CardContent>
           <ScrollArea className="h-[600px]">
             <div className="space-y-4">
               {notifications?.notifications?.map((notification) => (
-                <Card key={notification.id} className={`${getNotificationTypeColor(notification.type)} border-2 ${!notification.read ? 'ring-2 ring-blue-200 dark:ring-blue-800' : ''}`}>
+                <Card key={notification.id} className={`${getNotificationTypeColor(notification.type)} border-2 ${!notification.read ? 'ring-2 ring-blue-200 dark:ring-blue-800' : ''} transition-all duration-200 hover:shadow-md`}>
                   <CardContent className="p-4">
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
