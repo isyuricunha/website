@@ -299,3 +299,4 @@ export const spotifyRouter = createTRPCRouter({
       throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Failed to fetch recently played tracks' })
     }
   })
+})
