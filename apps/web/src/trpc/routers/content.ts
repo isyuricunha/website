@@ -5,6 +5,7 @@ import { randomBytes } from 'crypto'
 import { z } from 'zod'
 
 import { AuditLogger, getIpFromHeaders, getUserAgentFromHeaders } from '@/lib/audit-logger'
+import { logger } from '@/lib/logger'
 import { adminProcedure, createTRPCRouter } from '../trpc'
 
 // Helper function to generate slug from title
@@ -76,7 +77,7 @@ export const contentRouter = createTRPCRouter({
           hasMore: totalPosts.length > input.offset + input.limit
         }
       } catch (error) {
-        console.error('Error fetching posts:', error)
+        logger.error('Error fetching posts', error)
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to fetch posts'
@@ -118,7 +119,7 @@ export const contentRouter = createTRPCRouter({
         if (error instanceof TRPCError) {
           throw error
         }
-        console.error('Error fetching post:', error)
+        logger.error('Error fetching post', error)
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to fetch post'
@@ -201,7 +202,7 @@ export const contentRouter = createTRPCRouter({
         if (error instanceof TRPCError) {
           throw error
         }
-        console.error('Error creating post:', error)
+        logger.error('Error creating post', error)
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to create post'
@@ -303,7 +304,7 @@ export const contentRouter = createTRPCRouter({
         if (error instanceof TRPCError) {
           throw error
         }
-        console.error('Error updating post:', error)
+        logger.error('Error updating post', error)
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to update post'
@@ -357,7 +358,7 @@ export const contentRouter = createTRPCRouter({
         if (error instanceof TRPCError) {
           throw error
         }
-        console.error('Error deleting post:', error)
+        logger.error('Error deleting post', error)
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to delete post'
@@ -408,7 +409,7 @@ export const contentRouter = createTRPCRouter({
         }
       }
     } catch (error) {
-      console.error('Error fetching content stats:', error)
+      logger.error('Error fetching content stats', error)
       return {
         totals: {
           posts: 0,

@@ -2,6 +2,7 @@ import { initTRPC, TRPCError } from '@trpc/server'
 import { db } from '@tszhong0411/db'
 import { SuperJSON } from 'superjson'
 import { ZodError } from 'zod'
+import { logger } from '@/lib/logger'
 
 import { getSession } from '@/lib/auth'
 
@@ -25,7 +26,12 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
         zodError: error.cause instanceof ZodError ? error.cause.flatten() : null
       }
     }
-  }
+  },
+  onError: process.env.NODE_ENV === 'development'
+    ? ({ path, error }) => {
+        logger.error(`tRPC failed on ${path ?? '<no-path>'}`, error)
+      }
+    : undefined
 })
 
 export const createTRPCRouter = t.router
@@ -42,7 +48,7 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
   const result = await next()
 
   const end = Date.now()
-  console.log(`[TRPC] ${path} took ${end - start}ms to execute`)
+  logger.debug(`[TRPC] ${path} took ${end - start}ms to execute`)
 
   return result
 })

@@ -7,7 +7,8 @@ import { and, desc, eq, gte, inArray, or } from 'drizzle-orm'
 import { randomBytes } from 'crypto'
 import { z } from 'zod'
 
-import { AuditLogger } from '@/lib/audit-logger'
+import { AuditLogger, getIpFromHeaders, getUserAgentFromHeaders } from '@/lib/audit-logger'
+import { logger } from '@/lib/logger'
 import { adminProcedure, protectedProcedure, publicProcedure, createTRPCRouter } from '../trpc'
 
 const auditLogger = new AuditLogger()
@@ -94,7 +95,7 @@ export const announcementsRouter = createTRPCRouter({
           }))
         }
       } catch (error) {
-        console.error('Error fetching announcements:', error)
+        logger.error('Error fetching announcements', error)
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to fetch announcements'
@@ -151,7 +152,7 @@ export const announcementsRouter = createTRPCRouter({
 
         return { success: true, announcementId }
       } catch (error) {
-        console.error('Error creating announcement:', error)
+        logger.error('Error creating announcement', error)
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to create announcement'
@@ -202,7 +203,7 @@ export const announcementsRouter = createTRPCRouter({
 
         return { success: true }
       } catch (error) {
-        console.error('Error dismissing announcement:', error)
+        logger.error('Error dismissing announcement', error)
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to dismiss announcement'
@@ -254,7 +255,7 @@ export const announcementsRouter = createTRPCRouter({
 
         return { success: true }
       } catch (error) {
-        console.error('Error updating announcement:', error)
+        logger.error('Error updating announcement', error)
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to update announcement'
@@ -282,7 +283,7 @@ export const announcementsRouter = createTRPCRouter({
 
         return { success: true }
       } catch (error) {
-        console.error('Error deleting announcement:', error)
+        logger.error('Error deleting announcement', error)
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to delete announcement'
@@ -353,7 +354,7 @@ export const announcementsRouter = createTRPCRouter({
 
         return analytics
       } catch (error) {
-        console.error('Error fetching announcement analytics:', error)
+        logger.error('Error fetching announcement analytics', error)
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to fetch announcement analytics'

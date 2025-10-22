@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { BlogService } from '@/lib/blog/blog-service'
 import { aiService } from '@/lib/ai/ai-service'
 import { ratelimit } from '@/lib/ratelimit'
+import { logger } from '@/lib/logger'
 
 const SUPPORTED_LOCALES = ['en', 'pt', 'fr', 'de', 'ja', 'zh']
 
@@ -98,7 +99,7 @@ export async function POST(request: NextRequest) {
         })
 
       } catch (error) {
-        console.error(`Translation error for ${targetLocale}:`, error)
+        logger.error('Translation error', error, { locale: targetLocale })
         results.push({ 
           locale: targetLocale, 
           success: false, 
@@ -119,7 +120,7 @@ export async function POST(request: NextRequest) {
     })
 
   } catch (error) {
-    console.error('Error in translation:', error)
+    logger.error('Error in translation', error)
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

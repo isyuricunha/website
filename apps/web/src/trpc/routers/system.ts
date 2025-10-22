@@ -11,6 +11,7 @@ import { z } from 'zod'
 
 import { AuditLogger, getIpFromHeaders, getUserAgentFromHeaders } from '@/lib/audit-logger'
 import { adminProcedure, createTRPCRouter } from '../trpc'
+import { logger } from '@/lib/logger'
 
 // Helper function to perform health checks
 async function performHealthCheck(type: string, db: any) {
@@ -119,7 +120,7 @@ export const systemRouter = createTRPCRouter({
         }))
       }
     } catch (error) {
-      console.error('Error getting system health:', error)
+      logger.error('Error getting system health', error)
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Failed to get system health'
@@ -186,7 +187,7 @@ export const systemRouter = createTRPCRouter({
           hasMore: totalCount.length > input.offset + input.limit
         }
       } catch (error) {
-        console.error('Error fetching error logs:', error)
+        logger.error('Error fetching error logs', error)
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to fetch error logs'
@@ -224,7 +225,7 @@ export const systemRouter = createTRPCRouter({
 
         return { success: true, errorId }
       } catch (error) {
-        console.error('Error logging error:', error)
+        logger.error('Error logging error', error)
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to log error'
@@ -263,7 +264,7 @@ export const systemRouter = createTRPCRouter({
 
         return { success: true }
       } catch (error) {
-        console.error('Error resolving error:', error)
+        logger.error('Error resolving error', error)
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to resolve error'
@@ -301,7 +302,7 @@ export const systemRouter = createTRPCRouter({
 
       return { config: groupedConfig }
     } catch (error) {
-      console.error('Error fetching site config:', error)
+      logger.error('Error fetching site config', error)
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Failed to fetch site configuration'
@@ -376,7 +377,7 @@ export const systemRouter = createTRPCRouter({
 
         return { success: true }
       } catch (error) {
-        console.error('Error updating site config:', error)
+        logger.error('Error updating site config', error)
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to update site configuration'
@@ -423,7 +424,7 @@ export const systemRouter = createTRPCRouter({
           }))
         }
       } catch (error) {
-        console.error('Error fetching bulk operations:', error)
+        logger.error('Error fetching bulk operations', error)
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to fetch bulk operations'
@@ -483,7 +484,7 @@ export const systemRouter = createTRPCRouter({
         }
       }
     } catch (error) {
-      console.error('Error fetching system stats:', error)
+      logger.error('Error fetching system stats', error)
       return {
         errors: {
           total: 0,

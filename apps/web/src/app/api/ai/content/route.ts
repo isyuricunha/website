@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
+import { logger } from '@/lib/logger'
 import { aiService, type AIProvider } from '@/lib/ai/ai-service'
 import { flags } from '@tszhong0411/env'
 
@@ -85,7 +86,7 @@ export async function POST(request: NextRequest) {
     })
 
   } catch (error) {
-    console.error('Content generation API error:', error)
+    logger.error('Content generation API error', error)
     
     if (error instanceof z.ZodError) {
       return NextResponse.json(

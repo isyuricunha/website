@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { BlogService } from '@/lib/blog/blog-service'
 import { ratelimit } from '@/lib/ratelimit'
+import { logger } from '@/lib/logger'
 
 export async function POST(request: NextRequest) {
   try {
@@ -61,7 +62,7 @@ export async function POST(request: NextRequest) {
     })
 
   } catch (error) {
-    console.error('Error creating post:', error)
+    logger.error('Error creating post', error)
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -128,7 +129,7 @@ export async function PUT(request: NextRequest) {
     })
 
   } catch (error) {
-    console.error('Error updating post:', error)
+    logger.error('Error updating post', error)
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -187,7 +188,7 @@ export async function DELETE(request: NextRequest) {
     })
 
   } catch (error) {
-    console.error('Error deleting post:', error)
+    logger.error('Error deleting post', error)
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

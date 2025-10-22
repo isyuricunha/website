@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
+import { logger } from '@/lib/logger'
 
 import { resendService } from '@/lib/resend-service'
 
@@ -52,7 +53,7 @@ export async function POST(request: NextRequest) {
     })
 
   } catch (error) {
-    console.error('Newsletter unsubscribe error:', error)
+    logger.error('Newsletter unsubscribe error', error)
     
     if (error instanceof z.ZodError) {
       return NextResponse.json(

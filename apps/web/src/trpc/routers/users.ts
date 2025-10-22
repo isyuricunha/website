@@ -11,6 +11,7 @@ import { PasswordReset } from '@tszhong0411/emails'
 import { resend } from '@/lib/resend'
 import { env } from '@tszhong0411/env'
 import { AuditLogger, getIpFromHeaders, getUserAgentFromHeaders } from '@/lib/audit-logger'
+import { logger } from '@/lib/logger'
 import { adminProcedure, createTRPCRouter, publicProcedure } from '../trpc'
 
 export const usersRouter = createTRPCRouter({
@@ -350,13 +351,13 @@ export const usersRouter = createTRPCRouter({
               })
             })
           } catch (emailError) {
-            console.error('Failed to send password reset email:', emailError)
+            logger.error('Failed to send password reset email', emailError)
           }
         }
 
         return { success: true }
       } catch (error) {
-        console.error('Request password reset error:', error)
+        logger.error('Request password reset error', error)
         // Always return success to prevent email enumeration
         return { success: true }
       }
@@ -415,7 +416,7 @@ export const usersRouter = createTRPCRouter({
               })
             })
           } catch (emailError) {
-            console.error('Failed to send password reset email:', emailError)
+            logger.error('Failed to send password reset email', emailError)
           }
         }
 
@@ -437,7 +438,7 @@ export const usersRouter = createTRPCRouter({
 
         return { success: true }
       } catch (error) {
-        console.error('Password reset error:', error)
+        logger.error('Password reset error', error)
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to send password reset email'
@@ -493,7 +494,7 @@ export const usersRouter = createTRPCRouter({
 
         return { success: true }
       } catch (error) {
-        console.error('Reset password error:', error)
+        logger.error('Reset password error', error)
         if (error instanceof TRPCError) {
           throw error
         }

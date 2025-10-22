@@ -9,6 +9,7 @@ import { z } from 'zod'
 
 import { AuditLogger } from '@/lib/audit-logger'
 import { adminProcedure, protectedProcedure, createTRPCRouter } from '../trpc'
+import { logger } from '@/lib/logger'
 
 // DEPRECATED: This router is being replaced by resendEmailRouter
 // Only keeping basic template management for system emails
@@ -42,7 +43,7 @@ export const emailManagementRouter = createTRPCRouter({
 
         return { templates }
       } catch (error) {
-        console.error('Error fetching email templates:', error)
+        logger.error('Error fetching email templates', error)
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to fetch email templates'
@@ -89,7 +90,7 @@ export const emailManagementRouter = createTRPCRouter({
 
         return { success: true, templateId }
       } catch (error) {
-        console.error('Error creating email template:', error)
+        logger.error('Error creating email template', error)
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to create email template'
@@ -132,7 +133,7 @@ export const emailManagementRouter = createTRPCRouter({
 
         return { subscriptions }
       } catch (error) {
-        console.error('Error fetching email subscriptions:', error)
+        logger.error('Error fetching email subscriptions', error)
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to fetch email subscriptions'

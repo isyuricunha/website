@@ -14,6 +14,7 @@ import { randomBytes } from 'crypto'
 import { z } from 'zod'
 
 import { AuditLogger, getIpFromHeaders, getUserAgentFromHeaders } from '@/lib/audit-logger'
+import { logger } from '@/lib/logger'
 import { adminProcedure, createTRPCRouter } from '../trpc'
 
 export const dataManagementRouter = createTRPCRouter({
@@ -48,7 +49,7 @@ export const dataManagementRouter = createTRPCRouter({
           }))
         }
       } catch (error) {
-        console.error('Error fetching database backups:', error)
+        logger.error('Error fetching database backups', error)
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to fetch database backups'
@@ -105,7 +106,7 @@ export const dataManagementRouter = createTRPCRouter({
 
         return { success: true, backupId }
       } catch (error) {
-        console.error('Error creating database backup:', error)
+        logger.error('Error creating database backup', error)
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to create database backup'
@@ -144,7 +145,7 @@ export const dataManagementRouter = createTRPCRouter({
           }))
         }
       } catch (error) {
-        console.error('Error fetching data exports:', error)
+        logger.error('Error fetching data exports', error)
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to fetch data exports'
@@ -206,7 +207,7 @@ export const dataManagementRouter = createTRPCRouter({
 
         return { success: true, exportId }
       } catch (error) {
-        console.error('Error creating data export:', error)
+        logger.error('Error creating data export', error)
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to create data export'
@@ -271,7 +272,7 @@ export const dataManagementRouter = createTRPCRouter({
 
         return { success: true, checkId }
       } catch (error) {
-        console.error('Error running data quality check:', error)
+        logger.error('Error running data quality check', error)
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to run data quality check'
@@ -307,7 +308,7 @@ export const dataManagementRouter = createTRPCRouter({
           }
         }
       } catch (error) {
-        console.error('Error fetching data management stats:', error)
+        logger.error('Error fetching data management stats', error)
         return {
           backups: { total: 0, completed: 0, totalSize: 0 },
           exports: { total: 0, completed: 0, totalRecords: 0 }

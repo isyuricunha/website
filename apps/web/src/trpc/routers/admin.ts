@@ -1,6 +1,7 @@
 import { auditLogs } from '@tszhong0411/db'
 import { desc, gte, count, sql } from 'drizzle-orm'
 import { adminProcedure, createTRPCRouter } from '../trpc'
+import { logger } from '@/lib/logger'
 
 export const adminRouter = createTRPCRouter({
   getStats: adminProcedure.query(async ({ ctx }) => {
@@ -133,7 +134,7 @@ export const adminRouter = createTRPCRouter({
         }))
       }
     } catch (error) {
-      console.error('Error fetching admin stats:', error)
+      logger.error('Error fetching admin stats', error)
       return {
         totals: {
           users: 0,
@@ -193,7 +194,7 @@ export const adminRouter = createTRPCRouter({
         }))
       }
     } catch (error) {
-      console.error('Error fetching audit logs:', error)
+      logger.error('Error fetching audit logs', error)
       return { logs: [] }
     }
   })

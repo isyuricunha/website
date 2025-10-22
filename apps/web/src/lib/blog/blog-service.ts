@@ -1,6 +1,7 @@
 import fs from 'fs/promises'
 import path from 'path'
 import matter from 'gray-matter'
+import { logger } from '@/lib/logger'
 
 export interface BlogPost {
   slug: string
@@ -57,7 +58,7 @@ export class BlogService {
       
       return posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     } catch (error) {
-      console.error(`Error reading posts for locale ${locale}:`, error)
+      logger.error('Error reading posts for locale', error, { locale })
       return []
     }
   }
@@ -97,7 +98,7 @@ export class BlogService {
         filePath
       }
     } catch (error) {
-      console.error(`Error reading post ${slug} for locale ${locale}:`, error)
+      logger.error('Error reading post', error, { slug, locale })
       return null
     }
   }
@@ -128,7 +129,7 @@ export class BlogService {
       await fs.writeFile(filePath, fileContent, 'utf8')
       return true
     } catch (error) {
-      console.error(`Error saving post ${slug} for locale ${locale}:`, error)
+      logger.error('Error saving post', error, { slug, locale })
       return false
     }
   }
@@ -143,7 +144,7 @@ export class BlogService {
       await fs.unlink(filePath)
       return true
     } catch (error) {
-      console.error(`Error deleting post ${slug} for locale ${locale}:`, error)
+      logger.error('Error deleting post', error, { slug, locale })
       return false
     }
   }

@@ -1,6 +1,7 @@
 import { TRPCError } from '@trpc/server'
 import { env } from '@tszhong0411/env'
 import { ratelimit } from '@tszhong0411/kv'
+import { logger } from '@/lib/logger'
 
 import { getIp } from '@/utils/get-ip'
 
@@ -21,16 +22,11 @@ const getAccessToken = async () => {
   try {
     // Validate environment variables
     if (!CLIENT_ID || !CLIENT_SECRET || !REFRESH_TOKEN) {
-      console.error('Missing Spotify environment variables:', {
-        CLIENT_ID: !!CLIENT_ID,
-        CLIENT_SECRET: !!CLIENT_SECRET,
-        REFRESH_TOKEN: !!REFRESH_TOKEN
-      })
-      console.error('Make sure NEXT_PUBLIC_FLAG_SPOTIFY=true is set in your .env.local file')
+      logger.error('Missing Spotify environment variables')
       throw new Error('Missing required Spotify environment variables')
     }
 
-    console.log('Attempting token refresh with CLIENT_ID:', CLIENT_ID.substring(0, 8) + '...')
+    logger.debug('Attempting Spotify token refresh')
 
     const response = await fetch(TOKEN_ENDPOINT, {
       method: 'POST',
@@ -46,32 +42,22 @@ const getAccessToken = async () => {
     })
 
     if (!response.ok) {
-      console.error('Spotify token refresh failed:', response.status, response.statusText)
       const errorText = await response.text()
-      console.error('Token refresh error response:', errorText)
-      
-      // Try to parse the error as JSON for more details
-      try {
-        const errorJson = JSON.parse(errorText)
-        console.error('Parsed error details:', errorJson)
-      } catch (e) {
-        console.error('Could not parse error response as JSON')
-      }
-      
-      throw new Error(`Token refresh failed: ${response.status} - ${errorText}`)
+      logger.error('Spotify token refresh failed', new Error(`Status: ${response.status}`), { status: response.status })
+      throw new Error(`Token refresh failed: ${response.status}`)
     }
 
     const data = await response.json()
 
     if (!data.access_token) {
-      console.error('No access token in response:', data)
+      logger.error('No access token in Spotify response')
       throw new Error('No access token received')
     }
 
-    console.log('Successfully obtained access token')
+    logger.debug('Successfully obtained Spotify access token')
     return data.access_token as string
   } catch (error) {
-    console.error('Error getting Spotify access token:', error)
+    logger.error('Error getting Spotify access token', error)
     throw error
   }
 }
@@ -176,16 +162,14 @@ export const spotifyRouter = createTRPCRouter({
       })
 
       if (!response.ok) {
-        console.error('Spotify API error for top artists:', response.status, response.statusText)
-        const errorText = await response.text()
-        console.error('Error response:', errorText)
+        logger.error('Spotify API error for top artists', new Error(`Status: ${response.status}`))
         throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: `Failed to fetch top artists: ${response.status}` })
       }
 
       const data = await response.json()
 
       if (!data.items || !Array.isArray(data.items)) {
-        console.warn('No items in top artists response:', data)
+        logger.warn('No items in top artists response')
         return []
       }
 
@@ -206,7 +190,7 @@ export const spotifyRouter = createTRPCRouter({
         }
       })
     } catch (error) {
-      console.error('Error in getTopArtists:', error)
+      logger.error('Error in getTopArtists', error)
       throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Failed to fetch top artists' })
     }
   }),
@@ -229,16 +213,14 @@ export const spotifyRouter = createTRPCRouter({
       })
 
       if (!response.ok) {
-        console.error('Spotify API error for top tracks:', response.status, response.statusText)
-        const errorText = await response.text()
-        console.error('Error response:', errorText)
+        logger.error('Spotify API error for top tracks', new Error(`Status: ${response.status}`))
         throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: `Failed to fetch top tracks: ${response.status}` })
       }
 
       const data = await response.json()
 
       if (!data.items || !Array.isArray(data.items)) {
-        console.warn('No items in top tracks response:', data)
+        logger.warn('No items in top tracks response')
         return []
       }
 
@@ -261,7 +243,7 @@ export const spotifyRouter = createTRPCRouter({
         }
       })
     } catch (error) {
-      console.error('Error in getTopTracks:', error)
+      logger.error('Error in getTopTracks', error)
       throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Failed to fetch top tracks' })
     }
   }),
@@ -284,16 +266,14 @@ export const spotifyRouter = createTRPCRouter({
       })
 
       if (!response.ok) {
-        console.error('Spotify API error for recently played:', response.status, response.statusText)
-        const errorText = await response.text()
-        console.error('Error response:', errorText)
+        logger.error('Spotify API error for recently played', new Error(`Status: ${response.status}`))
         throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: `Failed to fetch recently played tracks: ${response.status}` })
       }
 
       const data = await response.json()
 
       if (!data.items || !Array.isArray(data.items)) {
-        console.warn('No items in recently played response:', data)
+        logger.warn('No items in recently played response')
         return []
       }
 
@@ -315,7 +295,7 @@ export const spotifyRouter = createTRPCRouter({
         }
       })
     } catch (error) {
-      console.error('Error in getRecentlyPlayed:', error)
+      logger.error('Error in getRecentlyPlayed', error)
       throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Failed to fetch recently played tracks' })
     }
   })
@@ -336,78 +316,4 @@ export const spotifyRouter = createTRPCRouter({
       if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
 
       try {
-        const accessToken = await getAccessToken()
-        const response = await fetch(`${TOP_ARTISTS_ENDPOINT}?limit=${input.limit}&time_range=${input.time_range}` as string, {
-          headers: { Authorization: `Bearer ${accessToken}` },
-          signal: AbortSignal.timeout(10000)
-        })
-        if (!response.ok) {
-          const errorText = await response.text()
-          console.error('Error top artists by range:', response.status, errorText)
-          throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: `Failed to fetch top artists (${response.status})` })
-        }
-        const data = await response.json()
-        if (!data.items || !Array.isArray(data.items)) return []
-        return data.items.map((artist: any) => {
-          const image = artist.images?.[0]?.url || artist.images?.[1]?.url || artist.images?.[2]?.url || null
-          return {
-            id: artist.id as string,
-            name: artist.name as string,
-            image,
-            url: artist.external_urls.spotify as string,
-            followers: artist.followers.total as number,
-            genres: artist.genres as string[]
-          }
-        })
-      } catch (error) {
-        console.error('Error in getTopArtistsByRange:', error)
-        throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Failed to fetch top artists by range' })
-      }
-    }),
-
-  // New: Fetch top tracks by time range without altering existing getTopTracks
-  getTopTracksByRange: publicProcedure
-    .input((val: unknown) => {
-      const input = val as { time_range?: 'short_term' | 'medium_term' | 'long_term', limit?: number }
-      return {
-        time_range: (input?.time_range ?? 'short_term') as 'short_term' | 'medium_term' | 'long_term',
-        limit: Math.min(Math.max(input?.limit ?? 20, 1), 50)
-      }
-    })
-    .query(async ({ ctx, input }) => {
-      const ip = getIp(ctx.headers)
-      const { success } = await ratelimit.limit(getKey(ip))
-      if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
-
-      try {
-        const accessToken = await getAccessToken()
-        const response = await fetch(`${TOP_TRACKS_ENDPOINT}?limit=${input.limit}&time_range=${input.time_range}` as string, {
-          headers: { Authorization: `Bearer ${accessToken}` },
-          signal: AbortSignal.timeout(10000)
-        })
-        if (!response.ok) {
-          const errorText = await response.text()
-          console.error('Error top tracks by range:', response.status, errorText)
-          throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: `Failed to fetch top tracks (${response.status})` })
-        }
-        const data = await response.json()
-        if (!data.items || !Array.isArray(data.items)) return []
-        return data.items.map((track: any) => {
-          const albumImage = track.album.images?.[0]?.url || track.album.images?.[1]?.url || track.album.images?.[2]?.url || null
-          return {
-            id: track.id as string,
-            name: track.name as string,
-            artist: track.artists.map((artist: { name: string }) => artist.name).join(', '),
-            album: track.album.name as string,
-            albumImage,
-            url: track.external_urls.spotify as string,
-            duration: track.duration_ms as number,
-            popularity: track.popularity as number
-          }
-        })
-      } catch (error) {
-        console.error('Error in getTopTracksByRange:', error)
-        throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Failed to fetch top tracks by range' })
-      }
-    })
 })

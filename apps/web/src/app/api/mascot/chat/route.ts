@@ -3,6 +3,7 @@ import { Ratelimit } from '@upstash/ratelimit'
 import { Redis } from '@upstash/redis'
 import { NextRequest, NextResponse } from 'next/server'
 import { flags } from '@tszhong0411/env'
+import { logger } from '@/lib/logger'
 
 // Rate limiting for Gemini API calls
 const redis = Redis.fromEnv()
@@ -94,7 +95,7 @@ User message: ${message}`
     })
 
   } catch (error) {
-    console.error('Gemini API error:', error)
+    logger.error('Gemini API error', error)
     
     // Fallback responses for common errors
     if (error instanceof Error && error.message.includes('quota')) {

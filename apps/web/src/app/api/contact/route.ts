@@ -4,6 +4,7 @@ import { Resend } from 'resend'
 import { render } from '@react-email/components'
 
 import { ContactForm, ContactConfirmation } from '@tszhong0411/emails'
+import { logger } from '@/lib/logger'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
@@ -51,7 +52,7 @@ Sent at: ${currentDate}
     })
 
     if (emailResult.error) {
-      console.error('Email sending error:', emailResult.error)
+      logger.error('Email sending error', emailResult.error)
       return Response.json(
         { error: 'Failed to send email. Please try again later.' },
         { status: 500 }
@@ -89,7 +90,7 @@ This is an automated confirmation email. Please do not reply to this email.
     })
 
   } catch (error) {
-    console.error('Contact form error:', error)
+    logger.error('Contact form error', error)
     
     if (error instanceof z.ZodError) {
       return Response.json(
