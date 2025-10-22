@@ -48,7 +48,7 @@ const ContactForm = (props: ContactFormProps) => {
               <Heading className="text-white text-[24px] font-bold mb-[24px] mt-0">
                 New Contact Form Submission
               </Heading>
-              
+
               <Text className="text-white text-[16px] mb-[24px] mt-0">
                 You have received a new message through your contact form on yuricunha.com.
               </Text>
@@ -107,13 +107,13 @@ const ContactForm = (props: ContactFormProps) => {
             {/* Footer */}
             <Section className="px-[32px] py-[24px]">
               <Text className="text-[#888888] text-[12px] mb-[16px] mt-0">
-                Senior Cloud and Infrastructure Specialist
+                Database Administrator (DBA) and Server Infrastructure Specialist
               </Text>
-              
+
               <Text className="text-[#888888] text-[12px] m-0">
                 Brazil
               </Text>
-              
+
               <Row className="mt-[16px]">
                 <Column className="w-auto pr-[16px]">
                   <Link href="https://github.com/isyuricunha">

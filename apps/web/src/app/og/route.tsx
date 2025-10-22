@@ -14,7 +14,7 @@ export const GET = async (req: NextRequest) => {
                 case 'pt':
                     return {
                         title: 'Yuri Cunha',
-                        subtitle: 'Especialista em Cloud e Infraestrutura',
+                        subtitle: 'Administrador de Banco de Dados (DBA) e Infraestrutura',
                         description: 'Construindo sistemas resilientes e garantindo performance perfeita'
                     }
                 case 'zh':
@@ -38,7 +38,7 @@ export const GET = async (req: NextRequest) => {
                 default: // en
                     return {
                         title: 'Yuri Cunha',
-                        subtitle: 'Cloud & Infrastructure Specialist',
+                        subtitle: 'Database Administrator (DBA) and Server Infrastructure Specialist',
                         description: 'Building resilient systems and ensuring seamless performance'
                     }
             }

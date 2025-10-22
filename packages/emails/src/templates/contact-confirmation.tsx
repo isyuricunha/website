@@ -45,19 +45,19 @@ const ContactConfirmation = (props: ContactConfirmationProps) => {
               <Heading className="text-white text-[24px] font-bold mb-[24px] text-left">
                 Thank you for reaching out, {contactName}!
               </Heading>
-              
+
               <Text className="text-white text-[16px] leading-[24px] mb-[16px]">
                 I have successfully received your contact inquiry and wanted to personally confirm that your message is now in my queue for review.
               </Text>
-              
+
               <Text className="text-white text-[16px] leading-[24px] mb-[16px]">
                 As a Server Infrastructure and Database Administration specialist, I understand the importance of timely communication. I will respond within 48 hours, probably much less (~)
               </Text>
-              
+
               <Text className="text-white text-[16px] leading-[24px] mb-[24px]">
                 In the meantime, feel free to explore my website at{' '}
-                <Link 
-                  href="https://yuricunha.com" 
+                <Link
+                  href="https://yuricunha.com"
                   className="text-[#c24000] underline"
                 >
                   yuricunha.com
@@ -111,7 +111,7 @@ const ContactConfirmation = (props: ContactConfirmationProps) => {
             {/* Footer */}
             <Section className="border-t border-solid border-[#333333] pt-[24px]">
               <Text className="text-[#888888] text-[12px] leading-[16px] text-center mb-[8px] m-0">
-                Senior Cloud and Infrastructure Specialist
+                dbA
               </Text>
               <Text className="text-[#888888] text-[12px] leading-[16px] text-center mb-[8px] m-0">
                 Brazil
