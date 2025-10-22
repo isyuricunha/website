@@ -54,7 +54,7 @@
     "@changesets/cli": "^2.29.6",
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
-    "@playwright/test": "^1.55.0",
+    "@playwright/test": "^1.56.1",
     "@tszhong0411/eslint-config": "workspace:*",
     "@tszhong0411/prettier-config": "workspace:*",
     "@tszhong0411/tsconfig": "workspace:*",
