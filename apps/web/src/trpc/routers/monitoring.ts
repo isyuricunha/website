@@ -498,6 +498,16 @@ export const monitoringRouter = createTRPCRouter({
           input.errorId,
           { action: 'error_resolved' },
           ipAddress,
+          userAgent
+        )
+
+        return { success: true }
+      } catch (error) {
+        logger.error('Error resolving error', error)
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to resolve error'
+        })
       }
     }),
 
@@ -731,7 +741,7 @@ export const monitoringRouter = createTRPCRouter({
           }
         }
       } catch (error) {
-        console.error('Error fetching monitoring stats:', error)
+        logger.error('Error fetching monitoring stats', error)
         return {
           performance: { totalMetrics: 0, avgResponseTime: 0 },
           errors: { total: 0, unresolved: 0, critical: 0, high: 0 },

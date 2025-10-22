@@ -299,21 +299,3 @@ export const spotifyRouter = createTRPCRouter({
       throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Failed to fetch recently played tracks' })
     }
   })
-  ,
-
-  // New: Fetch top artists by time range without altering existing getTopArtists
-  getTopArtistsByRange: publicProcedure
-    .input((val: unknown) => {
-      const input = val as { time_range?: 'short_term' | 'medium_term' | 'long_term', limit?: number }
-      return {
-        time_range: (input?.time_range ?? 'short_term') as 'short_term' | 'medium_term' | 'long_term',
-        limit: Math.min(Math.max(input?.limit ?? 20, 1), 50)
-      }
-    })
-    .query(async ({ ctx, input }) => {
-      const ip = getIp(ctx.headers)
-      const { success } = await ratelimit.limit(getKey(ip))
-      if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
-
-      try {
-})

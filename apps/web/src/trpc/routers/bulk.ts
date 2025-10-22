@@ -232,6 +232,8 @@ export const bulkRouter = createTRPCRouter({
             successful: successfulItems,
             failed: failedItems,
             processed: processedItems
+          }
+        }
       } catch (error) {
         logger.error('Bulk operation error:', error)
         
