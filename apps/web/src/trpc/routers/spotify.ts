@@ -1,4 +1,5 @@
 import { TRPCError } from '@trpc/server'
+import { z } from 'zod'
 import { env } from '@tszhong0411/env'
 import { ratelimit } from '@tszhong0411/kv'
 import { logger } from '@/lib/logger'
@@ -298,5 +299,121 @@ export const spotifyRouter = createTRPCRouter({
       logger.error('Error in getRecentlyPlayed', error)
       throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Failed to fetch recently played tracks' })
     }
-  })
+  }),
+
+  getTopArtistsByRange: publicProcedure
+    .input(
+      z.object({
+        time_range: z.enum(['short_term', 'medium_term', 'long_term']).default('short_term')
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const ip = getIp(ctx.headers)
+
+      const { success } = await ratelimit.limit(getKey(ip))
+
+      if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+
+      try {
+        const accessToken = await getAccessToken()
+
+        const response = await fetch(`${TOP_ARTISTS_ENDPOINT}?limit=20&time_range=${input.time_range}`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`
+          },
+          signal: AbortSignal.timeout(10000) // 10 second timeout
+        })
+
+        if (!response.ok) {
+          logger.error('Spotify API error for top artists by range', new Error(`Status: ${response.status}`))
+          throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: `Failed to fetch top artists: ${response.status}` })
+        }
+
+        const data = await response.json()
+
+        if (!data.items || !Array.isArray(data.items)) {
+          logger.warn('No items in top artists by range response')
+          return []
+        }
+
+        return data.items.map((artist: any) => {
+          // Try to get the best quality image
+          const image = artist.images?.[0]?.url ||
+                       artist.images?.[1]?.url ||
+                       artist.images?.[2]?.url ||
+                       null
+
+          return {
+            id: artist.id as string,
+            name: artist.name as string,
+            image,
+            url: artist.external_urls.spotify as string,
+            followers: artist.followers.total as number,
+            genres: artist.genres as string[]
+          }
+        })
+      } catch (error) {
+        logger.error('Error in getTopArtistsByRange', error)
+        throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Failed to fetch top artists' })
+      }
+    }),
+
+  getTopTracksByRange: publicProcedure
+    .input(
+      z.object({
+        time_range: z.enum(['short_term', 'medium_term', 'long_term']).default('short_term')
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const ip = getIp(ctx.headers)
+
+      const { success } = await ratelimit.limit(getKey(ip))
+
+      if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+
+      try {
+        const accessToken = await getAccessToken()
+
+        const response = await fetch(`${TOP_TRACKS_ENDPOINT}?limit=20&time_range=${input.time_range}`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`
+          },
+          signal: AbortSignal.timeout(10000) // 10 second timeout
+        })
+
+        if (!response.ok) {
+          logger.error('Spotify API error for top tracks by range', new Error(`Status: ${response.status}`))
+          throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: `Failed to fetch top tracks: ${response.status}` })
+        }
+
+        const data = await response.json()
+
+        if (!data.items || !Array.isArray(data.items)) {
+          logger.warn('No items in top tracks by range response')
+          return []
+        }
+
+        return data.items.map((track: any) => {
+          // Try to get the best quality image
+          const albumImage = track.album.images?.[0]?.url ||
+                            track.album.images?.[1]?.url ||
+                            track.album.images?.[2]?.url ||
+                            null
+
+          return {
+            id: track.id as string,
+            name: track.name as string,
+            artist: track.artists.map((artist: { name: string }) => artist.name).join(', '),
+            album: track.album.name as string,
+            albumImage,
+            url: track.external_urls.spotify as string,
+            duration: track.duration_ms as number,
+            popularity: track.popularity as number
+          }
+        })
+      } catch (error) {
+        logger.error('Error in getTopTracksByRange', error)
+        throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Failed to fetch top tracks' })
+      }
+    })
 })
