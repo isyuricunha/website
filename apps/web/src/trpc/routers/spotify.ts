@@ -19,6 +19,47 @@ const TOP_TRACKS_ENDPOINT = 'https://api.spotify.com/v1/me/top/tracks'
 const RECENTLY_PLAYED_ENDPOINT = 'https://api.spotify.com/v1/me/player/recently-played'
 const TOKEN_ENDPOINT = 'https://accounts.spotify.com/api/token'
 
+// Cache do access token (válido por ~50 minutos)
+let cachedAccessToken: { token: string; expiresAt: number } | null = null
+
+// Helper function for retry with exponential backoff
+const retryWithBackoff = async <T>(
+  fn: () => Promise<T>,
+  maxRetries = 3,
+  initialDelay = 1000
+): Promise<T> => {
+  let lastError: Error
+  
+  for (let i = 0; i < maxRetries; i++) {
+    try {
+      return await fn()
+    } catch (error) {
+      lastError = error as Error
+      
+      // Check if it's a temporary error (502, 503, 504)
+      const isTemporaryError = 
+        error instanceof Error &&
+        (error.message.includes('502') || 
+         error.message.includes('503') || 
+         error.message.includes('504'))
+      
+      // Don't retry on non-temporary errors
+      if (!isTemporaryError) {
+        throw error
+      }
+      
+      // Don't wait on last attempt
+      if (i < maxRetries - 1) {
+        const delay = initialDelay * Math.pow(2, i)
+        logger.debug(`Retry attempt ${i + 1}/${maxRetries} after ${delay}ms`)
+        await new Promise(resolve => setTimeout(resolve, delay))
+      }
+    }
+  }
+  
+  throw lastError!
+}
+
 const getAccessToken = async () => {
   try {
     // Validate environment variables
@@ -27,35 +68,50 @@ const getAccessToken = async () => {
       throw new Error('Missing required Spotify environment variables')
     }
 
-    logger.debug('Attempting Spotify token refresh')
-
-    const response = await fetch(TOKEN_ENDPOINT, {
-      method: 'POST',
-      headers: {
-        Authorization: `Basic ${BASIC}`,
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body: new URLSearchParams({
-        grant_type: 'refresh_token',
-        refresh_token: REFRESH_TOKEN
-      }),
-      signal: AbortSignal.timeout(10000) // 10 second timeout
-    })
-
-    if (!response.ok) {
-      const errorText = await response.text()
-      logger.error('Spotify token refresh failed', new Error(`Status: ${response.status}`), { status: response.status })
-      throw new Error(`Token refresh failed: ${response.status}`)
+    // Check cache first (tokens are valid for ~1 hour, we cache for 50 minutes)
+    const now = Date.now()
+    if (cachedAccessToken && cachedAccessToken.expiresAt > now) {
+      logger.debug('Using cached Spotify access token')
+      return cachedAccessToken.token
     }
 
-    const data = await response.json()
+    logger.debug('Requesting new Spotify access token')
+
+    // Use retry logic for token refresh
+    const data = await retryWithBackoff(async () => {
+      const response = await fetch(TOKEN_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          Authorization: `Basic ${BASIC}`,
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+          grant_type: 'refresh_token',
+          refresh_token: REFRESH_TOKEN
+        }),
+        signal: AbortSignal.timeout(10000) // 10 second timeout
+      })
+
+      if (!response.ok) {
+        logger.error('Spotify token refresh failed', new Error(`Status: ${response.status}`), { status: response.status })
+        throw new Error(`Token refresh failed: ${response.status}`)
+      }
+
+      return response.json()
+    })
 
     if (!data.access_token) {
       logger.error('No access token in Spotify response')
       throw new Error('No access token received')
     }
 
-    logger.debug('Successfully obtained Spotify access token')
+    // Cache the token (expires in 50 minutes)
+    cachedAccessToken = {
+      token: data.access_token,
+      expiresAt: now + (50 * 60 * 1000) // 50 minutes
+    }
+
+    logger.debug('Successfully obtained and cached Spotify access token')
     return data.access_token as string
   } catch (error) {
     logger.error('Error getting Spotify access token', error)
