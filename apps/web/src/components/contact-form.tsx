@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useTranslations } from '@tszhong0411/i18n/client'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, Input, Button, Textarea } from '@tszhong0411/ui'
 import { Send, MessageSquare, Loader2, CheckCircle, AlertCircle } from 'lucide-react'
@@ -10,6 +10,7 @@ interface FormData {
   email: string
   subject: string
   message: string
+  website: string // honeypot field
 }
 
 interface FormErrors {
@@ -26,13 +27,20 @@ export default function ContactForm() {
     name: '',
     email: '',
     subject: '',
-    message: ''
+    message: '',
+    website: '' // honeypot field - bots usually fill this
   })
   
   const [errors, setErrors] = useState<FormErrors>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
   const [submitMessage, setSubmitMessage] = useState('')
+  const [formStartTime, setFormStartTime] = useState<number>(0)
+
+  // Track when form was loaded (to prevent instant submissions)
+  useEffect(() => {
+    setFormStartTime(Date.now())
+  }, [])
 
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {}
@@ -74,6 +82,23 @@ export default function ContactForm() {
       return
     }
 
+    // Anti-bot check: honeypot field should be empty
+    if (formData.website) {
+      console.warn('Honeypot field was filled - likely a bot')
+      // Silently fail for bots (don't show error message)
+      setSubmitStatus('success')
+      setSubmitMessage(t('contact.form.success'))
+      return
+    }
+
+    // Anti-bot check: form should take at least 3 seconds to fill
+    const timeTaken = Date.now() - formStartTime
+    if (timeTaken < 3000) {
+      setSubmitStatus('error')
+      setSubmitMessage(t('contact.form.too-fast') || 'Please take your time to fill the form.')
+      return
+    }
+
     setIsSubmitting(true)
     setSubmitStatus('idle')
     setErrors({})
@@ -84,7 +109,13 @@ export default function ContactForm() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          subject: formData.subject,
+          message: formData.message,
+          timestamp: formStartTime
+        }),
       })
 
       const result = await response.json()
@@ -92,7 +123,8 @@ export default function ContactForm() {
       if (response.ok) {
         setSubmitStatus('success')
         setSubmitMessage(result.message || t('contact.form.success'))
-        setFormData({ name: '', email: '', subject: '', message: '' })
+        setFormData({ name: '', email: '', subject: '', message: '', website: '' })
+        setFormStartTime(Date.now()) // Reset timestamp
       } else {
         setSubmitStatus('error')
         if (result.details) {
@@ -231,6 +263,20 @@ export default function ContactForm() {
             <p className='text-xs text-gray-500 mt-1'>
               {t('contact.form.message.character-count', { count: formData.message.length })}
             </p>
+          </div>
+
+          {/* Honeypot field - hidden from users, but bots will fill it */}
+          <div className='absolute' style={{ left: '-9999px', opacity: 0, height: 0, overflow: 'hidden' }} aria-hidden='true'>
+            <label htmlFor='website'>Website (do not fill)</label>
+            <Input
+              id='website'
+              name='website'
+              type='text'
+              tabIndex={-1}
+              autoComplete='off'
+              value={formData.website}
+              onChange={(e) => setFormData(prev => ({ ...prev, website: e.target.value }))}
+            />
           </div>
 
           <Button 

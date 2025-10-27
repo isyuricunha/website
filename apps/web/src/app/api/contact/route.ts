@@ -5,6 +5,7 @@ import { render } from '@react-email/components'
 
 import { ContactForm, ContactConfirmation } from '@tszhong0411/emails'
 import { logger } from '@/lib/logger'
+import { checkRateLimit, validateContactData, getClientIp } from '@/lib/spam-detection'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
@@ -19,8 +20,46 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
     
+    // Get client IP for rate limiting
+    const clientIp = getClientIp(request.headers)
+    
+    // Check rate limit
+    const rateLimitResult = checkRateLimit(clientIp)
+    if (!rateLimitResult.allowed) {
+      logger.warn('Rate limit exceeded', { ip: clientIp, retryAfter: rateLimitResult.retryAfter })
+      return Response.json(
+        { 
+          error: 'Too many requests. Please try again later.',
+          retryAfter: rateLimitResult.retryAfter 
+        },
+        { 
+          status: 429,
+          headers: {
+            'Retry-After': String(rateLimitResult.retryAfter || 3600)
+          }
+        }
+      )
+    }
+    
     // Validate the form data
     const validatedData = contactFormSchema.parse(body)
+    
+    // Check for spam patterns in the data
+    const spamCheck = validateContactData(validatedData)
+    if (spamCheck.isSpam) {
+      logger.warn('Spam detected in contact form', {
+        ip: clientIp,
+        reason: spamCheck.reason,
+        name: validatedData.name,
+        subject: validatedData.subject
+      })
+      
+      // Return success to the bot (don't let them know they were blocked)
+      return Response.json({ 
+        success: true, 
+        message: 'Message sent successfully! You should receive a confirmation email shortly.' 
+      })
+    }
     
     const currentDate = new Date().toLocaleString()
 
