@@ -3,7 +3,7 @@
 import { useTranslations } from '@tszhong0411/i18n/client'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@tszhong0411/ui'
 import { Clock, Calendar, TrendingUp, Music } from 'lucide-react'
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 
 import { api } from '@/trpc/react'
 import Link from '../link'
@@ -12,6 +12,11 @@ import SpotifyImage from './spotify-image'
 const MusicTimeline = () => {
   const t = useTranslations()
   const [isRefreshing, setIsRefreshing] = useState(false)
+  const [isMounted, setIsMounted] = useState(false)
+
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
 
   const { data: recentTracks, refetch, isLoading, error } = api.spotify.getRecentlyPlayed.useQuery(
     undefined,
@@ -228,10 +233,10 @@ const MusicTimeline = () => {
                       </div>
                       <div className='text-right'>
                         <p className='text-[10px] sm:text-xs text-muted-foreground'>
-                          {formatTime(track.playedAt)}
+                          {isMounted ? formatTime(track.playedAt) : '...'}
                         </p>
                         <p className='text-[10px] sm:text-xs text-muted-foreground'>
-                          {formatDate(track.playedAt)}
+                          {isMounted ? formatDate(track.playedAt) : '...'}
                         </p>
                       </div>
                     </Link>

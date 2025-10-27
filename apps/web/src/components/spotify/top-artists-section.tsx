@@ -3,7 +3,7 @@
 import { useTranslations } from '@tszhong0411/i18n/client'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@tszhong0411/ui'
 import { UserIcon, Grid3X3, List, Shuffle } from 'lucide-react'
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 
 import { api } from '@/trpc/react'
 import TimeRangeToggle from './time-range-toggle'
@@ -18,6 +18,11 @@ const TopArtistsSection = () => {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('list')
   const [isShuffled, setIsShuffled] = useState(true)
   const [timeRange, setTimeRange] = useState<'short_term' | 'medium_term' | 'long_term'>('short_term')
+  const [isMounted, setIsMounted] = useState(false)
+
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
 
   const { data: artists, refetch, isLoading, error } = api.spotify.getTopArtistsByRange.useQuery(
     { time_range: timeRange },
@@ -251,7 +256,7 @@ const TopArtistsSection = () => {
                   </div>
                   <div className='text-right flex-shrink-0'>
                     <p className='text-xs text-muted-foreground'>
-                      {artist.followers.toLocaleString()} {t('spotify.followers')}
+                      {isMounted ? artist.followers.toLocaleString() : artist.followers} {t('spotify.followers')}
                     </p>
                   </div>
                 </div>

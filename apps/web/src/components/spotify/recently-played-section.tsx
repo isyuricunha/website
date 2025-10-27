@@ -3,7 +3,7 @@
 import { useTranslations } from '@tszhong0411/i18n/client'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@tszhong0411/ui'
 import { PlayIcon, ClockIcon } from 'lucide-react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import { api } from '@/trpc/react'
 import { exportJson, exportRecentlyPlayedCsv } from '@/utils/exporters/spotify'
@@ -14,6 +14,11 @@ import SpotifyImage from './spotify-image'
 const RecentlyPlayedSection = () => {
   const t = useTranslations()
   const [isRefreshing, setIsRefreshing] = useState(false)
+  const [isMounted, setIsMounted] = useState(false)
+
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
 
   const { data: tracks, refetch, isLoading, error } = api.spotify.getRecentlyPlayed.useQuery(
     undefined,
@@ -188,7 +193,7 @@ const RecentlyPlayedSection = () => {
               <div className='flex flex-shrink-0 items-center space-x-2 text-right'>
                 <ClockIcon className='h-4 w-4 text-muted-foreground' />
                 <p className='text-xs sm:text-sm text-muted-foreground'>
-                  {formatTimeAgo(track.playedAt)}
+                  {isMounted ? formatTimeAgo(track.playedAt) : '...'}
                 </p>
               </div>
 
