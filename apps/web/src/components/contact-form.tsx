@@ -11,7 +11,6 @@ interface FormData {
   email: string
   subject: string
   message: string
-  website: string // honeypot field
 }
 
 interface FormErrors {
@@ -28,21 +27,18 @@ export default function ContactForm() {
     name: '',
     email: '',
     subject: '',
-    message: '',
-    website: '' // honeypot field - bots usually fill this
+    message: ''
   })
   
   const [errors, setErrors] = useState<FormErrors>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
   const [submitMessage, setSubmitMessage] = useState('')
-  const [formStartTime, setFormStartTime] = useState<number>(0)
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
   const [isTurnstileEnabled, setIsTurnstileEnabled] = useState(false)
 
-  // Track when form was loaded and check Turnstile availability
+  // Check Turnstile availability
   useEffect(() => {
-    setFormStartTime(Date.now())
     // Check if Turnstile is enabled (client-side only to avoid hydration issues)
     setIsTurnstileEnabled(
       process.env.NEXT_PUBLIC_FLAG_TURNSTILE === 'true' && 
@@ -90,23 +86,6 @@ export default function ContactForm() {
       return
     }
 
-    // Anti-bot check: honeypot field should be empty
-    if (formData.website) {
-      console.warn('Honeypot field was filled - likely a bot')
-      // Silently fail for bots (don't show error message)
-      setSubmitStatus('success')
-      setSubmitMessage(t('contact.form.success'))
-      return
-    }
-
-    // Anti-bot check: form should take at least 3 seconds to fill
-    const timeTaken = Date.now() - formStartTime
-    if (timeTaken < 3000) {
-      setSubmitStatus('error')
-      setSubmitMessage(t('contact.form.too-fast') || 'Please take your time to fill the form.')
-      return
-    }
-
     // Check Turnstile token if enabled
     if (isTurnstileEnabled && !turnstileToken) {
       setSubmitStatus('error')
@@ -129,7 +108,6 @@ export default function ContactForm() {
           email: formData.email,
           subject: formData.subject,
           message: formData.message,
-          timestamp: formStartTime,
           ...(isTurnstileEnabled && { turnstileToken })
         }),
       })
@@ -139,8 +117,7 @@ export default function ContactForm() {
       if (response.ok) {
         setSubmitStatus('success')
         setSubmitMessage(result.message || t('contact.form.success'))
-        setFormData({ name: '', email: '', subject: '', message: '', website: '' })
-        setFormStartTime(Date.now()) // Reset timestamp
+        setFormData({ name: '', email: '', subject: '', message: '' })
         setTurnstileToken(null) // Reset Turnstile token
       } else {
         setSubmitStatus('error')
@@ -302,24 +279,10 @@ export default function ContactForm() {
             </div>
           )}
 
-          {/* Honeypot field - hidden from users, but bots will fill it */}
-          <div className='absolute' style={{ left: '-9999px', opacity: 0, height: 0, overflow: 'hidden' }} aria-hidden='true'>
-            <label htmlFor='website'>Website (do not fill)</label>
-            <Input
-              id='website'
-              name='website'
-              type='text'
-              tabIndex={-1}
-              autoComplete='off'
-              value={formData.website}
-              onChange={(e) => setFormData(prev => ({ ...prev, website: e.target.value }))}
-            />
-          </div>
-
           <Button 
             type='submit' 
             className='w-full flex items-center justify-center gap-2 text-sm'
-            disabled={isSubmitting}
+            disabled={isSubmitting || (isTurnstileEnabled && !turnstileToken)}
           >
             {isSubmitting ? (
               <>

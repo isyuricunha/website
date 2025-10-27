@@ -5,7 +5,7 @@ import { render } from '@react-email/components'
 
 import { ContactForm, ContactConfirmation } from '@tszhong0411/emails'
 import { logger } from '@/lib/logger'
-import { checkRateLimit, validateContactData, getClientIp, verifyTurnstileToken } from '@/lib/spam-detection'
+import { checkRateLimit, getClientIp, verifyTurnstileToken } from '@/lib/spam-detection'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
     // Validate the form data
     const validatedData = contactFormSchema.parse(body)
     
-    // Verify Turnstile token if enabled
+    // Verify Turnstile token (required)
     const isTurnstileEnabled = 
       process.env.NEXT_PUBLIC_FLAG_TURNSTILE === 'true' && 
       process.env.TURNSTILE_SECRET_KEY
@@ -76,23 +76,8 @@ export async function POST(request: NextRequest) {
           { status: 400 }
         )
       }
-    }
-    
-    // Check for spam patterns in the data
-    const spamCheck = validateContactData(validatedData)
-    if (spamCheck.isSpam) {
-      logger.warn('Spam detected in contact form', {
-        ip: clientIp,
-        reason: spamCheck.reason,
-        name: validatedData.name,
-        subject: validatedData.subject
-      })
       
-      // Return success to the bot (don't let them know they were blocked)
-      return Response.json({ 
-        success: true, 
-        message: 'Message sent successfully! You should receive a confirmation email shortly.' 
-      })
+      logger.info('Turnstile verification successful', { ip: clientIp })
     }
     
     const currentDate = new Date().toLocaleString()
