@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useTranslations } from '@tszhong0411/i18n/client'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, Input, Button, Textarea } from '@tszhong0411/ui'
 import { Send, MessageSquare, Loader2, CheckCircle, AlertCircle } from 'lucide-react'
+import { Turnstile } from '@marsidev/react-turnstile'
 
 interface FormData {
   name: string
@@ -36,6 +37,12 @@ export default function ContactForm() {
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
   const [submitMessage, setSubmitMessage] = useState('')
   const [formStartTime, setFormStartTime] = useState<number>(0)
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
+
+  // Check if Turnstile is enabled
+  const isTurnstileEnabled = 
+    process.env.NEXT_PUBLIC_FLAG_TURNSTILE === 'true' && 
+    process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
 
   // Track when form was loaded (to prevent instant submissions)
   useEffect(() => {
@@ -99,6 +106,13 @@ export default function ContactForm() {
       return
     }
 
+    // Check Turnstile token if enabled
+    if (isTurnstileEnabled && !turnstileToken) {
+      setSubmitStatus('error')
+      setSubmitMessage(t('contact.form.turnstile-required') || 'Please complete the security verification.')
+      return
+    }
+
     setIsSubmitting(true)
     setSubmitStatus('idle')
     setErrors({})
@@ -114,7 +128,8 @@ export default function ContactForm() {
           email: formData.email,
           subject: formData.subject,
           message: formData.message,
-          timestamp: formStartTime
+          timestamp: formStartTime,
+          ...(isTurnstileEnabled && { turnstileToken })
         }),
       })
 
@@ -125,6 +140,7 @@ export default function ContactForm() {
         setSubmitMessage(result.message || t('contact.form.success'))
         setFormData({ name: '', email: '', subject: '', message: '', website: '' })
         setFormStartTime(Date.now()) // Reset timestamp
+        setTurnstileToken(null) // Reset Turnstile token
       } else {
         setSubmitStatus('error')
         if (result.details) {
@@ -264,6 +280,26 @@ export default function ContactForm() {
               {t('contact.form.message.character-count', { count: formData.message.length })}
             </p>
           </div>
+
+          {/* Cloudflare Turnstile (optional) */}
+          {isTurnstileEnabled && (
+            <div className='flex justify-center'>
+              <Turnstile
+                siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
+                onSuccess={(token) => setTurnstileToken(token)}
+                onError={() => {
+                  setTurnstileToken(null)
+                  setSubmitStatus('error')
+                  setSubmitMessage(t('contact.form.turnstile-error') || 'Security verification failed. Please try again.')
+                }}
+                onExpire={() => setTurnstileToken(null)}
+                options={{
+                  theme: 'auto',
+                  size: 'normal'
+                }}
+              />
+            </div>
+          )}
 
           {/* Honeypot field - hidden from users, but bots will fill it */}
           <div className='absolute' style={{ left: '-9999px', opacity: 0, height: 0, overflow: 'hidden' }} aria-hidden='true'>

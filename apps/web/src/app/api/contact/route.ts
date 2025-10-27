@@ -5,7 +5,7 @@ import { render } from '@react-email/components'
 
 import { ContactForm, ContactConfirmation } from '@tszhong0411/emails'
 import { logger } from '@/lib/logger'
-import { checkRateLimit, validateContactData, getClientIp } from '@/lib/spam-detection'
+import { checkRateLimit, validateContactData, getClientIp, verifyTurnstileToken } from '@/lib/spam-detection'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
@@ -13,7 +13,9 @@ const contactFormSchema = z.object({
   name: z.string().min(1, 'Name is required').max(100),
   email: z.string().email('Invalid email address'),
   subject: z.string().min(1, 'Subject is required').max(200),
-  message: z.string().min(10, 'Message must be at least 10 characters').max(2000)
+  message: z.string().min(10, 'Message must be at least 10 characters').max(2000),
+  timestamp: z.number().optional(),
+  turnstileToken: z.string().optional()
 })
 
 export async function POST(request: NextRequest) {
@@ -43,6 +45,38 @@ export async function POST(request: NextRequest) {
     
     // Validate the form data
     const validatedData = contactFormSchema.parse(body)
+    
+    // Verify Turnstile token if enabled
+    const isTurnstileEnabled = 
+      process.env.NEXT_PUBLIC_FLAG_TURNSTILE === 'true' && 
+      process.env.TURNSTILE_SECRET_KEY
+    
+    if (isTurnstileEnabled) {
+      if (!validatedData.turnstileToken) {
+        logger.warn('Missing Turnstile token', { ip: clientIp })
+        return Response.json(
+          { error: 'Security verification required. Please refresh the page and try again.' },
+          { status: 400 }
+        )
+      }
+
+      const turnstileResult = await verifyTurnstileToken(
+        validatedData.turnstileToken,
+        process.env.TURNSTILE_SECRET_KEY!,
+        clientIp
+      )
+
+      if (!turnstileResult.success) {
+        logger.warn('Turnstile verification failed', {
+          ip: clientIp,
+          error: turnstileResult.error
+        })
+        return Response.json(
+          { error: 'Security verification failed. Please try again.' },
+          { status: 400 }
+        )
+      }
+    }
     
     // Check for spam patterns in the data
     const spamCheck = validateContactData(validatedData)

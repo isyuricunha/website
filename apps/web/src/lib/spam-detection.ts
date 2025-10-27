@@ -141,3 +141,43 @@ export function getClientIp(headers: Headers): string {
   // Fallback
   return headers.get('x-client-ip') || 'unknown'
 }
+
+/**
+ * Verify Cloudflare Turnstile token
+ * @see https://developers.cloudflare.com/turnstile/get-started/server-side-validation/
+ */
+export async function verifyTurnstileToken(
+  token: string,
+  secretKey: string,
+  remoteIp?: string
+): Promise<{ success: boolean; error?: string }> {
+  try {
+    const formData = new FormData()
+    formData.append('secret', secretKey)
+    formData.append('response', token)
+    if (remoteIp) {
+      formData.append('remoteip', remoteIp)
+    }
+
+    const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      body: formData,
+    })
+
+    const data = await response.json()
+
+    if (!data.success) {
+      return {
+        success: false,
+        error: data['error-codes']?.join(', ') || 'Turnstile verification failed'
+      }
+    }
+
+    return { success: true }
+  } catch (error) {
+    return {
+      success: false,
+      error: 'Failed to verify Turnstile token'
+    }
+  }
+}
