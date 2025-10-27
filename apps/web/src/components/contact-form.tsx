@@ -38,15 +38,16 @@ export default function ContactForm() {
   const [submitMessage, setSubmitMessage] = useState('')
   const [formStartTime, setFormStartTime] = useState<number>(0)
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
+  const [isTurnstileEnabled, setIsTurnstileEnabled] = useState(false)
 
-  // Check if Turnstile is enabled
-  const isTurnstileEnabled = 
-    process.env.NEXT_PUBLIC_FLAG_TURNSTILE === 'true' && 
-    process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
-
-  // Track when form was loaded (to prevent instant submissions)
+  // Track when form was loaded and check Turnstile availability
   useEffect(() => {
     setFormStartTime(Date.now())
+    // Check if Turnstile is enabled (client-side only to avoid hydration issues)
+    setIsTurnstileEnabled(
+      process.env.NEXT_PUBLIC_FLAG_TURNSTILE === 'true' && 
+      !!process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
+    )
   }, [])
 
   const validateForm = (): boolean => {
@@ -282,10 +283,10 @@ export default function ContactForm() {
           </div>
 
           {/* Cloudflare Turnstile (optional) */}
-          {isTurnstileEnabled && (
+          {isTurnstileEnabled && process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && (
             <div className='flex justify-center'>
               <Turnstile
-                siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
+                siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY}
                 onSuccess={(token) => setTurnstileToken(token)}
                 onError={() => {
                   setTurnstileToken(null)
