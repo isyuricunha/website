@@ -1193,7 +1193,8 @@
       "submitting": "Wird gesendet...",
       "success": "Nachricht erfolgreich gesendet!",
       "error": "Fehler beim Senden der Nachricht. Bitte versuche es erneut.",
-      "network-error": "Netzwerkfehler. Bitte überprüfe deine Verbindung und versuche es erneut."
+      "network-error": "Netzwerkfehler. Bitte überprüfe deine Verbindung und versuche es erneut.",
+      "turnstile-required": "Bitte schließen Sie die Verifizierungsherausforderung ab"
     },
     "direct": {
       "title": "Direkter Kontakt",

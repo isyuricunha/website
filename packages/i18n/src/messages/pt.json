@@ -1193,7 +1193,8 @@
       "submitting": "Enviando...",
       "success": "Mensagem enviada com sucesso!",
       "error": "Falha ao enviar mensagem. Por favor, tente novamente.",
-      "network-error": "Erro de rede. Por favor, verifique sua conexão e tente novamente."
+      "network-error": "Erro de rede. Por favor, verifique sua conexão e tente novamente.",
+      "turnstile-required": "Conclua o desafio de verificação"
     },
     "direct": {
       "title": "Contato Direto",

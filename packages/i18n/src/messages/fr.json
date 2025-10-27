@@ -1193,7 +1193,8 @@
       "submitting": "Envoi en cours...",
       "success": "Message envoyé avec succès !",
       "error": "Échec de l'envoi du message. Veuillez réessayer.",
-      "network-error": "Erreur réseau. Veuillez vérifier votre connexion et réessayer."
+      "network-error": "Erreur réseau. Veuillez vérifier votre connexion et réessayer.",
+      "turnstile-required": "Veuillez relever le défi de vérification"
     },
     "direct": {
       "title": "Contact Direct",
