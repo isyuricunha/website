@@ -5,7 +5,7 @@ import { i18nMiddleware } from '@tszhong0411/i18n/middleware'
 const middleware = (request: NextRequest) => {
   const csp = `
     default-src 'self';
-    script-src 'self' 'unsafe-inline' 'unsafe-eval' *.yuricunha.com *.umami.is vercel.live va.vercel-scripts.com unpkg.com;
+    script-src 'self' 'unsafe-inline' 'unsafe-eval' *.yuricunha.com *.umami.is vercel.live va.vercel-scripts.com unpkg.com challenges.cloudflare.com;
     style-src 'self' 'unsafe-inline' vercel.live;
     img-src * blob: data:;
     font-src 'self' data: assets.vercel.com vercel.live;
@@ -15,7 +15,7 @@ const middleware = (request: NextRequest) => {
     connect-src *;
     media-src 'self';
     frame-ancestors 'none';
-    frame-src vercel.live;
+    frame-src vercel.live challenges.cloudflare.com;
     block-all-mixed-content;
     upgrade-insecure-requests;
     worker-src blob: 'self';
