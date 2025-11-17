@@ -100,7 +100,7 @@ theme = "hugo-blog-awesome"
   avatar = "avatar.png" # put the file in assets folder; also ensure that image has same height and width
   # Note: image is not rendered if the resource(avatar image) is not found. No error is displayed.
   intro = "Yuri Cunha"
-  name = "Yuri Cunhq"
+  name = "Yuri Cunha"
   description = "committing changes to my life database every day"
 
 # Allow to override webmanifest options
