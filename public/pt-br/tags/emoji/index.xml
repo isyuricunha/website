@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Emoji on Awesome Hugo blog</title>
+    <link>http://localhost:1313/pt-br/tags/emoji/</link>
+    <description>Recent content in Emoji on Awesome Hugo blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>pt-br</language>
+    <lastBuildDate>Wed, 01 Feb 2023 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/pt-br/tags/emoji/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Emoji Support</title>
+      <link>http://localhost:1313/pt-br/posts/emoji-support/</link>
+      <pubDate>Wed, 01 Feb 2023 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/pt-br/posts/emoji-support/</guid>
+      
+      <description>&lt;p&gt;Os emojis podem ser habilitados em um projeto Hugo de várias maneiras.&lt;/p&gt;</description>
+      
+    </item>
+    
+  </channel>
+</rss>

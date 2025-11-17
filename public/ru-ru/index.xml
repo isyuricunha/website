@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Домашняя on Awesome Hugo blog</title>
+    <link>http://localhost:1313/ru-ru/</link>
+    <description>Recent content in Домашняя on Awesome Hugo blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ru-ru</language>
+    <lastBuildDate>Tue, 02 May 2023 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/ru-ru/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Содержание</title>
+      <link>http://localhost:1313/ru-ru/posts/table-of-content/</link>
+      <pubDate>Tue, 02 May 2023 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/ru-ru/posts/table-of-content/</guid>
+      
+      <description>&lt;h2 id=&#34;содержание&#34;&gt;Содержание&lt;/h2&gt;
+&lt;p&gt;Эта тема поддерживает отображение содержания для записей в блоге.&lt;/p&gt;
+&lt;h2 id=&#34;параметры&#34;&gt;Параметры&lt;/h2&gt;
+&lt;p&gt;Выв можете управлять содержимом с помощью двух параметров:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;глобальный &lt;code&gt;toc&lt;/code&gt; параметр;&lt;/li&gt;
+&lt;li&gt;параметр &lt;code&gt;toc&lt;/code&gt; записи.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Параметр &lt;code&gt;toc&lt;/code&gt; записи имеет более высокий приоритет чем глобальный &lt;code&gt;toc&lt;/code&gt; параметр.&lt;/p&gt;
+&lt;h2 id=&#34;включение-содержания-для-всех-записей&#34;&gt;Включение содержания для всех записей&lt;/h2&gt;
+&lt;p&gt;Для включения содержания для всех записей (глобально) установите параметр&lt;code&gt;toc&lt;/code&gt; в значение &lt;code&gt;true&lt;/code&gt; в &lt;code&gt;hugo.toml&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-toml&#34; data-lang=&#34;toml&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;params&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nx&#34;&gt;toc&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Для отключения содержания глобально, просто проигнорируйте параметр &lt;code&gt;toc&lt;/code&gt; или установите значение &lt;code&gt;false&lt;/code&gt;.&lt;/p&gt;
+&lt;h2 id=&#34;включение-содержания-для-определённых-записей&#34;&gt;Включение содержания для определённых записей&lt;/h2&gt;
+&lt;p&gt;Для включения содержания для определённых записей, установите параметр &lt;code&gt;toc&lt;/code&gt; в значение &lt;code&gt;true&lt;/code&gt; в настройках записи.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Текст с математическими символами</title>
+      <link>http://localhost:1313/ru-ru/posts/math-typesetting/</link>
+      <pubDate>Sat, 01 Apr 2023 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/ru-ru/posts/math-typesetting/</guid>
+      
+      <description>&lt;p&gt;Математические обозначения в проекте Hugo можно включить с помощью
+&lt;a href=&#34;https://github.com/hugo-sid/hugo-blog-awesome/blob/main/layouts/partials/helpers/katex.html&#34;&gt;сторонние библиотеки JavaScript&lt;/a&gt;.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Инструкция по использованию Markdown</title>
+      <link>http://localhost:1313/ru-ru/posts/markdown-syntax/</link>
+      <pubDate>Sat, 11 Feb 2023 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/ru-ru/posts/markdown-syntax/</guid>
+      
+      <description>&lt;p&gt;В этой статье предлагается образец базового синтаксиса Markdown, который можно использовать в файлах контента Hugo, а также показано как расширенна разметка базовые элементы HTML CSS в теме Hugo.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Обогащённый контент</title>
+      <link>http://localhost:1313/ru-ru/posts/rich-content/</link>
+      <pubDate>Thu, 09 Feb 2023 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/ru-ru/posts/rich-content/</guid>
+      
+      <description>&lt;p&gt;Hugo поставляется с несколькими &lt;a href=&#34;https://gohugo.io/content-management/shortcodes/#use-hugos-built-in-shortcodes&#34;&gt;встроенными шорт кодами&lt;/a&gt; для обогащённого контента, вместе с &lt;a href=&#34;https://gohugo.io/about/hugo-and-gdpr/&#34;&gt;конфигурационным файлом для настройки конфиденциальности&lt;/a&gt; и списком простых шорт кодов для включения статичных не JS версий различных встраиваемых медиа.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Плейсхолдер текст</title>
+      <link>http://localhost:1313/ru-ru/posts/placeholder-text/</link>
+      <pubDate>Tue, 07 Feb 2023 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/ru-ru/posts/placeholder-text/</guid>
+      
+      <description>&lt;p&gt;Lorem est tota propiore conpellat pectoribus de pectora summo.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Поддержка смайликов</title>
+      <link>http://localhost:1313/ru-ru/posts/emoji-support/</link>
+      <pubDate>Wed, 01 Feb 2023 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/ru-ru/posts/emoji-support/</guid>
+      
+      <description>&lt;p&gt;Смайлики могут быть задействован в проекте Hugo несколькими способами.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>О проекте</title>
+      <link>http://localhost:1313/ru-ru/pages/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/ru-ru/pages/about/</guid>
+      
+      <description>&lt;p&gt;Написанный на Go, Hugo - это генератор статических сайтов с открытом исходным кодом и лицензией &lt;a href=&#34;https://github.com/gohugoio/hugo/blob/master/LICENSE&#34;&gt;Apache Licence 2.0.&lt;/a&gt;. Hugo поддерживает TOML, YAML и JSON типы файлов с данными, Markdown, HTML файлы и использует шорт коды для добавления богатого содержания. Другие возможности: таксономия, режим нескольких языков, обработка изображений, настраиваемые выходные форматы, сжатие HTML/CSS/JS и поддержка Sass SCSS рабочих процессов.&lt;/p&gt;
+&lt;p&gt;Hugo использует множество проектов с исходным кодом, такие как:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/yuin/goldmark&#34;&gt;https://github.com/yuin/goldmark&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/alecthomas/chroma&#34;&gt;https://github.com/alecthomas/chroma&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/muesli/smartcrop&#34;&gt;https://github.com/muesli/smartcrop&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/spf13/cobra&#34;&gt;https://github.com/spf13/cobra&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/spf13/viper&#34;&gt;https://github.com/spf13/viper&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Использование Hugo идеально для блогов, корпоративных вебсайтов, творческих портфолио, on-line журналов, одностраничных приложений или вебсайтов с тысячью страниц.&lt;/p&gt;</description>
+      
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Pages on Awesome Hugo blog</title>
+    <link>http://localhost:1313/ru-ru/pages/</link>
+    <description>Recent content in Pages on Awesome Hugo blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ru-ru</language><atom:link href="http://localhost:1313/ru-ru/pages/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>О проекте</title>
+      <link>http://localhost:1313/ru-ru/pages/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/ru-ru/pages/about/</guid>
+      
+      <description>&lt;p&gt;Написанный на Go, Hugo - это генератор статических сайтов с открытом исходным кодом и лицензией &lt;a href=&#34;https://github.com/gohugoio/hugo/blob/master/LICENSE&#34;&gt;Apache Licence 2.0.&lt;/a&gt;. Hugo поддерживает TOML, YAML и JSON типы файлов с данными, Markdown, HTML файлы и использует шорт коды для добавления богатого содержания. Другие возможности: таксономия, режим нескольких языков, обработка изображений, настраиваемые выходные форматы, сжатие HTML/CSS/JS и поддержка Sass SCSS рабочих процессов.&lt;/p&gt;
+&lt;p&gt;Hugo использует множество проектов с исходным кодом, такие как:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/yuin/goldmark&#34;&gt;https://github.com/yuin/goldmark&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/alecthomas/chroma&#34;&gt;https://github.com/alecthomas/chroma&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/muesli/smartcrop&#34;&gt;https://github.com/muesli/smartcrop&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/spf13/cobra&#34;&gt;https://github.com/spf13/cobra&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/spf13/viper&#34;&gt;https://github.com/spf13/viper&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Использование Hugo идеально для блогов, корпоративных вебсайтов, творческих портфолио, on-line журналов, одностраничных приложений или вебсайтов с тысячью страниц.&lt;/p&gt;</description>
+      
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Publicações on Awesome Hugo blog</title>
+    <link>http://localhost:1313/pt-br/posts/</link>
+    <description>Recent content in Publicações on Awesome Hugo blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>pt-br</language>
+    <lastBuildDate>Tue, 02 May 2023 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/pt-br/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Tabela de Conteúdo</title>
+      <link>http://localhost:1313/pt-br/posts/table-of-content/</link>
+      <pubDate>Tue, 02 May 2023 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/pt-br/posts/table-of-content/</guid>
+      
+      <description>&lt;h2 id=&#34;tabela-de-conteúdo&#34;&gt;Tabela de Conteúdo&lt;/h2&gt;
+&lt;p&gt;Este tema suporta a exibição de um tabela de conteúdo (ToC) em postagens de blog.&lt;/p&gt;
+&lt;h2 id=&#34;parâmetros&#34;&gt;Parâmetros&lt;/h2&gt;
+&lt;p&gt;Você pode gerenciar o tabela de conteúdo com dois parâmetros:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;parâmetro global &lt;code&gt;toc&lt;/code&gt;;&lt;/li&gt;
+&lt;li&gt;parâmetro de postagem &lt;code&gt;toc&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;O parâmetro &lt;code&gt;toc&lt;/code&gt; da postagem tem prioridade mais alta que o parâmetro global &lt;code&gt;toc&lt;/code&gt;.&lt;/p&gt;
+&lt;h2 id=&#34;habilitar-a-tabela-de-conteúdo-em-todas-as-postagens&#34;&gt;Habilitar a Tabela de Conteúdo em todas as postagens&lt;/h2&gt;
+&lt;p&gt;Para habilitar o tabela de conteúdo (ToC) em todas as postagens (globalmente), defina o parâmetro &lt;code&gt;toc&lt;/code&gt; como &lt;code&gt;true&lt;/code&gt; no arquivo &lt;code&gt;hugo.toml&lt;/code&gt;.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Notação Matemática - use a notação matemática em postagens de blog.</title>
+      <link>http://localhost:1313/pt-br/posts/math-typesetting/</link>
+      <pubDate>Sat, 01 Apr 2023 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/pt-br/posts/math-typesetting/</guid>
+      
+      <description>&lt;p&gt;A notação matemática em um projeto Hugo pode ser habilitada usando
+&lt;a href=&#34;https://github.com/hugo-sid/hugo-blog-awesome/blob/main/layouts/partials/helpers/katex.html&#34;&gt;bibliotecas JavaScript de terceiros&lt;/a&gt;.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Guia de Sintaxe de Markdown</title>
+      <link>http://localhost:1313/pt-br/posts/markdown-syntax/</link>
+      <pubDate>Sat, 11 Feb 2023 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/pt-br/posts/markdown-syntax/</guid>
+      
+      <description>&lt;p&gt;Este artigo fornece um exemplo da sintaxe básica de Markdown que pode ser usada em arquivos de conteúdo do Hugo e também mostra se os elementos básicos de HTML são decorados com CSS em um tema do Hugo.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Conteúdo Rico</title>
+      <link>http://localhost:1313/pt-br/posts/rich-content/</link>
+      <pubDate>Thu, 09 Feb 2023 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/pt-br/posts/rich-content/</guid>
+      
+      <description>&lt;p&gt;O Hugo vem com vários &lt;a href=&#34;https://gohugo.io/content-management/shortcodes/#use-hugos-built-in-shortcodes&#34;&gt;Shortcodes Integrados&lt;/a&gt; para conteúdo rico, juntamente com uma &lt;a href=&#34;https://gohugo.io/about/hugo-and-gdpr/&#34;&gt;Configuração de Privacidade&lt;/a&gt; e um conjunto de Shortcodes Simples que permitem versões estáticas e sem JavaScript de diversas página embutidas de mídias sociais.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Texto de Substituição</title>
+      <link>http://localhost:1313/pt-br/posts/placeholder-text/</link>
+      <pubDate>Tue, 07 Feb 2023 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/pt-br/posts/placeholder-text/</guid>
+      
+      <description>&lt;p&gt;Lorem est tota propiore conpellat pectoribus de pectora summo.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Emoji Support</title>
+      <link>http://localhost:1313/pt-br/posts/emoji-support/</link>
+      <pubDate>Wed, 01 Feb 2023 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/pt-br/posts/emoji-support/</guid>
+      
+      <description>&lt;p&gt;Os emojis podem ser habilitados em um projeto Hugo de várias maneiras.&lt;/p&gt;</description>
+      
+    </item>
+    
+  </channel>
+</rss>

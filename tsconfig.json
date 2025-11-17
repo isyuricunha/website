@@ -1,5 +1,0 @@
-{
-  "exclude": ["apps/**", "packages/**"],
-  "extends": "@tszhong0411/tsconfig/base.json",
-  "include": ["**/*.ts"]
-}

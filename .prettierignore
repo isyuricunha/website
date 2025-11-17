@@ -1,6 +1,0 @@
-pnpm-lock.yaml
-**/migrations/**
-**/*.hbs
-
-# For CI
-.pnpm-store/

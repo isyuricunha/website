@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>文章 on Awesome Hugo blog</title>
+    <link>http://localhost:1313/zh-cn/posts/</link>
+    <description>Recent content in 文章 on Awesome Hugo blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Tue, 02 May 2023 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/zh-cn/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>目录</title>
+      <link>http://localhost:1313/zh-cn/posts/table-of-content/</link>
+      <pubDate>Tue, 02 May 2023 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/zh-cn/posts/table-of-content/</guid>
+      
+      <description>&lt;h2 id=&#34;目录&#34;&gt;目录&lt;/h2&gt;
+&lt;p&gt;本主题支持在博客文章中显示目录（ToC）。&lt;/p&gt;
+&lt;h2 id=&#34;参数&#34;&gt;参数&lt;/h2&gt;
+&lt;p&gt;您可以通过两个参数管理目录：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;全局 &lt;code&gt;toc&lt;/code&gt; 参数；&lt;/li&gt;
+&lt;li&gt;文章的 &lt;code&gt;toc&lt;/code&gt; 参数。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;文章的 &lt;code&gt;toc&lt;/code&gt; 参数优先级高于全局 &lt;code&gt;toc&lt;/code&gt; 参数。&lt;/p&gt;
+&lt;h2 id=&#34;在所有文章中启用目录&#34;&gt;在所有文章中启用目录&lt;/h2&gt;
+&lt;p&gt;要在所有文章（全局）中启用目录，请在 &lt;code&gt;hugo.toml&lt;/code&gt; 中将参数 &lt;code&gt;toc&lt;/code&gt; 设置为 &lt;code&gt;true&lt;/code&gt;。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-toml&#34; data-lang=&#34;toml&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;params&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nx&#34;&gt;toc&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;要全局禁用目录，只需忽略 &lt;code&gt;toc&lt;/code&gt; 参数或将其设置为 &lt;code&gt;false&lt;/code&gt;。&lt;/p&gt;
+&lt;h2 id=&#34;在特定文章中启用目录&#34;&gt;在特定文章中启用目录&lt;/h2&gt;
+&lt;p&gt;要在特定文章中启用目录，请在文章设置中将参数 &lt;code&gt;toc&lt;/code&gt; 设置为 &lt;code&gt;true&lt;/code&gt;。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nn&#34;&gt;---&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;title&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;如何启用目录&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;date&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;ld&#34;&gt;2023-05-02&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;toc&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nn&#34;&gt;---&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;在特定文章中禁用目录&#34;&gt;在特定文章中禁用目录&lt;/h2&gt;
+&lt;p&gt;要在特定文章中禁用目录，您需要遵循两个步骤。&lt;/p&gt;
+&lt;p&gt;注意：文章中的 &lt;code&gt;.Params.toc&lt;/code&gt; 会覆盖 &lt;code&gt;.Site.Params.toc&lt;/code&gt;。完成这些步骤后，文章中的 &lt;code&gt;toc&lt;/code&gt; 参数将为 &lt;code&gt;false&lt;/code&gt;。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;在 &lt;code&gt;hugo.toml&lt;/code&gt; 中将参数 &lt;code&gt;toc&lt;/code&gt; 设置为 &lt;code&gt;true&lt;/code&gt;。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-toml&#34; data-lang=&#34;toml&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;params&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nx&#34;&gt;toc&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;在希望禁用目录的文章的 front matter 中添加 &lt;code&gt;toc = false&lt;/code&gt;。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nn&#34;&gt;---&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;title&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;如何启用目录&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;date&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;ld&#34;&gt;2023-05-02&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;toc&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;false&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nn&#34;&gt;---&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;默认打开目录&#34;&gt;默认打开目录&lt;/h2&gt;
+&lt;p&gt;默认情况下，目录是关闭的。要默认打开它，请在 &lt;code&gt;hugo.toml&lt;/code&gt; 中将参数 &lt;code&gt;tocOpen&lt;/code&gt; 设置为 &lt;code&gt;true&lt;/code&gt;。&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>数学排版 - 在博客文章中使用数学符号</title>
+      <link>http://localhost:1313/zh-cn/posts/math-typesetting/</link>
+      <pubDate>Sat, 01 Apr 2023 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/zh-cn/posts/math-typesetting/</guid>
+      
+      <description>&lt;p&gt;在 Hugo 项目中，可以通过使用 &lt;a href=&#34;https://github.com/hugo-sid/hugo-blog-awesome/blob/main/layouts/partials/helpers/katex.html&#34;&gt;第三方 JavaScript 库&lt;/a&gt; 来启用数学符号。&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Markdown 语法指南</title>
+      <link>http://localhost:1313/zh-cn/posts/markdown-syntax/</link>
+      <pubDate>Sat, 11 Feb 2023 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/zh-cn/posts/markdown-syntax/</guid>
+      
+      <description>&lt;p&gt;本文提供了 Hugo 内容文件中可以使用的 Markdown 语法示例，同时展示了 Hugo 主题中是否对基本 HTML 元素进行了 CSS 装饰。&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>富内容</title>
+      <link>http://localhost:1313/zh-cn/posts/rich-content/</link>
+      <pubDate>Thu, 09 Feb 2023 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/zh-cn/posts/rich-content/</guid>
+      
+      <description>&lt;p&gt;Hugo 提供了多个&lt;a href=&#34;https://gohugo.io/content-management/shortcodes/#use-hugos-built-in-shortcodes&#34;&gt;内置短代码&lt;/a&gt;来支持富内容，同时还提供了&lt;a href=&#34;https://gohugo.io/about/hugo-and-gdpr/&#34;&gt;隐私配置&lt;/a&gt;和一组简单短代码，以实现各种社交媒体嵌入的静态和无 JS 版本。&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>占位文本</title>
+      <link>http://localhost:1313/zh-cn/posts/placeholder-text/</link>
+      <pubDate>Tue, 07 Feb 2023 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/zh-cn/posts/placeholder-text/</guid>
+      
+      <description>&lt;p&gt;Lorem est tota propiore conpellat pectoribus de pectora summo.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Emoji 支持</title>
+      <link>http://localhost:1313/zh-cn/posts/emoji-support/</link>
+      <pubDate>Wed, 01 Feb 2023 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/zh-cn/posts/emoji-support/</guid>
+      
+      <description>&lt;p&gt;在 Hugo 项目中有多种方式可以启用 Emoji。&lt;/p&gt;</description>
+      
+    </item>
+    
+  </channel>
+</rss>

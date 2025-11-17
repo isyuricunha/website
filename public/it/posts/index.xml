@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Articoli on Yuri Cunha</title>
+    <link>http://localhost:1313/it/posts/</link>
+    <description>Recent content in Articoli on Yuri Cunha</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 02 May 2023 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/it/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>I Sommari</title>
+      <link>http://localhost:1313/it/posts/table-of-content/</link>
+      <pubDate>Tue, 02 May 2023 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/it/posts/table-of-content/</guid>
+      
+      <description>&lt;h2 id=&#34;sommario&#34;&gt;Sommario&lt;/h2&gt;
+&lt;p&gt;Questo tema supporta la visualizzazione di un sommario (Table Of Content - ToC) all&amp;rsquo;interno degli articoli.&lt;/p&gt;
+&lt;h2 id=&#34;abilitare-il-sommario-in-tutti-gli-articoli&#34;&gt;Abilitare il sommario in tutti gli articoli&lt;/h2&gt;
+&lt;p&gt;Per abilitare il sommario in tutti gli articoli (globalmente) è necessario impostare il parametro &lt;code&gt;toc&lt;/code&gt; a &lt;code&gt;true&lt;/code&gt; in &lt;code&gt;hugo.toml&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-toml&#34; data-lang=&#34;toml&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;params&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nx&#34;&gt;toc&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Per disabilitare il sommario globalmente invece, basta semplicemente cancellare il parametro &lt;code&gt;toc&lt;/code&gt; oppure impostarlo a &lt;code&gt;false&lt;/code&gt;.&lt;/p&gt;
+&lt;h2 id=&#34;disabilitare-il-sommario-solo-in-alcuni-articoli&#34;&gt;Disabilitare il sommario solo in alcuni articoli&lt;/h2&gt;
+&lt;p&gt;Per disabilitare il sommario solamente in alcuni articoli selezionati, è necessario seguire questi due passi.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Impaginazione Delle Formule Matematiche</title>
+      <link>http://localhost:1313/it/posts/math-typesetting/</link>
+      <pubDate>Sat, 01 Apr 2023 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/it/posts/math-typesetting/</guid>
+      
+      <description>&lt;p&gt;La notazione matematica in un progetto Hugo può essere abilitata utilizzando delle
+&lt;a href=&#34;https://github.com/hugo-sid/hugo-blog-awesome/blob/main/layouts/partials/helpers/katex.html&#34;&gt;librerie JavaScript di terze parti&lt;/a&gt;.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Guida Alla Sintassi Markdown</title>
+      <link>http://localhost:1313/it/posts/markdown-syntax/</link>
+      <pubDate>Sat, 11 Feb 2023 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/it/posts/markdown-syntax/</guid>
+      
+      <description>&lt;p&gt;This article offers a sample of basic Markdown syntax that can be used in Hugo content files, also it shows whether basic HTML elements are decorated with CSS in a Hugo theme.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Gli Shortcode di Hugo</title>
+      <link>http://localhost:1313/it/posts/rich-content/</link>
+      <pubDate>Thu, 09 Feb 2023 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/it/posts/rich-content/</guid>
+      
+      <description>&lt;p&gt;Hugo viene distribuito con alcuni &lt;a href=&#34;https://gohugo.io/content-management/shortcodes/#use-hugos-built-in-shortcodes&#34;&gt;Shortcode integrati&lt;/a&gt; per il rich content, assieme a una &lt;a href=&#34;https://gohugo.io/about/hugo-and-gdpr/&#34;&gt;Configurazione Per La Privacy&lt;/a&gt; ed un&amp;rsquo;insieme di semplici Shortcode che consentono di incorporare alcune versioni statiche e senza-JS di alcuni social media.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Testo Segnaposto</title>
+      <link>http://localhost:1313/it/posts/placeholder-text/</link>
+      <pubDate>Tue, 07 Feb 2023 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/it/posts/placeholder-text/</guid>
+      
+      <description>&lt;p&gt;Lorem est tota propiore conpellat pectoribus de pectora summo.&lt;/p&gt;</description>
+      
+    </item>
+    
+    <item>
+      <title>Supporto Alle Emoji</title>
+      <link>http://localhost:1313/it/posts/emoji-support/</link>
+      <pubDate>Wed, 01 Feb 2023 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/it/posts/emoji-support/</guid>
+      
+      <description>&lt;p&gt;Le emoji possono essere abilitate in un progetto Hugo in diversi modi.&lt;/p&gt;</description>
+      
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Pages on Awesome Hugo blog</title>
+    <link>http://localhost:1313/ja/pages/</link>
+    <description>Recent content in Pages on Awesome Hugo blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja</language><atom:link href="http://localhost:1313/ja/pages/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>このサイトについて</title>
+      <link>http://localhost:1313/ja/pages/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/ja/pages/about/</guid>
+      
+      <description>&lt;p&gt;Hugoは&lt;a href=&#34;https://github.com/gohugoio/hugo/blob/master/LICENSE&#34;&gt;Apache License 2.0&lt;/a&gt;で提供される、Go製のオープンソース静的サイトジェネレーターです。 HugoはTOML、YAML、およびJSON形式に対応しており、MarkdownやHTMLもリッチコンテンツの作成にご利用いただけます。さらに、タクソノミー、多言語モード、画像処理、カスタム出力形式、さらにHTML/CSS/JSの最小化やSass SCSSのワークフローもご利用いただけます。&lt;/p&gt;
+&lt;p&gt;Hugoは以下に示すようなオープンソースプロジェクトを活用して作成されています:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/yuin/goldmark&#34;&gt;https://github.com/yuin/goldmark&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/alecthomas/chroma&#34;&gt;https://github.com/alecthomas/chroma&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/muesli/smartcrop&#34;&gt;https://github.com/muesli/smartcrop&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/spf13/cobra&#34;&gt;https://github.com/spf13/cobra&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/spf13/viper&#34;&gt;https://github.com/spf13/viper&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Hugoはブログや、コーポレートサイト、ポートフォリオ、オンラインマガジンをはじめとして、単一ページアプリケーションから何千ページもあるサイトまで幅広くご利用いただくことができます。&lt;/p&gt;
+&lt;p&gt;Hugoはご自身のコードをご自身で管理しつつも、複雑なランタイムや依存関係、データベースなどを気にしたくない方に最適です。&lt;/p&gt;
+&lt;p&gt;Hugoで構築されたウェブサイトは超高速、安全で、AWS、GitHub Pages、Heroku、Netlify、またはご自身の好きなホスティングプロバイダにデプロイすることが可能です。&lt;/p&gt;
+&lt;p&gt;詳細や、貢献方法については&lt;a href=&#34;https://github.com/gohugoio&#34;&gt;GitHubをご覧ください&lt;/a&gt;。&lt;/p&gt;</description>
+      
+    </item>
+    
+  </channel>
+</rss>

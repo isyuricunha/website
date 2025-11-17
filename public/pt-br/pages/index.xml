@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Pages on Awesome Hugo blog</title>
+    <link>http://localhost:1313/pt-br/pages/</link>
+    <description>Recent content in Pages on Awesome Hugo blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>pt-br</language><atom:link href="http://localhost:1313/pt-br/pages/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Sobre</title>
+      <link>http://localhost:1313/pt-br/pages/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://localhost:1313/pt-br/pages/about/</guid>
+      
+      <description>&lt;p&gt;Escrito em Go, Hugo é um gerador de sites estáticos de código aberto disponível sob a &lt;a href=&#34;https://github.com/gohugoio/hugo/blob/master/LICENSE&#34;&gt;Licença Apache 2.0.&lt;/a&gt; Hugo suporta os tipos de arquivos de dados TOML, YAML e JSON, arquivos de conteúdo em Markdown e HTML, e usa shortcodes para adicionar conteúdo rico. Outras funcionalidades notáveis incluem taxonomias, modo multilíngue, processamento de imagens, formatos de saída personalizados, minificação de HTML/CSS/JS e suporte para fluxos de trabalho com Sass e SCSS.&lt;/p&gt;</description>
+      
+    </item>
+    
+  </channel>
+</rss>
