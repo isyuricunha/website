@@ -4,8 +4,6 @@ description: 'committing changes to my life database every day'
 author: Yuri Cunha
 ---
 
-## Contact
-
 This page explains how you can reach me if you want to say hello, ask something or send any kind of message.
 
 You can use email or social links. Choose whatever is easier for you.
