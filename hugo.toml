@@ -72,6 +72,11 @@ theme = "hugo-blog-awesome"
     name = 'About'
     url = '/about/'
     weight = 30
+    [[Languages.en-us.menu.main]]
+    pageRef="contact"
+    name = 'Contact'
+    url = '/contact/'
+    weight = 30
 
 [Languages.en-us.params]
   sitename = "Yuri Cunha"
@@ -81,7 +86,7 @@ theme = "hugo-blog-awesome"
   # You can take a look at layouts/index.html for more information.
   description = "committing changes to my life database every day"
   mainSections = ['posts']
-  toc = true # set to false to disable table of contents 'globally'
+  toc = false # set to false to disable table of contents 'globally'
   tocOpen = false # set to true to open table of contents by default
   goToTop = true # set to false to disable 'go to top' button
   additionalScripts = ['js/custom.js', 'js/custom-2.js']
