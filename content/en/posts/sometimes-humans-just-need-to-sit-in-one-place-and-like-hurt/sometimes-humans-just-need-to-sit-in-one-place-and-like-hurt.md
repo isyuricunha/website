@@ -26,7 +26,7 @@ I will say one of the (perhaps not so profound) observations I've made about my 
 
 (Enjoy this Venn diagram I made of this, not drawn to scale. I really like when people draw up cute little graphics to illustrate concepts.)
 <br />
-<img src="/static/images/blog/sometimes-humans-just-need-to-sit-in-one-place-and-like-hurt/graphic.jpeg" alt="Venn diagram of understanding and conveying understanding" />
+<img src="/static/images/post/sometimes-humans-just-need-to-sit-in-one-place-and-like-hurt/graphic.jpeg" alt="Venn diagram of understanding and conveying understanding" />
 
 Yours, Yuri Cunha.
 
