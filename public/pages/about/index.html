@@ -114,7 +114,7 @@ stroke-linejoin="round" class="feather feather-home">
                 </li>
                 
                 <li>
-                    <a class="menu-link " href="/pages/about/">
+                    <a class="menu-link active" href="/pages/about/">
                         About
                     </a>
                     
@@ -154,99 +154,278 @@ stroke-linejoin="round" class="feather feather-home">
             
             <div class="page-content">
                 <h2 id="who-am-i">WHO AM I</h2>
-<p>I am Yuri Cunha, a Brazilian tech guy who likes databases, Linux, homelabs and breaking things in a controlled way so I can learn how to fix them.</p>
-<p>Right now I am building my path as a PostgreSQL and MongoDB focused DBA, while also playing the roles of sysadmin, homelab owner and eternal student of how computers actually work.</p>
-<p>Yes, this site is part of that mess.</p>
-<h2 id="what-i-do-in-tech">What I do in tech</h2>
-<p>On paper, I am a Database Technology student and an aspiring DBA. In practice, my day to day usually includes some mix of:</p>
+<p>I am Yuri Cunha, a Brazilian guy who decided to take computers, databases and homelabs a bit too seriously.</p>
+<p>On the internet I usually show up as <strong>&ldquo;Yuri Cunha&rdquo;</strong>, although my full name is longer in real life. This site is where I put a good part of my experiments, notes, labs and random ideas.</p>
+<p>If you like databases, Linux, self hosting, local AI and long term projects that do not look perfect from day one, you are in the right place.</p>
+<hr>
+<h2 id="in-one-paragraph">In one paragraph</h2>
+<p>I am a Database Technology student, an aspiring PostgreSQL and MongoDB DBA, a homelab owner who likes to self host things, and a person on a long term project to get lighter and run further. I care about practical knowledge, documentation, reliability and having real examples to point to, not just theory. I like tech, but I also like sleep, so I try to build systems I can debug at three in the morning without going insane.</p>
+<hr>
+<h2 id="a-bit-of-background">A bit of background</h2>
+<p>Some quick facts about me:</p>
 <ul>
-<li>taking care of Linux servers</li>
-<li>playing with PostgreSQL and MongoDB</li>
-<li>setting up Docker Compose stacks</li>
-<li>breaking and recovering databases on purpose to practice</li>
-<li>tuning queries and configs to squeeze a bit more performance</li>
-<li>documenting everything so I do not forget later</li>
+<li>I am from Brazil.</li>
+<li>I usually present myself as <strong>DBA PostgreSQL Jr</strong> or similar roles.</li>
+<li>I enjoy working close to infrastructure and databases, not only the top layer of the stack.</li>
+<li>Politically I tend to be more conservative, although this site is mainly about tech and personal projects, not politics.</li>
+<li>English is not my first language; you will probably find some weird sentences here and there.</li>
 </ul>
-<p>I like the full path of a service: from the machine and the network, to the database and the application, to the monitoring and backup.</p>
-<h2 id="homelab">Homelab</h2>
-<p>I run a small but very real homelab. Some highlights:</p>
+<p>I like being honest about where I am in my journey. I am not a senior architect with thirty years of experience. I am someone building that path, one lab and one project at a time.</p>
+<hr>
+<h2 id="what-i-am-doing-in-tech-right-now">What I am doing in tech right now</h2>
+<p>On the formal side, I study <strong>Database Technology</strong> at Estácio, a technologist degree focused on databases. The plan is to finish around 2026 or 2027 and, along the way, connect what I study in college with real projects in my homelab and in my repositories.</p>
+<p>On the practical side, my routine usually involves:</p>
 <ul>
-<li>multiple servers at home running Ubuntu Server, Proxmox and Alpine - sometimes VM&rsquo;s with Windows Workstation.</li>
-<li>Oracle Cloud VMs for extra experiments and databases</li>
-<li>everything connected with Tailscale so I can reach my stuff from anywhere</li>
-<li>domain <code>yuricunha.com</code> with services on subdomains</li>
-<li>access exposed with Cloudflare tunnels instead of opening ports directly</li>
+<li>taking care of <strong>Linux servers</strong>, mostly Ubuntu Server 24.04 LTS</li>
+<li>working with <strong>PostgreSQL</strong> as my main relational database</li>
+<li>using <strong>MongoDB</strong> for document based scenarios</li>
+<li>creating and maintaining <strong>Docker Compose</strong> stacks</li>
+<li>practicing backup, restore and disaster recovery</li>
+<li>tuning queries and database settings for better performance</li>
+<li>setting up monitoring and alerts</li>
+<li>documenting everything in Markdown so future me does not hate past me</li>
 </ul>
-<p>Typical self hosted services that pass through my lab at some point:</p>
+<p>I also spend time studying and preparing for certifications and professional opportunities related to databases, infrastructure and security.</p>
+<hr>
+<h2 id="my-homelab-and-infrastructure">My homelab and infrastructure</h2>
+<p>I like to say that my homelab is my best teacher.</p>
+<p>Some things that live there:</p>
+<ul>
+<li>Home servers running <strong>Ubuntu Server 24.04 LTS</strong>, including:
+<ul>
+<li>a more powerful machine focused on databases and services</li>
+<li>a lighter machine that I still use for experiments</li>
+</ul>
+</li>
+<li><strong>Oracle Cloud</strong> instances that act as extra nodes and database hosts</li>
+<li><strong>Tailscale</strong> to connect everything in a secure overlay, including my Windows laptop</li>
+<li><strong>Cloudflared</strong> tunnels to expose services without opening random ports to the internet</li>
+<li><strong>Random external ports</strong> mapped to containers, instead of defaults, as a small extra layer against bots</li>
+<li>A dedicated database server on Oracle where I centralize databases like PostgreSQL and others</li>
+</ul>
+<p>Typical services that appear and disappear here:</p>
 <ul>
 <li>Nextcloud for files</li>
 <li>Joplin Server for notes</li>
-<li>PrivateBin for quick paste sharing</li>
-<li>Databases like PostgreSQL and friends</li>
-<li>Local LLMs with Ollama/Llama.cpp for experiments</li>
+<li>PrivateBin for quick text sharing</li>
+<li>Self hosted monitoring tools</li>
+<li>Local AI models through Ollama</li>
+<li>Small web apps to support my workflow</li>
 </ul>
-<p>If it runs on Linux and is useful for infra, monitoring, backup or learning, there is a good chance I will test it here.</p>
-<h2 id="projects-and-experiments">Projects and experiments</h2>
-<p>I like to keep my learning visible and repeatable, so I create labs and small projects. Examples:</p>
+<p>I own the domain <strong><code>yuricunha.com</code></strong>, and many services live on subdomains like <code>something.yuricunha.com</code>. This site is one of the visible faces of all that.</p>
+<hr>
+<h2 id="tech-stack-and-preferences">Tech stack and preferences</h2>
+<p>These are some tools and choices that appear a lot in my projects:</p>
 <ul>
-<li>a PostgreSQL DBA lab and portfolio with real cases</li>
-<li>experiments with high availability, backups and monitoring</li>
-<li>scripts and runbooks to automate boring tasks</li>
-<li>Android app experiments like a personal music client</li>
-<li>small brands and ideas like personal tooling names and logos</li>
-</ul>
-<p>The idea is simple: have concrete things I can point to when I say I know how to do something.</p>
-<h2 id="study-path">Study path</h2>
-<p>I am formally studying Database Technology and using this site to complement the academic part with:</p>
+<li><strong>Operating systems</strong>
 <ul>
-<li>practical labs with PostgreSQL and MongoDB</li>
-<li>Linux, networking and infra practice</li>
-<li>notes about performance tuning, backups and monitoring</li>
-<li>summaries of courses, certifications and books</li>
+<li>Ubuntu Server 24.04 LTS on servers</li>
+<li>Windows 10 Pro on my main laptop</li>
+<li>Arch based distros on the side for experiments, like EndeavourOS, CachyOS and Garuda</li>
 </ul>
-<p>I like to mix theory and practice. I do not fully trust something until I break it with my own hands and see how it fails.</p>
-<h2 id="systems-and-tools-i-like">Systems and tools I like</h2>
-<p>A few things you will see a lot around here:</p>
+</li>
+<li><strong>Networking and access</strong>
 <ul>
-<li>Linux in general, especially Ubuntu Server on my machines</li>
-<li>testing Arch based distros on my laptop like EndeavourOS, CachyOS and Garuda</li>
-<li>window managers and Wayland compositors for fun and pain</li>
-<li>Docker Compose for most services</li>
-<li>PostgreSQL as my main database</li>
-<li>Python and shell for scripting</li>
+<li>Tailscale for secure remote access</li>
+<li>Cloudflared for publishing services without touching router port forwarding</li>
 </ul>
-<p>I enjoy tweaking performance, trying different kernels and seeing how far I can push my hardware without making it unusable.</p>
-<h2 id="health-and-running">Health and running</h2>
-<p>Outside pure tech I am also on a long term project to be lighter and run better.</p>
-<p>Things I track and care about:</p>
+</li>
+<li><strong>Containers and services</strong>
 <ul>
-<li>weight, calories and macros with food scale and apps</li>
-<li>running training plans using Garmin Coach</li>
-<li>building up to 5K and beyond with a mix of run and walk</li>
-<li>trying to be consistent instead of perfect</li>
-</ul>
-<p>So yes, in the same place you might see posts about <code>pg_dump</code>, you may also see notes about running sessions and diet.</p>
-<h2 id="how-i-see-this-site">How I see this site</h2>
-<p>This site is not meant to be a super polished portfolio only. It is more like:</p>
+<li>Docker with <strong>docker compose</strong> (the plugin, not the old <code>docker-compose</code> command)</li>
+<li><code>docker-compose.yml</code> files without the old <code>version</code> key</li>
+<li>external PostgreSQL instead of one database per container</li>
+<li>fixed DNS in containers using:
 <ul>
-<li>a notebook for my labs and experiments</li>
-<li>a log of what I am learning</li>
-<li>a place to centralize docs I would write anyway</li>
-<li>a way to show a realistic picture of what I know and what I am still figuring out</li>
+<li><code>1.1.1.1</code></li>
+<li><code>8.8.8.8</code></li>
 </ul>
-<p>If something here looks useful to you, great. If it looks chaotic, that is also honest.</p>
-<h2 id="values-and-style">Values and style</h2>
-<p>A few things about how I think and work:</p>
+</li>
+</ul>
+</li>
+<li><strong>Programming and tools</strong>
 <ul>
-<li>I like clear, direct communication</li>
-<li>I prefer transparency over marketing talk</li>
-<li>I enjoy structure and documentation, even for small things</li>
-<li>I tend to be conservative in values and careful with shortcuts in tech</li>
+<li>Python for automation and scripts</li>
+<li><code>pipx</code> to install Python based tools globally but cleanly</li>
+<li>shell scripts for simple tasks</li>
 </ul>
-<p>In short, I like systems that are understandable, debuggable and that I can fix at 3 am if they go down.</p>
-<h2 id="if-you-want-to-reach-me">If you want to reach me</h2>
-<p>If you got here and thought &ldquo;I want to talk to this person&rdquo;, you can check the <a href="/pages/about/">Contact</a> page for ways to reach me.</p>
-<p>Thanks for reading.</p>
+</li>
+<li><strong>Databases</strong>
+<ul>
+<li>PostgreSQL as the main database in my labs</li>
+<li>interest in MongoDB and other engines to compare approaches</li>
+</ul>
+</li>
+<li><strong>AI and automation</strong>
+<ul>
+<li>Ollama running on Ubuntu, directly on the host, not in containers</li>
+<li>tests with different models and prompts</li>
+<li>plans for personal automations and assistants</li>
+</ul>
+</li>
+</ul>
+<p>I like setups that are reproducible. If I write a compose file or a script, I try to make it so that I can recreate the same environment months later without guessing.</p>
+<hr>
+<h2 id="labs-repos-and-documentation-style">Labs, repos and documentation style</h2>
+<p>One of my main long term projects is building a <strong>DBA lab and portfolio</strong>, focused on PostgreSQL.</p>
+<p>Things you can expect from my repos:</p>
+<ul>
+<li>structured directories for each service or lab, for example:
+<ul>
+<li><code>~/docker/docker-compose/{service}</code></li>
+<li><code>~/docker/docker-data/{service}</code></li>
+</ul>
+</li>
+<li><code>docker compose</code> files that:
+<ul>
+<li>avoid deprecated options</li>
+<li>use external databases where it makes sense</li>
+<li>include sample environment values, so it is clear what goes where</li>
+</ul>
+</li>
+<li>documentation written in Markdown, usually in first person, with sections explaining:
+<ul>
+<li>what changed</li>
+<li>how it changed</li>
+<li>why it changed</li>
+</ul>
+</li>
+<li>comments in code in <strong>lowercase</strong></li>
+<li>SQL queries mostly in <strong>lowercase</strong></li>
+<li>preference for open source licenses, often <strong>LGPL 2.1</strong> in public projects</li>
+</ul>
+<p>I like to treat these labs as mini production environments. Even if no one else uses them, I act as if I am the DBA, the sysadmin and the on call person at the same time.</p>
+<hr>
+<h2 id="side-projects-and-personal-brands">Side projects and personal brands</h2>
+<p>Besides pure infra and databases, I also enjoy creating small projects and brands, both for fun and for practice.</p>
+<p>Examples:</p>
+<ul>
+<li>ideas around a personal music app, similar to <strong>YuMusic</strong>, using self hosted backends</li>
+<li>small brand concepts like <strong>YuFlow</strong> and others</li>
+<li>experiments with a personal AI avatar and assistant for support or chat</li>
+<li>services under <strong>YC Inc.</strong> style naming, for a future personal business presence</li>
+</ul>
+<p>These things evolve over time. Some of them may never go public, but the work behind them helps me learn about pipelines, CI, versioning, security and deploys.</p>
+<hr>
+<h2 id="study-style-and-mindset">Study style and mindset</h2>
+<p>How I like to study and grow in this area:</p>
+<ul>
+<li>mix <strong>theory and practice</strong> all the time</li>
+<li>break things on purpose, then fix them</li>
+<li>keep <strong>detailed notes</strong> of commands, outputs and decisions</li>
+<li>create <strong>runbooks</strong> for repetitive or stressful tasks, for example:
+<ul>
+<li>restoring backups</li>
+<li>reconfiguring a cluster</li>
+<li>doing maintenance with minimal downtime</li>
+</ul>
+</li>
+<li>focus on <strong>observability</strong>:
+<ul>
+<li>logs</li>
+<li>metrics</li>
+<li>alerts</li>
+</ul>
+</li>
+<li>revisit old labs with fresh knowledge to see what I would do differently now</li>
+</ul>
+<p>I prefer understanding how things work under the surface instead of memorizing a list of commands. If I know where the logs are, how the process starts, how the data is stored and what the configuration does, I feel much more comfortable touching production systems.</p>
+<hr>
+<h2 id="career-direction">Career direction</h2>
+<p>Professionally, I am building my path in roles like:</p>
+<ul>
+<li>Junior DBA PostgreSQL</li>
+<li>Database Administrator focused on production environments</li>
+<li>roles where PostgreSQL and Linux are first class citizens</li>
+<li>positions where observability, performance tuning and reliability matter</li>
+</ul>
+<p>I also keep an eye on areas related to:</p>
+<ul>
+<li>data engineering</li>
+<li>security and compliance</li>
+<li>high availability and clustering</li>
+</ul>
+<p>I have gone through real recruitment processes, including multi step interviews for DBA roles, and I use each experience to refine my portfolio, my labs and how I present my skills.</p>
+<hr>
+<h2 id="health-running-and-long-term-goals">Health, running and long term goals</h2>
+<p>Tech is not the only long term project in my life.</p>
+<p>I have been working on:</p>
+<ul>
+<li><strong>losing weight</strong></li>
+<li><strong>improving my health markers</strong></li>
+<li><strong>building a running habit</strong></li>
+</ul>
+<p>Some tools and habits that I use:</p>
+<ul>
+<li><strong>Garmin</strong> watch and <strong>Garmin Coach</strong> plans, especially for 5K</li>
+<li>structured training plans that mix run and walk</li>
+<li>tracking <strong>steps, distance and pace</strong></li>
+<li>using <strong>food scales</strong> and apps to measure calories and macros</li>
+<li>planning meals with simple, repeatable options like rice, beans, eggs, pasta and basic sides</li>
+<li>trying to keep a consistent <strong>calorie deficit</strong> without going into extremes</li>
+</ul>
+<p>I know I am a big guy and that this will take time. My goal is not only to drop numbers on the scale, but to build a body that can handle my plans, including running regular 5K races and, later, longer distances.</p>
+<p>You may see posts about:</p>
+<ul>
+<li>weekly training summaries</li>
+<li>how a specific run went</li>
+<li>small improvements in heart rate and pace</li>
+<li>experiments with diet and routine</li>
+</ul>
+<p>I see this health journey in the same way I see my homelab. It is a long project, full of iterations, metrics and adjustments.</p>
+<hr>
+<h2 id="how-i-use-this-site">How I use this site</h2>
+<p>This site exists for a few reasons:</p>
+<ul>
+<li>to centralize my <strong>notes, labs and guides</strong></li>
+<li>to act as a <strong>portfolio</strong> for people who want to know what I actually do</li>
+<li>to keep a <strong>log of my learning</strong> over time</li>
+<li>to share <strong>configs, compose files and scripts</strong> that might help others</li>
+<li>to document my <strong>running and health journey</strong> in a way that makes sense to me</li>
+</ul>
+<p>You may find here:</p>
+<ul>
+<li>technical articles about PostgreSQL, Linux and Docker</li>
+<li>step by step guides for specific setups</li>
+<li>small reflections on study, career and life</li>
+<li>notes about training, weight loss and discipline</li>
+</ul>
+<p>I prefer being honest over being perfect. So you will probably see drafts, work in progress, and things that changed halfway through. To me, that is better than pretending everything is finished and polished.</p>
+<hr>
+<h2 id="what-i-value">What I value</h2>
+<p>A few things that guide how I work and learn:</p>
+<ul>
+<li><strong>clarity</strong> over buzzwords</li>
+<li><strong>documentation</strong> over improvisation</li>
+<li><strong>reliability</strong> over shiny but fragile setups</li>
+<li><strong>personal responsibility</strong> over blaming tools</li>
+<li><strong>freedom and privacy</strong> in tech</li>
+<li>being <strong>realistic</strong> about current skills, while pushing to improve</li>
+</ul>
+<p>In practical terms, this means I like:</p>
+<ul>
+<li>logs, metrics and alerts instead of guesswork</li>
+<li>automation with clear behavior</li>
+<li>backups that I have actually restored and tested</li>
+<li>observability instead of blind faith in services</li>
+<li>self hosted or at least controllable tools when possible</li>
+</ul>
+<hr>
+<h2 id="random-facts-about-me">Random facts about me</h2>
+<p>Just to make this page a bit more human:</p>
+<ul>
+<li>I can get happily lost configuring a new Linux environment for hours.</li>
+<li>I enjoy tweaking kernels and performance options for my Ryzen laptop.</li>
+<li>I like to read about databases even when I am not strictly required to.</li>
+<li>I prefer quiet environments over noisy places.</li>
+<li>I think a good walk or run solves a lot of mental clutter.</li>
+<li>I use AI models, both local and in the cloud, as tools to think, draft and explore ideas.</li>
+</ul>
+<hr>
+<h2 id="if-you-read-all-this">If you read all this</h2>
+<p>If you made it this far, thank you.</p>
+<p>If you want to say hello, comment on something, propose a project or just tell me that a post helped you, you can go to the <a href="/contact">Contact</a> page and send a message.</p>
+<p>This site will probably keep changing over time, just like I am changing the things I do and the person I am becoming. That is part of the fun.</p>
 
             </div>
         </article></main>
