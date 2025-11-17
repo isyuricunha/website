@@ -74,12 +74,12 @@ theme = "hugo-blog-awesome"
     weight = 30
 
 [Languages.en-us.params]
-  sitename = "Awesome hugo blog"
+  sitename = "Yuri Cunha"
   defaultColor = "dark" # set color mode: dark, light, auto
   # Setting it to 'auto' applies the color scheme based on the visitor's device color preference.If you don't specify anything, ignore this parameter, or leave it blank,
   # the default value is set to 'auto'.
   # You can take a look at layouts/index.html for more information.
-  description = "Minimal Hugo blog theme with light and dark mode support"
+  description = "committing changes to my life database every day"
   mainSections = ['posts']
   toc = true # set to false to disable table of contents 'globally'
   tocOpen = false # set to true to open table of contents by default
@@ -91,17 +91,17 @@ theme = "hugo-blog-awesome"
   # The file `custom.js` is loaded on each page (before body tag ends).
   dateFormat = "" # date format used to show dates on various pages. If nothing is specified, then "2 Jan 2006" format is used.
   # See https://gohugo.io/functions/time/format/ for available date formats.
-  rssFeedDescription = "summary" # available options: 1) summary 2) full
+  rssFeedDescription = "full" # available options: 1) summary 2) full
   # summary - includes a short summary of the blog post in the RSS feed. Generated using Hugo .Summary .
   # full - includes full blog post in the RSS feed. Generated using Hugo .Content .
   # By default (or if nothing is specified), summary is used.
 
 [Languages.en-us.params.author]
-  avatar = "avatar.jpg" # put the file in assets folder; also ensure that image has same height and width
+  avatar = "avatar.png" # put the file in assets folder; also ensure that image has same height and width
   # Note: image is not rendered if the resource(avatar image) is not found. No error is displayed.
-  intro = "Awesome hugo blog"
-  name = "Sidharth R"
-  description = "A fast, minimalistic Hugo theme with light and dark mode support, for running a personal site or blog."
+  intro = "Yuri Cunha"
+  name = "Yuri Cunhq"
+  description = "committing changes to my life database every day"
 
 # Allow to override webmanifest options
 [Languages.en-us.params.webmanifest]
@@ -116,7 +116,7 @@ theme = "hugo-blog-awesome"
 
 # Allow to override `browserconfig.xml` params (configuration for windows embedded browsers)
 [params.browserconfig]
-  TileColor = "#2d89ef" # default windows 10 blue tile color
+  TileColor = "#d1a000ff" # default windows 10 blue tile color
 
 [[params.socialIcons]]
 name = "github"
