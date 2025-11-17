@@ -1,52 +1,46 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html lang="en-us"><head><meta charset="utf-8">
+<meta http-equiv="content-type" content="text/html">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<head>
-    <script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
-    <meta charset="utf-8">
-    <meta http-equiv="content-type" content="text/html">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title itemprop="name">What is the SQL Server Database? | Yuri Cunha</title>
+<meta property="og:title" content="What is the SQL Server Database? | Yuri Cunha" />
+<meta name="twitter:title" content="What is the SQL Server Database? | Yuri Cunha" />
+<meta itemprop="name" content="What is the SQL Server Database? | Yuri Cunha" />
+<meta name="application-name" content="What is the SQL Server Database? | Yuri Cunha" />
+<meta property="og:site_name" content="Yuri Cunha" />
 
-    <title itemprop="name">What is the SQL Server Database? | Yuri Cunha</title>
-    <meta property="og:title" content="What is the SQL Server Database? | Yuri Cunha" />
-    <meta name="twitter:title" content="What is the SQL Server Database? | Yuri Cunha" />
-    <meta itemprop="name" content="What is the SQL Server Database? | Yuri Cunha" />
-    <meta name="application-name" content="What is the SQL Server Database? | Yuri Cunha" />
-    <meta property="og:site_name" content="Yuri Cunha" />
+<meta name="description" content="Lets talk about my favorite database.">
+<meta itemprop="description" content="Lets talk about my favorite database." />
+<meta property="og:description" content="Lets talk about my favorite database." />
+<meta name="twitter:description" content="Lets talk about my favorite database." />
 
-    <meta name="description" content="Lets talk about my favorite database.">
-    <meta itemprop="description" content="Lets talk about my favorite database." />
-    <meta property="og:description" content="Lets talk about my favorite database." />
-    <meta name="twitter:description" content="Lets talk about my favorite database." />
+<meta property="og:locale" content="en-us" />
+<meta name="language" content="en-us" />
 
-    <meta property="og:locale" content="en-us" />
-    <meta name="language" content="en-us" />
-
-    <link rel="alternate" hreflang="en-us"
-        href="https://yuricunha.com/posts/what-is-sql-server-and-sql/what-is-sql-server-and-sql/" title="English" />
+  <link rel="alternate" hreflang="en-us" href="https://yuricunha.com/posts/what-is-sql-server-and-sql/what-is-sql-server-and-sql/" title="English" />
 
 
 
 
 
-
-
-
+    
+    
+    
 
     <meta property="og:type" content="article" />
     <meta property="og:article:published_time" content=2023-01-05T09:20:27-0300 />
     <meta property="article:published_time" content=2023-01-05T09:20:27-0300 />
-    <meta property="og:url"
-        content="https://yuricunha.com/posts/what-is-sql-server-and-sql/what-is-sql-server-and-sql/" />
+    <meta property="og:url" content="https://yuricunha.com/posts/what-is-sql-server-and-sql/what-is-sql-server-and-sql/" />
 
-
+    
     <meta property="og:article:author" content="Yuri Cunha" />
     <meta property="article:author" content="Yuri Cunha" />
     <meta name="author" content="Yuri Cunha" />
+    
+    
 
-
-
-
+    
 
     <script defer type="application/ld+json">
     {
@@ -74,36 +68,34 @@
     </script>
 
 
-    <meta name="generator" content="Hugo 0.152.2">
+<meta name="generator" content="Hugo 0.152.2">
 
-
-    <meta property="og:url"
-        content="https://yuricunha.com/posts/what-is-sql-server-and-sql/what-is-sql-server-and-sql/">
-    <meta property="og:site_name" content="Yuri Cunha">
-    <meta property="og:title" content="What is the SQL Server Database?">
-    <meta property="og:description" content="Lets talk about my favorite database.">
-    <meta property="og:locale" content="en_us">
-    <meta property="og:type" content="article">
+    
+    <meta property="og:url" content="https://yuricunha.com/posts/what-is-sql-server-and-sql/what-is-sql-server-and-sql/">
+  <meta property="og:site_name" content="Yuri Cunha">
+  <meta property="og:title" content="What is the SQL Server Database?">
+  <meta property="og:description" content="Lets talk about my favorite database.">
+  <meta property="og:locale" content="en_us">
+  <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
     <meta property="article:published_time" content="2023-01-05T09:20:27-03:00">
     <meta property="article:modified_time" content="2023-01-05T09:20:27-03:00">
 
 
+    
+    
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="What is the SQL Server Database?">
+  <meta name="twitter:description" content="Lets talk about my favorite database.">
 
 
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="What is the SQL Server Database?">
-    <meta name="twitter:description" content="Lets talk about my favorite database.">
-
-
-
+    
 
     <link rel="canonical" href="https://yuricunha.com/posts/what-is-sql-server-and-sql/what-is-sql-server-and-sql/">
     <link href="/style.min.0f2239e2e3d1057de4b67e38003f0bd74e17cf331d7c9d391a7342762c46b3f7.css" rel="stylesheet">
-    <link href="/code-highlight.min.706d31975fec544a864cb7f0d847a73ea55ca1df91bf495fd12a177138d807cf.css"
-        rel="stylesheet">
+    <link href="/code-highlight.min.706d31975fec544a864cb7f0d847a73ea55ca1df91bf495fd12a177138d807cf.css" rel="stylesheet">
 
-
+    
     <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
@@ -113,303 +105,204 @@
 
 
 
-    <link rel="manifest" href="https://yuricunha.com/site.webmanifest">
+<link rel="manifest" href="https://yuricunha.com/site.webmanifest">
 
-    <meta name="msapplication-config" content="/browserconfig.xml">
-    <meta name="msapplication-TileColor" content="#f59e0b">
-    <meta name="theme-color" content="#f59e0b">
+<meta name="msapplication-config" content="/browserconfig.xml">
+<meta name="msapplication-TileColor" content="#f59e0b">
+<meta name="theme-color" content="#f59e0b">
     <meta name="color-scheme" content="light dark">
 
-
+    
     <link rel="icon" type="image/svg+xml" href="/icons/favicon.svg">
 
-
-
+    
+    
+    
 </head>
+<body data-theme = "dark" class="notransition">
 
-<body data-theme="dark" class="notransition">
+<script src="/js/theme.min.8961c317c5b88b953fe27525839672c9343f1058ab044696ca225656c8ba2ab0.js" integrity="sha256-iWHDF8W4i5U/4nUlg5ZyyTQ/EFirBEaWyiJWVsi6KrA="></script>
 
-    <script src="/js/theme.js"></script>
+<div class="navbar" role="navigation">
+    <nav class="menu" aria-label="Main Navigation">
+        <a href="https://yuricunha.com/" class="logo">
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" 
+viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" 
+stroke-linejoin="round" class="feather feather-home">
+<title>Home</title>
+<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+<polyline points="9 22 9 12 15 12 15 22"></polyline>
+</svg>
+        </a>
+        <input type="checkbox" id="menu-trigger" class="menu-trigger" />
+        <label for="menu-trigger">
+            <span class="menu-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" stroke="currentColor" fill="none" viewBox="0 0 14 14"><title>Menu</title><path stroke-linecap="round" stroke-linejoin="round" d="M10.595 7L3.40726 7"></path><path stroke-linecap="round" stroke-linejoin="round" d="M10.5096 3.51488L3.49301 3.51488"></path><path stroke-linecap="round" stroke-linejoin="round" d="M10.5096 10.4851H3.49301"></path><path stroke-linecap="round" stroke-linejoin="round" d="M0.5 12.5V1.5C0.5 0.947715 0.947715 0.5 1.5 0.5H12.5C13.0523 0.5 13.5 0.947715 13.5 1.5V12.5C13.5 13.0523 13.0523 13.5 12.5 13.5H1.5C0.947715 13.5 0.5 13.0523 0.5 12.5Z"></path></svg>
+            </span>
+        </label>
 
-    <div class="navbar" role="navigation">
-        <nav class="menu" aria-label="Main Navigation">
-            <a href="https://yuricunha.com/" class="logo">
-                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                    class="feather feather-home">
-                    <title>Home</title>
-                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                </svg>
+        <div class="trigger">
+            <ul class="trigger-container">
+                
+                
+                <li>
+                    <a class="menu-link " href="/">
+                        Home
+                    </a>
+                    
+                </li>
+                
+                <li>
+                    <a class="menu-link active" href="/posts/">
+                        Posts
+                    </a>
+                    
+                </li>
+                
+                <li>
+                    <a class="menu-link " href="/pages/about/">
+                        About
+                    </a>
+                    
+                </li>
+                
+                <li>
+                    <a class="menu-link " href="/pages/contact/">
+                        Contact
+                    </a>
+                    
+                </li>
+                
+                <li class="menu-separator">
+                    <span>|</span>
+                </li>
+                
+                
+            </ul>
+            <a id="mode" href="#">
+                <svg xmlns="http://www.w3.org/2000/svg" class="mode-sunny" width="21" height="21" viewBox="0 0 14 14" stroke-width="1">
+<title>LIGHT</title><g><circle cx="7" cy="7" r="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"></circle><line x1="7" y1="0.5" x2="7" y2="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"></line><line x1="2.4" y1="2.4" x2="3.82" y2="3.82" fill="none" stroke-linecap="round" stroke-linejoin="round"></line><line x1="0.5" y1="7" x2="2.5" y2="7" fill="none" stroke-linecap="round" stroke-linejoin="round"></line><line x1="2.4" y1="11.6" x2="3.82" y2="10.18" fill="none" stroke-linecap="round" stroke-linejoin="round"></line><line x1="7" y1="13.5" x2="7" y2="11.5" fill="none" stroke-linecap="round" stroke-linejoin="round"></line><line x1="11.6" y1="11.6" x2="10.18" y2="10.18" fill="none" stroke-linecap="round" stroke-linejoin="round"></line><line x1="13.5" y1="7" x2="11.5" y2="7" fill="none" stroke-linecap="round" stroke-linejoin="round"></line><line x1="11.6" y1="2.4" x2="10.18" y2="3.82" fill="none" stroke-linecap="round" stroke-linejoin="round"></line></g></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" class="mode-moon" width="21" height="21" viewBox="0 0 14 14" stroke-width="1">
+<title>DARK</title><g><circle cx="7" cy="7" r="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"></circle><line x1="7" y1="0.5" x2="7" y2="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"></line><line x1="2.4" y1="2.4" x2="3.82" y2="3.82" fill="none" stroke-linecap="round" stroke-linejoin="round"></line><line x1="0.5" y1="7" x2="2.5" y2="7" fill="none" stroke-linecap="round" stroke-linejoin="round"></line><line x1="2.4" y1="11.6" x2="3.82" y2="10.18" fill="none" stroke-linecap="round" stroke-linejoin="round"></line><line x1="7" y1="13.5" x2="7" y2="11.5" fill="none" stroke-linecap="round" stroke-linejoin="round"></line><line x1="11.6" y1="11.6" x2="10.18" y2="10.18" fill="none" stroke-linecap="round" stroke-linejoin="round"></line><line x1="13.5" y1="7" x2="11.5" y2="7" fill="none" stroke-linecap="round" stroke-linejoin="round"></line><line x1="11.6" y1="2.4" x2="10.18" y2="3.82" fill="none" stroke-linecap="round" stroke-linejoin="round"></line></g></svg>
             </a>
-            <input type="checkbox" id="menu-trigger" class="menu-trigger" />
-            <label for="menu-trigger">
-                <span class="menu-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" stroke="currentColor" fill="none"
-                        viewBox="0 0 14 14">
-                        <title>Menu</title>
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.595 7L3.40726 7"></path>
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5096 3.51488L3.49301 3.51488">
-                        </path>
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5096 10.4851H3.49301"></path>
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M0.5 12.5V1.5C0.5 0.947715 0.947715 0.5 1.5 0.5H12.5C13.0523 0.5 13.5 0.947715 13.5 1.5V12.5C13.5 13.0523 13.0523 13.5 12.5 13.5H1.5C0.947715 13.5 0.5 13.0523 0.5 12.5Z">
-                        </path>
-                    </svg>
-                </span>
-            </label>
+        </div>
+    </nav>
+</div>
 
-            <div class="trigger">
-                <ul class="trigger-container">
-
-
-                    <li>
-                        <a class="menu-link " href="/">
-                            Home
-                        </a>
-
-                    </li>
-
-                    <li>
-                        <a class="menu-link active" href="/posts/">
-                            Posts
-                        </a>
-
-                    </li>
-
-                    <li>
-                        <a class="menu-link " href="/pages/about/">
-                            About
-                        </a>
-
-                    </li>
-
-                    <li>
-                        <a class="menu-link " href="/pages/contact/">
-                            Contact
-                        </a>
-
-                    </li>
-
-                    <li class="menu-separator">
-                        <span>|</span>
-                    </li>
-
-
-                </ul>
-                <a id="mode" href="#">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="mode-sunny" width="21" height="21"
-                        viewBox="0 0 14 14" stroke-width="1">
-                        <title>LIGHT</title>
-                        <g>
-                            <circle cx="7" cy="7" r="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                            </circle>
-                            <line x1="7" y1="0.5" x2="7" y2="2.5" fill="none" stroke-linecap="round"
-                                stroke-linejoin="round"></line>
-                            <line x1="2.4" y1="2.4" x2="3.82" y2="3.82" fill="none" stroke-linecap="round"
-                                stroke-linejoin="round"></line>
-                            <line x1="0.5" y1="7" x2="2.5" y2="7" fill="none" stroke-linecap="round"
-                                stroke-linejoin="round"></line>
-                            <line x1="2.4" y1="11.6" x2="3.82" y2="10.18" fill="none" stroke-linecap="round"
-                                stroke-linejoin="round"></line>
-                            <line x1="7" y1="13.5" x2="7" y2="11.5" fill="none" stroke-linecap="round"
-                                stroke-linejoin="round"></line>
-                            <line x1="11.6" y1="11.6" x2="10.18" y2="10.18" fill="none" stroke-linecap="round"
-                                stroke-linejoin="round"></line>
-                            <line x1="13.5" y1="7" x2="11.5" y2="7" fill="none" stroke-linecap="round"
-                                stroke-linejoin="round"></line>
-                            <line x1="11.6" y1="2.4" x2="10.18" y2="3.82" fill="none" stroke-linecap="round"
-                                stroke-linejoin="round"></line>
-                        </g>
-                    </svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="mode-moon" width="21" height="21" viewBox="0 0 14 14"
-                        stroke-width="1">
-                        <title>DARK</title>
-                        <g>
-                            <circle cx="7" cy="7" r="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                            </circle>
-                            <line x1="7" y1="0.5" x2="7" y2="2.5" fill="none" stroke-linecap="round"
-                                stroke-linejoin="round"></line>
-                            <line x1="2.4" y1="2.4" x2="3.82" y2="3.82" fill="none" stroke-linecap="round"
-                                stroke-linejoin="round"></line>
-                            <line x1="0.5" y1="7" x2="2.5" y2="7" fill="none" stroke-linecap="round"
-                                stroke-linejoin="round"></line>
-                            <line x1="2.4" y1="11.6" x2="3.82" y2="10.18" fill="none" stroke-linecap="round"
-                                stroke-linejoin="round"></line>
-                            <line x1="7" y1="13.5" x2="7" y2="11.5" fill="none" stroke-linecap="round"
-                                stroke-linejoin="round"></line>
-                            <line x1="11.6" y1="11.6" x2="10.18" y2="10.18" fill="none" stroke-linecap="round"
-                                stroke-linejoin="round"></line>
-                            <line x1="13.5" y1="7" x2="11.5" y2="7" fill="none" stroke-linecap="round"
-                                stroke-linejoin="round"></line>
-                            <line x1="11.6" y1="2.4" x2="10.18" y2="3.82" fill="none" stroke-linecap="round"
-                                stroke-linejoin="round"></line>
-                        </g>
-                    </svg>
-                </a>
-            </div>
-        </nav>
-    </div>
-
-    <div class="wrapper post">
-        <main class="page-content" aria-label="Content">
-            <article>
-                <header class="header">
-                    <h1 class="header-title">What is the SQL Server Database?</h1>
-
-
-
-                    <div class="post-meta">
-                        <time datetime="2023-01-05T09:20:27-03:00" itemprop="datePublished"> Jan 5, 2023 </time>
-                    </div>
-
-                </header>
-
-                <div class="page-content">
-                    <h1 id="what-is-the-sql-server-database">What is the SQL Server Database?</h1>
-                    <p>The SQL Server Database is a relational database management system produced by Microsoft. It is
-                        used to store and manage large amounts of data, including structured and unstructured data. SQL
-                        Server offers a wide range of features to ensure the security, availability, and integrity of
-                        stored data, as well as to ensure system performance and scalability.</p>
-                    <p>There are several versions of SQL Server available, including SQL Server Express, SQL Server
-                        Standard, and SQL Server Enterprise. Each of these versions offers a different set of features
-                        and is suitable for different types of use.</p>
-                    <p>To work with SQL Server, it is necessary to know the Structured Query Language (SQL). SQL is the
-                        standard language for working with relational databases and is used to create, query, and modify
-                        the data stored in the database.</p>
-                    <br />
-                    <br />
-                    <h1 id="what-is-the-structured-query-language-famous-sql">What is the Structured Query Language
-                        (famous SQL)?</h1>
-                    <p>Structured Query Language (SQL) is a programming language used to manage and manipulate data
-                        stored in relational databases. It is the standard language for working with relational
-                        databases and is used to create, query, and modify the data stored in the database.</p>
-                    <p>SQL is a declarative language, which means that it is used to describe what needs to be done,
-                        rather than specifying how it should be done. This allows the database management system (DBMS)
-                        to optimize the execution of SQL queries and ensure efficient use of system resources.</p>
-                    <p>SQL is used to perform a wide range of tasks, including creating and modifying tables and
-                        indices, inserting and updating data, and retrieving data from the database. It is also used to
-                        define the structure and relationships of the data within the database, as well as to set
-                        permissions and controls for users.</p>
-                    <p>SQL is a powerful and versatile language that is widely used in a variety of industries,
-                        including business, finance, healthcare, and government. It is an essential tool for database
-                        administrators and developers, and is also used by data analysts and data scientists to extract,
-                        transform, and load data for analysis and reporting purposes.</p>
-                    <p>There are several dialects of SQL, including MySQL, Oracle, and Microsoft SQL Server, each with
-                        its own unique features and syntax. However, the core concepts and principles of SQL are the
-                        same across all dialects, making it a language that is easy to learn and widely applicable.</p>
-                    <br />
-                    <br />
-                    <h1 id="examples-of-sql-queries">Examples of SQL Queries</h1>
-                    <p>Here are some examples of SQL queries that can be run on the SQL Server Database:</p>
-                    <h2 id="select-query"><em>Select Query</em></h2>
-                    <ul>
-                        <li>The following query selects all fields from the &ldquo;Customers&rdquo; table where the
-                            &ldquo;City&rdquo; field is equal to &ldquo;São Paulo&rdquo;:</li>
-                    </ul>
-                    <div class="highlight">
-                        <pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">Customers</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">City</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;São Paulo&#39;</span><span class="p">;</span><span class="w">
-</span></span></span></code></pre>
-                    </div><br />
-                    <h2 id="insert-data"><em>Insert Data</em></h2>
-                    <ul>
-                        <li>The following query inserts a new record into the &ldquo;Customers&rdquo; table:</li>
-                    </ul>
-                    <div class="highlight">
-                        <pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">Customers</span><span class="w"> </span><span class="p">(</span><span class="n">Name</span><span class="p">,</span><span class="w"> </span><span class="n">Address</span><span class="p">,</span><span class="w"> </span><span class="n">City</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;João da Silva&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Rua das Flores, 123&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;São Paulo&#39;</span><span class="p">);</span><span class="w">
-</span></span></span></code></pre>
-                    </div><br />
-                    <h2 id="update-data"><em>Update Data</em></h2>
-                    <ul>
-                        <li>The following query updates the &ldquo;Address&rdquo; field of the record with ID 1 in the
-                            &ldquo;Customers&rdquo; table:</li>
-                    </ul>
-                    <div class="highlight">
-                        <pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">UPDATE</span><span class="w"> </span><span class="n">Customers</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">Address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Rua das Oliveiras, 456&#39;</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">
-</span></span></span></code></pre>
-                    </div><br />
-                    <h2 id="delete-data"><em>Delete Data</em></h2>
-                    <ul>
-                        <li>The following query deletes the record with ID 1 from the &ldquo;Customers&rdquo; table:
-                        </li>
-                    </ul>
-                    <div class="highlight">
-                        <pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">DELETE</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">Customers</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">
-</span></span></span></code></pre>
-                    </div><br />
-                    <br />
-                    <h1 id="two-simple-examples">Two simple examples</h1>
-                    <br />
-                    <h2 id="first-example">First example</h2>
-                    <br />
-                    <blockquote>
-                        <p>You are the database administrator for a small customer database. You need to add a new
-                            customer record with the following information:</p>
-                    </blockquote>
-                    <br />
-                    <ul>
-                        <li>Name: &ldquo;John Smith&rdquo;</li>
-                        <li>Address: &ldquo;123 Main Street&rdquo;</li>
-                        <li>City: &ldquo;New York&rdquo;</li>
-                    </ul>
-                    <br />
-                    <br />
-                    <h2 id="solution"><em>Solution</em></h2>
-                    <br />
-                    <ul>
-                        <li>To add the new customer record, you can use the following SQL query:</li>
-                    </ul>
-                    <div class="highlight">
-                        <pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">Customers</span><span class="w"> </span><span class="p">(</span><span class="n">Name</span><span class="p">,</span><span class="w"> </span><span class="n">Address</span><span class="p">,</span><span class="w"> </span><span class="n">City</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;John Smith&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;123 Main Street&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;New York&#39;</span><span class="p">);</span><span class="w">
-</span></span></span></code></pre>
-                    </div><br />
-                    <p><em>This query will insert a new record into the &ldquo;Customers&rdquo; table with the specified
-                            name, address, and city.</em></p>
-                    <br />
-                    <br />
-                    <h2 id="second-example">Second example</h2>
-                    <br />
-                    <blockquote>
-                        <p>You are the database administrator for a product inventory database. You need to update the
-                            quantity of a product with the ID &ldquo;12345&rdquo; to 10.</p>
-                    </blockquote>
-                    <br />
-                    <br />
-                    <h2 id="solution-1"><em>Solution</em></h2>
-                    <br />
-                    <ul>
-                        <li>You are the database administrator for a product inventory database. You need to update the
-                            quantity of a product with the ID &ldquo;12345&rdquo; to 10.</li>
-                    </ul>
-                    <div class="highlight">
-                        <pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">UPDATE</span><span class="w"> </span><span class="n">Products</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">Quantity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">12345</span><span class="p">;</span><span class="w">
-</span></span></span></code></pre>
-                    </div><br />
-                    <p><em>This query will update the &ldquo;Quantity&rdquo; field of the product with the ID
-                            &ldquo;12345&rdquo; to the value 10.</em></p>
-                    <br />
-                    <br />
-                    <h1 id="complex-example">Complex example</h1>
-                    <p>Here is a complex example and solution involving the SQL Server Database:</p>
-                    <blockquote>
-                        <p>You are the database administrator for a large online retailer. The company has a database
-                            with several tables storing information about customers, orders, and products. The database
-                            is used to track customer information, process orders, and generate reports.</p>
-                    </blockquote>
-                    <blockquote>
-                        <p>One of the company&rsquo;s sales managers has requested a report showing the total sales and
-                            number of orders for each customer, broken down by product category. The report should show
-                            the data for the past year, and should be sorted by total sales in descending order.</p>
-                    </blockquote>
-                    <br />
-                    <br />
-                    <h2 id="solution-2"><em>Solution</em></h2>
-                    <br />
-                    <ul>
-                        <li>To generate the requested report, you can use the following SQL query:</li>
-                    </ul>
-                    <div class="highlight">
-                        <pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">Name</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;Customer&#39;</span><span class="p">,</span><span class="w">
+<div class="wrapper post">
+    <main class="page-content" aria-label="Content">
+        <article>
+            <header class="header">
+                <h1 class="header-title">What is the SQL Server Database?</h1>
+                
+                
+                
+                <div class="post-meta">
+                    <time datetime="2023-01-05T09:20:27-03:00" itemprop="datePublished"> Jan 5, 2023 </time>
+                </div>
+                
+            </header>
+            
+            <div class="page-content">
+                <h1 id="what-is-the-sql-server-database">What is the SQL Server Database?</h1>
+<p>The SQL Server Database is a relational database management system produced by Microsoft. It is used to store and manage large amounts of data, including structured and unstructured data. SQL Server offers a wide range of features to ensure the security, availability, and integrity of stored data, as well as to ensure system performance and scalability.</p>
+<p>There are several versions of SQL Server available, including SQL Server Express, SQL Server Standard, and SQL Server Enterprise. Each of these versions offers a different set of features and is suitable for different types of use.</p>
+<p>To work with SQL Server, it is necessary to know the Structured Query Language (SQL). SQL is the standard language for working with relational databases and is used to create, query, and modify the data stored in the database.</p>
+<br />
+<br />
+<h1 id="what-is-the-structured-query-language-famous-sql">What is the Structured Query Language (famous SQL)?</h1>
+<p>Structured Query Language (SQL) is a programming language used to manage and manipulate data stored in relational databases. It is the standard language for working with relational databases and is used to create, query, and modify the data stored in the database.</p>
+<p>SQL is a declarative language, which means that it is used to describe what needs to be done, rather than specifying how it should be done. This allows the database management system (DBMS) to optimize the execution of SQL queries and ensure efficient use of system resources.</p>
+<p>SQL is used to perform a wide range of tasks, including creating and modifying tables and indices, inserting and updating data, and retrieving data from the database. It is also used to define the structure and relationships of the data within the database, as well as to set permissions and controls for users.</p>
+<p>SQL is a powerful and versatile language that is widely used in a variety of industries, including business, finance, healthcare, and government. It is an essential tool for database administrators and developers, and is also used by data analysts and data scientists to extract, transform, and load data for analysis and reporting purposes.</p>
+<p>There are several dialects of SQL, including MySQL, Oracle, and Microsoft SQL Server, each with its own unique features and syntax. However, the core concepts and principles of SQL are the same across all dialects, making it a language that is easy to learn and widely applicable.</p>
+<br />
+<br />
+<h1 id="examples-of-sql-queries">Examples of SQL Queries</h1>
+<p>Here are some examples of SQL queries that can be run on the SQL Server Database:</p>
+<h2 id="select-query"><em>Select Query</em></h2>
+<ul>
+<li>The following query selects all fields from the &ldquo;Customers&rdquo; table where the &ldquo;City&rdquo; field is equal to &ldquo;São Paulo&rdquo;:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">Customers</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">City</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;São Paulo&#39;</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></div><br />
+<h2 id="insert-data"><em>Insert Data</em></h2>
+<ul>
+<li>The following query inserts a new record into the &ldquo;Customers&rdquo; table:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">Customers</span><span class="w"> </span><span class="p">(</span><span class="n">Name</span><span class="p">,</span><span class="w"> </span><span class="n">Address</span><span class="p">,</span><span class="w"> </span><span class="n">City</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;João da Silva&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Rua das Flores, 123&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;São Paulo&#39;</span><span class="p">);</span><span class="w">
+</span></span></span></code></pre></div><br />
+<h2 id="update-data"><em>Update Data</em></h2>
+<ul>
+<li>The following query updates the &ldquo;Address&rdquo; field of the record with ID 1 in the &ldquo;Customers&rdquo; table:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">UPDATE</span><span class="w"> </span><span class="n">Customers</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">Address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Rua das Oliveiras, 456&#39;</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></div><br />
+<h2 id="delete-data"><em>Delete Data</em></h2>
+<ul>
+<li>The following query deletes the record with ID 1 from the &ldquo;Customers&rdquo; table:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">DELETE</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">Customers</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></div><br />
+<br />
+<h1 id="two-simple-examples">Two simple examples</h1>
+<br />
+<h2 id="first-example">First example</h2>
+<br />
+<blockquote>
+<p>You are the database administrator for a small customer database. You need to add a new customer record with the following information:</p>
+</blockquote>
+<br />
+<ul>
+<li>Name: &ldquo;John Smith&rdquo;</li>
+<li>Address: &ldquo;123 Main Street&rdquo;</li>
+<li>City: &ldquo;New York&rdquo;</li>
+</ul>
+<br />
+<br />
+<h2 id="solution"><em>Solution</em></h2>
+<br />
+<ul>
+<li>To add the new customer record, you can use the following SQL query:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">Customers</span><span class="w"> </span><span class="p">(</span><span class="n">Name</span><span class="p">,</span><span class="w"> </span><span class="n">Address</span><span class="p">,</span><span class="w"> </span><span class="n">City</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;John Smith&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;123 Main Street&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;New York&#39;</span><span class="p">);</span><span class="w">
+</span></span></span></code></pre></div><br />
+<p><em>This query will insert a new record into the &ldquo;Customers&rdquo; table with the specified name, address, and city.</em></p>
+<br />
+<br />
+<h2 id="second-example">Second example</h2>
+<br />
+<blockquote>
+<p>You are the database administrator for a product inventory database. You need to update the quantity of a product with the ID &ldquo;12345&rdquo; to 10.</p>
+</blockquote>
+<br />
+<br />
+<h2 id="solution-1"><em>Solution</em></h2>
+<br />
+<ul>
+<li>You are the database administrator for a product inventory database. You need to update the quantity of a product with the ID &ldquo;12345&rdquo; to 10.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">UPDATE</span><span class="w"> </span><span class="n">Products</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">Quantity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">12345</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></div><br />
+<p><em>This query will update the &ldquo;Quantity&rdquo; field of the product with the ID &ldquo;12345&rdquo; to the value 10.</em></p>
+<br />
+<br />
+<h1 id="complex-example">Complex example</h1>
+<p>Here is a complex example and solution involving the SQL Server Database:</p>
+<blockquote>
+<p>You are the database administrator for a large online retailer. The company has a database with several tables storing information about customers, orders, and products. The database is used to track customer information, process orders, and generate reports.</p>
+</blockquote>
+<blockquote>
+<p>One of the company&rsquo;s sales managers has requested a report showing the total sales and number of orders for each customer, broken down by product category. The report should show the data for the past year, and should be sorted by total sales in descending order.</p>
+</blockquote>
+<br />
+<br />
+<h2 id="solution-2"><em>Solution</em></h2>
+<br />
+<ul>
+<li>To generate the requested report, you can use the following SQL query:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">Name</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;Customer&#39;</span><span class="p">,</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">       </span><span class="k">SUM</span><span class="p">(</span><span class="n">o</span><span class="p">.</span><span class="n">Total</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;Total Sales&#39;</span><span class="p">,</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">       </span><span class="k">COUNT</span><span class="p">(</span><span class="n">o</span><span class="p">.</span><span class="n">ID</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;Number of Orders&#39;</span><span class="p">,</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">       </span><span class="n">p</span><span class="p">.</span><span class="n">Category</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s1">&#39;Product Category&#39;</span><span class="w">
@@ -419,121 +312,105 @@
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">WHERE</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="nb">Date</span><span class="w"> </span><span class="k">BETWEEN</span><span class="w"> </span><span class="s1">&#39;2022-01-01&#39;</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="s1">&#39;2022-12-31&#39;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">Name</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">Category</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="s1">&#39;Total Sales&#39;</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span><span class="w">
-</span></span></span></code></pre>
-                    </div><br />
-                    <p><em>This query will select the customer name, total sales, number of orders, and product category
-                            for all orders placed within the specified date range. It will then group the results by
-                            customer name and product category, and will sort the results by total sales in descending
-                            order. The resulting report will show the total sales and number of orders for each
-                            customer, broken down by product category.</em></p>
-                    <br />
-                    <blockquote>
-                        <p>I hope the examples have helped you.</p>
-                    </blockquote>
-                    <br />
-                    <br />
-                    <h6
-                        id="here-are-some-additional-reference-links-that-you-might-find-helpful-in-learning-more-about-sql-server-database-and-the-sql-language">
-                        <em>Here are some additional reference links that you might find helpful in learning more about
-                            SQL Server Database and the SQL language:</em></h6>
-                    <ul>
-                        <li>
-                            <p>The SQL Server homepage: <a
-                                    href="https://www.microsoft.com/sql-server/">https://www.microsoft.com/sql-server/</a>
-                            </p>
-                        </li>
-                        <li>
-                            <p>The SQL Server documentation: <a
-                                    href="https://docs.microsoft.com/sql/">https://docs.microsoft.com/sql/</a></p>
-                        </li>
-                        <li>
-                            <p>The SQL tutorial: <a
-                                    href="https://www.w3schools.com/sql/">https://www.w3schools.com/sql/</a></p>
-                        </li>
-                        <li>
-                            <p>The MySQL reference guide: <a
-                                    href="https://dev.mysql.com/doc/refman/8.0/en/">https://dev.mysql.com/doc/refman/8.0/en/</a>
-                            </p>
-                        </li>
-                        <li>
-                            <p>The Oracle SQL tutorial: <a
-                                    href="https://docs.oracle.com/en/database/oracle/oracle-database/19/lnpls/index.html">https://docs.oracle.com/en/database/oracle/oracle-database/19/lnpls/index.html</a>
-                            </p>
-                        </li>
-                    </ul>
-                    <blockquote>
-                        <p>I hope these additional references and syntax are helpful to you.</p>
-                    </blockquote>
-                    <br />
-                    <br />
+</span></span></span></code></pre></div><br />
+<p><em>This query will select the customer name, total sales, number of orders, and product category for all orders placed within the specified date range. It will then group the results by customer name and product category, and will sort the results by total sales in descending order. The resulting report will show the total sales and number of orders for each customer, broken down by product category.</em></p>
+<br />
+<blockquote>
+<p>I hope the examples have helped you.</p>
+</blockquote>
+<br />
+<br />
+<h6 id="here-are-some-additional-reference-links-that-you-might-find-helpful-in-learning-more-about-sql-server-database-and-the-sql-language"><em>Here are some additional reference links that you might find helpful in learning more about SQL Server Database and the SQL language:</em></h6>
+<ul>
+<li>
+<p>The SQL Server homepage: <a href="https://www.microsoft.com/sql-server/">https://www.microsoft.com/sql-server/</a></p>
+</li>
+<li>
+<p>The SQL Server documentation: <a href="https://docs.microsoft.com/sql/">https://docs.microsoft.com/sql/</a></p>
+</li>
+<li>
+<p>The SQL tutorial: <a href="https://www.w3schools.com/sql/">https://www.w3schools.com/sql/</a></p>
+</li>
+<li>
+<p>The MySQL reference guide: <a href="https://dev.mysql.com/doc/refman/8.0/en/">https://dev.mysql.com/doc/refman/8.0/en/</a></p>
+</li>
+<li>
+<p>The Oracle SQL tutorial: <a href="https://docs.oracle.com/en/database/oracle/oracle-database/19/lnpls/index.html">https://docs.oracle.com/en/database/oracle/oracle-database/19/lnpls/index.html</a></p>
+</li>
+</ul>
+<blockquote>
+<p>I hope these additional references and syntax are helpful to you.</p>
+</blockquote>
+<br />
+<br />
 
-                </div>
-            </article>
-        </main>
-    </div>
-    <footer class="footer">
-        <span class="footer_item"> </span>
-        &nbsp;
+            </div>
+        </article></main>
+</div>
+<footer class="footer">
+    <span class="footer_item"> </span>
+    &nbsp;
 
-        <div class="footer_social-icons">
-            <a href="https://github.com/isyuricunha" target="_blank" rel="noopener noreferrer me" title="Github">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path
-                        d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
-                    </path>
-                </svg>
-            </a>
-            <a href="https://x.com/isyuricunha" target="_blank" rel="noopener noreferrer me" title="X">
-                <svg viewBox="0 0 1200 1227" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                        d="M714.163 519.284L1160.89 0H1055.03L667.137 450.887L357.328 0H0L468.492 681.821L0 1226.37H105.866L515.491 750.218L842.672 1226.37H1200L714.137 519.284H714.163ZM569.165 687.828L521.697 619.934L144.011 79.6944H306.615L611.412 515.685L658.88 583.579L1055.08 1150.3H892.476L569.165 687.854V687.828Z" />
-                </svg>
-            </a>
-            <a href="/index.xml" target="_blank" rel="noopener noreferrer me" title="Rss">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M4 11a9 9 0 0 1 9 9" />
-                    <path d="M4 4a16 16 0 0 1 16 16" />
-                    <circle cx="5" cy="19" r="1" />
-                </svg>
-            </a>
-        </div>
-        <small class="footer_copyright">
-            © 2025 Yuri Cunha.
+    <div class="footer_social-icons">
+<a href="https://github.com/isyuricunha" target="_blank" rel="noopener noreferrer me"
+    title="Github">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+    stroke-linecap="round" stroke-linejoin="round">
+    <path
+        d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+    </path>
+</svg>
+</a>
+<a href="https://x.com/isyuricunha" target="_blank" rel="noopener noreferrer me"
+    title="X">
+    <svg viewBox="0 0 1200 1227" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+    <path
+        d="M714.163 519.284L1160.89 0H1055.03L667.137 450.887L357.328 0H0L468.492 681.821L0 1226.37H105.866L515.491 750.218L842.672 1226.37H1200L714.137 519.284H714.163ZM569.165 687.828L521.697 619.934L144.011 79.6944H306.615L611.412 515.685L658.88 583.579L1055.08 1150.3H892.476L569.165 687.854V687.828Z"/>
+</svg>
+</a>
+<a href="/index.xml" target="_blank" rel="noopener noreferrer me"
+    title="Rss">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+    stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4 11a9 9 0 0 1 9 9" />
+    <path d="M4 4a16 16 0 0 1 16 16" />
+    <circle cx="5" cy="19" r="1" />
+</svg>
+</a>
+</div>
+    <small class="footer_copyright">
+        © 2025 Yuri Cunha.
+        
+    </small>
+</footer><a href="#" title="Go to top" id="totop">
+    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" stroke="currentColor" viewBox="0 96 960 960">
+    <path d="M283 704.739 234.261 656 480 410.261 725.739 656 677 704.739l-197-197-197 197Z"/>
+</svg>
 
-        </small>
-    </footer><a href="#" title="Go to top" id="totop">
-        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" stroke="currentColor"
-            viewBox="0 96 960 960">
-            <path d="M283 704.739 234.261 656 480 410.261 725.739 656 677 704.739l-197-197-197 197Z" />
-        </svg>
+</a>
 
-    </a>
+
+    
 
 
 
 
+    
+    
+        
+    
+
+    
+    
+        
+    
 
 
 
+    
+    <script src="https://yuricunha.com/js/main.min.35f435a5d8eac613c52daa28d8af544a4512337d3e95236e4a4978417b8dcb2f.js" integrity="sha256-NfQ1pdjqxhPFLaoo2K9USkUSM30&#43;lSNuSkl4QXuNyy8="></script>
 
-
-
-
-
-
-
-
-
-
-
-
-
-    <script async src="https://yuricunha.com/js/main.js"></script>
-
-
+    
 
 </body>
-
 </html>
