@@ -6,42 +6,118 @@ author: Yuri Cunha
 
 ## WHO AM I
 
-Hi there! I'm Yuri, a dbA passionate about building resilient systems and ensuring seamless performance. My expertise spans server optimization, database management, and deploying scalable cloud solutions.
+I am Yuri Cunha, a Brazilian tech guy who likes databases, Linux, homelabs and breaking things in a controlled way so I can learn how to fix them.
 
-Currently, I'm exploring new opportunities to apply my skills in designing efficient infrastructures and optimizing IT operations. In my previous roles, I mastered fine-tuning databases and creating reliable architectures at companies like Divinobit (now Bairon).
+Right now I am building my path as a PostgreSQL and MongoDB focused DBA, while also playing the roles of sysadmin, homelab owner and eternal student of how computers actually work.
 
-What drives me? Solving complex challenges in infrastructure, creating streamlined processes, and transforming raw data into actionable insights. For me, it's like engineering for the digital age — crafting solutions that stand the test of time.
+Yes, this site is part of that mess.
 
-While based in Brazil, I often find inspiration in solo travel, discovering diverse landscapes, and immersing myself in new cultures. These adventures keep me refreshed and ready to tackle the next big project.
+## What I do in tech
 
-Whether it's managing servers, fine-tuning databases, or scaling cloud platforms, I'm all about delivering excellence and finding harmony in technology. Let's build something remarkable together!
+On paper, I am a Database Technology student and an aspiring DBA. In practice, my day to day usually includes some mix of:
 
-## About this site
+- taking care of Linux servers
+- playing with PostgreSQL and MongoDB
+- setting up Docker Compose stacks
+- breaking and recovering databases on purpose to practice
+- tuning queries and configs to squeeze a bit more performance
+- documenting everything so I do not forget later
 
-- Framework: [Next.js](https://nextjs.org/)
-- Database: [PostgreSQL](https://www.postgresql.org/)
-- ORM: [Drizzle](https://orm.drizzle.team/)
-- Authentication: [Better Auth](https://www.better-auth.com/)
-- Deployment: [Vercel](https://vercel.com)
-- Content: [MDX](https://mdxjs.com/)
-- Analytics: [Umami](https://github.com/umami-software/umami)
-- Styling: [Tailwindcss](https://tailwindcss.com)
-- Code syntax highlighting: [Shiki](https://github.com/shikijs/shiki)
+I like the full path of a service: from the machine and the network, to the database and the application, to the monitoring and backup.
 
-Thanks to **Timothy Lin** for the
-[tailwind-nextjs-starter-blog](https://github.com/timlrx/tailwind-nextjs-starter-blog). It helped me when I haven't any idea how to create a blog from scratch. My code isn't like the starter code because I changed a lot of code :)
+## Homelab
 
-## Inspiration
+I run a small but very real homelab. Some highlights:
 
-Here are some websites that inspired me a lot to build a fantastic website.
+- multiple servers at home running Ubuntu Server, Proxmox and Alpine - sometimes VM's with Windows Workstation.
+- Oracle Cloud VMs for extra experiments and databases  
+- everything connected with Tailscale so I can reach my stuff from anywhere  
+- domain `yuricunha.com` with services on subdomains  
+- access exposed with Cloudflare tunnels instead of opening ports directly
 
-Refer to [README](https://github.com/isyuricunha/website/blob/main/CREDITS.md)
+Typical self hosted services that pass through my lab at some point:
 
-## Social links
+- Nextcloud for files
+- Joplin Server for notes
+- PrivateBin for quick paste sharing
+- Databases like PostgreSQL and friends
+- Local LLMs with Ollama/Llama.cpp for experiments
 
-- [GitHub](https://github.com/isyuricunha)
-- [X](https://x.com/isyuricunha)
+If it runs on Linux and is useful for infra, monitoring, backup or learning, there is a good chance I will test it here.
 
-## Logo
+## Projects and experiments
 
-<Logo />
+I like to keep my learning visible and repeatable, so I create labs and small projects. Examples:
+
+- a PostgreSQL DBA lab and portfolio with real cases  
+- experiments with high availability, backups and monitoring  
+- scripts and runbooks to automate boring tasks  
+- Android app experiments like a personal music client  
+- small brands and ideas like personal tooling names and logos
+
+The idea is simple: have concrete things I can point to when I say I know how to do something.
+
+## Study path
+
+I am formally studying Database Technology and using this site to complement the academic part with:
+
+- practical labs with PostgreSQL and MongoDB
+- Linux, networking and infra practice
+- notes about performance tuning, backups and monitoring
+- summaries of courses, certifications and books
+
+I like to mix theory and practice. I do not fully trust something until I break it with my own hands and see how it fails.
+
+## Systems and tools I like
+
+A few things you will see a lot around here:
+
+- Linux in general, especially Ubuntu Server on my machines  
+- testing Arch based distros on my laptop like EndeavourOS, CachyOS and Garuda  
+- window managers and Wayland compositors for fun and pain  
+- Docker Compose for most services  
+- PostgreSQL as my main database  
+- Python and shell for scripting
+
+I enjoy tweaking performance, trying different kernels and seeing how far I can push my hardware without making it unusable.
+
+## Health and running
+
+Outside pure tech I am also on a long term project to be lighter and run better.
+
+Things I track and care about:
+
+- weight, calories and macros with food scale and apps  
+- running training plans using Garmin Coach  
+- building up to 5K and beyond with a mix of run and walk  
+- trying to be consistent instead of perfect
+
+So yes, in the same place you might see posts about `pg_dump`, you may also see notes about running sessions and diet.
+
+## How I see this site
+
+This site is not meant to be a super polished portfolio only. It is more like:
+
+- a notebook for my labs and experiments  
+- a log of what I am learning  
+- a place to centralize docs I would write anyway  
+- a way to show a realistic picture of what I know and what I am still figuring out
+
+If something here looks useful to you, great. If it looks chaotic, that is also honest.
+
+## Values and style
+
+A few things about how I think and work:
+
+- I like clear, direct communication  
+- I prefer transparency over marketing talk  
+- I enjoy structure and documentation, even for small things  
+- I tend to be conservative in values and careful with shortcuts in tech
+
+In short, I like systems that are understandable, debuggable and that I can fix at 3 am if they go down.
+
+## If you want to reach me
+
+If you got here and thought "I want to talk to this person", you can check the [Contact](/pages/about/) page for ways to reach me.
+
+Thanks for reading.
