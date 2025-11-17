@@ -3,6 +3,7 @@ title: "My last goodbye"
 date: "2024-01-16T09:15:00-03:00"
 modifiedTime: "2024-01-16T09:15:00-03:00"
 description: "It's finally time to say goodbye to social media, and it took a while."
+isStarred: false
 ---
 
 In the midst of this era defined by relentless connectivity, I stand at the crossroads of an extraordinary digital transformation, contemplating a pivotal decision that will redefine my relationship with the virtual realm. Today signifies the commencement of a profound chapter—the deliberate erasure of my social media footprint. Instagram, Facebook, Twitter, Snapchat, and various other platforms that once dictated my online existence are now on the brink of extinction in my digital universe. In this odyssey, I'm not merely bidding farewell to virtual connections; I'm dismantling the intricate web of automation that once orchestrated my online narrative.
@@ -15,22 +16,26 @@ The decision to sever ties with social media is deeply rooted in a profound real
 
 To aid in this transformative endeavor, I've armed myself with an arsenal of tools and strategies:
 
-### On my computer:
+### On my computer
+
 - News Feed Eradicator
 - Distraction-free YouTube extension
 
-### On my phone:
+### On my phone
+
 - Grayscale display
 - Airplane mode
 - Focus modes, particularly 'Do Not Disturb'
 - App-specific time limits
 
-### In cultivating healthy habits:
+### In cultivating healthy habits
+
 - Meditation heightens self-awareness, curbing impulsive behaviors.
 - Reading replaces mindless scrolling, enhancing attention span.
 - Musical instruments and sports fill the void with gratifying activities.
 
-### Various lifestyle changes:
+### Various lifestyle changes
+
 - A physical alarm clock keeps my phone in a separate room, deterring late-night or early-morning digital temptations.
 - A 'dumb' watch replaces my Fitbit, reducing dependency on constant notifications.
 - A notebook and pen capture fleeting thoughts, replacing digital clutter.

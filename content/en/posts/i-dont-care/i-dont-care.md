@@ -3,6 +3,7 @@ title: "I Don't Care"
 date: "2023-10-11T15:58:57-03:00"
 modifiedTime: "2023-10-11T15:58:57-03:00"
 description: "I'm not a mean person. I don't go out of my way to hurt people's feelings. But I also don't care about most people or most things that don't involve me."
+isStarred: true
 ---
 
 I've always been like this. I was a shy kid with few friends. I preferred spending time alone, reading books, or playing video games.

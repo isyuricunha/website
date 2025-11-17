@@ -3,6 +3,7 @@ title: "echoes of a conflicted impostor"
 date: "2025-03-25T21:20:00-03:00"
 modifiedTime: "2025-03-25T21:20:00-03:00"
 description: "a sincere continuation of reflections on failures, doubts, and the quest to understand one's essence"
+isStarred: true
 ---
 
 
