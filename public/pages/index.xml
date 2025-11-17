@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0"
+  xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Pages on Yuri Cunha</title>
-    <link>http://localhost:1313/pages/</link>
+    <link>https://yuricunha.com/pages/</link>
     <description>Recent content in Pages on Yuri Cunha</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language><atom:link href="http://localhost:1313/pages/index.xml" rel="self" type="application/rss+xml" />
+    <language>en-us</language>
+    <atom:link href="https://yuricunha.com/pages/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>About</title>
-      <link>http://localhost:1313/pages/about/</link>
+      <link>https://yuricunha.com/pages/about/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://localhost:1313/pages/about/</guid>
-      
+
+      <guid>https://yuricunha.com/pages/about/</guid>
+
       <description>&lt;h2 id=&#34;who-am-i&#34;&gt;WHO AM I&lt;/h2&gt;
 &lt;p&gt;I am Yuri Cunha, a Brazilian guy who decided to take computers, databases and homelabs a bit too seriously.&lt;/p&gt;
 &lt;p&gt;On the internet I usually show up as &lt;strong&gt;&amp;ldquo;Yuri Cunha&amp;rdquo;&lt;/strong&gt;, although my full name is longer in real life. This site is where I put a good part of my experiments, notes, labs and random ideas.&lt;/p&gt;
@@ -284,19 +286,19 @@
 &lt;hr&gt;
 &lt;h2 id=&#34;if-you-read-all-this&#34;&gt;If you read all this&lt;/h2&gt;
 &lt;p&gt;If you made it this far, thank you.&lt;/p&gt;
-&lt;p&gt;If you want to say hello, comment on something, propose a project or just tell me that a post helped you, you can go to the &lt;a href=&#34;http://localhost:1313/contact&#34;&gt;Contact&lt;/a&gt; page and send a message.&lt;/p&gt;
+&lt;p&gt;If you want to say hello, comment on something, propose a project or just tell me that a post helped you, you can go to the &lt;a href=&#34;https://yuricunha.com/contact&#34;&gt;Contact&lt;/a&gt; page and send a message.&lt;/p&gt;
 &lt;p&gt;This site will probably keep changing over time, just like I am changing the things I do and the person I am becoming. That is part of the fun.&lt;/p&gt;
-</description>
-      
+      </description>
+
     </item>
-    
+
     <item>
       <title>Contact</title>
-      <link>http://localhost:1313/pages/contact/</link>
+      <link>https://yuricunha.com/pages/contact/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://localhost:1313/pages/contact/</guid>
-      
+
+      <guid>https://yuricunha.com/pages/contact/</guid>
+
       <description>&lt;h2 id=&#34;contact&#34;&gt;Contact&lt;/h2&gt;
 &lt;p&gt;This page explains how you can reach me if you want to say hello, ask something or send any kind of message.&lt;/p&gt;
 &lt;p&gt;You can use email or social links. Choose whatever is easier for you.&lt;/p&gt;
@@ -328,9 +330,9 @@
 &lt;p&gt;Messages are answered when possible. There is no fixed response time.&lt;/p&gt;
 &lt;h2 id=&#34;thanks&#34;&gt;Thanks&lt;/h2&gt;
 &lt;p&gt;Thanks for visiting the site and taking the time to reach out.&lt;/p&gt;
-</description>
-      
+      </description>
+
     </item>
-    
+
   </channel>
 </rss>
