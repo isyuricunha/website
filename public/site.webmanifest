@@ -2,7 +2,7 @@
     "name": "sitename",
     "short_name": "sitename",
     "start_url": "/",
-    "theme_color": "#434648",
+    "theme_color": "#f59e0b",
     "background_color": "#000000ff",
     "display": "standalone",
     "icons": [
