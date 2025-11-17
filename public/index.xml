@@ -1101,11 +1101,13 @@ toc: true
 &lt;p&gt;To enable KaTeX globally, set the parameter &lt;code&gt;math&lt;/code&gt; to &lt;code&gt;true&lt;/code&gt; in a project&amp;rsquo;s
 configuration file as follows.&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;code&gt;hugo.toml&lt;/code&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;hugo.toml&lt;/code&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-toml&#34; data-lang=&#34;toml&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;params&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nx&#34;&gt;math&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;hugo.yaml&lt;/code&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;hugo.yaml&lt;/code&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nt&#34;&gt;params&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;math&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;true&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
@@ -1215,16 +1217,11 @@ $$&lt;/p&gt;
       &lt;/tr&gt;
   &lt;/thead&gt;
   &lt;tbody&gt;
-      &lt;tr&gt;
-          &lt;td&gt;Bob&lt;/td&gt;
-          &lt;td&gt;27&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-          &lt;td&gt;Alice&lt;/td&gt;
-          &lt;td&gt;23&lt;/td&gt;
-      &lt;/tr&gt;
   &lt;/tbody&gt;
 &lt;/table&gt;
+&lt;pre&gt;&lt;code&gt;Bob | 27
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Alice | 23&lt;/p&gt;
 &lt;h3 id=&#34;markdown-within-tables&#34;&gt;Markdown within tables&lt;/h3&gt;
 &lt;table&gt;
   &lt;thead&gt;
@@ -1860,19 +1857,36 @@ Como disse Elon Musk:&lt;br /&gt;&lt;/p&gt;
       
       <guid>http://localhost:1313/pages/about/</guid>
       
-      <description>&lt;p&gt;Written in Go, Hugo is an open source static site generator available under the &lt;a href=&#34;https://github.com/gohugoio/hugo/blob/master/LICENSE&#34;&gt;Apache Licence 2.0.&lt;/a&gt; Hugo supports TOML, YAML and JSON data file types, Markdown and HTML content files and uses shortcodes to add rich content. Other notable features are taxonomies, multilingual mode, image processing, custom output formats, HTML/CSS/JS minification and support for Sass SCSS workflows.&lt;/p&gt;
-&lt;p&gt;Hugo makes use of a variety of open source projects including:&lt;/p&gt;
+      <description>&lt;h2 id=&#34;who-am-i&#34;&gt;WHO AM I&lt;/h2&gt;
+&lt;p&gt;Hi there! I&amp;rsquo;m Yuri, a dbA passionate about building resilient systems and ensuring seamless performance. My expertise spans server optimization, database management, and deploying scalable cloud solutions.&lt;/p&gt;
+&lt;p&gt;Currently, I&amp;rsquo;m exploring new opportunities to apply my skills in designing efficient infrastructures and optimizing IT operations. In my previous roles, I mastered fine-tuning databases and creating reliable architectures at companies like Divinobit (now Bairon).&lt;/p&gt;
+&lt;p&gt;What drives me? Solving complex challenges in infrastructure, creating streamlined processes, and transforming raw data into actionable insights. For me, it&amp;rsquo;s like engineering for the digital age — crafting solutions that stand the test of time.&lt;/p&gt;
+&lt;p&gt;While based in Brazil, I often find inspiration in solo travel, discovering diverse landscapes, and immersing myself in new cultures. These adventures keep me refreshed and ready to tackle the next big project.&lt;/p&gt;
+&lt;p&gt;Whether it&amp;rsquo;s managing servers, fine-tuning databases, or scaling cloud platforms, I&amp;rsquo;m all about delivering excellence and finding harmony in technology. Let&amp;rsquo;s build something remarkable together!&lt;/p&gt;
+&lt;h2 id=&#34;about-this-site&#34;&gt;About this site&lt;/h2&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/yuin/goldmark&#34;&gt;https://github.com/yuin/goldmark&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/alecthomas/chroma&#34;&gt;https://github.com/alecthomas/chroma&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/muesli/smartcrop&#34;&gt;https://github.com/muesli/smartcrop&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/spf13/cobra&#34;&gt;https://github.com/spf13/cobra&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/spf13/viper&#34;&gt;https://github.com/spf13/viper&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Framework: &lt;a href=&#34;https://nextjs.org/&#34;&gt;Next.js&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Database: &lt;a href=&#34;https://www.postgresql.org/&#34;&gt;PostgreSQL&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;ORM: &lt;a href=&#34;https://orm.drizzle.team/&#34;&gt;Drizzle&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Authentication: &lt;a href=&#34;https://www.better-auth.com/&#34;&gt;Better Auth&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Deployment: &lt;a href=&#34;https://vercel.com&#34;&gt;Vercel&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Content: &lt;a href=&#34;https://mdxjs.com/&#34;&gt;MDX&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Analytics: &lt;a href=&#34;https://github.com/umami-software/umami&#34;&gt;Umami&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Styling: &lt;a href=&#34;https://tailwindcss.com&#34;&gt;Tailwindcss&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Code syntax highlighting: &lt;a href=&#34;https://github.com/shikijs/shiki&#34;&gt;Shiki&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;Hugo is ideal for blogs, corporate websites, creative portfolios, online magazines, single page applications or even a website with thousands of pages.&lt;/p&gt;
-&lt;p&gt;Hugo is for people who want to hand code their own website without worrying about setting up complicated runtimes, dependencies and databases.&lt;/p&gt;
-&lt;p&gt;Websites built with Hugo are extremely fast, secure and can be deployed anywhere including, AWS, GitHub Pages, Heroku, Netlify and any other hosting provider.&lt;/p&gt;
-&lt;p&gt;Learn more and contribute on &lt;a href=&#34;https://github.com/gohugoio&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Thanks to &lt;strong&gt;Timothy Lin&lt;/strong&gt; for the
+&lt;a href=&#34;https://github.com/timlrx/tailwind-nextjs-starter-blog&#34;&gt;tailwind-nextjs-starter-blog&lt;/a&gt;. It helped me when I haven&amp;rsquo;t any idea how to create a blog from scratch. My code isn&amp;rsquo;t like the starter code because I changed a lot of code :)&lt;/p&gt;
+&lt;h2 id=&#34;inspiration&#34;&gt;Inspiration&lt;/h2&gt;
+&lt;p&gt;Here are some websites that inspired me a lot to build a fantastic website.&lt;/p&gt;
+&lt;p&gt;Refer to &lt;a href=&#34;https://github.com/isyuricunha/website/blob/main/CREDITS.md&#34;&gt;README&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;social-links&#34;&gt;Social links&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/isyuricunha&#34;&gt;GitHub&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;input checked=&#34;&#34; disabled=&#34;&#34; type=&#34;checkbox&#34;&gt; (&lt;a href=&#34;https://x.com/isyuricunha&#34;&gt;https://x.com/isyuricunha&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;logo&#34;&gt;Logo&lt;/h2&gt;
+&lt;Logo /&gt;
 </description>
       
     </item>

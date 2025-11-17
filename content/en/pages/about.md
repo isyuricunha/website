@@ -1,23 +1,47 @@
 ---
 title: About
-description: 'Hugo, the world''s fastest framework for building websites'
-author: Hugo Authors
+description: 'committing changes to my life database every day'
+author: Yuri Cunha
 ---
 
-Written in Go, Hugo is an open source static site generator available under the [Apache Licence 2.0.](https://github.com/gohugoio/hugo/blob/master/LICENSE) Hugo supports TOML, YAML and JSON data file types, Markdown and HTML content files and uses shortcodes to add rich content. Other notable features are taxonomies, multilingual mode, image processing, custom output formats, HTML/CSS/JS minification and support for Sass SCSS workflows.
+## WHO AM I
 
-Hugo makes use of a variety of open source projects including:
+Hi there! I'm Yuri, a dbA passionate about building resilient systems and ensuring seamless performance. My expertise spans server optimization, database management, and deploying scalable cloud solutions.
 
-* https://github.com/yuin/goldmark
-* https://github.com/alecthomas/chroma
-* https://github.com/muesli/smartcrop
-* https://github.com/spf13/cobra
-* https://github.com/spf13/viper
+Currently, I'm exploring new opportunities to apply my skills in designing efficient infrastructures and optimizing IT operations. In my previous roles, I mastered fine-tuning databases and creating reliable architectures at companies like Divinobit (now Bairon).
 
-Hugo is ideal for blogs, corporate websites, creative portfolios, online magazines, single page applications or even a website with thousands of pages.
+What drives me? Solving complex challenges in infrastructure, creating streamlined processes, and transforming raw data into actionable insights. For me, it's like engineering for the digital age — crafting solutions that stand the test of time.
 
-Hugo is for people who want to hand code their own website without worrying about setting up complicated runtimes, dependencies and databases.
+While based in Brazil, I often find inspiration in solo travel, discovering diverse landscapes, and immersing myself in new cultures. These adventures keep me refreshed and ready to tackle the next big project.
 
-Websites built with Hugo are extremely fast, secure and can be deployed anywhere including, AWS, GitHub Pages, Heroku, Netlify and any other hosting provider.
+Whether it's managing servers, fine-tuning databases, or scaling cloud platforms, I'm all about delivering excellence and finding harmony in technology. Let's build something remarkable together!
 
-Learn more and contribute on [GitHub](https://github.com/gohugoio).
+## About this site
+
+- Framework: [Next.js](https://nextjs.org/)
+- Database: [PostgreSQL](https://www.postgresql.org/)
+- ORM: [Drizzle](https://orm.drizzle.team/)
+- Authentication: [Better Auth](https://www.better-auth.com/)
+- Deployment: [Vercel](https://vercel.com)
+- Content: [MDX](https://mdxjs.com/)
+- Analytics: [Umami](https://github.com/umami-software/umami)
+- Styling: [Tailwindcss](https://tailwindcss.com)
+- Code syntax highlighting: [Shiki](https://github.com/shikijs/shiki)
+
+Thanks to **Timothy Lin** for the
+[tailwind-nextjs-starter-blog](https://github.com/timlrx/tailwind-nextjs-starter-blog). It helped me when I haven't any idea how to create a blog from scratch. My code isn't like the starter code because I changed a lot of code :)
+
+## Inspiration
+
+Here are some websites that inspired me a lot to build a fantastic website.
+
+Refer to [README](https://github.com/isyuricunha/website/blob/main/CREDITS.md)
+
+## Social links
+
+- [GitHub](https://github.com/isyuricunha)
+- [X](https://x.com/isyuricunha)
+
+## Logo
+
+<Logo />

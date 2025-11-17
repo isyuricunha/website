@@ -1,5 +1,5 @@
 ---
-author: Hugo Authors
+author: Yuri Cunha
 title: Math Typesetting - use Mathematical notation in blog posts
 date: 2023-04-01
 description: A brief guide to setup KaTeX
@@ -16,15 +16,19 @@ In this example we will be using [KaTeX](https://katex.org/).
 - To enable KaTeX globally, set the parameter `math` to `true` in a project's
   configuration file as follows.
   - `hugo.toml`
+
     ```toml
     [params]
       math = true
     ```
+
   - `hugo.yaml`
+
     ```yaml
     params:
       math: true
     ```
+
 - To enable KaTeX on a per page basis, include the parameter `math: true` in
   Front Matter of Markdown content file as follows.
 

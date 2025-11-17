@@ -1,15 +1,15 @@
 ---
 title: Emoji Support
 date: 2023-02-01
-author: Hugo Authors
+author: Yuri Cunha
 description: Guide to emoji usage in Hugo
 tags:
   - emoji
 ---
 
-Emoji can be enabled in a Hugo project in a number of ways. 
+Emoji can be enabled in a Hugo project in a number of ways.
 <!--more-->
-The [`emojify`](https://gohugo.io/functions/emojify/) function can be called directly in templates or [Inline Shortcodes](https://gohugo.io/templates/shortcode-templates/#inline-shortcodes). 
+The [`emojify`](https://gohugo.io/functions/emojify/) function can be called directly in templates or [Inline Shortcodes](https://gohugo.io/templates/shortcode-templates/#inline-shortcodes).
 
 To enable emoji globally, set `enableEmoji` to `true` in your site's `hugo.toml`. You can type emoji shorthand codes directly in content files; e.g.
 
@@ -32,9 +32,9 @@ The [Emoji cheat sheet](http://www.emoji-cheat-sheet.com/) is a useful reference
 {{< css.inline >}}
 <style>
 .emojify {
-	font-family: Apple Color Emoji, Segoe UI Emoji, NotoColorEmoji, Segoe UI Symbol, Android Emoji, EmojiSymbols;
-	font-size: 2rem;
-	vertical-align: middle;
+ font-family: Apple Color Emoji, Segoe UI Emoji, NotoColorEmoji, Segoe UI Symbol, Android Emoji, EmojiSymbols;
+ font-size: 2rem;
+ vertical-align: middle;
 }
 @media screen and (max-width:650px) {
   .nowrap {

@@ -1,7 +1,7 @@
 ---
 title: Markdown Syntax Guide
 date: 2023-02-11
-author: Hugo Authors
+author: Yuri Cunha
 description: Sample article showcasing basic Markdown syntax and formatting for HTML elements.
 isStarred: true
 ---
@@ -70,6 +70,7 @@ Tables aren't part of the core Markdown spec, but Hugo supports them out-of-the-
 
    Name | Age
 --------|------
+
     Bob | 27
   Alice | 23
 
@@ -77,7 +78,7 @@ Tables aren't part of the core Markdown spec, but Hugo supports them out-of-the-
 
 | Italics   | Bold     | Code   |
 | --------  | -------- | ------ |
-| *italics* | **bold** | `code` |
+| _italics_ | **bold** | `code` |
 
 ## Code Blocks
 

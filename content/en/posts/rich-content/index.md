@@ -1,5 +1,5 @@
 ---
-author: Hugo Authors
+author: Yuri Cunha
 title: Rich Content
 date: 2023-02-09
 description: A brief description of Hugo Shortcodes
