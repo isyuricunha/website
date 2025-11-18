@@ -1,0 +1,15 @@
+{{- with .Site.Params.umami }}
+  {{- if and .enabled .scriptUrl .websiteId }}
+    <script
+      defer
+      src="{{ .scriptUrl }}"
+      data-website-id="{{ .websiteId }}"
+      {{- with .dataHostUrl }}
+      data-host-url="{{ . }}"
+      {{- end }}
+      {{- with .dataDomains }}
+      data-domains="{{ . }}"
+      {{- end }}
+    ></script>
+  {{- end }}
+{{- end }}
