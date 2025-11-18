@@ -7,6 +7,9 @@ languageCode = 'en-us'
 # This defines how dates are formatted
 defaultContentLanguage = "en-us"
 
+ [permalinks]
+   pages = "/:slug/"
+
 # Enable emojis globally
 enableEmoji = true
 ignoreErrors = ["additional-script-loading-error"] # ignore error of loading additional scripts.
