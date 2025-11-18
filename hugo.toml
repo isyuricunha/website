@@ -47,7 +47,15 @@ theme = "hugo-blog-awesome"
 		endLevel = 4 # ToC ends at H4
 		ordered = false # generates <ul> instead of <ol>
 
+[permalinks]
+  [permalinks.page]
+    pages = "/:slug/"
+    posts = "/blog/:slug/"
+  [permalinks.section]
+    posts = "/blog/"
+
 ############################## English language ################################
+
 [Languages.en-us]
   languageName = "English"
   languageCode = "en-us"
@@ -63,9 +71,9 @@ theme = "hugo-blog-awesome"
     url = '/'
     weight = 10
   [[Languages.en-us.menu.main]]
-    pageRef="posts"
-    name = 'Posts'
-    url = '/posts/'
+    pageRef="blog"
+    name = 'Blog'
+    url = '/blog/'
     weight = 20
   [[Languages.en-us.menu.main]]
     pageRef="about"

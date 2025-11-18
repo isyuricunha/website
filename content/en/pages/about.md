@@ -286,6 +286,6 @@ Just to make this page a bit more human:
 
 If you made it this far, thank you.
 
-If you want to say hello, comment on something, propose a project or just tell me that a post helped you, you can go to the [Contact](/pages/contact) page and send a message.
+If you want to say hello, comment on something, propose a project or just tell me that a post helped you, you can go to the [Contact](/contact) page and send a message.
 
 This site will probably keep changing over time, just like I am changing the things I do and the person I am becoming. That is part of the fun.

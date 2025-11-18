@@ -7,7 +7,7 @@ isStarred: true
 ---
 
 
-I've been wandering these same shadowed corridors of my mind, [questioning every step I've taken since that confession of failure](https://yuricunha.com/post/reflections-of-a-conflicted-impostor). It’s strange—while admitting my shortcomings felt like an honest release at the time, the aftermath has only deepened the maze. I find myself retracing old paths, looking for signs of a truth I can cling to. There are moments when I catch a glimpse of the person I once hoped to become: confident, curious, driven. Yet, that image quickly dissolves into the persistent murmur of doubt.
+I've been wandering these same shadowed corridors of my mind, [questioning every step I've taken since that confession of failure](https://yuricunha.com/blog/reflections-of-a-conflicted-impostor). It’s strange—while admitting my shortcomings felt like an honest release at the time, the aftermath has only deepened the maze. I find myself retracing old paths, looking for signs of a truth I can cling to. There are moments when I catch a glimpse of the person I once hoped to become: confident, curious, driven. Yet, that image quickly dissolves into the persistent murmur of doubt.
 
 I’ve noticed how the smallest victories—solving a problem at work, a brief moment of genuine laughter with a friend—feel less like triumphs and more like fleeting distractions from the overwhelming sensation of inadequacy. It's as if each success, instead of building a solid foundation, only casts a longer, darker shadow of what might come next. The irony isn’t lost on me: for someone who meticulously built a portfolio admired by many, my inner critic still insists that I’m an impostor living a lie.
 
