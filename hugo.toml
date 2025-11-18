@@ -76,7 +76,12 @@ theme = "hugo-blog-awesome"
     pageRef="contact"
     name = 'Contact'
     url = '/contact/'
-    weight = 30
+    weight = 40
+  [[Languages.en-us.menu.main]]
+    pageRef="hardware"
+    name = 'Hardware'
+    url = '/hardware/'
+    weight = 40
 
 [Languages.en-us.params]
   sitename = "Yuri Cunha"

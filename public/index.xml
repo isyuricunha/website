@@ -2175,5 +2175,213 @@ Como disse Elon Musk:&lt;br /&gt;&lt;/p&gt;
       
     </item>
     
+    <item>
+      <title>Hardware</title>
+      <link>https://yuricunha.com/pages/hardware/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://yuricunha.com/pages/hardware/</guid>
+      
+      <description>&lt;p&gt;This page is a simple inventory of the hardware I use right now.&lt;/p&gt;
+&lt;p&gt;Nothing here is marketing. It is just a list of the machines that keep my life and my lab running.&lt;/p&gt;
+&lt;p&gt;I split things into:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;personal notebook&lt;/li&gt;
+&lt;li&gt;home lab main server&lt;/li&gt;
+&lt;li&gt;home lab ARM64 node&lt;/li&gt;
+&lt;li&gt;cloud dev and prod machines&lt;/li&gt;
+&lt;li&gt;a short note on why this mix exists&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;personal-hardware&#34;&gt;Personal hardware&lt;/h2&gt;
+&lt;h3 id=&#34;main-notebook&#34;&gt;Main notebook&lt;/h3&gt;
+&lt;p&gt;This is my daily driver. I use it for everything related to study, code, SSH, docs and general work.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Specs&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;CPU
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;AMD Ryzen 7 7445HS&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;RAM
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;64 GB DDR5&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Storage
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;256 GB&lt;/strong&gt; SSD&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;360 GB&lt;/strong&gt; SSD&lt;/li&gt;
+&lt;li&gt;used for system, dev tools, local databases, containers and files&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;GPU
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Nvidia RTX 4070&lt;/strong&gt; (notebook)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Main use cases:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;terminals and IDEs to work on code and documentation&lt;/li&gt;
+&lt;li&gt;SSH into all lab and cloud machines through Tailscale&lt;/li&gt;
+&lt;li&gt;database clients, admin tools and dashboards&lt;/li&gt;
+&lt;li&gt;browsers and apps that talk to services running in the lab&lt;/li&gt;
+&lt;li&gt;some local containers and light VMs when needed&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This notebook is the place where I drive everything else.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;home-lab-hardware&#34;&gt;Home lab hardware&lt;/h2&gt;
+&lt;h3 id=&#34;main-server-at-home&#34;&gt;Main server at home&lt;/h3&gt;
+&lt;p&gt;This is the big machine in the homelab, focused on databases, services and experiments.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;CPU&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Intel Xeon W9 3475X&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Memory&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;256 GB ECC R&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;256 GB ECC R&lt;/strong&gt; in mirror configuration&lt;/li&gt;
+&lt;li&gt;total of &lt;strong&gt;512 GB&lt;/strong&gt; of ECC memory, configured for redundancy to avoid failures&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Storage&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Rotational storage:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;14 TB HDD&lt;/strong&gt; main data&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;14 TB HDD&lt;/strong&gt; for redundancy&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;14 TB HDD&lt;/strong&gt; for backups&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;NVMe storage:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;256 GB NVMe&lt;/strong&gt; for the system&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;500 GB NVMe&lt;/strong&gt; used as file cache&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;4 TB NVMe&lt;/strong&gt; for cold files and long term storage&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;GPUs&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Nvidia GT210&lt;/strong&gt; for video output&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Nvidia GT 1050&lt;/strong&gt; for small workloads and video codecs&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;AMD Radeon RX 7900 XTX&lt;/strong&gt; for AI workloads&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I will replace all nvidia and intel stuff for AMD in some moment&lt;/p&gt;
+&lt;p&gt;Typical usage:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;PostgreSQL and other databases in real lab style setups&lt;/li&gt;
+&lt;li&gt;Docker/Containers stacks for self hosted services&lt;/li&gt;
+&lt;li&gt;monitoring, logging and backup jobs&lt;/li&gt;
+&lt;li&gt;AI experiments using the RX 7900 XTX&lt;/li&gt;
+&lt;li&gt;storage for media, backups and lab data with redundancy&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This is the core of the home lab and where most heavy work happens.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;arm64-node-in-the-home-lab&#34;&gt;ARM64 node in the home lab&lt;/h3&gt;
+&lt;p&gt;I also keep an ARM64 environment at home for testing and variety.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Board&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Raspberry Pi 5&lt;/strong&gt;, 16 GB version&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;SoC&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Broadcom BCM2712&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;quad core &lt;strong&gt;ARM Cortex A76&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Memory&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;16 GB LPDDR4X 4267&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Storage&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;64 GB eMMC&lt;/strong&gt; module for the system&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;512 GB&lt;/strong&gt; drive for containers and files&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Use cases:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;running ARM containers&lt;/li&gt;
+&lt;li&gt;testing services on ARM64 before going to cloud ARM&lt;/li&gt;
+&lt;li&gt;small always on services with low power usage&lt;/li&gt;
+&lt;li&gt;experiments with storage on small boards&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This node helps me make sure my setups are not x86 only.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;cloud-hardware&#34;&gt;Cloud hardware&lt;/h2&gt;
+&lt;p&gt;I also run dev and prod workloads in the cloud. Right now there are two main groups of VMs.&lt;/p&gt;
+&lt;h3 id=&#34;x86-64-dev-and-prod-in-the-cloud&#34;&gt;x86 64 dev and prod in the cloud&lt;/h3&gt;
+&lt;p&gt;These are two virtual machines with the same hardware, one for dev and one for prod.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Specs per VM&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;CPU
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;AMD EPYC 7551&lt;/strong&gt;, &lt;strong&gt;8 vCPU&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;RAM
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;16 GB&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Storage
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;250 GB&lt;/strong&gt; for system, data and logs&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;There are &lt;strong&gt;two&lt;/strong&gt; of these machines with the same configuration.&lt;/p&gt;
+&lt;p&gt;Main use:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;running databases and services in a more realistic production like environment&lt;/li&gt;
+&lt;li&gt;testing deployments that talk to the home lab through Tailscale&lt;/li&gt;
+&lt;li&gt;simulating scenarios where part of the stack is on premises and part is in the cloud&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;arm64-dev-and-prod-in-the-cloud&#34;&gt;ARM64 dev and prod in the cloud&lt;/h3&gt;
+&lt;p&gt;I also keep ARM64 machines in the cloud for tests and workloads that make sense on that architecture.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Specs per VM&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;CPU
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;8 vCPU&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;RAM
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;24 GB&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Storage
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;150 GB&lt;/strong&gt; for system and data&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;idk what machine is, and i dont care about that&lt;/p&gt;
+&lt;p&gt;Used for:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;running ARM64 containers and services&lt;/li&gt;
+&lt;li&gt;checking performance differences between ARM and x86 setups&lt;/li&gt;
+&lt;li&gt;experiments with energy efficient style workloads&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Again, the idea is to have at least dev and prod separated in this group.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;why-this-mix-of-hardware&#34;&gt;Why this mix of hardware&lt;/h2&gt;
+&lt;p&gt;The hardware is not random. It follows a simple idea.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;the notebook is the control center&lt;/li&gt;
+&lt;li&gt;the home lab main server is where heavy work and storage live&lt;/li&gt;
+&lt;li&gt;the home ARM64 node gives me variety and low power experiments&lt;/li&gt;
+&lt;li&gt;the cloud machines let me simulate more realistic production setups&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;With this combination I can:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;test databases and services with serious memory and storage at home&lt;/li&gt;
+&lt;li&gt;run AI workloads locally using the RX 7900 XTX&lt;/li&gt;
+&lt;li&gt;keep redundancy and backups with mirrored RAM and multiple HDDs&lt;/li&gt;
+&lt;li&gt;compare x86 and ARM64 behavior&lt;/li&gt;
+&lt;li&gt;practice dev, staging and prod style separation&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This page is mostly for me to remember what I actually have, but if you are reading this and you like homelabs, you now know what is running behind the scenes.&lt;/p&gt;
+</description>
+      
+    </item>
+    
   </channel>
 </rss>
