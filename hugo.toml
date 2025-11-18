@@ -36,11 +36,6 @@ theme = "hugo-blog-awesome"
   [services.disqus]
     shortname = ''
 
-[params.umami]
-  enabled = true
-  scriptUrl = "https://cloud.umami.is/script.js"
-  websiteId = "89c8b474-3a62-4ca7-ad30-22cb17535f24"
-
 # set markup.highlight.noClasses=false to enable code highlight
 [markup]
   [markup.highlight]
