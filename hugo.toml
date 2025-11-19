@@ -51,8 +51,10 @@ theme = "hugo-blog-awesome"
   [permalinks.page]
     pages = "/:slug/"
     posts = "/blog/:slug/"
+    snippets = "/snippet/:slug/"
   [permalinks.section]
     posts = "/blog/"
+    snippets = "/snippet/"
 
 ############################## English language ################################
 
@@ -75,6 +77,11 @@ theme = "hugo-blog-awesome"
     name = 'Blog'
     url = '/blog/'
     weight = 20
+  [[Languages.en-us.menu.main]]
+    pageRef="snippets"
+    name = 'Snippets'
+    url = '/snippet/'
+    weight = 25
   [[Languages.en-us.menu.main]]
     pageRef="about"
     name = 'About'
