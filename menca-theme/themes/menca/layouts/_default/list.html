@@ -1,0 +1,28 @@
+{{ define "main" }}
+
+<div class="archive">
+
+  <div class="container">
+    <div class="row">
+      <div class="col col-12">
+        <div class="archive__box">
+          <span class="archive__counter">{{ len .Pages }} {{ if lt (len .Pages) 2 }}Post{{ else }}Posts{{ end }}</span>
+          <h1 class="archive__title">{{ humanize .Title }}</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container">
+    <div class="row animate">
+  
+      {{ range .Data.Pages }}
+        {{ partial "article-content.html" . }}
+      {{ end }}
+  
+    </div>
+  </div>
+
+</div>
+
+{{ end }}

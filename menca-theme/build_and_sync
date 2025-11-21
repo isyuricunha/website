@@ -1,0 +1,3 @@
+#!/bin/sh
+hugo
+rsync -avz public/ dacharycarey.com:dacharycarey.com/

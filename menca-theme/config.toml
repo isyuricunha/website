@@ -1,0 +1,156 @@
+#-------------------------------
+# General Site Settings
+
+baseURL = 'https://dacharycarey.com/'
+languageCode = 'en-us'
+title = 'Dachary Carey'
+theme = 'menca'
+googleAnalytics = "" # Add your identifier. For example UA-99631805-1.
+paginate = 9
+
+
+#-------------------------------
+# Main Menu
+[menu]
+  [[menu.main]]
+    identifier = "technical-writing"
+    name = "Technical Writing"
+    url = "/technical-writing"
+    weight = 1
+
+  [[menu.main]]
+    identifier = "programming"
+    name = "Programming"
+    url = "/programming"
+    weight = 2
+
+  [[menu.main]]
+    identifier = "about"
+    name = "About"
+    url = "/about"
+    weight = 4
+
+  [[menu.main]]
+    identifier = "contact"
+    name = "Contact"
+    url = "/contact"
+    weight = 5
+
+
+[params]
+  logo = "" # You can add own logo. For example "/images/logo.png".
+  description = "Dachary - Tech Writer, Programmer, Coffee Enthusiast"
+
+  #-------------------------------
+  # Author Settings
+  [params.author]
+    author__name = "Dachary Carey"
+    author__bio = "Tech Writer, Programmer, Coffee Enthusiast"
+    author__avatar = "/images/dc.jpeg"
+
+  [[params.social]]
+    # icon = "ion-logo-mastodon"
+    icon = "logo-mastodon"
+    name = "Mastodon"
+    link = "https://dacharycarey.social/@dachary"
+
+  [[params.social]]
+    # icon = "ion-logo-github"
+    icon = "logo-github"
+    name = "GitHub"
+    link = "https://github.com/dacharyc"
+
+  [[params.social]]
+    # icon = "ion-logo-linkedin"
+    icon = "logo-linkedin"
+    name = "LinkedIn"
+    link = "https://www.linkedin.com/in/dachary/"
+
+  # Example of adding a new link to the author section and footer:
+  # [[params.social]]
+  #   icon = "ion-logo-vimeo"
+  #   name = "Vimeo"
+  #   link = "https://vimeo.com"
+
+  # Other icons can be found at https://ionicons.com/v4/
+
+
+  #-------------------------------
+  # Hero Settings
+  [params.hero]
+    hero__title = "Hey, I'm Dachary Carey"
+    hero__description = "Tech Writer, Programmer, Coffee Enthusiast"
+    hero__image = "/images/IMG_6321.jpeg"
+
+  #-------------------------------
+  # Gallery Footer Section
+  [params.gallery]
+    gallery__title = "Talk to Me About..."
+    gallery__columns = 3 # You can change the number of gallery columns
+
+  [[params.gallery_image]]
+    image_alt = "Me and my shadow"
+    image_url = "/images/gallery-ash-on-dachary.jpg"
+
+  [[params.gallery_image]]
+    image_alt = "Ash, our Maine Coon cat"
+    image_url = "/images/gallery-ash.jpg"
+
+  [[params.gallery_image]]
+    image_alt = "Ash the cat stands on Kay's shoulders"
+    image_url = "/images/gallery-ash-on-kay.jpg"
+
+  [[params.gallery_image]]
+    image_alt = "Maui and Lita, our two dogs, snuggling"
+    image_url = "/images/gallery-maui-and-lita.jpg"
+
+  [[params.gallery_image]]
+    image_alt = "Maui and Lita our two dogs, under beautiful spring blossoms"
+    image_url = "/images/gallery-maui-and-lita-tree-blossoms.jpg"
+
+  [[params.gallery_image]]
+    image_alt = "Maui and Ash, our dog and cat, snuggling"
+    image_url = "/images/gallery-maui-and-ash.jpg"
+
+  [[params.gallery_image]]
+    image_alt = "Coffee, a good book, and a liege waffle - paradise"
+    image_url = "/images/gallery-coffee-and-book.jpg"
+
+  [[params.gallery_image]]
+    image_alt = "Taking the tractor out for a little work"
+    image_url = "/images/gallery-tractor.jpg"
+
+  [[params.gallery_image]]
+    image_alt = "Coding away on an iOS app"
+    image_url = "/images/gallery-coding.jpg"
+
+
+  #-------------------------------
+  # Contact Settings
+  [params.contact]
+    email = "f/xqkjjenb" # Add your formspree contact form. This is everything after https://formspree.io/
+
+    # NOTE
+    # Menca comes with a built-in contact form, that you can use with Formspree service to handle up to 50 submissions per month for free. You could also easily switch to another contact form service if you want.
+
+  #-------------------------------
+  # Comment Section (Disqus)
+  # [params.disqus]
+  #  disqusShortname = "demo-menca" # Add your shortname for Disqus Comment. For example demo-menca
+
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+
+
+[markup.highlight]
+  codeFences = true
+  guessSyntax = true
+  noClasses = false
+
