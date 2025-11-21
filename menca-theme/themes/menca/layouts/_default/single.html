@@ -1,0 +1,49 @@
+{{ define "main" }}
+
+<div class="page-head">
+  <div class="container">
+    <div class="row">
+
+      {{ if .Params.video_embed }}
+      <div class="col col-12">
+        <div class="page-video">
+          <div class="page-video__wrap">
+            <iframe src="{{ .Params.video_embed }}" loading="lazy" width="640" height="360" frameborder="0"
+              webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+      {{ else }}
+
+      {{ if .Params.image }}
+      <div class="col col-12">
+        <div class="page-image">
+          <img class="lazy" data-src="{{ .Params.Image | absURL }}" alt="{{ .Title }}">
+        </div>
+      </div>
+      {{ end }}
+
+      {{ end }}
+
+      <div class="col col-12">
+        <div class="page__info">
+          <h1 class="page__title">{{ .Title }}</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- begin page -->
+<div class="container animate">
+
+  <article class="page">
+    <div class="page__content">
+      {{ .Content }}
+    </div>
+  </article>
+
+</div>
+<!-- end page -->
+
+{{ end }}

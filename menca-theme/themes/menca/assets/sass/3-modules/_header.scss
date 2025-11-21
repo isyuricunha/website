@@ -1,0 +1,252 @@
+/* Header */
+.header {
+  .header__inner {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 44px $base-spacing-unit;
+  
+    @media only screen and (max-width: $desktop) {
+      padding: 40px $base-spacing-unit;
+    }
+
+    @media only screen and (max-width: $mobile) {
+      padding: 32px $base-spacing-unit;
+    }
+  }
+}
+
+/* Logo */
+.logo__link {
+  padding: 4px 0;
+  font-family: $heading-font-family;
+  font-size: 28px;
+  letter-spacing: -1px;
+  line-height: 1;
+  font-weight: 700;
+  transition: color .25s ease;
+
+  &:hover {
+    color: var(--brand-color);
+  }
+}
+
+.logo__image {
+  max-height: 50px;
+}
+
+/* Nav */
+.main-nav {
+  margin-left: auto;
+
+  @media only screen and (max-width: $desktop) {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+    opacity: 0;
+    visibility: hidden;
+    background-color: var(--background-color);
+
+    &.is-open {
+      opacity: 1;
+      visibility: visible;
+      transition: all .25s ease;
+    }
+
+    .nav__list {
+      flex-direction: column;
+      width: 100%;
+
+      .nav__item {
+        display: block;
+        margin: 0;
+
+        &.nav__item-icon {
+          margin-right: 0;
+        }
+
+        .nav__link {
+          display: inline-block;
+          padding: 16px 0;
+          font-size: 18px;
+          transition: color .25s ease;
+
+          &:hover {
+            color: var(--brand-color);
+          }
+        }
+      }
+    }
+  }
+}
+
+.main-nav__box {
+  display: flex;
+  align-items: center;
+
+  .nav__icon-close {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    width: 36px;
+    height: 36px;
+    font-size: 24px;
+    line-height: 1;
+    border-radius: 50%;
+    color: var(--heading-font-color);
+    background: var(--background-alt-color);
+    cursor: pointer;
+
+    &:hover {
+      .ion-md-close {
+        transform: rotate(90deg);
+      }
+    }
+
+    .ion-md-close {
+      transition: $global-transition;
+    }
+  }
+
+  .nav__title {
+    display: none;
+  }
+
+  @media only screen and (max-width: $desktop) {
+    display: block;
+
+    align-items: center;
+    width: 80%;
+    height: 80vh;
+    padding-top: 180px;
+    margin: 0 auto;
+    text-align: center;
+    overflow-y: auto;
+
+    .nav__icon-close {
+      display: flex;
+      position: absolute;
+      top: 40px;
+      right: 40px;
+    }
+
+    .nav__title {
+      display: inline-block;
+      margin-bottom: 12px;
+      font-family: $heading-font-family;
+      font-size: 36px;
+      font-weight: 700;
+      letter-spacing: -1px;
+      color: var(--heading-font-color);
+    }
+  }
+
+  @media only screen and (max-width: $tablet) {
+    padding-top: 100px;
+  }
+}
+
+.nav__list {
+  display: flex;
+  align-items: center;
+
+  .nav__item {
+    display: inline-block;
+    margin-right: 48px;
+    margin-bottom: 0;
+
+    &.nav__item-icon {
+      margin-right: 12px;
+    }
+
+    .nav__link {
+      position: relative;
+      padding: 4px 0;
+      font-size: 16px;
+      line-height: 1;
+      font-weight: 700;
+      transition: color .25s ease;
+
+      &:hover {
+        color: var(--brand-color);
+      }
+    }
+  }
+}
+
+.nav-button {
+  font-size: 21px;
+  color: var(--link-color);
+  cursor: pointer;
+
+  .icon__menu {
+    display: none;
+    margin-right: 12px;
+  }
+
+  .icon__menu,
+  .icon__search {
+    transition: color .25s ease;
+
+    &:hover {
+      color: var(--brand-color);
+    }
+  }
+
+  @media only screen and (max-width: $desktop) {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    font-size: 24px;
+
+    .icon__menu {
+      display: block;
+    }
+  }
+}
+
+/* Toggle Theme */
+.toggle-theme {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+  user-select: none;
+  cursor: pointer;
+
+  @media only screen and (max-width: $desktop) {
+    padding: 20px 0;
+  }
+}
+
+.toggle-sun,
+.toggle-moon {
+  position: absolute;
+  font-size: 20px;
+  transition: color .25s ease;
+  color: var(--heading-font-color);
+
+  &:hover {
+    color: var(--brand-color);
+  }
+}
+
+.toggle-sun {
+  display: none;
+}
+
+.dark-mode {
+  .toggle-sun {
+    display: block;
+  }
+
+  .toggle-moon {
+    display: none;
+  }
+}

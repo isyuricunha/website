@@ -1,0 +1,30 @@
+{{ $pag := $.Paginator }}
+<!-- begin pagination -->
+<div class="container">
+  <div class="row">
+    <div class="col col-12">
+      <nav class="pagination animate" aria-label="Page navigation">
+        <div class="pagination__inner">
+
+          <div class="pagination__list">
+            {{ if $pag.HasPrev }}
+              <a href="{{ $pag.Prev.URL }}" class="pagination__prev pagination__item" rel="prev"><ion-icon name="chevron-back"></ion-icon> Prev</a>
+            {{ else }}
+              <span class="pagination__prev pagination__item disabled"><ion-icon name="chevron-back"></ion-icon> Prev</span>
+            {{ end }}
+
+            <div class="pagination__count pagination__item">Page {{ $pag.PageNumber }} of {{ $pag.TotalPages }}</div>
+
+            {{ if $pag.HasNext }}
+              <a href="{{ $pag.Next.URL }}" class="pagination__next pagination__item">Next <ion-icon name="chevron-forward"></ion-icon></a>
+            {{ else }}
+              <span class="pagination__next pagination__item disabled">Next <ion-icon name="chevron-forward"></ion-icon></span>
+            {{ end }}
+          </div>
+
+        </div>
+      </nav>
+    </div>
+  </div>
+</div>
+<!-- end pagination -->

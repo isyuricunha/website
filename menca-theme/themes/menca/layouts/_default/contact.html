@@ -1,0 +1,74 @@
+{{ define "main" }}
+
+<div class="page-head">
+  <div class="container">
+    <div class="row">
+
+      {{ if .Params.video_embed }}
+      <div class="col col-12">
+        <div class="page-video">
+          <div class="page-video__wrap">
+            <iframe src="{{ .Params.video_embed }}" loading="lazy" width="640" height="360" frameborder="0"
+              webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+      {{ else }}
+
+      {{ if .Params.image }}
+      <div class="col col-12">
+        <div class="page-image">
+          <img class="lazy" data-src="{{ .Params.Image | absURL }}" alt="{{ .Title }}">
+        </div>
+      </div>
+      {{ end }}
+
+      {{ end }}
+
+      <div class="col col-12">
+        <div class="page__info">
+          <h1 class="page__title">{{ .Title }}</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container animate">
+
+  <!-- begin page -->
+  <article class="page">
+    <div class="page__content">
+      <div class="form-box">
+        <div class="contact-head">
+        {{ if .Content }}
+          <div class="page-description">{{ .Content }}</div>
+        {{ end }}
+        </div>
+        <form class="form"
+          action="{{ if .Site.Params.contact.email }}https://formspree.io/{{.Site.Params.contact.email}}{{ else }}#{{ end }}"
+          method="POST">
+          <div class="form__group">
+            <label class="form__label screen-reader-text" for="form-name">Your Name</label>
+            <input class="form__input" id="form-name" type="text" name="name" placeholder="Name" required>
+          </div>
+          <div class="form__group">
+            <label class="form__label screen-reader-text" for="form-email">Your Email</label>
+            <input class="form__input" id="form-email" type="email" name="_replyto" placeholder="Email" required>
+          </div>
+          <div class="form__group">
+            <label class="form__label screen-reader-text" for="form-text">Your Message</label>
+            <textarea class="form__input" id="form-text" name="text" rows="10" placeholder="Message" required></textarea>
+          </div>
+          <div class="form__group">
+            <button class="button button--primary" type="submit">Send Message</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </article>
+  <!-- end page -->
+
+</div>
+
+{{ end }}

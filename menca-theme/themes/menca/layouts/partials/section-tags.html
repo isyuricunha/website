@@ -1,0 +1,35 @@
+<!-- begin section-tags -->
+<section class="section section-tags">
+  <div class="container">
+    <div class="row">
+      <div class="col col-12">
+        <div class="section__head">
+          <h3 class="section__title">Tags</h3>
+          <a href="/tags/" class="section__link">See all</a>
+        </div>
+
+        {{ $.Scratch.Set "myLimit" 0 }}
+        {{ $tags := .Site.Taxonomies.tags }}
+
+        <div class="row">
+
+          {{ range $name, $taxonomy := $tags }}
+            {{ $.Scratch.Set "myLimit" (add ($.Scratch.Get "myLimit") 1) }}
+            {{ if le ($.Scratch.Get "myLimit") 4 }}
+              {{ with $.Site.GetPage (printf "/tags/%s" $name) }}
+              <div class="col col-3 col-d-6 col-m-12">
+                <a href="{{ .RelPermalink }}" class="tag-image" title="{{ .Title }}">
+                  <span class="tag-name">{{ .Title }}</span>
+                  <img class="lazy" {{ range .Data.Pages }}data-src="{{ .Params.Image | absURL }}"{{ end }} alt="{{ .Title }}">
+                </a>
+              </div>
+              {{ end }}
+            {{ end }}
+          {{ end }}
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- end section-tags -->

@@ -1,0 +1,118 @@
+/* Article */
+.article {
+  margin-bottom: 32px;
+  will-change: transform;
+  transition: transform .2s;
+
+  &:hover {
+    transform: translateY(-3px);
+
+    .article__title a {
+      text-decoration: underline;
+      text-decoration-color: var(--link-color-hover);
+      text-decoration-thickness: 2px;
+    }
+  }
+}
+
+.article__head {
+  position: relative;
+}
+
+.article__date {
+  position: absolute;
+  z-index: 1;
+  top: 16px;
+  left: 16px;
+  display: inline-block;
+  padding: 8px 12px;
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 500;
+  border-radius: 4px;
+  color: var(--heading-font-color);
+  background: var(--background-color);
+  pointer-events: none;
+}
+
+.article__image {
+  position: relative;
+  transform: translate(0);
+  display: block;
+  height: 0;
+  margin-bottom: 24px;
+  padding-bottom: 62%;
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--background-alt-color);
+
+  img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    user-select: none;
+  }
+}
+
+.video-icon {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  width: 50%;
+  height: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+
+  .circle {
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: auto;
+    transform: scale(1, 1);
+
+    &.pulse {
+      animation-timing-function: ease;
+      animation: pulse 2s infinite;
+      background-color: rgba(255,255,255,0.25);
+    }
+  }
+
+  svg {
+    fill: rgba(255,255,255,0.25);
+    stroke: var(--light-blue);
+    stroke-linejoin: round;
+    stroke-width: 5;
+    backdrop-filter: blur(3.5px);
+    -webkit-backdrop-filter: blur(4.5px);
+    transition: all 0.3s;
+  }
+}
+
+.article__title {
+  margin-bottom: 12px;
+  font-size: 24px;
+
+  a {
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-decoration-thickness: 2px;
+
+    &:hover {
+      color: var(--heading-font-color);
+    }
+  }
+}
+
+.article__excerpt {
+  margin-bottom: 0;
+  font-size: 16px;
+  color: var(--text-alt-color);
+}

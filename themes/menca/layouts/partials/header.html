@@ -1,0 +1,50 @@
+<!-- begin header -->
+<header class="header" id="top">
+  <div class="container">
+    <div class="row">
+      <div class="header__inner col col-12">
+
+        <div class="logo">
+          <a class="logo__link" href="{{ .Site.BaseURL }}">
+            {{ if .Site.Params.logo }}
+            <img class="logo__image" src="{{ .Site.BaseURL }}{{ .Site.Params.logo }}" alt="{{ .Site.Title }}">
+            {{ else }}
+              {{ .Site.Title }}
+            {{ end }}
+          </a>
+        </div>
+
+        <nav class="main-nav">
+          <div class="main-nav__box">
+            <div class="nav__icon-close">
+              <i class="ion ion-md-close"><ion-icon name="close-circle"></ion-icon></i>
+            </div>
+            <div class="nav__title">Menu</div>
+            <ul class="nav__list list-reset">
+              {{ range.Site.Menus.main }}
+              <li class="nav__item">
+                <a href="{{ .URL }}" class="nav__link">{{ .Name }}</a>
+              </li>
+              {{ end }}
+              <li class="nav__item nav__item-icon">
+                <div class="toggle-theme">
+                  <div class="toggle-moon" title="Enable dark mode"><ion-icon name="moon"></ion-icon></div>
+                  <div class="toggle-sun" title="Enable light mode"><ion-icon name="sunny"></ion-icon></div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </nav>
+
+        <div class="nav-button">
+          <i class="nav__icon icon__menu ion ion-md-menu"><ion-icon name="menu"></ion-icon></i>
+          <i class="nav__icon icon__search ion ion-md-search"><ion-icon name="search"></ion-icon></i>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</header>
+<!-- end header -->
+
+{{ partial "search.html" . }}
