@@ -81,6 +81,23 @@ key features:
 
 ---
 
+### 🧠 yueai
+
+**personal ai model**
+
+my personal ai model being created and trained by me. this is a long-term project to develop custom ai capabilities tailored to my specific needs and use cases.
+
+current status:
+- in early development
+- custom training in progress
+- repository being prepared for initial release
+
+this represents my journey into ai development, machine learning, and creating personalized ai solutions that respect privacy and work locally.
+
+[github repository](https://github.com/isyuricunha/yueai)
+
+---
+
 ### 🗄️ postgresql dba jr lab portfolio
 
 **hands-on postgresql dba training**

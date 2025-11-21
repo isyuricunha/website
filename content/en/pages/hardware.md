@@ -1,20 +1,20 @@
 ---
 title: Hardware
-description: 'committing changes to my life database every day'
+description: 'the machines behind the lab'
 author: Yuri Cunha
 ---
 
-This page is a simple inventory of the hardware I use right now.
+this is a complete inventory of the hardware that powers my homelab, development work, and daily computing.
 
-Nothing here is marketing. It is just a list of the machines that keep my life and my lab running.
+no marketing, no affiliate links - just the actual machines i use and why they exist in my setup.
 
-I split things into:
+the hardware is organized into:
 
-- personal notebook
-- home lab main server
-- home lab ARM64 node
-- cloud dev and prod machines
-- a short note on why this mix exists
+- **personal notebook** - my daily driver
+- **home lab main server** - the powerhouse for databases and services
+- **home lab arm64 node** - raspberry pi for arm testing
+- **cloud x86-64 machines** - dev and prod in the cloud
+- **cloud arm64 machines** - arm-based cloud workloads
 
 ---
 
@@ -85,9 +85,9 @@ NVMe storage:
 - **Nvidia GT 1050** for small workloads and video codecs
 - **AMD Radeon RX 7900 XTX** for AI workloads
 
-I will replace all nvidia and intel stuff for AMD in some moment
+> note: planning to replace all nvidia and intel hardware with amd components in the future
 
-Typical usage:
+**typical usage:**
 
 - PostgreSQL and other databases in real lab style setups
 - Docker/Containers stacks for self hosted services
@@ -172,9 +172,9 @@ I also keep ARM64 machines in the cloud for tests and workloads that make sense 
 - Storage  
   - **150 GB** for system and data
 
-idk what machine is, and i dont care about that
+> note: exact cpu model not specified by cloud provider - what matters is the performance and arm64 architecture
 
-Used for:
+**used for:**
 
 - running ARM64 containers and services
 - checking performance differences between ARM and x86 setups
@@ -201,4 +201,6 @@ With this combination I can:
 - compare x86 and ARM64 behavior
 - practice dev, staging and prod style separation
 
-This page is mostly for me to remember what I actually have, but if you are reading this and you like homelabs, you now know what is running behind the scenes.
+---
+
+this inventory helps me remember what i actually have and serves as documentation for my infrastructure. if you are reading this and you are into homelabs, now you know what is running behind the scenes at yuricunha.com.

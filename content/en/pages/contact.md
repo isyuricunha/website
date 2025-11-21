@@ -1,45 +1,56 @@
 ---
 title: Contact
-description: 'committing changes to my life database every day'
+description: 'lets connect'
 author: Yuri Cunha
 ---
 
-This page explains how you can reach me if you want to say hello, ask something or send any kind of message.
+if you want to reach out, whether to say hello, ask a question, or discuss a project, this page shows you how.
 
-You can use email or social links. Choose whatever is easier for you.
+i am open to conversations about databases, homelabs, self-hosting, ai, and any of the projects i am working on.
 
-## Email
+---
 
-You can send an email to:
+## email
 
-[me@yuricunha.com](mailto:me@yuricunha.com)
+the best way to reach me:
 
-If you send a message, it helps if you include:
+**[me@yuricunha.com](mailto:me@yuricunha.com)**
+
+when sending a message, it helps if you include:
 
 - who you are
-- what you want to talk about
-- any important details or links
+- what you want to discuss
+- relevant details or links
 
-## Social
+---
 
-You can also connect or send a message through these profiles:
+## social profiles
 
-- [GitHub](https://github.com/isyuricunha)
-- [LinkedIn](https://www.linkedin.com/in/isyuricunha)
-- [Twitter/X](https://www.x.com/isyuricunha)
+you can also find me on these platforms:
 
+- **[github](https://github.com/isyuricunha)** - where i share my code and projects
+- **[linkedin](https://www.linkedin.com/in/isyuricunha)** - professional connections
+- **[twitter/x](https://www.x.com/isyuricunha)** - quick updates and thoughts
 
-## What this page is for
+---
 
-You can use this page if you want to:
+## what you can contact me about
 
-- ask a general question
-- give feedback about the site or a post
-- report a typo or a broken link
-- suggest a topic or idea
+feel free to reach out if you want to:
 
-Messages are answered when possible. There is no fixed response time.
+- discuss databases, postgresql, or infrastructure topics
+- ask questions about any of my projects
+- collaborate on open source work
+- report issues or suggest improvements to this site
+- share feedback on my posts or labs
+- talk about tech, running, or long-term projects
 
-## Thanks
+---
 
-Thanks for visiting the site and taking the time to reach out.
+## response time
+
+i respond when i can. there is no fixed response time, but i do my best to get back to people who take the time to reach out.
+
+---
+
+thanks for visiting and for considering getting in touch.
