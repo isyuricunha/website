@@ -1,0 +1,35 @@
+<div class="article col col-4 col-d-6 col-t-12">
+  <div class="article__inner">
+
+    <div class="article__head">
+        <time class="article__date" datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">{{ .Date.Format "2 Jan 2006" }}</time>
+
+        {{ if .Params.video_embed }}
+        <div class="video-icon">
+          <div class="circle pulse"></div>
+          <div class="circle">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+              <polygon points="40,30 65,50 40,70"></polygon>
+            </svg>
+          </div>
+        </div>
+        {{ end }}
+    
+        {{ if .Params.Image }}
+        <a class="article__image" href="{{ .RelPermalink }}">
+          <img class="lazy" data-src="{{ .Params.Image | absURL }}" alt="{{ .Title }}">
+        </a>
+        {{ end }}
+    </div>
+
+    <div class="article__content">
+
+      <h2 class="article__title">
+        <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+      </h2>
+
+      <p class="article__excerpt">{{ if .Description }}{{ .Description }}{{ else }}{{ truncate 95 .Summary | safeHTML }}{{ end }}</p>
+
+    </div>
+  </div>
+</div>

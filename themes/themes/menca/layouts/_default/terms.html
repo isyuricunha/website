@@ -1,0 +1,63 @@
+{{ define "main" }}
+
+<!-- begin tags -->
+<section class="tags">
+
+  <div class="tag__head">
+
+    <div class="container">
+      <div class="row">
+        <div class="col col-12">
+
+          <h1 class="tag__title">{{ .Title }}</h1>
+
+          <ul class="tag__list list-reset">
+            {{ range .Data.Terms.ByCount }}
+              <li class="tag__item"><a href="#{{ .Name | urlize }}" class="tag__link" data-tag="{{ .Name | lower }}">{{ .Name }}</a></li>
+            {{ end }}
+          </ul>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  {{ range .Data.Terms.ByCount }}
+  <div class="tags__inner">
+
+    <div class="container">
+      <div class="row">
+        <div class="col col-12">
+          <div class="tag__info">
+            <div class="tag__info-box">
+              <div class="tag__counter">
+                <span>{{ .Count }}</span>
+                <small>{{ if lt (len .Pages) 2 }}Post{{ else }}Posts{{ end }}</small>
+              </div>
+              <h2 class="tag__name" id="{{ .Name | urlize }}">{{ .Name }}</h2>
+            </div>
+            <a class="top__link" href="#top">Return to top</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="col col-12">
+          <div class="row">
+          {{ range .Pages }}
+            {{ partial "article-content.html" . }}
+          {{ end }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  {{ end }}
+
+</section>
+<!-- end tags -->
+{{ end }}

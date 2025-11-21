@@ -1,0 +1,89 @@
+{{ define "main" }}
+
+{{ if or (eq .Section "post") (eq .Section "posts") }}
+
+<div class="post-head">
+  <div class="container">
+    <div class="row">
+
+      {{ if .Params.video_embed }}
+      <div class="col col-12">
+        <div class="post-video">
+          <div class="post-video__wrap">
+            <iframe src="{{ .Params.video_embed }}" loading="lazy" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+      {{ else }}
+
+      {{ if .Params.image }}
+      <div class="col col-6 col-d-12">
+        <div class="post-image">
+          <img class="lazy" data-src="{{ .Params.Image | absURL }}" alt="{{ .Title }}">
+        </div>
+      </div>
+      {{ end }}
+
+      {{ end }}
+
+      <div class="col {{ if .Params.video_embed }}col-12{{ else }}col-6 col-d-12{{ end }}">
+        <div class="post__info {{ if .Params.video_embed }}post__info-video{{ end }}">
+
+          <div class="post__tags">
+            {{ range ($.GetTerms "tags") }}
+              <a href="{{ .Permalink }}" class="post__tag">{{ .LinkTitle }}</a>
+            {{ end }}
+          </div>
+
+          <h1 class="post__title">{{ .Title }}</h1>
+
+          <div class="post__meta">
+            <a href="/about/" class="post__author-image">
+              <img class="lazy" data-src="{{ .Site.Params.author.author__avatar }}" alt="{{ .Site.Params.author.author__name }}">
+            </a>
+
+            <div class="post__meta-bottom">
+              <a class="post__author" href="/about/">{{ .Site.Params.author.author__name }}</a>
+              <time class="post__date" datetime="{{ .Date.Format " 2006-01-02T15:04:05Z07:00" }}">{{ .Date.Format "2 Jan 2006" }}</time>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<div class="container animate">
+
+  <!-- begin post -->
+  <article class="post amimate">
+
+    <div class="post__content">
+      {{ .Content }}
+    </div>
+
+    {{ partial "share-buttons.html" . }}
+
+  </article>
+  <!-- end post -->
+
+</div>
+
+{{ partial "related-posts.html" . }}
+
+{{ if .Site.Params.disqus.disqusShortname }}
+  <div class="container">
+    <div class="row">
+      <div class="col col-12">
+        {{ partial "disqus-comments.html" . }}
+      </div>
+    </div>
+  </div>
+{{ end }}
+
+{{ end }}
+
+{{ end }}
