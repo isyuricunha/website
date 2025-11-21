@@ -28,7 +28,6 @@ You can also connect or send a message through these profiles:
 - [LinkedIn](https://www.linkedin.com/in/isyuricunha)
 - [Twitter/X](https://www.x.com/isyuricunha)
 
-You can add or remove links here as you prefer.
 
 ## What this page is for
 
