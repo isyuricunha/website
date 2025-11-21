@@ -1,125 +1,125 @@
 ---
 title: About
-description: 'committing changes to my life database every day'
+description: 'databases, homelabs, and long-term projects'
 author: Yuri Cunha
 ---
 
-## WHO AM I
+## who am i
 
-I am Yuri Cunha, a Brazilian guy who decided to take computers, databases and homelabs a bit too seriously.
+i am yuri cunha, a brazilian guy who decided to take computers, databases and homelabs a bit too seriously.
 
-On the internet I usually show up as **"Yuri Cunha"**, although my full name is longer in real life. This site is where I put a good part of my experiments, notes, labs and random ideas.
+on the internet i usually show up as **"yuri cunha"**, although my full name is longer in real life. this site is where i put a good part of my experiments, notes, labs and random ideas.
 
-If you like databases, Linux, self hosting, local AI and long term projects that do not look perfect from day one, you are in the right place.
-
----
-
-## In one paragraph
-
-I am a Database Technology student, an aspiring PostgreSQL and MongoDB DBA, a homelab owner who likes to self host things, and a person on a long term project to get lighter and run further. I care about practical knowledge, documentation, reliability and having real examples to point to, not just theory. I like tech, but I also like sleep, so I try to build systems I can debug at three in the morning without going insane.
+if you like databases, linux, self-hosting, local ai and long-term projects that do not look perfect from day one, you are in the right place.
 
 ---
 
-## A bit of background
+## in one paragraph
 
-Some quick facts about me:
-
-- I am from Brazil.
-- I usually present myself as **DBA PostgreSQL Jr** or similar roles.
-- I enjoy working close to infrastructure and databases, not only the top layer of the stack.
-- Politically I tend to be more conservative, although this site is mainly about tech and personal projects, not politics.
-- English is not my first language; you will probably find some weird sentences here and there.
-
-I like being honest about where I am in my journey. I am not a senior architect with thirty years of experience. I am someone building that path, one lab and one project at a time.
+i am a database technology student, an aspiring postgresql and mongodb dba, a homelab owner who likes to self-host things, and a person on a long-term project to get lighter and run further. i care about practical knowledge, documentation, reliability and having real examples to point to, not just theory. i like tech, but i also like sleep, so i try to build systems i can debug at three in the morning without going insane.
 
 ---
 
-## What I am doing in tech right now
+## a bit of background
 
-On the formal side, I study **Database Technology** at Estácio, a technologist degree focused on databases. The plan is to finish around 2026 or 2027 and, along the way, connect what I study in college with real projects in my homelab and in my repositories.
+some quick facts about me:
 
-On the practical side, my routine usually involves:
+- i am from brazil
+- i usually present myself as **dba postgresql jr** or similar roles
+- i enjoy working close to infrastructure and databases, not only the top layer of the stack
+- politically i tend to be more conservative, although this site is mainly about tech and personal projects, not politics
+- english is not my first language; you will probably find some weird sentences here and there
 
-- taking care of **Linux servers**, mostly Ubuntu Server 24.04 LTS
-- working with **PostgreSQL** as my main relational database
-- using **MongoDB** for document based scenarios
-- creating and maintaining **Docker Compose** stacks
+i like being honest about where i am in my journey. i am not a senior architect with thirty years of experience. i am someone building that path, one lab and one project at a time.
+
+---
+
+## what i am doing in tech right now
+
+on the formal side, i study **database technology** at estácio, a technologist degree focused on databases. the plan is to finish around 2026 or 2027 and, along the way, connect what i study in college with real projects in my homelab and in my repositories.
+
+on the practical side, my routine usually involves:
+
+- taking care of **linux servers**, mostly ubuntu server 24.04 lts
+- working with **postgresql** as my main relational database
+- using **mongodb** for document-based scenarios
+- creating and maintaining **docker compose** stacks
 - practicing backup, restore and disaster recovery
 - tuning queries and database settings for better performance
 - setting up monitoring and alerts
-- documenting everything in Markdown so future me does not hate past me
+- documenting everything in markdown so future me does not hate past me
 
-I also spend time studying and preparing for certifications and professional opportunities related to databases, infrastructure and security.
+i also spend time studying and preparing for certifications and professional opportunities related to databases, infrastructure and security.
 
 ---
 
-## My homelab and infrastructure
+## my homelab and infrastructure
 
-I like to say that my homelab is my best teacher.
+i like to say that my homelab is my best teacher.
 
-Some things that live there:
+some things that live there:
 
-- Home servers running **Ubuntu Server 24.04 LTS**, including:
+- home servers running **ubuntu server 24.04 lts**, including:
   - a more powerful machine focused on databases and services
-  - a lighter machine that I still use for experiments
-- **Oracle Cloud** instances that act as extra nodes and database hosts
-- **Tailscale** to connect everything in a secure overlay, including my Windows laptop
-- **Cloudflared** tunnels to expose services without opening random ports to the internet
-- **Random external ports** mapped to containers, instead of defaults, as a small extra layer against bots
-- A dedicated database server on Oracle where I centralize databases like PostgreSQL and others
+  - a lighter machine that i still use for experiments
+- **oracle cloud** instances that act as extra nodes and database hosts
+- **tailscale** to connect everything in a secure overlay, including my windows laptop
+- **cloudflared** tunnels to expose services without opening random ports to the internet
+- **random external ports** mapped to containers, instead of defaults, as a small extra layer against bots
+- a dedicated database server on oracle where i centralize databases like postgresql and others
 
-Typical services that appear and disappear here:
+typical services that appear and disappear here:
 
-- Nextcloud for files
-- Joplin Server for notes
-- PrivateBin for quick text sharing
-- Self hosted monitoring tools
-- Local AI models through Ollama
-- Small web apps to support my workflow
+- nextcloud for files
+- joplin server for notes
+- privatebin for quick text sharing
+- self-hosted monitoring tools
+- local ai models through ollama
+- small web apps to support my workflow
 
-I own the domain **`yuricunha.com`**, and many services live on subdomains like `something.yuricunha.com`. This site is one of the visible faces of all that.
+i own the domain **`yuricunha.com`**, and many services live on subdomains like `something.yuricunha.com`. this site is one of the visible faces of all that.
 
 ---
 
-## Tech stack and preferences
+## tech stack and preferences
 
-These are some tools and choices that appear a lot in my projects:
+these are some tools and choices that appear a lot in my projects:
 
-- **Operating systems**
-  - Ubuntu Server 24.04 LTS on servers
-  - Windows 10 Pro on my main laptop
-  - Arch based distros on the side for experiments, like EndeavourOS, CachyOS and Garuda
-- **Networking and access**
-  - Tailscale for secure remote access
-  - Cloudflared for publishing services without touching router port forwarding
-- **Containers and services**
-  - Docker with **docker compose** (the plugin, not the old `docker-compose` command)
+- **operating systems**
+  - ubuntu server 24.04 lts on servers
+  - windows 10 pro on my main laptop
+  - arch-based distros on the side for experiments, like endeavouros, cachyos and garuda
+- **networking and access**
+  - tailscale for secure remote access
+  - cloudflared for publishing services without touching router port forwarding
+- **containers and services**
+  - docker with **docker compose** (the plugin, not the old `docker-compose` command)
   - `docker-compose.yml` files without the old `version` key
-  - external PostgreSQL instead of one database per container
-  - fixed DNS in containers using:
+  - external postgresql instead of one database per container
+  - fixed dns in containers using:
     - `1.1.1.1`
     - `8.8.8.8`
-- **Programming and tools**
-  - Python for automation and scripts
-  - `pipx` to install Python based tools globally but cleanly
+- **programming and tools**
+  - python for automation and scripts
+  - `pipx` to install python-based tools globally but cleanly
   - shell scripts for simple tasks
-- **Databases**
-  - PostgreSQL as the main database in my labs
-  - interest in MongoDB and other engines to compare approaches
-- **AI and automation**
-  - Ollama running on Ubuntu, directly on the host, not in containers
+- **databases**
+  - postgresql as the main database in my labs
+  - interest in mongodb and other engines to compare approaches
+- **ai and automation**
+  - ollama running on ubuntu, directly on the host, not in containers
   - tests with different models and prompts
   - plans for personal automations and assistants
 
-I like setups that are reproducible. If I write a compose file or a script, I try to make it so that I can recreate the same environment months later without guessing.
+i like setups that are reproducible. if i write a compose file or a script, i try to make it so that i can recreate the same environment months later without guessing.
 
 ---
 
-## Labs, repos and documentation style
+## labs, repos and documentation style
 
-One of my main long term projects is building a **DBA lab and portfolio**, focused on PostgreSQL.
+one of my main long-term projects is building a **dba lab and portfolio**, focused on postgresql.
 
-Things you can expect from my repos:
+things you can expect from my repos:
 
 - structured directories for each service or lab, for example:
   - `~/docker/docker-compose/{service}`
@@ -128,36 +128,36 @@ Things you can expect from my repos:
   - avoid deprecated options
   - use external databases where it makes sense
   - include sample environment values, so it is clear what goes where
-- documentation written in Markdown, usually in first person, with sections explaining:
+- documentation written in markdown, usually in first person, with sections explaining:
   - what changed
   - how it changed
   - why it changed
 - comments in code in **lowercase**
-- SQL queries mostly in **lowercase**
-- preference for open source licenses, often **LGPL 2.1** in public projects
+- sql queries mostly in **lowercase**
+- preference for open source licenses, often **lgpl 2.1** in public projects
 
-I like to treat these labs as mini production environments. Even if no one else uses them, I act as if I am the DBA, the sysadmin and the on call person at the same time.
-
----
-
-## Side projects and personal brands
-
-Besides pure infra and databases, I also enjoy creating small projects and brands, both for fun and for practice.
-
-Examples:
-
-- ideas around a personal music app, similar to **YuMusic**, using self hosted backends
-- small brand concepts like **YuFlow** and others
-- experiments with a personal AI avatar and assistant for support or chat
-- services under **YC Inc.** style naming, for a future personal business presence
-
-These things evolve over time. Some of them may never go public, but the work behind them helps me learn about pipelines, CI, versioning, security and deploys.
+i like to treat these labs as mini production environments. even if no one else uses them, i act as if i am the dba, the sysadmin and the on-call person at the same time.
 
 ---
 
-## Study style and mindset
+## side projects and personal brands
 
-How I like to study and grow in this area:
+besides pure infra and databases, i also enjoy creating small projects and brands, both for fun and for practice.
+
+examples:
+
+- ideas around a personal music app, similar to **yumusic**, using self-hosted backends
+- small brand concepts like **yuflow** and others
+- experiments with a personal ai avatar and assistant for support or chat
+- services under **yc inc.** style naming, for a future personal business presence
+
+these things evolve over time. some of them may never go public, but the work behind them helps me learn about pipelines, ci, versioning, security and deploys.
+
+---
+
+## study style and mindset
+
+how i like to study and grow in this area:
 
 - mix **theory and practice** all the time
 - break things on purpose, then fix them
@@ -170,87 +170,87 @@ How I like to study and grow in this area:
   - logs
   - metrics
   - alerts
-- revisit old labs with fresh knowledge to see what I would do differently now
+- revisit old labs with fresh knowledge to see what i would do differently now
 
-I prefer understanding how things work under the surface instead of memorizing a list of commands. If I know where the logs are, how the process starts, how the data is stored and what the configuration does, I feel much more comfortable touching production systems.
+i prefer understanding how things work under the surface instead of memorizing a list of commands. if i know where the logs are, how the process starts, how the data is stored and what the configuration does, i feel much more comfortable touching production systems.
 
 ---
 
-## Career direction
+## career direction
 
-Professionally, I am building my path in roles like:
+professionally, i am building my path in roles like:
 
-- Junior DBA PostgreSQL
-- Database Administrator focused on production environments
-- roles where PostgreSQL and Linux are first class citizens
+- junior dba postgresql
+- database administrator focused on production environments
+- roles where postgresql and linux are first-class citizens
 - positions where observability, performance tuning and reliability matter
 
-I also keep an eye on areas related to:
+i also keep an eye on areas related to:
 
 - data engineering
 - security and compliance
 - high availability and clustering
 
-I have gone through real recruitment processes, including multi step interviews for DBA roles, and I use each experience to refine my portfolio, my labs and how I present my skills.
+i have gone through real recruitment processes, including multi-step interviews for dba roles, and i use each experience to refine my portfolio, my labs and how i present my skills.
 
 ---
 
-## Health, running and long term goals
+## health, running and long-term goals
 
-Tech is not the only long term project in my life.
+tech is not the only long-term project in my life.
 
-I have been working on:
+i have been working on:
 
 - **losing weight**
 - **improving my health markers**
 - **building a running habit**
 
-Some tools and habits that I use:
+some tools and habits that i use:
 
-- **Garmin** watch and **Garmin Coach** plans, especially for 5K
+- **garmin** watch and **garmin coach** plans, especially for 5k
 - structured training plans that mix run and walk
 - tracking **steps, distance and pace**
 - using **food scales** and apps to measure calories and macros
 - planning meals with simple, repeatable options like rice, beans, eggs, pasta and basic sides
 - trying to keep a consistent **calorie deficit** without going into extremes
 
-I know I am a big guy and that this will take time. My goal is not only to drop numbers on the scale, but to build a body that can handle my plans, including running regular 5K races and, later, longer distances.
+i know i am a big guy and that this will take time. my goal is not only to drop numbers on the scale, but to build a body that can handle my plans, including running regular 5k races and, later, longer distances.
 
-You may see posts about:
+you may see posts about:
 
 - weekly training summaries
 - how a specific run went
 - small improvements in heart rate and pace
 - experiments with diet and routine
 
-I see this health journey in the same way I see my homelab. It is a long project, full of iterations, metrics and adjustments.
+i see this health journey in the same way i see my homelab. it is a long project, full of iterations, metrics and adjustments.
 
 ---
 
-## How I use this site
+## how i use this site
 
-This site exists for a few reasons:
+this site exists for a few reasons:
 
 - to centralize my **notes, labs and guides**
-- to act as a **portfolio** for people who want to know what I actually do
+- to act as a **portfolio** for people who want to know what i actually do
 - to keep a **log of my learning** over time
 - to share **configs, compose files and scripts** that might help others
 - to document my **running and health journey** in a way that makes sense to me
 
-You may find here:
+you may find here:
 
-- technical articles about PostgreSQL, Linux and Docker
-- step by step guides for specific setups
+- technical articles about postgresql, linux and docker
+- step-by-step guides for specific setups
 - small reflections on study, career and life
 - notes about training, weight loss and discipline
 
-I prefer being honest over being perfect. So you will probably see drafts, work in progress, and things that changed halfway through. To me, that is better than pretending everything is finished and polished.
+i prefer being honest over being perfect. so you will probably see drafts, work in progress, and things that changed halfway through. to me, that is better than pretending everything is finished and polished.
 
 ---
 
-## What I value
+## what i value
 
-A few things that guide how I work and learn:
+a few things that guide how i work and learn:
 
 - **clarity** over buzzwords
 - **documentation** over improvisation
@@ -259,33 +259,33 @@ A few things that guide how I work and learn:
 - **freedom and privacy** in tech
 - being **realistic** about current skills, while pushing to improve
 
-In practical terms, this means I like:
+in practical terms, this means i like:
 
 - logs, metrics and alerts instead of guesswork
 - automation with clear behavior
-- backups that I have actually restored and tested
+- backups that i have actually restored and tested
 - observability instead of blind faith in services
-- self hosted or at least controllable tools when possible
+- self-hosted or at least controllable tools when possible
 
 ---
 
-## Random facts about me
+## random facts about me
 
-Just to make this page a bit more human:
+just to make this page a bit more human:
 
-- I can get happily lost configuring a new Linux environment for hours.
-- I enjoy tweaking kernels and performance options for my Ryzen laptop.
-- I like to read about databases even when I am not strictly required to.
-- I prefer quiet environments over noisy places.
-- I think a good walk or run solves a lot of mental clutter.
-- I use AI models, both local and in the cloud, as tools to think, draft and explore ideas.
+- i can get happily lost configuring a new linux environment for hours
+- i enjoy tweaking kernels and performance options for my ryzen laptop
+- i like to read about databases even when i am not strictly required to
+- i prefer quiet environments over noisy places
+- i think a good walk or run solves a lot of mental clutter
+- i use ai models, both local and in the cloud, as tools to think, draft and explore ideas
 
 ---
 
-## If you read all this
+## if you read all this
 
-If you made it this far, thank you.
+if you made it this far, thank you.
 
-If you want to say hello, comment on something, propose a project or just tell me that a post helped you, you can go to the [Contact](/contact) page and send a message.
+if you want to say hello, comment on something, propose a project or just tell me that a post helped you, you can go to the [contact](/contact) page and send a message.
 
-This site will probably keep changing over time, just like I am changing the things I do and the person I am becoming. That is part of the fun.
+this site will probably keep changing over time, just like i am changing the things i do and the person i am becoming. that is part of the fun.
