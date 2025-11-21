@@ -87,6 +87,11 @@ theme = "hugo-blog-awesome"
     name = 'About'
     url = '/about/'
     weight = 30
+  [[Languages.en-us.menu.main]]
+    pageRef="now"
+    name = 'Now'
+    url = '/now/'
+    weight = 35
     [[Languages.en-us.menu.main]]
     pageRef="contact"
     name = 'Contact'
