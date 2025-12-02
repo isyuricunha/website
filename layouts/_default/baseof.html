@@ -3,7 +3,9 @@
     {{- partial "head.html" . -}}
     <body data-theme = "{{ .Site.Params.defaultColor }}" class="notransition">
         {{- partial "scriptsBodyStart.html" . -}}
-        {{- partial "reading-progress.html" . -}}
+        {{- if and (eq .Kind "page") (eq .Section "posts") }}
+            {{- partial "reading-progress.html" . -}}
+        {{- end }}
         {{- partial "header.html" . -}}
         {{- block "main" . }}{{- end }}
         {{- partial "footer.html" . -}}
