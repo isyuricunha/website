@@ -1,82 +1,107 @@
-// Related Posts styling
+// Related Posts styling - using same style as post-item
 .related-posts {
   margin-top: 3rem;
   padding-top: 2rem;
-  border-top: 1px solid #333;
+  border-top: 1px solid $light;
 }
 
 .related-posts-title {
   font-size: 1.5rem;
   font-weight: 600;
   margin-bottom: 1.5rem;
-  color: #0d122b; // Same as site headings
+  color: $black;
+  margin-top: $spacing-full;
+  margin-bottom: 0;
+  letter-spacing: .03rem;
 }
 
 .related-posts-list {
-  display: grid;
-  gap: 1rem;
+  // Same as post-item container
 }
 
 .related-post-item {
-  background-color: transparent;
-  border: none;
-  border-radius: 0;
-  padding: 0.5rem 0;
-  transition: all 0.2s ease;
-  
-  &:hover {
-    transform: translateX(4px);
-  }
-}
+  // Copy exact post-item styles
+  display: flex;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
 
-.related-post-title {
-  margin: 0;
-  font-size: 1.1rem;
-  font-weight: 500;
-  
-  a {
-    color: #0d122b; // Same as site headings
-    text-decoration: none;
-    
-    &:hover {
-      color: #3b82f6;
+  &:not(:first-child) {
+    border-top: 1px solid $light;
+  }
+
+  .related-post-date {
+    min-width: 96px;
+    color: $black;
+
+    @include media-query($on-mobile) {
+      font-size: 16px;
+    }
+  }
+
+  .related-post-title {
+    margin: 0;
+    border: 0;
+    padding: 0;
+    font-size: $base-font-size;
+    font-weight: normal;
+    letter-spacing: 0.1px;
+
+    @include media-query($on-mobile) {
+      max-width: 15rem;
+    }
+
+    a {
+      color: $text-base-color;
+      transition: all 150ms ease-in 0s;
+
+      &:hover,
+      &focus {
+        color: $black;
+      }
     }
   }
 }
 
 .no-related-content {
-  color: #666;
+  color: $gray;
   font-style: italic;
   text-align: center;
   padding: 2rem;
 }
 
-// Dark mode adjustments
+// Dark mode adjustments - same as post-item dark mode
 html.dark .related-posts {
-  border-top-color: #333;
+  border-top-color: $dark-light;
 }
 
 html.dark .related-posts-title {
-  color: #e0e0e0; // Same as dark theme headings
+  color: $dark-white;
 }
 
 html.dark .related-post-item {
-  background-color: transparent;
-  border: none;
-  
-  &:hover {
-    transform: translateX(4px);
+  &:not(:first-child) {
+    border-top-color: $dark-light;
   }
-}
 
-html.dark .related-post-title a {
-  color: #e0e0e0; // Same as dark theme headings
-  
-  &:hover {
-    color: #3b82f6;
+  .related-post-date {
+    color: $dark-white;
+  }
+
+  .related-post-title {
+    a {
+      color: $dark-text-base-color;
+
+      &:hover,
+      &focus {
+        color: $dark-white;
+      }
+    }
   }
 }
 
 html.dark .no-related-content {
-  color: #666;
+  color: $dark-gray;
 }
