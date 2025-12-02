@@ -1,0 +1,85 @@
+// Related Posts styling
+.related-posts {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid #333;
+}
+
+.related-posts-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: #fff;
+}
+
+.related-posts-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.related-post-item {
+  background-color: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 1rem;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background-color: #252525;
+    border-color: #444;
+    transform: translateY(-2px);
+  }
+}
+
+.related-post-title {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 500;
+  
+  a {
+    color: #fff;
+    text-decoration: none;
+    
+    &:hover {
+      color: #3b82f6;
+    }
+  }
+}
+
+.no-related-content {
+  color: #666;
+  font-style: italic;
+  text-align: center;
+  padding: 2rem;
+}
+
+// Dark mode adjustments
+html.dark .related-posts {
+  border-top-color: #333;
+}
+
+html.dark .related-posts-title {
+  color: #fff;
+}
+
+html.dark .related-post-item {
+  background-color: #1a1a1a;
+  border-color: #333;
+  
+  &:hover {
+    background-color: #252525;
+    border-color: #444;
+  }
+}
+
+html.dark .related-post-title a {
+  color: #fff;
+  
+  &:hover {
+    color: #3b82f6;
+  }
+}
+
+html.dark .no-related-content {
+  color: #666;
+}

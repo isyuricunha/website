@@ -36,13 +36,6 @@
             <h4 class="related-post-title">
                 <a href="{{ .RelPermalink }}">{{ .Title }}</a>
             </h4>
-            {{ $configDateFormat := .Site.Params.dateFormat | default "2 Jan 2006" }}
-            <time class="related-post-date" datetime="{{ .Date.Format " 2006-01-02" }}">
-                {{ time.Format $configDateFormat .Date }}
-            </time>
-            {{ with .Summary }}
-            <p class="related-post-summary">{{ . | plainify | truncate 120 }}</p>
-            {{ end }}
         </article>
         {{ end }}
         {{ if not $finalPages }}
