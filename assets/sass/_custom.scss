@@ -1,3 +1,23 @@
+// Reading Progress Bar
+.reading-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+  width: 0%;
+  z-index: 1000;
+  transition: width 0.1s ease;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+}
+
+.reading-progress-bar.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 // Related Posts styling - modern card design
 .related-posts {
   margin-top: 3rem;
