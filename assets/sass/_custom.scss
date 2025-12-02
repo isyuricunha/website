@@ -1,74 +1,88 @@
-// Related Posts styling - using same style as post-item
+// Related Posts styling - modern card design
 .related-posts {
   margin-top: 3rem;
   padding-top: 2rem;
-  border-top: 1px solid $light;
-  background-color: transparent;
+  border-top: 1px solid #333;
 }
 
 .related-posts-title {
   font-size: 1.5rem;
   font-weight: 600;
-  margin-bottom: 1.5rem;
-  color: $black;
-  margin-top: $spacing-full;
-  margin-bottom: 0;
-  letter-spacing: .03rem;
-  background-color: transparent;
+  margin-bottom: 2rem;
+  color: #e0e0e0;
+  text-align: center;
+}
+
+.related-posts-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
 }
 
 .related-post-item {
-  // Copy exact post-item styles
-  display: flex;
-  padding-top: 5px;
-  padding-bottom: 6px;
-  justify-content: space-between;
-  flex-direction: row;
-  align-items: center;
-  background-color: transparent !important;
+  background: linear-gradient(135deg, #2a2a2a 0%, #1f1f1f 100%);
+  border: 1px solid #333;
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
 
-  &:not(:first-child) {
-    border-top: 1px solid $light;
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  &:hover {
+    transform: translateY(-4px);
+    border-color: #444;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+
+    &::before {
+      opacity: 1;
+    }
   }
 
   .related-post-date {
-    min-width: 96px;
-    color: $black;
-
-    @include media-query($on-mobile) {
-      font-size: 16px;
-    }
+    color: #666;
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
 
   .related-post-title {
     margin: 0;
-    border: 0;
-    padding: 0;
-    font-size: $base-font-size;
-    font-weight: normal;
-    letter-spacing: 0.1px;
-
-    @include media-query($on-mobile) {
-      max-width: 15rem;
-    }
 
     a {
-      color: $text-base-color;
-      transition: all 150ms ease-in 0s;
+      color: #e0e0e0;
+      text-decoration: none;
+      font-size: 1.1rem;
+      font-weight: 600;
+      line-height: 1.4;
+      transition: color 0.3s ease;
 
-      &:hover,
-      &focus {
-        color: $black;
+      &:hover {
+        color: #3b82f6;
       }
     }
   }
 }
 
 .no-related-content {
-  color: $gray;
+  color: #666;
   font-style: italic;
   text-align: center;
-  padding: 2rem;
+  padding: 3rem;
+  grid-column: 1 / -1;
 }
 
 // Dark mode adjustments - same as post-item dark mode
@@ -103,4 +117,35 @@ html.dark .related-post-item {
 
 html.dark .no-related-content {
   color: $dark-gray;
+}
+
+// Light mode adjustments
+html:not(.dark) .related-posts {
+  border-top-color: #e5e5e5;
+}
+
+html:not(.dark) .related-posts-title {
+  color: #0d122b;
+}
+
+html:not(.dark) .related-post-item {
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  border-color: #e5e5e5;
+
+  &:hover {
+    border-color: #d1d5db;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+  }
+
+  .related-post-date {
+    color: #6b7280;
+  }
+
+  .related-post-title a {
+    color: #0d122b;
+
+    &:hover {
+      color: #3b82f6;
+    }
+  }
 }
