@@ -9,7 +9,7 @@
   font-size: 1.5rem;
   font-weight: 600;
   margin-bottom: 1.5rem;
-  color: #fff;
+  color: #0d122b; // Same as site headings
 }
 
 .related-posts-list {
@@ -18,16 +18,14 @@
 }
 
 .related-post-item {
-  background-color: #1a1a1a;
-  border: 1px solid #333;
-  border-radius: 8px;
-  padding: 1rem;
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0.5rem 0;
   transition: all 0.2s ease;
   
   &:hover {
-    background-color: #252525;
-    border-color: #444;
-    transform: translateY(-2px);
+    transform: translateX(4px);
   }
 }
 
@@ -37,7 +35,7 @@
   font-weight: 500;
   
   a {
-    color: #fff;
+    color: #0d122b; // Same as site headings
     text-decoration: none;
     
     &:hover {
@@ -59,21 +57,20 @@ html.dark .related-posts {
 }
 
 html.dark .related-posts-title {
-  color: #fff;
+  color: #e0e0e0; // Same as dark theme headings
 }
 
 html.dark .related-post-item {
-  background-color: #1a1a1a;
-  border-color: #333;
+  background-color: transparent;
+  border: none;
   
   &:hover {
-    background-color: #252525;
-    border-color: #444;
+    transform: translateX(4px);
   }
 }
 
 html.dark .related-post-title a {
-  color: #fff;
+  color: #e0e0e0; // Same as dark theme headings
   
   &:hover {
     color: #3b82f6;
