@@ -3,6 +3,7 @@
   margin-top: 3rem;
   padding-top: 2rem;
   border-top: 1px solid $light;
+  background-color: transparent;
 }
 
 .related-posts-title {
@@ -13,6 +14,7 @@
   margin-top: $spacing-full;
   margin-bottom: 0;
   letter-spacing: .03rem;
+  background-color: transparent;
 }
 
 .related-post-item {
@@ -23,6 +25,7 @@
   justify-content: space-between;
   flex-direction: row;
   align-items: center;
+  background-color: transparent;
 
   &:not(:first-child) {
     border-top: 1px solid $light;
