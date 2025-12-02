@@ -29,7 +29,9 @@
                 {{ .Content }}
             </div>
         </article>
+        {{- if or (eq .Section "posts") (eq .Section "snippets") -}}
         {{- partial "related-posts.html" . -}}
+        {{- end -}}
         {{- partial "comments.html" . -}}
     </main>
 </div>
