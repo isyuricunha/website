@@ -1,0 +1,22 @@
+{{ $related := .Site.RegularPages.Related . | first 5 }}
+{{ with $related }}
+<aside class="related-posts">
+    <h3 class="related-posts-title">Related Posts</h3>
+    <div class="related-posts-list">
+        {{ range . }}
+        <article class="related-post-item">
+            <h4 class="related-post-title">
+                <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+            </h4>
+            {{ $configDateFormat := .Site.Params.dateFormat | default "2 Jan 2006" }}
+            <time class="related-post-date" datetime="{{ .Date.Format " 2006-01-02" }}">
+                {{ time.Format $configDateFormat .Date }}
+            </time>
+            {{ with .Summary }}
+            <p class="related-post-summary">{{ . | plainify | truncate 120 }}</p>
+            {{ end }}
+        </article>
+        {{ end }}
+    </div>
+</aside>
+{{ end }}

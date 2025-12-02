@@ -101,4 +101,5 @@ $on-widescreen: 1152px;
  
 {{ with .Site.Params.goToTop }} 
 @import "goToTop"; 
-{{ end }}
+{{ end }}@import "syntax-theme";
+@import "code-enhancements";

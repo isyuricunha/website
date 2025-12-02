@@ -1,0 +1,195 @@
+// code enhancements styles
+
+// reading time display
+.reading-time {
+  margin-left: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.9em;
+  opacity: 0.8;
+
+  .icon-clock {
+    width: 14px;
+    height: 14px;
+    vertical-align: middle;
+  }
+}
+
+// copy code button
+.copy-code-button {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.7rem;
+  font-size: 0.75rem;
+  font-family: inherit;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--text-color);
+  background-color: var(--code-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 0.375rem;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s ease, background-color 0.2s ease, transform 0.1s ease;
+
+  svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+  }
+
+  .copy-code-text {
+    font-size: 0.75rem;
+  }
+
+  &:hover {
+    background-color: var(--hover-bg);
+    transform: scale(1.05);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  &.copy-code-success {
+    background-color: #10b981;
+    color: white;
+    border-color: #059669;
+  }
+
+  &.copy-code-error {
+    background-color: #ef4444;
+    color: white;
+    border-color: #dc2626;
+  }
+}
+
+// show copy button on hover for desktop
+pre:hover .copy-code-button {
+  opacity: 1;
+}
+
+// always show copy button on mobile/touch devices
+@media (hover: none) {
+  .copy-code-button {
+    opacity: 1;
+  }
+}
+
+// ensure pre has proper positioning
+pre {
+  position: relative;
+  
+  &:has(.copy-code-button) {
+    padding-top: 2.5rem;
+  }
+}
+
+// related posts section
+.related-posts {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border-color);
+
+  .related-posts-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: var(--text-color);
+  }
+
+  .related-posts-list {
+    display: grid;
+    gap: 1.5rem;
+    
+    @media (min-width: 768px) {
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+  }
+
+  .related-post-item {
+    padding: 1.25rem;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  .related-post-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+    line-height: 1.4;
+
+    a {
+      color: var(--text-color);
+      text-decoration: none;
+      
+      &:hover {
+        text-decoration: underline;
+        color: var(--link-color);
+      }
+    }
+  }
+
+  .related-post-date {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.75rem;
+  }
+
+  .related-post-summary {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+}
+
+// dark mode adjustments
+[data-theme="dark"] {
+  .copy-code-button {
+    --code-bg: #1e293b;
+    --border-color: #334155;
+    --hover-bg: #334155;
+  }
+
+  .related-posts {
+    .related-post-item {
+      background-color: #1e293b;
+      border-color: #334155;
+      
+      &:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      }
+    }
+  }
+}
+
+// light mode adjustments  
+[data-theme="light"] {
+  .copy-code-button {
+    --code-bg: #f8fafc;
+    --border-color: #e2e8f0;
+    --hover-bg: #e2e8f0;
+  }
+
+  .related-posts {
+    .related-post-item {
+      background-color: #f8fafc;
+      border-color: #e2e8f0;
+    }
+  }
+}
