@@ -1,0 +1,21 @@
+{{- $type := .Get 0 | default "note" -}}
+{{- $title := .Get 1 | default (humanize $type) -}}
+{{- $icon := "" -}}
+
+{{- if eq $type "warning" -}}
+  {{- $icon = "warning" -}}
+{{- else if eq $type "tip" -}}
+  {{- $icon = "lightbulb" -}}
+{{- end -}}
+
+<div class="admonition {{ $type }}">
+  <div class="admonition-title">
+    {{- if $icon -}}
+      <span class="admonition-icon">{{ $icon | emojify }}</span>
+    {{- end -}}
+    {{- $title | markdownify | emojify -}}
+  </div>
+  <div class="admonition-content">
+    {{ .Inner | markdownify | emojify }}
+  </div>
+</div>

@@ -169,3 +169,135 @@ html:not(.dark) .related-post-item {
     }
   }
 }
+
+// Custom admonition styles
+.admonition {
+  margin: 1.5em 0;
+  padding: 0;
+  border-radius: 6px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  
+  .admonition-title {
+    font-weight: 600;
+    margin: 0;
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.95em;
+    letter-spacing: 0.3px;
+    
+    .admonition-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.25rem;
+      height: 1.25rem;
+      border-radius: 50%;
+      margin-right: 0.25rem;
+    }
+    gap: 0.5rem;
+    
+    &::before {
+      font-family: 'Material Icons';
+      font-size: 1.2em;
+    }
+  }
+  
+  p:last-child {
+    margin-bottom: 0;
+  }
+}
+
+// Warning style
+.admonition.warning {
+  border-left: 4px solid #f59e0b;
+  background-color: rgba(254, 243, 199, 0.6);
+  
+  .admonition-title {
+    background-color: rgba(254, 243, 199, 0.8);
+    color: #92400e;
+    border-bottom: 1px solid rgba(217, 119, 6, 0.2);
+    
+    .admonition-icon {
+      background-color: rgba(245, 158, 11, 0.2);
+      color: #92400e;
+    }
+  }
+  
+  .admonition-content {
+    padding: 1rem;
+    background-color: rgba(254, 243, 199, 0.4);
+  }
+}
+
+// Tip style
+.admonition.tip {
+  border-left: 4px solid #10b981;
+  background-color: rgba(209, 250, 229, 0.6);
+  
+  .admonition-title {
+    background-color: rgba(209, 250, 229, 0.8);
+    color: #065f46;
+    border-bottom: 1px solid rgba(5, 150, 105, 0.2);
+    
+    .admonition-icon {
+      background-color: rgba(16, 185, 129, 0.2);
+      color: #065f46;
+    }
+  }
+  
+  .admonition-content {
+    padding: 1rem;
+    background-color: rgba(209, 250, 229, 0.4);
+  }
+}
+
+// Dark mode overrides
+html.dark {
+  .admonition {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+    
+    &.warning {
+      background-color: rgba(120, 53, 15, 0.3);
+      border-left-color: #f59e0b;
+      
+      .admonition-title {
+        background-color: rgba(120, 53, 15, 0.5);
+        color: #fef3c7;
+        border-bottom-color: rgba(217, 119, 6, 0.3);
+        
+        .admonition-icon {
+          background-color: rgba(245, 158, 11, 0.2);
+          color: #fcd34d;
+        }
+      }
+      
+      .admonition-content {
+        background-color: rgba(120, 53, 15, 0.2);
+      }
+    }
+    
+    &.tip {
+      background-color: rgba(6, 78, 59, 0.3);
+      border-left-color: #10b981;
+      
+      .admonition-title {
+        background-color: rgba(6, 78, 59, 0.5);
+        color: #d1fae5;
+        border-bottom-color: rgba(5, 150, 105, 0.3);
+        
+        .admonition-icon {
+          background-color: rgba(16, 185, 129, 0.2);
+          color: #34d399;
+        }
+      }
+      
+      .admonition-content {
+        background-color: rgba(6, 78, 59, 0.2);
+      }
+    }
+  }
+}
