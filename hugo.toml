@@ -47,6 +47,28 @@ theme = "hugo-blog-awesome"
 		endLevel = 4 # ToC ends at H4
 		ordered = false # generates <ul> instead of <ol>
 
+[related]
+  threshold = 50
+  includeNewer = true
+  toLower = false
+
+  [[related.indices]]
+    name = "tags"
+    weight = 100
+
+  [[related.indices]]
+    name = "categories"
+    weight = 100
+
+  [[related.indices]]
+    name = "keywords"
+    weight = 50
+
+  [[related.indices]]
+    name = "date"
+    weight = 10
+
+
 [permalinks]
   [permalinks.page]
     pages = "/:slug/"
