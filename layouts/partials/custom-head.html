@@ -1,2 +1,11 @@
 {{/* Umami Analytics */}}
 <script defer src="https://cloud.umami.is/script.js" data-website-id="89c8b474-3a62-4ca7-ad30-22cb17535f24"></script>
+
+{{/* Projects page CSS */}}
+{{ if eq .RelPermalink "/projects/" }}
+{{ $projectsCSS := resources.Get "css/projects.css" }}
+{{ if $projectsCSS }}
+{{ $projectsCSS = $projectsCSS | resources.Minify }}
+<link rel="stylesheet" href="{{ $projectsCSS.RelPermalink }}">
+{{ end }}
+{{ end }}
