@@ -29,7 +29,44 @@
   color: var(--bg-color);
 }
 
-color: var(--text-color);
+.filter-count {
+  opacity: 0.7;
+  font-size: 0.85rem;
+  margin-left: 0.3rem;
+}
+
+/* projects grid */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+/* project card */
+.project-card {
+  border-bottom: 1px solid var(--text-color);
+  padding-bottom: 2rem;
+  margin-bottom: 2rem;
+  transition: all 0.2s ease;
+}
+
+.project-card:last-child {
+  border-bottom: none;
+}
+
+.project-card:hover {
+  opacity: 0.8;
+}
+
+.project-name {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.3rem;
+}
+
+.project-name a {
+  text-decoration: none;
+  color: var(--text-color);
 }
 
 .project-name a:hover {
