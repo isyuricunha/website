@@ -1,0 +1,48 @@
+/* enhanced theme transitions */
+
+/* smooth color transitions */
+:root {
+    transition-property: background-color, color, border-color;
+    transition-duration: 250ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html.theme-transitioning *,
+html.theme-transitioning *::before,
+html.theme-transitioning *::after {
+    transition-property: background-color, color, border-color, fill, stroke !important;
+    transition-duration: 250ms !important;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* animated theme toggle button */
+.theme-toggle-spin {
+    animation: spin-theme-toggle 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes spin-theme-toggle {
+    0% {
+        transform: rotate(0deg) scale(1);
+    }
+
+    50% {
+        transform: rotate(180deg) scale(0.9);
+    }
+
+    100% {
+        transform: rotate(360deg) scale(1);
+    }
+}
+
+/* enhanced theme toggle button hover */
+#mode {
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#mode:hover {
+    transform: scale(1.1);
+}
+
+#mode:active {
+    transform: scale(0.95);
+}

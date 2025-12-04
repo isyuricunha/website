@@ -43,11 +43,23 @@
         }
     };
 
-    // init theme ASAP, then do the rest.
+    // init theme asap, then enable transitions
     initTheme(getThemeState());
-    requestAnimationFrame(() => body.classList.remove("notransition"))
+    requestAnimationFrame(() => body.classList.remove("notransition"));
+
     const toggleTheme = () => {
         const state = getThemeState();
+        const lamp = document.getElementById("mode");
+
+        // add transition class for smooth animation
+        document.documentElement.classList.add('theme-transitioning');
+
+        // animate the toggle button
+        if (lamp) {
+            lamp.classList.add('theme-toggle-spin');
+            setTimeout(() => lamp.classList.remove('theme-toggle-spin'), 500);
+        }
+
         if (state === THEMES.DARK) {
             localStorage.setItem(LS_THEME_KEY, THEMES.LIGHT);
             initTheme(THEMES.LIGHT);
@@ -55,15 +67,20 @@
             localStorage.setItem(LS_THEME_KEY, THEMES.DARK);
             initTheme(THEMES.DARK);
         }
+
+        // remove transition class after animation
+        setTimeout(() => {
+            document.documentElement.classList.remove('theme-transitioning');
+        }, 300);
     };
 
     window.addEventListener("DOMContentLoaded", () => {
-        // Theme switch
+        // theme switch
         const lamp = document.getElementById("mode");
 
         lamp.addEventListener("click", () => toggleTheme());
 
-        // Blur the content when the menu is open
+        // blur the content when the menu is open
         const cbox = document.getElementById("menu-trigger");
 
         cbox.addEventListener("change", function () {

@@ -1,0 +1,51 @@
+name: Spell Check
+
+on:
+  pull_request:
+    paths:
+      - 'content/**/*.md'
+      - '**.md'
+  push:
+    branches:
+      - main
+    paths:
+      - 'content/**/*.md'
+      - '**.md'
+  workflow_dispatch:
+
+jobs:
+  spell-check:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          
+      - name: Install cspell
+        run: npm install -g cspell
+        
+      - name: Run spell check
+        run: |
+          cspell "content/**/*.md" "*.md" \
+            --no-progress \
+            --show-suggestions \
+            --words-only \
+            --unique || true
+        continue-on-error: true
+        
+      - name: Comment results on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '✅ Spell check completed! Review any suggestions above.'
+            })
