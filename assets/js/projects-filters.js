@@ -47,9 +47,16 @@
         const btn = document.createElement('button');
         btn.className = `filter-btn${active ? ' active' : ''}`;
         btn.setAttribute('data-language', language);
-        btn.innerHTML = `
-      ${label} <span class="filter-count">${count}</span>
-    `;
+        
+        // Create label text node
+        btn.appendChild(document.createTextNode(label + ' '));
+        
+        // Create count span
+        const countSpan = document.createElement('span');
+        countSpan.className = 'filter-count';
+        countSpan.textContent = count;
+        btn.appendChild(countSpan);
+        
         return btn;
     }
 
