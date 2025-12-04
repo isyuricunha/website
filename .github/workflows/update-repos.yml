@@ -10,6 +10,10 @@ jobs:
   update-repos:
     runs-on: ubuntu-latest
     
+    permissions:
+      contents: write  # needed to commit and push changes
+      actions: read    # needed to read workflow info
+    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4

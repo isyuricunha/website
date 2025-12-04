@@ -17,6 +17,10 @@ jobs:
   spell-check:
     runs-on: ubuntu-latest
     
+    permissions:
+      contents: read          # needed to checkout and read files
+      pull-requests: write    # needed to comment on PRs
+    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
