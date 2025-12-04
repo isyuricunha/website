@@ -1,91 +1,73 @@
 {{ define "main" }}
-<article class="projects-page">
-    <header class="projects-header">
-        <h1>{{ .Title }}</h1>
-        {{ if .Description }}
-        <p class="page-description">{{ .Description }}</p>
-        {{ end }}
-        <div class="content">
-            {{ .Content }}
-        </div>
-    </header>
+<div class="wrapper post">
+    <main class="page-content" aria-label="Content">
+        <article>
+            <header class="header">
+                <h1 class="header-title">{{ .Title }}</h1>
+            </header>
 
-    {{ $repos := .Site.Data.repos }}
-    {{ if $repos }}
-    <div class="projects-stats">
-        <span class="stat-item">📦 {{ len $repos }} repositories</span>
-        <span class="stat-item">⭐ {{ $totalStars := 0 }}{{ range $repos }}{{ $totalStars = add $totalStars .stars }}{{
-            end }}{{ $totalStars }} total stars</span>
-    </div>
+            <div class="page-content">
+                {{ .Content }}
 
-    <div class="projects-grid">
-        {{ range $repos }}
-        {{ if not .is_archived }}
-        <div class="project-card" data-language="{{ .language }}">
-            <div class="project-header">
-                <h2 class="project-name">
-                    <a href="{{ .url }}" target="_blank" rel="noopener noreferrer">
-                        {{ .name }}
-                    </a>
-                </h2>
-                {{ if .is_private }}
-                <span class="badge badge-private">🔒 private</span>
+                {{ $repos := .Site.Data.repos }}
+                {{ if $repos }}
+
+                <div class="projects-filters"></div>
+
+                <div class="projects-grid">
+                    {{ range $repos }}
+                    {{ if not .is_archived }}
+                    <div class="project-card" data-language="{{ .language }}">
+                        <h3 class="project-name">
+                            <a href="{{ .url }}" target="_blank" rel="noopener noreferrer">{{ .name }}</a>
+                            {{ if .is_private }}<span class="badge-private">🔒</span>{{ end }}
+                        </h3>
+
+                        <p class="project-description">{{ .description }}</p>
+
+                        <div class="project-meta">
+                            {{ if .language }}
+                            <span class="language-badge" data-lang="{{ .language }}">
+                                {{ .language }}
+                            </span>
+                            {{ end }}
+
+                            {{ if gt .stars 0 }}
+                            <span class="meta-item">⭐ {{ .stars }}</span>
+                            {{ end }}
+
+                            {{ if gt .forks 0 }}
+                            <span class="meta-item">🍴 {{ .forks }}</span>
+                            {{ end }}
+                        </div>
+
+                        {{ if .topics }}
+                        <div class="project-topics">
+                            {{ range first 5 .topics }}
+                            <span class="topic-tag">#{{ . }}</span>
+                            {{ end }}
+                        </div>
+                        {{ end }}
+
+                        {{ if .homepage }}
+                        <div class="project-links">
+                            <a href="{{ .homepage }}" target="_blank" rel="noopener noreferrer">🔗 homepage</a>
+                        </div>
+                        {{ end }}
+
+                        <div class="project-footer">
+                            <small>updated: {{ dateFormat "Jan 2, 2006" .updated_at }}</small>
+                        </div>
+                    </div>
+                    {{ end }}
+                    {{ end }}
+                </div>
+
+                {{ else }}
+                <p><em>No repository data found. Run <code>npm run fetch-repos</code> to fetch repositories.</em></p>
                 {{ end }}
             </div>
-
-            <p class="project-description">{{ .description }}</p>
-
-            <div class="project-meta">
-                {{ if .language }}
-                <span class="language-badge" data-lang="{{ .language }}">
-                    <span class="language-dot"></span>
-                    {{ .language }}
-                </span>
-                {{ end }}
-
-                {{ if gt .stars 0 }}
-                <span class="meta-item">
-                    ⭐ {{ .stars }}
-                </span>
-                {{ end }}
-
-                {{ if gt .forks 0 }}
-                <span class="meta-item">
-                    🍴 {{ .forks }}
-                </span>
-                {{ end }}
-            </div>
-
-            {{ if .topics }}
-            <div class="project-topics">
-                {{ range first 5 .topics }}
-                <span class="topic-tag">#{{ . }}</span>
-                {{ end }}
-            </div>
-            {{ end }}
-
-            {{ if .homepage }}
-            <div class="project-links">
-                <a href="{{ .homepage }}" target="_blank" rel="noopener noreferrer" class="link-homepage">
-                    🔗 homepage
-                </a>
-            </div>
-            {{ end }}
-
-            <div class="project-footer">
-                <span class="updated-date">
-                    updated: {{ dateFormat "Jan 2, 2006" .updated_at }}
-                </span>
-            </div>
-        </div>
-        {{ end }}
-        {{ end }}
-    </div>
-    {{ else }}
-    <div class="no-data-message">
-        <p>⚠️ no repository data found.</p>
-        <p>run <code>npm run fetch-repos</code> to fetch github repositories.</p>
-    </div>
-    {{ end }}
-</article>
+        </article>
+    </main>
+</div>
 {{ end }}

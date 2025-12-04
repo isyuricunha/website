@@ -1,84 +1,40 @@
 {{ define "main" }}
-<div class="container error-404">
-    <div class="error-content">
-        <div class="error-code">404</div>
+<div class="wrapper post">
+    <main class="page-content" aria-label="Content">
+        <article>
+            <header class="header">
+                <h1 class="header-title">404</h1>
+                <p>page not found</p>
+            </header>
 
-        <h1 class="error-title">page not found</h1>
+            <div class="page-content">
+                <p>looks like this page took a coffee break... ☕</p>
+                <p>it either never existed, got moved, or decided to pursue a career in the void.</p>
 
-        <div class="error-message">
-            <p>looks like this page took a coffee break... ☕</p>
-            <p>it either never existed, got moved, or decided to pursue a career in the void.</p>
-        </div>
-
-        <div class="error-ascii">
-            <pre>
+                <pre style="text-align: center; margin: 2rem 0;">
     ¯\_(ツ)_/¯
-      </pre>
-        </div>
+        </pre>
 
-        <div class="error-actions">
-            <h2>here's what you can do:</h2>
+                <h2>here's what you can do:</h2>
 
-            <div class="popular-links">
-                <a href="/" class="link-card">
-                    <span class="link-icon">🏠</span>
-                    <div class="link-content">
-                        <div class="link-title">home</div>
-                        <div class="link-desc">back to safety</div>
-                    </div>
-                </a>
+                <ul>
+                    <li><a href="/">🏠 home</a> - back to safety</li>
+                    <li><a href="/blog/">📝 blog</a> - read my posts</li>
+                    <li><a href="/projects/">💻 projects</a> - check my repos</li>
+                    <li><a href="/about/">👤 about</a> - who am i</li>
+                    <li><a href="/snippet/">⚡ snippets</a> - code examples</li>
+                    <li><a href="/hardware/">🖥️ hardware</a> - my setup</li>
+                </ul>
 
-                <a href="/blog/" class="link-card">
-                    <span class="link-icon">📝</span>
-                    <div class="link-content">
-                        <div class="link-title">blog</div>
-                        <div class="link-desc">read my posts</div>
-                    </div>
-                </a>
-
-                <a href="/projects/" class="link-card">
-                    <span class="link-icon">💻</span>
-                    <div class="link-content">
-                        <div class="link-title">projects</div>
-                        <div class="link-desc">check my repos</div>
-                    </div>
-                </a>
-
-                <a href="/about/" class="link-card">
-                    <span class="link-icon">👤</span>
-                    <div class="link-content">
-                        <div class="link-title">about</div>
-                        <div class="link-desc">who am i</div>
-                    </div>
-                </a>
-
-                <a href="/snippet/" class="link-card">
-                    <span class="link-icon">⚡</span>
-                    <div class="link-content">
-                        <div class="link-title">snippets</div>
-                        <div class="link-desc">code examples</div>
-                    </div>
-                </a>
-
-                <a href="/hardware/" class="link-card">
-                    <span class="link-icon">🖥️</span>
-                    <div class="link-content">
-                        <div class="link-title">hardware</div>
-                        <div class="link-desc">my setup</div>
-                    </div>
-                </a>
+                <h3>or maybe:</h3>
+                <ul>
+                    <li>check if you typed the url correctly</li>
+                    <li>the page was deleted (rip 🪦)</li>
+                    <li>i'm reorganizing things (happens)</li>
+                    <li>you found a broken link (please <a href="/contact/">let me know</a>!)</li>
+                </ul>
             </div>
-        </div>
-
-        <div class="error-tips">
-            <h3>or maybe:</h3>
-            <ul>
-                <li>check if you typed the url correctly</li>
-                <li>the page was deleted (rip 🪦)</li>
-                <li>i'm reorganizing things (happens)</li>
-                <li>you found a broken link (please <a href="/contact/">let me know</a>!)</li>
-            </ul>
-        </div>
-    </div>
+        </article>
+    </main>
 </div>
 {{ end }}
