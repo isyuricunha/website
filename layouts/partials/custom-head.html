@@ -16,12 +16,3 @@
 <link rel="stylesheet" href="{{ $projectsCSS.RelPermalink }}">
 {{ end }}
 {{ end }}
-
-{{/* 404 page CSS */}}
-{{ if eq .Kind "404" }}
-{{ $errorCSS := resources.Get "css/404.css" }}
-{{ if $errorCSS }}
-{{ $errorCSS = $errorCSS | resources.Minify }}
-<link rel="stylesheet" href="{{ $errorCSS.RelPermalink }}">
-{{ end }}
-{{ end }}
