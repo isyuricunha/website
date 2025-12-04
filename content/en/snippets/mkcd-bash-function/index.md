@@ -1,0 +1,56 @@
+---
+title: "mkcd: Make Directory and Enter It"
+date: 2025-12-04
+author: Yuri Cunha
+description: A simple Bash function to create a directory and switch into it in a single command.
+tags:
+  - bash
+  - terminal
+  - productivity
+  - linux
+---
+
+We've all been there: you create a new directory with `mkdir` and then immediately have to `cd` into it.
+
+```bash
+mkdir new-project
+cd new-project
+```
+
+It's a small friction, but it adds up. Here is a simple function to do both at once.
+
+<!--more-->
+
+## The Solution
+
+Add this function to your `.bashrc` (or `.zshrc`):
+
+```bash
+# Create a folder (and subfolders) and enter it immediately
+mkcd() {
+  mkdir -p "$1" && cd "$1"
+}
+```
+
+## How to Install
+
+1.  Open your config file:
+    ```bash
+    nano ~/.bashrc
+    ```
+2.  Paste the code block above at the end of the file.
+3.  Save and exit (`Ctrl+O`, `Enter`, `Ctrl+X`).
+4.  Reload your configuration:
+    ```bash
+    source ~/.bashrc
+    ```
+
+## Usage
+
+Now you can create deep directory structures and enter them instantly:
+
+```bash
+mkcd docker/docker-compose/vaultwarden
+```
+
+You will find yourself inside `vaultwarden` immediately.
