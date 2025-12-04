@@ -124,6 +124,11 @@ theme = "hugo-blog-awesome"
     name = 'Hardware'
     url = '/hardware/'
     weight = 40
+  [[Languages.en-us.menu.main]]
+    pageRef="projects"
+    name = 'Projects'
+    url = '/projects/'
+    weight = 45
 
 [Languages.en-us.params]
   sitename = "Yuri Cunha"

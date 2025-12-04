@@ -1,0 +1,77 @@
+[
+    {
+        "name": "example-repo-1",
+        "full_name": "isyuricunha/example-repo-1",
+        "description": "a sample repository to demonstrate the projects page layout",
+        "url": "https://github.com/isyuricunha/example-repo-1",
+        "homepage": null,
+        "stars": 42,
+        "forks": 8,
+        "watchers": 42,
+        "language": "Python",
+        "topics": [
+            "python",
+            "automation",
+            "postgresql"
+        ],
+        "created_at": "2024-01-15T10:30:00Z",
+        "updated_at": "2024-11-20T14:22:00Z",
+        "pushed_at": "2024-11-20T14:22:00Z",
+        "is_fork": false,
+        "is_archived": false,
+        "is_private": false,
+        "default_branch": "main",
+        "license": "LGPL-2.1",
+        "open_issues": 3
+    },
+    {
+        "name": "website",
+        "full_name": "isyuricunha/website",
+        "description": "personal website and blog built with hugo",
+        "url": "https://github.com/isyuricunha/website",
+        "homepage": "https://yuricunha.com",
+        "stars": 15,
+        "forks": 2,
+        "watchers": 15,
+        "language": "HTML",
+        "topics": [
+            "hugo",
+            "blog",
+            "portfolio"
+        ],
+        "created_at": "2024-02-10T08:15:00Z",
+        "updated_at": "2024-12-04T04:50:00Z",
+        "pushed_at": "2024-12-04T04:50:00Z",
+        "is_fork": false,
+        "is_archived": false,
+        "is_private": false,
+        "default_branch": "main",
+        "license": null,
+        "open_issues": 1
+    },
+    {
+        "name": "docker-compose-labs",
+        "full_name": "isyuricunha/docker-compose-labs",
+        "description": "collection of docker compose configs for homelab services",
+        "url": "https://github.com/isyuricunha/docker-compose-labs",
+        "homepage": null,
+        "stars": 28,
+        "forks": 5,
+        "watchers": 28,
+        "language": "Shell",
+        "topics": [
+            "docker",
+            "homelab",
+            "selfhosted"
+        ],
+        "created_at": "2024-03-05T12:45:00Z",
+        "updated_at": "2024-11-30T16:30:00Z",
+        "pushed_at": "2024-11-30T16:30:00Z",
+        "is_fork": false,
+        "is_archived": false,
+        "is_private": false,
+        "default_branch": "main",
+        "license": "LGPL-2.1",
+        "open_issues": 0
+    }
+]

@@ -1,0 +1,21 @@
+{
+    "name": "yuricunha-website",
+    "version": "1.0.0",
+    "description": "Hugo website for yuricunha.com",
+    "scripts": {
+        "fetch-repos": "node scripts/fetch-github-repos.js",
+        "build": "npm run fetch-repos && hugo --gc --minify"
+    },
+    "engines": {
+        "node": ">=18.0.0"
+    },
+    "keywords": [
+        "hugo",
+        "blog",
+        "github"
+    ],
+    "author": "Yuri Cunha",
+    "license": "LGPL-2.1",
+    "dependencies": {},
+    "devDependencies": {}
+}

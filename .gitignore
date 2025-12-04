@@ -5,3 +5,9 @@ resources/
 exampleSite/public/
 exampleSite/resources/
 exampleSite/.hugo_build.lock
+
+# environment variables (contains github token)
+.env
+
+# node dependencies
+node_modules/
