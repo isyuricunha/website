@@ -1,0 +1,51 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+public/
+resources/
+
+# Hugo theme
+themes/
+
+# Generated files
+data/repos.json
+
+# Config files that shouldn't be formatted
+package-lock.json
+yarn.lock
+
+# Hugo templates (contain Go template syntax)
+layouts/**/*.html
+archetypes/**/*.md
+
+# Content files (should not be auto-formatted)
+content/**/*.md
+
+# Images and binary files
+**/*.png
+**/*.jpg
+**/*.jpeg
+**/*.gif
+**/*.svg
+**/*.ico
+**/*.webp
+
+# Syntax highlighting CSS (generated)
+assets/code-highlight.css
+
+# SASS files with Hugo template syntax
+assets/sass/**/*.scss
+
+# Font files
+static/fonts/**/*.woff
+static/fonts/**/*.woff2
+static/fonts/**/*.ttf
+static/fonts/**/*.eot
+static/fonts/**/*.svg
+
+# Web manifest and other JSON files that shouldn't be formatted
+assets/icons/site.webmanifest
+
+# GitHub workflows (YAML)
+.github/**/*.yml

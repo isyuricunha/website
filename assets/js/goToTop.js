@@ -1,4 +1,4 @@
-window.addEventListener('load', () => {
+window.addEventListener("load", () => {
     const gttButton = document.getElementById("totop");
     if (!gttButton) return;
     window.onscroll = () => {

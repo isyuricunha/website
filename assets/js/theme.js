@@ -52,12 +52,12 @@
         const lamp = document.getElementById("mode");
 
         // add transition class for smooth animation
-        document.documentElement.classList.add('theme-transitioning');
+        document.documentElement.classList.add("theme-transitioning");
 
         // animate the toggle button
         if (lamp) {
-            lamp.classList.add('theme-toggle-spin');
-            setTimeout(() => lamp.classList.remove('theme-toggle-spin'), 500);
+            lamp.classList.add("theme-toggle-spin");
+            setTimeout(() => lamp.classList.remove("theme-toggle-spin"), 500);
         }
 
         if (state === THEMES.DARK) {
@@ -70,7 +70,7 @@
 
         // remove transition class after animation
         setTimeout(() => {
-            document.documentElement.classList.remove('theme-transitioning');
+            document.documentElement.classList.remove("theme-transitioning");
         }, 300);
     };
 

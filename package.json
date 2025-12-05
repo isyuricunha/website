@@ -4,7 +4,11 @@
     "description": "Hugo website for yuricunha.com",
     "scripts": {
         "fetch-repos": "node scripts/fetch-github-repos.js",
-        "build": "npm run fetch-repos && hugo --gc --minify"
+        "build": "npm run fetch-repos && hugo --gc --minify",
+        "lint": "eslint assets/js/**/*.js scripts/**/*.js",
+        "lint:fix": "eslint assets/js/**/*.js scripts/**/*.js --fix",
+        "format": "prettier --write .",
+        "format:check": "prettier --check ."
     },
     "engines": {
         "node": ">=18.0.0"
@@ -17,5 +21,8 @@
     "author": "Yuri Cunha",
     "license": "LGPL-2.1",
     "dependencies": {},
-    "devDependencies": {}
+    "devDependencies": {
+        "eslint": "^8.57.0",
+        "prettier": "^3.3.2"
+    }
 }

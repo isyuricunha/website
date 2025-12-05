@@ -9,7 +9,6 @@ defaultContentLanguage = "en-us"
 
 # Enable emojis globally
 enableEmoji = true
-ignoreErrors = ["additional-script-loading-error"] # ignore error of loading additional scripts.
 
 # traditional way: theme component resides in directory 'themes'
 theme = "hugo-blog-awesome"
@@ -141,9 +140,8 @@ theme = "hugo-blog-awesome"
   toc = false # set to false to disable table of contents 'globally'
   tocOpen = false # set to true to open table of contents by default
   goToTop = true # set to false to disable 'go to top' button
-  additionalScripts = ['js/custom.js', 'js/custom-2.js', 'js/copy-code.js', 'js/reading-progress.js', 'js/projects-filters.js']
-  # Will try to load 'assets/js/custom.js' and 'assets/js/custom-2.js'.
-  # Your custom scripts will be concatenated to one file `custom.js`.
+  additionalScripts = ['js/copy-code.js', 'js/reading-progress.js', 'js/projects-filters.js']
+  # Custom scripts will be concatenated to one file `custom.js`.
   # When building for production it will be minified.
   # The file `custom.js` is loaded on each page (before body tag ends).
   dateFormat = "" # date format used to show dates on various pages. If nothing is specified, then "2 Jan 2006" format is used.

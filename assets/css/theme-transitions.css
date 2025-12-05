@@ -10,7 +10,8 @@
 html.theme-transitioning *,
 html.theme-transitioning *::before,
 html.theme-transitioning *::after {
-    transition-property: background-color, color, border-color, fill, stroke !important;
+    transition-property:
+        background-color, color, border-color, fill, stroke !important;
     transition-duration: 250ms !important;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
 }

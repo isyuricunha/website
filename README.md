@@ -20,6 +20,7 @@ i chose this technology stack for a few key reasons:
 this website uses the excellent [hugo blog awesome](https://github.com/hugo-sid/hugo-blog-awesome) theme created by [sidharth](https://github.com/hugo-sid). huge thanks to them for creating such a clean, fast, and privacy-conscious theme.
 
 the theme is:
+
 - minimal and clean
 - supports dark mode
 - 100/100 google pagespeed score
@@ -38,11 +39,11 @@ while the base theme is excellent, i made some customizations:
 - customized social links and profile information
 - set dark mode as default theme
 - **added github projects page** - displays all my repositories with:
-  - automatic fetching via github api (build-time)
-  - sorted by stars (highest first)
-  - language filters for easy browsing
-  - modern card-based design with metadata
-  - secure token handling (never exposed client-side)
+    - automatic fetching via github api (build-time)
+    - sorted by stars (highest first)
+    - language filters for easy browsing
+    - modern card-based design with metadata
+    - secure token handling (never exposed client-side)
 - added reading time estimator for posts
 - implemented related posts section
 - added code copy button for all code blocks
@@ -114,6 +115,7 @@ the built site will be in the `public` directory.
 deployed on vercel with automatic builds on git push.
 
 **environment variables** (vercel):
+
 - `GITHUB_TOKEN` - github personal access token (for fetching repos)
 
 **build command**: `npm run build` (runs fetch-repos + hugo build)
