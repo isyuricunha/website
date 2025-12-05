@@ -11,7 +11,10 @@ tags:
   - extensions
 ---
 
-This snippet contains my complete VSCode configuration files for easy migration to VSCodium or fresh VSCode installations. It includes a comprehensive list of extensions and detailed editor settings.
+This snippet contains **my personal VSCode configuration files** for easy migration to VSCodium or fresh VSCode installations. It includes a comprehensive list of extensions and detailed editor settings.
+
+> [!WARNING]
+> These are **my personal configurations**. Review and adjust settings before applying them to your setup. Some settings like file paths, API keys, and preferences may need customization for your environment.
 
 <!--more-->
 
