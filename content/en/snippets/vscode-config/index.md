@@ -199,8 +199,8 @@ param(
     [string]$VSCodiumCli = ""
 )
 
-# script para copiar configs do vscode para o vscodium
-# e sincronizar extensoes (vscode -> vscodium)
+# script to copy vscode configs to vscodium
+# and sync extensions (vscode -> vscodium)
 
 function Get-VSCodeUserDir {
     if ($IsWindows) {
@@ -208,7 +208,7 @@ function Get-VSCodeUserDir {
     } elseif ($IsLinux -or $IsMacOS) {
         return "$HOME/.config/Code/User"
     } else {
-        throw "sistema operacional nao suportado"
+        throw "operating system not supported"
     }
 }
 
@@ -218,7 +218,7 @@ function Get-VSCodiumUserDir {
     } elseif ($IsLinux -or $IsMacOS) {
         return "$HOME/.config/VSCodium/User"
     } else {
-        throw "sistema operacional nao suportado"
+        throw "operating system not supported"
     }
 }
 
@@ -226,19 +226,19 @@ function Find-VSCodiumCli {
     param([string]$Preferred)
 
     if ($Preferred) {
-        # se usuario passou algo, tenta primeiro
+        # if user provided a path, try it first
         $cmd = Get-Command $Preferred -ErrorAction SilentlyContinue
         if ($cmd) { return $cmd.Source }
         if (Test-Path $Preferred) { return $Preferred }
     }
 
-    # tenta nomes comuns em path
+    # try common names in path
     foreach ($name in "codium", "vscodium") {
         $cmd = Get-Command $name -ErrorAction SilentlyContinue
         if ($cmd) { return $cmd.Source }
     }
 
-    # tenta caminhos padrao por sistema
+    # try default paths by system
     if ($IsWindows) {
         $candidates = @(
             "$env:LOCALAPPDATA\Programs\VSCodium\VSCodium.exe",
@@ -256,7 +256,7 @@ function Find-VSCodiumCli {
         if (Test-Path $path) { return $path }
     }
 
-    throw "nao encontrei o executavel do vscodium. passe o caminho em -VSCodiumCli"
+    throw "could not find vscodium executable. pass the path in -VSCodiumCli"
 }
 
 Write-Host "=== sync vscode -> vscodium ==="
@@ -265,83 +265,83 @@ $vsCodeUser = Get-VSCodeUserDir
 $vscodiumUser = Get-VSCodiumUserDir
 
 if (-not (Test-Path $vsCodeUser)) {
-    throw "pasta de configuracoes do vscode nao encontrada: $vsCodeUser"
+    throw "vscode configuration folder not found: $vsCodeUser"
 }
 
 New-Item -ItemType Directory -Path $vscodiumUser -Force | Out-Null
 
-Write-Host "pasta vscode  :" $vsCodeUser
-Write-Host "pasta vscodium:" $vscodiumUser
+Write-Host "vscode folder  :" $vsCodeUser
+Write-Host "vscodium folder:" $vscodiumUser
 
-# copia settings.json
+# copy settings.json
 $settings = Join-Path $vsCodeUser "settings.json"
 if (Test-Path $settings) {
     Copy-Item $settings $vscodiumUser -Force
-    Write-Host "copiado settings.json"
+    Write-Host "copied settings.json"
 } else {
-    Write-Host "aviso: settings.json nao encontrado no vscode"
+    Write-Host "warning: settings.json not found in vscode"
 }
 
-# copia keybindings.json
+# copy keybindings.json
 $keybindings = Join-Path $vsCodeUser "keybindings.json"
 if (Test-Path $keybindings) {
     Copy-Item $keybindings $vscodiumUser -Force
-    Write-Host "copiado keybindings.json"
+    Write-Host "copied keybindings.json"
 } else {
-    Write-Host "aviso: keybindings.json nao encontrado no vscode"
+    Write-Host "warning: keybindings.json not found in vscode"
 }
 
-# copia snippets
+# copy snippets
 $snippets = Join-Path $vsCodeUser "snippets"
 if (Test-Path $snippets) {
     Copy-Item $snippets $vscodiumUser -Recurse -Force
-    Write-Host "copiado diretorio snippets"
+    Write-Host "copied snippets directory"
 }
 
-# copia profiles (se existir)
+# copy profiles (if exists)
 $profiles = Join-Path $vsCodeUser "profiles"
 if (Test-Path $profiles) {
     Copy-Item $profiles $vscodiumUser -Recurse -Force
-    Write-Host "copiado diretorio profiles"
+    Write-Host "copied profiles directory"
 }
 
-# exporta lista de extensoes do vscode
+# export vscode extensions list
 Write-Host ""
-Write-Host "exportando extensoes do vscode..."
+Write-Host "exporting vscode extensions..."
 
 $extensions = @()
 try {
     $extensions = code --list-extensions
 } catch {
-    Write-Host "erro ao executar 'code --list-extensions'. verifique se o comando 'code' funciona no terminal."
+    Write-Host "error running 'code --list-extensions'. check if the 'code' command works in terminal."
 }
 
 if (-not $extensions -or $extensions.Count -eq 0) {
-    Write-Host "nenhuma extensao encontrada ou comando 'code' nao funcionou."
+    Write-Host "no extensions found or 'code' command did not work."
 } else {
     $backupFile = Join-Path $HOME "vscode-extensions-$(Get-Date -Format 'yyyyMMdd-HHmmss').txt"
     $extensions | Set-Content -Encoding UTF8 $backupFile
-    Write-Host "lista de extensoes salva em:" $backupFile
+    Write-Host "extensions list saved to:" $backupFile
 
-    # encontra cli do vscodium
+    # find vscodium cli
     $vscodiumCliPath = Find-VSCodiumCli -Preferred $VSCodiumCli
     Write-Host ""
-    Write-Host "usando vscodium cli:" $vscodiumCliPath
+    Write-Host "using vscodium cli:" $vscodiumCliPath
     Write-Host ""
-    Write-Host "instalando extensoes no vscodium..."
+    Write-Host "installing extensions in vscodium..."
 
     foreach ($ext in $extensions) {
         if ([string]::IsNullOrWhiteSpace($ext)) { continue }
-        Write-Host "  instalando $ext"
+        Write-Host "  installing $ext"
         try {
             & $vscodiumCliPath --install-extension $ext | Out-Null
         } catch {
-            Write-Host "  falha ao instalar $ext"
+            Write-Host "  failed to install $ext"
         }
     }
 
     Write-Host ""
-    Write-Host "sincronizacao concluida."
+    Write-Host "sync completed."
 }
 ```
 
@@ -381,79 +381,79 @@ Save as `sync-vscode-to-vscodium.sh`:
 #!/usr/bin/env bash
 set -e
 
-# script simples para sincronizar vscode -> vscodium no linux
+# simple script to sync vscode -> vscodium on linux
 
 VSCODE_USER="$HOME/.config/Code/User"
 VSCODIUM_USER="$HOME/.config/VSCodium/User"
 
-# permite sobrescrever o comando via variavel de ambiente
+# allow overriding command via environment variable
 VSCODIUM_CLI="${VSCODIUM_CLI:-codium}"
 
-echo "pasta vscode   : $VSCODE_USER"
-echo "pasta vscodium : $VSCODIUM_USER"
+echo "vscode folder   : $VSCODE_USER"
+echo "vscodium folder : $VSCODIUM_USER"
 echo "vscodium cli   : $VSCODIUM_CLI"
 echo
 
 if [ ! -d "$VSCODE_USER" ]; then
-  echo "erro: pasta do vscode nao encontrada: $VSCODE_USER"
+  echo "error: vscode folder not found: $VSCODE_USER"
   exit 1
 fi
 
 mkdir -p "$VSCODIUM_USER"
 
-# copia settings
+# copy settings
 if [ -f "$VSCODE_USER/settings.json" ]; then
   cp "$VSCODE_USER/settings.json" "$VSCODIUM_USER/"
-  echo "copiado settings.json"
+  echo "copied settings.json"
 fi
 
-# copia keybindings
+# copy keybindings
 if [ -f "$VSCODE_USER/keybindings.json" ]; then
   cp "$VSCODE_USER/keybindings.json" "$VSCODIUM_USER/"
-  echo "copiado keybindings.json"
+  echo "copied keybindings.json"
 fi
 
-# copia snippets
+# copy snippets
 if [ -d "$VSCODE_USER/snippets" ]; then
   cp -r "$VSCODE_USER/snippets" "$VSCODIUM_USER/"
-  echo "copiado diretorio snippets"
+  echo "copied snippets directory"
 fi
 
-# copia profiles
+# copy profiles
 if [ -d "$VSCODE_USER/profiles" ]; then
   cp -r "$VSCODE_USER/profiles" "$VSCODIUM_USER/"
-  echo "copiado diretorio profiles"
+  echo "copied profiles directory"
 fi
 
 echo
-echo "exportando extensoes do vscode..."
+echo "exporting vscode extensions..."
 
 if ! command -v code >/dev/null 2>&1; then
-  echo "erro: comando 'code' nao encontrado no path."
+  echo "error: 'code' command not found in path."
   exit 1
 fi
 
 EXT_FILE="$HOME/vscode-extensions-$(date +%Y%m%d-%H%M%S).txt"
 code --list-extensions > "$EXT_FILE"
 
-echo "lista de extensoes salva em: $EXT_FILE"
+echo "extensions list saved to: $EXT_FILE"
 echo
 
 if ! command -v "$VSCODIUM_CLI" >/dev/null 2>&1; then
-  echo "erro: comando '$VSCODIUM_CLI' nao encontrado. ajuste a variavel VSCODIUM_CLI."
+  echo "error: '$VSCODIUM_CLI' command not found. adjust VSCODIUM_CLI variable."
   exit 1
 fi
 
-echo "instalando extensoes no vscodium..."
+echo "installing extensions in vscodium..."
 
 while IFS= read -r ext; do
   [ -z "$ext" ] && continue
-  echo "  instalando $ext"
-  "$VSCODIUM_CLI" --install-extension "$ext" >/dev/null 2>&1 || echo "  falha ao instalar $ext"
+  echo "  installing $ext"
+  "$VSCODIUM_CLI" --install-extension "$ext" >/dev/null 2>&1 || echo "  failed to install $ext"
 done < "$EXT_FILE"
 
 echo
-echo "sincronizacao concluida."
+echo "sync completed."
 ```
 
 #### Usage on Linux
