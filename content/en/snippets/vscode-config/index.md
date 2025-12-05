@@ -184,9 +184,296 @@ Save this file as `settings.json` in your VSCode/VSCodium user settings director
 - **Settings**: `~/Library/Application Support/Code/User/settings.json`
 - **VSCodium**: `~/Library/Application Support/VSCodium/User/settings.json`
 
-## Installing Extensions from List
+## Automated Sync: VSCode → VSCodium
 
-To install all extensions from the `extensions.txt` file, you can use this command:
+Instead of manually copying files and installing extensions, you can automate the entire process with these scripts. They copy all configurations (settings, keybindings, snippets, profiles) from VSCode to VSCodium and install all your extensions automatically.
+
+### PowerShell Script (Cross-Platform)
+
+This script works on both Windows and Linux with PowerShell 7.
+
+Save as `sync-vscode-to-vscodium.ps1`:
+
+```powershell
+param(
+    [string]$VSCodiumCli = ""
+)
+
+# script para copiar configs do vscode para o vscodium
+# e sincronizar extensoes (vscode -> vscodium)
+
+function Get-VSCodeUserDir {
+    if ($IsWindows) {
+        return (Join-Path $env:APPDATA "Code\User")
+    } elseif ($IsLinux -or $IsMacOS) {
+        return "$HOME/.config/Code/User"
+    } else {
+        throw "sistema operacional nao suportado"
+    }
+}
+
+function Get-VSCodiumUserDir {
+    if ($IsWindows) {
+        return (Join-Path $env:APPDATA "VSCodium\User")
+    } elseif ($IsLinux -or $IsMacOS) {
+        return "$HOME/.config/VSCodium/User"
+    } else {
+        throw "sistema operacional nao suportado"
+    }
+}
+
+function Find-VSCodiumCli {
+    param([string]$Preferred)
+
+    if ($Preferred) {
+        # se usuario passou algo, tenta primeiro
+        $cmd = Get-Command $Preferred -ErrorAction SilentlyContinue
+        if ($cmd) { return $cmd.Source }
+        if (Test-Path $Preferred) { return $Preferred }
+    }
+
+    # tenta nomes comuns em path
+    foreach ($name in "codium", "vscodium") {
+        $cmd = Get-Command $name -ErrorAction SilentlyContinue
+        if ($cmd) { return $cmd.Source }
+    }
+
+    # tenta caminhos padrao por sistema
+    if ($IsWindows) {
+        $candidates = @(
+            "$env:LOCALAPPDATA\Programs\VSCodium\VSCodium.exe",
+            "C:\Program Files\VSCodium\VSCodium.exe"
+        )
+    } else {
+        $candidates = @(
+            "/usr/bin/codium",
+            "/usr/local/bin/codium",
+            "/snap/bin/codium"
+        )
+    }
+
+    foreach ($path in $candidates) {
+        if (Test-Path $path) { return $path }
+    }
+
+    throw "nao encontrei o executavel do vscodium. passe o caminho em -VSCodiumCli"
+}
+
+Write-Host "=== sync vscode -> vscodium ==="
+
+$vsCodeUser = Get-VSCodeUserDir
+$vscodiumUser = Get-VSCodiumUserDir
+
+if (-not (Test-Path $vsCodeUser)) {
+    throw "pasta de configuracoes do vscode nao encontrada: $vsCodeUser"
+}
+
+New-Item -ItemType Directory -Path $vscodiumUser -Force | Out-Null
+
+Write-Host "pasta vscode  :" $vsCodeUser
+Write-Host "pasta vscodium:" $vscodiumUser
+
+# copia settings.json
+$settings = Join-Path $vsCodeUser "settings.json"
+if (Test-Path $settings) {
+    Copy-Item $settings $vscodiumUser -Force
+    Write-Host "copiado settings.json"
+} else {
+    Write-Host "aviso: settings.json nao encontrado no vscode"
+}
+
+# copia keybindings.json
+$keybindings = Join-Path $vsCodeUser "keybindings.json"
+if (Test-Path $keybindings) {
+    Copy-Item $keybindings $vscodiumUser -Force
+    Write-Host "copiado keybindings.json"
+} else {
+    Write-Host "aviso: keybindings.json nao encontrado no vscode"
+}
+
+# copia snippets
+$snippets = Join-Path $vsCodeUser "snippets"
+if (Test-Path $snippets) {
+    Copy-Item $snippets $vscodiumUser -Recurse -Force
+    Write-Host "copiado diretorio snippets"
+}
+
+# copia profiles (se existir)
+$profiles = Join-Path $vsCodeUser "profiles"
+if (Test-Path $profiles) {
+    Copy-Item $profiles $vscodiumUser -Recurse -Force
+    Write-Host "copiado diretorio profiles"
+}
+
+# exporta lista de extensoes do vscode
+Write-Host ""
+Write-Host "exportando extensoes do vscode..."
+
+$extensions = @()
+try {
+    $extensions = code --list-extensions
+} catch {
+    Write-Host "erro ao executar 'code --list-extensions'. verifique se o comando 'code' funciona no terminal."
+}
+
+if (-not $extensions -or $extensions.Count -eq 0) {
+    Write-Host "nenhuma extensao encontrada ou comando 'code' nao funcionou."
+} else {
+    $backupFile = Join-Path $HOME "vscode-extensions-$(Get-Date -Format 'yyyyMMdd-HHmmss').txt"
+    $extensions | Set-Content -Encoding UTF8 $backupFile
+    Write-Host "lista de extensoes salva em:" $backupFile
+
+    # encontra cli do vscodium
+    $vscodiumCliPath = Find-VSCodiumCli -Preferred $VSCodiumCli
+    Write-Host ""
+    Write-Host "usando vscodium cli:" $vscodiumCliPath
+    Write-Host ""
+    Write-Host "instalando extensoes no vscodium..."
+
+    foreach ($ext in $extensions) {
+        if ([string]::IsNullOrWhiteSpace($ext)) { continue }
+        Write-Host "  instalando $ext"
+        try {
+            & $vscodiumCliPath --install-extension $ext | Out-Null
+        } catch {
+            Write-Host "  falha ao instalar $ext"
+        }
+    }
+
+    Write-Host ""
+    Write-Host "sincronizacao concluida."
+}
+```
+
+#### Usage on Windows
+
+Run the script with PowerShell 7:
+
+```powershell
+.\sync-vscode-to-vscodium.ps1
+```
+
+If the script can't find VSCodium automatically, specify the path:
+
+```powershell
+.\sync-vscode-to-vscodium.ps1 -VSCodiumCli "C:\Program Files\VSCodium\VSCodium.exe"
+```
+
+#### Usage on Linux with PowerShell 7
+
+If you have `pwsh` installed:
+
+```bash
+pwsh ./sync-vscode-to-vscodium.ps1
+```
+
+Or specify a custom VSCodium command:
+
+```bash
+pwsh ./sync-vscode-to-vscodium.ps1 -VSCodiumCli vscodium
+```
+
+### Bash Script (Linux Only)
+
+Save as `sync-vscode-to-vscodium.sh`:
+
+```bash
+#!/usr/bin/env bash
+set -e
+
+# script simples para sincronizar vscode -> vscodium no linux
+
+VSCODE_USER="$HOME/.config/Code/User"
+VSCODIUM_USER="$HOME/.config/VSCodium/User"
+
+# permite sobrescrever o comando via variavel de ambiente
+VSCODIUM_CLI="${VSCODIUM_CLI:-codium}"
+
+echo "pasta vscode   : $VSCODE_USER"
+echo "pasta vscodium : $VSCODIUM_USER"
+echo "vscodium cli   : $VSCODIUM_CLI"
+echo
+
+if [ ! -d "$VSCODE_USER" ]; then
+  echo "erro: pasta do vscode nao encontrada: $VSCODE_USER"
+  exit 1
+fi
+
+mkdir -p "$VSCODIUM_USER"
+
+# copia settings
+if [ -f "$VSCODE_USER/settings.json" ]; then
+  cp "$VSCODE_USER/settings.json" "$VSCODIUM_USER/"
+  echo "copiado settings.json"
+fi
+
+# copia keybindings
+if [ -f "$VSCODE_USER/keybindings.json" ]; then
+  cp "$VSCODE_USER/keybindings.json" "$VSCODIUM_USER/"
+  echo "copiado keybindings.json"
+fi
+
+# copia snippets
+if [ -d "$VSCODE_USER/snippets" ]; then
+  cp -r "$VSCODE_USER/snippets" "$VSCODIUM_USER/"
+  echo "copiado diretorio snippets"
+fi
+
+# copia profiles
+if [ -d "$VSCODE_USER/profiles" ]; then
+  cp -r "$VSCODE_USER/profiles" "$VSCODIUM_USER/"
+  echo "copiado diretorio profiles"
+fi
+
+echo
+echo "exportando extensoes do vscode..."
+
+if ! command -v code >/dev/null 2>&1; then
+  echo "erro: comando 'code' nao encontrado no path."
+  exit 1
+fi
+
+EXT_FILE="$HOME/vscode-extensions-$(date +%Y%m%d-%H%M%S).txt"
+code --list-extensions > "$EXT_FILE"
+
+echo "lista de extensoes salva em: $EXT_FILE"
+echo
+
+if ! command -v "$VSCODIUM_CLI" >/dev/null 2>&1; then
+  echo "erro: comando '$VSCODIUM_CLI' nao encontrado. ajuste a variavel VSCODIUM_CLI."
+  exit 1
+fi
+
+echo "instalando extensoes no vscodium..."
+
+while IFS= read -r ext; do
+  [ -z "$ext" ] && continue
+  echo "  instalando $ext"
+  "$VSCODIUM_CLI" --install-extension "$ext" >/dev/null 2>&1 || echo "  falha ao instalar $ext"
+done < "$EXT_FILE"
+
+echo
+echo "sincronizacao concluida."
+```
+
+#### Usage on Linux
+
+First, make the script executable:
+
+```bash
+chmod +x sync-vscode-to-vscodium.sh
+./sync-vscode-to-vscodium.sh
+```
+
+If your VSCodium command is `vscodium` instead of `codium`:
+
+```bash
+VSCODIUM_CLI=vscodium ./sync-vscode-to-vscodium.sh
+```
+
+## Manual Installation of Extensions
+
+If you prefer to install extensions manually from an `extensions.txt` file:
 
 ### Bash (Linux/macOS)
 
