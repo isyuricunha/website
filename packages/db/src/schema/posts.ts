@@ -8,24 +8,24 @@ export const postStatusEnum = pgEnum('post_status', ['draft', 'published', 'arch
 
 export const posts = pgTable('post', {
   id: text('id').primaryKey(),
-  slug: text('slug').notNull().unique(),
-  title: text('title').notNull(),
+  slug: text('slug').notNull().unique('unique_post_slug'),
+  title: text('title'), // Relaxed from .notNull() to match DB data
   description: text('description'),
   content: text('content'),
   excerpt: text('excerpt'),
   coverImage: text('cover_image'),
   tags: text('tags'), // JSON array of tags
-  status: postStatusEnum('status').notNull().default('draft'),
-  featured: boolean('featured').notNull().default(false),
+  status: postStatusEnum('status').default('draft'), // Relaxed
+  featured: boolean('featured').default(false), // Relaxed
   authorId: text('author_id')
-    .notNull()
+    //.notNull() // Relaxed
     .references(() => users.id, { onDelete: 'cascade' }),
   publishedAt: timestamp('published_at'),
   createdAt: timestamp('created_at')
     .notNull()
     .default(sql`CURRENT_TIMESTAMP(3)`),
   updatedAt: timestamp('updated_at')
-    .notNull()
+    //.notNull() // Relaxed
     .default(sql`CURRENT_TIMESTAMP(3)`),
   likes: integer('likes').notNull().default(0),
   views: integer('views').notNull().default(0)

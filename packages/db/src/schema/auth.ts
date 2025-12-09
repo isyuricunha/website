@@ -17,6 +17,8 @@ export const users = pgTable('users', {
   updatedAt: timestamp('updated_at').notNull(),
   // Custom
   isAnonymous: boolean('isAnonymous').default(false),
+  bio: text('bio'),
+  isPublic: boolean('is_public').default(true).notNull(),
   role: roleEnum('role').default('user').notNull(),
   banned: boolean('banned') // Required by better-auth admin plugin
 })
