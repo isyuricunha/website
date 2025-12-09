@@ -1,7 +1,9 @@
 import type { Options as PackageJSONOptions } from '@tszhong0411/prettier-plugin-package-json'
-import type { Config } from 'prettier'
+import type { Config, Plugin } from 'prettier'
 import type { PluginOptions } from 'prettier-plugin-tailwindcss'
 
+import prettierPluginPackageJson from '@tszhong0411/prettier-plugin-package-json'
+import * as prettierPluginTailwindcss from 'prettier-plugin-tailwindcss'
 
 export type Options = Config & PluginOptions & PackageJSONOptions
 
@@ -17,10 +19,10 @@ const tszhong0411 = (options: Options = {}): Options => {
     trailingComma: 'none',
     endOfLine: 'lf',
     plugins: [
-      '@tszhong0411/prettier-plugin-package-json',
+      prettierPluginPackageJson as Plugin,
       ...plugins,
 
-      'prettier-plugin-tailwindcss' // must be loaded last
+      prettierPluginTailwindcss as Plugin // must be loaded last
     ],
     printWidth: 100,
 

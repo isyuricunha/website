@@ -20,7 +20,6 @@ export const users = pgTable('users', {
   role: roleEnum('role').default('user').notNull()
 })
 
-
 export const accounts = pgTable('account', {
   id: text('id').primaryKey(),
   accountId: text('account_id').notNull(),
@@ -74,7 +73,7 @@ export const passwordResetTokens = pgTable('password_reset_tokens', {
 
 export const auditLogActionEnum = pgEnum('audit_log_action', [
   'user_create',
-  'user_update', 
+  'user_update',
   'user_delete',
   'user_ban',
   'user_unban',

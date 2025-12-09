@@ -41,12 +41,10 @@ const PasswordReset = (props: PasswordResetProps) => {
         <Body className='mx-auto my-auto bg-white px-2 font-sans'>
           <Container className='mx-auto my-[40px] max-w-[465px] rounded border border-solid border-[#eaeaea] p-[20px]'>
             <Logo />
+            <Text className='text-[14px] leading-[24px] text-black'>Hi {name},</Text>
             <Text className='text-[14px] leading-[24px] text-black'>
-              Hi {name},
-            </Text>
-            <Text className='text-[14px] leading-[24px] text-black'>
-              You recently requested to reset your password for your yuricunha.com account. 
-              Click the button below to reset it.
+              You recently requested to reset your password for your yuricunha.com account. Click
+              the button below to reset it.
             </Text>
             <Section className='mb-[32px] mt-[32px] text-center'>
               <Button

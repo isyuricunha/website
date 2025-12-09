@@ -141,11 +141,7 @@ export const alertTypeEnum = pgEnum('alert_type', [
   'business'
 ])
 
-export const alertSeverityEnum = pgEnum('alert_severity', [
-  'info',
-  'warning',
-  'critical'
-])
+export const alertSeverityEnum = pgEnum('alert_severity', ['info', 'warning', 'critical'])
 
 export const alerts = pgTable('alerts', {
   id: text('id').primaryKey(),

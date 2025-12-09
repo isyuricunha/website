@@ -6,7 +6,7 @@ import { posts } from './schema'
 const main = async () => {
   try {
     console.log('🌱 Seeding database...')
-    
+
     // Example seed data - customize as needed
     const examplePost = {
       id: nanoid(),

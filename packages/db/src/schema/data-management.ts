@@ -5,7 +5,13 @@ import { users } from './auth'
 
 // Database Backups
 export const backupTypeEnum = pgEnum('backup_type', ['full', 'incremental', 'differential'])
-export const backupStatusEnum = pgEnum('backup_status', ['pending', 'running', 'completed', 'failed', 'cancelled'])
+export const backupStatusEnum = pgEnum('backup_status', [
+  'pending',
+  'running',
+  'completed',
+  'failed',
+  'cancelled'
+])
 
 export const databaseBackups = pgTable('database_backups', {
   id: text('id').primaryKey(),
@@ -32,7 +38,13 @@ export const databaseBackups = pgTable('database_backups', {
 })
 
 // Database Restores
-export const restoreStatusEnum = pgEnum('restore_status', ['pending', 'running', 'completed', 'failed', 'cancelled'])
+export const restoreStatusEnum = pgEnum('restore_status', [
+  'pending',
+  'running',
+  'completed',
+  'failed',
+  'cancelled'
+])
 
 export const databaseRestores = pgTable('database_restores', {
   id: text('id').primaryKey(),
@@ -57,7 +69,13 @@ export const databaseRestores = pgTable('database_restores', {
 })
 
 // Data Migrations
-export const migrationStatusEnum = pgEnum('migration_status', ['pending', 'running', 'completed', 'failed', 'rolled_back'])
+export const migrationStatusEnum = pgEnum('migration_status', [
+  'pending',
+  'running',
+  'completed',
+  'failed',
+  'rolled_back'
+])
 
 export const dataMigrations = pgTable('data_migrations', {
   id: text('id').primaryKey(),
@@ -84,7 +102,13 @@ export const dataMigrations = pgTable('data_migrations', {
 
 // Data Export Jobs
 export const exportFormatEnum = pgEnum('export_format', ['csv', 'json', 'xml', 'sql', 'excel'])
-export const exportStatusEnum = pgEnum('export_status', ['pending', 'running', 'completed', 'failed', 'cancelled'])
+export const exportStatusEnum = pgEnum('export_status', [
+  'pending',
+  'running',
+  'completed',
+  'failed',
+  'cancelled'
+])
 
 export const dataExports = pgTable('data_exports', {
   id: text('id').primaryKey(),
@@ -112,7 +136,14 @@ export const dataExports = pgTable('data_exports', {
 })
 
 // Data Import Jobs
-export const importStatusEnum = pgEnum('import_status', ['pending', 'validating', 'running', 'completed', 'failed', 'cancelled'])
+export const importStatusEnum = pgEnum('import_status', [
+  'pending',
+  'validating',
+  'running',
+  'completed',
+  'failed',
+  'cancelled'
+])
 
 export const dataImports = pgTable('data_imports', {
   id: text('id').primaryKey(),
@@ -144,7 +175,13 @@ export const dataImports = pgTable('data_imports', {
 
 // Data Synchronization Jobs
 export const syncDirectionEnum = pgEnum('sync_direction', ['push', 'pull', 'bidirectional'])
-export const syncStatusEnum = pgEnum('sync_status', ['pending', 'running', 'completed', 'failed', 'cancelled'])
+export const syncStatusEnum = pgEnum('sync_status', [
+  'pending',
+  'running',
+  'completed',
+  'failed',
+  'cancelled'
+])
 
 export const dataSynchronization = pgTable('data_synchronization', {
   id: text('id').primaryKey(),

@@ -1,8 +1,8 @@
 import { relations, sql } from 'drizzle-orm'
 import { boolean, integer, pgEnum, pgTable, text, timestamp } from 'drizzle-orm/pg-core'
 
-import { comments } from './comments'
 import { users } from './auth'
+import { comments } from './comments'
 
 export const postStatusEnum = pgEnum('post_status', ['draft', 'published', 'archived'])
 
