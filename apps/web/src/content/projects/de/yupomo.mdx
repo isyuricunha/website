@@ -1,0 +1,54 @@
+---
+name: YuPomo
+description: Schöner Pomodoro Timer für Web und Desktop mit React, TypeScript, Vite und Tauri. Minimalistisches Design mit Statistiken, Benachrichtigungen und Lokalisierung.
+homepage: https://yupomo.yuricunha.com/
+github: https://github.com/isyuricunha/YuPomo
+techstack:
+  - React
+  - TypeScript
+  - Vite
+  - Tauri
+  - TailwindCSS
+  - Chart.js
+  - Rust
+selected: true
+status: active
+---
+
+## Über das Projekt
+
+YuPomo ist ein fokussierter Pomodoro Timer, der die Arbeit in Zyklen und bewusste Pausen unterstützt. Er läuft als schnelle Web App und als native Desktop App für Windows, macOS und Linux über Tauri. Die Oberfläche ist klar und direkt, damit Sie ohne Reibung starten und konzentriert bleiben. Einstellungen und Statistiken werden lokal gespeichert, Ihre Daten bleiben auf Ihrem Gerät.
+
+YuPomo folgt der klassischen Pomodoro Methode mit Standardwerten von fünfundzwanzig Minuten Arbeit, fünf Minuten kurze Pause und fünfzehn Minuten lange Pause. Alle Zeiten lassen sich anpassen. Sie können Klanghinweise und Benachrichtigungen aktivieren sowie zwischen hellem und dunklem Thema wechseln. Eine Statistikansicht zeigt tägliche, wöchentliche und monatliche Verläufe mit Diagrammen, damit Sie Trends beobachten und Ihre Routine verbessern können.
+
+## Wichtige Funktionen
+
+Vollständiger Pomodoro Ablauf mit Arbeit, kurzer Pause und langer Pause. Themenwechsel mit echtem Schwarz im dunklen Thema. Konfigurierbare Zeiten, Klänge und Benachrichtigungen. Lokale Speicherung für Einstellungen und Verlauf. Statistiken mit Diagrammen zur Visualisierung der Fokuszeit und der Sitzungsanzahl. Responsives Layout für Desktop und Mobil. Mehrsprachige Oberfläche mit sofortigem Sprachwechsel zur Laufzeit. Optionales Update Banner auf dem Desktop informiert über neue Versionen.
+
+## Plattformen und Installation
+
+Die Web Version ist über den Demo Link verfügbar. Die Desktop App wird über GitHub Releases bereitgestellt mit Installern für Windows, macOS und Linux. Unter Windows nutzen Sie das Setup exe oder den msi Installer. Unter macOS installieren Sie über das dmg für Ihren Chip. Unter Linux wählen Sie deb oder rpm Pakete oder nutzen die AppImage Datei. Die App kann auf dem Desktop nach Updates suchen und zur Installation der neuesten Version führen.
+
+## Entwicklung und Build
+
+Das Projekt verwendet React und TypeScript mit Vite für den Web Client und Tauri für die Desktop Hülle. Sie können das Repository klonen, Abhängigkeiten installieren und den Entwicklungsserver für das Web oder den Tauri Dev Prozess für den Desktop starten. Build Skripte stehen für den Web Deploy und für Desktop Pakete pro Betriebssystem bereit. Versionsskripte halten Web und Tauri Versionen synchron und der Release Workflow baut und veröffentlicht Artefakte zu GitHub Releases.
+
+## Desktop Auto Update
+
+Desktop Builds unterstützen Tauri Updater. Die App kann die neueste GitHub Version prüfen, ein Banner im Interface anzeigen und die neue Version herunterladen und installieren. Updater Artefakte sind signiert und werden verifiziert. Die Konfiguration nutzt einen öffentlichen Schlüssel in der Tauri Konfiguration und die latest json Datei im Release. Sie können die automatische Installation beim Start in den Einstellungen auf dem Desktop aktivieren.
+
+## Datenschutz
+
+YuPomo sammelt keine personenbezogenen Daten. Einstellungen und Statistiken werden lokal gespeichert. Im Web wird localStorage verwendet. Auf dem Desktop nutzt die App das Tauri Dateisystem im App Daten Verzeichnis. Benachrichtigungen und Klänge entstehen lokal. Die optionale Update Prüfung verwendet nur die öffentliche GitHub Releases API.
+
+## Kontakt und Links
+
+**Demo**: https://yupomo.yuricunha.com
+
+**Repository**: https://github.com/isyuricunha/YuPomo
+
+**Profil und Neuigkeiten**: https://x.com/isyuricunha
+
+**E-Mail**: me@yuricunha.com
+
+**Website**: https://yuricunha.com

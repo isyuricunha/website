@@ -1,0 +1,5 @@
+export { default as Comment } from './templates/comment'
+export { default as Reply } from './templates/reply'
+export { default as PasswordReset } from './templates/password-reset'
+export { default as ContactForm } from './templates/contact-form'
+export { default as ContactConfirmation } from './templates/contact-confirmation'

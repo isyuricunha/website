@@ -1,28 +1,109 @@
 {
-    "name": "yuricunha-website",
-    "version": "1.0.0",
-    "description": "Hugo website for yuricunha.com",
-    "scripts": {
-        "fetch-repos": "node scripts/fetch-github-repos.js",
-        "build": "npm run fetch-repos && hugo --gc --minify",
-        "lint": "eslint assets/js/**/*.js scripts/**/*.js",
-        "lint:fix": "eslint assets/js/**/*.js scripts/**/*.js --fix",
-        "format": "prettier --write .",
-        "format:check": "prettier --check ."
-    },
-    "engines": {
-        "node": ">=18.0.0"
-    },
-    "keywords": [
-        "hugo",
-        "blog",
-        "github"
-    ],
-    "author": "Yuri Cunha",
-    "license": "LGPL-2.1",
-    "dependencies": {},
-    "devDependencies": {
-        "eslint": "^9.39.1",
-        "prettier": "^3.3.2"
+  "private": true,
+  "name": "website",
+  "author": "isyuricunha <me@yuricunha.com> (https://github.com/isyuricunha/)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/isyuricunha/website.git"
+  },
+  "type": "module",
+  "scripts": {
+    "build": "turbo build",
+    "build:apps": "turbo build --filter=./apps/*",
+    "build:mdx": "turbo build:mdx",
+    "build:packages": "turbo build --filter=./packages/*",
+    "check": "turbo lint && turbo type-check && pnpm format:check && pnpm check:spelling && pnpm check:knip",
+    "check:all": "concurrently --raw \"turbo lint\" \"turbo type-check\" \"pnpm format:check\" \"pnpm check:spelling\" \"pnpm check:knip\"",
+    "check:knip": "dotenv -e .env.local -- knip",
+    "check:spelling": "echo 'Spell checking disabled'",
+    "clean": "turbo clean && rm -rf .turbo coverage",
+    "commit": "cz",
+    "db:check": "turbo db:check",
+    "db:generate": "turbo db:generate",
+    "db:migrate": "turbo db:migrate",
+    "db:push": "turbo db:push",
+    "db:seed": "turbo db:seed",
+    "db:studio": "turbo db:studio",
+    "dev": "turbo dev",
+    "dev:docs": "turbo dev --filter=@isyuricunha/docs",
+    "dev:packages": "turbo dev --filter=./packages/*",
+    "dev:web": "turbo dev --filter=@tszhong0411/web",
+    "format:check": "prettier --cache --check --ignore-path .gitignore --ignore-path .prettierignore .",
+    "format:write": "prettier --cache --write --list-different --ignore-path .gitignore --ignore-path .prettierignore .",
+    "preinstall": "npx --yes only-allow pnpm",
+    "lint": "turbo lint && eslint . --max-warnings 0",
+    "lint:fix": "turbo lint:fix && eslint --fix .",
+    "prepare": "simple-git-hooks && pnpm build:packages",
+    "release": "changeset publish",
+    "test:e2e": "turbo test:e2e",
+    "test:e2e:inspector": "turbo test:e2e:inspector",
+    "test:e2e:install": "playwright install",
+    "test:e2e:ui": "turbo test:e2e:ui",
+    "test:unit": "vitest run",
+    "test:unit:coverage": "vitest --coverage --ui",
+    "test:unit:ui": "vitest --ui",
+    "type-check": "turbo type-check",
+    "version": "changeset version"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-git"
     }
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.29.6",
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "@playwright/test": "^1.56.1",
+    "@tszhong0411/eslint-config": "workspace:*",
+    "@tszhong0411/prettier-config": "workspace:*",
+    "@tszhong0411/tsconfig": "workspace:*",
+    "@turbo/gen": "^2.5.6",
+    "@types/node": "^24.3.0",
+    "@vitest/coverage-v8": "^3.2.4",
+    "@vitest/ui": "^3.2.4",
+    "commitizen": "^4.3.1",
+    "concurrently": "^9.2.0",
+    "cross-env": "^10.0.0",
+    "cspell": "^9.2.0",
+    "cz-git": "^1.12.0",
+    "dotenv-cli": "^10.0.0",
+    "eslint": "^9.33.0",
+    "jsdom": "^26.1.0",
+    "knip": "^5.62.0",
+    "lint-staged": "^16.1.5",
+    "next": "^15.5.4",
+    "prettier": "^3.6.2",
+    "simple-git-hooks": "^2.13.1",
+    "ts-morph": "^26.0.0",
+    "tsup": "8.5.0",
+    "tsx": "^4.20.4",
+    "turbo": "^2.5.6",
+    "typescript": "5.9.2",
+    "vitest": "^3.2.4"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "lint-staged": {
+    "*.{cjs,mjs,js,jsx,cts,mts,ts,tsx,json}": "eslint --fix",
+    "**/*": [
+      "prettier --write --ignore-unknown",
+      "pnpm check:spelling"
+    ]
+  },
+  "packageManager": "pnpm@10.14.0",
+  "simple-git-hooks": {
+    "pre-commit": "pnpm lint-staged",
+    "commit-msg": "pnpm commitlint --edit $1 && pnpm check:spelling $1"
+  },
+  "dependencies": {
+    "@marsidev/react-turnstile": "^1.3.1",
+    "better-auth": "^1.3.26",
+    "drizzle-orm": "^0.44.4",
+    "prettier-plugin-sort-json": "^4.1.1",
+    "resend": "^6.0.1",
+    "sonner": "2.0.7",
+    "speakeasy": "^2.0.0"
+  }
 }

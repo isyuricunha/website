@@ -1,34 +1,12 @@
+# To get started with Dependabot version updates, you'll need to specify which
+# package ecosystems to update and where the package manifests are located.
+# Please see the documentation for all configuration options:
+# https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
+
 version: 2
 updates:
-  # Enable version updates for npm dependencies
-  - package-ecosystem: "npm"
-    directory: "/"
+  - package-ecosystem: "" # See documentation for possible values
+    directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"
-    open-pull-requests-limit: 5
-    reviewers:
-      - "isyuricunha"
-    assignees:
-      - "isyuricunha"
 
-  # Enable version updates for GitHub Actions
-  - package-ecosystem: "github-actions"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-    open-pull-requests-limit: 3
-    reviewers:
-      - "isyuricunha"
-    assignees:
-      - "isyuricunha"
-
-  # Enable version updates for Git submodules (Hugo theme)
-  - package-ecosystem: "gitsubmodule"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-    open-pull-requests-limit: 2
-    reviewers:
-      - "isyuricunha"
-    assignees:
-      - "isyuricunha"

@@ -1,0 +1,1226 @@
+{
+  "about": {
+    "title": "About",
+    "description": "👋 Hey! I am Yuri Cunha, just a random guy on the internet.."
+  },
+  "admin": {
+    "nav": {
+      "comments": "Comments",
+      "general": "General",
+      "users": "Users",
+      "dashboard": "Dashboard",
+      "security": "Security",
+      "security_management": "Security Management",
+      "communication": "Communication",
+      "communication_management": "Communication Management",
+      "email_marketing": "Email Marketing",
+      "announcements": "Announcements",
+      "notifications": "Notifications",
+      "monitoring": "Monitoring",
+      "monitoring_dashboard": "Monitoring Dashboard",
+      "data": "Data Management",
+      "data_management": "Data Management"
+    },
+    "page-header": {
+      "comments": {
+        "description": "Manage comments from users",
+        "title": "Comments"
+      },
+      "users": {
+        "description": "Manage users of the system",
+        "title": "Users"
+      }
+    },
+    "table": {
+      "comments": {
+        "body": "Body",
+        "createdAt": "Created At",
+        "failed-to-fetch-comments-data": "Failed to fetch comments data. Please refresh the page.",
+        "filter-body": "Filter body...",
+        "filter-userId": "Filter user ID...",
+        "type": "Type",
+        "userId": "User ID",
+        "actions": "Actions",
+        "delete": "Delete",
+        "edit": "Edit",
+        "view": "View",
+        "confirm-delete": "Are you sure you want to delete this comment?",
+        "delete-success": "Comment deleted successfully",
+        "delete-error": "Failed to delete comment"
+      },
+      "users": {
+        "email": "Email",
+        "failed-to-fetch-users-data": "Failed to fetch users data. Please refresh the page.",
+        "filter-names": "Filter names...",
+        "name": "Name",
+        "role": "Role",
+        "username": "Username",
+        "image": "Image",
+        "createdAt": "Created At",
+        "actions": "Actions",
+        "delete": "Delete User",
+        "ban": "Ban User",
+        "unban": "Unban User",
+        "edit": "Edit User",
+        "reset-password": "Send Password Reset",
+        "change-role": "Change Role",
+        "confirm-delete": "Are you sure you want to delete this user?",
+        "confirm-ban": "Are you sure you want to ban this user?",
+        "confirm-unban": "Are you sure you want to unban this user?",
+        "delete-success": "User deleted successfully",
+        "delete-error": "Failed to delete user",
+        "ban-success": "User banned successfully",
+        "ban-error": "Failed to ban user",
+        "unban-success": "User unbanned successfully",
+        "unban-error": "Failed to unban user",
+        "reset-password-success": "Password reset email sent",
+        "reset-password-error": "Failed to send password reset email",
+        "update-success": "User updated successfully",
+        "update-error": "Failed to update user"
+      }
+    },
+    "modals": {
+      "edit-user": {
+        "title": "Edit User",
+        "name": "Name",
+        "username": "Username",
+        "email": "Email",
+        "role": "Role",
+        "image": "Image URL",
+        "save": "Save Changes",
+        "cancel": "Cancel"
+      },
+      "delete-confirmation": {
+        "title": "Confirm Deletion",
+        "message": "This action cannot be undone. Are you sure you want to proceed?",
+        "confirm": "Delete",
+        "cancel": "Cancel"
+      }
+    }
+  },
+  "blog": {
+    "comments": {
+      "author": "Author",
+      "comment-cannot-be-empty": "Comment cannot be empty",
+      "comment-posted": "Comment posted",
+      "comments": "{count, plural, =1 {comment} other {comments}}",
+      "confirm-delete-comment": "Are you sure you want to delete this comment? This action cannot be undone.",
+      "copy-link": "Copy Link",
+      "delete-a-comment": "Delete a comment",
+      "deleted-a-comment": "Deleted a comment",
+      "dislike": "Dislike",
+      "failed-to-load-comments": "Failed to load comments. Please refresh the page.",
+      "failed-to-load-replies": "Failed to load replies. Please refresh the page.",
+      "like": "Like",
+      "link-copied": "Link copied to clipboard",
+      "need-logged-in-to-rate": "You need to be logged in to rate comments",
+      "newest": "Newest",
+      "no-comments": "No comments",
+      "oldest": "Oldest",
+      "open-menu": "Open menu",
+      "placeholder": "Leave a comment",
+      "replies": "{count, plural, =1 {reply} other {replies}}",
+      "reply": "Reply",
+      "reply-cannot-be-empty": "Reply cannot be empty",
+      "reply-to-comment": "Reply to comment",
+      "send-comment": "Send comment",
+      "sort-by": "Sort by",
+      "this-comment-has-been-deleted": "[This comment has been deleted]",
+      "toggle-bold": "Toggle bold",
+      "toggle-italic": "Toggle italic",
+      "toggle-strikethrough": "Toggle strikethrough"
+    },
+    "description": "My personal blog where I share thoughts on technology, servers, cloud, and a bit of my daily life. I started my journey in 2018 and have been exploring and learning ever since. If you’re into database, runners, or just want to read some thoughts on tech and life, check it out!",
+    "footer": {
+      "edit-on-github": "Edit on GitHub",
+      "last-updated": "Last updated: {date}"
+    },
+    "header": {
+      "comments": "Comments",
+      "published-on": "Published on",
+      "views": "Views",
+      "written-by": "Written by"
+    },
+    "like": "Like",
+    "like-limit-reached": "You can only like 3 times per post",
+    "like-this-post": "Like this post",
+    "on-this-page": "On this page",
+    "share": {
+      "description": "Read \"{title}\" on {site}'s blog"
+    },
+    "title": "Blog"
+  },
+  "command-menu": {
+    "actions": {
+      "copy-link": "Copy link",
+      "source-code": "Source code"
+    },
+    "groups": {
+      "account": "Account",
+      "general": "General",
+      "social": "Social"
+    },
+    "no-results": "No results found.",
+    "open-menu": "Open command menu",
+    "placeholder": "Type a command or search",
+    "trigger": {
+      "open-command": "Open Command",
+      "open-link": "Open Link"
+    }
+  },
+  "common": {
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "error": "Error",
+    "likes": "{count, plural, =1 {# like} other {# likes}}",
+    "sign-in": "Sign in",
+    "sign-in-error": "Failed to sign in. Please try again.",
+    "sign-in-success": "Login successful!",
+    "sign-out": "Sign out",
+    "views": "{count, plural, =1 {# view} other {# views}}",
+    "sign-up": "Sign up",
+    "sign-up-error": "Failed to sign up. Please try again."
+  },
+  "component": {
+    "uses-page": {
+      "badge": {
+        "updated-recently": "Updated recently"
+      },
+      "affiliate": {
+        "title": "Affiliate Disclosure",
+        "description": "Some links on this page are affiliate links. This means I may earn a small commission if you purchase through these links, at no additional cost to you. I only recommend products I personally use and believe in."
+      },
+      "table": {
+        "headers": {
+          "tool": "Tool",
+          "pros": "Pros",
+          "cons": "Cons",
+          "price": "Price",
+          "rating": "Rating"
+        },
+        "rating-out-of": "({rating}/5)"
+      },
+      "tools": {
+        "common": {
+          "price": {
+            "free": "Free",
+            "free-paid": "Free/Paid"
+          }
+        },
+        "docker": {
+          "pros": {
+            "0": "Easy containerization",
+            "1": "Great for development",
+            "2": "Wide ecosystem"
+          },
+          "cons": {
+            "0": "Resource intensive",
+            "1": "Learning curve"
+          }
+        },
+        "kubernetes": {
+          "pros": {
+            "0": "Excellent orchestration",
+            "1": "Auto-scaling",
+            "2": "Production ready"
+          },
+          "cons": {
+            "0": "Complex setup",
+            "1": "Steep learning curve"
+          }
+        },
+        "terraform": {
+          "pros": {
+            "0": "Infrastructure as code",
+            "1": "Multi-cloud",
+            "2": "Great planning"
+          },
+          "cons": {
+            "0": "State management",
+            "1": "Can be complex"
+          }
+        }
+      },
+      "sections": {
+        "laptop": {
+          "title": "Laptop",
+          "why-title": "Why I chose this laptop:",
+          "reasons": {
+            "0": "Perfect balance of performance and portability",
+            "1": "Great for development and occasional gaming",
+            "2": "Excellent value for money"
+          }
+        },
+        "infra-devops": {
+          "title": "Infrastructure & DevOps",
+          "comparison-title": "Infrastructure Tools Comparison"
+        }
+      }
+    },
+    "filtered-posts": {
+      "no-posts-found": "No posts found",
+      "placeholder": "Search articles",
+      "rss": "RSS Feed",
+      "featured": "Featured Posts",
+      "toggle-filters": {
+        "show": "Show Filters",
+        "hide": "Hide Filters"
+      },
+      "sort": {
+        "label": "Sort by:",
+        "options": {
+          "date-desc": "Newest First",
+          "date-asc": "Oldest First",
+          "title-asc": "A-Z",
+          "title-desc": "Z-A",
+          "reading-time": "Reading Time"
+        }
+      },
+      "filters": {
+        "category": {
+          "label": "Category",
+          "all": "All Categories"
+        },
+        "tag": {
+          "label": "Tag",
+          "all": "All Tags"
+        }
+      },
+      "searching": "Searching...",
+      "results": {
+        "count": "{count, plural, =0 {0 results} =1 {1 result} other {# results}}",
+        "for": " for \"{search}\""
+      },
+      "showing": {
+        "count": "Showing {count, plural, =0 {0 posts} =1 {1 post} other {# posts}}"
+      },
+      "pagination": {
+        "page-of": " (page {current} of {total})",
+        "previous": "Previous",
+        "next": "Next"
+      },
+      "clear-all": "Clear all filters",
+      "empty": {
+        "description": "Try adjusting your search terms or filters, or browse all posts below.",
+        "show-all": "Show all posts"
+      },
+      "posts": {
+        "all": "All Posts"
+      }
+    },
+    "go-to-homepage": "Go to homepage",
+    "announcement-banner": {
+      "dismiss": "Dismiss announcement"
+    },
+    "offline-indicator": {
+      "toast": {
+        "restored": "Connection restored!",
+        "offline": "You are offline. Some features may not work."
+      },
+      "status": {
+        "online": "Back online",
+        "offline": "No internet connection"
+      }
+    }
+  },
+  "site-search": {
+    "placeholder": "Search the site...",
+    "recent-searches": "Recent searches",
+    "no-results": "No results for"
+  },
+  "dialog": {
+    "sign-in": {
+      "continue-with": "Continue with {provider}",
+      "or": "or",
+      "description": "to continue to yuricunha.com",
+      "here": "Sign in here",
+      "anonymous": "Anonymous"
+    },
+    "sign-up": {
+      "description": "to create your account on yuricunha.com",
+      "here": "Sign up here"
+    },
+    "already-have-account": "Already have an account?",
+    "dont-have-account": "Don't have an account?"
+  },
+  "error": {
+    "something-went-wrong": "Something went wrong!",
+    "try-again": "Try again"
+  },
+  "guestbook": {
+    "create-message-successfully": "Create message successfully",
+    "delete-dialog": {
+      "description": "Are you sure you want to delete this comment? This action cannot be undone.",
+      "title": "Delete a comment"
+    },
+    "delete-message-successfully": "Delete message successfully",
+    "description": "Sign my guestbook and share your idea. You can tell me anything here!",
+    "failed-to-load-messages": "Failed to load messages. Please refresh the page.",
+    "message-cannot-be-empty": "Message cannot be empty. My bad or your bad?",
+    "no-messages": "No messages. Be the first to leave a message!",
+    "pinned": {
+      "description": "If you have a moment, please log in with your account to leave a comment. Thanks!",
+      "greeting": "Hey! 👋"
+    },
+    "placeholder": "Leave a message",
+    "signin": {
+      "description": "to leave a message"
+    },
+    "submit": "Submit",
+    "title": "Guestbook"
+  },
+  "homepage": {
+    "about-me": {
+      "coding-hours": "Coding hours",
+      "connect": "Connect",
+      "fav-framework": "Fav. Server",
+      "location": "São Paulo",
+      "more": "Know more about me",
+      "stacks": "Stacks",
+      "title": "About Me"
+    },
+    "get-in-touch": {
+      "description": "Feel free to reach out to me!",
+      "image-alt": "Me or not me",
+      "title": "Need to talk?"
+    },
+    "hero": {
+      "title-top": "I’m Yuri, a database specialist",
+      "title-middle-left": "optimizing",
+      "title-middle-right": "data solutions",
+      "amazing": "agile",
+      "attractive": "fast",
+      "fantastic": "robust",
+      "stunning": "secure",
+      "title-bottom": "for modern infrastructures",
+      "location-timezone": "Brazil • UTC/GMT -3",
+      "view-projects": "View Projects",
+      "read-blog": "Read Blog"
+    },
+    "latest-articles": {
+      "card": "Article",
+      "more": "See all articles",
+      "title": "Latest Articles"
+    },
+    "selectedProjects": {
+      "card": "Project",
+      "more": "See all project",
+      "title": "Selected Projects"
+    },
+    "recently-updated": {
+      "title": "Recently Updated",
+      "description": "Latest content updates and additions",
+      "type": {
+        "post": "Post",
+        "project": "Project",
+        "page": "Page"
+      },
+      "updated-on": "Updated {date}",
+      "empty": "No recent updates available"
+    },
+    "newsletter": {
+      "title": "Stay Updated",
+      "description": "Get notified about new blog posts and project updates",
+      "placeholder": "Enter your email",
+      "cta": "Subscribe",
+      "disclaimer": "No spam, unsubscribe at any time. Privacy policy applies.",
+      "success-title": "Thanks for subscribing!",
+      "success-description": "You'll receive updates about new posts and projects.",
+      "error-default": "Failed to subscribe"
+    }
+  },
+  "hook": {
+    "copy-to-clipboard": {
+      "copied": "Copied to clipboard!",
+      "error": "Unable to copy to clipboard. Please try again!"
+    }
+  },
+  "layout": {
+    "navigation": "Navigation",
+    "home": "Home",
+    "blog": "Blog",
+    "projects": "Projects",
+    "about": "About",
+    "guestbook": "Guestbook",
+    "uses": "Tools",
+    "spotify": "Music",
+    "contact": "Contact",
+    "sitemap": "Sitemap",
+    "skip-to-main-content": "Skip to main content",
+    "toggle-menu": "Toggle menu",
+    "change-language": "Change language",
+    "links": "Links",
+    "github": "GitHub",
+    "now-playing": {
+      "error": "Failed to fetch Spotify data",
+      "loading": "Loading ...",
+      "not-listening": "Not Listening - Spotify"
+    }
+  },
+  "mdx": {
+    "link-to-section": "Link to section"
+  },
+  "metadata": {
+    "site-description": "Senior DBA",
+    "site-title": "Yuri Cunha"
+  },
+  "not-found": "No pages here today!",
+  "sitemap": {
+    "title": "Sitemap",
+    "description": "Complete overview of all site content and navigation",
+    "main-pages": {
+      "title": "Main Pages",
+      "description": "Core site navigation and features",
+      "items": {
+        "home": { "description": "Welcome page with overview of projects and articles" },
+        "blog": { "description": "Technical articles and thoughts on development" },
+        "projects": { "description": "Portfolio of development projects and GitHub repositories" },
+        "uses": { "description": "Tools, equipment, and software I use for development" },
+        "spotify": { "description": "Music taste, listening activity, and statistics" },
+        "about": { "title": "About", "description": "Learn more about me and my background" }
+      }
+    },
+    "blog-posts": {
+      "title": "Blog Posts",
+      "description": "All published articles and technical content"
+    },
+    "projects": {
+      "title": "Projects",
+      "description": "Development projects and open source contributions"
+    },
+    "labels": {
+      "live-demo": "Live Demo",
+      "github": "GitHub"
+    }
+  },
+  "projects": {
+    "description": "The list of my projects. Everything was made with 💙 (this page still in development).",
+    "title": "Projects",
+    "visit-website": "Visit Website",
+    "all-repos": "My public GitHub repositories",
+    "featured": "Featured Projects",
+    "all": "All Projects",
+    "search": {
+      "placeholder": "Search projects..."
+    },
+    "filters": {
+      "show": "Show Filters",
+      "hide": "Hide Filters",
+      "category": "Category",
+      "all-categories": "All Categories",
+      "status": "Status",
+      "all-statuses": "All Statuses",
+      "technology": "Technology",
+      "all-technologies": "All Technologies",
+      "clear": "Clear filters"
+    },
+    "results": {
+      "found": "{count, plural, =1 {# project found} other {# projects found}}",
+      "showing": "Showing {count, plural, =1 {# project} other {# projects}}"
+    },
+    "empty": {
+      "title": "No projects found",
+      "description": "Try adjusting your filters or search terms.",
+      "show-all": "Show all projects"
+    },
+    "card": {
+      "open": "Open {name}",
+      "open-aria": "Open {name} project page",
+      "featured": "Featured",
+      "github": {
+        "title": "View source on GitHub",
+        "aria": "View source on GitHub (opens in a new tab)"
+      },
+      "live": {
+        "title": "Open live demo",
+        "aria": "Open live demo (opens in a new tab)"
+      },
+      "started-label": "Started"
+    },
+    "status": {
+      "active": "Active",
+      "archived": "Archived",
+      "beta": "Beta",
+      "completed": "Completed"
+    },
+    "repos": {
+      "empty": "No repositories found."
+    }
+  },
+  "theme-toggle": {
+    "options": {
+      "dark": "Dark",
+      "light": "Light",
+      "system": "System"
+    },
+    "toggle-theme": "Toggle theme"
+  },
+  "uses": {
+    "description": "This is the equipment I currently use for gaming, programming, making videos, and every day.",
+    "title": "Uses"
+  },
+  "spotify": {
+    "title": "Music",
+    "description": "Here's what I'm listening to at the moment - top songs and artists over the past 6 months.",
+    "now-listening": {
+      "title": "Now Listening",
+      "subtitle": "Currently playing on Spotify",
+      "not-playing": "Not currently listening to anything",
+      "by": "by"
+    },
+    "taste": {
+      "title": "Music Taste Analysis",
+      "subtitle": "AI-powered insights into your musical personality",
+      "loading": "Analyzing your musical preferences...",
+      "labels": {
+        "energy": "Energy Level",
+        "diversity": "Diversity",
+        "profile": "Profile"
+      },
+      "energy-levels": {
+        "high": "High",
+        "medium": "Medium",
+        "low": "Low"
+      },
+      "diversity-levels": {
+        "eclectic": "Eclectic",
+        "diverse": "Diverse",
+        "focused": "Focused"
+      },
+      "taste-profiles": {
+        "mainstream": "Mainstream",
+        "balanced": "Balanced",
+        "underground": "Underground"
+      },
+      "metrics": {
+        "mainstream-score": "Mainstream Score",
+        "genres-explored": "Genres Explored"
+      },
+      "insights": {
+        "title": "Your Musical Personality",
+        "energy": {
+          "high": "You gravitate toward popular, high-energy tracks that get people moving!",
+          "low": "You appreciate more intimate, lesser-known gems - a true music connoisseur!"
+        },
+        "diversity": {
+          "eclectic": "Your taste spans across many genres - you're musically adventurous!",
+          "focused": "You have refined taste in specific genres - quality over quantity!"
+        },
+        "profile": {
+          "underground": "You're a trendsetter who discovers artists before they hit the mainstream!",
+          "mainstream": "You stay current with popular music and know what's trending!"
+        }
+      }
+    },
+    "top-artists": {
+      "title": "Top Artists",
+      "subtitle": "Most listened to artists in the last 6 months",
+      "no-data": "No artist data available",
+      "tooltips": {
+        "shuffle-on": "Show original order",
+        "shuffle-off": "Shuffle artists",
+        "view-list": "Switch to list view",
+        "view-grid": "Switch to grid view"
+      }
+    },
+    "top-songs": {
+      "title": "Top Songs",
+      "subtitle": "Most played tracks in the last 6 months",
+      "no-data": "No song data available"
+    },
+    "recently-played": {
+      "title": "Recently Played",
+      "subtitle": "Tracks I've listened to recently",
+      "no-data": "No recently played tracks available"
+    },
+    "audio": {
+      "title": "Audio Features",
+      "subtitle": "Characteristics of your favorite tracks",
+      "danceability": "Danceability",
+      "energy": "Energy",
+      "valence": "Valence",
+      "tempo": "Tempo",
+      "acousticness": "Acousticness",
+      "instrumentalness": "Instrumentalness"
+    },
+    "genre": {
+      "title": "Genre Distribution",
+      "subtitle": "Breakdown of your top genres"
+    },
+    "heatmap": {
+      "title": "Listening Heatmap",
+      "subtitle": "Daily listening activity (recent plays)",
+      "days": {
+        "sun": "Sun",
+        "mon": "Mon",
+        "tue": "Tue",
+        "wed": "Wed",
+        "thu": "Thu",
+        "fri": "Fri",
+        "sat": "Sat"
+      },
+      "legend": {
+        "low": "Low",
+        "high": "High"
+      }
+    },
+    "import": {
+      "title": "Import Local History",
+      "subtitle": "Upload a CSV of your listening history",
+      "choose": "Choose file",
+      "plays": "Plays",
+      "artists": "Artists",
+      "duration": "Duration"
+    },
+    "stats": {
+      "title": "Music Statistics",
+      "subtitle": "Your listening habits and preferences",
+      "labels": {
+        "total-hours": "Total Hours",
+        "diversity": "Diversity",
+        "avg-popularity": "Avg Popularity",
+        "top-artists": "Top Artists",
+        "top-genres": "Top Genres"
+      }
+    },
+    "loading": "Loading music data...",
+    "error": "Failed to load music data. Please try again.",
+    "no-data": "No data available",
+    "refresh": "Refresh",
+    "export": {
+      "csv": "Export CSV",
+      "json": "Export JSON"
+    },
+    "range": {
+      "short": "Last 4 weeks",
+      "medium": "Last 6 months",
+      "long": "All time"
+    },
+    "album": "Album",
+    "artist": "Artist",
+    "artists": "Artists",
+    "song": "Song",
+    "tracks": "tracks",
+    "listeners": "listeners",
+    "followers": "followers",
+    "timeline": {
+      "title": "Music Timeline",
+      "subtitle": "Your listening history visualization",
+      "empty": "No recent listening history available",
+      "periods": {
+        "last-hour": "Last Hour",
+        "today": "Today",
+        "yesterday": "Yesterday",
+        "this-week": "This Week",
+        "earlier": "Earlier"
+      },
+      "more-tracks": "+{count} more tracks",
+      "count": "({count} {label})",
+      "labels": {
+        "total-tracks": "Total Tracks",
+        "unique-artists": "Unique Artists",
+        "track": "track",
+        "tracks": "tracks"
+      }
+    },
+    "social": {
+      "title": "Share Your Music",
+      "subtitle": "Share your favorite tracks with friends",
+      "now-playing": "Now Playing",
+      "top-tracks": "Top Tracks to Share",
+      "share-text": "🎵 Currently vibing to \"{name}\" by {artist} on Spotify!",
+      "buttons": {
+        "twitter": "Share on Twitter",
+        "facebook": "Share on Facebook",
+        "copy": "Copy link",
+        "open": "Open in Spotify"
+      },
+      "profile": {
+        "title": "Share Your Music Profile",
+        "share-title": "🎵 Check out my music taste and what I'm currently listening to!",
+        "share-description": "Discover my music preferences and current listening activity"
+      }
+    },
+    "time-ago": {
+      "just-now": "Just now",
+      "minutes": "{count}m ago",
+      "hours": "{count}h ago",
+      "days": "{count}d ago"
+    }
+  },
+  "mascot": {
+    "ariaLabel": "Yue - Virtual assistant",
+    "close": "Close",
+    "hide": "Hide",
+    "speechBubble": "Yue's message",
+    "settings": {
+      "title": "Yue's Settings",
+      "close": "Close settings",
+      "open": "Open settings",
+      "animations": "Animations",
+      "speechBubbles": "Speech bubbles",
+      "soundEffects": "Sound effects",
+      "messageDuration": "Message duration",
+      "bubblePosition": "Bubble position",
+      "positions": {
+        "bottomRight": "Bottom Right",
+        "bottomLeft": "Bottom Left",
+        "topRight": "Top Right",
+        "topLeft": "Top Left"
+      }
+    },
+    "easterEgg": {
+      "retroMode": "Retro mode activated! 🎮"
+    },
+    "restore": "Bring Yue back",
+    "idle": {
+      "tip1": "💡 Did you know? You can use Shift+Y to bring me back if I'm hidden!",
+      "tip2": "🎮 Try the mini-game! Click the gamepad icon in my speech bubble.",
+      "tip3": "⚙️ Customize my behavior in the settings panel.",
+      "tip4": "🎯 I'm here to help! Feel free to ask questions or explore the site.",
+      "tip5": "🌟 Found any bugs? Let me know and I'll help report them!"
+    },
+    "menu": {
+      "open": "Open menu",
+      "reportBug": "Report a bug / Contact",
+      "viewProjects": "View Projects",
+      "miniGame": "Mini-game",
+      "settings": "Settings"
+    },
+    "contact": {
+      "title": "Contact my creator, Yuri",
+      "close": "Close contact",
+      "description": "Found a bug or want to get in touch? Here's my creator's email:",
+      "copy": "Copy email"
+    },
+    "aiChat": {
+      "title": "Chat with Yue",
+      "clear": "Clear",
+      "welcomeMessage": "Hi! I'm Yue, your AI assistant! 🤖 Ask me anything about the website, tech topics, or just chat!",
+      "errorMessage": "Sorry, I'm having trouble right now. Please try again later! 😅",
+      "thinking": "Yue is thinking...",
+      "placeholder": "Ask me anything...",
+      "connectionError": "Having trouble connecting. Please try again.",
+      "footer": "Powered by Yue AI by Yuri & Gemini AI",
+      "modes": {
+        "chat": "Chat",
+        "imageGen": "Generate",
+        "imageAnalyze": "Analyze",
+        "speech": "Speech"
+      },
+      "descriptions": {
+        "chat": "Text conversation with AI",
+        "imageGen": "Create images from text prompts",
+        "imageAnalyze": "Analyze and describe images",
+        "speech": "Convert text to speech"
+      },
+      "placeholders": {
+        "chat": "Type your message...",
+        "imageGen": "Describe the image you want to generate...",
+        "imageAnalyze": "Ask about the uploaded image...",
+        "speech": "Enter text to convert to speech..."
+      },
+      "titles": {
+        "chat": "AI Chat",
+        "imageGen": "Image Generator",
+        "imageAnalyze": "Image Analyzer",
+        "speech": "Text to Speech"
+      },
+      "upload": "Upload image to analyze",
+      "selected": "Selected: {filename}",
+      "generatedImage": "Generated image:",
+      "generatedAudio": "Generated audio:",
+      "switchModel": "Switch AI Model",
+      "availableFeatures": "Available features for {model}",
+      "featureNotAvailable": "{feature} not available for this model",
+      "online": "Online"
+    },
+    "chatbot": {
+      "title": "Chat with Yue",
+      "close": "Close chat",
+      "description": "Choose a topic to chat about:",
+      "options": {
+        "contact": "I want to get in touch",
+        "feedback": "I have feedback",
+        "help": "I need help",
+        "bug": "I found a bug",
+        "feature": "I have a feature request",
+        "general": "Just want to chat"
+      },
+      "responses": {
+        "contact": "Great! You can reach my creator, Yuri, at me@yuricunha.com. They love hearing from visitors!",
+        "feedback": "Thank you for your feedback! It helps make this site better for everyone. Feel free to email me@yuricunha.com with details.",
+        "help": "I'm here to help! What would you like to know about? You can explore the site or ask me specific questions.",
+        "bug": "Thanks for reporting! Please email me@yuricunha.com with details about what you found. Every report helps improve the site!",
+        "feature": "That's exciting! My creator, Yuri loves hearing new ideas. Please email me@yuricunha.com with your suggestion.",
+        "general": "I love chatting with visitors! How's your day going? Feel free to explore the site or ask me anything!"
+      }
+    },
+    "greetings": {
+      "morning": "Good morning! I'm Yue! ☀️",
+      "afternoon": "Good afternoon! I'm Yue! 🌤️",
+      "evening": "Good evening! I'm Yue! 🌅",
+      "night": "Good night! I'm Yue! 🌙"
+    },
+    "game": {
+      "title": "Yue's Mini Game",
+      "close": "Close game",
+      "open": "Open game",
+      "score": "Score",
+      "time": "Time",
+      "highScore": "High Score",
+      "instructions": "Click the target as many times as you can in 30 seconds!",
+      "start": "Start Game",
+      "playAgain": "Play Again",
+      "gameOver": "Game Over! Your score: {score}",
+      "clickTarget": "Click target"
+    },
+    "messages": {
+      "0": "Hi! I'm Yue, your virtual assistant! Need help navigating?",
+      "1": "Did you know you can activate the retro mode with the Konami Code?",
+      "2": "Time for a coffee break! ☕",
+      "3": "Hey, I found a hidden easter egg! Want to see?",
+      "4": "Don't forget to check out my creator, Yuri's latest projects!",
+      "5": "Welcome to the website! How can I help you today?",
+      "6": "Feel free to explore around! There's lots to discover.",
+      "7": "Need to get in touch? Check out the contact section!",
+      "8": "Did you know this site is built with Next.js and TypeScript?",
+      "9": "Thanks for visiting! Hope you're having a great day!",
+      "10": "Want to see what my creator, Yuri is working on? Check out the projects!",
+      "11": "I love helping visitors and sharing knowledge. What about you?",
+      "12": "Dark mode or light mode? I support both!",
+      "13": "This website is fully responsive. Try resizing your browser!",
+      "14": "Found any bugs? Let me know and I'll help report them!",
+      "15": "I'm always learning new things from my creator, Yuri. What's your latest discovery?",
+      "16": "My creator, Yuri, is a database specialist. Pretty cool, right?",
+      "17": "I can help you find anything on the site!",
+      "18": "Did you know my creator, Yuri started this journey in 2018?",
+      "19": "The mini-game is a great way to take a break!",
+      "20": "I'm here to make your visit more enjoyable!",
+      "21": "My creator, Yuri writes about tech and life on the blog.",
+      "22": "Have you seen the projects section? My creator's work is amazing!",
+      "23": "I love when visitors explore different pages!",
+      "24": "The guestbook is a great place to leave a message!",
+      "25": "My creator, Yuri is always working on something new!",
+      "26": "Did you know you can customize my behavior in settings?",
+      "27": "I'm here to help make your experience better!",
+      "28": "My creator, Yuri loves sharing knowledge through the blog.",
+      "29": "The site is designed to be accessible to everyone!",
+      "30": "I'm learning new things every day from my creator, Yuri!",
+      "31": "Have you checked out the uses page? My creator's setup is impressive!",
+      "32": "I'm here to guide you through the site!",
+      "33": "My creator, Yuri believes in the power of open source!",
+      "34": "The Spotify page shows what my creator is listening to!",
+      "35": "I'm always excited to meet new visitors!",
+      "36": "My creator, Yuri loves helping others learn!",
+      "37": "Did you know you can pin messages to keep them visible?",
+      "38": "I'm here to make your browsing experience more fun!",
+      "39": "My creator, Yuri is passionate about technology!",
+      "40": "The search feature can help you find anything quickly!",
+      "41": "My creator, Yuri is always open to feedback and suggestions!",
+      "42": "The admin panel helps manage the site efficiently!",
+      "43": "I love seeing new comments and interactions on the site!",
+      "44": "My creator, Yuri believes in building things that matter!",
+      "45": "The site is constantly evolving with new features!",
+      "46": "I'm here to make technology more accessible to everyone!",
+      "47": "My creator, Yuri loves solving complex problems!",
+      "48": "The community around this site is amazing!",
+      "49": "I'm always ready to help with any questions you might have!"
+    },
+    "pageMessages": {
+      "home": {
+        "0": "Welcome to the homepage! 👋 I'm Yue, your virtual assistant!",
+        "1": "This is where it all begins. Ready to explore?",
+        "2": "My creator, Yuri is a database specialist. Want to know more?",
+        "3": "Check out the latest articles and projects below!",
+        "4": "Feel free to explore any section that interests you!",
+        "5": "The navigation menu can help you find what you're looking for!",
+        "6": "Home sweet home! This is where all the magic happens ✨",
+        "7": "Looking for something specific? I can help you navigate!",
+        "8": "Did you know you can change my position in the settings? 📍",
+        "9": "I love meeting new visitors! Thanks for stopping by! 😊",
+        "10": "The latest updates and content are always featured here first!",
+        "11": "Feeling curious? Every section has something unique to offer!",
+        "12": "Pro tip: Use the search feature to find exactly what you need! 🔍",
+        "13": "This site is constantly evolving with new features and content!",
+        "14": "Want to stay updated? Check back regularly for fresh content!",
+        "15": "I'm here 24/7 to help you explore and discover new things!"
+      },
+      "blog": {
+        "0": "Welcome to the blog! 📝",
+        "1": "My creator, Yuri writes about tech, databases, and sometimes life.",
+        "2": "Feel free to leave comments on the articles!",
+        "3": "What topics would you like to read about?",
+        "4": "The blog is updated regularly with fresh content!",
+        "5": "You can filter articles by tags and categories!",
+        "6": "So many interesting articles to dive into! 📚",
+        "7": "Each post is crafted with care and real-world experience!",
+        "8": "Don't forget to share articles you find valuable! 🔗",
+        "9": "The comment section is where the real discussions happen!",
+        "10": "Looking for something specific? Try the search or tags!",
+        "11": "New articles drop regularly - bookmark your favorites! ⭐",
+        "12": "From beginner tips to advanced concepts, there's something for everyone!",
+        "13": "Love reading about databases, web dev, and tech insights? You're in the right place!",
+        "14": "The blog reflects years of learning and real project experiences!",
+        "15": "Got questions about an article? The comments are perfect for that!"
+      },
+      "blogPost": {
+        "0": "This is a good read! 📖",
+        "1": "This makes me think... 🤔",
+        "2": "Interesting perspective on this topic!",
+        "3": "My creator, Yuri put a lot of thought into this one.",
+        "4": "Hope you're enjoying this article!",
+        "5": "Feel free to share your thoughts in the comments!",
+        "6": "This content is worth taking your time with.",
+        "7": "I love when people dive deep into topics like this!",
+        "8": "The insights here are really valuable.",
+        "9": "This is the kind of content that makes learning fun!"
+      },
+      "projects": {
+        "0": "Here are the projects! 🚀",
+        "1": "Everything is built with love and lots of coffee ☕",
+        "2": "Want to collaborate? Let's build something amazing!",
+        "3": "Each project taught my creator, Yuri something new.",
+        "4": "All projects are open source and available on GitHub!",
+        "5": "Feel free to contribute or suggest improvements!",
+        "6": "From small utilities to full-stack applications - diversity is key! 🛠️",
+        "7": "Every project solves a real problem or explores new technology!",
+        "8": "Check out the tech stacks - always experimenting with the latest tools!",
+        "9": "Live demos are available for most projects - try them out! 🌐",
+        "10": "The source code is clean, documented, and ready for contributions!",
+        "11": "Found a bug or have an idea? Issues and PRs are always welcome!",
+        "12": "These projects represent years of learning and experimentation!",
+        "13": "Star the repos you like - it really motivates the creator! ⭐",
+        "14": "From databases to web apps, each project has its own story!",
+        "15": "Want to build something together? Collaboration makes everything better!"
+      },
+      "projectsDetail": {
+        "0": "Nice project! 🔧",
+        "1": "Curious about the tech stack behind this?",
+        "2": "You can usually find the source code on GitHub.",
+        "3": "If there's a live demo, give it a try!",
+        "4": "Open source means your ideas are welcome.",
+        "5": "Found something to improve? Issues and PRs are appreciated!",
+        "6": "Reading code can be as fun as using the app.",
+        "7": "This project reflects real-world learnings.",
+        "8": "Star the repo if you like it! ⭐",
+        "9": "What would you build on top of this?"
+      },
+      "about": {
+        "0": "Want to know more about my creator, Yuri? 🤔",
+        "1": "My creator, Yuri is just a person who loves databases and coding.",
+        "2": "Feel free to ask questions!",
+        "3": "The journey started in 2018. Still learning every day!",
+        "4": "My creator, Yuri loves sharing knowledge and helping others!",
+        "5": "The about page has all the details about the journey!",
+        "6": "A database specialist with a passion for clean, efficient code! 💾",
+        "7": "From Brazil to the world - technology connects us all! 🌎",
+        "8": "Always learning, always growing, always curious about new tech!",
+        "9": "Believes in open source, knowledge sharing, and helping others succeed!",
+        "10": "Coffee-fueled coding sessions and late-night problem solving! ☕",
+        "11": "The story includes failures, successes, and everything in between!",
+        "12": "A firm believer that the best way to learn is by building and teaching!",
+        "13": "Databases might be the specialty, but full-stack is the playground!",
+        "14": "Every project is a learning opportunity and a chance to help others!",
+        "15": "Want to connect? The contact info is right here on this page!"
+      },
+      "uses": {
+        "0": "This is the setup! 💻",
+        "1": "Pretty cool setup, no? My creator, Yuri loves their gear!",
+        "2": "Want to know what's used for development?",
+        "3": "Good tools make all the difference!",
+        "4": "The setup is constantly evolving with new tools!",
+        "5": "Feel free to ask about any specific tool or setup!",
+        "6": "From hardware to software - every tool has been carefully chosen! ⚙️",
+        "7": "The perfect balance of performance, productivity, and aesthetics!",
+        "8": "Always experimenting with new tools and workflows!",
+        "9": "These tools have powered countless projects and late-night coding sessions!",
+        "10": "Curious about a specific setup choice? Each one has a story!",
+        "11": "The setup evolves with new discoveries and changing needs!",
+        "12": "From code editors to database tools - everything optimized for efficiency!",
+        "13": "Good tools don't make you a better developer, but they sure help! 🛠️",
+        "14": "The setup reflects years of trying different tools and finding what works!",
+        "15": "Want recommendations? These tools have been battle-tested in real projects!"
+      },
+      "spotify": {
+        "0": "Welcome to the music corner! 🎵",
+        "1": "Good or bad music? I don't know, but my creator, Yuri likes it!",
+        "2": "Music helps focus while coding.",
+        "3": "What are you listening to these days?",
+        "4": "The playlist is updated regularly with new discoveries!",
+        "5": "Music is a great way to stay motivated while working!",
+        "6": "The soundtrack to countless coding sessions and creative breakthroughs! 🎧",
+        "7": "From lo-fi beats to energetic tracks - music for every coding mood!",
+        "8": "These playlists have powered through debugging sessions and feature builds!",
+        "9": "Music and code go together like coffee and late nights! ☕",
+        "10": "Discover new artists and genres that fuel creativity and focus!",
+        "11": "The perfect background for deep work and problem-solving sessions!",
+        "12": "Each playlist is curated for different types of work and energy levels!",
+        "13": "Music taste evolves just like coding skills - always discovering something new!",
+        "14": "What's your coding soundtrack? Music can make or break a productive session!",
+        "15": "From ambient to upbeat - find the perfect rhythm for your workflow! 🎶"
+      },
+      "guestbook": {
+        "0": "Leave a message in the guestbook! 📖",
+        "1": "My creator, Yuri loves reading messages from visitors!",
+        "2": "Feel free to say hello or ask questions!",
+        "3": "Your message will make their day!",
+        "4": "The guestbook is a great way to connect with the community!",
+        "5": "All messages are moderated to keep the space friendly!",
+        "6": "A digital guestbook for the modern web - how cool is that? ✨",
+        "7": "Every message is read and appreciated - you're part of the community!",
+        "8": "Share your thoughts, feedback, or just say hi - all are welcome!",
+        "9": "The guestbook connects visitors from around the world! 🌍",
+        "10": "Your message might inspire the next blog post or project!",
+        "11": "From quick hellos to detailed feedback - every message matters!",
+        "12": "The guestbook is a reminder that behind every website are real people!",
+        "13": "Join the conversation and become part of this growing community!",
+        "14": "Messages here have led to collaborations, friendships, and new ideas!",
+        "15": "Don't be shy - your voice adds value to this space! 💬"
+      },
+      "admin": {
+        "0": "Welcome to the admin panel! 🔧",
+        "1": "This area is for site management and moderation.",
+        "2": "My creator, Yuri uses this to keep the site running smoothly.",
+        "3": "Admin tools help manage users, comments, and content.",
+        "4": "The admin panel is constantly being improved!",
+        "5": "Security and moderation are top priorities here!"
+      },
+      "search": {
+        "0": "Looking for something specific? 🔍",
+        "1": "The search feature can help you find anything quickly!",
+        "2": "Try different keywords to get better results.",
+        "3": "Search works across all content on the site!",
+        "4": "The search is powered by advanced algorithms!",
+        "5": "Can't find what you're looking for? Let me know!",
+        "6": "Smart search that understands context and finds relevant content! 🧠",
+        "7": "Search through articles, projects, and pages all in one place!",
+        "8": "Pro tip: Use specific terms for more targeted results!",
+        "9": "The search index is constantly updated with new content!",
+        "10": "Found something interesting? Bookmark it for later reference!",
+        "11": "Search results are ranked by relevance and freshness!",
+        "12": "Can't remember the exact title? Try searching by topic or keyword!",
+        "13": "The search feature learns and improves with every query!",
+        "14": "From technical articles to project details - find it all here!",
+        "15": "Search is your friend for navigating large amounts of content! 🗂️"
+      },
+      "404": {
+        "0": "Oops! Looks like you're lost! 🗺️",
+        "1": "Don't worry, I can help you find your way back!",
+        "2": "Try using the navigation menu or search feature.",
+        "3": "The homepage is always a good place to start!",
+        "4": "My creator, Yuri is working on making navigation even better!",
+        "5": "Feel free to report any broken links you find!",
+        "6": "Even the best explorers get lost sometimes! 🧭",
+        "7": "This page might have moved or doesn't exist yet!",
+        "8": "Use the search to find what you were looking for!",
+        "9": "The navigation menu has all the main sections organized!",
+        "10": "Sometimes getting lost leads to discovering something even better!",
+        "11": "Check the URL for typos - that's often the culprit!",
+        "12": "The site is constantly growing, so new content appears regularly!",
+        "13": "Broken links happen - thanks for helping improve the site!",
+        "14": "Every 404 is a chance to explore something new instead!",
+        "15": "When in doubt, the homepage has links to everything important! 🏠"
+      },
+      "contact": {
+        "0": "Want to get in touch? 📧",
+        "1": "My creator, Yuri loves hearing from visitors!",
+        "2": "Feel free to reach out for collaborations or questions!",
+        "3": "The contact form makes it easy to send a message!",
+        "4": "My creator, Yuri usually responds within 24-48 hours!",
+        "5": "You can also connect on social media platforms!",
+        "6": "From freelance inquiries to speaking opportunities - all welcome! 💼",
+        "7": "Every message is read personally - you're not just sending to a bot!",
+        "8": "Whether it's a question, collaboration, or just saying hi - reach out!",
+        "9": "The contact channels are open and welcoming to everyone!",
+        "10": "Found a bug or have feedback? This is the place to share it!",
+        "11": "Collaborations have led to some of the best projects!",
+        "12": "Professional inquiries are always welcome and appreciated!",
+        "13": "Your message might be the start of something amazing!",
+        "14": "Don't hesitate - my creator, Yuri is friendly and responsive!",
+        "15": "The best connections start with a simple message! 🤝"
+      }
+    }
+  },
+  "contact": {
+    "title": "Contact",
+    "description": "Get in touch for collaborations, questions, or just to say hello",
+    "page-title": "Contact",
+    "page-description": "Let's connect! Reach out for collaborations, questions, or just to say hello",
+    "form": {
+      "title": "Send a Message",
+      "description": "Fill out the form below and I'll get back to you soon",
+      "name": {
+        "label": "Name",
+        "placeholder": "Your name",
+        "required": "Name is required",
+        "max-length": "Name must be less than 100 characters"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "your@email.com",
+        "required": "Email is required",
+        "invalid": "Please enter a valid email address"
+      },
+      "subject": {
+        "label": "Subject",
+        "placeholder": "What is this about?",
+        "required": "Subject is required",
+        "max-length": "Subject must be less than 200 characters"
+      },
+      "message": {
+        "label": "Message",
+        "placeholder": "Tell me more about your project, question, or idea...",
+        "required": "Message is required",
+        "min-length": "Message must be at least 10 characters",
+        "max-length": "Message must be less than 2000 characters",
+        "character-count": "{count}/2000 characters"
+      },
+      "submit": "Send Message",
+      "submitting": "Sending...",
+      "success": "Message sent successfully!",
+      "error": "Failed to send message. Please try again.",
+      "network-error": "Network error. Please check your connection and try again.",
+      "turnstile-required": "Please complete the verification challenge"
+    },
+    "direct": {
+      "title": "Direct Contact",
+      "description": "Prefer email? Reach out directly",
+      "email-label": "Email",
+      "response-time": "I typically respond within 24-48 hours.",
+      "urgent": "For urgent matters, please mention it in the subject line."
+    },
+    "social": {
+      "title": "Connect on Social",
+      "description": "Follow me on various platforms",
+      "github": {
+        "name": "GitHub",
+        "description": "Follow my code and open source projects"
+      },
+      "twitter": {
+        "name": "Twitter",
+        "description": "Connect with me on Twitter"
+      },
+      "linkedin": {
+        "name": "LinkedIn",
+        "description": "Professional networking and career updates"
+      }
+    },
+    "faq": {
+      "title": "Quick Questions",
+      "description": "Common inquiries and responses",
+      "freelance": {
+        "question": "Available for freelance work?",
+        "answer": "Currently open to interesting projects. Let's discuss your needs!"
+      },
+      "collaborations": {
+        "question": "Open to collaborations?",
+        "answer": "Always interested in working with other developers on cool projects."
+      },
+      "speaking": {
+        "question": "Speaking opportunities?",
+        "answer": "Happy to speak at events about web development and open source."
+      }
+    }
+  }
+}

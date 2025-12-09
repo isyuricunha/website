@@ -1,13 +1,44 @@
-.hugo_build.lock
-.hvm
-public/
-resources/
-exampleSite/public/
-exampleSite/resources/
-exampleSite/.hugo_build.lock
-
-# environment variables (contains github token)
-.env
-
-# node dependencies
+# Dependencies
 node_modules/
+.pnp/
+.pnp.*
+
+# Local env files
+.env*.local
+.env
+!.env.example
+# Turbo
+.turbo/
+
+# Vercel
+.vercel/
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Misc
+.DS_Store
+*.pem
+
+# Build outputs
+.next/
+out/
+build/
+dist/
+.eslint-config-inspector/
+
+# Content Collections
+.content-collections
+
+# Testing
+playwright-report/
+test-results/
+coverage/
+**/src/e2e/.auth/
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts

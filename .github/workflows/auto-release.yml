@@ -1,0 +1,86 @@
+name: deploy release and notes / change logs
+
+permissions:
+  contents: write
+  actions: read
+
+on:
+  push:
+    branches: main
+    tags:
+      - '[0-9]+.*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.11]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: config git user
+        run: |
+          git config user.name "${GITHUB_ACTOR}"
+          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+
+      - name: Minor version for each merge
+        id: taggerDryRun
+        uses: anothrNick/github-tag-action@1.36.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WITH_V: true
+          DRY_RUN: true
+          DEFAULT_BUMP: patch
+          BRANCH_HISTORY: compare
+          TAG_NAME: 'v${{ steps.taggerDryRun.outputs.new_tag }}'
+
+      - name: echo new tag
+        run: |
+          echo "The next tag version will be: ${{ steps.taggerDryRun.outputs.new_tag }}"
+      - name: echo tag
+        run: |
+          echo "The current tag is: ${{ steps.taggerDryRun.outputs.tag }}"
+      - name: echo part
+        run: |
+          echo "The version increment was: ${{ steps.taggerDryRun.outputs.part }}"
+      # DO MY BUILD HERE
+      # IN CASE OF FAILURE, THE STEP BELOW WILL NOT RUN.
+
+      - name: Minor version for each merge
+        id: taggerFinal
+        uses: anothrNick/github-tag-action@1.36.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WITH_V: true
+          DEFAULT_BUMP: patch
+          BRANCH_HISTORY: compare
+          TAG_NAME: 'v${{ steps.taggerFinal.outputs.new_tag }}'
+
+      - name: Generate release notes
+        id: release_notes
+        run: |
+          notes=$(git log --oneline --decorate --no-merges "${{ steps.taggerFinal.outputs.tag }}..${{ steps.taggerFinal.outputs.new_tag }}")
+          echo "::set-output name=notes::${notes}"
+
+      - name: 'Generate tag and create release'
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.taggerFinal.outputs.new_tag }}
+          release_name: Release ${{ steps.taggerFinal.outputs.new_tag }}
+          body: ${{ steps.release_notes.outputs.notes }}
+          draft: false
+
+      - name: 'Generate changelog and create release'
+        uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: '${{ secrets.GITHUB_TOKEN }}'
+          automatic_release_tag: '${{ steps.taggerFinal.outputs.new_tag }}'
+          prerelease: false
+          title: 'Last build: ${{ steps.taggerFinal.outputs.new_tag }}'
+          files: |
+            *.zip
