@@ -15,8 +15,8 @@ import { Monitoring } from 'react-scan/monitoring/next'
 
 import Analytics from '@/components/analytics'
 import Hello from '@/components/hello'
-import SignInDialog from '@/components/sign-in-dialog'
 import OfflineIndicator from '@/components/offline-indicator'
+import SignInDialog from '@/components/sign-in-dialog'
 import ErrorBoundary from '@/components/ui/error-boundary'
 import { SITE_KEYWORDS, SITE_NAME, SITE_URL } from '@/lib/constants'
 
@@ -138,15 +138,15 @@ const Layout = async (props: LayoutProps) => {
     <html
       lang={locale}
       className={cn(GeistSans.variable, GeistMono.variable)}
-      data-scroll-behavior="smooth"
+      data-scroll-behavior='smooth'
       suppressHydrationWarning
     >
       <head>
-        <link rel="manifest" href="/favicon/site.webmanifest" />
-        <meta name="mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="Yuri Cunha" />
+        <link rel='manifest' href='/favicon/site.webmanifest' />
+        <meta name='mobile-web-app-capable' content='yes' />
+        <meta name='apple-mobile-web-app-capable' content='yes' />
+        <meta name='apple-mobile-web-app-status-bar-style' content='default' />
+        <meta name='apple-mobile-web-app-title' content='Yuri Cunha' />
         {env.NODE_ENV === 'development' ? (
           <Script
             id='react-scan-auto'
@@ -154,7 +154,7 @@ const Layout = async (props: LayoutProps) => {
             strategy='beforeInteractive'
           />
         ) : null}
-        <Script id="sw-register" strategy="afterInteractive">
+        <Script id='sw-register' strategy='afterInteractive'>
           {`
             if ('serviceWorker' in navigator) {
               window.addEventListener('load', function() {
