@@ -1,7 +1,7 @@
 'use client'
 
 import { useTranslations } from '@tszhong0411/i18n/client'
-import { Loader2, MessageCircle, Send, X } from 'lucide-react'
+import { Loader2, MessageCircle, Send, ThumbsDown, ThumbsUp, X } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 
 interface ChatMessage {
@@ -11,6 +11,11 @@ interface ChatMessage {
   timestamp: string
   isError?: boolean
   type?: 'text'
+  reactions?: {
+    likes: number
+    dislikes: number
+    userReaction?: 'like' | 'dislike' | null
+  }
 }
 
 interface AIChatInterfaceProps {
@@ -31,6 +36,7 @@ export default function AIChatInterface({
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [inputValue, setInputValue] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [typingDots, setTypingDots] = useState('')
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -90,9 +96,12 @@ export default function AIChatInterface({
     onMessageSent?.(messageText)
 
     try {
-      const recentMessages = messages.slice(-10).map((message) => ({
+      // Enhanced context with more conversation history for better memory
+      const recentMessages = messages.slice(-15).map((message) => ({
         role: message.isUser ? 'user' : 'assistant',
-        content: message.text
+        content: message.text,
+        timestamp: message.timestamp,
+        reactions: message.reactions
       }))
 
       const response = await fetch('/api/mascot/chat', {
@@ -104,8 +113,12 @@ export default function AIChatInterface({
           message: messageText,
           context: {
             currentPage,
-            previousMessages: messages.slice(-5).map((m) => m.text),
-            conversation: recentMessages
+            previousMessages: messages.slice(-8).map((m) => m.text),
+            conversation: recentMessages,
+            conversationLength: messages.length,
+            userPreferences: {
+              hasReactedToMessages: messages.some((m) => m.reactions?.userReaction)
+            }
           }
         })
       })
@@ -163,11 +176,66 @@ export default function AIChatInterface({
     }
   }
 
-  // Persist chat history locally to reduce context loss
+  const handleReaction = (messageId: string, reaction: 'like' | 'dislike') => {
+    setMessages((prevMessages) =>
+      prevMessages.map((message) => {
+        if (message.id !== messageId || message.isUser) return message
+
+        const currentReaction = message.reactions?.userReaction
+        let newLikes = message.reactions?.likes ?? 0
+        let newDislikes = message.reactions?.dislikes ?? 0
+        let newUserReaction: 'like' | 'dislike' | null = reaction
+
+        // If clicking the same reaction, remove it
+        if (currentReaction === reaction) {
+          newUserReaction = null
+          if (reaction === 'like') newLikes--
+          else newDislikes--
+        } else {
+          // If switching reactions, remove old and add new
+          if (currentReaction === 'like') newLikes--
+          else if (currentReaction === 'dislike') newDislikes--
+
+          if (reaction === 'like') newLikes++
+          else newDislikes++
+        }
+
+        return {
+          ...message,
+          reactions: {
+            likes: Math.max(0, newLikes),
+            dislikes: Math.max(0, newDislikes),
+            userReaction: newUserReaction
+          }
+        }
+      })
+    )
+  }
+
+  // Animated typing indicator
+  useEffect(() => {
+    if (!isLoading) {
+      setTypingDots('')
+      return
+    }
+
+    const interval = setInterval(() => {
+      setTypingDots((prev) => {
+        if (prev === '...') return '.'
+        if (prev === '..') return '...'
+        if (prev === '.') return '..'
+        return '.'
+      })
+    }, 500)
+
+    return () => clearInterval(interval)
+  }, [isLoading])
+
+  // Persist chat history locally to reduce context loss (increased to 50 messages)
   useEffect(() => {
     if (messages.length === 0) return
     try {
-      localStorage.setItem(storageKey, JSON.stringify(messages.slice(-30)))
+      localStorage.setItem(storageKey, JSON.stringify(messages.slice(-50)))
     } catch {
       // ignore storage errors
     }
@@ -235,7 +303,43 @@ export default function AIChatInterface({
                 </div>
               )}
               <p className='whitespace-pre-wrap leading-relaxed'>{message.text}</p>
-              {!message.isUser && (
+              {!message.isUser && !message.isError && (
+                <div className='mt-2 flex items-center justify-between'>
+                  <div className='flex items-center gap-1'>
+                    <button
+                      type='button'
+                      onClick={() => handleReaction(message.id, 'like')}
+                      className={`hover:bg-muted/80 flex items-center gap-1 rounded px-2 py-1 text-xs transition-all ${
+                        message.reactions?.userReaction === 'like'
+                          ? 'bg-green-50 text-green-600 dark:bg-green-950'
+                          : 'text-muted-foreground'
+                      }`}
+                    >
+                      <ThumbsUp className='h-3 w-3' />
+                      {message.reactions?.likes ?? 0}
+                    </button>
+                    <button
+                      type='button'
+                      onClick={() => handleReaction(message.id, 'dislike')}
+                      className={`hover:bg-muted/80 flex items-center gap-1 rounded px-2 py-1 text-xs transition-all ${
+                        message.reactions?.userReaction === 'dislike'
+                          ? 'bg-red-50 text-red-600 dark:bg-red-950'
+                          : 'text-muted-foreground'
+                      }`}
+                    >
+                      <ThumbsDown className='h-3 w-3' />
+                      {message.reactions?.dislikes ?? 0}
+                    </button>
+                  </div>
+                  <div className='text-muted-foreground/60 text-xs'>
+                    {new Date(message.timestamp).toLocaleTimeString([], {
+                      hour: '2-digit',
+                      minute: '2-digit'
+                    })}
+                  </div>
+                </div>
+              )}
+              {!message.isUser && message.isError && (
                 <div className='text-muted-foreground/60 mt-2 text-right text-xs'>
                   {new Date(message.timestamp).toLocaleTimeString([], {
                     hour: '2-digit',
@@ -258,7 +362,10 @@ export default function AIChatInterface({
               </div>
               <div className='flex items-center gap-2'>
                 <Loader2 className='text-primary h-4 w-4 animate-spin' />
-                <span className='text-xs'>{t('mascot.aiChat.thinking')}</span>
+                <span className='text-xs'>
+                  {t('mascot.aiChat.thinking')}
+                  {typingDots}
+                </span>
               </div>
             </div>
           </div>
