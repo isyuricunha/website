@@ -15,6 +15,7 @@ import { Monitoring } from 'react-scan/monitoring/next'
 
 import Analytics from '@/components/analytics'
 import Hello from '@/components/hello'
+import VirtualMascot from '@/components/mascot/virtual-mascot'
 import OfflineIndicator from '@/components/offline-indicator'
 import SignInDialog from '@/components/sign-in-dialog'
 import ErrorBoundary from '@/components/ui/error-boundary'
@@ -188,6 +189,7 @@ const Layout = async (props: LayoutProps) => {
                 {flags.analytics ? <Analytics /> : null}
                 <SignInDialog />
                 <OfflineIndicator />
+                <VirtualMascot />
               </ErrorBoundary>
             </NextIntlClientProvider>
           </Providers>

@@ -12,24 +12,37 @@ import {
 } from '@tanstack/react-table'
 import { useTranslations } from '@tszhong0411/i18n/client'
 import {
+  Badge,
+  Button,
   DataTable,
   DataTableColumnHeader,
   type DataTableFilterField,
   DataTableToolbar,
-  Button,
-  Input,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  Input,
   toast
 } from '@tszhong0411/ui'
-import { UserCogIcon, UserIcon, MoreHorizontalIcon, TrashIcon, BanIcon, EditIcon, MailIcon, Download, Search, X } from 'lucide-react'
-import { useState, useMemo } from 'react'
+import {
+  BanIcon,
+  Download,
+  EditIcon,
+  MailIcon,
+  MoreHorizontalIcon,
+  Search,
+  TrashIcon,
+  UserCogIcon,
+  UserIcon,
+  X
+} from 'lucide-react'
+import { useMemo, useState } from 'react'
 
-import { api } from '@/trpc/react'
 import { useDebounceSearch } from '@/hooks/use-debounced-search'
+import { api } from '@/trpc/react'
 import { exportToCSV, USER_EXPORT_COLUMNS } from '@/utils/csv-export'
+
 import ConfirmationDialog from './confirmation-dialog'
 
 type User = GetUsersOutput['users'][number]
@@ -63,8 +76,15 @@ const UsersTable = (props: UsersTableProps) => {
     description: string
     action: () => void
     variant?: 'default' | 'destructive'
-  }>({ open: false, title: '', description: '', action: () => {} })
-  
+  }>({
+    open: false,
+    title: '',
+    description: '',
+    action: () => {
+      /* no-op */
+    }
+  })
+
   const { searchTerm, debouncedSearchTerm, updateSearchTerm, clearSearch } = useDebounceSearch()
 
   const deleteUserMutation = api.users.deleteUser.useMutation({
@@ -109,12 +129,13 @@ const UsersTable = (props: UsersTableProps) => {
   // Filter data based on search term
   const filteredData = useMemo(() => {
     if (!debouncedSearchTerm) return data
-    
-    return data.filter(user => 
-      user.name?.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
-      user.email?.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
-      user.username?.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
-      user.role?.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
+
+    return data.filter(
+      (user) =>
+        user.name.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
+        user.email.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
+        (user.username?.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ?? false) ||
+        user.role.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
     )
   }, [data, debouncedSearchTerm])
 
@@ -126,7 +147,7 @@ const UsersTable = (props: UsersTableProps) => {
       variant: 'destructive',
       action: () => {
         deleteUserMutation.mutate({ userId })
-        setConfirmDialog(prev => ({ ...prev, open: false }))
+        setConfirmDialog((prev) => ({ ...prev, open: false }))
       }
     })
   }
@@ -139,7 +160,7 @@ const UsersTable = (props: UsersTableProps) => {
       variant: 'destructive',
       action: () => {
         banUserMutation.mutate({ userId })
-        setConfirmDialog(prev => ({ ...prev, open: false }))
+        setConfirmDialog((prev) => ({ ...prev, open: false }))
       }
     })
   }
@@ -151,7 +172,7 @@ const UsersTable = (props: UsersTableProps) => {
       description: `Are you sure you want to unban user "${userName}"?`,
       action: () => {
         unbanUserMutation.mutate({ userId })
-        setConfirmDialog(prev => ({ ...prev, open: false }))
+        setConfirmDialog((prev) => ({ ...prev, open: false }))
       }
     })
   }
@@ -166,7 +187,11 @@ const UsersTable = (props: UsersTableProps) => {
   }
 
   const handleExportCSV = () => {
-    exportToCSV(filteredData, `users-${new Date().toISOString().split('T')[0]}`, USER_EXPORT_COLUMNS)
+    exportToCSV(
+      filteredData,
+      `users-${new Date().toISOString().split('T')[0]}`,
+      USER_EXPORT_COLUMNS
+    )
     toast.success('Users exported to CSV successfully')
   }
 
@@ -194,7 +219,22 @@ const UsersTable = (props: UsersTableProps) => {
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={t('admin.table.users.createdAt')} />
       ),
-      cell: ({ row }) => row.original.createdAt.toLocaleDateString()
+      cell: ({ row }) => <>{row.original.createdAt.toLocaleDateString()}</>
+    },
+    {
+      accessorKey: 'banned',
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={t('admin.table.users.status')} />
+      ),
+      cell: ({ row }) => {
+        const isBanned = row.original.banned
+
+        return (
+          <Badge variant={isBanned ? 'destructive' : 'default'}>
+            {isBanned ? t('admin.table.users.banned') : t('admin.table.users.active')}
+          </Badge>
+        )
+      }
     },
     {
       id: 'actions',
@@ -207,30 +247,30 @@ const UsersTable = (props: UsersTableProps) => {
         return (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontalIcon className="h-4 w-4" />
+              <Button variant='ghost' className='h-8 w-8 p-0'>
+                <span className='sr-only'>Open menu</span>
+                <MoreHorizontalIcon className='h-4 w-4' />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
+            <DropdownMenuContent align='end'>
               <DropdownMenuItem onClick={() => handleEditUser(user)}>
-                <EditIcon className="mr-2 h-4 w-4" />
+                <EditIcon className='mr-2 h-4 w-4' />
                 {t('admin.table.users.edit')}
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => handleResetPassword(user.id)}>
-                <MailIcon className="mr-2 h-4 w-4" />
+                <MailIcon className='mr-2 h-4 w-4' />
                 {t('admin.table.users.reset-password')}
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleBanUser(user.id, user.name || 'Unknown')}>
-                <BanIcon className="mr-2 h-4 w-4" />
+              <DropdownMenuItem onClick={() => handleBanUser(user.id, user.name)}>
+                <BanIcon className='mr-2 h-4 w-4' />
                 {t('admin.table.users.ban')}
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleUnbanUser(user.id, user.name || 'Unknown')}>
-                <BanIcon className="mr-2 h-4 w-4" />
+              <DropdownMenuItem onClick={() => handleUnbanUser(user.id, user.name)}>
+                <BanIcon className='mr-2 h-4 w-4' />
                 {t('admin.table.users.unban')}
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleDeleteUser(user.id, user.name || 'Unknown')}>
-                <TrashIcon className="mr-2 h-4 w-4" />
+              <DropdownMenuItem onClick={() => handleDeleteUser(user.id, user.name)}>
+                <TrashIcon className='mr-2 h-4 w-4' />
                 {t('admin.table.users.delete')}
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -264,35 +304,35 @@ const UsersTable = (props: UsersTableProps) => {
 
   return (
     <>
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <div className="relative">
-              <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+      <div className='space-y-4'>
+        <div className='flex items-center justify-between'>
+          <div className='flex items-center space-x-2'>
+            <div className='relative'>
+              <Search className='text-muted-foreground absolute left-2 top-2.5 h-4 w-4' />
               <Input
-                placeholder="Search users..."
+                placeholder='Search users...'
                 value={searchTerm}
                 onChange={(e) => updateSearchTerm(e.target.value)}
-                className="pl-8 w-64"
+                className='w-64 pl-8'
               />
               {searchTerm && (
                 <Button
-                  variant="ghost"
-                  size="sm"
-                  className="absolute right-1 top-1 h-6 w-6 p-0"
+                  variant='ghost'
+                  size='sm'
+                  className='absolute right-1 top-1 h-6 w-6 p-0'
                   onClick={clearSearch}
                 >
-                  <X className="h-3 w-3" />
+                  <X className='h-3 w-3' />
                 </Button>
               )}
             </div>
           </div>
-          <Button onClick={handleExportCSV} variant="outline" size="sm">
-            <Download className="mr-2 h-4 w-4" />
+          <Button onClick={handleExportCSV} variant='outline' size='sm'>
+            <Download className='mr-2 h-4 w-4' />
             Export CSV
           </Button>
         </div>
-        
+
         <DataTable table={table}>
           <DataTableToolbar table={table} filterFields={filterFields} />
         </DataTable>
@@ -300,13 +340,17 @@ const UsersTable = (props: UsersTableProps) => {
 
       <ConfirmationDialog
         open={confirmDialog.open}
-        onOpenChange={(open) => setConfirmDialog(prev => ({ ...prev, open }))}
+        onOpenChange={(open) => setConfirmDialog((prev) => ({ ...prev, open }))}
         title={confirmDialog.title}
         description={confirmDialog.description}
         variant={confirmDialog.variant}
         onConfirm={confirmDialog.action}
-        loading={deleteUserMutation.isPending || banUserMutation.isPending || unbanUserMutation.isPending}
+        loading={
+          deleteUserMutation.isPending || banUserMutation.isPending || unbanUserMutation.isPending
+        }
       />
+
+      <UserEditModal user={editingUser} open={editModalOpen} onOpenChange={setEditModalOpen} />
     </>
   )
 }

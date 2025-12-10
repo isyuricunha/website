@@ -1,8 +1,9 @@
 import { GoogleGenerativeAI } from '@google/generative-ai'
+import { flags } from '@tszhong0411/env'
 import { Ratelimit } from '@upstash/ratelimit'
 import { Redis } from '@upstash/redis'
-import { NextRequest, NextResponse } from 'next/server'
-import { flags } from '@tszhong0411/env'
+import { type NextRequest, NextResponse } from 'next/server'
+
 import { logger } from '@/lib/logger'
 
 // Rate limiting for Gemini API calls
@@ -18,17 +19,14 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!)
 export async function POST(req: NextRequest) {
   // Check if Gemini AI is enabled
   if (!flags.gemini) {
-    return NextResponse.json(
-      { error: 'AI chat is currently disabled.' },
-      { status: 503 }
-    )
+    return NextResponse.json({ error: 'AI chat is currently disabled.' }, { status: 503 })
   }
 
   try {
     // Rate limiting
     const ip = req.ip ?? '127.0.0.1'
     const { success } = await ratelimit.limit(`mascot_chat_${ip}`)
-    
+
     if (!success) {
       return NextResponse.json(
         { error: 'Rate limit exceeded. Please try again later.' },
@@ -39,17 +37,14 @@ export async function POST(req: NextRequest) {
     const { message, context } = await req.json()
 
     if (!message || typeof message !== 'string') {
-      return NextResponse.json(
-        { error: 'Message is required' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'Message is required' }, { status: 400 })
     }
 
     // Initialize the model
     const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-lite' })
 
     // Create context-aware prompt
-    const systemPrompt = `You are Yue, the friendly virtual mascot made by Yuri Cunha and for Yuri personal website. 
+    const systemPrompt = `You are Yue, the friendly virtual mascot made by Yuri Cunha and for Yuri personal website.
 
 Personality:
 - Friendly, helpful, and enthusiastic
@@ -86,17 +81,16 @@ Guidelines:
 User message: ${message}`
 
     const result = await model.generateContent(systemPrompt)
-    const response = await result.response
+    const response = result.response
     const text = response.text()
 
-    return NextResponse.json({ 
+    return NextResponse.json({
       message: text,
       timestamp: new Date().toISOString()
     })
-
   } catch (error) {
     logger.error('Gemini API error', error)
-    
+
     // Fallback responses for common errors
     if (error instanceof Error && error.message.includes('quota')) {
       return NextResponse.json({
@@ -106,7 +100,8 @@ User message: ${message}`
     }
 
     return NextResponse.json({
-      message: "Oops! Something went wrong on my end. Let me know if you need help with anything else! 🤖",
+      message:
+        'Oops! Something went wrong on my end. Let me know if you need help with anything else! 🤖',
       isError: true
     })
   }

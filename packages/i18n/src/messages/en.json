@@ -57,6 +57,9 @@
         "username": "Username",
         "image": "Image",
         "createdAt": "Created At",
+        "status": "Status",
+        "banned": "Banned",
+        "active": "Active",
         "actions": "Actions",
         "delete": "Delete User",
         "ban": "Ban User",
@@ -472,12 +475,25 @@
       "title": "Main Pages",
       "description": "Core site navigation and features",
       "items": {
-        "home": { "description": "Welcome page with overview of projects and articles" },
-        "blog": { "description": "Technical articles and thoughts on development" },
-        "projects": { "description": "Portfolio of development projects and GitHub repositories" },
-        "uses": { "description": "Tools, equipment, and software I use for development" },
-        "spotify": { "description": "Music taste, listening activity, and statistics" },
-        "about": { "title": "About", "description": "Learn more about me and my background" }
+        "home": {
+          "description": "Welcome page with overview of projects and articles"
+        },
+        "blog": {
+          "description": "Technical articles and thoughts on development"
+        },
+        "projects": {
+          "description": "Portfolio of development projects and GitHub repositories"
+        },
+        "uses": {
+          "description": "Tools, equipment, and software I use for development"
+        },
+        "spotify": {
+          "description": "Music taste, listening activity, and statistics"
+        },
+        "about": {
+          "title": "About",
+          "description": "Learn more about me and my background"
+        }
       }
     },
     "blog-posts": {

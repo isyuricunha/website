@@ -17,15 +17,21 @@ import {
   Kbd,
   Logo
 } from '@tszhong0411/ui'
-import { CodeIcon, CommandIcon, LinkIcon, LogInIcon, LogOutIcon } from 'lucide-react'
+import { allPosts, allProjects } from 'content-collections'
+import {
+  CodeIcon,
+  CommandIcon,
+  FileTextIcon,
+  FolderGit2Icon,
+  LinkIcon,
+  LogInIcon,
+  LogOutIcon
+} from 'lucide-react'
 import { Fragment, useCallback, useEffect, useState } from 'react'
 
 import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
 import { signOut, useSession } from '@/lib/auth-client'
-import {
-  SITE_GITHUB_URL,
-  SITE_X_URL
-} from '@/lib/constants'
+import { SITE_GITHUB_URL, SITE_X_URL } from '@/lib/constants'
 import { useDialogsStore } from '@/store/dialogs'
 
 type Groups = Array<{
@@ -70,34 +76,56 @@ const CommandMenu = () => {
 
   const groups: Groups = [
     {
+      name: t('layout.blog'),
+      actions: allPosts.map((post) => ({
+        title: post.title,
+        icon: <FileTextIcon className='mr-3 size-4' />,
+        onSelect: () => {
+          setIsOpen(false)
+          router.push(`/blog/${post.slug}`)
+        }
+      }))
+    },
+    {
+      name: t('layout.projects'),
+      actions: allProjects.map((project) => ({
+        title: project.name,
+        icon: <FolderGit2Icon className='mr-3 size-4' />,
+        onSelect: () => {
+          setIsOpen(false)
+          router.push(`/projects#${project.slug}`)
+        }
+      }))
+    },
+    {
       name: t('command-menu.groups.account'),
       actions: [
         ...(session
           ? [
-            {
-              title: t('common.sign-out'),
-              icon: <LogOutIcon className='mr-3 size-4' />,
-              onSelect: async () => {
-                await signOut({
-                  fetchOptions: {
-                    onSuccess: () => {
-                      router.refresh()
+              {
+                title: t('common.sign-out'),
+                icon: <LogOutIcon className='mr-3 size-4' />,
+                onSelect: async () => {
+                  await signOut({
+                    fetchOptions: {
+                      onSuccess: () => {
+                        router.refresh()
+                      }
                     }
-                  }
-                })
+                  })
+                }
               }
-            }
-          ]
+            ]
           : [
-            {
-              title: t('common.sign-in'),
-              icon: <LogInIcon className='mr-3 size-4' />,
-              onSelect: () => {
-                setIsOpen(false)
-                setIsSignInOpen(true)
+              {
+                title: t('common.sign-in'),
+                icon: <LogInIcon className='mr-3 size-4' />,
+                onSelect: () => {
+                  setIsOpen(false)
+                  setIsSignInOpen(true)
+                }
               }
-            }
-          ])
+            ])
       ]
     },
     {

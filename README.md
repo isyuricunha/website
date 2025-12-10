@@ -31,6 +31,7 @@ Welcome to my personal portfolio website! Explore my work by visiting [yuricunha
 This project began as an adaptation of [Nelson Lai's site](https://github.com/tszhong0411) but has evolved significantly into a comprehensive, modern web application with advanced features, integrations, and a robust tech stack.
 
 ### **Key Highlights**
+
 - 🚀 **Modern Stack**: Next.js 15, React 19, TypeScript 5.7
 - 🗄️ **48 Database Tables**: Complete PostgreSQL schema with Drizzle ORM
 - 🌍 **5 Languages**: Full i18n support (EN, PT, FR, DE, ZH)
@@ -43,12 +44,14 @@ This project began as an adaptation of [Nelson Lai's site](https://github.com/ts
 ## 🏗️ Architecture & Tech Stack
 
 ### **Core Framework**
+
 - **Next.js 15.4.5** - React framework with App Router
 - **React 19.0.0** - Latest React with concurrent features
 - **TypeScript 5.7.3** - Full type safety
 - **Turbo** - Monorepo build system for optimal performance
 
 ### **Styling & UI**
+
 - **Tailwind CSS 4.0** - Utility-first CSS framework
 - **Geist Font** - Modern typography
 - **Lucide React** - Beautiful icon library
@@ -59,6 +62,7 @@ This project began as an adaptation of [Nelson Lai's site](https://github.com/ts
 - **React Intersection Observer** - Scroll-based animations
 
 ### **State Management & Data Fetching**
+
 - **Zustand** - Lightweight state management
 - **TanStack Query** - Server state management
 - **tRPC** - End-to-end type-safe APIs
@@ -66,6 +70,7 @@ This project began as an adaptation of [Nelson Lai's site](https://github.com/ts
 - **Zod** - Schema validation
 
 ### **Database & Backend**
+
 - **PostgreSQL** - Primary database (any provider: Supabase, Railway, Neon, self-hosted)
 - **Drizzle ORM 0.44.4** - Type-safe database queries
 - **Better Auth** - Authentication system
@@ -73,6 +78,7 @@ This project began as an adaptation of [Nelson Lai's site](https://github.com/ts
 - **Content Collections** - MDX content management
 
 ### **Development Tools**
+
 - **ESLint** - Code linting
 - **Prettier** - Code formatting
 - **Vitest** - Unit testing
@@ -194,13 +200,16 @@ website-apps/
 ### **Key Directories Explained**
 
 #### **apps/web/src/lib/**
+
 - `logger.ts` - **NEW**: Structured logger with automatic PII sanitization
 - `audit-logger.ts` - Tracks admin actions and system events
 - `resend-service.ts` - Email campaign and newsletter management
 - `ai/ai-service.ts` - AI integration (Gemini/Ollama/Claude support)
 
 #### **apps/web/src/trpc/routers/**
+
 API endpoints organized by domain:
+
 - `users.ts` - User management (CRUD, password reset)
 - `spotify.ts` - Spotify API integration
 - `github.ts` - GitHub API integration
@@ -209,7 +218,9 @@ API endpoints organized by domain:
 - `system.ts` - System health & configuration
 
 #### **packages/db/**
+
 Database layer with Drizzle ORM:
+
 - Auto-generated schema from PostgreSQL
 - Type-safe queries
 - Migration management
@@ -218,6 +229,7 @@ Database layer with Drizzle ORM:
 ## 🗄️ Database & SQL
 
 ### **Database Architecture**
+
 - **Primary:** PostgreSQL (any provider - Supabase, Railway, Neon, self-hosted, etc.)
 - **ORM:** Drizzle ORM 0.44.4
 - **Migrations:** Automated via drizzle-kit
@@ -226,6 +238,7 @@ Database layer with Drizzle ORM:
 - **Seeding:** Custom seed scripts
 
 ### **Schema Synchronization** 🆕
+
 The database schema is automatically synchronized with your PostgreSQL database:
 
 ```bash
@@ -244,6 +257,7 @@ pnpm db:push:force
 ```
 
 **Important Notes:**
+
 - Works with **any PostgreSQL database** (Supabase, Railway, Neon, self-hosted, etc.)
 - Schema files are auto-generated in `packages/db/src/migrations/`
 - `schema.ts` contains all 48 tables with 28 ENUMs
@@ -255,6 +269,7 @@ pnpm db:push:force
 ### **Database Tables** (48 total)
 
 **Core (11 tables):**
+
 - `users`, `account`, `session`, `verification` - Authentication
 - `password_reset_tokens` - Password recovery
 - `post`, `comment`, `rate` - Content management
@@ -262,6 +277,7 @@ pnpm db:push:force
 - `audit_logs` - System audit trail
 
 **Security (7 tables):**
+
 - `two_factor_tokens` - 2FA authentication
 - `ip_access_control` - IP whitelist/blacklist
 - `security_events` - Security monitoring
@@ -271,6 +287,7 @@ pnpm db:push:force
 - `api_rate_limits` - API protection
 
 **Monitoring (11 tables):**
+
 - `performance_metrics` - Performance tracking
 - `analytics_events` - User analytics
 - `resource_usage` - System resources
@@ -283,6 +300,7 @@ pnpm db:push:force
 - `system_health_logs` - Health checks
 
 **Communication (8 tables):**
+
 - `email_templates` - Email template management
 - `email_campaigns`, `email_campaign_recipients` - Email campaigns
 - `email_subscriptions` - Newsletter subscriptions
@@ -290,6 +308,7 @@ pnpm db:push:force
 - `notifications`, `notification_preferences` - User notifications
 
 **Data Management (11 tables):**
+
 - `database_backups`, `database_restores` - Backup management
 - `data_exports`, `data_imports` - Data import/export
 - `data_migrations` - Migration tracking
@@ -350,8 +369,9 @@ Modular schema organization (execute in order for fresh setup):
   - Use modular files above for actual setup
 
 - **`fix-error-tracking-column.sql`** - Fixes missing `created_at` column
+
   ```sql
-  ALTER TABLE error_tracking 
+  ALTER TABLE error_tracking
   ADD COLUMN IF NOT EXISTS created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;
   ```
 
@@ -372,20 +392,25 @@ Modular schema organization (execute in order for fresh setup):
 ### **Known Issues & Solutions**
 
 #### **Windows PowerShell Interactive Prompts**
+
 When running `pnpm db:push`, PowerShell may not render interactive prompts correctly. Use:
+
 ```bash
 pnpm db:push:force  # Skips all prompts
 ```
 
 #### **Foreign Key Constraint Order** ✅ FIXED
+
 Previously, `pnpm db:push` could fail with `there is no unique constraint matching given keys` error.
 
 **Solution implemented:**
+
 - Created migration `0006_fix_post_slug_unique.sql` to add UNIQUE constraint before foreign keys
 - Updated `db:push` and `db:push:force` to run migrations first
 - Now works correctly on fresh PostgreSQL databases without manual intervention
 
 **For fresh database setup:**
+
 ```bash
 # This will work on any empty PostgreSQL database
 cd packages/db
@@ -451,6 +476,7 @@ The project includes comprehensive documentation in multiple markdown files:
 ## 📱 Features & Functionality
 
 ### **Content Management**
+
 - **MDX Support** - Rich content with React components
 - **Content Collections** - Type-safe content management
 - **Dynamic routing** - SEO-friendly URLs
@@ -458,22 +484,26 @@ The project includes comprehensive documentation in multiple markdown files:
 - **RSS Feed** - Blog post syndication
 
 ### **User Experience**
+
 - **Responsive Design** - Mobile-first approach
 - **Progressive Web App** - Offline capabilities
 - **Keyboard Navigation** - Full accessibility
 - **Screen Reader Support** - ARIA labels
 - **Reduced Motion** - Accessibility preferences
+- **Global Command Menu** - Instant search for Posts, Projects, and Navigation (`Cmd+K`)
 - **Performance Optimization** - Core Web Vitals
 
 ### **Interactive Elements**
+
 - **Comments System** - User engagement (currently deactivated)
 - **Guestbook** - Visitor messages
 - **Contact Forms** - Email integration
 - **Social Sharing** - Dynamic meta tags
 - **Confetti Effects** - Celebration animations
-- **Mascot & AI** - Mascot with quotes (language and page based) & integrated AI (Ollama/LLama/Gemini/Claude)
+- **Virtual Assistant (Yue)** - Interactive mascot with context-aware AI chat (RAG) capabilities
 
 ### **SEO & Performance**
+
 - **Dynamic Meta Tags** - SEO optimization
 - **Structured Data** - Rich snippets
 - **Sitemap Generation** - Search engine indexing
@@ -484,14 +514,15 @@ The project includes comprehensive documentation in multiple markdown files:
 ## 🔒 Security Features
 
 ### **Structured Logging System** 🆕
+
 New secure logging implementation:
 
 ```typescript
 import { logger } from '@/lib/logger'
 
 // Automatic PII redaction
-logger.info('User action', { 
-  userId: '123', 
+logger.info('User action', {
+  userId: '123',
   email: 'user@example.com' // Automatically redacted as [REDACTED]
 })
 
@@ -503,6 +534,7 @@ logger.securityEvent('Failed login attempt', { ip: '192.168.1.1' })
 ```
 
 **Features:**
+
 - ✅ Automatic sanitization of passwords, secrets, tokens, emails, hashes
 - ✅ Environment-aware (dev/production)
 - ✅ Structured context logging
@@ -510,13 +542,16 @@ logger.securityEvent('Failed login attempt', { ip: '192.168.1.1' })
 - ✅ Type-safe with TypeScript
 
 ### **Security Improvements** 🆕
+
 Recent security audit completed:
+
 - ❌ Removed console.log exposing user emails, reset tokens, password hashes
 - ✅ Cleaned up 26+ debug logs in production code
 - ✅ Implemented structured logger with PII protection
 - ✅ All API keys properly secured via environment variables
 
 ### **Authentication & Authorization**
+
 - Better Auth integration
 - Session management
 - Role-based access control (RBAC)
@@ -526,6 +561,7 @@ Recent security audit completed:
 - 2FA support
 
 ### **Security Monitoring**
+
 - Security event logging
 - Failed login tracking
 - Account lockout mechanism
@@ -533,15 +569,23 @@ Recent security audit completed:
 - Security settings management
 - API rate limiting
 
+### **Admin Dashboard** 🆕
+
+- **User Management** - View, edit, ban/unban users with visual status indicators
+- **Content Overview** - Metrics and management for posts and projects
+- **Audit Logs** - Track all administrative actions
+
 ## 🔌 API Integrations
 
 ### **GitHub Integration**
+
 - **Octokit REST API** - Fetch public repositories
 - **Repository statistics** - Stars, forks, languages
 - **Profile information** - Bio, location, social links
 - **Real-time updates** - Live repository data
 
 ### **Spotify Integration**
+
 - **OAuth 2.0** - Secure authentication
 - **Currently Playing** - Real-time track information
 - **Top Artists** - Personal music preferences
@@ -553,18 +597,21 @@ Recent security audit completed:
 See `SPOTIFY_IMPLEMENTATION.md` for detailed setup instructions.
 
 ### **Newsletter Integration**
+
 - **ConvertKit API** - Newsletter management
 - **Mailerlite compatibility** - Alternative provider support
 - **Subscription forms** - Embedded signup
 - **Analytics** - Subscription tracking
 
 ### **Email Service (Resend)**
+
 - **Email templates** - React Email components
 - **Email campaigns** - Bulk email sending
 - **Campaign tracking** - Open rates, click rates
 - **Recipient management** - User segmentation
 
 ### **Analytics & Privacy**
+
 - **Umami** - Privacy-focused analytics
 - **DuckDuckGo Proxy** - Enhanced privacy
 - **Vercel Speed Insights** - Performance monitoring
@@ -573,6 +620,7 @@ See `SPOTIFY_IMPLEMENTATION.md` for detailed setup instructions.
 ## 🌍 Internationalization (i18n)
 
 ### **Supported Languages**
+
 - 🇬🇧 English (en)
 - 🇧🇷 Portuguese (pt)
 - 🇫🇷 French (fr)
@@ -580,6 +628,7 @@ See `SPOTIFY_IMPLEMENTATION.md` for detailed setup instructions.
 - 🇨🇳 Chinese (zh)
 
 ### **i18n Features**
+
 - **next-intl** - Internationalization framework
 - **Dynamic routing** - Language-specific URLs (`/[locale]/...`)
 - **Content translation** - All UI elements translated
@@ -591,28 +640,33 @@ See `SPOTIFY_IMPLEMENTATION.md` for detailed setup instructions.
 The project includes Python scripts for automated translation management:
 
 #### **`sync_translations_google.py`**
+
 - Uses Google Translate API for translations
 - Syncs all language files with English source
 - Preserves existing translations
 - Requires `GOOGLE_TRANSLATE_API_KEY` environment variable
 
 #### **`sync_translations_ollama.py`**
+
 - Uses local Ollama for translations (privacy-focused)
 - No API key required
 - Supports multiple models (llama2, mistral, etc.)
 - Slower but completely offline
 
 #### **`git_commit_translations.py`**
+
 - Translates git commit messages to multiple languages
 - Useful for international teams
 - Preserves commit history in multiple languages
 
 #### **`retranslate_all.py`**
+
 - Batch retranslation utility
 - Useful when changing translation provider
 - Backs up existing translations
 
 **Usage:**
+
 ```bash
 # Install dependencies
 pip install -r requirements-translate.txt
@@ -632,6 +686,7 @@ See `TRANSLATION_SCRIPTS.md` for detailed documentation.
 ## 🛠️ Development Setup
 
 ### **Prerequisites**
+
 - **Node.js** >= 22
 - **pnpm** 10.14.0 (package manager)
 - **PostgreSQL** (for database)
@@ -640,23 +695,27 @@ See `TRANSLATION_SCRIPTS.md` for detailed documentation.
 ### **Installation**
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/isyuricunha/website.git
    cd website
    ```
 
 2. **Install dependencies**
+
    ```bash
    pnpm install
    ```
 
 3. **Environment setup**
+
    ```bash
    cp .env.example .env.local
    # Configure your environment variables (see Environment Variables section)
    ```
 
 4. **Database setup**
+
    ```bash
    cd packages/db
    pnpm db:push:force  # Creates all 48 tables
@@ -664,6 +723,7 @@ See `TRANSLATION_SCRIPTS.md` for detailed documentation.
    ```
 
 5. **Start development server**
+
    ```bash
    cd ../..
    pnpm dev
@@ -676,6 +736,7 @@ See `TRANSLATION_SCRIPTS.md` for detailed documentation.
 ## 📜 Available Scripts
 
 ### **Development**
+
 ```bash
 pnpm dev              # Start all development servers
 pnpm dev:web          # Start web app only
@@ -683,6 +744,7 @@ pnpm dev:packages     # Start packages only
 ```
 
 ### **Building**
+
 ```bash
 pnpm build            # Build all packages and apps
 pnpm build:apps       # Build applications only
@@ -691,6 +753,7 @@ pnpm build:mdx        # Build MDX content
 ```
 
 ### **Testing**
+
 ```bash
 pnpm test:unit        # Run unit tests
 pnpm test:e2e         # Run E2E tests
@@ -699,6 +762,7 @@ pnpm test:e2e:ui      # Run E2E tests with UI
 ```
 
 ### **Code Quality**
+
 ```bash
 pnpm lint             # Run linter
 pnpm lint:fix         # Fix linting issues
@@ -708,6 +772,7 @@ pnpm format:write     # Fix formatting
 ```
 
 ### **Database**
+
 ```bash
 pnpm db:pull          # Pull schema from PostgreSQL (auto-generate TypeScript)
 pnpm db:generate      # Generate migrations from schema changes
@@ -720,6 +785,7 @@ pnpm db:studio        # Open Drizzle Studio (database GUI)
 ```
 
 ### **Utilities**
+
 ```bash
 pnpm clean            # Clean build artifacts
 pnpm check            # Run all checks (lint, type-check, format)
@@ -729,6 +795,7 @@ pnpm bundle-analyzer  # Analyze bundle size
 ## 🔧 Environment Variables
 
 ### **Required Variables**
+
 ```env
 # Database
 DATABASE_URL="postgresql://user:password@host:port/database"
@@ -754,6 +821,7 @@ UMAMI_SCRIPT_URL="https://analytics.yourdomain.com/script.js"
 ```
 
 ### **Optional Variables**
+
 ```env
 # AI Integration (choose one or more)
 GEMINI_API_KEY="your-gemini-api-key"
@@ -769,6 +837,7 @@ GOOGLE_TRANSLATE_API_KEY="your-google-translate-key"
 ```
 
 ### **Feature Flags**
+
 ```env
 # Enable/disable features
 NEXT_PUBLIC_FLAG_SPOTIFY="true"
@@ -780,23 +849,27 @@ NEXT_PUBLIC_FLAG_AI_ASSISTANT="true"
 ## 🚀 Deployment
 
 ### **Vercel (Recommended)**
+
 1. Connect your GitHub repository to Vercel
 2. Configure environment variables in Vercel dashboard
 3. Deploy automatically on push to main branch
 
 **Build Settings:**
+
 - Framework Preset: Next.js
 - Build Command: `pnpm build`
 - Output Directory: `apps/web/.next`
 - Install Command: `pnpm install`
 
 ### **Other Platforms**
+
 - **Netlify** - Static site hosting
 - **Railway** - Full-stack deployment with PostgreSQL
 - **Docker** - Containerized deployment
 - **Self-hosted** - Any Node.js hosting
 
 ### **Environment Setup**
+
 1. Configure all required environment variables
 2. Set up PostgreSQL database (or use managed service)
 3. Run database migrations: `pnpm db:push:force`
@@ -806,12 +879,14 @@ NEXT_PUBLIC_FLAG_AI_ASSISTANT="true"
 ## 📊 Performance & Monitoring
 
 ### **Performance Metrics**
+
 - **Core Web Vitals** - LCP, FID, CLS optimization
 - **Bundle Analysis** - Code splitting optimization
 - **Image Optimization** - WebP/AVIF formats with Next.js Image
 - **Caching Strategy** - Static and dynamic caching
 
 ### **Monitoring Tools**
+
 - **Vercel Analytics** - Performance insights and real user monitoring
 - **Umami Analytics** - Privacy-focused user analytics
 - **Error Tracking** - Production error monitoring via `error_tracking` table
@@ -820,6 +895,7 @@ NEXT_PUBLIC_FLAG_AI_ASSISTANT="true"
 - **Uptime Monitoring** - Service availability via `system_health_logs`
 
 ### **Database Monitoring**
+
 - **Query Performance** - Track slow queries via `query_performance` table
 - **Resource Usage** - Monitor CPU, memory, disk via `resource_usage` table
 - **Alert System** - Automated alerts via `alerts` and `alert_instances` tables
@@ -828,6 +904,7 @@ NEXT_PUBLIC_FLAG_AI_ASSISTANT="true"
 ## 🔒 Security & Privacy
 
 ### **Security Features**
+
 - **Content Security Policy** - XSS protection
 - **HTTPS Only** - Secure connections enforced
 - **Input Validation** - Zod schema validation on all inputs
@@ -839,6 +916,7 @@ NEXT_PUBLIC_FLAG_AI_ASSISTANT="true"
 - **Account Lockout** - Brute force protection via `account_lockouts`
 
 ### **Privacy Features**
+
 - **No Tracking** - Privacy-first analytics with Umami
 - **GDPR Compliance** - Data protection and user rights
 - **Cookie Consent** - User choice and transparency
@@ -848,11 +926,13 @@ NEXT_PUBLIC_FLAG_AI_ASSISTANT="true"
 ## 📈 Versioning
 
 ### **Semantic Versioning**
+
 - **Major** (1.x.x) - Breaking changes
 - **Minor** (x.2.x) - New features
 - **Patch** (x.x.3) - Bug fixes
 
 ### **Current Version**: 1.2.3
+
 - **1** - Design changes
 - **2** - Major tech updates
 - **3** - Minor changes and bug fixes
@@ -860,6 +940,7 @@ NEXT_PUBLIC_FLAG_AI_ASSISTANT="true"
 ## 🤝 Contributing
 
 ### **Development Guidelines**
+
 - Follow TypeScript best practices
 - Write comprehensive tests
 - Use conventional commits (enforced by commitlint)
@@ -867,6 +948,7 @@ NEXT_PUBLIC_FLAG_AI_ASSISTANT="true"
 - Follow the established code style
 
 ### **Code Quality**
+
 - **ESLint** for code linting
 - **Prettier** for code formatting
 - **Pre-commit hooks** for quality checks (via lint-staged)
@@ -875,6 +957,7 @@ NEXT_PUBLIC_FLAG_AI_ASSISTANT="true"
 - **CSpell** for spell checking
 
 ### **Commit Convention**
+
 ```bash
 # Format: type(scope): subject
 feat(auth): add 2FA support
@@ -890,6 +973,7 @@ See `CONTRIBUTING.md` for detailed contribution guidelines.
 This project is under a [personal license](https://github.com/isyuricunha/website/blob/main/license.md) which allows for non-commercial use with proper credit.
 
 **Summary:**
+
 - ✅ Personal use
 - ✅ Learning and education
 - ✅ Non-commercial projects with attribution
@@ -899,6 +983,7 @@ This project is under a [personal license](https://github.com/isyuricunha/websit
 ## 📞 Contact
 
 Feel free to reach out via:
+
 - **Email**: [me@yuricunha.com](mailto:me@yuricunha.com)
 - **GitHub**: [@isyuricunha](https://github.com/isyuricunha)
 - **Website**: [yuricunha.com](https://yuricunha.com)
@@ -906,9 +991,11 @@ Feel free to reach out via:
 ## 📸 Screenshots
 
 ### Desktop View
+
 ![Desktop](https://i.imgur.com/VQMeHTt.png)
 
 ### Mobile View
+
 ![Mobile](https://i.imgur.com/LCtrCGV.png)
 
 ## 🧪 Beta Features & Experiments
@@ -919,6 +1006,6 @@ Check out my GitHub repositories for beta versions or experimental features at [
 
 **Thanks for checking out my project!** 🚀
 
-*Built with ❤️ and lots of ☕*
+_Built with ❤️ and lots of ☕_
 
 **Last Updated:** 2025-01-04
