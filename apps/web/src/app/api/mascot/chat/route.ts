@@ -41,7 +41,9 @@ export async function POST(req: NextRequest) {
     }
 
     // Initialize the model
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-lite' })
+    const model = genAI.getGenerativeModel({
+      model: process.env.GEMINI_MODEL ?? 'gemini-2.0-flash-lite'
+    })
 
     // Create context-aware prompt
     const systemPrompt = `You are Yue, the friendly virtual mascot made by Yuri Cunha and for Yuri personal website.
