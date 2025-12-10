@@ -94,7 +94,10 @@
         "unban-success": "Usuario sin explotar con éxito",
         "update-error": "No se pudo actualizar el usuario",
         "update-success": "Usuario actualizado correctamente",
-        "username": "Nombre de usuario"
+        "username": "Nombre de usuario",
+        "active": "Activo",
+        "banned": "Prohibido",
+        "status": "Estado"
       }
     }
   },

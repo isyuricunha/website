@@ -76,7 +76,10 @@
         "reset-password-success": "重置密码邮件已发送",
         "reset-password-error": "发送重置密码邮件失败",
         "update-success": "用户更新成功",
-        "update-error": "更新用户失败"
+        "update-error": "更新用户失败",
+        "active": "积极的",
+        "banned": "禁止",
+        "status": "地位"
       }
     },
     "modals": {

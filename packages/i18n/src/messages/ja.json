@@ -76,7 +76,10 @@
         "reset-password-success": "パスワードリセットのメールを送信しました",
         "reset-password-error": "パスワードリセットメールの送信に失敗しました",
         "update-success": "ユーザーを更新しました",
-        "update-error": "ユーザーの更新に失敗しました"
+        "update-error": "ユーザーの更新に失敗しました",
+        "active": "アクティブ",
+        "banned": "禁止",
+        "status": "状態"
       }
     },
     "modals": {

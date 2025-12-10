@@ -76,7 +76,10 @@
         "reset-password-success": "E-Mail zum Zurücksetzen des Passworts gesendet",
         "reset-password-error": "E-Mail zum Zurücksetzen des Passworts konnte nicht gesendet werden",
         "update-success": "Benutzer erfolgreich aktualisiert",
-        "update-error": "Aktualisierung des Benutzers fehlgeschlagen"
+        "update-error": "Aktualisierung des Benutzers fehlgeschlagen",
+        "active": "Aktiv",
+        "banned": "Verboten",
+        "status": "Status"
       }
     },
     "modals": {
