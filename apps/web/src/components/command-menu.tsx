@@ -17,16 +17,7 @@ import {
   Kbd,
   Logo
 } from '@tszhong0411/ui'
-import { allPosts, allProjects } from 'content-collections'
-import {
-  CodeIcon,
-  CommandIcon,
-  FileTextIcon,
-  FolderGit2Icon,
-  LinkIcon,
-  LogInIcon,
-  LogOutIcon
-} from 'lucide-react'
+import { CodeIcon, CommandIcon, LinkIcon, LogInIcon, LogOutIcon } from 'lucide-react'
 import { Fragment, useCallback, useEffect, useState } from 'react'
 
 import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
@@ -75,28 +66,6 @@ const CommandMenu = () => {
   }, [])
 
   const groups: Groups = [
-    {
-      name: t('layout.blog'),
-      actions: allPosts.map((post) => ({
-        title: post.title,
-        icon: <FileTextIcon className='mr-3 size-4' />,
-        onSelect: () => {
-          setIsOpen(false)
-          router.push(`/blog/${post.slug}`)
-        }
-      }))
-    },
-    {
-      name: t('layout.projects'),
-      actions: allProjects.map((project) => ({
-        title: project.name,
-        icon: <FolderGit2Icon className='mr-3 size-4' />,
-        onSelect: () => {
-          setIsOpen(false)
-          router.push(`/projects#${project.slug}`)
-        }
-      }))
-    },
     {
       name: t('command-menu.groups.account'),
       actions: [
