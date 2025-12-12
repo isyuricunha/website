@@ -2,11 +2,11 @@ import type { Metadata, ResolvingMetadata } from 'next'
 
 import { i18n } from '@tszhong0411/i18n/config'
 import { getTranslations, setRequestLocale } from '@tszhong0411/i18n/server'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@tszhong0411/ui'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@tszhong0411/ui/server'
 import { FileText, Code, Music, User, Home, Map as MapIcon } from 'lucide-react'
 
-import { allPosts } from 'content-collections'
-import { allProjects } from 'content-collections'
+import { allPosts , allProjects } from 'content-collections'
+
 import PageTitle from '@/components/page-title'
 import Link from '@/components/link'
 import { getLocalizedPath } from '@/utils/get-localized-path'
@@ -100,7 +100,7 @@ const SitemapPage = async (props: PageProps) => {
   ]
 
   // Sort posts by date
-  const sortedPosts = allPosts.sort((a, b) => 
+  const sortedPosts = allPosts.sort((a, b) =>
     new Date(b.date).getTime() - new Date(a.date).getTime()
   )
 
@@ -109,8 +109,8 @@ const SitemapPage = async (props: PageProps) => {
 
   return (
     <>
-      <PageTitle 
-        title={t('title')} 
+      <PageTitle
+        title={t('title')}
         description={t('description')}
       />
 

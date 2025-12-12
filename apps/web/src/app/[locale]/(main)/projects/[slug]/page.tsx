@@ -2,8 +2,8 @@ import type { Metadata, ResolvingMetadata } from 'next'
 import type { SoftwareApplication, WithContext } from 'schema-dts'
 
 import { setRequestLocale } from '@tszhong0411/i18n/server'
-import { BlurImage } from '@tszhong0411/ui'
 import { allProjects } from 'content-collections'
+import Image from 'next/image'
 import { notFound } from 'next/navigation'
 
 import Mdx from '@/components/mdx'
@@ -119,13 +119,14 @@ const Page = async (props: PageProps) => {
       />
       <div className='mx-auto max-w-3xl'>
         <Header {...project} />
-        <BlurImage
+        <Image
           src={`/images/projects/${slug}/cover.png`}
           width={1280}
           height={832}
           alt={name}
           className='my-12 rounded-lg'
-          lazy={false}
+          priority
+          quality={100}
         />
         <Mdx code={code} />
       </div>

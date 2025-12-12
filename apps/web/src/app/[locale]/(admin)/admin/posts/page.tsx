@@ -1,8 +1,7 @@
 import Link from 'next/link'
 import { PlusIcon, EditIcon, LanguagesIcon, EyeIcon } from 'lucide-react'
 
-import { buttonVariants , Card, CardContent, CardHeader, CardTitle , Badge } from '@tszhong0411/ui'
-
+import { Badge, Card, CardContent, CardHeader, CardTitle, buttonVariants } from '@tszhong0411/ui/server'
 
 import { BlogService } from '@/lib/blog/blog-service'
 
