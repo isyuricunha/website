@@ -66,15 +66,15 @@ const SidebarProvider = (props: SidebarProviderProps) => {
   // This is the internal state of the sidebar.
   // We use openProp and setOpenProp for control from outside the component.
 
-  const [_open, _setOpen] = useState(defaultOpen)
-  const open = openProp ?? _open
+  const [openInternal, setOpenInternal] = useState(defaultOpen)
+  const open = openProp ?? openInternal
   const setOpen = useCallback(
     (value: boolean | ((value: boolean) => boolean)) => {
       const openState = typeof value === 'function' ? value(open) : value
       if (setOpenProp) {
         setOpenProp(openState)
       } else {
-        _setOpen(openState)
+        setOpenInternal(openState)
       }
 
       // This sets the cookie to keep the sidebar state.
@@ -591,7 +591,7 @@ const SidebarMenuAction = (props: SidebarMenuActionProps) => {
         'focus-visible:ring-2',
         '[&>svg]:size-4 [&>svg]:shrink-0',
         showOnHover &&
-          'peer-data-[active=true]/menu-button:text-sidebar-accent-foreground group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100 data-[state=open]:opacity-100 md:opacity-0',
+        'peer-data-[active=true]/menu-button:text-sidebar-accent-foreground group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100 data-[state=open]:opacity-100 md:opacity-0',
         className
       )}
       {...rest}

@@ -24,11 +24,12 @@ const CardHeader = (props: CardHeaderProps) => {
 type CardTitleProps = React.ComponentProps<'h3'>
 
 const CardTitle = (props: CardTitleProps) => {
-  const { className, ...rest } = props
+  const { className, children, ...rest } = props
 
   return (
-    // eslint-disable-next-line jsx-a11y/heading-has-content -- content is passed via children
-    <h3 className={cn('text-2xl font-semibold', className)} {...rest} />
+    <h3 className={cn('text-2xl font-semibold', className)} {...rest}>
+      {children}
+    </h3>
   )
 }
 

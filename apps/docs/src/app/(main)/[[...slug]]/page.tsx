@@ -21,12 +21,10 @@ const getDoc = (params: Awaited<PageProps['params']>) => {
 
   if (!doc) return null
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return -- suppress unsafe return error
   return doc
 }
 
 export const generateStaticParams = (): Array<{ slug: string[] }> => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return -- suppress unsafe return error
   return allDocs.map((doc) => ({
     slug: doc.slug.split('/')
   }))

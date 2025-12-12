@@ -1,7 +1,7 @@
 import { cn } from '@tszhong0411/utils'
 import useEmblaCarousel, { type UseEmblaCarouselType } from 'embla-carousel-react'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
-import { createContext, use, useCallback, useEffect, useState } from 'react'
+import { createContext, use, useCallback, useEffect, useMemo, useState } from 'react'
 
 import { Button } from './button'
 
@@ -104,18 +104,36 @@ const Carousel = (props: CarouselRootProps) => {
     }
   }, [api, onSelect])
 
+  const context_value = useMemo<CarouselContextProps>(
+    () => ({
+      carouselRef,
+      api,
+      options,
+      orientation,
+      scrollPrev,
+      scrollNext,
+      canScrollPrev,
+      canScrollNext,
+      plugins,
+      setApi
+    }),
+    [
+      canScrollNext,
+      canScrollPrev,
+      carouselRef,
+      api,
+      options,
+      orientation,
+      scrollNext,
+      scrollPrev,
+      plugins,
+      setApi
+    ]
+  )
+
   return (
     <CarouselContext
-      value={{
-        carouselRef,
-        api: api,
-        options,
-        orientation,
-        scrollPrev,
-        scrollNext,
-        canScrollPrev,
-        canScrollNext
-      }}
+      value={context_value}
     >
       <div
         onKeyDownCapture={handleKeyDown}

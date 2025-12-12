@@ -261,7 +261,7 @@ const DataTableViewOptions = <TData,>(props: DataTableViewOptionsProps<TData>) =
                 className='capitalize'
                 checked={column.getIsVisible()}
                 onCheckedChange={(value) => {
-                  column.toggleVisibility(!!value)
+                  column.toggleVisibility(value)
                 }}
               >
                 {column.id}
@@ -441,16 +441,15 @@ const DataTableToolbar = <TData,>(props: DataTableToolbarProps<TData>) => {
         {searchableColumns.length > 0 &&
           searchableColumns.map(
             (column) =>
-              table.getColumn(column.id ? String(column.id) : '') && (
+              table.getColumn(column.id) && (
                 <Input
-                  key={String(column.id)}
+                  key={column.id}
                   placeholder={column.placeholder}
                   value={
-                    (table.getColumn(String(column.id))?.getFilterValue() as string | undefined) ??
-                    ''
+                    (table.getColumn(column.id)?.getFilterValue() as string | undefined) ?? ''
                   }
                   onChange={(event) =>
-                    table.getColumn(String(column.id))?.setFilterValue(event.target.value)
+                    table.getColumn(column.id)?.setFilterValue(event.target.value)
                   }
                   className='h-8 w-40 lg:w-64'
                 />
@@ -459,10 +458,10 @@ const DataTableToolbar = <TData,>(props: DataTableToolbarProps<TData>) => {
         {filterableColumns.length > 0 &&
           filterableColumns.map(
             (column) =>
-              table.getColumn(column.id ? String(column.id) : '') && (
+              table.getColumn(column.id) && (
                 <DataTableFacetedFilter
-                  key={String(column.id)}
-                  column={table.getColumn(column.id ? String(column.id) : '')}
+                  key={column.id}
+                  column={table.getColumn(column.id)}
                   title={column.label}
                   options={column.options ?? []}
                 />

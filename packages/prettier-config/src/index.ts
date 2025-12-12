@@ -19,7 +19,7 @@ const tszhong0411 = (options: Options = {}): Options => {
     trailingComma: 'none',
     endOfLine: 'lf',
     plugins: [
-      prettierPluginPackageJson as Plugin,
+      prettierPluginPackageJson,
       ...plugins,
 
       prettierPluginTailwindcss as Plugin // must be loaded last
