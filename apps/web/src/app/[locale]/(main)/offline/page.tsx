@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import { buttonVariants } from '@tszhong0411/ui'
 import { WifiOff, Home } from 'lucide-react'
 import Link from 'next/link'
 
@@ -29,7 +28,7 @@ export default function OfflinePage() {
 
           <Link
             href='/'
-            className={buttonVariants({ variant: 'outline', className: 'w-full gap-2' })}
+            className='ring-offset-background inline-flex h-10 w-full items-center justify-center gap-2 whitespace-nowrap rounded-lg border border-input bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-ring focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50'
           >
             <Home className='size-4' />
             Go Home

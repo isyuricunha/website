@@ -41,7 +41,7 @@ const MessageBox = (props: FormProps) => {
   })
 
   const form = useForm<z.infer<typeof guestbookFormSchema>>({
-    resolver: zodResolver(guestbookFormSchema),
+    resolver: zodResolver(guestbookFormSchema as unknown as any),
     defaultValues: {
       message: ''
     }

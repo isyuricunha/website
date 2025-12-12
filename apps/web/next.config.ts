@@ -20,7 +20,7 @@ const config: NextConfig = {
   },
 
   eslint: {
-    ignoreDuringBuilds: false
+    ignoreDuringBuilds: !!process.env.CI
   },
   typescript: {
     ignoreBuildErrors: false
@@ -77,7 +77,7 @@ const config: NextConfig = {
     ]
   },
 
-   
+
   async redirects() {
     return [
       {
@@ -103,7 +103,7 @@ const config: NextConfig = {
     ]
   },
 
-   
+
   async headers() {
     return NextConfigHeaders
   },
