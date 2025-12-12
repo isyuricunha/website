@@ -23,7 +23,7 @@ const RecentlyPlayedSection = () => {
   const { data: tracks, refetch, isLoading, error } = api.spotify.getRecentlyPlayed.useQuery(
     undefined,
     {
-      staleTime: 300000 // 5 minutes
+      staleTime: 300_000 // 5 minutes
     }
   )
 
@@ -34,7 +34,7 @@ const RecentlyPlayedSection = () => {
   }
 
   const handleExportCsv = () => {
-    if (tracks && tracks.length) exportRecentlyPlayedCsv(tracks as any)
+    if (tracks && tracks.length > 0) exportRecentlyPlayedCsv(tracks)
   }
 
   const handleExportJson = () => {
@@ -164,7 +164,7 @@ const RecentlyPlayedSection = () => {
       </CardHeader>
       <CardContent>
         <div className='space-y-4'>
-          {tracks.map((track) => (
+          {tracks.map((track: any) => (
             <Link
               key={`${track.id}-${track.playedAt}`}
               href={track.url}

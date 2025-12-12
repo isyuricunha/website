@@ -1,13 +1,16 @@
-import { NextRequest } from 'next'
-import { z } from 'zod'
-import { Resend } from 'resend'
+import type { NextRequest } from 'next/server'
+
 import { render } from '@react-email/components'
+import { ContactConfirmation, ContactForm } from '@tszhong0411/emails'
+import { env, flags } from '@tszhong0411/env'
+import { Resend } from 'resend'
+import { z } from 'zod'
 
-import { ContactForm, ContactConfirmation } from '@tszhong0411/emails'
 import { logger } from '@/lib/logger'
-import { checkRateLimit, getClientIp, verifyTurnstileToken } from '@/lib/spam-detection'
+import { contactRatelimit } from '@/lib/ratelimit'
+import { getClientIp, verifyTurnstileToken } from '@/lib/spam-detection'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+const resend = new Resend(env.RESEND_API_KEY)
 
 const contactFormSchema = z.object({
   name: z.string().min(1, 'Name is required').max(100),
@@ -21,36 +24,34 @@ const contactFormSchema = z.object({
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    
+
     // Get client IP for rate limiting
     const clientIp = getClientIp(request.headers)
-    
+
     // Check rate limit
-    const rateLimitResult = checkRateLimit(clientIp)
-    if (!rateLimitResult.allowed) {
-      logger.warn('Rate limit exceeded', { ip: clientIp, retryAfter: rateLimitResult.retryAfter })
+    const { success } = await contactRatelimit.limit(`contact:${clientIp}`)
+    if (!success) {
+      logger.warn('Rate limit exceeded', { ip: clientIp })
       return Response.json(
-        { 
+        {
           error: 'Too many requests. Please try again later.',
-          retryAfter: rateLimitResult.retryAfter 
+          retryAfter: 3600
         },
-        { 
+        {
           status: 429,
           headers: {
-            'Retry-After': String(rateLimitResult.retryAfter || 3600)
+            'Retry-After': '3600'
           }
         }
       )
     }
-    
+
     // Validate the form data
     const validatedData = contactFormSchema.parse(body)
-    
+
     // Verify Turnstile token (required)
-    const isTurnstileEnabled = 
-      process.env.NEXT_PUBLIC_FLAG_TURNSTILE === 'true' && 
-      process.env.TURNSTILE_SECRET_KEY
-    
+    const isTurnstileEnabled = flags.turnstile
+
     if (isTurnstileEnabled) {
       if (!validatedData.turnstileToken) {
         logger.warn('Missing Turnstile token', { ip: clientIp })
@@ -62,7 +63,7 @@ export async function POST(request: NextRequest) {
 
       const turnstileResult = await verifyTurnstileToken(
         validatedData.turnstileToken,
-        process.env.TURNSTILE_SECRET_KEY!,
+        env.TURNSTILE_SECRET_KEY,
         clientIp
       )
 
@@ -76,10 +77,10 @@ export async function POST(request: NextRequest) {
           { status: 400 }
         )
       }
-      
+
       logger.info('Turnstile verification successful', { ip: clientIp })
     }
-    
+
     const currentDate = new Date().toLocaleString()
 
     // Send email to yourself using the template
@@ -142,21 +143,21 @@ This is an automated confirmation email. Please do not reply to this email.
       `
     })
 
-    return Response.json({ 
-      success: true, 
-      message: 'Message sent successfully! You should receive a confirmation email shortly.' 
+    return Response.json({
+      success: true,
+      message: 'Message sent successfully! You should receive a confirmation email shortly.'
     })
 
   } catch (error) {
     logger.error('Contact form error', error)
-    
+
     if (error instanceof z.ZodError) {
       return Response.json(
         { error: 'Invalid form data', details: error.errors },
         { status: 400 }
       )
     }
-    
+
     return Response.json(
       { error: 'Internal server error. Please try again later.' },
       { status: 500 }

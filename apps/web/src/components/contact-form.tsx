@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { env, flags } from '@tszhong0411/env'
 import { useTranslations } from '@tszhong0411/i18n/client'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, Input, Button, Textarea } from '@tszhong0411/ui'
 import { Send, MessageSquare, Loader2, CheckCircle, AlertCircle } from 'lucide-react'
@@ -29,7 +30,7 @@ export default function ContactForm() {
     subject: '',
     message: ''
   })
-  
+
   const [errors, setErrors] = useState<FormErrors>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
@@ -40,10 +41,7 @@ export default function ContactForm() {
   // Check Turnstile availability
   useEffect(() => {
     // Check if Turnstile is enabled (client-side only to avoid hydration issues)
-    setIsTurnstileEnabled(
-      process.env.NEXT_PUBLIC_FLAG_TURNSTILE === 'true' && 
-      !!process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
-    )
+    setIsTurnstileEnabled(flags.turnstile && !!env.NEXT_PUBLIC_TURNSTILE_SITE_KEY)
   }, [])
 
   const validateForm = (): boolean => {
@@ -81,7 +79,7 @@ export default function ContactForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    
+
     if (!validateForm()) {
       return
     }
@@ -174,7 +172,7 @@ export default function ContactForm() {
             <span className='text-sm'>{submitMessage}</span>
           </div>
         )}
-        
+
         {submitStatus === 'error' && submitMessage && (
           <div className='mb-4 p-3 bg-red-50 border border-red-200 rounded-lg flex items-center gap-2 text-red-800'>
             <AlertCircle className='h-4 w-4' />
@@ -260,10 +258,10 @@ export default function ContactForm() {
           </div>
 
           {/* Cloudflare Turnstile (optional) */}
-          {isTurnstileEnabled && process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && (
+          {isTurnstileEnabled && env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && (
             <div className='flex justify-center'>
               <Turnstile
-                siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY}
+                siteKey={env.NEXT_PUBLIC_TURNSTILE_SITE_KEY}
                 onSuccess={(token) => setTurnstileToken(token)}
                 onError={() => {
                   setTurnstileToken(null)
@@ -279,8 +277,8 @@ export default function ContactForm() {
             </div>
           )}
 
-          <Button 
-            type='submit' 
+          <Button
+            type='submit'
             className='w-full flex items-center justify-center gap-2 text-sm'
             disabled={isSubmitting || (isTurnstileEnabled && !turnstileToken)}
           >

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
-import { Button } from '@tszhong0411/ui'
-import { WifiOff, RefreshCw, Home } from 'lucide-react'
+import { buttonVariants } from '@tszhong0411/ui'
+import { WifiOff, Home } from 'lucide-react'
 import Link from 'next/link'
 
 import RefreshButton from './refresh-button'
@@ -16,7 +16,7 @@ export default function OfflinePage() {
     <div className='min-h-[60vh] flex flex-col items-center justify-center text-center px-4'>
       <div className='max-w-md mx-auto space-y-6'>
         <WifiOff className='size-16 text-muted-foreground mx-auto' />
-        
+
         <div className='space-y-2'>
           <h1 className='text-2xl font-bold'>You're offline</h1>
           <p className='text-muted-foreground'>
@@ -26,17 +26,14 @@ export default function OfflinePage() {
 
         <div className='space-y-3'>
           <RefreshButton />
-          
-          <Button
-            asChild
-            variant='outline'
-            className='w-full gap-2'
+
+          <Link
+            href='/'
+            className={buttonVariants({ variant: 'outline', className: 'w-full gap-2' })}
           >
-            <Link href='/'>
-              <Home className='size-4' />
-              Go Home
-            </Link>
-          </Button>
+            <Home className='size-4' />
+            Go Home
+          </Link>
         </div>
 
         <div className='text-sm text-muted-foreground space-y-1'>

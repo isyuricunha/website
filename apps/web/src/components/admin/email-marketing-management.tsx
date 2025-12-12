@@ -1,21 +1,21 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Button } from '@tszhong0411/ui'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@tszhong0411/ui'
-import { Badge } from '@tszhong0411/ui'
-import { Input } from '@tszhong0411/ui'
-import { Label } from '@tszhong0411/ui'
-import { Textarea } from '@tszhong0411/ui'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@tszhong0411/ui'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@tszhong0411/ui'
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@tszhong0411/ui'
-import { ScrollArea } from '@tszhong0411/ui'
-import { 
-  Mail, 
-  Plus, 
-  Send, 
-  Users, 
+import { Button , Card, CardContent, CardDescription, CardHeader, CardTitle , Badge , Input , Label , Textarea , Select, SelectContent, SelectItem, SelectTrigger, SelectValue , Tabs, TabsContent, TabsList, TabsTrigger , Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger , ScrollArea } from '@tszhong0411/ui'
+
+
+
+
+
+
+
+
+
+import {
+  Mail,
+  Plus,
+  Send,
+  Users,
   FileText,
   Calendar,
   TrendingUp,
@@ -32,8 +32,8 @@ import { toast } from 'sonner'
 import { api } from '@/trpc/react'
 
 // Helper function for broadcast status colors
-const getBroadcastStatusColor = (status: string) => {
-  switch (status) {
+const getBroadcastStatusColor = (status: string | undefined) => {
+  switch (status ?? 'draft') {
     case 'sent':
       return 'bg-green-100 text-green-800 border-green-200'
     case 'scheduled':
@@ -54,7 +54,7 @@ export default function EmailMarketingManagement() {
   const [isViewBroadcastDialogOpen, setIsViewBroadcastDialogOpen] = useState(false)
   const [selectedBroadcast, setSelectedBroadcast] = useState<any>(null)
   const [broadcastFilter, setBroadcastFilter] = useState('all')
-  
+
   // Sequential loading states
   const [loadingStage, setLoadingStage] = useState<'audiences' | 'broadcasts' | 'templates' | 'analytics' | 'complete'>('audiences')
   const [enableAudiences, setEnableAudiences] = useState(true)
@@ -95,7 +95,7 @@ export default function EmailMarketingManagement() {
       }, 1000)
       return () => clearTimeout(timeoutId)
     }
-    return undefined
+    return
   }, [audiencesLoading, audiences, loadingStage])
 
   useEffect(() => {
@@ -106,7 +106,7 @@ export default function EmailMarketingManagement() {
       }, 1000)
       return () => clearTimeout(timeoutId)
     }
-    return undefined
+    return
   }, [broadcastsLoading, broadcasts, loadingStage])
 
   useEffect(() => {
@@ -117,7 +117,7 @@ export default function EmailMarketingManagement() {
       }, 1000)
       return () => clearTimeout(timeoutId)
     }
-    return undefined
+    return
   }, [templatesLoading, templates, loadingStage])
 
   useEffect(() => {
@@ -223,7 +223,7 @@ export default function EmailMarketingManagement() {
 
   const handleCreateAudience = async (formData: FormData) => {
     const name = formData.get('name') as string
-    
+
     createAudienceMutation.mutate({ name })
   }
 
@@ -449,8 +449,8 @@ export default function EmailMarketingManagement() {
                       </div>
                     </div>
                   )) || (
-                    <p className="text-sm text-muted-foreground">No recent activity</p>
-                  )}
+                      <p className="text-sm text-muted-foreground">No recent activity</p>
+                    )}
                 </div>
               </CardContent>
             </Card>
@@ -465,25 +465,25 @@ export default function EmailMarketingManagement() {
                 </div>
               </CardHeader>
               <CardContent className="space-y-3">
-                <Button 
-                  onClick={() => setIsCreateCampaignDialogOpen(true)} 
+                <Button
+                  onClick={() => setIsCreateCampaignDialogOpen(true)}
                   className="w-full bg-purple-600 hover:bg-purple-700"
                   disabled={!audiences?.audiences?.length}
                 >
                   <Plus className="h-4 w-4 mr-2" />
                   Create New Broadcast
                 </Button>
-                <Button 
-                  onClick={() => setIsCreateAudienceDialogOpen(true)} 
-                  variant="outline" 
+                <Button
+                  onClick={() => setIsCreateAudienceDialogOpen(true)}
+                  variant="outline"
                   className="w-full"
                 >
                   <Users className="h-4 w-4 mr-2" />
                   Create New Audience
                 </Button>
-                <Button 
-                  onClick={() => setIsCreateTemplateDialogOpen(true)} 
-                  variant="outline" 
+                <Button
+                  onClick={() => setIsCreateTemplateDialogOpen(true)}
+                  variant="outline"
                   className="w-full"
                 >
                   <FileText className="h-4 w-4 mr-2" />
@@ -512,7 +512,7 @@ export default function EmailMarketingManagement() {
                     Create a new audience segment for your email campaigns
                   </DialogDescription>
                 </DialogHeader>
-                
+
                 <form action={handleCreateAudience}>
                   <div className="space-y-4">
                     <div>
@@ -520,7 +520,7 @@ export default function EmailMarketingManagement() {
                       <Input id="name" name="name" placeholder="e.g., Newsletter Subscribers" required />
                     </div>
                   </div>
-                  
+
                   <DialogFooter className="mt-6">
                     <Button type="button" variant="outline" onClick={() => setIsCreateAudienceDialogOpen(false)}>
                       Cancel
@@ -548,9 +548,9 @@ export default function EmailMarketingManagement() {
                     <p className="text-sm text-muted-foreground">
                       Created: {new Date().toLocaleDateString()}
                     </p>
-                    <Button 
-                      onClick={() => handleSyncUsers(audience.id)} 
-                      variant="outline" 
+                    <Button
+                      onClick={() => handleSyncUsers(audience.id)}
+                      variant="outline"
                       size="sm"
                       disabled={syncUsersMutation.isPending}
                     >
@@ -570,11 +570,11 @@ export default function EmailMarketingManagement() {
                 </CardContent>
               </Card>
             )) || (
-              <div className="col-span-full text-center py-8 text-muted-foreground">
-                <Users className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                <p>No audiences yet. Create your first audience to get started!</p>
-              </div>
-            )}
+                <div className="col-span-full text-center py-8 text-muted-foreground">
+                  <Users className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                  <p>No audiences yet. Create your first audience to get started!</p>
+                </div>
+              )}
           </div>
         </TabsContent>
 
@@ -595,10 +595,10 @@ export default function EmailMarketingManagement() {
                   <SelectItem value="sending">Sending</SelectItem>
                 </SelectContent>
               </Select>
-              
+
               <Dialog open={isCreateCampaignDialogOpen} onOpenChange={setIsCreateCampaignDialogOpen}>
                 <DialogTrigger asChild>
-                  <Button 
+                  <Button
                     className="bg-purple-600 hover:bg-purple-700 dark:bg-purple-700 dark:hover:bg-purple-600"
                     disabled={!audiences?.audiences?.length}
                   >
@@ -613,21 +613,21 @@ export default function EmailMarketingManagement() {
                       Create a new email broadcast campaign
                     </DialogDescription>
                   </DialogHeader>
-                  
+
                   <form action={handleCreateBroadcast}>
                     <div className="space-y-4">
                       <div>
                         <Label htmlFor="name">Broadcast Name</Label>
-                        <Input 
-                          id="name" 
-                          name="name" 
+                        <Input
+                          id="name"
+                          name="name"
                           defaultValue={selectedBroadcast?.name || ''}
-                          placeholder="Internal name for this broadcast" 
+                          placeholder="Internal name for this broadcast"
                           className="min-h-[44px] h-11 text-sm sm:text-base px-3 py-2"
-                          required 
+                          required
                         />
                       </div>
-                      
+
                       <div>
                         <Label htmlFor="audienceId">Target Audience</Label>
                         <Select name="audienceId" defaultValue={selectedBroadcast?.audienceId || ''} required>
@@ -643,57 +643,57 @@ export default function EmailMarketingManagement() {
                           </SelectContent>
                         </Select>
                       </div>
-                      
+
                       <div>
                         <Label htmlFor="from">From Email</Label>
-                        <Input 
-                          id="from" 
-                          name="from" 
-                          type="email" 
+                        <Input
+                          id="from"
+                          name="from"
+                          type="email"
                           defaultValue={selectedBroadcast?.from || ''}
-                          placeholder="noreply@yourdomain.com" 
+                          placeholder="noreply@yourdomain.com"
                           className="min-h-[44px] h-11 text-sm sm:text-base px-3 py-2"
-                          required 
+                          required
                         />
                       </div>
-                      
+
                       <div>
                         <Label htmlFor="subject">Subject Line</Label>
-                        <Input 
-                          id="subject" 
-                          name="subject" 
+                        <Input
+                          id="subject"
+                          name="subject"
                           defaultValue={selectedBroadcast?.subject || ''}
-                          placeholder="Email subject" 
+                          placeholder="Email subject"
                           className="min-h-[44px] h-11 text-sm sm:text-base px-3 py-2"
-                          required 
+                          required
                         />
                       </div>
-                      
+
                       <div>
                         <Label htmlFor="html">Email Content (HTML)</Label>
-                        <Textarea 
-                          id="html" 
-                          name="html" 
+                        <Textarea
+                          id="html"
+                          name="html"
                           defaultValue={selectedBroadcast?.html || ''}
-                          placeholder="Email HTML content" 
+                          placeholder="Email HTML content"
                           className="min-h-[120px] text-sm sm:text-base px-3 py-2"
-                          rows={8} 
+                          rows={8}
                         />
                       </div>
-                      
+
                       <div>
                         <Label htmlFor="text">Plain Text Version (Optional)</Label>
-                        <Textarea 
-                          id="text" 
-                          name="text" 
+                        <Textarea
+                          id="text"
+                          name="text"
                           defaultValue={selectedBroadcast?.text || ''}
-                          placeholder="Plain text version" 
+                          placeholder="Plain text version"
                           className="min-h-[80px] text-sm sm:text-base px-3 py-2"
-                          rows={4} 
+                          rows={4}
                         />
                       </div>
                     </div>
-                    
+
                     <DialogFooter className="mt-6">
                       <Button type="button" variant="outline" className="min-h-[44px] text-sm sm:text-base" onClick={() => setIsCreateCampaignDialogOpen(false)}>
                         Cancel
@@ -723,7 +723,7 @@ export default function EmailMarketingManagement() {
                                 {broadcast.status}
                               </Badge>
                             </div>
-                            
+
                             <div className="flex items-center gap-4 text-sm text-muted-foreground">
                               <span className="flex items-center gap-1">
                                 <Calendar className="h-3 w-3" />
@@ -741,7 +741,7 @@ export default function EmailMarketingManagement() {
                               )}
                             </div>
                           </div>
-                          
+
                           <div className="flex items-center gap-2 ml-4">
                             <Button
                               variant="outline"
@@ -751,7 +751,7 @@ export default function EmailMarketingManagement() {
                             >
                               <Eye className="h-4 w-4" />
                             </Button>
-                            
+
                             {broadcast.status === 'draft' && (
                               <>
                                 <Button
@@ -762,7 +762,7 @@ export default function EmailMarketingManagement() {
                                 >
                                   <Edit3 className="h-4 w-4" />
                                 </Button>
-                                
+
                                 <Button
                                   variant="outline"
                                   size="sm"
@@ -773,7 +773,7 @@ export default function EmailMarketingManagement() {
                                 </Button>
                               </>
                             )}
-                            
+
                             <Button
                               variant="outline"
                               size="sm"
@@ -782,7 +782,7 @@ export default function EmailMarketingManagement() {
                             >
                               <Copy className="h-4 w-4" />
                             </Button>
-                            
+
                             <Button
                               variant="outline"
                               size="sm"
@@ -796,26 +796,26 @@ export default function EmailMarketingManagement() {
                       </CardContent>
                     </Card>
                   ))}
-                  
-                  {!filteredBroadcasts.length && broadcasts?.broadcasts?.length ? (
+
+                  {filteredBroadcasts.length === 0 && broadcasts?.broadcasts?.length ? (
                     <div className="text-center py-8 text-muted-foreground">
                       <Mail className="h-12 w-12 mx-auto mb-4 opacity-50" />
                       <p>No broadcasts match the current filter.</p>
-                      <Button 
-                        variant="outline" 
+                      <Button
+                        variant="outline"
                         onClick={() => setBroadcastFilter('all')}
                         className="mt-2"
                       >
                         Show All Broadcasts
                       </Button>
                     </div>
-                  ) : !broadcasts?.broadcasts?.length ? (
+                  ) : broadcasts?.broadcasts?.length ? null : (
                     <div className="text-center py-8 text-muted-foreground">
                       <Mail className="h-12 w-12 mx-auto mb-4 opacity-50" />
                       <p>No broadcasts yet. Create your first broadcast to get started!</p>
                       <p className="text-sm mt-2">You'll need to create an audience first before creating broadcasts.</p>
                     </div>
-                  ) : null}
+                  )}
                 </div>
               </ScrollArea>
             </CardContent>
@@ -840,30 +840,30 @@ export default function EmailMarketingManagement() {
                     Create a reusable email template
                   </DialogDescription>
                 </DialogHeader>
-                
+
                 <form action={handleCreateTemplate}>
                   <div className="space-y-4">
                     <div>
                       <Label htmlFor="template-name">Template Name</Label>
                       <Input id="template-name" name="name" placeholder="e.g., Welcome Email" required />
                     </div>
-                    
+
                     <div>
                       <Label htmlFor="template-subject">Subject Line</Label>
                       <Input id="template-subject" name="subject" placeholder="Email subject" required />
                     </div>
-                    
+
                     <div>
                       <Label htmlFor="template-html">Email Content (HTML)</Label>
                       <Textarea id="template-html" name="html" placeholder="Email HTML content" rows={8} />
                     </div>
-                    
+
                     <div>
                       <Label htmlFor="template-text">Plain Text Version (Optional)</Label>
                       <Textarea id="template-text" name="text" placeholder="Plain text version" rows={4} />
                     </div>
                   </div>
-                  
+
                   <DialogFooter className="mt-6">
                     <Button type="button" variant="outline" onClick={() => setIsCreateTemplateDialogOpen(false)}>
                       Cancel
@@ -903,11 +903,11 @@ export default function EmailMarketingManagement() {
                 </CardContent>
               </Card>
             )) || (
-              <div className="col-span-full text-center py-8 text-muted-foreground">
-                <FileText className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                <p>No templates yet. Create your first template to get started!</p>
-              </div>
-            )}
+                <div className="col-span-full text-center py-8 text-muted-foreground">
+                  <FileText className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                  <p>No templates yet. Create your first template to get started!</p>
+                </div>
+              )}
           </div>
         </TabsContent>
       </Tabs>
@@ -921,7 +921,7 @@ export default function EmailMarketingManagement() {
               View broadcast information and content
             </DialogDescription>
           </DialogHeader>
-          
+
           {selectedBroadcastData && (
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
@@ -944,14 +944,14 @@ export default function EmailMarketingManagement() {
                   <p className="text-sm">{selectedBroadcastData?.broadcast?.from || 'N/A'}</p>
                 </div>
               </div>
-              
+
               <div>
                 <Label className="text-sm font-medium">HTML Content</Label>
                 <div className="mt-2 p-4 bg-muted rounded-lg max-h-64 overflow-y-auto">
                   <pre className="text-xs whitespace-pre-wrap">{selectedBroadcastData?.broadcast?.html || 'No content'}</pre>
                 </div>
               </div>
-              
+
               {selectedBroadcastData?.broadcast?.text && (
                 <div>
                   <Label className="text-sm font-medium">Plain Text Content</Label>
@@ -962,7 +962,7 @@ export default function EmailMarketingManagement() {
               )}
             </div>
           )}
-          
+
           <DialogFooter>
             <Button variant="outline" onClick={() => setIsViewBroadcastDialogOpen(false)}>
               Close
@@ -989,49 +989,49 @@ export default function EmailMarketingManagement() {
               Update broadcast content and settings
             </DialogDescription>
           </DialogHeader>
-          
+
           <form action={handleUpdateBroadcast}>
             <div className="space-y-4">
               <div>
                 <Label htmlFor="edit-subject">Subject Line</Label>
-                <Input 
-                  id="edit-subject" 
-                  name="subject" 
-                  defaultValue={selectedBroadcast?.subject || ''} 
-                  placeholder="Email subject" 
-                  required 
+                <Input
+                  id="edit-subject"
+                  name="subject"
+                  defaultValue={selectedBroadcast?.subject || ''}
+                  placeholder="Email subject"
+                  required
                 />
               </div>
-              
+
               <div>
                 <Label htmlFor="edit-html">Email Content (HTML)</Label>
-                <Textarea 
-                  id="edit-html" 
-                  name="html" 
-                  defaultValue={selectedBroadcast?.html || ''} 
-                  placeholder="Email HTML content" 
-                  rows={12} 
+                <Textarea
+                  id="edit-html"
+                  name="html"
+                  defaultValue={selectedBroadcast?.html || ''}
+                  placeholder="Email HTML content"
+                  rows={12}
                 />
               </div>
-              
+
               <div>
                 <Label htmlFor="edit-text">Plain Text Version (Optional)</Label>
-                <Textarea 
-                  id="edit-text" 
-                  name="text" 
-                  defaultValue={selectedBroadcast?.text || ''} 
-                  placeholder="Plain text version" 
-                  rows={6} 
+                <Textarea
+                  id="edit-text"
+                  name="text"
+                  defaultValue={selectedBroadcast?.text || ''}
+                  placeholder="Plain text version"
+                  rows={6}
                 />
               </div>
             </div>
-            
+
             <DialogFooter className="mt-6">
               <Button type="button" variant="outline" onClick={() => setIsEditBroadcastDialogOpen(false)}>
                 Cancel
               </Button>
-              <Button 
-                type="submit" 
+              <Button
+                type="submit"
                 className="bg-green-600 hover:bg-green-700"
                 disabled={updateBroadcastMutation.isPending}
               >

@@ -1197,7 +1197,8 @@
       "success": "संदेश सफलतापूर्वक भेजा गया!",
       "error": "संदेश भेजने में विफल। कृपया पुनः प्रयास करें।",
       "network-error": "नेटवर्क त्रुटि। कृपया अपना कनेक्शन जांचें और पुनः प्रयास करें।",
-      "turnstile-required": "कृपया सत्यापन चुनौती पूरी करें"
+      "turnstile-required": "कृपया सत्यापन चुनौती पूरी करें",
+      "turnstile-error": "Security verification failed. Please try again."
     },
     "direct": {
       "title": "सीधा संपर्क",

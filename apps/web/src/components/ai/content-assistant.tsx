@@ -4,7 +4,6 @@ import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { Wand2, Tag, FileText, Globe, Copy, Check, Loader2, Settings } from 'lucide-react'
 import { Button } from '@tszhong0411/ui'
-import { useTranslations } from '@tszhong0411/i18n/client'
 
 interface ContentAssistantProps {
   content?: string
@@ -25,7 +24,6 @@ export default function ContentAssistant({
   onMetaGenerated,
   onTranslationGenerated
 }: ContentAssistantProps) {
-  const t = useTranslations()
   const [isGenerating, setIsGenerating] = useState<Record<string, boolean>>({})
   const [results, setResults] = useState<{
     tags: string[]
@@ -61,9 +59,9 @@ export default function ContentAssistant({
 
   const generateContent = async (action: string, additionalData: any = {}) => {
     if (!content && action !== 'translate') return
-    
+
     setIsGenerating(prev => ({ ...prev, [action]: true }))
-    
+
     try {
       const response = await fetch('/api/ai/content', {
         method: 'POST',
@@ -88,7 +86,7 @@ export default function ContentAssistant({
       }
 
       const result = data.result
-      
+
       switch (action) {
         case 'tags':
           setResults(prev => ({ ...prev, tags: result }))
@@ -126,12 +124,12 @@ export default function ContentAssistant({
     }
   }
 
-  const GenerationCard = ({ 
-    title, 
-    icon: Icon, 
-    content: cardContent, 
-    isLoading, 
-    onGenerate, 
+  const GenerationCard = ({
+    title,
+    icon: Icon,
+    content: cardContent,
+    isLoading,
+    onGenerate,
     field,
     disabled = false
   }: {
@@ -159,7 +157,7 @@ export default function ContentAssistant({
               variant="ghost"
               size="sm"
               onClick={() => copyToClipboard(
-                Array.isArray(cardContent) ? cardContent.join(', ') : cardContent, 
+                Array.isArray(cardContent) ? cardContent.join(', ') : cardContent,
                 field
               )}
               className="h-6 w-6 p-0"
@@ -185,7 +183,7 @@ export default function ContentAssistant({
           </Button>
         </div>
       </div>
-      
+
       {cardContent && (
         <div className="text-sm text-muted-foreground">
           {Array.isArray(cardContent) ? (
@@ -265,7 +263,7 @@ export default function ContentAssistant({
                   )}
                 </select>
               </div>
-              
+
               <div>
                 <label className="text-sm font-medium mb-2 block">
                   Target Language
@@ -293,7 +291,7 @@ export default function ContentAssistant({
           title="Generate Tags"
           icon={Tag}
           content={results.tags}
-          isLoading={isGenerating.tags}
+          isLoading={!!isGenerating.tags}
           onGenerate={() => generateContent('tags')}
           field="tags"
           disabled={!content}
@@ -303,7 +301,7 @@ export default function ContentAssistant({
           title="Generate Summary"
           icon={FileText}
           content={results.summary}
-          isLoading={isGenerating.summary}
+          isLoading={!!isGenerating.summary}
           onGenerate={() => generateContent('summary')}
           field="summary"
           disabled={!content}
@@ -313,7 +311,7 @@ export default function ContentAssistant({
           title="Meta Description"
           icon={FileText}
           content={results.metaDescription}
-          isLoading={isGenerating.meta}
+          isLoading={!!isGenerating.meta}
           onGenerate={() => generateContent('meta')}
           field="meta"
           disabled={!content || !title}
@@ -323,7 +321,7 @@ export default function ContentAssistant({
           title={`Translate to ${targetLanguage.toUpperCase()}`}
           icon={Globe}
           content={results.translation}
-          isLoading={isGenerating.translate}
+          isLoading={!!isGenerating.translate}
           onGenerate={() => generateContent('translate')}
           field="translation"
           disabled={!content}

@@ -25,12 +25,12 @@ export class ErrorBoundary extends Component<Props, State> {
     return { hasError: true, error }
   }
 
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+  override componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     console.error('Error caught by boundary:', error, errorInfo)
     this.props.onError?.(error, errorInfo)
   }
 
-  render() {
+  override render() {
     if (this.state.hasError) {
       if (this.props.fallback) {
         return this.props.fallback
@@ -45,7 +45,7 @@ export class ErrorBoundary extends Component<Props, State> {
           </p>
           <div className='flex gap-2'>
             <Button
-              onClick={() => window.location.reload()}
+              onClick={() => globalThis.location.reload()}
               variant='outline'
               size='sm'
               className='gap-2'

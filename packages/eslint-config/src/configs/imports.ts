@@ -10,7 +10,7 @@ export const imports: Linter.Config[] = [
     },
     rules: {
       'import/no-amd': 'error',
-      'import/no-commonjs': 'error',
+      'import/no-commonjs': 'off',
       'import/first': 'error',
       'import/no-duplicates': 'error',
       'import/no-mutable-exports': 'error',

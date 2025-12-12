@@ -1,10 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, type MouseEvent } from 'react'
 import { X, Bell, AlertCircle, Info, CheckCircle, AlertTriangle, Sparkles } from 'lucide-react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@tszhong0411/ui'
-import { Badge } from '@tszhong0411/ui'
-import { ScrollArea } from '@tszhong0411/ui'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle , Badge , ScrollArea } from '@tszhong0411/ui'
+
+
 
 import { api } from '@/trpc/react'
 
@@ -62,7 +62,7 @@ interface AnnouncementWidgetProps {
 
 export default function AnnouncementWidget({ className, maxItems = 5 }: AnnouncementWidgetProps) {
   const [dismissedItems, setDismissedItems] = useState<string[]>(() => {
-    if (typeof window !== 'undefined') {
+    if (globalThis.window !== undefined) {
       const dismissed = sessionStorage.getItem('dismissedAnnouncements')
       return dismissed ? JSON.parse(dismissed) : []
     }
@@ -76,16 +76,16 @@ export default function AnnouncementWidget({ className, maxItems = 5 }: Announce
   })
 
   const dismissMutation = api.announcements.dismissAnnouncement.useMutation({
-    onSuccess: (data, variables) => {
+    onSuccess: (_data, variables) => {
       const newDismissed = [...dismissedItems, variables.announcementId]
       setDismissedItems(newDismissed)
-      if (typeof window !== 'undefined') {
+      if (globalThis.window !== undefined) {
         sessionStorage.setItem('dismissedAnnouncements', JSON.stringify(newDismissed))
       }
     }
   })
 
-  const handleDismiss = (announcementId: string, event: React.MouseEvent) => {
+  const handleDismiss = (announcementId: string, event: MouseEvent) => {
     event.stopPropagation()
     dismissMutation.mutate({ announcementId })
   }
@@ -163,7 +163,7 @@ export default function AnnouncementWidget({ className, maxItems = 5 }: Announce
                     <div className={`flex-shrink-0 transition-transform duration-200 group-hover:scale-110 ${styles.icon}`}>
                       {getAnnouncementIcon(announcement.type)}
                     </div>
-                    
+
                     <div className="flex-1 min-w-0 space-y-2">
                       <div className="flex items-start gap-2">
                         <h4 className="text-sm font-semibold leading-tight flex-1">
@@ -172,7 +172,7 @@ export default function AnnouncementWidget({ className, maxItems = 5 }: Announce
                         {announcement.isDismissible && (
                           <button
                             onClick={(e) => handleDismiss(announcement.id, e)}
-                            disabled={dismissMutation.isLoading}
+                            disabled={dismissMutation.isPending}
                             className="flex-shrink-0 rounded-md p-1 opacity-0 transition-opacity hover:bg-accent group-hover:opacity-100 disabled:opacity-50"
                             aria-label="Dismiss"
                           >
@@ -180,11 +180,11 @@ export default function AnnouncementWidget({ className, maxItems = 5 }: Announce
                           </button>
                         )}
                       </div>
-                      
+
                       <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
                         {announcement.content}
                       </p>
-                      
+
                       <div className="flex items-center gap-2">
                         <Badge variant="outline" className={`text-[10px] font-medium ${styles.badge}`}>
                           {announcement.type}

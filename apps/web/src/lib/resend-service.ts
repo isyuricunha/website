@@ -7,30 +7,30 @@ const resend = new Resend(process.env.RESEND_API_KEY)
 export interface ResendAudience {
   id: string
   name: string
-  object: 'audience'
+  object?: string
 }
 
 export interface ResendContact {
   id: string
-  email: string
+  email?: string
   first_name?: string
   last_name?: string
-  created_at: string
-  unsubscribed: boolean
+  created_at?: string
+  unsubscribed?: boolean
 }
 
 export interface ResendBroadcast {
   id: string
   name: string
-  subject: string
   audience_id: string
-  from: string
-  reply_to?: string
+  subject?: string
+  from?: string
+  reply_to?: string | string[] | null
   html?: string
   text?: string
-  scheduled_at?: string
-  sent_at?: string
-  status: 'draft' | 'scheduled' | 'sending' | 'sent' | 'cancelled'
+  scheduled_at?: string | null
+  sent_at?: string | null
+  status?: 'draft' | 'scheduled' | 'sending' | 'sent' | 'cancelled'
 }
 
 export class ResendService {
@@ -50,12 +50,12 @@ export class ResendService {
   /**
    * Audience Management
    */
-  
+
   // Create a new audience
   async createAudience(name: string): Promise<ResendAudience> {
     try {
       const response = await resend.audiences.create({ name })
-      return response.data as ResendAudience
+      return response.data as unknown as ResendAudience
     } catch (error) {
       logger.error('Error creating Resend audience', error)
       throw new Error('Failed to create audience')
@@ -68,7 +68,7 @@ export class ResendService {
       await this.rateLimitDelay()
       const response = await resend.audiences.list()
       const audiences = response.data?.data || []
-      return audiences
+      return audiences as unknown as ResendAudience[]
     } catch (error) {
       logger.error('Error listing Resend audiences', error)
       throw new Error('Failed to list audiences')
@@ -79,7 +79,7 @@ export class ResendService {
   async getAudience(audienceId: string): Promise<ResendAudience | null> {
     try {
       const response = await resend.audiences.get(audienceId)
-      return response.data as ResendAudience
+      return response.data as unknown as ResendAudience
     } catch (error) {
       logger.error('Error getting Resend audience', error)
       return null
@@ -100,7 +100,7 @@ export class ResendService {
   /**
    * Contact Management
    */
-  
+
   // Add contact to audience
   async addContact(audienceId: string, contact: {
     email: string
@@ -116,7 +116,7 @@ export class ResendService {
         lastName: contact.last_name,
         unsubscribed: contact.unsubscribed || false
       })
-      return response.data as ResendContact
+      return response.data as unknown as ResendContact
     } catch (error) {
       logger.error('Error adding contact to Resend audience', error)
       return null
@@ -137,7 +137,7 @@ export class ResendService {
         lastName: updates.last_name,
         unsubscribed: updates.unsubscribed
       })
-      return response.data as ResendContact
+      return response.data as unknown as ResendContact
     } catch (error) {
       logger.error('Error updating contact in Resend audience', error)
       return null
@@ -198,7 +198,7 @@ export class ResendService {
   /**
    * Broadcast Management
    */
-  
+
   // Create broadcast
   async createBroadcast(broadcast: {
     name: string
@@ -211,7 +211,7 @@ export class ResendService {
   }): Promise<ResendBroadcast | null> {
     try {
       await this.rateLimitDelay()
-      
+
       // Resend API only expects: audienceId, from, subject, html
       const response = await resend.broadcasts.create({
         audienceId: broadcast.audience_id,
@@ -219,8 +219,8 @@ export class ResendService {
         subject: broadcast.subject,
         html: broadcast.html || broadcast.text || '<p>No content provided</p>'
       })
-      
-      return response.data as ResendBroadcast
+
+      return response.data as unknown as ResendBroadcast
     } catch (error) {
       logger.error('Error creating Resend broadcast', error)
       return null
@@ -254,7 +254,7 @@ export class ResendService {
     try {
       await this.rateLimitDelay()
       const response = await resend.broadcasts.get(broadcastId)
-      return response.data as ResendBroadcast
+      return response.data as unknown as ResendBroadcast
     } catch (error) {
       logger.error('Error getting Resend broadcast', error)
       return null
@@ -268,12 +268,11 @@ export class ResendService {
   }): Promise<ResendBroadcast | null> {
     try {
       await this.rateLimitDelay()
-      const response = await resend.broadcasts.update({
-        id: broadcastId,
+      const response = await (resend.broadcasts as any).update(broadcastId, {
         html: updates.html,
         subject: updates.subject
       })
-      return response.data as ResendBroadcast
+      return response.data as unknown as ResendBroadcast
     } catch (error) {
       logger.error('Error updating Resend broadcast', error)
       return null
@@ -286,7 +285,7 @@ export class ResendService {
       await this.rateLimitDelay()
       const response = await resend.broadcasts.list()
       const broadcasts = response.data?.data || []
-      return broadcasts
+      return broadcasts as unknown as ResendBroadcast[]
     } catch (error) {
       logger.error('Error listing Resend broadcasts', error)
       return []
@@ -296,7 +295,7 @@ export class ResendService {
   // Cancel broadcast
   async cancelBroadcast(broadcastId: string): Promise<boolean> {
     try {
-      await resend.broadcasts.cancel(broadcastId)
+      await (resend.broadcasts as any).cancel(broadcastId)
       return true
     } catch (error) {
       logger.error('Error cancelling Resend broadcast', error)
@@ -318,7 +317,7 @@ export class ResendService {
   /**
    * User Sync Utilities
    */
-  
+
   // Sync user to Resend audience
   async syncUserToAudience(audienceId: string, user: {
     email: string
@@ -329,7 +328,7 @@ export class ResendService {
     try {
       // Check if contact already exists
       const existingContact = await this.findContactByEmail(audienceId, user.email)
-      
+
       if (existingContact) {
         // Update existing contact
         return await this.updateContact(audienceId, existingContact.id, {

@@ -14,10 +14,10 @@ const config: NextConfig = {
   },
 
   eslint: {
-    ignoreDuringBuilds: !!process.env.CI
+    ignoreDuringBuilds: false
   },
   typescript: {
-    ignoreBuildErrors: !!process.env.CI
+    ignoreBuildErrors: false
   },
 
   images: {
@@ -35,12 +35,12 @@ const config: NextConfig = {
 
   transpilePackages: ['@tszhong0411/*'],
 
-  // eslint-disable-next-line @typescript-eslint/require-await -- must be async
+   
   async headers() {
     return NextConfigHeaders
   },
 
-  // eslint-disable-next-line @typescript-eslint/require-await -- must be async
+   
   async redirects() {
     return [
       {

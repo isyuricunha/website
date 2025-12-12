@@ -5,8 +5,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@tszh
 import { Clock, FileText, Code, Calendar } from 'lucide-react'
 import { useMemo } from 'react'
 
-import { allPosts } from 'content-collections'
-import { allProjects } from 'content-collections'
+import { allPosts , allProjects } from 'content-collections'
+
 import Link from './link'
 
 type UpdatedItem = {
@@ -59,7 +59,7 @@ const RecentlyUpdated = () => {
             description: project.description,
             href: `/projects#${project.slug}`,
             type: 'project',
-            date: project.modifiedTime || new Date('2024-01-01').toISOString(),
+            date: project.endDate || project.startDate || new Date('2024-01-01').toISOString(),
             icon: <Code className='h-4 w-4' />
           })
         }
@@ -73,10 +73,10 @@ const RecentlyUpdated = () => {
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
-    
+
     // Use a consistent format to avoid hydration mismatches
-    return date.toLocaleDateString(locale, { 
-      month: 'short', 
+    return date.toLocaleDateString(locale, {
+      month: 'short',
       day: 'numeric',
       year: 'numeric'
     })
@@ -130,7 +130,7 @@ const RecentlyUpdated = () => {
             </Link>
           ))}
         </div>
-        
+
         {recentlyUpdated.length === 0 && (
           <div className='text-center py-8'>
             <Clock className='h-12 w-12 mx-auto text-muted-foreground mb-4' />

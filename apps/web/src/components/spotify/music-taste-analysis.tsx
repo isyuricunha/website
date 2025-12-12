@@ -9,6 +9,7 @@ import { api } from '@/trpc/react'
 
 const MusicTasteAnalysis = () => {
   const t = useTranslations()
+  const td = (key: string) => (t as any)(key) as string
   const [isRefreshing, setIsRefreshing] = useState(false)
 
   const { data: topArtists } = api.spotify.getTopArtists.useQuery()
@@ -24,11 +25,11 @@ const MusicTasteAnalysis = () => {
     if (!topTracks || !topArtists) return null
 
     // Energy analysis based on track popularity and artist diversity
-    const avgPopularity = topTracks.reduce((acc, track) => acc + (track.popularity || 0), 0) / topTracks.length
+    const avgPopularity = topTracks.reduce((acc: number, track: any) => acc + (track.popularity || 0), 0) / topTracks.length
     const energyLevel = avgPopularity > 70 ? 'high' : avgPopularity > 40 ? 'medium' : 'low'
 
     // Genre diversity analysis
-    const allGenres = topArtists.flatMap(artist => artist.genres || [])
+    const allGenres = topArtists.flatMap((artist: any) => artist.genres || [])
     const uniqueGenres = new Set(allGenres)
     const diversityLevel = uniqueGenres.size > 15 ? 'eclectic' : uniqueGenres.size > 8 ? 'diverse' : 'focused'
 
@@ -42,7 +43,7 @@ const MusicTasteAnalysis = () => {
 
     // Generate insights
     const insights = []
-    
+
     if (energyLevel === 'high') {
       insights.push(t('spotify.taste.insights.energy.high'))
     } else if (energyLevel === 'low') {
@@ -152,7 +153,7 @@ const MusicTasteAnalysis = () => {
               <Zap className='h-4 w-4' />
               <span className='text-xs sm:text-sm font-medium'>{t('spotify.taste.labels.energy')}</span>
             </div>
-            <p className='text-sm sm:text-base font-bold capitalize'>{t(`spotify.taste.energy-levels.${analysis.energyLevel}`)}</p>
+            <p className='text-sm sm:text-base font-bold capitalize'>{td(`spotify.taste.energy-levels.${analysis.energyLevel}`)}</p>
           </div>
 
           <div className={`p-4 rounded-lg ${getDiversityColor(analysis.diversityLevel)}`}>
@@ -160,7 +161,7 @@ const MusicTasteAnalysis = () => {
               <Heart className='h-4 w-4' />
               <span className='text-xs sm:text-sm font-medium'>{t('spotify.taste.labels.diversity')}</span>
             </div>
-            <p className='text-sm sm:text-base font-bold capitalize'>{t(`spotify.taste.diversity-levels.${analysis.diversityLevel}`)}</p>
+            <p className='text-sm sm:text-base font-bold capitalize'>{td(`spotify.taste.diversity-levels.${analysis.diversityLevel}`)}</p>
           </div>
 
           <div className={`p-4 rounded-lg ${getTasteColor(analysis.tasteProfile)}`}>
@@ -168,7 +169,7 @@ const MusicTasteAnalysis = () => {
               <Star className='h-4 w-4' />
               <span className='text-xs sm:text-sm font-medium'>{t('spotify.taste.labels.profile')}</span>
             </div>
-            <p className='text-sm sm:text-base font-bold capitalize'>{t(`spotify.taste.taste-profiles.${analysis.tasteProfile}`)}</p>
+            <p className='text-sm sm:text-base font-bold capitalize'>{td(`spotify.taste.taste-profiles.${analysis.tasteProfile}`)}</p>
           </div>
         </div>
 

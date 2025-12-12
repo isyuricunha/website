@@ -1,12 +1,12 @@
 'use client'
 
-import React from 'react'
-import { useEffect, useRef, useState, useMemo } from 'react'
+import React, { useEffect, useRef, useState, useMemo } from 'react'
+
 import { flags } from '@tszhong0411/env'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { X as XIcon, Settings as SettingsIcon, Gamepad as GamepadIcon, Eye as EyeIcon, Menu as MenuIcon, Bug as BugIcon, Github as GithubIcon, Copy as CopyIcon, MessageCircle as MessageCircleIcon, Code } from 'lucide-react'
-import { useTranslations, useLocale, useMessages } from '@tszhong0411/i18n/client'
+import { X as XIcon, Settings as SettingsIcon, Gamepad as GamepadIcon, Eye as EyeIcon, Menu as MenuIcon, Bug as BugIcon, Github as GithubIcon, Copy as CopyIcon, MessageCircle as MessageCircleIcon } from 'lucide-react'
+import { useTranslations, useMessages } from '@tszhong0411/i18n/client'
 import { i18n } from '@tszhong0411/i18n/config'
 import MascotGame from './mascot-game'
 import AIChatInterface from './ai-chat-interface'
@@ -59,7 +59,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     konamiSequence: [] as number[],
     isHovering: false,
     currentMessage: null as string | null,
-    messageQueue: [] as { id: number; text: string; expiresAt: number }[],
+    messageQueue: [] as Array<{ id: number; text: string; expiresAt: number }>,
     exitingIds: new Set<number>(),
     autoShowMessage: false,
     lastMessageIndex: -1,
@@ -125,7 +125,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
   // Load preferences from localStorage
   const loadPreferences = (): MascotPreferences => {
-    if (typeof window === 'undefined') return { ...DEFAULT_PREFERENCES }
+    if (globalThis.window === undefined) return { ...DEFAULT_PREFERENCES }
 
     try {
       const saved = localStorage.getItem(PREFERENCES_KEY)
@@ -147,10 +147,10 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   useEffect(() => {
     // This will only run on the client side
     setPrefersReducedMotion(
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      globalThis.matchMedia('(prefers-reduced-motion: reduce)').matches
     )
 
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const mediaQuery = globalThis.matchMedia('(prefers-reduced-motion: reduce)')
     const handleChange = () => setPrefersReducedMotion(mediaQuery.matches)
 
     mediaQuery.addEventListener('change', handleChange)
@@ -174,7 +174,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       const base = (allMessages?.mascot?.messages ?? {}) as Record<string, unknown>
       const keys = Object.keys(base)
         .filter((k) => /^\d+$/.test(k))
-        .map((k) => Number(k))
+        .map(Number)
         .sort((a, b) => a - b)
       for (const idx of keys) {
         const v = (base as any)[String(idx)]
@@ -182,7 +182,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       }
     } catch { }
     if (list.length === 0) return t('mascot.messages.0')
-    return list[Math.floor(Math.random() * list.length)]
+    return list[Math.floor(Math.random() * list.length)] ?? t('mascot.messages.0')
   }
 
   // Get blog post specific message
@@ -192,7 +192,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       const base = (allMessages?.mascot?.pageMessages?.blogPost ?? {}) as Record<string, unknown>
       const keys = Object.keys(base)
         .filter((k) => /^\d+$/.test(k))
-        .map((k) => Number(k))
+        .map(Number)
         .sort((a, b) => a - b)
       for (const idx of keys) {
         const v = (base as any)[String(idx)]
@@ -200,13 +200,13 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       }
     } catch { }
     if (list.length === 0) return t('mascot.messages.0')
-    return list[Math.floor(Math.random() * list.length)]
+    return list[Math.floor(Math.random() * list.length)] ?? t('mascot.messages.0')
   }
 
   // Copy email to clipboard
   const copyEmail = (): void => {
     navigator.clipboard.writeText('me@yuricunha.com')
-      .catch((err) => console.error('Failed to copy email:', err))
+      .catch((error) => console.error('Failed to copy email:', error))
     enqueueMessage('Email copied to clipboard!', 2000)
   }
 
@@ -217,7 +217,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     try {
       const saved = sessionStorage.getItem(MASCOT_IMAGE_KEY)
       if (saved) {
-        updateState({ currentMascotImage: parseInt(saved) })
+        updateState({ currentMascotImage: Number.parseInt(saved) })
       } else {
         const chosen = Math.floor(Math.random() * 5) + 1
         sessionStorage.setItem(MASCOT_IMAGE_KEY, String(chosen))
@@ -280,8 +280,8 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       }
     }
 
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
+    globalThis.addEventListener('keydown', handleKeyDown)
+    return () => globalThis.removeEventListener('keydown', handleKeyDown)
   }, [state.konamiSequence])
 
   // Blinking animation
@@ -304,7 +304,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       if (!state.autoShowMessage && !state.showContact && !state.showGame && !state.showSettings && !state.showMenu && !state.showAIChat) {
         enqueueMessage(getIdleMessage(), 4000)
       }
-    }, 25000) // 25 seconds idle
+    }, 25_000) // 25 seconds idle
 
     return () => {
       if (timer) clearTimeout(timer)
@@ -322,15 +322,15 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
     // Check for detail pages first (more specific)
     // Blog post detail
-    const blogPostMatch = pathWithoutLocale.match(/^\/blog\/([^\/]+)$/)
+    const blogPostMatch = /^\/blog\/([^\/]+)$/.exec(pathWithoutLocale)
     if (blogPostMatch) return 'blogPost'
 
     // Generic detail handling for known segments (e.g., /projects/[slug])
     const DETAIL_SEGMENTS = new Set(['projects'])
-    const detailMatch = pathWithoutLocale.match(/^\/(\w+)\/([^\/]+)$/)
+    const detailMatch = /^\/(\w+)\/([^\/]+)$/.exec(pathWithoutLocale)
     if (detailMatch) {
       const seg = detailMatch[1]
-      if (DETAIL_SEGMENTS.has(seg)) {
+      if (seg && DETAIL_SEGMENTS.has(seg)) {
         return `${seg}Detail`
       }
     }
@@ -362,7 +362,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         const base = (allMessages?.mascot?.pageMessages?.[k] ?? {}) as Record<string, unknown>
         const keys = Object.keys(base)
           .filter((kk) => /^\d+$/.test(kk))
-          .map((kk) => Number(kk))
+          .map(Number)
           .sort((a, b) => a - b)
         for (const idx of keys) {
           const v = (base as any)[String(idx)]
@@ -373,7 +373,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     }
 
     // Prefer detail-specific messages when available, then fallback to base and home
-    const isDetail = /Detail$/.test(key)
+    const isDetail = key.endsWith('Detail')
     const baseKey = isDetail ? key.replace(/Detail$/, '') : key
     let msgs: string[] = []
     if (isDetail) {
@@ -394,7 +394,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   const currentBlogPostSlug = useMemo(() => {
     if (!isOnBlogPost) return null
     const pathWithoutLocale = (pathname || '/').replace(/^\/(en|pt|fr|de|zh)\//, '/')
-    const blogPostMatch = pathWithoutLocale.match(/^\/blog\/([^\/]+)$/)
+    const blogPostMatch = /^\/blog\/([^\/]+)$/.exec(pathWithoutLocale)
     return blogPostMatch ? blogPostMatch[1] : null
   }, [pathname, isOnBlogPost])
 
@@ -424,20 +424,21 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         } else {
           // Show randomized page message for non-blog-post pages
           const pageMessages = fetchPageMessages(pageKey)
-          const randomized = pageMessages.length
+          const randomized = pageMessages.length > 0
             ? pageMessages[Math.floor(Math.random() * pageMessages.length)]
             : ''
           if (randomized) enqueueMessage(randomized)
         }
 
         // Reset auto show flag after duration
-        const hideTimer = setTimeout(() => {
+        setTimeout(() => {
           updateState({ autoShowMessage: false })
         }, state.preferences.messageDuration)
       }, 1000) // 1 second delay after page load
 
       return () => clearTimeout(timer)
     }
+    return
   }, [pageKey, state.preferences.speechBubbles, state.preferences.messageDuration, isOnBlogPost, currentBlogPostSlug, state.blogPostsVisited, t])
 
   // Build message list from i18n with time-based greetings and context
@@ -460,7 +461,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       list.push(...blogSpecific)
     } else {
       // First try to get page-specific messages for non-blog-post pages
-      const pageSpecific = fetchPageMessages(pageKey, 6)
+      const pageSpecific = fetchPageMessages(pageKey)
       list.push(...pageSpecific)
     }
 
@@ -667,13 +668,13 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
                 <span>{t('mascot.settings.messageDuration')}</span>
                 <select
                   value={state.preferences.messageDuration}
-                  onChange={(e) => updatePreferences({ messageDuration: parseInt(e.target.value) })}
+                  onChange={(e) => updatePreferences({ messageDuration: Number.parseInt(e.target.value) })}
                   className='rounded-xl border-2 border-input/50 bg-background/80 backdrop-blur-sm text-foreground text-xs px-3 py-2.5 shadow-lg transition-all duration-200 hover:border-primary/50 hover:shadow-xl focus:ring-2 focus:ring-primary/30 focus:ring-offset-2 focus:outline-none focus:border-primary cursor-pointer'
                 >
                   <option value={3000} className='bg-background text-foreground py-2.5 px-3 hover:bg-muted/80 rounded-lg border-b border-border/30 last:border-b-0'>3s</option>
                   <option value={5000} className='bg-background text-foreground py-2.5 px-3 hover:bg-muted/80 rounded-lg border-b border-border/30 last:border-b-0'>5s</option>
                   <option value={7000} className='bg-background text-foreground py-2.5 px-3 hover:bg-muted/80 rounded-lg border-b border-border/30 last:border-b-0'>7s</option>
-                  <option value={10000} className='bg-background text-foreground py-2.5 px-3 hover:bg-muted/80 rounded-lg border-b border-border/30 last:border-b-0'>10s</option>
+                  <option value={10_000} className='bg-background text-foreground py-2.5 px-3 hover:bg-muted/80 rounded-lg border-b border-border/30 last:border-b-0'>10s</option>
                 </select>
               </label>
 
@@ -755,8 +756,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
                 {t('mascot.menu.viewProjects')}
               </button>
               {flags.gemini && (
-                <>
-                  <button
+                <button
                     type='button'
                     className='flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-left transition-all duration-200 hover:bg-muted/80 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50'
                     onClick={() => handleMenuAction('chat')}
@@ -764,7 +764,6 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
                     <MessageCircleIcon className='h-4 w-4' />
                     AI Chat
                   </button>
-                </>
               )}
               <button
                 type='button'
@@ -811,7 +810,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
                     }`}
                   role='dialog'
                   aria-label={t('mascot.speechBubble')}
-                  style={!prefersReducedMotion ? { animation: 'fadeInUp 300ms ease-out' } : undefined}
+                  style={prefersReducedMotion ? undefined : { animation: 'fadeInUp 300ms ease-out' }}
                 >
                   <div className='bubble-float p-2'>
                     <div className='flex items-start gap-2'>
@@ -896,7 +895,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
       {/* Mini Game */}
       <MascotGame isOpen={state.showGame} onClose={() => updateState({ showGame: false })} />
-      
+
     </>
   )
 }

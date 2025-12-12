@@ -1197,7 +1197,8 @@
       "success": "Message sent successfully!",
       "error": "Failed to send message. Please try again.",
       "network-error": "Network error. Please check your connection and try again.",
-      "turnstile-required": "Please complete the verification challenge"
+      "turnstile-required": "Please complete the verification challenge",
+      "turnstile-error": "Security verification failed. Please try again."
     },
     "direct": {
       "title": "Direct Contact",

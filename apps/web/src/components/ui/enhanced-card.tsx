@@ -2,16 +2,18 @@
 
 import { cn } from '@tszhong0411/utils'
 import { motion } from 'motion/react'
-import { forwardRef } from 'react'
 
-interface EnhancedCardProps extends React.HTMLAttributes<HTMLDivElement> {
+interface EnhancedCardProps
+  extends Omit<
+    React.HTMLAttributes<HTMLDivElement>,
+    'onDrag' | 'onDragStart' | 'onDragEnd' | 'onAnimationStart' | 'onAnimationEnd' | 'onAnimationIteration'
+  > {
   hover?: boolean
   gradient?: boolean
   children: React.ReactNode
 }
 
-const EnhancedCard = forwardRef<HTMLDivElement, EnhancedCardProps>(
-  ({ className, hover = true, gradient = false, children, ...props }, ref) => {
+const EnhancedCard = ({ ref, className, hover = true, gradient = false, children, ...props }: EnhancedCardProps & { ref?: React.RefObject<HTMLDivElement | null> }) => {
     return (
       <motion.div
         ref={ref}
@@ -34,26 +36,19 @@ const EnhancedCard = forwardRef<HTMLDivElement, EnhancedCardProps>(
       </motion.div>
     )
   }
-)
 
 EnhancedCard.displayName = 'EnhancedCard'
 
-const EnhancedCardHeader = forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
+const EnhancedCardHeader = ({ ref, className, ...props }: React.HTMLAttributes<HTMLDivElement> & { ref?: React.RefObject<HTMLDivElement | null> }) => (
   <div
     ref={ref}
     className={cn('flex flex-col space-y-1.5 p-6', className)}
     {...props}
   />
-))
+)
 EnhancedCardHeader.displayName = 'EnhancedCardHeader'
 
-const EnhancedCardTitle = forwardRef<
-  HTMLParagraphElement,
-  React.HTMLAttributes<HTMLHeadingElement>
->(({ className, ...props }, ref) => (
+const EnhancedCardTitle = ({ ref, className, ...props }: React.HTMLAttributes<HTMLHeadingElement> & { ref?: React.RefObject<HTMLParagraphElement | null> }) => (
   <h3
     ref={ref}
     className={cn(
@@ -62,39 +57,30 @@ const EnhancedCardTitle = forwardRef<
     )}
     {...props}
   />
-))
+)
 EnhancedCardTitle.displayName = 'EnhancedCardTitle'
 
-const EnhancedCardDescription = forwardRef<
-  HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement>
->(({ className, ...props }, ref) => (
+const EnhancedCardDescription = ({ ref, className, ...props }: React.HTMLAttributes<HTMLParagraphElement> & { ref?: React.RefObject<HTMLParagraphElement | null> }) => (
   <p
     ref={ref}
     className={cn('text-sm text-muted-foreground', className)}
     {...props}
   />
-))
+)
 EnhancedCardDescription.displayName = 'EnhancedCardDescription'
 
-const EnhancedCardContent = forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
+const EnhancedCardContent = ({ ref, className, ...props }: React.HTMLAttributes<HTMLDivElement> & { ref?: React.RefObject<HTMLDivElement | null> }) => (
   <div ref={ref} className={cn('p-6 pt-0', className)} {...props} />
-))
+)
 EnhancedCardContent.displayName = 'EnhancedCardContent'
 
-const EnhancedCardFooter = forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
+const EnhancedCardFooter = ({ ref, className, ...props }: React.HTMLAttributes<HTMLDivElement> & { ref?: React.RefObject<HTMLDivElement | null> }) => (
   <div
     ref={ref}
     className={cn('flex items-center p-6 pt-0', className)}
     {...props}
   />
-))
+)
 EnhancedCardFooter.displayName = 'EnhancedCardFooter'
 
 export {

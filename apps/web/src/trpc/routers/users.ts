@@ -1,8 +1,7 @@
 import type { RouterOutputs } from '../react'
 
 import { TRPCError } from '@trpc/server'
-import { passwordResetTokens, users, sessions } from '@tszhong0411/db'
-import { eq } from 'drizzle-orm'
+import { eq, passwordResetTokens, users, sessions } from '@tszhong0411/db'
 import { randomBytes } from 'crypto'
 import { hash } from '@node-rs/argon2'
 import { z } from 'zod'
@@ -47,7 +46,7 @@ export const usersRouter = createTRPCRouter({
           where: (users, { eq }) => eq(users.id, input.userId),
           columns: { id: true, name: true, email: true, role: true }
         })
-        
+
         if (!user) {
           throw new TRPCError({
             code: 'NOT_FOUND',
@@ -62,26 +61,26 @@ export const usersRouter = createTRPCRouter({
             message: 'Cannot delete admin users'
           })
         }
-        
+
         // Actually delete the user from database
         await ctx.db.delete(users).where(eq(users.id, input.userId))
-        
+
         // Log the audit trail
         await auditLogger.logUserAction(
           ctx.session.user.id,
           'user_delete',
           input.userId,
-          { 
-            deletedUser: { 
-              name: user.name, 
-              email: user.email, 
-              role: user.role 
-            } 
+          {
+            deletedUser: {
+              name: user.name,
+              email: user.email,
+              role: user.role
+            }
           },
           ipAddress,
           userAgent
         )
-        
+
         return { success: true }
       } catch (error) {
         if (error instanceof TRPCError) {
@@ -107,7 +106,7 @@ export const usersRouter = createTRPCRouter({
           where: (users, { eq }) => eq(users.id, input.userId),
           columns: { id: true, name: true, email: true, role: true }
         })
-        
+
         if (!user) {
           throw new TRPCError({
             code: 'NOT_FOUND',
@@ -122,26 +121,26 @@ export const usersRouter = createTRPCRouter({
             message: 'Cannot ban admin users'
           })
         }
-        
+
         // For now, we'll delete all user sessions to effectively "ban" them
         // In a more sophisticated system, you'd add a 'banned' field to users table
         await ctx.db.delete(sessions).where(eq(sessions.userId, input.userId))
-        
+
         // Log the audit trail
         await auditLogger.logUserAction(
           ctx.session.user.id,
           'user_ban',
           input.userId,
-          { 
-            bannedUser: { 
-              name: user.name, 
-              email: user.email 
-            } 
+          {
+            bannedUser: {
+              name: user.name,
+              email: user.email
+            }
           },
           ipAddress,
           userAgent
         )
-        
+
         return { success: true }
       } catch (error) {
         if (error instanceof TRPCError) {
@@ -167,33 +166,33 @@ export const usersRouter = createTRPCRouter({
           where: (users, { eq }) => eq(users.id, input.userId),
           columns: { id: true, name: true, email: true }
         })
-        
+
         if (!user) {
           throw new TRPCError({
             code: 'NOT_FOUND',
             message: 'User not found'
           })
         }
-        
+
         // Since we "ban" by deleting sessions, "unbanning" means the user can sign in again
         // In a more sophisticated system, you'd update a 'banned' field to false
         // For now, we'll just log the unban action
-        
+
         // Log the audit trail
         await auditLogger.logUserAction(
           ctx.session.user.id,
           'user_unban',
           input.userId,
-          { 
-            unbannedUser: { 
-              name: user.name, 
-              email: user.email 
-            } 
+          {
+            unbannedUser: {
+              name: user.name,
+              email: user.email
+            }
           },
           ipAddress,
           userAgent
         )
-        
+
         return { success: true }
       } catch (error) {
         if (error instanceof TRPCError) {
@@ -227,7 +226,7 @@ export const usersRouter = createTRPCRouter({
           where: (users, { eq }) => eq(users.id, userId),
           columns: { id: true, name: true, email: true, username: true, role: true, image: true }
         })
-        
+
         if (!user) {
           throw new TRPCError({
             code: 'NOT_FOUND',
@@ -260,7 +259,7 @@ export const usersRouter = createTRPCRouter({
             })
           }
         }
-        
+
         // Filter out undefined values for the update
         const filteredUpdateData = Object.fromEntries(
           Object.entries(updateData).filter(([_, value]) => value !== undefined)
@@ -278,20 +277,20 @@ export const usersRouter = createTRPCRouter({
           .update(users)
           .set({ ...filteredUpdateData, updatedAt: new Date() })
           .where(eq(users.id, userId))
-        
+
         // Log the audit trail
         await auditLogger.logUserAction(
           ctx.session.user.id,
           'user_update',
           userId,
-          { 
+          {
             previousData: user,
             updatedData: filteredUpdateData
           },
           ipAddress,
           userAgent
         )
-        
+
         return { success: true }
       } catch (error) {
         if (error instanceof TRPCError) {
@@ -425,10 +424,10 @@ export const usersRouter = createTRPCRouter({
           ctx.session.user.id,
           'user_password_reset',
           input.userId,
-          { 
-            targetUser: { 
-              name: user.name, 
-              email: user.email 
+          {
+            targetUser: {
+              name: user.name,
+              email: user.email
             },
             resetInitiated: true
           },
@@ -447,7 +446,7 @@ export const usersRouter = createTRPCRouter({
     }),
 
   resetPassword: publicProcedure
-    .input(z.object({ 
+    .input(z.object({
       token: z.string(),
       newPassword: z.string().min(8)
     }))
@@ -480,7 +479,7 @@ export const usersRouter = createTRPCRouter({
         }
 
         // Hash the new password
-        const hashedPassword = await hash(input.newPassword)
+        await hash(input.newPassword)
 
         // Update user's password (this would require adding password field to accounts table)
         // For now, we'll simulate this

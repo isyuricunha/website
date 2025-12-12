@@ -13,14 +13,13 @@ export const GET = async (req: NextRequest, props: OGRouteProps) => {
   try {
     const { id } = await props.params
     const { searchParams } = new URL(req.url)
-    
+
     // Check if this is a blog post request
     const type = searchParams.get('type')
     const title = searchParams.get('title')
     const date = searchParams.get('date')
     const summary = searchParams.get('summary')
-    const locale = searchParams.get('locale') || 'en'
-    
+
     if (type === 'post' && title && date) {
       // Generate blog post specific OG image
       return new ImageResponse(
@@ -114,7 +113,7 @@ export const GET = async (req: NextRequest, props: OGRouteProps) => {
         }
       )
     }
-    
+
     // Fallback for other cases
     return new ImageResponse(
       (
@@ -204,7 +203,7 @@ export const GET = async (req: NextRequest, props: OGRouteProps) => {
         height: 630
       }
     )
-  } catch (error) {
+  } catch {
     return new Response('Failed to generate image', { status: 500 })
   }
 }

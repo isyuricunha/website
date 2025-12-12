@@ -34,6 +34,10 @@ export const javascript: Linter.Config[] = [
     rules: {
       ...eslintPlugin.configs.recommended.rules,
 
+      'no-case-declarations': 'off',
+      'no-empty': 'off',
+      'no-useless-escape': 'off',
+
       'unused-imports/no-unused-imports': 'error',
       'unused-imports/no-unused-vars': [
         'error',

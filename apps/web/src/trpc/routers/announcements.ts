@@ -1,17 +1,20 @@
 import { TRPCError } from '@trpc/server'
-import { 
+import {
+  and,
   announcements,
   announcementInteractions,
+  desc,
+  eq,
+  gte,
+  lte,
+  inArray,
 } from '@tszhong0411/db'
-import { and, desc, eq, gte, inArray, or } from 'drizzle-orm'
 import { randomBytes } from 'crypto'
 import { z } from 'zod'
 
 import { AuditLogger, getIpFromHeaders, getUserAgentFromHeaders } from '@/lib/audit-logger'
 import { logger } from '@/lib/logger'
-import { adminProcedure, protectedProcedure, publicProcedure, createTRPCRouter } from '../trpc'
-
-const auditLogger = new AuditLogger()
+import { adminProcedure, publicProcedure, createTRPCRouter } from '../trpc'
 
 export const announcementsRouter = createTRPCRouter({
   // Get announcements (public endpoint for homepage banners)
@@ -65,7 +68,7 @@ export const announcementsRouter = createTRPCRouter({
 
             // If no specific targeting, show to all
             return true
-          } catch (error) {
+          } catch {
             // If JSON parsing fails, show to all users
             return true
           }
@@ -80,11 +83,11 @@ export const announcementsRouter = createTRPCRouter({
               inArray(announcementInteractions.announcementId, filteredAnnouncements.map(a => a.id))
             )
           })
-          
-          userInteractions = interactions.reduce((acc, interaction) => {
+
+          userInteractions = interactions.reduce<any>((acc, interaction) => {
             acc[interaction.announcementId] = interaction
             return acc
-          }, {} as any)
+          }, {})
         }
 
         return {
@@ -120,6 +123,10 @@ export const announcementsRouter = createTRPCRouter({
     }))
     .mutation(async ({ ctx, input }) => {
       try {
+        const auditLogger = new AuditLogger(ctx.db)
+        const ipAddress = getIpFromHeaders(ctx.headers)
+        const userAgent = getUserAgentFromHeaders(ctx.headers)
+
         const announcementId = randomBytes(16).toString('hex')
 
         await ctx.db.insert(announcements).values({
@@ -147,7 +154,9 @@ export const announcementsRouter = createTRPCRouter({
             title: input.title,
             type: input.type,
             priority: input.priority
-          }
+          },
+          ipAddress,
+          userAgent
         )
 
         return { success: true, announcementId }
@@ -230,8 +239,12 @@ export const announcementsRouter = createTRPCRouter({
     }))
     .mutation(async ({ ctx, input }) => {
       try {
+        const auditLogger = new AuditLogger(ctx.db)
+        const ipAddress = getIpFromHeaders(ctx.headers)
+        const userAgent = getUserAgentFromHeaders(ctx.headers)
+
         const { id, ...updateData } = input
-        
+
         await ctx.db
           .update(announcements)
           .set({
@@ -250,7 +263,9 @@ export const announcementsRouter = createTRPCRouter({
           {
             action: 'announcement_updated',
             changes: updateData
-          }
+          },
+          ipAddress,
+          userAgent
         )
 
         return { success: true }
@@ -268,6 +283,10 @@ export const announcementsRouter = createTRPCRouter({
     .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
       try {
+        const auditLogger = new AuditLogger(ctx.db)
+        const ipAddress = getIpFromHeaders(ctx.headers)
+        const userAgent = getUserAgentFromHeaders(ctx.headers)
+
         await ctx.db.delete(announcements).where(eq(announcements.id, input.id))
 
         // Log audit trail
@@ -278,7 +297,9 @@ export const announcementsRouter = createTRPCRouter({
           input.id,
           {
             action: 'announcement_deleted'
-          }
+          },
+          ipAddress,
+          userAgent
         )
 
         return { success: true }
@@ -304,14 +325,14 @@ export const announcementsRouter = createTRPCRouter({
       try {
         // Get announcement engagement stats
         const conditions = []
-        
+
         if (input.announcementId) {
           conditions.push(eq(announcementInteractions.announcementId, input.announcementId))
         }
 
         if (input.dateRange) {
           conditions.push(gte(announcementInteractions.viewedAt, input.dateRange.start))
-          conditions.push(gte(input.dateRange.end, announcementInteractions.viewedAt))
+          conditions.push(lte(announcementInteractions.viewedAt, input.dateRange.end))
         }
 
         const interactions = await ctx.db.query.announcementInteractions.findMany({
@@ -339,7 +360,7 @@ export const announcementsRouter = createTRPCRouter({
               dismissalRate: 0
             }
           }
-          
+
           analytics.byAnnouncement[announcementId].views++
           if (interaction.dismissed) {
             analytics.byAnnouncement[announcementId].dismissals++

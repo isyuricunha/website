@@ -3,27 +3,29 @@ import type { NextRequest } from 'next/server'
 import { i18nMiddleware } from '@tszhong0411/i18n/middleware'
 
 const middleware = (request: NextRequest) => {
-  const csp = `
-    default-src 'self';
-    script-src 'self' 'unsafe-inline' 'unsafe-eval' *.yuricunha.com *.umami.is vercel.live va.vercel-scripts.com unpkg.com challenges.cloudflare.com;
-    style-src 'self' 'unsafe-inline' vercel.live;
-    img-src * blob: data:;
-    font-src 'self' data: assets.vercel.com vercel.live;
-    object-src 'none';
-    base-uri 'self';
-    form-action 'self';
-    connect-src *;
-    media-src 'self';
-    frame-ancestors 'none';
-    frame-src vercel.live challenges.cloudflare.com;
-    block-all-mixed-content;
-    upgrade-insecure-requests;
-    worker-src blob: 'self';
-  `
+  const is_production = process.env.NODE_ENV === 'production'
+
+  const csp = [
+    "default-src 'self'",
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' *.yuricunha.com *.umami.is vercel.live va.vercel-scripts.com unpkg.com challenges.cloudflare.com",
+    "style-src 'self' 'unsafe-inline' vercel.live",
+    "img-src 'self' https: data: blob:",
+    "font-src 'self' data: assets.vercel.com vercel.live",
+    "object-src 'none'",
+    "base-uri 'self'",
+    "form-action 'self'",
+    "connect-src 'self' https: wss:",
+    "media-src 'self'",
+    "frame-ancestors 'none'",
+    "frame-src vercel.live challenges.cloudflare.com",
+    "worker-src blob: 'self'"
+  ].join('; ')
 
   const response = i18nMiddleware(request)
 
-  response.headers.set('Content-Security-Policy', csp.replaceAll('\n', ''))
+  if (is_production) {
+    response.headers.set('Content-Security-Policy-Report-Only', csp)
+  }
 
   return response
 }

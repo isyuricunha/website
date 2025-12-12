@@ -1,15 +1,13 @@
 import { TRPCError } from '@trpc/server'
-import { 
-  databaseBackups,
-  databaseRestores,
-  dataMigrations,
+import {
+  and,
   dataExports,
-  dataImports,
-  dataSynchronization,
   dataQualityChecks,
-  dataQualityResults
+  databaseBackups,
+  desc,
+  eq,
+  gte
 } from '@tszhong0411/db'
-import { and, desc, eq, gte } from 'drizzle-orm'
 import { randomBytes } from 'crypto'
 import { z } from 'zod'
 
@@ -21,7 +19,7 @@ export const dataManagementRouter = createTRPCRouter({
   // Database Backups
   getDatabaseBackups: adminProcedure
     .input(z.object({
-      status: z.enum(['pending', 'in_progress', 'completed', 'failed']).optional(),
+      status: z.enum(['pending', 'running', 'completed', 'failed', 'cancelled']).optional(),
       limit: z.number().min(1).max(100).default(20)
     }))
     .query(async ({ ctx, input }) => {
@@ -69,25 +67,24 @@ export const dataManagementRouter = createTRPCRouter({
         const userAgent = getUserAgentFromHeaders(ctx.headers)
 
         const backupId = randomBytes(16).toString('hex')
-        const filename = `backup_${input.type}_${new Date().toISOString().replace(/[:.]/g, '-')}.sql`
+        const backupName = input.description || `backup_${input.type}_${new Date().toISOString()}`
 
         await ctx.db.insert(databaseBackups).values({
           id: backupId,
-          filename,
+          name: backupName,
           type: input.type,
-          description: input.description,
-          status: 'in_progress',
+          status: 'running',
           createdBy: ctx.session.user.id
         })
 
         // Simulate backup completion
         setTimeout(async () => {
-          const fileSize = Math.floor(Math.random() * 1000000) + 100000
+          const fileSize = Math.floor(Math.random() * 1_000_000) + 100_000
           await ctx.db
             .update(databaseBackups)
             .set({
               status: 'completed',
-              filePath: `/backups/${filename}`,
+              filePath: `/backups/${backupId}.sql`,
               fileSize,
               completedAt: new Date()
             })
@@ -117,7 +114,7 @@ export const dataManagementRouter = createTRPCRouter({
   // Data Exports
   getDataExports: adminProcedure
     .input(z.object({
-      status: z.enum(['pending', 'processing', 'completed', 'failed']).optional(),
+      status: z.enum(['pending', 'running', 'completed', 'failed', 'cancelled']).optional(),
       limit: z.number().min(1).max(100).default(20)
     }))
     .query(async ({ ctx, input }) => {
@@ -141,7 +138,7 @@ export const dataManagementRouter = createTRPCRouter({
         return {
           exports: exports.map(exportItem => ({
             ...exportItem,
-            exportOptions: exportItem.exportOptions ? JSON.parse(exportItem.exportOptions) : null
+            metadata: exportItem.metadata ? JSON.parse(exportItem.metadata) : null
           }))
         }
       } catch (error) {
@@ -156,7 +153,7 @@ export const dataManagementRouter = createTRPCRouter({
   createDataExport: adminProcedure
     .input(z.object({
       name: z.string().min(1),
-      format: z.enum(['csv', 'json', 'xml', 'xlsx']).default('csv'),
+      format: z.enum(['csv', 'json', 'xml', 'sql', 'excel']).default('csv'),
       tables: z.array(z.string())
     }))
     .mutation(async ({ ctx, input }) => {
@@ -166,14 +163,13 @@ export const dataManagementRouter = createTRPCRouter({
         const userAgent = getUserAgentFromHeaders(ctx.headers)
 
         const exportId = randomBytes(16).toString('hex')
-        const filename = `export_${input.name.replace(/\s+/g, '_')}_${Date.now()}.${input.format}`
+        const exportPath = `/exports/${exportId}.${input.format}`
 
         await ctx.db.insert(dataExports).values({
           id: exportId,
           name: input.name,
           format: input.format,
           tables: JSON.stringify(input.tables),
-          filename,
           status: 'pending',
           createdBy: ctx.session.user.id
         })
@@ -181,8 +177,8 @@ export const dataManagementRouter = createTRPCRouter({
         // Simulate export process
         setTimeout(async () => {
           const recordCount = Math.floor(Math.random() * 5000) + 100
-          const fileSize = Math.floor(Math.random() * 10000000) + 1000000
-          
+          const fileSize = Math.floor(Math.random() * 10_000_000) + 1_000_000
+
           await ctx.db
             .update(dataExports)
             .set({
@@ -190,7 +186,7 @@ export const dataManagementRouter = createTRPCRouter({
               completedAt: new Date(),
               recordCount,
               fileSize,
-              filePath: `/exports/${filename}`
+              filePath: exportPath
             })
             .where(eq(dataExports.id, exportId))
         }, 6000)
@@ -236,26 +232,19 @@ export const dataManagementRouter = createTRPCRouter({
         await ctx.db.insert(dataQualityChecks).values({
           id: checkId,
           name: input.name,
-          tableName: input.tableName,
-          checkRules: JSON.stringify(input.checkRules),
-          status: 'running',
+          type: 'validity',
+          table: input.tableName,
+          rules: JSON.stringify(input.checkRules),
           createdBy: ctx.session.user.id
         })
 
         // Simulate quality check execution
         setTimeout(async () => {
-          const totalRecords = Math.floor(Math.random() * 10000) + 1000
-          const passedRecords = Math.floor(totalRecords * (0.8 + Math.random() * 0.2))
-          const failedRecords = totalRecords - passedRecords
-          
           await ctx.db
             .update(dataQualityChecks)
             .set({
-              status: 'completed',
-              completedAt: new Date(),
-              totalRecords,
-              passedRecords,
-              failedRecords
+              lastRunAt: new Date(),
+              updatedAt: new Date()
             })
             .where(eq(dataQualityChecks.id, checkId))
         }, 7000)

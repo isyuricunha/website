@@ -3,7 +3,7 @@
 import { useTranslations } from '@tszhong0411/i18n/client'
 import { usePathname } from '@tszhong0411/i18n/routing'
 import { ChevronRight, Home } from 'lucide-react'
-import { Fragment } from 'react'
+import { Fragment, type ReactElement } from 'react'
 
 import Link from './link'
 
@@ -15,8 +15,8 @@ const Breadcrumbs = () => {
   if (pathname === '/') return null
 
   const pathSegments = pathname.split('/').filter(Boolean)
-  
-  const breadcrumbItems = [
+
+  const breadcrumbItems: Array<{ label: string; href: string; icon?: ReactElement }> = [
     {
       label: t('layout.home'),
       href: '/',
@@ -26,9 +26,9 @@ const Breadcrumbs = () => {
 
   // Build breadcrumb path
   let currentPath = ''
-  pathSegments.forEach((segment, index) => {
+  pathSegments.forEach((segment) => {
     currentPath += `/${segment}`
-    
+
     // Get translated label for common paths
     let label = segment
     switch (segment) {
@@ -61,7 +61,6 @@ const Breadcrumbs = () => {
     breadcrumbItems.push({
       label,
       href: currentPath,
-      icon: null
     })
   })
 

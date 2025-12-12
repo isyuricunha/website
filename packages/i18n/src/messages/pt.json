@@ -1197,7 +1197,8 @@
       "success": "Mensagem enviada com sucesso!",
       "error": "Falha ao enviar mensagem. Por favor, tente novamente.",
       "network-error": "Erro de rede. Por favor, verifique sua conexão e tente novamente.",
-      "turnstile-required": "Conclua o desafio de verificação"
+      "turnstile-required": "Conclua o desafio de verificação",
+      "turnstile-error": "Falha na verificação de segurança. Por favor, tente novamente."
     },
     "direct": {
       "title": "Contato Direto",

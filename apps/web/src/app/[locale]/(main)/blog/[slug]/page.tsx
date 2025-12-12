@@ -9,7 +9,6 @@ import { Suspense } from 'react'
 
 import Comments from '@/components/comments'
 import Mdx from '@/components/mdx'
-import NewsletterSignup from '@/components/newsletter-signup'
 import { SITE_NAME, SITE_URL } from '@/lib/constants'
 import { getLocalizedPath } from '@/utils/get-localized-path'
 

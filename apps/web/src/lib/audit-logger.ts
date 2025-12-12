@@ -1,10 +1,11 @@
 import { randomBytes } from 'crypto'
 import { auditLogs } from '@tszhong0411/db'
-import type { NodePgDatabase } from 'drizzle-orm/node-postgres'
 
-export type AuditAction = 
+type database = typeof import('@tszhong0411/db').db
+
+export type AuditAction =
   | 'user_create'
-  | 'user_update' 
+  | 'user_update'
   | 'user_delete'
   | 'user_ban'
   | 'user_unban'
@@ -28,12 +29,12 @@ export interface AuditLogEntry {
 }
 
 export class AuditLogger {
-  constructor(private db: NodePgDatabase<any>) {}
+  constructor(private db: database) { }
 
   async log(entry: AuditLogEntry): Promise<void> {
     try {
       const id = randomBytes(16).toString('hex')
-      
+
       await this.db.insert(auditLogs).values({
         id,
         adminUserId: entry.adminUserId,

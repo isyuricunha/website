@@ -2,12 +2,11 @@
 
 import { useState, useEffect } from 'react'
 import { Button } from '@tszhong0411/ui'
-import { 
-  RefreshCw, 
-  AlertTriangle, 
-  CheckCircle, 
-  XCircle, 
-  Clock,
+import {
+  RefreshCw,
+  AlertTriangle,
+  CheckCircle,
+  XCircle,
   Database,
   Mail,
   Server,
@@ -20,35 +19,6 @@ import {
 import { api } from '@/trpc/react'
 import { toast } from 'sonner'
 
-interface HealthCheck {
-  type: string
-  status: 'healthy' | 'warning' | 'critical' | 'unknown'
-  message: string
-  responseTime: number
-  timestamp: Date
-  details?: any
-}
-
-interface SystemStats {
-  errors: {
-    total: number
-    recent: number
-    unresolved: number
-    byLevel: {
-      error: number
-      warning: number
-      info: number
-    }
-  }
-  health: {
-    total: number
-    healthy: number
-    warning: number
-    critical: number
-    uptime: number
-  }
-}
-
 export const SystemHealthDashboard = () => {
   const [autoRefresh, setAutoRefresh] = useState(false)
   const [refreshInterval, setRefreshInterval] = useState<NodeJS.Timeout | null>(null)
@@ -60,7 +30,7 @@ export const SystemHealthDashboard = () => {
   const { data: statsData, isLoading: statsLoading, refetch: refetchStats } = api.system.getSystemStats.useQuery()
 
   // Fetch error logs
-  const { data: errorLogs, isLoading: errorsLoading, refetch: refetchErrors } = api.system.getErrorLogs.useQuery({
+  const { data: errorLogs, refetch: refetchErrors } = api.system.getErrorLogs.useQuery({
     resolved: false,
     limit: 10
   })
@@ -72,8 +42,8 @@ export const SystemHealthDashboard = () => {
         refetchHealth()
         refetchStats()
         refetchErrors()
-      }, 30000) // Refresh every 30 seconds
-      
+      }, 30_000) // Refresh every 30 seconds
+
       setRefreshInterval(interval)
     } else {
       if (refreshInterval) {
@@ -154,12 +124,12 @@ export const SystemHealthDashboard = () => {
         <div className="animate-pulse">
           <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-1/4 mb-4"></div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-            {[...Array(4)].map((_, i) => (
+            {Array.from({length: 4}).map((_, i) => (
               <div key={i} className="h-24 bg-gray-200 dark:bg-gray-700 rounded"></div>
             ))}
           </div>
           <div className="space-y-3">
-            {[...Array(3)].map((_, i) => (
+            {Array.from({length: 3}).map((_, i) => (
               <div key={i} className="h-20 bg-gray-200 dark:bg-gray-700 rounded"></div>
             ))}
           </div>
@@ -232,7 +202,7 @@ export const SystemHealthDashboard = () => {
               </div>
             </div>
           </div>
-          
+
           <div className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
             <div className="flex items-center">
               <AlertTriangle className="w-8 h-8 text-yellow-500" />
@@ -242,7 +212,7 @@ export const SystemHealthDashboard = () => {
               </div>
             </div>
           </div>
-          
+
           <div className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
             <div className="flex items-center">
               <XCircle className="w-8 h-8 text-red-500" />
@@ -252,7 +222,7 @@ export const SystemHealthDashboard = () => {
               </div>
             </div>
           </div>
-          
+
           <div className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
             <div className="flex items-center">
               <AlertCircle className="w-8 h-8 text-blue-500" />
@@ -326,13 +296,12 @@ export const SystemHealthDashboard = () => {
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
-                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                        error.level === 'error' 
+                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${error.level === 'error'
                           ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300'
                           : error.level === 'warning'
-                          ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300'
-                          : 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300'
-                      }`}>
+                            ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300'
+                            : 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300'
+                        }`}>
                         {error.level.toUpperCase()}
                       </span>
                       <span className="text-sm text-gray-500 dark:text-gray-400">

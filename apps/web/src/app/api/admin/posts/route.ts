@@ -2,13 +2,14 @@ import { NextRequest, NextResponse } from 'next/server'
 import { BlogService } from '@/lib/blog/blog-service'
 import { ratelimit } from '@/lib/ratelimit'
 import { logger } from '@/lib/logger'
+import { getClientIp } from '@/lib/spam-detection'
 
 export async function POST(request: NextRequest) {
   try {
     // Rate limiting
-    const ip = request.ip ?? '127.0.0.1'
+    const ip = getClientIp(request.headers)
     const { success } = await ratelimit.limit(ip)
-    
+
     if (!success) {
       return NextResponse.json(
         { error: 'Rate limit exceeded' },
@@ -17,7 +18,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { slug, title, summary, content, locale, date, modifiedTime, tags } = body
+    const { slug, title, summary, content, locale, date, modifiedTime } = body
 
     // Validation
     if (!slug || !title || !content || !locale) {
@@ -73,9 +74,9 @@ export async function POST(request: NextRequest) {
 export async function PUT(request: NextRequest) {
   try {
     // Rate limiting
-    const ip = request.ip ?? '127.0.0.1'
+    const ip = getClientIp(request.headers)
     const { success } = await ratelimit.limit(ip)
-    
+
     if (!success) {
       return NextResponse.json(
         { error: 'Rate limit exceeded' },
@@ -140,9 +141,9 @@ export async function PUT(request: NextRequest) {
 export async function DELETE(request: NextRequest) {
   try {
     // Rate limiting
-    const ip = request.ip ?? '127.0.0.1'
+    const ip = getClientIp(request.headers)
     const { success } = await ratelimit.limit(ip)
-    
+
     if (!success) {
       return NextResponse.json(
         { error: 'Rate limit exceeded' },

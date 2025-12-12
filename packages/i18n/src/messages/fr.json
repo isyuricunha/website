@@ -1192,15 +1192,16 @@
         "max-length": "Le message doit contenir moins de 2000 caractères",
         "character-count": "{count}/2000 caractères"
       },
-      "submit": "Envoyer le Message",
-      "submitting": "Envoi en cours...",
+      "submit": "Envoyer le message",
+      "submitting": "Envoi...",
       "success": "Message envoyé avec succès !",
       "error": "Échec de l'envoi du message. Veuillez réessayer.",
       "network-error": "Erreur réseau. Veuillez vérifier votre connexion et réessayer.",
-      "turnstile-required": "Veuillez relever le défi de vérification"
+      "turnstile-required": "Veuillez terminer le défi de vérification",
+      "turnstile-error": "Security verification failed. Please try again."
     },
     "direct": {
-      "title": "Contact Direct",
+      "title": "Contact direct",
       "description": "Vous préférez l'email ? Contactez-moi directement",
       "email-label": "Email",
       "response-time": "Je réponds généralement sous 24-48 heures.",

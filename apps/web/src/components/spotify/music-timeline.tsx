@@ -11,6 +11,7 @@ import SpotifyImage from './spotify-image'
 
 const MusicTimeline = () => {
   const t = useTranslations()
+  const td = (key: string, values?: Record<string, any>) => (t as any)(key, values) as string
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [isMounted, setIsMounted] = useState(false)
 
@@ -21,7 +22,7 @@ const MusicTimeline = () => {
   const { data: recentTracks, refetch, isLoading, error } = api.spotify.getRecentlyPlayed.useQuery(
     undefined,
     {
-      staleTime: 300000 // 5 minutes
+      staleTime: 300_000 // 5 minutes
     }
   )
 
@@ -31,12 +32,15 @@ const MusicTimeline = () => {
     setIsRefreshing(false)
   }
 
+  type RecentTrack = NonNullable<typeof recentTracks>[number]
+  type Period = 'last-hour' | 'today' | 'yesterday' | 'this-week' | 'earlier'
+
   // Group tracks by time periods
   const timelineData = useMemo(() => {
     if (!recentTracks) return []
 
     const now = new Date()
-    const groups: { [key: string]: any[] } = {
+    const groups: Record<Period, RecentTrack[]> = {
       'last-hour': [],
       'today': [],
       'yesterday': [],
@@ -44,7 +48,7 @@ const MusicTimeline = () => {
       'earlier': []
     }
 
-    recentTracks.forEach(track => {
+    recentTracks.forEach((track: RecentTrack) => {
       const playedAt = new Date(track.playedAt)
       const diffInHours = (now.getTime() - playedAt.getTime()) / (1000 * 60 * 60)
       const diffInDays = diffInHours / 24
@@ -196,19 +200,19 @@ const MusicTimeline = () => {
                     <Calendar className='h-4 w-4 text-primary' />
                   )}
                 </div>
-                <h3 className='text-sm sm:text-base font-semibold'>{t(`spotify.timeline.periods.${period}`)}</h3>
+                <h3 className='text-sm sm:text-base font-semibold'>{td(`spotify.timeline.periods.${period}`)}</h3>
                 <span className='text-xs sm:text-sm text-muted-foreground'>
-                  {t('spotify.timeline.count', { count: tracks.length, label: t(`spotify.timeline.labels.${tracks.length === 1 ? 'track' : 'tracks'}`) })}
+                  {td('spotify.timeline.count', { count: tracks.length, label: td(`spotify.timeline.labels.${tracks.length === 1 ? 'track' : 'tracks'}`) })}
                 </span>
               </div>
 
               {/* Timeline Items */}
               <div className='ml-4 border-l-2 border-muted pl-6 space-y-4'>
-                {tracks.slice(0, 5).map((track, index) => (
+                {tracks.slice(0, 5).map((track) => (
                   <div key={`${track.id}-${track.playedAt}`} className='relative'>
                     {/* Timeline Dot */}
                     <div className='absolute -left-[1.75rem] top-2 w-3 h-3 rounded-full bg-primary border-2 border-background' />
-                    
+
                     {/* Track Item */}
                     <Link
                       href={track.url}
@@ -242,7 +246,7 @@ const MusicTimeline = () => {
                     </Link>
                   </div>
                 ))}
-                
+
                 {/* Show more indicator */}
                 {tracks.length > 5 && (
                   <div className='relative'>
@@ -275,7 +279,7 @@ const MusicTimeline = () => {
                 <span className='text-xs sm:text-sm text-muted-foreground'>{t('spotify.timeline.labels.unique-artists')}</span>
               </div>
               <p className='text-lg sm:text-xl font-bold'>
-                {new Set(recentTracks.map(track => track.artist)).size}
+                {new Set(recentTracks.map((track: any) => track.artist)).size}
               </p>
             </div>
           </div>

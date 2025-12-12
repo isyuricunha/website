@@ -32,12 +32,13 @@ export const react = (options?: Options): Linter.Config[] => {
         ...jsxA11yPlugin.configs.strict.rules,
 
         // @eslint-react
-        '@eslint-react/no-leaked-conditional-rendering': 'error',
+        '@eslint-react/no-leaked-conditional-rendering': 'off',
         '@eslint-react/avoid-shorthand-boolean': 'off',
         '@eslint-react/avoid-shorthand-fragment': 'off',
         '@eslint-react/prefer-destructuring-assignment': 'off',
         '@eslint-react/no-array-index-key': 'off',
         '@eslint-react/no-complex-conditional-rendering': 'off',
+        '@eslint-react/no-nested-components': 'off',
 
         // @eslint-react/hooks-extra
         '@eslint-react/hooks-extra/no-direct-set-state-in-use-effect': 'off',
@@ -54,6 +55,12 @@ export const react = (options?: Options): Linter.Config[] => {
         ],
 
         // jsx-a11y
+        'jsx-a11y/anchor-has-content': 'off',
+        'jsx-a11y/anchor-is-valid': 'off',
+        'jsx-a11y/heading-has-content': 'off',
+        'jsx-a11y/click-events-have-key-events': 'off',
+        'jsx-a11y/label-has-associated-control': 'off',
+        'jsx-a11y/no-static-element-interactions': 'off',
         'jsx-a11y/alt-text': [
           'error',
           {

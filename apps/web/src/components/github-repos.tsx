@@ -1,6 +1,6 @@
 'use client'
 import React from 'react'
-import { Star, GitFork, AlertCircle, ExternalLink } from 'lucide-react'
+import { Star, GitFork, ExternalLink } from 'lucide-react'
 import { Badge } from '@tszhong0411/ui'
 import Link from './link'
 
@@ -30,14 +30,6 @@ const GithubRepos = ({ repos }: GithubReposProps) => {
 }
 
 const GithubRepoCard = ({ repo }: { repo: Repo }) => {
-  const formatDate = (dateString?: string) => {
-    if (!dateString) return null
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short'
-    })
-  }
-
   return (
     <Link
       href={repo.url}
@@ -47,7 +39,7 @@ const GithubRepoCard = ({ repo }: { repo: Repo }) => {
       <div className='absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity'>
         <ExternalLink className='h-4 w-4 text-muted-foreground' />
       </div>
-      
+
       <div className='space-y-2'>
         <div className='space-y-1'>
           <h3 className='text-sm font-medium group-hover:text-primary transition-colors pr-8 line-clamp-1'>
@@ -59,7 +51,7 @@ const GithubRepoCard = ({ repo }: { repo: Repo }) => {
             </p>
           )}
         </div>
-        
+
         {/* GitHub Stats */}
         <div className='flex items-center gap-3 text-xs text-muted-foreground'>
           <div className='flex items-center gap-1'>
@@ -73,7 +65,7 @@ const GithubRepoCard = ({ repo }: { repo: Repo }) => {
             </div>
           )}
         </div>
-        
+
         {/* Language */}
         <div className='flex items-center justify-between'>
           {repo.language && (

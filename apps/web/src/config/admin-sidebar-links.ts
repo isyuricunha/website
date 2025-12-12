@@ -1,12 +1,10 @@
-import { 
-  MessagesSquareIcon, 
-  UsersIcon, 
-  ShieldIcon, 
-  MailIcon, 
-  ActivityIcon, 
+import {
+  MessagesSquareIcon,
+  UsersIcon,
+  ShieldIcon,
+  ActivityIcon,
   DatabaseIcon,
   BarChart3Icon,
-  SettingsIcon,
   MegaphoneIcon,
   BellIcon,
   SendIcon

@@ -1,14 +1,14 @@
 'use client'
 
 import { useState } from 'react'
-import { Button } from '@tszhong0411/ui'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@tszhong0411/ui'
-import { Badge } from '@tszhong0411/ui'
-import { Input } from '@tszhong0411/ui'
-import { Label } from '@tszhong0411/ui'
-import { Textarea } from '@tszhong0411/ui'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@tszhong0411/ui'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@tszhong0411/ui'
+import { Button , Card, CardContent, CardDescription, CardHeader, CardTitle , Badge , Input , Label , Textarea , Select, SelectContent, SelectItem, SelectTrigger, SelectValue , Tabs, TabsContent, TabsList, TabsTrigger } from '@tszhong0411/ui'
+
+
+
+
+
+
+
 import { Database, Download, Upload, CheckCircle, AlertCircle, Clock } from 'lucide-react'
 import { toast } from 'sonner'
 
@@ -66,7 +66,7 @@ export default function DataManagement() {
 
   const handleCreateExport = (formData: FormData) => {
     const name = formData.get('name') as string
-    const format = formData.get('format') as 'csv' | 'json' | 'xml' | 'xlsx'
+    const format = formData.get('format') as 'csv' | 'json' | 'xml' | 'sql' | 'excel'
     const tablesInput = formData.get('tables') as string
 
     if (!name || !format || !tablesInput) {
@@ -120,7 +120,7 @@ export default function DataManagement() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'completed': return 'default'
-      case 'in_progress': 
+      case 'in_progress':
       case 'processing':
       case 'running': return 'secondary'
       case 'pending': return 'outline'
@@ -145,7 +145,7 @@ export default function DataManagement() {
     const k = 1024
     const sizes = ['Bytes', 'KB', 'MB', 'GB']
     const i = Math.floor(Math.log(bytes) / Math.log(k))
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
+    return Number.parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
   }
 
   if (statsLoading) {
@@ -405,7 +405,7 @@ export default function DataManagement() {
                         <SelectItem value="csv">CSV</SelectItem>
                         <SelectItem value="json">JSON</SelectItem>
                         <SelectItem value="xml">XML</SelectItem>
-                        <SelectItem value="xlsx">Excel (XLSX)</SelectItem>
+                        <SelectItem value="excel">Excel</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -452,8 +452,8 @@ export default function DataManagement() {
                         </div>
                         <div className="flex items-center justify-between text-sm">
                           <span className="text-muted-foreground">
-                            {exportItem.recordCount ? 
-                              `${exportItem.recordCount.toLocaleString()} records` : 
+                            {exportItem.recordCount ?
+                              `${exportItem.recordCount.toLocaleString()} records` :
                               'Processing...'
                             }
                           </span>
@@ -539,7 +539,7 @@ export default function DataManagement() {
                   <CheckCircle className="h-12 w-12 mx-auto mb-4 opacity-50" />
                   <p>Run a quality check to see results here</p>
                   <p className="text-sm mt-2">
-                    Quality checks help identify data issues like missing values, 
+                    Quality checks help identify data issues like missing values,
                     duplicates, and format problems.
                   </p>
                 </div>

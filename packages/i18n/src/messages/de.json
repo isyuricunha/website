@@ -1195,13 +1195,14 @@
       "submit": "Nachricht senden",
       "submitting": "Wird gesendet...",
       "success": "Nachricht erfolgreich gesendet!",
-      "error": "Fehler beim Senden der Nachricht. Bitte versuche es erneut.",
+      "error": "Senden der Nachricht fehlgeschlagen. Bitte versuche es erneut.",
       "network-error": "Netzwerkfehler. Bitte überprüfe deine Verbindung und versuche es erneut.",
-      "turnstile-required": "Bitte schließen Sie die Verifizierungsherausforderung ab"
+      "turnstile-required": "Bitte schließe die Verifizierungsaufgabe ab",
+      "turnstile-error": "Security verification failed. Please try again."
     },
     "direct": {
       "title": "Direkter Kontakt",
-      "description": "Bevorzugst du E-Mail? Kontaktiere mich direkt",
+      "description": "Du bevorzugst E-Mail? Melde dich direkt",
       "email-label": "E-Mail",
       "response-time": "Ich antworte normalerweise innerhalb von 24-48 Stunden.",
       "urgent": "Bei dringenden Angelegenheiten bitte in der Betreffzeile erwähnen."

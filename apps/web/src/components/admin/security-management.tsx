@@ -1,13 +1,13 @@
 'use client'
 
 import { useState } from 'react'
-import { Button } from '@tszhong0411/ui'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@tszhong0411/ui'
-import { Badge } from '@tszhong0411/ui'
-import { Input } from '@tszhong0411/ui'
-import { Label } from '@tszhong0411/ui'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@tszhong0411/ui'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@tszhong0411/ui'
+import { Button , Card, CardContent, CardDescription, CardHeader, CardTitle , Badge , Input , Label , Select, SelectContent, SelectItem, SelectTrigger, SelectValue , Tabs, TabsContent, TabsList, TabsTrigger } from '@tszhong0411/ui'
+
+
+
+
+
+
 import { AlertTriangle, Shield, Users, Lock } from 'lucide-react'
 import { toast } from 'sonner'
 
@@ -28,9 +28,7 @@ export default function SecurityManagement() {
   const { data: ipRules, isLoading: ipRulesLoading } = api.security.getIpAccessRules.useQuery()
 
   // Login attempts query
-  const { data: loginAttempts, isLoading: attemptsLoading } = api.security.getLoginAttempts.useQuery({
-    timeRange: '24h'
-  })
+  const { data: loginAttempts, isLoading: attemptsLoading } = api.security.getLoginAttempts.useQuery()
 
   // Account lockouts query - get all active lockouts for admin view
   const { data: lockouts, isLoading: lockoutsLoading } = api.security.getAccountLockouts.useQuery({})

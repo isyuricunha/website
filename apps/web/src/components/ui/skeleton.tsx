@@ -1,7 +1,6 @@
 'use client'
 
 import { cn } from '@tszhong0411/utils'
-import { motion } from 'motion/react'
 
 interface SkeletonProps extends React.HTMLAttributes<HTMLDivElement> {
   variant?: 'default' | 'pulse' | 'wave'
@@ -9,7 +8,7 @@ interface SkeletonProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const Skeleton = ({ className, variant = 'default', ...props }: SkeletonProps) => {
   const baseClasses = 'animate-pulse rounded-md bg-muted'
-  
+
   const variantClasses = {
     default: '',
     pulse: 'animate-pulse',
@@ -74,10 +73,10 @@ const SkeletonProject = ({ className, ...props }: React.HTMLAttributes<HTMLDivEl
   </div>
 )
 
-const SkeletonList = ({ 
-  items = 3, 
-  className, 
-  ...props 
+const SkeletonList = ({
+  items = 3,
+  className,
+  ...props
 }: React.HTMLAttributes<HTMLDivElement> & { items?: number }) => (
   <div className={cn('space-y-4', className)} {...props}>
     {Array.from({ length: items }).map((_, i) => (
@@ -101,11 +100,11 @@ const shimmerKeyframes = `
 }
 `
 
-export { 
-  Skeleton, 
-  SkeletonCard, 
-  SkeletonPost, 
-  SkeletonProject, 
+export {
+  Skeleton,
+  SkeletonCard,
+  SkeletonPost,
+  SkeletonProject,
   SkeletonList,
   shimmerKeyframes
 }

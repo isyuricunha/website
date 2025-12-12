@@ -19,7 +19,7 @@ const TopSongsSection = () => {
 
   const { data: tracks, refetch, isLoading, error } = api.spotify.getTopTracksByRange.useQuery(
     { time_range: timeRange },
-    { staleTime: 300000 }
+    { staleTime: 300_000 }
   )
 
   const handleRefresh = async () => {
@@ -29,13 +29,13 @@ const TopSongsSection = () => {
   }
 
   const formatDuration = (ms: number) => {
-    const minutes = Math.floor(ms / 60000)
-    const seconds = Math.floor((ms % 60000) / 1000)
+    const minutes = Math.floor(ms / 60_000)
+    const seconds = Math.floor((ms % 60_000) / 1000)
     return `${minutes}:${seconds.toString().padStart(2, '0')}`
   }
 
   const handleExportCsv = () => {
-    if (tracks && tracks.length) exportTopTracksCsv(tracks as any)
+    if (tracks && tracks.length > 0) exportTopTracksCsv(tracks)
   }
 
   const handleExportJson = () => {
@@ -148,7 +148,7 @@ const TopSongsSection = () => {
       </CardHeader>
       <CardContent>
         <div className='space-y-4'>
-          {tracks.map((track, index) => (
+          {tracks.map((track: any, index: number) => (
             <Link
               key={track.id}
               href={track.url}

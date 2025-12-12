@@ -28,7 +28,7 @@ const Footer = () => {
               const { href, key } = link
 
               return (
-                <Link key={href} href={href} className={linkVariants({ variant: 'muted', size: 'sm' })}>
+                <Link key={href} href={href} className={linkVariants({ variant: 'muted' })}>
                   {t(`layout.${key}`)}
                 </Link>
               )
@@ -51,10 +51,10 @@ const Footer = () => {
             {status === 'error' ? t('common.error') : null}
             {status === 'success'
               ? Intl.NumberFormat('en', {
-                  notation: 'compact',
-                  minimumFractionDigits: 0,
-                  maximumFractionDigits: 1
-                }).format(data)
+                notation: 'compact',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 1
+              }).format(data)
               : null}
           </div>
         </Link>

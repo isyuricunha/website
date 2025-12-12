@@ -1197,7 +1197,8 @@
       "success": "বার্তা সফলভাবে পাঠানো হয়েছে!",
       "error": "বার্তা পাঠাতে ব্যর্থ। দয়া করে আবার চেষ্টা করুন।",
       "network-error": "নেটওয়ার্ক ত্রুটি। দয়া করে আপনার সংযোগ পরীক্ষা করুন এবং আবার চেষ্টা করুন।",
-      "turnstile-required": "যাচাইকরণ চ্যালেঞ্জ সম্পূর্ণ করুন"
+      "turnstile-required": "যাচাইকরণ চ্যালেঞ্জ সম্পূর্ণ করুন",
+      "turnstile-error": "Security verification failed. Please try again."
     },
     "direct": {
       "title": "সরাসরি যোগাযোগ",

@@ -1,10 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { ChevronDown, ChevronUp, ExternalLink, Info, Calendar, Star, Zap, Shield, Code, Monitor, Smartphone, Headphones } from 'lucide-react'
+import { ChevronDown, ChevronUp, Info, Calendar, Star, Zap, Shield, Code, Monitor, Smartphone } from 'lucide-react'
 import { Badge } from '@tszhong0411/ui'
-import Link from './link'
-import ItemGrid from './mdx/item-grid'
 import { useTranslations } from '@tszhong0411/i18n/client'
 
 type CategoryIcon = {
@@ -87,9 +85,8 @@ const ComparisonTable = ({ items, title }: { items: ComparisonItem[], title: str
                       {Array.from({ length: 5 }, (_, i) => (
                         <Star
                           key={i}
-                          className={`h-3 w-3 ${
-                            i < item.rating ? 'text-yellow-500 fill-current' : 'text-gray-300'
-                          }`}
+                          className={`h-3 w-3 ${i < item.rating ? 'text-yellow-500 fill-current' : 'text-gray-300'
+                            }`}
                         />
                       ))}
                     </div>
@@ -107,12 +104,12 @@ const ComparisonTable = ({ items, title }: { items: ComparisonItem[], title: str
   )
 }
 
-const ExpandableSection = ({ 
-  title, 
-  children, 
+const ExpandableSection = ({
+  title,
+  children,
   defaultExpanded = true,
   icon
-}: { 
+}: {
   title: string
   children: React.ReactNode
   defaultExpanded?: boolean
@@ -217,14 +214,14 @@ const UsesPageClient = ({ title, description, mdxContent }: UsesPageClientProps)
       </div>
 
       <AffiliateDisclosure />
-      
+
       {/* Enhanced MDX content wrapper with interactive sections */}
       {mdxContent && (
         <div className='uses-content-wrapper'>
           {mdxContent}
         </div>
       )}
-      
+
       {/* Fallback content if no MDX */}
       {!mdxContent && (
         <>
@@ -249,7 +246,7 @@ const UsesPageClient = ({ title, description, mdxContent }: UsesPageClientProps)
 
           {/* Infrastructure Tools Section with Comparison Table */}
           <ExpandableSection title={t('sections.infra-devops.title')} icon={categoryIcons['Infra']}>
-            <ComparisonTable 
+            <ComparisonTable
               items={devToolsComparison}
               title={t('sections.infra-devops.comparison-title')}
             />

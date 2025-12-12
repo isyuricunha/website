@@ -2,13 +2,13 @@
 
 import { useState } from 'react'
 import { Button } from '@tszhong0411/ui'
-import { 
-  Plus, 
-  Search, 
-  Filter, 
-  Edit, 
-  Trash2, 
-  Eye, 
+import {
+  Plus,
+  Search,
+  Filter,
+  Edit,
+  Trash2,
+  Eye,
   Star,
   Calendar,
   FileText,
@@ -57,7 +57,7 @@ export const ContentManagement = () => {
       toast.error('Please select posts to perform bulk actions')
       return
     }
-    
+
     // TODO: Implement bulk actions
     toast.info(`Bulk ${action} for ${selectedPosts.length} posts (coming soon)`)
   }
@@ -77,7 +77,7 @@ export const ContentManagement = () => {
       published: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
       archived: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300'
     }
-    
+
     return (
       <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${styles[status as keyof typeof styles]}`}>
         {status.charAt(0).toUpperCase() + status.slice(1)}
@@ -91,7 +91,7 @@ export const ContentManagement = () => {
         <div className="animate-pulse">
           <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-1/4 mb-4"></div>
           <div className="space-y-3">
-            {[...Array(5)].map((_, i) => (
+            {Array.from({length: 5}).map((_, i) => (
               <div key={i} className="h-16 bg-gray-200 dark:bg-gray-700 rounded"></div>
             ))}
           </div>
@@ -126,7 +126,7 @@ export const ContentManagement = () => {
               </div>
             </div>
           </div>
-          
+
           <div className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
             <div className="flex items-center">
               <Eye className="w-8 h-8 text-green-500" />
@@ -136,7 +136,7 @@ export const ContentManagement = () => {
               </div>
             </div>
           </div>
-          
+
           <div className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
             <div className="flex items-center">
               <Edit className="w-8 h-8 text-yellow-500" />
@@ -146,7 +146,7 @@ export const ContentManagement = () => {
               </div>
             </div>
           </div>
-          
+
           <div className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
             <div className="flex items-center">
               <BarChart3 className="w-8 h-8 text-purple-500" />
@@ -174,7 +174,7 @@ export const ContentManagement = () => {
               />
             </div>
           </div>
-          
+
           <div className="flex gap-2">
             <select
               value={statusFilter || ''}
@@ -186,14 +186,14 @@ export const ContentManagement = () => {
               <option value="published">Published</option>
               <option value="archived">Archived</option>
             </select>
-            
+
             <Button variant="outline" size="sm">
               <Filter className="w-4 h-4 mr-2" />
               More Filters
             </Button>
           </div>
         </div>
-        
+
         {selectedPosts.length > 0 && (
           <div className="mt-4 flex items-center gap-2">
             <span className="text-sm text-gray-600 dark:text-gray-400">
@@ -303,23 +303,23 @@ export const ContentManagement = () => {
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {getStatusBadge(post.status)}
+                    {getStatusBadge(post.status ?? 'draft')}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
-                      {post.author.image && (
+                      {post.author?.image && (
                         <img
                           className="h-8 w-8 rounded-full mr-3"
                           src={post.author.image}
-                          alt={post.author.name}
+                          alt={post.author.name ?? 'Author'}
                         />
                       )}
                       <div>
                         <div className="text-sm font-medium text-gray-900 dark:text-white">
-                          {post.author.name}
+                          {post.author?.name ?? 'Unknown'}
                         </div>
                         <div className="text-sm text-gray-500 dark:text-gray-400">
-                          {post.author.email}
+                          {post.author?.email ?? ''}
                         </div>
                       </div>
                     </div>
@@ -370,7 +370,7 @@ export const ContentManagement = () => {
             </tbody>
           </table>
         </div>
-        
+
         {(!postsData?.posts || postsData.posts.length === 0) && (
           <div className="text-center py-12">
             <FileText className="mx-auto h-12 w-12 text-gray-400" />

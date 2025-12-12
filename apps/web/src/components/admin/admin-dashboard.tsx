@@ -1,30 +1,26 @@
 'use client'
 
-import { 
-  BarChart3, 
-  MessageSquare, 
-  Shield, 
-  Users, 
-  TrendingUp, 
-  Activity, 
-  Clock, 
+import {
+  BarChart3,
+  MessageSquare,
+  Shield,
+  Users,
+  TrendingUp,
+  Activity,
+  Clock,
   ArrowRight,
   RefreshCw,
-  AlertCircle,
   CheckCircle,
-  MegaphoneIcon,
-  BellIcon,
-  SendIcon,
   FileText,
   PlusIcon,
   Languages,
   Wand2
 } from 'lucide-react'
-import { 
-  Card, 
-  CardContent, 
-  CardDescription, 
-  CardHeader, 
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
   CardTitle,
   Button,
   Badge,
@@ -40,14 +36,13 @@ import AnnouncementWidget from '../announcement-widget'
 const AdminDashboard = () => {
   const [refreshing, setRefreshing] = useState(false)
   const { data: stats, isLoading, error, refetch } = api.admin.getStats.useQuery()
-  const { data: communicationStats } = api.communication.getCommunicationStats.useQuery()
-  
+
   const handleRefresh = async () => {
     setRefreshing(true)
     try {
       await refetch()
       toast.success('Dashboard refreshed successfully')
-    } catch (error) {
+    } catch {
       toast.error('Failed to refresh dashboard')
     } finally {
       setRefreshing(false)
@@ -152,9 +147,9 @@ const AdminDashboard = () => {
             <Activity className="mr-1.5 h-3.5 w-3.5" />
             Live
           </Badge>
-          <Button 
-            variant="outline" 
-            size="sm" 
+          <Button
+            variant="outline"
+            size="sm"
             onClick={handleRefresh}
             disabled={refreshing}
             className="transition-all duration-200 hover:shadow-md"
@@ -169,10 +164,10 @@ const AdminDashboard = () => {
         {statCards.map((stat) => {
           const Icon = stat.icon
           return (
-            <Card 
-              key={stat.title} 
+            <Card
+              key={stat.title}
               className="group relative cursor-pointer overflow-hidden border-border/50 bg-gradient-to-br from-background to-background/50 backdrop-blur-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:border-primary/30"
-              onClick={() => window.location.href = stat.href}
+              onClick={() => globalThis.location.href = stat.href}
             >
               <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
@@ -260,7 +255,7 @@ const AdminDashboard = () => {
           <CardContent className="space-y-2">
             <button
               className="w-full group flex items-start gap-3 p-3 rounded-xl border border-indigo-500/20 bg-indigo-500/5 backdrop-blur-sm transition-all duration-200 hover:shadow-md hover:border-indigo-500/30 hover:-translate-y-0.5"
-              onClick={() => window.location.href = '/admin/posts/new'}
+              onClick={() => globalThis.location.href = '/admin/posts/new'}
             >
               <div className="p-2 rounded-lg bg-indigo-500/10 transition-transform duration-200 group-hover:scale-110">
                 <PlusIcon className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
@@ -272,7 +267,7 @@ const AdminDashboard = () => {
             </button>
             <button
               className="w-full group flex items-start gap-3 p-3 rounded-xl border border-blue-500/20 bg-blue-500/5 backdrop-blur-sm transition-all duration-200 hover:shadow-md hover:border-blue-500/30 hover:-translate-y-0.5"
-              onClick={() => window.location.href = '/admin/users'}
+              onClick={() => globalThis.location.href = '/admin/users'}
             >
               <div className="p-2 rounded-lg bg-blue-500/10 transition-transform duration-200 group-hover:scale-110">
                 <Users className="h-4 w-4 text-blue-600 dark:text-blue-400" />
@@ -284,7 +279,7 @@ const AdminDashboard = () => {
             </button>
             <button
               className="w-full group flex items-start gap-3 p-3 rounded-xl border border-emerald-500/20 bg-emerald-500/5 backdrop-blur-sm transition-all duration-200 hover:shadow-md hover:border-emerald-500/30 hover:-translate-y-0.5"
-              onClick={() => window.location.href = '/admin/comments'}
+              onClick={() => globalThis.location.href = '/admin/comments'}
             >
               <div className="p-2 rounded-lg bg-emerald-500/10 transition-transform duration-200 group-hover:scale-110">
                 <MessageSquare className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
@@ -310,7 +305,7 @@ const AdminDashboard = () => {
           <CardContent className="space-y-2">
             <button
               className="w-full group flex items-center justify-between p-3 rounded-xl border border-indigo-500/20 bg-indigo-500/5 backdrop-blur-sm transition-all duration-200 hover:shadow-md hover:border-indigo-500/30"
-              onClick={() => window.location.href = '/admin/posts'}
+              onClick={() => globalThis.location.href = '/admin/posts'}
             >
               <div className="flex items-center gap-2">
                 <FileText className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
@@ -322,7 +317,7 @@ const AdminDashboard = () => {
             </button>
             <button
               className="w-full group flex items-center justify-between p-3 rounded-xl border border-emerald-500/20 bg-emerald-500/5 backdrop-blur-sm transition-all duration-200 hover:shadow-md hover:border-emerald-500/30"
-              onClick={() => window.location.href = '/admin/posts/new'}
+              onClick={() => globalThis.location.href = '/admin/posts/new'}
             >
               <div className="flex items-center gap-2">
                 <PlusIcon className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
@@ -334,7 +329,7 @@ const AdminDashboard = () => {
             </button>
             <button
               className="w-full group flex items-center justify-between p-3 rounded-xl border border-purple-500/20 bg-purple-500/5 backdrop-blur-sm transition-all duration-200 hover:shadow-md hover:border-purple-500/30"
-              onClick={() => window.location.href = '/admin/translate'}
+              onClick={() => globalThis.location.href = '/admin/translate'}
             >
               <div className="flex items-center gap-2">
                 <Languages className="h-4 w-4 text-purple-600 dark:text-purple-400" />
@@ -349,10 +344,10 @@ const AdminDashboard = () => {
       </div>
 
       <Separator className="my-8" />
-      
+
       <div className="grid gap-6 lg:grid-cols-2">
         <AnnouncementWidget className="lg:col-span-1" maxItems={5} />
-        
+
         <Card className="border-border/50 bg-gradient-to-br from-background to-background/80 backdrop-blur-sm">
           <CardHeader>
             <div className="flex items-center gap-2 mb-1">

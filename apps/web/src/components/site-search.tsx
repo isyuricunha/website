@@ -6,9 +6,8 @@ import { Search, FileText, User, Music, Code, Calendar } from 'lucide-react'
 import { useState, useMemo, useCallback, useEffect } from 'react'
 import { useRouter } from '@tszhong0411/i18n/routing'
 
-import { allPosts } from 'content-collections'
-import { allProjects } from 'content-collections'
-import Link from './link'
+import { allPosts , allProjects } from 'content-collections'
+
 import { HighlightText } from './ui/highlight-text'
 
 type SearchResult = {
@@ -179,10 +178,15 @@ const SiteSearch = () => {
     if (e.key === 'Enter' && selectedIndex >= 0) {
       e.preventDefault()
       if (showRecentSearches) {
-        handleRecentSearchClick(recentSearches[selectedIndex])
+        const term = recentSearches[selectedIndex]
+        if (term) {
+          handleRecentSearchClick(term)
+        }
       } else {
         const result = allResults[selectedIndex]
-        handleResultClick(result.href, query)
+        if (result) {
+          handleResultClick(result.href, query)
+        }
       }
     }
   }, [totalItems, selectedIndex, showRecentSearches, recentSearches, allResults, handleRecentSearchClick, handleResultClick, query])

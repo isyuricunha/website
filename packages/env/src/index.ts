@@ -10,7 +10,8 @@ export const flags = {
   gemini: process.env.NEXT_PUBLIC_FLAG_GEMINI === 'true',
   analytics: process.env.NEXT_PUBLIC_FLAG_ANALYTICS === 'true',
   guestbookNotification: process.env.NEXT_PUBLIC_FLAG_GUESTBOOK_NOTIFICATION === 'true',
-  likeButton: process.env.NEXT_PUBLIC_FLAG_LIKE_BUTTON === 'true'
+  likeButton: process.env.NEXT_PUBLIC_FLAG_LIKE_BUTTON === 'true',
+  turnstile: process.env.NEXT_PUBLIC_FLAG_TURNSTILE === 'true'
 }
 
 export const env = createEnv({
@@ -24,51 +25,59 @@ export const env = createEnv({
   server: {
     ...(flags.spotify
       ? {
-          SPOTIFY_CLIENT_ID: z.string().min(1),
-          SPOTIFY_CLIENT_SECRET: z.string().min(1),
-          SPOTIFY_REFRESH_TOKEN: z.string().min(1)
-        }
+        SPOTIFY_CLIENT_ID: z.string().min(1),
+        SPOTIFY_CLIENT_SECRET: z.string().min(1),
+        SPOTIFY_REFRESH_TOKEN: z.string().min(1)
+      }
       : {}),
 
     ...(flags.auth
       ? {
-          BETTER_AUTH_SECRET: z.string().min(1),
-          BETTER_AUTH_URL: z.string().url(),
-          GOOGLE_CLIENT_ID: z.string().min(1),
-          GOOGLE_CLIENT_SECRET: z.string().min(1),
-          GITHUB_CLIENT_ID: z.string().min(1),
-          GITHUB_CLIENT_SECRET: z.string().min(1)
-        }
+        BETTER_AUTH_SECRET: z.string().min(1),
+        BETTER_AUTH_URL: z.string().url(),
+        GOOGLE_CLIENT_ID: z.string().min(1),
+        GOOGLE_CLIENT_SECRET: z.string().min(1),
+        GITHUB_CLIENT_ID: z.string().min(1),
+        GITHUB_CLIENT_SECRET: z.string().min(1)
+      }
       : {}),
 
     ...(flags.stats
       ? {
-          GOOGLE_API_KEY: z.string().min(1),
-          GITHUB_TOKEN: z.string().min(1),
-          WAKATIME_API_KEY: z.string().min(1)
-        }
+        GOOGLE_API_KEY: z.string().min(1),
+        GITHUB_TOKEN: z.string().min(1),
+        WAKATIME_API_KEY: z.string().min(1)
+      }
       : {}),
 
+    RESEND_API_KEY: z.string().min(1),
+
     ...(flags.comment
-      ? { RESEND_API_KEY: z.string().min(1), AUTHOR_EMAIL: z.string().email() }
+      ? { AUTHOR_EMAIL: z.string().email() }
+      : {}),
+
+    ...(flags.turnstile
+      ? {
+        TURNSTILE_SECRET_KEY: z.string().min(1)
+      }
       : {}),
 
     ...(flags.guestbookNotification
       ? {
-          DISCORD_WEBHOOK_URL: z.string().url()
-        }
+        DISCORD_WEBHOOK_URL: z.string().url()
+      }
       : {}),
 
     ...(flags.likeButton
       ? {
-          IP_ADDRESS_SALT: z.string().min(1)
-        }
+        IP_ADDRESS_SALT: z.string().min(1)
+      }
       : {}),
 
     ...(flags.gemini
       ? {
-          GEMINI_API_KEY: z.string().min(1)
-        }
+        GEMINI_API_KEY: z.string().min(1)
+      }
       : {}),
 
     DATABASE_URL: z.string().url(),
@@ -79,11 +88,12 @@ export const env = createEnv({
   client: {
     ...(flags.analytics
       ? {
-          NEXT_PUBLIC_UMAMI_URL: z.string().url(),
-          NEXT_PUBLIC_UMAMI_WEBSITE_ID: z.string().uuid()
-        }
+        NEXT_PUBLIC_UMAMI_URL: z.string().url(),
+        NEXT_PUBLIC_UMAMI_WEBSITE_ID: z.string().uuid()
+      }
       : {}),
 
+    NEXT_PUBLIC_WEBSITE_URL: z.string().url().optional(),
     NEXT_PUBLIC_FLAG_COMMENT: z.string().min(1).optional(),
     NEXT_PUBLIC_FLAG_AUTH: z.string().min(1).optional(),
     NEXT_PUBLIC_FLAG_STATS: z.string().min(1).optional(),
@@ -92,6 +102,13 @@ export const env = createEnv({
     NEXT_PUBLIC_FLAG_ANALYTICS: z.string().min(1).optional(),
     NEXT_PUBLIC_FLAG_GUESTBOOK_NOTIFICATION: z.string().min(1).optional(),
     NEXT_PUBLIC_FLAG_LIKE_BUTTON: z.string().min(1).optional(),
+    NEXT_PUBLIC_FLAG_TURNSTILE: z.string().min(1).optional(),
+
+    ...(flags.turnstile
+      ? {
+        NEXT_PUBLIC_TURNSTILE_SITE_KEY: z.string().min(1)
+      }
+      : {}),
 
     NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA: z.string().min(1).optional(),
     NEXT_PUBLIC_VERCEL_GIT_COMMIT_REF: z.string().min(1).optional()
@@ -102,6 +119,8 @@ export const env = createEnv({
     NEXT_PUBLIC_UMAMI_URL: process.env.NEXT_PUBLIC_UMAMI_URL,
     NEXT_PUBLIC_UMAMI_WEBSITE_ID: process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID,
 
+    NEXT_PUBLIC_WEBSITE_URL: process.env.NEXT_PUBLIC_WEBSITE_URL,
+
     NEXT_PUBLIC_FLAG_COMMENT: process.env.NEXT_PUBLIC_FLAG_COMMENT,
     NEXT_PUBLIC_FLAG_AUTH: process.env.NEXT_PUBLIC_FLAG_AUTH,
     NEXT_PUBLIC_FLAG_STATS: process.env.NEXT_PUBLIC_FLAG_STATS,
@@ -110,9 +129,12 @@ export const env = createEnv({
     NEXT_PUBLIC_FLAG_ANALYTICS: process.env.NEXT_PUBLIC_FLAG_ANALYTICS,
     NEXT_PUBLIC_FLAG_GUESTBOOK_NOTIFICATION: process.env.NEXT_PUBLIC_FLAG_GUESTBOOK_NOTIFICATION,
     NEXT_PUBLIC_FLAG_LIKE_BUTTON: process.env.NEXT_PUBLIC_FLAG_LIKE_BUTTON,
+    NEXT_PUBLIC_FLAG_TURNSTILE: process.env.NEXT_PUBLIC_FLAG_TURNSTILE,
 
     NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA: process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA,
-    NEXT_PUBLIC_VERCEL_GIT_COMMIT_REF: process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_REF
+    NEXT_PUBLIC_VERCEL_GIT_COMMIT_REF: process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_REF,
+
+    NEXT_PUBLIC_TURNSTILE_SITE_KEY: process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
   },
 
   emptyStringAsUndefined: true

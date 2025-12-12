@@ -1,15 +1,15 @@
 'use client'
 
 import { useState } from 'react'
-import { Button } from '@tszhong0411/ui'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@tszhong0411/ui'
-import { Badge } from '@tszhong0411/ui'
-import { Input } from '@tszhong0411/ui'
-import { Label } from '@tszhong0411/ui'
-import { Textarea } from '@tszhong0411/ui'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@tszhong0411/ui'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@tszhong0411/ui'
-import { Mail, Megaphone, Bell, Send, Users, BarChart3 } from 'lucide-react'
+import { Button , Card, CardContent, CardDescription, CardHeader, CardTitle , Badge , Input , Label , Textarea , Select, SelectContent, SelectItem, SelectTrigger, SelectValue , Tabs, TabsContent, TabsList, TabsTrigger } from '@tszhong0411/ui'
+
+
+
+
+
+
+
+import { Mail, Megaphone, Bell, Send } from 'lucide-react'
 import { toast } from 'sonner'
 
 import { api } from '@/trpc/react'
@@ -111,7 +111,7 @@ export default function CommunicationManagement() {
     const title = formData.get('title') as string
     const content = formData.get('content') as string
     const type = formData.get('type') as any
-    const priority = parseInt(formData.get('priority') as string) || 0
+    const priority = Number.parseInt(formData.get('priority') as string) || 0
 
     if (!title || !content) {
       toast.error('Title and content are required')

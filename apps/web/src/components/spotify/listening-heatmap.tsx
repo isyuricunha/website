@@ -20,17 +20,21 @@ const cellColors = (v: number, max: number) => {
 
 const ListeningHeatmap = () => {
   const t = useTranslations()
+  const td = (key: string) => (t as any)(key) as string
   const { data: tracks, isLoading, error, refetch, isRefetching } = api.spotify.getRecentlyPlayed.useQuery(
     undefined,
-    { staleTime: 300000 }
+    { staleTime: 300_000 }
   )
 
   // Aggregate plays per weekday (0=Sun..6=Sat) for a simpler, compact heatmap
   const { byDay, max } = useMemo(() => {
-    const byDay = Array(7).fill(0) as number[]
+    const byDay = Array.from({length: 7}).fill(0) as number[]
     for (const tr of tracks ?? []) {
       const d = new Date(tr.playedAt)
-      byDay[d.getDay()] += 1
+      const idx = d.getDay()
+      if (typeof byDay[idx] === 'number') {
+        byDay[idx] = (byDay[idx] ?? 0) + 1
+      }
     }
     const max = byDay.reduce((m, v) => Math.max(m, v), 0)
     return { byDay, max }
@@ -60,26 +64,28 @@ const ListeningHeatmap = () => {
           </div>
         ) : error ? (
           <p className="text-sm text-muted-foreground">{t('spotify.error')}</p>
-        ) : !tracks?.length ? (
-          <p className="text-sm text-muted-foreground">{t('spotify.no-data') || 'No data'}</p>
-        ) : (
+        ) : tracks?.length ? (
           // Per-day compact heatmap: horizontal row of 7 cells with labels below
           <div className="space-y-6">
             {/* Cells + labels aligned per column with a subtle background track */}
             <div className="relative grid w-full grid-cols-7 gap-3 sm:gap-4">
               {/* background track (height adapts roughly to cell size) */}
               <div aria-hidden className="pointer-events-none absolute inset-x-0 top-[38%] sm:top-[40%] h-9 sm:h-11 -translate-y-1/2 rounded-md bg-muted/25 -z-10" />
-              {byDay.map((v, dayIdx) => (
-                <div key={`col-${dayIdx}`} className="flex flex-col items-center gap-2">
-                  <div
-                    className={`w-full aspect-square rounded-md ${cellColors(v, max)} ring-1 ring-black/5 dark:ring-white/5 transition duration-150 hover:scale-[1.04] hover:shadow-[0_0_0_4px_rgba(249,115,22,0.25)]`}
-                    title={`${t(`spotify.heatmap.days.${dayKeys[dayIdx]}`) || dayKeys[dayIdx].toUpperCase()} — ${v}`}
-                  />
-                  <div className="text-center text-[11px] leading-none text-muted-foreground">
-                    {t(`spotify.heatmap.days.${dayKeys[dayIdx]}`) || dayKeys[dayIdx].slice(0, 3).toUpperCase()}
+              {byDay.map((v, dayIdx) => {
+                const dayKey = dayKeys[dayIdx] ?? 'sun'
+
+                return (
+                  <div key={`col-${dayIdx}`} className="flex flex-col items-center gap-2">
+                    <div
+                      className={`w-full aspect-square rounded-md ${cellColors(v, max)} ring-1 ring-black/5 dark:ring-white/5 transition duration-150 hover:scale-[1.04] hover:shadow-[0_0_0_4px_rgba(249,115,22,0.25)]`}
+                      title={`${td(`spotify.heatmap.days.${dayKey}`) || dayKey.toUpperCase()} — ${v}`}
+                    />
+                    <div className="text-center text-[11px] leading-none text-muted-foreground">
+                      {td(`spotify.heatmap.days.${dayKey}`) || dayKey.slice(0, 3).toUpperCase()}
+                    </div>
                   </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
 
             {/* Legend: communicates scale without taking much space */}
@@ -89,13 +95,15 @@ const ListeningHeatmap = () => {
                 {[0, 1, 2, 3, 4].map((i) => (
                   <div
                     key={i}
-                    className={`h-3 w-3 rounded-[3px] ${['bg-muted/40','bg-orange-500/25','bg-orange-500/45','bg-orange-500/65','bg-orange-500/85'][i]} ring-1 ring-black/5 dark:ring-white/5`}
+                    className={`h-3 w-3 rounded-[3px] ${['bg-muted/40', 'bg-orange-500/25', 'bg-orange-500/45', 'bg-orange-500/65', 'bg-orange-500/85'][i]} ring-1 ring-black/5 dark:ring-white/5`}
                   />
                 ))}
               </div>
               <span className="text-[10px] text-muted-foreground">{t('spotify.heatmap.legend.high') || 'High'}</span>
             </div>
           </div>
+        ) : (
+          <p className="text-sm text-muted-foreground">{t('spotify.no-data') || 'No data'}</p>
         )}
       </CardContent>
     </Card>

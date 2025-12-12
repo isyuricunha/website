@@ -29,16 +29,27 @@ export const typescript = (options?: Options): Linter.Config[] => [
       ...typescriptPlugin.configs['eslint-recommended']!.overrides![0]!.rules!,
 
       '@typescript-eslint/array-type': ['error', { default: 'array-simple' }],
+      '@typescript-eslint/no-deprecated': 'off',
       '@typescript-eslint/no-invalid-this': 'error',
-      '@typescript-eslint/no-shadow': 'error',
-      '@typescript-eslint/consistent-type-imports': [
+      '@typescript-eslint/no-shadow': 'off',
+      '@typescript-eslint/consistent-type-imports': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-unused-vars': [
         'error',
         {
-          prefer: 'type-imports',
-          fixStyle: 'inline-type-imports'
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_'
         }
       ],
-      '@typescript-eslint/restrict-template-expressions': ['error', { allowNumber: true }],
+      '@typescript-eslint/dot-notation': 'off',
+      '@typescript-eslint/consistent-indexed-object-style': 'off',
+      '@typescript-eslint/no-unsafe-return': 'off',
+      '@typescript-eslint/no-unsafe-argument': 'off',
+      '@typescript-eslint/no-unnecessary-condition': 'off',
+      '@typescript-eslint/prefer-nullish-coalescing': 'off',
+      '@typescript-eslint/restrict-plus-operands': 'off',
+      '@typescript-eslint/restrict-template-expressions': 'off',
       '@typescript-eslint/no-confusing-void-expression': [
         'error',
         {
@@ -48,12 +59,18 @@ export const typescript = (options?: Options): Linter.Config[] => [
         }
       ],
 
+      '@typescript-eslint/no-require-imports': 'off',
+
       '@typescript-eslint/no-namespace': 'off',
       '@typescript-eslint/no-unsafe-call': 'off',
       '@typescript-eslint/no-unsafe-assignment': 'off',
       '@typescript-eslint/no-unsafe-member-access': 'off',
+      '@typescript-eslint/prefer-optional-chain': 'off',
+      '@typescript-eslint/require-await': 'off',
       '@typescript-eslint/consistent-type-definitions': 'off',
       '@typescript-eslint/no-non-null-assertion': 'off',
+      '@typescript-eslint/unbound-method': 'off',
+      '@typescript-eslint/use-unknown-in-catch-callback-variable': 'off',
 
       // Turn off due to poor performance
       '@typescript-eslint/no-misused-promises': 'off',

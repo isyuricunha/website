@@ -26,14 +26,14 @@ const MusicStatsSection = () => {
     if (!topTracks || !topArtists || !recentTracks) return null
 
     // Calculate total listening time (estimated from recent tracks)
-    const totalMinutes = recentTracks.reduce((acc, track) => acc + (track.duration || 180000), 0) / 60000
+    const totalMinutes = recentTracks.reduce((acc: number, track: any) => acc + (track.duration || 180_000), 0) / 60_000
     const totalHours = Math.round(totalMinutes / 60)
 
     // Extract top genres from artists
     const genreCount: Record<string, number> = {}
-    topArtists.forEach(artist => {
+    topArtists.forEach((artist: any) => {
       if (artist.genres) {
-        artist.genres.forEach(genre => {
+        artist.genres.forEach((genre: string) => {
           genreCount[genre] = (genreCount[genre] || 0) + 1
         })
       }
@@ -46,11 +46,11 @@ const MusicStatsSection = () => {
 
     // Calculate average track popularity
     const avgPopularity = Math.round(
-      topTracks.reduce((acc, track) => acc + (track.popularity || 0), 0) / topTracks.length
+      topTracks.reduce((acc: number, track: any) => acc + (track.popularity || 0), 0) / topTracks.length
     )
 
     // Calculate diversity score (unique artists in top tracks)
-    const uniqueArtists = new Set(topTracks.map(track => track.artist)).size
+    const uniqueArtists = new Set(topTracks.map((track: any) => track.artist)).size
     const diversityScore = Math.round((uniqueArtists / topTracks.length) * 100)
 
     return {
@@ -170,13 +170,12 @@ const MusicStatsSection = () => {
               {stats.topGenres.map((genre, index) => (
                 <span
                   key={genre}
-                  className={`px-3 py-1 rounded-full text-xs sm:text-sm font-medium ${
-                    index === 0
+                  className={`px-3 py-1 rounded-full text-xs sm:text-sm font-medium ${index === 0
                       ? 'bg-primary text-primary-foreground'
                       : index === 1
-                      ? 'bg-secondary text-secondary-foreground'
-                      : 'bg-muted text-muted-foreground'
-                  }`}
+                        ? 'bg-secondary text-secondary-foreground'
+                        : 'bg-muted text-muted-foreground'
+                    }`}
                 >
                   #{index + 1} {genre}
                 </span>

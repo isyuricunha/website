@@ -4,7 +4,7 @@ import type { Post } from 'content-collections'
 
 import { useTranslations } from '@tszhong0411/i18n/client'
 import { BlurImage, Badge } from '@tszhong0411/ui'
-import { Clock, Calendar, Star } from 'lucide-react'
+import { Star } from 'lucide-react'
 
 import { useFormattedDate } from '@/hooks/use-formatted-date'
 import { api } from '@/trpc/react'
@@ -30,9 +30,10 @@ const PostCards = (props: PostCardsProps) => {
 }
 
 const PostCard = (props: PostCardProps) => {
-  const { slug, title, summary, date, readingTime, category, tags, featured } = props
+  const { slug, title, summary, date, featured } = props
   const formattedDate = useFormattedDate(date)
   const t = useTranslations()
+  const tv = (key: string, values?: Record<string, any>) => (t as any)(key, values) as string
 
   const viewsQuery = api.views.get.useQuery({
     slug
@@ -52,7 +53,7 @@ const PostCard = (props: PostCardProps) => {
           </Badge>
         </div>
       )}
-      
+
       <BlurImage
         src={`/images/blog/${slug}/cover.png`}
         className='rounded-lg'
@@ -61,7 +62,7 @@ const PostCard = (props: PostCardProps) => {
         imageClassName='transition-transform group-hover:scale-105'
         alt={title}
       />
-      
+
       <div className='px-2 py-2'>
         <div className='flex items-center justify-between gap-1.5 text-[10px] text-zinc-500 mb-1.5'>
           {formattedDate}
@@ -69,13 +70,13 @@ const PostCard = (props: PostCardProps) => {
             {likesQuery.status === 'pending' ? '--' : null}
             {likesQuery.status === 'error' ? t('common.error') : null}
             {likesQuery.status === 'success' ? (
-              <div>{t('common.likes', { count: likesQuery.data.likes })}</div>
+              <div>{tv('common.likes', { count: likesQuery.data.likes })}</div>
             ) : null}
             <div>&middot;</div>
             {viewsQuery.status === 'pending' ? '--' : null}
             {viewsQuery.status === 'error' ? t('common.error') : null}
             {viewsQuery.status === 'success' ? (
-              <div>{t('common.views', { count: viewsQuery.data.views })}</div>
+              <div>{tv('common.views', { count: viewsQuery.data.views })}</div>
             ) : null}
           </div>
         </div>

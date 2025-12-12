@@ -1,6 +1,7 @@
 'use client'
 
-import { useTranslations } from '@tszhong0411/i18n/client'
+import { useTranslations , useLocale } from '@tszhong0411/i18n/client'
+
 import { Loader2, MessageCircle, Send, ThumbsDown, ThumbsUp, X } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 
@@ -32,6 +33,7 @@ export default function AIChatInterface({
   onMessageSent
 }: AIChatInterfaceProps) {
   const t = useTranslations()
+  const locale = useLocale()
   const storageKey = 'yue_chat_history_v1'
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [inputValue, setInputValue] = useState('')
@@ -81,43 +83,47 @@ export default function AIChatInterface({
   const sendMessage = async () => {
     if (!inputValue.trim() || isLoading) return
 
+    const messageText = inputValue.trim()
+
     const userMessage: ChatMessage = {
       id: Date.now().toString(),
-      text: inputValue,
+      text: messageText,
       isUser: true,
       timestamp: new Date().toISOString(),
       type: 'text'
     }
 
-    setMessages((prev) => [...prev, userMessage])
-    const messageText = inputValue
+    const nextMessages = [...messages, userMessage]
+
+    setMessages(nextMessages)
     setInputValue('')
     setIsLoading(true)
     onMessageSent?.(messageText)
 
     try {
       // Enhanced context with more conversation history for better memory
-      const recentMessages = messages.slice(-15).map((message) => ({
+      const recentMessages = nextMessages.slice(-15).map((message) => ({
         role: message.isUser ? 'user' : 'assistant',
         content: message.text,
         timestamp: message.timestamp,
         reactions: message.reactions
       }))
 
-      const response = await fetch('/api/mascot/chat', {
+      const response = await fetch('/api/ai/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           message: messageText,
+          locale,
           context: {
             currentPage,
-            previousMessages: messages.slice(-8).map((m) => m.text),
+            previousMessages: nextMessages.slice(-8).map((m) => m.text),
             conversation: recentMessages,
-            conversationLength: messages.length,
+            conversationLength: nextMessages.length,
             userPreferences: {
-              hasReactedToMessages: messages.some((m) => m.reactions?.userReaction)
+              hasReactedToMessages: nextMessages.some((m) => m.reactions?.userReaction)
             }
           }
         })
@@ -309,11 +315,10 @@ export default function AIChatInterface({
                     <button
                       type='button'
                       onClick={() => handleReaction(message.id, 'like')}
-                      className={`hover:bg-muted/80 flex items-center gap-1 rounded px-2 py-1 text-xs transition-all ${
-                        message.reactions?.userReaction === 'like'
+                      className={`hover:bg-muted/80 flex items-center gap-1 rounded px-2 py-1 text-xs transition-all ${message.reactions?.userReaction === 'like'
                           ? 'bg-green-50 text-green-600 dark:bg-green-950'
                           : 'text-muted-foreground'
-                      }`}
+                        }`}
                     >
                       <ThumbsUp className='h-3 w-3' />
                       {message.reactions?.likes ?? 0}
@@ -321,11 +326,10 @@ export default function AIChatInterface({
                     <button
                       type='button'
                       onClick={() => handleReaction(message.id, 'dislike')}
-                      className={`hover:bg-muted/80 flex items-center gap-1 rounded px-2 py-1 text-xs transition-all ${
-                        message.reactions?.userReaction === 'dislike'
+                      className={`hover:bg-muted/80 flex items-center gap-1 rounded px-2 py-1 text-xs transition-all ${message.reactions?.userReaction === 'dislike'
                           ? 'bg-red-50 text-red-600 dark:bg-red-950'
                           : 'text-muted-foreground'
-                      }`}
+                        }`}
                     >
                       <ThumbsDown className='h-3 w-3' />
                       {message.reactions?.dislikes ?? 0}

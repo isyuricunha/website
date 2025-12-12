@@ -1192,16 +1192,17 @@
         "max-length": "El mensaje debe tener menos de 2000 caracteres",
         "character-count": "{count}/2000 caracteres"
       },
-      "submit": "Enviar Mensaje",
+      "submit": "Enviar mensaje",
       "submitting": "Enviando...",
       "success": "¡Mensaje enviado con éxito!",
-      "error": "Error al enviar el mensaje. Por favor, inténtalo de nuevo.",
-      "network-error": "Error de red. Por favor, verifica tu conexión e inténtalo de nuevo.",
-      "turnstile-required": "Por favor completa el desafío de verificación"
+      "error": "No se pudo enviar el mensaje. Por favor, inténtalo de nuevo.",
+      "network-error": "Error de red. Por favor, comprueba tu conexión e inténtalo de nuevo.",
+      "turnstile-required": "Completa el desafío de verificación",
+      "turnstile-error": "La verificación de seguridad falló. Por favor, inténtalo de nuevo."
     },
     "direct": {
-      "title": "Contacto Directo",
-      "description": "¿Prefieres email? Contáctame directamente",
+      "title": "Contacto directo",
+      "description": "¿Prefieres email? Escríbeme directamente",
       "email-label": "Email",
       "response-time": "Normalmente respondo en 24-48 horas.",
       "urgent": "Para asuntos urgentes, por favor menciónalo en el asunto."

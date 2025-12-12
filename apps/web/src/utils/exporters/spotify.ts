@@ -3,8 +3,10 @@ export type TopTrack = { id: string; name: string; artist: string; album: string
 export type RecentTrack = { id: string; name: string; artist: string; album: string; albumImage: string | null; url: string; playedAt: string }
 
 const toCsv = (rows: Array<Record<string, any>>): string => {
-  if (!rows.length) return ''
-  const headers = Object.keys(rows[0])
+  if (rows.length === 0) return ''
+  const firstRow = rows[0]
+  if (!firstRow) return ''
+  const headers = Object.keys(firstRow)
   const escape = (v: any) => {
     const s = String(v ?? '')
     if (s.includes(',') || s.includes('"') || s.includes('\n')) {
@@ -22,7 +24,7 @@ export const download = (filename: string, content: string, mime: string) => {
   const a = document.createElement('a')
   a.href = url
   a.download = filename
-  document.body.appendChild(a)
+  document.body.append(a)
   a.click()
   a.remove()
   URL.revokeObjectURL(url)

@@ -2,6 +2,8 @@
 
 declare const self: ServiceWorkerGlobalScope
 
+type BackgroundSyncEvent = ExtendableEvent & { tag: string }
+
 const CACHE_NAME = 'yuri-cunha-v1'
 const STATIC_CACHE = 'static-v1'
 const DYNAMIC_CACHE = 'dynamic-v1'
@@ -25,7 +27,7 @@ const STATIC_ASSETS = [
 ]
 
 // Install event - cache critical resources
-self.addEventListener('install', (event) => {
+self.addEventListener('install', (event: ExtendableEvent) => {
   event.waitUntil(
     Promise.all([
       caches.open(STATIC_CACHE).then((cache) => {
@@ -41,13 +43,13 @@ self.addEventListener('install', (event) => {
 })
 
 // Activate event - clean up old caches
-self.addEventListener('activate', (event) => {
+self.addEventListener('activate', (event: ExtendableEvent) => {
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames
-          .filter((cacheName) => 
-            cacheName !== STATIC_CACHE && 
+          .filter((cacheName) =>
+            cacheName !== STATIC_CACHE &&
             cacheName !== DYNAMIC_CACHE &&
             cacheName !== CACHE_NAME
           )
@@ -60,7 +62,7 @@ self.addEventListener('activate', (event) => {
 })
 
 // Fetch event - serve from cache with network fallback
-self.addEventListener('fetch', (event) => {
+self.addEventListener('fetch', (event: FetchEvent) => {
   const { request } = event
   const url = new URL(request.url)
 
@@ -90,7 +92,7 @@ self.addEventListener('fetch', (event) => {
         }).catch(() => {
           // Network failed, but we have cache
         })
-        
+
         return cachedResponse
       }
 
@@ -102,7 +104,7 @@ self.addEventListener('fetch', (event) => {
         }
 
         const responseClone = response.clone()
-        
+
         // Cache successful responses
         caches.open(DYNAMIC_CACHE).then((cache) => {
           cache.put(request, responseClone)
@@ -112,33 +114,38 @@ self.addEventListener('fetch', (event) => {
       }).catch(() => {
         // Network failed and no cache - show offline page for navigation requests
         if (request.mode === 'navigate') {
-          return caches.match('/offline') || new Response(
-            `<!DOCTYPE html>
-            <html>
-            <head>
-              <title>Offline - Yuri Cunha</title>
-              <meta name="viewport" content="width=device-width, initial-scale=1">
-              <style>
-                body { font-family: system-ui, sans-serif; text-align: center; padding: 2rem; }
-                .offline { max-width: 400px; margin: 0 auto; }
-                .icon { font-size: 4rem; margin-bottom: 1rem; }
-              </style>
-            </head>
-            <body>
-              <div class="offline">
-                <div class="icon">📱</div>
-                <h1>You're offline</h1>
-                <p>Please check your internet connection and try again.</p>
-                <button onclick="window.location.reload()">Retry</button>
-              </div>
-            </body>
-            </html>`,
-            {
-              headers: { 'Content-Type': 'text/html' }
-            }
-          )
+          return caches.match('/offline').then((offline) => {
+            return (
+              offline ??
+              new Response(
+                `<!DOCTYPE html>
+                <html>
+                <head>
+                  <title>Offline - Yuri Cunha</title>
+                  <meta name="viewport" content="width=device-width, initial-scale=1">
+                  <style>
+                    body { font-family: system-ui, sans-serif; text-align: center; padding: 2rem; }
+                    .offline { max-width: 400px; margin: 0 auto; }
+                    .icon { font-size: 4rem; margin-bottom: 1rem; }
+                  </style>
+                </head>
+                <body>
+                  <div class="offline">
+                    <div class="icon">📱</div>
+                    <h1>You're offline</h1>
+                    <p>Please check your internet connection and try again.</p>
+                    <button onclick="window.location.reload()">Retry</button>
+                  </div>
+                </body>
+                </html>`,
+                {
+                  headers: { 'Content-Type': 'text/html' }
+                }
+              )
+            )
+          })
         }
-        
+
         // For other requests, just fail
         throw new Error('Network request failed and no cache available')
       })
@@ -148,19 +155,22 @@ self.addEventListener('fetch', (event) => {
 
 // Background sync for when connection is restored
 self.addEventListener('sync', (event) => {
-  if (event.tag === 'background-sync') {
-    event.waitUntil(
-      // Perform any background sync tasks here
-      console.log('Background sync triggered')
+  const syncEvent = event as unknown as BackgroundSyncEvent
+  if (syncEvent.tag === 'background-sync') {
+    syncEvent.waitUntil(
+      Promise.resolve().then(() => {
+        // Perform any background sync tasks here
+        console.log('Background sync triggered')
+      })
     )
   }
 })
 
 // Push notifications (if needed in the future)
-self.addEventListener('push', (event) => {
+self.addEventListener('push', (event: PushEvent) => {
   if (event.data) {
     const data = event.data.json()
-    
+
     event.waitUntil(
       self.registration.showNotification(data.title, {
         body: data.body,
@@ -174,9 +184,9 @@ self.addEventListener('push', (event) => {
 })
 
 // Notification click handler
-self.addEventListener('notificationclick', (event) => {
+self.addEventListener('notificationclick', (event: NotificationEvent) => {
   event.notification.close()
-  
+
   event.waitUntil(
     self.clients.openWindow(event.notification.data || '/')
   )

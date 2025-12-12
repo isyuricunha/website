@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import type { OpenGraph, Twitter } from 'next/dist/lib/metadata/types/opengraph-types'
 
 import { SITE_NAME, SITE_URL, SITE_DESCRIPTION } from './constants'
 
@@ -34,7 +33,7 @@ export function generateSEO({
   const fullUrl = url.startsWith('http') ? url : `${SITE_URL}${url}`
   const fullImage = image.startsWith('http') ? image : `${SITE_URL}${image}`
 
-  const openGraph: OpenGraph = {
+  const openGraph: NonNullable<Metadata['openGraph']> = {
     title: fullTitle,
     description,
     url: fullUrl,
@@ -57,7 +56,7 @@ export function generateSEO({
     })
   }
 
-  const twitter: Twitter = {
+  const twitter: NonNullable<Metadata['twitter']> = {
     card: 'summary_large_image',
     title: fullTitle,
     description,
@@ -75,10 +74,10 @@ export function generateSEO({
     alternates: {
       canonical: fullUrl,
       ...(alternateLocales.length > 0 && {
-        languages: alternateLocales.reduce((acc, loc) => {
+        languages: alternateLocales.reduce<Record<string, string>>((acc, loc) => {
           acc[loc] = `${SITE_URL}/${loc}${url.replace(SITE_URL, '')}`
           return acc
-        }, {} as Record<string, string>)
+        }, {})
       })
     },
     robots: {

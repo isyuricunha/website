@@ -11,7 +11,7 @@ import {
   SheetTrigger
 } from '@tszhong0411/ui'
 import { cn } from '@tszhong0411/utils'
-import { MenuIcon, X } from 'lucide-react'
+import { MenuIcon } from 'lucide-react'
 import { motion } from 'motion/react'
 import { useState } from 'react'
 

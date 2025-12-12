@@ -20,10 +20,10 @@ const config: NextConfig = {
   },
 
   eslint: {
-    ignoreDuringBuilds: !!process.env.CI
+    ignoreDuringBuilds: false
   },
   typescript: {
-    ignoreBuildErrors: !!process.env.CI
+    ignoreBuildErrors: false
   },
 
   transpilePackages: ['@tszhong0411/*'],
@@ -77,7 +77,7 @@ const config: NextConfig = {
     ]
   },
 
-  // eslint-disable-next-line @typescript-eslint/require-await -- must be async
+   
   async redirects() {
     return [
       {
@@ -103,7 +103,7 @@ const config: NextConfig = {
     ]
   },
 
-  // eslint-disable-next-line @typescript-eslint/require-await -- must be async
+   
   async headers() {
     return NextConfigHeaders
   },
@@ -113,7 +113,6 @@ const config: NextConfig = {
       c.plugins.push(ReactComponentName({}))
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return -- it's unknown
     return c
   }
 }

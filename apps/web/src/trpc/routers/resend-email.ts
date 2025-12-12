@@ -1,11 +1,10 @@
 import { z } from 'zod'
-import { eq } from 'drizzle-orm'
+import { emailSubscriptions, eq, users } from '@tszhong0411/db'
 
 import { createTRPCRouter, adminProcedure, protectedProcedure } from '@/trpc/trpc'
 import { TRPCError } from '@trpc/server'
 import { resendService } from '@/lib/resend-service'
-import { users, emailSubscriptions } from '@tszhong0411/db'
-import { AuditLogger } from '@/lib/audit-logger'
+import { AuditLogger, type AuditAction } from '@/lib/audit-logger'
 import { logger } from '@/lib/logger'
 
 export const resendEmailRouter = createTRPCRouter({
@@ -47,16 +46,11 @@ export const resendEmailRouter = createTRPCRouter({
         }
 
         // Log audit trail
-        await auditLogger.logSystemAction(
-          ctx.session.user.id,
-          'content_management',
-          'email_audience',
-          audience.id,
-          {
-            action: 'audience_created',
-            name: input.name
-          }
-        )
+        const action: AuditAction = 'settings_update'
+        await auditLogger.logSystemAction(ctx.session.user.id, action, 'email_audience', audience.id, {
+          action: 'audience_created',
+          name: input.name
+        })
 
         return { success: true, audience }
       } catch (error) {
@@ -87,15 +81,10 @@ export const resendEmailRouter = createTRPCRouter({
         }
 
         // Log audit trail
-        await auditLogger.logSystemAction(
-          ctx.session.user.id,
-          'content_management',
-          'email_audience',
-          input.audienceId,
-          {
-            action: 'audience_deleted'
-          }
-        )
+        const action: AuditAction = 'settings_update'
+        await auditLogger.logSystemAction(ctx.session.user.id, action, 'email_audience', input.audienceId, {
+          action: 'audience_deleted'
+        })
 
         return { success: true }
       } catch (error) {
@@ -163,18 +152,12 @@ export const resendEmailRouter = createTRPCRouter({
         const result = await resendService.bulkSyncUsersToAudience(input.audienceId, usersToSync)
 
         // Log audit trail
-        await auditLogger.logSystemAction(
-          ctx.session.user.id,
-          'content_management',
-          'email_audience',
-          input.audienceId,
-          {
-            action: 'users_synced',
-            totalUsers: usersToSync.length,
-            successful: result.success,
-            failed: result.failed
-          }
-        )
+        const action: AuditAction = 'settings_update'
+        await auditLogger.logSystemAction(ctx.session.user.id, action, 'email_audience', input.audienceId, {
+          action: 'audience_updated',
+          synced: result.success,
+          failed: result.failed
+        })
 
         return {
           success: true,
@@ -187,6 +170,91 @@ export const resendEmailRouter = createTRPCRouter({
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to sync users to audience'
+        })
+      }
+    }),
+
+  // Add contact to audience
+  addContactToAudience: adminProcedure
+    .input(z.object({
+      audienceId: z.string(),
+      contactId: z.string()
+    }))
+    .mutation(async ({ ctx, input }) => {
+      try {
+        const auditLogger = new AuditLogger(ctx.db)
+
+        const contact = await resendService.addContact(input.audienceId, {
+          email: input.contactId
+        })
+
+        if (!contact) {
+          throw new TRPCError({
+            code: 'INTERNAL_SERVER_ERROR',
+            message: 'Failed to add contact to audience'
+          })
+        }
+
+        // Log audit trail
+        const action: AuditAction = 'settings_update'
+        await auditLogger.logSystemAction(
+          ctx.session.user.id,
+          action,
+          'email_contact',
+          `${input.audienceId}:${contact.id}`,
+          {
+            action: 'contact_added',
+            email: contact.email
+          }
+        )
+
+        return { success: true }
+      } catch (error) {
+        logger.error('Error adding contact to Resend audience', error)
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to add contact to audience'
+        })
+      }
+    }),
+
+  // Remove contact from audience
+  removeContactFromAudience: adminProcedure
+    .input(z.object({
+      audienceId: z.string(),
+      contactId: z.string()
+    }))
+    .mutation(async ({ ctx, input }) => {
+      try {
+        const auditLogger = new AuditLogger(ctx.db)
+
+        const success = await resendService.removeContact(input.audienceId, input.contactId)
+
+        if (!success) {
+          throw new TRPCError({
+            code: 'INTERNAL_SERVER_ERROR',
+            message: 'Failed to remove contact from audience'
+          })
+        }
+
+        // Log audit trail
+        const action: AuditAction = 'settings_update'
+        await auditLogger.logSystemAction(
+          ctx.session.user.id,
+          action,
+          'email_contact',
+          `${input.audienceId}:${input.contactId}`,
+          {
+            action: 'contact_removed'
+          }
+        )
+
+        return { success: true }
+      } catch (error) {
+        logger.error('Error removing contact from Resend audience', error)
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to remove contact from audience'
         })
       }
     }),
@@ -245,7 +313,7 @@ export const resendEmailRouter = createTRPCRouter({
         // Log audit trail
         await auditLogger.logSystemAction(
           ctx.session.user.id,
-          'content_management',
+          'settings_update',
           'email_broadcast',
           broadcast.id,
           {
@@ -287,7 +355,7 @@ export const resendEmailRouter = createTRPCRouter({
         // Log audit trail
         await auditLogger.logSystemAction(
           ctx.session.user.id,
-          'content_management',
+          'settings_update',
           'email_broadcast',
           input.broadcastId,
           {
@@ -327,7 +395,7 @@ export const resendEmailRouter = createTRPCRouter({
         // Log audit trail
         await auditLogger.logSystemAction(
           ctx.session.user.id,
-          'content_management',
+          'settings_update',
           'email_broadcast',
           input.broadcastId,
           {
@@ -367,7 +435,7 @@ export const resendEmailRouter = createTRPCRouter({
         // Log audit trail
         await auditLogger.logSystemAction(
           ctx.session.user.id,
-          'content_management',
+          'settings_update',
           'email_broadcast',
           input.broadcastId,
           {
@@ -393,7 +461,7 @@ export const resendEmailRouter = createTRPCRouter({
     .query(async ({ input }) => {
       try {
         const broadcast = await resendService.getBroadcast(input.broadcastId)
-        
+
         if (!broadcast) {
           throw new TRPCError({
             code: 'NOT_FOUND',
@@ -437,7 +505,7 @@ export const resendEmailRouter = createTRPCRouter({
         // Log audit trail
         await auditLogger.logSystemAction(
           ctx.session.user.id,
-          'content_management',
+          'settings_update',
           'email_broadcast',
           input.broadcastId,
           {
@@ -480,7 +548,7 @@ export const resendEmailRouter = createTRPCRouter({
         // Log audit trail
         await auditLogger.logSystemAction(
           ctx.session.user.id,
-          'content_management',
+          'settings_update',
           'email_broadcast',
           input.broadcastId,
           {
@@ -644,8 +712,8 @@ export const resendEmailRouter = createTRPCRouter({
         }
 
         // Generate unique ID and unsubscribe token
-        const subscriptionId = `sub_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
-        const unsubscribeToken = `unsubscribe_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+        const subscriptionId = `sub_${Date.now()}_${Math.random().toString(36).slice(2, 11)}`
+        const unsubscribeToken = `unsubscribe_${Date.now()}_${Math.random().toString(36).slice(2, 11)}`
 
         // Update local subscription status
         await ctx.db

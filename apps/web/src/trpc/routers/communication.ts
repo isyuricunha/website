@@ -5,9 +5,16 @@ import {
   emailCampaigns,
   emailTemplates,
   notifications,
-  users
+  users,
+  and,
+  desc,
+  eq,
+  gte,
+  inArray,
+  isNull,
+  lte,
+  or
 } from '@tszhong0411/db'
-import { and, desc, eq, gte, inArray, isNull, lte, or } from 'drizzle-orm'
 import { randomBytes } from 'crypto'
 import { z } from 'zod'
 
@@ -26,11 +33,11 @@ export const communicationRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       try {
         const conditions = []
-        
+
         if (input.type) {
           conditions.push(eq(emailTemplates.type, input.type))
         }
-        
+
         if (input.active !== undefined) {
           conditions.push(eq(emailTemplates.isActive, input.active))
         }
@@ -99,7 +106,7 @@ export const communicationRouter = createTRPCRouter({
           ctx.session.user.id,
           'bulk_operation',
           '',
-          { 
+          {
             action: 'bulk_notification_send',
             recipientCount: 0,
             notificationType: input.type
@@ -160,7 +167,7 @@ export const communicationRouter = createTRPCRouter({
           ctx.session.user.id,
           'bulk_operation',
           '',
-          { 
+          {
             action: 'bulk_notification_send',
             recipientCount: 0,
             notificationType: ''
@@ -188,7 +195,7 @@ export const communicationRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       try {
         const conditions = []
-        
+
         if (input.status) {
           conditions.push(eq(emailCampaigns.status, input.status))
         }
@@ -292,7 +299,7 @@ export const communicationRouter = createTRPCRouter({
           ctx.session.user.id,
           'bulk_operation',
           '',
-          { 
+          {
             action: 'bulk_notification_send',
             recipientCount: totalRecipients,
             notificationType: ''
@@ -374,7 +381,7 @@ export const communicationRouter = createTRPCRouter({
           ctx.session.user.id,
           'bulk_operation',
           '',
-          { 
+          {
             action: 'bulk_notification_send',
             recipientCount: campaign.totalRecipients,
             notificationType: ''
@@ -405,7 +412,7 @@ export const communicationRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       try {
         const conditions = []
-        
+
         if (input.active !== undefined) {
           conditions.push(eq(announcements.isActive, input.active))
         }
@@ -470,7 +477,7 @@ export const communicationRouter = createTRPCRouter({
 
             // If no specific targeting, show to all
             return true
-          } catch (error) {
+          } catch {
             // If JSON parsing fails, show to all users
             return true
           }
@@ -485,11 +492,11 @@ export const communicationRouter = createTRPCRouter({
               eq(announcementInteractions.userId, ctx.session.user.id)
             )
           })
-          
-          userInteractions = interactions.reduce((acc, interaction) => {
+
+          userInteractions = interactions.reduce<any>((acc, interaction) => {
             acc[interaction.announcementId] = interaction
             return acc
-          }, {} as any)
+          }, {})
         }
 
         return {
@@ -548,7 +555,7 @@ export const communicationRouter = createTRPCRouter({
           ctx.session.user.id,
           'bulk_operation',
           '',
-          { 
+          {
             action: 'bulk_notification_send',
             recipientCount: 0,
             notificationType: ''
@@ -573,12 +580,6 @@ export const communicationRouter = createTRPCRouter({
       try {
         // For authenticated users, store dismissal in database
         if (ctx.session?.user) {
-          // Get dismissed announcements for this user
-          const dismissedInteractions = await ctx.db.query.announcementInteractions.findMany({
-            where: eq(announcementInteractions.userId, ctx.session.user.id),
-            columns: { announcementId: true }
-          })
-
           // Check if interaction already exists
           const existing = await ctx.db.query.announcementInteractions.findFirst({
             where: and(
@@ -639,7 +640,7 @@ export const communicationRouter = createTRPCRouter({
             gte(notifications.expiresAt, new Date())
           )
         ]
-        
+
         if (input.unreadOnly) {
           conditions.push(eq(notifications.read, false))
         }
@@ -743,9 +744,9 @@ export const communicationRouter = createTRPCRouter({
             userId: input.userId,
             title: input.title,
             message: input.content,
-            type: input.type === 'info' ? 'content' as const : 
-                  input.type === 'warning' ? 'system' as const : 
-                  input.type === 'success' ? 'user_action' as const : 
+            type: input.type === 'info' ? 'content' as const :
+              input.type === 'warning' ? 'system' as const :
+                input.type === 'success' ? 'user_action' as const :
                   input.type === 'error' ? 'security' as const : 'content' as const,
             expiresAt: input.expiresAt
           })
@@ -761,9 +762,9 @@ export const communicationRouter = createTRPCRouter({
             userId: user.id,
             title: input.title,
             message: input.content,
-            type: input.type === 'info' ? 'content' as const : 
-                  input.type === 'warning' ? 'system' as const : 
-                  input.type === 'success' ? 'user_action' as const : 
+            type: input.type === 'info' ? 'content' as const :
+              input.type === 'warning' ? 'system' as const :
+                input.type === 'success' ? 'user_action' as const :
                   input.type === 'error' ? 'security' as const : 'content' as const,
             expiresAt: input.expiresAt
           }))
@@ -810,7 +811,7 @@ export const communicationRouter = createTRPCRouter({
           columns: { id: true, status: true, sentCount: true, deliveredCount: true }
         })
 
-        const recentCampaigns = totalCampaigns.filter(c => 
+        const recentCampaigns = totalCampaigns.filter(c =>
           c.status === 'sent' || c.status === 'sending'
         )
 

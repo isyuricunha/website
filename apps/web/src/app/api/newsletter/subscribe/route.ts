@@ -23,7 +23,15 @@ export async function POST(request: NextRequest) {
     }
 
     // Use the first audience (or you can specify a specific audience ID)
-    const mainAudienceId = audiences[0].id
+    const mainAudience = audiences[0]
+    if (!mainAudience) {
+      return NextResponse.json(
+        { error: 'No newsletter audience available' },
+        { status: 500 }
+      )
+    }
+
+    const mainAudienceId = mainAudience.id
 
     // Check if email already exists in the audience
     const existingContact = await resendService.findContactByEmail(mainAudienceId, email)
@@ -54,7 +62,7 @@ export async function POST(request: NextRequest) {
 
   } catch (error) {
     logger.error('Newsletter subscription error', error)
-    
+
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         { error: 'Invalid email address' },

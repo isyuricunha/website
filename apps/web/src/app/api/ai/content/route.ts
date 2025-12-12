@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
+
+import { aiService } from '@/lib/ai/ai-service'
 import { logger } from '@/lib/logger'
-import { aiService, type AIProvider } from '@/lib/ai/ai-service'
-import { flags } from '@tszhong0411/env'
 
 const ContentGenerationSchema = z.object({
   action: z.enum(['tags', 'summary', 'meta', 'translate']),
@@ -49,15 +49,17 @@ export async function POST(request: NextRequest) {
     let result: any
 
     switch (action) {
-      case 'tags':
+      case 'tags': {
         result = await aiService.generateTags(content, existingTags, provider)
         break
+      }
 
-      case 'summary':
+      case 'summary': {
         result = await aiService.generateSummary(content, maxLength, provider)
         break
+      }
 
-      case 'meta':
+      case 'meta': {
         if (!title) {
           return NextResponse.json(
             { error: 'Title is required for meta description generation' },
@@ -66,16 +68,19 @@ export async function POST(request: NextRequest) {
         }
         result = await aiService.generateMetaDescription(title, content, provider)
         break
+      }
 
-      case 'translate':
+      case 'translate': {
         result = await aiService.translateContent(content, fromLang, toLang, provider)
         break
+      }
 
-      default:
+      default: {
         return NextResponse.json(
           { error: 'Invalid action' },
           { status: 400 }
         )
+      }
     }
 
     return NextResponse.json({
@@ -87,7 +92,7 @@ export async function POST(request: NextRequest) {
 
   } catch (error) {
     logger.error('Content generation API error', error)
-    
+
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         { error: 'Invalid request format', details: error.errors },
@@ -103,7 +108,7 @@ export async function POST(request: NextRequest) {
           { status: 429 }
         )
       }
-      
+
       if (error.message.includes('not available')) {
         return NextResponse.json(
           { error: error.message },
@@ -119,9 +124,9 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export async function GET() {
+export function GET() {
   const availableProviders = aiService.getAvailableProviders()
-  
+
   return NextResponse.json({
     message: 'AI Content Generation API',
     actions: ['tags', 'summary', 'meta', 'translate'],

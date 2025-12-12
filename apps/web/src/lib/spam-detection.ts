@@ -51,7 +51,8 @@ export function getClientIp(headers: Headers): string {
   // Check various headers that might contain the real IP
   const forwarded = headers.get('x-forwarded-for')
   if (forwarded) {
-    return forwarded.split(',')[0].trim()
+    const first = forwarded.split(',')[0]
+    return first ? first.trim() : 'unknown'
   }
 
   const realIp = headers.get('x-real-ip')
@@ -95,7 +96,7 @@ export async function verifyTurnstileToken(
     }
 
     return { success: true }
-  } catch (error) {
+  } catch {
     return {
       success: false,
       error: 'Failed to verify Turnstile token'

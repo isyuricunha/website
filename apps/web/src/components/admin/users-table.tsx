@@ -44,6 +44,7 @@ import { api } from '@/trpc/react'
 import { exportToCSV, USER_EXPORT_COLUMNS } from '@/utils/csv-export'
 
 import ConfirmationDialog from './confirmation-dialog'
+import UserEditModal from './user-edit-modal'
 
 type User = GetUsersOutput['users'][number]
 
@@ -222,19 +223,15 @@ const UsersTable = (props: UsersTableProps) => {
       cell: ({ row }) => <>{row.original.createdAt.toLocaleDateString()}</>
     },
     {
-      accessorKey: 'banned',
+      accessorKey: 'role',
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={t('admin.table.users.status')} />
       ),
-      cell: ({ row }) => {
-        const isBanned = row.original.banned
-
-        return (
-          <Badge variant={isBanned ? 'destructive' : 'default'}>
-            {isBanned ? t('admin.table.users.banned') : t('admin.table.users.active')}
-          </Badge>
-        )
-      }
+      cell: ({ row }) => (
+        <Badge variant={row.original.role === 'admin' ? 'secondary' : 'default'}>
+          {row.original.role}
+        </Badge>
+      )
     },
     {
       id: 'actions',

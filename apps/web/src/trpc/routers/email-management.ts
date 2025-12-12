@@ -1,14 +1,10 @@
 import { TRPCError } from '@trpc/server'
-import { 
-  emailTemplates,
-  emailSubscriptions
-} from '@tszhong0411/db'
-import { and, desc, eq } from 'drizzle-orm'
+import { and, desc, emailSubscriptions, emailTemplates, eq } from '@tszhong0411/db'
 import { randomBytes } from 'crypto'
 import { z } from 'zod'
 
 import { AuditLogger } from '@/lib/audit-logger'
-import { adminProcedure, protectedProcedure, createTRPCRouter } from '../trpc'
+import { adminProcedure, createTRPCRouter } from '../trpc'
 import { logger } from '@/lib/logger'
 
 // DEPRECATED: This router is being replaced by resendEmailRouter
@@ -69,7 +65,8 @@ export const emailManagementRouter = createTRPCRouter({
           id: templateId,
           name: input.name,
           subject: input.subject,
-          content: input.content,
+          htmlContent: input.content,
+          textContent: null,
           type: input.type,
           variables: input.variables ? JSON.stringify(input.variables) : null,
           createdBy: ctx.session.user.id
@@ -78,7 +75,7 @@ export const emailManagementRouter = createTRPCRouter({
         // Log audit trail
         await auditLogger.logSystemAction(
           ctx.session.user.id,
-          'content_management',
+          'settings_update',
           'email_template',
           templateId,
           {
@@ -110,7 +107,7 @@ export const emailManagementRouter = createTRPCRouter({
         const conditions = []
 
         if (input.active !== undefined) {
-          conditions.push(eq(emailSubscriptions.subscribed, input.active))
+          conditions.push(eq(emailSubscriptions.isActive, input.active))
         }
 
         const whereClause = conditions.length > 0 ? and(...conditions) : undefined

@@ -1,11 +1,14 @@
 import { TRPCError } from '@trpc/server'
-import { 
-  systemHealthLogs, 
-  errorLogs, 
+import {
+  and,
+  bulkOperations,
+  desc,
+  eq,
+  errorLogs,
+  gte,
   siteConfig,
-  bulkOperations
+  systemHealthLogs
 } from '@tszhong0411/db'
-import { and, desc, eq, gte } from 'drizzle-orm'
 import { randomBytes } from 'crypto'
 import { z } from 'zod'
 
@@ -28,29 +31,31 @@ async function performHealthCheck(type: string, db: any) {
         status = 'healthy'
         message = 'Database connection successful'
         break
-      
-      case 'email':
+
+      case 'email': {
         // Check if email service is configured
         const hasResendKey = !!process.env.RESEND_API_KEY
         status = hasResendKey ? 'healthy' : 'warning'
         message = hasResendKey ? 'Email service configured' : 'Email service not configured'
         details = { configured: hasResendKey }
         break
-      
-      case 'api':
+      }
+
+      case 'api': {
         // Check API response time
         const responseTime = Date.now() - startTime
         status = responseTime < 1000 ? 'healthy' : responseTime < 3000 ? 'warning' : 'critical'
         message = `API response time: ${responseTime}ms`
         details = { responseTime }
         break
-      
+      }
+
       case 'storage':
         // Check if we can write to temp directory (basic storage check)
         status = 'healthy'
         message = 'Storage access available'
         break
-      
+
       default:
         status = 'unknown'
         message = 'Unknown health check type'
@@ -106,7 +111,7 @@ export const systemRouter = createTRPCRouter({
       // Calculate overall system status
       const criticalCount = results.filter(r => r.status === 'critical').length
       const warningCount = results.filter(r => r.status === 'warning').length
-      
+
       let overallStatus: 'healthy' | 'warning' | 'critical' = 'healthy'
       if (criticalCount > 0) overallStatus = 'critical'
       else if (warningCount > 0) overallStatus = 'warning'
@@ -139,11 +144,11 @@ export const systemRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       try {
         const conditions = []
-        
+
         if (input.level) {
           conditions.push(eq(errorLogs.level, input.level))
         }
-        
+
         if (input.resolved !== undefined) {
           conditions.push(eq(errorLogs.resolved, input.resolved))
         }
@@ -291,10 +296,12 @@ export const systemRouter = createTRPCRouter({
       // Group by type
       const groupedConfig: Record<string, any[]> = {}
       config.forEach(item => {
-        if (!groupedConfig[item.type]) {
-          groupedConfig[item.type] = []
+        const type = item.type
+        const group = groupedConfig[type] ?? []
+        if (!groupedConfig[type]) {
+          groupedConfig[type] = group
         }
-        groupedConfig[item.type].push({
+        group.push({
           ...item,
           value: item.value ? JSON.parse(item.value) : null
         })
@@ -394,7 +401,7 @@ export const systemRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       try {
         const conditions = []
-        
+
         if (input.status) {
           conditions.push(eq(bulkOperations.status, input.status))
         }
@@ -443,7 +450,7 @@ export const systemRouter = createTRPCRouter({
       const totalErrors = await ctx.db.query.errorLogs.findMany({
         columns: { id: true }
       })
-      
+
       const recentErrors = await ctx.db.query.errorLogs.findMany({
         where: gte(errorLogs.createdAt, oneDayAgo),
         columns: { id: true, level: true }

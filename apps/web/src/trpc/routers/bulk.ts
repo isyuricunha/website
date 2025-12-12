@@ -1,6 +1,5 @@
 import { TRPCError } from '@trpc/server'
-import { bulkOperations, users, sessions } from '@tszhong0411/db'
-import { eq, inArray, and, or } from 'drizzle-orm'
+import { and, bulkOperations, eq, inArray, or, sessions, users } from '@tszhong0411/db'
 import { randomBytes } from 'crypto'
 import { z } from 'zod'
 
@@ -17,12 +16,12 @@ export const bulkRouter = createTRPCRouter({
       parameters: z.record(z.any()).optional() // For additional parameters like new role
     }))
     .mutation(async ({ ctx, input }) => {
+      const operationId = randomBytes(16).toString('hex')
       try {
         const auditLogger = new AuditLogger(ctx.db)
         const ipAddress = getIpFromHeaders(ctx.headers)
         const userAgent = getUserAgentFromHeaders(ctx.headers)
 
-        const operationId = randomBytes(16).toString('hex')
         const totalItems = input.userIds.length
         let processedItems = 0
         let successfulItems = 0
@@ -60,15 +59,12 @@ export const bulkRouter = createTRPCRouter({
         })
 
         // Validate that we found all users
-        const foundUserIds = targetUsers.map(u => u.id)
-        const missingUserIds = input.userIds.filter(id => !foundUserIds.includes(id))
-
         for (const userId of input.userIds) {
           processedItems++
-          
+
           try {
             const user = targetUsers.find(u => u.id === userId)
-            
+
             if (!user) {
               results.push({
                 userId,
@@ -97,7 +93,7 @@ export const bulkRouter = createTRPCRouter({
                   ctx.session.user.id,
                   'user_delete',
                   userId,
-                  { 
+                  {
                     bulkOperation: true,
                     operationId,
                     deletedUser: { name: user.name, email: user.email, role: user.role }
@@ -114,7 +110,7 @@ export const bulkRouter = createTRPCRouter({
                   ctx.session.user.id,
                   'user_ban',
                   userId,
-                  { 
+                  {
                     bulkOperation: true,
                     operationId,
                     bannedUser: { name: user.name, email: user.email }
@@ -130,7 +126,7 @@ export const bulkRouter = createTRPCRouter({
                   ctx.session.user.id,
                   'user_unban',
                   userId,
-                  { 
+                  {
                     bulkOperation: true,
                     operationId,
                     unbannedUser: { name: user.name, email: user.email }
@@ -140,22 +136,22 @@ export const bulkRouter = createTRPCRouter({
                 )
                 break
 
-              case 'update_role':
+              case 'update_role': {
                 const newRole = input.parameters?.role
                 if (!newRole || !['user', 'admin'].includes(newRole)) {
                   throw new Error('Invalid role specified')
                 }
-                
+
                 await ctx.db
                   .update(users)
                   .set({ role: newRole, updatedAt: new Date() })
                   .where(eq(users.id, userId))
-                
+
                 await auditLogger.logUserAction(
                   ctx.session.user.id,
                   'user_update',
                   userId,
-                  { 
+                  {
                     bulkOperation: true,
                     operationId,
                     previousRole: user.role,
@@ -166,6 +162,7 @@ export const bulkRouter = createTRPCRouter({
                   userAgent
                 )
                 break
+              }
 
               default:
                 throw new Error(`Unknown action: ${input.action}`)
@@ -236,7 +233,7 @@ export const bulkRouter = createTRPCRouter({
         }
       } catch (error) {
         logger.error('Bulk operation error:', error)
-        
+
         // Try to update operation status to failed
         try {
           await ctx.db
@@ -269,7 +266,7 @@ export const bulkRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       try {
         const conditions = []
-        
+
         if (input.excludeAdmins) {
           conditions.push(eq(users.role, 'user'))
         } else if (input.role) {
@@ -404,7 +401,7 @@ export const bulkRouter = createTRPCRouter({
           ...operation,
           parameters: operation.parameters ? JSON.parse(operation.parameters) : null,
           results: operation.results ? JSON.parse(operation.results) : null,
-          progress: operation.totalItems > 0 ? 
+          progress: operation.totalItems > 0 ?
             Math.round((operation.processedItems / operation.totalItems) * 100) : 0
         }
       } catch (error) {

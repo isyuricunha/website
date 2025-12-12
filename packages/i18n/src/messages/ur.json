@@ -1197,7 +1197,8 @@
       "success": "پیغام کامیابی سے بھیج دیا گیا!",
       "error": "پیغام بھیجنے میں ناکام۔ براہ کرم دوبارہ کوشش کریں۔",
       "network-error": "نیٹ ورک کی خرابی۔ براہ کرم اپنا کنکشن چیک کریں اور دوبارہ کوشش کریں۔",
-      "turnstile-required": "براہ کرم توثیق کا چیلنج مکمل کریں"
+      "turnstile-required": "براہ کرم توثیق کا چیلنج مکمل کریں",
+      "turnstile-error": "Security verification failed. Please try again."
     },
     "direct": {
       "title": "براہ راست رابطہ",

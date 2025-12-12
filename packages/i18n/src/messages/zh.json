@@ -1197,7 +1197,8 @@
       "success": "消息发送成功！",
       "error": "发送消息失败。请重试。",
       "network-error": "网络错误。请检查您的连接并重试。",
-      "turnstile-required": "请完成验证挑战"
+      "turnstile-required": "请完成验证挑战",
+      "turnstile-error": "Security verification failed. Please try again."
     },
     "direct": {
       "title": "直接联系",

@@ -1,17 +1,21 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { BlogService } from '@/lib/blog/blog-service'
+import type { NextRequest } from 'next/server'
+
+import { NextResponse } from 'next/server'
+
 import { aiService } from '@/lib/ai/ai-service'
-import { ratelimit } from '@/lib/ratelimit'
+import { BlogService } from '@/lib/blog/blog-service'
 import { logger } from '@/lib/logger'
+import { ratelimit } from '@/lib/ratelimit'
+import { getClientIp } from '@/lib/spam-detection'
 
 const SUPPORTED_LOCALES = ['en', 'pt', 'fr', 'de', 'ja', 'zh']
 
 export async function POST(request: NextRequest) {
   try {
     // Rate limiting
-    const ip = request.ip ?? '127.0.0.1'
+    const ip = getClientIp(request.headers)
     const { success } = await ratelimit.limit(ip)
-    
+
     if (!success) {
       return NextResponse.json(
         { error: 'Rate limit exceeded' },
@@ -49,10 +53,10 @@ export async function POST(request: NextRequest) {
         // Check if translation already exists
         const existingPost = await BlogService.getPost(slug, targetLocale)
         if (existingPost) {
-          results.push({ 
-            locale: targetLocale, 
-            success: false, 
-            error: 'Translation already exists' 
+          results.push({
+            locale: targetLocale,
+            success: false,
+            error: 'Translation already exists'
           })
           continue
         }
@@ -92,18 +96,18 @@ export async function POST(request: NextRequest) {
           modifiedTime: new Date().toISOString()
         })
 
-        results.push({ 
-          locale: targetLocale, 
+        results.push({
+          locale: targetLocale,
           success: saveSuccess,
           error: saveSuccess ? undefined : 'Failed to save translation'
         })
 
       } catch (error) {
         logger.error('Translation error', error, { locale: targetLocale })
-        results.push({ 
-          locale: targetLocale, 
-          success: false, 
-          error: 'Translation failed' 
+        results.push({
+          locale: targetLocale,
+          success: false,
+          error: 'Translation failed'
         })
       }
     }
@@ -126,16 +130,4 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     )
   }
-}
-
-function getLanguageName(locale: string): string {
-  const languageNames: Record<string, string> = {
-    'en': 'English',
-    'pt': 'Portuguese',
-    'fr': 'French',
-    'de': 'German',
-    'ja': 'Japanese',
-    'zh': 'Chinese'
-  }
-  return languageNames[locale] || locale
 }

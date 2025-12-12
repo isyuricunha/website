@@ -2,10 +2,10 @@
 
 import { useState } from 'react'
 import { Button } from '@tszhong0411/ui'
-import { 
-  Users, 
-  Search, 
-  Filter, 
+import {
+  Users,
+  Search,
+  Filter,
   Play,
   Pause,
   CheckCircle,
@@ -59,8 +59,7 @@ export const BulkOperations = () => {
 
   // Fetch bulk operations history - this endpoint returns a single operation, not a list
   // We need to create a separate endpoint or modify this to get multiple operations
-  const [operationsData, setOperationsData] = useState<{ operations: BulkOperationStatus[] } | null>(null)
-  const [operationsLoading, setOperationsLoading] = useState(false)
+  const [operationsData] = useState<{ operations: BulkOperationStatus[] } | null>(null)
 
   // Bulk user action mutation
   const bulkUserAction = api.bulk.bulkUserAction.useMutation({
@@ -168,7 +167,7 @@ export const BulkOperations = () => {
         <div className="animate-pulse">
           <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-1/4 mb-4"></div>
           <div className="space-y-3">
-            {[...Array(5)].map((_, i) => (
+            {Array.from({length: 5}).map((_, i) => (
               <div key={i} className="h-16 bg-gray-200 dark:bg-gray-700 rounded"></div>
             ))}
           </div>
@@ -230,7 +229,7 @@ export const BulkOperations = () => {
                 <option value="delete">Delete Users</option>
               </select>
             </div>
-            
+
             {selectedAction === 'update_role' && (
               <div className="flex-1">
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -246,7 +245,7 @@ export const BulkOperations = () => {
                 </select>
               </div>
             )}
-            
+
             <div className="flex items-end">
               <Button
                 onClick={handleBulkAction}
@@ -325,11 +324,10 @@ export const BulkOperations = () => {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                        user.role === 'admin' 
-                          ? 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300'
-                          : 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300'
-                      }`}>
+                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${user.role === 'admin'
+                        ? 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300'
+                        : 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300'
+                        }`}>
                         {user.role}
                       </span>
                     </td>
@@ -375,13 +373,13 @@ export const BulkOperations = () => {
                       </span>
                     </div>
                     <div className="text-sm text-gray-500 dark:text-gray-400">
-                      {operation.successfulItems}/{operation.totalItems} successful • 
-                      Created by {operation.createdByUser?.name || 'Unknown'} • 
+                      {operation.successfulItems}/{operation.totalItems} successful •
+                      Created by {operation.createdByUser?.name || 'Unknown'} •
                       {operation.createdAt ? formatDate(operation.createdAt) : 'Unknown date'}
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="flex items-center gap-2">
                   {operation.status === 'running' && (
                     <Button
@@ -400,7 +398,7 @@ export const BulkOperations = () => {
                   )}
                 </div>
               </div>
-              
+
               {/* Progress Bar */}
               {operation.status === 'running' && (
                 <div className="mt-4">
@@ -416,7 +414,7 @@ export const BulkOperations = () => {
                   </div>
                 </div>
               )}
-              
+
               {/* Error Message */}
               {operation.errorMessage && (
                 <div className="mt-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md">
@@ -430,12 +428,12 @@ export const BulkOperations = () => {
               )}
             </div>
           ))}
-        
-        {(!operationsData?.operations || operationsData.operations.length === 0) && (
-          <div className="p-6 text-center text-gray-500 dark:text-gray-400">
-            No bulk operations found.
-          </div>
-        )}
+
+          {(!operationsData?.operations || operationsData.operations.length === 0) && (
+            <div className="p-6 text-center text-gray-500 dark:text-gray-400">
+              No bulk operations found.
+            </div>
+          )}
         </div>
       </div>
     </div>

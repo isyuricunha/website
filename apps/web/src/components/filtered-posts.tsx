@@ -9,7 +9,6 @@ import { useState, useMemo, useCallback, useEffect } from 'react'
 import { debounce } from '@/lib/performance'
 
 import PostCards from './post-cards'
-import { PostCardSkeleton, FilterSkeleton } from './ui/loading-skeleton'
 import Link from './link'
 
 type FilteredPostsProps = {
@@ -52,12 +51,12 @@ const FilteredPosts = (props: FilteredPostsProps) => {
   const { categories, tags } = useMemo(() => {
     const categorySet = new Set<string>()
     const tagSet = new Set<string>()
-    
+
     posts.forEach(post => {
       if (post.category) categorySet.add(post.category)
       if (post.tags) post.tags.forEach(tag => tagSet.add(tag))
     })
-    
+
     return {
       categories: Array.from(categorySet).sort(),
       tags: Array.from(tagSet).sort()
@@ -65,13 +64,13 @@ const FilteredPosts = (props: FilteredPostsProps) => {
   }, [posts])
 
   const filteredAndSortedPosts = useMemo(() => {
-    let filtered = posts.filter((post) => {
-      const matchesSearch = debouncedSearchValue === '' || 
+    const filtered = posts.filter((post) => {
+      const matchesSearch = debouncedSearchValue === '' ||
         post.title.toLowerCase().includes(debouncedSearchValue.toLowerCase()) ||
         post.summary.toLowerCase().includes(debouncedSearchValue.toLowerCase())
       const matchesCategory = selectedCategory === 'all' || post.category === selectedCategory
       const matchesTag = selectedTag === 'all' || (post.tags && post.tags.includes(selectedTag))
-      
+
       return matchesSearch && matchesCategory && matchesTag
     })
 
@@ -129,7 +128,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
     <>
       {/* RSS Feed Link */}
       <div className='mb-6 flex justify-end px-4 sm:px-0'>
-        <Link 
+        <Link
           href={`/${locale}/rss.xml`}
           className='inline-flex items-center gap-2 text-xs sm:text-sm text-muted-foreground hover:text-foreground transition-colors px-3 py-2 rounded-2xl hover:bg-accent'
         >
@@ -179,7 +178,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
                 : t('component.filtered-posts.toggle-filters.show')}
             </span>
           </button>
-          
+
           {/* Sort Dropdown */}
           <div className='flex flex-col sm:flex-row sm:items-center gap-2'>
             <span className='text-xs sm:text-sm text-muted-foreground whitespace-nowrap'>
@@ -267,7 +266,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
             )}
           </div>
         )}
-        
+
         {/* Results Summary */}
         <div className='flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs sm:text-sm text-muted-foreground'>
           <span className='flex-1'>
@@ -281,9 +280,9 @@ const FilteredPosts = (props: FilteredPostsProps) => {
                   : ''}
                 {totalPages > 1
                   ? t('component.filtered-posts.pagination.page-of', {
-                      current: currentPage,
-                      total: totalPages
-                    })
+                    current: currentPage,
+                    total: totalPages
+                  })
                   : ''}
               </>
             ) : (
@@ -291,9 +290,9 @@ const FilteredPosts = (props: FilteredPostsProps) => {
                 {t('component.filtered-posts.showing.count', { count: regularPosts.length })}
                 {totalPages > 1
                   ? t('component.filtered-posts.pagination.page-of', {
-                      current: currentPage,
-                      total: totalPages
-                    })
+                    current: currentPage,
+                    total: totalPages
+                  })
                   : ''}
               </>
             )}
@@ -308,7 +307,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
           )}
         </div>
       </div>
-      
+
       {filteredAndSortedPosts.length === 0 ? (
         <div className='my-12 sm:my-16 lg:my-24 text-center space-y-4 px-4'>
           <div className='text-4xl sm:text-6xl'>📝</div>
@@ -326,7 +325,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
           </button>
         </div>
       ) : null}
-      
+
       {/* Regular Posts */}
       {regularPosts.length > 0 && (
         <div className='px-4 sm:px-0'>
@@ -336,7 +335,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
             </h2>
           )}
           <PostCards posts={paginatedPosts} />
-          
+
           {/* Pagination */}
           {totalPages > 1 && (
             <div className='flex items-center justify-center gap-2 mt-8'>
@@ -348,23 +347,22 @@ const FilteredPosts = (props: FilteredPostsProps) => {
                 <ChevronLeft className='h-4 w-4' />
                 {t('component.filtered-posts.pagination.previous')}
               </button>
-              
+
               <div className='flex items-center gap-1'>
                 {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
                   <button
                     key={page}
                     onClick={() => setCurrentPage(page)}
-                    className={`px-3 py-2 text-sm border rounded-2xl min-h-[44px] min-w-[44px] ${
-                      currentPage === page 
-                        ? 'bg-primary text-primary-foreground border-primary' 
+                    className={`px-3 py-2 text-sm border rounded-2xl min-h-[44px] min-w-[44px] ${currentPage === page
+                        ? 'bg-primary text-primary-foreground border-primary'
                         : 'hover:bg-accent'
-                    }`}
+                      }`}
                   >
                     {page}
                   </button>
                 ))}
               </div>
-              
+
               <button
                 onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                 disabled={currentPage === totalPages}

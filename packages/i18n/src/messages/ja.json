@@ -1197,7 +1197,8 @@
       "success": "メッセージが正常に送信されました！",
       "error": "メッセージの送信に失敗しました。もう一度お試しください。",
       "network-error": "ネットワークエラー。接続を確認してもう一度お試しください。",
-      "turnstile-required": "確認チャレンジを完了してください"
+      "turnstile-required": "確認チャレンジを完了してください",
+      "turnstile-error": "Security verification failed. Please try again."
     },
     "direct": {
       "title": "直接連絡",

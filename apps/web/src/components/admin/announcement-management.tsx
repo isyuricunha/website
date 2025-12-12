@@ -1,26 +1,26 @@
 'use client'
 
 import { useState } from 'react'
-import { Button } from '@tszhong0411/ui'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@tszhong0411/ui'
-import { Badge } from '@tszhong0411/ui'
-import { Input } from '@tszhong0411/ui'
-import { Label } from '@tszhong0411/ui'
-import { Textarea } from '@tszhong0411/ui'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@tszhong0411/ui'
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@tszhong0411/ui'
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@tszhong0411/ui'
-import { ScrollArea } from '@tszhong0411/ui'
-import { 
-  Megaphone, 
-  Plus, 
-  Edit, 
-  Trash2, 
-  Eye, 
-  EyeOff, 
-  AlertCircle, 
-  CheckCircle, 
-  Info, 
+import { Button , Card, CardContent, CardDescription, CardHeader, CardTitle , Badge , Input , Label , Textarea , Select, SelectContent, SelectItem, SelectTrigger, SelectValue , AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger , Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger , ScrollArea } from '@tszhong0411/ui'
+
+
+
+
+
+
+
+
+
+import {
+  Megaphone,
+  Plus,
+  Edit,
+  Trash2,
+  Eye,
+  EyeOff,
+  AlertCircle,
+  CheckCircle,
+  Info,
   AlertTriangle,
   Calendar,
   Users,
@@ -102,28 +102,11 @@ export default function AnnouncementManagement() {
     }
   }
 
-  const getAnnouncementTypeColor = (type: string) => {
-    switch (type) {
-      case 'error': return 'bg-red-50 text-red-700 border-red-200 dark:bg-red-950 dark:text-red-300 dark:border-red-800'
-      case 'warning': return 'bg-yellow-50 text-yellow-700 border-yellow-200 dark:bg-yellow-950 dark:text-yellow-300 dark:border-yellow-800'
-      case 'success': return 'bg-green-50 text-green-700 border-green-200 dark:bg-green-950 dark:text-green-300 dark:border-green-800'
-      case 'info': return 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950 dark:text-blue-300 dark:border-blue-800'
-      default: return 'bg-gray-50 text-gray-700 border-gray-200 dark:bg-gray-950 dark:text-gray-300 dark:border-gray-800'
-    }
-  }
-
-  const getPriorityColor = (priority: number) => {
-    if (priority >= 5) return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
-    if (priority >= 3) return 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200'
-    if (priority >= 1) return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
-    return 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200'
-  }
-
   const handleCreateAnnouncement = (formData: FormData) => {
     const title = formData.get('title') as string
     const content = formData.get('content') as string
     const type = formData.get('type') as any
-    const priority = parseInt(formData.get('priority') as string) || 0
+    const priority = Number.parseInt(formData.get('priority') as string) || 0
     const isDismissible = formData.get('isDismissible') === 'on'
 
     if (!title || !content) {
@@ -146,7 +129,7 @@ export default function AnnouncementManagement() {
     const title = formData.get('title') as string
     const content = formData.get('content') as string
     const type = formData.get('type') as any
-    const priority = parseInt(formData.get('priority') as string) || 0
+    const priority = Number.parseInt(formData.get('priority') as string) || 0
     const isDismissible = formData.get('isDismissible') === 'on'
     const isActive = formData.get('isActive') === 'on'
 
@@ -208,7 +191,7 @@ export default function AnnouncementManagement() {
           </h1>
           <p className="text-muted-foreground text-sm sm:text-base">Manage site-wide announcements and notifications</p>
         </div>
-        
+
         <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
           <DialogTrigger asChild>
             <Button className="bg-orange-600 hover:bg-orange-700 dark:bg-orange-700 dark:hover:bg-orange-600 min-h-[44px] px-4 sm:px-6 text-sm sm:text-base w-full sm:w-auto">
@@ -229,12 +212,12 @@ export default function AnnouncementManagement() {
                   <Label htmlFor="title">Title</Label>
                   <Input id="title" name="title" placeholder="Announcement title" required />
                 </div>
-                
+
                 <div>
                   <Label htmlFor="content">Content</Label>
                   <Textarea id="content" name="content" placeholder="Announcement content" rows={4} required />
                 </div>
-                
+
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="type">Type</Label>
@@ -250,19 +233,19 @@ export default function AnnouncementManagement() {
                       </SelectContent>
                     </Select>
                   </div>
-                  
+
                   <div>
                     <Label htmlFor="priority">Priority (0-10)</Label>
                     <Input id="priority" name="priority" type="number" min="0" max="10" defaultValue="0" />
                   </div>
                 </div>
-                
+
                 <div className="flex items-center space-x-2">
                   <input type="checkbox" id="isDismissible" name="isDismissible" defaultChecked className="rounded" />
                   <Label htmlFor="isDismissible">Allow users to dismiss this announcement</Label>
                 </div>
               </div>
-              
+
               <DialogFooter className="mt-6">
                 <Button type="button" variant="outline" onClick={() => setIsCreateDialogOpen(false)}>
                   Cancel
@@ -291,7 +274,7 @@ export default function AnnouncementManagement() {
               <p className="text-xs text-muted-foreground leading-relaxed">Across all announcements</p>
             </CardContent>
           </Card>
-          
+
           <Card className="border-border/50 bg-gradient-to-br from-background to-background/50 backdrop-blur-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
               <CardTitle className="text-sm font-semibold text-muted-foreground">Dismissal Rate</CardTitle>
@@ -304,7 +287,7 @@ export default function AnnouncementManagement() {
               <p className="text-xs text-muted-foreground leading-relaxed">{analytics.totalDismissals} total dismissals</p>
             </CardContent>
           </Card>
-          
+
           <Card className="border-border/50 bg-gradient-to-br from-background to-background/50 backdrop-blur-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
               <CardTitle className="text-sm font-semibold text-muted-foreground">Active Announcements</CardTitle>
@@ -366,7 +349,7 @@ export default function AnnouncementManagement() {
                             </p>
                           </div>
                         </div>
-                        
+
                         {/* Footer Info */}
                         <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground pl-14">
                           <span className="flex items-center gap-1.5">
@@ -387,7 +370,7 @@ export default function AnnouncementManagement() {
                           </span>
                         </div>
                       </div>
-                      
+
                       {/* Action Buttons */}
                       <div className="flex items-center gap-2">
                         <Button
@@ -396,8 +379,8 @@ export default function AnnouncementManagement() {
                           onClick={() => handleToggleActive(announcement)}
                           className={cn(
                             "h-9 w-9 p-0 transition-all duration-200",
-                            announcement.isActive 
-                              ? "text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 dark:hover:bg-emerald-950" 
+                            announcement.isActive
+                              ? "text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 dark:hover:bg-emerald-950"
                               : "text-muted-foreground hover:text-foreground hover:bg-muted"
                           )}
                           aria-label={announcement.isActive ? "Deactivate" : "Activate"}
@@ -408,7 +391,7 @@ export default function AnnouncementManagement() {
                             <EyeOff className="h-4 w-4" />
                           )}
                         </Button>
-                        
+
                         <Button
                           variant="ghost"
                           size="sm"
@@ -418,7 +401,7 @@ export default function AnnouncementManagement() {
                         >
                           <Edit className="h-4 w-4" />
                         </Button>
-                        
+
                         <AlertDialog>
                           <AlertDialogTrigger asChild>
                             <Button
@@ -453,7 +436,7 @@ export default function AnnouncementManagement() {
                   </CardContent>
                 </Card>
               ))}
-              
+
               {!announcements?.announcements?.length && (
                 <div className="text-center py-8 sm:py-12 text-muted-foreground">
                   <Megaphone className="h-8 w-8 sm:h-12 sm:w-12 mx-auto mb-4 opacity-50" />
@@ -479,25 +462,25 @@ export default function AnnouncementManagement() {
               <div className="space-y-4">
                 <div>
                   <Label htmlFor="edit-title">Title</Label>
-                  <Input 
-                    id="edit-title" 
-                    name="title" 
+                  <Input
+                    id="edit-title"
+                    name="title"
                     defaultValue={editingAnnouncement.title}
-                    required 
+                    required
                   />
                 </div>
-                
+
                 <div>
                   <Label htmlFor="edit-content">Content</Label>
-                  <Textarea 
-                    id="edit-content" 
-                    name="content" 
+                  <Textarea
+                    id="edit-content"
+                    name="content"
                     defaultValue={editingAnnouncement.content}
-                    rows={4} 
-                    required 
+                    rows={4}
+                    required
                   />
                 </div>
-                
+
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="edit-type">Type</Label>
@@ -513,45 +496,45 @@ export default function AnnouncementManagement() {
                       </SelectContent>
                     </Select>
                   </div>
-                  
+
                   <div>
                     <Label htmlFor="edit-priority">Priority (0-10)</Label>
-                    <Input 
-                      id="edit-priority" 
-                      name="priority" 
-                      type="number" 
-                      min="0" 
-                      max="10" 
+                    <Input
+                      id="edit-priority"
+                      name="priority"
+                      type="number"
+                      min="0"
+                      max="10"
                       defaultValue={editingAnnouncement.priority}
                     />
                   </div>
                 </div>
-                
+
                 <div className="space-y-3">
                   <div className="flex items-center space-x-2">
-                    <input 
-                      type="checkbox" 
-                      id="edit-isDismissible" 
-                      name="isDismissible" 
+                    <input
+                      type="checkbox"
+                      id="edit-isDismissible"
+                      name="isDismissible"
                       defaultChecked={editingAnnouncement.isDismissible}
-                      className="rounded" 
+                      className="rounded"
                     />
                     <Label htmlFor="edit-isDismissible">Allow users to dismiss this announcement</Label>
                   </div>
-                  
+
                   <div className="flex items-center space-x-2">
-                    <input 
-                      type="checkbox" 
-                      id="edit-isActive" 
-                      name="isActive" 
+                    <input
+                      type="checkbox"
+                      id="edit-isActive"
+                      name="isActive"
                       defaultChecked={editingAnnouncement.isActive}
-                      className="rounded" 
+                      className="rounded"
                     />
                     <Label htmlFor="edit-isActive">Announcement is active</Label>
                   </div>
                 </div>
               </div>
-              
+
               <DialogFooter className="mt-6">
                 <Button type="button" variant="outline" onClick={() => setIsEditDialogOpen(false)}>
                   Cancel

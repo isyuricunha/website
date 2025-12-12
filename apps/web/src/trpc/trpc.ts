@@ -18,7 +18,11 @@ export const createTRPCContext = async (opts: { headers: Headers }) => {
 
 const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: SuperJSON,
-  errorFormatter({ shape, error }) {
+  errorFormatter({ shape, error, path }) {
+    if (process.env.NODE_ENV === 'development') {
+      logger.error(`tRPC failed on ${path ?? '<no-path>'}`, error)
+    }
+
     return {
       ...shape,
       data: {
@@ -26,12 +30,7 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
         zodError: error.cause instanceof ZodError ? error.cause.flatten() : null
       }
     }
-  },
-  onError: process.env.NODE_ENV === 'development'
-    ? ({ path, error }) => {
-        logger.error(`tRPC failed on ${path ?? '<no-path>'}`, error)
-      }
-    : undefined
+  }
 })
 
 export const createTRPCRouter = t.router

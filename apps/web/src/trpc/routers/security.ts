@@ -1,20 +1,24 @@
 import { TRPCError } from '@trpc/server'
 import {
-  securityEvents,
-  loginAttempts,
-  ipAccessControl,
-  twoFactorTokens,
   accountLockouts,
-  securitySettings
+  and,
+  desc,
+  eq,
+  gte,
+  ipAccessControl,
+  loginAttempts,
+  securityEvents,
+  securitySettings,
+  twoFactorTokens
 } from '@tszhong0411/db'
-import { and, desc, eq, gte, lte } from 'drizzle-orm'
 import { randomBytes } from 'crypto'
-const speakeasy = require('speakeasy')
 import { z } from 'zod'
 
 import { AuditLogger, getIpFromHeaders, getUserAgentFromHeaders } from '@/lib/audit-logger'
 import { logger } from '@/lib/logger'
 import { adminProcedure, protectedProcedure, createTRPCRouter } from '../trpc'
+
+const speakeasy = require('speakeasy')
 
 // Helper function to generate backup codes
 function generateBackupCodes(): string[] {
@@ -25,20 +29,10 @@ function generateBackupCodes(): string[] {
   return codes
 }
 
-// Helper function to check if IP is in range
-function isIpInRange(ip: string, range: string): boolean {
-  // Simple CIDR check - in production, use a proper IP library
-  if (!range.includes('/')) {
-    return ip === range
-  }
-  // For now, just exact match - implement proper CIDR logic as needed
-  return ip === range.split('/')[0]
-}
-
 export const securityRouter = createTRPCRouter({
   // Two-Factor Authentication
   enable2FA: protectedProcedure
-    .mutation(async ({ ctx, input }) => {
+    .mutation(async ({ ctx }) => {
       try {
         const auditLogger = new AuditLogger(ctx.db)
         const ipAddress = getIpFromHeaders(ctx.headers)
@@ -103,7 +97,8 @@ export const securityRouter = createTRPCRouter({
 
   verify2FA: protectedProcedure
     .input(z.object({
-      token: z.string().length(6)
+      token: z.string(),
+      backupCode: z.string().optional()
     }))
     .mutation(async ({ ctx, input }) => {
       try {
@@ -170,7 +165,7 @@ export const securityRouter = createTRPCRouter({
     .input(z.object({
       password: z.string().min(1)
     }))
-    .mutation(async ({ ctx, input }) => {
+    .mutation(async ({ ctx }) => {
       try {
         const auditLogger = new AuditLogger(ctx.db)
         const ipAddress = getIpFromHeaders(ctx.headers)
@@ -261,10 +256,10 @@ export const securityRouter = createTRPCRouter({
           'settings_update',
           'security',
           'ip_rule_added',
-          { 
+          {
             ruleId,
             ipAddress: input.ipAddress,
-            type: input.type 
+            type: input.type
           },
           ipAddress,
           userAgent
@@ -324,11 +319,11 @@ export const securityRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       try {
         const conditions = []
-        
+
         if (input.severity) {
           conditions.push(eq(securityEvents.severity, input.severity))
         }
-        
+
         if (input.resolved !== undefined) {
           conditions.push(eq(securityEvents.resolved, input.resolved))
         }
@@ -420,27 +415,22 @@ export const securityRouter = createTRPCRouter({
 
   // Login Attempts Analysis
   getLoginAttempts: adminProcedure
-    .input(z.object({
-      timeRange: z.enum(['1h', '24h', '7d', '30d']).default('24h'),
-      limit: z.number().min(1).max(100).default(50)
-    }))
-    .query(async ({ ctx, input }) => {
+    .query(async ({ ctx }) => {
       try {
         const now = new Date()
         const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000)
-        const oneWeekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000)
 
         // Get recent login attempts
         const recentAttempts = await ctx.db.query.loginAttempts.findMany({
           where: gte(loginAttempts.createdAt, oneDayAgo),
-          columns: { id: true, success: true }
+          columns: { id: true, success: true, ipAddress: true }
         })
 
         // Get summary statistics
         const totalAttempts = recentAttempts.length
         const successfulAttempts = recentAttempts.filter(a => a.success).length
         const failedAttempts = totalAttempts - successfulAttempts
-        const uniqueIPs = new Set(recentAttempts.map(a => a.ipAddress)).size
+        const uniqueIPs = new Set(recentAttempts.map(a => a.ipAddress ?? '')).size
 
         return {
           attempts: recentAttempts,
@@ -467,12 +457,12 @@ export const securityRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       try {
         const conditions = []
-        
+
         // If userId is provided and not empty, filter by user
         if (input.userId && input.userId.trim() !== '') {
           conditions.push(eq(accountLockouts.userId, input.userId))
         }
-        
+
         // Only show active (unlocked = false) lockouts for admin view
         conditions.push(eq(accountLockouts.unlocked, false))
 
@@ -602,10 +592,12 @@ export const securityRouter = createTRPCRouter({
         // Group by category
         const groupedSettings: Record<string, any[]> = {}
         settings.forEach(setting => {
-          if (!groupedSettings[setting.category]) {
-            groupedSettings[setting.category] = []
+          const category = setting.category
+          const group = groupedSettings[category] ?? []
+          if (!groupedSettings[category]) {
+            groupedSettings[category] = group
           }
-          groupedSettings[setting.category].push(setting)
+          group.push(setting)
         })
 
         return { settings: groupedSettings }

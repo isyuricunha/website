@@ -6,7 +6,7 @@ import Image from 'next/image'
 interface SpotifyImageProps {
   src: string | null | undefined
   alt: string
-  fallbackIcon: React.ReactNode
+  fallbackIcon?: React.ReactNode
   className?: string
   sizes?: string
   fill?: boolean
@@ -17,7 +17,7 @@ interface SpotifyImageProps {
 const SpotifyImage = ({
   src,
   alt,
-  fallbackIcon,
+  fallbackIcon = null,
   className = '',
   sizes = '100px',
   fill = true,
@@ -75,7 +75,7 @@ const SpotifyImage = ({
       <Image
         src={src}
         alt={alt}
-        fill={true}
+        fill={fill}
         className={`object-cover transition-opacity duration-200 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
         sizes={sizes}
         loading="lazy"

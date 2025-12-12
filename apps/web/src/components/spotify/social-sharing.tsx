@@ -19,7 +19,7 @@ const SocialSharing = () => {
 
   const shareTrack = async (track: any, platform: 'twitter' | 'facebook' | 'copy') => {
     const shareText = t('spotify.social.share-text', { name: track.name, artist: track.artist })
-    const shareUrl = track.url || track.songUrl
+    const shareUrl: string = track.url || track.songUrl
 
     switch (platform) {
       case 'twitter':
@@ -37,10 +37,10 @@ const SocialSharing = () => {
       case 'copy':
         try {
           await navigator.clipboard.writeText(`${shareText} ${shareUrl}`)
-          setCopiedTrack(track.id)
+          setCopiedTrack(shareUrl)
           setTimeout(() => setCopiedTrack(null), 2000)
-        } catch (err) {
-          console.error('Failed to copy to clipboard:', err)
+        } catch (error) {
+          console.error('Failed to copy to clipboard:', error)
         }
         break
     }
@@ -98,7 +98,7 @@ const SocialSharing = () => {
                   className='p-2 hover:bg-muted rounded-lg transition-colors'
                   title={t('spotify.social.buttons.copy')}
                 >
-                  {copiedTrack === currentTrack.id ? (
+                  {copiedTrack === currentTrack.songUrl ? (
                     <span className='text-xs text-green-500'>✓</span>
                   ) : (
                     <Copy className='h-4 w-4' />
@@ -114,8 +114,8 @@ const SocialSharing = () => {
           <div>
             <h4 className='text-sm sm:text-base font-semibold mb-3'>{t('spotify.social.top-tracks')}</h4>
             <div className='space-y-3'>
-              {featuredTracks.map((track, index) => (
-                <div key={track.id} className='flex items-center gap-3 p-3 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors'>
+              {featuredTracks.map((track: any, index: number) => (
+                <div key={track.url ?? track.id ?? index} className='flex items-center gap-3 p-3 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors'>
                   <div className='flex items-center justify-center w-6 h-6 rounded-full bg-primary text-primary-foreground text-xs font-medium'>
                     {index + 1}
                   </div>
@@ -152,7 +152,7 @@ const SocialSharing = () => {
                       className='p-1.5 hover:bg-muted rounded-lg transition-colors'
                       title={t('spotify.social.buttons.copy')}
                     >
-                      {copiedTrack === track.id ? (
+                      {copiedTrack === track.url ? (
                         <span className='text-xs text-green-500'>✓</span>
                       ) : (
                         <Copy className='h-3 w-3' />

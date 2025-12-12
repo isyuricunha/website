@@ -1197,7 +1197,8 @@
       "success": "تم إرسال الرسالة بنجاح!",
       "error": "فشل إرسال الرسالة. يرجى المحاولة مرة أخرى.",
       "network-error": "خطأ في الشبكة. يرجى التحقق من اتصالك والمحاولة مرة أخرى.",
-      "turnstile-required": "يرجى إكمال تحدي التحقق"
+      "turnstile-required": "يرجى إكمال تحدي التحقق",
+      "turnstile-error": "Security verification failed. Please try again."
     },
     "direct": {
       "title": "اتصال مباشر",

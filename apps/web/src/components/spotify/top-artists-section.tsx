@@ -26,8 +26,10 @@ const TopArtistsSection = () => {
 
   const { data: artists, refetch, isLoading, error } = api.spotify.getTopArtistsByRange.useQuery(
     { time_range: timeRange },
-    { staleTime: 300000 }
+    { staleTime: 300_000 }
   )
+
+  type Artist = NonNullable<typeof artists>[number]
 
   // Shuffle artists when requested
   const displayedArtists = useMemo(() => {
@@ -45,7 +47,7 @@ const TopArtistsSection = () => {
   }
 
   const handleExportCsv = () => {
-    if (artists && artists.length) exportTopArtistsCsv(artists as any)
+    if (artists && artists.length > 0) exportTopArtistsCsv(artists)
   }
 
   const handleExportJson = () => {
@@ -134,11 +136,10 @@ const TopArtistsSection = () => {
           <div className='inline-flex items-center gap-1 rounded-md bg-muted p-1 text-xs'>
             <button
               onClick={() => setViewMode('list')}
-              className={`p-1.5 rounded-md transition-colors ${
-                viewMode === 'list'
+              className={`p-1.5 rounded-md transition-colors ${viewMode === 'list'
                   ? 'bg-background shadow text-foreground'
                   : 'text-muted-foreground hover:text-foreground'
-              }`}
+                }`}
               title={t('spotify.top-artists.tooltips.view-list')}
               aria-label={t('spotify.top-artists.tooltips.view-list')}
               aria-pressed={viewMode === 'list'}
@@ -147,11 +148,10 @@ const TopArtistsSection = () => {
             </button>
             <button
               onClick={() => setViewMode('grid')}
-              className={`p-1.5 rounded-md transition-colors ${
-                viewMode === 'grid'
+              className={`p-1.5 rounded-md transition-colors ${viewMode === 'grid'
                   ? 'bg-background shadow text-foreground'
                   : 'text-muted-foreground hover:text-foreground'
-              }`}
+                }`}
               title={t('spotify.top-artists.tooltips.view-grid')}
               aria-label={t('spotify.top-artists.tooltips.view-grid')}
               aria-pressed={viewMode === 'grid'}
@@ -161,11 +161,10 @@ const TopArtistsSection = () => {
           </div>
           <button
             onClick={() => setIsShuffled(!isShuffled)}
-            className={`p-1.5 rounded-md transition-colors ${
-              isShuffled
+            className={`p-1.5 rounded-md transition-colors ${isShuffled
                 ? 'bg-primary text-primary-foreground'
                 : 'text-muted-foreground hover:text-foreground hover:bg-muted'
-            }`}
+              }`}
             title={isShuffled ? t('spotify.top-artists.tooltips.shuffle-on') : t('spotify.top-artists.tooltips.shuffle-off')}
           >
             <Shuffle className='h-4 w-4' />
@@ -196,7 +195,7 @@ const TopArtistsSection = () => {
       <CardContent>
         {viewMode === 'grid' ? (
           <div className='grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5'>
-            {displayedArtists.map((artist) => (
+            {displayedArtists.map((artist: Artist) => (
               <Link
                 key={artist.id}
                 href={artist.url}
@@ -227,7 +226,7 @@ const TopArtistsSection = () => {
           </div>
         ) : (
           <div className='space-y-3'>
-            {displayedArtists.map((artist) => (
+            {displayedArtists.map((artist: Artist) => (
               <Link
                 key={artist.id}
                 href={artist.url}

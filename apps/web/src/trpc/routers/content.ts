@@ -1,6 +1,5 @@
 import { TRPCError } from '@trpc/server'
-import { posts } from '@tszhong0411/db'
-import { and, desc, eq, ilike, or } from 'drizzle-orm'
+import { and, desc, eq, ilike, or, posts } from '@tszhong0411/db'
 import { randomBytes } from 'crypto'
 import { z } from 'zod'
 
@@ -28,7 +27,7 @@ export const contentRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       try {
         const conditions = []
-        
+
         if (input.search) {
           conditions.push(
             or(
@@ -38,7 +37,7 @@ export const contentRouter = createTRPCRouter({
             )
           )
         }
-        
+
         if (input.status) {
           conditions.push(eq(posts.status, input.status))
         }
@@ -390,7 +389,7 @@ export const contentRouter = createTRPCRouter({
 
       // Recent posts (last 30 days)
       const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
-      const recentPosts = allPosts.filter(p => 
+      const recentPosts = allPosts.filter(p =>
         p.createdAt && new Date(p.createdAt) >= thirtyDaysAgo
       ).length
 

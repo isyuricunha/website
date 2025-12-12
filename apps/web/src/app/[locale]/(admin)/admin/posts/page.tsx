@@ -1,9 +1,9 @@
 import Link from 'next/link'
 import { PlusIcon, EditIcon, LanguagesIcon, EyeIcon } from 'lucide-react'
 
-import { Button } from '@tszhong0411/ui'
-import { Card, CardContent, CardHeader, CardTitle } from '@tszhong0411/ui'
-import { Badge } from '@tszhong0411/ui'
+import { buttonVariants , Card, CardContent, CardHeader, CardTitle , Badge } from '@tszhong0411/ui'
+
+
 import { BlogService } from '@/lib/blog/blog-service'
 
 type Props = {
@@ -15,12 +15,15 @@ type Props = {
 export default async function PostsPage(props: Props) {
   const { locale } = await props.params
   const postsBySlug = await BlogService.getPostsBySlug()
-  
-  const slugs = Object.keys(postsBySlug).sort((a, b) => {
-    const aPost = postsBySlug[a][0]
-    const bPost = postsBySlug[b][0]
-    return new Date(bPost.date).getTime() - new Date(aPost.date).getTime()
-  })
+
+  const slugs = Object.keys(postsBySlug)
+    .filter((slug) => (postsBySlug[slug]?.length ?? 0) > 0)
+    .sort((a, b) => {
+      const aPost = postsBySlug[a]?.[0]
+      const bPost = postsBySlug[b]?.[0]
+      if (!aPost || !bPost) return 0
+      return new Date(bPost.date).getTime() - new Date(aPost.date).getTime()
+    })
 
   const getLanguageCount = (posts: any[]) => posts.length
   const getMainPost = (posts: any[]) => posts.find(p => p.locale === 'en') || posts[0]
@@ -35,12 +38,10 @@ export default async function PostsPage(props: Props) {
             Manage all your blog posts and translations
           </p>
         </div>
-        <Button asChild>
-          <Link href={`/admin/posts/new`}>
-            <PlusIcon className="mr-2 h-4 w-4" />
-            New Post
-          </Link>
-        </Button>
+        <Link href={`/admin/posts/new`} className={buttonVariants({ className: 'gap-2' })}>
+          <PlusIcon className="h-4 w-4" />
+          New Post
+        </Link>
       </div>
 
       {/* Posts List */}
@@ -53,21 +54,21 @@ export default async function PostsPage(props: Props) {
                 <p className="text-muted-foreground mb-4">
                   Create your first blog post to get started
                 </p>
-                <Button asChild>
-                  <Link href={`/admin/posts/new`}>
-                    <PlusIcon className="mr-2 h-4 w-4" />
-                    Create First Post
-                  </Link>
-                </Button>
+                <Link href={`/admin/posts/new`} className={buttonVariants({ className: 'gap-2' })}>
+                  <PlusIcon className="h-4 w-4" />
+                  Create First Post
+                </Link>
               </div>
             </CardContent>
           </Card>
         ) : (
           slugs.map((slug) => {
-            const posts = postsBySlug[slug]
+            const posts = postsBySlug[slug] ?? []
+
+            if (posts.length === 0) return null
             const mainPost = getMainPost(posts)
             const languageCount = getLanguageCount(posts)
-            
+
             return (
               <Card key={slug} className="hover:shadow-md transition-shadow">
                 <CardHeader>
@@ -85,35 +86,38 @@ export default async function PostsPage(props: Props) {
                         </Badge>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-center gap-2 ml-4">
-                      <Button variant="ghost" size="sm" asChild>
-                        <Link href={`/${locale}/blog/${slug}`}>
-                          <EyeIcon className="h-4 w-4" />
-                        </Link>
-                      </Button>
-                      <Button variant="ghost" size="sm" asChild>
-                        <Link href={`/admin/posts/edit/${slug}`}>
-                          <EditIcon className="h-4 w-4" />
-                        </Link>
-                      </Button>
-                      <Button variant="ghost" size="sm" asChild>
-                        <Link href={`/admin/posts/translate/${slug}`}>
-                          <LanguagesIcon className="h-4 w-4" />
-                        </Link>
-                      </Button>
+                      <Link
+                        href={`/${locale}/blog/${slug}`}
+                        className={buttonVariants({ variant: 'ghost', size: 'sm', className: 'h-8 w-8 p-0' })}
+                      >
+                        <EyeIcon className="h-4 w-4" />
+                      </Link>
+                      <Link
+                        href={`/admin/posts/edit/${slug}`}
+                        className={buttonVariants({ variant: 'ghost', size: 'sm', className: 'h-8 w-8 p-0' })}
+                      >
+                        <EditIcon className="h-4 w-4" />
+                      </Link>
+                      <Link
+                        href={`/admin/posts/translate/${slug}`}
+                        className={buttonVariants({ variant: 'ghost', size: 'sm', className: 'h-8 w-8 p-0' })}
+                      >
+                        <LanguagesIcon className="h-4 w-4" />
+                      </Link>
                     </div>
                   </div>
                 </CardHeader>
-                
+
                 {/* Language Status */}
                 <CardContent className="pt-0">
                   <div className="flex flex-wrap gap-2">
                     {['en', 'pt', 'fr', 'de', 'ja', 'zh'].map((lang) => {
                       const hasTranslation = posts.some(p => p.locale === lang)
                       return (
-                        <Badge 
-                          key={lang} 
+                        <Badge
+                          key={lang}
                           variant={hasTranslation ? "default" : "outline"}
                           className="text-xs"
                         >
