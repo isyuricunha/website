@@ -13,7 +13,7 @@ export const bulkRouter = createTRPCRouter({
     .input(z.object({
       userIds: z.array(z.string()).min(1).max(100),
       action: z.enum(['delete', 'ban', 'unban', 'update_role']),
-      parameters: z.record(z.any()).optional() // For additional parameters like new role
+      parameters: z.record(z.string(), z.any()).optional() // For additional parameters like new role
     }))
     .mutation(async ({ ctx, input }) => {
       const operationId = randomBytes(16).toString('hex')

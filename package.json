@@ -72,7 +72,7 @@
     "jsdom": "^26.1.0",
     "knip": "^5.73.1",
     "lint-staged": "^16.2.7",
-    "next": "^15.5.7",
+    "next": "^15.5.9",
     "prettier": "^3.7.4",
     "simple-git-hooks": "^2.13.1",
     "ts-morph": "^26.0.0",
@@ -93,6 +93,15 @@
     ]
   },
   "packageManager": "pnpm@10.14.0",
+  "pnpm": {
+    "overrides": {
+      "@tszhong0411/web>zod": "4.1.13",
+      "@tszhong0411/web>@hookform/resolvers": "5.2.2",
+      "@isyuricunha/docs>zod": "4.1.13",
+      "@isyuricunha/docs>@hookform/resolvers": "5.2.2",
+      "@tszhong0411/env>zod": "3.25.76"
+    }
+  },
   "simple-git-hooks": {
     "pre-commit": "pnpm lint-staged --concurrent false",
     "commit-msg": "pnpm commitlint --edit $1 && pnpm check:spelling $1"

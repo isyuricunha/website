@@ -113,7 +113,7 @@ export const monitoringRouter = createTRPCRouter({
       metricType: z.enum(['response_time', 'throughput', 'error_rate', 'cpu_usage', 'memory_usage', 'disk_usage', 'network_io', 'database_connections']),
       value: z.number(),
       unit: z.string().optional(),
-      tags: z.record(z.string()).optional()
+      tags: z.record(z.string(), z.string()).optional()
     }))
     .mutation(async ({ ctx, input }) => {
       try {

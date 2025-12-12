@@ -25,8 +25,8 @@ const requestSchema = z.object({
             previousMessages: z.array(z.string().max(4000)).max(20).optional(),
             conversation: z.array(conversationMessageSchema).max(30).optional(),
             conversationLength: z.number().int().min(0).max(5000).optional(),
-            userPreferences: z.record(z.unknown()).optional(),
-            pageContext: z.record(z.unknown()).optional()
+            userPreferences: z.record(z.string(), z.unknown()).optional(),
+            pageContext: z.record(z.string(), z.unknown()).optional()
         })
         .optional()
 })
@@ -90,7 +90,7 @@ export async function POST(req: NextRequest) {
 
         if (error instanceof z.ZodError) {
             return NextResponse.json(
-                { error: 'Invalid request format', details: error.errors },
+                { error: 'Invalid request format', details: error.issues },
                 { status: 400 }
             )
         }

@@ -153,7 +153,7 @@ This is an automated confirmation email. Please do not reply to this email.
 
     if (error instanceof z.ZodError) {
       return Response.json(
-        { error: 'Invalid form data', details: error.errors },
+        { error: 'Invalid form data', details: error.issues },
         { status: 400 }
       )
     }

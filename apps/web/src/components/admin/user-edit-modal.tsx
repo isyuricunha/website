@@ -15,17 +15,17 @@ import {
     DialogFooter,
     DialogHeader,
     DialogTitle
-} from '@tszhong0411/ui'
-import { Button } from '@tszhong0411/ui'
-import { Input } from '@tszhong0411/ui'
-import { Label } from '@tszhong0411/ui'
-import {
+, Button , Input , Label ,
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue
 } from '@tszhong0411/ui'
+
+
+
+
 
 type User = GetUsersOutput['users'][number]
 
@@ -84,7 +84,7 @@ const UserEditModal = ({ user, open, onOpenChange }: UserEditModalProps) => {
         } catch (error) {
             if (error instanceof z.ZodError) {
                 const newErrors: Record<string, string> = {}
-                error.errors.forEach((err) => {
+                error.issues.forEach((err) => {
                     if (err.path[0]) {
                         newErrors[err.path[0] as string] = err.message
                     }
