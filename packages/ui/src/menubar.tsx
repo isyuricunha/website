@@ -2,11 +2,11 @@ import * as MenubarPrimitive from '@radix-ui/react-menubar'
 import { cn } from '@tszhong0411/utils'
 import { CheckIcon, ChevronRightIcon, DotIcon } from 'lucide-react'
 
-const MenubarMenu = MenubarPrimitive.Menu
-const MenubarGroup = MenubarPrimitive.Group
-const MenubarPortal = MenubarPrimitive.Portal
-const MenubarSub = MenubarPrimitive.Sub
-const MenubarRadioGroup = MenubarPrimitive.RadioGroup
+const MenubarMenu: typeof MenubarPrimitive.Menu = MenubarPrimitive.Menu
+const MenubarGroup: typeof MenubarPrimitive.Group = MenubarPrimitive.Group
+const MenubarPortal: typeof MenubarPrimitive.Portal = MenubarPrimitive.Portal
+const MenubarSub: typeof MenubarPrimitive.Sub = MenubarPrimitive.Sub
+const MenubarRadioGroup: typeof MenubarPrimitive.RadioGroup = MenubarPrimitive.RadioGroup
 
 type MenubarProps = React.ComponentProps<typeof MenubarPrimitive.Root>
 

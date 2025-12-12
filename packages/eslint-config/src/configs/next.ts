@@ -6,11 +6,11 @@ export const next: Linter.Config[] = [
   {
     name: 'tszhong0411:next',
     plugins: {
-      '@next/next': nextPlugin
+      '@next/next': nextPlugin as unknown as any
     },
     rules: {
-      ...nextPlugin.configs.recommended.rules,
-      ...nextPlugin.configs['core-web-vitals'].rules,
+      ...(nextPlugin.configs.recommended.rules as unknown as Linter.RulesRecord),
+      ...(nextPlugin.configs['core-web-vitals'].rules as unknown as Linter.RulesRecord),
 
       '@next/next/no-html-link-for-pages': 'off'
     }
