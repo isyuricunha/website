@@ -99,8 +99,4 @@ const EnhancedCardFooter = ({
 )
 EnhancedCardFooter.displayName = 'EnhancedCardFooter'
 
-export {
-  EnhancedCard,
-  EnhancedCardHeader,
-  EnhancedCardContent
-}
+export { EnhancedCard, EnhancedCardHeader, EnhancedCardContent }

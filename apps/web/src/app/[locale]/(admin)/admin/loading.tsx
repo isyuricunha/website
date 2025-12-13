@@ -1,7 +1,7 @@
 import AdminLoading from '@/components/admin/admin-loading'
 
 const Loading = () => {
-    return <AdminLoading />
+  return <AdminLoading />
 }
 
 export default Loading

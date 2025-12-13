@@ -1,7 +1,7 @@
 import { ContentManagement } from '@/components/admin/content-management'
 
 const ContentPage = () => {
-    return <ContentManagement />
+  return <ContentManagement />
 }
 
 export default ContentPage
