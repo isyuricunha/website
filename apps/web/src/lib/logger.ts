@@ -1,3 +1,5 @@
+import { env } from '@isyuricunha/env'
+
 type LogLevel = 'info' | 'warn' | 'error' | 'debug'
 
 interface LogContext {
@@ -5,8 +7,8 @@ interface LogContext {
 }
 
 class Logger {
-  private isDevelopment = process.env.NODE_ENV === 'development'
-  private isProduction = process.env.NODE_ENV === 'production'
+  private isDevelopment = env.NODE_ENV === 'development'
+  private isProduction = env.NODE_ENV === 'production'
 
   private formatMessage(level: LogLevel, message: string, context?: LogContext): string {
     const timestamp = new Date().toISOString()
@@ -56,9 +58,9 @@ class Logger {
       error:
         error instanceof Error
           ? {
-              message: error.message,
-              stack: this.isDevelopment ? error.stack : undefined
-            }
+            message: error.message,
+            stack: this.isDevelopment ? error.stack : undefined
+          }
           : error
     }
     console.error(this.formatMessage('error', message, errorContext))

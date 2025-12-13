@@ -1,8 +1,9 @@
 import { Resend } from 'resend'
+import { env } from '@isyuricunha/env'
 import { logger } from '@/lib/logger'
 
 // Initialize Resend client
-const resend = new Resend(process.env.RESEND_API_KEY)
+const resend = new Resend(env.RESEND_API_KEY)
 
 interface ResendAudience {
   id: string

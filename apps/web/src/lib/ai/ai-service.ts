@@ -1,5 +1,5 @@
 import { GoogleGenerativeAI } from '@google/generative-ai'
-import { flags } from '@isyuricunha/env'
+import { env, flags } from '@isyuricunha/env'
 
 type AIProvider = 'gemini' | 'ollama'
 
@@ -30,8 +30,8 @@ class AIService {
 
   constructor() {
     // Initialize Gemini only if enabled and API key exists
-    if (flags.gemini && process.env.GEMINI_API_KEY) {
-      this.gemini = new GoogleGenerativeAI(process.env.GEMINI_API_KEY)
+    if (flags.gemini && env.GEMINI_API_KEY) {
+      this.gemini = new GoogleGenerativeAI(env.GEMINI_API_KEY)
     }
   }
 
@@ -62,7 +62,7 @@ class AIService {
     }
 
     const model = this.gemini.getGenerativeModel({
-      model: config.model || 'gemini-2.0-flash-lite'
+      model: config.model || env.GEMINI_MODEL || 'gemini-2.0-flash-lite'
     })
 
     const systemPrompt = this.buildSystemPrompt(context, message)
@@ -77,8 +77,8 @@ class AIService {
     context: SiteContext,
     config: AIServiceConfig
   ): Promise<string> {
-    const ollamaUrl = process.env.OLLAMA_BASE_URL || 'http://localhost:11434'
-    const ollamaModel = config.model || process.env.OLLAMA_MODEL || 'llama3.2'
+    const ollamaUrl = env.OLLAMA_BASE_URL || 'http://localhost:11434'
+    const ollamaModel = config.model || env.OLLAMA_MODEL || 'llama3.2'
 
     const systemPrompt = this.buildSystemPrompt(context, message)
     const fullPrompt = `${systemPrompt}\n\nUser: ${message}`
@@ -297,11 +297,11 @@ Translation:`
 
   // Check if providers are available
   isGeminiAvailable(): boolean {
-    return !!(flags.gemini && process.env.GEMINI_API_KEY && this.gemini)
+    return !!(flags.gemini && env.GEMINI_API_KEY && this.gemini)
   }
 
   isOllamaAvailable(): boolean {
-    return !!(process.env.OLLAMA_BASE_URL || process.env.OLLAMA_MODEL)
+    return !!(env.OLLAMA_BASE_URL || env.OLLAMA_MODEL)
   }
 
   getAvailableProviders(): AIProvider[] {

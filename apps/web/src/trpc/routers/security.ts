@@ -11,6 +11,7 @@ import {
   securitySettings,
   twoFactorTokens
 } from '@isyuricunha/db'
+import { env } from '@isyuricunha/env'
 import { randomBytes } from 'crypto'
 import { z } from 'zod'
 
@@ -51,7 +52,7 @@ export const securityRouter = createTRPCRouter({
 
       // Generate TOTP secret
       const secret = speakeasy.generateSecret({
-        name: `${process.env.NEXT_PUBLIC_WEBSITE_URL || 'App'} (${ctx.session.user.email})`,
+        name: `${env.NEXT_PUBLIC_WEBSITE_URL || 'App'} (${ctx.session.user.email})`,
         length: 32
       })
 

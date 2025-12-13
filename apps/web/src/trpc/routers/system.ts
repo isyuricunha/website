@@ -10,6 +10,7 @@ import {
   systemHealthLogs
 } from '@isyuricunha/db'
 import { randomBytes } from 'crypto'
+import { env } from '@isyuricunha/env'
 import { z } from 'zod'
 
 import { AuditLogger, getIpFromHeaders, getUserAgentFromHeaders } from '@/lib/audit-logger'
@@ -34,7 +35,7 @@ async function performHealthCheck(type: string, db: any) {
 
       case 'email': {
         // Check if email service is configured
-        const hasResendKey = !!process.env.RESEND_API_KEY
+        const hasResendKey = !!env.RESEND_API_KEY
         status = hasResendKey ? 'healthy' : 'warning'
         message = hasResendKey ? 'Email service configured' : 'Email service not configured'
         details = { configured: hasResendKey }

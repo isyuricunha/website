@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 import { Component, type ReactNode } from 'react'
+import { env } from '@isyuricunha/env'
 import { Button } from '@isyuricunha/ui'
 import { AlertTriangle, RefreshCw } from 'lucide-react'
 
@@ -59,7 +60,7 @@ class ErrorBoundary extends Component<Props, State> {
               Try Again
             </Button>
           </div>
-          {process.env.NODE_ENV === 'development' && this.state.error && (
+          {env.NODE_ENV === 'development' && this.state.error && (
             <details className='mt-4 text-left'>
               <summary className='cursor-pointer text-sm font-medium'>Error Details</summary>
               <pre className='bg-muted mt-2 max-w-full overflow-auto rounded p-2 text-xs'>

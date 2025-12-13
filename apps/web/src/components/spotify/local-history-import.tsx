@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useTranslations } from '@isyuricunha/i18n/client'
+import { flags } from '@isyuricunha/env'
 import {
   Card,
   CardContent,
@@ -52,7 +53,7 @@ const LocalHistoryImport = () => {
     }
   }
 
-  if (process.env.NEXT_PUBLIC_FLAG_SPOTIFY_IMPORT !== 'true') return null
+  if (!flags.spotifyImport) return null
 
   return (
     <Card>

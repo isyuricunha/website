@@ -1,9 +1,10 @@
 import type { NextRequest } from 'next/server'
 
 import { i18nMiddleware } from '@isyuricunha/i18n/middleware'
+import { env } from '@isyuricunha/env'
 
 const middleware = (request: NextRequest) => {
-  const is_production = process.env.NODE_ENV === 'production'
+  const is_production = env.NODE_ENV === 'production'
 
   const csp = [
     "default-src 'self'",

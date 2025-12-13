@@ -23,9 +23,10 @@ const createQueryClient = () =>
 let clientQueryClientSingleton: QueryClient | undefined
 
 const getBaseUrl = () => {
-  if (typeof globalThis !== 'undefined') return ''
+  if (globalThis.window !== undefined) return ''
+  if (env.NEXT_PUBLIC_WEBSITE_URL) return env.NEXT_PUBLIC_WEBSITE_URL
   if (env.VERCEL_URL) return `https://${env.VERCEL_URL}`
-  return `http://localhost:${process.env.PORT ?? 3000}`
+  return 'http://localhost:3000'
 }
 
 const getQueryClient = () => {
@@ -59,7 +60,7 @@ export const TRPCReactProvider = (props: TRPCReactProviderProps) => {
         links: [
           loggerLink({
             enabled: (op) =>
-              process.env.NODE_ENV === 'development' ||
+              env.NODE_ENV === 'development' ||
               (op.direction === 'down' && op.result instanceof Error)
           }),
           unstable_httpBatchStreamLink({

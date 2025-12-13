@@ -1,5 +1,6 @@
 import { initTRPC, TRPCError } from '@trpc/server'
 import { db } from '@isyuricunha/db'
+import { env } from '@isyuricunha/env'
 import { SuperJSON } from 'superjson'
 import { ZodError } from 'zod'
 import { logger } from '@/lib/logger'
@@ -19,7 +20,7 @@ export const createTRPCContext = async (opts: { headers: Headers }) => {
 const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: SuperJSON,
   errorFormatter({ shape, error, path }) {
-    if (process.env.NODE_ENV === 'development') {
+    if (env.NODE_ENV === 'development') {
       logger.error(`tRPC failed on ${path ?? '<no-path>'}`, error)
     }
 

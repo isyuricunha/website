@@ -22,11 +22,11 @@ const get_site_url = (headers: Headers) => {
   const host = headers.get('x-forwarded-host') ?? headers.get('host')
   if (host) {
     const protocol =
-      headers.get('x-forwarded-proto') ?? (process.env.NODE_ENV === 'production' ? 'https' : 'http')
+      headers.get('x-forwarded-proto') ?? (env.NODE_ENV === 'production' ? 'https' : 'http')
     return `${protocol}://${host}`
   }
 
-  return `http://localhost:${process.env.PORT ?? 3000}`
+  return 'http://localhost:3000'
 }
 
 export const usersRouter = createTRPCRouter({
