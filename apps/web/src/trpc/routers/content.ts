@@ -1,5 +1,5 @@
 import { TRPCError } from '@trpc/server'
-import { and, desc, eq, ilike, ne, or, posts } from '@isyuricunha/db'
+import { and, desc, eq, ilike, inArray, isNull, ne, or, posts } from '@isyuricunha/db'
 import { randomBytes } from 'crypto'
 import { z } from 'zod'
 
@@ -361,6 +361,105 @@ export const contentRouter = createTRPCRouter({
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to delete post'
+        })
+      }
+    }),
+
+  bulkUpdatePostStatus: adminProcedure
+    .input(
+      z.object({
+        ids: z.array(z.string()).min(1).max(100),
+        status: z.enum(['draft', 'published', 'archived'])
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        const auditLogger = new AuditLogger(ctx.db)
+        const ipAddress = getIpFromHeaders(ctx.headers)
+        const userAgent = getUserAgentFromHeaders(ctx.headers)
+        const operationId = randomBytes(16).toString('hex')
+
+        const now = new Date()
+
+        const updated = await ctx.db
+          .update(posts)
+          .set({ status: input.status, updatedAt: now })
+          .where(inArray(posts.id, input.ids))
+          .returning({ id: posts.id })
+
+        let publishedAtUpdated: Array<{ id: string }> = []
+        if (input.status === 'published') {
+          publishedAtUpdated = await ctx.db
+            .update(posts)
+            .set({ publishedAt: now })
+            .where(and(inArray(posts.id, input.ids), isNull(posts.publishedAt)))
+            .returning({ id: posts.id })
+        }
+
+        await auditLogger.logBulkOperation(
+          ctx.session.user.id,
+          {
+            operationId,
+            type: 'post_status_update',
+            status: input.status,
+            updatedCount: updated.length,
+            postIds: updated.map((row) => row.id),
+            publishedAtUpdatedCount: publishedAtUpdated.length
+          },
+          ipAddress,
+          userAgent
+        )
+
+        return {
+          success: true,
+          operationId,
+          updatedCount: updated.length
+        }
+      } catch (error) {
+        logger.error('Error updating posts in bulk', error)
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to update posts'
+        })
+      }
+    }),
+
+  bulkDeletePosts: adminProcedure
+    .input(z.object({ ids: z.array(z.string()).min(1).max(100) }))
+    .mutation(async ({ ctx, input }) => {
+      try {
+        const auditLogger = new AuditLogger(ctx.db)
+        const ipAddress = getIpFromHeaders(ctx.headers)
+        const userAgent = getUserAgentFromHeaders(ctx.headers)
+        const operationId = randomBytes(16).toString('hex')
+
+        const deleted = await ctx.db
+          .delete(posts)
+          .where(inArray(posts.id, input.ids))
+          .returning({ id: posts.id })
+
+        await auditLogger.logBulkOperation(
+          ctx.session.user.id,
+          {
+            operationId,
+            type: 'post_delete',
+            deletedCount: deleted.length,
+            postIds: deleted.map((row) => row.id)
+          },
+          ipAddress,
+          userAgent
+        )
+
+        return {
+          success: true,
+          operationId,
+          deletedCount: deleted.length
+        }
+      } catch (error) {
+        logger.error('Error deleting posts in bulk', error)
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to delete posts'
         })
       }
     }),
