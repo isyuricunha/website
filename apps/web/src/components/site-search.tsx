@@ -1,10 +1,10 @@
 'use client'
 
-import { useTranslations } from '@tszhong0411/i18n/client'
-import { Card, CardContent, Input } from '@tszhong0411/ui'
+import { useTranslations } from '@isyuricunha/i18n/client'
+import { Card, CardContent, Input } from '@isyuricunha/ui'
 import { Search, FileText, User, Music, Code, Calendar } from 'lucide-react'
 import { useState, useMemo, useCallback, useEffect } from 'react'
-import { useRouter } from '@tszhong0411/i18n/routing'
+import { useRouter } from '@isyuricunha/i18n/routing'
 
 import { allPosts, allProjects } from 'content-collections'
 

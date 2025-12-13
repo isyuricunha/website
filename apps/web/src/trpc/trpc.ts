@@ -1,5 +1,5 @@
 import { initTRPC, TRPCError } from '@trpc/server'
-import { db } from '@tszhong0411/db'
+import { db } from '@isyuricunha/db'
 import { SuperJSON } from 'superjson'
 import { ZodError } from 'zod'
 import { logger } from '@/lib/logger'

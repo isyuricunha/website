@@ -1,4 +1,4 @@
-# @tszhong0411/prettier-config
+# @isyuricunha/prettier-config
 
 ## 0.0.15
 
@@ -6,7 +6,7 @@
 
 - f26d25a: Remove `turbo` auto-detection as it has a false positive
 - Updated dependencies [f26d25a]
-  - @tszhong0411/prettier-plugin-package-json@0.0.4
+  - @isyuricunha/prettier-plugin-package-json@0.0.4
 
 ## 0.0.14
 
@@ -18,7 +18,7 @@
 
 - 681e29d: Remove `sideEffects` in package.json
 - Updated dependencies [681e29d]
-  - @tszhong0411/prettier-plugin-package-json@0.0.3
+  - @isyuricunha/prettier-plugin-package-json@0.0.3
 
 ## 0.0.13
 
@@ -33,7 +33,7 @@
 - [`fdba13e`](https://github.com/tszhong0411/honghong.me/commit/fdba13e933085bec17f85ec686161377295e13f7): Update license
 
 - Updated dependencies [[`fdba13e`](https://github.com/tszhong0411/honghong.me/commit/fdba13e933085bec17f85ec686161377295e13f7)]:
-  - @tszhong0411/prettier-plugin-package-json@0.0.2
+  - @isyuricunha/prettier-plugin-package-json@0.0.2
 
 ## 0.0.11
 
@@ -42,7 +42,7 @@
 - [`a36d829`](https://github.com/tszhong0411/honghong.me/commit/a36d829b62622c785f0060debe3ab7ee7dd0ac05): Convert prettier-package-json to a prettier plugin
 
 - Updated dependencies [[`a36d829`](https://github.com/tszhong0411/honghong.me/commit/a36d829b62622c785f0060debe3ab7ee7dd0ac05)]:
-  - @tszhong0411/prettier-plugin-package-json@0.0.1
+  - @isyuricunha/prettier-plugin-package-json@0.0.1
 
 ## 0.0.10
 

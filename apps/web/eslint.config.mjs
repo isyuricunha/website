@@ -1,4 +1,4 @@
-import tszhong0411, { GLOB_E2E } from '@tszhong0411/eslint-config'
+import tszhong0411, { GLOB_E2E } from '@isyuricunha/eslint-config'
 
 export default tszhong0411(
   {

@@ -34,7 +34,7 @@ import {
   DialogTitle,
   DialogTrigger,
   ScrollArea
-} from '@tszhong0411/ui'
+} from '@isyuricunha/ui'
 
 import {
   Megaphone,
@@ -52,7 +52,7 @@ import {
   BarChart3
 } from 'lucide-react'
 import { toast } from 'sonner'
-import { cn } from '@tszhong0411/utils'
+import { cn } from '@isyuricunha/utils'
 
 import { api } from '@/trpc/react'
 

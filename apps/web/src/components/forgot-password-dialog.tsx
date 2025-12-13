@@ -10,7 +10,7 @@ import {
   Input,
   Button,
   toast
-} from '@tszhong0411/ui'
+} from '@isyuricunha/ui'
 import { Mail, ArrowLeft, CheckCircle2 } from 'lucide-react'
 
 import { api } from '@/trpc/react'

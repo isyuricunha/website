@@ -2,9 +2,9 @@
 
 import type { Project } from 'content-collections'
 
-import { useTranslations } from '@tszhong0411/i18n/client'
-import { buttonVariants } from '@tszhong0411/ui'
-import { cn } from '@tszhong0411/utils'
+import { useTranslations } from '@isyuricunha/i18n/client'
+import { buttonVariants } from '@isyuricunha/ui'
+import { cn } from '@isyuricunha/utils'
 import { ArrowUpRightIcon } from 'lucide-react'
 import { motion } from 'motion/react'
 

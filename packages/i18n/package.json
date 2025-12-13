@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@tszhong0411/i18n",
+  "name": "@isyuricunha/i18n",
   "version": "0.0.0",
   "description": "The internationalization package for tszhong0411's projects",
   "license": "MIT",
@@ -27,8 +27,8 @@
     "next": "^15"
   },
   "devDependencies": {
-    "@tszhong0411/eslint-config": "workspace:*",
-    "@tszhong0411/tsconfig": "workspace:*",
+    "@isyuricunha/eslint-config": "workspace:*",
+    "@isyuricunha/tsconfig": "workspace:*",
     "@types/react": "19.0.10",
     "next": "15.5.9"
   },

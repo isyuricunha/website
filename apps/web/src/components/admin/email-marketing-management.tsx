@@ -29,7 +29,7 @@ import {
   DialogTitle,
   DialogTrigger,
   ScrollArea
-} from '@tszhong0411/ui'
+} from '@isyuricunha/ui'
 
 import {
   Mail,

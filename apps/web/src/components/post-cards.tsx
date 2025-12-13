@@ -2,8 +2,8 @@
 
 import type { Post } from 'content-collections'
 
-import { useTranslations } from '@tszhong0411/i18n/client'
-import { BlurImage, Badge } from '@tszhong0411/ui'
+import { useTranslations } from '@isyuricunha/i18n/client'
+import { BlurImage, Badge } from '@isyuricunha/ui'
 import { Star } from 'lucide-react'
 
 import { useFormattedDate } from '@/hooks/use-formatted-date'

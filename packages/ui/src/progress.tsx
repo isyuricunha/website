@@ -1,5 +1,5 @@
 import { Progress as ProgressPrimitive } from '@ark-ui/react'
-import { cn } from '@tszhong0411/utils'
+import { cn } from '@isyuricunha/utils'
 
 type ProgressProps = React.ComponentProps<typeof ProgressPrimitive.Root>
 

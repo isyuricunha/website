@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@tszhong0411/emails",
+  "name": "@isyuricunha/emails",
   "version": "0.0.0",
   "description": "The email templates for tszhong0411's projects",
   "license": "MIT",
@@ -18,8 +18,8 @@
     "react-email": "3.0.7"
   },
   "devDependencies": {
-    "@tszhong0411/eslint-config": "workspace:*",
-    "@tszhong0411/tsconfig": "workspace:*",
+    "@isyuricunha/eslint-config": "workspace:*",
+    "@isyuricunha/tsconfig": "workspace:*",
     "@types/node": "^22.13.5",
     "@types/react": "19.0.10"
   },

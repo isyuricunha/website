@@ -1,5 +1,5 @@
-import { useTranslations } from '@tszhong0411/i18n/client'
-import { Card } from '@tszhong0411/ui'
+import { useTranslations } from '@isyuricunha/i18n/client'
+import { Card } from '@isyuricunha/ui'
 import { MessageCircleIcon, PinIcon } from 'lucide-react'
 
 const Pinned = () => {

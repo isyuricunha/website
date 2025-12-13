@@ -1,8 +1,8 @@
 import type { Metadata, ResolvingMetadata } from 'next'
 
-import { i18n } from '@tszhong0411/i18n/config'
-import { getTranslations, setRequestLocale } from '@tszhong0411/i18n/server'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@tszhong0411/ui/server'
+import { i18n } from '@isyuricunha/i18n/config'
+import { getTranslations, setRequestLocale } from '@isyuricunha/i18n/server'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@isyuricunha/ui/server'
 import { FileText, Code, Music, User, Home, Map as MapIcon } from 'lucide-react'
 
 import { allPosts, allProjects } from 'content-collections'

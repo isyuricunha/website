@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@tszhong0411/db",
+  "name": "@isyuricunha/db",
   "version": "0.0.0",
   "description": "The ORM for tszhong0411's projects",
   "license": "MIT",
@@ -22,7 +22,7 @@
     "with-env": "dotenv -e ../../.env.local --"
   },
   "dependencies": {
-    "@tszhong0411/env": "workspace:*",
+    "@isyuricunha/env": "workspace:*",
     "drizzle-orm": "^0.44.7",
     "nanoid": "^5.1.6"
   },
@@ -30,8 +30,8 @@
     "pg": "^8"
   },
   "devDependencies": {
-    "@tszhong0411/eslint-config": "workspace:*",
-    "@tszhong0411/tsconfig": "workspace:*",
+    "@isyuricunha/eslint-config": "workspace:*",
+    "@isyuricunha/tsconfig": "workspace:*",
     "@types/node": "^22.13.5",
     "@types/pg": "^8.15.5",
     "drizzle-kit": "^0.30.5",

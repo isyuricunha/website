@@ -1,7 +1,7 @@
 'use client'
 
-import { useTranslations } from '@tszhong0411/i18n/client'
-import { DataTableSkeleton } from '@tszhong0411/ui'
+import { useTranslations } from '@isyuricunha/i18n/client'
+import { DataTableSkeleton } from '@isyuricunha/ui'
 
 import AdminPageHeader from '@/components/admin/admin-page-header'
 import CommentsTable from '@/components/admin/comments-table'

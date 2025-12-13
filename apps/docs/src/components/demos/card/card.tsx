@@ -13,7 +13,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue
-} from '@tszhong0411/ui'
+} from '@isyuricunha/ui'
 
 const CardDemo = () => {
   return (

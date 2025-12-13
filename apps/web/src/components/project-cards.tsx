@@ -12,7 +12,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue
-} from '@tszhong0411/ui'
+} from '@isyuricunha/ui'
 import {
   ExternalLink,
   Github,
@@ -26,7 +26,7 @@ import {
 } from 'lucide-react'
 import { motion } from 'motion/react'
 import { useState, useMemo } from 'react'
-import { useTranslations } from '@tszhong0411/i18n/client'
+import { useTranslations } from '@isyuricunha/i18n/client'
 
 import Link from './link'
 import { EnhancedCard, EnhancedCardContent, EnhancedCardHeader } from './ui/enhanced-card'

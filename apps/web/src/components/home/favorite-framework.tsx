@@ -1,5 +1,5 @@
 import { SiLinuxserver } from '@icons-pack/react-simple-icons'
-import { useTranslations } from '@tszhong0411/i18n/client'
+import { useTranslations } from '@isyuricunha/i18n/client'
 import { HeartIcon } from 'lucide-react'
 
 const FavoriteFramework = () => {

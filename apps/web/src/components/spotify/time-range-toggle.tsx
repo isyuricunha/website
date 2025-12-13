@@ -1,6 +1,6 @@
 'use client'
 
-import { useTranslations } from '@tszhong0411/i18n/client'
+import { useTranslations } from '@isyuricunha/i18n/client'
 
 type Props = {
   value: 'short_term' | 'medium_term' | 'long_term'

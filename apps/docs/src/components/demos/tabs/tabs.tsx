@@ -12,7 +12,7 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger
-} from '@tszhong0411/ui'
+} from '@isyuricunha/ui'
 
 const TabsDemo = () => {
   return (

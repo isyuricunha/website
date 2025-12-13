@@ -1,7 +1,7 @@
 import { randomBytes } from 'crypto'
-import { auditLogs } from '@tszhong0411/db'
+import { auditLogs } from '@isyuricunha/db'
 
-type database = typeof import('@tszhong0411/db').db
+type database = typeof import('@isyuricunha/db').db
 
 export type AuditAction =
   | 'user_create'

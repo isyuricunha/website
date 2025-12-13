@@ -1,10 +1,10 @@
 import type { NextConfig } from 'next'
 
-import '@tszhong0411/env'
+import '@isyuricunha/env'
 
 import { withContentCollections } from '@content-collections/next'
 import bundleAnalyzer from '@next/bundle-analyzer'
-import { NextConfigHeaders } from '@tszhong0411/shared'
+import { NextConfigHeaders } from '@isyuricunha/shared'
 import createNextIntlPlugin from 'next-intl/plugin'
 import ReactComponentName from 'react-scan/react-component-name/webpack'
 
@@ -26,7 +26,7 @@ const config: NextConfig = {
     ignoreBuildErrors: false
   },
 
-  transpilePackages: ['@tszhong0411/*'],
+  transpilePackages: ['@isyuricunha/*'],
 
   images: {
     remotePatterns: [

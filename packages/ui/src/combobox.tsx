@@ -1,6 +1,6 @@
 import { Portal } from '@ark-ui/react'
 import { Combobox as ComboboxPrimitive } from '@ark-ui/react/combobox'
-import { cn } from '@tszhong0411/utils'
+import { cn } from '@isyuricunha/utils'
 
 const ComboboxContext = ComboboxPrimitive.Context
 const ComboboxItemContext = ComboboxPrimitive.ItemContext

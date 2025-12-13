@@ -1,4 +1,4 @@
-import { env } from '@tszhong0411/env'
+import { env } from '@isyuricunha/env'
 import Script from 'next/script'
 
 import { isProduction } from '@/lib/constants'

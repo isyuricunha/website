@@ -1,7 +1,7 @@
 import { TRPCError } from '@trpc/server'
-import { eq, likesSessions, posts, sql, sum } from '@tszhong0411/db'
-import { env } from '@tszhong0411/env'
-import { ratelimit, redis, redisKeys } from '@tszhong0411/kv'
+import { eq, likesSessions, posts, sql, sum } from '@isyuricunha/db'
+import { env } from '@isyuricunha/env'
+import { ratelimit, redis, redisKeys } from '@isyuricunha/kv'
 import { sha512 } from 'js-sha512'
 import { z } from 'zod'
 

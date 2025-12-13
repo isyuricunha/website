@@ -1,5 +1,5 @@
 import { type Column, flexRender, type Table as TanstackTable } from '@tanstack/react-table'
-import { cn, range } from '@tszhong0411/utils'
+import { cn, range } from '@isyuricunha/utils'
 import {
   ArrowDownIcon,
   ArrowUpIcon,

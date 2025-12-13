@@ -12,7 +12,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar
-} from '@tszhong0411/ui'
+} from '@isyuricunha/ui'
 import {
   AudioWaveformIcon,
   ChevronsUpDownIcon,

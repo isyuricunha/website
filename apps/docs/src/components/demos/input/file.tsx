@@ -1,4 +1,4 @@
-import { Input, Label } from '@tszhong0411/ui'
+import { Input, Label } from '@isyuricunha/ui'
 
 const InputFileDemo = () => {
   return (

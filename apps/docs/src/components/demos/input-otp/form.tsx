@@ -14,7 +14,7 @@ import {
   InputOTPGroup,
   InputOTPSlot,
   toast
-} from '@tszhong0411/ui'
+} from '@isyuricunha/ui'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 

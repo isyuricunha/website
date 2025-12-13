@@ -11,7 +11,7 @@ import {
   FormLabel,
   FormMessage,
   Input
-} from '@tszhong0411/ui'
+} from '@isyuricunha/ui'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 

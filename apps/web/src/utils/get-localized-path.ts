@@ -1,4 +1,4 @@
-import { i18n } from '@tszhong0411/i18n/config'
+import { i18n } from '@isyuricunha/i18n/config'
 
 type LocalizedDocument = {
   slug: string

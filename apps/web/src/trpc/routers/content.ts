@@ -1,5 +1,5 @@
 import { TRPCError } from '@trpc/server'
-import { and, desc, eq, ilike, or, posts } from '@tszhong0411/db'
+import { and, desc, eq, ilike, or, posts } from '@isyuricunha/db'
 import { randomBytes } from 'crypto'
 import { z } from 'zod'
 

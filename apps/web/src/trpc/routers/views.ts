@@ -1,6 +1,6 @@
 import { TRPCError } from '@trpc/server'
-import { eq, posts, sql, sum } from '@tszhong0411/db'
-import { ratelimit, redis, redisKeys } from '@tszhong0411/kv'
+import { eq, posts, sql, sum } from '@isyuricunha/db'
+import { ratelimit, redis, redisKeys } from '@isyuricunha/kv'
 import { z } from 'zod'
 
 import { getIp } from '@/utils/get-ip'

@@ -1,6 +1,6 @@
 'use client'
 
-import { Card, CardContent, CardHeader, CardTitle } from '@tszhong0411/ui'
+import { Card, CardContent, CardHeader, CardTitle } from '@isyuricunha/ui'
 import { FileText, Code, TrendingUp, Lightbulb } from 'lucide-react'
 import { motion } from 'motion/react'
 

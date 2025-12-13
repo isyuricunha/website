@@ -1,8 +1,8 @@
 'use client'
 
 import { useMemo } from 'react'
-import { useTranslations } from '@tszhong0411/i18n/client'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@tszhong0411/ui'
+import { useTranslations } from '@isyuricunha/i18n/client'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@isyuricunha/ui'
 import { api } from '@/trpc/react'
 
 // Day keys for i18n lookups (Sun..Sat)

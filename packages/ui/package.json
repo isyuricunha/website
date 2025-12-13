@@ -1,5 +1,5 @@
 {
-  "name": "@tszhong0411/ui",
+  "name": "@isyuricunha/ui",
   "version": "0.0.61",
   "description": "The UI components for tszhong0411's projects",
   "license": "MIT",
@@ -81,16 +81,16 @@
   },
   "peerDependencies": {
     "@tanstack/react-table": "^8",
-    "@tszhong0411/utils": ">=0",
+    "@isyuricunha/utils": ">=0",
     "next": "^15",
     "react": "^19",
     "react-dom": "^19"
   },
   "devDependencies": {
     "@tanstack/react-table": "^8.21.2",
-    "@tszhong0411/eslint-config": "workspace:*",
-    "@tszhong0411/tsconfig": "workspace:*",
-    "@tszhong0411/utils": "workspace:*",
+    "@isyuricunha/eslint-config": "workspace:*",
+    "@isyuricunha/tsconfig": "workspace:*",
+    "@isyuricunha/utils": "workspace:*",
     "@types/react": "19.0.10",
     "@types/react-dom": "19.0.4",
     "next": "15.5.9",

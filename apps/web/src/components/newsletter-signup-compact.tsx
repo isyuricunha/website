@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Input, Button } from '@tszhong0411/ui'
+import { Input, Button } from '@isyuricunha/ui'
 import { CheckCircle, AlertCircle, Send } from 'lucide-react'
 
 const NewsletterSignupCompact = () => {

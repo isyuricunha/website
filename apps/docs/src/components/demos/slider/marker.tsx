@@ -6,7 +6,7 @@ import {
   SliderRange,
   SliderThumb,
   SliderTrack
-} from '@tszhong0411/ui'
+} from '@isyuricunha/ui'
 
 const SliderDemo = () => {
   return (

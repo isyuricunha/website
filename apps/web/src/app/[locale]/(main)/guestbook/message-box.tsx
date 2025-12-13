@@ -1,8 +1,8 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useTranslations } from '@tszhong0411/i18n/client'
-import { useRouter } from '@tszhong0411/i18n/routing'
+import { useTranslations } from '@isyuricunha/i18n/client'
+import { useRouter } from '@isyuricunha/i18n/routing'
 import {
   Avatar,
   AvatarFallback,
@@ -16,7 +16,7 @@ import {
   Skeleton,
   Textarea,
   toast
-} from '@tszhong0411/ui'
+} from '@isyuricunha/ui'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 

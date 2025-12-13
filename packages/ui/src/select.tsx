@@ -1,5 +1,5 @@
 import * as SelectPrimitive from '@radix-ui/react-select'
-import { cn } from '@tszhong0411/utils'
+import { cn } from '@isyuricunha/utils'
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from 'lucide-react'
 
 const Select = SelectPrimitive.Root

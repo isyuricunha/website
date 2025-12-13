@@ -1,8 +1,8 @@
 'use client'
 
 import { SiGithub, SiX } from '@icons-pack/react-simple-icons'
-import { useTranslations } from '@tszhong0411/i18n/client'
-import { useRouter } from '@tszhong0411/i18n/routing'
+import { useTranslations } from '@isyuricunha/i18n/client'
+import { useRouter } from '@isyuricunha/i18n/routing'
 import {
   Button,
   CommandDialog,
@@ -16,7 +16,7 @@ import {
   CommandSeparator,
   Kbd,
   Logo
-} from '@tszhong0411/ui'
+} from '@isyuricunha/ui'
 import { CodeIcon, CommandIcon, LinkIcon, LogInIcon, LogOutIcon } from 'lucide-react'
 import { Fragment, useCallback, useEffect, useState } from 'react'
 

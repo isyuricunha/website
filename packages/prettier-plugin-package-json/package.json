@@ -1,5 +1,5 @@
 {
-  "name": "@tszhong0411/prettier-plugin-package-json",
+  "name": "@isyuricunha/prettier-plugin-package-json",
   "version": "0.0.4",
   "description": "A prettier plugin using prettier-package-json",
   "license": "MIT",
@@ -34,8 +34,8 @@
     "prettier": "3.x"
   },
   "devDependencies": {
-    "@tszhong0411/eslint-config": "workspace:*",
-    "@tszhong0411/tsconfig": "workspace:*"
+    "@isyuricunha/eslint-config": "workspace:*",
+    "@isyuricunha/tsconfig": "workspace:*"
   },
   "publishConfig": {
     "access": "public"

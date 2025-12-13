@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@tszhong0411/env",
+  "name": "@isyuricunha/env",
   "version": "0.0.0",
   "description": "The validated environment variables for tszhong0411's projects",
   "license": "MIT",
@@ -17,8 +17,8 @@
     "zod": "^3.25.76"
   },
   "devDependencies": {
-    "@tszhong0411/eslint-config": "workspace:*",
-    "@tszhong0411/tsconfig": "workspace:*"
+    "@isyuricunha/eslint-config": "workspace:*",
+    "@isyuricunha/tsconfig": "workspace:*"
   },
   "lint-staged": {
     "*.{cjs,mjs,js,jsx,cts,mts,ts,tsx}": "eslint --fix --max-warnings 999"

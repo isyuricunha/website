@@ -1,4 +1,4 @@
-import { Button, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@tszhong0411/ui'
+import { Button, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@isyuricunha/ui'
 
 const TooltipDemo = () => {
   return (

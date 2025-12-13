@@ -2,9 +2,9 @@
 
 import type { GetInfiniteCommentsOutput } from '@/trpc/routers/comments'
 
-import { useTranslations } from '@tszhong0411/i18n/client'
-import { Skeleton, Tooltip, TooltipContent, TooltipTrigger } from '@tszhong0411/ui'
-import { cn } from '@tszhong0411/utils'
+import { useTranslations } from '@isyuricunha/i18n/client'
+import { Skeleton, Tooltip, TooltipContent, TooltipTrigger } from '@isyuricunha/ui'
+import { cn } from '@isyuricunha/utils'
 import Image from 'next/image'
 import { useEffect, useMemo, useRef, useState } from 'react'
 

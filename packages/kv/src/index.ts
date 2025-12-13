@@ -1,4 +1,4 @@
-import { env } from '@tszhong0411/env'
+import { env } from '@isyuricunha/env'
 import { Ratelimit } from '@upstash/ratelimit'
 import { Redis } from '@upstash/redis'
 

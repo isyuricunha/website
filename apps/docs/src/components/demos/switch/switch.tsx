@@ -1,4 +1,4 @@
-import { Label, Switch } from '@tszhong0411/ui'
+import { Label, Switch } from '@isyuricunha/ui'
 
 const SwitchDemo = () => {
   return (

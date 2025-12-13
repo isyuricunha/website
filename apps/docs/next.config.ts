@@ -2,7 +2,7 @@ import type { NextConfig } from 'next'
 
 import { withContentCollections } from '@content-collections/next'
 import bundleAnalyzer from '@next/bundle-analyzer'
-import { NextConfigHeaders } from '@tszhong0411/shared'
+import { NextConfigHeaders } from '@isyuricunha/shared'
 
 const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === 'true'
@@ -33,7 +33,7 @@ const config: NextConfig = {
     ]
   },
 
-  transpilePackages: ['@tszhong0411/*'],
+  transpilePackages: ['@isyuricunha/*'],
 
   async headers() {
     return NextConfigHeaders

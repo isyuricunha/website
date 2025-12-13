@@ -1,5 +1,5 @@
 {
-  "name": "@tszhong0411/utils",
+  "name": "@isyuricunha/utils",
   "version": "0.0.21",
   "description": "The utility functions for tszhong0411's projects",
   "license": "MIT",
@@ -32,8 +32,8 @@
     "tailwind-merge": "^3.0.2"
   },
   "devDependencies": {
-    "@tszhong0411/eslint-config": "workspace:*",
-    "@tszhong0411/tsconfig": "workspace:*",
+    "@isyuricunha/eslint-config": "workspace:*",
+    "@isyuricunha/tsconfig": "workspace:*",
     "@types/node": "^22.13.5"
   },
   "publishConfig": {

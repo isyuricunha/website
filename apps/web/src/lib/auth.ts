@@ -1,5 +1,5 @@
-import { db } from '@tszhong0411/db'
-import { env } from '@tszhong0411/env'
+import { db } from '@isyuricunha/db'
+import { env } from '@isyuricunha/env'
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 import { admin, anonymous, username } from 'better-auth/plugins'

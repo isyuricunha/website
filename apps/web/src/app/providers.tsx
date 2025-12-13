@@ -1,6 +1,6 @@
 'use client'
 
-import { Toaster, TooltipProvider } from '@tszhong0411/ui'
+import { Toaster, TooltipProvider } from '@isyuricunha/ui'
 import { ThemeProvider } from 'next-themes'
 
 import { TRPCReactProvider } from '@/trpc/react'

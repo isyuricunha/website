@@ -13,8 +13,8 @@ import {
   Monitor,
   Smartphone
 } from 'lucide-react'
-import { Badge } from '@tszhong0411/ui'
-import { useTranslations } from '@tszhong0411/i18n/client'
+import { Badge } from '@isyuricunha/ui'
+import { useTranslations } from '@isyuricunha/i18n/client'
 import Image from 'next/image'
 
 type CategoryIcon = {

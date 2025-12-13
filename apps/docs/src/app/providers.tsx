@@ -1,6 +1,6 @@
 'use client'
 
-import { Toaster } from '@tszhong0411/ui'
+import { Toaster } from '@isyuricunha/ui'
 import { ThemeProvider } from 'next-themes'
 
 type ProvidesProps = {

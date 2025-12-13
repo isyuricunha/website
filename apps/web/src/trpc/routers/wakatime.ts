@@ -1,6 +1,6 @@
 import { TRPCError } from '@trpc/server'
-import { env } from '@tszhong0411/env'
-import { ratelimit } from '@tszhong0411/kv'
+import { env } from '@isyuricunha/env'
+import { ratelimit } from '@isyuricunha/kv'
 
 import { getIp } from '@/utils/get-ip'
 

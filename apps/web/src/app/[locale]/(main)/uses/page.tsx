@@ -1,8 +1,8 @@
 import type { Metadata, ResolvingMetadata } from 'next'
 import type { WebPage, WithContext } from 'schema-dts'
 
-import { i18n } from '@tszhong0411/i18n/config'
-import { getTranslations, setRequestLocale } from '@tszhong0411/i18n/server'
+import { i18n } from '@isyuricunha/i18n/config'
+import { getTranslations, setRequestLocale } from '@isyuricunha/i18n/server'
 import { allPages } from 'content-collections'
 import { notFound } from 'next/navigation'
 

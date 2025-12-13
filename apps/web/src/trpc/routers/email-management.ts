@@ -1,5 +1,5 @@
 import { TRPCError } from '@trpc/server'
-import { and, desc, emailSubscriptions, emailTemplates, eq } from '@tszhong0411/db'
+import { and, desc, emailSubscriptions, emailTemplates, eq } from '@isyuricunha/db'
 import { randomBytes } from 'crypto'
 import { z } from 'zod'
 

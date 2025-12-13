@@ -1,7 +1,7 @@
 'use client'
 
-import { flags } from '@tszhong0411/env'
-import { useTranslations } from '@tszhong0411/i18n/client'
+import { flags } from '@isyuricunha/env'
+import { useTranslations } from '@isyuricunha/i18n/client'
 import { ClockIcon } from 'lucide-react'
 
 import { api } from '@/trpc/react'

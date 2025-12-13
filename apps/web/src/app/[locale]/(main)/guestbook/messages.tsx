@@ -3,8 +3,8 @@
 import type { GetInfiniteMessagesOutput } from '@/trpc/routers/guestbook'
 
 import { keepPreviousData } from '@tanstack/react-query'
-import { useTranslations } from '@tszhong0411/i18n/client'
-import { Avatar, AvatarFallback, AvatarImage, Skeleton } from '@tszhong0411/ui'
+import { useTranslations } from '@isyuricunha/i18n/client'
+import { Avatar, AvatarFallback, AvatarImage, Skeleton } from '@isyuricunha/ui'
 import { MessageCircle } from 'lucide-react'
 import { motion } from 'motion/react'
 import { useEffect, useMemo } from 'react'

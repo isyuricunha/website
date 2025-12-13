@@ -26,7 +26,7 @@ import {
   Badge,
   Separator,
   Progress
-} from '@tszhong0411/ui'
+} from '@isyuricunha/ui'
 import { toast } from 'sonner'
 import { useState } from 'react'
 

@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { emailSubscriptions, eq, users } from '@tszhong0411/db'
+import { emailSubscriptions, eq, users } from '@isyuricunha/db'
 
 import { createTRPCRouter, adminProcedure, protectedProcedure } from '@/trpc/trpc'
 import { TRPCError } from '@trpc/server'

@@ -1,6 +1,6 @@
 import { Ratelimit } from '@upstash/ratelimit'
 
-import { ratelimit, redis } from '@tszhong0411/kv'
+import { ratelimit, redis } from '@isyuricunha/kv'
 
 export { ratelimit }
 

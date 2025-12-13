@@ -1,5 +1,5 @@
 import { TRPCError } from '@trpc/server'
-import { and, bulkOperations, eq, inArray, or, sessions, users } from '@tszhong0411/db'
+import { and, bulkOperations, eq, inArray, or, sessions, users } from '@isyuricunha/db'
 import { randomBytes } from 'crypto'
 import { z } from 'zod'
 

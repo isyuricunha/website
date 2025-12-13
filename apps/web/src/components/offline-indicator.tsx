@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { WifiOff, Wifi } from 'lucide-react'
 import { toast } from 'sonner'
-import { useTranslations } from '@tszhong0411/i18n/client'
+import { useTranslations } from '@isyuricunha/i18n/client'
 
 export default function OfflineIndicator() {
   const [isOnline, setIsOnline] = useState(true)

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useTranslations } from '@tszhong0411/i18n/client'
+import { useTranslations } from '@isyuricunha/i18n/client'
 import { X, AlertCircle, Info, CheckCircle, AlertTriangle, Sparkles } from 'lucide-react'
 
 import { api } from '@/trpc/react'

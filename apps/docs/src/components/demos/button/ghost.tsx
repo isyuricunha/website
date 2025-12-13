@@ -1,4 +1,4 @@
-import { Button } from '@tszhong0411/ui'
+import { Button } from '@isyuricunha/ui'
 
 const ButtonGhostDemo = () => {
   return <Button variant='ghost'>Ghost</Button>

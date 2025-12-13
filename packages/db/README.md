@@ -1,6 +1,6 @@
 # Database Management
 
-This package (`@tszhong0411/db`) is the **Single Source of Truth** for the application's database schema.
+This package (`@isyuricunha/db`) is the **Single Source of Truth** for the application's database schema.
 
 ## Schema Management
 

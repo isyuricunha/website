@@ -1,4 +1,4 @@
-import { Toggle } from '@tszhong0411/ui'
+import { Toggle } from '@isyuricunha/ui'
 import { ItalicIcon } from 'lucide-react'
 
 const ToggleDemo = () => {

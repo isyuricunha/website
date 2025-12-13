@@ -1,10 +1,10 @@
 'use client'
 
-import type { TOC } from '@tszhong0411/mdx-plugins'
+import type { TOC } from '@isyuricunha/mdx-plugins'
 
-import { useTranslations } from '@tszhong0411/i18n/client'
-import { useRouter } from '@tszhong0411/i18n/routing'
-import { SegmentGroup, SegmentGroupItem } from '@tszhong0411/ui'
+import { useTranslations } from '@isyuricunha/i18n/client'
+import { useRouter } from '@isyuricunha/i18n/routing'
+import { SegmentGroup, SegmentGroupItem } from '@isyuricunha/ui'
 
 import { useScrollspy } from '@/hooks/use-scrollspy'
 

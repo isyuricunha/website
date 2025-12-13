@@ -1,4 +1,4 @@
-import { cn } from '@tszhong0411/utils'
+import { cn } from '@isyuricunha/utils'
 import { OTPInput, OTPInputContext } from 'input-otp'
 import { MinusIcon } from 'lucide-react'
 import { use } from 'react'

@@ -1,8 +1,8 @@
 'use client'
 
-import { useLocale, useTranslations } from '@tszhong0411/i18n/client'
-import { i18n } from '@tszhong0411/i18n/config'
-import { linkVariants } from '@tszhong0411/ui'
+import { useLocale, useTranslations } from '@isyuricunha/i18n/client'
+import { i18n } from '@isyuricunha/i18n/config'
+import { linkVariants } from '@isyuricunha/ui'
 
 import Link from '@/components/link'
 import NewsletterSignupCompact from '@/components/newsletter-signup-compact'

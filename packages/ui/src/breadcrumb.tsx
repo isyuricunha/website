@@ -1,5 +1,5 @@
 import { Slot } from '@radix-ui/react-slot'
-import { cn } from '@tszhong0411/utils'
+import { cn } from '@isyuricunha/utils'
 import { ChevronRightIcon, MoreHorizontalIcon } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 

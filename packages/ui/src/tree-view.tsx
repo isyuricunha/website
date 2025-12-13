@@ -1,5 +1,5 @@
 import { type TreeCollection, TreeView as TreeViewPrimitive } from '@ark-ui/react'
-import { cn } from '@tszhong0411/utils'
+import { cn } from '@isyuricunha/utils'
 import { ChevronRightIcon, FileIcon, FolderIcon } from 'lucide-react'
 
 type Node = {

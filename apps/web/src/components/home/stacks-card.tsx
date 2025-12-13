@@ -30,8 +30,8 @@ import {
   SiUbuntu,
   SiVmware
 } from '@icons-pack/react-simple-icons'
-import { useTranslations } from '@tszhong0411/i18n/client'
-import { Marquee } from '@tszhong0411/ui'
+import { useTranslations } from '@isyuricunha/i18n/client'
+import { Marquee } from '@isyuricunha/ui'
 import { ZapIcon } from 'lucide-react'
 
 const StacksCard = () => {

@@ -1,5 +1,5 @@
 import * as NavigationMenuPrimitive from '@radix-ui/react-navigation-menu'
-import { cn } from '@tszhong0411/utils'
+import { cn } from '@isyuricunha/utils'
 import { cva } from 'cva'
 import { ChevronDownIcon } from 'lucide-react'
 

@@ -1,4 +1,4 @@
-import { Button, Input, Label, Popover, PopoverContent, PopoverTrigger } from '@tszhong0411/ui'
+import { Button, Input, Label, Popover, PopoverContent, PopoverTrigger } from '@isyuricunha/ui'
 
 const PopoverDemo = () => {
   return (

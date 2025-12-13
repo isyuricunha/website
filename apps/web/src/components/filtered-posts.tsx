@@ -2,7 +2,7 @@
 
 import type { Post } from 'content-collections'
 
-import { useLocale, useTranslations } from '@tszhong0411/i18n/client'
+import { useLocale, useTranslations } from '@isyuricunha/i18n/client'
 import {
   Input,
   Label,
@@ -11,7 +11,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue
-} from '@tszhong0411/ui'
+} from '@isyuricunha/ui'
 import {
   SearchIcon,
   SlidersHorizontal,

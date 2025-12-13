@@ -15,7 +15,7 @@ import {
   CardTitle,
   Badge,
   Separator
-} from '@tszhong0411/ui'
+} from '@isyuricunha/ui'
 import { toast } from 'sonner'
 
 interface PostData {

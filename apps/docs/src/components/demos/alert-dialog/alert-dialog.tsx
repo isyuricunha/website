@@ -9,7 +9,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
   Button
-} from '@tszhong0411/ui'
+} from '@isyuricunha/ui'
 
 const AlertDialogDemo = () => {
   return (

@@ -1,4 +1,4 @@
-import { cn } from '@tszhong0411/utils'
+import { cn } from '@isyuricunha/utils'
 import { cva, type VariantProps } from 'cva'
 
 const badgeVariants = cva({

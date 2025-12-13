@@ -1,6 +1,6 @@
 'use client'
 
-import { cn } from '@tszhong0411/utils'
+import { cn } from '@isyuricunha/utils'
 import { motion } from 'motion/react'
 
 interface EnhancedCardProps extends Omit<

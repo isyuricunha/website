@@ -1,7 +1,7 @@
 'use client'
 
-import { useTranslations } from '@tszhong0411/i18n/client'
-import { Button, toast } from '@tszhong0411/ui'
+import { useTranslations } from '@isyuricunha/i18n/client'
+import { Button, toast } from '@isyuricunha/ui'
 import { SendIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
 

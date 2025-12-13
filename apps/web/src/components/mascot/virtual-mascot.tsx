@@ -3,7 +3,7 @@
 import * as React from 'react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import { flags } from '@tszhong0411/env'
+import { flags } from '@isyuricunha/env'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import {
@@ -17,8 +17,8 @@ import {
   Copy as CopyIcon,
   MessageCircle as MessageCircleIcon
 } from 'lucide-react'
-import { useTranslations, useMessages } from '@tszhong0411/i18n/client'
-import { i18n } from '@tszhong0411/i18n/config'
+import { useTranslations, useMessages } from '@isyuricunha/i18n/client'
+import { i18n } from '@isyuricunha/i18n/config'
 import MascotGame from './mascot-game'
 import AIChatInterface from './ai-chat-interface'
 

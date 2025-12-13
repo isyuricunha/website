@@ -5,7 +5,7 @@ import {
   SliderThumb,
   SliderTrack,
   SliderValueText
-} from '@tszhong0411/ui'
+} from '@isyuricunha/ui'
 
 const SliderDemo = () => {
   return (

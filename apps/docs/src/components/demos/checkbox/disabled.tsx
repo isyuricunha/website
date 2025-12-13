@@ -1,4 +1,4 @@
-import { Checkbox, Label } from '@tszhong0411/ui'
+import { Checkbox, Label } from '@isyuricunha/ui'
 
 const CheckboxDisabledDemo = () => {
   return (

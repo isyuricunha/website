@@ -1,4 +1,4 @@
-import { Slider, SliderControl, SliderRange, SliderThumb, SliderTrack } from '@tszhong0411/ui'
+import { Slider, SliderControl, SliderRange, SliderThumb, SliderTrack } from '@isyuricunha/ui'
 
 const SliderDemo = () => {
   return (

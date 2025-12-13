@@ -1,6 +1,6 @@
 import { useMDXComponent } from '@content-collections/mdx/react'
-import * as uiComponents from '@tszhong0411/ui'
-import { cn } from '@tszhong0411/utils'
+import * as uiComponents from '@isyuricunha/ui'
+import { cn } from '@isyuricunha/utils'
 
 import ComponentPreview from './component-preview'
 import EmbedComponentPreview from './embed-component-preview'

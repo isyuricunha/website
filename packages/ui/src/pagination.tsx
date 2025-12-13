@@ -1,5 +1,5 @@
 import { Pagination as PaginationPrimitive } from '@ark-ui/react/pagination'
-import { cn } from '@tszhong0411/utils'
+import { cn } from '@isyuricunha/utils'
 import { ChevronLeftIcon, ChevronRightIcon, MoreHorizontalIcon } from 'lucide-react'
 
 import { type ButtonProps, buttonVariants } from './button'

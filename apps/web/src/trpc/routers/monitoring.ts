@@ -14,7 +14,7 @@ import {
   queryPerformance,
   resourceUsage,
   userActivity
-} from '@tszhong0411/db'
+} from '@isyuricunha/db'
 import { randomBytes } from 'crypto'
 import { z } from 'zod'
 

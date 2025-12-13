@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { useMDXComponent } from '@content-collections/mdx/react'
-import { BlurImage, CodeBlock, Kbd } from '@tszhong0411/ui'
+import { BlurImage, CodeBlock, Kbd } from '@isyuricunha/ui'
 
 import ImageZoom from '../image-zoom'
 import Link from '../link'

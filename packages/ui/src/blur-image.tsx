@@ -5,7 +5,7 @@
  *
  * Modified by: tszhong0411
  */
-import { cn } from '@tszhong0411/utils'
+import { cn } from '@isyuricunha/utils'
 import NextImage from 'next/image'
 import { useState } from 'react'
 

@@ -1,6 +1,6 @@
 'use client'
 
-import { useTranslations } from '@tszhong0411/i18n/client'
+import { useTranslations } from '@isyuricunha/i18n/client'
 import {
   Card,
   CardContent,
@@ -9,7 +9,7 @@ import {
   CardTitle,
   Input,
   Button
-} from '@tszhong0411/ui'
+} from '@isyuricunha/ui'
 import { Mail, Send, CheckCircle, AlertCircle } from 'lucide-react'
 import { useState } from 'react'
 

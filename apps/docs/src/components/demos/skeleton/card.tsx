@@ -1,4 +1,4 @@
-import { Skeleton } from '@tszhong0411/ui'
+import { Skeleton } from '@isyuricunha/ui'
 
 const SkeletonCardDemo = () => {
   return (

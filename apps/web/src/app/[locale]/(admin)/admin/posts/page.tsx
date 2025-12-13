@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
   buttonVariants
-} from '@tszhong0411/ui/server'
+} from '@isyuricunha/ui/server'
 
 import { BlogService } from '@/lib/blog/blog-service'
 

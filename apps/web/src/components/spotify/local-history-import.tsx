@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useTranslations } from '@tszhong0411/i18n/client'
+import { useTranslations } from '@isyuricunha/i18n/client'
 import {
   Card,
   CardContent,
@@ -10,7 +10,7 @@ import {
   CardTitle,
   Input,
   Label
-} from '@tszhong0411/ui'
+} from '@isyuricunha/ui'
 
 // Simple parser for Spotify extended streaming history JSON files (array of plays)
 // This runs entirely client-side; no upload.

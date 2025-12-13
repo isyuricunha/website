@@ -1,5 +1,5 @@
-import { i18n } from '@tszhong0411/i18n/config'
-import { getTranslations } from '@tszhong0411/i18n/server'
+import { i18n } from '@isyuricunha/i18n/config'
+import { getTranslations } from '@isyuricunha/i18n/server'
 import { allPosts } from 'content-collections'
 import { NextResponse } from 'next/server'
 import RSS from 'rss'

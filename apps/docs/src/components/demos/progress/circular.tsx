@@ -7,7 +7,7 @@ import {
   ProgressCircleTrack,
   ProgressLabel,
   ProgressValueText
-} from '@tszhong0411/ui'
+} from '@isyuricunha/ui'
 import { useEffect, useState } from 'react'
 
 const ProgressCircularDemo = () => {

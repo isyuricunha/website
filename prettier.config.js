@@ -1,3 +1,3 @@
-import tszhong0411 from '@tszhong0411/prettier-config'
+import tszhong0411 from '@isyuricunha/prettier-config'
 
 export default tszhong0411()

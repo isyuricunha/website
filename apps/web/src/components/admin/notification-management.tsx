@@ -25,7 +25,7 @@ import {
   DialogTitle,
   DialogTrigger,
   ScrollArea
-} from '@tszhong0411/ui'
+} from '@isyuricunha/ui'
 
 import { Bell, Plus, Check, X, Clock, User, BarChart3 } from 'lucide-react'
 import { toast } from 'sonner'

@@ -10,7 +10,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger
-} from '@tszhong0411/ui'
+} from '@isyuricunha/ui'
 
 const BreadcrumbDemo = () => {
   return (

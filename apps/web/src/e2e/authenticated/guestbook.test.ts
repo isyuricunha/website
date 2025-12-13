@@ -1,6 +1,6 @@
 import { createId } from '@paralleldrive/cuid2'
 import test, { expect } from '@playwright/test'
-import { db, guestbook } from '@tszhong0411/db'
+import { db, guestbook } from '@isyuricunha/db'
 
 import { TEST_USER } from '../constants'
 

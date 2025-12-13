@@ -1,4 +1,4 @@
-import { BlurImage } from '@tszhong0411/ui'
+import { BlurImage } from '@isyuricunha/ui'
 import { ExternalLinkIcon } from 'lucide-react'
 
 import Link from '../link'

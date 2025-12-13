@@ -1,4 +1,4 @@
-import { auditLogs as audit_logs_table, desc, gte } from '@tszhong0411/db'
+import { auditLogs as audit_logs_table, desc, gte } from '@isyuricunha/db'
 import { adminProcedure, createTRPCRouter } from '../trpc'
 import { logger } from '@/lib/logger'
 

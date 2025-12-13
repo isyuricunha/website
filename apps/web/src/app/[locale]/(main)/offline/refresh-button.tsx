@@ -1,6 +1,6 @@
 'use client'
 
-import { Button } from '@tszhong0411/ui'
+import { Button } from '@isyuricunha/ui'
 import { RefreshCw } from 'lucide-react'
 
 export default function RefreshButton() {

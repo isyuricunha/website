@@ -11,7 +11,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   Button
-} from '@tszhong0411/ui'
+} from '@isyuricunha/ui'
 
 interface ConfirmationDialogProps {
   open: boolean

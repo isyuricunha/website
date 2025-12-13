@@ -2,8 +2,8 @@
 
 import type { GetInfiniteCommentsInput } from '@/trpc/routers/comments'
 
-import { useTranslations } from '@tszhong0411/i18n/client'
-import { Button, toast } from '@tszhong0411/ui'
+import { useTranslations } from '@isyuricunha/i18n/client'
+import { Button, toast } from '@isyuricunha/ui'
 import { useState } from 'react'
 
 import { useCommentContext } from '@/contexts/comment'

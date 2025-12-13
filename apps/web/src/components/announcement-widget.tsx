@@ -10,7 +10,7 @@ import {
   CardTitle,
   Badge,
   ScrollArea
-} from '@tszhong0411/ui'
+} from '@isyuricunha/ui'
 
 import { api } from '@/trpc/react'
 

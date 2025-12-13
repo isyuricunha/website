@@ -1,7 +1,7 @@
 import type { GetInfiniteCommentsInput } from '@/trpc/routers/comments'
 
 import NumberFlow, { continuous, NumberFlowGroup } from '@number-flow/react'
-import { useTranslations } from '@tszhong0411/i18n/client'
+import { useTranslations } from '@isyuricunha/i18n/client'
 import {
   Button,
   DropdownMenu,
@@ -9,7 +9,7 @@ import {
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
   DropdownMenuTrigger
-} from '@tszhong0411/ui'
+} from '@isyuricunha/ui'
 import { ListFilterIcon } from 'lucide-react'
 
 import { useCommentsContext } from '@/contexts/comments'

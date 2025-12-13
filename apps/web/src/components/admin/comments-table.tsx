@@ -11,7 +11,7 @@ import {
   type SortingState,
   useReactTable
 } from '@tanstack/react-table'
-import { useTranslations } from '@tszhong0411/i18n/client'
+import { useTranslations } from '@isyuricunha/i18n/client'
 import {
   DataTable,
   DataTableColumnHeader,
@@ -33,7 +33,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
   toast
-} from '@tszhong0411/ui'
+} from '@isyuricunha/ui'
 import { useState, useMemo } from 'react'
 import { MoreHorizontalIcon, TrashIcon, Download, Search, X } from 'lucide-react'
 

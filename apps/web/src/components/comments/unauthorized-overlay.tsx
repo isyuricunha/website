@@ -1,5 +1,5 @@
-import { useTranslations } from '@tszhong0411/i18n/client'
-import { Button } from '@tszhong0411/ui'
+import { useTranslations } from '@isyuricunha/i18n/client'
+import { Button } from '@isyuricunha/ui'
 
 import { useDialogsStore } from '@/store/dialogs'
 

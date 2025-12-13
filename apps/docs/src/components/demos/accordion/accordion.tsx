@@ -1,4 +1,4 @@
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@tszhong0411/ui'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@isyuricunha/ui'
 
 const AccordionDemo = () => {
   return (

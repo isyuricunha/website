@@ -1,9 +1,9 @@
 'use client'
 
-import { useTranslations } from '@tszhong0411/i18n/client'
-import { usePathname } from '@tszhong0411/i18n/routing'
-import { Button, Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@tszhong0411/ui'
-import { cn } from '@tszhong0411/utils'
+import { useTranslations } from '@isyuricunha/i18n/client'
+import { usePathname } from '@isyuricunha/i18n/routing'
+import { Button, Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@isyuricunha/ui'
+import { cn } from '@isyuricunha/utils'
 import { MenuIcon } from 'lucide-react'
 import { motion } from 'motion/react'
 import { useState } from 'react'

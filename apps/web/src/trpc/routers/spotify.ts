@@ -1,7 +1,7 @@
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
-import { env } from '@tszhong0411/env'
-import { ratelimit } from '@tszhong0411/kv'
+import { env } from '@isyuricunha/env'
+import { ratelimit } from '@isyuricunha/kv'
 import { logger } from '@/lib/logger'
 
 import { getIp } from '@/utils/get-ip'

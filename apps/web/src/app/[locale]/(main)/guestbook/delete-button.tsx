@@ -1,4 +1,4 @@
-import { useTranslations } from '@tszhong0411/i18n/client'
+import { useTranslations } from '@isyuricunha/i18n/client'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,7 +12,7 @@ import {
   Button,
   buttonVariants,
   toast
-} from '@tszhong0411/ui'
+} from '@isyuricunha/ui'
 
 import { useMessageContext } from '@/contexts/message'
 import { api } from '@/trpc/react'

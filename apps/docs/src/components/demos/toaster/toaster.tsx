@@ -1,6 +1,6 @@
 'use client'
 
-import { Button, toast } from '@tszhong0411/ui'
+import { Button, toast } from '@isyuricunha/ui'
 
 const ToasterDemo = () => {
   return (

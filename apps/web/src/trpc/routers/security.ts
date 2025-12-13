@@ -10,7 +10,7 @@ import {
   securityEvents,
   securitySettings,
   twoFactorTokens
-} from '@tszhong0411/db'
+} from '@isyuricunha/db'
 import { randomBytes } from 'crypto'
 import { z } from 'zod'
 

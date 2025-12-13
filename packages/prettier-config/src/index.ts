@@ -1,8 +1,8 @@
-import type { Options as PackageJSONOptions } from '@tszhong0411/prettier-plugin-package-json'
+import type { Options as PackageJSONOptions } from '@isyuricunha/prettier-plugin-package-json'
 import type { Config, Plugin } from 'prettier'
 import type { PluginOptions } from 'prettier-plugin-tailwindcss'
 
-import prettierPluginPackageJson from '@tszhong0411/prettier-plugin-package-json'
+import prettierPluginPackageJson from '@isyuricunha/prettier-plugin-package-json'
 import * as prettierPluginTailwindcss from 'prettier-plugin-tailwindcss'
 
 export type Options = Config & PluginOptions & PackageJSONOptions

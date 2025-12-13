@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@tszhong0411/mdx-plugins",
+  "name": "@isyuricunha/mdx-plugins",
   "version": "0.0.0",
   "description": "Useful MDX plugins",
   "license": "MIT",
@@ -27,8 +27,8 @@
     "unist-util-visit": "^5.0.0"
   },
   "devDependencies": {
-    "@tszhong0411/eslint-config": "workspace:*",
-    "@tszhong0411/tsconfig": "workspace:*",
+    "@isyuricunha/eslint-config": "workspace:*",
+    "@isyuricunha/tsconfig": "workspace:*",
     "@types/hast": "^3.0.4",
     "@types/mdast": "^4.0.4"
   },

@@ -95,7 +95,7 @@ export const packageGenerator = (plop: PlopTypes.NodePlopAPI): void => {
           type: 'append',
           path: '.changeset/config.json',
           pattern: / {2}"ignore": \[/g,
-          template: '    "@tszhong0411/{{ name }}",'
+          template: '    "@isyuricunha/{{ name }}",'
         })
       }
 
@@ -124,7 +124,7 @@ export const packageGenerator = (plop: PlopTypes.NodePlopAPI): void => {
         })
         /* eslint-enable sonarjs/no-os-command-from-path, sonarjs/os-command -- enable them again */
 
-        return `@tszhong0411/${packageName} is created successfully!`
+        return `@isyuricunha/${packageName} is created successfully!`
       })
 
       return actions

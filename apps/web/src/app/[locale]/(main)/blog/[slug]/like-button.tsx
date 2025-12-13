@@ -4,8 +4,8 @@
  * Inspired by: https://framer.university/resources/like-button-component
  */
 import NumberFlow, { continuous } from '@number-flow/react'
-import { useTranslations } from '@tszhong0411/i18n/client'
-import { Separator, toast } from '@tszhong0411/ui'
+import { useTranslations } from '@isyuricunha/i18n/client'
+import { Separator, toast } from '@isyuricunha/ui'
 import { motion } from 'motion/react'
 import { useRef, useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'

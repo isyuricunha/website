@@ -1,6 +1,6 @@
 import { TRPCError } from '@trpc/server'
-import { and, eq, rates } from '@tszhong0411/db'
-import { ratelimit } from '@tszhong0411/kv'
+import { and, eq, rates } from '@isyuricunha/db'
+import { ratelimit } from '@isyuricunha/kv'
 import { z } from 'zod'
 
 import { createTRPCRouter, protectedProcedure } from '../trpc'

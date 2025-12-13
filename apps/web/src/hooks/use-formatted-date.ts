@@ -1,4 +1,4 @@
-import { useFormatter } from '@tszhong0411/i18n/client'
+import { useFormatter } from '@isyuricunha/i18n/client'
 import dayjs from 'dayjs'
 
 type Options = {

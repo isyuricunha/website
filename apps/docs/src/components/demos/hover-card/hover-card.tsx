@@ -6,7 +6,7 @@ import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger
-} from '@tszhong0411/ui'
+} from '@isyuricunha/ui'
 import { CalendarDaysIcon } from 'lucide-react'
 
 const HoverCardDemo = () => {

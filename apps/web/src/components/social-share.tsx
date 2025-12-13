@@ -7,7 +7,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger
-} from '@tszhong0411/ui'
+} from '@isyuricunha/ui'
 
 import { Share2, Twitter, Facebook, Link, Check } from 'lucide-react'
 import { toast } from 'sonner'

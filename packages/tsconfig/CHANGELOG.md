@@ -1,4 +1,4 @@
-# @tszhong0411/tsconfig
+# @isyuricunha/tsconfig
 
 ## 0.0.11
 

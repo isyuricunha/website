@@ -1,6 +1,6 @@
 'use client'
 
-import { getAvatarAbbreviation, Input } from '@tszhong0411/ui'
+import { getAvatarAbbreviation, Input } from '@isyuricunha/ui'
 import { useState } from 'react'
 
 const GetAvatarAbbreviationDemo = () => {

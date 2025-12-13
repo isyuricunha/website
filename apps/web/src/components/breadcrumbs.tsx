@@ -1,7 +1,7 @@
 'use client'
 
-import { useTranslations } from '@tszhong0411/i18n/client'
-import { usePathname } from '@tszhong0411/i18n/routing'
+import { useTranslations } from '@isyuricunha/i18n/client'
+import { usePathname } from '@isyuricunha/i18n/routing'
 import { ChevronRight, Home } from 'lucide-react'
 import { Fragment, type ReactElement } from 'react'
 

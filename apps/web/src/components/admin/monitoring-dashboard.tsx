@@ -18,7 +18,7 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger
-} from '@tszhong0411/ui'
+} from '@isyuricunha/ui'
 
 import { Activity, AlertTriangle, Zap } from 'lucide-react'
 import { toast } from 'sonner'

@@ -1,6 +1,6 @@
 'use client'
 
-import { Card, CardContent, CardHeader, Skeleton, Badge } from '@tszhong0411/ui'
+import { Card, CardContent, CardHeader, Skeleton, Badge } from '@isyuricunha/ui'
 import { Activity, RefreshCw } from 'lucide-react'
 
 const AdminLoading = () => {

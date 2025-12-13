@@ -1,7 +1,7 @@
 'use client'
 
-import { useTranslations } from '@tszhong0411/i18n/client'
-import { buttonVariants } from '@tszhong0411/ui'
+import { useTranslations } from '@isyuricunha/i18n/client'
+import { buttonVariants } from '@isyuricunha/ui'
 
 import Link from './link'
 

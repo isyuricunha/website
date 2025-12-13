@@ -6,8 +6,8 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious
-} from '@tszhong0411/ui'
-import { range } from '@tszhong0411/utils'
+} from '@isyuricunha/ui'
+import { range } from '@isyuricunha/utils'
 
 const CarouselDemo = () => {
   return (

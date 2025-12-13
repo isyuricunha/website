@@ -1,4 +1,4 @@
-import { useTranslations } from '@tszhong0411/i18n/client'
+import { useTranslations } from '@isyuricunha/i18n/client'
 import {
   Avatar,
   AvatarFallback,
@@ -9,7 +9,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
   Skeleton
-} from '@tszhong0411/ui'
+} from '@isyuricunha/ui'
 
 import { useSession } from '@/lib/auth-client'
 import { useDialogsStore } from '@/store/dialogs'

@@ -10,7 +10,7 @@ import {
   CommandSeparator,
   Kbd,
   Logo
-} from '@tszhong0411/ui'
+} from '@isyuricunha/ui'
 import {
   CalculatorIcon,
   CalendarIcon,

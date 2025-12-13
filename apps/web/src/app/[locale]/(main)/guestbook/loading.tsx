@@ -1,5 +1,5 @@
-import { useTranslations } from '@tszhong0411/i18n/client'
-import { Skeleton } from '@tszhong0411/ui'
+import { useTranslations } from '@isyuricunha/i18n/client'
+import { Skeleton } from '@isyuricunha/ui'
 
 import PageTitle from '@/components/page-title'
 

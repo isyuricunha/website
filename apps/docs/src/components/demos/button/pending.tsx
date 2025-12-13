@@ -1,4 +1,4 @@
-import { Button } from '@tszhong0411/ui'
+import { Button } from '@isyuricunha/ui'
 
 const ButtonPendingDemo = () => {
   return <Button isPending>Pending</Button>

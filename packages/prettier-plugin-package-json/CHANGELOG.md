@@ -1,4 +1,4 @@
-# @tszhong0411/prettier-plugin-package-json
+# @isyuricunha/prettier-plugin-package-json
 
 ## 0.0.4
 

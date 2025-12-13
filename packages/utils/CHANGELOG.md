@@ -1,4 +1,4 @@
-# @tszhong0411/utils
+# @isyuricunha/utils
 
 ## 0.0.21
 
@@ -114,7 +114,7 @@
 
 - [`0ac65b9`](https://github.com/tszhong0411/honghong.me/commit/0ac65b9fe08356ca093c6f72874f4fc49d2eb0bc): Remove range function
 
-- [#756](https://github.com/tszhong0411/honghong.me/pull/756) [`17ad46d`](https://github.com/tszhong0411/honghong.me/commit/17ad46dbfe5afa85872478d6099273da7fd90b62): Remove dayjs from @tszhong0411/utils
+- [#756](https://github.com/tszhong0411/honghong.me/pull/756) [`17ad46d`](https://github.com/tszhong0411/honghong.me/commit/17ad46dbfe5afa85872478d6099273da7fd90b62): Remove dayjs from @isyuricunha/utils
 
 ## 0.0.3
 

@@ -1,5 +1,5 @@
 import { GoogleGenerativeAI } from '@google/generative-ai'
-import { flags } from '@tszhong0411/env'
+import { flags } from '@isyuricunha/env'
 
 type AIProvider = 'gemini' | 'ollama'
 

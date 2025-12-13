@@ -1,7 +1,7 @@
 'use client'
 
 import { keepPreviousData } from '@tanstack/react-query'
-import { useTranslations } from '@tszhong0411/i18n/client'
+import { useTranslations } from '@isyuricunha/i18n/client'
 import { useEffect } from 'react'
 import { useInView } from 'react-intersection-observer'
 import { getSingletonHighlighterCore } from 'shiki'

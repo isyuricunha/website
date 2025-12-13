@@ -1,8 +1,8 @@
 'use client'
 
-import { useTranslations } from '@tszhong0411/i18n/client'
-import { Logo } from '@tszhong0411/ui'
-import { cn } from '@tszhong0411/utils'
+import { useTranslations } from '@isyuricunha/i18n/client'
+import { Logo } from '@isyuricunha/ui'
+import { cn } from '@isyuricunha/utils'
 import { motion } from 'motion/react'
 import { useEffect, useState } from 'react'
 

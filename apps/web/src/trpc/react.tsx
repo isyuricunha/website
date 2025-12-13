@@ -7,7 +7,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { loggerLink, unstable_httpBatchStreamLink } from '@trpc/client'
 import { createTRPCReact } from '@trpc/react-query'
-import { env } from '@tszhong0411/env'
+import { env } from '@isyuricunha/env'
 import { useMemo } from 'react'
 import { SuperJSON } from 'superjson'
 

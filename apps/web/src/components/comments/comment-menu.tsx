@@ -1,4 +1,4 @@
-import { useTranslations } from '@tszhong0411/i18n/client'
+import { useTranslations } from '@isyuricunha/i18n/client'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -16,7 +16,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
   toast
-} from '@tszhong0411/ui'
+} from '@isyuricunha/ui'
 import { MoreVerticalIcon } from 'lucide-react'
 
 import { useCommentContext } from '@/contexts/comment'

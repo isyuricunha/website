@@ -1,8 +1,8 @@
 'use client'
 
 import { SiGithub } from '@icons-pack/react-simple-icons'
-import { useTranslations } from '@tszhong0411/i18n/client'
-import { usePathname } from '@tszhong0411/i18n/routing'
+import { useTranslations } from '@isyuricunha/i18n/client'
+import { usePathname } from '@isyuricunha/i18n/routing'
 import {
   Badge,
   Button,
@@ -13,7 +13,7 @@ import {
   DialogTitle,
   Input,
   toast
-} from '@tszhong0411/ui'
+} from '@isyuricunha/ui'
 import { useEffect, useState } from 'react'
 
 import { signIn, signUp } from '@/lib/auth-client'

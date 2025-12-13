@@ -1,5 +1,5 @@
-import { supportedLanguages } from '@tszhong0411/i18n/config'
-import { getTranslations } from '@tszhong0411/i18n/server'
+import { supportedLanguages } from '@isyuricunha/i18n/config'
+import { getTranslations } from '@isyuricunha/i18n/server'
 import { allPosts } from 'content-collections'
 import { type NextRequest, NextResponse } from 'next/server'
 import RSS from 'rss'

@@ -10,7 +10,7 @@ import {
   getSortedRowModel,
   useReactTable
 } from '@tanstack/react-table'
-import { useTranslations } from '@tszhong0411/i18n/client'
+import { useTranslations } from '@isyuricunha/i18n/client'
 import {
   Badge,
   Button,
@@ -24,7 +24,7 @@ import {
   DropdownMenuTrigger,
   Input,
   toast
-} from '@tszhong0411/ui'
+} from '@isyuricunha/ui'
 import {
   BanIcon,
   Download,

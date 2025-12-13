@@ -1,8 +1,8 @@
 'use client'
 
 import NumberFlow, { continuous } from '@number-flow/react'
-import { useTranslations } from '@tszhong0411/i18n/client'
-import { BlurImage } from '@tszhong0411/ui'
+import { useTranslations } from '@isyuricunha/i18n/client'
+import { BlurImage } from '@isyuricunha/ui'
 import { useEffect, useRef } from 'react'
 
 import ImageZoom from '@/components/image-zoom'

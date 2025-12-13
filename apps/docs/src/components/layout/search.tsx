@@ -13,8 +13,8 @@ import {
   CommandSeparator,
   Kbd,
   Logo
-} from '@tszhong0411/ui'
-import { cn } from '@tszhong0411/utils'
+} from '@isyuricunha/ui'
+import { cn } from '@isyuricunha/utils'
 import { ComponentIcon, MoonIcon, SearchIcon, SunIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useTheme } from 'next-themes'

@@ -1,6 +1,6 @@
 import { defineCollection, defineConfig } from '@content-collections/core'
 import { compileMDX } from '@content-collections/mdx'
-import { rehypePlugins, remarkPlugins } from '@tszhong0411/mdx-plugins'
+import { rehypePlugins, remarkPlugins } from '@isyuricunha/mdx-plugins'
 
 const docs = defineCollection({
   name: 'Doc',

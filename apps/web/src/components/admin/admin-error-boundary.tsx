@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 import { AlertTriangle, RefreshCw } from 'lucide-react'
-import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle } from '@tszhong0411/ui'
+import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle } from '@isyuricunha/ui'
 import ErrorBoundary from '../ui/error-boundary'
 
 interface AdminErrorBoundaryProps {

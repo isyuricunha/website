@@ -1,8 +1,8 @@
 import type { SidebarLink } from '@/config/admin-sidebar-links'
 
-import { useTranslations } from '@tszhong0411/i18n/client'
-import { usePathname } from '@tszhong0411/i18n/routing'
-import { SidebarMenuButton, SidebarMenuItem } from '@tszhong0411/ui'
+import { useTranslations } from '@isyuricunha/i18n/client'
+import { usePathname } from '@isyuricunha/i18n/routing'
+import { SidebarMenuButton, SidebarMenuItem } from '@isyuricunha/ui'
 
 import Link from '../link'
 

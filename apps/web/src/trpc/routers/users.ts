@@ -1,14 +1,14 @@
 import type { RouterOutputs } from '../react'
 
 import { TRPCError } from '@trpc/server'
-import { eq, passwordResetTokens, users, sessions } from '@tszhong0411/db'
+import { eq, passwordResetTokens, users, sessions } from '@isyuricunha/db'
 import { randomBytes } from 'crypto'
 import { hash } from '@node-rs/argon2'
 import { z } from 'zod'
-import { PasswordReset } from '@tszhong0411/emails'
+import { PasswordReset } from '@isyuricunha/emails'
 
 import { resend } from '@/lib/resend'
-import { env } from '@tszhong0411/env'
+import { env } from '@isyuricunha/env'
 import { AuditLogger, getIpFromHeaders, getUserAgentFromHeaders } from '@/lib/audit-logger'
 import { logger } from '@/lib/logger'
 import { adminProcedure, createTRPCRouter, publicProcedure } from '../trpc'

@@ -1,8 +1,8 @@
 import type { Metadata, ResolvingMetadata } from 'next'
 import type { Article, WithContext } from 'schema-dts'
 
-import { flags } from '@tszhong0411/env'
-import { setRequestLocale } from '@tszhong0411/i18n/server'
+import { flags } from '@isyuricunha/env'
+import { setRequestLocale } from '@isyuricunha/i18n/server'
 import { allPosts } from 'content-collections'
 import { notFound } from 'next/navigation'
 import { Suspense } from 'react'

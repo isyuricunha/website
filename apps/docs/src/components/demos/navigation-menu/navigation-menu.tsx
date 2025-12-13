@@ -9,8 +9,8 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
   navigationMenuTriggerVariants
-} from '@tszhong0411/ui'
-import { cn } from '@tszhong0411/utils'
+} from '@isyuricunha/ui'
+import { cn } from '@isyuricunha/utils'
 import Link from 'next/link'
 
 const components: Array<{ title: string; href: string; description: string }> = [

@@ -10,7 +10,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle
-} from '@tszhong0411/ui'
+} from '@isyuricunha/ui'
 
 import { toast } from 'sonner'
 import { api } from '@/trpc/react'

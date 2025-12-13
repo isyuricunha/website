@@ -1,7 +1,7 @@
 /**
  * Inspired by: https://jahir.dev/uses
  */
-import { BlurImage, Badge } from '@tszhong0411/ui'
+import { BlurImage, Badge } from '@isyuricunha/ui'
 import { ExternalLink } from 'lucide-react'
 
 import Link from '../link'

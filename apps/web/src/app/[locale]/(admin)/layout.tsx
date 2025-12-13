@@ -1,5 +1,5 @@
-import { redirect } from '@tszhong0411/i18n/routing'
-import { SidebarProvider } from '@tszhong0411/ui'
+import { redirect } from '@isyuricunha/i18n/routing'
+import { SidebarProvider } from '@isyuricunha/ui'
 
 import AdminBreadcrumb from '@/components/admin/admin-breadcrumb'
 import AdminErrorBoundary from '@/components/admin/admin-error-boundary'

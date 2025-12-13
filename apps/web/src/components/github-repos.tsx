@@ -1,7 +1,7 @@
 'use client'
 import * as React from 'react'
 import { Star, GitFork, ExternalLink } from 'lucide-react'
-import { Badge } from '@tszhong0411/ui'
+import { Badge } from '@isyuricunha/ui'
 import Link from './link'
 
 type Repo = {

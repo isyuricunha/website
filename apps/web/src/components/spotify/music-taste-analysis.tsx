@@ -1,7 +1,7 @@
 'use client'
 
-import { useTranslations } from '@tszhong0411/i18n/client'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@tszhong0411/ui'
+import { useTranslations } from '@isyuricunha/i18n/client'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@isyuricunha/ui'
 import { Brain, Zap, Heart, Volume2, Star, TrendingUp } from 'lucide-react'
 import { useState, useMemo } from 'react'
 

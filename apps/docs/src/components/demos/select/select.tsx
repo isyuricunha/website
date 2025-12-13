@@ -6,7 +6,7 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue
-} from '@tszhong0411/ui'
+} from '@isyuricunha/ui'
 
 const SelectDemo = () => {
   return (

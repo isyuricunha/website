@@ -9,7 +9,7 @@ import {
   DialogTrigger,
   Input,
   Label
-} from '@tszhong0411/ui'
+} from '@isyuricunha/ui'
 
 const DialogDemo = () => {
   return (

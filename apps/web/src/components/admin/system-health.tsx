@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { Button } from '@tszhong0411/ui'
+import { Button } from '@isyuricunha/ui'
 import {
   RefreshCw,
   AlertTriangle,

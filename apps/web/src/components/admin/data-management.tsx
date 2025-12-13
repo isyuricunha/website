@@ -21,7 +21,7 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger
-} from '@tszhong0411/ui'
+} from '@isyuricunha/ui'
 
 import { Database, Download, Upload, CheckCircle, AlertCircle, Clock } from 'lucide-react'
 import { toast } from 'sonner'

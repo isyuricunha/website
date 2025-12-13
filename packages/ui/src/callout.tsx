@@ -1,4 +1,4 @@
-import { cn } from '@tszhong0411/utils'
+import { cn } from '@isyuricunha/utils'
 import { AlertOctagonIcon, AlertTriangleIcon, InfoIcon } from 'lucide-react'
 
 type CalloutProps = {

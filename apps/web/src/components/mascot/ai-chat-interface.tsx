@@ -1,6 +1,6 @@
 'use client'
 
-import { useTranslations, useLocale } from '@tszhong0411/i18n/client'
+import { useTranslations, useLocale } from '@isyuricunha/i18n/client'
 
 import { Loader2, MessageCircle, Send, ThumbsDown, ThumbsUp, X } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'

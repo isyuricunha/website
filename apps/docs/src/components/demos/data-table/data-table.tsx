@@ -27,7 +27,7 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger
-} from '@tszhong0411/ui'
+} from '@isyuricunha/ui'
 import {
   ArrowDownIcon,
   ArrowRightIcon,

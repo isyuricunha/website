@@ -1,4 +1,4 @@
-import { Link } from '@tszhong0411/ui'
+import { Link } from '@isyuricunha/ui'
 
 const LinkMutedDemo = () => {
   return (

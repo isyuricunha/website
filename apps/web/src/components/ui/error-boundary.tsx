@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 import { Component, type ReactNode } from 'react'
-import { Button } from '@tszhong0411/ui'
+import { Button } from '@isyuricunha/ui'
 import { AlertTriangle, RefreshCw } from 'lucide-react'
 
 interface Props {

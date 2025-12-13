@@ -1,6 +1,6 @@
 'use client'
 
-import { useTranslations } from '@tszhong0411/i18n/client'
+import { useTranslations } from '@isyuricunha/i18n/client'
 import { TrophyIcon, XIcon } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
 

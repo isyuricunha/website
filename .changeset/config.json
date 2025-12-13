@@ -6,15 +6,15 @@
   "commit": false,
   "fixed": [],
   "ignore": [
-    "@tszhong0411/mdx-plugins",
-    "@tszhong0411/db",
+    "@isyuricunha/mdx-plugins",
+    "@isyuricunha/db",
     "@isyuricunha/docs",
-    "@tszhong0411/emails",
-    "@tszhong0411/env",
-    "@tszhong0411/i18n",
-    "@tszhong0411/kv",
-    "@tszhong0411/shared",
-    "@tszhong0411/web"
+    "@isyuricunha/emails",
+    "@isyuricunha/env",
+    "@isyuricunha/i18n",
+    "@isyuricunha/kv",
+    "@isyuricunha/shared",
+    "@isyuricunha/web"
   ],
   "linked": [],
   "updateInternalDependencies": "patch"

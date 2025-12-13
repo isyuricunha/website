@@ -1,5 +1,5 @@
 import * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu'
-import { cn } from '@tszhong0411/utils'
+import { cn } from '@isyuricunha/utils'
 import { CheckIcon, ChevronRightIcon, DotIcon } from 'lucide-react'
 
 const DropdownMenu = DropdownMenuPrimitive.Root

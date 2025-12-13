@@ -15,10 +15,10 @@ import {
   lt,
   ne,
   rates
-} from '@tszhong0411/db'
-import { Comment, Reply } from '@tszhong0411/emails'
-import { env } from '@tszhong0411/env'
-import { ratelimit } from '@tszhong0411/kv'
+} from '@isyuricunha/db'
+import { Comment, Reply } from '@isyuricunha/emails'
+import { env } from '@isyuricunha/env'
+import { ratelimit } from '@isyuricunha/kv'
 import { allPosts } from 'content-collections'
 import { z } from 'zod'
 

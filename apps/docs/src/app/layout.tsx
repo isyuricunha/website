@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from 'next'
 
 import '@/styles/globals.css'
 
-import { cn } from '@tszhong0411/utils'
+import { cn } from '@isyuricunha/utils'
 import { GeistMono } from 'geist/font/mono'
 import { GeistSans } from 'geist/font/sans'
 

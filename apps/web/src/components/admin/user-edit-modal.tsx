@@ -2,7 +2,7 @@
 
 import type { GetUsersOutput } from '@/trpc/routers/users'
 
-import { useTranslations } from '@tszhong0411/i18n/client'
+import { useTranslations } from '@isyuricunha/i18n/client'
 import { useState } from 'react'
 import { toast } from 'sonner'
 import { z } from 'zod'
@@ -23,7 +23,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue
-} from '@tszhong0411/ui'
+} from '@isyuricunha/ui'
 
 type User = GetUsersOutput['users'][number]
 

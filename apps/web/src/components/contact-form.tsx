@@ -1,8 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { env, flags } from '@tszhong0411/env'
-import { useTranslations } from '@tszhong0411/i18n/client'
+import { env, flags } from '@isyuricunha/env'
+import { useTranslations } from '@isyuricunha/i18n/client'
 import {
   Card,
   CardContent,
@@ -12,7 +12,7 @@ import {
   Input,
   Button,
   Textarea
-} from '@tszhong0411/ui'
+} from '@isyuricunha/ui'
 import { Send, MessageSquare, Loader2, CheckCircle, AlertCircle } from 'lucide-react'
 import { Turnstile } from '@marsidev/react-turnstile'
 

@@ -1,4 +1,4 @@
-import { cn } from '@tszhong0411/utils'
+import { cn } from '@isyuricunha/utils'
 import { Drawer as DrawerPrimitive } from 'vaul'
 
 type DrawerProps = React.ComponentProps<typeof DrawerPrimitive.Root>

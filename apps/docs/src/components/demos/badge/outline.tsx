@@ -1,4 +1,4 @@
-import { Badge } from '@tszhong0411/ui'
+import { Badge } from '@isyuricunha/ui'
 
 const BadgeOutlineDemo = () => {
   return <Badge variant='outline'>Badge</Badge>

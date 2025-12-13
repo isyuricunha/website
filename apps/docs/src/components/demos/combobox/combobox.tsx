@@ -6,7 +6,7 @@ import {
   ComboboxPortal,
   ComboboxPositioner,
   createListCollection
-} from '@tszhong0411/ui'
+} from '@isyuricunha/ui'
 import {
   Combobox,
   ComboboxContent,
@@ -18,7 +18,7 @@ import {
   ComboboxItemIndicator,
   ComboboxItemText,
   ComboboxTrigger
-} from '@tszhong0411/ui'
+} from '@isyuricunha/ui'
 import { CheckIcon, ChevronsUpDownIcon } from 'lucide-react'
 import { useState } from 'react'
 

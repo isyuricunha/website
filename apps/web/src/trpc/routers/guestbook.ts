@@ -2,9 +2,9 @@ import type { RouterOutputs } from '../react'
 
 import { createId } from '@paralleldrive/cuid2'
 import { TRPCError } from '@trpc/server'
-import { and, desc, eq, guestbook, lt } from '@tszhong0411/db'
-import { env, flags } from '@tszhong0411/env'
-import { ratelimit } from '@tszhong0411/kv'
+import { and, desc, eq, guestbook, lt } from '@isyuricunha/db'
+import { env, flags } from '@isyuricunha/env'
+import { ratelimit } from '@isyuricunha/kv'
 import { z } from 'zod'
 
 import { isProduction } from '@/lib/constants'

@@ -1,4 +1,4 @@
-import { Logo as HongLogo } from '@tszhong0411/ui'
+import { Logo as HongLogo } from '@isyuricunha/ui'
 
 const Logo = () => {
   return (

@@ -17,7 +17,7 @@
     "skipLibCheck": true
   },
   "exclude": ["node_modules"],
-  "extends": "@tszhong0411/tsconfig/nextjs.json",
+  "extends": "@isyuricunha/tsconfig/nextjs.json",
   "include": [
     "next-env.d.ts",
     "next.config.mjs",
