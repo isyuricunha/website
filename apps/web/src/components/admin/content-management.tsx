@@ -20,9 +20,12 @@ import { toast } from 'sonner'
 
 // Post interface is now inferred from tRPC response
 
+const status_filters = ['draft', 'published', 'archived'] as const
+type StatusFilter = (typeof status_filters)[number]
+
 export const ContentManagement = () => {
   const [searchTerm, setSearchTerm] = useState('')
-  const [statusFilter, setStatusFilter] = useState<'draft' | 'published' | 'archived' | undefined>()
+  const [statusFilter, setStatusFilter] = useState<StatusFilter | undefined>()
   const [selectedPosts, setSelectedPosts] = useState<string[]>([])
 
   // Fetch posts
@@ -193,7 +196,18 @@ export const ContentManagement = () => {
           <div className='flex gap-2'>
             <select
               value={statusFilter || ''}
-              onChange={(e) => setStatusFilter((e.target.value as any) || undefined)}
+              onChange={(e) => {
+                const value = e.target.value
+
+                if (value === '') {
+                  setStatusFilter(undefined)
+                  return
+                }
+
+                if (status_filters.includes(value as StatusFilter)) {
+                  setStatusFilter(value as StatusFilter)
+                }
+              }}
               className='rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white'
             >
               <option value=''>All Status</option>
