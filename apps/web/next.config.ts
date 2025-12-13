@@ -29,6 +29,7 @@ const config: NextConfig = {
   transpilePackages: ['@isyuricunha/*'],
 
   images: {
+    qualities: [25, 50, 75, 100],
     remotePatterns: [
       {
         protocol: 'https',
