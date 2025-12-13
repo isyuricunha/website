@@ -1,7 +1,13 @@
 import type { KnipConfig } from 'knip'
 
 const config: KnipConfig = {
-  ignore: ['**/fixtures/**', '**/*.css', 'packages/eslint-config/eslint.config.bundled_*.mjs'],
+  ignore: [
+    '**/fixtures/**',
+    '**/*.css',
+    'apps/web/public/sw.js',
+    'packages/db/src/migrations/**',
+    'packages/eslint-config/eslint.config.bundled_*.mjs'
+  ],
   vitest: {
     config: ['vitest.{config,shared,workspace}.ts']
   },
