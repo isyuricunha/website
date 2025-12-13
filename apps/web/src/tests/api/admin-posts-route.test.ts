@@ -19,6 +19,10 @@ vi.mock('@/lib/spam-detection', () => ({
     getClientIp: vi.fn()
 }))
 
+vi.mock('@/lib/auth', () => ({
+    getSession: vi.fn()
+}))
+
 vi.mock('@/lib/blog/blog-service', () => ({
     BlogService: {
         postExists: vi.fn(),
@@ -33,11 +37,47 @@ describe('/api/admin/posts', () => {
         vi.clearAllMocks()
     })
 
+    it('returns 401 when not authenticated', async () => {
+        const { getSession } = await import('@/lib/auth')
+
+        vi.mocked(getSession).mockResolvedValue(null as never)
+
+        const { POST } = await import('@/app/api/admin/posts/route')
+
+        const req = {
+            headers: new Headers(),
+            json: async () => ({ slug: 'test', title: 'Test', content: 'Hello', locale: 'en' })
+        } as unknown as Parameters<typeof POST>[0]
+
+        const res = await POST(req)
+
+        expect(res.status).toBe(401)
+    })
+
+    it('returns 403 when not admin', async () => {
+        const { getSession } = await import('@/lib/auth')
+
+        vi.mocked(getSession).mockResolvedValue({ user: { role: 'user' } } as never)
+
+        const { POST } = await import('@/app/api/admin/posts/route')
+
+        const req = {
+            headers: new Headers(),
+            json: async () => ({ slug: 'test', title: 'Test', content: 'Hello', locale: 'en' })
+        } as unknown as Parameters<typeof POST>[0]
+
+        const res = await POST(req)
+
+        expect(res.status).toBe(403)
+    })
+
     it('returns 429 when rate limited (POST)', async () => {
         const { ratelimit } = await import('@/lib/ratelimit')
         const { getClientIp } = await import('@/lib/spam-detection')
+        const { getSession } = await import('@/lib/auth')
 
         vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
+        vi.mocked(getSession).mockResolvedValue({ user: { role: 'admin' } } as never)
         vi.mocked(ratelimit.limit).mockResolvedValue({ success: false } as never)
 
         const { POST } = await import('@/app/api/admin/posts/route')
@@ -60,8 +100,10 @@ describe('/api/admin/posts', () => {
     it('returns 400 on invalid payload (POST)', async () => {
         const { ratelimit } = await import('@/lib/ratelimit')
         const { getClientIp } = await import('@/lib/spam-detection')
+        const { getSession } = await import('@/lib/auth')
 
         vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
+        vi.mocked(getSession).mockResolvedValue({ user: { role: 'admin' } } as never)
         vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
 
         const { POST } = await import('@/app/api/admin/posts/route')
@@ -81,8 +123,10 @@ describe('/api/admin/posts', () => {
     it('returns 400 on invalid query params (DELETE)', async () => {
         const { ratelimit } = await import('@/lib/ratelimit')
         const { getClientIp } = await import('@/lib/spam-detection')
+        const { getSession } = await import('@/lib/auth')
 
         vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
+        vi.mocked(getSession).mockResolvedValue({ user: { role: 'admin' } } as never)
         vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
 
         const { DELETE } = await import('@/app/api/admin/posts/route')

@@ -3,6 +3,7 @@ import { BlogService } from '@/lib/blog/blog-service'
 import { ratelimit } from '@/lib/ratelimit'
 import { logger } from '@/lib/logger'
 import { rate_limit_keys } from '@/lib/rate-limit-keys'
+import { requireAdmin } from '@/lib/admin-auth'
 import { getClientIp } from '@/lib/spam-detection'
 import { z } from 'zod'
 
@@ -23,6 +24,9 @@ const deleteQuerySchema = z.object({
 
 export async function POST(request: NextRequest) {
   try {
+    const authResponse = await requireAdmin()
+    if (authResponse) return authResponse
+
     // Rate limiting
     const ip = getClientIp(request.headers)
     const { success } = await ratelimit.limit(rate_limit_keys.admin_posts_create(ip))
@@ -77,6 +81,9 @@ export async function POST(request: NextRequest) {
 
 export async function PUT(request: NextRequest) {
   try {
+    const authResponse = await requireAdmin()
+    if (authResponse) return authResponse
+
     // Rate limiting
     const ip = getClientIp(request.headers)
     const { success } = await ratelimit.limit(rate_limit_keys.admin_posts_update(ip))
@@ -131,6 +138,9 @@ export async function PUT(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
+    const authResponse = await requireAdmin()
+    if (authResponse) return authResponse
+
     // Rate limiting
     const ip = getClientIp(request.headers)
     const { success } = await ratelimit.limit(rate_limit_keys.admin_posts_delete(ip))

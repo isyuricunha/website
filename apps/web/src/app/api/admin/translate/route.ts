@@ -8,6 +8,7 @@ import { BlogService } from '@/lib/blog/blog-service'
 import { logger } from '@/lib/logger'
 import { ratelimit } from '@/lib/ratelimit'
 import { rate_limit_keys } from '@/lib/rate-limit-keys'
+import { requireAdmin } from '@/lib/admin-auth'
 import { getClientIp } from '@/lib/spam-detection'
 
 const SUPPORTED_LOCALES = ['en', 'pt', 'fr', 'de', 'ja', 'zh']
@@ -21,6 +22,9 @@ const requestSchema = z.object({
 
 export async function POST(request: NextRequest) {
   try {
+    const authResponse = await requireAdmin()
+    if (authResponse) return authResponse
+
     // Rate limiting
     const ip = getClientIp(request.headers)
     const { success } = await ratelimit.limit(rate_limit_keys.admin_translate(ip))
