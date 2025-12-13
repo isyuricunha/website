@@ -159,7 +159,9 @@ export default function AIChatInterface({
 
       setMessages((prev) => [...prev, aiMessage])
     } catch (error) {
-      console.error('Chat error:', error)
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Chat error:', error)
+      }
 
       const errorMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
@@ -317,11 +319,10 @@ export default function AIChatInterface({
                     <button
                       type='button'
                       onClick={() => handleReaction(message.id, 'like')}
-                      className={`hover:bg-muted/80 flex items-center gap-1 rounded px-2 py-1 text-xs transition-all ${
-                        message.reactions?.userReaction === 'like'
+                      className={`hover:bg-muted/80 flex items-center gap-1 rounded px-2 py-1 text-xs transition-all ${message.reactions?.userReaction === 'like'
                           ? 'bg-green-50 text-green-600 dark:bg-green-950'
                           : 'text-muted-foreground'
-                      }`}
+                        }`}
                     >
                       <ThumbsUp className='h-3 w-3' />
                       {message.reactions?.likes ?? 0}
@@ -329,11 +330,10 @@ export default function AIChatInterface({
                     <button
                       type='button'
                       onClick={() => handleReaction(message.id, 'dislike')}
-                      className={`hover:bg-muted/80 flex items-center gap-1 rounded px-2 py-1 text-xs transition-all ${
-                        message.reactions?.userReaction === 'dislike'
+                      className={`hover:bg-muted/80 flex items-center gap-1 rounded px-2 py-1 text-xs transition-all ${message.reactions?.userReaction === 'dislike'
                           ? 'bg-red-50 text-red-600 dark:bg-red-950'
                           : 'text-muted-foreground'
-                      }`}
+                        }`}
                     >
                       <ThumbsDown className='h-3 w-3' />
                       {message.reactions?.dislikes ?? 0}
