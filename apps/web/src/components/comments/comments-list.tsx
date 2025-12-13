@@ -46,14 +46,20 @@ const CommentsList = () => {
   useEffect(() => {
     if (highlighter) return
 
+    let cancelled = false
+
     getSingletonHighlighterCore({
       themes: [githubLightDefault, githubDarkDefault],
       engine: createOnigurumaEngine(import('shiki/wasm'))
     }).then((instance) => {
+      if (cancelled) return
       setHighlighter(instance)
     })
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- only run once
-  }, [])
+
+    return () => {
+      cancelled = true
+    }
+  }, [highlighter, setHighlighter])
 
   const isSuccess = status === 'success'
   const isError = status === 'error'
@@ -66,8 +72,8 @@ const CommentsList = () => {
       <div className='space-y-8 py-2'>
         {isSuccess
           ? data.pages.map((page) =>
-              page.comments.map((comment) => <Comment key={comment.id} comment={comment} />)
-            )
+            page.comments.map((comment) => <Comment key={comment.id} comment={comment} />)
+          )
           : null}
         {noComments ? (
           <div className='flex min-h-20 items-center justify-center'>

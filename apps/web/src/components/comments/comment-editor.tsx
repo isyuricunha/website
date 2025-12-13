@@ -2,7 +2,7 @@ import { useTranslations } from '@isyuricunha/i18n/client'
 import { Button, Textarea } from '@isyuricunha/ui'
 import { cn } from '@isyuricunha/utils'
 import { BoldIcon, ItalicIcon, StrikethroughIcon } from 'lucide-react'
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 
 type Command = {
   onModEnter?: () => void
@@ -11,6 +11,7 @@ type Command = {
 
 type CommentEditorProps = {
   initialValue?: string
+  focusOnMount?: boolean
 } & Command &
   React.ComponentProps<typeof Textarea>
 
@@ -121,9 +122,14 @@ const decorateText = (
 }
 
 const CommentEditor = (props: CommentEditorProps) => {
-  const { onModEnter, onEscape, initialValue, ...rest } = props
+  const { onModEnter, onEscape, initialValue, focusOnMount, ...rest } = props
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const t = useTranslations()
+
+  useEffect(() => {
+    if (!focusOnMount) return
+    textareaRef.current?.focus()
+  }, [focusOnMount])
 
   return (
     <div

@@ -108,8 +108,7 @@ const CommentReply = () => {
           onEscape={() => setIsReplying(false)}
           placeholder={t('blog.comments.reply-to-comment')}
           disabled={disabled}
-          // eslint-disable-next-line jsx-a11y/no-autofocus -- Autofocus is necessary because user is replying to a comment
-          autoFocus
+          focusOnMount
         />
         {isAuthenticated ? null : <UnauthorizedOverlay />}
       </div>
