@@ -1,5 +1,5 @@
 import { TRPCError } from '@trpc/server'
-import { and, desc, eq, ilike, or, posts } from '@isyuricunha/db'
+import { and, desc, eq, ilike, ne, or, posts } from '@isyuricunha/db'
 import { randomBytes } from 'crypto'
 import { z } from 'zod'
 
@@ -14,6 +14,8 @@ function generateSlug(title: string): string {
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/(^-|-$)/g, '')
 }
+
+type PostUpdate = Partial<typeof posts.$inferInsert>
 
 export const contentRouter = createTRPCRouter({
   // Get all posts for admin management
@@ -250,7 +252,7 @@ export const contentRouter = createTRPCRouter({
         // Check slug uniqueness if slug is being updated
         if (updateData.slug && updateData.slug !== existingPost.slug) {
           const slugExists = await ctx.db.query.posts.findFirst({
-            where: and(eq(posts.slug, updateData.slug), eq(posts.id, id))
+            where: and(eq(posts.slug, updateData.slug), ne(posts.id, id))
           })
 
           if (slugExists) {
@@ -261,17 +263,17 @@ export const contentRouter = createTRPCRouter({
           }
         }
 
-        // Filter out undefined values and prepare update data
-        const filteredUpdateData: any = {}
-        Object.entries(updateData).forEach(([key, value]) => {
-          if (value !== undefined) {
-            if (key === 'tags') {
-              filteredUpdateData[key] = JSON.stringify(value)
-            } else {
-              filteredUpdateData[key] = value
-            }
-          }
-        })
+        const filteredUpdateData: PostUpdate = {}
+
+        if (updateData.title !== undefined) filteredUpdateData.title = updateData.title
+        if (updateData.description !== undefined) filteredUpdateData.description = updateData.description
+        if (updateData.content !== undefined) filteredUpdateData.content = updateData.content
+        if (updateData.excerpt !== undefined) filteredUpdateData.excerpt = updateData.excerpt
+        if (updateData.coverImage !== undefined) filteredUpdateData.coverImage = updateData.coverImage
+        if (updateData.slug !== undefined) filteredUpdateData.slug = updateData.slug
+        if (updateData.status !== undefined) filteredUpdateData.status = updateData.status
+        if (updateData.featured !== undefined) filteredUpdateData.featured = updateData.featured
+        if (updateData.tags !== undefined) filteredUpdateData.tags = JSON.stringify(updateData.tags)
 
         // Handle published status change
         if (updateData.status === 'published' && existingPost.status !== 'published') {
