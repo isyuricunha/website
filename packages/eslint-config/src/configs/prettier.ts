@@ -4,7 +4,7 @@ import { prettierConfig } from '@/plugins'
 
 export const prettier: Linter.Config[] = [
   {
-    name: 'tszhong0411:prettier',
+    name: 'isyuricunha:prettier',
     rules: {
       // Avoid conflicts
       ...prettierConfig.rules,

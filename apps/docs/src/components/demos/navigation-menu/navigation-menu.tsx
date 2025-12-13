@@ -65,7 +65,7 @@ const NavigationMenuDemo = () => {
                     href='/'
                   >
                     <Logo className='size-6' />
-                    <div className='mb-2 mt-4 text-lg font-medium'>tszhong0411/ui</div>
+                    <div className='mb-2 mt-4 text-lg font-medium'>isyuricunha/ui</div>
                     <p className='text-muted-foreground text-sm leading-tight'>
                       A modern component library.
                     </p>

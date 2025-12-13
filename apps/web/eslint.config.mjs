@@ -1,6 +1,6 @@
-import tszhong0411, { GLOB_E2E } from '@isyuricunha/eslint-config'
+import isyuricunha, { GLOB_E2E } from '@isyuricunha/eslint-config'
 
-export default tszhong0411(
+export default isyuricunha(
   {
     project: './tsconfig.json',
     tsconfigRootDir: import.meta.dirname,

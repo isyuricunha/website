@@ -2,7 +2,7 @@
   "private": true,
   "name": "@isyuricunha/kv",
   "version": "0.0.0",
-  "description": "The key-value store for tszhong0411's projects",
+  "description": "The key-value store for isyuricunha's projects",
   "license": "MIT",
   "type": "module",
   "main": "./src/index.ts",

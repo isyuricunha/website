@@ -2,7 +2,7 @@
   "private": true,
   "name": "@isyuricunha/db",
   "version": "0.0.0",
-  "description": "The ORM for tszhong0411's projects",
+  "description": "The ORM for isyuricunha's projects",
   "license": "MIT",
   "type": "module",
   "main": "./src/index.ts",

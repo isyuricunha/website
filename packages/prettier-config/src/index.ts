@@ -7,7 +7,7 @@ import * as prettierPluginTailwindcss from 'prettier-plugin-tailwindcss'
 
 export type Options = Config & PluginOptions & PackageJSONOptions
 
-const tszhong0411 = (options: Options = {}): Options => {
+const isyuricunha = (options: Options = {}): Options => {
   const { plugins = [], ...rest } = options
 
   return {
@@ -33,4 +33,4 @@ const tszhong0411 = (options: Options = {}): Options => {
   }
 }
 
-export default tszhong0411
+export default isyuricunha

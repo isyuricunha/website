@@ -4,7 +4,7 @@ import { sonarjsPlugin } from '@/plugins'
 
 export const sonarjs: Linter.Config[] = [
   {
-    name: 'tszhong0411:sonarjs',
+    name: 'isyuricunha:sonarjs',
     plugins: {
       sonarjs: sonarjsPlugin as unknown as Record<string, unknown>
     },

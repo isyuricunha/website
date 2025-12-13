@@ -2,7 +2,7 @@
   "private": true,
   "name": "@isyuricunha/i18n",
   "version": "0.0.0",
-  "description": "The internationalization package for tszhong0411's projects",
+  "description": "The internationalization package for isyuricunha's projects",
   "license": "MIT",
   "type": "module",
   "exports": {

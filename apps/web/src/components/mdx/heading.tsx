@@ -3,7 +3,7 @@
  * Copyright (c) fuma-nama
  * Source: https://github.com/fuma-nama/fumadocs/blob/82c273917280f63da95687852135f89a08593e71/packages/ui/src/components/heading.tsx
  *
- * Modified by: tszhong0411
+ * Modified by: isyuricunha
  */
 import { useTranslations } from '@isyuricunha/i18n/client'
 import { cn } from '@isyuricunha/utils'

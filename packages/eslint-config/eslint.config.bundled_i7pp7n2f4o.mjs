@@ -51,7 +51,7 @@ import { default as default16 } from 'eslint-plugin-unused-imports'
 // dist/chunk-Q67Y2PJA.js
 var typescript = (options) => [
   {
-    name: 'tszhong0411:typescript',
+    name: 'isyuricunha:typescript',
     plugins: {
       '@typescript-eslint': default5
     },
@@ -107,7 +107,7 @@ var typescript = (options) => [
 // dist/chunk-YGQSUSG7.js
 var unicorn = [
   {
-    name: 'tszhong0411:unicorn',
+    name: 'isyuricunha:unicorn',
     plugins: {
       unicorn: default15
     },
@@ -126,7 +126,7 @@ var unicorn = [
 // dist/chunk-3MS64ZJH.js
 var next = [
   {
-    name: 'tszhong0411:next',
+    name: 'isyuricunha:next',
     plugins: {
       '@next/next': default4
     },
@@ -141,7 +141,7 @@ var next = [
 // dist/chunk-6TYUC3E7.js
 var playwright = [
   {
-    name: 'tszhong0411:playwright',
+    name: 'isyuricunha:playwright',
     ...default10.configs['flat/recommended'],
     files: [GLOB_E2E]
   }
@@ -150,7 +150,7 @@ var playwright = [
 // dist/chunk-DJX4274D.js
 var prettier = [
   {
-    name: 'tszhong0411:prettier',
+    name: 'isyuricunha:prettier',
     plugins: {
       prettier: default11
     },
@@ -169,7 +169,7 @@ var react = (options) => {
   const reactPluginAll = default3.configs.all
   return [
     {
-      name: 'tszhong0411:react',
+      name: 'isyuricunha:react',
       plugins: {
         ...reactPluginAll.plugins,
         'react-hooks': default12,
@@ -248,7 +248,7 @@ var react = (options) => {
 // dist/chunk-KMYJ7O2J.js
 var sonarjs = [
   {
-    name: 'tszhong0411:sonarjs',
+    name: 'isyuricunha:sonarjs',
     plugins: {
       sonarjs: sonarjsPlugin
     },
@@ -264,7 +264,7 @@ var sonarjs = [
 // dist/chunk-SOPDY2KU.js
 var testingLibrary = [
   {
-    name: 'tszhong0411:testing-library',
+    name: 'isyuricunha:testing-library',
     plugins: {
       'testing-library': default14
     },
@@ -278,7 +278,7 @@ var testingLibrary = [
 // dist/chunk-IDASO4DG.js
 var turbo = [
   {
-    name: 'tszhong0411:turbo',
+    name: 'isyuricunha:turbo',
     plugins: {
       turbo: turboPlugin
     },
@@ -291,7 +291,7 @@ var turbo = [
 // dist/chunk-PBBRDSBZ.js
 var comments = [
   {
-    name: 'tszhong0411:comments',
+    name: 'isyuricunha:comments',
     plugins: {
       'eslint-comments': default8
     },
@@ -312,7 +312,7 @@ var ignores = [
 // dist/chunk-GEBMW5GH.js
 var importSort = [
   {
-    name: 'tszhong0411:import-sort',
+    name: 'isyuricunha:import-sort',
     plugins: {
       'simple-import-sort': default13
     },
@@ -352,7 +352,7 @@ var importSort = [
 // dist/chunk-KR7RMZ7V.js
 var imports = [
   {
-    name: 'tszhong0411:imports',
+    name: 'isyuricunha:imports',
     plugins: {
       import: importPlugin
     },
@@ -374,7 +374,7 @@ var imports = [
 import globals from 'globals'
 var javascript = [
   {
-    name: 'tszhong0411:javascript',
+    name: 'isyuricunha:javascript',
     languageOptions: {
       ecmaVersion: 2022,
       globals: {
@@ -418,7 +418,7 @@ var javascript = [
 // dist/index.js
 import { isPackageExists } from 'local-pkg'
 var hasTypeScript = isPackageExists('typescript')
-var tszhong0411 = async (options = {}, ...userConfigs) => {
+var isyuricunha = async (options = {}, ...userConfigs) => {
   const {
     typescript: enableTypeScript = hasTypeScript,
     react: enableReact = false,
@@ -463,7 +463,7 @@ var tszhong0411 = async (options = {}, ...userConfigs) => {
   configs.push(...userConfigs)
   return configs
 }
-var src_default = tszhong0411
+var src_default = isyuricunha
 
 // eslint.config.mjs
 var eslint_config_default = src_default({

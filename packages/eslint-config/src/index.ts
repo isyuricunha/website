@@ -36,7 +36,7 @@ export type Configs = Linter.Config[]
 
 const hasTypeScript = isPackageExists('typescript')
 
-const tszhong0411 = async (options: Options = {}, ...userConfigs: Configs): Promise<Configs> => {
+const isyuricunha = async (options: Options = {}, ...userConfigs: Configs): Promise<Configs> => {
   const {
     typescript: enableTypeScript = hasTypeScript,
     react: enableReact = false,
@@ -97,4 +97,4 @@ const tszhong0411 = async (options: Options = {}, ...userConfigs: Configs): Prom
 
 export * from './globs'
 
-export default tszhong0411
+export default isyuricunha

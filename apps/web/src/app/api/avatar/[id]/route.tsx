@@ -3,7 +3,7 @@
  * Copyright (c) Vercel
  * Source: https://github.com/vercel/avatar/blob/410bc1e438ef26a7456b037bbdd44d5aec49031a/pages/api/avatar/%5Bname%5D.tsx
  *
- * Modified by: tszhong0411
+ * Modified by: isyuricunha
  */
 import { getErrorMessage } from '@isyuricunha/utils'
 import { ImageResponse } from 'next/og'

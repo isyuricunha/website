@@ -3,7 +3,7 @@ name: Bug report
 about: Report a bug or issue
 title: '[BUG]'
 labels: Bug
-assignees: tszhong0411
+assignees: isyuricunha
 ---
 
 ### Description:

@@ -1,3 +1,3 @@
-import tszhong0411 from '@isyuricunha/prettier-config'
+import isyuricunha from '@isyuricunha/prettier-config'
 
-export default tszhong0411()
+export default isyuricunha()

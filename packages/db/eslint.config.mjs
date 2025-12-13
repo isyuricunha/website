@@ -1,6 +1,6 @@
-import tszhong0411 from '@isyuricunha/eslint-config'
+import isyuricunha from '@isyuricunha/eslint-config'
 
-export default tszhong0411(
+export default isyuricunha(
   {
     project: './tsconfig.json',
     tsconfigRootDir: import.meta.dirname,

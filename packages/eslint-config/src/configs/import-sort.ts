@@ -4,7 +4,7 @@ import { simpleImportSortPlugin } from '@/plugins'
 
 export const importSort: Linter.Config[] = [
   {
-    name: 'tszhong0411:import-sort',
+    name: 'isyuricunha:import-sort',
     plugins: {
       'simple-import-sort': simpleImportSortPlugin
     },

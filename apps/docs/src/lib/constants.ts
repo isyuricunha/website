@@ -5,7 +5,7 @@ export const SITE_TITLE = 'Docs | Yuri Cunha - A Senior Cloud & Infrastructure A
 export const SITE_DESCRIPTION =
   "Explore comprehensive documentation and resources for Yuri's projects"
 export const SITE_KEYWORDS = [
-  'tszhong0411',
+  'isyuricunha',
   'Web Development',
   'Programming',
   'UI/UX Design',
