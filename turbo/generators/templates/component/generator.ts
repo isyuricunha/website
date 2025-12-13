@@ -16,7 +16,6 @@ export const componentGenerator = (plop: PlopTypes.NodePlopAPI): void => {
         type: 'input',
         name: 'name',
         message: 'What is the name of the component?',
-        // eslint-disable-next-line sonarjs/function-return-type -- boolean or string is expected
         validate: (input: string) => {
           if (input.trim().length === 0) {
             return 'Component name is required.'
