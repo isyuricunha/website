@@ -65,14 +65,12 @@
     "commitizen": "^4.3.1",
     "concurrently": "^9.2.1",
     "cross-env": "^10.1.0",
-    "cspell": "^9.4.0",
     "cz-git": "^1.12.0",
     "dotenv-cli": "^10.0.0",
     "eslint": "^9.39.1",
     "jsdom": "^26.1.0",
     "knip": "^5.73.1",
     "lint-staged": "^16.2.7",
-    "next": "^15.5.9",
     "prettier": "^3.7.4",
     "simple-git-hooks": "^2.13.1",
     "ts-morph": "^26.0.0",
@@ -107,12 +105,8 @@
     "commit-msg": "pnpm commitlint --edit $1 && pnpm check:spelling $1"
   },
   "dependencies": {
-    "@google/genai": "^1.32.0",
     "@marsidev/react-turnstile": "^1.4.0",
-    "better-auth": "^1.4.6",
-    "drizzle-orm": "^0.44.7",
     "prettier-plugin-sort-json": "^4.1.1",
-    "resend": "^6.6.0",
     "sonner": "^2.0.7",
     "speakeasy": "^2.0.0"
   }
