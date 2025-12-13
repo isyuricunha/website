@@ -8,5 +8,13 @@ export default isyuricunha(
   },
   {
     ignores: ['apps/**', 'packages/**']
+  },
+  {
+    files: ['scripts/vercel-ignore.js'],
+    rules: {
+      'sonarjs/no-os-command-from-path': 'off',
+      'sonarjs/os-command': 'off',
+      'turbo/no-undeclared-env-vars': 'off'
+    }
   }
 )
