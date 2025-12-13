@@ -9,11 +9,13 @@ import RecentlyPlayedSection from '@/components/spotify/recently-played-section'
 import TopArtistsSection from '@/components/spotify/top-artists-section'
 import TopSongsSection from '@/components/spotify/top-songs-section'
 import MusicStatsSection from '@/components/spotify/music-stats-section'
+import AudioFeaturesSummary from '@/components/spotify/audio-features-summary'
 import MusicTasteAnalysis from '@/components/spotify/music-taste-analysis'
 import MusicTimeline from '@/components/spotify/music-timeline'
 import GenreDistribution from '@/components/spotify/genre-distribution'
 import ListeningHeatmap from '@/components/spotify/listening-heatmap'
 import LocalHistoryImport from '@/components/spotify/local-history-import'
+import SocialSharing from '@/components/spotify/social-sharing'
 import PageTitle from '@/components/page-title'
 import { SITE_NAME, SITE_URL } from '@/lib/constants'
 import { getLocalizedPath } from '@/utils/get-localized-path'
@@ -96,6 +98,11 @@ const Page = async (props: PageProps) => {
         <NowListeningSection />
 
         <MusicStatsSection />
+
+        <div className='grid grid-cols-1 gap-8 lg:grid-cols-2'>
+          <AudioFeaturesSummary />
+          <SocialSharing />
+        </div>
 
         <MusicTasteAnalysis />
 
