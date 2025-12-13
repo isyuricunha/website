@@ -4,9 +4,7 @@ permissions:
   pull-requests: write
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
