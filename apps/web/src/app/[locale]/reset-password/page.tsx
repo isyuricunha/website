@@ -14,19 +14,22 @@ import {
 
 import { toast } from 'sonner'
 import { api } from '@/trpc/react'
+import { useDialogsStore } from '@/store/dialogs'
 
 function ResetPasswordForm() {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [isSuccess, setIsSuccess] = useState(false)
   const router = useRouter()
   const searchParams = useSearchParams()
   const token = searchParams.get('token')
+  const { setIsSignInOpen } = useDialogsStore()
 
   const resetPasswordMutation = api.users.resetPassword.useMutation({
     onSuccess: () => {
       toast.success('Password reset successfully! You can now sign in with your new password.')
-      router.push('/sign-in')
+      setIsSuccess(true)
     },
     onError: (error) => {
       toast.error(error.message || 'Failed to reset password')
@@ -35,6 +38,32 @@ function ResetPasswordForm() {
       setIsLoading(false)
     }
   })
+
+  if (isSuccess) {
+    return (
+      <div className='flex min-h-screen items-center justify-center'>
+        <Card className='w-full max-w-md'>
+          <CardHeader>
+            <CardTitle>Password updated</CardTitle>
+            <CardDescription>Your password has been reset successfully.</CardDescription>
+          </CardHeader>
+          <CardContent className='space-y-3'>
+            <Button
+              onClick={() => {
+                setIsSignInOpen(true)
+              }}
+              className='w-full'
+            >
+              Sign in
+            </Button>
+            <Button onClick={() => router.push('/')} className='w-full' variant='outline'>
+              Back to home
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    )
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -70,8 +99,13 @@ function ResetPasswordForm() {
             <CardDescription>This password reset link is invalid or has expired.</CardDescription>
           </CardHeader>
           <CardContent>
-            <Button onClick={() => router.push('/sign-in')} className='w-full'>
-              Back to Sign In
+            <Button
+              onClick={() => {
+                setIsSignInOpen(true)
+              }}
+              className='w-full'
+            >
+              Sign in
             </Button>
           </CardContent>
         </Card>
