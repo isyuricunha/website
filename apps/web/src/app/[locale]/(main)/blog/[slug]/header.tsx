@@ -8,6 +8,7 @@ import { useEffect, useRef } from 'react'
 import ImageZoom from '@/components/image-zoom'
 import Link from '@/components/link'
 import SocialShare from '@/components/social-share'
+import { BlogCoverImage } from '@/components/ui/optimized-image'
 import { usePostContext } from '@/contexts/post'
 import { useFormattedDate } from '@/hooks/use-formatted-date'
 import { api } from '@/trpc/react'
@@ -103,14 +104,7 @@ const Header = () => {
           alt: title
         }}
       >
-        <BlurImage
-          src={`/images/blog/${slug}/cover.png`}
-          className='rounded-lg'
-          width={1200}
-          height={630}
-          lazy={false}
-          alt={title}
-        />
+        <BlogCoverImage slug={slug} title={title} priority />
       </ImageZoom>
     </div>
   )

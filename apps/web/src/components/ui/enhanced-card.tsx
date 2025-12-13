@@ -102,8 +102,5 @@ EnhancedCardFooter.displayName = 'EnhancedCardFooter'
 export {
   EnhancedCard,
   EnhancedCardHeader,
-  EnhancedCardFooter,
-  EnhancedCardTitle,
-  EnhancedCardDescription,
   EnhancedCardContent
 }

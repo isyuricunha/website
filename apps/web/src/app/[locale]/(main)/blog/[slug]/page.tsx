@@ -9,7 +9,10 @@ import { Suspense } from 'react'
 
 import Comments from '@/components/comments'
 import Mdx from '@/components/mdx'
-import { SITE_NAME, SITE_URL } from '@/lib/constants'
+import Recommendations from '@/components/ui/recommendations'
+import { SITE_URL } from '@/lib/constants'
+import { getRecommendedPosts } from '@/lib/recommendations'
+import { generateBlogPostJsonLd, generateSEO } from '@/lib/seo'
 import { getLocalizedPath } from '@/utils/get-localized-path'
 
 import Footer from './footer'
@@ -45,10 +48,8 @@ export const generateMetadata = async (
 
   if (!post) return {}
 
-  const { date, modifiedTime, title, summary } = post
+  const { title, summary, date, modifiedTime } = post
 
-  const ISOPublishedTime = new Date(date).toISOString()
-  const ISOModifiedTime = new Date(modifiedTime).toISOString()
   const previousTwitter = (await parent).twitter ?? {}
   const previousOpenGraph = (await parent).openGraph ?? {}
   const url = getLocalizedPath({ slug: `/blog/${slug}`, locale })
@@ -60,43 +61,30 @@ export const generateMetadata = async (
   const safeDate = date?.split('T')[0] ?? new Date().toISOString().split('T')[0] ?? ''
   const ogImageUrl = `/og/${slug}?title=${encodeURIComponent(safeTitle)}&date=${encodeURIComponent(safeDate)}&summary=${encodeURIComponent(safeSummary)}&locale=${safeLocale}&type=post`
 
-  return {
-    title: title,
+  const seo = generateSEO({
+    title,
     description: summary,
+    url,
+    image: ogImageUrl,
+    type: 'article',
+    publishedTime: date,
+    modifiedTime,
+    authors: [SITE_URL]
+  })
+
+  return {
+    ...seo,
     alternates: {
       canonical: url
     },
     openGraph: {
       ...previousOpenGraph,
-      url,
-      type: 'article',
-      title: title,
-      description: summary,
-      publishedTime: ISOPublishedTime,
-      modifiedTime: ISOModifiedTime,
-      authors: SITE_URL,
-      images: [
-        {
-          url: ogImageUrl,
-          width: 1200,
-          height: 630,
-          alt: title,
-          type: 'image/png'
-        }
-      ]
+      ...seo.openGraph,
+      url
     },
     twitter: {
       ...previousTwitter,
-      title: title,
-      description: summary,
-      images: [
-        {
-          url: ogImageUrl,
-          width: 1200,
-          height: 630,
-          alt: title
-        }
-      ]
+      ...seo.twitter
     }
   }
 }
@@ -106,14 +94,13 @@ const Page = async (props: PageProps) => {
   setRequestLocale(locale)
 
   const post = allPosts.find((p) => p.slug === slug && p.locale === locale)
-  const localizedPath = getLocalizedPath({ slug: `/blog/${slug}`, locale })
-  const url = `${SITE_URL}${localizedPath}`
 
   if (!post) {
     notFound()
   }
 
   const { title, summary, date, modifiedTime, code, toc } = post
+  const recommended_posts = getRecommendedPosts(slug)
 
   // Precompute safe values for JSON-LD as well
   const safeTitle = title ?? ''
@@ -122,27 +109,14 @@ const Page = async (props: PageProps) => {
   const safeDate = date?.split('T')[0] ?? new Date().toISOString().split('T')[0] ?? ''
   const ogImageUrl = `/og/${slug}?title=${encodeURIComponent(safeTitle)}&date=${encodeURIComponent(safeDate)}&summary=${encodeURIComponent(safeSummary)}&locale=${safeLocale}&type=post`
 
-  const jsonLd: WithContext<Article> = {
-    '@context': 'https://schema.org',
-    '@type': 'Article',
-    headline: title,
-    name: title,
+  const jsonLd = generateBlogPostJsonLd({
+    title: title,
     description: summary,
-    url,
-    datePublished: date,
-    dateModified: modifiedTime,
-    image: `${SITE_URL}${ogImageUrl}`,
-    author: {
-      '@type': 'Person',
-      name: SITE_NAME,
-      url: SITE_URL
-    },
-    publisher: {
-      '@type': 'Person',
-      name: SITE_NAME,
-      url: SITE_URL
-    }
-  }
+    slug,
+    publishedTime: date,
+    modifiedTime,
+    image: ogImageUrl
+  }) as WithContext<Article>
 
   return (
     <>
@@ -169,6 +143,14 @@ const Page = async (props: PageProps) => {
 
         {toc.length > 0 ? <MobileTableOfContents toc={toc} /> : null}
         <Footer />
+
+        {recommended_posts.length > 0 ? (
+          <Recommendations
+            recommendations={recommended_posts}
+            className='mt-10'
+            title='Recommended for you'
+          />
+        ) : null}
       </Providers>
 
       {flags.comment ? (

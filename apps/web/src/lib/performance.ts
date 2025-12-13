@@ -2,44 +2,6 @@
  * Performance optimization utilities
  */
 
-import * as React from 'react'
-import { unstable_cache } from 'next/cache'
-
-// Cache tags for revalidation
-export const CACHE_TAGS = {
-  POSTS: 'posts',
-  PROJECTS: 'projects',
-  SPOTIFY: 'spotify',
-  GITHUB: 'github',
-  VIEWS: 'views',
-  LIKES: 'likes'
-} as const
-
-// Cache durations in seconds
-export const CACHE_DURATIONS = {
-  SHORT: 60, // 1 minute
-  MEDIUM: 300, // 5 minutes
-  LONG: 3600, // 1 hour
-  VERY_LONG: 86_400 // 24 hours
-} as const
-
-/**
- * Create a cached version of a function with automatic revalidation
- */
-export function createCachedFunction<T extends (...args: any[]) => any>(
-  fn: T,
-  keyParts: string[],
-  options: {
-    revalidate?: number
-    tags?: string[]
-  } = {}
-): T {
-  return unstable_cache(fn, keyParts, {
-    revalidate: options.revalidate || CACHE_DURATIONS.MEDIUM,
-    tags: options.tags || []
-  })
-}
-
 /**
  * Debounce function for search inputs
  */
@@ -51,38 +13,6 @@ export function debounce<T extends (...args: any[]) => any>(
   return (...args: Parameters<T>) => {
     clearTimeout(timeout)
     timeout = setTimeout(() => func(...args), wait)
-  }
-}
-
-/**
- * Lazy load component with intersection observer
- */
-export function createLazyComponent<T extends Record<string, any>>(
-  importFn: () => Promise<{ default: React.ComponentType<T> }>,
-  fallback?: React.ComponentType
-): React.ComponentType<T> {
-  const LazyComponent = React.lazy(importFn)
-
-  return function LazyWrapper(props: T) {
-    return React.createElement(
-      React.Suspense,
-      { fallback: fallback ? React.createElement(fallback) : null },
-      React.createElement(LazyComponent, props)
-    )
-  }
-}
-
-/**
- * Preload critical resources
- */
-export function preloadResource(href: string, as: string, type?: string) {
-  if (globalThis.window !== undefined) {
-    const link = document.createElement('link')
-    link.rel = 'preload'
-    link.href = href
-    link.as = as
-    if (type) link.type = type
-    document.head.append(link)
   }
 }
 

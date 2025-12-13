@@ -20,6 +20,7 @@ import OfflineIndicator from '@/components/offline-indicator'
 import SignInDialog from '@/components/sign-in-dialog'
 import ErrorBoundary from '@/components/ui/error-boundary'
 import { SITE_KEYWORDS, SITE_NAME, SITE_URL } from '@/lib/constants'
+import { generateWebsiteJsonLd } from '@/lib/seo'
 
 import Providers from '../providers'
 
@@ -134,6 +135,7 @@ const Layout = async (props: LayoutProps) => {
   setRequestLocale(locale)
 
   const messages = await getMessages()
+  const website_json_ld = generateWebsiteJsonLd()
 
   return (
     <html
@@ -148,6 +150,10 @@ const Layout = async (props: LayoutProps) => {
         <meta name='apple-mobile-web-app-capable' content='yes' />
         <meta name='apple-mobile-web-app-status-bar-style' content='default' />
         <meta name='apple-mobile-web-app-title' content='Yuri Cunha' />
+        <script
+          type='application/ld+json'
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(website_json_ld) }}
+        />
         {env.NODE_ENV === 'development' ? (
           <Script
             id='react-scan-auto'

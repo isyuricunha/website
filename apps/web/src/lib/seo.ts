@@ -96,61 +96,6 @@ export function generateSEO({
   return metadata
 }
 
-export function generateBlogPostSEO({
-  title,
-  description,
-  slug,
-  publishedTime,
-  modifiedTime,
-  tags,
-  locale = 'en'
-}: {
-  title: string
-  description: string
-  slug: string
-  publishedTime: string
-  modifiedTime?: string
-  tags?: string[]
-  locale?: string
-}): Metadata {
-  return generateSEO({
-    title,
-    description,
-    url: `/blog/${slug}`,
-    image: `/images/blog/${slug}/cover.png`,
-    type: 'article',
-    publishedTime,
-    modifiedTime,
-    authors: [SITE_NAME],
-    tags,
-    locale
-  })
-}
-
-export function generateProjectSEO({
-  title,
-  description,
-  slug,
-  techStack,
-  locale = 'en'
-}: {
-  title: string
-  description: string
-  slug: string
-  techStack?: string[]
-  locale?: string
-}): Metadata {
-  return generateSEO({
-    title,
-    description,
-    url: `/projects/${slug}`,
-    image: `/images/projects/${slug}/cover.png`,
-    type: 'website',
-    tags: techStack,
-    locale
-  })
-}
-
 // JSON-LD structured data generators
 export function generateWebsiteJsonLd() {
   return {
@@ -166,25 +111,6 @@ export function generateWebsiteJsonLd() {
         urlTemplate: `${SITE_URL}/search?q={search_term_string}`
       },
       'query-input': 'required name=search_term_string'
-    }
-  }
-}
-
-export function generatePersonJsonLd() {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'Person',
-    name: SITE_NAME,
-    url: SITE_URL,
-    sameAs: [
-      'https://github.com/isyuricunha',
-      'https://x.com/isyuricunha',
-      'https://linkedin.com/in/isyuricunha'
-    ],
-    jobTitle: 'Senior Cloud & Infrastructure Architect',
-    worksFor: {
-      '@type': 'Organization',
-      name: 'Freelancer'
     }
   }
 }

@@ -4,13 +4,13 @@ import { logger } from '@/lib/logger'
 // Initialize Resend client
 const resend = new Resend(process.env.RESEND_API_KEY)
 
-export interface ResendAudience {
+interface ResendAudience {
   id: string
   name: string
   object?: string
 }
 
-export interface ResendContact {
+interface ResendContact {
   id: string
   email?: string
   first_name?: string
@@ -19,7 +19,7 @@ export interface ResendContact {
   unsubscribed?: boolean
 }
 
-export interface ResendBroadcast {
+interface ResendBroadcast {
   id: string
   name: string
   audience_id: string
@@ -33,7 +33,7 @@ export interface ResendBroadcast {
   status?: 'draft' | 'scheduled' | 'sending' | 'sent' | 'cancelled'
 }
 
-export class ResendService {
+class ResendService {
   private lastRequestTime = 0
   private readonly minRequestInterval = 500 // 500ms between requests (2 requests per second)
 

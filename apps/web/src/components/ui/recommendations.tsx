@@ -24,12 +24,12 @@ const typeColors = {
   project: 'text-green-600 dark:text-green-400'
 }
 
-export function Recommendations({
+const Recommendations = ({
   recommendations,
   title = 'Recommended for you',
   showReason = true,
   className = ''
-}: RecommendationsProps) {
+}: RecommendationsProps) => {
   if (recommendations.length === 0) return null
 
   return (

@@ -1,16 +1,16 @@
 import { GoogleGenerativeAI } from '@google/generative-ai'
 import { flags } from '@tszhong0411/env'
 
-export type AIProvider = 'gemini' | 'ollama'
+type AIProvider = 'gemini' | 'ollama'
 
-export interface AIServiceConfig {
+interface AIServiceConfig {
   provider: AIProvider
   model?: string
   temperature?: number
   maxTokens?: number
 }
 
-export interface SiteContext {
+interface SiteContext {
   currentPage: string
   recentPosts?: Array<{
     title: string

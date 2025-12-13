@@ -3,7 +3,7 @@ import path from 'path'
 import matter from 'gray-matter'
 import { logger } from '@/lib/logger'
 
-export interface BlogPost {
+interface BlogPost {
   slug: string
   title: string
   date: string
@@ -14,7 +14,7 @@ export interface BlogPost {
   filePath: string
 }
 
-export interface BlogPostMetadata {
+interface BlogPostMetadata {
   slug: string
   title: string
   date: string

@@ -8,7 +8,7 @@ import { z } from 'zod'
 
 import { logger } from '@/lib/logger'
 import { contactRatelimit } from '@/lib/ratelimit'
-import { getClientIp, verifyTurnstileToken } from '@/lib/spam-detection'
+import { checkRateLimit, getClientIp, verifyTurnstileToken } from '@/lib/spam-detection'
 
 const resend = new Resend(env.RESEND_API_KEY)
 
@@ -27,6 +27,25 @@ export async function POST(request: NextRequest) {
 
     // Get client IP for rate limiting
     const clientIp = getClientIp(request.headers)
+
+    // Additional in-memory rate limit safeguard (defense-in-depth)
+    const { allowed: isAllowed, retryAfter } = checkRateLimit(clientIp)
+    if (!isAllowed) {
+      const retryAfterSeconds = retryAfter ?? 3600
+      logger.warn('In-memory rate limit exceeded', { ip: clientIp })
+      return Response.json(
+        {
+          error: 'Too many requests. Please try again later.',
+          retryAfter: retryAfterSeconds
+        },
+        {
+          status: 429,
+          headers: {
+            'Retry-After': String(retryAfterSeconds)
+          }
+        }
+      )
+    }
 
     // Check rate limit
     const { success } = await contactRatelimit.limit(`contact:${clientIp}`)

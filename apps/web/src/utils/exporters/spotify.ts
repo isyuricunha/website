@@ -1,4 +1,4 @@
-export type TopArtist = {
+type TopArtist = {
   id: string
   name: string
   image: string | null
@@ -6,7 +6,7 @@ export type TopArtist = {
   followers: number
   genres: string[]
 }
-export type TopTrack = {
+type TopTrack = {
   id: string
   name: string
   artist: string
@@ -16,7 +16,7 @@ export type TopTrack = {
   duration: number
   popularity: number
 }
-export type RecentTrack = {
+type RecentTrack = {
   id: string
   name: string
   artist: string
@@ -42,7 +42,7 @@ const toCsv = (rows: Array<Record<string, any>>): string => {
   return lines.join('\n')
 }
 
-export const download = (filename: string, content: string, mime: string) => {
+const download = (filename: string, content: string, mime: string) => {
   const blob = new Blob([content], { type: mime })
   const url = URL.createObjectURL(blob)
   const a = document.createElement('a')

@@ -3,11 +3,11 @@ import type { SoftwareApplication, WithContext } from 'schema-dts'
 
 import { setRequestLocale } from '@tszhong0411/i18n/server'
 import { allProjects } from 'content-collections'
-import Image from 'next/image'
 import { notFound } from 'next/navigation'
 
 import Mdx from '@/components/mdx'
-import { SITE_NAME, SITE_URL } from '@/lib/constants'
+import { ProjectCoverImage } from '@/components/ui/optimized-image'
+import { generateProjectJsonLd } from '@/lib/seo'
 import { getLocalizedPath } from '@/utils/get-localized-path'
 
 import Header from './header'
@@ -86,8 +86,6 @@ const Page = async (props: PageProps) => {
   setRequestLocale(locale)
 
   const project = allProjects.find((p) => p.slug === slug && p.locale === locale)
-  const localizedPath = getLocalizedPath({ slug: `/projects/${slug}`, locale })
-  const url = `${SITE_URL}${localizedPath}`
 
   if (!project) {
     notFound()
@@ -95,21 +93,12 @@ const Page = async (props: PageProps) => {
 
   const { name, code, description, github } = project
 
-  const jsonLd: WithContext<SoftwareApplication> = {
-    '@context': 'https://schema.org',
-    '@type': 'SoftwareApplication',
+  const jsonLd = generateProjectJsonLd({
     name,
     description,
-    url,
-    applicationCategory: 'WebApplication',
-    author: {
-      '@type': 'Person',
-      name: SITE_NAME,
-      url: SITE_URL
-    },
-    sameAs: [github],
-    screenshot: `${SITE_URL}/images/projects/${slug}/cover.png`
-  }
+    slug,
+    repository: github
+  }) as WithContext<SoftwareApplication>
 
   return (
     <>
@@ -119,15 +108,9 @@ const Page = async (props: PageProps) => {
       />
       <div className='mx-auto max-w-3xl'>
         <Header {...project} />
-        <Image
-          src={`/images/projects/${slug}/cover.png`}
-          width={1280}
-          height={832}
-          alt={name}
-          className='my-12 rounded-lg'
-          priority
-          quality={100}
-        />
+        <div className='my-12'>
+          <ProjectCoverImage slug={slug} name={name} priority />
+        </div>
         <Mdx code={code} />
       </div>
     </>

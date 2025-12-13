@@ -17,7 +17,7 @@ interface OptimizedImageProps {
   onError?: () => void
 }
 
-export function OptimizedImage({
+function OptimizedImage({
   src,
   alt,
   width,
@@ -116,30 +116,6 @@ export function ProjectCoverImage({
       fallbackSrc='/images/projects/default-cover.png'
       className='aspect-video w-full object-cover'
       imageClassName='transition-transform duration-500 group-hover:scale-110'
-    />
-  )
-}
-
-export function AvatarImage({
-  src,
-  alt,
-  size = 112,
-  priority = false
-}: {
-  src: string
-  alt: string
-  size?: number
-  priority?: boolean
-}) {
-  return (
-    <OptimizedImage
-      src={src}
-      alt={alt}
-      width={size}
-      height={size}
-      priority={priority}
-      className='overflow-hidden rounded-full'
-      fallbackSrc='/images/default-avatar.png'
     />
   )
 }
