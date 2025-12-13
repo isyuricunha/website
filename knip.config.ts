@@ -1,7 +1,7 @@
 import type { KnipConfig } from 'knip'
 
 const config: KnipConfig = {
-  ignore: ['**/fixtures/**'],
+  ignore: ['**/fixtures/**', '**/*.css', 'packages/eslint-config/eslint.config.bundled_*.mjs'],
   vitest: {
     config: ['vitest.{config,shared,workspace}.ts']
   },
@@ -18,10 +18,16 @@ const config: KnipConfig = {
       entry: ['turbo/generators/config.ts']
     },
     'apps/docs': {
-      entry: ['content-collections.ts', 'src/components/demos/**/*.tsx']
+      entry: ['content-collections.ts', 'src/app/**/*.{ts,tsx}', 'src/components/demos/**/*.tsx']
     },
     'apps/web': {
-      entry: ['content-collections.ts', 'src/i18n/request.ts', 'src/e2e/auth.setup.ts']
+      entry: [
+        'content-collections.ts',
+        'src/app/**/*.{ts,tsx}',
+        'src/middleware.ts',
+        'src/i18n/request.ts',
+        'src/e2e/auth.setup.ts'
+      ]
     },
     'packages/db': {
       entry: ['src/seed.ts']
