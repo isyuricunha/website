@@ -19,7 +19,7 @@ const config: KnipConfig = {
   ],
   workspaces: {
     '.': {
-      entry: ['turbo/generators/config.ts']
+      entry: ['turbo/generators/config.ts', 'scripts/vercel-ignore.js']
     },
     'apps/docs': {
       entry: ['content-collections.ts', 'src/app/**/*.{ts,tsx}', 'src/components/demos/**/*.tsx']
