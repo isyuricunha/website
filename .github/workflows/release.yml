@@ -1,8 +1,7 @@
 name: Release
 permissions:
-  contents: read
+  contents: write
   pull-requests: write
-  packages: write
 
 on:
   push:
@@ -29,15 +28,5 @@ jobs:
           commit: 'chore(release): version packages'
           title: 'chore(release): version packages'
           version: pnpm run version
-          publish: pnpm run release
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          UPDATE_REPO_SSH_KEY: ${{ secrets.UPDATE_REPO_SSH_KEY }}
-
-      - name: Check if eslint config was released
-        run: echo "PACKAGE_RELEASED=$(echo ${{ steps.changesets.outputs.publishedPackages }} | jq -r 'map(select(.name == "@isyuricunha/eslint-config")) | length > 0')" >> $GITHUB_ENV
-
-      - name: Sync repo if needed
-        if: env.PACKAGE_RELEASED == 'true'
-        run: pnpm -r run postpublish
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
