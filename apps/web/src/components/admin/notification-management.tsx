@@ -1,15 +1,15 @@
 'use client'
 
 import { useState } from 'react'
-import { Button } from '@tszhong0411/ui'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@tszhong0411/ui'
-import { Badge } from '@tszhong0411/ui'
-import { Input } from '@tszhong0411/ui'
-import { Label } from '@tszhong0411/ui'
-import { Textarea } from '@tszhong0411/ui'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@tszhong0411/ui'
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@tszhong0411/ui'
-import { ScrollArea } from '@tszhong0411/ui'
+import { Button , Card, CardContent, CardDescription, CardHeader, CardTitle , Badge , Input , Label , Textarea , Select, SelectContent, SelectItem, SelectTrigger, SelectValue , Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger , ScrollArea } from '@tszhong0411/ui'
+
+
+
+
+
+
+
+
 import { 
   Bell, 
   Plus, 
@@ -243,7 +243,7 @@ export default function NotificationManagement() {
           <ScrollArea className="h-[600px]">
             <div className="space-y-4">
               {notifications?.notifications?.map((notification) => (
-                <Card key={notification.id} className={`${getNotificationTypeColor(notification.type)} border-2 ${!notification.read ? 'ring-2 ring-blue-200 dark:ring-blue-800' : ''} transition-all duration-200 hover:shadow-md`}>
+                <Card key={notification.id} className={`${getNotificationTypeColor(notification.type)} border-2 ${notification.read ? '' : 'ring-2 ring-blue-200 dark:ring-blue-800'} transition-all duration-200 hover:shadow-md`}>
                   <CardContent className="p-4">
                     <div className="flex items-start justify-between">
                       <div className="flex-1">

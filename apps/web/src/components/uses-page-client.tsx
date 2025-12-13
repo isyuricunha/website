@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { ChevronDown, ChevronUp, Info, Calendar, Star, Zap, Shield, Code, Monitor, Smartphone } from 'lucide-react'
 import { Badge } from '@tszhong0411/ui'
 import { useTranslations } from '@tszhong0411/i18n/client'
+import Image from 'next/image'
 
 type CategoryIcon = {
   [key: string]: React.ComponentType<{ className?: string }>
@@ -123,6 +124,7 @@ const ExpandableSection = ({
   return (
     <div className='mb-8 border rounded-lg overflow-hidden'>
       <button
+        type='button'
         onClick={() => setIsExpanded(!isExpanded)}
         className='w-full px-4 py-4 bg-muted/20 hover:bg-muted/30 transition-colors flex items-center justify-between text-left'
       >
@@ -228,9 +230,12 @@ const UsesPageClient = ({ title, description, mdxContent }: UsesPageClientProps)
           {/* Laptop Section */}
           <ExpandableSection title={t('sections.laptop.title')} icon={categoryIcons['Laptop']}>
             <div className='mb-6'>
-              <img
+              <Image
                 src='/images/uses/ideapad-3i.png'
                 alt='Ideapad Gaming 3 R7'
+                width={512}
+                height={192}
+                sizes='(max-width: 640px) 100vw, 512px'
                 className='w-full max-w-xs mx-auto rounded-lg shadow-lg object-contain h-48'
               />
             </div>

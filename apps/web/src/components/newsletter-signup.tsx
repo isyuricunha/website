@@ -36,8 +36,8 @@ const NewsletterSignup = () => {
 
       setIsSubscribed(true)
       setEmail('')
-    } catch (err) {
-      setError(err instanceof Error ? err.message : t('homepage.newsletter.error-default'))
+    } catch (error_) {
+      setError(error_ instanceof Error ? error_.message : t('homepage.newsletter.error-default'))
     } finally {
       setIsLoading(false)
     }

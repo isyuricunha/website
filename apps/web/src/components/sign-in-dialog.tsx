@@ -108,7 +108,7 @@ const SignInDialog = () => {
   const handleAnonymousSignIn = async () => {
     try {
       const user =
-        await // eslint-disable-next-line @typescript-eslint/no-explicit-any -- need to work
+        await  
         (signIn as any).anonymous({
           callbackURL: pathname,
           fetchOptions: {

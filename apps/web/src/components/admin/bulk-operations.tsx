@@ -18,6 +18,7 @@ import {
   UserCheck,
   Settings
 } from 'lucide-react'
+import Image from 'next/image'
 import { api } from '@/trpc/react'
 import { toast } from 'sonner'
 
@@ -59,7 +60,7 @@ export const BulkOperations = () => {
 
   // Fetch bulk operations history - this endpoint returns a single operation, not a list
   // We need to create a separate endpoint or modify this to get multiple operations
-  const [operationsData] = useState<{ operations: BulkOperationStatus[] } | null>(null)
+  const operations: BulkOperationStatus[] = []
 
   // Bulk user action mutation
   const bulkUserAction = api.bulk.bulkUserAction.useMutation({
@@ -167,7 +168,7 @@ export const BulkOperations = () => {
         <div className="animate-pulse">
           <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-1/4 mb-4"></div>
           <div className="space-y-3">
-            {Array.from({length: 5}).map((_, i) => (
+            {Array.from({ length: 5 }).map((_, i) => (
               <div key={i} className="h-16 bg-gray-200 dark:bg-gray-700 rounded"></div>
             ))}
           </div>
@@ -307,10 +308,12 @@ export const BulkOperations = () => {
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
                         {user.image && (
-                          <img
+                          <Image
                             className="h-8 w-8 rounded-full mr-3"
                             src={user.image}
                             alt={user.name}
+                            width={32}
+                            height={32}
                           />
                         )}
                         <div>
@@ -358,7 +361,7 @@ export const BulkOperations = () => {
           <h3 className="text-lg font-medium text-gray-900 dark:text-white">Recent Operations</h3>
         </div>
         <div className="divide-y divide-gray-200 dark:divide-gray-700">
-          {operationsData?.operations?.map((operation: BulkOperationStatus) => (
+          {operations.map((operation: BulkOperationStatus) => (
             <div key={operation.id} className="p-6">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
@@ -429,7 +432,7 @@ export const BulkOperations = () => {
             </div>
           ))}
 
-          {(!operationsData?.operations || operationsData.operations.length === 0) && (
+          {operations.length === 0 && (
             <div className="p-6 text-center text-gray-500 dark:text-gray-400">
               No bulk operations found.
             </div>

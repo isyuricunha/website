@@ -11,6 +11,9 @@ export default tszhong0411(
     turbo: true
   },
   {
+    ignores: ['public/**/*.js']
+  },
+  {
     files: [GLOB_E2E],
     rules: {
       'playwright/expect-expect': [

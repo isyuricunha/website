@@ -1,11 +1,11 @@
 'use client'
 
 import { useState } from 'react'
-import { Button } from '@tszhong0411/ui'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@tszhong0411/ui'
-import { Badge } from '@tszhong0411/ui'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@tszhong0411/ui'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@tszhong0411/ui'
+import { Button , Card, CardContent, CardDescription, CardHeader, CardTitle , Badge , Select, SelectContent, SelectItem, SelectTrigger, SelectValue , Tabs, TabsContent, TabsList, TabsTrigger } from '@tszhong0411/ui'
+
+
+
+
 import { Activity, AlertTriangle, Zap } from 'lucide-react'
 import { toast } from 'sonner'
 
@@ -353,12 +353,12 @@ export default function MonitoringDashboard() {
                 ) : (
                   <div className="space-y-3">
                     {Object.entries(apiUsage?.stats.topEndpoints || {})
-                      .sort(([,a], [,b]) => (b as number) - (a as number))
+                      .sort(([,a], [,b]) => (b) - (a))
                       .slice(0, 5)
                       .map(([endpoint, count]) => (
                         <div key={endpoint} className="flex items-center justify-between">
                           <span className="text-sm font-mono">{endpoint}</span>
-                          <Badge variant="outline">{count as number}</Badge>
+                          <Badge variant="outline">{count}</Badge>
                         </div>
                       ))}
                     {Object.keys(apiUsage?.stats.topEndpoints || {}).length === 0 && (
@@ -501,11 +501,11 @@ export default function MonitoringDashboard() {
                 ) : (
                   <div className="space-y-3">
                     {Object.entries(analyticsEvents?.eventTypes || {})
-                      .sort(([,a], [,b]) => (b as number) - (a as number))
+                      .sort(([,a], [,b]) => (b) - (a))
                       .map(([type, count]) => (
                         <div key={type} className="flex items-center justify-between">
                           <span className="text-sm">{type}</span>
-                          <Badge variant="outline">{count as number}</Badge>
+                          <Badge variant="outline">{count}</Badge>
                         </div>
                       ))}
                     {Object.keys(analyticsEvents?.eventTypes || {}).length === 0 && (

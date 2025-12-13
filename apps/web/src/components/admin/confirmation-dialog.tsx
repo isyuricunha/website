@@ -21,7 +21,7 @@ interface ConfirmationDialogProps {
   confirmText?: string
   cancelText?: string
   variant?: 'default' | 'destructive'
-  onConfirm: () => void
+  onConfirm?: () => void
   loading?: boolean
 }
 
@@ -36,6 +36,8 @@ const ConfirmationDialog = ({
   onConfirm,
   loading = false
 }: ConfirmationDialogProps) => {
+  const is_confirm_disabled = loading || !onConfirm
+
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
@@ -54,7 +56,7 @@ const ConfirmationDialog = ({
             <Button
               variant={variant}
               onClick={onConfirm}
-              disabled={loading}
+              disabled={is_confirm_disabled}
             >
               {loading ? 'Processing...' : confirmText}
             </Button>

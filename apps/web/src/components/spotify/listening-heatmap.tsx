@@ -28,7 +28,7 @@ const ListeningHeatmap = () => {
 
   // Aggregate plays per weekday (0=Sun..6=Sat) for a simpler, compact heatmap
   const { byDay, max } = useMemo(() => {
-    const byDay = Array.from({length: 7}).fill(0) as number[]
+    const byDay = Array.from({ length: 7 }).fill(0) as number[]
     for (const tr of tracks ?? []) {
       const d = new Date(tr.playedAt)
       const idx = d.getDay()
@@ -50,7 +50,12 @@ const ListeningHeatmap = () => {
         </div>
         {/* Controls row beneath title, wraps on small screens; extra spacing for clarity */}
         <div className="mt-6 flex flex-wrap items-center gap-5 sm:gap-7">
-          <button onClick={() => refetch()} disabled={isRefetching} className="text-sm text-muted-foreground hover:text-foreground disabled:opacity-50">
+          <button
+            type="button"
+            onClick={() => refetch()}
+            disabled={isRefetching}
+            className="text-sm text-muted-foreground hover:text-foreground disabled:opacity-50"
+          >
             {t('spotify.refresh')}
           </button>
         </div>

@@ -80,6 +80,7 @@ const SocialSharing = () => {
               </div>
               <div className='flex items-center gap-1'>
                 <button
+                  type='button'
                   onClick={() => shareTrack(currentTrack, 'twitter')}
                   className='p-2 hover:bg-muted rounded-lg transition-colors'
                   title={t('spotify.social.buttons.twitter')}
@@ -87,6 +88,7 @@ const SocialSharing = () => {
                   <Twitter className='h-4 w-4' />
                 </button>
                 <button
+                  type='button'
                   onClick={() => shareTrack(currentTrack, 'facebook')}
                   className='p-2 hover:bg-muted rounded-lg transition-colors'
                   title={t('spotify.social.buttons.facebook')}
@@ -94,6 +96,7 @@ const SocialSharing = () => {
                   <Facebook className='h-4 w-4' />
                 </button>
                 <button
+                  type='button'
                   onClick={() => shareTrack(currentTrack, 'copy')}
                   className='p-2 hover:bg-muted rounded-lg transition-colors'
                   title={t('spotify.social.buttons.copy')}
@@ -134,6 +137,7 @@ const SocialSharing = () => {
                   </div>
                   <div className='flex items-center gap-1'>
                     <button
+                      type='button'
                       onClick={() => shareTrack(track, 'twitter')}
                       className='p-1.5 hover:bg-muted rounded-lg transition-colors'
                       title={t('spotify.social.buttons.twitter')}
@@ -141,6 +145,7 @@ const SocialSharing = () => {
                       <Twitter className='h-3 w-3' />
                     </button>
                     <button
+                      type='button'
                       onClick={() => shareTrack(track, 'facebook')}
                       className='p-1.5 hover:bg-muted rounded-lg transition-colors'
                       title={t('spotify.social.buttons.facebook')}
@@ -148,6 +153,7 @@ const SocialSharing = () => {
                       <Facebook className='h-3 w-3' />
                     </button>
                     <button
+                      type='button'
                       onClick={() => shareTrack(track, 'copy')}
                       className='p-1.5 hover:bg-muted rounded-lg transition-colors'
                       title={t('spotify.social.buttons.copy')}

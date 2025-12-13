@@ -71,7 +71,7 @@ const MusicTasteAnalysis = () => {
       genreCount: uniqueGenres.size,
       insights
     }
-  }, [topTracks, topArtists])
+  }, [topTracks, topArtists, t])
 
   if (!analysis) {
     return (
@@ -137,6 +137,7 @@ const MusicTasteAnalysis = () => {
             </CardDescription>
           </div>
           <button
+            type='button'
             onClick={handleRefresh}
             disabled={isRefreshing}
             className='text-xs sm:text-sm text-muted-foreground hover:text-foreground disabled:opacity-50'

@@ -1,6 +1,7 @@
 'use client'
 
-import React, { useEffect, useRef, useState, useMemo } from 'react'
+import * as React from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { flags } from '@tszhong0411/env'
 import Image from 'next/image'
@@ -40,49 +41,56 @@ interface MascotPreferences {
   bubblePosition: 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left'
 }
 
+const KONAMI_CODE = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65]
+
+const create_initial_state = () => ({
+  isDismissed: false,
+  isHiddenPref: false,
+  isActive: false,
+  showBubble: false,
+  messageIndex: 0,
+  isBlinking: false,
+  showSettings: false,
+  showGame: false,
+  showMenu: false,
+  showContact: false,
+  showAIChat: false,
+  isKonamiMode: false,
+  konamiSequence: [] as number[],
+  isHovering: false,
+  currentMessage: null as string | null,
+  messageQueue: [] as Array<{ id: number; text: string; expiresAt: number }>,
+  exitingIds: new Set<number>(),
+  autoShowMessage: false,
+  lastMessageIndex: -1,
+  // 0 means "not chosen yet"; we will choose after mount to avoid SSR mismatch
+  currentMascotImage: 0,
+  blogPostsVisited: new Set<string>(),
+  preferences: { ...DEFAULT_PREFERENCES }
+})
+
 const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   const t = useTranslations()
   const allMessages = useMessages() as any
-  const [state, setState] = useState(() => ({
-    isDismissed: false,
-    isHiddenPref: false,
-    isActive: false,
-    showBubble: false,
-    messageIndex: 0,
-    isBlinking: false,
-    showSettings: false,
-    showGame: false,
-    showMenu: false,
-    showContact: false,
-    showAIChat: false,
-    isKonamiMode: false,
-    konamiSequence: [] as number[],
-    isHovering: false,
-    currentMessage: null as string | null,
-    messageQueue: [] as Array<{ id: number; text: string; expiresAt: number }>,
-    exitingIds: new Set<number>(),
-    autoShowMessage: false,
-    lastMessageIndex: -1,
-    // 0 means "not chosen yet"; we will choose after mount to avoid SSR mismatch
-    currentMascotImage: 0,
-    blogPostsVisited: new Set<string>(),
-    preferences: { ...DEFAULT_PREFERENCES }
-  }))
+  const [state, setState] = useState(create_initial_state)
 
   const mascotRef = useRef<HTMLButtonElement | null>(null)
   const [mounted, setMounted] = useState(false)
+  const reset_auto_show_timeout_ref = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const blink_timeout_ref = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // Helper functions to update state
-  const updateState = (updates: Partial<typeof state>) => {
+  const updateState = useCallback((updates: Partial<ReturnType<typeof create_initial_state>>) => {
     setState(prev => ({ ...prev, ...updates }))
-  }
+  }, [])
 
   // Queue helpers
-  const enqueueMessage = (text: string, duration?: number) => {
+  const enqueueMessage = useCallback((text: string, duration?: number) => {
     if (!text) return
     const d = duration ?? state.preferences.messageDuration
     const id = Date.now() + Math.floor(Math.random() * 1000)
     const expiresAt = Date.now() + d
+
     setState(prev => ({
       ...prev,
       messageQueue: [...prev.messageQueue, { id, text, expiresAt }]
@@ -91,9 +99,10 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     setTimeout(() => {
       startExit(id)
     }, d)
-  }
+  }, [state.preferences.messageDuration])
 
   const startExit = (id: number) => {
+
     // Mark as exiting to trigger fade-out animation
     setState(prev => ({
       ...prev,
@@ -114,6 +123,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   }
 
   const updatePreferences = (updates: Partial<MascotPreferences>) => {
+
     const newPrefs = { ...state.preferences, ...updates }
     updateState({ preferences: newPrefs })
     try {
@@ -125,6 +135,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
   // Load preferences from localStorage
   const loadPreferences = (): MascotPreferences => {
+
     if (globalThis.window === undefined) return { ...DEFAULT_PREFERENCES }
 
     try {
@@ -137,9 +148,6 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     }
     return { ...DEFAULT_PREFERENCES }
   }
-
-  // Konami Code sequence: ↑↑↓↓←→←→BA
-  const KONAMI_CODE = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65]
 
   // Check for reduced motion preference (client-side only)
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
@@ -158,20 +166,21 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   }, [])
 
   // Get time-based greeting (only after mount to avoid SSR/client mismatch)
-  const getTimeBasedGreeting = () => {
+  const getTimeBasedGreeting = useCallback(() => {
     if (!mounted) return ''
     const hour = new Date().getHours()
     if (hour < 12) return t('mascot.greetings.morning')
     if (hour < 17) return t('mascot.greetings.afternoon')
     if (hour < 21) return t('mascot.greetings.evening')
     return t('mascot.greetings.night')
-  }
+  }, [mounted, t])
 
   // Get idle message - use all available messages instead of just first 5
-  const getIdleMessage = () => {
+  const getIdleMessage = useCallback(() => {
     const list: string[] = []
     try {
       const base = (allMessages?.mascot?.messages ?? {}) as Record<string, unknown>
+
       const keys = Object.keys(base)
         .filter((k) => /^\d+$/.test(k))
         .map(Number)
@@ -183,13 +192,14 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     } catch { }
     if (list.length === 0) return t('mascot.messages.0')
     return list[Math.floor(Math.random() * list.length)] ?? t('mascot.messages.0')
-  }
+  }, [allMessages, t])
 
   // Get blog post specific message
-  const getBlogPostMessage = () => {
+  const getBlogPostMessage = useCallback(() => {
     const list: string[] = []
     try {
       const base = (allMessages?.mascot?.pageMessages?.blogPost ?? {}) as Record<string, unknown>
+
       const keys = Object.keys(base)
         .filter((k) => /^\d+$/.test(k))
         .map(Number)
@@ -201,7 +211,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     } catch { }
     if (list.length === 0) return t('mascot.messages.0')
     return list[Math.floor(Math.random() * list.length)] ?? t('mascot.messages.0')
-  }
+  }, [allMessages, t])
 
   // Copy email to clipboard
   const copyEmail = (): void => {
@@ -212,6 +222,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
   // Mount flag to coordinate client-only behaviors and select session image
   useEffect(() => {
+
     setMounted(true)
     // Choose persistent session image only on client after mount
     try {
@@ -224,10 +235,11 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         updateState({ currentMascotImage: chosen })
       }
     } catch { }
-  }, [])
+  }, [updateState])
 
   // Read dismissal state and preferences once per session
   useEffect(() => {
+
     try {
       const v = sessionStorage.getItem(STORAGE_KEY)
       if (v === '1') updateState({ isDismissed: true })
@@ -247,10 +259,11 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         updateState({ blogPostsVisited: new Set(JSON.parse(visited)) })
       }
     } catch { }
-  }, [])
+  }, [updateState])
 
   // Konami Code detection
   useEffect(() => {
+
     const handleKeyDown = (event: KeyboardEvent) => {
       // Keyboard shortcut to restore Yue (Shift+Y)
       if (event.shiftKey && event.key.toLowerCase() === 'y') {
@@ -282,7 +295,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
     globalThis.addEventListener('keydown', handleKeyDown)
     return () => globalThis.removeEventListener('keydown', handleKeyDown)
-  }, [state.konamiSequence])
+  }, [state.konamiSequence, state.isKonamiMode, updateState])
 
   // Blinking animation
   useEffect(() => {
@@ -290,11 +303,20 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
     const blinkInterval = setInterval(() => {
       updateState({ isBlinking: true })
-      setTimeout(() => updateState({ isBlinking: false }), 150)
+      if (blink_timeout_ref.current) {
+        clearTimeout(blink_timeout_ref.current)
+      }
+      blink_timeout_ref.current = setTimeout(() => updateState({ isBlinking: false }), 150)
     }, 3000 + Math.random() * 2000) // Random interval between 3-5 seconds
 
-    return () => clearInterval(blinkInterval)
-  }, [state.preferences.animations, prefersReducedMotion])
+    return () => {
+      clearInterval(blinkInterval)
+      if (blink_timeout_ref.current) {
+        clearTimeout(blink_timeout_ref.current)
+        blink_timeout_ref.current = null
+      }
+    }
+  }, [state.preferences.animations, prefersReducedMotion, updateState])
 
   // Idle timer for fun facts
   useEffect(() => {
@@ -309,7 +331,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     return () => {
       if (timer) clearTimeout(timer)
     }
-  }, [state.preferences.speechBubbles, state.autoShowMessage, state.showContact, state.showGame, state.showSettings, state.showMenu, state.showAIChat])
+  }, [state.preferences.speechBubbles, state.autoShowMessage, state.showContact, state.showGame, state.showSettings, state.showMenu, state.showAIChat, enqueueMessage, getIdleMessage])
 
   // Track current page path for contextual messages (language-aware)
   const pathname = usePathname()
@@ -355,7 +377,8 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   }, [pageKey])
 
   // Helper: fetch page-specific messages with graceful fallbacks
-  const fetchPageMessages = (key: string): string[] => {
+  const fetchPageMessages = useCallback((key: string): string[] => {
+
     const tryKey = (k: string): string[] => {
       const res: string[] = []
       try {
@@ -388,7 +411,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     }
 
     return msgs
-  }
+  }, [allMessages])
 
   // Get current blog post slug for tracking visits
   const currentBlogPostSlug = useMemo(() => {
@@ -431,18 +454,28 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         }
 
         // Reset auto show flag after duration
-        setTimeout(() => {
+        if (reset_auto_show_timeout_ref.current) {
+          clearTimeout(reset_auto_show_timeout_ref.current)
+        }
+        reset_auto_show_timeout_ref.current = setTimeout(() => {
           updateState({ autoShowMessage: false })
         }, state.preferences.messageDuration)
       }, 1000) // 1 second delay after page load
 
-      return () => clearTimeout(timer)
+      return () => {
+        clearTimeout(timer)
+        if (reset_auto_show_timeout_ref.current) {
+          clearTimeout(reset_auto_show_timeout_ref.current)
+          reset_auto_show_timeout_ref.current = null
+        }
+      }
     }
     return
-  }, [pageKey, state.preferences.speechBubbles, state.preferences.messageDuration, isOnBlogPost, currentBlogPostSlug, state.blogPostsVisited, t])
+  }, [pageKey, state.preferences.speechBubbles, state.preferences.messageDuration, isOnBlogPost, currentBlogPostSlug, state.blogPostsVisited, enqueueMessage, fetchPageMessages, getBlogPostMessage, updateState])
 
   // Build message list from i18n with time-based greetings and context
   const messages: string[] = useMemo(() => {
+
     const list: string[] = []
 
     // Only add time-based greeting on the home page, after mount
@@ -478,7 +511,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     }
 
     return list
-  }, [mounted, t, pageKey, currentBlogPostSlug, state.blogPostsVisited])
+  }, [mounted, t, pageKey, fetchPageMessages, getTimeBasedGreeting])
 
   // (Removed unused random picker helpers after introducing message queue)
 
@@ -757,13 +790,13 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
               </button>
               {flags.gemini && (
                 <button
-                    type='button'
-                    className='flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-left transition-all duration-200 hover:bg-muted/80 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50'
-                    onClick={() => handleMenuAction('chat')}
-                  >
-                    <MessageCircleIcon className='h-4 w-4' />
-                    AI Chat
-                  </button>
+                  type='button'
+                  className='flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-left transition-all duration-200 hover:bg-muted/80 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50'
+                  onClick={() => handleMenuAction('chat')}
+                >
+                  <MessageCircleIcon className='h-4 w-4' />
+                  AI Chat
+                </button>
               )}
               <button
                 type='button'

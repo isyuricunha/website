@@ -1,9 +1,94 @@
 'use client'
 
-import React, { useState } from 'react'
+import * as React from 'react'
+import { useState } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { Wand2, Tag, FileText, Globe, Copy, Check, Loader2, Settings } from 'lucide-react'
 import { Button } from '@tszhong0411/ui'
+
+const default_existing_tags: string[] = []
+
+type GenerationCardProps = {
+  title: string
+  icon: React.ComponentType<any>
+  content: string | string[]
+  isLoading: boolean
+  onGenerate: () => void
+  onCopy: () => void
+  field: string
+  copiedField: string | null
+  disabled?: boolean
+}
+
+const GenerationCard = (props: GenerationCardProps) => {
+  const { title, icon: Icon, content, isLoading, onGenerate, onCopy, field, copiedField, disabled } = props
+
+  const has_content = Array.isArray(content) ? content.length > 0 : content.length > 0
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="border rounded-lg p-4 space-y-3 bg-card"
+    >
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Icon className="w-4 h-4 text-primary" />
+          <h3 className="font-medium text-sm">{title}</h3>
+        </div>
+        <div className="flex items-center gap-2">
+          {has_content && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onCopy}
+              className="h-6 w-6 p-0"
+              type="button"
+            >
+              {copiedField === field ? (
+                <Check className="w-3 h-3 text-green-500" />
+              ) : (
+                <Copy className="w-3 h-3" />
+              )}
+            </Button>
+          )}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={onGenerate}
+            disabled={isLoading || disabled}
+            type="button"
+          >
+            {isLoading ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <Wand2 className="w-4 h-4" />
+            )}
+          </Button>
+        </div>
+      </div>
+
+      {has_content && (
+        <div className="text-sm text-muted-foreground">
+          {Array.isArray(content) ? (
+            <div className="flex flex-wrap gap-1">
+              {content.map((item, index) => (
+                <span
+                  key={index}
+                  className="bg-muted px-2 py-1 rounded-md text-xs"
+                >
+                  {item}
+                </span>
+              ))}
+            </div>
+          ) : (
+            <p className="leading-relaxed">{content}</p>
+          )}
+        </div>
+      )}
+    </motion.div>
+  )
+}
 
 interface ContentAssistantProps {
   content?: string
@@ -18,7 +103,7 @@ interface ContentAssistantProps {
 export default function ContentAssistant({
   content = '',
   title = '',
-  existingTags = [],
+  existingTags = default_existing_tags,
   onTagsGenerated,
   onSummaryGenerated,
   onMetaGenerated,
@@ -41,6 +126,8 @@ export default function ContentAssistant({
   const [copiedField, setCopiedField] = useState<string | null>(null)
   const [availableProviders, setAvailableProviders] = useState<string[]>([])
   const [showSettings, setShowSettings] = useState(false)
+
+  const get_copy_text = (value: string | string[]) => (Array.isArray(value) ? value.join(', ') : value)
 
   React.useEffect(() => {
     // Check available providers on mount
@@ -123,87 +210,6 @@ export default function ContentAssistant({
       console.error('Failed to copy:', error)
     }
   }
-
-  const GenerationCard = ({
-    title,
-    icon: Icon,
-    content: cardContent,
-    isLoading,
-    onGenerate,
-    field,
-    disabled = false
-  }: {
-    title: string
-    icon: React.ComponentType<any>
-    content: string | string[]
-    isLoading: boolean
-    onGenerate: () => void
-    field: string
-    disabled?: boolean
-  }) => (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="border rounded-lg p-4 space-y-3 bg-card"
-    >
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Icon className="w-4 h-4 text-primary" />
-          <h3 className="font-medium text-sm">{title}</h3>
-        </div>
-        <div className="flex items-center gap-2">
-          {cardContent && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => copyToClipboard(
-                Array.isArray(cardContent) ? cardContent.join(', ') : cardContent,
-                field
-              )}
-              className="h-6 w-6 p-0"
-            >
-              {copiedField === field ? (
-                <Check className="w-3 h-3 text-green-500" />
-              ) : (
-                <Copy className="w-3 h-3" />
-              )}
-            </Button>
-          )}
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={onGenerate}
-            disabled={isLoading || disabled}
-          >
-            {isLoading ? (
-              <Loader2 className="w-4 h-4 animate-spin" />
-            ) : (
-              <Wand2 className="w-4 h-4" />
-            )}
-          </Button>
-        </div>
-      </div>
-
-      {cardContent && (
-        <div className="text-sm text-muted-foreground">
-          {Array.isArray(cardContent) ? (
-            <div className="flex flex-wrap gap-1">
-              {cardContent.map((item, index) => (
-                <span
-                  key={index}
-                  className="bg-muted px-2 py-1 rounded-md text-xs"
-                >
-                  {item}
-                </span>
-              ))}
-            </div>
-          ) : (
-            <p className="leading-relaxed">{cardContent}</p>
-          )}
-        </div>
-      )}
-    </motion.div>
-  )
 
   if (availableProviders.length === 0) {
     return (
@@ -293,7 +299,9 @@ export default function ContentAssistant({
           content={results.tags}
           isLoading={!!isGenerating.tags}
           onGenerate={() => generateContent('tags')}
+          onCopy={() => void copyToClipboard(get_copy_text(results.tags), 'tags')}
           field="tags"
+          copiedField={copiedField}
           disabled={!content}
         />
 
@@ -303,7 +311,9 @@ export default function ContentAssistant({
           content={results.summary}
           isLoading={!!isGenerating.summary}
           onGenerate={() => generateContent('summary')}
+          onCopy={() => void copyToClipboard(get_copy_text(results.summary), 'summary')}
           field="summary"
+          copiedField={copiedField}
           disabled={!content}
         />
 
@@ -313,7 +323,9 @@ export default function ContentAssistant({
           content={results.metaDescription}
           isLoading={!!isGenerating.meta}
           onGenerate={() => generateContent('meta')}
+          onCopy={() => void copyToClipboard(get_copy_text(results.metaDescription), 'meta')}
           field="meta"
+          copiedField={copiedField}
           disabled={!content || !title}
         />
 
@@ -323,7 +335,9 @@ export default function ContentAssistant({
           content={results.translation}
           isLoading={!!isGenerating.translate}
           onGenerate={() => generateContent('translate')}
+          onCopy={() => void copyToClipboard(get_copy_text(results.translation), 'translation')}
           field="translation"
+          copiedField={copiedField}
           disabled={!content}
         />
       </div>

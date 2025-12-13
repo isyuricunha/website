@@ -2,7 +2,7 @@
 
 import { useState, type MouseEvent } from 'react'
 import { X, Bell, AlertCircle, Info, CheckCircle, AlertTriangle, Sparkles } from 'lucide-react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle , Badge , ScrollArea } from '@tszhong0411/ui'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, Badge, ScrollArea } from '@tszhong0411/ui'
 
 
 
@@ -171,6 +171,7 @@ export default function AnnouncementWidget({ className, maxItems = 5 }: Announce
                         </h4>
                         {announcement.isDismissible && (
                           <button
+                            type="button"
                             onClick={(e) => handleDismiss(announcement.id, e)}
                             disabled={dismissMutation.isPending}
                             className="flex-shrink-0 rounded-md p-1 opacity-0 transition-opacity hover:bg-accent group-hover:opacity-100 disabled:opacity-50"

@@ -134,7 +134,7 @@ export const GET = async (req: NextRequest) => {
                 height: 630
             }
         )
-    } catch (error) {
+    } catch {
         return new Response('Failed to generate image', { status: 500 })
     }
 }

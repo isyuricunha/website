@@ -34,8 +34,8 @@ const NewsletterSignupCompact = () => {
 
       setIsSubscribed(true)
       setEmail('')
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to subscribe')
+    } catch (error_) {
+      setError(error_ instanceof Error ? error_.message : 'Failed to subscribe')
     } finally {
       setIsLoading(false)
     }

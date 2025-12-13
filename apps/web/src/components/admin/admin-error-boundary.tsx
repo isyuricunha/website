@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import * as React from 'react'
 import { AlertTriangle, RefreshCw } from 'lucide-react'
 import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle } from '@tszhong0411/ui'
 import ErrorBoundary from '../ui/error-boundary'
@@ -27,7 +27,7 @@ const AdminErrorBoundary = ({ children, fallback }: AdminErrorBoundaryProps) => 
         <CardContent className="space-y-4">
           <div className="flex gap-2">
             <Button 
-              onClick={() => window.location.reload()}
+              onClick={() => globalThis.location.reload()}
               className="flex-1"
               variant="outline"
             >

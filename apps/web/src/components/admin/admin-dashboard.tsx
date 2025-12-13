@@ -254,6 +254,7 @@ const AdminDashboard = () => {
           </CardHeader>
           <CardContent className="space-y-2">
             <button
+              type="button"
               className="w-full group flex items-start gap-3 p-3 rounded-xl border border-indigo-500/20 bg-indigo-500/5 backdrop-blur-sm transition-all duration-200 hover:shadow-md hover:border-indigo-500/30 hover:-translate-y-0.5"
               onClick={() => globalThis.location.href = '/admin/posts/new'}
             >
@@ -266,6 +267,7 @@ const AdminDashboard = () => {
               </div>
             </button>
             <button
+              type="button"
               className="w-full group flex items-start gap-3 p-3 rounded-xl border border-blue-500/20 bg-blue-500/5 backdrop-blur-sm transition-all duration-200 hover:shadow-md hover:border-blue-500/30 hover:-translate-y-0.5"
               onClick={() => globalThis.location.href = '/admin/users'}
             >
@@ -278,6 +280,7 @@ const AdminDashboard = () => {
               </div>
             </button>
             <button
+              type="button"
               className="w-full group flex items-start gap-3 p-3 rounded-xl border border-emerald-500/20 bg-emerald-500/5 backdrop-blur-sm transition-all duration-200 hover:shadow-md hover:border-emerald-500/30 hover:-translate-y-0.5"
               onClick={() => globalThis.location.href = '/admin/comments'}
             >
@@ -304,6 +307,7 @@ const AdminDashboard = () => {
           </CardHeader>
           <CardContent className="space-y-2">
             <button
+              type="button"
               className="w-full group flex items-center justify-between p-3 rounded-xl border border-indigo-500/20 bg-indigo-500/5 backdrop-blur-sm transition-all duration-200 hover:shadow-md hover:border-indigo-500/30"
               onClick={() => globalThis.location.href = '/admin/posts'}
             >
@@ -316,6 +320,7 @@ const AdminDashboard = () => {
               </Badge>
             </button>
             <button
+              type="button"
               className="w-full group flex items-center justify-between p-3 rounded-xl border border-emerald-500/20 bg-emerald-500/5 backdrop-blur-sm transition-all duration-200 hover:shadow-md hover:border-emerald-500/30"
               onClick={() => globalThis.location.href = '/admin/posts/new'}
             >
@@ -328,6 +333,7 @@ const AdminDashboard = () => {
               </Badge>
             </button>
             <button
+              type="button"
               className="w-full group flex items-center justify-between p-3 rounded-xl border border-purple-500/20 bg-purple-500/5 backdrop-blur-sm transition-all duration-200 hover:shadow-md hover:border-purple-500/30"
               onClick={() => globalThis.location.href = '/admin/translate'}
             >

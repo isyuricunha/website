@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { Button ,
+import {
+  Button,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -10,6 +11,8 @@ import { Button ,
 
 import { Share2, Twitter, Facebook, Link, Check } from 'lucide-react'
 import { toast } from 'sonner'
+
+const default_hashtags: string[] = []
 
 interface SocialShareProps {
   title: string
@@ -23,7 +26,7 @@ export default function SocialShare({
   title,
   url,
   description,
-  hashtags = [],
+  hashtags = default_hashtags,
   className
 }: SocialShareProps) {
   const [copied, setCopied] = useState(false)
@@ -82,6 +85,7 @@ export default function SocialShare({
           size='sm'
           className={`gap-2 ${className}`}
           aria-label='Share content'
+          type='button'
         >
           <Share2 className='size-4' />
           Share

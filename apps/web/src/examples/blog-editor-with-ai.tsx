@@ -1,6 +1,7 @@
 'use client'
 
-import React, { useState } from 'react'
+import * as React from 'react'
+import { useState } from 'react'
 import { Button } from '@tszhong0411/ui'
 import ContentAssistant from '@/components/ai/content-assistant'
 
@@ -26,7 +27,7 @@ export default function BlogEditorWithAI() {
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-6">
       <h1 className="text-2xl font-bold">Editor de Blog com IA</h1>
-      
+
       {/* Formulário do Post */}
       <div className="space-y-4">
         <div>
@@ -82,6 +83,7 @@ export default function BlogEditorWithAI() {
               >
                 {tag}
                 <button
+                  type='button'
                   onClick={() => setPost(prev => ({
                     ...prev,
                     tags: prev.tags.filter((_, i) => i !== index)
@@ -118,7 +120,7 @@ export default function BlogEditorWithAI() {
         >
           {showAI ? 'Esconder' : 'Mostrar'} Assistente de IA
         </Button>
-        
+
         <div className="text-sm text-muted-foreground">
           Caracteres no conteúdo: {post.content.length}
         </div>
@@ -154,19 +156,19 @@ export default function BlogEditorWithAI() {
           <div><strong>Excerpt:</strong> {post.excerpt || 'Sem resumo'}</div>
           <div><strong>Meta Description:</strong> {post.metaDescription || 'Sem meta description'}</div>
           <div><strong>Tags:</strong> {post.tags.join(', ') || 'Sem tags'}</div>
-          <div><strong>Conteúdo:</strong> {post.content.substring(0, 100)}...</div>
+          <div><strong>Conteúdo:</strong> {post.content.slice(0, 100)}...</div>
         </div>
       </div>
 
       {/* Botões de Ação */}
       <div className="flex gap-3">
-        <Button 
+        <Button
           onClick={() => console.log('Salvando post:', post)}
           disabled={!post.title || !post.content}
         >
           Salvar Post
         </Button>
-        <Button 
+        <Button
           variant="outline"
           onClick={() => setPost({ title: '', content: '', excerpt: '', tags: [], metaDescription: '' })}
         >

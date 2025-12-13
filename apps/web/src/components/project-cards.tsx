@@ -46,13 +46,13 @@ const ProjectCards = (props: ProjectCardsProps) => {
     const categorySet = new Set<string>()
     const statusSet = new Set<string>()
     const techStackSet = new Set<string>()
-    
+
     projects.forEach(project => {
       if (project.category) categorySet.add(project.category)
       if (project.status) statusSet.add(project.status)
       project.techstack.forEach(tech => techStackSet.add(tech))
     })
-    
+
     return {
       categories: Array.from(categorySet).sort(),
       statuses: Array.from(statusSet).sort(),
@@ -63,24 +63,24 @@ const ProjectCards = (props: ProjectCardsProps) => {
   // Filter and sort projects
   const filteredProjects = useMemo(() => {
     return projects.filter(project => {
-      const matchesSearch = filters.search === '' || 
+      const matchesSearch = filters.search === '' ||
         project.name.toLowerCase().includes(filters.search.toLowerCase()) ||
         project.description.toLowerCase().includes(filters.search.toLowerCase())
-      
+
       const matchesCategory = filters.category === 'all' || project.category === filters.category
       const matchesStatus = filters.status === 'all' || project.status === filters.status
       const matchesTechStack = filters.techStack === 'all' || project.techstack.includes(filters.techStack)
-      
+
       return matchesSearch && matchesCategory && matchesStatus && matchesTechStack
     }).sort((a, b) => {
       // Sort featured projects first, then by status priority
       if (a.featured && !b.featured) return -1
       if (!a.featured && b.featured) return 1
-      
+
       const statusPriority = { active: 0, beta: 1, completed: 2, archived: 3 }
       const aStatus = statusPriority[a.status || 'active'] || 0
       const bStatus = statusPriority[b.status || 'active'] || 0
-      
+
       return aStatus - bStatus
     })
   }, [projects, filters])
@@ -94,8 +94,8 @@ const ProjectCards = (props: ProjectCardsProps) => {
     })
   }
 
-  const hasActiveFilters = filters.search !== '' || filters.category !== 'all' || 
-                          filters.status !== 'all' || filters.techStack !== 'all'
+  const hasActiveFilters = filters.search !== '' || filters.category !== 'all' ||
+    filters.status !== 'all' || filters.techStack !== 'all'
 
   // Separate featured and regular projects
   const featuredProjects = useMemo(() => {
@@ -135,119 +135,121 @@ const ProjectCards = (props: ProjectCardsProps) => {
         {featuredProjects.length > 0 && (
           <h2 className="text-lg sm:text-xl font-semibold">{t('projects.all')}</h2>
         )}
-        
-        {/* Filter Controls */}
-      <div className="space-y-4">
-        {/* Search and Filter Toggle */}
-        <div className="flex flex-col sm:flex-row gap-4">
-          <div className="relative flex-1">
-            <Input
-              type="text"
-              placeholder={t('projects.search.placeholder')}
-              value={filters.search}
-              onChange={(e) => setFilters(prev => ({ ...prev, search: e.target.value }))}
-              className="pl-10"
-            />
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          </div>
-          
-          <button
-            onClick={() => setShowFilters(!showFilters)}
-            className="flex items-center gap-2 px-4 py-2 border rounded-2xl hover:bg-muted/50 transition-colors"
-          >
-            <SlidersHorizontal className="h-4 w-4" />
-            {showFilters ? t('projects.filters.hide') : t('projects.filters.show')}
-          </button>
-        </div>
 
-        {/* Advanced Filters */}
-        {showFilters && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 border rounded-2xl bg-muted/20">
-            {/* Category Filter */}
-            {categories.length > 0 && (
+        {/* Filter Controls */}
+        <div className="space-y-4">
+          {/* Search and Filter Toggle */}
+          <div className="flex flex-col sm:flex-row gap-4">
+            <div className="relative flex-1">
+              <Input
+                type="text"
+                placeholder={t('projects.search.placeholder')}
+                value={filters.search}
+                onChange={(e) => setFilters(prev => ({ ...prev, search: e.target.value }))}
+                className="pl-10"
+              />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setShowFilters(!showFilters)}
+              className="flex items-center gap-2 px-4 py-2 border rounded-2xl hover:bg-muted/50 transition-colors"
+            >
+              <SlidersHorizontal className="h-4 w-4" />
+              {showFilters ? t('projects.filters.hide') : t('projects.filters.show')}
+            </button>
+          </div>
+
+          {/* Advanced Filters */}
+          {showFilters && (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 border rounded-2xl bg-muted/20">
+              {/* Category Filter */}
+              {categories.length > 0 && (
+                <div>
+                  <Label className="text-xs sm:text-sm font-medium mb-2 block">{t('projects.filters.category')}</Label>
+                  <Select value={filters.category} onValueChange={(value) => setFilters(prev => ({ ...prev, category: value }))}>
+                    <SelectTrigger>
+                      <SelectValue placeholder={t('projects.filters.all-categories')} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">{t('projects.filters.all-categories')}</SelectItem>
+                      {categories.map(category => (
+                        <SelectItem key={category} value={category}>
+                          {category}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
+
+              {/* Status Filter */}
               <div>
-                <Label className="text-xs sm:text-sm font-medium mb-2 block">{t('projects.filters.category')}</Label>
-                <Select value={filters.category} onValueChange={(value) => setFilters(prev => ({ ...prev, category: value }))}>
+                <Label className="text-xs sm:text-sm font-medium mb-2 block">{t('projects.filters.status')}</Label>
+                <Select value={filters.status} onValueChange={(value) => setFilters(prev => ({ ...prev, status: value }))}>
                   <SelectTrigger>
-                    <SelectValue placeholder={t('projects.filters.all-categories')} />
+                    <SelectValue placeholder={t('projects.filters.all-statuses')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">{t('projects.filters.all-categories')}</SelectItem>
-                    {categories.map(category => (
-                      <SelectItem key={category} value={category}>
-                        {category}
+                    <SelectItem value="all">{t('projects.filters.all-statuses')}</SelectItem>
+                    {statuses.map(status => {
+                      const config = statusConfig[status as keyof typeof statusConfig]
+                      return (
+                        <SelectItem key={status} value={status}>
+                          <div className="flex items-center gap-2">
+                            {config && <config.icon className="h-4 w-4" />}
+                            {config ? t(config.labelKey as any) : status}
+                          </div>
+                        </SelectItem>
+                      )
+                    })}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Tech Stack Filter */}
+              <div>
+                <Label className="text-xs sm:text-sm font-medium mb-2 block">{t('projects.filters.technology')}</Label>
+                <Select value={filters.techStack} onValueChange={(value) => setFilters(prev => ({ ...prev, techStack: value }))}>
+                  <SelectTrigger>
+                    <SelectValue placeholder={t('projects.filters.all-technologies')} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">{t('projects.filters.all-technologies')}</SelectItem>
+                    {techStacks.map(tech => (
+                      <SelectItem key={tech} value={tech}>
+                        {tech}
                       </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               </div>
-            )}
-
-            {/* Status Filter */}
-            <div>
-              <Label className="text-xs sm:text-sm font-medium mb-2 block">{t('projects.filters.status')}</Label>
-              <Select value={filters.status} onValueChange={(value) => setFilters(prev => ({ ...prev, status: value }))}>
-                <SelectTrigger>
-                  <SelectValue placeholder={t('projects.filters.all-statuses')} />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">{t('projects.filters.all-statuses')}</SelectItem>
-                  {statuses.map(status => {
-                    const config = statusConfig[status as keyof typeof statusConfig]
-                    return (
-                      <SelectItem key={status} value={status}>
-                        <div className="flex items-center gap-2">
-                          {config && <config.icon className="h-4 w-4" />}
-                          {config ? t(config.labelKey as any) : status}
-                        </div>
-                      </SelectItem>
-                    )
-                  })}
-                </SelectContent>
-              </Select>
             </div>
-
-            {/* Tech Stack Filter */}
-            <div>
-              <Label className="text-xs sm:text-sm font-medium mb-2 block">{t('projects.filters.technology')}</Label>
-              <Select value={filters.techStack} onValueChange={(value) => setFilters(prev => ({ ...prev, techStack: value }))}>
-                <SelectTrigger>
-                  <SelectValue placeholder={t('projects.filters.all-technologies')} />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">{t('projects.filters.all-technologies')}</SelectItem>
-                  {techStacks.map(tech => (
-                    <SelectItem key={tech} value={tech}>
-                      {tech}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-        )}
-
-        {/* Results Summary */}
-        <div className="flex items-center justify-between text-xs sm:text-sm text-muted-foreground">
-          <span>
-            {hasActiveFilters ? (
-              <>
-                {t('projects.results.found', { count: filteredProjects.length })}
-              </>
-            ) : (
-              <>{t('projects.results.showing', { count: regularProjects.length })}</>
-            )}
-          </span>
-          {hasActiveFilters && (
-            <button
-              onClick={clearFilters}
-              className="text-primary hover:text-primary/80 transition-colors"
-            >
-              {t('projects.filters.clear')}
-            </button>
           )}
+
+          {/* Results Summary */}
+          <div className="flex items-center justify-between text-xs sm:text-sm text-muted-foreground">
+            <span>
+              {hasActiveFilters ? (
+                <>
+                  {t('projects.results.found', { count: filteredProjects.length })}
+                </>
+              ) : (
+                <>{t('projects.results.showing', { count: regularProjects.length })}</>
+              )}
+            </span>
+            {hasActiveFilters && (
+              <button
+                type="button"
+                onClick={clearFilters}
+                className="text-primary hover:text-primary/80 transition-colors"
+              >
+                {t('projects.filters.clear')}
+              </button>
+            )}
+          </div>
         </div>
-      </div>
 
         {/* Projects Grid */}
         {regularProjects.length === 0 ? (
@@ -259,6 +261,7 @@ const ProjectCards = (props: ProjectCardsProps) => {
             </p>
             {hasActiveFilters && (
               <button
+                type="button"
                 onClick={clearFilters}
                 className="inline-flex items-center justify-center rounded-2xl bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
               >
@@ -287,7 +290,7 @@ const ProjectCards = (props: ProjectCardsProps) => {
 
 const ProjectCard = (props: ProjectCardProps) => {
   const { name, description, techstack, slug, homepage, repository, status = 'active', category, featured, startDate, endDate } = props
-  const statusInfo = statusConfig[status as keyof typeof statusConfig]
+  const statusInfo = statusConfig[status]
   const t = useTranslations()
 
   return (
@@ -329,7 +332,7 @@ const ProjectCard = (props: ProjectCardProps) => {
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
         </div>
       </EnhancedCardHeader>
-      
+
       <EnhancedCardContent className="space-y-4">
         {/* Action buttons moved out of image; always visible and readable */}
         {(homepage || repository || props.github) && (
@@ -379,7 +382,7 @@ const ProjectCard = (props: ProjectCardProps) => {
               </Badge>
             )}
           </div>
-          
+
           <p className='text-xs sm:text-sm text-muted-foreground line-clamp-2'>
             {description}
           </p>
@@ -397,7 +400,7 @@ const ProjectCard = (props: ProjectCardProps) => {
             </div>
           )}
         </div>
-        
+
         <div className='flex flex-wrap gap-1.5'>
           {techstack.slice(0, 4).map((label) => (
             <span

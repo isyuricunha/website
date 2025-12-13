@@ -57,8 +57,8 @@ export const generateMetadata = async (
   const safeTitle = title ?? ''
   const safeSummary = summary ?? ''
   const safeLocale = locale ?? ''
-  const safeDate = date?.split('T')[0] ?? new Date().toISOString().split('T')[0]
-  const ogImageUrl = `/og/${slug}?title=${encodeURIComponent(String(safeTitle))}&date=${encodeURIComponent(String(safeDate))}&summary=${encodeURIComponent(String(safeSummary))}&locale=${safeLocale}&type=post`
+  const safeDate = date?.split('T')[0] ?? new Date().toISOString().split('T')[0] ?? ''
+  const ogImageUrl = `/og/${slug}?title=${encodeURIComponent(safeTitle)}&date=${encodeURIComponent(safeDate)}&summary=${encodeURIComponent(safeSummary)}&locale=${safeLocale}&type=post`
 
   return {
     title: title,
@@ -119,8 +119,8 @@ const Page = async (props: PageProps) => {
   const safeTitle = title ?? ''
   const safeSummary = summary ?? ''
   const safeLocale = locale ?? ''
-  const safeDate = date?.split('T')[0] ?? new Date().toISOString().split('T')[0]
-  const ogImageUrl = `/og/${slug}?title=${encodeURIComponent(String(safeTitle))}&date=${encodeURIComponent(String(safeDate))}&summary=${encodeURIComponent(String(safeSummary))}&locale=${safeLocale}&type=post`
+  const safeDate = date?.split('T')[0] ?? new Date().toISOString().split('T')[0] ?? ''
+  const ogImageUrl = `/og/${slug}?title=${encodeURIComponent(safeTitle)}&date=${encodeURIComponent(safeDate)}&summary=${encodeURIComponent(safeSummary)}&locale=${safeLocale}&type=post`
 
   const jsonLd: WithContext<Article> = {
     '@context': 'https://schema.org',

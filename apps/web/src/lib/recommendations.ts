@@ -1,5 +1,5 @@
-import { allPosts } from 'content-collections'
-import { allProjects } from 'content-collections'
+import { allPosts , allProjects } from 'content-collections'
+
 
 export type RecommendationType = 'post' | 'project'
 
@@ -41,7 +41,7 @@ function calculateSimilarity(
  */
 export function getRecommendedPosts(
   currentPostSlug: string,
-  limit: number = 3
+  limit = 3
 ): Recommendation[] {
   const currentPost = allPosts.find(post => post.slug === currentPostSlug)
   if (!currentPost) return []
@@ -55,7 +55,7 @@ export function getRecommendedPosts(
       if (currentPost.category === post.category) {
         reason = `Same category: ${post.category}`
       } else if (currentPost.tags && post.tags) {
-        const commonTags = currentPost.tags.filter(tag => post.tags!.includes(tag))
+        const commonTags = currentPost.tags.filter(tag => post.tags.includes(tag))
         if (commonTags.length > 0) {
           reason = `Similar tags: ${commonTags.slice(0, 2).join(', ')}`
         }
@@ -83,7 +83,7 @@ export function getRecommendedPosts(
  */
 export function getRecommendedProjects(
   currentProjectSlug: string,
-  limit: number = 3
+  limit = 3
 ): Recommendation[] {
   const currentProject = allProjects.find(project => project.slug === currentProjectSlug)
   if (!currentProject) return []
@@ -131,7 +131,7 @@ export function getRecommendedProjects(
  */
 export function getSearchRecommendations(
   searchQuery: string,
-  limit: number = 4
+  limit = 4
 ): Recommendation[] {
   if (!searchQuery.trim()) return []
   
@@ -236,7 +236,7 @@ export function getSearchRecommendations(
 /**
  * Get trending/popular content (based on featured flag and recent dates)
  */
-export function getTrendingRecommendations(limit: number = 4): Recommendation[] {
+export function getTrendingRecommendations(limit = 4): Recommendation[] {
   const recommendations: Recommendation[] = []
   
   // Featured posts get priority

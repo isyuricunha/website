@@ -16,7 +16,7 @@ class Logger {
 
   private sanitizeContext(context: LogContext): LogContext {
     const sanitized: LogContext = {}
-    
+
     for (const [key, value] of Object.entries(context)) {
       // Skip sensitive fields
       const lowerKey = key.toLowerCase()
@@ -36,7 +36,7 @@ class Logger {
         sanitized[key] = value
       }
     }
-    
+
     return sanitized
   }
 
@@ -50,7 +50,7 @@ class Logger {
     console.warn(this.formatMessage('warn', message, context))
   }
 
-  error(message: string, error?: Error | unknown, context?: LogContext): void {
+  error(message: string, error?: unknown, context?: LogContext): void {
     const errorContext = {
       ...context,
       error: error instanceof Error ? {

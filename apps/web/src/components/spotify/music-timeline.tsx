@@ -131,6 +131,7 @@ const MusicTimeline = () => {
           <div className='flex items-center justify-between'>
             <p className='text-muted-foreground'>{t('spotify.error')}</p>
             <button
+              type='button'
               onClick={handleRefresh}
               disabled={isRefreshing}
               className='text-sm text-muted-foreground hover:text-foreground disabled:opacity-50'
@@ -179,6 +180,7 @@ const MusicTimeline = () => {
             </CardDescription>
           </div>
           <button
+            type='button'
             onClick={handleRefresh}
             disabled={isRefreshing}
             className='text-xs sm:text-sm text-muted-foreground hover:text-foreground disabled:opacity-50'

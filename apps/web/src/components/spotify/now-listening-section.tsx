@@ -17,8 +17,8 @@ const NowListeningSection = () => {
   const { data: currentTrack, refetch, isLoading, error } = api.spotify.getCurrentlyPlaying.useQuery(
     undefined,
     {
-      refetchInterval: 60000, // Refresh every 60 seconds
-      staleTime: 30000 // Consider data stale after 30 seconds
+      refetchInterval: 60_000, // Refresh every 60 seconds
+      staleTime: 30_000 // Consider data stale after 30 seconds
     }
   )
 
@@ -32,7 +32,7 @@ const NowListeningSection = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       refetch()
-    }, 60000)
+    }, 60_000)
 
     return () => clearInterval(interval)
   }, [refetch])
@@ -68,6 +68,7 @@ const NowListeningSection = () => {
           <div className='flex items-center justify-between'>
             <p className='text-muted-foreground'>{t('spotify.error')}</p>
             <button
+              type='button'
               onClick={handleRefresh}
               disabled={isRefreshing}
               className='text-sm text-muted-foreground hover:text-foreground disabled:opacity-50'
@@ -91,6 +92,7 @@ const NowListeningSection = () => {
           <div className='flex items-center justify-between'>
             <p className='text-muted-foreground'>{t('spotify.now-listening.not-playing')}</p>
             <button
+              type='button'
               onClick={handleRefresh}
               disabled={isRefreshing}
               className='text-sm text-muted-foreground hover:text-foreground disabled:opacity-50'
@@ -112,6 +114,7 @@ const NowListeningSection = () => {
             <CardDescription className='text-xs sm:text-sm'>{t('spotify.now-listening.subtitle')}</CardDescription>
           </div>
           <button
+            type='button'
             onClick={handleRefresh}
             disabled={isRefreshing}
             className='text-xs sm:text-sm text-muted-foreground hover:text-foreground disabled:opacity-50'

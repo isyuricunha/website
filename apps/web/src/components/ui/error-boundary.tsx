@@ -1,6 +1,7 @@
 'use client'
 
-import React, { Component, type ReactNode } from 'react'
+import * as React from 'react'
+import { Component, type ReactNode } from 'react'
 import { Button } from '@tszhong0411/ui'
 import { AlertTriangle, RefreshCw } from 'lucide-react'
 

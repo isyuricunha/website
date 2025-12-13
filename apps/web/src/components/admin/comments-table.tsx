@@ -57,10 +57,10 @@ const CommentsTable = (props: CommentsTableProps) => {
     open: boolean
     title: string
     description: string
-    action: () => void
+    action?: () => void
     variant?: 'default' | 'destructive'
-  }>({ open: false, title: '', description: '', action: () => {} })
-  
+  }>({ open: false, title: '', description: '' })
+
   const { searchTerm, debouncedSearchTerm, updateSearchTerm, clearSearch } = useDebounceSearch()
 
   const deleteCommentMutation = api.comments.deleteComment.useMutation({
@@ -76,8 +76,8 @@ const CommentsTable = (props: CommentsTableProps) => {
   // Filter data based on search term
   const filteredData = useMemo(() => {
     if (!debouncedSearchTerm) return data
-    
-    return data.filter(comment => 
+
+    return data.filter(comment =>
       comment.body?.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
       comment.userId?.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
       comment.type?.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
@@ -85,7 +85,7 @@ const CommentsTable = (props: CommentsTableProps) => {
   }, [data, debouncedSearchTerm])
 
   const handleDeleteComment = (commentId: string, commentBody: string) => {
-    const truncatedBody = commentBody.length > 50 ? commentBody.substring(0, 50) + '...' : commentBody
+    const truncatedBody = commentBody.length > 50 ? commentBody.slice(0, 50) + '...' : commentBody
     setConfirmDialog({
       open: true,
       title: 'Delete Comment',
@@ -231,7 +231,7 @@ const CommentsTable = (props: CommentsTableProps) => {
             Export CSV
           </Button>
         </div>
-        
+
         <DataTable table={table}>
           <DataTableToolbar table={table} filterFields={filterFields} />
         </DataTable>

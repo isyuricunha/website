@@ -35,7 +35,7 @@ export function HighlightText({
         )}
       </span>
     )
-  } catch (error) {
+  } catch {
     // Fallback if regex fails
     return <span className={className}>{text}</span>
   }

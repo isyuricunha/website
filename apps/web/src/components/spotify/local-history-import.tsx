@@ -39,8 +39,8 @@ const LocalHistoryImport = () => {
       }
       setArtists(artistSet.size)
       setDurationMs(total)
-    } catch (e: any) {
-      setError(e?.message || 'Parse error')
+    } catch (error_: any) {
+      setError(error_?.message || 'Parse error')
     }
   }
 
@@ -75,7 +75,7 @@ const LocalHistoryImport = () => {
               </div>
               <div className="p-3 rounded bg-muted/50">
                 <div className="text-xs text-muted-foreground">{t('spotify.import.duration') || 'Total time'}</div>
-                <div className="text-lg font-semibold">{durationMs ? Math.round(durationMs / 3600000) + 'h' : '—'}</div>
+                <div className="text-lg font-semibold">{durationMs ? Math.round(durationMs / 3_600_000) + 'h' : '—'}</div>
               </div>
             </div>
           )}

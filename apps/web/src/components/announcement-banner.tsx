@@ -66,7 +66,7 @@ const getAnnouncementStyles = (type: string) => {
 export default function AnnouncementBanner() {
   const t = useTranslations()
   const [dismissedAnnouncements, setDismissedAnnouncements] = useState<string[]>(() => {
-    if (typeof window !== 'undefined') {
+    if (globalThis.window !== undefined) {
       const dismissed = sessionStorage.getItem('dismissedAnnouncements')
       return dismissed ? JSON.parse(dismissed) : []
     }
@@ -84,7 +84,7 @@ export default function AnnouncementBanner() {
     onSuccess: (_, variables) => {
       const newDismissed = [...dismissedAnnouncements, variables.announcementId]
       setDismissedAnnouncements(newDismissed)
-      if (typeof window !== 'undefined') {
+      if (globalThis.window !== undefined) {
         sessionStorage.setItem('dismissedAnnouncements', JSON.stringify(newDismissed))
       }
     }
@@ -120,7 +120,7 @@ export default function AnnouncementBanner() {
                 <div className={`flex-shrink-0 transition-transform duration-300 group-hover:scale-110 ${styles.icon}`}>
                   {getAnnouncementIcon(announcement.type)}
                 </div>
-                
+
                 <div className="flex-1 min-w-0 space-y-1.5">
                   <div className="flex items-center gap-2">
                     <h4 className={`font-semibold text-base leading-tight ${styles.title}`}>
@@ -139,6 +139,7 @@ export default function AnnouncementBanner() {
 
                 {announcement.isDismissible && (
                   <button
+                    type="button"
                     onClick={() => handleDismiss(announcement.id)}
                     disabled={dismissMutation.isPending}
                     className="flex-shrink-0 rounded-lg p-1.5 transition-colors hover:bg-black/5 dark:hover:bg-white/5 disabled:opacity-50"

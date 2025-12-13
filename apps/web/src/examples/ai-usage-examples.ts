@@ -1,6 +1,9 @@
 // Exemplos práticos de uso do sistema de IA
 
 // 1. Gerar tags para um post
+// 6. Hook React personalizado
+import { useState } from 'react'
+
 export async function generatePostTags(content: string, existingTags: string[] = []) {
   const response = await fetch('/api/ai/content', {
     method: 'POST',
@@ -18,7 +21,7 @@ export async function generatePostTags(content: string, existingTags: string[] =
 }
 
 // 2. Gerar resumo para excerpt
-export async function generatePostSummary(content: string, maxLength: number = 200) {
+export async function generatePostSummary(content: string, maxLength = 200) {
   const response = await fetch('/api/ai/content', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -54,8 +57,8 @@ export async function generateMetaDescription(title: string, content: string) {
 // 4. Traduzir conteúdo
 export async function translateContent(
   content: string, 
-  fromLang: string = 'en', 
-  toLang: string = 'pt'
+  fromLang = 'en', 
+  toLang = 'pt'
 ) {
   const response = await fetch('/api/ai/content', {
     method: 'POST',
@@ -100,9 +103,6 @@ export async function processNewBlogPost(postData: {
   }
 }
 
-// 6. Hook React personalizado
-import { useState } from 'react'
-
 export function useAIContentGeneration() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -124,9 +124,9 @@ export function useAIContentGeneration() {
 
       const result = await response.json()
       return result.result
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erro desconhecido')
-      throw err
+    } catch (error_) {
+      setError(error_ instanceof Error ? error_.message : 'Erro desconhecido')
+      throw error_
     } finally {
       setIsLoading(false)
     }

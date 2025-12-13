@@ -59,7 +59,7 @@ export const commentsRouter = createTRPCRouter({
       try {
         await ctx.db.delete(comments).where(eq(comments.id, input.commentId))
         return { success: true }
-      } catch (error) {
+      } catch {
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to delete comment'

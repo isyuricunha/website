@@ -5,7 +5,7 @@ import type { Post } from 'content-collections'
 import { useLocale, useTranslations } from '@tszhong0411/i18n/client'
 import { Input, Label, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@tszhong0411/ui'
 import { SearchIcon, SlidersHorizontal, Clock, Calendar, Star, Rss, ChevronLeft, ChevronRight } from 'lucide-react'
-import { useState, useMemo, useCallback, useEffect } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { debounce } from '@/lib/performance'
 
 import PostCards from './post-cards'
@@ -32,13 +32,12 @@ const FilteredPosts = (props: FilteredPostsProps) => {
   const t = useTranslations()
 
   // Debounced search to improve performance
-  const debouncedSearch = useCallback(
-    debounce((value: string) => {
+  const debouncedSearch = useMemo(() => {
+    return debounce((value: string) => {
       setDebouncedSearchValue(value)
       setIsSearching(false)
-    }, 300),
-    []
-  )
+    }, 300)
+  }, [])
 
   useEffect(() => {
     if (searchValue !== debouncedSearchValue) {
@@ -168,6 +167,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
         {/* Filter Toggle */}
         <div className='flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0'>
           <button
+            type='button'
             onClick={() => setShowFilters(!showFilters)}
             className='flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors min-h-[44px] px-3 py-2 rounded-2xl hover:bg-accent self-start'
           >
@@ -299,6 +299,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
           </span>
           {(searchValue || selectedCategory !== 'all' || selectedTag !== 'all') && (
             <button
+              type='button'
               onClick={clearAllFilters}
               className='text-primary hover:text-primary/80 transition-colors min-h-[44px] px-3 py-2 rounded-2xl hover:bg-accent self-start sm:self-auto'
             >
@@ -318,6 +319,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
             {t('component.filtered-posts.empty.description')}
           </p>
           <button
+            type='button'
             onClick={clearAllFilters}
             className='inline-flex items-center justify-center rounded-2xl bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 min-h-[44px]'
           >
@@ -340,6 +342,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
           {totalPages > 1 && (
             <div className='flex items-center justify-center gap-2 mt-8'>
               <button
+                type='button'
                 onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                 disabled={currentPage === 1}
                 className='flex items-center gap-1 px-3 py-2 text-sm border rounded-2xl hover:bg-accent disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]'
@@ -351,11 +354,12 @@ const FilteredPosts = (props: FilteredPostsProps) => {
               <div className='flex items-center gap-1'>
                 {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
                   <button
+                    type='button'
                     key={page}
                     onClick={() => setCurrentPage(page)}
                     className={`px-3 py-2 text-sm border rounded-2xl min-h-[44px] min-w-[44px] ${currentPage === page
-                        ? 'bg-primary text-primary-foreground border-primary'
-                        : 'hover:bg-accent'
+                      ? 'bg-primary text-primary-foreground border-primary'
+                      : 'hover:bg-accent'
                       }`}
                   >
                     {page}
@@ -364,6 +368,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
               </div>
 
               <button
+                type='button'
                 onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                 disabled={currentPage === totalPages}
                 className='flex items-center gap-1 px-3 py-2 text-sm border rounded-2xl hover:bg-accent disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]'

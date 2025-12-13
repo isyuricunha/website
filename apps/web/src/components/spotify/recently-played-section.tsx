@@ -94,6 +94,7 @@ const RecentlyPlayedSection = () => {
           <div className='flex items-center justify-between'>
             <p className='text-muted-foreground'>{t('spotify.error')}</p>
             <button
+              type='button'
               onClick={handleRefresh}
               disabled={isRefreshing}
               className='text-sm text-muted-foreground hover:text-foreground disabled:opacity-50'
@@ -117,6 +118,7 @@ const RecentlyPlayedSection = () => {
           <div className='flex items-center justify-between'>
             <p className='text-muted-foreground'>{t('spotify.recently-played.no-data')}</p>
             <button
+              type='button'
               onClick={handleRefresh}
               disabled={isRefreshing}
               className='text-sm text-muted-foreground hover:text-foreground disabled:opacity-50'
@@ -139,6 +141,7 @@ const RecentlyPlayedSection = () => {
           </div>
           <div className='flex items-center gap-2'>
             <button
+              type='button'
               onClick={handleExportCsv}
               className='px-2 py-1 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors'
               title={t('spotify.export.csv')}
@@ -146,6 +149,7 @@ const RecentlyPlayedSection = () => {
               CSV
             </button>
             <button
+              type='button'
               onClick={handleExportJson}
               className='px-2 py-1 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors'
               title={t('spotify.export.json')}
@@ -153,6 +157,7 @@ const RecentlyPlayedSection = () => {
               JSON
             </button>
             <button
+              type='button'
               onClick={handleRefresh}
               disabled={isRefreshing}
               className='text-sm text-muted-foreground hover:text-foreground disabled:opacity-50'

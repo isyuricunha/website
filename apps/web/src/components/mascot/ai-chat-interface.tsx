@@ -1,6 +1,6 @@
 'use client'
 
-import { useTranslations , useLocale } from '@tszhong0411/i18n/client'
+import { useTranslations, useLocale } from '@tszhong0411/i18n/client'
 
 import { Loader2, MessageCircle, Send, ThumbsDown, ThumbsUp, X } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
@@ -41,6 +41,16 @@ export default function AIChatInterface({
   const [typingDots, setTypingDots] = useState('')
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+
+  const get_bubble_class_name = (message: ChatMessage) => {
+    if (message.isUser) {
+      return 'from-primary to-primary/90 text-primary-foreground rounded-br-md bg-gradient-to-br'
+    }
+    if (message.isError) {
+      return 'from-destructive/10 to-destructive/5 text-destructive border-destructive/20 rounded-bl-md border bg-gradient-to-br'
+    }
+    return 'from-muted/80 to-muted/60 text-foreground border-border/30 rounded-bl-md border bg-gradient-to-br'
+  }
 
   // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
@@ -290,15 +300,7 @@ export default function AIChatInterface({
             className={`flex ${message.isUser ? 'justify-end' : 'justify-start'} animate-in slide-in-from-bottom-2 duration-300`}
           >
             <div
-              className={`max-w-[85%] rounded-2xl p-3 text-xs shadow-sm ${(() => {
-                if (message.isUser) {
-                  return 'from-primary to-primary/90 text-primary-foreground rounded-br-md bg-gradient-to-br'
-                }
-                if (message.isError) {
-                  return 'from-destructive/10 to-destructive/5 text-destructive border-destructive/20 rounded-bl-md border bg-gradient-to-br'
-                }
-                return 'from-muted/80 to-muted/60 text-foreground border-border/30 rounded-bl-md border bg-gradient-to-br'
-              })()}`}
+              className={`max-w-[85%] rounded-2xl p-3 text-xs shadow-sm ${get_bubble_class_name(message)}`}
             >
               {!message.isUser && (
                 <div className='border-border/20 mb-2 flex items-center gap-2 border-b pb-2'>
@@ -316,8 +318,8 @@ export default function AIChatInterface({
                       type='button'
                       onClick={() => handleReaction(message.id, 'like')}
                       className={`hover:bg-muted/80 flex items-center gap-1 rounded px-2 py-1 text-xs transition-all ${message.reactions?.userReaction === 'like'
-                          ? 'bg-green-50 text-green-600 dark:bg-green-950'
-                          : 'text-muted-foreground'
+                        ? 'bg-green-50 text-green-600 dark:bg-green-950'
+                        : 'text-muted-foreground'
                         }`}
                     >
                       <ThumbsUp className='h-3 w-3' />
@@ -327,8 +329,8 @@ export default function AIChatInterface({
                       type='button'
                       onClick={() => handleReaction(message.id, 'dislike')}
                       className={`hover:bg-muted/80 flex items-center gap-1 rounded px-2 py-1 text-xs transition-all ${message.reactions?.userReaction === 'dislike'
-                          ? 'bg-red-50 text-red-600 dark:bg-red-950'
-                          : 'text-muted-foreground'
+                        ? 'bg-red-50 text-red-600 dark:bg-red-950'
+                        : 'text-muted-foreground'
                         }`}
                     >
                       <ThumbsDown className='h-3 w-3' />

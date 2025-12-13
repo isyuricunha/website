@@ -83,7 +83,7 @@ export default function AnnouncementToast() {
 
     // Filter urgent announcements that haven't been dismissed (date filtering is done server-side)
     const urgentAnnouncements = announcementsData.announcements
-      .filter(announcement => 
+      .filter(announcement =>
         announcement.priority >= 3 && // Only urgent announcements
         !dismissedAnnouncements.includes(announcement.id)
       )
@@ -91,12 +91,12 @@ export default function AnnouncementToast() {
     // Show toast for each urgent announcement
     urgentAnnouncements.forEach((announcement) => {
       const toastId = `announcement-${announcement.id}`
-      
+
       // Check if this toast was already shown in this session
       const shownToasts = JSON.parse(
         sessionStorage.getItem('shownAnnouncementToasts') || '[]'
       )
-      
+
       if (!shownToasts.includes(announcement.id)) {
         const styles = getAnnouncementStyles(announcement.type)
         toast.custom(
@@ -108,7 +108,7 @@ export default function AnnouncementToast() {
                   <div className={`flex-shrink-0 transition-transform duration-300 ${styles.icon}`}>
                     {getAnnouncementIcon(announcement.type)}
                   </div>
-                  
+
                   <div className="flex-1 min-w-0 space-y-2">
                     <h4 className={`font-semibold text-base leading-tight ${styles.title}`}>
                       {announcement.title}
@@ -116,10 +116,11 @@ export default function AnnouncementToast() {
                     <p className={`text-sm leading-relaxed ${styles.content}`}>
                       {announcement.content}
                     </p>
-                    
+
                     <div className="flex items-center gap-3 pt-1">
                       {announcement.isDismissible && (
                         <button
+                          type="button"
                           onClick={() => {
                             dismissMutation.mutate({ announcementId: announcement.id })
                             const dismissed = JSON.parse(
@@ -135,6 +136,7 @@ export default function AnnouncementToast() {
                         </button>
                       )}
                       <button
+                        type="button"
                         onClick={() => toast.dismiss(t)}
                         className={`text-xs font-medium transition-colors ${styles.button}`}
                       >
@@ -144,6 +146,7 @@ export default function AnnouncementToast() {
                   </div>
 
                   <button
+                    type="button"
                     onClick={() => toast.dismiss(t)}
                     className="flex-shrink-0 rounded-lg p-1.5 transition-colors hover:bg-accent/50"
                     aria-label="Close"
@@ -156,7 +159,7 @@ export default function AnnouncementToast() {
           ),
           {
             id: toastId,
-            duration: announcement.priority >= 5 ? Infinity : 10000, // Critical announcements stay until dismissed
+            duration: announcement.priority >= 5 ? Infinity : 10_000, // Critical announcements stay until dismissed
             position: 'top-right'
           }
         )

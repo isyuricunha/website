@@ -89,7 +89,7 @@ const getAccessToken = async () => {
           grant_type: 'refresh_token',
           refresh_token: REFRESH_TOKEN
         }),
-        signal: AbortSignal.timeout(10000) // 10 second timeout
+        signal: AbortSignal.timeout(10_000) // 10 second timeout
       })
 
       if (!response.ok) {
@@ -169,7 +169,7 @@ export const spotifyRouter = createTRPCRouter({
       headers: {
         Authorization: `Bearer ${accessToken}`
       },
-      signal: AbortSignal.timeout(10000) // 10 second timeout
+      signal: AbortSignal.timeout(10_000) // 10 second timeout
     })
 
     if (response.status === 204) {
@@ -215,7 +215,7 @@ export const spotifyRouter = createTRPCRouter({
         headers: {
           Authorization: `Bearer ${accessToken}`
         },
-        signal: AbortSignal.timeout(10000) // 10 second timeout
+        signal: AbortSignal.timeout(10_000) // 10 second timeout
       })
 
       if (!response.ok) {
@@ -266,7 +266,7 @@ export const spotifyRouter = createTRPCRouter({
         headers: {
           Authorization: `Bearer ${accessToken}`
         },
-        signal: AbortSignal.timeout(10000) // 10 second timeout
+        signal: AbortSignal.timeout(10_000) // 10 second timeout
       })
 
       if (!response.ok) {
@@ -319,7 +319,7 @@ export const spotifyRouter = createTRPCRouter({
         headers: {
           Authorization: `Bearer ${accessToken}`
         },
-        signal: AbortSignal.timeout(10000) // 10 second timeout
+        signal: AbortSignal.timeout(10_000) // 10 second timeout
       })
 
       if (!response.ok) {
@@ -377,7 +377,7 @@ export const spotifyRouter = createTRPCRouter({
           headers: {
             Authorization: `Bearer ${accessToken}`
           },
-          signal: AbortSignal.timeout(10000) // 10 second timeout
+          signal: AbortSignal.timeout(10_000) // 10 second timeout
         })
 
         if (!response.ok) {
@@ -434,7 +434,7 @@ export const spotifyRouter = createTRPCRouter({
           headers: {
             Authorization: `Bearer ${accessToken}`
           },
-          signal: AbortSignal.timeout(10000) // 10 second timeout
+          signal: AbortSignal.timeout(10_000) // 10 second timeout
         })
 
         if (!response.ok) {

@@ -56,7 +56,41 @@ export default function ForgotPasswordDialog({ open, onOpenChange }: ForgotPassw
   return (
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className='sm:max-w-[440px]'>
-        {!isSuccess ? (
+        {isSuccess ? (
+          <>
+            <DialogHeader>
+              <div className="flex flex-col items-center text-center space-y-4 py-4">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500/10">
+                  <CheckCircle2 className="h-8 w-8 text-emerald-600 dark:text-emerald-400" />
+                </div>
+                <div>
+                  <DialogTitle className='text-xl font-semibold mb-2'>
+                    Check Your Email
+                  </DialogTitle>
+                  <DialogDescription className='text-sm leading-relaxed'>
+                    We've sent a password reset link to <strong className="font-medium text-foreground">{email}</strong>.
+                    <br />
+                    Please check your inbox and follow the instructions.
+                  </DialogDescription>
+                </div>
+              </div>
+            </DialogHeader>
+
+            <div className="space-y-3 mt-2">
+              <p className="text-xs text-center text-muted-foreground">
+                Didn't receive the email? Check your spam folder or try again.
+              </p>
+              
+              <Button
+                variant="outline"
+                className="w-full h-11 rounded-xl font-medium"
+                onClick={handleClose}
+              >
+                Back to Sign In
+              </Button>
+            </div>
+          </>
+        ) : (
           <>
             <DialogHeader>
               <div className="flex items-center gap-3 mb-2">
@@ -109,40 +143,6 @@ export default function ForgotPasswordDialog({ open, onOpenChange }: ForgotPassw
                 Back to Sign In
               </Button>
             </form>
-          </>
-        ) : (
-          <>
-            <DialogHeader>
-              <div className="flex flex-col items-center text-center space-y-4 py-4">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500/10">
-                  <CheckCircle2 className="h-8 w-8 text-emerald-600 dark:text-emerald-400" />
-                </div>
-                <div>
-                  <DialogTitle className='text-xl font-semibold mb-2'>
-                    Check Your Email
-                  </DialogTitle>
-                  <DialogDescription className='text-sm leading-relaxed'>
-                    We've sent a password reset link to <strong className="font-medium text-foreground">{email}</strong>.
-                    <br />
-                    Please check your inbox and follow the instructions.
-                  </DialogDescription>
-                </div>
-              </div>
-            </DialogHeader>
-
-            <div className="space-y-3 mt-2">
-              <p className="text-xs text-center text-muted-foreground">
-                Didn't receive the email? Check your spam folder or try again.
-              </p>
-              
-              <Button
-                variant="outline"
-                className="w-full h-11 rounded-xl font-medium"
-                onClick={handleClose}
-              >
-                Back to Sign In
-              </Button>
-            </div>
           </>
         )}
       </DialogContent>

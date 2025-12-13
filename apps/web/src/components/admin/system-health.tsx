@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Button } from '@tszhong0411/ui'
 import {
   RefreshCw,
@@ -21,7 +21,7 @@ import { toast } from 'sonner'
 
 export const SystemHealthDashboard = () => {
   const [autoRefresh, setAutoRefresh] = useState(false)
-  const [refreshInterval, setRefreshInterval] = useState<NodeJS.Timeout | null>(null)
+  const refresh_interval_ref = useRef<ReturnType<typeof setInterval> | null>(null)
 
   // Fetch system health
   const { data: healthData, isLoading: healthLoading, refetch: refetchHealth } = api.system.getSystemHealth.useQuery()
@@ -37,24 +37,24 @@ export const SystemHealthDashboard = () => {
 
   // Auto-refresh functionality
   useEffect(() => {
-    if (autoRefresh) {
-      const interval = setInterval(() => {
-        refetchHealth()
-        refetchStats()
-        refetchErrors()
-      }, 30_000) // Refresh every 30 seconds
-
-      setRefreshInterval(interval)
-    } else {
-      if (refreshInterval) {
-        clearInterval(refreshInterval)
-        setRefreshInterval(null)
+    if (!autoRefresh) {
+      if (refresh_interval_ref.current) {
+        clearInterval(refresh_interval_ref.current)
+        refresh_interval_ref.current = null
       }
+      return
     }
 
+    refresh_interval_ref.current = setInterval(() => {
+      refetchHealth()
+      refetchStats()
+      refetchErrors()
+    }, 30_000) // Refresh every 30 seconds
+
     return () => {
-      if (refreshInterval) {
-        clearInterval(refreshInterval)
+      if (refresh_interval_ref.current) {
+        clearInterval(refresh_interval_ref.current)
+        refresh_interval_ref.current = null
       }
     }
   }, [autoRefresh, refetchHealth, refetchStats, refetchErrors])
@@ -124,12 +124,12 @@ export const SystemHealthDashboard = () => {
         <div className="animate-pulse">
           <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-1/4 mb-4"></div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-            {Array.from({length: 4}).map((_, i) => (
+            {Array.from({ length: 4 }).map((_, i) => (
               <div key={i} className="h-24 bg-gray-200 dark:bg-gray-700 rounded"></div>
             ))}
           </div>
           <div className="space-y-3">
-            {Array.from({length: 3}).map((_, i) => (
+            {Array.from({ length: 3 }).map((_, i) => (
               <div key={i} className="h-20 bg-gray-200 dark:bg-gray-700 rounded"></div>
             ))}
           </div>
@@ -297,10 +297,10 @@ export const SystemHealthDashboard = () => {
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
                       <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${error.level === 'error'
-                          ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300'
-                          : error.level === 'warning'
-                            ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300'
-                            : 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300'
+                        ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300'
+                        : error.level === 'warning'
+                          ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300'
+                          : 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300'
                         }`}>
                         {error.level.toUpperCase()}
                       </span>

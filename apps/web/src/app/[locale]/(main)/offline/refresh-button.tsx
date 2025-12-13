@@ -6,7 +6,7 @@ import { RefreshCw } from 'lucide-react'
 export default function RefreshButton() {
   return (
     <Button
-      onClick={() => window.location.reload()}
+      onClick={() => globalThis.location.reload()}
       className='w-full gap-2'
     >
       <RefreshCw className='size-4' />

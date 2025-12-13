@@ -87,7 +87,7 @@ export function PostEditor({ initialData, mode, locale }: PostEditorProps) {
       }
       
       toast.success(`${action} generated successfully!`)
-    } catch (error) {
+    } catch {
       toast.error("AI generation failed. Please try again.")
     } finally {
       setAiLoading(null)
@@ -119,7 +119,7 @@ export function PostEditor({ initialData, mode, locale }: PostEditorProps) {
       
       toast.success(`Post ${mode === 'create' ? 'created' : 'updated'} successfully!`)
       router.push(`/admin/posts`)
-    } catch (error) {
+    } catch {
       toast.error("Failed to save post. Please try again.")
     } finally {
       setIsLoading(false)

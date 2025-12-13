@@ -38,15 +38,17 @@ class AIService {
   async generateResponse(
     message: string,
     context: SiteContext,
-    config: AIServiceConfig = { provider: 'gemini' }
+    config?: AIServiceConfig
   ): Promise<string> {
-    switch (config.provider) {
+    const resolved_config: AIServiceConfig = config ?? { provider: 'gemini' }
+
+    switch (resolved_config.provider) {
       case 'gemini':
-        return this.generateGeminiResponse(message, context, config)
+        return this.generateGeminiResponse(message, context, resolved_config)
       case 'ollama':
-        return this.generateOllamaResponse(message, context, config)
+        return this.generateOllamaResponse(message, context, resolved_config)
       default:
-        throw new Error(`Unsupported AI provider: ${config.provider}`)
+        throw new Error(`Unsupported AI provider: ${resolved_config.provider}`)
     }
   }
 
@@ -59,14 +61,14 @@ class AIService {
       throw new Error('Gemini AI is not available')
     }
 
-    const model = this.gemini.getGenerativeModel({ 
-      model: config.model || 'gemini-2.0-flash-lite' 
+    const model = this.gemini.getGenerativeModel({
+      model: config.model || 'gemini-2.0-flash-lite'
     })
 
     const systemPrompt = this.buildSystemPrompt(context, message)
     const result = await model.generateContent(systemPrompt)
-    const response = await result.response
-    
+    const response = result.response
+
     return response.text()
   }
 
@@ -158,7 +160,7 @@ User message: ${message}`
     const prompt = `Analyze this blog post content and suggest 3-6 relevant tags.
 
 CONTENT:
-${content.substring(0, 1500)}...
+${content.slice(0, 1500)}...
 
 EXISTING TAGS: ${existingTags.join(', ')}
 
@@ -176,7 +178,7 @@ Tags:`
     }
 
     const response = await this.generateResponse(prompt, context, { provider })
-    
+
     // Extract tags from response
     return response
       .split(',')
@@ -185,11 +187,11 @@ Tags:`
       .slice(0, 6)
   }
 
-  async generateSummary(content: string, maxLength: number = 200, provider: AIProvider = 'gemini'): Promise<string> {
+  async generateSummary(content: string, maxLength = 200, provider: AIProvider = 'gemini'): Promise<string> {
     const prompt = `Create a concise summary of this blog post (max ${maxLength} characters):
 
 CONTENT:
-${content.substring(0, 2000)}...
+${content.slice(0, 2000)}...
 
 Requirements:
 - Maximum ${maxLength} characters
@@ -205,7 +207,7 @@ Summary:`
     }
 
     const response = await this.generateResponse(prompt, context, { provider })
-    return response.substring(0, maxLength).trim()
+    return response.slice(0, Math.max(0, maxLength)).trim()
   }
 
   async generateMetaDescription(title: string, content: string, provider: AIProvider = 'gemini'): Promise<string> {
@@ -214,7 +216,7 @@ Summary:`
 TITLE: ${title}
 
 CONTENT:
-${content.substring(0, 1500)}...
+${content.slice(0, 1500)}...
 
 Requirements:
 - Exactly 120-160 characters
@@ -230,15 +232,15 @@ Meta description:`
     }
 
     const response = await this.generateResponse(prompt, context, { provider })
-    
+
     // Ensure it's within the character limit
     let description = response.trim()
     if (description.length > 160) {
-      description = description.substring(0, 157) + '...'
+      description = description.slice(0, 157) + '...'
     } else if (description.length < 120) {
       description = description + ' - Yuri Cunha\'s Blog'
     }
-    
+
     return description
   }
 

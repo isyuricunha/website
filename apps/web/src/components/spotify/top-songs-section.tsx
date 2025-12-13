@@ -77,6 +77,7 @@ const TopSongsSection = () => {
           <div className='flex items-center justify-between'>
             <p className='text-muted-foreground'>{t('spotify.error')}</p>
             <button
+              type='button'
               onClick={handleRefresh}
               disabled={isRefreshing}
               className='text-sm text-muted-foreground hover:text-foreground disabled:opacity-50'
@@ -100,6 +101,7 @@ const TopSongsSection = () => {
           <div className='flex items-center justify-between'>
             <p className='text-muted-foreground'>{t('spotify.top-songs.no-data')}</p>
             <button
+              type='button'
               onClick={handleRefresh}
               disabled={isRefreshing}
               className='text-sm text-muted-foreground hover:text-foreground disabled:opacity-50'
@@ -124,6 +126,7 @@ const TopSongsSection = () => {
         <div className='mt-3 flex flex-wrap items-center gap-2'>
           <TimeRangeToggle value={timeRange} onChange={setTimeRange} />
           <button
+            type='button'
             onClick={handleExportCsv}
             className='px-2 py-1 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors'
             title={t('spotify.export.csv')}
@@ -131,6 +134,7 @@ const TopSongsSection = () => {
             CSV
           </button>
           <button
+            type='button'
             onClick={handleExportJson}
             className='px-2 py-1 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors'
             title={t('spotify.export.json')}
@@ -138,6 +142,7 @@ const TopSongsSection = () => {
             JSON
           </button>
           <button
+            type='button'
             onClick={handleRefresh}
             disabled={isRefreshing}
             className='text-sm text-muted-foreground hover:text-foreground disabled:opacity-50'

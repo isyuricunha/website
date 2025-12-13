@@ -104,6 +104,7 @@ const MusicStatsSection = () => {
             </CardDescription>
           </div>
           <button
+            type='button'
             onClick={handleRefresh}
             disabled={isRefreshing}
             className='text-xs sm:text-sm text-muted-foreground hover:text-foreground disabled:opacity-50'
@@ -171,10 +172,10 @@ const MusicStatsSection = () => {
                 <span
                   key={genre}
                   className={`px-3 py-1 rounded-full text-xs sm:text-sm font-medium ${index === 0
-                      ? 'bg-primary text-primary-foreground'
-                      : index === 1
-                        ? 'bg-secondary text-secondary-foreground'
-                        : 'bg-muted text-muted-foreground'
+                    ? 'bg-primary text-primary-foreground'
+                    : index === 1
+                      ? 'bg-secondary text-secondary-foreground'
+                      : 'bg-muted text-muted-foreground'
                     }`}
                 >
                   #{index + 1} {genre}

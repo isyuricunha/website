@@ -1,10 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Button } from '@tszhong0411/ui'
-import { 
-  Settings, 
-  RefreshCw, 
+import {
+  Settings,
+  RefreshCw,
   Search,
   Eye,
   EyeOff,
@@ -43,12 +43,24 @@ export const ConfigurationPanel = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedType, setSelectedType] = useState<string>('')
   const [editingConfig, setEditingConfig] = useState<ConfigItem | null>(null)
+  const edit_textarea_ref = useRef<HTMLTextAreaElement | null>(null)
   const [newConfigKey, setNewConfigKey] = useState('')
   const [newConfigValue, setNewConfigValue] = useState('')
   const [newConfigType, setNewConfigType] = useState<'general' | 'seo' | 'social' | 'email' | 'analytics' | 'security' | 'features'>('general')
   const [newConfigDescription, setNewConfigDescription] = useState('')
   const [newConfigIsPublic, setNewConfigIsPublic] = useState(false)
   const [showAddForm, setShowAddForm] = useState(false)
+
+  useEffect(() => {
+    if (!editingConfig) return
+
+    const handle = globalThis.setTimeout(() => {
+      edit_textarea_ref.current?.focus()
+      edit_textarea_ref.current?.select()
+    }, 0)
+
+    return () => globalThis.clearTimeout(handle)
+  }, [editingConfig])
 
   // Fetch site configuration
   const { data: configData, isLoading, refetch } = api.system.getSiteConfig.useQuery()
@@ -151,14 +163,14 @@ export const ConfigurationPanel = () => {
   if (configData?.config) {
     Object.entries(configData.config).forEach(([type, configs]) => {
       if (selectedType && type !== selectedType) return
-      
-      const filtered = configs.filter(config => 
-        !searchTerm || 
+
+      const filtered = configs.filter(config =>
+        !searchTerm ||
         config.key.toLowerCase().includes(searchTerm.toLowerCase()) ||
         config.value?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         config.description?.toLowerCase().includes(searchTerm.toLowerCase())
       )
-      
+
       if (filtered.length > 0) {
         filteredConfig[type] = filtered
       }
@@ -171,7 +183,7 @@ export const ConfigurationPanel = () => {
         <div className="animate-pulse">
           <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-1/4 mb-4"></div>
           <div className="space-y-3">
-            {[...Array(5)].map((_, i) => (
+            {Array.from({ length: 5 }).map((_, i) => (
               <div key={i} className="h-20 bg-gray-200 dark:bg-gray-700 rounded"></div>
             ))}
           </div>
@@ -215,7 +227,7 @@ export const ConfigurationPanel = () => {
               />
             </div>
           </div>
-          
+
           <select
             value={selectedType}
             onChange={(e) => setSelectedType(e.target.value)}
@@ -250,7 +262,7 @@ export const ConfigurationPanel = () => {
                 className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
-            
+
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Value
@@ -263,7 +275,7 @@ export const ConfigurationPanel = () => {
                 className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
-            
+
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Category
@@ -282,7 +294,7 @@ export const ConfigurationPanel = () => {
                 <option value="features">Features</option>
               </select>
             </div>
-            
+
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Description
@@ -296,7 +308,7 @@ export const ConfigurationPanel = () => {
               />
             </div>
           </div>
-          
+
           <div className="mt-4">
             <label className="flex items-center gap-2">
               <input
@@ -310,7 +322,7 @@ export const ConfigurationPanel = () => {
               </span>
             </label>
           </div>
-          
+
           <div className="flex justify-end gap-2 mt-6">
             <Button
               variant="outline"
@@ -342,7 +354,7 @@ export const ConfigurationPanel = () => {
               </span>
             </div>
           </div>
-          
+
           <div className="divide-y divide-gray-200 dark:divide-gray-700">
             {configs.map((config) => (
               <div key={config.id} className="p-6">
@@ -358,16 +370,17 @@ export const ConfigurationPanel = () => {
                         <EyeOff className="w-4 h-4 text-gray-400" />
                       )}
                     </div>
-                    
+
                     {editingConfig?.id === config.id ? (
                       <div className="space-y-3">
                         <textarea
+                          ref={edit_textarea_ref}
                           defaultValue={config.value || ''}
                           onBlur={(e) => {
-                            if (e.target.value !== config.value) {
-                              handleSaveConfig(config, e.target.value)
-                            } else {
+                            if (e.target.value === config.value) {
                               setEditingConfig(null)
+                            } else {
+                              handleSaveConfig(config, e.target.value)
                             }
                           }}
                           onKeyDown={(e) => {
@@ -378,7 +391,6 @@ export const ConfigurationPanel = () => {
                               setEditingConfig(null)
                             }
                           }}
-                          autoFocus
                           className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
                           rows={3}
                         />
@@ -394,18 +406,18 @@ export const ConfigurationPanel = () => {
                         {config.value || <em>No value set</em>}
                       </div>
                     )}
-                    
+
                     {config.description && (
                       <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                         {config.description}
                       </p>
                     )}
-                    
+
                     <div className="text-xs text-gray-400 mt-2">
                       Updated by {config.updatedBy.name} on {formatDate(config.updatedAt)}
                     </div>
                   </div>
-                  
+
                   <div className="flex items-center gap-2 ml-4">
                     <Button
                       size="sm"

@@ -2,7 +2,7 @@
  * Performance optimization utilities
  */
 
-import React from 'react'
+import * as React from 'react'
 import { unstable_cache } from 'next/cache'
 
 // Cache tags for revalidation
@@ -20,7 +20,7 @@ export const CACHE_DURATIONS = {
   SHORT: 60, // 1 minute
   MEDIUM: 300, // 5 minutes
   LONG: 3600, // 1 hour
-  VERY_LONG: 86400 // 24 hours
+  VERY_LONG: 86_400 // 24 hours
 } as const
 
 /**
@@ -41,7 +41,7 @@ export function createCachedFunction<T extends (...args: any[]) => any>(
       revalidate: options.revalidate || CACHE_DURATIONS.MEDIUM,
       tags: options.tags || []
     }
-  ) as T
+  )
 }
 
 /**
@@ -80,13 +80,13 @@ export function createLazyComponent<T extends Record<string, any>>(
  * Preload critical resources
  */
 export function preloadResource(href: string, as: string, type?: string) {
-  if (typeof window !== 'undefined') {
+  if (globalThis.window !== undefined) {
     const link = document.createElement('link')
     link.rel = 'preload'
     link.href = href
     link.as = as
     if (type) link.type = type
-    document.head.appendChild(link)
+    document.head.append(link)
   }
 }
 

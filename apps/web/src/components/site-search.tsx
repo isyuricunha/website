@@ -6,7 +6,7 @@ import { Search, FileText, User, Music, Code, Calendar } from 'lucide-react'
 import { useState, useMemo, useCallback, useEffect } from 'react'
 import { useRouter } from '@tszhong0411/i18n/routing'
 
-import { allPosts , allProjects } from 'content-collections'
+import { allPosts, allProjects } from 'content-collections'
 
 import { HighlightText } from './ui/highlight-text'
 
@@ -136,7 +136,9 @@ const SiteSearch = () => {
 
   // Show recent searches when no query
   const showRecentSearches = !query.trim() && recentSearches.length > 0
-  const allResults = showRecentSearches ? [] : filteredResults
+  const allResults = useMemo(() => {
+    return showRecentSearches ? [] : filteredResults
+  }, [showRecentSearches, filteredResults])
   const totalItems = showRecentSearches ? recentSearches.length : allResults.length
 
   const handleResultClick = useCallback((href: string, searchTerm?: string) => {
@@ -230,6 +232,7 @@ const SiteSearch = () => {
                     </div>
                     {recentSearches.map((searchTerm, index) => (
                       <button
+                        type='button'
                         key={`recent-${searchTerm}-${index}`}
                         onClick={() => handleRecentSearchClick(searchTerm)}
                         className={`w-full text-left p-3 rounded-lg transition-colors group ${selectedIndex === index ? 'bg-accent' : 'hover:bg-muted/50'
@@ -247,6 +250,7 @@ const SiteSearch = () => {
                 {/* Search Results */}
                 {filteredResults.map((result, index) => (
                   <button
+                    type='button'
                     key={`result-${result.href}`}
                     onClick={() => handleResultClick(result.href, query)}
                     className={`w-full text-left p-3 rounded-lg transition-colors group ${selectedIndex === index ? 'bg-accent' : 'hover:bg-muted/50'

@@ -20,10 +20,10 @@ const TimeRangeToggle = ({ value, onChange, className }: Props) => {
       {opts.map((o) => (
         <button
           key={o.key}
+          type='button'
           onClick={() => onChange(o.key)}
-          className={`px-2 py-1 rounded-md transition-colors ${
-            value === o.key ? 'bg-background shadow text-foreground' : 'text-muted-foreground hover:text-foreground'
-          }`}
+          className={`px-2 py-1 rounded-md transition-colors ${value === o.key ? 'bg-background shadow text-foreground' : 'text-muted-foreground hover:text-foreground'
+            }`}
           aria-pressed={value === o.key}
         >
           {o.label}

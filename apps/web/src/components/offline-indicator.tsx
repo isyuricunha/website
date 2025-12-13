@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { WifiOff, Wifi } from 'lucide-react'
 import { toast } from 'sonner'
@@ -10,13 +10,18 @@ export default function OfflineIndicator() {
   const [isOnline, setIsOnline] = useState(true)
   const [showIndicator, setShowIndicator] = useState(false)
   const t = useTranslations('component.offline-indicator')
+  const hide_timeout_ref = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
     const handleOnline = () => {
       setIsOnline(true)
       setShowIndicator(true)
       toast.success(t('toast.restored'))
-      setTimeout(() => setShowIndicator(false), 3000)
+
+      if (hide_timeout_ref.current) {
+        clearTimeout(hide_timeout_ref.current)
+      }
+      hide_timeout_ref.current = setTimeout(() => setShowIndicator(false), 3000)
     }
 
     const handleOffline = () => {
@@ -27,15 +32,20 @@ export default function OfflineIndicator() {
 
     // Set initial state
     setIsOnline(navigator.onLine)
-    
-    window.addEventListener('online', handleOnline)
-    window.addEventListener('offline', handleOffline)
+
+    globalThis.addEventListener('online', handleOnline)
+    globalThis.addEventListener('offline', handleOffline)
 
     return () => {
-      window.removeEventListener('online', handleOnline)
-      window.removeEventListener('offline', handleOffline)
+      globalThis.removeEventListener('online', handleOnline)
+      globalThis.removeEventListener('offline', handleOffline)
+
+      if (hide_timeout_ref.current) {
+        clearTimeout(hide_timeout_ref.current)
+        hide_timeout_ref.current = null
+      }
     }
-  }, [])
+  }, [t])
 
   return (
     <AnimatePresence>
@@ -44,11 +54,10 @@ export default function OfflineIndicator() {
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -50 }}
-          className={`fixed top-4 right-4 z-50 flex items-center gap-2 px-4 py-2 rounded-lg shadow-lg ${
-            isOnline 
-              ? 'bg-green-500 text-white' 
+          className={`fixed top-4 right-4 z-50 flex items-center gap-2 px-4 py-2 rounded-lg shadow-lg ${isOnline
+              ? 'bg-green-500 text-white'
               : 'bg-red-500 text-white'
-          }`}
+            }`}
         >
           {isOnline ? (
             <Wifi className='size-4' />

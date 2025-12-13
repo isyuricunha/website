@@ -86,6 +86,7 @@ const TopArtistsSection = () => {
           <div className='flex items-center justify-between'>
             <p className='text-muted-foreground'>{t('spotify.error')}</p>
             <button
+              type='button'
               onClick={handleRefresh}
               disabled={isRefreshing}
               className='text-sm text-muted-foreground hover:text-foreground disabled:opacity-50'
@@ -109,6 +110,7 @@ const TopArtistsSection = () => {
           <div className='flex items-center justify-between'>
             <p className='text-muted-foreground'>{t('spotify.top-artists.no-data')}</p>
             <button
+              type='button'
               onClick={handleRefresh}
               disabled={isRefreshing}
               className='text-sm text-muted-foreground hover:text-foreground disabled:opacity-50'
@@ -135,10 +137,11 @@ const TopArtistsSection = () => {
           {/* View mode toggle: list vs grid */}
           <div className='inline-flex items-center gap-1 rounded-md bg-muted p-1 text-xs'>
             <button
+              type='button'
               onClick={() => setViewMode('list')}
               className={`p-1.5 rounded-md transition-colors ${viewMode === 'list'
-                  ? 'bg-background shadow text-foreground'
-                  : 'text-muted-foreground hover:text-foreground'
+                ? 'bg-background shadow text-foreground'
+                : 'text-muted-foreground hover:text-foreground'
                 }`}
               title={t('spotify.top-artists.tooltips.view-list')}
               aria-label={t('spotify.top-artists.tooltips.view-list')}
@@ -147,10 +150,11 @@ const TopArtistsSection = () => {
               <List className='h-4 w-4' />
             </button>
             <button
+              type='button'
               onClick={() => setViewMode('grid')}
               className={`p-1.5 rounded-md transition-colors ${viewMode === 'grid'
-                  ? 'bg-background shadow text-foreground'
-                  : 'text-muted-foreground hover:text-foreground'
+                ? 'bg-background shadow text-foreground'
+                : 'text-muted-foreground hover:text-foreground'
                 }`}
               title={t('spotify.top-artists.tooltips.view-grid')}
               aria-label={t('spotify.top-artists.tooltips.view-grid')}
@@ -160,16 +164,18 @@ const TopArtistsSection = () => {
             </button>
           </div>
           <button
+            type='button'
             onClick={() => setIsShuffled(!isShuffled)}
             className={`p-1.5 rounded-md transition-colors ${isShuffled
-                ? 'bg-primary text-primary-foreground'
-                : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+              ? 'bg-primary text-primary-foreground'
+              : 'text-muted-foreground hover:text-foreground hover:bg-muted'
               }`}
             title={isShuffled ? t('spotify.top-artists.tooltips.shuffle-on') : t('spotify.top-artists.tooltips.shuffle-off')}
           >
             <Shuffle className='h-4 w-4' />
           </button>
           <button
+            type='button'
             onClick={handleExportCsv}
             className='px-2 py-1 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors'
             title={t('spotify.export.csv') || 'Export CSV'}
@@ -177,6 +183,7 @@ const TopArtistsSection = () => {
             CSV
           </button>
           <button
+            type='button'
             onClick={handleExportJson}
             className='px-2 py-1 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors'
             title={t('spotify.export.json') || 'Export JSON'}
@@ -184,6 +191,7 @@ const TopArtistsSection = () => {
             JSON
           </button>
           <button
+            type='button'
             onClick={handleRefresh}
             disabled={isRefreshing}
             className='text-sm text-muted-foreground hover:text-foreground disabled:opacity-50'

@@ -21,7 +21,7 @@ const GenreDistribution = () => {
   const [timeRange, setTimeRange] = useState<'short_term' | 'medium_term' | 'long_term'>('short_term')
   const { data: artists, isLoading, error, refetch, isRefetching } = api.spotify.getTopArtistsByRange.useQuery(
     { time_range: timeRange },
-    { staleTime: 300000 }
+    { staleTime: 300_000 }
   )
 
   const topGenres = useMemo(() => {
@@ -47,7 +47,12 @@ const GenreDistribution = () => {
         {/* Controls row beneath title, wraps on small screens */}
         <div className="mt-3 flex flex-wrap items-center gap-2">
           <TimeRangeToggle value={timeRange} onChange={setTimeRange} />
-          <button onClick={() => refetch()} disabled={isRefetching} className="text-sm text-muted-foreground hover:text-foreground disabled:opacity-50">
+          <button
+            type="button"
+            onClick={() => refetch()}
+            disabled={isRefetching}
+            className="text-sm text-muted-foreground hover:text-foreground disabled:opacity-50"
+          >
             {t('spotify.refresh')}
           </button>
         </div>
@@ -61,7 +66,7 @@ const GenreDistribution = () => {
           </div>
         ) : error ? (
           <p className="text-sm text-muted-foreground">{t('spotify.error')}</p>
-        ) : !topGenres.length ? (
+        ) : topGenres.length === 0 ? (
           <p className="text-sm text-muted-foreground">{t('spotify.no-data') || 'No data'}</p>
         ) : (
           <div className="space-y-2">
