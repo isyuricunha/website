@@ -58,9 +58,9 @@ class Logger {
       error:
         error instanceof Error
           ? {
-            message: error.message,
-            stack: this.isDevelopment ? error.stack : undefined
-          }
+              message: error.message,
+              stack: this.isDevelopment ? error.stack : undefined
+            }
           : error
     }
     console.error(this.formatMessage('error', message, errorContext))

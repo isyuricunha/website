@@ -2,9 +2,9 @@ import { env } from '@isyuricunha/env'
 
 export const isProduction = env.NODE_ENV === 'production'
 
-export const SITE_URL = (env.NEXT_PUBLIC_WEBSITE_URL ??
-  (isProduction ? 'https://yuricunha.com' : 'http://localhost:3000'))
-  .replace(/\/$/, '')
+export const SITE_URL = (
+  env.NEXT_PUBLIC_WEBSITE_URL ?? (isProduction ? 'https://yuricunha.com' : 'http://localhost:3000')
+).replace(/\/$/, '')
 
 export const GITHUB_USERNAME = 'isyuricunha'
 
