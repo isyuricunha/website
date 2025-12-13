@@ -6,6 +6,7 @@ import { z } from 'zod'
 import { aiService } from '@/lib/ai/ai-service'
 import { logger } from '@/lib/logger'
 import { ratelimit } from '@/lib/ratelimit'
+import { rate_limit_keys } from '@/lib/rate-limit-keys'
 import { getClientIp } from '@/lib/spam-detection'
 
 const conversationMessageSchema = z.object({
@@ -36,7 +37,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const ip = getClientIp(req.headers)
-    const { success } = await ratelimit.limit(`ai_chat:${ip}`)
+    const { success } = await ratelimit.limit(rate_limit_keys.ai_chat(ip))
 
     if (!success) {
       return NextResponse.json(

@@ -1,35 +1,37 @@
 import type { NextRequest } from 'next/server'
 
 import { NextResponse } from 'next/server'
+import { z } from 'zod'
 
 import { aiService } from '@/lib/ai/ai-service'
 import { BlogService } from '@/lib/blog/blog-service'
 import { logger } from '@/lib/logger'
 import { ratelimit } from '@/lib/ratelimit'
+import { rate_limit_keys } from '@/lib/rate-limit-keys'
 import { getClientIp } from '@/lib/spam-detection'
 
 const SUPPORTED_LOCALES = ['en', 'pt', 'fr', 'de', 'ja', 'zh']
+
+const requestSchema = z.object({
+  slug: z.string().min(1),
+  sourceLocale: z.string().min(1),
+  targetLocales: z.array(z.string().min(1)).optional(),
+  provider: z.enum(['gemini', 'ollama']).optional().default('ollama')
+})
 
 export async function POST(request: NextRequest) {
   try {
     // Rate limiting
     const ip = getClientIp(request.headers)
-    const { success } = await ratelimit.limit(ip)
+    const { success } = await ratelimit.limit(rate_limit_keys.admin_translate(ip))
 
     if (!success) {
       return NextResponse.json({ error: 'Rate limit exceeded' }, { status: 429 })
     }
 
     const body = await request.json()
-    const { slug, sourceLocale, targetLocales, provider = 'ollama' } = body
-
-    // Validation
-    if (!slug || !sourceLocale) {
-      return NextResponse.json(
-        { error: 'Missing required fields: slug, sourceLocale' },
-        { status: 400 }
-      )
-    }
+    const parsed = requestSchema.parse(body)
+    const { slug, sourceLocale, targetLocales, provider } = parsed
 
     // Get source post
     const sourcePost = await BlogService.getPost(slug, sourceLocale)
@@ -116,6 +118,13 @@ export async function POST(request: NextRequest) {
       sourceLocale
     })
   } catch (error) {
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        { error: 'Invalid request format', details: error.issues },
+        { status: 400 }
+      )
+    }
+
     logger.error('Error in translation', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }

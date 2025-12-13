@@ -8,6 +8,7 @@ import { z } from 'zod'
 
 import { logger } from '@/lib/logger'
 import { contactRatelimit } from '@/lib/ratelimit'
+import { rate_limit_keys } from '@/lib/rate-limit-keys'
 import { checkRateLimit, getClientIp, verifyTurnstileToken } from '@/lib/spam-detection'
 
 const resend = new Resend(env.RESEND_API_KEY)
@@ -48,7 +49,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Check rate limit
-    const { success } = await contactRatelimit.limit(`contact:${clientIp}`)
+    const { success } = await contactRatelimit.limit(rate_limit_keys.contact_submit(clientIp))
     if (!success) {
       logger.warn('Rate limit exceeded', { ip: clientIp })
       return Response.json(

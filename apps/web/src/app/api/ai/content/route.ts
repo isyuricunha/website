@@ -3,6 +3,9 @@ import { z } from 'zod'
 
 import { aiService } from '@/lib/ai/ai-service'
 import { logger } from '@/lib/logger'
+import { ratelimit } from '@/lib/ratelimit'
+import { rate_limit_keys } from '@/lib/rate-limit-keys'
+import { getClientIp } from '@/lib/spam-detection'
 
 const ContentGenerationSchema = z.object({
   action: z.enum(['tags', 'summary', 'meta', 'translate']),
@@ -14,9 +17,17 @@ const ContentGenerationSchema = z.object({
   toLang: z.string().optional().default('pt'),
   maxLength: z.number().min(50).max(500).optional().default(200)
 })
+type ContentResult = string | string[]
 
 export async function POST(request: NextRequest) {
   try {
+    const ip = getClientIp(request.headers)
+    const { success } = await ratelimit.limit(rate_limit_keys.ai_content(ip))
+
+    if (!success) {
+      return NextResponse.json({ error: 'Rate limit exceeded. Please try again later.' }, { status: 429 })
+    }
+
     // Check if any AI provider is available
     const availableProviders = aiService.getAvailableProviders()
     if (availableProviders.length === 0) {
@@ -40,17 +51,25 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    let result: any
-
     switch (action) {
       case 'tags': {
-        result = await aiService.generateTags(content, existingTags, provider)
-        break
+        const result: ContentResult = await aiService.generateTags(content, existingTags, provider)
+        return NextResponse.json({
+          action,
+          result,
+          provider,
+          timestamp: new Date().toISOString()
+        })
       }
 
       case 'summary': {
-        result = await aiService.generateSummary(content, maxLength, provider)
-        break
+        const result: ContentResult = await aiService.generateSummary(content, maxLength, provider)
+        return NextResponse.json({
+          action,
+          result,
+          provider,
+          timestamp: new Date().toISOString()
+        })
       }
 
       case 'meta': {
@@ -60,26 +79,25 @@ export async function POST(request: NextRequest) {
             { status: 400 }
           )
         }
-        result = await aiService.generateMetaDescription(title, content, provider)
-        break
+        const result: ContentResult = await aiService.generateMetaDescription(title, content, provider)
+        return NextResponse.json({
+          action,
+          result,
+          provider,
+          timestamp: new Date().toISOString()
+        })
       }
 
       case 'translate': {
-        result = await aiService.translateContent(content, fromLang, toLang, provider)
-        break
-      }
-
-      default: {
-        return NextResponse.json({ error: 'Invalid action' }, { status: 400 })
+        const result: ContentResult = await aiService.translateContent(content, fromLang, toLang, provider)
+        return NextResponse.json({
+          action,
+          result,
+          provider,
+          timestamp: new Date().toISOString()
+        })
       }
     }
-
-    return NextResponse.json({
-      action,
-      result,
-      provider,
-      timestamp: new Date().toISOString()
-    })
   } catch (error) {
     logger.error('Content generation API error', error)
 

@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { logger } from '@/lib/logger'
 
+import { ratelimit } from '@/lib/ratelimit'
+import { rate_limit_keys } from '@/lib/rate-limit-keys'
+import { getClientIp } from '@/lib/spam-detection'
 import { resendService } from '@/lib/resend-service'
 
 const subscribeSchema = z.object({
@@ -10,6 +13,16 @@ const subscribeSchema = z.object({
 
 export async function POST(request: NextRequest) {
   try {
+    const ip = getClientIp(request.headers)
+    const { success } = await ratelimit.limit(rate_limit_keys.newsletter_subscribe(ip))
+
+    if (!success) {
+      return NextResponse.json(
+        { error: 'Rate limit exceeded. Please try again later.' },
+        { status: 429 }
+      )
+    }
+
     const body = await request.json()
     const { email } = subscribeSchema.parse(body)
 
