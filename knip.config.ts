@@ -12,7 +12,6 @@ const config: KnipConfig = {
     config: ['vitest.{config,shared,workspace}.ts']
   },
   ignoreDependencies: [
-    'prettier-plugin-*',
     'sharp',
     // Can't detect `pnpm with-env tsx`
     'tsx'

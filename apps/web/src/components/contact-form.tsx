@@ -265,7 +265,7 @@ export default function ContactForm() {
             <div className='flex justify-center'>
               <Turnstile
                 siteKey={env.NEXT_PUBLIC_TURNSTILE_SITE_KEY}
-                onSuccess={(token) => setTurnstileToken(token)}
+                onSuccess={(token: string) => setTurnstileToken(token)}
                 onError={() => {
                   setTurnstileToken(null)
                   setSubmitStatus('error')

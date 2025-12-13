@@ -104,11 +104,5 @@
   "simple-git-hooks": {
     "pre-commit": "pnpm lint-staged --concurrent false",
     "commit-msg": "pnpm commitlint --edit $1 && pnpm check:spelling $1"
-  },
-  "dependencies": {
-    "@marsidev/react-turnstile": "^1.4.0",
-    "prettier-plugin-sort-json": "^4.1.1",
-    "sonner": "^2.0.7",
-    "speakeasy": "^2.0.0"
   }
 }

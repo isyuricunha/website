@@ -21,6 +21,7 @@
     "with-env": "dotenv -e ../../.env.local --"
   },
   "dependencies": {
+    "@marsidev/react-turnstile": "^1.4.0",
     "@google/generative-ai": "^0.24.1",
     "@hookform/resolvers": "^5.2.2",
     "@icons-pack/react-simple-icons": "12.0.0",
@@ -71,6 +72,8 @@
     "resend": "^4.1.2",
     "rss": "^1.2.2",
     "shiki": "^3.1.0",
+    "speakeasy": "^2.0.0",
+    "sonner": "^2.0.7",
     "superjson": "^2.2.2",
     "tinycolor2": "^1.6.0",
     "use-debounce": "^10.0.4",

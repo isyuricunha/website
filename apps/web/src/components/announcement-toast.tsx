@@ -100,7 +100,7 @@ export default function AnnouncementToast() {
       if (!shownToasts.includes(announcement.id)) {
         const styles = getAnnouncementStyles(announcement.type)
         toast.custom(
-          (t) => (
+          (t: string | number) => (
             <div className='border-border/50 bg-background/95 animate-in slide-in-from-top-5 fade-in group relative max-w-md overflow-hidden rounded-xl border shadow-2xl backdrop-blur-xl'>
               <div className='from-primary/5 absolute inset-0 bg-gradient-to-br via-transparent to-transparent' />
               <div className='relative p-5'>
