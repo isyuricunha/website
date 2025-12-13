@@ -50,7 +50,7 @@ describe('/api/ai/chat', () => {
     expect(await res.json()).toEqual({
       error: 'Rate limit exceeded. Please try again later.'
     })
-    expect(ratelimit.limit).toHaveBeenCalledWith('ai_chat:1.2.3.4')
+    expect(ratelimit.limit).toHaveBeenCalledWith('ai:chat:1.2.3.4')
   })
 
   it('returns 400 on invalid payload (zod)', async () => {
