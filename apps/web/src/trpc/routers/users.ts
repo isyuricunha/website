@@ -13,6 +13,22 @@ import { AuditLogger, getIpFromHeaders, getUserAgentFromHeaders } from '@/lib/au
 import { logger } from '@/lib/logger'
 import { adminProcedure, createTRPCRouter, publicProcedure } from '../trpc'
 
+const get_site_url = (headers: Headers) => {
+  const configured_url = env.NEXT_PUBLIC_WEBSITE_URL
+  if (configured_url) {
+    return configured_url.replace(/\/$/, '')
+  }
+
+  const host = headers.get('x-forwarded-host') ?? headers.get('host')
+  if (host) {
+    const protocol =
+      headers.get('x-forwarded-proto') ?? (process.env.NODE_ENV === 'production' ? 'https' : 'http')
+    return `${protocol}://${host}`
+  }
+
+  return `http://localhost:${process.env.PORT ?? 3000}`
+}
+
 export const usersRouter = createTRPCRouter({
   getUsers: adminProcedure.query(async ({ ctx }) => {
     const result = await ctx.db.query.users.findMany({
@@ -336,7 +352,7 @@ export const usersRouter = createTRPCRouter({
         })
 
         // Create reset URL
-        const baseUrl = env.NEXT_PUBLIC_WEBSITE_URL || 'http://localhost:3000'
+        const baseUrl = get_site_url(ctx.headers)
         const resetUrl = `${baseUrl}/reset-password?token=${token}`
 
         // Send email if Resend is configured
@@ -401,7 +417,7 @@ export const usersRouter = createTRPCRouter({
         })
 
         // Create reset URL with fallback for development
-        const baseUrl = process.env.NEXT_PUBLIC_WEBSITE_URL || 'http://localhost:3000'
+        const baseUrl = get_site_url(ctx.headers)
         const resetUrl = `${baseUrl}/reset-password?token=${token}`
 
         // Send email if Resend is configured
