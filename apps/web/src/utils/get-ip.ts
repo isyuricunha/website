@@ -1,3 +1,6 @@
+import { getClientIp } from '@/lib/spam-detection'
+
 export const getIp = (headersList: Headers) => {
-  return headersList.get('x-forwarded-for') ?? '0.0.0.0'
+  const ip = getClientIp(headersList)
+  return ip === 'unknown' ? '0.0.0.0' : ip
 }

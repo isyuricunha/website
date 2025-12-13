@@ -47,20 +47,41 @@ export function checkRateLimit(ip: string): { allowed: boolean; retryAfter?: num
  * Get client IP from request headers
  */
 export function getClientIp(headers: Headers): string {
-  // Check various headers that might contain the real IP
-  const forwarded = headers.get('x-forwarded-for')
-  if (forwarded) {
-    const first = forwarded.split(',')[0]
-    return first ? first.trim() : 'unknown'
+  const normalizeIp = (value: string | null): string | null => {
+    const trimmed = value?.trim()
+    if (!trimmed) return null
+
+    const first = trimmed.split(',')[0]?.trim()
+    if (!first) return null
+
+    const bracketedIpv6 = /^\[(.+)]:(\d+)$/.exec(first)
+    if (bracketedIpv6?.[1]) return bracketedIpv6[1]
+
+    const looksLikeIpv4WithPort = first.includes('.') && first.includes(':')
+    if (looksLikeIpv4WithPort) {
+      const [ip] = first.split(':')
+      return ip?.trim() || null
+    }
+
+    return first
   }
 
-  const realIp = headers.get('x-real-ip')
-  if (realIp) {
-    return realIp
-  }
+  const cfConnectingIp = normalizeIp(headers.get('cf-connecting-ip'))
+  if (cfConnectingIp) return cfConnectingIp
 
-  // Fallback
-  return headers.get('x-client-ip') || 'unknown'
+  const trueClientIp = normalizeIp(headers.get('true-client-ip'))
+  if (trueClientIp) return trueClientIp
+
+  const vercelForwardedFor = normalizeIp(headers.get('x-vercel-forwarded-for'))
+  if (vercelForwardedFor) return vercelForwardedFor
+
+  const forwardedFor = normalizeIp(headers.get('x-forwarded-for'))
+  if (forwardedFor) return forwardedFor
+
+  const realIp = normalizeIp(headers.get('x-real-ip'))
+  if (realIp) return realIp
+
+  return normalizeIp(headers.get('x-client-ip')) ?? 'unknown'
 }
 
 /**
