@@ -43,7 +43,6 @@ export function checkRateLimit(ip: string): { allowed: boolean; retryAfter?: num
   return { allowed: true }
 }
 
-
 /**
  * Get client IP from request headers
  */
@@ -83,7 +82,7 @@ export async function verifyTurnstileToken(
 
     const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
       method: 'POST',
-      body: formData,
+      body: formData
     })
 
     const data = await response.json()

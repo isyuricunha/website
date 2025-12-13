@@ -18,12 +18,14 @@ function generateSlug(title: string): string {
 export const contentRouter = createTRPCRouter({
   // Get all posts for admin management
   getPosts: adminProcedure
-    .input(z.object({
-      search: z.string().optional(),
-      status: z.enum(['draft', 'published', 'archived']).optional(),
-      limit: z.number().min(1).max(100).default(20),
-      offset: z.number().min(0).default(0)
-    }))
+    .input(
+      z.object({
+        search: z.string().optional(),
+        status: z.enum(['draft', 'published', 'archived']).optional(),
+        limit: z.number().min(1).max(100).default(20),
+        offset: z.number().min(0).default(0)
+      })
+    )
     .query(async ({ ctx, input }) => {
       try {
         const conditions = []
@@ -68,7 +70,7 @@ export const contentRouter = createTRPCRouter({
         })
 
         return {
-          posts: allPosts.map(post => ({
+          posts: allPosts.map((post) => ({
             ...post,
             tags: post.tags ? JSON.parse(post.tags) : []
           })),
@@ -85,60 +87,60 @@ export const contentRouter = createTRPCRouter({
     }),
 
   // Get single post for editing
-  getPost: adminProcedure
-    .input(z.object({ id: z.string() }))
-    .query(async ({ ctx, input }) => {
-      try {
-        const post = await ctx.db.query.posts.findFirst({
-          where: eq(posts.id, input.id),
-          with: {
-            author: {
-              columns: {
-                id: true,
-                name: true,
-                email: true,
-                image: true
-              }
+  getPost: adminProcedure.input(z.object({ id: z.string() })).query(async ({ ctx, input }) => {
+    try {
+      const post = await ctx.db.query.posts.findFirst({
+        where: eq(posts.id, input.id),
+        with: {
+          author: {
+            columns: {
+              id: true,
+              name: true,
+              email: true,
+              image: true
             }
           }
-        })
+        }
+      })
 
-        if (!post) {
-          throw new TRPCError({
-            code: 'NOT_FOUND',
-            message: 'Post not found'
-          })
-        }
-
-        return {
-          ...post,
-          tags: post.tags ? JSON.parse(post.tags) : []
-        }
-      } catch (error) {
-        if (error instanceof TRPCError) {
-          throw error
-        }
-        logger.error('Error fetching post', error)
+      if (!post) {
         throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: 'Failed to fetch post'
+          code: 'NOT_FOUND',
+          message: 'Post not found'
         })
       }
-    }),
+
+      return {
+        ...post,
+        tags: post.tags ? JSON.parse(post.tags) : []
+      }
+    } catch (error) {
+      if (error instanceof TRPCError) {
+        throw error
+      }
+      logger.error('Error fetching post', error)
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Failed to fetch post'
+      })
+    }
+  }),
 
   // Create new post
   createPost: adminProcedure
-    .input(z.object({
-      title: z.string().min(1).max(200),
-      description: z.string().optional(),
-      content: z.string().optional(),
-      excerpt: z.string().optional(),
-      coverImage: z.string().optional(),
-      tags: z.array(z.string()).default([]),
-      status: z.enum(['draft', 'published', 'archived']).default('draft'),
-      featured: z.boolean().default(false),
-      slug: z.string().optional()
-    }))
+    .input(
+      z.object({
+        title: z.string().min(1).max(200),
+        description: z.string().optional(),
+        content: z.string().optional(),
+        excerpt: z.string().optional(),
+        coverImage: z.string().optional(),
+        tags: z.array(z.string()).default([]),
+        status: z.enum(['draft', 'published', 'archived']).default('draft'),
+        featured: z.boolean().default(false),
+        slug: z.string().optional()
+      })
+    )
     .mutation(async ({ ctx, input }) => {
       try {
         const auditLogger = new AuditLogger(ctx.db)
@@ -211,18 +213,20 @@ export const contentRouter = createTRPCRouter({
 
   // Update existing post
   updatePost: adminProcedure
-    .input(z.object({
-      id: z.string(),
-      title: z.string().min(1).max(200).optional(),
-      description: z.string().optional(),
-      content: z.string().optional(),
-      excerpt: z.string().optional(),
-      coverImage: z.string().optional(),
-      tags: z.array(z.string()).optional(),
-      status: z.enum(['draft', 'published', 'archived']).optional(),
-      featured: z.boolean().optional(),
-      slug: z.string().optional()
-    }))
+    .input(
+      z.object({
+        id: z.string(),
+        title: z.string().min(1).max(200).optional(),
+        description: z.string().optional(),
+        content: z.string().optional(),
+        excerpt: z.string().optional(),
+        coverImage: z.string().optional(),
+        tags: z.array(z.string()).optional(),
+        status: z.enum(['draft', 'published', 'archived']).optional(),
+        featured: z.boolean().optional(),
+        slug: z.string().optional()
+      })
+    )
     .mutation(async ({ ctx, input }) => {
       try {
         const auditLogger = new AuditLogger(ctx.db)
@@ -246,10 +250,7 @@ export const contentRouter = createTRPCRouter({
         // Check slug uniqueness if slug is being updated
         if (updateData.slug && updateData.slug !== existingPost.slug) {
           const slugExists = await ctx.db.query.posts.findFirst({
-            where: and(
-              eq(posts.slug, updateData.slug),
-              eq(posts.id, id)
-            )
+            where: and(eq(posts.slug, updateData.slug), eq(posts.id, id))
           })
 
           if (slugExists) {
@@ -279,10 +280,7 @@ export const contentRouter = createTRPCRouter({
 
         filteredUpdateData.updatedAt = new Date()
 
-        await ctx.db
-          .update(posts)
-          .set(filteredUpdateData)
-          .where(eq(posts.id, id))
+        await ctx.db.update(posts).set(filteredUpdateData).where(eq(posts.id, id))
 
         // Log the audit trail
         await auditLogger.log({
@@ -380,17 +378,17 @@ export const contentRouter = createTRPCRouter({
       })
 
       const totalPosts = allPosts.length
-      const publishedPosts = allPosts.filter(p => p.status === 'published').length
-      const draftPosts = allPosts.filter(p => p.status === 'draft').length
-      const archivedPosts = allPosts.filter(p => p.status === 'archived').length
-      const featuredPosts = allPosts.filter(p => p.featured).length
+      const publishedPosts = allPosts.filter((p) => p.status === 'published').length
+      const draftPosts = allPosts.filter((p) => p.status === 'draft').length
+      const archivedPosts = allPosts.filter((p) => p.status === 'archived').length
+      const featuredPosts = allPosts.filter((p) => p.featured).length
       const totalViews = allPosts.reduce((sum, p) => sum + p.views, 0)
       const totalLikes = allPosts.reduce((sum, p) => sum + p.likes, 0)
 
       // Recent posts (last 30 days)
       const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
-      const recentPosts = allPosts.filter(p =>
-        p.createdAt && new Date(p.createdAt) >= thirtyDaysAgo
+      const recentPosts = allPosts.filter(
+        (p) => p.createdAt && new Date(p.createdAt) >= thirtyDaysAgo
       ).length
 
       return {

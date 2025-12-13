@@ -132,9 +132,7 @@ const Carousel = (props: CarouselRootProps) => {
   )
 
   return (
-    <CarouselContext
-      value={context_value}
-    >
+    <CarouselContext value={context_value}>
       <div
         onKeyDownCapture={handleKeyDown}
         className={cn('relative', className)}

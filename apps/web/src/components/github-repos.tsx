@@ -33,27 +33,25 @@ const GithubRepoCard = ({ repo }: { repo: Repo }) => {
   return (
     <Link
       href={repo.url}
-      className='group rounded-lg border border-gray-200 p-3 transition-all hover:shadow-md hover:border-primary/20 dark:border-zinc-700 dark:hover:border-primary/20 relative overflow-hidden'
+      className='hover:border-primary/20 dark:hover:border-primary/20 group relative overflow-hidden rounded-lg border border-gray-200 p-3 transition-all hover:shadow-md dark:border-zinc-700'
     >
       {/* External link indicator */}
-      <div className='absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity'>
-        <ExternalLink className='h-4 w-4 text-muted-foreground' />
+      <div className='absolute right-3 top-3 opacity-0 transition-opacity group-hover:opacity-100'>
+        <ExternalLink className='text-muted-foreground h-4 w-4' />
       </div>
 
       <div className='space-y-2'>
         <div className='space-y-1'>
-          <h3 className='text-sm font-medium group-hover:text-primary transition-colors pr-8 line-clamp-1'>
+          <h3 className='group-hover:text-primary line-clamp-1 pr-8 text-sm font-medium transition-colors'>
             {repo.name}
           </h3>
           {repo.description && (
-            <p className='text-xs text-muted-foreground line-clamp-2'>
-              {repo.description}
-            </p>
+            <p className='text-muted-foreground line-clamp-2 text-xs'>{repo.description}</p>
           )}
         </div>
 
         {/* GitHub Stats */}
-        <div className='flex items-center gap-3 text-xs text-muted-foreground'>
+        <div className='text-muted-foreground flex items-center gap-3 text-xs'>
           <div className='flex items-center gap-1'>
             <Star className='h-3 w-3 text-yellow-500' />
             <span>{repo.stargazersCount}</span>
@@ -69,7 +67,7 @@ const GithubRepoCard = ({ repo }: { repo: Repo }) => {
         {/* Language */}
         <div className='flex items-center justify-between'>
           {repo.language && (
-            <Badge variant='secondary' className='text-xs px-2 py-0.5'>
+            <Badge variant='secondary' className='px-2 py-0.5 text-xs'>
               {repo.language}
             </Badge>
           )}

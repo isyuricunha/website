@@ -43,11 +43,11 @@ const posts = defineCollection({
   }),
   transform: async (document, context) => {
     const baseTransform = await transform(document, context)
-    
+
     // Calculate reading time (average 200 words per minute)
     const wordCount = document.content.split(/\s+/).length
     const readingTime = Math.ceil(wordCount / 200)
-    
+
     return {
       ...baseTransform,
       readingTime
@@ -75,7 +75,7 @@ const projects = defineCollection({
   }),
   transform: async (document, context) => {
     const baseTransform = await transform(document, context)
-    
+
     return {
       ...baseTransform,
       repository: document.github || document.repository // Ensure compatibility

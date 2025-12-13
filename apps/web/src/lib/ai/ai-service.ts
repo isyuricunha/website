@@ -110,11 +110,11 @@ class AIService {
 
   private buildSystemPrompt(context: SiteContext, message: string): string {
     const localeInstructions = {
-      'en': 'Respond in English',
-      'pt': 'Responda em português brasileiro',
-      'fr': 'Répondez en français',
-      'de': 'Antworten Sie auf Deutsch',
-      'zh': '请用中文回答'
+      en: 'Respond in English',
+      pt: 'Responda em português brasileiro',
+      fr: 'Répondez en français',
+      de: 'Antworten Sie auf Deutsch',
+      zh: '请用中文回答'
     }
 
     return `You are Yue, the friendly virtual mascot created by Yuri Cunha for his personal website.
@@ -130,8 +130,8 @@ Context about the website:
 - Owner: Yuri Cunha, a Database Administrator (DBA) and Server Infrastructure Specialist from Brazil
 - Focus: Modern web development, server/warehouse infrastructure, database optimization, and tech projects
 - Current page: ${context.currentPage}
-- Recent posts: ${context.recentPosts?.map(p => p.title).join(', ') || 'none'}
-- Featured projects: ${context.projects?.map(p => p.name).join(', ') || 'none'}
+- Recent posts: ${context.recentPosts?.map((p) => p.title).join(', ') || 'none'}
+- Featured projects: ${context.projects?.map((p) => p.name).join(', ') || 'none'}
 
 About Yuri:
 - Database Administrator (DBA) and Server Infrastructure Specialist
@@ -156,7 +156,11 @@ User message: ${message}`
   }
 
   // Content generation methods
-  async generateTags(content: string, existingTags: string[] = [], provider: AIProvider = 'gemini'): Promise<string[]> {
+  async generateTags(
+    content: string,
+    existingTags: string[] = [],
+    provider: AIProvider = 'gemini'
+  ): Promise<string[]> {
     const prompt = `Analyze this blog post content and suggest 3-6 relevant tags.
 
 CONTENT:
@@ -182,12 +186,21 @@ Tags:`
     // Extract tags from response
     return response
       .split(',')
-      .map(tag => tag.trim().toLowerCase().replace(/[^a-z0-9-]/g, ''))
-      .filter(tag => tag.length > 0)
+      .map((tag) =>
+        tag
+          .trim()
+          .toLowerCase()
+          .replace(/[^a-z0-9-]/g, '')
+      )
+      .filter((tag) => tag.length > 0)
       .slice(0, 6)
   }
 
-  async generateSummary(content: string, maxLength = 200, provider: AIProvider = 'gemini'): Promise<string> {
+  async generateSummary(
+    content: string,
+    maxLength = 200,
+    provider: AIProvider = 'gemini'
+  ): Promise<string> {
     const prompt = `Create a concise summary of this blog post (max ${maxLength} characters):
 
 CONTENT:
@@ -210,7 +223,11 @@ Summary:`
     return response.slice(0, Math.max(0, maxLength)).trim()
   }
 
-  async generateMetaDescription(title: string, content: string, provider: AIProvider = 'gemini'): Promise<string> {
+  async generateMetaDescription(
+    title: string,
+    content: string,
+    provider: AIProvider = 'gemini'
+  ): Promise<string> {
     const prompt = `Create an SEO-optimized meta description (120-160 characters) for this blog post:
 
 TITLE: ${title}
@@ -238,19 +255,24 @@ Meta description:`
     if (description.length > 160) {
       description = description.slice(0, 157) + '...'
     } else if (description.length < 120) {
-      description = description + ' - Yuri Cunha\'s Blog'
+      description = description + " - Yuri Cunha's Blog"
     }
 
     return description
   }
 
-  async translateContent(content: string, fromLang: string, toLang: string, provider: AIProvider = 'gemini'): Promise<string> {
+  async translateContent(
+    content: string,
+    fromLang: string,
+    toLang: string,
+    provider: AIProvider = 'gemini'
+  ): Promise<string> {
     const langNames = {
-      'en': 'English',
-      'pt': 'Portuguese (Brazilian)',
-      'fr': 'French',
-      'de': 'German',
-      'zh': 'Chinese (Simplified)'
+      en: 'English',
+      pt: 'Portuguese (Brazilian)',
+      fr: 'French',
+      de: 'German',
+      zh: 'Chinese (Simplified)'
     }
 
     const prompt = `Translate this content from ${langNames[fromLang as keyof typeof langNames]} to ${langNames[toLang as keyof typeof langNames]}:

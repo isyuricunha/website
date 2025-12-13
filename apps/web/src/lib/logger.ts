@@ -53,10 +53,13 @@ class Logger {
   error(message: string, error?: unknown, context?: LogContext): void {
     const errorContext = {
       ...context,
-      error: error instanceof Error ? {
-        message: error.message,
-        stack: this.isDevelopment ? error.stack : undefined
-      } : error
+      error:
+        error instanceof Error
+          ? {
+              message: error.message,
+              stack: this.isDevelopment ? error.stack : undefined
+            }
+          : error
     }
     console.error(this.formatMessage('error', message, errorContext))
   }

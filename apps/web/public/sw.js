@@ -5,14 +5,7 @@ const STATIC_CACHE = 'static-v1'
 const DYNAMIC_CACHE = 'dynamic-v1'
 
 // Critical pages to cache for offline access
-const CRITICAL_PAGES = [
-  '/',
-  '/blog',
-  '/projects',
-  '/about',
-  '/uses',
-  '/offline'
-]
+const CRITICAL_PAGES = ['/', '/blog', '/projects', '/about', '/uses', '/offline']
 
 // Static assets to cache
 const STATIC_ASSETS = [
@@ -41,19 +34,23 @@ self.addEventListener('install', (event) => {
 // Activate event - clean up old caches
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames
-          .filter((cacheName) => 
-            cacheName !== STATIC_CACHE && 
-            cacheName !== DYNAMIC_CACHE &&
-            cacheName !== CACHE_NAME
-          )
-          .map((cacheName) => caches.delete(cacheName))
-      )
-    }).then(() => {
-      self.clients.claim()
-    })
+    caches
+      .keys()
+      .then((cacheNames) => {
+        return Promise.all(
+          cacheNames
+            .filter(
+              (cacheName) =>
+                cacheName !== STATIC_CACHE &&
+                cacheName !== DYNAMIC_CACHE &&
+                cacheName !== CACHE_NAME
+            )
+            .map((cacheName) => caches.delete(cacheName))
+        )
+      })
+      .then(() => {
+        self.clients.claim()
+      })
   )
 })
 
@@ -78,40 +75,46 @@ self.addEventListener('fetch', (event) => {
       // Return cached version if available
       if (cachedResponse) {
         // Update cache in background for next time
-        fetch(request).then((response) => {
-          if (response.ok) {
-            const responseClone = response.clone()
-            caches.open(DYNAMIC_CACHE).then((cache) => {
-              cache.put(request, responseClone)
-            })
-          }
-        }).catch(() => {
-          // Network failed, but we have cache
-        })
-        
+        fetch(request)
+          .then((response) => {
+            if (response.ok) {
+              const responseClone = response.clone()
+              caches.open(DYNAMIC_CACHE).then((cache) => {
+                cache.put(request, responseClone)
+              })
+            }
+          })
+          .catch(() => {
+            // Network failed, but we have cache
+          })
+
         return cachedResponse
       }
 
       // Try network first
-      return fetch(request).then((response) => {
-        // Don't cache non-successful responses
-        if (!response.ok) {
-          throw new Error('Network response was not ok')
-        }
+      return fetch(request)
+        .then((response) => {
+          // Don't cache non-successful responses
+          if (!response.ok) {
+            throw new Error('Network response was not ok')
+          }
 
-        const responseClone = response.clone()
-        
-        // Cache successful responses
-        caches.open(DYNAMIC_CACHE).then((cache) => {
-          cache.put(request, responseClone)
+          const responseClone = response.clone()
+
+          // Cache successful responses
+          caches.open(DYNAMIC_CACHE).then((cache) => {
+            cache.put(request, responseClone)
+          })
+
+          return response
         })
-
-        return response
-      }).catch(() => {
-        // Network failed and no cache - show offline page for navigation requests
-        if (request.mode === 'navigate') {
-          return caches.match('/offline') || new Response(
-            `<!DOCTYPE html>
+        .catch(() => {
+          // Network failed and no cache - show offline page for navigation requests
+          if (request.mode === 'navigate') {
+            return (
+              caches.match('/offline') ||
+              new Response(
+                `<!DOCTYPE html>
             <html>
             <head>
               <title>Offline - Yuri Cunha</title>
@@ -131,15 +134,16 @@ self.addEventListener('fetch', (event) => {
               </div>
             </body>
             </html>`,
-            {
-              headers: { 'Content-Type': 'text/html' }
-            }
-          )
-        }
-        
-        // For other requests, just fail
-        throw new Error('Network request failed and no cache available')
-      })
+                {
+                  headers: { 'Content-Type': 'text/html' }
+                }
+              )
+            )
+          }
+
+          // For other requests, just fail
+          throw new Error('Network request failed and no cache available')
+        })
     })
   )
 })
@@ -158,7 +162,7 @@ self.addEventListener('sync', (event) => {
 self.addEventListener('push', (event) => {
   if (event.data) {
     const data = event.data.json()
-    
+
     event.waitUntil(
       self.registration.showNotification(data.title, {
         body: data.body,
@@ -174,8 +178,6 @@ self.addEventListener('push', (event) => {
 // Notification click handler
 self.addEventListener('notificationclick', (event) => {
   event.notification.close()
-  
-  event.waitUntil(
-    self.clients.openWindow(event.notification.data || '/')
-  )
+
+  event.waitUntil(self.clients.openWindow(event.notification.data || '/'))
 })

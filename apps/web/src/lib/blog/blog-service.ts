@@ -36,7 +36,7 @@ export const BlogService = {
 
     try {
       const files = await fs.readdir(localeDir)
-      const mdxFiles = files.filter(file => file.endsWith('.mdx'))
+      const mdxFiles = files.filter((file) => file.endsWith('.mdx'))
 
       const posts = await Promise.all(
         mdxFiles.map(async (file) => {
@@ -170,7 +170,7 @@ export const BlogService = {
     const allPosts = await this.getAllPosts()
     const groupedPosts: Record<string, BlogPostMetadata[]> = {}
 
-    allPosts.forEach(post => {
+    allPosts.forEach((post) => {
       const slug = post.slug
       const group = groupedPosts[slug] ?? []
       if (!groupedPosts[slug]) {
@@ -192,5 +192,5 @@ export const BlogService = {
       .replace(/\s+/g, '-')
       .replace(/-+/g, '-')
       .trim()
-  },
-};
+  }
+}

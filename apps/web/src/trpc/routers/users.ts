@@ -206,14 +206,16 @@ export const usersRouter = createTRPCRouter({
     }),
 
   updateUser: adminProcedure
-    .input(z.object({
-      userId: z.string(),
-      name: z.string().optional(),
-      username: z.string().optional(),
-      email: z.string().email().optional(),
-      role: z.enum(['user', 'admin']).optional(),
-      image: z.string().optional()
-    }))
+    .input(
+      z.object({
+        userId: z.string(),
+        name: z.string().optional(),
+        username: z.string().optional(),
+        email: z.string().email().optional(),
+        role: z.enum(['user', 'admin']).optional(),
+        image: z.string().optional()
+      })
+    )
     .mutation(async ({ ctx, input }) => {
       try {
         const auditLogger = new AuditLogger(ctx.db)
@@ -446,18 +448,18 @@ export const usersRouter = createTRPCRouter({
     }),
 
   resetPassword: publicProcedure
-    .input(z.object({
-      token: z.string(),
-      newPassword: z.string().min(8)
-    }))
+    .input(
+      z.object({
+        token: z.string(),
+        newPassword: z.string().min(8)
+      })
+    )
     .mutation(async ({ ctx, input }) => {
       try {
         // Find valid reset token
         const resetToken = await ctx.db.query.passwordResetTokens.findFirst({
-          where: (tokens, { eq, and }) => and(
-            eq(tokens.token, input.token),
-            eq(tokens.used, false)
-          ),
+          where: (tokens, { eq, and }) =>
+            and(eq(tokens.token, input.token), eq(tokens.used, false)),
           with: {
             user: true
           }

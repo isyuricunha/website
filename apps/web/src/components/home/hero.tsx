@@ -64,10 +64,10 @@ const Hero = () => {
   if (!textItem) return null
 
   return (
-    <div className='my-6 sm:my-8 lg:my-10 space-y-3 sm:space-y-4'>
-      <div className='flex flex-col lg:flex-row lg:justify-between gap-6 lg:gap-8'>
-        <div className='flex flex-col gap-4 flex-1 text-center lg:text-left'>
-          <h1 className='text-base font-medium sm:text-lg lg:text-xl xl:text-2xl leading-relaxed max-w-2xl'>
+    <div className='my-6 space-y-3 sm:my-8 sm:space-y-4 lg:my-10'>
+      <div className='flex flex-col gap-6 lg:flex-row lg:justify-between lg:gap-8'>
+        <div className='flex flex-1 flex-col gap-4 text-center lg:text-left'>
+          <h1 className='max-w-2xl text-base font-medium leading-relaxed sm:text-lg lg:text-xl xl:text-2xl'>
             <motion.div
               initial={{ x: 20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
@@ -83,7 +83,7 @@ const Hero = () => {
               className='mb-1'
             >
               <span>{t('homepage.hero.title-middle-left')} </span>
-              <div className='inline-block relative min-w-[60px] align-baseline'>
+              <div className='relative inline-block min-w-[60px] align-baseline'>
                 <AnimatePresence mode='popLayout'>
                   <motion.div
                     key={currentIndex}
@@ -115,33 +115,33 @@ const Hero = () => {
             initial={{ x: 50, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ ease: 'easeOut' }}
-            className='text-muted-foreground text-sm sm:text-base max-w-md'
+            className='text-muted-foreground max-w-md text-sm sm:text-base'
           >
             {t('homepage.hero.location-timezone')}
           </motion.div>
-          
+
           <motion.div
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ ease: 'easeOut', delay: 0.4 }}
-            className='flex flex-col gap-2 pt-3 sm:flex-row sm:gap-3 max-w-sm mx-auto lg:mx-0'
+            className='mx-auto flex max-w-sm flex-col gap-2 pt-3 sm:flex-row sm:gap-3 lg:mx-0'
           >
             <Link
               href='/projects'
-              className='inline-flex items-center justify-center rounded-full bg-primary px-4 py-2 text-xs sm:text-sm font-medium text-primary-foreground transition-all duration-200 hover:bg-primary/90 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 min-h-[36px]'
+              className='bg-primary text-primary-foreground hover:bg-primary/90 focus-visible:ring-ring inline-flex min-h-[36px] items-center justify-center rounded-full px-4 py-2 text-xs font-medium transition-all duration-200 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 sm:text-sm'
             >
               {t('homepage.hero.view-projects')}
             </Link>
             <Link
               href='/blog'
-              className='inline-flex items-center justify-center rounded-full border border-input bg-background px-4 py-2 text-xs sm:text-sm font-medium transition-all duration-200 hover:bg-accent hover:text-accent-foreground hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 min-h-[36px]'
+              className='border-input bg-background hover:bg-accent hover:text-accent-foreground focus-visible:ring-ring inline-flex min-h-[36px] items-center justify-center rounded-full border px-4 py-2 text-xs font-medium transition-all duration-200 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 sm:text-sm'
             >
               {t('homepage.hero.read-blog')}
             </Link>
           </motion.div>
         </div>
         <motion.div
-          className='relative size-16 sm:size-20 lg:size-24 xl:size-28 mx-auto lg:mx-0 flex-shrink-0'
+          className='relative mx-auto size-16 flex-shrink-0 sm:size-20 lg:mx-0 lg:size-24 xl:size-28'
           initial={{
             scale: 0
           }}
@@ -154,7 +154,7 @@ const Hero = () => {
         >
           <BlurImage
             src='/images/avatar.png'
-            className='rounded-full w-full h-full object-cover'
+            className='h-full w-full rounded-full object-cover'
             width={144}
             height={144}
             alt='Yuri Cunha'

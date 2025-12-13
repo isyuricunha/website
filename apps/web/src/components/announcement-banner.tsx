@@ -9,16 +9,16 @@ import { api } from '@/trpc/react'
 const getAnnouncementIcon = (type: string) => {
   switch (type) {
     case 'error':
-      return <AlertCircle className="h-5 w-5" />
+      return <AlertCircle className='h-5 w-5' />
     case 'warning':
-      return <AlertTriangle className="h-5 w-5" />
+      return <AlertTriangle className='h-5 w-5' />
     case 'success':
-      return <CheckCircle className="h-5 w-5" />
+      return <CheckCircle className='h-5 w-5' />
     case 'feature':
-      return <Sparkles className="h-5 w-5" />
+      return <Sparkles className='h-5 w-5' />
     case 'info':
     default:
-      return <Info className="h-5 w-5" />
+      return <Info className='h-5 w-5' />
   }
 }
 
@@ -33,21 +33,24 @@ const getAnnouncementStyles = (type: string) => {
       }
     case 'warning':
       return {
-        container: 'bg-amber-500/5 border-amber-500/20 dark:bg-amber-500/10 dark:border-amber-500/30',
+        container:
+          'bg-amber-500/5 border-amber-500/20 dark:bg-amber-500/10 dark:border-amber-500/30',
         icon: 'text-amber-600 dark:text-amber-400',
         title: 'text-amber-900 dark:text-amber-100',
         content: 'text-amber-800/80 dark:text-amber-200/80'
       }
     case 'success':
       return {
-        container: 'bg-emerald-500/5 border-emerald-500/20 dark:bg-emerald-500/10 dark:border-emerald-500/30',
+        container:
+          'bg-emerald-500/5 border-emerald-500/20 dark:bg-emerald-500/10 dark:border-emerald-500/30',
         icon: 'text-emerald-600 dark:text-emerald-400',
         title: 'text-emerald-900 dark:text-emerald-100',
         content: 'text-emerald-800/80 dark:text-emerald-200/80'
       }
     case 'feature':
       return {
-        container: 'bg-purple-500/5 border-purple-500/20 dark:bg-purple-500/10 dark:border-purple-500/30',
+        container:
+          'bg-purple-500/5 border-purple-500/20 dark:bg-purple-500/10 dark:border-purple-500/30',
         icon: 'text-purple-600 dark:text-purple-400',
         title: 'text-purple-900 dark:text-purple-100',
         content: 'text-purple-800/80 dark:text-purple-200/80'
@@ -99,15 +102,16 @@ export default function AnnouncementBanner() {
   }
 
   // Filter announcements that haven't been dismissed (date filtering and sorting are done server-side)
-  const activeAnnouncements = announcementsData.announcements
-    .filter(announcement => !dismissedAnnouncements.includes(announcement.id))
+  const activeAnnouncements = announcementsData.announcements.filter(
+    (announcement) => !dismissedAnnouncements.includes(announcement.id)
+  )
 
   if (activeAnnouncements.length === 0) {
     return null
   }
 
   return (
-    <div className="space-y-3">
+    <div className='space-y-3'>
       {activeAnnouncements.map((announcement) => {
         const styles = getAnnouncementStyles(announcement.type)
         return (
@@ -115,19 +119,21 @@ export default function AnnouncementBanner() {
             key={announcement.id}
             className={`group relative overflow-hidden rounded-xl border backdrop-blur-sm transition-all duration-300 hover:shadow-lg ${styles.container}`}
           >
-            <div className="relative p-4">
-              <div className="flex items-start gap-4">
-                <div className={`flex-shrink-0 transition-transform duration-300 group-hover:scale-110 ${styles.icon}`}>
+            <div className='relative p-4'>
+              <div className='flex items-start gap-4'>
+                <div
+                  className={`flex-shrink-0 transition-transform duration-300 group-hover:scale-110 ${styles.icon}`}
+                >
                   {getAnnouncementIcon(announcement.type)}
                 </div>
 
-                <div className="flex-1 min-w-0 space-y-1.5">
-                  <div className="flex items-center gap-2">
-                    <h4 className={`font-semibold text-base leading-tight ${styles.title}`}>
+                <div className='min-w-0 flex-1 space-y-1.5'>
+                  <div className='flex items-center gap-2'>
+                    <h4 className={`text-base font-semibold leading-tight ${styles.title}`}>
                       {announcement.title}
                     </h4>
                     {announcement.priority > 5 && (
-                      <span className="inline-flex items-center rounded-full bg-current/10 px-2 py-0.5 text-xs font-medium">
+                      <span className='bg-current/10 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium'>
                         High Priority
                       </span>
                     )}
@@ -139,13 +145,13 @@ export default function AnnouncementBanner() {
 
                 {announcement.isDismissible && (
                   <button
-                    type="button"
+                    type='button'
                     onClick={() => handleDismiss(announcement.id)}
                     disabled={dismissMutation.isPending}
-                    className="flex-shrink-0 rounded-lg p-1.5 transition-colors hover:bg-black/5 dark:hover:bg-white/5 disabled:opacity-50"
+                    className='flex-shrink-0 rounded-lg p-1.5 transition-colors hover:bg-black/5 disabled:opacity-50 dark:hover:bg-white/5'
                     aria-label={t('component.announcement-banner.dismiss')}
                   >
-                    <X className="h-4 w-4 opacity-60 hover:opacity-100 transition-opacity" />
+                    <X className='h-4 w-4 opacity-60 transition-opacity hover:opacity-100' />
                   </button>
                 )}
               </div>

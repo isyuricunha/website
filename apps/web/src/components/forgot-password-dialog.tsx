@@ -35,7 +35,7 @@ export default function ForgotPasswordDialog({ open, onOpenChange }: ForgotPassw
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    
+
     if (!email) {
       toast.error('Please enter your email address')
       return
@@ -59,16 +59,15 @@ export default function ForgotPasswordDialog({ open, onOpenChange }: ForgotPassw
         {isSuccess ? (
           <>
             <DialogHeader>
-              <div className="flex flex-col items-center text-center space-y-4 py-4">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500/10">
-                  <CheckCircle2 className="h-8 w-8 text-emerald-600 dark:text-emerald-400" />
+              <div className='flex flex-col items-center space-y-4 py-4 text-center'>
+                <div className='flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500/10'>
+                  <CheckCircle2 className='h-8 w-8 text-emerald-600 dark:text-emerald-400' />
                 </div>
                 <div>
-                  <DialogTitle className='text-xl font-semibold mb-2'>
-                    Check Your Email
-                  </DialogTitle>
+                  <DialogTitle className='mb-2 text-xl font-semibold'>Check Your Email</DialogTitle>
                   <DialogDescription className='text-sm leading-relaxed'>
-                    We've sent a password reset link to <strong className="font-medium text-foreground">{email}</strong>.
+                    We've sent a password reset link to{' '}
+                    <strong className='text-foreground font-medium'>{email}</strong>.
                     <br />
                     Please check your inbox and follow the instructions.
                   </DialogDescription>
@@ -76,14 +75,14 @@ export default function ForgotPasswordDialog({ open, onOpenChange }: ForgotPassw
               </div>
             </DialogHeader>
 
-            <div className="space-y-3 mt-2">
-              <p className="text-xs text-center text-muted-foreground">
+            <div className='mt-2 space-y-3'>
+              <p className='text-muted-foreground text-center text-xs'>
                 Didn't receive the email? Check your spam folder or try again.
               </p>
-              
+
               <Button
-                variant="outline"
-                className="w-full h-11 rounded-xl font-medium"
+                variant='outline'
+                className='h-11 w-full rounded-xl font-medium'
                 onClick={handleClose}
               >
                 Back to Sign In
@@ -93,11 +92,11 @@ export default function ForgotPasswordDialog({ open, onOpenChange }: ForgotPassw
         ) : (
           <>
             <DialogHeader>
-              <div className="flex items-center gap-3 mb-2">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
-                  <Mail className="h-6 w-6 text-primary" />
+              <div className='mb-2 flex items-center gap-3'>
+                <div className='bg-primary/10 flex h-12 w-12 items-center justify-center rounded-xl'>
+                  <Mail className='text-primary h-6 w-6' />
                 </div>
-                <div className="flex-1">
+                <div className='flex-1'>
                   <DialogTitle className='text-left text-xl font-semibold'>
                     Forgot Password?
                   </DialogTitle>
@@ -108,38 +107,38 @@ export default function ForgotPasswordDialog({ open, onOpenChange }: ForgotPassw
               </div>
             </DialogHeader>
 
-            <form onSubmit={handleSubmit} className="space-y-4 mt-4">
+            <form onSubmit={handleSubmit} className='mt-4 space-y-4'>
               <div>
-                <label htmlFor="email" className="block text-sm font-medium mb-2">
+                <label htmlFor='email' className='mb-2 block text-sm font-medium'>
                   Email Address
                 </label>
                 <Input
-                  id="email"
-                  type="email"
+                  id='email'
+                  type='email'
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email"
+                  placeholder='Enter your email'
                   required
                   disabled={requestResetMutation.isPending}
-                  className="w-full h-11"
+                  className='h-11 w-full'
                 />
               </div>
 
-              <Button 
-                type="submit" 
-                className="w-full h-11 rounded-xl font-semibold" 
+              <Button
+                type='submit'
+                className='h-11 w-full rounded-xl font-semibold'
                 disabled={requestResetMutation.isPending || !email}
               >
                 {requestResetMutation.isPending ? 'Sending...' : 'Send Reset Link'}
               </Button>
 
               <Button
-                type="button"
-                variant="ghost"
-                className="w-full h-11 rounded-xl font-medium"
+                type='button'
+                variant='ghost'
+                className='h-11 w-full rounded-xl font-medium'
                 onClick={handleClose}
               >
-                <ArrowLeft className="h-4 w-4 mr-2" />
+                <ArrowLeft className='mr-2 h-4 w-4' />
                 Back to Sign In
               </Button>
             </form>

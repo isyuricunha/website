@@ -77,10 +77,11 @@ const CommentsTable = (props: CommentsTableProps) => {
   const filteredData = useMemo(() => {
     if (!debouncedSearchTerm) return data
 
-    return data.filter(comment =>
-      comment.body?.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
-      comment.userId?.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
-      comment.type?.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
+    return data.filter(
+      (comment) =>
+        comment.body?.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
+        comment.userId?.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
+        comment.type?.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
     )
   }, [data, debouncedSearchTerm])
 
@@ -93,13 +94,17 @@ const CommentsTable = (props: CommentsTableProps) => {
       variant: 'destructive',
       action: () => {
         deleteCommentMutation.mutate({ commentId })
-        setConfirmDialog(prev => ({ ...prev, open: false }))
+        setConfirmDialog((prev) => ({ ...prev, open: false }))
       }
     })
   }
 
   const handleExportCSV = () => {
-    exportToCSV(filteredData, `comments-${new Date().toISOString().split('T')[0]}`, COMMENT_EXPORT_COLUMNS)
+    exportToCSV(
+      filteredData,
+      `comments-${new Date().toISOString().split('T')[0]}`,
+      COMMENT_EXPORT_COLUMNS
+    )
     toast.success('Comments exported to CSV successfully')
   }
 
@@ -140,29 +145,35 @@ const CommentsTable = (props: CommentsTableProps) => {
         return (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontalIcon className="h-4 w-4" />
+              <Button variant='ghost' className='h-8 w-8 p-0'>
+                <span className='sr-only'>Open menu</span>
+                <MoreHorizontalIcon className='h-4 w-4' />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
+            <DropdownMenuContent align='end'>
               <AlertDialog>
                 <AlertDialogTrigger asChild>
                   <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                    <TrashIcon className="mr-2 h-4 w-4" />
+                    <TrashIcon className='mr-2 h-4 w-4' />
                     {t('admin.table.comments.delete')}
                   </DropdownMenuItem>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                   <AlertDialogHeader>
-                    <AlertDialogTitle>{t('admin.modals.delete-confirmation.title')}</AlertDialogTitle>
+                    <AlertDialogTitle>
+                      {t('admin.modals.delete-confirmation.title')}
+                    </AlertDialogTitle>
                     <AlertDialogDescription>
                       {t('admin.table.comments.confirm-delete')}
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
-                    <AlertDialogCancel>{t('admin.modals.delete-confirmation.cancel')}</AlertDialogCancel>
-                    <AlertDialogAction onClick={() => handleDeleteComment(comment.id, comment.body)}>
+                    <AlertDialogCancel>
+                      {t('admin.modals.delete-confirmation.cancel')}
+                    </AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={() => handleDeleteComment(comment.id, comment.body)}
+                    >
                       {t('admin.modals.delete-confirmation.confirm')}
                     </AlertDialogAction>
                   </AlertDialogFooter>
@@ -203,31 +214,31 @@ const CommentsTable = (props: CommentsTableProps) => {
 
   return (
     <>
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <div className="relative">
-              <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+      <div className='space-y-4'>
+        <div className='flex items-center justify-between'>
+          <div className='flex items-center space-x-2'>
+            <div className='relative'>
+              <Search className='text-muted-foreground absolute left-2 top-2.5 h-4 w-4' />
               <Input
-                placeholder="Search comments..."
+                placeholder='Search comments...'
                 value={searchTerm}
                 onChange={(e) => updateSearchTerm(e.target.value)}
-                className="pl-8 w-64"
+                className='w-64 pl-8'
               />
               {searchTerm && (
                 <Button
-                  variant="ghost"
-                  size="sm"
-                  className="absolute right-1 top-1 h-6 w-6 p-0"
+                  variant='ghost'
+                  size='sm'
+                  className='absolute right-1 top-1 h-6 w-6 p-0'
                   onClick={clearSearch}
                 >
-                  <X className="h-3 w-3" />
+                  <X className='h-3 w-3' />
                 </Button>
               )}
             </div>
           </div>
-          <Button onClick={handleExportCSV} variant="outline" size="sm">
-            <Download className="mr-2 h-4 w-4" />
+          <Button onClick={handleExportCSV} variant='outline' size='sm'>
+            <Download className='mr-2 h-4 w-4' />
             Export CSV
           </Button>
         </div>
@@ -239,7 +250,7 @@ const CommentsTable = (props: CommentsTableProps) => {
 
       <ConfirmationDialog
         open={confirmDialog.open}
-        onOpenChange={(open) => setConfirmDialog(prev => ({ ...prev, open }))}
+        onOpenChange={(open) => setConfirmDialog((prev) => ({ ...prev, open }))}
         title={confirmDialog.title}
         description={confirmDialog.description}
         variant={confirmDialog.variant}

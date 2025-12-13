@@ -29,7 +29,7 @@ export interface AuditLogEntry {
 }
 
 export class AuditLogger {
-  constructor(private db: database) { }
+  constructor(private db: database) {}
 
   async log(entry: AuditLogEntry): Promise<void> {
     try {

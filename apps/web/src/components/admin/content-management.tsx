@@ -26,7 +26,11 @@ export const ContentManagement = () => {
   const [selectedPosts, setSelectedPosts] = useState<string[]>([])
 
   // Fetch posts
-  const { data: postsData, isLoading, refetch } = api.content.getPosts.useQuery({
+  const {
+    data: postsData,
+    isLoading,
+    refetch
+  } = api.content.getPosts.useQuery({
     search: searchTerm || undefined,
     status: statusFilter,
     limit: 20,
@@ -80,7 +84,9 @@ export const ContentManagement = () => {
     }
 
     return (
-      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${styles[status as keyof typeof styles]}`}>
+      <span
+        className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${styles[status as keyof typeof styles]}`}
+      >
         {status.charAt(0).toUpperCase() + status.slice(1)}
       </span>
     )
@@ -88,12 +94,12 @@ export const ContentManagement = () => {
 
   if (isLoading) {
     return (
-      <div className="space-y-6">
-        <div className="animate-pulse">
-          <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-1/4 mb-4"></div>
-          <div className="space-y-3">
+      <div className='space-y-6'>
+        <div className='animate-pulse'>
+          <div className='mb-4 h-8 w-1/4 rounded bg-gray-200 dark:bg-gray-700'></div>
+          <div className='space-y-3'>
             {Array.from({ length: 5 }).map((_, i) => (
-              <div key={i} className="h-16 bg-gray-200 dark:bg-gray-700 rounded"></div>
+              <div key={i} className='h-16 rounded bg-gray-200 dark:bg-gray-700'></div>
             ))}
           </div>
         </div>
@@ -102,58 +108,66 @@ export const ContentManagement = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className='space-y-6'>
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className='flex items-center justify-between'>
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Content Management</h1>
-          <p className="text-gray-600 dark:text-gray-400">Manage your blog posts and content</p>
+          <h1 className='text-2xl font-bold text-gray-900 dark:text-white'>Content Management</h1>
+          <p className='text-gray-600 dark:text-gray-400'>Manage your blog posts and content</p>
         </div>
-        <Button className="flex items-center gap-2">
-          <Plus className="w-4 h-4" />
+        <Button className='flex items-center gap-2'>
+          <Plus className='h-4 w-4' />
           New Post
         </Button>
       </div>
 
       {/* Stats Cards */}
       {statsData && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
-            <div className="flex items-center">
-              <FileText className="w-8 h-8 text-blue-500" />
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Posts</p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">{statsData.totals.posts}</p>
+        <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4'>
+          <div className='rounded-lg border border-gray-200 bg-white p-6 dark:border-gray-700 dark:bg-gray-800'>
+            <div className='flex items-center'>
+              <FileText className='h-8 w-8 text-blue-500' />
+              <div className='ml-4'>
+                <p className='text-sm font-medium text-gray-600 dark:text-gray-400'>Total Posts</p>
+                <p className='text-2xl font-bold text-gray-900 dark:text-white'>
+                  {statsData.totals.posts}
+                </p>
               </div>
             </div>
           </div>
 
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
-            <div className="flex items-center">
-              <Eye className="w-8 h-8 text-green-500" />
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Published</p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">{statsData.totals.published}</p>
+          <div className='rounded-lg border border-gray-200 bg-white p-6 dark:border-gray-700 dark:bg-gray-800'>
+            <div className='flex items-center'>
+              <Eye className='h-8 w-8 text-green-500' />
+              <div className='ml-4'>
+                <p className='text-sm font-medium text-gray-600 dark:text-gray-400'>Published</p>
+                <p className='text-2xl font-bold text-gray-900 dark:text-white'>
+                  {statsData.totals.published}
+                </p>
               </div>
             </div>
           </div>
 
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
-            <div className="flex items-center">
-              <Edit className="w-8 h-8 text-yellow-500" />
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Drafts</p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">{statsData.totals.drafts}</p>
+          <div className='rounded-lg border border-gray-200 bg-white p-6 dark:border-gray-700 dark:bg-gray-800'>
+            <div className='flex items-center'>
+              <Edit className='h-8 w-8 text-yellow-500' />
+              <div className='ml-4'>
+                <p className='text-sm font-medium text-gray-600 dark:text-gray-400'>Drafts</p>
+                <p className='text-2xl font-bold text-gray-900 dark:text-white'>
+                  {statsData.totals.drafts}
+                </p>
               </div>
             </div>
           </div>
 
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
-            <div className="flex items-center">
-              <BarChart3 className="w-8 h-8 text-purple-500" />
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Views</p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">{statsData.totals.views.toLocaleString()}</p>
+          <div className='rounded-lg border border-gray-200 bg-white p-6 dark:border-gray-700 dark:bg-gray-800'>
+            <div className='flex items-center'>
+              <BarChart3 className='h-8 w-8 text-purple-500' />
+              <div className='ml-4'>
+                <p className='text-sm font-medium text-gray-600 dark:text-gray-400'>Total Views</p>
+                <p className='text-2xl font-bold text-gray-900 dark:text-white'>
+                  {statsData.totals.views.toLocaleString()}
+                </p>
               </div>
             </div>
           </div>
@@ -161,52 +175,52 @@ export const ContentManagement = () => {
       )}
 
       {/* Filters and Search */}
-      <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
-        <div className="flex flex-col sm:flex-row gap-4">
-          <div className="flex-1">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+      <div className='rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800'>
+        <div className='flex flex-col gap-4 sm:flex-row'>
+          <div className='flex-1'>
+            <div className='relative'>
+              <Search className='absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-gray-400' />
               <input
-                type="text"
-                placeholder="Search posts..."
+                type='text'
+                placeholder='Search posts...'
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className='w-full rounded-md border border-gray-300 bg-white py-2 pl-10 pr-4 text-gray-900 focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white'
               />
             </div>
           </div>
 
-          <div className="flex gap-2">
+          <div className='flex gap-2'>
             <select
               value={statusFilter || ''}
-              onChange={(e) => setStatusFilter(e.target.value as any || undefined)}
-              className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              onChange={(e) => setStatusFilter((e.target.value as any) || undefined)}
+              className='rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white'
             >
-              <option value="">All Status</option>
-              <option value="draft">Draft</option>
-              <option value="published">Published</option>
-              <option value="archived">Archived</option>
+              <option value=''>All Status</option>
+              <option value='draft'>Draft</option>
+              <option value='published'>Published</option>
+              <option value='archived'>Archived</option>
             </select>
 
-            <Button variant="outline" size="sm">
-              <Filter className="w-4 h-4 mr-2" />
+            <Button variant='outline' size='sm'>
+              <Filter className='mr-2 h-4 w-4' />
               More Filters
             </Button>
           </div>
         </div>
 
         {selectedPosts.length > 0 && (
-          <div className="mt-4 flex items-center gap-2">
-            <span className="text-sm text-gray-600 dark:text-gray-400">
+          <div className='mt-4 flex items-center gap-2'>
+            <span className='text-sm text-gray-600 dark:text-gray-400'>
               {selectedPosts.length} posts selected
             </span>
-            <Button size="sm" variant="outline" onClick={() => handleBulkAction('publish')}>
+            <Button size='sm' variant='outline' onClick={() => handleBulkAction('publish')}>
               Bulk Publish
             </Button>
-            <Button size="sm" variant="outline" onClick={() => handleBulkAction('archive')}>
+            <Button size='sm' variant='outline' onClick={() => handleBulkAction('archive')}>
               Bulk Archive
             </Button>
-            <Button size="sm" variant="outline" onClick={() => handleBulkAction('delete')}>
+            <Button size='sm' variant='outline' onClick={() => handleBulkAction('delete')}>
               Bulk Delete
             </Button>
           </div>
@@ -214,87 +228,83 @@ export const ContentManagement = () => {
       </div>
 
       {/* Posts Table */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-            <thead className="bg-gray-50 dark:bg-gray-900">
+      <div className='overflow-hidden rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800'>
+        <div className='overflow-x-auto'>
+          <table className='min-w-full divide-y divide-gray-200 dark:divide-gray-700'>
+            <thead className='bg-gray-50 dark:bg-gray-900'>
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <th className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400'>
                   <input
-                    type="checkbox"
+                    type='checkbox'
                     onChange={(e) => {
                       if (e.target.checked) {
-                        setSelectedPosts(postsData?.posts.map(p => p.id) || [])
+                        setSelectedPosts(postsData?.posts.map((p) => p.id) || [])
                       } else {
                         setSelectedPosts([])
                       }
                     }}
-                    className="rounded border-gray-300 dark:border-gray-600"
+                    className='rounded border-gray-300 dark:border-gray-600'
                   />
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <th className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400'>
                   Post
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <th className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400'>
                   Status
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <th className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400'>
                   Author
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <th className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400'>
                   Stats
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <th className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400'>
                   Date
                 </th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <th className='px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400'>
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+            <tbody className='divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800'>
               {postsData?.posts.map((post) => (
-                <tr key={post.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
-                  <td className="px-6 py-4 whitespace-nowrap">
+                <tr key={post.id} className='hover:bg-gray-50 dark:hover:bg-gray-700'>
+                  <td className='whitespace-nowrap px-6 py-4'>
                     <input
-                      type="checkbox"
+                      type='checkbox'
                       checked={selectedPosts.includes(post.id)}
                       onChange={(e) => {
                         if (e.target.checked) {
                           setSelectedPosts([...selectedPosts, post.id])
                         } else {
-                          setSelectedPosts(selectedPosts.filter(id => id !== post.id))
+                          setSelectedPosts(selectedPosts.filter((id) => id !== post.id))
                         }
                       }}
-                      className="rounded border-gray-300 dark:border-gray-600"
+                      className='rounded border-gray-300 dark:border-gray-600'
                     />
                   </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center">
+                  <td className='px-6 py-4'>
+                    <div className='flex items-center'>
                       <div>
-                        <div className="flex items-center gap-2">
-                          <div className="text-sm font-medium text-gray-900 dark:text-white">
+                        <div className='flex items-center gap-2'>
+                          <div className='text-sm font-medium text-gray-900 dark:text-white'>
                             {post.title}
                           </div>
-                          {post.featured && (
-                            <Star className="w-4 h-4 text-yellow-500" />
-                          )}
+                          {post.featured && <Star className='h-4 w-4 text-yellow-500' />}
                         </div>
-                        <div className="text-sm text-gray-500 dark:text-gray-400">
-                          /{post.slug}
-                        </div>
+                        <div className='text-sm text-gray-500 dark:text-gray-400'>/{post.slug}</div>
                         {post.tags.length > 0 && (
-                          <div className="flex gap-1 mt-1">
+                          <div className='mt-1 flex gap-1'>
                             {post.tags.slice(0, 3).map((tag: string) => (
                               <span
                                 key={tag}
-                                className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300"
+                                className='inline-flex items-center rounded bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-300'
                               >
                                 {tag}
                               </span>
                             ))}
                             {post.tags.length > 3 && (
-                              <span className="text-xs text-gray-500 dark:text-gray-400">
+                              <span className='text-xs text-gray-500 dark:text-gray-400'>
                                 +{post.tags.length - 3} more
                               </span>
                             )}
@@ -303,14 +313,14 @@ export const ContentManagement = () => {
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td className='whitespace-nowrap px-6 py-4'>
                     {getStatusBadge(post.status ?? 'draft')}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center">
+                  <td className='whitespace-nowrap px-6 py-4'>
+                    <div className='flex items-center'>
                       {post.author?.image && (
                         <Image
-                          className="h-8 w-8 rounded-full mr-3"
+                          className='mr-3 h-8 w-8 rounded-full'
                           src={post.author.image}
                           alt={post.author.name ?? 'Author'}
                           width={32}
@@ -318,53 +328,51 @@ export const ContentManagement = () => {
                         />
                       )}
                       <div>
-                        <div className="text-sm font-medium text-gray-900 dark:text-white">
+                        <div className='text-sm font-medium text-gray-900 dark:text-white'>
                           {post.author?.name ?? 'Unknown'}
                         </div>
-                        <div className="text-sm text-gray-500 dark:text-gray-400">
+                        <div className='text-sm text-gray-500 dark:text-gray-400'>
                           {post.author?.email ?? ''}
                         </div>
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                    <div className="flex items-center gap-4">
-                      <div className="flex items-center gap-1">
-                        <Eye className="w-4 h-4 text-gray-400" />
+                  <td className='whitespace-nowrap px-6 py-4 text-sm text-gray-900 dark:text-white'>
+                    <div className='flex items-center gap-4'>
+                      <div className='flex items-center gap-1'>
+                        <Eye className='h-4 w-4 text-gray-400' />
                         {post.views}
                       </div>
-                      <div className="flex items-center gap-1">
-                        <Star className="w-4 h-4 text-gray-400" />
+                      <div className='flex items-center gap-1'>
+                        <Star className='h-4 w-4 text-gray-400' />
                         {post.likes}
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                  <td className='whitespace-nowrap px-6 py-4 text-sm text-gray-500 dark:text-gray-400'>
                     <div>
-                      <div className="flex items-center gap-1">
-                        <Calendar className="w-4 h-4" />
+                      <div className='flex items-center gap-1'>
+                        <Calendar className='h-4 w-4' />
                         {formatDate(post.publishedAt)}
                       </div>
-                      <div className="text-xs">
-                        Updated {formatDate(post.updatedAt)}
-                      </div>
+                      <div className='text-xs'>Updated {formatDate(post.updatedAt)}</div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <div className="flex items-center justify-end gap-2">
-                      <Button size="sm" variant="outline">
-                        <Edit className="w-4 h-4" />
+                  <td className='whitespace-nowrap px-6 py-4 text-right text-sm font-medium'>
+                    <div className='flex items-center justify-end gap-2'>
+                      <Button size='sm' variant='outline'>
+                        <Edit className='h-4 w-4' />
                       </Button>
-                      <Button size="sm" variant="outline">
-                        <Eye className="w-4 h-4" />
+                      <Button size='sm' variant='outline'>
+                        <Eye className='h-4 w-4' />
                       </Button>
                       <Button
-                        size="sm"
-                        variant="outline"
+                        size='sm'
+                        variant='outline'
                         onClick={() => handleDeletePost(post.id)}
                         disabled={deletePost.isPending}
                       >
-                        <Trash2 className="w-4 h-4" />
+                        <Trash2 className='h-4 w-4' />
                       </Button>
                     </div>
                   </td>
@@ -375,15 +383,17 @@ export const ContentManagement = () => {
         </div>
 
         {(!postsData?.posts || postsData.posts.length === 0) && (
-          <div className="text-center py-12">
-            <FileText className="mx-auto h-12 w-12 text-gray-400" />
-            <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-white">No posts found</h3>
-            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+          <div className='py-12 text-center'>
+            <FileText className='mx-auto h-12 w-12 text-gray-400' />
+            <h3 className='mt-2 text-sm font-medium text-gray-900 dark:text-white'>
+              No posts found
+            </h3>
+            <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
               Get started by creating your first blog post.
             </p>
-            <div className="mt-6">
+            <div className='mt-6'>
               <Button>
-                <Plus className="w-4 h-4 mr-2" />
+                <Plus className='mr-2 h-4 w-4' />
                 New Post
               </Button>
             </div>
@@ -393,8 +403,8 @@ export const ContentManagement = () => {
 
       {/* Pagination */}
       {postsData && postsData.hasMore && (
-        <div className="flex justify-center">
-          <Button variant="outline">Load More Posts</Button>
+        <div className='flex justify-center'>
+          <Button variant='outline'>Load More Posts</Button>
         </div>
       )}
     </div>

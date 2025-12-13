@@ -20,12 +20,14 @@ const RecentlyPlayedSection = () => {
     setIsMounted(true)
   }, [])
 
-  const { data: tracks, refetch, isLoading, error } = api.spotify.getRecentlyPlayed.useQuery(
-    undefined,
-    {
-      staleTime: 300_000 // 5 minutes
-    }
-  )
+  const {
+    data: tracks,
+    refetch,
+    isLoading,
+    error
+  } = api.spotify.getRecentlyPlayed.useQuery(undefined, {
+    staleTime: 300_000 // 5 minutes
+  })
 
   const handleRefresh = async () => {
     setIsRefreshing(true)
@@ -69,12 +71,12 @@ const RecentlyPlayedSection = () => {
           <div className='space-y-4'>
             {Array.from({ length: 5 }).map((_, i) => (
               <div key={i} className='flex items-center space-x-4'>
-                <div className='h-12 w-12 animate-pulse rounded-lg bg-muted' />
+                <div className='bg-muted h-12 w-12 animate-pulse rounded-lg' />
                 <div className='flex-1 space-y-2'>
-                  <div className='h-4 w-48 animate-pulse rounded bg-muted' />
-                  <div className='h-3 w-32 animate-pulse rounded bg-muted' />
+                  <div className='bg-muted h-4 w-48 animate-pulse rounded' />
+                  <div className='bg-muted h-3 w-32 animate-pulse rounded' />
                 </div>
-                <div className='h-3 w-16 animate-pulse rounded bg-muted' />
+                <div className='bg-muted h-3 w-16 animate-pulse rounded' />
               </div>
             ))}
           </div>
@@ -97,7 +99,7 @@ const RecentlyPlayedSection = () => {
               type='button'
               onClick={handleRefresh}
               disabled={isRefreshing}
-              className='text-sm text-muted-foreground hover:text-foreground disabled:opacity-50'
+              className='text-muted-foreground hover:text-foreground text-sm disabled:opacity-50'
             >
               {t('spotify.refresh')}
             </button>
@@ -121,7 +123,7 @@ const RecentlyPlayedSection = () => {
               type='button'
               onClick={handleRefresh}
               disabled={isRefreshing}
-              className='text-sm text-muted-foreground hover:text-foreground disabled:opacity-50'
+              className='text-muted-foreground hover:text-foreground text-sm disabled:opacity-50'
             >
               {t('spotify.refresh')}
             </button>
@@ -136,14 +138,18 @@ const RecentlyPlayedSection = () => {
       <CardHeader>
         <div className='flex items-center justify-between'>
           <div>
-            <CardTitle className='text-base sm:text-lg'>{t('spotify.recently-played.title')}</CardTitle>
-            <CardDescription className='text-xs sm:text-sm'>{t('spotify.recently-played.subtitle')}</CardDescription>
+            <CardTitle className='text-base sm:text-lg'>
+              {t('spotify.recently-played.title')}
+            </CardTitle>
+            <CardDescription className='text-xs sm:text-sm'>
+              {t('spotify.recently-played.subtitle')}
+            </CardDescription>
           </div>
           <div className='flex items-center gap-2'>
             <button
               type='button'
               onClick={handleExportCsv}
-              className='px-2 py-1 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors'
+              className='text-muted-foreground hover:text-foreground hover:bg-muted rounded-md px-2 py-1 text-xs transition-colors'
               title={t('spotify.export.csv')}
             >
               CSV
@@ -151,7 +157,7 @@ const RecentlyPlayedSection = () => {
             <button
               type='button'
               onClick={handleExportJson}
-              className='px-2 py-1 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors'
+              className='text-muted-foreground hover:text-foreground hover:bg-muted rounded-md px-2 py-1 text-xs transition-colors'
               title={t('spotify.export.json')}
             >
               JSON
@@ -160,7 +166,7 @@ const RecentlyPlayedSection = () => {
               type='button'
               onClick={handleRefresh}
               disabled={isRefreshing}
-              className='text-sm text-muted-foreground hover:text-foreground disabled:opacity-50'
+              className='text-muted-foreground hover:text-foreground text-sm disabled:opacity-50'
             >
               {t('spotify.refresh')}
             </button>
@@ -173,13 +179,13 @@ const RecentlyPlayedSection = () => {
             <Link
               key={`${track.id}-${track.playedAt}`}
               href={track.url}
-              className='group flex items-center space-x-4 rounded-lg p-2 transition-colors hover:bg-muted/50'
+              className='hover:bg-muted/50 group flex items-center space-x-4 rounded-lg p-2 transition-colors'
             >
               <div className='relative h-12 w-12 flex-shrink-0 overflow-hidden rounded-lg'>
                 <SpotifyImage
                   src={track.albumImage}
                   alt={`${track.album} album cover`}
-                  fallbackIcon={<PlayIcon className='h-4 w-4 text-muted-foreground' />}
+                  fallbackIcon={<PlayIcon className='text-muted-foreground h-4 w-4' />}
                   width={48}
                   height={48}
                   sizes='48px'
@@ -187,17 +193,17 @@ const RecentlyPlayedSection = () => {
               </div>
 
               <div className='min-w-0 flex-1'>
-                <h3 className='truncate text-sm sm:text-base font-medium group-hover:text-primary'>
+                <h3 className='group-hover:text-primary truncate text-sm font-medium sm:text-base'>
                   {track.name}
                 </h3>
-                <p className='truncate text-xs sm:text-sm text-muted-foreground'>
+                <p className='text-muted-foreground truncate text-xs sm:text-sm'>
                   {track.artist} • {track.album}
                 </p>
               </div>
 
               <div className='flex flex-shrink-0 items-center space-x-2 text-right'>
-                <ClockIcon className='h-4 w-4 text-muted-foreground' />
-                <p className='text-xs sm:text-sm text-muted-foreground'>
+                <ClockIcon className='text-muted-foreground h-4 w-4' />
+                <p className='text-muted-foreground text-xs sm:text-sm'>
                   {isMounted ? formatTimeAgo(track.playedAt) : '...'}
                 </p>
               </div>

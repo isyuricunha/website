@@ -1,7 +1,15 @@
 'use client'
 
 import { useTranslations } from '@tszhong0411/i18n/client'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, Input, Button } from '@tszhong0411/ui'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  Input,
+  Button
+} from '@tszhong0411/ui'
 import { Mail, Send, CheckCircle, AlertCircle } from 'lucide-react'
 import { useState } from 'react'
 
@@ -18,14 +26,14 @@ const NewsletterSignup = () => {
 
     setIsLoading(true)
     setError('')
-    
+
     try {
       const response = await fetch('/api/newsletter/subscribe', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ email: email.trim() }),
+        body: JSON.stringify({ email: email.trim() })
       })
 
       const data = await response.json()
@@ -47,9 +55,11 @@ const NewsletterSignup = () => {
     return (
       <Card>
         <CardContent className='p-6 text-center'>
-          <CheckCircle className='h-12 w-12 mx-auto text-green-500 mb-4' />
-          <h3 className='text-base sm:text-lg font-semibold mb-2'>{t('homepage.newsletter.success-title')}</h3>
-          <p className='text-xs sm:text-sm text-muted-foreground'>
+          <CheckCircle className='mx-auto mb-4 h-12 w-12 text-green-500' />
+          <h3 className='mb-2 text-base font-semibold sm:text-lg'>
+            {t('homepage.newsletter.success-title')}
+          </h3>
+          <p className='text-muted-foreground text-xs sm:text-sm'>
             {t('homepage.newsletter.success-description')}
           </p>
         </CardContent>
@@ -60,7 +70,7 @@ const NewsletterSignup = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className='text-base sm:text-lg flex items-center gap-2'>
+        <CardTitle className='flex items-center gap-2 text-base sm:text-lg'>
           <Mail className='h-5 w-5' />
           {t('homepage.newsletter.title')}
         </CardTitle>
@@ -71,12 +81,12 @@ const NewsletterSignup = () => {
       <CardContent>
         <form onSubmit={handleSubmit} className='space-y-4'>
           {error && (
-            <div className='flex items-center gap-2 p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md'>
+            <div className='flex items-center gap-2 rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-600'>
               <AlertCircle className='h-4 w-4 flex-shrink-0' />
               <span>{error}</span>
             </div>
           )}
-          <div className='flex flex-col sm:flex-row gap-2'>
+          <div className='flex flex-col gap-2 sm:flex-row'>
             <Input
               type='email'
               placeholder={t('homepage.newsletter.placeholder')}
@@ -86,8 +96,8 @@ const NewsletterSignup = () => {
               className='flex-1 text-sm'
               disabled={isLoading}
             />
-            <Button 
-              type='submit' 
+            <Button
+              type='submit'
               disabled={isLoading || !email.trim()}
               className='flex items-center gap-2 text-sm'
             >
@@ -99,9 +109,7 @@ const NewsletterSignup = () => {
               {t('homepage.newsletter.cta')}
             </Button>
           </div>
-          <p className='text-xs text-muted-foreground'>
-            {t('homepage.newsletter.disclaimer')}
-          </p>
+          <p className='text-muted-foreground text-xs'>{t('homepage.newsletter.disclaimer')}</p>
         </form>
       </CardContent>
     </Card>

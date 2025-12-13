@@ -5,7 +5,6 @@
 ### Patch Changes
 
 - 9b6ae55: Update dependencies
-
   - Upgrade @eslint-react/eslint-plugin from `^1.22.1` to `^1.28.0`
   - Upgrade @eslint/js from `^9.17.0` to `^9.21.0`
   - Upgrade @next/eslint-plugin-next from `^15.1.5` to `^15.2.0`

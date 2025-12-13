@@ -38,24 +38,24 @@ export const adminRouter = createTRPCRouter({
       const totalUsers = allUsers.length
       const totalComments = allComments.length
       const totalGuestbookEntries = allGuestbookEntries.length
-      const adminUsers = allUsers.filter(user => user.role === 'admin').length
+      const adminUsers = allUsers.filter((user) => user.role === 'admin').length
 
       // Calculate recent activity (last 30 days)
-      const recentUsers = allUsers.filter(user =>
-        user.createdAt && new Date(user.createdAt) >= thirtyDaysAgo
+      const recentUsers = allUsers.filter(
+        (user) => user.createdAt && new Date(user.createdAt) >= thirtyDaysAgo
       ).length
 
-      const recentComments = allComments.filter(comment =>
-        comment.createdAt && new Date(comment.createdAt) >= thirtyDaysAgo
+      const recentComments = allComments.filter(
+        (comment) => comment.createdAt && new Date(comment.createdAt) >= thirtyDaysAgo
       ).length
 
       // Calculate weekly activity (last 7 days)
-      const weeklyUsers = allUsers.filter(user =>
-        user.createdAt && new Date(user.createdAt) >= sevenDaysAgo
+      const weeklyUsers = allUsers.filter(
+        (user) => user.createdAt && new Date(user.createdAt) >= sevenDaysAgo
       ).length
 
-      const weeklyComments = allComments.filter(comment =>
-        comment.createdAt && new Date(comment.createdAt) >= sevenDaysAgo
+      const weeklyComments = allComments.filter(
+        (comment) => comment.createdAt && new Date(comment.createdAt) >= sevenDaysAgo
       ).length
 
       // Calculate user growth trends (monthly data for the past year)
@@ -64,27 +64,28 @@ export const adminRouter = createTRPCRouter({
         const monthStart = new Date(now.getFullYear(), now.getMonth() - i, 1)
         const monthEnd = new Date(now.getFullYear(), now.getMonth() - i + 1, 0)
 
-        const monthlyUsers = allUsers.filter(user =>
-          user.createdAt &&
-          new Date(user.createdAt) >= monthStart &&
-          new Date(user.createdAt) <= monthEnd
+        const monthlyUsers = allUsers.filter(
+          (user) =>
+            user.createdAt &&
+            new Date(user.createdAt) >= monthStart &&
+            new Date(user.createdAt) <= monthEnd
         ).length
 
         userGrowthData.push({
           month: monthStart.toISOString().slice(0, 7), // YYYY-MM format
           users: monthlyUsers,
-          cumulative: allUsers.filter(user =>
-            user.createdAt && new Date(user.createdAt) <= monthEnd
+          cumulative: allUsers.filter(
+            (user) => user.createdAt && new Date(user.createdAt) <= monthEnd
           ).length
         })
       }
 
       // Calculate engagement metrics
-      const activeUsers = allUsers.filter(user =>
-        user.createdAt && new Date(user.createdAt) >= thirtyDaysAgo
+      const activeUsers = allUsers.filter(
+        (user) => user.createdAt && new Date(user.createdAt) >= thirtyDaysAgo
       ).length
 
-      const engagementRate = totalUsers > 0 ? (totalComments / totalUsers) : 0
+      const engagementRate = totalUsers > 0 ? totalComments / totalUsers : 0
 
       // Get recent audit logs for admin activity
       const recentAuditLogs = await ctx.db.query.auditLogs.findMany({
@@ -121,7 +122,7 @@ export const adminRouter = createTRPCRouter({
           userGrowthData,
           engagementRate: Math.round(engagementRate * 100) / 100
         },
-        recentActivity: recentAuditLogs.map(log => ({
+        recentActivity: recentAuditLogs.map((log) => ({
           id: log.id,
           action: log.action,
           targetType: log.targetType,
@@ -175,7 +176,7 @@ export const adminRouter = createTRPCRouter({
       })
 
       return {
-        logs: logs.map(log => ({
+        logs: logs.map((log) => ({
           id: log.id,
           action: log.action,
           targetType: log.targetType,

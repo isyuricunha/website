@@ -1,8 +1,8 @@
 {
-    "rewrites": [
-        {
-            "source": "/.well-known/matrix/:path*",
-            "destination": "/_well-known/matrix/:path*"
-        }
-    ]
+  "rewrites": [
+    {
+      "source": "/.well-known/matrix/:path*",
+      "destination": "/_well-known/matrix/:path*"
+    }
+  ]
 }

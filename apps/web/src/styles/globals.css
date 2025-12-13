@@ -66,7 +66,8 @@
 
 /* Subtle floating animation for speech bubbles */
 @keyframes bubbleFloat {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0);
   }
   50% {
@@ -83,7 +84,8 @@
 
 /* Gentle pulse for loading states */
 @keyframes gentlePulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {
@@ -107,12 +109,12 @@
   .bubble-float {
     animation: bubbleFloat 3s ease-in-out infinite;
   }
-  
+
   .shimmer {
     position: relative;
     overflow: hidden;
   }
-  
+
   .shimmer::before {
     content: '';
     position: absolute;
@@ -121,15 +123,15 @@
     transform: translateX(-100%);
     animation: shimmer 2s infinite;
   }
-  
+
   .gentle-pulse {
     animation: gentlePulse 2s ease-in-out infinite;
   }
-  
+
   .scale-in {
     animation: scaleIn 0.2s ease-out;
   }
-  
+
   /* Text truncation utilities */
   .line-clamp-1 {
     overflow: hidden;
@@ -138,7 +140,7 @@
     -webkit-line-clamp: 1;
     line-clamp: 1;
   }
-  
+
   .line-clamp-2 {
     overflow: hidden;
     display: -webkit-box;
@@ -146,7 +148,7 @@
     -webkit-line-clamp: 2;
     line-clamp: 2;
   }
-  
+
   .line-clamp-3 {
     overflow: hidden;
     display: -webkit-box;
@@ -154,14 +156,14 @@
     -webkit-line-clamp: 3;
     line-clamp: 3;
   }
-  
+
   /* Enhanced focus styles */
   .focus-enhanced:focus-visible {
     outline: 2px solid hsl(var(--primary));
     outline-offset: 2px;
     border-radius: 0.375rem;
   }
-  
+
   /* Smooth transitions for interactive elements */
   .transition-smooth {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -176,7 +178,7 @@
   .scale-in {
     animation: none !important;
   }
-  
+
   .transition-smooth {
     transition: none !important;
   }

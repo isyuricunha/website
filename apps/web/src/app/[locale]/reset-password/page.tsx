@@ -2,8 +2,15 @@
 
 import { Suspense, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { Button , Input , Card, CardContent, CardDescription, CardHeader, CardTitle } from '@tszhong0411/ui'
-
+import {
+  Button,
+  Input,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from '@tszhong0411/ui'
 
 import { toast } from 'sonner'
 import { api } from '@/trpc/react'
@@ -31,7 +38,7 @@ function ResetPasswordForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    
+
     if (!token) {
       toast.error('Invalid or missing reset token')
       return
@@ -56,19 +63,14 @@ function ResetPasswordForm() {
 
   if (!token) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        <Card className="w-full max-w-md">
+      <div className='flex min-h-screen items-center justify-center'>
+        <Card className='w-full max-w-md'>
           <CardHeader>
             <CardTitle>Invalid Reset Link</CardTitle>
-            <CardDescription>
-              This password reset link is invalid or has expired.
-            </CardDescription>
+            <CardDescription>This password reset link is invalid or has expired.</CardDescription>
           </CardHeader>
           <CardContent>
-            <Button 
-              onClick={() => router.push('/sign-in')} 
-              className="w-full"
-            >
+            <Button onClick={() => router.push('/sign-in')} className='w-full'>
               Back to Sign In
             </Button>
           </CardContent>
@@ -78,49 +80,47 @@ function ResetPasswordForm() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center">
-      <Card className="w-full max-w-md">
+    <div className='flex min-h-screen items-center justify-center'>
+      <Card className='w-full max-w-md'>
         <CardHeader>
           <CardTitle>Reset Your Password</CardTitle>
-          <CardDescription>
-            Enter your new password below.
-          </CardDescription>
+          <CardDescription>Enter your new password below.</CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className='space-y-4'>
             <div>
-              <label htmlFor="password" className="block text-sm font-medium mb-2">
+              <label htmlFor='password' className='mb-2 block text-sm font-medium'>
                 New Password
               </label>
               <Input
-                id="password"
-                type="password"
+                id='password'
+                type='password'
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter your new password"
+                placeholder='Enter your new password'
                 required
                 minLength={8}
                 disabled={isLoading}
               />
             </div>
             <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium mb-2">
+              <label htmlFor='confirmPassword' className='mb-2 block text-sm font-medium'>
                 Confirm New Password
               </label>
               <Input
-                id="confirmPassword"
-                type="password"
+                id='confirmPassword'
+                type='password'
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="Confirm your new password"
+                placeholder='Confirm your new password'
                 required
                 minLength={8}
                 disabled={isLoading}
               />
             </div>
-            <Button 
-              type="submit" 
-              className="w-full" 
+            <Button
+              type='submit'
+              className='w-full'
               disabled={isLoading || !password || !confirmPassword}
             >
               {isLoading ? 'Resetting Password...' : 'Reset Password'}
@@ -134,7 +134,9 @@ function ResetPasswordForm() {
 
 export default function ResetPasswordPage() {
   return (
-    <Suspense fallback={<div className="flex items-center justify-center min-h-screen">Loading...</div>}>
+    <Suspense
+      fallback={<div className='flex min-h-screen items-center justify-center'>Loading...</div>}
+    >
       <ResetPasswordForm />
     </Suspense>
   )

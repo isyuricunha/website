@@ -53,8 +53,8 @@ export function OptimizedImage({
   return (
     <div className={className} style={{ position: 'relative' }}>
       {isLoading && (
-        <div 
-          className="absolute inset-0 bg-muted animate-pulse rounded-lg"
+        <div
+          className='bg-muted absolute inset-0 animate-pulse rounded-lg'
           style={{ aspectRatio: `${width}/${height}` }}
         />
       )}
@@ -74,10 +74,14 @@ export function OptimizedImage({
 }
 
 // Specialized image components for different use cases
-export function BlogCoverImage({ slug, title, priority = false }: { 
+export function BlogCoverImage({
+  slug,
+  title,
+  priority = false
+}: {
   slug: string
   title: string
-  priority?: boolean 
+  priority?: boolean
 }) {
   return (
     <OptimizedImage
@@ -86,17 +90,21 @@ export function BlogCoverImage({ slug, title, priority = false }: {
       width={1200}
       height={630}
       priority={priority}
-      fallbackSrc="/images/blog/default-cover.png"
-      className="rounded-lg overflow-hidden"
-      imageClassName="transition-transform group-hover:scale-105"
+      fallbackSrc='/images/blog/default-cover.png'
+      className='overflow-hidden rounded-lg'
+      imageClassName='transition-transform group-hover:scale-105'
     />
   )
 }
 
-export function ProjectCoverImage({ slug, name, priority = false }: { 
+export function ProjectCoverImage({
+  slug,
+  name,
+  priority = false
+}: {
   slug: string
   name: string
-  priority?: boolean 
+  priority?: boolean
 }) {
   return (
     <OptimizedImage
@@ -105,23 +113,23 @@ export function ProjectCoverImage({ slug, name, priority = false }: {
       width={1280}
       height={832}
       priority={priority}
-      fallbackSrc="/images/projects/default-cover.png"
-      className="aspect-video w-full object-cover"
-      imageClassName="transition-transform duration-500 group-hover:scale-110"
+      fallbackSrc='/images/projects/default-cover.png'
+      className='aspect-video w-full object-cover'
+      imageClassName='transition-transform duration-500 group-hover:scale-110'
     />
   )
 }
 
-export function AvatarImage({ 
-  src, 
-  alt, 
-  size = 112, 
-  priority = false 
-}: { 
+export function AvatarImage({
+  src,
+  alt,
+  size = 112,
+  priority = false
+}: {
   src: string
   alt: string
   size?: number
-  priority?: boolean 
+  priority?: boolean
 }) {
   return (
     <OptimizedImage
@@ -130,8 +138,8 @@ export function AvatarImage({
       width={size}
       height={size}
       priority={priority}
-      className="rounded-full overflow-hidden"
-      fallbackSrc="/images/default-avatar.png"
+      className='overflow-hidden rounded-full'
+      fallbackSrc='/images/default-avatar.png'
     />
   )
 }

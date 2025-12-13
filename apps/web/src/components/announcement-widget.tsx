@@ -2,25 +2,31 @@
 
 import { useState, type MouseEvent } from 'react'
 import { X, Bell, AlertCircle, Info, CheckCircle, AlertTriangle, Sparkles } from 'lucide-react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, Badge, ScrollArea } from '@tszhong0411/ui'
-
-
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  Badge,
+  ScrollArea
+} from '@tszhong0411/ui'
 
 import { api } from '@/trpc/react'
 
 const getAnnouncementIcon = (type: string) => {
   switch (type) {
     case 'error':
-      return <AlertCircle className="h-4 w-4" />
+      return <AlertCircle className='h-4 w-4' />
     case 'warning':
-      return <AlertTriangle className="h-4 w-4" />
+      return <AlertTriangle className='h-4 w-4' />
     case 'success':
-      return <CheckCircle className="h-4 w-4" />
+      return <CheckCircle className='h-4 w-4' />
     case 'feature':
-      return <Sparkles className="h-4 w-4" />
+      return <Sparkles className='h-4 w-4' />
     case 'info':
     default:
-      return <Info className="h-4 w-4" />
+      return <Info className='h-4 w-4' />
   }
 }
 
@@ -93,14 +99,14 @@ export default function AnnouncementWidget({ className, maxItems = 5 }: Announce
   if (isLoading) {
     return (
       <Card className={className}>
-        <CardHeader className="pb-3">
-          <CardTitle className="flex items-center gap-2 text-sm font-medium">
-            <Bell className="h-4 w-4" />
+        <CardHeader className='pb-3'>
+          <CardTitle className='flex items-center gap-2 text-sm font-medium'>
+            <Bell className='h-4 w-4' />
             Announcements
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-sm text-muted-foreground">Loading announcements...</div>
+          <div className='text-muted-foreground text-sm'>Loading announcements...</div>
         </CardContent>
       </Card>
     )
@@ -112,20 +118,20 @@ export default function AnnouncementWidget({ className, maxItems = 5 }: Announce
 
   // Filter announcements that haven't been dismissed (date filtering is done server-side)
   const activeAnnouncements = announcementsData.announcements
-    .filter(announcement => !dismissedItems.includes(announcement.id))
+    .filter((announcement) => !dismissedItems.includes(announcement.id))
     .slice(0, maxItems)
 
   if (activeAnnouncements.length === 0) {
     return (
       <Card className={className}>
-        <CardHeader className="pb-3">
-          <CardTitle className="flex items-center gap-2 text-sm font-medium">
-            <Bell className="h-4 w-4" />
+        <CardHeader className='pb-3'>
+          <CardTitle className='flex items-center gap-2 text-sm font-medium'>
+            <Bell className='h-4 w-4' />
             Announcements
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-sm text-muted-foreground">No announcements at this time.</div>
+          <div className='text-muted-foreground text-sm'>No announcements at this time.</div>
         </CardContent>
       </Card>
     )
@@ -133,70 +139,81 @@ export default function AnnouncementWidget({ className, maxItems = 5 }: Announce
 
   return (
     <Card className={className}>
-      <CardHeader className="pb-4">
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
-            <Bell className="h-5 w-5 text-primary" />
+      <CardHeader className='pb-4'>
+        <div className='flex items-center gap-3'>
+          <div className='bg-primary/10 flex h-10 w-10 items-center justify-center rounded-xl'>
+            <Bell className='text-primary h-5 w-5' />
           </div>
-          <div className="flex-1">
-            <CardTitle className="text-base font-semibold">Announcements</CardTitle>
-            <CardDescription className="text-xs">
+          <div className='flex-1'>
+            <CardTitle className='text-base font-semibold'>Announcements</CardTitle>
+            <CardDescription className='text-xs'>
               Latest updates and important information
             </CardDescription>
           </div>
-          <Badge variant="secondary" className="text-xs font-medium">
+          <Badge variant='secondary' className='text-xs font-medium'>
             {activeAnnouncements.length}
           </Badge>
         </div>
       </CardHeader>
-      <CardContent className="pt-0">
-        <ScrollArea className="h-[320px] pr-4">
-          <div className="space-y-3">
+      <CardContent className='pt-0'>
+        <ScrollArea className='h-[320px] pr-4'>
+          <div className='space-y-3'>
             {activeAnnouncements.map((announcement) => {
               const styles = getAnnouncementStyles(announcement.type)
               return (
                 <div
                   key={announcement.id}
-                  className="group relative rounded-lg border border-border/50 p-3 transition-all duration-200 hover:border-border hover:shadow-sm"
+                  className='border-border/50 hover:border-border group relative rounded-lg border p-3 transition-all duration-200 hover:shadow-sm'
                 >
-                  <div className="flex items-start gap-3">
-                    <div className={`flex-shrink-0 transition-transform duration-200 group-hover:scale-110 ${styles.icon}`}>
+                  <div className='flex items-start gap-3'>
+                    <div
+                      className={`flex-shrink-0 transition-transform duration-200 group-hover:scale-110 ${styles.icon}`}
+                    >
                       {getAnnouncementIcon(announcement.type)}
                     </div>
 
-                    <div className="flex-1 min-w-0 space-y-2">
-                      <div className="flex items-start gap-2">
-                        <h4 className="text-sm font-semibold leading-tight flex-1">
+                    <div className='min-w-0 flex-1 space-y-2'>
+                      <div className='flex items-start gap-2'>
+                        <h4 className='flex-1 text-sm font-semibold leading-tight'>
                           {announcement.title}
                         </h4>
                         {announcement.isDismissible && (
                           <button
-                            type="button"
+                            type='button'
                             onClick={(e) => handleDismiss(announcement.id, e)}
                             disabled={dismissMutation.isPending}
-                            className="flex-shrink-0 rounded-md p-1 opacity-0 transition-opacity hover:bg-accent group-hover:opacity-100 disabled:opacity-50"
-                            aria-label="Dismiss"
+                            className='hover:bg-accent flex-shrink-0 rounded-md p-1 opacity-0 transition-opacity disabled:opacity-50 group-hover:opacity-100'
+                            aria-label='Dismiss'
                           >
-                            <X className="h-3 w-3" />
+                            <X className='h-3 w-3' />
                           </button>
                         )}
                       </div>
 
-                      <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
+                      <p className='text-muted-foreground line-clamp-2 text-xs leading-relaxed'>
                         {announcement.content}
                       </p>
 
-                      <div className="flex items-center gap-2">
-                        <Badge variant="outline" className={`text-[10px] font-medium ${styles.badge}`}>
+                      <div className='flex items-center gap-2'>
+                        <Badge
+                          variant='outline'
+                          className={`text-[10px] font-medium ${styles.badge}`}
+                        >
                           {announcement.type}
                         </Badge>
                         {announcement.priority > 5 && (
-                          <Badge variant="outline" className="text-[10px] font-medium bg-orange-500/10 text-orange-700 dark:text-orange-300 border-orange-500/20">
+                          <Badge
+                            variant='outline'
+                            className='border-orange-500/20 bg-orange-500/10 text-[10px] font-medium text-orange-700 dark:text-orange-300'
+                          >
                             High Priority
                           </Badge>
                         )}
-                        <span className="ml-auto text-[10px] text-muted-foreground">
-                          {new Date(announcement.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                        <span className='text-muted-foreground ml-auto text-[10px]'>
+                          {new Date(announcement.createdAt).toLocaleDateString('en-US', {
+                            month: 'short',
+                            day: 'numeric'
+                          })}
                         </span>
                       </div>
                     </div>

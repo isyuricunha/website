@@ -48,7 +48,7 @@ const LatestArticles = () => {
       className='my-8 sm:my-10 lg:my-12'
     >
       <motion.h2
-        className='text-center text-lg sm:text-xl lg:text-2xl font-medium'
+        className='text-center text-lg font-medium sm:text-xl lg:text-2xl'
         initial={{
           y: 30,
           opacity: 0
@@ -88,7 +88,7 @@ const LatestArticles = () => {
             buttonVariants({
               variant: 'outline'
             }),
-            'rounded-full min-h-[36px] px-4 py-2 text-xs sm:text-sm'
+            'min-h-[36px] rounded-full px-4 py-2 text-xs sm:text-sm'
           )}
         >
           {t('homepage.latest-articles.more')}
@@ -149,7 +149,7 @@ const Card = (props: CardProps) => {
         </div>
       </div>
       <div className='flex flex-col px-1.5 py-2 transition-transform ease-out group-hover:translate-x-0.5'>
-        <h3 className='text-sm sm:text-base font-medium'>{title}</h3>
+        <h3 className='text-sm font-medium sm:text-base'>{title}</h3>
         <p className='text-muted-foreground mt-0.5 text-xs'>{summary}</p>
       </div>
     </Link>

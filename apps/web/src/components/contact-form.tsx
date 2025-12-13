@@ -3,7 +3,16 @@
 import { useState, useEffect } from 'react'
 import { env, flags } from '@tszhong0411/env'
 import { useTranslations } from '@tszhong0411/i18n/client'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, Input, Button, Textarea } from '@tszhong0411/ui'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  Input,
+  Button,
+  Textarea
+} from '@tszhong0411/ui'
 import { Send, MessageSquare, Loader2, CheckCircle, AlertCircle } from 'lucide-react'
 import { Turnstile } from '@marsidev/react-turnstile'
 
@@ -87,7 +96,9 @@ export default function ContactForm() {
     // Check Turnstile token if enabled
     if (isTurnstileEnabled && !turnstileToken) {
       setSubmitStatus('error')
-      setSubmitMessage(t('contact.form.turnstile-required') || 'Please complete the security verification.')
+      setSubmitMessage(
+        t('contact.form.turnstile-required') || 'Please complete the security verification.'
+      )
       return
     }
 
@@ -99,7 +110,7 @@ export default function ContactForm() {
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           name: formData.name,
@@ -107,7 +118,7 @@ export default function ContactForm() {
           subject: formData.subject,
           message: formData.message,
           ...(isTurnstileEnabled && { turnstileToken })
-        }),
+        })
       })
 
       const result = await response.json()
@@ -142,10 +153,10 @@ export default function ContactForm() {
   }
 
   const handleInputChange = (field: keyof FormData, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }))
+    setFormData((prev) => ({ ...prev, [field]: value }))
     // Clear error when user starts typing
     if (errors[field]) {
-      setErrors(prev => ({ ...prev, [field]: undefined }))
+      setErrors((prev) => ({ ...prev, [field]: undefined }))
     }
     // Clear submit status when user makes changes
     if (submitStatus !== 'idle') {
@@ -157,7 +168,7 @@ export default function ContactForm() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className='text-base sm:text-lg flex items-center gap-2'>
+        <CardTitle className='flex items-center gap-2 text-base sm:text-lg'>
           <MessageSquare className='h-5 w-5' />
           {t('contact.form.title')}
         </CardTitle>
@@ -167,23 +178,23 @@ export default function ContactForm() {
       </CardHeader>
       <CardContent>
         {submitStatus === 'success' && (
-          <div className='mb-4 p-3 bg-green-50 border border-green-200 rounded-lg flex items-center gap-2 text-green-800'>
+          <div className='mb-4 flex items-center gap-2 rounded-lg border border-green-200 bg-green-50 p-3 text-green-800'>
             <CheckCircle className='h-4 w-4' />
             <span className='text-sm'>{submitMessage}</span>
           </div>
         )}
 
         {submitStatus === 'error' && submitMessage && (
-          <div className='mb-4 p-3 bg-red-50 border border-red-200 rounded-lg flex items-center gap-2 text-red-800'>
+          <div className='mb-4 flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 p-3 text-red-800'>
             <AlertCircle className='h-4 w-4' />
             <span className='text-sm'>{submitMessage}</span>
           </div>
         )}
 
         <form onSubmit={handleSubmit} className='space-y-4'>
-          <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
+          <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
             <div>
-              <label htmlFor='name' className='block text-xs sm:text-sm font-medium mb-2'>
+              <label htmlFor='name' className='mb-2 block text-xs font-medium sm:text-sm'>
                 {t('contact.form.name.label')} *
               </label>
               <Input
@@ -195,12 +206,10 @@ export default function ContactForm() {
                 className={`text-sm ${errors.name ? 'border-red-500' : ''}`}
                 disabled={isSubmitting}
               />
-              {errors.name && (
-                <p className='text-xs text-red-600 mt-1'>{errors.name}</p>
-              )}
+              {errors.name && <p className='mt-1 text-xs text-red-600'>{errors.name}</p>}
             </div>
             <div>
-              <label htmlFor='email' className='block text-xs sm:text-sm font-medium mb-2'>
+              <label htmlFor='email' className='mb-2 block text-xs font-medium sm:text-sm'>
                 {t('contact.form.email.label')} *
               </label>
               <Input
@@ -212,14 +221,12 @@ export default function ContactForm() {
                 className={`text-sm ${errors.email ? 'border-red-500' : ''}`}
                 disabled={isSubmitting}
               />
-              {errors.email && (
-                <p className='text-xs text-red-600 mt-1'>{errors.email}</p>
-              )}
+              {errors.email && <p className='mt-1 text-xs text-red-600'>{errors.email}</p>}
             </div>
           </div>
 
           <div>
-            <label htmlFor='subject' className='block text-xs sm:text-sm font-medium mb-2'>
+            <label htmlFor='subject' className='mb-2 block text-xs font-medium sm:text-sm'>
               {t('contact.form.subject.label')} *
             </label>
             <Input
@@ -231,13 +238,11 @@ export default function ContactForm() {
               className={`text-sm ${errors.subject ? 'border-red-500' : ''}`}
               disabled={isSubmitting}
             />
-            {errors.subject && (
-              <p className='text-xs text-red-600 mt-1'>{errors.subject}</p>
-            )}
+            {errors.subject && <p className='mt-1 text-xs text-red-600'>{errors.subject}</p>}
           </div>
 
           <div>
-            <label htmlFor='message' className='block text-xs sm:text-sm font-medium mb-2'>
+            <label htmlFor='message' className='mb-2 block text-xs font-medium sm:text-sm'>
               {t('contact.form.message.label')} *
             </label>
             <Textarea
@@ -246,13 +251,11 @@ export default function ContactForm() {
               rows={6}
               value={formData.message}
               onChange={(e) => handleInputChange('message', e.target.value)}
-              className={`text-sm resize-none ${errors.message ? 'border-red-500' : ''}`}
+              className={`resize-none text-sm ${errors.message ? 'border-red-500' : ''}`}
               disabled={isSubmitting}
             />
-            {errors.message && (
-              <p className='text-xs text-red-600 mt-1'>{errors.message}</p>
-            )}
-            <p className='text-xs text-gray-500 mt-1'>
+            {errors.message && <p className='mt-1 text-xs text-red-600'>{errors.message}</p>}
+            <p className='mt-1 text-xs text-gray-500'>
               {t('contact.form.message.character-count', { count: formData.message.length })}
             </p>
           </div>
@@ -266,7 +269,10 @@ export default function ContactForm() {
                 onError={() => {
                   setTurnstileToken(null)
                   setSubmitStatus('error')
-                  setSubmitMessage(t('contact.form.turnstile-error') || 'Security verification failed. Please try again.')
+                  setSubmitMessage(
+                    t('contact.form.turnstile-error') ||
+                      'Security verification failed. Please try again.'
+                  )
                 }}
                 onExpire={() => setTurnstileToken(null)}
                 options={{
@@ -279,7 +285,7 @@ export default function ContactForm() {
 
           <Button
             type='submit'
-            className='w-full flex items-center justify-center gap-2 text-sm'
+            className='flex w-full items-center justify-center gap-2 text-sm'
             disabled={isSubmitting || (isTurnstileEnabled && !turnstileToken)}
           >
             {isSubmitting ? (

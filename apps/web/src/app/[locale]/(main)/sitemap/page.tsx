@@ -5,7 +5,7 @@ import { getTranslations, setRequestLocale } from '@tszhong0411/i18n/server'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@tszhong0411/ui/server'
 import { FileText, Code, Music, User, Home, Map as MapIcon } from 'lucide-react'
 
-import { allPosts , allProjects } from 'content-collections'
+import { allPosts, allProjects } from 'content-collections'
 
 import PageTitle from '@/components/page-title'
 import Link from '@/components/link'
@@ -100,25 +100,22 @@ const SitemapPage = async (props: PageProps) => {
   ]
 
   // Sort posts by date
-  const sortedPosts = allPosts.sort((a, b) =>
-    new Date(b.date).getTime() - new Date(a.date).getTime()
+  const sortedPosts = allPosts.sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
   )
 
   // Deduplicate projects by slug to avoid duplicate keys in render
-  const uniqueProjects = Array.from(new Map(allProjects.map(p => [p.slug, p])).values())
+  const uniqueProjects = Array.from(new Map(allProjects.map((p) => [p.slug, p])).values())
 
   return (
     <>
-      <PageTitle
-        title={t('title')}
-        description={t('description')}
-      />
+      <PageTitle title={t('title')} description={t('description')} />
 
       <div className='space-y-8'>
         {/* Main Pages */}
         <Card>
           <CardHeader>
-            <CardTitle className='text-base sm:text-lg flex items-center gap-2'>
+            <CardTitle className='flex items-center gap-2 text-base sm:text-lg'>
               <MapIcon className='h-5 w-5' />
               {t('main-pages.title')}
             </CardTitle>
@@ -127,24 +124,22 @@ const SitemapPage = async (props: PageProps) => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+            <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
               {mainPages.map((page) => (
                 <Link
                   key={page.href}
                   href={page.href}
-                  className='group block p-4 rounded-lg border hover:bg-muted/50 transition-colors'
+                  className='hover:bg-muted/50 group block rounded-lg border p-4 transition-colors'
                 >
                   <div className='flex items-start gap-3'>
-                    <div className='flex-shrink-0 mt-0.5 text-muted-foreground group-hover:text-foreground'>
+                    <div className='text-muted-foreground group-hover:text-foreground mt-0.5 flex-shrink-0'>
                       {page.icon}
                     </div>
                     <div>
-                      <h3 className='text-sm sm:text-base font-medium group-hover:text-primary mb-1'>
+                      <h3 className='group-hover:text-primary mb-1 text-sm font-medium sm:text-base'>
                         {page.title}
                       </h3>
-                      <p className='text-xs sm:text-sm text-muted-foreground'>
-                        {page.description}
-                      </p>
+                      <p className='text-muted-foreground text-xs sm:text-sm'>{page.description}</p>
                     </div>
                   </div>
                 </Link>
@@ -156,7 +151,7 @@ const SitemapPage = async (props: PageProps) => {
         {/* Blog Posts */}
         <Card>
           <CardHeader>
-            <CardTitle className='text-base sm:text-lg flex items-center gap-2'>
+            <CardTitle className='flex items-center gap-2 text-base sm:text-lg'>
               <FileText className='h-5 w-5' />
               {t('blog-posts.title')} ({sortedPosts.length})
             </CardTitle>
@@ -170,17 +165,17 @@ const SitemapPage = async (props: PageProps) => {
                 <Link
                   key={post.slug}
                   href={`/blog/${post.slug}`}
-                  className='group block p-3 rounded-lg hover:bg-muted/50 transition-colors'
+                  className='hover:bg-muted/50 group block rounded-lg p-3 transition-colors'
                 >
                   <div className='flex items-start justify-between gap-4'>
-                    <div className='flex-1 min-w-0'>
-                      <h4 className='text-sm sm:text-base font-medium group-hover:text-primary mb-1 truncate'>
+                    <div className='min-w-0 flex-1'>
+                      <h4 className='group-hover:text-primary mb-1 truncate text-sm font-medium sm:text-base'>
                         {post.title}
                       </h4>
-                      <p className='text-xs sm:text-sm text-muted-foreground line-clamp-2 mb-2'>
+                      <p className='text-muted-foreground mb-2 line-clamp-2 text-xs sm:text-sm'>
                         {post.summary}
                       </p>
-                      <div className='flex items-center gap-2 text-xs text-muted-foreground'>
+                      <div className='text-muted-foreground flex items-center gap-2 text-xs'>
                         <span>{new Date(post.date).toLocaleDateString()}</span>
                         {post.tags && post.tags.length > 0 && (
                           <>
@@ -200,7 +195,7 @@ const SitemapPage = async (props: PageProps) => {
         {/* Projects */}
         <Card>
           <CardHeader>
-            <CardTitle className='text-base sm:text-lg flex items-center gap-2'>
+            <CardTitle className='flex items-center gap-2 text-base sm:text-lg'>
               <Code className='h-5 w-5' />
               {t('projects.title')} ({uniqueProjects.length})
             </CardTitle>
@@ -209,30 +204,30 @@ const SitemapPage = async (props: PageProps) => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+            <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
               {uniqueProjects.map((project) => (
                 <div
                   key={project.slug}
-                  className='group block p-4 rounded-lg border hover:bg-muted/50 transition-colors'
+                  className='hover:bg-muted/50 group block rounded-lg border p-4 transition-colors'
                 >
                   <div className='flex items-start gap-3'>
-                    <div className='flex-shrink-0 mt-0.5'>
-                      <Code className='h-4 w-4 text-muted-foreground group-hover:text-foreground' />
+                    <div className='mt-0.5 flex-shrink-0'>
+                      <Code className='text-muted-foreground group-hover:text-foreground h-4 w-4' />
                     </div>
-                    <div className='flex-1 min-w-0'>
-                      <h4 className='text-sm sm:text-base font-medium group-hover:text-primary mb-1'>
+                    <div className='min-w-0 flex-1'>
+                      <h4 className='group-hover:text-primary mb-1 text-sm font-medium sm:text-base'>
                         {project.name}
                       </h4>
-                      <p className='text-xs sm:text-sm text-muted-foreground line-clamp-2 mb-2'>
+                      <p className='text-muted-foreground mb-2 line-clamp-2 text-xs sm:text-sm'>
                         {project.description}
                       </p>
                       <div className='flex items-center gap-2'>
                         {project.homepage && (
                           <Link
                             href={project.homepage}
-                            className='text-xs text-primary hover:underline'
-                            target="_blank"
-                            rel="noopener noreferrer"
+                            className='text-primary text-xs hover:underline'
+                            target='_blank'
+                            rel='noopener noreferrer'
                           >
                             {t('labels.live-demo')}
                           </Link>
@@ -240,9 +235,9 @@ const SitemapPage = async (props: PageProps) => {
                         {project.repository && (
                           <Link
                             href={project.repository}
-                            className='text-xs text-muted-foreground hover:text-foreground'
-                            target="_blank"
-                            rel="noopener noreferrer"
+                            className='text-muted-foreground hover:text-foreground text-xs'
+                            target='_blank'
+                            rel='noopener noreferrer'
                           >
                             {t('labels.github')}
                           </Link>

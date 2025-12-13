@@ -58,8 +58,8 @@ const GetInTouch = () => {
         duration: 0.5
       }}
     >
-      <div className='flex flex-col gap-4 sm:gap-6 rounded-[11px] p-4 sm:p-5 lg:p-6'>
-        <div className='flex gap-8 sm:gap-12 max-md:flex-col'>
+      <div className='flex flex-col gap-4 rounded-[11px] p-4 sm:gap-6 sm:p-5 lg:p-6'>
+        <div className='flex gap-8 max-md:flex-col sm:gap-12'>
           <div className='relative size-64 max-md:mx-auto' ref={scope}>
             <BlurImage
               src={me}
@@ -116,16 +116,16 @@ const GetInTouch = () => {
           </div>
 
           <div className='flex flex-col justify-center px-4'>
-            <p className='bg-linear-to-r mb-2 sm:mb-3 from-black to-black/70 bg-clip-text text-2xl sm:text-3xl font-semibold text-transparent dark:from-zinc-100 dark:to-zinc-400'>
+            <p className='bg-linear-to-r mb-2 from-black to-black/70 bg-clip-text text-2xl font-semibold text-transparent sm:mb-3 sm:text-3xl dark:from-zinc-100 dark:to-zinc-400'>
               {t('homepage.get-in-touch.title')}
             </p>
-            <p className='text-sm sm:text-base text-zinc-800 dark:text-zinc-300 leading-relaxed'>
+            <p className='text-sm leading-relaxed text-zinc-800 sm:text-base dark:text-zinc-300'>
               {t('homepage.get-in-touch.description')}
             </p>
             <div className='my-6 sm:my-8'>
               <a
                 href='mailto:me@yuricunha.com'
-                className='bg-email-button rounded-full px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base text-white min-h-[44px] inline-flex items-center justify-center'
+                className='bg-email-button inline-flex min-h-[44px] items-center justify-center rounded-full px-4 py-2 text-sm text-white sm:px-6 sm:py-3 sm:text-base'
               >
                 me@yuricunha.com
               </a>

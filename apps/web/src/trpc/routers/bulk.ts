@@ -10,11 +10,13 @@ import { logger } from '@/lib/logger'
 export const bulkRouter = createTRPCRouter({
   // Bulk user operations
   bulkUserAction: adminProcedure
-    .input(z.object({
-      userIds: z.array(z.string()).min(1).max(100),
-      action: z.enum(['delete', 'ban', 'unban', 'update_role']),
-      parameters: z.record(z.string(), z.any()).optional() // For additional parameters like new role
-    }))
+    .input(
+      z.object({
+        userIds: z.array(z.string()).min(1).max(100),
+        action: z.enum(['delete', 'ban', 'unban', 'update_role']),
+        parameters: z.record(z.string(), z.any()).optional() // For additional parameters like new role
+      })
+    )
     .mutation(async ({ ctx, input }) => {
       const operationId = randomBytes(16).toString('hex')
       try {
@@ -63,7 +65,7 @@ export const bulkRouter = createTRPCRouter({
           processedItems++
 
           try {
-            const user = targetUsers.find(u => u.id === userId)
+            const user = targetUsers.find((u) => u.id === userId)
 
             if (!user) {
               results.push({
@@ -174,7 +176,6 @@ export const bulkRouter = createTRPCRouter({
               user: { name: user.name, email: user.email }
             })
             successfulItems++
-
           } catch (error) {
             results.push({
               userId,
@@ -257,12 +258,14 @@ export const bulkRouter = createTRPCRouter({
 
   // Get users for bulk operations (with filtering)
   getUsersForBulkOperation: adminProcedure
-    .input(z.object({
-      search: z.string().optional(),
-      role: z.enum(['user', 'admin']).optional(),
-      excludeAdmins: z.boolean().default(true),
-      limit: z.number().min(1).max(1000).default(100)
-    }))
+    .input(
+      z.object({
+        search: z.string().optional(),
+        role: z.enum(['user', 'admin']).optional(),
+        excludeAdmins: z.boolean().default(true),
+        limit: z.number().min(1).max(1000).default(100)
+      })
+    )
     .query(async ({ ctx, input }) => {
       try {
         const conditions = []
@@ -401,8 +404,10 @@ export const bulkRouter = createTRPCRouter({
           ...operation,
           parameters: operation.parameters ? JSON.parse(operation.parameters) : null,
           results: operation.results ? JSON.parse(operation.results) : null,
-          progress: operation.totalItems > 0 ?
-            Math.round((operation.processedItems / operation.totalItems) * 100) : 0
+          progress:
+            operation.totalItems > 0
+              ? Math.round((operation.processedItems / operation.totalItems) * 100)
+              : 0
         }
       } catch (error) {
         if (error instanceof TRPCError) {

@@ -29,9 +29,7 @@ const SpotifyImage = ({
 
   if (!src || hasError) {
     return (
-      <div className={`flex items-center justify-center bg-muted ${className}`}>
-        {fallbackIcon}
-      </div>
+      <div className={`bg-muted flex items-center justify-center ${className}`}>{fallbackIcon}</div>
     )
   }
 
@@ -40,7 +38,7 @@ const SpotifyImage = ({
     return (
       <div className={`relative ${className}`}>
         {isLoading && (
-          <div className="absolute inset-0 flex items-center justify-center bg-muted animate-pulse">
+          <div className='bg-muted absolute inset-0 flex animate-pulse items-center justify-center'>
             {fallbackIcon}
           </div>
         )}
@@ -51,7 +49,7 @@ const SpotifyImage = ({
           height={height}
           className={`object-cover transition-opacity duration-200 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
           sizes={sizes}
-          loading="lazy"
+          loading='lazy'
           onLoad={() => {
             setIsLoading(false)
           }}
@@ -68,7 +66,7 @@ const SpotifyImage = ({
   return (
     <div className={`relative ${className}`}>
       {isLoading && (
-        <div className="absolute inset-0 flex items-center justify-center bg-muted animate-pulse">
+        <div className='bg-muted absolute inset-0 flex animate-pulse items-center justify-center'>
           {fallbackIcon}
         </div>
       )}
@@ -78,7 +76,7 @@ const SpotifyImage = ({
         fill={fill}
         className={`object-cover transition-opacity duration-200 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
         sizes={sizes}
-        loading="lazy"
+        loading='lazy'
         onLoad={() => {
           setIsLoading(false)
         }}

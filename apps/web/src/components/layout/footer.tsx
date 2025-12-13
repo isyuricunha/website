@@ -51,10 +51,10 @@ const Footer = () => {
             {status === 'error' ? t('common.error') : null}
             {status === 'success'
               ? Intl.NumberFormat('en', {
-                notation: 'compact',
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 1
-              }).format(data)
+                  notation: 'compact',
+                  minimumFractionDigits: 0,
+                  maximumFractionDigits: 1
+                }).format(data)
               : null}
           </div>
         </Link>

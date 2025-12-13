@@ -1,5 +1,4 @@
-import { allPosts , allProjects } from 'content-collections'
-
+import { allPosts, allProjects } from 'content-collections'
 
 export type RecommendationType = 'post' | 'project'
 
@@ -21,46 +20,43 @@ function calculateSimilarity(
   item2: { tags?: string[]; category?: string }
 ): number {
   let score = 0
-  
+
   // Category match (higher weight)
   if (item1.category && item2.category && item1.category === item2.category) {
     score += 3
   }
-  
+
   // Tag matches
   if (item1.tags && item2.tags) {
-    const commonTags = item1.tags.filter(tag => item2.tags!.includes(tag))
+    const commonTags = item1.tags.filter((tag) => item2.tags!.includes(tag))
     score += commonTags.length * 2
   }
-  
+
   return score
 }
 
 /**
  * Get recommended posts based on current post
  */
-export function getRecommendedPosts(
-  currentPostSlug: string,
-  limit = 3
-): Recommendation[] {
-  const currentPost = allPosts.find(post => post.slug === currentPostSlug)
+export function getRecommendedPosts(currentPostSlug: string, limit = 3): Recommendation[] {
+  const currentPost = allPosts.find((post) => post.slug === currentPostSlug)
   if (!currentPost) return []
-  
+
   const recommendations = allPosts
-    .filter(post => post.slug !== currentPostSlug)
-    .map(post => {
+    .filter((post) => post.slug !== currentPostSlug)
+    .map((post) => {
       const score = calculateSimilarity(currentPost, post)
       let reason = 'Similar content'
-      
+
       if (currentPost.category === post.category) {
         reason = `Same category: ${post.category}`
       } else if (currentPost.tags && post.tags) {
-        const commonTags = currentPost.tags.filter(tag => post.tags.includes(tag))
+        const commonTags = currentPost.tags.filter((tag) => post.tags.includes(tag))
         if (commonTags.length > 0) {
           reason = `Similar tags: ${commonTags.slice(0, 2).join(', ')}`
         }
       }
-      
+
       return {
         id: post.slug,
         title: post.title,
@@ -71,44 +67,41 @@ export function getRecommendedPosts(
         reason
       }
     })
-    .filter(rec => rec.score > 0)
+    .filter((rec) => rec.score > 0)
     .sort((a, b) => b.score - a.score)
     .slice(0, limit)
-  
+
   return recommendations
 }
 
 /**
  * Get recommended projects based on current project
  */
-export function getRecommendedProjects(
-  currentProjectSlug: string,
-  limit = 3
-): Recommendation[] {
-  const currentProject = allProjects.find(project => project.slug === currentProjectSlug)
+export function getRecommendedProjects(currentProjectSlug: string, limit = 3): Recommendation[] {
+  const currentProject = allProjects.find((project) => project.slug === currentProjectSlug)
   if (!currentProject) return []
-  
+
   const recommendations = allProjects
-    .filter(project => project.slug !== currentProjectSlug)
-    .map(project => {
+    .filter((project) => project.slug !== currentProjectSlug)
+    .map((project) => {
       const score = calculateSimilarity(
         { tags: currentProject.techstack, category: currentProject.category },
         { tags: project.techstack, category: project.category }
       )
-      
+
       let reason = 'Similar project'
-      
+
       if (currentProject.category === project.category) {
         reason = `Same category: ${project.category}`
       } else {
-        const commonTech = currentProject.techstack.filter(tech => 
+        const commonTech = currentProject.techstack.filter((tech) =>
           project.techstack.includes(tech)
         )
         if (commonTech.length > 0) {
           reason = `Similar tech: ${commonTech.slice(0, 2).join(', ')}`
         }
       }
-      
+
       return {
         id: project.slug,
         title: project.name,
@@ -119,57 +112,52 @@ export function getRecommendedProjects(
         reason
       }
     })
-    .filter(rec => rec.score > 0)
+    .filter((rec) => rec.score > 0)
     .sort((a, b) => b.score - a.score)
     .slice(0, limit)
-  
+
   return recommendations
 }
 
 /**
  * Get mixed recommendations (posts + projects) based on search query
  */
-export function getSearchRecommendations(
-  searchQuery: string,
-  limit = 4
-): Recommendation[] {
+export function getSearchRecommendations(searchQuery: string, limit = 4): Recommendation[] {
   if (!searchQuery.trim()) return []
-  
+
   const query = searchQuery.toLowerCase()
   const recommendations: Recommendation[] = []
-  
+
   // Search in posts
-  allPosts.forEach(post => {
+  allPosts.forEach((post) => {
     let score = 0
     let reason = 'Related content'
-    
+
     // Title match (highest priority)
     if (post.title.toLowerCase().includes(query)) {
       score += 5
       reason = 'Title match'
     }
-    
+
     // Summary match
     if (post.summary.toLowerCase().includes(query)) {
       score += 3
       reason = 'Content match'
     }
-    
+
     // Category match
     if (post.category?.toLowerCase().includes(query)) {
       score += 4
       reason = `Category: ${post.category}`
     }
-    
+
     // Tag match
-    if (post.tags?.some(tag => tag.toLowerCase().includes(query))) {
+    if (post.tags?.some((tag) => tag.toLowerCase().includes(query))) {
       score += 2
-      const matchingTags = post.tags.filter(tag => 
-        tag.toLowerCase().includes(query)
-      )
+      const matchingTags = post.tags.filter((tag) => tag.toLowerCase().includes(query))
       reason = `Tags: ${matchingTags.slice(0, 2).join(', ')}`
     }
-    
+
     if (score > 0) {
       recommendations.push({
         id: post.slug,
@@ -182,39 +170,37 @@ export function getSearchRecommendations(
       })
     }
   })
-  
+
   // Search in projects
-  allProjects.forEach(project => {
+  allProjects.forEach((project) => {
     let score = 0
     let reason = 'Related project'
-    
+
     // Name match
     if (project.name.toLowerCase().includes(query)) {
       score += 5
       reason = 'Name match'
     }
-    
+
     // Description match
     if (project.description.toLowerCase().includes(query)) {
       score += 3
       reason = 'Description match'
     }
-    
+
     // Category match
     if (project.category?.toLowerCase().includes(query)) {
       score += 4
       reason = `Category: ${project.category}`
     }
-    
+
     // Tech stack match
-    if (project.techstack.some(tech => tech.toLowerCase().includes(query))) {
+    if (project.techstack.some((tech) => tech.toLowerCase().includes(query))) {
       score += 2
-      const matchingTech = project.techstack.filter(tech => 
-        tech.toLowerCase().includes(query)
-      )
+      const matchingTech = project.techstack.filter((tech) => tech.toLowerCase().includes(query))
       reason = `Tech: ${matchingTech.slice(0, 2).join(', ')}`
     }
-    
+
     if (score > 0) {
       recommendations.push({
         id: project.slug,
@@ -227,10 +213,8 @@ export function getSearchRecommendations(
       })
     }
   })
-  
-  return recommendations
-    .sort((a, b) => b.score - a.score)
-    .slice(0, limit)
+
+  return recommendations.sort((a, b) => b.score - a.score).slice(0, limit)
 }
 
 /**
@@ -238,12 +222,12 @@ export function getSearchRecommendations(
  */
 export function getTrendingRecommendations(limit = 4): Recommendation[] {
   const recommendations: Recommendation[] = []
-  
+
   // Featured posts get priority
   const featuredPosts = allPosts
-    .filter(post => post.featured)
+    .filter((post) => post.featured)
     .slice(0, 2)
-    .map(post => ({
+    .map((post) => ({
       id: post.slug,
       title: post.title,
       description: post.summary,
@@ -252,12 +236,12 @@ export function getTrendingRecommendations(limit = 4): Recommendation[] {
       score: 10,
       reason: 'Featured post'
     }))
-  
+
   // Featured projects
   const featuredProjects = allProjects
-    .filter(project => project.featured)
+    .filter((project) => project.featured)
     .slice(0, 2)
-    .map(project => ({
+    .map((project) => ({
       id: project.slug,
       title: project.name,
       description: project.description,
@@ -266,16 +250,16 @@ export function getTrendingRecommendations(limit = 4): Recommendation[] {
       score: 10,
       reason: 'Featured project'
     }))
-  
+
   recommendations.push(...featuredPosts, ...featuredProjects)
-  
+
   // Fill remaining with recent posts if needed
   if (recommendations.length < limit) {
     const recentPosts = allPosts
-      .filter(post => !post.featured)
+      .filter((post) => !post.featured)
       .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
       .slice(0, limit - recommendations.length)
-      .map(post => ({
+      .map((post) => ({
         id: post.slug,
         title: post.title,
         description: post.summary,
@@ -284,9 +268,9 @@ export function getTrendingRecommendations(limit = 4): Recommendation[] {
         score: 5,
         reason: 'Recent post'
       }))
-    
+
     recommendations.push(...recentPosts)
   }
-  
+
   return recommendations.slice(0, limit)
 }

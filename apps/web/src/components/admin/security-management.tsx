@@ -1,12 +1,26 @@
 'use client'
 
 import { useState } from 'react'
-import { Button , Card, CardContent, CardDescription, CardHeader, CardTitle , Badge , Input , Label , Select, SelectContent, SelectItem, SelectTrigger, SelectValue , Tabs, TabsContent, TabsList, TabsTrigger } from '@tszhong0411/ui'
-
-
-
-
-
+import {
+  Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  Badge,
+  Input,
+  Label,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger
+} from '@tszhong0411/ui'
 
 import { AlertTriangle, Shield, Users, Lock } from 'lucide-react'
 import { toast } from 'sonner'
@@ -20,18 +34,22 @@ export default function SecurityManagement() {
   const { data: securityStats, isLoading: statsLoading } = api.security.getSecurityStats.useQuery()
 
   // Security events query
-  const { data: securityEvents, isLoading: eventsLoading } = api.security.getSecurityEvents.useQuery({
-    limit: 10
-  })
+  const { data: securityEvents, isLoading: eventsLoading } =
+    api.security.getSecurityEvents.useQuery({
+      limit: 10
+    })
 
   // IP access rules query
   const { data: ipRules, isLoading: ipRulesLoading } = api.security.getIpAccessRules.useQuery()
 
   // Login attempts query
-  const { data: loginAttempts, isLoading: attemptsLoading } = api.security.getLoginAttempts.useQuery()
+  const { data: loginAttempts, isLoading: attemptsLoading } =
+    api.security.getLoginAttempts.useQuery()
 
   // Account lockouts query - get all active lockouts for admin view
-  const { data: lockouts, isLoading: lockoutsLoading } = api.security.getAccountLockouts.useQuery({})
+  const { data: lockouts, isLoading: lockoutsLoading } = api.security.getAccountLockouts.useQuery(
+    {}
+  )
 
   // Mutations
   const addIpRuleMutation = api.security.addIpAccessRule.useMutation({
@@ -83,76 +101,81 @@ export default function SecurityManagement() {
 
   const getSeverityColor = (severity: string) => {
     switch (severity) {
-      case 'critical': return 'destructive'
-      case 'high': return 'destructive'
-      case 'medium': return 'secondary'
-      case 'low': return 'outline'
-      default: return 'outline'
+      case 'critical':
+        return 'destructive'
+      case 'high':
+        return 'destructive'
+      case 'medium':
+        return 'secondary'
+      case 'low':
+        return 'outline'
+      default:
+        return 'outline'
     }
   }
 
   if (statsLoading) {
-    return <div className="p-6">Loading security dashboard...</div>
+    return <div className='p-6'>Loading security dashboard...</div>
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className='space-y-6'>
+      <div className='flex items-center justify-between'>
         <div>
-          <h1 className="text-xl sm:text-2xl font-bold">Security Management</h1>
-          <p className="text-sm text-muted-foreground">Monitor and manage system security</p>
+          <h1 className='text-xl font-bold sm:text-2xl'>Security Management</h1>
+          <p className='text-muted-foreground text-sm'>Monitor and manage system security</p>
         </div>
       </div>
 
       {/* Security Overview Cards */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-4'>
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Security Events</CardTitle>
-            <AlertTriangle className="h-4 w-4 text-muted-foreground" />
+          <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+            <CardTitle className='text-sm font-medium'>Security Events</CardTitle>
+            <AlertTriangle className='text-muted-foreground h-4 w-4' />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{securityStats?.events.total || 0}</div>
-            <p className="text-xs text-muted-foreground">
+            <div className='text-2xl font-bold'>{securityStats?.events.total || 0}</div>
+            <p className='text-muted-foreground text-xs'>
               {securityStats?.events.critical || 0} critical events
             </p>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Login Attempts</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
+          <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+            <CardTitle className='text-sm font-medium'>Login Attempts</CardTitle>
+            <Users className='text-muted-foreground h-4 w-4' />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{securityStats?.loginAttempts.total || 0}</div>
-            <p className="text-xs text-muted-foreground">
+            <div className='text-2xl font-bold'>{securityStats?.loginAttempts.total || 0}</div>
+            <p className='text-muted-foreground text-xs'>
               {securityStats?.loginAttempts.failed || 0} failed attempts
             </p>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Account Lockouts</CardTitle>
-            <Lock className="h-4 w-4 text-muted-foreground" />
+          <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+            <CardTitle className='text-sm font-medium'>Account Lockouts</CardTitle>
+            <Lock className='text-muted-foreground h-4 w-4' />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{securityStats?.lockouts.active || 0}</div>
-            <p className="text-xs text-muted-foreground">Active lockouts</p>
+            <div className='text-2xl font-bold'>{securityStats?.lockouts.active || 0}</div>
+            <p className='text-muted-foreground text-xs'>Active lockouts</p>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">2FA Adoption</CardTitle>
-            <Shield className="h-4 w-4 text-muted-foreground" />
+          <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+            <CardTitle className='text-sm font-medium'>2FA Adoption</CardTitle>
+            <Shield className='text-muted-foreground h-4 w-4' />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div className='text-2xl font-bold'>
               {securityStats?.twoFactor.adoptionRate?.toFixed(1) || 0}%
             </div>
-            <p className="text-xs text-muted-foreground">
+            <p className='text-muted-foreground text-xs'>
               {securityStats?.twoFactor.enabledUsers || 0} users enabled
             </p>
           </CardContent>
@@ -161,16 +184,16 @@ export default function SecurityManagement() {
 
       {/* Security Management Tabs */}
       <Tabs value={selectedTab} onValueChange={setSelectedTab}>
-        <TabsList className="grid w-full grid-cols-5">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="events">Events</TabsTrigger>
-          <TabsTrigger value="ip-control">IP Control</TabsTrigger>
-          <TabsTrigger value="lockouts">Lockouts</TabsTrigger>
-          <TabsTrigger value="settings">Settings</TabsTrigger>
+        <TabsList className='grid w-full grid-cols-5'>
+          <TabsTrigger value='overview'>Overview</TabsTrigger>
+          <TabsTrigger value='events'>Events</TabsTrigger>
+          <TabsTrigger value='ip-control'>IP Control</TabsTrigger>
+          <TabsTrigger value='lockouts'>Lockouts</TabsTrigger>
+          <TabsTrigger value='settings'>Settings</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="overview" className="space-y-4">
-          <div className="grid gap-4 md:grid-cols-2">
+        <TabsContent value='overview' className='space-y-4'>
+          <div className='grid gap-4 md:grid-cols-2'>
             {/* Recent Security Events */}
             <Card>
               <CardHeader>
@@ -181,20 +204,20 @@ export default function SecurityManagement() {
                 {eventsLoading ? (
                   <div>Loading events...</div>
                 ) : (
-                  <div className="space-y-3">
+                  <div className='space-y-3'>
                     {securityEvents?.events.slice(0, 5).map((event) => (
-                      <div key={event.id} className="flex items-center justify-between">
-                        <div className="flex items-center space-x-2">
+                      <div key={event.id} className='flex items-center justify-between'>
+                        <div className='flex items-center space-x-2'>
                           <Badge variant={getSeverityColor(event.severity) as any}>
                             {event.severity}
                           </Badge>
-                          <span className="text-sm">{event.eventType}</span>
+                          <span className='text-sm'>{event.eventType}</span>
                         </div>
-                        <span className="text-xs text-muted-foreground">
+                        <span className='text-muted-foreground text-xs'>
                           {new Date(event.createdAt).toLocaleString()}
                         </span>
                       </div>
-                    )) || <div className="text-sm text-muted-foreground">No recent events</div>}
+                    )) || <div className='text-muted-foreground text-sm'>No recent events</div>}
                   </div>
                 )}
               </CardContent>
@@ -210,26 +233,32 @@ export default function SecurityManagement() {
                 {attemptsLoading ? (
                   <div>Loading attempts...</div>
                 ) : (
-                  <div className="space-y-2">
-                    <div className="flex justify-between">
+                  <div className='space-y-2'>
+                    <div className='flex justify-between'>
                       <span>Total Attempts:</span>
-                      <span className="font-medium">{loginAttempts?.summary.total || 0}</span>
+                      <span className='font-medium'>{loginAttempts?.summary.total || 0}</span>
                     </div>
-                    <div className="flex justify-between">
+                    <div className='flex justify-between'>
                       <span>Successful:</span>
-                      <span className="font-medium text-green-600">{loginAttempts?.summary.successful || 0}</span>
+                      <span className='font-medium text-green-600'>
+                        {loginAttempts?.summary.successful || 0}
+                      </span>
                     </div>
-                    <div className="flex justify-between">
+                    <div className='flex justify-between'>
                       <span>Failed:</span>
-                      <span className="font-medium text-red-600">{loginAttempts?.summary.failed || 0}</span>
+                      <span className='font-medium text-red-600'>
+                        {loginAttempts?.summary.failed || 0}
+                      </span>
                     </div>
-                    <div className="flex justify-between">
+                    <div className='flex justify-between'>
                       <span>Unique IPs:</span>
-                      <span className="font-medium">{loginAttempts?.summary.uniqueIPs || 0}</span>
+                      <span className='font-medium'>{loginAttempts?.summary.uniqueIPs || 0}</span>
                     </div>
-                    <div className="flex justify-between">
+                    <div className='flex justify-between'>
                       <span>Success Rate:</span>
-                      <span className="font-medium">{loginAttempts?.summary.successRate?.toFixed(1) || 0}%</span>
+                      <span className='font-medium'>
+                        {loginAttempts?.summary.successRate?.toFixed(1) || 0}%
+                      </span>
                     </div>
                   </div>
                 )}
@@ -238,7 +267,7 @@ export default function SecurityManagement() {
           </div>
         </TabsContent>
 
-        <TabsContent value="events" className="space-y-4">
+        <TabsContent value='events' className='space-y-4'>
           <Card>
             <CardHeader>
               <CardTitle>Security Events</CardTitle>
@@ -248,23 +277,23 @@ export default function SecurityManagement() {
               {eventsLoading ? (
                 <div>Loading security events...</div>
               ) : (
-                <div className="space-y-4">
+                <div className='space-y-4'>
                   {securityEvents?.events.map((event) => (
-                    <div key={event.id} className="border rounded-lg p-4">
-                      <div className="flex items-center justify-between mb-2">
-                        <div className="flex items-center space-x-2">
+                    <div key={event.id} className='rounded-lg border p-4'>
+                      <div className='mb-2 flex items-center justify-between'>
+                        <div className='flex items-center space-x-2'>
                           <Badge variant={getSeverityColor(event.severity) as any}>
                             {event.severity}
                           </Badge>
-                          <span className="font-medium">{event.eventType}</span>
+                          <span className='font-medium'>{event.eventType}</span>
                         </div>
-                        <div className="flex items-center space-x-2">
-                          <span className="text-sm text-muted-foreground">
+                        <div className='flex items-center space-x-2'>
+                          <span className='text-muted-foreground text-sm'>
                             {new Date(event.createdAt).toLocaleString()}
                           </span>
                           {!event.resolved && (
                             <Button
-                              size="sm"
+                              size='sm'
                               onClick={() => resolveEventMutation.mutate({ eventId: event.id })}
                               disabled={resolveEventMutation.isPending}
                             >
@@ -274,30 +303,32 @@ export default function SecurityManagement() {
                         </div>
                       </div>
                       {event.ipAddress && (
-                        <div className="text-sm text-muted-foreground">
-                          IP: {event.ipAddress}
-                        </div>
+                        <div className='text-muted-foreground text-sm'>IP: {event.ipAddress}</div>
                       )}
                       {event.user && (
-                        <div className="text-sm text-muted-foreground">
+                        <div className='text-muted-foreground text-sm'>
                           User: {event.user.name} ({event.user.email})
                         </div>
                       )}
                       {event.resolved && (
-                        <Badge variant="outline" className="mt-2">
+                        <Badge variant='outline' className='mt-2'>
                           Resolved {event.resolvedAt && new Date(event.resolvedAt).toLocaleString()}
                         </Badge>
                       )}
                     </div>
-                  )) || <div className="text-center text-muted-foreground">No security events found</div>}
+                  )) || (
+                    <div className='text-muted-foreground text-center'>
+                      No security events found
+                    </div>
+                  )}
                 </div>
               )}
             </CardContent>
           </Card>
         </TabsContent>
 
-        <TabsContent value="ip-control" className="space-y-4">
-          <div className="grid gap-4 md:grid-cols-2">
+        <TabsContent value='ip-control' className='space-y-4'>
+          <div className='grid gap-4 md:grid-cols-2'>
             {/* Add IP Rule Form */}
             <Card>
               <CardHeader>
@@ -305,37 +336,33 @@ export default function SecurityManagement() {
                 <CardDescription>Control access by IP address</CardDescription>
               </CardHeader>
               <CardContent>
-                <form action={handleAddIpRule} className="space-y-4">
+                <form action={handleAddIpRule} className='space-y-4'>
                   <div>
-                    <Label htmlFor="ipAddress">IP Address</Label>
+                    <Label htmlFor='ipAddress'>IP Address</Label>
                     <Input
-                      id="ipAddress"
-                      name="ipAddress"
-                      placeholder="192.168.1.1 or 192.168.1.0/24"
+                      id='ipAddress'
+                      name='ipAddress'
+                      placeholder='192.168.1.1 or 192.168.1.0/24'
                       required
                     />
                   </div>
                   <div>
-                    <Label htmlFor="type">Rule Type</Label>
-                    <Select name="type" required>
+                    <Label htmlFor='type'>Rule Type</Label>
+                    <Select name='type' required>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select rule type" />
+                        <SelectValue placeholder='Select rule type' />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="whitelist">Whitelist (Allow)</SelectItem>
-                        <SelectItem value="blacklist">Blacklist (Block)</SelectItem>
+                        <SelectItem value='whitelist'>Whitelist (Allow)</SelectItem>
+                        <SelectItem value='blacklist'>Blacklist (Block)</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                   <div>
-                    <Label htmlFor="description">Description (Optional)</Label>
-                    <Input
-                      id="description"
-                      name="description"
-                      placeholder="Rule description"
-                    />
+                    <Label htmlFor='description'>Description (Optional)</Label>
+                    <Input id='description' name='description' placeholder='Rule description' />
                   </div>
-                  <Button type="submit" disabled={addIpRuleMutation.isPending}>
+                  <Button type='submit' disabled={addIpRuleMutation.isPending}>
                     {addIpRuleMutation.isPending ? 'Adding...' : 'Add Rule'}
                   </Button>
                 </form>
@@ -352,12 +379,15 @@ export default function SecurityManagement() {
                 {ipRulesLoading ? (
                   <div>Loading IP rules...</div>
                 ) : (
-                  <div className="space-y-3">
+                  <div className='space-y-3'>
                     {ipRules?.rules.map((rule) => (
-                      <div key={rule.id} className="flex items-center justify-between border rounded p-3">
+                      <div
+                        key={rule.id}
+                        className='flex items-center justify-between rounded border p-3'
+                      >
                         <div>
-                          <div className="font-medium">{rule.ipAddress}</div>
-                          <div className="text-sm text-muted-foreground">
+                          <div className='font-medium'>{rule.ipAddress}</div>
+                          <div className='text-muted-foreground text-sm'>
                             {rule.description || 'No description'}
                           </div>
                         </div>
@@ -365,7 +395,11 @@ export default function SecurityManagement() {
                           {rule.type}
                         </Badge>
                       </div>
-                    )) || <div className="text-center text-muted-foreground">No IP rules configured</div>}
+                    )) || (
+                      <div className='text-muted-foreground text-center'>
+                        No IP rules configured
+                      </div>
+                    )}
                   </div>
                 )}
               </CardContent>
@@ -373,7 +407,7 @@ export default function SecurityManagement() {
           </div>
         </TabsContent>
 
-        <TabsContent value="lockouts" className="space-y-4">
+        <TabsContent value='lockouts' className='space-y-4'>
           <Card>
             <CardHeader>
               <CardTitle>Account Lockouts</CardTitle>
@@ -383,17 +417,19 @@ export default function SecurityManagement() {
               {lockoutsLoading ? (
                 <div>Loading account lockouts...</div>
               ) : (
-                <div className="space-y-4">
+                <div className='space-y-4'>
                   {lockouts?.lockouts.map((lockout: any) => (
-                    <div key={lockout.id} className="border rounded-lg p-4">
-                      <div className="flex items-center justify-between">
+                    <div key={lockout.id} className='rounded-lg border p-4'>
+                      <div className='flex items-center justify-between'>
                         <div>
-                          <div className="font-medium">User ID: {lockout.userId}</div>
-                          <div className="text-sm text-muted-foreground">Lockout ID: {lockout.id}</div>
-                          <div className="text-sm text-muted-foreground">
+                          <div className='font-medium'>User ID: {lockout.userId}</div>
+                          <div className='text-muted-foreground text-sm'>
+                            Lockout ID: {lockout.id}
+                          </div>
+                          <div className='text-muted-foreground text-sm'>
                             Locked: {new Date(lockout.lockedAt).toLocaleString()}
                           </div>
-                          <div className="text-sm text-muted-foreground">
+                          <div className='text-muted-foreground text-sm'>
                             Reason: {lockout.reason}
                           </div>
                         </div>
@@ -405,21 +441,25 @@ export default function SecurityManagement() {
                         </Button>
                       </div>
                     </div>
-                  )) || <div className="text-center text-muted-foreground">No active account lockouts</div>}
+                  )) || (
+                    <div className='text-muted-foreground text-center'>
+                      No active account lockouts
+                    </div>
+                  )}
                 </div>
               )}
             </CardContent>
           </Card>
         </TabsContent>
 
-        <TabsContent value="settings" className="space-y-4">
+        <TabsContent value='settings' className='space-y-4'>
           <Card>
             <CardHeader>
               <CardTitle>Security Settings</CardTitle>
               <CardDescription>Configure security policies and thresholds</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="text-center text-muted-foreground py-8">
+              <div className='text-muted-foreground py-8 text-center'>
                 Security settings configuration coming soon...
               </div>
             </CardContent>

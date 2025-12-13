@@ -7,7 +7,10 @@ interface UseDebounceSearchProps {
   delay?: number
 }
 
-export const useDebounceSearch = ({ initialValue = '', delay = 300 }: UseDebounceSearchProps = {}) => {
+export const useDebounceSearch = ({
+  initialValue = '',
+  delay = 300
+}: UseDebounceSearchProps = {}) => {
   const [searchTerm, setSearchTerm] = useState(initialValue)
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(initialValue)
 

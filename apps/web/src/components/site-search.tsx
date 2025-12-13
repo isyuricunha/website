@@ -36,7 +36,7 @@ const SiteSearch = () => {
     const results: SearchResult[] = []
 
     // Add blog posts
-    allPosts.forEach(post => {
+    allPosts.forEach((post) => {
       results.push({
         id: post.slug,
         title: post.title,
@@ -49,7 +49,7 @@ const SiteSearch = () => {
     })
 
     // Add projects
-    allProjects.forEach(project => {
+    allProjects.forEach((project) => {
       results.push({
         id: project.slug,
         title: project.name,
@@ -91,7 +91,7 @@ const SiteSearch = () => {
     results.push(...staticPages)
 
     // Deduplicate by href to avoid duplicate keys/entries across locales or sources
-    const uniqueByHref = Array.from(new Map(results.map(r => [r.href, r])).values())
+    const uniqueByHref = Array.from(new Map(results.map((r) => [r.href, r])).values())
     return uniqueByHref
   }, [t])
 
@@ -108,18 +108,23 @@ const SiteSearch = () => {
   }, [])
 
   // Save search to recent searches
-  const saveRecentSearch = useCallback((searchTerm: string) => {
-    if (!searchTerm.trim()) return
+  const saveRecentSearch = useCallback(
+    (searchTerm: string) => {
+      if (!searchTerm.trim()) return
 
-    try {
-      const updated = [searchTerm, ...recentSearches.filter(s => s !== searchTerm)]
-        .slice(0, MAX_RECENT_SEARCHES)
-      setRecentSearches(updated)
-      localStorage.setItem(RECENT_SEARCHES_KEY, JSON.stringify(updated))
-    } catch (error) {
-      console.error('Error saving recent search:', error)
-    }
-  }, [recentSearches])
+      try {
+        const updated = [searchTerm, ...recentSearches.filter((s) => s !== searchTerm)].slice(
+          0,
+          MAX_RECENT_SEARCHES
+        )
+        setRecentSearches(updated)
+        localStorage.setItem(RECENT_SEARCHES_KEY, JSON.stringify(updated))
+      } catch (error) {
+        console.error('Error saving recent search:', error)
+      }
+    },
+    [recentSearches]
+  )
 
   // Filter results based on query
   const filteredResults = useMemo(() => {
@@ -127,9 +132,10 @@ const SiteSearch = () => {
 
     const searchTerm = query.toLowerCase()
     return searchableContent
-      .filter(item =>
-        item.title.toLowerCase().includes(searchTerm) ||
-        item.description.toLowerCase().includes(searchTerm)
+      .filter(
+        (item) =>
+          item.title.toLowerCase().includes(searchTerm) ||
+          item.description.toLowerCase().includes(searchTerm)
       )
       .slice(0, 8) // Limit results
   }, [query, searchableContent])
@@ -141,15 +147,18 @@ const SiteSearch = () => {
   }, [showRecentSearches, filteredResults])
   const totalItems = showRecentSearches ? recentSearches.length : allResults.length
 
-  const handleResultClick = useCallback((href: string, searchTerm?: string) => {
-    if (searchTerm) {
-      saveRecentSearch(searchTerm)
-    }
-    setIsOpen(false)
-    setQuery('')
-    setSelectedIndex(-1)
-    router.push(href)
-  }, [router, saveRecentSearch])
+  const handleResultClick = useCallback(
+    (href: string, searchTerm?: string) => {
+      if (searchTerm) {
+        saveRecentSearch(searchTerm)
+      }
+      setIsOpen(false)
+      setQuery('')
+      setSelectedIndex(-1)
+      router.push(href)
+    },
+    [router, saveRecentSearch]
+  )
 
   const handleRecentSearchClick = useCallback((searchTerm: string) => {
     setQuery(searchTerm)
@@ -157,46 +166,56 @@ const SiteSearch = () => {
     // Don't close dropdown, let user see results
   }, [])
 
-  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
-    if (e.key === 'Escape') {
-      setIsOpen(false)
-      setQuery('')
-      setSelectedIndex(-1)
-      return
-    }
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsOpen(false)
+        setQuery('')
+        setSelectedIndex(-1)
+        return
+      }
 
-    if (e.key === 'ArrowDown') {
-      e.preventDefault()
-      setSelectedIndex(prev =>
-        prev < totalItems - 1 ? prev + 1 : prev
-      )
-    }
+      if (e.key === 'ArrowDown') {
+        e.preventDefault()
+        setSelectedIndex((prev) => (prev < totalItems - 1 ? prev + 1 : prev))
+      }
 
-    if (e.key === 'ArrowUp') {
-      e.preventDefault()
-      setSelectedIndex(prev => prev > -1 ? prev - 1 : -1)
-    }
+      if (e.key === 'ArrowUp') {
+        e.preventDefault()
+        setSelectedIndex((prev) => (prev > -1 ? prev - 1 : -1))
+      }
 
-    if (e.key === 'Enter' && selectedIndex >= 0) {
-      e.preventDefault()
-      if (showRecentSearches) {
-        const term = recentSearches[selectedIndex]
-        if (term) {
-          handleRecentSearchClick(term)
-        }
-      } else {
-        const result = allResults[selectedIndex]
-        if (result) {
-          handleResultClick(result.href, query)
+      if (e.key === 'Enter' && selectedIndex >= 0) {
+        e.preventDefault()
+        if (showRecentSearches) {
+          const term = recentSearches[selectedIndex]
+          if (term) {
+            handleRecentSearchClick(term)
+          }
+        } else {
+          const result = allResults[selectedIndex]
+          if (result) {
+            handleResultClick(result.href, query)
+          }
         }
       }
-    }
-  }, [totalItems, selectedIndex, showRecentSearches, recentSearches, allResults, handleRecentSearchClick, handleResultClick, query])
+    },
+    [
+      totalItems,
+      selectedIndex,
+      showRecentSearches,
+      recentSearches,
+      allResults,
+      handleRecentSearchClick,
+      handleResultClick,
+      query
+    ]
+  )
 
   return (
     <div className='relative'>
       <div className='relative'>
-        <Search className='absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground' />
+        <Search className='text-muted-foreground absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform' />
         <Input
           type='text'
           placeholder={t('site-search.placeholder', { default: 'Search the site...' })}
@@ -221,13 +240,13 @@ const SiteSearch = () => {
               setSelectedIndex(-1)
             }}
           />
-          <Card className='absolute top-full mt-2 w-full z-50 max-h-96 overflow-y-auto'>
+          <Card className='absolute top-full z-50 mt-2 max-h-96 w-full overflow-y-auto'>
             <CardContent className='p-2'>
               <div className='space-y-1'>
                 {/* Recent Searches */}
                 {showRecentSearches && (
                   <>
-                    <div className='px-3 py-2 text-xs font-medium text-muted-foreground border-b'>
+                    <div className='text-muted-foreground border-b px-3 py-2 text-xs font-medium'>
                       {t('site-search.recent-searches', { default: 'Recent searches' })}
                     </div>
                     {recentSearches.map((searchTerm, index) => (
@@ -235,11 +254,12 @@ const SiteSearch = () => {
                         type='button'
                         key={`recent-${searchTerm}-${index}`}
                         onClick={() => handleRecentSearchClick(searchTerm)}
-                        className={`w-full text-left p-3 rounded-lg transition-colors group ${selectedIndex === index ? 'bg-accent' : 'hover:bg-muted/50'
-                          }`}
+                        className={`group w-full rounded-lg p-3 text-left transition-colors ${
+                          selectedIndex === index ? 'bg-accent' : 'hover:bg-muted/50'
+                        }`}
                       >
                         <div className='flex items-center gap-3'>
-                          <Search className='h-4 w-4 text-muted-foreground' />
+                          <Search className='text-muted-foreground h-4 w-4' />
                           <span className='text-sm'>{searchTerm}</span>
                         </div>
                       </button>
@@ -253,29 +273,30 @@ const SiteSearch = () => {
                     type='button'
                     key={`result-${result.href}`}
                     onClick={() => handleResultClick(result.href, query)}
-                    className={`w-full text-left p-3 rounded-lg transition-colors group ${selectedIndex === index ? 'bg-accent' : 'hover:bg-muted/50'
-                      }`}
+                    className={`group w-full rounded-lg p-3 text-left transition-colors ${
+                      selectedIndex === index ? 'bg-accent' : 'hover:bg-muted/50'
+                    }`}
                   >
                     <div className='flex items-start gap-3'>
-                      <div className='flex-shrink-0 mt-0.5 text-muted-foreground group-hover:text-foreground'>
+                      <div className='text-muted-foreground group-hover:text-foreground mt-0.5 flex-shrink-0'>
                         {result.icon}
                       </div>
-                      <div className='flex-1 min-w-0'>
-                        <div className='flex items-center gap-2 mb-1'>
-                          <h4 className='text-sm font-medium truncate group-hover:text-primary'>
+                      <div className='min-w-0 flex-1'>
+                        <div className='mb-1 flex items-center gap-2'>
+                          <h4 className='group-hover:text-primary truncate text-sm font-medium'>
                             <HighlightText text={result.title} searchTerm={query} />
                           </h4>
-                          <span className='text-xs text-muted-foreground px-2 py-0.5 bg-muted rounded-full'>
+                          <span className='text-muted-foreground bg-muted rounded-full px-2 py-0.5 text-xs'>
                             {t(`homepage.recently-updated.type.${result.type}`)}
                           </span>
                         </div>
-                        <p className='text-xs text-muted-foreground line-clamp-2'>
+                        <p className='text-muted-foreground line-clamp-2 text-xs'>
                           <HighlightText text={result.description} searchTerm={query} />
                         </p>
                         {result.date && (
-                          <div className='flex items-center gap-1 mt-1'>
-                            <Calendar className='h-3 w-3 text-muted-foreground' />
-                            <span className='text-xs text-muted-foreground'>
+                          <div className='mt-1 flex items-center gap-1'>
+                            <Calendar className='text-muted-foreground h-3 w-3' />
+                            <span className='text-muted-foreground text-xs'>
                               {new Date(result.date).toLocaleDateString()}
                             </span>
                           </div>
@@ -299,10 +320,10 @@ const SiteSearch = () => {
               setSelectedIndex(-1)
             }}
           />
-          <Card className='absolute top-full mt-2 w-full z-50'>
+          <Card className='absolute top-full z-50 mt-2 w-full'>
             <CardContent className='p-4 text-center'>
-              <Search className='h-8 w-8 mx-auto text-muted-foreground mb-2' />
-              <p className='text-sm text-muted-foreground'>
+              <Search className='text-muted-foreground mx-auto mb-2 h-8 w-8' />
+              <p className='text-muted-foreground text-sm'>
                 {t('site-search.no-results', { default: 'No results for' })} "{query}"
               </p>
             </CardContent>

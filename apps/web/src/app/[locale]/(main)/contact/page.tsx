@@ -81,12 +81,9 @@ const ContactPage = async (props: PageProps) => {
 
   return (
     <>
-      <PageTitle
-        title={t('contact.page-title')}
-        description={t('contact.page-description')}
-      />
+      <PageTitle title={t('contact.page-title')} description={t('contact.page-description')} />
 
-      <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
+      <div className='grid grid-cols-1 gap-8 lg:grid-cols-2'>
         {/* Contact Form */}
         <ContactForm />
 
@@ -95,7 +92,7 @@ const ContactPage = async (props: PageProps) => {
           {/* Direct Contact */}
           <Card>
             <CardHeader>
-              <CardTitle className='text-base sm:text-lg flex items-center gap-2'>
+              <CardTitle className='flex items-center gap-2 text-base sm:text-lg'>
                 <Mail className='h-5 w-5' />
                 {t('contact.direct.title')}
               </CardTitle>
@@ -105,20 +102,20 @@ const ContactPage = async (props: PageProps) => {
             </CardHeader>
             <CardContent>
               <div className='space-y-4'>
-                <div className='flex items-center gap-3 p-3 rounded-lg bg-muted/50'>
-                  <Mail className='h-4 w-4 text-muted-foreground' />
+                <div className='bg-muted/50 flex items-center gap-3 rounded-lg p-3'>
+                  <Mail className='text-muted-foreground h-4 w-4' />
                   <div>
                     <p className='text-sm font-medium'>{t('contact.direct.email-label')}</p>
                     <Link
                       href='mailto:me@yuricunha.com'
-                      className='text-xs sm:text-sm text-primary hover:underline'
+                      className='text-primary text-xs hover:underline sm:text-sm'
                     >
                       me@yuricunha.com
                     </Link>
                   </div>
                 </div>
 
-                <div className='text-xs sm:text-sm text-muted-foreground'>
+                <div className='text-muted-foreground text-xs sm:text-sm'>
                   <p className='mb-2'>{t('contact.direct.response-time')}</p>
                   <p>{t('contact.direct.urgent')}</p>
                 </div>
@@ -129,7 +126,7 @@ const ContactPage = async (props: PageProps) => {
           {/* Social Links */}
           <Card>
             <CardHeader>
-              <CardTitle className='text-base sm:text-lg flex items-center gap-2'>
+              <CardTitle className='flex items-center gap-2 text-base sm:text-lg'>
                 <User className='h-5 w-5' />
                 {t('contact.social.title')}
               </CardTitle>
@@ -143,18 +140,14 @@ const ContactPage = async (props: PageProps) => {
                   <Link
                     key={social.name}
                     href={social.href}
-                    className='group flex items-center gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors'
+                    className='hover:bg-muted/50 group flex items-center gap-3 rounded-lg p-3 transition-colors'
                   >
                     <div className='text-muted-foreground group-hover:text-foreground'>
                       {social.icon}
                     </div>
                     <div className='flex-1'>
-                      <p className='text-sm font-medium group-hover:text-primary'>
-                        {social.name}
-                      </p>
-                      <p className='text-xs text-muted-foreground'>
-                        {social.description}
-                      </p>
+                      <p className='group-hover:text-primary text-sm font-medium'>{social.name}</p>
+                      <p className='text-muted-foreground text-xs'>{social.description}</p>
                     </div>
                   </Link>
                 ))}
@@ -165,9 +158,7 @@ const ContactPage = async (props: PageProps) => {
           {/* FAQ */}
           <Card>
             <CardHeader>
-              <CardTitle className='text-base sm:text-lg'>
-                {t('contact.faq.title')}
-              </CardTitle>
+              <CardTitle className='text-base sm:text-lg'>{t('contact.faq.title')}</CardTitle>
               <CardDescription className='text-xs sm:text-sm'>
                 {t('contact.faq.description')}
               </CardDescription>
@@ -175,20 +166,24 @@ const ContactPage = async (props: PageProps) => {
             <CardContent>
               <div className='space-y-4'>
                 <div>
-                  <h4 className='text-sm font-medium mb-1'>{t('contact.faq.freelance.question')}</h4>
-                  <p className='text-xs sm:text-sm text-muted-foreground'>
+                  <h4 className='mb-1 text-sm font-medium'>
+                    {t('contact.faq.freelance.question')}
+                  </h4>
+                  <p className='text-muted-foreground text-xs sm:text-sm'>
                     {t('contact.faq.freelance.answer')}
                   </p>
                 </div>
                 <div>
-                  <h4 className='text-sm font-medium mb-1'>{t('contact.faq.collaborations.question')}</h4>
-                  <p className='text-xs sm:text-sm text-muted-foreground'>
+                  <h4 className='mb-1 text-sm font-medium'>
+                    {t('contact.faq.collaborations.question')}
+                  </h4>
+                  <p className='text-muted-foreground text-xs sm:text-sm'>
                     {t('contact.faq.collaborations.answer')}
                   </p>
                 </div>
                 <div>
-                  <h4 className='text-sm font-medium mb-1'>{t('contact.faq.speaking.question')}</h4>
-                  <p className='text-xs sm:text-sm text-muted-foreground'>
+                  <h4 className='mb-1 text-sm font-medium'>{t('contact.faq.speaking.question')}</h4>
+                  <p className='text-muted-foreground text-xs sm:text-sm'>
                     {t('contact.faq.speaking.answer')}
                   </p>
                 </div>

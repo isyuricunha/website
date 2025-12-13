@@ -27,21 +27,15 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const {
-      action,
-      content,
-      title,
-      existingTags,
-      provider,
-      fromLang,
-      toLang,
-      maxLength
-    } = ContentGenerationSchema.parse(body)
+    const { action, content, title, existingTags, provider, fromLang, toLang, maxLength } =
+      ContentGenerationSchema.parse(body)
 
     // Check if requested provider is available
     if (!availableProviders.includes(provider)) {
       return NextResponse.json(
-        { error: `Provider ${provider} is not available. Available: ${availableProviders.join(', ')}` },
+        {
+          error: `Provider ${provider} is not available. Available: ${availableProviders.join(', ')}`
+        },
         { status: 400 }
       )
     }
@@ -76,10 +70,7 @@ export async function POST(request: NextRequest) {
       }
 
       default: {
-        return NextResponse.json(
-          { error: 'Invalid action' },
-          { status: 400 }
-        )
+        return NextResponse.json({ error: 'Invalid action' }, { status: 400 })
       }
     }
 
@@ -89,7 +80,6 @@ export async function POST(request: NextRequest) {
       provider,
       timestamp: new Date().toISOString()
     })
-
   } catch (error) {
     logger.error('Content generation API error', error)
 
@@ -110,17 +100,11 @@ export async function POST(request: NextRequest) {
       }
 
       if (error.message.includes('not available')) {
-        return NextResponse.json(
-          { error: error.message },
-          { status: 503 }
-        )
+        return NextResponse.json({ error: error.message }, { status: 503 })
       }
     }
 
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
 

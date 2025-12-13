@@ -38,11 +38,12 @@ export class ErrorBoundary extends Component<Props, State> {
       }
 
       return (
-        <div className='flex flex-col items-center justify-center min-h-[200px] p-6 text-center'>
-          <AlertTriangle className='size-12 text-destructive mb-4' />
-          <h2 className='text-lg font-semibold mb-2'>Something went wrong</h2>
-          <p className='text-sm text-muted-foreground mb-4 max-w-md'>
-            We encountered an unexpected error. Please try refreshing the page or contact support if the problem persists.
+        <div className='flex min-h-[200px] flex-col items-center justify-center p-6 text-center'>
+          <AlertTriangle className='text-destructive mb-4 size-12' />
+          <h2 className='mb-2 text-lg font-semibold'>Something went wrong</h2>
+          <p className='text-muted-foreground mb-4 max-w-md text-sm'>
+            We encountered an unexpected error. Please try refreshing the page or contact support if
+            the problem persists.
           </p>
           <div className='flex gap-2'>
             <Button
@@ -54,17 +55,14 @@ export class ErrorBoundary extends Component<Props, State> {
               <RefreshCw className='size-4' />
               Refresh Page
             </Button>
-            <Button
-              onClick={() => this.setState({ hasError: false, error: undefined })}
-              size='sm'
-            >
+            <Button onClick={() => this.setState({ hasError: false, error: undefined })} size='sm'>
               Try Again
             </Button>
           </div>
           {process.env.NODE_ENV === 'development' && this.state.error && (
             <details className='mt-4 text-left'>
               <summary className='cursor-pointer text-sm font-medium'>Error Details</summary>
-              <pre className='mt-2 text-xs bg-muted p-2 rounded overflow-auto max-w-full'>
+              <pre className='bg-muted mt-2 max-w-full overflow-auto rounded p-2 text-xs'>
                 {this.state.error.stack}
               </pre>
             </details>

@@ -33,9 +33,7 @@ const Layout = async (props: LayoutProps) => {
         <AdminHeader />
         <main className='py-6'>
           <AdminBreadcrumb />
-          <AdminErrorBoundary>
-            {children}
-          </AdminErrorBoundary>
+          <AdminErrorBoundary>{children}</AdminErrorBoundary>
         </main>
       </div>
     </SidebarProvider>

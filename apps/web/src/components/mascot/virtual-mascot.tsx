@@ -6,7 +6,17 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { flags } from '@tszhong0411/env'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { X as XIcon, Settings as SettingsIcon, Gamepad as GamepadIcon, Eye as EyeIcon, Menu as MenuIcon, Bug as BugIcon, Github as GithubIcon, Copy as CopyIcon, MessageCircle as MessageCircleIcon } from 'lucide-react'
+import {
+  X as XIcon,
+  Settings as SettingsIcon,
+  Gamepad as GamepadIcon,
+  Eye as EyeIcon,
+  Menu as MenuIcon,
+  Bug as BugIcon,
+  Github as GithubIcon,
+  Copy as CopyIcon,
+  MessageCircle as MessageCircleIcon
+} from 'lucide-react'
 import { useTranslations, useMessages } from '@tszhong0411/i18n/client'
 import { i18n } from '@tszhong0411/i18n/config'
 import MascotGame from './mascot-game'
@@ -81,41 +91,43 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
   // Helper functions to update state
   const updateState = useCallback((updates: Partial<ReturnType<typeof create_initial_state>>) => {
-    setState(prev => ({ ...prev, ...updates }))
+    setState((prev) => ({ ...prev, ...updates }))
   }, [])
 
   // Queue helpers
-  const enqueueMessage = useCallback((text: string, duration?: number) => {
-    if (!text) return
-    const d = duration ?? state.preferences.messageDuration
-    const id = Date.now() + Math.floor(Math.random() * 1000)
-    const expiresAt = Date.now() + d
+  const enqueueMessage = useCallback(
+    (text: string, duration?: number) => {
+      if (!text) return
+      const d = duration ?? state.preferences.messageDuration
+      const id = Date.now() + Math.floor(Math.random() * 1000)
+      const expiresAt = Date.now() + d
 
-    setState(prev => ({
-      ...prev,
-      messageQueue: [...prev.messageQueue, { id, text, expiresAt }]
-    }))
-    // schedule exit animation then removal
-    setTimeout(() => {
-      startExit(id)
-    }, d)
-  }, [state.preferences.messageDuration])
+      setState((prev) => ({
+        ...prev,
+        messageQueue: [...prev.messageQueue, { id, text, expiresAt }]
+      }))
+      // schedule exit animation then removal
+      setTimeout(() => {
+        startExit(id)
+      }, d)
+    },
+    [state.preferences.messageDuration]
+  )
 
   const startExit = (id: number) => {
-
     // Mark as exiting to trigger fade-out animation
-    setState(prev => ({
+    setState((prev) => ({
       ...prev,
       exitingIds: new Set(prev.exitingIds).add(id)
     }))
     // After animation completes, remove from queue
     setTimeout(() => {
-      setState(prev => {
+      setState((prev) => {
         const newExitingIds = new Set(prev.exitingIds)
         newExitingIds.delete(id)
         return {
           ...prev,
-          messageQueue: prev.messageQueue.filter(item => item.id !== id),
+          messageQueue: prev.messageQueue.filter((item) => item.id !== id),
           exitingIds: newExitingIds
         }
       })
@@ -123,7 +135,6 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   }
 
   const updatePreferences = (updates: Partial<MascotPreferences>) => {
-
     const newPrefs = { ...state.preferences, ...updates }
     updateState({ preferences: newPrefs })
     try {
@@ -135,7 +146,6 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
   // Load preferences from localStorage
   const loadPreferences = (): MascotPreferences => {
-
     if (globalThis.window === undefined) return { ...DEFAULT_PREFERENCES }
 
     try {
@@ -154,9 +164,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
   useEffect(() => {
     // This will only run on the client side
-    setPrefersReducedMotion(
-      globalThis.matchMedia('(prefers-reduced-motion: reduce)').matches
-    )
+    setPrefersReducedMotion(globalThis.matchMedia('(prefers-reduced-motion: reduce)').matches)
 
     const mediaQuery = globalThis.matchMedia('(prefers-reduced-motion: reduce)')
     const handleChange = () => setPrefersReducedMotion(mediaQuery.matches)
@@ -189,7 +197,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         const v = (base as any)[String(idx)]
         if (typeof v === 'string' && v) list.push(v)
       }
-    } catch { }
+    } catch {}
     if (list.length === 0) return t('mascot.messages.0')
     return list[Math.floor(Math.random() * list.length)] ?? t('mascot.messages.0')
   }, [allMessages, t])
@@ -208,21 +216,21 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         const v = (base as any)[String(idx)]
         if (typeof v === 'string' && v) list.push(v)
       }
-    } catch { }
+    } catch {}
     if (list.length === 0) return t('mascot.messages.0')
     return list[Math.floor(Math.random() * list.length)] ?? t('mascot.messages.0')
   }, [allMessages, t])
 
   // Copy email to clipboard
   const copyEmail = (): void => {
-    navigator.clipboard.writeText('me@yuricunha.com')
+    navigator.clipboard
+      .writeText('me@yuricunha.com')
       .catch((error) => console.error('Failed to copy email:', error))
     enqueueMessage('Email copied to clipboard!', 2000)
   }
 
   // Mount flag to coordinate client-only behaviors and select session image
   useEffect(() => {
-
     setMounted(true)
     // Choose persistent session image only on client after mount
     try {
@@ -234,12 +242,11 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         sessionStorage.setItem(MASCOT_IMAGE_KEY, String(chosen))
         updateState({ currentMascotImage: chosen })
       }
-    } catch { }
+    } catch {}
   }, [updateState])
 
   // Read dismissal state and preferences once per session
   useEffect(() => {
-
     try {
       const v = sessionStorage.getItem(STORAGE_KEY)
       if (v === '1') updateState({ isDismissed: true })
@@ -258,12 +265,11 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       if (visited) {
         updateState({ blogPostsVisited: new Set(JSON.parse(visited)) })
       }
-    } catch { }
+    } catch {}
   }, [updateState])
 
   // Konami Code detection
   useEffect(() => {
-
     const handleKeyDown = (event: KeyboardEvent) => {
       // Keyboard shortcut to restore Yue (Shift+Y)
       if (event.shiftKey && event.key.toLowerCase() === 'y') {
@@ -271,7 +277,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         try {
           sessionStorage.removeItem(STORAGE_KEY)
           localStorage.removeItem(HIDE_KEY)
-        } catch { }
+        } catch {}
         return
       }
 
@@ -285,7 +291,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
           updateState({ isKonamiMode: !state.isKonamiMode })
           try {
             localStorage.setItem(KONAMI_MODE_KEY, state.isKonamiMode ? '1' : '0')
-          } catch { }
+          } catch {}
         }
         updateState({ konamiSequence: [] })
       } else if (newSequence.length > KONAMI_CODE.length) {
@@ -301,13 +307,16 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   useEffect(() => {
     if (!state.preferences.animations || prefersReducedMotion) return
 
-    const blinkInterval = setInterval(() => {
-      updateState({ isBlinking: true })
-      if (blink_timeout_ref.current) {
-        clearTimeout(blink_timeout_ref.current)
-      }
-      blink_timeout_ref.current = setTimeout(() => updateState({ isBlinking: false }), 150)
-    }, 3000 + Math.random() * 2000) // Random interval between 3-5 seconds
+    const blinkInterval = setInterval(
+      () => {
+        updateState({ isBlinking: true })
+        if (blink_timeout_ref.current) {
+          clearTimeout(blink_timeout_ref.current)
+        }
+        blink_timeout_ref.current = setTimeout(() => updateState({ isBlinking: false }), 150)
+      },
+      3000 + Math.random() * 2000
+    ) // Random interval between 3-5 seconds
 
     return () => {
       clearInterval(blinkInterval)
@@ -320,10 +329,26 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
   // Idle timer for fun facts
   useEffect(() => {
-    if (!state.preferences.speechBubbles || state.autoShowMessage || state.showContact || state.showGame || state.showSettings || state.showMenu || state.showAIChat) return
+    if (
+      !state.preferences.speechBubbles ||
+      state.autoShowMessage ||
+      state.showContact ||
+      state.showGame ||
+      state.showSettings ||
+      state.showMenu ||
+      state.showAIChat
+    )
+      return
 
     const timer = setTimeout(() => {
-      if (!state.autoShowMessage && !state.showContact && !state.showGame && !state.showSettings && !state.showMenu && !state.showAIChat) {
+      if (
+        !state.autoShowMessage &&
+        !state.showContact &&
+        !state.showGame &&
+        !state.showSettings &&
+        !state.showMenu &&
+        !state.showAIChat
+      ) {
         enqueueMessage(getIdleMessage(), 4000)
       }
     }, 25_000) // 25 seconds idle
@@ -331,7 +356,17 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     return () => {
       if (timer) clearTimeout(timer)
     }
-  }, [state.preferences.speechBubbles, state.autoShowMessage, state.showContact, state.showGame, state.showSettings, state.showMenu, state.showAIChat, enqueueMessage, getIdleMessage])
+  }, [
+    state.preferences.speechBubbles,
+    state.autoShowMessage,
+    state.showContact,
+    state.showGame,
+    state.showSettings,
+    state.showMenu,
+    state.showAIChat,
+    enqueueMessage,
+    getIdleMessage
+  ])
 
   // Track current page path for contextual messages (language-aware)
   const pathname = usePathname()
@@ -377,41 +412,43 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   }, [pageKey])
 
   // Helper: fetch page-specific messages with graceful fallbacks
-  const fetchPageMessages = useCallback((key: string): string[] => {
+  const fetchPageMessages = useCallback(
+    (key: string): string[] => {
+      const tryKey = (k: string): string[] => {
+        const res: string[] = []
+        try {
+          const base = (allMessages?.mascot?.pageMessages?.[k] ?? {}) as Record<string, unknown>
+          const keys = Object.keys(base)
+            .filter((kk) => /^\d+$/.test(kk))
+            .map(Number)
+            .sort((a, b) => a - b)
+          for (const idx of keys) {
+            const v = (base as any)[String(idx)]
+            if (typeof v === 'string' && v) res.push(v)
+          }
+        } catch {}
+        return res
+      }
 
-    const tryKey = (k: string): string[] => {
-      const res: string[] = []
-      try {
-        const base = (allMessages?.mascot?.pageMessages?.[k] ?? {}) as Record<string, unknown>
-        const keys = Object.keys(base)
-          .filter((kk) => /^\d+$/.test(kk))
-          .map(Number)
-          .sort((a, b) => a - b)
-        for (const idx of keys) {
-          const v = (base as any)[String(idx)]
-          if (typeof v === 'string' && v) res.push(v)
-        }
-      } catch { }
-      return res
-    }
+      // Prefer detail-specific messages when available, then fallback to base and home
+      const isDetail = key.endsWith('Detail')
+      const baseKey = isDetail ? key.replace(/Detail$/, '') : key
+      let msgs: string[] = []
+      if (isDetail) {
+        msgs = tryKey(key)
+        if (msgs.length > 0) return msgs
+      }
+      msgs = tryKey(baseKey)
 
-    // Prefer detail-specific messages when available, then fallback to base and home
-    const isDetail = key.endsWith('Detail')
-    const baseKey = isDetail ? key.replace(/Detail$/, '') : key
-    let msgs: string[] = []
-    if (isDetail) {
-      msgs = tryKey(key)
-      if (msgs.length > 0) return msgs
-    }
-    msgs = tryKey(baseKey)
+      // Final fallback to home so we never show empty bubbles
+      if (msgs.length === 0 && baseKey !== 'home') {
+        msgs = tryKey('home')
+      }
 
-    // Final fallback to home so we never show empty bubbles
-    if (msgs.length === 0 && baseKey !== 'home') {
-      msgs = tryKey('home')
-    }
-
-    return msgs
-  }, [allMessages])
+      return msgs
+    },
+    [allMessages]
+  )
 
   // Get current blog post slug for tracking visits
   const currentBlogPostSlug = useMemo(() => {
@@ -442,14 +479,15 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
             updateState({ blogPostsVisited: newVisited })
             try {
               localStorage.setItem(BLOG_POST_VISITED_KEY, JSON.stringify([...newVisited]))
-            } catch { }
+            } catch {}
           }
         } else {
           // Show randomized page message for non-blog-post pages
           const pageMessages = fetchPageMessages(pageKey)
-          const randomized = pageMessages.length > 0
-            ? pageMessages[Math.floor(Math.random() * pageMessages.length)]
-            : ''
+          const randomized =
+            pageMessages.length > 0
+              ? pageMessages[Math.floor(Math.random() * pageMessages.length)]
+              : ''
           if (randomized) enqueueMessage(randomized)
         }
 
@@ -471,11 +509,21 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       }
     }
     return
-  }, [pageKey, state.preferences.speechBubbles, state.preferences.messageDuration, isOnBlogPost, currentBlogPostSlug, state.blogPostsVisited, enqueueMessage, fetchPageMessages, getBlogPostMessage, updateState])
+  }, [
+    pageKey,
+    state.preferences.speechBubbles,
+    state.preferences.messageDuration,
+    isOnBlogPost,
+    currentBlogPostSlug,
+    state.blogPostsVisited,
+    enqueueMessage,
+    fetchPageMessages,
+    getBlogPostMessage,
+    updateState
+  ])
 
   // Build message list from i18n with time-based greetings and context
   const messages: string[] = useMemo(() => {
-
     const list: string[] = []
 
     // Only add time-based greeting on the home page, after mount
@@ -526,7 +574,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       showContact: false,
       showSettings: false,
       showGame: false,
-      showAIChat: false,
+      showAIChat: false
     })
   }
 
@@ -556,7 +604,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       showSettings: false,
       showMenu: false,
       showGame: false,
-      showAIChat: false,
+      showAIChat: false
     })
 
     // Use a small timeout to ensure the hide animation completes before showing new content
@@ -639,7 +687,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         <button
           type='button'
           aria-label={t('mascot.restore')}
-          className='rounded-full bg-gradient-to-br from-primary to-primary/80 p-2 sm:p-3 text-primary-foreground shadow-2xl shadow-primary/30 transition-all duration-300 hover:scale-110 hover:shadow-2xl hover:shadow-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 min-h-[44px] min-w-[44px] border-2 border-primary/20'
+          className='from-primary to-primary/80 text-primary-foreground shadow-primary/30 hover:shadow-primary/40 focus-visible:ring-primary/50 border-primary/20 min-h-[44px] min-w-[44px] rounded-full border-2 bg-gradient-to-br p-2 shadow-2xl transition-all duration-300 hover:scale-110 hover:shadow-2xl focus-visible:outline-none focus-visible:ring-2 sm:p-3'
           onClick={() => updateState({ isDismissed: false, isHiddenPref: false })}
         >
           <EyeIcon className='h-5 w-5 sm:h-6 sm:w-6' />
@@ -653,13 +701,15 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       <div className={`${getPositionClasses()} z-50`}>
         {/* Settings Panel */}
         {state.showSettings && (
-          <div className={`${getBubblePositionClasses()} w-60 sm:w-64 rounded-3xl border-2 border-border/20 bg-popover/95 backdrop-blur-md p-3 sm:p-4 text-xs text-popover-foreground shadow-2xl shadow-primary/10`}>
-            <div className='flex items-center justify-between mb-3'>
+          <div
+            className={`${getBubblePositionClasses()} border-border/20 bg-popover/95 text-popover-foreground shadow-primary/10 w-60 rounded-3xl border-2 p-3 text-xs shadow-2xl backdrop-blur-md sm:w-64 sm:p-4`}
+          >
+            <div className='mb-3 flex items-center justify-between'>
               <h3 className='font-medium'>{t('mascot.settings.title')}</h3>
               <button
                 type='button'
                 aria-label={t('mascot.settings.close')}
-                className='rounded-xl p-1.5 text-muted-foreground transition-all duration-200 hover:bg-muted/80 hover:text-foreground hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50'
+                className='text-muted-foreground hover:bg-muted/80 hover:text-foreground focus-visible:ring-primary/50 rounded-xl p-1.5 transition-all duration-200 hover:scale-105 focus-visible:outline-none focus-visible:ring-2'
                 onClick={() => updateState({ showSettings: false, showBubble: false })}
               >
                 <XIcon className='h-4 w-4' />
@@ -673,7 +723,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
                   type='checkbox'
                   checked={state.preferences.animations}
                   onChange={(e) => updatePreferences({ animations: e.target.checked })}
-                  className='rounded border-input bg-background text-foreground accent-primary focus:ring-2 focus:ring-ring focus:ring-offset-2'
+                  className='border-input bg-background text-foreground accent-primary focus:ring-ring rounded focus:ring-2 focus:ring-offset-2'
                 />
               </label>
 
@@ -683,7 +733,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
                   type='checkbox'
                   checked={state.preferences.speechBubbles}
                   onChange={(e) => updatePreferences({ speechBubbles: e.target.checked })}
-                  className='rounded border-input bg-background text-foreground accent-primary focus:ring-2 focus:ring-ring focus:ring-offset-2'
+                  className='border-input bg-background text-foreground accent-primary focus:ring-ring rounded focus:ring-2 focus:ring-offset-2'
                 />
               </label>
 
@@ -693,7 +743,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
                   type='checkbox'
                   checked={state.preferences.soundEffects}
                   onChange={(e) => updatePreferences({ soundEffects: e.target.checked })}
-                  className='rounded border-input bg-background text-foreground accent-primary focus:ring-2 focus:ring-ring focus:ring-offset-2'
+                  className='border-input bg-background text-foreground accent-primary focus:ring-ring rounded focus:ring-2 focus:ring-offset-2'
                 />
               </label>
 
@@ -701,13 +751,35 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
                 <span>{t('mascot.settings.messageDuration')}</span>
                 <select
                   value={state.preferences.messageDuration}
-                  onChange={(e) => updatePreferences({ messageDuration: Number.parseInt(e.target.value) })}
-                  className='rounded-xl border-2 border-input/50 bg-background/80 backdrop-blur-sm text-foreground text-xs px-3 py-2.5 shadow-lg transition-all duration-200 hover:border-primary/50 hover:shadow-xl focus:ring-2 focus:ring-primary/30 focus:ring-offset-2 focus:outline-none focus:border-primary cursor-pointer'
+                  onChange={(e) =>
+                    updatePreferences({ messageDuration: Number.parseInt(e.target.value) })
+                  }
+                  className='border-input/50 bg-background/80 text-foreground hover:border-primary/50 focus:ring-primary/30 focus:border-primary cursor-pointer rounded-xl border-2 px-3 py-2.5 text-xs shadow-lg backdrop-blur-sm transition-all duration-200 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-offset-2'
                 >
-                  <option value={3000} className='bg-background text-foreground py-2.5 px-3 hover:bg-muted/80 rounded-lg border-b border-border/30 last:border-b-0'>3s</option>
-                  <option value={5000} className='bg-background text-foreground py-2.5 px-3 hover:bg-muted/80 rounded-lg border-b border-border/30 last:border-b-0'>5s</option>
-                  <option value={7000} className='bg-background text-foreground py-2.5 px-3 hover:bg-muted/80 rounded-lg border-b border-border/30 last:border-b-0'>7s</option>
-                  <option value={10_000} className='bg-background text-foreground py-2.5 px-3 hover:bg-muted/80 rounded-lg border-b border-border/30 last:border-b-0'>10s</option>
+                  <option
+                    value={3000}
+                    className='bg-background text-foreground hover:bg-muted/80 border-border/30 rounded-lg border-b px-3 py-2.5 last:border-b-0'
+                  >
+                    3s
+                  </option>
+                  <option
+                    value={5000}
+                    className='bg-background text-foreground hover:bg-muted/80 border-border/30 rounded-lg border-b px-3 py-2.5 last:border-b-0'
+                  >
+                    5s
+                  </option>
+                  <option
+                    value={7000}
+                    className='bg-background text-foreground hover:bg-muted/80 border-border/30 rounded-lg border-b px-3 py-2.5 last:border-b-0'
+                  >
+                    7s
+                  </option>
+                  <option
+                    value={10_000}
+                    className='bg-background text-foreground hover:bg-muted/80 border-border/30 rounded-lg border-b px-3 py-2.5 last:border-b-0'
+                  >
+                    10s
+                  </option>
                 </select>
               </label>
 
@@ -715,21 +787,43 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
                 <span>{t('mascot.settings.bubblePosition')}</span>
                 <select
                   value={state.preferences.bubblePosition}
-                  onChange={(e) => updatePreferences({ bubblePosition: e.target.value as MascotPreferences['bubblePosition'] })}
-                  className='rounded-xl border-2 border-input/50 bg-background/80 backdrop-blur-sm text-foreground text-xs px-3 py-2.5 shadow-lg transition-all duration-200 hover:border-primary/50 hover:shadow-xl focus:ring-2 focus:ring-primary/30 focus:ring-offset-2 focus:outline-none focus:border-primary cursor-pointer'
+                  onChange={(e) =>
+                    updatePreferences({
+                      bubblePosition: e.target.value as MascotPreferences['bubblePosition']
+                    })
+                  }
+                  className='border-input/50 bg-background/80 text-foreground hover:border-primary/50 focus:ring-primary/30 focus:border-primary cursor-pointer rounded-xl border-2 px-3 py-2.5 text-xs shadow-lg backdrop-blur-sm transition-all duration-200 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-offset-2'
                 >
-                  <option value='bottom-right' className='bg-background text-foreground py-2.5 px-3 hover:bg-muted/80 rounded-lg border-b border-border/30 last:border-b-0'>{t('mascot.settings.positions.bottomRight')}</option>
-                  <option value='bottom-left' className='bg-background text-foreground py-2.5 px-3 hover:bg-muted/80 rounded-lg border-b border-border/30 last:border-b-0'>{t('mascot.settings.positions.bottomLeft')}</option>
-                  <option value='top-right' className='bg-background text-foreground py-2.5 px-3 hover:bg-muted/80 rounded-lg border-b border-border/30 last:border-b-0'>{t('mascot.settings.positions.topRight')}</option>
-                  <option value='top-left' className='bg-background text-foreground py-2.5 px-3 hover:bg-muted/80 rounded-lg border-b border-border/30 last:border-b-0'>{t('mascot.settings.positions.topLeft')}</option>
+                  <option
+                    value='bottom-right'
+                    className='bg-background text-foreground hover:bg-muted/80 border-border/30 rounded-lg border-b px-3 py-2.5 last:border-b-0'
+                  >
+                    {t('mascot.settings.positions.bottomRight')}
+                  </option>
+                  <option
+                    value='bottom-left'
+                    className='bg-background text-foreground hover:bg-muted/80 border-border/30 rounded-lg border-b px-3 py-2.5 last:border-b-0'
+                  >
+                    {t('mascot.settings.positions.bottomLeft')}
+                  </option>
+                  <option
+                    value='top-right'
+                    className='bg-background text-foreground hover:bg-muted/80 border-border/30 rounded-lg border-b px-3 py-2.5 last:border-b-0'
+                  >
+                    {t('mascot.settings.positions.topRight')}
+                  </option>
+                  <option
+                    value='top-left'
+                    className='bg-background text-foreground hover:bg-muted/80 border-border/30 rounded-lg border-b px-3 py-2.5 last:border-b-0'
+                  >
+                    {t('mascot.settings.positions.topLeft')}
+                  </option>
                 </select>
               </label>
 
               {state.isKonamiMode && (
-                <div className='pt-2 border-t'>
-                  <p className='text-xs text-muted-foreground'>
-                    {t('mascot.easterEgg.retroMode')}
-                  </p>
+                <div className='border-t pt-2'>
+                  <p className='text-muted-foreground text-xs'>{t('mascot.easterEgg.retroMode')}</p>
                 </div>
               )}
             </div>
@@ -738,13 +832,15 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
         {/* Contact Panel */}
         {state.showContact && (
-          <div className={`${getBubblePositionClasses()} w-60 sm:w-64 rounded-3xl border-2 border-border/20 bg-popover/95 backdrop-blur-md p-3 sm:p-4 text-xs text-popover-foreground shadow-2xl shadow-primary/10`}>
-            <div className='flex items-center justify-between mb-3'>
+          <div
+            className={`${getBubblePositionClasses()} border-border/20 bg-popover/95 text-popover-foreground shadow-primary/10 w-60 rounded-3xl border-2 p-3 text-xs shadow-2xl backdrop-blur-md sm:w-64 sm:p-4`}
+          >
+            <div className='mb-3 flex items-center justify-between'>
               <h3 className='font-medium'>{t('mascot.contact.title')}</h3>
               <button
                 type='button'
                 aria-label={t('mascot.contact.close')}
-                className='rounded-xl p-1.5 text-muted-foreground transition-all duration-200 hover:bg-muted/80 hover:text-foreground hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50'
+                className='text-muted-foreground hover:bg-muted/80 hover:text-foreground focus-visible:ring-primary/50 rounded-xl p-1.5 transition-all duration-200 hover:scale-105 focus-visible:outline-none focus-visible:ring-2'
                 onClick={() => updateState({ showContact: false, showBubble: false })}
               >
                 <XIcon className='h-4 w-4' />
@@ -754,11 +850,11 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
             <div className='space-y-3'>
               <p className='text-sm'>{t('mascot.contact.description')}</p>
               <div className='flex items-center gap-2'>
-                <code className='flex-1 rounded bg-muted px-2 py-1 text-xs'>me@yuricunha.com</code>
+                <code className='bg-muted flex-1 rounded px-2 py-1 text-xs'>me@yuricunha.com</code>
                 <button
                   type='button'
                   aria-label={t('mascot.contact.copy')}
-                  className='rounded-xl p-1.5 text-muted-foreground transition-all duration-200 hover:bg-muted/80 hover:text-foreground hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50'
+                  className='text-muted-foreground hover:bg-muted/80 hover:text-foreground focus-visible:ring-primary/50 rounded-xl p-1.5 transition-all duration-200 hover:scale-105 focus-visible:outline-none focus-visible:ring-2'
                   onClick={copyEmail}
                 >
                   <CopyIcon className='h-4 w-4' />
@@ -770,11 +866,13 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
         {/* Menu Panel */}
         {state.showMenu && (
-          <div className={`${getBubblePositionClasses()} w-36 sm:w-40 rounded-3xl border-2 border-border/20 bg-popover/95 backdrop-blur-md p-3 text-xs text-popover-foreground shadow-2xl shadow-primary/10`}>
+          <div
+            className={`${getBubblePositionClasses()} border-border/20 bg-popover/95 text-popover-foreground shadow-primary/10 w-36 rounded-3xl border-2 p-3 text-xs shadow-2xl backdrop-blur-md sm:w-40`}
+          >
             <div className='space-y-1'>
               <button
                 type='button'
-                className='flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-left transition-all duration-200 hover:bg-muted/80 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50'
+                className='hover:bg-muted/80 focus-visible:ring-primary/50 flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-left transition-all duration-200 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2'
                 onClick={() => handleMenuAction('contact')}
               >
                 <BugIcon className='h-4 w-4' />
@@ -782,7 +880,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
               </button>
               <button
                 type='button'
-                className='flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-left transition-all duration-200 hover:bg-muted/80 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50'
+                className='hover:bg-muted/80 focus-visible:ring-primary/50 flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-left transition-all duration-200 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2'
                 onClick={() => handleMenuAction('projects')}
               >
                 <GithubIcon className='h-4 w-4' />
@@ -791,7 +889,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
               {flags.gemini && (
                 <button
                   type='button'
-                  className='flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-left transition-all duration-200 hover:bg-muted/80 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50'
+                  className='hover:bg-muted/80 focus-visible:ring-primary/50 flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-left transition-all duration-200 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2'
                   onClick={() => handleMenuAction('chat')}
                 >
                   <MessageCircleIcon className='h-4 w-4' />
@@ -800,7 +898,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
               )}
               <button
                 type='button'
-                className='flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-left transition-all duration-200 hover:bg-muted/80 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50'
+                className='hover:bg-muted/80 focus-visible:ring-primary/50 flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-left transition-all duration-200 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2'
                 onClick={() => handleMenuAction('game')}
               >
                 <GamepadIcon className='h-4 w-4' />
@@ -808,7 +906,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
               </button>
               <button
                 type='button'
-                className='flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-left transition-all duration-200 hover:bg-muted/80 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50'
+                className='hover:bg-muted/80 focus-visible:ring-primary/50 flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-left transition-all duration-200 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2'
                 onClick={() => handleMenuAction('settings')}
               >
                 <SettingsIcon className='h-4 w-4' />
@@ -832,72 +930,87 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         )}
 
         {/* Speech Bubbles (Queued) */}
-        {state.preferences.speechBubbles && !state.showContact && !state.showSettings && !state.showMenu && !state.showAIChat && (
-          <div className={`${getBubblePositionClasses()} flex w-56 sm:w-60 flex-col gap-2`}>
-            {state.messageQueue.map((item, idx) => {
-              const isExiting = state.exitingIds.has(item.id)
-              return (
-                <div
-                  key={item.id}
-                  className={`rounded-3xl border-2 border-border/20 bg-popover/95 backdrop-blur-md text-popover-foreground shadow-2xl shadow-primary/10 outline-none ring-0 transition-all duration-200 ease-in-out ${isExiting ? 'opacity-0 translate-y-1 scale-95' : 'opacity-100 translate-y-0 scale-100'
+        {state.preferences.speechBubbles &&
+          !state.showContact &&
+          !state.showSettings &&
+          !state.showMenu &&
+          !state.showAIChat && (
+            <div className={`${getBubblePositionClasses()} flex w-56 flex-col gap-2 sm:w-60`}>
+              {state.messageQueue.map((item, idx) => {
+                const isExiting = state.exitingIds.has(item.id)
+                return (
+                  <div
+                    key={item.id}
+                    className={`border-border/20 bg-popover/95 text-popover-foreground shadow-primary/10 rounded-3xl border-2 shadow-2xl outline-none ring-0 backdrop-blur-md transition-all duration-200 ease-in-out ${
+                      isExiting
+                        ? 'translate-y-1 scale-95 opacity-0'
+                        : 'translate-y-0 scale-100 opacity-100'
                     }`}
-                  role='dialog'
-                  aria-label={t('mascot.speechBubble')}
-                  style={prefersReducedMotion ? undefined : { animation: 'fadeInUp 300ms ease-out' }}
-                >
-                  <div className='bubble-float p-2'>
-                    <div className='flex items-start gap-2'>
-                      <div className='min-w-0 flex-1 whitespace-pre-wrap break-words leading-relaxed text-xs'>
-                        {item.text}
-                      </div>
-                      <div className='flex items-center gap-1 flex-shrink-0'>
-                        {idx === state.messageQueue.length - 1 && (
+                    role='dialog'
+                    aria-label={t('mascot.speechBubble')}
+                    style={
+                      prefersReducedMotion ? undefined : { animation: 'fadeInUp 300ms ease-out' }
+                    }
+                  >
+                    <div className='bubble-float p-2'>
+                      <div className='flex items-start gap-2'>
+                        <div className='min-w-0 flex-1 whitespace-pre-wrap break-words text-xs leading-relaxed'>
+                          {item.text}
+                        </div>
+                        <div className='flex flex-shrink-0 items-center gap-1'>
+                          {idx === state.messageQueue.length - 1 && (
+                            <button
+                              type='button'
+                              aria-label={t('mascot.menu.open')}
+                              className='text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:ring-ring rounded px-2 py-1 text-xs transition-colors focus-visible:outline-none focus-visible:ring-2'
+                              onClick={() => updateState({ showMenu: !state.showMenu })}
+                            >
+                              <MenuIcon className='h-3 w-3' />
+                            </button>
+                          )}
+                          {idx === state.messageQueue.length - 1 && (
+                            <button
+                              type='button'
+                              aria-label={t('mascot.hide')}
+                              className='text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:ring-ring rounded px-2 py-1 text-xs transition-colors focus-visible:outline-none focus-visible:ring-2'
+                              onClick={handleHideMascot}
+                            >
+                              {t('mascot.hide')}
+                            </button>
+                          )}
                           <button
                             type='button'
-                            aria-label={t('mascot.menu.open')}
-                            className='rounded px-2 py-1 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
-                            onClick={() => updateState({ showMenu: !state.showMenu })}
+                            aria-label={t('mascot.close')}
+                            className='text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:ring-ring rounded p-1 transition-colors focus-visible:outline-none focus-visible:ring-2'
+                            onClick={() => startExit(item.id)}
                           >
-                            <MenuIcon className='h-3 w-3' />
+                            <XIcon className='h-4 w-4' />
                           </button>
-                        )}
-                        {idx === state.messageQueue.length - 1 && (
-                          <button
-                            type='button'
-                            aria-label={t('mascot.hide')}
-                            className='rounded px-2 py-1 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
-                            onClick={handleHideMascot}
-                          >
-                            {t('mascot.hide')}
-                          </button>
-                        )}
-                        <button
-                          type='button'
-                          aria-label={t('mascot.close')}
-                          className='rounded p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
-                          onClick={() => startExit(item.id)}
-                        >
-                          <XIcon className='h-4 w-4' />
-                        </button>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              )
-            })}
-          </div>
-        )}
+                )
+              })}
+            </div>
+          )}
 
         {/* Mascot button */}
         <button
           ref={mascotRef}
           type='button'
           aria-label={t('mascot.ariaLabel')}
-          className={`relative inline-flex h-12 w-12 sm:h-14 sm:w-14 lg:h-16 lg:w-16 items-center justify-center rounded-full border-2 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 ${state.isActive ? 'border-primary/60 shadow-2xl shadow-primary/30 scale-110' : 'border-border/40 shadow-xl shadow-black/10'} ${state.preferences.animations ? 'hover:scale-110 hover:shadow-2xl hover:shadow-primary/20' : ''} ${state.isKonamiMode ? 'animate-pulse border-yellow-400 shadow-yellow-400/20' : ''}`}
+          className={`focus-visible:ring-primary/50 relative inline-flex h-12 w-12 items-center justify-center rounded-full border-2 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 sm:h-14 sm:w-14 lg:h-16 lg:w-16 ${state.isActive ? 'border-primary/60 shadow-primary/30 scale-110 shadow-2xl' : 'border-border/40 shadow-xl shadow-black/10'} ${state.preferences.animations ? 'hover:shadow-primary/20 hover:scale-110 hover:shadow-2xl' : ''} ${state.isKonamiMode ? 'animate-pulse border-yellow-400 shadow-yellow-400/20' : ''}`}
           onClick={handleMascotClick}
           onMouseEnter={handleMouseEnter}
           onFocus={() => {
-            if (state.preferences.speechBubbles && !state.autoShowMessage && !state.showContact && !state.showSettings && !state.showMenu) {
+            if (
+              state.preferences.speechBubbles &&
+              !state.autoShowMessage &&
+              !state.showContact &&
+              !state.showSettings &&
+              !state.showMenu
+            ) {
               if (!state.currentMessage) {
                 updateState({ currentMessage: messages[state.messageIndex] || '' })
               }
@@ -905,7 +1018,13 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
             }
           }}
           onBlur={() => {
-            if (!state.autoShowMessage && !state.isHovering && !state.showContact && !state.showSettings && !state.showMenu) {
+            if (
+              !state.autoShowMessage &&
+              !state.isHovering &&
+              !state.showContact &&
+              !state.showSettings &&
+              !state.showMenu
+            ) {
               updateState({ showBubble: false })
             }
           }}
@@ -917,18 +1036,17 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
               role='presentation'
               width={64}
               height={64}
-              className={`rounded-full object-cover transition-all duration-200 w-full h-full ${state.isBlinking ? 'animate-pulse' : ''} ${state.isKonamiMode ? 'filter sepia hue-rotate-180' : ''}`}
+              className={`h-full w-full rounded-full object-cover transition-all duration-200 ${state.isBlinking ? 'animate-pulse' : ''} ${state.isKonamiMode ? 'hue-rotate-180 sepia filter' : ''}`}
               priority={false}
             />
           ) : (
-            <div aria-hidden className='w-full h-full rounded-full bg-muted/40' />)
-          }
+            <div aria-hidden className='bg-muted/40 h-full w-full rounded-full' />
+          )}
         </button>
       </div>
 
       {/* Mini Game */}
       <MascotGame isOpen={state.showGame} onClose={() => updateState({ showGame: false })} />
-
     </>
   )
 }

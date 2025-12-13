@@ -88,7 +88,6 @@
 ### Patch Changes
 
 - 021c08d: Fix the variant type that is not accessible
-
   - Upgrade to `cva@beta`
 
 ## 0.0.50

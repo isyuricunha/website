@@ -22,14 +22,26 @@ import { AuditLogger, getIpFromHeaders, getUserAgentFromHeaders } from '@/lib/au
 import { logger } from '@/lib/logger'
 import { adminProcedure, protectedProcedure, publicProcedure, createTRPCRouter } from '../trpc'
 
-
 export const communicationRouter = createTRPCRouter({
   // Email Templates
   getEmailTemplates: adminProcedure
-    .input(z.object({
-      type: z.enum(['welcome', 'password_reset', 'email_verification', 'newsletter', 'announcement', 'notification', 'marketing', 'transactional']).optional(),
-      active: z.boolean().optional()
-    }))
+    .input(
+      z.object({
+        type: z
+          .enum([
+            'welcome',
+            'password_reset',
+            'email_verification',
+            'newsletter',
+            'announcement',
+            'notification',
+            'marketing',
+            'transactional'
+          ])
+          .optional(),
+        active: z.boolean().optional()
+      })
+    )
     .query(async ({ ctx, input }) => {
       try {
         const conditions = []
@@ -59,7 +71,7 @@ export const communicationRouter = createTRPCRouter({
         })
 
         return {
-          templates: templates.map(template => ({
+          templates: templates.map((template) => ({
             ...template,
             variables: template.variables ? JSON.parse(template.variables) : []
           }))
@@ -74,14 +86,25 @@ export const communicationRouter = createTRPCRouter({
     }),
 
   createEmailTemplate: adminProcedure
-    .input(z.object({
-      name: z.string().min(1),
-      type: z.enum(['welcome', 'password_reset', 'email_verification', 'newsletter', 'announcement', 'notification', 'marketing', 'transactional']),
-      subject: z.string().min(1),
-      htmlContent: z.string().min(1),
-      textContent: z.string().optional(),
-      variables: z.array(z.string()).default([])
-    }))
+    .input(
+      z.object({
+        name: z.string().min(1),
+        type: z.enum([
+          'welcome',
+          'password_reset',
+          'email_verification',
+          'newsletter',
+          'announcement',
+          'notification',
+          'marketing',
+          'transactional'
+        ]),
+        subject: z.string().min(1),
+        htmlContent: z.string().min(1),
+        textContent: z.string().optional(),
+        variables: z.array(z.string()).default([])
+      })
+    )
     .mutation(async ({ ctx, input }) => {
       try {
         const auditLogger = new AuditLogger(ctx.db)
@@ -126,15 +149,17 @@ export const communicationRouter = createTRPCRouter({
     }),
 
   updateEmailTemplate: adminProcedure
-    .input(z.object({
-      id: z.string(),
-      name: z.string().min(1).optional(),
-      subject: z.string().min(1).optional(),
-      htmlContent: z.string().min(1).optional(),
-      textContent: z.string().optional(),
-      variables: z.array(z.string()).optional(),
-      isActive: z.boolean().optional()
-    }))
+    .input(
+      z.object({
+        id: z.string(),
+        name: z.string().min(1).optional(),
+        subject: z.string().min(1).optional(),
+        htmlContent: z.string().min(1).optional(),
+        textContent: z.string().optional(),
+        variables: z.array(z.string()).optional(),
+        isActive: z.boolean().optional()
+      })
+    )
     .mutation(async ({ ctx, input }) => {
       try {
         const auditLogger = new AuditLogger(ctx.db)
@@ -157,10 +182,7 @@ export const communicationRouter = createTRPCRouter({
 
         filteredUpdateData.updatedAt = new Date()
 
-        await ctx.db
-          .update(emailTemplates)
-          .set(filteredUpdateData)
-          .where(eq(emailTemplates.id, id))
+        await ctx.db.update(emailTemplates).set(filteredUpdateData).where(eq(emailTemplates.id, id))
 
         // Log audit trail
         await auditLogger.logUserAction(
@@ -188,10 +210,14 @@ export const communicationRouter = createTRPCRouter({
 
   // Email Campaigns
   getEmailCampaigns: adminProcedure
-    .input(z.object({
-      status: z.enum(['draft', 'scheduled', 'sending', 'sent', 'paused', 'cancelled', 'failed']).optional(),
-      limit: z.number().min(1).max(100).default(20)
-    }))
+    .input(
+      z.object({
+        status: z
+          .enum(['draft', 'scheduled', 'sending', 'sent', 'paused', 'cancelled', 'failed'])
+          .optional(),
+        limit: z.number().min(1).max(100).default(20)
+      })
+    )
     .query(async ({ ctx, input }) => {
       try {
         const conditions = []
@@ -225,7 +251,7 @@ export const communicationRouter = createTRPCRouter({
         })
 
         return {
-          campaigns: campaigns.map(campaign => ({
+          campaigns: campaigns.map((campaign) => ({
             ...campaign,
             targetAudience: campaign.targetAudience ? JSON.parse(campaign.targetAudience) : null
           }))
@@ -240,19 +266,23 @@ export const communicationRouter = createTRPCRouter({
     }),
 
   createEmailCampaign: adminProcedure
-    .input(z.object({
-      name: z.string().min(1),
-      subject: z.string().min(1),
-      templateId: z.string().optional(),
-      htmlContent: z.string().optional(),
-      textContent: z.string().optional(),
-      targetAudience: z.object({
-        userRoles: z.array(z.string()).optional(),
-        userIds: z.array(z.string()).optional(),
-        emailList: z.array(z.string()).optional()
-      }).optional(),
-      scheduledAt: z.date().optional()
-    }))
+    .input(
+      z.object({
+        name: z.string().min(1),
+        subject: z.string().min(1),
+        templateId: z.string().optional(),
+        htmlContent: z.string().optional(),
+        textContent: z.string().optional(),
+        targetAudience: z
+          .object({
+            userRoles: z.array(z.string()).optional(),
+            userIds: z.array(z.string()).optional(),
+            emailList: z.array(z.string()).optional()
+          })
+          .optional(),
+        scheduledAt: z.date().optional()
+      })
+    )
     .mutation(async ({ ctx, input }) => {
       try {
         const auditLogger = new AuditLogger(ctx.db)
@@ -273,7 +303,10 @@ export const communicationRouter = createTRPCRouter({
           if (input.targetAudience.userRoles) {
             // Count users with specified roles
             const roleUsers = await ctx.db.query.users.findMany({
-              where: inArray(users.role, input.targetAudience.userRoles.filter(role => role === 'user' || role === 'admin')),
+              where: inArray(
+                users.role,
+                input.targetAudience.userRoles.filter((role) => role === 'user' || role === 'admin')
+              ),
               columns: { id: true }
             })
             totalRecipients += roleUsers.length
@@ -405,10 +438,12 @@ export const communicationRouter = createTRPCRouter({
 
   // Announcements
   getAnnouncements: publicProcedure
-    .input(z.object({
-      active: z.boolean().optional(),
-      adminView: z.boolean().default(false)
-    }))
+    .input(
+      z.object({
+        active: z.boolean().optional(),
+        adminView: z.boolean().default(false)
+      })
+    )
     .query(async ({ ctx, input }) => {
       try {
         const conditions = []
@@ -420,18 +455,8 @@ export const communicationRouter = createTRPCRouter({
         // For non-admin users or unauthenticated users, only show current announcements
         if (!input.adminView && (!ctx.session?.user || ctx.session.user.role !== 'admin')) {
           const now = new Date()
-          conditions.push(
-            or(
-              isNull(announcements.startDate),
-              lte(announcements.startDate, now)
-            )
-          )
-          conditions.push(
-            or(
-              isNull(announcements.endDate),
-              gte(announcements.endDate, now)
-            )
-          )
+          conditions.push(or(isNull(announcements.startDate), lte(announcements.startDate, now)))
+          conditions.push(or(isNull(announcements.endDate), gte(announcements.endDate, now)))
         }
 
         const whereClause = conditions.length > 0 ? and(...conditions) : undefined
@@ -439,19 +464,21 @@ export const communicationRouter = createTRPCRouter({
         const announcementList = await ctx.db.query.announcements.findMany({
           where: whereClause,
           orderBy: [desc(announcements.priority), desc(announcements.createdAt)],
-          with: input.adminView ? {
-            createdByUser: {
-              columns: {
-                id: true,
-                name: true,
-                email: true
+          with: input.adminView
+            ? {
+                createdByUser: {
+                  columns: {
+                    id: true,
+                    name: true,
+                    email: true
+                  }
+                }
               }
-            }
-          } : {}
+            : {}
         })
 
         // Filter announcements based on user targeting
-        const filteredAnnouncements = announcementList.filter(announcement => {
+        const filteredAnnouncements = announcementList.filter((announcement) => {
           if (!announcement.targetAudience || input.adminView) {
             return true // Show all if no targeting or admin view
           }
@@ -488,7 +515,10 @@ export const communicationRouter = createTRPCRouter({
         if (!input.adminView && ctx.session?.user) {
           const interactions = await ctx.db.query.announcementInteractions.findMany({
             where: and(
-              inArray(announcementInteractions.announcementId, filteredAnnouncements.map(a => a.id)),
+              inArray(
+                announcementInteractions.announcementId,
+                filteredAnnouncements.map((a) => a.id)
+              ),
               eq(announcementInteractions.userId, ctx.session.user.id)
             )
           })
@@ -500,9 +530,11 @@ export const communicationRouter = createTRPCRouter({
         }
 
         return {
-          announcements: filteredAnnouncements.map(announcement => ({
+          announcements: filteredAnnouncements.map((announcement) => ({
             ...announcement,
-            targetAudience: announcement.targetAudience ? JSON.parse(announcement.targetAudience) : null,
+            targetAudience: announcement.targetAudience
+              ? JSON.parse(announcement.targetAudience)
+              : null,
             userInteraction: userInteractions[announcement.id] || null
           }))
         }
@@ -516,19 +548,25 @@ export const communicationRouter = createTRPCRouter({
     }),
 
   createAnnouncement: adminProcedure
-    .input(z.object({
-      title: z.string().min(1),
-      content: z.string().min(1),
-      type: z.enum(['info', 'warning', 'success', 'error', 'maintenance', 'feature', 'update']).default('info'),
-      priority: z.number().min(0).max(10).default(0),
-      isDismissible: z.boolean().default(true),
-      targetAudience: z.object({
-        userRoles: z.array(z.string()).optional(),
-        userIds: z.array(z.string()).optional()
-      }).optional(),
-      startDate: z.date().optional(),
-      endDate: z.date().optional()
-    }))
+    .input(
+      z.object({
+        title: z.string().min(1),
+        content: z.string().min(1),
+        type: z
+          .enum(['info', 'warning', 'success', 'error', 'maintenance', 'feature', 'update'])
+          .default('info'),
+        priority: z.number().min(0).max(10).default(0),
+        isDismissible: z.boolean().default(true),
+        targetAudience: z
+          .object({
+            userRoles: z.array(z.string()).optional(),
+            userIds: z.array(z.string()).optional()
+          })
+          .optional(),
+        startDate: z.date().optional(),
+        endDate: z.date().optional()
+      })
+    )
     .mutation(async ({ ctx, input }) => {
       try {
         const auditLogger = new AuditLogger(ctx.db)
@@ -626,19 +664,18 @@ export const communicationRouter = createTRPCRouter({
 
   // Notifications
   getNotifications: protectedProcedure
-    .input(z.object({
-      unreadOnly: z.boolean().default(false),
-      limit: z.number().min(1).max(100).default(20),
-      offset: z.number().min(0).default(0)
-    }))
+    .input(
+      z.object({
+        unreadOnly: z.boolean().default(false),
+        limit: z.number().min(1).max(100).default(20),
+        offset: z.number().min(0).default(0)
+      })
+    )
     .query(async ({ ctx, input }) => {
       try {
         const conditions = [
           eq(notifications.userId, ctx.session.user.id),
-          or(
-            isNull(notifications.expiresAt),
-            gte(notifications.expiresAt, new Date())
-          )
+          or(isNull(notifications.expiresAt), gte(notifications.expiresAt, new Date()))
         ]
 
         if (input.unreadOnly) {
@@ -658,7 +695,7 @@ export const communicationRouter = createTRPCRouter({
         })
 
         return {
-          notifications: userNotifications.map(notification => ({
+          notifications: userNotifications.map((notification) => ({
             ...notification,
             data: notification.data ? JSON.parse(notification.data) : null
           })),
@@ -684,10 +721,12 @@ export const communicationRouter = createTRPCRouter({
             read: true,
             readAt: new Date()
           })
-          .where(and(
-            eq(notifications.id, input.notificationId),
-            eq(notifications.userId, ctx.session.user.id)
-          ))
+          .where(
+            and(
+              eq(notifications.id, input.notificationId),
+              eq(notifications.userId, ctx.session.user.id)
+            )
+          )
 
         return { success: true }
       } catch (error) {
@@ -699,39 +738,37 @@ export const communicationRouter = createTRPCRouter({
       }
     }),
 
-  markAllNotificationsRead: protectedProcedure
-    .mutation(async ({ ctx }) => {
-      try {
-        await ctx.db
-          .update(notifications)
-          .set({
-            read: true,
-            readAt: new Date()
-          })
-          .where(and(
-            eq(notifications.userId, ctx.session.user.id),
-            eq(notifications.read, false)
-          ))
-
-        return { success: true }
-      } catch (error) {
-        logger.error('Error marking all notifications as read', error)
-        throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: 'Failed to mark all notifications as read'
+  markAllNotificationsRead: protectedProcedure.mutation(async ({ ctx }) => {
+    try {
+      await ctx.db
+        .update(notifications)
+        .set({
+          read: true,
+          readAt: new Date()
         })
-      }
-    }),
+        .where(and(eq(notifications.userId, ctx.session.user.id), eq(notifications.read, false)))
+
+      return { success: true }
+    } catch (error) {
+      logger.error('Error marking all notifications as read', error)
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Failed to mark all notifications as read'
+      })
+    }
+  }),
 
   // Create notification (admin only)
   createNotification: adminProcedure
-    .input(z.object({
-      title: z.string().min(1),
-      content: z.string().min(1),
-      type: z.enum(['info', 'success', 'warning', 'error']).default('info'),
-      userId: z.string().optional(),
-      expiresAt: z.date().optional()
-    }))
+    .input(
+      z.object({
+        title: z.string().min(1),
+        content: z.string().min(1),
+        type: z.enum(['info', 'success', 'warning', 'error']).default('info'),
+        userId: z.string().optional(),
+        expiresAt: z.date().optional()
+      })
+    )
     .mutation(async ({ ctx, input }) => {
       try {
         const auditLogger = new AuditLogger(ctx.db)
@@ -744,10 +781,16 @@ export const communicationRouter = createTRPCRouter({
             userId: input.userId,
             title: input.title,
             message: input.content,
-            type: input.type === 'info' ? 'content' as const :
-              input.type === 'warning' ? 'system' as const :
-                input.type === 'success' ? 'user_action' as const :
-                  input.type === 'error' ? 'security' as const : 'content' as const,
+            type:
+              input.type === 'info'
+                ? ('content' as const)
+                : input.type === 'warning'
+                  ? ('system' as const)
+                  : input.type === 'success'
+                    ? ('user_action' as const)
+                    : input.type === 'error'
+                      ? ('security' as const)
+                      : ('content' as const),
             expiresAt: input.expiresAt
           })
         } else {
@@ -757,15 +800,21 @@ export const communicationRouter = createTRPCRouter({
           })
 
           // Create notifications for eligible users
-          const notificationsList = allUsers.map(user => ({
+          const notificationsList = allUsers.map((user) => ({
             id: randomBytes(16).toString('hex'),
             userId: user.id,
             title: input.title,
             message: input.content,
-            type: input.type === 'info' ? 'content' as const :
-              input.type === 'warning' ? 'system' as const :
-                input.type === 'success' ? 'user_action' as const :
-                  input.type === 'error' ? 'security' as const : 'content' as const,
+            type:
+              input.type === 'info'
+                ? ('content' as const)
+                : input.type === 'warning'
+                  ? ('system' as const)
+                  : input.type === 'success'
+                    ? ('user_action' as const)
+                    : input.type === 'error'
+                      ? ('security' as const)
+                      : ('content' as const),
             expiresAt: input.expiresAt
           }))
 
@@ -800,68 +849,71 @@ export const communicationRouter = createTRPCRouter({
     }),
 
   // Communication Stats
-  getCommunicationStats: adminProcedure
-    .query(async ({ ctx }) => {
-      try {
-        const now = new Date()
-        const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000)
+  getCommunicationStats: adminProcedure.query(async ({ ctx }) => {
+    try {
+      const now = new Date()
+      const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000)
 
-        // Email campaign stats
-        const totalCampaigns = await ctx.db.query.emailCampaigns.findMany({
-          columns: { id: true, status: true, sentCount: true, deliveredCount: true }
-        })
+      // Email campaign stats
+      const totalCampaigns = await ctx.db.query.emailCampaigns.findMany({
+        columns: { id: true, status: true, sentCount: true, deliveredCount: true }
+      })
 
-        const recentCampaigns = totalCampaigns.filter(c =>
-          c.status === 'sent' || c.status === 'sending'
-        )
+      const recentCampaigns = totalCampaigns.filter(
+        (c) => c.status === 'sent' || c.status === 'sending'
+      )
 
-        // Announcement stats
-        const totalAnnouncements = await ctx.db.query.announcements.findMany({
-          where: gte(announcements.createdAt, thirtyDaysAgo),
-          columns: { id: true, type: true }
-        })
+      // Announcement stats
+      const totalAnnouncements = await ctx.db.query.announcements.findMany({
+        where: gte(announcements.createdAt, thirtyDaysAgo),
+        columns: { id: true, type: true }
+      })
 
-        const activeAnnouncements = await ctx.db.query.announcements.findMany({
-          where: eq(announcements.isActive, true),
-          columns: { id: true }
-        })
+      const activeAnnouncements = await ctx.db.query.announcements.findMany({
+        where: eq(announcements.isActive, true),
+        columns: { id: true }
+      })
 
-        // Notification stats
-        const totalNotifications = await ctx.db.query.notifications.findMany({
-          where: gte(notifications.createdAt, thirtyDaysAgo),
-          columns: { id: true, read: true }
-        })
+      // Notification stats
+      const totalNotifications = await ctx.db.query.notifications.findMany({
+        where: gte(notifications.createdAt, thirtyDaysAgo),
+        columns: { id: true, read: true }
+      })
 
-        return {
-          campaigns: {
-            total: totalCampaigns.length,
-            sent: recentCampaigns.length,
-            totalEmailsSent: totalCampaigns.reduce((sum, c) => sum + (c.sentCount || 0), 0),
-            totalEmailsDelivered: totalCampaigns.reduce((sum, c) => sum + (c.deliveredCount || 0), 0)
-          },
-          announcements: {
-            total: totalAnnouncements.length,
-            active: activeAnnouncements.length,
-            byType: {
-              info: totalAnnouncements.filter(a => a.type === 'info').length,
-              warning: totalAnnouncements.filter(a => a.type === 'warning').length,
-              success: totalAnnouncements.filter(a => a.type === 'success').length,
-              error: totalAnnouncements.filter(a => a.type === 'error').length
-            }
-          },
-          notifications: {
-            total: totalNotifications.length,
-            read: totalNotifications.filter(n => n.read).length,
-            unread: totalNotifications.filter(n => !n.read).length
+      return {
+        campaigns: {
+          total: totalCampaigns.length,
+          sent: recentCampaigns.length,
+          totalEmailsSent: totalCampaigns.reduce((sum, c) => sum + (c.sentCount || 0), 0),
+          totalEmailsDelivered: totalCampaigns.reduce((sum, c) => sum + (c.deliveredCount || 0), 0)
+        },
+        announcements: {
+          total: totalAnnouncements.length,
+          active: activeAnnouncements.length,
+          byType: {
+            info: totalAnnouncements.filter((a) => a.type === 'info').length,
+            warning: totalAnnouncements.filter((a) => a.type === 'warning').length,
+            success: totalAnnouncements.filter((a) => a.type === 'success').length,
+            error: totalAnnouncements.filter((a) => a.type === 'error').length
           }
-        }
-      } catch (error) {
-        console.error('Error fetching communication stats:', error)
-        return {
-          campaigns: { total: 0, sent: 0, totalEmailsSent: 0, totalEmailsDelivered: 0 },
-          announcements: { total: 0, active: 0, byType: { info: 0, warning: 0, success: 0, error: 0 } },
-          notifications: { total: 0, read: 0, unread: 0 }
+        },
+        notifications: {
+          total: totalNotifications.length,
+          read: totalNotifications.filter((n) => n.read).length,
+          unread: totalNotifications.filter((n) => !n.read).length
         }
       }
-    })
+    } catch (error) {
+      console.error('Error fetching communication stats:', error)
+      return {
+        campaigns: { total: 0, sent: 0, totalEmailsSent: 0, totalEmailsDelivered: 0 },
+        announcements: {
+          total: 0,
+          active: 0,
+          byType: { info: 0, warning: 0, success: 0, error: 0 }
+        },
+        notifications: { total: 0, read: 0, unread: 0 }
+      }
+    }
+  })
 })

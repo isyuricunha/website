@@ -18,10 +18,12 @@ import { adminProcedure, createTRPCRouter } from '../trpc'
 export const dataManagementRouter = createTRPCRouter({
   // Database Backups
   getDatabaseBackups: adminProcedure
-    .input(z.object({
-      status: z.enum(['pending', 'running', 'completed', 'failed', 'cancelled']).optional(),
-      limit: z.number().min(1).max(100).default(20)
-    }))
+    .input(
+      z.object({
+        status: z.enum(['pending', 'running', 'completed', 'failed', 'cancelled']).optional(),
+        limit: z.number().min(1).max(100).default(20)
+      })
+    )
     .query(async ({ ctx, input }) => {
       try {
         const conditions = []
@@ -41,7 +43,7 @@ export const dataManagementRouter = createTRPCRouter({
         })
 
         return {
-          backups: backups.map(backup => ({
+          backups: backups.map((backup) => ({
             ...backup,
             metadata: backup.metadata ? JSON.parse(backup.metadata) : null
           }))
@@ -56,10 +58,12 @@ export const dataManagementRouter = createTRPCRouter({
     }),
 
   createDatabaseBackup: adminProcedure
-    .input(z.object({
-      type: z.enum(['full', 'incremental', 'differential']).default('full'),
-      description: z.string().optional()
-    }))
+    .input(
+      z.object({
+        type: z.enum(['full', 'incremental', 'differential']).default('full'),
+        description: z.string().optional()
+      })
+    )
     .mutation(async ({ ctx, input }) => {
       try {
         const auditLogger = new AuditLogger(ctx.db)
@@ -113,10 +117,12 @@ export const dataManagementRouter = createTRPCRouter({
 
   // Data Exports
   getDataExports: adminProcedure
-    .input(z.object({
-      status: z.enum(['pending', 'running', 'completed', 'failed', 'cancelled']).optional(),
-      limit: z.number().min(1).max(100).default(20)
-    }))
+    .input(
+      z.object({
+        status: z.enum(['pending', 'running', 'completed', 'failed', 'cancelled']).optional(),
+        limit: z.number().min(1).max(100).default(20)
+      })
+    )
     .query(async ({ ctx, input }) => {
       try {
         const conditions = []
@@ -136,7 +142,7 @@ export const dataManagementRouter = createTRPCRouter({
         })
 
         return {
-          exports: exports.map(exportItem => ({
+          exports: exports.map((exportItem) => ({
             ...exportItem,
             metadata: exportItem.metadata ? JSON.parse(exportItem.metadata) : null
           }))
@@ -151,11 +157,13 @@ export const dataManagementRouter = createTRPCRouter({
     }),
 
   createDataExport: adminProcedure
-    .input(z.object({
-      name: z.string().min(1),
-      format: z.enum(['csv', 'json', 'xml', 'sql', 'excel']).default('csv'),
-      tables: z.array(z.string())
-    }))
+    .input(
+      z.object({
+        name: z.string().min(1),
+        format: z.enum(['csv', 'json', 'xml', 'sql', 'excel']).default('csv'),
+        tables: z.array(z.string())
+      })
+    )
     .mutation(async ({ ctx, input }) => {
       try {
         const auditLogger = new AuditLogger(ctx.db)
@@ -213,14 +221,18 @@ export const dataManagementRouter = createTRPCRouter({
 
   // Data Quality Checks
   runDataQualityCheck: adminProcedure
-    .input(z.object({
-      name: z.string().min(1),
-      tableName: z.string(),
-      checkRules: z.array(z.object({
-        field: z.string(),
-        rule: z.enum(['not_null', 'unique', 'format', 'range'])
-      }))
-    }))
+    .input(
+      z.object({
+        name: z.string().min(1),
+        tableName: z.string(),
+        checkRules: z.array(
+          z.object({
+            field: z.string(),
+            rule: z.enum(['not_null', 'unique', 'format', 'range'])
+          })
+        )
+      })
+    )
     .mutation(async ({ ctx, input }) => {
       try {
         const auditLogger = new AuditLogger(ctx.db)
@@ -270,38 +282,37 @@ export const dataManagementRouter = createTRPCRouter({
     }),
 
   // Data Management Stats
-  getDataManagementStats: adminProcedure
-    .query(async ({ ctx }) => {
-      try {
-        const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+  getDataManagementStats: adminProcedure.query(async ({ ctx }) => {
+    try {
+      const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
 
-        const totalBackups = await ctx.db.query.databaseBackups.findMany({
-          columns: { id: true, status: true, fileSize: true }
-        })
+      const totalBackups = await ctx.db.query.databaseBackups.findMany({
+        columns: { id: true, status: true, fileSize: true }
+      })
 
-        const totalExports = await ctx.db.query.dataExports.findMany({
-          where: gte(dataExports.createdAt, thirtyDaysAgo),
-          columns: { id: true, status: true, recordCount: true }
-        })
+      const totalExports = await ctx.db.query.dataExports.findMany({
+        where: gte(dataExports.createdAt, thirtyDaysAgo),
+        columns: { id: true, status: true, recordCount: true }
+      })
 
-        return {
-          backups: {
-            total: totalBackups.length,
-            completed: totalBackups.filter(b => b.status === 'completed').length,
-            totalSize: totalBackups.reduce((sum, b) => sum + (b.fileSize || 0), 0)
-          },
-          exports: {
-            total: totalExports.length,
-            completed: totalExports.filter(e => e.status === 'completed').length,
-            totalRecords: totalExports.reduce((sum, e) => sum + (e.recordCount || 0), 0)
-          }
-        }
-      } catch (error) {
-        logger.error('Error fetching data management stats', error)
-        return {
-          backups: { total: 0, completed: 0, totalSize: 0 },
-          exports: { total: 0, completed: 0, totalRecords: 0 }
+      return {
+        backups: {
+          total: totalBackups.length,
+          completed: totalBackups.filter((b) => b.status === 'completed').length,
+          totalSize: totalBackups.reduce((sum, b) => sum + (b.fileSize || 0), 0)
+        },
+        exports: {
+          total: totalExports.length,
+          completed: totalExports.filter((e) => e.status === 'completed').length,
+          totalRecords: totalExports.reduce((sum, e) => sum + (e.recordCount || 0), 0)
         }
       }
-    })
+    } catch (error) {
+      logger.error('Error fetching data management stats', error)
+      return {
+        backups: { total: 0, completed: 0, totalSize: 0 },
+        exports: { total: 0, completed: 0, totalRecords: 0 }
+      }
+    }
+  })
 })

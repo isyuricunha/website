@@ -8,12 +8,7 @@ import { notFound } from 'next/navigation'
 
 import Mdx from '@/components/mdx'
 import PageTitle from '@/components/page-title'
-import {
-  SITE_GITHUB_URL,
-  SITE_NAME,
-  SITE_URL,
-  SITE_X_URL
-} from '@/lib/constants'
+import { SITE_GITHUB_URL, SITE_NAME, SITE_URL, SITE_X_URL } from '@/lib/constants'
 import { getLocalizedPath } from '@/utils/get-localized-path'
 
 type PageProps = {

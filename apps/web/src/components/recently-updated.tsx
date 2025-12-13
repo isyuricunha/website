@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@tszh
 import { Clock, FileText, Code, Calendar } from 'lucide-react'
 import { useMemo } from 'react'
 
-import { allPosts , allProjects } from 'content-collections'
+import { allPosts, allProjects } from 'content-collections'
 
 import Link from './link'
 
@@ -29,8 +29,8 @@ const RecentlyUpdated = () => {
 
     // Add blog posts filtered by current locale
     allPosts
-      .filter(post => post.locale === locale)
-      .forEach(post => {
+      .filter((post) => post.locale === locale)
+      .forEach((post) => {
         const id = `post-${post.slug}`
         if (!seenIds.has(id)) {
           seenIds.add(id)
@@ -48,8 +48,8 @@ const RecentlyUpdated = () => {
 
     // Add projects filtered by current locale (using a fallback date if no modified time)
     allProjects
-      .filter(project => project.locale === locale)
-      .forEach(project => {
+      .filter((project) => project.locale === locale)
+      .forEach((project) => {
         const id = `project-${project.slug}`
         if (!seenIds.has(id)) {
           seenIds.add(id)
@@ -66,9 +66,7 @@ const RecentlyUpdated = () => {
       })
 
     // Sort by date and take top 3
-    return items
-      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-      .slice(0, 3)
+    return items.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, 3)
   }, [locale])
 
   const formatDate = (dateString: string) => {
@@ -85,7 +83,7 @@ const RecentlyUpdated = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className='text-base sm:text-lg flex items-center gap-2'>
+        <CardTitle className='flex items-center gap-2 text-base sm:text-lg'>
           <Clock className='h-5 w-5' />
           {t('homepage.recently-updated.title')}
         </CardTitle>
@@ -99,29 +97,29 @@ const RecentlyUpdated = () => {
             <Link
               key={item.id}
               href={item.href}
-              className='group block p-3 rounded-lg hover:bg-muted/50 transition-colors'
+              className='hover:bg-muted/50 group block rounded-lg p-3 transition-colors'
             >
               <div className='flex items-start gap-3'>
-                <div className='flex-shrink-0 mt-0.5 text-muted-foreground group-hover:text-foreground'>
+                <div className='text-muted-foreground group-hover:text-foreground mt-0.5 flex-shrink-0'>
                   {item.icon}
                 </div>
-                <div className='flex-1 min-w-0'>
-                  <div className='flex items-center gap-2 mb-1'>
-                    <h4 className='text-sm sm:text-base font-medium truncate group-hover:text-primary'>
+                <div className='min-w-0 flex-1'>
+                  <div className='mb-1 flex items-center gap-2'>
+                    <h4 className='group-hover:text-primary truncate text-sm font-medium sm:text-base'>
                       {item.title}
                     </h4>
-                    <span className='text-xs text-muted-foreground px-2 py-0.5 bg-muted rounded-full'>
+                    <span className='text-muted-foreground bg-muted rounded-full px-2 py-0.5 text-xs'>
                       {item.type === 'post'
                         ? t('homepage.recently-updated.type.post')
                         : t('homepage.recently-updated.type.project')}
                     </span>
                   </div>
-                  <p className='text-xs sm:text-sm text-muted-foreground line-clamp-2 mb-2'>
+                  <p className='text-muted-foreground mb-2 line-clamp-2 text-xs sm:text-sm'>
                     {item.description}
                   </p>
                   <div className='flex items-center gap-1'>
-                    <Calendar className='h-3 w-3 text-muted-foreground' />
-                    <span className='text-xs text-muted-foreground'>
+                    <Calendar className='text-muted-foreground h-3 w-3' />
+                    <span className='text-muted-foreground text-xs'>
                       {t('homepage.recently-updated.updated-on', { date: formatDate(item.date) })}
                     </span>
                   </div>
@@ -132,9 +130,9 @@ const RecentlyUpdated = () => {
         </div>
 
         {recentlyUpdated.length === 0 && (
-          <div className='text-center py-8'>
-            <Clock className='h-12 w-12 mx-auto text-muted-foreground mb-4' />
-            <p className='text-sm text-muted-foreground'>{t('homepage.recently-updated.empty')}</p>
+          <div className='py-8 text-center'>
+            <Clock className='text-muted-foreground mx-auto mb-4 h-12 w-12' />
+            <p className='text-muted-foreground text-sm'>{t('homepage.recently-updated.empty')}</p>
           </div>
         )}
       </CardContent>

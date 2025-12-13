@@ -26,7 +26,7 @@ const PageTitle = (props: PageTitleProps) => {
   return (
     <div className='mb-16 mt-6 sm:mb-24 sm:mt-12'>
       <motion.h1
-        className='my-4 text-2xl sm:text-3xl md:text-4xl font-bold'
+        className='my-4 text-2xl font-bold sm:text-3xl md:text-4xl'
         {...(animate && {
           initial: animation.hide,
           animate: animation.show

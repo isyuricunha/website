@@ -17,10 +17,7 @@ export async function POST(request: NextRequest) {
     const { success } = await ratelimit.limit(ip)
 
     if (!success) {
-      return NextResponse.json(
-        { error: 'Rate limit exceeded' },
-        { status: 429 }
-      )
+      return NextResponse.json({ error: 'Rate limit exceeded' }, { status: 429 })
     }
 
     const body = await request.json()
@@ -37,14 +34,11 @@ export async function POST(request: NextRequest) {
     // Get source post
     const sourcePost = await BlogService.getPost(slug, sourceLocale)
     if (!sourcePost) {
-      return NextResponse.json(
-        { error: 'Source post not found' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: 'Source post not found' }, { status: 404 })
     }
 
     // Determine target languages
-    const targets = targetLocales || SUPPORTED_LOCALES.filter(locale => locale !== sourceLocale)
+    const targets = targetLocales || SUPPORTED_LOCALES.filter((locale) => locale !== sourceLocale)
     const results: Array<{ locale: string; success: boolean; error?: string }> = []
 
     // Translate to each target language
@@ -101,7 +95,6 @@ export async function POST(request: NextRequest) {
           success: saveSuccess,
           error: saveSuccess ? undefined : 'Failed to save translation'
         })
-
       } catch (error) {
         logger.error('Translation error', error, { locale: targetLocale })
         results.push({
@@ -112,7 +105,7 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    const successCount = results.filter(r => r.success).length
+    const successCount = results.filter((r) => r.success).length
     const totalCount = results.length
 
     return NextResponse.json({
@@ -122,12 +115,8 @@ export async function POST(request: NextRequest) {
       slug,
       sourceLocale
     })
-
   } catch (error) {
     logger.error('Error in translation', error)
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

@@ -15,7 +15,7 @@ export async function generatePostTags(content: string, existingTags: string[] =
       provider: 'ollama' // ou 'gemini'
     })
   })
-  
+
   const data = await response.json()
   return data.result // Array de strings: ['nextjs', 'react', 'typescript']
 }
@@ -32,7 +32,7 @@ export async function generatePostSummary(content: string, maxLength = 200) {
       provider: 'ollama'
     })
   })
-  
+
   const data = await response.json()
   return data.result // String: "Este tutorial ensina como..."
 }
@@ -49,17 +49,13 @@ export async function generateMetaDescription(title: string, content: string) {
       provider: 'ollama'
     })
   })
-  
+
   const data = await response.json()
   return data.result // String: "Aprenda Next.js 15 com Server Components..."
 }
 
 // 4. Traduzir conteúdo
-export async function translateContent(
-  content: string, 
-  fromLang = 'en', 
-  toLang = 'pt'
-) {
+export async function translateContent(content: string, fromLang = 'en', toLang = 'pt') {
   const response = await fetch('/api/ai/content', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -71,7 +67,7 @@ export async function translateContent(
       provider: 'ollama'
     })
   })
-  
+
   const data = await response.json()
   return data.result // String traduzida
 }
@@ -110,7 +106,7 @@ export function useAIContentGeneration() {
   const generate = async (action: string, data: any) => {
     setIsLoading(true)
     setError(null)
-    
+
     try {
       const response = await fetch('/api/ai/content', {
         method: 'POST',

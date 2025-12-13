@@ -42,10 +42,8 @@ const ConfirmationDialog = ({
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle className="flex items-center gap-2">
-            {variant === 'destructive' && (
-              <AlertTriangle className="h-5 w-5 text-destructive" />
-            )}
+          <AlertDialogTitle className='flex items-center gap-2'>
+            {variant === 'destructive' && <AlertTriangle className='text-destructive h-5 w-5' />}
             {title}
           </AlertDialogTitle>
           <AlertDialogDescription>{description}</AlertDialogDescription>
@@ -53,11 +51,7 @@ const ConfirmationDialog = ({
         <AlertDialogFooter>
           <AlertDialogCancel disabled={loading}>{cancelText}</AlertDialogCancel>
           <AlertDialogAction asChild>
-            <Button
-              variant={variant}
-              onClick={onConfirm}
-              disabled={is_confirm_disabled}
-            >
+            <Button variant={variant} onClick={onConfirm} disabled={is_confirm_disabled}>
               {loading ? 'Processing...' : confirmText}
             </Button>
           </AlertDialogAction>

@@ -1,8 +1,8 @@
 ---
-title: "¿Cuál es la base de datos de SQL Server?"
-date: "2023-01-05T09:20:27.751-03:00"
-modifiedTime: "2023-01-05T09:20:27.751-03:00"
-summary: "Hablemos de mi base de datos favorita."
+title: '¿Cuál es la base de datos de SQL Server?'
+date: '2023-01-05T09:20:27.751-03:00'
+modifiedTime: '2023-01-05T09:20:27.751-03:00'
+summary: 'Hablemos de mi base de datos favorita.'
 ---
 
 # ¿Cuál es la base de datos de SQL Server?
@@ -39,8 +39,7 @@ Aquí hay algunos ejemplos de consultas SQL que se pueden ejecutar en la base de
 - La siguiente consulta selecciona todos los campos de la tabla "clientes" donde el campo "Ciudad" es igual a "São Paulo":
 
 `` `SQL
-Seleccionar * de los clientes donde City = 'São Paulo';
-`` `` ``
+Seleccionar * de los clientes donde City = 'São Paulo'; `` ` `
 
 <br />
 
@@ -49,8 +48,7 @@ Seleccionar * de los clientes donde City = 'São Paulo';
 - La siguiente consulta inserta un nuevo registro en la tabla "Clientes":
 
 `` `SQL
-Insertar en los valores de los clientes (nombre, dirección, ciudad) ('João da Silva', 'Rua Das Flores, 123', 'São Paulo');
-`` `` ``
+Insertar en los valores de los clientes (nombre, dirección, ciudad) ('João da Silva', 'Rua Das Flores, 123', 'São Paulo'); `` ` `
 
 <br />
 
@@ -59,8 +57,7 @@ Insertar en los valores de los clientes (nombre, dirección, ciudad) ('João da 
 - La siguiente consulta actualiza el campo "Dirección" del registro con ID 1 en la tabla "Clientes":
 
 `` `SQL
-Actualizar a los clientes la dirección establecida = 'rua das oliveiras, 456' donde id = 1;
-`` `` ``
+Actualizar a los clientes la dirección establecida = 'rua das oliveiras, 456' donde id = 1; `` ` `
 
 <br />
 
@@ -69,8 +66,7 @@ Actualizar a los clientes la dirección establecida = 'rua das oliveiras, 456' d
 - La siguiente consulta elimina el registro con ID 1 de la tabla "Clientes":
 
 `` `SQL
-Eliminar de los clientes donde id = 1;
-`` `` ``
+Eliminar de los clientes donde id = 1; `` ` `
 
 <br />
 <br />
@@ -101,12 +97,11 @@ Eliminar de los clientes donde id = 1;
 - Para agregar el nuevo registro del cliente, puede usar la siguiente consulta SQL:
 
 `` `SQL
-Inserte en los clientes (nombre, dirección, ciudad) valores ('John Smith', '123 Main Street', 'Nueva York');
-`` `` ``
+Inserte en los clientes (nombre, dirección, ciudad) valores ('John Smith', '123 Main Street', 'Nueva York'); `` ` `
 
 <br />
 
-_ Esta consulta insertará un nuevo registro en la tabla "clientes" con el nombre, la dirección y la ciudad especificados.
+\_ Esta consulta insertará un nuevo registro en la tabla "clientes" con el nombre, la dirección y la ciudad especificados.
 
 <br />
 <br />
@@ -127,8 +122,7 @@ _ Esta consulta insertará un nuevo registro en la tabla "clientes" con el nombr
 - Usted es el administrador de la base de datos para una base de datos de inventario de productos. Debe actualizar la cantidad de un producto con la ID "12345" a 10.
 
 `` `SQL
-Actualización de productos establecidos Cantidad = 10 donde id = 12345;
-`` `` ``
+Actualización de productos establecidos Cantidad = 10 donde id = 12345; `` ` `
 
 <br />
 
@@ -164,11 +158,13 @@ De los clientes c
 Productos de unión interno P en O.Productid = P.ID
 Donde O. Date entre '2022-01-01' y '2022-12-31'
 Grupo de C.Name, P.Category
-Pedido por 'ventas totales' Desc;
-`` `` ``
+Pedido por 'ventas totales' Desc; `` ` `
 
-<br />
-_ Esta consulta seleccionará el nombre del cliente, las ventas totales, el número de pedidos y la categoría de productos para todos los pedidos realizados dentro del rango de fecha especificado. Luego agrupará los resultados por nombre del cliente y categoría de producto, y ordenará los resultados por ventas totales en orden descendente. El informe resultante mostrará las ventas totales y el número de pedidos para cada cliente, desglosados ​​por la categoría de producto.
+<br />_ Esta consulta seleccionará el nombre del cliente, las ventas totales, el número de pedidos y
+la categoría de productos para todos los pedidos realizados dentro del rango de fecha especificado.
+Luego agrupará los resultados por nombre del cliente y categoría de producto, y ordenará los
+resultados por ventas totales en orden descendente. El informe resultante mostrará las ventas
+totales y el número de pedidos para cada cliente, desglosados ​​por la categoría de producto.
 
 <br />
 

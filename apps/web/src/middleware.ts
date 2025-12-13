@@ -17,7 +17,7 @@ const middleware = (request: NextRequest) => {
     "connect-src 'self' https: wss:",
     "media-src 'self'",
     "frame-ancestors 'none'",
-    "frame-src vercel.live challenges.cloudflare.com",
+    'frame-src vercel.live challenges.cloudflare.com',
     "worker-src blob: 'self'"
   ].join('; ')
 

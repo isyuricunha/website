@@ -9,16 +9,16 @@ import { api } from '@/trpc/react'
 const getAnnouncementIcon = (type: string) => {
   switch (type) {
     case 'error':
-      return <AlertCircle className="h-5 w-5" />
+      return <AlertCircle className='h-5 w-5' />
     case 'warning':
-      return <AlertTriangle className="h-5 w-5" />
+      return <AlertTriangle className='h-5 w-5' />
     case 'success':
-      return <CheckCircle className="h-5 w-5" />
+      return <CheckCircle className='h-5 w-5' />
     case 'feature':
-      return <Sparkles className="h-5 w-5" />
+      return <Sparkles className='h-5 w-5' />
     case 'info':
     default:
-      return <Info className="h-5 w-5" />
+      return <Info className='h-5 w-5' />
   }
 }
 
@@ -43,14 +43,16 @@ const getAnnouncementStyles = (type: string) => {
         icon: 'text-emerald-600 dark:text-emerald-400',
         title: 'text-emerald-900 dark:text-emerald-100',
         content: 'text-emerald-800/80 dark:text-emerald-200/70',
-        button: 'text-emerald-700 hover:text-emerald-900 dark:text-emerald-300 dark:hover:text-emerald-100'
+        button:
+          'text-emerald-700 hover:text-emerald-900 dark:text-emerald-300 dark:hover:text-emerald-100'
       }
     case 'feature':
       return {
         icon: 'text-purple-600 dark:text-purple-400',
         title: 'text-purple-900 dark:text-purple-100',
         content: 'text-purple-800/80 dark:text-purple-200/70',
-        button: 'text-purple-700 hover:text-purple-900 dark:text-purple-300 dark:hover:text-purple-100'
+        button:
+          'text-purple-700 hover:text-purple-900 dark:text-purple-300 dark:hover:text-purple-100'
       }
     case 'info':
     default:
@@ -82,52 +84,53 @@ export default function AnnouncementToast() {
     )
 
     // Filter urgent announcements that haven't been dismissed (date filtering is done server-side)
-    const urgentAnnouncements = announcementsData.announcements
-      .filter(announcement =>
+    const urgentAnnouncements = announcementsData.announcements.filter(
+      (announcement) =>
         announcement.priority >= 3 && // Only urgent announcements
         !dismissedAnnouncements.includes(announcement.id)
-      )
+    )
 
     // Show toast for each urgent announcement
     urgentAnnouncements.forEach((announcement) => {
       const toastId = `announcement-${announcement.id}`
 
       // Check if this toast was already shown in this session
-      const shownToasts = JSON.parse(
-        sessionStorage.getItem('shownAnnouncementToasts') || '[]'
-      )
+      const shownToasts = JSON.parse(sessionStorage.getItem('shownAnnouncementToasts') || '[]')
 
       if (!shownToasts.includes(announcement.id)) {
         const styles = getAnnouncementStyles(announcement.type)
         toast.custom(
           (t) => (
-            <div className="group relative overflow-hidden rounded-xl border border-border/50 bg-background/95 backdrop-blur-xl shadow-2xl max-w-md animate-in slide-in-from-top-5 fade-in">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent" />
-              <div className="relative p-5">
-                <div className="flex items-start gap-4">
+            <div className='border-border/50 bg-background/95 animate-in slide-in-from-top-5 fade-in group relative max-w-md overflow-hidden rounded-xl border shadow-2xl backdrop-blur-xl'>
+              <div className='from-primary/5 absolute inset-0 bg-gradient-to-br via-transparent to-transparent' />
+              <div className='relative p-5'>
+                <div className='flex items-start gap-4'>
                   <div className={`flex-shrink-0 transition-transform duration-300 ${styles.icon}`}>
                     {getAnnouncementIcon(announcement.type)}
                   </div>
 
-                  <div className="flex-1 min-w-0 space-y-2">
-                    <h4 className={`font-semibold text-base leading-tight ${styles.title}`}>
+                  <div className='min-w-0 flex-1 space-y-2'>
+                    <h4 className={`text-base font-semibold leading-tight ${styles.title}`}>
                       {announcement.title}
                     </h4>
                     <p className={`text-sm leading-relaxed ${styles.content}`}>
                       {announcement.content}
                     </p>
 
-                    <div className="flex items-center gap-3 pt-1">
+                    <div className='flex items-center gap-3 pt-1'>
                       {announcement.isDismissible && (
                         <button
-                          type="button"
+                          type='button'
                           onClick={() => {
                             dismissMutation.mutate({ announcementId: announcement.id })
                             const dismissed = JSON.parse(
                               sessionStorage.getItem('dismissedAnnouncements') || '[]'
                             )
                             dismissed.push(announcement.id)
-                            sessionStorage.setItem('dismissedAnnouncements', JSON.stringify(dismissed))
+                            sessionStorage.setItem(
+                              'dismissedAnnouncements',
+                              JSON.stringify(dismissed)
+                            )
                             toast.dismiss(t)
                           }}
                           className={`text-xs font-medium transition-colors ${styles.button}`}
@@ -136,7 +139,7 @@ export default function AnnouncementToast() {
                         </button>
                       )}
                       <button
-                        type="button"
+                        type='button'
                         onClick={() => toast.dismiss(t)}
                         className={`text-xs font-medium transition-colors ${styles.button}`}
                       >
@@ -146,12 +149,12 @@ export default function AnnouncementToast() {
                   </div>
 
                   <button
-                    type="button"
+                    type='button'
                     onClick={() => toast.dismiss(t)}
-                    className="flex-shrink-0 rounded-lg p-1.5 transition-colors hover:bg-accent/50"
-                    aria-label="Close"
+                    className='hover:bg-accent/50 flex-shrink-0 rounded-lg p-1.5 transition-colors'
+                    aria-label='Close'
                   >
-                    <X className="h-4 w-4 opacity-50 hover:opacity-100 transition-opacity" />
+                    <X className='h-4 w-4 opacity-50 transition-opacity hover:opacity-100' />
                   </button>
                 </div>
               </div>

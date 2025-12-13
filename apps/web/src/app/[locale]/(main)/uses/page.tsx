@@ -89,11 +89,7 @@ const Page = async (props: PageProps) => {
         type='application/ld+json'
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <UsesPageClient 
-        title={title}
-        description={description}
-        mdxContent={<Mdx code={code} />}
-      />
+      <UsesPageClient title={title} description={description} mdxContent={<Mdx code={code} />} />
     </>
   )
 }

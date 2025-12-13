@@ -109,8 +109,8 @@ export const systemRouter = createTRPCRouter({
       })
 
       // Calculate overall system status
-      const criticalCount = results.filter(r => r.status === 'critical').length
-      const warningCount = results.filter(r => r.status === 'warning').length
+      const criticalCount = results.filter((r) => r.status === 'critical').length
+      const warningCount = results.filter((r) => r.status === 'warning').length
 
       let overallStatus: 'healthy' | 'warning' | 'critical' = 'healthy'
       if (criticalCount > 0) overallStatus = 'critical'
@@ -119,7 +119,7 @@ export const systemRouter = createTRPCRouter({
       return {
         overallStatus,
         checks: results,
-        history: recentLogs.map(log => ({
+        history: recentLogs.map((log) => ({
           ...log,
           details: log.details ? JSON.parse(log.details) : null
         }))
@@ -135,12 +135,14 @@ export const systemRouter = createTRPCRouter({
 
   // Get error logs
   getErrorLogs: adminProcedure
-    .input(z.object({
-      level: z.enum(['error', 'warning', 'info']).optional(),
-      resolved: z.boolean().optional(),
-      limit: z.number().min(1).max(100).default(50),
-      offset: z.number().min(0).default(0)
-    }))
+    .input(
+      z.object({
+        level: z.enum(['error', 'warning', 'info']).optional(),
+        resolved: z.boolean().optional(),
+        limit: z.number().min(1).max(100).default(50),
+        offset: z.number().min(0).default(0)
+      })
+    )
     .query(async ({ ctx, input }) => {
       try {
         const conditions = []
@@ -184,7 +186,7 @@ export const systemRouter = createTRPCRouter({
         })
 
         return {
-          logs: logs.map(log => ({
+          logs: logs.map((log) => ({
             ...log,
             metadata: log.metadata ? JSON.parse(log.metadata) : null
           })),
@@ -202,13 +204,15 @@ export const systemRouter = createTRPCRouter({
 
   // Log an error
   logError: adminProcedure
-    .input(z.object({
-      level: z.enum(['error', 'warning', 'info']),
-      message: z.string(),
-      stack: z.string().optional(),
-      url: z.string().optional(),
-      metadata: z.record(z.string(), z.any()).optional()
-    }))
+    .input(
+      z.object({
+        level: z.enum(['error', 'warning', 'info']),
+        message: z.string(),
+        stack: z.string().optional(),
+        url: z.string().optional(),
+        metadata: z.record(z.string(), z.any()).optional()
+      })
+    )
     .mutation(async ({ ctx, input }) => {
       try {
         const errorId = randomBytes(16).toString('hex')
@@ -295,7 +299,7 @@ export const systemRouter = createTRPCRouter({
 
       // Group by type
       const groupedConfig: Record<string, any[]> = {}
-      config.forEach(item => {
+      config.forEach((item) => {
         const type = item.type
         const group = groupedConfig[type] ?? []
         if (!groupedConfig[type]) {
@@ -319,13 +323,17 @@ export const systemRouter = createTRPCRouter({
 
   // Update site configuration
   updateSiteConfig: adminProcedure
-    .input(z.object({
-      key: z.string(),
-      value: z.string(),
-      type: z.enum(['general', 'seo', 'social', 'email', 'analytics', 'security', 'features']).optional(),
-      description: z.string().optional(),
-      isPublic: z.boolean().optional()
-    }))
+    .input(
+      z.object({
+        key: z.string(),
+        value: z.string(),
+        type: z
+          .enum(['general', 'seo', 'social', 'email', 'analytics', 'security', 'features'])
+          .optional(),
+        description: z.string().optional(),
+        isPublic: z.boolean().optional()
+      })
+    )
     .mutation(async ({ ctx, input }) => {
       try {
         const auditLogger = new AuditLogger(ctx.db)
@@ -394,10 +402,12 @@ export const systemRouter = createTRPCRouter({
 
   // Get bulk operations
   getBulkOperations: adminProcedure
-    .input(z.object({
-      status: z.enum(['pending', 'running', 'completed', 'failed', 'cancelled']).optional(),
-      limit: z.number().min(1).max(50).default(20)
-    }))
+    .input(
+      z.object({
+        status: z.enum(['pending', 'running', 'completed', 'failed', 'cancelled']).optional(),
+        limit: z.number().min(1).max(50).default(20)
+      })
+    )
     .query(async ({ ctx, input }) => {
       try {
         const conditions = []
@@ -424,7 +434,7 @@ export const systemRouter = createTRPCRouter({
         })
 
         return {
-          operations: operations.map(op => ({
+          operations: operations.map((op) => ({
             ...op,
             parameters: op.parameters ? JSON.parse(op.parameters) : null,
             results: op.results ? JSON.parse(op.results) : null
@@ -467,9 +477,9 @@ export const systemRouter = createTRPCRouter({
         columns: { id: true, status: true, checkType: true }
       })
 
-      const healthyChecks = recentHealthChecks.filter(h => h.status === 'healthy').length
-      const warningChecks = recentHealthChecks.filter(h => h.status === 'warning').length
-      const criticalChecks = recentHealthChecks.filter(h => h.status === 'critical').length
+      const healthyChecks = recentHealthChecks.filter((h) => h.status === 'healthy').length
+      const warningChecks = recentHealthChecks.filter((h) => h.status === 'warning').length
+      const criticalChecks = recentHealthChecks.filter((h) => h.status === 'critical').length
 
       return {
         errors: {
@@ -477,9 +487,9 @@ export const systemRouter = createTRPCRouter({
           recent: recentErrors.length,
           unresolved: unresolvedErrors.length,
           byLevel: {
-            error: recentErrors.filter(e => e.level === 'error').length,
-            warning: recentErrors.filter(e => e.level === 'warning').length,
-            info: recentErrors.filter(e => e.level === 'info').length
+            error: recentErrors.filter((e) => e.level === 'error').length,
+            warning: recentErrors.filter((e) => e.level === 'warning').length,
+            info: recentErrors.filter((e) => e.level === 'info').length
           }
         },
         health: {
@@ -487,7 +497,7 @@ export const systemRouter = createTRPCRouter({
           healthy: healthyChecks,
           warning: warningChecks,
           critical: criticalChecks,
-          uptime: healthyChecks / (recentHealthChecks.length || 1) * 100
+          uptime: (healthyChecks / (recentHealthChecks.length || 1)) * 100
         }
       }
     } catch (error) {

@@ -1,14 +1,14 @@
+import { type IconType, SiGithub, SiX } from '@icons-pack/react-simple-icons'
 import {
-  type IconType,
-  SiGithub,
-  SiX
-} from '@icons-pack/react-simple-icons'
-import { FlameIcon, MessageCircleIcon, MonitorIcon, MusicIcon, PencilIcon, UserCircleIcon } from 'lucide-react'
+  FlameIcon,
+  MessageCircleIcon,
+  MonitorIcon,
+  MusicIcon,
+  PencilIcon,
+  UserCircleIcon
+} from 'lucide-react'
 
-import {
-  SITE_GITHUB_URL,
-  SITE_X_URL
-} from '@/lib/constants'
+import { SITE_GITHUB_URL, SITE_X_URL } from '@/lib/constants'
 
 type SocialLinks = Array<{
   href: string

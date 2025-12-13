@@ -68,7 +68,7 @@ export function generateSEO({
     title: fullTitle,
     description,
     keywords: tags?.join(', '),
-    authors: authors?.map(author => ({ name: author })),
+    authors: authors?.map((author) => ({ name: author })),
     openGraph,
     twitter,
     alternates: {

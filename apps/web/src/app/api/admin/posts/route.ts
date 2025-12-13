@@ -11,10 +11,7 @@ export async function POST(request: NextRequest) {
     const { success } = await ratelimit.limit(ip)
 
     if (!success) {
-      return NextResponse.json(
-        { error: 'Rate limit exceeded' },
-        { status: 429 }
-      )
+      return NextResponse.json({ error: 'Rate limit exceeded' }, { status: 429 })
     }
 
     const body = await request.json()
@@ -31,10 +28,7 @@ export async function POST(request: NextRequest) {
     // Check if post already exists
     const exists = await BlogService.postExists(slug, locale)
     if (exists) {
-      return NextResponse.json(
-        { error: 'Post already exists in this locale' },
-        { status: 409 }
-      )
+      return NextResponse.json({ error: 'Post already exists in this locale' }, { status: 409 })
     }
 
     // Save the post
@@ -49,10 +43,7 @@ export async function POST(request: NextRequest) {
     })
 
     if (!saveSuccess) {
-      return NextResponse.json(
-        { error: 'Failed to save post' },
-        { status: 500 }
-      )
+      return NextResponse.json({ error: 'Failed to save post' }, { status: 500 })
     }
 
     return NextResponse.json({
@@ -61,13 +52,9 @@ export async function POST(request: NextRequest) {
       slug,
       locale
     })
-
   } catch (error) {
     logger.error('Error creating post', error)
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
 
@@ -78,10 +65,7 @@ export async function PUT(request: NextRequest) {
     const { success } = await ratelimit.limit(ip)
 
     if (!success) {
-      return NextResponse.json(
-        { error: 'Rate limit exceeded' },
-        { status: 429 }
-      )
+      return NextResponse.json({ error: 'Rate limit exceeded' }, { status: 429 })
     }
 
     const body = await request.json()
@@ -98,10 +82,7 @@ export async function PUT(request: NextRequest) {
     // Check if post exists
     const existingPost = await BlogService.getPost(slug, locale)
     if (!existingPost) {
-      return NextResponse.json(
-        { error: 'Post not found' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: 'Post not found' }, { status: 404 })
     }
 
     // Update the post
@@ -116,10 +97,7 @@ export async function PUT(request: NextRequest) {
     })
 
     if (!updateSuccess) {
-      return NextResponse.json(
-        { error: 'Failed to update post' },
-        { status: 500 }
-      )
+      return NextResponse.json({ error: 'Failed to update post' }, { status: 500 })
     }
 
     return NextResponse.json({
@@ -128,13 +106,9 @@ export async function PUT(request: NextRequest) {
       slug,
       locale
     })
-
   } catch (error) {
     logger.error('Error updating post', error)
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
 
@@ -145,10 +119,7 @@ export async function DELETE(request: NextRequest) {
     const { success } = await ratelimit.limit(ip)
 
     if (!success) {
-      return NextResponse.json(
-        { error: 'Rate limit exceeded' },
-        { status: 429 }
-      )
+      return NextResponse.json({ error: 'Rate limit exceeded' }, { status: 429 })
     }
 
     const { searchParams } = new URL(request.url)
@@ -165,20 +136,14 @@ export async function DELETE(request: NextRequest) {
     // Check if post exists
     const exists = await BlogService.postExists(slug, locale)
     if (!exists) {
-      return NextResponse.json(
-        { error: 'Post not found' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: 'Post not found' }, { status: 404 })
     }
 
     // Delete the post
     const deleteSuccess = await BlogService.deletePost(slug, locale)
 
     if (!deleteSuccess) {
-      return NextResponse.json(
-        { error: 'Failed to delete post' },
-        { status: 500 }
-      )
+      return NextResponse.json({ error: 'Failed to delete post' }, { status: 500 })
     }
 
     return NextResponse.json({
@@ -187,12 +152,8 @@ export async function DELETE(request: NextRequest) {
       slug,
       locale
     })
-
   } catch (error) {
     logger.error('Error deleting post', error)
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

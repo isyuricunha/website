@@ -46,7 +46,7 @@ const SelectedProjects = () => {
       className='relative my-8 sm:my-10 lg:my-12'
     >
       <motion.h2
-        className='text-center text-lg sm:text-xl lg:text-2xl font-medium px-4'
+        className='px-4 text-center text-lg font-medium sm:text-xl lg:text-2xl'
         initial={{
           y: 30,
           opacity: 0
@@ -62,7 +62,7 @@ const SelectedProjects = () => {
         {t('homepage.selectedProjects.title')}
       </motion.h2>
       <motion.div
-        className='mt-8 sm:mt-12 grid gap-4 sm:gap-6 md:grid-cols-2 px-4'
+        className='mt-8 grid gap-4 px-4 sm:mt-12 sm:gap-6 md:grid-cols-2'
         initial={{
           y: 40,
           opacity: 0
@@ -86,7 +86,7 @@ const SelectedProjects = () => {
             buttonVariants({
               variant: 'outline'
             }),
-            'rounded-full min-h-[36px] px-4 py-2 text-xs sm:text-sm'
+            'min-h-[36px] rounded-full px-4 py-2 text-xs sm:text-sm'
           )}
         >
           {t('homepage.selectedProjects.more')}
@@ -105,7 +105,7 @@ const Card = (props: CardProps) => {
     <Link
       key={slug}
       href={`/projects/${slug}`}
-      className='shadow-feature-card group relative rounded-2xl p-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
+      className='shadow-feature-card focus-visible:ring-ring group relative rounded-2xl p-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2'
     >
       <div className='flex items-center justify-between p-2'>
         <div className='flex items-center gap-1.5'>
@@ -114,7 +114,7 @@ const Card = (props: CardProps) => {
         </div>
         <ArrowUpRightIcon className='size-3 opacity-0 transition-opacity group-hover:opacity-100' />
       </div>
-      <div className='relative overflow-hidden rounded-lg ring-1 ring-border shadow-sm w-full aspect-[16/9]'>
+      <div className='ring-border relative aspect-[16/9] w-full overflow-hidden rounded-lg shadow-sm ring-1'>
         <BlurImage
           width={1280}
           height={832}
@@ -124,11 +124,9 @@ const Card = (props: CardProps) => {
         />
       </div>
       <div className='mt-3 px-2 pb-2'>
-        <h3 className='text-sm sm:text-base font-semibold truncate text-foreground'>
-          {name}
-        </h3>
+        <h3 className='text-foreground truncate text-sm font-semibold sm:text-base'>{name}</h3>
         <p
-          className='text-xs sm:text-sm text-muted-foreground'
+          className='text-muted-foreground text-xs sm:text-sm'
           style={{
             display: '-webkit-box',
             WebkitLineClamp: 3,

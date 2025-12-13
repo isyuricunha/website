@@ -8,11 +8,6 @@ type Props = {
 
 export default async function NewPostPage(props: Props) {
   const { locale } = await props.params
-  
-  return (
-    <PostEditor 
-      mode="create" 
-      locale={locale}
-    />
-  )
+
+  return <PostEditor mode='create' locale={locale} />
 }

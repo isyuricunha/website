@@ -1,5 +1,5 @@
 Yuri Cunha – Personal License  
-Version 2.1 – July 2025  
+Version 2.1 – July 2025
 
 License Agreement
 
@@ -8,7 +8,7 @@ This License Agreement (the “Agreement”) governs your use of code authored b
 1. Permission to Use and Modify  
    1.1. The User may use, modify, and reuse the Work for personal or project purposes, provided that proper credit is given to the Author each time the Work (or any substantial portion thereof) is used or distributed.  
    1.2. Credit must appear in documentation, source headers, or any medium where the Work is presented, clearly stating:  
-       “Original code by Yuri Cunha (https://github.com/isyuricunha)”.
+    “Original code by Yuri Cunha (https://github.com/isyuricunha)”.
 
 2. Redistribution  
    2.1. Redistribution of the Work—whether modified or unmodified—is permitted only if this Agreement remains intact and the required attribution (see Section 1) is clearly visible.  
@@ -27,7 +27,7 @@ This License Agreement (the “Agreement”) governs your use of code authored b
 6. Contact and Support  
    If you have questions about correct implementation, proper attribution, or this Agreement, please reach out:  
    • Twitter: @isyuricunha  
-   • Email: me@yuricunha.com  
+   • Email: me@yuricunha.com
 
 7. Governing Law  
    This Agreement is governed by the laws of the Author’s jurisdiction, without regard to conflict-of-law principles.
@@ -35,8 +35,8 @@ This License Agreement (the “Agreement”) governs your use of code authored b
 8. Updates to This Agreement  
    8.1. The Author may revise this Agreement at any time. Continued use or redistribution of the Work after any update signifies your acceptance of the new version.  
    8.2. The latest version will always be available at:  
-       [https://github.com/isyuricunha/personal-license  ](https://github.com/isyuricunha/isyuricunha?tab=License-1-ov-file#readme)
+    [https://github.com/isyuricunha/personal-license ](https://github.com/isyuricunha/isyuricunha?tab=License-1-ov-file#readme)
 
 ---
 
-By using, modifying, or redistributing the Work, you acknowledge that you have read, understood, and agree to the terms of this Agreement. Failure to comply will result in immediate termination of your rights under this License.  
+By using, modifying, or redistributing the Work, you acknowledge that you have read, understood, and agree to the terms of this Agreement. Failure to comply will result in immediate termination of your rights under this License.

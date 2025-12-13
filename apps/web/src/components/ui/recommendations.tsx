@@ -24,8 +24,8 @@ const typeColors = {
   project: 'text-green-600 dark:text-green-400'
 }
 
-export function Recommendations({ 
-  recommendations, 
+export function Recommendations({
+  recommendations,
   title = 'Recommended for you',
   showReason = true,
   className = ''
@@ -34,17 +34,17 @@ export function Recommendations({
 
   return (
     <Card className={className}>
-      <CardHeader className="pb-3">
-        <CardTitle className="flex items-center gap-2 text-lg">
-          <Lightbulb className="h-5 w-5 text-yellow-500" />
+      <CardHeader className='pb-3'>
+        <CardTitle className='flex items-center gap-2 text-lg'>
+          <Lightbulb className='h-5 w-5 text-yellow-500' />
           {title}
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-3">
+      <CardContent className='space-y-3'>
         {recommendations.map((rec, index) => {
           const Icon = typeIcons[rec.type]
           const colorClass = typeColors[rec.type]
-          
+
           return (
             <motion.div
               key={rec.id}
@@ -54,30 +54,28 @@ export function Recommendations({
             >
               <Link
                 href={rec.href}
-                className="block p-3 rounded-lg border hover:bg-accent/50 transition-colors group"
+                className='hover:bg-accent/50 group block rounded-lg border p-3 transition-colors'
               >
-                <div className="flex items-start gap-3">
-                  <div className={`flex-shrink-0 mt-0.5 ${colorClass}`}>
-                    <Icon className="h-4 w-4" />
+                <div className='flex items-start gap-3'>
+                  <div className={`mt-0.5 flex-shrink-0 ${colorClass}`}>
+                    <Icon className='h-4 w-4' />
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h4 className="text-sm font-medium truncate group-hover:text-primary">
+                  <div className='min-w-0 flex-1'>
+                    <div className='mb-1 flex items-center gap-2'>
+                      <h4 className='group-hover:text-primary truncate text-sm font-medium'>
                         {rec.title}
                       </h4>
-                      <span className="text-xs text-muted-foreground px-2 py-0.5 bg-muted rounded-full">
+                      <span className='text-muted-foreground bg-muted rounded-full px-2 py-0.5 text-xs'>
                         {rec.type}
                       </span>
                     </div>
-                    <p className="text-xs text-muted-foreground line-clamp-2 mb-1">
+                    <p className='text-muted-foreground mb-1 line-clamp-2 text-xs'>
                       {rec.description}
                     </p>
                     {showReason && (
-                      <div className="flex items-center gap-1">
-                        <TrendingUp className="h-3 w-3 text-muted-foreground" />
-                        <span className="text-xs text-muted-foreground">
-                          {rec.reason}
-                        </span>
+                      <div className='flex items-center gap-1'>
+                        <TrendingUp className='text-muted-foreground h-3 w-3' />
+                        <span className='text-muted-foreground text-xs'>{rec.reason}</span>
                       </div>
                     )}
                   </div>

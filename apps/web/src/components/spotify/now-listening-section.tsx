@@ -14,13 +14,15 @@ const NowListeningSection = () => {
   const t = useTranslations()
   const [isRefreshing, setIsRefreshing] = useState(false)
 
-  const { data: currentTrack, refetch, isLoading, error } = api.spotify.getCurrentlyPlaying.useQuery(
-    undefined,
-    {
-      refetchInterval: 60_000, // Refresh every 60 seconds
-      staleTime: 30_000 // Consider data stale after 30 seconds
-    }
-  )
+  const {
+    data: currentTrack,
+    refetch,
+    isLoading,
+    error
+  } = api.spotify.getCurrentlyPlaying.useQuery(undefined, {
+    refetchInterval: 60_000, // Refresh every 60 seconds
+    staleTime: 30_000 // Consider data stale after 30 seconds
+  })
 
   const handleRefresh = async () => {
     setIsRefreshing(true)
@@ -46,10 +48,10 @@ const NowListeningSection = () => {
         </CardHeader>
         <CardContent>
           <div className='flex items-center space-x-4'>
-            <div className='h-16 w-16 animate-pulse rounded-lg bg-muted' />
+            <div className='bg-muted h-16 w-16 animate-pulse rounded-lg' />
             <div className='space-y-2'>
-              <div className='h-4 w-48 animate-pulse rounded bg-muted' />
-              <div className='h-3 w-32 animate-pulse rounded bg-muted' />
+              <div className='bg-muted h-4 w-48 animate-pulse rounded' />
+              <div className='bg-muted h-3 w-32 animate-pulse rounded' />
             </div>
           </div>
         </CardContent>
@@ -71,7 +73,7 @@ const NowListeningSection = () => {
               type='button'
               onClick={handleRefresh}
               disabled={isRefreshing}
-              className='text-sm text-muted-foreground hover:text-foreground disabled:opacity-50'
+              className='text-muted-foreground hover:text-foreground text-sm disabled:opacity-50'
             >
               {t('spotify.refresh')}
             </button>
@@ -95,7 +97,7 @@ const NowListeningSection = () => {
               type='button'
               onClick={handleRefresh}
               disabled={isRefreshing}
-              className='text-sm text-muted-foreground hover:text-foreground disabled:opacity-50'
+              className='text-muted-foreground hover:text-foreground text-sm disabled:opacity-50'
             >
               {t('spotify.refresh')}
             </button>
@@ -110,14 +112,18 @@ const NowListeningSection = () => {
       <CardHeader>
         <div className='flex items-center justify-between'>
           <div>
-            <CardTitle className='text-base sm:text-lg'>{t('spotify.now-listening.title')}</CardTitle>
-            <CardDescription className='text-xs sm:text-sm'>{t('spotify.now-listening.subtitle')}</CardDescription>
+            <CardTitle className='text-base sm:text-lg'>
+              {t('spotify.now-listening.title')}
+            </CardTitle>
+            <CardDescription className='text-xs sm:text-sm'>
+              {t('spotify.now-listening.subtitle')}
+            </CardDescription>
           </div>
           <button
             type='button'
             onClick={handleRefresh}
             disabled={isRefreshing}
-            className='text-xs sm:text-sm text-muted-foreground hover:text-foreground disabled:opacity-50'
+            className='text-muted-foreground hover:text-foreground text-xs disabled:opacity-50 sm:text-sm'
           >
             {t('spotify.refresh')}
           </button>
@@ -126,13 +132,13 @@ const NowListeningSection = () => {
       <CardContent>
         <Link
           href={currentTrack.songUrl}
-          className='group flex items-center space-x-4 rounded-lg p-4 transition-colors hover:bg-muted/50'
+          className='hover:bg-muted/50 group flex items-center space-x-4 rounded-lg p-4 transition-colors'
         >
           <div className='relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg'>
             <SpotifyImage
               src={currentTrack.albumImage}
               alt={`${currentTrack.album} album cover`}
-              fallbackIcon={<PlayIcon className='h-6 w-6 text-muted-foreground' />}
+              fallbackIcon={<PlayIcon className='text-muted-foreground h-6 w-6' />}
               width={64}
               height={64}
               sizes='64px'
@@ -141,18 +147,18 @@ const NowListeningSection = () => {
               <div className='absolute inset-0 flex items-center justify-center bg-black/20'>
                 <div className='flex space-x-1'>
                   <div className='h-1 w-1 animate-pulse rounded-full bg-white'></div>
-                  <div className='h-1 w-1 animate-pulse rounded-full bg-white animation-delay-150'></div>
-                  <div className='h-1 w-1 animate-pulse rounded-full bg-white animation-delay-300'></div>
+                  <div className='animation-delay-150 h-1 w-1 animate-pulse rounded-full bg-white'></div>
+                  <div className='animation-delay-300 h-1 w-1 animate-pulse rounded-full bg-white'></div>
                 </div>
               </div>
             )}
           </div>
 
           <div className='min-w-0 flex-1'>
-            <h3 className='truncate text-sm sm:text-base font-medium group-hover:text-primary'>
+            <h3 className='group-hover:text-primary truncate text-sm font-medium sm:text-base'>
               {currentTrack.name}
             </h3>
-            <p className='truncate text-xs sm:text-sm text-muted-foreground'>
+            <p className='text-muted-foreground truncate text-xs sm:text-sm'>
               {currentTrack.artist} {t('spotify.now-listening.by')} {currentTrack.album}
             </p>
           </div>

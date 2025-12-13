@@ -27,32 +27,34 @@ const ItemGrid = (props: ItemGridProps) => {
         <Link
           key={item.name}
           href={item.url}
-          className='shadow-xs flex gap-4 rounded-lg border p-4 no-underline transition-all hover:bg-zinc-100 hover:shadow-md sm:flex-col sm:gap-3 dark:bg-zinc-900 dark:hover:bg-zinc-800 relative group min-h-[120px] sm:min-h-[160px]'
+          className='shadow-xs group relative flex min-h-[120px] gap-4 rounded-lg border p-4 no-underline transition-all hover:bg-zinc-100 hover:shadow-md sm:min-h-[160px] sm:flex-col sm:gap-3 dark:bg-zinc-900 dark:hover:bg-zinc-800'
         >
           {item.isAffiliate && (
-            <Badge 
-              variant='secondary' 
-              className='absolute top-2 right-2 text-xs bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
+            <Badge
+              variant='secondary'
+              className='absolute right-2 top-2 bg-blue-100 text-xs text-blue-800 dark:bg-blue-900 dark:text-blue-200'
             >
               Affiliate
             </Badge>
           )}
-          <div className='shrink-0 w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center bg-muted/10 rounded-lg p-3'>
+          <div className='bg-muted/10 flex h-16 w-16 shrink-0 items-center justify-center rounded-lg p-3 sm:h-20 sm:w-20'>
             <BlurImage
               src={item.image}
               width={80}
               height={80}
               alt={item.name}
-              className='max-w-full max-h-full'
+              className='max-h-full max-w-full'
               imageClassName='max-w-full max-h-full object-contain transition-transform group-hover:scale-105'
             />
           </div>
-          <div className='flex flex-col justify-center gap-2 flex-1'>
-            <div className='text-sm sm:text-base font-semibold flex items-center gap-2 line-clamp-2'>
+          <div className='flex flex-1 flex-col justify-center gap-2'>
+            <div className='line-clamp-2 flex items-center gap-2 text-sm font-semibold sm:text-base'>
               {item.name}
-              <ExternalLink className='h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0' />
+              <ExternalLink className='h-3 w-3 flex-shrink-0 opacity-0 transition-opacity group-hover:opacity-100' />
             </div>
-            <div className='text-muted-foreground text-xs sm:text-sm line-clamp-2'>{item.description}</div>
+            <div className='text-muted-foreground line-clamp-2 text-xs sm:text-sm'>
+              {item.description}
+            </div>
           </div>
         </Link>
       ))}

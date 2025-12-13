@@ -42,7 +42,7 @@ export class ResendService {
     const timeSinceLastRequest = now - this.lastRequestTime
     if (timeSinceLastRequest < this.minRequestInterval) {
       const delayTime = this.minRequestInterval - timeSinceLastRequest
-      await new Promise(resolve => setTimeout(resolve, delayTime))
+      await new Promise((resolve) => setTimeout(resolve, delayTime))
     }
     this.lastRequestTime = Date.now()
   }
@@ -102,12 +102,15 @@ export class ResendService {
    */
 
   // Add contact to audience
-  async addContact(audienceId: string, contact: {
-    email: string
-    first_name?: string
-    last_name?: string
-    unsubscribed?: boolean
-  }): Promise<ResendContact | null> {
+  async addContact(
+    audienceId: string,
+    contact: {
+      email: string
+      first_name?: string
+      last_name?: string
+      unsubscribed?: boolean
+    }
+  ): Promise<ResendContact | null> {
     try {
       const response = await resend.contacts.create({
         audienceId,
@@ -124,11 +127,15 @@ export class ResendService {
   }
 
   // Update contact in audience
-  async updateContact(audienceId: string, contactId: string, updates: {
-    first_name?: string
-    last_name?: string
-    unsubscribed?: boolean
-  }): Promise<ResendContact | null> {
+  async updateContact(
+    audienceId: string,
+    contactId: string,
+    updates: {
+      first_name?: string
+      last_name?: string
+      unsubscribed?: boolean
+    }
+  ): Promise<ResendContact | null> {
     try {
       const response = await resend.contacts.update({
         audienceId,
@@ -176,7 +183,7 @@ export class ResendService {
     try {
       const contacts = await this.listContacts(audienceId)
       // Count only active subscribers (not unsubscribed)
-      const activeSubscribers = contacts.filter(contact => !contact.unsubscribed)
+      const activeSubscribers = contacts.filter((contact) => !contact.unsubscribed)
       return activeSubscribers.length
     } catch (error) {
       logger.error('Error getting subscriber count for audience', error)
@@ -188,7 +195,7 @@ export class ResendService {
   async findContactByEmail(audienceId: string, email: string): Promise<ResendContact | null> {
     try {
       const contacts = await this.listContacts(audienceId)
-      return contacts.find(contact => contact.email === email) || null
+      return contacts.find((contact) => contact.email === email) || null
     } catch (error) {
       logger.error('Error finding contact by email', error)
       return null
@@ -262,10 +269,13 @@ export class ResendService {
   }
 
   // Update broadcast
-  async updateBroadcast(broadcastId: string, updates: {
-    html?: string
-    subject?: string
-  }): Promise<ResendBroadcast | null> {
+  async updateBroadcast(
+    broadcastId: string,
+    updates: {
+      html?: string
+      subject?: string
+    }
+  ): Promise<ResendBroadcast | null> {
     try {
       await this.rateLimitDelay()
       const response = await (resend.broadcasts as any).update(broadcastId, {
@@ -319,12 +329,15 @@ export class ResendService {
    */
 
   // Sync user to Resend audience
-  async syncUserToAudience(audienceId: string, user: {
-    email: string
-    firstName?: string
-    lastName?: string
-    subscribed?: boolean
-  }): Promise<ResendContact | null> {
+  async syncUserToAudience(
+    audienceId: string,
+    user: {
+      email: string
+      firstName?: string
+      lastName?: string
+      subscribed?: boolean
+    }
+  ): Promise<ResendContact | null> {
     try {
       // Check if contact already exists
       const existingContact = await this.findContactByEmail(audienceId, user.email)
@@ -352,12 +365,15 @@ export class ResendService {
   }
 
   // Bulk sync users to audience
-  async bulkSyncUsersToAudience(audienceId: string, users: Array<{
-    email: string
-    firstName?: string
-    lastName?: string
-    subscribed?: boolean
-  }>): Promise<{ success: number; failed: number }> {
+  async bulkSyncUsersToAudience(
+    audienceId: string,
+    users: Array<{
+      email: string
+      firstName?: string
+      lastName?: string
+      subscribed?: boolean
+    }>
+  ): Promise<{ success: number; failed: number }> {
     let success = 0
     let failed = 0
 

@@ -67,7 +67,7 @@ const Page = async (props: PageProps) => {
 
   const reqHeaders = await headers()
   const trpcContext = await createTRPCContext({ headers: reqHeaders as unknown as Headers })
-   
+
   const caller = appRouter.createCaller(trpcContext)
   const repos = (await caller.github.getRepos()).map((repo) => ({
     ...repo,
@@ -106,9 +106,9 @@ const Page = async (props: PageProps) => {
       <ProjectCards projects={projects} />
 
       <section className='mt-12'>
-        <h2 className='mb-6 text-lg sm:text-xl font-semibold'>{t('projects.all-repos')}</h2>
+        <h2 className='mb-6 text-lg font-semibold sm:text-xl'>{t('projects.all-repos')}</h2>
         {repos.length === 0 ? (
-          <p className='text-sm sm:text-base text-muted-foreground'>{t('projects.repos.empty')}</p>
+          <p className='text-muted-foreground text-sm sm:text-base'>{t('projects.repos.empty')}</p>
         ) : (
           <GithubRepos repos={repos} />
         )}

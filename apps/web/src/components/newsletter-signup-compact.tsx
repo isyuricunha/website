@@ -16,14 +16,14 @@ const NewsletterSignupCompact = () => {
 
     setIsLoading(true)
     setError('')
-    
+
     try {
       const response = await fetch('/api/newsletter/subscribe', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ email: email.trim() }),
+        body: JSON.stringify({ email: email.trim() })
       })
 
       const data = await response.json()
@@ -51,22 +51,22 @@ const NewsletterSignupCompact = () => {
   }
 
   return (
-    <div className='flex gap-2 items-center'>
+    <div className='flex items-center gap-2'>
       <Input
         type='email'
         placeholder='email@domain.com'
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         required
-        className='w-40 text-sm h-9 px-3 py-2 border border-input bg-background'
+        className='border-input bg-background h-9 w-40 border px-3 py-2 text-sm'
         disabled={isLoading}
       />
-      <Button 
-        type='submit' 
+      <Button
+        type='submit'
         disabled={isLoading || !email.trim()}
         variant='outline'
         size='sm'
-        className='gap-2 h-9 px-3 py-2'
+        className='h-9 gap-2 px-3 py-2'
         onClick={handleSubmit}
       >
         {isLoading ? (
@@ -75,9 +75,9 @@ const NewsletterSignupCompact = () => {
           <Send className='size-4' />
         )}
       </Button>
-      
+
       {error && (
-        <div className='absolute mt-10 flex items-center gap-1 text-xs text-destructive'>
+        <div className='text-destructive absolute mt-10 flex items-center gap-1 text-xs'>
           <AlertCircle className='h-3 w-3' />
           <span>{error}</span>
         </div>

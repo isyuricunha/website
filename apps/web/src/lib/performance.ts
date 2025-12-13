@@ -34,14 +34,10 @@ export function createCachedFunction<T extends (...args: any[]) => any>(
     tags?: string[]
   } = {}
 ): T {
-  return unstable_cache(
-    fn,
-    keyParts,
-    {
-      revalidate: options.revalidate || CACHE_DURATIONS.MEDIUM,
-      tags: options.tags || []
-    }
-  )
+  return unstable_cache(fn, keyParts, {
+    revalidate: options.revalidate || CACHE_DURATIONS.MEDIUM,
+    tags: options.tags || []
+  })
 }
 
 /**
@@ -66,7 +62,7 @@ export function createLazyComponent<T extends Record<string, any>>(
   fallback?: React.ComponentType
 ): React.ComponentType<T> {
   const LazyComponent = React.lazy(importFn)
-  
+
   return function LazyWrapper(props: T) {
     return React.createElement(
       React.Suspense,
@@ -104,11 +100,10 @@ export function getOptimizedImageProps(
     width,
     height,
     priority,
-    sizes: priority 
-      ? '100vw'
-      : '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw',
+    sizes: priority ? '100vw' : '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw',
     quality: 85,
     placeholder: 'blur' as const,
-    blurDataURL: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=='
+    blurDataURL:
+      'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=='
   }
 }

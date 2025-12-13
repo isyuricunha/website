@@ -19,12 +19,14 @@ const MusicTimeline = () => {
     setIsMounted(true)
   }, [])
 
-  const { data: recentTracks, refetch, isLoading, error } = api.spotify.getRecentlyPlayed.useQuery(
-    undefined,
-    {
-      staleTime: 300_000 // 5 minutes
-    }
-  )
+  const {
+    data: recentTracks,
+    refetch,
+    isLoading,
+    error
+  } = api.spotify.getRecentlyPlayed.useQuery(undefined, {
+    staleTime: 300_000 // 5 minutes
+  })
 
   const handleRefresh = async () => {
     setIsRefreshing(true)
@@ -42,10 +44,10 @@ const MusicTimeline = () => {
     const now = new Date()
     const groups: Record<Period, RecentTrack[]> = {
       'last-hour': [],
-      'today': [],
-      'yesterday': [],
+      today: [],
+      yesterday: [],
       'this-week': [],
-      'earlier': []
+      earlier: []
     }
 
     recentTracks.forEach((track: RecentTrack) => {
@@ -85,7 +87,7 @@ const MusicTimeline = () => {
     return (
       <Card>
         <CardHeader>
-          <CardTitle className='text-base sm:text-lg flex items-center gap-2'>
+          <CardTitle className='flex items-center gap-2 text-base sm:text-lg'>
             <Clock className='h-5 w-5' />
             {t('spotify.timeline.title')}
           </CardTitle>
@@ -97,13 +99,13 @@ const MusicTimeline = () => {
           <div className='space-y-4'>
             {Array.from({ length: 3 }).map((_, i) => (
               <div key={i} className='space-y-3'>
-                <div className='h-4 w-32 animate-pulse rounded bg-muted' />
+                <div className='bg-muted h-4 w-32 animate-pulse rounded' />
                 <div className='ml-4 space-y-3'>
                   <div className='flex items-center gap-3'>
-                    <div className='h-10 w-10 animate-pulse rounded-lg bg-muted' />
+                    <div className='bg-muted h-10 w-10 animate-pulse rounded-lg' />
                     <div className='flex-1 space-y-2'>
-                      <div className='h-3 w-40 animate-pulse rounded bg-muted' />
-                      <div className='h-3 w-24 animate-pulse rounded bg-muted' />
+                      <div className='bg-muted h-3 w-40 animate-pulse rounded' />
+                      <div className='bg-muted h-3 w-24 animate-pulse rounded' />
                     </div>
                   </div>
                 </div>
@@ -119,7 +121,7 @@ const MusicTimeline = () => {
     return (
       <Card>
         <CardHeader>
-          <CardTitle className='text-base sm:text-lg flex items-center gap-2'>
+          <CardTitle className='flex items-center gap-2 text-base sm:text-lg'>
             <Clock className='h-5 w-5' />
             {t('spotify.timeline.title')}
           </CardTitle>
@@ -134,7 +136,7 @@ const MusicTimeline = () => {
               type='button'
               onClick={handleRefresh}
               disabled={isRefreshing}
-              className='text-sm text-muted-foreground hover:text-foreground disabled:opacity-50'
+              className='text-muted-foreground hover:text-foreground text-sm disabled:opacity-50'
             >
               {t('spotify.refresh')}
             </button>
@@ -148,7 +150,7 @@ const MusicTimeline = () => {
     return (
       <Card>
         <CardHeader>
-          <CardTitle className='text-base sm:text-lg flex items-center gap-2'>
+          <CardTitle className='flex items-center gap-2 text-base sm:text-lg'>
             <Clock className='h-5 w-5' />
             {t('spotify.timeline.title')}
           </CardTitle>
@@ -157,9 +159,9 @@ const MusicTimeline = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className='text-center py-8'>
-            <Music className='h-12 w-12 mx-auto text-muted-foreground mb-4' />
-            <p className='text-sm text-muted-foreground'>{t('spotify.timeline.empty')}</p>
+          <div className='py-8 text-center'>
+            <Music className='text-muted-foreground mx-auto mb-4 h-12 w-12' />
+            <p className='text-muted-foreground text-sm'>{t('spotify.timeline.empty')}</p>
           </div>
         </CardContent>
       </Card>
@@ -171,7 +173,7 @@ const MusicTimeline = () => {
       <CardHeader>
         <div className='flex items-center justify-between'>
           <div>
-            <CardTitle className='text-base sm:text-lg flex items-center gap-2'>
+            <CardTitle className='flex items-center gap-2 text-base sm:text-lg'>
               <Clock className='h-5 w-5' />
               {t('spotify.timeline.title')}
             </CardTitle>
@@ -183,7 +185,7 @@ const MusicTimeline = () => {
             type='button'
             onClick={handleRefresh}
             disabled={isRefreshing}
-            className='text-xs sm:text-sm text-muted-foreground hover:text-foreground disabled:opacity-50'
+            className='text-muted-foreground hover:text-foreground text-xs disabled:opacity-50 sm:text-sm'
           >
             {t('spotify.refresh')}
           </button>
@@ -194,31 +196,36 @@ const MusicTimeline = () => {
           {timelineData.map(({ period, tracks }) => (
             <div key={period} className='relative'>
               {/* Timeline Header */}
-              <div className='flex items-center gap-2 mb-4'>
-                <div className='flex items-center justify-center w-8 h-8 rounded-full bg-primary/10'>
+              <div className='mb-4 flex items-center gap-2'>
+                <div className='bg-primary/10 flex h-8 w-8 items-center justify-center rounded-full'>
                   {period === 'last-hour' ? (
-                    <Clock className='h-4 w-4 text-primary' />
+                    <Clock className='text-primary h-4 w-4' />
                   ) : (
-                    <Calendar className='h-4 w-4 text-primary' />
+                    <Calendar className='text-primary h-4 w-4' />
                   )}
                 </div>
-                <h3 className='text-sm sm:text-base font-semibold'>{td(`spotify.timeline.periods.${period}`)}</h3>
-                <span className='text-xs sm:text-sm text-muted-foreground'>
-                  {td('spotify.timeline.count', { count: tracks.length, label: td(`spotify.timeline.labels.${tracks.length === 1 ? 'track' : 'tracks'}`) })}
+                <h3 className='text-sm font-semibold sm:text-base'>
+                  {td(`spotify.timeline.periods.${period}`)}
+                </h3>
+                <span className='text-muted-foreground text-xs sm:text-sm'>
+                  {td('spotify.timeline.count', {
+                    count: tracks.length,
+                    label: td(`spotify.timeline.labels.${tracks.length === 1 ? 'track' : 'tracks'}`)
+                  })}
                 </span>
               </div>
 
               {/* Timeline Items */}
-              <div className='ml-4 border-l-2 border-muted pl-6 space-y-4'>
+              <div className='border-muted ml-4 space-y-4 border-l-2 pl-6'>
                 {tracks.slice(0, 5).map((track) => (
                   <div key={`${track.id}-${track.playedAt}`} className='relative'>
                     {/* Timeline Dot */}
-                    <div className='absolute -left-[1.75rem] top-2 w-3 h-3 rounded-full bg-primary border-2 border-background' />
+                    <div className='bg-primary border-background absolute -left-[1.75rem] top-2 h-3 w-3 rounded-full border-2' />
 
                     {/* Track Item */}
                     <Link
                       href={track.url}
-                      className='group flex items-center gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors'
+                      className='hover:bg-muted/50 group flex items-center gap-3 rounded-lg p-3 transition-colors'
                     >
                       <div className='relative h-10 w-10 flex-shrink-0 overflow-hidden rounded-lg'>
                         <SpotifyImage
@@ -229,19 +236,19 @@ const MusicTimeline = () => {
                           sizes='40px'
                         />
                       </div>
-                      <div className='flex-1 min-w-0'>
-                        <h4 className='text-xs sm:text-sm font-medium truncate group-hover:text-primary'>
+                      <div className='min-w-0 flex-1'>
+                        <h4 className='group-hover:text-primary truncate text-xs font-medium sm:text-sm'>
                           {track.name}
                         </h4>
-                        <p className='text-[10px] sm:text-xs text-muted-foreground truncate'>
+                        <p className='text-muted-foreground truncate text-[10px] sm:text-xs'>
                           {track.artist} • {track.album}
                         </p>
                       </div>
                       <div className='text-right'>
-                        <p className='text-[10px] sm:text-xs text-muted-foreground'>
+                        <p className='text-muted-foreground text-[10px] sm:text-xs'>
                           {isMounted ? formatTime(track.playedAt) : '...'}
                         </p>
-                        <p className='text-[10px] sm:text-xs text-muted-foreground'>
+                        <p className='text-muted-foreground text-[10px] sm:text-xs'>
                           {isMounted ? formatDate(track.playedAt) : '...'}
                         </p>
                       </div>
@@ -252,9 +259,9 @@ const MusicTimeline = () => {
                 {/* Show more indicator */}
                 {tracks.length > 5 && (
                   <div className='relative'>
-                    <div className='absolute -left-[1.75rem] top-2 w-3 h-3 rounded-full bg-muted border-2 border-background' />
+                    <div className='bg-muted border-background absolute -left-[1.75rem] top-2 h-3 w-3 rounded-full border-2' />
                     <div className='p-3 text-center'>
-                      <p className='text-xs sm:text-sm text-muted-foreground'>
+                      <p className='text-muted-foreground text-xs sm:text-sm'>
                         {t('spotify.timeline.more-tracks', { count: tracks.length - 5 })}
                       </p>
                     </div>
@@ -266,21 +273,25 @@ const MusicTimeline = () => {
         </div>
 
         {/* Timeline Stats */}
-        <div className='mt-6 pt-6 border-t'>
+        <div className='mt-6 border-t pt-6'>
           <div className='grid grid-cols-2 gap-4'>
             <div className='text-center'>
-              <div className='flex items-center justify-center gap-2 mb-1'>
-                <TrendingUp className='h-4 w-4 text-muted-foreground' />
-                <span className='text-xs sm:text-sm text-muted-foreground'>{t('spotify.timeline.labels.total-tracks')}</span>
+              <div className='mb-1 flex items-center justify-center gap-2'>
+                <TrendingUp className='text-muted-foreground h-4 w-4' />
+                <span className='text-muted-foreground text-xs sm:text-sm'>
+                  {t('spotify.timeline.labels.total-tracks')}
+                </span>
               </div>
-              <p className='text-lg sm:text-xl font-bold'>{recentTracks.length}</p>
+              <p className='text-lg font-bold sm:text-xl'>{recentTracks.length}</p>
             </div>
             <div className='text-center'>
-              <div className='flex items-center justify-center gap-2 mb-1'>
-                <Music className='h-4 w-4 text-muted-foreground' />
-                <span className='text-xs sm:text-sm text-muted-foreground'>{t('spotify.timeline.labels.unique-artists')}</span>
+              <div className='mb-1 flex items-center justify-center gap-2'>
+                <Music className='text-muted-foreground h-4 w-4' />
+                <span className='text-muted-foreground text-xs sm:text-sm'>
+                  {t('spotify.timeline.labels.unique-artists')}
+                </span>
               </div>
-              <p className='text-lg sm:text-xl font-bold'>
+              <p className='text-lg font-bold sm:text-xl'>
                 {new Set(recentTracks.map((track: any) => track.artist)).size}
               </p>
             </div>

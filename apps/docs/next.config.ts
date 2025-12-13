@@ -35,12 +35,10 @@ const config: NextConfig = {
 
   transpilePackages: ['@tszhong0411/*'],
 
-   
   async headers() {
     return NextConfigHeaders
   },
 
-   
   async redirects() {
     return [
       {

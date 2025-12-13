@@ -7,7 +7,7 @@ import {
   eq,
   gte,
   lte,
-  inArray,
+  inArray
 } from '@tszhong0411/db'
 import { randomBytes } from 'crypto'
 import { z } from 'zod'
@@ -19,10 +19,12 @@ import { adminProcedure, publicProcedure, createTRPCRouter } from '../trpc'
 export const announcementsRouter = createTRPCRouter({
   // Get announcements (public endpoint for homepage banners)
   getAnnouncements: publicProcedure
-    .input(z.object({
-      active: z.boolean().optional(),
-      adminView: z.boolean().default(false)
-    }))
+    .input(
+      z.object({
+        active: z.boolean().optional(),
+        adminView: z.boolean().default(false)
+      })
+    )
     .query(async ({ ctx, input }) => {
       try {
         const conditions = []
@@ -42,7 +44,7 @@ export const announcementsRouter = createTRPCRouter({
         })
 
         // Filter announcements based on user targeting
-        const filteredAnnouncements = announcementList.filter(announcement => {
+        const filteredAnnouncements = announcementList.filter((announcement) => {
           if (!announcement.targetAudience || input.adminView) {
             return true // Show all if no targeting or admin view
           }
@@ -80,7 +82,10 @@ export const announcementsRouter = createTRPCRouter({
           const interactions = await ctx.db.query.announcementInteractions.findMany({
             where: and(
               eq(announcementInteractions.userId, ctx.session.user.id),
-              inArray(announcementInteractions.announcementId, filteredAnnouncements.map(a => a.id))
+              inArray(
+                announcementInteractions.announcementId,
+                filteredAnnouncements.map((a) => a.id)
+              )
             )
           })
 
@@ -91,9 +96,11 @@ export const announcementsRouter = createTRPCRouter({
         }
 
         return {
-          announcements: filteredAnnouncements.map(announcement => ({
+          announcements: filteredAnnouncements.map((announcement) => ({
             ...announcement,
-            targetAudience: announcement.targetAudience ? JSON.parse(announcement.targetAudience) : null,
+            targetAudience: announcement.targetAudience
+              ? JSON.parse(announcement.targetAudience)
+              : null,
             userInteraction: userInteractions[announcement.id] || null
           }))
         }
@@ -108,19 +115,25 @@ export const announcementsRouter = createTRPCRouter({
 
   // Create announcement (admin only)
   createAnnouncement: adminProcedure
-    .input(z.object({
-      title: z.string().min(1),
-      content: z.string().min(1),
-      type: z.enum(['info', 'warning', 'success', 'error', 'maintenance', 'feature', 'update']).default('info'),
-      priority: z.number().min(0).max(10).default(0),
-      isDismissible: z.boolean().default(true),
-      targetAudience: z.object({
-        userRoles: z.array(z.string()).optional(),
-        userIds: z.array(z.string()).optional()
-      }).optional(),
-      startDate: z.date().optional(),
-      endDate: z.date().optional()
-    }))
+    .input(
+      z.object({
+        title: z.string().min(1),
+        content: z.string().min(1),
+        type: z
+          .enum(['info', 'warning', 'success', 'error', 'maintenance', 'feature', 'update'])
+          .default('info'),
+        priority: z.number().min(0).max(10).default(0),
+        isDismissible: z.boolean().default(true),
+        targetAudience: z
+          .object({
+            userRoles: z.array(z.string()).optional(),
+            userIds: z.array(z.string()).optional()
+          })
+          .optional(),
+        startDate: z.date().optional(),
+        endDate: z.date().optional()
+      })
+    )
     .mutation(async ({ ctx, input }) => {
       try {
         const auditLogger = new AuditLogger(ctx.db)
@@ -222,21 +235,27 @@ export const announcementsRouter = createTRPCRouter({
 
   // Update announcement (admin only)
   updateAnnouncement: adminProcedure
-    .input(z.object({
-      id: z.string(),
-      title: z.string().min(1).optional(),
-      content: z.string().min(1).optional(),
-      type: z.enum(['info', 'warning', 'success', 'error', 'maintenance', 'feature', 'update']).optional(),
-      priority: z.number().min(0).max(10).optional(),
-      isDismissible: z.boolean().optional(),
-      isActive: z.boolean().optional(),
-      targetAudience: z.object({
-        userRoles: z.array(z.string()).optional(),
-        userIds: z.array(z.string()).optional()
-      }).optional(),
-      startDate: z.date().optional(),
-      endDate: z.date().optional()
-    }))
+    .input(
+      z.object({
+        id: z.string(),
+        title: z.string().min(1).optional(),
+        content: z.string().min(1).optional(),
+        type: z
+          .enum(['info', 'warning', 'success', 'error', 'maintenance', 'feature', 'update'])
+          .optional(),
+        priority: z.number().min(0).max(10).optional(),
+        isDismissible: z.boolean().optional(),
+        isActive: z.boolean().optional(),
+        targetAudience: z
+          .object({
+            userRoles: z.array(z.string()).optional(),
+            userIds: z.array(z.string()).optional()
+          })
+          .optional(),
+        startDate: z.date().optional(),
+        endDate: z.date().optional()
+      })
+    )
     .mutation(async ({ ctx, input }) => {
       try {
         const auditLogger = new AuditLogger(ctx.db)
@@ -249,7 +268,9 @@ export const announcementsRouter = createTRPCRouter({
           .update(announcements)
           .set({
             ...updateData,
-            targetAudience: updateData.targetAudience ? JSON.stringify(updateData.targetAudience) : undefined,
+            targetAudience: updateData.targetAudience
+              ? JSON.stringify(updateData.targetAudience)
+              : undefined,
             updatedAt: new Date()
           })
           .where(eq(announcements.id, id))
@@ -314,13 +335,17 @@ export const announcementsRouter = createTRPCRouter({
 
   // Get announcement analytics (admin only)
   getAnnouncementAnalytics: adminProcedure
-    .input(z.object({
-      announcementId: z.string().optional(),
-      dateRange: z.object({
-        start: z.date(),
-        end: z.date()
-      }).optional()
-    }))
+    .input(
+      z.object({
+        announcementId: z.string().optional(),
+        dateRange: z
+          .object({
+            start: z.date(),
+            end: z.date()
+          })
+          .optional()
+      })
+    )
     .query(async ({ ctx, input }) => {
       try {
         // Get announcement engagement stats
@@ -344,13 +369,16 @@ export const announcementsRouter = createTRPCRouter({
 
         const analytics = {
           totalViews: interactions.length,
-          totalDismissals: interactions.filter(i => i.dismissed).length,
-          dismissalRate: interactions.length > 0 ? (interactions.filter(i => i.dismissed).length / interactions.length) * 100 : 0,
+          totalDismissals: interactions.filter((i) => i.dismissed).length,
+          dismissalRate:
+            interactions.length > 0
+              ? (interactions.filter((i) => i.dismissed).length / interactions.length) * 100
+              : 0,
           byAnnouncement: {} as any
         }
 
         // Group by announcement
-        interactions.forEach(interaction => {
+        interactions.forEach((interaction) => {
           const announcementId = interaction.announcementId
           if (!analytics.byAnnouncement[announcementId]) {
             analytics.byAnnouncement[announcementId] = {
@@ -368,7 +396,7 @@ export const announcementsRouter = createTRPCRouter({
         })
 
         // Calculate dismissal rates
-        Object.keys(analytics.byAnnouncement).forEach(announcementId => {
+        Object.keys(analytics.byAnnouncement).forEach((announcementId) => {
           const data = analytics.byAnnouncement[announcementId]
           data.dismissalRate = data.views > 0 ? (data.dismissals / data.views) * 100 : 0
         })

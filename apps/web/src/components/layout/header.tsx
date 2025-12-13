@@ -37,7 +37,7 @@ const Header = () => {
   return (
     <motion.header
       className={cn(
-        'bg-background/30 shadow-xs fixed inset-x-0 top-2 sm:top-4 z-40 mx-2 sm:mx-auto flex h-[56px] sm:h-[60px] max-w-5xl items-center justify-between rounded-xl sm:rounded-2xl px-4 sm:px-6 lg:px-8 saturate-100 backdrop-blur-[10px] transition-colors',
+        'bg-background/30 shadow-xs fixed inset-x-0 top-2 z-40 mx-2 flex h-[56px] max-w-5xl items-center justify-between rounded-xl px-4 saturate-100 backdrop-blur-[10px] transition-colors sm:top-4 sm:mx-auto sm:h-[60px] sm:rounded-2xl sm:px-6 lg:px-8',
         isScrolled && 'bg-background/80'
       )}
       initial={{
@@ -58,13 +58,13 @@ const Header = () => {
       </a>
       <Link
         href='/'
-        className='flex items-center justify-center gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-lg p-1'
+        className='focus-visible:ring-ring flex items-center justify-center gap-1 rounded-lg p-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2'
         aria-label={t('layout.home')}
       >
-        <Logo width={24} height={24} className='sm:w-7 sm:h-7' aria-hidden='true' />
+        <Logo width={24} height={24} className='sm:h-7 sm:w-7' aria-hidden='true' />
       </Link>
       <div className='flex items-center gap-1 sm:gap-2'>
-        <div className='hidden md:block w-64'>
+        <div className='hidden w-64 md:block'>
           <SiteSearch />
         </div>
         <Navbar />

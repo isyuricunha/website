@@ -445,9 +445,7 @@ const DataTableToolbar = <TData,>(props: DataTableToolbarProps<TData>) => {
                 <Input
                   key={column.id}
                   placeholder={column.placeholder}
-                  value={
-                    (table.getColumn(column.id)?.getFilterValue() as string | undefined) ?? ''
-                  }
+                  value={(table.getColumn(column.id)?.getFilterValue() as string | undefined) ?? ''}
                   onChange={(event) =>
                     table.getColumn(column.id)?.setFilterValue(event.target.value)
                   }

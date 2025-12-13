@@ -15,12 +15,16 @@ import SpotifyImage from './spotify-image'
 const TopSongsSection = () => {
   const t = useTranslations()
   const [isRefreshing, setIsRefreshing] = useState(false)
-  const [timeRange, setTimeRange] = useState<'short_term' | 'medium_term' | 'long_term'>('short_term')
-
-  const { data: tracks, refetch, isLoading, error } = api.spotify.getTopTracksByRange.useQuery(
-    { time_range: timeRange },
-    { staleTime: 300_000 }
+  const [timeRange, setTimeRange] = useState<'short_term' | 'medium_term' | 'long_term'>(
+    'short_term'
   )
+
+  const {
+    data: tracks,
+    refetch,
+    isLoading,
+    error
+  } = api.spotify.getTopTracksByRange.useQuery({ time_range: timeRange }, { staleTime: 300_000 })
 
   const handleRefresh = async () => {
     setIsRefreshing(true)
@@ -53,10 +57,10 @@ const TopSongsSection = () => {
           <div className='space-y-4'>
             {Array.from({ length: 5 }).map((_, i) => (
               <div key={i} className='flex items-center space-x-4'>
-                <div className='h-12 w-12 animate-pulse rounded-lg bg-muted' />
+                <div className='bg-muted h-12 w-12 animate-pulse rounded-lg' />
                 <div className='flex-1 space-y-2'>
-                  <div className='h-4 w-48 animate-pulse rounded bg-muted' />
-                  <div className='h-3 w-32 animate-pulse rounded bg-muted' />
+                  <div className='bg-muted h-4 w-48 animate-pulse rounded' />
+                  <div className='bg-muted h-3 w-32 animate-pulse rounded' />
                 </div>
               </div>
             ))}
@@ -80,7 +84,7 @@ const TopSongsSection = () => {
               type='button'
               onClick={handleRefresh}
               disabled={isRefreshing}
-              className='text-sm text-muted-foreground hover:text-foreground disabled:opacity-50'
+              className='text-muted-foreground hover:text-foreground text-sm disabled:opacity-50'
             >
               {t('spotify.refresh')}
             </button>
@@ -104,7 +108,7 @@ const TopSongsSection = () => {
               type='button'
               onClick={handleRefresh}
               disabled={isRefreshing}
-              className='text-sm text-muted-foreground hover:text-foreground disabled:opacity-50'
+              className='text-muted-foreground hover:text-foreground text-sm disabled:opacity-50'
             >
               {t('spotify.refresh')}
             </button>
@@ -120,7 +124,9 @@ const TopSongsSection = () => {
         {/* Title and subtitle */}
         <div>
           <CardTitle className='text-base sm:text-lg'>{t('spotify.top-songs.title')}</CardTitle>
-          <CardDescription className='text-xs sm:text-sm'>{t('spotify.top-songs.subtitle')}</CardDescription>
+          <CardDescription className='text-xs sm:text-sm'>
+            {t('spotify.top-songs.subtitle')}
+          </CardDescription>
         </div>
         {/* Controls row beneath title, wraps on small screens */}
         <div className='mt-3 flex flex-wrap items-center gap-2'>
@@ -128,7 +134,7 @@ const TopSongsSection = () => {
           <button
             type='button'
             onClick={handleExportCsv}
-            className='px-2 py-1 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors'
+            className='text-muted-foreground hover:text-foreground hover:bg-muted rounded-md px-2 py-1 text-xs transition-colors'
             title={t('spotify.export.csv')}
           >
             CSV
@@ -136,7 +142,7 @@ const TopSongsSection = () => {
           <button
             type='button'
             onClick={handleExportJson}
-            className='px-2 py-1 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors'
+            className='text-muted-foreground hover:text-foreground hover:bg-muted rounded-md px-2 py-1 text-xs transition-colors'
             title={t('spotify.export.json')}
           >
             JSON
@@ -145,7 +151,7 @@ const TopSongsSection = () => {
             type='button'
             onClick={handleRefresh}
             disabled={isRefreshing}
-            className='text-sm text-muted-foreground hover:text-foreground disabled:opacity-50'
+            className='text-muted-foreground hover:text-foreground text-sm disabled:opacity-50'
           >
             {t('spotify.refresh')}
           </button>
@@ -157,9 +163,9 @@ const TopSongsSection = () => {
             <Link
               key={track.id}
               href={track.url}
-              className='group flex items-center space-x-4 rounded-lg p-2 transition-colors hover:bg-muted/50'
+              className='hover:bg-muted/50 group flex items-center space-x-4 rounded-lg p-2 transition-colors'
             >
-              <div className='flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg bg-muted text-sm font-medium text-muted-foreground'>
+              <div className='bg-muted text-muted-foreground flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg text-sm font-medium'>
                 {index + 1}
               </div>
 
@@ -167,7 +173,7 @@ const TopSongsSection = () => {
                 <SpotifyImage
                   src={track.albumImage}
                   alt={`${track.album} album cover`}
-                  fallbackIcon={<PlayIcon className='h-4 w-4 text-muted-foreground' />}
+                  fallbackIcon={<PlayIcon className='text-muted-foreground h-4 w-4' />}
                   width={48}
                   height={48}
                   sizes='48px'
@@ -175,19 +181,19 @@ const TopSongsSection = () => {
               </div>
 
               <div className='min-w-0 flex-1'>
-                <h3 className='truncate text-sm sm:text-base font-medium group-hover:text-primary'>
+                <h3 className='group-hover:text-primary truncate text-sm font-medium sm:text-base'>
                   {track.name}
                 </h3>
-                <p className='truncate text-xs sm:text-sm text-muted-foreground'>
+                <p className='text-muted-foreground truncate text-xs sm:text-sm'>
                   {track.artist} • {track.album}
                 </p>
               </div>
 
               <div className='flex-shrink-0 text-right'>
-                <p className='text-xs sm:text-sm text-muted-foreground'>
+                <p className='text-muted-foreground text-xs sm:text-sm'>
                   {formatDuration(track.duration)}
                 </p>
-                <p className='text-[10px] sm:text-xs text-muted-foreground'>
+                <p className='text-muted-foreground text-[10px] sm:text-xs'>
                   {track.popularity}% {t('spotify.listeners')}
                 </p>
               </div>

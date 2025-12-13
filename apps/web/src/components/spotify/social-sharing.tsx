@@ -51,7 +51,7 @@ const SocialSharing = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className='text-base sm:text-lg flex items-center gap-2'>
+        <CardTitle className='flex items-center gap-2 text-base sm:text-lg'>
           <Share2 className='h-5 w-5' />
           {t('spotify.social.title')}
         </CardTitle>
@@ -63,8 +63,10 @@ const SocialSharing = () => {
         {/* Currently Playing */}
         {currentTrack && (
           <div>
-            <h4 className='text-sm sm:text-base font-semibold mb-3'>{t('spotify.social.now-playing')}</h4>
-            <div className='flex items-center gap-3 p-3 rounded-lg bg-muted/50'>
+            <h4 className='mb-3 text-sm font-semibold sm:text-base'>
+              {t('spotify.social.now-playing')}
+            </h4>
+            <div className='bg-muted/50 flex items-center gap-3 rounded-lg p-3'>
               <div className='relative h-12 w-12 flex-shrink-0 overflow-hidden rounded-lg'>
                 <SpotifyImage
                   src={currentTrack.albumImage}
@@ -74,15 +76,17 @@ const SocialSharing = () => {
                   sizes='48px'
                 />
               </div>
-              <div className='flex-1 min-w-0'>
-                <h5 className='text-sm sm:text-base font-medium truncate'>{currentTrack.name}</h5>
-                <p className='text-xs sm:text-sm text-muted-foreground truncate'>{currentTrack.artist}</p>
+              <div className='min-w-0 flex-1'>
+                <h5 className='truncate text-sm font-medium sm:text-base'>{currentTrack.name}</h5>
+                <p className='text-muted-foreground truncate text-xs sm:text-sm'>
+                  {currentTrack.artist}
+                </p>
               </div>
               <div className='flex items-center gap-1'>
                 <button
                   type='button'
                   onClick={() => shareTrack(currentTrack, 'twitter')}
-                  className='p-2 hover:bg-muted rounded-lg transition-colors'
+                  className='hover:bg-muted rounded-lg p-2 transition-colors'
                   title={t('spotify.social.buttons.twitter')}
                 >
                   <Twitter className='h-4 w-4' />
@@ -90,7 +94,7 @@ const SocialSharing = () => {
                 <button
                   type='button'
                   onClick={() => shareTrack(currentTrack, 'facebook')}
-                  className='p-2 hover:bg-muted rounded-lg transition-colors'
+                  className='hover:bg-muted rounded-lg p-2 transition-colors'
                   title={t('spotify.social.buttons.facebook')}
                 >
                   <Facebook className='h-4 w-4' />
@@ -98,7 +102,7 @@ const SocialSharing = () => {
                 <button
                   type='button'
                   onClick={() => shareTrack(currentTrack, 'copy')}
-                  className='p-2 hover:bg-muted rounded-lg transition-colors'
+                  className='hover:bg-muted rounded-lg p-2 transition-colors'
                   title={t('spotify.social.buttons.copy')}
                 >
                   {copiedTrack === currentTrack.songUrl ? (
@@ -115,11 +119,16 @@ const SocialSharing = () => {
         {/* Featured Tracks */}
         {featuredTracks.length > 0 && (
           <div>
-            <h4 className='text-sm sm:text-base font-semibold mb-3'>{t('spotify.social.top-tracks')}</h4>
+            <h4 className='mb-3 text-sm font-semibold sm:text-base'>
+              {t('spotify.social.top-tracks')}
+            </h4>
             <div className='space-y-3'>
               {featuredTracks.map((track: any, index: number) => (
-                <div key={track.url ?? track.id ?? index} className='flex items-center gap-3 p-3 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors'>
-                  <div className='flex items-center justify-center w-6 h-6 rounded-full bg-primary text-primary-foreground text-xs font-medium'>
+                <div
+                  key={track.url ?? track.id ?? index}
+                  className='bg-muted/30 hover:bg-muted/50 flex items-center gap-3 rounded-lg p-3 transition-colors'
+                >
+                  <div className='bg-primary text-primary-foreground flex h-6 w-6 items-center justify-center rounded-full text-xs font-medium'>
                     {index + 1}
                   </div>
                   <div className='relative h-10 w-10 flex-shrink-0 overflow-hidden rounded-lg'>
@@ -131,15 +140,17 @@ const SocialSharing = () => {
                       sizes='40px'
                     />
                   </div>
-                  <div className='flex-1 min-w-0'>
-                    <h5 className='text-xs sm:text-sm font-medium truncate'>{track.name}</h5>
-                    <p className='text-[10px] sm:text-xs text-muted-foreground truncate'>{track.artist}</p>
+                  <div className='min-w-0 flex-1'>
+                    <h5 className='truncate text-xs font-medium sm:text-sm'>{track.name}</h5>
+                    <p className='text-muted-foreground truncate text-[10px] sm:text-xs'>
+                      {track.artist}
+                    </p>
                   </div>
                   <div className='flex items-center gap-1'>
                     <button
                       type='button'
                       onClick={() => shareTrack(track, 'twitter')}
-                      className='p-1.5 hover:bg-muted rounded-lg transition-colors'
+                      className='hover:bg-muted rounded-lg p-1.5 transition-colors'
                       title={t('spotify.social.buttons.twitter')}
                     >
                       <Twitter className='h-3 w-3' />
@@ -147,7 +158,7 @@ const SocialSharing = () => {
                     <button
                       type='button'
                       onClick={() => shareTrack(track, 'facebook')}
-                      className='p-1.5 hover:bg-muted rounded-lg transition-colors'
+                      className='hover:bg-muted rounded-lg p-1.5 transition-colors'
                       title={t('spotify.social.buttons.facebook')}
                     >
                       <Facebook className='h-3 w-3' />
@@ -155,7 +166,7 @@ const SocialSharing = () => {
                     <button
                       type='button'
                       onClick={() => shareTrack(track, 'copy')}
-                      className='p-1.5 hover:bg-muted rounded-lg transition-colors'
+                      className='hover:bg-muted rounded-lg p-1.5 transition-colors'
                       title={t('spotify.social.buttons.copy')}
                     >
                       {copiedTrack === track.url ? (
@@ -166,7 +177,7 @@ const SocialSharing = () => {
                     </button>
                     <Link
                       href={track.url}
-                      className='p-1.5 hover:bg-muted rounded-lg transition-colors'
+                      className='hover:bg-muted rounded-lg p-1.5 transition-colors'
                       title={t('spotify.social.buttons.open')}
                     >
                       <ExternalLink className='h-3 w-3' />
@@ -179,12 +190,14 @@ const SocialSharing = () => {
         )}
 
         {/* Share Profile */}
-        <div className='pt-4 border-t'>
-          <h4 className='text-sm sm:text-base font-semibold mb-3'>{t('spotify.social.profile.title')}</h4>
+        <div className='border-t pt-4'>
+          <h4 className='mb-3 text-sm font-semibold sm:text-base'>
+            {t('spotify.social.profile.title')}
+          </h4>
           <div className='flex justify-center'>
             <SocialShare
               title={t('spotify.social.profile.share-title')}
-              url="/spotify"
+              url='/spotify'
               description={t('spotify.social.profile.share-description')}
               hashtags={['music', 'spotify', 'nowplaying']}
               className='w-full'

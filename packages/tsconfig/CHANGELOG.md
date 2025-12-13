@@ -5,7 +5,6 @@
 ### Patch Changes
 
 - 61405bb: Upgrade dependencies
-
   - Upgrade next from `^15.1.3` to `^15.2.0`
 
 ## 0.0.10

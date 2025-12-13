@@ -26,22 +26,41 @@ import { adminProcedure, createTRPCRouter } from '../trpc'
 function getTimeRange(range: string): Date {
   const now = new Date()
   switch (range) {
-    case '1h': return new Date(now.getTime() - 60 * 60 * 1000)
-    case '6h': return new Date(now.getTime() - 6 * 60 * 60 * 1000)
-    case '24h': return new Date(now.getTime() - 24 * 60 * 60 * 1000)
-    case '7d': return new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000)
-    case '30d': return new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000)
-    default: return new Date(now.getTime() - 24 * 60 * 60 * 1000)
+    case '1h':
+      return new Date(now.getTime() - 60 * 60 * 1000)
+    case '6h':
+      return new Date(now.getTime() - 6 * 60 * 60 * 1000)
+    case '24h':
+      return new Date(now.getTime() - 24 * 60 * 60 * 1000)
+    case '7d':
+      return new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000)
+    case '30d':
+      return new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000)
+    default:
+      return new Date(now.getTime() - 24 * 60 * 60 * 1000)
   }
 }
 
 export const monitoringRouter = createTRPCRouter({
   // Performance Metrics
   getPerformanceMetrics: adminProcedure
-    .input(z.object({
-      timeRange: z.enum(['1h', '6h', '24h', '7d', '30d']).default('24h'),
-      metricType: z.enum(['response_time', 'throughput', 'error_rate', 'cpu_usage', 'memory_usage', 'disk_usage', 'network_io', 'database_connections']).optional()
-    }))
+    .input(
+      z.object({
+        timeRange: z.enum(['1h', '6h', '24h', '7d', '30d']).default('24h'),
+        metricType: z
+          .enum([
+            'response_time',
+            'throughput',
+            'error_rate',
+            'cpu_usage',
+            'memory_usage',
+            'disk_usage',
+            'network_io',
+            'database_connections'
+          ])
+          .optional()
+      })
+    )
     .query(async ({ ctx, input }) => {
       try {
         const startTime = getTimeRange(input.timeRange)
@@ -59,7 +78,7 @@ export const monitoringRouter = createTRPCRouter({
 
         // Group metrics by type and calculate aggregates
         const groupedMetrics: Record<string, any> = {}
-        metrics.forEach(metric => {
+        metrics.forEach((metric) => {
           if (!groupedMetrics[metric.metricName]) {
             groupedMetrics[metric.metricName] = {
               data: [],
@@ -89,9 +108,10 @@ export const monitoringRouter = createTRPCRouter({
         })
 
         // Calculate averages
-        Object.keys(groupedMetrics).forEach(type => {
+        Object.keys(groupedMetrics).forEach((type) => {
           const group = groupedMetrics[type]
-          group.avg = group.data.reduce((sum: number, item: any) => sum + item.value, 0) / group.data.length
+          group.avg =
+            group.data.reduce((sum: number, item: any) => sum + item.value, 0) / group.data.length
         })
 
         return {
@@ -109,12 +129,23 @@ export const monitoringRouter = createTRPCRouter({
     }),
 
   recordPerformanceMetric: adminProcedure
-    .input(z.object({
-      metricType: z.enum(['response_time', 'throughput', 'error_rate', 'cpu_usage', 'memory_usage', 'disk_usage', 'network_io', 'database_connections']),
-      value: z.number(),
-      unit: z.string().optional(),
-      tags: z.record(z.string(), z.string()).optional()
-    }))
+    .input(
+      z.object({
+        metricType: z.enum([
+          'response_time',
+          'throughput',
+          'error_rate',
+          'cpu_usage',
+          'memory_usage',
+          'disk_usage',
+          'network_io',
+          'database_connections'
+        ]),
+        value: z.number(),
+        unit: z.string().optional(),
+        tags: z.record(z.string(), z.string()).optional()
+      })
+    )
     .mutation(async ({ ctx, input }) => {
       try {
         const metricId = randomBytes(16).toString('hex')
@@ -140,11 +171,13 @@ export const monitoringRouter = createTRPCRouter({
 
   // Analytics Events
   getAnalyticsEvents: adminProcedure
-    .input(z.object({
-      timeRange: z.enum(['1h', '6h', '24h', '7d', '30d']).default('24h'),
-      eventType: z.string().optional(),
-      limit: z.number().min(1).max(1000).default(100)
-    }))
+    .input(
+      z.object({
+        timeRange: z.enum(['1h', '6h', '24h', '7d', '30d']).default('24h'),
+        eventType: z.string().optional(),
+        limit: z.number().min(1).max(1000).default(100)
+      })
+    )
     .query(async ({ ctx, input }) => {
       try {
         const startTime = getTimeRange(input.timeRange)
@@ -171,12 +204,12 @@ export const monitoringRouter = createTRPCRouter({
 
         // Get event type distribution
         const eventTypes: Record<string, number> = {}
-        events.forEach(event => {
+        events.forEach((event) => {
           eventTypes[event.eventType] = (eventTypes[event.eventType] || 0) + 1
         })
 
         return {
-          events: events.map(event => ({
+          events: events.map((event) => ({
             ...event,
             properties: event.properties ? JSON.parse(event.properties) : null
           })),
@@ -194,16 +227,23 @@ export const monitoringRouter = createTRPCRouter({
 
   // Resource Usage
   getResourceUsage: adminProcedure
-    .input(z.object({
-      timeRange: z.enum(['1h', '6h', '24h', '7d', '30d']).default('24h'),
-      resourceType: z.enum(['cpu', 'memory', 'disk', 'network', 'database_connections', 'cache_hit_rate']).optional()
-    }))
+    .input(
+      z.object({
+        timeRange: z.enum(['1h', '6h', '24h', '7d', '30d']).default('24h'),
+        resourceType: z
+          .enum(['cpu', 'memory', 'disk', 'network', 'database_connections', 'cache_hit_rate'])
+          .optional()
+      })
+    )
     .query(async ({ ctx, input }) => {
       try {
         const startTime = getTimeRange(input.timeRange)
         const resourceUsageData = await ctx.db.query.resourceUsage.findMany({
           where: input.resourceType
-            ? and(eq(resourceUsage.type, input.resourceType), gte(resourceUsage.createdAt, startTime))
+            ? and(
+                eq(resourceUsage.type, input.resourceType),
+                gte(resourceUsage.createdAt, startTime)
+              )
             : gte(resourceUsage.createdAt, startTime),
           orderBy: desc(resourceUsage.createdAt),
           limit: 1000
@@ -211,7 +251,7 @@ export const monitoringRouter = createTRPCRouter({
 
         // Group by resource type and calculate statistics
         const groupedUsage: Record<string, any> = {}
-        resourceUsageData.forEach(item => {
+        resourceUsageData.forEach((item) => {
           if (!groupedUsage[item.type]) {
             groupedUsage[item.type] = {
               data: [],
@@ -242,9 +282,10 @@ export const monitoringRouter = createTRPCRouter({
         })
 
         // Calculate averages
-        Object.keys(groupedUsage).forEach(type => {
+        Object.keys(groupedUsage).forEach((type) => {
           const group = groupedUsage[type]
-          group.avgUsage = group.data.reduce((sum: number, item: any) => sum + item.usage, 0) / group.data.length
+          group.avgUsage =
+            group.data.reduce((sum: number, item: any) => sum + item.usage, 0) / group.data.length
         })
 
         return {
@@ -262,11 +303,13 @@ export const monitoringRouter = createTRPCRouter({
 
   // API Usage Tracking
   getApiUsage: adminProcedure
-    .input(z.object({
-      timeRange: z.enum(['1h', '6h', '24h', '7d', '30d']).default('24h'),
-      endpoint: z.string().optional(),
-      method: z.enum(['GET', 'POST', 'PUT', 'DELETE', 'PATCH']).optional()
-    }))
+    .input(
+      z.object({
+        timeRange: z.enum(['1h', '6h', '24h', '7d', '30d']).default('24h'),
+        endpoint: z.string().optional(),
+        method: z.enum(['GET', 'POST', 'PUT', 'DELETE', 'PATCH']).optional()
+      })
+    )
     .query(async ({ ctx, input }) => {
       try {
         const startTime = getTimeRange(input.timeRange)
@@ -298,23 +341,24 @@ export const monitoringRouter = createTRPCRouter({
         // Calculate statistics
         const stats = {
           totalRequests: usage.length,
-          uniqueUsers: new Set(usage.map(u => u.userId).filter(Boolean)).size,
+          uniqueUsers: new Set(usage.map((u) => u.userId).filter(Boolean)).size,
           avgResponseTime: usage.reduce((sum, u) => sum + (u.responseTime || 0), 0) / usage.length,
-          errorRate: (usage.filter(u => u.statusCode >= 400).length / usage.length) * 100,
+          errorRate: (usage.filter((u) => u.statusCode >= 400).length / usage.length) * 100,
           topEndpoints: {} as Record<string, number>,
           statusCodes: {} as Record<string, number>
         }
 
         // Group by endpoint and status code
-        usage.forEach(item => {
+        usage.forEach((item) => {
           stats.topEndpoints[item.endpoint] = (stats.topEndpoints[item.endpoint] || 0) + 1
-          stats.statusCodes[item.statusCode.toString()] = (stats.statusCodes[item.statusCode.toString()] || 0) + 1
+          stats.statusCodes[item.statusCode.toString()] =
+            (stats.statusCodes[item.statusCode.toString()] || 0) + 1
         })
 
         return {
-          usage: usage.map(item => ({
+          usage: usage.map((item) => ({
             ...item,
-            headers: {}, // responseHeaders not stored in schema
+            headers: {} // responseHeaders not stored in schema
           })),
           stats,
           timeRange: input.timeRange
@@ -330,11 +374,13 @@ export const monitoringRouter = createTRPCRouter({
 
   // Query Performance
   getQueryPerformance: adminProcedure
-    .input(z.object({
-      timeRange: z.enum(['1h', '6h', '24h', '7d', '30d']).default('24h'),
-      slowQueriesOnly: z.boolean().default(false),
-      limit: z.number().min(1).max(100).default(50)
-    }))
+    .input(
+      z.object({
+        timeRange: z.enum(['1h', '6h', '24h', '7d', '30d']).default('24h'),
+        slowQueriesOnly: z.boolean().default(false),
+        limit: z.number().min(1).max(100).default(50)
+      })
+    )
     .query(async ({ ctx, input }) => {
       try {
         const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
@@ -355,11 +401,11 @@ export const monitoringRouter = createTRPCRouter({
         const stats = {
           totalQueries: queries.length,
           avgExecutionTime: queries.reduce((sum, q) => sum + q.executionTime, 0) / queries.length,
-          slowQueries: queries.filter(q => q.executionTime > 1000).length,
+          slowQueries: queries.filter((q) => q.executionTime > 1000).length,
           topSlowQueries: queries
-            .filter(q => q.executionTime > 1000)
+            .filter((q) => q.executionTime > 1000)
             .slice(0, 10)
-            .map(q => ({
+            .map((q) => ({
               query: q.queryType.slice(0, 100) + '...',
               executionTime: q.executionTime,
               timestamp: q.createdAt
@@ -367,7 +413,7 @@ export const monitoringRouter = createTRPCRouter({
         }
 
         return {
-          queries: queries.map(query => ({
+          queries: queries.map((query) => ({
             ...query,
             parameters: query.queryHash
           })),
@@ -385,12 +431,14 @@ export const monitoringRouter = createTRPCRouter({
 
   // Error Tracking
   getErrorTracking: adminProcedure
-    .input(z.object({
-      timeRange: z.enum(['1h', '6h', '24h', '7d', '30d']).default('24h'),
-      resolved: z.boolean().optional(),
-      errorType: z.enum(['javascript', 'server', 'database', 'network']).optional(),
-      limit: z.number().min(1).max(100).default(50)
-    }))
+    .input(
+      z.object({
+        timeRange: z.enum(['1h', '6h', '24h', '7d', '30d']).default('24h'),
+        resolved: z.boolean().optional(),
+        errorType: z.enum(['javascript', 'server', 'database', 'network']).optional(),
+        limit: z.number().min(1).max(100).default(50)
+      })
+    )
     .query(async ({ ctx, input }) => {
       try {
         const startTime = getTimeRange(input.timeRange)
@@ -421,14 +469,14 @@ export const monitoringRouter = createTRPCRouter({
 
         // Group by error type
         const errorTypeStats: Record<string, number> = {}
-        errors.forEach(error => {
+        errors.forEach((error) => {
           const errorType = error.errorType || 'unknown'
           errorTypeStats[errorType] = (errorTypeStats[errorType] || 0) + 1
         })
 
         // Group by fingerprint to show error frequency
         const errorGroups: Record<string, any> = {}
-        errors.forEach(error => {
+        errors.forEach((error) => {
           const fingerprint = error.fingerprint || 'unknown'
           if (!errorGroups[fingerprint]) {
             errorGroups[fingerprint] = {
@@ -455,7 +503,7 @@ export const monitoringRouter = createTRPCRouter({
         })
 
         return {
-          errors: errors.map(error => ({
+          errors: errors.map((error) => ({
             ...error,
             context: JSON.parse(error.breadcrumbs || '{}'),
             timestamp: error.firstSeen,
@@ -513,10 +561,12 @@ export const monitoringRouter = createTRPCRouter({
 
   // Alerts
   getAlerts: adminProcedure
-    .input(z.object({
-      active: z.boolean().optional(),
-      severity: z.enum(['info', 'warning', 'critical']).optional()
-    }))
+    .input(
+      z.object({
+        active: z.boolean().optional(),
+        severity: z.enum(['info', 'warning', 'critical']).optional()
+      })
+    )
     .query(async ({ ctx, input }) => {
       try {
         const conditions = []
@@ -544,10 +594,12 @@ export const monitoringRouter = createTRPCRouter({
         })
 
         return {
-          alerts: alertList.map(alert => ({
+          alerts: alertList.map((alert) => ({
             ...alert,
             conditions: alert.conditions ? JSON.parse(alert.conditions) : null,
-            notificationChannels: alert.notificationChannels ? JSON.parse(alert.notificationChannels) : []
+            notificationChannels: alert.notificationChannels
+              ? JSON.parse(alert.notificationChannels)
+              : []
           }))
         }
       } catch (error) {
@@ -560,11 +612,13 @@ export const monitoringRouter = createTRPCRouter({
     }),
 
   getAlertInstances: adminProcedure
-    .input(z.object({
-      alertId: z.string().optional(),
-      resolved: z.boolean().optional(),
-      timeRange: z.enum(['1h', '6h', '24h', '7d', '30d']).default('24h')
-    }))
+    .input(
+      z.object({
+        alertId: z.string().optional(),
+        resolved: z.boolean().optional(),
+        timeRange: z.enum(['1h', '6h', '24h', '7d', '30d']).default('24h')
+      })
+    )
     .query(async ({ ctx, input }) => {
       try {
         const startTime = getTimeRange(input.timeRange)
@@ -594,7 +648,7 @@ export const monitoringRouter = createTRPCRouter({
         })
 
         return {
-          instances: instances.map(instance => ({
+          instances: instances.map((instance) => ({
             ...instance,
             triggerData: instance.metadata ? JSON.parse(instance.metadata) : null
           }))
@@ -610,12 +664,14 @@ export const monitoringRouter = createTRPCRouter({
 
   // User Activity Tracking
   getUserActivity: adminProcedure
-    .input(z.object({
-      userId: z.string().optional(),
-      timeRange: z.enum(['1h', '6h', '24h', '7d', '30d']).default('24h'),
-      activityType: z.string().optional(),
-      limit: z.number().min(1).max(100).default(50)
-    }))
+    .input(
+      z.object({
+        userId: z.string().optional(),
+        timeRange: z.enum(['1h', '6h', '24h', '7d', '30d']).default('24h'),
+        activityType: z.string().optional(),
+        limit: z.number().min(1).max(100).default(50)
+      })
+    )
     .query(async ({ ctx, input }) => {
       try {
         const startTime = getTimeRange(input.timeRange)
@@ -647,12 +703,12 @@ export const monitoringRouter = createTRPCRouter({
         // Calculate activity statistics
         const stats = {
           totalActivities: activities.length,
-          uniqueUsers: new Set(activities.map(a => a.userId)).size,
+          uniqueUsers: new Set(activities.map((a) => a.userId)).size,
           activityTypes: {} as Record<string, number>,
           hourlyDistribution: {} as Record<string, number>
         }
 
-        activities.forEach(activity => {
+        activities.forEach((activity) => {
           stats.activityTypes[activity.action] = (stats.activityTypes[activity.action] || 0) + 1
 
           const hour = activity.createdAt.getHours()
@@ -660,7 +716,7 @@ export const monitoringRouter = createTRPCRouter({
         })
 
         return {
-          activities: activities.map(activity => ({
+          activities: activities.map((activity) => ({
             ...activity,
             metadata: activity.details ? JSON.parse(activity.details) : null
           })),
@@ -676,78 +732,87 @@ export const monitoringRouter = createTRPCRouter({
     }),
 
   // Monitoring Dashboard Stats
-  getMonitoringStats: adminProcedure
-    .query(async ({ ctx }) => {
-      try {
-        const now = new Date()
-        const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000)
+  getMonitoringStats: adminProcedure.query(async ({ ctx }) => {
+    try {
+      const now = new Date()
+      const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000)
 
-        // Get recent performance metrics
-        const recentMetrics = await ctx.db.query.performanceMetrics.findMany({
-          where: gte(performanceMetrics.createdAt, oneHourAgo),
-          columns: { id: true, metricName: true, value: true }
-        })
+      // Get recent performance metrics
+      const recentMetrics = await ctx.db.query.performanceMetrics.findMany({
+        where: gte(performanceMetrics.createdAt, oneHourAgo),
+        columns: { id: true, metricName: true, value: true }
+      })
 
-        // Get recent errors
-        const recentErrors = await ctx.db.query.errorTracking.findMany({
-          where: gte(errorTracking.firstSeen, oneHourAgo),
-          columns: { id: true, errorType: true, resolved: true }
-        })
+      // Get recent errors
+      const recentErrors = await ctx.db.query.errorTracking.findMany({
+        where: gte(errorTracking.firstSeen, oneHourAgo),
+        columns: { id: true, errorType: true, resolved: true }
+      })
 
-        // Get active alerts
-        const activeAlerts = await ctx.db.query.alerts.findMany({
-          where: eq(alerts.isActive, true),
-          columns: { id: true, severity: true }
-        })
+      // Get active alerts
+      const activeAlerts = await ctx.db.query.alerts.findMany({
+        where: eq(alerts.isActive, true),
+        columns: { id: true, severity: true }
+      })
 
-        // Get recent API usage
-        const recentApiCalls = await ctx.db.query.apiUsage.findMany({
-          where: gte(apiUsage.createdAt, oneHourAgo),
-          columns: { id: true, statusCode: true, responseTime: true }
-        })
+      // Get recent API usage
+      const recentApiCalls = await ctx.db.query.apiUsage.findMany({
+        where: gte(apiUsage.createdAt, oneHourAgo),
+        columns: { id: true, statusCode: true, responseTime: true }
+      })
 
-        const totalErrors = recentErrors.length
-        const resolvedErrors = recentErrors.filter(e => e.resolved).length
-        const serverErrors = recentErrors.filter(e => e.errorType === 'server').length
+      const totalErrors = recentErrors.length
+      const resolvedErrors = recentErrors.filter((e) => e.resolved).length
+      const serverErrors = recentErrors.filter((e) => e.errorType === 'server').length
 
-        return {
-          performance: {
-            totalMetrics: recentMetrics.length,
-            avgResponseTime: recentMetrics.filter(m => m.metricName === 'response_time')
+      return {
+        performance: {
+          totalMetrics: recentMetrics.length,
+          avgResponseTime:
+            recentMetrics
+              .filter((m) => m.metricName === 'response_time')
               .reduce((sum, m) => sum + m.value, 0) /
-              Math.max(recentMetrics.filter(m => m.metricName === 'response_time').length, 1),
-            throughput: recentMetrics.filter(m => m.metricName === 'throughput')
+            Math.max(recentMetrics.filter((m) => m.metricName === 'response_time').length, 1),
+          throughput:
+            recentMetrics
+              .filter((m) => m.metricName === 'throughput')
               .reduce((sum, m) => sum + m.value, 0) /
-              Math.max(recentMetrics.filter(m => m.metricName === 'throughput').length, 1)
-          },
-          errors: {
-            total: totalErrors,
-            unresolved: totalErrors - resolvedErrors,
-            javascript: recentErrors.filter(e => e.errorType === 'javascript').length,
-            database: recentErrors.filter(e => e.errorType === 'database').length,
-            server: serverErrors
-          },
-          alerts: {
-            total: activeAlerts.length,
-            critical: activeAlerts.filter(a => a.severity === 'critical').length,
-            warning: activeAlerts.filter(a => a.severity === 'warning').length
-          },
-          api: {
-            totalRequests: recentApiCalls.length,
-            errorRate: recentApiCalls.length > 0 ?
-              (recentApiCalls.filter(u => u.statusCode >= 400).length / recentApiCalls.length) * 100 : 0,
-            avgResponseTime: recentApiCalls.length > 0 ?
-              recentApiCalls.reduce((sum, u) => sum + (u.responseTime || 0), 0) / recentApiCalls.length : 0
-          }
-        }
-      } catch (error) {
-        logger.error('Error fetching monitoring stats', error)
-        return {
-          performance: { totalMetrics: 0, avgResponseTime: 0 },
-          errors: { total: 0, unresolved: 0, critical: 0, high: 0 },
-          alerts: { total: 0, critical: 0, high: 0 },
-          api: { totalRequests: 0, errorRate: 0, avgResponseTime: 0 }
+            Math.max(recentMetrics.filter((m) => m.metricName === 'throughput').length, 1)
+        },
+        errors: {
+          total: totalErrors,
+          unresolved: totalErrors - resolvedErrors,
+          javascript: recentErrors.filter((e) => e.errorType === 'javascript').length,
+          database: recentErrors.filter((e) => e.errorType === 'database').length,
+          server: serverErrors
+        },
+        alerts: {
+          total: activeAlerts.length,
+          critical: activeAlerts.filter((a) => a.severity === 'critical').length,
+          warning: activeAlerts.filter((a) => a.severity === 'warning').length
+        },
+        api: {
+          totalRequests: recentApiCalls.length,
+          errorRate:
+            recentApiCalls.length > 0
+              ? (recentApiCalls.filter((u) => u.statusCode >= 400).length / recentApiCalls.length) *
+                100
+              : 0,
+          avgResponseTime:
+            recentApiCalls.length > 0
+              ? recentApiCalls.reduce((sum, u) => sum + (u.responseTime || 0), 0) /
+                recentApiCalls.length
+              : 0
         }
       }
-    })
+    } catch (error) {
+      logger.error('Error fetching monitoring stats', error)
+      return {
+        performance: { totalMetrics: 0, avgResponseTime: 0 },
+        errors: { total: 0, unresolved: 0, critical: 0, high: 0 },
+        alerts: { total: 0, critical: 0, high: 0 },
+        api: { totalRequests: 0, errorRate: 0, avgResponseTime: 0 }
+      }
+    }
+  })
 })

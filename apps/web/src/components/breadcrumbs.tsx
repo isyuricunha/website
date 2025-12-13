@@ -55,18 +55,18 @@ const Breadcrumbs = () => {
         break
       default:
         // Capitalize and format segment
-        label = segment.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())
+        label = segment.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase())
     }
 
     breadcrumbItems.push({
       label,
-      href: currentPath,
+      href: currentPath
     })
   })
 
   return (
-    <nav aria-label="Breadcrumb" className='mb-4'>
-      <ol className='flex items-center space-x-2 text-xs sm:text-sm text-muted-foreground'>
+    <nav aria-label='Breadcrumb' className='mb-4'>
+      <ol className='text-muted-foreground flex items-center space-x-2 text-xs sm:text-sm'>
         {breadcrumbItems.map((item, index) => {
           const isLast = index === breadcrumbItems.length - 1
 
@@ -74,14 +74,14 @@ const Breadcrumbs = () => {
             <Fragment key={item.href}>
               <li className='flex items-center'>
                 {isLast ? (
-                  <span className='flex items-center gap-1 text-foreground font-medium'>
+                  <span className='text-foreground flex items-center gap-1 font-medium'>
                     {item.icon}
                     {item.label}
                   </span>
                 ) : (
                   <Link
                     href={item.href}
-                    className='flex items-center gap-1 hover:text-foreground transition-colors'
+                    className='hover:text-foreground flex items-center gap-1 transition-colors'
                   >
                     {item.icon}
                     {item.label}

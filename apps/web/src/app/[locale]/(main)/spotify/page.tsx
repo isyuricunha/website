@@ -15,10 +15,7 @@ import GenreDistribution from '@/components/spotify/genre-distribution'
 import ListeningHeatmap from '@/components/spotify/listening-heatmap'
 import LocalHistoryImport from '@/components/spotify/local-history-import'
 import PageTitle from '@/components/page-title'
-import {
-  SITE_NAME,
-  SITE_URL
-} from '@/lib/constants'
+import { SITE_NAME, SITE_URL } from '@/lib/constants'
 import { getLocalizedPath } from '@/utils/get-localized-path'
 
 type PageProps = {
@@ -102,18 +99,17 @@ const Page = async (props: PageProps) => {
 
         <MusicTasteAnalysis />
 
-        <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
+        <div className='grid grid-cols-1 gap-8 lg:grid-cols-2'>
           <TopArtistsSection />
           <TopSongsSection />
         </div>
 
-
-        <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
+        <div className='grid grid-cols-1 gap-8 lg:grid-cols-2'>
           <GenreDistribution />
           <ListeningHeatmap />
         </div>
 
-        <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
+        <div className='grid grid-cols-1 gap-8 lg:grid-cols-2'>
           <RecentlyPlayedSection />
           <MusicTimeline />
         </div>

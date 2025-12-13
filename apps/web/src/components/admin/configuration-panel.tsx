@@ -46,7 +46,9 @@ export const ConfigurationPanel = () => {
   const edit_textarea_ref = useRef<HTMLTextAreaElement | null>(null)
   const [newConfigKey, setNewConfigKey] = useState('')
   const [newConfigValue, setNewConfigValue] = useState('')
-  const [newConfigType, setNewConfigType] = useState<'general' | 'seo' | 'social' | 'email' | 'analytics' | 'security' | 'features'>('general')
+  const [newConfigType, setNewConfigType] = useState<
+    'general' | 'seo' | 'social' | 'email' | 'analytics' | 'security' | 'features'
+  >('general')
   const [newConfigDescription, setNewConfigDescription] = useState('')
   const [newConfigIsPublic, setNewConfigIsPublic] = useState(false)
   const [showAddForm, setShowAddForm] = useState(false)
@@ -109,21 +111,21 @@ export const ConfigurationPanel = () => {
   const getTypeIcon = (type: string) => {
     switch (type) {
       case 'general':
-        return <Settings className="w-5 h-5 text-gray-500" />
+        return <Settings className='h-5 w-5 text-gray-500' />
       case 'seo':
-        return <Search className="w-5 h-5 text-green-500" />
+        return <Search className='h-5 w-5 text-green-500' />
       case 'social':
-        return <Globe className="w-5 h-5 text-blue-500" />
+        return <Globe className='h-5 w-5 text-blue-500' />
       case 'email':
-        return <Mail className="w-5 h-5 text-purple-500" />
+        return <Mail className='h-5 w-5 text-purple-500' />
       case 'analytics':
-        return <BarChart3 className="w-5 h-5 text-orange-500" />
+        return <BarChart3 className='h-5 w-5 text-orange-500' />
       case 'security':
-        return <Shield className="w-5 h-5 text-red-500" />
+        return <Shield className='h-5 w-5 text-red-500' />
       case 'features':
-        return <Zap className="w-5 h-5 text-yellow-500" />
+        return <Zap className='h-5 w-5 text-yellow-500' />
       default:
-        return <Settings className="w-5 h-5 text-gray-500" />
+        return <Settings className='h-5 w-5 text-gray-500' />
     }
   }
 
@@ -164,11 +166,12 @@ export const ConfigurationPanel = () => {
     Object.entries(configData.config).forEach(([type, configs]) => {
       if (selectedType && type !== selectedType) return
 
-      const filtered = configs.filter(config =>
-        !searchTerm ||
-        config.key.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        config.value?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        config.description?.toLowerCase().includes(searchTerm.toLowerCase())
+      const filtered = configs.filter(
+        (config) =>
+          !searchTerm ||
+          config.key.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          config.value?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          config.description?.toLowerCase().includes(searchTerm.toLowerCase())
       )
 
       if (filtered.length > 0) {
@@ -179,12 +182,12 @@ export const ConfigurationPanel = () => {
 
   if (isLoading) {
     return (
-      <div className="space-y-6">
-        <div className="animate-pulse">
-          <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-1/4 mb-4"></div>
-          <div className="space-y-3">
+      <div className='space-y-6'>
+        <div className='animate-pulse'>
+          <div className='mb-4 h-8 w-1/4 rounded bg-gray-200 dark:bg-gray-700'></div>
+          <div className='space-y-3'>
             {Array.from({ length: 5 }).map((_, i) => (
-              <div key={i} className="h-20 bg-gray-200 dark:bg-gray-700 rounded"></div>
+              <div key={i} className='h-20 rounded bg-gray-200 dark:bg-gray-700'></div>
             ))}
           </div>
         </div>
@@ -193,37 +196,37 @@ export const ConfigurationPanel = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className='space-y-6'>
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className='flex items-center justify-between'>
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Configuration</h1>
-          <p className="text-gray-600 dark:text-gray-400">Manage site settings and configuration</p>
+          <h1 className='text-2xl font-bold text-gray-900 dark:text-white'>Configuration</h1>
+          <p className='text-gray-600 dark:text-gray-400'>Manage site settings and configuration</p>
         </div>
-        <div className="flex items-center gap-2">
-          <Button onClick={() => setShowAddForm(true)} className="flex items-center gap-2">
-            <Plus className="w-4 h-4" />
+        <div className='flex items-center gap-2'>
+          <Button onClick={() => setShowAddForm(true)} className='flex items-center gap-2'>
+            <Plus className='h-4 w-4' />
             Add Setting
           </Button>
-          <Button onClick={() => refetch()} variant="outline" size="sm">
-            <RefreshCw className="w-4 h-4 mr-2" />
+          <Button onClick={() => refetch()} variant='outline' size='sm'>
+            <RefreshCw className='mr-2 h-4 w-4' />
             Refresh
           </Button>
         </div>
       </div>
 
       {/* Filters */}
-      <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
-        <div className="flex flex-col sm:flex-row gap-4">
-          <div className="flex-1">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+      <div className='rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800'>
+        <div className='flex flex-col gap-4 sm:flex-row'>
+          <div className='flex-1'>
+            <div className='relative'>
+              <Search className='absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-gray-400' />
               <input
-                type="text"
-                placeholder="Search configuration..."
+                type='text'
+                placeholder='Search configuration...'
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className='w-full rounded-md border border-gray-300 bg-white py-2 pl-10 pr-4 text-gray-900 focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white'
               />
             </div>
           </div>
@@ -231,109 +234,105 @@ export const ConfigurationPanel = () => {
           <select
             value={selectedType}
             onChange={(e) => setSelectedType(e.target.value)}
-            className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className='rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white'
           >
-            <option value="">All Categories</option>
-            <option value="general">General</option>
-            <option value="seo">SEO</option>
-            <option value="social">Social</option>
-            <option value="email">Email</option>
-            <option value="analytics">Analytics</option>
-            <option value="security">Security</option>
-            <option value="features">Features</option>
+            <option value=''>All Categories</option>
+            <option value='general'>General</option>
+            <option value='seo'>SEO</option>
+            <option value='social'>Social</option>
+            <option value='email'>Email</option>
+            <option value='analytics'>Analytics</option>
+            <option value='security'>Security</option>
+            <option value='features'>Features</option>
           </select>
         </div>
       </div>
 
       {/* Add New Configuration Form */}
       {showAddForm && (
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
-          <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Add New Configuration</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className='rounded-lg border border-gray-200 bg-white p-6 dark:border-gray-700 dark:bg-gray-800'>
+          <h3 className='mb-4 text-lg font-medium text-gray-900 dark:text-white'>
+            Add New Configuration
+          </h3>
+          <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className='mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300'>
                 Key
               </label>
               <input
-                type="text"
+                type='text'
                 value={newConfigKey}
                 onChange={(e) => setNewConfigKey(e.target.value)}
-                placeholder="config_key"
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder='config_key'
+                className='w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white'
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className='mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300'>
                 Value
               </label>
               <input
-                type="text"
+                type='text'
                 value={newConfigValue}
                 onChange={(e) => setNewConfigValue(e.target.value)}
-                placeholder="Configuration value"
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder='Configuration value'
+                className='w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white'
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className='mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300'>
                 Category
               </label>
               <select
                 value={newConfigType}
                 onChange={(e) => setNewConfigType(e.target.value as any)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className='w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white'
               >
-                <option value="general">General</option>
-                <option value="seo">SEO</option>
-                <option value="social">Social</option>
-                <option value="email">Email</option>
-                <option value="analytics">Analytics</option>
-                <option value="security">Security</option>
-                <option value="features">Features</option>
+                <option value='general'>General</option>
+                <option value='seo'>SEO</option>
+                <option value='social'>Social</option>
+                <option value='email'>Email</option>
+                <option value='analytics'>Analytics</option>
+                <option value='security'>Security</option>
+                <option value='features'>Features</option>
               </select>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className='mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300'>
                 Description
               </label>
               <input
-                type="text"
+                type='text'
                 value={newConfigDescription}
                 onChange={(e) => setNewConfigDescription(e.target.value)}
-                placeholder="Optional description"
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder='Optional description'
+                className='w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white'
               />
             </div>
           </div>
 
-          <div className="mt-4">
-            <label className="flex items-center gap-2">
+          <div className='mt-4'>
+            <label className='flex items-center gap-2'>
               <input
-                type="checkbox"
+                type='checkbox'
                 checked={newConfigIsPublic}
                 onChange={(e) => setNewConfigIsPublic(e.target.checked)}
-                className="rounded border-gray-300 dark:border-gray-600"
+                className='rounded border-gray-300 dark:border-gray-600'
               />
-              <span className="text-sm text-gray-700 dark:text-gray-300">
+              <span className='text-sm text-gray-700 dark:text-gray-300'>
                 Public (accessible by non-admin users)
               </span>
             </label>
           </div>
 
-          <div className="flex justify-end gap-2 mt-6">
-            <Button
-              variant="outline"
-              onClick={() => setShowAddForm(false)}
-            >
+          <div className='mt-6 flex justify-end gap-2'>
+            <Button variant='outline' onClick={() => setShowAddForm(false)}>
               Cancel
             </Button>
-            <Button
-              onClick={handleAddConfig}
-              disabled={updateConfig.isPending}
-            >
+            <Button onClick={handleAddConfig} disabled={updateConfig.isPending}>
               Add Configuration
             </Button>
           </div>
@@ -342,37 +341,42 @@ export const ConfigurationPanel = () => {
 
       {/* Configuration Groups */}
       {Object.entries(filteredConfig).map(([type, configs]) => (
-        <div key={type} className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
-          <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-            <div className="flex items-center gap-3">
+        <div
+          key={type}
+          className='rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800'
+        >
+          <div className='border-b border-gray-200 px-6 py-4 dark:border-gray-700'>
+            <div className='flex items-center gap-3'>
               {getTypeIcon(type)}
-              <h3 className="text-lg font-medium text-gray-900 dark:text-white capitalize">
+              <h3 className='text-lg font-medium capitalize text-gray-900 dark:text-white'>
                 {type} Settings
               </h3>
-              <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getTypeColor(type)}`}>
+              <span
+                className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${getTypeColor(type)}`}
+              >
                 {configs.length} items
               </span>
             </div>
           </div>
 
-          <div className="divide-y divide-gray-200 dark:divide-gray-700">
+          <div className='divide-y divide-gray-200 dark:divide-gray-700'>
             {configs.map((config) => (
-              <div key={config.id} className="p-6">
-                <div className="flex items-start justify-between">
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-2">
-                      <h4 className="text-sm font-medium text-gray-900 dark:text-white">
+              <div key={config.id} className='p-6'>
+                <div className='flex items-start justify-between'>
+                  <div className='min-w-0 flex-1'>
+                    <div className='mb-2 flex items-center gap-2'>
+                      <h4 className='text-sm font-medium text-gray-900 dark:text-white'>
                         {config.key}
                       </h4>
                       {config.isPublic ? (
-                        <Eye className="w-4 h-4 text-green-500" />
+                        <Eye className='h-4 w-4 text-green-500' />
                       ) : (
-                        <EyeOff className="w-4 h-4 text-gray-400" />
+                        <EyeOff className='h-4 w-4 text-gray-400' />
                       )}
                     </div>
 
                     {editingConfig?.id === config.id ? (
-                      <div className="space-y-3">
+                      <div className='space-y-3'>
                         <textarea
                           ref={edit_textarea_ref}
                           defaultValue={config.value || ''}
@@ -391,16 +395,16 @@ export const ConfigurationPanel = () => {
                               setEditingConfig(null)
                             }
                           }}
-                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                          className='w-full resize-none rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white'
                           rows={3}
                         />
-                        <div className="text-xs text-gray-500 dark:text-gray-400">
+                        <div className='text-xs text-gray-500 dark:text-gray-400'>
                           Press Enter to save, Escape to cancel
                         </div>
                       </div>
                     ) : (
                       <div
-                        className="text-sm text-gray-600 dark:text-gray-400 cursor-pointer hover:text-gray-900 dark:hover:text-white"
+                        className='cursor-pointer text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white'
                         onClick={() => setEditingConfig(config)}
                       >
                         {config.value || <em>No value set</em>}
@@ -408,24 +412,24 @@ export const ConfigurationPanel = () => {
                     )}
 
                     {config.description && (
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                      <p className='mt-1 text-xs text-gray-500 dark:text-gray-400'>
                         {config.description}
                       </p>
                     )}
 
-                    <div className="text-xs text-gray-400 mt-2">
+                    <div className='mt-2 text-xs text-gray-400'>
                       Updated by {config.updatedBy.name} on {formatDate(config.updatedAt)}
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2 ml-4">
+                  <div className='ml-4 flex items-center gap-2'>
                     <Button
-                      size="sm"
-                      variant="outline"
+                      size='sm'
+                      variant='outline'
                       onClick={() => setEditingConfig(config)}
                       disabled={editingConfig?.id === config.id}
                     >
-                      <Edit className="w-4 h-4" />
+                      <Edit className='h-4 w-4' />
                     </Button>
                   </div>
                 </div>
@@ -437,16 +441,20 @@ export const ConfigurationPanel = () => {
 
       {/* Empty State */}
       {Object.keys(filteredConfig).length === 0 && (
-        <div className="text-center py-12">
-          <Settings className="mx-auto h-12 w-12 text-gray-400" />
-          <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-white">No configuration found</h3>
-          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-            {searchTerm || selectedType ? 'Try adjusting your filters.' : 'Get started by adding your first configuration setting.'}
+        <div className='py-12 text-center'>
+          <Settings className='mx-auto h-12 w-12 text-gray-400' />
+          <h3 className='mt-2 text-sm font-medium text-gray-900 dark:text-white'>
+            No configuration found
+          </h3>
+          <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
+            {searchTerm || selectedType
+              ? 'Try adjusting your filters.'
+              : 'Get started by adding your first configuration setting.'}
           </p>
           {!searchTerm && !selectedType && (
-            <div className="mt-6">
+            <div className='mt-6'>
               <Button onClick={() => setShowAddForm(true)}>
-                <Plus className="w-4 h-4 mr-2" />
+                <Plus className='mr-2 h-4 w-4' />
                 Add Setting
               </Button>
             </div>

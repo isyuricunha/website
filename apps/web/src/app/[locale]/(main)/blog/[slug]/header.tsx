@@ -84,7 +84,7 @@ const Header = () => {
             ) : null}
           </div>
         </div>
-        
+
         <div className='flex justify-center'>
           <SocialShare
             title={title}

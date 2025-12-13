@@ -12,13 +12,7 @@ import SelectedProjects from '@/components/home/selected-projects'
 import AnnouncementBanner from '@/components/announcement-banner'
 import RecentlyUpdated from '@/components/recently-updated'
 import NewsletterSignup from '@/components/newsletter-signup'
-import {
-  SITE_GITHUB_URL,
-  SITE_KEYWORDS,
-  SITE_NAME,
-  SITE_URL,
-  SITE_X_URL
-} from '@/lib/constants'
+import { SITE_GITHUB_URL, SITE_KEYWORDS, SITE_NAME, SITE_URL, SITE_X_URL } from '@/lib/constants'
 import { getLocalizedPath } from '@/utils/get-localized-path'
 
 type PageProps = {
@@ -78,19 +72,19 @@ const Page = async (props: PageProps) => {
         type='application/ld+json'
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <div className="mb-6">
+      <div className='mb-6'>
         <AnnouncementBanner />
       </div>
       <Hero />
       <SelectedProjects />
       <AboutMe />
       <LatestArticles />
-      
-      <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16'>
+
+      <div className='mb-16 grid grid-cols-1 gap-8 lg:grid-cols-2'>
         <RecentlyUpdated />
         <NewsletterSignup />
       </div>
-      
+
       <GetInTouch />
     </>
   )

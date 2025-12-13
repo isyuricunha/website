@@ -3,8 +3,25 @@
 import type { Post } from 'content-collections'
 
 import { useLocale, useTranslations } from '@tszhong0411/i18n/client'
-import { Input, Label, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@tszhong0411/ui'
-import { SearchIcon, SlidersHorizontal, Clock, Calendar, Star, Rss, ChevronLeft, ChevronRight } from 'lucide-react'
+import {
+  Input,
+  Label,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@tszhong0411/ui'
+import {
+  SearchIcon,
+  SlidersHorizontal,
+  Clock,
+  Calendar,
+  Star,
+  Rss,
+  ChevronLeft,
+  ChevronRight
+} from 'lucide-react'
 import { useState, useMemo, useEffect } from 'react'
 import { debounce } from '@/lib/performance'
 
@@ -51,9 +68,9 @@ const FilteredPosts = (props: FilteredPostsProps) => {
     const categorySet = new Set<string>()
     const tagSet = new Set<string>()
 
-    posts.forEach(post => {
+    posts.forEach((post) => {
       if (post.category) categorySet.add(post.category)
-      if (post.tags) post.tags.forEach(tag => tagSet.add(tag))
+      if (post.tags) post.tags.forEach((tag) => tagSet.add(tag))
     })
 
     return {
@@ -64,7 +81,8 @@ const FilteredPosts = (props: FilteredPostsProps) => {
 
   const filteredAndSortedPosts = useMemo(() => {
     const filtered = posts.filter((post) => {
-      const matchesSearch = debouncedSearchValue === '' ||
+      const matchesSearch =
+        debouncedSearchValue === '' ||
         post.title.toLowerCase().includes(debouncedSearchValue.toLowerCase()) ||
         post.summary.toLowerCase().includes(debouncedSearchValue.toLowerCase())
       const matchesCategory = selectedCategory === 'all' || post.category === selectedCategory
@@ -104,11 +122,11 @@ const FilteredPosts = (props: FilteredPostsProps) => {
 
   // Separate featured and regular posts
   const featuredPosts = useMemo(() => {
-    return filteredAndSortedPosts.filter(post => post.featured)
+    return filteredAndSortedPosts.filter((post) => post.featured)
   }, [filteredAndSortedPosts])
 
   const regularPosts = useMemo(() => {
-    return filteredAndSortedPosts.filter(post => !post.featured)
+    return filteredAndSortedPosts.filter((post) => !post.featured)
   }, [filteredAndSortedPosts])
 
   // Pagination for regular posts
@@ -129,7 +147,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
       <div className='mb-6 flex justify-end px-4 sm:px-0'>
         <Link
           href={`/${locale}/rss.xml`}
-          className='inline-flex items-center gap-2 text-xs sm:text-sm text-muted-foreground hover:text-foreground transition-colors px-3 py-2 rounded-2xl hover:bg-accent'
+          className='text-muted-foreground hover:text-foreground hover:bg-accent inline-flex items-center gap-2 rounded-2xl px-3 py-2 text-xs transition-colors sm:text-sm'
         >
           <Rss className='h-4 w-4' />
           {t('component.filtered-posts.rss')}
@@ -138,16 +156,18 @@ const FilteredPosts = (props: FilteredPostsProps) => {
 
       {/* Featured Posts Section */}
       {featuredPosts.length > 0 && (
-        <div className='mb-8 sm:mb-12 px-4 sm:px-0'>
-          <div className='flex items-center gap-2 mb-6'>
+        <div className='mb-8 px-4 sm:mb-12 sm:px-0'>
+          <div className='mb-6 flex items-center gap-2'>
             <Star className='h-5 w-5 text-yellow-500' />
-            <h2 className='text-lg sm:text-xl font-semibold'>{t('component.filtered-posts.featured')}</h2>
+            <h2 className='text-lg font-semibold sm:text-xl'>
+              {t('component.filtered-posts.featured')}
+            </h2>
           </div>
           <PostCards posts={featuredPosts} />
         </div>
       )}
 
-      <div className='mb-6 sm:mb-8 space-y-4 px-4 sm:px-0'>
+      <div className='mb-6 space-y-4 px-4 sm:mb-8 sm:px-0'>
         {/* Search Bar */}
         <div className='relative'>
           <Input
@@ -156,20 +176,20 @@ const FilteredPosts = (props: FilteredPostsProps) => {
             onChange={(e) => setSearchValue(e.target.value)}
             placeholder={t('component.filtered-posts.placeholder')}
             aria-label={t('component.filtered-posts.placeholder')}
-            className='w-full pl-10 sm:pl-12 h-11 sm:h-12 text-sm border-2 focus:border-primary/50 transition-colors'
+            className='focus:border-primary/50 h-11 w-full border-2 pl-10 text-sm transition-colors sm:h-12 sm:pl-12'
             id='search'
           />
           <Label htmlFor='search'>
-            <SearchIcon className='absolute left-3 sm:left-4 top-1/2 size-4 sm:size-5 -translate-y-1/2 text-muted-foreground' />
+            <SearchIcon className='text-muted-foreground absolute left-3 top-1/2 size-4 -translate-y-1/2 sm:left-4 sm:size-5' />
           </Label>
         </div>
 
         {/* Filter Toggle */}
-        <div className='flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0'>
+        <div className='flex flex-col justify-between gap-3 sm:flex-row sm:items-center sm:gap-0'>
           <button
             type='button'
             onClick={() => setShowFilters(!showFilters)}
-            className='flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors min-h-[44px] px-3 py-2 rounded-2xl hover:bg-accent self-start'
+            className='text-muted-foreground hover:text-foreground hover:bg-accent flex min-h-[44px] items-center gap-2 self-start rounded-2xl px-3 py-2 text-sm transition-colors'
           >
             <SlidersHorizontal className='h-4 w-4 flex-shrink-0' />
             <span className='text-sm'>
@@ -180,12 +200,12 @@ const FilteredPosts = (props: FilteredPostsProps) => {
           </button>
 
           {/* Sort Dropdown */}
-          <div className='flex flex-col sm:flex-row sm:items-center gap-2'>
-            <span className='text-xs sm:text-sm text-muted-foreground whitespace-nowrap'>
+          <div className='flex flex-col gap-2 sm:flex-row sm:items-center'>
+            <span className='text-muted-foreground whitespace-nowrap text-xs sm:text-sm'>
               {t('component.filtered-posts.sort.label')}
             </span>
             <Select value={sortBy} onValueChange={(value: SortOption) => setSortBy(value)}>
-              <SelectTrigger className='w-full sm:w-40 min-h-[44px]'>
+              <SelectTrigger className='min-h-[44px] w-full sm:w-40'>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -201,8 +221,12 @@ const FilteredPosts = (props: FilteredPostsProps) => {
                     {t('component.filtered-posts.sort.options.date-asc')}
                   </div>
                 </SelectItem>
-                <SelectItem value='title-asc'>{t('component.filtered-posts.sort.options.title-asc')}</SelectItem>
-                <SelectItem value='title-desc'>{t('component.filtered-posts.sort.options.title-desc')}</SelectItem>
+                <SelectItem value='title-asc'>
+                  {t('component.filtered-posts.sort.options.title-asc')}
+                </SelectItem>
+                <SelectItem value='title-desc'>
+                  {t('component.filtered-posts.sort.options.title-desc')}
+                </SelectItem>
                 <SelectItem value='reading-time'>
                   <div className='flex items-center gap-2'>
                     <Clock className='h-4 w-4' />
@@ -216,11 +240,11 @@ const FilteredPosts = (props: FilteredPostsProps) => {
 
         {/* Advanced Filters */}
         {showFilters && (
-          <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 border rounded-2xl bg-muted/20'>
+          <div className='bg-muted/20 grid grid-cols-1 gap-4 rounded-2xl border p-4 sm:grid-cols-2'>
             {/* Category Filter */}
             {categories.length > 0 && (
               <div>
-                <Label className='text-xs sm:text-sm font-medium mb-2 block'>
+                <Label className='mb-2 block text-xs font-medium sm:text-sm'>
                   {t('component.filtered-posts.filters.category.label')}
                 </Label>
                 <Select value={selectedCategory} onValueChange={setSelectedCategory}>
@@ -231,7 +255,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
                     <SelectItem value='all'>
                       {t('component.filtered-posts.filters.category.all')}
                     </SelectItem>
-                    {categories.map(category => (
+                    {categories.map((category) => (
                       <SelectItem key={category} value={category}>
                         {category}
                       </SelectItem>
@@ -244,7 +268,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
             {/* Tag Filter */}
             {tags.length > 0 && (
               <div>
-                <Label className='text-xs sm:text-sm font-medium mb-2 block'>
+                <Label className='mb-2 block text-xs font-medium sm:text-sm'>
                   {t('component.filtered-posts.filters.tag.label')}
                 </Label>
                 <Select value={selectedTag} onValueChange={setSelectedTag}>
@@ -255,7 +279,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
                     <SelectItem value='all'>
                       {t('component.filtered-posts.filters.tag.all')}
                     </SelectItem>
-                    {tags.map(tag => (
+                    {tags.map((tag) => (
                       <SelectItem key={tag} value={tag}>
                         {tag}
                       </SelectItem>
@@ -268,7 +292,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
         )}
 
         {/* Results Summary */}
-        <div className='flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs sm:text-sm text-muted-foreground'>
+        <div className='text-muted-foreground flex flex-col justify-between gap-2 text-xs sm:flex-row sm:items-center sm:text-sm'>
           <span className='flex-1'>
             {isSearching ? (
               t('component.filtered-posts.searching')
@@ -280,9 +304,9 @@ const FilteredPosts = (props: FilteredPostsProps) => {
                   : ''}
                 {totalPages > 1
                   ? t('component.filtered-posts.pagination.page-of', {
-                    current: currentPage,
-                    total: totalPages
-                  })
+                      current: currentPage,
+                      total: totalPages
+                    })
                   : ''}
               </>
             ) : (
@@ -290,9 +314,9 @@ const FilteredPosts = (props: FilteredPostsProps) => {
                 {t('component.filtered-posts.showing.count', { count: regularPosts.length })}
                 {totalPages > 1
                   ? t('component.filtered-posts.pagination.page-of', {
-                    current: currentPage,
-                    total: totalPages
-                  })
+                      current: currentPage,
+                      total: totalPages
+                    })
                   : ''}
               </>
             )}
@@ -301,7 +325,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
             <button
               type='button'
               onClick={clearAllFilters}
-              className='text-primary hover:text-primary/80 transition-colors min-h-[44px] px-3 py-2 rounded-2xl hover:bg-accent self-start sm:self-auto'
+              className='text-primary hover:text-primary/80 hover:bg-accent min-h-[44px] self-start rounded-2xl px-3 py-2 transition-colors sm:self-auto'
             >
               {t('component.filtered-posts.clear-all')}
             </button>
@@ -310,18 +334,18 @@ const FilteredPosts = (props: FilteredPostsProps) => {
       </div>
 
       {filteredAndSortedPosts.length === 0 ? (
-        <div className='my-12 sm:my-16 lg:my-24 text-center space-y-4 px-4'>
+        <div className='my-12 space-y-4 px-4 text-center sm:my-16 lg:my-24'>
           <div className='text-4xl sm:text-6xl'>📝</div>
-          <h3 className='text-base sm:text-lg font-semibold'>
+          <h3 className='text-base font-semibold sm:text-lg'>
             {t('component.filtered-posts.no-posts-found')}
           </h3>
-          <p className='text-muted-foreground max-w-md mx-auto text-xs sm:text-sm'>
+          <p className='text-muted-foreground mx-auto max-w-md text-xs sm:text-sm'>
             {t('component.filtered-posts.empty.description')}
           </p>
           <button
             type='button'
             onClick={clearAllFilters}
-            className='inline-flex items-center justify-center rounded-2xl bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 min-h-[44px]'
+            className='bg-primary text-primary-foreground hover:bg-primary/90 inline-flex min-h-[44px] items-center justify-center rounded-2xl px-6 py-3 text-sm font-medium transition-colors'
           >
             {t('component.filtered-posts.empty.show-all')}
           </button>
@@ -332,7 +356,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
       {regularPosts.length > 0 && (
         <div className='px-4 sm:px-0'>
           {featuredPosts.length > 0 && (
-            <h2 className='text-lg sm:text-xl font-semibold mb-6'>
+            <h2 className='mb-6 text-lg font-semibold sm:text-xl'>
               {t('component.filtered-posts.posts.all')}
             </h2>
           )}
@@ -340,27 +364,28 @@ const FilteredPosts = (props: FilteredPostsProps) => {
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className='flex items-center justify-center gap-2 mt-8'>
+            <div className='mt-8 flex items-center justify-center gap-2'>
               <button
                 type='button'
-                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                 disabled={currentPage === 1}
-                className='flex items-center gap-1 px-3 py-2 text-sm border rounded-2xl hover:bg-accent disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]'
+                className='hover:bg-accent flex min-h-[44px] items-center gap-1 rounded-2xl border px-3 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-50'
               >
                 <ChevronLeft className='h-4 w-4' />
                 {t('component.filtered-posts.pagination.previous')}
               </button>
 
               <div className='flex items-center gap-1'>
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
                   <button
                     type='button'
                     key={page}
                     onClick={() => setCurrentPage(page)}
-                    className={`px-3 py-2 text-sm border rounded-2xl min-h-[44px] min-w-[44px] ${currentPage === page
-                      ? 'bg-primary text-primary-foreground border-primary'
-                      : 'hover:bg-accent'
-                      }`}
+                    className={`min-h-[44px] min-w-[44px] rounded-2xl border px-3 py-2 text-sm ${
+                      currentPage === page
+                        ? 'bg-primary text-primary-foreground border-primary'
+                        : 'hover:bg-accent'
+                    }`}
                   >
                     {page}
                   </button>
@@ -369,9 +394,9 @@ const FilteredPosts = (props: FilteredPostsProps) => {
 
               <button
                 type='button'
-                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
                 disabled={currentPage === totalPages}
-                className='flex items-center gap-1 px-3 py-2 text-sm border rounded-2xl hover:bg-accent disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]'
+                className='hover:bg-accent flex min-h-[44px] items-center gap-1 rounded-2xl border px-3 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-50'
               >
                 {t('component.filtered-posts.pagination.next')}
                 <ChevronRight className='h-4 w-4' />

@@ -88,13 +88,15 @@ export async function POST(request: NextRequest) {
       from: 'Contact Form <noreply@yuricunha.com>',
       to: ['me@yuricunha.com'],
       subject: `Contact Form: ${validatedData.subject}`,
-      html: await render(ContactForm({
-        name: validatedData.name,
-        email: validatedData.email,
-        subject: validatedData.subject,
-        message: validatedData.message,
-        date: currentDate
-      })),
+      html: await render(
+        ContactForm({
+          name: validatedData.name,
+          email: validatedData.email,
+          subject: validatedData.subject,
+          message: validatedData.message,
+          date: currentDate
+        })
+      ),
       text: `
 New Contact Form Submission
 
@@ -123,11 +125,13 @@ Sent at: ${currentDate}
       from: 'Yuri Cunha <noreply@yuricunha.com>',
       to: [validatedData.email],
       subject: 'Thank you for contacting me!',
-      html: await render(ContactConfirmation({
-        name: validatedData.name,
-        subject: validatedData.subject,
-        message: validatedData.message
-      })),
+      html: await render(
+        ContactConfirmation({
+          name: validatedData.name,
+          subject: validatedData.subject,
+          message: validatedData.message
+        })
+      ),
       text: `
 Hi ${validatedData.name},
 
@@ -147,15 +151,11 @@ This is an automated confirmation email. Please do not reply to this email.
       success: true,
       message: 'Message sent successfully! You should receive a confirmation email shortly.'
     })
-
   } catch (error) {
     logger.error('Contact form error', error)
 
     if (error instanceof z.ZodError) {
-      return Response.json(
-        { error: 'Invalid form data', details: error.issues },
-        { status: 400 }
-      )
+      return Response.json({ error: 'Invalid form data', details: error.issues }, { status: 400 })
     }
 
     return Response.json(

@@ -23,32 +23,34 @@ export const exportToCSV = <T extends Record<string, any>>(
     }))
 
   // Create CSV header
-  const headers = columnsToUse.map(col => col.label).join(',')
+  const headers = columnsToUse.map((col) => col.label).join(',')
 
   // Create CSV rows
-  const rows = data.map(item =>
-    columnsToUse.map(col => {
-      const value = item[col.key]
+  const rows = data.map((item) =>
+    columnsToUse
+      .map((col) => {
+        const value = item[col.key]
 
-      // Handle different data types
-      if (value === null || value === undefined) {
-        return ''
-      }
+        // Handle different data types
+        if (value === null || value === undefined) {
+          return ''
+        }
 
-      if (typeof value === 'string') {
-        // Escape quotes and wrap in quotes if contains comma, quote, or newline
-        const escaped = value.replace(/"/g, '""')
-        return escaped.includes(',') || escaped.includes('"') || escaped.includes('\n')
-          ? `"${escaped}"`
-          : escaped
-      }
+        if (typeof value === 'string') {
+          // Escape quotes and wrap in quotes if contains comma, quote, or newline
+          const escaped = value.replace(/"/g, '""')
+          return escaped.includes(',') || escaped.includes('"') || escaped.includes('\n')
+            ? `"${escaped}"`
+            : escaped
+        }
 
-      if (Object.prototype.toString.call(value) === '[object Date]') {
-        return (value as Date).toISOString()
-      }
+        if (Object.prototype.toString.call(value) === '[object Date]') {
+          return (value as Date).toISOString()
+        }
 
-      return String(value)
-    }).join(',')
+        return String(value)
+      })
+      .join(',')
   )
 
   // Combine header and rows

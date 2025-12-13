@@ -107,25 +107,23 @@ const SignInDialog = () => {
 
   const handleAnonymousSignIn = async () => {
     try {
-      const user =
-        await  
-        (signIn as any).anonymous({
-          callbackURL: pathname,
-          fetchOptions: {
-            onRequest: () => {
-              setIsPending(true)
-            },
-            onSuccess: () => {
-              setIsPending(false)
-              toast.success(t('common.sign-in-success'))
-              setIsSignInOpen(false)
-            },
-            onError: () => {
-              setIsPending(false)
-              toast.error(t('common.sign-in-error'))
-            }
+      const user = await (signIn as any).anonymous({
+        callbackURL: pathname,
+        fetchOptions: {
+          onRequest: () => {
+            setIsPending(true)
+          },
+          onSuccess: () => {
+            setIsPending(false)
+            toast.success(t('common.sign-in-success'))
+            setIsSignInOpen(false)
+          },
+          onError: () => {
+            setIsPending(false)
+            toast.error(t('common.sign-in-error'))
           }
-        })
+        }
+      })
       console.log('Anonymous user:', user)
     } catch (error: unknown) {
       const errorMsg = error instanceof Error ? error.message : 'Unknow error'
@@ -202,135 +200,140 @@ const SignInDialog = () => {
 
   return (
     <>
-    <Dialog
-      open={isSignInOpen}
-      onOpenChange={(v) => {
-        setIsSignInOpen(v)
-      }}
-    >
-      <DialogContent className='sm:max-w-[425px]'>
-        <DialogHeader>
-          <DialogTitle className='text-left text-2xl'>
-            {isSignup ? t('common.sign-up') : t('common.sign-in')}
-          </DialogTitle>
-          <DialogDescription className='text-left'>
-            {isSignup ? t('dialog.sign-up.description') : t('dialog.sign-in.description')}
-          </DialogDescription>
-        </DialogHeader>
+      <Dialog
+        open={isSignInOpen}
+        onOpenChange={(v) => {
+          setIsSignInOpen(v)
+        }}
+      >
+        <DialogContent className='sm:max-w-[425px]'>
+          <DialogHeader>
+            <DialogTitle className='text-left text-2xl'>
+              {isSignup ? t('common.sign-up') : t('common.sign-in')}
+            </DialogTitle>
+            <DialogDescription className='text-left'>
+              {isSignup ? t('dialog.sign-up.description') : t('dialog.sign-in.description')}
+            </DialogDescription>
+          </DialogHeader>
 
-        {!isSignup && (
+          {!isSignup && (
+            <div className='my-6 flex flex-col gap-4'>
+              <Button
+                className='relative h-10 min-h-[44px] rounded-xl text-sm font-semibold sm:text-base'
+                onClick={() => handleSocialSignIn('github')}
+                isPending={isPending}
+              >
+                {isPending ? null : <SiGithub className='mr-3' />}
+                {t('dialog.sign-in.continue-with', { provider: 'GitHub' })}
+                {lastUsedProvider === 'github' && <LastUsed />}
+              </Button>
+              <Button
+                className='relative h-10 min-h-[44px] rounded-xl border text-sm font-semibold sm:text-base'
+                variant='ghost'
+                onClick={() => handleSocialSignIn('google')}
+                isPending={isPending}
+              >
+                {isPending ? null : <GoogleIcon />}
+                {t('dialog.sign-in.continue-with', { provider: 'Google' })}
+                {lastUsedProvider === 'google' && <LastUsed />}
+              </Button>
+              <Button
+                className='relative h-10 min-h-[44px] w-full rounded-xl border text-sm font-semibold sm:text-base'
+                onClick={handleAnonymousSignIn}
+                isPending={isPending}
+              >
+                {isPending ? null : <AnonIcon />}
+                {t('dialog.sign-in.anonymous')}
+              </Button>
+            </div>
+          )}
+
+          {/* Divider */}
+          <div className='flex items-center gap-2'>
+            <div className='h-px flex-1 bg-gray-300' />
+            <span className='text-sm text-gray-500'>{t('dialog.sign-in.or')}</span>
+            <div className='h-px flex-1 bg-gray-300' />
+          </div>
+
+          {/* Formulário de Email & Senha */}
           <div className='my-6 flex flex-col gap-4'>
+            {isSignup && (
+              <Input
+                placeholder='Name'
+                type='text'
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className='h-11 min-h-[44px] w-full px-3 py-2 text-sm sm:text-base'
+              />
+            )}
+            <Input
+              placeholder='Email'
+              type='email'
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className='h-11 min-h-[44px] w-full px-3 py-2 text-sm sm:text-base'
+            />
+            <div className='space-y-2'>
+              <Input
+                placeholder='Password'
+                type='password'
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className='h-11 min-h-[44px] w-full px-3 py-2 text-sm sm:text-base'
+              />
+              {!isSignup && (
+                <div className='text-right'>
+                  <button
+                    type='button'
+                    onClick={() => {
+                      setIsSignInOpen(false)
+                      setIsForgotPasswordOpen(true)
+                    }}
+                    className='text-primary text-xs font-medium hover:underline'
+                  >
+                    Forgot password?
+                  </button>
+                </div>
+              )}
+            </div>
             <Button
-              className='relative min-h-[44px] h-10 rounded-xl font-semibold text-sm sm:text-base'
-              onClick={() => handleSocialSignIn('github')}
-              isPending={isPending}
+              className='relative h-10 min-h-[44px] rounded-xl text-sm font-semibold sm:text-base'
+              onClick={isSignup ? handleEmailSignUp : handleEmailSignIn}
+              isPending={isEmailPending}
             >
-              {isPending ? null : <SiGithub className='mr-3' />}
-              {t('dialog.sign-in.continue-with', { provider: 'GitHub' })}
-              {lastUsedProvider === 'github' && <LastUsed />}
-            </Button>
-            <Button
-              className='relative min-h-[44px] h-10 rounded-xl border font-semibold text-sm sm:text-base'
-              variant='ghost'
-              onClick={() => handleSocialSignIn('google')}
-              isPending={isPending}
-            >
-              {isPending ? null : <GoogleIcon />}
-              {t('dialog.sign-in.continue-with', { provider: 'Google' })}
-              {lastUsedProvider === 'google' && <LastUsed />}
-            </Button>
-            <Button
-              className='relative min-h-[44px] h-10 w-full rounded-xl border font-semibold text-sm sm:text-base'
-              onClick={handleAnonymousSignIn}
-              isPending={isPending}
-            >
-              {isPending ? null : <AnonIcon />}
-              {t('dialog.sign-in.anonymous')}
+              {t('dialog.sign-in.continue-with', { provider: isSignup ? 'Sign Up' : 'Email' })}
             </Button>
           </div>
-        )}
 
-        {/* Divider */}
-        <div className='flex items-center gap-2'>
-          <div className='h-px flex-1 bg-gray-300' />
-          <span className='text-sm text-gray-500'>{t('dialog.sign-in.or')}</span>
-          <div className='h-px flex-1 bg-gray-300' />
-        </div>
-
-        {/* Formulário de Email & Senha */}
-        <div className='my-6 flex flex-col gap-4'>
-          {isSignup && (
-            <Input
-              placeholder='Name'
-              type='text'
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className='w-full min-h-[44px] h-11 text-sm sm:text-base px-3 py-2'
-            />
-          )}
-          <Input
-            placeholder='Email'
-            type='email'
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className='w-full min-h-[44px] h-11 text-sm sm:text-base px-3 py-2'
-          />
-          <div className="space-y-2">
-            <Input
-              placeholder='Password'
-              type='password'
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className='w-full min-h-[44px] h-11 text-sm sm:text-base px-3 py-2'
-            />
-            {!isSignup && (
-              <div className="text-right">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setIsSignInOpen(false)
-                    setIsForgotPasswordOpen(true)
-                  }}
-                  className="text-xs font-medium text-primary hover:underline"
+          {/* Alternar entre Login e Cadastro */}
+          <div className='mt-4 text-center'>
+            {isSignup ? (
+              <span>
+                {t('dialog.already-have-account')}{' '}
+                <Button
+                  variant='link'
+                  className='min-h-[32px] p-1 text-sm sm:text-base'
+                  onClick={() => setIsSignup(false)}
                 >
-                  Forgot password?
-                </button>
-              </div>
+                  {t('dialog.sign-in.here')}
+                </Button>
+              </span>
+            ) : (
+              <span>
+                {t('dialog.dont-have-account')}{' '}
+                <Button
+                  variant='link'
+                  className='min-h-[32px] p-1 text-sm sm:text-base'
+                  onClick={() => setIsSignup(true)}
+                >
+                  {t('dialog.sign-up.here')}
+                </Button>
+              </span>
             )}
           </div>
-          <Button
-            className='relative min-h-[44px] h-10 rounded-xl font-semibold text-sm sm:text-base'
-            onClick={isSignup ? handleEmailSignUp : handleEmailSignIn}
-            isPending={isEmailPending}
-          >
-            {t('dialog.sign-in.continue-with', { provider: isSignup ? 'Sign Up' : 'Email' })}
-          </Button>
-        </div>
-
-        {/* Alternar entre Login e Cadastro */}
-        <div className='mt-4 text-center'>
-          {isSignup ? (
-            <span>
-              {t('dialog.already-have-account')}{' '}
-              <Button variant='link' className='min-h-[32px] text-sm sm:text-base p-1' onClick={() => setIsSignup(false)}>
-                {t('dialog.sign-in.here')}
-              </Button>
-            </span>
-          ) : (
-            <span>
-              {t('dialog.dont-have-account')}{' '}
-              <Button variant='link' className='min-h-[32px] text-sm sm:text-base p-1' onClick={() => setIsSignup(true)}>
-                {t('dialog.sign-up.here')}
-              </Button>
-            </span>
-          )}
-        </div>
-      </DialogContent>
-    </Dialog>
-    <ForgotPasswordDialog 
-      open={isForgotPasswordOpen} 
-      onOpenChange={setIsForgotPasswordOpen}
-    />
+        </DialogContent>
+      </Dialog>
+      <ForgotPasswordDialog open={isForgotPasswordOpen} onOpenChange={setIsForgotPasswordOpen} />
     </>
   )
 }

@@ -44,11 +44,17 @@ const PostCard = (props: PostCardProps) => {
   })
 
   return (
-    <Link href={`/blog/${slug}`} className='shadow-feature-card group rounded-2xl px-1.5 py-2 relative overflow-hidden'>
+    <Link
+      href={`/blog/${slug}`}
+      className='shadow-feature-card group relative overflow-hidden rounded-2xl px-1.5 py-2'
+    >
       {featured && (
-        <div className='absolute top-2 right-2 z-10'>
-          <Badge variant='secondary' className='bg-yellow-100 text-yellow-800 border-yellow-200 text-[10px] px-1.5 py-0.5'>
-            <Star className='h-2 w-2 mr-0.5' />
+        <div className='absolute right-2 top-2 z-10'>
+          <Badge
+            variant='secondary'
+            className='border-yellow-200 bg-yellow-100 px-1.5 py-0.5 text-[10px] text-yellow-800'
+          >
+            <Star className='mr-0.5 h-2 w-2' />
             Featured
           </Badge>
         </div>
@@ -64,7 +70,7 @@ const PostCard = (props: PostCardProps) => {
       />
 
       <div className='px-2 py-2'>
-        <div className='flex items-center justify-between gap-1.5 text-[10px] text-zinc-500 mb-1.5'>
+        <div className='mb-1.5 flex items-center justify-between gap-1.5 text-[10px] text-zinc-500'>
           {formattedDate}
           <div className='flex gap-1.5'>
             {likesQuery.status === 'pending' ? '--' : null}
@@ -80,8 +86,10 @@ const PostCard = (props: PostCardProps) => {
             ) : null}
           </div>
         </div>
-        <h3 className='text-sm font-medium mb-1 group-hover:text-primary transition-colors duration-200'>{title}</h3>
-        <p className='text-muted-foreground text-xs line-clamp-2'>{summary}</p>
+        <h3 className='group-hover:text-primary mb-1 text-sm font-medium transition-colors duration-200'>
+          {title}
+        </h3>
+        <p className='text-muted-foreground line-clamp-2 text-xs'>{summary}</p>
       </div>
     </Link>
   )

@@ -77,7 +77,6 @@ const config: NextConfig = {
     ]
   },
 
-
   async redirects() {
     return [
       {
@@ -102,7 +101,6 @@ const config: NextConfig = {
       }
     ]
   },
-
 
   async headers() {
     return NextConfigHeaders

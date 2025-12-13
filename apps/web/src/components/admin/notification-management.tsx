@@ -1,24 +1,33 @@
 'use client'
 
 import { useState } from 'react'
-import { Button , Card, CardContent, CardDescription, CardHeader, CardTitle , Badge , Input , Label , Textarea , Select, SelectContent, SelectItem, SelectTrigger, SelectValue , Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger , ScrollArea } from '@tszhong0411/ui'
+import {
+  Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  Badge,
+  Input,
+  Label,
+  Textarea,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  ScrollArea
+} from '@tszhong0411/ui'
 
-
-
-
-
-
-
-
-import { 
-  Bell, 
-  Plus, 
-  Check, 
-  X, 
-  Clock, 
-  User, 
-  BarChart3
-} from 'lucide-react'
+import { Bell, Plus, Check, X, Clock, User, BarChart3 } from 'lucide-react'
 import { toast } from 'sonner'
 
 import { api } from '@/trpc/react'
@@ -27,7 +36,11 @@ export default function NotificationManagement() {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
 
   // Queries
-  const { data: notifications, isLoading, refetch } = api.communication.getNotifications.useQuery({})
+  const {
+    data: notifications,
+    isLoading,
+    refetch
+  } = api.communication.getNotifications.useQuery({})
 
   // Mutations
   const createNotificationMutation = api.communication.createNotification.useMutation({
@@ -76,54 +89,61 @@ export default function NotificationManagement() {
   const getNotificationIcon = (type: string) => {
     switch (type) {
       case 'info':
-        return <Bell className="h-4 w-4 text-blue-500" />
+        return <Bell className='h-4 w-4 text-blue-500' />
       case 'success':
-        return <Check className="h-4 w-4 text-green-500" />
+        return <Check className='h-4 w-4 text-green-500' />
       case 'warning':
-        return <Clock className="h-4 w-4 text-yellow-500" />
+        return <Clock className='h-4 w-4 text-yellow-500' />
       case 'error':
-        return <X className="h-4 w-4 text-red-500" />
+        return <X className='h-4 w-4 text-red-500' />
       default:
-        return <Bell className="h-4 w-4 text-gray-500" />
+        return <Bell className='h-4 w-4 text-gray-500' />
     }
   }
 
   const getNotificationTypeColor = (type: string) => {
     switch (type) {
-      case 'error': return 'bg-red-50 text-red-700 border-red-200 dark:bg-red-950 dark:text-red-300 dark:border-red-800'
-      case 'warning': return 'bg-yellow-50 text-yellow-700 border-yellow-200 dark:bg-yellow-950 dark:text-yellow-300 dark:border-yellow-800'
-      case 'success': return 'bg-green-50 text-green-700 border-green-200 dark:bg-green-950 dark:text-green-300 dark:border-green-800'
-      case 'info': return 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950 dark:text-blue-300 dark:border-blue-800'
-      default: return 'bg-gray-50 text-gray-700 border-gray-200 dark:bg-gray-950 dark:text-gray-300 dark:border-gray-800'
+      case 'error':
+        return 'bg-red-50 text-red-700 border-red-200 dark:bg-red-950 dark:text-red-300 dark:border-red-800'
+      case 'warning':
+        return 'bg-yellow-50 text-yellow-700 border-yellow-200 dark:bg-yellow-950 dark:text-yellow-300 dark:border-yellow-800'
+      case 'success':
+        return 'bg-green-50 text-green-700 border-green-200 dark:bg-green-950 dark:text-green-300 dark:border-green-800'
+      case 'info':
+        return 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950 dark:text-blue-300 dark:border-blue-800'
+      default:
+        return 'bg-gray-50 text-gray-700 border-gray-200 dark:bg-gray-950 dark:text-gray-300 dark:border-gray-800'
     }
   }
 
   if (isLoading) {
-    return <div className="p-6">Loading notifications...</div>
+    return <div className='p-6'>Loading notifications...</div>
   }
 
   return (
-    <div className="space-y-8">
+    <div className='space-y-8'>
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="space-y-1">
-          <h1 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent flex items-center gap-3">
-            <div className="p-2.5 rounded-xl bg-blue-500/10">
-              <Bell className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+      <div className='flex items-center justify-between'>
+        <div className='space-y-1'>
+          <h1 className='from-foreground to-foreground/70 flex items-center gap-3 bg-gradient-to-r bg-clip-text text-4xl font-bold tracking-tight text-transparent'>
+            <div className='rounded-xl bg-blue-500/10 p-2.5'>
+              <Bell className='h-8 w-8 text-blue-600 dark:text-blue-400' />
             </div>
             Notifications
           </h1>
-          <p className="text-muted-foreground text-base">Manage user notifications and system alerts</p>
+          <p className='text-muted-foreground text-base'>
+            Manage user notifications and system alerts
+          </p>
         </div>
-        
+
         <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
           <DialogTrigger asChild>
-            <Button className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600">
-              <Plus className="h-4 w-4 mr-2" />
+            <Button className='bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600'>
+              <Plus className='mr-2 h-4 w-4' />
               Create Notification
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-2xl">
+          <DialogContent className='max-w-2xl'>
             <DialogHeader>
               <DialogTitle>Create New Notification</DialogTitle>
               <DialogDescription>
@@ -131,45 +151,58 @@ export default function NotificationManagement() {
               </DialogDescription>
             </DialogHeader>
             <form action={handleCreateNotification}>
-              <div className="space-y-4">
+              <div className='space-y-4'>
                 <div>
-                  <Label htmlFor="title">Title</Label>
-                  <Input id="title" name="title" placeholder="Notification title" required />
+                  <Label htmlFor='title'>Title</Label>
+                  <Input id='title' name='title' placeholder='Notification title' required />
                 </div>
-                
+
                 <div>
-                  <Label htmlFor="content">Content</Label>
-                  <Textarea id="content" name="content" placeholder="Notification content" rows={4} required />
+                  <Label htmlFor='content'>Content</Label>
+                  <Textarea
+                    id='content'
+                    name='content'
+                    placeholder='Notification content'
+                    rows={4}
+                    required
+                  />
                 </div>
-                
-                <div className="grid grid-cols-2 gap-4">
+
+                <div className='grid grid-cols-2 gap-4'>
                   <div>
-                    <Label htmlFor="type">Type</Label>
-                    <Select name="type" defaultValue="info">
+                    <Label htmlFor='type'>Type</Label>
+                    <Select name='type' defaultValue='info'>
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="info">Info</SelectItem>
-                        <SelectItem value="success">Success</SelectItem>
-                        <SelectItem value="warning">Warning</SelectItem>
-                        <SelectItem value="error">Error</SelectItem>
+                        <SelectItem value='info'>Info</SelectItem>
+                        <SelectItem value='success'>Success</SelectItem>
+                        <SelectItem value='warning'>Warning</SelectItem>
+                        <SelectItem value='error'>Error</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
-                  
+
                   <div>
-                    <Label htmlFor="userId">User ID (optional)</Label>
-                    <Input id="userId" name="userId" placeholder="Leave empty for all users" />
+                    <Label htmlFor='userId'>User ID (optional)</Label>
+                    <Input id='userId' name='userId' placeholder='Leave empty for all users' />
                   </div>
                 </div>
               </div>
-              
-              <DialogFooter className="mt-6">
-                <Button type="button" variant="outline" onClick={() => setIsCreateDialogOpen(false)}>
+
+              <DialogFooter className='mt-6'>
+                <Button
+                  type='button'
+                  variant='outline'
+                  onClick={() => setIsCreateDialogOpen(false)}
+                >
                   Cancel
                 </Button>
-                <Button type="submit" className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600">
+                <Button
+                  type='submit'
+                  className='bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600'
+                >
                   Send Notification
                 </Button>
               </DialogFooter>
@@ -179,93 +212,105 @@ export default function NotificationManagement() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid gap-5 md:grid-cols-3">
-        <Card className="border-border/50 bg-gradient-to-br from-background to-background/50 backdrop-blur-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-            <CardTitle className="text-sm font-semibold text-muted-foreground">Total Notifications</CardTitle>
-            <div className="p-2 rounded-lg bg-blue-500/10">
-              <Bell className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+      <div className='grid gap-5 md:grid-cols-3'>
+        <Card className='border-border/50 from-background to-background/50 bg-gradient-to-br backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl'>
+          <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-3'>
+            <CardTitle className='text-muted-foreground text-sm font-semibold'>
+              Total Notifications
+            </CardTitle>
+            <div className='rounded-lg bg-blue-500/10 p-2'>
+              <Bell className='h-5 w-5 text-blue-600 dark:text-blue-400' />
             </div>
           </CardHeader>
-          <CardContent className="space-y-2">
-            <div className="text-3xl font-bold tracking-tight text-blue-600 dark:text-blue-400">
+          <CardContent className='space-y-2'>
+            <div className='text-3xl font-bold tracking-tight text-blue-600 dark:text-blue-400'>
               {notifications?.notifications?.length || 0}
             </div>
-            <p className="text-xs text-muted-foreground leading-relaxed">All notifications</p>
+            <p className='text-muted-foreground text-xs leading-relaxed'>All notifications</p>
           </CardContent>
         </Card>
-        
-        <Card className="border-border/50 bg-gradient-to-br from-background to-background/50 backdrop-blur-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-            <CardTitle className="text-sm font-semibold text-muted-foreground">Unread</CardTitle>
-            <div className="p-2 rounded-lg bg-blue-500/10">
-              <Clock className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+
+        <Card className='border-border/50 from-background to-background/50 bg-gradient-to-br backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl'>
+          <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-3'>
+            <CardTitle className='text-muted-foreground text-sm font-semibold'>Unread</CardTitle>
+            <div className='rounded-lg bg-blue-500/10 p-2'>
+              <Clock className='h-5 w-5 text-blue-600 dark:text-blue-400' />
             </div>
           </CardHeader>
-          <CardContent className="space-y-2">
-            <div className="text-3xl font-bold tracking-tight text-blue-600 dark:text-blue-400">
-              {notifications?.notifications?.filter(n => !n.read).length || 0}
+          <CardContent className='space-y-2'>
+            <div className='text-3xl font-bold tracking-tight text-blue-600 dark:text-blue-400'>
+              {notifications?.notifications?.filter((n) => !n.read).length || 0}
             </div>
-            <p className="text-xs text-muted-foreground leading-relaxed">Pending notifications</p>
+            <p className='text-muted-foreground text-xs leading-relaxed'>Pending notifications</p>
           </CardContent>
         </Card>
-        
-        <Card className="border-border/50 bg-gradient-to-br from-background to-background/50 backdrop-blur-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-            <CardTitle className="text-sm font-semibold text-muted-foreground">Read Rate</CardTitle>
-            <div className="p-2 rounded-lg bg-blue-500/10">
-              <BarChart3 className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+
+        <Card className='border-border/50 from-background to-background/50 bg-gradient-to-br backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl'>
+          <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-3'>
+            <CardTitle className='text-muted-foreground text-sm font-semibold'>Read Rate</CardTitle>
+            <div className='rounded-lg bg-blue-500/10 p-2'>
+              <BarChart3 className='h-5 w-5 text-blue-600 dark:text-blue-400' />
             </div>
           </CardHeader>
-          <CardContent className="space-y-2">
-            <div className="text-3xl font-bold tracking-tight text-blue-600 dark:text-blue-400">
-              {notifications?.notifications?.length 
-                ? Math.round((notifications.notifications.filter(n => n.read).length / notifications.notifications.length) * 100)
-                : 0}%
+          <CardContent className='space-y-2'>
+            <div className='text-3xl font-bold tracking-tight text-blue-600 dark:text-blue-400'>
+              {notifications?.notifications?.length
+                ? Math.round(
+                    (notifications.notifications.filter((n) => n.read).length /
+                      notifications.notifications.length) *
+                      100
+                  )
+                : 0}
+              %
             </div>
-            <p className="text-xs text-muted-foreground leading-relaxed">Notifications read</p>
+            <p className='text-muted-foreground text-xs leading-relaxed'>Notifications read</p>
           </CardContent>
         </Card>
       </div>
 
       {/* Notifications List */}
-      <Card className="border-border/50 bg-gradient-to-br from-background to-background/80 backdrop-blur-sm">
+      <Card className='border-border/50 from-background to-background/80 bg-gradient-to-br backdrop-blur-sm'>
         <CardHeader>
-          <div className="flex items-center gap-2 mb-1">
-            <div className="p-2 rounded-lg bg-blue-500/10">
-              <Bell className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+          <div className='mb-1 flex items-center gap-2'>
+            <div className='rounded-lg bg-blue-500/10 p-2'>
+              <Bell className='h-4 w-4 text-blue-600 dark:text-blue-400' />
             </div>
-            <CardTitle className="text-base font-semibold">Recent Notifications</CardTitle>
+            <CardTitle className='text-base font-semibold'>Recent Notifications</CardTitle>
           </div>
-          <CardDescription className="text-xs">Manage user notifications and system alerts</CardDescription>
+          <CardDescription className='text-xs'>
+            Manage user notifications and system alerts
+          </CardDescription>
         </CardHeader>
         <CardContent>
-          <ScrollArea className="h-[600px]">
-            <div className="space-y-4">
+          <ScrollArea className='h-[600px]'>
+            <div className='space-y-4'>
               {notifications?.notifications?.map((notification) => (
-                <Card key={notification.id} className={`${getNotificationTypeColor(notification.type)} border-2 ${notification.read ? '' : 'ring-2 ring-blue-200 dark:ring-blue-800'} transition-all duration-200 hover:shadow-md`}>
-                  <CardContent className="p-4">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-2">
+                <Card
+                  key={notification.id}
+                  className={`${getNotificationTypeColor(notification.type)} border-2 ${notification.read ? '' : 'ring-2 ring-blue-200 dark:ring-blue-800'} transition-all duration-200 hover:shadow-md`}
+                >
+                  <CardContent className='p-4'>
+                    <div className='flex items-start justify-between'>
+                      <div className='flex-1'>
+                        <div className='mb-2 flex items-center gap-2'>
                           {getNotificationIcon(notification.type)}
-                          <h3 className="font-semibold">{notification.title}</h3>
+                          <h3 className='font-semibold'>{notification.title}</h3>
                           {!notification.read && (
-                            <Badge className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                            <Badge className='bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'>
                               Unread
                             </Badge>
                           )}
                         </div>
-                        
-                        <p className="text-sm mb-3">{notification.message}</p>
-                        
-                        <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                          <span className="flex items-center gap-1">
-                            <Clock className="h-3 w-3" />
+
+                        <p className='mb-3 text-sm'>{notification.message}</p>
+
+                        <div className='text-muted-foreground flex items-center gap-4 text-xs'>
+                          <span className='flex items-center gap-1'>
+                            <Clock className='h-3 w-3' />
                             {new Date(notification.createdAt).toLocaleDateString()}
                           </span>
-                          <span className="flex items-center gap-1">
-                            <User className="h-3 w-3" />
+                          <span className='flex items-center gap-1'>
+                            <User className='h-3 w-3' />
                             User: {notification.userId}
                           </span>
                           {notification.expiresAt && (
@@ -275,16 +320,16 @@ export default function NotificationManagement() {
                           )}
                         </div>
                       </div>
-                      
-                      <div className="flex items-center gap-2 ml-4">
+
+                      <div className='ml-4 flex items-center gap-2'>
                         {!notification.read && (
                           <Button
-                            variant="outline"
-                            size="sm"
+                            variant='outline'
+                            size='sm'
                             onClick={() => handleMarkAsRead(notification.id)}
-                            className="text-blue-600 hover:text-blue-700 border-blue-300 hover:border-blue-400"
+                            className='border-blue-300 text-blue-600 hover:border-blue-400 hover:text-blue-700'
                           >
-                            <Check className="h-4 w-4 mr-1" />
+                            <Check className='mr-1 h-4 w-4' />
                             Mark Read
                           </Button>
                         )}
@@ -293,10 +338,10 @@ export default function NotificationManagement() {
                   </CardContent>
                 </Card>
               ))}
-              
+
               {!notifications?.notifications?.length && (
-                <div className="text-center py-8 text-muted-foreground">
-                  <Bell className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                <div className='text-muted-foreground py-8 text-center'>
+                  <Bell className='mx-auto mb-4 h-12 w-12 opacity-50' />
                   <p>No notifications yet. Create your first notification to get started!</p>
                 </div>
               )}

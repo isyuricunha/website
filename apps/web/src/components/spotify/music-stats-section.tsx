@@ -26,7 +26,9 @@ const MusicStatsSection = () => {
     if (!topTracks || !topArtists || !recentTracks) return null
 
     // Calculate total listening time (estimated from recent tracks)
-    const totalMinutes = recentTracks.reduce((acc: number, track: any) => acc + (track.duration || 180_000), 0) / 60_000
+    const totalMinutes =
+      recentTracks.reduce((acc: number, track: any) => acc + (track.duration || 180_000), 0) /
+      60_000
     const totalHours = Math.round(totalMinutes / 60)
 
     // Extract top genres from artists
@@ -46,7 +48,8 @@ const MusicStatsSection = () => {
 
     // Calculate average track popularity
     const avgPopularity = Math.round(
-      topTracks.reduce((acc: number, track: any) => acc + (track.popularity || 0), 0) / topTracks.length
+      topTracks.reduce((acc: number, track: any) => acc + (track.popularity || 0), 0) /
+        topTracks.length
     )
 
     // Calculate diversity score (unique artists in top tracks)
@@ -67,7 +70,7 @@ const MusicStatsSection = () => {
     return (
       <Card>
         <CardHeader>
-          <CardTitle className='text-base sm:text-lg flex items-center gap-2'>
+          <CardTitle className='flex items-center gap-2 text-base sm:text-lg'>
             <BarChart3 className='h-5 w-5' />
             {t('spotify.stats.title')}
           </CardTitle>
@@ -76,12 +79,12 @@ const MusicStatsSection = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className='grid grid-cols-2 md:grid-cols-4 gap-4'>
+          <div className='grid grid-cols-2 gap-4 md:grid-cols-4'>
             {Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className='text-center space-y-2'>
-                <div className='h-8 w-8 mx-auto animate-pulse rounded-full bg-muted' />
-                <div className='h-4 w-16 mx-auto animate-pulse rounded bg-muted' />
-                <div className='h-3 w-12 mx-auto animate-pulse rounded bg-muted' />
+              <div key={i} className='space-y-2 text-center'>
+                <div className='bg-muted mx-auto h-8 w-8 animate-pulse rounded-full' />
+                <div className='bg-muted mx-auto h-4 w-16 animate-pulse rounded' />
+                <div className='bg-muted mx-auto h-3 w-12 animate-pulse rounded' />
               </div>
             ))}
           </div>
@@ -95,7 +98,7 @@ const MusicStatsSection = () => {
       <CardHeader>
         <div className='flex items-center justify-between'>
           <div>
-            <CardTitle className='text-base sm:text-lg flex items-center gap-2'>
+            <CardTitle className='flex items-center gap-2 text-base sm:text-lg'>
               <BarChart3 className='h-5 w-5' />
               {t('spotify.stats.title')}
             </CardTitle>
@@ -107,63 +110,71 @@ const MusicStatsSection = () => {
             type='button'
             onClick={handleRefresh}
             disabled={isRefreshing}
-            className='text-xs sm:text-sm text-muted-foreground hover:text-foreground disabled:opacity-50'
+            className='text-muted-foreground hover:text-foreground text-xs disabled:opacity-50 sm:text-sm'
           >
             {t('spotify.refresh')}
           </button>
         </div>
       </CardHeader>
       <CardContent>
-        <div className='grid grid-cols-2 md:grid-cols-4 gap-6'>
+        <div className='grid grid-cols-2 gap-6 md:grid-cols-4'>
           {/* Total Listening Time */}
-          <div className='text-center space-y-2'>
-            <div className='mx-auto w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center'>
-              <Clock className='h-6 w-6 text-primary' />
+          <div className='space-y-2 text-center'>
+            <div className='bg-primary/10 mx-auto flex h-12 w-12 items-center justify-center rounded-full'>
+              <Clock className='text-primary h-6 w-6' />
             </div>
             <div>
-              <p className='text-lg sm:text-xl font-bold'>{stats.totalHours}h</p>
-              <p className='text-xs sm:text-sm text-muted-foreground'>{t('spotify.stats.labels.total-hours')}</p>
+              <p className='text-lg font-bold sm:text-xl'>{stats.totalHours}h</p>
+              <p className='text-muted-foreground text-xs sm:text-sm'>
+                {t('spotify.stats.labels.total-hours')}
+              </p>
             </div>
           </div>
 
           {/* Track Diversity */}
-          <div className='text-center space-y-2'>
-            <div className='mx-auto w-12 h-12 rounded-full bg-green-500/10 flex items-center justify-center'>
+          <div className='space-y-2 text-center'>
+            <div className='mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-500/10'>
               <TrendingUp className='h-6 w-6 text-green-500' />
             </div>
             <div>
-              <p className='text-lg sm:text-xl font-bold'>{stats.diversityScore}%</p>
-              <p className='text-xs sm:text-sm text-muted-foreground'>{t('spotify.stats.labels.diversity')}</p>
+              <p className='text-lg font-bold sm:text-xl'>{stats.diversityScore}%</p>
+              <p className='text-muted-foreground text-xs sm:text-sm'>
+                {t('spotify.stats.labels.diversity')}
+              </p>
             </div>
           </div>
 
           {/* Average Popularity */}
-          <div className='text-center space-y-2'>
-            <div className='mx-auto w-12 h-12 rounded-full bg-yellow-500/10 flex items-center justify-center'>
+          <div className='space-y-2 text-center'>
+            <div className='mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-yellow-500/10'>
               <Headphones className='h-6 w-6 text-yellow-500' />
             </div>
             <div>
-              <p className='text-lg sm:text-xl font-bold'>{stats.avgPopularity}%</p>
-              <p className='text-xs sm:text-sm text-muted-foreground'>{t('spotify.stats.labels.avg-popularity')}</p>
+              <p className='text-lg font-bold sm:text-xl'>{stats.avgPopularity}%</p>
+              <p className='text-muted-foreground text-xs sm:text-sm'>
+                {t('spotify.stats.labels.avg-popularity')}
+              </p>
             </div>
           </div>
 
           {/* Total Artists */}
-          <div className='text-center space-y-2'>
-            <div className='mx-auto w-12 h-12 rounded-full bg-purple-500/10 flex items-center justify-center'>
+          <div className='space-y-2 text-center'>
+            <div className='mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-purple-500/10'>
               <Music className='h-6 w-6 text-purple-500' />
             </div>
             <div>
-              <p className='text-lg sm:text-xl font-bold'>{stats.totalArtists}</p>
-              <p className='text-xs sm:text-sm text-muted-foreground'>{t('spotify.stats.labels.top-artists')}</p>
+              <p className='text-lg font-bold sm:text-xl'>{stats.totalArtists}</p>
+              <p className='text-muted-foreground text-xs sm:text-sm'>
+                {t('spotify.stats.labels.top-artists')}
+              </p>
             </div>
           </div>
         </div>
 
         {/* Top Genres */}
         {stats.topGenres.length > 0 && (
-          <div className='mt-6 pt-6 border-t'>
-            <h4 className='text-sm sm:text-base font-semibold mb-3 flex items-center gap-2'>
+          <div className='mt-6 border-t pt-6'>
+            <h4 className='mb-3 flex items-center gap-2 text-sm font-semibold sm:text-base'>
               <Calendar className='h-4 w-4' />
               {t('spotify.stats.labels.top-genres')}
             </h4>
@@ -171,12 +182,13 @@ const MusicStatsSection = () => {
               {stats.topGenres.map((genre, index) => (
                 <span
                   key={genre}
-                  className={`px-3 py-1 rounded-full text-xs sm:text-sm font-medium ${index === 0
-                    ? 'bg-primary text-primary-foreground'
-                    : index === 1
-                      ? 'bg-secondary text-secondary-foreground'
-                      : 'bg-muted text-muted-foreground'
-                    }`}
+                  className={`rounded-full px-3 py-1 text-xs font-medium sm:text-sm ${
+                    index === 0
+                      ? 'bg-primary text-primary-foreground'
+                      : index === 1
+                        ? 'bg-secondary text-secondary-foreground'
+                        : 'bg-muted text-muted-foreground'
+                  }`}
                 >
                   #{index + 1} {genre}
                 </span>

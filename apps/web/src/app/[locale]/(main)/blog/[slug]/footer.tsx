@@ -29,7 +29,7 @@ const Footer = () => {
 
   return (
     <div className='my-8 space-y-6'>
-      <div className='flex flex-col sm:flex-row items-center justify-center gap-6 border-t pt-6'>
+      <div className='flex flex-col items-center justify-center gap-6 border-t pt-6 sm:flex-row'>
         <SocialShare
           title={title}
           url={`/blog/${slug}`}
@@ -41,7 +41,7 @@ const Footer = () => {
         />
         <NewsletterSignupCompact />
       </div>
-      
+
       <div className='flex w-full items-center justify-between py-4 text-sm'>
         <Link href={getEditURL(slug, locale)} className={linkVariants({ variant: 'muted' })}>
           {t('blog.footer.edit-on-github')}
