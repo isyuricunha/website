@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Button } from '@isyuricunha/ui'
 import {
   Users,
@@ -40,9 +40,22 @@ interface BulkOperationStatus {
     name: string
     email: string
   }
-  parameters: any
-  results: any
-  errorMessage?: string
+  parameters: unknown
+  results: unknown
+  errorMessage?: string | null
+}
+
+const exportJson = (fileName: string, data: unknown) => {
+  const content = JSON.stringify(data, null, 2)
+  const blob = new Blob([content], { type: 'application/json' })
+  const url = URL.createObjectURL(blob)
+
+  const a = document.createElement('a')
+  a.href = url
+  a.download = fileName
+  a.click()
+
+  URL.revokeObjectURL(url)
 }
 
 export const BulkOperations = () => {
@@ -52,6 +65,8 @@ export const BulkOperations = () => {
     'ban'
   )
   const [newRole, setNewRole] = useState<'user' | 'admin'>('user')
+
+  const utils = api.useUtils()
 
   // Fetch users for bulk operations
   const {
@@ -64,9 +79,26 @@ export const BulkOperations = () => {
     limit: 100
   })
 
-  // Fetch bulk operations history - this endpoint returns a single operation, not a list
-  // We need to create a separate endpoint or modify this to get multiple operations
-  const operations: BulkOperationStatus[] = []
+  const operationsQuery = api.bulk.listBulkOperations.useQuery(
+    {
+      limit: 20,
+      offset: 0
+    },
+    {
+      refetchInterval: (query) => {
+        const data = query.state.data
+        const hasActive =
+          data?.some((op: { status: BulkOperationStatus['status'] }) =>
+            op.status === 'pending' || op.status === 'running'
+          ) ?? false
+        return hasActive ? 2000 : false
+      }
+    }
+  )
+
+  const operations = useMemo(() => {
+    return (operationsQuery.data ?? []) as unknown as BulkOperationStatus[]
+  }, [operationsQuery.data])
 
   // Bulk user action mutation
   const bulkUserAction = api.bulk.bulkUserAction.useMutation({
@@ -76,7 +108,7 @@ export const BulkOperations = () => {
       )
       setSelectedUsers([])
       refetchUsers()
-      // refetchOperations() // Temporarily disabled since we're using local state
+      utils.bulk.listBulkOperations.invalidate()
     },
     onError: (error) => {
       toast.error(error.message || 'Bulk operation failed')
@@ -87,12 +119,19 @@ export const BulkOperations = () => {
   const cancelOperation = api.bulk.cancelBulkOperation.useMutation({
     onSuccess: () => {
       toast.success('Operation cancelled')
-      // refetchOperations() // Temporarily disabled since we're using local state
+      utils.bulk.listBulkOperations.invalidate()
     },
     onError: (error) => {
       toast.error(error.message || 'Failed to cancel operation')
     }
   })
+
+  const handleExportOperation = (operation: BulkOperationStatus) => {
+    exportJson(`bulk-operation-${operation.id}.json`, {
+      ...operation,
+      exportedAt: new Date().toISOString()
+    })
+  }
 
   const handleBulkAction = async () => {
     if (selectedUsers.length === 0) {
@@ -338,11 +377,10 @@ export const BulkOperations = () => {
                     </td>
                     <td className='whitespace-nowrap px-6 py-4'>
                       <span
-                        className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                          user.role === 'admin'
-                            ? 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300'
-                            : 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300'
-                        }`}
+                        className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${user.role === 'admin'
+                          ? 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300'
+                          : 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300'
+                          }`}
                       >
                         {user.role}
                       </span>
@@ -376,6 +414,18 @@ export const BulkOperations = () => {
           <h3 className='text-lg font-medium text-gray-900 dark:text-white'>Recent Operations</h3>
         </div>
         <div className='divide-y divide-gray-200 dark:divide-gray-700'>
+          {operationsQuery.isError && (
+            <div className='p-6 text-center text-gray-500 dark:text-gray-400'>
+              Failed to load bulk operations.
+            </div>
+          )}
+
+          {operationsQuery.isLoading && (
+            <div className='p-6 text-center text-gray-500 dark:text-gray-400'>
+              Loading bulk operations...
+            </div>
+          )}
+
           {operations.map((operation: BulkOperationStatus) => (
             <div key={operation.id} className='p-6'>
               <div className='flex items-center justify-between'>
@@ -403,7 +453,7 @@ export const BulkOperations = () => {
                 </div>
 
                 <div className='flex items-center gap-2'>
-                  {operation.status === 'running' && (
+                  {(operation.status === 'running' || operation.status === 'pending') && (
                     <Button
                       size='sm'
                       variant='outline'
@@ -412,8 +462,12 @@ export const BulkOperations = () => {
                       Cancel
                     </Button>
                   )}
-                  {operation.status === 'completed' && operation.results && (
-                    <Button size='sm' variant='outline'>
+                  {operation.status === 'completed' && operation.results != null && (
+                    <Button
+                      size='sm'
+                      variant='outline'
+                      onClick={() => handleExportOperation(operation)}
+                    >
                       <Download className='mr-2 h-4 w-4' />
                       Export
                     </Button>
@@ -422,7 +476,7 @@ export const BulkOperations = () => {
               </div>
 
               {/* Progress Bar */}
-              {operation.status === 'running' && (
+              {(operation.status === 'running' || operation.status === 'pending') && (
                 <div className='mt-4'>
                   <div className='mb-1 flex justify-between text-sm text-gray-600 dark:text-gray-400'>
                     <span>Progress</span>
@@ -434,7 +488,7 @@ export const BulkOperations = () => {
                     <div
                       className='h-2 rounded-full bg-blue-600 transition-all duration-300'
                       style={{
-                        width: `${(operation.processedItems / operation.totalItems) * 100}%`
+                        width: `${operation.progress}%`
                       }}
                     ></div>
                   </div>
@@ -442,7 +496,7 @@ export const BulkOperations = () => {
               )}
 
               {/* Error Message */}
-              {operation.errorMessage && (
+              {typeof operation.errorMessage === 'string' && operation.errorMessage.length > 0 && (
                 <div className='mt-4 rounded-md border border-red-200 bg-red-50 p-3 dark:border-red-800 dark:bg-red-900/20'>
                   <div className='flex items-center gap-2'>
                     <AlertTriangle className='h-4 w-4 text-red-500' />
@@ -455,7 +509,7 @@ export const BulkOperations = () => {
             </div>
           ))}
 
-          {operations.length === 0 && (
+          {!operationsQuery.isLoading && !operationsQuery.isError && operations.length === 0 && (
             <div className='p-6 text-center text-gray-500 dark:text-gray-400'>
               No bulk operations found.
             </div>
