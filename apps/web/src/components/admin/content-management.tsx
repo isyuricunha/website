@@ -54,20 +54,53 @@ export const ContentManagement = () => {
     }
   })
 
+  const bulkUpdatePostStatus = api.content.bulkUpdatePostStatus.useMutation({
+    onSuccess: (data) => {
+      toast.success(`Updated ${data.updatedCount} posts successfully`)
+      setSelectedPosts([])
+      refetch()
+    },
+    onError: (error) => {
+      toast.error(error.message || 'Failed to update posts')
+    }
+  })
+
+  const bulkDeletePosts = api.content.bulkDeletePosts.useMutation({
+    onSuccess: (data) => {
+      toast.success(`Deleted ${data.deletedCount} posts successfully`)
+      setSelectedPosts([])
+      refetch()
+    },
+    onError: (error) => {
+      toast.error(error.message || 'Failed to delete posts')
+    }
+  })
+
   const handleDeletePost = async (postId: string) => {
     if (confirm('Are you sure you want to delete this post? This action cannot be undone.')) {
       await deletePost.mutateAsync({ id: postId })
     }
   }
 
-  const handleBulkAction = (action: string) => {
+  const handleBulkAction = async (action: 'publish' | 'archive' | 'delete') => {
     if (selectedPosts.length === 0) {
       toast.error('Please select posts to perform bulk actions')
       return
     }
 
-    // TODO: Implement bulk actions
-    toast.info(`Bulk ${action} for ${selectedPosts.length} posts (coming soon)`)
+    if (action === 'delete') {
+      const confirmed = confirm(
+        `Are you sure you want to delete ${selectedPosts.length} posts? This action cannot be undone.`
+      )
+
+      if (!confirmed) return
+
+      await bulkDeletePosts.mutateAsync({ ids: selectedPosts })
+      return
+    }
+
+    const status = action === 'publish' ? 'published' : 'archived'
+    await bulkUpdatePostStatus.mutateAsync({ ids: selectedPosts, status })
   }
 
   const formatDate = (date: Date | string | null | undefined) => {
@@ -228,13 +261,28 @@ export const ContentManagement = () => {
             <span className='text-sm text-gray-600 dark:text-gray-400'>
               {selectedPosts.length} posts selected
             </span>
-            <Button size='sm' variant='outline' onClick={() => handleBulkAction('publish')}>
+            <Button
+              size='sm'
+              variant='outline'
+              disabled={bulkUpdatePostStatus.isPending || bulkDeletePosts.isPending}
+              onClick={() => handleBulkAction('publish')}
+            >
               Bulk Publish
             </Button>
-            <Button size='sm' variant='outline' onClick={() => handleBulkAction('archive')}>
+            <Button
+              size='sm'
+              variant='outline'
+              disabled={bulkUpdatePostStatus.isPending || bulkDeletePosts.isPending}
+              onClick={() => handleBulkAction('archive')}
+            >
               Bulk Archive
             </Button>
-            <Button size='sm' variant='outline' onClick={() => handleBulkAction('delete')}>
+            <Button
+              size='sm'
+              variant='outline'
+              disabled={bulkUpdatePostStatus.isPending || bulkDeletePosts.isPending}
+              onClick={() => handleBulkAction('delete')}
+            >
               Bulk Delete
             </Button>
           </div>
