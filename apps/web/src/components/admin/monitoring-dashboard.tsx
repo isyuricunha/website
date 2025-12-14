@@ -25,9 +25,17 @@ import { toast } from 'sonner'
 
 import { api } from '@/trpc/react'
 
+type TimeRange = '1h' | '6h' | '24h' | '7d' | '30d'
+
+const is_time_range = (value: string): value is TimeRange => {
+  return value === '1h' || value === '6h' || value === '24h' || value === '7d' || value === '30d'
+}
+
 export default function MonitoringDashboard() {
   const [selectedTab, setSelectedTab] = useState('overview')
-  const [timeRange, setTimeRange] = useState('24h')
+  const [timeRange, setTimeRange] = useState<TimeRange>('24h')
+
+  const utils = api.useUtils()
 
   // Monitoring stats query
   const { data: monitoringStats, isLoading: statsLoading } =
@@ -36,36 +44,40 @@ export default function MonitoringDashboard() {
   // Performance metrics query
   const { data: performanceMetrics, isLoading: metricsLoading } =
     api.monitoring.getPerformanceMetrics.useQuery({
-      timeRange: timeRange as any
+      timeRange
     })
 
   // API usage query
   const { data: apiUsage, isLoading: apiLoading } = api.monitoring.getApiUsage.useQuery({
-    timeRange: timeRange as any
+    timeRange
   })
 
   // Error tracking query
   const { data: errorTracking, isLoading: errorsLoading } =
     api.monitoring.getErrorTracking.useQuery({
-      timeRange: timeRange as any
+      timeRange
     })
 
   // Resource usage query
   const { data: resourceUsage, isLoading: resourceLoading } =
     api.monitoring.getResourceUsage.useQuery({
-      timeRange: timeRange as any
+      timeRange
     })
 
   // Analytics events query
   const { data: analyticsEvents, isLoading: analyticsLoading } =
     api.monitoring.getAnalyticsEvents.useQuery({
-      timeRange: timeRange as any
+      timeRange
     })
 
   // Mutations
   const resolveErrorMutation = api.monitoring.resolveError.useMutation({
     onSuccess: () => {
       toast.success('Error resolved successfully')
+
+      utils.monitoring.getErrorTracking.invalidate()
+      utils.monitoring.getMonitoringStats.invalidate()
+      utils.monitoring.getAlerts.invalidate()
     },
     onError: (error) => {
       toast.error(`Failed to resolve error: ${error.message}`)
@@ -98,7 +110,14 @@ export default function MonitoringDashboard() {
           <h1 className='text-3xl font-bold'>Monitoring Dashboard</h1>
           <p className='text-muted-foreground'>Real-time system performance and analytics</p>
         </div>
-        <Select value={timeRange} onValueChange={setTimeRange}>
+        <Select
+          value={timeRange}
+          onValueChange={(value) => {
+            if (is_time_range(value)) {
+              setTimeRange(value)
+            }
+          }}
+        >
           <SelectTrigger className='w-[180px]'>
             <SelectValue />
           </SelectTrigger>
@@ -249,7 +268,10 @@ export default function MonitoringDashboard() {
                           {new Date(event.createdAt).toLocaleString()}
                         </span>
                       </div>
-                    )) || <div className='text-muted-foreground text-sm'>No recent activity</div>}
+                    ))}
+                    {(analyticsEvents?.events.length ?? 0) === 0 && (
+                      <div className='text-muted-foreground text-sm'>No recent activity</div>
+                    )}
                   </div>
                 )}
               </CardContent>
@@ -430,7 +452,7 @@ export default function MonitoringDashboard() {
                     <div key={error.id} className='rounded-lg border p-4'>
                       <div className='mb-2 flex items-center justify-between'>
                         <div className='flex items-center space-x-2'>
-                          <Badge variant={getSeverityColor(error.errorType || 'unknown') as any}>
+                          <Badge variant={getSeverityColor(error.errorType || 'unknown')}>
                             {error.errorType || 'unknown'}
                           </Badge>
                           <span className='font-medium'>{error.message}</span>
@@ -444,6 +466,7 @@ export default function MonitoringDashboard() {
                               size='sm'
                               onClick={() => resolveErrorMutation.mutate({ errorId: error.id })}
                               disabled={resolveErrorMutation.isPending}
+                              isPending={resolveErrorMutation.isPending}
                             >
                               Resolve
                             </Button>
@@ -471,7 +494,10 @@ export default function MonitoringDashboard() {
                         </Badge>
                       )}
                     </div>
-                  )) || <div className='text-muted-foreground text-center'>No errors found</div>}
+                  ))}
+                  {(errorTracking?.errors.length ?? 0) === 0 && (
+                    <div className='text-muted-foreground text-center'>No errors found</div>
+                  )}
                 </div>
               )}
             </CardContent>
@@ -583,7 +609,10 @@ export default function MonitoringDashboard() {
                           {new Date(event.createdAt).toLocaleString()}
                         </span>
                       </div>
-                    )) || <div className='text-muted-foreground text-center'>No recent events</div>}
+                    ))}
+                    {(analyticsEvents?.events.length ?? 0) === 0 && (
+                      <div className='text-muted-foreground text-center'>No recent events</div>
+                    )}
                   </div>
                 )}
               </CardContent>
