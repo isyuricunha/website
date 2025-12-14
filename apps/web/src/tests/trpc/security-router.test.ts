@@ -100,10 +100,31 @@ type AccountLockoutRow = {
     lockedUntil: Date | null
 }
 
+type SecuritySettingRow = {
+    id: string
+    key: string
+    value: string
+    description: string | null
+    category: string
+    updatedBy: string
+    updatedAt: Date
+}
+
 const createDbMock = () => {
     const security_events: SecurityEventRow[] = []
     const ip_rules: IpAccessControlRow[] = []
     const lockouts: AccountLockoutRow[] = []
+    const security_settings: SecuritySettingRow[] = [
+        {
+            id: 'setting-1',
+            key: 'security.max_failed_logins',
+            value: '5',
+            description: 'max failed login attempts',
+            category: 'auth',
+            updatedBy: 'admin-1',
+            updatedAt: new Date()
+        }
+    ]
 
     const insertValues = vi.fn(async (value: unknown) => {
         return value
@@ -126,18 +147,43 @@ const createDbMock = () => {
                     lockouts.push(value)
                 }
 
+                if (tableName === 'security_settings') {
+                    security_settings.push(value)
+                }
+
                 await insertValues(value)
                 return
             })
         }
     })
 
+    const updateWhere = vi.fn(async () => {
+        return
+    })
+
+    const updateSet = vi.fn(() => ({ where: updateWhere }))
+
+    const update = vi.fn(() => ({ set: updateSet }))
+
+    const query = {
+        securitySettings: {
+            findFirst: vi.fn(async () => security_settings[0] ?? null)
+        }
+    }
+
     return {
         insert,
+        update,
+        query,
         __state: {
             security_events,
             ip_rules,
-            lockouts
+            lockouts,
+            security_settings
+        },
+        __mocks: {
+            updateWhere,
+            updateSet
         }
     }
 }
@@ -221,6 +267,45 @@ describe('securityRouter admin events', () => {
             expect.objectContaining({
                 lockedBy: 'admin-1',
                 reason: 'test'
+            })
+        )
+    })
+
+    it('updateSecuritySetting creates a security event', async () => {
+        const { securityRouter } = await import('@/trpc/routers/security')
+
+        const db = createDbMock()
+
+        const caller = securityRouter.createCaller({
+            db: db as unknown,
+            headers: new Headers({ 'x-forwarded-for': '203.0.113.10' }),
+            session: {
+                user: { id: 'admin-1', role: 'admin' }
+            }
+        } as unknown as Parameters<typeof securityRouter.createCaller>[0])
+
+        const result = await caller.updateSecuritySetting({
+            key: 'security.max_failed_logins',
+            value: '7',
+            description: 'updated',
+            category: 'auth'
+        })
+
+        expect(result.success).toBe(true)
+        expect(db.__mocks.updateSet).toHaveBeenCalledTimes(1)
+        expect(db.__mocks.updateWhere).toHaveBeenCalledTimes(1)
+        expect(db.__state.security_events).toHaveLength(1)
+
+        const event = db.__state.security_events[0]
+        expect(event?.eventType).toBe('admin_action')
+        expect(event?.severity).toBe('low')
+        expect(event?.userId).toBe('admin-1')
+
+        const details = event?.details ? JSON.parse(event.details) : null
+        expect(details).toEqual(
+            expect.objectContaining({
+                action: 'security_setting_updated',
+                key: 'security.max_failed_logins'
             })
         )
     })

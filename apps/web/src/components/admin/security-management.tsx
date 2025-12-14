@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import {
   Button,
   Card,
@@ -11,6 +11,7 @@ import {
   Badge,
   Input,
   Label,
+  Textarea,
   Select,
   SelectContent,
   SelectItem,
@@ -41,8 +42,28 @@ type SecurityLockout = {
 
 type BadgeVariant = 'default' | 'secondary' | 'destructive' | 'outline'
 
+type SecuritySetting = {
+  id: string
+  key: string
+  value: string
+  description: string | null
+  category: string
+  updatedAt: Date | string
+  updatedByUser?: {
+    id: string
+    name: string
+    email: string
+  }
+}
+
 export default function SecurityManagement() {
   const [selectedTab, setSelectedTab] = useState('overview')
+  const [settingsSearchTerm, setSettingsSearchTerm] = useState('')
+  const [selectedSettingsCategory, setSelectedSettingsCategory] = useState<string>('')
+  const [editingSettingKey, setEditingSettingKey] = useState<string | null>(null)
+  const [draftSettingValue, setDraftSettingValue] = useState('')
+  const [draftSettingDescription, setDraftSettingDescription] = useState('')
+  const [draftSettingCategory, setDraftSettingCategory] = useState('')
 
   const utils = api.useUtils()
 
@@ -66,6 +87,9 @@ export default function SecurityManagement() {
   const { data: lockouts, isLoading: lockoutsLoading } = api.security.getAccountLockouts.useQuery(
     {}
   )
+
+  const { data: securitySettings, isLoading: settingsLoading } =
+    api.security.getSecuritySettings.useQuery()
 
   // Mutations
   const addIpRuleMutation = api.security.addIpAccessRule.useMutation({
@@ -102,6 +126,74 @@ export default function SecurityManagement() {
       toast.error(`Failed to unlock account: ${error.message}`)
     }
   })
+
+  const updateSecuritySettingMutation = api.security.updateSecuritySetting.useMutation({
+    onSuccess: () => {
+      toast.success('Security setting updated successfully')
+      setEditingSettingKey(null)
+      utils.security.getSecuritySettings.invalidate()
+      utils.security.getSecurityEvents.invalidate()
+      utils.security.getSecurityStats.invalidate()
+    },
+    onError: (error) => {
+      toast.error(`Failed to update security setting: ${error.message}`)
+    }
+  })
+
+  const categories = useMemo(() => {
+    const keys = Object.keys(securitySettings?.settings ?? {})
+    return keys.sort((a, b) => a.localeCompare(b))
+  }, [securitySettings?.settings])
+
+  const filteredSettings = useMemo(() => {
+    const grouped = securitySettings?.settings ?? {}
+    const result: Record<string, SecuritySetting[]> = {}
+
+    for (const [category, settings] of Object.entries(grouped)) {
+      if (selectedSettingsCategory && category !== selectedSettingsCategory) continue
+
+      const items = (settings as SecuritySetting[]).filter((s) => {
+        if (!settingsSearchTerm) return true
+        const needle = settingsSearchTerm.toLowerCase()
+        return (
+          s.key.toLowerCase().includes(needle) ||
+          s.value.toLowerCase().includes(needle) ||
+          (s.description?.toLowerCase().includes(needle) ?? false)
+        )
+      })
+
+      if (items.length > 0) {
+        result[category] = items
+      }
+    }
+
+    return result
+  }, [securitySettings?.settings, selectedSettingsCategory, settingsSearchTerm])
+
+  const startEditingSetting = (setting: SecuritySetting) => {
+    setEditingSettingKey(setting.key)
+    setDraftSettingValue(setting.value)
+    setDraftSettingDescription(setting.description ?? '')
+    setDraftSettingCategory(setting.category)
+  }
+
+  const cancelEditingSetting = () => {
+    setEditingSettingKey(null)
+    setDraftSettingValue('')
+    setDraftSettingDescription('')
+    setDraftSettingCategory('')
+  }
+
+  const saveEditingSetting = async () => {
+    if (!editingSettingKey) return
+
+    await updateSecuritySettingMutation.mutateAsync({
+      key: editingSettingKey,
+      value: draftSettingValue,
+      description: draftSettingDescription || undefined,
+      category: draftSettingCategory || undefined
+    })
+  }
 
   const handleAddIpRule = (formData: FormData) => {
     const ipAddress = formData.get('ipAddress') as string
@@ -480,8 +572,151 @@ export default function SecurityManagement() {
               <CardDescription>Configure security policies and thresholds</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className='text-muted-foreground py-8 text-center'>
-                Security settings configuration coming soon...
+              <div className='space-y-4'>
+                <div className='grid gap-3 md:grid-cols-2'>
+                  <div>
+                    <Label htmlFor='security-settings-search'>Search</Label>
+                    <Input
+                      id='security-settings-search'
+                      value={settingsSearchTerm}
+                      onChange={(e) => setSettingsSearchTerm(e.target.value)}
+                      placeholder='Search by key, value, or description'
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor='security-settings-category'>Category</Label>
+                    <Select value={selectedSettingsCategory} onValueChange={setSelectedSettingsCategory}>
+                      <SelectTrigger id='security-settings-category'>
+                        <SelectValue placeholder='All categories' />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value=''>All categories</SelectItem>
+                        {categories.map((c) => (
+                          <SelectItem key={c} value={c}>
+                            {c}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
+                {settingsLoading ? (
+                  <div className='text-muted-foreground py-8 text-center'>Loading security settings...</div>
+                ) : Object.keys(filteredSettings).length === 0 ? (
+                  <div className='text-muted-foreground py-8 text-center'>No security settings found</div>
+                ) : (
+                  <div className='space-y-4'>
+                    {Object.entries(filteredSettings).map(([category, settings]) => (
+                      <Card key={category}>
+                        <CardHeader>
+                          <CardTitle className='text-base'>{category}</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <div className='space-y-3'>
+                            {settings.map((setting) => {
+                              const isEditing = editingSettingKey === setting.key
+
+                              return (
+                                <div key={setting.id} className='rounded-lg border p-4'>
+                                  <div className='flex items-start justify-between gap-4'>
+                                    <div className='min-w-0 flex-1 space-y-2'>
+                                      <div className='flex items-center gap-2'>
+                                        <span className='truncate font-medium'>{setting.key}</span>
+                                        <Badge variant='outline' className='shrink-0'>
+                                          {setting.category}
+                                        </Badge>
+                                      </div>
+
+                                      {isEditing ? (
+                                        <div className='space-y-3'>
+                                          <div>
+                                            <Label htmlFor={`setting-value-${setting.id}`}>Value</Label>
+                                            <Textarea
+                                              id={`setting-value-${setting.id}`}
+                                              value={draftSettingValue}
+                                              onChange={(e) => setDraftSettingValue(e.target.value)}
+                                              rows={3}
+                                            />
+                                          </div>
+                                          <div>
+                                            <Label htmlFor={`setting-description-${setting.id}`}>Description</Label>
+                                            <Input
+                                              id={`setting-description-${setting.id}`}
+                                              value={draftSettingDescription}
+                                              onChange={(e) => setDraftSettingDescription(e.target.value)}
+                                              placeholder='Optional description'
+                                            />
+                                          </div>
+                                          <div>
+                                            <Label htmlFor={`setting-category-${setting.id}`}>Category</Label>
+                                            <Input
+                                              id={`setting-category-${setting.id}`}
+                                              value={draftSettingCategory}
+                                              onChange={(e) => setDraftSettingCategory(e.target.value)}
+                                              placeholder='Category'
+                                            />
+                                          </div>
+                                        </div>
+                                      ) : (
+                                        <div className='space-y-1'>
+                                          <div className='text-muted-foreground text-sm break-words'>
+                                            {setting.value}
+                                          </div>
+                                          {setting.description ? (
+                                            <div className='text-muted-foreground text-xs break-words'>
+                                              {setting.description}
+                                            </div>
+                                          ) : null}
+                                        </div>
+                                      )}
+
+                                      <div className='text-muted-foreground text-xs'>
+                                        Updated {new Date(setting.updatedAt).toLocaleString()}
+                                        {setting.updatedByUser ? (
+                                          <span>
+                                            {' '}
+                                            by {setting.updatedByUser.name}
+                                          </span>
+                                        ) : null}
+                                      </div>
+                                    </div>
+
+                                    <div className='flex shrink-0 flex-col gap-2'>
+                                      {isEditing ? (
+                                        <>
+                                          <Button
+                                            size='sm'
+                                            onClick={saveEditingSetting}
+                                            disabled={updateSecuritySettingMutation.isPending}
+                                          >
+                                            Save
+                                          </Button>
+                                          <Button
+                                            size='sm'
+                                            variant='outline'
+                                            onClick={cancelEditingSetting}
+                                            disabled={updateSecuritySettingMutation.isPending}
+                                          >
+                                            Cancel
+                                          </Button>
+                                        </>
+                                      ) : (
+                                        <Button size='sm' variant='outline' onClick={() => startEditingSetting(setting)}>
+                                          Edit
+                                        </Button>
+                                      )}
+                                    </div>
+                                  </div>
+                                </div>
+                              )
+                            })}
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>
