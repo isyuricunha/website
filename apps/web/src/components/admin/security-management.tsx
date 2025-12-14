@@ -27,8 +27,24 @@ import { toast } from 'sonner'
 
 import { api } from '@/trpc/react'
 
+type SecurityLockout = {
+  id: string
+  userId: string
+  reason: string
+  lockedAt: Date
+  lockedUntil: Date | null
+  lockedBy: string | null
+  unlocked: boolean
+  unlockedAt: Date | null
+  unlockedBy: string | null
+}
+
+type BadgeVariant = 'default' | 'secondary' | 'destructive' | 'outline'
+
 export default function SecurityManagement() {
   const [selectedTab, setSelectedTab] = useState('overview')
+
+  const utils = api.useUtils()
 
   // Security stats query
   const { data: securityStats, isLoading: statsLoading } = api.security.getSecurityStats.useQuery()
@@ -55,7 +71,9 @@ export default function SecurityManagement() {
   const addIpRuleMutation = api.security.addIpAccessRule.useMutation({
     onSuccess: () => {
       toast.success('IP access rule added successfully')
-      // Refetch IP rules
+      utils.security.getIpAccessRules.invalidate()
+      utils.security.getSecurityEvents.invalidate()
+      utils.security.getSecurityStats.invalidate()
     },
     onError: (error) => {
       toast.error(`Failed to add IP rule: ${error.message}`)
@@ -65,7 +83,8 @@ export default function SecurityManagement() {
   const resolveEventMutation = api.security.resolveSecurityEvent.useMutation({
     onSuccess: () => {
       toast.success('Security event resolved')
-      // Refetch events
+      utils.security.getSecurityEvents.invalidate()
+      utils.security.getSecurityStats.invalidate()
     },
     onError: (error) => {
       toast.error(`Failed to resolve event: ${error.message}`)
@@ -75,7 +94,9 @@ export default function SecurityManagement() {
   const unlockAccountMutation = api.security.unlockAccount.useMutation({
     onSuccess: () => {
       toast.success('Account unlocked successfully')
-      // Refetch lockouts
+      utils.security.getAccountLockouts.invalidate()
+      utils.security.getSecurityStats.invalidate()
+      utils.security.getSecurityEvents.invalidate()
     },
     onError: (error) => {
       toast.error(`Failed to unlock account: ${error.message}`)
@@ -99,7 +120,7 @@ export default function SecurityManagement() {
     })
   }
 
-  const getSeverityColor = (severity: string) => {
+  const getSeverityColor = (severity: string): BadgeVariant => {
     switch (severity) {
       case 'critical':
         return 'destructive'
@@ -205,19 +226,21 @@ export default function SecurityManagement() {
                   <div>Loading events...</div>
                 ) : (
                   <div className='space-y-3'>
-                    {securityEvents?.events.slice(0, 5).map((event) => (
-                      <div key={event.id} className='flex items-center justify-between'>
-                        <div className='flex items-center space-x-2'>
-                          <Badge variant={getSeverityColor(event.severity) as any}>
-                            {event.severity}
-                          </Badge>
-                          <span className='text-sm'>{event.eventType}</span>
+                    {(securityEvents?.events?.length ?? 0) > 0 ? (
+                      securityEvents?.events.slice(0, 5).map((event) => (
+                        <div key={event.id} className='flex items-center justify-between'>
+                          <div className='flex items-center space-x-2'>
+                            <Badge variant={getSeverityColor(event.severity)}>{event.severity}</Badge>
+                            <span className='text-sm'>{event.eventType}</span>
+                          </div>
+                          <span className='text-muted-foreground text-xs'>
+                            {new Date(event.createdAt).toLocaleString()}
+                          </span>
                         </div>
-                        <span className='text-muted-foreground text-xs'>
-                          {new Date(event.createdAt).toLocaleString()}
-                        </span>
-                      </div>
-                    )) || <div className='text-muted-foreground text-sm'>No recent events</div>}
+                      ))
+                    ) : (
+                      <div className='text-muted-foreground text-sm'>No recent events</div>
+                    )}
                   </div>
                 )}
               </CardContent>
@@ -278,48 +301,46 @@ export default function SecurityManagement() {
                 <div>Loading security events...</div>
               ) : (
                 <div className='space-y-4'>
-                  {securityEvents?.events.map((event) => (
-                    <div key={event.id} className='rounded-lg border p-4'>
-                      <div className='mb-2 flex items-center justify-between'>
-                        <div className='flex items-center space-x-2'>
-                          <Badge variant={getSeverityColor(event.severity) as any}>
-                            {event.severity}
+                  {(securityEvents?.events?.length ?? 0) > 0 ? (
+                    securityEvents?.events.map((event) => (
+                      <div key={event.id} className='rounded-lg border p-4'>
+                        <div className='mb-2 flex items-center justify-between'>
+                          <div className='flex items-center space-x-2'>
+                            <Badge variant={getSeverityColor(event.severity)}>{event.severity}</Badge>
+                            <span className='font-medium'>{event.eventType}</span>
+                          </div>
+                          <div className='flex items-center space-x-2'>
+                            <span className='text-muted-foreground text-sm'>
+                              {new Date(event.createdAt).toLocaleString()}
+                            </span>
+                            {!event.resolved && (
+                              <Button
+                                size='sm'
+                                onClick={() => resolveEventMutation.mutate({ eventId: event.id })}
+                                disabled={resolveEventMutation.isPending}
+                              >
+                                Resolve
+                              </Button>
+                            )}
+                          </div>
+                        </div>
+                        {event.ipAddress && (
+                          <div className='text-muted-foreground text-sm'>IP: {event.ipAddress}</div>
+                        )}
+                        {event.user && (
+                          <div className='text-muted-foreground text-sm'>
+                            User: {event.user.name} ({event.user.email})
+                          </div>
+                        )}
+                        {event.resolved && (
+                          <Badge variant='outline' className='mt-2'>
+                            Resolved {event.resolvedAt && new Date(event.resolvedAt).toLocaleString()}
                           </Badge>
-                          <span className='font-medium'>{event.eventType}</span>
-                        </div>
-                        <div className='flex items-center space-x-2'>
-                          <span className='text-muted-foreground text-sm'>
-                            {new Date(event.createdAt).toLocaleString()}
-                          </span>
-                          {!event.resolved && (
-                            <Button
-                              size='sm'
-                              onClick={() => resolveEventMutation.mutate({ eventId: event.id })}
-                              disabled={resolveEventMutation.isPending}
-                            >
-                              Resolve
-                            </Button>
-                          )}
-                        </div>
+                        )}
                       </div>
-                      {event.ipAddress && (
-                        <div className='text-muted-foreground text-sm'>IP: {event.ipAddress}</div>
-                      )}
-                      {event.user && (
-                        <div className='text-muted-foreground text-sm'>
-                          User: {event.user.name} ({event.user.email})
-                        </div>
-                      )}
-                      {event.resolved && (
-                        <Badge variant='outline' className='mt-2'>
-                          Resolved {event.resolvedAt && new Date(event.resolvedAt).toLocaleString()}
-                        </Badge>
-                      )}
-                    </div>
-                  )) || (
-                    <div className='text-muted-foreground text-center'>
-                      No security events found
-                    </div>
+                    ))
+                  ) : (
+                    <div className='text-muted-foreground text-center'>No security events found</div>
                   )}
                 </div>
               )}
@@ -380,25 +401,25 @@ export default function SecurityManagement() {
                   <div>Loading IP rules...</div>
                 ) : (
                   <div className='space-y-3'>
-                    {ipRules?.rules.map((rule) => (
-                      <div
-                        key={rule.id}
-                        className='flex items-center justify-between rounded border p-3'
-                      >
-                        <div>
-                          <div className='font-medium'>{rule.ipAddress}</div>
-                          <div className='text-muted-foreground text-sm'>
-                            {rule.description || 'No description'}
+                    {(ipRules?.rules?.length ?? 0) > 0 ? (
+                      ipRules?.rules.map((rule) => (
+                        <div
+                          key={rule.id}
+                          className='flex items-center justify-between rounded border p-3'
+                        >
+                          <div>
+                            <div className='font-medium'>{rule.ipAddress}</div>
+                            <div className='text-muted-foreground text-sm'>
+                              {rule.description || 'No description'}
+                            </div>
                           </div>
+                          <Badge variant={rule.type === 'whitelist' ? 'default' : 'destructive'}>
+                            {rule.type}
+                          </Badge>
                         </div>
-                        <Badge variant={rule.type === 'whitelist' ? 'default' : 'destructive'}>
-                          {rule.type}
-                        </Badge>
-                      </div>
-                    )) || (
-                      <div className='text-muted-foreground text-center'>
-                        No IP rules configured
-                      </div>
+                      ))
+                    ) : (
+                      <div className='text-muted-foreground text-center'>No IP rules configured</div>
                     )}
                   </div>
                 )}
@@ -418,33 +439,33 @@ export default function SecurityManagement() {
                 <div>Loading account lockouts...</div>
               ) : (
                 <div className='space-y-4'>
-                  {lockouts?.lockouts.map((lockout: any) => (
-                    <div key={lockout.id} className='rounded-lg border p-4'>
-                      <div className='flex items-center justify-between'>
-                        <div>
-                          <div className='font-medium'>User ID: {lockout.userId}</div>
-                          <div className='text-muted-foreground text-sm'>
-                            Lockout ID: {lockout.id}
+                  {(lockouts?.lockouts?.length ?? 0) > 0 ? (
+                    lockouts?.lockouts.map((lockout: SecurityLockout) => (
+                      <div key={lockout.id} className='rounded-lg border p-4'>
+                        <div className='flex items-center justify-between'>
+                          <div>
+                            <div className='font-medium'>User ID: {lockout.userId}</div>
+                            <div className='text-muted-foreground text-sm'>
+                              Lockout ID: {lockout.id}
+                            </div>
+                            <div className='text-muted-foreground text-sm'>
+                              Locked: {new Date(lockout.lockedAt).toLocaleString()}
+                            </div>
+                            <div className='text-muted-foreground text-sm'>
+                              Reason: {lockout.reason}
+                            </div>
                           </div>
-                          <div className='text-muted-foreground text-sm'>
-                            Locked: {new Date(lockout.lockedAt).toLocaleString()}
-                          </div>
-                          <div className='text-muted-foreground text-sm'>
-                            Reason: {lockout.reason}
-                          </div>
+                          <Button
+                            onClick={() => unlockAccountMutation.mutate({ lockoutId: lockout.id })}
+                            disabled={unlockAccountMutation.isPending}
+                          >
+                            Unlock Account
+                          </Button>
                         </div>
-                        <Button
-                          onClick={() => unlockAccountMutation.mutate({ lockoutId: lockout.id })}
-                          disabled={unlockAccountMutation.isPending}
-                        >
-                          Unlock Account
-                        </Button>
                       </div>
-                    </div>
-                  )) || (
-                    <div className='text-muted-foreground text-center'>
-                      No active account lockouts
-                    </div>
+                    ))
+                  ) : (
+                    <div className='text-muted-foreground text-center'>No active account lockouts</div>
                   )}
                 </div>
               )}

@@ -21,6 +21,51 @@ import { adminProcedure, protectedProcedure, createTRPCRouter } from '../trpc'
 
 const speakeasy = require('speakeasy')
 
+const create_security_event = async (args: {
+  db: typeof import('@isyuricunha/db').db
+  eventType:
+  | 'login_attempt'
+  | 'login_success'
+  | 'login_failure'
+  | 'password_change'
+  | 'email_change'
+  | 'two_factor_enabled'
+  | 'two_factor_disabled'
+  | 'suspicious_activity'
+  | 'account_locked'
+  | 'account_unlocked'
+  | 'admin_action'
+  | 'data_export'
+  | 'permission_change'
+  severity: 'low' | 'medium' | 'high' | 'critical'
+  userId: string | null
+  ipAddress?: string
+  userAgent?: string
+  details?: Record<string, unknown>
+}) => {
+  try {
+    await args.db.insert(securityEvents).values({
+      id: randomBytes(16).toString('hex'),
+      eventType: args.eventType,
+      severity: args.severity,
+      userId: args.userId,
+      ipAddress: args.ipAddress ?? null,
+      userAgent: args.userAgent ?? null,
+      location: null,
+      details: args.details ? JSON.stringify(args.details) : null,
+      resolved: false,
+      resolvedBy: null,
+      resolvedAt: null,
+      createdAt: new Date()
+    })
+  } catch (error) {
+    logger.warn('Failed to write security event', {
+      error: error instanceof Error ? error.message : String(error),
+      eventType: args.eventType
+    })
+  }
+}
+
 // Helper function to generate backup codes
 function generateBackupCodes(): string[] {
   const codes = []
@@ -65,6 +110,16 @@ export const securityRouter = createTRPCRouter({
         secret: secret.base32,
         backupCodes: JSON.stringify(backupCodes),
         isEnabled: false
+      })
+
+      await create_security_event({
+        db: ctx.db,
+        eventType: 'admin_action',
+        severity: 'low',
+        userId: ctx.session.user.id,
+        ipAddress,
+        userAgent,
+        details: { action: '2fa_setup_initiated' }
       })
 
       // Log security event
@@ -140,6 +195,16 @@ export const securityRouter = createTRPCRouter({
           .set({ isEnabled: true, lastUsedAt: new Date() })
           .where(eq(twoFactorTokens.userId, ctx.session.user.id))
 
+        await create_security_event({
+          db: ctx.db,
+          eventType: 'two_factor_enabled',
+          severity: 'medium',
+          userId: ctx.session.user.id,
+          ipAddress,
+          userAgent,
+          details: { action: '2fa_enabled' }
+        })
+
         // Log security event
         await auditLogger.logSystemAction(
           ctx.session.user.id,
@@ -183,6 +248,16 @@ export const securityRouter = createTRPCRouter({
           .update(twoFactorTokens)
           .set({ backupCodes: JSON.stringify(generateBackupCodes()) })
           .where(eq(twoFactorTokens.userId, ctx.session.user.id))
+
+        await create_security_event({
+          db: ctx.db,
+          eventType: 'two_factor_disabled',
+          severity: 'medium',
+          userId: ctx.session.user.id,
+          ipAddress,
+          userAgent,
+          details: { action: '2fa_disabled' }
+        })
 
         // Log security event
         await auditLogger.logSystemAction(
@@ -257,6 +332,16 @@ export const securityRouter = createTRPCRouter({
           createdBy: ctx.session.user.id
         })
 
+        await create_security_event({
+          db: ctx.db,
+          eventType: 'admin_action',
+          severity: 'medium',
+          userId: ctx.session.user.id,
+          ipAddress,
+          userAgent,
+          details: { action: 'ip_rule_added', ruleId, type: input.type, ipAddress: input.ipAddress }
+        })
+
         // Log security event
         await auditLogger.logSystemAction(
           ctx.session.user.id,
@@ -291,6 +376,16 @@ export const securityRouter = createTRPCRouter({
         const userAgent = getUserAgentFromHeaders(ctx.headers)
 
         await ctx.db.delete(ipAccessControl).where(eq(ipAccessControl.id, input.ruleId))
+
+        await create_security_event({
+          db: ctx.db,
+          eventType: 'admin_action',
+          severity: 'medium',
+          userId: ctx.session.user.id,
+          ipAddress,
+          userAgent,
+          details: { action: 'ip_rule_removed', ruleId: input.ruleId }
+        })
 
         // Log security event
         await auditLogger.logSystemAction(
@@ -510,6 +605,16 @@ export const securityRouter = createTRPCRouter({
           lockedUntil: input.duration ? new Date(Date.now() + input.duration * 60 * 1000) : null
         })
 
+        await create_security_event({
+          db: ctx.db,
+          eventType: 'account_locked',
+          severity: 'high',
+          userId: input.userId,
+          ipAddress,
+          userAgent,
+          details: { lockoutId, lockedBy: ctx.session.user.id, reason: input.reason }
+        })
+
         // Log security event
         await auditLogger.logSystemAction(
           ctx.session.user.id,
@@ -558,6 +663,16 @@ export const securityRouter = createTRPCRouter({
             unlockedBy: ctx.session.user.id
           })
           .where(eq(accountLockouts.id, input.lockoutId))
+
+        await create_security_event({
+          db: ctx.db,
+          eventType: 'account_unlocked',
+          severity: 'medium',
+          userId: lockout.userId,
+          ipAddress,
+          userAgent,
+          details: { lockoutId: input.lockoutId, unlockedBy: ctx.session.user.id }
+        })
 
         // Log security event
         await auditLogger.logSystemAction(
@@ -683,6 +798,16 @@ export const securityRouter = createTRPCRouter({
           ipAddress,
           userAgent
         )
+
+        await create_security_event({
+          db: ctx.db,
+          eventType: 'admin_action',
+          severity: 'low',
+          userId: ctx.session.user.id,
+          ipAddress,
+          userAgent,
+          details: { action: 'security_setting_updated', key: input.key }
+        })
 
         return { success: true }
       } catch (error) {

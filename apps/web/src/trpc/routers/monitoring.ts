@@ -9,7 +9,6 @@ import {
   eq,
   errorTracking,
   gte,
-  lte,
   performanceMetrics,
   queryPerformance,
   resourceUsage,
@@ -241,9 +240,9 @@ export const monitoringRouter = createTRPCRouter({
         const resourceUsageData = await ctx.db.query.resourceUsage.findMany({
           where: input.resourceType
             ? and(
-                eq(resourceUsage.type, input.resourceType),
-                gte(resourceUsage.createdAt, startTime)
-              )
+              eq(resourceUsage.type, input.resourceType),
+              gte(resourceUsage.createdAt, startTime)
+            )
             : gte(resourceUsage.createdAt, startTime),
           orderBy: desc(resourceUsage.createdAt),
           limit: 1000
@@ -339,11 +338,14 @@ export const monitoringRouter = createTRPCRouter({
         })
 
         // Calculate statistics
+        const total_requests = usage.length
+        const total_requests_safe = Math.max(total_requests, 1)
         const stats = {
-          totalRequests: usage.length,
+          totalRequests: total_requests,
           uniqueUsers: new Set(usage.map((u) => u.userId).filter(Boolean)).size,
-          avgResponseTime: usage.reduce((sum, u) => sum + (u.responseTime || 0), 0) / usage.length,
-          errorRate: (usage.filter((u) => u.statusCode >= 400).length / usage.length) * 100,
+          avgResponseTime:
+            usage.reduce((sum, u) => sum + (u.responseTime || 0), 0) / total_requests_safe,
+          errorRate: (usage.filter((u) => u.statusCode >= 400).length / total_requests_safe) * 100,
           topEndpoints: {} as Record<string, number>,
           statusCodes: {} as Record<string, number>
         }
@@ -383,8 +385,8 @@ export const monitoringRouter = createTRPCRouter({
     )
     .query(async ({ ctx, input }) => {
       try {
-        const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
-        const conditions = [lte(queryPerformance.createdAt, thirtyDaysAgo)]
+        const startTime = getTimeRange(input.timeRange)
+        const conditions = [gte(queryPerformance.createdAt, startTime)]
 
         if (input.slowQueriesOnly) {
           // Consider queries > 1000ms as slow
@@ -398,9 +400,11 @@ export const monitoringRouter = createTRPCRouter({
         })
 
         // Calculate statistics
+        const total_queries = queries.length
+        const total_queries_safe = Math.max(total_queries, 1)
         const stats = {
-          totalQueries: queries.length,
-          avgExecutionTime: queries.reduce((sum, q) => sum + q.executionTime, 0) / queries.length,
+          totalQueries: total_queries,
+          avgExecutionTime: queries.reduce((sum, q) => sum + q.executionTime, 0) / total_queries_safe,
           slowQueries: queries.filter((q) => q.executionTime > 1000).length,
           topSlowQueries: queries
             .filter((q) => q.executionTime > 1000)
@@ -796,12 +800,12 @@ export const monitoringRouter = createTRPCRouter({
           errorRate:
             recentApiCalls.length > 0
               ? (recentApiCalls.filter((u) => u.statusCode >= 400).length / recentApiCalls.length) *
-                100
+              100
               : 0,
           avgResponseTime:
             recentApiCalls.length > 0
               ? recentApiCalls.reduce((sum, u) => sum + (u.responseTime || 0), 0) /
-                recentApiCalls.length
+              recentApiCalls.length
               : 0
         }
       }
