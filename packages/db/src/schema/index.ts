@@ -1,4 +1,5 @@
 export * from './auth'
+export * from './ai-chat-feedback'
 export * from './comments'
 export * from './communication'
 export * from './data-management'

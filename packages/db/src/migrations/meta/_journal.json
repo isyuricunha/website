@@ -43,6 +43,13 @@
       "when": 1759550463126,
       "tag": "0005_slippery_talon",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1765752279147,
+      "tag": "0006_legal_maddog",
+      "breakpoints": true
     }
   ]
 }
