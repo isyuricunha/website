@@ -20,6 +20,7 @@ interface AIChatInterfaceProps {
   readonly isOpen: boolean
   readonly onClose: () => void
   readonly currentPage?: string
+  readonly pagePath?: string
   readonly onMessageSent?: (message: string) => void
 }
 
@@ -27,6 +28,7 @@ export default function AIChatInterface({
   isOpen,
   onClose,
   currentPage = '',
+  pagePath = '',
   onMessageSent
 }: AIChatInterfaceProps) {
   const t = useTranslations()
@@ -262,6 +264,7 @@ export default function AIChatInterface({
           locale,
           context: {
             currentPage,
+            pagePath,
             previousMessages: nextMessages.slice(-8).map((m) => m.text),
             conversation: recentMessages,
             conversationLength: nextMessages.length,
@@ -272,8 +275,21 @@ export default function AIChatInterface({
         })
       })
 
-      const data: { message?: string; timestamp?: string; isError?: boolean; error?: string } =
-        await response.json()
+      const data: {
+        message?: string
+        timestamp?: string
+        isError?: boolean
+        error?: string
+        requestId?: string
+        latencyMs?: number
+        citations?: Array<{
+          id: string
+          title: string
+          href: string
+          excerpt?: string
+          type: 'post' | 'project' | 'page'
+        }>
+      } = await response.json()
 
       if (!response.ok) {
         throw new Error(data.error ?? 'Failed to get response')
@@ -287,7 +303,10 @@ export default function AIChatInterface({
         isUser: false,
         timestamp: safeTimestamp,
         isError: data.isError ?? false,
-        type: 'text'
+        type: 'text',
+        requestId: data.requestId,
+        latencyMs: data.latencyMs,
+        citations: data.citations
       }
 
       updateActiveConversation((c) => ({
@@ -508,6 +527,23 @@ export default function AIChatInterface({
                 </div>
               )}
               <p className='whitespace-pre-wrap leading-relaxed'>{message.text}</p>
+
+              {!message.isUser && !message.isError && (message.citations?.length ?? 0) > 0 ? (
+                <div className='border-border/20 mt-3 space-y-2 border-t pt-2'>
+                  <div className='text-muted-foreground text-[11px] font-medium'>Sources</div>
+                  <div className='space-y-1'>
+                    {message.citations?.map((c) => (
+                      <a
+                        key={c.id}
+                        href={c.href}
+                        className='text-primary hover:underline block text-[11px]'
+                      >
+                        {c.title}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
               {!message.isUser && !message.isError && (
                 <div className='mt-2 flex items-center justify-between'>
                   <div className='flex items-center gap-1'>

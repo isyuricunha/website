@@ -926,9 +926,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
             isOpen={state.showAIChat}
             onClose={() => updateState({ showAIChat: false, showBubble: false })}
             currentPage={pageKey}
-            onMessageSent={() => {
-              return
-            }}
+            pagePath={pathname || '/'}
           />
         )}
 

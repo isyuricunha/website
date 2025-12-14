@@ -12,6 +12,26 @@ interface AIServiceConfig {
 
 interface SiteContext {
   currentPage: string
+  pagePath?: string
+  pageContext?: {
+    type: 'post' | 'project' | 'page'
+    title: string
+    description: string
+    href: string
+    contentExcerpt: string
+  } | null
+  citations?: Array<{
+    id: string
+    title: string
+    href: string
+    excerpt?: string
+    type: 'post' | 'project' | 'page'
+  }>
+  conversation?: Array<{
+    role: 'user' | 'assistant'
+    content: string
+    timestamp?: string
+  }>
   recentPosts?: Array<{
     title: string
     slug: string
@@ -117,6 +137,32 @@ class AIService {
       zh: '请用中文回答'
     }
 
+    const conversationBlock = (() => {
+      const conversation = context.conversation?.slice(-10) ?? []
+      if (conversation.length === 0) return 'none'
+
+      return conversation
+        .map((m) => {
+          const role = m.role === 'user' ? 'User' : 'Assistant'
+          return `${role}: ${m.content}`
+        })
+        .join('\n')
+    })()
+
+    const pageContextBlock = context.pageContext
+      ? [
+        `type: ${context.pageContext.type}`,
+        `title: ${context.pageContext.title}`,
+        `description: ${context.pageContext.description}`,
+        `href: ${context.pageContext.href}`,
+        `content_excerpt: ${context.pageContext.contentExcerpt}`
+      ].join('\n')
+      : 'none'
+
+    const sourcesBlock = (context.citations ?? [])
+      .map((c) => `- ${c.title} (${c.type}): ${c.href}${c.excerpt ? ` — ${c.excerpt}` : ''}`)
+      .join('\n')
+
     return `You are Yue, the friendly virtual mascot created by Yuri Cunha for his personal website.
 
 Personality:
@@ -130,8 +176,18 @@ Context about the website:
 - Owner: Yuri Cunha, a Database Administrator (DBA) and Server Infrastructure Specialist from Brazil
 - Focus: Modern web development, server/warehouse infrastructure, database optimization, and tech projects
 - Current page: ${context.currentPage}
+- Current path: ${context.pagePath ?? 'unknown'}
 - Recent posts: ${context.recentPosts?.map((p) => p.title).join(', ') || 'none'}
 - Featured projects: ${context.projects?.map((p) => p.name).join(', ') || 'none'}
+
+Page context (if available):
+${pageContextBlock}
+
+Conversation (recent):
+${conversationBlock}
+
+Sources (internal site links you can reference; do not invent URLs):
+${sourcesBlock || 'none'}
 
 About Yuri:
 - Database Administrator (DBA) and Server Infrastructure Specialist

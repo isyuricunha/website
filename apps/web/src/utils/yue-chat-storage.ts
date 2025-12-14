@@ -9,6 +9,15 @@ export type ChatMessage = {
     timestamp: string
     isError?: boolean
     type?: 'text'
+    requestId?: string
+    latencyMs?: number
+    citations?: Array<{
+        id: string
+        title: string
+        href: string
+        excerpt?: string
+        type: 'post' | 'project' | 'page'
+    }>
     reactions?: {
         likes: number
         dislikes: number
@@ -33,6 +42,20 @@ const legacyMessagesSchema = z
             timestamp: z.string(),
             isError: z.boolean().optional(),
             type: z.literal('text').optional(),
+            requestId: z.string().optional(),
+            latencyMs: z.number().int().min(0).optional(),
+            citations: z
+                .array(
+                    z.object({
+                        id: z.string().min(1),
+                        title: z.string().min(1),
+                        href: z.string().min(1),
+                        excerpt: z.string().optional(),
+                        type: z.enum(['post', 'project', 'page'])
+                    })
+                )
+                .max(10)
+                .optional(),
             reactions: z
                 .object({
                     likes: z.number().int().min(0),

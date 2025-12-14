@@ -18,6 +18,17 @@ vi.mock('@/lib/spam-detection', () => ({
   getClientIp: vi.fn()
 }))
 
+vi.mock('@/lib/ai/site-index', () => ({
+  find_citations: vi.fn(() => [
+    { id: 'post:hello', title: 'Hello', href: '/en/blog/hello', type: 'post', excerpt: 'hi' }
+  ]),
+  get_page_context: vi.fn(() => null),
+  build_navigation_answer: vi.fn(() => ({
+    message: 'nav',
+    citations: [{ id: 'page:about', title: 'About', href: '/en/about', type: 'page' }]
+  }))
+}))
+
 vi.mock('@/lib/ai/ai-service', () => ({
   aiService: {
     getAvailableProviders: vi.fn(),
@@ -47,9 +58,9 @@ describe('/api/ai/chat', () => {
     const res = await POST(req)
 
     expect(res.status).toBe(429)
-    expect(await res.json()).toEqual({
-      error: 'Rate limit exceeded. Please try again later.'
-    })
+    const json = (await res.json()) as { error?: string; requestId?: string }
+    expect(json.error).toBe('Rate limit exceeded. Please try again later.')
+    expect(typeof json.requestId).toBe('string')
     expect(ratelimit.limit).toHaveBeenCalledWith('ai:chat:1.2.3.4')
   })
 
@@ -102,16 +113,23 @@ describe('/api/ai/chat', () => {
       message: string
       provider: string
       latencyMs: number
+      requestId?: string
+      citations?: unknown
     }
 
     expect(res.status).toBe(200)
     expect(json.message).toBe('ok')
     expect(json.provider).toBe('ollama')
     expect(typeof json.latencyMs).toBe('number')
+    expect(typeof json.requestId).toBe('string')
+    expect(json.citations).toBeTruthy()
 
     expect(aiService.generateResponse).toHaveBeenCalledWith(
       'hello',
-      { currentPage: '/test', locale: 'pt' },
+      expect.objectContaining({
+        currentPage: '/test',
+        locale: 'pt'
+      }),
       { provider: 'ollama', model: undefined }
     )
   })
@@ -141,14 +159,19 @@ describe('/api/ai/chat', () => {
     const res = await POST(req)
     const json = (await res.json()) as {
       provider: string
+      requestId?: string
     }
 
     expect(res.status).toBe(200)
     expect(json.provider).toBe('ollama')
+    expect(typeof json.requestId).toBe('string')
 
     expect(aiService.generateResponse).toHaveBeenCalledWith(
       'hello',
-      { currentPage: '/test', locale: 'en' },
+      expect.objectContaining({
+        currentPage: '/test',
+        locale: 'en'
+      }),
       { provider: 'ollama', model: undefined }
     )
   })
