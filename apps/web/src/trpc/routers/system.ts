@@ -297,6 +297,20 @@ export const systemRouter = createTRPCRouter({
         }
       })
 
+      const parse_config_value = (rawValue: string, meta: { key: string; type: string }) => {
+        try {
+          return JSON.parse(rawValue)
+        } catch (error) {
+          logger.warn('Invalid JSON in site config value', {
+            error,
+            key: meta.key,
+            type: meta.type,
+            rawValueLength: rawValue.length
+          })
+          return rawValue
+        }
+      }
+
       // Group by type
       const groupedConfig: Record<string, any[]> = {}
       config.forEach((item) => {
@@ -307,7 +321,7 @@ export const systemRouter = createTRPCRouter({
         }
         group.push({
           ...item,
-          value: item.value ? JSON.parse(item.value) : null
+          value: item.value ? parse_config_value(item.value, { key: item.key, type: item.type }) : null
         })
       })
 
