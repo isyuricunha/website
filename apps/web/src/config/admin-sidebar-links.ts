@@ -7,7 +7,13 @@ import {
   BarChart3Icon,
   MegaphoneIcon,
   BellIcon,
-  SendIcon
+  SendIcon,
+  FileTextIcon,
+  FilesIcon,
+  BoxesIcon,
+  WrenchIcon,
+  HeartPulseIcon,
+  MessageCircleMoreIcon
 } from 'lucide-react'
 
 export const ADMIN_SIDEBAR_LINKS = [
@@ -18,6 +24,16 @@ export const ADMIN_SIDEBAR_LINKS = [
         titleKey: 'dashboard',
         url: '/admin',
         icon: BarChart3Icon
+      },
+      {
+        titleKey: 'posts',
+        url: '/admin/posts',
+        icon: FileTextIcon
+      },
+      {
+        titleKey: 'content',
+        url: '/admin/content',
+        icon: FilesIcon
       },
       {
         titleKey: 'users',
@@ -45,6 +61,11 @@ export const ADMIN_SIDEBAR_LINKS = [
     titleKey: 'communication',
     links: [
       {
+        titleKey: 'communication',
+        url: '/admin/communication',
+        icon: MessageCircleMoreIcon
+      },
+      {
         titleKey: 'email_marketing',
         url: '/admin/email-marketing',
         icon: SendIcon
@@ -68,6 +89,11 @@ export const ADMIN_SIDEBAR_LINKS = [
         titleKey: 'monitoring_dashboard',
         url: '/admin/monitoring',
         icon: ActivityIcon
+      },
+      {
+        titleKey: 'system_health',
+        url: '/admin/system-health',
+        icon: HeartPulseIcon
       }
     ]
   },
@@ -78,6 +104,16 @@ export const ADMIN_SIDEBAR_LINKS = [
         titleKey: 'data_management',
         url: '/admin/data-management',
         icon: DatabaseIcon
+      },
+      {
+        titleKey: 'bulk_operations',
+        url: '/admin/bulk-operations',
+        icon: BoxesIcon
+      },
+      {
+        titleKey: 'configuration',
+        url: '/admin/configuration',
+        icon: WrenchIcon
       }
     ]
   }

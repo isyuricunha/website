@@ -1,19 +1,28 @@
 import type { SidebarGroup as SidebarGroupConfig } from '@/config/admin-sidebar-links'
 
-import { useTranslations } from '@isyuricunha/i18n/client'
 import { SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu } from '@isyuricunha/ui'
 
 import AdminNavLink from './admin-nav-link'
+
+const humanize_title_key = (titleKey: string) => {
+  return titleKey
+    .replaceAll('_', ' ')
+    .replaceAll('-', ' ')
+    .split(' ')
+    .filter(Boolean)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ')
+}
 
 type AdminNavGroupProps = SidebarGroupConfig
 
 const AdminNavGroup = (props: AdminNavGroupProps) => {
   const { titleKey, links } = props
-  const t = useTranslations()
+  const label = humanize_title_key(titleKey)
 
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>{t(`admin.nav.${titleKey}`)}</SidebarGroupLabel>
+      <SidebarGroupLabel>{label}</SidebarGroupLabel>
       <SidebarGroupContent>
         <SidebarMenu>
           {links.map((link) => (
