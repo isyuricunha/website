@@ -12,7 +12,8 @@
     "./request": "./src/request.ts",
     "./routing": "./src/routing.ts",
     "./server": "./src/server.ts",
-    "./messages/*.json": "./src/messages/*.json"
+    "./messages/en.json": "./src/messages/en.json",
+    "./messages/pt.json": "./src/messages/pt.json"
   },
   "scripts": {
     "clean": "rm -rf .turbo",

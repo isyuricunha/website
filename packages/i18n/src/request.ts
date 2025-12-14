@@ -9,9 +9,14 @@ export default getRequestConfig(async ({ requestLocale }) => {
     locale = i18n.defaultLocale
   }
 
+  const messages_by_locale = {
+    en: (await import('./messages/en.json')).default,
+    pt: (await import('./messages/pt.json')).default
+  } as const
+
   return {
     messages: {
-      ...(await import(`./messages/${locale}.json`)).default
+      ...messages_by_locale[locale as keyof typeof messages_by_locale]
     },
     locale
   }
