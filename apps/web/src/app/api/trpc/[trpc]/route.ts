@@ -9,7 +9,9 @@ import { logger } from '@/lib/logger'
 
 const create_trpc_context = async (req: NextRequest) => {
   return createTRPCContext({
-    headers: req.headers
+    headers: req.headers,
+    method: req.method,
+    url: req.nextUrl.pathname
   })
 }
 
@@ -23,8 +25,8 @@ const handler = async (req: NextRequest) =>
     onError:
       env.NODE_ENV === 'development'
         ? ({ path, error }) => {
-            logger.error(`tRPC failed on ${path ?? '<no-path>'}`, error)
-          }
+          logger.error(`tRPC failed on ${path ?? '<no-path>'}`, error)
+        }
         : undefined
   })
 
