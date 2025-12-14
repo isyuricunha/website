@@ -56,10 +56,12 @@ type SecuritySetting = {
   }
 }
 
+const all_categories_value = 'all'
+
 export default function SecurityManagement() {
   const [selectedTab, setSelectedTab] = useState('overview')
   const [settingsSearchTerm, setSettingsSearchTerm] = useState('')
-  const [selectedSettingsCategory, setSelectedSettingsCategory] = useState<string>('')
+  const [selectedSettingsCategory, setSelectedSettingsCategory] = useState<string>(all_categories_value)
   const [editingSettingKey, setEditingSettingKey] = useState<string | null>(null)
   const [draftSettingValue, setDraftSettingValue] = useState('')
   const [draftSettingDescription, setDraftSettingDescription] = useState('')
@@ -150,7 +152,7 @@ export default function SecurityManagement() {
     const result: Record<string, SecuritySetting[]> = {}
 
     for (const [category, settings] of Object.entries(grouped)) {
-      if (selectedSettingsCategory && category !== selectedSettingsCategory) continue
+      if (selectedSettingsCategory !== all_categories_value && category !== selectedSettingsCategory) continue
 
       const items = (settings as SecuritySetting[]).filter((s) => {
         if (!settingsSearchTerm) return true
@@ -590,7 +592,7 @@ export default function SecurityManagement() {
                         <SelectValue placeholder='All categories' />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value=''>All categories</SelectItem>
+                        <SelectItem value={all_categories_value}>All categories</SelectItem>
                         {categories.map((c) => (
                           <SelectItem key={c} value={c}>
                             {c}

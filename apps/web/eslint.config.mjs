@@ -11,7 +11,7 @@ export default isyuricunha(
     turbo: true
   },
   {
-    ignores: ['public/**/*.js']
+    ignores: ['public/**/*.js', 'scripts/vercel-ignore.js']
   },
   {
     files: [GLOB_E2E],
