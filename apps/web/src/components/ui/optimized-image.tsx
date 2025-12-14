@@ -90,7 +90,7 @@ export function BlogCoverImage({
       width={1200}
       height={630}
       priority={priority}
-      fallbackSrc='/images/blog/default-cover.png'
+      fallbackSrc='/images/og.png'
       className='overflow-hidden rounded-lg'
       imageClassName='transition-transform group-hover:scale-105'
     />
@@ -113,7 +113,7 @@ export function ProjectCoverImage({
       width={1280}
       height={832}
       priority={priority}
-      fallbackSrc='/images/projects/default-cover.png'
+      fallbackSrc='/images/og.png'
       className='aspect-video w-full object-cover'
       imageClassName='transition-transform duration-500 group-hover:scale-110'
     />
