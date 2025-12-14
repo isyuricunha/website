@@ -19,7 +19,7 @@ interface SEOProps {
 export function generateSEO({
   title,
   description = SITE_DESCRIPTION,
-  image = '/images/og-default.png',
+  image = '/images/og.png',
   url = SITE_URL,
   type = 'website',
   publishedTime,
