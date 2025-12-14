@@ -2,6 +2,7 @@ const normalize = (value: string) => value.trim().replace(/\s+/g, ' ')
 
 export const rate_limit_keys = {
     ai_chat: (ip: string) => `ai:chat:${normalize(ip)}`,
+    ai_chat_feedback: (ip: string) => `ai:chat:feedback:${normalize(ip)}`,
     ai_content: (ip: string) => `ai:content:${normalize(ip)}`,
     contact_submit: (ip: string) => `contact:submit:${normalize(ip)}`,
     newsletter_subscribe: (ip: string) => `newsletter:subscribe:${normalize(ip)}`,

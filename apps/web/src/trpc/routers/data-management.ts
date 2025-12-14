@@ -245,7 +245,7 @@ export const dataManagementRouter = createTRPCRouter({
           id: checkId,
           name: input.name,
           type: 'validity',
-          table: input.tableName,
+          tableName: input.tableName,
           rules: JSON.stringify(input.checkRules),
           createdBy: ctx.session.user.id
         })
