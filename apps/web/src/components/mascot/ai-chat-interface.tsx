@@ -2,22 +2,19 @@
 
 import { useTranslations, useLocale } from '@isyuricunha/i18n/client'
 
-import { Loader2, MessageCircle, Send, ThumbsDown, ThumbsUp, X } from 'lucide-react'
-import { useEffect, useRef, useState } from 'react'
+import { Copy, Loader2, MessageCircle, Plus, Send, Share2, ThumbsDown, ThumbsUp, Trash2, X } from 'lucide-react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { toast } from 'sonner'
 
-interface ChatMessage {
-  id: string
-  text: string
-  isUser: boolean
-  timestamp: string
-  isError?: boolean
-  type?: 'text'
-  reactions?: {
-    likes: number
-    dislikes: number
-    userReaction?: 'like' | 'dislike' | null
-  }
-}
+import {
+  type ChatConversation,
+  type ChatMessage,
+  createEmptyConversation,
+  decodeConversationShare,
+  encodeConversationShare,
+  loadYueChatState,
+  saveYueChatState
+} from '@/utils/yue-chat-storage'
 
 interface AIChatInterfaceProps {
   readonly isOpen: boolean
@@ -34,13 +31,31 @@ export default function AIChatInterface({
 }: AIChatInterfaceProps) {
   const t = useTranslations()
   const locale = useLocale()
-  const storageKey = 'yue_chat_history_v1'
-  const [messages, setMessages] = useState<ChatMessage[]>([])
+  const [conversations, setConversations] = useState<ChatConversation[]>([])
+  const [activeConversationId, setActiveConversationId] = useState<string>('')
   const [inputValue, setInputValue] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [typingDots, setTypingDots] = useState('')
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+
+  const getWelcomeMessage = useCallback((): ChatMessage => {
+    return {
+      id: 'welcome',
+      text: t('mascot.aiChat.welcomeMessage'),
+      isUser: false,
+      timestamp: new Date().toISOString(),
+      type: 'text'
+    }
+  }, [t])
+
+  const activeConversation = useMemo(() => {
+    return conversations.find((c) => c.id === activeConversationId) ?? null
+  }, [activeConversationId, conversations])
+
+  const messages = useMemo(() => {
+    return activeConversation?.messages ?? []
+  }, [activeConversation])
 
   const get_bubble_class_name = (message: ChatMessage) => {
     if (message.isUser) {
@@ -64,34 +79,148 @@ export default function AIChatInterface({
     return () => clearTimeout(timer)
   }, [isOpen])
 
-  // Load persisted history or show welcome when first opened
+  // Load persisted conversations, migrate legacy storage, and optionally import a shared conversation.
   useEffect(() => {
-    if (!isOpen || messages.length > 0) return
+    if (!isOpen) return
 
-    try {
-      const stored = localStorage.getItem(storageKey)
-      if (stored) {
-        const parsed: ChatMessage[] = JSON.parse(stored)
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          setMessages(parsed)
-          return
+    const loaded = loadYueChatState()
+    let nextConversations = loaded.conversations
+    let nextActiveId = loaded.activeConversationId
+
+    if (globalThis.window !== undefined) {
+      const params = new URLSearchParams(globalThis.location.search)
+      const shared = params.get('yue_chat')
+
+      if (shared) {
+        const decoded = decodeConversationShare(shared)
+        if (decoded) {
+          const importedId = (() => {
+            try {
+              return globalThis.crypto.randomUUID()
+            } catch {
+              return `${Date.now()}-${Math.random().toString(16).slice(2)}`
+            }
+          })()
+
+          const imported: ChatConversation = {
+            ...decoded,
+            id: importedId,
+            title: decoded.title || t('mascot.aiChat.importedTitle'),
+            updatedAt: new Date().toISOString()
+          }
+
+          nextConversations = [imported, ...nextConversations].slice(0, 50)
+          nextActiveId = imported.id
+
+          params.delete('yue_chat')
+          const url = `${globalThis.location.pathname}${params.size > 0 ? `?${params.toString()}` : ''}`
+          globalThis.history.replaceState(null, '', url)
+
+          toast.success(t('mascot.aiChat.imported'))
+        } else {
+          toast.error(t('mascot.aiChat.importFailed'))
         }
       }
-    } catch {
-      // ignore corrupted storage
     }
 
-    const welcomeMessage: ChatMessage = {
-      id: 'welcome',
-      text: t('mascot.aiChat.welcomeMessage'),
-      isUser: false,
-      timestamp: new Date().toISOString()
+    // Ensure active conversation has at least the welcome message
+    nextConversations = nextConversations.map((c) => {
+      if (c.id !== nextActiveId) return c
+      if (c.messages.length > 0) return c
+      return { ...c, messages: [getWelcomeMessage()], updatedAt: new Date().toISOString() }
+    })
+
+    setConversations(nextConversations)
+    setActiveConversationId(nextActiveId)
+    saveYueChatState({ conversations: nextConversations, activeConversationId: nextActiveId })
+  }, [getWelcomeMessage, isOpen, t])
+
+  useEffect(() => {
+    if (!isOpen) return
+    if (!activeConversationId) return
+
+    saveYueChatState({ conversations, activeConversationId })
+  }, [activeConversationId, conversations, isOpen])
+
+  const updateActiveConversation = (updater: (conversation: ChatConversation) => ChatConversation) => {
+    if (!activeConversation) return
+
+    setConversations((prev) =>
+      prev.map((c) => {
+        if (c.id !== activeConversation.id) return c
+        return updater(c)
+      })
+    )
+  }
+
+  const startNewChat = () => {
+    const created = createEmptyConversation(t('mascot.aiChat.newChatTitle'))
+    const withWelcome: ChatConversation = {
+      ...created,
+      messages: [getWelcomeMessage()],
+      updatedAt: new Date().toISOString()
     }
-    setMessages([welcomeMessage])
-  }, [isOpen, messages.length, t, storageKey])
+
+    setConversations((prev) => [withWelcome, ...prev].slice(0, 50))
+    setActiveConversationId(withWelcome.id)
+  }
+
+  const renameChat = () => {
+    if (!activeConversation) return
+    const next = prompt(t('mascot.aiChat.renamePrompt'), activeConversation.title)
+    if (!next?.trim()) return
+
+    const title = next.trim().slice(0, 120)
+    updateActiveConversation((c) => ({ ...c, title, updatedAt: new Date().toISOString() }))
+  }
+
+  const deleteChat = () => {
+    if (!activeConversation) return
+
+    const confirmed = confirm(t('mascot.aiChat.deleteConfirm'))
+    if (!confirmed) return
+
+    setConversations((prev) => {
+      const remaining = prev.filter((c) => c.id !== activeConversation.id)
+      if (remaining.length > 0) {
+        setActiveConversationId(remaining[0]?.id ?? '')
+        return remaining
+      }
+
+      const created = createEmptyConversation(t('mascot.aiChat.newChatTitle'))
+      const withWelcome: ChatConversation = {
+        ...created,
+        messages: [getWelcomeMessage()],
+        updatedAt: new Date().toISOString()
+      }
+      setActiveConversationId(withWelcome.id)
+      return [withWelcome]
+    })
+  }
+
+  const shareChat = async () => {
+    if (!activeConversation) return
+    if (globalThis.window === undefined) return
+
+    const payload = encodeConversationShare({
+      ...activeConversation,
+      messages: activeConversation.messages.slice(-50)
+    })
+
+    const url = new URL(globalThis.location.href)
+    url.searchParams.set('yue_chat', payload)
+
+    try {
+      await navigator.clipboard.writeText(url.toString())
+      toast.success(t('mascot.aiChat.shareCopied'))
+    } catch {
+      toast.error(t('mascot.aiChat.shareCopyFailed'))
+    }
+  }
 
   const sendMessage = async () => {
     if (!inputValue.trim() || isLoading) return
+    if (!activeConversation) return
 
     const messageText = inputValue.trim()
 
@@ -105,7 +234,11 @@ export default function AIChatInterface({
 
     const nextMessages = [...messages, userMessage]
 
-    setMessages(nextMessages)
+    updateActiveConversation((c) => ({
+      ...c,
+      messages: nextMessages,
+      updatedAt: new Date().toISOString()
+    }))
     setInputValue('')
     setIsLoading(true)
     onMessageSent?.(messageText)
@@ -157,7 +290,11 @@ export default function AIChatInterface({
         type: 'text'
       }
 
-      setMessages((prev) => [...prev, aiMessage])
+      updateActiveConversation((c) => ({
+        ...c,
+        messages: [...c.messages, aiMessage],
+        updatedAt: new Date().toISOString()
+      }))
     } catch (error) {
       if (process.env.NODE_ENV === 'development') {
         console.error('Chat error:', error)
@@ -172,7 +309,11 @@ export default function AIChatInterface({
         type: 'text'
       }
 
-      setMessages((prev) => [...prev, errorMessage])
+      updateActiveConversation((c) => ({
+        ...c,
+        messages: [...c.messages, errorMessage],
+        updatedAt: new Date().toISOString()
+      }))
     } finally {
       setIsLoading(false)
     }
@@ -186,17 +327,18 @@ export default function AIChatInterface({
   }
 
   const clearChat = () => {
-    setMessages([])
-    try {
-      localStorage.removeItem(storageKey)
-    } catch {
-      // ignore storage errors
-    }
+    updateActiveConversation((c) => ({
+      ...c,
+      messages: [getWelcomeMessage()],
+      updatedAt: new Date().toISOString()
+    }))
   }
 
   const handleReaction = (messageId: string, reaction: 'like' | 'dislike') => {
-    setMessages((prevMessages) =>
-      prevMessages.map((message) => {
+    updateActiveConversation((c) => ({
+      ...c,
+      updatedAt: new Date().toISOString(),
+      messages: c.messages.map((message) => {
         if (message.id !== messageId || message.isUser) return message
 
         const currentReaction = message.reactions?.userReaction
@@ -227,7 +369,16 @@ export default function AIChatInterface({
           }
         }
       })
-    )
+    }))
+  }
+
+  const copyMessage = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text)
+      toast.success(t('mascot.aiChat.messageCopied'))
+    } catch {
+      toast.error(t('mascot.aiChat.messageCopyFailed'))
+    }
   }
 
   // Animated typing indicator
@@ -249,32 +400,66 @@ export default function AIChatInterface({
     return () => clearInterval(interval)
   }, [isLoading])
 
-  // Persist chat history locally to reduce context loss (increased to 50 messages)
-  useEffect(() => {
-    if (messages.length === 0) return
-    try {
-      localStorage.setItem(storageKey, JSON.stringify(messages.slice(-50)))
-    } catch {
-      // ignore storage errors
-    }
-  }, [messages, storageKey])
-
   if (!isOpen) return null
 
   return (
     <div className='bg-popover/95 absolute bottom-full right-0 mb-2 max-h-[600px] w-96 overflow-hidden rounded-2xl border shadow-2xl backdrop-blur-sm sm:w-[28rem]'>
       {/* Header */}
       <div className='from-primary/10 to-primary/5 flex items-center justify-between border-b bg-gradient-to-r p-3'>
-        <div className='flex items-center gap-2'>
+        <div className='flex min-w-0 items-center gap-2'>
           <div className='bg-primary/10 rounded-lg p-1.5'>
             <MessageCircle className='h-4 w-4' />
           </div>
           <div className='flex flex-col'>
             <span className='text-sm font-semibold leading-none'>{t('mascot.aiChat.title')}</span>
-            <span className='text-muted-foreground text-xs'>Gemini AI</span>
+            <div className='text-muted-foreground mt-0.5 flex items-center gap-2 text-xs'>
+              <select
+                value={activeConversationId}
+                onChange={(e) => setActiveConversationId(e.target.value)}
+                className='bg-background/40 border-border/40 max-w-[180px] rounded border px-2 py-0.5 text-xs'
+                aria-label={t('mascot.aiChat.conversations')}
+              >
+                {conversations.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.title}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
         </div>
         <div className='flex items-center gap-1'>
+          <button
+            type='button'
+            onClick={startNewChat}
+            className='hover:bg-muted rounded p-1 transition-colors'
+            aria-label={t('mascot.aiChat.newChat')}
+          >
+            <Plus className='h-4 w-4' />
+          </button>
+          <button
+            type='button'
+            onClick={shareChat}
+            className='hover:bg-muted rounded p-1 transition-colors'
+            aria-label={t('mascot.aiChat.share')}
+          >
+            <Share2 className='h-4 w-4' />
+          </button>
+          <button
+            type='button'
+            onClick={renameChat}
+            className='hover:bg-muted rounded px-2 py-1 text-xs transition-colors'
+          >
+            {t('mascot.aiChat.rename')}
+          </button>
+          <button
+            type='button'
+            onClick={deleteChat}
+            className='hover:bg-muted rounded p-1 transition-colors'
+            aria-label={t('mascot.aiChat.deleteChat')}
+          >
+            <Trash2 className='h-4 w-4' />
+          </button>
           {messages.length > 1 && (
             <button
               type='button'
@@ -310,6 +495,16 @@ export default function AIChatInterface({
                     <span className='text-primary text-xs font-bold'>Y</span>
                   </div>
                   <span className='text-muted-foreground text-xs font-medium'>Yue</span>
+                  {!message.isError && (
+                    <button
+                      type='button'
+                      onClick={() => copyMessage(message.text)}
+                      className='text-muted-foreground hover:text-foreground ml-auto rounded p-1 transition-colors'
+                      aria-label={t('mascot.aiChat.copyMessage')}
+                    >
+                      <Copy className='h-3.5 w-3.5' />
+                    </button>
+                  )}
                 </div>
               )}
               <p className='whitespace-pre-wrap leading-relaxed'>{message.text}</p>
@@ -320,8 +515,8 @@ export default function AIChatInterface({
                       type='button'
                       onClick={() => handleReaction(message.id, 'like')}
                       className={`hover:bg-muted/80 flex items-center gap-1 rounded px-2 py-1 text-xs transition-all ${message.reactions?.userReaction === 'like'
-                          ? 'bg-green-50 text-green-600 dark:bg-green-950'
-                          : 'text-muted-foreground'
+                        ? 'bg-green-50 text-green-600 dark:bg-green-950'
+                        : 'text-muted-foreground'
                         }`}
                     >
                       <ThumbsUp className='h-3 w-3' />
@@ -331,8 +526,8 @@ export default function AIChatInterface({
                       type='button'
                       onClick={() => handleReaction(message.id, 'dislike')}
                       className={`hover:bg-muted/80 flex items-center gap-1 rounded px-2 py-1 text-xs transition-all ${message.reactions?.userReaction === 'dislike'
-                          ? 'bg-red-50 text-red-600 dark:bg-red-950'
-                          : 'text-muted-foreground'
+                        ? 'bg-red-50 text-red-600 dark:bg-red-950'
+                        : 'text-muted-foreground'
                         }`}
                     >
                       <ThumbsDown className='h-3 w-3' />
