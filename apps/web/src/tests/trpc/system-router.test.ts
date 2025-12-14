@@ -88,6 +88,18 @@ type ErrorLogRow = {
     createdAt: Date
 }
 
+type SiteConfigRow = {
+    id: string
+    key: string
+    value: string | null
+    type: string
+    description: string | null
+    isPublic: boolean
+    updatedBy: string
+    createdAt: Date
+    updatedAt: Date
+}
+
 const createDbMock = () => {
     const health_logs: SystemHealthLogRow[] = []
     const error_logs: ErrorLogRow[] = [
@@ -102,6 +114,20 @@ const createDbMock = () => {
         }
     ]
 
+    const site_config: SiteConfigRow[] = [
+        {
+            id: 'cfg-1',
+            key: 'site.title',
+            value: JSON.stringify('Website'),
+            type: 'general',
+            description: 'site title',
+            isPublic: true,
+            updatedBy: 'admin-1',
+            createdAt: new Date(),
+            updatedAt: new Date()
+        }
+    ]
+
     const insert = vi.fn((table: unknown) => {
         return {
             values: vi.fn(async (value: any) => {
@@ -111,12 +137,24 @@ const createDbMock = () => {
                     health_logs.push(value)
                 }
 
-                return
+                if (tableName === 'site_config') {
+                    site_config.push(value)
+                }
             })
         }
     })
 
-    const updateWhere = vi.fn(async () => {
+    const updateSiteConfigWhere = vi.fn(async () => {
+        const cfg = site_config[0]
+        if (cfg) {
+            cfg.value = JSON.stringify('Updated')
+            cfg.updatedAt = new Date()
+            cfg.updatedBy = 'admin-1'
+        }
+        return
+    })
+
+    const updateErrorWhere = vi.fn(async () => {
         const error = error_logs[0]
         if (error) {
             error.resolved = true
@@ -126,8 +164,14 @@ const createDbMock = () => {
         return
     })
 
-    const updateSet = vi.fn(() => ({ where: updateWhere }))
-    const update = vi.fn(() => ({ set: updateSet }))
+    const updateErrorSet = vi.fn(() => ({ where: updateErrorWhere }))
+    const updateSiteConfigSet = vi.fn(() => ({ where: updateSiteConfigWhere }))
+
+    const update = vi.fn((table: unknown) => {
+        const tableName = (table as any)?.[Symbol.for('drizzle:Name')] ?? null
+        const set = tableName === 'site_config' ? updateSiteConfigSet : updateErrorSet
+        return { set }
+    })
 
     const query = {
         users: {
@@ -140,7 +184,8 @@ const createDbMock = () => {
             findMany: vi.fn(async () => error_logs)
         },
         siteConfig: {
-            findMany: vi.fn(async () => [])
+            findMany: vi.fn(async () => site_config),
+            findFirst: vi.fn(async () => site_config[0] ?? null)
         }
     }
 
@@ -150,11 +195,14 @@ const createDbMock = () => {
         query,
         __state: {
             health_logs,
-            error_logs
+            error_logs,
+            site_config
         },
         __mocks: {
-            updateWhere,
-            updateSet
+            updateErrorWhere,
+            updateSiteConfigWhere,
+            updateErrorSet,
+            updateSiteConfigSet
         }
     }
 }
@@ -204,7 +252,58 @@ describe('systemRouter', () => {
         expect(result.success).toBe(true)
         expect(db.__state.error_logs[0]?.resolved).toBe(true)
         expect(db.__state.error_logs[0]?.resolvedBy).toBe('admin-1')
-        expect(db.__mocks.updateWhere).toHaveBeenCalledTimes(1)
+        expect(db.__mocks.updateErrorWhere).toHaveBeenCalledTimes(1)
         expect(auditLogMock).toHaveBeenCalledTimes(1)
+    })
+
+    it('getSiteConfig returns grouped config with parsed values', async () => {
+        const { systemRouter } = await import('@/trpc/routers/system')
+
+        const db = createDbMock()
+
+        const caller = systemRouter.createCaller({
+            db: db as unknown,
+            headers: new Headers(),
+            session: {
+                user: { id: 'admin-1', role: 'admin' }
+            }
+        } as unknown as Parameters<typeof systemRouter.createCaller>[0])
+
+        const result = await caller.getSiteConfig()
+
+        const general = result.config.general
+        expect(general).toBeDefined()
+        if (!general) {
+            throw new Error('Expected general config group to be defined')
+        }
+        expect(general).toHaveLength(1)
+        expect(general[0]?.key).toBe('site.title')
+        expect(general[0]?.value).toBe('Website')
+    })
+
+    it('updateSiteConfig updates existing config when key exists', async () => {
+        const { systemRouter } = await import('@/trpc/routers/system')
+
+        const db = createDbMock()
+
+        const caller = systemRouter.createCaller({
+            db: db as unknown,
+            headers: new Headers({ 'x-forwarded-for': '203.0.113.10' }),
+            session: {
+                user: { id: 'admin-1', role: 'admin' }
+            }
+        } as unknown as Parameters<typeof systemRouter.createCaller>[0])
+
+        const result = await caller.updateSiteConfig({
+            key: 'site.title',
+            value: JSON.stringify('Updated'),
+            type: 'general',
+            description: 'site title',
+            isPublic: true
+        })
+
+        expect(result.success).toBe(true)
+        expect(db.__mocks.updateSiteConfigWhere).toHaveBeenCalledTimes(1)
+        expect(auditLogMock).toHaveBeenCalled()
     })
 })

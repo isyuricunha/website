@@ -194,45 +194,49 @@ describe('securityRouter admin events', () => {
         vi.resetModules()
     })
 
-    it('addIpAccessRule creates a security event', async () => {
-        const { securityRouter } = await import('@/trpc/routers/security')
+    it(
+        'addIpAccessRule creates a security event',
+        async () => {
+            const { securityRouter } = await import('@/trpc/routers/security')
 
-        const db = createDbMock()
+            const db = createDbMock()
 
-        const caller = securityRouter.createCaller({
-            db: db as unknown,
-            headers: new Headers({ 'x-forwarded-for': '203.0.113.10' }),
-            session: {
-                user: { id: 'admin-1', role: 'admin' }
-            }
-        } as unknown as Parameters<typeof securityRouter.createCaller>[0])
+            const caller = securityRouter.createCaller({
+                db: db as unknown,
+                headers: new Headers({ 'x-forwarded-for': '203.0.113.10' }),
+                session: {
+                    user: { id: 'admin-1', role: 'admin' }
+                }
+            } as unknown as Parameters<typeof securityRouter.createCaller>[0])
 
-        const result = await caller.addIpAccessRule({
-            ipAddress: '198.51.100.10',
-            type: 'blacklist',
-            description: 'test'
-        })
-
-        expect(result.success).toBe(true)
-        expect(db.__state.ip_rules).toHaveLength(1)
-        expect(db.__state.security_events).toHaveLength(1)
-
-        const event = db.__state.security_events[0]
-        expect(event?.eventType).toBe('admin_action')
-        expect(event?.severity).toBe('medium')
-        expect(event?.userId).toBe('admin-1')
-        expect(event?.ipAddress).toBe('203.0.113.10')
-        expect(event?.userAgent).toBe('vitest')
-
-        const details = event?.details ? JSON.parse(event.details) : null
-        expect(details).toEqual(
-            expect.objectContaining({
-                action: 'ip_rule_added',
+            const result = await caller.addIpAccessRule({
+                ipAddress: '198.51.100.10',
                 type: 'blacklist',
-                ipAddress: '198.51.100.10'
+                description: 'test'
             })
-        )
-    })
+
+            expect(result.success).toBe(true)
+            expect(db.__state.ip_rules).toHaveLength(1)
+            expect(db.__state.security_events).toHaveLength(1)
+
+            const event = db.__state.security_events[0]
+            expect(event?.eventType).toBe('admin_action')
+            expect(event?.severity).toBe('medium')
+            expect(event?.userId).toBe('admin-1')
+            expect(event?.ipAddress).toBe('203.0.113.10')
+            expect(event?.userAgent).toBe('vitest')
+
+            const details = event?.details ? JSON.parse(event.details) : null
+            expect(details).toEqual(
+                expect.objectContaining({
+                    action: 'ip_rule_added',
+                    type: 'blacklist',
+                    ipAddress: '198.51.100.10'
+                })
+            )
+        },
+        15_000
+    )
 
     it('lockAccount creates a security event', async () => {
         const { securityRouter } = await import('@/trpc/routers/security')

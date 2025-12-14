@@ -19,11 +19,49 @@ import {
 import { api } from '@/trpc/react'
 import { toast } from 'sonner'
 
+type ConfigType = 'general' | 'seo' | 'social' | 'email' | 'analytics' | 'security' | 'features'
+
+const is_config_type = (value: string): value is ConfigType => {
+  return (
+    value === 'general' ||
+    value === 'seo' ||
+    value === 'social' ||
+    value === 'email' ||
+    value === 'analytics' ||
+    value === 'security' ||
+    value === 'features'
+  )
+}
+
+const normalize_config_value = (value: unknown): string => {
+  if (typeof value === 'string') return value
+  if (value === null || value === undefined) return ''
+
+  try {
+    return JSON.stringify(value, null, 2)
+  } catch {
+    switch (typeof value) {
+      case 'number':
+      case 'boolean':
+      case 'bigint':
+        return `${value}`
+      case 'symbol':
+        return value.description ? `Symbol(${value.description})` : 'Symbol()'
+      case 'function':
+        return '[function]'
+      case 'object':
+        return Object.prototype.toString.call(value)
+      default:
+        return ''
+    }
+  }
+}
+
 interface ConfigItem {
   id: string
   key: string
-  value?: string
-  type: 'general' | 'seo' | 'social' | 'email' | 'analytics' | 'security' | 'features'
+  value?: unknown
+  type: ConfigType
   description?: string
   isPublic: boolean
   updatedBy: {
@@ -46,12 +84,12 @@ export const ConfigurationPanel = () => {
   const edit_textarea_ref = useRef<HTMLTextAreaElement | null>(null)
   const [newConfigKey, setNewConfigKey] = useState('')
   const [newConfigValue, setNewConfigValue] = useState('')
-  const [newConfigType, setNewConfigType] = useState<
-    'general' | 'seo' | 'social' | 'email' | 'analytics' | 'security' | 'features'
-  >('general')
+  const [newConfigType, setNewConfigType] = useState<ConfigType>('general')
   const [newConfigDescription, setNewConfigDescription] = useState('')
   const [newConfigIsPublic, setNewConfigIsPublic] = useState(false)
   const [showAddForm, setShowAddForm] = useState(false)
+
+  const utils = api.useUtils()
 
   useEffect(() => {
     if (!editingConfig) return
@@ -76,7 +114,7 @@ export const ConfigurationPanel = () => {
       setNewConfigKey('')
       setNewConfigValue('')
       setNewConfigDescription('')
-      refetch()
+      utils.system.getSiteConfig.invalidate()
     },
     onError: (error) => {
       toast.error(error.message || 'Failed to update configuration')
@@ -170,7 +208,7 @@ export const ConfigurationPanel = () => {
         (config) =>
           !searchTerm ||
           config.key.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          config.value?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          normalize_config_value(config.value).toLowerCase().includes(searchTerm.toLowerCase()) ||
           config.description?.toLowerCase().includes(searchTerm.toLowerCase())
       )
 
@@ -287,7 +325,11 @@ export const ConfigurationPanel = () => {
               </label>
               <select
                 value={newConfigType}
-                onChange={(e) => setNewConfigType(e.target.value as any)}
+                onChange={(e) => {
+                  if (is_config_type(e.target.value)) {
+                    setNewConfigType(e.target.value)
+                  }
+                }}
                 className='w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white'
               >
                 <option value='general'>General</option>
@@ -379,9 +421,9 @@ export const ConfigurationPanel = () => {
                       <div className='space-y-3'>
                         <textarea
                           ref={edit_textarea_ref}
-                          defaultValue={config.value || ''}
+                          defaultValue={normalize_config_value(config.value)}
                           onBlur={(e) => {
-                            if (e.target.value === config.value) {
+                            if (e.target.value === normalize_config_value(config.value)) {
                               setEditingConfig(null)
                             } else {
                               handleSaveConfig(config, e.target.value)
@@ -407,7 +449,7 @@ export const ConfigurationPanel = () => {
                         className='cursor-pointer text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white'
                         onClick={() => setEditingConfig(config)}
                       >
-                        {config.value || <em>No value set</em>}
+                        {normalize_config_value(config.value) || <em>No value set</em>}
                       </div>
                     )}
 
