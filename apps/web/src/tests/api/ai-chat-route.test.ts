@@ -29,6 +29,13 @@ vi.mock('@/lib/ai/site-index', () => ({
   }))
 }))
 
+vi.mock('@/lib/ai/ai-observability', () => ({
+  estimate_tokens: vi.fn(() => 1),
+  record_ai_chat_observability: vi.fn(async () => {
+    return
+  })
+}))
+
 vi.mock('@/lib/ai/ai-service', () => ({
   aiService: {
     getAvailableProviders: vi.fn(),

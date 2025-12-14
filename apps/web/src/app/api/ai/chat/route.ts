@@ -4,6 +4,7 @@ import { NextResponse } from 'next/server'
 import { z } from 'zod'
 
 import { aiService } from '@/lib/ai/ai-service'
+import { estimate_tokens, record_ai_chat_observability } from '@/lib/ai/ai-observability'
 import { build_navigation_answer, find_citations, get_page_context } from '@/lib/ai/site-index'
 import { logger } from '@/lib/logger'
 import { ratelimit } from '@/lib/ratelimit'
@@ -57,35 +58,84 @@ const infer_mode = (message: string): 'chat' | 'navigate' => {
 export async function POST(req: NextRequest) {
   const started_at = Date.now()
   const request_id = create_request_id()
+  const endpoint = '/api/ai/chat'
+  const method = 'POST'
+  const user_agent = req.headers.get('user-agent') ?? undefined
+
+  const response_headers = {
+    'x-request-id': request_id
+  }
+
+  const byte_length = (value: string): number => {
+    return Buffer.byteLength(value, 'utf8')
+  }
 
   try {
     const ip = getClientIp(req.headers)
     const { success } = await ratelimit.limit(rate_limit_keys.ai_chat(ip))
 
     if (!success) {
-      return NextResponse.json(
-        { error: 'Rate limit exceeded. Please try again later.', requestId: request_id },
-        { status: 429 }
-      )
+      const payload = { error: 'Rate limit exceeded. Please try again later.', requestId: request_id }
+      await record_ai_chat_observability({
+        requestId: request_id,
+        endpoint,
+        method,
+        statusCode: 429,
+        responseTimeMs: Date.now() - started_at,
+        provider: 'n/a',
+        mode: 'n/a',
+        ipAddress: ip,
+        userAgent: user_agent,
+        responseSizeBytes: byte_length(JSON.stringify(payload)),
+        errorMessage: 'rate_limited'
+      })
+      return NextResponse.json(payload, { status: 429, headers: response_headers })
     }
 
     const body = await req.json()
     const parsed = requestSchema.parse(body)
+    const request_size = byte_length(JSON.stringify(body))
 
     const available_providers = aiService.getAvailableProviders()
     if (available_providers.length === 0) {
-      return NextResponse.json(
-        { error: 'No AI providers are currently available.' },
-        { status: 503 }
-      )
+      const payload = { error: 'No AI providers are currently available.', requestId: request_id }
+      await record_ai_chat_observability({
+        requestId: request_id,
+        endpoint,
+        method,
+        statusCode: 503,
+        responseTimeMs: Date.now() - started_at,
+        provider: 'n/a',
+        mode: 'n/a',
+        model: parsed.model,
+        ipAddress: ip,
+        userAgent: user_agent,
+        requestSizeBytes: request_size,
+        responseSizeBytes: byte_length(JSON.stringify(payload)),
+        errorMessage: 'no_providers'
+      })
+      return NextResponse.json(payload, { status: 503, headers: response_headers })
     }
 
     const default_provider = available_providers[0]
     if (!default_provider) {
-      return NextResponse.json(
-        { error: 'No AI providers are currently available.' },
-        { status: 503 }
-      )
+      const payload = { error: 'No AI providers are currently available.', requestId: request_id }
+      await record_ai_chat_observability({
+        requestId: request_id,
+        endpoint,
+        method,
+        statusCode: 503,
+        responseTimeMs: Date.now() - started_at,
+        provider: 'n/a',
+        mode: 'n/a',
+        model: parsed.model,
+        ipAddress: ip,
+        userAgent: user_agent,
+        requestSizeBytes: request_size,
+        responseSizeBytes: byte_length(JSON.stringify(payload)),
+        errorMessage: 'no_default_provider'
+      })
+      return NextResponse.json(payload, { status: 503, headers: response_headers })
     }
 
     const requested_provider = parsed.provider
@@ -104,14 +154,31 @@ export async function POST(req: NextRequest) {
     if (mode === 'navigate') {
       const navigation = build_navigation_answer({ query: message, locale })
 
-      return NextResponse.json({
+      const payload = {
         requestId: request_id,
         message: navigation.message,
         citations: navigation.citations,
         timestamp: new Date().toISOString(),
         provider: 'navigation',
         latencyMs: Date.now() - started_at
+      }
+
+      await record_ai_chat_observability({
+        requestId: request_id,
+        endpoint,
+        method,
+        statusCode: 200,
+        responseTimeMs: Date.now() - started_at,
+        provider: 'navigation',
+        mode,
+        ipAddress: ip,
+        userAgent: user_agent,
+        requestSizeBytes: request_size,
+        responseSizeBytes: byte_length(JSON.stringify(payload)),
+        tokensEstimated: estimate_tokens(message) + estimate_tokens(navigation.message)
       })
+
+      return NextResponse.json(payload, { status: 200, headers: response_headers })
     }
 
     const citations = find_citations({ message, locale, page_path: page_path, limit: 5 })
@@ -133,33 +200,73 @@ export async function POST(req: NextRequest) {
       }
     )
 
-    return NextResponse.json({
+    const payload = {
       requestId: request_id,
       message: response_text,
       citations,
       timestamp: new Date().toISOString(),
       provider,
       latencyMs: Date.now() - started_at
+    }
+
+    await record_ai_chat_observability({
+      requestId: request_id,
+      endpoint,
+      method,
+      statusCode: 200,
+      responseTimeMs: Date.now() - started_at,
+      provider,
+      mode,
+      model: parsed.model,
+      ipAddress: ip,
+      userAgent: user_agent,
+      requestSizeBytes: request_size,
+      responseSizeBytes: byte_length(JSON.stringify(payload)),
+      tokensEstimated: estimate_tokens(message) + estimate_tokens(response_text)
     })
+
+    return NextResponse.json(payload, { status: 200, headers: response_headers })
   } catch (error) {
     logger.error('AI chat error', error, { requestId: request_id })
 
     if (error instanceof z.ZodError) {
-      return NextResponse.json(
-        { error: 'Invalid request format', details: error.issues, requestId: request_id },
-        { status: 400 }
-      )
+      const payload = { error: 'Invalid request format', details: error.issues, requestId: request_id }
+      await record_ai_chat_observability({
+        requestId: request_id,
+        endpoint,
+        method,
+        statusCode: 400,
+        responseTimeMs: Date.now() - started_at,
+        provider: 'n/a',
+        mode: 'n/a',
+        userAgent: user_agent,
+        responseSizeBytes: byte_length(JSON.stringify(payload)),
+        errorMessage: 'zod_error'
+      })
+      return NextResponse.json(payload, { status: 400, headers: response_headers })
     }
 
-    return NextResponse.json(
-      {
-        requestId: request_id,
-        message:
-          'Oops! Something went wrong on my end. Let me know if you need help with anything else!',
-        isError: true,
-        latencyMs: Date.now() - started_at
-      },
-      { status: 500 }
-    )
+    const payload = {
+      requestId: request_id,
+      message:
+        'Oops! Something went wrong on my end. Let me know if you need help with anything else!',
+      isError: true,
+      latencyMs: Date.now() - started_at
+    }
+
+    await record_ai_chat_observability({
+      requestId: request_id,
+      endpoint,
+      method,
+      statusCode: 500,
+      responseTimeMs: Date.now() - started_at,
+      provider: 'n/a',
+      mode: 'n/a',
+      userAgent: user_agent,
+      responseSizeBytes: byte_length(JSON.stringify(payload)),
+      errorMessage: error instanceof Error ? error.message : 'unknown_error'
+    })
+
+    return NextResponse.json(payload, { status: 500, headers: response_headers })
   }
 }
