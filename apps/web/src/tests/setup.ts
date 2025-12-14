@@ -54,3 +54,8 @@ vi.mock('@isyuricunha/ui', async (importOriginal) => {
         }
     }
 })
+
+Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', {
+    value: vi.fn(),
+    writable: true
+})

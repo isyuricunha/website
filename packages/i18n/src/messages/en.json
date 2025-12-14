@@ -834,6 +834,15 @@
       "placeholder": "Ask me anything...",
       "connectionError": "Having trouble connecting. Please try again.",
       "footer": "Powered by Yue AI by Yuri & Gemini AI",
+      "feedback": {
+        "like": "Thumbs up",
+        "dislike": "Thumbs down",
+        "commentPlaceholder": "Tell me what went wrong (optional)",
+        "send": "Send",
+        "cancel": "Cancel",
+        "sent": "Thanks for the feedback!",
+        "error": "Failed to send feedback"
+      },
       "modes": {
         "chat": "Chat",
         "imageGen": "Generate",

@@ -834,6 +834,15 @@
       "placeholder": "Me pergunte qualquer coisa...",
       "connectionError": "Problemas de conexão. Tente novamente.",
       "footer": "Powered by Yue AI by Yuri & Gemini AI",
+      "feedback": {
+        "like": "Gostei",
+        "dislike": "Não gostei",
+        "commentPlaceholder": "Conte o que deu errado (opcional)",
+        "send": "Enviar",
+        "cancel": "Cancelar",
+        "sent": "Obrigado pelo feedback!",
+        "error": "Falha ao enviar feedback"
+      },
       "modes": {
         "chat": "Conversar",
         "imageGen": "Gerar",

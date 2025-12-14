@@ -38,6 +38,11 @@ export default function AIChatInterface({
   const [inputValue, setInputValue] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [typingDots, setTypingDots] = useState('')
+  const [feedbackOpenForMessageId, setFeedbackOpenForMessageId] = useState<string | null>(null)
+  const [feedbackDraftByMessageId, setFeedbackDraftByMessageId] = useState<Record<string, string>>({})
+  const [feedbackIsSubmittingByMessageId, setFeedbackIsSubmittingByMessageId] = useState<
+    Record<string, boolean>
+  >({})
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -353,7 +358,53 @@ export default function AIChatInterface({
     }))
   }
 
+  const submit_feedback = useCallback(
+    async (input: { requestId: string; messageId: string; rating: 'like' | 'dislike'; comment?: string }) => {
+      setFeedbackIsSubmittingByMessageId((prev) => ({ ...prev, [input.messageId]: true }))
+      try {
+        const response = await fetch('/api/ai/chat/feedback', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            requestId: input.requestId,
+            messageId: input.messageId,
+            rating: input.rating,
+            comment: input.comment,
+            pagePath,
+            locale
+          })
+        })
+
+        const data: { error?: string } = await response.json()
+
+        if (!response.ok) {
+          throw new Error(data.error ?? t('mascot.aiChat.feedback.error'))
+        }
+
+        toast.success(t('mascot.aiChat.feedback.sent'))
+      } catch {
+        toast.error(t('mascot.aiChat.feedback.error'))
+      } finally {
+        setFeedbackIsSubmittingByMessageId((prev) => ({ ...prev, [input.messageId]: false }))
+      }
+    },
+    [locale, pagePath, t]
+  )
+
   const handleReaction = (messageId: string, reaction: 'like' | 'dislike') => {
+    const message = messages.find((m) => m.id === messageId)
+    if (!message || message.isUser || message.isError) return
+    if (!message.requestId) return
+
+    let nextUserReaction: 'like' | 'dislike' | null = reaction
+
+    const currentReaction = message.reactions?.userReaction
+    if (currentReaction === reaction) {
+      nextUserReaction = null
+    }
+
     updateActiveConversation((c) => ({
       ...c,
       updatedAt: new Date().toISOString(),
@@ -389,6 +440,23 @@ export default function AIChatInterface({
         }
       })
     }))
+
+    if (!nextUserReaction) {
+      setFeedbackOpenForMessageId((current) => (current === messageId ? null : current))
+      return
+    }
+
+    if (nextUserReaction === 'dislike') {
+      setFeedbackOpenForMessageId(messageId)
+      return
+    }
+
+    setFeedbackOpenForMessageId((current) => (current === messageId ? null : current))
+    void submit_feedback({
+      requestId: message.requestId,
+      messageId,
+      rating: nextUserReaction
+    })
   }
 
   const copyMessage = async (text: string) => {
@@ -544,12 +612,14 @@ export default function AIChatInterface({
                   </div>
                 </div>
               ) : null}
-              {!message.isUser && !message.isError && (
+              {!message.isUser && !message.isError && message.requestId && (
                 <div className='mt-2 flex items-center justify-between'>
                   <div className='flex items-center gap-1'>
                     <button
                       type='button'
                       onClick={() => handleReaction(message.id, 'like')}
+                      aria-label={t('mascot.aiChat.feedback.like')}
+                      disabled={feedbackIsSubmittingByMessageId[message.id] === true}
                       className={`hover:bg-muted/80 flex items-center gap-1 rounded px-2 py-1 text-xs transition-all ${message.reactions?.userReaction === 'like'
                         ? 'bg-green-50 text-green-600 dark:bg-green-950'
                         : 'text-muted-foreground'
@@ -561,6 +631,8 @@ export default function AIChatInterface({
                     <button
                       type='button'
                       onClick={() => handleReaction(message.id, 'dislike')}
+                      aria-label={t('mascot.aiChat.feedback.dislike')}
+                      disabled={feedbackIsSubmittingByMessageId[message.id] === true}
                       className={`hover:bg-muted/80 flex items-center gap-1 rounded px-2 py-1 text-xs transition-all ${message.reactions?.userReaction === 'dislike'
                         ? 'bg-red-50 text-red-600 dark:bg-red-950'
                         : 'text-muted-foreground'
@@ -578,6 +650,62 @@ export default function AIChatInterface({
                   </div>
                 </div>
               )}
+              {!message.isUser &&
+                !message.isError &&
+                message.requestId &&
+                feedbackOpenForMessageId === message.id &&
+                message.reactions?.userReaction === 'dislike' ? (
+                <div className='border-border/20 mt-3 space-y-2 border-t pt-2'>
+                  <textarea
+                    rows={2}
+                    value={feedbackDraftByMessageId[message.id] ?? ''}
+                    onChange={(e) =>
+                      setFeedbackDraftByMessageId((prev) => ({ ...prev, [message.id]: e.target.value }))
+                    }
+                    placeholder={t('mascot.aiChat.feedback.commentPlaceholder')}
+                    className='bg-background/80 border-border/50 focus:ring-primary/50 focus:border-primary placeholder:text-muted-foreground/60 w-full resize-none rounded-lg border px-3 py-2 text-xs transition-all duration-200 focus:outline-none focus:ring-2'
+                    disabled={feedbackIsSubmittingByMessageId[message.id] === true}
+                  />
+                  <div className='flex items-center justify-end gap-2'>
+                    <button
+                      type='button'
+                      onClick={() => setFeedbackOpenForMessageId(null)}
+                      className='text-muted-foreground hover:text-foreground rounded px-2 py-1 text-xs transition-colors'
+                      disabled={feedbackIsSubmittingByMessageId[message.id] === true}
+                    >
+                      {t('mascot.aiChat.feedback.cancel')}
+                    </button>
+                    <button
+                      type='button'
+                      onClick={() => {
+                        const raw = feedbackDraftByMessageId[message.id]
+                        const comment = raw?.trim() ? raw.trim() : undefined
+
+                        void submit_feedback({
+                          requestId: message.requestId!,
+                          messageId: message.id,
+                          rating: 'dislike',
+                          comment
+                        })
+
+                        setFeedbackOpenForMessageId(null)
+                        setFeedbackDraftByMessageId((prev) => ({ ...prev, [message.id]: '' }))
+                      }}
+                      className='bg-primary text-primary-foreground hover:bg-primary/90 rounded px-3 py-1 text-xs transition-colors disabled:cursor-not-allowed disabled:opacity-60'
+                      disabled={feedbackIsSubmittingByMessageId[message.id] === true}
+                    >
+                      {feedbackIsSubmittingByMessageId[message.id] === true ? (
+                        <span className='flex items-center gap-2'>
+                          <Loader2 className='h-3 w-3 animate-spin' />
+                          {t('mascot.aiChat.feedback.send')}
+                        </span>
+                      ) : (
+                        t('mascot.aiChat.feedback.send')
+                      )}
+                    </button>
+                  </div>
+                </div>
+              ) : null}
               {!message.isUser && message.isError && (
                 <div className='text-muted-foreground/60 mt-2 text-right text-xs'>
                   {new Date(message.timestamp).toLocaleTimeString([], {
