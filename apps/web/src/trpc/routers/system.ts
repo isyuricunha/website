@@ -1,7 +1,6 @@
 import { TRPCError } from '@trpc/server'
 import {
   and,
-  bulkOperations,
   desc,
   eq,
   errorLogs,
@@ -397,55 +396,6 @@ export const systemRouter = createTRPCRouter({
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to update site configuration'
-        })
-      }
-    }),
-
-  // Get bulk operations
-  getBulkOperations: adminProcedure
-    .input(
-      z.object({
-        status: z.enum(['pending', 'running', 'completed', 'failed', 'cancelled']).optional(),
-        limit: z.number().min(1).max(50).default(20)
-      })
-    )
-    .query(async ({ ctx, input }) => {
-      try {
-        const conditions = []
-
-        if (input.status) {
-          conditions.push(eq(bulkOperations.status, input.status))
-        }
-
-        const whereClause = conditions.length > 0 ? and(...conditions) : undefined
-
-        const operations = await ctx.db.query.bulkOperations.findMany({
-          where: whereClause,
-          orderBy: desc(bulkOperations.createdAt),
-          limit: input.limit,
-          with: {
-            createdByUser: {
-              columns: {
-                id: true,
-                name: true,
-                email: true
-              }
-            }
-          }
-        })
-
-        return {
-          operations: operations.map((op) => ({
-            ...op,
-            parameters: op.parameters ? JSON.parse(op.parameters) : null,
-            results: op.results ? JSON.parse(op.results) : null
-          }))
-        }
-      } catch (error) {
-        logger.error('Error fetching bulk operations', error)
-        throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: 'Failed to fetch bulk operations'
         })
       }
     }),
