@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useMemo, useState, useEffect, useRef } from 'react'
 import { Button } from '@isyuricunha/ui'
 import {
   RefreshCw,
@@ -21,7 +21,10 @@ import { toast } from 'sonner'
 
 export const SystemHealthDashboard = () => {
   const [autoRefresh, setAutoRefresh] = useState(false)
+  const [selected_check_type, set_selected_check_type] = useState<string>('all')
   const refresh_interval_ref = useRef<ReturnType<typeof setInterval> | null>(null)
+
+  const utils = api.useUtils()
 
   // Fetch system health
   const {
@@ -41,6 +44,17 @@ export const SystemHealthDashboard = () => {
   const { data: errorLogs, refetch: refetchErrors } = api.system.getErrorLogs.useQuery({
     resolved: false,
     limit: 10
+  })
+
+  const resolveErrorMutation = api.system.resolveError.useMutation({
+    onSuccess: async () => {
+      toast.success('Error resolved')
+      await utils.system.getErrorLogs.invalidate()
+      await utils.system.getSystemStats.invalidate()
+    },
+    onError: (error) => {
+      toast.error(`Failed to resolve error: ${error.message}`)
+    }
   })
 
   // Auto-refresh functionality
@@ -125,6 +139,53 @@ export const SystemHealthDashboard = () => {
   const formatUptime = (percentage: number) => {
     return `${percentage.toFixed(2)}%`
   }
+
+  const history = useMemo(() => {
+    return healthData?.history ?? []
+  }, [healthData?.history])
+
+  const available_check_types = useMemo(() => {
+    const set = new Set<string>()
+    for (const row of history) {
+      if (row?.checkType) {
+        set.add(row.checkType)
+      }
+    }
+    return Array.from(set).sort((a, b) => a.localeCompare(b))
+  }, [history])
+
+  const filtered_history = useMemo(() => {
+    if (selected_check_type === 'all') return history
+    return history.filter((row) => row.checkType === selected_check_type)
+  }, [history, selected_check_type])
+
+  const history_stats = useMemo(() => {
+    const stats = {
+      healthy: 0,
+      warning: 0,
+      critical: 0,
+      unknown: 0
+    }
+
+    for (const row of filtered_history) {
+      switch (row.status) {
+        case 'healthy':
+          stats.healthy += 1
+          break
+        case 'warning':
+          stats.warning += 1
+          break
+        case 'critical':
+          stats.critical += 1
+          break
+        default:
+          stats.unknown += 1
+          break
+      }
+    }
+
+    return stats
+  }, [filtered_history])
 
   if (healthLoading || statsLoading) {
     return (
@@ -317,13 +378,12 @@ export const SystemHealthDashboard = () => {
                   <div className='flex-1'>
                     <div className='mb-2 flex items-center gap-2'>
                       <span
-                        className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                          error.level === 'error'
-                            ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300'
-                            : error.level === 'warning'
-                              ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300'
-                              : 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300'
-                        }`}
+                        className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${error.level === 'error'
+                          ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300'
+                          : error.level === 'warning'
+                            ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300'
+                            : 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300'
+                          }`}
                       >
                         {error.level.toUpperCase()}
                       </span>
@@ -345,7 +405,12 @@ export const SystemHealthDashboard = () => {
                       </p>
                     )}
                   </div>
-                  <Button size='sm' variant='outline'>
+                  <Button
+                    size='sm'
+                    variant='outline'
+                    isPending={resolveErrorMutation.isPending}
+                    onClick={() => resolveErrorMutation.mutate({ errorId: error.id })}
+                  >
                     Resolve
                   </Button>
                 </div>
@@ -368,12 +433,102 @@ export const SystemHealthDashboard = () => {
       {/* Health History Chart Placeholder */}
       <div className='rounded-lg border border-gray-200 bg-white p-6 dark:border-gray-700 dark:bg-gray-800'>
         <h3 className='mb-4 text-lg font-medium text-gray-900 dark:text-white'>Health Trends</h3>
-        <div className='flex h-64 items-center justify-center text-gray-500 dark:text-gray-400'>
-          <div className='text-center'>
-            <TrendingUp className='mx-auto mb-2 h-12 w-12 opacity-50' />
-            <p>Health trends chart coming soon</p>
-            <p className='text-sm'>Will show system health over time</p>
+        <div className='space-y-4'>
+          <div className='flex flex-wrap items-center justify-between gap-2'>
+            <div className='text-sm text-gray-600 dark:text-gray-400'>
+              Last {filtered_history.length} checks
+            </div>
+            <div className='flex items-center gap-2'>
+              <label className='text-sm text-gray-600 dark:text-gray-400'>Filter</label>
+              <select
+                value={selected_check_type}
+                onChange={(e) => set_selected_check_type(e.target.value)}
+                className='h-9 rounded-md border border-gray-200 bg-white px-3 text-sm text-gray-900 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100'
+              >
+                <option value='all'>All services</option>
+                {available_check_types.map((t) => (
+                  <option key={t} value={t}>
+                    {t}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
+
+          <div className='grid grid-cols-2 gap-3 md:grid-cols-4'>
+            <div className='rounded-md border border-gray-200 bg-white p-3 dark:border-gray-700 dark:bg-gray-900'>
+              <div className='text-xs text-gray-600 dark:text-gray-400'>Healthy</div>
+              <div className='text-lg font-semibold text-gray-900 dark:text-gray-100'>
+                {history_stats.healthy}
+              </div>
+            </div>
+            <div className='rounded-md border border-gray-200 bg-white p-3 dark:border-gray-700 dark:bg-gray-900'>
+              <div className='text-xs text-gray-600 dark:text-gray-400'>Warnings</div>
+              <div className='text-lg font-semibold text-gray-900 dark:text-gray-100'>
+                {history_stats.warning}
+              </div>
+            </div>
+            <div className='rounded-md border border-gray-200 bg-white p-3 dark:border-gray-700 dark:bg-gray-900'>
+              <div className='text-xs text-gray-600 dark:text-gray-400'>Critical</div>
+              <div className='text-lg font-semibold text-gray-900 dark:text-gray-100'>
+                {history_stats.critical}
+              </div>
+            </div>
+            <div className='rounded-md border border-gray-200 bg-white p-3 dark:border-gray-700 dark:bg-gray-900'>
+              <div className='text-xs text-gray-600 dark:text-gray-400'>Unknown</div>
+              <div className='text-lg font-semibold text-gray-900 dark:text-gray-100'>
+                {history_stats.unknown}
+              </div>
+            </div>
+          </div>
+
+          {filtered_history.length === 0 ? (
+            <div className='flex h-40 items-center justify-center text-gray-500 dark:text-gray-400'>
+              <div className='text-center'>
+                <TrendingUp className='mx-auto mb-2 h-12 w-12 opacity-50' />
+                <p>No health history yet</p>
+                <p className='text-sm'>Trigger a refresh to record health checks</p>
+              </div>
+            </div>
+          ) : (
+            <div className='overflow-x-auto rounded-md border border-gray-200 dark:border-gray-700'>
+              <table className='w-full text-sm'>
+                <thead className='bg-gray-50 text-left text-xs text-gray-600 dark:bg-gray-900 dark:text-gray-400'>
+                  <tr>
+                    <th className='px-3 py-2'>Time</th>
+                    <th className='px-3 py-2'>Service</th>
+                    <th className='px-3 py-2'>Status</th>
+                    <th className='px-3 py-2'>Latency</th>
+                    <th className='px-3 py-2'>Message</th>
+                  </tr>
+                </thead>
+                <tbody className='divide-y divide-gray-200 dark:divide-gray-800'>
+                  {filtered_history.slice(0, 15).map((row) => (
+                    <tr key={row.id} className='bg-white dark:bg-gray-950'>
+                      <td className='px-3 py-2 text-gray-600 dark:text-gray-400'>
+                        {new Date(row.createdAt).toLocaleString()}
+                      </td>
+                      <td className='px-3 py-2 font-medium text-gray-900 dark:text-gray-100'>
+                        {row.checkType}
+                      </td>
+                      <td className='px-3 py-2'>
+                        <span className={`inline-flex items-center gap-2 rounded-full px-2 py-0.5 ${getStatusColor(row.status)}`}>
+                          {getStatusIcon(row.status)}
+                          <span className='text-xs font-medium'>
+                            {row.status.charAt(0).toUpperCase() + row.status.slice(1)}
+                          </span>
+                        </span>
+                      </td>
+                      <td className='px-3 py-2 text-gray-600 dark:text-gray-400'>
+                        {typeof row.responseTime === 'number' ? formatResponseTime(row.responseTime) : '—'}
+                      </td>
+                      <td className='px-3 py-2 text-gray-700 dark:text-gray-300'>{row.message}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       </div>
     </div>
