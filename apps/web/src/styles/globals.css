@@ -18,25 +18,25 @@
 
 @layer base {
   :root {
-    --anchor: rgb(255, 140, 0);
+    --anchor: rgb(230, 126, 0);
 
     --nav-link-indicator: radial-gradient(
       44.6% 825% at 50% 50%,
       rgb(255 208 128) 0%,
       rgb(255 170 0 / 0) 100%
     );
-    --email-button: linear-gradient(180deg, rgb(255 140 0) 5%, rgb(255 210 0) 100%);
+    --email-button: linear-gradient(180deg, rgb(230 126 0) 5%, rgb(255 210 0) 100%);
 
     --feature-card: 0 -1px 3px 0 rgb(0 0 0 / 0.05);
   }
 
   .dark {
-    --anchor: rgb(255, 184, 0);
+    --anchor: rgb(230, 126, 0);
 
     --nav-link-indicator: radial-gradient(
       44.6% 825% at 50% 50%,
-      rgb(255 184 0) 0%,
-      rgb(255 184 0 / 0) 100%
+      rgb(230 126 0) 0%,
+      rgb(230 126 0 / 0) 100%
     );
 
     --feature-card: 0 0 0 1px rgb(255 255 255 / 0.06), 0 -1px rgb(255 255 255 / 0.1);
