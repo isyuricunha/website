@@ -27,6 +27,15 @@ interface BlogPostMetadata {
 const CONTENT_DIR = path.join(process.cwd(), 'src/content/blog')
 const SUPPORTED_LOCALES = ['en', 'pt', 'fr', 'de', 'ja', 'zh']
 
+const is_enoent = (error: unknown): boolean => {
+  return (
+    typeof error === 'object' &&
+    error !== null &&
+    'code' in error &&
+    (error as { code?: unknown }).code === 'ENOENT'
+  )
+}
+
 export const BlogService = {
   /**
    * Get all blog posts for a specific locale
@@ -58,6 +67,7 @@ export const BlogService = {
 
       return posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     } catch (error) {
+      if (is_enoent(error)) return []
       logger.error('Error reading posts for locale', error, { locale })
       return []
     }
@@ -98,6 +108,7 @@ export const BlogService = {
         filePath
       }
     } catch (error) {
+      if (is_enoent(error)) return null
       logger.error('Error reading post', error, { slug, locale })
       return null
     }
