@@ -464,6 +464,7 @@
     "change-language": "Mudar idioma",
     "links": "Links",
     "github": "GitHub",
+    "star": "Star",
     "now-playing": {
       "error": "Falha ao buscar dados do Spotify",
       "loading": "Carregando ...",

@@ -1,7 +1,7 @@
 'use client'
 
 import { flags } from '@isyuricunha/env'
-import { useTranslations } from '@isyuricunha/i18n/client'
+import { useFormatter, useTranslations } from '@isyuricunha/i18n/client'
 import { linkVariants } from '@isyuricunha/ui'
 import { StarIcon } from 'lucide-react'
 
@@ -16,7 +16,9 @@ const Footer = () => {
   const { status, data } = api.github.getRepoStars.useQuery(undefined, {
     staleTime: 1000 * 60 * 60
   })
-  const t = useTranslations()
+  const t_layout = useTranslations('layout')
+  const t_common = useTranslations('common')
+  const format = useFormatter()
 
   return (
     <footer className='bg-background/30 shadow-xs relative mx-auto mb-6 flex w-full max-w-5xl flex-col rounded-2xl p-8 saturate-100 backdrop-blur-[10px]'>
@@ -29,7 +31,7 @@ const Footer = () => {
 
               return (
                 <Link key={href} href={href} className={linkVariants({ variant: 'muted' })}>
-                  {t(`layout.${key}`)}
+                  {t_layout(key)}
                 </Link>
               )
             })}
@@ -44,17 +46,17 @@ const Footer = () => {
         >
           <div className='bg-muted flex h-8 items-center gap-2 border-r px-2'>
             <StarIcon className='size-4' />
-            <span className='font-medium'>Star</span>
+            <span className='font-medium'>{t_layout('star')}</span>
           </div>
           <div className='bg-background flex h-8 items-center px-3'>
             {status === 'pending' ? '--' : null}
-            {status === 'error' ? t('common.error') : null}
+            {status === 'error' ? t_common('error') : null}
             {status === 'success'
-              ? Intl.NumberFormat('en', {
-                  notation: 'compact',
-                  minimumFractionDigits: 0,
-                  maximumFractionDigits: 1
-                }).format(data)
+              ? format.number(data, {
+                notation: 'compact',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 1
+              })
               : null}
           </div>
         </Link>

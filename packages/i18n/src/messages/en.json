@@ -464,6 +464,7 @@
     "change-language": "Change language",
     "links": "Links",
     "github": "GitHub",
+    "star": "Star",
     "now-playing": {
       "error": "Failed to fetch Spotify data",
       "loading": "Loading ...",
