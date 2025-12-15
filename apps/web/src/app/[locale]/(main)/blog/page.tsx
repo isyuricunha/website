@@ -79,10 +79,10 @@ const Page = async (props: PageProps) => {
       name: SITE_NAME,
       url: SITE_URL
     },
-    blogPost: allPosts.map((post) => ({
+    blogPost: posts.map((post) => ({
       '@type': 'BlogPosting',
       headline: post.title,
-      url: `${url}/${post.slug}`,
+      url: `${SITE_URL}${getLocalizedPath({ slug: `/blog/${post.slug}`, locale })}`,
       datePublished: post.date,
       dateModified: post.modifiedTime
     }))

@@ -87,11 +87,11 @@ const Page = async (props: PageProps) => {
       name: t('metadata.site-title'),
       url: SITE_URL
     },
-    hasPart: allProjects.map((project) => ({
+    hasPart: projects.map((project) => ({
       '@type': 'SoftwareApplication',
       name: project.name,
       description: project.description,
-      url: `${url}/${project.slug}`,
+      url: `${SITE_URL}${getLocalizedPath({ slug: `/projects/${project.slug}`, locale })}`,
       applicationCategory: 'WebApplication'
     }))
   }

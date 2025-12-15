@@ -176,6 +176,7 @@ export function generateBlogPostJsonLd({
   title,
   description,
   slug,
+  locale,
   publishedTime,
   modifiedTime,
   image
@@ -183,16 +184,19 @@ export function generateBlogPostJsonLd({
   title: string
   description: string
   slug: string
+  locale: string
   publishedTime: string
   modifiedTime?: string
   image?: string
 }) {
+  const url = `${SITE_URL}${getLocalizedPath({ slug: `/blog/${slug}`, locale })}`
+
   return {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
     headline: title,
     description,
-    url: `${SITE_URL}/blog/${slug}`,
+    url,
     datePublished: publishedTime,
     dateModified: modifiedTime || publishedTime,
     author: {
@@ -208,7 +212,7 @@ export function generateBlogPostJsonLd({
     image: image ? `${SITE_URL}${image}` : `${SITE_URL}/images/blog/${slug}/cover.png`,
     mainEntityOfPage: {
       '@type': 'WebPage',
-      '@id': `${SITE_URL}/blog/${slug}`
+      '@id': url
     }
   }
 }
@@ -217,6 +221,7 @@ export function generateProjectJsonLd({
   name,
   description,
   slug,
+  locale,
   homepage,
   repository,
   techStack
@@ -224,16 +229,19 @@ export function generateProjectJsonLd({
   name: string
   description: string
   slug: string
+  locale: string
   homepage?: string
   repository?: string
   techStack?: string[]
 }) {
+  const url = `${SITE_URL}${getLocalizedPath({ slug: `/projects/${slug}`, locale })}`
+
   return {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
     name,
     description,
-    url: `${SITE_URL}/projects/${slug}`,
+    url,
     applicationCategory: 'WebApplication',
     operatingSystem: 'Web',
     author: {

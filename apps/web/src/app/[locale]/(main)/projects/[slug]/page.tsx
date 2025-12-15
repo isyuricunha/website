@@ -104,6 +104,7 @@ const Page = async (props: PageProps) => {
     name,
     description,
     slug,
+    locale,
     repository: github
   }) as WithContext<SoftwareApplication>
 

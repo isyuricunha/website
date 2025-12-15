@@ -116,6 +116,7 @@ const Page = async (props: PageProps) => {
     title: title,
     description: summary,
     slug,
+    locale,
     publishedTime: date,
     modifiedTime,
     image: ogImageUrl
