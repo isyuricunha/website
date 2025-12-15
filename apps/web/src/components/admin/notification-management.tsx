@@ -89,31 +89,24 @@ export default function NotificationManagement() {
   const getNotificationIcon = (type: string) => {
     switch (type) {
       case 'info':
-        return <Bell className='h-4 w-4 text-blue-500' />
+        return <Bell className='text-primary h-4 w-4' />
       case 'success':
-        return <Check className='h-4 w-4 text-green-500' />
+        return <Check className='text-primary h-4 w-4' />
       case 'warning':
-        return <Clock className='h-4 w-4 text-yellow-500' />
+        return <Clock className='text-primary h-4 w-4' />
       case 'error':
-        return <X className='h-4 w-4 text-red-500' />
+        return <X className='text-destructive h-4 w-4' />
       default:
-        return <Bell className='h-4 w-4 text-gray-500' />
+        return <Bell className='text-muted-foreground h-4 w-4' />
     }
   }
 
   const getNotificationTypeColor = (type: string) => {
-    switch (type) {
-      case 'error':
-        return 'bg-red-50 text-red-700 border-red-200 dark:bg-red-950 dark:text-red-300 dark:border-red-800'
-      case 'warning':
-        return 'bg-yellow-50 text-yellow-700 border-yellow-200 dark:bg-yellow-950 dark:text-yellow-300 dark:border-yellow-800'
-      case 'success':
-        return 'bg-green-50 text-green-700 border-green-200 dark:bg-green-950 dark:text-green-300 dark:border-green-800'
-      case 'info':
-        return 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950 dark:text-blue-300 dark:border-blue-800'
-      default:
-        return 'bg-gray-50 text-gray-700 border-gray-200 dark:bg-gray-950 dark:text-gray-300 dark:border-gray-800'
+    if (type === 'error') {
+      return 'border-destructive/30 bg-destructive/10 text-foreground'
     }
+
+    return 'border-border/60 bg-card text-foreground'
   }
 
   if (isLoading) {
@@ -126,8 +119,8 @@ export default function NotificationManagement() {
       <div className='flex items-center justify-between'>
         <div className='space-y-1'>
           <h1 className='from-foreground to-foreground/70 flex items-center gap-3 bg-gradient-to-r bg-clip-text text-4xl font-bold tracking-tight text-transparent'>
-            <div className='rounded-xl bg-blue-500/10 p-2.5'>
-              <Bell className='h-8 w-8 text-blue-600 dark:text-blue-400' />
+            <div className='bg-primary/10 text-primary rounded-xl p-2.5'>
+              <Bell className='h-8 w-8' />
             </div>
             Notifications
           </h1>
@@ -138,7 +131,7 @@ export default function NotificationManagement() {
 
         <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
           <DialogTrigger asChild>
-            <Button className='bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600'>
+            <Button>
               <Plus className='mr-2 h-4 w-4' />
               Create Notification
             </Button>
@@ -201,7 +194,6 @@ export default function NotificationManagement() {
                 </Button>
                 <Button
                   type='submit'
-                  className='bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600'
                 >
                   Send Notification
                 </Button>
@@ -218,12 +210,12 @@ export default function NotificationManagement() {
             <CardTitle className='text-muted-foreground text-sm font-semibold'>
               Total Notifications
             </CardTitle>
-            <div className='rounded-lg bg-blue-500/10 p-2'>
-              <Bell className='h-5 w-5 text-blue-600 dark:text-blue-400' />
+            <div className='bg-primary/10 text-primary rounded-lg p-2'>
+              <Bell className='h-5 w-5' />
             </div>
           </CardHeader>
           <CardContent className='space-y-2'>
-            <div className='text-3xl font-bold tracking-tight text-blue-600 dark:text-blue-400'>
+            <div className='text-primary text-3xl font-bold tracking-tight'>
               {notifications?.notifications?.length || 0}
             </div>
             <p className='text-muted-foreground text-xs leading-relaxed'>All notifications</p>
@@ -233,12 +225,12 @@ export default function NotificationManagement() {
         <Card className='border-border/50 from-background to-background/50 bg-gradient-to-br backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl'>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-3'>
             <CardTitle className='text-muted-foreground text-sm font-semibold'>Unread</CardTitle>
-            <div className='rounded-lg bg-blue-500/10 p-2'>
-              <Clock className='h-5 w-5 text-blue-600 dark:text-blue-400' />
+            <div className='bg-primary/10 text-primary rounded-lg p-2'>
+              <Clock className='h-5 w-5' />
             </div>
           </CardHeader>
           <CardContent className='space-y-2'>
-            <div className='text-3xl font-bold tracking-tight text-blue-600 dark:text-blue-400'>
+            <div className='text-primary text-3xl font-bold tracking-tight'>
               {notifications?.notifications?.filter((n) => !n.read).length || 0}
             </div>
             <p className='text-muted-foreground text-xs leading-relaxed'>Pending notifications</p>
@@ -248,18 +240,18 @@ export default function NotificationManagement() {
         <Card className='border-border/50 from-background to-background/50 bg-gradient-to-br backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl'>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-3'>
             <CardTitle className='text-muted-foreground text-sm font-semibold'>Read Rate</CardTitle>
-            <div className='rounded-lg bg-blue-500/10 p-2'>
-              <BarChart3 className='h-5 w-5 text-blue-600 dark:text-blue-400' />
+            <div className='bg-primary/10 text-primary rounded-lg p-2'>
+              <BarChart3 className='h-5 w-5' />
             </div>
           </CardHeader>
           <CardContent className='space-y-2'>
-            <div className='text-3xl font-bold tracking-tight text-blue-600 dark:text-blue-400'>
+            <div className='text-primary text-3xl font-bold tracking-tight'>
               {notifications?.notifications?.length
                 ? Math.round(
-                    (notifications.notifications.filter((n) => n.read).length /
-                      notifications.notifications.length) *
-                      100
-                  )
+                  (notifications.notifications.filter((n) => n.read).length /
+                    notifications.notifications.length) *
+                  100
+                )
                 : 0}
               %
             </div>
@@ -272,8 +264,8 @@ export default function NotificationManagement() {
       <Card className='border-border/50 from-background to-background/80 bg-gradient-to-br backdrop-blur-sm'>
         <CardHeader>
           <div className='mb-1 flex items-center gap-2'>
-            <div className='rounded-lg bg-blue-500/10 p-2'>
-              <Bell className='h-4 w-4 text-blue-600 dark:text-blue-400' />
+            <div className='bg-primary/10 text-primary rounded-lg p-2'>
+              <Bell className='h-4 w-4' />
             </div>
             <CardTitle className='text-base font-semibold'>Recent Notifications</CardTitle>
           </div>
@@ -287,7 +279,7 @@ export default function NotificationManagement() {
               {notifications?.notifications?.map((notification) => (
                 <Card
                   key={notification.id}
-                  className={`${getNotificationTypeColor(notification.type)} border-2 ${notification.read ? '' : 'ring-2 ring-blue-200 dark:ring-blue-800'} transition-all duration-200 hover:shadow-md`}
+                  className={`${getNotificationTypeColor(notification.type)} border-2 ${notification.read ? '' : 'ring-primary/30 ring-2'} transition-all duration-200 hover:shadow-md`}
                 >
                   <CardContent className='p-4'>
                     <div className='flex items-start justify-between'>
@@ -296,7 +288,7 @@ export default function NotificationManagement() {
                           {getNotificationIcon(notification.type)}
                           <h3 className='font-semibold'>{notification.title}</h3>
                           {!notification.read && (
-                            <Badge className='bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'>
+                            <Badge className='border-primary/20 bg-primary/10 text-primary border'>
                               Unread
                             </Badge>
                           )}
@@ -327,7 +319,6 @@ export default function NotificationManagement() {
                             variant='outline'
                             size='sm'
                             onClick={() => handleMarkAsRead(notification.id)}
-                            className='border-blue-300 text-blue-600 hover:border-blue-400 hover:text-blue-700'
                           >
                             <Check className='mr-1 h-4 w-4' />
                             Mark Read
