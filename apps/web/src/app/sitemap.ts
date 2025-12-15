@@ -9,15 +9,37 @@ import { getLocalizedPath } from '@/utils/get-localized-path'
 const sitemap = (): MetadataRoute.Sitemap => {
   const entries: MetadataRoute.Sitemap = []
 
+  const buildTime = new Date()
+
+  const seen = new Set<string>()
+
+  const addEntry = (entry: MetadataRoute.Sitemap[number]) => {
+    if (seen.has(entry.url)) return
+    seen.add(entry.url)
+    entries.push(entry)
+  }
+
   // Base routes that should exist for all languages
-  const baseRoutes = ['', '/blog', '/guestbook']
+  const baseRoutes = [
+    '',
+    '/blog',
+    '/projects',
+    '/guestbook',
+    '/uses',
+    '/now',
+    '/spotify',
+    '/rss.xml',
+    '/about',
+    '/contact',
+    '/sitemap'
+  ]
 
   // Generate URLs for base routes (all languages)
   for (const locale of supportedLanguages) {
     for (const route of baseRoutes) {
-      entries.push({
+      addEntry({
         url: `${SITE_URL}${getLocalizedPath({ slug: route, locale: locale.code })}`,
-        lastModified: new Date()
+        lastModified: buildTime
       })
     }
   }
@@ -33,9 +55,11 @@ const sitemap = (): MetadataRoute.Sitemap => {
 
   for (const [locale, slugs] of postsByLocale) {
     for (const slug of slugs) {
-      entries.push({
+      const post = allPosts.find((p) => p.slug === slug && p.locale === locale)
+
+      addEntry({
         url: `${SITE_URL}${getLocalizedPath({ slug: `/blog/${slug}`, locale })}`,
-        lastModified: new Date()
+        lastModified: post ? new Date(post.modifiedTime || post.date) : buildTime
       })
     }
   }
@@ -50,17 +74,11 @@ const sitemap = (): MetadataRoute.Sitemap => {
   }
 
   for (const [locale, slugs] of projectsByLocale) {
-    // Add /projects route for this locale
-    entries.push({
-      url: `${SITE_URL}${getLocalizedPath({ slug: '/projects', locale })}`,
-      lastModified: new Date()
-    })
-
     // Add individual project pages
     for (const slug of slugs) {
-      entries.push({
+      addEntry({
         url: `${SITE_URL}${getLocalizedPath({ slug: `/projects/${slug}`, locale })}`,
-        lastModified: new Date()
+        lastModified: buildTime
       })
     }
   }
@@ -76,9 +94,9 @@ const sitemap = (): MetadataRoute.Sitemap => {
 
   for (const [locale, slugs] of pagesByLocale) {
     for (const slug of slugs) {
-      entries.push({
+      addEntry({
         url: `${SITE_URL}${getLocalizedPath({ slug: `/${slug}`, locale })}`,
-        lastModified: new Date()
+        lastModified: buildTime
       })
     }
   }
