@@ -9,7 +9,8 @@ import { allPosts, allProjects } from 'content-collections'
 
 import PageTitle from '@/components/page-title'
 import Link from '@/components/link'
-import { getLocalizedPath } from '@/utils/get-localized-path'
+import { SITE_URL } from '@/lib/constants'
+import { build_alternates } from '@/lib/seo'
 
 type PageProps = {
   params: Promise<{
@@ -31,17 +32,16 @@ export const generateMetadata = async (
   const t = await getTranslations({ locale, namespace: 'sitemap' })
   const title = t('title')
   const description = t('description')
-  const url = getLocalizedPath({ slug: '/sitemap', locale })
+  const alternates = build_alternates({ slug: '/sitemap', locale })
+  const fullUrl = `${SITE_URL}${alternates.canonical}`
 
   return {
     title,
     description,
-    alternates: {
-      canonical: url
-    },
+    alternates,
     openGraph: {
       ...previousOpenGraph,
-      url,
+      url: fullUrl,
       type: 'website',
       title,
       description

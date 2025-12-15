@@ -26,6 +26,11 @@ const normalize_pathname = (url: string) => {
   return pathname.startsWith('/') ? pathname : `/${pathname}`
 }
 
+export type SeoAlternates = {
+  canonical: string
+  languages: Record<string, string>
+}
+
 export const build_alternates = ({
   slug,
   locale,
@@ -34,7 +39,7 @@ export const build_alternates = ({
   slug: string
   locale: string
   locales?: string[]
-}): NonNullable<Metadata['alternates']> => {
+}): SeoAlternates => {
   const availableLocales = locales && locales.length > 0 ? locales : i18n.locales
 
   const languages = availableLocales.reduce<Record<string, string>>((acc, loc) => {
@@ -128,7 +133,10 @@ export function generateSEO({
     authors: authors?.map((author) => ({ name: author })),
     openGraph,
     twitter,
-    alternates,
+    alternates: {
+      canonical: alternates.canonical,
+      languages: alternates.languages
+    },
     robots: {
       index: true,
       follow: true,

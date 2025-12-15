@@ -8,7 +8,8 @@ import { Mail, User, Github, Twitter, Linkedin } from 'lucide-react'
 import PageTitle from '@/components/page-title'
 import Link from '@/components/link'
 import ContactForm from '@/components/contact-form'
-import { getLocalizedPath } from '@/utils/get-localized-path'
+import { SITE_URL } from '@/lib/constants'
+import { build_alternates } from '@/lib/seo'
 
 type PageProps = {
   params: Promise<{
@@ -30,17 +31,16 @@ export const generateMetadata = async (
   const previousTwitter = (await parent).twitter ?? {}
   const title = t('contact.title')
   const description = t('contact.description')
-  const url = getLocalizedPath({ slug: '/contact', locale })
+  const alternates = build_alternates({ slug: '/contact', locale })
+  const fullUrl = `${SITE_URL}${alternates.canonical}`
 
   return {
     title,
     description,
-    alternates: {
-      canonical: url
-    },
+    alternates,
     openGraph: {
       ...previousOpenGraph,
-      url,
+      url: fullUrl,
       type: 'website',
       title,
       description

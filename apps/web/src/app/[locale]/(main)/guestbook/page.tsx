@@ -8,6 +8,7 @@ import { getTranslations, setRequestLocale } from '@isyuricunha/i18n/server'
 import PageTitle from '@/components/page-title'
 import { getSession } from '@/lib/auth'
 import { SITE_URL } from '@/lib/constants'
+import { build_alternates } from '@/lib/seo'
 import { getLocalizedPath } from '@/utils/get-localized-path'
 
 import MessageBox from './message-box'
@@ -36,17 +37,16 @@ export const generateMetadata = async (
   const t = await getTranslations({ locale, namespace: 'guestbook' })
   const title = t('title')
   const description = t('description')
-  const url = getLocalizedPath({ slug: '/guestbook', locale })
+  const alternates = build_alternates({ slug: '/guestbook', locale })
+  const fullUrl = `${SITE_URL}${alternates.canonical}`
 
   return {
     title,
     description,
-    alternates: {
-      canonical: url
-    },
+    alternates,
     openGraph: {
       ...previousOpenGraph,
-      url,
+      url: fullUrl,
       title,
       description
     },

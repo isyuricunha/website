@@ -7,8 +7,8 @@ import { notFound } from 'next/navigation'
 
 import Mdx from '@/components/mdx'
 import { ProjectCoverImage } from '@/components/ui/optimized-image'
-import { generateProjectJsonLd } from '@/lib/seo'
-import { getLocalizedPath } from '@/utils/get-localized-path'
+import { SITE_URL } from '@/lib/constants'
+import { build_alternates, generateProjectJsonLd } from '@/lib/seo'
 
 import Header from './header'
 
@@ -42,17 +42,24 @@ export const generateMetadata = async (
   const { name, description } = project
   const previousTwitter = (await parent).twitter ?? {}
   const previousOpenGraph = (await parent).openGraph ?? {}
-  const url = getLocalizedPath({ slug: `/projects/${slug}`, locale })
+  const alternateLocales = Array.from(
+    new Set(allProjects.filter((p) => p.slug === slug && p.locale !== locale).map((p) => p.locale))
+  )
+
+  const alternates = build_alternates({
+    slug: `/projects/${slug}`,
+    locale,
+    locales: [locale, ...alternateLocales]
+  })
+  const fullUrl = `${SITE_URL}${alternates.canonical}`
 
   return {
     title: name,
     description: description,
-    alternates: {
-      canonical: url
-    },
+    alternates,
     openGraph: {
       ...previousOpenGraph,
-      url,
+      url: fullUrl,
       title: name,
       description: description,
       images: [

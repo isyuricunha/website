@@ -8,6 +8,7 @@ import { allPosts } from 'content-collections'
 import FilteredPosts from '@/components/filtered-posts'
 import PageTitle from '@/components/page-title'
 import { SITE_NAME, SITE_URL } from '@/lib/constants'
+import { build_alternates } from '@/lib/seo'
 import { getLocalizedPath } from '@/utils/get-localized-path'
 
 type PageProps = {
@@ -31,17 +32,16 @@ export const generateMetadata = async (
   const t = await getTranslations({ locale, namespace: 'blog' })
   const title = t('title')
   const description = t('description')
-  const url = getLocalizedPath({ slug: '/blog', locale })
+  const alternates = build_alternates({ slug: '/blog', locale })
+  const fullUrl = `${SITE_URL}${alternates.canonical}`
 
   return {
     title,
     description,
-    alternates: {
-      canonical: url
-    },
+    alternates,
     openGraph: {
       ...previousOpenGraph,
-      url,
+      url: fullUrl,
       title,
       description
     },

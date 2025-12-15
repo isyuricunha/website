@@ -10,6 +10,7 @@ import GithubRepos from '@/components/github-repos'
 import PageTitle from '@/components/page-title'
 import ProjectCards from '@/components/project-cards'
 import { SITE_URL } from '@/lib/constants'
+import { build_alternates } from '@/lib/seo'
 import { appRouter } from '@/trpc/root'
 import { createTRPCContext } from '@/trpc/trpc'
 import { getLocalizedPath } from '@/utils/get-localized-path'
@@ -35,17 +36,16 @@ export const generateMetadata = async (
   const t = await getTranslations({ locale, namespace: 'projects' })
   const title = t('title')
   const description = t('description')
-  const url = getLocalizedPath({ slug: '/projects', locale })
+  const alternates = build_alternates({ slug: '/projects', locale })
+  const fullUrl = `${SITE_URL}${alternates.canonical}`
 
   return {
     title,
     description,
-    alternates: {
-      canonical: url
-    },
+    alternates,
     openGraph: {
       ...previousOpenGraph,
-      url,
+      url: fullUrl,
       title,
       description
     },

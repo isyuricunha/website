@@ -9,6 +9,7 @@ import { notFound } from 'next/navigation'
 import Mdx from '@/components/mdx'
 import PageTitle from '@/components/page-title'
 import { SITE_URL } from '@/lib/constants'
+import { build_alternates } from '@/lib/seo'
 import { getLocalizedPath } from '@/utils/get-localized-path'
 
 type PageProps = {
@@ -31,17 +32,19 @@ export const generateMetadata = async (
     const t = await getTranslations({ locale, namespace: 'now' })
     const title = t('title')
     const description = t('description')
-    const url = getLocalizedPath({ slug: '/now', locale })
+    const alternates = build_alternates({ slug: '/now', locale })
+    const fullUrl = `${SITE_URL}${alternates.canonical}`
 
     return {
         title,
         description,
         alternates: {
-            canonical: url
+            canonical: alternates.canonical,
+            languages: alternates.languages
         },
         openGraph: {
             ...previousOpenGraph,
-            url,
+            url: fullUrl,
             type: 'website',
             title,
             description

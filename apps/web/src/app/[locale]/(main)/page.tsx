@@ -13,6 +13,7 @@ import AnnouncementBanner from '@/components/announcement-banner'
 import RecentlyUpdated from '@/components/recently-updated'
 import NewsletterSignup from '@/components/newsletter-signup'
 import { SITE_GITHUB_URL, SITE_KEYWORDS, SITE_NAME, SITE_URL, SITE_X_URL } from '@/lib/constants'
+import { build_alternates } from '@/lib/seo'
 import { getLocalizedPath } from '@/utils/get-localized-path'
 
 type PageProps = {
@@ -30,9 +31,7 @@ export const generateMetadata = async (props: PageProps): Promise<Metadata> => {
   const { locale } = await props.params
 
   return {
-    alternates: {
-      canonical: getLocalizedPath({ slug: '', locale })
-    }
+    alternates: build_alternates({ slug: '', locale })
   }
 }
 
