@@ -153,7 +153,8 @@
     "like-this-post": "Curtir esta postagem",
     "on-this-page": "Nesta página",
     "share": {
-      "description": "Leia \"{title}\" no blog de {site}"
+      "description": "Leia \"{title}\" no blog de {site}",
+      "hashtags": "blog,tecnologia,desenvolvimento"
     },
     "title": "Blog"
   },

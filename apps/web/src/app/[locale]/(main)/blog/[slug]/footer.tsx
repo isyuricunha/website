@@ -27,6 +27,11 @@ const Footer = () => {
   const locale = useLocale()
   const formattedDate = useFormattedDate(modifiedTime)
 
+  const share_hashtags = t('blog.share.hashtags')
+    .split(',')
+    .map((tag) => tag.trim())
+    .filter(Boolean)
+
   return (
     <div className='my-8 space-y-6'>
       <div className='flex flex-col items-center justify-center gap-6 border-t pt-6 sm:flex-row'>
@@ -37,7 +42,7 @@ const Footer = () => {
             title: title,
             site: t('metadata.site-title')
           })}
-          hashtags={['blog', 'tech', 'development']}
+          hashtags={share_hashtags}
         />
         <NewsletterSignupCompact />
       </div>

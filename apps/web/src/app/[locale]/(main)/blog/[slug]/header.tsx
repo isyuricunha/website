@@ -19,6 +19,11 @@ const Header = () => {
   const utils = api.useUtils()
   const t = useTranslations()
 
+  const share_hashtags = t('blog.share.hashtags')
+    .split(',')
+    .map((tag) => tag.trim())
+    .filter(Boolean)
+
   const incrementMutation = api.views.increment.useMutation({
     onSettled: () => utils.views.get.invalidate()
   })
@@ -55,9 +60,9 @@ const Header = () => {
                 className='rounded-full'
                 width={24}
                 height={24}
-                alt='Yuri Cunha'
+                alt={t('metadata.site-title')}
               />
-              Yuri Cunha
+              {t('metadata.site-title')}
             </Link>
           </div>
           <div className='space-y-1 md:mx-auto'>
@@ -94,7 +99,7 @@ const Header = () => {
               title,
               site: t('metadata.site-title')
             })}
-            hashtags={['blog', 'tech', 'development']}
+            hashtags={share_hashtags}
           />
         </div>
       </div>

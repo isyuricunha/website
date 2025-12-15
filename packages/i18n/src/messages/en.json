@@ -153,7 +153,8 @@
     "like-this-post": "Like this post",
     "on-this-page": "On this page",
     "share": {
-      "description": "Read \"{title}\" on {site}'s blog"
+      "description": "Read \"{title}\" on {site}'s blog",
+      "hashtags": "blog,tech,development"
     },
     "title": "Blog"
   },
