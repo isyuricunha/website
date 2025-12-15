@@ -115,9 +115,9 @@ const UserEditModal = ({ user, open, onOpenChange }: UserEditModalProps) => {
               id='name'
               value={formData.name}
               onChange={(e) => handleInputChange('name', e.target.value)}
-              className={errors.name ? 'border-red-500' : ''}
+              className={errors.name ? 'border-destructive' : ''}
             />
-            {errors.name && <p className='text-sm text-red-500'>{errors.name}</p>}
+            {errors.name && <p className='text-destructive text-sm'>{errors.name}</p>}
           </div>
 
           <div className='space-y-2'>
@@ -126,9 +126,9 @@ const UserEditModal = ({ user, open, onOpenChange }: UserEditModalProps) => {
               id='username'
               value={formData.username}
               onChange={(e) => handleInputChange('username', e.target.value)}
-              className={errors.username ? 'border-red-500' : ''}
+              className={errors.username ? 'border-destructive' : ''}
             />
-            {errors.username && <p className='text-sm text-red-500'>{errors.username}</p>}
+            {errors.username && <p className='text-destructive text-sm'>{errors.username}</p>}
           </div>
 
           <div className='space-y-2'>
@@ -138,9 +138,9 @@ const UserEditModal = ({ user, open, onOpenChange }: UserEditModalProps) => {
               type='email'
               value={formData.email}
               onChange={(e) => handleInputChange('email', e.target.value)}
-              className={errors.email ? 'border-red-500' : ''}
+              className={errors.email ? 'border-destructive' : ''}
             />
-            {errors.email && <p className='text-sm text-red-500'>{errors.email}</p>}
+            {errors.email && <p className='text-destructive text-sm'>{errors.email}</p>}
           </div>
 
           <div className='space-y-2'>
@@ -166,9 +166,9 @@ const UserEditModal = ({ user, open, onOpenChange }: UserEditModalProps) => {
               type='url'
               value={formData.image}
               onChange={(e) => handleInputChange('image', e.target.value)}
-              className={errors.image ? 'border-red-500' : ''}
+              className={errors.image ? 'border-destructive' : ''}
             />
-            {errors.image && <p className='text-sm text-red-500'>{errors.image}</p>}
+            {errors.image && <p className='text-destructive text-sm'>{errors.image}</p>}
           </div>
 
           <DialogFooter>
