@@ -35,8 +35,8 @@ const InputOTPFormDemo = () => {
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
     toast('You submitted the following values:', {
       description: (
-        <pre className='mt-2 w-[340px] rounded-md bg-zinc-950 p-4'>
-          <code className='text-white'>{JSON.stringify(data, null, 2)}</code>
+        <pre className='bg-muted text-foreground mt-2 w-[340px] rounded-md p-4'>
+          <code>{JSON.stringify(data, null, 2)}</code>
         </pre>
       )
     })

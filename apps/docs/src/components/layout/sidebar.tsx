@@ -9,7 +9,7 @@ import { SIDEBAR_LINKS } from '../../config/links'
 const sidebarLinkVariants = cva('block rounded-lg px-4 py-2', {
   variants: {
     active: {
-      true: 'bg-red-500/10 font-semibold text-red-500',
+      true: 'bg-primary/10 text-primary font-semibold',
       false: 'hover:bg-accent'
     }
   }
