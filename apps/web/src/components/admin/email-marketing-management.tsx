@@ -55,13 +55,13 @@ import { api } from '@/trpc/react'
 const getBroadcastStatusColor = (status: string | undefined) => {
   switch (status ?? 'draft') {
     case 'sent':
-      return 'bg-green-100 text-green-800 border-green-200'
+      return 'border border-primary/20 bg-primary/10 text-primary'
     case 'scheduled':
-      return 'bg-blue-100 text-blue-800 border-blue-200'
+      return 'border border-primary/20 bg-primary/10 text-primary'
     case 'draft':
-      return 'bg-gray-100 text-gray-800 border-gray-200'
+      return 'border border-border bg-muted/30 text-muted-foreground'
     default:
-      return 'bg-gray-100 text-gray-800 border-gray-200'
+      return 'border border-border bg-muted/30 text-muted-foreground'
   }
 }
 
@@ -337,11 +337,11 @@ export default function EmailMarketingManagement() {
   // Helper function to render loading indicator for each stage
   const renderLoadingIndicator = (_stage: string, isActive: boolean, isComplete: boolean) => {
     if (isComplete) {
-      return <CheckCircle className='h-5 w-5 text-green-500' />
+      return <CheckCircle className='text-primary h-5 w-5' />
     } else if (isActive) {
-      return <Loader2 className='h-5 w-5 animate-spin text-blue-500' />
+      return <Loader2 className='text-primary h-5 w-5 animate-spin' />
     } else {
-      return <Clock className='h-5 w-5 text-gray-400' />
+      return <Clock className='text-muted-foreground h-5 w-5' />
     }
   }
 
@@ -350,8 +350,8 @@ export default function EmailMarketingManagement() {
       <div className='flex items-center justify-between'>
         <div className='space-y-1'>
           <h1 className='from-foreground to-foreground/70 flex items-center gap-3 bg-gradient-to-r bg-clip-text text-4xl font-bold tracking-tight text-transparent'>
-            <div className='rounded-xl bg-purple-500/10 p-2.5'>
-              <Mail className='h-8 w-8 text-purple-600 dark:text-purple-400' />
+            <div className='bg-primary/10 text-primary rounded-xl p-2.5'>
+              <Mail className='h-8 w-8' />
             </div>
             Email Marketing
           </h1>
@@ -366,7 +366,7 @@ export default function EmailMarketingManagement() {
         <Card className='border-border/50 from-background to-background/80 bg-gradient-to-br backdrop-blur-sm'>
           <CardHeader>
             <CardTitle className='flex items-center gap-2 text-base'>
-              <Loader2 className='h-5 w-5 animate-spin text-purple-600 dark:text-purple-400' />
+              <Loader2 className='text-primary h-5 w-5 animate-spin' />
               Loading Email Marketing Data...
             </CardTitle>
           </CardHeader>
@@ -433,8 +433,8 @@ export default function EmailMarketingManagement() {
                 <CardTitle className='text-muted-foreground text-sm font-semibold'>
                   Total Audiences
                 </CardTitle>
-                <div className='rounded-lg bg-purple-500/10 p-2'>
-                  <Users className='h-5 w-5 text-purple-600 dark:text-purple-400' />
+                <div className='bg-primary/10 text-primary rounded-lg p-2'>
+                  <Users className='h-5 w-5' />
                 </div>
               </CardHeader>
               <CardContent className='space-y-2'>
@@ -451,8 +451,8 @@ export default function EmailMarketingManagement() {
                 <CardTitle className='text-muted-foreground text-sm font-semibold'>
                   Total Broadcasts
                 </CardTitle>
-                <div className='rounded-lg bg-purple-500/10 p-2'>
-                  <Mail className='h-5 w-5 text-purple-600 dark:text-purple-400' />
+                <div className='bg-primary/10 text-primary rounded-lg p-2'>
+                  <Mail className='h-5 w-5' />
                 </div>
               </CardHeader>
               <CardContent className='space-y-2'>
@@ -469,8 +469,8 @@ export default function EmailMarketingManagement() {
                 <CardTitle className='text-muted-foreground text-sm font-semibold'>
                   Subscribers
                 </CardTitle>
-                <div className='rounded-lg bg-purple-500/10 p-2'>
-                  <TrendingUp className='h-5 w-5 text-purple-600 dark:text-purple-400' />
+                <div className='bg-primary/10 text-primary rounded-lg p-2'>
+                  <TrendingUp className='h-5 w-5' />
                 </div>
               </CardHeader>
               <CardContent className='space-y-2'>
@@ -487,8 +487,8 @@ export default function EmailMarketingManagement() {
                 <CardTitle className='text-muted-foreground text-sm font-semibold'>
                   Sent Broadcasts
                 </CardTitle>
-                <div className='rounded-lg bg-purple-500/10 p-2'>
-                  <Send className='h-5 w-5 text-purple-600 dark:text-purple-400' />
+                <div className='bg-primary/10 text-primary rounded-lg p-2'>
+                  <Send className='h-5 w-5' />
                 </div>
               </CardHeader>
               <CardContent className='space-y-2'>
@@ -506,8 +506,8 @@ export default function EmailMarketingManagement() {
             <Card className='border-border/50 from-background to-background/80 bg-gradient-to-br backdrop-blur-sm'>
               <CardHeader>
                 <div className='mb-1 flex items-center gap-2'>
-                  <div className='rounded-lg bg-purple-500/10 p-2'>
-                    <Clock className='h-4 w-4 text-purple-600 dark:text-purple-400' />
+                  <div className='bg-primary/10 text-primary rounded-lg p-2'>
+                    <Clock className='h-4 w-4' />
                   </div>
                   <CardTitle className='text-base'>Recent Activity</CardTitle>
                 </div>
@@ -536,8 +536,8 @@ export default function EmailMarketingManagement() {
             <Card className='border-border/50 from-background to-background/80 bg-gradient-to-br backdrop-blur-sm'>
               <CardHeader>
                 <div className='mb-1 flex items-center gap-2'>
-                  <div className='rounded-lg bg-purple-500/10 p-2'>
-                    <Send className='h-4 w-4 text-purple-600 dark:text-purple-400' />
+                  <div className='bg-primary/10 text-primary rounded-lg p-2'>
+                    <Send className='h-4 w-4' />
                   </div>
                   <CardTitle className='text-base'>Quick Actions</CardTitle>
                 </div>
@@ -545,7 +545,7 @@ export default function EmailMarketingManagement() {
               <CardContent className='space-y-3'>
                 <Button
                   onClick={() => setIsCreateCampaignDialogOpen(true)}
-                  className='w-full bg-purple-600 hover:bg-purple-700'
+                  className='w-full'
                   disabled={!audiences?.audiences?.length}
                 >
                   <Plus className='mr-2 h-4 w-4' />
@@ -578,7 +578,7 @@ export default function EmailMarketingManagement() {
             <h2 className='text-2xl font-bold'>Audiences</h2>
             <Dialog open={isCreateAudienceDialogOpen} onOpenChange={setIsCreateAudienceDialogOpen}>
               <DialogTrigger asChild>
-                <Button className='bg-purple-600 hover:bg-purple-700 dark:bg-purple-700 dark:hover:bg-purple-600'>
+                <Button>
                   <Plus className='mr-2 h-4 w-4' />
                   Create Audience
                 </Button>
@@ -614,7 +614,6 @@ export default function EmailMarketingManagement() {
                     </Button>
                     <Button
                       type='submit'
-                      className='bg-purple-600 hover:bg-purple-700 dark:bg-purple-700 dark:hover:bg-purple-600'
                     >
                       Create Audience
                     </Button>
@@ -665,11 +664,11 @@ export default function EmailMarketingManagement() {
                 </CardContent>
               </Card>
             )) || (
-              <div className='text-muted-foreground col-span-full py-8 text-center'>
-                <Users className='mx-auto mb-4 h-12 w-12 opacity-50' />
-                <p>No audiences yet. Create your first audience to get started!</p>
-              </div>
-            )}
+                <div className='text-muted-foreground col-span-full py-8 text-center'>
+                  <Users className='mx-auto mb-4 h-12 w-12 opacity-50' />
+                  <p>No audiences yet. Create your first audience to get started!</p>
+                </div>
+              )}
           </div>
         </TabsContent>
 
@@ -697,7 +696,6 @@ export default function EmailMarketingManagement() {
               >
                 <DialogTrigger asChild>
                   <Button
-                    className='bg-purple-600 hover:bg-purple-700 dark:bg-purple-700 dark:hover:bg-purple-600'
                     disabled={!audiences?.audiences?.length}
                   >
                     <Plus className='mr-2 h-4 w-4' />
@@ -805,7 +803,7 @@ export default function EmailMarketingManagement() {
                       </Button>
                       <Button
                         type='submit'
-                        className='min-h-[44px] bg-purple-600 text-sm hover:bg-purple-700 sm:text-base dark:bg-purple-700 dark:hover:bg-purple-600'
+                        className='min-h-[44px] text-sm sm:text-base'
                       >
                         Create Broadcast
                       </Button>
@@ -858,7 +856,6 @@ export default function EmailMarketingManagement() {
                               variant='outline'
                               size='sm'
                               onClick={() => handleViewBroadcast(broadcast)}
-                              className='border-blue-300 text-blue-600 hover:border-blue-400 hover:text-blue-700'
                             >
                               <Eye className='h-4 w-4' />
                             </Button>
@@ -869,7 +866,6 @@ export default function EmailMarketingManagement() {
                                   variant='outline'
                                   size='sm'
                                   onClick={() => handleEditBroadcast(broadcast)}
-                                  className='border-green-300 text-green-600 hover:border-green-400 hover:text-green-700'
                                 >
                                   <Edit3 className='h-4 w-4' />
                                 </Button>
@@ -878,7 +874,6 @@ export default function EmailMarketingManagement() {
                                   variant='outline'
                                   size='sm'
                                   onClick={() => handleSendBroadcast(broadcast.id)}
-                                  className='border-purple-300 text-purple-600 hover:border-purple-400 hover:text-purple-700'
                                 >
                                   <Send className='h-4 w-4' />
                                 </Button>
@@ -889,16 +884,14 @@ export default function EmailMarketingManagement() {
                               variant='outline'
                               size='sm'
                               onClick={() => handleDuplicateBroadcast(broadcast)}
-                              className='border-orange-300 text-orange-600 hover:border-orange-400 hover:text-orange-700'
                             >
                               <Copy className='h-4 w-4' />
                             </Button>
 
                             <Button
-                              variant='outline'
+                              variant='destructive'
                               size='sm'
                               onClick={() => handleDeleteBroadcast(broadcast.id)}
-                              className='border-red-300 text-red-600 hover:border-red-400 hover:text-red-700'
                             >
                               <Trash2 className='h-4 w-4' />
                             </Button>
@@ -941,7 +934,7 @@ export default function EmailMarketingManagement() {
             <h2 className='text-2xl font-bold'>Email Templates</h2>
             <Dialog open={isCreateTemplateDialogOpen} onOpenChange={setIsCreateTemplateDialogOpen}>
               <DialogTrigger asChild>
-                <Button className='bg-purple-600 hover:bg-purple-700 dark:bg-purple-700 dark:hover:bg-purple-600'>
+                <Button>
                   <Plus className='mr-2 h-4 w-4' />
                   Create Template
                 </Button>
@@ -1005,7 +998,6 @@ export default function EmailMarketingManagement() {
                     </Button>
                     <Button
                       type='submit'
-                      className='bg-purple-600 hover:bg-purple-700 dark:bg-purple-700 dark:hover:bg-purple-600'
                     >
                       Create Template
                     </Button>
@@ -1041,11 +1033,11 @@ export default function EmailMarketingManagement() {
                 </CardContent>
               </Card>
             )) || (
-              <div className='text-muted-foreground col-span-full py-8 text-center'>
-                <FileText className='mx-auto mb-4 h-12 w-12 opacity-50' />
-                <p>No templates yet. Create your first template to get started!</p>
-              </div>
-            )}
+                <div className='text-muted-foreground col-span-full py-8 text-center'>
+                  <FileText className='mx-auto mb-4 h-12 w-12 opacity-50' />
+                  <p>No templates yet. Create your first template to get started!</p>
+                </div>
+              )}
           </div>
         </TabsContent>
       </Tabs>
@@ -1117,7 +1109,6 @@ export default function EmailMarketingManagement() {
                   setIsViewBroadcastDialogOpen(false)
                   handleEditBroadcast(selectedBroadcast)
                 }}
-                className='bg-green-600 hover:bg-green-700'
               >
                 <Edit3 className='mr-2 h-4 w-4' />
                 Edit Broadcast
@@ -1181,7 +1172,6 @@ export default function EmailMarketingManagement() {
               </Button>
               <Button
                 type='submit'
-                className='bg-green-600 hover:bg-green-700'
                 disabled={updateBroadcastMutation.isPending}
               >
                 {updateBroadcastMutation.isPending ? (
