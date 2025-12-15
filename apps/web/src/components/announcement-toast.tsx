@@ -23,45 +23,20 @@ const getAnnouncementIcon = (type: string) => {
 }
 
 const getAnnouncementStyles = (type: string) => {
-  switch (type) {
-    case 'error':
-      return {
-        icon: 'text-red-600 dark:text-red-400',
-        title: 'text-red-900 dark:text-red-100',
-        content: 'text-red-800/80 dark:text-red-200/70',
-        button: 'text-red-700 hover:text-red-900 dark:text-red-300 dark:hover:text-red-100'
-      }
-    case 'warning':
-      return {
-        icon: 'text-amber-600 dark:text-amber-400',
-        title: 'text-amber-900 dark:text-amber-100',
-        content: 'text-amber-800/80 dark:text-amber-200/70',
-        button: 'text-amber-700 hover:text-amber-900 dark:text-amber-300 dark:hover:text-amber-100'
-      }
-    case 'success':
-      return {
-        icon: 'text-emerald-600 dark:text-emerald-400',
-        title: 'text-emerald-900 dark:text-emerald-100',
-        content: 'text-emerald-800/80 dark:text-emerald-200/70',
-        button:
-          'text-emerald-700 hover:text-emerald-900 dark:text-emerald-300 dark:hover:text-emerald-100'
-      }
-    case 'feature':
-      return {
-        icon: 'text-purple-600 dark:text-purple-400',
-        title: 'text-purple-900 dark:text-purple-100',
-        content: 'text-purple-800/80 dark:text-purple-200/70',
-        button:
-          'text-purple-700 hover:text-purple-900 dark:text-purple-300 dark:hover:text-purple-100'
-      }
-    case 'info':
-    default:
-      return {
-        icon: 'text-blue-600 dark:text-blue-400',
-        title: 'text-blue-900 dark:text-blue-100',
-        content: 'text-blue-800/80 dark:text-blue-200/70',
-        button: 'text-blue-700 hover:text-blue-900 dark:text-blue-300 dark:hover:text-blue-100'
-      }
+  if (type === 'error') {
+    return {
+      icon: 'text-destructive',
+      title: 'text-destructive',
+      content: 'text-destructive/80',
+      button: 'text-destructive/80 hover:text-destructive'
+    }
+  }
+
+  return {
+    icon: 'text-primary',
+    title: 'text-foreground',
+    content: 'text-muted-foreground',
+    button: 'text-muted-foreground hover:text-foreground'
   }
 }
 

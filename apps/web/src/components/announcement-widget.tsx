@@ -31,33 +31,16 @@ const getAnnouncementIcon = (type: string) => {
 }
 
 const getAnnouncementStyles = (type: string) => {
-  switch (type) {
-    case 'error':
-      return {
-        icon: 'text-red-600 dark:text-red-400',
-        badge: 'bg-red-500/10 text-red-700 dark:text-red-300 border-red-500/20'
-      }
-    case 'warning':
-      return {
-        icon: 'text-amber-600 dark:text-amber-400',
-        badge: 'bg-amber-500/10 text-amber-700 dark:text-amber-300 border-amber-500/20'
-      }
-    case 'success':
-      return {
-        icon: 'text-emerald-600 dark:text-emerald-400',
-        badge: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border-emerald-500/20'
-      }
-    case 'feature':
-      return {
-        icon: 'text-purple-600 dark:text-purple-400',
-        badge: 'bg-purple-500/10 text-purple-700 dark:text-purple-300 border-purple-500/20'
-      }
-    case 'info':
-    default:
-      return {
-        icon: 'text-blue-600 dark:text-blue-400',
-        badge: 'bg-blue-500/10 text-blue-700 dark:text-blue-300 border-blue-500/20'
-      }
+  if (type === 'error') {
+    return {
+      icon: 'text-destructive',
+      badge: 'bg-destructive/10 text-destructive border-destructive/20'
+    }
+  }
+
+  return {
+    icon: 'text-primary',
+    badge: 'bg-primary/10 text-primary border-primary/20'
   }
 }
 
@@ -204,7 +187,7 @@ export default function AnnouncementWidget({ className, maxItems = 5 }: Announce
                         {announcement.priority > 5 && (
                           <Badge
                             variant='outline'
-                            className='border-orange-500/20 bg-orange-500/10 text-[10px] font-medium text-orange-700 dark:text-orange-300'
+                            className='bg-primary/10 text-primary border-primary/20 text-[10px] font-medium'
                           >
                             High Priority
                           </Badge>

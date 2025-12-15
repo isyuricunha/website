@@ -23,46 +23,20 @@ const getAnnouncementIcon = (type: string) => {
 }
 
 const getAnnouncementStyles = (type: string) => {
-  switch (type) {
-    case 'error':
-      return {
-        container: 'bg-red-500/5 border-red-500/20 dark:bg-red-500/10 dark:border-red-500/30',
-        icon: 'text-red-600 dark:text-red-400',
-        title: 'text-red-900 dark:text-red-100',
-        content: 'text-red-800/80 dark:text-red-200/80'
-      }
-    case 'warning':
-      return {
-        container:
-          'bg-amber-500/5 border-amber-500/20 dark:bg-amber-500/10 dark:border-amber-500/30',
-        icon: 'text-amber-600 dark:text-amber-400',
-        title: 'text-amber-900 dark:text-amber-100',
-        content: 'text-amber-800/80 dark:text-amber-200/80'
-      }
-    case 'success':
-      return {
-        container:
-          'bg-emerald-500/5 border-emerald-500/20 dark:bg-emerald-500/10 dark:border-emerald-500/30',
-        icon: 'text-emerald-600 dark:text-emerald-400',
-        title: 'text-emerald-900 dark:text-emerald-100',
-        content: 'text-emerald-800/80 dark:text-emerald-200/80'
-      }
-    case 'feature':
-      return {
-        container:
-          'bg-purple-500/5 border-purple-500/20 dark:bg-purple-500/10 dark:border-purple-500/30',
-        icon: 'text-purple-600 dark:text-purple-400',
-        title: 'text-purple-900 dark:text-purple-100',
-        content: 'text-purple-800/80 dark:text-purple-200/80'
-      }
-    case 'info':
-    default:
-      return {
-        container: 'bg-blue-500/5 border-blue-500/20 dark:bg-blue-500/10 dark:border-blue-500/30',
-        icon: 'text-blue-600 dark:text-blue-400',
-        title: 'text-blue-900 dark:text-blue-100',
-        content: 'text-blue-800/80 dark:text-blue-200/80'
-      }
+  if (type === 'error') {
+    return {
+      container: 'bg-destructive/10 border-destructive/20',
+      icon: 'text-destructive',
+      title: 'text-destructive',
+      content: 'text-destructive/80'
+    }
+  }
+
+  return {
+    container: 'bg-primary/10 border-primary/20',
+    icon: 'text-primary',
+    title: 'text-foreground',
+    content: 'text-muted-foreground'
   }
 }
 
@@ -148,7 +122,7 @@ export default function AnnouncementBanner() {
                     type='button'
                     onClick={() => handleDismiss(announcement.id)}
                     disabled={dismissMutation.isPending}
-                    className='flex-shrink-0 rounded-lg p-1.5 transition-colors hover:bg-black/5 disabled:opacity-50 dark:hover:bg-white/5'
+                    className='hover:bg-muted/50 flex-shrink-0 rounded-lg p-1.5 transition-colors disabled:opacity-50'
                     aria-label={t('component.announcement-banner.dismiss')}
                   >
                     <X className='h-4 w-4 opacity-60 transition-opacity hover:opacity-100' />
