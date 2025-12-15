@@ -342,7 +342,7 @@ export default function MonitoringDashboard() {
                             <div>Max: {data.maxUsage?.toFixed(1) || 0}%</div>
                           </div>
                           {data.alerts > 0 && (
-                            <div className='mt-1 text-xs text-red-600'>
+                            <div className='text-destructive mt-1 text-xs'>
                               {data.alerts} threshold breach(es)
                             </div>
                           )}
