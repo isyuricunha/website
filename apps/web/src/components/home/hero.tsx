@@ -11,22 +11,22 @@ const TEXTS = [
   {
     key: 'amazing',
     className:
-      'bg-clip-text text-center text-transparent bg-linear-to-r from-[#ff1835] to-[#ffc900]'
+      'bg-clip-text text-center text-transparent bg-linear-to-r from-primary to-primary/60'
   },
   {
     key: 'stunning',
     className:
-      'bg-clip-text text-center text-transparent bg-linear-to-r from-[#0077ff] to-[#00e7df]'
+      'bg-clip-text text-center text-transparent bg-linear-to-r from-primary to-primary/60'
   },
   {
     key: 'fantastic',
     className:
-      'bg-clip-text text-center text-transparent bg-linear-to-r from-[#7f00de] to-[#ff007f]'
+      'bg-clip-text text-center text-transparent bg-linear-to-r from-primary to-primary/60'
   },
   {
     key: 'attractive',
     className:
-      'bg-clip-text text-center text-transparent bg-linear-to-r from-[#2ecc70] to-[#1ca085]'
+      'bg-clip-text text-center text-transparent bg-linear-to-r from-primary to-primary/60'
   }
 ] as const
 

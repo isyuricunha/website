@@ -3,6 +3,13 @@ import { NextRequest } from 'next/server'
 
 export const runtime = 'edge'
 
+const ogTheme = {
+  background: 'linear-gradient(135deg, hsl(0 0% 2%) 0%, hsl(0 0% 6%) 100%)',
+  text: 'hsl(0 0% 92%)',
+  accentText: 'linear-gradient(91.52deg, hsl(42 100% 56%) 0.79%, hsl(42 100% 72%) 109.05%)',
+  accentBlock: 'linear-gradient(135deg, hsl(42 100% 56%) 0%, hsl(42 100% 72%) 100%)'
+} as const
+
 export const GET = async (req: NextRequest) => {
   try {
     const { searchParams } = new URL(req.url)
@@ -49,7 +56,7 @@ export const GET = async (req: NextRequest) => {
     return new ImageResponse(
       <div
         style={{
-          background: 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)',
+          background: ogTheme.background,
           width: '100%',
           height: '100%',
           display: 'flex',
@@ -63,7 +70,7 @@ export const GET = async (req: NextRequest) => {
       >
         <div
           style={{
-            color: '#e2e8f0',
+            color: ogTheme.text,
             fontSize: 30
           }}
         >
@@ -80,7 +87,7 @@ export const GET = async (req: NextRequest) => {
           <div
             style={{
               fontSize: 64,
-              background: 'linear-gradient(91.52deg, #FF4D4D 0.79%, #FFCCCC 109.05%)',
+              background: ogTheme.accentText,
               backgroundClip: 'text',
               WebkitBackgroundClip: 'text',
               letterSpacing: '-0.03em',
@@ -93,7 +100,7 @@ export const GET = async (req: NextRequest) => {
           <div
             style={{
               fontSize: 24,
-              color: '#e2e8f0',
+              color: ogTheme.text,
               maxWidth: '800px',
               lineHeight: 1.4
             }}
@@ -103,7 +110,7 @@ export const GET = async (req: NextRequest) => {
         </div>
         <div
           style={{
-            color: '#e2e8f0',
+            color: ogTheme.text,
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
@@ -114,7 +121,7 @@ export const GET = async (req: NextRequest) => {
             style={{
               width: '33px',
               height: '48px',
-              background: 'linear-gradient(135deg, #FF4D4D 0%, #FFCCCC 100%)',
+              background: ogTheme.accentBlock,
               borderRadius: '8px'
             }}
           />

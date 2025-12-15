@@ -101,7 +101,7 @@ const LikeButton = (props: LikeButtonProps) => {
     <div className='mt-12 flex justify-center'>
       <motion.button
         ref={buttonRef}
-        className='flex items-center gap-3 rounded-xl bg-zinc-900 px-4 py-2 text-lg text-white'
+        className='bg-card text-foreground border-border hover:bg-muted/40 flex items-center gap-3 rounded-xl border px-4 py-2 text-lg transition-colors'
         onClick={handleLikeButtonClick}
         aria-label={t('blog.like-this-post')}
         whileTap={{ scale: 0.96 }}
@@ -113,8 +113,8 @@ const LikeButton = (props: LikeButtonProps) => {
           height='28'
           viewBox='0 0 24 24'
           strokeWidth='2'
-          stroke='#ef4444'
-          className='relative overflow-hidden'
+          stroke='currentColor'
+          className='text-primary relative overflow-hidden'
           fill='none'
           strokeLinecap='round'
           strokeLinejoin='round'
@@ -131,7 +131,7 @@ const LikeButton = (props: LikeButtonProps) => {
               y='0'
               width='24'
               height='24'
-              fill='#ef4444'
+              fill='currentColor'
               initial={{
                 y: '100%'
               }}
@@ -142,7 +142,7 @@ const LikeButton = (props: LikeButtonProps) => {
           </g>
         </svg>
         {t('blog.like')}
-        <Separator orientation='vertical' className='bg-zinc-700' />
+        <Separator orientation='vertical' className='bg-border' />
         {status === 'pending' ? <div>--</div> : null}
         {status === 'error' ? <div>{t('common.error')}</div> : null}
         {status === 'success' ? (
