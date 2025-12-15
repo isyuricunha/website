@@ -357,13 +357,13 @@ export default function SecurityManagement() {
                     </div>
                     <div className='flex justify-between'>
                       <span>Successful:</span>
-                      <span className='font-medium text-green-600'>
+                      <span className='text-primary font-medium'>
                         {loginAttempts?.summary.successful || 0}
                       </span>
                     </div>
                     <div className='flex justify-between'>
                       <span>Failed:</span>
-                      <span className='font-medium text-red-600'>
+                      <span className='text-destructive font-medium'>
                         {loginAttempts?.summary.failed || 0}
                       </span>
                     </div>
