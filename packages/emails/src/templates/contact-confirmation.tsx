@@ -29,8 +29,19 @@ const ContactConfirmation = (props: ContactConfirmationProps) => {
       <Head />
       <Preview>Thank you for contacting yuricunha.com - I'll respond within 48 hours</Preview>
       <Tailwind>
-        <Body className='bg-black py-[40px] font-sans'>
-          <Container className='mx-auto max-w-[600px] bg-black px-[20px]'>
+        <Body
+          className='bg-[color:var(--email-bg)] py-[40px] font-sans'
+          style={
+            {
+              '--email-bg': 'hsl(0 0% 0%)',
+              '--email-fg': 'hsl(0 0% 100%)',
+              '--email-border': 'hsl(0 0% 20%)',
+              '--email-muted': 'hsl(0 0% 55%)',
+              '--email-accent': 'hsl(42 100% 56%)'
+            } as React.CSSProperties
+          }
+        >
+          <Container className='mx-auto max-w-[600px] bg-[color:var(--email-bg)] px-[20px]'>
             {/* Header with Logo */}
             <Section className='mb-[32px] text-center'>
               <Img
@@ -42,24 +53,27 @@ const ContactConfirmation = (props: ContactConfirmationProps) => {
 
             {/* Main Content */}
             <Section className='mb-[32px]'>
-              <Heading className='mb-[24px] text-left text-[24px] font-bold text-white'>
+              <Heading className='mb-[24px] text-left text-[24px] font-bold text-[color:var(--email-fg)]'>
                 Thank you for reaching out, {contactName}!
               </Heading>
 
-              <Text className='mb-[16px] text-[16px] leading-[24px] text-white'>
+              <Text className='mb-[16px] text-[16px] leading-[24px] text-[color:var(--email-fg)]'>
                 I have successfully received your contact inquiry and wanted to personally confirm
                 that your message is now in my queue for review.
               </Text>
 
-              <Text className='mb-[16px] text-[16px] leading-[24px] text-white'>
+              <Text className='mb-[16px] text-[16px] leading-[24px] text-[color:var(--email-fg)]'>
                 As a Server Infrastructure and Database Administration specialist, I understand the
                 importance of timely communication. I will respond within 48 hours, probably much
                 less (~)
               </Text>
 
-              <Text className='mb-[24px] text-[16px] leading-[24px] text-white'>
+              <Text className='mb-[24px] text-[16px] leading-[24px] text-[color:var(--email-fg)]'>
                 In the meantime, feel free to explore my website at{' '}
-                <Link href='https://yuricunha.com' className='text-[#c24000] underline'>
+                <Link
+                  href='https://yuricunha.com'
+                  className='text-[color:var(--email-accent)] underline'
+                >
                   yuricunha.com
                 </Link>{' '}
                 to learn more about my expertise in cloud infrastructure and database solutions.
@@ -67,17 +81,17 @@ const ContactConfirmation = (props: ContactConfirmationProps) => {
             </Section>
 
             {/* Contact Information */}
-            <Section className='mb-[40px] rounded-[8px] border border-solid border-[#333333] p-[20px]'>
-              <Text className='mb-[8px] text-[14px] font-bold leading-[20px] text-white'>
+            <Section className='mb-[40px] rounded-[8px] border border-solid border-[color:var(--email-border)] p-[20px]'>
+              <Text className='mb-[8px] text-[14px] font-bold leading-[20px] text-[color:var(--email-fg)]'>
                 What happens next?
               </Text>
-              <Text className='mb-[4px] text-[14px] leading-[20px] text-white'>
+              <Text className='mb-[4px] text-[14px] leading-[20px] text-[color:var(--email-fg)]'>
                 • I will review your inquiry thoroughly
               </Text>
-              <Text className='mb-[4px] text-[14px] leading-[20px] text-white'>
+              <Text className='mb-[4px] text-[14px] leading-[20px] text-[color:var(--email-fg)]'>
                 • I will respond within 48 hours, probably much less (~)
               </Text>
-              <Text className='text-[14px] leading-[20px] text-white'>
+              <Text className='text-[14px] leading-[20px] text-[color:var(--email-fg)]'>
                 • If urgent, please, put in the SUBJECT
               </Text>
             </Section>
@@ -109,18 +123,21 @@ const ContactConfirmation = (props: ContactConfirmationProps) => {
             </Section>
 
             {/* Footer */}
-            <Section className='border-t border-solid border-[#333333] pt-[24px]'>
-              <Text className='m-0 mb-[8px] text-center text-[12px] leading-[16px] text-[#888888]'>
+            <Section className='border-t border-solid border-[color:var(--email-border)] pt-[24px]'>
+              <Text className='m-0 mb-[8px] text-center text-[12px] leading-[16px] text-[color:var(--email-muted)]'>
                 dbA
               </Text>
-              <Text className='m-0 mb-[8px] text-center text-[12px] leading-[16px] text-[#888888]'>
+              <Text className='m-0 mb-[8px] text-center text-[12px] leading-[16px] text-[color:var(--email-muted)]'>
                 Brazil
               </Text>
-              <Text className='m-0 text-center text-[12px] leading-[16px] text-[#888888]'>
+              <Text className='m-0 text-center text-[12px] leading-[16px] text-[color:var(--email-muted)]'>
                 © {new Date().getFullYear()} yuricunha.com. All rights reserved.
               </Text>
-              <Text className='m-0 mt-[8px] text-center text-[12px] leading-[16px] text-[#888888]'>
-                <Link href='https://yuricunha.com' className='text-[#c24000] underline'>
+              <Text className='m-0 mt-[8px] text-center text-[12px] leading-[16px] text-[color:var(--email-muted)]'>
+                <Link
+                  href='https://yuricunha.com'
+                  className='text-[color:var(--email-accent)] underline'
+                >
                   Unsubscribe
                 </Link>
               </Text>
