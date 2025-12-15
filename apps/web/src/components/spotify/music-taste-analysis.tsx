@@ -102,42 +102,24 @@ const MusicTasteAnalysis = () => {
   }
 
   const getEnergyColor = (level: string) => {
-    switch (level) {
-      case 'high':
-        return 'text-red-500 bg-red-500/10'
-      case 'medium':
-        return 'text-yellow-500 bg-yellow-500/10'
-      case 'low':
-        return 'text-blue-500 bg-blue-500/10'
-      default:
-        return 'text-gray-500 bg-gray-500/10'
-    }
+    if (level === 'high') return 'bg-primary/20 text-primary'
+    if (level === 'medium') return 'bg-primary/10 text-primary'
+    if (level === 'low') return 'bg-muted/30 text-muted-foreground'
+    return 'bg-muted/30 text-muted-foreground'
   }
 
   const getDiversityColor = (level: string) => {
-    switch (level) {
-      case 'eclectic':
-        return 'text-purple-500 bg-purple-500/10'
-      case 'diverse':
-        return 'text-green-500 bg-green-500/10'
-      case 'focused':
-        return 'text-orange-500 bg-orange-500/10'
-      default:
-        return 'text-gray-500 bg-gray-500/10'
-    }
+    if (level === 'eclectic') return 'bg-primary/20 text-primary'
+    if (level === 'diverse') return 'bg-primary/10 text-primary'
+    if (level === 'focused') return 'bg-muted/30 text-muted-foreground'
+    return 'bg-muted/30 text-muted-foreground'
   }
 
   const getTasteColor = (profile: string) => {
-    switch (profile) {
-      case 'mainstream':
-        return 'text-pink-500 bg-pink-500/10'
-      case 'balanced':
-        return 'text-indigo-500 bg-indigo-500/10'
-      case 'underground':
-        return 'text-emerald-500 bg-emerald-500/10'
-      default:
-        return 'text-gray-500 bg-gray-500/10'
-    }
+    if (profile === 'mainstream') return 'bg-primary/20 text-primary'
+    if (profile === 'balanced') return 'bg-primary/10 text-primary'
+    if (profile === 'underground') return 'bg-muted/30 text-muted-foreground'
+    return 'bg-muted/30 text-muted-foreground'
   }
 
   return (

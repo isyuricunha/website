@@ -20,10 +20,10 @@ const cellColors = (v: number, max: number) => {
   // Opacity-based single hue (orange) for a cleaner look
   const ratio = max === 0 ? 0 : v / max
   if (ratio === 0) return 'bg-muted/40'
-  if (ratio < 0.25) return 'bg-orange-500/25'
-  if (ratio < 0.5) return 'bg-orange-500/45'
-  if (ratio < 0.75) return 'bg-orange-500/65'
-  return 'bg-orange-500/85'
+  if (ratio < 0.25) return 'bg-primary/10'
+  if (ratio < 0.5) return 'bg-primary/20'
+  if (ratio < 0.75) return 'bg-primary/30'
+  return 'bg-primary/40'
 }
 
 const ListeningHeatmap = () => {
@@ -100,7 +100,7 @@ const ListeningHeatmap = () => {
                 return (
                   <div key={`col-${dayIdx}`} className='flex flex-col items-center gap-2'>
                     <div
-                      className={`aspect-square w-full rounded-md ${cellColors(v, max)} ring-1 ring-black/5 transition duration-150 hover:scale-[1.04] hover:shadow-[0_0_0_4px_rgba(249,115,22,0.25)] dark:ring-white/5`}
+                      className={`ring-border/50 aspect-square w-full rounded-md ${cellColors(v, max)} ring-1 transition duration-150 hover:scale-[1.04] hover:ring-primary/30 hover:ring-4`}
                       title={`${td(`spotify.heatmap.days.${dayKey}`) || dayKey.toUpperCase()} — ${v}`}
                     />
                     <div className='text-muted-foreground text-center text-[11px] leading-none'>
@@ -120,7 +120,7 @@ const ListeningHeatmap = () => {
                 {[0, 1, 2, 3, 4].map((i) => (
                   <div
                     key={i}
-                    className={`h-3 w-3 rounded-[3px] ${['bg-muted/40', 'bg-orange-500/25', 'bg-orange-500/45', 'bg-orange-500/65', 'bg-orange-500/85'][i]} ring-1 ring-black/5 dark:ring-white/5`}
+                    className={`ring-border/50 h-3 w-3 rounded-[3px] ${['bg-muted/40', 'bg-primary/10', 'bg-primary/20', 'bg-primary/30', 'bg-primary/40'][i]} ring-1`}
                   />
                 ))}
               </div>

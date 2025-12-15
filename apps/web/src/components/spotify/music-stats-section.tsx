@@ -49,7 +49,7 @@ const MusicStatsSection = () => {
     // Calculate average track popularity
     const avgPopularity = Math.round(
       topTracks.reduce((acc: number, track: any) => acc + (track.popularity || 0), 0) /
-        topTracks.length
+      topTracks.length
     )
 
     // Calculate diversity score (unique artists in top tracks)
@@ -133,8 +133,8 @@ const MusicStatsSection = () => {
 
           {/* Track Diversity */}
           <div className='space-y-2 text-center'>
-            <div className='mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-500/10'>
-              <TrendingUp className='h-6 w-6 text-green-500' />
+            <div className='bg-primary/10 mx-auto flex h-12 w-12 items-center justify-center rounded-full'>
+              <TrendingUp className='text-primary h-6 w-6' />
             </div>
             <div>
               <p className='text-lg font-bold sm:text-xl'>{stats.diversityScore}%</p>
@@ -146,8 +146,8 @@ const MusicStatsSection = () => {
 
           {/* Average Popularity */}
           <div className='space-y-2 text-center'>
-            <div className='mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-yellow-500/10'>
-              <Headphones className='h-6 w-6 text-yellow-500' />
+            <div className='bg-primary/10 mx-auto flex h-12 w-12 items-center justify-center rounded-full'>
+              <Headphones className='text-primary h-6 w-6' />
             </div>
             <div>
               <p className='text-lg font-bold sm:text-xl'>{stats.avgPopularity}%</p>
@@ -159,8 +159,8 @@ const MusicStatsSection = () => {
 
           {/* Total Artists */}
           <div className='space-y-2 text-center'>
-            <div className='mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-purple-500/10'>
-              <Music className='h-6 w-6 text-purple-500' />
+            <div className='bg-primary/10 mx-auto flex h-12 w-12 items-center justify-center rounded-full'>
+              <Music className='text-primary h-6 w-6' />
             </div>
             <div>
               <p className='text-lg font-bold sm:text-xl'>{stats.totalArtists}</p>
@@ -182,13 +182,12 @@ const MusicStatsSection = () => {
               {stats.topGenres.map((genre, index) => (
                 <span
                   key={genre}
-                  className={`rounded-full px-3 py-1 text-xs font-medium sm:text-sm ${
-                    index === 0
+                  className={`rounded-full px-3 py-1 text-xs font-medium sm:text-sm ${index === 0
                       ? 'bg-primary text-primary-foreground'
                       : index === 1
                         ? 'bg-secondary text-secondary-foreground'
                         : 'bg-muted text-muted-foreground'
-                  }`}
+                    }`}
                 >
                   #{index + 1} {genre}
                 </span>

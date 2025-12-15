@@ -106,7 +106,7 @@ const SocialSharing = () => {
                   title={t('spotify.social.buttons.copy')}
                 >
                   {copiedTrack === currentTrack.songUrl ? (
-                    <span className='text-xs text-green-500'>✓</span>
+                    <span className='text-primary text-xs'>✓</span>
                   ) : (
                     <Copy className='h-4 w-4' />
                   )}
@@ -170,7 +170,7 @@ const SocialSharing = () => {
                       title={t('spotify.social.buttons.copy')}
                     >
                       {copiedTrack === track.url ? (
-                        <span className='text-xs text-green-500'>✓</span>
+                        <span className='text-primary text-xs'>✓</span>
                       ) : (
                         <Copy className='h-3 w-3' />
                       )}

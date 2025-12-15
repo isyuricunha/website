@@ -82,7 +82,7 @@ const LocalHistoryImport = () => {
               onChange={(e) => onFile(e.target.files?.[0])}
             />
           </div>
-          {error && <p className='text-sm text-red-500'>{error}</p>}
+          {error && <p className='text-destructive text-sm'>{error}</p>}
           {count !== null && (
             <div className='grid grid-cols-3 gap-3'>
               <div className='bg-muted/50 rounded p-3'>
