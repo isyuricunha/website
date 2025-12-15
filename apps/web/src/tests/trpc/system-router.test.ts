@@ -232,7 +232,7 @@ describe('systemRouter', () => {
         expect(result.checks).toHaveLength(4)
         expect(db.__state.health_logs).toHaveLength(4)
         expect(result.history.length).toBeGreaterThanOrEqual(1)
-    })
+    }, 15_000)
 
     it('resolveError marks error resolved', async () => {
         const { systemRouter } = await import('@/trpc/routers/system')

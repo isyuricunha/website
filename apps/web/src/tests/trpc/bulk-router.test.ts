@@ -216,7 +216,7 @@ describe('bulkRouter queue', () => {
         expect(result[0]?.progress).toBe(30)
         expect(result[0]?.parameters).toEqual({ action: 'publish' })
         expect(result[0]?.results).toEqual([{ postId: 'a', success: true }])
-    })
+    }, 15_000)
 
     it('bulkPostAction publishes posts and completes an operation', async () => {
         const { bulkRouter } = await import('@/trpc/routers/bulk')

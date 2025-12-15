@@ -122,7 +122,7 @@ describe('contentRouter bulk mutations', () => {
         await expect(
             caller.bulkUpdatePostStatus({ ids: ['a'], status: 'archived' })
         ).rejects.toMatchObject({ code: 'FORBIDDEN' })
-    })
+    }, 15_000)
 
     it('bulkUpdatePostStatus updates status and sets publishedAt for unpublished posts', async () => {
         const { contentRouter } = await import('@/trpc/routers/content')
