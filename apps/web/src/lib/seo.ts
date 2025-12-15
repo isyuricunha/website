@@ -1,6 +1,54 @@
 import type { Metadata } from 'next'
 
-import { SITE_NAME, SITE_URL, SITE_DESCRIPTION } from './constants'
+import { i18n } from '@isyuricunha/i18n/config'
+
+import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from '@/lib/constants'
+import { getLocalizedPath } from '@/utils/get-localized-path'
+
+const strip_locale_prefix = (pathname: string) => {
+  for (const locale of i18n.locales) {
+    if (locale === i18n.defaultLocale) continue
+
+    if (pathname === `/${locale}`) return ''
+    if (pathname.startsWith(`/${locale}/`)) {
+      return pathname.slice(locale.length + 1)
+    }
+  }
+
+  return pathname
+}
+
+const normalize_pathname = (url: string) => {
+  if (!url) return ''
+
+  const pathname = url.startsWith('http') ? new URL(url).pathname : url
+  if (pathname === '/') return ''
+  return pathname.startsWith('/') ? pathname : `/${pathname}`
+}
+
+export const build_alternates = ({
+  slug,
+  locale,
+  locales
+}: {
+  slug: string
+  locale: string
+  locales?: string[]
+}): NonNullable<Metadata['alternates']> => {
+  const availableLocales = locales && locales.length > 0 ? locales : i18n.locales
+
+  const languages = availableLocales.reduce<Record<string, string>>((acc, loc) => {
+    acc[loc] = getLocalizedPath({ slug, locale: loc })
+    return acc
+  }, {})
+
+  languages['x-default'] = getLocalizedPath({ slug, locale: i18n.defaultLocale })
+
+  return {
+    canonical: getLocalizedPath({ slug, locale }),
+    languages
+  }
+}
 
 interface SEOProps {
   title?: string
@@ -30,8 +78,17 @@ export function generateSEO({
   alternateLocales = []
 }: SEOProps = {}): Metadata {
   const fullTitle = title ? `${title} | ${SITE_NAME}` : SITE_NAME
-  const fullUrl = url.startsWith('http') ? url : `${SITE_URL}${url}`
+  const localizedPath = normalize_pathname(url)
+  const baseSlug = strip_locale_prefix(localizedPath)
+  const canonicalPath = getLocalizedPath({ slug: baseSlug, locale })
+  const fullUrl = `${SITE_URL}${canonicalPath}`
   const fullImage = image.startsWith('http') ? image : `${SITE_URL}${image}`
+
+  const alternates = build_alternates({
+    slug: baseSlug,
+    locale,
+    locales: [locale, ...alternateLocales]
+  })
 
   const openGraph: NonNullable<Metadata['openGraph']> = {
     title: fullTitle,
@@ -71,15 +128,7 @@ export function generateSEO({
     authors: authors?.map((author) => ({ name: author })),
     openGraph,
     twitter,
-    alternates: {
-      canonical: fullUrl,
-      ...(alternateLocales.length > 0 && {
-        languages: alternateLocales.reduce<Record<string, string>>((acc, loc) => {
-          acc[loc] = `${SITE_URL}/${loc}${url.replace(SITE_URL, '')}`
-          return acc
-        }, {})
-      })
-    },
+    alternates,
     robots: {
       index: true,
       follow: true,

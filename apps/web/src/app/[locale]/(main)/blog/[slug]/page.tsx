@@ -54,6 +54,10 @@ export const generateMetadata = async (
   const previousOpenGraph = (await parent).openGraph ?? {}
   const url = getLocalizedPath({ slug: `/blog/${slug}`, locale })
 
+  const alternateLocales = Array.from(
+    new Set(allPosts.filter((p) => p.slug === slug && p.locale !== locale).map((p) => p.locale))
+  )
+
   // Precompute safe values to avoid passing undefined to encodeURIComponent
   const safeTitle = title ?? ''
   const safeSummary = summary ?? ''
@@ -69,18 +73,17 @@ export const generateMetadata = async (
     type: 'article',
     publishedTime: date,
     modifiedTime,
-    authors: [SITE_URL]
+    authors: [SITE_URL],
+    locale,
+    alternateLocales
   })
 
   return {
     ...seo,
-    alternates: {
-      canonical: url
-    },
     openGraph: {
       ...previousOpenGraph,
       ...seo.openGraph,
-      url
+      url: seo.openGraph?.url
     },
     twitter: {
       ...previousTwitter,
