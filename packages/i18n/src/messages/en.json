@@ -384,6 +384,7 @@
   "homepage": {
     "about-me": {
       "coding-hours": "Coding hours",
+      "coding-hours-value": "{count, plural, =1 {# hr} other {# hrs}}",
       "connect": "Connect",
       "fav-framework": "Fav. Server",
       "location": "São Paulo",

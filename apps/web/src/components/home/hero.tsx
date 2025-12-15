@@ -50,6 +50,7 @@ const variants = {
 const Hero = () => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const t = useTranslations()
+  const t_metadata = useTranslations('metadata')
 
   useEffect(() => {
     const timer = setInterval(
@@ -157,7 +158,7 @@ const Hero = () => {
             className='h-full w-full rounded-full object-cover'
             width={144}
             height={144}
-            alt='Yuri Cunha'
+            alt={t_metadata('site-title')}
             lazy={false}
           />
           <div className='bg-linear-to-tl absolute inset-0 -z-10 from-purple-700 to-orange-700 opacity-50 blur-2xl' />

@@ -12,6 +12,8 @@ const CodingHours = () => {
   })
   const t = useTranslations()
 
+  const hours = status === 'success' ? Math.round(data.seconds / 60 / 60) : 0
+
   return (
     <div className='shadow-feature-card flex flex-col gap-4 rounded-xl p-4 sm:gap-6 sm:p-5 lg:p-6'>
       <div className='flex items-center gap-2'>
@@ -21,7 +23,7 @@ const CodingHours = () => {
       <div className='flex grow items-center justify-center text-3xl font-semibold sm:text-4xl'>
         {status === 'pending' ? '--' : null}
         {status === 'error' ? t('common.error') : null}
-        {status === 'success' ? Math.round(data.seconds / 60 / 60) : null} hrs
+        {status === 'success' ? t('homepage.about-me.coding-hours-value', { count: hours }) : null}
       </div>
     </div>
   )

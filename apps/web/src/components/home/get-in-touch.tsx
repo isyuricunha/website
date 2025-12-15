@@ -23,6 +23,7 @@ const GetInTouch = () => {
   const cardsRef = useRef<HTMLDivElement>(null)
   const isInView = useInView(cardsRef, { once: true, margin: '-100px' })
   const t = useTranslations()
+  const t_metadata = useTranslations('metadata')
 
   useEffect(() => {
     animate(
@@ -110,7 +111,7 @@ const GetInTouch = () => {
                 />
               </svg>
               <span className='bg-primary text-primary-foreground relative left-4 rounded-3xl px-2 py-0.5 text-xs'>
-                Yuri
+                {t_metadata('site-title')}
               </span>
             </div>
           </div>
