@@ -3,6 +3,10 @@
     "title": "About",
     "description": "👋 Hey! I am Yuri Cunha, just a random guy on the internet.."
   },
+  "now": {
+    "title": "Now",
+    "description": "A snapshot of what I'm focusing on right now"
+  },
   "admin": {
     "nav": {
       "comments": "Comments",
@@ -444,6 +448,7 @@
     "blog": "Blog",
     "projects": "Projects",
     "about": "About",
+    "now": "Now",
     "guestbook": "Guestbook",
     "uses": "Tools",
     "spotify": "Music",
@@ -486,6 +491,9 @@
         },
         "uses": {
           "description": "Tools, equipment, and software I use for development"
+        },
+        "now": {
+          "description": "What I'm working on and thinking about right now"
         },
         "spotify": {
           "description": "Music taste, listening activity, and statistics"

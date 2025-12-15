@@ -3,6 +3,10 @@
     "title": "Sobre",
     "description": "👋 Oi! Eu sou Yuri Cunha, apenas um cara aleatório na internet.."
   },
+  "now": {
+    "title": "Agora",
+    "description": "Um retrato do que eu estou focando no momento"
+  },
   "admin": {
     "nav": {
       "comments": "Comentários",
@@ -444,11 +448,12 @@
     "blog": "Blog",
     "projects": "Projetos",
     "about": "Sobre",
-    "guestbook": "Assinaturas",
-    "uses": "Equipamentos",
+    "now": "Agora",
+    "guestbook": "Livro de visitas",
+    "uses": "Ferramentas",
     "spotify": "Música",
     "contact": "Contato",
-    "sitemap": "Mapa do Site",
+    "sitemap": "Mapa do site",
     "skip-to-main-content": "Ir para o conteúdo principal",
     "toggle-menu": "Alternar menu",
     "change-language": "Mudar idioma",
@@ -485,10 +490,13 @@
           "description": "Portfólio de projetos de desenvolvimento e repositórios do GitHub"
         },
         "uses": {
-          "description": "Ferramentas, equipamentos e softwares que uso para desenvolvimento"
+          "description": "Ferramentas, equipamentos e softwares que eu uso no dia a dia"
+        },
+        "now": {
+          "description": "No que eu estou trabalhando e pensando no momento"
         },
         "spotify": {
-          "description": "Gostos musicais, atividade de escuta e estatísticas"
+          "description": "Gosto musical, atividade de escuta e estatísticas"
         },
         "about": {
           "title": "Sobre",
