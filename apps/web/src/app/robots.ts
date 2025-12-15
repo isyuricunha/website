@@ -7,7 +7,23 @@ const robots = (): MetadataRoute.Robots => ({
     {
       userAgent: '*',
       allow: ['/', '/api/avatar/*'],
-      disallow: ['/api/']
+      disallow: [
+        '/api/',
+        '/admin',
+        '/admin/',
+        '/admin/*',
+        '/*/admin',
+        '/*/admin/',
+        '/*/admin/*',
+        '/reset-password',
+        '/reset-password/',
+        '/reset-password/*',
+        '/*/reset-password',
+        '/*/reset-password/',
+        '/*/reset-password/*',
+        '/_next/',
+        '/_next/*'
+      ]
     }
   ],
   sitemap: `${SITE_URL}/sitemap.xml`,
