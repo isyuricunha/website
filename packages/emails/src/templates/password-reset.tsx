@@ -39,7 +39,7 @@ const PasswordReset = (props: PasswordResetProps) => {
       <Preview>Reset your password for yuricunha.com</Preview>
       <Tailwind>
         <Body className='mx-auto my-auto bg-white px-2 font-sans'>
-          <Container className='mx-auto my-[40px] max-w-[465px] rounded border border-solid border-[#eaeaea] p-[20px]'>
+          <Container className='mx-auto my-[40px] max-w-[465px] rounded border border-solid border-gray-200 p-[20px]'>
             <Logo />
             <Text className='text-[14px] leading-[24px] text-black'>Hi {name},</Text>
             <Text className='text-[14px] leading-[24px] text-black'>
@@ -48,7 +48,7 @@ const PasswordReset = (props: PasswordResetProps) => {
             </Text>
             <Section className='mb-[32px] mt-[32px] text-center'>
               <Button
-                className='rounded bg-[#000000] px-5 py-3 text-center text-[12px] font-semibold text-white no-underline'
+                className='rounded bg-black px-5 py-3 text-center text-[12px] font-semibold text-white no-underline'
                 href={resetUrl}
               >
                 Reset Password

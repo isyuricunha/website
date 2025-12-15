@@ -52,20 +52,20 @@ const Comment = (props: CommentProps) => {
       <Preview>New comment on the post "{post.title}" on yuricunha.com</Preview>
       <Tailwind>
         <Body className='m-auto bg-white p-1'>
-          <Container className='mx-auto w-full max-w-[660px] rounded-lg border border-solid border-[#e5e5e5] bg-white p-8 shadow-sm'>
+          <Container className='mx-auto w-full max-w-[660px] rounded-lg border border-solid border-gray-200 bg-white p-8 shadow-sm'>
             <Logo />
             <Section>
               <Text className='m-0 p-0 text-xl font-semibold text-gray-900'>
                 New Comment on Your Blog Post
               </Text>
-              <Text className='m-0 mt-2 p-0 text-base font-normal text-gray-500'>
+              <Text className='m-0 mt-2 p-0 text-base font-normal text-gray-600'>
                 Someone has commented on{' '}
                 <Link href={post.url} className='font-medium text-gray-900'>
                   {post.title}
                 </Link>
               </Text>
             </Section>
-            <Section className='mt-6 rounded-lg border border-solid border-[#e5e5e5] bg-gray-50 p-6'>
+            <Section className='mt-6 rounded-lg border border-solid border-gray-200 bg-gray-50 p-6'>
               <Row>
                 <Column className='w-10'>
                   <Img
@@ -80,7 +80,7 @@ const Comment = (props: CommentProps) => {
                   <Text className='m-0 p-0 pl-3 text-base font-medium text-gray-900'>
                     {commenter.name}
                   </Text>
-                  <Text className='m-0 p-0 pl-3 text-sm font-normal text-gray-500'>{date}</Text>
+                  <Text className='m-0 p-0 pl-3 text-sm font-normal text-gray-600'>{date}</Text>
                 </Column>
               </Row>
               <Text className='m-0 mt-4 p-0 text-base font-normal text-gray-700'>{comment}</Text>
