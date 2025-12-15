@@ -17,10 +17,10 @@ const Toaster = (props: ToasterProps) => {
         } as React.CSSProperties
       }
       icons={{
-        success: <CheckCircle2Icon className='size-5 text-green-500' />,
-        error: <AlertCircleIcon className='size-5 text-red-500' />,
-        warning: <AlertTriangleIcon className='size-5 text-yellow-500' />,
-        info: <InfoIcon className='size-5 text-blue-500' />
+        success: <CheckCircle2Icon className='text-primary size-5' />,
+        error: <AlertCircleIcon className='text-destructive size-5' />,
+        warning: <AlertTriangleIcon className='text-primary size-5' />,
+        info: <InfoIcon className='text-muted-foreground size-5' />
       }}
       {...rest}
     />

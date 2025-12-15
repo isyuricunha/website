@@ -11,9 +11,9 @@ const Callout = (props: CalloutProps) => {
   const { title, type = 'info', icon, className, children, ...rest } = props
 
   const icons = {
-    info: <InfoIcon className='my-0.5 size-4 text-blue-500' />,
-    warning: <AlertTriangleIcon className='my-0.5 size-4 text-orange-500' />,
-    error: <AlertOctagonIcon className='my-0.5 size-4 text-red-500' />
+    info: <InfoIcon className='text-primary my-0.5 size-4' />,
+    warning: <AlertTriangleIcon className='text-primary/80 my-0.5 size-4' />,
+    error: <AlertOctagonIcon className='text-destructive my-0.5 size-4' />
   }
 
   return (
