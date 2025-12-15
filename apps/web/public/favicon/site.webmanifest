@@ -5,9 +5,13 @@
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "background_color": "#000000",
-  "theme_color": "#000000",
-  "categories": ["portfolio", "developer", "blog"],
+  "background_color": "black",
+  "theme_color": "black",
+  "categories": [
+    "portfolio",
+    "developer",
+    "blog"
+  ],
   "lang": "en",
   "scope": "/",
   "icons": [
@@ -30,21 +34,36 @@
       "short_name": "Blog",
       "description": "Read latest blog posts",
       "url": "/blog",
-      "icons": [{ "src": "/favicon/android-chrome-192x192.png", "sizes": "192x192" }]
+      "icons": [
+        {
+          "src": "/favicon/android-chrome-192x192.png",
+          "sizes": "192x192"
+        }
+      ]
     },
     {
       "name": "Projects",
       "short_name": "Projects",
       "description": "View portfolio projects",
       "url": "/projects",
-      "icons": [{ "src": "/favicon/android-chrome-192x192.png", "sizes": "192x192" }]
+      "icons": [
+        {
+          "src": "/favicon/android-chrome-192x192.png",
+          "sizes": "192x192"
+        }
+      ]
     },
     {
       "name": "Spotify",
       "short_name": "Music",
       "description": "Current music activity",
       "url": "/spotify",
-      "icons": [{ "src": "/favicon/android-chrome-192x192.png", "sizes": "192x192" }]
+      "icons": [
+        {
+          "src": "/favicon/android-chrome-192x192.png",
+          "sizes": "192x192"
+        }
+      ]
     }
   ]
 }
