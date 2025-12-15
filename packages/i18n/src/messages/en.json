@@ -494,6 +494,9 @@
         "projects": {
           "description": "Portfolio of development projects and GitHub repositories"
         },
+        "guestbook": {
+          "description": "Public guestbook where you can leave a message"
+        },
         "uses": {
           "description": "Tools, equipment, and software I use for development"
         },
@@ -503,9 +506,15 @@
         "spotify": {
           "description": "Music taste, listening activity, and statistics"
         },
+        "contact": {
+          "description": "How to get in touch with me"
+        },
         "about": {
           "title": "About",
           "description": "Learn more about me and my background"
+        },
+        "sitemap": {
+          "description": "A complete overview of all pages on the website"
         }
       }
     },
