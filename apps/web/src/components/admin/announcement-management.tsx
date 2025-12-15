@@ -120,14 +120,14 @@ export default function AnnouncementManagement() {
   const getAnnouncementIcon = (type: string) => {
     switch (type) {
       case 'error':
-        return <AlertCircle className='h-4 w-4 text-red-500' />
+        return <AlertCircle className='text-destructive h-4 w-4' />
       case 'warning':
-        return <AlertTriangle className='h-4 w-4 text-yellow-500' />
+        return <AlertTriangle className='text-primary h-4 w-4' />
       case 'success':
-        return <CheckCircle className='h-4 w-4 text-green-500' />
+        return <CheckCircle className='text-primary h-4 w-4' />
       case 'info':
       default:
-        return <Info className='h-4 w-4 text-blue-500' />
+        return <Info className='text-primary h-4 w-4' />
     }
   }
 
@@ -213,8 +213,8 @@ export default function AnnouncementManagement() {
       <div className='flex flex-col justify-between gap-4 sm:flex-row sm:items-center'>
         <div className='min-w-0 flex-1 space-y-1'>
           <h1 className='from-foreground to-foreground/70 flex items-center gap-3 bg-gradient-to-r bg-clip-text text-3xl font-bold tracking-tight text-transparent sm:text-4xl'>
-            <div className='flex-shrink-0 rounded-xl bg-orange-500/10 p-2.5'>
-              <Megaphone className='h-7 w-7 text-orange-600 sm:h-8 sm:w-8 dark:text-orange-400' />
+            <div className='bg-primary/10 text-primary flex-shrink-0 rounded-xl p-2.5'>
+              <Megaphone className='h-7 w-7 sm:h-8 sm:w-8' />
             </div>
             <span className='truncate'>Announcements</span>
           </h1>
@@ -225,7 +225,7 @@ export default function AnnouncementManagement() {
 
         <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
           <DialogTrigger asChild>
-            <Button className='min-h-[44px] w-full bg-orange-600 px-4 text-sm hover:bg-orange-700 sm:w-auto sm:px-6 sm:text-base dark:bg-orange-700 dark:hover:bg-orange-600'>
+            <Button className='min-h-[44px] w-full px-4 text-sm sm:w-auto sm:px-6 sm:text-base'>
               <Plus className='mr-2 h-4 w-4 flex-shrink-0' />
               <span className='truncate'>Create Announcement</span>
             </Button>
@@ -304,10 +304,7 @@ export default function AnnouncementManagement() {
                 >
                   Cancel
                 </Button>
-                <Button
-                  type='submit'
-                  className='bg-orange-600 hover:bg-orange-700 dark:bg-orange-700 dark:hover:bg-orange-600'
-                >
+                <Button type='submit'>
                   Create Announcement
                 </Button>
               </DialogFooter>
@@ -324,12 +321,12 @@ export default function AnnouncementManagement() {
               <CardTitle className='text-muted-foreground text-sm font-semibold'>
                 Total Views
               </CardTitle>
-              <div className='rounded-lg bg-orange-500/10 p-2'>
-                <BarChart3 className='h-5 w-5 text-orange-600 dark:text-orange-400' />
+              <div className='bg-primary/10 text-primary rounded-lg p-2'>
+                <BarChart3 className='h-5 w-5' />
               </div>
             </CardHeader>
             <CardContent className='space-y-2'>
-              <div className='text-3xl font-bold tracking-tight text-orange-600 dark:text-orange-400'>
+              <div className='text-primary text-3xl font-bold tracking-tight'>
                 {analytics.totalViews}
               </div>
               <p className='text-muted-foreground text-xs leading-relaxed'>
@@ -343,12 +340,12 @@ export default function AnnouncementManagement() {
               <CardTitle className='text-muted-foreground text-sm font-semibold'>
                 Dismissal Rate
               </CardTitle>
-              <div className='rounded-lg bg-orange-500/10 p-2'>
-                <Users className='h-5 w-5 text-orange-600 dark:text-orange-400' />
+              <div className='bg-primary/10 text-primary rounded-lg p-2'>
+                <Users className='h-5 w-5' />
               </div>
             </CardHeader>
             <CardContent className='space-y-2'>
-              <div className='text-3xl font-bold tracking-tight text-orange-600 dark:text-orange-400'>
+              <div className='text-primary text-3xl font-bold tracking-tight'>
                 {analytics.dismissalRate.toFixed(1)}%
               </div>
               <p className='text-muted-foreground text-xs leading-relaxed'>
@@ -362,12 +359,12 @@ export default function AnnouncementManagement() {
               <CardTitle className='text-muted-foreground text-sm font-semibold'>
                 Active Announcements
               </CardTitle>
-              <div className='rounded-lg bg-orange-500/10 p-2'>
-                <Megaphone className='h-5 w-5 text-orange-600 dark:text-orange-400' />
+              <div className='bg-primary/10 text-primary rounded-lg p-2'>
+                <Megaphone className='h-5 w-5' />
               </div>
             </CardHeader>
             <CardContent className='space-y-2'>
-              <div className='text-3xl font-bold tracking-tight text-orange-600 dark:text-orange-400'>
+              <div className='text-primary text-3xl font-bold tracking-tight'>
                 {announcements?.announcements?.filter((a) => a.isActive).length || 0}
               </div>
               <p className='text-muted-foreground text-xs leading-relaxed'>
@@ -382,8 +379,8 @@ export default function AnnouncementManagement() {
       <Card className='border-border/50 from-background to-background/80 bg-gradient-to-br backdrop-blur-sm'>
         <CardHeader className='p-4 sm:p-6'>
           <div className='mb-1 flex items-center gap-2'>
-            <div className='rounded-lg bg-orange-500/10 p-2'>
-              <Megaphone className='h-4 w-4 text-orange-600 dark:text-orange-400' />
+            <div className='bg-primary/10 text-primary rounded-lg p-2'>
+              <Megaphone className='h-4 w-4' />
             </div>
             <CardTitle className='text-lg font-semibold sm:text-xl'>All Announcements</CardTitle>
           </div>
@@ -397,7 +394,7 @@ export default function AnnouncementManagement() {
               {announcements?.announcements?.map((announcement) => (
                 <Card
                   key={announcement.id}
-                  className='border-border/40 bg-card group transition-all duration-300 hover:border-orange-500/30 hover:shadow-lg'
+                  className='border-border/40 bg-card group transition-all duration-300 hover:border-primary/30 hover:shadow-lg'
                 >
                   <CardContent className='p-5'>
                     <div className='flex items-start justify-between gap-4'>
@@ -407,17 +404,15 @@ export default function AnnouncementManagement() {
                           <div
                             className={cn(
                               'rounded-xl p-2.5 transition-transform duration-200 group-hover:scale-110',
-                              announcement.type === 'error' && 'bg-red-500/10',
-                              announcement.type === 'warning' && 'bg-yellow-500/10',
-                              announcement.type === 'success' && 'bg-emerald-500/10',
-                              announcement.type === 'info' && 'bg-blue-500/10'
+                              announcement.type === 'error' && 'bg-destructive/10',
+                              announcement.type !== 'error' && 'bg-primary/10 text-primary'
                             )}
                           >
                             {getAnnouncementIcon(announcement.type)}
                           </div>
                           <div className='min-w-0 flex-1'>
                             <div className='mb-1.5 flex items-center gap-2'>
-                              <h3 className='truncate text-lg font-semibold transition-colors group-hover:text-orange-600 dark:group-hover:text-orange-400'>
+                              <h3 className='truncate text-lg font-semibold transition-colors group-hover:text-primary'>
                                 {announcement.title}
                               </h3>
                               {!announcement.isActive && (
@@ -462,7 +457,7 @@ export default function AnnouncementManagement() {
                           className={cn(
                             'h-9 w-9 p-0 transition-all duration-200',
                             announcement.isActive
-                              ? 'text-emerald-600 hover:bg-emerald-50 hover:text-emerald-700 dark:hover:bg-emerald-950'
+                              ? 'text-primary hover:bg-primary/10'
                               : 'text-muted-foreground hover:text-foreground hover:bg-muted'
                           )}
                           aria-label={announcement.isActive ? 'Deactivate' : 'Activate'}
@@ -478,7 +473,7 @@ export default function AnnouncementManagement() {
                           variant='ghost'
                           size='sm'
                           onClick={() => openEditDialog(announcement)}
-                          className='h-9 w-9 p-0 text-orange-600 transition-all duration-200 hover:bg-orange-50 hover:text-orange-700 dark:hover:bg-orange-950'
+                          className='text-primary hover:bg-primary/10 h-9 w-9 p-0 transition-all duration-200'
                           aria-label='Edit announcement'
                         >
                           <Edit className='h-4 w-4' />
@@ -489,7 +484,7 @@ export default function AnnouncementManagement() {
                             <Button
                               variant='ghost'
                               size='sm'
-                              className='h-9 w-9 p-0 text-red-600 transition-all duration-200 hover:bg-red-50 hover:text-red-700 dark:hover:bg-red-950'
+                              className='text-destructive hover:bg-destructive/10 h-9 w-9 p-0 transition-all duration-200'
                               aria-label='Delete announcement'
                             >
                               <Trash2 className='h-4 w-4' />
@@ -507,7 +502,7 @@ export default function AnnouncementManagement() {
                               <AlertDialogCancel>Cancel</AlertDialogCancel>
                               <AlertDialogAction
                                 onClick={() => handleDeleteAnnouncement(announcement.id)}
-                                className='bg-red-600 hover:bg-red-700'
+                                className='bg-destructive text-destructive-foreground hover:bg-destructive/90'
                               >
                                 Delete
                               </AlertDialogAction>
@@ -624,10 +619,7 @@ export default function AnnouncementManagement() {
                 <Button type='button' variant='outline' onClick={() => setIsEditDialogOpen(false)}>
                   Cancel
                 </Button>
-                <Button
-                  type='submit'
-                  className='bg-orange-600 hover:bg-orange-700 dark:bg-orange-700 dark:hover:bg-orange-600'
-                >
+                <Button type='submit'>
                   Update Announcement
                 </Button>
               </DialogFooter>
