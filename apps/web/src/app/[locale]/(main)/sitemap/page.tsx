@@ -3,7 +3,7 @@ import type { Metadata, ResolvingMetadata } from 'next'
 import { i18n } from '@isyuricunha/i18n/config'
 import { getTranslations, setRequestLocale } from '@isyuricunha/i18n/server'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@isyuricunha/ui/server'
-import { FileText, Code, Music, User, Home, Map as MapIcon, Calendar } from 'lucide-react'
+import { FileText, Code, Music, User, Home, Map as MapIcon, Calendar, MessageSquare, Mail } from 'lucide-react'
 
 import { allPosts, allProjects } from 'content-collections'
 
@@ -60,6 +60,12 @@ const SitemapPage = async (props: PageProps) => {
   const t = await getTranslations('sitemap')
   const tCommon = await getTranslations()
 
+  const dateFormatter = new Intl.DateTimeFormat(locale, {
+    year: 'numeric',
+    month: 'short',
+    day: '2-digit'
+  })
+
   const mainPages = [
     {
       title: tCommon('layout.home'),
@@ -80,6 +86,12 @@ const SitemapPage = async (props: PageProps) => {
       icon: <Code className='h-4 w-4' />
     },
     {
+      title: tCommon('layout.guestbook'),
+      description: t('main-pages.items.guestbook.description'),
+      href: '/guestbook',
+      icon: <MessageSquare className='h-4 w-4' />
+    },
+    {
       title: tCommon('layout.uses'),
       description: t('main-pages.items.uses.description'),
       href: '/uses',
@@ -98,20 +110,34 @@ const SitemapPage = async (props: PageProps) => {
       icon: <Music className='h-4 w-4' />
     },
     {
+      title: tCommon('layout.contact'),
+      description: t('main-pages.items.contact.description'),
+      href: '/contact',
+      icon: <Mail className='h-4 w-4' />
+    },
+    {
       title: t('main-pages.items.about.title'),
       description: t('main-pages.items.about.description'),
       href: '/about',
       icon: <User className='h-4 w-4' />
+    },
+    {
+      title: tCommon('layout.sitemap'),
+      description: t('main-pages.items.sitemap.description'),
+      href: '/sitemap',
+      icon: <MapIcon className='h-4 w-4' />
     }
   ]
 
-  // Sort posts by date
-  const sortedPosts = allPosts.sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-  )
+  const localePosts = allPosts
+    .filter((post) => post.locale === locale)
+    .slice()
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 
-  // Deduplicate projects by slug to avoid duplicate keys in render
-  const uniqueProjects = Array.from(new Map(allProjects.map((p) => [p.slug, p])).values())
+  const localeProjects = allProjects
+    .filter((project) => project.locale === locale)
+    .slice()
+    .sort((a, b) => a.name.localeCompare(b.name))
 
   return (
     <>
@@ -159,7 +185,7 @@ const SitemapPage = async (props: PageProps) => {
           <CardHeader>
             <CardTitle className='flex items-center gap-2 text-base sm:text-lg'>
               <FileText className='h-5 w-5' />
-              {t('blog-posts.title')} ({sortedPosts.length})
+              {t('blog-posts.title')} ({localePosts.length})
             </CardTitle>
             <CardDescription className='text-xs sm:text-sm'>
               {t('blog-posts.description')}
@@ -167,7 +193,7 @@ const SitemapPage = async (props: PageProps) => {
           </CardHeader>
           <CardContent>
             <div className='space-y-3'>
-              {sortedPosts.map((post) => (
+              {localePosts.map((post) => (
                 <Link
                   key={post.slug}
                   href={`/blog/${post.slug}`}
@@ -182,7 +208,7 @@ const SitemapPage = async (props: PageProps) => {
                         {post.summary}
                       </p>
                       <div className='text-muted-foreground flex items-center gap-2 text-xs'>
-                        <span>{new Date(post.date).toLocaleDateString()}</span>
+                        <span>{dateFormatter.format(new Date(post.date))}</span>
                         {post.tags && post.tags.length > 0 && (
                           <>
                             <span>•</span>
@@ -203,7 +229,7 @@ const SitemapPage = async (props: PageProps) => {
           <CardHeader>
             <CardTitle className='flex items-center gap-2 text-base sm:text-lg'>
               <Code className='h-5 w-5' />
-              {t('projects.title')} ({uniqueProjects.length})
+              {t('projects.title')} ({localeProjects.length})
             </CardTitle>
             <CardDescription className='text-xs sm:text-sm'>
               {t('projects.description')}
@@ -211,7 +237,7 @@ const SitemapPage = async (props: PageProps) => {
           </CardHeader>
           <CardContent>
             <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
-              {uniqueProjects.map((project) => (
+              {localeProjects.map((project) => (
                 <div
                   key={project.slug}
                   className='hover:bg-muted/50 group block rounded-lg border p-4 transition-colors'
@@ -221,9 +247,12 @@ const SitemapPage = async (props: PageProps) => {
                       <Code className='text-muted-foreground group-hover:text-foreground h-4 w-4' />
                     </div>
                     <div className='min-w-0 flex-1'>
-                      <h4 className='group-hover:text-primary mb-1 text-sm font-medium sm:text-base'>
+                      <Link
+                        href={`/projects/${project.slug}`}
+                        className='group-hover:text-primary mb-1 block text-sm font-medium sm:text-base'
+                      >
                         {project.name}
-                      </h4>
+                      </Link>
                       <p className='text-muted-foreground mb-2 line-clamp-2 text-xs sm:text-sm'>
                         {project.description}
                       </p>
