@@ -35,7 +35,7 @@
     "@tanstack/react-table": "^8.21.2",
     "@trpc/client": "11.0.0-rc.666",
     "@trpc/react-query": "11.0.0-rc.666",
-    "@trpc/server": "11.0.0-rc.666",
+    "@trpc/server": "11.8.0",
     "@isyuricunha/db": "workspace:*",
     "@isyuricunha/emails": "workspace:*",
     "@isyuricunha/env": "workspace:*",
