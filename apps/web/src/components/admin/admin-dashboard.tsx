@@ -96,8 +96,6 @@ const AdminDashboard = () => {
       value: stats?.totals.users ?? 0,
       description: `+${stats?.recent.users ?? 0} this month`,
       icon: Users,
-      color: 'text-blue-600',
-      bgColor: 'bg-blue-50 dark:bg-blue-950',
       trend: stats?.recent.users ? '+12%' : '0%',
       href: '/admin/users'
     },
@@ -106,8 +104,6 @@ const AdminDashboard = () => {
       value: stats?.totals.comments ?? 0,
       description: `+${stats?.recent.comments ?? 0} this month`,
       icon: MessageSquare,
-      color: 'text-green-600',
-      bgColor: 'bg-green-50 dark:bg-green-950',
       trend: stats?.recent.comments ? '+8%' : '0%',
       href: '/admin/comments'
     },
@@ -116,8 +112,6 @@ const AdminDashboard = () => {
       value: stats?.totals.guestbookEntries ?? 0,
       description: 'All time entries',
       icon: BarChart3,
-      color: 'text-purple-600',
-      bgColor: 'bg-purple-50 dark:bg-purple-950',
       trend: '+5%',
       href: '/admin'
     },
@@ -126,8 +120,6 @@ const AdminDashboard = () => {
       value: stats?.totals.admins ?? 0,
       description: 'System administrators',
       icon: Shield,
-      color: 'text-orange-600',
-      bgColor: 'bg-orange-50 dark:bg-orange-950',
       trend: '0%',
       href: '/admin/users'
     }
@@ -147,7 +139,7 @@ const AdminDashboard = () => {
         <div className='flex items-center gap-3'>
           <Badge
             variant='outline'
-            className='border-emerald-500/30 bg-emerald-500/10 px-3 py-1.5 text-xs font-medium text-emerald-700 dark:text-emerald-300'
+            className='border-primary/30 bg-primary/10 text-primary px-3 py-1.5 text-xs font-medium'
           >
             <Activity className='mr-1.5 h-3.5 w-3.5' />
             Live
@@ -180,9 +172,9 @@ const AdminDashboard = () => {
                   {stat.title}
                 </CardTitle>
                 <div
-                  className={`rounded-xl p-2.5 ${stat.bgColor} transition-transform duration-300 group-hover:scale-110`}
+                  className='bg-primary/10 rounded-xl p-2.5 text-primary transition-transform duration-300 group-hover:scale-110'
                 >
-                  <Icon className={`h-5 w-5 ${stat.color}`} />
+                  <Icon className='h-5 w-5' />
                 </div>
               </CardHeader>
               <CardContent className='space-y-3'>
@@ -190,7 +182,7 @@ const AdminDashboard = () => {
                   <div className='text-3xl font-bold tracking-tight'>
                     {stat.value.toLocaleString()}
                   </div>
-                  <div className='flex items-center gap-1 text-xs font-medium text-emerald-600 dark:text-emerald-400'>
+                  <div className='text-primary flex items-center gap-1 text-xs font-medium'>
                     <TrendingUp className='h-3.5 w-3.5' />
                     {stat.trend}
                   </div>
@@ -211,8 +203,8 @@ const AdminDashboard = () => {
             <div className='flex items-center justify-between'>
               <div className='space-y-1'>
                 <CardTitle className='flex items-center gap-2 text-base'>
-                  <div className='rounded-lg bg-blue-500/10 p-2'>
-                    <Clock className='h-4 w-4 text-blue-600 dark:text-blue-400' />
+                  <div className='bg-primary/10 rounded-lg p-2 text-primary'>
+                    <Clock className='h-4 w-4' />
                   </div>
                   Recent Activity
                 </CardTitle>
@@ -224,28 +216,28 @@ const AdminDashboard = () => {
             </div>
           </CardHeader>
           <CardContent className='space-y-3'>
-            <div className='flex items-center justify-between rounded-xl border border-blue-500/20 bg-blue-500/5 p-3 backdrop-blur-sm transition-all duration-200 hover:shadow-sm'>
+            <div className='bg-muted/30 border-border/60 hover:bg-muted/40 flex items-center justify-between rounded-xl border p-3 backdrop-blur-sm transition-all duration-200 hover:shadow-sm'>
               <div className='flex items-center gap-3'>
-                <div className='rounded-lg bg-blue-500/10 p-2'>
-                  <Users className='h-4 w-4 text-blue-600 dark:text-blue-400' />
+                <div className='bg-primary/10 rounded-lg p-2 text-primary'>
+                  <Users className='h-4 w-4' />
                 </div>
                 <span className='text-sm font-semibold'>New Users</span>
               </div>
               <div className='flex items-center gap-2'>
                 <span className='text-lg font-bold'>{stats?.weekly.users ?? 0}</span>
-                <CheckCircle className='h-4 w-4 text-emerald-600 dark:text-emerald-400' />
+                <CheckCircle className='text-primary h-4 w-4' />
               </div>
             </div>
-            <div className='flex items-center justify-between rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-3 backdrop-blur-sm transition-all duration-200 hover:shadow-sm'>
+            <div className='bg-muted/30 border-border/60 hover:bg-muted/40 flex items-center justify-between rounded-xl border p-3 backdrop-blur-sm transition-all duration-200 hover:shadow-sm'>
               <div className='flex items-center gap-3'>
-                <div className='rounded-lg bg-emerald-500/10 p-2'>
-                  <MessageSquare className='h-4 w-4 text-emerald-600 dark:text-emerald-400' />
+                <div className='bg-primary/10 rounded-lg p-2 text-primary'>
+                  <MessageSquare className='h-4 w-4' />
                 </div>
                 <span className='text-sm font-semibold'>New Comments</span>
               </div>
               <div className='flex items-center gap-2'>
                 <span className='text-lg font-bold'>{stats?.weekly.comments ?? 0}</span>
-                <CheckCircle className='h-4 w-4 text-emerald-600 dark:text-emerald-400' />
+                <CheckCircle className='text-primary h-4 w-4' />
               </div>
             </div>
           </CardContent>
@@ -254,8 +246,8 @@ const AdminDashboard = () => {
         <Card className='border-border/50 from-background to-background/80 bg-gradient-to-br backdrop-blur-sm md:col-span-1'>
           <CardHeader>
             <div className='mb-1 flex items-center gap-2'>
-              <div className='rounded-lg bg-purple-500/10 p-2'>
-                <ArrowRight className='h-4 w-4 text-purple-600 dark:text-purple-400' />
+              <div className='bg-primary/10 rounded-lg p-2 text-primary'>
+                <ArrowRight className='h-4 w-4' />
               </div>
               <CardTitle className='text-base'>Quick Actions</CardTitle>
             </div>
@@ -264,11 +256,11 @@ const AdminDashboard = () => {
           <CardContent className='space-y-2'>
             <button
               type='button'
-              className='group flex w-full items-start gap-3 rounded-xl border border-indigo-500/20 bg-indigo-500/5 p-3 backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-indigo-500/30 hover:shadow-md'
+              className='bg-muted/30 border-border/60 hover:border-primary/30 hover:bg-muted/40 group flex w-full items-start gap-3 rounded-xl border p-3 backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md'
               onClick={() => (globalThis.location.href = '/admin/posts/new')}
             >
-              <div className='rounded-lg bg-indigo-500/10 p-2 transition-transform duration-200 group-hover:scale-110'>
-                <PlusIcon className='h-4 w-4 text-indigo-600 dark:text-indigo-400' />
+              <div className='bg-primary/10 text-primary rounded-lg p-2 transition-transform duration-200 group-hover:scale-110'>
+                <PlusIcon className='h-4 w-4' />
               </div>
               <div className='flex-1 space-y-0.5 text-left'>
                 <div className='text-sm font-semibold'>Create Blog Post</div>
@@ -277,11 +269,11 @@ const AdminDashboard = () => {
             </button>
             <button
               type='button'
-              className='group flex w-full items-start gap-3 rounded-xl border border-blue-500/20 bg-blue-500/5 p-3 backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-blue-500/30 hover:shadow-md'
+              className='bg-muted/30 border-border/60 hover:border-primary/30 hover:bg-muted/40 group flex w-full items-start gap-3 rounded-xl border p-3 backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md'
               onClick={() => (globalThis.location.href = '/admin/users')}
             >
-              <div className='rounded-lg bg-blue-500/10 p-2 transition-transform duration-200 group-hover:scale-110'>
-                <Users className='h-4 w-4 text-blue-600 dark:text-blue-400' />
+              <div className='bg-primary/10 text-primary rounded-lg p-2 transition-transform duration-200 group-hover:scale-110'>
+                <Users className='h-4 w-4' />
               </div>
               <div className='flex-1 space-y-0.5 text-left'>
                 <div className='text-sm font-semibold'>Manage Users</div>
@@ -290,11 +282,11 @@ const AdminDashboard = () => {
             </button>
             <button
               type='button'
-              className='group flex w-full items-start gap-3 rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-3 backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-emerald-500/30 hover:shadow-md'
+              className='bg-muted/30 border-border/60 hover:border-primary/30 hover:bg-muted/40 group flex w-full items-start gap-3 rounded-xl border p-3 backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md'
               onClick={() => (globalThis.location.href = '/admin/comments')}
             >
-              <div className='rounded-lg bg-emerald-500/10 p-2 transition-transform duration-200 group-hover:scale-110'>
-                <MessageSquare className='h-4 w-4 text-emerald-600 dark:text-emerald-400' />
+              <div className='bg-primary/10 text-primary rounded-lg p-2 transition-transform duration-200 group-hover:scale-110'>
+                <MessageSquare className='h-4 w-4' />
               </div>
               <div className='flex-1 space-y-0.5 text-left'>
                 <div className='text-sm font-semibold'>Moderate Comments</div>
@@ -307,8 +299,8 @@ const AdminDashboard = () => {
         <Card className='border-border/50 from-background to-background/80 bg-gradient-to-br backdrop-blur-sm md:col-span-2 lg:col-span-1'>
           <CardHeader>
             <div className='mb-1 flex items-center gap-2'>
-              <div className='rounded-lg bg-indigo-500/10 p-2'>
-                <Wand2 className='h-4 w-4 text-indigo-600 dark:text-indigo-400' />
+              <div className='bg-primary/10 rounded-lg p-2 text-primary'>
+                <Wand2 className='h-4 w-4' />
               </div>
               <CardTitle className='text-base'>Blog Management</CardTitle>
             </div>
@@ -317,11 +309,11 @@ const AdminDashboard = () => {
           <CardContent className='space-y-2'>
             <button
               type='button'
-              className='group flex w-full items-center justify-between rounded-xl border border-indigo-500/20 bg-indigo-500/5 p-3 backdrop-blur-sm transition-all duration-200 hover:border-indigo-500/30 hover:shadow-md'
+              className='bg-muted/30 border-border/60 hover:border-primary/30 hover:bg-muted/40 group flex w-full items-center justify-between rounded-xl border p-3 backdrop-blur-sm transition-all duration-200 hover:shadow-md'
               onClick={() => (globalThis.location.href = '/admin/posts')}
             >
               <div className='flex items-center gap-2'>
-                <FileText className='h-4 w-4 text-indigo-600 dark:text-indigo-400' />
+                <FileText className='text-primary h-4 w-4' />
                 <span className='text-sm font-semibold'>Manage Posts</span>
               </div>
               <Badge variant='secondary' className='px-2 py-0.5 text-xs font-medium'>
@@ -330,27 +322,27 @@ const AdminDashboard = () => {
             </button>
             <button
               type='button'
-              className='group flex w-full items-center justify-between rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-3 backdrop-blur-sm transition-all duration-200 hover:border-emerald-500/30 hover:shadow-md'
+              className='bg-muted/30 border-border/60 hover:border-primary/30 hover:bg-muted/40 group flex w-full items-center justify-between rounded-xl border p-3 backdrop-blur-sm transition-all duration-200 hover:shadow-md'
               onClick={() => (globalThis.location.href = '/admin/posts/new')}
             >
               <div className='flex items-center gap-2'>
-                <PlusIcon className='h-4 w-4 text-emerald-600 dark:text-emerald-400' />
+                <PlusIcon className='text-primary h-4 w-4' />
                 <span className='text-sm font-semibold'>Create New Post</span>
               </div>
               <Badge
                 variant='secondary'
-                className='bg-indigo-500/10 px-2 py-0.5 text-xs font-medium text-indigo-700 dark:text-indigo-300'
+                className='bg-primary/10 text-primary px-2 py-0.5 text-xs font-medium'
               >
                 AI
               </Badge>
             </button>
             <button
               type='button'
-              className='group flex w-full items-center justify-between rounded-xl border border-purple-500/20 bg-purple-500/5 p-3 backdrop-blur-sm transition-all duration-200 hover:border-purple-500/30 hover:shadow-md'
+              className='bg-muted/30 border-border/60 hover:border-primary/30 hover:bg-muted/40 group flex w-full items-center justify-between rounded-xl border p-3 backdrop-blur-sm transition-all duration-200 hover:shadow-md'
               onClick={() => (globalThis.location.href = '/admin/translate')}
             >
               <div className='flex items-center gap-2'>
-                <Languages className='h-4 w-4 text-purple-600 dark:text-purple-400' />
+                <Languages className='text-primary h-4 w-4' />
                 <span className='text-sm font-semibold'>Auto-Translate</span>
               </div>
               <Badge variant='secondary' className='px-2 py-0.5 text-xs font-medium'>
@@ -369,8 +361,8 @@ const AdminDashboard = () => {
         <Card className='border-border/50 from-background to-background/80 bg-gradient-to-br backdrop-blur-sm'>
           <CardHeader>
             <div className='mb-1 flex items-center gap-2'>
-              <div className='rounded-lg bg-indigo-500/10 p-2'>
-                <BarChart3 className='h-4 w-4 text-indigo-600 dark:text-indigo-400' />
+              <div className='bg-primary/10 rounded-lg p-2 text-primary'>
+                <BarChart3 className='h-4 w-4' />
               </div>
               <CardTitle className='text-base'>System Health</CardTitle>
             </div>
@@ -382,7 +374,7 @@ const AdminDashboard = () => {
             <div className='space-y-2.5'>
               <div className='flex justify-between text-sm'>
                 <span className='font-medium'>Database Performance</span>
-                <span className='text-xs font-semibold text-emerald-600 dark:text-emerald-400'>
+                <span className='text-primary text-xs font-semibold'>
                   Excellent
                 </span>
               </div>
@@ -391,7 +383,7 @@ const AdminDashboard = () => {
             <div className='space-y-2.5'>
               <div className='flex justify-between text-sm'>
                 <span className='font-medium'>API Response Time</span>
-                <span className='text-xs font-semibold text-emerald-600 dark:text-emerald-400'>
+                <span className='text-primary text-xs font-semibold'>
                   Fast
                 </span>
               </div>
@@ -400,7 +392,7 @@ const AdminDashboard = () => {
             <div className='space-y-2.5'>
               <div className='flex justify-between text-sm'>
                 <span className='font-medium'>Storage Usage</span>
-                <span className='text-xs font-semibold text-amber-600 dark:text-amber-400'>
+                <span className='text-muted-foreground text-xs font-semibold'>
                   Moderate
                 </span>
               </div>
@@ -410,7 +402,7 @@ const AdminDashboard = () => {
               <div className='flex items-center justify-between'>
                 <span className='text-muted-foreground text-xs'>Last updated</span>
                 <div className='flex items-center gap-1.5'>
-                  <div className='h-2 w-2 animate-pulse rounded-full bg-emerald-500' />
+                  <div className='bg-primary h-2 w-2 animate-pulse rounded-full' />
                   <span className='text-xs font-medium'>Just now</span>
                 </div>
               </div>
