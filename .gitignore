@@ -22,6 +22,7 @@ yarn-error.log*
 # Misc
 .DS_Store
 *.pem
+.windsurf/
 
 # Build outputs
 .next/
