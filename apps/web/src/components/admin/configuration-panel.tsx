@@ -149,42 +149,42 @@ export const ConfigurationPanel = () => {
   const getTypeIcon = (type: string) => {
     switch (type) {
       case 'general':
-        return <Settings className='h-5 w-5 text-gray-500' />
+        return <Settings className='text-primary h-5 w-5' />
       case 'seo':
-        return <Search className='h-5 w-5 text-green-500' />
+        return <Search className='text-primary h-5 w-5' />
       case 'social':
-        return <Globe className='h-5 w-5 text-blue-500' />
+        return <Globe className='text-primary h-5 w-5' />
       case 'email':
-        return <Mail className='h-5 w-5 text-purple-500' />
+        return <Mail className='text-primary h-5 w-5' />
       case 'analytics':
-        return <BarChart3 className='h-5 w-5 text-orange-500' />
+        return <BarChart3 className='text-primary h-5 w-5' />
       case 'security':
-        return <Shield className='h-5 w-5 text-red-500' />
+        return <Shield className='text-primary h-5 w-5' />
       case 'features':
-        return <Zap className='h-5 w-5 text-yellow-500' />
+        return <Zap className='text-primary h-5 w-5' />
       default:
-        return <Settings className='h-5 w-5 text-gray-500' />
+        return <Settings className='text-muted-foreground h-5 w-5' />
     }
   }
 
   const getTypeColor = (type: string) => {
     switch (type) {
       case 'general':
-        return 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300'
+        return 'bg-primary/10 text-primary'
       case 'seo':
-        return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
+        return 'bg-primary/10 text-primary'
       case 'social':
-        return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300'
+        return 'bg-primary/10 text-primary'
       case 'email':
-        return 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300'
+        return 'bg-primary/10 text-primary'
       case 'analytics':
-        return 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300'
+        return 'bg-primary/10 text-primary'
       case 'security':
-        return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300'
+        return 'bg-primary/10 text-primary'
       case 'features':
-        return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300'
+        return 'bg-primary/10 text-primary'
       default:
-        return 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300'
+        return 'bg-muted/30 text-muted-foreground'
     }
   }
 
@@ -222,10 +222,10 @@ export const ConfigurationPanel = () => {
     return (
       <div className='space-y-6'>
         <div className='animate-pulse'>
-          <div className='mb-4 h-8 w-1/4 rounded bg-gray-200 dark:bg-gray-700'></div>
+          <div className='bg-muted mb-4 h-8 w-1/4 rounded'></div>
           <div className='space-y-3'>
             {Array.from({ length: 5 }).map((_, i) => (
-              <div key={i} className='h-20 rounded bg-gray-200 dark:bg-gray-700'></div>
+              <div key={i} className='bg-muted h-20 rounded'></div>
             ))}
           </div>
         </div>
@@ -238,8 +238,8 @@ export const ConfigurationPanel = () => {
       {/* Header */}
       <div className='flex items-center justify-between'>
         <div>
-          <h1 className='text-2xl font-bold text-gray-900 dark:text-white'>Configuration</h1>
-          <p className='text-gray-600 dark:text-gray-400'>Manage site settings and configuration</p>
+          <h1 className='text-2xl font-bold'>Configuration</h1>
+          <p className='text-muted-foreground'>Manage site settings and configuration</p>
         </div>
         <div className='flex items-center gap-2'>
           <Button onClick={() => setShowAddForm(true)} className='flex items-center gap-2'>
@@ -254,17 +254,17 @@ export const ConfigurationPanel = () => {
       </div>
 
       {/* Filters */}
-      <div className='rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800'>
+      <div className='bg-card border-border rounded-lg border p-4'>
         <div className='flex flex-col gap-4 sm:flex-row'>
           <div className='flex-1'>
             <div className='relative'>
-              <Search className='absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-gray-400' />
+              <Search className='text-muted-foreground absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform' />
               <input
                 type='text'
                 placeholder='Search configuration...'
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className='w-full rounded-md border border-gray-300 bg-white py-2 pl-10 pr-4 text-gray-900 focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white'
+                className='bg-background border-border text-foreground w-full rounded-md border py-2 pl-10 pr-4 focus:border-transparent focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background'
               />
             </div>
           </div>
@@ -272,7 +272,7 @@ export const ConfigurationPanel = () => {
           <select
             value={selectedType}
             onChange={(e) => setSelectedType(e.target.value)}
-            className='rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white'
+            className='bg-background border-border text-foreground rounded-md border px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background'
           >
             <option value=''>All Categories</option>
             <option value='general'>General</option>
@@ -288,13 +288,13 @@ export const ConfigurationPanel = () => {
 
       {/* Add New Configuration Form */}
       {showAddForm && (
-        <div className='rounded-lg border border-gray-200 bg-white p-6 dark:border-gray-700 dark:bg-gray-800'>
-          <h3 className='mb-4 text-lg font-medium text-gray-900 dark:text-white'>
+        <div className='bg-card border-border rounded-lg border p-6'>
+          <h3 className='mb-4 text-lg font-medium'>
             Add New Configuration
           </h3>
           <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
             <div>
-              <label className='mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300'>
+              <label className='mb-2 block text-sm font-medium'>
                 Key
               </label>
               <input
@@ -302,12 +302,12 @@ export const ConfigurationPanel = () => {
                 value={newConfigKey}
                 onChange={(e) => setNewConfigKey(e.target.value)}
                 placeholder='config_key'
-                className='w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white'
+                className='bg-background border-border text-foreground w-full rounded-md border px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background'
               />
             </div>
 
             <div>
-              <label className='mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300'>
+              <label className='mb-2 block text-sm font-medium'>
                 Value
               </label>
               <input
@@ -315,12 +315,12 @@ export const ConfigurationPanel = () => {
                 value={newConfigValue}
                 onChange={(e) => setNewConfigValue(e.target.value)}
                 placeholder='Configuration value'
-                className='w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white'
+                className='bg-background border-border text-foreground w-full rounded-md border px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background'
               />
             </div>
 
             <div>
-              <label className='mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300'>
+              <label className='mb-2 block text-sm font-medium'>
                 Category
               </label>
               <select
@@ -330,7 +330,7 @@ export const ConfigurationPanel = () => {
                     setNewConfigType(e.target.value)
                   }
                 }}
-                className='w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white'
+                className='bg-background border-border text-foreground w-full rounded-md border px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background'
               >
                 <option value='general'>General</option>
                 <option value='seo'>SEO</option>
@@ -343,7 +343,7 @@ export const ConfigurationPanel = () => {
             </div>
 
             <div>
-              <label className='mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300'>
+              <label className='mb-2 block text-sm font-medium'>
                 Description
               </label>
               <input
@@ -351,7 +351,7 @@ export const ConfigurationPanel = () => {
                 value={newConfigDescription}
                 onChange={(e) => setNewConfigDescription(e.target.value)}
                 placeholder='Optional description'
-                className='w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white'
+                className='bg-background border-border text-foreground w-full rounded-md border px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background'
               />
             </div>
           </div>
@@ -362,9 +362,9 @@ export const ConfigurationPanel = () => {
                 type='checkbox'
                 checked={newConfigIsPublic}
                 onChange={(e) => setNewConfigIsPublic(e.target.checked)}
-                className='rounded border-gray-300 dark:border-gray-600'
+                className='border-border rounded'
               />
-              <span className='text-sm text-gray-700 dark:text-gray-300'>
+              <span className='text-muted-foreground text-sm'>
                 Public (accessible by non-admin users)
               </span>
             </label>
@@ -385,12 +385,12 @@ export const ConfigurationPanel = () => {
       {Object.entries(filteredConfig).map(([type, configs]) => (
         <div
           key={type}
-          className='rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800'
+          className='bg-card border-border rounded-lg border'
         >
-          <div className='border-b border-gray-200 px-6 py-4 dark:border-gray-700'>
+          <div className='border-border border-b px-6 py-4'>
             <div className='flex items-center gap-3'>
               {getTypeIcon(type)}
-              <h3 className='text-lg font-medium capitalize text-gray-900 dark:text-white'>
+              <h3 className='text-lg font-medium capitalize'>
                 {type} Settings
               </h3>
               <span
@@ -401,19 +401,19 @@ export const ConfigurationPanel = () => {
             </div>
           </div>
 
-          <div className='divide-y divide-gray-200 dark:divide-gray-700'>
+          <div className='divide-border divide-y'>
             {configs.map((config) => (
               <div key={config.id} className='p-6'>
                 <div className='flex items-start justify-between'>
                   <div className='min-w-0 flex-1'>
                     <div className='mb-2 flex items-center gap-2'>
-                      <h4 className='text-sm font-medium text-gray-900 dark:text-white'>
+                      <h4 className='text-sm font-medium'>
                         {config.key}
                       </h4>
                       {config.isPublic ? (
-                        <Eye className='h-4 w-4 text-green-500' />
+                        <Eye className='text-primary h-4 w-4' />
                       ) : (
-                        <EyeOff className='h-4 w-4 text-gray-400' />
+                        <EyeOff className='text-muted-foreground h-4 w-4' />
                       )}
                     </div>
 
@@ -437,16 +437,16 @@ export const ConfigurationPanel = () => {
                               setEditingConfig(null)
                             }
                           }}
-                          className='w-full resize-none rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white'
+                          className='bg-background border-border text-foreground w-full resize-none rounded-md border px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background'
                           rows={3}
                         />
-                        <div className='text-xs text-gray-500 dark:text-gray-400'>
+                        <div className='text-muted-foreground text-xs'>
                           Press Enter to save, Escape to cancel
                         </div>
                       </div>
                     ) : (
                       <div
-                        className='cursor-pointer text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white'
+                        className='text-muted-foreground hover:text-foreground cursor-pointer text-sm'
                         onClick={() => setEditingConfig(config)}
                       >
                         {normalize_config_value(config.value) || <em>No value set</em>}
@@ -454,12 +454,12 @@ export const ConfigurationPanel = () => {
                     )}
 
                     {config.description && (
-                      <p className='mt-1 text-xs text-gray-500 dark:text-gray-400'>
+                      <p className='text-muted-foreground mt-1 text-xs'>
                         {config.description}
                       </p>
                     )}
 
-                    <div className='mt-2 text-xs text-gray-400'>
+                    <div className='text-muted-foreground mt-2 text-xs'>
                       Updated by {config.updatedBy.name} on {formatDate(config.updatedAt)}
                     </div>
                   </div>
@@ -484,11 +484,11 @@ export const ConfigurationPanel = () => {
       {/* Empty State */}
       {Object.keys(filteredConfig).length === 0 && (
         <div className='py-12 text-center'>
-          <Settings className='mx-auto h-12 w-12 text-gray-400' />
-          <h3 className='mt-2 text-sm font-medium text-gray-900 dark:text-white'>
+          <Settings className='text-muted-foreground mx-auto h-12 w-12' />
+          <h3 className='mt-2 text-sm font-medium'>
             No configuration found
           </h3>
-          <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
+          <p className='text-muted-foreground mt-1 text-sm'>
             {searchTerm || selectedType
               ? 'Try adjusting your filters.'
               : 'Get started by adding your first configuration setting.'}
