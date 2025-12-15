@@ -178,14 +178,14 @@ export default function ContactForm() {
       </CardHeader>
       <CardContent>
         {submitStatus === 'success' && (
-          <div className='mb-4 flex items-center gap-2 rounded-lg border border-green-200 bg-green-50 p-3 text-green-800'>
+          <div className='bg-primary/10 border-primary/20 text-primary mb-4 flex items-center gap-2 rounded-lg border p-3'>
             <CheckCircle className='h-4 w-4' />
             <span className='text-sm'>{submitMessage}</span>
           </div>
         )}
 
         {submitStatus === 'error' && submitMessage && (
-          <div className='mb-4 flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 p-3 text-red-800'>
+          <div className='border-destructive/20 bg-destructive/10 text-destructive mb-4 flex items-center gap-2 rounded-lg border p-3'>
             <AlertCircle className='h-4 w-4' />
             <span className='text-sm'>{submitMessage}</span>
           </div>
@@ -203,10 +203,10 @@ export default function ContactForm() {
                 placeholder={t('contact.form.name.placeholder')}
                 value={formData.name}
                 onChange={(e) => handleInputChange('name', e.target.value)}
-                className={`text-sm ${errors.name ? 'border-red-500' : ''}`}
+                className={`text-sm ${errors.name ? 'border-destructive' : ''}`}
                 disabled={isSubmitting}
               />
-              {errors.name && <p className='mt-1 text-xs text-red-600'>{errors.name}</p>}
+              {errors.name && <p className='text-destructive mt-1 text-xs'>{errors.name}</p>}
             </div>
             <div>
               <label htmlFor='email' className='mb-2 block text-xs font-medium sm:text-sm'>
@@ -218,10 +218,10 @@ export default function ContactForm() {
                 placeholder={t('contact.form.email.placeholder')}
                 value={formData.email}
                 onChange={(e) => handleInputChange('email', e.target.value)}
-                className={`text-sm ${errors.email ? 'border-red-500' : ''}`}
+                className={`text-sm ${errors.email ? 'border-destructive' : ''}`}
                 disabled={isSubmitting}
               />
-              {errors.email && <p className='mt-1 text-xs text-red-600'>{errors.email}</p>}
+              {errors.email && <p className='text-destructive mt-1 text-xs'>{errors.email}</p>}
             </div>
           </div>
 
@@ -235,10 +235,10 @@ export default function ContactForm() {
               placeholder={t('contact.form.subject.placeholder')}
               value={formData.subject}
               onChange={(e) => handleInputChange('subject', e.target.value)}
-              className={`text-sm ${errors.subject ? 'border-red-500' : ''}`}
+              className={`text-sm ${errors.subject ? 'border-destructive' : ''}`}
               disabled={isSubmitting}
             />
-            {errors.subject && <p className='mt-1 text-xs text-red-600'>{errors.subject}</p>}
+            {errors.subject && <p className='text-destructive mt-1 text-xs'>{errors.subject}</p>}
           </div>
 
           <div>
@@ -251,11 +251,11 @@ export default function ContactForm() {
               rows={6}
               value={formData.message}
               onChange={(e) => handleInputChange('message', e.target.value)}
-              className={`resize-none text-sm ${errors.message ? 'border-red-500' : ''}`}
+              className={`resize-none text-sm ${errors.message ? 'border-destructive' : ''}`}
               disabled={isSubmitting}
             />
-            {errors.message && <p className='mt-1 text-xs text-red-600'>{errors.message}</p>}
-            <p className='mt-1 text-xs text-gray-500'>
+            {errors.message && <p className='text-destructive mt-1 text-xs'>{errors.message}</p>}
+            <p className='text-muted-foreground mt-1 text-xs'>
               {t('contact.form.message.character-count', { count: formData.message.length })}
             </p>
           </div>
@@ -271,7 +271,7 @@ export default function ContactForm() {
                   setSubmitStatus('error')
                   setSubmitMessage(
                     t('contact.form.turnstile-error') ||
-                      'Security verification failed. Please try again.'
+                    'Security verification failed. Please try again.'
                   )
                 }}
                 onExpire={() => setTurnstileToken(null)}

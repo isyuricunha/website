@@ -70,25 +70,25 @@ const GetInTouch = () => {
             />
             <div
               id='postgresql'
-              className='bg-linear-to-b absolute bottom-12 left-14 rounded-3xl border from-zinc-50 to-zinc-100 px-2 py-1.5 text-xs opacity-40 dark:from-zinc-800 dark:to-zinc-900'
+              className='bg-muted/30 border-border absolute bottom-12 left-14 rounded-3xl border px-2 py-1.5 text-xs opacity-40'
             >
               PostgreSQL
             </div>
             <div
               id='docker'
-              className='bg-linear-to-b absolute left-2 top-20 rounded-3xl border from-zinc-50 to-zinc-100 px-2 py-1.5 text-xs opacity-40 dark:from-zinc-800 dark:to-zinc-900'
+              className='bg-muted/30 border-border absolute left-2 top-20 rounded-3xl border px-2 py-1.5 text-xs opacity-40'
             >
               Docker
             </div>
             <div
               id='cloudflare-workers'
-              className='bg-linear-to-b absolute bottom-20 right-1 rounded-3xl border from-zinc-50 to-zinc-100 px-2 py-1.5 text-xs opacity-40 dark:from-zinc-800 dark:to-zinc-900'
+              className='bg-muted/30 border-border absolute bottom-20 right-1 rounded-3xl border px-2 py-1.5 text-xs opacity-40'
             >
               Cloudflare
             </div>
             <div
               id='terraform'
-              className='bg-linear-to-b absolute right-8 top-10 rounded-3xl border from-zinc-50 to-zinc-100 px-2 py-1.5 text-xs opacity-40 dark:from-zinc-800 dark:to-zinc-900'
+              className='bg-muted/30 border-border absolute right-8 top-10 rounded-3xl border px-2 py-1.5 text-xs opacity-40'
             >
               Terraform
             </div>
@@ -98,8 +98,8 @@ const GetInTouch = () => {
                 width='16.8'
                 height='18.2'
                 viewBox='0 0 12 13'
-                className='fill-red-500'
-                stroke='white'
+                className='fill-primary'
+                stroke='hsl(var(--primary-foreground))'
                 strokeWidth='1'
                 xmlns='http://www.w3.org/2000/svg'
               >
@@ -109,17 +109,17 @@ const GetInTouch = () => {
                   d='M12 5.50676L0 0L2.83818 13L6.30623 7.86537L12 5.50676V5.50676Z'
                 />
               </svg>
-              <span className='relative left-4 rounded-3xl bg-red-500 px-2 py-0.5 text-xs text-white'>
+              <span className='bg-primary text-primary-foreground relative left-4 rounded-3xl px-2 py-0.5 text-xs'>
                 Yuri
               </span>
             </div>
           </div>
 
           <div className='flex flex-col justify-center px-4'>
-            <p className='bg-linear-to-r mb-2 from-black to-black/70 bg-clip-text text-2xl font-semibold text-transparent sm:mb-3 sm:text-3xl dark:from-zinc-100 dark:to-zinc-400'>
+            <p className='text-foreground mb-2 text-2xl font-semibold sm:mb-3 sm:text-3xl'>
               {t('homepage.get-in-touch.title')}
             </p>
-            <p className='text-sm leading-relaxed text-zinc-800 sm:text-base dark:text-zinc-300'>
+            <p className='text-muted-foreground text-sm leading-relaxed sm:text-base'>
               {t('homepage.get-in-touch.description')}
             </p>
             <div className='my-6 sm:my-8'>
