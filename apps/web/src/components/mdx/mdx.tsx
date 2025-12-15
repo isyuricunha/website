@@ -10,6 +10,7 @@ import Heading from './heading'
 import ItemGrid from './item-grid'
 import LinkCard from './link-card'
 import Logo from './logo'
+import NowProject from './now-project'
 import Table from './table'
 import TreeView from './tree-view'
 import Video from './video'
@@ -53,6 +54,7 @@ const components = {
   Video,
   LinkCard,
   Logo,
+  NowProject,
   TreeView,
   Kbd,
   ExpandableSection,
