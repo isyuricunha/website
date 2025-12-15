@@ -1,6 +1,7 @@
 'use client'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@isyuricunha/ui'
+import { useTranslations } from '@isyuricunha/i18n/client'
 import { FileText, Code, TrendingUp, Lightbulb } from 'lucide-react'
 import { motion } from 'motion/react'
 
@@ -26,18 +27,31 @@ const typeColors = {
 
 const Recommendations = ({
   recommendations,
-  title = 'Recommended for you',
+  title,
   showReason = true,
   className = ''
 }: RecommendationsProps) => {
+  const t = useTranslations('component.recommendations')
+  const resolvedTitle = title ?? t('title')
+
   if (recommendations.length === 0) return null
+
+  const get_reason = (rec: Recommendation) => {
+    if (rec.reason.kind === 'same-category') {
+      return t('reason.same-category', { category: rec.reason.category })
+    }
+    if (rec.reason.kind === 'similar-tags') {
+      return t('reason.similar-tags', { tags: rec.reason.tags.join(', ') })
+    }
+    return t('reason.similar-content')
+  }
 
   return (
     <Card className={className}>
       <CardHeader className='pb-3'>
         <CardTitle className='flex items-center gap-2 text-lg'>
           <Lightbulb className='h-5 w-5 text-yellow-500' />
-          {title}
+          {resolvedTitle}
         </CardTitle>
       </CardHeader>
       <CardContent className='space-y-3'>
@@ -66,7 +80,7 @@ const Recommendations = ({
                         {rec.title}
                       </h4>
                       <span className='text-muted-foreground bg-muted rounded-full px-2 py-0.5 text-xs'>
-                        {rec.type}
+                        {t(`type.${rec.type}`)}
                       </span>
                     </div>
                     <p className='text-muted-foreground mb-1 line-clamp-2 text-xs'>
@@ -75,7 +89,7 @@ const Recommendations = ({
                     {showReason && (
                       <div className='flex items-center gap-1'>
                         <TrendingUp className='text-muted-foreground h-3 w-3' />
-                        <span className='text-muted-foreground text-xs'>{rec.reason}</span>
+                        <span className='text-muted-foreground text-xs'>{get_reason(rec)}</span>
                       </div>
                     )}
                   </div>

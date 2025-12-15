@@ -194,6 +194,40 @@
       "release": "Lançamento",
       "updated": "Atualizado"
     },
+    "recommendations": {
+      "title": "Recomendado para você",
+      "type": {
+        "post": "Post",
+        "project": "Projeto"
+      },
+      "reason": {
+        "similar-content": "Conteúdo parecido",
+        "same-category": "Mesma categoria: {category}",
+        "similar-tags": "Tags parecidas: {tags}"
+      }
+    },
+    "social-share": {
+      "button": {
+        "label": "Compartilhar",
+        "aria": "Compartilhar conteúdo"
+      },
+      "native": "Compartilhar…",
+      "platform": {
+        "twitter": "Twitter",
+        "facebook": "Facebook",
+        "linkedin": "LinkedIn",
+        "reddit": "Reddit",
+        "whatsapp": "WhatsApp"
+      },
+      "copy": {
+        "label": "Copiar link",
+        "copied": "Copiado!"
+      },
+      "toast": {
+        "copied": "Link copiado para a área de transferência!",
+        "copy-failed": "Falha ao copiar link"
+      }
+    },
     "filtered-posts": {
       "no-posts-found": "Nenhum artigo encontrado",
       "placeholder": "Pesquisar artigos",

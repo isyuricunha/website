@@ -194,6 +194,40 @@
       "release": "Release",
       "updated": "Updated"
     },
+    "recommendations": {
+      "title": "Recommended for you",
+      "type": {
+        "post": "Post",
+        "project": "Project"
+      },
+      "reason": {
+        "similar-content": "Similar content",
+        "same-category": "Same category: {category}",
+        "similar-tags": "Similar tags: {tags}"
+      }
+    },
+    "social-share": {
+      "button": {
+        "label": "Share",
+        "aria": "Share content"
+      },
+      "native": "Share…",
+      "platform": {
+        "twitter": "Twitter",
+        "facebook": "Facebook",
+        "linkedin": "LinkedIn",
+        "reddit": "Reddit",
+        "whatsapp": "WhatsApp"
+      },
+      "copy": {
+        "label": "Copy link",
+        "copied": "Copied!"
+      },
+      "toast": {
+        "copied": "Link copied to clipboard!",
+        "copy-failed": "Failed to copy link"
+      }
+    },
     "uses-page": {
       "badge": {
         "updated-recently": "Updated recently"

@@ -152,7 +152,6 @@ const Page = async (props: PageProps) => {
           <Recommendations
             recommendations={recommended_posts}
             className='mt-10'
-            title='Recommended for you'
           />
         ) : null}
       </Providers>

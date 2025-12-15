@@ -7,7 +7,10 @@ export interface Recommendation {
   href: string
   type: 'post' | 'project'
   score: number
-  reason: string
+  reason:
+  | { kind: 'similar-content' }
+  | { kind: 'same-category'; category: string }
+  | { kind: 'similar-tags'; tags: string[] }
 }
 
 /**
@@ -45,14 +48,14 @@ export function getRecommendedPosts(currentPostSlug: string, limit = 3): Recomme
     .filter((post) => post.slug !== currentPostSlug && post.locale === currentLocale)
     .map((post) => {
       const score = calculateSimilarity(currentPost, post)
-      let reason = 'Similar content'
+      let reason: Recommendation['reason'] = { kind: 'similar-content' }
 
       if (currentPost.category === post.category) {
-        reason = `Same category: ${post.category}`
+        reason = { kind: 'same-category', category: post.category ?? '' }
       } else if (currentPost.tags && post.tags) {
         const commonTags = currentPost.tags.filter((tag) => post.tags.includes(tag))
         if (commonTags.length > 0) {
-          reason = `Similar tags: ${commonTags.slice(0, 2).join(', ')}`
+          reason = { kind: 'similar-tags', tags: commonTags.slice(0, 2) }
         }
       }
 
