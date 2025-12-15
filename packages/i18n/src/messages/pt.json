@@ -189,6 +189,11 @@
     "sign-up-error": "Falha ao criar conta. Por favor, tente novamente."
   },
   "component": {
+    "now-project": {
+      "website": "Site",
+      "release": "Lançamento",
+      "updated": "Atualizado"
+    },
     "filtered-posts": {
       "no-posts-found": "Nenhum artigo encontrado",
       "placeholder": "Pesquisar artigos",
