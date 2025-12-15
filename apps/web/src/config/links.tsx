@@ -1,6 +1,7 @@
 import { type IconType, SiGithub, SiX } from '@icons-pack/react-simple-icons'
 import {
   FlameIcon,
+  CalendarIcon,
   MessageCircleIcon,
   MonitorIcon,
   MusicIcon,
@@ -39,6 +40,11 @@ export const HEADER_LINKS = [
     key: 'about'
   },
   {
+    icon: <CalendarIcon className='size-3.5' />,
+    href: '/now',
+    key: 'now'
+  },
+  {
     icon: <MonitorIcon className='size-3.5' />,
     href: '/uses',
     key: 'uses'
@@ -64,6 +70,7 @@ export const FOOTER_LINKS = [
     id: 2,
     links: [
       { href: '/guestbook', key: 'guestbook' },
+      { href: '/now', key: 'now' },
       { href: '/uses', key: 'uses' },
       { href: '/projects', key: 'projects' },
       { href: '/spotify', key: 'spotify' },

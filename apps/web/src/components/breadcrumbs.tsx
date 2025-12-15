@@ -38,6 +38,9 @@ const Breadcrumbs = () => {
       case 'projects':
         label = t('layout.projects')
         break
+      case 'now':
+        label = t('layout.now')
+        break
       case 'uses':
         label = t('layout.uses')
         break

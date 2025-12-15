@@ -3,7 +3,7 @@ import type { Metadata, ResolvingMetadata } from 'next'
 import { i18n } from '@isyuricunha/i18n/config'
 import { getTranslations, setRequestLocale } from '@isyuricunha/i18n/server'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@isyuricunha/ui/server'
-import { FileText, Code, Music, User, Home, Map as MapIcon } from 'lucide-react'
+import { FileText, Code, Music, User, Home, Map as MapIcon, Calendar } from 'lucide-react'
 
 import { allPosts, allProjects } from 'content-collections'
 
@@ -84,6 +84,12 @@ const SitemapPage = async (props: PageProps) => {
       description: t('main-pages.items.uses.description'),
       href: '/uses',
       icon: <Code className='h-4 w-4' />
+    },
+    {
+      title: tCommon('layout.now'),
+      description: t('main-pages.items.now.description'),
+      href: '/now',
+      icon: <Calendar className='h-4 w-4' />
     },
     {
       title: tCommon('layout.spotify'),
