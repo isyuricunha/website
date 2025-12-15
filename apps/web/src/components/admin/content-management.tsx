@@ -114,9 +114,9 @@ export const ContentManagement = () => {
 
   const getStatusBadge = (status: string) => {
     const styles = {
-      draft: 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300',
-      published: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
-      archived: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300'
+      draft: 'bg-muted/30 text-muted-foreground',
+      published: 'bg-primary/10 text-primary',
+      archived: 'bg-muted/30 text-muted-foreground'
     }
 
     return (
@@ -132,10 +132,10 @@ export const ContentManagement = () => {
     return (
       <div className='space-y-6'>
         <div className='animate-pulse'>
-          <div className='mb-4 h-8 w-1/4 rounded bg-gray-200 dark:bg-gray-700'></div>
+          <div className='bg-muted mb-4 h-8 w-1/4 rounded'></div>
           <div className='space-y-3'>
             {Array.from({ length: 5 }).map((_, i) => (
-              <div key={i} className='h-16 rounded bg-gray-200 dark:bg-gray-700'></div>
+              <div key={i} className='bg-muted h-16 rounded'></div>
             ))}
           </div>
         </div>
@@ -148,8 +148,8 @@ export const ContentManagement = () => {
       {/* Header */}
       <div className='flex items-center justify-between'>
         <div>
-          <h1 className='text-2xl font-bold text-gray-900 dark:text-white'>Content Management</h1>
-          <p className='text-gray-600 dark:text-gray-400'>Manage your blog posts and content</p>
+          <h1 className='text-2xl font-bold'>Content Management</h1>
+          <p className='text-muted-foreground'>Manage your blog posts and content</p>
         </div>
         <Button className='flex items-center gap-2'>
           <Plus className='h-4 w-4' />
@@ -160,48 +160,48 @@ export const ContentManagement = () => {
       {/* Stats Cards */}
       {statsData && (
         <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4'>
-          <div className='rounded-lg border border-gray-200 bg-white p-6 dark:border-gray-700 dark:bg-gray-800'>
+          <div className='bg-card border-border rounded-lg border p-6'>
             <div className='flex items-center'>
-              <FileText className='h-8 w-8 text-blue-500' />
+              <FileText className='text-primary h-8 w-8' />
               <div className='ml-4'>
-                <p className='text-sm font-medium text-gray-600 dark:text-gray-400'>Total Posts</p>
-                <p className='text-2xl font-bold text-gray-900 dark:text-white'>
+                <p className='text-muted-foreground text-sm font-medium'>Total Posts</p>
+                <p className='text-2xl font-bold'>
                   {statsData.totals.posts}
                 </p>
               </div>
             </div>
           </div>
 
-          <div className='rounded-lg border border-gray-200 bg-white p-6 dark:border-gray-700 dark:bg-gray-800'>
+          <div className='bg-card border-border rounded-lg border p-6'>
             <div className='flex items-center'>
-              <Eye className='h-8 w-8 text-green-500' />
+              <Eye className='text-primary h-8 w-8' />
               <div className='ml-4'>
-                <p className='text-sm font-medium text-gray-600 dark:text-gray-400'>Published</p>
-                <p className='text-2xl font-bold text-gray-900 dark:text-white'>
+                <p className='text-muted-foreground text-sm font-medium'>Published</p>
+                <p className='text-2xl font-bold'>
                   {statsData.totals.published}
                 </p>
               </div>
             </div>
           </div>
 
-          <div className='rounded-lg border border-gray-200 bg-white p-6 dark:border-gray-700 dark:bg-gray-800'>
+          <div className='bg-card border-border rounded-lg border p-6'>
             <div className='flex items-center'>
-              <Edit className='h-8 w-8 text-yellow-500' />
+              <Edit className='text-muted-foreground h-8 w-8' />
               <div className='ml-4'>
-                <p className='text-sm font-medium text-gray-600 dark:text-gray-400'>Drafts</p>
-                <p className='text-2xl font-bold text-gray-900 dark:text-white'>
+                <p className='text-muted-foreground text-sm font-medium'>Drafts</p>
+                <p className='text-2xl font-bold'>
                   {statsData.totals.drafts}
                 </p>
               </div>
             </div>
           </div>
 
-          <div className='rounded-lg border border-gray-200 bg-white p-6 dark:border-gray-700 dark:bg-gray-800'>
+          <div className='bg-card border-border rounded-lg border p-6'>
             <div className='flex items-center'>
-              <BarChart3 className='h-8 w-8 text-purple-500' />
+              <BarChart3 className='text-primary h-8 w-8' />
               <div className='ml-4'>
-                <p className='text-sm font-medium text-gray-600 dark:text-gray-400'>Total Views</p>
-                <p className='text-2xl font-bold text-gray-900 dark:text-white'>
+                <p className='text-muted-foreground text-sm font-medium'>Total Views</p>
+                <p className='text-2xl font-bold'>
                   {statsData.totals.views.toLocaleString()}
                 </p>
               </div>
@@ -211,17 +211,17 @@ export const ContentManagement = () => {
       )}
 
       {/* Filters and Search */}
-      <div className='rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800'>
+      <div className='bg-card border-border rounded-lg border p-4'>
         <div className='flex flex-col gap-4 sm:flex-row'>
           <div className='flex-1'>
             <div className='relative'>
-              <Search className='absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-gray-400' />
+              <Search className='text-muted-foreground absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform' />
               <input
                 type='text'
                 placeholder='Search posts...'
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className='w-full rounded-md border border-gray-300 bg-white py-2 pl-10 pr-4 text-gray-900 focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white'
+                className='bg-background border-border text-foreground w-full rounded-md border py-2 pl-10 pr-4 focus:border-transparent focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background'
               />
             </div>
           </div>
@@ -241,7 +241,7 @@ export const ContentManagement = () => {
                   setStatusFilter(value as StatusFilter)
                 }
               }}
-              className='rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 focus:border-transparent focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white'
+              className='bg-background border-border text-foreground rounded-md border px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background'
             >
               <option value=''>All Status</option>
               <option value='draft'>Draft</option>
@@ -258,7 +258,7 @@ export const ContentManagement = () => {
 
         {selectedPosts.length > 0 && (
           <div className='mt-4 flex items-center gap-2'>
-            <span className='text-sm text-gray-600 dark:text-gray-400'>
+            <span className='text-muted-foreground text-sm'>
               {selectedPosts.length} posts selected
             </span>
             <Button
@@ -290,12 +290,12 @@ export const ContentManagement = () => {
       </div>
 
       {/* Posts Table */}
-      <div className='overflow-hidden rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800'>
+      <div className='bg-card border-border overflow-hidden rounded-lg border'>
         <div className='overflow-x-auto'>
-          <table className='min-w-full divide-y divide-gray-200 dark:divide-gray-700'>
-            <thead className='bg-gray-50 dark:bg-gray-900'>
+          <table className='min-w-full divide-y divide-border'>
+            <thead className='bg-muted'>
               <tr>
-                <th className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400'>
+                <th className='text-muted-foreground px-6 py-3 text-left text-xs font-medium uppercase tracking-wider'>
                   <input
                     type='checkbox'
                     onChange={(e) => {
@@ -305,32 +305,32 @@ export const ContentManagement = () => {
                         setSelectedPosts([])
                       }
                     }}
-                    className='rounded border-gray-300 dark:border-gray-600'
+                    className='border-border rounded'
                   />
                 </th>
-                <th className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400'>
+                <th className='text-muted-foreground px-6 py-3 text-left text-xs font-medium uppercase tracking-wider'>
                   Post
                 </th>
-                <th className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400'>
+                <th className='text-muted-foreground px-6 py-3 text-left text-xs font-medium uppercase tracking-wider'>
                   Status
                 </th>
-                <th className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400'>
+                <th className='text-muted-foreground px-6 py-3 text-left text-xs font-medium uppercase tracking-wider'>
                   Author
                 </th>
-                <th className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400'>
+                <th className='text-muted-foreground px-6 py-3 text-left text-xs font-medium uppercase tracking-wider'>
                   Stats
                 </th>
-                <th className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400'>
+                <th className='text-muted-foreground px-6 py-3 text-left text-xs font-medium uppercase tracking-wider'>
                   Date
                 </th>
-                <th className='px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400'>
+                <th className='text-muted-foreground px-6 py-3 text-right text-xs font-medium uppercase tracking-wider'>
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className='divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800'>
+            <tbody className='divide-y divide-border bg-background'>
               {postsData?.posts.map((post) => (
-                <tr key={post.id} className='hover:bg-gray-50 dark:hover:bg-gray-700'>
+                <tr key={post.id} className='hover:bg-muted/30'>
                   <td className='whitespace-nowrap px-6 py-4'>
                     <input
                       type='checkbox'
@@ -342,31 +342,31 @@ export const ContentManagement = () => {
                           setSelectedPosts(selectedPosts.filter((id) => id !== post.id))
                         }
                       }}
-                      className='rounded border-gray-300 dark:border-gray-600'
+                      className='border-border rounded'
                     />
                   </td>
                   <td className='px-6 py-4'>
                     <div className='flex items-center'>
                       <div>
                         <div className='flex items-center gap-2'>
-                          <div className='text-sm font-medium text-gray-900 dark:text-white'>
+                          <div className='text-sm font-medium'>
                             {post.title}
                           </div>
-                          {post.featured && <Star className='h-4 w-4 text-yellow-500' />}
+                          {post.featured && <Star className='text-primary h-4 w-4' />}
                         </div>
-                        <div className='text-sm text-gray-500 dark:text-gray-400'>/{post.slug}</div>
+                        <div className='text-muted-foreground text-sm'>/{post.slug}</div>
                         {post.tags.length > 0 && (
                           <div className='mt-1 flex gap-1'>
                             {post.tags.slice(0, 3).map((tag: string) => (
                               <span
                                 key={tag}
-                                className='inline-flex items-center rounded bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-300'
+                                className='bg-primary/10 text-primary inline-flex items-center rounded px-2 py-0.5 text-xs font-medium'
                               >
                                 {tag}
                               </span>
                             ))}
                             {post.tags.length > 3 && (
-                              <span className='text-xs text-gray-500 dark:text-gray-400'>
+                              <span className='text-muted-foreground text-xs'>
                                 +{post.tags.length - 3} more
                               </span>
                             )}
@@ -390,28 +390,28 @@ export const ContentManagement = () => {
                         />
                       )}
                       <div>
-                        <div className='text-sm font-medium text-gray-900 dark:text-white'>
+                        <div className='text-sm font-medium'>
                           {post.author?.name ?? 'Unknown'}
                         </div>
-                        <div className='text-sm text-gray-500 dark:text-gray-400'>
+                        <div className='text-muted-foreground text-sm'>
                           {post.author?.email ?? ''}
                         </div>
                       </div>
                     </div>
                   </td>
-                  <td className='whitespace-nowrap px-6 py-4 text-sm text-gray-900 dark:text-white'>
+                  <td className='whitespace-nowrap px-6 py-4 text-sm'>
                     <div className='flex items-center gap-4'>
                       <div className='flex items-center gap-1'>
-                        <Eye className='h-4 w-4 text-gray-400' />
+                        <Eye className='text-muted-foreground h-4 w-4' />
                         {post.views}
                       </div>
                       <div className='flex items-center gap-1'>
-                        <Star className='h-4 w-4 text-gray-400' />
+                        <Star className='text-muted-foreground h-4 w-4' />
                         {post.likes}
                       </div>
                     </div>
                   </td>
-                  <td className='whitespace-nowrap px-6 py-4 text-sm text-gray-500 dark:text-gray-400'>
+                  <td className='text-muted-foreground whitespace-nowrap px-6 py-4 text-sm'>
                     <div>
                       <div className='flex items-center gap-1'>
                         <Calendar className='h-4 w-4' />
@@ -446,11 +446,11 @@ export const ContentManagement = () => {
 
         {(!postsData?.posts || postsData.posts.length === 0) && (
           <div className='py-12 text-center'>
-            <FileText className='mx-auto h-12 w-12 text-gray-400' />
-            <h3 className='mt-2 text-sm font-medium text-gray-900 dark:text-white'>
+            <FileText className='text-muted-foreground mx-auto h-12 w-12' />
+            <h3 className='mt-2 text-sm font-medium'>
               No posts found
             </h3>
-            <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
+            <p className='text-muted-foreground mt-1 text-sm'>
               Get started by creating your first blog post.
             </p>
             <div className='mt-6'>
