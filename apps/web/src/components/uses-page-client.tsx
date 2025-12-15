@@ -43,7 +43,7 @@ const ComparisonTable = ({ items, title }: { items: ComparisonItem[]; title: str
     <div className='my-8 overflow-hidden rounded-lg border'>
       <div className='bg-muted/50 border-b px-4 py-3'>
         <h3 className='flex items-center gap-2 text-sm font-semibold sm:text-base'>
-          <Star className='h-4 w-4 text-yellow-500' />
+          <Star className='text-primary h-4 w-4' />
           {title}
         </h3>
       </div>
@@ -77,7 +77,7 @@ const ComparisonTable = ({ items, title }: { items: ComparisonItem[]; title: str
                   </div>
                 </td>
                 <td className='border-border/50 border-r px-8 py-6 align-top'>
-                  <ul className='mr-4 space-y-2 text-xs leading-relaxed text-green-600 dark:text-green-400'>
+                  <ul className='text-primary mr-4 space-y-2 text-xs leading-relaxed'>
                     {item.pros.map((pro, i) => (
                       <li key={i} className='break-words'>
                         • {pro}
@@ -86,7 +86,7 @@ const ComparisonTable = ({ items, title }: { items: ComparisonItem[]; title: str
                   </ul>
                 </td>
                 <td className='border-border/50 border-r px-8 py-6 align-top'>
-                  <ul className='mr-4 space-y-2 text-xs leading-relaxed text-red-600 dark:text-red-400'>
+                  <ul className='text-muted-foreground mr-4 space-y-2 text-xs leading-relaxed'>
                     {item.cons.map((con, i) => (
                       <li key={i} className='break-words'>
                         • {con}
@@ -103,9 +103,10 @@ const ComparisonTable = ({ items, title }: { items: ComparisonItem[]; title: str
                       {Array.from({ length: 5 }, (_, i) => (
                         <Star
                           key={i}
-                          className={`h-3 w-3 ${
-                            i < item.rating ? 'fill-current text-yellow-500' : 'text-gray-300'
-                          }`}
+                          className={`h-3 w-3 ${i < item.rating
+                              ? 'text-primary fill-current'
+                              : 'text-muted-foreground/30'
+                            }`}
                         />
                       ))}
                     </div>
@@ -164,14 +165,14 @@ const ExpandableSection = ({
 const AffiliateDisclosure = () => {
   const t = useTranslations('component.uses-page')
   return (
-    <div className='mb-8 rounded-lg border border-blue-200 bg-blue-50 p-4 dark:border-blue-800 dark:bg-blue-950/20'>
+    <div className='bg-primary/10 border-primary/20 mb-8 rounded-lg border p-4'>
       <div className='flex items-start gap-3'>
-        <Info className='mt-0.5 h-5 w-5 flex-shrink-0 text-blue-600 dark:text-blue-400' />
+        <Info className='text-primary mt-0.5 h-5 w-5 flex-shrink-0' />
         <div>
-          <h3 className='mb-1 text-sm font-semibold text-blue-900 dark:text-blue-100'>
+          <h3 className='text-foreground mb-1 text-sm font-semibold'>
             {t('affiliate.title')}
           </h3>
-          <p className='text-xs text-blue-800 sm:text-sm dark:text-blue-200'>
+          <p className='text-muted-foreground text-xs sm:text-sm'>
             {t('affiliate.description')}
           </p>
         </div>

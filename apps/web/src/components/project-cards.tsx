@@ -47,22 +47,22 @@ const statusConfig = {
   active: {
     labelKey: 'projects.status.active',
     icon: CheckCircle,
-    color: 'bg-green-100 text-green-800 border-green-200'
+    color: 'bg-primary/10 text-primary border-primary/20'
   },
   archived: {
     labelKey: 'projects.status.archived',
     icon: Archive,
-    color: 'bg-gray-100 text-gray-800 border-gray-200'
+    color: 'bg-muted/40 text-muted-foreground border-border'
   },
   beta: {
     labelKey: 'projects.status.beta',
     icon: Beaker,
-    color: 'bg-blue-100 text-blue-800 border-blue-200'
+    color: 'bg-primary/10 text-primary border-primary/20'
   },
   completed: {
     labelKey: 'projects.status.completed',
     icon: CheckCircle,
-    color: 'bg-purple-100 text-purple-800 border-purple-200'
+    color: 'bg-primary/10 text-primary border-primary/20'
   }
 } as const
 
@@ -155,7 +155,7 @@ const ProjectCards = (props: ProjectCardsProps) => {
       {featuredProjects.length > 0 && (
         <div className='space-y-6'>
           <div className='flex items-center gap-2'>
-            <Star className='h-5 w-5 text-yellow-500' />
+            <Star className='text-primary h-5 w-5' />
             <h2 className='text-lg font-semibold sm:text-xl'>{t('projects.featured')}</h2>
           </div>
           <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
@@ -374,7 +374,7 @@ const ProjectCard = (props: ProjectCardProps) => {
       {/* Status and Featured Badges */}
       <div className='absolute left-3 top-3 z-10 flex gap-2'>
         {featured && (
-          <Badge variant='secondary' className='border-yellow-200 bg-yellow-100 text-yellow-800'>
+          <Badge variant='secondary' className='bg-primary/10 text-primary border-primary/20'>
             <Star className='mr-1 h-3 w-3' />
             {t('projects.card.featured')}
           </Badge>
@@ -397,7 +397,7 @@ const ProjectCard = (props: ProjectCardProps) => {
             alt={name}
             className='aspect-video w-full object-cover'
           />
-          <div className='absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100' />
+          <div className='absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100' />
         </div>
       </EnhancedCardHeader>
 
