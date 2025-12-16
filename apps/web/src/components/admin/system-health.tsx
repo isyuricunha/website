@@ -251,9 +251,7 @@ export const SystemHealthDashboard = () => {
             </div>
             {statsData && (
               <div className='text-right'>
-                <div className='text-2xl font-bold'>
-                  {formatUptime(statsData.health.uptime)}
-                </div>
+                <div className='text-2xl font-bold'>{formatUptime(statsData.health.uptime)}</div>
                 <div className='text-muted-foreground text-sm'>Uptime</div>
               </div>
             )}
@@ -268,12 +266,8 @@ export const SystemHealthDashboard = () => {
             <div className='flex items-center'>
               <CheckCircle className='text-primary h-8 w-8' />
               <div className='ml-4'>
-                <p className='text-muted-foreground text-sm font-medium'>
-                  Healthy Checks
-                </p>
-                <p className='text-2xl font-bold'>
-                  {statsData.health.healthy}
-                </p>
+                <p className='text-muted-foreground text-sm font-medium'>Healthy Checks</p>
+                <p className='text-2xl font-bold'>{statsData.health.healthy}</p>
               </div>
             </div>
           </div>
@@ -283,9 +277,7 @@ export const SystemHealthDashboard = () => {
               <AlertTriangle className='text-primary h-8 w-8' />
               <div className='ml-4'>
                 <p className='text-muted-foreground text-sm font-medium'>Warnings</p>
-                <p className='text-2xl font-bold'>
-                  {statsData.health.warning}
-                </p>
+                <p className='text-2xl font-bold'>{statsData.health.warning}</p>
               </div>
             </div>
           </div>
@@ -294,12 +286,8 @@ export const SystemHealthDashboard = () => {
             <div className='flex items-center'>
               <XCircle className='text-destructive h-8 w-8' />
               <div className='ml-4'>
-                <p className='text-muted-foreground text-sm font-medium'>
-                  Critical Issues
-                </p>
-                <p className='text-2xl font-bold'>
-                  {statsData.health.critical}
-                </p>
+                <p className='text-muted-foreground text-sm font-medium'>Critical Issues</p>
+                <p className='text-2xl font-bold'>{statsData.health.critical}</p>
               </div>
             </div>
           </div>
@@ -308,12 +296,8 @@ export const SystemHealthDashboard = () => {
             <div className='flex items-center'>
               <AlertCircle className='text-primary h-8 w-8' />
               <div className='ml-4'>
-                <p className='text-muted-foreground text-sm font-medium'>
-                  Unresolved Errors
-                </p>
-                <p className='text-2xl font-bold'>
-                  {statsData.errors.unresolved}
-                </p>
+                <p className='text-muted-foreground text-sm font-medium'>Unresolved Errors</p>
+                <p className='text-2xl font-bold'>{statsData.errors.unresolved}</p>
               </div>
             </div>
           </div>
@@ -378,10 +362,11 @@ export const SystemHealthDashboard = () => {
                   <div className='flex-1'>
                     <div className='mb-2 flex items-center gap-2'>
                       <span
-                        className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${error.level === 'error'
-                          ? 'bg-destructive/10 text-destructive'
-                          : 'bg-primary/10 text-primary'
-                          }`}
+                        className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                          error.level === 'error'
+                            ? 'bg-destructive/10 text-destructive'
+                            : 'bg-primary/10 text-primary'
+                        }`}
                       >
                         {error.level.toUpperCase()}
                       </span>
@@ -389,13 +374,9 @@ export const SystemHealthDashboard = () => {
                         {new Date(error.createdAt).toLocaleString()}
                       </span>
                     </div>
-                    <p className='mb-1 text-sm font-medium'>
-                      {error.message}
-                    </p>
+                    <p className='mb-1 text-sm font-medium'>{error.message}</p>
                     {error.url && (
-                      <p className='text-muted-foreground mb-1 text-xs'>
-                        URL: {error.url}
-                      </p>
+                      <p className='text-muted-foreground mb-1 text-xs'>URL: {error.url}</p>
                     )}
                     {error.user && (
                       <p className='text-muted-foreground text-xs'>
@@ -456,27 +437,19 @@ export const SystemHealthDashboard = () => {
           <div className='grid grid-cols-2 gap-3 md:grid-cols-4'>
             <div className='bg-background border-border rounded-md border p-3'>
               <div className='text-muted-foreground text-xs'>Healthy</div>
-              <div className='text-foreground text-lg font-semibold'>
-                {history_stats.healthy}
-              </div>
+              <div className='text-foreground text-lg font-semibold'>{history_stats.healthy}</div>
             </div>
             <div className='bg-background border-border rounded-md border p-3'>
               <div className='text-muted-foreground text-xs'>Warnings</div>
-              <div className='text-foreground text-lg font-semibold'>
-                {history_stats.warning}
-              </div>
+              <div className='text-foreground text-lg font-semibold'>{history_stats.warning}</div>
             </div>
             <div className='bg-background border-border rounded-md border p-3'>
               <div className='text-muted-foreground text-xs'>Critical</div>
-              <div className='text-foreground text-lg font-semibold'>
-                {history_stats.critical}
-              </div>
+              <div className='text-foreground text-lg font-semibold'>{history_stats.critical}</div>
             </div>
             <div className='bg-background border-border rounded-md border p-3'>
               <div className='text-muted-foreground text-xs'>Unknown</div>
-              <div className='text-foreground text-lg font-semibold'>
-                {history_stats.unknown}
-              </div>
+              <div className='text-foreground text-lg font-semibold'>{history_stats.unknown}</div>
             </div>
           </div>
 
@@ -506,11 +479,11 @@ export const SystemHealthDashboard = () => {
                       <td className='text-muted-foreground px-3 py-2'>
                         {new Date(row.createdAt).toLocaleString()}
                       </td>
-                      <td className='text-foreground px-3 py-2 font-medium'>
-                        {row.checkType}
-                      </td>
+                      <td className='text-foreground px-3 py-2 font-medium'>{row.checkType}</td>
                       <td className='px-3 py-2'>
-                        <span className={`inline-flex items-center gap-2 rounded-full px-2 py-0.5 ${getStatusColor(row.status)}`}>
+                        <span
+                          className={`inline-flex items-center gap-2 rounded-full px-2 py-0.5 ${getStatusColor(row.status)}`}
+                        >
                           {getStatusIcon(row.status)}
                           <span className='text-xs font-medium'>
                             {row.status.charAt(0).toUpperCase() + row.status.slice(1)}
@@ -518,7 +491,9 @@ export const SystemHealthDashboard = () => {
                         </span>
                       </td>
                       <td className='text-muted-foreground px-3 py-2'>
-                        {typeof row.responseTime === 'number' ? formatResponseTime(row.responseTime) : '—'}
+                        {typeof row.responseTime === 'number'
+                          ? formatResponseTime(row.responseTime)
+                          : '—'}
                       </td>
                       <td className='text-muted-foreground px-3 py-2'>{row.message}</td>
                     </tr>

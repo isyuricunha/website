@@ -14,7 +14,9 @@ tags:
 This snippet contains **my personal VSCode configuration files** for easy migration to VSCodium or fresh VSCode installations. It includes a comprehensive list of extensions and detailed editor settings.
 
 <Callout type='warning'>
-  These are **my personal configurations**. Review and adjust settings before applying them to your setup. Some settings like file paths, API keys, and preferences may need customization for your environment.
+  These are **my personal configurations**. Review and adjust settings before applying them to your
+  setup. Some settings like file paths, API keys, and preferences may need customization for your
+  environment.
 </Callout>
 
 {/* more */}
@@ -58,116 +60,114 @@ Save this file as `settings.json` in your VSCode/VSCodium user settings director
 
 ```json
 {
-	"workbench.sideBar.location": "right",
-	"files.autoSave": "onWindowChange",
-	"editor.fontFamily": "'Fira Code'",
-	"editor.fontWeight": "300", // Light
-	"editor.fontLigatures": true,
-	"editor.smoothScrolling": true,
-	"editor.cursorSmoothCaretAnimation": "explicit",
-	"editor.cursorBlinking": "expand",
-	"editor.formatOnSave": true,
-	"workbench.cloudChanges.autoResume": "off",
-	"update.enableWindowsBackgroundUpdates": false,
-	"telemetry.telemetryLevel": "off",
-	"window.restoreWindows": "none",
-	"window.commandCenter": true,
-	"git.autofetch": true,
-	"security.workspace.trust.untrustedFiles": "newWindow",
-	"workbench.colorTheme": "Shades of Purple (Super Dark)",
-	"editor.inlineSuggest.enabled": true,
-	"git.enableSmartCommit": true,
-	"git.confirmSync": false,
-	"liveServer.settings.fullReload": true,
-	"liveServer.settings.useLocalIp": true,
-	"[javascript]": {
-		"editor.defaultFormatter": "vscode.typescript-language-features"
-	},
-	"[markdown]": {
-		"editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
-	},
+  "workbench.sideBar.location": "right",
+  "files.autoSave": "onWindowChange",
+  "editor.fontFamily": "'Fira Code'",
+  "editor.fontWeight": "300", // Light
+  "editor.fontLigatures": true,
+  "editor.smoothScrolling": true,
+  "editor.cursorSmoothCaretAnimation": "explicit",
+  "editor.cursorBlinking": "expand",
+  "editor.formatOnSave": true,
+  "workbench.cloudChanges.autoResume": "off",
+  "update.enableWindowsBackgroundUpdates": false,
+  "telemetry.telemetryLevel": "off",
+  "window.restoreWindows": "none",
+  "window.commandCenter": true,
+  "git.autofetch": true,
+  "security.workspace.trust.untrustedFiles": "newWindow",
+  "workbench.colorTheme": "Shades of Purple (Super Dark)",
+  "editor.inlineSuggest.enabled": true,
+  "git.enableSmartCommit": true,
+  "git.confirmSync": false,
+  "liveServer.settings.fullReload": true,
+  "liveServer.settings.useLocalIp": true,
+  "[javascript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+  },
 
-	"github.copilot.enable": {
-		"*": true,
-		"plaintext": true,
-		"markdown": false,
-		"scminput": false,
-		"typescriptreact": true
-	},
-	"git.openRepositoryInParentFolders": "never",
-	"typescript.updateImportsOnFileMove.enabled": "always",
-	"explorer.confirmDragAndDrop": false,
-	"explorer.confirmDelete": false,
-	"editor.unicodeHighlight.nonBasicASCII": false,
-	"diffEditor.maxComputationTime": 0,
-	"[xml]": {
-		"editor.defaultFormatter": "DotJoshJohnson.xml"
-	},
-"[python]": {
-      "editor.defaultFormatter": "ms-python.autopep8"
-    },
-	"[typescriptreact]": {
-		"editor.defaultFormatter": "vscode.typescript-language-features"
-	},
-	"update.mode": "none",
-	"[typescript]": {},
-	"editor.autoClosingComments": "always",
-	"editor.bracketPairColorization.independentColorPoolPerBracketType": true,
-	"workbench.experimental.cloudChanges.autoStore": "onShutdown",
-	"workbench.list.smoothScrolling": true,
-	"workbench.preferredLightColorTheme": "Shades of Purple",
-	"workbench.cloudChanges.continueOn": "off",
-	"workbench.iconTheme": "vscode-icons",
-	"prettier.endOfLine": "auto",
-	"prettier.useTabs": true,
-	"editor.formatOnPaste": true,
-	"editor.defaultFormatter": "esbenp.prettier-vscode",
-	"workbench.editor.restoreViewState": false,
-	"files.associations": {
-		"*.tpl": "markdown",
-		"*.mdx": "markdown"
-	},
-	"diffEditor.ignoreTrimWhitespace": false,
-	"gitlens.ai.experimental.provider": "anthropic",
-	"gitlens.ai.experimental.anthropic.model": "claude-2.1",
-	"vsicons.dontShowNewVersionMessage": true,
-	"gitCommitSuggestions.openAIKey": "sk-whoKnows",
-	"editor.unicodeHighlight.invisibleCharacters": false,
-	"editor.stickyScroll.enabled": false,
-	"css.lint.unknownAtRules": "ignore",
-	"extensions.ignoreRecommendations": true,
-	"extensions.autoCheckUpdates": false,
-	"extensions.autoUpdate": false,
-	"git.replaceTagsWhenPull": true,
-	"discord.suppressNotifications": true,
-	"discord.removeRemoteRepository": true,
-	"discord.lowerDetailsEditing": " {dir_name}",
-	"discord.lowerDetailsDebugging": "Debugging: {file_name}",
-	"gitlens.advanced.messages": {
-		"suppressLineUncommittedWarning": true
-	},
-	"workbench.editorAssociations": {
-		"*.db-shm": "default",
-		"*.dll": "default"
-	},
-	"editor.unicodeHighlight.ambiguousCharacters": false,
-	"editor.largeFileOptimizations": false,
-	"editor.minimap.size": "fit",
-	"[json]": {
-		"editor.defaultFormatter": "vscode.json-language-features"
-	},
-	"security.allowedUNCHosts": [
-		"100.83.216.64"
-	],
-	"workbench.startupEditor": "none",
-	"monkeyC.developerKeyPath": "c:\\Users\\isy\\Documents\\GitHub\\yurounded\\developer_key",
-	"window.confirmSaveUntitledWorkspace": false,
-	"window.customTitleBarVisibility": "windowed",
-	"[html]": {
-		"editor.defaultFormatter": "vscode.html-language-features"
-	},
-	"workbench.secondarySideBar.defaultVisibility": "hidden",
-	"chat.disableAIFeatures": true
+  "github.copilot.enable": {
+    "*": true,
+    "plaintext": true,
+    "markdown": false,
+    "scminput": false,
+    "typescriptreact": true
+  },
+  "git.openRepositoryInParentFolders": "never",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "explorer.confirmDragAndDrop": false,
+  "explorer.confirmDelete": false,
+  "editor.unicodeHighlight.nonBasicASCII": false,
+  "diffEditor.maxComputationTime": 0,
+  "[xml]": {
+    "editor.defaultFormatter": "DotJoshJohnson.xml"
+  },
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.autopep8"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "update.mode": "none",
+  "[typescript]": {},
+  "editor.autoClosingComments": "always",
+  "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
+  "workbench.experimental.cloudChanges.autoStore": "onShutdown",
+  "workbench.list.smoothScrolling": true,
+  "workbench.preferredLightColorTheme": "Shades of Purple",
+  "workbench.cloudChanges.continueOn": "off",
+  "workbench.iconTheme": "vscode-icons",
+  "prettier.endOfLine": "auto",
+  "prettier.useTabs": true,
+  "editor.formatOnPaste": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "workbench.editor.restoreViewState": false,
+  "files.associations": {
+    "*.tpl": "markdown",
+    "*.mdx": "markdown"
+  },
+  "diffEditor.ignoreTrimWhitespace": false,
+  "gitlens.ai.experimental.provider": "anthropic",
+  "gitlens.ai.experimental.anthropic.model": "claude-2.1",
+  "vsicons.dontShowNewVersionMessage": true,
+  "gitCommitSuggestions.openAIKey": "sk-whoKnows",
+  "editor.unicodeHighlight.invisibleCharacters": false,
+  "editor.stickyScroll.enabled": false,
+  "css.lint.unknownAtRules": "ignore",
+  "extensions.ignoreRecommendations": true,
+  "extensions.autoCheckUpdates": false,
+  "extensions.autoUpdate": false,
+  "git.replaceTagsWhenPull": true,
+  "discord.suppressNotifications": true,
+  "discord.removeRemoteRepository": true,
+  "discord.lowerDetailsEditing": " {dir_name}",
+  "discord.lowerDetailsDebugging": "Debugging: {file_name}",
+  "gitlens.advanced.messages": {
+    "suppressLineUncommittedWarning": true
+  },
+  "workbench.editorAssociations": {
+    "*.db-shm": "default",
+    "*.dll": "default"
+  },
+  "editor.unicodeHighlight.ambiguousCharacters": false,
+  "editor.largeFileOptimizations": false,
+  "editor.minimap.size": "fit",
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "security.allowedUNCHosts": ["100.83.216.64"],
+  "workbench.startupEditor": "none",
+  "monkeyC.developerKeyPath": "c:\\Users\\isy\\Documents\\GitHub\\yurounded\\developer_key",
+  "window.confirmSaveUntitledWorkspace": false,
+  "window.customTitleBarVisibility": "windowed",
+  "[html]": {
+    "editor.defaultFormatter": "vscode.html-language-features"
+  },
+  "workbench.secondarySideBar.defaultVisibility": "hidden",
+  "chat.disableAIFeatures": true
 }
 ```
 
@@ -502,22 +502,26 @@ cat extensions.txt | xargs -L 1 codium --install-extension
 ## Key Features
 
 ### Editor Enhancements
+
 - **Font**: Fira Code with ligatures enabled
 - **Smooth animations**: Cursor and scrolling
 - **Auto-save**: On window change
 - **Format on save**: Enabled
 
 ### Git Integration
+
 - Auto-fetch enabled
 - Smart commits enabled
 - GitLens with experimental AI features
 - Pull request integration
 
 ### Theme & Icons
+
 - **Theme**: Shades of Purple (Super Dark)
 - **Icons**: vscode-icons
 
 ### Language-Specific Formatters
+
 - **JavaScript/TypeScript**: Built-in formatter
 - **Python**: autopep8
 - **Markdown**: markdownlint
@@ -526,15 +530,20 @@ cat extensions.txt | xargs -L 1 codium --install-extension
 - **HTML**: Built-in formatter
 
 ### Privacy & Performance
+
 - Telemetry disabled
 - Auto-updates disabled
 - Cloud sync disabled
 - Extension recommendations ignored
 
 <Callout type='warning'>
-  The `settings.json` file contains an API key (`gitCommitSuggestions.openAIKey`). Make sure to remove or replace this with your own key, or better yet, use environment variables for sensitive data.
+  The `settings.json` file contains an API key (`gitCommitSuggestions.openAIKey`). Make sure to
+  remove or replace this with your own key, or better yet, use environment variables for sensitive
+  data.
 </Callout>
 
 <Callout type='info'>
-  Before applying these settings to a fresh installation, review each setting to ensure it matches your workflow and preferences. Some settings like file paths may need adjustment for your environment.
+  Before applying these settings to a fresh installation, review each setting to ensure it matches
+  your workflow and preferences. Some settings like file paths may need adjustment for your
+  environment.
 </Callout>

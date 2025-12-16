@@ -24,19 +24,19 @@ const speakeasy = require('speakeasy')
 const create_security_event = async (args: {
   db: typeof import('@isyuricunha/db').db
   eventType:
-  | 'login_attempt'
-  | 'login_success'
-  | 'login_failure'
-  | 'password_change'
-  | 'email_change'
-  | 'two_factor_enabled'
-  | 'two_factor_disabled'
-  | 'suspicious_activity'
-  | 'account_locked'
-  | 'account_unlocked'
-  | 'admin_action'
-  | 'data_export'
-  | 'permission_change'
+    | 'login_attempt'
+    | 'login_success'
+    | 'login_failure'
+    | 'password_change'
+    | 'email_change'
+    | 'two_factor_enabled'
+    | 'two_factor_disabled'
+    | 'suspicious_activity'
+    | 'account_locked'
+    | 'account_unlocked'
+    | 'admin_action'
+    | 'data_export'
+    | 'permission_change'
   severity: 'low' | 'medium' | 'high' | 'critical'
   userId: string | null
   ipAddress?: string

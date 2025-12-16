@@ -612,11 +612,7 @@ export default function EmailMarketingManagement() {
                     >
                       Cancel
                     </Button>
-                    <Button
-                      type='submit'
-                    >
-                      Create Audience
-                    </Button>
+                    <Button type='submit'>Create Audience</Button>
                   </DialogFooter>
                 </form>
               </DialogContent>
@@ -664,11 +660,11 @@ export default function EmailMarketingManagement() {
                 </CardContent>
               </Card>
             )) || (
-                <div className='text-muted-foreground col-span-full py-8 text-center'>
-                  <Users className='mx-auto mb-4 h-12 w-12 opacity-50' />
-                  <p>No audiences yet. Create your first audience to get started!</p>
-                </div>
-              )}
+              <div className='text-muted-foreground col-span-full py-8 text-center'>
+                <Users className='mx-auto mb-4 h-12 w-12 opacity-50' />
+                <p>No audiences yet. Create your first audience to get started!</p>
+              </div>
+            )}
           </div>
         </TabsContent>
 
@@ -695,9 +691,7 @@ export default function EmailMarketingManagement() {
                 onOpenChange={setIsCreateCampaignDialogOpen}
               >
                 <DialogTrigger asChild>
-                  <Button
-                    disabled={!audiences?.audiences?.length}
-                  >
+                  <Button disabled={!audiences?.audiences?.length}>
                     <Plus className='mr-2 h-4 w-4' />
                     Create Broadcast
                   </Button>
@@ -801,10 +795,7 @@ export default function EmailMarketingManagement() {
                       >
                         Cancel
                       </Button>
-                      <Button
-                        type='submit'
-                        className='min-h-[44px] text-sm sm:text-base'
-                      >
+                      <Button type='submit' className='min-h-[44px] text-sm sm:text-base'>
                         Create Broadcast
                       </Button>
                     </DialogFooter>
@@ -996,11 +987,7 @@ export default function EmailMarketingManagement() {
                     >
                       Cancel
                     </Button>
-                    <Button
-                      type='submit'
-                    >
-                      Create Template
-                    </Button>
+                    <Button type='submit'>Create Template</Button>
                   </DialogFooter>
                 </form>
               </DialogContent>
@@ -1033,11 +1020,11 @@ export default function EmailMarketingManagement() {
                 </CardContent>
               </Card>
             )) || (
-                <div className='text-muted-foreground col-span-full py-8 text-center'>
-                  <FileText className='mx-auto mb-4 h-12 w-12 opacity-50' />
-                  <p>No templates yet. Create your first template to get started!</p>
-                </div>
-              )}
+              <div className='text-muted-foreground col-span-full py-8 text-center'>
+                <FileText className='mx-auto mb-4 h-12 w-12 opacity-50' />
+                <p>No templates yet. Create your first template to get started!</p>
+              </div>
+            )}
           </div>
         </TabsContent>
       </Tabs>
@@ -1170,10 +1157,7 @@ export default function EmailMarketingManagement() {
               >
                 Cancel
               </Button>
-              <Button
-                type='submit'
-                disabled={updateBroadcastMutation.isPending}
-              >
+              <Button type='submit' disabled={updateBroadcastMutation.isPending}>
                 {updateBroadcastMutation.isPending ? (
                   <>
                     <Loader2 className='mr-2 h-4 w-4 animate-spin' />

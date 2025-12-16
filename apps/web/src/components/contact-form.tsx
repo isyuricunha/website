@@ -271,7 +271,7 @@ export default function ContactForm() {
                   setSubmitStatus('error')
                   setSubmitMessage(
                     t('contact.form.turnstile-error') ||
-                    'Security verification failed. Please try again.'
+                      'Security verification failed. Please try again.'
                   )
                 }}
                 onExpire={() => setTurnstileToken(null)}

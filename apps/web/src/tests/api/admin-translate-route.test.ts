@@ -1,121 +1,121 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 vi.mock('@/lib/logger', () => ({
-    logger: {
-        error: vi.fn(),
-        warn: vi.fn(),
-        info: vi.fn(),
-        debug: vi.fn()
-    }
+  logger: {
+    error: vi.fn(),
+    warn: vi.fn(),
+    info: vi.fn(),
+    debug: vi.fn()
+  }
 }))
 
 vi.mock('@/lib/ratelimit', () => ({
-    ratelimit: {
-        limit: vi.fn()
-    }
+  ratelimit: {
+    limit: vi.fn()
+  }
 }))
 
 vi.mock('@/lib/spam-detection', () => ({
-    getClientIp: vi.fn()
+  getClientIp: vi.fn()
 }))
 
 vi.mock('@/lib/auth', () => ({
-    getSession: vi.fn()
+  getSession: vi.fn()
 }))
 
 vi.mock('@/lib/ai/ai-service', () => ({
-    aiService: {
-        translateContent: vi.fn()
-    }
+  aiService: {
+    translateContent: vi.fn()
+  }
 }))
 
 vi.mock('@/lib/blog/blog-service', () => ({
-    BlogService: {
-        getPost: vi.fn(),
-        savePost: vi.fn()
-    }
+  BlogService: {
+    getPost: vi.fn(),
+    savePost: vi.fn()
+  }
 }))
 
 describe('/api/admin/translate', () => {
-    beforeEach(() => {
-        vi.clearAllMocks()
-    })
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
 
-    it('returns 401 when not authenticated', async () => {
-        const { getSession } = await import('@/lib/auth')
+  it('returns 401 when not authenticated', async () => {
+    const { getSession } = await import('@/lib/auth')
 
-        vi.mocked(getSession).mockResolvedValue(null as never)
+    vi.mocked(getSession).mockResolvedValue(null as never)
 
-        const { POST } = await import('@/app/api/admin/translate/route')
+    const { POST } = await import('@/app/api/admin/translate/route')
 
-        const req = {
-            headers: new Headers(),
-            json: async () => ({ slug: 'test', sourceLocale: 'en' })
-        } as unknown as Parameters<typeof POST>[0]
+    const req = {
+      headers: new Headers(),
+      json: async () => ({ slug: 'test', sourceLocale: 'en' })
+    } as unknown as Parameters<typeof POST>[0]
 
-        const res = await POST(req)
+    const res = await POST(req)
 
-        expect(res.status).toBe(401)
-    })
+    expect(res.status).toBe(401)
+  })
 
-    it('returns 403 when not admin', async () => {
-        const { getSession } = await import('@/lib/auth')
+  it('returns 403 when not admin', async () => {
+    const { getSession } = await import('@/lib/auth')
 
-        vi.mocked(getSession).mockResolvedValue({ user: { role: 'user' } } as never)
+    vi.mocked(getSession).mockResolvedValue({ user: { role: 'user' } } as never)
 
-        const { POST } = await import('@/app/api/admin/translate/route')
+    const { POST } = await import('@/app/api/admin/translate/route')
 
-        const req = {
-            headers: new Headers(),
-            json: async () => ({ slug: 'test', sourceLocale: 'en' })
-        } as unknown as Parameters<typeof POST>[0]
+    const req = {
+      headers: new Headers(),
+      json: async () => ({ slug: 'test', sourceLocale: 'en' })
+    } as unknown as Parameters<typeof POST>[0]
 
-        const res = await POST(req)
+    const res = await POST(req)
 
-        expect(res.status).toBe(403)
-    })
+    expect(res.status).toBe(403)
+  })
 
-    it('returns 429 when rate limited', async () => {
-        const { ratelimit } = await import('@/lib/ratelimit')
-        const { getClientIp } = await import('@/lib/spam-detection')
-        const { getSession } = await import('@/lib/auth')
+  it('returns 429 when rate limited', async () => {
+    const { ratelimit } = await import('@/lib/ratelimit')
+    const { getClientIp } = await import('@/lib/spam-detection')
+    const { getSession } = await import('@/lib/auth')
 
-        vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
-        vi.mocked(getSession).mockResolvedValue({ user: { role: 'admin' } } as never)
-        vi.mocked(ratelimit.limit).mockResolvedValue({ success: false } as never)
+    vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
+    vi.mocked(getSession).mockResolvedValue({ user: { role: 'admin' } } as never)
+    vi.mocked(ratelimit.limit).mockResolvedValue({ success: false } as never)
 
-        const { POST } = await import('@/app/api/admin/translate/route')
+    const { POST } = await import('@/app/api/admin/translate/route')
 
-        const req = {
-            headers: new Headers(),
-            json: async () => ({ slug: 'test', sourceLocale: 'en' })
-        } as unknown as Parameters<typeof POST>[0]
+    const req = {
+      headers: new Headers(),
+      json: async () => ({ slug: 'test', sourceLocale: 'en' })
+    } as unknown as Parameters<typeof POST>[0]
 
-        const res = await POST(req)
+    const res = await POST(req)
 
-        expect(res.status).toBe(429)
-    })
+    expect(res.status).toBe(429)
+  })
 
-    it('returns 400 on invalid payload (zod)', async () => {
-        const { ratelimit } = await import('@/lib/ratelimit')
-        const { getClientIp } = await import('@/lib/spam-detection')
-        const { getSession } = await import('@/lib/auth')
+  it('returns 400 on invalid payload (zod)', async () => {
+    const { ratelimit } = await import('@/lib/ratelimit')
+    const { getClientIp } = await import('@/lib/spam-detection')
+    const { getSession } = await import('@/lib/auth')
 
-        vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
-        vi.mocked(getSession).mockResolvedValue({ user: { role: 'admin' } } as never)
-        vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
+    vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
+    vi.mocked(getSession).mockResolvedValue({ user: { role: 'admin' } } as never)
+    vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
 
-        const { POST } = await import('@/app/api/admin/translate/route')
+    const { POST } = await import('@/app/api/admin/translate/route')
 
-        const req = {
-            headers: new Headers(),
-            json: async () => ({ slug: '', sourceLocale: '' })
-        } as unknown as Parameters<typeof POST>[0]
+    const req = {
+      headers: new Headers(),
+      json: async () => ({ slug: '', sourceLocale: '' })
+    } as unknown as Parameters<typeof POST>[0]
 
-        const res = await POST(req)
+    const res = await POST(req)
 
-        expect(res.status).toBe(400)
-        const json = (await res.json()) as { error?: string }
-        expect(json.error).toBe('Invalid request format')
-    })
+    expect(res.status).toBe(400)
+    const json = (await res.json()) as { error?: string }
+    expect(json.error).toBe('Invalid request format')
+  })
 })

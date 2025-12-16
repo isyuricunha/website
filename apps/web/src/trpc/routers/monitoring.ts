@@ -240,9 +240,9 @@ export const monitoringRouter = createTRPCRouter({
         const resourceUsageData = await ctx.db.query.resourceUsage.findMany({
           where: input.resourceType
             ? and(
-              eq(resourceUsage.type, input.resourceType),
-              gte(resourceUsage.createdAt, startTime)
-            )
+                eq(resourceUsage.type, input.resourceType),
+                gte(resourceUsage.createdAt, startTime)
+              )
             : gte(resourceUsage.createdAt, startTime),
           orderBy: desc(resourceUsage.createdAt),
           limit: 1000
@@ -404,7 +404,8 @@ export const monitoringRouter = createTRPCRouter({
         const total_queries_safe = Math.max(total_queries, 1)
         const stats = {
           totalQueries: total_queries,
-          avgExecutionTime: queries.reduce((sum, q) => sum + q.executionTime, 0) / total_queries_safe,
+          avgExecutionTime:
+            queries.reduce((sum, q) => sum + q.executionTime, 0) / total_queries_safe,
           slowQueries: queries.filter((q) => q.executionTime > 1000).length,
           topSlowQueries: queries
             .filter((q) => q.executionTime > 1000)
@@ -800,12 +801,12 @@ export const monitoringRouter = createTRPCRouter({
           errorRate:
             recentApiCalls.length > 0
               ? (recentApiCalls.filter((u) => u.statusCode >= 400).length / recentApiCalls.length) *
-              100
+                100
               : 0,
           avgResponseTime:
             recentApiCalls.length > 0
               ? recentApiCalls.reduce((sum, u) => sum + (u.responseTime || 0), 0) /
-              recentApiCalls.length
+                recentApiCalls.length
               : 0
         }
       }

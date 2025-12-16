@@ -7,11 +7,7 @@
   "orientation": "portrait-primary",
   "background_color": "black",
   "theme_color": "black",
-  "categories": [
-    "portfolio",
-    "developer",
-    "blog"
-  ],
+  "categories": ["portfolio", "developer", "blog"],
   "lang": "en",
   "scope": "/",
   "icons": [

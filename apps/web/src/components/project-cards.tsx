@@ -397,7 +397,7 @@ const ProjectCard = (props: ProjectCardProps) => {
             alt={name}
             className='aspect-video w-full object-cover'
           />
-          <div className='absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100' />
+          <div className='from-background/80 via-background/20 absolute inset-0 bg-gradient-to-t to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100' />
         </div>
       </EnhancedCardHeader>
 

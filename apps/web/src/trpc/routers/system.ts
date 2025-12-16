@@ -1,13 +1,5 @@
 import { TRPCError } from '@trpc/server'
-import {
-  and,
-  desc,
-  eq,
-  errorLogs,
-  gte,
-  siteConfig,
-  systemHealthLogs
-} from '@isyuricunha/db'
+import { and, desc, eq, errorLogs, gte, siteConfig, systemHealthLogs } from '@isyuricunha/db'
 import { randomBytes } from 'crypto'
 import { env } from '@isyuricunha/env'
 import { z } from 'zod'
@@ -321,7 +313,9 @@ export const systemRouter = createTRPCRouter({
         }
         group.push({
           ...item,
-          value: item.value ? parse_config_value(item.value, { key: item.key, type: item.type }) : null
+          value: item.value
+            ? parse_config_value(item.value, { key: item.key, type: item.type })
+            : null
         })
       })
 

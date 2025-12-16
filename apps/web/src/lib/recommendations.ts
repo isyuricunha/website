@@ -8,9 +8,9 @@ export interface Recommendation {
   type: 'post' | 'project'
   score: number
   reason:
-  | { kind: 'similar-content' }
-  | { kind: 'same-category'; category: string }
-  | { kind: 'similar-tags'; tags: string[] }
+    | { kind: 'similar-content' }
+    | { kind: 'same-category'; category: string }
+    | { kind: 'similar-tags'; tags: string[] }
 }
 
 /**

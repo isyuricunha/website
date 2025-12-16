@@ -2,7 +2,18 @@
 
 import { useTranslations, useLocale } from '@isyuricunha/i18n/client'
 
-import { Copy, Loader2, MessageCircle, Plus, Send, Share2, ThumbsDown, ThumbsUp, Trash2, X } from 'lucide-react'
+import {
+  Copy,
+  Loader2,
+  MessageCircle,
+  Plus,
+  Send,
+  Share2,
+  ThumbsDown,
+  ThumbsUp,
+  Trash2,
+  X
+} from 'lucide-react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { toast } from 'sonner'
 
@@ -39,7 +50,9 @@ export default function AIChatInterface({
   const [isLoading, setIsLoading] = useState(false)
   const [typingDots, setTypingDots] = useState('')
   const [feedbackOpenForMessageId, setFeedbackOpenForMessageId] = useState<string | null>(null)
-  const [feedbackDraftByMessageId, setFeedbackDraftByMessageId] = useState<Record<string, string>>({})
+  const [feedbackDraftByMessageId, setFeedbackDraftByMessageId] = useState<Record<string, string>>(
+    {}
+  )
   const [feedbackIsSubmittingByMessageId, setFeedbackIsSubmittingByMessageId] = useState<
     Record<string, boolean>
   >({})
@@ -149,7 +162,9 @@ export default function AIChatInterface({
     saveYueChatState({ conversations, activeConversationId })
   }, [activeConversationId, conversations, isOpen])
 
-  const updateActiveConversation = (updater: (conversation: ChatConversation) => ChatConversation) => {
+  const updateActiveConversation = (
+    updater: (conversation: ChatConversation) => ChatConversation
+  ) => {
     if (!activeConversation) return
 
     setConversations((prev) =>
@@ -359,7 +374,12 @@ export default function AIChatInterface({
   }
 
   const submit_feedback = useCallback(
-    async (input: { requestId: string; messageId: string; rating: 'like' | 'dislike'; comment?: string }) => {
+    async (input: {
+      requestId: string
+      messageId: string
+      rating: 'like' | 'dislike'
+      comment?: string
+    }) => {
       setFeedbackIsSubmittingByMessageId((prev) => ({ ...prev, [input.messageId]: true }))
       try {
         const response = await fetch('/api/ai/chat/feedback', {
@@ -604,7 +624,7 @@ export default function AIChatInterface({
                       <a
                         key={c.id}
                         href={c.href}
-                        className='text-primary hover:underline block text-[11px]'
+                        className='text-primary block text-[11px] hover:underline'
                       >
                         {c.title}
                       </a>
@@ -620,10 +640,11 @@ export default function AIChatInterface({
                       onClick={() => handleReaction(message.id, 'like')}
                       aria-label={t('mascot.aiChat.feedback.like')}
                       disabled={feedbackIsSubmittingByMessageId[message.id] === true}
-                      className={`hover:bg-muted/80 flex items-center gap-1 rounded px-2 py-1 text-xs transition-all ${message.reactions?.userReaction === 'like'
-                        ? 'bg-green-50 text-green-600 dark:bg-green-950'
-                        : 'text-muted-foreground'
-                        }`}
+                      className={`hover:bg-muted/80 flex items-center gap-1 rounded px-2 py-1 text-xs transition-all ${
+                        message.reactions?.userReaction === 'like'
+                          ? 'bg-green-50 text-green-600 dark:bg-green-950'
+                          : 'text-muted-foreground'
+                      }`}
                     >
                       <ThumbsUp className='h-3 w-3' />
                       {message.reactions?.likes ?? 0}
@@ -633,10 +654,11 @@ export default function AIChatInterface({
                       onClick={() => handleReaction(message.id, 'dislike')}
                       aria-label={t('mascot.aiChat.feedback.dislike')}
                       disabled={feedbackIsSubmittingByMessageId[message.id] === true}
-                      className={`hover:bg-muted/80 flex items-center gap-1 rounded px-2 py-1 text-xs transition-all ${message.reactions?.userReaction === 'dislike'
-                        ? 'bg-red-50 text-red-600 dark:bg-red-950'
-                        : 'text-muted-foreground'
-                        }`}
+                      className={`hover:bg-muted/80 flex items-center gap-1 rounded px-2 py-1 text-xs transition-all ${
+                        message.reactions?.userReaction === 'dislike'
+                          ? 'bg-red-50 text-red-600 dark:bg-red-950'
+                          : 'text-muted-foreground'
+                      }`}
                     >
                       <ThumbsDown className='h-3 w-3' />
                       {message.reactions?.dislikes ?? 0}
@@ -651,16 +673,19 @@ export default function AIChatInterface({
                 </div>
               )}
               {!message.isUser &&
-                !message.isError &&
-                message.requestId &&
-                feedbackOpenForMessageId === message.id &&
-                message.reactions?.userReaction === 'dislike' ? (
+              !message.isError &&
+              message.requestId &&
+              feedbackOpenForMessageId === message.id &&
+              message.reactions?.userReaction === 'dislike' ? (
                 <div className='border-border/20 mt-3 space-y-2 border-t pt-2'>
                   <textarea
                     rows={2}
                     value={feedbackDraftByMessageId[message.id] ?? ''}
                     onChange={(e) =>
-                      setFeedbackDraftByMessageId((prev) => ({ ...prev, [message.id]: e.target.value }))
+                      setFeedbackDraftByMessageId((prev) => ({
+                        ...prev,
+                        [message.id]: e.target.value
+                      }))
                     }
                     placeholder={t('mascot.aiChat.feedback.commentPlaceholder')}
                     className='bg-background/80 border-border/50 focus:ring-primary/50 focus:border-primary placeholder:text-muted-foreground/60 w-full resize-none rounded-lg border px-3 py-2 text-xs transition-all duration-200 focus:outline-none focus:ring-2'

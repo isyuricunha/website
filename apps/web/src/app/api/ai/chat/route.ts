@@ -38,7 +38,9 @@ const requestSchema = z.object({
 
 const create_request_id = (): string => {
   try {
-    return globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(16).slice(2)}`
+    return (
+      globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(16).slice(2)}`
+    )
   } catch {
     return `${Date.now()}-${Math.random().toString(16).slice(2)}`
   }
@@ -46,7 +48,11 @@ const create_request_id = (): string => {
 
 const infer_mode = (message: string): 'chat' | 'navigate' => {
   const m = message.toLowerCase()
-  if (m.includes('onde encontro') || m.includes('where can i find') || m.includes('help me navigate')) {
+  if (
+    m.includes('onde encontro') ||
+    m.includes('where can i find') ||
+    m.includes('help me navigate')
+  ) {
     return 'navigate'
   }
   if (m.startsWith('onde ') || m.startsWith('where ')) {
@@ -75,7 +81,10 @@ export async function POST(req: NextRequest) {
     const { success } = await ratelimit.limit(rate_limit_keys.ai_chat(ip))
 
     if (!success) {
-      const payload = { error: 'Rate limit exceeded. Please try again later.', requestId: request_id }
+      const payload = {
+        error: 'Rate limit exceeded. Please try again later.',
+        requestId: request_id
+      }
       await record_ai_chat_observability({
         requestId: request_id,
         endpoint,
@@ -230,7 +239,11 @@ export async function POST(req: NextRequest) {
     logger.error('AI chat error', error, { requestId: request_id })
 
     if (error instanceof z.ZodError) {
-      const payload = { error: 'Invalid request format', details: error.issues, requestId: request_id }
+      const payload = {
+        error: 'Invalid request format',
+        details: error.issues,
+        requestId: request_id
+      }
       await record_ai_chat_observability({
         requestId: request_id,
         endpoint,

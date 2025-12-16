@@ -83,7 +83,9 @@ const ContactForm = (props: ContactFormProps) => {
                     <Text className='mb-[8px] mt-0 text-[14px] font-bold uppercase tracking-wide text-[color:var(--email-accent)]'>
                       Subject
                     </Text>
-                    <Text className='mb-[16px] mt-0 text-[16px] text-[color:var(--email-fg)]'>{subject}</Text>
+                    <Text className='mb-[16px] mt-0 text-[16px] text-[color:var(--email-fg)]'>
+                      {subject}
+                    </Text>
                   </Column>
                 </Row>
 

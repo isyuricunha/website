@@ -266,10 +266,12 @@ export const contentRouter = createTRPCRouter({
         const filteredUpdateData: PostUpdate = {}
 
         if (updateData.title !== undefined) filteredUpdateData.title = updateData.title
-        if (updateData.description !== undefined) filteredUpdateData.description = updateData.description
+        if (updateData.description !== undefined)
+          filteredUpdateData.description = updateData.description
         if (updateData.content !== undefined) filteredUpdateData.content = updateData.content
         if (updateData.excerpt !== undefined) filteredUpdateData.excerpt = updateData.excerpt
-        if (updateData.coverImage !== undefined) filteredUpdateData.coverImage = updateData.coverImage
+        if (updateData.coverImage !== undefined)
+          filteredUpdateData.coverImage = updateData.coverImage
         if (updateData.slug !== undefined) filteredUpdateData.slug = updateData.slug
         if (updateData.status !== undefined) filteredUpdateData.status = updateData.status
         if (updateData.featured !== undefined) filteredUpdateData.featured = updateData.featured

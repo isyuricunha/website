@@ -49,11 +49,11 @@ class Config:
     """Application configuration constants."""
     # REPLACE THIS WITH YOUR ACTUAL TOKEN
     DISCORD_TOKEN = "YOUR_DISCORD_BOT_TOKEN"
-    
+
     # Ollama Configuration
     OLLAMA_MODEL = "llama3"  # Change to your preferred model
     OLLAMA_URL = "http://localhost:11434/v1/chat/completions"
-    
+
     # Bot Settings
     MAX_HISTORY_LENGTH = 6
     MAX_CONCURRENT_WORKERS = 2
@@ -61,7 +61,7 @@ class Config:
 
 class DatabaseManager:
     """Handles SQLite database interactions."""
-    
+
     def __init__(self, db_name: str):
         self.db_name = db_name
         self._init_db()
@@ -102,7 +102,7 @@ class DatabaseManager:
 
 class OllamaClient:
     """Handles communication with the Ollama API."""
-    
+
     def __init__(self, model: str, url: str):
         self.model = model
         self.url = url
@@ -131,26 +131,26 @@ class OllamaClient:
                         line = line.strip()
                         if not line or not line.startswith("data: "):
                             continue
-                        
+
                         data = line[len("data: "):]
                         if data == "[DONE]":
                             break
-                        
+
                         try:
                             parsed = json.loads(data)
                             delta = parsed["choices"][0]["delta"].get("content", "")
                             full_text += delta
                         except json.JSONDecodeError:
                             continue
-                            
+
             return full_text, ""
-            
+
         except httpx.RequestError as e:
             return "", f"Connection error: {str(e)}"
 
 class WorkerManager:
     """Manages async workers for processing message queues per channel."""
-    
+
     def __init__(self, process_callback):
         self.queues: Dict[str, asyncio.Queue] = {}
         self.semaphores: Dict[str, asyncio.Semaphore] = {}
@@ -161,10 +161,10 @@ class WorkerManager:
         """Adds an item to the channel's processing queue."""
         if channel_id not in self.queues:
             self.queues[channel_id] = asyncio.Queue()
-        
+
         if channel_id not in self.semaphores:
             self.semaphores[channel_id] = asyncio.Semaphore(Config.MAX_CONCURRENT_WORKERS)
-            
+
         await self.queues[channel_id].put(item)
         await self._start_workers(channel_id)
 
@@ -190,7 +190,7 @@ class WorkerManager:
 
                     async with semaphore:
                         await self.process_callback(item)
-                    
+
                     queue.task_done()
                 except Exception as e:
                     logger.error(f"Worker error in channel {channel_id}: {e}")
@@ -198,24 +198,24 @@ class WorkerManager:
         # Launch workers
         for _ in range(Config.MAX_CONCURRENT_WORKERS):
             asyncio.create_task(worker())
-            
-        # Note: In this simple implementation, we don't strictly wait for workers to finish 
-        # before removing from active_channels to keep it simple. 
+
+        # Note: In this simple implementation, we don't strictly wait for workers to finish
+        # before removing from active_channels to keep it simple.
         # A more robust solution would track tasks.
 
 class DiscordBot(discord.Client):
     """Main Bot Class."""
-    
+
     def __init__(self):
         intents = discord.Intents.default()
         intents.messages = True
         intents.message_content = True
         super().__init__(intents=intents)
-        
+
         self.db = DatabaseManager(Config.DB_NAME)
         self.ollama = OllamaClient(Config.OLLAMA_MODEL, Config.OLLAMA_URL)
         self.worker_manager = WorkerManager(self.process_message_task)
-        
+
         # In-memory conversation history: { "channel_id:user_id": [messages] }
         self.conversations: Dict[str, List[Dict[str, str]]] = {}
 
@@ -236,7 +236,7 @@ class DiscordBot(discord.Client):
         # Update history
         history = self.conversations[conversation_key]
         history.append({"role": "user", "content": prompt})
-        
+
         # Trim history
         if len(history) > Config.MAX_HISTORY_LENGTH:
             history = history[-Config.MAX_HISTORY_LENGTH:]
@@ -255,10 +255,10 @@ class DiscordBot(discord.Client):
             response_text = response_text[-2000:]
 
         await message.reply(response_text, mention_author=True)
-        
+
         # Update history with assistant response
         history.append({"role": "assistant", "content": response_text})
-        
+
         # Log to DB
         self.db.register_user(author_id, message.author.name, prompt)
 
@@ -269,7 +269,7 @@ class DiscordBot(discord.Client):
         content = message.content.strip()
         channel_id = str(message.channel.id)
         author_id = str(message.author.id)
-        
+
         # Command: Reset Context
         if content == "!reset":
             key = f"{channel_id}:{author_id}"
@@ -280,14 +280,14 @@ class DiscordBot(discord.Client):
         # Check if bot is mentioned or invoked via command
         is_mentioned = self.user in message.mentions
         is_command = content.lower().startswith("!ai ")
-        
+
         prompt = ""
         if is_command:
             prompt = content[4:].strip()
         elif is_mentioned:
             # Remove mention from prompt
             prompt = content.replace(f"<@{self.user.id}>", "").strip()
-        
+
         if prompt:
             await self.worker_manager.enqueue(channel_id, (message, prompt))
 
@@ -306,5 +306,6 @@ if __name__ == "__main__":
 3.  **Token**: Replace `DISCORD_TOKEN` in the `Config` class with your actual bot token from the Discord Developer Portal.
 
 <Callout type='warning'>
-  Never commit your actual Discord token to a public repository. Use environment variables (e.g., `python-dotenv`) for production deployments.
+  Never commit your actual Discord token to a public repository. Use environment variables (e.g.,
+  `python-dotenv`) for production deployments.
 </Callout>

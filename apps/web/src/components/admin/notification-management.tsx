@@ -192,11 +192,7 @@ export default function NotificationManagement() {
                 >
                   Cancel
                 </Button>
-                <Button
-                  type='submit'
-                >
-                  Send Notification
-                </Button>
+                <Button type='submit'>Send Notification</Button>
               </DialogFooter>
             </form>
           </DialogContent>
@@ -248,10 +244,10 @@ export default function NotificationManagement() {
             <div className='text-primary text-3xl font-bold tracking-tight'>
               {notifications?.notifications?.length
                 ? Math.round(
-                  (notifications.notifications.filter((n) => n.read).length /
-                    notifications.notifications.length) *
-                  100
-                )
+                    (notifications.notifications.filter((n) => n.read).length /
+                      notifications.notifications.length) *
+                      100
+                  )
                 : 0}
               %
             </div>

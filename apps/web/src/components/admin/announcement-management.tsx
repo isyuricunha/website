@@ -304,9 +304,7 @@ export default function AnnouncementManagement() {
                 >
                   Cancel
                 </Button>
-                <Button type='submit'>
-                  Create Announcement
-                </Button>
+                <Button type='submit'>Create Announcement</Button>
               </DialogFooter>
             </form>
           </DialogContent>
@@ -394,7 +392,7 @@ export default function AnnouncementManagement() {
               {announcements?.announcements?.map((announcement) => (
                 <Card
                   key={announcement.id}
-                  className='border-border/40 bg-card group transition-all duration-300 hover:border-primary/30 hover:shadow-lg'
+                  className='border-border/40 bg-card hover:border-primary/30 group transition-all duration-300 hover:shadow-lg'
                 >
                   <CardContent className='p-5'>
                     <div className='flex items-start justify-between gap-4'>
@@ -412,7 +410,7 @@ export default function AnnouncementManagement() {
                           </div>
                           <div className='min-w-0 flex-1'>
                             <div className='mb-1.5 flex items-center gap-2'>
-                              <h3 className='truncate text-lg font-semibold transition-colors group-hover:text-primary'>
+                              <h3 className='group-hover:text-primary truncate text-lg font-semibold transition-colors'>
                                 {announcement.title}
                               </h3>
                               {!announcement.isActive && (
@@ -619,9 +617,7 @@ export default function AnnouncementManagement() {
                 <Button type='button' variant='outline' onClick={() => setIsEditDialogOpen(false)}>
                   Cancel
                 </Button>
-                <Button type='submit'>
-                  Update Announcement
-                </Button>
+                <Button type='submit'>Update Announcement</Button>
               </DialogFooter>
             </form>
           )}

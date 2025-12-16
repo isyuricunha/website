@@ -88,8 +88,9 @@ export const BulkOperations = () => {
       refetchInterval: (query) => {
         const data = query.state.data
         const hasActive =
-          data?.some((op: { status: BulkOperationStatus['status'] }) =>
-            op.status === 'pending' || op.status === 'running'
+          data?.some(
+            (op: { status: BulkOperationStatus['status'] }) =>
+              op.status === 'pending' || op.status === 'running'
           ) ?? false
         return hasActive ? 2000 : false
       }
@@ -230,9 +231,7 @@ export const BulkOperations = () => {
       <div className='flex items-center justify-between'>
         <div>
           <h1 className='text-2xl font-bold'>Bulk Operations</h1>
-          <p className='text-muted-foreground'>
-            Perform bulk actions on users and content
-          </p>
+          <p className='text-muted-foreground'>Perform bulk actions on users and content</p>
         </div>
       </div>
 
@@ -252,7 +251,7 @@ export const BulkOperations = () => {
                   placeholder='Search users...'
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className='bg-background border-border text-foreground w-full rounded-md border py-2 pl-10 pr-4 focus:border-transparent focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background'
+                  className='bg-background border-border text-foreground focus:ring-ring focus:ring-offset-background w-full rounded-md border py-2 pl-10 pr-4 focus:border-transparent focus:ring-2 focus:ring-offset-2'
                 />
               </div>
             </div>
@@ -265,13 +264,11 @@ export const BulkOperations = () => {
           {/* Action Selection */}
           <div className='bg-muted/30 mb-6 flex flex-col gap-4 rounded-lg p-4 sm:flex-row'>
             <div className='flex-1'>
-              <label className='mb-2 block text-sm font-medium'>
-                Select Action
-              </label>
+              <label className='mb-2 block text-sm font-medium'>Select Action</label>
               <select
                 value={selectedAction}
                 onChange={(e) => setSelectedAction(e.target.value as any)}
-                className='bg-background border-border text-foreground w-full rounded-md border px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background'
+                className='bg-background border-border text-foreground focus:ring-ring focus:ring-offset-background w-full rounded-md border px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-offset-2'
               >
                 <option value='ban'>Ban Users</option>
                 <option value='unban'>Unban Users</option>
@@ -282,13 +279,11 @@ export const BulkOperations = () => {
 
             {selectedAction === 'update_role' && (
               <div className='flex-1'>
-                <label className='mb-2 block text-sm font-medium'>
-                  New Role
-                </label>
+                <label className='mb-2 block text-sm font-medium'>New Role</label>
                 <select
                   value={newRole}
                   onChange={(e) => setNewRole(e.target.value as any)}
-                  className='bg-background border-border text-foreground w-full rounded-md border px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background'
+                  className='bg-background border-border text-foreground focus:ring-ring focus:ring-offset-background w-full rounded-md border px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-offset-2'
                 >
                   <option value='user'>User</option>
                   <option value='admin'>Admin</option>
@@ -310,7 +305,7 @@ export const BulkOperations = () => {
 
           {/* Users Table */}
           <div className='overflow-x-auto'>
-            <table className='min-w-full divide-y divide-border'>
+            <table className='divide-border min-w-full divide-y'>
               <thead className='bg-muted'>
                 <tr>
                   <th className='text-muted-foreground px-6 py-3 text-left text-xs font-medium uppercase tracking-wider'>
@@ -337,7 +332,7 @@ export const BulkOperations = () => {
                   </th>
                 </tr>
               </thead>
-              <tbody className='divide-y divide-border bg-background'>
+              <tbody className='divide-border bg-background divide-y'>
                 {usersData?.users.map((user) => (
                   <tr key={user.id} className='hover:bg-muted/30'>
                     <td className='whitespace-nowrap px-6 py-4'>
@@ -366,21 +361,18 @@ export const BulkOperations = () => {
                           />
                         )}
                         <div>
-                          <div className='text-sm font-medium'>
-                            {user.name}
-                          </div>
-                          <div className='text-muted-foreground text-sm'>
-                            {user.email}
-                          </div>
+                          <div className='text-sm font-medium'>{user.name}</div>
+                          <div className='text-muted-foreground text-sm'>{user.email}</div>
                         </div>
                       </div>
                     </td>
                     <td className='whitespace-nowrap px-6 py-4'>
                       <span
-                        className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${user.role === 'admin'
-                          ? 'bg-primary/10 text-primary'
-                          : 'bg-muted/30 text-muted-foreground'
-                          }`}
+                        className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                          user.role === 'admin'
+                            ? 'bg-primary/10 text-primary'
+                            : 'bg-muted/30 text-muted-foreground'
+                        }`}
                       >
                         {user.role}
                       </span>
@@ -397,9 +389,7 @@ export const BulkOperations = () => {
           {(!usersData?.users || usersData.users.length === 0) && (
             <div className='py-12 text-center'>
               <Users className='text-muted-foreground mx-auto h-12 w-12' />
-              <h3 className='mt-2 text-sm font-medium'>
-                No users found
-              </h3>
+              <h3 className='mt-2 text-sm font-medium'>No users found</h3>
               <p className='text-muted-foreground mt-1 text-sm'>
                 Try adjusting your search criteria.
               </p>
@@ -421,9 +411,7 @@ export const BulkOperations = () => {
           )}
 
           {operationsQuery.isLoading && (
-            <div className='text-muted-foreground p-6 text-center'>
-              Loading bulk operations...
-            </div>
+            <div className='text-muted-foreground p-6 text-center'>Loading bulk operations...</div>
           )}
 
           {operations.map((operation: BulkOperationStatus) => (
@@ -500,9 +488,7 @@ export const BulkOperations = () => {
                 <div className='border-destructive/20 bg-destructive/10 mt-4 rounded-md border p-3'>
                   <div className='flex items-center gap-2'>
                     <AlertTriangle className='text-destructive h-4 w-4' />
-                    <span className='text-destructive text-sm'>
-                      {operation.errorMessage}
-                    </span>
+                    <span className='text-destructive text-sm'>{operation.errorMessage}</span>
                   </div>
                 </div>
               )}
@@ -510,9 +496,7 @@ export const BulkOperations = () => {
           ))}
 
           {!operationsQuery.isLoading && !operationsQuery.isError && operations.length === 0 && (
-            <div className='text-muted-foreground p-6 text-center'>
-              No bulk operations found.
-            </div>
+            <div className='text-muted-foreground p-6 text-center'>No bulk operations found.</div>
           )}
         </div>
       </div>

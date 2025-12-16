@@ -1,5 +1,15 @@
 import { relations, sql } from 'drizzle-orm'
-import { boolean, foreignKey, index, integer, pgEnum, pgTable, text, timestamp, unique } from 'drizzle-orm/pg-core'
+import {
+  boolean,
+  foreignKey,
+  index,
+  integer,
+  pgEnum,
+  pgTable,
+  text,
+  timestamp,
+  unique
+} from 'drizzle-orm/pg-core'
 
 import { users } from './auth'
 
@@ -12,7 +22,9 @@ export const twoFactorTokens = pgTable(
     secret: text('secret').notNull(), // TOTP secret
     backupCodes: text('backup_codes'), // JSON array of backup codes
     isEnabled: boolean('is_enabled').notNull().default(false),
-    createdAt: timestamp('created_at').notNull().default(sql`CURRENT_TIMESTAMP`),
+    createdAt: timestamp('created_at')
+      .notNull()
+      .default(sql`CURRENT_TIMESTAMP`),
     lastUsedAt: timestamp('last_used_at')
   },
   (twoFactorToken) => [
@@ -41,8 +53,12 @@ export const ipAccessControl = pgTable(
     description: text('description'),
     isActive: boolean('is_active').notNull().default(true),
     createdBy: text('created_by').notNull(),
-    createdAt: timestamp('created_at').notNull().default(sql`CURRENT_TIMESTAMP`),
-    updatedAt: timestamp('updated_at').notNull().default(sql`CURRENT_TIMESTAMP`)
+    createdAt: timestamp('created_at')
+      .notNull()
+      .default(sql`CURRENT_TIMESTAMP`),
+    updatedAt: timestamp('updated_at')
+      .notNull()
+      .default(sql`CURRENT_TIMESTAMP`)
   },
   (ipAccessControlRow) => [
     foreignKey({
@@ -91,7 +107,9 @@ export const securityEvents = pgTable(
     resolved: boolean('resolved').notNull().default(false),
     resolvedBy: text('resolved_by'),
     resolvedAt: timestamp('resolved_at'),
-    createdAt: timestamp('created_at').notNull().default(sql`CURRENT_TIMESTAMP`)
+    createdAt: timestamp('created_at')
+      .notNull()
+      .default(sql`CURRENT_TIMESTAMP`)
   },
   (securityEvent) => [
     index('idx_security_events_created_at').using(
@@ -127,14 +145,19 @@ export const loginAttempts = pgTable(
     failureReason: text('failure_reason'), // 'invalid_credentials', 'account_locked', 'ip_blocked', etc.
     twoFactorRequired: boolean('two_factor_required').notNull().default(false),
     twoFactorSuccess: boolean('two_factor_success'),
-    createdAt: timestamp('created_at').notNull().default(sql`CURRENT_TIMESTAMP`)
+    createdAt: timestamp('created_at')
+      .notNull()
+      .default(sql`CURRENT_TIMESTAMP`)
   },
   (loginAttempt) => [
     index('idx_login_attempts_created_at').using(
       'btree',
       loginAttempt.createdAt.asc().nullsLast().op('timestamp_ops')
     ),
-    index('idx_login_attempts_email').using('btree', loginAttempt.email.asc().nullsLast().op('text_ops')),
+    index('idx_login_attempts_email').using(
+      'btree',
+      loginAttempt.email.asc().nullsLast().op('text_ops')
+    ),
     index('idx_login_attempts_ip_address').using(
       'btree',
       loginAttempt.ipAddress.asc().nullsLast().op('text_ops')
@@ -149,7 +172,9 @@ export const accountLockouts = pgTable(
     id: text('id').primaryKey(),
     userId: text('user_id').notNull(),
     reason: text('reason').notNull(), // 'failed_attempts', 'suspicious_activity', 'admin_action'
-    lockedAt: timestamp('locked_at').notNull().default(sql`CURRENT_TIMESTAMP`),
+    lockedAt: timestamp('locked_at')
+      .notNull()
+      .default(sql`CURRENT_TIMESTAMP`),
     lockedUntil: timestamp('locked_until'), // NULL for permanent locks
     lockedBy: text('locked_by'), // Admin who locked the account
     unlocked: boolean('unlocked').notNull().default(false),
@@ -182,7 +207,9 @@ export const apiRateLimits = pgTable('api_rate_limits', {
   identifierType: text('identifier_type').notNull(), // 'ip', 'user', 'api_key'
   endpoint: text('endpoint'), // Specific endpoint or '*' for global
   requestCount: integer('request_count').notNull().default(0),
-  windowStart: timestamp('window_start').notNull().default(sql`CURRENT_TIMESTAMP`),
+  windowStart: timestamp('window_start')
+    .notNull()
+    .default(sql`CURRENT_TIMESTAMP`),
   windowEnd: timestamp('window_end').notNull(),
   blocked: boolean('blocked').notNull().default(false),
   blockedUntil: timestamp('blocked_until')
@@ -198,8 +225,12 @@ export const securitySettings = pgTable(
     description: text('description'),
     category: text('category').notNull().default('general'), // 'auth', 'rate_limiting', 'monitoring', etc.
     updatedBy: text('updated_by').notNull(),
-    createdAt: timestamp('created_at').notNull().default(sql`CURRENT_TIMESTAMP`),
-    updatedAt: timestamp('updated_at').notNull().default(sql`CURRENT_TIMESTAMP`)
+    createdAt: timestamp('created_at')
+      .notNull()
+      .default(sql`CURRENT_TIMESTAMP`),
+    updatedAt: timestamp('updated_at')
+      .notNull()
+      .default(sql`CURRENT_TIMESTAMP`)
   },
   (securitySetting) => [
     foreignKey({

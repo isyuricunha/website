@@ -60,7 +60,7 @@ with open(output_file, "w", newline="", encoding="utf-8") as f:
     writer.writerows(rows)
 
 print(f"salvo {len(rows)} itens sem duplicatas em {output_file}")
-````
+```
 
 ## Como usar
 
@@ -74,23 +74,25 @@ print(f"salvo {len(rows)} itens sem duplicatas em {output_file}")
 
 O script considera dois itens como duplicados se **todos** estes campos forem iguais:
 
-* Tipo (login, nota, cartão, etc.)
-* Nome
-* URI de login
-* Nome de usuário
-* Senha
-* Notas
+- Tipo (login, nota, cartão, etc.)
+- Nome
+- URI de login
+- Nome de usuário
+- Senha
+- Notas
 
 Se pelo menos um campo for diferente, os itens são mantidos como entradas separadas.
 
 ## Observações importantes
 
 <Callout type='warning'>
-  Sempre faça backup do seu cofre antes de qualquer operação de limpeza. Exporte seu cofre atual antes de importar o arquivo sem duplicatas, só por segurança.
+  Sempre faça backup do seu cofre antes de qualquer operação de limpeza. Exporte seu cofre atual
+  antes de importar o arquivo sem duplicatas, só por segurança.
 </Callout>
 
 <Callout type='info'>
-  Se você quiser detectar duplicatas com base em outros campos (tipo apenas usuário + URI), dá pra ajustar a tupla `key` no código e manter só os campos que você quer comparar.
+  Se você quiser detectar duplicatas com base em outros campos (tipo apenas usuário + URI), dá pra
+  ajustar a tupla `key` no código e manter só os campos que você quer comparar.
 </Callout>
 
 O script usa o módulo `csv` nativo do Python e um `set` para rastrear o que já foi visto, então ele costuma ser eficiente mesmo em cofres grandes.

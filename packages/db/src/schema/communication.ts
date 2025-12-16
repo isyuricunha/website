@@ -1,5 +1,15 @@
 import { relations, sql } from 'drizzle-orm'
-import { boolean, foreignKey, index, integer, pgEnum, pgTable, text, timestamp, unique } from 'drizzle-orm/pg-core'
+import {
+  boolean,
+  foreignKey,
+  index,
+  integer,
+  pgEnum,
+  pgTable,
+  text,
+  timestamp,
+  unique
+} from 'drizzle-orm/pg-core'
 
 import { users } from './auth'
 
@@ -27,8 +37,12 @@ export const emailTemplates = pgTable(
     variables: text('variables'), // JSON array of template variables
     isActive: boolean('is_active').notNull().default(true),
     createdBy: text('created_by').notNull(),
-    createdAt: timestamp('created_at').notNull().default(sql`CURRENT_TIMESTAMP`),
-    updatedAt: timestamp('updated_at').notNull().default(sql`CURRENT_TIMESTAMP`)
+    createdAt: timestamp('created_at')
+      .notNull()
+      .default(sql`CURRENT_TIMESTAMP`),
+    updatedAt: timestamp('updated_at')
+      .notNull()
+      .default(sql`CURRENT_TIMESTAMP`)
   },
   (emailTemplate) => [
     foreignKey({
@@ -72,8 +86,12 @@ export const emailCampaigns = pgTable(
     startedAt: timestamp('started_at'),
     completedAt: timestamp('completed_at'),
     createdBy: text('created_by').notNull(),
-    createdAt: timestamp('created_at').notNull().default(sql`CURRENT_TIMESTAMP`),
-    updatedAt: timestamp('updated_at').notNull().default(sql`CURRENT_TIMESTAMP`)
+    createdAt: timestamp('created_at')
+      .notNull()
+      .default(sql`CURRENT_TIMESTAMP`),
+    updatedAt: timestamp('updated_at')
+      .notNull()
+      .default(sql`CURRENT_TIMESTAMP`)
   },
   (emailCampaign) => [
     index('idx_email_campaigns_status').using(
@@ -148,8 +166,12 @@ export const announcements = pgTable(
     startDate: timestamp('start_date'),
     endDate: timestamp('end_date'),
     createdBy: text('created_by').notNull(),
-    createdAt: timestamp('created_at').notNull().default(sql`CURRENT_TIMESTAMP`),
-    updatedAt: timestamp('updated_at').notNull().default(sql`CURRENT_TIMESTAMP`)
+    createdAt: timestamp('created_at')
+      .notNull()
+      .default(sql`CURRENT_TIMESTAMP`),
+    updatedAt: timestamp('updated_at')
+      .notNull()
+      .default(sql`CURRENT_TIMESTAMP`)
   },
   (announcement) => [
     foreignKey({
@@ -209,10 +231,15 @@ export const notifications = pgTable(
     readAt: timestamp('read_at'),
     actionUrl: text('action_url'), // URL to navigate to when clicked
     expiresAt: timestamp('expires_at'),
-    createdAt: timestamp('created_at').notNull().default(sql`CURRENT_TIMESTAMP`)
+    createdAt: timestamp('created_at')
+      .notNull()
+      .default(sql`CURRENT_TIMESTAMP`)
   },
   (notification) => [
-    index('idx_notifications_read').using('btree', notification.read.asc().nullsLast().op('bool_ops')),
+    index('idx_notifications_read').using(
+      'btree',
+      notification.read.asc().nullsLast().op('bool_ops')
+    ),
     index('idx_notifications_user_id').using(
       'btree',
       notification.userId.asc().nullsLast().op('text_ops')
@@ -241,8 +268,12 @@ export const notificationPreferences = pgTable(
     notificationType: notificationTypeEnum('notification_type').notNull(),
     channel: notificationChannelEnum('channel').notNull(),
     enabled: boolean('enabled').notNull().default(true),
-    createdAt: timestamp('created_at').notNull().default(sql`CURRENT_TIMESTAMP`),
-    updatedAt: timestamp('updated_at').notNull().default(sql`CURRENT_TIMESTAMP`)
+    createdAt: timestamp('created_at')
+      .notNull()
+      .default(sql`CURRENT_TIMESTAMP`),
+    updatedAt: timestamp('updated_at')
+      .notNull()
+      .default(sql`CURRENT_TIMESTAMP`)
   },
   (notificationPreference) => [
     foreignKey({
@@ -263,7 +294,9 @@ export const emailSubscriptions = pgTable(
     subscriptionTypes: text('subscription_types'), // JSON array of subscription types
     isActive: boolean('is_active').notNull().default(true),
     unsubscribeToken: text('unsubscribe_token').notNull(),
-    subscribedAt: timestamp('subscribed_at').notNull().default(sql`CURRENT_TIMESTAMP`),
+    subscribedAt: timestamp('subscribed_at')
+      .notNull()
+      .default(sql`CURRENT_TIMESTAMP`),
     unsubscribedAt: timestamp('unsubscribed_at')
   },
   (emailSubscription) => [

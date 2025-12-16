@@ -18,17 +18,19 @@ Removing duplicates from arrays is a common task in JavaScript. Here are several
 The simplest and most performant way to remove duplicates is using a `Set`:
 
 ```javascript
-const array = [1, 2, 2, 3, 4, 4, 5];
-const uniqueArray = [...new Set(array)];
-console.log(uniqueArray); // [1, 2, 3, 4, 5]
+const array = [1, 2, 2, 3, 4, 4, 5]
+const uniqueArray = [...new Set(array)]
+console.log(uniqueArray) // [1, 2, 3, 4, 5]
 ```
 
 **Pros:**
+
 - Clean and concise
 - Good performance O(n)
 - Works with primitive values
 
 **Cons:**
+
 - Only works with primitive values (numbers, strings, booleans)
 - Objects are compared by reference
 
@@ -37,18 +39,20 @@ console.log(uniqueArray); // [1, 2, 3, 4, 5]
 For more complex scenarios or when you need to keep the first occurrence:
 
 ```javascript
-const array = [1, 2, 2, 3, 4, 4, 5];
+const array = [1, 2, 2, 3, 4, 4, 5]
 const uniqueArray = array.filter((value, index, self) => {
-  return self.indexOf(value) === index;
-});
-console.log(uniqueArray); // [1, 2, 3, 4, 5]
+  return self.indexOf(value) === index
+})
+console.log(uniqueArray) // [1, 2, 3, 4, 5]
 ```
 
 **Pros:**
+
 - More flexible for custom logic
 - Easy to understand
 
 **Cons:**
+
 - Less performant O(n²) due to `indexOf`
 
 ## Method 3: Using Reduce
@@ -56,21 +60,23 @@ console.log(uniqueArray); // [1, 2, 3, 4, 5]
 A functional approach using `reduce`:
 
 ```javascript
-const array = [1, 2, 2, 3, 4, 4, 5];
+const array = [1, 2, 2, 3, 4, 4, 5]
 const uniqueArray = array.reduce((acc, current) => {
   if (!acc.includes(current)) {
-    acc.push(current);
+    acc.push(current)
   }
-  return acc;
-}, []);
-console.log(uniqueArray); // [1, 2, 3, 4, 5]
+  return acc
+}, [])
+console.log(uniqueArray) // [1, 2, 3, 4, 5]
 ```
 
 **Pros:**
+
 - Functional programming style
 - Can be combined with other transformations
 
 **Cons:**
+
 - Less performant due to `includes`
 - More verbose
 
@@ -84,13 +90,11 @@ const users = [
   { id: 2, name: 'Bob' },
   { id: 1, name: 'Alice' },
   { id: 3, name: 'Charlie' }
-];
+]
 
-const uniqueUsers = Array.from(
-  new Map(users.map(user => [user.id, user])).values()
-);
+const uniqueUsers = Array.from(new Map(users.map((user) => [user.id, user])).values())
 
-console.log(uniqueUsers);
+console.log(uniqueUsers)
 // [
 //   { id: 1, name: 'Alice' },
 //   { id: 2, name: 'Bob' },
@@ -99,11 +103,13 @@ console.log(uniqueUsers);
 ```
 
 **Pros:**
+
 - Works with objects
 - Can specify which property to use for uniqueness
 - Good performance
 
 **Cons:**
+
 - More complex syntax
 - Keeps the last occurrence (can be modified to keep first)
 

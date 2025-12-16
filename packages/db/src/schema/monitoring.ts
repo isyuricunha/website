@@ -1,5 +1,15 @@
 import { relations, sql } from 'drizzle-orm'
-import { boolean, foreignKey, index, integer, pgEnum, pgTable, real, text, timestamp } from 'drizzle-orm/pg-core'
+import {
+  boolean,
+  foreignKey,
+  index,
+  integer,
+  pgEnum,
+  pgTable,
+  real,
+  text,
+  timestamp
+} from 'drizzle-orm/pg-core'
 
 import { users } from './auth'
 
@@ -17,7 +27,9 @@ export const performanceMetrics = pgTable(
     userAgent: text('user_agent'),
     ipAddress: text('ip_address'),
     metadata: text('metadata'), // JSON with additional context
-    createdAt: timestamp('created_at').notNull().default(sql`CURRENT_TIMESTAMP`)
+    createdAt: timestamp('created_at')
+      .notNull()
+      .default(sql`CURRENT_TIMESTAMP`)
   },
   (performanceMetric) => [
     index('idx_performance_metrics_created_at').using(
@@ -51,14 +63,19 @@ export const analyticsEvents = pgTable(
     browser: text('browser'),
     os: text('os'),
     properties: text('properties'), // JSON with event-specific data
-    createdAt: timestamp('created_at').notNull().default(sql`CURRENT_TIMESTAMP`)
+    createdAt: timestamp('created_at')
+      .notNull()
+      .default(sql`CURRENT_TIMESTAMP`)
   },
   (analyticsEvent) => [
     index('idx_analytics_events_created_at').using(
       'btree',
       analyticsEvent.createdAt.asc().nullsLast().op('timestamp_ops')
     ),
-    index('idx_analytics_events_user_id').using('btree', analyticsEvent.userId.asc().nullsLast().op('text_ops')),
+    index('idx_analytics_events_user_id').using(
+      'btree',
+      analyticsEvent.userId.asc().nullsLast().op('text_ops')
+    ),
     foreignKey({
       columns: [analyticsEvent.userId],
       foreignColumns: [users.id],
@@ -86,7 +103,9 @@ export const resourceUsage = pgTable('resource_usage', {
   hostname: text('hostname'), // Server/container identifier
   service: text('service'), // 'web', 'database', 'cache', etc.
   metadata: text('metadata'), // JSON with additional details
-  createdAt: timestamp('created_at').notNull().default(sql`CURRENT_TIMESTAMP`)
+  createdAt: timestamp('created_at')
+    .notNull()
+    .default(sql`CURRENT_TIMESTAMP`)
 })
 
 // API Usage Tracking
@@ -105,14 +124,19 @@ export const apiUsage = pgTable(
     userAgent: text('user_agent'),
     apiKey: text('api_key'), // If using API keys
     errorMessage: text('error_message'),
-    createdAt: timestamp('created_at').notNull().default(sql`CURRENT_TIMESTAMP`)
+    createdAt: timestamp('created_at')
+      .notNull()
+      .default(sql`CURRENT_TIMESTAMP`)
   },
   (apiUsageRow) => [
     index('idx_api_usage_created_at').using(
       'btree',
       apiUsageRow.createdAt.asc().nullsLast().op('timestamp_ops')
     ),
-    index('idx_api_usage_endpoint').using('btree', apiUsageRow.endpoint.asc().nullsLast().op('text_ops')),
+    index('idx_api_usage_endpoint').using(
+      'btree',
+      apiUsageRow.endpoint.asc().nullsLast().op('text_ops')
+    ),
     foreignKey({
       columns: [apiUsageRow.userId],
       foreignColumns: [users.id],
@@ -134,7 +158,9 @@ export const queryPerformance = pgTable(
     endpoint: text('endpoint'), // API endpoint that triggered the query
     userId: text('user_id'),
     slow: boolean('slow').notNull().default(false), // Flagged as slow query
-    createdAt: timestamp('created_at').notNull().default(sql`CURRENT_TIMESTAMP`)
+    createdAt: timestamp('created_at')
+      .notNull()
+      .default(sql`CURRENT_TIMESTAMP`)
   },
   (queryPerformanceRow) => [
     foreignKey({
@@ -166,12 +192,18 @@ export const errorTracking = pgTable(
     tags: text('tags'), // JSON array of tags for categorization
     fingerprint: text('fingerprint'), // Unique identifier for grouping similar errors
     count: integer('count').notNull().default(1), // Number of times this error occurred
-    firstSeen: timestamp('first_seen').notNull().default(sql`CURRENT_TIMESTAMP`),
-    lastSeen: timestamp('last_seen').notNull().default(sql`CURRENT_TIMESTAMP`),
+    firstSeen: timestamp('first_seen')
+      .notNull()
+      .default(sql`CURRENT_TIMESTAMP`),
+    lastSeen: timestamp('last_seen')
+      .notNull()
+      .default(sql`CURRENT_TIMESTAMP`),
     resolved: boolean('resolved').notNull().default(false),
     resolvedBy: text('resolved_by'),
     resolvedAt: timestamp('resolved_at'),
-    createdAt: timestamp('created_at').notNull().default(sql`CURRENT_TIMESTAMP`)
+    createdAt: timestamp('created_at')
+      .notNull()
+      .default(sql`CURRENT_TIMESTAMP`)
   },
   (errorTrackingRow) => [
     index('idx_error_tracking_fingerprint').using(
@@ -192,23 +224,29 @@ export const errorTracking = pgTable(
 )
 
 // Custom Metrics/KPIs
-export const customMetrics = pgTable('custom_metrics', {
-  id: text('id').primaryKey(),
-  name: text('name').notNull(),
-  description: text('description'),
-  value: real('value').notNull(),
-  unit: text('unit'),
-  category: text('category'), // 'business', 'technical', 'user_engagement', etc.
-  dimensions: text('dimensions'), // JSON object with metric dimensions
-  createdBy: text('created_by'),
-  createdAt: timestamp('created_at').notNull().default(sql`CURRENT_TIMESTAMP`)
-}, (customMetric) => [
-  foreignKey({
-    columns: [customMetric.createdBy],
-    foreignColumns: [users.id],
-    name: 'custom_metrics_created_by_fkey'
-  })
-])
+export const customMetrics = pgTable(
+  'custom_metrics',
+  {
+    id: text('id').primaryKey(),
+    name: text('name').notNull(),
+    description: text('description'),
+    value: real('value').notNull(),
+    unit: text('unit'),
+    category: text('category'), // 'business', 'technical', 'user_engagement', etc.
+    dimensions: text('dimensions'), // JSON object with metric dimensions
+    createdBy: text('created_by'),
+    createdAt: timestamp('created_at')
+      .notNull()
+      .default(sql`CURRENT_TIMESTAMP`)
+  },
+  (customMetric) => [
+    foreignKey({
+      columns: [customMetric.createdBy],
+      foreignColumns: [users.id],
+      name: 'custom_metrics_created_by_fkey'
+    })
+  ]
+)
 
 // Alerts Configuration
 export const alertTypeEnum = pgEnum('alert_type', [
@@ -234,8 +272,12 @@ export const alerts = pgTable(
     isActive: boolean('is_active').notNull().default(true),
     notificationChannels: text('notification_channels'), // JSON array of channels
     createdBy: text('created_by').notNull(),
-    createdAt: timestamp('created_at').notNull().default(sql`CURRENT_TIMESTAMP`),
-    updatedAt: timestamp('updated_at').notNull().default(sql`CURRENT_TIMESTAMP`)
+    createdAt: timestamp('created_at')
+      .notNull()
+      .default(sql`CURRENT_TIMESTAMP`),
+    updatedAt: timestamp('updated_at')
+      .notNull()
+      .default(sql`CURRENT_TIMESTAMP`)
   },
   (alert) => [
     foreignKey({
@@ -259,7 +301,9 @@ export const alertInstances = pgTable(
     resolvedBy: text('resolved_by'),
     resolvedAt: timestamp('resolved_at'),
     notificationsSent: text('notifications_sent'), // JSON array of sent notifications
-    triggeredAt: timestamp('triggered_at').notNull().default(sql`CURRENT_TIMESTAMP`)
+    triggeredAt: timestamp('triggered_at')
+      .notNull()
+      .default(sql`CURRENT_TIMESTAMP`)
   },
   (alertInstance) => [
     foreignKey({
@@ -288,7 +332,9 @@ export const userActivity = pgTable(
     userAgent: text('user_agent'),
     sessionId: text('session_id'),
     duration: integer('duration'), // Time spent on action (in seconds)
-    createdAt: timestamp('created_at').notNull().default(sql`CURRENT_TIMESTAMP`)
+    createdAt: timestamp('created_at')
+      .notNull()
+      .default(sql`CURRENT_TIMESTAMP`)
   },
   (userActivityRow) => [
     index('idx_user_activity_created_at').using(

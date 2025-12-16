@@ -53,10 +53,10 @@ const Footer = () => {
             {status === 'error' ? t_common('error') : null}
             {status === 'success'
               ? format.number(data, {
-                notation: 'compact',
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 1
-              })
+                  notation: 'compact',
+                  minimumFractionDigits: 0,
+                  maximumFractionDigits: 1
+                })
               : null}
           </div>
         </Link>

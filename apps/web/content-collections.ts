@@ -63,7 +63,9 @@ const snippets = defineCollection({
     title: z.string(),
     date: z
       .union([z.string(), z.date()])
-      .transform((value) => (typeof value === 'string' ? value : value.toISOString().split('T')[0] ?? '')),
+      .transform((value) =>
+        typeof value === 'string' ? value : (value.toISOString().split('T')[0] ?? '')
+      ),
     author: z.string().optional(),
     description: z.string(),
     tags: z.array(z.string()).optional().default([]),

@@ -32,8 +32,7 @@ const BlurImage = (props: ImageProps) => {
   const [isLoading, setIsLoading] = useState(true)
 
   const resolvedPriority = priority ?? !lazy
-  const resolvedLoading =
-    loading ?? (resolvedPriority ? undefined : lazy ? 'lazy' : undefined)
+  const resolvedLoading = loading ?? (resolvedPriority ? undefined : lazy ? 'lazy' : undefined)
   const resolvedQuality = quality ?? 100
 
   return (

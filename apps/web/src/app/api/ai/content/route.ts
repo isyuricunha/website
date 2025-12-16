@@ -25,7 +25,10 @@ export async function POST(request: NextRequest) {
     const { success } = await ratelimit.limit(rate_limit_keys.ai_content(ip))
 
     if (!success) {
-      return NextResponse.json({ error: 'Rate limit exceeded. Please try again later.' }, { status: 429 })
+      return NextResponse.json(
+        { error: 'Rate limit exceeded. Please try again later.' },
+        { status: 429 }
+      )
     }
 
     // Check if any AI provider is available
@@ -79,7 +82,11 @@ export async function POST(request: NextRequest) {
             { status: 400 }
           )
         }
-        const result: ContentResult = await aiService.generateMetaDescription(title, content, provider)
+        const result: ContentResult = await aiService.generateMetaDescription(
+          title,
+          content,
+          provider
+        )
         return NextResponse.json({
           action,
           result,
@@ -89,7 +96,12 @@ export async function POST(request: NextRequest) {
       }
 
       case 'translate': {
-        const result: ContentResult = await aiService.translateContent(content, fromLang, toLang, provider)
+        const result: ContentResult = await aiService.translateContent(
+          content,
+          fromLang,
+          toLang,
+          provider
+        )
         return NextResponse.json({
           action,
           result,

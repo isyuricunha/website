@@ -7,11 +7,11 @@ const current_dir_path = path.dirname(current_file_path)
 const root_script_path = path.resolve(current_dir_path, '../../../scripts/vercel-ignore.js')
 
 const result = spawnSync('node', [root_script_path], {
-    stdio: 'inherit'
+  stdio: 'inherit'
 })
 
 if (result.error) {
-    throw result.error
+  throw result.error
 }
 
 process.exitCode = result.status ?? 1

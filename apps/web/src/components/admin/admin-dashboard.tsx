@@ -171,9 +171,7 @@ const AdminDashboard = () => {
                 <CardTitle className='text-muted-foreground group-hover:text-foreground text-sm font-semibold transition-colors'>
                   {stat.title}
                 </CardTitle>
-                <div
-                  className='bg-primary/10 rounded-xl p-2.5 text-primary transition-transform duration-300 group-hover:scale-110'
-                >
+                <div className='bg-primary/10 text-primary rounded-xl p-2.5 transition-transform duration-300 group-hover:scale-110'>
                   <Icon className='h-5 w-5' />
                 </div>
               </CardHeader>
@@ -203,7 +201,7 @@ const AdminDashboard = () => {
             <div className='flex items-center justify-between'>
               <div className='space-y-1'>
                 <CardTitle className='flex items-center gap-2 text-base'>
-                  <div className='bg-primary/10 rounded-lg p-2 text-primary'>
+                  <div className='bg-primary/10 text-primary rounded-lg p-2'>
                     <Clock className='h-4 w-4' />
                   </div>
                   Recent Activity
@@ -218,7 +216,7 @@ const AdminDashboard = () => {
           <CardContent className='space-y-3'>
             <div className='bg-muted/30 border-border/60 hover:bg-muted/40 flex items-center justify-between rounded-xl border p-3 backdrop-blur-sm transition-all duration-200 hover:shadow-sm'>
               <div className='flex items-center gap-3'>
-                <div className='bg-primary/10 rounded-lg p-2 text-primary'>
+                <div className='bg-primary/10 text-primary rounded-lg p-2'>
                   <Users className='h-4 w-4' />
                 </div>
                 <span className='text-sm font-semibold'>New Users</span>
@@ -230,7 +228,7 @@ const AdminDashboard = () => {
             </div>
             <div className='bg-muted/30 border-border/60 hover:bg-muted/40 flex items-center justify-between rounded-xl border p-3 backdrop-blur-sm transition-all duration-200 hover:shadow-sm'>
               <div className='flex items-center gap-3'>
-                <div className='bg-primary/10 rounded-lg p-2 text-primary'>
+                <div className='bg-primary/10 text-primary rounded-lg p-2'>
                   <MessageSquare className='h-4 w-4' />
                 </div>
                 <span className='text-sm font-semibold'>New Comments</span>
@@ -246,7 +244,7 @@ const AdminDashboard = () => {
         <Card className='border-border/50 from-background to-background/80 bg-gradient-to-br backdrop-blur-sm md:col-span-1'>
           <CardHeader>
             <div className='mb-1 flex items-center gap-2'>
-              <div className='bg-primary/10 rounded-lg p-2 text-primary'>
+              <div className='bg-primary/10 text-primary rounded-lg p-2'>
                 <ArrowRight className='h-4 w-4' />
               </div>
               <CardTitle className='text-base'>Quick Actions</CardTitle>
@@ -299,7 +297,7 @@ const AdminDashboard = () => {
         <Card className='border-border/50 from-background to-background/80 bg-gradient-to-br backdrop-blur-sm md:col-span-2 lg:col-span-1'>
           <CardHeader>
             <div className='mb-1 flex items-center gap-2'>
-              <div className='bg-primary/10 rounded-lg p-2 text-primary'>
+              <div className='bg-primary/10 text-primary rounded-lg p-2'>
                 <Wand2 className='h-4 w-4' />
               </div>
               <CardTitle className='text-base'>Blog Management</CardTitle>
@@ -361,7 +359,7 @@ const AdminDashboard = () => {
         <Card className='border-border/50 from-background to-background/80 bg-gradient-to-br backdrop-blur-sm'>
           <CardHeader>
             <div className='mb-1 flex items-center gap-2'>
-              <div className='bg-primary/10 rounded-lg p-2 text-primary'>
+              <div className='bg-primary/10 text-primary rounded-lg p-2'>
                 <BarChart3 className='h-4 w-4' />
               </div>
               <CardTitle className='text-base'>System Health</CardTitle>
@@ -374,27 +372,21 @@ const AdminDashboard = () => {
             <div className='space-y-2.5'>
               <div className='flex justify-between text-sm'>
                 <span className='font-medium'>Database Performance</span>
-                <span className='text-primary text-xs font-semibold'>
-                  Excellent
-                </span>
+                <span className='text-primary text-xs font-semibold'>Excellent</span>
               </div>
               <Progress value={95} className='h-2' />
             </div>
             <div className='space-y-2.5'>
               <div className='flex justify-between text-sm'>
                 <span className='font-medium'>API Response Time</span>
-                <span className='text-primary text-xs font-semibold'>
-                  Fast
-                </span>
+                <span className='text-primary text-xs font-semibold'>Fast</span>
               </div>
               <Progress value={88} className='h-2' />
             </div>
             <div className='space-y-2.5'>
               <div className='flex justify-between text-sm'>
                 <span className='font-medium'>Storage Usage</span>
-                <span className='text-muted-foreground text-xs font-semibold'>
-                  Moderate
-                </span>
+                <span className='text-muted-foreground text-xs font-semibold'>Moderate</span>
               </div>
               <Progress value={65} className='h-2' />
             </div>

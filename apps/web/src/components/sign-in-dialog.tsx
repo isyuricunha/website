@@ -230,7 +230,9 @@ const SignInDialog = () => {
                 isPending={isPending}
               >
                 {isPending ? null : <SiGithub className='mr-3' />}
-                {t('dialog.sign-in.continue-with', { provider: t('dialog.sign-in.provider.github') })}
+                {t('dialog.sign-in.continue-with', {
+                  provider: t('dialog.sign-in.provider.github')
+                })}
                 {lastUsedProvider === 'github' && <LastUsed />}
               </Button>
               <Button
@@ -240,7 +242,9 @@ const SignInDialog = () => {
                 isPending={isPending}
               >
                 {isPending ? null : <GoogleIcon />}
-                {t('dialog.sign-in.continue-with', { provider: t('dialog.sign-in.provider.google') })}
+                {t('dialog.sign-in.continue-with', {
+                  provider: t('dialog.sign-in.provider.google')
+                })}
                 {lastUsedProvider === 'google' && <LastUsed />}
               </Button>
               <Button

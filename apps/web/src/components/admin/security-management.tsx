@@ -61,7 +61,8 @@ const all_categories_value = 'all'
 export default function SecurityManagement() {
   const [selectedTab, setSelectedTab] = useState('overview')
   const [settingsSearchTerm, setSettingsSearchTerm] = useState('')
-  const [selectedSettingsCategory, setSelectedSettingsCategory] = useState<string>(all_categories_value)
+  const [selectedSettingsCategory, setSelectedSettingsCategory] =
+    useState<string>(all_categories_value)
   const [editingSettingKey, setEditingSettingKey] = useState<string | null>(null)
   const [draftSettingValue, setDraftSettingValue] = useState('')
   const [draftSettingDescription, setDraftSettingDescription] = useState('')
@@ -152,7 +153,11 @@ export default function SecurityManagement() {
     const result: Record<string, SecuritySetting[]> = {}
 
     for (const [category, settings] of Object.entries(grouped)) {
-      if (selectedSettingsCategory !== all_categories_value && category !== selectedSettingsCategory) continue
+      if (
+        selectedSettingsCategory !== all_categories_value &&
+        category !== selectedSettingsCategory
+      )
+        continue
 
       const items = (settings as SecuritySetting[]).filter((s) => {
         if (!settingsSearchTerm) return true
@@ -324,7 +329,9 @@ export default function SecurityManagement() {
                       securityEvents?.events.slice(0, 5).map((event) => (
                         <div key={event.id} className='flex items-center justify-between'>
                           <div className='flex items-center space-x-2'>
-                            <Badge variant={getSeverityColor(event.severity)}>{event.severity}</Badge>
+                            <Badge variant={getSeverityColor(event.severity)}>
+                              {event.severity}
+                            </Badge>
                             <span className='text-sm'>{event.eventType}</span>
                           </div>
                           <span className='text-muted-foreground text-xs'>
@@ -400,7 +407,9 @@ export default function SecurityManagement() {
                       <div key={event.id} className='rounded-lg border p-4'>
                         <div className='mb-2 flex items-center justify-between'>
                           <div className='flex items-center space-x-2'>
-                            <Badge variant={getSeverityColor(event.severity)}>{event.severity}</Badge>
+                            <Badge variant={getSeverityColor(event.severity)}>
+                              {event.severity}
+                            </Badge>
                             <span className='font-medium'>{event.eventType}</span>
                           </div>
                           <div className='flex items-center space-x-2'>
@@ -428,13 +437,16 @@ export default function SecurityManagement() {
                         )}
                         {event.resolved && (
                           <Badge variant='outline' className='mt-2'>
-                            Resolved {event.resolvedAt && new Date(event.resolvedAt).toLocaleString()}
+                            Resolved{' '}
+                            {event.resolvedAt && new Date(event.resolvedAt).toLocaleString()}
                           </Badge>
                         )}
                       </div>
                     ))
                   ) : (
-                    <div className='text-muted-foreground text-center'>No security events found</div>
+                    <div className='text-muted-foreground text-center'>
+                      No security events found
+                    </div>
                   )}
                 </div>
               )}
@@ -513,7 +525,9 @@ export default function SecurityManagement() {
                         </div>
                       ))
                     ) : (
-                      <div className='text-muted-foreground text-center'>No IP rules configured</div>
+                      <div className='text-muted-foreground text-center'>
+                        No IP rules configured
+                      </div>
                     )}
                   </div>
                 )}
@@ -559,7 +573,9 @@ export default function SecurityManagement() {
                       </div>
                     ))
                   ) : (
-                    <div className='text-muted-foreground text-center'>No active account lockouts</div>
+                    <div className='text-muted-foreground text-center'>
+                      No active account lockouts
+                    </div>
                   )}
                 </div>
               )}
@@ -587,7 +603,10 @@ export default function SecurityManagement() {
                   </div>
                   <div>
                     <Label htmlFor='security-settings-category'>Category</Label>
-                    <Select value={selectedSettingsCategory} onValueChange={setSelectedSettingsCategory}>
+                    <Select
+                      value={selectedSettingsCategory}
+                      onValueChange={setSelectedSettingsCategory}
+                    >
                       <SelectTrigger id='security-settings-category'>
                         <SelectValue placeholder='All categories' />
                       </SelectTrigger>
@@ -604,9 +623,13 @@ export default function SecurityManagement() {
                 </div>
 
                 {settingsLoading ? (
-                  <div className='text-muted-foreground py-8 text-center'>Loading security settings...</div>
+                  <div className='text-muted-foreground py-8 text-center'>
+                    Loading security settings...
+                  </div>
                 ) : Object.keys(filteredSettings).length === 0 ? (
-                  <div className='text-muted-foreground py-8 text-center'>No security settings found</div>
+                  <div className='text-muted-foreground py-8 text-center'>
+                    No security settings found
+                  </div>
                 ) : (
                   <div className='space-y-4'>
                     {Object.entries(filteredSettings).map(([category, settings]) => (
@@ -633,7 +656,9 @@ export default function SecurityManagement() {
                                       {isEditing ? (
                                         <div className='space-y-3'>
                                           <div>
-                                            <Label htmlFor={`setting-value-${setting.id}`}>Value</Label>
+                                            <Label htmlFor={`setting-value-${setting.id}`}>
+                                              Value
+                                            </Label>
                                             <Textarea
                                               id={`setting-value-${setting.id}`}
                                               value={draftSettingValue}
@@ -642,31 +667,39 @@ export default function SecurityManagement() {
                                             />
                                           </div>
                                           <div>
-                                            <Label htmlFor={`setting-description-${setting.id}`}>Description</Label>
+                                            <Label htmlFor={`setting-description-${setting.id}`}>
+                                              Description
+                                            </Label>
                                             <Input
                                               id={`setting-description-${setting.id}`}
                                               value={draftSettingDescription}
-                                              onChange={(e) => setDraftSettingDescription(e.target.value)}
+                                              onChange={(e) =>
+                                                setDraftSettingDescription(e.target.value)
+                                              }
                                               placeholder='Optional description'
                                             />
                                           </div>
                                           <div>
-                                            <Label htmlFor={`setting-category-${setting.id}`}>Category</Label>
+                                            <Label htmlFor={`setting-category-${setting.id}`}>
+                                              Category
+                                            </Label>
                                             <Input
                                               id={`setting-category-${setting.id}`}
                                               value={draftSettingCategory}
-                                              onChange={(e) => setDraftSettingCategory(e.target.value)}
+                                              onChange={(e) =>
+                                                setDraftSettingCategory(e.target.value)
+                                              }
                                               placeholder='Category'
                                             />
                                           </div>
                                         </div>
                                       ) : (
                                         <div className='space-y-1'>
-                                          <div className='text-muted-foreground text-sm break-words'>
+                                          <div className='text-muted-foreground break-words text-sm'>
                                             {setting.value}
                                           </div>
                                           {setting.description ? (
-                                            <div className='text-muted-foreground text-xs break-words'>
+                                            <div className='text-muted-foreground break-words text-xs'>
                                               {setting.description}
                                             </div>
                                           ) : null}
@@ -676,10 +709,7 @@ export default function SecurityManagement() {
                                       <div className='text-muted-foreground text-xs'>
                                         Updated {new Date(setting.updatedAt).toLocaleString()}
                                         {setting.updatedByUser ? (
-                                          <span>
-                                            {' '}
-                                            by {setting.updatedByUser.name}
-                                          </span>
+                                          <span> by {setting.updatedByUser.name}</span>
                                         ) : null}
                                       </div>
                                     </div>
@@ -704,7 +734,11 @@ export default function SecurityManagement() {
                                           </Button>
                                         </>
                                       ) : (
-                                        <Button size='sm' variant='outline' onClick={() => startEditingSetting(setting)}>
+                                        <Button
+                                          size='sm'
+                                          variant='outline'
+                                          onClick={() => startEditingSetting(setting)}
+                                        >
                                           Edit
                                         </Button>
                                       )}

@@ -149,10 +149,7 @@ const Page = async (props: PageProps) => {
         <Footer />
 
         {recommended_posts.length > 0 ? (
-          <Recommendations
-            recommendations={recommended_posts}
-            className='mt-10'
-          />
+          <Recommendations recommendations={recommended_posts} className='mt-10' />
         ) : null}
       </Providers>
 

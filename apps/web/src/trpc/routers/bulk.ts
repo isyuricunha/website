@@ -1,5 +1,16 @@
 import { TRPCError } from '@trpc/server'
-import { and, bulkOperations, desc, eq, inArray, isNull, or, posts, sessions, users } from '@isyuricunha/db'
+import {
+  and,
+  bulkOperations,
+  desc,
+  eq,
+  inArray,
+  isNull,
+  or,
+  posts,
+  sessions,
+  users
+} from '@isyuricunha/db'
 import { randomBytes } from 'crypto'
 import { z } from 'zod'
 
@@ -124,7 +135,11 @@ export const bulkRouter = createTRPCRouter({
           if (await isBulkOperationCancelled(ctx.db, operationId)) {
             await ctx.db
               .update(bulkOperations)
-              .set({ status: 'cancelled', completedAt: new Date(), results: JSON.stringify(results) })
+              .set({
+                status: 'cancelled',
+                completedAt: new Date(),
+                results: JSON.stringify(results)
+              })
               .where(eq(bulkOperations.id, operationId))
 
             return {
@@ -385,7 +400,11 @@ export const bulkRouter = createTRPCRouter({
           if (await isBulkOperationCancelled(ctx.db, operationId)) {
             await ctx.db
               .update(bulkOperations)
-              .set({ status: 'cancelled', completedAt: new Date(), results: JSON.stringify(results) })
+              .set({
+                status: 'cancelled',
+                completedAt: new Date(),
+                results: JSON.stringify(results)
+              })
               .where(eq(bulkOperations.id, operationId))
 
             return {

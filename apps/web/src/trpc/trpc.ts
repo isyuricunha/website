@@ -101,7 +101,7 @@ const timingMiddleware = t.middleware(async ({ next, path, ctx }) => {
         null
 
       const status_code = result.ok ? 200 : map_trpc_error_to_status_code(result.error?.code)
-      const error_message = result.ok ? null : result.error?.message ?? 'Unknown error'
+      const error_message = result.ok ? null : (result.error?.message ?? 'Unknown error')
 
       await ctx.db.insert(apiUsage).values({
         id: randomBytes(16).toString('hex'),

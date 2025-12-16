@@ -29,4 +29,4 @@ const robots = (): MetadataRoute.Robots => ({
   sitemap: `${SITE_URL}/sitemap.xml`
 })
 
-export default robots;
+export default robots

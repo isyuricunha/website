@@ -1,5 +1,14 @@
 import { relations, sql } from 'drizzle-orm'
-import { boolean, foreignKey, index, integer, pgEnum, pgTable, text, timestamp } from 'drizzle-orm/pg-core'
+import {
+  boolean,
+  foreignKey,
+  index,
+  integer,
+  pgEnum,
+  pgTable,
+  text,
+  timestamp
+} from 'drizzle-orm/pg-core'
 
 import { users } from './auth'
 import { comments } from './comments'
@@ -32,7 +41,10 @@ export const posts = pgTable(
   },
   (post) => [
     index('idx_post_author_id').using('btree', post.authorId.asc().nullsLast().op('text_ops')),
-    index('idx_post_published_at').using('btree', post.publishedAt.asc().nullsLast().op('timestamp_ops')),
+    index('idx_post_published_at').using(
+      'btree',
+      post.publishedAt.asc().nullsLast().op('timestamp_ops')
+    ),
     index('idx_post_status').using('btree', post.status.asc().nullsLast().op('enum_ops')),
     foreignKey({
       columns: [post.authorId],

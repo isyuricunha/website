@@ -10,23 +10,19 @@ import Link from '../link'
 const TEXTS = [
   {
     key: 'amazing',
-    className:
-      'bg-clip-text text-center text-transparent bg-linear-to-r from-primary to-primary/60'
+    className: 'bg-clip-text text-center text-transparent bg-linear-to-r from-primary to-primary/60'
   },
   {
     key: 'stunning',
-    className:
-      'bg-clip-text text-center text-transparent bg-linear-to-r from-primary to-primary/60'
+    className: 'bg-clip-text text-center text-transparent bg-linear-to-r from-primary to-primary/60'
   },
   {
     key: 'fantastic',
-    className:
-      'bg-clip-text text-center text-transparent bg-linear-to-r from-primary to-primary/60'
+    className: 'bg-clip-text text-center text-transparent bg-linear-to-r from-primary to-primary/60'
   },
   {
     key: 'attractive',
-    className:
-      'bg-clip-text text-center text-transparent bg-linear-to-r from-primary to-primary/60'
+    className: 'bg-clip-text text-center text-transparent bg-linear-to-r from-primary to-primary/60'
   }
 ] as const
 

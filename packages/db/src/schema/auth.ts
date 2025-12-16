@@ -1,5 +1,15 @@
 import { relations } from 'drizzle-orm'
-import { boolean, foreignKey, index, pgEnum, pgTable, text, timestamp, unique, uniqueIndex } from 'drizzle-orm/pg-core'
+import {
+  boolean,
+  foreignKey,
+  index,
+  pgEnum,
+  pgTable,
+  text,
+  timestamp,
+  unique,
+  uniqueIndex
+} from 'drizzle-orm/pg-core'
 
 import { comments } from './comments'
 import { guestbook } from './guestbook'
@@ -145,7 +155,10 @@ export const auditLogs = pgTable(
       'btree',
       auditLog.adminUserId.asc().nullsLast().op('text_ops')
     ),
-    index('idx_audit_logs_created_at').using('btree', auditLog.createdAt.asc().nullsLast().op('timestamp_ops')),
+    index('idx_audit_logs_created_at').using(
+      'btree',
+      auditLog.createdAt.asc().nullsLast().op('timestamp_ops')
+    ),
     index('idx_audit_logs_target').using(
       'btree',
       auditLog.targetType.asc().nullsLast().op('text_ops'),

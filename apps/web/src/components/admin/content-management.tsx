@@ -165,9 +165,7 @@ export const ContentManagement = () => {
               <FileText className='text-primary h-8 w-8' />
               <div className='ml-4'>
                 <p className='text-muted-foreground text-sm font-medium'>Total Posts</p>
-                <p className='text-2xl font-bold'>
-                  {statsData.totals.posts}
-                </p>
+                <p className='text-2xl font-bold'>{statsData.totals.posts}</p>
               </div>
             </div>
           </div>
@@ -177,9 +175,7 @@ export const ContentManagement = () => {
               <Eye className='text-primary h-8 w-8' />
               <div className='ml-4'>
                 <p className='text-muted-foreground text-sm font-medium'>Published</p>
-                <p className='text-2xl font-bold'>
-                  {statsData.totals.published}
-                </p>
+                <p className='text-2xl font-bold'>{statsData.totals.published}</p>
               </div>
             </div>
           </div>
@@ -189,9 +185,7 @@ export const ContentManagement = () => {
               <Edit className='text-muted-foreground h-8 w-8' />
               <div className='ml-4'>
                 <p className='text-muted-foreground text-sm font-medium'>Drafts</p>
-                <p className='text-2xl font-bold'>
-                  {statsData.totals.drafts}
-                </p>
+                <p className='text-2xl font-bold'>{statsData.totals.drafts}</p>
               </div>
             </div>
           </div>
@@ -201,9 +195,7 @@ export const ContentManagement = () => {
               <BarChart3 className='text-primary h-8 w-8' />
               <div className='ml-4'>
                 <p className='text-muted-foreground text-sm font-medium'>Total Views</p>
-                <p className='text-2xl font-bold'>
-                  {statsData.totals.views.toLocaleString()}
-                </p>
+                <p className='text-2xl font-bold'>{statsData.totals.views.toLocaleString()}</p>
               </div>
             </div>
           </div>
@@ -221,7 +213,7 @@ export const ContentManagement = () => {
                 placeholder='Search posts...'
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className='bg-background border-border text-foreground w-full rounded-md border py-2 pl-10 pr-4 focus:border-transparent focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background'
+                className='bg-background border-border text-foreground focus:ring-ring focus:ring-offset-background w-full rounded-md border py-2 pl-10 pr-4 focus:border-transparent focus:ring-2 focus:ring-offset-2'
               />
             </div>
           </div>
@@ -241,7 +233,7 @@ export const ContentManagement = () => {
                   setStatusFilter(value as StatusFilter)
                 }
               }}
-              className='bg-background border-border text-foreground rounded-md border px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background'
+              className='bg-background border-border text-foreground focus:ring-ring focus:ring-offset-background rounded-md border px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-offset-2'
             >
               <option value=''>All Status</option>
               <option value='draft'>Draft</option>
@@ -292,7 +284,7 @@ export const ContentManagement = () => {
       {/* Posts Table */}
       <div className='bg-card border-border overflow-hidden rounded-lg border'>
         <div className='overflow-x-auto'>
-          <table className='min-w-full divide-y divide-border'>
+          <table className='divide-border min-w-full divide-y'>
             <thead className='bg-muted'>
               <tr>
                 <th className='text-muted-foreground px-6 py-3 text-left text-xs font-medium uppercase tracking-wider'>
@@ -328,7 +320,7 @@ export const ContentManagement = () => {
                 </th>
               </tr>
             </thead>
-            <tbody className='divide-y divide-border bg-background'>
+            <tbody className='divide-border bg-background divide-y'>
               {postsData?.posts.map((post) => (
                 <tr key={post.id} className='hover:bg-muted/30'>
                   <td className='whitespace-nowrap px-6 py-4'>
@@ -349,9 +341,7 @@ export const ContentManagement = () => {
                     <div className='flex items-center'>
                       <div>
                         <div className='flex items-center gap-2'>
-                          <div className='text-sm font-medium'>
-                            {post.title}
-                          </div>
+                          <div className='text-sm font-medium'>{post.title}</div>
                           {post.featured && <Star className='text-primary h-4 w-4' />}
                         </div>
                         <div className='text-muted-foreground text-sm'>/{post.slug}</div>
@@ -390,9 +380,7 @@ export const ContentManagement = () => {
                         />
                       )}
                       <div>
-                        <div className='text-sm font-medium'>
-                          {post.author?.name ?? 'Unknown'}
-                        </div>
+                        <div className='text-sm font-medium'>{post.author?.name ?? 'Unknown'}</div>
                         <div className='text-muted-foreground text-sm'>
                           {post.author?.email ?? ''}
                         </div>
@@ -447,9 +435,7 @@ export const ContentManagement = () => {
         {(!postsData?.posts || postsData.posts.length === 0) && (
           <div className='py-12 text-center'>
             <FileText className='text-muted-foreground mx-auto h-12 w-12' />
-            <h3 className='mt-2 text-sm font-medium'>
-              No posts found
-            </h3>
+            <h3 className='mt-2 text-sm font-medium'>No posts found</h3>
             <p className='text-muted-foreground mt-1 text-sm'>
               Get started by creating your first blog post.
             </p>

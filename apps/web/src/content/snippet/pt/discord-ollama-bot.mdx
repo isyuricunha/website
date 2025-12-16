@@ -294,7 +294,7 @@ class DiscordBot(discord.Client):
 if __name__ == "__main__":
     bot = DiscordBot()
     bot.run(Config.DISCORD_TOKEN)
-````
+```
 
 ## Configuração
 
@@ -303,9 +303,11 @@ if __name__ == "__main__":
    ```bash
    pip install discord.py httpx aiofiles
    ```
+
 2. **Ollama**: garanta que o Ollama está rodando (`ollama serve`) e que você já puxou o modelo (ex.: `ollama pull llama3`).
 3. **Token**: substitua `DISCORD_TOKEN` na classe `Config` pelo seu token real do bot, obtido no Discord Developer Portal.
 
 <Callout type='warning'>
-  Nunca faça commit do seu token real do Discord em um repositório público. Em produção, use variáveis de ambiente (por exemplo, `python-dotenv`).
+  Nunca faça commit do seu token real do Discord em um repositório público. Em produção, use
+  variáveis de ambiente (por exemplo, `python-dotenv`).
 </Callout>

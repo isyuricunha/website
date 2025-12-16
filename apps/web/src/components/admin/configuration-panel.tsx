@@ -264,7 +264,7 @@ export const ConfigurationPanel = () => {
                 placeholder='Search configuration...'
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className='bg-background border-border text-foreground w-full rounded-md border py-2 pl-10 pr-4 focus:border-transparent focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background'
+                className='bg-background border-border text-foreground focus:ring-ring focus:ring-offset-background w-full rounded-md border py-2 pl-10 pr-4 focus:border-transparent focus:ring-2 focus:ring-offset-2'
               />
             </div>
           </div>
@@ -272,7 +272,7 @@ export const ConfigurationPanel = () => {
           <select
             value={selectedType}
             onChange={(e) => setSelectedType(e.target.value)}
-            className='bg-background border-border text-foreground rounded-md border px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background'
+            className='bg-background border-border text-foreground focus:ring-ring focus:ring-offset-background rounded-md border px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-offset-2'
           >
             <option value=''>All Categories</option>
             <option value='general'>General</option>
@@ -289,40 +289,32 @@ export const ConfigurationPanel = () => {
       {/* Add New Configuration Form */}
       {showAddForm && (
         <div className='bg-card border-border rounded-lg border p-6'>
-          <h3 className='mb-4 text-lg font-medium'>
-            Add New Configuration
-          </h3>
+          <h3 className='mb-4 text-lg font-medium'>Add New Configuration</h3>
           <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
             <div>
-              <label className='mb-2 block text-sm font-medium'>
-                Key
-              </label>
+              <label className='mb-2 block text-sm font-medium'>Key</label>
               <input
                 type='text'
                 value={newConfigKey}
                 onChange={(e) => setNewConfigKey(e.target.value)}
                 placeholder='config_key'
-                className='bg-background border-border text-foreground w-full rounded-md border px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background'
+                className='bg-background border-border text-foreground focus:ring-ring focus:ring-offset-background w-full rounded-md border px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-offset-2'
               />
             </div>
 
             <div>
-              <label className='mb-2 block text-sm font-medium'>
-                Value
-              </label>
+              <label className='mb-2 block text-sm font-medium'>Value</label>
               <input
                 type='text'
                 value={newConfigValue}
                 onChange={(e) => setNewConfigValue(e.target.value)}
                 placeholder='Configuration value'
-                className='bg-background border-border text-foreground w-full rounded-md border px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background'
+                className='bg-background border-border text-foreground focus:ring-ring focus:ring-offset-background w-full rounded-md border px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-offset-2'
               />
             </div>
 
             <div>
-              <label className='mb-2 block text-sm font-medium'>
-                Category
-              </label>
+              <label className='mb-2 block text-sm font-medium'>Category</label>
               <select
                 value={newConfigType}
                 onChange={(e) => {
@@ -330,7 +322,7 @@ export const ConfigurationPanel = () => {
                     setNewConfigType(e.target.value)
                   }
                 }}
-                className='bg-background border-border text-foreground w-full rounded-md border px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background'
+                className='bg-background border-border text-foreground focus:ring-ring focus:ring-offset-background w-full rounded-md border px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-offset-2'
               >
                 <option value='general'>General</option>
                 <option value='seo'>SEO</option>
@@ -343,15 +335,13 @@ export const ConfigurationPanel = () => {
             </div>
 
             <div>
-              <label className='mb-2 block text-sm font-medium'>
-                Description
-              </label>
+              <label className='mb-2 block text-sm font-medium'>Description</label>
               <input
                 type='text'
                 value={newConfigDescription}
                 onChange={(e) => setNewConfigDescription(e.target.value)}
                 placeholder='Optional description'
-                className='bg-background border-border text-foreground w-full rounded-md border px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background'
+                className='bg-background border-border text-foreground focus:ring-ring focus:ring-offset-background w-full rounded-md border px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-offset-2'
               />
             </div>
           </div>
@@ -383,16 +373,11 @@ export const ConfigurationPanel = () => {
 
       {/* Configuration Groups */}
       {Object.entries(filteredConfig).map(([type, configs]) => (
-        <div
-          key={type}
-          className='bg-card border-border rounded-lg border'
-        >
+        <div key={type} className='bg-card border-border rounded-lg border'>
           <div className='border-border border-b px-6 py-4'>
             <div className='flex items-center gap-3'>
               {getTypeIcon(type)}
-              <h3 className='text-lg font-medium capitalize'>
-                {type} Settings
-              </h3>
+              <h3 className='text-lg font-medium capitalize'>{type} Settings</h3>
               <span
                 className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${getTypeColor(type)}`}
               >
@@ -407,9 +392,7 @@ export const ConfigurationPanel = () => {
                 <div className='flex items-start justify-between'>
                   <div className='min-w-0 flex-1'>
                     <div className='mb-2 flex items-center gap-2'>
-                      <h4 className='text-sm font-medium'>
-                        {config.key}
-                      </h4>
+                      <h4 className='text-sm font-medium'>{config.key}</h4>
                       {config.isPublic ? (
                         <Eye className='text-primary h-4 w-4' />
                       ) : (
@@ -437,7 +420,7 @@ export const ConfigurationPanel = () => {
                               setEditingConfig(null)
                             }
                           }}
-                          className='bg-background border-border text-foreground w-full resize-none rounded-md border px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background'
+                          className='bg-background border-border text-foreground focus:ring-ring focus:ring-offset-background w-full resize-none rounded-md border px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-offset-2'
                           rows={3}
                         />
                         <div className='text-muted-foreground text-xs'>
@@ -454,9 +437,7 @@ export const ConfigurationPanel = () => {
                     )}
 
                     {config.description && (
-                      <p className='text-muted-foreground mt-1 text-xs'>
-                        {config.description}
-                      </p>
+                      <p className='text-muted-foreground mt-1 text-xs'>{config.description}</p>
                     )}
 
                     <div className='text-muted-foreground mt-2 text-xs'>
@@ -485,9 +466,7 @@ export const ConfigurationPanel = () => {
       {Object.keys(filteredConfig).length === 0 && (
         <div className='py-12 text-center'>
           <Settings className='text-muted-foreground mx-auto h-12 w-12' />
-          <h3 className='mt-2 text-sm font-medium'>
-            No configuration found
-          </h3>
+          <h3 className='mt-2 text-sm font-medium'>No configuration found</h3>
           <p className='text-muted-foreground mt-1 text-sm'>
             {searchTerm || selectedType
               ? 'Try adjusting your filters.'

@@ -73,6 +73,7 @@ print(f"saved {len(rows)} items without duplicates in {output_file}")
 ## What Gets Checked
 
 The script considers two entries as duplicates if **all** of these fields match:
+
 - Type (login, note, card, etc.)
 - Name
 - Login URI
@@ -85,11 +86,13 @@ If even one field is different, the entries are kept as separate items.
 ## Important Notes
 
 <Callout type='warning'>
-  Always backup your vault before doing any cleanup operations. Export your current vault before importing the deduplicated one, just to be safe.
+  Always backup your vault before doing any cleanup operations. Export your current vault before
+  importing the deduplicated one, just to be safe.
 </Callout>
 
 <Callout type='info'>
-  If you want to check for duplicates based on different fields (like just username + URI), you can modify the `key` tuple in the code to include only the fields you care about.
+  If you want to check for duplicates based on different fields (like just username + URI), you can
+  modify the `key` tuple in the code to include only the fields you care about.
 </Callout>
 
 The script uses Python's built-in `csv` module and a `set` to track what we've already seen, making it pretty efficient even for large vaults.

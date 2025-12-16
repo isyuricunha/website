@@ -134,9 +134,7 @@ export default function AnnouncementWidget({ className, maxItems = 5 }: Announce
           </div>
           <div className='flex-1'>
             <CardTitle className='text-base font-semibold'>{t('title')}</CardTitle>
-            <CardDescription className='text-xs'>
-              {t('description')}
-            </CardDescription>
+            <CardDescription className='text-xs'>{t('description')}</CardDescription>
           </div>
           <Badge variant='secondary' className='text-xs font-medium'>
             {activeAnnouncements.length}

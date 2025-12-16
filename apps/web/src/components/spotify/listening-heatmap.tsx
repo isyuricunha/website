@@ -100,7 +100,7 @@ const ListeningHeatmap = () => {
                 return (
                   <div key={`col-${dayIdx}`} className='flex flex-col items-center gap-2'>
                     <div
-                      className={`ring-border/50 aspect-square w-full rounded-md ${cellColors(v, max)} ring-1 transition duration-150 hover:scale-[1.04] hover:ring-primary/30 hover:ring-4`}
+                      className={`ring-border/50 aspect-square w-full rounded-md ${cellColors(v, max)} hover:ring-primary/30 ring-1 transition duration-150 hover:scale-[1.04] hover:ring-4`}
                       title={`${td(`spotify.heatmap.days.${dayKey}`) || dayKey.toUpperCase()} — ${v}`}
                     />
                     <div className='text-muted-foreground text-center text-[11px] leading-none'>

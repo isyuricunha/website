@@ -49,7 +49,7 @@ const MusicStatsSection = () => {
     // Calculate average track popularity
     const avgPopularity = Math.round(
       topTracks.reduce((acc: number, track: any) => acc + (track.popularity || 0), 0) /
-      topTracks.length
+        topTracks.length
     )
 
     // Calculate diversity score (unique artists in top tracks)
@@ -182,12 +182,13 @@ const MusicStatsSection = () => {
               {stats.topGenres.map((genre, index) => (
                 <span
                   key={genre}
-                  className={`rounded-full px-3 py-1 text-xs font-medium sm:text-sm ${index === 0
+                  className={`rounded-full px-3 py-1 text-xs font-medium sm:text-sm ${
+                    index === 0
                       ? 'bg-primary text-primary-foreground'
                       : index === 1
                         ? 'bg-secondary text-secondary-foreground'
                         : 'bg-muted text-muted-foreground'
-                    }`}
+                  }`}
                 >
                   #{index + 1} {genre}
                 </span>

@@ -103,10 +103,11 @@ const ComparisonTable = ({ items, title }: { items: ComparisonItem[]; title: str
                       {Array.from({ length: 5 }, (_, i) => (
                         <Star
                           key={i}
-                          className={`h-3 w-3 ${i < item.rating
+                          className={`h-3 w-3 ${
+                            i < item.rating
                               ? 'text-primary fill-current'
                               : 'text-muted-foreground/30'
-                            }`}
+                          }`}
                         />
                       ))}
                     </div>
@@ -169,12 +170,8 @@ const AffiliateDisclosure = () => {
       <div className='flex items-start gap-3'>
         <Info className='text-primary mt-0.5 h-5 w-5 flex-shrink-0' />
         <div>
-          <h3 className='text-foreground mb-1 text-sm font-semibold'>
-            {t('affiliate.title')}
-          </h3>
-          <p className='text-muted-foreground text-xs sm:text-sm'>
-            {t('affiliate.description')}
-          </p>
+          <h3 className='text-foreground mb-1 text-sm font-semibold'>{t('affiliate.title')}</h3>
+          <p className='text-muted-foreground text-xs sm:text-sm'>{t('affiliate.description')}</p>
         </div>
       </div>
     </div>

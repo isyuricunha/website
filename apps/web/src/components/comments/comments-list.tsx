@@ -72,8 +72,8 @@ const CommentsList = () => {
       <div className='space-y-8 py-2'>
         {isSuccess
           ? data.pages.map((page) =>
-            page.comments.map((comment) => <Comment key={comment.id} comment={comment} />)
-          )
+              page.comments.map((comment) => <Comment key={comment.id} comment={comment} />)
+            )
           : null}
         {noComments ? (
           <div className='flex min-h-20 items-center justify-center'>

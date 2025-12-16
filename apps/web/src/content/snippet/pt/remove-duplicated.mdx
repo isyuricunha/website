@@ -18,67 +18,67 @@ Remover duplicatas de arrays é uma tarefa comum em JavaScript. Abaixo vão algu
 A forma mais simples e geralmente mais rápida de remover duplicatas é usando `Set`:
 
 ```javascript
-const array = [1, 2, 2, 3, 4, 4, 5];
-const uniqueArray = [...new Set(array)];
-console.log(uniqueArray); // [1, 2, 3, 4, 5]
-````
+const array = [1, 2, 2, 3, 4, 4, 5]
+const uniqueArray = [...new Set(array)]
+console.log(uniqueArray) // [1, 2, 3, 4, 5]
+```
 
 **Prós:**
 
-* Limpo e direto
-* Boa performance O(n)
-* Funciona bem com valores primitivos
+- Limpo e direto
+- Boa performance O(n)
+- Funciona bem com valores primitivos
 
 **Contras:**
 
-* Só funciona com valores primitivos (números, strings, booleanos)
-* Objetos são comparados por referência
+- Só funciona com valores primitivos (números, strings, booleanos)
+- Objetos são comparados por referência
 
 ## Método 2: usando Filter
 
 Útil em cenários mais específicos, ou quando você quer manter a primeira ocorrência:
 
 ```javascript
-const array = [1, 2, 2, 3, 4, 4, 5];
+const array = [1, 2, 2, 3, 4, 4, 5]
 const uniqueArray = array.filter((value, index, self) => {
-  return self.indexOf(value) === index;
-});
-console.log(uniqueArray); // [1, 2, 3, 4, 5]
+  return self.indexOf(value) === index
+})
+console.log(uniqueArray) // [1, 2, 3, 4, 5]
 ```
 
 **Prós:**
 
-* Mais flexível para lógica customizada
-* Fácil de entender
+- Mais flexível para lógica customizada
+- Fácil de entender
 
 **Contras:**
 
-* Menos performático O(n²) por causa do `indexOf`
+- Menos performático O(n²) por causa do `indexOf`
 
 ## Método 3: usando Reduce
 
 Uma abordagem funcional usando `reduce`:
 
 ```javascript
-const array = [1, 2, 2, 3, 4, 4, 5];
+const array = [1, 2, 2, 3, 4, 4, 5]
 const uniqueArray = array.reduce((acc, current) => {
   if (!acc.includes(current)) {
-    acc.push(current);
+    acc.push(current)
   }
-  return acc;
-}, []);
-console.log(uniqueArray); // [1, 2, 3, 4, 5]
+  return acc
+}, [])
+console.log(uniqueArray) // [1, 2, 3, 4, 5]
 ```
 
 **Prós:**
 
-* Estilo de programação funcional
-* Pode ser combinado com outras transformações
+- Estilo de programação funcional
+- Pode ser combinado com outras transformações
 
 **Contras:**
 
-* Menos performático por causa do `includes`
-* Mais verboso
+- Menos performático por causa do `includes`
+- Mais verboso
 
 ## Método 4: para objetos (usando Map)
 
@@ -90,13 +90,11 @@ const users = [
   { id: 2, name: 'Bob' },
   { id: 1, name: 'Alice' },
   { id: 3, name: 'Charlie' }
-];
+]
 
-const uniqueUsers = Array.from(
-  new Map(users.map(user => [user.id, user])).values()
-);
+const uniqueUsers = Array.from(new Map(users.map((user) => [user.id, user])).values())
 
-console.log(uniqueUsers);
+console.log(uniqueUsers)
 // [
 //   { id: 1, name: 'Alice' },
 //   { id: 2, name: 'Bob' },
@@ -106,14 +104,14 @@ console.log(uniqueUsers);
 
 **Prós:**
 
-* Funciona com objetos
-* Você escolhe qual propriedade define a unicidade
-* Boa performance
+- Funciona com objetos
+- Você escolhe qual propriedade define a unicidade
+- Boa performance
 
 **Contras:**
 
-* Sintaxe um pouco mais complexa
-* Mantém a última ocorrência (dá pra ajustar para manter a primeira)
+- Sintaxe um pouco mais complexa
+- Mantém a última ocorrência (dá pra ajustar para manter a primeira)
 
 ## Comparação de performance
 
@@ -126,9 +124,9 @@ Em arrays grandes (10.000+ itens):
 
 ## Recomendação
 
-* Use **Set** para valores primitivos (números, strings, booleanos)
-* Use **Map** para objetos quando precisar remover duplicatas por uma propriedade específica
-* Use **Filter** ou **Reduce** só quando você precisar de lógica customizada ou estiver lidando com arrays pequenos
+- Use **Set** para valores primitivos (números, strings, booleanos)
+- Use **Map** para objetos quando precisar remover duplicatas por uma propriedade específica
+- Use **Filter** ou **Reduce** só quando você precisar de lógica customizada ou estiver lidando com arrays pequenos
 
 ---
 

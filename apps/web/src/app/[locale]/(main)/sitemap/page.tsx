@@ -3,7 +3,17 @@ import type { Metadata, ResolvingMetadata } from 'next'
 import { i18n } from '@isyuricunha/i18n/config'
 import { getTranslations, setRequestLocale } from '@isyuricunha/i18n/server'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@isyuricunha/ui/server'
-import { FileText, Code, Music, User, Home, Map as MapIcon, Calendar, MessageSquare, Mail } from 'lucide-react'
+import {
+  FileText,
+  Code,
+  Music,
+  User,
+  Home,
+  Map as MapIcon,
+  Calendar,
+  MessageSquare,
+  Mail
+} from 'lucide-react'
 
 import { allPosts, allProjects, allSnippets } from 'content-collections'
 

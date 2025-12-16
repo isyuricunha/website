@@ -262,8 +262,9 @@ const SiteSearch = () => {
                         type='button'
                         key={`recent-${searchTerm}-${index}`}
                         onClick={() => handleRecentSearchClick(searchTerm)}
-                        className={`group w-full rounded-lg p-3 text-left transition-colors ${selectedIndex === index ? 'bg-accent' : 'hover:bg-muted/50'
-                          }`}
+                        className={`group w-full rounded-lg p-3 text-left transition-colors ${
+                          selectedIndex === index ? 'bg-accent' : 'hover:bg-muted/50'
+                        }`}
                       >
                         <div className='flex items-center gap-3'>
                           <Search className='text-muted-foreground h-4 w-4' />
@@ -280,8 +281,9 @@ const SiteSearch = () => {
                     type='button'
                     key={`result-${result.href}`}
                     onClick={() => handleResultClick(result.href, query)}
-                    className={`group w-full rounded-lg p-3 text-left transition-colors ${selectedIndex === index ? 'bg-accent' : 'hover:bg-muted/50'
-                      }`}
+                    className={`group w-full rounded-lg p-3 text-left transition-colors ${
+                      selectedIndex === index ? 'bg-accent' : 'hover:bg-muted/50'
+                    }`}
                   >
                     <div className='flex items-start gap-3'>
                       <div className='text-muted-foreground group-hover:text-foreground mt-0.5 flex-shrink-0'>

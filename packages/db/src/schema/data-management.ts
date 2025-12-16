@@ -1,5 +1,14 @@
 import { relations, sql } from 'drizzle-orm'
-import { boolean, foreignKey, index, integer, pgEnum, pgTable, text, timestamp } from 'drizzle-orm/pg-core'
+import {
+  boolean,
+  foreignKey,
+  index,
+  integer,
+  pgEnum,
+  pgTable,
+  text,
+  timestamp
+} from 'drizzle-orm/pg-core'
 
 import { users } from './auth'
 
@@ -34,7 +43,9 @@ export const databaseBackups = pgTable(
     isAutomatic: boolean('is_automatic').notNull().default(false),
     retentionDays: integer('retention_days').default(30),
     createdBy: text('created_by').notNull(),
-    createdAt: timestamp('created_at').notNull().default(sql`CURRENT_TIMESTAMP`)
+    createdAt: timestamp('created_at')
+      .notNull()
+      .default(sql`CURRENT_TIMESTAMP`)
   },
   (databaseBackup) => [
     index('idx_database_backups_created_at').using(
@@ -75,7 +86,9 @@ export const databaseRestores = pgTable(
     errorMessage: text('error_message'),
     metadata: text('metadata'), // JSON with restore metadata
     createdBy: text('created_by').notNull(),
-    createdAt: timestamp('created_at').notNull().default(sql`CURRENT_TIMESTAMP`)
+    createdAt: timestamp('created_at')
+      .notNull()
+      .default(sql`CURRENT_TIMESTAMP`)
   },
   (databaseRestore) => [
     foreignKey({
@@ -120,7 +133,9 @@ export const dataMigrations = pgTable(
     rollbackReason: text('rollback_reason'),
     metadata: text('metadata'), // JSON with migration metadata
     createdBy: text('created_by').notNull(),
-    createdAt: timestamp('created_at').notNull().default(sql`CURRENT_TIMESTAMP`)
+    createdAt: timestamp('created_at')
+      .notNull()
+      .default(sql`CURRENT_TIMESTAMP`)
   },
   (dataMigration) => [
     foreignKey({
@@ -163,7 +178,9 @@ export const dataExports = pgTable(
     expiresAt: timestamp('expires_at'), // When download expires
     metadata: text('metadata'), // JSON with export metadata
     createdBy: text('created_by').notNull(),
-    createdAt: timestamp('created_at').notNull().default(sql`CURRENT_TIMESTAMP`)
+    createdAt: timestamp('created_at')
+      .notNull()
+      .default(sql`CURRENT_TIMESTAMP`)
   },
   (dataExport) => [
     index('idx_data_exports_created_at').using(
@@ -213,7 +230,9 @@ export const dataImports = pgTable(
     errorMessage: text('error_message'),
     metadata: text('metadata'), // JSON with import metadata
     createdBy: text('created_by').notNull(),
-    createdAt: timestamp('created_at').notNull().default(sql`CURRENT_TIMESTAMP`)
+    createdAt: timestamp('created_at')
+      .notNull()
+      .default(sql`CURRENT_TIMESTAMP`)
   },
   (dataImport) => [
     foreignKey({
@@ -256,8 +275,12 @@ export const dataSynchronization = pgTable(
     isActive: boolean('is_active').notNull().default(true),
     metadata: text('metadata'), // JSON with sync metadata
     createdBy: text('created_by').notNull(),
-    createdAt: timestamp('created_at').notNull().default(sql`CURRENT_TIMESTAMP`),
-    updatedAt: timestamp('updated_at').notNull().default(sql`CURRENT_TIMESTAMP`)
+    createdAt: timestamp('created_at')
+      .notNull()
+      .default(sql`CURRENT_TIMESTAMP`),
+    updatedAt: timestamp('updated_at')
+      .notNull()
+      .default(sql`CURRENT_TIMESTAMP`)
   },
   (dataSync) => [
     foreignKey({
@@ -294,8 +317,12 @@ export const dataQualityChecks = pgTable(
     lastRunAt: timestamp('last_run_at'),
     nextRunAt: timestamp('next_run_at'),
     createdBy: text('created_by').notNull(),
-    createdAt: timestamp('created_at').notNull().default(sql`CURRENT_TIMESTAMP`),
-    updatedAt: timestamp('updated_at').notNull().default(sql`CURRENT_TIMESTAMP`)
+    createdAt: timestamp('created_at')
+      .notNull()
+      .default(sql`CURRENT_TIMESTAMP`),
+    updatedAt: timestamp('updated_at')
+      .notNull()
+      .default(sql`CURRENT_TIMESTAMP`)
   },
   (dataQualityCheck) => [
     foreignKey({
@@ -318,7 +345,9 @@ export const qualityCheckResults = pgTable(
     successRate: integer('success_rate').notNull(), // Percentage
     details: text('details'), // JSON with detailed results
     issues: text('issues'), // JSON array of identified issues
-    runAt: timestamp('run_at').notNull().default(sql`CURRENT_TIMESTAMP`)
+    runAt: timestamp('run_at')
+      .notNull()
+      .default(sql`CURRENT_TIMESTAMP`)
   },
   (qualityCheckResult) => [
     foreignKey({
