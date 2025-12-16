@@ -6,7 +6,9 @@ import { allSnippets } from 'content-collections'
 import { notFound } from 'next/navigation'
 
 import Mdx from '@/components/mdx'
+import Recommendations from '@/components/ui/recommendations'
 import { SITE_NAME, SITE_URL } from '@/lib/constants'
+import { getRecommendedSnippets } from '@/lib/recommendations'
 import { generateSEO } from '@/lib/seo'
 import { getLocalizedPath } from '@/utils/get-localized-path'
 
@@ -95,6 +97,8 @@ const Page = async (props: PageProps) => {
     notFound()
   }
 
+  const recommended_snippets = getRecommendedSnippets({ slug, locale })
+
   const dateFormatter = new Intl.DateTimeFormat(locale, {
     year: 'numeric',
     month: 'short',
@@ -156,6 +160,10 @@ const Page = async (props: PageProps) => {
 
         <ProgressBar />
         {snippet.toc.length > 0 ? <MobileTableOfContents toc={snippet.toc} /> : null}
+
+        {recommended_snippets.length > 0 ? (
+          <Recommendations recommendations={recommended_snippets} className='mt-10' />
+        ) : null}
       </div>
     </>
   )

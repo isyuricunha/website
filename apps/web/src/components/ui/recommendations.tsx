@@ -17,12 +17,14 @@ interface RecommendationsProps {
 
 const typeIcons = {
   post: FileText,
-  project: Code
+  project: Code,
+  snippet: Code
 }
 
 const typeColors = {
   post: 'text-blue-600 dark:text-blue-400',
-  project: 'text-green-600 dark:text-green-400'
+  project: 'text-green-600 dark:text-green-400',
+  snippet: 'text-purple-600 dark:text-purple-400'
 }
 
 const Recommendations = ({
@@ -86,7 +88,7 @@ const Recommendations = ({
                     <p className='text-muted-foreground mb-1 line-clamp-2 text-xs'>
                       {rec.description}
                     </p>
-                    {showReason && (
+                    {showReason && !rec.isFallback && (
                       <div className='flex items-center gap-1'>
                         <TrendingUp className='text-muted-foreground h-3 w-3' />
                         <span className='text-muted-foreground text-xs'>{get_reason(rec)}</span>

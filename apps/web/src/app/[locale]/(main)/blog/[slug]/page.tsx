@@ -103,7 +103,7 @@ const Page = async (props: PageProps) => {
   }
 
   const { title, summary, date, modifiedTime, code, toc } = post
-  const recommended_posts = getRecommendedPosts(slug)
+  const recommended_posts = getRecommendedPosts({ slug, locale })
 
   // Precompute safe values for JSON-LD as well
   const safeTitle = title ?? ''

@@ -200,7 +200,8 @@
       "title": "Recomendado para você",
       "type": {
         "post": "Post",
-        "project": "Projeto"
+        "project": "Projeto",
+        "snippet": "Snippet"
       },
       "reason": {
         "similar-content": "Conteúdo parecido",

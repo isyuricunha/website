@@ -200,7 +200,8 @@
       "title": "Recommended for you",
       "type": {
         "post": "Post",
-        "project": "Project"
+        "project": "Project",
+        "snippet": "Snippet"
       },
       "reason": {
         "similar-content": "Similar content",
