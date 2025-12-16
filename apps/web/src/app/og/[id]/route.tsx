@@ -21,14 +21,14 @@ export const GET = async (req: NextRequest, props: OGRouteProps) => {
     const { id } = await props.params
     const { searchParams } = new URL(req.url)
 
-    // Check if this is a blog post request
+    // Check if this is a content item request (blog/snippet)
     const type = searchParams.get('type')
     const title = searchParams.get('title')
     const date = searchParams.get('date')
     const summary = searchParams.get('summary')
 
-    if (type === 'post' && title && date) {
-      // Generate blog post specific OG image
+    if ((type === 'post' || type === 'snippet') && title && date) {
+      // Generate content specific OG image
       return new ImageResponse(
         <div
           style={{
