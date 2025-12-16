@@ -1,8 +1,7 @@
 'use client'
 
 import { useTranslations } from '@isyuricunha/i18n/client'
-import { BlurImage, buttonVariants } from '@isyuricunha/ui'
-import { cn } from '@isyuricunha/utils'
+import { BlurImage } from '@isyuricunha/ui'
 import { AnimatePresence, motion } from 'motion/react'
 import { useEffect, useState } from 'react'
 
@@ -46,31 +45,17 @@ const variants = {
 
 const Hero = () => {
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
   const t = useTranslations()
   const t_metadata = useTranslations('metadata')
 
   useEffect(() => {
-    const mediaQuery = globalThis.matchMedia('(prefers-reduced-motion: reduce)')
-    const handleChange = () => setPrefersReducedMotion(mediaQuery.matches)
-    handleChange()
-    mediaQuery.addEventListener('change', handleChange)
-    return () => mediaQuery.removeEventListener('change', handleChange)
-  }, [])
-
-  useEffect(() => {
-    if (prefersReducedMotion) {
-      setCurrentIndex(0)
-      return
-    }
-
     const timer = setInterval(
       () => setCurrentIndex((prev) => (prev + 1) % TEXTS.length),
       SPEED * 1000
     )
 
     return () => clearInterval(timer)
-  }, [prefersReducedMotion])
+  }, [])
 
   const textItem = TEXTS[currentIndex]
   if (!textItem) return null
@@ -79,7 +64,7 @@ const Hero = () => {
     <div className='my-6 space-y-3 sm:my-8 sm:space-y-4 lg:my-10'>
       <div className='flex flex-col gap-6 lg:flex-row lg:justify-between lg:gap-8'>
         <div className='flex flex-1 flex-col gap-4 text-center lg:text-left'>
-          <h1 className='max-w-2xl text-lg font-medium leading-relaxed sm:text-xl lg:text-2xl xl:text-3xl'>
+          <h1 className='max-w-2xl text-base font-medium leading-relaxed sm:text-lg lg:text-xl xl:text-2xl'>
             <motion.div
               initial={{ x: 20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
@@ -96,26 +81,22 @@ const Hero = () => {
             >
               <span>{t('homepage.hero.title-middle-left')} </span>
               <div className='relative inline-block min-w-[60px] align-baseline'>
-                {prefersReducedMotion ? (
-                  <span className={textItem.className}>{t(`homepage.hero.${textItem.key}`)}</span>
-                ) : (
-                  <AnimatePresence mode='popLayout'>
-                    <motion.div
-                      key={currentIndex}
-                      variants={variants}
-                      initial='enter'
-                      animate='center'
-                      exit='exit'
-                      transition={{
-                        type: 'tween',
-                        duration: 0.3
-                      }}
-                      className='inline-block align-baseline'
-                    >
-                      <span className={textItem.className}>{t(`homepage.hero.${textItem.key}`)}</span>
-                    </motion.div>
-                  </AnimatePresence>
-                )}
+                <AnimatePresence mode='popLayout'>
+                  <motion.div
+                    key={currentIndex}
+                    variants={variants}
+                    initial='enter'
+                    animate='center'
+                    exit='exit'
+                    transition={{
+                      type: 'tween',
+                      duration: 0.3
+                    }}
+                    className='inline-block align-baseline'
+                  >
+                    <span className={textItem.className}>{t(`homepage.hero.${textItem.key}`)}</span>
+                  </motion.div>
+                </AnimatePresence>
               </div>
               <span> {t('homepage.hero.title-middle-right')}</span>
             </motion.div>
@@ -144,26 +125,20 @@ const Hero = () => {
           >
             <Link
               href='/projects'
-              className={cn(
-                buttonVariants({ size: 'sm' }),
-                'rounded-full px-4 text-xs transition-transform hover:scale-[1.02] sm:text-sm'
-              )}
+              className='bg-primary text-primary-foreground hover:bg-primary/90 focus-visible:ring-ring inline-flex min-h-[36px] items-center justify-center rounded-full px-4 py-2 text-xs font-medium transition-all duration-200 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 sm:text-sm'
             >
               {t('homepage.hero.view-projects')}
             </Link>
             <Link
               href='/blog'
-              className={cn(
-                buttonVariants({ variant: 'outline', size: 'sm' }),
-                'rounded-full px-4 text-xs transition-transform hover:scale-[1.02] sm:text-sm'
-              )}
+              className='border-input bg-background hover:bg-accent hover:text-accent-foreground focus-visible:ring-ring inline-flex min-h-[36px] items-center justify-center rounded-full border px-4 py-2 text-xs font-medium transition-all duration-200 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 sm:text-sm'
             >
               {t('homepage.hero.read-blog')}
             </Link>
           </motion.div>
         </div>
         <motion.div
-          className='relative mx-auto size-16 shrink-0 sm:size-20 lg:mx-0 lg:size-24 xl:size-28'
+          className='relative mx-auto size-16 flex-shrink-0 sm:size-20 lg:mx-0 lg:size-24 xl:size-28'
           initial={{
             scale: 0
           }}
