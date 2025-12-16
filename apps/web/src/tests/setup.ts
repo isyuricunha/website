@@ -2,7 +2,6 @@ import '@testing-library/jest-dom/vitest'
 
 import * as React from 'react'
 import { vi } from 'vitest'
-
 ;
 
 (globalThis as unknown as { __NEXT_IMAGE_OPTS?: unknown }).__NEXT_IMAGE_OPTS = {
