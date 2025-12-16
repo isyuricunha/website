@@ -1,44 +1,290 @@
 ---
 ---
 
-## WHO AM I
+## who am i
 
-Hi there! I'm Yuri, a dbA passionate about building resilient systems and ensuring seamless performance. My expertise spans server optimization, database management, and deploying scalable cloud solutions.
+i am yuri cunha, a brazilian guy who decided to take computers, databases and homelabs a bit too seriously.
 
-Currently, I'm exploring new opportunities to apply my skills in designing efficient infrastructures and optimizing IT operations. In my previous roles, I mastered fine-tuning databases and creating reliable architectures at companies like Divinobit (now Bairon).
+on the internet i usually show up as **"yuri cunha"**, although my full name is longer in real life. this site is where i put a good part of my experiments, notes, labs and random ideas.
 
-What drives me? Solving complex challenges in infrastructure, creating streamlined processes, and transforming raw data into actionable insights. For me, it's like engineering for the digital age — crafting solutions that stand the test of time.
+if you like databases, linux, self-hosting, local ai and long-term projects that do not look perfect from day one, you are in the right place.
 
-While based in Brazil, I often find inspiration in solo travel, discovering diverse landscapes, and immersing myself in new cultures. These adventures keep me refreshed and ready to tackle the next big project.
+---
 
-Whether it's managing servers, fine-tuning databases, or scaling cloud platforms, I'm all about delivering excellence and finding harmony in technology. Let's build something remarkable together!
+## in one paragraph
 
-## About this site
+i am a database technology student, an aspiring postgresql and mongodb dba, a homelab owner who likes to self-host things, and a person on a long-term project to get lighter and run further. i care about practical knowledge, documentation, reliability and having real examples to point to, not just theory. i like tech, but i also like sleep, so i try to build systems i can debug at three in the morning without going insane.
 
-- Framework: [Next.js](https://nextjs.org/)
-- Database: [PostgreSQL](https://www.postgresql.org/)
-- ORM: [Drizzle](https://orm.drizzle.team/)
-- Authentication: [Better Auth](https://www.better-auth.com/)
-- Deployment: [Vercel](https://vercel.com)
-- Content: [MDX](https://mdxjs.com/)
-- Analytics: [Umami](https://github.com/umami-software/umami)
-- Styling: [Tailwindcss](https://tailwindcss.com)
-- Code syntax highlighting: [Shiki](https://github.com/shikijs/shiki)
+---
 
-Thanks to **Timothy Lin** for the
-[tailwind-nextjs-starter-blog](https://github.com/timlrx/tailwind-nextjs-starter-blog). It helped me when I haven't any idea how to create a blog from scratch. My code isn't like the starter code because I changed a lot of code :)
+## a bit of background
 
-## Inspiration
+some quick facts about me:
 
-Here are some websites that inspired me a lot to build a fantastic website.
+- i am from brazil
+- i usually present myself as **dba postgresql jr** or similar roles
+- i enjoy working close to infrastructure and databases, not only the top layer of the stack
+- politically i tend to be more conservative, although this site is mainly about tech and personal projects, not politics
+- english is not my first language; you will probably find some weird sentences here and there
 
-Refer to [README](https://github.com/isyuricunha/website/blob/main/CREDITS.md)
+i like being honest about where i am in my journey. i am not a senior architect with thirty years of experience. i am someone building that path, one lab and one project at a time.
 
-## Social links
+---
 
-- [GitHub](https://github.com/isyuricunha)
-- [X](https://x.com/isyuricunha)
+## what i am doing in tech right now
 
-## Logo
+on the formal side, i study **database technology** at estácio, a technologist degree focused on databases. the plan is to finish around 2026 or 2027 and, along the way, connect what i study in college with real projects in my homelab and in my repositories.
+
+on the practical side, my routine usually involves:
+
+- taking care of **linux servers**, mostly ubuntu server 24.04 lts
+- working with **postgresql** as my main relational database
+- using **mongodb** for document-based scenarios
+- creating and maintaining **docker compose** stacks
+- practicing backup, restore and disaster recovery
+- tuning queries and database settings for better performance
+- setting up monitoring and alerts
+- documenting everything in markdown so future me does not hate past me
+
+i also spend time studying and preparing for certifications and professional opportunities related to databases, infrastructure and security.
+
+---
+
+## my homelab and infrastructure
+
+i like to say that my homelab is my best teacher.
+
+some things that live there:
+
+- home servers running **ubuntu server 24.04 lts**, including:
+  - a more powerful machine focused on databases and services
+  - a lighter machine that i still use for experiments
+- **oracle cloud** instances that act as extra nodes and database hosts
+- **tailscale** to connect everything in a secure overlay, including my windows laptop
+- **cloudflared** tunnels to expose services without opening random ports to the internet
+- **random external ports** mapped to containers, instead of defaults, as a small extra layer against bots
+- a dedicated database server on oracle where i centralize databases like postgresql and others
+
+typical services that appear and disappear here:
+
+- nextcloud for files
+- joplin server for notes
+- privatebin for quick text sharing
+- self-hosted monitoring tools
+- local ai models through ollama
+- small web apps to support my workflow
+
+i own the domain **`yuricunha.com`**, and many services live on subdomains like `something.yuricunha.com`. this site is one of the visible faces of all that.
+
+---
+
+## tech stack and preferences
+
+these are some tools and choices that appear a lot in my projects:
+
+- **operating systems**
+  - ubuntu server 24.04 lts on servers
+  - windows 10 pro on my main laptop
+  - arch-based distros on the side for experiments, like endeavouros, cachyos and garuda
+- **networking and access**
+  - tailscale for secure remote access
+  - cloudflared for publishing services without touching router port forwarding
+- **containers and services**
+  - docker with **docker compose** (the plugin, not the old `docker-compose` command)
+  - `docker-compose.yml` files without the old `version` key
+  - external postgresql instead of one database per container
+  - fixed dns in containers using:
+    - `1.1.1.1`
+    - `8.8.8.8`
+- **programming and tools**
+  - python for automation and scripts
+  - `pipx` to install python-based tools globally but cleanly
+  - shell scripts for simple tasks
+- **databases**
+  - postgresql as the main database in my labs
+  - interest in mongodb and other engines to compare approaches
+- **ai and automation**
+  - ollama running on ubuntu, directly on the host, not in containers
+  - tests with different models and prompts
+  - plans for personal automations and assistants
+
+i like setups that are reproducible. if i write a compose file or a script, i try to make it so that i can recreate the same environment months later without guessing.
+
+---
+
+## labs, repos and documentation style
+
+one of my main long-term projects is building a **dba lab and portfolio**, focused on postgresql.
+
+things you can expect from my repos:
+
+- structured directories for each service or lab, for example:
+  - `~/docker/docker-compose/{service}`
+  - `~/docker/docker-data/{service}`
+- `docker compose` files that:
+  - avoid deprecated options
+  - use external databases where it makes sense
+  - include sample environment values, so it is clear what goes where
+- documentation written in markdown, usually in first person, with sections explaining:
+  - what changed
+  - how it changed
+  - why it changed
+- comments in code in **lowercase**
+- sql queries mostly in **lowercase**
+- preference for open source licenses, often **lgpl 2.1** in public projects
+
+i like to treat these labs as mini production environments. even if no one else uses them, i act as if i am the dba, the sysadmin and the on-call person at the same time.
+
+---
+
+## side projects and personal brands
+
+besides pure infra and databases, i also enjoy creating small projects and brands, both for fun and for practice.
+
+examples:
+
+- ideas around a personal music app, similar to **yumusic**, using self-hosted backends
+- small brand concepts like **yuflow** and others
+- experiments with a personal ai avatar and assistant for support or chat
+- services under **yc inc.** style naming, for a future personal business presence
+
+these things evolve over time. some of them may never go public, but the work behind them helps me learn about pipelines, ci, versioning, security and deploys.
+
+---
+
+## study style and mindset
+
+how i like to study and grow in this area:
+
+- mix **theory and practice** all the time
+- break things on purpose, then fix them
+- keep **detailed notes** of commands, outputs and decisions
+- create **runbooks** for repetitive or stressful tasks, for example:
+  - restoring backups
+  - reconfiguring a cluster
+  - doing maintenance with minimal downtime
+- focus on **observability**:
+  - logs
+  - metrics
+  - alerts
+- revisit old labs with fresh knowledge to see what i would do differently now
+
+i prefer understanding how things work under the surface instead of memorizing a list of commands. if i know where the logs are, how the process starts, how the data is stored and what the configuration does, i feel much more comfortable touching production systems.
+
+---
+
+## career direction
+
+professionally, i am building my path in roles like:
+
+- junior dba postgresql
+- database administrator focused on production environments
+- roles where postgresql and linux are first-class citizens
+- positions where observability, performance tuning and reliability matter
+
+i also keep an eye on areas related to:
+
+- data engineering
+- security and compliance
+- high availability and clustering
+
+i have gone through real recruitment processes, including multi-step interviews for dba roles, and i use each experience to refine my portfolio, my labs and how i present my skills.
+
+---
+
+## health, running and long-term goals
+
+tech is not the only long-term project in my life.
+
+i have been working on:
+
+- **losing weight**
+- **improving my health markers**
+- **building a running habit**
+
+some tools and habits that i use:
+
+- **garmin** watch and **garmin coach** plans, especially for 5k
+- structured training plans that mix run and walk
+- tracking **steps, distance and pace**
+- using **food scales** and apps to measure calories and macros
+- planning meals with simple, repeatable options like rice, beans, eggs, pasta and basic sides
+- trying to keep a consistent **calorie deficit** without going into extremes
+
+i know i am a big guy and that this will take time. my goal is not only to drop numbers on the scale, but to build a body that can handle my plans, including running regular 5k races and, later, longer distances.
+
+you may see posts about:
+
+- weekly training summaries
+- how a specific run went
+- small improvements in heart rate and pace
+- experiments with diet and routine
+
+i see this health journey in the same way i see my homelab. it is a long project, full of iterations, metrics and adjustments.
+
+---
+
+## how i use this site
+
+this site exists for a few reasons:
+
+- to centralize my **notes, labs and guides**
+- to act as a **portfolio** for people who want to know what i actually do
+- to keep a **log of my learning** over time
+- to share **configs, compose files and scripts** that might help others
+- to document my **running and health journey** in a way that makes sense to me
+
+you may find here:
+
+- technical articles about postgresql, linux and docker
+- step-by-step guides for specific setups
+- small reflections on study, career and life
+- notes about training, weight loss and discipline
+
+i prefer being honest over being perfect. so you will probably see drafts, work in progress, and things that changed halfway through. to me, that is better than pretending everything is finished and polished.
+
+---
+
+## what i value
+
+a few things that guide how i work and learn:
+
+- **clarity** over buzzwords
+- **documentation** over improvisation
+- **reliability** over shiny but fragile setups
+- **personal responsibility** over blaming tools
+- **freedom and privacy** in tech
+- being **realistic** about current skills, while pushing to improve
+
+in practical terms, this means i like:
+
+- logs, metrics and alerts instead of guesswork
+- automation with clear behavior
+- backups that i have actually restored and tested
+- observability instead of blind faith in services
+- self-hosted or at least controllable tools when possible
+
+---
+
+## random facts about me
+
+just to make this page a bit more human:
+
+- i can get happily lost configuring a new linux environment for hours
+- i enjoy tweaking kernels and performance options for my ryzen laptop
+- i like to read about databases even when i am not strictly required to
+- i prefer quiet environments over noisy places
+- i think a good walk or run solves a lot of mental clutter
+- i use ai models, both local and in the cloud, as tools to think, draft and explore ideas
+
+---
+
+## if you read all this
+
+if you made it this far, thank you.
+
+if you want to say hello, comment on something, propose a project or just tell me that a post helped you, you can go to the [contact](/contact) page and send a message.
+
+this site will probably keep changing over time, just like i am changing the things i do and the person i am becoming. that is part of the fun.
 
 <Logo />
