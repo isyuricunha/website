@@ -7,6 +7,6 @@
     }
   },
   "exclude": ["node_modules"],
-  "extends": "@isyuricunha/tsconfig/base.json",
+  "extends": "../tsconfig/base.json",
   "include": ["**/*.ts", "eslint.config.mjs"]
 }

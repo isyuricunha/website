@@ -10,7 +10,7 @@
     "plugins": [{ "name": "next" }]
   },
   "exclude": ["node_modules"],
-  "extends": "@isyuricunha/tsconfig/nextjs.json",
+  "extends": "../../packages/tsconfig/nextjs.json",
   "include": [
     "next-env.d.ts",
     "next.config.mjs",
