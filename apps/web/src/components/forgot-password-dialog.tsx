@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useTranslations } from '@isyuricunha/i18n/client'
 import {
   Dialog,
   DialogContent,
@@ -23,13 +24,14 @@ interface ForgotPasswordDialogProps {
 export default function ForgotPasswordDialog({ open, onOpenChange }: ForgotPasswordDialogProps) {
   const [email, setEmail] = useState('')
   const [isSuccess, setIsSuccess] = useState(false)
+  const t = useTranslations()
 
   const requestResetMutation = api.users.requestPasswordReset.useMutation({
     onSuccess: () => {
       setIsSuccess(true)
     },
     onError: (error) => {
-      toast.error(error.message || 'Failed to send reset email')
+      toast.error(error.message || t('dialog.forgot-password.errors.send-failed'))
     }
   })
 
@@ -37,7 +39,7 @@ export default function ForgotPasswordDialog({ open, onOpenChange }: ForgotPassw
     e.preventDefault()
 
     if (!email) {
-      toast.error('Please enter your email address')
+      toast.error(t('dialog.forgot-password.errors.no-email'))
       return
     }
 
@@ -64,12 +66,14 @@ export default function ForgotPasswordDialog({ open, onOpenChange }: ForgotPassw
                   <CheckCircle2 className='h-8 w-8 text-emerald-600 dark:text-emerald-400' />
                 </div>
                 <div>
-                  <DialogTitle className='mb-2 text-xl font-semibold'>Check Your Email</DialogTitle>
+                  <DialogTitle className='mb-2 text-xl font-semibold'>
+                    {t('dialog.forgot-password.success.title')}
+                  </DialogTitle>
                   <DialogDescription className='text-sm leading-relaxed'>
-                    We've sent a password reset link to{' '}
+                    {t('dialog.forgot-password.success.sent')}{' '}
                     <strong className='text-foreground font-medium'>{email}</strong>.
                     <br />
-                    Please check your inbox and follow the instructions.
+                    {t('dialog.forgot-password.success.instructions')}
                   </DialogDescription>
                 </div>
               </div>
@@ -77,7 +81,7 @@ export default function ForgotPasswordDialog({ open, onOpenChange }: ForgotPassw
 
             <div className='mt-2 space-y-3'>
               <p className='text-muted-foreground text-center text-xs'>
-                Didn't receive the email? Check your spam folder or try again.
+                {t('dialog.forgot-password.success.tip')}
               </p>
 
               <Button
@@ -85,7 +89,7 @@ export default function ForgotPasswordDialog({ open, onOpenChange }: ForgotPassw
                 className='h-11 w-full rounded-xl font-medium'
                 onClick={handleClose}
               >
-                Back to Sign In
+                {t('dialog.forgot-password.back')}
               </Button>
             </div>
           </>
@@ -98,10 +102,10 @@ export default function ForgotPasswordDialog({ open, onOpenChange }: ForgotPassw
                 </div>
                 <div className='flex-1'>
                   <DialogTitle className='text-left text-xl font-semibold'>
-                    Forgot Password?
+                    {t('dialog.forgot-password.title')}
                   </DialogTitle>
                   <DialogDescription className='text-left text-sm'>
-                    No worries, we'll send you reset instructions.
+                    {t('dialog.forgot-password.description')}
                   </DialogDescription>
                 </div>
               </div>
@@ -110,14 +114,14 @@ export default function ForgotPasswordDialog({ open, onOpenChange }: ForgotPassw
             <form onSubmit={handleSubmit} className='mt-4 space-y-4'>
               <div>
                 <label htmlFor='email' className='mb-2 block text-sm font-medium'>
-                  Email Address
+                  {t('dialog.forgot-password.email.label')}
                 </label>
                 <Input
                   id='email'
                   type='email'
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder='Enter your email'
+                  placeholder={t('dialog.forgot-password.email.placeholder')}
                   required
                   disabled={requestResetMutation.isPending}
                   className='h-11 w-full'
@@ -129,7 +133,9 @@ export default function ForgotPasswordDialog({ open, onOpenChange }: ForgotPassw
                 className='h-11 w-full rounded-xl font-semibold'
                 disabled={requestResetMutation.isPending || !email}
               >
-                {requestResetMutation.isPending ? 'Sending...' : 'Send Reset Link'}
+                {requestResetMutation.isPending
+                  ? t('dialog.forgot-password.submit.pending')
+                  : t('dialog.forgot-password.submit.default')}
               </Button>
 
               <Button
@@ -139,7 +145,7 @@ export default function ForgotPasswordDialog({ open, onOpenChange }: ForgotPassw
                 onClick={handleClose}
               >
                 <ArrowLeft className='mr-2 h-4 w-4' />
-                Back to Sign In
+                {t('dialog.forgot-password.back')}
               </Button>
             </form>
           </>

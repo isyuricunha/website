@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
+import { useTranslations } from '@isyuricunha/i18n/client'
 import { toast } from 'sonner'
 import { AlertCircle, Info, CheckCircle, AlertTriangle, X, Sparkles } from 'lucide-react'
 
@@ -41,6 +42,8 @@ const getAnnouncementStyles = (type: string) => {
 }
 
 export default function AnnouncementToast() {
+  const t_announcement = useTranslations('component.announcement-toast')
+
   // Get urgent announcements (priority >= 3)
   const { data: announcementsData } = api.announcements.getAnnouncements.useQuery({
     active: true,
@@ -110,7 +113,7 @@ export default function AnnouncementToast() {
                           }}
                           className={`text-xs font-medium transition-colors ${styles.button}`}
                         >
-                          Don't show again
+                          {t_announcement('dont-show-again')}
                         </button>
                       )}
                       <button
@@ -118,7 +121,7 @@ export default function AnnouncementToast() {
                         onClick={() => toast.dismiss(t)}
                         className={`text-xs font-medium transition-colors ${styles.button}`}
                       >
-                        Dismiss
+                        {t_announcement('dismiss')}
                       </button>
                     </div>
                   </div>
@@ -127,7 +130,7 @@ export default function AnnouncementToast() {
                     type='button'
                     onClick={() => toast.dismiss(t)}
                     className='hover:bg-accent/50 flex-shrink-0 rounded-lg p-1.5 transition-colors'
-                    aria-label='Close'
+                    aria-label={t_announcement('close')}
                   >
                     <X className='h-4 w-4 opacity-50 transition-opacity hover:opacity-100' />
                   </button>
@@ -147,7 +150,7 @@ export default function AnnouncementToast() {
         sessionStorage.setItem('shownAnnouncementToasts', JSON.stringify(shownToasts))
       }
     })
-  }, [announcementsData, dismissMutation])
+  }, [announcementsData, dismissMutation, t_announcement])
 
   return null // This component doesn't render anything directly
 }

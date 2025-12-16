@@ -51,10 +51,10 @@ const Breadcrumbs = () => {
         label = t('layout.about')
         break
       case 'sitemap':
-        label = 'Sitemap'
+        label = t('layout.sitemap')
         break
       case 'contact':
-        label = 'Contact'
+        label = t('layout.contact')
         break
       default:
         // Capitalize and format segment
@@ -68,7 +68,7 @@ const Breadcrumbs = () => {
   })
 
   return (
-    <nav aria-label='Breadcrumb' className='mb-4'>
+    <nav aria-label={t('component.breadcrumbs.aria-label')} className='mb-4'>
       <ol className='text-muted-foreground flex items-center space-x-2 text-xs sm:text-sm'>
         {breadcrumbItems.map((item, index) => {
           const isLast = index === breadcrumbItems.length - 1

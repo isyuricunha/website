@@ -187,7 +187,8 @@
     "sign-out": "Sign out",
     "views": "{count, plural, =1 {# view} other {# views}}",
     "sign-up": "Sign up",
-    "sign-up-error": "Failed to sign up. Please try again."
+    "sign-up-error": "Failed to sign up. Please try again.",
+    "unknown-error": "Unknown error"
   },
   "component": {
     "now-project": {
@@ -357,7 +358,24 @@
     },
     "go-to-homepage": "Go to homepage",
     "announcement-banner": {
-      "dismiss": "Dismiss announcement"
+      "dismiss": "Dismiss announcement",
+      "high-priority": "High Priority"
+    },
+    "announcement-widget": {
+      "title": "Announcements",
+      "description": "Latest updates and important information",
+      "loading": "Loading announcements...",
+      "empty": "No announcements at this time.",
+      "dismiss": "Dismiss",
+      "high-priority": "High Priority"
+    },
+    "announcement-toast": {
+      "dont-show-again": "Don't show again",
+      "dismiss": "Dismiss",
+      "close": "Close"
+    },
+    "breadcrumbs": {
+      "aria-label": "Breadcrumb"
     },
     "offline-indicator": {
       "toast": {
@@ -381,18 +399,55 @@
       "or": "or",
       "description": "to continue to yuricunha.com",
       "here": "Sign in here",
-      "anonymous": "Anonymous"
+      "anonymous": "Anonymous",
+      "provider": {
+        "github": "GitHub",
+        "google": "Google"
+      },
+      "email-placeholder": "Email",
+      "password-placeholder": "Password",
+      "forgot-password": "Forgot password?",
+      "email-submit": "Continue with Email",
+      "last-used": "Last used"
     },
     "sign-up": {
       "description": "to create your account on yuricunha.com",
-      "here": "Sign up here"
+      "here": "Sign up here",
+      "name-placeholder": "Name",
+      "email-submit": "Continue with Sign Up"
+    },
+    "forgot-password": {
+      "title": "Forgot password?",
+      "description": "No worries, we'll send you reset instructions.",
+      "email": {
+        "label": "Email Address",
+        "placeholder": "Enter your email"
+      },
+      "submit": {
+        "pending": "Sending...",
+        "default": "Send Reset Link"
+      },
+      "back": "Back to Sign In",
+      "errors": {
+        "send-failed": "Failed to send reset email",
+        "no-email": "Please enter your email address"
+      },
+      "success": {
+        "title": "Check Your Email",
+        "sent": "We've sent a password reset link to",
+        "instructions": "Please check your inbox and follow the instructions.",
+        "tip": "Didn't receive the email? Check your spam folder or try again."
+      }
     },
     "already-have-account": "Already have an account?",
     "dont-have-account": "Don't have an account?"
   },
   "error": {
     "something-went-wrong": "Something went wrong!",
-    "try-again": "Try again"
+    "try-again": "Try again",
+    "unexpected-description": "We encountered an unexpected error. Please try refreshing the page or contact support if the problem persists.",
+    "refresh-page": "Refresh Page",
+    "details": "Error Details"
   },
   "guestbook": {
     "create-message-successfully": "Create message successfully",
@@ -474,7 +529,8 @@
       "disclaimer": "No spam, unsubscribe at any time. Privacy policy applies.",
       "success-title": "Thanks for subscribing!",
       "success-description": "You'll receive updates about new posts and projects.",
-      "error-default": "Failed to subscribe"
+      "error-default": "Failed to subscribe",
+      "success-compact": "Subscribed!"
     }
   },
   "hook": {

@@ -81,6 +81,8 @@ const SignInDialog = () => {
   const t = useTranslations()
   const pathname = usePathname()
 
+  const unknown_error_message = t('common.unknown-error')
+
   useEffect(() => {
     if (typeof globalThis !== 'undefined') {
       const provider = localStorage.getItem('last-used-provider') as Provider | null
@@ -130,7 +132,7 @@ const SignInDialog = () => {
       })
       console.log('Anonymous user:', user)
     } catch (error: unknown) {
-      const errorMsg = error instanceof Error ? error.message : 'Unknow error'
+      const errorMsg = error instanceof Error ? error.message : unknown_error_message
       toast.error(errorMsg)
       setIsPending(false)
     }
@@ -161,7 +163,7 @@ const SignInDialog = () => {
         toast.error(error.message)
       }
     } catch (error: unknown) {
-      const errorMsg = error instanceof Error ? error.message : 'Unknow error'
+      const errorMsg = error instanceof Error ? error.message : unknown_error_message
       toast.error(errorMsg)
     } finally {
       setIsEmailPending(false)
@@ -195,7 +197,7 @@ const SignInDialog = () => {
         toast.error(error.message)
       }
     } catch (error: unknown) {
-      const errorMsg = error instanceof Error ? error.message : 'Unknow Error'
+      const errorMsg = error instanceof Error ? error.message : unknown_error_message
       toast.error(errorMsg)
     } finally {
       setIsEmailPending(false)
@@ -228,7 +230,7 @@ const SignInDialog = () => {
                 isPending={isPending}
               >
                 {isPending ? null : <SiGithub className='mr-3' />}
-                {t('dialog.sign-in.continue-with', { provider: 'GitHub' })}
+                {t('dialog.sign-in.continue-with', { provider: t('dialog.sign-in.provider.github') })}
                 {lastUsedProvider === 'github' && <LastUsed />}
               </Button>
               <Button
@@ -238,7 +240,7 @@ const SignInDialog = () => {
                 isPending={isPending}
               >
                 {isPending ? null : <GoogleIcon />}
-                {t('dialog.sign-in.continue-with', { provider: 'Google' })}
+                {t('dialog.sign-in.continue-with', { provider: t('dialog.sign-in.provider.google') })}
                 {lastUsedProvider === 'google' && <LastUsed />}
               </Button>
               <Button
@@ -263,7 +265,7 @@ const SignInDialog = () => {
           <div className='my-6 flex flex-col gap-4'>
             {isSignup && (
               <Input
-                placeholder='Name'
+                placeholder={t('dialog.sign-up.name-placeholder')}
                 type='text'
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -271,7 +273,7 @@ const SignInDialog = () => {
               />
             )}
             <Input
-              placeholder='Email'
+              placeholder={t('dialog.sign-in.email-placeholder')}
               type='email'
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -279,7 +281,7 @@ const SignInDialog = () => {
             />
             <div className='space-y-2'>
               <Input
-                placeholder='Password'
+                placeholder={t('dialog.sign-in.password-placeholder')}
                 type='password'
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -295,7 +297,7 @@ const SignInDialog = () => {
                     }}
                     className='text-primary text-xs font-medium hover:underline'
                   >
-                    Forgot password?
+                    {t('dialog.sign-in.forgot-password')}
                   </button>
                 </div>
               )}
@@ -305,7 +307,7 @@ const SignInDialog = () => {
               onClick={isSignup ? handleEmailSignUp : handleEmailSignIn}
               isPending={isEmailPending}
             >
-              {t('dialog.sign-in.continue-with', { provider: isSignup ? 'Sign Up' : 'Email' })}
+              {isSignup ? t('dialog.sign-up.email-submit') : t('dialog.sign-in.email-submit')}
             </Button>
           </div>
 
@@ -343,9 +345,10 @@ const SignInDialog = () => {
 }
 
 const LastUsed = () => {
+  const t = useTranslations()
   return (
     <Badge variant='outline' className='bg-background absolute -right-2 -top-2'>
-      Last used
+      {t('dialog.sign-in.last-used')}
     </Badge>
   )
 }

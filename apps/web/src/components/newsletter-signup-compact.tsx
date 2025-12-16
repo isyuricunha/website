@@ -1,10 +1,12 @@
 'use client'
 
 import { useState } from 'react'
+import { useTranslations } from '@isyuricunha/i18n/client'
 import { Input, Button } from '@isyuricunha/ui'
 import { CheckCircle, AlertCircle, Send } from 'lucide-react'
 
 const NewsletterSignupCompact = () => {
+  const t = useTranslations('homepage.newsletter')
   const [email, setEmail] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [isSubscribed, setIsSubscribed] = useState(false)
@@ -29,13 +31,13 @@ const NewsletterSignupCompact = () => {
       const data = await response.json()
 
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to subscribe')
+        throw new Error(data.error || t('error-default'))
       }
 
       setIsSubscribed(true)
       setEmail('')
     } catch (error_) {
-      setError(error_ instanceof Error ? error_.message : 'Failed to subscribe')
+      setError(error_ instanceof Error ? error_.message : t('error-default'))
     } finally {
       setIsLoading(false)
     }
@@ -45,7 +47,7 @@ const NewsletterSignupCompact = () => {
     return (
       <div className='flex items-center gap-2 text-sm text-green-600'>
         <CheckCircle className='h-4 w-4' />
-        <span>Subscribed!</span>
+        <span>{t('success-compact')}</span>
       </div>
     )
   }
@@ -54,7 +56,7 @@ const NewsletterSignupCompact = () => {
     <div className='flex items-center gap-2'>
       <Input
         type='email'
-        placeholder='email@domain.com'
+        placeholder={t('placeholder')}
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         required
@@ -68,6 +70,7 @@ const NewsletterSignupCompact = () => {
         size='sm'
         className='h-9 gap-2 px-3 py-2'
         onClick={handleSubmit}
+        aria-label={t('cta')}
       >
         {isLoading ? (
           <div className='size-4 animate-spin rounded-full border-2 border-current border-t-transparent' />

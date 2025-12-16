@@ -187,7 +187,8 @@
     "sign-out": "Sair",
     "views": "{count, plural, =1 {# visualização} other {# visualizações}}",
     "sign-up": "Criar conta",
-    "sign-up-error": "Falha ao criar conta. Por favor, tente novamente."
+    "sign-up-error": "Falha ao criar conta. Por favor, tente novamente.",
+    "unknown-error": "Erro desconhecido"
   },
   "component": {
     "now-project": {
@@ -282,7 +283,24 @@
     },
     "go-to-homepage": "Ir para a página inicial",
     "announcement-banner": {
-      "dismiss": "Dispensar anúncio"
+      "dismiss": "Dispensar anúncio",
+      "high-priority": "Alta prioridade"
+    },
+    "announcement-widget": {
+      "title": "Anúncios",
+      "description": "Últimas atualizações e informações importantes",
+      "loading": "Carregando anúncios...",
+      "empty": "Nenhum anúncio no momento.",
+      "dismiss": "Dispensar",
+      "high-priority": "Alta prioridade"
+    },
+    "announcement-toast": {
+      "dont-show-again": "Não mostrar novamente",
+      "dismiss": "Dispensar",
+      "close": "Fechar"
+    },
+    "breadcrumbs": {
+      "aria-label": "Breadcrumb"
     },
     "uses-page": {
       "badge": {
@@ -381,18 +399,55 @@
       "or": "ou",
       "description": "para continuar em yuricunha.com",
       "here": "Entrar aqui",
-      "anonymous": "Anônimo"
+      "anonymous": "Anônimo",
+      "provider": {
+        "github": "GitHub",
+        "google": "Google"
+      },
+      "email-placeholder": "E-mail",
+      "password-placeholder": "Senha",
+      "forgot-password": "Esqueceu a senha?",
+      "email-submit": "Continuar com e-mail",
+      "last-used": "Último usado"
     },
     "sign-up": {
       "description": "para criar sua conta em yuricunha.com",
-      "here": "Criar conta aqui"
+      "here": "Criar conta aqui",
+      "name-placeholder": "Nome",
+      "email-submit": "Continuar com cadastro"
+    },
+    "forgot-password": {
+      "title": "Esqueceu a senha?",
+      "description": "Sem problemas, vamos enviar as instruções de redefinição.",
+      "email": {
+        "label": "Endereço de e-mail",
+        "placeholder": "Digite seu e-mail"
+      },
+      "submit": {
+        "pending": "Enviando...",
+        "default": "Enviar link de redefinição"
+      },
+      "back": "Voltar para entrar",
+      "errors": {
+        "send-failed": "Falha ao enviar o e-mail de redefinição",
+        "no-email": "Por favor, informe seu e-mail"
+      },
+      "success": {
+        "title": "Verifique seu e-mail",
+        "sent": "Enviamos um link de redefinição de senha para",
+        "instructions": "Verifique sua caixa de entrada e siga as instruções.",
+        "tip": "Não recebeu o e-mail? Verifique o spam ou tente novamente."
+      }
     },
     "already-have-account": "Já tem uma conta?",
     "dont-have-account": "Não tem uma conta?"
   },
   "error": {
     "something-went-wrong": "Algo deu errado!",
-    "try-again": "Tente novamente"
+    "try-again": "Tente novamente",
+    "unexpected-description": "Encontramos um erro inesperado. Tente atualizar a página ou entre em contato com o suporte se o problema persistir.",
+    "refresh-page": "Atualizar página",
+    "details": "Detalhes do erro"
   },
   "guestbook": {
     "create-message-successfully": "Mensagem criada com sucesso",
@@ -474,7 +529,8 @@
       "disclaimer": "Sem spam, cancele a inscrição a qualquer momento. A política de privacidade se aplica.",
       "success-title": "Obrigado por se inscrever!",
       "success-description": "Você receberá atualizações sobre novos posts e projetos.",
-      "error-default": "Falha ao inscrever-se"
+      "error-default": "Falha ao inscrever-se",
+      "success-compact": "Inscrito!"
     }
   },
   "hook": {

@@ -11,6 +11,7 @@ import {
   Badge,
   ScrollArea
 } from '@isyuricunha/ui'
+import { useLocale, useTranslations } from '@isyuricunha/i18n/client'
 
 import { api } from '@/trpc/react'
 
@@ -50,6 +51,10 @@ interface AnnouncementWidgetProps {
 }
 
 export default function AnnouncementWidget({ className, maxItems = 5 }: AnnouncementWidgetProps) {
+  const t = useTranslations('component.announcement-widget')
+  const locale = useLocale()
+  const date_locale = locale === 'pt' ? 'pt-BR' : 'en-US'
+
   const [dismissedItems, setDismissedItems] = useState<string[]>(() => {
     if (globalThis.window !== undefined) {
       const dismissed = sessionStorage.getItem('dismissedAnnouncements')
@@ -85,11 +90,11 @@ export default function AnnouncementWidget({ className, maxItems = 5 }: Announce
         <CardHeader className='pb-3'>
           <CardTitle className='flex items-center gap-2 text-sm font-medium'>
             <Bell className='h-4 w-4' />
-            Announcements
+            {t('title')}
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className='text-muted-foreground text-sm'>Loading announcements...</div>
+          <div className='text-muted-foreground text-sm'>{t('loading')}</div>
         </CardContent>
       </Card>
     )
@@ -110,11 +115,11 @@ export default function AnnouncementWidget({ className, maxItems = 5 }: Announce
         <CardHeader className='pb-3'>
           <CardTitle className='flex items-center gap-2 text-sm font-medium'>
             <Bell className='h-4 w-4' />
-            Announcements
+            {t('title')}
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className='text-muted-foreground text-sm'>No announcements at this time.</div>
+          <div className='text-muted-foreground text-sm'>{t('empty')}</div>
         </CardContent>
       </Card>
     )
@@ -128,9 +133,9 @@ export default function AnnouncementWidget({ className, maxItems = 5 }: Announce
             <Bell className='text-primary h-5 w-5' />
           </div>
           <div className='flex-1'>
-            <CardTitle className='text-base font-semibold'>Announcements</CardTitle>
+            <CardTitle className='text-base font-semibold'>{t('title')}</CardTitle>
             <CardDescription className='text-xs'>
-              Latest updates and important information
+              {t('description')}
             </CardDescription>
           </div>
           <Badge variant='secondary' className='text-xs font-medium'>
@@ -166,7 +171,7 @@ export default function AnnouncementWidget({ className, maxItems = 5 }: Announce
                             onClick={(e) => handleDismiss(announcement.id, e)}
                             disabled={dismissMutation.isPending}
                             className='hover:bg-accent flex-shrink-0 rounded-md p-1 opacity-0 transition-opacity disabled:opacity-50 group-hover:opacity-100'
-                            aria-label='Dismiss'
+                            aria-label={t('dismiss')}
                           >
                             <X className='h-3 w-3' />
                           </button>
@@ -189,11 +194,11 @@ export default function AnnouncementWidget({ className, maxItems = 5 }: Announce
                             variant='outline'
                             className='bg-primary/10 text-primary border-primary/20 text-[10px] font-medium'
                           >
-                            High Priority
+                            {t('high-priority')}
                           </Badge>
                         )}
                         <span className='text-muted-foreground ml-auto text-[10px]'>
-                          {new Date(announcement.createdAt).toLocaleDateString('en-US', {
+                          {new Date(announcement.createdAt).toLocaleDateString(date_locale, {
                             month: 'short',
                             day: 'numeric'
                           })}

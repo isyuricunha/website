@@ -108,7 +108,7 @@ export default function AnnouncementBanner() {
                     </h4>
                     {announcement.priority > 5 && (
                       <span className='bg-current/10 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium'>
-                        High Priority
+                        {t('component.announcement-banner.high-priority')}
                       </span>
                     )}
                   </div>
