@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger
 } from '@isyuricunha/ui'
 import { cn } from '@isyuricunha/utils'
-import { MoreHorizontalIcon } from 'lucide-react'
+import { MenuIcon } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { HEADER_LINKS } from '@/config/links'
@@ -22,7 +22,7 @@ const Navbar = () => {
   const pathname = usePathname()
   const t = useTranslations()
 
-const [visibleCount, setVisibleCount] = useState(HEADER_LINKS.length)
+  const [visibleCount, setVisibleCount] = useState<number>(HEADER_LINKS.length)
   const containerRef = useRef<HTMLUListElement | null>(null)
   const measureLinksRef = useRef<HTMLUListElement | null>(null)
   const measureMoreRef = useRef<HTMLLIElement | null>(null)
@@ -110,7 +110,7 @@ const [visibleCount, setVisibleCount] = useState(HEADER_LINKS.length)
                   )}
                   aria-label={t('layout.more')}
                 >
-                  <MoreHorizontalIcon className='size-4' />
+                  <MenuIcon className='size-4' />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align='end'>
@@ -121,15 +121,12 @@ const [visibleCount, setVisibleCount] = useState(HEADER_LINKS.length)
                     <DropdownMenuItem
                       key={link.key}
                       asChild
-                      className={cn('gap-2', {
+                      className={cn({
                         'bg-accent text-accent-foreground': isActive
                       })}
                     >
-                      <Link href={link.href} className='flex items-center gap-2'>
-                        <span className='flex h-5 w-5 shrink-0 items-center justify-center'>
-                          {link.icon}
-                        </span>
-                        <span className='flex-1'>{t(`layout.${link.key}`)}</span>
+                      <Link href={link.href} className='w-full'>
+                        {t(`layout.${link.key}`)}
                       </Link>
                     </DropdownMenuItem>
                   )
@@ -159,7 +156,7 @@ const [visibleCount, setVisibleCount] = useState(HEADER_LINKS.length)
         <ul className='flex gap-2'>
           <li ref={measureMoreRef} className='relative flex h-[60px] items-center justify-center'>
             <span className='h-auto rounded-sm px-3 py-2 text-sm font-medium'>
-              <MoreHorizontalIcon className='size-4' />
+              <MenuIcon className='size-4' />
             </span>
           </li>
         </ul>
