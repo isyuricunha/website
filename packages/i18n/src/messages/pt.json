@@ -539,10 +539,18 @@
       "error": "Não foi possível copiar para a área de transferência. Por favor, tente novamente!"
     }
   },
+  "snippets": {
+    "title": "Snippets",
+    "description": "Notas curtas e receitas práticas de código.",
+    "empty": "Nenhum snippet disponível.",
+    "on-this-page": "Nesta página",
+    "min-read": "{minutes} min de leitura"
+  },
   "layout": {
     "navigation": "Navegação",
     "home": "Início",
     "blog": "Blog",
+    "snippets": "Snippets",
     "projects": "Projetos",
     "about": "Sobre",
     "now": "Agora",

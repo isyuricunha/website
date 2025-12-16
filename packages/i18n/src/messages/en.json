@@ -539,10 +539,18 @@
       "error": "Unable to copy to clipboard. Please try again!"
     }
   },
+  "snippets": {
+    "title": "Snippets",
+    "description": "Small, practical notes and code recipes.",
+    "empty": "No snippets available.",
+    "on-this-page": "On this page",
+    "min-read": "{minutes} min read"
+  },
   "layout": {
     "navigation": "Navigation",
     "home": "Home",
     "blog": "Blog",
+    "snippets": "Snippets",
     "projects": "Projects",
     "about": "About",
     "now": "Now",
