@@ -81,7 +81,7 @@ const RecentlyUpdated = () => {
   }
 
   return (
-    <Card className='shadow-feature-card rounded-2xl'>
+    <Card>
       <CardHeader>
         <CardTitle className='flex items-center gap-2 text-base sm:text-lg'>
           <Clock className='h-5 w-5' />
@@ -97,10 +97,10 @@ const RecentlyUpdated = () => {
             <Link
               key={item.id}
               href={item.href}
-              className='hover:bg-muted/50 focus-visible:ring-ring group block rounded-xl p-3 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2'
+              className='hover:bg-muted/50 group block rounded-lg p-3 transition-colors'
             >
               <div className='flex items-start gap-3'>
-                <div className='text-muted-foreground group-hover:text-foreground mt-0.5 shrink-0'>
+                <div className='text-muted-foreground group-hover:text-foreground mt-0.5 flex-shrink-0'>
                   {item.icon}
                 </div>
                 <div className='min-w-0 flex-1'>

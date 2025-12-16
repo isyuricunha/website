@@ -43,10 +43,10 @@ const SelectedProjects = () => {
       transition={{
         duration: 0.5
       }}
-      className='relative py-10 sm:py-12 lg:py-14'
+      className='relative my-8 sm:my-10 lg:my-12'
     >
       <motion.h2
-        className='text-center text-lg font-medium sm:text-xl lg:text-2xl'
+        className='px-4 text-center text-lg font-medium sm:text-xl lg:text-2xl'
         initial={{
           y: 30,
           opacity: 0
@@ -62,7 +62,7 @@ const SelectedProjects = () => {
         {t('homepage.selectedProjects.title')}
       </motion.h2>
       <motion.div
-        className='mt-8 grid gap-4 sm:mt-12 sm:gap-6 md:grid-cols-2'
+        className='mt-8 grid gap-4 px-4 sm:mt-12 sm:gap-6 md:grid-cols-2'
         initial={{
           y: 40,
           opacity: 0
@@ -79,7 +79,7 @@ const SelectedProjects = () => {
           <Card key={project.slug} project={project} />
         ))}
       </motion.div>
-      <div className='my-8 flex items-center justify-center'>
+      <div className='my-8 flex items-center justify-center px-4'>
         <Link
           href='/projects'
           className={cn(

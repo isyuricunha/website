@@ -45,7 +45,7 @@ const LatestArticles = () => {
       transition={{
         duration: 0.5
       }}
-      className='py-10 sm:py-12 lg:py-14'
+      className='my-8 sm:my-10 lg:my-12'
     >
       <motion.h2
         className='text-center text-lg font-medium sm:text-xl lg:text-2xl'

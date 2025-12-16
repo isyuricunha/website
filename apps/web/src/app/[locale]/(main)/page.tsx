@@ -71,7 +71,7 @@ const Page = async (props: PageProps) => {
         type='application/ld+json'
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <div className='pb-6'>
+      <div className='mb-6'>
         <AnnouncementBanner />
       </div>
       <Hero />
@@ -79,7 +79,7 @@ const Page = async (props: PageProps) => {
       <AboutMe />
       <LatestArticles />
 
-      <div className='grid grid-cols-1 gap-8 py-10 sm:py-12 lg:grid-cols-2 lg:py-14'>
+      <div className='mb-16 grid grid-cols-1 gap-8 lg:grid-cols-2'>
         <RecentlyUpdated />
         <NewsletterSignup />
       </div>
