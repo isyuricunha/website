@@ -3,6 +3,9 @@
 import { useState } from 'react'
 import { useTranslations } from '@isyuricunha/i18n/client'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@isyuricunha/ui'
+
+import { api } from '@/trpc/react'
+
 import TimeRangeToggle from './time-range-toggle'
 
 const Stat = ({
@@ -29,6 +32,29 @@ const AudioFeaturesSummary = () => {
     'short_term'
   )
 
+  const {
+    data: summary,
+    isLoading,
+    error,
+    refetch,
+    isRefetching
+  } = api.spotify.getAudioFeaturesSummaryByRange.useQuery(
+    { time_range: timeRange },
+    {
+      staleTime: 300_000
+    }
+  )
+
+  const fmtPercent = (v: number | null | undefined) => {
+    if (typeof v !== 'number') return null
+    return Math.round(v * 100)
+  }
+
+  const fmtTempo = (v: number | null | undefined) => {
+    if (typeof v !== 'number') return null
+    return Math.round(v)
+  }
+
   return (
     <Card>
       <CardHeader>
@@ -43,18 +69,75 @@ const AudioFeaturesSummary = () => {
           </div>
           <div className='flex items-center gap-2'>
             <TimeRangeToggle value={timeRange} onChange={setTimeRange} />
+            <button
+              type='button'
+              onClick={() => refetch()}
+              disabled={isRefetching}
+              className='text-muted-foreground hover:text-foreground text-xs disabled:opacity-50 sm:text-sm'
+            >
+              {t('spotify.refresh')}
+            </button>
           </div>
         </div>
       </CardHeader>
       <CardContent>
-        <div className='grid grid-cols-2 gap-3 sm:grid-cols-3'>
-          <Stat label={t('spotify.audio.danceability') || 'Danceability'} value={null} />
-          <Stat label={t('spotify.audio.energy') || 'Energy'} value={null} />
-          <Stat label={t('spotify.audio.valence') || 'Valence'} value={null} />
-          <Stat label={t('spotify.audio.tempo') || 'Tempo'} value={null} suffix=' bpm' />
-          <Stat label={t('spotify.audio.acousticness') || 'Acousticness'} value={null} />
-          <Stat label={t('spotify.audio.instrumentalness') || 'Instrumentalness'} value={null} />
-        </div>
+        {isLoading ? (
+          <div className='grid grid-cols-2 gap-3 sm:grid-cols-3'>
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className='bg-muted/30 h-[62px] animate-pulse rounded-lg' />
+            ))}
+          </div>
+        ) : error ? (
+          <div className='flex items-center justify-between'>
+            <p className='text-muted-foreground text-sm'>{t('spotify.error')}</p>
+            <button
+              type='button'
+              onClick={() => refetch()}
+              disabled={isRefetching}
+              className='text-muted-foreground hover:text-foreground text-sm disabled:opacity-50'
+            >
+              {t('spotify.refresh')}
+            </button>
+          </div>
+        ) : !summary || summary.sampleSize === 0 ? (
+          <p className='text-muted-foreground text-sm'>{t('spotify.no-data')}</p>
+        ) : (
+          <div className='space-y-3'>
+            <p className='text-muted-foreground text-xs'>{`n=${summary.sampleSize}`}</p>
+            <div className='grid grid-cols-2 gap-3 sm:grid-cols-3'>
+              <Stat
+                label={t('spotify.audio.danceability') || 'Danceability'}
+                value={fmtPercent(summary.danceability)}
+                suffix='%'
+              />
+              <Stat
+                label={t('spotify.audio.energy') || 'Energy'}
+                value={fmtPercent(summary.energy)}
+                suffix='%'
+              />
+              <Stat
+                label={t('spotify.audio.valence') || 'Valence'}
+                value={fmtPercent(summary.valence)}
+                suffix='%'
+              />
+              <Stat
+                label={t('spotify.audio.tempo') || 'Tempo'}
+                value={fmtTempo(summary.tempo)}
+                suffix=' bpm'
+              />
+              <Stat
+                label={t('spotify.audio.acousticness') || 'Acousticness'}
+                value={fmtPercent(summary.acousticness)}
+                suffix='%'
+              />
+              <Stat
+                label={t('spotify.audio.instrumentalness') || 'Instrumentalness'}
+                value={fmtPercent(summary.instrumentalness)}
+                suffix='%'
+              />
+            </div>
+          </div>
+        )}
       </CardContent>
     </Card>
   )

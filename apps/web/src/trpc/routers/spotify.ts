@@ -17,6 +17,7 @@ const NOW_PLAYING_ENDPOINT = 'https://api.spotify.com/v1/me/player/currently-pla
 const TOP_ARTISTS_ENDPOINT = 'https://api.spotify.com/v1/me/top/artists'
 const TOP_TRACKS_ENDPOINT = 'https://api.spotify.com/v1/me/top/tracks'
 const RECENTLY_PLAYED_ENDPOINT = 'https://api.spotify.com/v1/me/player/recently-played'
+const AUDIO_FEATURES_ENDPOINT = 'https://api.spotify.com/v1/audio-features'
 const TOKEN_ENDPOINT = 'https://accounts.spotify.com/api/token'
 
 // Cache do access token (válido por ~50 minutos)
@@ -365,6 +366,7 @@ export const spotifyRouter = createTRPCRouter({
           album: item.track.album.name as string,
           albumImage,
           url: item.track.external_urls.spotify as string,
+          duration: item.track.duration_ms as number,
           playedAt: item.played_at as string
         }
       })
@@ -376,6 +378,161 @@ export const spotifyRouter = createTRPCRouter({
       })
     }
   }),
+
+  getAudioFeaturesSummaryByRange: publicProcedure
+    .input(
+      z.object({
+        time_range: z.enum(['short_term', 'medium_term', 'long_term']).default('short_term')
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const ip = getIp(ctx.headers)
+
+      const { success } = await ratelimit.limit(getKey(ip))
+
+      if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+
+      try {
+        const accessToken = await getAccessToken()
+
+        // Fetch top tracks for a given time range to get track IDs
+        const topTracksResponse = await fetch(
+          `${TOP_TRACKS_ENDPOINT}?limit=50&time_range=${input.time_range}`,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`
+            },
+            signal: AbortSignal.timeout(10_000)
+          }
+        )
+
+        if (!topTracksResponse.ok) {
+          logger.error(
+            'Spotify API error for audio features (top tracks)',
+            new Error(`Status: ${topTracksResponse.status}`)
+          )
+          throw new TRPCError({
+            code: 'INTERNAL_SERVER_ERROR',
+            message: `Failed to fetch top tracks: ${topTracksResponse.status}`
+          })
+        }
+
+        const topTracksData = await topTracksResponse.json()
+        const ids: string[] = Array.isArray(topTracksData.items)
+          ? topTracksData.items.map((t: any) => t?.id).filter(Boolean)
+          : []
+
+        if (ids.length === 0) {
+          return {
+            sampleSize: 0,
+            danceability: null,
+            energy: null,
+            valence: null,
+            tempo: null,
+            acousticness: null,
+            instrumentalness: null
+          }
+        }
+
+        // Spotify audio-features endpoint supports up to 100 IDs, so we're safe with 50.
+        const audioFeaturesResponse = await fetch(
+          `${AUDIO_FEATURES_ENDPOINT}?ids=${encodeURIComponent(ids.join(','))}`,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`
+            },
+            signal: AbortSignal.timeout(10_000)
+          }
+        )
+
+        if (!audioFeaturesResponse.ok) {
+          logger.error(
+            'Spotify API error for audio features (features fetch)',
+            new Error(`Status: ${audioFeaturesResponse.status}`)
+          )
+          throw new TRPCError({
+            code: 'INTERNAL_SERVER_ERROR',
+            message: `Failed to fetch audio features: ${audioFeaturesResponse.status}`
+          })
+        }
+
+        const audioFeaturesData = await audioFeaturesResponse.json()
+        const features: any[] = Array.isArray(audioFeaturesData.audio_features)
+          ? audioFeaturesData.audio_features.filter(Boolean)
+          : []
+
+        const sums = {
+          danceability: 0,
+          energy: 0,
+          valence: 0,
+          tempo: 0,
+          acousticness: 0,
+          instrumentalness: 0
+        }
+        const counts = {
+          danceability: 0,
+          energy: 0,
+          valence: 0,
+          tempo: 0,
+          acousticness: 0,
+          instrumentalness: 0
+        }
+
+        for (const f of features) {
+          if (typeof f.danceability === 'number') {
+            sums.danceability += f.danceability
+            counts.danceability += 1
+          }
+          if (typeof f.energy === 'number') {
+            sums.energy += f.energy
+            counts.energy += 1
+          }
+          if (typeof f.valence === 'number') {
+            sums.valence += f.valence
+            counts.valence += 1
+          }
+          if (typeof f.tempo === 'number') {
+            sums.tempo += f.tempo
+            counts.tempo += 1
+          }
+          if (typeof f.acousticness === 'number') {
+            sums.acousticness += f.acousticness
+            counts.acousticness += 1
+          }
+          if (typeof f.instrumentalness === 'number') {
+            sums.instrumentalness += f.instrumentalness
+            counts.instrumentalness += 1
+          }
+        }
+
+        const average = (sum: number, count: number) => (count > 0 ? sum / count : null)
+
+        const sampleSize = Math.max(
+          counts.danceability,
+          counts.energy,
+          counts.valence,
+          counts.tempo,
+          counts.acousticness,
+          counts.instrumentalness
+        )
+
+        return {
+          sampleSize,
+          danceability: average(sums.danceability, counts.danceability),
+          energy: average(sums.energy, counts.energy),
+          valence: average(sums.valence, counts.valence),
+          tempo: average(sums.tempo, counts.tempo),
+          acousticness: average(sums.acousticness, counts.acousticness),
+          instrumentalness: average(sums.instrumentalness, counts.instrumentalness)
+        }
+      } catch (error) {
+        logger.error('Error in getAudioFeaturesSummaryByRange', error)
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to fetch audio features'
+        })
+      }
+    }),
 
   getTopArtistsByRange: publicProcedure
     .input(
