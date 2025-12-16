@@ -1,4 +1,4 @@
-import { execSync } from 'node:child_process'
+import { execFileSync, execSync } from 'node:child_process'
 
 const ignoredPathPatterns = [
   /^README\.md$/i,
@@ -13,16 +13,33 @@ const ignoredPathPatterns = [
   /^apps\/docs\//
 ]
 
-function getChangedFiles(base, head) {
-  const output = execSync(`git diff --name-only ${base} ${head}`, {
-    encoding: 'utf8',
-    stdio: ['ignore', 'pipe', 'ignore']
-  })
+function commitExists(rev) {
+  if (!rev) return false
 
-  return output
-    .split(/\r?\n/)
-    .map((line) => line.trim())
-    .filter(Boolean)
+  try {
+    execFileSync('git', ['cat-file', '-e', `${rev}^{commit}`], {
+      stdio: ['ignore', 'ignore', 'ignore']
+    })
+    return true
+  } catch {
+    return false
+  }
+}
+
+function getChangedFiles(base, head) {
+  try {
+    const output = execFileSync('git', ['diff', '--name-only', base, head], {
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore']
+    })
+
+    return output
+      .split(/\r?\n/)
+      .map((line) => line.trim())
+      .filter(Boolean)
+  } catch {
+    return null
+  }
 }
 
 function shouldIgnoreBuild(files) {
@@ -60,7 +77,19 @@ function main() {
     return
   }
 
+  if (!commitExists(base) || !commitExists(head)) {
+    console.log('vercel-ignore: base/head sha not available in this clone; proceeding with build')
+    process.exitCode = 1
+    return
+  }
+
   const files = getChangedFiles(base, head)
+
+  if (!files) {
+    console.log('vercel-ignore: git diff failed; proceeding with build')
+    process.exitCode = 1
+    return
+  }
 
   if (files.length === 0) {
     console.log('vercel-ignore: no changed files detected; proceeding with build')
