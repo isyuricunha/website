@@ -46,7 +46,6 @@ export const generateMetadata = async (
         new Set(allSnippets.filter((s) => s.slug === slug && s.locale !== locale).map((s) => s.locale))
     )
 
-    // Precompute safe values to avoid passing undefined to encodeURIComponent
     const safeTitle = snippet.title ?? ''
     const safeDescription = snippet.description ?? ''
     const safeLocale = locale ?? ''

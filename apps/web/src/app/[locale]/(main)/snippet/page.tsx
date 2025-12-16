@@ -64,8 +64,9 @@ const Page = async (props: PageProps) => {
     const url = `${SITE_URL}${getLocalizedPath({ slug: '/snippet', locale })}`
 
     const snippets = allSnippets
-        .toSorted((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
         .filter((snippet) => snippet.locale === locale)
+        .slice()
+        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 
     const dateFormatter = new Intl.DateTimeFormat(locale, {
         year: 'numeric',
