@@ -1,0 +1,96 @@
+---
+title: Remover duplicatas de um export do Bitwarden
+date: 2025-11-19
+author: Yuri Cunha
+description: Script em Python para remover entradas duplicadas de exports CSV do Bitwarden
+tags:
+  - python
+  - bitwarden
+  - csv
+  - limpeza-de-dados
+---
+
+Se você já exportou seu cofre do Bitwarden para CSV e acabou com entradas duplicadas, este script é pra você. Ele varre o arquivo exportado e remove duplicatas com base em campos chave.
+
+{/* more */}
+
+## O problema
+
+Às vezes, ao exportar o cofre do Bitwarden, podem surgir itens duplicados, mesmas credenciais, mesmas notas, tudo igual. Este script ajuda a limpar isso mantendo apenas entradas únicas.
+
+## Como funciona
+
+O script lê o CSV exportado do Bitwarden, compara cada entrada com um conjunto de campos chave (tipo, nome, URI, usuário, senha e notas) e mantém apenas a primeira ocorrência de cada combinação única. Bem direto!
+
+## O código
+
+```python
+import csv
+
+input_file = "bitwarden.csv"          # nome do arquivo exportado
+output_file = "bitwarden_dedup.csv"   # novo arquivo, sem duplicatas
+
+seen = set()
+rows = []
+
+with open(input_file, newline="", encoding="utf-8") as f:
+    reader = csv.DictReader(f)
+    fieldnames = reader.fieldnames
+
+    for row in reader:
+        # chave para considerar entradas "iguais"
+        key = (
+            row.get("type", ""),
+            row.get("name", ""),
+            row.get("login_uri", ""),
+            row.get("login_username", ""),
+            row.get("login_password", ""),
+            row.get("notes", ""),
+        )
+
+        if key in seen:
+            continue
+
+        seen.add(key)
+        rows.append(row)
+
+with open(output_file, "w", newline="", encoding="utf-8") as f:
+    writer = csv.DictWriter(f, fieldnames=fieldnames)
+    writer.writeheader()
+    writer.writerows(rows)
+
+print(f"salvo {len(rows)} itens sem duplicatas em {output_file}")
+````
+
+## Como usar
+
+1. Exporte seu cofre do Bitwarden para CSV (Configurações → Exportar cofre)
+2. Salve o script como `bitwarden_dedup.py`
+3. Garanta que o arquivo exportado se chama `bitwarden.csv` (ou altere a variável `input_file`)
+4. Rode: `python bitwarden_dedup.py`
+5. Importe o arquivo limpo `bitwarden_dedup.csv` de volta no Bitwarden
+
+## O que é verificado
+
+O script considera dois itens como duplicados se **todos** estes campos forem iguais:
+
+* Tipo (login, nota, cartão, etc.)
+* Nome
+* URI de login
+* Nome de usuário
+* Senha
+* Notas
+
+Se pelo menos um campo for diferente, os itens são mantidos como entradas separadas.
+
+## Observações importantes
+
+<Callout type='warning'>
+  Sempre faça backup do seu cofre antes de qualquer operação de limpeza. Exporte seu cofre atual antes de importar o arquivo sem duplicatas, só por segurança.
+</Callout>
+
+<Callout type='info'>
+  Se você quiser detectar duplicatas com base em outros campos (tipo apenas usuário + URI), dá pra ajustar a tupla `key` no código e manter só os campos que você quer comparar.
+</Callout>
+
+O script usa o módulo `csv` nativo do Python e um `set` para rastrear o que já foi visto, então ele costuma ser eficiente mesmo em cofres grandes.

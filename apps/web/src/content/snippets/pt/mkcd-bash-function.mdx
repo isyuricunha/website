@@ -1,0 +1,58 @@
+---
+title: "mkcd: Criar diretório e entrar nele"
+date: 2025-12-04
+author: Yuri Cunha
+description: Uma função simples em Bash para criar um diretório e entrar nele em um único comando.
+tags:
+  - bash
+  - terminal
+  - produtividade
+  - linux
+---
+
+Todo mundo já passou por isso: você cria um diretório novo com `mkdir` e logo em seguida precisa dar `cd` pra entrar nele.
+
+```bash
+mkdir novo-projeto
+cd novo-projeto
+````
+
+É uma fricção pequena, mas vai somando. Aqui vai uma função simples que faz os dois de uma vez.
+
+{/* more */}
+
+## A solução
+
+Adicione esta função no seu `.bashrc` (ou `.zshrc`):
+
+```bash
+# cria uma pasta (e subpastas) e entra nela imediatamente
+mkcd() {
+  mkdir -p "$1" && cd "$1"
+}
+```
+
+## Como instalar
+
+1. Abra seu arquivo de configuração:
+
+   ```bash
+   nano ~/.bashrc
+   ```
+2. Cole o bloco de código acima no final do arquivo.
+3. Salve e saia (`Ctrl+O`, `Enter`, `Ctrl+X`).
+4. Recarregue sua configuração:
+
+   ```bash
+   source ~/.bashrc
+   ```
+
+## Como usar
+
+Agora você pode criar estruturas de diretório profundas e entrar nelas na hora:
+
+```bash
+mkcd docker/docker-compose/vaultwarden
+```
+
+Você já vai cair dentro de `vaultwarden` imediatamente.
