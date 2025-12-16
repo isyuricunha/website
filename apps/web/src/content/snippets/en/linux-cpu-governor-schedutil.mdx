@@ -1,0 +1,104 @@
+---
+title: Set Linux CPU Governor to Schedutil
+date: 2025-12-04
+author: Yuri Cunha
+description: A quick guide to setting the Linux CPU governor to "schedutil" for a balance of performance and power efficiency, including persistence across reboots.
+tags:
+  - linux
+  - cpu
+  - performance
+  - systemd
+  - ubuntu
+---
+
+The `schedutil` governor is often the best choice for modern kernels, using scheduler utilization data to make faster and more accurate frequency decisions than older governors like `ondemand`.
+
+Here is how to enable it and make it persistent.
+
+{/* more */}
+
+## 1. Install Tools
+
+First, ensure you have the necessary tools installed. On Ubuntu/Debian:
+
+```bash
+sudo apt update
+sudo apt install linux-tools-common linux-tools-generic
+```
+
+## 2. Set Governor (Immediate)
+
+You can set the governor immediately for the current session. It's good practice to set the frequency limits as well.
+
+```bash
+sudo cpupower frequency-set -g schedutil
+# Optional: explicitly set limits if needed, though usually automatic
+# sudo cpupower frequency-set -g powersave
+# sudo cpupower frequency-set -g performance
+```
+
+### Verify
+
+Check if the policy has been applied:
+
+```bash
+cpupower frequency-info | grep "current policy" -A2
+```
+
+You should see output similar to:
+
+```text
+current policy: frequency should be within 1.20 GHz and 3.60 GHz.
+                The governor "schedutil" may decide which speed to use
+```
+
+To double-check individual CPUs:
+
+```bash
+grep . /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
+```
+
+All cores should report `schedutil`.
+
+## 3. Make Persistent (Systemd)
+
+To ensure this setting survives a reboot, create a simple systemd service.
+
+Create the service file:
+
+```bash
+sudo tee /etc/systemd/system/cpupower-schedutil.service >/dev/null << 'EOF'
+[Unit]
+Description=Set CPU governor to schedutil
+After=multi-user.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/cpupower frequency-set -g schedutil
+
+[Install]
+WantedBy=multi-user.target
+EOF
+```
+
+Enable and start the service:
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable cpupower-schedutil.service
+sudo systemctl start cpupower-schedutil.service
+```
+
+After starting, run the verification command again to confirm it's working.
+
+## 4. Cleanup (Optional)
+
+If you previously created a service for high performance (e.g., `cpupower-performance.service`), you should disable and remove it to avoid conflicts.
+
+```bash
+sudo systemctl disable --now cpupower-performance.service
+sudo rm /etc/systemd/system/cpupower-performance.service
+sudo systemctl daemon-reload
+```
+
+Your server is now configured to use `schedutil` automatically on every boot.

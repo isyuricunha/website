@@ -55,6 +55,34 @@ const posts = defineCollection({
   }
 })
 
+const snippets = defineCollection({
+  name: 'Snippet',
+  directory: 'src/content/snippets',
+  include: '**/*.mdx',
+  schema: (z) => ({
+    title: z.string(),
+    date: z
+      .union([z.string(), z.date()])
+      .transform((value) => (typeof value === 'string' ? value : value.toISOString().split('T')[0] ?? '')),
+    author: z.string().optional(),
+    description: z.string(),
+    tags: z.array(z.string()).optional().default([]),
+    readingTime: z.number().optional()
+  }),
+  transform: async (document, context) => {
+    const baseTransform = await transform(document, context)
+
+    // Calculate reading time (average 200 words per minute)
+    const wordCount = document.content.split(/\s+/).length
+    const readingTime = Math.ceil(wordCount / 200)
+
+    return {
+      ...baseTransform,
+      readingTime
+    }
+  }
+})
+
 const projects = defineCollection({
   name: 'Project',
   directory: 'src/content/projects',
@@ -92,5 +120,5 @@ const pages = defineCollection({
 })
 
 export default defineConfig({
-  collections: [posts, projects, pages]
+  collections: [posts, snippets, projects, pages]
 })

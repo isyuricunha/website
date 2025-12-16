@@ -1,0 +1,127 @@
+---
+title: Remove Duplicates from Array
+date: 2025-11-19
+author: Yuri Cunha
+description: Different methods to remove duplicate values from arrays in JavaScript
+tags:
+  - javascript
+  - array
+  - data-structures
+---
+
+Removing duplicates from arrays is a common task in JavaScript. Here are several effective methods to accomplish this.
+
+{/* more */}
+
+## Method 1: Using Set (Recommended)
+
+The simplest and most performant way to remove duplicates is using a `Set`:
+
+```javascript
+const array = [1, 2, 2, 3, 4, 4, 5];
+const uniqueArray = [...new Set(array)];
+console.log(uniqueArray); // [1, 2, 3, 4, 5]
+```
+
+**Pros:**
+- Clean and concise
+- Good performance O(n)
+- Works with primitive values
+
+**Cons:**
+- Only works with primitive values (numbers, strings, booleans)
+- Objects are compared by reference
+
+## Method 2: Using Filter
+
+For more complex scenarios or when you need to keep the first occurrence:
+
+```javascript
+const array = [1, 2, 2, 3, 4, 4, 5];
+const uniqueArray = array.filter((value, index, self) => {
+  return self.indexOf(value) === index;
+});
+console.log(uniqueArray); // [1, 2, 3, 4, 5]
+```
+
+**Pros:**
+- More flexible for custom logic
+- Easy to understand
+
+**Cons:**
+- Less performant O(n²) due to `indexOf`
+
+## Method 3: Using Reduce
+
+A functional approach using `reduce`:
+
+```javascript
+const array = [1, 2, 2, 3, 4, 4, 5];
+const uniqueArray = array.reduce((acc, current) => {
+  if (!acc.includes(current)) {
+    acc.push(current);
+  }
+  return acc;
+}, []);
+console.log(uniqueArray); // [1, 2, 3, 4, 5]
+```
+
+**Pros:**
+- Functional programming style
+- Can be combined with other transformations
+
+**Cons:**
+- Less performant due to `includes`
+- More verbose
+
+## Method 4: For Objects (Using Map)
+
+When dealing with objects, you need to compare by a specific property:
+
+```javascript
+const users = [
+  { id: 1, name: 'Alice' },
+  { id: 2, name: 'Bob' },
+  { id: 1, name: 'Alice' },
+  { id: 3, name: 'Charlie' }
+];
+
+const uniqueUsers = Array.from(
+  new Map(users.map(user => [user.id, user])).values()
+);
+
+console.log(uniqueUsers);
+// [
+//   { id: 1, name: 'Alice' },
+//   { id: 2, name: 'Bob' },
+//   { id: 3, name: 'Charlie' }
+// ]
+```
+
+**Pros:**
+- Works with objects
+- Can specify which property to use for uniqueness
+- Good performance
+
+**Cons:**
+- More complex syntax
+- Keeps the last occurrence (can be modified to keep first)
+
+## Performance Comparison
+
+For large arrays (10,000+ elements):
+
+1. **Set**: ~1ms (fastest)
+2. **Map (for objects)**: ~2ms
+3. **Reduce**: ~50ms
+4. **Filter**: ~100ms (slowest)
+
+## Recommendation
+
+- Use **Set** for primitive values (numbers, strings, booleans)
+- Use **Map** for objects when you need to deduplicate by a specific property
+- Use **Filter** or **Reduce** only when you need custom logic or are working with small arrays
+
+---
+
+**Note:** All these methods create a new array. If you need to modify the original array in place, you'll need a different approach.
