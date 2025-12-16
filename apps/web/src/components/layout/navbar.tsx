@@ -96,13 +96,14 @@ const Navbar = () => {
 
         {overflowLinks.length > 0 ? (
           <li className='relative flex h-[60px] items-center justify-center'>
-            <DropdownMenu>
+            <DropdownMenu modal={false}>
               <DropdownMenuTrigger asChild>
                 <Button
                   variant='ghost'
                   className={cn(
                     'h-auto rounded-sm px-3 py-2 text-sm font-medium transition-colors',
                     'hover:bg-transparent',
+                    'focus:outline-none focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0',
                     {
                       'text-muted-foreground hover:text-foreground': !isOverflowActive,
                       'text-foreground': isOverflowActive
