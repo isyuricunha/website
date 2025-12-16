@@ -188,7 +188,7 @@ const Layout = async (props: LayoutProps) => {
         ) : null}
         <NuqsAdapter>
           <Providers>
-            <NextIntlClientProvider messages={messages}>
+            <NextIntlClientProvider messages={messages} locale={locale}>
               <ErrorBoundary>
                 <Hello />
                 {children}

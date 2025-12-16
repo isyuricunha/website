@@ -8,7 +8,9 @@ type LocalizedDocument = {
 export const getLocalizedPath = (doc: LocalizedDocument) => {
   const locale = doc.locale
 
+  const slug = doc.slug === '' ? '/' : doc.slug
+
   const localePath = locale === i18n.defaultLocale ? '' : `/${locale}`
 
-  return `${localePath}${doc.slug}`
+  return `${localePath}${slug}`
 }
