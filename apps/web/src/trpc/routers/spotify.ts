@@ -122,13 +122,13 @@ const getAccessToken = async () => {
   }
 }
 
-const getKey = (id: string) => `spotify:${id}`
+const getKey = (id: string, scope: string) => `spotify:${scope}:${id}`
 
 export const spotifyRouter = createTRPCRouter({
   get: publicProcedure.query(async ({ ctx }) => {
     const ip = getIp(ctx.headers)
 
-    const { success } = await ratelimit.limit(getKey(ip))
+    const { success } = await ratelimit.limit(getKey(ip, 'get'))
 
     if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
 
@@ -162,7 +162,7 @@ export const spotifyRouter = createTRPCRouter({
   getCurrentlyPlaying: publicProcedure.query(async ({ ctx }) => {
     const ip = getIp(ctx.headers)
 
-    const { success } = await ratelimit.limit(getKey(ip))
+    const { success } = await ratelimit.limit(getKey(ip, 'getCurrentlyPlaying'))
 
     if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
 
@@ -210,7 +210,7 @@ export const spotifyRouter = createTRPCRouter({
   getTopArtists: publicProcedure.query(async ({ ctx }) => {
     const ip = getIp(ctx.headers)
 
-    const { success } = await ratelimit.limit(getKey(ip))
+    const { success } = await ratelimit.limit(getKey(ip, 'getTopArtists'))
 
     if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
 
@@ -262,7 +262,7 @@ export const spotifyRouter = createTRPCRouter({
   getTopTracks: publicProcedure.query(async ({ ctx }) => {
     const ip = getIp(ctx.headers)
 
-    const { success } = await ratelimit.limit(getKey(ip))
+    const { success } = await ratelimit.limit(getKey(ip, 'getTopTracks'))
 
     if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
 
@@ -319,7 +319,7 @@ export const spotifyRouter = createTRPCRouter({
   getRecentlyPlayed: publicProcedure.query(async ({ ctx }) => {
     const ip = getIp(ctx.headers)
 
-    const { success } = await ratelimit.limit(getKey(ip))
+    const { success } = await ratelimit.limit(getKey(ip, 'getRecentlyPlayed'))
 
     if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
 
@@ -388,7 +388,7 @@ export const spotifyRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       const ip = getIp(ctx.headers)
 
-      const { success } = await ratelimit.limit(getKey(ip))
+      const { success } = await ratelimit.limit(getKey(ip, 'getAudioFeaturesSummaryByRange'))
 
       if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
 
@@ -407,6 +407,13 @@ export const spotifyRouter = createTRPCRouter({
         )
 
         if (!topTracksResponse.ok) {
+          if (topTracksResponse.status === 429) {
+            throw new TRPCError({
+              code: 'TOO_MANY_REQUESTS',
+              message: 'Spotify rate limit reached'
+            })
+          }
+
           logger.error(
             'Spotify API error for audio features (top tracks)',
             new Error(`Status: ${topTracksResponse.status}`)
@@ -446,6 +453,13 @@ export const spotifyRouter = createTRPCRouter({
         )
 
         if (!audioFeaturesResponse.ok) {
+          if (audioFeaturesResponse.status === 429) {
+            throw new TRPCError({
+              code: 'TOO_MANY_REQUESTS',
+              message: 'Spotify rate limit reached'
+            })
+          }
+
           logger.error(
             'Spotify API error for audio features (features fetch)',
             new Error(`Status: ${audioFeaturesResponse.status}`)
@@ -526,6 +540,8 @@ export const spotifyRouter = createTRPCRouter({
           instrumentalness: average(sums.instrumentalness, counts.instrumentalness)
         }
       } catch (error) {
+        if (error instanceof TRPCError) throw error
+
         logger.error('Error in getAudioFeaturesSummaryByRange', error)
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
@@ -543,7 +559,7 @@ export const spotifyRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       const ip = getIp(ctx.headers)
 
-      const { success } = await ratelimit.limit(getKey(ip))
+      const { success } = await ratelimit.limit(getKey(ip, 'getTopArtistsByRange'))
 
       if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
 
@@ -610,7 +626,7 @@ export const spotifyRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       const ip = getIp(ctx.headers)
 
-      const { success } = await ratelimit.limit(getKey(ip))
+      const { success } = await ratelimit.limit(getKey(ip, 'getTopTracksByRange'))
 
       if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
 

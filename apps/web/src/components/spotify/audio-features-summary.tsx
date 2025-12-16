@@ -41,7 +41,10 @@ const AudioFeaturesSummary = () => {
   } = api.spotify.getAudioFeaturesSummaryByRange.useQuery(
     { time_range: timeRange },
     {
-      staleTime: 300_000
+      staleTime: 300_000,
+      retry: false,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false
     }
   )
 
