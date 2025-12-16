@@ -26,7 +26,7 @@ export const HEADER_LINKS = [
   },
   {
     icon: <CodeIcon className='size-3.5' />,
-    href: '/snippets',
+    href: '/snippet',
     key: 'snippets'
   },
   {
@@ -68,7 +68,7 @@ export const FOOTER_LINKS = [
     links: [
       { href: '/', key: 'home' },
       { href: '/blog', key: 'blog' },
-      { href: '/snippets', key: 'snippets' },
+      { href: '/snippet', key: 'snippets' },
       { href: '/about', key: 'about' },
       { href: '/contact', key: 'contact' }
     ]

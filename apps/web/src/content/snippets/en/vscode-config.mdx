@@ -418,8 +418,8 @@ if [ -f "$VSCODE_USER/keybindings.json" ]; then
 fi
 
 # copy snippets
-if [ -d "$VSCODE_USER/snippets" ]; then
-  cp -r "$VSCODE_USER/snippets" "$VSCODIUM_USER/"
+if [ -d "$VSCODE_USER/snippet" ]; then
+  cp -r "$VSCODE_USER/snippet" "$VSCODIUM_USER/"
   echo "copied snippets directory"
 fi
 

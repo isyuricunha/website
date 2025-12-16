@@ -56,7 +56,7 @@ export const generateMetadata = async (
         safeDate
     )}&summary=${encodeURIComponent(safeDescription)}&locale=${safeLocale}&type=snippet`
 
-    const url = getLocalizedPath({ slug: `/snippets/${slug}`, locale })
+    const url = getLocalizedPath({ slug: `/snippet/${slug}`, locale })
 
     const seo = generateSEO({
         title: snippet.title,
@@ -120,7 +120,7 @@ const Page = async (props: PageProps) => {
         },
         mainEntityOfPage: {
             '@type': 'WebPage',
-            '@id': `${SITE_URL}${getLocalizedPath({ slug: `/snippets/${slug}`, locale })}`
+            '@id': `${SITE_URL}${getLocalizedPath({ slug: `/snippet/${slug}`, locale })}`
         }
     }
 

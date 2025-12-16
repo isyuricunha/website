@@ -82,7 +82,7 @@ const SitemapPage = async (props: PageProps) => {
     {
       title: tCommon('layout.snippets'),
       description: t('main-pages.items.snippets.description'),
-      href: '/snippets',
+      href: '/snippet',
       icon: <Code className='h-4 w-4' />
     },
     {
@@ -313,7 +313,7 @@ const SitemapPage = async (props: PageProps) => {
               {localeSnippets.map((snippet) => (
                 <Link
                   key={snippet.slug}
-                  href={`/snippets/${snippet.slug}`}
+                  href={`/snippet/${snippet.slug}`}
                   className='hover:bg-muted/50 group block rounded-lg p-3 transition-colors'
                 >
                   <div className='flex items-start justify-between gap-4'>

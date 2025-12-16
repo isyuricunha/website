@@ -33,7 +33,7 @@ const sitemap = (): MetadataRoute.Sitemap => {
       const snippet = allSnippets.find((s) => s.slug === slug && s.locale === locale)
 
       addEntry({
-        url: `${SITE_URL}${getLocalizedPath({ slug: `/snippets/${slug}`, locale })}`,
+        url: `${SITE_URL}${getLocalizedPath({ slug: `/snippet/${slug}`, locale })}`,
         lastModified: snippet ? new Date(snippet.date) : buildTime
       })
     }
@@ -43,7 +43,7 @@ const sitemap = (): MetadataRoute.Sitemap => {
   const baseRoutes = [
     '',
     '/blog',
-    '/snippets',
+    '/snippet',
     '/projects',
     '/guestbook',
     '/uses',

@@ -57,7 +57,7 @@ const posts = defineCollection({
 
 const snippets = defineCollection({
   name: 'Snippet',
-  directory: 'src/content/snippets',
+  directory: 'src/content/snippet',
   include: '**/*.mdx',
   schema: (z) => ({
     title: z.string(),

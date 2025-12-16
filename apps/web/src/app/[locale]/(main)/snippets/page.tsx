@@ -33,7 +33,7 @@ export const generateMetadata = async (
     const t = await getTranslations({ locale, namespace: 'snippets' })
     const title = t('title')
     const description = t('description')
-    const alternates = build_alternates({ slug: '/snippets', locale })
+    const alternates = build_alternates({ slug: '/snippet', locale })
     const fullUrl = `${SITE_URL}${alternates.canonical}`
 
     return {
@@ -61,7 +61,7 @@ const Page = async (props: PageProps) => {
     const t = await getTranslations({ locale, namespace: 'snippets' })
     const title = t('title')
     const description = t('description')
-    const url = `${SITE_URL}${getLocalizedPath({ slug: '/snippets', locale })}`
+    const url = `${SITE_URL}${getLocalizedPath({ slug: '/snippet', locale })}`
 
     const snippets = allSnippets
         .toSorted((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
@@ -89,7 +89,7 @@ const Page = async (props: PageProps) => {
             '@type': 'Article',
             headline: snippet.title,
             description: snippet.description,
-            url: `${SITE_URL}${getLocalizedPath({ slug: `/snippets/${snippet.slug}`, locale })}`,
+            url: `${SITE_URL}${getLocalizedPath({ slug: `/snippet/${snippet.slug}`, locale })}`,
             datePublished: snippet.date
         }))
     }
@@ -107,7 +107,7 @@ const Page = async (props: PageProps) => {
                     {snippets.map((snippet) => (
                         <Link
                             key={`${snippet.locale}:${snippet.slug}`}
-                            href={`/snippets/${snippet.slug}`}
+                            href={`/snippet/${snippet.slug}`}
                             className='shadow-feature-card hover:bg-accent/40 block rounded-2xl border p-4 transition-colors'
                         >
                             <div className='mb-2 flex items-center justify-between gap-2 text-xs text-zinc-500'>
