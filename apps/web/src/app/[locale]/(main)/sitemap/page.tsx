@@ -5,7 +5,7 @@ import { getTranslations, setRequestLocale } from '@isyuricunha/i18n/server'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@isyuricunha/ui/server'
 import { FileText, Code, Music, User, Home, Map as MapIcon, Calendar, MessageSquare, Mail } from 'lucide-react'
 
-import { allPosts, allProjects } from 'content-collections'
+import { allPosts, allProjects, allSnippets } from 'content-collections'
 
 import PageTitle from '@/components/page-title'
 import Link from '@/components/link'
@@ -80,6 +80,12 @@ const SitemapPage = async (props: PageProps) => {
       icon: <FileText className='h-4 w-4' />
     },
     {
+      title: tCommon('layout.snippets'),
+      description: t('main-pages.items.snippets.description'),
+      href: '/snippets',
+      icon: <Code className='h-4 w-4' />
+    },
+    {
       title: tCommon('layout.projects'),
       description: t('main-pages.items.projects.description'),
       href: '/projects',
@@ -138,6 +144,11 @@ const SitemapPage = async (props: PageProps) => {
     .filter((project) => project.locale === locale)
     .slice()
     .sort((a, b) => a.name.localeCompare(b.name))
+
+  const localeSnippets = allSnippets
+    .filter((snippet) => snippet.locale === locale)
+    .slice()
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 
   return (
     <>
@@ -281,6 +292,50 @@ const SitemapPage = async (props: PageProps) => {
                     </div>
                   </div>
                 </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Snippets */}
+        <Card>
+          <CardHeader>
+            <CardTitle className='flex items-center gap-2 text-base sm:text-lg'>
+              <Code className='h-5 w-5' />
+              {t('snippets.title')} ({localeSnippets.length})
+            </CardTitle>
+            <CardDescription className='text-xs sm:text-sm'>
+              {t('snippets.description')}
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className='space-y-3'>
+              {localeSnippets.map((snippet) => (
+                <Link
+                  key={snippet.slug}
+                  href={`/snippets/${snippet.slug}`}
+                  className='hover:bg-muted/50 group block rounded-lg p-3 transition-colors'
+                >
+                  <div className='flex items-start justify-between gap-4'>
+                    <div className='min-w-0 flex-1'>
+                      <h4 className='group-hover:text-primary mb-1 truncate text-sm font-medium sm:text-base'>
+                        {snippet.title}
+                      </h4>
+                      <p className='text-muted-foreground mb-2 line-clamp-2 text-xs sm:text-sm'>
+                        {snippet.description}
+                      </p>
+                      <div className='text-muted-foreground flex items-center gap-2 text-xs'>
+                        <span>{dateFormatter.format(new Date(snippet.date))}</span>
+                        {snippet.tags && snippet.tags.length > 0 ? (
+                          <>
+                            <span>•</span>
+                            <span>{snippet.tags.slice(0, 2).join(', ')}</span>
+                          </>
+                        ) : null}
+                      </div>
+                    </div>
+                  </div>
+                </Link>
               ))}
             </div>
           </CardContent>

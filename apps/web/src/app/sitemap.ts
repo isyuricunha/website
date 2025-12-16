@@ -1,7 +1,7 @@
 import type { MetadataRoute } from 'next'
 
 import { supportedLanguages } from '@isyuricunha/i18n/config'
-import { allPages, allPosts, allProjects } from 'content-collections'
+import { allPages, allPosts, allProjects, allSnippets } from 'content-collections'
 
 import { SITE_URL } from '@/lib/constants'
 import { getLocalizedPath } from '@/utils/get-localized-path'
@@ -19,10 +19,31 @@ const sitemap = (): MetadataRoute.Sitemap => {
     entries.push(entry)
   }
 
+  // Generate URLs for snippets (group by locale to only generate existing content)
+  const snippetsByLocale = new Map<string, Set<string>>()
+  for (const snippet of allSnippets) {
+    if (!snippetsByLocale.has(snippet.locale)) {
+      snippetsByLocale.set(snippet.locale, new Set())
+    }
+    snippetsByLocale.get(snippet.locale)?.add(snippet.slug)
+  }
+
+  for (const [locale, slugs] of snippetsByLocale) {
+    for (const slug of slugs) {
+      const snippet = allSnippets.find((s) => s.slug === slug && s.locale === locale)
+
+      addEntry({
+        url: `${SITE_URL}${getLocalizedPath({ slug: `/snippets/${slug}`, locale })}`,
+        lastModified: snippet ? new Date(snippet.date) : buildTime
+      })
+    }
+  }
+
   // Base routes that should exist for all languages
   const baseRoutes = [
     '',
     '/blog',
+    '/snippets',
     '/projects',
     '/guestbook',
     '/uses',

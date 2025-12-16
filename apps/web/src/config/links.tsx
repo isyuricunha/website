@@ -2,6 +2,7 @@ import { type IconType, SiGithub, SiX } from '@icons-pack/react-simple-icons'
 import {
   FlameIcon,
   CalendarIcon,
+  CodeIcon,
   MessageCircleIcon,
   MonitorIcon,
   MusicIcon,
@@ -22,6 +23,11 @@ export const HEADER_LINKS = [
     icon: <PencilIcon className='size-3.5' />,
     href: '/blog',
     key: 'blog'
+  },
+  {
+    icon: <CodeIcon className='size-3.5' />,
+    href: '/snippets',
+    key: 'snippets'
   },
   {
     icon: <MessageCircleIcon className='size-3.5' />,
@@ -62,6 +68,7 @@ export const FOOTER_LINKS = [
     links: [
       { href: '/', key: 'home' },
       { href: '/blog', key: 'blog' },
+      { href: '/snippets', key: 'snippets' },
       { href: '/about', key: 'about' },
       { href: '/contact', key: 'contact' }
     ]
