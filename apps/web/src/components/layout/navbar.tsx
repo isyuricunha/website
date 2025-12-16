@@ -68,8 +68,8 @@ const Navbar = () => {
   }, [t])
 
   return (
-    <nav className='hidden min-w-0 md:block'>
-      <ul ref={containerRef} className='flex min-w-0 gap-2 overflow-hidden'>
+    <nav className='hidden min-w-0 flex-1 items-center md:flex'>
+      <ul ref={containerRef} className='flex w-full min-w-0 justify-end gap-2 overflow-hidden'>
         {visibleLinks.map((link) => {
           const isActive = link.href === pathname
 
