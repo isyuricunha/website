@@ -19,6 +19,7 @@ vi.mock('@/utils/get-localized-path', () => ({
 }))
 
 vi.mock('content-collections', () => ({
+    allSnippets: [],
     allPosts: [
         {
             locale: 'en',
