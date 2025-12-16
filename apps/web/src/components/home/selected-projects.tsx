@@ -114,7 +114,7 @@ const Card = (props: CardProps) => {
         </div>
         <ArrowUpRightIcon className='size-3 opacity-0 transition-opacity group-hover:opacity-100' />
       </div>
-      <div className='ring-border relative aspect-[16/9] w-full overflow-hidden rounded-lg shadow-sm ring-1'>
+      <div className='ring-border relative aspect-video w-full overflow-hidden rounded-lg shadow-sm ring-1'>
         <BlurImage
           width={1280}
           height={832}
@@ -125,16 +125,7 @@ const Card = (props: CardProps) => {
       </div>
       <div className='mt-3 px-2 pb-2'>
         <h3 className='text-foreground truncate text-sm font-semibold sm:text-base'>{name}</h3>
-        <p
-          className='text-muted-foreground text-xs sm:text-sm'
-          style={{
-            display: '-webkit-box',
-            WebkitLineClamp: 3,
-            WebkitBoxOrient: 'vertical',
-            overflow: 'hidden',
-            minHeight: '60px'
-          }}
-        >
+        <p className='text-muted-foreground line-clamp-3 min-h-[60px] text-xs sm:text-sm'>
           {description}
         </p>
       </div>

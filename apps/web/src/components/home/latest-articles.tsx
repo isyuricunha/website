@@ -117,7 +117,10 @@ const Card = (props: CardProps) => {
   })
 
   return (
-    <Link href={`/blog/${slug}`} className='shadow-feature-card group relative rounded-2xl p-1.5'>
+    <Link
+      href={`/blog/${slug}`}
+      className='shadow-feature-card focus-visible:ring-ring group relative rounded-2xl p-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2'
+    >
       <div className='flex items-center justify-between p-2'>
         <div className='flex items-center gap-1.5'>
           <PencilIcon className='size-3' />
