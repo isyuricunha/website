@@ -53,7 +53,7 @@ const NewsletterSignup = () => {
 
   if (isSubscribed) {
     return (
-      <Card>
+      <Card className='shadow-feature-card rounded-2xl'>
         <CardContent className='p-6 text-center'>
           <CheckCircle className='mx-auto mb-4 h-12 w-12 text-green-500' />
           <h3 className='mb-2 text-base font-semibold sm:text-lg'>
@@ -68,7 +68,7 @@ const NewsletterSignup = () => {
   }
 
   return (
-    <Card>
+    <Card className='shadow-feature-card rounded-2xl'>
       <CardHeader>
         <CardTitle className='flex items-center gap-2 text-base sm:text-lg'>
           <Mail className='h-5 w-5' />
@@ -82,7 +82,7 @@ const NewsletterSignup = () => {
         <form onSubmit={handleSubmit} className='space-y-4'>
           {error && (
             <div className='flex items-center gap-2 rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-600'>
-              <AlertCircle className='h-4 w-4 flex-shrink-0' />
+              <AlertCircle className='h-4 w-4 shrink-0' />
               <span>{error}</span>
             </div>
           )}
