@@ -2,9 +2,10 @@ import '@testing-library/jest-dom/vitest'
 
 import * as React from 'react'
 import { vi } from 'vitest'
-;
 
-(globalThis as unknown as { __NEXT_IMAGE_OPTS?: unknown }).__NEXT_IMAGE_OPTS = {
+const globalThisTyped = globalThis as unknown as { __NEXT_IMAGE_OPTS?: unknown }
+
+globalThisTyped.__NEXT_IMAGE_OPTS = {
   qualities: [25, 50, 75, 100]
 }
 
