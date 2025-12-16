@@ -33,7 +33,6 @@ const PostCard = (props: PostCardProps) => {
   const { slug, title, summary, date, featured } = props
   const formattedDate = useFormattedDate(date)
   const t = useTranslations()
-  const tv = (key: string, values?: Record<string, any>) => (t as any)(key, values) as string
 
   const viewsQuery = api.views.get.useQuery({
     slug
@@ -55,7 +54,7 @@ const PostCard = (props: PostCardProps) => {
             className='border-yellow-200 bg-yellow-100 px-1.5 py-0.5 text-[10px] text-yellow-800'
           >
             <Star className='mr-0.5 h-2 w-2' />
-            Featured
+            {t('component.filtered-posts.featured')}
           </Badge>
         </div>
       )}
@@ -76,13 +75,13 @@ const PostCard = (props: PostCardProps) => {
             {likesQuery.status === 'pending' ? '--' : null}
             {likesQuery.status === 'error' ? t('common.error') : null}
             {likesQuery.status === 'success' ? (
-              <div>{tv('common.likes', { count: likesQuery.data.likes })}</div>
+              <div>{t('common.likes', { count: likesQuery.data.likes })}</div>
             ) : null}
             <div>&middot;</div>
             {viewsQuery.status === 'pending' ? '--' : null}
             {viewsQuery.status === 'error' ? t('common.error') : null}
             {viewsQuery.status === 'success' ? (
-              <div>{tv('common.views', { count: viewsQuery.data.views })}</div>
+              <div>{t('common.views', { count: viewsQuery.data.views })}</div>
             ) : null}
           </div>
         </div>
