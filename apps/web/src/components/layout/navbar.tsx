@@ -22,7 +22,7 @@ const Navbar = () => {
   const pathname = usePathname()
   const t = useTranslations()
 
-const [visibleCount, setVisibleCount] = useState<number>(HEADER_LINKS.length)
+const [visibleCount, setVisibleCount] = useState(HEADER_LINKS.length)
   const containerRef = useRef<HTMLUListElement | null>(null)
   const measureLinksRef = useRef<HTMLUListElement | null>(null)
   const measureMoreRef = useRef<HTMLLIElement | null>(null)
