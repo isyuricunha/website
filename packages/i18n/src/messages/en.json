@@ -592,6 +592,9 @@
         "blog": {
           "description": "Technical articles and thoughts on development"
         },
+        "snippets": {
+          "description": "Short, practical notes and code recipes"
+        },
         "projects": {
           "description": "Portfolio of development projects and GitHub repositories"
         },
@@ -626,6 +629,10 @@
     "projects": {
       "title": "Projects",
       "description": "Development projects and open source contributions"
+    },
+    "snippets": {
+      "title": "Snippets",
+      "description": "Small, practical notes and code recipes"
     },
     "labels": {
       "live-demo": "Live Demo",
