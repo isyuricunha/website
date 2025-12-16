@@ -154,9 +154,11 @@ const Page = async (props: PageProps) => {
       </Providers>
 
       {flags.comment ? (
-        <Suspense>
-          <Comments slug={slug} />
-        </Suspense>
+        <div className='mt-10'>
+          <Suspense>
+            <Comments slug={slug} />
+          </Suspense>
+        </div>
       ) : null}
     </>
   )

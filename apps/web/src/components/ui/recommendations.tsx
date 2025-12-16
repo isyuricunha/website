@@ -73,7 +73,7 @@ const Recommendations = ({
                 className='hover:bg-accent/50 group block rounded-lg border p-3 transition-colors'
               >
                 <div className='flex items-start gap-3'>
-                  <div className={`mt-0.5 flex-shrink-0 ${colorClass}`}>
+                  <div className={`mt-0.5 shrink-0 ${colorClass}`}>
                     <Icon className='h-4 w-4' />
                   </div>
                   <div className='min-w-0 flex-1'>
