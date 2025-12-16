@@ -63,8 +63,8 @@ const Header = () => {
       >
         <Logo width={24} height={24} className='sm:h-7 sm:w-7' aria-hidden='true' />
       </Link>
-      <div className='flex items-center gap-1 sm:gap-2'>
-        <div className='hidden w-64 md:block'>
+      <div className='flex min-w-0 flex-1 items-center justify-end gap-1 sm:gap-2'>
+        <div className='hidden w-64 shrink-0 md:block'>
           <SiteSearch />
         </div>
         <Navbar />
