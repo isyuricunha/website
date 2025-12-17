@@ -1,7 +1,209 @@
 ---
 ---
 
-<ExpandableSection title='Laptop' icon='Monitor'>
+this is a complete inventory of the hardware that powers my homelab, development work, and daily computing.
+
+no marketing, no affiliate links - just the actual machines i use and why they exist in my setup.
+
+the hardware is organized into:
+
+- **personal notebook** - my daily driver
+- **home lab main server** - the powerhouse for databases and services
+- **home lab arm64 node** - raspberry pi for arm testing
+- **cloud x86-64 machines** - dev and prod in the cloud
+- **cloud arm64 machines** - arm-based cloud workloads
+
+---
+
+## Personal hardware
+
+### Main notebook
+
+This is my daily driver. I use it for everything related to study, code, SSH, docs and general work.
+
+**Specs**
+
+- CPU
+  - **AMD Ryzen 7 7445HS**
+- RAM
+  - **64 GB DDR5**
+- Storage
+  - **256 GB** SSD
+  - **360 GB** SSD
+  - used for system, dev tools, local databases, containers and files
+- GPU
+  - **Nvidia RTX 4070** (notebook)
+
+Main use cases:
+
+- terminals and IDEs to work on code and documentation
+- SSH into all lab and cloud machines through Tailscale
+- database clients, admin tools and dashboards
+- browsers and apps that talk to services running in the lab
+- some local containers and light VMs when needed
+
+This notebook is the place where I drive everything else.
+
+---
+
+## Home lab hardware
+
+### Main server at home
+
+This is the big machine in the homelab, focused on databases, services and experiments.
+
+**CPU**
+
+- **Intel Xeon W9 3475X**
+
+**Memory**
+
+- **256 GB ECC R**
+- **256 GB ECC R** in mirror configuration
+- total of **512 GB** of ECC memory, configured for redundancy to avoid failures
+
+**Storage**
+
+Rotational storage:
+
+- **14 TB HDD** main data
+- **14 TB HDD** for redundancy
+- **14 TB HDD** for backups
+
+NVMe storage:
+
+- **256 GB NVMe** for the system
+- **500 GB NVMe** used as file cache
+- **4 TB NVMe** for cold files and long term storage
+
+**GPUs**
+
+- **Nvidia GT210** for video output
+- **Nvidia GT 1050** for small workloads and video codecs
+- **AMD Radeon RX 7900 XTX** for AI workloads
+
+> note: planning to replace all nvidia and intel hardware with amd components in the future
+
+**typical usage:**
+
+- PostgreSQL and other databases in real lab style setups
+- Docker/Containers stacks for self hosted services
+- monitoring, logging and backup jobs
+- AI experiments using the RX 7900 XTX
+- storage for media, backups and lab data with redundancy
+
+This is the core of the home lab and where most heavy work happens.
+
+---
+
+### ARM64 node in the home lab
+
+I also keep an ARM64 environment at home for testing and variety.
+
+**Board**
+
+- **Raspberry Pi 5**, 16 GB version
+
+**SoC**
+
+- **Broadcom BCM2712**
+- quad core **ARM Cortex A76**
+
+**Memory**
+
+- **16 GB LPDDR4X 4267**
+
+**Storage**
+
+- **64 GB eMMC** module for the system
+- **512 GB** drive for containers and files
+
+Use cases:
+
+- running ARM containers
+- testing services on ARM64 before going to cloud ARM
+- small always on services with low power usage
+- experiments with storage on small boards
+
+This node helps me make sure my setups are not x86 only.
+
+---
+
+## Cloud hardware
+
+I also run dev and prod workloads in the cloud. Right now there are two main groups of VMs.
+
+### x86 64 dev and prod in the cloud
+
+These are two virtual machines with the same hardware, one for dev and one for prod.
+
+**Specs per VM**
+
+- CPU
+  - **AMD EPYC 7551**, **8 vCPU**
+- RAM
+  - **16 GB**
+- Storage
+  - **250 GB** for system, data and logs
+
+There are **two** of these machines with the same configuration.
+
+Main use:
+
+- running databases and services in a more realistic production like environment
+- testing deployments that talk to the home lab through Tailscale
+- simulating scenarios where part of the stack is on premises and part is in the cloud
+
+---
+
+### ARM64 dev and prod in the cloud
+
+I also keep ARM64 machines in the cloud for tests and workloads that make sense on that architecture.
+
+**Specs per VM**
+
+- CPU
+  - **8 vCPU**
+- RAM
+  - **24 GB**
+- Storage
+  - **150 GB** for system and data
+
+> note: exact cpu model not specified by cloud provider - what matters is the performance and arm64 architecture
+
+**used for:**
+
+- running ARM64 containers and services
+- checking performance differences between ARM and x86 setups
+- experiments with energy efficient style workloads
+
+Again, the idea is to have at least dev and prod separated in this group.
+
+---
+
+## Why this mix of hardware
+
+The hardware is not random. It follows a simple idea.
+
+- the notebook is the control center
+- the home lab main server is where heavy work and storage live
+- the home ARM64 node gives me variety and low power experiments
+- the cloud machines let me simulate more realistic production setups
+
+With this combination I can:
+
+- test databases and services with serious memory and storage at home
+- run AI workloads locally using the RX 7900 XTX
+- keep redundancy and backups with mirrored RAM and multiple HDDs
+- compare x86 and ARM64 behavior
+- practice dev, staging and prod style separation
+
+---
+
+this inventory helps me remember what i actually have and serves as documentation for my infrastructure. if you are reading this and you are into homelabs, now you know what is running behind the scenes at yuricunha.com.
+
+
+{/* <ExpandableSection title='Notebook' icon='Monitor'>
   <div className='mb-6'>
     <Image
       src='/images/uses/ideapad-3i.png'
@@ -10,33 +212,33 @@
       height={1080}
       lazy={false}
       priority
-      className='mx-auto h-auto w-full max-w-sm rounded-lg object-contain shadow-lg'
+      className='mx-auto h-48 w-full max-w-xs rounded-lg object-contain shadow-lg'
     />
   </div>
   <div className='bg-muted/20 rounded-lg p-4'>
-    <h3 className='mb-2 text-sm font-semibold sm:text-base'>Why I chose this laptop:</h3>
+    <h3 className='mb-2 text-sm font-semibold sm:text-base'>Por que escolhi este notebook:</h3>
     <ul className='text-muted-foreground space-y-1 text-xs sm:text-sm'>
-      <li>Perfect balance of performance and portability</li>
-      <li>Great for development and occasional gaming</li>
-      <li>Excellent value for money</li>
+      <li>Equilíbrio perfeito entre desempenho e portabilidade</li>
+      <li>Ótimo para desenvolvimento e jogos ocasionais</li>
+      <li>Excelente custo-benefício</li>
     </ul>
   </div>
 </ExpandableSection>
 
-<ExpandableSection title='Accessories' icon='Smartphone'>
+<ExpandableSection title='Acessórios' icon='Smartphone'>
   <ItemGrid
     items={[
       {
         image: '/images/uses/accessories/s10.png',
         name: 'S10 5G',
-        description: 'Black, 512GB',
+        description: 'Preto, 512GB',
         url: 'https://www.samsung.com/uk/smartphones/galaxy-s10.../',
         isAffiliate: false
       },
       {
         image: '/images/uses/accessories/quietcontrol30.png',
         name: 'Bose Quiet Control 30',
-        description: 'Headphone',
+        description: 'Fone de ouvido',
         url: 'https://www.boselatam.com/en_ar/products/headphones/earbuds/quietcontrol-30.html',
         isAffiliate: true
       }
@@ -44,107 +246,267 @@
   />
 </ExpandableSection>
 
-<ExpandableSection title='Gaming PC - Hardware' icon='Zap'>
-  <ItemGrid
-    items={[
-      {
-        image: '/images/uses/gaming-pc/monitor.png',
-        name: 'LG 27GR75Q-B',
-        description: '27" 165hz Monitor',
-        url: 'https://www.lg.com/us/monitors/lg-27gr75q-b-gaming-monitor',
-        isAffiliate: true
-      },
-      {
-        image: '/images/uses/gaming-pc/mx-ergo.png',
-        name: 'Logitech MX Ergo+',
-        description: 'Mouse',
-        url: 'https://www.logitech.com/en-us/shop/p/mx-ergo-wireless-trackball-mouse.910-005177',
-        isAffiliate: true
-      },
-      {
-        image: '/images/uses/gaming-pc/wooting-60he.png',
-        name: 'Wooting 60HE+',
-        description: 'Wireless Custom Mechanical Keyboard',
-        url: 'https://wooting.io/wooting-60he',
-        isAffiliate: false
-      }
-    ]}
-  />
+<ExpandableSection title='PC Gamer - Hardware' icon='Zap'>
+
+<ItemGrid
+  items={[
+    {
+      image: '/images/uses/gaming-pc/monitor.png',
+      name: 'LG 27GR75Q-B',
+      description: 'Monitor 27" 165Hz',
+      url: 'https://www.lg.com/us/monitors/lg-27gr75q-b-gaming-monitor'
+    },
+    {
+      image: '/images/uses/gaming-pc/mx-ergo.png',
+      name: 'Logitech MX Ergo+',
+      description: 'Mouse',
+      url: 'https://www.logitech.com/en-us/shop/p/mx-ergo-wireless-trackball-mouse.910-005177'
+    },
+    {
+      image: '/images/uses/gaming-pc/wooting-60he.png',
+      name: 'Wooting 60HE+',
+      description: 'Teclado Mecânico Personalizado Sem Fio',
+      url: 'https://wooting.io/wooting-60he'
+    },
+    {
+      image: '/images/uses/gaming-pc/i9.png',
+      name: 'Intel® Core™ Ultra 9 Processor 285K',
+      description: 'CPU',
+      url: 'https://www.intel.com/content/www/us/en/products/sku/241060/intel-core-ultra-9-processor-285k-36m-cache-up-to-5-70-ghz/specifications.html'
+    },
+    {
+      image: '/images/uses/gaming-pc/5070d.png',
+      name: 'RTX 5070D',
+      description: 'Placa de vídeo',
+      url: 'https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5070-family/'
+    },
+    {
+      image: '/images/uses/gaming-pc/adata.png',
+      name: 'NVME ADATA Legends',
+      description: '2TB',
+      url: 'https://www.amazon.com/ADATA-800-Internal-Storage-Endurance/dp/B0BWFMXMJR'
+    },
+    {
+      image: '/images/uses/gaming-pc/gamdias.png',
+      name: 'Water Cooler Gamdias Chione M4-420',
+      description: 'Cooler',
+      url: 'https://www.gamdias.com/en/component/cooler/CHIONE_M4-420'
+    },
+    {
+      image: '/images/uses/gaming-pc/fsp-700w.png',
+      name: 'FSP 700W',
+      description: 'Fonte de Alimentação, 80+ Bronze',
+      url: 'https://www.fsplifestyle.com/en/product/Hydro700w.html'
+    },
+    {
+      image: '/images/uses/gaming-pc/32gb-ram.png',
+      name: '96GB',
+      description: 'RAM',
+      url: 'https://www.amazon.com/s?k=96gb+ram'
+    },
+    {
+      image: '/images/uses/gaming-pc/case.png',
+      name: 'Duex DX305T',
+      description: 'Gabinete',
+      url: 'https://www.duex.com.br/produtos/gabinete/gabinete-gamer-dx305t'
+    }
+  ]}
+/>
 
   <div className='bg-primary/10 border-primary/20 mt-6 rounded-lg border p-4'>
-    <h3 className='text-primary mb-2 text-sm font-semibold'>💡 Pro Tip</h3>
+    <h3 className='text-primary mb-2 text-sm font-semibold'>
+      💡 Dica Pro
+    </h3>
     <div className='text-muted-foreground text-xs sm:text-sm'>
-      When building a gaming PC, invest in GPU and CPU first. You can always upgrade peripherals
-      later, but the main components determine your overall performance.
+      Ao montar um PC gamer, invista mais na GPU e CPU primeiro. Você sempre pode atualizar
+      os periféricos depois, mas os componentes principais determinam seu desempenho geral.
     </div>
   </div>
 </ExpandableSection>
 
-<ExpandableSection title='Infrastructure & DevOps' icon='Shield'>
-  <div className='mb-6'>
-    <ItemGrid
-      items={[
-        {
-          image: '/images/uses/software/docker.png',
-          name: 'Docker',
-          description: 'Container Platform',
-          url: 'https://www.docker.com/',
-          isAffiliate: false
-        },
-        {
-          image: '/images/uses/software/kubernetes.png',
-          name: 'Kubernetes',
-          description: 'Container Orchestration',
-          url: 'https://kubernetes.io/',
-          isAffiliate: false
-        },
-        {
-          image: '/images/uses/software/terraform.png',
-          name: 'Terraform',
-          description: 'Infrastructure as Code',
-          url: 'https://www.terraform.io/',
-          isAffiliate: false
-        }
-      ]}
-    />
-  </div>
+<ExpandableSection title='Infraestrutura' icon='Shield'>
+
+<ItemGrid
+  items={[
+    {
+      image: '/images/uses/software/docker.png',
+      name: 'Docker',
+      description: 'Plataforma de Contêineres',
+      url: 'https://www.docker.com/'
+    },
+    {
+      image: '/images/uses/software/kubernetes.png',
+      name: 'Kubernetes',
+      description: 'Orquestração de Contêineres',
+      url: 'https://kubernetes.io/'
+    },
+    {
+      image: '/images/uses/software/ansible.png',
+      name: 'Ansible',
+      description: 'Gerenciamento de Configurações',
+      url: 'https://www.ansible.com/'
+    },
+    {
+      image: '/images/uses/software/terraform.png',
+      name: 'Terraform',
+      description: 'Infraestrutura como Código',
+      url: 'https://www.terraform.io/'
+    },
+    {
+      image: '/images/uses/software/prometheus.png',
+      name: 'Prometheus',
+      description: 'Monitoramento e Alertas',
+      url: 'https://prometheus.io/'
+    },
+    {
+      image: '/images/uses/software/grafana.png',
+      name: 'Grafana',
+      description: 'Visualização de Métricas',
+      url: 'https://grafana.com/'
+    },
+    {
+      image: '/images/uses/software/nginx.png',
+      name: 'Nginx',
+      description: 'Servidor Web e Proxy Reverso',
+      url: 'https://nginx.org/'
+    },
+    {
+      image: '/images/uses/software/haproxy.png',
+      name: 'HAProxy',
+      description: 'Balanceador de Carga',
+      url: 'https://www.haproxy.org/'
+    },
+    {
+      image: '/images/uses/software/jenkins.png',
+      name: 'Jenkins',
+      description: 'Automação CI/CD',
+      url: 'https://www.jenkins.io/'
+    },
+    {
+      image: '/images/uses/software/consul.png',
+      name: 'Consul',
+      description: 'Descoberta de Serviços e Configuração',
+      url: 'https://www.consul.io/'
+    },
+    {
+      image: '/images/uses/software/vault.png',
+      name: 'Vault',
+      description: 'Gerenciamento de Segredos',
+      url: 'https://www.vaultproject.io/'
+    },
+    {
+      image: '/images/uses/software/chef.png',
+      name: 'Chef',
+      description: 'Automação de Infraestrutura',
+      url: 'https://www.chef.io/'
+    },
+    {
+      image: '/images/uses/software/puppet.png',
+      name: 'Puppet',
+      description: 'Gerenciamento de Configurações',
+      url: 'https://puppet.com/'
+    },
+    {
+      image: '/images/uses/software/saltstack.png',
+      name: 'SaltStack',
+      description: 'Automação e Gerenciamento de Configurações',
+      url: 'https://www.saltproject.io/'
+    },
+    {
+      image: '/images/uses/software/vagrant.png',
+      name: 'Vagrant',
+      description: 'Automação de Máquinas Virtuais',
+      url: 'https://www.vagrantup.com/'
+    },
+    {
+      image: '/images/uses/software/zabbix.png',
+      name: 'Zabbix',
+      description: 'Solução de Monitoramento',
+      url: 'https://www.zabbix.com/'
+    },
+    {
+      image: '/images/uses/software/datadog.png',
+      name: 'Datadog',
+      description: 'Monitoramento em Nuvem',
+      url: 'https://www.datadoghq.com/'
+    },
+    {
+      image: '/images/uses/software/rabbitmq.png',
+      name: 'RabbitMQ',
+      description: 'Broker de Mensagens',
+      url: 'https://www.rabbitmq.com/'
+    },
+    {
+      image: '/images/uses/software/kafka.png',
+      name: 'Kafka',
+      description: 'Streaming Distribuído',
+      url: 'https://kafka.apache.org/'
+    },
+    {
+      image: '/images/uses/software/splunk.png',
+      name: 'Splunk',
+      description: 'Análise de Logs e Monitoramento',
+      url: 'https://www.splunk.com/'
+    },
+    {
+      image: '/images/uses/software/apache.png',
+      name: 'Apache',
+      description: 'Servidor Web',
+      url: 'https://httpd.apache.org/'
+    }
+  ]}
+/>
 
   <ComparisonTable
     items={[
       {
         name: 'Docker',
-        pros: ['Easy containerization', 'Great for development', 'Wide ecosystem'],
-        cons: ['Resource intensive', 'Learning curve'],
-        price: 'Free',
+        pros: ['Containerização fácil', 'Ótimo para desenvolvimento', 'Amplo ecossistema'],
+        cons: ['Uso intensivo de recursos', 'Curva de aprendizado'],
+        price: 'Gratuito',
         rating: 5
       },
       {
         name: 'Kubernetes',
-        pros: ['Excellent orchestration', 'Auto-scaling', 'Production ready'],
-        cons: ['Complex setup', 'Steep learning curve'],
-        price: 'Free',
+        pros: ['Excelente orquestração', 'Auto-scaling', 'Pronto para produção'],
+        cons: ['Configuração complexa', 'Curva de aprendizado íngreme'],
+        price: 'Gratuito',
         rating: 4
       },
       {
         name: 'Terraform',
-        pros: ['Infrastructure as code', 'Multi-cloud', 'Great planning'],
-        cons: ['State management', 'Can be complex'],
-        price: 'Free/Paid',
+        pros: ['Infraestrutura como código', 'Multi-cloud', 'Ótimo planejamento'],
+        cons: ['Gerenciamento de estado', 'Pode ser complexo'],
+        price: 'Gratuito/Pago',
         rating: 4
       }
     ]}
-    title='Infrastructure Tools Comparison'
+    title='Comparação de Ferramentas de Infraestrutura'
   />
 </ExpandableSection>
 
-<ExpandableSection title='Development Stacks' icon='Code'>
+<ExpandableSection title='Stacks' icon='Code'>
   <ItemGrid
     items={[
       {
         image: '/images/uses/software/elk.png',
         name: 'ELK Stack',
-        description: 'Elasticsearch, Logstash & Kibana for log analysis',
+        description: 'Elasticsearch, Logstash & Kibana para análise de logs',
         url: 'https://www.elastic.co/what-is/elk-stack',
+        isAffiliate: false
+      },
+      {
+        image: '/images/uses/software/lamp.png',
+        name: 'LAMP Stack',
+        description: 'Linux, Apache, MySQL & PHP',
+        url: 'https://en.wikipedia.org/wiki/LAMP_(software_bundle)',
+        isAffiliate: false
+      },
+      {
+        image: '/images/uses/software/mean.png',
+        name: 'MEAN Stack',
+        description: 'MongoDB, Express, Angular & Node.js',
+        url: 'https://en.wikipedia.org/wiki/MEAN_stack',
         isAffiliate: false
       },
       {
@@ -163,4 +525,4 @@
       }
     ]}
   />
-</ExpandableSection>
+</ExpandableSection> */}
