@@ -43,18 +43,14 @@ import {
   Trash2,
   Eye,
   EyeOff,
-  AlertCircle,
-  CheckCircle,
-  Info,
-  AlertTriangle,
   Calendar,
   Users,
   BarChart3
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { cn } from '@isyuricunha/utils'
-
 import { api } from '@/trpc/react'
+import { getAnnouncementUi } from '@/lib/announcement-ui'
 
 interface EditAnnouncementData {
   id: string
@@ -116,20 +112,6 @@ export default function AnnouncementManagement() {
       toast.error(`Failed to delete announcement: ${error.message}`)
     }
   })
-
-  const getAnnouncementIcon = (type: string) => {
-    switch (type) {
-      case 'error':
-        return <AlertCircle className='text-destructive h-4 w-4' />
-      case 'warning':
-        return <AlertTriangle className='text-primary h-4 w-4' />
-      case 'success':
-        return <CheckCircle className='text-primary h-4 w-4' />
-      case 'info':
-      default:
-        return <Info className='text-primary h-4 w-4' />
-    }
-  }
 
   const handleCreateAnnouncement = (formData: FormData) => {
     const title = formData.get('title') as string
@@ -212,8 +194,8 @@ export default function AnnouncementManagement() {
       {/* Header */}
       <div className='flex flex-col justify-between gap-4 sm:flex-row sm:items-center'>
         <div className='min-w-0 flex-1 space-y-1'>
-          <h1 className='from-foreground to-foreground/70 flex items-center gap-3 bg-gradient-to-r bg-clip-text text-3xl font-bold tracking-tight text-transparent sm:text-4xl'>
-            <div className='bg-primary/10 text-primary flex-shrink-0 rounded-xl p-2.5'>
+          <h1 className='from-foreground to-foreground/70 flex items-center gap-3 bg-linear-to-r bg-clip-text text-3xl font-bold tracking-tight text-transparent sm:text-4xl'>
+            <div className='bg-primary/10 text-primary shrink-0 rounded-xl p-2.5'>
               <Megaphone className='h-7 w-7 sm:h-8 sm:w-8' />
             </div>
             <span className='truncate'>Announcements</span>
@@ -226,7 +208,7 @@ export default function AnnouncementManagement() {
         <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
           <DialogTrigger asChild>
             <Button className='min-h-[44px] w-full px-4 text-sm sm:w-auto sm:px-6 sm:text-base'>
-              <Plus className='mr-2 h-4 w-4 flex-shrink-0' />
+              <Plus className='mr-2 h-4 w-4 shrink-0' />
               <span className='truncate'>Create Announcement</span>
             </Button>
           </DialogTrigger>
@@ -267,6 +249,9 @@ export default function AnnouncementManagement() {
                         <SelectItem value='success'>Success</SelectItem>
                         <SelectItem value='warning'>Warning</SelectItem>
                         <SelectItem value='error'>Error</SelectItem>
+                        <SelectItem value='maintenance'>Maintenance</SelectItem>
+                        <SelectItem value='feature'>Feature</SelectItem>
+                        <SelectItem value='update'>Update</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -314,7 +299,7 @@ export default function AnnouncementManagement() {
       {/* Analytics Cards */}
       {analytics && (
         <div className='grid gap-5 sm:grid-cols-2 lg:grid-cols-3'>
-          <Card className='border-border/50 from-background to-background/50 bg-gradient-to-br backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl'>
+          <Card className='border-border/50 from-background to-background/50 bg-linear-to-br backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl'>
             <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-3'>
               <CardTitle className='text-muted-foreground text-sm font-semibold'>
                 Total Views
@@ -333,7 +318,7 @@ export default function AnnouncementManagement() {
             </CardContent>
           </Card>
 
-          <Card className='border-border/50 from-background to-background/50 bg-gradient-to-br backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl'>
+          <Card className='border-border/50 from-background to-background/50 bg-linear-to-br backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl'>
             <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-3'>
               <CardTitle className='text-muted-foreground text-sm font-semibold'>
                 Dismissal Rate
@@ -352,7 +337,7 @@ export default function AnnouncementManagement() {
             </CardContent>
           </Card>
 
-          <Card className='border-border/50 from-background to-background/50 bg-gradient-to-br backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl'>
+          <Card className='border-border/50 from-background to-background/50 bg-linear-to-br backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl'>
             <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-3'>
               <CardTitle className='text-muted-foreground text-sm font-semibold'>
                 Active Announcements
@@ -374,7 +359,7 @@ export default function AnnouncementManagement() {
       )}
 
       {/* Announcements List */}
-      <Card className='border-border/50 from-background to-background/80 bg-gradient-to-br backdrop-blur-sm'>
+      <Card className='border-border/50 from-background to-background/80 bg-linear-to-br backdrop-blur-sm'>
         <CardHeader className='p-4 sm:p-6'>
           <div className='mb-1 flex items-center gap-2'>
             <div className='bg-primary/10 text-primary rounded-lg p-2'>
@@ -389,129 +374,132 @@ export default function AnnouncementManagement() {
         <CardContent className='p-4 sm:p-6'>
           <ScrollArea className='h-[400px] sm:h-[500px] lg:h-[600px]'>
             <div className='space-y-4'>
-              {announcements?.announcements?.map((announcement) => (
-                <Card
-                  key={announcement.id}
-                  className='border-border/40 bg-card hover:border-primary/30 group transition-all duration-300 hover:shadow-lg'
-                >
-                  <CardContent className='p-5'>
-                    <div className='flex items-start justify-between gap-4'>
-                      <div className='min-w-0 flex-1 space-y-3'>
-                        {/* Header */}
-                        <div className='flex items-start gap-3'>
-                          <div
-                            className={cn(
-                              'rounded-xl p-2.5 transition-transform duration-200 group-hover:scale-110',
-                              announcement.type === 'error' && 'bg-destructive/10',
-                              announcement.type !== 'error' && 'bg-primary/10 text-primary'
-                            )}
-                          >
-                            {getAnnouncementIcon(announcement.type)}
-                          </div>
-                          <div className='min-w-0 flex-1'>
-                            <div className='mb-1.5 flex items-center gap-2'>
-                              <h3 className='group-hover:text-primary truncate text-lg font-semibold transition-colors'>
-                                {announcement.title}
-                              </h3>
-                              {!announcement.isActive && (
-                                <Badge variant='secondary' className='text-xs'>
-                                  Inactive
-                                </Badge>
+              {announcements?.announcements?.map((announcement) => {
+                const ui = getAnnouncementUi(announcement.type, { iconSize: 'sm' })
+                return (
+                  <Card
+                    key={announcement.id}
+                    className='border-border/40 bg-card hover:border-primary/30 group transition-all duration-300 hover:shadow-lg'
+                  >
+                    <CardContent className='p-5'>
+                      <div className='flex items-start justify-between gap-4'>
+                        <div className='min-w-0 flex-1 space-y-3'>
+                          {/* Header */}
+                          <div className='flex items-start gap-3'>
+                            <div
+                              className={cn(
+                                'rounded-xl p-2.5 transition-transform duration-200 group-hover:scale-110',
+                                ui.iconContainerClassName,
+                                ui.iconClassName
                               )}
+                            >
+                              {ui.icon}
                             </div>
-                            <p className='text-muted-foreground line-clamp-2 text-sm leading-relaxed'>
-                              {announcement.content}
-                            </p>
+                            <div className='min-w-0 flex-1'>
+                              <div className='mb-1.5 flex items-center gap-2'>
+                                <h3 className='group-hover:text-primary truncate text-lg font-semibold transition-colors'>
+                                  {announcement.title}
+                                </h3>
+                                {!announcement.isActive && (
+                                  <Badge variant='secondary' className='text-xs'>
+                                    Inactive
+                                  </Badge>
+                                )}
+                              </div>
+                              <p className='text-muted-foreground line-clamp-2 text-sm leading-relaxed'>
+                                {announcement.content}
+                              </p>
+                            </div>
+                          </div>
+
+                          {/* Footer Info */}
+                          <div className='text-muted-foreground flex flex-wrap items-center gap-4 pl-14 text-xs'>
+                            <span className='flex items-center gap-1.5'>
+                              <Calendar className='h-3.5 w-3.5' />
+                              {new Date(announcement.createdAt).toLocaleDateString()}
+                            </span>
+                            <Badge variant='outline' className='text-xs font-medium'>
+                              Priority {announcement.priority}
+                            </Badge>
+                            {announcement.targetAudience && (
+                              <span className='flex items-center gap-1.5'>
+                                <Users className='h-3.5 w-3.5' />
+                                Targeted
+                              </span>
+                            )}
+                            <span>
+                              {announcement.isDismissible ? '✓ Dismissible' : '✗ Not dismissible'}
+                            </span>
                           </div>
                         </div>
 
-                        {/* Footer Info */}
-                        <div className='text-muted-foreground flex flex-wrap items-center gap-4 pl-14 text-xs'>
-                          <span className='flex items-center gap-1.5'>
-                            <Calendar className='h-3.5 w-3.5' />
-                            {new Date(announcement.createdAt).toLocaleDateString()}
-                          </span>
-                          <Badge variant='outline' className='text-xs font-medium'>
-                            Priority {announcement.priority}
-                          </Badge>
-                          {announcement.targetAudience && (
-                            <span className='flex items-center gap-1.5'>
-                              <Users className='h-3.5 w-3.5' />
-                              Targeted
-                            </span>
-                          )}
-                          <span>
-                            {announcement.isDismissible ? '✓ Dismissible' : '✗ Not dismissible'}
-                          </span>
+                        {/* Action Buttons */}
+                        <div className='flex items-center gap-2'>
+                          <Button
+                            variant='ghost'
+                            size='sm'
+                            onClick={() => handleToggleActive(announcement)}
+                            className={cn(
+                              'h-9 w-9 p-0 transition-all duration-200',
+                              announcement.isActive
+                                ? 'text-primary hover:bg-primary/10'
+                                : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+                            )}
+                            aria-label={announcement.isActive ? 'Deactivate' : 'Activate'}
+                          >
+                            {announcement.isActive ? (
+                              <Eye className='h-4 w-4' />
+                            ) : (
+                              <EyeOff className='h-4 w-4' />
+                            )}
+                          </Button>
+
+                          <Button
+                            variant='ghost'
+                            size='sm'
+                            onClick={() => openEditDialog(announcement)}
+                            className='text-primary hover:bg-primary/10 h-9 w-9 p-0 transition-all duration-200'
+                            aria-label='Edit announcement'
+                          >
+                            <Edit className='h-4 w-4' />
+                          </Button>
+
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <Button
+                                variant='ghost'
+                                size='sm'
+                                className='text-destructive hover:bg-destructive/10 h-9 w-9 p-0 transition-all duration-200'
+                                aria-label='Delete announcement'
+                              >
+                                <Trash2 className='h-4 w-4' />
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>Delete Announcement</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  Are you sure you want to delete "{announcement.title}"? This action
+                                  cannot be undone.
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction
+                                  onClick={() => handleDeleteAnnouncement(announcement.id)}
+                                  className='bg-destructive text-destructive-foreground hover:bg-destructive/90'
+                                >
+                                  Delete
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
                         </div>
                       </div>
-
-                      {/* Action Buttons */}
-                      <div className='flex items-center gap-2'>
-                        <Button
-                          variant='ghost'
-                          size='sm'
-                          onClick={() => handleToggleActive(announcement)}
-                          className={cn(
-                            'h-9 w-9 p-0 transition-all duration-200',
-                            announcement.isActive
-                              ? 'text-primary hover:bg-primary/10'
-                              : 'text-muted-foreground hover:text-foreground hover:bg-muted'
-                          )}
-                          aria-label={announcement.isActive ? 'Deactivate' : 'Activate'}
-                        >
-                          {announcement.isActive ? (
-                            <Eye className='h-4 w-4' />
-                          ) : (
-                            <EyeOff className='h-4 w-4' />
-                          )}
-                        </Button>
-
-                        <Button
-                          variant='ghost'
-                          size='sm'
-                          onClick={() => openEditDialog(announcement)}
-                          className='text-primary hover:bg-primary/10 h-9 w-9 p-0 transition-all duration-200'
-                          aria-label='Edit announcement'
-                        >
-                          <Edit className='h-4 w-4' />
-                        </Button>
-
-                        <AlertDialog>
-                          <AlertDialogTrigger asChild>
-                            <Button
-                              variant='ghost'
-                              size='sm'
-                              className='text-destructive hover:bg-destructive/10 h-9 w-9 p-0 transition-all duration-200'
-                              aria-label='Delete announcement'
-                            >
-                              <Trash2 className='h-4 w-4' />
-                            </Button>
-                          </AlertDialogTrigger>
-                          <AlertDialogContent>
-                            <AlertDialogHeader>
-                              <AlertDialogTitle>Delete Announcement</AlertDialogTitle>
-                              <AlertDialogDescription>
-                                Are you sure you want to delete "{announcement.title}"? This action
-                                cannot be undone.
-                              </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                              <AlertDialogCancel>Cancel</AlertDialogCancel>
-                              <AlertDialogAction
-                                onClick={() => handleDeleteAnnouncement(announcement.id)}
-                                className='bg-destructive text-destructive-foreground hover:bg-destructive/90'
-                              >
-                                Delete
-                              </AlertDialogAction>
-                            </AlertDialogFooter>
-                          </AlertDialogContent>
-                        </AlertDialog>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+                    </CardContent>
+                  </Card>
+                )
+              })}
 
               {!announcements?.announcements?.length && (
                 <div className='text-muted-foreground py-8 text-center sm:py-12'>
@@ -569,6 +557,9 @@ export default function AnnouncementManagement() {
                         <SelectItem value='success'>Success</SelectItem>
                         <SelectItem value='warning'>Warning</SelectItem>
                         <SelectItem value='error'>Error</SelectItem>
+                        <SelectItem value='maintenance'>Maintenance</SelectItem>
+                        <SelectItem value='feature'>Feature</SelectItem>
+                        <SelectItem value='update'>Update</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>

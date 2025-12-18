@@ -27,6 +27,7 @@ import { Mail, Megaphone, Bell, Send } from 'lucide-react'
 import { toast } from 'sonner'
 
 import { api } from '@/trpc/react'
+import { getAnnouncementUi } from '@/lib/announcement-ui'
 
 export default function CommunicationManagement() {
   const [selectedTab, setSelectedTab] = useState('overview')
@@ -166,19 +167,8 @@ export default function CommunicationManagement() {
     }
   }
 
-  const getAnnouncementTypeColor = (type: string) => {
-    switch (type) {
-      case 'error':
-        return 'destructive'
-      case 'warning':
-        return 'secondary'
-      case 'success':
-        return 'default'
-      case 'info':
-        return 'outline'
-      default:
-        return 'outline'
-    }
+  const getAnnouncementTypeVariant = (type: string) => {
+    return getAnnouncementUi(type).badgeVariant
   }
 
   if (statsLoading) {
@@ -307,7 +297,7 @@ export default function CommunicationManagement() {
                       .map((announcement) => (
                         <div key={announcement.id} className='flex items-center justify-between'>
                           <div className='flex items-center space-x-2'>
-                            <Badge variant={getAnnouncementTypeColor(announcement.type) as any}>
+                            <Badge variant={getAnnouncementTypeVariant(announcement.type) as any}>
                               {announcement.type}
                             </Badge>
                             <span className='text-sm'>{announcement.title}</span>
@@ -589,7 +579,7 @@ export default function CommunicationManagement() {
                         <div className='mb-2 flex items-center justify-between'>
                           <div className='font-medium'>{announcement.title}</div>
                           <div className='flex items-center space-x-2'>
-                            <Badge variant={getAnnouncementTypeColor(announcement.type) as any}>
+                            <Badge variant={getAnnouncementTypeVariant(announcement.type) as any}>
                               {announcement.type}
                             </Badge>
                             {announcement.isActive && <Badge variant='default'>Active</Badge>}

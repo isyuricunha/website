@@ -2,43 +2,10 @@
 
 import { useEffect, useState } from 'react'
 import { useTranslations } from '@isyuricunha/i18n/client'
-import { X, AlertCircle, Info, CheckCircle, AlertTriangle, Sparkles } from 'lucide-react'
+import { X } from 'lucide-react'
 
 import { api } from '@/trpc/react'
-
-const getAnnouncementIcon = (type: string) => {
-  switch (type) {
-    case 'error':
-      return <AlertCircle className='h-5 w-5' />
-    case 'warning':
-      return <AlertTriangle className='h-5 w-5' />
-    case 'success':
-      return <CheckCircle className='h-5 w-5' />
-    case 'feature':
-      return <Sparkles className='h-5 w-5' />
-    case 'info':
-    default:
-      return <Info className='h-5 w-5' />
-  }
-}
-
-const getAnnouncementStyles = (type: string) => {
-  if (type === 'error') {
-    return {
-      container: 'bg-destructive/10 border-destructive/20',
-      icon: 'text-destructive',
-      title: 'text-destructive',
-      content: 'text-destructive/80'
-    }
-  }
-
-  return {
-    container: 'bg-primary/10 border-primary/20',
-    icon: 'text-primary',
-    title: 'text-foreground',
-    content: 'text-muted-foreground'
-  }
-}
+import { getAnnouncementUi } from '@/lib/announcement-ui'
 
 export default function AnnouncementBanner() {
   const t = useTranslations()
@@ -96,23 +63,23 @@ export default function AnnouncementBanner() {
   return (
     <div className='space-y-3'>
       {activeAnnouncements.map((announcement) => {
-        const styles = getAnnouncementStyles(announcement.type)
+        const ui = getAnnouncementUi(announcement.type, { iconSize: 'md' })
         return (
           <div
             key={announcement.id}
-            className={`group relative overflow-hidden rounded-xl border backdrop-blur-sm transition-all duration-300 hover:shadow-lg ${styles.container}`}
+            className={`group relative overflow-hidden rounded-xl border backdrop-blur-sm transition-all duration-300 hover:shadow-lg ${ui.containerClassName}`}
           >
             <div className='relative p-4'>
               <div className='flex items-start gap-4'>
                 <div
-                  className={`shrink-0 transition-transform duration-300 group-hover:scale-110 ${styles.icon}`}
+                  className={`shrink-0 transition-transform duration-300 group-hover:scale-110 ${ui.iconClassName}`}
                 >
-                  {getAnnouncementIcon(announcement.type)}
+                  {ui.icon}
                 </div>
 
                 <div className='min-w-0 flex-1 space-y-1.5'>
                   <div className='flex items-center gap-2'>
-                    <h4 className={`text-base font-semibold leading-tight ${styles.title}`}>
+                    <h4 className={`text-base font-semibold leading-tight ${ui.titleClassName}`}>
                       {announcement.title}
                     </h4>
                     {announcement.priority > 5 && (
@@ -121,7 +88,7 @@ export default function AnnouncementBanner() {
                       </span>
                     )}
                   </div>
-                  <p className={`text-sm leading-relaxed ${styles.content}`}>
+                  <p className={`text-sm leading-relaxed ${ui.contentClassName}`}>
                     {announcement.content}
                   </p>
                 </div>

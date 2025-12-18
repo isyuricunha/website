@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState, type MouseEvent } from 'react'
-import { X, Bell, AlertCircle, Info, CheckCircle, AlertTriangle, Sparkles } from 'lucide-react'
+import { X, Bell } from 'lucide-react'
 import {
   Card,
   CardContent,
@@ -14,36 +14,7 @@ import {
 import { useLocale, useTranslations } from '@isyuricunha/i18n/client'
 
 import { api } from '@/trpc/react'
-
-const getAnnouncementIcon = (type: string) => {
-  switch (type) {
-    case 'error':
-      return <AlertCircle className='h-4 w-4' />
-    case 'warning':
-      return <AlertTriangle className='h-4 w-4' />
-    case 'success':
-      return <CheckCircle className='h-4 w-4' />
-    case 'feature':
-      return <Sparkles className='h-4 w-4' />
-    case 'info':
-    default:
-      return <Info className='h-4 w-4' />
-  }
-}
-
-const getAnnouncementStyles = (type: string) => {
-  if (type === 'error') {
-    return {
-      icon: 'text-destructive',
-      badge: 'bg-destructive/10 text-destructive border-destructive/20'
-    }
-  }
-
-  return {
-    icon: 'text-primary',
-    badge: 'bg-primary/10 text-primary border-primary/20'
-  }
-}
+import { getAnnouncementUi } from '@/lib/announcement-ui'
 
 interface AnnouncementWidgetProps {
   className?: string
@@ -156,7 +127,7 @@ export default function AnnouncementWidget({ className, maxItems = 5 }: Announce
         <ScrollArea className='h-[320px] pr-4'>
           <div className='space-y-3'>
             {activeAnnouncements.map((announcement) => {
-              const styles = getAnnouncementStyles(announcement.type)
+              const ui = getAnnouncementUi(announcement.type, { iconSize: 'sm' })
               return (
                 <div
                   key={announcement.id}
@@ -164,9 +135,9 @@ export default function AnnouncementWidget({ className, maxItems = 5 }: Announce
                 >
                   <div className='flex items-start gap-3'>
                     <div
-                      className={`shrink-0 transition-transform duration-200 group-hover:scale-110 ${styles.icon}`}
+                      className={`shrink-0 transition-transform duration-200 group-hover:scale-110 ${ui.iconClassName}`}
                     >
-                      {getAnnouncementIcon(announcement.type)}
+                      {ui.icon}
                     </div>
 
                     <div className='min-w-0 flex-1 space-y-2'>
@@ -194,7 +165,7 @@ export default function AnnouncementWidget({ className, maxItems = 5 }: Announce
                       <div className='flex items-center gap-2'>
                         <Badge
                           variant='outline'
-                          className={`text-[10px] font-medium ${styles.badge}`}
+                          className={`text-[10px] font-medium ${ui.badgeClassName}`}
                         >
                           {announcement.type}
                         </Badge>

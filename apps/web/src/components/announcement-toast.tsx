@@ -3,43 +3,10 @@
 import { useEffect } from 'react'
 import { useTranslations } from '@isyuricunha/i18n/client'
 import { toast } from 'sonner'
-import { AlertCircle, Info, CheckCircle, AlertTriangle, X, Sparkles } from 'lucide-react'
+import { X } from 'lucide-react'
 
 import { api } from '@/trpc/react'
-
-const getAnnouncementIcon = (type: string) => {
-  switch (type) {
-    case 'error':
-      return <AlertCircle className='h-5 w-5' />
-    case 'warning':
-      return <AlertTriangle className='h-5 w-5' />
-    case 'success':
-      return <CheckCircle className='h-5 w-5' />
-    case 'feature':
-      return <Sparkles className='h-5 w-5' />
-    case 'info':
-    default:
-      return <Info className='h-5 w-5' />
-  }
-}
-
-const getAnnouncementStyles = (type: string) => {
-  if (type === 'error') {
-    return {
-      icon: 'text-destructive',
-      title: 'text-destructive',
-      content: 'text-destructive/80',
-      button: 'text-destructive/80 hover:text-destructive'
-    }
-  }
-
-  return {
-    icon: 'text-primary',
-    title: 'text-foreground',
-    content: 'text-muted-foreground',
-    button: 'text-muted-foreground hover:text-foreground'
-  }
-}
+import { getAnnouncementUi } from '@/lib/announcement-ui'
 
 export default function AnnouncementToast() {
   const t_announcement = useTranslations('component.announcement-toast')
@@ -81,22 +48,22 @@ export default function AnnouncementToast() {
       const shownToasts = JSON.parse(sessionStorage.getItem('shownAnnouncementToasts') || '[]')
 
       if (!shownToasts.includes(announcement.id)) {
-        const styles = getAnnouncementStyles(announcement.type)
+        const ui = getAnnouncementUi(announcement.type, { iconSize: 'md' })
         toast.custom(
           (t: string | number) => (
             <div className='border-border/50 bg-background/95 animate-in slide-in-from-top-5 fade-in group relative max-w-md overflow-hidden rounded-xl border shadow-2xl backdrop-blur-xl'>
               <div className='from-primary/5 absolute inset-0 bg-linear-to-br via-transparent to-transparent' />
               <div className='relative p-5'>
                 <div className='flex items-start gap-4'>
-                  <div className={`shrink-0 transition-transform duration-300 ${styles.icon}`}>
-                    {getAnnouncementIcon(announcement.type)}
+                  <div className={`shrink-0 transition-transform duration-300 ${ui.iconClassName}`}>
+                    {ui.icon}
                   </div>
 
                   <div className='min-w-0 flex-1 space-y-2'>
-                    <h4 className={`text-base font-semibold leading-tight ${styles.title}`}>
+                    <h4 className={`text-base font-semibold leading-tight ${ui.titleClassName}`}>
                       {announcement.title}
                     </h4>
-                    <p className={`text-sm leading-relaxed ${styles.content}`}>
+                    <p className={`text-sm leading-relaxed ${ui.contentClassName}`}>
                       {announcement.content}
                     </p>
 
@@ -116,7 +83,7 @@ export default function AnnouncementToast() {
                             )
                             toast.dismiss(t)
                           }}
-                          className={`text-xs font-medium transition-colors ${styles.button}`}
+                          className={`text-xs font-medium transition-colors ${ui.buttonClassName}`}
                         >
                           {t_announcement('dont-show-again')}
                         </button>
@@ -124,7 +91,7 @@ export default function AnnouncementToast() {
                       <button
                         type='button'
                         onClick={() => toast.dismiss(t)}
-                        className={`text-xs font-medium transition-colors ${styles.button}`}
+                        className={`text-xs font-medium transition-colors ${ui.buttonClassName}`}
                       >
                         {t_announcement('dismiss')}
                       </button>
