@@ -6,6 +6,7 @@ import { X } from 'lucide-react'
 
 import { api } from '@/trpc/react'
 import { getAnnouncementUi } from '@/lib/announcement-ui'
+import { hasHighPriorityBadge } from '@/lib/announcement-priority'
 import { addDismissedAnnouncementId, getDismissedAnnouncementIds } from '@/utils/announcement-storage'
 
 export default function AnnouncementBanner() {
@@ -76,7 +77,7 @@ export default function AnnouncementBanner() {
                     <h4 className={`text-base font-semibold leading-tight ${ui.titleClassName}`}>
                       {announcement.title}
                     </h4>
-                    {announcement.priority > 5 && (
+                    {hasHighPriorityBadge(announcement.priority) && (
                       <span className='bg-current/10 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium'>
                         {t('component.announcement-banner.high-priority')}
                       </span>

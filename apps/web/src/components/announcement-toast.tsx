@@ -8,6 +8,10 @@ import { X } from 'lucide-react'
 import { api } from '@/trpc/react'
 import { getAnnouncementUi } from '@/lib/announcement-ui'
 import {
+  getAnnouncementToastDurationMs,
+  isUrgentAnnouncement
+} from '@/lib/announcement-priority'
+import {
   addDismissedAnnouncementId,
   addShownAnnouncementToastId,
   getDismissedAnnouncementIds,
@@ -36,7 +40,7 @@ export default function AnnouncementToast() {
     // Filter urgent announcements that haven't been dismissed (date filtering is done server-side)
     const urgentAnnouncements = announcementsData.announcements.filter(
       (announcement) =>
-        announcement.priority >= 3 && // Only urgent announcements
+        isUrgentAnnouncement(announcement.priority) && // Only urgent announcements
         !announcement.userInteraction?.dismissed &&
         !dismissedAnnouncements.includes(announcement.id)
     )
@@ -111,7 +115,7 @@ export default function AnnouncementToast() {
           ),
           {
             id: toastId,
-            duration: announcement.priority >= 5 ? Infinity : 10_000, // Critical announcements stay until dismissed
+            duration: getAnnouncementToastDurationMs(announcement.priority), // Critical announcements stay until dismissed
             position: 'top-right'
           }
         )

@@ -15,6 +15,7 @@ import { useLocale, useTranslations } from '@isyuricunha/i18n/client'
 
 import { api } from '@/trpc/react'
 import { getAnnouncementUi } from '@/lib/announcement-ui'
+import { hasHighPriorityBadge } from '@/lib/announcement-priority'
 import { addDismissedAnnouncementId, getDismissedAnnouncementIds } from '@/utils/announcement-storage'
 
 interface AnnouncementWidgetProps {
@@ -163,7 +164,7 @@ export default function AnnouncementWidget({ className, maxItems = 5 }: Announce
                         >
                           {announcement.type}
                         </Badge>
-                        {announcement.priority > 5 && (
+                        {hasHighPriorityBadge(announcement.priority) && (
                           <Badge
                             variant='outline'
                             className='bg-primary/10 text-primary border-primary/20 text-[10px] font-medium'
