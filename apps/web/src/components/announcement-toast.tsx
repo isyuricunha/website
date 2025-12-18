@@ -7,6 +7,12 @@ import { X } from 'lucide-react'
 
 import { api } from '@/trpc/react'
 import { getAnnouncementUi } from '@/lib/announcement-ui'
+import {
+  addDismissedAnnouncementId,
+  addShownAnnouncementToastId,
+  getDismissedAnnouncementIds,
+  getShownAnnouncementToastIds
+} from '@/utils/announcement-storage'
 
 export default function AnnouncementToast() {
   const t_announcement = useTranslations('component.announcement-toast')
@@ -25,10 +31,7 @@ export default function AnnouncementToast() {
   useEffect(() => {
     if (!announcementsData?.announcements) return
 
-    // Get dismissed announcements from sessionStorage
-    const dismissedAnnouncements = JSON.parse(
-      sessionStorage.getItem('dismissedAnnouncements') || '[]'
-    )
+    const dismissedAnnouncements = getDismissedAnnouncementIds()
 
     // Filter urgent announcements that haven't been dismissed (date filtering is done server-side)
     const urgentAnnouncements = announcementsData.announcements.filter(
@@ -45,7 +48,7 @@ export default function AnnouncementToast() {
       markViewedMutation.mutate({ announcementId: announcement.id })
 
       // Check if this toast was already shown in this session
-      const shownToasts = JSON.parse(sessionStorage.getItem('shownAnnouncementToasts') || '[]')
+      const shownToasts = getShownAnnouncementToastIds()
 
       if (!shownToasts.includes(announcement.id)) {
         const ui = getAnnouncementUi(announcement.type, { iconSize: 'md' })
@@ -73,13 +76,9 @@ export default function AnnouncementToast() {
                           type='button'
                           onClick={() => {
                             dismissMutation.mutate({ announcementId: announcement.id })
-                            const dismissed = JSON.parse(
-                              sessionStorage.getItem('dismissedAnnouncements') || '[]'
-                            )
-                            dismissed.push(announcement.id)
-                            sessionStorage.setItem(
-                              'dismissedAnnouncements',
-                              JSON.stringify(dismissed)
+                            addDismissedAnnouncementId(
+                              getDismissedAnnouncementIds(),
+                              announcement.id
                             )
                             toast.dismiss(t)
                           }}
@@ -118,8 +117,7 @@ export default function AnnouncementToast() {
         )
 
         // Mark as shown in this session
-        shownToasts.push(announcement.id)
-        sessionStorage.setItem('shownAnnouncementToasts', JSON.stringify(shownToasts))
+        addShownAnnouncementToastId(shownToasts, announcement.id)
       }
     })
   }, [announcementsData, dismissMutation, markViewedMutation, t_announcement])

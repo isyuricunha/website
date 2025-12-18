@@ -6,15 +6,12 @@ import { X } from 'lucide-react'
 
 import { api } from '@/trpc/react'
 import { getAnnouncementUi } from '@/lib/announcement-ui'
+import { addDismissedAnnouncementId, getDismissedAnnouncementIds } from '@/utils/announcement-storage'
 
 export default function AnnouncementBanner() {
   const t = useTranslations()
   const [dismissedAnnouncements, setDismissedAnnouncements] = useState<string[]>(() => {
-    if (globalThis.window !== undefined) {
-      const dismissed = sessionStorage.getItem('dismissedAnnouncements')
-      return dismissed ? JSON.parse(dismissed) : []
-    }
-    return []
+    return getDismissedAnnouncementIds()
   })
 
   // Get active announcements
@@ -28,11 +25,8 @@ export default function AnnouncementBanner() {
   // Dismiss announcement mutation
   const dismissMutation = api.announcements.dismissAnnouncement.useMutation({
     onSuccess: (_, variables) => {
-      const newDismissed = [...dismissedAnnouncements, variables.announcementId]
-      setDismissedAnnouncements(newDismissed)
-      if (globalThis.window !== undefined) {
-        sessionStorage.setItem('dismissedAnnouncements', JSON.stringify(newDismissed))
-      }
+      const next = addDismissedAnnouncementId(dismissedAnnouncements, variables.announcementId)
+      setDismissedAnnouncements(next)
     }
   })
 

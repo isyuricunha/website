@@ -15,6 +15,7 @@ import { useLocale, useTranslations } from '@isyuricunha/i18n/client'
 
 import { api } from '@/trpc/react'
 import { getAnnouncementUi } from '@/lib/announcement-ui'
+import { addDismissedAnnouncementId, getDismissedAnnouncementIds } from '@/utils/announcement-storage'
 
 interface AnnouncementWidgetProps {
   className?: string
@@ -27,11 +28,7 @@ export default function AnnouncementWidget({ className, maxItems = 5 }: Announce
   const date_locale = locale === 'pt' ? 'pt-BR' : 'en-US'
 
   const [dismissedItems, setDismissedItems] = useState<string[]>(() => {
-    if (globalThis.window !== undefined) {
-      const dismissed = sessionStorage.getItem('dismissedAnnouncements')
-      return dismissed ? JSON.parse(dismissed) : []
-    }
-    return []
+    return getDismissedAnnouncementIds()
   })
 
   // Get active announcements
@@ -44,11 +41,8 @@ export default function AnnouncementWidget({ className, maxItems = 5 }: Announce
 
   const dismissMutation = api.announcements.dismissAnnouncement.useMutation({
     onSuccess: (_data, variables) => {
-      const newDismissed = [...dismissedItems, variables.announcementId]
-      setDismissedItems(newDismissed)
-      if (globalThis.window !== undefined) {
-        sessionStorage.setItem('dismissedAnnouncements', JSON.stringify(newDismissed))
-      }
+      const next = addDismissedAnnouncementId(dismissedItems, variables.announcementId)
+      setDismissedItems(next)
     }
   })
 
