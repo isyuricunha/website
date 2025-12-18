@@ -32,10 +32,10 @@
   "devDependencies": {
     "@isyuricunha/eslint-config": "workspace:*",
     "@isyuricunha/tsconfig": "workspace:*",
-    "@types/node": "^22.13.5",
-    "@types/pg": "^8.15.5",
-    "drizzle-kit": "^0.30.5",
-    "pg": "^8.13.3"
+    "@types/node": "^22.19.3",
+    "@types/pg": "^8.16.0",
+    "drizzle-kit": "^0.30.6",
+    "pg": "^8.16.3"
   },
   "lint-staged": {
     "*.{cjs,mjs,js,jsx,cts,mts,ts,tsx}": "eslint --fix --max-warnings 999"
