@@ -33,7 +33,7 @@
     "recharts": "^3.6.0",
     "sharp": "^0.33.5",
     "shiki": "^3.20.0",
-    "zod": "4.0.10"
+    "zod": "4.2.1"
   },
   "devDependencies": {
     "@content-collections/cli": "^0.1.8",
@@ -54,6 +54,6 @@
     "tailwindcss": "^4.1.18"
   },
   "lint-staged": {
-    "*.{cjs,mjs,js,jsx,cts,mts,ts,tsx}": "eslint --fix --max-warnings 999"
+    "*.{cjs,mjs,js,jsx,cts,mts,ts,tsx}": "pnpm -w exec eslint --fix --max-warnings 999"
   }
 }

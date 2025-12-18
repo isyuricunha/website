@@ -352,7 +352,7 @@ const ProjectCard = (props: ProjectCardProps) => {
     slug,
     homepage,
     repository,
-    status = 'active',
+    status,
     category,
     featured,
     startDate,
