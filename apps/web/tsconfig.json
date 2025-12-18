@@ -3,9 +3,15 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
-      "content-collections": ["./.content-collections/generated"],
-      "~/*": ["./public/*"]
+      "@/*": [
+        "./src/*"
+      ],
+      "content-collections": [
+        "./.content-collections/generated"
+      ],
+      "~/*": [
+        "./public/*"
+      ]
     },
     "plugins": [
       {
@@ -16,16 +22,18 @@
     "declarationMap": false,
     "skipLibCheck": true
   },
-  "exclude": ["node_modules"],
+  "exclude": [
+    "node_modules"
+  ],
   "extends": "../../packages/tsconfig/nextjs.json",
   "include": [
-    "next-env.d.ts",
-    "next.config.mjs",
-    "eslint.config.mjs",
-    "postcss.config.mjs",
-    "scripts/**/*.js",
     "**/*.ts",
     "**/*.tsx",
+    "eslint.config.mjs",
+    "next-env.d.ts",
+    "next.config.mjs",
+    "postcss.config.mjs",
+    "scripts/**/*.js",
     ".next/types/**/*.ts"
   ]
 }

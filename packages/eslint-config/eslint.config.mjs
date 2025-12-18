@@ -12,6 +12,6 @@ export default isyuricunha(
     typescript: true
   },
   {
-    ignores: ['eslint.config.bundled_*.mjs']
+    ignores: ['eslint.config.bundled_*.mjs', 'tsup.config.bundled_*.mjs']
   }
 )

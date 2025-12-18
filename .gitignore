@@ -30,6 +30,8 @@ out/
 build/
 dist/
 .eslint-config-inspector/
+**/tsup.config.bundled_*.mjs
+**/eslint.config.bundled_*.mjs
 
 # Content Collections
 .content-collections

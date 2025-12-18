@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, type MouseEvent } from 'react'
+import { useEffect, useState, type MouseEvent } from 'react'
 import { X, Bell, AlertCircle, Info, CheckCircle, AlertTriangle, Sparkles } from 'lucide-react'
 import {
   Card,
@@ -69,6 +69,8 @@ export default function AnnouncementWidget({ className, maxItems = 5 }: Announce
     adminView: false
   })
 
+  const markViewedMutation = api.announcements.markAnnouncementViewed.useMutation()
+
   const dismissMutation = api.announcements.dismissAnnouncement.useMutation({
     onSuccess: (_data, variables) => {
       const newDismissed = [...dismissedItems, variables.announcementId]
@@ -83,6 +85,20 @@ export default function AnnouncementWidget({ className, maxItems = 5 }: Announce
     event.stopPropagation()
     dismissMutation.mutate({ announcementId })
   }
+
+  const activeAnnouncements = (announcementsData?.announcements ?? [])
+    .filter(
+      (announcement) =>
+        !announcement.userInteraction?.dismissed && !dismissedItems.includes(announcement.id)
+    )
+    .slice(0, maxItems)
+
+  useEffect(() => {
+    if (activeAnnouncements.length === 0) return
+    activeAnnouncements.forEach((announcement) => {
+      markViewedMutation.mutate({ announcementId: announcement.id })
+    })
+  }, [activeAnnouncements, markViewedMutation])
 
   if (isLoading) {
     return (
@@ -103,11 +119,6 @@ export default function AnnouncementWidget({ className, maxItems = 5 }: Announce
   if (!announcementsData?.announcements) {
     return null
   }
-
-  // Filter announcements that haven't been dismissed (date filtering is done server-side)
-  const activeAnnouncements = announcementsData.announcements
-    .filter((announcement) => !dismissedItems.includes(announcement.id))
-    .slice(0, maxItems)
 
   if (activeAnnouncements.length === 0) {
     return (
@@ -153,7 +164,7 @@ export default function AnnouncementWidget({ className, maxItems = 5 }: Announce
                 >
                   <div className='flex items-start gap-3'>
                     <div
-                      className={`flex-shrink-0 transition-transform duration-200 group-hover:scale-110 ${styles.icon}`}
+                      className={`shrink-0 transition-transform duration-200 group-hover:scale-110 ${styles.icon}`}
                     >
                       {getAnnouncementIcon(announcement.type)}
                     </div>
@@ -168,7 +179,7 @@ export default function AnnouncementWidget({ className, maxItems = 5 }: Announce
                             type='button'
                             onClick={(e) => handleDismiss(announcement.id, e)}
                             disabled={dismissMutation.isPending}
-                            className='hover:bg-accent flex-shrink-0 rounded-md p-1 opacity-0 transition-opacity disabled:opacity-50 group-hover:opacity-100'
+                            className='hover:bg-accent shrink-0 rounded-md p-1 opacity-0 transition-opacity disabled:opacity-50 group-hover:opacity-100'
                             aria-label={t('dismiss')}
                           >
                             <X className='h-3 w-3' />

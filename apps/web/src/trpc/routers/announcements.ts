@@ -27,14 +27,34 @@ export const announcementsRouter = createTRPCRouter({
     )
     .query(async ({ ctx, input }) => {
       try {
+        const isAdmin = ctx.session?.user?.role === 'admin'
+        const adminView = input.adminView && isAdmin
+
+        const isRecord = (value: unknown): value is Record<string, unknown> => {
+          return typeof value === 'object' && value !== null
+        }
+
+        const getStringArray = (value: unknown, key: string): string[] | null => {
+          if (!isRecord(value)) return null
+          const raw = value[key]
+          if (!Array.isArray(raw)) return null
+          if (!raw.every((item) => typeof item === 'string')) return null
+          return raw
+        }
+
+        const parseTargetAudience = (raw: string) => {
+          try {
+            return JSON.parse(raw)
+          } catch {
+            return null
+          }
+        }
+
         const conditions = []
 
         if (input.active !== undefined) {
           conditions.push(eq(announcements.isActive, input.active))
         }
-
-        // No date filtering - if is_active is true, announcement should appear
-        // Date fields (startDate/endDate) are kept for reference only
 
         const whereClause = conditions.length > 0 ? and(...conditions) : undefined
 
@@ -43,9 +63,28 @@ export const announcementsRouter = createTRPCRouter({
           orderBy: [desc(announcements.priority), desc(announcements.createdAt)]
         })
 
+        let visibleAnnouncements = announcementList
+
+        // Apply active filtering defensively (useful in tests and prevents relying solely on DB where clause)
+        if (input.active !== undefined) {
+          visibleAnnouncements = visibleAnnouncements.filter(
+            (announcement) => announcement.isActive === input.active
+          )
+        }
+
+        // Apply time-window filtering for non-admin view
+        if (!adminView) {
+          const now = new Date()
+          visibleAnnouncements = visibleAnnouncements.filter((announcement) => {
+            const startsOk = !announcement.startDate || announcement.startDate <= now
+            const endsOk = !announcement.endDate || announcement.endDate >= now
+            return startsOk && endsOk
+          })
+        }
+
         // Filter announcements based on user targeting
-        const filteredAnnouncements = announcementList.filter((announcement) => {
-          if (!announcement.targetAudience || input.adminView) {
+        const filteredAnnouncements = visibleAnnouncements.filter((announcement) => {
+          if (!announcement.targetAudience || adminView) {
             return true // Show all if no targeting or admin view
           }
 
@@ -54,31 +93,32 @@ export const announcementsRouter = createTRPCRouter({
             return true // Show to unauthenticated users if no specific targeting
           }
 
-          try {
-            const targetAudience = JSON.parse(announcement.targetAudience)
-            const userRole = ctx.session.user.role
-
-            // Check role-based targeting
-            if (targetAudience.roles && Array.isArray(targetAudience.roles)) {
-              return targetAudience.roles.includes(userRole)
-            }
-
-            // Check user-specific targeting
-            if (targetAudience.userIds && Array.isArray(targetAudience.userIds)) {
-              return targetAudience.userIds.includes(ctx.session.user.id)
-            }
-
-            // If no specific targeting, show to all
-            return true
-          } catch {
-            // If JSON parsing fails, show to all users
+          const targetAudience = parseTargetAudience(announcement.targetAudience)
+          if (!targetAudience) {
             return true
           }
+
+          const userRole = ctx.session.user.role
+
+          const roleTargets =
+            getStringArray(targetAudience, 'userRoles') ?? getStringArray(targetAudience, 'roles')
+
+          const userTargets = getStringArray(targetAudience, 'userIds')
+
+          // If explicit targets exist, user must match at least one
+          if (roleTargets || userTargets) {
+            const matchesRole = roleTargets ? roleTargets.includes(userRole) : false
+            const matchesUser = userTargets ? userTargets.includes(ctx.session.user.id) : false
+            return matchesRole || matchesUser
+          }
+
+          // If no specific targeting, show to all
+          return true
         })
 
         // Get user interactions for non-admin view (only for authenticated users)
         let userInteractions: any = {}
-        if (!input.adminView && ctx.session?.user) {
+        if (!adminView && ctx.session?.user) {
           const interactions = await ctx.db.query.announcementInteractions.findMany({
             where: and(
               eq(announcementInteractions.userId, ctx.session.user.id),
@@ -99,7 +139,17 @@ export const announcementsRouter = createTRPCRouter({
           announcements: filteredAnnouncements.map((announcement) => ({
             ...announcement,
             targetAudience: announcement.targetAudience
-              ? JSON.parse(announcement.targetAudience)
+              ? (() => {
+                  const parsed = parseTargetAudience(announcement.targetAudience)
+                  if (!parsed) return null
+                  if (!isRecord(parsed)) return null
+                  const userRoles =
+                    getStringArray(parsed, 'userRoles') ?? getStringArray(parsed, 'roles') ?? undefined
+                  return {
+                    ...parsed,
+                    userRoles
+                  }
+                })()
               : null,
             userInteraction: userInteractions[announcement.id] || null
           }))
@@ -178,6 +228,57 @@ export const announcementsRouter = createTRPCRouter({
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to create announcement'
+        })
+      }
+    }),
+
+  markAnnouncementViewed: publicProcedure
+    .input(z.object({ announcementId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      try {
+        if (!ctx.session?.user) {
+          return { success: true }
+        }
+
+        const existing = await ctx.db.query.announcementInteractions.findFirst({
+          where: and(
+            eq(announcementInteractions.announcementId, input.announcementId),
+            eq(announcementInteractions.userId, ctx.session.user.id)
+          )
+        })
+
+        if (existing) {
+          if (existing.viewed) {
+            return { success: true }
+          }
+
+          await ctx.db
+            .update(announcementInteractions)
+            .set({
+              viewed: true,
+              viewedAt: new Date()
+            })
+            .where(eq(announcementInteractions.id, existing.id))
+
+          return { success: true }
+        }
+
+        const interactionId = randomBytes(16).toString('hex')
+        await ctx.db.insert(announcementInteractions).values({
+          id: interactionId,
+          announcementId: input.announcementId,
+          userId: ctx.session.user.id,
+          viewed: true,
+          dismissed: false,
+          viewedAt: new Date()
+        })
+
+        return { success: true }
+      } catch (error) {
+        logger.error('Error marking announcement viewed', error)
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to mark announcement viewed'
         })
       }
     }),
@@ -367,12 +468,14 @@ export const announcementsRouter = createTRPCRouter({
           }
         })
 
+        const totalViews = interactions.filter((i) => i.viewed).length
+        const totalDismissals = interactions.filter((i) => i.dismissed).length
+
         const analytics = {
-          totalViews: interactions.length,
-          totalDismissals: interactions.filter((i) => i.dismissed).length,
+          totalViews,
+          totalDismissals,
           dismissalRate:
-            interactions.length > 0
-              ? (interactions.filter((i) => i.dismissed).length / interactions.length) * 100
+            totalViews > 0 ? (totalDismissals / totalViews) * 100
               : 0,
           byAnnouncement: {} as any
         }
@@ -389,7 +492,9 @@ export const announcementsRouter = createTRPCRouter({
             }
           }
 
-          analytics.byAnnouncement[announcementId].views++
+          if (interaction.viewed) {
+            analytics.byAnnouncement[announcementId].views++
+          }
           if (interaction.dismissed) {
             analytics.byAnnouncement[announcementId].dismissals++
           }

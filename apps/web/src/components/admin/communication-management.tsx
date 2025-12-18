@@ -45,7 +45,7 @@ export default function CommunicationManagement() {
 
   // Announcements query
   const { data: announcements, isLoading: announcementsLoading } =
-    api.communication.getAnnouncements.useQuery({
+    api.announcements.getAnnouncements.useQuery({
       adminView: true
     })
 
@@ -81,7 +81,7 @@ export default function CommunicationManagement() {
     }
   })
 
-  const createAnnouncementMutation = api.communication.createAnnouncement.useMutation({
+  const createAnnouncementMutation = api.announcements.createAnnouncement.useMutation({
     onSuccess: () => {
       toast.success('Announcement created successfully')
     },

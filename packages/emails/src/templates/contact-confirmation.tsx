@@ -16,7 +16,7 @@ import {
 import * as React from 'react'
 
 type ContactConfirmationProps = {
-  name: string
+  name?: string
   subject?: string
   message?: string
 }

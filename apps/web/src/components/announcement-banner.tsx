@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslations } from '@isyuricunha/i18n/client'
 import { X, AlertCircle, Info, CheckCircle, AlertTriangle, Sparkles } from 'lucide-react'
 
@@ -56,6 +56,8 @@ export default function AnnouncementBanner() {
     adminView: false
   })
 
+  const markViewedMutation = api.announcements.markAnnouncementViewed.useMutation()
+
   // Dismiss announcement mutation
   const dismissMutation = api.announcements.dismissAnnouncement.useMutation({
     onSuccess: (_, variables) => {
@@ -71,14 +73,21 @@ export default function AnnouncementBanner() {
     dismissMutation.mutate({ announcementId })
   }
 
+  const activeAnnouncements = (announcementsData?.announcements ?? []).filter(
+    (announcement) =>
+      !announcement.userInteraction?.dismissed && !dismissedAnnouncements.includes(announcement.id)
+  )
+
+  useEffect(() => {
+    if (activeAnnouncements.length === 0) return
+    activeAnnouncements.forEach((announcement) => {
+      markViewedMutation.mutate({ announcementId: announcement.id })
+    })
+  }, [activeAnnouncements, markViewedMutation])
+
   if (!announcementsData?.announcements) {
     return null
   }
-
-  // Filter announcements that haven't been dismissed (date filtering and sorting are done server-side)
-  const activeAnnouncements = announcementsData.announcements.filter(
-    (announcement) => !dismissedAnnouncements.includes(announcement.id)
-  )
 
   if (activeAnnouncements.length === 0) {
     return null
@@ -96,7 +105,7 @@ export default function AnnouncementBanner() {
             <div className='relative p-4'>
               <div className='flex items-start gap-4'>
                 <div
-                  className={`flex-shrink-0 transition-transform duration-300 group-hover:scale-110 ${styles.icon}`}
+                  className={`shrink-0 transition-transform duration-300 group-hover:scale-110 ${styles.icon}`}
                 >
                   {getAnnouncementIcon(announcement.type)}
                 </div>
@@ -122,7 +131,7 @@ export default function AnnouncementBanner() {
                     type='button'
                     onClick={() => handleDismiss(announcement.id)}
                     disabled={dismissMutation.isPending}
-                    className='hover:bg-muted/50 flex-shrink-0 rounded-lg p-1.5 transition-colors disabled:opacity-50'
+                    className='hover:bg-muted/50 shrink-0 rounded-lg p-1.5 transition-colors disabled:opacity-50'
                     aria-label={t('component.announcement-banner.dismiss')}
                   >
                     <X className='h-4 w-4 opacity-60 transition-opacity hover:opacity-100' />

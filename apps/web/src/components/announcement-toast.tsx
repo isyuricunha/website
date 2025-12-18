@@ -50,6 +50,8 @@ export default function AnnouncementToast() {
     adminView: false
   })
 
+  const markViewedMutation = api.announcements.markAnnouncementViewed.useMutation()
+
   // Dismiss announcement mutation
   const dismissMutation = api.announcements.dismissAnnouncement.useMutation()
 
@@ -65,12 +67,15 @@ export default function AnnouncementToast() {
     const urgentAnnouncements = announcementsData.announcements.filter(
       (announcement) =>
         announcement.priority >= 3 && // Only urgent announcements
+        !announcement.userInteraction?.dismissed &&
         !dismissedAnnouncements.includes(announcement.id)
     )
 
     // Show toast for each urgent announcement
     urgentAnnouncements.forEach((announcement) => {
       const toastId = `announcement-${announcement.id}`
+
+      markViewedMutation.mutate({ announcementId: announcement.id })
 
       // Check if this toast was already shown in this session
       const shownToasts = JSON.parse(sessionStorage.getItem('shownAnnouncementToasts') || '[]')
@@ -80,10 +85,10 @@ export default function AnnouncementToast() {
         toast.custom(
           (t: string | number) => (
             <div className='border-border/50 bg-background/95 animate-in slide-in-from-top-5 fade-in group relative max-w-md overflow-hidden rounded-xl border shadow-2xl backdrop-blur-xl'>
-              <div className='from-primary/5 absolute inset-0 bg-gradient-to-br via-transparent to-transparent' />
+              <div className='from-primary/5 absolute inset-0 bg-linear-to-br via-transparent to-transparent' />
               <div className='relative p-5'>
                 <div className='flex items-start gap-4'>
-                  <div className={`flex-shrink-0 transition-transform duration-300 ${styles.icon}`}>
+                  <div className={`shrink-0 transition-transform duration-300 ${styles.icon}`}>
                     {getAnnouncementIcon(announcement.type)}
                   </div>
 
@@ -129,7 +134,7 @@ export default function AnnouncementToast() {
                   <button
                     type='button'
                     onClick={() => toast.dismiss(t)}
-                    className='hover:bg-accent/50 flex-shrink-0 rounded-lg p-1.5 transition-colors'
+                    className='hover:bg-accent/50 shrink-0 rounded-lg p-1.5 transition-colors'
                     aria-label={t_announcement('close')}
                   >
                     <X className='h-4 w-4 opacity-50 transition-opacity hover:opacity-100' />
@@ -150,7 +155,7 @@ export default function AnnouncementToast() {
         sessionStorage.setItem('shownAnnouncementToasts', JSON.stringify(shownToasts))
       }
     })
-  }, [announcementsData, dismissMutation, t_announcement])
+  }, [announcementsData, dismissMutation, markViewedMutation, t_announcement])
 
   return null // This component doesn't render anything directly
 }
