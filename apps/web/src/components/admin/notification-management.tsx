@@ -40,7 +40,11 @@ export default function NotificationManagement() {
     data: notifications,
     isLoading,
     refetch
-  } = api.communication.getNotifications.useQuery({})
+  } = api.communication.getAllNotifications.useQuery({
+    limit: 50,
+    offset: 0,
+    includeExpired: false
+  })
 
   // Mutations
   const createNotificationMutation = api.communication.createNotification.useMutation({
@@ -54,7 +58,7 @@ export default function NotificationManagement() {
     }
   })
 
-  const markAsReadMutation = api.communication.markNotificationRead.useMutation({
+  const markAsReadMutation = api.communication.adminMarkNotificationRead.useMutation({
     onSuccess: () => {
       refetch()
     },
@@ -86,8 +90,8 @@ export default function NotificationManagement() {
     markAsReadMutation.mutate({ notificationId })
   }
 
-  const getNotificationIcon = (type: string) => {
-    switch (type) {
+  const getNotificationIcon = (severity: string) => {
+    switch (severity) {
       case 'info':
         return <Bell className='text-primary h-4 w-4' />
       case 'success':
@@ -101,8 +105,8 @@ export default function NotificationManagement() {
     }
   }
 
-  const getNotificationTypeColor = (type: string) => {
-    if (type === 'error') {
+  const getNotificationTypeColor = (severity: string) => {
+    if (severity === 'error') {
       return 'border-destructive/30 bg-destructive/10 text-foreground'
     }
 
@@ -164,15 +168,17 @@ export default function NotificationManagement() {
                 <div className='grid grid-cols-2 gap-4'>
                   <div>
                     <Label htmlFor='type'>Type</Label>
-                    <Select name='type' defaultValue='info'>
+                    <Select name='type' defaultValue='system'>
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value='info'>Info</SelectItem>
-                        <SelectItem value='success'>Success</SelectItem>
-                        <SelectItem value='warning'>Warning</SelectItem>
-                        <SelectItem value='error'>Error</SelectItem>
+                        <SelectItem value='system'>System</SelectItem>
+                        <SelectItem value='security'>Security</SelectItem>
+                        <SelectItem value='user_action'>User Action</SelectItem>
+                        <SelectItem value='content'>Content</SelectItem>
+                        <SelectItem value='marketing'>Marketing</SelectItem>
+                        <SelectItem value='reminder'>Reminder</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -275,14 +281,15 @@ export default function NotificationManagement() {
               {notifications?.notifications?.map((notification) => (
                 <Card
                   key={notification.id}
-                  className={`${getNotificationTypeColor(notification.type)} border-2 ${notification.read ? '' : 'ring-primary/30 ring-2'} transition-all duration-200 hover:shadow-md`}
+                  className={`${getNotificationTypeColor(notification.severity)} border-2 ${notification.read ? '' : 'ring-primary/30 ring-2'} transition-all duration-200 hover:shadow-md`}
                 >
                   <CardContent className='p-4'>
                     <div className='flex items-start justify-between'>
                       <div className='flex-1'>
                         <div className='mb-2 flex items-center gap-2'>
-                          {getNotificationIcon(notification.type)}
+                          {getNotificationIcon(notification.severity)}
                           <h3 className='font-semibold'>{notification.title}</h3>
+                          <Badge variant='outline'>{notification.type}</Badge>
                           {!notification.read && (
                             <Badge className='border-primary/20 bg-primary/10 text-primary border'>
                               Unread

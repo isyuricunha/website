@@ -51,7 +51,11 @@ export default function CommunicationManagement() {
 
   // Notifications query (for current user)
   const { data: notifications, isLoading: notificationsLoading } =
-    api.communication.getNotifications.useQuery({})
+    api.communication.getAllNotifications.useQuery({
+      limit: 20,
+      offset: 0,
+      includeExpired: false
+    })
 
   // Mutations
   const createTemplateMutation = api.communication.createEmailTemplate.useMutation({

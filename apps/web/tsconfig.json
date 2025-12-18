@@ -23,7 +23,8 @@
     "skipLibCheck": true
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    ".next"
   ],
   "extends": "../../packages/tsconfig/nextjs.json",
   "include": [

@@ -20,6 +20,33 @@ import { AuditLogger, getIpFromHeaders, getUserAgentFromHeaders } from '@/lib/au
 import { logger } from '@/lib/logger'
 import { adminProcedure, protectedProcedure, createTRPCRouter } from '../trpc'
 
+const parseJson = (raw: string | null): unknown => {
+  if (!raw) return null
+  try {
+    return JSON.parse(raw) as unknown
+  } catch {
+    return null
+  }
+}
+
+const getNotificationSeverity = (
+  type: 'system' | 'user_action' | 'content' | 'security' | 'marketing' | 'reminder'
+): 'info' | 'success' | 'warning' | 'error' => {
+  switch (type) {
+    case 'security':
+      return 'error'
+    case 'user_action':
+      return 'success'
+    case 'system':
+    case 'reminder':
+      return 'warning'
+    case 'content':
+    case 'marketing':
+    default:
+      return 'info'
+  }
+}
+
 export const communicationRouter = createTRPCRouter({
   // Email Templates
   getEmailTemplates: adminProcedure
@@ -79,6 +106,70 @@ export const communicationRouter = createTRPCRouter({
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to fetch email templates'
+        })
+      }
+    }),
+
+  getAllNotifications: adminProcedure
+    .input(
+      z.object({
+        userId: z.string().optional(),
+        unreadOnly: z.boolean().default(false),
+        includeExpired: z.boolean().default(false),
+        type: z.enum(['system', 'user_action', 'content', 'security', 'marketing', 'reminder']).optional(),
+        limit: z.number().min(1).max(200).default(50),
+        offset: z.number().min(0).default(0)
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      try {
+        const now = new Date()
+        const conditions = [] as any[]
+
+        if (input.userId) {
+          conditions.push(eq(notifications.userId, input.userId))
+        }
+
+        if (!input.includeExpired) {
+          conditions.push(or(isNull(notifications.expiresAt), gte(notifications.expiresAt, now)))
+        }
+
+        if (input.unreadOnly) {
+          conditions.push(eq(notifications.read, false))
+        }
+
+        if (input.type) {
+          conditions.push(eq(notifications.type, input.type))
+        }
+
+        const whereClause = conditions.length > 0 ? and(...conditions) : undefined
+
+        const rows = await ctx.db.query.notifications.findMany({
+          where: whereClause,
+          orderBy: desc(notifications.createdAt),
+          limit: input.limit,
+          offset: input.offset
+        })
+
+        const totalCount = await ctx.db.query.notifications.findMany({
+          where: whereClause,
+          columns: { id: true }
+        })
+
+        return {
+          notifications: rows.map((notification) => ({
+            ...notification,
+            data: parseJson(notification.data),
+            severity: getNotificationSeverity(notification.type)
+          })),
+          total: totalCount.length,
+          hasMore: totalCount.length > input.offset + input.limit
+        }
+      } catch (error) {
+        logger.error('Error fetching all notifications', error)
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to fetch notifications'
         })
       }
     }),
@@ -445,9 +536,10 @@ export const communicationRouter = createTRPCRouter({
     )
     .query(async ({ ctx, input }) => {
       try {
+        const now = new Date()
         const conditions = [
           eq(notifications.userId, ctx.session.user.id),
-          or(isNull(notifications.expiresAt), gte(notifications.expiresAt, new Date()))
+          or(isNull(notifications.expiresAt), gte(notifications.expiresAt, now))
         ]
 
         if (input.unreadOnly) {
@@ -469,7 +561,8 @@ export const communicationRouter = createTRPCRouter({
         return {
           notifications: userNotifications.map((notification) => ({
             ...notification,
-            data: notification.data ? JSON.parse(notification.data) : null
+            data: parseJson(notification.data),
+            severity: getNotificationSeverity(notification.type)
           })),
           total: totalCount.length,
           hasMore: totalCount.length > input.offset + input.limit
@@ -510,6 +603,28 @@ export const communicationRouter = createTRPCRouter({
       }
     }),
 
+  adminMarkNotificationRead: adminProcedure
+    .input(z.object({ notificationId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      try {
+        await ctx.db
+          .update(notifications)
+          .set({
+            read: true,
+            readAt: new Date()
+          })
+          .where(eq(notifications.id, input.notificationId))
+
+        return { success: true }
+      } catch (error) {
+        logger.error('Error marking notification as read (admin)', error)
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to mark notification as read'
+        })
+      }
+    }),
+
   markAllNotificationsRead: protectedProcedure.mutation(async ({ ctx }) => {
     try {
       await ctx.db
@@ -536,15 +651,19 @@ export const communicationRouter = createTRPCRouter({
       z.object({
         title: z.string().min(1),
         content: z.string().min(1),
-        type: z.enum(['info', 'success', 'warning', 'error']).default('info'),
+        type: z.enum(['system', 'user_action', 'content', 'security', 'marketing', 'reminder']).default('system'),
         userId: z.string().optional(),
-        expiresAt: z.date().optional()
+        expiresAt: z.date().optional(),
+        actionUrl: z.string().url().optional(),
+        data: z.record(z.string(), z.unknown()).optional()
       })
     )
     .mutation(async ({ ctx, input }) => {
       try {
         const auditLogger = new AuditLogger(ctx.db)
         const notificationId = randomBytes(16).toString('hex')
+
+        const dataJson = input.data ? JSON.stringify(input.data) : null
 
         // If userId is provided, send to specific user, otherwise send to all users
         if (input.userId) {
@@ -553,16 +672,9 @@ export const communicationRouter = createTRPCRouter({
             userId: input.userId,
             title: input.title,
             message: input.content,
-            type:
-              input.type === 'info'
-                ? ('content' as const)
-                : input.type === 'warning'
-                  ? ('system' as const)
-                  : input.type === 'success'
-                    ? ('user_action' as const)
-                    : input.type === 'error'
-                      ? ('security' as const)
-                      : ('content' as const),
+            type: input.type,
+            data: dataJson,
+            actionUrl: input.actionUrl,
             expiresAt: input.expiresAt
           })
         } else {
@@ -577,16 +689,9 @@ export const communicationRouter = createTRPCRouter({
             userId: user.id,
             title: input.title,
             message: input.content,
-            type:
-              input.type === 'info'
-                ? ('content' as const)
-                : input.type === 'warning'
-                  ? ('system' as const)
-                  : input.type === 'success'
-                    ? ('user_action' as const)
-                    : input.type === 'error'
-                      ? ('security' as const)
-                      : ('content' as const),
+            type: input.type,
+            data: dataJson,
+            actionUrl: input.actionUrl,
             expiresAt: input.expiresAt
           }))
 
