@@ -7,6 +7,8 @@ import { createTRPCContext } from '@/trpc/trpc'
 import { env } from '@isyuricunha/env'
 import { logger } from '@/lib/logger'
 
+export const runtime = 'nodejs'
+
 const create_trpc_context = async (req: NextRequest) => {
   return createTRPCContext({
     headers: req.headers,
