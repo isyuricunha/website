@@ -19,7 +19,7 @@ export const viewsRouter = createTRPCRouter({
 
     const cachedViewCount = await redis.get<number>(redisKeys.postViewCount)
 
-    if (cachedViewCount) {
+    if (typeof cachedViewCount === 'number') {
       return {
         views: cachedViewCount
       }
@@ -50,7 +50,7 @@ export const viewsRouter = createTRPCRouter({
 
       const cachedViews = await redis.get<number>(redisKeys.postViews(input.slug))
 
-      if (cachedViews) {
+      if (typeof cachedViews === 'number') {
         return {
           views: cachedViews
         }
@@ -91,6 +91,14 @@ export const viewsRouter = createTRPCRouter({
         .where(eq(posts.slug, input.slug))
         .returning()
 
-      await redis.set(redisKeys.postViews(input.slug), views[0]?.views)
+      const nextViews = views[0]?.views
+      if (typeof nextViews !== 'number') {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Post not found'
+        })
+      }
+
+      await redis.set(redisKeys.postViews(input.slug), nextViews)
     })
 })
