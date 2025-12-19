@@ -375,6 +375,15 @@
       "dismiss": "Dismiss",
       "close": "Close"
     },
+    "notifications": {
+      "aria": "Open notifications",
+      "title": "Notifications",
+      "sign-in": "Sign in to view your notifications.",
+      "empty": "No notifications.",
+      "unread": "Unread",
+      "mark-all-read": "Mark all read",
+      "view-all": "View all"
+    },
     "breadcrumbs": {
       "aria-label": "Breadcrumb"
     },

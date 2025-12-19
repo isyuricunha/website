@@ -300,6 +300,15 @@
       "dismiss": "Dispensar",
       "close": "Fechar"
     },
+    "notifications": {
+      "aria": "Abrir notificações",
+      "title": "Notificações",
+      "sign-in": "Entre para ver suas notificações.",
+      "empty": "Sem notificações.",
+      "unread": "Não lida",
+      "mark-all-read": "Marcar todas como lidas",
+      "view-all": "Ver todas"
+    },
     "breadcrumbs": {
       "aria-label": "Breadcrumb"
     },
