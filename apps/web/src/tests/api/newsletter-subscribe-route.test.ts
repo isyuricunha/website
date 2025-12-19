@@ -22,6 +22,7 @@ vi.mock('@/lib/spam-detection', () => ({
 vi.mock('@/lib/resend-service', () => ({
   resendService: {
     listAudiences: vi.fn(),
+    getMainAudienceId: vi.fn(),
     findContactByEmail: vi.fn(),
     addContact: vi.fn()
   }
@@ -73,5 +74,52 @@ describe('/api/newsletter/subscribe', () => {
     expect(res.status).toBe(400)
     const json = (await res.json()) as { error?: string }
     expect(json.error).toBe('Invalid email address')
+  })
+
+  it('returns 500 when no newsletter audience is available', async () => {
+    const { ratelimit } = await import('@/lib/ratelimit')
+    const { getClientIp } = await import('@/lib/spam-detection')
+    const { resendService } = await import('@/lib/resend-service')
+
+    vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
+    vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
+    vi.mocked(resendService.getMainAudienceId).mockResolvedValue(null as never)
+
+    const { POST } = await import('@/app/api/newsletter/subscribe/route')
+
+    const req = {
+      headers: new Headers(),
+      json: async () => ({ email: 'a@b.com' })
+    } as unknown as Parameters<typeof POST>[0]
+
+    const res = await POST(req)
+    expect(res.status).toBe(500)
+    expect(await res.json()).toEqual({ error: 'No newsletter audience available' })
+  })
+
+  it('returns 200 on successful subscription', async () => {
+    const { ratelimit } = await import('@/lib/ratelimit')
+    const { getClientIp } = await import('@/lib/spam-detection')
+    const { resendService } = await import('@/lib/resend-service')
+
+    vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
+    vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
+    vi.mocked(resendService.getMainAudienceId).mockResolvedValue('aud-1' as never)
+    vi.mocked(resendService.findContactByEmail).mockResolvedValue(null as never)
+    vi.mocked(resendService.addContact).mockResolvedValue({ id: 'c-1' } as never)
+
+    const { POST } = await import('@/app/api/newsletter/subscribe/route')
+
+    const req = {
+      headers: new Headers(),
+      json: async () => ({ email: 'a@b.com' })
+    } as unknown as Parameters<typeof POST>[0]
+
+    const res = await POST(req)
+    expect(res.status).toBe(200)
+    expect(await res.json()).toEqual({
+      success: true,
+      message: 'Successfully subscribed to newsletter'
+    })
   })
 })

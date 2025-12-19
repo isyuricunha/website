@@ -76,6 +76,12 @@ class ResendService {
     }
   }
 
+  async getMainAudienceId(): Promise<string | null> {
+    const audiences = await this.listAudiences()
+    const mainAudienceId = audiences[0]?.id
+    return mainAudienceId ?? null
+  }
+
   // Get audience by ID
   async getAudience(audienceId: string): Promise<ResendAudience | null> {
     try {

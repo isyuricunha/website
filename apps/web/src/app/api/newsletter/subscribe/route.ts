@@ -26,19 +26,10 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const { email } = subscribeSchema.parse(body)
 
-    // Get audiences from Resend
-    const audiences = await resendService.listAudiences()
-    if (audiences.length === 0) {
+    const mainAudienceId = await resendService.getMainAudienceId()
+    if (!mainAudienceId) {
       return NextResponse.json({ error: 'No newsletter audience available' }, { status: 500 })
     }
-
-    // Use the first audience (or you can specify a specific audience ID)
-    const mainAudience = audiences[0]
-    if (!mainAudience) {
-      return NextResponse.json({ error: 'No newsletter audience available' }, { status: 500 })
-    }
-
-    const mainAudienceId = mainAudience.id
 
     // Check if email already exists in the audience
     const existingContact = await resendService.findContactByEmail(mainAudienceId, email)
