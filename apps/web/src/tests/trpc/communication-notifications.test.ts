@@ -189,6 +189,103 @@ describe('communicationRouter notifications', () => {
     vi.resetModules()
   })
 
+  it('user getNotifications filters by userId and expiresAt, and computes total/hasMore on filtered set', async () => {
+    const { communicationRouter } = await import('@/trpc/routers/communication')
+
+    const db = createDbMock()
+
+    const now = new Date()
+    db.__state.notifications.push({
+      id: 'n-expired',
+      userId: 'user-1',
+      title: 'Old',
+      message: 'Expired message',
+      type: 'system',
+      data: null,
+      read: false,
+      readAt: null,
+      actionUrl: null,
+      expiresAt: new Date(now.getTime() - 60_000),
+      createdAt: now
+    })
+
+    db.__state.notifications.push({
+      id: 'n-read',
+      userId: 'user-1',
+      title: 'Read',
+      message: 'Already read',
+      type: 'system',
+      data: null,
+      read: true,
+      readAt: now,
+      actionUrl: null,
+      expiresAt: null,
+      createdAt: now
+    })
+
+    const caller = communicationRouter.createCaller({
+      db: db as unknown,
+      headers: new Headers(),
+      session: { user: { id: 'user-1', role: 'user' } }
+    } as any)
+
+    const result = await caller.getNotifications({ unreadOnly: false, limit: 1, offset: 0 })
+
+    expect(result.notifications.every((n) => n.userId === 'user-1')).toBe(true)
+    expect(result.notifications.some((n) => n.id === 'n-expired')).toBe(false)
+    expect(result.total).toBe(2)
+    expect(result.hasMore).toBe(true)
+  })
+
+  it('user getNotifications unreadOnly returns only unread and not expired', async () => {
+    const { communicationRouter } = await import('@/trpc/routers/communication')
+
+    const db = createDbMock()
+    const now = new Date()
+
+    db.__state.notifications.push({
+      id: 'n-expired',
+      userId: 'user-1',
+      title: 'Old',
+      message: 'Expired message',
+      type: 'system',
+      data: null,
+      read: false,
+      readAt: null,
+      actionUrl: null,
+      expiresAt: new Date(now.getTime() - 60_000),
+      createdAt: now
+    })
+
+    db.__state.notifications.push({
+      id: 'n-read',
+      userId: 'user-1',
+      title: 'Read',
+      message: 'Already read',
+      type: 'system',
+      data: null,
+      read: true,
+      readAt: now,
+      actionUrl: null,
+      expiresAt: null,
+      createdAt: now
+    })
+
+    const caller = communicationRouter.createCaller({
+      db: db as unknown,
+      headers: new Headers(),
+      session: { user: { id: 'user-1', role: 'user' } }
+    } as any)
+
+    const result = await caller.getNotifications({ unreadOnly: true, limit: 50, offset: 0 })
+
+    expect(result.notifications.every((n) => n.userId === 'user-1')).toBe(true)
+    expect(result.notifications.some((n) => n.id === 'n-expired')).toBe(false)
+    expect(result.notifications.some((n) => n.read === true)).toBe(false)
+    expect(result.total).toBe(1)
+    expect(result.hasMore).toBe(false)
+  })
+
   it('admin can list all notifications and receives severity + parsed data', async () => {
     const { communicationRouter } = await import('@/trpc/routers/communication')
 

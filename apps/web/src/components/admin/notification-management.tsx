@@ -72,6 +72,8 @@ export default function NotificationManagement() {
     const content = formData.get('content') as string
     const type = formData.get('type') as any
     const userId = formData.get('userId') as string
+    const expiresAtRaw = formData.get('expiresAt') as string
+    const actionUrlRaw = formData.get('actionUrl') as string
 
     if (!title || !content) {
       toast.error('Title and content are required')
@@ -82,7 +84,9 @@ export default function NotificationManagement() {
       title,
       content,
       type,
-      userId: userId || undefined
+      userId: userId || undefined,
+      expiresAt: expiresAtRaw ? new Date(expiresAtRaw) : undefined,
+      actionUrl: actionUrlRaw ? actionUrlRaw : undefined
     })
   }
 
@@ -186,6 +190,23 @@ export default function NotificationManagement() {
                   <div>
                     <Label htmlFor='userId'>User ID (optional)</Label>
                     <Input id='userId' name='userId' placeholder='Leave empty for all users' />
+                  </div>
+                </div>
+
+                <div className='grid grid-cols-2 gap-4'>
+                  <div>
+                    <Label htmlFor='expiresAt'>Expires At (optional)</Label>
+                    <Input id='expiresAt' name='expiresAt' type='datetime-local' />
+                  </div>
+
+                  <div>
+                    <Label htmlFor='actionUrl'>Action URL (optional)</Label>
+                    <Input
+                      id='actionUrl'
+                      name='actionUrl'
+                      placeholder='https://example.com'
+                      type='url'
+                    />
                   </div>
                 </div>
               </div>

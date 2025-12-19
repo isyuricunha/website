@@ -555,17 +555,31 @@ export const communicationRouter = createTRPCRouter({
 
         const totalCount = await ctx.db.query.notifications.findMany({
           where: and(...conditions),
-          columns: { id: true }
+          columns: { id: true, userId: true, read: true, expiresAt: true }
         })
 
+        const applyFilters = <T extends { userId?: string | null; expiresAt?: Date | null; read?: boolean }>(
+          items: T[]
+        ): T[] => {
+          return items.filter((notification) => {
+            const sameUser = notification.userId === ctx.session.user.id
+            const notExpired = !notification.expiresAt || notification.expiresAt >= now
+            const matchesUnread = input.unreadOnly ? notification.read === false : true
+            return sameUser && notExpired && matchesUnread
+          })
+        }
+
+        const visibleNotifications = applyFilters(userNotifications)
+        const visibleTotalCount = applyFilters(totalCount).length
+
         return {
-          notifications: userNotifications.map((notification) => ({
+          notifications: visibleNotifications.map((notification) => ({
             ...notification,
             data: parseJson(notification.data),
             severity: getNotificationSeverity(notification.type)
           })),
-          total: totalCount.length,
-          hasMore: totalCount.length > input.offset + input.limit
+          total: visibleTotalCount,
+          hasMore: visibleTotalCount > input.offset + input.limit
         }
       } catch (error) {
         logger.error('Error fetching notifications', error)

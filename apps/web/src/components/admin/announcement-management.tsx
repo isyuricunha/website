@@ -61,6 +61,8 @@ interface EditAnnouncementData {
   isDismissible: boolean
   isActive: boolean
   targetAudience?: any
+  startDate?: Date | string | null
+  endDate?: Date | string | null
 }
 
 export default function AnnouncementManagement() {
@@ -119,6 +121,8 @@ export default function AnnouncementManagement() {
     const type = formData.get('type') as any
     const priority = Number.parseInt(formData.get('priority') as string) || 0
     const isDismissible = formData.get('isDismissible') === 'on'
+    const startDateRaw = formData.get('startDate') as string
+    const endDateRaw = formData.get('endDate') as string
 
     if (!title || !content) {
       toast.error('Title and content are required')
@@ -130,7 +134,9 @@ export default function AnnouncementManagement() {
       content,
       type,
       priority,
-      isDismissible
+      isDismissible,
+      startDate: startDateRaw ? new Date(startDateRaw) : undefined,
+      endDate: endDateRaw ? new Date(endDateRaw) : undefined
     })
   }
 
@@ -143,6 +149,8 @@ export default function AnnouncementManagement() {
     const priority = Number.parseInt(formData.get('priority') as string) || 0
     const isDismissible = formData.get('isDismissible') === 'on'
     const isActive = formData.get('isActive') === 'on'
+    const startDateRaw = formData.get('startDate') as string
+    const endDateRaw = formData.get('endDate') as string
 
     if (!title || !content) {
       toast.error('Title and content are required')
@@ -156,7 +164,9 @@ export default function AnnouncementManagement() {
       type,
       priority,
       isDismissible,
-      isActive
+      isActive,
+      startDate: startDateRaw ? new Date(startDateRaw) : undefined,
+      endDate: endDateRaw ? new Date(endDateRaw) : undefined
     })
   }
 
@@ -180,7 +190,9 @@ export default function AnnouncementManagement() {
       priority: announcement.priority,
       isDismissible: announcement.isDismissible,
       isActive: announcement.isActive,
-      targetAudience: announcement.targetAudience
+      targetAudience: announcement.targetAudience,
+      startDate: announcement.startDate,
+      endDate: announcement.endDate
     })
     setIsEditDialogOpen(true)
   }
@@ -278,6 +290,18 @@ export default function AnnouncementManagement() {
                     className='rounded'
                   />
                   <Label htmlFor='isDismissible'>Allow users to dismiss this announcement</Label>
+                </div>
+
+                <div className='grid grid-cols-2 gap-4'>
+                  <div>
+                    <Label htmlFor='startDate'>Start Date (optional)</Label>
+                    <Input id='startDate' name='startDate' type='datetime-local' />
+                  </div>
+
+                  <div>
+                    <Label htmlFor='endDate'>End Date (optional)</Label>
+                    <Input id='endDate' name='endDate' type='datetime-local' />
+                  </div>
                 </div>
               </div>
 
@@ -578,6 +602,36 @@ export default function AnnouncementManagement() {
                 </div>
 
                 <div className='space-y-3'>
+                  <div className='grid grid-cols-2 gap-4'>
+                    <div>
+                      <Label htmlFor='edit-startDate'>Start Date (optional)</Label>
+                      <Input
+                        id='edit-startDate'
+                        name='startDate'
+                        type='datetime-local'
+                        defaultValue={
+                          editingAnnouncement.startDate
+                            ? new Date(editingAnnouncement.startDate).toISOString().slice(0, 16)
+                            : undefined
+                        }
+                      />
+                    </div>
+
+                    <div>
+                      <Label htmlFor='edit-endDate'>End Date (optional)</Label>
+                      <Input
+                        id='edit-endDate'
+                        name='endDate'
+                        type='datetime-local'
+                        defaultValue={
+                          editingAnnouncement.endDate
+                            ? new Date(editingAnnouncement.endDate).toISOString().slice(0, 16)
+                            : undefined
+                        }
+                      />
+                    </div>
+                  </div>
+
                   <div className='flex items-center space-x-2'>
                     <input
                       type='checkbox'
