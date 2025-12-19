@@ -25,6 +25,8 @@ const MusicStatsSection = () => {
   const stats = useMemo(() => {
     if (!topTracks || !topArtists || !recentTracks) return null
 
+    const totalTracks = topTracks.length
+
     // Calculate total listening time (estimated from recent tracks)
     const totalMinutes =
       recentTracks.reduce((acc: number, track: any) => acc + (track.duration || 180_000), 0) /
@@ -47,21 +49,25 @@ const MusicStatsSection = () => {
       .map(([genre]) => genre)
 
     // Calculate average track popularity
-    const avgPopularity = Math.round(
-      topTracks.reduce((acc: number, track: any) => acc + (track.popularity || 0), 0) /
-        topTracks.length
-    )
+    const avgPopularity =
+      totalTracks === 0
+        ? 0
+        : Math.round(
+            topTracks.reduce((acc: number, track: any) => acc + (track.popularity || 0), 0) /
+              totalTracks
+          )
 
     // Calculate diversity score (unique artists in top tracks)
-    const uniqueArtists = new Set(topTracks.map((track: any) => track.artist)).size
-    const diversityScore = Math.round((uniqueArtists / topTracks.length) * 100)
+    const uniqueArtists =
+      totalTracks === 0 ? 0 : new Set(topTracks.map((track: any) => track.artist)).size
+    const diversityScore = totalTracks === 0 ? 0 : Math.round((uniqueArtists / totalTracks) * 100)
 
     return {
       totalHours,
       topGenres,
       avgPopularity,
       diversityScore,
-      totalTracks: topTracks.length,
+      totalTracks,
       totalArtists: topArtists.length
     }
   }, [topTracks, topArtists, recentTracks])

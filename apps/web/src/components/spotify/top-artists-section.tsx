@@ -38,11 +38,11 @@ const TopArtistsSection = () => {
   // Shuffle artists when requested
   const displayedArtists = useMemo(() => {
     if (!artists) return []
-    if (isShuffled) {
+    if (isShuffled && isMounted) {
       return [...artists].sort(() => Math.random() - 0.5)
     }
     return artists
-  }, [artists, isShuffled])
+  }, [artists, isShuffled, isMounted])
 
   const handleRefresh = async () => {
     setIsRefreshing(true)
@@ -254,7 +254,7 @@ const TopArtistsSection = () => {
                 className='hover:bg-muted/50 group flex items-center gap-4 rounded-lg p-3 transition-colors'
               >
                 <div className='flex min-w-0 flex-1 items-center gap-4'>
-                  <div className='relative h-12 w-12 flex-shrink-0 overflow-hidden rounded-full'>
+                  <div className='relative h-12 w-12 shrink-0 overflow-hidden rounded-full'>
                     <SpotifyImage
                       src={artist.image}
                       alt={`${artist.name} artist photo`}
@@ -274,7 +274,7 @@ const TopArtistsSection = () => {
                       </p>
                     )}
                   </div>
-                  <div className='flex-shrink-0 text-right'>
+                  <div className='shrink-0 text-right'>
                     <p className='text-muted-foreground text-xs'>
                       {isMounted ? artist.followers.toLocaleString() : artist.followers}{' '}
                       {t('spotify.followers')}

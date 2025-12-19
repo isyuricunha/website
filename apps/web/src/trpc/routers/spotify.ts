@@ -23,6 +23,52 @@ const TOKEN_ENDPOINT = 'https://accounts.spotify.com/api/token'
 // Cache do access token (válido por ~50 minutos)
 let cachedAccessToken: { token: string; expiresAt: number } | null = null
 
+const resetAccessTokenCache = () => {
+  cachedAccessToken = null
+}
+
+const readSpotifyErrorBody = async (response: Response): Promise<string | null> => {
+  try {
+    const json = await response.clone().json()
+    const message =
+      typeof json?.error?.message === 'string'
+        ? json.error.message
+        : typeof json?.message === 'string'
+          ? json.message
+          : null
+    if (message) return message
+    return JSON.stringify(json)
+  } catch {
+    try {
+      return await response.clone().text()
+    } catch {
+      return null
+    }
+  }
+}
+
+const spotifyFetch = async (
+  url: string,
+  init: RequestInit = {},
+  retryOnAuthError = true
+): Promise<Response> => {
+  const accessToken = await getAccessToken()
+  const headers = new Headers(init.headers)
+  headers.set('Authorization', `Bearer ${accessToken}`)
+
+  const response = await fetch(url, {
+    ...init,
+    headers
+  })
+
+  if (response.status === 401 && retryOnAuthError) {
+    resetAccessTokenCache()
+    return spotifyFetch(url, init, false)
+  }
+
+  return response
+}
+
 // Helper function for retry with exponential backoff
 const retryWithBackoff = async <T>(
   fn: () => Promise<T>,
@@ -132,13 +178,7 @@ export const spotifyRouter = createTRPCRouter({
 
     if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
 
-    const accessToken = await getAccessToken()
-
-    const response = await fetch(NOW_PLAYING_ENDPOINT, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`
-      }
-    })
+    const response = await spotifyFetch(NOW_PLAYING_ENDPOINT)
 
     if (response.status === 204) {
       return {
@@ -149,13 +189,39 @@ export const spotifyRouter = createTRPCRouter({
       }
     }
 
+    if (!response.ok) {
+      const details = await readSpotifyErrorBody(response)
+      logger.warn('Spotify API error for now playing', {
+        status: response.status,
+        details
+      })
+
+      return {
+        isPlaying: false,
+        songUrl: null,
+        name: null,
+        artist: null
+      }
+    }
+
     const song = await response.json()
 
+    if (!song?.item) {
+      return {
+        isPlaying: false,
+        songUrl: null,
+        name: null,
+        artist: null
+      }
+    }
+
     return {
-      isPlaying: song.is_playing as boolean,
-      songUrl: song.item.external_urls.spotify as string,
-      name: song.item.name as string,
-      artist: song.item.artists.map((artist: { name: string }) => artist.name).join(', ') as string
+      isPlaying: (song.is_playing as boolean) ?? false,
+      songUrl: (song.item.external_urls?.spotify as string) ?? null,
+      name: (song.item.name as string) ?? null,
+      artist:
+        (song.item.artists?.map((artist: { name: string }) => artist.name).join(', ') as string) ??
+        null
     }
   }),
 
@@ -166,16 +232,20 @@ export const spotifyRouter = createTRPCRouter({
 
     if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
 
-    const accessToken = await getAccessToken()
-
-    const response = await fetch(NOW_PLAYING_ENDPOINT, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`
-      },
+    const response = await spotifyFetch(NOW_PLAYING_ENDPOINT, {
       signal: AbortSignal.timeout(10_000) // 10 second timeout
     })
 
     if (response.status === 204) {
+      return null
+    }
+
+    if (!response.ok) {
+      const details = await readSpotifyErrorBody(response)
+      logger.warn('Spotify API error for currently playing', {
+        status: response.status,
+        details
+      })
       return null
     }
 
@@ -215,21 +285,24 @@ export const spotifyRouter = createTRPCRouter({
     if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
 
     try {
-      const accessToken = await getAccessToken()
-
-      const response = await fetch(`${TOP_ARTISTS_ENDPOINT}?limit=20&time_range=short_term`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`
-        },
+      const response = await spotifyFetch(`${TOP_ARTISTS_ENDPOINT}?limit=20&time_range=short_term`, {
         signal: AbortSignal.timeout(10_000) // 10 second timeout
       })
 
       if (!response.ok) {
-        logger.error('Spotify API error for top artists', new Error(`Status: ${response.status}`))
-        throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: `Failed to fetch top artists: ${response.status}`
+        if (response.status === 429) {
+          throw new TRPCError({
+            code: 'TOO_MANY_REQUESTS',
+            message: 'Spotify rate limit reached'
+          })
+        }
+
+        const details = await readSpotifyErrorBody(response)
+        logger.warn('Spotify API error for top artists', {
+          status: response.status,
+          details
         })
+        return []
       }
 
       const data = await response.json()
@@ -255,7 +328,7 @@ export const spotifyRouter = createTRPCRouter({
       })
     } catch (error) {
       logger.error('Error in getTopArtists', error)
-      throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Failed to fetch top artists' })
+      return []
     }
   }),
 
@@ -267,21 +340,24 @@ export const spotifyRouter = createTRPCRouter({
     if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
 
     try {
-      const accessToken = await getAccessToken()
-
-      const response = await fetch(`${TOP_TRACKS_ENDPOINT}?limit=20&time_range=short_term`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`
-        },
+      const response = await spotifyFetch(`${TOP_TRACKS_ENDPOINT}?limit=20&time_range=short_term`, {
         signal: AbortSignal.timeout(10_000) // 10 second timeout
       })
 
       if (!response.ok) {
-        logger.error('Spotify API error for top tracks', new Error(`Status: ${response.status}`))
-        throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: `Failed to fetch top tracks: ${response.status}`
+        if (response.status === 429) {
+          throw new TRPCError({
+            code: 'TOO_MANY_REQUESTS',
+            message: 'Spotify rate limit reached'
+          })
+        }
+
+        const details = await readSpotifyErrorBody(response)
+        logger.warn('Spotify API error for top tracks', {
+          status: response.status,
+          details
         })
+        return []
       }
 
       const data = await response.json()
@@ -312,7 +388,7 @@ export const spotifyRouter = createTRPCRouter({
       })
     } catch (error) {
       logger.error('Error in getTopTracks', error)
-      throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Failed to fetch top tracks' })
+      return []
     }
   }),
 
@@ -324,24 +400,24 @@ export const spotifyRouter = createTRPCRouter({
     if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
 
     try {
-      const accessToken = await getAccessToken()
-
-      const response = await fetch(`${RECENTLY_PLAYED_ENDPOINT}?limit=20`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`
-        },
+      const response = await spotifyFetch(`${RECENTLY_PLAYED_ENDPOINT}?limit=20`, {
         signal: AbortSignal.timeout(10_000) // 10 second timeout
       })
 
       if (!response.ok) {
-        logger.error(
-          'Spotify API error for recently played',
-          new Error(`Status: ${response.status}`)
-        )
-        throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: `Failed to fetch recently played tracks: ${response.status}`
+        if (response.status === 429) {
+          throw new TRPCError({
+            code: 'TOO_MANY_REQUESTS',
+            message: 'Spotify rate limit reached'
+          })
+        }
+
+        const details = await readSpotifyErrorBody(response)
+        logger.warn('Spotify API error for recently played', {
+          status: response.status,
+          details
         })
+        return []
       }
 
       const data = await response.json()
@@ -372,10 +448,7 @@ export const spotifyRouter = createTRPCRouter({
       })
     } catch (error) {
       logger.error('Error in getRecentlyPlayed', error)
-      throw new TRPCError({
-        code: 'INTERNAL_SERVER_ERROR',
-        message: 'Failed to fetch recently played tracks'
-      })
+      return []
     }
   }),
 
@@ -393,15 +466,10 @@ export const spotifyRouter = createTRPCRouter({
       if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
 
       try {
-        const accessToken = await getAccessToken()
-
         // Fetch top tracks for a given time range to get track IDs
-        const topTracksResponse = await fetch(
+        const topTracksResponse = await spotifyFetch(
           `${TOP_TRACKS_ENDPOINT}?limit=50&time_range=${input.time_range}`,
           {
-            headers: {
-              Authorization: `Bearer ${accessToken}`
-            },
             signal: AbortSignal.timeout(10_000)
           }
         )
@@ -414,14 +482,21 @@ export const spotifyRouter = createTRPCRouter({
             })
           }
 
-          logger.error(
-            'Spotify API error for audio features (top tracks)',
-            new Error(`Status: ${topTracksResponse.status}`)
-          )
-          throw new TRPCError({
-            code: 'INTERNAL_SERVER_ERROR',
-            message: `Failed to fetch top tracks: ${topTracksResponse.status}`
+          const details = await readSpotifyErrorBody(topTracksResponse)
+          logger.warn('Spotify API error for audio features (top tracks)', {
+            status: topTracksResponse.status,
+            details
           })
+
+          return {
+            sampleSize: 0,
+            danceability: null,
+            energy: null,
+            valence: null,
+            tempo: null,
+            acousticness: null,
+            instrumentalness: null
+          }
         }
 
         const topTracksData = await topTracksResponse.json()
@@ -442,12 +517,9 @@ export const spotifyRouter = createTRPCRouter({
         }
 
         // Spotify audio-features endpoint supports up to 100 IDs, so we're safe with 50.
-        const audioFeaturesResponse = await fetch(
+        const audioFeaturesResponse = await spotifyFetch(
           `${AUDIO_FEATURES_ENDPOINT}?ids=${encodeURIComponent(ids.join(','))}`,
           {
-            headers: {
-              Authorization: `Bearer ${accessToken}`
-            },
             signal: AbortSignal.timeout(10_000)
           }
         )
@@ -460,14 +532,21 @@ export const spotifyRouter = createTRPCRouter({
             })
           }
 
-          logger.error(
-            'Spotify API error for audio features (features fetch)',
-            new Error(`Status: ${audioFeaturesResponse.status}`)
-          )
-          throw new TRPCError({
-            code: 'INTERNAL_SERVER_ERROR',
-            message: `Failed to fetch audio features: ${audioFeaturesResponse.status}`
+          const details = await readSpotifyErrorBody(audioFeaturesResponse)
+          logger.warn('Spotify API error for audio features (features fetch)', {
+            status: audioFeaturesResponse.status,
+            details
           })
+
+          return {
+            sampleSize: 0,
+            danceability: null,
+            energy: null,
+            valence: null,
+            tempo: null,
+            acousticness: null,
+            instrumentalness: null
+          }
         }
 
         const audioFeaturesData = await audioFeaturesResponse.json()
@@ -543,10 +622,15 @@ export const spotifyRouter = createTRPCRouter({
         if (error instanceof TRPCError) throw error
 
         logger.error('Error in getAudioFeaturesSummaryByRange', error)
-        throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: 'Failed to fetch audio features'
-        })
+        return {
+          sampleSize: 0,
+          danceability: null,
+          energy: null,
+          valence: null,
+          tempo: null,
+          acousticness: null,
+          instrumentalness: null
+        }
       }
     }),
 
@@ -564,27 +648,27 @@ export const spotifyRouter = createTRPCRouter({
       if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
 
       try {
-        const accessToken = await getAccessToken()
-
-        const response = await fetch(
+        const response = await spotifyFetch(
           `${TOP_ARTISTS_ENDPOINT}?limit=20&time_range=${input.time_range}`,
           {
-            headers: {
-              Authorization: `Bearer ${accessToken}`
-            },
             signal: AbortSignal.timeout(10_000) // 10 second timeout
           }
         )
 
         if (!response.ok) {
-          logger.error(
-            'Spotify API error for top artists by range',
-            new Error(`Status: ${response.status}`)
-          )
-          throw new TRPCError({
-            code: 'INTERNAL_SERVER_ERROR',
-            message: `Failed to fetch top artists: ${response.status}`
+          if (response.status === 429) {
+            throw new TRPCError({
+              code: 'TOO_MANY_REQUESTS',
+              message: 'Spotify rate limit reached'
+            })
+          }
+
+          const details = await readSpotifyErrorBody(response)
+          logger.warn('Spotify API error for top artists by range', {
+            status: response.status,
+            details
           })
+          return []
         }
 
         const data = await response.json()
@@ -610,10 +694,7 @@ export const spotifyRouter = createTRPCRouter({
         })
       } catch (error) {
         logger.error('Error in getTopArtistsByRange', error)
-        throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: 'Failed to fetch top artists'
-        })
+        return []
       }
     }),
 
@@ -631,27 +712,27 @@ export const spotifyRouter = createTRPCRouter({
       if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
 
       try {
-        const accessToken = await getAccessToken()
-
-        const response = await fetch(
+        const response = await spotifyFetch(
           `${TOP_TRACKS_ENDPOINT}?limit=20&time_range=${input.time_range}`,
           {
-            headers: {
-              Authorization: `Bearer ${accessToken}`
-            },
             signal: AbortSignal.timeout(10_000) // 10 second timeout
           }
         )
 
         if (!response.ok) {
-          logger.error(
-            'Spotify API error for top tracks by range',
-            new Error(`Status: ${response.status}`)
-          )
-          throw new TRPCError({
-            code: 'INTERNAL_SERVER_ERROR',
-            message: `Failed to fetch top tracks: ${response.status}`
+          if (response.status === 429) {
+            throw new TRPCError({
+              code: 'TOO_MANY_REQUESTS',
+              message: 'Spotify rate limit reached'
+            })
+          }
+
+          const details = await readSpotifyErrorBody(response)
+          logger.warn('Spotify API error for top tracks by range', {
+            status: response.status,
+            details
           })
+          return []
         }
 
         const data = await response.json()
@@ -682,10 +763,7 @@ export const spotifyRouter = createTRPCRouter({
         })
       } catch (error) {
         logger.error('Error in getTopTracksByRange', error)
-        throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: 'Failed to fetch top tracks'
-        })
+        return []
       }
     })
 })
