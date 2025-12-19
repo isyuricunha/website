@@ -16,6 +16,17 @@ import { AuditLogger, getIpFromHeaders, getUserAgentFromHeaders } from '@/lib/au
 import { logger } from '@/lib/logger'
 import { adminProcedure, publicProcedure, createTRPCRouter } from '../trpc'
 
+const is_foreign_key_violation = (error: unknown): boolean => {
+  if (!error || typeof error !== 'object') return false
+  const maybe = error as { code?: unknown; cause?: unknown }
+  if (maybe.code === '23503') return true
+  if (maybe.cause && typeof maybe.cause === 'object') {
+    const cause = maybe.cause as { code?: unknown }
+    return cause.code === '23503'
+  }
+  return false
+}
+
 export const announcementsRouter = createTRPCRouter({
   // Get announcements (public endpoint for homepage banners)
   getAnnouncements: publicProcedure
@@ -275,6 +286,13 @@ export const announcementsRouter = createTRPCRouter({
 
         return { success: true }
       } catch (error) {
+        if (is_foreign_key_violation(error)) {
+          logger.warn('Skipping announcement viewed update due to missing announcement', {
+            announcementId: input.announcementId,
+            userId: ctx.session?.user?.id
+          })
+          return { success: true }
+        }
         logger.error('Error marking announcement viewed', error)
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
@@ -326,6 +344,13 @@ export const announcementsRouter = createTRPCRouter({
 
         return { success: true }
       } catch (error) {
+        if (is_foreign_key_violation(error)) {
+          logger.warn('Skipping announcement dismissal due to missing announcement', {
+            announcementId: input.announcementId,
+            userId: ctx.session?.user?.id
+          })
+          return { success: true }
+        }
         logger.error('Error dismissing announcement', error)
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',

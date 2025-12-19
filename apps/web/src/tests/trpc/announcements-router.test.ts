@@ -373,4 +373,64 @@ describe('announcementsRouter', () => {
     },
     15_000
   )
+
+  it(
+    'markAnnouncementViewed tolerates foreign key violations (announcement deleted) and returns success',
+    async () => {
+    const { announcementsRouter } = await import('@/trpc/routers/announcements')
+
+    const db = createDbMock()
+    db.insert.mockImplementationOnce(() => {
+      const err = new Error('fk violation') as Error & { code?: string }
+      err.code = '23503'
+      return {
+        values: vi.fn(async () => {
+          throw err
+        })
+      }
+    })
+
+    const caller = announcementsRouter.createCaller({
+      db: db as unknown,
+      headers: new Headers(),
+      session: {
+        user: { id: 'user-1', role: 'user' }
+      }
+    } as unknown as Parameters<typeof announcementsRouter.createCaller>[0])
+
+    const result = await caller.markAnnouncementViewed({ announcementId: 'missing' })
+    expect(result.success).toBe(true)
+    },
+    15_000
+  )
+
+  it(
+    'dismissAnnouncement tolerates foreign key violations (announcement deleted) and returns success',
+    async () => {
+    const { announcementsRouter } = await import('@/trpc/routers/announcements')
+
+    const db = createDbMock()
+    db.insert.mockImplementationOnce(() => {
+      const err = new Error('fk violation') as Error & { code?: string }
+      err.code = '23503'
+      return {
+        values: vi.fn(async () => {
+          throw err
+        })
+      }
+    })
+
+    const caller = announcementsRouter.createCaller({
+      db: db as unknown,
+      headers: new Headers(),
+      session: {
+        user: { id: 'user-1', role: 'user' }
+      }
+    } as unknown as Parameters<typeof announcementsRouter.createCaller>[0])
+
+    const result = await caller.dismissAnnouncement({ announcementId: 'missing' })
+    expect(result.success).toBe(true)
+    },
+    15_000
+  )
 })
