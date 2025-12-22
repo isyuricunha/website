@@ -74,7 +74,7 @@
     "lint-staged": "^16.2.7",
     "prettier": "^3.7.4",
     "simple-git-hooks": "^2.13.1",
-    "ts-morph": "^26.0.0",
+    "ts-morph": "^27.0.2",
     "tsup": "^8.5.1",
     "tsx": "^4.21.0",
     "turbo": "^2.6.3",
