@@ -9,14 +9,20 @@ import { getAnnouncementUi } from '@/lib/announcement-ui'
 import { hasHighPriorityBadge } from '@/lib/announcement-priority'
 import {
   addDismissedAnnouncementId,
-  getDismissedAnnouncementIds
+  addViewedAnnouncementId,
+  getDismissedAnnouncementIds,
+  getViewedAnnouncementIds
 } from '@/utils/announcement-storage'
 
 export default function AnnouncementBanner() {
   const t = useTranslations()
-  const [dismissedAnnouncements, setDismissedAnnouncements] = useState<string[]>(() => {
-    return getDismissedAnnouncementIds()
-  })
+  const [dismissedAnnouncements, setDismissedAnnouncements] = useState<string[]>([])
+  const [viewedAnnouncements, setViewedAnnouncements] = useState<string[]>([])
+
+  useEffect(() => {
+    setDismissedAnnouncements(getDismissedAnnouncementIds())
+    setViewedAnnouncements(getViewedAnnouncementIds())
+  }, [])
 
   // Get active announcements
   const { data: announcementsData } = api.announcements.getAnnouncements.useQuery({
@@ -45,10 +51,23 @@ export default function AnnouncementBanner() {
 
   useEffect(() => {
     if (activeAnnouncements.length === 0) return
-    activeAnnouncements.forEach((announcement) => {
+
+    const toMark = activeAnnouncements.filter(
+      (announcement) => !viewedAnnouncements.includes(announcement.id)
+    )
+
+    if (toMark.length === 0) return
+
+    toMark.forEach((announcement) => {
       markViewedMutation.mutate({ announcementId: announcement.id })
     })
-  }, [activeAnnouncements, markViewedMutation])
+
+    const nextViewed = toMark.reduce<string[]>(
+      (acc, announcement) => addViewedAnnouncementId(acc, announcement.id),
+      viewedAnnouncements
+    )
+    setViewedAnnouncements(nextViewed)
+  }, [activeAnnouncements, markViewedMutation, viewedAnnouncements])
 
   if (!announcementsData?.announcements) {
     return null

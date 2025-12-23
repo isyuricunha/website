@@ -11,8 +11,10 @@ import { getAnnouncementToastDurationMs, isUrgentAnnouncement } from '@/lib/anno
 import {
   addDismissedAnnouncementId,
   addShownAnnouncementToastId,
+  addViewedAnnouncementId,
   getDismissedAnnouncementIds,
-  getShownAnnouncementToastIds
+  getShownAnnouncementToastIds,
+  getViewedAnnouncementIds
 } from '@/utils/announcement-storage'
 
 export default function AnnouncementToast() {
@@ -33,6 +35,7 @@ export default function AnnouncementToast() {
     if (!announcementsData?.announcements) return
 
     const dismissedAnnouncements = getDismissedAnnouncementIds()
+    const viewedAnnouncements = getViewedAnnouncementIds()
 
     // Filter urgent announcements that haven't been dismissed (date filtering is done server-side)
     const urgentAnnouncements = announcementsData.announcements.filter(
@@ -46,7 +49,10 @@ export default function AnnouncementToast() {
     urgentAnnouncements.forEach((announcement) => {
       const toastId = `announcement-${announcement.id}`
 
-      markViewedMutation.mutate({ announcementId: announcement.id })
+      if (!viewedAnnouncements.includes(announcement.id)) {
+        markViewedMutation.mutate({ announcementId: announcement.id })
+        addViewedAnnouncementId(viewedAnnouncements, announcement.id)
+      }
 
       // Check if this toast was already shown in this session
       const shownToasts = getShownAnnouncementToastIds()

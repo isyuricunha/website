@@ -1,10 +1,11 @@
 const dismissedKey = 'dismissedAnnouncements'
 const shownToastsKey = 'shownAnnouncementToasts'
+const viewedAnnouncementsKey = 'viewedAnnouncements'
 
-const safeGetSessionStorage = (): Storage | null => {
+const safeGetStorage = (): Storage | null => {
   try {
     if (globalThis.window === undefined) return null
-    return sessionStorage
+    return localStorage
   } catch {
     return null
   }
@@ -29,13 +30,13 @@ const uniqueAppend = (items: string[], next: string): string[] => {
 }
 
 export const getDismissedAnnouncementIds = (): string[] => {
-  const storage = safeGetSessionStorage()
+  const storage = safeGetStorage()
   if (!storage) return []
   return parseStringArray(storage.getItem(dismissedKey))
 }
 
 export const setDismissedAnnouncementIds = (ids: string[]): void => {
-  const storage = safeGetSessionStorage()
+  const storage = safeGetStorage()
   if (!storage) return
 
   try {
@@ -52,13 +53,13 @@ export const addDismissedAnnouncementId = (current: string[], announcementId: st
 }
 
 export const getShownAnnouncementToastIds = (): string[] => {
-  const storage = safeGetSessionStorage()
+  const storage = safeGetStorage()
   if (!storage) return []
   return parseStringArray(storage.getItem(shownToastsKey))
 }
 
 export const setShownAnnouncementToastIds = (ids: string[]): void => {
-  const storage = safeGetSessionStorage()
+  const storage = safeGetStorage()
   if (!storage) return
 
   try {
@@ -74,5 +75,28 @@ export const addShownAnnouncementToastId = (
 ): string[] => {
   const next = uniqueAppend(current, announcementId)
   setShownAnnouncementToastIds(next)
+  return next
+}
+
+export const getViewedAnnouncementIds = (): string[] => {
+  const storage = safeGetStorage()
+  if (!storage) return []
+  return parseStringArray(storage.getItem(viewedAnnouncementsKey))
+}
+
+export const setViewedAnnouncementIds = (ids: string[]): void => {
+  const storage = safeGetStorage()
+  if (!storage) return
+
+  try {
+    storage.setItem(viewedAnnouncementsKey, JSON.stringify(ids))
+  } catch {
+    // ignore storage errors
+  }
+}
+
+export const addViewedAnnouncementId = (current: string[], announcementId: string): string[] => {
+  const next = uniqueAppend(current, announcementId)
+  setViewedAnnouncementIds(next)
   return next
 }

@@ -18,7 +18,9 @@ import { getAnnouncementUi } from '@/lib/announcement-ui'
 import { hasHighPriorityBadge } from '@/lib/announcement-priority'
 import {
   addDismissedAnnouncementId,
-  getDismissedAnnouncementIds
+  addViewedAnnouncementId,
+  getDismissedAnnouncementIds,
+  getViewedAnnouncementIds
 } from '@/utils/announcement-storage'
 
 interface AnnouncementWidgetProps {
@@ -31,9 +33,13 @@ export default function AnnouncementWidget({ className, maxItems = 5 }: Announce
   const locale = useLocale()
   const date_locale = locale === 'pt' ? 'pt-BR' : 'en-US'
 
-  const [dismissedItems, setDismissedItems] = useState<string[]>(() => {
-    return getDismissedAnnouncementIds()
-  })
+  const [dismissedItems, setDismissedItems] = useState<string[]>([])
+  const [viewedAnnouncements, setViewedAnnouncements] = useState<string[]>([])
+
+  useEffect(() => {
+    setDismissedItems(getDismissedAnnouncementIds())
+    setViewedAnnouncements(getViewedAnnouncementIds())
+  }, [])
 
   // Get active announcements
   const { data: announcementsData, isLoading } = api.announcements.getAnnouncements.useQuery({
@@ -64,10 +70,23 @@ export default function AnnouncementWidget({ className, maxItems = 5 }: Announce
 
   useEffect(() => {
     if (activeAnnouncements.length === 0) return
-    activeAnnouncements.forEach((announcement) => {
+
+    const toMark = activeAnnouncements.filter(
+      (announcement) => !viewedAnnouncements.includes(announcement.id)
+    )
+
+    if (toMark.length === 0) return
+
+    toMark.forEach((announcement) => {
       markViewedMutation.mutate({ announcementId: announcement.id })
     })
-  }, [activeAnnouncements, markViewedMutation])
+
+    const nextViewed = toMark.reduce<string[]>(
+      (acc, announcement) => addViewedAnnouncementId(acc, announcement.id),
+      viewedAnnouncements
+    )
+    setViewedAnnouncements(nextViewed)
+  }, [activeAnnouncements, markViewedMutation, viewedAnnouncements])
 
   if (isLoading) {
     return (
