@@ -23,12 +23,12 @@ export default defineConfig({
     projects: [
       'apps/*/vitest.config.ts',
       'apps/web/vitest.trpc.config.ts',
-      'packages/*/vitest.config.ts'
+      'packages/*/vitest.config.ts',
+      'scripts/vitest.config.ts'
     ],
     environment: 'jsdom',
     coverage: {
       reporter: ['lcov', 'html'],
-      all: true,
       provider: 'v8',
       exclude: [
         ...coverageConfigDefaults.exclude,
