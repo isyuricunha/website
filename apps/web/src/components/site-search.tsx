@@ -223,7 +223,7 @@ const SiteSearch = () => {
   return (
     <div className='relative'>
       <div className='relative'>
-        <Search className='text-muted-foreground absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform' />
+        <Search className='text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform' />
         <Input
           type='text'
           placeholder={t('site-search.placeholder', { default: 'Search the site...' })}

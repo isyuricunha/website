@@ -84,7 +84,7 @@ const Navbar = () => {
             <li key={link.key} className='relative flex h-[60px] items-center justify-center'>
               <Link
                 className={cn(
-                  'whitespace-nowrap rounded-sm px-3 py-2 text-sm font-medium transition-colors',
+                  'rounded-sm px-3 py-2 text-sm font-medium whitespace-nowrap transition-colors',
                   {
                     'text-muted-foreground hover:text-foreground': !isActive,
                     'text-foreground': isActive
@@ -113,7 +113,7 @@ const Navbar = () => {
                   className={cn(
                     'h-auto rounded-sm px-3 py-2 text-sm font-medium transition-colors',
                     'hover:bg-transparent',
-                    'focus:outline-none focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0',
+                    'focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none',
                     {
                       'text-muted-foreground hover:text-foreground': !isOverflowActive,
                       'text-foreground': isOverflowActive
@@ -154,11 +154,11 @@ const Navbar = () => {
         ) : null}
       </ul>
 
-      <div className='pointer-events-none fixed left-0 top-0 -z-50 opacity-0' aria-hidden='true'>
+      <div className='pointer-events-none fixed top-0 left-0 -z-50 opacity-0' aria-hidden='true'>
         <ul ref={measureLinksRef} className='flex gap-2'>
           {HEADER_LINKS.map((link) => (
             <li key={link.key} className='relative flex h-[60px] items-center justify-center'>
-              <span className='whitespace-nowrap rounded-sm px-3 py-2 text-sm font-medium'>
+              <span className='rounded-sm px-3 py-2 text-sm font-medium whitespace-nowrap'>
                 {t(`layout.${link.key}`)}
               </span>
             </li>

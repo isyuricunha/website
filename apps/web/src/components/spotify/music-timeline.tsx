@@ -220,7 +220,7 @@ const MusicTimeline = () => {
                 {tracks.slice(0, 5).map((track) => (
                   <div key={`${track.id}-${track.playedAt}`} className='relative'>
                     {/* Timeline Dot */}
-                    <div className='bg-primary border-background absolute -left-[1.75rem] top-2 h-3 w-3 rounded-full border-2' />
+                    <div className='bg-primary border-background absolute top-2 -left-[1.75rem] h-3 w-3 rounded-full border-2' />
 
                     {/* Track Item */}
                     <Link
@@ -259,7 +259,7 @@ const MusicTimeline = () => {
                 {/* Show more indicator */}
                 {tracks.length > 5 && (
                   <div className='relative'>
-                    <div className='bg-muted border-background absolute -left-[1.75rem] top-2 h-3 w-3 rounded-full border-2' />
+                    <div className='bg-muted border-background absolute top-2 -left-[1.75rem] h-3 w-3 rounded-full border-2' />
                     <div className='p-3 text-center'>
                       <p className='text-muted-foreground text-xs sm:text-sm'>
                         {t('spotify.timeline.more-tracks', { count: tracks.length - 5 })}

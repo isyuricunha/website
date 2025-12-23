@@ -57,7 +57,7 @@ const MobileNav = () => {
                     className={cn(
                       'flex min-h-[44px] items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium transition-all duration-200',
                       'hover:bg-accent hover:text-accent-foreground',
-                      'focus-visible:ring-ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
+                      'focus-visible:ring-ring focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
                       {
                         'bg-accent text-accent-foreground': isActive,
                         'text-muted-foreground': !isActive

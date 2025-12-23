@@ -51,19 +51,19 @@ const ComparisonTable = ({ items, title }: { items: ComparisonItem[]; title: str
         <table className='w-full min-w-[1100px] table-fixed border-separate border-spacing-0'>
           <thead className='bg-muted/20'>
             <tr>
-              <th className='text-muted-foreground w-[16%] px-6 py-4 text-left text-xs font-medium uppercase tracking-wider'>
+              <th className='text-muted-foreground w-[16%] px-6 py-4 text-left text-xs font-medium tracking-wider uppercase'>
                 {t('table.headers.tool')}
               </th>
-              <th className='text-muted-foreground w-[34%] px-6 py-4 text-left text-xs font-medium uppercase tracking-wider'>
+              <th className='text-muted-foreground w-[34%] px-6 py-4 text-left text-xs font-medium tracking-wider uppercase'>
                 {t('table.headers.pros')}
               </th>
-              <th className='text-muted-foreground w-[34%] px-6 py-4 text-left text-xs font-medium uppercase tracking-wider'>
+              <th className='text-muted-foreground w-[34%] px-6 py-4 text-left text-xs font-medium tracking-wider uppercase'>
                 {t('table.headers.cons')}
               </th>
-              <th className='text-muted-foreground w-[10%] px-6 py-4 text-left text-xs font-medium uppercase tracking-wider'>
+              <th className='text-muted-foreground w-[10%] px-6 py-4 text-left text-xs font-medium tracking-wider uppercase'>
                 {t('table.headers.price')}
               </th>
-              <th className='text-muted-foreground w-[6%] px-6 py-4 text-left text-xs font-medium uppercase tracking-wider'>
+              <th className='text-muted-foreground w-[6%] px-6 py-4 text-left text-xs font-medium tracking-wider uppercase'>
                 {t('table.headers.rating')}
               </th>
             </tr>
@@ -72,7 +72,7 @@ const ComparisonTable = ({ items, title }: { items: ComparisonItem[]; title: str
             {items.map((item, index) => (
               <tr key={index} className='hover:bg-muted/30 transition-colors'>
                 <td className='border-border/50 border-r px-8 py-6 align-top'>
-                  <div className='mr-4 break-words text-sm font-medium leading-relaxed'>
+                  <div className='mr-4 text-sm leading-relaxed font-medium break-words'>
                     {item.name}
                   </div>
                 </td>
@@ -95,7 +95,7 @@ const ComparisonTable = ({ items, title }: { items: ComparisonItem[]; title: str
                   </ul>
                 </td>
                 <td className='border-border/50 border-r px-8 py-6 align-top'>
-                  <span className='mr-4 break-words text-sm'>{item.price}</span>
+                  <span className='mr-4 text-sm break-words'>{item.price}</span>
                 </td>
                 <td className='px-8 py-6 align-top'>
                   <div className='flex flex-col items-start gap-1'>
@@ -111,7 +111,7 @@ const ComparisonTable = ({ items, title }: { items: ComparisonItem[]; title: str
                         />
                       ))}
                     </div>
-                    <span className='text-muted-foreground whitespace-nowrap text-xs'>
+                    <span className='text-muted-foreground text-xs whitespace-nowrap'>
                       {t('table.rating-out-of', { rating: item.rating })}
                     </span>
                   </div>

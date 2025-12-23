@@ -105,7 +105,7 @@ const Card = (props: CardProps) => {
     <Link
       key={slug}
       href={`/projects/${slug}`}
-      className='shadow-feature-card focus-visible:ring-ring group relative rounded-2xl p-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2'
+      className='shadow-feature-card focus-visible:ring-ring group relative rounded-2xl p-1.5 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none'
     >
       <div className='flex items-center justify-between p-2'>
         <div className='flex items-center gap-1.5'>

@@ -206,7 +206,7 @@ export default function AnnouncementManagement() {
       {/* Header */}
       <div className='flex flex-col justify-between gap-4 sm:flex-row sm:items-center'>
         <div className='min-w-0 flex-1 space-y-1'>
-          <h1 className='from-foreground to-foreground/70 bg-linear-to-r flex items-center gap-3 bg-clip-text text-3xl font-bold tracking-tight text-transparent sm:text-4xl'>
+          <h1 className='from-foreground to-foreground/70 flex items-center gap-3 bg-linear-to-r bg-clip-text text-3xl font-bold tracking-tight text-transparent sm:text-4xl'>
             <div className='bg-primary/10 text-primary shrink-0 rounded-xl p-2.5'>
               <Megaphone className='h-7 w-7 sm:h-8 sm:w-8' />
             </div>

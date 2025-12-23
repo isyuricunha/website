@@ -1,5 +1,6 @@
 import { type Column, flexRender, type Table as TanstackTable } from '@tanstack/react-table'
 import { cn, range } from '@isyuricunha/utils'
+import type { ListCollection } from '@ark-ui/react/combobox'
 import {
   ArrowDownIcon,
   ArrowUpIcon,
@@ -112,13 +113,13 @@ const DataTablePagination = <TData,>(props: DataTablePaginationProps<TData>) => 
 
   return (
     <div className='flex w-full flex-col-reverse items-center justify-between gap-4 overflow-auto p-1 sm:flex-row sm:gap-8'>
-      <div className='text-muted-foreground flex-1 whitespace-nowrap text-sm'>
+      <div className='text-muted-foreground flex-1 text-sm whitespace-nowrap'>
         {table.getFilteredSelectedRowModel().rows.length} of{' '}
         {table.getFilteredRowModel().rows.length} row(s) selected.
       </div>
       <div className='flex flex-col-reverse items-center gap-4 sm:flex-row sm:gap-6 lg:gap-8'>
         <div className='flex items-center gap-2'>
-          <p className='whitespace-nowrap text-sm font-medium'>Rows per page</p>
+          <p className='text-sm font-medium whitespace-nowrap'>Rows per page</p>
           <Select
             value={`${table.getState().pagination.pageSize}`}
             onValueChange={(value) => {
@@ -297,23 +298,24 @@ const DataTableFacetedFilter = <TData, TValue>(
 ) => {
   const { column, title, options } = props
   const facets = column?.getFacetedUniqueValues()
-  const selectedValues = new Set(column?.getFilterValue() as string[])
-  const [collection, setCollection] = useState(() => createListCollection({ items: options }))
+  const rawSelectedValues = column?.getFilterValue() as string[] | undefined
+  const selectedValues = new Set(rawSelectedValues)
+  const [collection, setCollection] = useState<ListCollection<Option>>(() =>
+    createListCollection({ items: options })
+  )
 
   const handleInputValueChange = (details: ComboboxInputValueChangeDetails) => {
     const filtered = options.filter((item) =>
       item.label.toLowerCase().includes(details.inputValue.toLowerCase())
     )
 
-    if (filtered.length > 0) setCollection(() => createListCollection({ items: filtered }))
-    else setCollection(() => createListCollection({ items: [] }))
+    if (filtered.length > 0) setCollection(createListCollection({ items: filtered }))
+    else setCollection(createListCollection({ items: [] as Option[] }))
   }
 
   const handleValueChange = (details: ComboboxValueChangeDetails) => {
     if (!Array.isArray(details.value)) return
-    selectedValues.clear()
-    for (const value of details.value) selectedValues.add(value)
-    const filterValues = [...selectedValues]
+    const filterValues = [...details.value]
     column?.setFilterValue(filterValues.length > 0 ? filterValues : undefined)
   }
 
@@ -353,7 +355,7 @@ const DataTableFacetedFilter = <TData, TValue>(
         </Button>
       </PopoverTrigger>
       <PopoverContent className='w-[200px] p-0' align='start'>
-        <Combobox
+        <Combobox<Option>
           collection={collection}
           onValueChange={handleValueChange}
           onInputValueChange={handleInputValueChange}
@@ -364,15 +366,15 @@ const DataTableFacetedFilter = <TData, TValue>(
             placeholder={title}
             className='rounded-none border-0 border-b bg-transparent py-0 text-sm focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0'
           />
-          <ComboboxContent className='data-[state=closed]:animate-none! data-[state=open]:animate-none! rounded-none border-0 bg-transparent p-1 shadow-none'>
+          <ComboboxContent className='rounded-none border-0 bg-transparent p-1 shadow-none data-[state=closed]:animate-none! data-[state=open]:animate-none!'>
             {collection.items.length === 0 ? (
               <div className='py-6 text-center text-sm'>No results found.</div>
             ) : null}
-            {collection.items.map((item) => (
+            {collection.items.map((item: Option) => (
               <ComboboxItem key={item.value} item={item}>
                 <div
                   className={cn(
-                    'border-primary rounded-xs mr-2 flex size-4 items-center justify-center border',
+                    'border-primary mr-2 flex size-4 items-center justify-center rounded-xs border',
                     selectedValues.has(item.value)
                       ? 'bg-primary text-primary-foreground'
                       : 'opacity-50 [&_svg]:invisible'
@@ -399,7 +401,6 @@ const DataTableFacetedFilter = <TData, TValue>(
                     variant='ghost'
                     onClick={() => {
                       column?.setFilterValue(undefined)
-                      console.log(selectedValues)
                     }}
                     className='h-8 w-full rounded-md'
                   >

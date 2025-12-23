@@ -27,12 +27,12 @@ const ItemGrid = (props: ItemGridProps) => {
         <Link
           key={item.name}
           href={item.url}
-          className='shadow-xs group relative flex min-h-[120px] gap-4 rounded-lg border p-4 no-underline transition-all hover:bg-zinc-100 hover:shadow-md sm:min-h-[160px] sm:flex-col sm:gap-3 dark:bg-zinc-900 dark:hover:bg-zinc-800'
+          className='group relative flex min-h-[120px] gap-4 rounded-lg border p-4 no-underline shadow-xs transition-all hover:bg-zinc-100 hover:shadow-md sm:min-h-[160px] sm:flex-col sm:gap-3 dark:bg-zinc-900 dark:hover:bg-zinc-800'
         >
           {item.isAffiliate && (
             <Badge
               variant='secondary'
-              className='absolute right-2 top-2 bg-blue-100 text-xs text-blue-800 dark:bg-blue-900 dark:text-blue-200'
+              className='absolute top-2 right-2 bg-blue-100 text-xs text-blue-800 dark:bg-blue-900 dark:text-blue-200'
             >
               Affiliate
             </Badge>

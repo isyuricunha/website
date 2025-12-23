@@ -11,7 +11,7 @@ const SliderControl = (props: SliderControlProps) => {
 
   return (
     <SliderPrimitive.Control
-      className={cn('flex w-full touch-none select-none items-center rounded-full', className)}
+      className={cn('flex w-full touch-none items-center rounded-full select-none', className)}
       {...rest}
     />
   )
@@ -24,7 +24,7 @@ const SliderLabel = (props: SliderLabelProps) => {
 
   return (
     <SliderPrimitive.Label
-      className={cn('text-sm font-medium leading-none', className)}
+      className={cn('text-sm leading-none font-medium', className)}
       {...rest}
     />
   )
@@ -60,7 +60,7 @@ const SliderThumb = (props: SliderThumbProps) => {
     <SliderPrimitive.Thumb
       className={cn(
         'border-primary bg-background ring-offset-background size-5 rounded-full border-2 transition-colors',
-        'focus-visible:ring-ring focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2',
+        'focus-visible:ring-ring focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden',
         'disabled:pointer-events-none disabled:opacity-50',
         className
       )}

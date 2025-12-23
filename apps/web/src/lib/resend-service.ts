@@ -13,9 +13,9 @@ interface ResendAudience {
 
 interface ResendContact {
   id: string
-  email?: string
-  first_name?: string
-  last_name?: string
+  email?: string | null
+  first_name?: string | null
+  last_name?: string | null
   created_at?: string
   unsubscribed?: boolean
 }

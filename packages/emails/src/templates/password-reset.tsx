@@ -46,7 +46,7 @@ const PasswordReset = (props: PasswordResetProps) => {
               You recently requested to reset your password for your yuricunha.com account. Click
               the button below to reset it.
             </Text>
-            <Section className='mb-[32px] mt-[32px] text-center'>
+            <Section className='mt-[32px] mb-[32px] text-center'>
               <Button
                 className='rounded bg-black px-5 py-3 text-center text-[12px] font-semibold text-white no-underline'
                 href={resetUrl}

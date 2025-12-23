@@ -77,7 +77,7 @@ const CommentPost = () => {
         <Button
           variant='ghost'
           size='icon'
-          className='absolute bottom-1.5 right-2 size-7'
+          className='absolute right-2 bottom-1.5 size-7'
           type='submit'
           disabled={disabled || !content}
           aria-label={t('blog.comments.send-comment')}

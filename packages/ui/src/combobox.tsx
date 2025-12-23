@@ -1,5 +1,6 @@
 import { Portal } from '@ark-ui/react'
 import { Combobox as ComboboxPrimitive } from '@ark-ui/react/combobox'
+import type { CollectionItem, ComboboxRootComponentProps } from '@ark-ui/react/combobox'
 import { cn } from '@isyuricunha/utils'
 
 const ComboboxContext = ComboboxPrimitive.Context
@@ -19,12 +20,12 @@ type ComboboxInputValueChangeDetails = ComboboxPrimitive.InputValueChangeDetails
 type ComboboxOpenChangeDetails = ComboboxPrimitive.OpenChangeDetails
 type ComboboxValueChangeDetails = ComboboxPrimitive.ValueChangeDetails
 
-type ComboboxProps = React.ComponentProps<typeof ComboboxPrimitive.Root>
+type ComboboxProps<T extends CollectionItem = CollectionItem> = ComboboxRootComponentProps<T>
 
-const Combobox = (props: ComboboxProps) => {
+const Combobox = <T extends CollectionItem>(props: ComboboxProps<T>) => {
   const { openOnClick = true, ...rest } = props
 
-  return <ComboboxPrimitive.Root openOnClick={openOnClick} {...rest} />
+  return <ComboboxPrimitive.Root<T> openOnClick={openOnClick} {...rest} />
 }
 
 type ComboboxInputProps = React.ComponentProps<typeof ComboboxPrimitive.Input>
@@ -37,7 +38,7 @@ const ComboboxInput = (props: ComboboxInputProps) => {
       className={cn(
         'border-input bg-background ring-offset-background flex h-10 w-full items-center justify-between rounded-lg border px-3 py-2 text-sm',
         'placeholder:text-muted-foreground',
-        'focus-visible:ring-ring focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2',
+        'focus-visible:ring-ring focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden',
         'disabled:cursor-not-allowed disabled:opacity-50',
         className
       )}
@@ -53,7 +54,7 @@ const ComboboxLabel = (props: ComboboxLabelProps) => {
 
   return (
     <ComboboxPrimitive.Label
-      className={cn('text-sm font-medium leading-none', className)}
+      className={cn('text-sm leading-none font-medium', className)}
       {...rest}
     />
   )
@@ -98,7 +99,7 @@ const ComboboxItem = (props: ComboboxItemProps) => {
   return (
     <ComboboxPrimitive.Item
       className={cn(
-        'outline-hidden relative flex cursor-default select-none items-center rounded-md px-2 py-1.5 text-sm transition-colors',
+        'relative flex cursor-default items-center rounded-md px-2 py-1.5 text-sm outline-hidden transition-colors select-none',
         'data-highlighted:bg-accent data-highlighted:text-accent-foreground',
         'data-disabled:cursor-not-allowed data-disabled:opacity-50',
         className

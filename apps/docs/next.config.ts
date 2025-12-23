@@ -13,9 +13,6 @@ const config: NextConfig = {
     optimizePackageImports: ['shiki']
   },
 
-  eslint: {
-    ignoreDuringBuilds: false
-  },
   typescript: {
     ignoreBuildErrors: false
   },

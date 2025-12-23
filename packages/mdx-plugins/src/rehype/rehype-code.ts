@@ -7,6 +7,7 @@
  */
 import type { Root } from 'hast'
 import type { Plugin } from 'unified'
+import type { VFile } from 'vfile'
 
 import { type RehypeShikiOptions } from '@shikijs/rehype'
 import rehypeShikiFromHighlighter from '@shikijs/rehype/core'
@@ -33,13 +34,15 @@ export const rehypeCode: Plugin<[RehypeShikiOptions], Root> = () => {
        * - Remove trailing newline
        * - Remove title from meta
        */
-      preprocess(code, { meta }) {
+      preprocess(code: string, options: unknown) {
+        const meta = (options as { meta?: { __raw?: string } } | undefined)?.meta
+
         if (meta) {
           meta.__raw = meta.__raw?.replace(titleRegex, '')
         }
         return code.replace(/\n$/, '')
       },
-      root(hast) {
+      root(hast: Root) {
         const pre = hast.children[0]
         if (pre?.type !== 'element') return
         hast.children = [
@@ -88,7 +91,7 @@ export const rehypeCode: Plugin<[RehypeShikiOptions], Root> = () => {
     })
   )
 
-  return async (tree, file) => {
+  return async (tree: Root, file: VFile) => {
     await (
       await transformer
     )(tree, file, () => {

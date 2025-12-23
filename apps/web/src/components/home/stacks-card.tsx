@@ -1,7 +1,6 @@
 'use client'
 
 import {
-  SiAmazon,
   SiAnsible,
   SiApache,
   SiApachecassandra,
@@ -48,7 +47,6 @@ const StacksCard = () => {
         <SiKubernetes className='size-6' />
         <SiNginx className='size-6' />
         <SiApache className='size-6' />
-        <SiAmazon className='size-6' />
         <SiGooglecloud className='size-6' />
         <SiDigitalocean className='size-6' />
         <SiUbuntu className='size-6' />

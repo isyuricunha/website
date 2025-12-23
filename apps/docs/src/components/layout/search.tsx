@@ -58,7 +58,7 @@ const Search = () => {
         onClick={() => setIsOpen(true)}
       >
         <span>Search documentation</span>
-        <kbd className='bg-muted flex select-none gap-1 rounded-sm border px-1.5 font-mono text-xs font-medium'>
+        <kbd className='bg-muted flex gap-1 rounded-sm border px-1.5 font-mono text-xs font-medium select-none'>
           <span>⌘</span>
           <span>K</span>
         </kbd>

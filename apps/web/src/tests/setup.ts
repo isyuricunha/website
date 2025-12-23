@@ -44,6 +44,69 @@ vi.mock('next/image', () => {
   }
 })
 
+// eslint-disable react-hooks/rules-of-hooks
+vi.mock('next-intl/navigation', () => {
+  return {
+    __esModule: true,
+    createNavigation: () => {
+      return {
+        Link: (props: any) => {
+          const { href, children, ...rest } = props ?? {}
+          return React.createElement('a', { href, ...rest }, children)
+        },
+        useRouter: () => ({
+          push: vi.fn(),
+          replace: vi.fn(),
+          prefetch: vi.fn(),
+          back: vi.fn(),
+          forward: vi.fn(),
+          refresh: vi.fn()
+        }),
+        usePathname: () => '/',
+        useSearchParams: () => new URLSearchParams(),
+        useParams: () => ({}),
+        redirect: vi.fn(),
+        permanentRedirect: vi.fn(),
+        notFound: vi.fn()
+      }
+    },
+    useRouter: () => ({
+      push: vi.fn(),
+      replace: vi.fn(),
+      prefetch: vi.fn(),
+      back: vi.fn(),
+      forward: vi.fn(),
+      refresh: vi.fn()
+    }),
+    usePathname: () => '/',
+    useSearchParams: () => new URLSearchParams(),
+    useParams: () => ({})
+  }
+})
+// eslint-enable react-hooks/rules-of-hooks
+
+// eslint-disable react-hooks/rules-of-hooks
+vi.mock('next/navigation', () => {
+  return {
+    __esModule: true,
+    useRouter: () => ({
+      push: vi.fn(),
+      replace: vi.fn(),
+      prefetch: vi.fn(),
+      back: vi.fn(),
+      forward: vi.fn(),
+      refresh: vi.fn()
+    }),
+    usePathname: () => '/',
+    useSearchParams: () => new URLSearchParams(),
+    useParams: () => ({}),
+    redirect: vi.fn(),
+    permanentRedirect: vi.fn(),
+    notFound: vi.fn()
+  }
+})
+// eslint-enable react-hooks/rules-of-hooks
+
 vi.mock('@isyuricunha/ui', async (importOriginal) => {
   const mod = await importOriginal<typeof import('@isyuricunha/ui')>()
 
@@ -57,7 +120,23 @@ vi.mock('@isyuricunha/ui', async (importOriginal) => {
   }
 })
 
-Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', {
-  value: vi.fn(),
+const scrollIntoViewMock = vi.fn()
+
+Object.defineProperty(Element.prototype, 'scrollIntoView', {
+  value: scrollIntoViewMock,
   writable: true
 })
+
+if (globalThis.HTMLElement) {
+  Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', {
+    value: scrollIntoViewMock,
+    writable: true
+  })
+}
+
+if (globalThis.SVGElement) {
+  Object.defineProperty(SVGElement.prototype, 'scrollIntoView', {
+    value: scrollIntoViewMock,
+    writable: true
+  })
+}

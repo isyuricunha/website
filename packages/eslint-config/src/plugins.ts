@@ -2,6 +2,11 @@
 // @ts-nocheck
 export { default as eslintPlugin } from '@eslint/js'
 export { default as reactPlugin } from '@eslint-react/eslint-plugin'
+export { default as reactDomPlugin } from 'eslint-plugin-react-dom'
+export { default as reactHooksExtraPlugin } from 'eslint-plugin-react-hooks-extra'
+export { default as reactNamingConventionPlugin } from 'eslint-plugin-react-naming-convention'
+export { default as reactWebApiPlugin } from 'eslint-plugin-react-web-api'
+export { default as reactXPlugin } from 'eslint-plugin-react-x'
 export { default as nextPlugin } from '@next/eslint-plugin-next'
 export { default as typescriptPlugin } from '@typescript-eslint/eslint-plugin'
 export { default as typescriptParser } from '@typescript-eslint/parser'

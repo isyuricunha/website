@@ -60,9 +60,9 @@ const SheetContent = (props: SheetContentProps) => {
         {children}
         <SheetPrimitive.Close
           className={cn(
-            'ring-offset-background rounded-xs absolute right-4 top-4 opacity-70 transition-opacity',
+            'ring-offset-background absolute top-4 right-4 rounded-xs opacity-70 transition-opacity',
             'hover:opacity-100',
-            'focus:ring-ring focus:outline-hidden focus:ring-2 focus:ring-offset-2',
+            'focus:ring-ring focus:ring-2 focus:ring-offset-2 focus:outline-hidden',
             'disabled:pointer-events-none'
           )}
           aria-label='Close'

@@ -1067,7 +1067,7 @@ export default function EmailMarketingManagement() {
               <div>
                 <Label className='text-sm font-medium'>HTML Content</Label>
                 <div className='bg-muted mt-2 max-h-64 overflow-y-auto rounded-lg p-4'>
-                  <pre className='whitespace-pre-wrap text-xs'>
+                  <pre className='text-xs whitespace-pre-wrap'>
                     {selectedBroadcastData?.broadcast?.html || 'No content'}
                   </pre>
                 </div>
@@ -1077,7 +1077,7 @@ export default function EmailMarketingManagement() {
                 <div>
                   <Label className='text-sm font-medium'>Plain Text Content</Label>
                   <div className='bg-muted mt-2 max-h-64 overflow-y-auto rounded-lg p-4'>
-                    <pre className='whitespace-pre-wrap text-xs'>
+                    <pre className='text-xs whitespace-pre-wrap'>
                       {selectedBroadcastData.broadcast.text}
                     </pre>
                   </div>

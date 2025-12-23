@@ -47,7 +47,7 @@ const ContactForm = (props: ContactFormProps) => {
         >
           <Container className='mx-auto max-w-[600px] rounded-[8px] border border-solid border-[color:var(--email-border)] bg-[color:var(--email-bg)]'>
             {/* Header with Logo */}
-            <Section className='px-[32px] pb-[24px] pt-[32px]'>
+            <Section className='px-[32px] pt-[32px] pb-[24px]'>
               <Img
                 src='https://di867tnz6fwga.cloudfront.net/brand-kits/fcb0c687-f9fb-478b-ac69-67bdccfcd37a/primary/63d1ccea-870c-4147-a2c6-695fe9b6e9fa.png'
                 alt='Yuri'
@@ -57,11 +57,11 @@ const ContactForm = (props: ContactFormProps) => {
 
             {/* Main Content */}
             <Section className='px-[32px] pb-[32px]'>
-              <Heading className='mb-[24px] mt-0 text-[24px] font-bold text-[color:var(--email-fg)]'>
+              <Heading className='mt-0 mb-[24px] text-[24px] font-bold text-[color:var(--email-fg)]'>
                 New Contact Form Submission
               </Heading>
 
-              <Text className='mb-[24px] mt-0 text-[16px] text-[color:var(--email-fg)]'>
+              <Text className='mt-0 mb-[24px] text-[16px] text-[color:var(--email-fg)]'>
                 You have received a new message through your contact form on yuricunha.com.
               </Text>
 
@@ -69,10 +69,10 @@ const ContactForm = (props: ContactFormProps) => {
               <Section className='mb-[24px] rounded-[8px] border border-solid border-[color:var(--email-border)] bg-[color:var(--email-surface)] p-[24px]'>
                 <Row>
                   <Column>
-                    <Text className='mb-[8px] mt-0 text-[14px] font-bold uppercase tracking-wide text-[color:var(--email-accent)]'>
+                    <Text className='mt-0 mb-[8px] text-[14px] font-bold tracking-wide text-[color:var(--email-accent)] uppercase'>
                       From
                     </Text>
-                    <Text className='mb-[16px] mt-0 text-[16px] text-[color:var(--email-fg)]'>
+                    <Text className='mt-0 mb-[16px] text-[16px] text-[color:var(--email-fg)]'>
                       {senderName ? `${senderName} <${senderEmail}>` : senderEmail}
                     </Text>
                   </Column>
@@ -80,10 +80,10 @@ const ContactForm = (props: ContactFormProps) => {
 
                 <Row>
                   <Column>
-                    <Text className='mb-[8px] mt-0 text-[14px] font-bold uppercase tracking-wide text-[color:var(--email-accent)]'>
+                    <Text className='mt-0 mb-[8px] text-[14px] font-bold tracking-wide text-[color:var(--email-accent)] uppercase'>
                       Subject
                     </Text>
-                    <Text className='mb-[16px] mt-0 text-[16px] text-[color:var(--email-fg)]'>
+                    <Text className='mt-0 mb-[16px] text-[16px] text-[color:var(--email-fg)]'>
                       {subject}
                     </Text>
                   </Column>
@@ -91,10 +91,10 @@ const ContactForm = (props: ContactFormProps) => {
 
                 <Row>
                   <Column>
-                    <Text className='mb-[8px] mt-0 text-[14px] font-bold uppercase tracking-wide text-[color:var(--email-accent)]'>
+                    <Text className='mt-0 mb-[8px] text-[14px] font-bold tracking-wide text-[color:var(--email-accent)] uppercase'>
                       Message
                     </Text>
-                    <Text className='mb-0 mt-0 whitespace-pre-wrap text-[16px] leading-[24px] text-[color:var(--email-fg)]'>
+                    <Text className='mt-0 mb-0 text-[16px] leading-[24px] whitespace-pre-wrap text-[color:var(--email-fg)]'>
                       {message}
                     </Text>
                   </Column>
@@ -102,11 +102,11 @@ const ContactForm = (props: ContactFormProps) => {
               </Section>
 
               {/* Quick Actions */}
-              <Text className='mb-[16px] mt-0 text-[16px] text-[color:var(--email-fg)]'>
+              <Text className='mt-0 mb-[16px] text-[16px] text-[color:var(--email-fg)]'>
                 You can reply directly to this email to respond to {senderName || 'the sender'}.
               </Text>
 
-              <Text className='mb-0 mt-0 text-[14px] text-[color:var(--email-muted)]'>
+              <Text className='mt-0 mb-0 text-[14px] text-[color:var(--email-muted)]'>
                 This notification was automatically generated from your contact form at{' '}
                 <Link
                   href='https://yuricunha.com'
@@ -121,7 +121,7 @@ const ContactForm = (props: ContactFormProps) => {
 
             {/* Footer */}
             <Section className='px-[32px] py-[24px]'>
-              <Text className='mb-[16px] mt-0 text-[12px] text-[color:var(--email-muted)]'>
+              <Text className='mt-0 mb-[16px] text-[12px] text-[color:var(--email-muted)]'>
                 Database Administrator (DBA) and Server Infrastructure Specialist
               </Text>
 

@@ -19,7 +19,7 @@ const ContextMenuSubTrigger = (props: ContextMenuSubTriggerProps) => {
   return (
     <ContextMenuPrimitive.SubTrigger
       className={cn(
-        'outline-hidden flex cursor-default select-none items-center rounded-md px-2 py-1.5 text-sm',
+        'flex cursor-default items-center rounded-md px-2 py-1.5 text-sm outline-hidden select-none',
         'focus:bg-accent focus:text-accent-foreground',
         'data-[state=open]:bg-accent data-[state=open]:text-accent-foreground',
         inset && 'pl-8',
@@ -89,7 +89,7 @@ const ContextMenuItem = (props: ContextMenuItemProps) => {
   return (
     <ContextMenuPrimitive.Item
       className={cn(
-        'outline-hidden relative flex cursor-default select-none items-center rounded-md px-2 py-1.5 text-sm transition-colors',
+        'relative flex cursor-default items-center rounded-md px-2 py-1.5 text-sm outline-hidden transition-colors select-none',
         'focus:bg-accent focus:text-accent-foreground',
         'data-disabled:pointer-events-none data-disabled:opacity-50',
         inset && 'pl-8',
@@ -108,7 +108,7 @@ const ContextMenuCheckboxItem = (props: ContextMenuCheckboxItemProps) => {
   return (
     <ContextMenuPrimitive.CheckboxItem
       className={cn(
-        'outline-hidden relative flex cursor-default select-none items-center rounded-md py-1.5 pl-8 pr-2 text-sm transition-colors',
+        'relative flex cursor-default items-center rounded-md py-1.5 pr-2 pl-8 text-sm outline-hidden transition-colors select-none',
         'focus:bg-accent focus:text-accent-foreground',
         'data-disabled:pointer-events-none data-disabled:opacity-50',
         className
@@ -134,7 +134,7 @@ const ContextMenuRadioItem = (props: ContextMenuRadioItemProps) => {
   return (
     <ContextMenuPrimitive.RadioItem
       className={cn(
-        'outline-hidden relative flex cursor-default select-none items-center rounded-md py-1.5 pl-8 pr-2 text-sm transition-colors',
+        'relative flex cursor-default items-center rounded-md py-1.5 pr-2 pl-8 text-sm outline-hidden transition-colors select-none',
         'focus:bg-accent focus:text-accent-foreground',
         'data-disabled:pointer-events-none data-disabled:opacity-50',
         className

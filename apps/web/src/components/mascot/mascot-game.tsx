@@ -134,7 +134,7 @@ const MascotGame = ({ isOpen, onClose }: MascotGameProps) => {
           <button
             type='button'
             aria-label={t('mascot.game.close')}
-            className='text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:ring-ring rounded p-1 transition-colors focus-visible:outline-none focus-visible:ring-2'
+            className='text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:ring-ring rounded p-1 transition-colors focus-visible:ring-2 focus-visible:outline-none'
             onClick={onClose}
           >
             <XIcon className='h-4 w-4' />
@@ -194,7 +194,7 @@ const MascotGame = ({ isOpen, onClose }: MascotGameProps) => {
           <div className='bg-muted relative h-64 w-full rounded border'>
             <button
               type='button'
-              className={`bg-primary focus-visible:ring-ring absolute rounded-full transition-all hover:scale-110 focus-visible:outline-none focus-visible:ring-2 ${multiplier > 1 ? 'animate-pulse bg-yellow-500' : ''}`}
+              className={`bg-primary focus-visible:ring-ring absolute rounded-full transition-all hover:scale-110 focus-visible:ring-2 focus-visible:outline-none ${multiplier > 1 ? 'animate-pulse bg-yellow-500' : ''}`}
               style={{
                 left: `${targetPosition.x}%`,
                 top: `${targetPosition.y}%`,
@@ -206,7 +206,7 @@ const MascotGame = ({ isOpen, onClose }: MascotGameProps) => {
               aria-label={t('mascot.game.clickTarget')}
             />
             {multiplier > 1 && (
-              <div className='absolute left-2 top-2 rounded bg-yellow-500 px-2 py-1 text-xs font-bold text-white'>
+              <div className='absolute top-2 left-2 rounded bg-yellow-500 px-2 py-1 text-xs font-bold text-white'>
                 {multiplier}x
               </div>
             )}
@@ -220,7 +220,7 @@ const MascotGame = ({ isOpen, onClose }: MascotGameProps) => {
             </p>
             <button
               type='button'
-              className='bg-primary text-primary-foreground hover:bg-primary/90 focus-visible:ring-ring rounded px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2'
+              className='bg-primary text-primary-foreground hover:bg-primary/90 focus-visible:ring-ring rounded px-4 py-2 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none'
               onClick={startGame}
             >
               {timeLeft === 0 ? t('mascot.game.playAgain') : t('mascot.game.start')}

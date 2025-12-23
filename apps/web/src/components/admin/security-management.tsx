@@ -695,11 +695,11 @@ export default function SecurityManagement() {
                                         </div>
                                       ) : (
                                         <div className='space-y-1'>
-                                          <div className='text-muted-foreground break-words text-sm'>
+                                          <div className='text-muted-foreground text-sm break-words'>
                                             {setting.value}
                                           </div>
                                           {setting.description ? (
-                                            <div className='text-muted-foreground break-words text-xs'>
+                                            <div className='text-muted-foreground text-xs break-words'>
                                               {setting.description}
                                             </div>
                                           ) : null}

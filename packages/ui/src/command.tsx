@@ -52,7 +52,7 @@ const CommandInput = (props: CommandInputProps) => {
     <div className='border-b pb-2'>
       <CommandPrimitive.Input
         className={cn(
-          'outline-hidden w-full bg-transparent px-4 py-2 text-sm',
+          'w-full bg-transparent px-4 py-2 text-sm outline-hidden',
           'placeholder:text-muted-foreground',
           'disabled:cursor-not-allowed disabled:opacity-50',
           className
@@ -71,7 +71,7 @@ const CommandList = (props: CommandListProps) => {
   return (
     <CommandPrimitive.List
       className={cn(
-        'max-h-[50vh] overflow-y-auto overflow-x-hidden px-2 [&>[cmdk-list-sizer]]:py-2',
+        'max-h-[50vh] overflow-x-hidden overflow-y-auto px-2 [&>[cmdk-list-sizer]]:py-2',
         className
       )}
       {...rest}
@@ -121,7 +121,7 @@ const CommandItem = (props: CommandItemProps) => {
   return (
     <CommandPrimitive.Item
       className={cn(
-        'outline-hidden not-first:mt-1 flex h-10 cursor-default select-none items-center rounded-lg px-2 text-sm',
+        'flex h-10 cursor-default items-center rounded-lg px-2 text-sm outline-hidden select-none not-first:mt-1',
         '[&_svg]:pointer-events-none [&_svg]:mr-2 [&_svg]:size-3.5',
         'aria-selected:bg-accent',
         'data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50',

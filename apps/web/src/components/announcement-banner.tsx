@@ -77,11 +77,11 @@ export default function AnnouncementBanner() {
 
                 <div className='min-w-0 flex-1 space-y-1.5'>
                   <div className='flex items-center gap-2'>
-                    <h4 className={`text-base font-semibold leading-tight ${ui.titleClassName}`}>
+                    <h4 className={`text-base leading-tight font-semibold ${ui.titleClassName}`}>
                       {announcement.title}
                     </h4>
                     {hasHighPriorityBadge(announcement.priority) && (
-                      <span className='bg-current/10 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium'>
+                      <span className='inline-flex items-center rounded-full bg-current/10 px-2 py-0.5 text-xs font-medium'>
                         {t('component.announcement-banner.high-priority')}
                       </span>
                     )}

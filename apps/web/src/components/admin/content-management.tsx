@@ -207,13 +207,13 @@ export const ContentManagement = () => {
         <div className='flex flex-col gap-4 sm:flex-row'>
           <div className='flex-1'>
             <div className='relative'>
-              <Search className='text-muted-foreground absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform' />
+              <Search className='text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform' />
               <input
                 type='text'
                 placeholder='Search posts...'
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className='bg-background border-border text-foreground focus:ring-ring focus:ring-offset-background w-full rounded-md border py-2 pl-10 pr-4 focus:border-transparent focus:ring-2 focus:ring-offset-2'
+                className='bg-background border-border text-foreground focus:ring-ring focus:ring-offset-background w-full rounded-md border py-2 pr-4 pl-10 focus:border-transparent focus:ring-2 focus:ring-offset-2'
               />
             </div>
           </div>
@@ -287,7 +287,7 @@ export const ContentManagement = () => {
           <table className='divide-border min-w-full divide-y'>
             <thead className='bg-muted'>
               <tr>
-                <th className='text-muted-foreground px-6 py-3 text-left text-xs font-medium uppercase tracking-wider'>
+                <th className='text-muted-foreground px-6 py-3 text-left text-xs font-medium tracking-wider uppercase'>
                   <input
                     type='checkbox'
                     onChange={(e) => {
@@ -300,22 +300,22 @@ export const ContentManagement = () => {
                     className='border-border rounded'
                   />
                 </th>
-                <th className='text-muted-foreground px-6 py-3 text-left text-xs font-medium uppercase tracking-wider'>
+                <th className='text-muted-foreground px-6 py-3 text-left text-xs font-medium tracking-wider uppercase'>
                   Post
                 </th>
-                <th className='text-muted-foreground px-6 py-3 text-left text-xs font-medium uppercase tracking-wider'>
+                <th className='text-muted-foreground px-6 py-3 text-left text-xs font-medium tracking-wider uppercase'>
                   Status
                 </th>
-                <th className='text-muted-foreground px-6 py-3 text-left text-xs font-medium uppercase tracking-wider'>
+                <th className='text-muted-foreground px-6 py-3 text-left text-xs font-medium tracking-wider uppercase'>
                   Author
                 </th>
-                <th className='text-muted-foreground px-6 py-3 text-left text-xs font-medium uppercase tracking-wider'>
+                <th className='text-muted-foreground px-6 py-3 text-left text-xs font-medium tracking-wider uppercase'>
                   Stats
                 </th>
-                <th className='text-muted-foreground px-6 py-3 text-left text-xs font-medium uppercase tracking-wider'>
+                <th className='text-muted-foreground px-6 py-3 text-left text-xs font-medium tracking-wider uppercase'>
                   Date
                 </th>
-                <th className='text-muted-foreground px-6 py-3 text-right text-xs font-medium uppercase tracking-wider'>
+                <th className='text-muted-foreground px-6 py-3 text-right text-xs font-medium tracking-wider uppercase'>
                   Actions
                 </th>
               </tr>
@@ -323,7 +323,7 @@ export const ContentManagement = () => {
             <tbody className='divide-border bg-background divide-y'>
               {postsData?.posts.map((post) => (
                 <tr key={post.id} className='hover:bg-muted/30'>
-                  <td className='whitespace-nowrap px-6 py-4'>
+                  <td className='px-6 py-4 whitespace-nowrap'>
                     <input
                       type='checkbox'
                       checked={selectedPosts.includes(post.id)}
@@ -365,10 +365,10 @@ export const ContentManagement = () => {
                       </div>
                     </div>
                   </td>
-                  <td className='whitespace-nowrap px-6 py-4'>
+                  <td className='px-6 py-4 whitespace-nowrap'>
                     {getStatusBadge(post.status ?? 'draft')}
                   </td>
-                  <td className='whitespace-nowrap px-6 py-4'>
+                  <td className='px-6 py-4 whitespace-nowrap'>
                     <div className='flex items-center'>
                       {post.author?.image && (
                         <Image
@@ -387,7 +387,7 @@ export const ContentManagement = () => {
                       </div>
                     </div>
                   </td>
-                  <td className='whitespace-nowrap px-6 py-4 text-sm'>
+                  <td className='px-6 py-4 text-sm whitespace-nowrap'>
                     <div className='flex items-center gap-4'>
                       <div className='flex items-center gap-1'>
                         <Eye className='text-muted-foreground h-4 w-4' />
@@ -399,7 +399,7 @@ export const ContentManagement = () => {
                       </div>
                     </div>
                   </td>
-                  <td className='text-muted-foreground whitespace-nowrap px-6 py-4 text-sm'>
+                  <td className='text-muted-foreground px-6 py-4 text-sm whitespace-nowrap'>
                     <div>
                       <div className='flex items-center gap-1'>
                         <Calendar className='h-4 w-4' />
@@ -408,7 +408,7 @@ export const ContentManagement = () => {
                       <div className='text-xs'>Updated {formatDate(post.updatedAt)}</div>
                     </div>
                   </td>
-                  <td className='whitespace-nowrap px-6 py-4 text-right text-sm font-medium'>
+                  <td className='px-6 py-4 text-right text-sm font-medium whitespace-nowrap'>
                     <div className='flex items-center justify-end gap-2'>
                       <Button size='sm' variant='outline'>
                         <Edit className='h-4 w-4' />

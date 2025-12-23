@@ -82,23 +82,39 @@ export const systemRouter = createTRPCRouter({
         })
 
         // Log health check result
-        const logId = randomBytes(16).toString('hex')
-        await ctx.db.insert(systemHealthLogs).values({
-          id: logId,
-          checkType: checkType as any,
-          status: result.status,
-          responseTime: result.responseTime,
-          message: result.message,
-          details: JSON.stringify(result.details),
-          createdAt: new Date()
-        })
+        try {
+          const logId = randomBytes(16).toString('hex')
+          await ctx.db.insert(systemHealthLogs).values({
+            id: logId,
+            checkType: checkType as any,
+            status: result.status,
+            responseTime: result.responseTime,
+            message: result.message,
+            details: JSON.stringify(result.details),
+            createdAt: new Date()
+          })
+        } catch (error) {
+          logger.warn('Failed to log health check result', {
+            error: error instanceof Error ? error.message : String(error),
+            checkType
+          })
+        }
       }
 
       // Get recent health history
-      const recentLogs = await ctx.db.query.systemHealthLogs.findMany({
-        orderBy: desc(systemHealthLogs.createdAt),
-        limit: 50
-      })
+      const recentLogs = await (async () => {
+        try {
+          return await ctx.db.query.systemHealthLogs.findMany({
+            orderBy: desc(systemHealthLogs.createdAt),
+            limit: 50
+          })
+        } catch (error) {
+          logger.warn('Failed to fetch system health history', {
+            error: error instanceof Error ? error.message : String(error)
+          })
+          return []
+        }
+      })()
 
       // Calculate overall system status
       const criticalCount = results.filter((r) => r.status === 'critical').length
@@ -111,10 +127,19 @@ export const systemRouter = createTRPCRouter({
       return {
         overallStatus,
         checks: results,
-        history: recentLogs.map((log) => ({
-          ...log,
-          details: log.details ? JSON.parse(log.details) : null
-        }))
+        history: recentLogs.map((log) => {
+          try {
+            return {
+              ...log,
+              details: log.details ? JSON.parse(log.details) : null
+            }
+          } catch {
+            return {
+              ...log,
+              details: null
+            }
+          }
+        })
       }
     } catch (error) {
       logger.error('Error getting system health', error)

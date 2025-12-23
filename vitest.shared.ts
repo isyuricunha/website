@@ -1,10 +1,7 @@
-import { defineConfig } from 'vitest/config'
-
-export const sharedProjectConfig = defineConfig({
+export const sharedProjectConfig = {
   test: {
     globals: true,
-    environment: 'jsdom',
-    include: ['src/tests/**/*.test.{ts,tsx}'],
+    testTimeout: 10_000,
     exclude: ['**/node_modules/**', '**/e2e/**']
   }
-})
+}

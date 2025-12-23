@@ -21,7 +21,7 @@ const ComponentPreviewWrapper = (props: ComponentPreviewWrapperProps) => {
       </TabsList>
       <TabsContent value='preview' className='relative' key={key}>
         <Button
-          className='absolute right-1.5 top-1.5 z-10'
+          className='absolute top-1.5 right-1.5 z-10'
           variant='outline'
           size='icon'
           onClick={() => setKey((prev) => prev + 1)}

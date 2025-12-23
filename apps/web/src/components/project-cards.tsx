@@ -191,7 +191,7 @@ const ProjectCards = (props: ProjectCardsProps) => {
                 onChange={(e) => setFilters((prev) => ({ ...prev, search: e.target.value }))}
                 className='pl-10'
               />
-              <Search className='text-muted-foreground absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform' />
+              <Search className='text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform' />
             </div>
 
             <button
@@ -367,12 +367,12 @@ const ProjectCard = (props: ProjectCardProps) => {
       <Link
         href={`/projects/${slug}`}
         aria-label={t('projects.card.open-aria', { name })}
-        className='focus-visible:ring-primary/60 absolute inset-0 z-[5] rounded-2xl focus-visible:outline-none focus-visible:ring-2'
+        className='focus-visible:ring-primary/60 absolute inset-0 z-[5] rounded-2xl focus-visible:ring-2 focus-visible:outline-none'
       >
         <span className='sr-only'>{t('projects.card.open', { name })}</span>
       </Link>
       {/* Status and Featured Badges */}
-      <div className='absolute left-3 top-3 z-10 flex gap-2'>
+      <div className='absolute top-3 left-3 z-10 flex gap-2'>
         {featured && (
           <Badge variant='secondary' className='bg-primary/10 text-primary border-primary/20'>
             <Star className='mr-1 h-3 w-3' />
@@ -412,7 +412,7 @@ const ProjectCard = (props: ProjectCardProps) => {
                 rel='noopener noreferrer'
                 title={t('projects.card.github.title')}
                 aria-label={t('projects.card.github.aria')}
-                className='bg-muted text-foreground border-border hover:bg-muted/70 focus-visible:ring-primary/60 inline-flex h-9 items-center gap-2 rounded-full border px-2 shadow-sm transition-all focus-visible:outline-none focus-visible:ring-2 md:px-3'
+                className='bg-muted text-foreground border-border hover:bg-muted/70 focus-visible:ring-primary/60 inline-flex h-9 items-center gap-2 rounded-full border px-2 shadow-sm transition-all focus-visible:ring-2 focus-visible:outline-none md:px-3'
                 onClick={(e) => e.stopPropagation()}
               >
                 <Github className='h-4 w-4' />
@@ -428,7 +428,7 @@ const ProjectCard = (props: ProjectCardProps) => {
                 rel='noopener noreferrer'
                 title={t('projects.card.live.title')}
                 aria-label={t('projects.card.live.aria')}
-                className='bg-primary text-primary-foreground border-primary/60 hover:bg-primary/90 focus-visible:ring-primary/60 inline-flex h-9 items-center gap-2 rounded-full border px-2 shadow-sm transition-all focus-visible:outline-none focus-visible:ring-2 md:px-3'
+                className='bg-primary text-primary-foreground border-primary/60 hover:bg-primary/90 focus-visible:ring-primary/60 inline-flex h-9 items-center gap-2 rounded-full border px-2 shadow-sm transition-all focus-visible:ring-2 focus-visible:outline-none md:px-3'
                 onClick={(e) => e.stopPropagation()}
               >
                 <ExternalLink className='h-4 w-4' />

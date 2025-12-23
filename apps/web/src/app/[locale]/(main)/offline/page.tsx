@@ -29,7 +29,7 @@ export default function OfflinePage() {
 
           <Link
             href='/'
-            className='ring-offset-background border-input bg-background hover:bg-accent hover:text-accent-foreground focus-visible:ring-ring focus-visible:outline-hidden inline-flex h-10 w-full items-center justify-center gap-2 whitespace-nowrap rounded-lg border px-4 py-2 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50'
+            className='ring-offset-background border-input bg-background hover:bg-accent hover:text-accent-foreground focus-visible:ring-ring inline-flex h-10 w-full items-center justify-center gap-2 rounded-lg border px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50'
           >
             <Home className='size-4' />
             Go Home

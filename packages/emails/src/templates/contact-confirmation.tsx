@@ -82,7 +82,7 @@ const ContactConfirmation = (props: ContactConfirmationProps) => {
 
             {/* Contact Information */}
             <Section className='mb-[40px] rounded-[8px] border border-solid border-[color:var(--email-border)] p-[20px]'>
-              <Text className='mb-[8px] text-[14px] font-bold leading-[20px] text-[color:var(--email-fg)]'>
+              <Text className='mb-[8px] text-[14px] leading-[20px] font-bold text-[color:var(--email-fg)]'>
                 What happens next?
               </Text>
               <Text className='mb-[4px] text-[14px] leading-[20px] text-[color:var(--email-fg)]'>

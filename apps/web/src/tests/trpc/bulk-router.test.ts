@@ -68,6 +68,7 @@ vi.mock('crypto', async (importOriginal) => {
   const actual = await importOriginal<typeof import('crypto')>()
 
   return {
+    default: actual,
     ...actual,
     randomBytes: () => ({
       toString: () => 'operation-id'

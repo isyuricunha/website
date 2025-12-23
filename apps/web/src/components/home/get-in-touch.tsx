@@ -66,7 +66,7 @@ const GetInTouch = () => {
               src={me}
               width={3975}
               height={3975}
-              className='absolute left-1/2 top-1/2 size-20 -translate-x-1/2 -translate-y-1/2 rounded-[20px]'
+              className='absolute top-1/2 left-1/2 size-20 -translate-x-1/2 -translate-y-1/2 rounded-[20px]'
               alt={t('homepage.get-in-touch.image-alt')}
             />
             <div
@@ -77,19 +77,19 @@ const GetInTouch = () => {
             </div>
             <div
               id='docker'
-              className='bg-muted/30 border-border absolute left-2 top-20 rounded-3xl border px-2 py-1.5 text-xs opacity-40'
+              className='bg-muted/30 border-border absolute top-20 left-2 rounded-3xl border px-2 py-1.5 text-xs opacity-40'
             >
               Docker
             </div>
             <div
               id='cloudflare-workers'
-              className='bg-muted/30 border-border absolute bottom-20 right-1 rounded-3xl border px-2 py-1.5 text-xs opacity-40'
+              className='bg-muted/30 border-border absolute right-1 bottom-20 rounded-3xl border px-2 py-1.5 text-xs opacity-40'
             >
               Cloudflare
             </div>
             <div
               id='terraform'
-              className='bg-muted/30 border-border absolute right-8 top-10 rounded-3xl border px-2 py-1.5 text-xs opacity-40'
+              className='bg-muted/30 border-border absolute top-10 right-8 rounded-3xl border px-2 py-1.5 text-xs opacity-40'
             >
               Terraform
             </div>

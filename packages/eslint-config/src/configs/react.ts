@@ -2,7 +2,17 @@ import type { Options } from '@/index'
 import type { ESLint, Linter } from 'eslint'
 
 import { GLOB_JS, GLOB_JSX, GLOB_TS, GLOB_TSX } from '@/globs'
-import { jsxA11yPlugin, reactHooksPlugin, reactPlugin, typescriptParser } from '@/plugins'
+import {
+  jsxA11yPlugin,
+  reactDomPlugin,
+  reactHooksExtraPlugin,
+  reactHooksPlugin,
+  reactNamingConventionPlugin,
+  reactPlugin,
+  reactWebApiPlugin,
+  reactXPlugin,
+  typescriptParser
+} from '@/plugins'
 
 export const react = (options?: Options): Linter.Config[] => {
   const reactPluginAll = reactPlugin.configs.all
@@ -11,9 +21,14 @@ export const react = (options?: Options): Linter.Config[] => {
     {
       name: 'isyuricunha:react',
       plugins: {
-        ...(reactPluginAll.plugins as unknown as Record<string, ESLint.Plugin>),
-        'react-hooks': reactHooksPlugin,
-        'jsx-a11y': jsxA11yPlugin
+        '@eslint-react': reactPlugin as unknown as ESLint.Plugin,
+        '@eslint-react/dom': reactDomPlugin as unknown as ESLint.Plugin,
+        '@eslint-react/hooks-extra': reactHooksExtraPlugin as unknown as ESLint.Plugin,
+        '@eslint-react/naming-convention': reactNamingConventionPlugin as unknown as ESLint.Plugin,
+        '@eslint-react/web-api': reactWebApiPlugin as unknown as ESLint.Plugin,
+        '@eslint-react/x': reactXPlugin as unknown as ESLint.Plugin,
+        'react-hooks': reactHooksPlugin as unknown as ESLint.Plugin,
+        'jsx-a11y': jsxA11yPlugin as unknown as ESLint.Plugin
       },
       files: [GLOB_JS, GLOB_JSX, GLOB_TS, GLOB_TSX],
       languageOptions: {
@@ -45,6 +60,10 @@ export const react = (options?: Options): Linter.Config[] => {
 
         // @eslint-react/dom
         '@eslint-react/dom/no-dangerously-set-innerhtml': 'off',
+
+        // react-hooks
+        'react-hooks/incompatible-library': 'off',
+        'react-hooks/static-components': 'off',
 
         // @eslint-react/naming-convention
         '@eslint-react/naming-convention/filename': [

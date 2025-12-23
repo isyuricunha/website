@@ -140,7 +140,7 @@ export default function AnnouncementWidget({ className, maxItems = 5 }: Announce
 
                     <div className='min-w-0 flex-1 space-y-2'>
                       <div className='flex items-start gap-2'>
-                        <h4 className='flex-1 text-sm font-semibold leading-tight'>
+                        <h4 className='flex-1 text-sm leading-tight font-semibold'>
                           {announcement.title}
                         </h4>
                         {announcement.isDismissible && (
@@ -148,7 +148,7 @@ export default function AnnouncementWidget({ className, maxItems = 5 }: Announce
                             type='button'
                             onClick={(e) => handleDismiss(announcement.id, e)}
                             disabled={dismissMutation.isPending}
-                            className='hover:bg-accent shrink-0 rounded-md p-1 opacity-0 transition-opacity disabled:opacity-50 group-hover:opacity-100'
+                            className='hover:bg-accent shrink-0 rounded-md p-1 opacity-0 transition-opacity group-hover:opacity-100 disabled:opacity-50'
                             aria-label={t('dismiss')}
                           >
                             <X className='h-3 w-3' />

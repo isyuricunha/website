@@ -1,9 +1,11 @@
 import { useFormatter } from '@isyuricunha/i18n/client'
 import dayjs from 'dayjs'
 
+import type { DateTimeFormatOptions } from '@isyuricunha/i18n/client'
+
 type Options = {
   relative?: boolean
-  formatOptions?: Parameters<ReturnType<typeof useFormatter>['dateTime']>['1']
+  formatOptions?: DateTimeFormatOptions
 }
 
 export const useFormattedDate = (date: Date | string, options: Options = {}) => {
@@ -22,7 +24,7 @@ export const useFormattedDate = (date: Date | string, options: Options = {}) => 
   const convertedDate = typeof date === 'string' ? new Date(date) : date
 
   if (relative) {
-    const weeksDiff = dayjs().diff(date, 'week')
+    const weeksDiff = dayjs().diff(convertedDate, 'week')
 
     return Math.abs(weeksDiff) > 1
       ? format.dateTime(convertedDate, formatOptions)

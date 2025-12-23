@@ -35,7 +35,7 @@ const DialogContent = (props: DialogContentProps) => {
       <DialogOverlay />
       <DialogPrimitive.Content
         className={cn(
-          'bg-background fixed left-1/2 top-1/2 z-50 grid w-full max-w-lg -translate-x-1/2 -translate-y-1/2 gap-4 rounded-lg border p-6 shadow-lg',
+          'bg-background fixed top-1/2 left-1/2 z-50 grid w-full max-w-lg -translate-x-1/2 -translate-y-1/2 gap-4 rounded-lg border p-6 shadow-lg',
           'data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95',
           'data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95',
           className
@@ -45,9 +45,9 @@ const DialogContent = (props: DialogContentProps) => {
         {children}
         <DialogPrimitive.Close
           className={cn(
-            'ring-offset-background rounded-xs absolute right-4 top-4 opacity-70 transition-opacity',
+            'ring-offset-background absolute top-4 right-4 rounded-xs opacity-70 transition-opacity',
             'hover:opacity-100',
-            'focus:ring-ring focus:outline-hidden focus:ring-2 focus:ring-offset-2',
+            'focus:ring-ring focus:ring-2 focus:ring-offset-2 focus:outline-hidden',
             'disabled:pointer-events-none'
           )}
           aria-label='Close'

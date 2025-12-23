@@ -1,4 +1,3 @@
-import react from '@vitejs/plugin-react'
 import { mergeConfig } from 'vitest/config'
 
 import { sharedProjectConfig } from '../../vitest.shared'
@@ -6,13 +5,11 @@ import { sharedProjectConfig } from '../../vitest.shared'
 const resolve = (path: string) => new URL(path, import.meta.url).pathname
 
 export default mergeConfig(sharedProjectConfig, {
-  plugins: [react()],
   test: {
-    name: 'web-ui',
-    environment: 'jsdom',
-    setupFiles: ['./src/tests/setup.ts'],
-    include: ['src/tests/**/*.test.{ts,tsx}'],
-    exclude: [...(sharedProjectConfig.test?.exclude ?? []), 'src/tests/trpc/**']
+    name: 'web-trpc',
+    environment: 'node',
+    include: ['src/tests/trpc/**/*.test.{ts,tsx}'],
+    exclude: [...(sharedProjectConfig.test?.exclude ?? [])]
   },
   resolve: {
     alias: {

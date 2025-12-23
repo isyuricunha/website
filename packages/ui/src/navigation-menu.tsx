@@ -72,7 +72,7 @@ const NavigationMenuContent = (props: NavigationMenuContentProps) => {
   return (
     <NavigationMenuPrimitive.Content
       className={cn(
-        'left-0 top-0 w-full md:absolute md:w-auto',
+        'top-0 left-0 w-full md:absolute md:w-auto',
         'data-[motion^=from-]:animate-in data-[motion^=from-]:fade-in',
         'data-[motion^=to-]:animate-out data-[motion^=to-]:fade-out',
         'data-[motion=from-start]:slide-in-from-left-52 data-[motion=to-start]:slide-out-to-left-52',
@@ -92,7 +92,7 @@ const NavigationMenuViewport = (props: NavigationMenuViewportProps) => {
   const { className, ...rest } = props
 
   return (
-    <div className={cn('absolute left-0 top-full flex justify-center')}>
+    <div className={cn('absolute top-full left-0 flex justify-center')}>
       <NavigationMenuPrimitive.Viewport
         className={cn(
           'origin-top-center bg-popover text-popover-foreground relative mt-1.5 h-[var(--radix-navigation-menu-viewport-height)] w-full overflow-hidden rounded-lg border shadow-lg duration-200 md:w-[var(--radix-navigation-menu-viewport-width)]',
@@ -114,7 +114,7 @@ const NavigationMenuIndicator = (props: NavigationMenuIndicatorProps) => {
   return (
     <NavigationMenuPrimitive.Indicator
       className={cn(
-        'z-1 top-full flex h-1.5 items-end justify-center overflow-hidden',
+        'top-full z-1 flex h-1.5 items-end justify-center overflow-hidden',
         'data-[state=visible]:animate-in data-[state=visible]:fade-in',
         'data-[state=hidden]:animate-out data-[state=hidden]:fade-out',
         className

@@ -4,8 +4,8 @@ import { LoaderIcon } from 'lucide-react'
 
 const buttonVariants = cva({
   base: [
-    'ring-offset-background inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors',
-    'focus-visible:ring-ring focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2',
+    'ring-offset-background inline-flex items-center justify-center rounded-lg text-sm font-medium whitespace-nowrap transition-colors',
+    'focus-visible:ring-ring focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden',
     'disabled:pointer-events-none disabled:opacity-50'
   ],
   variants: {

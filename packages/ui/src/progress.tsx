@@ -21,7 +21,7 @@ const ProgressLabel = (props: ProgressLabelProps) => {
 
   return (
     <ProgressPrimitive.Label
-      className={cn('text-sm font-medium leading-none', className)}
+      className={cn('text-sm leading-none font-medium', className)}
       {...rest}
     />
   )

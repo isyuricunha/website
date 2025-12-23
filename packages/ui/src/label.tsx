@@ -4,7 +4,7 @@ import { cva, type VariantProps } from 'cva'
 
 const labelVariants = cva({
   base: [
-    'text-sm font-medium leading-none',
+    'text-sm leading-none font-medium',
     'peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
   ]
 })

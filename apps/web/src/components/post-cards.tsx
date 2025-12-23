@@ -48,7 +48,7 @@ const PostCard = (props: PostCardProps) => {
       className='shadow-feature-card group relative overflow-hidden rounded-2xl px-1.5 py-2'
     >
       {featured && (
-        <div className='absolute right-2 top-2 z-10'>
+        <div className='absolute top-2 right-2 z-10'>
           <Badge
             variant='secondary'
             className='border-yellow-200 bg-yellow-100 px-1.5 py-0.5 text-[10px] text-yellow-800'

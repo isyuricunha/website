@@ -23,7 +23,7 @@ const MobileTableOfContents = (props: MobileTableOfContentsProps) => {
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger className='gap-2' asChild>
-        <Button variant='secondary' className='fixed bottom-2 right-2 z-50 lg:hidden'>
+        <Button variant='secondary' className='fixed right-2 bottom-2 z-50 lg:hidden'>
           <AlignLeftIcon className='size-4' /> {t('blog.on-this-page')}
         </Button>
       </PopoverTrigger>

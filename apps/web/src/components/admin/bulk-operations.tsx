@@ -245,13 +245,13 @@ export const BulkOperations = () => {
           <div className='mb-6 flex flex-col gap-4 sm:flex-row'>
             <div className='flex-1'>
               <div className='relative'>
-                <Search className='text-muted-foreground absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform' />
+                <Search className='text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform' />
                 <input
                   type='text'
                   placeholder='Search users...'
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className='bg-background border-border text-foreground focus:ring-ring focus:ring-offset-background w-full rounded-md border py-2 pl-10 pr-4 focus:border-transparent focus:ring-2 focus:ring-offset-2'
+                  className='bg-background border-border text-foreground focus:ring-ring focus:ring-offset-background w-full rounded-md border py-2 pr-4 pl-10 focus:border-transparent focus:ring-2 focus:ring-offset-2'
                 />
               </div>
             </div>
@@ -308,7 +308,7 @@ export const BulkOperations = () => {
             <table className='divide-border min-w-full divide-y'>
               <thead className='bg-muted'>
                 <tr>
-                  <th className='text-muted-foreground px-6 py-3 text-left text-xs font-medium uppercase tracking-wider'>
+                  <th className='text-muted-foreground px-6 py-3 text-left text-xs font-medium tracking-wider uppercase'>
                     <input
                       type='checkbox'
                       onChange={(e) => {
@@ -321,13 +321,13 @@ export const BulkOperations = () => {
                       className='border-border rounded'
                     />
                   </th>
-                  <th className='text-muted-foreground px-6 py-3 text-left text-xs font-medium uppercase tracking-wider'>
+                  <th className='text-muted-foreground px-6 py-3 text-left text-xs font-medium tracking-wider uppercase'>
                     User
                   </th>
-                  <th className='text-muted-foreground px-6 py-3 text-left text-xs font-medium uppercase tracking-wider'>
+                  <th className='text-muted-foreground px-6 py-3 text-left text-xs font-medium tracking-wider uppercase'>
                     Role
                   </th>
-                  <th className='text-muted-foreground px-6 py-3 text-left text-xs font-medium uppercase tracking-wider'>
+                  <th className='text-muted-foreground px-6 py-3 text-left text-xs font-medium tracking-wider uppercase'>
                     Joined
                   </th>
                 </tr>
@@ -335,7 +335,7 @@ export const BulkOperations = () => {
               <tbody className='divide-border bg-background divide-y'>
                 {usersData?.users.map((user) => (
                   <tr key={user.id} className='hover:bg-muted/30'>
-                    <td className='whitespace-nowrap px-6 py-4'>
+                    <td className='px-6 py-4 whitespace-nowrap'>
                       <input
                         type='checkbox'
                         checked={selectedUsers.includes(user.id)}
@@ -349,7 +349,7 @@ export const BulkOperations = () => {
                         className='border-border rounded'
                       />
                     </td>
-                    <td className='whitespace-nowrap px-6 py-4'>
+                    <td className='px-6 py-4 whitespace-nowrap'>
                       <div className='flex items-center'>
                         {user.image && (
                           <Image
@@ -366,7 +366,7 @@ export const BulkOperations = () => {
                         </div>
                       </div>
                     </td>
-                    <td className='whitespace-nowrap px-6 py-4'>
+                    <td className='px-6 py-4 whitespace-nowrap'>
                       <span
                         className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
                           user.role === 'admin'
@@ -377,7 +377,7 @@ export const BulkOperations = () => {
                         {user.role}
                       </span>
                     </td>
-                    <td className='text-muted-foreground whitespace-nowrap px-6 py-4 text-sm'>
+                    <td className='text-muted-foreground px-6 py-4 text-sm whitespace-nowrap'>
                       {formatDate(user.createdAt)}
                     </td>
                   </tr>

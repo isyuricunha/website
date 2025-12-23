@@ -71,7 +71,7 @@ const ComboboxDemo = () => {
       <ComboboxLabel>Framework</ComboboxLabel>
       <ComboboxControl className='relative'>
         <ComboboxInput placeholder='Select a framework' className='pr-6' />
-        <ComboboxTrigger className='absolute right-2 top-0 h-full'>
+        <ComboboxTrigger className='absolute top-0 right-2 h-full'>
           <ChevronsUpDownIcon className='size-4 shrink-0 opacity-50' />
         </ComboboxTrigger>
       </ComboboxControl>

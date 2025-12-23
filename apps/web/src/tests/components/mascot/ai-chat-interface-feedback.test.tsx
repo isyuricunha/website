@@ -76,7 +76,7 @@ describe('<AIChatInterface /> feedback', () => {
       </NextIntlClientProvider>
     )
 
-    fireEvent.click(screen.getByRole('button', { name: 'Thumbs up' }))
+    fireEvent.click(screen.getAllByRole('button', { name: 'Thumbs up' })[0]!)
 
     await waitFor(() => {
       expect(fetchMock).toHaveBeenCalled()
@@ -112,7 +112,7 @@ describe('<AIChatInterface /> feedback', () => {
       </NextIntlClientProvider>
     )
 
-    fireEvent.click(screen.getByRole('button', { name: 'Thumbs down' }))
+    fireEvent.click(screen.getAllByRole('button', { name: 'Thumbs down' })[0]!)
 
     const textarea = await screen.findByPlaceholderText('Tell me what went wrong (optional)')
     fireEvent.change(textarea, { target: { value: ' not helpful ' } })

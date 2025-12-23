@@ -64,7 +64,7 @@ const Hero = () => {
     <div className='my-6 space-y-3 sm:my-8 sm:space-y-4 lg:my-10'>
       <div className='flex flex-col gap-6 lg:flex-row lg:justify-between lg:gap-8'>
         <div className='flex flex-1 flex-col gap-4 text-center lg:text-left'>
-          <h1 className='max-w-2xl text-base font-medium leading-relaxed sm:text-lg lg:text-xl xl:text-2xl'>
+          <h1 className='max-w-2xl text-base leading-relaxed font-medium sm:text-lg lg:text-xl xl:text-2xl'>
             <motion.div
               initial={{ x: 20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
@@ -125,13 +125,13 @@ const Hero = () => {
           >
             <Link
               href='/projects'
-              className='bg-primary text-primary-foreground hover:bg-primary/90 focus-visible:ring-ring inline-flex min-h-[36px] items-center justify-center rounded-full px-4 py-2 text-xs font-medium transition-all duration-200 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 sm:text-sm'
+              className='bg-primary text-primary-foreground hover:bg-primary/90 focus-visible:ring-ring inline-flex min-h-[36px] items-center justify-center rounded-full px-4 py-2 text-xs font-medium transition-all duration-200 hover:scale-105 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none sm:text-sm'
             >
               {t('homepage.hero.view-projects')}
             </Link>
             <Link
               href='/blog'
-              className='border-input bg-background hover:bg-accent hover:text-accent-foreground focus-visible:ring-ring inline-flex min-h-[36px] items-center justify-center rounded-full border px-4 py-2 text-xs font-medium transition-all duration-200 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 sm:text-sm'
+              className='border-input bg-background hover:bg-accent hover:text-accent-foreground focus-visible:ring-ring inline-flex min-h-[36px] items-center justify-center rounded-full border px-4 py-2 text-xs font-medium transition-all duration-200 hover:scale-105 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none sm:text-sm'
             >
               {t('homepage.hero.read-blog')}
             </Link>
@@ -157,7 +157,7 @@ const Hero = () => {
             alt={t_metadata('site-title')}
             lazy={false}
           />
-          <div className='bg-linear-to-tl absolute inset-0 -z-10 from-purple-700 to-orange-700 opacity-50 blur-2xl' />
+          <div className='absolute inset-0 -z-10 bg-linear-to-tl from-purple-700 to-orange-700 opacity-50 blur-2xl' />
         </motion.div>
       </div>
     </div>

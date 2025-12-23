@@ -689,7 +689,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         <button
           type='button'
           aria-label={t('mascot.restore')}
-          className='from-primary to-primary/80 text-primary-foreground shadow-primary/30 hover:shadow-primary/40 focus-visible:ring-primary/50 border-primary/20 min-h-[44px] min-w-[44px] rounded-full border-2 bg-gradient-to-br p-2 shadow-2xl transition-all duration-300 hover:scale-110 hover:shadow-2xl focus-visible:outline-none focus-visible:ring-2 sm:p-3'
+          className='from-primary to-primary/80 text-primary-foreground shadow-primary/30 hover:shadow-primary/40 focus-visible:ring-primary/50 border-primary/20 min-h-[44px] min-w-[44px] rounded-full border-2 bg-gradient-to-br p-2 shadow-2xl transition-all duration-300 hover:scale-110 hover:shadow-2xl focus-visible:ring-2 focus-visible:outline-none sm:p-3'
           onClick={() => updateState({ isDismissed: false, isHiddenPref: false })}
         >
           <EyeIcon className='h-5 w-5 sm:h-6 sm:w-6' />
@@ -711,7 +711,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
               <button
                 type='button'
                 aria-label={t('mascot.settings.close')}
-                className='text-muted-foreground hover:bg-muted/80 hover:text-foreground focus-visible:ring-primary/50 rounded-xl p-1.5 transition-all duration-200 hover:scale-105 focus-visible:outline-none focus-visible:ring-2'
+                className='text-muted-foreground hover:bg-muted/80 hover:text-foreground focus-visible:ring-primary/50 rounded-xl p-1.5 transition-all duration-200 hover:scale-105 focus-visible:ring-2 focus-visible:outline-none'
                 onClick={() => updateState({ showSettings: false, showBubble: false })}
               >
                 <XIcon className='h-4 w-4' />
@@ -756,7 +756,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
                   onChange={(e) =>
                     updatePreferences({ messageDuration: Number.parseInt(e.target.value) })
                   }
-                  className='border-input/50 bg-background/80 text-foreground hover:border-primary/50 focus:ring-primary/30 focus:border-primary cursor-pointer rounded-xl border-2 px-3 py-2.5 text-xs shadow-lg backdrop-blur-sm transition-all duration-200 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-offset-2'
+                  className='border-input/50 bg-background/80 text-foreground hover:border-primary/50 focus:ring-primary/30 focus:border-primary cursor-pointer rounded-xl border-2 px-3 py-2.5 text-xs shadow-lg backdrop-blur-sm transition-all duration-200 hover:shadow-xl focus:ring-2 focus:ring-offset-2 focus:outline-none'
                 >
                   <option
                     value={3000}
@@ -794,7 +794,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
                       bubblePosition: e.target.value as MascotPreferences['bubblePosition']
                     })
                   }
-                  className='border-input/50 bg-background/80 text-foreground hover:border-primary/50 focus:ring-primary/30 focus:border-primary cursor-pointer rounded-xl border-2 px-3 py-2.5 text-xs shadow-lg backdrop-blur-sm transition-all duration-200 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-offset-2'
+                  className='border-input/50 bg-background/80 text-foreground hover:border-primary/50 focus:ring-primary/30 focus:border-primary cursor-pointer rounded-xl border-2 px-3 py-2.5 text-xs shadow-lg backdrop-blur-sm transition-all duration-200 hover:shadow-xl focus:ring-2 focus:ring-offset-2 focus:outline-none'
                 >
                   <option
                     value='bottom-right'
@@ -842,7 +842,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
               <button
                 type='button'
                 aria-label={t('mascot.contact.close')}
-                className='text-muted-foreground hover:bg-muted/80 hover:text-foreground focus-visible:ring-primary/50 rounded-xl p-1.5 transition-all duration-200 hover:scale-105 focus-visible:outline-none focus-visible:ring-2'
+                className='text-muted-foreground hover:bg-muted/80 hover:text-foreground focus-visible:ring-primary/50 rounded-xl p-1.5 transition-all duration-200 hover:scale-105 focus-visible:ring-2 focus-visible:outline-none'
                 onClick={() => updateState({ showContact: false, showBubble: false })}
               >
                 <XIcon className='h-4 w-4' />
@@ -856,7 +856,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
                 <button
                   type='button'
                   aria-label={t('mascot.contact.copy')}
-                  className='text-muted-foreground hover:bg-muted/80 hover:text-foreground focus-visible:ring-primary/50 rounded-xl p-1.5 transition-all duration-200 hover:scale-105 focus-visible:outline-none focus-visible:ring-2'
+                  className='text-muted-foreground hover:bg-muted/80 hover:text-foreground focus-visible:ring-primary/50 rounded-xl p-1.5 transition-all duration-200 hover:scale-105 focus-visible:ring-2 focus-visible:outline-none'
                   onClick={copyEmail}
                 >
                   <CopyIcon className='h-4 w-4' />
@@ -874,7 +874,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
             <div className='space-y-1'>
               <button
                 type='button'
-                className='hover:bg-muted/80 focus-visible:ring-primary/50 flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-left transition-all duration-200 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2'
+                className='hover:bg-muted/80 focus-visible:ring-primary/50 flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-left transition-all duration-200 hover:scale-[1.02] focus-visible:ring-2 focus-visible:outline-none'
                 onClick={() => handleMenuAction('contact')}
               >
                 <BugIcon className='h-4 w-4' />
@@ -882,7 +882,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
               </button>
               <button
                 type='button'
-                className='hover:bg-muted/80 focus-visible:ring-primary/50 flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-left transition-all duration-200 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2'
+                className='hover:bg-muted/80 focus-visible:ring-primary/50 flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-left transition-all duration-200 hover:scale-[1.02] focus-visible:ring-2 focus-visible:outline-none'
                 onClick={() => handleMenuAction('projects')}
               >
                 <GithubIcon className='h-4 w-4' />
@@ -891,7 +891,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
               {flags.gemini && (
                 <button
                   type='button'
-                  className='hover:bg-muted/80 focus-visible:ring-primary/50 flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-left transition-all duration-200 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2'
+                  className='hover:bg-muted/80 focus-visible:ring-primary/50 flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-left transition-all duration-200 hover:scale-[1.02] focus-visible:ring-2 focus-visible:outline-none'
                   onClick={() => handleMenuAction('chat')}
                 >
                   <MessageCircleIcon className='h-4 w-4' />
@@ -900,7 +900,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
               )}
               <button
                 type='button'
-                className='hover:bg-muted/80 focus-visible:ring-primary/50 flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-left transition-all duration-200 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2'
+                className='hover:bg-muted/80 focus-visible:ring-primary/50 flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-left transition-all duration-200 hover:scale-[1.02] focus-visible:ring-2 focus-visible:outline-none'
                 onClick={() => handleMenuAction('game')}
               >
                 <GamepadIcon className='h-4 w-4' />
@@ -908,7 +908,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
               </button>
               <button
                 type='button'
-                className='hover:bg-muted/80 focus-visible:ring-primary/50 flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-left transition-all duration-200 hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2'
+                className='hover:bg-muted/80 focus-visible:ring-primary/50 flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-left transition-all duration-200 hover:scale-[1.02] focus-visible:ring-2 focus-visible:outline-none'
                 onClick={() => handleMenuAction('settings')}
               >
                 <SettingsIcon className='h-4 w-4' />
@@ -940,7 +940,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
                 return (
                   <div
                     key={item.id}
-                    className={`border-border/20 bg-popover/95 text-popover-foreground shadow-primary/10 rounded-3xl border-2 shadow-2xl outline-none ring-0 backdrop-blur-md transition-all duration-200 ease-in-out ${
+                    className={`border-border/20 bg-popover/95 text-popover-foreground shadow-primary/10 rounded-3xl border-2 shadow-2xl ring-0 backdrop-blur-md transition-all duration-200 ease-in-out outline-none ${
                       isExiting
                         ? 'translate-y-1 scale-95 opacity-0'
                         : 'translate-y-0 scale-100 opacity-100'
@@ -953,7 +953,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
                   >
                     <div className='bubble-float p-2'>
                       <div className='flex items-start gap-2'>
-                        <div className='min-w-0 flex-1 whitespace-pre-wrap break-words text-xs leading-relaxed'>
+                        <div className='min-w-0 flex-1 text-xs leading-relaxed break-words whitespace-pre-wrap'>
                           {item.text}
                         </div>
                         <div className='flex flex-shrink-0 items-center gap-1'>
@@ -961,7 +961,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
                             <button
                               type='button'
                               aria-label={t('mascot.menu.open')}
-                              className='text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:ring-ring rounded px-2 py-1 text-xs transition-colors focus-visible:outline-none focus-visible:ring-2'
+                              className='text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:ring-ring rounded px-2 py-1 text-xs transition-colors focus-visible:ring-2 focus-visible:outline-none'
                               onClick={() => updateState({ showMenu: !state.showMenu })}
                             >
                               <MenuIcon className='h-3 w-3' />
@@ -971,7 +971,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
                             <button
                               type='button'
                               aria-label={t('mascot.hide')}
-                              className='text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:ring-ring rounded px-2 py-1 text-xs transition-colors focus-visible:outline-none focus-visible:ring-2'
+                              className='text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:ring-ring rounded px-2 py-1 text-xs transition-colors focus-visible:ring-2 focus-visible:outline-none'
                               onClick={handleHideMascot}
                             >
                               {t('mascot.hide')}
@@ -980,7 +980,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
                           <button
                             type='button'
                             aria-label={t('mascot.close')}
-                            className='text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:ring-ring rounded p-1 transition-colors focus-visible:outline-none focus-visible:ring-2'
+                            className='text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:ring-ring rounded p-1 transition-colors focus-visible:ring-2 focus-visible:outline-none'
                             onClick={() => startExit(item.id)}
                           >
                             <XIcon className='h-4 w-4' />
@@ -999,7 +999,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
           ref={mascotRef}
           type='button'
           aria-label={t('mascot.ariaLabel')}
-          className={`focus-visible:ring-primary/50 relative inline-flex h-12 w-12 items-center justify-center rounded-full border-2 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 sm:h-14 sm:w-14 lg:h-16 lg:w-16 ${state.isActive ? 'border-primary/60 shadow-primary/30 scale-110 shadow-2xl' : 'border-border/40 shadow-xl shadow-black/10'} ${state.preferences.animations ? 'hover:shadow-primary/20 hover:scale-110 hover:shadow-2xl' : ''} ${state.isKonamiMode ? 'animate-pulse border-yellow-400 shadow-yellow-400/20' : ''}`}
+          className={`focus-visible:ring-primary/50 relative inline-flex h-12 w-12 items-center justify-center rounded-full border-2 transition-all duration-300 focus-visible:ring-2 focus-visible:outline-none sm:h-14 sm:w-14 lg:h-16 lg:w-16 ${state.isActive ? 'border-primary/60 shadow-primary/30 scale-110 shadow-2xl' : 'border-border/40 shadow-xl shadow-black/10'} ${state.preferences.animations ? 'hover:shadow-primary/20 hover:scale-110 hover:shadow-2xl' : ''} ${state.isKonamiMode ? 'animate-pulse border-yellow-400 shadow-yellow-400/20' : ''}`}
           onClick={handleMascotClick}
           onMouseEnter={handleMouseEnter}
           onFocus={() => {

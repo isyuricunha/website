@@ -305,7 +305,7 @@ const UsersTable = (props: UsersTableProps) => {
         <div className='flex items-center justify-between'>
           <div className='flex items-center space-x-2'>
             <div className='relative'>
-              <Search className='text-muted-foreground absolute left-2 top-2.5 h-4 w-4' />
+              <Search className='text-muted-foreground absolute top-2.5 left-2 h-4 w-4' />
               <Input
                 placeholder='Search users...'
                 value={searchTerm}
@@ -316,7 +316,7 @@ const UsersTable = (props: UsersTableProps) => {
                 <Button
                   variant='ghost'
                   size='sm'
-                  className='absolute right-1 top-1 h-6 w-6 p-0'
+                  className='absolute top-1 right-1 h-6 w-6 p-0'
                   onClick={clearSearch}
                 >
                   <X className='h-3 w-3' />

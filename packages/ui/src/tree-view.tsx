@@ -1,4 +1,5 @@
-import { type TreeCollection, TreeView as TreeViewPrimitive } from '@ark-ui/react'
+import type { TreeCollection, TreeViewRootComponentProps } from '@ark-ui/react/tree-view'
+import { TreeView as TreeViewPrimitive } from '@ark-ui/react/tree-view'
 import { cn } from '@isyuricunha/utils'
 import { ChevronRightIcon, FileIcon, FolderIcon } from 'lucide-react'
 
@@ -11,13 +12,13 @@ type Node = {
 type TreeViewProps = {
   collection: TreeCollection<Node>
   label?: string
-} & Omit<React.ComponentProps<typeof TreeViewPrimitive.Root>, 'collection'>
+} & Omit<TreeViewRootComponentProps<Node>, 'collection'>
 
 const TreeView = (props: TreeViewProps) => {
   const { collection, className, label = 'Tree View', ...rest } = props
 
   return (
-    <TreeViewPrimitive.Root
+    <TreeViewPrimitive.Root<Node>
       collection={collection}
       className={cn('bg-card rounded-lg border p-2', className)}
       {...rest}

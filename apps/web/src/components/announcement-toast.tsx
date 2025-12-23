@@ -56,7 +56,7 @@ export default function AnnouncementToast() {
         toast.custom(
           (t: string | number) => (
             <div className='border-border/50 bg-background/95 animate-in slide-in-from-top-5 fade-in group relative max-w-md overflow-hidden rounded-xl border shadow-2xl backdrop-blur-xl'>
-              <div className='from-primary/5 bg-linear-to-br absolute inset-0 via-transparent to-transparent' />
+              <div className='from-primary/5 absolute inset-0 bg-linear-to-br via-transparent to-transparent' />
               <div className='relative p-5'>
                 <div className='flex items-start gap-4'>
                   <div className={`shrink-0 transition-transform duration-300 ${ui.iconClassName}`}>
@@ -64,7 +64,7 @@ export default function AnnouncementToast() {
                   </div>
 
                   <div className='min-w-0 flex-1 space-y-2'>
-                    <h4 className={`text-base font-semibold leading-tight ${ui.titleClassName}`}>
+                    <h4 className={`text-base leading-tight font-semibold ${ui.titleClassName}`}>
                       {announcement.title}
                     </h4>
                     <p className={`text-sm leading-relaxed ${ui.contentClassName}`}>

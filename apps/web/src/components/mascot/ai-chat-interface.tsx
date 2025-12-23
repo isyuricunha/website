@@ -89,7 +89,10 @@ export default function AIChatInterface({
 
   // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    const el = messagesEndRef.current
+    if (el && typeof (el as any).scrollIntoView === 'function') {
+      ;(el as any).scrollIntoView({ behavior: 'smooth' })
+    }
   }, [messages])
 
   // Focus input when opened
@@ -510,7 +513,7 @@ export default function AIChatInterface({
   if (!isOpen) return null
 
   return (
-    <div className='bg-popover/95 absolute bottom-full right-0 mb-2 max-h-[600px] w-96 overflow-hidden rounded-2xl border shadow-2xl backdrop-blur-sm sm:w-[28rem]'>
+    <div className='bg-popover/95 absolute right-0 bottom-full mb-2 max-h-[600px] w-96 overflow-hidden rounded-2xl border shadow-2xl backdrop-blur-sm sm:w-[28rem]'>
       {/* Header */}
       <div className='from-primary/10 to-primary/5 flex items-center justify-between border-b bg-gradient-to-r p-3'>
         <div className='flex min-w-0 items-center gap-2'>
@@ -518,7 +521,7 @@ export default function AIChatInterface({
             <MessageCircle className='h-4 w-4' />
           </div>
           <div className='flex flex-col'>
-            <span className='text-sm font-semibold leading-none'>{t('mascot.aiChat.title')}</span>
+            <span className='text-sm leading-none font-semibold'>{t('mascot.aiChat.title')}</span>
             <div className='text-muted-foreground mt-0.5 flex items-center gap-2 text-xs'>
               <select
                 value={activeConversationId}
@@ -614,7 +617,7 @@ export default function AIChatInterface({
                   )}
                 </div>
               )}
-              <p className='whitespace-pre-wrap leading-relaxed'>{message.text}</p>
+              <p className='leading-relaxed whitespace-pre-wrap'>{message.text}</p>
 
               {!message.isUser && !message.isError && (message.citations?.length ?? 0) > 0 ? (
                 <div className='border-border/20 mt-3 space-y-2 border-t pt-2'>
@@ -688,7 +691,7 @@ export default function AIChatInterface({
                       }))
                     }
                     placeholder={t('mascot.aiChat.feedback.commentPlaceholder')}
-                    className='bg-background/80 border-border/50 focus:ring-primary/50 focus:border-primary placeholder:text-muted-foreground/60 w-full resize-none rounded-lg border px-3 py-2 text-xs transition-all duration-200 focus:outline-none focus:ring-2'
+                    className='bg-background/80 border-border/50 focus:ring-primary/50 focus:border-primary placeholder:text-muted-foreground/60 w-full resize-none rounded-lg border px-3 py-2 text-xs transition-all duration-200 focus:ring-2 focus:outline-none'
                     disabled={feedbackIsSubmittingByMessageId[message.id] === true}
                   />
                   <div className='flex items-center justify-end gap-2'>
@@ -776,7 +779,7 @@ export default function AIChatInterface({
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder={t('mascot.aiChat.placeholder')}
-            className='bg-background/80 border-border/50 focus:ring-primary/50 focus:border-primary placeholder:text-muted-foreground/60 flex-1 rounded-xl border px-4 py-3 text-sm transition-all duration-200 focus:outline-none focus:ring-2'
+            className='bg-background/80 border-border/50 focus:ring-primary/50 focus:border-primary placeholder:text-muted-foreground/60 flex-1 rounded-xl border px-4 py-3 text-sm transition-all duration-200 focus:ring-2 focus:outline-none'
             disabled={isLoading}
           />
           <button

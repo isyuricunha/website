@@ -27,8 +27,8 @@ const TabsTrigger = (props: TabsTriggerProps) => {
   return (
     <TabsPrimitive.Trigger
       className={cn(
-        'ring-offset-background inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1.5 text-sm font-medium transition-all',
-        'focus-visible:ring-ring focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2',
+        'ring-offset-background inline-flex items-center justify-center rounded-md px-3 py-1.5 text-sm font-medium whitespace-nowrap transition-all',
+        'focus-visible:ring-ring focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden',
         'disabled:pointer-events-none disabled:opacity-50',
         'data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-xs',
         className
@@ -47,7 +47,7 @@ const TabsContent = (props: TabsContentProps) => {
     <TabsPrimitive.Content
       className={cn(
         'ring-offset-background mt-2',
-        'focus-visible:ring-ring focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2',
+        'focus-visible:ring-ring focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden',
         className
       )}
       {...rest}

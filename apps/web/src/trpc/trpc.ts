@@ -195,6 +195,7 @@ export const protectedProcedure = publicProcedure.use(({ ctx, next }) => {
 
   return next({
     ctx: {
+      ...ctx,
       session: { ...ctx.session, user: ctx.session.user }
     }
   })

@@ -58,6 +58,7 @@ vi.mock('crypto', async (importOriginal) => {
   let counter = 0
 
   return {
+    default: actual,
     ...actual,
     randomBytes: () => {
       counter += 1

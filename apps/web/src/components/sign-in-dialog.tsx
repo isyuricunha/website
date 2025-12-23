@@ -351,7 +351,7 @@ const SignInDialog = () => {
 const LastUsed = () => {
   const t = useTranslations()
   return (
-    <Badge variant='outline' className='bg-background absolute -right-2 -top-2'>
+    <Badge variant='outline' className='bg-background absolute -top-2 -right-2'>
       {t('dialog.sign-in.last-used')}
     </Badge>
   )

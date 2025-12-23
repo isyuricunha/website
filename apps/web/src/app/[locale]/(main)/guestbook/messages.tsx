@@ -154,7 +154,7 @@ const Message = (props: MessageProps) => {
                 </AvatarFallback>
               </Avatar>
               {/* Online indicator (optional enhancement) */}
-              <div className='border-background absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 bg-green-500' />
+              <div className='border-background absolute -right-0.5 -bottom-0.5 h-3 w-3 rounded-full border-2 bg-green-500' />
             </div>
 
             <div className='min-w-0 flex-1'>
@@ -172,7 +172,7 @@ const Message = (props: MessageProps) => {
             </div>
           </div>
 
-          <div className='prose prose-sm text-muted-foreground max-w-none break-words leading-relaxed'>
+          <div className='prose prose-sm text-muted-foreground max-w-none leading-relaxed break-words'>
             {body}
           </div>
         </div>

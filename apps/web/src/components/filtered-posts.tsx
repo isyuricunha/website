@@ -180,7 +180,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
             id='search'
           />
           <Label htmlFor='search'>
-            <SearchIcon className='text-muted-foreground absolute left-3 top-1/2 size-4 -translate-y-1/2 sm:left-4 sm:size-5' />
+            <SearchIcon className='text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2 sm:left-4 sm:size-5' />
           </Label>
         </div>
 
@@ -201,7 +201,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
 
           {/* Sort Dropdown */}
           <div className='flex flex-col gap-2 sm:flex-row sm:items-center'>
-            <span className='text-muted-foreground whitespace-nowrap text-xs sm:text-sm'>
+            <span className='text-muted-foreground text-xs whitespace-nowrap sm:text-sm'>
               {t('component.filtered-posts.sort.label')}
             </span>
             <Select value={sortBy} onValueChange={(value: SortOption) => setSortBy(value)}>

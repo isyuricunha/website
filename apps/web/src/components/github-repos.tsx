@@ -36,7 +36,7 @@ const GithubRepoCard = ({ repo }: { repo: Repo }) => {
       className='hover:border-primary/20 dark:hover:border-primary/20 group relative overflow-hidden rounded-lg border border-gray-200 p-3 transition-all hover:shadow-md dark:border-zinc-700'
     >
       {/* External link indicator */}
-      <div className='absolute right-3 top-3 opacity-0 transition-opacity group-hover:opacity-100'>
+      <div className='absolute top-3 right-3 opacity-0 transition-opacity group-hover:opacity-100'>
         <ExternalLink className='text-muted-foreground h-4 w-4' />
       </div>
 

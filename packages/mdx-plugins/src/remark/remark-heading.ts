@@ -1,6 +1,7 @@
 import type { TOC } from '../types'
-import type { Heading } from 'mdast'
+import type { Heading, Root } from 'mdast'
 import type { Plugin } from 'unified'
+import type { VFile } from 'vfile'
 
 import Slugger from 'github-slugger'
 import { visit } from 'unist-util-visit'
@@ -15,8 +16,8 @@ declare module 'mdast' {
 
 const slugger = new Slugger()
 
-export const remarkHeading: Plugin = () => {
-  return (tree, file) => {
+export const remarkHeading: Plugin<[], Root> = () => {
+  return (tree: Root, file: VFile) => {
     const toc: TOC[] = []
     slugger.reset()
 
