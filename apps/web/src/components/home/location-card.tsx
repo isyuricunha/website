@@ -4,7 +4,6 @@ import { useTranslations } from '@isyuricunha/i18n/client'
 import createGlobe from 'cobe'
 import { MapPinIcon } from 'lucide-react'
 import { useEffect, useRef } from 'react'
-import { useSpring } from 'react-spring'
 
 const LocationCard = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -12,17 +11,8 @@ const LocationCard = () => {
   const fadeMask = 'radial-gradient(circle at 50% 50%, rgb(0, 0, 0) 60%, rgb(0, 0, 0, 0) 70%)'
   const t = useTranslations()
 
-  // Criamos duas variáveis de animação: 'r' para rotação horizontal e 'v' para vertical
-  const [{ r, v }, api] = useSpring(() => ({
-    r: 0,
-    v: 0,
-    config: {
-      mass: 1,
-      tension: 280,
-      friction: 40,
-      precision: 0.001
-    }
-  }))
+  const rotationRef = useRef({ r: 0, v: 0 })
+  const rotationTargetRef = useRef({ r: 0, v: 0 })
 
   useEffect(() => {
     let width = 0
@@ -54,9 +44,16 @@ const LocationCard = () => {
       markers: [{ location: [-23.5505, -46.6333], size: 0.1 }],
       scale: 0.75,
       onRender: (state) => {
+        // Smooth rotation via simple easing (keeps behavior without external animation libs)
+        const rotation = rotationRef.current
+        const target = rotationTargetRef.current
+
+        rotation.r += (target.r - rotation.r) * 0.12
+        rotation.v += (target.v - rotation.v) * 0.12
+
         // Atualiza as rotações horizontal e vertical conforme a interação do usuário
-        state.phi = 4.75 + r.get()
-        state.theta = 0 + v.get()
+        state.phi = 4.75 + rotation.r
+        state.theta = 0 + rotation.v
         state.width = width * 3
         state.height = width * 3
       }
@@ -66,7 +63,7 @@ const LocationCard = () => {
       globe.destroy()
       window.removeEventListener('resize', onResize)
     }
-  }, [r, v])
+  }, [])
 
   const handlePointerDown = (e: React.PointerEvent<HTMLCanvasElement>) => {
     pointerInteracting.current = { x: e.clientX, y: e.clientY }
@@ -84,10 +81,10 @@ const LocationCard = () => {
       const deltaY = e.clientY - pointerInteracting.current.y
       // Atualiza a posição inicial para o próximo movimento
       pointerInteracting.current = { x: e.clientX, y: e.clientY }
-      api.start({
-        r: r.get() + deltaX / 200,
-        v: v.get() + deltaY / 200
-      })
+      rotationTargetRef.current = {
+        r: rotationTargetRef.current.r + deltaX / 200,
+        v: rotationTargetRef.current.v + deltaY / 200
+      }
     }
   }
 
@@ -104,10 +101,10 @@ const LocationCard = () => {
       const deltaX = touch.clientX - pointerInteracting.current.x
       const deltaY = touch.clientY - pointerInteracting.current.y
       pointerInteracting.current = { x: touch.clientX, y: touch.clientY }
-      api.start({
-        r: r.get() + deltaX / 100,
-        v: v.get() + deltaY / 100
-      })
+      rotationTargetRef.current = {
+        r: rotationTargetRef.current.r + deltaX / 100,
+        v: rotationTargetRef.current.v + deltaY / 100
+      }
     }
   }
 
