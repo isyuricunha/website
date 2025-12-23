@@ -109,6 +109,33 @@ pnpm build
 
 If upgrades introduce runtime issues, prefer debugging in development mode (`pnpm dev:web`) to get non-minified React errors.
 
+## Tech stack (versions)
+
+Core tooling:
+
+- Node.js: `>=22` (see `package.json#engines.node`)
+- pnpm: `10.26.0` (see `package.json#packageManager`)
+- TypeScript: `^5.9.3`
+- Turbo: `^2.7.1`
+- Vitest: `^4.0.16`
+- ESLint: `^9.39.2`
+- Prettier: `^3.7.4`
+
+Web apps:
+
+- Next.js: `16.1.1`
+- React: `19.2.3`
+- Zod: `4.2.1`
+- tRPC: `11.8.1`
+- TanStack React Query: `^5.90.12`
+- TailwindCSS: `^4.1.18`
+
+To list all installed versions in the workspace:
+
+```bash
+pnpm -r list --depth 0
+```
+
 ## Environment variables
 
 Environment variables are documented in `.env.example`.
