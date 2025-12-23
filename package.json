@@ -97,8 +97,7 @@
       "@isyuricunha/web>zod": "4.2.1",
       "@isyuricunha/web>@hookform/resolvers": "5.2.2",
       "@isyuricunha/docs>zod": "4.2.1",
-      "@isyuricunha/docs>@hookform/resolvers": "5.2.2",
-      "@isyuricunha/env>zod": "3.25.76"
+      "@isyuricunha/docs>@hookform/resolvers": "5.2.2"
     }
   },
   "simple-git-hooks": {
