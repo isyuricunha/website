@@ -91,10 +91,10 @@
     "@isyuricunha/tsconfig": "workspace:*",
     "@isyuricunha/utils": "workspace:*",
     "@tanstack/react-table": "^8.21.3",
-    "@types/react": "19.0.10",
+    "@types/react": "19.2.7",
     "@types/react-dom": "19.0.4",
     "next": "15.5.9",
-    "react": "19.0.0",
+    "react": "19.2.3",
     "react-dom": "19.0.0",
     "tailwindcss": "^4.1.18"
   },
