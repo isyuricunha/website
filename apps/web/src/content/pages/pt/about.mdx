@@ -21,11 +21,11 @@ eu sou estudante de tecnologia em banco de dados, um aspirante a dba de postgres
 
 alguns fatos rápidos sobre mim:
 
-* eu sou do brasil
-* eu geralmente me apresento como **dba postgresql jr** ou algo parecido
-* eu gosto de trabalhar perto de infraestrutura e bancos de dados, não só na camada mais de cima do stack
-* politicamente eu tendo a ser mais conservador, embora este site seja principalmente sobre tech e projetos pessoais, não política
-* inglês não é minha primeira língua; você provavelmente vai encontrar algumas frases estranhas aqui e ali
+- eu sou do brasil
+- eu geralmente me apresento como **dba postgresql jr** ou algo parecido
+- eu gosto de trabalhar perto de infraestrutura e bancos de dados, não só na camada mais de cima do stack
+- politicamente eu tendo a ser mais conservador, embora este site seja principalmente sobre tech e projetos pessoais, não política
+- inglês não é minha primeira língua; você provavelmente vai encontrar algumas frases estranhas aqui e ali
 
 eu gosto de ser honesto sobre onde eu estou na minha jornada. eu não sou um arquiteto sênior com trinta anos de experiência. eu sou alguém construindo esse caminho, um lab e um projeto de cada vez.
 
@@ -37,14 +37,14 @@ no lado formal, eu estudo **tecnologia em banco de dados** na estácio, um curso
 
 no lado prático, minha rotina geralmente envolve:
 
-* cuidar de **servidores linux**, principalmente ubuntu server 24.04 lts
-* trabalhar com **postgresql** como meu principal banco relacional
-* usar **mongodb** para cenários baseados em documentos
-* criar e manter stacks de **docker compose**
-* praticar backup, restore e disaster recovery
-* tunar queries e configurações do banco para melhorar performance
-* configurar monitoramento e alertas
-* documentar tudo em markdown para o eu do futuro não odiar o eu do passado
+- cuidar de **servidores linux**, principalmente ubuntu server 24.04 lts
+- trabalhar com **postgresql** como meu principal banco relacional
+- usar **mongodb** para cenários baseados em documentos
+- criar e manter stacks de **docker compose**
+- praticar backup, restore e disaster recovery
+- tunar queries e configurações do banco para melhorar performance
+- configurar monitoramento e alertas
+- documentar tudo em markdown para o eu do futuro não odiar o eu do passado
 
 eu também gasto tempo estudando e me preparando para certificações e oportunidades profissionais relacionadas a bancos de dados, infraestrutura e segurança.
 
@@ -56,24 +56,24 @@ eu gosto de dizer que meu homelab é meu melhor professor.
 
 algumas coisas que vivem lá:
 
-* servidores em casa rodando **ubuntu server 24.04 lts**, incluindo:
+- servidores em casa rodando **ubuntu server 24.04 lts**, incluindo:
+  - uma máquina mais potente focada em bancos de dados e serviços
+  - uma máquina mais leve que eu ainda uso para experimentos
 
-  * uma máquina mais potente focada em bancos de dados e serviços
-  * uma máquina mais leve que eu ainda uso para experimentos
-* instâncias na **oracle cloud** que atuam como nós extras e hosts de banco de dados
-* **tailscale** para conectar tudo em uma rede overlay segura, incluindo meu notebook windows
-* túneis **cloudflared** para expor serviços sem abrir portas aleatórias na internet
-* **portas externas aleatórias** mapeadas para containers, em vez das padrões, como uma camada extra pequena contra bots
-* um servidor dedicado de banco na oracle onde eu centralizo bancos como postgresql e outros
+- instâncias na **oracle cloud** que atuam como nós extras e hosts de banco de dados
+- **tailscale** para conectar tudo em uma rede overlay segura, incluindo meu notebook windows
+- túneis **cloudflared** para expor serviços sem abrir portas aleatórias na internet
+- **portas externas aleatórias** mapeadas para containers, em vez das padrões, como uma camada extra pequena contra bots
+- um servidor dedicado de banco na oracle onde eu centralizo bancos como postgresql e outros
 
 serviços típicos que aparecem e somem por aqui:
 
-* nextcloud para arquivos
-* joplin server para notas
-* privatebin para compartilhar texto rapidamente
-* ferramentas de monitoramento self-hosted
-* modelos de ia local via ollama
-* pequenos web apps para apoiar meu workflow
+- nextcloud para arquivos
+- joplin server para notas
+- privatebin para compartilhar texto rapidamente
+- ferramentas de monitoramento self-hosted
+- modelos de ia local via ollama
+- pequenos web apps para apoiar meu workflow
 
 eu tenho o domínio **`yuricunha.com`**, e muitos serviços vivem em subdomínios como `something.yuricunha.com`. este site é uma das faces visíveis de tudo isso.
 
@@ -83,38 +83,36 @@ eu tenho o domínio **`yuricunha.com`**, e muitos serviços vivem em subdomínio
 
 estas são algumas ferramentas e escolhas que aparecem bastante nos meus projetos:
 
-* **sistemas operacionais**
+- **sistemas operacionais**
+  - ubuntu server 24.04 lts nos servidores
+  - windows 10 pro no meu notebook principal
+  - distros baseadas em arch para experimentos, como endeavouros, cachyos e garuda
 
-  * ubuntu server 24.04 lts nos servidores
-  * windows 10 pro no meu notebook principal
-  * distros baseadas em arch para experimentos, como endeavouros, cachyos e garuda
-* **rede e acesso**
+- **rede e acesso**
+  - tailscale para acesso remoto seguro
+  - cloudflared para publicar serviços sem mexer com port forwarding no roteador
 
-  * tailscale para acesso remoto seguro
-  * cloudflared para publicar serviços sem mexer com port forwarding no roteador
-* **containers e serviços**
+- **containers e serviços**
+  - docker com **docker compose** (o plugin, não o comando antigo `docker-compose`)
+  - arquivos `docker-compose.yml` sem a chave antiga `version`
+  - postgresql externo em vez de um banco por container
+  - dns fixo nos containers usando:
+    - `1.1.1.1`
+    - `8.8.8.8`
 
-  * docker com **docker compose** (o plugin, não o comando antigo `docker-compose`)
-  * arquivos `docker-compose.yml` sem a chave antiga `version`
-  * postgresql externo em vez de um banco por container
-  * dns fixo nos containers usando:
+- **programação e ferramentas**
+  - python para automação e scripts
+  - `pipx` para instalar ferramentas python globalmente, mas de forma limpa
+  - shell scripts para tarefas simples
 
-    * `1.1.1.1`
-    * `8.8.8.8`
-* **programação e ferramentas**
+- **bancos de dados**
+  - postgresql como o principal banco nos meus labs
+  - interesse em mongodb e outros engines para comparar abordagens
 
-  * python para automação e scripts
-  * `pipx` para instalar ferramentas python globalmente, mas de forma limpa
-  * shell scripts para tarefas simples
-* **bancos de dados**
-
-  * postgresql como o principal banco nos meus labs
-  * interesse em mongodb e outros engines para comparar abordagens
-* **ia e automação**
-
-  * ollama rodando no ubuntu, direto no host, não em containers
-  * testes com diferentes modelos e prompts
-  * planos para automações e assistentes pessoais
+- **ia e automação**
+  - ollama rodando no ubuntu, direto no host, não em containers
+  - testes com diferentes modelos e prompts
+  - planos para automações e assistentes pessoais
 
 eu gosto de setups que sejam reproduzíveis. se eu escrevo um compose file ou um script, eu tento fazer de um jeito que eu consiga recriar o mesmo ambiente meses depois, sem chute.
 
@@ -126,23 +124,23 @@ um dos meus principais projetos de longo prazo é construir um **lab e portfóli
 
 o que você pode esperar dos meus repositórios:
 
-* diretórios estruturados para cada serviço ou lab, por exemplo:
+- diretórios estruturados para cada serviço ou lab, por exemplo:
+  - `~/docker/docker-compose/{service}`
+  - `~/docker/docker-data/{service}`
 
-  * `~/docker/docker-compose/{service}`
-  * `~/docker/docker-data/{service}`
-* arquivos de `docker compose` que:
+- arquivos de `docker compose` que:
+  - evitam opções depreciadas
+  - usam bancos externos quando faz sentido
+  - incluem valores de exemplo para variáveis de ambiente, para ficar claro o que vai onde
 
-  * evitam opções depreciadas
-  * usam bancos externos quando faz sentido
-  * incluem valores de exemplo para variáveis de ambiente, para ficar claro o que vai onde
-* documentação em markdown, geralmente em primeira pessoa, com seções explicando:
+- documentação em markdown, geralmente em primeira pessoa, com seções explicando:
+  - o que mudou
+  - como mudou
+  - por que mudou
 
-  * o que mudou
-  * como mudou
-  * por que mudou
-* comentários no código em **minúsculas**
-* queries sql majoritariamente em **minúsculas**
-* preferência por licenças open source, muitas vezes **lgpl 2.1** em projetos públicos
+- comentários no código em **minúsculas**
+- queries sql majoritariamente em **minúsculas**
+- preferência por licenças open source, muitas vezes **lgpl 2.1** em projetos públicos
 
 eu gosto de tratar esses labs como mini ambientes de produção. mesmo que ninguém mais use, eu ajo como se eu fosse o dba, o sysadmin e a pessoa de plantão ao mesmo tempo.
 
@@ -154,10 +152,10 @@ além de infra pura e bancos de dados, eu também curto criar projetos e marcas 
 
 exemplos:
 
-* ideias em torno de um app pessoal de música, parecido com **yumusic**, usando backends self-hosted
-* conceitos de marca como **yuflow** e outros
-* experimentos com um avatar e assistente pessoal de ia para suporte ou chat
-* serviços sob um naming estilo **yc inc.**, pensando em uma presença futura de negócio pessoal
+- ideias em torno de um app pessoal de música, parecido com **yumusic**, usando backends self-hosted
+- conceitos de marca como **yuflow** e outros
+- experimentos com um avatar e assistente pessoal de ia para suporte ou chat
+- serviços sob um naming estilo **yc inc.**, pensando em uma presença futura de negócio pessoal
 
 essas coisas evoluem com o tempo. algumas podem nunca ficar públicas, mas o trabalho por trás me ajuda a aprender sobre pipelines, ci, versionamento, segurança e deploy.
 
@@ -167,20 +165,20 @@ essas coisas evoluem com o tempo. algumas podem nunca ficar públicas, mas o tra
 
 como eu gosto de estudar e evoluir nessa área:
 
-* misturar **teoria e prática** o tempo todo
-* quebrar coisas de propósito, depois consertar
-* manter **notas detalhadas** de comandos, saídas e decisões
-* criar **runbooks** para tarefas repetitivas ou estressantes, por exemplo:
+- misturar **teoria e prática** o tempo todo
+- quebrar coisas de propósito, depois consertar
+- manter **notas detalhadas** de comandos, saídas e decisões
+- criar **runbooks** para tarefas repetitivas ou estressantes, por exemplo:
+  - restaurar backups
+  - reconfigurar um cluster
+  - fazer manutenção com o mínimo de downtime
 
-  * restaurar backups
-  * reconfigurar um cluster
-  * fazer manutenção com o mínimo de downtime
-* focar em **observabilidade**:
+- focar em **observabilidade**:
+  - logs
+  - métricas
+  - alertas
 
-  * logs
-  * métricas
-  * alertas
-* revisitar labs antigos com conhecimento novo para ver o que eu faria diferente hoje
+- revisitar labs antigos com conhecimento novo para ver o que eu faria diferente hoje
 
 eu prefiro entender como as coisas funcionam por baixo do capô em vez de decorar uma lista de comandos. se eu sei onde ficam os logs, como o processo inicia, como os dados são armazenados e o que cada configuração faz, eu me sinto bem mais confortável mexendo em ambientes de produção.
 
@@ -190,16 +188,16 @@ eu prefiro entender como as coisas funcionam por baixo do capô em vez de decora
 
 profissionalmente, eu estou construindo meu caminho em funções como:
 
-* dba postgresql junior
-* database administrator focado em ambientes de produção
-* cargos onde postgresql e linux são prioridade
-* posições onde observabilidade, performance tuning e confiabilidade importam
+- dba postgresql junior
+- database administrator focado em ambientes de produção
+- cargos onde postgresql e linux são prioridade
+- posições onde observabilidade, performance tuning e confiabilidade importam
 
 eu também fico de olho em áreas relacionadas a:
 
-* data engineering
-* segurança e compliance
-* alta disponibilidade e clustering
+- data engineering
+- segurança e compliance
+- alta disponibilidade e clustering
 
 eu já passei por processos reais de recrutamento, incluindo entrevistas em várias etapas para vagas de dba, e eu uso cada experiência para refinar meu portfólio, meus labs e a forma como eu apresento minhas habilidades.
 
@@ -211,27 +209,27 @@ tech não é o único projeto de longo prazo na minha vida.
 
 eu venho trabalhando em:
 
-* **perder peso**
-* **melhorar meus marcadores de saúde**
-* **criar um hábito de corrida**
+- **perder peso**
+- **melhorar meus marcadores de saúde**
+- **criar um hábito de corrida**
 
 algumas ferramentas e hábitos que eu uso:
 
-* relógio **garmin** e planos do **garmin coach**, especialmente para 5k
-* planos estruturados que misturam correr e caminhar
-* acompanhar **passos, distância e ritmo**
-* usar **balança de alimentos** e apps para medir calorias e macros
-* planejar refeições com opções simples e repetíveis como arroz, feijão, ovos, macarrão e acompanhamentos básicos
-* tentar manter um **déficit calórico** consistente sem ir para extremos
+- relógio **garmin** e planos do **garmin coach**, especialmente para 5k
+- planos estruturados que misturam correr e caminhar
+- acompanhar **passos, distância e ritmo**
+- usar **balança de alimentos** e apps para medir calorias e macros
+- planejar refeições com opções simples e repetíveis como arroz, feijão, ovos, macarrão e acompanhamentos básicos
+- tentar manter um **déficit calórico** consistente sem ir para extremos
 
 eu sei que eu sou um cara grande e que isso vai levar tempo. meu objetivo não é só baixar número na balança, mas construir um corpo que aguente meus planos, incluindo correr provas regulares de 5k e, depois, distâncias maiores.
 
 você pode ver posts sobre:
 
-* resumos semanais de treino
-* como foi uma corrida específica
-* pequenas melhorias em frequência cardíaca e ritmo
-* experimentos com dieta e rotina
+- resumos semanais de treino
+- como foi uma corrida específica
+- pequenas melhorias em frequência cardíaca e ritmo
+- experimentos com dieta e rotina
 
 eu vejo essa jornada de saúde do mesmo jeito que eu vejo meu homelab. é um projeto longo, cheio de iterações, métricas e ajustes.
 
@@ -241,18 +239,18 @@ eu vejo essa jornada de saúde do mesmo jeito que eu vejo meu homelab. é um pro
 
 este site existe por alguns motivos:
 
-* centralizar minhas **notas, labs e guias**
-* servir como **portfólio** para quem quer saber o que eu realmente faço
-* manter um **registro do meu aprendizado** ao longo do tempo
-* compartilhar **configs, compose files e scripts** que podem ajudar outras pessoas
-* documentar minha **jornada de corrida e saúde** de um jeito que faça sentido para mim
+- centralizar minhas **notas, labs e guias**
+- servir como **portfólio** para quem quer saber o que eu realmente faço
+- manter um **registro do meu aprendizado** ao longo do tempo
+- compartilhar **configs, compose files e scripts** que podem ajudar outras pessoas
+- documentar minha **jornada de corrida e saúde** de um jeito que faça sentido para mim
 
 você pode encontrar aqui:
 
-* artigos técnicos sobre postgresql, linux e docker
-* guias passo a passo para setups específicos
-* reflexões pequenas sobre estudo, carreira e vida
-* notas sobre treino, perda de peso e disciplina
+- artigos técnicos sobre postgresql, linux e docker
+- guias passo a passo para setups específicos
+- reflexões pequenas sobre estudo, carreira e vida
+- notas sobre treino, perda de peso e disciplina
 
 eu prefiro ser honesto do que ser perfeito. então você provavelmente vai ver rascunhos, coisas em andamento e partes que mudaram no meio do caminho. pra mim, isso é melhor do que fingir que tudo está finalizado e polido.
 
@@ -262,20 +260,20 @@ eu prefiro ser honesto do que ser perfeito. então você provavelmente vai ver r
 
 algumas coisas que guiam como eu trabalho e aprendo:
 
-* **clareza** acima de buzzwords
-* **documentação** acima de improviso
-* **confiabilidade** acima de setups bonitos, mas frágeis
-* **responsabilidade pessoal** acima de culpar ferramentas
-* **liberdade e privacidade** em tecnologia
-* ser **realista** sobre habilidades atuais, enquanto eu continuo melhorando
+- **clareza** acima de buzzwords
+- **documentação** acima de improviso
+- **confiabilidade** acima de setups bonitos, mas frágeis
+- **responsabilidade pessoal** acima de culpar ferramentas
+- **liberdade e privacidade** em tecnologia
+- ser **realista** sobre habilidades atuais, enquanto eu continuo melhorando
 
 na prática, isso significa que eu gosto de:
 
-* logs, métricas e alertas em vez de adivinhação
-* automação com comportamento claro
-* backups que eu realmente restaurei e testei
-* observabilidade em vez de fé cega em serviços
-* ferramentas self-hosted, ou pelo menos controláveis, sempre que possível
+- logs, métricas e alertas em vez de adivinhação
+- automação com comportamento claro
+- backups que eu realmente restaurei e testei
+- observabilidade em vez de fé cega em serviços
+- ferramentas self-hosted, ou pelo menos controláveis, sempre que possível
 
 ---
 
@@ -283,12 +281,12 @@ na prática, isso significa que eu gosto de:
 
 só para deixar esta página um pouco mais humana:
 
-* eu consigo me perder feliz configurando um novo ambiente linux por horas
-* eu gosto de mexer em kernel e opções de performance no meu notebook ryzen
-* eu gosto de ler sobre bancos de dados mesmo quando eu não sou obrigado
-* eu prefiro ambientes silenciosos a lugares barulhentos
-* eu acho que uma boa caminhada ou corrida resolve muita bagunça mental
-* eu uso modelos de ia, tanto local quanto na nuvem, como ferramentas para pensar, rascunhar e explorar ideias
+- eu consigo me perder feliz configurando um novo ambiente linux por horas
+- eu gosto de mexer em kernel e opções de performance no meu notebook ryzen
+- eu gosto de ler sobre bancos de dados mesmo quando eu não sou obrigado
+- eu prefiro ambientes silenciosos a lugares barulhentos
+- eu acho que uma boa caminhada ou corrida resolve muita bagunça mental
+- eu uso modelos de ia, tanto local quanto na nuvem, como ferramentas para pensar, rascunhar e explorar ideias
 
 ---
 

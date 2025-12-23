@@ -129,7 +129,9 @@ export default function NotificationsPage() {
                 <div className='flex items-start justify-between gap-3'>
                   <div className='min-w-0 space-y-1'>
                     <CardTitle className='truncate text-base'>{n.title}</CardTitle>
-                    <CardDescription className='text-xs'>{formatDateTime(n.createdAt)}</CardDescription>
+                    <CardDescription className='text-xs'>
+                      {formatDateTime(n.createdAt)}
+                    </CardDescription>
                   </div>
                   <div className='flex items-center gap-2'>
                     {n.read ? null : (

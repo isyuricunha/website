@@ -68,7 +68,10 @@ export const setShownAnnouncementToastIds = (ids: string[]): void => {
   }
 }
 
-export const addShownAnnouncementToastId = (current: string[], announcementId: string): string[] => {
+export const addShownAnnouncementToastId = (
+  current: string[],
+  announcementId: string
+): string[] => {
   const next = uniqueAppend(current, announcementId)
   setShownAnnouncementToastIds(next)
   return next

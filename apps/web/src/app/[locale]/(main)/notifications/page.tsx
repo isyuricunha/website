@@ -79,7 +79,10 @@ const Page = async (props: PageProps) => {
 
   return (
     <>
-      <script type='application/ld+json' dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script
+        type='application/ld+json'
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <PageTitle title={title} description={description} />
       <div className='mx-auto max-w-3xl'>
         <NotificationsPage />

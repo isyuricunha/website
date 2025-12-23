@@ -116,10 +116,15 @@ const createDbMock = () => {
 
   const updateWhere = vi.fn(async () => {
     const pendingId = (updateWhere as any).__pendingId as string | undefined
-    const target = pendingId ? notification_rows.find((n) => n.id === pendingId) : notification_rows[0]
+    const target = pendingId
+      ? notification_rows.find((n) => n.id === pendingId)
+      : notification_rows[0]
     if (!target) return
 
-    if (typeof (updateWhere as any).__pendingSet === 'object' && (updateWhere as any).__pendingSet) {
+    if (
+      typeof (updateWhere as any).__pendingSet === 'object' &&
+      (updateWhere as any).__pendingSet
+    ) {
       const setData = (updateWhere as any).__pendingSet as Record<string, unknown>
       if (typeof setData.read === 'boolean') target.read = setData.read
       if (setData.readAt instanceof Date) target.readAt = setData.readAt

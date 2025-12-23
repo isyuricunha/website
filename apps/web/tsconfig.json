@@ -3,15 +3,9 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./src/*"
-      ],
-      "content-collections": [
-        "./.content-collections/generated"
-      ],
-      "~/*": [
-        "./public/*"
-      ]
+      "@/*": ["./src/*"],
+      "content-collections": ["./.content-collections/generated"],
+      "~/*": ["./public/*"]
     },
     "plugins": [
       {
@@ -22,10 +16,7 @@
     "declarationMap": false,
     "skipLibCheck": true
   },
-  "exclude": [
-    "node_modules",
-    ".next"
-  ],
+  "exclude": ["node_modules", ".next"],
   "extends": "../../packages/tsconfig/nextjs.json",
   "include": [
     "**/*.ts",

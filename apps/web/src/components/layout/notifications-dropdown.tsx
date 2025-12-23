@@ -94,50 +94,54 @@ export default function NotificationsDropdown() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
 
-        {session ? (data?.notifications?.length ?? 0) === 0 ? (
-          <div className='text-muted-foreground px-3 py-2 text-sm'>{t('empty')}</div>
-        ) : (
-          <ScrollArea className='h-80'>
-            <div className='space-y-1 p-1'>
-              {data?.notifications?.map((n) => {
-                const href = getActionHref(n.actionUrl)
-                const item = (
-                  <div className='flex min-w-0 flex-1 flex-col gap-0.5'>
-                    <div className='flex items-center gap-2'>
-                      <span className='truncate text-sm font-medium'>{n.title}</span>
-                      {n.read ? null : (
-                        <span className='bg-primary/10 text-primary rounded-full px-2 py-0.5 text-[10px] font-semibold'>
-                          {t('unread')}
-                        </span>
-                      )}
+        {session ? (
+          (data?.notifications?.length ?? 0) === 0 ? (
+            <div className='text-muted-foreground px-3 py-2 text-sm'>{t('empty')}</div>
+          ) : (
+            <ScrollArea className='h-80'>
+              <div className='space-y-1 p-1'>
+                {data?.notifications?.map((n) => {
+                  const href = getActionHref(n.actionUrl)
+                  const item = (
+                    <div className='flex min-w-0 flex-1 flex-col gap-0.5'>
+                      <div className='flex items-center gap-2'>
+                        <span className='truncate text-sm font-medium'>{n.title}</span>
+                        {n.read ? null : (
+                          <span className='bg-primary/10 text-primary rounded-full px-2 py-0.5 text-[10px] font-semibold'>
+                            {t('unread')}
+                          </span>
+                        )}
+                      </div>
+                      <span className='text-muted-foreground line-clamp-2 text-xs'>
+                        {n.message}
+                      </span>
                     </div>
-                    <span className='text-muted-foreground line-clamp-2 text-xs'>{n.message}</span>
-                  </div>
-                )
+                  )
 
-                return (
-                  <DropdownMenuItem
-                    key={n.id}
-                    className='gap-2'
-                    onClick={() => {
-                      if (!n.read) {
-                        markReadMutation.mutate({ notificationId: n.id })
-                      }
-                    }}
-                    asChild={Boolean(href)}
-                  >
-                    {href ? (
-                      <Link href={href} className='flex w-full items-start gap-2'>
-                        {item}
-                      </Link>
-                    ) : (
-                      <div className='flex w-full items-start gap-2'>{item}</div>
-                    )}
-                  </DropdownMenuItem>
-                )
-              })}
-            </div>
-          </ScrollArea>
+                  return (
+                    <DropdownMenuItem
+                      key={n.id}
+                      className='gap-2'
+                      onClick={() => {
+                        if (!n.read) {
+                          markReadMutation.mutate({ notificationId: n.id })
+                        }
+                      }}
+                      asChild={Boolean(href)}
+                    >
+                      {href ? (
+                        <Link href={href} className='flex w-full items-start gap-2'>
+                          {item}
+                        </Link>
+                      ) : (
+                        <div className='flex w-full items-start gap-2'>{item}</div>
+                      )}
+                    </DropdownMenuItem>
+                  )
+                })}
+              </div>
+            </ScrollArea>
+          )
         ) : (
           <div className='text-muted-foreground px-3 py-2 text-sm'>{t('sign-in')}</div>
         )}
@@ -156,11 +160,7 @@ export default function NotificationsDropdown() {
                 <Check className='size-4' />
                 {t('mark-all-read')}
               </Button>
-              <Button
-                variant='ghost'
-                size='sm'
-                onClick={() => router.push('/notifications')}
-              >
+              <Button variant='ghost' size='sm' onClick={() => router.push('/notifications')}>
                 {t('view-all')}
               </Button>
             </div>

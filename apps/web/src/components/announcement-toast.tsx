@@ -7,10 +7,7 @@ import { X } from 'lucide-react'
 
 import { api } from '@/trpc/react'
 import { getAnnouncementUi } from '@/lib/announcement-ui'
-import {
-  getAnnouncementToastDurationMs,
-  isUrgentAnnouncement
-} from '@/lib/announcement-priority'
+import { getAnnouncementToastDurationMs, isUrgentAnnouncement } from '@/lib/announcement-priority'
 import {
   addDismissedAnnouncementId,
   addShownAnnouncementToastId,
@@ -59,7 +56,7 @@ export default function AnnouncementToast() {
         toast.custom(
           (t: string | number) => (
             <div className='border-border/50 bg-background/95 animate-in slide-in-from-top-5 fade-in group relative max-w-md overflow-hidden rounded-xl border shadow-2xl backdrop-blur-xl'>
-              <div className='from-primary/5 absolute inset-0 bg-linear-to-br via-transparent to-transparent' />
+              <div className='from-primary/5 bg-linear-to-br absolute inset-0 via-transparent to-transparent' />
               <div className='relative p-5'>
                 <div className='flex items-start gap-4'>
                   <div className={`shrink-0 transition-transform duration-300 ${ui.iconClassName}`}>

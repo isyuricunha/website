@@ -12,7 +12,8 @@ export const calculate_visible_count = (args: CalculateVisibleCountArgs) => {
     return 0
   }
 
-  const totalAll = itemWidths.reduce((acc, w) => acc + w, 0) + gapPx * Math.max(0, itemWidths.length - 1)
+  const totalAll =
+    itemWidths.reduce((acc, w) => acc + w, 0) + gapPx * Math.max(0, itemWidths.length - 1)
 
   if (totalAll <= availableWidth) {
     return itemWidths.length
@@ -20,7 +21,8 @@ export const calculate_visible_count = (args: CalculateVisibleCountArgs) => {
 
   for (let visibleCount = itemWidths.length - 1; visibleCount >= 0; visibleCount -= 1) {
     const visibleWidth =
-      itemWidths.slice(0, visibleCount).reduce((acc, w) => acc + w, 0) + gapPx * Math.max(0, visibleCount - 1)
+      itemWidths.slice(0, visibleCount).reduce((acc, w) => acc + w, 0) +
+      gapPx * Math.max(0, visibleCount - 1)
 
     const totalWithMore = visibleWidth + (visibleCount > 0 ? gapPx : 0) + moreWidth
 

@@ -155,7 +155,9 @@ export const announcementsRouter = createTRPCRouter({
                   if (!parsed) return null
                   if (!isRecord(parsed)) return null
                   const userRoles =
-                    getStringArray(parsed, 'userRoles') ?? getStringArray(parsed, 'roles') ?? undefined
+                    getStringArray(parsed, 'userRoles') ??
+                    getStringArray(parsed, 'roles') ??
+                    undefined
                   return {
                     ...parsed,
                     userRoles
@@ -499,9 +501,7 @@ export const announcementsRouter = createTRPCRouter({
         const analytics = {
           totalViews,
           totalDismissals,
-          dismissalRate:
-            totalViews > 0 ? (totalDismissals / totalViews) * 100
-              : 0,
+          dismissalRate: totalViews > 0 ? (totalDismissals / totalViews) * 100 : 0,
           byAnnouncement: {} as any
         }
 

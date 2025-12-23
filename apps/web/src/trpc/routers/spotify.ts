@@ -285,9 +285,12 @@ export const spotifyRouter = createTRPCRouter({
     if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
 
     try {
-      const response = await spotifyFetch(`${TOP_ARTISTS_ENDPOINT}?limit=20&time_range=short_term`, {
-        signal: AbortSignal.timeout(10_000) // 10 second timeout
-      })
+      const response = await spotifyFetch(
+        `${TOP_ARTISTS_ENDPOINT}?limit=20&time_range=short_term`,
+        {
+          signal: AbortSignal.timeout(10_000) // 10 second timeout
+        }
+      )
 
       if (!response.ok) {
         if (response.status === 429) {

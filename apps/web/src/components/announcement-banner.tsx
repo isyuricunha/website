@@ -7,7 +7,10 @@ import { X } from 'lucide-react'
 import { api } from '@/trpc/react'
 import { getAnnouncementUi } from '@/lib/announcement-ui'
 import { hasHighPriorityBadge } from '@/lib/announcement-priority'
-import { addDismissedAnnouncementId, getDismissedAnnouncementIds } from '@/utils/announcement-storage'
+import {
+  addDismissedAnnouncementId,
+  getDismissedAnnouncementIds
+} from '@/utils/announcement-storage'
 
 export default function AnnouncementBanner() {
   const t = useTranslations()

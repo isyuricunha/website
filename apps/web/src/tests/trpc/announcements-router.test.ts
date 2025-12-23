@@ -199,7 +199,10 @@ const createDbMock = () => {
     const first = interactions[0]
     if (!first) return
 
-    if (typeof (updateWhere as any).__pendingSet === 'object' && (updateWhere as any).__pendingSet) {
+    if (
+      typeof (updateWhere as any).__pendingSet === 'object' &&
+      (updateWhere as any).__pendingSet
+    ) {
       const setData = (updateWhere as any).__pendingSet as Record<string, unknown>
       if (typeof setData.viewed === 'boolean') first.viewed = setData.viewed
       if (typeof setData.dismissed === 'boolean') first.dismissed = setData.dismissed
@@ -260,9 +263,7 @@ describe('announcementsRouter', () => {
     vi.resetModules()
   })
 
-  it(
-    'filters announcements by targeting (userRoles + legacy roles) and tolerates invalid JSON',
-    async () => {
+  it('filters announcements by targeting (userRoles + legacy roles) and tolerates invalid JSON', async () => {
     const { announcementsRouter } = await import('@/trpc/routers/announcements')
 
     const db = createDbMock()
@@ -281,13 +282,9 @@ describe('announcementsRouter', () => {
     expect(ids).toContain('a-role-user-legacy')
     expect(ids).toContain('a-invalid-json')
     expect(ids).not.toContain('a-role-admin')
-    },
-    15_000
-  )
+  }, 15_000)
 
-  it(
-    'applies date filtering for non-admin view and bypasses it for real adminView',
-    async () => {
+  it('applies date filtering for non-admin view and bypasses it for real adminView', async () => {
     const { announcementsRouter } = await import('@/trpc/routers/announcements')
 
     const db = createDbMock()
@@ -305,13 +302,9 @@ describe('announcementsRouter', () => {
 
     const adminView = await callerAdmin.getAnnouncements({ active: true, adminView: true })
     expect(adminView.announcements.map((a) => a.id)).toContain('a-future')
-    },
-    15_000
-  )
+  }, 15_000)
 
-  it(
-    'markAnnouncementViewed inserts a new interaction when missing',
-    async () => {
+  it('markAnnouncementViewed inserts a new interaction when missing', async () => {
     const { announcementsRouter } = await import('@/trpc/routers/announcements')
 
     const db = createDbMock()
@@ -334,13 +327,9 @@ describe('announcementsRouter', () => {
     expect(interaction?.viewed).toBe(true)
     expect(interaction?.dismissed).toBe(false)
     expect(interaction?.viewedAt).toBeInstanceOf(Date)
-    },
-    15_000
-  )
+  }, 15_000)
 
-  it(
-    'markAnnouncementViewed updates an existing interaction if it exists and is not viewed',
-    async () => {
+  it('markAnnouncementViewed updates an existing interaction if it exists and is not viewed', async () => {
     const { announcementsRouter } = await import('@/trpc/routers/announcements')
 
     const db = createDbMock()
@@ -370,13 +359,9 @@ describe('announcementsRouter', () => {
     const interaction = db.__state.interactions[0]
     expect(interaction?.viewed).toBe(true)
     expect(interaction?.viewedAt).toBeInstanceOf(Date)
-    },
-    15_000
-  )
+  }, 15_000)
 
-  it(
-    'markAnnouncementViewed tolerates foreign key violations (announcement deleted) and returns success',
-    async () => {
+  it('markAnnouncementViewed tolerates foreign key violations (announcement deleted) and returns success', async () => {
     const { announcementsRouter } = await import('@/trpc/routers/announcements')
 
     const db = createDbMock()
@@ -400,13 +385,9 @@ describe('announcementsRouter', () => {
 
     const result = await caller.markAnnouncementViewed({ announcementId: 'missing' })
     expect(result.success).toBe(true)
-    },
-    15_000
-  )
+  }, 15_000)
 
-  it(
-    'dismissAnnouncement tolerates foreign key violations (announcement deleted) and returns success',
-    async () => {
+  it('dismissAnnouncement tolerates foreign key violations (announcement deleted) and returns success', async () => {
     const { announcementsRouter } = await import('@/trpc/routers/announcements')
 
     const db = createDbMock()
@@ -430,7 +411,5 @@ describe('announcementsRouter', () => {
 
     const result = await caller.dismissAnnouncement({ announcementId: 'missing' })
     expect(result.success).toBe(true)
-    },
-    15_000
-  )
+  }, 15_000)
 })

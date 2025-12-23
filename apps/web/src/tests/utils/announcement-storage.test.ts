@@ -54,7 +54,7 @@ describe('announcement-storage', () => {
 
   it('tolerates non-string arrays by returning empty arrays', () => {
     sessionStorage.setItem('dismissedAnnouncements', JSON.stringify([1, 2, 3]))
-    sessionStorage.setItem('shownAnnouncementToasts', JSON.stringify(["ok", 2]))
+    sessionStorage.setItem('shownAnnouncementToasts', JSON.stringify(['ok', 2]))
 
     expect(getDismissedAnnouncementIds()).toEqual([])
     expect(getShownAnnouncementToastIds()).toEqual([])

@@ -116,7 +116,9 @@ export const communicationRouter = createTRPCRouter({
         userId: z.string().optional(),
         unreadOnly: z.boolean().default(false),
         includeExpired: z.boolean().default(false),
-        type: z.enum(['system', 'user_action', 'content', 'security', 'marketing', 'reminder']).optional(),
+        type: z
+          .enum(['system', 'user_action', 'content', 'security', 'marketing', 'reminder'])
+          .optional(),
         limit: z.number().min(1).max(200).default(50),
         offset: z.number().min(0).default(0)
       })
@@ -558,7 +560,9 @@ export const communicationRouter = createTRPCRouter({
           columns: { id: true, userId: true, read: true, expiresAt: true }
         })
 
-        const applyFilters = <T extends { userId?: string | null; expiresAt?: Date | null; read?: boolean }>(
+        const applyFilters = <
+          T extends { userId?: string | null; expiresAt?: Date | null; read?: boolean }
+        >(
           items: T[]
         ): T[] => {
           return items.filter((notification) => {
@@ -665,7 +669,9 @@ export const communicationRouter = createTRPCRouter({
       z.object({
         title: z.string().min(1),
         content: z.string().min(1),
-        type: z.enum(['system', 'user_action', 'content', 'security', 'marketing', 'reminder']).default('system'),
+        type: z
+          .enum(['system', 'user_action', 'content', 'security', 'marketing', 'reminder'])
+          .default('system'),
         userId: z.string().optional(),
         expiresAt: z.date().optional(),
         actionUrl: z.string().url().optional(),

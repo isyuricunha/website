@@ -16,7 +16,10 @@ import { useLocale, useTranslations } from '@isyuricunha/i18n/client'
 import { api } from '@/trpc/react'
 import { getAnnouncementUi } from '@/lib/announcement-ui'
 import { hasHighPriorityBadge } from '@/lib/announcement-priority'
-import { addDismissedAnnouncementId, getDismissedAnnouncementIds } from '@/utils/announcement-storage'
+import {
+  addDismissedAnnouncementId,
+  getDismissedAnnouncementIds
+} from '@/utils/announcement-storage'
 
 interface AnnouncementWidgetProps {
   className?: string

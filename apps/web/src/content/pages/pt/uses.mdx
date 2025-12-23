@@ -7,11 +7,11 @@ sem marketing, sem links de afiliado, só as máquinas que eu realmente uso e po
 
 o hardware está organizado em:
 
-* **notebook pessoal**: meu computador do dia a dia
-* **servidor principal do homelab**: a máquina forte para bancos de dados e serviços
-* **nó arm64 do homelab**: raspberry pi para testes em arm
-* **máquinas x86-64 na nuvem**: dev e prod na nuvem
-* **máquinas arm64 na nuvem**: workloads arm na nuvem
+- **notebook pessoal**: meu computador do dia a dia
+- **servidor principal do homelab**: a máquina forte para bancos de dados e serviços
+- **nó arm64 do homelab**: raspberry pi para testes em arm
+- **máquinas x86-64 na nuvem**: dev e prod na nuvem
+- **máquinas arm64 na nuvem**: workloads arm na nuvem
 
 ---
 
@@ -23,28 +23,27 @@ este é o meu computador principal. eu uso para tudo que envolve estudo, código
 
 **especificações**
 
-* cpu
+- cpu
+  - **amd ryzen 7 7445hs**
 
-  * **amd ryzen 7 7445hs**
-* ram
+- ram
+  - **64 gb ddr5**
 
-  * **64 gb ddr5**
-* armazenamento
+- armazenamento
+  - **256 gb** ssd
+  - **360 gb** ssd
+  - usado para sistema, ferramentas de dev, bancos locais, containers e arquivos
 
-  * **256 gb** ssd
-  * **360 gb** ssd
-  * usado para sistema, ferramentas de dev, bancos locais, containers e arquivos
-* gpu
-
-  * **nvidia rtx 4070** (notebook)
+- gpu
+  - **nvidia rtx 4070** (notebook)
 
 principais usos:
 
-* terminais e ides para trabalhar em código e documentação
-* ssh em todas as máquinas do lab e da nuvem via tailscale
-* clientes de banco, ferramentas de administração e dashboards
-* navegadores e apps que conversam com serviços rodando no lab
-* alguns containers locais e vms leves quando necessário
+- terminais e ides para trabalhar em código e documentação
+- ssh em todas as máquinas do lab e da nuvem via tailscale
+- clientes de banco, ferramentas de administração e dashboards
+- navegadores e apps que conversam com serviços rodando no lab
+- alguns containers locais e vms leves quando necessário
 
 este notebook é o lugar de onde eu controlo o resto.
 
@@ -58,43 +57,43 @@ esta é a máquina grande do homelab, focada em bancos de dados, serviços e exp
 
 **cpu**
 
-* **intel xeon w9 3475x**
+- **intel xeon w9 3475x**
 
 **memória**
 
-* **256 gb ecc r**
-* **256 gb ecc r** em configuração espelhada
-* total de **512 gb** de memória ecc, configurada com redundância para reduzir risco de falhas
+- **256 gb ecc r**
+- **256 gb ecc r** em configuração espelhada
+- total de **512 gb** de memória ecc, configurada com redundância para reduzir risco de falhas
 
 **armazenamento**
 
 armazenamento rotacional:
 
-* **14 tb hdd** para dados principais
-* **14 tb hdd** para redundância
-* **14 tb hdd** para backups
+- **14 tb hdd** para dados principais
+- **14 tb hdd** para redundância
+- **14 tb hdd** para backups
 
 armazenamento nvme:
 
-* **256 gb nvme** para o sistema
-* **500 gb nvme** usado como cache de arquivos
-* **4 tb nvme** para arquivos frios e armazenamento de longo prazo
+- **256 gb nvme** para o sistema
+- **500 gb nvme** usado como cache de arquivos
+- **4 tb nvme** para arquivos frios e armazenamento de longo prazo
 
 **gpus**
 
-* **nvidia gt210** para saída de vídeo
-* **nvidia gt 1050** para cargas pequenas e codecs de vídeo
-* **amd radeon rx 7900 xtx** para workloads de ia
+- **nvidia gt210** para saída de vídeo
+- **nvidia gt 1050** para cargas pequenas e codecs de vídeo
+- **amd radeon rx 7900 xtx** para workloads de ia
 
 > nota: planejo substituir todo hardware nvidia e intel por componentes amd no futuro
 
 **uso típico:**
 
-* postgresql e outros bancos em setups de lab no estilo real
-* stacks de docker e containers para serviços self-hosted
-* monitoramento, logging e rotinas de backup
-* experimentos de ia usando a rx 7900 xtx
-* armazenamento de mídia, backups e dados do lab com redundância
+- postgresql e outros bancos em setups de lab no estilo real
+- stacks de docker e containers para serviços self-hosted
+- monitoramento, logging e rotinas de backup
+- experimentos de ia usando a rx 7900 xtx
+- armazenamento de mídia, backups e dados do lab com redundância
 
 este é o núcleo do meu homelab e onde a maior parte do trabalho pesado acontece.
 
@@ -106,28 +105,28 @@ eu também mantenho um ambiente arm64 em casa para testes e variedade.
 
 **placa**
 
-* **raspberry pi 5**, versão de 16 gb
+- **raspberry pi 5**, versão de 16 gb
 
 **soc**
 
-* **broadcom bcm2712**
-* quad core **arm cortex a76**
+- **broadcom bcm2712**
+- quad core **arm cortex a76**
 
 **memória**
 
-* **16 gb lpddr4x 4267**
+- **16 gb lpddr4x 4267**
 
 **armazenamento**
 
-* **64 gb emmc** para o sistema
-* **512 gb** para containers e arquivos
+- **64 gb emmc** para o sistema
+- **512 gb** para containers e arquivos
 
 casos de uso:
 
-* rodar containers arm
-* testar serviços em arm64 antes de levar para arm na nuvem
-* serviços pequenos sempre ligados com baixo consumo
-* experimentos com armazenamento em placas menores
+- rodar containers arm
+- testar serviços em arm64 antes de levar para arm na nuvem
+- serviços pequenos sempre ligados com baixo consumo
+- experimentos com armazenamento em placas menores
 
 este nó me ajuda a garantir que meus setups não sejam só x86.
 
@@ -143,23 +142,22 @@ são duas máquinas virtuais com o mesmo hardware, uma para dev e outra para pro
 
 **especificações por vm**
 
-* cpu
+- cpu
+  - **amd epyc 7551**, **8 vcpu**
 
-  * **amd epyc 7551**, **8 vcpu**
-* ram
+- ram
+  - **16 gb**
 
-  * **16 gb**
-* armazenamento
-
-  * **250 gb** para sistema, dados e logs
+- armazenamento
+  - **250 gb** para sistema, dados e logs
 
 existem **duas** máquinas com a mesma configuração.
 
 uso principal:
 
-* rodar bancos e serviços em um ambiente mais realista, parecido com produção
-* testar deploys que conversam com o homelab via tailscale
-* simular cenários onde parte do stack está on premises e parte está na nuvem
+- rodar bancos e serviços em um ambiente mais realista, parecido com produção
+- testar deploys que conversam com o homelab via tailscale
+- simular cenários onde parte do stack está on premises e parte está na nuvem
 
 ---
 
@@ -169,23 +167,22 @@ eu também mantenho máquinas arm64 na nuvem para testes e workloads que façam 
 
 **especificações por vm**
 
-* cpu
+- cpu
+  - **8 vcpu**
 
-  * **8 vcpu**
-* ram
+- ram
+  - **24 gb**
 
-  * **24 gb**
-* armazenamento
-
-  * **150 gb** para sistema e dados
+- armazenamento
+  - **150 gb** para sistema e dados
 
 > nota: o modelo exato de cpu não é especificado pelo provedor, o que importa aqui é a performance e a arquitetura arm64
 
 **usado para:**
 
-* rodar containers e serviços arm64
-* comparar diferenças de performance entre arm e x86
-* experimentos com workloads mais eficientes em energia
+- rodar containers e serviços arm64
+- comparar diferenças de performance entre arm e x86
+- experimentos com workloads mais eficientes em energia
 
 de novo, a ideia é manter pelo menos dev e prod separados nesse grupo.
 
@@ -195,25 +192,25 @@ de novo, a ideia é manter pelo menos dev e prod separados nesse grupo.
 
 esse hardware não é aleatório. ele segue uma ideia simples.
 
-* o notebook é o centro de controle
-* o servidor principal do homelab é onde ficam o trabalho pesado e o armazenamento
-* o nó arm64 em casa dá variedade e experimentos de baixo consumo
-* as máquinas na nuvem me deixam simular setups mais realistas de produção
+- o notebook é o centro de controle
+- o servidor principal do homelab é onde ficam o trabalho pesado e o armazenamento
+- o nó arm64 em casa dá variedade e experimentos de baixo consumo
+- as máquinas na nuvem me deixam simular setups mais realistas de produção
 
 com essa combinação eu consigo:
 
-* testar bancos e serviços com memória e armazenamento de verdade em casa
-* rodar workloads de ia localmente usando a rx 7900 xtx
-* manter redundância e backups com ram espelhada e múltiplos hdds
-* comparar comportamento de x86 e arm64
-* praticar separação estilo dev, staging e prod
+- testar bancos e serviços com memória e armazenamento de verdade em casa
+- rodar workloads de ia localmente usando a rx 7900 xtx
+- manter redundância e backups com ram espelhada e múltiplos hdds
+- comparar comportamento de x86 e arm64
+- praticar separação estilo dev, staging e prod
 
 ---
 
 este inventário me ajuda a lembrar o que eu realmente tenho e serve como documentação da minha infraestrutura. se você está lendo isso e curte homelabs, agora você sabe o que está rodando por trás das cortinas em yuricunha.com.
 
+<ExpandableSection title='Notebook' icon='Monitor'>
 
-{/* <ExpandableSection title='Notebook' icon='Monitor'>
   <div className='mb-6'>
     <Image
       src='/images/uses/ideapad-3i.png'
@@ -535,4 +532,4 @@ este inventário me ajuda a lembrar o que eu realmente tenho e serve como docume
       }
     ]}
   />
-</ExpandableSection> */}
+</ExpandableSection>
