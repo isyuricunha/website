@@ -93,6 +93,22 @@ packages/
    pnpm dev
    ```
 
+## Maintenance
+
+This repository is actively maintained and dependencies across all apps and packages are updated regularly.
+
+Recommended upgrade workflow:
+
+```bash
+pnpm -r up --latest
+pnpm install
+pnpm check
+pnpm test:unit
+pnpm build
+```
+
+If upgrades introduce runtime issues, prefer debugging in development mode (`pnpm dev:web`) to get non-minified React errors.
+
 ## Environment variables
 
 Environment variables are documented in `.env.example`.
@@ -139,6 +155,13 @@ Notes:
 
 - Ensure all required environment variables are set.
 - The monorepo uses Turbo pipelines; the default root `pnpm build` is the expected build command.
+
+## Troubleshooting
+
+Common browser console messages:
+
+- `Failed to load resource: net::ERR_BLOCKED_BY_CLIENT` typically indicates a browser extension (ad blocker/privacy tooling) is blocking a request.
+- Minified React errors in production builds are best debugged by reproducing the issue in development mode.
 
 ## Contributing
 
