@@ -71,7 +71,7 @@
     "dotenv-cli": "^11.0.0",
     "eslint": "^9.39.2",
     "jsdom": "^27.3.0",
-    "knip": "^5.76.3",
+    "knip": "^5.78.0",
     "lint-staged": "^16.2.7",
     "prettier": "^3.7.4",
     "simple-git-hooks": "^2.13.1",
