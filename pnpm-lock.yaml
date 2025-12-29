@@ -270,13 +270,13 @@ importers:
         version: 11.8.1(typescript@5.9.3)
       '@upstash/ratelimit':
         specifier: ^2.0.7
-        version: 2.0.7(@upstash/redis@1.35.8)
+        version: 2.0.7(@upstash/redis@1.36.0)
       '@upstash/redis':
-        specifier: ^1.35.8
-        version: 1.35.8
+        specifier: ^1.36.0
+        version: 1.36.0
       better-auth:
         specifier: ^1.4.9
-        version: 1.4.9(drizzle-kit@0.31.8)(drizzle-orm@0.45.1(@opentelemetry/api@1.9.0)(@types/pg@8.16.0)(@upstash/redis@1.35.8)(gel@2.2.0)(kysely@0.28.9)(pg@8.16.3))(next@16.1.1(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(@playwright/test@1.57.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(pg@8.16.3)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(vitest@4.0.16)
+        version: 1.4.9(drizzle-kit@0.31.8)(drizzle-orm@0.45.1(@opentelemetry/api@1.9.0)(@types/pg@8.16.0)(@upstash/redis@1.36.0)(gel@2.2.0)(kysely@0.28.9)(pg@8.16.3))(next@16.1.1(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(@playwright/test@1.57.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(pg@8.16.3)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(vitest@4.0.16)
       better-call:
         specifier: ^1.1.7
         version: 1.1.7(zod@4.2.1)
@@ -466,7 +466,7 @@ importers:
         version: link:../env
       drizzle-orm:
         specifier: ^0.45.1
-        version: 0.45.1(@opentelemetry/api@1.9.0)(@types/pg@8.16.0)(@upstash/redis@1.35.8)(gel@2.2.0)(kysely@0.28.9)(pg@8.16.3)
+        version: 0.45.1(@opentelemetry/api@1.9.0)(@types/pg@8.16.0)(@upstash/redis@1.36.0)(gel@2.2.0)(kysely@0.28.9)(pg@8.16.3)
       nanoid:
         specifier: ^5.1.6
         version: 5.1.6
@@ -598,7 +598,7 @@ importers:
         version: 7.15.3(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       eslint-plugin-turbo:
         specifier: ^2.7.1
-        version: 2.7.1(eslint@9.39.2(jiti@2.6.1))(turbo@2.7.1)
+        version: 2.7.1(eslint@9.39.2(jiti@2.6.1))(turbo@2.7.2)
       eslint-plugin-unicorn:
         specifier: ^62.0.0
         version: 62.0.0(eslint@9.39.2(jiti@2.6.1))
@@ -645,10 +645,10 @@ importers:
     dependencies:
       '@upstash/ratelimit':
         specifier: ^2.0.7
-        version: 2.0.7(@upstash/redis@1.35.8)
+        version: 2.0.7(@upstash/redis@1.36.0)
       '@upstash/redis':
-        specifier: ^1.35.8
-        version: 1.35.8
+        specifier: ^1.36.0
+        version: 1.36.0
     devDependencies:
       '@isyuricunha/env':
         specifier: workspace:*
@@ -4092,8 +4092,8 @@ packages:
     peerDependencies:
       '@upstash/redis': ^1.34.3
 
-  '@upstash/redis@1.35.8':
-    resolution: {integrity: sha512-QqLpVCD9PCPE6hlRzOkz864nfijSdazxtyJLIy9ZeTh6kU2nBIKKfjT5HMHjIRD4BCm6TK1dbUT9pxhFjcvpng==}
+  '@upstash/redis@1.36.0':
+    resolution: {integrity: sha512-9zN2UV9QJGPnXfWU3yZBLVQaqqENDh7g+Y4J2vJuSxBCi9FQ0aUOtaXlzuFhnsiZvCqM+eS27ic+tgmkWUsfOg==}
 
   '@vitejs/plugin-react@5.1.2':
     resolution: {integrity: sha512-EcA07pHJouywpzsoTUqNh5NwGayl2PPVEJKUSinGGSxFGYn+shYbqMGBg6FXDqgXum9Ou/ecb+411ssw8HImJQ==}
@@ -8751,8 +8751,18 @@ packages:
     cpu: [x64]
     os: [darwin]
 
+  turbo-darwin-64@2.7.2:
+    resolution: {integrity: sha512-dxY3X6ezcT5vm3coK6VGixbrhplbQMwgNsCsvZamS/+/6JiebqW9DKt4NwpgYXhDY2HdH00I7FWs3wkVuan4rA==}
+    cpu: [x64]
+    os: [darwin]
+
   turbo-darwin-arm64@2.7.1:
     resolution: {integrity: sha512-/pWGSygtBugd7sKQOeMm+jKY3qN1vyB0RiHBM6bN/6qUOo2VHo8IQwBTIaSgINN4Ue6fzEU+WfePNvonSU9yXw==}
+    cpu: [arm64]
+    os: [darwin]
+
+  turbo-darwin-arm64@2.7.2:
+    resolution: {integrity: sha512-1bXmuwPLqNFt3mzrtYcVx1sdJ8UYb124Bf48nIgcpMCGZy3kDhgxNv1503kmuK/37OGOZbsWSQFU4I08feIuSg==}
     cpu: [arm64]
     os: [darwin]
 
@@ -8761,8 +8771,18 @@ packages:
     cpu: [x64]
     os: [linux]
 
+  turbo-linux-64@2.7.2:
+    resolution: {integrity: sha512-kP+TiiMaiPugbRlv57VGLfcjFNsFbo8H64wMBCPV2270Or2TpDCBULMzZrvEsvWFjT3pBFvToYbdp8/Kw0jAQg==}
+    cpu: [x64]
+    os: [linux]
+
   turbo-linux-arm64@2.7.1:
     resolution: {integrity: sha512-L/r77jD7cqIEXoyu2LGBUrTY5GJSi/XcGLsQ2nZ/fefk6x3MpljTvwsXUVG1BUkiBPc4zaKRj6yGyWMo5MbLxQ==}
+    cpu: [arm64]
+    os: [linux]
+
+  turbo-linux-arm64@2.7.2:
+    resolution: {integrity: sha512-VDJwQ0+8zjAfbyY6boNaWfP6RIez4ypKHxwkuB6SrWbOSk+vxTyW5/hEjytTwK8w/TsbKVcMDyvpora8tEsRFw==}
     cpu: [arm64]
     os: [linux]
 
@@ -8771,13 +8791,27 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  turbo-windows-64@2.7.2:
+    resolution: {integrity: sha512-rPjqQXVnI6A6oxgzNEE8DNb6Vdj2Wwyhfv3oDc+YM3U9P7CAcBIlKv/868mKl4vsBtz4ouWpTQNXG8vljgJO+w==}
+    cpu: [x64]
+    os: [win32]
+
   turbo-windows-arm64@2.7.1:
     resolution: {integrity: sha512-1rZk9htm3+iP/rWCf/h4/DFQey9sMs2TJPC4T5QQfwqAdMWsphgrxBuFqHdxczlbBCgbWNhVw0CH2bTxe1/GFg==}
     cpu: [arm64]
     os: [win32]
 
+  turbo-windows-arm64@2.7.2:
+    resolution: {integrity: sha512-tcnHvBhO515OheIFWdxA+qUvZzNqqcHbLVFc1+n+TJ1rrp8prYicQtbtmsiKgMvr/54jb9jOabU62URAobnB7g==}
+    cpu: [arm64]
+    os: [win32]
+
   turbo@2.7.1:
     resolution: {integrity: sha512-zAj9jGc7VDvuAo/5Jbos4QTtWz9uUpkMhMKGyTjDJkx//hdL2bM31qQoJSAbU+7JyK5vb0LPzpwf6DUt3zayqg==}
+    hasBin: true
+
+  turbo@2.7.2:
+    resolution: {integrity: sha512-5JIA5aYBAJSAhrhbyag1ZuMSgUZnHtI+Sq3H8D3an4fL8PeF+L1yYvbEJg47akP1PFfATMf5ehkqFnxfkmuwZQ==}
     hasBin: true
 
   type-check@0.4.0:
@@ -9117,6 +9151,7 @@ packages:
   whatwg-encoding@3.1.1:
     resolution: {integrity: sha512-6qN4hJdMwfYBtE3YBTTHhoeuUrDBPZmbQaxWAqSALV/MeEnR5z1xd8UKud2RAkFoPkmB+hli1TZSnyi84xz1vQ==}
     engines: {node: '>=18'}
+    deprecated: Use @exodus/bytes instead for a more spec-conformant and faster implementation
 
   whatwg-mimetype@4.0.0:
     resolution: {integrity: sha512-QaKxh0eNIi2mE9p2vEdzfagOKHCcj1pJ56EEHGQOVxp8r9/iszLUUV7v89x9O1p/T+NlTM5W7jW6+cz4Fq1YVg==}
@@ -12420,14 +12455,14 @@ snapshots:
 
   '@upstash/core-analytics@0.0.10':
     dependencies:
-      '@upstash/redis': 1.35.8
+      '@upstash/redis': 1.36.0
 
-  '@upstash/ratelimit@2.0.7(@upstash/redis@1.35.8)':
+  '@upstash/ratelimit@2.0.7(@upstash/redis@1.36.0)':
     dependencies:
       '@upstash/core-analytics': 0.0.10
-      '@upstash/redis': 1.35.8
+      '@upstash/redis': 1.36.0
 
-  '@upstash/redis@1.35.8':
+  '@upstash/redis@1.36.0':
     dependencies:
       uncrypto: 0.1.3
 
@@ -13244,7 +13279,7 @@ snapshots:
 
   before-after-hook@4.0.0: {}
 
-  better-auth@1.4.9(drizzle-kit@0.31.8)(drizzle-orm@0.45.1(@opentelemetry/api@1.9.0)(@types/pg@8.16.0)(@upstash/redis@1.35.8)(gel@2.2.0)(kysely@0.28.9)(pg@8.16.3))(next@16.1.1(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(@playwright/test@1.57.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(pg@8.16.3)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(vitest@4.0.16):
+  better-auth@1.4.9(drizzle-kit@0.31.8)(drizzle-orm@0.45.1(@opentelemetry/api@1.9.0)(@types/pg@8.16.0)(@upstash/redis@1.36.0)(gel@2.2.0)(kysely@0.28.9)(pg@8.16.3))(next@16.1.1(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(@playwright/test@1.57.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(pg@8.16.3)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(vitest@4.0.16):
     dependencies:
       '@better-auth/core': 1.4.9(@better-auth/utils@0.3.0)(@better-fetch/fetch@1.1.21)(better-call@1.1.7(zod@4.2.1))(jose@6.1.3)(kysely@0.28.9)(nanostores@1.1.0)
       '@better-auth/telemetry': 1.4.9(@better-auth/core@1.4.9(@better-auth/utils@0.3.0)(@better-fetch/fetch@1.1.21)(better-call@1.1.7(zod@4.2.1))(jose@6.1.3)(kysely@0.28.9)(nanostores@1.1.0))
@@ -13260,7 +13295,7 @@ snapshots:
       zod: 4.2.1
     optionalDependencies:
       drizzle-kit: 0.31.8
-      drizzle-orm: 0.45.1(@opentelemetry/api@1.9.0)(@types/pg@8.16.0)(@upstash/redis@1.35.8)(gel@2.2.0)(kysely@0.28.9)(pg@8.16.3)
+      drizzle-orm: 0.45.1(@opentelemetry/api@1.9.0)(@types/pg@8.16.0)(@upstash/redis@1.36.0)(gel@2.2.0)(kysely@0.28.9)(pg@8.16.3)
       next: 16.1.1(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(@playwright/test@1.57.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       pg: 8.16.3
       react: 19.2.3
@@ -13938,11 +13973,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm@0.45.1(@opentelemetry/api@1.9.0)(@types/pg@8.16.0)(@upstash/redis@1.35.8)(gel@2.2.0)(kysely@0.28.9)(pg@8.16.3):
+  drizzle-orm@0.45.1(@opentelemetry/api@1.9.0)(@types/pg@8.16.0)(@upstash/redis@1.36.0)(gel@2.2.0)(kysely@0.28.9)(pg@8.16.3):
     optionalDependencies:
       '@opentelemetry/api': 1.9.0
       '@types/pg': 8.16.0
-      '@upstash/redis': 1.35.8
+      '@upstash/redis': 1.36.0
       gel: 2.2.0
       kysely: 0.28.9
       pg: 8.16.3
@@ -14455,11 +14490,11 @@ snapshots:
       - supports-color
       - typescript
 
-  eslint-plugin-turbo@2.7.1(eslint@9.39.2(jiti@2.6.1))(turbo@2.7.1):
+  eslint-plugin-turbo@2.7.1(eslint@9.39.2(jiti@2.6.1))(turbo@2.7.2):
     dependencies:
       dotenv: 16.0.3
       eslint: 9.39.2(jiti@2.6.1)
-      turbo: 2.7.1
+      turbo: 2.7.2
 
   eslint-plugin-unicorn@62.0.0(eslint@9.39.2(jiti@2.6.1)):
     dependencies:
@@ -18058,19 +18093,37 @@ snapshots:
   turbo-darwin-64@2.7.1:
     optional: true
 
+  turbo-darwin-64@2.7.2:
+    optional: true
+
   turbo-darwin-arm64@2.7.1:
+    optional: true
+
+  turbo-darwin-arm64@2.7.2:
     optional: true
 
   turbo-linux-64@2.7.1:
     optional: true
 
+  turbo-linux-64@2.7.2:
+    optional: true
+
   turbo-linux-arm64@2.7.1:
+    optional: true
+
+  turbo-linux-arm64@2.7.2:
     optional: true
 
   turbo-windows-64@2.7.1:
     optional: true
 
+  turbo-windows-64@2.7.2:
+    optional: true
+
   turbo-windows-arm64@2.7.1:
+    optional: true
+
+  turbo-windows-arm64@2.7.2:
     optional: true
 
   turbo@2.7.1:
@@ -18081,6 +18134,15 @@ snapshots:
       turbo-linux-arm64: 2.7.1
       turbo-windows-64: 2.7.1
       turbo-windows-arm64: 2.7.1
+
+  turbo@2.7.2:
+    optionalDependencies:
+      turbo-darwin-64: 2.7.2
+      turbo-darwin-arm64: 2.7.2
+      turbo-linux-64: 2.7.2
+      turbo-linux-arm64: 2.7.2
+      turbo-windows-64: 2.7.2
+      turbo-windows-arm64: 2.7.2
 
   type-check@0.4.0:
     dependencies:
