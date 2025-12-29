@@ -598,7 +598,7 @@ importers:
         version: 7.15.3(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       eslint-plugin-turbo:
         specifier: ^2.7.1
-        version: 2.7.1(eslint@9.39.2(jiti@2.6.1))(turbo@2.7.1)
+        version: 2.7.1(eslint@9.39.2(jiti@2.6.1))(turbo@2.7.2)
       eslint-plugin-unicorn:
         specifier: ^62.0.0
         version: 62.0.0(eslint@9.39.2(jiti@2.6.1))
@@ -846,8 +846,8 @@ importers:
         specifier: ^1.1.1
         version: 1.1.1(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       cva:
-        specifier: 1.0.0-beta.3
-        version: 1.0.0-beta.3(typescript@5.9.3)
+        specifier: 1.0.0-beta.4
+        version: 1.0.0-beta.4(typescript@5.9.3)
       embla-carousel-react:
         specifier: ^8.6.0
         version: 8.6.0(react@19.2.3)
@@ -5040,8 +5040,8 @@ packages:
   csstype@3.2.3:
     resolution: {integrity: sha512-z1HGKcYy2xA8AGQfwrn0PAy+PB7X/GSj3UVJW9qKyn43xWa+gl5nXmU4qqLMRzWVLFC8KusUX8T/0kCiOYpAIQ==}
 
-  cva@1.0.0-beta.3:
-    resolution: {integrity: sha512-CZa8pTkpEygxJRLH9aod/wfnSgK5z/0GJqG/NNehlwam+S8llqCWUXS3eCenvAiW5sTUpwTWE6bJaeeZ/b4pzA==}
+  cva@1.0.0-beta.4:
+    resolution: {integrity: sha512-F/JS9hScapq4DBVQXcK85l9U91M6ePeXoBMSp7vypzShoefUBxjQTo3g3935PUHgQd+IW77DjbPRIxugy4/GCQ==}
     peerDependencies:
       typescript: '>= 4.5.5'
     peerDependenciesMeta:
@@ -8751,8 +8751,18 @@ packages:
     cpu: [x64]
     os: [darwin]
 
+  turbo-darwin-64@2.7.2:
+    resolution: {integrity: sha512-dxY3X6ezcT5vm3coK6VGixbrhplbQMwgNsCsvZamS/+/6JiebqW9DKt4NwpgYXhDY2HdH00I7FWs3wkVuan4rA==}
+    cpu: [x64]
+    os: [darwin]
+
   turbo-darwin-arm64@2.7.1:
     resolution: {integrity: sha512-/pWGSygtBugd7sKQOeMm+jKY3qN1vyB0RiHBM6bN/6qUOo2VHo8IQwBTIaSgINN4Ue6fzEU+WfePNvonSU9yXw==}
+    cpu: [arm64]
+    os: [darwin]
+
+  turbo-darwin-arm64@2.7.2:
+    resolution: {integrity: sha512-1bXmuwPLqNFt3mzrtYcVx1sdJ8UYb124Bf48nIgcpMCGZy3kDhgxNv1503kmuK/37OGOZbsWSQFU4I08feIuSg==}
     cpu: [arm64]
     os: [darwin]
 
@@ -8761,8 +8771,18 @@ packages:
     cpu: [x64]
     os: [linux]
 
+  turbo-linux-64@2.7.2:
+    resolution: {integrity: sha512-kP+TiiMaiPugbRlv57VGLfcjFNsFbo8H64wMBCPV2270Or2TpDCBULMzZrvEsvWFjT3pBFvToYbdp8/Kw0jAQg==}
+    cpu: [x64]
+    os: [linux]
+
   turbo-linux-arm64@2.7.1:
     resolution: {integrity: sha512-L/r77jD7cqIEXoyu2LGBUrTY5GJSi/XcGLsQ2nZ/fefk6x3MpljTvwsXUVG1BUkiBPc4zaKRj6yGyWMo5MbLxQ==}
+    cpu: [arm64]
+    os: [linux]
+
+  turbo-linux-arm64@2.7.2:
+    resolution: {integrity: sha512-VDJwQ0+8zjAfbyY6boNaWfP6RIez4ypKHxwkuB6SrWbOSk+vxTyW5/hEjytTwK8w/TsbKVcMDyvpora8tEsRFw==}
     cpu: [arm64]
     os: [linux]
 
@@ -8771,13 +8791,27 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  turbo-windows-64@2.7.2:
+    resolution: {integrity: sha512-rPjqQXVnI6A6oxgzNEE8DNb6Vdj2Wwyhfv3oDc+YM3U9P7CAcBIlKv/868mKl4vsBtz4ouWpTQNXG8vljgJO+w==}
+    cpu: [x64]
+    os: [win32]
+
   turbo-windows-arm64@2.7.1:
     resolution: {integrity: sha512-1rZk9htm3+iP/rWCf/h4/DFQey9sMs2TJPC4T5QQfwqAdMWsphgrxBuFqHdxczlbBCgbWNhVw0CH2bTxe1/GFg==}
     cpu: [arm64]
     os: [win32]
 
+  turbo-windows-arm64@2.7.2:
+    resolution: {integrity: sha512-tcnHvBhO515OheIFWdxA+qUvZzNqqcHbLVFc1+n+TJ1rrp8prYicQtbtmsiKgMvr/54jb9jOabU62URAobnB7g==}
+    cpu: [arm64]
+    os: [win32]
+
   turbo@2.7.1:
     resolution: {integrity: sha512-zAj9jGc7VDvuAo/5Jbos4QTtWz9uUpkMhMKGyTjDJkx//hdL2bM31qQoJSAbU+7JyK5vb0LPzpwf6DUt3zayqg==}
+    hasBin: true
+
+  turbo@2.7.2:
+    resolution: {integrity: sha512-5JIA5aYBAJSAhrhbyag1ZuMSgUZnHtI+Sq3H8D3an4fL8PeF+L1yYvbEJg47akP1PFfATMf5ehkqFnxfkmuwZQ==}
     hasBin: true
 
   type-check@0.4.0:
@@ -9117,6 +9151,7 @@ packages:
   whatwg-encoding@3.1.1:
     resolution: {integrity: sha512-6qN4hJdMwfYBtE3YBTTHhoeuUrDBPZmbQaxWAqSALV/MeEnR5z1xd8UKud2RAkFoPkmB+hli1TZSnyi84xz1vQ==}
     engines: {node: '>=18'}
+    deprecated: Use @exodus/bytes instead for a more spec-conformant and faster implementation
 
   whatwg-mimetype@4.0.0:
     resolution: {integrity: sha512-QaKxh0eNIi2mE9p2vEdzfagOKHCcj1pJ56EEHGQOVxp8r9/iszLUUV7v89x9O1p/T+NlTM5W7jW6+cz4Fq1YVg==}
@@ -13692,7 +13727,7 @@ snapshots:
 
   csstype@3.2.3: {}
 
-  cva@1.0.0-beta.3(typescript@5.9.3):
+  cva@1.0.0-beta.4(typescript@5.9.3):
     dependencies:
       clsx: 2.1.1
     optionalDependencies:
@@ -14455,11 +14490,11 @@ snapshots:
       - supports-color
       - typescript
 
-  eslint-plugin-turbo@2.7.1(eslint@9.39.2(jiti@2.6.1))(turbo@2.7.1):
+  eslint-plugin-turbo@2.7.1(eslint@9.39.2(jiti@2.6.1))(turbo@2.7.2):
     dependencies:
       dotenv: 16.0.3
       eslint: 9.39.2(jiti@2.6.1)
-      turbo: 2.7.1
+      turbo: 2.7.2
 
   eslint-plugin-unicorn@62.0.0(eslint@9.39.2(jiti@2.6.1)):
     dependencies:
@@ -18058,19 +18093,37 @@ snapshots:
   turbo-darwin-64@2.7.1:
     optional: true
 
+  turbo-darwin-64@2.7.2:
+    optional: true
+
   turbo-darwin-arm64@2.7.1:
+    optional: true
+
+  turbo-darwin-arm64@2.7.2:
     optional: true
 
   turbo-linux-64@2.7.1:
     optional: true
 
+  turbo-linux-64@2.7.2:
+    optional: true
+
   turbo-linux-arm64@2.7.1:
+    optional: true
+
+  turbo-linux-arm64@2.7.2:
     optional: true
 
   turbo-windows-64@2.7.1:
     optional: true
 
+  turbo-windows-64@2.7.2:
+    optional: true
+
   turbo-windows-arm64@2.7.1:
+    optional: true
+
+  turbo-windows-arm64@2.7.2:
     optional: true
 
   turbo@2.7.1:
@@ -18081,6 +18134,15 @@ snapshots:
       turbo-linux-arm64: 2.7.1
       turbo-windows-64: 2.7.1
       turbo-windows-arm64: 2.7.1
+
+  turbo@2.7.2:
+    optionalDependencies:
+      turbo-darwin-64: 2.7.2
+      turbo-darwin-arm64: 2.7.2
+      turbo-linux-64: 2.7.2
+      turbo-linux-arm64: 2.7.2
+      turbo-windows-64: 2.7.2
+      turbo-windows-arm64: 2.7.2
 
   type-check@0.4.0:
     dependencies:

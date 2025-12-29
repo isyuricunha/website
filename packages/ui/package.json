@@ -67,7 +67,7 @@
     "@radix-ui/react-visually-hidden": "^1.2.4",
     "@tailwindcss/typography": "^0.5.19",
     "cmdk": "^1.1.1",
-    "cva": "1.0.0-beta.3",
+    "cva": "1.0.0-beta.4",
     "embla-carousel-react": "^8.6.0",
     "framer-motion": "^12.23.26",
     "input-otp": "^1.4.2",
