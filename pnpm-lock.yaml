@@ -37,8 +37,8 @@ importers:
         specifier: ^1.57.0
         version: 1.57.0
       '@turbo/gen':
-        specifier: ^2.7.1
-        version: 2.7.1(@swc/core@1.15.7(@swc/helpers@0.5.17))(@types/node@25.0.3)(typescript@5.9.3)
+        specifier: ^2.7.2
+        version: 2.7.2(@swc/core@1.15.7(@swc/helpers@0.5.17))(@types/node@25.0.3)(typescript@5.9.3)
       '@types/node':
         specifier: ^25.0.3
         version: 25.0.3
@@ -3855,12 +3855,12 @@ packages:
   '@tsconfig/node16@1.0.4':
     resolution: {integrity: sha512-vxhUy4J8lyeyinH7Azl1pdd43GJhZH/tP2weN8TntQblOY+A0XbT8DJk1/oCPuOOyg/Ja757rG0CgHcWC8OfMA==}
 
-  '@turbo/gen@2.7.1':
-    resolution: {integrity: sha512-aG+9goyHq7En96pEeCx88Ougc9wesWscZxTGyWVinDazqE8qfka2+cntZKokd9TOPfhN5ImDckP8ITmoG0eGUg==}
+  '@turbo/gen@2.7.2':
+    resolution: {integrity: sha512-1aVYGeRDJkjpKYVls4Op9nhVAzmWKO5HbF2lRmxmLQJXa45Cr9MGQhvq81XUlP+w6Doef65ck5Obq3wNfGyJBQ==}
     hasBin: true
 
-  '@turbo/workspaces@2.7.1':
-    resolution: {integrity: sha512-cSdUacc2OWCkgbqZOkLKc2ZqbTEcP2LLoVNL/fOw2lefm1VkSL4sirdoKZNDEdn/2LqLcseyZkg0pfazBZhvBg==}
+  '@turbo/workspaces@2.7.2':
+    resolution: {integrity: sha512-uabSe1AITEq2+/iEa8AlNJH+bpcED8lHdhwVyxODFlVH7AUFtsAw9OuSAw+wsRSKVdFs2dnXyQKzHoJSfLW+lg==}
     hasBin: true
 
   '@tybys/wasm-util@0.10.1':
@@ -4570,8 +4570,8 @@ packages:
     resolution: {integrity: sha512-Sg0xJUNDU1sJNGdfGWhVHX0kkZ+HWcvmVymJbj6NSgZZmW/8S9Y2HQ5euytnIgakgxN6papOAWiwDo1ctFDcoQ==}
     hasBin: true
 
-  basic-ftp@5.0.5:
-    resolution: {integrity: sha512-4Bcg1P8xhUuqcii/S0Z9wiHIrQVPMermM1any+MX5GeGD7faD3/msQUDGLol9wOcz4/jbg/WJnGqoJF6LiBdtg==}
+  basic-ftp@5.1.0:
+    resolution: {integrity: sha512-RkaJzeJKDbaDWTIPiJwubyljaEPwpVWkm9Rt5h9Nd6h7tEXTJ3VB4qxdZBioV7JO5yLUaOKwz7vDOzlncUsegw==}
     engines: {node: '>=10.0.0'}
 
   before-after-hook@4.0.0:
@@ -12157,9 +12157,9 @@ snapshots:
 
   '@tsconfig/node16@1.0.4': {}
 
-  '@turbo/gen@2.7.1(@swc/core@1.15.7(@swc/helpers@0.5.17))(@types/node@25.0.3)(typescript@5.9.3)':
+  '@turbo/gen@2.7.2(@swc/core@1.15.7(@swc/helpers@0.5.17))(@types/node@25.0.3)(typescript@5.9.3)':
     dependencies:
-      '@turbo/workspaces': 2.7.1
+      '@turbo/workspaces': 2.7.2
       commander: 10.0.0
       fs-extra: 10.1.0
       inquirer: 8.2.4
@@ -12177,7 +12177,7 @@ snapshots:
       - supports-color
       - typescript
 
-  '@turbo/workspaces@2.7.1':
+  '@turbo/workspaces@2.7.2':
     dependencies:
       commander: 10.0.0
       execa: 5.1.1
@@ -12302,7 +12302,7 @@ snapshots:
 
   '@types/minimatch@6.0.0':
     dependencies:
-      minimatch: 9.0.0
+      minimatch: 10.1.1
 
   '@types/ms@2.1.0': {}
 
@@ -13275,7 +13275,7 @@ snapshots:
 
   baseline-browser-mapping@2.9.11: {}
 
-  basic-ftp@5.0.5: {}
+  basic-ftp@5.1.0: {}
 
   before-after-hook@4.0.0: {}
 
@@ -14918,7 +14918,7 @@ snapshots:
 
   get-uri@6.0.5:
     dependencies:
-      basic-ftp: 5.0.5
+      basic-ftp: 5.1.0
       data-uri-to-buffer: 6.0.2
       debug: 4.4.3
     transitivePeerDependencies:
