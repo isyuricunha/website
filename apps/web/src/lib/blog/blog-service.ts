@@ -1,6 +1,7 @@
 import fs from 'fs/promises'
 import path from 'path'
 import matter from 'gray-matter'
+import * as yaml from 'js-yaml'
 import { logger } from '@/lib/logger'
 
 interface BlogPost {
@@ -27,6 +28,11 @@ interface BlogPostMetadata {
 const CONTENT_DIR = path.join(process.cwd(), 'src/content/blog')
 const SUPPORTED_LOCALES = ['en', 'pt', 'fr', 'de', 'ja', 'zh']
 
+const yaml_engine = {
+  parse: (input: string) => yaml.load(input) as Record<string, unknown>,
+  stringify: (data: unknown) => yaml.dump(data)
+}
+
 const is_enoent = (error: unknown): boolean => {
   return (
     typeof error === 'object' &&
@@ -51,7 +57,11 @@ export const BlogService = {
         mdxFiles.map(async (file) => {
           const filePath = path.join(localeDir, file)
           const fileContent = await fs.readFile(filePath, 'utf8')
-          const { data } = matter(fileContent)
+          const { data } = matter(fileContent, {
+            engines: {
+              yaml: yaml_engine
+            }
+          })
 
           return {
             slug: file.replace('.mdx', ''),
@@ -95,7 +105,11 @@ export const BlogService = {
 
     try {
       const fileContent = await fs.readFile(filePath, 'utf8')
-      const { data, content } = matter(fileContent)
+      const { data, content } = matter(fileContent, {
+        engines: {
+          yaml: yaml_engine
+        }
+      })
 
       return {
         slug,
@@ -134,7 +148,11 @@ export const BlogService = {
     }
 
     // Combine frontmatter and content
-    const fileContent = matter.stringify(content, frontmatter)
+    const fileContent = matter.stringify(content, frontmatter, {
+      engines: {
+        yaml: yaml_engine
+      }
+    })
 
     try {
       await fs.writeFile(filePath, fileContent, 'utf8')
