@@ -1,5 +1,50 @@
 export const NextConfigHeaders = [
   {
+    source: '/admin/:path*',
+    headers: [
+      {
+        key: 'X-Robots-Tag',
+        value: 'noindex, nofollow'
+      }
+    ]
+  },
+  {
+    source: '/:locale/admin/:path*',
+    headers: [
+      {
+        key: 'X-Robots-Tag',
+        value: 'noindex, nofollow'
+      }
+    ]
+  },
+  {
+    source: '/api/:path*',
+    headers: [
+      {
+        key: 'X-Robots-Tag',
+        value: 'noindex, nofollow'
+      }
+    ]
+  },
+  {
+    source: '/reset-password/:path*',
+    headers: [
+      {
+        key: 'X-Robots-Tag',
+        value: 'noindex, nofollow'
+      }
+    ]
+  },
+  {
+    source: '/:locale/reset-password/:path*',
+    headers: [
+      {
+        key: 'X-Robots-Tag',
+        value: 'noindex, nofollow'
+      }
+    ]
+  },
+  {
     source: '/(.*)',
     headers: [
       {

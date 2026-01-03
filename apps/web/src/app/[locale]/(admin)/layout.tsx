@@ -1,3 +1,5 @@
+import type { Metadata } from 'next'
+
 import { redirect } from '@isyuricunha/i18n/routing'
 import { SidebarProvider } from '@isyuricunha/ui'
 
@@ -12,6 +14,17 @@ type LayoutProps = {
     locale: string
   }>
   children: React.ReactNode
+}
+
+export const metadata: Metadata = {
+  robots: {
+    index: false,
+    follow: false,
+    googleBot: {
+      index: false,
+      follow: false
+    }
+  }
 }
 
 const Layout = async (props: LayoutProps) => {
