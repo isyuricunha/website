@@ -10,7 +10,7 @@ import { Suspense } from 'react'
 import Comments from '@/components/comments'
 import Mdx from '@/components/mdx'
 import Recommendations from '@/components/ui/recommendations'
-import { SITE_URL } from '@/lib/constants'
+import { SITE_NAME } from '@/lib/constants'
 import { getRecommendedPosts } from '@/lib/recommendations'
 import { generateBlogPostJsonLd, generateSEO } from '@/lib/seo'
 import { getLocalizedPath } from '@/utils/get-localized-path'
@@ -73,7 +73,7 @@ export const generateMetadata = async (
     type: 'article',
     publishedTime: date,
     modifiedTime,
-    authors: [SITE_URL],
+    authors: [SITE_NAME],
     locale,
     alternateLocales
   })

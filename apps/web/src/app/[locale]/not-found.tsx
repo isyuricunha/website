@@ -1,18 +1,37 @@
-'use client'
-
 import type { Metadata } from 'next'
 
-import { useTranslations } from '@isyuricunha/i18n/client'
+import { i18n } from '@isyuricunha/i18n/config'
+import { getTranslations } from '@isyuricunha/i18n/server'
 
 import GoToHomepage from '@/components/go-to-homepage'
 import MainLayout from '@/components/main-layout'
 
-export const metadata: Metadata = {
-  title: '404'
+type PageProps = {
+  params?: Promise<{
+    locale: string
+  }>
 }
 
-const NotFound = () => {
-  const t = useTranslations()
+export const generateMetadata = async (props: PageProps): Promise<Metadata> => {
+  const locale = (await props.params)?.locale ?? i18n.defaultLocale
+  const t = await getTranslations({ locale })
+
+  return {
+    title: t('not-found'),
+    robots: {
+      index: false,
+      follow: false,
+      googleBot: {
+        index: false,
+        follow: false
+      }
+    }
+  }
+}
+
+const NotFound = async (props: PageProps) => {
+  const locale = (await props.params)?.locale ?? i18n.defaultLocale
+  const t = await getTranslations({ locale })
 
   return (
     <MainLayout>
