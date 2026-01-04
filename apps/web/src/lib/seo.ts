@@ -127,7 +127,7 @@ export function generateSEO({
   }
 
   const metadata: Metadata = {
-    title: fullTitle,
+    title: title || SITE_NAME,
     description,
     keywords: tags?.join(', '),
     authors: authors?.map((author) => ({ name: author })),

@@ -67,4 +67,16 @@ describe('seo helpers', () => {
     expect(seo.alternates?.canonical).toBe('/pt/blog/hello')
     expect(seo.openGraph?.url).toBe('https://example.com/pt/blog/hello')
   })
+
+  it('generateSEO sets metadata.title without appending site name to avoid double templating', async () => {
+    const { generateSEO } = await import('@/lib/seo')
+
+    const seo = generateSEO({
+      title: 'Hello'
+    })
+
+    expect(seo.title).toBe('Hello')
+    expect(seo.openGraph?.title).toBe('Hello | Example')
+    expect(seo.twitter?.title).toBe('Hello | Example')
+  })
 })
