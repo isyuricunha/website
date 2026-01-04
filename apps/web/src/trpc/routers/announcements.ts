@@ -83,16 +83,6 @@ export const announcementsRouter = createTRPCRouter({
           )
         }
 
-        // Apply time-window filtering for non-admin view
-        if (!adminView) {
-          const now = new Date()
-          visibleAnnouncements = visibleAnnouncements.filter((announcement) => {
-            const startsOk = !announcement.startDate || announcement.startDate <= now
-            const endsOk = !announcement.endDate || announcement.endDate >= now
-            return startsOk && endsOk
-          })
-        }
-
         // Filter announcements based on user targeting
         const filteredAnnouncements = visibleAnnouncements.filter((announcement) => {
           if (!announcement.targetAudience || adminView) {
@@ -151,18 +141,18 @@ export const announcementsRouter = createTRPCRouter({
             ...announcement,
             targetAudience: announcement.targetAudience
               ? (() => {
-                  const parsed = parseTargetAudience(announcement.targetAudience)
-                  if (!parsed) return null
-                  if (!isRecord(parsed)) return null
-                  const userRoles =
-                    getStringArray(parsed, 'userRoles') ??
-                    getStringArray(parsed, 'roles') ??
-                    undefined
-                  return {
-                    ...parsed,
-                    userRoles
-                  }
-                })()
+                const parsed = parseTargetAudience(announcement.targetAudience)
+                if (!parsed) return null
+                if (!isRecord(parsed)) return null
+                const userRoles =
+                  getStringArray(parsed, 'userRoles') ??
+                  getStringArray(parsed, 'roles') ??
+                  undefined
+                return {
+                  ...parsed,
+                  userRoles
+                }
+              })()
               : null,
             userInteraction: userInteractions[announcement.id] || null
           }))
@@ -192,9 +182,7 @@ export const announcementsRouter = createTRPCRouter({
             userRoles: z.array(z.string()).optional(),
             userIds: z.array(z.string()).optional()
           })
-          .optional(),
-        startDate: z.date().optional(),
-        endDate: z.date().optional()
+          .optional()
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -214,8 +202,6 @@ export const announcementsRouter = createTRPCRouter({
           isDismissible: input.isDismissible,
           isActive: true, // Explicitly set new announcements as active
           targetAudience: input.targetAudience ? JSON.stringify(input.targetAudience) : null,
-          startDate: input.startDate,
-          endDate: input.endDate,
           createdBy: ctx.session.user.id
         })
 
@@ -379,9 +365,7 @@ export const announcementsRouter = createTRPCRouter({
             userRoles: z.array(z.string()).optional(),
             userIds: z.array(z.string()).optional()
           })
-          .optional(),
-        startDate: z.date().optional(),
-        endDate: z.date().optional()
+          .optional()
       })
     )
     .mutation(async ({ ctx, input }) => {

@@ -215,7 +215,7 @@ const createDbMock = () => {
   })
 
   const updateSet = vi.fn((data: any) => {
-    ;(updateWhere as any).__pendingSet = data
+    ; (updateWhere as any).__pendingSet = data
     return { where: updateWhere }
   })
 
@@ -285,7 +285,7 @@ describe('announcementsRouter', () => {
     expect(ids).not.toContain('a-role-admin')
   }, 15_000)
 
-  it('applies date filtering for non-admin view and bypasses it for real adminView', async () => {
+  it('does not apply date-window filtering for announcements', async () => {
     const { announcementsRouter } = await import('@/trpc/routers/announcements')
 
     const db = createDbMock()
@@ -299,7 +299,7 @@ describe('announcementsRouter', () => {
     } as unknown as Parameters<typeof announcementsRouter.createCaller>[0])
 
     const nonAdminView = await callerAdmin.getAnnouncements({ active: true, adminView: false })
-    expect(nonAdminView.announcements.map((a) => a.id)).not.toContain('a-future')
+    expect(nonAdminView.announcements.map((a) => a.id)).toContain('a-future')
 
     const adminView = await callerAdmin.getAnnouncements({ active: true, adminView: true })
     expect(adminView.announcements.map((a) => a.id)).toContain('a-future')
