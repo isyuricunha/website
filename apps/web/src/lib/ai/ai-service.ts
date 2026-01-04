@@ -151,12 +151,12 @@ class AIService {
 
     const pageContextBlock = context.pageContext
       ? [
-          `type: ${context.pageContext.type}`,
-          `title: ${context.pageContext.title}`,
-          `description: ${context.pageContext.description}`,
-          `href: ${context.pageContext.href}`,
-          `content_excerpt: ${context.pageContext.contentExcerpt}`
-        ].join('\n')
+        `type: ${context.pageContext.type}`,
+        `title: ${context.pageContext.title}`,
+        `description: ${context.pageContext.description}`,
+        `href: ${context.pageContext.href}`,
+        `content_excerpt: ${context.pageContext.contentExcerpt}`
+      ].join('\n')
       : 'none'
 
     const sourcesBlock = (context.citations ?? [])
@@ -357,7 +357,7 @@ Translation:`
   }
 
   isOllamaAvailable(): boolean {
-    return !!(env.OLLAMA_BASE_URL || env.OLLAMA_MODEL)
+    return !!(flags.ollama && (env.OLLAMA_BASE_URL || env.OLLAMA_MODEL))
   }
 
   getAvailableProviders(): AIProvider[] {
