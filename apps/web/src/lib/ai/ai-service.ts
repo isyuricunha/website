@@ -362,8 +362,9 @@ Translation:`
 
   getAvailableProviders(): AIProvider[] {
     const providers: AIProvider[] = []
-    if (this.isGeminiAvailable()) providers.push('gemini')
+    // Prefer local Ollama when available; Gemini stays as fallback
     if (this.isOllamaAvailable()) providers.push('ollama')
+    if (this.isGeminiAvailable()) providers.push('gemini')
     return providers
   }
 }
