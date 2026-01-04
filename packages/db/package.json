@@ -16,7 +16,6 @@
     "db:push": "pnpm db:migrate && pnpm with-env drizzle-kit push",
     "db:push:force": "pnpm db:migrate && pnpm with-env drizzle-kit push --force",
     "db:seed": "pnpm with-env tsx ./src/seed.ts",
-    "db:seed:guestbook": "pnpm with-env tsx ./src/seed-guestbook.ts",
     "db:studio": "pnpm with-env drizzle-kit studio",
     "lint": "eslint . --max-warnings 0",
     "lint:fix": "eslint --fix .",
@@ -24,7 +23,6 @@
     "with-env": "dotenv -e ../../.env.local --"
   },
   "dependencies": {
-    "@google/generative-ai": "^0.24.1",
     "@isyuricunha/env": "workspace:*",
     "drizzle-orm": "^0.45.1",
     "nanoid": "^5.1.6"
