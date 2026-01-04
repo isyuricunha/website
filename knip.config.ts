@@ -5,6 +5,7 @@ const config: KnipConfig = {
     '**/fixtures/**',
     '**/*.css',
     'apps/web/public/sw.js',
+    'apps/web/scripts/vercel-ignore.js',
     'packages/db/src/migrations/**',
     'packages/eslint-config/eslint.config.bundled_*.mjs'
   ],
@@ -13,6 +14,7 @@ const config: KnipConfig = {
   },
   ignoreDependencies: [
     'sharp',
+    '@isyuricunha/tsconfig',
     // Can't detect `pnpm with-env tsx`
     'tsx'
   ],

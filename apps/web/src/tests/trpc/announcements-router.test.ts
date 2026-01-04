@@ -215,7 +215,7 @@ const createDbMock = () => {
   })
 
   const updateSet = vi.fn((data: any) => {
-    ; (updateWhere as any).__pendingSet = data
+    ;(updateWhere as any).__pendingSet = data
     return { where: updateWhere }
   })
 
