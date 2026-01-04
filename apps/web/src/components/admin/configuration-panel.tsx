@@ -1,7 +1,14 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { Button } from '@isyuricunha/ui'
+import {
+  Button,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@isyuricunha/ui'
 import {
   Settings,
   RefreshCw,
@@ -269,20 +276,21 @@ export const ConfigurationPanel = () => {
             </div>
           </div>
 
-          <select
-            value={selectedType}
-            onChange={(e) => setSelectedType(e.target.value)}
-            className='bg-background border-border text-foreground focus:ring-ring focus:ring-offset-background rounded-md border px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-offset-2'
-          >
-            <option value=''>All Categories</option>
-            <option value='general'>General</option>
-            <option value='seo'>SEO</option>
-            <option value='social'>Social</option>
-            <option value='email'>Email</option>
-            <option value='analytics'>Analytics</option>
-            <option value='security'>Security</option>
-            <option value='features'>Features</option>
-          </select>
+          <Select value={selectedType} onValueChange={(value) => setSelectedType(value)}>
+            <SelectTrigger className='bg-background border-border text-foreground focus:ring-ring focus:ring-offset-background rounded-md border px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-offset-2'>
+              <SelectValue placeholder='All Categories' />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value=''>All Categories</SelectItem>
+              <SelectItem value='general'>General</SelectItem>
+              <SelectItem value='seo'>SEO</SelectItem>
+              <SelectItem value='social'>Social</SelectItem>
+              <SelectItem value='email'>Email</SelectItem>
+              <SelectItem value='analytics'>Analytics</SelectItem>
+              <SelectItem value='security'>Security</SelectItem>
+              <SelectItem value='features'>Features</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
       </div>
 
@@ -315,23 +323,27 @@ export const ConfigurationPanel = () => {
 
             <div>
               <label className='mb-2 block text-sm font-medium'>Category</label>
-              <select
+              <Select
                 value={newConfigType}
-                onChange={(e) => {
-                  if (is_config_type(e.target.value)) {
-                    setNewConfigType(e.target.value)
+                onValueChange={(value) => {
+                  if (is_config_type(value)) {
+                    setNewConfigType(value)
                   }
                 }}
-                className='bg-background border-border text-foreground focus:ring-ring focus:ring-offset-background w-full rounded-md border px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-offset-2'
               >
-                <option value='general'>General</option>
-                <option value='seo'>SEO</option>
-                <option value='social'>Social</option>
-                <option value='email'>Email</option>
-                <option value='analytics'>Analytics</option>
-                <option value='security'>Security</option>
-                <option value='features'>Features</option>
-              </select>
+                <SelectTrigger className='bg-background border-border text-foreground focus:ring-ring focus:ring-offset-background w-full rounded-md border px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-offset-2'>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value='general'>General</SelectItem>
+                  <SelectItem value='seo'>SEO</SelectItem>
+                  <SelectItem value='social'>Social</SelectItem>
+                  <SelectItem value='email'>Email</SelectItem>
+                  <SelectItem value='analytics'>Analytics</SelectItem>
+                  <SelectItem value='security'>Security</SelectItem>
+                  <SelectItem value='features'>Features</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             <div>

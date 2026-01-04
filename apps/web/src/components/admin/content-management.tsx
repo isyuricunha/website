@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Button } from '@isyuricunha/ui'
+import { Button, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@isyuricunha/ui'
 import {
   Plus,
   Search,
@@ -219,27 +219,28 @@ export const ContentManagement = () => {
           </div>
 
           <div className='flex gap-2'>
-            <select
-              value={statusFilter || ''}
-              onChange={(e) => {
-                const value = e.target.value
-
+            <Select
+              value={statusFilter ?? ''}
+              onValueChange={(value) => {
                 if (value === '') {
                   setStatusFilter(undefined)
                   return
                 }
-
                 if (status_filters.includes(value as StatusFilter)) {
                   setStatusFilter(value as StatusFilter)
                 }
               }}
-              className='bg-background border-border text-foreground focus:ring-ring focus:ring-offset-background rounded-md border px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-offset-2'
             >
-              <option value=''>All Status</option>
-              <option value='draft'>Draft</option>
-              <option value='published'>Published</option>
-              <option value='archived'>Archived</option>
-            </select>
+              <SelectTrigger className='bg-background border-border text-foreground focus:ring-ring focus:ring-offset-background rounded-md border px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-offset-2'>
+                <SelectValue placeholder='All Status' />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value=''>All Status</SelectItem>
+                <SelectItem value='draft'>Draft</SelectItem>
+                <SelectItem value='published'>Published</SelectItem>
+                <SelectItem value='archived'>Archived</SelectItem>
+              </SelectContent>
+            </Select>
 
             <Button variant='outline' size='sm'>
               <Filter className='mr-2 h-4 w-4' />

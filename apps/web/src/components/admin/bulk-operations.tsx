@@ -1,7 +1,14 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import { Button } from '@isyuricunha/ui'
+import {
+  Button,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@isyuricunha/ui'
 import {
   Users,
   Search,
@@ -265,29 +272,36 @@ export const BulkOperations = () => {
           <div className='bg-muted/30 mb-6 flex flex-col gap-4 rounded-lg p-4 sm:flex-row'>
             <div className='flex-1'>
               <label className='mb-2 block text-sm font-medium'>Select Action</label>
-              <select
+              <Select
                 value={selectedAction}
-                onChange={(e) => setSelectedAction(e.target.value as any)}
-                className='bg-background border-border text-foreground focus:ring-ring focus:ring-offset-background w-full rounded-md border px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-offset-2'
+                onValueChange={(value) =>
+                  setSelectedAction(value as 'ban' | 'unban' | 'update_role' | 'delete')
+                }
               >
-                <option value='ban'>Ban Users</option>
-                <option value='unban'>Unban Users</option>
-                <option value='update_role'>Update Role</option>
-                <option value='delete'>Delete Users</option>
-              </select>
+                <SelectTrigger className='bg-background border-border text-foreground focus:ring-ring focus:ring-offset-background w-full rounded-md border px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-offset-2'>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value='ban'>Ban Users</SelectItem>
+                  <SelectItem value='unban'>Unban Users</SelectItem>
+                  <SelectItem value='update_role'>Update Role</SelectItem>
+                  <SelectItem value='delete'>Delete Users</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             {selectedAction === 'update_role' && (
               <div className='flex-1'>
                 <label className='mb-2 block text-sm font-medium'>New Role</label>
-                <select
-                  value={newRole}
-                  onChange={(e) => setNewRole(e.target.value as any)}
-                  className='bg-background border-border text-foreground focus:ring-ring focus:ring-offset-background w-full rounded-md border px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-offset-2'
-                >
-                  <option value='user'>User</option>
-                  <option value='admin'>Admin</option>
-                </select>
+                <Select value={newRole} onValueChange={(value) => setNewRole(value as 'user' | 'admin')}>
+                  <SelectTrigger className='bg-background border-border text-foreground focus:ring-ring focus:ring-offset-background w-full rounded-md border px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-offset-2'>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value='user'>User</SelectItem>
+                    <SelectItem value='admin'>Admin</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             )}
 

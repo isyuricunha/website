@@ -1,6 +1,7 @@
 'use client'
 
 import { useTranslations, useLocale } from '@isyuricunha/i18n/client'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@isyuricunha/ui'
 
 import {
   Copy,
@@ -523,18 +524,21 @@ export default function AIChatInterface({
           <div className='flex flex-col'>
             <span className='text-sm leading-none font-semibold'>{t('mascot.aiChat.title')}</span>
             <div className='text-muted-foreground mt-0.5 flex items-center gap-2 text-xs'>
-              <select
-                value={activeConversationId}
-                onChange={(e) => setActiveConversationId(e.target.value)}
-                className='bg-background/40 border-border/40 max-w-[180px] rounded border px-2 py-0.5 text-xs'
-                aria-label={t('mascot.aiChat.conversations')}
-              >
-                {conversations.map((c) => (
-                  <option key={c.id} value={c.id}>
-                    {c.title}
-                  </option>
-                ))}
-              </select>
+              <Select value={activeConversationId} onValueChange={setActiveConversationId}>
+                <SelectTrigger
+                  className='bg-background/40 border-border/40 max-w-[180px] rounded border px-2 py-0.5 text-xs'
+                  aria-label={t('mascot.aiChat.conversations')}
+                >
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {conversations.map((c) => (
+                    <SelectItem key={c.id} value={c.id}>
+                      {c.title}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
           </div>
         </div>

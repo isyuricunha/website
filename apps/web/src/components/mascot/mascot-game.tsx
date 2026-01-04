@@ -1,6 +1,7 @@
 'use client'
 
 import { useTranslations } from '@isyuricunha/i18n/client'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@isyuricunha/ui'
 import { TrophyIcon, XIcon } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
 
@@ -162,31 +163,39 @@ const MascotGame = ({ isOpen, onClose }: MascotGameProps) => {
             <label htmlFor='difficulty-select' className='text-sm font-medium'>
               Difficulty:
             </label>
-            <select
-              id='difficulty-select'
-              value={difficulty}
-              onChange={(e) => setDifficulty(e.target.value as 'easy' | 'medium' | 'hard')}
-              className='bg-background rounded border px-2 py-1 text-xs'
-            >
-              <option value='easy'>Easy</option>
-              <option value='medium'>Medium</option>
-              <option value='hard'>Hard</option>
-            </select>
+            <Select value={difficulty} onValueChange={(value) => setDifficulty(value as typeof difficulty)}>
+              <SelectTrigger
+                id='difficulty-select'
+                className='h-9 w-28 rounded border text-xs'
+                aria-label='Select difficulty'
+              >
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value='easy'>Easy</SelectItem>
+                <SelectItem value='medium'>Medium</SelectItem>
+                <SelectItem value='hard'>Hard</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
           <div className='flex items-center justify-between'>
             <label htmlFor='mode-select' className='text-sm font-medium'>
               Mode:
             </label>
-            <select
-              id='mode-select'
-              value={gameMode}
-              onChange={(e) => setGameMode(e.target.value as 'classic' | 'survival' | 'challenge')}
-              className='bg-background rounded border px-2 py-1 text-xs'
-            >
-              <option value='classic'>Classic</option>
-              <option value='survival'>Survival</option>
-              <option value='challenge'>Challenge</option>
-            </select>
+            <Select value={gameMode} onValueChange={(value) => setGameMode(value as typeof gameMode)}>
+              <SelectTrigger
+                id='mode-select'
+                className='h-9 w-32 rounded border text-xs'
+                aria-label='Select mode'
+              >
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value='classic'>Classic</SelectItem>
+                <SelectItem value='survival'>Survival</SelectItem>
+                <SelectItem value='challenge'>Challenge</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </div>
 

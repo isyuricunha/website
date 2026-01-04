@@ -1,7 +1,7 @@
 'use client'
 
 import { useMemo, useState, useEffect, useRef } from 'react'
-import { Button } from '@isyuricunha/ui'
+import { Button, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@isyuricunha/ui'
 import {
   RefreshCw,
   AlertTriangle,
@@ -419,18 +419,19 @@ export const SystemHealthDashboard = () => {
             </div>
             <div className='flex items-center gap-2'>
               <label className='text-muted-foreground text-sm'>Filter</label>
-              <select
-                value={selected_check_type}
-                onChange={(e) => set_selected_check_type(e.target.value)}
-                className='bg-background border-border text-foreground h-9 rounded-md border px-3 text-sm'
-              >
-                <option value='all'>All services</option>
-                {available_check_types.map((t) => (
-                  <option key={t} value={t}>
-                    {t}
-                  </option>
-                ))}
-              </select>
+              <Select value={selected_check_type} onValueChange={set_selected_check_type}>
+                <SelectTrigger className='bg-background border-border text-foreground h-9 rounded-md border px-3 text-sm'>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value='all'>All services</SelectItem>
+                  {available_check_types.map((t) => (
+                    <SelectItem key={t} value={t}>
+                      {t}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
           </div>
 

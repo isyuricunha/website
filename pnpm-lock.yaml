@@ -467,9 +467,6 @@ importers:
 
   packages/db:
     dependencies:
-      '@google/generative-ai':
-        specifier: ^0.24.1
-        version: 0.24.1
       '@isyuricunha/env':
         specifier: workspace:*
         version: link:../env

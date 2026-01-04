@@ -4,6 +4,7 @@ import * as React from 'react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { flags } from '@isyuricunha/env'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@isyuricunha/ui'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import {
@@ -751,76 +752,42 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
               <label className='flex items-center justify-between'>
                 <span>{t('mascot.settings.messageDuration')}</span>
-                <select
-                  value={state.preferences.messageDuration}
-                  onChange={(e) =>
-                    updatePreferences({ messageDuration: Number.parseInt(e.target.value) })
+                <Select
+                  value={`${state.preferences.messageDuration}`}
+                  onValueChange={(value) =>
+                    updatePreferences({ messageDuration: Number.parseInt(value, 10) })
                   }
-                  className='border-input/50 bg-background/80 text-foreground hover:border-primary/50 focus:ring-primary/30 focus:border-primary cursor-pointer rounded-xl border-2 px-3 py-2.5 text-xs shadow-lg backdrop-blur-sm transition-all duration-200 hover:shadow-xl focus:ring-2 focus:ring-offset-2 focus:outline-none'
                 >
-                  <option
-                    value={3000}
-                    className='bg-background text-foreground hover:bg-muted/80 border-border/30 rounded-lg border-b px-3 py-2.5 last:border-b-0'
-                  >
-                    3s
-                  </option>
-                  <option
-                    value={5000}
-                    className='bg-background text-foreground hover:bg-muted/80 border-border/30 rounded-lg border-b px-3 py-2.5 last:border-b-0'
-                  >
-                    5s
-                  </option>
-                  <option
-                    value={7000}
-                    className='bg-background text-foreground hover:bg-muted/80 border-border/30 rounded-lg border-b px-3 py-2.5 last:border-b-0'
-                  >
-                    7s
-                  </option>
-                  <option
-                    value={10_000}
-                    className='bg-background text-foreground hover:bg-muted/80 border-border/30 rounded-lg border-b px-3 py-2.5 last:border-b-0'
-                  >
-                    10s
-                  </option>
-                </select>
+                  <SelectTrigger className='border-input/50 bg-background/80 text-foreground hover:border-primary/50 focus:ring-primary/30 focus:border-primary cursor-pointer rounded-xl border-2 px-3 py-2.5 text-xs shadow-lg backdrop-blur-sm transition-all duration-200 hover:shadow-xl focus:ring-2 focus:ring-offset-2 focus:outline-none'>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value='3000'>3s</SelectItem>
+                    <SelectItem value='5000'>5s</SelectItem>
+                    <SelectItem value='7000'>7s</SelectItem>
+                    <SelectItem value='10000'>10s</SelectItem>
+                  </SelectContent>
+                </Select>
               </label>
 
               <label className='flex items-center justify-between'>
                 <span>{t('mascot.settings.bubblePosition')}</span>
-                <select
+                <Select
                   value={state.preferences.bubblePosition}
-                  onChange={(e) =>
-                    updatePreferences({
-                      bubblePosition: e.target.value as MascotPreferences['bubblePosition']
-                    })
+                  onValueChange={(value) =>
+                    updatePreferences({ bubblePosition: value as MascotPreferences['bubblePosition'] })
                   }
-                  className='border-input/50 bg-background/80 text-foreground hover:border-primary/50 focus:ring-primary/30 focus:border-primary cursor-pointer rounded-xl border-2 px-3 py-2.5 text-xs shadow-lg backdrop-blur-sm transition-all duration-200 hover:shadow-xl focus:ring-2 focus:ring-offset-2 focus:outline-none'
                 >
-                  <option
-                    value='bottom-right'
-                    className='bg-background text-foreground hover:bg-muted/80 border-border/30 rounded-lg border-b px-3 py-2.5 last:border-b-0'
-                  >
-                    {t('mascot.settings.positions.bottomRight')}
-                  </option>
-                  <option
-                    value='bottom-left'
-                    className='bg-background text-foreground hover:bg-muted/80 border-border/30 rounded-lg border-b px-3 py-2.5 last:border-b-0'
-                  >
-                    {t('mascot.settings.positions.bottomLeft')}
-                  </option>
-                  <option
-                    value='top-right'
-                    className='bg-background text-foreground hover:bg-muted/80 border-border/30 rounded-lg border-b px-3 py-2.5 last:border-b-0'
-                  >
-                    {t('mascot.settings.positions.topRight')}
-                  </option>
-                  <option
-                    value='top-left'
-                    className='bg-background text-foreground hover:bg-muted/80 border-border/30 rounded-lg border-b px-3 py-2.5 last:border-b-0'
-                  >
-                    {t('mascot.settings.positions.topLeft')}
-                  </option>
-                </select>
+                  <SelectTrigger className='border-input/50 bg-background/80 text-foreground hover:border-primary/50 focus:ring-primary/30 focus:border-primary cursor-pointer rounded-xl border-2 px-3 py-2.5 text-xs shadow-lg backdrop-blur-sm transition-all duration-200 hover:shadow-xl focus:ring-2 focus:ring-offset-2 focus:outline-none'>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value='bottom-right'>{t('mascot.settings.positions.bottomRight')}</SelectItem>
+                    <SelectItem value='bottom-left'>{t('mascot.settings.positions.bottomLeft')}</SelectItem>
+                    <SelectItem value='top-right'>{t('mascot.settings.positions.topRight')}</SelectItem>
+                    <SelectItem value='top-left'>{t('mascot.settings.positions.topLeft')}</SelectItem>
+                  </SelectContent>
+                </Select>
               </label>
 
               {state.isKonamiMode && (
