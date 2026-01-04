@@ -1,0 +1,83 @@
+name: Dependabot auto-merge
+
+on:
+  pull_request_target:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: dependabot-auto-merge-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  enable-auto-merge:
+    name: Enable auto-merge (Dependabot)
+    runs-on: ubuntu-latest
+    if: >-
+      github.actor == 'dependabot[bot]' &&
+      (github.event.pull_request.user.login == 'dependabot[bot]' ||
+      github.event.pull_request.user.login == 'dependabot')
+
+    steps:
+      - name: Decide whether this update is eligible
+        id: eligibility
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+
+            // Dependabot sets a metadata section in the PR body, e.g.:
+            // updated-dependencies:
+            // - dependency-name: "foo"
+            //   update-type: version-update:semver-minor
+            // ...
+            const body = pr.body ?? '';
+            const match = body.match(/update-type:\s*(version-update:semver-(patch|minor|major))/i);
+            const updateType = match?.[1]?.toLowerCase() ?? null;
+
+            core.info(`Detected update-type: ${updateType ?? 'unknown'}`);
+
+            const eligible = updateType === 'version-update:semver-patch' || updateType === 'version-update:semver-minor';
+            core.setOutput('update_type', updateType ?? 'unknown');
+            core.setOutput('eligible', eligible ? 'true' : 'false');
+
+      - name: Enable auto-merge (squash)
+        if: steps.eligibility.outputs.eligible == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+
+            // Enable GitHub Auto-merge for this PR.
+            // Actual merge only happens after required checks are satisfied by branch protection.
+            await github.graphql(
+              `mutation EnableAutoMerge($input: EnablePullRequestAutoMergeInput!) {
+                enablePullRequestAutoMerge(input: $input) {
+                  pullRequest {
+                    number
+                    autoMergeRequest {
+                      enabledAt
+                      mergeMethod
+                    }
+                  }
+                }
+              }`,
+              {
+                input: {
+                  pullRequestId: pr.node_id,
+                  mergeMethod: 'SQUASH'
+                }
+              }
+            );
+
+            core.info(`Enabled auto-merge (SQUASH) for PR #${pr.number}`);
+
+      - name: Skip (not eligible)
+        if: steps.eligibility.outputs.eligible != 'true'
+        run: |
+          echo "Not enabling auto-merge. Only semver patch/minor updates are eligible."
+          echo "Detected: ${{ steps.eligibility.outputs.update_type }}"
