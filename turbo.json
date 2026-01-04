@@ -80,6 +80,9 @@
     "db:migrate": {
       "cache": false
     },
+    "db:migrate:safe": {
+      "cache": false
+    },
     "db:push": {
       "cache": false
     },

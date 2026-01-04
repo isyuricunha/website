@@ -11,6 +11,7 @@
     "db:check": "pnpm with-env drizzle-kit check",
     "db:generate": "pnpm with-env drizzle-kit generate",
     "db:migrate": "pnpm with-env drizzle-kit migrate",
+    "db:migrate:safe": "pnpm with-env drizzle-kit migrate",
     "db:pull": "pnpm with-env drizzle-kit pull",
     "db:push": "pnpm db:migrate && pnpm with-env drizzle-kit push",
     "db:push:force": "pnpm db:migrate && pnpm with-env drizzle-kit push --force",
