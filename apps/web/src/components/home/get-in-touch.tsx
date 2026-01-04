@@ -5,7 +5,7 @@ import { BlurImage } from '@isyuricunha/ui'
 import { motion, useAnimate, useInView } from 'motion/react'
 import { useEffect, useRef } from 'react'
 
-import me from '~/images/me.png'
+const me_image_src = '/images/me.png'
 
 const variants = {
   initial: {
@@ -63,7 +63,7 @@ const GetInTouch = () => {
         <div className='flex gap-8 max-md:flex-col sm:gap-12'>
           <div className='relative size-64 max-md:mx-auto' ref={scope}>
             <BlurImage
-              src={me}
+              src={me_image_src}
               width={3975}
               height={3975}
               className='absolute top-1/2 left-1/2 size-20 -translate-x-1/2 -translate-y-1/2 rounded-[20px]'
