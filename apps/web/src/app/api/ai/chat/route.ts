@@ -22,6 +22,7 @@ const requestSchema = z.object({
   mode: z.enum(['chat', 'navigate']).optional(),
   provider: z.enum(['gemini', 'ollama']).optional(),
   model: z.string().max(100).optional(),
+  stream: z.boolean().optional(),
   locale: z.string().min(2).max(10).optional(),
   context: z
     .object({
@@ -192,6 +193,48 @@ export async function POST(req: NextRequest) {
 
     const citations = find_citations({ message, locale, page_path: page_path, limit: 5 })
     const page_context = page_path ? get_page_context(page_path, locale) : null
+
+    const stream_requested = parsed.stream === true
+
+    if (stream_requested && provider === 'ollama') {
+      const stream = await aiService.generateOllamaStream(
+        message,
+        {
+          currentPage: current_page,
+          pagePath: page_path,
+          pageContext: page_context,
+          citations,
+          conversation: parsed.context?.conversation,
+          locale
+        },
+        {
+          provider: 'ollama',
+          model: parsed.model
+        }
+      )
+
+      const response_headers_stream = {
+        ...response_headers,
+        'content-type': 'text/plain; charset=utf-8',
+        'x-provider': 'ollama'
+      }
+
+      await record_ai_chat_observability({
+        requestId: request_id,
+        endpoint,
+        method,
+        statusCode: 200,
+        responseTimeMs: Date.now() - started_at,
+        provider,
+        mode,
+        model: parsed.model,
+        ipAddress: ip,
+        userAgent: user_agent,
+        requestSizeBytes: request_size
+      })
+
+      return new Response(stream, { status: 200, headers: response_headers_stream })
+    }
 
     const response_text = await aiService.generateResponse(
       message,

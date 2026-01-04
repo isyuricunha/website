@@ -296,6 +296,8 @@ export default function AIChatInterface({
         },
         body: JSON.stringify({
           message: messageText,
+          provider: 'ollama',
+          stream: true,
           locale,
           context: {
             currentPage,
@@ -310,6 +312,64 @@ export default function AIChatInterface({
         })
       })
 
+      const contentType = response.headers.get('content-type') || ''
+
+      // Streaming path (Ollama)
+      if (contentType.startsWith('text/plain') && response.body) {
+        const reader = response.body.getReader()
+        const decoder = new TextDecoder()
+        const messageId = (Date.now() + 1).toString()
+
+        let accumulated = ''
+        const startTime = performance.now()
+
+        updateActiveConversation((c) => ({
+          ...c,
+          messages: [
+            ...c.messages,
+            {
+              id: messageId,
+              text: '',
+              isUser: false,
+              timestamp: new Date().toISOString(),
+              isError: false,
+              type: 'text'
+            }
+          ],
+          updatedAt: new Date().toISOString()
+        }))
+
+        while (true) {
+          const { value, done } = await reader.read()
+          if (done) break
+          accumulated += decoder.decode(value, { stream: true })
+          updateActiveConversation((c) => ({
+            ...c,
+            messages: c.messages.map((m) =>
+              m.id === messageId ? { ...m, text: accumulated } : m
+            )
+          }))
+        }
+
+        const latency = Math.max(0, performance.now() - startTime)
+        updateActiveConversation((c) => ({
+          ...c,
+          messages: c.messages.map((m) =>
+            m.id === messageId
+              ? {
+                  ...m,
+                  text: accumulated || t('mascot.aiChat.errorMessage'),
+                  latencyMs: latency
+                }
+              : m
+          ),
+          updatedAt: new Date().toISOString()
+        }))
+
+        return
+      }
+
+      // JSON path (fallback / non-stream providers)
       const data: {
         message?: string
         timestamp?: string

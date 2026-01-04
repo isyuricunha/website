@@ -114,8 +114,8 @@ class AIService {
         prompt: fullPrompt,
         stream: false,
         options: {
-          temperature: config.temperature || 0.7,
-          num_predict: config.maxTokens || 500
+          temperature: config.temperature ?? 0.4,
+          num_predict: config.maxTokens ?? 256
         }
       })
     })
@@ -128,7 +128,87 @@ class AIService {
     return data.response || 'Desculpe, não consegui gerar uma resposta.'
   }
 
-  private buildSystemPrompt(context: SiteContext, message: string): string {
+  async generateOllamaStream(
+    message: string,
+    context: SiteContext,
+    config: AIServiceConfig
+  ): Promise<ReadableStream<Uint8Array>> {
+    if (!this.isOllamaAvailable()) {
+      throw new Error('Ollama AI is not available')
+    }
+
+    const ollamaUrl = env.OLLAMA_BASE_URL || 'http://localhost:11434'
+    const ollamaModel = config.model || env.OLLAMA_MODEL || 'llama3.2'
+
+    const systemPrompt = this.buildSystemPrompt(context, message)
+    const fullPrompt = `${systemPrompt}\n\nUser: ${message}`
+
+    const encoder = new TextEncoder()
+    const decoder = new TextDecoder()
+
+    return new ReadableStream<Uint8Array>({
+      async start(controller) {
+        const response = await fetch(`${ollamaUrl}/api/generate`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            model: ollamaModel,
+            prompt: fullPrompt,
+            stream: true,
+            options: {
+              temperature: config.temperature ?? 0.4,
+              num_predict: config.maxTokens ?? 256
+            }
+          })
+        })
+
+        if (!response.ok || !response.body) {
+          throw new Error(`Ollama API error: ${response.statusText}`)
+        }
+
+        const reader = response.body.getReader()
+        let buffer = ''
+
+        while (true) {
+          const { value, done } = await reader.read()
+          if (done) break
+          buffer += decoder.decode(value, { stream: true })
+
+          const lines = buffer.split('\n')
+          buffer = lines.pop() || ''
+
+          for (const line of lines) {
+            if (!line.trim()) continue
+            try {
+              const chunk = JSON.parse(line) as { response?: string; done?: boolean }
+              if (chunk.response) {
+                controller.enqueue(encoder.encode(chunk.response))
+              }
+            } catch {
+              // ignore malformed chunk
+            }
+          }
+        }
+
+        if (buffer.trim()) {
+          try {
+            const chunk = JSON.parse(buffer) as { response?: string }
+            if (chunk.response) {
+              controller.enqueue(encoder.encode(chunk.response))
+            }
+          } catch {
+            // ignore trailing malformed chunk
+          }
+        }
+
+        controller.close()
+      }
+    })
+  }
+
+  buildSystemPrompt(context: SiteContext, message: string): string {
     const localeInstructions = {
       en: 'Respond in English',
       pt: 'Responda em português brasileiro',
