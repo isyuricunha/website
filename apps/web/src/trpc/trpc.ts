@@ -1,5 +1,5 @@
 import { initTRPC, TRPCError } from '@trpc/server'
-import { apiUsage, db, errorLogs, errorTracking, performanceMetrics } from '@isyuricunha/db'
+import { db, errorLogs, errorTracking, performanceMetrics } from '@isyuricunha/db'
 import { env } from '@isyuricunha/env'
 import { SuperJSON } from 'superjson'
 import { ZodError } from 'zod'
@@ -102,22 +102,6 @@ const timingMiddleware = t.middleware(async ({ next, path, ctx }) => {
 
       const status_code = result.ok ? 200 : map_trpc_error_to_status_code(result.error?.code)
       const error_message = result.ok ? null : (result.error?.message ?? 'Unknown error')
-
-      await ctx.db.insert(apiUsage).values({
-        id: randomBytes(16).toString('hex'),
-        endpoint,
-        method: request_method,
-        statusCode: status_code,
-        responseTime: duration_ms,
-        requestSize: null,
-        responseSize: null,
-        userId: ctx.session?.user?.id ?? null,
-        ipAddress: ip_address,
-        userAgent: user_agent,
-        apiKey: null,
-        errorMessage: error_message,
-        createdAt: new Date()
-      })
 
       await ctx.db.insert(performanceMetrics).values({
         id: randomBytes(16).toString('hex'),
