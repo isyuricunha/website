@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@t3-oss/env-nextjs": "^0.13.10",
-    "zod": "4.3.0"
+    "zod": "4.3.4"
   },
   "devDependencies": {
     "@isyuricunha/eslint-config": "workspace:*",

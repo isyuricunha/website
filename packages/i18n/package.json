@@ -22,7 +22,7 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "next-intl": "^4.6.1"
+    "next-intl": "^4.7.0"
   },
   "peerDependencies": {
     "next": "^15"
