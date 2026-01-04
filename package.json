@@ -96,9 +96,9 @@
   "packageManager": "pnpm@10.26.0",
   "pnpm": {
     "overrides": {
-      "@isyuricunha/web>zod": "4.2.1",
+      "@isyuricunha/web>zod": "4.3.0",
       "@isyuricunha/web>@hookform/resolvers": "5.2.2",
-      "@isyuricunha/docs>zod": "4.2.1",
+      "@isyuricunha/docs>zod": "4.3.0",
       "@isyuricunha/docs>@hookform/resolvers": "5.2.2",
       "js-yaml": "^4.1.1"
     }
