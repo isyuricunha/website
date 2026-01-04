@@ -119,7 +119,7 @@ export const createEmptyConversation = (title: string): ChatConversation => {
   }
 }
 
-export type YueChatState = {
+type YueChatState = {
   conversations: ChatConversation[]
   activeConversationId: string
 }

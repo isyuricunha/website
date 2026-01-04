@@ -3,9 +3,9 @@ import { allPages, allPosts, allProjects } from 'content-collections'
 
 import { getLocalizedPath } from '@/utils/get-localized-path'
 
-export type SiteEntryType = 'post' | 'project' | 'page'
+type SiteEntryType = 'post' | 'project' | 'page'
 
-export type SiteEntry = {
+type SiteEntry = {
   type: SiteEntryType
   title: string
   description: string
@@ -14,7 +14,7 @@ export type SiteEntry = {
   locale: string
 }
 
-export type PageContext = {
+type PageContext = {
   type: SiteEntryType
   title: string
   description: string
@@ -22,7 +22,7 @@ export type PageContext = {
   contentExcerpt: string
 }
 
-export type Citation = {
+type Citation = {
   id: string
   title: string
   href: string
@@ -161,7 +161,7 @@ export const find_citations = (params: {
       return { entry, score }
     })
     .filter((r) => r.score > 0)
-    .sort((a, b) => b.score - a.score)
+    .toSorted((a, b) => b.score - a.score)
 
   const citations: Citation[] = []
 

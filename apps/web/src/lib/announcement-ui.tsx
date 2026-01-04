@@ -9,7 +9,7 @@ import {
   Wrench
 } from 'lucide-react'
 
-export type AnnouncementType =
+type AnnouncementType =
   | 'info'
   | 'warning'
   | 'success'
@@ -18,11 +18,11 @@ export type AnnouncementType =
   | 'feature'
   | 'update'
 
-export type BadgeVariant = 'default' | 'secondary' | 'destructive' | 'outline'
+type BadgeVariant = 'default' | 'secondary' | 'destructive' | 'outline'
 
 type IconSize = 'sm' | 'md'
 
-export type AnnouncementUi = {
+type AnnouncementUi = {
   type: AnnouncementType
   icon: ReactNode
   iconContainerClassName: string

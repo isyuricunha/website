@@ -26,20 +26,13 @@ const config: KnipConfig = {
       entry: ['content-collections.ts', 'src/app/**/*.{ts,tsx}', 'src/components/demos/**/*.tsx']
     },
     'apps/web': {
-      entry: [
-        'content-collections.ts',
-        'src/app/**/*.{ts,tsx}',
-        'src/middleware.ts',
-        'src/i18n/request.ts',
-        'src/e2e/auth.setup.ts'
-      ]
+      entry: ['content-collections.ts', 'src/app/**/*.{ts,tsx}', 'src/e2e/auth.setup.ts']
     },
     'packages/db': {
       entry: ['src/seed.ts']
     },
     'packages/eslint-config': {
       // @see https://github.com/francoismassart/eslint-plugin-tailwindcss/issues/325
-      ignoreDependencies: ['eslint-plugin-tailwindcss']
     },
     'packages/ui': {
       // @see https://github.com/shadcn-ui/ui/issues/4792

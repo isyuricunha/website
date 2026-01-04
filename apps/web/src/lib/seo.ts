@@ -26,7 +26,7 @@ const normalize_pathname = (url: string) => {
   return pathname.startsWith('/') ? pathname : `/${pathname}`
 }
 
-export type SeoAlternates = {
+type SeoAlternates = {
   canonical: string
   languages: Record<string, string>
 }

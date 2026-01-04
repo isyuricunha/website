@@ -1,4 +1,4 @@
-export type CalculateVisibleCountArgs = {
+type CalculateVisibleCountArgs = {
   availableWidth: number
   itemWidths: number[]
   moreWidth: number
