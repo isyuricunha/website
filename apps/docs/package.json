@@ -14,7 +14,7 @@
     "lint": "eslint . --max-warnings 0",
     "lint:fix": "eslint --fix .",
     "start": "next start -p 3002",
-    "type-check": "tsc --noEmit"
+    "type-check": "pnpm build:mdx && tsc --noEmit"
   },
   "dependencies": {
     "@hookform/resolvers": "5.2.2",
