@@ -3,20 +3,26 @@ import { compileMDX } from '@content-collections/mdx'
 import { rehypePlugins, remarkPlugins } from '@isyuricunha/mdx-plugins'
 import { z } from 'zod'
 
+const contentSchema = z.object({
+  content: z.string()
+})
+
 const docs = defineCollection({
   name: 'Doc',
   directory: 'src/content',
   include: '**/*.mdx',
-  schema: z.object({
-    title: z.string(),
-    description: z.string(),
-    link: z
-      .object({
-        doc: z.string().optional(),
-        api: z.string().optional()
-      })
-      .optional()
-  }),
+  schema: contentSchema.merge(
+    z.object({
+      title: z.string(),
+      description: z.string(),
+      link: z
+        .object({
+          doc: z.string().optional(),
+          api: z.string().optional()
+        })
+        .optional()
+    })
+  ),
   transform: async (document, context) => {
     const code = await compileMDX(context, document, {
       remarkPlugins,
