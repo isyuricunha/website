@@ -23,27 +23,26 @@ jobs:
       github.event.pull_request.user.login == 'dependabot')
 
     steps:
+      - name: Fetch Dependabot metadata
+        id: dependabot-metadata
+        uses: dependabot/fetch-metadata@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          pull-request-number: ${{ github.event.pull_request.number }}
+
       - name: Decide whether this update is eligible
         id: eligibility
         uses: actions/github-script@v7
         with:
           script: |
-            const pr = context.payload.pull_request;
-
-            // Dependabot sets a metadata section in the PR body, e.g.:
-            // updated-dependencies:
-            // - dependency-name: "foo"
-            //   update-type: version-update:semver-minor
-            // ...
-            const body = pr.body ?? '';
-            const match = body.match(/update-type:\s*(version-update:semver-(patch|minor|major))/i);
-            const updateType = match?.[1]?.toLowerCase() ?? null;
-
-            core.info(`Detected update-type: ${updateType ?? 'unknown'}`);
-
+            const updateType = (process.env.UPDATE_TYPE ?? '').toLowerCase();
             const eligible = updateType === 'version-update:semver-patch' || updateType === 'version-update:semver-minor';
-            core.setOutput('update_type', updateType ?? 'unknown');
+
+            core.info(`Detected update-type: ${updateType || 'unknown'}`);
+            core.setOutput('update_type', updateType || 'unknown');
             core.setOutput('eligible', eligible ? 'true' : 'false');
+        env:
+          UPDATE_TYPE: ${{ steps.dependabot-metadata.outputs.update-type }}
 
       - name: Enable auto-merge (squash)
         if: steps.eligibility.outputs.eligible == 'true'
@@ -75,6 +74,13 @@ jobs:
             );
 
             core.info(`Enabled auto-merge (SQUASH) for PR #${pr.number}`);
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "### Dependabot auto-merge" >> "$GITHUB_STEP_SUMMARY"
+          echo "- update-type: ${{ steps.eligibility.outputs.update_type }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- eligible: ${{ steps.eligibility.outputs.eligible }}" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Skip (not eligible)
         if: steps.eligibility.outputs.eligible != 'true'
