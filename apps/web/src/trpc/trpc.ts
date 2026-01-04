@@ -14,24 +14,6 @@ type trpc_context_opts = {
   url?: string
 }
 
-const map_trpc_error_to_status_code = (code?: string): number => {
-  switch (code) {
-    case 'BAD_REQUEST':
-      return 400
-    case 'UNAUTHORIZED':
-      return 401
-    case 'FORBIDDEN':
-      return 403
-    case 'NOT_FOUND':
-      return 404
-    case 'TOO_MANY_REQUESTS':
-      return 429
-    case 'INTERNAL_SERVER_ERROR':
-    default:
-      return 500
-  }
-}
-
 const safe_json_stringify = (value: unknown) => {
   try {
     return JSON.stringify(value)
@@ -89,7 +71,6 @@ const timingMiddleware = t.middleware(async ({ next, path, ctx }) => {
 
   if (env.NODE_ENV !== 'test') {
     try {
-      const request_method = ctx.method ?? 'POST'
       const request_url = ctx.url ?? '/api/trpc'
       const endpoint = `${request_url}/${path}`
 
@@ -100,7 +81,6 @@ const timingMiddleware = t.middleware(async ({ next, path, ctx }) => {
         ctx.headers.get('cf-connecting-ip') ||
         null
 
-      const status_code = result.ok ? 200 : map_trpc_error_to_status_code(result.error?.code)
       const error_message = result.ok ? null : (result.error?.message ?? 'Unknown error')
 
       await ctx.db.insert(performanceMetrics).values({
