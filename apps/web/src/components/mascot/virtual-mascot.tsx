@@ -690,7 +690,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         <button
           type='button'
           aria-label={t('mascot.restore')}
-          className='from-primary to-primary/80 text-primary-foreground shadow-primary/30 hover:shadow-primary/40 focus-visible:ring-primary/50 border-primary/20 min-h-[44px] min-w-[44px] rounded-full border-2 bg-gradient-to-br p-2 shadow-2xl transition-all duration-300 hover:scale-110 hover:shadow-2xl focus-visible:ring-2 focus-visible:outline-none sm:p-3'
+          className='from-primary to-primary/80 text-primary-foreground shadow-primary/30 hover:shadow-primary/40 focus-visible:ring-primary/50 border-primary/20 min-h-[44px] min-w-[44px] rounded-full border-2 bg-linear-to-br p-2 shadow-2xl transition-all duration-300 hover:scale-110 hover:shadow-2xl focus-visible:ring-2 focus-visible:outline-none sm:p-3'
           onClick={() => updateState({ isDismissed: false, isHiddenPref: false })}
         >
           <EyeIcon className='h-5 w-5 sm:h-6 sm:w-6' />
@@ -920,10 +920,10 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
                   >
                     <div className='bubble-float p-2'>
                       <div className='flex items-start gap-2'>
-                        <div className='min-w-0 flex-1 text-xs leading-relaxed break-words whitespace-pre-wrap'>
+                        <div className='min-w-0 flex-1 text-xs leading-relaxed wrap-break-word whitespace-pre-wrap'>
                           {item.text}
                         </div>
-                        <div className='flex flex-shrink-0 items-center gap-1'>
+                        <div className='shrink-0'>
                           {idx === state.messageQueue.length - 1 && (
                             <button
                               type='button'

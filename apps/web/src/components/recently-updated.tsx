@@ -4,6 +4,7 @@ import { useLocale, useTranslations } from '@isyuricunha/i18n/client'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@isyuricunha/ui'
 import { Clock, FileText, Code, Calendar } from 'lucide-react'
 import { useMemo } from 'react'
+import type { ReactNode } from 'react'
 
 import { allPosts, allProjects } from 'content-collections'
 
@@ -16,7 +17,7 @@ type UpdatedItem = {
   href: string
   type: 'post' | 'project'
   date: string
-  icon: React.ReactNode
+  icon: ReactNode
 }
 
 const RecentlyUpdated = () => {
@@ -66,18 +67,25 @@ const RecentlyUpdated = () => {
       })
 
     // Sort by date and take top 3
-    return items.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, 3)
+    return items
+      .toSorted((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+      .slice(0, 3)
   }, [locale])
+
+  const dateFormatter = useMemo(
+    () =>
+      new Intl.DateTimeFormat(locale, {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+        timeZone: 'UTC'
+      }),
+    [locale]
+  )
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
-
-    // Use a consistent format to avoid hydration mismatches
-    return date.toLocaleDateString(locale, {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric'
-    })
+    return dateFormatter.format(date)
   }
 
   return (
@@ -100,7 +108,7 @@ const RecentlyUpdated = () => {
               className='hover:bg-muted/50 group block rounded-lg p-3 transition-colors'
             >
               <div className='flex items-start gap-3'>
-                <div className='text-muted-foreground group-hover:text-foreground mt-0.5 flex-shrink-0'>
+                <div className='text-muted-foreground group-hover:text-foreground mt-0.5 shrink-0'>
                   {item.icon}
                 </div>
                 <div className='min-w-0 flex-1'>

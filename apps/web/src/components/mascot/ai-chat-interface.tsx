@@ -1,7 +1,13 @@
 'use client'
 
 import { useTranslations, useLocale } from '@isyuricunha/i18n/client'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@isyuricunha/ui'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@isyuricunha/ui'
 
 import {
   Copy,
@@ -27,6 +33,7 @@ import {
   loadYueChatState,
   saveYueChatState
 } from '@/utils/yue-chat-storage'
+import ConfirmationDialog from '../admin/confirmation-dialog'
 
 interface AIChatInterfaceProps {
   readonly isOpen: boolean
@@ -191,6 +198,8 @@ export default function AIChatInterface({
     setActiveConversationId(withWelcome.id)
   }
 
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+
   const renameChat = () => {
     if (!activeConversation) return
     const next = prompt(t('mascot.aiChat.renamePrompt'), activeConversation.title)
@@ -202,10 +211,12 @@ export default function AIChatInterface({
 
   const deleteChat = () => {
     if (!activeConversation) return
+    setDeleteDialogOpen(true)
+  }
 
-    const confirmed = confirm(t('mascot.aiChat.deleteConfirm'))
-    if (!confirmed) return
-
+  const confirmDeleteChat = () => {
+    if (!activeConversation) return
+    setDeleteDialogOpen(false)
     setConversations((prev) => {
       const remaining = prev.filter((c) => c.id !== activeConversation.id)
       if (remaining.length > 0) {
@@ -514,299 +525,311 @@ export default function AIChatInterface({
   if (!isOpen) return null
 
   return (
-    <div className='bg-popover/95 absolute right-0 bottom-full mb-2 max-h-[600px] w-96 overflow-hidden rounded-2xl border shadow-2xl backdrop-blur-sm sm:w-[28rem]'>
-      {/* Header */}
-      <div className='from-primary/10 to-primary/5 flex items-center justify-between border-b bg-gradient-to-r p-3'>
-        <div className='flex min-w-0 items-center gap-2'>
-          <div className='bg-primary/10 rounded-lg p-1.5'>
-            <MessageCircle className='h-4 w-4' />
-          </div>
-          <div className='flex flex-col'>
-            <span className='text-sm leading-none font-semibold'>{t('mascot.aiChat.title')}</span>
-            <div className='text-muted-foreground mt-0.5 flex items-center gap-2 text-xs'>
-              <Select value={activeConversationId} onValueChange={setActiveConversationId}>
-                <SelectTrigger
-                  className='bg-background/40 border-border/40 max-w-[180px] rounded border px-2 py-0.5 text-xs'
-                  aria-label={t('mascot.aiChat.conversations')}
-                >
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {conversations.map((c) => (
-                    <SelectItem key={c.id} value={c.id}>
-                      {c.title}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+    <>
+      <div className='bg-popover/95 absolute right-0 bottom-full mb-2 max-h-[600px] w-96 overflow-hidden rounded-2xl border shadow-2xl backdrop-blur-sm sm:w-md'>
+        {/* Header */}
+        <div className='from-primary/10 to-primary/5 flex items-center justify-between border-b bg-linear-to-r p-3'>
+          <div className='flex min-w-0 items-center gap-2'>
+            <div className='bg-primary/10 rounded-lg p-1.5'>
+              <MessageCircle className='h-4 w-4' />
+            </div>
+            <div className='flex flex-col'>
+              <span className='text-sm leading-none font-semibold'>{t('mascot.aiChat.title')}</span>
+              <div className='text-muted-foreground mt-0.5 flex items-center gap-2 text-xs'>
+                <Select value={activeConversationId} onValueChange={setActiveConversationId}>
+                  <SelectTrigger
+                    className='bg-background/40 border-border/40 max-w-[180px] rounded border px-2 py-0.5 text-xs'
+                    aria-label={t('mascot.aiChat.conversations')}
+                  >
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {conversations.map((c) => (
+                      <SelectItem key={c.id} value={c.id}>
+                        {c.title}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </div>
-        </div>
-        <div className='flex items-center gap-1'>
-          <button
-            type='button'
-            onClick={startNewChat}
-            className='hover:bg-muted rounded p-1 transition-colors'
-            aria-label={t('mascot.aiChat.newChat')}
-          >
-            <Plus className='h-4 w-4' />
-          </button>
-          <button
-            type='button'
-            onClick={shareChat}
-            className='hover:bg-muted rounded p-1 transition-colors'
-            aria-label={t('mascot.aiChat.share')}
-          >
-            <Share2 className='h-4 w-4' />
-          </button>
-          <button
-            type='button'
-            onClick={renameChat}
-            className='hover:bg-muted rounded px-2 py-1 text-xs transition-colors'
-          >
-            {t('mascot.aiChat.rename')}
-          </button>
-          <button
-            type='button'
-            onClick={deleteChat}
-            className='hover:bg-muted rounded p-1 transition-colors'
-            aria-label={t('mascot.aiChat.deleteChat')}
-          >
-            <Trash2 className='h-4 w-4' />
-          </button>
-          {messages.length > 1 && (
+          <div className='flex items-center gap-1'>
             <button
               type='button'
-              onClick={clearChat}
-              className='text-muted-foreground hover:text-foreground rounded px-2 py-1 text-xs transition-colors'
+              onClick={startNewChat}
+              className='hover:bg-muted rounded p-1 transition-colors'
+              aria-label={t('mascot.aiChat.newChat')}
             >
-              {t('mascot.aiChat.clear')}
+              <Plus className='h-4 w-4' />
             </button>
-          )}
-          <button
-            type='button'
-            onClick={onClose}
-            className='hover:bg-muted rounded p-1 transition-colors'
-          >
-            <X className='h-4 w-4' />
-          </button>
-        </div>
-      </div>
-
-      {/* Messages */}
-      <div className='from-background/50 to-background/80 max-h-80 flex-1 space-y-4 overflow-y-auto bg-gradient-to-b p-4'>
-        {messages.map((message) => (
-          <div
-            key={message.id}
-            className={`flex ${message.isUser ? 'justify-end' : 'justify-start'} animate-in slide-in-from-bottom-2 duration-300`}
-          >
-            <div
-              className={`max-w-[85%] rounded-2xl p-3 text-xs shadow-sm ${get_bubble_class_name(message)}`}
+            <button
+              type='button'
+              onClick={shareChat}
+              className='hover:bg-muted rounded p-1 transition-colors'
+              aria-label={t('mascot.aiChat.share')}
             >
-              {!message.isUser && (
-                <div className='border-border/20 mb-2 flex items-center gap-2 border-b pb-2'>
-                  <div className='bg-primary/20 flex h-5 w-5 items-center justify-center rounded-full'>
-                    <span className='text-primary text-xs font-bold'>Y</span>
-                  </div>
-                  <span className='text-muted-foreground text-xs font-medium'>Yue</span>
-                  {!message.isError && (
-                    <button
-                      type='button'
-                      onClick={() => copyMessage(message.text)}
-                      className='text-muted-foreground hover:text-foreground ml-auto rounded p-1 transition-colors'
-                      aria-label={t('mascot.aiChat.copyMessage')}
-                    >
-                      <Copy className='h-3.5 w-3.5' />
-                    </button>
-                  )}
-                </div>
-              )}
-              <p className='leading-relaxed whitespace-pre-wrap'>{message.text}</p>
+              <Share2 className='h-4 w-4' />
+            </button>
+            <button
+              type='button'
+              onClick={renameChat}
+              className='hover:bg-muted rounded px-2 py-1 text-xs transition-colors'
+            >
+              {t('mascot.aiChat.rename')}
+            </button>
+            <button
+              type='button'
+              onClick={deleteChat}
+              className='hover:bg-muted rounded p-1 transition-colors'
+              aria-label={t('mascot.aiChat.deleteChat')}
+            >
+              <Trash2 className='h-4 w-4' />
+            </button>
+            {messages.length > 1 && (
+              <button
+                type='button'
+                onClick={clearChat}
+                className='text-muted-foreground hover:text-foreground rounded px-2 py-1 text-xs transition-colors'
+              >
+                {t('mascot.aiChat.clear')}
+              </button>
+            )}
+            <button
+              type='button'
+              onClick={onClose}
+              className='hover:bg-muted rounded p-1 transition-colors'
+            >
+              <X className='h-4 w-4' />
+            </button>
+          </div>
+        </div>
 
-              {!message.isUser && !message.isError && (message.citations?.length ?? 0) > 0 ? (
-                <div className='border-border/20 mt-3 space-y-2 border-t pt-2'>
-                  <div className='text-muted-foreground text-[11px] font-medium'>Sources</div>
-                  <div className='space-y-1'>
-                    {message.citations?.map((c) => (
-                      <a
-                        key={c.id}
-                        href={c.href}
-                        className='text-primary block text-[11px] hover:underline'
+        {/* Messages */}
+        <div className='from-background/50 to-background/80 max-h-80 flex-1 space-y-4 overflow-y-auto bg-linear-to-b p-4'>
+          {messages.map((message) => (
+            <div
+              key={message.id}
+              className={`flex ${message.isUser ? 'justify-end' : 'justify-start'} animate-in slide-in-from-bottom-2 duration-300`}
+            >
+              <div
+                className={`max-w-[85%] rounded-2xl p-3 text-xs shadow-sm ${get_bubble_class_name(message)}`}
+              >
+                {!message.isUser && (
+                  <div className='border-border/20 mb-2 flex items-center gap-2 border-b pb-2'>
+                    <div className='bg-primary/20 flex h-5 w-5 items-center justify-center rounded-full'>
+                      <span className='text-primary text-xs font-bold'>Y</span>
+                    </div>
+                    <span className='text-muted-foreground text-xs font-medium'>Yue</span>
+                    {!message.isError && (
+                      <button
+                        type='button'
+                        onClick={() => copyMessage(message.text)}
+                        className='text-muted-foreground hover:text-foreground ml-auto rounded p-1 transition-colors'
+                        aria-label={t('mascot.aiChat.copyMessage')}
                       >
-                        {c.title}
-                      </a>
-                    ))}
+                        <Copy className='h-3.5 w-3.5' />
+                      </button>
+                    )}
                   </div>
-                </div>
-              ) : null}
-              {!message.isUser && !message.isError && message.requestId && (
-                <div className='mt-2 flex items-center justify-between'>
-                  <div className='flex items-center gap-1'>
-                    <button
-                      type='button'
-                      onClick={() => handleReaction(message.id, 'like')}
-                      aria-label={t('mascot.aiChat.feedback.like')}
-                      disabled={feedbackIsSubmittingByMessageId[message.id] === true}
-                      className={`hover:bg-muted/80 flex items-center gap-1 rounded px-2 py-1 text-xs transition-all ${
-                        message.reactions?.userReaction === 'like'
-                          ? 'bg-green-50 text-green-600 dark:bg-green-950'
-                          : 'text-muted-foreground'
-                      }`}
-                    >
-                      <ThumbsUp className='h-3 w-3' />
-                      {message.reactions?.likes ?? 0}
-                    </button>
-                    <button
-                      type='button'
-                      onClick={() => handleReaction(message.id, 'dislike')}
-                      aria-label={t('mascot.aiChat.feedback.dislike')}
-                      disabled={feedbackIsSubmittingByMessageId[message.id] === true}
-                      className={`hover:bg-muted/80 flex items-center gap-1 rounded px-2 py-1 text-xs transition-all ${
-                        message.reactions?.userReaction === 'dislike'
-                          ? 'bg-red-50 text-red-600 dark:bg-red-950'
-                          : 'text-muted-foreground'
-                      }`}
-                    >
-                      <ThumbsDown className='h-3 w-3' />
-                      {message.reactions?.dislikes ?? 0}
-                    </button>
+                )}
+                <p className='leading-relaxed whitespace-pre-wrap'>{message.text}</p>
+
+                {!message.isUser && !message.isError && (message.citations?.length ?? 0) > 0 ? (
+                  <div className='border-border/20 mt-3 space-y-2 border-t pt-2'>
+                    <div className='text-muted-foreground text-[11px] font-medium'>Sources</div>
+                    <div className='space-y-1'>
+                      {message.citations?.map((c) => (
+                        <a
+                          key={c.id}
+                          href={c.href}
+                          className='text-primary block text-[11px] hover:underline'
+                        >
+                          {c.title}
+                        </a>
+                      ))}
+                    </div>
                   </div>
-                  <div className='text-muted-foreground/60 text-xs'>
+                ) : null}
+                {!message.isUser && !message.isError && message.requestId && (
+                  <div className='mt-2 flex items-center justify-between'>
+                    <div className='flex items-center gap-1'>
+                      <button
+                        type='button'
+                        onClick={() => handleReaction(message.id, 'like')}
+                        aria-label={t('mascot.aiChat.feedback.like')}
+                        disabled={feedbackIsSubmittingByMessageId[message.id] === true}
+                        className={`hover:bg-muted/80 flex items-center gap-1 rounded px-2 py-1 text-xs transition-all ${
+                          message.reactions?.userReaction === 'like'
+                            ? 'bg-green-50 text-green-600 dark:bg-green-950'
+                            : 'text-muted-foreground'
+                        }`}
+                      >
+                        <ThumbsUp className='h-3 w-3' />
+                        {message.reactions?.likes ?? 0}
+                      </button>
+                      <button
+                        type='button'
+                        onClick={() => handleReaction(message.id, 'dislike')}
+                        aria-label={t('mascot.aiChat.feedback.dislike')}
+                        disabled={feedbackIsSubmittingByMessageId[message.id] === true}
+                        className={`hover:bg-muted/80 flex items-center gap-1 rounded px-2 py-1 text-xs transition-all ${
+                          message.reactions?.userReaction === 'dislike'
+                            ? 'bg-red-50 text-red-600 dark:bg-red-950'
+                            : 'text-muted-foreground'
+                        }`}
+                      >
+                        <ThumbsDown className='h-3 w-3' />
+                        {message.reactions?.dislikes ?? 0}
+                      </button>
+                    </div>
+                    <div className='text-muted-foreground/60 text-xs'>
+                      {new Date(message.timestamp).toLocaleTimeString([], {
+                        hour: '2-digit',
+                        minute: '2-digit'
+                      })}
+                    </div>
+                  </div>
+                )}
+                {!message.isUser &&
+                !message.isError &&
+                message.requestId &&
+                feedbackOpenForMessageId === message.id &&
+                message.reactions?.userReaction === 'dislike' ? (
+                  <div className='border-border/20 mt-3 space-y-2 border-t pt-2'>
+                    <textarea
+                      rows={2}
+                      value={feedbackDraftByMessageId[message.id] ?? ''}
+                      onChange={(e) =>
+                        setFeedbackDraftByMessageId((prev) => ({
+                          ...prev,
+                          [message.id]: e.target.value
+                        }))
+                      }
+                      placeholder={t('mascot.aiChat.feedback.commentPlaceholder')}
+                      className='bg-background/80 border-border/50 focus:ring-primary/50 focus:border-primary placeholder:text-muted-foreground/60 w-full resize-none rounded-lg border px-3 py-2 text-xs transition-all duration-200 focus:ring-2 focus:outline-none'
+                      disabled={feedbackIsSubmittingByMessageId[message.id] === true}
+                    />
+                    <div className='flex items-center justify-end gap-2'>
+                      <button
+                        type='button'
+                        onClick={() => setFeedbackOpenForMessageId(null)}
+                        className='text-muted-foreground hover:text-foreground rounded px-2 py-1 text-xs transition-colors'
+                        disabled={feedbackIsSubmittingByMessageId[message.id] === true}
+                      >
+                        {t('mascot.aiChat.feedback.cancel')}
+                      </button>
+                      <button
+                        type='button'
+                        onClick={() => {
+                          const raw = feedbackDraftByMessageId[message.id]
+                          const comment = raw?.trim() ? raw.trim() : undefined
+
+                          void submit_feedback({
+                            requestId: message.requestId!,
+                            messageId: message.id,
+                            rating: 'dislike',
+                            comment
+                          })
+
+                          setFeedbackOpenForMessageId(null)
+                          setFeedbackDraftByMessageId((prev) => ({ ...prev, [message.id]: '' }))
+                        }}
+                        className='bg-primary text-primary-foreground hover:bg-primary/90 rounded px-3 py-1 text-xs transition-colors disabled:cursor-not-allowed disabled:opacity-60'
+                        disabled={feedbackIsSubmittingByMessageId[message.id] === true}
+                      >
+                        {feedbackIsSubmittingByMessageId[message.id] === true ? (
+                          <span className='flex items-center gap-2'>
+                            <Loader2 className='h-3 w-3 animate-spin' />
+                            {t('mascot.aiChat.feedback.send')}
+                          </span>
+                        ) : (
+                          t('mascot.aiChat.feedback.send')
+                        )}
+                      </button>
+                    </div>
+                  </div>
+                ) : null}
+                {!message.isUser && message.isError && (
+                  <div className='text-muted-foreground/60 mt-2 text-right text-xs'>
                     {new Date(message.timestamp).toLocaleTimeString([], {
                       hour: '2-digit',
                       minute: '2-digit'
                     })}
                   </div>
-                </div>
-              )}
-              {!message.isUser &&
-              !message.isError &&
-              message.requestId &&
-              feedbackOpenForMessageId === message.id &&
-              message.reactions?.userReaction === 'dislike' ? (
-                <div className='border-border/20 mt-3 space-y-2 border-t pt-2'>
-                  <textarea
-                    rows={2}
-                    value={feedbackDraftByMessageId[message.id] ?? ''}
-                    onChange={(e) =>
-                      setFeedbackDraftByMessageId((prev) => ({
-                        ...prev,
-                        [message.id]: e.target.value
-                      }))
-                    }
-                    placeholder={t('mascot.aiChat.feedback.commentPlaceholder')}
-                    className='bg-background/80 border-border/50 focus:ring-primary/50 focus:border-primary placeholder:text-muted-foreground/60 w-full resize-none rounded-lg border px-3 py-2 text-xs transition-all duration-200 focus:ring-2 focus:outline-none'
-                    disabled={feedbackIsSubmittingByMessageId[message.id] === true}
-                  />
-                  <div className='flex items-center justify-end gap-2'>
-                    <button
-                      type='button'
-                      onClick={() => setFeedbackOpenForMessageId(null)}
-                      className='text-muted-foreground hover:text-foreground rounded px-2 py-1 text-xs transition-colors'
-                      disabled={feedbackIsSubmittingByMessageId[message.id] === true}
-                    >
-                      {t('mascot.aiChat.feedback.cancel')}
-                    </button>
-                    <button
-                      type='button'
-                      onClick={() => {
-                        const raw = feedbackDraftByMessageId[message.id]
-                        const comment = raw?.trim() ? raw.trim() : undefined
+                )}
+              </div>
+            </div>
+          ))}
 
-                        void submit_feedback({
-                          requestId: message.requestId!,
-                          messageId: message.id,
-                          rating: 'dislike',
-                          comment
-                        })
-
-                        setFeedbackOpenForMessageId(null)
-                        setFeedbackDraftByMessageId((prev) => ({ ...prev, [message.id]: '' }))
-                      }}
-                      className='bg-primary text-primary-foreground hover:bg-primary/90 rounded px-3 py-1 text-xs transition-colors disabled:cursor-not-allowed disabled:opacity-60'
-                      disabled={feedbackIsSubmittingByMessageId[message.id] === true}
-                    >
-                      {feedbackIsSubmittingByMessageId[message.id] === true ? (
-                        <span className='flex items-center gap-2'>
-                          <Loader2 className='h-3 w-3 animate-spin' />
-                          {t('mascot.aiChat.feedback.send')}
-                        </span>
-                      ) : (
-                        t('mascot.aiChat.feedback.send')
-                      )}
-                    </button>
+          {isLoading && (
+            <div className='animate-in slide-in-from-bottom-2 flex justify-start duration-300'>
+              <div className='from-muted/80 to-muted/60 text-foreground border-border/30 flex items-center gap-2 rounded-2xl rounded-bl-md border bg-linear-to-br p-3'>
+                <div className='border-border/20 mb-2 flex w-full items-center gap-2 border-b pb-2'>
+                  <div className='bg-primary/20 flex h-5 w-5 items-center justify-center rounded-full'>
+                    <span className='text-primary text-xs font-bold'>Y</span>
                   </div>
+                  <span className='text-muted-foreground text-xs font-medium'>Yue</span>
                 </div>
-              ) : null}
-              {!message.isUser && message.isError && (
-                <div className='text-muted-foreground/60 mt-2 text-right text-xs'>
-                  {new Date(message.timestamp).toLocaleTimeString([], {
-                    hour: '2-digit',
-                    minute: '2-digit'
-                  })}
+                <div className='flex items-center gap-2'>
+                  <Loader2 className='text-primary h-4 w-4 animate-spin' />
+                  <span className='text-xs'>
+                    {t('mascot.aiChat.thinking')}
+                    {typingDots}
+                  </span>
                 </div>
+              </div>
+            </div>
+          )}
+
+          <div ref={messagesEndRef} />
+        </div>
+
+        {/* Input */}
+        <div className='from-background/80 to-background/60 border-t bg-linear-to-r p-4 backdrop-blur-sm'>
+          <div className='flex gap-2'>
+            <input
+              ref={inputRef}
+              type='text'
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder={t('mascot.aiChat.placeholder')}
+              className='bg-background/80 border-border/50 focus:ring-primary/50 focus:border-primary placeholder:text-muted-foreground/60 flex-1 rounded-xl border px-4 py-3 text-sm transition-all duration-200 focus:ring-2 focus:outline-none'
+              disabled={isLoading}
+            />
+            <button
+              type='button'
+              onClick={sendMessage}
+              disabled={!inputValue.trim() || isLoading}
+              className='from-primary to-primary/90 text-primary-foreground hover:from-primary/90 hover:to-primary/80 rounded-xl bg-linear-to-r px-4 py-3 shadow-sm transition-all duration-200 hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none'
+            >
+              {isLoading ? (
+                <Loader2 className='h-4 w-4 animate-spin' />
+              ) : (
+                <Send className='h-4 w-4' />
               )}
-            </div>
+            </button>
           </div>
-        ))}
-
-        {isLoading && (
-          <div className='animate-in slide-in-from-bottom-2 flex justify-start duration-300'>
-            <div className='from-muted/80 to-muted/60 text-foreground border-border/30 flex items-center gap-2 rounded-2xl rounded-bl-md border bg-gradient-to-br p-3'>
-              <div className='border-border/20 mb-2 flex w-full items-center gap-2 border-b pb-2'>
-                <div className='bg-primary/20 flex h-5 w-5 items-center justify-center rounded-full'>
-                  <span className='text-primary text-xs font-bold'>Y</span>
-                </div>
-                <span className='text-muted-foreground text-xs font-medium'>Yue</span>
-              </div>
-              <div className='flex items-center gap-2'>
-                <Loader2 className='text-primary h-4 w-4 animate-spin' />
-                <span className='text-xs'>
-                  {t('mascot.aiChat.thinking')}
-                  {typingDots}
-                </span>
-              </div>
+          <div className='mt-3 flex items-center justify-between'>
+            <p className='text-muted-foreground/80 text-xs'>{t('mascot.aiChat.footer')}</p>
+            <div className='text-muted-foreground/60 flex items-center gap-1 text-xs'>
+              <div className='h-2 w-2 animate-pulse rounded-full bg-green-500'></div>
+              <span>{t('mascot.aiChat.online')}</span>
             </div>
-          </div>
-        )}
-
-        <div ref={messagesEndRef} />
-      </div>
-
-      {/* Input */}
-      <div className='from-background/80 to-background/60 border-t bg-gradient-to-r p-4 backdrop-blur-sm'>
-        <div className='flex gap-2'>
-          <input
-            ref={inputRef}
-            type='text'
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder={t('mascot.aiChat.placeholder')}
-            className='bg-background/80 border-border/50 focus:ring-primary/50 focus:border-primary placeholder:text-muted-foreground/60 flex-1 rounded-xl border px-4 py-3 text-sm transition-all duration-200 focus:ring-2 focus:outline-none'
-            disabled={isLoading}
-          />
-          <button
-            type='button'
-            onClick={sendMessage}
-            disabled={!inputValue.trim() || isLoading}
-            className='from-primary to-primary/90 text-primary-foreground hover:from-primary/90 hover:to-primary/80 rounded-xl bg-gradient-to-r px-4 py-3 shadow-sm transition-all duration-200 hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none'
-          >
-            {isLoading ? (
-              <Loader2 className='h-4 w-4 animate-spin' />
-            ) : (
-              <Send className='h-4 w-4' />
-            )}
-          </button>
-        </div>
-        <div className='mt-3 flex items-center justify-between'>
-          <p className='text-muted-foreground/80 text-xs'>{t('mascot.aiChat.footer')}</p>
-          <div className='text-muted-foreground/60 flex items-center gap-1 text-xs'>
-            <div className='h-2 w-2 animate-pulse rounded-full bg-green-500'></div>
-            <span>{t('mascot.aiChat.online')}</span>
           </div>
         </div>
       </div>
-    </div>
+      <ConfirmationDialog
+        open={deleteDialogOpen}
+        onOpenChange={setDeleteDialogOpen}
+        title={t('mascot.aiChat.deleteChat')}
+        description={t('mascot.aiChat.deleteConfirm')}
+        confirmText={t('common.delete') ?? 'Delete'}
+        cancelText={t('common.cancel') ?? 'Cancel'}
+        variant='destructive'
+        onConfirm={confirmDeleteChat}
+      />
+    </>
   )
 }
