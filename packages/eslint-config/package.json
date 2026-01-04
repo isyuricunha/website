@@ -33,7 +33,7 @@
     "@eslint/js": "^9.39.2",
     "@next/eslint-plugin-next": "^16.1.1",
     "@typescript-eslint/eslint-plugin": "^8.50.1",
-    "@typescript-eslint/parser": "^8.50.1",
+    "@typescript-eslint/parser": "^8.51.0",
     "eslint-plugin-react-dom": "^2.5.0",
     "eslint-plugin-react-hooks-extra": "^2.3.13",
     "eslint-plugin-react-naming-convention": "^2.4.0",
