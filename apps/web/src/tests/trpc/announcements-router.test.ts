@@ -73,6 +73,8 @@ type AnnouncementRow = {
   id: string
   title: string
   content: string
+  titlePt: string | null
+  contentPt: string | null
   type: string
   priority: number
   isActive: boolean
@@ -104,6 +106,8 @@ const createDbMock = () => {
       id: 'a-role-admin',
       title: 'Admin only',
       content: 'secret',
+      titlePt: null,
+      contentPt: null,
       type: 'info',
       priority: 0,
       isActive: true,
@@ -119,6 +123,8 @@ const createDbMock = () => {
       id: 'a-role-user-legacy',
       title: 'Users only',
       content: 'hello',
+      titlePt: null,
+      contentPt: null,
       type: 'info',
       priority: 0,
       isActive: true,
@@ -134,6 +140,8 @@ const createDbMock = () => {
       id: 'a-invalid-json',
       title: 'Broken JSON',
       content: 'still visible',
+      titlePt: null,
+      contentPt: null,
       type: 'info',
       priority: 0,
       isActive: true,
@@ -149,6 +157,8 @@ const createDbMock = () => {
       id: 'a-future',
       title: 'Future',
       content: 'scheduled',
+      titlePt: null,
+      contentPt: null,
       type: 'info',
       priority: 0,
       isActive: true,
@@ -215,7 +225,7 @@ const createDbMock = () => {
   })
 
   const updateSet = vi.fn((data: any) => {
-    ;(updateWhere as any).__pendingSet = data
+    ; (updateWhere as any).__pendingSet = data
     return { where: updateWhere }
   })
 
@@ -303,6 +313,80 @@ describe('announcementsRouter', () => {
 
     const adminView = await callerAdmin.getAnnouncements({ active: true, adminView: true })
     expect(adminView.announcements.map((a) => a.id)).toContain('a-future')
+  }, 15_000)
+
+  it('localizes title/content when locale is pt and adminView is false', async () => {
+    const { announcementsRouter } = await import('@/trpc/routers/announcements')
+
+    const db = createDbMock()
+
+    db.__state.announcements.push({
+      id: 'a-pt',
+      title: 'Hello',
+      content: 'English',
+      titlePt: 'Olá',
+      contentPt: 'Português',
+      type: 'info',
+      priority: 0,
+      isActive: true,
+      isDismissible: true,
+      targetAudience: null,
+      startDate: null,
+      endDate: null,
+      createdBy: 'admin-1',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    })
+
+    const caller = announcementsRouter.createCaller({
+      db: db as unknown,
+      headers: new Headers(),
+      session: {
+        user: { id: 'user-1', role: 'user' }
+      }
+    } as unknown as Parameters<typeof announcementsRouter.createCaller>[0])
+
+    const result = await caller.getAnnouncements({ active: true, adminView: false, locale: 'pt' })
+    const localized = result.announcements.find((a) => a.id === 'a-pt')
+    expect(localized?.title).toBe('Olá')
+    expect(localized?.content).toBe('Português')
+  }, 15_000)
+
+  it('falls back to default title/content when pt fields are missing', async () => {
+    const { announcementsRouter } = await import('@/trpc/routers/announcements')
+
+    const db = createDbMock()
+
+    db.__state.announcements.push({
+      id: 'a-pt-fallback',
+      title: 'Hello',
+      content: 'English',
+      titlePt: null,
+      contentPt: null,
+      type: 'info',
+      priority: 0,
+      isActive: true,
+      isDismissible: true,
+      targetAudience: null,
+      startDate: null,
+      endDate: null,
+      createdBy: 'admin-1',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    })
+
+    const caller = announcementsRouter.createCaller({
+      db: db as unknown,
+      headers: new Headers(),
+      session: {
+        user: { id: 'user-1', role: 'user' }
+      }
+    } as unknown as Parameters<typeof announcementsRouter.createCaller>[0])
+
+    const result = await caller.getAnnouncements({ active: true, adminView: false, locale: 'pt-BR' })
+    const localized = result.announcements.find((a) => a.id === 'a-pt-fallback')
+    expect(localized?.title).toBe('Hello')
+    expect(localized?.content).toBe('English')
   }, 15_000)
 
   it('markAnnouncementViewed inserts a new interaction when missing', async () => {

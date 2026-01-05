@@ -33,13 +33,16 @@ export const announcementsRouter = createTRPCRouter({
     .input(
       z.object({
         active: z.boolean().optional(),
-        adminView: z.boolean().default(false)
+        adminView: z.boolean().default(false),
+        locale: z.string().min(2).max(10).optional()
       })
     )
     .query(async ({ ctx, input }) => {
       try {
         const isAdmin = ctx.session?.user?.role === 'admin'
         const adminView = input.adminView && isAdmin
+        const locale = input.locale ?? 'en'
+        const should_use_pt = locale.toLowerCase().startsWith('pt')
 
         const isRecord = (value: unknown): value is Record<string, unknown> => {
           return typeof value === 'object' && value !== null
@@ -139,20 +142,28 @@ export const announcementsRouter = createTRPCRouter({
         return {
           announcements: filteredAnnouncements.map((announcement) => ({
             ...announcement,
+            title:
+              !adminView && should_use_pt
+                ? (announcement.titlePt ?? announcement.title)
+                : announcement.title,
+            content:
+              !adminView && should_use_pt
+                ? (announcement.contentPt ?? announcement.content)
+                : announcement.content,
             targetAudience: announcement.targetAudience
               ? (() => {
-                  const parsed = parseTargetAudience(announcement.targetAudience)
-                  if (!parsed) return null
-                  if (!isRecord(parsed)) return null
-                  const userRoles =
-                    getStringArray(parsed, 'userRoles') ??
-                    getStringArray(parsed, 'roles') ??
-                    undefined
-                  return {
-                    ...parsed,
-                    userRoles
-                  }
-                })()
+                const parsed = parseTargetAudience(announcement.targetAudience)
+                if (!parsed) return null
+                if (!isRecord(parsed)) return null
+                const userRoles =
+                  getStringArray(parsed, 'userRoles') ??
+                  getStringArray(parsed, 'roles') ??
+                  undefined
+                return {
+                  ...parsed,
+                  userRoles
+                }
+              })()
               : null,
             userInteraction: userInteractions[announcement.id] || null
           }))
@@ -172,6 +183,8 @@ export const announcementsRouter = createTRPCRouter({
       z.object({
         title: z.string().min(1),
         content: z.string().min(1),
+        titlePt: z.string().min(1).optional(),
+        contentPt: z.string().min(1).optional(),
         type: z
           .enum(['info', 'warning', 'success', 'error', 'maintenance', 'feature', 'update'])
           .default('info'),
@@ -197,6 +210,8 @@ export const announcementsRouter = createTRPCRouter({
           id: announcementId,
           title: input.title,
           content: input.content,
+          titlePt: input.titlePt,
+          contentPt: input.contentPt,
           type: input.type,
           priority: input.priority,
           isDismissible: input.isDismissible,
@@ -354,6 +369,8 @@ export const announcementsRouter = createTRPCRouter({
         id: z.string(),
         title: z.string().min(1).optional(),
         content: z.string().min(1).optional(),
+        titlePt: z.string().min(1).optional(),
+        contentPt: z.string().min(1).optional(),
         type: z
           .enum(['info', 'warning', 'success', 'error', 'maintenance', 'feature', 'update'])
           .optional(),
