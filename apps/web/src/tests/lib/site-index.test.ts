@@ -14,6 +14,13 @@ vi.mock('content-collections', () => ({
       title: 'Hello World',
       summary: 'Intro post',
       content: 'Hello content'
+    },
+    {
+      locale: 'en',
+      slug: 'art-of-starting-over',
+      title: 'The Art of Starting Over',
+      summary: 'A post about starting over',
+      content: 'Content about starting over'
     }
   ],
   allProjects: [
@@ -77,5 +84,32 @@ describe('site-index', () => {
     const result = build_navigation_answer({ query: 'hello', locale: 'en' })
     expect(result.message).toContain('Here are some pages')
     expect(result.citations.length).toBeGreaterThan(0)
+  })
+
+  it('build_post_recommendation_answer avoids recommending the quoted post title', async () => {
+    const { build_post_recommendation_answer } = await import('@/lib/ai/site-index')
+
+    const result = build_post_recommendation_answer({
+      query: 'Recommend more Post like "The Art of Starting Over". Please include links.',
+      locale: 'en',
+      limit: 3
+    })
+
+    expect(result.citations.some((c) => c.id === 'post:art-of-starting-over')).toBe(false)
+    expect(result.citations.some((c) => c.id === 'post:hello')).toBe(true)
+  })
+
+  it('build_post_recommendation_answer respects excludeIds', async () => {
+    const { build_post_recommendation_answer } = await import('@/lib/ai/site-index')
+
+    const result = build_post_recommendation_answer({
+      query: 'recommend a post',
+      locale: 'en',
+      limit: 3,
+      excludeIds: ['post:hello']
+    })
+
+    expect(result.citations.some((c) => c.id === 'post:hello')).toBe(false)
+    expect(result.citations.some((c) => c.id === 'post:art-of-starting-over')).toBe(true)
   })
 })

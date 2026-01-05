@@ -127,6 +127,8 @@ export default function AIChatInterface({
 
   const yue_avatar_src = '/images/mascote-3.png'
 
+  const user_display_name = locale.startsWith('pt') ? 'Eu' : 'Me'
+
   const [conversations, setConversations] = useState<ChatConversation[]>([])
   const [activeConversationId, setActiveConversationId] = useState<string>('')
   const [provider, setProvider] = useState<YueChatProvider>('auto')
@@ -864,6 +866,13 @@ export default function AIChatInterface({
               <div
                 className={`max-w-[90%] rounded-2xl px-3.5 py-3 text-sm shadow-sm sm:max-w-[85%] ${get_bubble_class_name(message)}`}
               >
+                {message.isUser && (
+                  <div className='border-border/20 mb-2 flex items-center gap-2 border-b pb-2'>
+                    <span className='text-primary-foreground/80 text-xs font-medium'>
+                      {user_display_name}
+                    </span>
+                  </div>
+                )}
                 {!message.isUser && (
                   <div className='border-border/20 mb-2 flex items-center gap-2 border-b pb-2'>
                     <Avatar className='h-6 w-6'>

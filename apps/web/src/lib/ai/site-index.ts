@@ -49,6 +49,45 @@ const tokenize = (value: string): string[] => {
     .filter(Boolean)
 }
 
+const unique = <T>(items: T[]): T[] => {
+  return Array.from(new Set(items))
+}
+
+const extract_quoted_phrases = (value: string): string[] => {
+  const phrases: string[] = []
+  const re = /["“”']([^"“”']+)["“”']/g
+  let match: RegExpExecArray | null = null
+  while ((match = re.exec(value)) !== null) {
+    const phrase = match[1]?.trim()
+    if (phrase) phrases.push(phrase)
+  }
+  return phrases
+}
+
+const infer_excluded_post_slugs_from_query = (params: { query: string; locale: string }): string[] => {
+  const { query, locale } = params
+  const slugs: string[] = []
+
+  // /blog/<slug>
+  const blog_re = /\/blog\/([a-z0-9-]+)/gi
+  let match: RegExpExecArray | null = null
+  while ((match = blog_re.exec(query)) !== null) {
+    const slug = match[1]?.trim()
+    if (slug) slugs.push(slug)
+  }
+
+  // "<title>"
+  const normalize = (value: string) => value.toLowerCase().trim()
+  const quoted = extract_quoted_phrases(query)
+  for (const phrase of quoted) {
+    const needle = normalize(phrase)
+    const post = allPosts.find((p) => p.locale === locale && normalize(p.title) === needle)
+    if (post) slugs.push(post.slug)
+  }
+
+  return unique(slugs)
+}
+
 export const build_site_index = (locale: string): SiteEntry[] => {
   const entries: SiteEntry[] = []
 
@@ -227,12 +266,24 @@ export const recommend_posts = (params: {
   query: string
   locale: string
   limit?: number
+  excludeIds?: string[]
+  excludeSlugs?: string[]
 }): Citation[] => {
-  const { query, locale, limit = 3 } = params
+  const { query, locale, limit = 3, excludeIds = [], excludeSlugs = [] } = params
   const tokens = tokenize(query)
+
+  const excluded_slugs_by_id = excludeIds
+    .filter((id) => id.startsWith('post:'))
+    .map((id) => id.slice('post:'.length))
+
+  const inferred_excluded_slugs = infer_excluded_post_slugs_from_query({ query, locale })
+  const excluded_slugs = new Set(
+    unique([...excludeSlugs, ...excluded_slugs_by_id, ...inferred_excluded_slugs])
+  )
 
   const scored = allPosts
     .filter((p) => p.locale === locale)
+    .filter((p) => !excluded_slugs.has(p.slug))
     .map((post) => {
       const haystack_title = post.title.toLowerCase()
       const haystack_summary = post.summary.toLowerCase()
@@ -275,9 +326,10 @@ export const build_post_recommendation_answer = (params: {
   query: string
   locale: string
   limit?: number
+  excludeIds?: string[]
 }): RecommendationResult => {
-  const { query, locale, limit = 3 } = params
-  const citations = recommend_posts({ query, locale, limit })
+  const { query, locale, limit = 3, excludeIds } = params
+  const citations = recommend_posts({ query, locale, limit, excludeIds })
 
   if (citations.length === 0) {
     const message = locale.startsWith('pt')

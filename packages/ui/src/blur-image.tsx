@@ -25,6 +25,7 @@ const BlurImage = (props: ImageProps) => {
     onError,
     priority,
     loading,
+    fill,
     quality,
     style,
     ...rest
@@ -36,7 +37,14 @@ const BlurImage = (props: ImageProps) => {
   const resolvedQuality = quality ?? 100
 
   return (
-    <div className={cn('overflow-hidden', isLoading && 'animate-pulse', className)}>
+    <div
+      className={cn(
+        'overflow-hidden',
+        fill && 'relative h-full w-full',
+        isLoading && 'animate-pulse',
+        className
+      )}
+    >
       <NextImage
         className={cn(isLoading && 'scale-[1.02] blur-xl grayscale', imageClassName)}
         style={{
@@ -48,6 +56,7 @@ const BlurImage = (props: ImageProps) => {
         loading={resolvedLoading}
         priority={resolvedPriority}
         quality={resolvedQuality}
+        fill={fill}
         onLoad={(event) => {
           setIsLoading(false)
           onLoad?.(event)

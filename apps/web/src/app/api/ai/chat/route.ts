@@ -123,6 +123,17 @@ const pick_last_user_intent = (
   return null
 }
 
+const extract_blog_slugs_from_text = (value: string): string[] => {
+  const slugs: string[] = []
+  const re = /\/blog\/([a-z0-9-]+)/gi
+  let match: RegExpExecArray | null = null
+  while ((match = re.exec(value)) !== null) {
+    const slug = match[1]?.trim()
+    if (slug) slugs.push(slug)
+  }
+  return slugs
+}
+
 export async function POST(req: NextRequest) {
   const started_at = Date.now()
   const request_id = create_request_id()
@@ -246,7 +257,30 @@ export async function POST(req: NextRequest) {
     }
 
     if (mode === 'recommend') {
-      const rec = build_post_recommendation_answer({ query: navigation_query, locale })
+      const exclude_ids = (() => {
+        const ids: string[] = []
+
+        // Exclude posts already suggested in the conversation history.
+        const texts: string[] = []
+        for (const msg of parsed.context?.conversation ?? []) {
+          if (!msg?.content) continue
+          texts.push(msg.content)
+        }
+        for (const text of parsed.context?.previousMessages ?? []) {
+          if (!text) continue
+          texts.push(text)
+        }
+
+        // Also exclude the current page if it is a blog page.
+        if (page_path) texts.push(page_path)
+
+        const slugs = texts.flatMap(extract_blog_slugs_from_text)
+        for (const slug of slugs) ids.push(`post:${slug}`)
+
+        return Array.from(new Set(ids))
+      })()
+
+      const rec = build_post_recommendation_answer({ query: navigation_query, locale, excludeIds: exclude_ids })
 
       const payload = {
         requestId: request_id,
