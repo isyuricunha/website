@@ -458,7 +458,7 @@ export default function AIChatInterface({
           }))
         }
 
-        const latency = Math.max(0, performance.now() - startTime)
+        const latency = Math.max(0, Math.round(performance.now() - startTime))
         updateActiveConversation((c) => ({
           ...c,
           messages: c.messages.map((m) =>
