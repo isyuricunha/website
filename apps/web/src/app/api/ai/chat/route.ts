@@ -5,7 +5,12 @@ import { z } from 'zod'
 
 import { aiService } from '@/lib/ai/ai-service'
 import { estimate_tokens, record_ai_chat_observability } from '@/lib/ai/ai-observability'
-import { build_navigation_answer, find_citations, get_page_context } from '@/lib/ai/site-index'
+import {
+  build_navigation_answer,
+  build_post_recommendation_answer,
+  find_citations,
+  get_page_context
+} from '@/lib/ai/site-index'
 import { logger } from '@/lib/logger'
 import { ratelimit } from '@/lib/ratelimit'
 import { rate_limit_keys } from '@/lib/rate-limit-keys'
@@ -19,7 +24,7 @@ const conversationMessageSchema = z.object({
 
 const requestSchema = z.object({
   message: z.string().min(1).max(2000),
-  mode: z.enum(['chat', 'navigate']).optional(),
+  mode: z.enum(['chat', 'navigate', 'recommend']).optional(),
   provider: z.enum(['hf', 'hf_local', 'gemini', 'groq', 'ollama']).optional(),
   model: z.string().max(100).optional(),
   stream: z.boolean().optional(),
@@ -47,12 +52,31 @@ const create_request_id = (): string => {
   }
 }
 
-const infer_mode = (message: string): 'chat' | 'navigate' => {
+const infer_mode = (message: string): 'chat' | 'navigate' | 'recommend' => {
   const m = message.toLowerCase()
+
+  // Recommendations
+  if (
+    m.includes('recomenda') ||
+    m.includes('sugere') ||
+    m.includes('postagem') ||
+    m.includes('um post') ||
+    m.includes('blog post') ||
+    m.includes('recommend')
+  ) {
+    return 'recommend'
+  }
+
+  // Navigation / link requests
   if (
     m.includes('onde encontro') ||
     m.includes('where can i find') ||
-    m.includes('help me navigate')
+    m.includes('help me navigate') ||
+    m.includes('direciona') ||
+    m.includes('me manda') ||
+    m.includes('manda o link') ||
+    m.includes('link') ||
+    m.includes('url')
   ) {
     return 'navigate'
   }
@@ -60,6 +84,43 @@ const infer_mode = (message: string): 'chat' | 'navigate' => {
     return 'navigate'
   }
   return 'chat'
+}
+
+const is_short_follow_up_navigation = (message: string): boolean => {
+  const m = message.toLowerCase().trim()
+  return (
+    m === 'direciona' ||
+    m === 'direciona então' ||
+    m === 'direciona entao' ||
+    m === 'manda' ||
+    m === 'manda então' ||
+    m === 'manda entao' ||
+    m === 'manda o link' ||
+    m === 'manda o link então' ||
+    m === 'manda o link entao' ||
+    m === 'envia' ||
+    m === 'envia então' ||
+    m === 'envia entao' ||
+    m === 'ok' ||
+    m === 'ok então' ||
+    m === 'ok entao'
+  )
+}
+
+const pick_last_user_intent = (
+  conversation?: Array<{ role: 'user' | 'assistant'; content: string }>
+) => {
+  const msgs = (conversation ?? []).slice(-10)
+
+  for (let i = msgs.length - 1; i >= 0; i -= 1) {
+    const msg = msgs[i]
+    if (!msg || msg.role !== 'user') continue
+    const text = msg.content.trim()
+    if (!text) continue
+    if (is_short_follow_up_navigation(text)) continue
+    return text
+  }
+  return null
 }
 
 export async function POST(req: NextRequest) {
@@ -173,10 +234,49 @@ export async function POST(req: NextRequest) {
     const page_path = parsed.context?.pagePath
     const locale = parsed.locale ?? parsed.context?.pageContext?.locale?.toString?.() ?? 'en'
 
-    const mode = parsed.mode ?? infer_mode(message)
+    let mode = parsed.mode ?? infer_mode(message)
+
+    const follow_up_intent = is_short_follow_up_navigation(message)
+      ? pick_last_user_intent(parsed.context?.conversation)
+      : null
+    const navigation_query = follow_up_intent ?? message
+
+    if (follow_up_intent && mode === 'chat') {
+      mode = 'navigate'
+    }
+
+    if (mode === 'recommend') {
+      const rec = build_post_recommendation_answer({ query: navigation_query, locale })
+
+      const payload = {
+        requestId: request_id,
+        message: rec.message,
+        citations: rec.citations,
+        timestamp: new Date().toISOString(),
+        provider: 'recommendations',
+        latencyMs: Date.now() - started_at
+      }
+
+      await record_ai_chat_observability({
+        requestId: request_id,
+        endpoint,
+        method,
+        statusCode: 200,
+        responseTimeMs: Date.now() - started_at,
+        provider: 'recommendations',
+        mode,
+        ipAddress: ip,
+        userAgent: user_agent,
+        requestSizeBytes: request_size,
+        responseSizeBytes: byte_length(JSON.stringify(payload)),
+        tokensEstimated: estimate_tokens(message) + estimate_tokens(rec.message)
+      })
+
+      return NextResponse.json(payload, { status: 200, headers: response_headers })
+    }
 
     if (mode === 'navigate') {
-      const navigation = build_navigation_answer({ query: message, locale })
+      const navigation = build_navigation_answer({ query: navigation_query, locale })
 
       const payload = {
         requestId: request_id,
@@ -199,7 +299,7 @@ export async function POST(req: NextRequest) {
         userAgent: user_agent,
         requestSizeBytes: request_size,
         responseSizeBytes: byte_length(JSON.stringify(payload)),
-        tokensEstimated: estimate_tokens(message) + estimate_tokens(navigation.message)
+        tokensEstimated: estimate_tokens(navigation_query) + estimate_tokens(navigation.message)
       })
 
       return NextResponse.json(payload, { status: 200, headers: response_headers })

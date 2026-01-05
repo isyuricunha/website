@@ -30,6 +30,11 @@ type Citation = {
   type: SiteEntryType
 }
 
+type RecommendationResult = {
+  message: string
+  citations: Citation[]
+}
+
 const strip_locale_prefix = (path: string): string => {
   const locale_pattern = new RegExp(`^/(${i18n.locales.join('|')})(/|$)`, 'i')
   return path.replace(locale_pattern, '/').replace(/\/+/g, '/')
@@ -209,6 +214,82 @@ export const build_navigation_answer = (params: {
   const intro = locale.startsWith('pt')
     ? 'Encontrei estas páginas que podem ajudar:'
     : 'Here are some pages that may help:'
+
+  const lines = citations.map((c) => `- ${c.title}: ${c.href}`)
+
+  return {
+    message: [intro, '', ...lines].join('\n'),
+    citations
+  }
+}
+
+export const recommend_posts = (params: {
+  query: string
+  locale: string
+  limit?: number
+}): Citation[] => {
+  const { query, locale, limit = 3 } = params
+  const tokens = tokenize(query)
+
+  const scored = allPosts
+    .filter((p) => p.locale === locale)
+    .map((post) => {
+      const haystack_title = post.title.toLowerCase()
+      const haystack_summary = post.summary.toLowerCase()
+      const haystack_slug = post.slug.toLowerCase()
+
+      let score = 0
+      for (const token of tokens) {
+        if (haystack_title.includes(token)) score += 3
+        if (haystack_summary.includes(token)) score += 2
+        if (haystack_slug.includes(token)) score += 1
+      }
+
+      const date = new Date((post as unknown as { date?: string }).date ?? 0).getTime()
+      return { post, score, date: Number.isFinite(date) ? date : 0 }
+    })
+    .toSorted((a, b) => {
+      if (b.score !== a.score) return b.score - a.score
+      return b.date - a.date
+    })
+
+  const matched = scored
+    .filter((r) => (tokens.length === 0 ? true : r.score > 0))
+    .slice(0, Math.max(0, limit))
+
+  const picks =
+    matched.length > 0
+      ? matched
+      : scored.toSorted((a, b) => b.date - a.date).slice(0, Math.max(0, limit))
+
+  return picks.map(({ post }) => ({
+    id: `post:${post.slug}`,
+    title: post.title,
+    href: getLocalizedPath({ slug: `/blog/${post.slug}`, locale }),
+    excerpt: post.summary,
+    type: 'post'
+  }))
+}
+
+export const build_post_recommendation_answer = (params: {
+  query: string
+  locale: string
+  limit?: number
+}): RecommendationResult => {
+  const { query, locale, limit = 3 } = params
+  const citations = recommend_posts({ query, locale, limit })
+
+  if (citations.length === 0) {
+    const message = locale.startsWith('pt')
+      ? 'Não encontrei uma postagem para recomendar agora. Você pode tentar outra palavra-chave (ex.: "database", "nextjs", "infra").'
+      : 'I could not find a post to recommend right now. Try different keywords (e.g., "database", "nextjs", "infra").'
+
+    return { message, citations: [] }
+  }
+
+  const intro = locale.startsWith('pt')
+    ? 'Aqui vão algumas postagens que você pode curtir:'
+    : 'Here are a few posts you might enjoy:'
 
   const lines = citations.map((c) => `- ${c.title}: ${c.href}`)
 

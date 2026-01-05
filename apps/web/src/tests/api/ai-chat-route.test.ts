@@ -26,6 +26,10 @@ vi.mock('@/lib/ai/site-index', () => ({
   build_navigation_answer: vi.fn(() => ({
     message: 'nav',
     citations: [{ id: 'page:about', title: 'About', href: '/en/about', type: 'page' }]
+  })),
+  build_post_recommendation_answer: vi.fn(() => ({
+    message: 'rec',
+    citations: [{ id: 'post:hello', title: 'Hello', href: '/en/blog/hello', type: 'post' }]
   }))
 }))
 
@@ -46,6 +50,68 @@ vi.mock('@/lib/ai/ai-service', () => ({
 describe('/api/ai/chat', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+  })
+
+  it('returns recommendations when mode is inferred as recommend', async () => {
+    const { ratelimit } = await import('@/lib/ratelimit')
+    const { getClientIp } = await import('@/lib/spam-detection')
+    const { aiService } = await import('@/lib/ai/ai-service')
+
+    vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
+    vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
+    vi.mocked(aiService.getAvailableProviders).mockReturnValue(['gemini'])
+
+    const { POST } = await import('@/app/api/ai/chat/route')
+
+    const req = {
+      headers: new Headers(),
+      json: async () => ({
+        message: 'me recomenda uma postagem bacana',
+        locale: 'pt',
+        context: { currentPage: '/test' }
+      })
+    } as unknown as Parameters<typeof POST>[0]
+
+    const res = await POST(req)
+    const json = (await res.json()) as { message?: string; provider?: string; citations?: unknown }
+
+    expect(res.status).toBe(200)
+    expect(json.message).toBe('rec')
+    expect(json.provider).toBe('recommendations')
+    expect(json.citations).toBeTruthy()
+
+    expect(aiService.generateResponse).not.toHaveBeenCalled()
+  })
+
+  it('uses previous user intent for short follow-up navigation like "direciona então"', async () => {
+    const { ratelimit } = await import('@/lib/ratelimit')
+    const { getClientIp } = await import('@/lib/spam-detection')
+
+    vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
+    vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
+
+    const { build_navigation_answer } = await import('@/lib/ai/site-index')
+    const { POST } = await import('@/app/api/ai/chat/route')
+
+    const req = {
+      headers: new Headers(),
+      json: async () => ({
+        message: 'direciona então',
+        locale: 'pt',
+        context: {
+          currentPage: '/test',
+          conversation: [
+            { role: 'user', content: 'fala uma postagem bacana de infra', timestamp: new Date().toISOString() }
+          ]
+        }
+      })
+    } as unknown as Parameters<typeof POST>[0]
+
+    const res = await POST(req)
+    expect(res.status).toBe(200)
+    expect(vi.mocked(build_navigation_answer)).toHaveBeenCalledWith(
+      expect.objectContaining({ query: 'fala uma postagem bacana de infra', locale: 'pt' })
+    )
   })
 
   it('returns 429 when rate limited', async () => {
