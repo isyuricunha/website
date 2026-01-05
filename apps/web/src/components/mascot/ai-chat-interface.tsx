@@ -624,20 +624,20 @@ export default function AIChatInterface({
                   >
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value='auto'>{t('mascot.aiChat.providers.auto')}</SelectItem>
-                    {flags.hf && <SelectItem value='hf'>{t('mascot.aiChat.providers.hf')}</SelectItem>}
-                    {flags.hfLocal && (
-                      <SelectItem value='hf_local'>{t('mascot.aiChat.providers.hf_local')}</SelectItem>
-                    )}
-                    {flags.gemini && (
-                      <SelectItem value='gemini'>{t('mascot.aiChat.providers.gemini')}</SelectItem>
-                    )}
-                    {flags.groq && <SelectItem value='groq'>{t('mascot.aiChat.providers.groq')}</SelectItem>}
-                    {flags.ollama && (
-                      <SelectItem value='ollama'>{t('mascot.aiChat.providers.ollama')}</SelectItem>
-                    )}
-                  </SelectContent>
+<SelectContent>
+  <SelectItem value='auto'>{t('mascot.aiChat.providers.auto')}</SelectItem>
+  {flags.groq && <SelectItem value='groq'>{t('mascot.aiChat.providers.groq')}</SelectItem>}
+  {flags.hf && <SelectItem value='hf'>{t('mascot.aiChat.providers.hf')}</SelectItem>}
+  {flags.hfLocal && (
+    <SelectItem value='hf_local'>{t('mascot.aiChat.providers.hf_local')}</SelectItem>
+  )}
+  {flags.gemini && (
+    <SelectItem value='gemini'>{t('mascot.aiChat.providers.gemini')}</SelectItem>
+  )}
+  {flags.ollama && (
+    <SelectItem value='ollama'>{t('mascot.aiChat.providers.ollama')}</SelectItem>
+  )}
+</SelectContent>
                 </Select>
               </div>
             </div>

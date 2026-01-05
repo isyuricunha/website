@@ -979,10 +979,10 @@
       "footer": "Powered by Yue AI by Yuri & Gemini AI",
       "providers": {
         "auto": "Auto",
-        "hf": "HF (remote)",
-        "hf_local": "HF (local)",
+        "hf": "Yue (Medium)",
+        "hf_local": "HF (Low)",
         "gemini": "Gemini",
-        "groq": "Groq",
+        "groq": "Yue (High)",
         "ollama": "Ollama"
       },
       "feedback": {
