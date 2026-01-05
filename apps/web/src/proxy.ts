@@ -5,7 +5,7 @@ import { i18nMiddleware } from '@isyuricunha/i18n/middleware'
 import { env } from '@isyuricunha/env'
 import { i18n } from '@isyuricunha/i18n/config'
 
-const middleware = (request: NextRequest) => {
+export default function proxy(request: NextRequest) {
   const is_production = env.NODE_ENV === 'production'
 
   const { pathname, search } = request.nextUrl
@@ -59,5 +59,3 @@ export const config = {
     '/((?!api|_next/static|_next/image|_vercel|og|favicon|fonts|images|videos|favicon.ico|sitemap.xml|robots.txt|rss.xml).*)'
   ]
 }
-
-export default middleware
