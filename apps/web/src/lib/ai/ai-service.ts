@@ -1,6 +1,15 @@
 import { GoogleGenerativeAI } from '@google/generative-ai'
 import { env, flags } from '@isyuricunha/env'
 
+import {
+  build_yue_gemini_prompt,
+  build_yue_history,
+  build_yue_openai_messages,
+  build_yue_ollama_prompt,
+  build_yue_system_message,
+  type YueSiteContext
+} from './yue-context'
+
 type AIProvider = 'hf' | 'hf_local' | 'gemini' | 'groq' | 'ollama'
 
 interface AIServiceConfig {
@@ -10,40 +19,7 @@ interface AIServiceConfig {
   maxTokens?: number
 }
 
-interface SiteContext {
-  currentPage: string
-  pagePath?: string
-  pageContext?: {
-    type: 'post' | 'project' | 'page'
-    title: string
-    description: string
-    href: string
-    contentExcerpt: string
-  } | null
-  citations?: Array<{
-    id: string
-    title: string
-    href: string
-    excerpt?: string
-    type: 'post' | 'project' | 'page'
-  }>
-  conversation?: Array<{
-    role: 'user' | 'assistant'
-    content: string
-    timestamp?: string
-  }>
-  recentPosts?: Array<{
-    title: string
-    slug: string
-    excerpt: string
-  }>
-  projects?: Array<{
-    name: string
-    description: string
-    tech: string[]
-  }>
-  locale: string
-}
+type SiteContext = YueSiteContext
 
 class AIService {
   private gemini?: GoogleGenerativeAI
@@ -82,91 +58,6 @@ class AIService {
     return env.YUE_LLM_REQUEST_TIMEOUT_MS ?? 300_000
   }
 
-  private buildSystemMessage(context: SiteContext): string {
-    const localeInstructions = {
-      en: 'Respond in English',
-      pt: 'Responda em português brasileiro',
-      fr: 'Répondez en français',
-      de: 'Antworten Sie auf Deutsch',
-      zh: '请用中文回答'
-    }
-
-    const conversationBlock = (() => {
-      const conversation = context.conversation?.slice(-10) ?? []
-      if (conversation.length === 0) return 'none'
-
-      return conversation
-        .map((m) => {
-          const role = m.role === 'user' ? 'User' : 'Assistant'
-          return `${role}: ${m.content}`
-        })
-        .join('\n')
-    })()
-
-    const pageContextBlock = context.pageContext
-      ? [
-        `type: ${context.pageContext.type}`,
-        `title: ${context.pageContext.title}`,
-        `description: ${context.pageContext.description}`,
-        `href: ${context.pageContext.href}`,
-        `content_excerpt: ${context.pageContext.contentExcerpt}`
-      ].join('\n')
-      : 'none'
-
-    const sourcesBlock = (context.citations ?? [])
-      .map((c) => `- ${c.title} (${c.type}): ${c.href}${c.excerpt ? ` — ${c.excerpt}` : ''}`)
-      .join('\n')
-
-    return `You are Yue, the friendly virtual mascot created by Yuri Cunha for his personal website.
-
-Personality:
-- Friendly, helpful, and enthusiastic
-- Knowledgeable about web development, databases, and technology
-- Speaks in a casual, approachable tone
-- Sometimes uses emojis to be more expressive
-- ${localeInstructions[context.locale as keyof typeof localeInstructions] || 'Reply in the same language the user speaks to you'}
-
-Context about the website:
-- Owner: Yuri Cunha, a Database Administrator (DBA) and Server Infrastructure Specialist from Brazil
-- Focus: Modern web development, server/warehouse infrastructure, database optimization, and tech projects
-- Current page: ${context.currentPage}
-- Current path: ${context.pagePath ?? 'unknown'}
-- Recent posts: ${context.recentPosts?.map((p) => p.title).join(', ') || 'none'}
-- Featured projects: ${context.projects?.map((p) => p.name).join(', ') || 'none'}
-
-Page context (if available):
-${pageContextBlock}
-
-Conversation (recent):
-${conversationBlock}
-
-Sources (internal site links you can reference; do not invent URLs):
-${sourcesBlock || 'none'}
-
-About Yuri:
-- Database Administrator (DBA) and Server Infrastructure Specialist
-- Experienced with Go programming language, GitHub API integration, bug fixing with GitHub team
-- Website sections:
-  * Blog: https://yuricunha.com/blog
-  * Setup/Stacks: https://yuricunha.com/
-  * Guestbook: https://yuricunha.com/guestbook
-  * Projects: https://yuricunha.com/projects (functional with GitHub API)
-  * About: https://yuricunha.com/about
-  * Music: https://yuricunha.com/spotify
-- Email: me@yuricunha.com
-- GitHub: https://github.com/isyuricunha
-
-Guidelines:
-- Provide helpful but concise explanations for technical topics
-- Share relevant information about Yuri or the website when asked
-- Stay in character as the website mascot
-- Keep responses brief unless specifically asked for detailed explanations`
-  }
-
-  private buildSystemPrompt(context: SiteContext, message: string): string {
-    return `${this.buildSystemMessage(context)}\n\nUser message: ${message}`
-  }
-
   private async generateYueLlmResponse(
     message: string,
     context: SiteContext,
@@ -180,11 +71,8 @@ Guidelines:
     const spaceUrl = env.YUE_LLM_SPACE_URL.replace(/\/$/, '')
     const endpoint = provider === 'hf' ? '/respond/hf' : '/respond/local'
 
-    const system_message = this.buildSystemMessage(context)
-    const history = (context.conversation ?? []).slice(-15).map((m) => ({
-      role: m.role,
-      content: m.content
-    }))
+    const system_message = build_yue_system_message(context)
+    const history = build_yue_history(context, 15)
 
     const controller = new AbortController()
     const timeout = setTimeout(() => controller.abort(), this.getYueLlmTimeoutMs())
@@ -244,8 +132,8 @@ Guidelines:
       model: config.model || env.GEMINI_MODEL || 'gemini-2.0-flash-lite'
     })
 
-    const systemPrompt = this.buildSystemPrompt(context, message)
-    const result = await model.generateContent(systemPrompt)
+    const prompt = build_yue_gemini_prompt(context, message)
+    const result = await model.generateContent(prompt)
     const response = result.response
 
     return response.text()
@@ -264,14 +152,7 @@ Guidelines:
     const controller = new AbortController()
     const timeout = setTimeout(() => controller.abort(), 60_000)
 
-    const system_message = this.buildSystemMessage(context)
-    const history = (context.conversation ?? []).slice(-15)
-
-    const messages = [
-      { role: 'system' as const, content: system_message },
-      ...history.map((m) => ({ role: m.role, content: m.content })),
-      { role: 'user' as const, content: message }
-    ]
+    const messages = build_yue_openai_messages(context, message, 15)
 
     try {
       const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
@@ -318,8 +199,7 @@ Guidelines:
     const ollamaUrl = env.OLLAMA_BASE_URL || 'http://localhost:11434'
     const ollamaModel = config.model || env.OLLAMA_MODEL || 'llama3.2'
 
-    const systemPrompt = this.buildSystemPrompt(context, message)
-    const fullPrompt = `${systemPrompt}\n\nUser: ${message}`
+    const fullPrompt = build_yue_ollama_prompt(context, message)
 
     // Usando endpoint nativo do Ollama
     const response = await fetch(`${ollamaUrl}/api/generate`, {
@@ -358,8 +238,7 @@ Guidelines:
     const ollamaUrl = env.OLLAMA_BASE_URL || 'http://localhost:11434'
     const ollamaModel = config.model || env.OLLAMA_MODEL || 'llama3.2'
 
-    const systemPrompt = this.buildSystemPrompt(context, message)
-    const fullPrompt = `${systemPrompt}\n\nUser: ${message}`
+    const fullPrompt = build_yue_ollama_prompt(context, message)
 
     const encoder = new TextEncoder()
     const decoder = new TextDecoder()
