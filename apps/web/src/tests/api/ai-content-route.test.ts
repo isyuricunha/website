@@ -26,6 +26,8 @@ vi.mock('@/lib/ai/ai-service', () => ({
     generateSummary: vi.fn(),
     generateMetaDescription: vi.fn(),
     translateContent: vi.fn(),
+    isHfAvailable: vi.fn(),
+    isHfLocalAvailable: vi.fn(),
     isGeminiAvailable: vi.fn(),
     isOllamaAvailable: vi.fn()
   }

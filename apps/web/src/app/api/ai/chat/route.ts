@@ -20,7 +20,7 @@ const conversationMessageSchema = z.object({
 const requestSchema = z.object({
   message: z.string().min(1).max(2000),
   mode: z.enum(['chat', 'navigate']).optional(),
-  provider: z.enum(['gemini', 'ollama']).optional(),
+  provider: z.enum(['hf', 'hf_local', 'gemini', 'ollama']).optional(),
   model: z.string().max(100).optional(),
   stream: z.boolean().optional(),
   locale: z.string().min(2).max(10).optional(),
@@ -149,10 +149,24 @@ export async function POST(req: NextRequest) {
     }
 
     const requested_provider = parsed.provider
-    const provider =
+    const primary_provider =
       requested_provider && available_providers.includes(requested_provider)
         ? requested_provider
         : default_provider
+
+    const provider_candidates = (() => {
+      if (!primary_provider) return [] as typeof available_providers
+
+      if (requested_provider && requested_provider !== primary_provider) {
+        return [primary_provider, ...available_providers.filter((p) => p !== primary_provider)]
+      }
+
+      if (requested_provider) {
+        return [requested_provider, ...available_providers.filter((p) => p !== requested_provider)]
+      }
+
+      return available_providers
+    })()
 
     const message = parsed.message.trim()
     const current_page = parsed.context?.currentPage ?? 'unknown'
@@ -196,7 +210,9 @@ export async function POST(req: NextRequest) {
 
     const stream_requested = parsed.stream === true
 
-    if (stream_requested && provider === 'ollama') {
+    const selected_provider_for_stream = provider_candidates[0]
+
+    if (stream_requested && selected_provider_for_stream === 'ollama') {
       const stream = await aiService.generateOllamaStream(
         message,
         {
@@ -225,7 +241,7 @@ export async function POST(req: NextRequest) {
         method,
         statusCode: 200,
         responseTimeMs: Date.now() - started_at,
-        provider,
+        provider: 'ollama',
         mode,
         model: parsed.model,
         ipAddress: ip,
@@ -236,28 +252,41 @@ export async function POST(req: NextRequest) {
       return new Response(stream, { status: 200, headers: response_headers_stream })
     }
 
-    const response_text = await aiService.generateResponse(
-      message,
-      {
-        currentPage: current_page,
-        pagePath: page_path,
-        pageContext: page_context,
-        citations,
-        conversation: parsed.context?.conversation,
-        locale
-      },
-      {
-        provider,
-        model: parsed.model
+    const response_text = await (async () => {
+      let last_error: unknown = null
+
+      for (const candidate of provider_candidates) {
+        try {
+          const text = await aiService.generateResponse(
+            message,
+            {
+              currentPage: current_page,
+              pagePath: page_path,
+              pageContext: page_context,
+              citations,
+              conversation: parsed.context?.conversation,
+              locale
+            },
+            {
+              provider: candidate,
+              model: parsed.model
+            }
+          )
+          return { text, provider: candidate }
+        } catch (error) {
+          last_error = error
+        }
       }
-    )
+
+      throw last_error instanceof Error ? last_error : new Error('AI provider failed')
+    })()
 
     const payload = {
       requestId: request_id,
-      message: response_text,
+      message: response_text.text,
       citations,
       timestamp: new Date().toISOString(),
-      provider,
+      provider: response_text.provider,
       latencyMs: Date.now() - started_at
     }
 
@@ -267,14 +296,14 @@ export async function POST(req: NextRequest) {
       method,
       statusCode: 200,
       responseTimeMs: Date.now() - started_at,
-      provider,
+      provider: response_text.provider,
       mode,
       model: parsed.model,
       ipAddress: ip,
       userAgent: user_agent,
       requestSizeBytes: request_size,
       responseSizeBytes: byte_length(JSON.stringify(payload)),
-      tokensEstimated: estimate_tokens(message) + estimate_tokens(response_text)
+      tokensEstimated: estimate_tokens(message) + estimate_tokens(response_text.text)
     })
 
     return NextResponse.json(payload, { status: 200, headers: response_headers })

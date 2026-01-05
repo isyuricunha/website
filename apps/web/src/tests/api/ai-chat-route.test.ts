@@ -182,4 +182,49 @@ describe('/api/ai/chat', () => {
       { provider: 'ollama', model: undefined }
     )
   })
+
+  it('tries providers in order until one succeeds', async () => {
+    const { ratelimit } = await import('@/lib/ratelimit')
+    const { getClientIp } = await import('@/lib/spam-detection')
+    const { aiService } = await import('@/lib/ai/ai-service')
+
+    vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
+    vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
+    vi.mocked(aiService.getAvailableProviders).mockReturnValue(['hf', 'hf_local', 'gemini'])
+    vi.mocked(aiService.generateResponse)
+      .mockRejectedValueOnce(new Error('hf failed'))
+      .mockResolvedValueOnce('ok-local')
+
+    const { POST } = await import('@/app/api/ai/chat/route')
+
+    const req = {
+      headers: new Headers(),
+      json: async () => ({
+        message: 'hello',
+        locale: 'en',
+        context: { currentPage: '/test' }
+      })
+    } as unknown as Parameters<typeof POST>[0]
+
+    const res = await POST(req)
+    const json = (await res.json()) as { message: string; provider: string }
+
+    expect(res.status).toBe(200)
+    expect(json.message).toBe('ok-local')
+    expect(json.provider).toBe('hf_local')
+
+    expect(aiService.generateResponse).toHaveBeenCalledTimes(2)
+    expect(aiService.generateResponse).toHaveBeenNthCalledWith(
+      1,
+      'hello',
+      expect.anything(),
+      expect.objectContaining({ provider: 'hf' })
+    )
+    expect(aiService.generateResponse).toHaveBeenNthCalledWith(
+      2,
+      'hello',
+      expect.anything(),
+      expect.objectContaining({ provider: 'hf_local' })
+    )
+  })
 })

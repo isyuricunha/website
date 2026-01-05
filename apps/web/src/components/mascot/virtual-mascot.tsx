@@ -855,7 +855,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
                 <GithubIcon className='h-4 w-4' />
                 {t('mascot.menu.viewProjects')}
               </button>
-              {(flags.gemini || flags.ollama) && (
+              {(flags.gemini || flags.hf || flags.hfLocal || flags.ollama) && (
                 <button
                   type='button'
                   className='hover:bg-muted/80 focus-visible:ring-primary/50 flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-left transition-all duration-200 hover:scale-[1.02] focus-visible:ring-2 focus-visible:outline-none'
