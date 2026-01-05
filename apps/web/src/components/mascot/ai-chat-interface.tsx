@@ -3,6 +3,9 @@
 import { flags } from '@isyuricunha/env'
 import { useTranslations, useLocale } from '@isyuricunha/i18n/client'
 import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
   Select,
   SelectContent,
   SelectItem,
@@ -54,6 +57,9 @@ export default function AIChatInterface({
 }: AIChatInterfaceProps) {
   const t = useTranslations()
   const locale = useLocale()
+
+  const yue_avatar_src = '/images/mascote-6.png'
+
   const [conversations, setConversations] = useState<ChatConversation[]>([])
   const [activeConversationId, setActiveConversationId] = useState<string>('')
   const [provider, setProvider] = useState<YueChatProvider>('auto')
@@ -591,9 +597,9 @@ export default function AIChatInterface({
 
   return (
     <>
-      <div className='bg-popover/95 absolute right-0 bottom-full mb-2 max-h-[600px] w-96 overflow-hidden rounded-2xl border shadow-2xl backdrop-blur-sm sm:w-md'>
+      <div className='bg-popover/95 absolute right-0 bottom-full mb-2 flex h-[70vh] max-h-[720px] min-h-[460px] w-[420px] max-w-[calc(100vw-1rem)] flex-col overflow-hidden rounded-3xl border shadow-2xl backdrop-blur-sm'>
         {/* Header */}
-        <div className='from-primary/10 to-primary/5 flex items-center justify-between border-b bg-linear-to-r p-3'>
+        <div className='from-primary/10 to-primary/5 flex items-center justify-between gap-3 border-b bg-linear-to-r px-4 py-3'>
           <div className='flex min-w-0 items-center gap-2'>
             <div className='bg-primary/10 rounded-lg p-1.5'>
               <MessageCircle className='h-4 w-4' />
@@ -603,7 +609,7 @@ export default function AIChatInterface({
               <div className='text-muted-foreground mt-0.5 flex items-center gap-2 text-xs'>
                 <Select value={activeConversationId} onValueChange={setActiveConversationId}>
                   <SelectTrigger
-                    className='bg-background/40 border-border/40 max-w-[180px] rounded border px-2 py-0.5 text-xs'
+                    className='bg-background/30 hover:bg-background/40 border-border/30 focus:ring-primary/30 h-7 max-w-[200px] rounded-full border px-2.5 text-xs shadow-none focus:ring-2 focus:outline-none'
                     aria-label={t('mascot.aiChat.conversations')}
                   >
                     <SelectValue />
@@ -619,25 +625,27 @@ export default function AIChatInterface({
 
                 <Select value={provider} onValueChange={(v) => setProvider(v as YueChatProvider)}>
                   <SelectTrigger
-                    className='bg-background/40 border-border/40 max-w-[150px] rounded border px-2 py-0.5 text-xs'
+                    className='bg-background/30 hover:bg-background/40 border-border/30 focus:ring-primary/30 h-7 max-w-[160px] rounded-full border px-2.5 text-xs shadow-none focus:ring-2 focus:outline-none'
                     aria-label={t('mascot.aiChat.provider')}
                   >
                     <SelectValue />
                   </SelectTrigger>
-<SelectContent>
-  <SelectItem value='auto'>{t('mascot.aiChat.providers.auto')}</SelectItem>
-  {flags.groq && <SelectItem value='groq'>{t('mascot.aiChat.providers.groq')}</SelectItem>}
-  {flags.hf && <SelectItem value='hf'>{t('mascot.aiChat.providers.hf')}</SelectItem>}
-  {flags.hfLocal && (
-    <SelectItem value='hf_local'>{t('mascot.aiChat.providers.hf_local')}</SelectItem>
-  )}
-  {flags.gemini && (
-    <SelectItem value='gemini'>{t('mascot.aiChat.providers.gemini')}</SelectItem>
-  )}
-  {flags.ollama && (
-    <SelectItem value='ollama'>{t('mascot.aiChat.providers.ollama')}</SelectItem>
-  )}
-</SelectContent>
+                  <SelectContent>
+                    <SelectItem value='auto'>{t('mascot.aiChat.providers.auto')}</SelectItem>
+                    {flags.groq && (
+                      <SelectItem value='groq'>{t('mascot.aiChat.providers.groq')}</SelectItem>
+                    )}
+                    {flags.hf && <SelectItem value='hf'>{t('mascot.aiChat.providers.hf')}</SelectItem>}
+                    {flags.hfLocal && (
+                      <SelectItem value='hf_local'>{t('mascot.aiChat.providers.hf_local')}</SelectItem>
+                    )}
+                    {flags.gemini && (
+                      <SelectItem value='gemini'>{t('mascot.aiChat.providers.gemini')}</SelectItem>
+                    )}
+                    {flags.ollama && (
+                      <SelectItem value='ollama'>{t('mascot.aiChat.providers.ollama')}</SelectItem>
+                    )}
+                  </SelectContent>
                 </Select>
               </div>
             </div>
@@ -694,7 +702,7 @@ export default function AIChatInterface({
         </div>
 
         {/* Messages */}
-        <div className='from-background/50 to-background/80 max-h-80 flex-1 space-y-4 overflow-y-auto bg-linear-to-b p-4'>
+        <div className='from-background/50 to-background/80 flex flex-1 flex-col gap-4 overflow-y-auto bg-linear-to-b px-4 py-4'>
           {messages.map((message) => (
             <div
               key={message.id}
@@ -705,9 +713,12 @@ export default function AIChatInterface({
               >
                 {!message.isUser && (
                   <div className='border-border/20 mb-2 flex items-center gap-2 border-b pb-2'>
-                    <div className='bg-primary/20 flex h-5 w-5 items-center justify-center rounded-full'>
-                      <span className='text-primary text-xs font-bold'>Y</span>
-                    </div>
+                    <Avatar className='h-5 w-5'>
+                      <AvatarImage src={yue_avatar_src} alt='Yue' />
+                      <AvatarFallback className='bg-primary/20 text-primary text-[10px] font-bold'>
+                        Y
+                      </AvatarFallback>
+                    </Avatar>
                     <span className='text-muted-foreground text-xs font-medium'>Yue</span>
                     {!message.isError && (
                       <button
@@ -854,9 +865,12 @@ export default function AIChatInterface({
             <div className='animate-in slide-in-from-bottom-2 flex justify-start duration-300'>
               <div className='from-muted/80 to-muted/60 text-foreground border-border/30 flex items-center gap-2 rounded-2xl rounded-bl-md border bg-linear-to-br p-3'>
                 <div className='border-border/20 mb-2 flex w-full items-center gap-2 border-b pb-2'>
-                  <div className='bg-primary/20 flex h-5 w-5 items-center justify-center rounded-full'>
-                    <span className='text-primary text-xs font-bold'>Y</span>
-                  </div>
+                  <Avatar className='h-5 w-5'>
+                    <AvatarImage src={yue_avatar_src} alt='Yue' />
+                    <AvatarFallback className='bg-primary/20 text-primary text-[10px] font-bold'>
+                      Y
+                    </AvatarFallback>
+                  </Avatar>
                   <span className='text-muted-foreground text-xs font-medium'>Yue</span>
                 </div>
                 <div className='flex items-center gap-2'>
@@ -874,7 +888,7 @@ export default function AIChatInterface({
         </div>
 
         {/* Input */}
-        <div className='from-background/80 to-background/60 border-t bg-linear-to-r p-4 backdrop-blur-sm'>
+        <div className='from-background/80 to-background/60 border-t bg-linear-to-r px-4 py-4 backdrop-blur-sm'>
           <div className='flex gap-2'>
             <input
               ref={inputRef}
