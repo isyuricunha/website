@@ -8,6 +8,7 @@ import {
   AvatarImage,
   Badge,
   Button,
+  buttonVariants,
   Card,
   CodeBlock,
   DropdownMenu,
@@ -31,6 +32,7 @@ import MarkdownToJSX from 'markdown-to-jsx'
 import {
   Copy,
   Eraser,
+  Sparkles,
   Loader2,
   MessageCircle,
   MoreVertical,
@@ -46,6 +48,7 @@ import {
 import { Fragment, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { toast } from 'sonner'
 
+import { cn } from '@isyuricunha/utils'
 import {
   type ChatConversation,
   type ChatMessage,
@@ -330,10 +333,21 @@ export default function AIChatInterface({
   }
 
   const sendMessage = async () => {
-    if (!inputValue.trim() || isLoading) return
+    const messageText = inputValue.trim()
+    if (!messageText || isLoading) return
     if (!activeConversation) return
 
-    const messageText = inputValue.trim()
+    setInputValue('')
+
+    await send_chat_message(messageText)
+  }
+
+  const send_chat_message = async (rawText: string) => {
+    if (isLoading) return
+    if (!activeConversation) return
+
+    const messageText = rawText.trim()
+    if (!messageText) return
 
     const userMessage: ChatMessage = {
       id: Date.now().toString(),
@@ -350,7 +364,6 @@ export default function AIChatInterface({
       messages: nextMessages,
       updatedAt: new Date().toISOString()
     }))
-    setInputValue('')
     setIsLoading(true)
     onMessageSent?.(messageText)
 
@@ -505,6 +518,33 @@ export default function AIChatInterface({
     } finally {
       setIsLoading(false)
     }
+  }
+
+  const copyLink = async (href: string) => {
+    try {
+      const absolute = (() => {
+        if (globalThis.window === undefined) return href
+        try {
+          return new URL(href, globalThis.location.origin).toString()
+        } catch {
+          return href
+        }
+      })()
+
+      await navigator.clipboard.writeText(absolute)
+      toast.success(t('mascot.aiChat.citations.linkCopied'))
+    } catch {
+      toast.error(t('mascot.aiChat.citations.linkCopyFailed'))
+    }
+  }
+
+  const more_like_this = async (citation: { title: string; type: 'post' | 'project' | 'page' }) => {
+    const prompt = t('mascot.aiChat.citations.moreLikeThisPrompt', {
+      title: citation.title,
+      type: t(`mascot.aiChat.citations.types.${citation.type}` as any)
+    })
+
+    await send_chat_message(prompt)
   }
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -857,6 +897,39 @@ export default function AIChatInterface({
                                   {c.excerpt}
                                 </div>
                               ) : null}
+
+                              <div className='mt-2 flex flex-wrap items-center gap-2'>
+                                <Link
+                                  href={c.href}
+                                  className={cn(
+                                    buttonVariants({ variant: 'outline', size: 'sm' }),
+                                    'h-8 px-2 text-xs'
+                                  )}
+                                >
+                                  {t('mascot.aiChat.citations.actions.open')}
+                                </Link>
+                                <Button
+                                  variant='ghost'
+                                  size='sm'
+                                  className='h-8 px-2 text-xs'
+                                  onClick={() => void copyLink(c.href)}
+                                  aria-label={t('mascot.aiChat.citations.actions.copyLink')}
+                                >
+                                  <Copy className='mr-1 h-3.5 w-3.5' />
+                                  {t('mascot.aiChat.citations.actions.copyLink')}
+                                </Button>
+                                <Button
+                                  variant='ghost'
+                                  size='sm'
+                                  className='h-8 px-2 text-xs'
+                                  disabled={isLoading}
+                                  onClick={() => void more_like_this({ title: c.title, type: c.type })}
+                                  aria-label={t('mascot.aiChat.citations.actions.moreLikeThis')}
+                                >
+                                  <Sparkles className='mr-1 h-3.5 w-3.5' />
+                                  {t('mascot.aiChat.citations.actions.moreLikeThis')}
+                                </Button>
+                              </div>
                             </div>
                           </div>
                         </Card>

@@ -966,6 +966,14 @@
       "share": "Share",
       "citations": {
         "title": "Sources",
+        "actions": {
+          "open": "Open",
+          "copyLink": "Copy link",
+          "moreLikeThis": "More like this"
+        },
+        "linkCopied": "Link copied to clipboard",
+        "linkCopyFailed": "Failed to copy link",
+        "moreLikeThisPrompt": "Recommend more {type} like \"{title}\". Please include links.",
         "types": {
           "post": "Post",
           "project": "Project",
