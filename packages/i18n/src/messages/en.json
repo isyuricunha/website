@@ -976,7 +976,7 @@
       "thinking": "Yue is thinking...",
       "placeholder": "Ask me anything...",
       "connectionError": "Having trouble connecting. Please try again.",
-      "footer": "Powered by Yue AI by Yuri & Gemini AI",
+      "footer": "Yue AI by Yuri & Gemini AI",
       "providers": {
         "auto": "Auto",
         "hf": "Yue (Medium)",
