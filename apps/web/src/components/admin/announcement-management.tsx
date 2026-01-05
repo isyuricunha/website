@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import {
   Button,
   Card,
@@ -70,6 +70,16 @@ export default function AnnouncementManagement() {
   const [editingAnnouncement, setEditingAnnouncement] = useState<EditAnnouncementData | null>(null)
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
 
+  const createTitleRef = useRef<HTMLInputElement>(null)
+  const createContentRef = useRef<HTMLTextAreaElement>(null)
+  const createTitlePtRef = useRef<HTMLInputElement>(null)
+  const createContentPtRef = useRef<HTMLTextAreaElement>(null)
+
+  const editTitleRef = useRef<HTMLInputElement>(null)
+  const editContentRef = useRef<HTMLTextAreaElement>(null)
+  const editTitlePtRef = useRef<HTMLInputElement>(null)
+  const editContentPtRef = useRef<HTMLTextAreaElement>(null)
+
   // Queries
   const {
     data: announcements,
@@ -78,6 +88,58 @@ export default function AnnouncementManagement() {
   } = api.announcements.getAnnouncements.useQuery({
     adminView: true
   })
+
+  const translateMutation = api.announcements.translateAnnouncement.useMutation({
+    onError: (error) => {
+      toast.error(`Failed to translate: ${error.message}`)
+    }
+  })
+
+  const handleAiFillCreatePt = async () => {
+    const title = createTitleRef.current?.value ?? ''
+    const content = createContentRef.current?.value ?? ''
+
+    if (!title.trim() || !content.trim()) {
+      toast.error('Title and content are required')
+      return
+    }
+
+    const result = await translateMutation.mutateAsync({
+      title,
+      content,
+      fromLang: 'en',
+      toLang: 'pt',
+      provider: 'auto'
+    })
+
+    if (createTitlePtRef.current) createTitlePtRef.current.value = result.titlePt ?? ''
+    if (createContentPtRef.current) createContentPtRef.current.value = result.contentPt ?? ''
+
+    toast.success(`Filled pt-BR using ${result.provider}`)
+  }
+
+  const handleAiFillEditPt = async () => {
+    const title = editTitleRef.current?.value ?? editingAnnouncement?.title ?? ''
+    const content = editContentRef.current?.value ?? editingAnnouncement?.content ?? ''
+
+    if (!title.trim() || !content.trim()) {
+      toast.error('Title and content are required')
+      return
+    }
+
+    const result = await translateMutation.mutateAsync({
+      title,
+      content,
+      fromLang: 'en',
+      toLang: 'pt',
+      provider: 'auto'
+    })
+
+    if (editTitlePtRef.current) editTitlePtRef.current.value = result.titlePt ?? ''
+    if (editContentPtRef.current) editContentPtRef.current.value = result.contentPt ?? ''
+
+    toast.success(`Filled pt-BR using ${result.provider}`)
+  }
 
   const { data: analytics } = api.announcements.getAnnouncementAnalytics.useQuery({})
 
@@ -235,12 +297,23 @@ export default function AnnouncementManagement() {
               <div className='space-y-4'>
                 <div>
                   <Label htmlFor='title'>Title</Label>
-                  <Input id='title' name='title' placeholder='Announcement title' required />
+                  <Input
+                    id='title'
+                    name='title'
+                    placeholder='Announcement title'
+                    required
+                    ref={createTitleRef}
+                  />
                 </div>
 
                 <div>
                   <Label htmlFor='title-pt'>Title (pt-BR)</Label>
-                  <Input id='title-pt' name='titlePt' placeholder='Título em português (opcional)' />
+                  <Input
+                    id='title-pt'
+                    name='titlePt'
+                    placeholder='Título em português (opcional)'
+                    ref={createTitlePtRef}
+                  />
                 </div>
 
                 <div>
@@ -251,6 +324,7 @@ export default function AnnouncementManagement() {
                     placeholder='Announcement content'
                     rows={4}
                     required
+                    ref={createContentRef}
                   />
                 </div>
 
@@ -261,7 +335,19 @@ export default function AnnouncementManagement() {
                     name='contentPt'
                     placeholder='Conteúdo em português (opcional)'
                     rows={4}
+                    ref={createContentPtRef}
                   />
+                </div>
+
+                <div>
+                  <Button
+                    type='button'
+                    variant='outline'
+                    onClick={handleAiFillCreatePt}
+                    disabled={translateMutation.isPending}
+                  >
+                    {translateMutation.isPending ? 'Translating...' : 'Fill pt-BR with AI'}
+                  </Button>
                 </div>
 
                 <div className='grid grid-cols-2 gap-4'>
@@ -403,6 +489,10 @@ export default function AnnouncementManagement() {
             <div className='space-y-4'>
               {announcements?.announcements?.map((announcement) => {
                 const ui = getAnnouncementUi(announcement.type, { iconSize: 'sm' })
+                const has_pt_title =
+                  typeof announcement.titlePt === 'string' && announcement.titlePt.trim().length > 0
+                const has_pt_content =
+                  typeof announcement.contentPt === 'string' && announcement.contentPt.trim().length > 0
                 return (
                   <Card
                     key={announcement.id}
@@ -430,6 +520,11 @@ export default function AnnouncementManagement() {
                                 {!announcement.isActive && (
                                   <Badge variant='secondary' className='text-xs'>
                                     Inactive
+                                  </Badge>
+                                )}
+                                {(has_pt_title || has_pt_content) && (
+                                  <Badge variant='outline' className='text-xs'>
+                                    {has_pt_title && has_pt_content ? 'PT' : 'PT partial'}
                                   </Badge>
                                 )}
                               </div>
@@ -558,6 +653,7 @@ export default function AnnouncementManagement() {
                     name='title'
                     defaultValue={editingAnnouncement.title}
                     required
+                    ref={editTitleRef}
                   />
                 </div>
 
@@ -567,6 +663,7 @@ export default function AnnouncementManagement() {
                     id='edit-title-pt'
                     name='titlePt'
                     defaultValue={editingAnnouncement.titlePt ?? ''}
+                    ref={editTitlePtRef}
                   />
                 </div>
 
@@ -578,6 +675,7 @@ export default function AnnouncementManagement() {
                     defaultValue={editingAnnouncement.content}
                     rows={4}
                     required
+                    ref={editContentRef}
                   />
                 </div>
 
@@ -588,7 +686,19 @@ export default function AnnouncementManagement() {
                     name='contentPt'
                     defaultValue={editingAnnouncement.contentPt ?? ''}
                     rows={4}
+                    ref={editContentPtRef}
                   />
+                </div>
+
+                <div>
+                  <Button
+                    type='button'
+                    variant='outline'
+                    onClick={handleAiFillEditPt}
+                    disabled={translateMutation.isPending}
+                  >
+                    {translateMutation.isPending ? 'Translating...' : 'Fill pt-BR with AI'}
+                  </Button>
                 </div>
 
                 <div className='grid grid-cols-2 gap-4'>
