@@ -138,7 +138,7 @@ const Hero = () => {
           </motion.div>
         </div>
         <motion.div
-          className='relative mx-auto size-16 flex-shrink-0 sm:size-20 lg:mx-0 lg:size-24 xl:size-28'
+          className='relative mx-auto size-16 shrink-0 sm:size-20 lg:mx-0 lg:size-24 xl:size-28'
           initial={{
             scale: 0
           }}
@@ -151,9 +151,10 @@ const Hero = () => {
         >
           <BlurImage
             src='/images/avatar.png'
-            className='h-full w-full rounded-full object-cover'
-            width={144}
-            height={144}
+            fill
+            sizes='(max-width: 640px) 64px, (max-width: 1024px) 80px, 112px'
+            className='rounded-full'
+            imageClassName='object-cover'
             alt={t_metadata('site-title')}
             lazy={false}
           />

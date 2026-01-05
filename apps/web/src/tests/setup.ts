@@ -17,6 +17,7 @@ const toImgProps = (props: Record<string, unknown>) => {
     'placeholder',
     'blurDataURL',
     'unoptimized',
+    'imageClassName',
     'fill',
     'loader'
   ])

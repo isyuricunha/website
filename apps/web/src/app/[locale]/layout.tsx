@@ -154,7 +154,7 @@ const Layout = async (props: LayoutProps) => {
           type='application/ld+json'
           dangerouslySetInnerHTML={{ __html: JSON.stringify(website_json_ld) }}
         />
-        {env.NODE_ENV === 'development' ? (
+        {env.REACT_SCAN_MONITOR_API_KEY ? (
           <Script
             id='react-scan-auto'
             src='https://unpkg.com/react-scan/dist/auto.global.js'
@@ -167,10 +167,10 @@ const Layout = async (props: LayoutProps) => {
               window.addEventListener('load', function() {
                 navigator.serviceWorker.register('/sw.js')
                   .then(function(registration) {
-                    console.log('SW registered: ', registration);
+                    void registration
                   })
                   .catch(function(registrationError) {
-                    console.log('SW registration failed: ', registrationError);
+                    void registrationError
                   });
               });
             }
@@ -190,7 +190,7 @@ const Layout = async (props: LayoutProps) => {
           <Providers>
             <NextIntlClientProvider messages={messages} locale={locale}>
               <ErrorBoundary>
-                <Hello />
+                {env.NODE_ENV === 'development' ? <Hello /> : null}
                 {children}
                 {flags.analytics ? <Analytics /> : null}
                 <SignInDialog />
