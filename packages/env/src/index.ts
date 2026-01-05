@@ -9,6 +9,8 @@ export const flags = {
   spotify: process.env.NEXT_PUBLIC_FLAG_SPOTIFY === 'true',
   spotifyImport: process.env.NEXT_PUBLIC_FLAG_SPOTIFY_IMPORT === 'true',
   gemini: process.env.NEXT_PUBLIC_FLAG_GEMINI === 'true',
+  hf: process.env.NEXT_PUBLIC_FLAG_HF === 'true',
+  hfLocal: process.env.NEXT_PUBLIC_FLAG_HF_LOCAL === 'true',
   ollama: process.env.NEXT_PUBLIC_FLAG_OLLAMA === 'true',
   analytics: process.env.NEXT_PUBLIC_FLAG_ANALYTICS === 'true',
   guestbookNotification: process.env.NEXT_PUBLIC_FLAG_GUESTBOOK_NOTIFICATION === 'true',
@@ -80,7 +82,15 @@ export const env = createEnv({
       }
       : {}),
 
+    ...((flags.hf || flags.hfLocal)
+      ? {
+        YUE_LLM_SPACE_URL: z.string().url(),
+        YUE_LLM_API_TOKEN: z.string().min(1)
+      }
+      : {}),
+
     GEMINI_MODEL: z.string().min(1).optional(),
+    YUE_LLM_REQUEST_TIMEOUT_MS: z.coerce.number().int().min(1000).optional(),
     OLLAMA_BASE_URL: z.string().url().optional(),
     OLLAMA_MODEL: z.string().min(1).optional(),
 
@@ -104,6 +114,8 @@ export const env = createEnv({
     NEXT_PUBLIC_FLAG_SPOTIFY: z.string().min(1).optional(),
     NEXT_PUBLIC_FLAG_SPOTIFY_IMPORT: z.string().min(1).optional(),
     NEXT_PUBLIC_FLAG_GEMINI: z.string().min(1).optional(),
+    NEXT_PUBLIC_FLAG_HF: z.string().min(1).optional(),
+    NEXT_PUBLIC_FLAG_HF_LOCAL: z.string().min(1).optional(),
     NEXT_PUBLIC_FLAG_OLLAMA: z.string().min(1).optional(),
     NEXT_PUBLIC_FLAG_ANALYTICS: z.string().min(1).optional(),
     NEXT_PUBLIC_FLAG_GUESTBOOK_NOTIFICATION: z.string().min(1).optional(),
@@ -133,6 +145,8 @@ export const env = createEnv({
     NEXT_PUBLIC_FLAG_SPOTIFY: process.env.NEXT_PUBLIC_FLAG_SPOTIFY,
     NEXT_PUBLIC_FLAG_SPOTIFY_IMPORT: process.env.NEXT_PUBLIC_FLAG_SPOTIFY_IMPORT,
     NEXT_PUBLIC_FLAG_GEMINI: process.env.NEXT_PUBLIC_FLAG_GEMINI,
+    NEXT_PUBLIC_FLAG_HF: process.env.NEXT_PUBLIC_FLAG_HF,
+    NEXT_PUBLIC_FLAG_HF_LOCAL: process.env.NEXT_PUBLIC_FLAG_HF_LOCAL,
     NEXT_PUBLIC_FLAG_OLLAMA: process.env.NEXT_PUBLIC_FLAG_OLLAMA,
     NEXT_PUBLIC_FLAG_ANALYTICS: process.env.NEXT_PUBLIC_FLAG_ANALYTICS,
     NEXT_PUBLIC_FLAG_GUESTBOOK_NOTIFICATION: process.env.NEXT_PUBLIC_FLAG_GUESTBOOK_NOTIFICATION,
