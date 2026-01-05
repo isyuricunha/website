@@ -50,6 +50,13 @@
       "when": 1765752279147,
       "tag": "0006_legal_maddog",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1767608976003,
+      "tag": "0007_thick_firelord",
+      "breakpoints": true
     }
   ]
 }

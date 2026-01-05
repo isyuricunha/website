@@ -158,6 +158,8 @@ export const announcements = pgTable(
     id: text('id').primaryKey(),
     title: text('title').notNull(),
     content: text('content').notNull(),
+    titlePt: text('title_pt'),
+    contentPt: text('content_pt'),
     type: announcementTypeEnum('type').notNull().default('info'),
     priority: integer('priority').notNull().default(0), // Higher numbers = higher priority
     isActive: boolean('is_active').notNull().default(true),
