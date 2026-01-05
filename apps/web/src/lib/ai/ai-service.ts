@@ -121,7 +121,10 @@ class AIService {
 
       if (!response.ok) {
         const details = contentType.includes('application/json')
-          ? ((await response.json().catch(() => null)) as { detail?: string; error?: string } | null)
+          ? ((await response.json().catch(() => null)) as {
+              detail?: string
+              error?: string
+            } | null)
           : null
 
         const msg = details?.error ?? details?.detail ?? response.statusText
@@ -181,7 +184,10 @@ class AIService {
       if (!response.ok || !response.body) {
         const contentType = response.headers.get('content-type') || ''
         const details = contentType.includes('application/json')
-          ? ((await response.json().catch(() => null)) as { detail?: string; error?: string } | null)
+          ? ((await response.json().catch(() => null)) as {
+              detail?: string
+              error?: string
+            } | null)
           : null
         const msg = details?.error ?? details?.detail ?? response.statusText
         throw new Error(`Yue LLM API error (${response.status}): ${msg}`)
@@ -202,7 +208,9 @@ class AIService {
     }
   }
 
-  private convertJsonLinesToTextStream(input: ReadableStream<Uint8Array>): ReadableStream<Uint8Array> {
+  private convertJsonLinesToTextStream(
+    input: ReadableStream<Uint8Array>
+  ): ReadableStream<Uint8Array> {
     const decoder = new TextDecoder()
     const encoder = new TextEncoder()
 
@@ -224,7 +232,11 @@ class AIService {
               const trimmed = line.trim()
               if (!trimmed) continue
               try {
-                const parsed = JSON.parse(trimmed) as { token?: string; response?: string; text?: string }
+                const parsed = JSON.parse(trimmed) as {
+                  token?: string
+                  response?: string
+                  text?: string
+                }
                 const chunk = parsed.token ?? parsed.response ?? parsed.text
                 if (chunk) controller.enqueue(encoder.encode(chunk))
               } catch {
@@ -235,7 +247,11 @@ class AIService {
 
           if (buffer.trim()) {
             try {
-              const parsed = JSON.parse(buffer.trim()) as { token?: string; response?: string; text?: string }
+              const parsed = JSON.parse(buffer.trim()) as {
+                token?: string
+                response?: string
+                text?: string
+              }
               const chunk = parsed.token ?? parsed.response ?? parsed.text
               if (chunk) controller.enqueue(encoder.encode(chunk))
             } catch {
@@ -299,39 +315,72 @@ class AIService {
     const timeout = setTimeout(() => controller.abort(), 60_000)
 
     try {
-      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${env.GROQ_API_KEY}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          model,
-          messages: build_yue_openai_messages(context, message, 15),
-          temperature: config.temperature ?? 0.7,
-          max_tokens: config.maxTokens ?? 256,
-          stream: true
-        }),
-        signal: controller.signal
-      })
+      const apiKeys = this.getGroqApiKeys()
 
-      if (!response.ok || !response.body) {
+      for (let i = 0; i < apiKeys.length; i++) {
+        const apiKey = apiKeys[i]
+        const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${apiKey}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            model,
+            messages: build_yue_openai_messages(context, message, 15),
+            temperature: config.temperature ?? 0.7,
+            max_tokens: config.maxTokens ?? 256,
+            stream: true
+          }),
+          signal: controller.signal
+        })
+
+        if (response.ok && response.body) {
+          return this.convertOpenAiSseToTextStream(response.body)
+        }
+
         const contentType = response.headers.get('content-type') || ''
         const details = contentType.includes('application/json')
           ? ((await response.json().catch(() => null)) as { error?: { message?: string } } | null)
           : null
 
         const msg = details?.error?.message ?? response.statusText
-        throw new Error(`Groq API error (${response.status}): ${msg}`)
+
+        const shouldTryNextKey =
+          i < apiKeys.length - 1 && this.isGroqKeyFallbackCandidate(response.status, msg)
+
+        if (!shouldTryNextKey) {
+          throw new Error(`Groq API error (${response.status}): ${msg}`)
+        }
       }
 
-      return this.convertOpenAiSseToTextStream(response.body)
+      throw new Error('Groq API error: no API keys available')
     } finally {
       clearTimeout(timeout)
     }
   }
 
-  private convertOpenAiSseToTextStream(input: ReadableStream<Uint8Array>): ReadableStream<Uint8Array> {
+  private getGroqApiKeys(): string[] {
+    const keys: Array<string | undefined> = [env.GROQ_API_KEY, env.GROQ_API_KEY_FALLBACK]
+    return keys.filter((k): k is string => typeof k === 'string' && k.length > 0)
+  }
+
+  private isGroqKeyFallbackCandidate(status: number, message: string): boolean {
+    if ([401, 403, 429].includes(status)) return true
+
+    const normalized = message.toLowerCase()
+    return (
+      normalized.includes('rate limit') ||
+      normalized.includes('too many requests') ||
+      normalized.includes('quota') ||
+      normalized.includes('insufficient') ||
+      normalized.includes('limit')
+    )
+  }
+
+  private convertOpenAiSseToTextStream(
+    input: ReadableStream<Uint8Array>
+  ): ReadableStream<Uint8Array> {
     const decoder = new TextDecoder()
     const encoder = new TextEncoder()
 
@@ -420,37 +469,52 @@ class AIService {
     const messages = build_yue_openai_messages(context, message, 15)
 
     try {
-      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${env.GROQ_API_KEY}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          model,
-          messages,
-          temperature: config.temperature ?? 0.7,
-          max_tokens: config.maxTokens ?? 256,
-          stream: false
-        }),
-        signal: controller.signal
-      })
+      const apiKeys = this.getGroqApiKeys()
 
-      if (!response.ok) {
+      for (let i = 0; i < apiKeys.length; i++) {
+        const apiKey = apiKeys[i]
+        const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${apiKey}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            model,
+            messages,
+            temperature: config.temperature ?? 0.7,
+            max_tokens: config.maxTokens ?? 256,
+            stream: false
+          }),
+          signal: controller.signal
+        })
+
+        if (response.ok) {
+          const data = (await response.json()) as {
+            choices?: Array<{ message?: { content?: string } }>
+          }
+
+          return (
+            data.choices?.[0]?.message?.content?.trim() || 'Sorry, I could not generate a response.'
+          )
+        }
+
         const contentType = response.headers.get('content-type') || ''
         const details = contentType.includes('application/json')
           ? ((await response.json().catch(() => null)) as { error?: { message?: string } } | null)
           : null
 
         const msg = details?.error?.message ?? response.statusText
-        throw new Error(`Groq API error (${response.status}): ${msg}`)
+
+        const shouldTryNextKey =
+          i < apiKeys.length - 1 && this.isGroqKeyFallbackCandidate(response.status, msg)
+
+        if (!shouldTryNextKey) {
+          throw new Error(`Groq API error (${response.status}): ${msg}`)
+        }
       }
 
-      const data = (await response.json()) as {
-        choices?: Array<{ message?: { content?: string } }>
-      }
-
-      return data.choices?.[0]?.message?.content?.trim() || 'Sorry, I could not generate a response.'
+      throw new Error('Groq API error: no API keys available')
     } finally {
       clearTimeout(timeout)
     }

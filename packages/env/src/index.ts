@@ -30,29 +30,29 @@ export const env = createEnv({
   server: {
     ...(flags.spotify
       ? {
-        SPOTIFY_CLIENT_ID: z.string().min(1),
-        SPOTIFY_CLIENT_SECRET: z.string().min(1),
-        SPOTIFY_REFRESH_TOKEN: z.string().min(1)
-      }
+          SPOTIFY_CLIENT_ID: z.string().min(1),
+          SPOTIFY_CLIENT_SECRET: z.string().min(1),
+          SPOTIFY_REFRESH_TOKEN: z.string().min(1)
+        }
       : {}),
 
     ...(flags.auth
       ? {
-        BETTER_AUTH_SECRET: z.string().min(1),
-        BETTER_AUTH_URL: z.string().url(),
-        GOOGLE_CLIENT_ID: z.string().min(1),
-        GOOGLE_CLIENT_SECRET: z.string().min(1),
-        GITHUB_CLIENT_ID: z.string().min(1),
-        GITHUB_CLIENT_SECRET: z.string().min(1)
-      }
+          BETTER_AUTH_SECRET: z.string().min(1),
+          BETTER_AUTH_URL: z.string().url(),
+          GOOGLE_CLIENT_ID: z.string().min(1),
+          GOOGLE_CLIENT_SECRET: z.string().min(1),
+          GITHUB_CLIENT_ID: z.string().min(1),
+          GITHUB_CLIENT_SECRET: z.string().min(1)
+        }
       : {}),
 
     ...(flags.stats
       ? {
-        GOOGLE_API_KEY: z.string().min(1),
-        GITHUB_TOKEN: z.string().min(1),
-        WAKATIME_API_KEY: z.string().min(1)
-      }
+          GOOGLE_API_KEY: z.string().min(1),
+          GITHUB_TOKEN: z.string().min(1),
+          WAKATIME_API_KEY: z.string().min(1)
+        }
       : {}),
 
     RESEND_API_KEY: z.string().min(1),
@@ -61,39 +61,40 @@ export const env = createEnv({
 
     ...(flags.turnstile
       ? {
-        TURNSTILE_SECRET_KEY: z.string().min(1)
-      }
+          TURNSTILE_SECRET_KEY: z.string().min(1)
+        }
       : {}),
 
     ...(flags.guestbookNotification
       ? {
-        DISCORD_WEBHOOK_URL: z.string().url()
-      }
+          DISCORD_WEBHOOK_URL: z.string().url()
+        }
       : {}),
 
     ...(flags.likeButton
       ? {
-        IP_ADDRESS_SALT: z.string().min(1)
-      }
+          IP_ADDRESS_SALT: z.string().min(1)
+        }
       : {}),
 
     ...(flags.gemini
       ? {
-        GEMINI_API_KEY: z.string().min(1)
-      }
+          GEMINI_API_KEY: z.string().min(1)
+        }
       : {}),
 
     ...(flags.groq
       ? {
-        GROQ_API_KEY: z.string().min(1)
-      }
+          GROQ_API_KEY: z.string().min(1),
+          GROQ_API_KEY_FALLBACK: z.string().min(1).optional()
+        }
       : {}),
 
-    ...((flags.hf || flags.hfLocal)
+    ...(flags.hf || flags.hfLocal
       ? {
-        YUE_LLM_SPACE_URL: z.string().url(),
-        YUE_LLM_API_TOKEN: z.string().min(1)
-      }
+          YUE_LLM_SPACE_URL: z.string().url(),
+          YUE_LLM_API_TOKEN: z.string().min(1)
+        }
       : {}),
 
     GEMINI_MODEL: z.string().min(1).optional(),
@@ -110,9 +111,9 @@ export const env = createEnv({
   client: {
     ...(flags.analytics
       ? {
-        NEXT_PUBLIC_UMAMI_URL: z.string().url(),
-        NEXT_PUBLIC_UMAMI_WEBSITE_ID: z.string().uuid()
-      }
+          NEXT_PUBLIC_UMAMI_URL: z.string().url(),
+          NEXT_PUBLIC_UMAMI_WEBSITE_ID: z.string().uuid()
+        }
       : {}),
 
     NEXT_PUBLIC_WEBSITE_URL: z.string().url().optional(),
@@ -133,8 +134,8 @@ export const env = createEnv({
 
     ...(flags.turnstile
       ? {
-        NEXT_PUBLIC_TURNSTILE_SITE_KEY: z.string().min(1)
-      }
+          NEXT_PUBLIC_TURNSTILE_SITE_KEY: z.string().min(1)
+        }
       : {}),
 
     NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA: z.string().min(1).optional(),
