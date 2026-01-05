@@ -1,7 +1,14 @@
 'use client'
 
 import { useState } from 'react'
-import { Button, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@isyuricunha/ui'
+import {
+  Button,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@isyuricunha/ui'
 import {
   Plus,
   Search,

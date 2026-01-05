@@ -775,17 +775,27 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
                 <Select
                   value={state.preferences.bubblePosition}
                   onValueChange={(value) =>
-                    updatePreferences({ bubblePosition: value as MascotPreferences['bubblePosition'] })
+                    updatePreferences({
+                      bubblePosition: value as MascotPreferences['bubblePosition']
+                    })
                   }
                 >
                   <SelectTrigger className='border-input/50 bg-background/80 text-foreground hover:border-primary/50 focus:ring-primary/30 focus:border-primary cursor-pointer rounded-xl border-2 px-3 py-2.5 text-xs shadow-lg backdrop-blur-sm transition-all duration-200 hover:shadow-xl focus:ring-2 focus:ring-offset-2 focus:outline-none'>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value='bottom-right'>{t('mascot.settings.positions.bottomRight')}</SelectItem>
-                    <SelectItem value='bottom-left'>{t('mascot.settings.positions.bottomLeft')}</SelectItem>
-                    <SelectItem value='top-right'>{t('mascot.settings.positions.topRight')}</SelectItem>
-                    <SelectItem value='top-left'>{t('mascot.settings.positions.topLeft')}</SelectItem>
+                    <SelectItem value='bottom-right'>
+                      {t('mascot.settings.positions.bottomRight')}
+                    </SelectItem>
+                    <SelectItem value='bottom-left'>
+                      {t('mascot.settings.positions.bottomLeft')}
+                    </SelectItem>
+                    <SelectItem value='top-right'>
+                      {t('mascot.settings.positions.topRight')}
+                    </SelectItem>
+                    <SelectItem value='top-left'>
+                      {t('mascot.settings.positions.topLeft')}
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </label>

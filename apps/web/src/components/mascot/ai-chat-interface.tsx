@@ -78,7 +78,7 @@ const ChatMarkdown = memo((props: ChatMarkdownProps) => {
   const { children } = props
 
   return (
-    <div className='prose prose-sm dark:prose-invert max-w-none whitespace-normal [&_p]:m-0 [&_ul]:my-2 [&_ol]:my-2 [&_pre]:my-2'>
+    <div className='prose prose-sm dark:prose-invert max-w-none whitespace-normal [&_ol]:my-2 [&_p]:m-0 [&_pre]:my-2 [&_ul]:my-2'>
       <MarkdownToJSX
         options={{
           overrides: {
@@ -87,8 +87,11 @@ const ChatMarkdown = memo((props: ChatMarkdownProps) => {
               const code_props = preProps?.children?.props
               const raw_code = code_props?.children
               const code = typeof raw_code === 'string' ? raw_code : String(raw_code ?? '')
-              const class_name = typeof code_props?.className === 'string' ? code_props.className : ''
-              const lang = class_name.startsWith('lang-') ? class_name.replace('lang-', '') : undefined
+              const class_name =
+                typeof code_props?.className === 'string' ? code_props.className : ''
+              const lang = class_name.startsWith('lang-')
+                ? class_name.replace('lang-', '')
+                : undefined
 
               return (
                 <CodeBlock data-lang={lang} className='whitespace-pre-wrap' figureClassName='my-2'>
@@ -243,7 +246,11 @@ export default function AIChatInterface({
     setConversations(nextConversations)
     setActiveConversationId(nextActiveId)
     setProvider(nextProvider)
-    saveYueChatState({ conversations: nextConversations, activeConversationId: nextActiveId, provider: nextProvider })
+    saveYueChatState({
+      conversations: nextConversations,
+      activeConversationId: nextActiveId,
+      provider: nextProvider
+    })
   }, [getWelcomeMessage, isOpen, t])
 
   useEffect(() => {
@@ -454,9 +461,7 @@ export default function AIChatInterface({
           accumulated += decoder.decode(value, { stream: true })
           updateActiveConversation((c) => ({
             ...c,
-            messages: c.messages.map((m) =>
-              m.id === messageId ? { ...m, text: accumulated } : m
-            )
+            messages: c.messages.map((m) => (m.id === messageId ? { ...m, text: accumulated } : m))
           }))
         }
 
@@ -760,9 +765,13 @@ export default function AIChatInterface({
                     {flags.groq && (
                       <SelectItem value='groq'>{t('mascot.aiChat.providers.groq')}</SelectItem>
                     )}
-                    {flags.hf && <SelectItem value='hf'>{t('mascot.aiChat.providers.hf')}</SelectItem>}
+                    {flags.hf && (
+                      <SelectItem value='hf'>{t('mascot.aiChat.providers.hf')}</SelectItem>
+                    )}
                     {flags.hfLocal && (
-                      <SelectItem value='hf_local'>{t('mascot.aiChat.providers.hf_local')}</SelectItem>
+                      <SelectItem value='hf_local'>
+                        {t('mascot.aiChat.providers.hf_local')}
+                      </SelectItem>
                     )}
                     {flags.gemini && (
                       <SelectItem value='gemini'>{t('mascot.aiChat.providers.gemini')}</SelectItem>
@@ -907,7 +916,10 @@ export default function AIChatInterface({
                     </div>
                     <div className='space-y-2'>
                       {message.citations?.map((c) => (
-                        <Card key={c.id} className='bg-background/40 border-border/40 p-3 shadow-none'>
+                        <Card
+                          key={c.id}
+                          className='bg-background/40 border-border/40 p-3 shadow-none'
+                        >
                           <div className='flex items-start justify-between gap-3'>
                             <div className='min-w-0'>
                               <div className='mb-1 flex items-center gap-2'>
@@ -918,11 +930,14 @@ export default function AIChatInterface({
                                   {t(`mascot.aiChat.citations.types.${c.type}` as any)}
                                 </Badge>
                               </div>
-                              <Link href={c.href} className='text-foreground block text-sm font-medium hover:underline'>
+                              <Link
+                                href={c.href}
+                                className='text-foreground block text-sm font-medium hover:underline'
+                              >
                                 {c.title}
                               </Link>
                               {c.excerpt ? (
-                                <div className='text-muted-foreground mt-1 text-xs line-clamp-2'>
+                                <div className='text-muted-foreground mt-1 line-clamp-2 text-xs'>
                                   {c.excerpt}
                                 </div>
                               ) : null}
@@ -944,7 +959,9 @@ export default function AIChatInterface({
                                       </span>
                                     </Link>
                                   </TooltipTrigger>
-                                  <TooltipContent>{t('mascot.aiChat.citations.actions.open')}</TooltipContent>
+                                  <TooltipContent>
+                                    {t('mascot.aiChat.citations.actions.open')}
+                                  </TooltipContent>
                                 </Tooltip>
 
                                 <Tooltip>
@@ -962,7 +979,9 @@ export default function AIChatInterface({
                                       </span>
                                     </Button>
                                   </TooltipTrigger>
-                                  <TooltipContent>{t('mascot.aiChat.citations.actions.copyLink')}</TooltipContent>
+                                  <TooltipContent>
+                                    {t('mascot.aiChat.citations.actions.copyLink')}
+                                  </TooltipContent>
                                 </Tooltip>
 
                                 <Tooltip>
@@ -972,7 +991,9 @@ export default function AIChatInterface({
                                       size='sm'
                                       className='h-8 w-8 justify-center px-0 text-xs sm:w-auto sm:px-2'
                                       disabled={isLoading}
-                                      onClick={() => void more_like_this({ title: c.title, type: c.type })}
+                                      onClick={() =>
+                                        void more_like_this({ title: c.title, type: c.type })
+                                      }
                                       aria-label={t('mascot.aiChat.citations.actions.moreLikeThis')}
                                     >
                                       <Sparkles className='h-3.5 w-3.5 sm:mr-1' />
@@ -981,7 +1002,9 @@ export default function AIChatInterface({
                                       </span>
                                     </Button>
                                   </TooltipTrigger>
-                                  <TooltipContent>{t('mascot.aiChat.citations.actions.moreLikeThis')}</TooltipContent>
+                                  <TooltipContent>
+                                    {t('mascot.aiChat.citations.actions.moreLikeThis')}
+                                  </TooltipContent>
                                 </Tooltip>
                               </div>
                             </div>

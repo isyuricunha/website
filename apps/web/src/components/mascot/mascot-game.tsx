@@ -163,7 +163,10 @@ const MascotGame = ({ isOpen, onClose }: MascotGameProps) => {
             <label htmlFor='difficulty-select' className='text-sm font-medium'>
               Difficulty:
             </label>
-            <Select value={difficulty} onValueChange={(value) => setDifficulty(value as typeof difficulty)}>
+            <Select
+              value={difficulty}
+              onValueChange={(value) => setDifficulty(value as typeof difficulty)}
+            >
               <SelectTrigger
                 id='difficulty-select'
                 className='h-9 w-28 rounded border text-xs'
@@ -182,7 +185,10 @@ const MascotGame = ({ isOpen, onClose }: MascotGameProps) => {
             <label htmlFor='mode-select' className='text-sm font-medium'>
               Mode:
             </label>
-            <Select value={gameMode} onValueChange={(value) => setGameMode(value as typeof gameMode)}>
+            <Select
+              value={gameMode}
+              onValueChange={(value) => setGameMode(value as typeof gameMode)}
+            >
               <SelectTrigger
                 id='mode-select'
                 className='h-9 w-32 rounded border text-xs'

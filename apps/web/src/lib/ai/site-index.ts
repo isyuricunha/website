@@ -64,7 +64,10 @@ const extract_quoted_phrases = (value: string): string[] => {
   return phrases
 }
 
-const infer_excluded_post_slugs_from_query = (params: { query: string; locale: string }): string[] => {
+const infer_excluded_post_slugs_from_query = (params: {
+  query: string
+  locale: string
+}): string[] => {
   const { query, locale } = params
   const slugs: string[] = []
 

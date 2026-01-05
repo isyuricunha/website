@@ -492,7 +492,8 @@ export default function AnnouncementManagement() {
                 const has_pt_title =
                   typeof announcement.titlePt === 'string' && announcement.titlePt.trim().length > 0
                 const has_pt_content =
-                  typeof announcement.contentPt === 'string' && announcement.contentPt.trim().length > 0
+                  typeof announcement.contentPt === 'string' &&
+                  announcement.contentPt.trim().length > 0
                 return (
                   <Card
                     key={announcement.id}

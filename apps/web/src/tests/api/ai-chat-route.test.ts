@@ -101,7 +101,11 @@ describe('/api/ai/chat', () => {
         context: {
           currentPage: '/test',
           conversation: [
-            { role: 'user', content: 'fala uma postagem bacana de infra', timestamp: new Date().toISOString() }
+            {
+              role: 'user',
+              content: 'fala uma postagem bacana de infra',
+              timestamp: new Date().toISOString()
+            }
           ]
         }
       })

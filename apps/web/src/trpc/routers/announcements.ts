@@ -65,7 +65,10 @@ export const announcementsRouter = createTRPCRouter({
         }
 
         if (requested_provider) {
-          return [requested_provider, ...available_providers.filter((p) => p !== requested_provider)]
+          return [
+            requested_provider,
+            ...available_providers.filter((p) => p !== requested_provider)
+          ]
         }
 
         return available_providers
@@ -254,18 +257,18 @@ ${input.content}
                 : announcement.content,
             targetAudience: announcement.targetAudience
               ? (() => {
-                const parsed = parseTargetAudience(announcement.targetAudience)
-                if (!parsed) return null
-                if (!isRecord(parsed)) return null
-                const userRoles =
-                  getStringArray(parsed, 'userRoles') ??
-                  getStringArray(parsed, 'roles') ??
-                  undefined
-                return {
-                  ...parsed,
-                  userRoles
-                }
-              })()
+                  const parsed = parseTargetAudience(announcement.targetAudience)
+                  if (!parsed) return null
+                  if (!isRecord(parsed)) return null
+                  const userRoles =
+                    getStringArray(parsed, 'userRoles') ??
+                    getStringArray(parsed, 'roles') ??
+                    undefined
+                  return {
+                    ...parsed,
+                    userRoles
+                  }
+                })()
               : null,
             userInteraction: userInteractions[announcement.id] || null
           }))

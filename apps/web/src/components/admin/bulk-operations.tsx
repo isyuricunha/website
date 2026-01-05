@@ -293,7 +293,10 @@ export const BulkOperations = () => {
             {selectedAction === 'update_role' && (
               <div className='flex-1'>
                 <label className='mb-2 block text-sm font-medium'>New Role</label>
-                <Select value={newRole} onValueChange={(value) => setNewRole(value as 'user' | 'admin')}>
+                <Select
+                  value={newRole}
+                  onValueChange={(value) => setNewRole(value as 'user' | 'admin')}
+                >
                   <SelectTrigger className='bg-background border-border text-foreground focus:ring-ring focus:ring-offset-background w-full rounded-md border px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-offset-2'>
                     <SelectValue />
                   </SelectTrigger>

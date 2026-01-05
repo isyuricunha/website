@@ -1,7 +1,14 @@
 'use client'
 
 import { useMemo, useState, useEffect, useRef } from 'react'
-import { Button, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@isyuricunha/ui'
+import {
+  Button,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@isyuricunha/ui'
 import {
   RefreshCw,
   AlertTriangle,

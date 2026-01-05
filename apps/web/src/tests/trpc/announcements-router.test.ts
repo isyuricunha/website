@@ -238,7 +238,7 @@ const createDbMock = () => {
   })
 
   const updateSet = vi.fn((data: any) => {
-    ; (updateWhere as any).__pendingSet = data
+    ;(updateWhere as any).__pendingSet = data
     return { where: updateWhere }
   })
 
@@ -396,7 +396,11 @@ describe('announcementsRouter', () => {
       }
     } as unknown as Parameters<typeof announcementsRouter.createCaller>[0])
 
-    const result = await caller.getAnnouncements({ active: true, adminView: false, locale: 'pt-BR' })
+    const result = await caller.getAnnouncements({
+      active: true,
+      adminView: false,
+      locale: 'pt-BR'
+    })
     const localized = result.announcements.find((a) => a.id === 'a-pt-fallback')
     expect(localized?.title).toBe('Hello')
     expect(localized?.content).toBe('English')

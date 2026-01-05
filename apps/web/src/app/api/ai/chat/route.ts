@@ -280,7 +280,11 @@ export async function POST(req: NextRequest) {
         return Array.from(new Set(ids))
       })()
 
-      const rec = build_post_recommendation_answer({ query: navigation_query, locale, excludeIds: exclude_ids })
+      const rec = build_post_recommendation_answer({
+        query: navigation_query,
+        locale,
+        excludeIds: exclude_ids
+      })
 
       const payload = {
         requestId: request_id,
