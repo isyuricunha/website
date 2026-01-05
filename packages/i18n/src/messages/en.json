@@ -964,6 +964,14 @@
       "deleteChat": "Delete chat",
       "deleteConfirm": "Are you sure you want to delete this chat?",
       "share": "Share",
+      "citations": {
+        "title": "Sources",
+        "types": {
+          "post": "Post",
+          "project": "Project",
+          "page": "Page"
+        }
+      },
       "shareCopied": "Share link copied to clipboard",
       "shareCopyFailed": "Failed to copy share link",
       "importedTitle": "Imported chat",

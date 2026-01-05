@@ -964,6 +964,14 @@
       "deleteChat": "Excluir conversa",
       "deleteConfirm": "Tem certeza que deseja excluir esta conversa?",
       "share": "Compartilhar",
+      "citations": {
+        "title": "Fontes",
+        "types": {
+          "post": "Post",
+          "project": "Projeto",
+          "page": "Página"
+        }
+      },
       "shareCopied": "Link de compartilhamento copiado",
       "shareCopyFailed": "Falha ao copiar link de compartilhamento",
       "importedTitle": "Conversa importada",

@@ -6,7 +6,9 @@ import {
   Avatar,
   AvatarFallback,
   AvatarImage,
+  Badge,
   Button,
+  Card,
   CodeBlock,
   DropdownMenu,
   DropdownMenuContent,
@@ -102,6 +104,12 @@ const ChatMarkdown = memo((props: ChatMarkdownProps) => {
 })
 
 ChatMarkdown.displayName = 'ChatMarkdown'
+
+const get_citation_badge_variant = (type: 'post' | 'project' | 'page') => {
+  if (type === 'post') return 'default'
+  if (type === 'project') return 'secondary'
+  return 'outline'
+}
 
 export default function AIChatInterface({
   isOpen,
@@ -825,16 +833,33 @@ export default function AIChatInterface({
 
                 {!message.isUser && !message.isError && (message.citations?.length ?? 0) > 0 ? (
                   <div className='border-border/20 mt-3 space-y-2 border-t pt-2'>
-                    <div className='text-muted-foreground text-[11px] font-medium'>Sources</div>
-                    <div className='space-y-1'>
+                    <div className='text-muted-foreground text-[11px] font-medium'>
+                      {t('mascot.aiChat.citations.title')}
+                    </div>
+                    <div className='space-y-2'>
                       {message.citations?.map((c) => (
-                        <Link
-                          key={c.id}
-                          href={c.href}
-                          className='text-primary block text-[11px] hover:underline'
-                        >
-                          {c.title}
-                        </Link>
+                        <Card key={c.id} className='bg-background/40 border-border/40 p-3 shadow-none'>
+                          <div className='flex items-start justify-between gap-3'>
+                            <div className='min-w-0'>
+                              <div className='mb-1 flex items-center gap-2'>
+                                <Badge
+                                  variant={get_citation_badge_variant(c.type)}
+                                  className='h-5 px-2 text-[10px]'
+                                >
+                                  {t(`mascot.aiChat.citations.types.${c.type}` as any)}
+                                </Badge>
+                              </div>
+                              <Link href={c.href} className='text-foreground block text-sm font-medium hover:underline'>
+                                {c.title}
+                              </Link>
+                              {c.excerpt ? (
+                                <div className='text-muted-foreground mt-1 text-xs line-clamp-2'>
+                                  {c.excerpt}
+                                </div>
+                              ) : null}
+                            </div>
+                          </div>
+                        </Card>
                       ))}
                     </div>
                   </div>
