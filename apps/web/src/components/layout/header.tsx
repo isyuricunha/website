@@ -1,13 +1,16 @@
 'use client'
 
 import { useTranslations } from '@isyuricunha/i18n/client'
-import { Logo } from '@isyuricunha/ui'
+import { useRouter } from '@isyuricunha/i18n/routing'
+import { Button, Logo } from '@isyuricunha/ui'
 import { cn } from '@isyuricunha/utils'
+import { LayoutDashboard } from 'lucide-react'
 import { motion } from 'motion/react'
 import { useEffect, useState } from 'react'
 
 import CommandMenu from '@/components/command-menu'
 import SiteSearch from '@/components/site-search'
+import { useSession } from '@/lib/auth-client'
 
 import Link from '../link'
 
@@ -20,6 +23,9 @@ import ThemeSwitcher from './theme-switcher'
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false)
   const t = useTranslations()
+  const router = useRouter()
+  const { data: session, isPending } = useSession()
+  const is_admin = !isPending && session?.user.role === 'admin'
 
   useEffect(() => {
     const changeBackground = () => {
@@ -69,6 +75,17 @@ const Header = () => {
           <SiteSearch />
         </div>
         <Navbar />
+        {is_admin ? (
+          <Button
+            variant='ghost'
+            className='size-9 p-0'
+            aria-label='Admin'
+            title='Admin'
+            onClick={() => router.push('/admin')}
+          >
+            <LayoutDashboard className='size-4' />
+          </Button>
+        ) : null}
         <NotificationsDropdown />
         <ThemeSwitcher />
         <LocaleSwitcher />

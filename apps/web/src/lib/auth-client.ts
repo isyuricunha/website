@@ -1,4 +1,4 @@
-import type { auth } from './auth'
+import type { Auth } from './auth'
 
 import { toast } from '@isyuricunha/ui'
 import {
@@ -9,9 +9,9 @@ import {
 } from 'better-auth/client/plugins'
 import { createAuthClient } from 'better-auth/react'
 
-const authClient: ReturnType<typeof createAuthClient> = createAuthClient({
+const authClient = createAuthClient({
   plugins: [
-    inferAdditionalFields<typeof auth>(),
+    inferAdditionalFields<Auth>(),
     usernameClient(),
     adminClient(),
     anonymousClient()
