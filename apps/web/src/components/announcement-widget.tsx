@@ -44,7 +44,8 @@ export default function AnnouncementWidget({ className, maxItems = 5 }: Announce
   // Get active announcements
   const { data: announcementsData, isLoading } = api.announcements.getAnnouncements.useQuery({
     active: true,
-    adminView: false
+    adminView: false,
+    locale
   })
 
   const markViewedMutation = api.announcements.markAnnouncementViewed.useMutation()

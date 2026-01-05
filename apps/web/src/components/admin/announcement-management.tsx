@@ -56,6 +56,8 @@ interface EditAnnouncementData {
   id: string
   title: string
   content: string
+  titlePt?: string
+  contentPt?: string
   type: string
   priority: number
   isDismissible: boolean
@@ -116,6 +118,8 @@ export default function AnnouncementManagement() {
   const handleCreateAnnouncement = (formData: FormData) => {
     const title = formData.get('title') as string
     const content = formData.get('content') as string
+    const title_pt = (formData.get('titlePt') as string | null) ?? ''
+    const content_pt = (formData.get('contentPt') as string | null) ?? ''
     const type = formData.get('type') as any
     const priority = Number.parseInt(formData.get('priority') as string) || 0
     const isDismissible = formData.get('isDismissible') === 'on'
@@ -128,6 +132,8 @@ export default function AnnouncementManagement() {
     createMutation.mutate({
       title,
       content,
+      titlePt: title_pt.trim() ? title_pt : undefined,
+      contentPt: content_pt.trim() ? content_pt : undefined,
       type,
       priority,
       isDismissible
@@ -139,6 +145,8 @@ export default function AnnouncementManagement() {
 
     const title = formData.get('title') as string
     const content = formData.get('content') as string
+    const title_pt = (formData.get('titlePt') as string | null) ?? ''
+    const content_pt = (formData.get('contentPt') as string | null) ?? ''
     const type = formData.get('type') as any
     const priority = Number.parseInt(formData.get('priority') as string) || 0
     const isDismissible = formData.get('isDismissible') === 'on'
@@ -153,6 +161,8 @@ export default function AnnouncementManagement() {
       id: editingAnnouncement.id,
       title,
       content,
+      titlePt: title_pt.trim() ? title_pt : undefined,
+      contentPt: content_pt.trim() ? content_pt : undefined,
       type,
       priority,
       isDismissible,
@@ -176,6 +186,8 @@ export default function AnnouncementManagement() {
       id: announcement.id,
       title: announcement.title,
       content: announcement.content,
+      titlePt: announcement.titlePt ?? undefined,
+      contentPt: announcement.contentPt ?? undefined,
       type: announcement.type,
       priority: announcement.priority,
       isDismissible: announcement.isDismissible,
@@ -227,6 +239,11 @@ export default function AnnouncementManagement() {
                 </div>
 
                 <div>
+                  <Label htmlFor='title-pt'>Title (pt-BR)</Label>
+                  <Input id='title-pt' name='titlePt' placeholder='Título em português (opcional)' />
+                </div>
+
+                <div>
                   <Label htmlFor='content'>Content</Label>
                   <Textarea
                     id='content'
@@ -234,6 +251,16 @@ export default function AnnouncementManagement() {
                     placeholder='Announcement content'
                     rows={4}
                     required
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor='content-pt'>Content (pt-BR)</Label>
+                  <Textarea
+                    id='content-pt'
+                    name='contentPt'
+                    placeholder='Conteúdo em português (opcional)'
+                    rows={4}
                   />
                 </div>
 
@@ -535,6 +562,15 @@ export default function AnnouncementManagement() {
                 </div>
 
                 <div>
+                  <Label htmlFor='edit-title-pt'>Title (pt-BR)</Label>
+                  <Input
+                    id='edit-title-pt'
+                    name='titlePt'
+                    defaultValue={editingAnnouncement.titlePt ?? ''}
+                  />
+                </div>
+
+                <div>
                   <Label htmlFor='edit-content'>Content</Label>
                   <Textarea
                     id='edit-content'
@@ -542,6 +578,16 @@ export default function AnnouncementManagement() {
                     defaultValue={editingAnnouncement.content}
                     rows={4}
                     required
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor='edit-content-pt'>Content (pt-BR)</Label>
+                  <Textarea
+                    id='edit-content-pt'
+                    name='contentPt'
+                    defaultValue={editingAnnouncement.contentPt ?? ''}
+                    rows={4}
                   />
                 </div>
 

@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useTranslations } from '@isyuricunha/i18n/client'
+import { useLocale, useTranslations } from '@isyuricunha/i18n/client'
 import { X } from 'lucide-react'
 
 import { api } from '@/trpc/react'
@@ -16,6 +16,7 @@ import {
 
 export default function AnnouncementBanner() {
   const t = useTranslations()
+  const locale = useLocale()
   const [dismissedAnnouncements, setDismissedAnnouncements] = useState<string[]>([])
   const [viewedAnnouncements, setViewedAnnouncements] = useState<string[]>([])
 
@@ -27,7 +28,8 @@ export default function AnnouncementBanner() {
   // Get active announcements
   const { data: announcementsData } = api.announcements.getAnnouncements.useQuery({
     active: true,
-    adminView: false
+    adminView: false,
+    locale
   })
 
   const markViewedMutation = api.announcements.markAnnouncementViewed.useMutation()

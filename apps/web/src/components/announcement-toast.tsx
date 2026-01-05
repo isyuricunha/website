@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
-import { useTranslations } from '@isyuricunha/i18n/client'
+import { useLocale, useTranslations } from '@isyuricunha/i18n/client'
 import { toast } from 'sonner'
 import { X } from 'lucide-react'
 
@@ -19,11 +19,13 @@ import {
 
 export default function AnnouncementToast() {
   const t_announcement = useTranslations('component.announcement-toast')
+  const locale = useLocale()
 
   // Get urgent announcements (priority >= 3)
   const { data: announcementsData } = api.announcements.getAnnouncements.useQuery({
     active: true,
-    adminView: false
+    adminView: false,
+    locale
   })
 
   const markViewedMutation = api.announcements.markAnnouncementViewed.useMutation()

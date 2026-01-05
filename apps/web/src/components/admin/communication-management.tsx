@@ -134,6 +134,8 @@ export default function CommunicationManagement() {
   const handleCreateAnnouncement = (formData: FormData) => {
     const title = formData.get('title') as string
     const content = formData.get('content') as string
+    const title_pt = (formData.get('titlePt') as string | null) ?? ''
+    const content_pt = (formData.get('contentPt') as string | null) ?? ''
     const type = formData.get('type') as any
     const priority = Number.parseInt(formData.get('priority') as string) || 0
 
@@ -145,6 +147,8 @@ export default function CommunicationManagement() {
     createAnnouncementMutation.mutate({
       title,
       content,
+      titlePt: title_pt.trim() ? title_pt : undefined,
+      contentPt: content_pt.trim() ? content_pt : undefined,
       type,
       priority
     })
@@ -519,6 +523,14 @@ export default function CommunicationManagement() {
                     />
                   </div>
                   <div>
+                    <Label htmlFor='announcementTitlePt'>Title (pt-BR)</Label>
+                    <Input
+                      id='announcementTitlePt'
+                      name='titlePt'
+                      placeholder='Aviso de manutenção (opcional)'
+                    />
+                  </div>
+                  <div>
                     <Label htmlFor='announcementType'>Type</Label>
                     <Select name='type' defaultValue='info'>
                       <SelectTrigger>
@@ -554,6 +566,15 @@ export default function CommunicationManagement() {
                       placeholder='We will be performing scheduled maintenance...'
                       rows={4}
                       required
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor='announcementContentPt'>Content (pt-BR)</Label>
+                    <Textarea
+                      id='announcementContentPt'
+                      name='contentPt'
+                      placeholder='Vamos realizar uma manutenção programada... (opcional)'
+                      rows={4}
                     />
                   </div>
                   <Button type='submit' disabled={createAnnouncementMutation.isPending}>
