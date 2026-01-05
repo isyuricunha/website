@@ -738,11 +738,11 @@ Translation:`
 
   getAvailableProviders(): AIProvider[] {
     const providers: AIProvider[] = []
-    // Preferred fallback order: hf -> hf_local -> gemini
+    // Preferred fallback order: groq -> hf -> hf_local -> gemini -> ollama
+    if (this.isGroqAvailable()) providers.push('groq')
     if (this.isHfAvailable()) providers.push('hf')
     if (this.isHfLocalAvailable()) providers.push('hf_local')
     if (this.isGeminiAvailable()) providers.push('gemini')
-    if (this.isGroqAvailable()) providers.push('groq')
 
     // Keep Ollama as an optional provider (useful for local dev)
     if (this.isOllamaAvailable()) providers.push('ollama')
