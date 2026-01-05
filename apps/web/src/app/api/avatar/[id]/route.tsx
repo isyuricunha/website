@@ -10,7 +10,7 @@ import { ImageResponse } from 'next/og'
 import { NextResponse } from 'next/server'
 import color from 'tinycolor2'
 
-export const runtime = 'edge'
+export const runtime = 'nodejs'
 
 type AvatarRouteProps = {
   params: Promise<{

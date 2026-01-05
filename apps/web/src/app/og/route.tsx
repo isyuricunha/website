@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og'
 import { NextRequest } from 'next/server'
 
-export const runtime = 'edge'
+export const runtime = 'nodejs'
 
 const ogTheme = {
   background: 'linear-gradient(135deg, hsl(0 0% 2%) 0%, hsl(0 0% 6%) 100%)',
