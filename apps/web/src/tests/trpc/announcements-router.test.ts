@@ -39,6 +39,19 @@ vi.mock('@/lib/logger', () => ({
   }
 }))
 
+const generateResponseMock = vi.fn(async () => {
+  return JSON.stringify({ title: 'Olá', content: 'Português' })
+})
+
+vi.mock('@/lib/ai/ai-service', () => {
+  return {
+    aiService: {
+      getAvailableProviders: () => ['groq'],
+      generateResponse: generateResponseMock
+    }
+  }
+})
+
 const logSystemActionMock = vi.fn().mockImplementation(async () => {
   return
 })
@@ -387,6 +400,33 @@ describe('announcementsRouter', () => {
     const localized = result.announcements.find((a) => a.id === 'a-pt-fallback')
     expect(localized?.title).toBe('Hello')
     expect(localized?.content).toBe('English')
+  }, 15_000)
+
+  it('translateAnnouncement returns pt-BR fields using available provider', async () => {
+    const { announcementsRouter } = await import('@/trpc/routers/announcements')
+
+    const db = createDbMock()
+
+    const caller = announcementsRouter.createCaller({
+      db: db as unknown,
+      headers: new Headers(),
+      session: {
+        user: { id: 'admin-1', role: 'admin' }
+      }
+    } as unknown as Parameters<typeof announcementsRouter.createCaller>[0])
+
+    const result = await caller.translateAnnouncement({
+      title: 'Hello',
+      content: 'English',
+      fromLang: 'en',
+      toLang: 'pt',
+      provider: 'auto'
+    })
+
+    expect(result.titlePt).toBe('Olá')
+    expect(result.contentPt).toBe('Português')
+    expect(result.provider).toBe('groq')
+    expect(generateResponseMock).toHaveBeenCalled()
   }, 15_000)
 
   it('markAnnouncementViewed inserts a new interaction when missing', async () => {
