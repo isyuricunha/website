@@ -10,12 +10,7 @@ import {
 import { createAuthClient } from 'better-auth/react'
 
 const authClient = createAuthClient({
-  plugins: [
-    inferAdditionalFields<Auth>(),
-    usernameClient(),
-    adminClient(),
-    anonymousClient()
-  ],
+  plugins: [inferAdditionalFields<Auth>(), usernameClient(), adminClient(), anonymousClient()],
   fetchOptions: {
     onError(e) {
       if (e.error.status === 429) {
