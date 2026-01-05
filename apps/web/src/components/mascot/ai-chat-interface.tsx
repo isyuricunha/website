@@ -7,11 +7,13 @@ import {
   AvatarFallback,
   AvatarImage,
   Button,
+  CodeBlock,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  Link,
   Select,
   SelectContent,
   SelectItem,
@@ -23,6 +25,7 @@ import {
   TooltipTrigger
 } from '@isyuricunha/ui'
 
+import MarkdownToJSX from 'markdown-to-jsx'
 import {
   Copy,
   Eraser,
@@ -38,7 +41,7 @@ import {
   Trash2,
   X
 } from 'lucide-react'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Fragment, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { toast } from 'sonner'
 
 import {
@@ -60,6 +63,45 @@ interface AIChatInterfaceProps {
   readonly pagePath?: string
   readonly onMessageSent?: (message: string) => void
 }
+
+type ChatMarkdownProps = {
+  children: string
+}
+
+const ChatMarkdown = memo((props: ChatMarkdownProps) => {
+  const { children } = props
+
+  return (
+    <div className='prose prose-sm dark:prose-invert max-w-none whitespace-normal [&_p]:m-0 [&_ul]:my-2 [&_ol]:my-2 [&_pre]:my-2'>
+      <MarkdownToJSX
+        options={{
+          overrides: {
+            a: Link,
+            pre: (preProps: any) => {
+              const code_props = preProps?.children?.props
+              const raw_code = code_props?.children
+              const code = typeof raw_code === 'string' ? raw_code : String(raw_code ?? '')
+              const class_name = typeof code_props?.className === 'string' ? code_props.className : ''
+              const lang = class_name.startsWith('lang-') ? class_name.replace('lang-', '') : undefined
+
+              return (
+                <CodeBlock data-lang={lang} className='whitespace-pre-wrap' figureClassName='my-2'>
+                  <code>{code}</code>
+                </CodeBlock>
+              )
+            }
+          },
+          disableParsingRawHTML: true,
+          wrapper: Fragment
+        }}
+      >
+        {children}
+      </MarkdownToJSX>
+    </div>
+  )
+})
+
+ChatMarkdown.displayName = 'ChatMarkdown'
 
 export default function AIChatInterface({
   isOpen,
@@ -775,20 +817,24 @@ export default function AIChatInterface({
                     )}
                   </div>
                 )}
-                <p className='leading-relaxed whitespace-pre-wrap'>{message.text}</p>
+                {message.isUser ? (
+                  <p className='leading-relaxed whitespace-pre-wrap'>{message.text}</p>
+                ) : (
+                  <ChatMarkdown>{message.text}</ChatMarkdown>
+                )}
 
                 {!message.isUser && !message.isError && (message.citations?.length ?? 0) > 0 ? (
                   <div className='border-border/20 mt-3 space-y-2 border-t pt-2'>
                     <div className='text-muted-foreground text-[11px] font-medium'>Sources</div>
                     <div className='space-y-1'>
                       {message.citations?.map((c) => (
-                        <a
+                        <Link
                           key={c.id}
                           href={c.href}
                           className='text-primary block text-[11px] hover:underline'
                         >
                           {c.title}
-                        </a>
+                        </Link>
                       ))}
                     </div>
                   </div>
