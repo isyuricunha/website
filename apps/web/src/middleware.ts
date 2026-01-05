@@ -1,10 +1,21 @@
 import type { NextRequest } from 'next/server'
+import { NextResponse } from 'next/server'
 
 import { i18nMiddleware } from '@isyuricunha/i18n/middleware'
 import { env } from '@isyuricunha/env'
+import { i18n } from '@isyuricunha/i18n/config'
 
 const middleware = (request: NextRequest) => {
   const is_production = env.NODE_ENV === 'production'
+
+  const { pathname, search } = request.nextUrl
+
+  if (pathname === '/admin' || pathname.startsWith('/admin/')) {
+    const url = request.nextUrl.clone()
+    url.pathname = `/${i18n.defaultLocale}${pathname}`
+    url.search = search
+    return NextResponse.rewrite(url)
+  }
 
   const csp = [
     "default-src 'self'",
