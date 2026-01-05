@@ -6,17 +6,30 @@ import {
   Avatar,
   AvatarFallback,
   AvatarImage,
+  Button,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue
+  SelectValue,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger
 } from '@isyuricunha/ui'
 
 import {
   Copy,
+  Eraser,
   Loader2,
   MessageCircle,
+  MoreVertical,
+  Pencil,
   Plus,
   Send,
   Share2,
@@ -58,7 +71,7 @@ export default function AIChatInterface({
   const t = useTranslations()
   const locale = useLocale()
 
-  const yue_avatar_src = '/images/mascote-6.png'
+  const yue_avatar_src = '/images/mascote-3.png'
 
   const [conversations, setConversations] = useState<ChatConversation[]>([])
   const [activeConversationId, setActiveConversationId] = useState<string>('')
@@ -596,7 +609,7 @@ export default function AIChatInterface({
   if (!isOpen) return null
 
   return (
-    <>
+    <TooltipProvider>
       <div className='bg-popover/95 absolute right-0 bottom-full mb-2 flex h-[70vh] max-h-[720px] min-h-[460px] w-[420px] max-w-[calc(100vw-1rem)] flex-col overflow-hidden rounded-3xl border shadow-2xl backdrop-blur-sm'>
         {/* Header */}
         <div className='from-primary/10 to-primary/5 flex items-center justify-between gap-3 border-b bg-linear-to-r px-4 py-3'>
@@ -651,53 +664,83 @@ export default function AIChatInterface({
             </div>
           </div>
           <div className='flex items-center gap-1'>
-            <button
-              type='button'
-              onClick={startNewChat}
-              className='hover:bg-muted rounded p-1 transition-colors'
-              aria-label={t('mascot.aiChat.newChat')}
-            >
-              <Plus className='h-4 w-4' />
-            </button>
-            <button
-              type='button'
-              onClick={shareChat}
-              className='hover:bg-muted rounded p-1 transition-colors'
-              aria-label={t('mascot.aiChat.share')}
-            >
-              <Share2 className='h-4 w-4' />
-            </button>
-            <button
-              type='button'
-              onClick={renameChat}
-              className='hover:bg-muted rounded px-2 py-1 text-xs transition-colors'
-            >
-              {t('mascot.aiChat.rename')}
-            </button>
-            <button
-              type='button'
-              onClick={deleteChat}
-              className='hover:bg-muted rounded p-1 transition-colors'
-              aria-label={t('mascot.aiChat.deleteChat')}
-            >
-              <Trash2 className='h-4 w-4' />
-            </button>
-            {messages.length > 1 && (
-              <button
-                type='button'
-                onClick={clearChat}
-                className='text-muted-foreground hover:text-foreground rounded px-2 py-1 text-xs transition-colors'
-              >
-                {t('mascot.aiChat.clear')}
-              </button>
-            )}
-            <button
-              type='button'
-              onClick={onClose}
-              className='hover:bg-muted rounded p-1 transition-colors'
-            >
-              <X className='h-4 w-4' />
-            </button>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant='ghost'
+                  size='icon'
+                  className='size-8'
+                  onClick={startNewChat}
+                  aria-label={t('mascot.aiChat.newChat')}
+                >
+                  <Plus className='size-4' />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>{t('mascot.aiChat.newChat')}</TooltipContent>
+            </Tooltip>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant='ghost'
+                  size='icon'
+                  className='size-8'
+                  onClick={shareChat}
+                  aria-label={t('mascot.aiChat.share')}
+                >
+                  <Share2 className='size-4' />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>{t('mascot.aiChat.share')}</TooltipContent>
+            </Tooltip>
+
+            <DropdownMenu>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant='ghost' size='icon' className='size-8' aria-label='More'>
+                      <MoreVertical className='size-4' />
+                    </Button>
+                  </DropdownMenuTrigger>
+                </TooltipTrigger>
+                <TooltipContent>More</TooltipContent>
+              </Tooltip>
+              <DropdownMenuContent align='end' className='w-48'>
+                <DropdownMenuItem onClick={renameChat} className='gap-2'>
+                  <Pencil className='size-4' />
+                  {t('mascot.aiChat.rename')}
+                </DropdownMenuItem>
+                {messages.length > 1 ? (
+                  <DropdownMenuItem onClick={clearChat} className='gap-2'>
+                    <Eraser className='size-4' />
+                    {t('mascot.aiChat.clear')}
+                  </DropdownMenuItem>
+                ) : null}
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={deleteChat}
+                  className='gap-2 text-red-600 focus:text-red-500'
+                >
+                  <Trash2 className='size-4' />
+                  {t('mascot.aiChat.deleteChat')}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant='ghost'
+                  size='icon'
+                  className='size-8'
+                  onClick={onClose}
+                  aria-label={t('mascot.aiChat.close')}
+                >
+                  <X className='size-4' />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>{t('mascot.aiChat.close')}</TooltipContent>
+            </Tooltip>
           </div>
         </div>
 
@@ -709,11 +752,11 @@ export default function AIChatInterface({
               className={`flex ${message.isUser ? 'justify-end' : 'justify-start'} animate-in slide-in-from-bottom-2 duration-300`}
             >
               <div
-                className={`max-w-[85%] rounded-2xl p-3 text-xs shadow-sm ${get_bubble_class_name(message)}`}
+                className={`max-w-[90%] rounded-2xl px-3.5 py-3 text-sm shadow-sm sm:max-w-[85%] ${get_bubble_class_name(message)}`}
               >
                 {!message.isUser && (
                   <div className='border-border/20 mb-2 flex items-center gap-2 border-b pb-2'>
-                    <Avatar className='h-5 w-5'>
+                    <Avatar className='h-6 w-6'>
                       <AvatarImage src={yue_avatar_src} alt='Yue' />
                       <AvatarFallback className='bg-primary/20 text-primary text-[10px] font-bold'>
                         Y
@@ -932,6 +975,6 @@ export default function AIChatInterface({
         variant='destructive'
         onConfirm={confirmDeleteChat}
       />
-    </>
+    </TooltipProvider>
   )
 }

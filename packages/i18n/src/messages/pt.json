@@ -954,6 +954,7 @@
     "aiChat": {
       "title": "Conversar com Yue",
       "clear": "Limpar",
+      "close": "Fechar",
       "conversations": "Conversas",
       "provider": "Provedor",
       "newChat": "Nova conversa",

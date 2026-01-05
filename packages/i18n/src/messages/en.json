@@ -954,6 +954,7 @@
     "aiChat": {
       "title": "Chat with Yue",
       "clear": "Clear",
+      "close": "Close",
       "conversations": "Conversations",
       "provider": "Provider",
       "newChat": "New chat",
