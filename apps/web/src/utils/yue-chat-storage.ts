@@ -33,6 +33,8 @@ export type ChatConversation = {
   messages: ChatMessage[]
 }
 
+export type YueChatProvider = 'auto' | 'hf' | 'hf_local' | 'gemini' | 'ollama'
+
 const legacyMessagesSchema = z
   .array(
     z.object({
@@ -75,10 +77,19 @@ const conversationSchema = z.object({
   messages: legacyMessagesSchema
 })
 
-const storageSchema = z.object({
+const providerSchema = z.enum(['auto', 'hf', 'hf_local', 'gemini', 'ollama'])
+
+const storageSchemaV2 = z.object({
   version: z.literal(2),
   conversations: z.array(conversationSchema).max(50),
   activeConversationId: z.string().min(1).optional()
+})
+
+const storageSchemaV3 = z.object({
+  version: z.literal(3),
+  conversations: z.array(conversationSchema).max(50),
+  activeConversationId: z.string().min(1).optional(),
+  provider: providerSchema.optional()
 })
 
 const sharePayloadSchema = z.object({
@@ -122,6 +133,7 @@ export const createEmptyConversation = (title: string): ChatConversation => {
 type YueChatState = {
   conversations: ChatConversation[]
   activeConversationId: string
+  provider: YueChatProvider
 }
 
 const normalizeState = (input: YueChatState): YueChatState => {
@@ -131,12 +143,13 @@ const normalizeState = (input: YueChatState): YueChatState => {
 
   if (!active) {
     const created = createEmptyConversation('New chat')
-    return { conversations: [created], activeConversationId: created.id }
+    return { conversations: [created], activeConversationId: created.id, provider: input.provider }
   }
 
   return {
     conversations: input.conversations,
-    activeConversationId: active
+    activeConversationId: active,
+    provider: input.provider
   }
 }
 
@@ -144,16 +157,29 @@ export const loadYueChatState = (): YueChatState => {
   const storage = safeGetLocalStorage()
   if (!storage) {
     const created = createEmptyConversation('New chat')
-    return { conversations: [created], activeConversationId: created.id }
+    return { conversations: [created], activeConversationId: created.id, provider: 'auto' }
   }
 
   const stored = storage.getItem(STORAGE_KEY_V2)
   if (stored) {
     try {
-      const parsed = storageSchema.parse(JSON.parse(stored))
+      const json = JSON.parse(stored)
+
+      const parsedV3 = storageSchemaV3.safeParse(json)
+      if (parsedV3.success) {
+        return normalizeState({
+          conversations: parsedV3.data.conversations,
+          activeConversationId:
+            parsedV3.data.activeConversationId ?? parsedV3.data.conversations[0]?.id ?? '',
+          provider: parsedV3.data.provider ?? 'auto'
+        })
+      }
+
+      const parsedV2 = storageSchemaV2.parse(json)
       return normalizeState({
-        conversations: parsed.conversations,
-        activeConversationId: parsed.activeConversationId ?? parsed.conversations[0]?.id ?? ''
+        conversations: parsedV2.conversations,
+        activeConversationId: parsedV2.activeConversationId ?? parsedV2.conversations[0]?.id ?? '',
+        provider: 'auto'
       })
     } catch {
       // ignore corrupted storage
@@ -174,7 +200,8 @@ export const loadYueChatState = (): YueChatState => {
 
       const next = normalizeState({
         conversations: [migrated],
-        activeConversationId: migrated.id
+        activeConversationId: migrated.id,
+        provider: 'auto'
       })
 
       saveYueChatState(next)
@@ -186,7 +213,11 @@ export const loadYueChatState = (): YueChatState => {
   }
 
   const created = createEmptyConversation('New chat')
-  const initial = { conversations: [created], activeConversationId: created.id }
+  const initial: YueChatState = {
+    conversations: [created],
+    activeConversationId: created.id,
+    provider: 'auto'
+  }
   saveYueChatState(initial)
   return initial
 }
@@ -198,9 +229,10 @@ export const saveYueChatState = (state: YueChatState): void => {
   const normalized = normalizeState(state)
 
   const toStore = {
-    version: 2 as const,
+    version: 3 as const,
     conversations: normalized.conversations,
-    activeConversationId: normalized.activeConversationId
+    activeConversationId: normalized.activeConversationId,
+    provider: normalized.provider
   }
 
   try {

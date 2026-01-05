@@ -46,7 +46,8 @@ vi.mock('@/utils/yue-chat-storage', () => {
             ]
           }
         ],
-        activeConversationId: 'c1'
+        activeConversationId: 'c1',
+        provider: 'auto'
       }
     },
     saveYueChatState: vi.fn(),

@@ -37,6 +37,7 @@ describe('yue-chat-storage', () => {
 
     expect(state.conversations.length).toBe(1)
     expect(state.activeConversationId).toBe(state.conversations[0]?.id)
+    expect(state.provider).toBe('auto')
 
     const conversation = state.conversations[0]
     expect(conversation?.title).toBe('Imported chat')

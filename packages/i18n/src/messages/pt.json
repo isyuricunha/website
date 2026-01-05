@@ -955,6 +955,7 @@
       "title": "Conversar com Yue",
       "clear": "Limpar",
       "conversations": "Conversas",
+      "provider": "Provedor",
       "newChat": "Nova conversa",
       "newChatTitle": "Nova conversa",
       "rename": "Renomear",
@@ -976,6 +977,13 @@
       "placeholder": "Me pergunte qualquer coisa...",
       "connectionError": "Problemas de conexão. Tente novamente.",
       "footer": "Powered by Yue AI by Yuri & Gemini AI",
+      "providers": {
+        "auto": "Auto",
+        "hf": "HF (remoto)",
+        "hf_local": "HF (local)",
+        "gemini": "Gemini",
+        "ollama": "Ollama"
+      },
       "feedback": {
         "like": "Gostei",
         "dislike": "Não gostei",

@@ -1,5 +1,6 @@
 'use client'
 
+import { flags } from '@isyuricunha/env'
 import { useTranslations, useLocale } from '@isyuricunha/i18n/client'
 import {
   Select,
@@ -27,6 +28,7 @@ import { toast } from 'sonner'
 import {
   type ChatConversation,
   type ChatMessage,
+  type YueChatProvider,
   createEmptyConversation,
   decodeConversationShare,
   encodeConversationShare,
@@ -54,6 +56,7 @@ export default function AIChatInterface({
   const locale = useLocale()
   const [conversations, setConversations] = useState<ChatConversation[]>([])
   const [activeConversationId, setActiveConversationId] = useState<string>('')
+  const [provider, setProvider] = useState<YueChatProvider>('auto')
   const [inputValue, setInputValue] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [typingDots, setTypingDots] = useState('')
@@ -117,6 +120,7 @@ export default function AIChatInterface({
     const loaded = loadYueChatState()
     let nextConversations = loaded.conversations
     let nextActiveId = loaded.activeConversationId
+    const nextProvider = loaded.provider
 
     if (globalThis.window !== undefined) {
       const params = new URLSearchParams(globalThis.location.search)
@@ -163,15 +167,16 @@ export default function AIChatInterface({
 
     setConversations(nextConversations)
     setActiveConversationId(nextActiveId)
-    saveYueChatState({ conversations: nextConversations, activeConversationId: nextActiveId })
+    setProvider(nextProvider)
+    saveYueChatState({ conversations: nextConversations, activeConversationId: nextActiveId, provider: nextProvider })
   }, [getWelcomeMessage, isOpen, t])
 
   useEffect(() => {
     if (!isOpen) return
     if (!activeConversationId) return
 
-    saveYueChatState({ conversations, activeConversationId })
-  }, [activeConversationId, conversations, isOpen])
+    saveYueChatState({ conversations, activeConversationId, provider })
+  }, [activeConversationId, conversations, isOpen, provider])
 
   const updateActiveConversation = (
     updater: (conversation: ChatConversation) => ChatConversation
@@ -296,8 +301,8 @@ export default function AIChatInterface({
         },
         body: JSON.stringify({
           message: messageText,
-          provider: 'ollama',
-          stream: true,
+          provider: provider === 'auto' ? undefined : provider,
+          stream: provider === 'ollama',
           locale,
           context: {
             currentPage,
@@ -609,6 +614,28 @@ export default function AIChatInterface({
                         {c.title}
                       </SelectItem>
                     ))}
+                  </SelectContent>
+                </Select>
+
+                <Select value={provider} onValueChange={(v) => setProvider(v as YueChatProvider)}>
+                  <SelectTrigger
+                    className='bg-background/40 border-border/40 max-w-[150px] rounded border px-2 py-0.5 text-xs'
+                    aria-label={t('mascot.aiChat.provider')}
+                  >
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value='auto'>{t('mascot.aiChat.providers.auto')}</SelectItem>
+                    {flags.hf && <SelectItem value='hf'>{t('mascot.aiChat.providers.hf')}</SelectItem>}
+                    {flags.hfLocal && (
+                      <SelectItem value='hf_local'>{t('mascot.aiChat.providers.hf_local')}</SelectItem>
+                    )}
+                    {flags.gemini && (
+                      <SelectItem value='gemini'>{t('mascot.aiChat.providers.gemini')}</SelectItem>
+                    )}
+                    {flags.ollama && (
+                      <SelectItem value='ollama'>{t('mascot.aiChat.providers.ollama')}</SelectItem>
+                    )}
                   </SelectContent>
                 </Select>
               </div>
