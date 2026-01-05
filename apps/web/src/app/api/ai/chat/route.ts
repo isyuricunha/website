@@ -210,46 +210,48 @@ export async function POST(req: NextRequest) {
 
     const stream_requested = parsed.stream === true
 
-    const selected_provider_for_stream = provider_candidates[0]
-
-    if (stream_requested && selected_provider_for_stream === 'ollama') {
-      const stream = await aiService.generateOllamaStream(
-        message,
-        {
-          currentPage: current_page,
-          pagePath: page_path,
-          pageContext: page_context,
-          citations,
-          conversation: parsed.context?.conversation,
-          locale
-        },
-        {
-          provider: 'ollama',
-          model: parsed.model
-        }
-      )
-
-      const response_headers_stream = {
-        ...response_headers,
-        'content-type': 'text/plain; charset=utf-8',
-        'x-provider': 'ollama'
+    if (stream_requested) {
+      const shared_context = {
+        currentPage: current_page,
+        pagePath: page_path,
+        pageContext: page_context,
+        citations,
+        conversation: parsed.context?.conversation,
+        locale
       }
 
-      await record_ai_chat_observability({
-        requestId: request_id,
-        endpoint,
-        method,
-        statusCode: 200,
-        responseTimeMs: Date.now() - started_at,
-        provider: 'ollama',
-        mode,
-        model: parsed.model,
-        ipAddress: ip,
-        userAgent: user_agent,
-        requestSizeBytes: request_size
-      })
+      for (const candidate of provider_candidates) {
+        try {
+          const stream = await aiService.generateStream(message, shared_context, {
+            provider: candidate,
+            model: parsed.model
+          })
 
-      return new Response(stream, { status: 200, headers: response_headers_stream })
+          const response_headers_stream = {
+            ...response_headers,
+            'content-type': 'text/plain; charset=utf-8',
+            'x-provider': candidate
+          }
+
+          await record_ai_chat_observability({
+            requestId: request_id,
+            endpoint,
+            method,
+            statusCode: 200,
+            responseTimeMs: Date.now() - started_at,
+            provider: candidate,
+            mode,
+            model: parsed.model,
+            ipAddress: ip,
+            userAgent: user_agent,
+            requestSizeBytes: request_size
+          })
+
+          return new Response(stream, { status: 200, headers: response_headers_stream })
+        } catch {
+          // try next provider or fallback to JSON
+        }
+      }
     }
 
     const response_text = await (async () => {

@@ -31,6 +31,27 @@ class AIService {
     }
   }
 
+  async generateStream(
+    message: string,
+    context: SiteContext,
+    config: AIServiceConfig
+  ): Promise<ReadableStream<Uint8Array>> {
+    switch (config.provider) {
+      case 'hf':
+        return this.generateYueLlmStream(message, context, config, 'hf')
+      case 'hf_local':
+        return this.generateYueLlmStream(message, context, config, 'hf_local')
+      case 'gemini':
+        return this.generateGeminiStream(message, context, config)
+      case 'groq':
+        return this.generateGroqStream(message, context, config)
+      case 'ollama':
+        return this.generateOllamaStream(message, context, config)
+      default:
+        throw new Error(`Unsupported AI provider for streaming: ${config.provider}`)
+    }
+  }
+
   async generateResponse(
     message: string,
     context: SiteContext,
@@ -117,6 +138,250 @@ class AIService {
     } finally {
       clearTimeout(timeout)
     }
+  }
+
+  private async generateYueLlmStream(
+    message: string,
+    context: SiteContext,
+    config: AIServiceConfig,
+    provider: 'hf' | 'hf_local'
+  ): Promise<ReadableStream<Uint8Array>> {
+    if (!this.isYueLlmAvailable(provider)) {
+      throw new Error('Yue LLM is not available')
+    }
+
+    const spaceUrl = env.YUE_LLM_SPACE_URL.replace(/\/$/, '')
+    const endpoint = provider === 'hf' ? '/respond/hf' : '/respond/local'
+
+    const system_message = build_yue_system_message(context)
+    const history = build_yue_history(context, 15)
+
+    const controller = new AbortController()
+    const timeout = setTimeout(() => controller.abort(), this.getYueLlmTimeoutMs())
+
+    try {
+      const response = await fetch(`${spaceUrl}${endpoint}`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${env.YUE_LLM_API_TOKEN}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          message,
+          history,
+          system_message,
+          max_tokens: config.maxTokens ?? 256,
+          temperature: config.temperature ?? 0.7,
+          top_p: 0.95,
+          stream: true
+        }),
+        signal: controller.signal
+      })
+
+      if (!response.ok || !response.body) {
+        const contentType = response.headers.get('content-type') || ''
+        const details = contentType.includes('application/json')
+          ? ((await response.json().catch(() => null)) as { detail?: string; error?: string } | null)
+          : null
+        const msg = details?.error ?? details?.detail ?? response.statusText
+        throw new Error(`Yue LLM API error (${response.status}): ${msg}`)
+      }
+
+      const contentType = response.headers.get('content-type') || ''
+      if (contentType.includes('text/event-stream')) {
+        return this.convertOpenAiSseToTextStream(response.body)
+      }
+
+      if (contentType.includes('application/json')) {
+        return this.convertJsonLinesToTextStream(response.body)
+      }
+
+      return response.body
+    } finally {
+      clearTimeout(timeout)
+    }
+  }
+
+  private convertJsonLinesToTextStream(input: ReadableStream<Uint8Array>): ReadableStream<Uint8Array> {
+    const decoder = new TextDecoder()
+    const encoder = new TextEncoder()
+
+    return new ReadableStream<Uint8Array>({
+      async start(controller) {
+        const reader = input.getReader()
+        let buffer = ''
+
+        try {
+          while (true) {
+            const { value, done } = await reader.read()
+            if (done) break
+
+            buffer += decoder.decode(value, { stream: true })
+            const lines = buffer.split('\n')
+            buffer = lines.pop() ?? ''
+
+            for (const line of lines) {
+              const trimmed = line.trim()
+              if (!trimmed) continue
+              try {
+                const parsed = JSON.parse(trimmed) as { token?: string; response?: string; text?: string }
+                const chunk = parsed.token ?? parsed.response ?? parsed.text
+                if (chunk) controller.enqueue(encoder.encode(chunk))
+              } catch {
+                controller.enqueue(encoder.encode(trimmed))
+              }
+            }
+          }
+
+          if (buffer.trim()) {
+            try {
+              const parsed = JSON.parse(buffer.trim()) as { token?: string; response?: string; text?: string }
+              const chunk = parsed.token ?? parsed.response ?? parsed.text
+              if (chunk) controller.enqueue(encoder.encode(chunk))
+            } catch {
+              controller.enqueue(encoder.encode(buffer))
+            }
+          }
+
+          controller.close()
+        } catch (error) {
+          controller.error(error)
+        } finally {
+          reader.releaseLock()
+        }
+      }
+    })
+  }
+
+  private async generateGeminiStream(
+    message: string,
+    context: SiteContext,
+    config: AIServiceConfig
+  ): Promise<ReadableStream<Uint8Array>> {
+    if (!this.gemini || !flags.gemini) {
+      throw new Error('Gemini AI is not available')
+    }
+
+    const model = this.gemini.getGenerativeModel({
+      model: config.model || env.GEMINI_MODEL || 'gemini-2.0-flash-lite'
+    })
+
+    const prompt = build_yue_gemini_prompt(context, message)
+    const result = await model.generateContentStream(prompt)
+    const encoder = new TextEncoder()
+
+    return new ReadableStream<Uint8Array>({
+      async start(controller) {
+        try {
+          for await (const chunk of result.stream) {
+            const text = (chunk as unknown as { text?: () => string }).text?.()
+            if (text) controller.enqueue(encoder.encode(text))
+          }
+          controller.close()
+        } catch (error) {
+          controller.error(error)
+        }
+      }
+    })
+  }
+
+  private async generateGroqStream(
+    message: string,
+    context: SiteContext,
+    config: AIServiceConfig
+  ): Promise<ReadableStream<Uint8Array>> {
+    if (!this.isGroqAvailable()) {
+      throw new Error('Groq AI is not available')
+    }
+
+    const model = config.model || env.GROQ_MODEL || 'llama-3.3-70b-versatile'
+    const controller = new AbortController()
+    const timeout = setTimeout(() => controller.abort(), 60_000)
+
+    try {
+      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${env.GROQ_API_KEY}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          model,
+          messages: build_yue_openai_messages(context, message, 15),
+          temperature: config.temperature ?? 0.7,
+          max_tokens: config.maxTokens ?? 256,
+          stream: true
+        }),
+        signal: controller.signal
+      })
+
+      if (!response.ok || !response.body) {
+        const contentType = response.headers.get('content-type') || ''
+        const details = contentType.includes('application/json')
+          ? ((await response.json().catch(() => null)) as { error?: { message?: string } } | null)
+          : null
+
+        const msg = details?.error?.message ?? response.statusText
+        throw new Error(`Groq API error (${response.status}): ${msg}`)
+      }
+
+      return this.convertOpenAiSseToTextStream(response.body)
+    } finally {
+      clearTimeout(timeout)
+    }
+  }
+
+  private convertOpenAiSseToTextStream(input: ReadableStream<Uint8Array>): ReadableStream<Uint8Array> {
+    const decoder = new TextDecoder()
+    const encoder = new TextEncoder()
+
+    return new ReadableStream<Uint8Array>({
+      async start(controller) {
+        const reader = input.getReader()
+        let buffer = ''
+
+        try {
+          while (true) {
+            const { value, done } = await reader.read()
+            if (done) break
+
+            buffer += decoder.decode(value, { stream: true })
+            const events = buffer.split('\n\n')
+            buffer = events.pop() ?? ''
+
+            for (const evt of events) {
+              const lines = evt.split('\n')
+              for (const line of lines) {
+                const trimmed = line.trim()
+                if (!trimmed.startsWith('data:')) continue
+                const data = trimmed.slice('data:'.length).trim()
+                if (!data) continue
+                if (data === '[DONE]') {
+                  controller.close()
+                  return
+                }
+
+                try {
+                  const parsed = JSON.parse(data) as {
+                    choices?: Array<{ delta?: { content?: string } }>
+                  }
+                  const chunk = parsed.choices?.[0]?.delta?.content
+                  if (chunk) controller.enqueue(encoder.encode(chunk))
+                } catch {
+                  // ignore malformed chunk
+                }
+              }
+            }
+          }
+
+          controller.close()
+        } catch (error) {
+          controller.error(error)
+        } finally {
+          reader.releaseLock()
+        }
+      }
+    })
   }
 
   private async generateGeminiResponse(

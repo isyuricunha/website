@@ -302,7 +302,7 @@ export default function AIChatInterface({
         body: JSON.stringify({
           message: messageText,
           provider: provider === 'auto' ? undefined : provider,
-          stream: provider === 'ollama',
+          stream: true,
           locale,
           context: {
             currentPage,
@@ -319,7 +319,7 @@ export default function AIChatInterface({
 
       const contentType = response.headers.get('content-type') || ''
 
-      // Streaming path (Ollama)
+      // Streaming path
       if (contentType.startsWith('text/plain') && response.body) {
         const reader = response.body.getReader()
         const decoder = new TextDecoder()
