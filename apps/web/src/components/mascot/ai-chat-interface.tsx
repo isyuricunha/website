@@ -30,9 +30,9 @@ import {
 
 import MarkdownToJSX from 'markdown-to-jsx'
 import {
-  ArrowUpRight,
   Copy,
   Eraser,
+  ExternalLink,
   Sparkles,
   Loader2,
   MessageCircle,
@@ -898,10 +898,7 @@ export default function AIChatInterface({
                     </div>
                     <div className='space-y-2'>
                       {message.citations?.map((c) => (
-                        <Card
-                          key={c.id}
-                          className='bg-background/40 border-border/40 hover:bg-background/60 p-2 shadow-none transition-colors sm:p-3'
-                        >
+                        <Card key={c.id} className='bg-background/40 border-border/40 p-3 shadow-none'>
                           <div className='flex items-start justify-between gap-3'>
                             <div className='min-w-0'>
                               <div className='mb-1 flex items-center gap-2'>
@@ -921,7 +918,7 @@ export default function AIChatInterface({
                                 </div>
                               ) : null}
 
-                              <div className='mt-2 flex flex-wrap items-center gap-1.5'>
+                              <div className='mt-2 flex flex-wrap items-center gap-2'>
                                 <Tooltip>
                                   <TooltipTrigger asChild>
                                     <Link
@@ -929,10 +926,10 @@ export default function AIChatInterface({
                                       aria-label={t('mascot.aiChat.citations.actions.open')}
                                       className={cn(
                                         buttonVariants({ variant: 'outline', size: 'sm' }),
-                                        'h-8 px-2 text-xs'
+                                        'h-8 w-8 justify-center px-0 text-xs sm:w-auto sm:px-2'
                                       )}
                                     >
-                                      <ArrowUpRight className='mr-0 h-3.5 w-3.5 sm:mr-1' />
+                                      <ExternalLink className='h-3.5 w-3.5 sm:mr-1' />
                                       <span className='hidden sm:inline'>
                                         {t('mascot.aiChat.citations.actions.open')}
                                       </span>
@@ -946,19 +943,17 @@ export default function AIChatInterface({
                                     <Button
                                       variant='ghost'
                                       size='sm'
-                                      className='h-8 px-2 text-xs'
+                                      className='h-8 w-8 justify-center px-0 text-xs sm:w-auto sm:px-2'
                                       onClick={() => void copyLink(c.href)}
                                       aria-label={t('mascot.aiChat.citations.actions.copyLink')}
                                     >
-                                      <Copy className='mr-0 h-3.5 w-3.5 sm:mr-1' />
+                                      <Copy className='h-3.5 w-3.5 sm:mr-1' />
                                       <span className='hidden sm:inline'>
                                         {t('mascot.aiChat.citations.actions.copyLink')}
                                       </span>
                                     </Button>
                                   </TooltipTrigger>
-                                  <TooltipContent>
-                                    {t('mascot.aiChat.citations.actions.copyLink')}
-                                  </TooltipContent>
+                                  <TooltipContent>{t('mascot.aiChat.citations.actions.copyLink')}</TooltipContent>
                                 </Tooltip>
 
                                 <Tooltip>
@@ -966,20 +961,18 @@ export default function AIChatInterface({
                                     <Button
                                       variant='ghost'
                                       size='sm'
-                                      className='h-8 px-2 text-xs'
+                                      className='h-8 w-8 justify-center px-0 text-xs sm:w-auto sm:px-2'
                                       disabled={isLoading}
                                       onClick={() => void more_like_this({ title: c.title, type: c.type })}
                                       aria-label={t('mascot.aiChat.citations.actions.moreLikeThis')}
                                     >
-                                      <Sparkles className='mr-0 h-3.5 w-3.5 sm:mr-1' />
+                                      <Sparkles className='h-3.5 w-3.5 sm:mr-1' />
                                       <span className='hidden sm:inline'>
                                         {t('mascot.aiChat.citations.actions.moreLikeThis')}
                                       </span>
                                     </Button>
                                   </TooltipTrigger>
-                                  <TooltipContent>
-                                    {t('mascot.aiChat.citations.actions.moreLikeThis')}
-                                  </TooltipContent>
+                                  <TooltipContent>{t('mascot.aiChat.citations.actions.moreLikeThis')}</TooltipContent>
                                 </Tooltip>
                               </div>
                             </div>
