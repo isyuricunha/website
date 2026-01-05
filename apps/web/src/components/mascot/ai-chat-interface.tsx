@@ -633,6 +633,7 @@ export default function AIChatInterface({
                     {flags.gemini && (
                       <SelectItem value='gemini'>{t('mascot.aiChat.providers.gemini')}</SelectItem>
                     )}
+                    {flags.groq && <SelectItem value='groq'>{t('mascot.aiChat.providers.groq')}</SelectItem>}
                     {flags.ollama && (
                       <SelectItem value='ollama'>{t('mascot.aiChat.providers.ollama')}</SelectItem>
                     )}

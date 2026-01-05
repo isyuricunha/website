@@ -982,6 +982,7 @@
         "hf": "HF (remote)",
         "hf_local": "HF (local)",
         "gemini": "Gemini",
+        "groq": "Groq",
         "ollama": "Ollama"
       },
       "feedback": {

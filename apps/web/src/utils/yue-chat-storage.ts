@@ -33,7 +33,7 @@ export type ChatConversation = {
   messages: ChatMessage[]
 }
 
-export type YueChatProvider = 'auto' | 'hf' | 'hf_local' | 'gemini' | 'ollama'
+export type YueChatProvider = 'auto' | 'hf' | 'hf_local' | 'gemini' | 'groq' | 'ollama'
 
 const legacyMessagesSchema = z
   .array(
@@ -77,7 +77,7 @@ const conversationSchema = z.object({
   messages: legacyMessagesSchema
 })
 
-const providerSchema = z.enum(['auto', 'hf', 'hf_local', 'gemini', 'ollama'])
+const providerSchema = z.enum(['auto', 'hf', 'hf_local', 'gemini', 'groq', 'ollama'])
 
 const storageSchemaV2 = z.object({
   version: z.literal(2),

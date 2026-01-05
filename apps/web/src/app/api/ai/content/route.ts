@@ -12,7 +12,7 @@ const ContentGenerationSchema = z.object({
   content: z.string().min(1),
   title: z.string().optional(),
   existingTags: z.array(z.string()).optional().default([]),
-  provider: z.enum(['hf', 'hf_local', 'gemini', 'ollama']).optional().default('gemini'),
+  provider: z.enum(['hf', 'hf_local', 'gemini', 'groq', 'ollama']).optional().default('gemini'),
   fromLang: z.string().optional().default('en'),
   toLang: z.string().optional().default('pt'),
   maxLength: z.number().min(50).max(500).optional().default(200)
@@ -150,6 +150,7 @@ export function GET() {
       hf: aiService.isHfAvailable(),
       hfLocal: aiService.isHfLocalAvailable(),
       gemini: aiService.isGeminiAvailable(),
+      groq: aiService.isGroqAvailable(),
       ollama: aiService.isOllamaAvailable()
     }
   })

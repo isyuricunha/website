@@ -29,6 +29,7 @@ vi.mock('@/lib/ai/ai-service', () => ({
     isHfAvailable: vi.fn(),
     isHfLocalAvailable: vi.fn(),
     isGeminiAvailable: vi.fn(),
+    isGroqAvailable: vi.fn(),
     isOllamaAvailable: vi.fn()
   }
 }))

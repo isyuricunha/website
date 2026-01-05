@@ -1,7 +1,7 @@
 import { GoogleGenerativeAI } from '@google/generative-ai'
 import { env, flags } from '@isyuricunha/env'
 
-type AIProvider = 'hf' | 'hf_local' | 'gemini' | 'ollama'
+type AIProvider = 'hf' | 'hf_local' | 'gemini' | 'groq' | 'ollama'
 
 interface AIServiceConfig {
   provider: AIProvider
@@ -69,6 +69,8 @@ class AIService {
         return this.generateYueLlmResponse(message, context, resolved_config, 'hf_local')
       case 'gemini':
         return this.generateGeminiResponse(message, context, resolved_config)
+      case 'groq':
+        return this.generateGroqResponse(message, context, resolved_config)
       case 'ollama':
         return this.generateOllamaResponse(message, context, resolved_config)
       default:
@@ -249,6 +251,65 @@ Guidelines:
     return response.text()
   }
 
+  private async generateGroqResponse(
+    message: string,
+    context: SiteContext,
+    config: AIServiceConfig
+  ): Promise<string> {
+    if (!this.isGroqAvailable()) {
+      throw new Error('Groq AI is not available')
+    }
+
+    const model = config.model || env.GROQ_MODEL || 'llama-3.3-70b-versatile'
+    const controller = new AbortController()
+    const timeout = setTimeout(() => controller.abort(), 60_000)
+
+    const system_message = this.buildSystemMessage(context)
+    const history = (context.conversation ?? []).slice(-15)
+
+    const messages = [
+      { role: 'system' as const, content: system_message },
+      ...history.map((m) => ({ role: m.role, content: m.content })),
+      { role: 'user' as const, content: message }
+    ]
+
+    try {
+      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${env.GROQ_API_KEY}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          model,
+          messages,
+          temperature: config.temperature ?? 0.7,
+          max_tokens: config.maxTokens ?? 256,
+          stream: false
+        }),
+        signal: controller.signal
+      })
+
+      if (!response.ok) {
+        const contentType = response.headers.get('content-type') || ''
+        const details = contentType.includes('application/json')
+          ? ((await response.json().catch(() => null)) as { error?: { message?: string } } | null)
+          : null
+
+        const msg = details?.error?.message ?? response.statusText
+        throw new Error(`Groq API error (${response.status}): ${msg}`)
+      }
+
+      const data = (await response.json()) as {
+        choices?: Array<{ message?: { content?: string } }>
+      }
+
+      return data.choices?.[0]?.message?.content?.trim() || 'Sorry, I could not generate a response.'
+    } finally {
+      clearTimeout(timeout)
+    }
+  }
+
   private async generateOllamaResponse(
     message: string,
     context: SiteContext,
@@ -376,6 +437,10 @@ Guidelines:
 
   private isYueLlmAvailable(provider: 'hf' | 'hf_local'): boolean {
     return provider === 'hf' ? this.isHfAvailable() : this.isHfLocalAvailable()
+  }
+
+  isGroqAvailable(): boolean {
+    return !!(flags.groq && env.GROQ_API_KEY)
   }
 
   // Content generation methods
@@ -533,6 +598,7 @@ Translation:`
     if (this.isHfAvailable()) providers.push('hf')
     if (this.isHfLocalAvailable()) providers.push('hf_local')
     if (this.isGeminiAvailable()) providers.push('gemini')
+    if (this.isGroqAvailable()) providers.push('groq')
 
     // Keep Ollama as an optional provider (useful for local dev)
     if (this.isOllamaAvailable()) providers.push('ollama')

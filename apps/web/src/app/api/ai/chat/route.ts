@@ -20,7 +20,7 @@ const conversationMessageSchema = z.object({
 const requestSchema = z.object({
   message: z.string().min(1).max(2000),
   mode: z.enum(['chat', 'navigate']).optional(),
-  provider: z.enum(['hf', 'hf_local', 'gemini', 'ollama']).optional(),
+  provider: z.enum(['hf', 'hf_local', 'gemini', 'groq', 'ollama']).optional(),
   model: z.string().max(100).optional(),
   stream: z.boolean().optional(),
   locale: z.string().min(2).max(10).optional(),
