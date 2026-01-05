@@ -136,6 +136,7 @@ const Layout = async (props: LayoutProps) => {
 
   const messages = await getMessages()
   const website_json_ld = generateWebsiteJsonLd()
+  const react_scan_api_key = env.REACT_SCAN_MONITOR_API_KEY
 
   return (
     <html
@@ -154,7 +155,7 @@ const Layout = async (props: LayoutProps) => {
           type='application/ld+json'
           dangerouslySetInnerHTML={{ __html: JSON.stringify(website_json_ld) }}
         />
-        {env.REACT_SCAN_MONITOR_API_KEY ? (
+        {env.NODE_ENV === 'development' && react_scan_api_key ? (
           <Script
             id='react-scan-auto'
             src='https://unpkg.com/react-scan/dist/auto.global.js'
@@ -178,9 +179,9 @@ const Layout = async (props: LayoutProps) => {
         </Script>
       </head>
       <body className='relative flex min-h-screen flex-col'>
-        {env.REACT_SCAN_MONITOR_API_KEY ? (
+        {env.NODE_ENV === 'development' && react_scan_api_key ? (
           <Monitoring
-            apiKey={env.REACT_SCAN_MONITOR_API_KEY}
+            apiKey={react_scan_api_key}
             url='https://monitoring.react-scan.com/api/v1/ingest'
             commit={env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA}
             branch={env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_REF}
