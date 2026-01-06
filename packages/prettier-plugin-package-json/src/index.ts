@@ -16,18 +16,32 @@ const parsePersonString = (value: string): Record<string, string> | string => {
   const trimmed = value.trim()
   if (!trimmed) return value
 
-  const emailMatch = /<([^>]+)>/u.exec(trimmed)
-  const urlMatch = /\(([^)]+)\)/u.exec(trimmed)
+  const removeSegment = (input: string, start: number, end: number) => {
+    if (start < 0 || end < 0 || end <= start) return input
+    return (input.slice(0, start) + input.slice(end)).trim()
+  }
 
-  const name = trimmed
-    .replace(/<[^>]+>/gu, '')
-    .replace(/\([^)]+\)/gu, '')
-    .trim()
+  const emailStart = trimmed.indexOf('<')
+  const emailEnd = emailStart === -1 ? -1 : trimmed.indexOf('>', emailStart + 1)
+  const email =
+    emailStart !== -1 && emailEnd > emailStart ? trimmed.slice(emailStart + 1, emailEnd) : null
+
+  const urlStart = trimmed.indexOf('(')
+  const urlEnd = urlStart === -1 ? -1 : trimmed.indexOf(')', urlStart + 1)
+  const url = urlStart !== -1 && urlEnd > urlStart ? trimmed.slice(urlStart + 1, urlEnd) : null
+
+  let name = trimmed
+  if (email !== null) {
+    name = removeSegment(name, emailStart, emailEnd + 1)
+  }
+  if (url !== null) {
+    name = removeSegment(name, urlStart, urlEnd + 1)
+  }
 
   const obj: Record<string, string> = {}
   if (name) obj.name = name
-  if (emailMatch?.[1]) obj.email = emailMatch[1]
-  if (urlMatch?.[1]) obj.url = urlMatch[1]
+  if (email) obj.email = email
+  if (url) obj.url = url
 
   return Object.keys(obj).length > 0 ? obj : value
 }
