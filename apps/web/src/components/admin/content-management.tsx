@@ -227,9 +227,9 @@ export const ContentManagement = () => {
 
           <div className='flex gap-2'>
             <Select
-              value={statusFilter ?? ''}
+              value={statusFilter ?? 'all'}
               onValueChange={(value) => {
-                if (value === '') {
+                if (value === 'all') {
                   setStatusFilter(undefined)
                   return
                 }
@@ -242,7 +242,7 @@ export const ContentManagement = () => {
                 <SelectValue placeholder='All Status' />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value=''>All Status</SelectItem>
+                <SelectItem value='all'>All Status</SelectItem>
                 <SelectItem value='draft'>Draft</SelectItem>
                 <SelectItem value='published'>Published</SelectItem>
                 <SelectItem value='archived'>Archived</SelectItem>

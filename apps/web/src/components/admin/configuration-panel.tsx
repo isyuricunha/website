@@ -86,7 +86,7 @@ interface ConfigGroup {
 
 export const ConfigurationPanel = () => {
   const [searchTerm, setSearchTerm] = useState('')
-  const [selectedType, setSelectedType] = useState<string>('')
+  const [selectedType, setSelectedType] = useState<string>('all')
   const [editingConfig, setEditingConfig] = useState<ConfigItem | null>(null)
   const edit_textarea_ref = useRef<HTMLTextAreaElement | null>(null)
   const [newConfigKey, setNewConfigKey] = useState('')
@@ -209,7 +209,7 @@ export const ConfigurationPanel = () => {
   const filteredConfig: ConfigGroup = {}
   if (configData?.config) {
     Object.entries(configData.config).forEach(([type, configs]) => {
-      if (selectedType && type !== selectedType) return
+      if (selectedType !== 'all' && type !== selectedType) return
 
       const filtered = configs.filter(
         (config) =>
@@ -281,7 +281,7 @@ export const ConfigurationPanel = () => {
               <SelectValue placeholder='All Categories' />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value=''>All Categories</SelectItem>
+              <SelectItem value='all'>All Categories</SelectItem>
               <SelectItem value='general'>General</SelectItem>
               <SelectItem value='seo'>SEO</SelectItem>
               <SelectItem value='social'>Social</SelectItem>
