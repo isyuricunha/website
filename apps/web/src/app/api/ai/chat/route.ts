@@ -8,6 +8,7 @@ import { estimate_tokens, record_ai_chat_observability } from '@/lib/ai/ai-obser
 import {
   build_navigation_answer,
   build_post_recommendation_answer,
+  build_snippet_recommendation_answer,
   find_citations,
   get_page_context
 } from '@/lib/ai/site-index'
@@ -132,6 +133,23 @@ const extract_blog_slugs_from_text = (value: string): string[] => {
     if (slug) slugs.push(slug)
   }
   return slugs
+}
+
+const extract_snippet_slugs_from_text = (value: string): string[] => {
+  const slugs: string[] = []
+  const re = /\/snippet\/([a-z0-9-]+)/gi
+  let match: RegExpExecArray | null = null
+  while ((match = re.exec(value)) !== null) {
+    const slug = match[1]?.trim()
+    if (slug) slugs.push(slug)
+  }
+  return slugs
+}
+
+const infer_recommendation_kind = (message: string): 'post' | 'snippet' => {
+  const m = message.toLowerCase()
+  if (m.includes('snippet') || m.includes('snippets') || m.includes('snipper')) return 'snippet'
+  return 'post'
 }
 
 export async function POST(req: NextRequest) {
@@ -274,17 +292,28 @@ export async function POST(req: NextRequest) {
         // Also exclude the current page if it is a blog page.
         if (page_path) texts.push(page_path)
 
-        const slugs = texts.flatMap(extract_blog_slugs_from_text)
-        for (const slug of slugs) ids.push(`post:${slug}`)
+        const blog_slugs = texts.flatMap((text) => extract_blog_slugs_from_text(text))
+        for (const slug of blog_slugs) ids.push(`post:${slug}`)
+
+        const snippet_slugs = texts.flatMap((text) => extract_snippet_slugs_from_text(text))
+        for (const slug of snippet_slugs) ids.push(`snippet:${slug}`)
 
         return Array.from(new Set(ids))
       })()
 
-      const rec = build_post_recommendation_answer({
-        query: navigation_query,
-        locale,
-        excludeIds: exclude_ids
-      })
+      const kind = infer_recommendation_kind(navigation_query)
+      const rec =
+        kind === 'snippet'
+          ? build_snippet_recommendation_answer({
+            query: navigation_query,
+            locale,
+            excludeIds: exclude_ids
+          })
+          : build_post_recommendation_answer({
+            query: navigation_query,
+            locale,
+            excludeIds: exclude_ids
+          })
 
       const payload = {
         requestId: request_id,
