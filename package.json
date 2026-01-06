@@ -19,7 +19,7 @@
     "check:spelling": "echo 'Spell checking disabled'",
     "clean": "turbo clean && pnpm clean:cache",
     "clean:cache": "node ./scripts/clean-cache.mjs",
-    "commit": "cz",
+    "commit": "pnpm exec czg",
     "db:check": "turbo db:check",
     "db:generate": "turbo db:generate",
     "db:migrate": "turbo db:migrate",
