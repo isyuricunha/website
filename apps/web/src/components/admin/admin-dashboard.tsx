@@ -390,15 +390,6 @@ const AdminDashboard = () => {
               </div>
               <Progress value={65} className='h-2' />
             </div>
-            <div className='border-border/50 mt-2 border-t pt-3'>
-              <div className='flex items-center justify-between'>
-                <span className='text-muted-foreground text-xs'>Last updated</span>
-                <div className='flex items-center gap-1.5'>
-                  <div className='bg-primary h-2 w-2 animate-pulse rounded-full' />
-                  <span className='text-xs font-medium'>Just now</span>
-                </div>
-              </div>
-            </div>
           </CardContent>
         </Card>
       </div>
