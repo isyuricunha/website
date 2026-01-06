@@ -977,7 +977,8 @@
         "types": {
           "post": "Post",
           "project": "Projeto",
-          "page": "Página"
+          "page": "Página",
+          "snippet": "Snippet"
         }
       },
       "shareCopied": "Link de compartilhamento copiado",

@@ -16,7 +16,7 @@ export type ChatMessage = {
     title: string
     href: string
     excerpt?: string
-    type: 'post' | 'project' | 'page'
+    type: 'post' | 'project' | 'page' | 'snippet'
   }>
   reactions?: {
     likes: number
@@ -53,7 +53,7 @@ const legacyMessagesSchema = z
             title: z.string().min(1),
             href: z.string().min(1),
             excerpt: z.string().optional(),
-            type: z.enum(['post', 'project', 'page'])
+            type: z.enum(['post', 'project', 'page', 'snippet'])
           })
         )
         .max(10)

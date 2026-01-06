@@ -2,7 +2,7 @@ export type YueSiteContext = {
   currentPage: string
   pagePath?: string
   pageContext?: {
-    type: 'post' | 'project' | 'page'
+    type: 'post' | 'project' | 'page' | 'snippet'
     title: string
     description: string
     href: string
@@ -13,7 +13,7 @@ export type YueSiteContext = {
     title: string
     href: string
     excerpt?: string
-    type: 'post' | 'project' | 'page'
+    type: 'post' | 'project' | 'page' | 'snippet'
   }>
   conversation?: Array<{
     role: 'user' | 'assistant'
@@ -61,12 +61,12 @@ export const build_yue_system_message = (context: YueSiteContext): string => {
 
   const pageContextBlock = context.pageContext
     ? [
-        `type: ${context.pageContext.type}`,
-        `title: ${context.pageContext.title}`,
-        `description: ${context.pageContext.description}`,
-        `href: ${context.pageContext.href}`,
-        `content_excerpt: ${context.pageContext.contentExcerpt}`
-      ].join('\n')
+      `type: ${context.pageContext.type}`,
+      `title: ${context.pageContext.title}`,
+      `description: ${context.pageContext.description}`,
+      `href: ${context.pageContext.href}`,
+      `content_excerpt: ${context.pageContext.contentExcerpt}`
+    ].join('\n')
     : 'none'
 
   const sourcesBlock = (context.citations ?? [])

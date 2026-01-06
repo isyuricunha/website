@@ -112,9 +112,12 @@ const ChatMarkdown = memo((props: ChatMarkdownProps) => {
 
 ChatMarkdown.displayName = 'ChatMarkdown'
 
-const get_citation_badge_variant = (type: 'post' | 'project' | 'page') => {
+type CitationType = 'post' | 'project' | 'page' | 'snippet'
+
+const get_citation_badge_variant = (type: CitationType) => {
   if (type === 'post') return 'default'
   if (type === 'project') return 'secondary'
+  if (type === 'snippet') return 'outline'
   return 'outline'
 }
 
@@ -388,7 +391,7 @@ export default function AIChatInterface({
 
       const should_stream = (() => {
         const lower = messageText.toLowerCase()
-        if (
+        return !(
           lower.includes('blog') ||
           lower.includes('post') ||
           lower.includes('postagem') ||
@@ -399,10 +402,7 @@ export default function AIChatInterface({
           lower.includes('direciona') ||
           lower.includes('onde ') ||
           lower.includes('where ')
-        ) {
-          return false
-        }
-        return true
+        )
       })()
 
       const response = await fetch('/api/ai/chat', {
@@ -496,7 +496,7 @@ export default function AIChatInterface({
           title: string
           href: string
           excerpt?: string
-          type: 'post' | 'project' | 'page'
+          type: 'post' | 'project' | 'page' | 'snippet'
         }>
       } = await response.json()
 
@@ -565,7 +565,10 @@ export default function AIChatInterface({
     }
   }
 
-  const more_like_this = async (citation: { title: string; type: 'post' | 'project' | 'page' }) => {
+  const more_like_this = async (citation: {
+    title: string
+    type: CitationType
+  }) => {
     const prompt = t('mascot.aiChat.citations.moreLikeThisPrompt', {
       title: citation.title,
       type: t(`mascot.aiChat.citations.types.${citation.type}` as any)
