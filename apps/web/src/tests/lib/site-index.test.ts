@@ -32,6 +32,16 @@ vi.mock('content-collections', () => ({
       content: 'Proj content'
     }
   ],
+  allSnippets: [
+    {
+      locale: 'en',
+      slug: 'snippet-hello',
+      title: 'Hello Snippet',
+      description: 'Snippet desc',
+      content: 'Snippet content',
+      date: '2023-01-01T00:00:00.000Z'
+    }
+  ],
   allPages: [
     {
       locale: 'en',
@@ -53,7 +63,8 @@ describe('site-index', () => {
     const entries = build_site_index('en')
     expect(entries.find((e) => e.type === 'post')?.href).toBe('/en/blog/hello')
     expect(entries.find((e) => e.type === 'project')?.href).toBe('/en/projects/proj')
-    expect(entries.find((e) => e.type === 'page')?.href).toBe('/en/about')
+    expect(entries.find((e) => e.type === 'page' && e.href === '/en/about')?.href).toBe('/en/about')
+    expect(entries.find((e) => e.type === 'snippet')?.href).toBe('/en/snippet/snippet-hello')
   })
 
   it('get_page_context resolves blog post context using page_path', async () => {
@@ -63,6 +74,15 @@ describe('site-index', () => {
     expect(ctx).toBeTruthy()
     expect(ctx?.type).toBe('post')
     expect(ctx?.href).toBe('/en/blog/hello')
+  })
+
+  it('get_page_context resolves snippet context using page_path', async () => {
+    const { get_page_context } = await import('@/lib/ai/site-index')
+
+    const ctx = get_page_context('/pt/snippet/snippet-hello', 'en')
+    expect(ctx).toBeTruthy()
+    expect(ctx?.type).toBe('snippet')
+    expect(ctx?.href).toBe('/en/snippet/snippet-hello')
   })
 
   it('find_citations includes current page context first when available', async () => {

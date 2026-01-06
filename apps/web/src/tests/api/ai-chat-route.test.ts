@@ -30,6 +30,12 @@ vi.mock('@/lib/ai/site-index', () => ({
   build_post_recommendation_answer: vi.fn(() => ({
     message: 'rec',
     citations: [{ id: 'post:hello', title: 'Hello', href: '/en/blog/hello', type: 'post' }]
+  })),
+  build_snippet_recommendation_answer: vi.fn(() => ({
+    message: 'rec-snippet',
+    citations: [
+      { id: 'snippet:hello', title: 'Hello Snippet', href: '/en/snippet/hello', type: 'snippet' }
+    ]
   }))
 }))
 
@@ -81,6 +87,38 @@ describe('/api/ai/chat', () => {
     expect(json.citations).toBeTruthy()
 
     expect(aiService.generateResponse).not.toHaveBeenCalled()
+  })
+
+  it('returns snippet recommendations when user asks for snippet/snipper', async () => {
+    const { ratelimit } = await import('@/lib/ratelimit')
+    const { getClientIp } = await import('@/lib/spam-detection')
+    const { aiService } = await import('@/lib/ai/ai-service')
+    const { build_snippet_recommendation_answer } = await import('@/lib/ai/site-index')
+
+    vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
+    vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
+    vi.mocked(aiService.getAvailableProviders).mockReturnValue(['gemini'])
+
+    const { POST } = await import('@/app/api/ai/chat/route')
+
+    const req = {
+      headers: new Headers(),
+      json: async () => ({
+        message: 'me recomenda um snipper de docker',
+        locale: 'pt',
+        context: { currentPage: '/test' }
+      })
+    } as unknown as Parameters<typeof POST>[0]
+
+    const res = await POST(req)
+    const json = (await res.json()) as { message?: string; provider?: string; citations?: unknown }
+
+    expect(res.status).toBe(200)
+    expect(json.message).toBe('rec-snippet')
+    expect(json.provider).toBe('recommendations')
+    expect(json.citations).toBeTruthy()
+
+    expect(vi.mocked(build_snippet_recommendation_answer)).toHaveBeenCalled()
   })
 
   it('uses previous user intent for short follow-up navigation like "direciona então"', async () => {
