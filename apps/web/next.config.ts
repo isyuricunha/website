@@ -38,6 +38,10 @@ const config: NextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'i.pravatar.cc'
+      },
+      {
+        protocol: 'https',
         hostname: '**.googleusercontent.com'
       },
       {
