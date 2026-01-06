@@ -591,6 +591,17 @@
     "site-short-name": "Yuri"
   },
   "not-found": "No pages here today!",
+  "notFound": {
+    "badge": "Page not found",
+    "subtitle": "Try searching for what you need, or jump to one of the sections below.",
+    "viewAll": "View all",
+    "recentPosts": "Recent posts",
+    "recentPostsDescription": "Latest articles from the blog",
+    "recentSnippets": "Recent snippets",
+    "recentSnippetsDescription": "Short notes and code recipes",
+    "recentProjects": "Recent projects",
+    "recentProjectsDescription": "Things I've been building"
+  },
   "sitemap": {
     "title": "Sitemap",
     "description": "Complete overview of all site content and navigation",
