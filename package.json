@@ -61,7 +61,6 @@
     "@isyuricunha/prettier-config": "workspace:*",
     "@isyuricunha/tsconfig": "workspace:*",
     "@playwright/test": "^1.57.0",
-    "@turbo/gen": "^2.7.2",
     "@types/node": "^25.0.3",
     "@vitest/coverage-v8": "^4.0.16",
     "@vitest/ui": "^4.0.16",
