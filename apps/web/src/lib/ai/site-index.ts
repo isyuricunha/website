@@ -265,7 +265,7 @@ export const build_navigation_answer = (params: {
   }
 }
 
-export const recommend_posts = (params: {
+const recommend_posts = (params: {
   query: string
   locale: string
   limit?: number
