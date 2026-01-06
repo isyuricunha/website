@@ -223,7 +223,7 @@ const UsersTable = (props: UsersTableProps) => {
       cell: ({ row }) => <>{row.original.createdAt.toLocaleDateString()}</>
     },
     {
-      accessorKey: 'role',
+      id: 'status',
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title={t('admin.table.users.status')} />
       ),
