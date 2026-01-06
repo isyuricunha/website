@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 
 import { i18n } from '@isyuricunha/i18n/config'
 import { getTranslations } from '@isyuricunha/i18n/server'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, buttonVariants } from '@isyuricunha/ui'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, buttonVariants } from '@isyuricunha/ui/server'
 import { ArrowRight, FileText, Code, FolderGit2 } from 'lucide-react'
 import { allPosts, allProjects, allSnippets } from 'content-collections'
 
