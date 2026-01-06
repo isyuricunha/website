@@ -998,7 +998,7 @@
       "providers": {
         "auto": "Auto",
         "hf": "Yue (Medium)",
-        "hf_local": "HF (Low)",
+        "hf_local": "Yue (Low)",
         "gemini": "Gemini",
         "groq": "Yue (High)",
         "ollama": "Ollama"
