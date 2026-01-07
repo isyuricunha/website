@@ -215,9 +215,29 @@
   html {
     @apply scroll-smooth;
     scrollbar-gutter: stable;
+    scrollbar-color: hsl(var(--muted-foreground) / 0.55) hsl(var(--background));
   }
 
   body {
     @apply bg-background text-foreground antialiased;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--background));
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted-foreground) / 0.45);
+    border-radius: 9999px;
+    border: 3px solid hsl(var(--background));
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground) / 0.65);
   }
 }
