@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { useMDXComponent } from '@content-collections/mdx/react'
-import { BlurImage, Callout, CodeBlock, Kbd } from '@isyuricunha/ui'
+import { BlurImage, Callout as UiCallout, CodeBlock, Kbd } from '@isyuricunha/ui'
 
 import ImageZoom from '../image-zoom'
 import Link from '../link'
@@ -57,7 +57,9 @@ const components = {
   NowProject,
   TreeView,
   Kbd,
-  Callout,
+  Callout: (props: React.ComponentProps<typeof UiCallout>) => (
+    <UiCallout className='[&_p]:m-0' {...props} />
+  ),
   ExpandableSection,
   ComparisonTable,
   AffiliateDisclosure
