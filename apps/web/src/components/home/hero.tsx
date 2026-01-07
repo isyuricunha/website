@@ -1,6 +1,6 @@
 'use client'
 
-import { useTranslations } from '@isyuricunha/i18n/client'
+import { useLocale, useTranslations } from '@isyuricunha/i18n/client'
 import { BlurImage } from '@isyuricunha/ui'
 import { AnimatePresence, motion } from 'motion/react'
 import { useEffect, useState } from 'react'
@@ -45,6 +45,7 @@ const variants = {
 
 const Hero = () => {
   const [currentIndex, setCurrentIndex] = useState(0)
+  const locale = useLocale()
   const t = useTranslations()
   const t_metadata = useTranslations('metadata')
 
@@ -79,26 +80,53 @@ const Hero = () => {
               transition={{ ease: 'easeOut' }}
               className='mb-1'
             >
-              <span>{t('homepage.hero.title-middle-left')} </span>
-              <div className='relative inline-block min-w-[60px] align-baseline'>
-                <AnimatePresence mode='popLayout'>
-                  <motion.div
-                    key={currentIndex}
-                    variants={variants}
-                    initial='enter'
-                    animate='center'
-                    exit='exit'
-                    transition={{
-                      type: 'tween',
-                      duration: 0.3
-                    }}
-                    className='inline-block align-baseline'
-                  >
-                    <span className={textItem.className}>{t(`homepage.hero.${textItem.key}`)}</span>
-                  </motion.div>
-                </AnimatePresence>
-              </div>
-              <span> {t('homepage.hero.title-middle-right')}</span>
+              <span>{t('homepage.hero.title-middle-left')}</span>
+              {locale === 'pt' ? (
+                <>
+                  <span>{' '}{t('homepage.hero.title-middle-right')}{' '}</span>
+                  <div className='relative inline-block min-w-[60px] align-baseline'>
+                    <AnimatePresence mode='popLayout'>
+                      <motion.div
+                        key={currentIndex}
+                        variants={variants}
+                        initial='enter'
+                        animate='center'
+                        exit='exit'
+                        transition={{
+                          type: 'tween',
+                          duration: 0.3
+                        }}
+                        className='inline-block align-baseline'
+                      >
+                        <span className={textItem.className}>{t(`homepage.hero.${textItem.key}`)}</span>
+                      </motion.div>
+                    </AnimatePresence>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <span>{' '}</span>
+                  <div className='relative inline-block min-w-[60px] align-baseline'>
+                    <AnimatePresence mode='popLayout'>
+                      <motion.div
+                        key={currentIndex}
+                        variants={variants}
+                        initial='enter'
+                        animate='center'
+                        exit='exit'
+                        transition={{
+                          type: 'tween',
+                          duration: 0.3
+                        }}
+                        className='inline-block align-baseline'
+                      >
+                        <span className={textItem.className}>{t(`homepage.hero.${textItem.key}`)}</span>
+                      </motion.div>
+                    </AnimatePresence>
+                  </div>
+                  <span>{' '}{t('homepage.hero.title-middle-right')}</span>
+                </>
+              )}
             </motion.div>
             <motion.div
               initial={{ x: 40, opacity: 0 }}
