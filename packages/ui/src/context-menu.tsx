@@ -2,7 +2,14 @@ import * as ContextMenuPrimitive from '@radix-ui/react-context-menu'
 import { cn } from '@isyuricunha/utils'
 import { CheckIcon, ChevronRightIcon, DotIcon } from 'lucide-react'
 
-const ContextMenu = ContextMenuPrimitive.Root
+type ContextMenuProps = React.ComponentProps<typeof ContextMenuPrimitive.Root>
+
+const ContextMenu = (props: ContextMenuProps) => {
+  const { modal = false, ...rest } = props
+
+  return <ContextMenuPrimitive.Root modal={modal} {...rest} />
+}
+
 const ContextMenuTrigger = ContextMenuPrimitive.Trigger
 const ContextMenuGroup = ContextMenuPrimitive.Group
 const ContextMenuPortal = ContextMenuPrimitive.Portal

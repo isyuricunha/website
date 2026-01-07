@@ -2,7 +2,14 @@ import * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu'
 import { cn } from '@isyuricunha/utils'
 import { CheckIcon, ChevronRightIcon, DotIcon } from 'lucide-react'
 
-const DropdownMenu = DropdownMenuPrimitive.Root
+type DropdownMenuProps = React.ComponentProps<typeof DropdownMenuPrimitive.Root>
+
+const DropdownMenu = (props: DropdownMenuProps) => {
+  const { modal = false, ...rest } = props
+
+  return <DropdownMenuPrimitive.Root modal={modal} {...rest} />
+}
+
 const DropdownMenuTrigger = DropdownMenuPrimitive.Trigger
 const DropdownMenuGroup = DropdownMenuPrimitive.Group
 const DropdownMenuPortal = DropdownMenuPrimitive.Portal
