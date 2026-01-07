@@ -1,7 +1,7 @@
 import { defineConfig } from 'tsup'
 
 export default defineConfig({
-  entry: ['src/**/*@(ts|tsx)'],
+  entry: ['src/index.ts', 'src/server.ts'],
   dts: true,
   format: ['esm'],
   target: 'esnext',
