@@ -14,6 +14,7 @@ import {
   Badge
 } from '@isyuricunha/ui'
 import { Bell, Check } from 'lucide-react'
+import { useState } from 'react'
 
 import { api } from '@/trpc/react'
 import { useSession } from '@/lib/auth-client'
@@ -28,10 +29,13 @@ const getActionHref = (actionUrl: string | null): string | null => {
 
 export default function NotificationsDropdown() {
   const t = useTranslations('component.notifications')
+  const tCommon = useTranslations()
   const { data: session, isPending } = useSession()
   const { setIsSignInOpen } = useDialogsStore()
   const utils = api.useUtils()
   const router = useRouter()
+
+  const [open, setOpen] = useState(false)
 
   const enabled = Boolean(session)
 
@@ -62,18 +66,12 @@ export default function NotificationsDropdown() {
   if (isPending) return null
 
   return (
-    <DropdownMenu>
+    <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
         <Button
           variant='ghost'
           className='relative size-9 p-0'
           aria-label={t('aria')}
-          onClick={(e) => {
-            if (!session) {
-              e.preventDefault()
-              setIsSignInOpen(true)
-            }
-          }}
         >
           <Bell className='size-4' />
           {session && unreadCount > 0 ? (
@@ -143,7 +141,18 @@ export default function NotificationsDropdown() {
             </ScrollArea>
           )
         ) : (
-          <div className='text-muted-foreground px-3 py-2 text-sm'>{t('sign-in')}</div>
+          <div className='flex flex-col gap-3 px-3 py-2'>
+            <div className='text-muted-foreground text-sm'>{t('sign-in')}</div>
+            <Button
+              size='sm'
+              onClick={() => {
+                setOpen(false)
+                setIsSignInOpen(true)
+              }}
+            >
+              {tCommon('common.sign-in')}
+            </Button>
+          </div>
         )}
 
         {session ? (
