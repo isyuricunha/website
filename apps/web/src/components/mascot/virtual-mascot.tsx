@@ -949,8 +949,8 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
                   <div
                     key={item.id}
                     className={`border-border/20 bg-popover/95 text-popover-foreground shadow-primary/10 rounded-3xl border-2 shadow-2xl ring-0 backdrop-blur-md transition-all duration-200 ease-in-out outline-none ${isExiting
-                        ? 'translate-y-1 scale-95 opacity-0'
-                        : 'translate-y-0 scale-100 opacity-100'
+                      ? 'translate-y-1 scale-95 opacity-0'
+                      : 'translate-y-0 scale-100 opacity-100'
                       }`}
                     role='dialog'
                     aria-label={t('mascot.speechBubble')}
