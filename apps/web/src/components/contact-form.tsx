@@ -110,7 +110,8 @@ export default function ContactForm() {
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'x-locale': document.documentElement.lang
         },
         body: JSON.stringify({
           name: formData.name,

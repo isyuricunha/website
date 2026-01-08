@@ -69,6 +69,14 @@ export const TRPCReactProvider = (props: TRPCReactProviderProps) => {
             headers: () => {
               const headers = new Headers()
               headers.set('x-trpc-source', 'nextjs-react')
+
+              if (typeof document !== 'undefined') {
+                const current_locale = document.documentElement?.lang
+                if (current_locale) {
+                  headers.set('x-locale', current_locale)
+                }
+              }
+
               return headers
             }
           })
