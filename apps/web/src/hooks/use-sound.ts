@@ -195,6 +195,9 @@ export const useSound = (
           sourceRef.current.stop()
           sourceRef.current.disconnect()
         }
+        if (gainRef.current) {
+          gainRef.current.disconnect()
+        }
 
         const buffer = getSoundBuffer(context, soundType)
 
