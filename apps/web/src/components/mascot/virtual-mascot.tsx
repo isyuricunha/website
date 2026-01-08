@@ -22,6 +22,7 @@ import { useTranslations, useMessages } from '@isyuricunha/i18n/client'
 import { i18n } from '@isyuricunha/i18n/config'
 import MascotGame from './mascot-game'
 import AIChatInterface from './ai-chat-interface'
+import { useSound } from '../../hooks/use-sound'
 
 type VirtualMascotProps = {
   hidden?: boolean
@@ -86,6 +87,11 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   const [state, setState] = useState(create_initial_state)
 
   const isProduction = process.env.NODE_ENV === 'production'
+
+  // Sound hooks
+  const clickSound = useSound('click', state.preferences.soundEffects)
+  const successSound = useSound('success', state.preferences.soundEffects)
+  const notificationSound = useSound('notification', state.preferences.soundEffects)
 
   const mascotRef = useRef<HTMLButtonElement | null>(null)
   const [mounted, setMounted] = useState(false)
@@ -230,6 +236,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       if (!isProduction) console.error('Failed to copy email:', error)
     })
     enqueueMessage('Email copied to clipboard!', 2000)
+    successSound.play()
   }
 
   // Mount flag to coordinate client-only behaviors and select session image
@@ -579,6 +586,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       showGame: false,
       showAIChat: false
     })
+    clickSound.play()
   }
 
   const handleMouseEnter = () => {
@@ -618,27 +626,32 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
             showContact: true,
             showBubble: true
           })
+          notificationSound.play()
           break
         case 'projects':
           window.open('https://github.com/isyuricunha', '_blank')
+          clickSound.play()
           break
         case 'game':
           updateState({
             showGame: true,
             showBubble: true
           })
+          notificationSound.play()
           break
         case 'chat':
           updateState({
             showAIChat: true,
             showBubble: true
           })
+          notificationSound.play()
           break
         case 'settings':
           updateState({
             showSettings: true,
             showBubble: true
           })
+          clickSound.play()
           break
         default:
           // No action needed for unknown actions
@@ -1022,7 +1035,10 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       </div>
 
       {/* Mini Game */}
-      <MascotGame isOpen={state.showGame} onClose={() => updateState({ showGame: false })} />
+      <MascotGame
+        isOpen={state.showGame}
+        onClose={() => updateState({ showGame: false })}
+      />
     </>
   )
 }
