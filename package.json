@@ -93,6 +93,7 @@
       "@isyuricunha/web>@hookform/resolvers": "5.2.2",
       "@isyuricunha/docs>zod": "4.3.0",
       "@isyuricunha/docs>@hookform/resolvers": "5.2.2",
+      "preact": "10.28.2",
       "js-yaml": "^4.1.1"
     }
   },
