@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 interface SoundOptions {
   volume?: number
@@ -250,11 +250,14 @@ export const useSound = (
     }
   }, [enabled, isPlaying, stop])
 
-  return {
-    play,
-    stop,
-    isPlaying,
-    volume,
-    setVolume
-  }
+  return useMemo(
+    () => ({
+      play,
+      stop,
+      isPlaying,
+      volume,
+      setVolume
+    }),
+    [play, stop, isPlaying, volume, setVolume]
+  )
 }

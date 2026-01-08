@@ -98,6 +98,24 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   const reset_auto_show_timeout_ref = useRef<ReturnType<typeof setTimeout> | null>(null)
   const blink_timeout_ref = useRef<ReturnType<typeof setTimeout> | null>(null)
 
+  // Refs to store current sound functions to avoid stale closures
+  const clickSoundRef = useRef(clickSound.play)
+  const successSoundRef = useRef(successSound.play)
+  const notificationSoundRef = useRef(notificationSound.play)
+
+  // Keep refs updated with latest sound functions
+  useEffect(() => {
+    clickSoundRef.current = clickSound.play
+  }, [clickSound.play])
+
+  useEffect(() => {
+    successSoundRef.current = successSound.play
+  }, [successSound.play])
+
+  useEffect(() => {
+    notificationSoundRef.current = notificationSound.play
+  }, [notificationSound.play])
+
   // Helper functions to update state
   const updateState = useCallback((updates: Partial<ReturnType<typeof create_initial_state>>) => {
     setState((prev) => ({ ...prev, ...updates }))
@@ -206,7 +224,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         const v = (base as any)[String(idx)]
         if (typeof v === 'string' && v) list.push(v)
       }
-    } catch {}
+    } catch { }
     if (list.length === 0) return t('mascot.messages.0')
     return list[Math.floor(Math.random() * list.length)] ?? t('mascot.messages.0')
   }, [allMessages, t])
@@ -225,7 +243,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         const v = (base as any)[String(idx)]
         if (typeof v === 'string' && v) list.push(v)
       }
-    } catch {}
+    } catch { }
     if (list.length === 0) return t('mascot.messages.0')
     return list[Math.floor(Math.random() * list.length)] ?? t('mascot.messages.0')
   }, [allMessages, t])
@@ -236,7 +254,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       if (!isProduction) console.error('Failed to copy email:', error)
     })
     enqueueMessage('Email copied to clipboard!', 2000)
-    successSound.play()
+    successSoundRef.current()
   }
 
   // Mount flag to coordinate client-only behaviors and select session image
@@ -252,7 +270,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         sessionStorage.setItem(MASCOT_IMAGE_KEY, String(chosen))
         updateState({ currentMascotImage: chosen })
       }
-    } catch {}
+    } catch { }
   }, [updateState])
 
   // Read dismissal state and preferences once per session
@@ -275,7 +293,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       if (visited) {
         updateState({ blogPostsVisited: new Set(JSON.parse(visited)) })
       }
-    } catch {}
+    } catch { }
   }, [loadPreferences, updateState])
 
   // Konami Code detection
@@ -287,7 +305,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         try {
           sessionStorage.removeItem(STORAGE_KEY)
           localStorage.removeItem(HIDE_KEY)
-        } catch {}
+        } catch { }
         return
       }
 
@@ -301,7 +319,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
           updateState({ isKonamiMode: !state.isKonamiMode })
           try {
             localStorage.setItem(KONAMI_MODE_KEY, state.isKonamiMode ? '1' : '0')
-          } catch {}
+          } catch { }
         }
         updateState({ konamiSequence: [] })
       } else if (newSequence.length > KONAMI_CODE.length) {
@@ -436,7 +454,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
             const v = (base as any)[String(idx)]
             if (typeof v === 'string' && v) res.push(v)
           }
-        } catch {}
+        } catch { }
         return res
       }
 
@@ -489,7 +507,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
             updateState({ blogPostsVisited: newVisited })
             try {
               localStorage.setItem(BLOG_POST_VISITED_KEY, JSON.stringify([...newVisited]))
-            } catch {}
+            } catch { }
           }
         } else {
           // Show randomized page message for non-blog-post pages
@@ -586,7 +604,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       showGame: false,
       showAIChat: false
     })
-    clickSound.play()
+    clickSoundRef.current()
   }
 
   const handleMouseEnter = () => {
@@ -626,32 +644,32 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
             showContact: true,
             showBubble: true
           })
-          notificationSound.play()
+          notificationSoundRef.current()
           break
         case 'projects':
           window.open('https://github.com/isyuricunha', '_blank')
-          clickSound.play()
+          clickSoundRef.current()
           break
         case 'game':
           updateState({
             showGame: true,
             showBubble: true
           })
-          notificationSound.play()
+          notificationSoundRef.current()
           break
         case 'chat':
           updateState({
             showAIChat: true,
             showBubble: true
           })
-          notificationSound.play()
+          notificationSoundRef.current()
           break
         case 'settings':
           updateState({
             showSettings: true,
             showBubble: true
           })
-          clickSound.play()
+          clickSoundRef.current()
           break
         default:
           // No action needed for unknown actions
@@ -930,11 +948,10 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
                 return (
                   <div
                     key={item.id}
-                    className={`border-border/20 bg-popover/95 text-popover-foreground shadow-primary/10 rounded-3xl border-2 shadow-2xl ring-0 backdrop-blur-md transition-all duration-200 ease-in-out outline-none ${
-                      isExiting
+                    className={`border-border/20 bg-popover/95 text-popover-foreground shadow-primary/10 rounded-3xl border-2 shadow-2xl ring-0 backdrop-blur-md transition-all duration-200 ease-in-out outline-none ${isExiting
                         ? 'translate-y-1 scale-95 opacity-0'
                         : 'translate-y-0 scale-100 opacity-100'
-                    }`}
+                      }`}
                     role='dialog'
                     aria-label={t('mascot.speechBubble')}
                     style={
