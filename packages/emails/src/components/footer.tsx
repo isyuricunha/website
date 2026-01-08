@@ -8,7 +8,13 @@ const Footer = () => {
         <Row className='mt-4' align='left' width='auto'>
           <Column className='pr-6 align-middle'>
             <Link href='https://x.com/isyuricunha' className='text-xl text-black'>
-              <Img src='https://yuricunha.com/images/email/x.png' alt='X' width={22} height={22} />
+              <Img
+                src='https://yuricunha.com/images/email/x.png'
+                alt='X'
+                width={22}
+                height={22}
+                style={{ display: 'block', border: 0, outline: 'none' }}
+              />
             </Link>
           </Column>
           <Column className='align-middle'>
@@ -18,6 +24,7 @@ const Footer = () => {
                 alt='GitHub'
                 width={22}
                 height={22}
+                style={{ display: 'block', border: 0, outline: 'none' }}
               />
             </Link>
           </Column>

@@ -128,20 +128,22 @@ const ContactConfirmation = (props: ContactConfirmationProps) => {
                 <Column className='text-center'>
                   <Link href='https://github.com/isyuricunha' className='mx-[8px] inline-block'>
                     <Img
-                      src='https://new.email/static/emails/social/social-github.png'
+                      src='https://yuricunha.com/images/email/github.png'
                       alt='GitHub'
-                      width='32'
-                      height='32'
+                      width={32}
+                      height={32}
                       className='h-[32px] w-[32px]'
+                      style={{ display: 'block', border: 0, outline: 'none' }}
                     />
                   </Link>
                   <Link href='https://x.com/isyuricunha' className='mx-[8px] inline-block'>
                     <Img
-                      src='https://new.email/static/emails/social/social-x.png'
+                      src='https://yuricunha.com/images/email/x.png'
                       alt='X (Twitter)'
-                      width='32'
-                      height='32'
+                      width={32}
+                      height={32}
                       className='h-[32px] w-[32px]'
+                      style={{ display: 'block', border: 0, outline: 'none' }}
                     />
                   </Link>
                 </Column>
