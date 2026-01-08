@@ -30,13 +30,30 @@ type CommentProps = {
     title: string
     url: string
   }
+  locale?: 'en' | 'pt'
 }
 
 const Comment = (props: CommentProps) => {
   const { comment, commenter, date, id, post } = props
+  const locale = props.locale ?? 'en'
+
+  const copy =
+    locale === 'pt'
+      ? {
+          preview: `Novo comentário no post "${post.title}" em yuricunha.com`,
+          title: 'Novo comentário no seu post',
+          intro_before: 'Alguém comentou em',
+          button: 'Ver comentário'
+        }
+      : {
+          preview: `New comment on the post "${post.title}" on yuricunha.com`,
+          title: 'New Comment on Your Blog Post',
+          intro_before: 'Someone has commented on',
+          button: 'View Comment'
+        }
 
   return (
-    <Html>
+    <Html lang={locale} dir='ltr'>
       <Head>
         <Font
           fontFamily='Geist'
@@ -49,17 +66,15 @@ const Comment = (props: CommentProps) => {
           fontStyle='normal'
         />
       </Head>
-      <Preview>New comment on the post "{post.title}" on yuricunha.com</Preview>
+      <Preview>{copy.preview}</Preview>
       <Tailwind>
         <Body className='m-auto bg-white p-1'>
           <Container className='mx-auto w-full max-w-[660px] rounded-lg border border-solid border-gray-200 bg-white p-8 shadow-sm'>
             <Logo />
             <Section>
-              <Text className='m-0 p-0 text-xl font-semibold text-gray-900'>
-                New Comment on Your Blog Post
-              </Text>
+              <Text className='m-0 p-0 text-xl font-semibold text-gray-900'>{copy.title}</Text>
               <Text className='m-0 mt-2 p-0 text-base font-normal text-gray-600'>
-                Someone has commented on{' '}
+                {copy.intro_before}{' '}
                 <Link href={post.url} className='font-medium text-gray-900'>
                   {post.title}
                 </Link>
@@ -89,7 +104,7 @@ const Comment = (props: CommentProps) => {
               className='mt-6 rounded-full bg-gray-900 px-8 py-2.5 align-middle text-sm font-medium text-white'
               href={`${post.url}?${id}`}
             >
-              View Comment
+              {copy.button}
             </Button>
             <Footer />
           </Container>

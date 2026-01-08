@@ -23,9 +23,12 @@ import { allPosts } from 'content-collections'
 import { z } from 'zod'
 
 import { isProduction } from '@/lib/constants'
+import { SITE_URL } from '@/lib/constants'
+import { get_request_locale } from '@/lib/request-locale'
 import { resend } from '@/lib/resend'
 import { getDefaultImage } from '@/utils/get-default-image'
 import { getIp } from '@/utils/get-ip'
+import { getLocalizedPath } from '@/utils/get-localized-path'
 
 import { adminProcedure, createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc'
 
@@ -273,6 +276,7 @@ export const commentsRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       const user = ctx.session.user
+      const locale = get_request_locale(ctx.headers)
 
       const { success } = await ratelimit.limit(getKey(`post:${user.id}`))
 
@@ -294,7 +298,7 @@ export const commentsRouter = createTRPCRouter({
 
       const post = {
         title,
-        url: `https://yuricunha.com/blog/${input.slug}`
+        url: `${SITE_URL}${getLocalizedPath({ slug: `/blog/${input.slug}`, locale })}`
       }
 
       await ctx.db.transaction(async (tx) => {
@@ -313,13 +317,15 @@ export const commentsRouter = createTRPCRouter({
           await resend.emails.send({
             from: 'yuricunha.com <me@yuricunha.com>',
             to: env.AUTHOR_EMAIL,
-            subject: 'New comment on your blog post',
+            subject:
+              locale === 'pt' ? 'Novo comentário no seu post' : 'New comment on your blog post',
             react: Comment({
               comment: input.content,
               commenter: userProfile,
               id: `comment=${commentId}`,
               date: input.date,
-              post
+              post,
+              locale
             })
           })
         }
@@ -339,14 +345,16 @@ export const commentsRouter = createTRPCRouter({
             await resend.emails.send({
               from: 'yuricunha.com <me@yuricunha.com>',
               to: parentComment.user.email,
-              subject: 'New reply to your comment',
+              subject:
+                locale === 'pt' ? 'Nova resposta ao seu comentário' : 'New reply to your comment',
               react: Reply({
                 reply: input.content,
                 replier: userProfile,
                 comment: parentComment.body,
                 id: `comment=${input.parentId}&reply=${commentId}`,
                 date: input.date,
-                post
+                post,
+                locale
               })
             })
           }

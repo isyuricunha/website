@@ -19,15 +19,44 @@ type ContactConfirmationProps = {
   name?: string
   subject?: string
   message?: string
+  locale?: 'en' | 'pt'
 }
 
 const ContactConfirmation = (props: ContactConfirmationProps) => {
   const { name: contactName = 'there' } = props
+  const locale = props.locale ?? 'en'
+
+  const copy =
+    locale === 'pt'
+      ? {
+          preview: 'Obrigado por entrar em contato com yuricunha.com — respondo em até 48h',
+          title: `Obrigado por entrar em contato, ${contactName}!`,
+          p1: 'Recebi sua mensagem com sucesso e queria confirmar pessoalmente que ela já está na minha fila para análise.',
+          p2: 'Vou responder em até 48 horas, provavelmente bem antes (~).',
+          p3: 'Enquanto isso, você pode explorar meu site em',
+          next_title: 'O que acontece agora?',
+          next_1: 'Vou analisar sua mensagem com atenção',
+          next_2: 'Vou responder em até 48 horas, provavelmente bem antes (~)',
+          next_3: 'Se for urgente, coloque no ASSUNTO',
+          outro: 'para saber mais sobre meu trabalho com infraestrutura cloud e bancos de dados.'
+        }
+      : {
+          preview: "Thank you for contacting yuricunha.com - I'll respond within 48 hours",
+          title: `Thank you for reaching out, ${contactName}!`,
+          p1: 'I have successfully received your contact inquiry and wanted to personally confirm that your message is now in my queue for review.',
+          p2: 'I will respond within 48 hours, probably much less (~)',
+          p3: 'In the meantime, feel free to explore my website at',
+          next_title: 'What happens next?',
+          next_1: 'I will review your inquiry thoroughly',
+          next_2: 'I will respond within 48 hours, probably much less (~)',
+          next_3: 'If urgent, please, put in the SUBJECT',
+          outro: 'to learn more about my expertise in cloud infrastructure and database solutions.'
+        }
 
   return (
-    <Html lang='en' dir='ltr'>
+    <Html lang={locale} dir='ltr'>
       <Head />
-      <Preview>Thank you for contacting yuricunha.com - I'll respond within 48 hours</Preview>
+      <Preview>{copy.preview}</Preview>
       <Tailwind>
         <Body
           className='bg-[color:var(--email-bg)] py-[40px] font-sans'
@@ -54,45 +83,42 @@ const ContactConfirmation = (props: ContactConfirmationProps) => {
             {/* Main Content */}
             <Section className='mb-[32px]'>
               <Heading className='mb-[24px] text-left text-[24px] font-bold text-[color:var(--email-fg)]'>
-                Thank you for reaching out, {contactName}!
+                {copy.title}
               </Heading>
 
               <Text className='mb-[16px] text-[16px] leading-[24px] text-[color:var(--email-fg)]'>
-                I have successfully received your contact inquiry and wanted to personally confirm
-                that your message is now in my queue for review.
+                {copy.p1}
               </Text>
 
               <Text className='mb-[16px] text-[16px] leading-[24px] text-[color:var(--email-fg)]'>
-                As a Server Infrastructure and Database Administration specialist, I understand the
-                importance of timely communication. I will respond within 48 hours, probably much
-                less (~)
+                {copy.p2}
               </Text>
 
               <Text className='mb-[24px] text-[16px] leading-[24px] text-[color:var(--email-fg)]'>
-                In the meantime, feel free to explore my website at{' '}
+                {copy.p3}{' '}
                 <Link
                   href='https://yuricunha.com'
                   className='text-[color:var(--email-accent)] underline'
                 >
                   yuricunha.com
                 </Link>{' '}
-                to learn more about my expertise in cloud infrastructure and database solutions.
+                {copy.outro}
               </Text>
             </Section>
 
             {/* Contact Information */}
             <Section className='mb-[40px] rounded-[8px] border border-solid border-[color:var(--email-border)] p-[20px]'>
               <Text className='mb-[8px] text-[14px] leading-[20px] font-bold text-[color:var(--email-fg)]'>
-                What happens next?
+                {copy.next_title}
               </Text>
               <Text className='mb-[4px] text-[14px] leading-[20px] text-[color:var(--email-fg)]'>
-                • I will review your inquiry thoroughly
+                • {copy.next_1}
               </Text>
               <Text className='mb-[4px] text-[14px] leading-[20px] text-[color:var(--email-fg)]'>
-                • I will respond within 48 hours, probably much less (~)
+                • {copy.next_2}
               </Text>
               <Text className='text-[14px] leading-[20px] text-[color:var(--email-fg)]'>
-                • If urgent, please, put in the SUBJECT
+                • {copy.next_3}
               </Text>
             </Section>
 

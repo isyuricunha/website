@@ -1,13 +1,18 @@
 import { i18n } from '@isyuricunha/i18n/config'
 
-const normalize_locale = (value: string): string | null => {
+export type request_locale = 'en' | 'pt'
+
+const normalize_locale = (value: string): request_locale | null => {
   const trimmed = value.trim().toLowerCase()
   if (!trimmed) return null
 
   const [base] = trimmed.split('-')
   if (!base) return null
 
-  return i18n.locales.includes(base) ? base : null
+  if (!i18n.locales.includes(base)) return null
+
+  if (base === 'en' || base === 'pt') return base
+  return null
 }
 
 const get_cookie_value = (cookie_header: string | null, name: string): string | null => {
@@ -33,12 +38,12 @@ const get_cookie_value = (cookie_header: string | null, name: string): string | 
   return null
 }
 
-const get_locale_from_referer = (referer: string | null): string | null => {
+const get_locale_from_referer = (referer: string | null): request_locale | null => {
   if (!referer) return null
 
   try {
     const url = new URL(referer)
-    const first_segment = url.pathname.split('/').filter(Boolean)[0]
+    const first_segment = url.pathname.split('/').find(Boolean)
     if (!first_segment) return null
 
     return normalize_locale(first_segment)
@@ -47,7 +52,7 @@ const get_locale_from_referer = (referer: string | null): string | null => {
   }
 }
 
-const get_locale_from_accept_language = (accept_language: string | null): string | null => {
+const get_locale_from_accept_language = (accept_language: string | null): request_locale | null => {
   if (!accept_language) return null
 
   const candidates = accept_language
@@ -63,7 +68,7 @@ const get_locale_from_accept_language = (accept_language: string | null): string
   return null
 }
 
-export const get_request_locale = (headers: Headers): string => {
+export const get_request_locale = (headers: Headers): request_locale => {
   const header_locale = normalize_locale(headers.get('x-locale') ?? '')
   if (header_locale) return header_locale
 
@@ -78,5 +83,5 @@ export const get_request_locale = (headers: Headers): string => {
   const accept_language_locale = get_locale_from_accept_language(headers.get('accept-language'))
   if (accept_language_locale) return accept_language_locale
 
-  return i18n.defaultLocale
+  return normalize_locale(i18n.defaultLocale) ?? 'en'
 }

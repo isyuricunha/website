@@ -11,6 +11,8 @@ import { resend } from '@/lib/resend'
 import { env } from '@isyuricunha/env'
 import { AuditLogger, getIpFromHeaders, getUserAgentFromHeaders } from '@/lib/audit-logger'
 import { logger } from '@/lib/logger'
+import { get_request_locale } from '@/lib/request-locale'
+import { getLocalizedPath } from '@/utils/get-localized-path'
 import { adminProcedure, createTRPCRouter, publicProcedure } from '../trpc'
 
 const get_site_url = (headers: Headers) => {
@@ -325,6 +327,8 @@ export const usersRouter = createTRPCRouter({
     .input(z.object({ email: z.string().email() }))
     .mutation(async ({ ctx, input }) => {
       try {
+        const locale = get_request_locale(ctx.headers)
+
         // Get user by email
         const user = await ctx.db.query.users.findFirst({
           where: eq(users.email, input.email),
@@ -353,7 +357,8 @@ export const usersRouter = createTRPCRouter({
 
         // Create reset URL
         const baseUrl = get_site_url(ctx.headers)
-        const resetUrl = `${baseUrl}/reset-password?token=${token}`
+        const resetPath = getLocalizedPath({ slug: '/reset-password', locale })
+        const resetUrl = `${baseUrl}${resetPath}?token=${token}`
 
         // Send email if Resend is configured
         if (resend) {
@@ -361,10 +366,11 @@ export const usersRouter = createTRPCRouter({
             await resend.emails.send({
               from: 'yuricunha.com <noreply@yuricunha.com>',
               to: user.email,
-              subject: 'Reset your password',
+              subject: locale === 'pt' ? 'Redefina sua senha' : 'Reset your password',
               react: PasswordReset({
                 name: user.name,
-                resetUrl
+                resetUrl,
+                locale
               })
             })
           } catch (emailError) {
@@ -384,6 +390,7 @@ export const usersRouter = createTRPCRouter({
     .input(z.object({ userId: z.string() }))
     .mutation(async ({ ctx, input }) => {
       try {
+        const locale = get_request_locale(ctx.headers)
         const auditLogger = new AuditLogger(ctx.db)
         const ipAddress = getIpFromHeaders(ctx.headers)
         const userAgent = getUserAgentFromHeaders(ctx.headers)
@@ -418,7 +425,8 @@ export const usersRouter = createTRPCRouter({
 
         // Create reset URL with fallback for development
         const baseUrl = get_site_url(ctx.headers)
-        const resetUrl = `${baseUrl}/reset-password?token=${token}`
+        const resetPath = getLocalizedPath({ slug: '/reset-password', locale })
+        const resetUrl = `${baseUrl}${resetPath}?token=${token}`
 
         // Send email if Resend is configured
         if (resend) {
@@ -426,10 +434,11 @@ export const usersRouter = createTRPCRouter({
             await resend.emails.send({
               from: 'yuricunha.com <noreply@yuricunha.com>',
               to: user.email,
-              subject: 'Reset your password',
+              subject: locale === 'pt' ? 'Redefina sua senha' : 'Reset your password',
               react: PasswordReset({
                 name: user.name,
-                resetUrl
+                resetUrl,
+                locale
               })
             })
           } catch (emailError) {

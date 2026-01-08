@@ -7,6 +7,7 @@ import { Resend } from 'resend'
 import { z } from 'zod'
 
 import { logger } from '@/lib/logger'
+import { get_request_locale } from '@/lib/request-locale'
 import { contactRatelimit } from '@/lib/ratelimit'
 import { rate_limit_keys } from '@/lib/rate-limit-keys'
 import { checkRateLimit, getClientIp, verifyTurnstileToken } from '@/lib/spam-detection'
@@ -25,6 +26,8 @@ const contactFormSchema = z.object({
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
+
+    const locale = get_request_locale(request.headers)
 
     // Get client IP for rate limiting
     const clientIp = getClientIp(request.headers)
@@ -144,12 +147,13 @@ Sent at: ${currentDate}
     await resend.emails.send({
       from: 'Yuri Cunha <noreply@yuricunha.com>',
       to: [validatedData.email],
-      subject: 'Thank you for contacting me!',
+      subject: locale === 'pt' ? 'Obrigado por entrar em contato!' : 'Thank you for contacting me!',
       html: await render(
         ContactConfirmation({
           name: validatedData.name,
           subject: validatedData.subject,
-          message: validatedData.message
+          message: validatedData.message,
+          locale
         })
       ),
       text: `
@@ -169,7 +173,10 @@ This is an automated confirmation email. Please do not reply to this email.
 
     return Response.json({
       success: true,
-      message: 'Message sent successfully! You should receive a confirmation email shortly.'
+      message:
+        locale === 'pt'
+          ? 'Mensagem enviada com sucesso! Você receberá um e-mail de confirmação em instantes.'
+          : 'Message sent successfully! You should receive a confirmation email shortly.'
     })
   } catch (error) {
     logger.error('Contact form error', error)
