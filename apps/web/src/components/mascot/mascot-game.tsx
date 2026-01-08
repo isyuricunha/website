@@ -4,16 +4,13 @@ import { useTranslations } from '@isyuricunha/i18n/client'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@isyuricunha/ui'
 import { TrophyIcon, XIcon } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
-import { useMascotSounds } from '@/hooks/use-mascot-sounds'
 
 interface MascotGameProps {
   isOpen: boolean
   onClose: () => void
-  soundEnabled?: boolean
-  soundVolume?: number
 }
 
-const MascotGame = ({ isOpen, onClose, soundEnabled = false, soundVolume = 0.5 }: MascotGameProps) => {
+const MascotGame = ({ isOpen, onClose }: MascotGameProps) => {
   const t = useTranslations()
   const [score, setScore] = useState(0)
   const [timeLeft, setTimeLeft] = useState(30)
@@ -25,12 +22,6 @@ const MascotGame = ({ isOpen, onClose, soundEnabled = false, soundVolume = 0.5 }
   const [multiplier, setMultiplier] = useState(1)
   const [achievements, setAchievements] = useState<string[]>([])
 
-  // Initialize sounds
-  const sounds = useMascotSounds({
-    enabled: soundEnabled,
-    volume: soundVolume,
-    preloadSounds: true
-  })
   // Load high score from localStorage
   useEffect(() => {
     try {
@@ -49,8 +40,6 @@ const MascotGame = ({ isOpen, onClose, soundEnabled = false, soundVolume = 0.5 }
       setTimeLeft((prev) => {
         if (prev <= 1) {
           setIsPlaying(false)
-          // Play game over sound
-          sounds.play('gameOver')
           return 0
         }
         return prev - 1
@@ -58,7 +47,7 @@ const MascotGame = ({ isOpen, onClose, soundEnabled = false, soundVolume = 0.5 }
     }, 1000)
 
     return () => clearInterval(timer)
-  }, [isPlaying, sounds]) // Only depend on isPlaying to prevent timer restarts
+  }, [isPlaying]) // Only depend on isPlaying to prevent timer restarts
 
   // Handle game end and high score saving separately
   useEffect(() => {
@@ -68,15 +57,13 @@ const MascotGame = ({ isOpen, onClose, soundEnabled = false, soundVolume = 0.5 }
       score > highScore
     ) {
       setHighScore(score)
-      // Play high score sound
-      sounds.play('highScore')
       try {
         localStorage.setItem('vc_mascot_game_high_score', score.toString())
       } catch {
         // Ignore localStorage errors
       }
     }
-  }, [isPlaying, timeLeft, score, highScore, sounds])
+  }, [isPlaying, timeLeft, score, highScore])
 
   // Get difficulty settings
   const getDifficultySettings = useCallback(() => {
@@ -114,15 +101,10 @@ const MascotGame = ({ isOpen, onClose, soundEnabled = false, soundVolume = 0.5 }
     setIsPlaying(true)
     setMultiplier(1)
     moveTarget()
-    // Play game start sound
-    sounds.play('gameStart')
-  }, [gameMode, moveTarget, sounds])
+  }, [gameMode, moveTarget])
 
   const handleTargetClick = useCallback(() => {
     if (!isPlaying) return
-
-    // Play click sound
-    sounds.play('gameClick')
 
     const settings = getDifficultySettings()
     const basePoints = settings.scoreMultiplier * multiplier
@@ -141,7 +123,7 @@ const MascotGame = ({ isOpen, onClose, soundEnabled = false, soundVolume = 0.5 }
     if (score === 50 && !achievements.includes('speed_demon')) {
       setAchievements((prev) => [...prev, 'speed_demon'])
     }
-  }, [isPlaying, moveTarget, getDifficultySettings, multiplier, score, gameMode, achievements, sounds])
+  }, [isPlaying, moveTarget, getDifficultySettings, multiplier, score, gameMode, achievements])
 
   if (!isOpen) return null
 
