@@ -83,7 +83,7 @@ const Hero = () => {
               <span>{t('homepage.hero.title-middle-left')}</span>
               {locale === 'pt' ? (
                 <>
-                  <span>{' '}{t('homepage.hero.title-middle-right')}{' '}</span>
+                  <span> {t('homepage.hero.title-middle-right')} </span>
                   <div className='relative inline-block min-w-[60px] align-baseline'>
                     <AnimatePresence mode='popLayout'>
                       <motion.div
@@ -98,14 +98,16 @@ const Hero = () => {
                         }}
                         className='inline-block align-baseline'
                       >
-                        <span className={textItem.className}>{t(`homepage.hero.${textItem.key}`)}</span>
+                        <span className={textItem.className}>
+                          {t(`homepage.hero.${textItem.key}`)}
+                        </span>
                       </motion.div>
                     </AnimatePresence>
                   </div>
                 </>
               ) : (
                 <>
-                  <span>{' '}</span>
+                  <span> </span>
                   <div className='relative inline-block min-w-[60px] align-baseline'>
                     <AnimatePresence mode='popLayout'>
                       <motion.div
@@ -120,11 +122,13 @@ const Hero = () => {
                         }}
                         className='inline-block align-baseline'
                       >
-                        <span className={textItem.className}>{t(`homepage.hero.${textItem.key}`)}</span>
+                        <span className={textItem.className}>
+                          {t(`homepage.hero.${textItem.key}`)}
+                        </span>
                       </motion.div>
                     </AnimatePresence>
                   </div>
-                  <span>{' '}{t('homepage.hero.title-middle-right')}</span>
+                  <span> {t('homepage.hero.title-middle-right')}</span>
                 </>
               )}
             </motion.div>

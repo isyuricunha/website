@@ -224,7 +224,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         const v = (base as any)[String(idx)]
         if (typeof v === 'string' && v) list.push(v)
       }
-    } catch { }
+    } catch {}
     if (list.length === 0) return t('mascot.messages.0')
     return list[Math.floor(Math.random() * list.length)] ?? t('mascot.messages.0')
   }, [allMessages, t])
@@ -243,7 +243,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         const v = (base as any)[String(idx)]
         if (typeof v === 'string' && v) list.push(v)
       }
-    } catch { }
+    } catch {}
     if (list.length === 0) return t('mascot.messages.0')
     return list[Math.floor(Math.random() * list.length)] ?? t('mascot.messages.0')
   }, [allMessages, t])
@@ -273,7 +273,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         sessionStorage.setItem(MASCOT_IMAGE_KEY, String(chosen))
         updateState({ currentMascotImage: chosen })
       }
-    } catch { }
+    } catch {}
   }, [updateState])
 
   // Read dismissal state and preferences once per session
@@ -296,7 +296,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       if (visited) {
         updateState({ blogPostsVisited: new Set(JSON.parse(visited)) })
       }
-    } catch { }
+    } catch {}
   }, [loadPreferences, updateState])
 
   // Konami Code detection
@@ -308,7 +308,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         try {
           sessionStorage.removeItem(STORAGE_KEY)
           localStorage.removeItem(HIDE_KEY)
-        } catch { }
+        } catch {}
         return
       }
 
@@ -322,7 +322,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
           updateState({ isKonamiMode: !state.isKonamiMode })
           try {
             localStorage.setItem(KONAMI_MODE_KEY, state.isKonamiMode ? '1' : '0')
-          } catch { }
+          } catch {}
         }
         updateState({ konamiSequence: [] })
       } else if (newSequence.length > KONAMI_CODE.length) {
@@ -457,7 +457,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
             const v = (base as any)[String(idx)]
             if (typeof v === 'string' && v) res.push(v)
           }
-        } catch { }
+        } catch {}
         return res
       }
 
@@ -510,7 +510,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
             updateState({ blogPostsVisited: newVisited })
             try {
               localStorage.setItem(BLOG_POST_VISITED_KEY, JSON.stringify([...newVisited]))
-            } catch { }
+            } catch {}
           }
         } else {
           // Show randomized page message for non-blog-post pages
@@ -951,10 +951,11 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
                 return (
                   <div
                     key={item.id}
-                    className={`border-border/20 bg-popover/95 text-popover-foreground shadow-primary/10 rounded-3xl border-2 shadow-2xl ring-0 backdrop-blur-md transition-all duration-200 ease-in-out outline-none ${isExiting
-                      ? 'translate-y-1 scale-95 opacity-0'
-                      : 'translate-y-0 scale-100 opacity-100'
-                      }`}
+                    className={`border-border/20 bg-popover/95 text-popover-foreground shadow-primary/10 rounded-3xl border-2 shadow-2xl ring-0 backdrop-blur-md transition-all duration-200 ease-in-out outline-none ${
+                      isExiting
+                        ? 'translate-y-1 scale-95 opacity-0'
+                        : 'translate-y-0 scale-100 opacity-100'
+                    }`}
                     role='dialog'
                     aria-label={t('mascot.speechBubble')}
                     style={
@@ -1055,10 +1056,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       </div>
 
       {/* Mini Game */}
-      <MascotGame
-        isOpen={state.showGame}
-        onClose={() => updateState({ showGame: false })}
-      />
+      <MascotGame isOpen={state.showGame} onClose={() => updateState({ showGame: false })} />
     </>
   )
 }

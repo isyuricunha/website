@@ -565,10 +565,7 @@ export default function AIChatInterface({
     }
   }
 
-  const more_like_this = async (citation: {
-    title: string
-    type: CitationType
-  }) => {
+  const more_like_this = async (citation: { title: string; type: CitationType }) => {
     const prompt = t('mascot.aiChat.citations.moreLikeThisPrompt', {
       title: citation.title,
       type: t(`mascot.aiChat.citations.types.${citation.type}` as any)

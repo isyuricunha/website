@@ -71,9 +71,15 @@ const generateSound = (
   const channelData = buffer.getChannelData(0)
 
   // ADSR envelope for more natural sound
-  const adsr = (t: number, attack: number, decay: number, sustain: number, release: number): number => {
+  const adsr = (
+    t: number,
+    attack: number,
+    decay: number,
+    sustain: number,
+    release: number
+  ): number => {
     if (t < attack) return t / attack // Attack
-    if (t < attack + decay) return 1 - (1 - sustain) * (t - attack) / decay // Decay
+    if (t < attack + decay) return 1 - ((1 - sustain) * (t - attack)) / decay // Decay
     if (t < duration - release) return sustain // Sustain
     return sustain * Math.max(0, (duration - t) / release) // Release
   }
@@ -95,7 +101,7 @@ const generateSound = (
         // Major chord: C4, E4, G4
         const c4 = Math.sin(2 * Math.PI * 261.63 * t) * Math.exp(-t * 2)
         const e4 = Math.sin(2 * Math.PI * 329.63 * t) * Math.exp(-t * 2) * 0.7
-        const g4 = Math.sin(2 * Math.PI * 392.00 * t) * Math.exp(-t * 2) * 0.5
+        const g4 = Math.sin(2 * Math.PI * 392.0 * t) * Math.exp(-t * 2) * 0.5
         sample = (c4 + e4 + g4) * successEnvelope * 0.25
         break
 
@@ -125,7 +131,7 @@ const generateSound = (
         const gameSuccessEnvelope = adsr(t, 0.02, 0.08, 0.5, 0.2)
         // Perfect fifth: C4 + G4
         const c4_game = Math.sin(2 * Math.PI * 261.63 * t) * Math.exp(-t * 2.5)
-        const g4_game = Math.sin(2 * Math.PI * 392.00 * t) * Math.exp(-t * 3) * 0.8
+        const g4_game = Math.sin(2 * Math.PI * 392.0 * t) * Math.exp(-t * 3) * 0.8
         sample = (c4_game + g4_game) * gameSuccessEnvelope * 0.28
         break
 
@@ -162,7 +168,14 @@ const getSoundBuffer = (context: AudioContext, soundType: string): AudioBuffer =
 }
 
 export const useSound = (
-  soundType: 'click' | 'success' | 'error' | 'notification' | 'gameClick' | 'gameSuccess' | 'gameOver',
+  soundType:
+    | 'click'
+    | 'success'
+    | 'error'
+    | 'notification'
+    | 'gameClick'
+    | 'gameSuccess'
+    | 'gameOver',
   enabled: boolean = true
 ): SoundHookReturn => {
   const [isPlaying, setIsPlaying] = useState(false)
@@ -237,7 +250,6 @@ export const useSound = (
         // Start playback
         source.start()
         setIsPlaying(true)
-
       } catch (error) {
         console.warn('Failed to play sound:', error)
       }

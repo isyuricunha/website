@@ -305,15 +305,15 @@ export async function POST(req: NextRequest) {
       const rec =
         kind === 'snippet'
           ? build_snippet_recommendation_answer({
-            query: navigation_query,
-            locale,
-            excludeIds: exclude_ids
-          })
+              query: navigation_query,
+              locale,
+              excludeIds: exclude_ids
+            })
           : build_post_recommendation_answer({
-            query: navigation_query,
-            locale,
-            excludeIds: exclude_ids
-          })
+              query: navigation_query,
+              locale,
+              excludeIds: exclude_ids
+            })
 
       const payload = {
         requestId: request_id,

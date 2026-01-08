@@ -142,9 +142,7 @@ const get_static_routes = (locale: string): StaticRouteEntry[] => {
     {
       slug: '/snippet',
       title: is_pt ? 'Snippets' : 'Snippets',
-      description: is_pt
-        ? 'Notas práticas e trechos de código'
-        : 'Practical notes and code recipes'
+      description: is_pt ? 'Notas práticas e trechos de código' : 'Practical notes and code recipes'
     },
     {
       slug: '/projects',
@@ -208,10 +206,7 @@ function extract_quoted_phrases(value: string): string[] {
   return phrases
 }
 
-function infer_excluded_post_slugs_from_query(params: {
-  query: string
-  locale: string
-}): string[] {
+function infer_excluded_post_slugs_from_query(params: { query: string; locale: string }): string[] {
   const { query, locale } = params
   const slugs: string[] = []
 

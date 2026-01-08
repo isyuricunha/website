@@ -68,11 +68,7 @@ export default function NotificationsDropdown() {
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
-        <Button
-          variant='ghost'
-          className='relative size-9 p-0'
-          aria-label={t('aria')}
-        >
+        <Button variant='ghost' className='relative size-9 p-0' aria-label={t('aria')}>
           <Bell className='size-4' />
           {session && unreadCount > 0 ? (
             <span className='bg-primary text-primary-foreground absolute -top-1 -right-1 inline-flex min-w-5 items-center justify-center rounded-full px-1.5 text-[10px] leading-5 font-semibold'>

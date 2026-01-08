@@ -2,7 +2,14 @@ import type { Metadata } from 'next'
 
 import { i18n } from '@isyuricunha/i18n/config'
 import { getTranslations } from '@isyuricunha/i18n/server'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, buttonVariants } from '@isyuricunha/ui/server'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  buttonVariants
+} from '@isyuricunha/ui/server'
 import { ArrowRight, FileText, Code, FolderGit2 } from 'lucide-react'
 import { allPosts, allProjects, allSnippets } from 'content-collections'
 
@@ -87,19 +94,34 @@ const NotFound = async (props: PageProps) => {
 
         <div className='flex flex-wrap justify-center gap-3'>
           <GoToHomepage />
-          <Link href={getLocalizedPath({ slug: '/sitemap', locale })} className={buttonVariants({ variant: 'outline' })}>
+          <Link
+            href={getLocalizedPath({ slug: '/sitemap', locale })}
+            className={buttonVariants({ variant: 'outline' })}
+          >
             {t('layout.sitemap')}
           </Link>
-          <Link href={getLocalizedPath({ slug: '/blog', locale })} className={buttonVariants({ variant: 'outline' })}>
+          <Link
+            href={getLocalizedPath({ slug: '/blog', locale })}
+            className={buttonVariants({ variant: 'outline' })}
+          >
             {t('layout.blog')}
           </Link>
-          <Link href={getLocalizedPath({ slug: '/snippet', locale })} className={buttonVariants({ variant: 'outline' })}>
+          <Link
+            href={getLocalizedPath({ slug: '/snippet', locale })}
+            className={buttonVariants({ variant: 'outline' })}
+          >
             {t('layout.snippets')}
           </Link>
-          <Link href={getLocalizedPath({ slug: '/projects', locale })} className={buttonVariants({ variant: 'outline' })}>
+          <Link
+            href={getLocalizedPath({ slug: '/projects', locale })}
+            className={buttonVariants({ variant: 'outline' })}
+          >
             {t('layout.projects')}
           </Link>
-          <Link href={getLocalizedPath({ slug: '/guestbook', locale })} className={buttonVariants({ variant: 'outline' })}>
+          <Link
+            href={getLocalizedPath({ slug: '/guestbook', locale })}
+            className={buttonVariants({ variant: 'outline' })}
+          >
             {t('layout.guestbook')}
           </Link>
         </div>
@@ -123,7 +145,9 @@ const NotFound = async (props: PageProps) => {
                   <div className='flex items-start justify-between gap-3'>
                     <div className='min-w-0'>
                       <div className='truncate text-sm font-medium'>{post.title}</div>
-                      <div className='text-muted-foreground line-clamp-2 text-xs'>{post.summary}</div>
+                      <div className='text-muted-foreground line-clamp-2 text-xs'>
+                        {post.summary}
+                      </div>
                     </div>
                     <ArrowRight className='text-muted-foreground mt-1 size-4 shrink-0' />
                   </div>
@@ -131,7 +155,11 @@ const NotFound = async (props: PageProps) => {
               ))}
               <Link
                 href={getLocalizedPath({ slug: '/blog', locale })}
-                className={buttonVariants({ variant: 'ghost', size: 'sm', className: 'justify-start' })}
+                className={buttonVariants({
+                  variant: 'ghost',
+                  size: 'sm',
+                  className: 'justify-start'
+                })}
               >
                 {t('notFound.viewAll')}
               </Link>
@@ -166,7 +194,11 @@ const NotFound = async (props: PageProps) => {
               ))}
               <Link
                 href={getLocalizedPath({ slug: '/snippet', locale })}
-                className={buttonVariants({ variant: 'ghost', size: 'sm', className: 'justify-start' })}
+                className={buttonVariants({
+                  variant: 'ghost',
+                  size: 'sm',
+                  className: 'justify-start'
+                })}
               >
                 {t('notFound.viewAll')}
               </Link>
@@ -201,7 +233,11 @@ const NotFound = async (props: PageProps) => {
               ))}
               <Link
                 href={getLocalizedPath({ slug: '/projects', locale })}
-                className={buttonVariants({ variant: 'ghost', size: 'sm', className: 'justify-start' })}
+                className={buttonVariants({
+                  variant: 'ghost',
+                  size: 'sm',
+                  className: 'justify-start'
+                })}
               >
                 {t('notFound.viewAll')}
               </Link>
