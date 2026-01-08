@@ -22,6 +22,7 @@ import { useTranslations, useMessages } from '@isyuricunha/i18n/client'
 import { i18n } from '@isyuricunha/i18n/config'
 import MascotGame from './mascot-game'
 import AIChatInterface from './ai-chat-interface'
+import { useMascotSounds } from '@/hooks/use-mascot-sounds'
 
 type VirtualMascotProps = {
   hidden?: boolean
@@ -40,7 +41,8 @@ const DEFAULT_PREFERENCES: MascotPreferences = {
   speechBubbles: true,
   skin: 'default',
   messageDuration: 7000,
-  bubblePosition: 'bottom-right'
+  bubblePosition: 'bottom-right',
+  volume: 0.5
 }
 
 interface MascotPreferences {
@@ -50,6 +52,7 @@ interface MascotPreferences {
   skin: string
   messageDuration: number
   bubblePosition: 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left'
+  volume: number
 }
 
 const KONAMI_CODE = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65]
@@ -87,6 +90,13 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
   const isProduction = process.env.NODE_ENV === 'production'
 
+  // Initialize sound effects
+  const sounds = useMascotSounds({
+    enabled: state.preferences.soundEffects,
+    volume: state.preferences.volume,
+    preloadSounds: true
+  })
+
   const mascotRef = useRef<HTMLButtonElement | null>(null)
   const [mounted, setMounted] = useState(false)
   const reset_auto_show_timeout_ref = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -109,12 +119,16 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         ...prev,
         messageQueue: [...prev.messageQueue, { id, text, expiresAt }]
       }))
+
+      // Play message sound
+      sounds.play('message')
+
       // schedule exit animation then removal
       setTimeout(() => {
         startExit(id)
       }, d)
     },
-    [state.preferences.messageDuration]
+    [state.preferences.messageDuration, sounds]
   )
 
   const startExit = (id: number) => {
@@ -140,6 +154,15 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   const updatePreferences = (updates: Partial<MascotPreferences>) => {
     const newPrefs = { ...state.preferences, ...updates }
     updateState({ preferences: newPrefs })
+
+    // Update sound settings
+    if (updates.soundEffects !== undefined) {
+      sounds.setEnabled(updates.soundEffects)
+    }
+    if (updates.volume !== undefined) {
+      sounds.setVolume(updates.volume)
+    }
+
     try {
       localStorage.setItem(PREFERENCES_KEY, JSON.stringify(newPrefs))
     } catch (error) {
@@ -200,7 +223,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         const v = (base as any)[String(idx)]
         if (typeof v === 'string' && v) list.push(v)
       }
-    } catch {}
+    } catch { }
     if (list.length === 0) return t('mascot.messages.0')
     return list[Math.floor(Math.random() * list.length)] ?? t('mascot.messages.0')
   }, [allMessages, t])
@@ -219,7 +242,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         const v = (base as any)[String(idx)]
         if (typeof v === 'string' && v) list.push(v)
       }
-    } catch {}
+    } catch { }
     if (list.length === 0) return t('mascot.messages.0')
     return list[Math.floor(Math.random() * list.length)] ?? t('mascot.messages.0')
   }, [allMessages, t])
@@ -245,7 +268,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         sessionStorage.setItem(MASCOT_IMAGE_KEY, String(chosen))
         updateState({ currentMascotImage: chosen })
       }
-    } catch {}
+    } catch { }
   }, [updateState])
 
   // Read dismissal state and preferences once per session
@@ -268,7 +291,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       if (visited) {
         updateState({ blogPostsVisited: new Set(JSON.parse(visited)) })
       }
-    } catch {}
+    } catch { }
   }, [loadPreferences, updateState])
 
   // Konami Code detection
@@ -280,7 +303,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         try {
           sessionStorage.removeItem(STORAGE_KEY)
           localStorage.removeItem(HIDE_KEY)
-        } catch {}
+        } catch { }
         return
       }
 
@@ -294,7 +317,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
           updateState({ isKonamiMode: !state.isKonamiMode })
           try {
             localStorage.setItem(KONAMI_MODE_KEY, state.isKonamiMode ? '1' : '0')
-          } catch {}
+          } catch { }
         }
         updateState({ konamiSequence: [] })
       } else if (newSequence.length > KONAMI_CODE.length) {
@@ -429,7 +452,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
             const v = (base as any)[String(idx)]
             if (typeof v === 'string' && v) res.push(v)
           }
-        } catch {}
+        } catch { }
         return res
       }
 
@@ -482,7 +505,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
             updateState({ blogPostsVisited: newVisited })
             try {
               localStorage.setItem(BLOG_POST_VISITED_KEY, JSON.stringify([...newVisited]))
-            } catch {}
+            } catch { }
           }
         } else {
           // Show randomized page message for non-blog-post pages
@@ -569,6 +592,9 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   // (Removed dismiss handler; per-bubble close and Hide button cover behavior)
 
   const handleMascotClick = () => {
+    // Play click sound
+    sounds.play('click')
+
     // Toggle menu visibility when clicking on mascot
     updateState({
       isActive: !state.isActive,
@@ -582,6 +608,9 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   }
 
   const handleMouseEnter = () => {
+    // Play hover sound
+    sounds.play('hover')
+
     updateState({ isHovering: true })
     // Do not auto-enqueue on hover to avoid spam; only show if queue already has messages
   }
@@ -600,6 +629,9 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   // (Removed restore handler; Eye button toggles state directly)
 
   const handleMenuAction = (action: string) => {
+    // Play menu close sound
+    sounds.play('menuClose')
+
     // First hide all UI elements
     updateState({
       showBubble: false,
@@ -614,6 +646,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     setTimeout(() => {
       switch (action) {
         case 'contact':
+          sounds.play('menuOpen')
           updateState({
             showContact: true,
             showBubble: true
@@ -623,18 +656,21 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
           window.open('https://github.com/isyuricunha', '_blank')
           break
         case 'game':
+          sounds.play('menuOpen')
           updateState({
             showGame: true,
             showBubble: true
           })
           break
         case 'chat':
+          sounds.play('menuOpen')
           updateState({
             showAIChat: true,
             showBubble: true
           })
           break
         case 'settings':
+          sounds.play('menuOpen')
           updateState({
             showSettings: true,
             showBubble: true
@@ -749,6 +785,25 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
                   className='border-input bg-background text-foreground accent-primary focus:ring-ring rounded focus:ring-2 focus:ring-offset-2'
                 />
               </label>
+
+              {state.preferences.soundEffects && (
+                <label className='flex flex-col gap-2'>
+                  <div className='flex items-center justify-between'>
+                    <span>{t('mascot.settings.volume')}</span>
+                    <span className='text-muted-foreground text-xs'>
+                      {Math.round(state.preferences.volume * 100)}%
+                    </span>
+                  </div>
+                  <input
+                    type='range'
+                    min='0'
+                    max='100'
+                    value={state.preferences.volume * 100}
+                    onChange={(e) => updatePreferences({ volume: Number.parseInt(e.target.value) / 100 })}
+                    className='border-input bg-background accent-primary focus:ring-ring w-full rounded focus:ring-2 focus:ring-offset-2'
+                  />
+                </label>
+              )}
 
               <label className='flex items-center justify-between'>
                 <span>{t('mascot.settings.messageDuration')}</span>
@@ -917,11 +972,10 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
                 return (
                   <div
                     key={item.id}
-                    className={`border-border/20 bg-popover/95 text-popover-foreground shadow-primary/10 rounded-3xl border-2 shadow-2xl ring-0 backdrop-blur-md transition-all duration-200 ease-in-out outline-none ${
-                      isExiting
+                    className={`border-border/20 bg-popover/95 text-popover-foreground shadow-primary/10 rounded-3xl border-2 shadow-2xl ring-0 backdrop-blur-md transition-all duration-200 ease-in-out outline-none ${isExiting
                         ? 'translate-y-1 scale-95 opacity-0'
                         : 'translate-y-0 scale-100 opacity-100'
-                    }`}
+                      }`}
                     role='dialog'
                     aria-label={t('mascot.speechBubble')}
                     style={
@@ -1022,7 +1076,12 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       </div>
 
       {/* Mini Game */}
-      <MascotGame isOpen={state.showGame} onClose={() => updateState({ showGame: false })} />
+      <MascotGame
+        isOpen={state.showGame}
+        onClose={() => updateState({ showGame: false })}
+        soundEnabled={state.preferences.soundEffects}
+        soundVolume={state.preferences.volume}
+      />
     </>
   )
 }
