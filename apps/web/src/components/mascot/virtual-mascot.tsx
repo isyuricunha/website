@@ -249,12 +249,15 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   }, [allMessages, t])
 
   // Copy email to clipboard
-  const copyEmail = (): void => {
-    navigator.clipboard.writeText('me@yuricunha.com').catch((error) => {
+  const copyEmail = async (): Promise<void> => {
+    try {
+      await navigator.clipboard.writeText('me@yuricunha.com')
+      enqueueMessage('Email copied to clipboard!', 2000)
+      successSoundRef.current()
+    } catch (error) {
+      enqueueMessage('Failed to copy email. Please try again.', 3000)
       if (!isProduction) console.error('Failed to copy email:', error)
-    })
-    enqueueMessage('Email copied to clipboard!', 2000)
-    successSoundRef.current()
+    }
   }
 
   // Mount flag to coordinate client-only behaviors and select session image

@@ -36,8 +36,37 @@ const generateSound = (
   type: 'click' | 'success' | 'error' | 'notification' | 'gameClick' | 'gameSuccess' | 'gameOver'
 ): AudioBuffer => {
   const sampleRate = context.sampleRate
-  let duration = 0.2 // Base duration - shorter for minimalist feel
-  const frameCount = sampleRate * duration
+
+  // Determine duration based on sound type first
+  let duration: number
+  switch (type) {
+    case 'click':
+      duration = 0.15
+      break
+    case 'success':
+      duration = 0.4
+      break
+    case 'error':
+      duration = 0.3
+      break
+    case 'notification':
+      duration = 0.25
+      break
+    case 'gameClick':
+      duration = 0.12
+      break
+    case 'gameSuccess':
+      duration = 0.35
+      break
+    case 'gameOver':
+      duration = 0.5
+      break
+    default:
+      duration = 0.2
+  }
+
+  // Calculate frame count based on actual duration
+  const frameCount = Math.ceil(sampleRate * duration)
   const buffer = context.createBuffer(1, frameCount, sampleRate)
   const channelData = buffer.getChannelData(0)
 
@@ -56,14 +85,12 @@ const generateSound = (
     switch (type) {
       case 'click':
         // Soft, modern click - gentle high frequency with quick decay
-        duration = 0.15
         const clickEnvelope = Math.exp(-t * 15) * (1 - t / duration)
         sample = Math.sin(2 * Math.PI * 1200 * t) * clickEnvelope * 0.4
         break
 
       case 'success':
         // Pleasant, modern success - gentle chord with smooth envelope
-        duration = 0.4
         const successEnvelope = adsr(t, 0.02, 0.1, 0.3, 0.15)
         // Major chord: C4, E4, G4
         const c4 = Math.sin(2 * Math.PI * 261.63 * t) * Math.exp(-t * 2)
@@ -74,14 +101,12 @@ const generateSound = (
 
       case 'error':
         // Subtle, modern error - low, gentle tone
-        duration = 0.3
         const errorEnvelope = adsr(t, 0.05, 0.15, 0.2, 0.1)
         sample = Math.sin(2 * Math.PI * 180 * t) * errorEnvelope * 0.35
         break
 
       case 'notification':
         // Gentle, modern notification - soft bell-like tone
-        duration = 0.25
         const notifEnvelope = adsr(t, 0.03, 0.1, 0.4, 0.12)
         // Fundamental + octave harmonic
         const fundamental = Math.sin(2 * Math.PI * 440 * t) * Math.exp(-t * 3)
@@ -91,14 +116,12 @@ const generateSound = (
 
       case 'gameClick':
         // Clean, modern game click - crisp and responsive
-        duration = 0.12
         const gameClickEnvelope = Math.exp(-t * 20) * (1 - t / duration)
         sample = Math.sin(2 * Math.PI * 800 * t) * gameClickEnvelope * 0.35
         break
 
       case 'gameSuccess':
         // Bright, modern game success - uplifting chord
-        duration = 0.35
         const gameSuccessEnvelope = adsr(t, 0.02, 0.08, 0.5, 0.2)
         // Perfect fifth: C4 + G4
         const c4_game = Math.sin(2 * Math.PI * 261.63 * t) * Math.exp(-t * 2.5)
@@ -108,7 +131,6 @@ const generateSound = (
 
       case 'gameOver':
         // Gentle, modern game over - descending, peaceful
-        duration = 0.5
         const gameOverEnvelope = adsr(t, 0.04, 0.2, 0.1, 0.26)
         // Slowly descending from G4 to C4
         const descendingFreq = 392 - t * 80 // Descend from G4 to C4
