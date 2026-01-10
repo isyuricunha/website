@@ -41,25 +41,33 @@ const get_github_headers = () => {
 }
 
 const fetch_repo = async (repo: string): Promise<GithubRepo | null> => {
-  const res = await fetch(`https://api.github.com/repos/${repo}`, {
-    headers: get_github_headers(),
-    next: { revalidate: 60 * 60 }
-  })
+  try {
+    const res = await fetch(`https://api.github.com/repos/${repo}`, {
+      headers: get_github_headers(),
+      next: { revalidate: 60 * 60 }
+    })
 
-  if (!res.ok) return null
+    if (!res.ok) return null
 
-  return (await res.json()) as GithubRepo
+    return (await res.json()) as GithubRepo
+  } catch {
+    return null
+  }
 }
 
 const fetch_latest_release = async (repo: string): Promise<GithubRelease | null> => {
-  const res = await fetch(`https://api.github.com/repos/${repo}/releases/latest`, {
-    headers: get_github_headers(),
-    next: { revalidate: 60 * 60 }
-  })
+  try {
+    const res = await fetch(`https://api.github.com/repos/${repo}/releases/latest`, {
+      headers: get_github_headers(),
+      next: { revalidate: 60 * 60 }
+    })
 
-  if (!res.ok) return null
+    if (!res.ok) return null
 
-  return (await res.json()) as GithubRelease
+    return (await res.json()) as GithubRelease
+  } catch {
+    return null
+  }
 }
 
 const format_date = (iso: string, locale: string) => {

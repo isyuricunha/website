@@ -95,6 +95,7 @@
       "@isyuricunha/docs>zod": "4.3.0",
       "@isyuricunha/docs>@hookform/resolvers": "5.2.2",
       "better-call": "1.1.7",
+      "drizzle-kit": "1.0.0-beta.10-42c284e",
       "preact": "10.28.2",
       "js-yaml": "^4.1.1"
     }
