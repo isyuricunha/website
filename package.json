@@ -86,7 +86,7 @@
       "pnpm check:spelling"
     ]
   },
-  "packageManager": "pnpm@10.26.0",
+  "packageManager": "pnpm@10.28.0",
   "pnpm": {
     "overrides": {
       "@isyuricunha/web>zod": "4.3.0",
