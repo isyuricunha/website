@@ -90,9 +90,9 @@
   "packageManager": "pnpm@10.28.0",
   "pnpm": {
     "overrides": {
-      "@isyuricunha/web>zod": "4.3.0",
+      "@isyuricunha/web>zod": "4.3.5",
       "@isyuricunha/web>@hookform/resolvers": "5.2.2",
-      "@isyuricunha/docs>zod": "4.3.0",
+      "@isyuricunha/docs>zod": "4.3.5",
       "@isyuricunha/docs>@hookform/resolvers": "5.2.2",
       "better-call": "1.1.7",
       "drizzle-kit": "1.0.0-beta.10-42c284e",
