@@ -47,7 +47,8 @@
     "test:unit:coverage": "vitest --coverage --ui",
     "test:unit:ui": "vitest --ui",
     "type-check": "turbo type-check",
-    "version": "changeset version"
+    "version": "changeset version",
+    "update": "pnpm -r up --latest"
   },
   "devDependencies": {
     "@changesets/cli": "^2.29.8",
