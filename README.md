@@ -4,7 +4,7 @@ Source code for my personal website.
 
 Production:
 
-- **Website**: https://yuricunha.com
+- **Website**: <https://yuricunha.com>
 
 ## Notice
 
@@ -33,7 +33,7 @@ The repository is organized as a monorepo (Turbo + pnpm) so that the main app an
 
 ## Repository layout
 
-```
+```text
 apps/
   web/        main website
   docs/       documentation site
@@ -212,6 +212,6 @@ Thank you to Nelson for the original inspiration.
 
 ## Contact
 
-- **Email**: me@yuricunha.com
-- **GitHub**: https://github.com/isyuricunha
-- **Website**: https://yuricunha.com
+- **Email**: <me@yuricunha.com>
+- **GitHub**: <https://github.com/isyuricunha>
+- **Website**: <https://yuricunha.com>
