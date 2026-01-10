@@ -33,7 +33,7 @@
   "devDependencies": {
     "@isyuricunha/eslint-config": "workspace:*",
     "@isyuricunha/tsconfig": "workspace:*",
-    "@types/node": "^25.0.3",
+    "@types/node": "^25.0.5",
     "@types/pg": "^8.16.0",
     "drizzle-kit": "^0.31.8",
     "pg": "^8.16.3"

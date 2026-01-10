@@ -32,12 +32,12 @@
     "react-hook-form": "^7.70.0",
     "recharts": "^3.6.0",
     "sharp": "^0.34.5",
-    "shiki": "^3.20.0",
-    "zod": "4.3.4"
+    "shiki": "^3.21.0",
+    "zod": "4.3.5"
   },
   "devDependencies": {
     "@content-collections/cli": "^0.1.8",
-    "@content-collections/core": "^0.13.0",
+    "@content-collections/core": "^0.13.1",
     "@content-collections/mdx": "^0.2.2",
     "@content-collections/next": "^0.2.10",
     "@isyuricunha/eslint-config": "workspace:*",
@@ -46,8 +46,8 @@
     "@isyuricunha/tsconfig": "workspace:*",
     "@next/bundle-analyzer": "^16.1.1",
     "@tailwindcss/postcss": "^4.1.18",
-    "@types/node": "^25.0.3",
-    "@types/react": "19.2.7",
+    "@types/node": "^25.0.5",
+    "@types/react": "19.2.8",
     "@types/react-dom": "19.2.3",
     "postcss": "^8.5.6",
     "postcss-load-config": "^6.0.1",
