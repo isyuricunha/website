@@ -204,7 +204,7 @@ importers:
         version: 0.24.1
       '@hookform/resolvers':
         specifier: 5.2.2
-        version: 5.2.2(react-hook-form@7.70.0(react@19.2.3))
+        version: 5.2.2(react-hook-form@7.71.0(react@19.2.3))
       '@icons-pack/react-simple-icons':
         specifier: 13.8.0
         version: 13.8.0(react@19.2.3)
@@ -315,7 +315,7 @@ importers:
         version: 16.1.1(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(@playwright/test@1.57.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       next-intl:
         specifier: ^4.7.0
-        version: 4.7.0(@swc/helpers@0.5.18)(next@16.1.1(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(@playwright/test@1.57.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react@19.2.3)(typescript@5.9.3)
+        version: 4.7.0(@swc/helpers@0.5.18)(next@16.1.1(@opentelemetry/api@1.9.0)(@playwright/test@1.57.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react@19.2.3)(typescript@5.9.3)
       next-themes:
         specifier: ^0.4.6
         version: 0.4.6(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -332,8 +332,8 @@ importers:
         specifier: 19.2.3
         version: 19.2.3(react@19.2.3)
       react-hook-form:
-        specifier: ^7.70.0
-        version: 7.70.0(react@19.2.3)
+        specifier: ^7.71.0
+        version: 7.71.0(react@19.2.3)
       react-intersection-observer:
         specifier: ^10.0.0
         version: 10.0.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -626,7 +626,7 @@ importers:
     dependencies:
       next-intl:
         specifier: ^4.7.0
-        version: 4.7.0(@swc/helpers@0.5.18)(next@16.1.1(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(@playwright/test@1.57.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react@19.2.3)(typescript@5.9.3)
+        version: 4.7.0(@swc/helpers@0.5.18)(next@16.1.1(@opentelemetry/api@1.9.0)(@playwright/test@1.57.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react@19.2.3)(typescript@5.9.3)
     devDependencies:
       '@isyuricunha/eslint-config':
         specifier: workspace:*
@@ -7231,12 +7231,6 @@ packages:
     engines: {node: '>=20.0.0'}
     hasBin: true
 
-  react-hook-form@7.70.0:
-    resolution: {integrity: sha512-COOMajS4FI3Wuwrs3GPpi/Jeef/5W1DRR84Yl5/ShlT3dKVFUfoGiEZ/QE6Uw8P4T2/CLJdcTVYKvWBMQTEpvw==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      react: ^16.8.0 || ^17 || ^18 || ^19
-
   react-hook-form@7.71.0:
     resolution: {integrity: sha512-oFDt/iIFMV9ZfV52waONXzg4xuSlbwKUPvXVH2jumL1me5qFhBMc4knZxuXiZ2+j6h546sYe3ZKJcg/900/iHw==}
     engines: {node: '>=18.0.0'}
@@ -9501,11 +9495,6 @@ snapshots:
       tslib: 2.8.1
 
   '@google/generative-ai@0.24.1': {}
-
-  '@hookform/resolvers@5.2.2(react-hook-form@7.70.0(react@19.2.3))':
-    dependencies:
-      '@standard-schema/utils': 0.3.0
-      react-hook-form: 7.70.0(react@19.2.3)
 
   '@hookform/resolvers@5.2.2(react-hook-form@7.71.0(react@19.2.3))':
     dependencies:
@@ -14988,7 +14977,7 @@ snapshots:
 
   next-intl-swc-plugin-extractor@4.7.0: {}
 
-  next-intl@4.7.0(@swc/helpers@0.5.18)(next@16.1.1(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(@playwright/test@1.57.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react@19.2.3)(typescript@5.9.3):
+  next-intl@4.7.0(@swc/helpers@0.5.18)(next@16.1.1(@opentelemetry/api@1.9.0)(@playwright/test@1.57.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react@19.2.3)(typescript@5.9.3):
     dependencies:
       '@formatjs/intl-localematcher': 0.5.10
       '@parcel/watcher': 2.5.1
@@ -15446,10 +15435,6 @@ snapshots:
       - bufferutil
       - supports-color
       - utf-8-validate
-
-  react-hook-form@7.70.0(react@19.2.3):
-    dependencies:
-      react: 19.2.3
 
   react-hook-form@7.71.0(react@19.2.3):
     dependencies:
