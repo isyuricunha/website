@@ -58,7 +58,7 @@
     "@isyuricunha/prettier-config": "workspace:*",
     "@isyuricunha/tsconfig": "workspace:*",
     "@playwright/test": "^1.57.0",
-    "@types/node": "^25.0.5",
+    "@types/node": "^25.0.6",
     "@vitest/coverage-v8": "^4.0.16",
     "@vitest/ui": "^4.0.16",
     "concurrently": "^9.2.1",

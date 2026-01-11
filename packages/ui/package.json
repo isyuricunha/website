@@ -73,7 +73,7 @@
     "input-otp": "^1.4.2",
     "lucide-react": "^0.562.0",
     "merge-refs": "^2.0.0",
-    "react-hook-form": "^7.70.0",
+    "react-hook-form": "^7.71.0",
     "react-resizable-panels": "^4.3.3",
     "react-textarea-autosize": "^8.5.9",
     "sonner": "^2.0.7",
