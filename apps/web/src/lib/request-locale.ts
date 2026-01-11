@@ -1,6 +1,6 @@
 import { i18n } from '@isyuricunha/i18n/config'
 
-export type request_locale = 'en' | 'pt'
+type request_locale = 'en' | 'pt'
 
 const normalize_locale = (value: string): request_locale | null => {
   const trimmed = value.trim().toLowerCase()
