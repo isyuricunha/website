@@ -55,5 +55,6 @@
   },
   "lint-staged": {
     "*.{cjs,mjs,js,jsx,cts,mts,ts,tsx}": "pnpm -w exec eslint --fix --max-warnings 999"
-  }
+  },
+  "packageManager": "pnpm@10.28.0"
 }
