@@ -1,0 +1,171 @@
+---
+title: mistral agents no openwebui (pipe via api)
+date: 2026-01-16
+author: Yuri Cunha
+description: um snippet bem detalhado para importar um pipe (function) no openwebui e usar um agent da mistral via api.
+tags:
+  - openwebui
+  - mistral
+  - agents
+  - python
+  - api
+  - llm
+---
+
+esse `pipe` habilita suporte nativo a **mistral ai agents** dentro do openwebui, usando o endpoint `https://api.mistral.ai/v1/agents/completions`.
+
+ele permite selecionar um agent criado no console da mistral e conversar com ele diretamente pelo openwebui.
+
+{/*more*/}
+
+## funcionalidades
+
+- integração direta com a api de agents da mistral (`/v1/agents/completions`).
+- suporte a respostas em streaming.
+- configuração simples via valves (sem precisar editar código após importar).
+- funciona com qualquer agent criado no console da mistral (tools, instruções, knowledge, etc.).
+
+## pré-requisitos
+
+- conta na mistral com acesso à api.
+- `MISTRAL_API_KEY` válido (pegue em <https://console.mistral.ai/>).
+- um agent criado (você precisa do id do agent para preencher a valve `AGENT_ID`, normalmente começa com `ag_`).
+- permissões de admin (ou equivalentes) para importar/editar functions no openwebui.
+
+## onde pegar o agent id
+
+1. vá para <https://console.mistral.ai/build/agents>.
+2. crie (ou abra) um agent.
+3. copie o agent id.
+
+observação: em algumas interfaces ele pode aparecer com `ag:`; aqui, o pipe espera o valor como string e o formato mais comum é `ag_...`.
+
+## como importar no openwebui
+
+você tem duas formas comuns:
+
+### opção a: importar pela página do openwebui
+
+use o post oficial da função (import pronto pelo openwebui):
+
+<https://openwebui.com/posts/mistral_agents_integration_pipe_42bce620>
+
+no openwebui:
+
+1. abra a página acima.
+2. clique em `import`.
+3. confirme a importação.
+
+### opção b: importar manualmente (copiar e colar o código)
+
+1. no openwebui, vá em `admin panel`.
+2. entre em `functions`.
+3. clique em `+` (ou `new`) e escolha criar uma nova function/pipe.
+4. cole o código abaixo e salve.
+
+## configuração (valves)
+
+depois de importar, configure as valves (normalmente pelo ícone de engrenagem `⚙️`):
+
+- `MISTRAL_API_KEY`: sua api key da mistral.
+- `AGENT_ID`: o id do agent (ex.: `ag_...`).
+
+## o código (pipe)
+
+importante:
+
+- não hardcode sua chave real no arquivo.
+- preencha `MISTRAL_API_KEY` e `AGENT_ID` nas valves (config do openwebui) depois de importar.
+
+```python
+# title: Mistral Agents
+# author: Yuri Cunha
+# version: 1.0.0
+# license: MIT
+
+import requests
+import json
+from typing import List, Dict, Generator
+from pydantic import BaseModel, Field
+
+
+class Pipe:
+    class Valves(BaseModel):
+        MISTRAL_API_KEY: str = Field(default="")
+        AGENT_ID: str = Field(
+            default="ag_"
+        )  # Your Agent ID aqui or put in var, please, use VAR!
+
+    def __init__(self):
+        self.type = "manifold"
+        self.id = "mistral-agent"
+        self.name = "mistral-agent/"
+        self.valves = self.Valves()
+        self.agents_endpoint = "https://api.mistral.ai/v1/agents/completions"
+
+    def pipes(self) -> List[Dict[str, str]]:
+        return [{"id": "agent", "name": f"Mistral Agent ({self.valves.AGENT_ID[:10]})"}]
+
+    def pipe(self, body: dict) -> Generator:
+        headers = {
+            "Authorization": f"Bearer {self.valves.MISTRAL_API_KEY}",
+            "Content-Type": "application/json",
+        }
+
+        payload = {
+            "agent_id": self.valves.AGENT_ID,
+            "messages": body["messages"],
+            "stream": body.get("stream", False),
+        }
+
+        response = requests.post(
+            self.agents_endpoint, headers=headers, json=payload, stream=True
+        )
+
+        for line in response.iter_lines():
+            if line:
+                yield line.decode("utf-8")
+```
+
+## como configurar as valves
+
+depois de importar, edite as configurações da function no openwebui e defina:
+
+- `mistral_api_key`: sua chave da mistral.
+- `agent_id`: o id do agent (ex.: `ag_...`).
+
+<Callout type='warning'>
+  nunca cole sua chave em repositório público. em produção, prefira variáveis de ambiente e secrets do seu deploy.
+</Callout>
+
+## como usar no chat
+
+1. abra um chat no openwebui.
+2. selecione o pipe `mistral agent (...)` na lista.
+3. envie mensagens normalmente.
+
+o openwebui vai repassar `body["messages"]` para a mistral, mantendo roles (`user`, `assistant`, etc.).
+
+## notas importantes
+
+- **agent id vs model**: este pipe usa a rota de agents (`/v1/agents/completions`), que é diferente do chat completions tradicional.
+- **tools**: se seu agent tem tools configuradas no console da mistral, elas serão aplicadas automaticamente pelo agent.
+
+## notas sobre streaming
+
+- se `stream` estiver habilitado no openwebui, o payload envia `"stream": true`.
+- o `pipe` retorna as linhas do response em streaming (`iter_lines`).
+
+se você notar saída "crua" (linhas json) em vez de texto renderizado, revise se o openwebui está esperando sse/chunks nesse formato específico.
+
+## troubleshooting rápido
+
+- **401 unauthorized / 403 forbidden**: `mistral_api_key` vazio, inválido, ou sem permissão.
+- **404 / invalid agent**: `agent_id` errado ou agent removido.
+- **sem resposta / timeout**: verifique conectividade do servidor do openwebui com `https://api.mistral.ai`.
+- **sem streaming**: confirme que o openwebui está enviando `stream: true` no body.
+
+## referências
+
+- post para import no openwebui:
+  <https://openwebui.com/posts/mistral_agents_integration_pipe_42bce620>
