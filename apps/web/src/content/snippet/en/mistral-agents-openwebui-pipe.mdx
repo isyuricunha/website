@@ -12,7 +12,7 @@ tags:
   - llm
 ---
 
-this `pipe` enables native **mistral ai agents** support inside openwebui by calling `https://api.mistral.ai/v1/agents/completions`.
+this `pipe` enables native **mistral ai agents** support inside openwebui by calling [mistral api](https://api.mistral.ai/v1/agents/completions).
 
 it allows you to select an agent created in mistral console and chat with it directly from your openwebui instance.
 
@@ -28,13 +28,13 @@ it allows you to select an agent created in mistral console and chat with it dir
 ## prerequisites
 
 - a mistral account with api access.
-- a valid `MISTRAL_API_KEY` (get it at <https://console.mistral.ai/>).
+- a valid `MISTRAL_API_KEY` (get it at [https://console.mistral.ai/](https://console.mistral.ai/)).
 - an existing agent (you need the agent id to fill the `AGENT_ID` valve, usually starts with `ag_`).
 - permissions to import/edit functions in your openwebui instance.
 
 ## where to get the agent id
 
-1. go to <https://console.mistral.ai/build/agents>.
+1. go to [https://console.mistral.ai/build/agents](https://console.mistral.ai/build/agents).
 2. create (or open) an agent.
 3. copy the agent id.
 
@@ -48,7 +48,7 @@ you typically have two options:
 
 use the official function post (one-click import):
 
-<https://openwebui.com/posts/mistral_agents_integration_pipe_42bce620>
+[https://openwebui.com/posts/mistral_agents_integration_pipe_42bce620](https://openwebui.com/posts/mistral_agents_integration_pipe_42bce620)
 
 in openwebui:
 
@@ -153,12 +153,12 @@ if you see "raw" output (json lines) instead of rendered text, check whether ope
 
 ## quick troubleshooting
 
-- **401 unauthorized / 403 forbidden**: `mistral_api_key` is empty, invalid, or lacks permissions.
-- **404 / invalid agent**: `agent_id` is wrong or the agent was removed.
+- **401 unauthorized / 403 forbidden**: `MISTRAL_API_KEY` is empty, invalid, or lacks permissions.
+- **404 / invalid agent**: `AGENT_ID` is wrong or the agent was removed.
 - **no response / timeout**: verify your openwebui server can reach `https://api.mistral.ai`.
 - **no streaming**: confirm openwebui is sending `stream: true` in the request body.
 
 ## references
 
 - import post on openwebui:
-  <https://openwebui.com/posts/mistral_agents_integration_pipe_42bce620>
+  [https://openwebui.com/posts/mistral_agents_integration_pipe_42bce620](https://openwebui.com/posts/mistral_agents_integration_pipe_42bce620)
