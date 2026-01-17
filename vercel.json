@@ -1,5 +1,7 @@
 {
   "ignoreCommand": "node ./scripts/vercel-ignore.js",
+  "installCommand": "pnpm install --frozen-lockfile",
+  "buildCommand": "pnpm build --filter=@isyuricunha/docs",
   "rewrites": [
     {
       "source": "/.well-known/matrix/:path*",
