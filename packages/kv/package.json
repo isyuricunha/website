@@ -13,7 +13,7 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@upstash/ratelimit": "^2.0.7",
+    "@upstash/ratelimit": "^2.0.8",
     "@upstash/redis": "^1.36.1"
   },
   "devDependencies": {
