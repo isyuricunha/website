@@ -1,5 +1,5 @@
 {
-  "ignoreCommand": "node ../../scripts/vercel-ignore.js",
+  "ignoreCommand": "node ./scripts/vercel-ignore.js",
   "installCommand": "pnpm -C ../.. install --frozen-lockfile",
   "buildCommand": "pnpm -C ../.. --filter @isyuricunha/docs build"
 }
