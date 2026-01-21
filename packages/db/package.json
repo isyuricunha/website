@@ -35,7 +35,7 @@
     "@isyuricunha/tsconfig": "workspace:*",
     "@types/node": "^25.0.9",
     "@types/pg": "^8.16.0",
-    "drizzle-kit": "1.0.0-beta.10-42c284e",
+    "drizzle-kit": "1.0.0-beta.12-18d8bfb",
     "pg": "^8.17.1"
   },
   "lint-staged": {
