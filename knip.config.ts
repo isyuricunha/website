@@ -23,7 +23,12 @@ const config: KnipConfig = {
       entry: ['scripts/vercel-ignore.js']
     },
     'apps/docs': {
-      entry: ['content-collections.ts', 'src/app/**/*.{ts,tsx}', 'src/components/demos/**/*.tsx']
+      entry: [
+        'content-collections.ts',
+        'src/app/**/*.{ts,tsx}',
+        'src/components/demos/**/*.tsx',
+        'scripts/vercel-ignore.js'
+      ]
     },
     'apps/web': {
       entry: ['content-collections.ts', 'src/app/**/*.{ts,tsx}', 'src/e2e/auth.setup.ts']
