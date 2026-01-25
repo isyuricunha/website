@@ -57,10 +57,10 @@
     "@isyuricunha/eslint-config": "workspace:*",
     "@isyuricunha/prettier-config": "workspace:*",
     "@isyuricunha/tsconfig": "workspace:*",
-    "@playwright/test": "^1.57.0",
-    "@types/node": "^25.0.9",
-    "@vitest/coverage-v8": "^4.0.17",
-    "@vitest/ui": "^4.0.17",
+    "@playwright/test": "^1.58.0",
+    "@types/node": "^25.0.10",
+    "@vitest/coverage-v8": "^4.0.18",
+    "@vitest/ui": "^4.0.18",
     "concurrently": "^9.2.1",
     "cross-env": "^10.1.0",
     "czg": "^1.12.0",
@@ -73,9 +73,9 @@
     "simple-git-hooks": "^2.13.1",
     "tsup": "^8.5.1",
     "tsx": "^4.21.0",
-    "turbo": "^2.7.5",
+    "turbo": "^2.7.6",
     "typescript": "^5.9.3",
-    "vitest": "^4.0.17"
+    "vitest": "^4.0.18"
   },
   "engines": {
     "node": ">=22"
