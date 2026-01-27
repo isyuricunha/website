@@ -1,0 +1,252 @@
+---
+name: DBeaver Proxy to Mistral
+description: A small FastAPI proxy that makes DBeaver CE (and other OpenAI-compatible clients) work with the Mistral API.
+homepage: https://github.com/isyuricunha/dbeaver-proxy-to-mistral
+github: https://github.com/isyuricunha/dbeaver-proxy-to-mistral
+techstack:
+  - Python
+  - FastAPI
+  - Mistral AI
+  - DBeaver
+  - Docker
+selected: true
+status: active
+---
+## About DBeaver Proxy to Mistral
+
+DBeaver Proxy to Mistral is a small FastAPI proxy that makes **DBeaver CE** (and other OpenAI-compatible clients) work with the **Mistral API**.
+
+DBeaver's AI assistant speaks an *OpenAI-like* API, but it expects some very specific JSON fields and SSE event types. This proxy:
+
+- Exposes **OpenAI-compatible** endpoints (`/responses`, `/models`, legacy `/chat/completions`)
+- Translates `POST /responses` (OpenAI Responses API shape used by DBeaver) into **Mistral** `POST /chat/completions`
+- Translates Mistral responses back to a payload that DBeaver can parse without `NullPointerException`
+- Supports **streaming** (Server-Sent Events) and non-streaming
+- Is configurable via environment variables and can run as a **systemd** service
+
+![Preview](https://i.imgur.com/yXR2G0n.png)
+
+## Supported Endpoints
+
+The proxy exposes the following endpoints (both root and `/v1/*` aliases where applicable):
+
+### Model Endpoints
+
+- `GET /models`
+- `GET /v1/models`
+
+Returns a list of advertised models (configured via `MISTRAL_MODELS`).
+
+### Response Endpoints
+
+- `POST /responses`
+- `POST /v1/responses`
+
+Accepts a DBeaver/OpenAI Responses API request and forwards it to Mistral `chat/completions`.
+
+### Legacy Endpoints
+
+- `POST /chat/completions`
+- `POST /v1/chat/completions`
+
+Legacy pass-through to Mistral `chat/completions` (no format conversion).
+
+## Configuration
+
+Configuration is done via environment variables. You can use a local `.env` file (loaded via `python-dotenv`) or set variables in your shell/systemd environment.
+
+### Environment Variables
+
+#### Required
+
+- `MISTRAL_API_KEY`
+
+#### Optional
+
+- `MISTRAL_BASE_URL` - Default: `https://api.mistral.ai/v1`
+- `MISTRAL_MODEL` - Default: `mistral-large-latest` (used when request doesn't specify a model)
+- `MISTRAL_MODELS` - Comma-separated list of model ids that the proxy will advertise via `GET /models`
+- `HOST` - Default: `0.0.0.0`
+- `PORT` - Default: `60916`
+- `REQUEST_TIMEOUT_SECONDS` - Default: `60`
+
+### Configuration Notes
+
+- `GET /models` works even if `MISTRAL_API_KEY` is not set
+- Any route that calls the Mistral API (`/responses`, `/chat/completions`) will return **401** if `MISTRAL_API_KEY` is missing
+
+## Local Development
+
+### Requirements
+
+- Python **3.12+**
+
+### Setup
+
+```bash
+python -m venv .venv
+. .venv/bin/activate
+pip install -r requirements.txt -r requirements-dev.txt
+pip install -e .
+```
+
+### Configure
+
+```bash
+cp .env.example .env
+# edit .env
+```
+
+### Run
+
+```bash
+python -m dbeaver_mistral_proxy
+```
+
+The server will listen on `http://0.0.0.0:60916` by default.
+
+### Lint & Test
+
+```bash
+ruff check .
+pytest
+```
+
+## Using with DBeaver
+
+In DBeaver CE:
+
+- Set the OpenAI endpoint/base URL to: `http://<your-server>:60916/v1/`
+- Set any token value (DBeaver requires one), but the proxy uses `MISTRAL_API_KEY` from the server environment
+
+DBeaver uses:
+
+- `GET /v1/models`
+- `POST /v1/responses`
+
+## Systemd Service
+
+This repo includes an example unit file and env file template:
+
+- `deploy/systemd/dbeaver-mistral-proxy.service`
+- `deploy/systemd/dbeaver-mistral-proxy.env.example`
+
+### Install
+
+1. Create a virtualenv and install deps (see Local development)
+2. Create the environment file used by the service:
+
+```bash
+cp .env.example /home/cloud/not-safe/github/dbeaver-proxy-to-mistral/.env
+# edit the file and set MISTRAL_API_KEY
+```
+
+3. Install the unit file:
+
+```bash
+sudo cp deploy/systemd/dbeaver-mistral-proxy.service /etc/systemd/system/dbeaver-mistral-proxy.service
+sudo systemctl daemon-reload
+sudo systemctl enable dbeaver-mistral-proxy
+sudo systemctl restart dbeaver-mistral-proxy
+```
+
+### Logs
+
+```bash
+journalctl -u dbeaver-mistral-proxy -f
+```
+
+## Docker
+
+This project can run as a lightweight container.
+
+### Build
+
+```bash
+docker build -t dbeaver-proxy-to-mistral:local .
+```
+
+### Run (Docker)
+
+```bash
+docker run --rm -p 60916:60916 \
+  -e MISTRAL_API_KEY="..." \
+  -e MISTRAL_MODEL="mistral-large-latest" \
+  dbeaver-proxy-to-mistral:local
+```
+
+### Docker Compose
+
+```bash
+docker compose up --build
+```
+
+## Versioning and Releases
+
+This project uses **Semantic Versioning (SemVer)** and **Conventional Commits**. Releases are automated via **python-semantic-release** in GitHub Actions.
+
+### How it Works
+
+- A push to `main` triggers the release workflow
+- `python-semantic-release` analyzes commit messages and determines the next version
+- If a release is created, it:
+  - Creates a Git tag in the format `vX.Y.Z`
+  - Updates `project.version` in `pyproject.toml`
+  - Generates `CHANGELOG.md` from templates
+  - Publishes Docker images tagged with `latest` and `vX.Y.Z`
+
+### Conventional Commits Examples
+
+- `feat(proxy): add tool_choice forwarding` -> minor bump
+- `fix(api): handle gzip bodies` -> patch bump
+- `perf(proxy): reduce allocations` -> patch bump
+- `docs: update readme` -> no version bump
+
+### Breaking Changes
+
+Include `BREAKING CHANGE:` in the commit body to trigger a major bump.
+
+### GitHub Actions Secrets
+
+- `GITHUB_TOKEN` - Provided automatically by GitHub
+- `RELEASE_TOKEN` (optional) - PAT with permissions to push commits/tags
+- `DOCKERHUB_USERNAME` (optional)
+- `DOCKERHUB_TOKEN` (optional)
+
+### Publishing Notes
+
+- GHCR publish uses `github.token` and runs when a release is created
+- Docker Hub publish runs only when `DOCKERHUB_USERNAME` and `DOCKERHUB_TOKEN` are set
+
+## Troubleshooting
+
+### DBeaver Error: "HTTP/1.1 header parser received no bytes" / "Connection reset"
+
+This generally indicates the proxy failed before writing a response.
+
+**Mitigations implemented:**
+
+- Robust request parsing for `/responses` and `/chat/completions`
+- Handles empty bodies and `Content-Encoding: gzip`
+- Uvicorn forced to use the `h11` HTTP implementation for better compatibility
+
+**Debugging:**
+
+```bash
+journalctl -u dbeaver-mistral-proxy -n 200 --no-pager
+```
+
+### "Unsupported upgrade request" in logs
+
+This can happen when a client attempts an upgrade (e.g. h2c/websocket-style upgrades). It is expected and harmless for normal DBeaver usage.
+
+## Technology Stack
+
+- **Python 3.12+** with FastAPI for the proxy server
+- **Mistral AI API** integration for AI completions
+- **DBeaver CE** compatibility layer
+- **Docker** for containerized deployment
+- **Systemd** for Linux service management
+- **Semantic Versioning** with Conventional Commits for automated releases
+
+DBeaver Proxy to Mistral provides a seamless bridge between DBeaver's OpenAI-compatible API expectations and the Mistral API, enabling developers to use Mistral's AI capabilities directly within DBeaver CE.
