@@ -1,8 +1,8 @@
 ---
 name: Discord RSS Bot
 description: Automated bot that monitors RSS feeds and posts updates to Discord channels via webhook. Fully configurable with custom feeds and categories. Features timeout handling to prevent hanging on slow RSS feeds.
-homepage: https://github.com/isyuricunha/discord-rss-bot
-github: https://github.com/isyuricunha/discord-rss-bot
+homepage: https://github.com/isyuricunha/discord-news-rss-bot
+github: https://github.com/isyuricunha/discord-news-rss-bot
 techstack:
   - Python
   - Discord
@@ -59,7 +59,7 @@ docker compose -f docker-compose.test.yml logs -f
 
 Pre-built images are available from multiple registries:
 
-- **Docker Hub**: `isyuricunha/discord-rss-bot:latest` | `isyuricunha/discord-rss-bot:2.0.8`
+- **Docker Hub**: `isyuricunha/discord-news-rss-bot:latest` | `isyuricunha/discord-news-rss-bot:2.0.8`
 - **GitHub Container Registry**: `ghcr.io/isyuricunha/discord-news-rss-bot:latest` | `ghcr.io/isyuricunha/discord-news-rss-bot:2.0.8`
 
 ### Supported Architectures
@@ -116,21 +116,21 @@ For production deployments, you can install the bot as a system service:
 
 ```bash
 sudo ./scripts/install-debian.sh --webhook-url "YOUR_WEBHOOK_URL"
-sudo systemctl start discord-rss-bot
+sudo systemctl start discord-news-rss-bot
 ```
 
 #### Fedora/RHEL/CentOS
 
 ```bash
 sudo ./scripts/install-fedora.sh --webhook-url "YOUR_WEBHOOK_URL"
-sudo systemctl start discord-rss-bot
+sudo systemctl start discord-news-rss-bot
 ```
 
 #### Alpine Linux
 
 ```bash
 sudo ./scripts/install-alpine.sh --webhook-url "YOUR_WEBHOOK_URL"
-sudo rc-service discord-rss-bot start
+sudo rc-service discord-news-rss-bot start
 ```
 
 #### Windows
@@ -155,7 +155,7 @@ net start DiscordRSSBot
 |----------|-------------------------|-------------|
 | `RSS_BOT_DATA` | `/app/data` | Directory where the SQLite database is stored |
 | `RSS_BOT_LOGS` | `/app/logs` | Directory where log files are written |
-| `RSS_BOT_PID` | `/tmp/discord-rss-bot.pid` | PID file path (avoid `/var/run` in non-root containers) |
+| `RSS_BOT_PID` | `/tmp/discord-news-rss-bot.pid` | PID file path (avoid `/var/run` in non-root containers) |
 
 #### Advanced overrides (optional)
 

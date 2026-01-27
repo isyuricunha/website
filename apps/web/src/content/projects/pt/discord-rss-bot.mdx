@@ -1,8 +1,8 @@
 ---
 name: Discord RSS Bot
 description: Bot automatizado que monitora feeds RSS e envia atualizações para canais do Discord via webhook. Totalmente configurável com feeds e categorias personalizadas. Possui tratamento de timeout para evitar travamentos em feeds RSS lentos.
-homepage: https://github.com/isyuricunha/discord-rss-bot
-github: https://github.com/isyuricunha/discord-rss-bot
+homepage: https://github.com/isyuricunha/discord-news-rss-bot
+github: https://github.com/isyuricunha/discord-news-rss-bot
 techstack:
   - Python
   - Discord
@@ -59,7 +59,7 @@ docker compose -f docker-compose.test.yml logs -f
 
 Imagens pré-construídas estão disponíveis em vários registros:
 
-- **Docker Hub**: `isyuricunha/discord-rss-bot:latest` | `isyuricunha/discord-rss-bot:2.0.8`
+- **Docker Hub**: `isyuricunha/discord-news-rss-bot:latest` | `isyuricunha/discord-news-rss-bot:2.0.8`
 - **GitHub Container Registry**: `ghcr.io/isyuricunha/discord-news-rss-bot:latest` | `ghcr.io/isyuricunha/discord-news-rss-bot:2.0.8`
 
 ### Arquiteturas Suportadas
@@ -116,21 +116,21 @@ Para implantações em produção, você pode instalar o bot como um serviço de
 
 ```bash
 sudo ./scripts/install-debian.sh --webhook-url "YOUR_WEBHOOK_URL"
-sudo systemctl start discord-rss-bot
+sudo systemctl start discord-news-rss-bot
 ```
 
 #### Fedora/RHEL/CentOS
 
 ```bash
 sudo ./scripts/install-fedora.sh --webhook-url "YOUR_WEBHOOK_URL"
-sudo systemctl start discord-rss-bot
+sudo systemctl start discord-news-rss-bot
 ```
 
 #### Alpine Linux
 
 ```bash
 sudo ./scripts/install-alpine.sh --webhook-url "YOUR_WEBHOOK_URL"
-sudo rc-service discord-rss-bot start
+sudo rc-service discord-news-rss-bot start
 ```
 
 #### Windows
@@ -155,7 +155,7 @@ net start DiscordRSSBot
 |----------|-------------------------|-------------|
 | `RSS_BOT_DATA` | `/app/data` | Diretório onde o banco de dados SQLite é armazenado |
 | `RSS_BOT_LOGS` | `/app/logs` | Diretório onde os arquivos de log são escritos |
-| `RSS_BOT_PID` | `/tmp/discord-rss-bot.pid` | Caminho do arquivo PID (evite `/var/run` em containers não-root) |
+| `RSS_BOT_PID` | `/tmp/discord-news-rss-bot.pid` | Caminho do arquivo PID (evite `/var/run` em containers não-root) |
 
 #### Substituições avançadas (opcionais)
 
