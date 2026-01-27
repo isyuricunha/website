@@ -1,0 +1,536 @@
+---
+name: WhatsApp AI Bot
+description: Um bot de WhatsApp com IA pronto para produção integrado com a API Mistral Agents, apresentando comportamento de assistente configurável via instruções Mistral Agent, monitoramento avançado e segurança de nível empresarial.
+homepage: https://github.com/isyuricunha/whatsapp-ai-bot
+github: https://github.com/isyuricunha/whatsapp-ai-bot
+techstack:
+  - Node.js
+  - TypeScript
+  - WhatsApp Web.js
+  - Mistral AI
+  - SQLite
+  - Puppeteer
+selected: true
+status: inactive
+---
+## Sobre o WhatsApp AI Bot
+
+WhatsApp AI Bot é um bot de WhatsApp com IA pronto para produção integrado com a API Mistral Agents, apresentando comportamento de assistente configurável via instruções Mistral Agent, monitoramento avançado e segurança de nível empresarial.
+
+**Nota Importante**: Todas as configurações fornecidas são apenas exemplos. Você deve configurar seus próprios endpoints de API, modelos, informações comerciais e outras configurações antes da implantação.
+
+## Recursos
+
+### Integração Principal de IA
+
+- **Conversas Naturais**: Integração direta com um Mistral Agent (Agent ID)
+- **Instruções do Agente**: Configure a persona da IA, políticas e conhecimento de domínio nas instruções do Mistral Agent
+- **Persistência de Conversas**: Armazenamento persistente de conversas via SQLite
+- **Gerenciamento Inteligente de Mensagens**: Divisão automática de mensagens, formatação e filtragem de emojis
+- **Gerenciamento de Contexto**: Contexto de conversa inteligente com limites de mensagens configuráveis
+
+### Segurança Empresarial
+
+- **Controle de Acesso de Admin**: Acesso a comandos apenas para admins com autenticação por número do WhatsApp
+- **Logging Seguro**: Logs sanitizados que previnem exposição de dados da API e vazamento de informações sensíveis
+- **Proteção de Comandos**: Todos os comandos administrativos restritos apenas a usuários autorizados
+- **Gerenciamento de Erros**: Gerenciamento abrangente de erros sem divulgação de informações
+- **Gerenciamento de Dados**: Persistência local via SQLite com chamadas de API externas para integrações configuradas
+
+### Performance & Monitoramento
+
+- **Monitoramento em Tempo Real**: Verificações de saúde do sistema, rastreamento de status de componentes e métricas de performance
+- **Análise Avançada**: Análise abrangente de uso, rastreamento de comandos e relatórios de engajamento de usuários
+- **Otimização de Performance**: Cache inteligente, gerenciamento de memória e otimização de tempo de resposta
+- **Gerenciamento de Timeout**: Gerenciamento inteligente de timeout com notificações para o usuário em requisições de longa duração
+- **Persistência SQLite**: Armazenamento durável de conversas via SQLite
+- **Gerenciamento de Recursos**: Limpeza automática, coleta de lixo e otimização de memória
+
+### Recursos de Produção
+
+- **Recuperação de Erros**: Detecção automática de erros, categorização e mecanismos de recuperação
+- **Monitoramento de Saúde**: Monitoramento contínuo da saúde do sistema e rastreamento de alertas
+- **Métricas de Performance**: Rastreamento de performance em tempo real com recomendações de otimização
+- **Gerenciamento de Dados**: Limpeza automática de dados e políticas de retenção
+- **Escalabilidade**: Arquitetura otimizada para implantações de produção de alto volume
+- **Otimizações de Processamento de Mensagens**: Cache de respostas e otimizações de processamento de mensagens
+
+## 📋 Pré-requisitos
+
+- Node.js 20+ instalado
+- Navegador Chrome/Chromium
+- Conexão estável com a internet
+- Acesso ao WhatsApp Web
+
+## Instalação
+
+### 1. Clone o Repositório
+
+```bash
+git clone <repository-url>
+cd whatsapp-ai
+```
+
+### 2. Instale as Dependências
+
+```bash
+pnpm install
+```
+
+### 3. Configuração do Ambiente
+
+Copie o arquivo de exemplo de ambiente e configure suas configurações:
+
+```bash
+cp .env.example .env
+```
+
+Edite o arquivo `.env` com sua configuração:
+
+```bash
+# Configuração do Mistral Agents (OBRIGATÓRIO)
+MISTRAL_API_KEY=your_mistral_api_key
+MISTRAL_AGENT_ID=ag_your_agent_id
+
+# Configuração do Bot
+BOT_NAME=Your Bot Name
+MAX_CONTEXT_MESSAGES=20
+MESSAGE_SPLIT_LENGTH=1500
+
+# WhatsApp / Puppeteer
+# Onde o cache de autenticação/sessão do WhatsApp Web será armazenado
+WHATSAPP_SESSION_PATH=./session
+PUPPETEER_HEADLESS=true
+# Opcional. Útil em servidores onde o caminho do chromium é personalizado.
+PUPPETEER_EXECUTABLE_PATH=
+
+# Configuração de Admin (OBRIGATÓRIO)
+ADMIN_WHATSAPP_NUMBER=5511999999999@c.us
+
+# Desenvolvimento
+NODE_ENV=production
+DEBUG=false
+```
+
+**Importante**: Substitua os valores de exemplo pela sua configuração real.
+
+### 4. Configuração do Assistente
+
+Configure o comportamento do seu assistente (persona, políticas, conhecimento do negócio) nas **instruções do Mistral Agent**.
+
+### 5. Inicie o Bot
+
+```bash
+pnpm start
+```
+
+### 6. Autenticação do WhatsApp
+
+1. Um QR code aparecerá no terminal
+2. Abra o WhatsApp no seu telefone
+3. Vá para Configurações > Dispositivos Conectados > Conectar um Dispositivo
+4. Escaneie o QR code exibido no terminal
+5. Aguarde a mensagem "WhatsApp bot is ready!"
+
+## Uso
+
+### Comandos Disponíveis
+
+**Nota**: Todos os comandos são apenas para admins por segurança. Apenas o número de WhatsApp configurado como admin pode usar esses comandos.
+
+#### Comandos Básicos
+
+- `/help` - Exibir comandos disponíveis e instruções de uso
+- `/status` - Verificar status do bot, conectividade da API e visão geral do sistema
+- `/about` - Informações sobre o bot e suas capacidades
+- `/reset` - Limpar histórico de conversas para o chat atual
+- `/clear` - Alias para `/reset`
+
+#### Gerenciamento de Contexto
+
+- `/context` - Ver configuração atual do bot (Agent ID e configurações de runtime)
+
+#### Análise & Relatórios
+
+- `/analytics` - Análise detalhada de conversas e relatórios de uso (período de 7 dias)
+- `/cleanup` - Limpar dados antigos de conversas (30+ dias) para otimizar o armazenamento
+
+#### Monitoramento do Sistema
+
+- `/health` - Verificação de saúde do sistema e status dos componentes
+- `/monitor` - Painel de monitoramento abrangente com métricas em tempo real
+- `/performance` - Métricas de performance, uso de memória e status de otimização
+- `/errors` - Logs de erros, diagnósticos e problemas do sistema
+
+#### Administração Avançada
+
+- `/admin` - Estatísticas de comandos de admin e informações de controle de acesso
+- `/sqlite` - Status e informações de performance do SQLite
+
+### Conversas Normais
+
+Os usuários podem enviar mensagens de texto regulares para interagir com o assistente de IA. O bot:
+
+- Mantém o contexto da conversa entre mensagens
+- Responde com conhecimento específico do negócio
+- Usa a personalidade e tom configurados
+- Gerencia automaticamente mensagens longas dividindo-as
+
+### Exemplos de Uso
+
+```text
+User: Olá! Quais serviços você oferece?
+AI: Olá! Eu sou [AI Name], seu assistente para [Company]. Nós oferecemos:
+- Desenvolvimento de Websites: Design personalizado ($2,500, 2 semanas)
+- Pacote de Hospedagem: Hospedagem gerenciada ($29/mês)
+...
+
+User: /status
+AI: 📊 Status do Bot
+    API Mistral Agent: ✅ Conectado
+    Conversas ativas: 3
+    Total de mensagens: 127
+    ...
+```
+
+## Configuração
+
+### Variáveis de Ambiente
+
+| Variável | Descrição | Padrão | Obrigatório |
+| ---------- | ------------- | ------- | -------- |
+| `MISTRAL_API_KEY` | Chave da API Mistral | None | Sim |
+| `MISTRAL_AGENT_ID` | ID do Agente Mistral (formato: ag_...) | None | Sim |
+| `BOT_NAME` | Nome de exibição do bot | `WhatsApp AI Bot` | Não |
+| `MAX_CONTEXT_MESSAGES` | Número máximo de mensagens para manter no contexto | `20` | Não |
+| `MESSAGE_SPLIT_LENGTH` | Comprimento máximo antes de dividir mensagens | `1500` | Não |
+| `WHATSAPP_SESSION_PATH` | Onde o cache de sessão/autenticação do WhatsApp Web será armazenado | `./session` | Não |
+| `PUPPETEER_HEADLESS` | Executar navegador no modo headless | `true` | Não |
+| `PUPPETEER_EXECUTABLE_PATH` | Caminho personalizado do executável Chromium | None | Não |
+| `ADMIN_WHATSAPP_NUMBER` | Número de WhatsApp do admin (formato: <5511999999999@c.us>) | None | Sim |
+| `NODE_ENV` | Modo de ambiente | `development` | Não |
+| `DEBUG` | Ativar logging de debug | `false` | Não |
+
+### Estrutura Completa de Configuração
+
+O comportamento do assistente (persona, políticas, conhecimento do negócio e uso de ferramentas) é configurado nas **instruções do Mistral Agent**. Este repositório mantém apenas a configuração de runtime (chaves de API, configurações do bot, WhatsApp/Puppeteer e integrações) como variáveis de ambiente.
+
+## Arquitetura
+
+### Estrutura do Projeto
+
+```text
+whatsapp-ai/
+├── src/
+│   ├── bot/
+│   │   └── whatsappBot.js           # Implementação principal do bot WhatsApp
+│   ├── commands/
+│   │   └── commandHandler.js        # Processamento e roteamento de comandos
+│   ├── config/
+│   │   └── config.js               # Carregador de configuração do sistema
+│   ├── services/
+│   │   ├── mistralAgentService.js  # Cliente da API Mistral Agents
+│   │   ├── conversationService.js  # Gerenciamento de contexto de conversa
+│   │   ├── messageService.js       # Processamento e formatação de mensagens
+│   │   ├── adminService.js         # Controle de acesso e segurança de admin
+│   │   ├── errorHandler.js         # Gerenciamento centralizado de erros
+│   │   ├── monitoringService.js    # Monitoramento de sistema e verificações de saúde
+│   │   ├── performanceOptimizer.js # Otimização de performance
+│   │   ├── sqlitePersistenceService.js # Persistência e análise SQLite
+│   │   └── timeoutHandler.js       # Gerenciamento de timeout de requisições
+│   └── index.js                    # Ponto de entrada do aplicativo
+├── data/                           # Armazenamento de dados persistentes (auto-criado)
+├── session/                        # Dados de sessão do WhatsApp (auto-criado)
+├── .env                           # Configuração de ambiente
+├── package.json                   # Dependências Node.js
+└── README.md                      # Documentação
+```
+
+### Persistência de Dados & Análise
+
+#### Sistema de Armazenamento
+
+- **Persistência de Conversas**: Persistência automática via SQLite
+- **Continuidade entre Sessões**: Conversas persistem entre reinicializações do bot
+- **Carregamento sob Demanda**: Conversas carregadas conforme necessário para otimizar memória
+- **Integridade de Dados**: Gerenciamento robusto de erros e validação
+
+#### Recursos de Análise
+
+- **Rastreamento de Mensagens**: Histórico completo de mensagens com timestamps e metadados
+- **Análise de Usuários**: Rastreamento de engajamento, padrões de atividade e estatísticas de uso
+- **Monitoramento de Comandos**: Rastreamento de comandos populares e análise de uso
+- **Métricas de Performance**: Análise de tempo de resposta e performance do sistema
+- **Estatísticas Diárias**: Estatísticas diárias agregadas para análise de tendências
+- **Monitoramento de Erros**: Categorização automática de erros e rastreamento
+
+#### Gerenciamento de Dados
+
+- **Limpeza Automática**: Manutenção integrada para otimização de armazenamento
+- **Armazenamento de Dados**: Conversas são armazenadas localmente em SQLite (enquanto mensagens são enviadas para APIs externas)
+- **Pronto para Backup**: Armazenamento de banco de dados baseado em arquivos para backup e migração fácil
+- **Design Escalável**: Gerencia milhares de conversas de forma eficiente
+
+## Desenvolvimento
+
+### Scripts Disponíveis
+
+```bash
+pnpm start      # Iniciar o bot no modo de produção
+pnpm dev        # Iniciar com nodemon para desenvolvimento (auto-recarregamento)
+pnpm test       # Executar testes unitários
+pnpm run check:secrets  # Verificar arquivos preparados para secrets acidentais antes de commitar
+pnpm run hooks:install  # Habilitar hooks do repositório git (.githooks) para verificação de secrets
+```
+
+### Git Hooks (Verificação de Secrets)
+
+Este repositório inclui um hook pré-commit opcional que executa uma verificação leve de secrets
+contra arquivos preparados.
+
+```bash
+pnpm run hooks:install
+```
+
+Se um padrão semelhante a secret for detectado (ex: `MISTRAL_API_KEY=...`), o commit será bloqueado.
+
+### CI
+
+GitHub Actions é executado em cada Pull Request e em pushes para `main`:
+
+- **Instalação**: `pnpm install --frozen-lockfile`
+- **Teste**: `pnpm test`
+- **Versões do Node**: 18 e 20
+
+### Fluxo de Trabalho de Desenvolvimento
+
+1. **Mudanças no Agente**: Atualize as instruções do Mistral Agent (persona e conhecimento do negócio)
+2. **Verifique Runtime**: Use o comando `/context` para verificar as configurações atuais de runtime
+3. **Monitore o Sistema**: Use os comandos `/health` e `/monitor` para status do sistema
+4. **Depure Problemas**: Habilite `DEBUG=true` no `.env` para logging detalhado
+
+### Dicas de Desenvolvimento
+
+- **Teste Incremental**: Teste mudanças com `/context` antes de ir ao vivo
+- **Monitoramento de Performance**: Use `/performance` para monitorar recursos do sistema
+- **Rastreamento de Erros**: Verifique o comando `/errors` para problemas do sistema
+- **Segurança de Admin**: Certifique-se de que o número de WhatsApp do admin está configurado corretamente
+
+### Depuração
+
+#### Habilitar Modo de Debug
+
+```bash
+# No arquivo .env
+DEBUG=true
+NODE_ENV=development
+
+# Então inicie o bot
+pnpm start
+```
+
+#### Comandos Comuns de Debug
+
+- `/health` - Status dos componentes do sistema
+- `/errors` - Logs recentes de erros
+- `/performance` - Métricas de performance
+- `/admin status` - Status de configuração de admin
+
+## Segurança & Privacidade
+
+### Recursos de Segurança
+
+- **Controle de Acesso de Admin**: Todos os comandos restritos a números de WhatsApp configurados como admin
+- **Logging Sanitizado**: URLs de API e dados sensíveis automaticamente removidos dos logs
+- **Gerenciamento Seguro de Erros**: Mensagens de erro previnem divulgação de informações
+- **Armazenamento Local de Dados**: Persistência de conversas é armazenada localmente em SQLite
+- **Comunicação Criptografada**: Toda comunicação com APIs usa HTTPS
+
+### Proteção de Privacidade
+
+- **Processamento Externo**: Mensagens são enviadas para APIs configuradas (Mistral e integrações opcionais)
+- **Retenção Configurável**: Limpeza automática de dados antigos de conversas
+- **Controle do Usuário**: Usuários podem redefinir seu histórico de conversas a qualquer momento
+- **Configuração de Runtime**: Configuração de runtime permanece em variáveis de ambiente
+
+### Melhores Práticas de Segurança
+
+1. **Configuração de Admin**: Adicione apenas números de WhatsApp confiáveis como admins
+2. **Segurança de Ambiente**: Mantenha o arquivo `.env` seguro e nunca faça commit para controle de versão
+3. **Segurança de API**: Use endpoints de API seguros com autenticação adequada
+4. **Atualizações Regulares**: Mantenha as dependências atualizadas para patches de segurança
+5. **Monitoramento de Acesso**: Monitore o uso de comandos de admin através dos comandos `/admin`
+
+## Solução de Problemas
+
+### Problemas Comuns
+
+#### Instalação & Configuração
+
+##### QR Code não aparece
+
+- Certifique-se de que o Chrome/Chromium está instalado
+- Execute com modo de debug: `DEBUG=true pnpm start`
+- Verifique se a versão do Node.js é 20+
+
+##### Bot não responde às mensagens
+
+- Verifique a conectividade da API com o comando `/status`
+- Verifique se `MISTRAL_API_KEY` e `MISTRAL_AGENT_ID` no `.env` estão corretos
+- Verifique a estabilidade da conexão com a internet
+
+##### Falhas de autenticação
+
+- Exclua a pasta `session/` e escaneie novamente o QR code
+- Certifique-se de que o WhatsApp Web não está aberto em outros navegadores
+- Verifique se a conta do WhatsApp suporta dispositivos conectados
+- Verifique se o telefone tem conexão estável com a internet
+
+#### Problemas de Configuração
+
+##### Respostas de IA parecem genéricas
+
+- Atualize suas instruções do Mistral Agent com informações do seu negócio
+- Verifique as configurações de runtime com o comando `/context`
+
+##### Comandos não funcionando
+
+- Verifique o formato do número de WhatsApp do admin: `5511999999999@c.us`
+- Verifique se o número corresponde exatamente no arquivo `.env`
+- Certifique-se de que os comandos começam com `/` (barra)
+- Use `/help` para ver os comandos disponíveis
+
+##### Erros no arquivo de configuração
+
+- Verifique se as variáveis de ambiente obrigatórias estão configuradas corretamente
+- Verifique o console para erros específicos de inicialização
+
+#### Problemas de Performance
+
+##### Tempos de resposta lentos
+
+- Verifique a performance do servidor da API
+- Monitore os recursos do sistema com `/performance`
+- Revise os logs de erros com o comando `/errors`
+- Considere habilitar o SQLite para melhor performance
+
+##### Uso alto de memória
+
+- Use `/cleanup` para remover dados antigos de conversas
+- Verifique `/monitor` para estatísticas de uso de memória
+- Reinicie o bot se o uso de memória for excessivo
+- Revise os limites de contexto de conversa na configuração
+
+### Modo de Debug
+
+Habilite logging detalhado para solução de problemas:
+
+```bash
+# Configure no arquivo .env
+DEBUG=true
+NODE_ENV=development
+
+# Então inicie o bot
+pnpm start
+```
+
+### Obtendo Ajuda
+
+1. **Verifique o Status do Sistema**: Use o comando `/health` para status dos componentes
+2. **Revise os Logs**: Habilite o modo de debug e verifique a saída do console
+3. **Valide o Runtime**: Use `/context` para verificar as configurações de runtime
+4. **Monitore a Performance**: Use `/monitor` para métricas do sistema
+5. **Verifique Erros**: Use `/errors` para relatórios recentes de erros
+
+## Suporte
+
+### Recursos de Suporte
+
+- **Documentação**: Este README contém informações abrangentes de configuração e uso
+- **Configuração**: Configure o comportamento do assistente nas instruções do Mistral Agent
+- **Solução de Problemas**: Veja a seção de solução de problemas para problemas comuns e soluções
+- **Monitoramento do Sistema**: Use comandos integrados (`/health`, `/monitor`, `/errors`) para diagnósticos
+
+### Suporte Técnico
+
+- **GitHub Issues**: Relate bugs e problemas técnicos através de issues do GitHub
+- **Documentação da API**: Consulte a documentação da API Mistral para problemas relacionados à API
+- **Comunidade**: Verifique issues e discussões existentes para problemas semelhantes
+
+### Ferramentas de Autodiagnóstico
+
+- `/health` - Verificação completa de saúde do sistema
+- `/status` - Status de conectividade do bot e API
+- `/errors` - Logs recentes de erros e diagnósticos
+- `/performance` - Métricas de performance do sistema
+- `/admin status` - Verificação de configuração de admin
+
+## Licença
+
+Licença LGPL-2.1 - veja o arquivo LICENSE para detalhes.
+
+---
+
+### Desenvolvido com ❤️ usando Node.js + WhatsApp Web + API Mistral Agents
+
+## Casos de Uso
+
+### Aplicações Empresariais
+
+- **Atendimento ao Cliente**: Suporte automatizado 24/7 com conhecimento específico do negócio
+- **Assistente de Vendas**: Informações de produtos, preços e detalhes de serviços
+- **Suporte Técnico**: Assistente de IA com expertise em seus produtos e serviços
+- **Geração de Leads**: Capture e qualifique leads através de conversas naturais
+- **Automação de FAQ**: Respostas automatizadas para perguntas frequentes
+
+### Recursos para Diferentes Usuários
+
+- **Proprietários de Negócios**: Configure o comportamento do assistente nas instruções do Mistral Agent sem mudanças de código
+- **Desenvolvedores**: Integração abrangente de API com monitoramento e análise
+- **Administradores de Sistema**: Monitoramento avançado, otimização de performance e controles de segurança
+- **Usuários Não-Técnicos**: Configure o comportamento do assistente nas instruções do Mistral Agent
+- **Usuários Empresariais**: Recursos prontos para produção com segurança e conformidade
+
+### Capacidades Técnicas
+
+- **Arquitetura Escalável**: Gerencia conversas de alto volume de forma eficiente
+- **Monitoramento de Performance**: Monitoramento em tempo real do sistema e otimização
+- **Design com Foco em Segurança**: Controles de admin e gerenciamento seguro de dados
+
+---
+
+### Construído com Node.js, WhatsApp Web.js e integração com API Mistral Agents
+
+---
+
+Code made without AI.
+
+</final_file_content>
+
+IMPORTANT: For any future changes to this file, use the final_file_content shown above as your reference. This content reflects the current state of the file, including any auto-formatting (e.g., if you used single quotes but the formatter converted them to double quotes). Always base your SEARCH/REPLACE operations on this final version to ensure accuracy.
+
+<environment_details>
+
+# Visual Studio Code Visible Files
+
+apps/web/src/content/projects/pt/whatsapp-ai-bot.mdx
+
+# Visual Studio Code Open Tabs
+
+apps/web/src/content/projects/en/discord-rss-bot.mdx
+apps/web/src/content/projects/pt/discord-rss-bot.mdx
+apps/web/src/content/projects/en/whatsapp-ai-bot.mdx
+apps/web/src/content/projects/pt/whatsapp-ai-bot.mdx
+
+# Current Time
+
+1/27/2026, 5:26:16 AM (America/Sao_Paulo, UTC-3:00)
+
+# Context Window Usage
+
+50,899 / 262.144K tokens used (19%)
+
+# Current Mode
+
+ACT MODE
+</environment_details>
