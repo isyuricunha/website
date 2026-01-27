@@ -1,0 +1,289 @@
+---
+name: Discord RSS Bot
+description: Automated bot that monitors RSS feeds and posts updates to Discord channels via webhook. Fully configurable with custom feeds and categories. Features timeout handling to prevent hanging on slow RSS feeds.
+homepage: https://github.com/isyuricunha/discord-rss-bot
+github: https://github.com/isyuricunha/discord-rss-bot
+techstack:
+  - Python
+  - Discord
+  - Docker
+  - SQLite
+  - RSS
+  - Webhooks
+selected: true
+status: inactive
+---
+## About Discord RSS Bot
+
+Discord RSS Bot is an automated bot that monitors RSS feeds and posts updates to Discord channels via webhook. Fully configurable with custom feeds and categories, it features timeout handling to prevent hanging on slow RSS feeds.
+
+### Key Features
+
+- **Automatic RSS monitoring** with configurable intervals
+- **Elegant Discord formatting** with category emojis
+- **Smart caching** to prevent duplicate posts
+- **Timeout handling** prevents hanging on slow feeds
+- **Robust error handling** for network issues
+- **Fully containerized** with Docker support
+- **Pre-built images** available on Docker Hub & GHCR
+- **Multi-platform** (AMD64, ARM64)
+- **Flexible configuration** - universal or category-based feeds
+- **Multiple deployment options** (Docker, System Service)
+- **Comprehensive logging** and health checks
+- **Security-focused** with non-root containers
+
+### Quick Start
+
+#### Using Pre-built Container (Recommended)
+
+```bash
+# Create directories for persistent data/logs
+mkdir -p ~/docker/docker-data/rss-discord-bot/data
+mkdir -p ~/docker/docker-data/rss-discord-bot/logs
+
+# Set permissions for container access (container runs as non-root)
+chmod 777 ~/docker/docker-data/rss-discord-bot/logs
+chmod 777 ~/docker/docker-data/rss-discord-bot/data
+
+# Create .env file with your webhook URL (do not commit this file)
+echo "DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/YOUR_ID/YOUR_TOKEN" > .env
+
+# Run with Docker Compose (for testing with pre-built image)
+docker compose -f docker-compose.test.yml up -d
+
+# View logs
+docker compose -f docker-compose.test.yml logs -f
+```
+
+### Container Images
+
+Pre-built images are available from multiple registries:
+
+- **Docker Hub**: `isyuricunha/discord-rss-bot:latest` | `isyuricunha/discord-rss-bot:2.0.8`
+- **GitHub Container Registry**: `ghcr.io/isyuricunha/discord-news-rss-bot:latest` | `ghcr.io/isyuricunha/discord-news-rss-bot:2.0.8`
+
+### Supported Architectures
+
+- `linux/amd64` (x86_64)
+- `linux/arm64` (ARM64/AArch64)
+
+### Automatic Versioning
+
+The project uses automated CI/CD that:
+
+- **Auto-creates Git tags** on every push to `main` (e.g., `v2.0.8`)
+- **Creates a GitHub Release** for each tag
+- **Uses the triggering commit message** as the release title and body
+- **Publishes to both registries** simultaneously
+- **Maintains version consistency** across Docker Hub and GHCR
+- **Updates both `latest` and specific version tags**
+
+### Deployment Options
+
+#### 1. Standard Docker Compose (with .env file)
+
+```bash
+docker compose up -d
+```
+
+#### 2. Inline Environment Variables
+
+```bash
+# Edit docker-compose.inline.yml with your webhook URL
+docker compose -f docker-compose.inline.yml up -d
+```
+
+#### 3. Pre-built Image (from .env file)
+
+```bash
+# Edit docker-compose.prebuilt.yml and configure .env file
+docker compose -f docker-compose.prebuilt.yml up -d
+```
+
+#### 4. Testing with All Default Feeds
+
+```bash
+# Use the test configuration with all feeds pre-configured
+# Edit webhook URL in docker-compose.test.yml first
+docker compose -f docker-compose.test.yml up -d
+```
+
+### System Service Installation
+
+For production deployments, you can install the bot as a system service:
+
+#### Debian/Ubuntu
+
+```bash
+sudo ./scripts/install-debian.sh --webhook-url "YOUR_WEBHOOK_URL"
+sudo systemctl start discord-rss-bot
+```
+
+#### Fedora/RHEL/CentOS
+
+```bash
+sudo ./scripts/install-fedora.sh --webhook-url "YOUR_WEBHOOK_URL"
+sudo systemctl start discord-rss-bot
+```
+
+#### Alpine Linux
+
+```bash
+sudo ./scripts/install-alpine.sh --webhook-url "YOUR_WEBHOOK_URL"
+sudo rc-service discord-rss-bot start
+```
+
+#### Windows
+
+```powershell
+# Run as Administrator
+.\windows\install.ps1 -WebhookUrl "YOUR_WEBHOOK_URL"
+net start DiscordRSSBot
+```
+
+### Configuration
+
+#### Required Variables
+
+| Variable | Description |
+|----------|-------------|
+| `DISCORD_WEBHOOK_URL` | **Required**: Discord webhook URL |
+
+#### Paths (recommended)
+
+| Variable | Default (Docker image) | Description |
+|----------|-------------------------|-------------|
+| `RSS_BOT_DATA` | `/app/data` | Directory where the SQLite database is stored |
+| `RSS_BOT_LOGS` | `/app/logs` | Directory where log files are written |
+| `RSS_BOT_PID` | `/tmp/discord-rss-bot.pid` | PID file path (avoid `/var/run` in non-root containers) |
+
+#### Advanced overrides (optional)
+
+| Variable | Description |
+|----------|-------------|
+| `DB_FILE` | Explicit SQLite DB file path (overrides `RSS_BOT_DATA`) |
+| `LOG_FILE` | Explicit log file path (overrides `RSS_BOT_LOGS`) |
+| `DATA_DIR` | Legacy alias for `RSS_BOT_DATA` |
+
+#### Optional Bot Settings
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `CHECK_INTERVAL` | 300 | Interval between checks (seconds) |
+| `POST_DELAY` | 3 | Delay between posts (seconds) |
+| `COOLDOWN_DELAY` | 60 | Delay after rate limit (seconds) |
+| `MAX_POST_LENGTH` | 1900 | Maximum message length |
+| `MAX_CONTENT_LENGTH` | 800 | Maximum content length |
+| `FEED_TIMEOUT` | 30 | RSS feed request timeout (seconds) |
+
+### RSS Feeds Configuration
+
+The bot supports **two configuration methods** with automatic priority handling:
+
+#### Option 1: Universal Feeds (Simple)
+
+Use a single variable for all your RSS feeds:
+
+```bash
+RSS_FEEDS=https://example.com/rss,https://another.com/feed,https://third.com/rss
+```
+
+#### Option 2: Category-Based Feeds (Organized)
+
+Use separate variables for different categories:
+
+```bash
+RSS_FEEDS_NEWS=https://g1.globo.com/dynamo/rss2.xml,https://rss.uol.com.br/feed/noticias.xml
+RSS_FEEDS_TECHNOLOGY=https://canaltech.com.br/rss/,https://tecnoblog.net/feed/
+RSS_FEEDS_SPORTS=https://globoesporte.globo.com/rss/ultimas/
+RSS_FEEDS_BUSINESS=https://www.infomoney.com.br/rss/
+RSS_FEEDS_POLITICS=https://www.gazetadopovo.com.br/rss/brasil.xml
+```
+
+#### Priority System
+
+1. **RSS_FEEDS** (universal) - takes priority if set
+2. **RSS_FEEDS_CATEGORY** (categories) - used if no universal feeds
+3. **Default feeds** - Brazilian news feeds if no custom configuration
+
+#### Automatic Category Emojis
+
+- **News/Noticias/General** → 📰
+- **Technology/Tecnologia** → 💻
+- **Politics/Politica** → 🏛️
+- **Sports/Esportes** → ⚽
+- **Business/Economia** → 💼
+- **Other categories** → 📢
+
+### Monitored Feeds
+
+#### 📰 General News
+
+- G1
+- UOL
+- Band
+- CNN Brasil
+- Folha de S.Paulo
+
+#### 🏛️ Politics & Conservative
+
+- Gazeta do Povo
+- Jovem Pan
+- Diário do Poder
+- Pragmatismo Político
+- Conexão Política
+- Poder 360
+- Revista Crusoé
+- Veja
+- Metrópoles
+- O Antagonista
+- Terra Politics
+
+#### 💻 Technology
+
+- Canaltech
+- Olhar Digital
+- Tecnoblog
+- Meio Bit
+- ShowMeTech
+- TecMundo
+- Adrenaline
+- Hardware.com.br
+- Tudo Celular
+- Oficina da Net
+
+### Development
+
+#### Run Locally (without Docker)
+
+```bash
+# Install dependencies
+pip install -r requirements.txt
+
+# Configure environment variables
+export DISCORD_WEBHOOK_URL="your_webhook_url_here"
+
+# Run the bot
+python bot_service.py
+```
+
+#### Customize Feeds
+
+You can customize feeds in two ways:
+
+1. **Environment Variables (Recommended)**
+Use the `RSS_FEEDS_CATEGORY_NAME` format as described in the Configuration section above.
+
+2. **Code Modification**
+Edit the `parse_feeds_from_env()` function in `bot_service.py` to modify default feeds.
+
+### Technology Stack
+
+- **Python** for the main bot logic
+- **Discord webhooks** for posting updates
+- **Docker** for containerization and deployment
+- **SQLite** for data persistence and caching
+- **RSS parsing** for feed monitoring
+- **Systemd** for Linux service management
+
+Discord RSS Bot is a complete solution for automatically posting RSS feed updates to Discord channels, with robust error handling, flexible configuration, and multiple deployment options.
