@@ -10,11 +10,7 @@ import {
   Clock,
   ArrowRight,
   RefreshCw,
-  CheckCircle,
-  FileText,
-  PlusIcon,
-  Languages,
-  Wand2
+  CheckCircle
 } from 'lucide-react'
 import {
   Card,
@@ -29,12 +25,14 @@ import {
 } from '@isyuricunha/ui'
 import { toast } from 'sonner'
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 import { api } from '@/trpc/react'
 import AnnouncementWidget from '../announcement-widget'
 
 const AdminDashboard = () => {
   const [refreshing, setRefreshing] = useState(false)
+  const router = useRouter()
   const { data: stats, isLoading, error, refetch } = api.admin.getStats.useQuery()
 
   const handleRefresh = async () => {
@@ -133,7 +131,7 @@ const AdminDashboard = () => {
             Admin Dashboard
           </h1>
           <p className='text-muted-foreground text-base'>
-            Monitor your site's performance and manage content
+            Monitor your site's performance and manage operations
           </p>
         </div>
         <div className='flex items-center gap-3'>
@@ -164,7 +162,7 @@ const AdminDashboard = () => {
             <Card
               key={stat.title}
               className='border-border/50 from-background to-background/50 hover:border-primary/30 group relative cursor-pointer overflow-hidden bg-gradient-to-br backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl'
-              onClick={() => (globalThis.location.href = stat.href)}
+              onClick={() => router.push(stat.href)}
             >
               <div className='from-primary/5 absolute inset-0 bg-gradient-to-br via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100' />
               <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-3'>
@@ -255,20 +253,7 @@ const AdminDashboard = () => {
             <button
               type='button'
               className='bg-muted/30 border-border/60 hover:border-primary/30 hover:bg-muted/40 group flex w-full items-start gap-3 rounded-xl border p-3 backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md'
-              onClick={() => (globalThis.location.href = '/admin/posts/new')}
-            >
-              <div className='bg-primary/10 text-primary rounded-lg p-2 transition-transform duration-200 group-hover:scale-110'>
-                <PlusIcon className='h-4 w-4' />
-              </div>
-              <div className='flex-1 space-y-0.5 text-left'>
-                <div className='text-sm font-semibold'>Create Blog Post</div>
-                <div className='text-muted-foreground text-xs'>Write with AI assistance</div>
-              </div>
-            </button>
-            <button
-              type='button'
-              className='bg-muted/30 border-border/60 hover:border-primary/30 hover:bg-muted/40 group flex w-full items-start gap-3 rounded-xl border p-3 backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md'
-              onClick={() => (globalThis.location.href = '/admin/users')}
+              onClick={() => router.push('/admin/users')}
             >
               <div className='bg-primary/10 text-primary rounded-lg p-2 transition-transform duration-200 group-hover:scale-110'>
                 <Users className='h-4 w-4' />
@@ -281,7 +266,7 @@ const AdminDashboard = () => {
             <button
               type='button'
               className='bg-muted/30 border-border/60 hover:border-primary/30 hover:bg-muted/40 group flex w-full items-start gap-3 rounded-xl border p-3 backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md'
-              onClick={() => (globalThis.location.href = '/admin/comments')}
+              onClick={() => router.push('/admin/comments')}
             >
               <div className='bg-primary/10 text-primary rounded-lg p-2 transition-transform duration-200 group-hover:scale-110'>
                 <MessageSquare className='h-4 w-4' />
@@ -291,61 +276,18 @@ const AdminDashboard = () => {
                 <div className='text-muted-foreground text-xs'>Review and manage comments</div>
               </div>
             </button>
-          </CardContent>
-        </Card>
-
-        <Card className='border-border/50 from-background to-background/80 bg-gradient-to-br backdrop-blur-sm md:col-span-2 lg:col-span-1'>
-          <CardHeader>
-            <div className='mb-1 flex items-center gap-2'>
-              <div className='bg-primary/10 text-primary rounded-lg p-2'>
-                <Wand2 className='h-4 w-4' />
-              </div>
-              <CardTitle className='text-base'>Blog Management</CardTitle>
-            </div>
-            <CardDescription className='text-xs'>AI-powered content creation</CardDescription>
-          </CardHeader>
-          <CardContent className='space-y-2'>
             <button
               type='button'
-              className='bg-muted/30 border-border/60 hover:border-primary/30 hover:bg-muted/40 group flex w-full items-center justify-between rounded-xl border p-3 backdrop-blur-sm transition-all duration-200 hover:shadow-md'
-              onClick={() => (globalThis.location.href = '/admin/posts')}
+              className='bg-muted/30 border-border/60 hover:border-primary/30 hover:bg-muted/40 group flex w-full items-start gap-3 rounded-xl border p-3 backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md'
+              onClick={() => router.push('/admin/monitoring')}
             >
-              <div className='flex items-center gap-2'>
-                <FileText className='text-primary h-4 w-4' />
-                <span className='text-sm font-semibold'>Manage Posts</span>
+              <div className='bg-primary/10 text-primary rounded-lg p-2 transition-transform duration-200 group-hover:scale-110'>
+                <Activity className='h-4 w-4' />
               </div>
-              <Badge variant='secondary' className='px-2 py-0.5 text-xs font-medium'>
-                36
-              </Badge>
-            </button>
-            <button
-              type='button'
-              className='bg-muted/30 border-border/60 hover:border-primary/30 hover:bg-muted/40 group flex w-full items-center justify-between rounded-xl border p-3 backdrop-blur-sm transition-all duration-200 hover:shadow-md'
-              onClick={() => (globalThis.location.href = '/admin/posts/new')}
-            >
-              <div className='flex items-center gap-2'>
-                <PlusIcon className='text-primary h-4 w-4' />
-                <span className='text-sm font-semibold'>Create New Post</span>
+              <div className='flex-1 space-y-0.5 text-left'>
+                <div className='text-sm font-semibold'>Monitoring</div>
+                <div className='text-muted-foreground text-xs'>View metrics, errors and alerts</div>
               </div>
-              <Badge
-                variant='secondary'
-                className='bg-primary/10 text-primary px-2 py-0.5 text-xs font-medium'
-              >
-                AI
-              </Badge>
-            </button>
-            <button
-              type='button'
-              className='bg-muted/30 border-border/60 hover:border-primary/30 hover:bg-muted/40 group flex w-full items-center justify-between rounded-xl border p-3 backdrop-blur-sm transition-all duration-200 hover:shadow-md'
-              onClick={() => (globalThis.location.href = '/admin/translate')}
-            >
-              <div className='flex items-center gap-2'>
-                <Languages className='text-primary h-4 w-4' />
-                <span className='text-sm font-semibold'>Auto-Translate</span>
-              </div>
-              <Badge variant='secondary' className='px-2 py-0.5 text-xs font-medium'>
-                6 langs
-              </Badge>
             </button>
           </CardContent>
         </Card>
