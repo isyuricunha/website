@@ -36,6 +36,8 @@ export default function MonitoringDashboard() {
   const [timeRange, setTimeRange] = useState<TimeRange>('24h')
 
   const snapshot_interval_ref = useRef<ReturnType<typeof setInterval> | null>(null)
+  const has_sent_page_view_ref = useRef(false)
+  const snapshot_in_flight_ref = useRef(false)
 
   const utils = api.useUtils()
 
@@ -77,12 +79,14 @@ export default function MonitoringDashboard() {
 
   // Mutations
   const recordAnalyticsEventMutation = api.monitoring.recordAnalyticsEvent.useMutation({
+    retry: false,
     onSuccess: () => {
       utils.monitoring.getAnalyticsEvents.invalidate()
     }
   })
 
   const recordResourceSnapshotMutation = api.monitoring.recordResourceSnapshot.useMutation({
+    retry: false,
     onSuccess: () => {
       utils.monitoring.getResourceUsage.invalidate()
     }
@@ -102,25 +106,40 @@ export default function MonitoringDashboard() {
   })
 
   useEffect(() => {
-    recordAnalyticsEventMutation.mutate({
-      eventType: 'page_view',
-      page: '/admin/monitoring',
-      properties: {
-        tab: selectedTab,
-        timeRange
-      }
-    })
-  }, [recordAnalyticsEventMutation, selectedTab, timeRange])
+    if (!has_sent_page_view_ref.current) {
+      has_sent_page_view_ref.current = true
+      recordAnalyticsEventMutation.mutate({
+        eventType: 'page_view',
+        page: '/admin/monitoring',
+        properties: {
+          tab: selectedTab,
+          timeRange
+        }
+      })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- fire once on mount to avoid request loops
+  }, [])
 
   useEffect(() => {
-    recordResourceSnapshotMutation.mutate()
+    const record_snapshot = async () => {
+      if (snapshot_in_flight_ref.current) return
+      snapshot_in_flight_ref.current = true
+
+      try {
+        await recordResourceSnapshotMutation.mutateAsync()
+      } finally {
+        snapshot_in_flight_ref.current = false
+      }
+    }
+
+    void record_snapshot()
 
     if (snapshot_interval_ref.current) {
       clearInterval(snapshot_interval_ref.current)
     }
 
     snapshot_interval_ref.current = setInterval(() => {
-      recordResourceSnapshotMutation.mutate()
+      void record_snapshot()
     }, 60_000)
 
     return () => {
@@ -129,7 +148,8 @@ export default function MonitoringDashboard() {
         snapshot_interval_ref.current = null
       }
     }
-  }, [recordResourceSnapshotMutation])
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- interval lifecycle should be mount/unmount
+  }, [])
 
   const getSeverityColor = (severity: string) => {
     switch (severity) {
