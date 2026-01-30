@@ -1,5 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
+const fetchMock = vi.fn()
+
+vi.stubGlobal('fetch', fetchMock)
+
 vi.mock('@isyuricunha/env', () => {
   return {
     flags: {
@@ -38,6 +42,32 @@ vi.mock('@/lib/logger', () => ({
     debug: vi.fn()
   }
 }))
+
+vi.mock('node:fs/promises', () => {
+  return {
+    default: {
+      writeFile: vi.fn(async () => undefined),
+      readFile: vi.fn(async () => 'health-check:123'),
+      unlink: vi.fn(async () => undefined)
+    }
+  }
+})
+
+vi.mock('node:os', () => {
+  return {
+    default: {
+      tmpdir: () => '/tmp'
+    }
+  }
+})
+
+vi.mock('node:path', () => {
+  return {
+    default: {
+      join: (...parts: string[]) => parts.join('/')
+    }
+  }
+})
 
 const auditLogMock = vi.fn().mockImplementation(async () => {
   return
@@ -211,6 +241,8 @@ const createDbMock = () => {
 describe('systemRouter', () => {
   beforeEach(() => {
     auditLogMock.mockClear()
+    fetchMock.mockReset()
+    fetchMock.mockResolvedValue({ ok: true, status: 200 })
     vi.resetModules()
   })
 

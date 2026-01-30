@@ -2,14 +2,33 @@ import { TRPCError } from '@trpc/server'
 import { and, desc, eq, errorLogs, gte, siteConfig, systemHealthLogs } from '@isyuricunha/db'
 import { randomBytes } from 'crypto'
 import { env } from '@isyuricunha/env'
+import fs from 'node:fs/promises'
+import os from 'node:os'
+import path from 'node:path'
 import { z } from 'zod'
 
 import { AuditLogger, getIpFromHeaders, getUserAgentFromHeaders } from '@/lib/audit-logger'
 import { adminProcedure, createTRPCRouter } from '../trpc'
 import { logger } from '@/lib/logger'
 
+const get_base_url = (headers: Headers) => {
+  const configured_url = env.NEXT_PUBLIC_WEBSITE_URL
+  if (configured_url) {
+    return configured_url.replace(/\/$/, '')
+  }
+
+  const host = headers.get('x-forwarded-host') ?? headers.get('host')
+  if (host) {
+    const protocol =
+      headers.get('x-forwarded-proto') ?? (env.NODE_ENV === 'production' ? 'https' : 'http')
+    return `${protocol}://${host}`
+  }
+
+  return 'http://localhost:3000'
+}
+
 // Helper function to perform health checks
-async function performHealthCheck(type: string, db: any) {
+async function performHealthCheck(type: string, ctx: { db: any; headers: Headers }) {
   const startTime = Date.now()
   let status: 'healthy' | 'warning' | 'critical' | 'unknown' = 'unknown'
   let message = ''
@@ -19,7 +38,7 @@ async function performHealthCheck(type: string, db: any) {
     switch (type) {
       case 'database':
         // Simple database connectivity test
-        await db.query.users.findFirst({ columns: { id: true } })
+        await ctx.db.query.users.findFirst({ columns: { id: true } })
         status = 'healthy'
         message = 'Database connection successful'
         break
@@ -34,18 +53,59 @@ async function performHealthCheck(type: string, db: any) {
       }
 
       case 'api': {
-        // Check API response time
+        const baseUrl = get_base_url(ctx.headers)
+        const healthUrl = `${baseUrl}/api/health`
+        const controller = new AbortController()
+        const timeout = setTimeout(() => controller.abort(), 5_000)
+
+        const res = await fetch(healthUrl, {
+          method: 'GET',
+          cache: 'no-store',
+          signal: controller.signal
+        }).finally(() => clearTimeout(timeout))
+
         const responseTime = Date.now() - startTime
-        status = responseTime < 1000 ? 'healthy' : responseTime < 3000 ? 'warning' : 'critical'
-        message = `API response time: ${responseTime}ms`
-        details = { responseTime }
+        const ok = res.ok
+
+        status = ok
+          ? responseTime < 1000
+            ? 'healthy'
+            : responseTime < 3000
+              ? 'warning'
+              : 'critical'
+          : 'critical'
+
+        message = ok
+          ? `API health endpoint OK (${responseTime}ms)`
+          : `API health endpoint failed (status ${res.status})`
+
+        details = {
+          url: healthUrl,
+          status: res.status,
+          ok
+        }
         break
       }
 
       case 'storage':
-        // Check if we can write to temp directory (basic storage check)
-        status = 'healthy'
-        message = 'Storage access available'
+        // Verify write/read/delete in temp directory
+        {
+          const tempDir = os.tmpdir()
+          const testFile = path.join(tempDir, `health-${randomBytes(8).toString('hex')}.txt`)
+          const payload = `health-check:${Date.now()}`
+
+          await fs.writeFile(testFile, payload, 'utf8')
+          const readBack = await fs.readFile(testFile, 'utf8')
+          await fs.unlink(testFile)
+
+          if (readBack !== payload) {
+            throw new Error('Storage read/write mismatch')
+          }
+
+          status = 'healthy'
+          message = 'Storage write/read/delete OK'
+          details = { dir: tempDir }
+        }
         break
 
       default:
@@ -74,7 +134,7 @@ export const systemRouter = createTRPCRouter({
       const results = []
 
       for (const checkType of healthChecks) {
-        const result = await performHealthCheck(checkType, ctx.db)
+        const result = await performHealthCheck(checkType, { db: ctx.db, headers: ctx.headers })
         results.push({
           type: checkType,
           ...result,
