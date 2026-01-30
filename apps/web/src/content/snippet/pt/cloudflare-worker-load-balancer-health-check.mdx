@@ -1,0 +1,220 @@
+---
+title: Load balancer com Cloudflare Worker + health check (de graça)
+date: 2026-01-30
+author: Yuri Cunha
+description: Um load balancer gratuito usando Cloudflare Workers + Cloudflare Tunnel, com health check em intervalo e failover automático.
+tags:
+  - cloudflare
+  - workers
+  - tunnel
+  - load-balancing
+  - health-check
+  - devops
+  - javascript
+---
+
+O Cloudflare Load Balancer é muito bom, mas é um produto pago. Se o seu caso é “tenho duas réplicas atrás do Cloudflare Tunnel e quero failover automático se uma cair”, dá pra resolver com um **Worker** (free tier) fazendo roteamento e health check.
+
+A ideia é simples:
+
+- Você cria **dois hostnames**, um por túnel (primary e replica).
+- Você cria um **terceiro hostname** (o que você divulga) apontando pro Worker.
+- O Worker verifica se os backends estão saudáveis e faz proxy para o melhor destino.
+
+{/*more*/}
+
+## Arquitetura (recomendada)
+
+O padrão mais prático é usar 3 hostnames:
+
+- `service.seudominio.com`:
+  - Aponta pro **Worker** (URL pública)
+- `service-primary.seudominio.com`:
+  - Cloudflare Tunnel apontando pro **servidor principal**
+- `service-replica.seudominio.com`:
+  - Cloudflare Tunnel apontando pro **servidor réplica**
+
+Isso resolve aquele “problema” comum do Tunnel: você não consegue ter o *mesmo* hostname em múltiplos túneis, mas consegue ter hostnames diferentes e colocar o Worker na frente.
+
+## Como o Worker funciona
+
+- Ele mantém um cache em memória chamado `serverHealth`, com:
+  - `healthy`: último status conhecido
+  - `lastCheck`: quando foi o último check
+- A cada request:
+  - Ele atualiza o health check se passou do `HEALTH_CHECK_INTERVAL`.
+  - Ele escolhe o primeiro servidor saudável.
+  - Se nenhum estiver saudável, ele cai no primeiro como fallback.
+- Ele injeta o header `X-Served-By` pra debug.
+- Se o `fetch` pro servidor escolhido der erro, ele tenta 1 vez no outro servidor.
+
+Detalhe importante: esse cache fica na memória do isolate do Worker. Ou seja, ele pode resetar em cold start e não é um “cache global” garantido. Pra failover simples, costuma ser suficiente.
+
+## O código
+
+Troque as URLs pelos seus túneis.
+
+```js
+// Cloudflare Worker Load Balancer com Health Check
+// Configure suas URLs dos túneis aqui
+const SERVERS = [
+  {
+    url: 'https://seu-tunel-1.seudominio.com',
+    name: 'Server 1',
+    healthCheckPath: '/health' // ou '/' se não tiver endpoint específico
+  },
+  {
+    url: 'https://seu-tunel-2.seudominio.com',
+    name: 'Server 2',
+    healthCheckPath: '/health'
+  }
+]
+
+// Configurações
+const HEALTH_CHECK_TIMEOUT = 5000 // 5 segundos
+const HEALTH_CHECK_INTERVAL = 30000 // Checar a cada 30 segundos
+
+// Cache de status dos servidores (mantido pelo Worker)
+let serverHealth = {}
+
+// Função para fazer health check
+async function checkHealth(server) {
+  try {
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), HEALTH_CHECK_TIMEOUT)
+
+    const response = await fetch(server.url + server.healthCheckPath, {
+      method: 'GET',
+      signal: controller.signal,
+      headers: {
+        'User-Agent': 'Cloudflare-Worker-HealthCheck'
+      }
+    })
+
+    clearTimeout(timeoutId)
+
+    // Considera saudável se retornar 2xx ou 3xx
+    return response.status >= 200 && response.status < 400
+  } catch (error) {
+    console.log(`Health check failed for ${server.name}:`, error.message)
+    return false
+  }
+}
+
+// Função para obter servidor disponível
+async function getAvailableServer() {
+  // Atualiza health check se necessário
+  for (const server of SERVERS) {
+    const lastCheck = serverHealth[server.url]?.lastCheck || 0
+    const now = Date.now()
+
+    if (now - lastCheck > HEALTH_CHECK_INTERVAL) {
+      const isHealthy = await checkHealth(server)
+      serverHealth[server.url] = {
+        healthy: isHealthy,
+        lastCheck: now
+      }
+    }
+  }
+
+  // Encontra servidor saudável
+  for (const server of SERVERS) {
+    if (serverHealth[server.url]?.healthy) {
+      return server
+    }
+  }
+
+  // Se nenhum estiver saudável, tenta o primeiro como fallback
+  console.log('Nenhum servidor saudável encontrado, usando fallback')
+  return SERVERS[0]
+}
+
+// Handler principal
+export default {
+  async fetch(request, env, ctx) {
+    // Pega servidor disponível
+    const server = await getAvailableServer()
+
+    // Cria nova URL mantendo o path original
+    const url = new URL(request.url)
+    const targetUrl = new URL(url.pathname + url.search, server.url)
+
+    // Clona a requisição para o servidor escolhido
+    const modifiedRequest = new Request(targetUrl, {
+      method: request.method,
+      headers: request.headers,
+      body: request.body,
+      redirect: 'follow'
+    })
+
+    // Adiciona header para debug (opcional)
+    modifiedRequest.headers.set('X-Served-By', server.name)
+
+    try {
+      // Faz a requisição para o servidor
+      const response = await fetch(modifiedRequest)
+
+      // Clona a resposta para adicionar headers
+      const newResponse = new Response(response.body, response)
+      newResponse.headers.set('X-Served-By', server.name)
+
+      return newResponse
+    } catch (error) {
+      // Se der erro, tenta o outro servidor
+      console.log(`Erro ao acessar ${server.name}, tentando fallback`)
+
+      const fallbackServer = SERVERS.find((s) => s.url !== server.url)
+      if (fallbackServer) {
+        const fallbackUrl = new URL(url.pathname + url.search, fallbackServer.url)
+        const fallbackRequest = new Request(fallbackUrl, {
+          method: request.method,
+          headers: request.headers,
+          body: request.body,
+          redirect: 'follow'
+        })
+
+        return fetch(fallbackRequest)
+      }
+
+      return new Response('Todos os servidores estão indisponíveis', { status: 503 })
+    }
+  }
+}
+```
+
+## Como configurar (passo a passo)
+
+1. **Crie dois hostnames de túnel**
+
+   - Túnel do principal: `service-primary.seudominio.com`
+   - Túnel da réplica: `service-replica.seudominio.com`
+
+2. **Crie o Worker**
+
+   - Cloudflare Dashboard
+   - Workers & Pages
+   - Create Worker
+   - Cole o código e atualize a lista `SERVERS`
+
+3. **Aponte o hostname público pro Worker**
+
+   Crie uma rota (ou custom domain) pra que `service.seudominio.com/*` seja atendido por esse Worker.
+
+4. **Testar qual servidor está respondendo**
+
+   ```bash
+   curl -I https://service.seudominio.com
+   ```
+
+   Procure pelo header `X-Served-By`.
+
+5. **Testar o failover**
+
+   Derrube o tunnel do principal por alguns segundos e faça a request de novo. O header deve mudar pra réplica.
+
+## Observações e limitações
+
+- **Serviços com estado**: se o seu serviço grava estado em disco (sessões, upload, histórico de chat, etc.), pense em storage compartilhado ou sincronização entre os nós.
+- **Endpoint de health check**: prefira um endpoint bem leve (ou `/`) e evite checks “caros”.
+- **WebSockets / conexões longas**: dependendo do plano e do comportamento do seu app, conexões longas podem exigir ajustes.
+- **Escopo do cache**: `serverHealth` fica em memória do Worker e pode resetar. Se você precisar de algo mais consistente, dá pra evoluir usando KV, Durable Objects ou monitoramento externo.
