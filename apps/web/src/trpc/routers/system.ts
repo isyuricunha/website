@@ -13,13 +13,7 @@ import { logger } from '@/lib/logger'
 
 const normalize_base_url = (url: string) => url.replace(/\/$/, '')
 
-const get_api_health_base_url = (headers: Headers) => {
-  const vercel_url = env.VERCEL_URL
-  if (vercel_url) {
-    const has_protocol = /^https?:\/\//i.test(vercel_url)
-    return normalize_base_url(has_protocol ? vercel_url : `https://${vercel_url}`)
-  }
-
+const get_public_base_url = (headers: Headers) => {
   const configured_url = env.NEXT_PUBLIC_WEBSITE_URL
   if (configured_url) {
     return normalize_base_url(configured_url)
@@ -33,6 +27,27 @@ const get_api_health_base_url = (headers: Headers) => {
   }
 
   return 'http://localhost:3000'
+}
+
+const get_vercel_base_url = () => {
+  const vercel_url = env.VERCEL_URL
+  if (!vercel_url) return null
+
+  const has_protocol = /^https?:\/\//i.test(vercel_url)
+  return normalize_base_url(has_protocol ? vercel_url : `https://${vercel_url}`)
+}
+
+const get_api_health_urls = (headers: Headers) => {
+  const urls: string[] = []
+  const public_base_url = get_public_base_url(headers)
+  urls.push(`${public_base_url}/api/health`)
+
+  const vercel_base_url = get_vercel_base_url()
+  if (vercel_base_url) {
+    urls.push(`${vercel_base_url}/api/health`)
+  }
+
+  return [...new Set(urls)]
 }
 
 // Helper function to perform health checks
@@ -61,23 +76,56 @@ async function performHealthCheck(type: string, ctx: { db: any; headers: Headers
       }
 
       case 'api': {
-        const baseUrl = get_api_health_base_url(ctx.headers)
-        const healthUrl = `${baseUrl}/api/health`
-        const controller = new AbortController()
-        const timeout = setTimeout(() => controller.abort(), 5_000)
+        const healthUrls = get_api_health_urls(ctx.headers)
+        const attempts: Array<{ url: string; status: number | null; ok: boolean; durationMs: number }> =
+          []
 
-        const res = await fetch(healthUrl, {
-          method: 'GET',
-          cache: 'no-store',
-          headers: {
-            accept: 'application/json',
-            'user-agent': 'isyuricunha-health-check/1.0'
-          },
-          signal: controller.signal
-        }).finally(() => clearTimeout(timeout))
+        const timeout_ms_total = 5000
+        let res: Response | null = null
+        let successfulUrl: string | null = null
+
+        for (const url of healthUrls) {
+          const elapsed = Date.now() - startTime
+          const remaining = timeout_ms_total - elapsed
+          if (remaining <= 0) break
+
+          const attempt_start = Date.now()
+          const controller = new AbortController()
+          const timeout = setTimeout(() => controller.abort(), remaining)
+
+          try {
+            res = await fetch(url, {
+              method: 'GET',
+              cache: 'no-store',
+              headers: {
+                accept: 'application/json',
+                'user-agent': 'isyuricunha-health-check/1.0'
+              },
+              signal: controller.signal
+            })
+          } catch {
+            res = null
+          } finally {
+            clearTimeout(timeout)
+          }
+
+          const durationMs = Date.now() - attempt_start
+          const ok = res?.ok ?? false
+          const status_code = res?.status ?? null
+          attempts.push({ url, status: status_code, ok, durationMs })
+
+          if (ok) {
+            successfulUrl = url
+            break
+          }
+
+          if (status_code !== 401 && status_code !== 403 && status_code !== 404) {
+            break
+          }
+        }
 
         const responseTime = Date.now() - startTime
-        const ok = res.ok
+        const ok = attempts.some((a) => a.ok)
 
         status = ok
           ? responseTime < 1000
@@ -89,12 +137,13 @@ async function performHealthCheck(type: string, ctx: { db: any; headers: Headers
 
         message = ok
           ? `API health endpoint OK (${responseTime}ms)`
-          : `API health endpoint failed (status ${res.status})`
+          : `API health endpoint failed (status ${attempts.at(-1)?.status ?? 'unknown'})`
 
         details = {
-          url: healthUrl,
-          status: res.status,
-          ok
+          url: successfulUrl ?? attempts.at(-1)?.url ?? healthUrls[0] ?? null,
+          status: attempts.at(-1)?.status ?? null,
+          ok,
+          attempts
         }
         break
       }

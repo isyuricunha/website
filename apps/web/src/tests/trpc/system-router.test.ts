@@ -46,9 +46,9 @@ vi.mock('@/lib/logger', () => ({
 vi.mock('node:fs/promises', () => {
   return {
     default: {
-      writeFile: vi.fn(async () => undefined),
+      writeFile: vi.fn(async () => {}),
       readFile: vi.fn(async () => 'health-check:123'),
-      unlink: vi.fn(async () => undefined)
+      unlink: vi.fn(async () => {})
     }
   }
 })
@@ -305,9 +305,9 @@ describe('systemRouter', () => {
 
     await caller.getSystemHealth()
 
-    expect(fetchMock).toHaveBeenCalled()
+    expect(fetchMock).toHaveBeenCalledTimes(1)
     const [url, options] = fetchMock.mock.calls[0] ?? []
-    expect(url).toBe('https://example.vercel.app/api/health')
+    expect(url).toBe('http://yuricunha.com/api/health')
     expect(options?.headers?.accept).toBe('application/json')
   })
 
@@ -353,6 +353,63 @@ describe('systemRouter', () => {
     expect(fetchMock).toHaveBeenCalled()
     const [url] = fetchMock.mock.calls[0] ?? []
     expect(url).toBe('https://yuricunha.com/api/health')
+  })
+
+  it('getSystemHealth falls back to VERCEL_URL when public URL is forbidden', async () => {
+    vi.doMock('@isyuricunha/env', () => {
+      return {
+        flags: {
+          comment: false,
+          auth: false,
+          stats: false,
+          spotify: false,
+          spotifyImport: false,
+          gemini: false,
+          analytics: false,
+          guestbookNotification: false,
+          likeButton: false,
+          turnstile: false
+        },
+        env: {
+          NODE_ENV: 'test',
+          DATABASE_URL: 'postgres://user:pass@localhost:5432/test',
+          UPSTASH_REDIS_REST_URL: 'https://example.com',
+          UPSTASH_REDIS_REST_TOKEN: 'token',
+          RESEND_API_KEY: 'token',
+          NEXT_PUBLIC_WEBSITE_URL: 'https://yuricunha.com',
+          VERCEL_URL: 'example.vercel.app'
+        }
+      }
+    })
+
+    fetchMock
+      .mockResolvedValueOnce({ ok: false, status: 403 })
+      .mockResolvedValueOnce({ ok: true, status: 200 })
+
+    const { systemRouter } = await import('@/trpc/routers/system')
+    const db = createDbMock()
+
+    const caller = systemRouter.createCaller({
+      db: db as unknown,
+      headers: new Headers({ host: 'irrelevant.example' }),
+      session: {
+        user: { id: 'admin-1', role: 'admin' }
+      }
+    } as unknown as Parameters<typeof systemRouter.createCaller>[0])
+
+    const result = await caller.getSystemHealth()
+
+    const api_check = result.checks.find((c) => c.type === 'api')
+    expect(api_check?.details?.ok).toBe(true)
+    expect(api_check?.details?.attempts).toHaveLength(2)
+    expect(api_check?.details?.attempts?.[0]?.url).toBe('https://yuricunha.com/api/health')
+    expect(api_check?.details?.attempts?.[0]?.status).toBe(403)
+    expect(api_check?.details?.attempts?.[1]?.url).toBe('https://example.vercel.app/api/health')
+    expect(api_check?.details?.attempts?.[1]?.status).toBe(200)
+
+    expect(fetchMock).toHaveBeenCalledTimes(2)
+    expect(fetchMock.mock.calls[0]?.[0]).toBe('https://yuricunha.com/api/health')
+    expect(fetchMock.mock.calls[1]?.[0]).toBe('https://example.vercel.app/api/health')
   })
 
   it('resolveError marks error resolved', async () => {
