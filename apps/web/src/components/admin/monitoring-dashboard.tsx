@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
   Button,
   Card,
@@ -35,42 +35,59 @@ export default function MonitoringDashboard() {
   const [selectedTab, setSelectedTab] = useState('overview')
   const [timeRange, setTimeRange] = useState<TimeRange>('24h')
 
+  const snapshot_interval_ref = useRef<ReturnType<typeof setInterval> | null>(null)
+
   const utils = api.useUtils()
 
   // Monitoring stats query
   const { data: monitoringStats, isLoading: statsLoading } =
-    api.monitoring.getMonitoringStats.useQuery()
+    api.monitoring.getMonitoringStats.useQuery(undefined, { refetchInterval: 30_000 })
 
   // Performance metrics query
   const { data: performanceMetrics, isLoading: metricsLoading } =
     api.monitoring.getPerformanceMetrics.useQuery({
       timeRange
-    })
+    }, { refetchInterval: 30_000 })
 
   // API usage query
-  const { data: apiUsage, isLoading: apiLoading } = api.monitoring.getApiUsage.useQuery({
-    timeRange
-  })
+  const { data: apiUsage, isLoading: apiLoading } = api.monitoring.getApiUsage.useQuery(
+    {
+      timeRange
+    },
+    { refetchInterval: 30_000 }
+  )
 
   // Error tracking query
   const { data: errorTracking, isLoading: errorsLoading } =
     api.monitoring.getErrorTracking.useQuery({
       timeRange
-    })
+    }, { refetchInterval: 30_000 })
 
   // Resource usage query
   const { data: resourceUsage, isLoading: resourceLoading } =
     api.monitoring.getResourceUsage.useQuery({
       timeRange
-    })
+    }, { refetchInterval: 30_000 })
 
   // Analytics events query
   const { data: analyticsEvents, isLoading: analyticsLoading } =
     api.monitoring.getAnalyticsEvents.useQuery({
       timeRange
-    })
+    }, { refetchInterval: 30_000 })
 
   // Mutations
+  const recordAnalyticsEventMutation = api.monitoring.recordAnalyticsEvent.useMutation({
+    onSuccess: () => {
+      utils.monitoring.getAnalyticsEvents.invalidate()
+    }
+  })
+
+  const recordResourceSnapshotMutation = api.monitoring.recordResourceSnapshot.useMutation({
+    onSuccess: () => {
+      utils.monitoring.getResourceUsage.invalidate()
+    }
+  })
+
   const resolveErrorMutation = api.monitoring.resolveError.useMutation({
     onSuccess: () => {
       toast.success('Error resolved successfully')
@@ -83,6 +100,36 @@ export default function MonitoringDashboard() {
       toast.error(`Failed to resolve error: ${error.message}`)
     }
   })
+
+  useEffect(() => {
+    recordAnalyticsEventMutation.mutate({
+      eventType: 'page_view',
+      page: '/admin/monitoring',
+      properties: {
+        tab: selectedTab,
+        timeRange
+      }
+    })
+  }, [recordAnalyticsEventMutation, selectedTab, timeRange])
+
+  useEffect(() => {
+    recordResourceSnapshotMutation.mutate()
+
+    if (snapshot_interval_ref.current) {
+      clearInterval(snapshot_interval_ref.current)
+    }
+
+    snapshot_interval_ref.current = setInterval(() => {
+      recordResourceSnapshotMutation.mutate()
+    }, 60_000)
+
+    return () => {
+      if (snapshot_interval_ref.current) {
+        clearInterval(snapshot_interval_ref.current)
+        snapshot_interval_ref.current = null
+      }
+    }
+  }, [recordResourceSnapshotMutation])
 
   const getSeverityColor = (severity: string) => {
     switch (severity) {

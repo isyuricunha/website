@@ -15,6 +15,7 @@ import {
   userActivity
 } from '@isyuricunha/db'
 import { randomBytes } from 'crypto'
+import os from 'node:os'
 import { z } from 'zod'
 
 import { AuditLogger, getIpFromHeaders, getUserAgentFromHeaders } from '@/lib/audit-logger'
@@ -41,6 +42,101 @@ function getTimeRange(range: string): Date {
 }
 
 export const monitoringRouter = createTRPCRouter({
+  recordAnalyticsEvent: adminProcedure
+    .input(
+      z.object({
+        eventType: z.string().min(1),
+        eventName: z.string().optional(),
+        page: z.string().optional(),
+        referrer: z.string().optional(),
+        properties: z.record(z.string(), z.unknown()).optional()
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        const eventId = randomBytes(16).toString('hex')
+        const ipAddress = getIpFromHeaders(ctx.headers) ?? null
+        const userAgent = getUserAgentFromHeaders(ctx.headers) ?? null
+
+        await ctx.db.insert(analyticsEvents).values({
+          id: eventId,
+          eventType: input.eventType,
+          eventName: input.eventName ?? null,
+          userId: ctx.session.user.id,
+          sessionId: ctx.session.user.id,
+          page: input.page ?? null,
+          referrer: input.referrer ?? null,
+          userAgent,
+          ipAddress,
+          country: null,
+          city: null,
+          device: null,
+          browser: null,
+          os: null,
+          properties: input.properties ? JSON.stringify(input.properties) : null,
+          createdAt: new Date()
+        })
+
+        return { success: true, eventId }
+      } catch (error) {
+        logger.error('Error recording analytics event', error)
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to record analytics event'
+        })
+      }
+    }),
+
+  recordResourceSnapshot: adminProcedure.mutation(async ({ ctx }) => {
+    try {
+      const now = new Date()
+
+      const total_mem = os.totalmem()
+      const free_mem = os.freemem()
+      const used_mem = Math.max(0, total_mem - free_mem)
+      const memory_usage_percent = total_mem > 0 ? (used_mem / total_mem) * 100 : 0
+
+      const cpu_count = os.cpus().length
+      const load_1m = os.loadavg()[0] ?? 0
+      const cpu_usage_percent = cpu_count > 0 ? Math.min(100, (load_1m / cpu_count) * 100) : 0
+
+      const hostname = os.hostname()
+
+      await ctx.db.insert(resourceUsage).values([
+        {
+          id: randomBytes(16).toString('hex'),
+          type: 'cpu',
+          value: cpu_usage_percent,
+          maxValue: 100,
+          unit: '%',
+          hostname,
+          service: 'web',
+          metadata: JSON.stringify({ load1m: load_1m, cpuCount: cpu_count }),
+          createdAt: now
+        },
+        {
+          id: randomBytes(16).toString('hex'),
+          type: 'memory',
+          value: memory_usage_percent,
+          maxValue: 100,
+          unit: '%',
+          hostname,
+          service: 'web',
+          metadata: JSON.stringify({ totalBytes: total_mem, usedBytes: used_mem }),
+          createdAt: now
+        }
+      ])
+
+      return { success: true }
+    } catch (error) {
+      logger.error('Error recording resource snapshot', error)
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Failed to record resource snapshot'
+      })
+    }
+  }),
+
   // Performance Metrics
   getPerformanceMetrics: adminProcedure
     .input(
@@ -769,6 +865,7 @@ export const monitoringRouter = createTRPCRouter({
       const totalErrors = recentErrors.length
       const resolvedErrors = recentErrors.filter((e) => e.resolved).length
       const serverErrors = recentErrors.filter((e) => e.errorType === 'server').length
+      const criticalErrors = recentErrors.filter((e) => e.errorType === 'server' && !e.resolved).length
 
       return {
         performance: {
@@ -787,6 +884,7 @@ export const monitoringRouter = createTRPCRouter({
         errors: {
           total: totalErrors,
           unresolved: totalErrors - resolvedErrors,
+          critical: criticalErrors,
           javascript: recentErrors.filter((e) => e.errorType === 'javascript').length,
           database: recentErrors.filter((e) => e.errorType === 'database').length,
           server: serverErrors
@@ -813,9 +911,9 @@ export const monitoringRouter = createTRPCRouter({
     } catch (error) {
       logger.error('Error fetching monitoring stats', error)
       return {
-        performance: { totalMetrics: 0, avgResponseTime: 0 },
-        errors: { total: 0, unresolved: 0, critical: 0, high: 0 },
-        alerts: { total: 0, critical: 0, high: 0 },
+        performance: { totalMetrics: 0, avgResponseTime: 0, throughput: 0 },
+        errors: { total: 0, unresolved: 0, critical: 0, javascript: 0, database: 0, server: 0 },
+        alerts: { total: 0, critical: 0, warning: 0 },
         api: { totalRequests: 0, errorRate: 0, avgResponseTime: 0 }
       }
     }

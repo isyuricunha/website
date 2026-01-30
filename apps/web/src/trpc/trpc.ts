@@ -1,5 +1,5 @@
 import { initTRPC, TRPCError } from '@trpc/server'
-import { db, errorLogs, errorTracking, performanceMetrics } from '@isyuricunha/db'
+import { apiUsage, db, errorLogs, errorTracking, performanceMetrics } from '@isyuricunha/db'
 import { env } from '@isyuricunha/env'
 import { SuperJSON } from 'superjson'
 import { ZodError } from 'zod'
@@ -53,6 +53,38 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
 
 export const createTRPCRouter = t.router
 
+const map_trpc_error_to_status_code = (code: string | undefined): number => {
+  switch (code) {
+    case 'BAD_REQUEST':
+    case 'PARSE_ERROR':
+      return 400
+    case 'UNAUTHORIZED':
+      return 401
+    case 'FORBIDDEN':
+      return 403
+    case 'NOT_FOUND':
+      return 404
+    case 'METHOD_NOT_SUPPORTED':
+      return 405
+    case 'CONFLICT':
+      return 409
+    case 'PRECONDITION_FAILED':
+      return 412
+    case 'PAYLOAD_TOO_LARGE':
+      return 413
+    case 'TOO_MANY_REQUESTS':
+      return 429
+    case 'NOT_IMPLEMENTED':
+      return 501
+    case 'TIMEOUT':
+      return 504
+    case 'CLIENT_CLOSED_REQUEST':
+      return 499
+    default:
+      return 500
+  }
+}
+
 const timingMiddleware = t.middleware(async ({ next, path, ctx }) => {
   const start = Date.now()
 
@@ -69,7 +101,7 @@ const timingMiddleware = t.middleware(async ({ next, path, ctx }) => {
 
   logger.debug(`[TRPC] ${path} took ${duration_ms}ms to execute`)
 
-  if (env.NODE_ENV !== 'test') {
+  if (env.NODE_ENV !== 'test' && process.env.NODE_ENV !== 'test') {
     try {
       const request_url = ctx.url ?? '/api/trpc'
       const endpoint = `${request_url}/${path}`
@@ -83,6 +115,8 @@ const timingMiddleware = t.middleware(async ({ next, path, ctx }) => {
 
       const error_message = result.ok ? null : (result.error?.message ?? 'Unknown error')
 
+      const status_code = result.ok ? 200 : map_trpc_error_to_status_code(result.error?.code)
+
       await ctx.db.insert(performanceMetrics).values({
         id: randomBytes(16).toString('hex'),
         metricName: 'response_time',
@@ -94,6 +128,22 @@ const timingMiddleware = t.middleware(async ({ next, path, ctx }) => {
         userAgent: user_agent,
         ipAddress: ip_address,
         metadata: null,
+        createdAt: new Date()
+      })
+
+      await ctx.db.insert(apiUsage).values({
+        id: randomBytes(16).toString('hex'),
+        endpoint,
+        method: ctx.method ?? 'POST',
+        statusCode: status_code,
+        responseTime: duration_ms,
+        requestSize: null,
+        responseSize: null,
+        userId: ctx.session?.user?.id ?? null,
+        ipAddress: ip_address,
+        userAgent: user_agent,
+        apiKey: null,
+        errorMessage: error_message,
         createdAt: new Date()
       })
 
