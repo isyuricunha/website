@@ -98,7 +98,14 @@
       "drizzle-kit": "1.0.0-beta.10-42c284e",
       "preact": "10.28.2",
       "js-yaml": "^4.1.1"
-    }
+    },
+    "onlyBuiltDependencies": [
+      "@parcel/watcher",
+      "@swc/core",
+      "esbuild",
+      "sharp",
+      "simple-git-hooks"
+    ]
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm lint-staged --concurrent false",
