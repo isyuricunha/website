@@ -2,6 +2,7 @@ import { TRPCError } from '@trpc/server'
 import {
   announcements,
   emailCampaigns,
+  emailCampaignRecipients,
   emailTemplates,
   notifications,
   users,
@@ -13,12 +14,16 @@ import {
   isNull,
   or
 } from '@isyuricunha/db'
+import { env } from '@isyuricunha/env'
 import { randomBytes } from 'crypto'
+import { Resend } from 'resend'
 import { z } from 'zod'
 
 import { AuditLogger, getIpFromHeaders, getUserAgentFromHeaders } from '@/lib/audit-logger'
 import { logger } from '@/lib/logger'
 import { adminProcedure, protectedProcedure, createTRPCRouter } from '../trpc'
+
+const resend = new Resend(env.RESEND_API_KEY)
 
 const parseJson = (raw: string | null): unknown => {
   if (!raw) return null
@@ -472,12 +477,75 @@ export const communicationRouter = createTRPCRouter({
           })
         }
 
+        const parseTargetAudience = (
+          raw: string | null
+        ): { userRoles?: string[]; userIds?: string[]; emailList?: string[] } | null => {
+          if (!raw) return null
+          try {
+            return JSON.parse(raw)
+          } catch {
+            return null
+          }
+        }
+
+        const targetAudience = parseTargetAudience(campaign.targetAudience)
+
+        const recipientMap = new Map<string, { email: string; userId: string | null }>()
+
+        const addRecipient = (email: string, userId: string | null) => {
+          const normalized = email.trim().toLowerCase()
+          if (!normalized) return
+          if (!recipientMap.has(normalized)) {
+            recipientMap.set(normalized, { email: normalized, userId })
+          }
+        }
+
+        if (targetAudience?.emailList?.length) {
+          targetAudience.emailList.forEach((email) => addRecipient(email, null))
+        }
+
+        if (targetAudience?.userIds?.length) {
+          const selectedUsers = await ctx.db.query.users.findMany({
+            where: inArray(users.id, targetAudience.userIds),
+            columns: { id: true, email: true }
+          })
+          selectedUsers.forEach((u) => addRecipient(u.email, u.id))
+        }
+
+        if (targetAudience?.userRoles?.length) {
+          const roles = targetAudience.userRoles.filter((role) => role === 'user' || role === 'admin')
+          if (roles.length > 0) {
+            const roleUsers = await ctx.db.query.users.findMany({
+              where: inArray(users.role, roles),
+              columns: { id: true, email: true }
+            })
+            roleUsers.forEach((u) => addRecipient(u.email, u.id))
+          }
+        }
+
+        if (!targetAudience) {
+          const allUsers = await ctx.db.query.users.findMany({
+            columns: { id: true, email: true }
+          })
+          allUsers.forEach((u) => addRecipient(u.email, u.id))
+        }
+
+        const recipients = Array.from(recipientMap.values())
+        if (recipients.length === 0) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Campaign has no recipients'
+          })
+        }
+
         // Update campaign status to sending
         await ctx.db
           .update(emailCampaigns)
           .set({
             status: 'sending',
-            startedAt: new Date()
+            startedAt: new Date(),
+            totalRecipients: recipients.length,
+            updatedAt: new Date()
           })
           .where(eq(emailCampaigns.id, input.campaignId))
 
@@ -487,18 +555,104 @@ export const communicationRouter = createTRPCRouter({
         // 3. Send emails in batches to avoid rate limits
         // 4. Track delivery, opens, clicks, etc.
 
-        // For now, we'll just mark it as sent
-        setTimeout(async () => {
+        const html = campaign.htmlContent ?? campaign.template?.htmlContent ?? null
+        const text = campaign.textContent ?? campaign.template?.textContent ?? null
+
+        if (!html && !text) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Campaign content is empty'
+          })
+        }
+
+        const now = new Date()
+
+        const recipientRows = recipients.map((recipient) => ({
+          id: randomBytes(16).toString('hex'),
+          campaignId: campaign.id,
+          userId: recipient.userId,
+          email: recipient.email,
+          status: 'pending',
+          sentAt: null,
+          deliveredAt: null,
+          openedAt: null,
+          clickedAt: null,
+          unsubscribedAt: null,
+          errorMessage: null
+        }))
+
+        await ctx.db.insert(emailCampaignRecipients).values(recipientRows)
+
+        const updateRecipientStatus = async (args: {
+          email: string
+          status: 'sent' | 'failed'
+          sentAt?: Date
+          errorMessage?: string
+        }) => {
           await ctx.db
-            .update(emailCampaigns)
+            .update(emailCampaignRecipients)
             .set({
-              status: 'sent',
-              completedAt: new Date(),
-              sentCount: campaign.totalRecipients,
-              deliveredCount: campaign.totalRecipients
+              status: args.status,
+              sentAt: args.sentAt ?? null,
+              errorMessage: args.errorMessage ?? null
             })
-            .where(eq(emailCampaigns.id, input.campaignId))
-        }, 1000)
+            .where(
+              and(eq(emailCampaignRecipients.campaignId, campaign.id), eq(emailCampaignRecipients.email, args.email))
+            )
+        }
+
+        let sentCount = 0
+        let failedCount = 0
+
+        for (const recipient of recipients) {
+          try {
+            if (html) {
+              await resend.emails.send({
+                from: 'yuricunha.com <noreply@yuricunha.com>',
+                to: [recipient.email],
+                subject: campaign.subject,
+                html
+              })
+            } else {
+              await resend.emails.send({
+                from: 'yuricunha.com <noreply@yuricunha.com>',
+                to: [recipient.email],
+                subject: campaign.subject,
+                text: text ?? ''
+              })
+            }
+
+            sentCount += 1
+            await updateRecipientStatus({
+              email: recipient.email,
+              status: 'sent',
+              sentAt: now
+            })
+          } catch (error) {
+            failedCount += 1
+            await updateRecipientStatus({
+              email: recipient.email,
+              status: 'failed',
+              errorMessage: error instanceof Error ? error.message : 'Failed to send'
+            })
+          }
+
+          await new Promise((resolve) => setTimeout(resolve, 350))
+        }
+
+        const completedAt = new Date()
+        const status = sentCount > 0 ? 'sent' : 'failed'
+
+        await ctx.db
+          .update(emailCampaigns)
+          .set({
+            status,
+            completedAt,
+            sentCount,
+            deliveredCount: sentCount,
+            updatedAt: completedAt
+          })
+          .where(eq(emailCampaigns.id, input.campaignId))
 
         // Log audit trail
         await auditLogger.logUserAction(
@@ -507,14 +661,19 @@ export const communicationRouter = createTRPCRouter({
           '',
           {
             action: 'bulk_notification_send',
-            recipientCount: campaign.totalRecipients,
+            recipientCount: recipients.length,
             notificationType: ''
           },
           ipAddress,
           userAgent
         )
 
-        return { success: true }
+        return {
+          success: true,
+          sent: sentCount,
+          failed: failedCount,
+          total: recipients.length
+        }
       } catch (error) {
         if (error instanceof TRPCError) {
           throw error
