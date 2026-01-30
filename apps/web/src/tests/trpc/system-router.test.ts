@@ -266,6 +266,95 @@ describe('systemRouter', () => {
     expect(Array.isArray(result.history)).toBe(true)
   }, 15_000)
 
+  it('getSystemHealth uses VERCEL_URL as API health base URL when available', async () => {
+    vi.doMock('@isyuricunha/env', () => {
+      return {
+        flags: {
+          comment: false,
+          auth: false,
+          stats: false,
+          spotify: false,
+          spotifyImport: false,
+          gemini: false,
+          analytics: false,
+          guestbookNotification: false,
+          likeButton: false,
+          turnstile: false
+        },
+        env: {
+          NODE_ENV: 'test',
+          DATABASE_URL: 'postgres://user:pass@localhost:5432/test',
+          UPSTASH_REDIS_REST_URL: 'https://example.com',
+          UPSTASH_REDIS_REST_TOKEN: 'token',
+          RESEND_API_KEY: 'token',
+          VERCEL_URL: 'example.vercel.app'
+        }
+      }
+    })
+
+    const { systemRouter } = await import('@/trpc/routers/system')
+    const db = createDbMock()
+
+    const caller = systemRouter.createCaller({
+      db: db as unknown,
+      headers: new Headers({ host: 'yuricunha.com' }),
+      session: {
+        user: { id: 'admin-1', role: 'admin' }
+      }
+    } as unknown as Parameters<typeof systemRouter.createCaller>[0])
+
+    await caller.getSystemHealth()
+
+    expect(fetchMock).toHaveBeenCalled()
+    const [url, options] = fetchMock.mock.calls[0] ?? []
+    expect(url).toBe('https://example.vercel.app/api/health')
+    expect(options?.headers?.accept).toBe('application/json')
+  })
+
+  it('getSystemHealth falls back to NEXT_PUBLIC_WEBSITE_URL when VERCEL_URL is missing', async () => {
+    vi.doMock('@isyuricunha/env', () => {
+      return {
+        flags: {
+          comment: false,
+          auth: false,
+          stats: false,
+          spotify: false,
+          spotifyImport: false,
+          gemini: false,
+          analytics: false,
+          guestbookNotification: false,
+          likeButton: false,
+          turnstile: false
+        },
+        env: {
+          NODE_ENV: 'test',
+          DATABASE_URL: 'postgres://user:pass@localhost:5432/test',
+          UPSTASH_REDIS_REST_URL: 'https://example.com',
+          UPSTASH_REDIS_REST_TOKEN: 'token',
+          RESEND_API_KEY: 'token',
+          NEXT_PUBLIC_WEBSITE_URL: 'https://yuricunha.com'
+        }
+      }
+    })
+
+    const { systemRouter } = await import('@/trpc/routers/system')
+    const db = createDbMock()
+
+    const caller = systemRouter.createCaller({
+      db: db as unknown,
+      headers: new Headers({ host: 'ignored.example' }),
+      session: {
+        user: { id: 'admin-1', role: 'admin' }
+      }
+    } as unknown as Parameters<typeof systemRouter.createCaller>[0])
+
+    await caller.getSystemHealth()
+
+    expect(fetchMock).toHaveBeenCalled()
+    const [url] = fetchMock.mock.calls[0] ?? []
+    expect(url).toBe('https://yuricunha.com/api/health')
+  })
+
   it('resolveError marks error resolved', async () => {
     const { systemRouter } = await import('@/trpc/routers/system')
 

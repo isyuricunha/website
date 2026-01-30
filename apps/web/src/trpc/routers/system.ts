@@ -11,10 +11,18 @@ import { AuditLogger, getIpFromHeaders, getUserAgentFromHeaders } from '@/lib/au
 import { adminProcedure, createTRPCRouter } from '../trpc'
 import { logger } from '@/lib/logger'
 
-const get_base_url = (headers: Headers) => {
+const normalize_base_url = (url: string) => url.replace(/\/$/, '')
+
+const get_api_health_base_url = (headers: Headers) => {
+  const vercel_url = env.VERCEL_URL
+  if (vercel_url) {
+    const has_protocol = /^https?:\/\//i.test(vercel_url)
+    return normalize_base_url(has_protocol ? vercel_url : `https://${vercel_url}`)
+  }
+
   const configured_url = env.NEXT_PUBLIC_WEBSITE_URL
   if (configured_url) {
-    return configured_url.replace(/\/$/, '')
+    return normalize_base_url(configured_url)
   }
 
   const host = headers.get('x-forwarded-host') ?? headers.get('host')
@@ -53,7 +61,7 @@ async function performHealthCheck(type: string, ctx: { db: any; headers: Headers
       }
 
       case 'api': {
-        const baseUrl = get_base_url(ctx.headers)
+        const baseUrl = get_api_health_base_url(ctx.headers)
         const healthUrl = `${baseUrl}/api/health`
         const controller = new AbortController()
         const timeout = setTimeout(() => controller.abort(), 5_000)
@@ -61,6 +69,10 @@ async function performHealthCheck(type: string, ctx: { db: any; headers: Headers
         const res = await fetch(healthUrl, {
           method: 'GET',
           cache: 'no-store',
+          headers: {
+            accept: 'application/json',
+            'user-agent': 'isyuricunha-health-check/1.0'
+          },
           signal: controller.signal
         }).finally(() => clearTimeout(timeout))
 
