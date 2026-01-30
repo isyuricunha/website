@@ -8,12 +8,10 @@ import {
   MegaphoneIcon,
   BellIcon,
   SendIcon,
-  FileTextIcon,
-  FilesIcon,
   BoxesIcon,
-  WrenchIcon,
   HeartPulseIcon,
-  MessageCircleMoreIcon
+  MessageCircleMoreIcon,
+  ScrollTextIcon
 } from 'lucide-react'
 
 export const ADMIN_SIDEBAR_LINKS = [
@@ -24,16 +22,6 @@ export const ADMIN_SIDEBAR_LINKS = [
         titleKey: 'dashboard',
         url: '/admin',
         icon: BarChart3Icon
-      },
-      {
-        titleKey: 'posts',
-        url: '/admin/posts',
-        icon: FileTextIcon
-      },
-      {
-        titleKey: 'content',
-        url: '/admin/content',
-        icon: FilesIcon
       },
       {
         titleKey: 'users',
@@ -54,6 +42,11 @@ export const ADMIN_SIDEBAR_LINKS = [
         titleKey: 'security_management',
         url: '/admin/security',
         icon: ShieldIcon
+      },
+      {
+        titleKey: 'audit_logs',
+        url: '/admin/audit-logs',
+        icon: ScrollTextIcon
       }
     ]
   },
@@ -109,11 +102,6 @@ export const ADMIN_SIDEBAR_LINKS = [
         titleKey: 'bulk_operations',
         url: '/admin/bulk-operations',
         icon: BoxesIcon
-      },
-      {
-        titleKey: 'configuration',
-        url: '/admin/configuration',
-        icon: WrenchIcon
       }
     ]
   }
