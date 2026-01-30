@@ -8,8 +8,7 @@ Production:
 
 ## Notice
 
-This project contains a personal AI assistant feature that is my own creation and intellectual property.
-Do not copy, reproduce, or implement similar AI assistant features without explicit permission. Thanks.
+Please, use your own AI/Mascot nome and your own model/llm. Thanks.
 
 ## Table of contents
 
