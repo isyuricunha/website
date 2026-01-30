@@ -218,3 +218,74 @@ export default {
 - **Health check endpoint**: prefer a lightweight endpoint (or `/`) and avoid heavy logic.
 - **WebSockets / long-lived connections**: depending on your Cloudflare plan and your app’s behavior, long-lived connections may require extra care.
 - **Cache scope**: `serverHealth` is isolate memory, not a global datastore. If you need more reliable shared health state, consider KV, Durable Objects, or external monitoring.
+
+## Another way to do it
+
+You could/could use the same Tunnel in two servers/services, so you could have a Tunnel named "Services" and connect it to "Server A" and "Server B".
+Some people think this solution is better, and in terms of simplicity, it is better. But if you want to separate the Tunnels, Cloudflare Worker Load Balancer is better.
+
+But if you still want a Tunnel in all your servers, here's what I noticed about having 1 Tunnel in all machines:
+If you use a shared Tunnel in all machines:
+
+        ┌─────────────────┐
+        │  Tunnel "main"  │
+        └─────────────────┘
+                │
+    ┌───────────┼───────────┬───────────┐
+    ▼           ▼           ▼           ▼
+┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐
+│Server A │ │Server B │ │Server C │ │Server D │
+│         │ │         │ │         │ │         │
+│Jellyfin │ │Navidrome│ │qBittor. │ │OpenWebUI│
+└─────────┘ ─────────┘ └─────────┘ └─────────┘
+
+Problem: Cloudflare will route jellyfin.domain.com to ANY server (A, B, C or D randomly), but Jellyfin is only on Server A! 💥
+Result:
+
+- 75% of the requests will result in error 502 (they fell on the wrong server)
+- You lose control of where each service runs
+- Total mess
+
+Works but it's not recommended.
+
+In this case, THE CORRECT WAY to use replicas with a single Tunnel would be a Tunnel sharing ONLY when the SAME service is replicated on MULTIPLE machines:
+
+Scenario 1: You want failover from Open WebUI
+┌─────────────────────┐
+│ Tunnel "openwebui"  │
+└─────────────────────┘
+         │
+    ┌────┴────┐
+    ▼         ▼
+┌─────────┐ ┌─────────┐
+│Server A │ │Server B │
+│         │ │         │  ← Same Open WebUI (PostgreSQL+Redis shared)
+│OpenWebUI│ │OpenWebUI│
+└─────────┘ └─────────┘
+
+Works, because Open WebUI is in the two servers.
+
+Scenario 2: Jellyfin is only on 1 server
+┌──────────────────┐
+│ Tunnel "media"   │
+└──────────────────┘
+         │
+         ▼
+    ┌─────────┐
+    │Server A │
+    │         │
+    │Jellyfin │ ← Only here
+    └─────────┘
+✅ Correct! Dedicated Tunnel because Jellyfin is only in 1 place.
+
+---
+
+Summary:
+
+- 1 tunnel per machine: Different services in different machines
+- 1 tunnel in multiple machines: Same service replicated (failover)
+1 tunnel in all machines: Never (unless all services are in all machines)
+
+## Remember kindly
+
+Don't forget that you need shared data to be accessible by all servers, otherwise you'll have inconsistencies in the data. And until configurations diverge, or having to configure each one differently.
