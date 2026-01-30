@@ -105,6 +105,17 @@ export default function MonitoringDashboard() {
     }
   })
 
+  const resolveAllErrorsMutation = api.monitoring.resolveAllErrors.useMutation({
+    onSuccess: () => {
+      toast.success('All errors resolved successfully')
+      utils.monitoring.getErrorTracking.invalidate()
+      utils.monitoring.getMonitoringStats.invalidate()
+    },
+    onError: (error) => {
+      toast.error(`Failed to resolve all errors: ${error.message}`)
+    }
+  })
+
   useEffect(() => {
     if (!has_sent_page_view_ref.current) {
       has_sent_page_view_ref.current = true
@@ -507,8 +518,21 @@ export default function MonitoringDashboard() {
         <TabsContent value='errors' className='space-y-4'>
           <Card>
             <CardHeader>
-              <CardTitle>Error Tracking</CardTitle>
-              <CardDescription>System errors and exceptions</CardDescription>
+              <div className='flex items-center justify-between gap-2'>
+                <div>
+                  <CardTitle>Error Tracking</CardTitle>
+                  <CardDescription>System errors and exceptions</CardDescription>
+                </div>
+                <Button
+                  variant='outline'
+                  size='sm'
+                  isPending={resolveAllErrorsMutation.isPending}
+                  disabled={resolveAllErrorsMutation.isPending}
+                  onClick={() => resolveAllErrorsMutation.mutate()}
+                >
+                  Resolve all
+                </Button>
+              </div>
             </CardHeader>
             <CardContent>
               {errorsLoading ? (
@@ -575,7 +599,7 @@ export default function MonitoringDashboard() {
           <Card>
             <CardHeader>
               <CardTitle>System Resources</CardTitle>
-              <CardDescription>CPU, memory, disk, and network usage</CardDescription>
+              <CardDescription>CPU and memory usage</CardDescription>
             </CardHeader>
             <CardContent>
               {resourceLoading ? (

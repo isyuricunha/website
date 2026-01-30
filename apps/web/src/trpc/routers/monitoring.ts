@@ -660,6 +660,40 @@ export const monitoringRouter = createTRPCRouter({
       }
     }),
 
+  resolveAllErrors: adminProcedure.mutation(async ({ ctx }) => {
+    try {
+      const auditLogger = new AuditLogger(ctx.db)
+      const ipAddress = getIpFromHeaders(ctx.headers)
+      const userAgent = getUserAgentFromHeaders(ctx.headers)
+
+      await ctx.db
+        .update(errorTracking)
+        .set({
+          resolved: true,
+          resolvedAt: new Date()
+        })
+        .where(eq(errorTracking.resolved, false))
+
+      await auditLogger.logSystemAction(
+        ctx.session.user.id,
+        'settings_update',
+        'error_tracking',
+        'bulk',
+        { action: 'bulk_resolved' },
+        ipAddress,
+        userAgent
+      )
+
+      return { success: true }
+    } catch (error) {
+      logger.error('Error resolving all errors', error)
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Failed to resolve all errors'
+      })
+    }
+  }),
+
   // Alerts
   getAlerts: adminProcedure
     .input(

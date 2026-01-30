@@ -434,6 +434,28 @@ describe('systemRouter', () => {
     expect(auditLogMock).toHaveBeenCalledTimes(1)
   })
 
+  it('resolveAllErrors marks errors resolved', async () => {
+    const { systemRouter } = await import('@/trpc/routers/system')
+
+    const db = createDbMock()
+
+    const caller = systemRouter.createCaller({
+      db: db as unknown,
+      headers: new Headers({ 'x-forwarded-for': '203.0.113.10' }),
+      session: {
+        user: { id: 'admin-1', role: 'admin' }
+      }
+    } as unknown as Parameters<typeof systemRouter.createCaller>[0])
+
+    const result = await caller.resolveAllErrors()
+
+    expect(result.success).toBe(true)
+    expect(db.__state.error_logs[0]?.resolved).toBe(true)
+    expect(db.__state.error_logs[0]?.resolvedBy).toBe('admin-1')
+    expect(db.__mocks.updateErrorWhere).toHaveBeenCalledTimes(1)
+    expect(auditLogMock).toHaveBeenCalledTimes(1)
+  })
+
   it('getSiteConfig returns grouped config with parsed values', async () => {
     const { systemRouter } = await import('@/trpc/routers/system')
 

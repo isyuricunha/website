@@ -64,6 +64,17 @@ export const SystemHealthDashboard = () => {
     }
   })
 
+  const resolveAllErrorsMutation = api.system.resolveAllErrors.useMutation({
+    onSuccess: async () => {
+      toast.success('All errors resolved')
+      await utils.system.getErrorLogs.invalidate()
+      await utils.system.getSystemStats.invalidate()
+    },
+    onError: (error) => {
+      toast.error(`Failed to resolve all errors: ${error.message}`)
+    }
+  })
+
   // Auto-refresh functionality
   useEffect(() => {
     if (!autoRefresh) {
@@ -357,9 +368,20 @@ export const SystemHealthDashboard = () => {
           <div className='border-border border-b px-6 py-4'>
             <div className='flex items-center justify-between'>
               <h3 className='text-lg font-medium'>Recent Errors</h3>
-              <Button variant='outline' size='sm'>
-                View All Errors
-              </Button>
+              <div className='flex items-center gap-2'>
+                <Button
+                  variant='outline'
+                  size='sm'
+                  isPending={resolveAllErrorsMutation.isPending}
+                  disabled={resolveAllErrorsMutation.isPending}
+                  onClick={() => resolveAllErrorsMutation.mutate()}
+                >
+                  Resolve all
+                </Button>
+                <Button variant='outline' size='sm'>
+                  View All Errors
+                </Button>
+              </div>
             </div>
           </div>
           <div className='divide-border divide-y'>
@@ -369,11 +391,10 @@ export const SystemHealthDashboard = () => {
                   <div className='flex-1'>
                     <div className='mb-2 flex items-center gap-2'>
                       <span
-                        className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                          error.level === 'error'
+                        className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${error.level === 'error'
                             ? 'bg-destructive/10 text-destructive'
                             : 'bg-primary/10 text-primary'
-                        }`}
+                          }`}
                       >
                         {error.level.toUpperCase()}
                       </span>

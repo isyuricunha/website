@@ -419,6 +419,41 @@ export const systemRouter = createTRPCRouter({
       }
     }),
 
+  resolveAllErrors: adminProcedure.mutation(async ({ ctx }) => {
+    try {
+      const auditLogger = new AuditLogger(ctx.db)
+      const ipAddress = getIpFromHeaders(ctx.headers)
+      const userAgent = getUserAgentFromHeaders(ctx.headers)
+
+      await ctx.db
+        .update(errorLogs)
+        .set({
+          resolved: true,
+          resolvedBy: ctx.session.user.id,
+          resolvedAt: new Date()
+        })
+        .where(eq(errorLogs.resolved, false))
+
+      await auditLogger.log({
+        adminUserId: ctx.session.user.id,
+        action: 'settings_update',
+        targetType: 'error',
+        targetId: 'bulk',
+        details: { action: 'bulk_resolved' },
+        ipAddress,
+        userAgent
+      })
+
+      return { success: true }
+    } catch (error) {
+      logger.error('Error resolving all errors', error)
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Failed to resolve all errors'
+      })
+    }
+  }),
+
   // Get site configuration
   getSiteConfig: adminProcedure.query(async ({ ctx }) => {
     try {
