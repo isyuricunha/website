@@ -1,5 +1,12 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
   "ignoreCommand": "node ./scripts/vercel-ignore.js",
+  "crons": [
+    {
+      "path": "/api/cron/alerts",
+      "schedule": "*/10 * * * *"
+    }
+  ],
   "rewrites": [
     {
       "source": "/.well-known/matrix/:path*",

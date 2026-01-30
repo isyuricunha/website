@@ -400,12 +400,13 @@ describe('systemRouter', () => {
     const result = await caller.getSystemHealth()
 
     const api_check = result.checks.find((c) => c.type === 'api')
-    expect(api_check?.details?.ok).toBe(true)
-    expect(api_check?.details?.attempts).toHaveLength(2)
-    expect(api_check?.details?.attempts?.[0]?.url).toBe('https://yuricunha.com/api/health')
-    expect(api_check?.details?.attempts?.[0]?.status).toBe(403)
-    expect(api_check?.details?.attempts?.[1]?.url).toBe('https://example.vercel.app/api/health')
-    expect(api_check?.details?.attempts?.[1]?.status).toBe(200)
+    const api_details = api_check?.details as any
+    expect(api_details?.ok).toBe(true)
+    expect(api_details?.attempts).toHaveLength(2)
+    expect(api_details?.attempts?.[0]?.url).toBe('https://yuricunha.com/api/health')
+    expect(api_details?.attempts?.[0]?.status).toBe(403)
+    expect(api_details?.attempts?.[1]?.url).toBe('https://example.vercel.app/api/health')
+    expect(api_details?.attempts?.[1]?.status).toBe(200)
 
     expect(fetchMock).toHaveBeenCalledTimes(2)
     expect(fetchMock.mock.calls[0]?.[0]).toBe('https://yuricunha.com/api/health')

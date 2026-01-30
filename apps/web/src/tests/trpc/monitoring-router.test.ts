@@ -1,5 +1,33 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
+vi.mock('@isyuricunha/env', () => {
+  return {
+    flags: {
+      comment: false,
+      auth: false,
+      stats: false,
+      spotify: false,
+      spotifyImport: false,
+      gemini: false,
+      groq: false,
+      hf: false,
+      hfLocal: false,
+      ollama: false,
+      analytics: false,
+      guestbookNotification: false,
+      likeButton: false,
+      turnstile: false
+    },
+    env: {
+      NODE_ENV: 'test',
+      DATABASE_URL: 'postgres://user:pass@localhost:5432/test',
+      UPSTASH_REDIS_REST_URL: 'https://example.com',
+      UPSTASH_REDIS_REST_TOKEN: 'token',
+      RESEND_API_KEY: 'token'
+    }
+  }
+})
+
 vi.mock('@/lib/auth', () => {
   return {
     getSession: vi.fn(async () => null)

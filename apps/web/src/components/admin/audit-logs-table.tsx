@@ -92,11 +92,6 @@ const AuditLogsTable = (props: AuditLogsTableProps) => {
             id: 'action',
             label: 'Action',
             placeholder: 'Filter actions...'
-        },
-        {
-            id: 'adminUser.email',
-            label: 'Admin',
-            placeholder: 'Filter admins...'
         }
     ]
 
