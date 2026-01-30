@@ -227,6 +227,8 @@ Some people think this solution is better, and in terms of simplicity, it is bet
 But if you still want a Tunnel in all your servers, here's what I noticed about having 1 Tunnel in all machines:
 If you use a shared Tunnel in all machines:
 
+```text
+
         ┌─────────────────┐
         │  Tunnel "main"  │
         └─────────────────┘
@@ -237,7 +239,9 @@ If you use a shared Tunnel in all machines:
 │Server A │ │Server B │ │Server C │ │Server D │
 │         │ │         │ │         │ │         │
 │Jellyfin │ │Navidrome│ │qBittor. │ │OpenWebUI│
-└─────────┘ ─────────┘ └─────────┘ └─────────┘
+└─────────┘ └─────────┘ └─────────┘ └─────────┘
+
+```
 
 Problem: Cloudflare will route jellyfin.domain.com to ANY server (A, B, C or D randomly), but Jellyfin is only on Server A! 💥
 Result:
@@ -251,6 +255,8 @@ Works but it's not recommended.
 In this case, THE CORRECT WAY to use replicas with a single Tunnel would be a Tunnel sharing ONLY when the SAME service is replicated on MULTIPLE machines:
 
 Scenario 1: You want failover from Open WebUI
+
+```text
 ┌─────────────────────┐
 │ Tunnel "openwebui"  │
 └─────────────────────┘
@@ -263,9 +269,13 @@ Scenario 1: You want failover from Open WebUI
 │OpenWebUI│ │OpenWebUI│
 └─────────┘ └─────────┘
 
+```
+
 Works, because Open WebUI is in the two servers.
 
 Scenario 2: Jellyfin is only on 1 server
+
+```text
 ┌──────────────────┐
 │ Tunnel "media"   │
 └──────────────────┘
@@ -276,6 +286,9 @@ Scenario 2: Jellyfin is only on 1 server
     │         │
     │Jellyfin │ ← Only here
     └─────────┘
+
+```
+
 ✅ Correct! Dedicated Tunnel because Jellyfin is only in 1 place.
 
 ---
@@ -284,7 +297,7 @@ Summary:
 
 - 1 tunnel per machine: Different services in different machines
 - 1 tunnel in multiple machines: Same service replicated (failover)
-1 tunnel in all machines: Never (unless all services are in all machines)
+- 1 tunnel in all machines: Never (unless all services are in all machines)
 
 ## Remember kindly
 
