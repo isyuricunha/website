@@ -13,6 +13,7 @@ techstack:
 selected: true
 status: beta
 ---
+
 ## Sobre o WhatsApp AI Bot
 
 WhatsApp AI Bot é um bot de WhatsApp com IA pronto para produção integrado com a API Mistral Agents, apresentando comportamento de assistente configurável via instruções Mistral Agent, monitoramento avançado e segurança de nível empresarial.
@@ -197,19 +198,19 @@ AI: 📊 Status do Bot
 
 ### Variáveis de Ambiente
 
-| Variável | Descrição | Padrão | Obrigatório |
-| ---------- | ------------- | ------- | -------- |
-| `MISTRAL_API_KEY` | Chave da API Mistral | None | Sim |
-| `MISTRAL_AGENT_ID` | ID do Agente Mistral (formato: ag_...) | None | Sim |
-| `BOT_NAME` | Nome de exibição do bot | `WhatsApp AI Bot` | Não |
-| `MAX_CONTEXT_MESSAGES` | Número máximo de mensagens para manter no contexto | `20` | Não |
-| `MESSAGE_SPLIT_LENGTH` | Comprimento máximo antes de dividir mensagens | `1500` | Não |
-| `WHATSAPP_SESSION_PATH` | Onde o cache de sessão/autenticação do WhatsApp Web será armazenado | `./session` | Não |
-| `PUPPETEER_HEADLESS` | Executar navegador no modo headless | `true` | Não |
-| `PUPPETEER_EXECUTABLE_PATH` | Caminho personalizado do executável Chromium | None | Não |
-| `ADMIN_WHATSAPP_NUMBER` | Número de WhatsApp do admin (formato: `5511999999999@c.us`) | None | Sim |
-| `NODE_ENV` | Modo de ambiente | `development` | Não |
-| `DEBUG` | Ativar logging de debug | `false` | Não |
+| Variável                    | Descrição                                                           | Padrão            | Obrigatório |
+| --------------------------- | ------------------------------------------------------------------- | ----------------- | ----------- |
+| `MISTRAL_API_KEY`           | Chave da API Mistral                                                | None              | Sim         |
+| `MISTRAL_AGENT_ID`          | ID do Agente Mistral (formato: ag\_...)                             | None              | Sim         |
+| `BOT_NAME`                  | Nome de exibição do bot                                             | `WhatsApp AI Bot` | Não         |
+| `MAX_CONTEXT_MESSAGES`      | Número máximo de mensagens para manter no contexto                  | `20`              | Não         |
+| `MESSAGE_SPLIT_LENGTH`      | Comprimento máximo antes de dividir mensagens                       | `1500`            | Não         |
+| `WHATSAPP_SESSION_PATH`     | Onde o cache de sessão/autenticação do WhatsApp Web será armazenado | `./session`       | Não         |
+| `PUPPETEER_HEADLESS`        | Executar navegador no modo headless                                 | `true`            | Não         |
+| `PUPPETEER_EXECUTABLE_PATH` | Caminho personalizado do executável Chromium                        | None              | Não         |
+| `ADMIN_WHATSAPP_NUMBER`     | Número de WhatsApp do admin (formato: `5511999999999@c.us`)         | None              | Sim         |
+| `NODE_ENV`                  | Modo de ambiente                                                    | `development`     | Não         |
+| `DEBUG`                     | Ativar logging de debug                                             | `false`           | Não         |
 
 ### Estrutura Completa de Configuração
 

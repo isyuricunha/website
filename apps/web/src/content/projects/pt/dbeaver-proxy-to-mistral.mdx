@@ -12,11 +12,12 @@ techstack:
 selected: true
 status: active
 ---
+
 ## Sobre o DBeaver Proxy to Mistral
 
 DBeaver Proxy to Mistral é um pequeno proxy FastAPI que faz o **DBeaver CE** (e outros clientes compatíveis com OpenAI) funcionar com a **API Mistral**.
 
-O assistente de IA do DBeaver fala uma API *semelhante à OpenAI*, mas espera alguns campos JSON muito específicos e tipos de eventos SSE. Este proxy:
+O assistente de IA do DBeaver fala uma API _semelhante à OpenAI_, mas espera alguns campos JSON muito específicos e tipos de eventos SSE. Este proxy:
 
 - Expõe endpoints **compatíveis com OpenAI** (`/responses`, `/models`, legado `/chat/completions`)
 - Traduz `POST /responses` (formato de API Responses OpenAI usado pelo DBeaver) para **Mistral** `POST /chat/completions`

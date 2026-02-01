@@ -513,7 +513,9 @@ export const communicationRouter = createTRPCRouter({
         }
 
         if (targetAudience?.userRoles?.length) {
-          const roles = targetAudience.userRoles.filter((role) => role === 'user' || role === 'admin')
+          const roles = targetAudience.userRoles.filter(
+            (role) => role === 'user' || role === 'admin'
+          )
           if (roles.length > 0) {
             const roleUsers = await ctx.db.query.users.findMany({
               where: inArray(users.role, roles),
@@ -597,7 +599,10 @@ export const communicationRouter = createTRPCRouter({
               errorMessage: args.errorMessage ?? null
             })
             .where(
-              and(eq(emailCampaignRecipients.campaignId, campaign.id), eq(emailCampaignRecipients.email, args.email))
+              and(
+                eq(emailCampaignRecipients.campaignId, campaign.id),
+                eq(emailCampaignRecipients.email, args.email)
+              )
             )
         }
 

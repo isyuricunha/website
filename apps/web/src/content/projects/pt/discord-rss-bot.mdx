@@ -13,6 +13,7 @@ techstack:
 selected: true
 status: completed
 ---
+
 ## Sobre o Discord RSS Bot
 
 Discord RSS Bot é um bot automatizado que monitora feeds RSS e envia atualizações para canais do Discord via webhook. Totalmente configurável com feeds e categorias personalizadas, possui tratamento de timeout para evitar travamentos em feeds RSS lentos.
@@ -145,36 +146,36 @@ net start DiscordRSSBot
 
 #### Variáveis Obrigatórias
 
-| Variável | Descrição |
-|----------|-------------|
+| Variável              | Descrição                                  |
+| --------------------- | ------------------------------------------ |
 | `DISCORD_WEBHOOK_URL` | **Obrigatório**: URL do webhook do Discord |
 
 #### Caminhos (recomendados)
 
-| Variável | Padrão (imagem Docker) | Descrição |
-|----------|-------------------------|-------------|
-| `RSS_BOT_DATA` | `/app/data` | Diretório onde o banco de dados SQLite é armazenado |
-| `RSS_BOT_LOGS` | `/app/logs` | Diretório onde os arquivos de log são escritos |
-| `RSS_BOT_PID` | `/tmp/discord-news-rss-bot.pid` | Caminho do arquivo PID (evite `/var/run` em containers não-root) |
+| Variável       | Padrão (imagem Docker)          | Descrição                                                        |
+| -------------- | ------------------------------- | ---------------------------------------------------------------- |
+| `RSS_BOT_DATA` | `/app/data`                     | Diretório onde o banco de dados SQLite é armazenado              |
+| `RSS_BOT_LOGS` | `/app/logs`                     | Diretório onde os arquivos de log são escritos                   |
+| `RSS_BOT_PID`  | `/tmp/discord-news-rss-bot.pid` | Caminho do arquivo PID (evite `/var/run` em containers não-root) |
 
 #### Substituições avançadas (opcionais)
 
-| Variável | Descrição |
-|----------|-------------|
-| `DB_FILE` | Caminho explícito do arquivo SQLite DB (substitui `RSS_BOT_DATA`) |
-| `LOG_FILE` | Caminho explícito do arquivo de log (substitui `RSS_BOT_LOGS`) |
-| `DATA_DIR` | Alias legado para `RSS_BOT_DATA` |
+| Variável   | Descrição                                                         |
+| ---------- | ----------------------------------------------------------------- |
+| `DB_FILE`  | Caminho explícito do arquivo SQLite DB (substitui `RSS_BOT_DATA`) |
+| `LOG_FILE` | Caminho explícito do arquivo de log (substitui `RSS_BOT_LOGS`)    |
+| `DATA_DIR` | Alias legado para `RSS_BOT_DATA`                                  |
 
 #### Configurações Opcionais do Bot
 
-| Variável | Padrão | Descrição |
-|----------|---------|-------------|
-| `CHECK_INTERVAL` | 300 | Intervalo entre verificações (segundos) |
-| `POST_DELAY` | 3 | Atraso entre posts (segundos) |
-| `COOLDOWN_DELAY` | 60 | Atraso após limite de taxa (segundos) |
-| `MAX_POST_LENGTH` | 1900 | Comprimento máximo da mensagem |
-| `MAX_CONTENT_LENGTH` | 800 | Comprimento máximo do conteúdo |
-| `FEED_TIMEOUT` | 30 | Timeout de requisição de feed RSS (segundos) |
+| Variável             | Padrão | Descrição                                    |
+| -------------------- | ------ | -------------------------------------------- |
+| `CHECK_INTERVAL`     | 300    | Intervalo entre verificações (segundos)      |
+| `POST_DELAY`         | 3      | Atraso entre posts (segundos)                |
+| `COOLDOWN_DELAY`     | 60     | Atraso após limite de taxa (segundos)        |
+| `MAX_POST_LENGTH`    | 1900   | Comprimento máximo da mensagem               |
+| `MAX_CONTENT_LENGTH` | 800    | Comprimento máximo do conteúdo               |
+| `FEED_TIMEOUT`       | 30     | Timeout de requisição de feed RSS (segundos) |
 
 ### Configuração de Feeds RSS
 
@@ -272,10 +273,10 @@ python bot_service.py
 Você pode personalizar feeds de duas maneiras:
 
 1. **Variáveis de Ambiente (Recomendado)**
-Use o formato `RSS_FEEDS_CATEGORY_NAME` como descrito na seção de Configuração acima.
+   Use o formato `RSS_FEEDS_CATEGORY_NAME` como descrito na seção de Configuração acima.
 
 2. **Modificação de Código**
-Edite a função `parse_feeds_from_env()` em `bot_service.py` para modificar feeds padrão.
+   Edite a função `parse_feeds_from_env()` em `bot_service.py` para modificar feeds padrão.
 
 ### Stack Tecnológica
 

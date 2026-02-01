@@ -77,8 +77,12 @@ async function performHealthCheck(type: string, ctx: { db: any; headers: Headers
 
       case 'api': {
         const healthUrls = get_api_health_urls(ctx.headers)
-        const attempts: Array<{ url: string; status: number | null; ok: boolean; durationMs: number }> =
-          []
+        const attempts: Array<{
+          url: string
+          status: number | null
+          ok: boolean
+          durationMs: number
+        }> = []
 
         const timeout_ms_total = 5000
         let res: Response | null = null

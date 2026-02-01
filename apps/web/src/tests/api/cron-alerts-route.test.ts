@@ -219,10 +219,7 @@ describe('/api/cron/alerts', () => {
       }
     ])
 
-    db.query.apiUsage.findMany.mockResolvedValue([
-      { statusCode: 200 },
-      { statusCode: 500 }
-    ])
+    db.query.apiUsage.findMany.mockResolvedValue([{ statusCode: 200 }, { statusCode: 500 }])
 
     db.query.users.findMany.mockResolvedValue([{ id: 'admin-1' }, { id: 'admin-2' }])
 
@@ -283,10 +280,7 @@ describe('/api/cron/alerts', () => {
       }
     ])
 
-    db.query.apiUsage.findMany.mockResolvedValue([
-      { statusCode: 200 },
-      { statusCode: 500 }
-    ])
+    db.query.apiUsage.findMany.mockResolvedValue([{ statusCode: 200 }, { statusCode: 500 }])
 
     db.query.users.findMany.mockResolvedValue([{ id: 'admin-1' }, { id: 'admin-2' }])
 

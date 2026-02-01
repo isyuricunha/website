@@ -21,7 +21,7 @@ The core idea is:
 - You expose a **third hostname** (the one you share with users) that points to the Worker.
 - The Worker performs health checks and proxies each request to the best target.
 
-{/*more*/}
+{/* more */}
 
 ## Architecture (recommended)
 
@@ -34,7 +34,7 @@ You’ll usually want 3 hostnames:
 - `service-replica.yourdomain.com`:
   - Cloudflare Tunnel pointing to your **replica** server
 
-This solves the common Cloudflare Tunnel limitation: you can’t bind the same hostname to multiple tunnels, but you *can* bind different hostnames and put a Worker in front.
+This solves the common Cloudflare Tunnel limitation: you can’t bind the same hostname to multiple tunnels, but you _can_ bind different hostnames and put a Worker in front.
 
 ## How the Worker works
 
@@ -185,12 +185,10 @@ export default {
 ## Setup (step-by-step)
 
 1. **Create two tunnel hostnames**
-
    - Primary tunnel hostname: `service-primary.yourdomain.com`
    - Replica tunnel hostname: `service-replica.yourdomain.com`
 
 2. **Create a Worker**
-
    - Cloudflare Dashboard
    - Workers & Pages
    - Create Worker

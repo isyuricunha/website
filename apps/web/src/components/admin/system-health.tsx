@@ -391,10 +391,11 @@ export const SystemHealthDashboard = () => {
                   <div className='flex-1'>
                     <div className='mb-2 flex items-center gap-2'>
                       <span
-                        className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${error.level === 'error'
+                        className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                          error.level === 'error'
                             ? 'bg-destructive/10 text-destructive'
                             : 'bg-primary/10 text-primary'
-                          }`}
+                        }`}
                       >
                         {error.level.toUpperCase()}
                       </span>

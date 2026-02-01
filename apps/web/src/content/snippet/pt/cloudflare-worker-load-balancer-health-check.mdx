@@ -21,7 +21,7 @@ A ideia é simples:
 - Você cria um **terceiro hostname** (o que você divulga) apontando pro Worker.
 - O Worker verifica se os backends estão saudáveis e faz proxy para o melhor destino.
 
-{/*more*/}
+{/* more */}
 
 ## Arquitetura (recomendada)
 
@@ -34,7 +34,7 @@ O padrão mais prático é usar 3 hostnames:
 - `service-replica.seudominio.com`:
   - Cloudflare Tunnel apontando pro **servidor réplica**
 
-Isso resolve aquele “problema” comum do Tunnel: você não consegue ter o *mesmo* hostname em múltiplos túneis, mas consegue ter hostnames diferentes e colocar o Worker na frente.
+Isso resolve aquele “problema” comum do Tunnel: você não consegue ter o _mesmo_ hostname em múltiplos túneis, mas consegue ter hostnames diferentes e colocar o Worker na frente.
 
 ## Como o Worker funciona
 
@@ -185,12 +185,10 @@ export default {
 ## Como configurar (passo a passo)
 
 1. **Crie dois hostnames de túnel**
-
    - Túnel do principal: `service-primary.seudominio.com`
    - Túnel da réplica: `service-replica.seudominio.com`
 
 2. **Crie o Worker**
-
    - Cloudflare Dashboard
    - Workers & Pages
    - Create Worker

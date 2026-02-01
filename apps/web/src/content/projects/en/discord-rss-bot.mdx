@@ -13,6 +13,7 @@ techstack:
 selected: true
 status: completed
 ---
+
 ## About Discord RSS Bot
 
 Discord RSS Bot is an automated bot that monitors RSS feeds and posts updates to Discord channels via webhook. Fully configurable with custom feeds and categories, it features timeout handling to prevent hanging on slow RSS feeds.
@@ -145,36 +146,36 @@ net start DiscordRSSBot
 
 #### Required Variables
 
-| Variable | Description |
-|----------|-------------|
+| Variable              | Description                       |
+| --------------------- | --------------------------------- |
 | `DISCORD_WEBHOOK_URL` | **Required**: Discord webhook URL |
 
 #### Paths (recommended)
 
-| Variable | Default (Docker image) | Description |
-|----------|-------------------------|-------------|
-| `RSS_BOT_DATA` | `/app/data` | Directory where the SQLite database is stored |
-| `RSS_BOT_LOGS` | `/app/logs` | Directory where log files are written |
-| `RSS_BOT_PID` | `/tmp/discord-news-rss-bot.pid` | PID file path (avoid `/var/run` in non-root containers) |
+| Variable       | Default (Docker image)          | Description                                             |
+| -------------- | ------------------------------- | ------------------------------------------------------- |
+| `RSS_BOT_DATA` | `/app/data`                     | Directory where the SQLite database is stored           |
+| `RSS_BOT_LOGS` | `/app/logs`                     | Directory where log files are written                   |
+| `RSS_BOT_PID`  | `/tmp/discord-news-rss-bot.pid` | PID file path (avoid `/var/run` in non-root containers) |
 
 #### Advanced overrides (optional)
 
-| Variable | Description |
-|----------|-------------|
-| `DB_FILE` | Explicit SQLite DB file path (overrides `RSS_BOT_DATA`) |
-| `LOG_FILE` | Explicit log file path (overrides `RSS_BOT_LOGS`) |
-| `DATA_DIR` | Legacy alias for `RSS_BOT_DATA` |
+| Variable   | Description                                             |
+| ---------- | ------------------------------------------------------- |
+| `DB_FILE`  | Explicit SQLite DB file path (overrides `RSS_BOT_DATA`) |
+| `LOG_FILE` | Explicit log file path (overrides `RSS_BOT_LOGS`)       |
+| `DATA_DIR` | Legacy alias for `RSS_BOT_DATA`                         |
 
 #### Optional Bot Settings
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `CHECK_INTERVAL` | 300 | Interval between checks (seconds) |
-| `POST_DELAY` | 3 | Delay between posts (seconds) |
-| `COOLDOWN_DELAY` | 60 | Delay after rate limit (seconds) |
-| `MAX_POST_LENGTH` | 1900 | Maximum message length |
-| `MAX_CONTENT_LENGTH` | 800 | Maximum content length |
-| `FEED_TIMEOUT` | 30 | RSS feed request timeout (seconds) |
+| Variable             | Default | Description                        |
+| -------------------- | ------- | ---------------------------------- |
+| `CHECK_INTERVAL`     | 300     | Interval between checks (seconds)  |
+| `POST_DELAY`         | 3       | Delay between posts (seconds)      |
+| `COOLDOWN_DELAY`     | 60      | Delay after rate limit (seconds)   |
+| `MAX_POST_LENGTH`    | 1900    | Maximum message length             |
+| `MAX_CONTENT_LENGTH` | 800     | Maximum content length             |
+| `FEED_TIMEOUT`       | 30      | RSS feed request timeout (seconds) |
 
 ### RSS Feeds Configuration
 
@@ -272,10 +273,10 @@ python bot_service.py
 You can customize feeds in two ways:
 
 1. **Environment Variables (Recommended)**
-Use the `RSS_FEEDS_CATEGORY_NAME` format as described in the Configuration section above.
+   Use the `RSS_FEEDS_CATEGORY_NAME` format as described in the Configuration section above.
 
 2. **Code Modification**
-Edit the `parse_feeds_from_env()` function in `bot_service.py` to modify default feeds.
+   Edit the `parse_feeds_from_env()` function in `bot_service.py` to modify default feeds.
 
 ### Technology Stack
 

@@ -899,7 +899,9 @@ export const monitoringRouter = createTRPCRouter({
       const totalErrors = recentErrors.length
       const resolvedErrors = recentErrors.filter((e) => e.resolved).length
       const serverErrors = recentErrors.filter((e) => e.errorType === 'server').length
-      const criticalErrors = recentErrors.filter((e) => e.errorType === 'server' && !e.resolved).length
+      const criticalErrors = recentErrors.filter(
+        (e) => e.errorType === 'server' && !e.resolved
+      ).length
 
       return {
         performance: {

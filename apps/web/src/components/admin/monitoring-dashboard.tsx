@@ -47,9 +47,12 @@ export default function MonitoringDashboard() {
 
   // Performance metrics query
   const { data: performanceMetrics, isLoading: metricsLoading } =
-    api.monitoring.getPerformanceMetrics.useQuery({
-      timeRange
-    }, { refetchInterval: 30_000 })
+    api.monitoring.getPerformanceMetrics.useQuery(
+      {
+        timeRange
+      },
+      { refetchInterval: 30_000 }
+    )
 
   // API usage query
   const { data: apiUsage, isLoading: apiLoading } = api.monitoring.getApiUsage.useQuery(
@@ -61,21 +64,30 @@ export default function MonitoringDashboard() {
 
   // Error tracking query
   const { data: errorTracking, isLoading: errorsLoading } =
-    api.monitoring.getErrorTracking.useQuery({
-      timeRange
-    }, { refetchInterval: 30_000 })
+    api.monitoring.getErrorTracking.useQuery(
+      {
+        timeRange
+      },
+      { refetchInterval: 30_000 }
+    )
 
   // Resource usage query
   const { data: resourceUsage, isLoading: resourceLoading } =
-    api.monitoring.getResourceUsage.useQuery({
-      timeRange
-    }, { refetchInterval: 30_000 })
+    api.monitoring.getResourceUsage.useQuery(
+      {
+        timeRange
+      },
+      { refetchInterval: 30_000 }
+    )
 
   // Analytics events query
   const { data: analyticsEvents, isLoading: analyticsLoading } =
-    api.monitoring.getAnalyticsEvents.useQuery({
-      timeRange
-    }, { refetchInterval: 30_000 })
+    api.monitoring.getAnalyticsEvents.useQuery(
+      {
+        timeRange
+      },
+      { refetchInterval: 30_000 }
+    )
 
   // Mutations
   const recordAnalyticsEventMutation = api.monitoring.recordAnalyticsEvent.useMutation({

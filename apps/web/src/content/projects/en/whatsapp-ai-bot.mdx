@@ -13,6 +13,7 @@ techstack:
 selected: true
 status: beta
 ---
+
 ## About WhatsApp AI Bot
 
 WhatsApp AI Bot is a production-ready WhatsApp AI bot integrated with the Mistral Agents API, featuring configurable assistant behavior via Mistral Agent instructions, advanced monitoring, and enterprise-grade security.
@@ -197,19 +198,19 @@ AI: 📊 Bot Status
 
 ### Environment Variables
 
-| Variable | Description | Default | Required |
-| ---------- | ------------- | ------- | -------- |
-| `MISTRAL_API_KEY` | Mistral API key | None | Yes |
-| `MISTRAL_AGENT_ID` | Mistral Agent ID (format: ag_...) | None | Yes |
-| `BOT_NAME` | Display name for the bot | `WhatsApp AI Bot` | No |
-| `MAX_CONTEXT_MESSAGES` | Maximum messages to keep in context | `20` | No |
-| `MESSAGE_SPLIT_LENGTH` | Maximum length before splitting messages | `1500` | No |
-| `WHATSAPP_SESSION_PATH` | Where WhatsApp Web session/auth cache is stored | `./session` | No |
-| `PUPPETEER_HEADLESS` | Run browser in headless mode | `true` | No |
-| `PUPPETEER_EXECUTABLE_PATH` | Custom Chromium executable path | None | No |
-| `ADMIN_WHATSAPP_NUMBER` | Admin WhatsApp number (format: `5511999999999@c.us`) | None | Yes |
-| `NODE_ENV` | Environment mode | `development` | No |
-| `DEBUG` | Enable debug logging | `false` | No |
+| Variable                    | Description                                          | Default           | Required |
+| --------------------------- | ---------------------------------------------------- | ----------------- | -------- |
+| `MISTRAL_API_KEY`           | Mistral API key                                      | None              | Yes      |
+| `MISTRAL_AGENT_ID`          | Mistral Agent ID (format: ag\_...)                   | None              | Yes      |
+| `BOT_NAME`                  | Display name for the bot                             | `WhatsApp AI Bot` | No       |
+| `MAX_CONTEXT_MESSAGES`      | Maximum messages to keep in context                  | `20`              | No       |
+| `MESSAGE_SPLIT_LENGTH`      | Maximum length before splitting messages             | `1500`            | No       |
+| `WHATSAPP_SESSION_PATH`     | Where WhatsApp Web session/auth cache is stored      | `./session`       | No       |
+| `PUPPETEER_HEADLESS`        | Run browser in headless mode                         | `true`            | No       |
+| `PUPPETEER_EXECUTABLE_PATH` | Custom Chromium executable path                      | None              | No       |
+| `ADMIN_WHATSAPP_NUMBER`     | Admin WhatsApp number (format: `5511999999999@c.us`) | None              | Yes      |
+| `NODE_ENV`                  | Environment mode                                     | `development`     | No       |
+| `DEBUG`                     | Enable debug logging                                 | `false`           | No       |
 
 ### Complete Configuration Structure
 

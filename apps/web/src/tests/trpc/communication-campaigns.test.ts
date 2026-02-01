@@ -1,8 +1,15 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-const resendSendMock = vi.fn<
-  (args: { from: string; to: string[]; subject: string; html?: string; text?: string }) => Promise<unknown>
->()
+const resendSendMock =
+  vi.fn<
+    (args: {
+      from: string
+      to: string[]
+      subject: string
+      html?: string
+      text?: string
+    }) => Promise<unknown>
+  >()
 
 vi.mock('resend', () => {
   return {
