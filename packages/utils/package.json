@@ -34,7 +34,7 @@
   "devDependencies": {
     "@isyuricunha/eslint-config": "workspace:*",
     "@isyuricunha/tsconfig": "workspace:*",
-    "@types/node": "^25.0.10"
+    "@types/node": "^25.1.0"
   },
   "publishConfig": {
     "access": "public"
