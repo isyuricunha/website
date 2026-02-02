@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from 'motion/react'
 import { useEffect, useState } from 'react'
 
 import Link from '../link'
+import SqlJokesBackground from './sql-jokes-background'
 
 const TEXTS = [
   {
@@ -62,7 +63,8 @@ const Hero = () => {
   if (!textItem) return null
 
   return (
-    <div className='my-6 space-y-3 sm:my-8 sm:space-y-4 lg:my-10'>
+    <div className='relative my-6 space-y-3 sm:my-8 sm:space-y-4 lg:my-10'>
+      <SqlJokesBackground />
       <div className='flex flex-col gap-6 lg:flex-row lg:justify-between lg:gap-8'>
         <div className='flex flex-1 flex-col gap-4 text-center lg:text-left'>
           <h1 className='max-w-2xl text-base leading-relaxed font-medium sm:text-lg lg:text-xl xl:text-2xl'>
