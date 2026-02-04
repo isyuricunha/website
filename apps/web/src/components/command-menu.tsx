@@ -17,7 +17,7 @@ import {
   Kbd,
   Logo
 } from '@isyuricunha/ui'
-import { CodeIcon, CommandIcon, LinkIcon, LogInIcon, LogOutIcon } from 'lucide-react'
+import { CodeIcon, CommandIcon, LinkIcon, LogInIcon, LogOutIcon, SettingsIcon } from 'lucide-react'
 import { Fragment, useCallback, useEffect, useState } from 'react'
 
 import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
@@ -71,30 +71,38 @@ const CommandMenu = () => {
       actions: [
         ...(session
           ? [
-              {
-                title: t('common.sign-out'),
-                icon: <LogOutIcon className='mr-3 size-4' />,
-                onSelect: async () => {
-                  await signOut({
-                    fetchOptions: {
-                      onSuccess: () => {
-                        router.refresh()
-                      }
+            {
+              title: t('command-menu.actions.settings'),
+              icon: <SettingsIcon className='mr-3 size-4' />,
+              onSelect: () => {
+                setIsOpen(false)
+                router.push('/settings')
+              }
+            },
+            {
+              title: t('common.sign-out'),
+              icon: <LogOutIcon className='mr-3 size-4' />,
+              onSelect: async () => {
+                await signOut({
+                  fetchOptions: {
+                    onSuccess: () => {
+                      router.refresh()
                     }
-                  })
-                }
+                  }
+                })
               }
-            ]
+            }
+          ]
           : [
-              {
-                title: t('common.sign-in'),
-                icon: <LogInIcon className='mr-3 size-4' />,
-                onSelect: () => {
-                  setIsOpen(false)
-                  setIsSignInOpen(true)
-                }
+            {
+              title: t('common.sign-in'),
+              icon: <LogInIcon className='mr-3 size-4' />,
+              onSelect: () => {
+                setIsOpen(false)
+                setIsSignInOpen(true)
               }
-            ])
+            }
+          ])
       ]
     },
     {

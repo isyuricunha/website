@@ -161,6 +161,7 @@
   "command-menu": {
     "actions": {
       "copy-link": "Copiar link",
+      "settings": "Configurações",
       "source-code": "Código-fonte"
     },
     "groups": {
@@ -175,6 +176,10 @@
       "open-command": "Abrir Comando",
       "open-link": "Abrir Link"
     }
+  },
+  "settings": {
+    "title": "Configurações",
+    "description": "Gerencie sua conta e perfil"
   },
   "common": {
     "cancel": "Cancelar",

@@ -4,12 +4,17 @@ import { EmailVerification, PasswordReset } from '@isyuricunha/emails'
 import { env } from '@isyuricunha/env'
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
+import { APIError } from 'better-auth/api'
 import { admin, anonymous, username } from 'better-auth/plugins'
 import { headers } from 'next/headers'
 import { Resend } from 'resend'
 
 import { logger } from '@/lib/logger'
 import { get_request_locale } from '@/lib/request-locale'
+
+const is_anonymous_email = (email: string) => {
+  return /^temp-[^@]+@yuricunha\.com$/i.test(email)
+}
 
 const resend = new Resend(env.RESEND_API_KEY)
 
@@ -18,6 +23,47 @@ export const auth = betterAuth({
     provider: 'pg',
     usePlural: true
   }),
+  databaseHooks: {
+    user: {
+      update: {
+        before: async (data, ctx) => {
+          const auth_session = ctx?.context.session
+          if (!auth_session) return { data }
+
+          const current_user = await db.query.users.findFirst({
+            where: (users, { eq }) => eq(users.id, auth_session.user.id),
+            columns: {
+              id: true,
+              image: true,
+              email: true,
+              isAnonymous: true
+            }
+          })
+
+          if (!current_user) return { data }
+
+          if (current_user.isAnonymous) {
+            if (data.image !== undefined && data.image !== current_user.image) {
+              throw new APIError('FORBIDDEN', {
+                message: 'Anonymous users cannot change avatar until they update their email.'
+              })
+            }
+
+            if (typeof data.email === 'string' && !is_anonymous_email(data.email)) {
+              return {
+                data: {
+                  ...data,
+                  isAnonymous: false
+                }
+              }
+            }
+          }
+
+          return { data }
+        }
+      }
+    }
+  },
   plugins: [
     username({ minUsernameLength: 3 }),
     admin(),
