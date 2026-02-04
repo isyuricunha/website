@@ -14,6 +14,7 @@ import { useSession } from '@/lib/auth-client'
 
 import Link from '../link'
 
+import AccountDropdown from './account-dropdown'
 import LocaleSwitcher from './locale-switcher'
 import MobileNav from './mobile-nav'
 import Navbar from './navbar'
@@ -89,6 +90,7 @@ const Header = () => {
         <NotificationsDropdown />
         <ThemeSwitcher />
         <LocaleSwitcher />
+        <AccountDropdown />
         <CommandMenu />
         <MobileNav />
       </div>

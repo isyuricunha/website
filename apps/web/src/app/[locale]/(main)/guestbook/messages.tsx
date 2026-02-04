@@ -145,7 +145,7 @@ const Message = (props: MessageProps) => {
         id={`message-${id}`}
       >
         {/* Subtle gradient overlay on hover */}
-        <div className='from-primary/5 to-secondary/5 absolute inset-0 rounded-xl bg-gradient-to-br via-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100' />
+        <div className='from-primary/5 to-secondary/5 absolute inset-0 rounded-xl bg-linear-to-br via-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100' />
 
         <div className='relative z-10'>
           <div className='mb-4 flex items-start gap-4'>
@@ -179,7 +179,7 @@ const Message = (props: MessageProps) => {
             </div>
           </div>
 
-          <div className='prose prose-sm text-muted-foreground max-w-none leading-relaxed break-words'>
+          <div className='prose prose-sm text-muted-foreground max-w-none leading-relaxed wrap-break-word'>
             {body}
           </div>
         </div>

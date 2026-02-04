@@ -17,7 +17,15 @@ import {
   Kbd,
   Logo
 } from '@isyuricunha/ui'
-import { CodeIcon, CommandIcon, LinkIcon, LogInIcon, LogOutIcon, SettingsIcon } from 'lucide-react'
+import {
+  CodeIcon,
+  CommandIcon,
+  LinkIcon,
+  LogInIcon,
+  LogOutIcon,
+  SettingsIcon,
+  UserIcon
+} from 'lucide-react'
 import { Fragment, useCallback, useEffect, useState } from 'react'
 
 import { useCopyToClipboard } from '@/hooks/use-copy-to-clipboard'
@@ -71,6 +79,15 @@ const CommandMenu = () => {
       actions: [
         ...(session
           ? [
+            {
+              title: t('account.actions.my-profile'),
+              icon: <UserIcon className='mr-3 size-4' />,
+              onSelect: () => {
+                const handle = session.user.username ?? session.user.id
+                setIsOpen(false)
+                router.push(`/u/${handle}`)
+              }
+            },
             {
               title: t('command-menu.actions.settings'),
               icon: <SettingsIcon className='mr-3 size-4' />,

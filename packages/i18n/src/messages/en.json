@@ -177,6 +177,11 @@
       "open-link": "Open Link"
     }
   },
+  "account": {
+    "actions": {
+      "my-profile": "My profile"
+    }
+  },
   "settings": {
     "title": "Settings",
     "description": "Manage your account and profile",
