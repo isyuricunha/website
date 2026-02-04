@@ -179,7 +179,48 @@
   },
   "settings": {
     "title": "Configurações",
-    "description": "Gerencie sua conta e perfil"
+    "description": "Gerencie sua conta e perfil",
+    "sections": {
+      "profile": "Perfil",
+      "profile-description": "Atualize como seu perfil aparece para outras pessoas",
+      "security": "Segurança",
+      "security-description": "Atualize seu email e senha"
+    },
+    "fields": {
+      "avatar-url": "URL do avatar",
+      "username": "Nome de usuário",
+      "public-profile": "Perfil público",
+      "public": "Público",
+      "private": "Privado",
+      "name-color": "Cor do nome",
+      "name-effect": "Efeito do nome",
+      "bio": "Bio",
+      "bio-placeholder": "Conte um pouco sobre você",
+      "new-email": "Novo email",
+      "current-password": "Senha atual",
+      "new-password": "Nova senha",
+      "confirm-new-password": "Confirmar nova senha"
+    },
+    "effects": {
+      "none": "Nenhum",
+      "rays": "Raios",
+      "glow": "Brilho"
+    },
+    "actions": {
+      "save-profile": "Salvar perfil",
+      "change-email": "Alterar email",
+      "change-password": "Alterar senha"
+    },
+    "messages": {
+      "profile-updated": "Perfil atualizado",
+      "email-required": "Email é obrigatório",
+      "email-verification-sent": "Email de verificação enviado",
+      "current-password-required": "Senha atual é obrigatória",
+      "password-too-short": "A senha deve ter pelo menos 8 caracteres",
+      "passwords-do-not-match": "As senhas não conferem",
+      "password-updated": "Senha atualizada",
+      "anonymous-avatar-restriction": "Usuários anônimos não podem mudar o avatar até atualizarem o email."
+    }
   },
   "common": {
     "cancel": "Cancelar",

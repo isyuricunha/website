@@ -179,7 +179,48 @@
   },
   "settings": {
     "title": "Settings",
-    "description": "Manage your account and profile"
+    "description": "Manage your account and profile",
+    "sections": {
+      "profile": "Profile",
+      "profile-description": "Update how your profile appears to others",
+      "security": "Security",
+      "security-description": "Update your email and password"
+    },
+    "fields": {
+      "avatar-url": "Avatar URL",
+      "username": "Username",
+      "public-profile": "Public profile",
+      "public": "Public",
+      "private": "Private",
+      "name-color": "Name color",
+      "name-effect": "Name effect",
+      "bio": "Bio",
+      "bio-placeholder": "Tell a bit about yourself",
+      "new-email": "New email",
+      "current-password": "Current password",
+      "new-password": "New password",
+      "confirm-new-password": "Confirm new password"
+    },
+    "effects": {
+      "none": "None",
+      "rays": "Rays",
+      "glow": "Glow"
+    },
+    "actions": {
+      "save-profile": "Save profile",
+      "change-email": "Change email",
+      "change-password": "Change password"
+    },
+    "messages": {
+      "profile-updated": "Profile updated",
+      "email-required": "Email is required",
+      "email-verification-sent": "Verification email sent",
+      "current-password-required": "Current password is required",
+      "password-too-short": "Password must be at least 8 characters",
+      "passwords-do-not-match": "Passwords do not match",
+      "password-updated": "Password updated",
+      "anonymous-avatar-restriction": "Anonymous users cannot change avatar until they update their email."
+    }
   },
   "common": {
     "cancel": "Cancel",
