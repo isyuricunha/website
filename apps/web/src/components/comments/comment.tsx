@@ -14,6 +14,9 @@ import { useClickOutside } from '@/hooks/use-click-outside'
 import { useCommentParams } from '@/hooks/use-comment-params'
 import { useFormattedDate } from '@/hooks/use-formatted-date'
 
+import Link from '@/components/link'
+import UserName from '@/components/user/user-name'
+
 import Markdown from '../mdx/markdown'
 
 import CommentActions from './comment-actions'
@@ -43,7 +46,7 @@ const Comment = (props: CommentProps) => {
     createdAt,
     isDeleted,
     parentId,
-    user: { image, name, role },
+    user: { image, name, role, username, id: userId, nameColor, nameEffect },
     replies
   } = comment
 
@@ -98,7 +101,13 @@ const Comment = (props: CommentProps) => {
           <div className='flex-1'>
             <div className='ml-0.5 flex h-8 items-center justify-between'>
               <div className='flex items-center gap-2 text-sm'>
-                <div className='font-semibold'>{name}</div>
+                <Link
+                  href={`/u/${username ?? userId}`}
+                  className='hover:underline'
+                  aria-label={name}
+                >
+                  <UserName name={name} color={nameColor} effect={nameEffect} />
+                </Link>
                 <div className='text-muted-foreground'>
                   {formattedDate ? (
                     <Tooltip>

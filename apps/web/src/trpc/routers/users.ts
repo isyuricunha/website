@@ -162,7 +162,7 @@ export const usersRouter = createTRPCRouter({
         const post_url = getLocalizedPath({ slug: `/blog/${comment.postId}`, locale })
         return {
           ...comment,
-          type: comment.parentId ? 'reply' : 'comment',
+          type: comment.parentId ? ('reply' as const) : ('comment' as const),
           post: {
             slug: comment.postId,
             title: comment.post?.title ?? comment.postId,

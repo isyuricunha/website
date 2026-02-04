@@ -15,6 +15,9 @@ import { useFormattedDate } from '@/hooks/use-formatted-date'
 import { useSession } from '@/lib/auth-client'
 import { api } from '@/trpc/react'
 
+import Link from '@/components/link'
+import UserName from '@/components/user/user-name'
+
 import DeleteButton from './delete-button'
 import MessagesLoader from './messages-loader'
 
@@ -70,20 +73,20 @@ const Messages = () => {
     <div className='flex flex-col gap-6' data-testid='guestbook-messages-list'>
       {isSuccess
         ? data.pages.map((page, pageIndex) =>
-            page.messages.map((message, messageIndex) => (
-              <motion.div
-                key={message.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{
-                  delay: (pageIndex * page.messages.length + messageIndex) * 0.05,
-                  duration: 0.4
-                }}
-              >
-                <Message message={message} />
-              </motion.div>
-            ))
-          )
+          page.messages.map((message, messageIndex) => (
+            <motion.div
+              key={message.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                delay: (pageIndex * page.messages.length + messageIndex) * 0.05,
+                duration: 0.4
+              }}
+            >
+              <Message message={message} />
+            </motion.div>
+          ))
+        )
         : null}
       {noMessages ? (
         <motion.div
@@ -120,7 +123,7 @@ const Message = (props: MessageProps) => {
   const {
     message: {
       id,
-      user: { name, image, id: userId },
+      user: { name, image, id: userId, username, nameColor, nameEffect },
       updatedAt,
       body
     }
@@ -160,7 +163,11 @@ const Message = (props: MessageProps) => {
             <div className='min-w-0 flex-1'>
               <div className='flex items-center justify-between'>
                 <div className='flex flex-col gap-1'>
-                  <h4 className='text-foreground truncate font-semibold'>{name}</h4>
+                  <Link href={`/u/${username ?? userId}`} className='hover:underline'>
+                    <h4 className='text-foreground truncate'>
+                      <UserName name={name} color={nameColor} effect={nameEffect} />
+                    </h4>
+                  </Link>
                   <UpdatedDate date={updatedAt} />
                 </div>
                 {isAuthor && (

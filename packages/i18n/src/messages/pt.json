@@ -222,6 +222,26 @@
       "anonymous-avatar-restriction": "Usuários anônimos não podem mudar o avatar até atualizarem o email."
     }
   },
+  "profile": {
+    "title": "{name}",
+    "description": "Perfil público",
+    "not-found": {
+      "title": "Perfil não encontrado",
+      "description": "Este perfil não existe ou está privado"
+    },
+    "comments": {
+      "title": "Comentários",
+      "description": "Atividade recente",
+      "empty": "Ainda sem comentários",
+      "error": "Falha ao carregar comentários. Tente novamente.",
+      "end": "Você viu tudo",
+      "load-more": "Carregar mais",
+      "type": {
+        "comment": "Comentário",
+        "reply": "Resposta"
+      }
+    }
+  },
   "common": {
     "cancel": "Cancelar",
     "delete": "Excluir",

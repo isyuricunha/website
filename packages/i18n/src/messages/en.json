@@ -222,6 +222,26 @@
       "anonymous-avatar-restriction": "Anonymous users cannot change avatar until they update their email."
     }
   },
+  "profile": {
+    "title": "{name}",
+    "description": "Public profile",
+    "not-found": {
+      "title": "Profile not found",
+      "description": "This profile does not exist or is private"
+    },
+    "comments": {
+      "title": "Comments",
+      "description": "Recent activity",
+      "empty": "No comments yet",
+      "error": "Failed to load comments. Please try again.",
+      "end": "You're all caught up",
+      "load-more": "Load more",
+      "type": {
+        "comment": "Comment",
+        "reply": "Reply"
+      }
+    }
+  },
   "common": {
     "cancel": "Cancel",
     "delete": "Delete",
