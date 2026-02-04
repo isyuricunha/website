@@ -6,6 +6,49 @@ vi.mock('@/lib/auth', () => {
   }
 })
 
+describe('usersRouter avatar upload', () => {
+  it('createAvatarUploadUrl rejects anonymous users', async () => {
+    const { usersRouter } = await import('@/trpc/routers/users')
+
+    const caller = usersRouter.createCaller({
+      db: {} as unknown,
+      headers: new Headers({ 'x-locale': 'en' }),
+      session: {
+        user: {
+          id: 'u1',
+          role: 'user',
+          isAnonymous: true
+        }
+      }
+    } as unknown as Parameters<typeof usersRouter.createCaller>[0])
+
+    await expect(
+      caller.createAvatarUploadUrl({ contentType: 'image/png', size: 100 })
+    ).rejects.toMatchObject({ code: 'FORBIDDEN' })
+  })
+
+  it('createAvatarUploadUrl returns upload and public urls for normal users', async () => {
+    const { usersRouter } = await import('@/trpc/routers/users')
+
+    const caller = usersRouter.createCaller({
+      db: {} as unknown,
+      headers: new Headers({ 'x-locale': 'en' }),
+      session: {
+        user: {
+          id: 'u1',
+          role: 'user',
+          isAnonymous: false
+        }
+      }
+    } as unknown as Parameters<typeof usersRouter.createCaller>[0])
+
+    const result = await caller.createAvatarUploadUrl({ contentType: 'image/png', size: 100 })
+    expect(result.uploadUrl).toContain('https://signed.example.com')
+    expect(result.publicUrl).toContain('https://assets.example.com/avatars/u1/')
+    expect(result.requiredHeaders['Content-Type']).toBe('image/png')
+  })
+})
+
 vi.mock('@isyuricunha/env', () => {
   return {
     flags: {
@@ -29,8 +72,25 @@ vi.mock('@isyuricunha/env', () => {
       DATABASE_URL: 'postgres://user:pass@localhost:5432/test',
       UPSTASH_REDIS_REST_URL: 'https://example.com',
       UPSTASH_REDIS_REST_TOKEN: 'token',
-      RESEND_API_KEY: 'token'
+      RESEND_API_KEY: 'token',
+      R2_BUCKET_NAME: 'bucket',
+      R2_PUBLIC_BASE_URL: 'https://assets.example.com',
+      R2_ACCESS_KEY_ID: 'key',
+      R2_SECRET_ACCESS_KEY: 'secret',
+      R2_ENDPOINT: 'https://example.r2.cloudflarestorage.com'
     }
+  }
+})
+
+vi.mock('@/lib/r2', () => {
+  return {
+    get_r2_public_base_url: () => 'https://assets.example.com',
+    create_presigned_r2_put_url: vi.fn(async () => ({
+      url: 'https://signed.example.com/upload',
+      requiredHeaders: {
+        'Content-Type': 'image/png'
+      }
+    }))
   }
 })
 

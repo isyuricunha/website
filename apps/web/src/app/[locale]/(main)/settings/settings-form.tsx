@@ -20,6 +20,7 @@ import {
 import { useEffect, useMemo, useState } from 'react'
 
 import { changeEmail, changePassword, updateUser, useSession } from '@/lib/auth-client'
+import { api } from '@/trpc/react'
 import { getAvatarAbbreviation } from '@/utils/get-avatar-abbreviation'
 import { getDefaultImage } from '@/utils/get-default-image'
 
@@ -54,9 +55,13 @@ const SettingsForm = () => {
         confirmNewPassword: ''
     })
 
+    const [avatarFile, setAvatarFile] = useState<File | null>(null)
+
     const [isSavingProfile, setIsSavingProfile] = useState(false)
     const [isSavingEmail, setIsSavingEmail] = useState(false)
     const [isSavingPassword, setIsSavingPassword] = useState(false)
+
+    const createAvatarUploadUrlMutation = api.users.createAvatarUploadUrl.useMutation()
 
     useEffect(() => {
         if (!user) return
@@ -102,6 +107,58 @@ const SettingsForm = () => {
             toast.error(error instanceof Error ? error.message : t('common.unknown-error'))
         } finally {
             setIsSavingProfile(false)
+        }
+    }
+
+    const upload_avatar = async () => {
+        if (!user) return
+
+        if (!avatarFile) {
+            toast.error(t('settings.messages.avatar-file-required'))
+            return
+        }
+
+        if (!['image/png', 'image/jpeg', 'image/webp'].includes(avatarFile.type)) {
+            toast.error(t('settings.messages.avatar-invalid-type'))
+            return
+        }
+
+        if (avatarFile.size > 5 * 1024 * 1024) {
+            toast.error(t('settings.messages.avatar-too-large'))
+            return
+        }
+
+        try {
+            const result = await createAvatarUploadUrlMutation.mutateAsync({
+                contentType: avatarFile.type as 'image/png' | 'image/jpeg' | 'image/webp',
+                size: avatarFile.size
+            })
+
+            const upload_response = await fetch(result.uploadUrl, {
+                method: 'PUT',
+                headers: result.requiredHeaders,
+                body: avatarFile
+            })
+
+            if (!upload_response.ok) {
+                throw new Error(`Upload failed with status ${upload_response.status}`)
+            }
+
+            const { error } = await updateUser({
+                image: result.publicUrl
+            })
+
+            if (error) {
+                toast.error(error.message)
+                return
+            }
+
+            toast.success(t('settings.messages.avatar-updated'))
+            setAvatarFile(null)
+            setProfileForm((p) => ({ ...p, image: result.publicUrl }))
+            router.refresh()
+        } catch (error) {
+            toast.error(error instanceof Error ? error.message : t('common.unknown-error'))
         }
     }
 
@@ -196,6 +253,31 @@ const SettingsForm = () => {
                             onChange={(e) => setProfileForm((p) => ({ ...p, image: e.target.value }))}
                             placeholder='https://...'
                         />
+                        <div className='mt-3 flex flex-col gap-2 sm:flex-row sm:items-end'>
+                            <div className='flex-1'>
+                                <Label htmlFor='avatarFile'>{t('settings.fields.avatar-upload')}</Label>
+                                <Input
+                                    id='avatarFile'
+                                    type='file'
+                                    accept='image/png,image/jpeg,image/webp'
+                                    disabled={isAnonymous || createAvatarUploadUrlMutation.isPending}
+                                    onChange={(e) => setAvatarFile(e.target.files?.[0] ?? null)}
+                                />
+                            </div>
+                            <Button
+                                type='button'
+                                variant='secondary'
+                                disabled={
+                                    isAnonymous ||
+                                    createAvatarUploadUrlMutation.isPending ||
+                                    !avatarFile
+                                }
+                                isPending={createAvatarUploadUrlMutation.isPending}
+                                onClick={upload_avatar}
+                            >
+                                {t('settings.actions.upload-avatar')}
+                            </Button>
+                        </div>
                         {isAnonymous ? (
                             <p className='text-muted-foreground mt-1 text-xs'>
                                 {t('settings.messages.anonymous-avatar-restriction')}

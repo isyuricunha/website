@@ -8,10 +8,12 @@ import { env } from '@isyuricunha/env'
 import { AuditLogger, getIpFromHeaders, getUserAgentFromHeaders } from '@/lib/audit-logger'
 import { logger } from '@/lib/logger'
 import { get_request_locale } from '@/lib/request-locale'
+import { create_presigned_r2_put_url, get_r2_public_base_url } from '@/lib/r2'
 import { getLocalizedPath } from '@/utils/get-localized-path'
 import { getDefaultImage } from '@/utils/get-default-image'
 import { auth } from '@/lib/auth'
-import { adminProcedure, createTRPCRouter, publicProcedure } from '../trpc'
+import { adminProcedure, createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc'
+import { randomUUID } from 'node:crypto'
 
 const get_site_url = (headers: Headers) => {
   const configured_url = env.NEXT_PUBLIC_WEBSITE_URL
@@ -30,6 +32,71 @@ const get_site_url = (headers: Headers) => {
 }
 
 export const usersRouter = createTRPCRouter({
+  createAvatarUploadUrl: protectedProcedure
+    .input(
+      z.object({
+        contentType: z.enum(['image/png', 'image/jpeg', 'image/webp']),
+        size: z.number().int().positive().max(5 * 1024 * 1024)
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const is_anonymous = ctx.session.user.isAnonymous === true
+      if (is_anonymous) {
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message: 'Anonymous users cannot change avatar until they update their email.'
+        })
+      }
+
+      if (!env.R2_BUCKET_NAME) {
+        throw new TRPCError({
+          code: 'PRECONDITION_FAILED',
+          message: 'R2 is not configured'
+        })
+      }
+
+      const public_base_url = get_r2_public_base_url()
+      if (!public_base_url) {
+        throw new TRPCError({
+          code: 'PRECONDITION_FAILED',
+          message: 'R2_PUBLIC_BASE_URL is not configured'
+        })
+      }
+
+      const ext =
+        input.contentType === 'image/png'
+          ? 'png'
+          : input.contentType === 'image/webp'
+            ? 'webp'
+            : 'jpg'
+
+      const key = `avatars/${ctx.session.user.id}/${randomUUID()}.${ext}`
+
+      const presigned = await create_presigned_r2_put_url({
+        bucket: env.R2_BUCKET_NAME,
+        key,
+        contentType: input.contentType,
+        cacheControl: 'public, max-age=31536000, immutable',
+        expiresInSeconds: 60
+      })
+
+      if (!presigned) {
+        throw new TRPCError({
+          code: 'PRECONDITION_FAILED',
+          message: 'R2 is not configured'
+        })
+      }
+
+      const publicUrl = `${public_base_url}/${key}`
+
+      return {
+        key,
+        uploadUrl: presigned.url,
+        publicUrl,
+        requiredHeaders: presigned.requiredHeaders
+      }
+    }),
+
   getPublicProfile: publicProcedure
     .input(
       z.object({

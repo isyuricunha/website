@@ -188,6 +188,7 @@
     },
     "fields": {
       "avatar-url": "Avatar URL",
+      "avatar-upload": "Upload avatar",
       "username": "Username",
       "public-profile": "Public profile",
       "public": "Public",
@@ -208,11 +209,16 @@
     },
     "actions": {
       "save-profile": "Save profile",
+      "upload-avatar": "Upload",
       "change-email": "Change email",
       "change-password": "Change password"
     },
     "messages": {
       "profile-updated": "Profile updated",
+      "avatar-updated": "Avatar updated",
+      "avatar-file-required": "Select an image file to upload",
+      "avatar-invalid-type": "Only PNG, JPG, or WebP images are supported",
+      "avatar-too-large": "Image must be 5MB or smaller",
       "email-required": "Email is required",
       "email-verification-sent": "Verification email sent",
       "current-password-required": "Current password is required",
