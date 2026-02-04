@@ -106,6 +106,14 @@ export const env = createEnv({
     DATABASE_URL: z.string().url(),
     UPSTASH_REDIS_REST_URL: z.string().url(),
     UPSTASH_REDIS_REST_TOKEN: z.string().min(1),
+
+    R2_ACCOUNT_ID: z.string().min(1).optional(),
+    R2_ACCESS_KEY_ID: z.string().min(1).optional(),
+    R2_SECRET_ACCESS_KEY: z.string().min(1).optional(),
+    R2_BUCKET_NAME: z.string().min(1).optional(),
+    R2_ENDPOINT: z.string().url().optional(),
+    R2_PUBLIC_BASE_URL: z.string().url().optional(),
+
     REACT_SCAN_MONITOR_API_KEY: z.string().optional(),
     CRON_SECRET: z.string().min(16).optional()
   },
