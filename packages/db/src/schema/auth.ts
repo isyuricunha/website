@@ -1,4 +1,4 @@
-import { relations } from 'drizzle-orm'
+import { relations, sql } from 'drizzle-orm'
 import {
   boolean,
   foreignKey,
@@ -16,24 +16,36 @@ import { guestbook } from './guestbook'
 
 export const roleEnum = pgEnum('role', ['user', 'admin'])
 
-export const users = pgTable('users', {
-  id: text('id').primaryKey(),
-  username: text('username'),
-  name: text('name').notNull(),
-  email: text('email').notNull(),
-  emailVerified: boolean('email_verified').notNull(),
-  image: text('image'),
-  createdAt: timestamp('created_at').notNull(),
-  updatedAt: timestamp('updated_at').notNull(),
-  // Custom
-  isAnonymous: boolean('isAnonymous').default(false),
-  bio: text('bio'),
-  isPublic: boolean('is_public').default(true).notNull(),
-  role: roleEnum('role').default('user').notNull(),
-  banned: boolean('banned').default(false).notNull(),
-  banReason: text('ban_reason'),
-  banExpires: timestamp('ban_expires')
-})
+export const nameEffectEnum = pgEnum('name_effect', ['none', 'rays', 'glow'])
+
+export const users = pgTable(
+  'users',
+  {
+    id: text('id').primaryKey(),
+    username: text('username'),
+    name: text('name').notNull(),
+    email: text('email').notNull(),
+    emailVerified: boolean('email_verified').notNull(),
+    image: text('image'),
+    createdAt: timestamp('created_at').notNull(),
+    updatedAt: timestamp('updated_at').notNull(),
+    // Custom
+    isAnonymous: boolean('isAnonymous').default(false),
+    bio: text('bio'),
+    isPublic: boolean('is_public').default(true).notNull(),
+    nameColor: text('name_color'),
+    nameEffect: nameEffectEnum('name_effect').default('none').notNull(),
+    role: roleEnum('role').default('user').notNull(),
+    banned: boolean('banned').default(false).notNull(),
+    banReason: text('ban_reason'),
+    banExpires: timestamp('ban_expires')
+  },
+  (users) => [
+    uniqueIndex('users_username_unique').on(users.username),
+    index('users_is_public_idx').on(users.isPublic),
+    index('users_username_lower_idx').using('btree', sql`lower(${users.username})`)
+  ]
+)
 
 export const accounts = pgTable(
   'account',
