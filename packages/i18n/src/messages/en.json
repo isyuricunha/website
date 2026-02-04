@@ -179,7 +179,8 @@
   },
   "account": {
     "actions": {
-      "my-profile": "My profile"
+      "my-profile": "My profile",
+      "edit-profile": "Edit profile"
     }
   },
   "settings": {

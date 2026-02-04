@@ -15,7 +15,7 @@ import {
   DropdownMenuTrigger,
   Skeleton
 } from '@isyuricunha/ui'
-import { SettingsIcon, UserIcon } from 'lucide-react'
+import { PencilIcon, SettingsIcon, UserIcon } from 'lucide-react'
 
 import { signOut, useSession } from '@/lib/auth-client'
 import { useDialogsStore } from '@/store/dialogs'
@@ -70,6 +70,10 @@ const AccountDropdown = () => {
         <DropdownMenuItem className='gap-2' onClick={() => router.push(`/u/${handle}`)}>
           <UserIcon className='size-4' />
           {t('account.actions.my-profile')}
+        </DropdownMenuItem>
+        <DropdownMenuItem className='gap-2' onClick={() => router.push('/settings#profile')}>
+          <PencilIcon className='size-4' />
+          {t('account.actions.edit-profile')}
         </DropdownMenuItem>
         <DropdownMenuItem className='gap-2' onClick={() => router.push('/settings')}>
           <SettingsIcon className='size-4' />

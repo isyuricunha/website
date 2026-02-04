@@ -232,7 +232,7 @@ const SettingsForm = () => {
 
     return (
         <div className='space-y-10'>
-            <section className='space-y-4'>
+            <section id='profile' className='space-y-4'>
                 <div>
                     <h3 className='text-lg font-semibold'>{t('settings.sections.profile')}</h3>
                     <p className='text-muted-foreground text-sm'>{t('settings.sections.profile-description')}</p>
@@ -360,7 +360,7 @@ const SettingsForm = () => {
                 </div>
             </section>
 
-            <section className='space-y-4'>
+            <section id='security' className='space-y-4'>
                 <div>
                     <h3 className='text-lg font-semibold'>{t('settings.sections.security')}</h3>
                     <p className='text-muted-foreground text-sm'>{t('settings.sections.security-description')}</p>
