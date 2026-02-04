@@ -112,7 +112,10 @@ export const commentsRouter = createTRPCRouter({
               name: true,
               image: true,
               role: true,
-              id: true
+              id: true,
+              username: true,
+              nameColor: true,
+              nameEffect: true
             }
           },
           rates: {
@@ -139,7 +142,10 @@ export const commentsRouter = createTRPCRouter({
                 name: true,
                 image: true,
                 role: true,
-                id: true
+                id: true,
+                username: true,
+                nameColor: true,
+                nameEffect: true
               }
             },
             rates: {

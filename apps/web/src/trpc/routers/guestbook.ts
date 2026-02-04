@@ -38,7 +38,10 @@ export const guestbookRouter = createTRPCRouter({
             columns: {
               name: true,
               image: true,
-              id: true
+              id: true,
+              username: true,
+              nameColor: true,
+              nameEffect: true
             }
           }
         },

@@ -1,7 +1,7 @@
 import type { RouterOutputs } from '../react'
 
 import { TRPCError } from '@trpc/server'
-import { eq, users, sessions } from '@isyuricunha/db'
+import { and, comments, desc, eq, lt, users, sessions, sql } from '@isyuricunha/db'
 import { z } from 'zod'
 
 import { env } from '@isyuricunha/env'
@@ -9,6 +9,7 @@ import { AuditLogger, getIpFromHeaders, getUserAgentFromHeaders } from '@/lib/au
 import { logger } from '@/lib/logger'
 import { get_request_locale } from '@/lib/request-locale'
 import { getLocalizedPath } from '@/utils/get-localized-path'
+import { getDefaultImage } from '@/utils/get-default-image'
 import { auth } from '@/lib/auth'
 import { adminProcedure, createTRPCRouter, publicProcedure } from '../trpc'
 
@@ -29,6 +30,153 @@ const get_site_url = (headers: Headers) => {
 }
 
 export const usersRouter = createTRPCRouter({
+  getPublicProfile: publicProcedure
+    .input(
+      z.object({
+        handle: z.string().min(1)
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const handle_lower = input.handle.toLowerCase()
+
+      const user = await ctx.db.query.users.findFirst({
+        where: (users, { and, eq }) =>
+          and(
+            eq(users.isPublic, true),
+            eq(sql`lower(${users.username})`, handle_lower)
+          ),
+        columns: {
+          id: true,
+          username: true,
+          name: true,
+          image: true,
+          bio: true,
+          isPublic: true,
+          nameColor: true,
+          nameEffect: true,
+          role: true
+        }
+      })
+
+      if (user) {
+        return {
+          ...user,
+          image: user.image ?? getDefaultImage(user.id)
+        }
+      }
+
+      const user_by_id = await ctx.db.query.users.findFirst({
+        where: (users, { and, eq }) => and(eq(users.isPublic, true), eq(users.id, input.handle)),
+        columns: {
+          id: true,
+          username: true,
+          name: true,
+          image: true,
+          bio: true,
+          isPublic: true,
+          nameColor: true,
+          nameEffect: true,
+          role: true
+        }
+      })
+
+      if (!user_by_id) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'User not found'
+        })
+      }
+
+      return {
+        ...user_by_id,
+        image: user_by_id.image ?? getDefaultImage(user_by_id.id)
+      }
+    }),
+
+  getInfiniteUserComments: publicProcedure
+    .input(
+      z.object({
+        handle: z.string().min(1),
+        cursor: z.date().nullish(),
+        limit: z.number().min(1).max(50).default(10)
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const locale = get_request_locale(ctx.headers)
+
+      const profile = await ctx.db.query.users.findFirst({
+        where: (users, { and, eq }) =>
+          and(
+            eq(users.isPublic, true),
+            eq(sql`lower(${users.username})`, input.handle.toLowerCase())
+          ),
+        columns: {
+          id: true
+        }
+      })
+
+      const profile_id =
+        profile?.id ??
+        (
+          await ctx.db.query.users.findFirst({
+            where: (users, { and, eq }) => and(eq(users.isPublic, true), eq(users.id, input.handle)),
+            columns: {
+              id: true
+            }
+          })
+        )?.id
+
+      if (!profile_id) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'User not found'
+        })
+      }
+
+      const query = await ctx.db.query.comments.findMany({
+        where: and(
+          eq(comments.userId, profile_id),
+          eq(comments.isDeleted, false),
+          input.cursor ? lt(comments.createdAt, input.cursor) : undefined
+        ),
+        limit: input.limit,
+        orderBy: desc(comments.createdAt),
+        with: {
+          post: {
+            columns: {
+              slug: true,
+              title: true
+            }
+          }
+        },
+        columns: {
+          id: true,
+          body: true,
+          createdAt: true,
+          postId: true,
+          parentId: true
+        }
+      })
+
+      const result = query.map((comment) => {
+        const post_url = getLocalizedPath({ slug: `/blog/${comment.postId}`, locale })
+        return {
+          ...comment,
+          type: comment.parentId ? 'reply' : 'comment',
+          post: {
+            slug: comment.postId,
+            title: comment.post?.title ?? comment.postId,
+            url: post_url
+          }
+        }
+      })
+
+      return {
+        comments: result,
+        nextCursor: result.at(-1)?.createdAt ?? null
+      }
+    }),
+
   getUsers: adminProcedure.query(async ({ ctx }) => {
     const result = await ctx.db.query.users.findMany({
       columns: {
