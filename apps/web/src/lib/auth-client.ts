@@ -25,4 +25,8 @@ export const signUp: typeof authClient.signUp = authClient.signUp
 export const signOut: typeof authClient.signOut = authClient.signOut
 export const useSession: typeof authClient.useSession = authClient.useSession
 
+export const updateUser: typeof authClient.updateUser = authClient.updateUser
+export const changeEmail: typeof authClient.changeEmail = authClient.changeEmail
+export const changePassword: typeof authClient.changePassword = authClient.changePassword
+
 export type User = (typeof authClient.$Infer.Session)['user']

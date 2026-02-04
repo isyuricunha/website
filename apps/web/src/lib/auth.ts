@@ -1,6 +1,6 @@
 import { render } from '@react-email/components'
 import { db } from '@isyuricunha/db'
-import { PasswordReset } from '@isyuricunha/emails'
+import { EmailVerification, PasswordReset } from '@isyuricunha/emails'
 import { env } from '@isyuricunha/env'
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
@@ -57,6 +57,31 @@ export const auth = betterAuth({
       logger.info('Password reset completed', { userId: user.id })
     }
   },
+  emailVerification: {
+    sendVerificationEmail: async ({ user, url }, request) => {
+      const locale = request?.headers ? get_request_locale(request.headers) : 'en'
+      const subject = locale === 'pt' ? 'Verifique seu e-mail' : 'Verify your email'
+
+      void (async () => {
+        const html = await render(
+          EmailVerification({
+            name: user.name,
+            verifyUrl: url,
+            locale
+          })
+        )
+
+        await resend.emails.send({
+          from: 'yuricunha.com <noreply@yuricunha.com>',
+          to: user.email,
+          subject,
+          html
+        })
+      })().catch((error) => {
+        logger.error('Failed to send verification email', error)
+      })
+    }
+  },
   socialProviders: {
     google: {
       clientId: env.GOOGLE_CLIENT_ID,
@@ -68,8 +93,16 @@ export const auth = betterAuth({
     }
   },
   user: {
+    changeEmail: {
+      enabled: true
+    },
     additionalFields: {
-      role: { type: 'string', required: true, input: false, defaultValue: 'user' }
+      role: { type: 'string', required: true, input: false, defaultValue: 'user' },
+      isAnonymous: { type: 'boolean', required: false, input: false },
+      bio: { type: 'string', required: false, input: true },
+      isPublic: { type: 'boolean', required: false, input: true },
+      nameColor: { type: 'string', required: false, input: true },
+      nameEffect: { type: 'string', required: false, input: true, defaultValue: 'none' }
     }
   }
 })
