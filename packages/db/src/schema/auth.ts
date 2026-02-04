@@ -29,7 +29,10 @@ export const users = pgTable('users', {
   isAnonymous: boolean('isAnonymous').default(false),
   bio: text('bio'),
   isPublic: boolean('is_public').default(true).notNull(),
-  role: roleEnum('role').default('user').notNull()
+  role: roleEnum('role').default('user').notNull(),
+  banned: boolean('banned').default(false).notNull(),
+  banReason: text('ban_reason'),
+  banExpires: timestamp('ban_expires')
 })
 
 export const accounts = pgTable(
