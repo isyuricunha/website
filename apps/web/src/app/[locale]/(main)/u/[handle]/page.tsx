@@ -2,6 +2,7 @@ import type { Metadata, ResolvingMetadata } from 'next'
 import type { ProfilePage, WithContext } from 'schema-dts'
 
 import { getTranslations, setRequestLocale } from '@isyuricunha/i18n/server'
+import Image from 'next/image'
 import { headers } from 'next/headers'
 import { notFound } from 'next/navigation'
 
@@ -45,6 +46,10 @@ export const generateMetadata = async (
         const caller = await get_caller()
         const profile = await caller.users.getPublicProfile({ handle })
 
+        const avatarUrl = profile.image.startsWith('http')
+            ? profile.image
+            : `${SITE_URL}${profile.image}`
+
         const title = t('profile.title', {
             name: profile.name
         })
@@ -60,12 +65,19 @@ export const generateMetadata = async (
                 url: fullUrl,
                 type: 'profile',
                 title,
-                description
+                description,
+                images: [
+                    {
+                        url: avatarUrl,
+                        alt: profile.name
+                    }
+                ]
             },
             twitter: {
                 ...previousTwitter,
                 title,
-                description
+                description,
+                images: [avatarUrl]
             }
         }
     } catch {
@@ -134,16 +146,25 @@ const Page = async (props: PageProps) => {
                 <PageTitle title={title} description={description} />
                 <div className='mx-auto max-w-3xl space-y-6'>
                     <div className='flex items-start justify-between gap-6'>
-                        <div className='min-w-0'>
-                            <div className='text-2xl font-bold'>
-                                <UserName
-                                    name={profile.name}
-                                    color={profile.nameColor}
-                                    effect={profile.nameEffect}
-                                />
-                            </div>
-                            <div className='text-muted-foreground mt-1 text-sm'>
-                                @{profile.username ?? profile.id}
+                        <div className='flex min-w-0 items-start gap-6'>
+                            <Image
+                                src={profile.image}
+                                alt={profile.name}
+                                width={80}
+                                height={80}
+                                className='size-20 shrink-0 rounded-full'
+                            />
+                            <div className='min-w-0'>
+                                <div className='text-2xl font-bold'>
+                                    <UserName
+                                        name={profile.name}
+                                        color={profile.nameColor}
+                                        effect={profile.nameEffect}
+                                    />
+                                </div>
+                                <div className='text-muted-foreground mt-1 text-sm'>
+                                    @{profile.username ?? profile.id}
+                                </div>
                             </div>
                         </div>
                     </div>
