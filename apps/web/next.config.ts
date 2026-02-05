@@ -1,6 +1,6 @@
 import type { NextConfig } from 'next'
 
-import '@isyuricunha/env'
+import { env } from '@isyuricunha/env'
 
 import { withContentCollections } from '@content-collections/next'
 import bundleAnalyzer from '@next/bundle-analyzer'
@@ -28,6 +28,26 @@ const config: NextConfig = {
   images: {
     qualities: [25, 50, 75, 85, 100],
     remotePatterns: [
+      ...(() => {
+        if (!env.R2_PUBLIC_BASE_URL) return []
+
+        try {
+          const url = new URL(env.R2_PUBLIC_BASE_URL)
+          const protocol =
+            url.protocol === 'http:' ? 'http' : url.protocol === 'https:' ? 'https' : null
+
+          if (!protocol) return []
+
+          return [
+            {
+              protocol,
+              hostname: url.hostname
+            } as const
+          ]
+        } catch {
+          return []
+        }
+      })(),
       {
         protocol: 'https',
         hostname: 'avatars.githubusercontent.com'

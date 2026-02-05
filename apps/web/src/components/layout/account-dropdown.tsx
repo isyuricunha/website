@@ -18,6 +18,7 @@ import {
 import { PencilIcon, SettingsIcon, UserIcon } from 'lucide-react'
 
 import { signOut, useSession } from '@/lib/auth-client'
+import UserName from '@/components/user/user-name'
 import { useDialogsStore } from '@/store/dialogs'
 import { getAvatarAbbreviation } from '@/utils/get-avatar-abbreviation'
 import { getDefaultImage } from '@/utils/get-default-image'
@@ -45,24 +46,34 @@ const AccountDropdown = () => {
     )
   }
 
-  const { id, image, name, email, username } = session.user
+  const { id, image, name, email, username, nameColor, nameEffect } = session.user
   const defaultImage = getDefaultImage(id)
   const handle = username ?? id
+  const displayName = name ?? email ?? 'Account'
+  const resolvedNameEffect =
+    nameEffect === 'none' || nameEffect === 'rays' || nameEffect === 'glow' ? nameEffect : null
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button className='size-9 rounded-full p-0' variant='ghost' aria-label={name ?? 'Account'}>
+        <Button className='size-9 rounded-full p-0' variant='ghost' aria-label={displayName}>
           <Avatar className='size-9'>
             <AvatarImage className='size-9' src={image ?? defaultImage} />
-            <AvatarFallback>{getAvatarAbbreviation(name)}</AvatarFallback>
+            <AvatarFallback>{getAvatarAbbreviation(displayName)}</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className='w-56' align='end'>
         <DropdownMenuLabel>
           <div className='flex flex-col gap-1'>
-            <p className='text-sm'>{name}</p>
+            <p className='text-sm'>
+              <UserName
+                name={displayName}
+                color={nameColor}
+                effect={resolvedNameEffect}
+                className='font-normal'
+              />
+            </p>
             {email ? <p className='text-muted-foreground text-xs'>{email}</p> : null}
           </div>
         </DropdownMenuLabel>
