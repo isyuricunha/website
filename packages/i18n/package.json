@@ -22,7 +22,7 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "next-intl": "^4.8.1"
+    "next-intl": "^4.8.2"
   },
   "peerDependencies": {
     "next": "^15"
@@ -30,7 +30,7 @@
   "devDependencies": {
     "@isyuricunha/eslint-config": "workspace:*",
     "@isyuricunha/tsconfig": "workspace:*",
-    "@types/react": "19.2.10",
+    "@types/react": "19.2.13",
     "next": "16.1.6"
   },
   "lint-staged": {
