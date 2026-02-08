@@ -33,9 +33,9 @@
   "devDependencies": {
     "@isyuricunha/eslint-config": "workspace:*",
     "@isyuricunha/tsconfig": "workspace:*",
-    "@types/node": "^25.1.0",
+    "@types/node": "^25.2.2",
     "@types/pg": "^8.16.0",
-    "drizzle-kit": "0.31.6",
+    "drizzle-kit": "0.31.8",
     "pg": "^8.18.0"
   },
   "lint-staged": {
