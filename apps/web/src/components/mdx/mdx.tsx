@@ -37,6 +37,11 @@ const components = {
   Image: (props: React.ComponentProps<typeof BlurImage>) => {
     const { alt, ...rest } = props
 
+    const src = (rest as { src?: unknown }).src
+    if (typeof src !== 'string' || src.trim().length === 0) {
+      return null
+    }
+
     return (
       <>
         <ImageZoom>

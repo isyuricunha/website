@@ -43,12 +43,15 @@ function OptimizedImage({
     onError?.()
   }, [onError])
 
-  const imageProps = getOptimizedImageProps(
-    hasError && fallbackSrc ? fallbackSrc : src,
-    width,
-    height,
-    priority
-  )
+  const safeSrc = src.trim().length > 0 ? src : undefined
+  const safeFallbackSrc = fallbackSrc?.trim().length ? fallbackSrc : undefined
+  const effectiveSrc = hasError && safeFallbackSrc ? safeFallbackSrc : safeSrc ?? safeFallbackSrc
+
+  if (!effectiveSrc) {
+    return null
+  }
+
+  const imageProps = getOptimizedImageProps(effectiveSrc, width, height, priority)
 
   return (
     <div className={className} style={{ position: 'relative' }}>
