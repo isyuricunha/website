@@ -1,6 +1,7 @@
 import { TRPCError } from '@trpc/server'
 import { eq, posts, sql, sum } from '@isyuricunha/db'
 import { ratelimit, redis, redisKeys } from '@isyuricunha/kv'
+import { randomUUID } from 'crypto'
 import { z } from 'zod'
 
 import { getIp } from '@/utils/get-ip'
@@ -61,17 +62,12 @@ export const viewsRouter = createTRPCRouter({
         .from(posts)
         .where(eq(posts.slug, input.slug))
 
-      if (!post[0]) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'Post not found'
-        })
-      }
+      const views = post[0]?.views ?? 0
 
-      await redis.set(redisKeys.postViews(input.slug), post[0].views)
+      await redis.set(redisKeys.postViews(input.slug), views)
 
       return {
-        views: post[0].views
+        views
       }
     }),
   increment: publicProcedure
@@ -83,22 +79,24 @@ export const viewsRouter = createTRPCRouter({
 
       if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
 
-      const views = await ctx.db
-        .update(posts)
-        .set({
-          views: sql<number>`${posts.views} + 1`
+      const upserted = await ctx.db
+        .insert(posts)
+        .values({
+          id: randomUUID(),
+          slug: input.slug,
+          views: 1
         })
-        .where(eq(posts.slug, input.slug))
-        .returning()
+        .onConflictDoUpdate({
+          target: posts.slug,
+          set: {
+            views: sql<number>`${posts.views} + 1`
+          }
+        })
+        .returning({ views: posts.views })
 
-      const nextViews = views[0]?.views
-      if (typeof nextViews !== 'number') {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'Post not found'
-        })
+      const nextViews = upserted[0]?.views
+      if (typeof nextViews === 'number') {
+        await redis.set(redisKeys.postViews(input.slug), nextViews)
       }
-
-      await redis.set(redisKeys.postViews(input.slug), nextViews)
     })
 })

@@ -57,10 +57,12 @@ vi.mock('@isyuricunha/kv', () => {
 type DbMock = {
   select: ReturnType<typeof vi.fn>
   update: ReturnType<typeof vi.fn>
+  insert: ReturnType<typeof vi.fn>
   __mocks: {
     selectCount: ReturnType<typeof vi.fn>
     selectViews: ReturnType<typeof vi.fn>
     updateReturning: ReturnType<typeof vi.fn>
+    insertReturning: ReturnType<typeof vi.fn>
   }
 }
 
@@ -102,13 +104,31 @@ const createDbMock = (): DbMock => {
     }
   })
 
+  const insertReturning = vi.fn(async () => [{ views: 11 }])
+
+  const insert = vi.fn(() => {
+    return {
+      values: vi.fn(() => {
+        return {
+          onConflictDoUpdate: vi.fn(() => {
+            return {
+              returning: insertReturning
+            }
+          })
+        }
+      })
+    }
+  })
+
   return {
     select,
     update,
+    insert,
     __mocks: {
       selectCount,
       selectViews,
-      updateReturning
+      updateReturning,
+      insertReturning
     }
   }
 }
@@ -156,7 +176,7 @@ describe('viewsRouter', () => {
     const { viewsRouter } = await import('@/trpc/routers/views')
 
     const db = createDbMock()
-    db.__mocks.updateReturning.mockResolvedValueOnce([])
+    db.__mocks.insertReturning.mockResolvedValueOnce([{ views: 1 }])
 
     const headers = new Headers()
     headers.set('x-forwarded-for', '203.0.113.10')
@@ -166,18 +186,16 @@ describe('viewsRouter', () => {
       headers
     } as unknown as Parameters<typeof viewsRouter.createCaller>[0])
 
-    await expect(caller.increment({ slug: 'missing-post' })).rejects.toMatchObject({
-      code: 'NOT_FOUND'
-    })
+    await expect(caller.increment({ slug: 'missing-post' })).resolves.toBeUndefined()
 
-    expect(redisSetMock).not.toHaveBeenCalled()
+    expect(redisSetMock).toHaveBeenCalledWith('post:views:missing-post', 1)
   })
 
   it('increment writes numeric nextViews to redis on success', async () => {
     const { viewsRouter } = await import('@/trpc/routers/views')
 
     const db = createDbMock()
-    db.__mocks.updateReturning.mockResolvedValueOnce([{ views: 42 }])
+    db.__mocks.insertReturning.mockResolvedValueOnce([{ views: 42 }])
 
     const headers = new Headers()
     headers.set('x-forwarded-for', '203.0.113.10')
