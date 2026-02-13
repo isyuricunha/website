@@ -23,6 +23,7 @@ type UpdatedItem = {
 const RecentlyUpdated = () => {
   const t = useTranslations()
   const locale = useLocale()
+  const resolvedLocale = locale || 'en'
 
   const recentlyUpdated = useMemo(() => {
     const items: UpdatedItem[] = []
@@ -30,7 +31,7 @@ const RecentlyUpdated = () => {
 
     // Add blog posts filtered by current locale
     allPosts
-      .filter((post) => post.locale === locale)
+      .filter((post) => post.locale === resolvedLocale)
       .forEach((post) => {
         const id = `post-${post.slug}`
         if (!seenIds.has(id)) {
@@ -49,7 +50,7 @@ const RecentlyUpdated = () => {
 
     // Add projects filtered by current locale (using a fallback date if no modified time)
     allProjects
-      .filter((project) => project.locale === locale)
+      .filter((project) => project.locale === resolvedLocale)
       .forEach((project) => {
         const id = `project-${project.slug}`
         if (!seenIds.has(id)) {
@@ -70,17 +71,17 @@ const RecentlyUpdated = () => {
     return items
       .toSorted((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
       .slice(0, 3)
-  }, [locale])
+  }, [resolvedLocale])
 
   const dateFormatter = useMemo(
     () =>
-      new Intl.DateTimeFormat(locale, {
+      new Intl.DateTimeFormat(resolvedLocale, {
         month: 'short',
         day: 'numeric',
         year: 'numeric',
         timeZone: 'UTC'
       }),
-    [locale]
+    [resolvedLocale]
   )
 
   const formatDate = (dateString: string) => {

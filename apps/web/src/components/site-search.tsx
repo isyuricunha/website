@@ -31,6 +31,14 @@ const SiteSearch = () => {
   const t = useTranslations()
   const router = useRouter()
 
+  const placeholder = t.has('site-search.placeholder')
+    ? t('site-search.placeholder')
+    : 'Search the site...'
+  const recentSearchesLabel = t.has('site-search.recent-searches')
+    ? t('site-search.recent-searches')
+    : 'Recent searches'
+  const noResultsLabel = t.has('site-search.no-results') ? t('site-search.no-results') : 'No results for'
+
   // Combine all searchable content
   const searchableContent = useMemo(() => {
     const results: SearchResult[] = []
@@ -64,32 +72,32 @@ const SiteSearch = () => {
     const staticPages = [
       {
         id: 'about',
-        title: t('layout.about'),
-        description: t('about.description'),
+        title: t.has('layout.about') ? t('layout.about') : 'About',
+        description: t.has('about.description') ? t('about.description') : '',
         href: '/about',
         type: 'page' as const,
         icon: <User className='h-4 w-4' />
       },
       {
         id: 'now',
-        title: t('layout.now'),
-        description: t('now.description'),
+        title: t.has('layout.now') ? t('layout.now') : 'Now',
+        description: t.has('now.description') ? t('now.description') : '',
         href: '/now',
         type: 'page' as const,
         icon: <Calendar className='h-4 w-4' />
       },
       {
         id: 'uses',
-        title: t('layout.uses'),
-        description: t('uses.description'),
+        title: t.has('layout.uses') ? t('layout.uses') : 'Uses',
+        description: t.has('uses.description') ? t('uses.description') : '',
         href: '/uses',
         type: 'page' as const,
         icon: <Code className='h-4 w-4' />
       },
       {
         id: 'spotify',
-        title: t('layout.spotify'),
-        description: t('spotify.description'),
+        title: t.has('layout.spotify') ? t('layout.spotify') : 'Spotify',
+        description: t.has('spotify.description') ? t('spotify.description') : '',
         href: '/spotify',
         type: 'page' as const,
         icon: <Music className='h-4 w-4' />
@@ -105,13 +113,26 @@ const SiteSearch = () => {
 
   // Load recent searches from localStorage
   useEffect(() => {
+    let timeoutId: ReturnType<typeof globalThis.setTimeout> | undefined
+
     try {
       const saved = localStorage.getItem(RECENT_SEARCHES_KEY)
       if (saved) {
-        setRecentSearches(JSON.parse(saved))
+        const parsed = JSON.parse(saved) as unknown
+        timeoutId = globalThis.setTimeout(() => {
+          if (Array.isArray(parsed) && parsed.every((x) => typeof x === 'string')) {
+            setRecentSearches(parsed)
+          }
+        }, 0)
       }
     } catch (error) {
       console.error('Error loading recent searches:', error)
+    }
+
+    return () => {
+      if (timeoutId !== undefined) {
+        globalThis.clearTimeout(timeoutId)
+      }
     }
   }, [])
 
@@ -226,7 +247,7 @@ const SiteSearch = () => {
         <Search className='text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform' />
         <Input
           type='text'
-          placeholder={t('site-search.placeholder', { default: 'Search the site...' })}
+          placeholder={placeholder}
           value={query}
           onChange={(e) => {
             setQuery(e.target.value)
@@ -255,16 +276,15 @@ const SiteSearch = () => {
                 {showRecentSearches && (
                   <>
                     <div className='text-muted-foreground border-b px-3 py-2 text-xs font-medium'>
-                      {t('site-search.recent-searches', { default: 'Recent searches' })}
+                      {recentSearchesLabel}
                     </div>
                     {recentSearches.map((searchTerm, index) => (
                       <button
                         type='button'
                         key={`recent-${searchTerm}-${index}`}
                         onClick={() => handleRecentSearchClick(searchTerm)}
-                        className={`group w-full rounded-lg p-3 text-left transition-colors ${
-                          selectedIndex === index ? 'bg-accent' : 'hover:bg-muted/50'
-                        }`}
+                        className={`group w-full rounded-lg p-3 text-left transition-colors ${selectedIndex === index ? 'bg-accent' : 'hover:bg-muted/50'
+                          }`}
                       >
                         <div className='flex items-center gap-3'>
                           <Search className='text-muted-foreground h-4 w-4' />
@@ -281,9 +301,8 @@ const SiteSearch = () => {
                     type='button'
                     key={`result-${result.href}`}
                     onClick={() => handleResultClick(result.href, query)}
-                    className={`group w-full rounded-lg p-3 text-left transition-colors ${
-                      selectedIndex === index ? 'bg-accent' : 'hover:bg-muted/50'
-                    }`}
+                    className={`group w-full rounded-lg p-3 text-left transition-colors ${selectedIndex === index ? 'bg-accent' : 'hover:bg-muted/50'
+                      }`}
                   >
                     <div className='flex items-start gap-3'>
                       <div className='text-muted-foreground group-hover:text-foreground mt-0.5 flex-shrink-0'>
@@ -332,7 +351,7 @@ const SiteSearch = () => {
             <CardContent className='p-4 text-center'>
               <Search className='text-muted-foreground mx-auto mb-2 h-8 w-8' />
               <p className='text-muted-foreground text-sm'>
-                {t('site-search.no-results', { default: 'No results for' })} "{query}"
+                {noResultsLabel} "{query}"
               </p>
             </CardContent>
           </Card>

@@ -16,6 +16,7 @@ import {
   Skeleton
 } from '@isyuricunha/ui'
 import { PencilIcon, SettingsIcon, UserIcon } from 'lucide-react'
+import { useEffect, useState } from 'react'
 
 import { signOut, useSession } from '@/lib/auth-client'
 import UserName from '@/components/user/user-name'
@@ -29,7 +30,13 @@ const AccountDropdown = () => {
   const router = useRouter()
   const { setIsSignInOpen } = useDialogsStore()
 
-  if (isPending) {
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => {
+    const id = globalThis.requestAnimationFrame(() => setMounted(true))
+    return () => globalThis.cancelAnimationFrame(id)
+  }, [])
+
+  if (!mounted || isPending) {
     return <Skeleton className='size-9 rounded-full' />
   }
 
