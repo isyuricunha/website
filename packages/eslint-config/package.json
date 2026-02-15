@@ -51,7 +51,7 @@
     "eslint-plugin-sonarjs": "^3.0.6",
     "eslint-plugin-testing-library": "^7.15.4",
     "eslint-plugin-turbo": "^2.8.3",
-    "eslint-plugin-unicorn": "^62.0.0",
+    "eslint-plugin-unicorn": "^63.0.0",
     "eslint-plugin-unused-imports": "^4.3.0",
     "globals": "^17.3.0",
     "local-pkg": "^1.1.2"
