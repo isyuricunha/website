@@ -11,7 +11,6 @@ import { GeistMono } from 'geist/font/mono'
 import { GeistSans } from 'geist/font/sans'
 import Script from 'next/script'
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
-import { Monitoring } from 'react-scan/monitoring/next'
 
 import Analytics from '@/components/analytics'
 import Hello from '@/components/hello'
@@ -179,14 +178,6 @@ const Layout = async (props: LayoutProps) => {
         </Script>
       </head>
       <body className='relative flex min-h-screen flex-col'>
-        {env.NODE_ENV === 'development' && react_scan_api_key ? (
-          <Monitoring
-            apiKey={react_scan_api_key}
-            url='https://monitoring.react-scan.com/api/v1/ingest'
-            commit={env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA}
-            branch={env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_REF}
-          />
-        ) : null}
         <NuqsAdapter>
           <Providers>
             <NextIntlClientProvider messages={messages} locale={locale}>

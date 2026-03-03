@@ -11,7 +11,7 @@ import {
   SiDocker,
   SiFirebase,
   SiGooglecloud,
-  SiHeroku,
+  SiHeroui,
   SiJenkins,
   SiKubernetes,
   SiMariadb,
@@ -59,7 +59,7 @@ const StacksCard = () => {
       </Marquee>
       <Marquee gap='12px' className='py-2' reverse fade pauseOnHover>
         <SiApachecassandra className='size-6' />
-        <SiHeroku className='size-6' />
+        <SiHeroui className='size-6' />
         <SiOpenstack className='size-6' />
         <SiTerraform className='size-6' />
         <SiPuppet className='size-6' />
