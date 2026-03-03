@@ -1,5 +1,18 @@
 export const NextConfigHeaders = [
   {
+    source: '/.well-known/matrix/:path*',
+    headers: [
+      {
+        key: 'Access-Control-Allow-Origin',
+        value: '*'
+      },
+      {
+        key: 'Content-Type',
+        value: 'application/json'
+      }
+    ]
+  },
+  {
     source: '/admin/:path*',
     headers: [
       {
