@@ -31,7 +31,7 @@
     "@isyuricunha/eslint-config": "workspace:*",
     "@isyuricunha/tsconfig": "workspace:*",
     "@types/react": "19.2.14",
-    "next": "16.1.6"
+    "next": "16.2.1"
   },
   "lint-staged": {
     "*.{cjs,mjs,js,jsx,cts,mts,ts,tsx}": "eslint --fix --max-warnings 999"
