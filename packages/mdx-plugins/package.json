@@ -17,7 +17,7 @@
   },
   "types": "./dist/index.d.ts",
   "dependencies": {
-    "@shikijs/rehype": "^3.22.0",
+    "@shikijs/rehype": "^4.0.2",
     "@shikijs/transformers": "^4.0.2",
     "github-slugger": "^2.0.0",
     "remark": "^15.0.1",
