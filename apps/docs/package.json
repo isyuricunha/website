@@ -30,14 +30,14 @@
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "react-hook-form": "^7.72.0",
-    "recharts": "^3.8.0",
+    "recharts": "^3.8.1",
     "sharp": "^0.34.5",
     "shiki": "^3.22.0",
     "zod": "4.3.6"
   },
   "devDependencies": {
     "@content-collections/cli": "^0.1.9",
-    "@content-collections/core": "^0.14.2",
+    "@content-collections/core": "^0.14.3",
     "@content-collections/mdx": "^0.2.2",
     "@content-collections/next": "^0.2.11",
     "@isyuricunha/eslint-config": "workspace:*",
