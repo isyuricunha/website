@@ -75,11 +75,19 @@ const format_date = (iso: string, locale: string) => {
 
   if (Number.isNaN(date.getTime())) return null
 
-  return new Intl.DateTimeFormat(locale, {
-    year: 'numeric',
-    month: 'short',
-    day: '2-digit'
-  }).format(date)
+  try {
+    return new Intl.DateTimeFormat(locale, {
+      year: 'numeric',
+      month: 'short',
+      day: '2-digit'
+    }).format(date)
+  } catch {
+    return new Intl.DateTimeFormat('en', {
+      year: 'numeric',
+      month: 'short',
+      day: '2-digit'
+    }).format(date)
+  }
 }
 
 const NowProject = async (props: NowProjectProps) => {

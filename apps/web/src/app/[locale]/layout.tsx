@@ -154,6 +154,8 @@ const Layout = async (props: LayoutProps) => {
           type='application/ld+json'
           dangerouslySetInnerHTML={{ __html: JSON.stringify(website_json_ld) }}
         />
+      </head>
+      <body className='relative flex min-h-screen flex-col'>
         {env.NODE_ENV === 'development' && react_scan_api_key ? (
           <Script
             id='react-scan-auto'
@@ -176,8 +178,6 @@ const Layout = async (props: LayoutProps) => {
             }
           `}
         </Script>
-      </head>
-      <body className='relative flex min-h-screen flex-col'>
         <NuqsAdapter>
           <Providers>
             <NextIntlClientProvider messages={messages} locale={locale}>

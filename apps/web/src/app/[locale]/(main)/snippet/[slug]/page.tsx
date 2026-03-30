@@ -99,11 +99,23 @@ const Page = async (props: PageProps) => {
 
   const recommended_snippets = getRecommendedSnippets({ slug, locale })
 
-  const dateFormatter = new Intl.DateTimeFormat(locale, {
-    year: 'numeric',
-    month: 'short',
-    day: '2-digit'
-  })
+  const getSafeDateFormatter = (l: string) => {
+    try {
+      return new Intl.DateTimeFormat(l, {
+        year: 'numeric',
+        month: 'short',
+        day: '2-digit'
+      })
+    } catch {
+      return new Intl.DateTimeFormat('en', {
+        year: 'numeric',
+        month: 'short',
+        day: '2-digit'
+      })
+    }
+  }
+
+  const dateFormatter = getSafeDateFormatter(locale)
 
   const jsonLd: WithContext<Article> = {
     '@context': 'https://schema.org',

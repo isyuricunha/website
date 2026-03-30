@@ -70,11 +70,23 @@ const SitemapPage = async (props: PageProps) => {
   const t = await getTranslations('sitemap')
   const tCommon = await getTranslations()
 
-  const dateFormatter = new Intl.DateTimeFormat(locale, {
-    year: 'numeric',
-    month: 'short',
-    day: '2-digit'
-  })
+  const getSafeDateFormatter = (l: string) => {
+    try {
+      return new Intl.DateTimeFormat(l, {
+        year: 'numeric',
+        month: 'short',
+        day: '2-digit'
+      })
+    } catch {
+      return new Intl.DateTimeFormat('en', {
+        year: 'numeric',
+        month: 'short',
+        day: '2-digit'
+      })
+    }
+  }
+
+  const dateFormatter = getSafeDateFormatter(locale)
 
   const mainPages = [
     {
