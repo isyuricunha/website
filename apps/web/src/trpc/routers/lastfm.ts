@@ -39,6 +39,50 @@ const lastfmFetch = async (method: string, params: Record<string, string> = {}) 
   return response.json()
 }
 
+const fetchArtistTopAlbumImage = async (artistName: string): Promise<string | null> => {
+  try {
+    const data = await lastfmFetch('artist.gettopalbums', {
+      artist: artistName,
+      limit: '1'
+    })
+    const album = data.topalbums?.album?.[0]
+    if (!album) return null
+
+    return (
+      album.image?.find((img: any) => img.size === 'extralarge')?.['#text'] ||
+      album.image?.find((img: any) => img.size === 'large')?.['#text'] ||
+      null
+    )
+  } catch (error) {
+    logger.warn(`Failed to fetch fallback image for artist: ${artistName}`, error)
+    return null
+  }
+}
+
+const fetchTrackFallbackImage = async (
+  artistName: string,
+  trackName: string
+): Promise<string | null> => {
+  try {
+    const data = await lastfmFetch('track.getInfo', {
+      artist: artistName,
+      track: trackName,
+      autocorrect: '1'
+    })
+    const album = data.track?.album
+    if (!album) return null
+
+    return (
+      album.image?.find((img: any) => img.size === 'extralarge')?.['#text'] ||
+      album.image?.find((img: any) => img.size === 'large')?.['#text'] ||
+      null
+    )
+  } catch (error) {
+    logger.warn(`Failed to fetch fallback image for track: ${trackName} by ${artistName}`, error)
+    return null
+  }
+}
+
 const getKey = (id: string, scope: string) => `lastfm:${scope}:${id}`
 
 const mapTimeRangeToPeriod = (range: 'short_term' | 'medium_term' | 'long_term') => {
@@ -136,14 +180,27 @@ export const lastfmRouter = createTRPCRouter({
       const data = await lastfmFetch('user.gettopartists', { limit: '20', period: '7day' })
       const artists = data.topartists.artist || []
 
-      return artists.map((artist: any) => ({
+      const artistList = artists.map((artist: any) => ({
         id: artist.mbid || artist.name,
         name: artist.name as string,
         image: artist.image?.find((img: any) => img.size === 'extralarge')?.['#text'] || null,
         url: artist.url as string,
-        followers: parseInt(artist.playcount) || 0, // Fallback to playcount as followers isn't directly here
-        genres: [] // Last.fm top artists doesn't include tags directly without another call
+        followers: parseInt(artist.playcount) || 0,
+        genres: []
       }))
+
+      // Fallback for missing images
+      const withFallbacks = await Promise.all(
+        artistList.map(async (artist: any) => {
+          if (artist.image && !artist.image.includes('2a96cbd8b46e442fc41c2b86b821562f')) {
+            return artist
+          }
+          const fallback = await fetchArtistTopAlbumImage(artist.name)
+          return { ...artist, image: fallback || artist.image }
+        })
+      )
+
+      return withFallbacks
     } catch (error) {
       logger.error('Error in lastfm.getTopArtists', error)
       return []
@@ -160,7 +217,7 @@ export const lastfmRouter = createTRPCRouter({
       const data = await lastfmFetch('user.gettoptracks', { limit: '20', period: '7day' })
       const tracks = data.toptracks.track || []
 
-      return tracks.map((track: any) => ({
+      const trackList = tracks.map((track: any) => ({
         id: track.mbid || `${track.artist.name}-${track.name}`,
         name: track.name as string,
         artist: track.artist.name as string,
@@ -170,6 +227,19 @@ export const lastfmRouter = createTRPCRouter({
         duration: parseInt(track.duration) * 1000 || 0,
         popularity: parseInt(track.playcount) || 0
       }))
+
+      // Fallback for missing images
+      const withFallbacks = await Promise.all(
+        trackList.map(async (track: any) => {
+          if (track.albumImage && !track.albumImage.includes('2a96cbd8b46e442fc41c2b86b821562f')) {
+            return track
+          }
+          const fallback = await fetchTrackFallbackImage(track.artist, track.name)
+          return { ...track, albumImage: fallback || track.albumImage }
+        })
+      )
+
+      return withFallbacks
     } catch (error) {
       logger.error('Error in lastfm.getTopTracks', error)
       return []
@@ -203,9 +273,11 @@ export const lastfmRouter = createTRPCRouter({
   }),
 
   getTopArtistsByRange: publicProcedure
-    .input(z.object({
-      time_range: z.enum(['short_term', 'medium_term', 'long_term']).default('short_term')
-    }))
+    .input(
+      z.object({
+        time_range: z.enum(['short_term', 'medium_term', 'long_term']).default('short_term')
+      })
+    )
     .query(async ({ ctx, input }) => {
       const ip = getIp(ctx.headers)
       const { success } = await ratelimit.limit(getKey(ip, 'getTopArtistsByRange'))
@@ -217,7 +289,7 @@ export const lastfmRouter = createTRPCRouter({
         const data = await lastfmFetch('user.gettopartists', { limit: '20', period })
         const artists = data.topartists.artist || []
 
-        return artists.map((artist: any) => ({
+        const artistList = artists.map((artist: any) => ({
           id: artist.mbid || artist.name,
           name: artist.name as string,
           image: artist.image?.find((img: any) => img.size === 'extralarge')?.['#text'] || null,
@@ -225,6 +297,19 @@ export const lastfmRouter = createTRPCRouter({
           followers: parseInt(artist.playcount) || 0,
           genres: []
         }))
+
+        // Fallback for missing images
+        const withFallbacks = await Promise.all(
+          artistList.map(async (artist: any) => {
+            if (artist.image && !artist.image.includes('2a96cbd8b46e442fc41c2b86b821562f')) {
+              return artist
+            }
+            const fallback = await fetchArtistTopAlbumImage(artist.name)
+            return { ...artist, image: fallback || artist.image }
+          })
+        )
+
+        return withFallbacks
       } catch (error) {
         logger.error('Error in lastfm.getTopArtistsByRange', error)
         return []
@@ -232,9 +317,11 @@ export const lastfmRouter = createTRPCRouter({
     }),
 
   getTopTracksByRange: publicProcedure
-    .input(z.object({
-      time_range: z.enum(['short_term', 'medium_term', 'long_term']).default('short_term')
-    }))
+    .input(
+      z.object({
+        time_range: z.enum(['short_term', 'medium_term', 'long_term']).default('short_term')
+      })
+    )
     .query(async ({ ctx, input }) => {
       const ip = getIp(ctx.headers)
       const { success } = await ratelimit.limit(getKey(ip, 'getTopTracksByRange'))
@@ -246,7 +333,7 @@ export const lastfmRouter = createTRPCRouter({
         const data = await lastfmFetch('user.gettoptracks', { limit: '20', period })
         const tracks = data.toptracks.track || []
 
-        return tracks.map((track: any) => ({
+        const trackList = tracks.map((track: any) => ({
           id: track.mbid || `${track.artist.name}-${track.name}`,
           name: track.name as string,
           artist: track.artist.name as string,
@@ -256,6 +343,19 @@ export const lastfmRouter = createTRPCRouter({
           duration: parseInt(track.duration) * 1000 || 0,
           popularity: parseInt(track.playcount) || 0
         }))
+
+        // Fallback for missing images
+        const withFallbacks = await Promise.all(
+          trackList.map(async (track: any) => {
+            if (track.albumImage && !track.albumImage.includes('2a96cbd8b46e442fc41c2b86b821562f')) {
+              return track
+            }
+            const fallback = await fetchTrackFallbackImage(track.artist, track.name)
+            return { ...track, albumImage: fallback || track.albumImage }
+          })
+        )
+
+        return withFallbacks
       } catch (error) {
         logger.error('Error in lastfm.getTopTracksByRange', error)
         return []
