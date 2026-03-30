@@ -708,8 +708,8 @@
         "now": {
           "description": "No que eu estou trabalhando e pensando no momento"
         },
-        "spotify": {
-          "description": "Gosto musical, atividade de escuta e estatísticas"
+        "music": {
+          "description": "Gosto musical, atividade de escuta e estatísticas do Last.fm"
         },
         "contact": {
           "description": "Como entrar em contato comigo"
