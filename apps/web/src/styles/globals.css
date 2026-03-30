@@ -168,6 +168,24 @@
   .transition-smooth {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
+
+  /* Music Visualizer Animations */
+  @keyframes music-bar {
+    0%, 100% { height: 20%; }
+    50% { height: 100%; }
+  }
+
+  .animate-music-bar-1 {
+    animation: music-bar 0.8s ease-in-out infinite;
+  }
+  .animate-music-bar-2 {
+    animation: music-bar 0.7s ease-in-out infinite;
+    animation-delay: 0.1s;
+  }
+  .animate-music-bar-3 {
+    animation: music-bar 0.9s ease-in-out infinite;
+    animation-delay: 0.2s;
+  }
 }
 
 /* Respect reduced motion preferences */
