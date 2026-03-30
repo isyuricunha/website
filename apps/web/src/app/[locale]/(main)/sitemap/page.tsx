@@ -132,9 +132,9 @@ const SitemapPage = async (props: PageProps) => {
       icon: <Calendar className='h-4 w-4' />
     },
     {
-      title: tCommon('layout.spotify'),
-      description: t('main-pages.items.spotify.description'),
-      href: '/spotify',
+      title: tCommon('layout.music'),
+      description: t('main-pages.items.music.description'),
+      href: '/music',
       icon: <Music className='h-4 w-4' />
     },
     {

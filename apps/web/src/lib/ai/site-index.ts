@@ -170,9 +170,9 @@ const get_static_routes = (locale: string): StaticRouteEntry[] => {
       description: is_pt ? 'Ferramentas e setup' : 'Tools and setup'
     },
     {
-      slug: '/spotify',
+      slug: '/music',
       title: is_pt ? 'Música' : 'Music',
-      description: is_pt ? 'Página do Spotify e estatísticas.' : 'Spotify page and stats.'
+      description: is_pt ? 'Página de música e estatísticas.' : 'Music page and stats.'
     }
   ]
 }

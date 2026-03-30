@@ -44,8 +44,8 @@ const Breadcrumbs = () => {
       case 'uses':
         label = t('layout.uses')
         break
-      case 'spotify':
-        label = t('layout.spotify')
+      case 'music':
+        label = t('layout.music')
         break
       case 'about':
         label = t('layout.about')

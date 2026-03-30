@@ -48,7 +48,7 @@ const sitemap = (): MetadataRoute.Sitemap => {
     '/guestbook',
     '/uses',
     '/now',
-    '/spotify',
+    '/music',
     '/rss.xml',
     '/about',
     '/contact',

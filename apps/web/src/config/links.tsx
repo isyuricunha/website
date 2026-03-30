@@ -57,8 +57,8 @@ export const HEADER_LINKS = [
   },
   {
     icon: <MusicIcon className='size-3.5' />,
-    href: '/spotify',
-    key: 'spotify'
+    href: '/music',
+    key: 'music'
   }
 ] as const
 
@@ -80,7 +80,7 @@ export const FOOTER_LINKS = [
       { href: '/now', key: 'now' },
       { href: '/uses', key: 'uses' },
       { href: '/projects', key: 'projects' },
-      { href: '/spotify', key: 'spotify' },
+      { href: '/music', key: 'music' },
       { href: '/sitemap', key: 'sitemap' }
     ]
   },

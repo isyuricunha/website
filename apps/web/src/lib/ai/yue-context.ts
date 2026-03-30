@@ -108,7 +108,7 @@ About Yuri:
   * Guestbook: https://yuricunha.com/guestbook
   * Projects: https://yuricunha.com/projects (functional with GitHub API)
   * About: https://yuricunha.com/about
-  * Music: https://yuricunha.com/spotify
+  * Music: https://yuricunha.com/music
 - Email: me@yuricunha.com
 - GitHub: https://github.com/isyuricunha
 

@@ -7,7 +7,7 @@ import { useState, useMemo, useEffect } from 'react'
 
 import { api } from '@/trpc/react'
 import Link from '../link'
-import SpotifyImage from './spotify-image'
+import MusicImage from './music-image'
 
 const MusicTimeline = () => {
   const t = useTranslations()

@@ -95,10 +95,10 @@ const SiteSearch = () => {
         icon: <Code className='h-4 w-4' />
       },
       {
-        id: 'spotify',
-        title: t.has('layout.spotify') ? t('layout.spotify') : 'Spotify',
-        description: t.has('spotify.description') ? t('spotify.description') : '',
-        href: '/spotify',
+        id: 'music',
+        title: t.has('layout.music') ? t('layout.music') : 'Music',
+        description: t.has('music.description') ? t('music.description') : '',
+        href: '/music',
         type: 'page' as const,
         icon: <Music className='h-4 w-4' />
       }

@@ -427,7 +427,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     if (pathWithoutLocale.startsWith('/projects')) return 'projects'
     if (pathWithoutLocale.startsWith('/about')) return 'about'
     if (pathWithoutLocale.startsWith('/uses')) return 'uses'
-    if (pathWithoutLocale.startsWith('/spotify')) return 'spotify'
+    if (pathWithoutLocale.startsWith('/music')) return 'music'
     if (pathWithoutLocale.startsWith('/guestbook')) return 'guestbook'
     if (pathWithoutLocale.startsWith('/admin')) return 'admin'
     if (pathWithoutLocale.includes('search') || pathWithoutLocale.includes('?q=')) return 'search'
