@@ -44,11 +44,32 @@ const lastfmFetch = async (method: string, params: Record<string, string> = {}) 
  * Removes common suffixes like (feat. ...), (ft. ...), - Remastered, etc.
  */
 const cleanName = (name: string): string => {
-  return name
-    .split(/\s+[\(\[]?(?:feat|ft|with|prod)\.?\s+/i)[0] // Remove feat/ft/prod
-    .split(/\s+-\s+(?:remaster|live|radio edit|original mix)/i)[0] // Remove common suffixes
-    .replace(/\s*[\(\[].*[\)\]]\s*$/, '') // Remove trailing parentheses content
-    .trim()
+  return (
+    name
+      .split(/\s+[\(\[]?(?:feat|ft|with|prod)\.?\s+/i)[0]
+      ?.split(/\s+-\s+(?:remaster|live|radio edit|original mix)/i)[0]
+      ?.replace(/\s*[\(\[].*[\)\]]\s*$/, '')
+      ?.trim() || name
+  )
+}
+
+const fetchRecentTracksImageMap = async (limit = 200): Promise<Map<string, string>> => {
+  const imageMap = new Map<string, string>()
+  try {
+    const data = await lastfmFetch('user.getrecenttracks', { limit: String(limit) })
+    const tracks = data.recenttracks?.track || []
+
+    tracks.forEach((t: any) => {
+      const key = `${t.artist['#text']}:${t.name}`.toLowerCase()
+      const img = t.image?.find((i: any) => i.size === 'extralarge')?.['#text']
+      if (img && !img.includes('2a96cbd8b46e442fc41c2b86b821562f')) {
+        imageMap.set(key, img)
+      }
+    })
+  } catch (error) {
+    logger.warn('Failed to fetch recent tracks for image enrichment', error)
+  }
+  return imageMap
 }
 
 const fetchArtistTopAlbumImage = async (artistName: string): Promise<string | null> => {
@@ -251,13 +272,16 @@ export const lastfmRouter = createTRPCRouter({
 
     try {
       const data = await lastfmFetch('user.gettoptracks', { limit: '20', period: '7day' })
-      const tracks = data.toptracks.track || []
+      const tracks = data.toptracks?.track || []
+
+      // Enrichment: Fetch recent tracks to use as a primary image source
+      const recentImageMap = await fetchRecentTracksImageMap(200)
 
       const trackList = tracks.map((track: any) => ({
         id: track.mbid || `${track.artist.name}-${track.name}`,
         name: track.name as string,
         artist: track.artist.name as string,
-        album: '', // Not in top tracks response
+        album: '',
         albumImage: track.image?.find((img: any) => img.size === 'extralarge')?.['#text'] || null,
         url: track.url as string,
         duration: parseInt(track.duration) * 1000 || 0,
@@ -269,12 +293,20 @@ export const lastfmRouter = createTRPCRouter({
 
       const withFallbacks = await Promise.all(
         trackList.map(async (track: any) => {
-          // If we already have a real image, use it
+          const cacheKey = `${track.artist}:${track.name}`.toLowerCase()
+
+          // 1. If we already have a real image from Top Tracks response, use it
           if (track.albumImage && !track.albumImage.includes('2a96cbd8b46e442fc41c2b86b821562f')) {
             return track
           }
 
-          const cacheKey = `${track.artist}:${track.name}`
+          // 2. Try to find image in recently played (Enrichment)
+          const recentImg = recentImageMap.get(cacheKey)
+          if (recentImg) {
+            return { ...track, albumImage: recentImg }
+          }
+
+          // 3. Fallback to detail/search if necessary
           if (!fallbackCache.has(cacheKey)) {
             fallbackCache.set(cacheKey, fetchTrackFallbackImage(track.artist, track.name))
           }
@@ -376,7 +408,10 @@ export const lastfmRouter = createTRPCRouter({
       try {
         const period = mapTimeRangeToPeriod(input.time_range)
         const data = await lastfmFetch('user.gettoptracks', { limit: '20', period })
-        const tracks = data.toptracks.track || []
+        const tracks = data.toptracks?.track || []
+
+        // Enrichment: Fetch recent tracks to use as a primary image source
+        const recentImageMap = await fetchRecentTracksImageMap(200)
 
         const trackList = tracks.map((track: any) => ({
           id: track.mbid || `${track.artist.name}-${track.name}`,
@@ -394,11 +429,17 @@ export const lastfmRouter = createTRPCRouter({
 
         const withFallbacks = await Promise.all(
           trackList.map(async (track: any) => {
+            const cacheKey = `${track.artist}:${track.name}`.toLowerCase()
+
             if (track.albumImage && !track.albumImage.includes('2a96cbd8b46e442fc41c2b86b821562f')) {
               return track
             }
 
-            const cacheKey = `${track.artist}:${track.name}`
+            const recentImg = recentImageMap.get(cacheKey)
+            if (recentImg) {
+              return { ...track, albumImage: recentImg }
+            }
+
             if (!fallbackCache.has(cacheKey)) {
               fallbackCache.set(cacheKey, fetchTrackFallbackImage(track.artist, track.name))
             }
