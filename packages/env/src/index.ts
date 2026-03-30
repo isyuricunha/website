@@ -7,7 +7,8 @@ export const flags = {
   auth: process.env.NEXT_PUBLIC_FLAG_AUTH === 'true',
   stats: process.env.NEXT_PUBLIC_FLAG_STATS === 'true',
   spotify: process.env.NEXT_PUBLIC_FLAG_SPOTIFY === 'true',
-  spotifyImport: process.env.NEXT_PUBLIC_FLAG_SPOTIFY_IMPORT === 'true',
+  lastfm: process.env.NEXT_PUBLIC_FLAG_LASTFM === 'true',
+  lastfmImport: process.env.NEXT_PUBLIC_FLAG_LASTFM_IMPORT === 'true',
   gemini: process.env.NEXT_PUBLIC_FLAG_GEMINI === 'true',
   groq: process.env.NEXT_PUBLIC_FLAG_GROQ === 'true',
   hf: process.env.NEXT_PUBLIC_FLAG_HF === 'true',
@@ -33,6 +34,12 @@ export const env = createEnv({
           SPOTIFY_CLIENT_ID: z.string().min(1),
           SPOTIFY_CLIENT_SECRET: z.string().min(1),
           SPOTIFY_REFRESH_TOKEN: z.string().min(1)
+        }
+      : {}),
+    ...(flags.lastfm
+      ? {
+          LASTFM_API_KEY: z.string().min(1),
+          LASTFM_USER: z.string().min(1)
         }
       : {}),
 
@@ -129,8 +136,8 @@ export const env = createEnv({
     NEXT_PUBLIC_FLAG_COMMENT: z.string().min(1).optional(),
     NEXT_PUBLIC_FLAG_AUTH: z.string().min(1).optional(),
     NEXT_PUBLIC_FLAG_STATS: z.string().min(1).optional(),
-    NEXT_PUBLIC_FLAG_SPOTIFY: z.string().min(1).optional(),
-    NEXT_PUBLIC_FLAG_SPOTIFY_IMPORT: z.string().min(1).optional(),
+    NEXT_PUBLIC_FLAG_LASTFM: z.string().min(1).optional(),
+    NEXT_PUBLIC_FLAG_LASTFM_IMPORT: z.string().min(1).optional(),
     NEXT_PUBLIC_FLAG_GEMINI: z.string().min(1).optional(),
     NEXT_PUBLIC_FLAG_GROQ: z.string().min(1).optional(),
     NEXT_PUBLIC_FLAG_HF: z.string().min(1).optional(),
@@ -161,8 +168,8 @@ export const env = createEnv({
     NEXT_PUBLIC_FLAG_COMMENT: process.env.NEXT_PUBLIC_FLAG_COMMENT,
     NEXT_PUBLIC_FLAG_AUTH: process.env.NEXT_PUBLIC_FLAG_AUTH,
     NEXT_PUBLIC_FLAG_STATS: process.env.NEXT_PUBLIC_FLAG_STATS,
-    NEXT_PUBLIC_FLAG_SPOTIFY: process.env.NEXT_PUBLIC_FLAG_SPOTIFY,
-    NEXT_PUBLIC_FLAG_SPOTIFY_IMPORT: process.env.NEXT_PUBLIC_FLAG_SPOTIFY_IMPORT,
+    NEXT_PUBLIC_FLAG_LASTFM: process.env.NEXT_PUBLIC_FLAG_LASTFM,
+    NEXT_PUBLIC_FLAG_LASTFM_IMPORT: process.env.NEXT_PUBLIC_FLAG_LASTFM_IMPORT,
     NEXT_PUBLIC_FLAG_GEMINI: process.env.NEXT_PUBLIC_FLAG_GEMINI,
     NEXT_PUBLIC_FLAG_GROQ: process.env.NEXT_PUBLIC_FLAG_GROQ,
     NEXT_PUBLIC_FLAG_HF: process.env.NEXT_PUBLIC_FLAG_HF,

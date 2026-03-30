@@ -7,15 +7,15 @@ import { useState, useMemo, useEffect } from 'react'
 
 import { api } from '@/trpc/react'
 import TimeRangeToggle from './time-range-toggle'
-import { exportJson, exportTopArtistsCsv } from '@/utils/exporters/spotify'
+import { exportJson, exportTopArtistsCsv } from '@/utils/exporters/music'
 
 import Link from '../link'
-import SpotifyImage from './spotify-image'
+import MusicImage from './music-image'
 
 const TopArtistsSection = () => {
   const t = useTranslations()
   const [isRefreshing, setIsRefreshing] = useState(false)
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('list')
+  const [viewMode, setViewMode] = useState<'list' | 'grid'>('list')
   const [isShuffled, setIsShuffled] = useState(true)
   const [timeRange, setTimeRange] = useState<'short_term' | 'medium_term' | 'long_term'>(
     'short_term'
@@ -31,7 +31,7 @@ const TopArtistsSection = () => {
     refetch,
     isLoading,
     error
-  } = api.spotify.getTopArtistsByRange.useQuery({ time_range: timeRange }, { staleTime: 300_000 })
+  } = api.lastfm.getTopArtistsByRange.useQuery({ time_range: timeRange }, { staleTime: 300_000 })
 
   type Artist = NonNullable<typeof artists>[number]
 
@@ -223,7 +223,7 @@ const TopArtistsSection = () => {
                 className='hover:bg-muted/50 group flex min-w-0 flex-col items-center space-y-2 rounded-lg p-2 transition-colors'
               >
                 <div className='relative h-16 w-16 overflow-hidden rounded-full'>
-                  <SpotifyImage
+                  <MusicImage
                     src={artist.image}
                     alt={`${artist.name} artist photo`}
                     fallbackIcon={<UserIcon className='text-muted-foreground h-6 w-6' />}
@@ -255,7 +255,7 @@ const TopArtistsSection = () => {
               >
                 <div className='flex min-w-0 flex-1 items-center gap-4'>
                   <div className='relative h-12 w-12 shrink-0 overflow-hidden rounded-full'>
-                    <SpotifyImage
+                    <MusicImage
                       src={artist.image}
                       alt={`${artist.name} artist photo`}
                       fallbackIcon={<UserIcon className='text-muted-foreground h-4 w-4' />}

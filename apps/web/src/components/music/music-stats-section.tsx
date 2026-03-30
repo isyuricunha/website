@@ -11,9 +11,9 @@ const MusicStatsSection = () => {
   const t = useTranslations()
   const [isRefreshing, setIsRefreshing] = useState(false)
 
-  const { data: topArtists } = api.spotify.getTopArtists.useQuery()
-  const { data: topTracks } = api.spotify.getTopTracks.useQuery()
-  const { data: recentTracks } = api.spotify.getRecentlyPlayed.useQuery()
+  const { data: topArtists } = api.lastfm.getTopArtists.useQuery()
+  const { data: topTracks } = api.lastfm.getTopTracks.useQuery()
+  const { data: recentTracks } = api.lastfm.getRecentlyPlayed.useQuery()
 
   const handleRefresh = async () => {
     setIsRefreshing(true)
@@ -36,7 +36,7 @@ const MusicStatsSection = () => {
     // Extract top genres from artists
     const genreCount: Record<string, number> = {}
     topArtists.forEach((artist: any) => {
-      if (artist.genres) {
+      if (artist.genres && artist.genres.length > 0) {
         artist.genres.forEach((genre: string) => {
           genreCount[genre] = (genreCount[genre] || 0) + 1
         })

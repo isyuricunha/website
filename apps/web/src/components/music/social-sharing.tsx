@@ -8,14 +8,14 @@ import { useState } from 'react'
 import { api } from '@/trpc/react'
 import Link from '../link'
 import SocialShare from '../social-share'
-import SpotifyImage from './spotify-image'
+import MusicImage from './music-image'
 
 const SocialSharing = () => {
   const t = useTranslations()
   const [copiedTrack, setCopiedTrack] = useState<string | null>(null)
 
-  const { data: currentTrack } = api.spotify.getCurrentlyPlaying.useQuery()
-  const { data: topTracks } = api.spotify.getTopTracks.useQuery()
+  const { data: currentTrack } = api.lastfm.getCurrentlyPlaying.useQuery()
+  const { data: topTracks } = api.lastfm.getTopTracks.useQuery()
 
   const shareTrack = async (track: any, platform: 'twitter' | 'facebook' | 'copy') => {
     const shareText = t('spotify.social.share-text', { name: track.name, artist: track.artist })
@@ -68,7 +68,7 @@ const SocialSharing = () => {
             </h4>
             <div className='bg-muted/50 flex items-center gap-3 rounded-lg p-3'>
               <div className='relative h-12 w-12 flex-shrink-0 overflow-hidden rounded-lg'>
-                <SpotifyImage
+                <MusicImage
                   src={currentTrack.albumImage}
                   alt={`${currentTrack.album} album cover`}
                   width={48}
@@ -132,7 +132,7 @@ const SocialSharing = () => {
                     {index + 1}
                   </div>
                   <div className='relative h-10 w-10 flex-shrink-0 overflow-hidden rounded-lg'>
-                    <SpotifyImage
+                    <MusicImage
                       src={track.albumImage}
                       alt={`${track.album} album cover`}
                       width={40}
@@ -197,9 +197,9 @@ const SocialSharing = () => {
           <div className='flex justify-center'>
             <SocialShare
               title={t('spotify.social.profile.share-title')}
-              url='/spotify'
+              url='/music'
               description={t('spotify.social.profile.share-description')}
-              hashtags={['music', 'spotify', 'nowplaying']}
+              hashtags={['music', 'lastfm', 'nowplaying']}
               className='w-full'
             />
           </div>

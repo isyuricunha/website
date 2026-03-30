@@ -50,6 +50,14 @@ const config: NextConfig = {
       })(),
       {
         protocol: 'https',
+        hostname: 'last.fm'
+      },
+      {
+        protocol: 'https',
+        hostname: 'lastfm.freetls.fastly.net'
+      },
+      {
+        protocol: 'https',
         hostname: 'avatars.githubusercontent.com'
       },
       {

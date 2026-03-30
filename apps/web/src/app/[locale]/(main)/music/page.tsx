@@ -4,18 +4,15 @@ import type { WebPage, WithContext } from 'schema-dts'
 import { i18n } from '@isyuricunha/i18n/config'
 import { getTranslations, setRequestLocale } from '@isyuricunha/i18n/server'
 
-import NowListeningSection from '@/components/spotify/now-listening-section'
-import RecentlyPlayedSection from '@/components/spotify/recently-played-section'
-import TopArtistsSection from '@/components/spotify/top-artists-section'
-import TopSongsSection from '@/components/spotify/top-songs-section'
-import MusicStatsSection from '@/components/spotify/music-stats-section'
-import AudioFeaturesSummary from '@/components/spotify/audio-features-summary'
-import MusicTasteAnalysis from '@/components/spotify/music-taste-analysis'
-import MusicTimeline from '@/components/spotify/music-timeline'
-import GenreDistribution from '@/components/spotify/genre-distribution'
-import ListeningHeatmap from '@/components/spotify/listening-heatmap'
-import LocalHistoryImport from '@/components/spotify/local-history-import'
-import SocialSharing from '@/components/spotify/social-sharing'
+import NowListeningSection from '@/components/music/now-listening-section'
+import RecentlyPlayedSection from '@/components/music/recently-played-section'
+import TopArtistsSection from '@/components/music/top-artists-section'
+import TopSongsSection from '@/components/music/top-songs-section'
+import MusicStatsSection from '@/components/music/music-stats-section'
+import MusicTimeline from '@/components/music/music-timeline'
+import ListeningHeatmap from '@/components/music/listening-heatmap'
+import LocalHistoryImport from '@/components/music/local-history-import'
+import SocialSharing from '@/components/music/social-sharing'
 import PageTitle from '@/components/page-title'
 import { SITE_NAME, SITE_URL } from '@/lib/constants'
 import { build_alternates } from '@/lib/seo'
@@ -42,7 +39,7 @@ export const generateMetadata = async (
   const t = await getTranslations({ locale, namespace: 'spotify' })
   const title = t('title')
   const description = t('description')
-  const alternates = build_alternates({ slug: '/spotify', locale })
+  const alternates = build_alternates({ slug: '/music', locale })
   const fullUrl = `${SITE_URL}${alternates.canonical}`
 
   return {
@@ -70,7 +67,7 @@ const Page = async (props: PageProps) => {
   const t = await getTranslations()
   const title = t('spotify.title')
   const description = t('spotify.description')
-  const url = `${SITE_URL}${getLocalizedPath({ slug: '/spotify', locale })}`
+  const url = `${SITE_URL}${getLocalizedPath({ slug: '/music', locale })}`
 
   const jsonLd: WithContext<WebPage> = {
     '@context': 'https://schema.org',
@@ -99,20 +96,17 @@ const Page = async (props: PageProps) => {
 
         <MusicStatsSection />
 
-        <div className='grid grid-cols-1 gap-8 lg:grid-cols-2'>
-          <AudioFeaturesSummary />
+        <div className='grid grid-cols-1 gap-8'>
           <SocialSharing />
         </div>
 
-        <MusicTasteAnalysis />
 
         <div className='grid grid-cols-1 gap-8 lg:grid-cols-2'>
           <TopArtistsSection />
           <TopSongsSection />
         </div>
 
-        <div className='grid grid-cols-1 gap-8 lg:grid-cols-2'>
-          <GenreDistribution />
+        <div className='grid grid-cols-1 gap-8'>
           <ListeningHeatmap />
         </div>
 

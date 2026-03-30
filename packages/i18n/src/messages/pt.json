@@ -655,9 +655,9 @@
     "github": "GitHub",
     "star": "Star",
     "now-playing": {
-      "error": "Falha ao buscar dados do Spotify",
+      "error": "Falha ao buscar dados do Last.fm",
       "loading": "Carregando ...",
-      "not-listening": "Não ouvindo - Spotify"
+      "not-listening": "Não ouvindo — Last.fm"
     }
   },
   "mdx": {
@@ -808,10 +808,10 @@
   },
   "spotify": {
     "title": "Música",
-    "description": "O que estou ouvindo no momento — músicas e artistas mais ouvidos nos últimos 6 meses.",
+    "description": "Aqui está o que estou ouvindo no momento — principais faixas e artistas do meu perfil no Last.fm.",
     "now-listening": {
       "title": "Agora Tocando",
-      "subtitle": "Tocando atualmente no Spotify",
+      "subtitle": "Tocando atualmente no Last.fm",
       "not-playing": "Não está tocando nada no momento",
       "by": "por"
     },
@@ -882,12 +882,12 @@
       "subtitle": "Compartilhe suas faixas favoritas com amigos",
       "now-playing": "Reproduzindo agora",
       "top-tracks": "Principais faixas para compartilhar",
-      "share-text": "🎵 Estou curtindo agora \"{name}\" de {artist} no Spotify!",
+      "share-text": "🎵 Estou curtindo agora \"{name}\" de {artist} — faixa compartilhada do meu perfil musical!",
       "buttons": {
         "twitter": "Compartilhar no Twitter",
         "facebook": "Compartilhar no Facebook",
         "copy": "Copiar link",
-        "open": "Abrir no Spotify"
+        "open": "Abrir no Last.fm"
       },
       "profile": {
         "title": "Compartilhe seu perfil musical",
@@ -900,64 +900,6 @@
       "minutes": "há {count}min",
       "hours": "há {count}h",
       "days": "há {count}d"
-    },
-    "taste": {
-      "title": "Análise do seu gosto musical",
-      "subtitle": "Insights com IA sobre a sua personalidade musical",
-      "loading": "Analisando suas preferências musicais...",
-      "labels": {
-        "energy": "Nível de energia",
-        "diversity": "Diversidade",
-        "profile": "Perfil"
-      },
-      "energy-levels": {
-        "high": "Alto",
-        "medium": "Médio",
-        "low": "Baixo"
-      },
-      "diversity-levels": {
-        "eclectic": "Eclético",
-        "diverse": "Diversificado",
-        "focused": "Focado"
-      },
-      "taste-profiles": {
-        "mainstream": "Mainstream",
-        "balanced": "Equilibrado",
-        "underground": "Underground"
-      },
-      "metrics": {
-        "mainstream-score": "Pontuação Mainstream",
-        "genres-explored": "Gêneros explorados"
-      },
-      "insights": {
-        "title": "Sua personalidade musical",
-        "energy": {
-          "high": "Você tende a ouvir faixas populares e cheias de energia que fazem todo mundo se mexer!",
-          "low": "Você valoriza músicas mais íntimas e menos conhecidas — um verdadeiro conhecedor!"
-        },
-        "diversity": {
-          "eclectic": "Seu gosto abrange muitos gêneros — você é musicalmente aventureiro!",
-          "focused": "Você tem um gosto refinado por gêneros específicos — qualidade acima de quantidade!"
-        },
-        "profile": {
-          "underground": "Você é um formador de tendências que descobre artistas antes que virem mainstream!",
-          "mainstream": "Você acompanha a música popular e sabe o que está em alta!"
-        }
-      }
-    },
-    "audio": {
-      "title": "Recursos de áudio",
-      "subtitle": "Características das suas faixas favoritas",
-      "danceability": "Dançabilidade",
-      "energy": "Energia",
-      "valence": "Valência",
-      "tempo": "Tempo",
-      "acousticness": "Acústica",
-      "instrumentalness": "Instrumentalidade"
-    },
-    "genre": {
-      "title": "Distribuição de gêneros",
-      "subtitle": "Divisão dos seus principais gêneros"
     },
     "heatmap": {
       "title": "Mapa de calor de audição",

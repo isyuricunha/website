@@ -655,9 +655,9 @@
     "github": "GitHub",
     "star": "Star",
     "now-playing": {
-      "error": "Failed to fetch Spotify data",
+      "error": "Failed to fetch Last.fm data",
       "loading": "Loading ...",
-      "not-listening": "Not Listening - Spotify"
+      "not-listening": "Not Listening — Last.fm"
     }
   },
   "mdx": {
@@ -808,56 +808,12 @@
   },
   "spotify": {
     "title": "Music",
-    "description": "Here's what I'm listening to at the moment - top songs and artists over the past 6 months.",
+    "description": "Here's what I'm listening to at the moment — top tracks and artists from my Last.fm profile.",
     "now-listening": {
       "title": "Now Listening",
-      "subtitle": "Currently playing on Spotify",
+      "subtitle": "Currently playing on Last.fm",
       "not-playing": "Not currently listening to anything",
       "by": "by"
-    },
-    "taste": {
-      "title": "Music Taste Analysis",
-      "subtitle": "AI-powered insights into your musical personality",
-      "loading": "Analyzing your musical preferences...",
-      "labels": {
-        "energy": "Energy Level",
-        "diversity": "Diversity",
-        "profile": "Profile"
-      },
-      "energy-levels": {
-        "high": "High",
-        "medium": "Medium",
-        "low": "Low"
-      },
-      "diversity-levels": {
-        "eclectic": "Eclectic",
-        "diverse": "Diverse",
-        "focused": "Focused"
-      },
-      "taste-profiles": {
-        "mainstream": "Mainstream",
-        "balanced": "Balanced",
-        "underground": "Underground"
-      },
-      "metrics": {
-        "mainstream-score": "Mainstream Score",
-        "genres-explored": "Genres Explored"
-      },
-      "insights": {
-        "title": "Your Musical Personality",
-        "energy": {
-          "high": "You gravitate toward popular, high-energy tracks that get people moving!",
-          "low": "You appreciate more intimate, lesser-known gems - a true music connoisseur!"
-        },
-        "diversity": {
-          "eclectic": "Your taste spans across many genres - you're musically adventurous!",
-          "focused": "You have refined taste in specific genres - quality over quantity!"
-        },
-        "profile": {
-          "underground": "You're a trendsetter who discovers artists before they hit the mainstream!",
-          "mainstream": "You stay current with popular music and know what's trending!"
-        }
-      }
     },
     "top-artists": {
       "title": "Top Artists",
@@ -879,20 +835,6 @@
       "title": "Recently Played",
       "subtitle": "Tracks I've listened to recently",
       "no-data": "No recently played tracks available"
-    },
-    "audio": {
-      "title": "Audio Features",
-      "subtitle": "Characteristics of your favorite tracks",
-      "danceability": "Danceability",
-      "energy": "Energy",
-      "valence": "Valence",
-      "tempo": "Tempo",
-      "acousticness": "Acousticness",
-      "instrumentalness": "Instrumentalness"
-    },
-    "genre": {
-      "title": "Genre Distribution",
-      "subtitle": "Breakdown of your top genres"
     },
     "heatmap": {
       "title": "Listening Heatmap",
@@ -975,12 +917,12 @@
       "subtitle": "Share your favorite tracks with friends",
       "now-playing": "Now Playing",
       "top-tracks": "Top Tracks to Share",
-      "share-text": "🎵 Currently vibing to \"{name}\" by {artist} on Spotify!",
+      "share-text": "🎵 Currently vibing to \"{name}\" by {artist} — track shared from my music profile!",
       "buttons": {
         "twitter": "Share on Twitter",
         "facebook": "Share on Facebook",
         "copy": "Copy link",
-        "open": "Open in Spotify"
+        "open": "Open in Last.fm"
       },
       "profile": {
         "title": "Share Your Music Profile",

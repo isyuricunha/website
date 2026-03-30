@@ -53,7 +53,7 @@ const LocalHistoryImport = () => {
     }
   }
 
-  if (!flags.spotifyImport) return null
+  if (!flags.lastfmImport) return null
 
   return (
     <Card>
@@ -64,7 +64,7 @@ const LocalHistoryImport = () => {
               {t('spotify.import.title') || 'Import Local History'}
             </CardTitle>
             <CardDescription className='text-xs sm:text-sm'>
-              {t('spotify.import.subtitle') || 'Analyze your exported Spotify history offline'}
+              {t('spotify.import.subtitle') || 'Analyze your exported Music history offline'}
             </CardDescription>
           </div>
         </div>
@@ -72,11 +72,11 @@ const LocalHistoryImport = () => {
       <CardContent>
         <div className='space-y-3'>
           <div className='flex items-center gap-3'>
-            <Label htmlFor='spotifyHistoryFile' className='text-sm'>
+            <Label htmlFor='musicHistoryFile' className='text-sm'>
               {t('spotify.import.choose') || 'Choose JSON file'}
             </Label>
             <Input
-              id='spotifyHistoryFile'
+              id='musicHistoryFile'
               type='file'
               accept='application/json'
               onChange={(e) => onFile(e.target.files?.[0])}

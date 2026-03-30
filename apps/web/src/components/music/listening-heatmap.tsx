@@ -35,7 +35,7 @@ const ListeningHeatmap = () => {
     error,
     refetch,
     isRefetching
-  } = api.spotify.getRecentlyPlayed.useQuery(undefined, { staleTime: 300_000 })
+  } = api.lastfm.getRecentlyPlayed.useQuery(undefined, { staleTime: 300_000 })
 
   // Aggregate plays per weekday (0=Sun..6=Sat) for a simpler, compact heatmap
   const { byDay, max } = useMemo(() => {

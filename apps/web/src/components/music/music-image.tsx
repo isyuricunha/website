@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Image from 'next/image'
 
-interface SpotifyImageProps {
+interface MusicImageProps {
   src: string | null | undefined
   alt: string
   fallbackIcon?: React.ReactNode
@@ -14,7 +14,7 @@ interface SpotifyImageProps {
   height?: number
 }
 
-const SpotifyImage = ({
+const MusicImage = ({
   src,
   alt,
   fallbackIcon = null,
@@ -23,7 +23,7 @@ const SpotifyImage = ({
   fill = true,
   width,
   height
-}: SpotifyImageProps) => {
+}: MusicImageProps) => {
   const [hasError, setHasError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
 
@@ -89,4 +89,4 @@ const SpotifyImage = ({
   )
 }
 
-export default SpotifyImage
+export default MusicImage

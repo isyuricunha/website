@@ -24,7 +24,7 @@ const MusicTimeline = () => {
     refetch,
     isLoading,
     error
-  } = api.spotify.getRecentlyPlayed.useQuery(undefined, {
+  } = api.lastfm.getRecentlyPlayed.useQuery(undefined, {
     staleTime: 300_000 // 5 minutes
   })
 
@@ -228,7 +228,7 @@ const MusicTimeline = () => {
                       className='hover:bg-muted/50 group flex items-center gap-3 rounded-lg p-3 transition-colors'
                     >
                       <div className='relative h-10 w-10 flex-shrink-0 overflow-hidden rounded-lg'>
-                        <SpotifyImage
+                        <MusicImage
                           src={track.albumImage}
                           alt={`${track.album} album cover`}
                           width={40}
