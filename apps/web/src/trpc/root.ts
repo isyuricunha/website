@@ -13,7 +13,6 @@ import { likesRouter } from './routers/likes'
 import { monitoringRouter } from './routers/monitoring'
 import { ratesRouter } from './routers/rates'
 import { securityRouter } from './routers/security'
-import { spotifyRouter } from './routers/spotify'
 import { lastfmRouter } from './routers/lastfm'
 import { systemRouter } from './routers/system'
 import { usersRouter } from './routers/users'
@@ -37,7 +36,6 @@ export const appRouter = createTRPCRouter({
   wakatime: wakatimeRouter,
   views: viewsRouter,
   likes: likesRouter,
-  spotify: spotifyRouter,
   lastfm: lastfmRouter,
   comments: commentsRouter,
   guestbook: guestbookRouter,
