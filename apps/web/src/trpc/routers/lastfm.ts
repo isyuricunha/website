@@ -67,7 +67,7 @@ const fetchRecentTracksImageMap = async (limit = 200): Promise<Map<string, strin
       }
     })
   } catch (error) {
-    logger.warn('Failed to fetch recent tracks for image enrichment', error)
+    logger.warn('Failed to fetch recent tracks for image enrichment', error as any)
   }
   return imageMap
 }
@@ -87,7 +87,7 @@ const fetchArtistTopAlbumImage = async (artistName: string): Promise<string | nu
       null
     )
   } catch (error) {
-    logger.warn(`Failed to fetch fallback image for artist: ${artistName}`, error)
+    logger.warn(`Failed to fetch fallback image for artist: ${artistName}`, error as any)
     return null
   }
 }
@@ -134,7 +134,7 @@ const fetchTrackFallbackImage = async (
       return searchImage
     }
   } catch (error) {
-    logger.warn(`Failed to fetch search fallback for track: ${trackName} by ${artistName}`, error)
+    logger.warn(`Failed to fetch search fallback for track: ${trackName} by ${artistName}`, error as any)
   }
 
   return null
@@ -182,7 +182,7 @@ export const lastfmRouter = createTRPCRouter({
         artist: track.artist['#text'] as string
       }
     } catch (error) {
-      logger.error('Error in lastfm.get', error)
+      logger.error('Error in lastfm.get', error as any)
       return {
         isPlaying: false,
         songUrl: null,
@@ -222,7 +222,7 @@ export const lastfmRouter = createTRPCRouter({
         progress: 0
       }
     } catch (error) {
-      logger.error('Error in lastfm.getCurrentlyPlaying', error)
+      logger.error('Error in lastfm.getCurrentlyPlaying', error as any)
       return null
     }
   }),
@@ -259,7 +259,7 @@ export const lastfmRouter = createTRPCRouter({
 
       return withFallbacks
     } catch (error) {
-      logger.error('Error in lastfm.getTopArtists', error)
+      logger.error('Error in lastfm.getTopArtists', error as any)
       return []
     }
   }),
@@ -318,7 +318,7 @@ export const lastfmRouter = createTRPCRouter({
 
       return withFallbacks
     } catch (error) {
-      logger.error('Error in lastfm.getTopTracks', error)
+      logger.error('Error in lastfm.getTopTracks', error as any)
       return []
     }
   }),
@@ -344,7 +344,7 @@ export const lastfmRouter = createTRPCRouter({
         playedAt: track.date?.uts ? new Date(parseInt(track.date.uts) * 1000).toISOString() : new Date().toISOString()
       }))
     } catch (error) {
-      logger.error('Error in lastfm.getRecentlyPlayed', error)
+      logger.error('Error in lastfm.getRecentlyPlayed', error as any)
       return []
     }
   }),
@@ -388,7 +388,7 @@ export const lastfmRouter = createTRPCRouter({
 
         return withFallbacks
       } catch (error) {
-        logger.error('Error in lastfm.getTopArtistsByRange', error)
+        logger.error('Error in lastfm.getTopArtistsByRange', error as any)
         return []
       }
     }),
@@ -451,7 +451,7 @@ export const lastfmRouter = createTRPCRouter({
 
         return withFallbacks
       } catch (error) {
-        logger.error('Error in lastfm.getTopTracksByRange', error)
+        logger.error('Error in lastfm.getTopTracksByRange', error as any)
         return []
       }
     }),
