@@ -39,6 +39,18 @@ const lastfmFetch = async (method: string, params: Record<string, string> = {}) 
   return response.json()
 }
 
+/**
+ * Cleans track and artist names to improve matching hit rate.
+ * Removes common suffixes like (feat. ...), (ft. ...), - Remastered, etc.
+ */
+const cleanName = (name: string): string => {
+  return name
+    .split(/\s+[\(\[]?(?:feat|ft|with|prod)\.?\s+/i)[0] // Remove feat/ft/prod
+    .split(/\s+-\s+(?:remaster|live|radio edit|original mix)/i)[0] // Remove common suffixes
+    .replace(/\s*[\(\[].*[\)\]]\s*$/, '') // Remove trailing parentheses content
+    .trim()
+}
+
 const fetchArtistTopAlbumImage = async (artistName: string): Promise<string | null> => {
   try {
     const data = await lastfmFetch('artist.gettopalbums', {
@@ -63,24 +75,48 @@ const fetchTrackFallbackImage = async (
   artistName: string,
   trackName: string
 ): Promise<string | null> => {
+  // 1. Try track.getInfo with cleaned names
   try {
+    const cleanedTrack = cleanName(trackName)
+    const cleanedArtist = cleanName(artistName)
+
     const data = await lastfmFetch('track.getInfo', {
-      artist: artistName,
-      track: trackName,
+      artist: cleanedArtist,
+      track: cleanedTrack,
       autocorrect: '1'
     })
-    const album = data.track?.album
-    if (!album) return null
-
-    return (
-      album.image?.find((img: any) => img.size === 'extralarge')?.['#text'] ||
-      album.image?.find((img: any) => img.size === 'large')?.['#text'] ||
-      null
-    )
+    
+    // If track.getInfo returns an album with an image, use it
+    const albumImage = data.track?.album?.image?.find((img: any) => img.size === 'extralarge')?.['#text'] ||
+                      data.track?.album?.image?.find((img: any) => img.size === 'large')?.['#text']
+    
+    if (albumImage && !albumImage.includes('2a96cbd8b46e442fc41c2b86b821562f')) {
+      return albumImage
+    }
   } catch (error) {
-    logger.warn(`Failed to fetch fallback image for track: ${trackName} by ${artistName}`, error)
-    return null
+    // Fail silently to try search fallback
   }
+
+  // 2. Try track.search as a last resort
+  try {
+    const searchData = await lastfmFetch('track.search', {
+      artist: artistName,
+      track: trackName,
+      limit: '1'
+    })
+    
+    const track = searchData.results?.trackmatches?.track?.[0]
+    const searchImage = track?.image?.find((img: any) => img.size === 'extralarge')?.['#text'] || 
+                        track?.image?.find((img: any) => img.size === 'large')?.['#text']
+
+    if (searchImage && !searchImage.includes('2a96cbd8b46e442fc41c2b86b821562f')) {
+      return searchImage
+    }
+  } catch (error) {
+    logger.warn(`Failed to fetch search fallback for track: ${trackName} by ${artistName}`, error)
+  }
+
+  return null
 }
 
 const getKey = (id: string, scope: string) => `lastfm:${scope}:${id}`
@@ -228,13 +264,22 @@ export const lastfmRouter = createTRPCRouter({
         popularity: parseInt(track.playcount) || 0
       }))
 
-      // Fallback for missing images
+      // Request-level cache to avoid duplicate calls for identical tracks
+      const fallbackCache = new Map<string, Promise<string | null>>()
+
       const withFallbacks = await Promise.all(
         trackList.map(async (track: any) => {
+          // If we already have a real image, use it
           if (track.albumImage && !track.albumImage.includes('2a96cbd8b46e442fc41c2b86b821562f')) {
             return track
           }
-          const fallback = await fetchTrackFallbackImage(track.artist, track.name)
+
+          const cacheKey = `${track.artist}:${track.name}`
+          if (!fallbackCache.has(cacheKey)) {
+            fallbackCache.set(cacheKey, fetchTrackFallbackImage(track.artist, track.name))
+          }
+
+          const fallback = await fallbackCache.get(cacheKey)!
           return { ...track, albumImage: fallback || track.albumImage }
         })
       )
@@ -344,13 +389,21 @@ export const lastfmRouter = createTRPCRouter({
           popularity: parseInt(track.playcount) || 0
         }))
 
-        // Fallback for missing images
+        // Request-level cache to avoid duplicate calls for identical tracks
+        const fallbackCache = new Map<string, Promise<string | null>>()
+
         const withFallbacks = await Promise.all(
           trackList.map(async (track: any) => {
             if (track.albumImage && !track.albumImage.includes('2a96cbd8b46e442fc41c2b86b821562f')) {
               return track
             }
-            const fallback = await fetchTrackFallbackImage(track.artist, track.name)
+
+            const cacheKey = `${track.artist}:${track.name}`
+            if (!fallbackCache.has(cacheKey)) {
+              fallbackCache.set(cacheKey, fetchTrackFallbackImage(track.artist, track.name))
+            }
+
+            const fallback = await fallbackCache.get(cacheKey)!
             return { ...track, albumImage: fallback || track.albumImage }
           })
         )
