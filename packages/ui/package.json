@@ -73,8 +73,8 @@
     "input-otp": "^1.4.2",
     "lucide-react": "^0.577.0",
     "merge-refs": "^2.0.0",
-    "react-hook-form": "^7.72.0",
-    "react-resizable-panels": "^4.8.0",
+    "react-hook-form": "^7.72.1",
+    "react-resizable-panels": "^4.9.0",
     "react-textarea-autosize": "^8.5.9",
     "sonner": "^2.0.7",
     "vaul": "^1.1.2"
@@ -93,7 +93,7 @@
     "@tanstack/react-table": "^8.21.3",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
-    "next": "16.2.1",
+    "next": "16.2.2",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "tailwindcss": "^4.2.2"
