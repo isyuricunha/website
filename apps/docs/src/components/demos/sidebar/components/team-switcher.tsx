@@ -54,7 +54,7 @@ const teams: Team[] = [
 
 const TeamSwitcher = () => {
   const { isMobile } = useSidebar()
-  const [activeTeam, setActiveTeam] = useState<Team>(defaultTeam)
+  const [activeTeam, setActiveTeam] = useState(defaultTeam)
 
   return (
     <SidebarMenu>

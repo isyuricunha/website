@@ -70,7 +70,7 @@ const remove_entry = async ({ absolute_path, repo_root, verbose }) => {
     }
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error)
-    throw new Error(`Failed to remove ${absolute_path}: ${message}`)
+    throw new Error(`Failed to remove ${absolute_path}: ${message}`, { cause: error })
   }
 }
 

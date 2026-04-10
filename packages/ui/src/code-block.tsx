@@ -15,11 +15,11 @@ type CodeBlockProps = {
 const CodeBlock = (props: CodeBlockProps) => {
   const { children, className, title, 'data-lang': lang, figureClassName, ref, ...rest } = props
 
-  const textInput = useRef<HTMLPreElement>(null)
+  const textInputRef = useRef<HTMLPreElement>(null)
   const Icon = getIconByLanguage(lang ?? '')
 
   const onCopy = () => {
-    void navigator.clipboard.writeText(textInput.current?.textContent ?? '')
+    void navigator.clipboard.writeText(textInputRef.current?.textContent ?? '')
   }
 
   return (
@@ -42,7 +42,7 @@ const CodeBlock = (props: CodeBlockProps) => {
       )}
 
       <ScrollArea>
-        <pre ref={mergeRefs(textInput, ref)} className={cn('p-4 text-[13px]', className)} {...rest}>
+        <pre ref={mergeRefs(textInputRef, ref)} className={cn('p-4 text-[13px]', className)} {...rest}>
           {children}
         </pre>
         <ScrollBar orientation='horizontal' />
