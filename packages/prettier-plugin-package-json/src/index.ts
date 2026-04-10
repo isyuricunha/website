@@ -13,22 +13,25 @@ type Options = {
 type PackageJson = Record<string, unknown>
 
 const parsePersonString = (value: string): Record<string, string> | string => {
-  const trimmed = value.trim()
+  if (!value || typeof value !== 'string') return value
+
+  const trimmed = value?.trim?.() ?? ''
   if (!trimmed) return value
 
   const removeSegment = (input: string, start: number, end: number) => {
+    if (!input || typeof input !== 'string') return input
     if (start < 0 || end < 0 || end <= start) return input
-    return (input.slice(0, start) + input.slice(end)).trim()
+    return (input?.slice?.(0, start) + input?.slice?.(end))?.trim?.() ?? ''
   }
 
-  const emailStart = trimmed.indexOf('<')
-  const emailEnd = emailStart === -1 ? -1 : trimmed.indexOf('>', emailStart + 1)
+  const emailStart = trimmed?.indexOf?.('<') ?? -1
+  const emailEnd = emailStart === -1 ? -1 : (trimmed?.indexOf?.('>', emailStart + 1) ?? -1)
   const email =
-    emailStart !== -1 && emailEnd > emailStart ? trimmed.slice(emailStart + 1, emailEnd) : null
+    emailStart !== -1 && emailEnd > emailStart ? (trimmed?.slice?.(emailStart + 1, emailEnd) ?? null) : null
 
-  const urlStart = trimmed.indexOf('(')
-  const urlEnd = urlStart === -1 ? -1 : trimmed.indexOf(')', urlStart + 1)
-  const url = urlStart !== -1 && urlEnd > urlStart ? trimmed.slice(urlStart + 1, urlEnd) : null
+  const urlStart = trimmed?.indexOf?.('(') ?? -1
+  const urlEnd = urlStart === -1 ? -1 : (trimmed?.indexOf?.(')', urlStart + 1) ?? -1)
+  const url = urlStart !== -1 && urlEnd > urlStart ? (trimmed?.slice?.(urlStart + 1, urlEnd) ?? null) : null
 
   let name = trimmed
   if (email !== null) {

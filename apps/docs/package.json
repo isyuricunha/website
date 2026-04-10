@@ -29,11 +29,11 @@
     "next-themes": "^0.4.6",
     "react": "19.2.4",
     "react-dom": "19.2.4",
-    "react-hook-form": "^7.72.0",
+    "react-hook-form": "^7.72.1",
     "recharts": "^3.8.1",
     "sharp": "^0.34.5",
-    "shiki": "^3.22.0",
-    "zod": "4.3.6"
+    "shiki": "^3.23.0",
+    "zod": "4.3.5"
   },
   "devDependencies": {
     "@content-collections/cli": "^0.1.9",
@@ -44,12 +44,12 @@
     "@isyuricunha/mdx-plugins": "workspace:*",
     "@isyuricunha/shared": "workspace:*",
     "@isyuricunha/tsconfig": "workspace:*",
-    "@next/bundle-analyzer": "^16.2.1",
+    "@next/bundle-analyzer": "^16.2.3",
     "@tailwindcss/postcss": "^4.2.2",
-    "@types/node": "^25.5.0",
+    "@types/node": "^25.6.0",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
-    "postcss": "^8.5.8",
+    "postcss": "^8.5.9",
     "postcss-load-config": "^6.0.1",
     "tailwindcss": "^4.2.2"
   },
