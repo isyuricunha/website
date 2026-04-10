@@ -9,6 +9,7 @@ import { getMessages, getTranslations, setRequestLocale } from '@isyuricunha/i18
 import { cn } from '@isyuricunha/utils'
 import { GeistMono } from 'geist/font/mono'
 import { GeistSans } from 'geist/font/sans'
+import { notFound } from 'next/navigation'
 import Script from 'next/script'
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
 
@@ -131,6 +132,12 @@ export const viewport: Viewport = {
 const Layout = async (props: LayoutProps) => {
   const { children } = props
   const { locale } = await props.params
+
+  // Fix: Block static assets (like favicon.ico) from falling through into the [locale] handler
+  if (!i18n.locales.includes(locale as any)) {
+    notFound()
+  }
+
   setRequestLocale(locale)
 
   const messages = await getMessages()
