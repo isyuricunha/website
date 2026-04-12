@@ -5,6 +5,7 @@ const config: KnipConfig = {
     '**/*.css',
     'apps/web/public/sw.js',
     'apps/web/scripts/vercel-ignore.js',
+    'apps/web/src/tests/stubs/**',
     'packages/db/src/migrations/**'
   ],
   vitest: {
