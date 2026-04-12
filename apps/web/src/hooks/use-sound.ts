@@ -33,7 +33,7 @@ const getAudioContext = (soundType: string): AudioContext => {
 // Generate different sound types using Web Audio API - Minimalist, Modern, Pleasant
 const generateSound = (
   context: AudioContext,
-  type: 'click' | 'success' | 'error' | 'notification' | 'gameClick' | 'gameSuccess' | 'gameOver'
+  type: 'click' | 'success' | 'error' | 'notification' | 'gameClick' | 'gameSuccess' | 'gameOver' | 'navigation' | 'alert'
 ): AudioBuffer => {
   const sampleRate = context.sampleRate
 
@@ -142,6 +142,18 @@ const generateSound = (
         const descendingFreq = 392 - t * 80 // Descend from G4 to C4
         sample = Math.sin(2 * Math.PI * descendingFreq * t) * gameOverEnvelope * 0.3
         break
+      case 'navigation':
+        // Modern, sliding navigation sound - soft sweep up
+        const navEnvelope = adsr(t, 0.05, 0.1, 0.5, 0.45)
+        const sweepFreq = 300 + t * 400 // Sweep from 300Hz to 700Hz
+        sample = Math.sin(2 * Math.PI * sweepFreq * t) * navEnvelope * 0.2
+        break
+      case 'alert':
+        // Distinct alert sound - two pulses
+        const alertEnvelope = adsr(t, 0.02, 0.08, 0.4, 0.3)
+        const pulse = Math.sin(t * 40) > 0 ? 1 : 0.5
+        sample = Math.sin(2 * Math.PI * 550 * t) * alertEnvelope * 0.25 * pulse
+        break
     }
 
     // Additional subtle fade out for all sounds to prevent any clicks
@@ -175,7 +187,9 @@ export const useSound = (
     | 'notification'
     | 'gameClick'
     | 'gameSuccess'
-    | 'gameOver',
+    | 'gameOver'
+    | 'navigation'
+    | 'alert',
   enabled: boolean = true
 ): SoundHookReturn => {
   const [isPlaying, setIsPlaying] = useState(false)
