@@ -15,11 +15,7 @@ export default mergeConfig(sharedProjectConfig, {
     }
   },
   resolve: {
-    alias: {
       '@': resolve('./src'),
-      'next/navigation': resolve('./src/tests/stubs/next-navigation.ts'),
-      'next-intl/navigation': resolve('./src/tests/stubs/next-intl-navigation.ts'),
       'content-collections': resolve('./.content-collections/generated/index.js')
-    }
   }
 })
