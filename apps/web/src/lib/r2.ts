@@ -12,7 +12,7 @@ export const get_r2_public_base_url = () => {
   return env.R2_PUBLIC_BASE_URL?.replace(/\/$/, '') ?? null
 }
 
-export const create_r2_client = () => {
+const create_r2_client = () => {
   const endpoint = get_r2_endpoint()
   if (!endpoint || !env.R2_ACCESS_KEY_ID || !env.R2_SECRET_ACCESS_KEY) return null
 
