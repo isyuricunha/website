@@ -7,7 +7,6 @@ const Table = (props: TableProps) => {
 
   return (
     <div className='relative w-full overflow-auto'>
-      {/* eslint-disable-next-line sonarjs/table-header -- this is a component */}
       <table className={cn('w-full caption-bottom text-sm', className)} {...rest} />
     </div>
   )
