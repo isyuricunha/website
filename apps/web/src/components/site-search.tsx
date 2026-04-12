@@ -136,6 +136,21 @@ const SiteSearch = () => {
     }
   }, [])
 
+  // Listen for autonomous search commands from Yue
+  useEffect(() => {
+    const handleYueSearch = (e: Event) => {
+      const customEvent = e as CustomEvent<{ query: string }>
+      if (customEvent.detail?.query) {
+        setQuery(customEvent.detail.query)
+        setIsOpen(true)
+        setSelectedIndex(-1)
+      }
+    }
+
+    window.addEventListener('yue-open-search' as any, handleYueSearch)
+    return () => window.removeEventListener('yue-open-search' as any, handleYueSearch)
+  }, [])
+
   // Save search to recent searches
   const saveRecentSearch = useCallback(
     (searchTerm: string) => {

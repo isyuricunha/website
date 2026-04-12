@@ -16,7 +16,16 @@ import {
   Bug as BugIcon,
   Github as GithubIcon,
   Copy as CopyIcon,
-  MessageCircle as MessageCircleIcon
+  MessageCircle as MessageCircleIcon,
+  Pencil,
+  Plus,
+  Send,
+  Share2,
+  ThumbsDown,
+  ThumbsUp,
+  Trash2,
+  RefreshCw,
+  Sparkles
 } from 'lucide-react'
 import { useTranslations, useMessages, useLocale } from '@isyuricunha/i18n/client'
 import { i18n } from '@isyuricunha/i18n/config'
@@ -80,6 +89,12 @@ const create_initial_state = () => ({
   isThinking: false,
   mousePosition: { x: 0, y: 0 },
   blogPostsVisited: new Set<string>(),
+  clickCount: 0,
+  lastClickTime: 0,
+  isTickled: false,
+  isDizzy: false,
+  showSelectionBubble: false,
+  selectedText: '',
   preferences: { ...DEFAULT_PREFERENCES }
 })
 
@@ -652,6 +667,25 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     updateState
   ])
 
+  // Handle document selection for "Explain this" feature
+  useEffect(() => {
+    if (!mounted || !state.preferences.speechBubbles) return
+
+    const handleSelectionChange = () => {
+      const selection = window.getSelection()
+      const text = selection?.toString().trim() ?? ''
+
+      if (text.length > 10 && (pageKey === 'blogPost' || pageKey === 'snippets')) {
+        updateState({ selectedText: text, showSelectionBubble: true })
+      } else {
+        updateState({ showSelectionBubble: false })
+      }
+    }
+
+    document.addEventListener('selectionchange', handleSelectionChange)
+    return () => document.removeEventListener('selectionchange', handleSelectionChange)
+  }, [mounted, state.preferences.speechBubbles, pageKey, updateState])
+
   // Build message list from i18n with time-based greetings and context
   const messages: string[] = useMemo(() => {
     const list: string[] = []
@@ -691,11 +725,34 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     return list
   }, [mounted, t, pageKey, fetchPageMessages, getTimeBasedGreeting])
 
-  // (Removed unused random picker helpers after introducing message queue)
-
-  // (Removed dismiss handler; per-bubble close and Hide button cover behavior)
-
   const handleMascotClick = () => {
+    const now = Date.now()
+    const isRapid = now - state.lastClickTime < 1000
+    const newCount = isRapid ? state.clickCount + 1 : 1
+
+    updateState({
+      clickCount: newCount,
+      lastClickTime: now
+    })
+
+    if (newCount === 5) {
+      // Tickle triggered!
+      updateState({ isTickled: true })
+      enqueueMessage(t('mascot.interactions.tickle'), 3000)
+      notificationSoundRef.current()
+      setTimeout(() => updateState({ isTickled: false }), 1000)
+      return
+    }
+
+    if (newCount === 10) {
+      // Dizzy triggered!
+      updateState({ isDizzy: true, clickCount: 0 })
+      enqueueMessage(t('mascot.interactions.dizzy'), 4000)
+      alertSound.play()
+      setTimeout(() => updateState({ isDizzy: false }), 5000)
+      return
+    }
+
     // Toggle menu visibility when clicking on mascot
     updateState({
       isActive: !state.isActive,
@@ -711,10 +768,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
 
   const handleMouseEnter = () => {
     updateState({ isHovering: true })
-    // Do not auto-enqueue on hover to avoid spam; only show if queue already has messages
   }
-
-  // (Removed unused hover leave handler; visibility handled by queue existence)
 
   const handleHideMascot = () => {
     updateState({ isHiddenPref: true })
@@ -724,8 +778,6 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       if (!isProduction) console.error('Error hiding mascot:', error)
     }
   }
-
-  // (Removed restore handler; Eye button toggles state directly)
 
   const handleMenuAction = (action: string) => {
     // First hide all UI elements
@@ -779,6 +831,22 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       }
     }, 50) // Small delay to ensure clean transition
   }
+
+  const explain_selection = useCallback(() => {
+    const text = state.selectedText
+    if (!text) return
+
+    updateState({
+      showAIChat: true,
+      showSelectionBubble: false,
+      selectedText: ''
+    })
+
+    // Send a message to the AI asking to explain the selection
+    const prompt = t('mascot.interactions.explainPrompt', { text })
+    sessionStorage.setItem('yue_pending_prompt', prompt)
+    notificationSoundRef.current()
+  }, [state.selectedText, t, updateState])
 
   // Get position classes based on preference
   const getPositionClasses = (): string => {
@@ -1109,12 +1177,36 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
             </div>
           )}
 
+        {/* Selection Explain Bubble */}
+        {state.showSelectionBubble && !state.showAIChat && (
+          <div className={`${getBubblePositionClasses()} animate-in fade-in slide-in-from-bottom-2 duration-300 z-50`}>
+            <div className="bg-primary text-primary-foreground shadow-lg flex items-center gap-2 rounded-2xl px-3 py-2 text-xs">
+              <Sparkles className="h-3 w-3 animate-pulse" />
+              <span className="font-medium">{t('mascot.interactions.selectionExplain')}</span>
+              <button
+                type="button"
+                onClick={explain_selection}
+                className="bg-primary-foreground/20 hover:bg-primary-foreground/30 rounded-lg px-2 py-1 font-bold transition-colors"
+              >
+                {t('mascot.interactions.explainButton')}
+              </button>
+              <button
+                type="button"
+                onClick={() => updateState({ showSelectionBubble: false })}
+                className="hover:bg-primary-foreground/10 rounded p-1"
+              >
+                <XIcon className="h-3 w-3" />
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* Mascot button */}
         <button
           ref={mascotRef}
           type='button'
           aria-label={t('mascot.ariaLabel')}
-          className={`focus-visible:ring-primary/50 relative inline-flex h-12 w-12 items-center justify-center rounded-full border-2 transition-all duration-300 focus-visible:ring-2 focus-visible:outline-none sm:h-14 sm:w-14 lg:h-16 lg:w-16 ${state.isActive ? 'border-primary/60 shadow-primary/30 scale-110 shadow-2xl' : 'border-border/40 shadow-xl shadow-black/10'} ${state.preferences.animations ? 'hover:shadow-primary/20 hover:scale-110 hover:shadow-2xl' : ''} ${state.isKonamiMode ? 'animate-pulse border-yellow-400 shadow-yellow-400/20' : ''}`}
+          className={`focus-visible:ring-primary/50 relative inline-flex h-12 w-12 items-center justify-center rounded-full border-2 transition-all duration-300 focus-visible:ring-2 focus-visible:outline-none sm:h-14 sm:w-14 lg:h-16 lg:w-16 ${state.isActive ? 'border-primary/60 shadow-primary/30 scale-110 shadow-2xl' : 'border-border/40 shadow-xl shadow-black/10'} ${state.preferences.animations ? 'hover:shadow-primary/20 hover:scale-110 hover:shadow-2xl' : ''} ${state.isKonamiMode ? 'animate-pulse border-yellow-400 shadow-yellow-400/20' : ''} ${state.isTickled ? 'animate-bounce' : ''} ${state.isDizzy ? 'animate-spin' : ''}`}
           onClick={handleMascotClick}
           onMouseEnter={handleMouseEnter}
           onFocus={() => {

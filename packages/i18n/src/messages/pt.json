@@ -967,6 +967,13 @@
     "actions": {
       "navigating": "Entendido! Te levando para {target} em um instante... 🚀"
     },
+    "interactions": {
+      "tickle": "Ei! Isso faz cócegas! Haha! 😄",
+      "dizzy": "Uau... acho que girei demais... 😵‍💫",
+      "selectionExplain": "Quer que eu te explique o que é isso?",
+      "explainButton": "Explicar",
+      "explainPrompt": "Pode me explicar este trecho de texto que selecionei?\n\n\"{text}\""
+    },
     "restore": "Trazer a Yue de volta",
     "idle": {
       "tip1": "💡 Sabia que você pode usar Shift+Y para me trazer de volta se eu estiver oculto?",

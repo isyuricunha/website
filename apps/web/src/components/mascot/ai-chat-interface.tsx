@@ -48,6 +48,7 @@ import {
   RefreshCw,
   X
 } from 'lucide-react'
+import { useTheme } from 'next-themes'
 import { Fragment, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { toast } from 'sonner'
 
@@ -137,6 +138,8 @@ export default function AIChatInterface({
   const locale = useLocale()
   const router = useRouter()
   const { play: navigationPlay } = useSound('navigation')
+  const { play: successPlay } = useSound('success')
+  const { play: clickPlay } = useSound('click')
 
   const yue_avatar_src = '/images/mascote-3.png'
 
@@ -352,6 +355,7 @@ export default function AIChatInterface({
     }
   }
 
+
   const sendMessage = async () => {
     const messageText = inputValue.trim()
     if (!messageText || isLoading) return
@@ -563,6 +567,17 @@ export default function AIChatInterface({
     }
   }
 
+  // Handle pending prompts (like "Explain this selection")
+  useEffect(() => {
+    if (isOpen && !isLoading) {
+      const pending = sessionStorage.getItem('yue_pending_prompt')
+      if (pending) {
+        sessionStorage.removeItem('yue_pending_prompt')
+        void send_chat_message(pending)
+      }
+    }
+  }, [isOpen, isLoading, send_chat_message])
+
   const copyLink = async (href: string) => {
     try {
       const absolute = (() => {
@@ -770,20 +785,49 @@ export default function AIChatInterface({
     onThinkingChange?.(isLoading)
   }, [isLoading, onThinkingChange])
 
+  const { theme, setTheme } = useTheme()
+
   // Handle autonomous navigation commands in AI responses
   const handleAutonomousActions = useCallback(
     async (text: string) => {
+      // 1. Navigation
       const navMatch = /\[\[NAVIGATE:([^\]]+)\]\]/.exec(text)
       if (navMatch?.[1]) {
         const targetPath = navMatch[1].trim()
-        // Wait 1.5s so user can read the confirmation
         setTimeout(() => {
           navigationPlay()
           router.push(targetPath)
         }, 1500)
       }
+
+      // 2. Theme Toggle
+      if (text.includes('[[TOGGLE_THEME]]')) {
+        setTimeout(() => {
+          setTheme(theme === 'dark' ? 'light' : 'dark')
+          successPlay()
+        }, 1000)
+      }
+
+      // 3. Site Search
+      const searchMatch = /\[\[SEARCH:([^\]]+)\]\]/.exec(text)
+      if (searchMatch?.[1]) {
+        const query = searchMatch[1].trim()
+        setTimeout(() => {
+          const event = new CustomEvent('yue-open-search', { detail: { query } })
+          window.dispatchEvent(event)
+          clickPlay()
+        }, 800)
+      }
+
+      // 4. Scroll to Top
+      if (text.includes('[[SCROLL_TO_TOP]]')) {
+        setTimeout(() => {
+          window.scrollTo({ top: 0, behavior: 'smooth' })
+          clickPlay()
+        }, 800)
+      }
     },
-    [router, navigationPlay]
+    [router, navigationPlay, theme, setTheme, successPlay, clickPlay]
   )
 
   if (!isOpen) return null
@@ -957,7 +1001,9 @@ export default function AIChatInterface({
                     {!message.isError && (
                       <button
                         type='button'
-                        onClick={() => copyMessage(message.text)}
+                        onClick={() =>
+                          copyMessage(message.text.replace(/\[\[[A-Z_]+(?::[^\]]+)?\]\]/g, '').trim())
+                        }
                         className='text-muted-foreground hover:text-foreground ml-auto rounded p-1 transition-colors'
                         aria-label={t('mascot.aiChat.copyMessage')}
                       >
@@ -970,7 +1016,9 @@ export default function AIChatInterface({
                   <p className='leading-relaxed whitespace-pre-wrap'>{message.text}</p>
                 ) : (
                   <div className='flex flex-col gap-2'>
-                    <ChatMarkdown>{message.text}</ChatMarkdown>
+                    <ChatMarkdown>
+                      {message.text.replace(/\[\[[A-Z_]+(?::[^\]]+)?\]\]/g, '').trim()}
+                    </ChatMarkdown>
                     {message.isError && (
                       <Button
                         variant='outline'
