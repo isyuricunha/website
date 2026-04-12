@@ -961,6 +961,12 @@
     "easterEgg": {
       "retroMode": "Retro mode activated! 🎮"
     },
+    "notifications": {
+      "newPost": "Hey! I've published a new article: {title}. Want to check it out? 📝"
+    },
+    "actions": {
+      "navigating": "Got it! Taking you to {target} in a moment... 🚀"
+    },
     "restore": "Bring Yue back",
     "idle": {
       "tip1": "💡 Did you know? You can use Shift+Y to bring me back if I'm hidden!",

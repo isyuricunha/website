@@ -2,6 +2,7 @@
 
 import { flags } from '@isyuricunha/env'
 import { useTranslations, useLocale } from '@isyuricunha/i18n/client'
+import { useRouter } from 'next/navigation'
 import {
   Avatar,
   AvatarFallback,
@@ -44,6 +45,7 @@ import {
   ThumbsDown,
   ThumbsUp,
   Trash2,
+  RefreshCw,
   X
 } from 'lucide-react'
 import { Fragment, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
@@ -61,6 +63,7 @@ import {
   saveYueChatState
 } from '@/utils/yue-chat-storage'
 import ConfirmationDialog from '../admin/confirmation-dialog'
+import { useSound } from '../../hooks/use-sound'
 
 interface AIChatInterfaceProps {
   readonly isOpen: boolean
@@ -68,6 +71,7 @@ interface AIChatInterfaceProps {
   readonly currentPage?: string
   readonly pagePath?: string
   readonly onMessageSent?: (message: string) => void
+  readonly onThinkingChange?: (isThinking: boolean) => void
 }
 
 type ChatMarkdownProps = {
@@ -126,10 +130,13 @@ export default function AIChatInterface({
   onClose,
   currentPage = '',
   pagePath = '',
-  onMessageSent
+  onMessageSent,
+  onThinkingChange
 }: AIChatInterfaceProps) {
   const t = useTranslations()
   const locale = useLocale()
+  const router = useRouter()
+  const { play: navigationPlay } = useSound('navigation')
 
   const yue_avatar_src = '/images/mascote-3.png'
 
@@ -465,6 +472,7 @@ export default function AIChatInterface({
           }))
         }
 
+
         const latency = Math.max(0, Math.round(performance.now() - startTime))
         updateActiveConversation((c) => ({
           ...c,
@@ -479,6 +487,10 @@ export default function AIChatInterface({
           ),
           updatedAt: new Date().toISOString()
         }))
+
+        if (accumulated) {
+          handleAutonomousActions(accumulated)
+        }
 
         return
       }
@@ -523,6 +535,10 @@ export default function AIChatInterface({
         messages: [...c.messages, aiMessage],
         updatedAt: new Date().toISOString()
       }))
+
+      if (data.message) {
+        handleAutonomousActions(data.message)
+      }
     } catch (error) {
       if (process.env.NODE_ENV === 'development') {
         console.error('Chat error:', error)
@@ -579,6 +595,32 @@ export default function AIChatInterface({
       e.preventDefault()
       sendMessage()
     }
+  }
+
+  const retry_message = async (messageId: string) => {
+    const conversation = conversations.find((c) => c.id === activeConversationId)
+    if (!conversation) return
+
+    const messageIndex = conversation.messages.findIndex((m) => m.id === messageId)
+    if (messageIndex === -1) return
+
+    // Find the last user message before this error
+    const lastUserMessage = [...conversation.messages]
+      .slice(0, messageIndex)
+      .reverse()
+      .find((m) => m.isUser)
+
+    if (!lastUserMessage) return
+
+    // Remove the error message and any trailing messages
+    updateActiveConversation((c) => ({
+      ...c,
+      messages: c.messages.slice(0, messageIndex),
+      updatedAt: new Date().toISOString()
+    }))
+
+    // Re-send the user message
+    await send_chat_message(lastUserMessage.text)
   }
 
   const clearChat = () => {
@@ -722,6 +764,27 @@ export default function AIChatInterface({
 
     return () => clearInterval(interval)
   }, [isLoading])
+
+  // Report thinking state to parent
+  useEffect(() => {
+    onThinkingChange?.(isLoading)
+  }, [isLoading, onThinkingChange])
+
+  // Handle autonomous navigation commands in AI responses
+  const handleAutonomousActions = useCallback(
+    async (text: string) => {
+      const navMatch = /\[\[NAVIGATE:([^\]]+)\]\]/.exec(text)
+      if (navMatch?.[1]) {
+        const targetPath = navMatch[1].trim()
+        // Wait 1.5s so user can read the confirmation
+        setTimeout(() => {
+          navigationPlay()
+          router.push(targetPath)
+        }, 1500)
+      }
+    },
+    [router, navigationPlay]
+  )
 
   if (!isOpen) return null
 
@@ -906,7 +969,20 @@ export default function AIChatInterface({
                 {message.isUser ? (
                   <p className='leading-relaxed whitespace-pre-wrap'>{message.text}</p>
                 ) : (
-                  <ChatMarkdown>{message.text}</ChatMarkdown>
+                  <div className='flex flex-col gap-2'>
+                    <ChatMarkdown>{message.text}</ChatMarkdown>
+                    {message.isError && (
+                      <Button
+                        variant='outline'
+                        size='sm'
+                        onClick={() => void retry_message(message.id)}
+                        className='mt-1 flex w-fit items-center gap-2 rounded-full px-4 text-xs'
+                      >
+                        <RefreshCw className='h-3 w-3' />
+                        {t('mascot.aiChat.retry')}
+                      </Button>
+                    )}
+                  </div>
                 )}
 
                 {!message.isUser && !message.isError && (message.citations?.length ?? 0) > 0 ? (

@@ -18,7 +18,7 @@ import {
   Copy as CopyIcon,
   MessageCircle as MessageCircleIcon
 } from 'lucide-react'
-import { useTranslations, useMessages } from '@isyuricunha/i18n/client'
+import { useTranslations, useMessages, useLocale } from '@isyuricunha/i18n/client'
 import { i18n } from '@isyuricunha/i18n/config'
 import MascotGame from './mascot-game'
 import AIChatInterface from './ai-chat-interface'
@@ -77,12 +77,15 @@ const create_initial_state = () => ({
   lastMessageIndex: -1,
   // 0 means "not chosen yet"; we will choose after mount to avoid SSR mismatch
   currentMascotImage: 0,
+  isThinking: false,
+  mousePosition: { x: 0, y: 0 },
   blogPostsVisited: new Set<string>(),
   preferences: { ...DEFAULT_PREFERENCES }
 })
 
 const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   const t = useTranslations()
+  const locale = useLocale()
   const allMessages = useMessages() as any
   const [state, setState] = useState(create_initial_state)
 
@@ -92,29 +95,85 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   const clickSound = useSound('click', state.preferences.soundEffects)
   const successSound = useSound('success', state.preferences.soundEffects)
   const notificationSound = useSound('notification', state.preferences.soundEffects)
+  const alertSound = useSound('alert', state.preferences.soundEffects)
 
   const mascotRef = useRef<HTMLButtonElement | null>(null)
+
+  // Track current page path for contextual messages (language-aware)
+  const pathname = usePathname()
+  const getPageKey = useCallback(
+    (path: string) => {
+      // Remove locale prefix if present
+      const localePattern = new RegExp(`^/(${i18n.locales.join('|')})/`, '')
+      const pathWithoutLocale = path.replace(localePattern, '/')
+
+      if (pathWithoutLocale === '/' || pathWithoutLocale === '') return 'home'
+
+      // Check for detail pages first (more specific)
+      // Blog post detail
+      const blogPostMatch = /^\/blog\/([^\/]+)$/.exec(pathWithoutLocale)
+      if (blogPostMatch) return 'blogPost'
+
+      // Generic detail handling for known segments (e.g., /projects/[slug])
+      const DETAIL_SEGMENTS = new Set(['projects'])
+      const detailMatch = /^\/(\w+)\/([^\/]+)$/.exec(pathWithoutLocale)
+      if (detailMatch) {
+        const seg = detailMatch[1]
+        if (seg && DETAIL_SEGMENTS.has(seg)) {
+          return `${seg}Detail`
+        }
+      }
+
+      if (pathWithoutLocale.startsWith('/blog')) return 'blog'
+      if (pathWithoutLocale.startsWith('/projects')) return 'projects'
+      if (pathWithoutLocale.startsWith('/about')) return 'about'
+      if (pathWithoutLocale.startsWith('/uses')) return 'uses'
+      if (pathWithoutLocale.startsWith('/music')) return 'music'
+      if (pathWithoutLocale.startsWith('/guestbook')) return 'guestbook'
+      if (pathWithoutLocale.startsWith('/admin')) return 'admin'
+      if (pathWithoutLocale.includes('search') || pathWithoutLocale.includes('?q=')) return 'search'
+      if (pathWithoutLocale === '/404' || pathWithoutLocale.includes('not-found')) return '404'
+      return 'home'
+    },
+    [i18n.locales]
+  )
+
+  const pageKey = getPageKey(pathname || '/')
   const [mounted, setMounted] = useState(false)
-  const reset_auto_show_timeout_ref = useRef<ReturnType<typeof setTimeout> | null>(null)
   const blink_timeout_ref = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const reset_auto_show_timeout_ref = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  // Preload all mascot images to avoid flickering during state changes
+  useEffect(() => {
+    const images = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    images.forEach((num) => {
+      const img = new globalThis.Image()
+      img.src = `/images/mascote-${num}.png`
+    })
+  }, [])
 
   // Refs to store current sound functions to avoid stale closures
-  const clickSoundRef = useRef(clickSound.play)
-  const successSoundRef = useRef(successSound.play)
-  const notificationSoundRef = useRef(notificationSound.play)
+  const clickPlay = clickSound.play
+  const successPlay = successSound.play
+  const notificationPlay = notificationSound.play
+  const alertPlay = alertSound.play
+
+  const clickSoundRef = useRef(clickPlay)
+  const successSoundRef = useRef(successPlay)
+  const notificationSoundRef = useRef(notificationPlay)
 
   // Keep refs updated with latest sound functions
   useEffect(() => {
-    clickSoundRef.current = clickSound.play
-  }, [clickSound.play])
+    clickSoundRef.current = clickPlay
+  }, [clickPlay])
 
   useEffect(() => {
-    successSoundRef.current = successSound.play
-  }, [successSound.play])
+    successSoundRef.current = successPlay
+  }, [successPlay])
 
   useEffect(() => {
-    notificationSoundRef.current = notificationSound.play
-  }, [notificationSound.play])
+    notificationSoundRef.current = notificationPlay
+  }, [notificationPlay])
 
   // Helper functions to update state
   const updateState = useCallback((updates: Partial<ReturnType<typeof create_initial_state>>) => {
@@ -209,6 +268,18 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     if (hour < 21) return t('mascot.greetings.evening')
     return t('mascot.greetings.night')
   }, [mounted, t])
+
+  // AI Chat Interface Handlers
+  const handleAIClose = useCallback(() => {
+    updateState({ showAIChat: false, showBubble: false, isThinking: false })
+  }, [updateState])
+
+  const handleThinkingChange = useCallback(
+    (thinking: boolean) => {
+      updateState({ isThinking: thinking })
+    },
+    [updateState]
+  )
 
   // Get idle message - use all available messages instead of just first 5
   const getIdleMessage = useCallback(() => {
@@ -358,6 +429,41 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     }
   }, [state.preferences.animations, prefersReducedMotion, updateState])
 
+  // Mouse follow effect
+  useEffect(() => {
+    if (!state.preferences.animations || prefersReducedMotion || !state.isActive) return
+
+    const handleMouseMove = (e: MouseEvent) => {
+      // Calculate normalized position (-1 to 1) relative to screen center
+      const x = (e.clientX / window.innerWidth) * 2 - 1
+      const y = (e.clientY / window.innerHeight) * 2 - 1
+      updateState({ mousePosition: { x, y } })
+    }
+
+    window.addEventListener('mousemove', handleMouseMove)
+    return () => window.removeEventListener('mousemove', handleMouseMove)
+  }, [state.preferences.animations, prefersReducedMotion, state.isActive, updateState])
+
+  // Contextual skin switching
+  useEffect(() => {
+    let nextImage = 1 // Default
+
+    if (state.isThinking) {
+      nextImage = 8 // Thinking
+    } else if (pageKey === '404') {
+      nextImage = 6 // Worried
+    } else if (pageKey === 'projects' || pageKey === 'projectsDetail') {
+      nextImage = 7 // Explorer
+    } else if (state.autoShowMessage || state.showBubble) {
+      // If she's talking and everything is fine, maybe keep default or happy if success?
+      // For now, let's stick to these rules.
+    }
+
+    if (nextImage !== state.currentMascotImage) {
+      updateState({ currentMascotImage: nextImage })
+    }
+  }, [pageKey, state.isThinking, state.autoShowMessage, state.showBubble, state.currentMascotImage, updateState])
+
   // Idle timer for fun facts
   useEffect(() => {
     if (
@@ -384,6 +490,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
       }
     }, 25_000) // 25 seconds idle
 
+
     return () => {
       if (timer) clearTimeout(timer)
     }
@@ -399,43 +506,35 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     getIdleMessage
   ])
 
-  // Track current page path for contextual messages (language-aware)
-  const pathname = usePathname()
-  const getPageKey = (path: string) => {
-    // Remove locale prefix if present
-    const localePattern = new RegExp(`^/(${i18n.locales.join('|')})/`, '')
-    const pathWithoutLocale = path.replace(localePattern, '/')
+  // Smart Notifications: Check for new blog posts
+  useEffect(() => {
+    if (!mounted || !state.preferences.speechBubbles) return
 
-    if (pathWithoutLocale === '/' || pathWithoutLocale === '') return 'home'
+    const checkForNewPost = async () => {
+      try {
+        const res = await fetch(`/api/mascot/latest-post?locale=${locale}`)
+        const data = await res.json()
 
-    // Check for detail pages first (more specific)
-    // Blog post detail
-    const blogPostMatch = /^\/blog\/([^\/]+)$/.exec(pathWithoutLocale)
-    if (blogPostMatch) return 'blogPost'
-
-    // Generic detail handling for known segments (e.g., /projects/[slug])
-    const DETAIL_SEGMENTS = new Set(['projects'])
-    const detailMatch = /^\/(\w+)\/([^\/]+)$/.exec(pathWithoutLocale)
-    if (detailMatch) {
-      const seg = detailMatch[1]
-      if (seg && DETAIL_SEGMENTS.has(seg)) {
-        return `${seg}Detail`
+        if (data.post && data.post.slug) {
+          const hasVisited = state.blogPostsVisited.has(data.post.slug)
+          if (!hasVisited) {
+            // Wait a bit after mount so it doesn't clash with the greeting
+            setTimeout(() => {
+              const msg = t('mascot.notifications.newPost', { title: data.post.title })
+              enqueueMessage(msg, 10000)
+              alertSound.play()
+            }, 5000)
+          }
+        }
+      } catch (error) {
+        // Silently fail for notifications
       }
     }
 
-    if (pathWithoutLocale.startsWith('/blog')) return 'blog'
-    if (pathWithoutLocale.startsWith('/projects')) return 'projects'
-    if (pathWithoutLocale.startsWith('/about')) return 'about'
-    if (pathWithoutLocale.startsWith('/uses')) return 'uses'
-    if (pathWithoutLocale.startsWith('/music')) return 'music'
-    if (pathWithoutLocale.startsWith('/guestbook')) return 'guestbook'
-    if (pathWithoutLocale.startsWith('/admin')) return 'admin'
-    if (pathWithoutLocale.includes('search') || pathWithoutLocale.includes('?q=')) return 'search'
-    if (pathWithoutLocale === '/404' || pathWithoutLocale.includes('not-found')) return '404'
-    return 'home'
-  }
+    void checkForNewPost()
+  }, [mounted, locale, state.blogPostsVisited, state.preferences.speechBubbles, t, enqueueMessage, alertPlay])
 
-  const pageKey = getPageKey(pathname || '/')
+
 
   // Check if we're on a specific blog post
   const isOnBlogPost = useMemo(() => {
@@ -933,7 +1032,8 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         {state.showAIChat && (
           <AIChatInterface
             isOpen={state.showAIChat}
-            onClose={() => updateState({ showAIChat: false, showBubble: false })}
+            onClose={handleAIClose}
+            onThinkingChange={handleThinkingChange}
             currentPage={pageKey}
             pagePath={pathname || '/'}
           />
@@ -945,7 +1045,11 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
           !state.showSettings &&
           !state.showMenu &&
           !state.showAIChat && (
-            <div className={`${getBubblePositionClasses()} flex w-56 flex-col gap-2 sm:w-60`}>
+            <div
+              className={`${getBubblePositionClasses()} flex w-56 flex-col gap-2 sm:w-60`}
+              aria-live='polite'
+              aria-atomic='false'
+            >
               {state.messageQueue.map((item, idx) => {
                 const isExiting = state.exitingIds.has(item.id)
                 return (
@@ -1040,15 +1144,26 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
           }}
         >
           {mounted && state.currentMascotImage > 0 ? (
-            <Image
-              src={`/images/mascote-${state.currentMascotImage}.png`}
-              alt=''
-              role='presentation'
-              width={64}
-              height={64}
-              className={`h-full w-full rounded-full object-cover transition-all duration-200 ${state.isBlinking ? 'animate-pulse' : ''} ${state.isKonamiMode ? 'hue-rotate-180 sepia filter' : ''}`}
-              priority={false}
-            />
+            <div
+              className='relative h-full w-full rounded-full transition-transform duration-500 ease-out'
+              style={
+                state.preferences.animations && !prefersReducedMotion
+                  ? {
+                      transform: `translate(${state.mousePosition.x * 5}px, ${state.mousePosition.y * 5}px) rotate(${state.mousePosition.x * 5}deg)`
+                    }
+                  : undefined
+              }
+            >
+              <Image
+                src={`/images/mascote-${state.currentMascotImage}.png`}
+                alt=''
+                role='presentation'
+                width={64}
+                height={64}
+                className={`h-full w-full rounded-full object-cover transition-all duration-500 ${state.isBlinking ? 'animate-pulse' : ''} ${state.isKonamiMode ? 'hue-rotate-180 sepia filter' : ''}`}
+                priority={state.isActive}
+              />
+            </div>
           ) : (
             <div aria-hidden className='bg-muted/40 h-full w-full rounded-full' />
           )}

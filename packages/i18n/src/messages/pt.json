@@ -961,6 +961,12 @@
     "easterEgg": {
       "retroMode": "Modo retrô ativado! 🎮"
     },
+    "notifications": {
+      "newPost": "Ei! Publiquei um novo artigo: {title}. Quer dar uma olhada? 📝"
+    },
+    "actions": {
+      "navigating": "Entendido! Te levando para {target} em um instante... 🚀"
+    },
     "restore": "Trazer a Yue de volta",
     "idle": {
       "tip1": "💡 Sabia que você pode usar Shift+Y para me trazer de volta se eu estiver oculto?",
