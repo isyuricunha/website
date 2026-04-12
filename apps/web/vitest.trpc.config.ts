@@ -15,7 +15,9 @@ export default mergeConfig(sharedProjectConfig, {
     }
   },
   resolve: {
+    alias: {
       '@': resolve('./src'),
       'content-collections': resolve('./.content-collections/generated/index.js')
+    }
   }
 })
