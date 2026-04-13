@@ -814,7 +814,7 @@ export default function AIChatInterface({
         const query = searchMatch[1].trim()
         setTimeout(() => {
           const event = new CustomEvent('yue-open-search', { detail: { query } })
-          window.dispatchEvent(event)
+          globalThis.dispatchEvent(event)
           clickPlay()
         }, 800)
       }
