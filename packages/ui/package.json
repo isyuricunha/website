@@ -37,7 +37,7 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@ark-ui/react": "^5.36.0",
+    "@ark-ui/react": "^5.36.1",
     "@icons-pack/react-simple-icons": "13.13.0",
     "@radix-ui/react-accordion": "^1.2.12",
     "@radix-ui/react-alert-dialog": "^1.1.15",
@@ -93,7 +93,7 @@
     "@tanstack/react-table": "^8.21.3",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
-    "next": "16.2.3",
+    "next": "16.2.4",
     "react": "19.2.5",
     "react-dom": "19.2.5",
     "tailwindcss": "^4.2.2"
