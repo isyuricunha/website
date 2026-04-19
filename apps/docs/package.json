@@ -17,7 +17,7 @@
     "type-check": "pnpm build:mdx && tsc --noEmit"
   },
   "dependencies": {
-    "@hookform/resolvers": "5.2.2",
+    "@hookform/resolvers": "5.2.1",
     "@isyuricunha/ui": "workspace:*",
     "@isyuricunha/utils": "workspace:*",
     "@tanstack/react-table": "^8.21.3",
@@ -33,7 +33,7 @@
     "recharts": "^3.8.1",
     "sharp": "^0.34.5",
     "shiki": "^4.0.2",
-    "zod": "4.3.6"
+    "zod": "4.3.5"
   },
   "devDependencies": {
     "@content-collections/cli": "^0.1.9",
