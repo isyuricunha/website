@@ -355,7 +355,6 @@ export default function AIChatInterface({
     }
   }
 
-
   const sendMessage = async () => {
     const messageText = inputValue.trim()
     if (!messageText || isLoading) return
@@ -475,7 +474,6 @@ export default function AIChatInterface({
             messages: c.messages.map((m) => (m.id === messageId ? { ...m, text: accumulated } : m))
           }))
         }
-
 
         const latency = Math.max(0, Math.round(performance.now() - startTime))
         updateActiveConversation((c) => ({
@@ -1002,7 +1000,9 @@ export default function AIChatInterface({
                       <button
                         type='button'
                         onClick={() =>
-                          copyMessage(message.text.replace(/\[\[[A-Z_]+(?::[^\]]+)?\]\]/g, '').trim())
+                          copyMessage(
+                            message.text.replace(/\[\[[A-Z_]+(?::[^\]]+)?\]\]/g, '').trim()
+                          )
                         }
                         className='text-muted-foreground hover:text-foreground ml-auto rounded p-1 transition-colors'
                         aria-label={t('mascot.aiChat.copyMessage')}

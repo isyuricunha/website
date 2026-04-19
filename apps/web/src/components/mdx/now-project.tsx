@@ -2,7 +2,8 @@ import type { ReactNode } from 'react'
 
 import { Badge } from '@isyuricunha/ui'
 import { getLocale, getTranslations } from '@isyuricunha/i18n/server'
-import { Clock, ExternalLink, Github, Globe, Tag } from 'lucide-react'
+import { Clock, ExternalLink, Globe, Tag } from 'lucide-react'
+import { SiGithub } from '@icons-pack/react-simple-icons'
 
 import Link from '../link'
 
@@ -115,7 +116,7 @@ const NowProject = async (props: NowProjectProps) => {
         <div className='min-w-0'>
           <div className='flex flex-wrap items-center gap-2'>
             <Link href={githubUrl} className='flex items-center gap-2 font-semibold no-underline'>
-              <Github className='h-4 w-4' />
+              <SiGithub className='h-4 w-4' />
               <span className='truncate'>{displayName}</span>
               <ExternalLink className='text-muted-foreground h-3.5 w-3.5' />
             </Link>

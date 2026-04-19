@@ -73,20 +73,20 @@ const Messages = () => {
     <div className='flex flex-col gap-6' data-testid='guestbook-messages-list'>
       {isSuccess
         ? data.pages.map((page, pageIndex) =>
-          page.messages.map((message, messageIndex) => (
-            <motion.div
-              key={message.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                delay: (pageIndex * page.messages.length + messageIndex) * 0.05,
-                duration: 0.4
-              }}
-            >
-              <Message message={message} />
-            </motion.div>
-          ))
-        )
+            page.messages.map((message, messageIndex) => (
+              <motion.div
+                key={message.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  delay: (pageIndex * page.messages.length + messageIndex) * 0.05,
+                  duration: 0.4
+                }}
+              >
+                <Message message={message} />
+              </motion.div>
+            ))
+          )
         : null}
       {noMessages ? (
         <motion.div

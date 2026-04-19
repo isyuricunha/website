@@ -2,5 +2,8 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "exclude": ["node_modules"],
   "extends": "../tsconfig/base.json",
+  "compilerOptions": {
+    "types": ["node"]
+  },
   "include": ["**/*.ts"]
 }

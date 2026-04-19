@@ -22,6 +22,8 @@ type ContactConfirmationProps = {
   locale?: 'en' | 'pt'
 }
 
+const currentYear = new Date().getFullYear()
+
 const ContactConfirmation = (props: ContactConfirmationProps) => {
   const { name: contactName = 'there' } = props
   const locale = props.locale ?? 'en'
@@ -159,7 +161,7 @@ const ContactConfirmation = (props: ContactConfirmationProps) => {
                 Brazil
               </Text>
               <Text className='m-0 text-center text-[12px] leading-[16px] text-[color:var(--email-muted)]'>
-                © {new Date().getFullYear()} yuricunha.com. All rights reserved.
+                © {currentYear} yuricunha.com. All rights reserved.
               </Text>
               <Text className='m-0 mt-[8px] text-center text-[12px] leading-[16px] text-[color:var(--email-muted)]'>
                 <Link

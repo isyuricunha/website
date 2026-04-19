@@ -43,7 +43,7 @@ const LocationCard = () => {
       glowColor: [0.8, 0.7, 0],
       markers: [{ location: [-23.5505, -46.6333], size: 0.1 }],
       scale: 0.75,
-      onRender: (state) => {
+      onRender: (state: any) => {
         // Smooth rotation via simple easing (keeps behavior without external animation libs)
         const rotation = rotationRef.current
         const target = rotationTargetRef.current
@@ -57,7 +57,7 @@ const LocationCard = () => {
         state.width = width * 3
         state.height = width * 3
       }
-    })
+    } as any)
 
     return () => {
       globe.destroy()

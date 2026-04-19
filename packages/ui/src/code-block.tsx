@@ -42,7 +42,11 @@ const CodeBlock = (props: CodeBlockProps) => {
       )}
 
       <ScrollArea>
-        <pre ref={mergeRefs(textInputRef, ref)} className={cn('p-4 text-[13px]', className)} {...rest}>
+        <pre
+          ref={mergeRefs(textInputRef, ref)}
+          className={cn('p-4 text-[13px]', className)}
+          {...rest}
+        >
           {children}
         </pre>
         <ScrollBar orientation='horizontal' />

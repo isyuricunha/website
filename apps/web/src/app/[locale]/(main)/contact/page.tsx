@@ -3,7 +3,8 @@ import type { Metadata, ResolvingMetadata } from 'next'
 import { i18n } from '@isyuricunha/i18n/config'
 import { getTranslations, setRequestLocale } from '@isyuricunha/i18n/server'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@isyuricunha/ui/server'
-import { Mail, User, Github, Twitter, Linkedin } from 'lucide-react'
+import { Mail, User } from 'lucide-react'
+import { SiGithub, SiX } from '@icons-pack/react-simple-icons'
 
 import PageTitle from '@/components/page-title'
 import Link from '@/components/link'
@@ -62,19 +63,27 @@ const ContactPage = async (props: PageProps) => {
     {
       name: t('contact.social.github.name'),
       href: 'https://github.com/isyuricunha',
-      icon: <Github className='h-5 w-5' />,
+      icon: <SiGithub className='h-5 w-5' />,
       description: t('contact.social.github.description')
     },
     {
       name: t('contact.social.twitter.name'),
       href: 'https://x.com/isyuricunha',
-      icon: <Twitter className='h-5 w-5' />,
+      icon: <SiX className='h-5 w-5' />,
       description: t('contact.social.twitter.description')
     },
     {
       name: t('contact.social.linkedin.name'),
       href: 'https://linkedin.com/in/isyuricunha',
-      icon: <Linkedin className='h-5 w-5' />,
+      icon: (
+        <svg
+          viewBox='0 0 24 24'
+          className='h-5 w-5 fill-current'
+          xmlns='http://www.w3.org/2000/svg'
+        >
+          <path d='M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z' />
+        </svg>
+      ),
       description: t('contact.social.linkedin.description')
     }
   ]

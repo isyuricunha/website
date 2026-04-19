@@ -6,12 +6,12 @@ export const comments: Linter.Config[] = [
   {
     name: 'isyuricunha:comments',
     plugins: {
-      'eslint-comments': eslintCommentsPlugin
+      '@eslint-community/eslint-comments': eslintCommentsPlugin
     },
     rules: {
       ...eslintCommentsPlugin.configs.recommended.rules,
 
-      'eslint-comments/require-description': 'error'
+      '@eslint-community/eslint-comments/require-description': 'error'
     }
   }
 ]

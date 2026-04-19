@@ -166,13 +166,13 @@ const NowListeningSection = () => {
           <div className='flex-shrink-0'>
             <div className='relative flex h-6 w-6 items-center justify-center'>
               {currentTrack.isPlaying ? (
-                <div className='flex items-end gap-[3px] h-4'>
-                  <div className='w-[4px] bg-primary animate-music-bar-1 opacity-80' />
-                  <div className='w-[4px] bg-primary animate-music-bar-2 opacity-80' />
-                  <div className='w-[4px] bg-primary animate-music-bar-3 opacity-80' />
+                <div className='flex h-4 items-end gap-[3px]'>
+                  <div className='bg-primary animate-music-bar-1 w-[4px] opacity-80' />
+                  <div className='bg-primary animate-music-bar-2 w-[4px] opacity-80' />
+                  <div className='bg-primary animate-music-bar-3 w-[4px] opacity-80' />
                 </div>
               ) : (
-                <Music className='h-5 w-5 text-muted-foreground opacity-50' />
+                <Music className='text-muted-foreground h-5 w-5 opacity-50' />
               )}
             </div>
           </div>

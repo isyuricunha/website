@@ -138,7 +138,7 @@ type CommandFooterProps = React.ComponentProps<'div'>
 const CommandFooter = (props: CommandFooterProps) => {
   return (
     <div
-      // eslint-disable-next-line @eslint-react/dom/no-unknown-property -- custom attribute
+      // eslint-disable-next-line @eslint-react/dom-no-unknown-property -- custom attribute
       cmdk-footer=''
       className='flex h-10 w-full items-center justify-between rounded-b-lg border-t p-2'
       {...props}

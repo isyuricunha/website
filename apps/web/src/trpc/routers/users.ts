@@ -36,7 +36,11 @@ export const usersRouter = createTRPCRouter({
     .input(
       z.object({
         contentType: z.enum(['image/png', 'image/jpeg', 'image/webp']),
-        size: z.number().int().positive().max(5 * 1024 * 1024)
+        size: z
+          .number()
+          .int()
+          .positive()
+          .max(5 * 1024 * 1024)
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -108,10 +112,7 @@ export const usersRouter = createTRPCRouter({
 
       const user = await ctx.db.query.users.findFirst({
         where: (users, { and, eq }) =>
-          and(
-            eq(users.isPublic, true),
-            eq(sql`lower(${users.username})`, handle_lower)
-          ),
+          and(eq(users.isPublic, true), eq(sql`lower(${users.username})`, handle_lower)),
         columns: {
           id: true,
           username: true,
@@ -186,7 +187,8 @@ export const usersRouter = createTRPCRouter({
         profile?.id ??
         (
           await ctx.db.query.users.findFirst({
-            where: (users, { and, eq }) => and(eq(users.isPublic, true), eq(users.id, input.handle)),
+            where: (users, { and, eq }) =>
+              and(eq(users.isPublic, true), eq(users.id, input.handle)),
             columns: {
               id: true
             }

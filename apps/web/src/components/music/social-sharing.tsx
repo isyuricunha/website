@@ -2,7 +2,8 @@
 
 import { useTranslations } from '@isyuricunha/i18n/client'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@isyuricunha/ui'
-import { Share2, Twitter, Facebook, Copy, ExternalLink } from 'lucide-react'
+import { SiX, SiFacebook } from '@icons-pack/react-simple-icons'
+import { Share2, Copy, ExternalLink } from 'lucide-react'
 import { useState } from 'react'
 
 import { api } from '@/trpc/react'
@@ -89,7 +90,7 @@ const SocialSharing = () => {
                   className='hover:bg-muted rounded-lg p-2 transition-colors'
                   title={t('spotify.social.buttons.twitter')}
                 >
-                  <Twitter className='h-4 w-4' />
+                  <SiX className='h-4 w-4' />
                 </button>
                 <button
                   type='button'
@@ -97,7 +98,7 @@ const SocialSharing = () => {
                   className='hover:bg-muted rounded-lg p-2 transition-colors'
                   title={t('spotify.social.buttons.facebook')}
                 >
-                  <Facebook className='h-4 w-4' />
+                  <SiFacebook className='h-4 w-4' />
                 </button>
                 <button
                   type='button'
@@ -153,7 +154,7 @@ const SocialSharing = () => {
                       className='hover:bg-muted rounded-lg p-1.5 transition-colors'
                       title={t('spotify.social.buttons.twitter')}
                     >
-                      <Twitter className='h-3 w-3' />
+                      <SiX className='h-3 w-3' />
                     </button>
                     <button
                       type='button'
@@ -161,7 +162,7 @@ const SocialSharing = () => {
                       className='hover:bg-muted rounded-lg p-1.5 transition-colors'
                       title={t('spotify.social.buttons.facebook')}
                     >
-                      <Facebook className='h-3 w-3' />
+                      <SiFacebook className='h-3 w-3' />
                     </button>
                     <button
                       type='button'

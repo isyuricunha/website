@@ -1,3 +1,5 @@
+import * as React from 'react'
+
 import { getErrorMessage } from '@isyuricunha/utils'
 
 type PageProps = {
@@ -12,13 +14,22 @@ const Page = async (props: PageProps) => {
     return <div>Error: Invalid component name</div>
   }
 
-  try {
-    const Component = (await import(`@/components/demos/${component}`)).default
+  // Separate the dynamic import from JSX rendering — JSX inside try/catch
+  // cannot be caught by React's error boundaries and is flagged by the linter.
+  let Component: React.ComponentType | null = null
+  let importError: string | null = null
 
-    return <Component />
+  try {
+    Component = (await import(`@/components/demos/${component}`)).default
   } catch (error) {
-    return <div>Error: {getErrorMessage(error)}</div>
+    importError = getErrorMessage(error)
   }
+
+  if (importError !== null || Component === null) {
+    return <div>Error: {importError}</div>
+  }
+
+  return <Component />
 }
 
 export default Page

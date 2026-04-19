@@ -13,9 +13,9 @@ import {
   SelectTrigger,
   SelectValue
 } from '@isyuricunha/ui'
+import { SiGithub } from '@icons-pack/react-simple-icons'
 import {
   ExternalLink,
-  Github,
   Search,
   SlidersHorizontal,
   Star,
@@ -415,7 +415,7 @@ const ProjectCard = (props: ProjectCardProps) => {
                 className='bg-muted text-foreground border-border hover:bg-muted/70 focus-visible:ring-primary/60 inline-flex h-9 items-center gap-2 rounded-full border px-2 shadow-sm transition-all focus-visible:ring-2 focus-visible:outline-none md:px-3'
                 onClick={(e) => e.stopPropagation()}
               >
-                <Github className='h-4 w-4' />
+                <SiGithub className='h-4 w-4' />
                 <span className='hidden overflow-hidden text-xs font-medium md:inline-block md:max-w-0 md:opacity-0 md:transition-all md:group-hover:max-w-[64px] md:group-hover:opacity-100'>
                   {t('sitemap.labels.github')}
                 </span>

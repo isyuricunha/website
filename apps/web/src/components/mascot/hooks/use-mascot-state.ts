@@ -160,17 +160,20 @@ export function useMascotState() {
   /**
    * Update preferences and persist to localStorage
    */
-  const updatePreferences = useCallback((updates: Partial<MascotPreferences>) => {
-    setState((prev) => {
-      const newPrefs = { ...prev.preferences, ...updates }
-      try {
-        localStorage.setItem(PREFERENCES_KEY, JSON.stringify(newPrefs))
-      } catch (error) {
-        if (!isProduction) console.error('Error saving preferences:', error)
-      }
-      return { ...prev, preferences: newPrefs }
-    })
-  }, [isProduction])
+  const updatePreferences = useCallback(
+    (updates: Partial<MascotPreferences>) => {
+      setState((prev) => {
+        const newPrefs = { ...prev.preferences, ...updates }
+        try {
+          localStorage.setItem(PREFERENCES_KEY, JSON.stringify(newPrefs))
+        } catch (error) {
+          if (!isProduction) console.error('Error saving preferences:', error)
+        }
+        return { ...prev, preferences: newPrefs }
+      })
+    },
+    [isProduction]
+  )
 
   /**
    * Load saved preferences from localStorage
@@ -243,26 +246,23 @@ export function useMascotState() {
   /**
    * Generic helper to fetch numbered messages from i18n structure
    */
-  const fetchMessageList = useCallback(
-    (base: Record<string, unknown>): string[] => {
-      const res: string[] = []
-      try {
-        const keys = Object.keys(base)
-          .filter((k) => /^\d+$/.test(k))
-          .map(Number)
-          .sort((a, b) => a - b)
+  const fetchMessageList = useCallback((base: Record<string, unknown>): string[] => {
+    const res: string[] = []
+    try {
+      const keys = Object.keys(base)
+        .filter((k) => /^\d+$/.test(k))
+        .map(Number)
+        .sort((a, b) => a - b)
 
-        for (const idx of keys) {
-          const v = base[String(idx)]
-          if (typeof v === 'string' && v) res.push(v)
-        }
-      } catch {
-        // ignore errors
+      for (const idx of keys) {
+        const v = base[String(idx)]
+        if (typeof v === 'string' && v) res.push(v)
       }
-      return res
-    },
-    []
-  )
+    } catch {
+      // ignore errors
+    }
+    return res
+  }, [])
 
   /**
    * Fetch page specific messages with proper fallbacks
@@ -345,53 +345,56 @@ export function useMascotState() {
   /**
    * Handle menu actions
    */
-  const handleMenuAction = useCallback((action: string) => {
-    updateState({
-      showBubble: false,
-      showContact: false,
-      showSettings: false,
-      showMenu: false,
-      showGame: false,
-      showAIChat: false
-    })
+  const handleMenuAction = useCallback(
+    (action: string) => {
+      updateState({
+        showBubble: false,
+        showContact: false,
+        showSettings: false,
+        showMenu: false,
+        showGame: false,
+        showAIChat: false
+      })
 
-    setTimeout(() => {
-      switch (action) {
-        case 'contact':
-          updateState({
-            showContact: true,
-            showBubble: true
-          })
-          notificationSoundRef.current()
-          break
-        case 'projects':
-          window.open('https://github.com/isyuricunha', '_blank')
-          clickSoundRef.current()
-          break
-        case 'game':
-          updateState({
-            showGame: true,
-            showBubble: true
-          })
-          notificationSoundRef.current()
-          break
-        case 'chat':
-          updateState({
-            showAIChat: true,
-            showBubble: true
-          })
-          notificationSoundRef.current()
-          break
-        case 'settings':
-          updateState({
-            showSettings: true,
-            showBubble: true
-          })
-          clickSoundRef.current()
-          break
-      }
-    }, 50)
-  }, [updateState])
+      setTimeout(() => {
+        switch (action) {
+          case 'contact':
+            updateState({
+              showContact: true,
+              showBubble: true
+            })
+            notificationSoundRef.current()
+            break
+          case 'projects':
+            window.open('https://github.com/isyuricunha', '_blank')
+            clickSoundRef.current()
+            break
+          case 'game':
+            updateState({
+              showGame: true,
+              showBubble: true
+            })
+            notificationSoundRef.current()
+            break
+          case 'chat':
+            updateState({
+              showAIChat: true,
+              showBubble: true
+            })
+            notificationSoundRef.current()
+            break
+          case 'settings':
+            updateState({
+              showSettings: true,
+              showBubble: true
+            })
+            clickSoundRef.current()
+            break
+        }
+      }, 50)
+    },
+    [updateState]
+  )
 
   /**
    * Handle AI Chat close
@@ -466,7 +469,16 @@ export function useMascotState() {
       showAIChat: false
     })
     clickSoundRef.current()
-  }, [state.lastClickTime, state.clickCount, state.isActive, state.showMenu, t, updateState, enqueueMessage, alertSound])
+  }, [
+    state.lastClickTime,
+    state.clickCount,
+    state.isActive,
+    state.showMenu,
+    t,
+    updateState,
+    enqueueMessage,
+    alertSound
+  ])
 
   /**
    * Handle mouse enter on mascot
@@ -570,7 +582,7 @@ export function useMascotState() {
         try {
           sessionStorage.removeItem(STORAGE_KEY)
           localStorage.removeItem(HIDE_KEY)
-        } catch { }
+        } catch {}
         return
       }
 
@@ -584,7 +596,7 @@ export function useMascotState() {
           updateState({ isKonamiMode: newMode })
           try {
             localStorage.setItem(KONAMI_MODE_KEY, newMode ? '1' : '0')
-          } catch { }
+          } catch {}
         }
         updateState({ konamiSequence: [] })
       } else if (newSequence.length > KONAMI_CODE.length) {
@@ -717,7 +729,15 @@ export function useMascotState() {
     }
 
     void checkForNewPost()
-  }, [mounted, locale, state.blogPostsVisited, state.preferences.speechBubbles, t, enqueueMessage, alertSound])
+  }, [
+    mounted,
+    locale,
+    state.blogPostsVisited,
+    state.preferences.speechBubbles,
+    t,
+    enqueueMessage,
+    alertSound
+  ])
 
   const isOnBlogPost = pageKey === 'blogPost'
 
@@ -747,7 +767,7 @@ export function useMascotState() {
             updateState({ blogPostsVisited: newVisited })
             try {
               localStorage.setItem(BLOG_POST_VISITED_KEY, JSON.stringify([...newVisited]))
-            } catch { }
+            } catch {}
           }
         } else {
           const pageMessages = fetchPageMessages(pageKey)
@@ -774,7 +794,7 @@ export function useMascotState() {
         }
       }
     }
-    
+
     return undefined
   }, [
     pageKey,
@@ -815,7 +835,7 @@ export function useMascotState() {
     if (mounted && pageKey === 'home') {
       try {
         list.push(getTimeBasedGreeting())
-      } catch { }
+      } catch {}
     }
 
     if (pageKey === 'blogPost') {

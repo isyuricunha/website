@@ -29,26 +29,26 @@
   },
   "types": "./dist/index.d.ts",
   "dependencies": {
-    "@eslint-react/eslint-plugin": "^2.13.0",
+    "@eslint-community/eslint-plugin-eslint-comments": "^4.7.1",
+    "@eslint-react/eslint-plugin": "^4.2.3",
     "@eslint/js": "^10.0.1",
     "@next/eslint-plugin-next": "^16.2.4",
     "@typescript-eslint/eslint-plugin": "^8.58.2",
     "@typescript-eslint/parser": "^8.58.2",
     "eslint-config-flat-gitignore": "^2.3.0",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-eslint-comments": "^3.2.0",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-playwright": "^2.10.1",
     "eslint-plugin-prettier": "^5.5.5",
-    "eslint-plugin-react-dom": "^2.13.0",
+    "eslint-plugin-react-dom": "^4.2.3",
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-hooks-extra": "^2.13.0",
-    "eslint-plugin-react-naming-convention": "^2.13.0",
-    "eslint-plugin-react-web-api": "^3.0.0",
-    "eslint-plugin-react-x": "^2.13.0",
-    "eslint-plugin-simple-import-sort": "^12.1.1",
-    "eslint-plugin-sonarjs": "^3.0.7",
+    "eslint-plugin-react-naming-convention": "^4.2.3",
+    "eslint-plugin-react-web-api": "^4.2.3",
+    "eslint-plugin-react-x": "^4.2.3",
+    "eslint-plugin-simple-import-sort": "^13.0.0",
+    "eslint-plugin-sonarjs": "^4.0.3",
     "eslint-plugin-testing-library": "^7.16.2",
     "eslint-plugin-turbo": "^2.9.6",
     "eslint-plugin-unicorn": "^64.0.0",
@@ -60,9 +60,9 @@
     "eslint": "^9.20.0"
   },
   "devDependencies": {
-    "@eslint/config-inspector": "^1.5.0",
+    "@eslint/config-inspector": "^2.0.0",
     "@isyuricunha/tsconfig": "workspace:*",
-    "eslint": "^9.39.4"
+    "eslint": "^10.2.1"
   },
   "publishConfig": {
     "access": "public"

@@ -19,7 +19,21 @@ type VirtualMascotProps = {
 
 const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
   const mascot = useMascotState()
-  const { state, mounted, prefersReducedMotion, pathname, pageKey, updateState, handleMascotClick, handleMouseEnter, getPositionClasses, getBubblePositionClasses, handleAIClose, handleThinkingChange, t } = mascot
+  const {
+    state,
+    mounted,
+    prefersReducedMotion,
+    pathname,
+    pageKey,
+    updateState,
+    handleMascotClick,
+    handleMouseEnter,
+    getPositionClasses,
+    getBubblePositionClasses,
+    handleAIClose,
+    handleThinkingChange,
+    t
+  } = mascot
 
   if (hidden) return null
 
@@ -116,8 +130,8 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
               style={
                 state.preferences.animations && !prefersReducedMotion
                   ? {
-                    transform: `translate(${state.mousePosition.x * 5}px, ${state.mousePosition.y * 5}px) rotate(${state.mousePosition.x * 5}deg)`
-                  }
+                      transform: `translate(${state.mousePosition.x * 5}px, ${state.mousePosition.y * 5}px) rotate(${state.mousePosition.x * 5}deg)`
+                    }
                   : undefined
               }
             >

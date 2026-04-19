@@ -1,5 +1,7 @@
 import { Column, Hr, Img, Link, Row, Section, Text } from '@react-email/components'
 
+const currentYear = new Date().getFullYear()
+
 const Footer = () => {
   return (
     <>
@@ -31,7 +33,7 @@ const Footer = () => {
         </Row>
       </Section>
       <Text className='m-0 mt-6 p-0 text-xs font-normal text-gray-600'>
-        © {new Date().getFullYear()} Yuri Cunha. All rights reserved.
+        © {currentYear} Yuri Cunha. All rights reserved.
       </Text>
     </>
   )

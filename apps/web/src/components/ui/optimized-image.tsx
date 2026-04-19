@@ -45,7 +45,7 @@ function OptimizedImage({
 
   const safeSrc = src.trim().length > 0 ? src : undefined
   const safeFallbackSrc = fallbackSrc?.trim().length ? fallbackSrc : undefined
-  const effectiveSrc = hasError && safeFallbackSrc ? safeFallbackSrc : safeSrc ?? safeFallbackSrc
+  const effectiveSrc = hasError && safeFallbackSrc ? safeFallbackSrc : (safeSrc ?? safeFallbackSrc)
 
   if (!effectiveSrc) {
     return null

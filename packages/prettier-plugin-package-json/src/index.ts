@@ -27,11 +27,14 @@ const parsePersonString = (value: string): Record<string, string> | string => {
   const emailStart = trimmed?.indexOf?.('<') ?? -1
   const emailEnd = emailStart === -1 ? -1 : (trimmed?.indexOf?.('>', emailStart + 1) ?? -1)
   const email =
-    emailStart !== -1 && emailEnd > emailStart ? (trimmed?.slice?.(emailStart + 1, emailEnd) ?? null) : null
+    emailStart !== -1 && emailEnd > emailStart
+      ? (trimmed?.slice?.(emailStart + 1, emailEnd) ?? null)
+      : null
 
   const urlStart = trimmed?.indexOf?.('(') ?? -1
   const urlEnd = urlStart === -1 ? -1 : (trimmed?.indexOf?.(')', urlStart + 1) ?? -1)
-  const url = urlStart !== -1 && urlEnd > urlStart ? (trimmed?.slice?.(urlStart + 1, urlEnd) ?? null) : null
+  const url =
+    urlStart !== -1 && urlEnd > urlStart ? (trimmed?.slice?.(urlStart + 1, urlEnd) ?? null) : null
 
   let name = trimmed
   if (email !== null) {

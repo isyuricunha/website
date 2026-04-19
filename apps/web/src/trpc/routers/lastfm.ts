@@ -106,11 +106,12 @@ const fetchTrackFallbackImage = async (
       track: cleanedTrack,
       autocorrect: '1'
     })
-    
+
     // If track.getInfo returns an album with an image, use it
-    const albumImage = data.track?.album?.image?.find((img: any) => img.size === 'extralarge')?.['#text'] ||
-                      data.track?.album?.image?.find((img: any) => img.size === 'large')?.['#text']
-    
+    const albumImage =
+      data.track?.album?.image?.find((img: any) => img.size === 'extralarge')?.['#text'] ||
+      data.track?.album?.image?.find((img: any) => img.size === 'large')?.['#text']
+
     if (albumImage && !albumImage.includes('2a96cbd8b46e442fc41c2b86b821562f')) {
       return albumImage
     }
@@ -125,16 +126,20 @@ const fetchTrackFallbackImage = async (
       track: trackName,
       limit: '1'
     })
-    
+
     const track = searchData.results?.trackmatches?.track?.[0]
-    const searchImage = track?.image?.find((img: any) => img.size === 'extralarge')?.['#text'] || 
-                        track?.image?.find((img: any) => img.size === 'large')?.['#text']
+    const searchImage =
+      track?.image?.find((img: any) => img.size === 'extralarge')?.['#text'] ||
+      track?.image?.find((img: any) => img.size === 'large')?.['#text']
 
     if (searchImage && !searchImage.includes('2a96cbd8b46e442fc41c2b86b821562f')) {
       return searchImage
     }
   } catch (error) {
-    logger.warn(`Failed to fetch search fallback for track: ${trackName} by ${artistName}`, error as any)
+    logger.warn(
+      `Failed to fetch search fallback for track: ${trackName} by ${artistName}`,
+      error as any
+    )
   }
 
   return null
@@ -207,9 +212,10 @@ export const lastfmRouter = createTRPCRouter({
       const isPlaying = track['@attr']?.nowplaying === 'true'
 
       // Best effort for album image
-      const image = track.image?.find((img: any) => img.size === 'extralarge')?.['#text'] || 
-                    track.image?.find((img: any) => img.size === 'large')?.['#text'] || 
-                    null
+      const image =
+        track.image?.find((img: any) => img.size === 'extralarge')?.['#text'] ||
+        track.image?.find((img: any) => img.size === 'large')?.['#text'] ||
+        null
 
       return {
         isPlaying,
@@ -341,7 +347,9 @@ export const lastfmRouter = createTRPCRouter({
         albumImage: track.image?.find((img: any) => img.size === 'extralarge')?.['#text'] || null,
         url: track.url as string,
         duration: 0,
-        playedAt: track.date?.uts ? new Date(parseInt(track.date.uts) * 1000).toISOString() : new Date().toISOString()
+        playedAt: track.date?.uts
+          ? new Date(parseInt(track.date.uts) * 1000).toISOString()
+          : new Date().toISOString()
       }))
     } catch (error) {
       logger.error('Error in lastfm.getRecentlyPlayed', error as any)
@@ -431,7 +439,10 @@ export const lastfmRouter = createTRPCRouter({
           trackList.map(async (track: any) => {
             const cacheKey = `${track.artist}:${track.name}`.toLowerCase()
 
-            if (track.albumImage && !track.albumImage.includes('2a96cbd8b46e442fc41c2b86b821562f')) {
+            if (
+              track.albumImage &&
+              !track.albumImage.includes('2a96cbd8b46e442fc41c2b86b821562f')
+            ) {
               return track
             }
 
@@ -455,12 +466,14 @@ export const lastfmRouter = createTRPCRouter({
         return []
       }
     }),
-  
+
   // Audio features fallback
   getAudioFeaturesSummaryByRange: publicProcedure
-    .input(z.object({
-      time_range: z.enum(['short_term', 'medium_term', 'long_term']).default('short_term')
-    }))
+    .input(
+      z.object({
+        time_range: z.enum(['short_term', 'medium_term', 'long_term']).default('short_term')
+      })
+    )
     .query(async () => {
       return {
         sampleSize: 0,

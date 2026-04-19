@@ -114,7 +114,7 @@ const Layout = (props: LayoutProps) => {
     >
       <body>
         <Providers>
-          {/* eslint-disable-next-line @eslint-react/dom/no-unknown-property -- custom attribute */}
+          {/* eslint-disable-next-line @eslint-react/dom-no-unknown-property -- custom attribute */}
           <div vaul-drawer-wrapper='' className='bg-background'>
             {children}
           </div>

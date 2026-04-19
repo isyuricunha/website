@@ -79,47 +79,47 @@ const CommandMenu = () => {
       actions: [
         ...(session
           ? [
-            {
-              title: t('account.actions.my-profile'),
-              icon: <UserIcon className='mr-3 size-4' />,
-              onSelect: () => {
-                const handle = session.user.username ?? session.user.id
-                setIsOpen(false)
-                router.push(`/u/${handle}`)
-              }
-            },
-            {
-              title: t('command-menu.actions.settings'),
-              icon: <SettingsIcon className='mr-3 size-4' />,
-              onSelect: () => {
-                setIsOpen(false)
-                router.push('/settings')
-              }
-            },
-            {
-              title: t('common.sign-out'),
-              icon: <LogOutIcon className='mr-3 size-4' />,
-              onSelect: async () => {
-                await signOut({
-                  fetchOptions: {
-                    onSuccess: () => {
-                      router.refresh()
+              {
+                title: t('account.actions.my-profile'),
+                icon: <UserIcon className='mr-3 size-4' />,
+                onSelect: () => {
+                  const handle = session.user.username ?? session.user.id
+                  setIsOpen(false)
+                  router.push(`/u/${handle}`)
+                }
+              },
+              {
+                title: t('command-menu.actions.settings'),
+                icon: <SettingsIcon className='mr-3 size-4' />,
+                onSelect: () => {
+                  setIsOpen(false)
+                  router.push('/settings')
+                }
+              },
+              {
+                title: t('common.sign-out'),
+                icon: <LogOutIcon className='mr-3 size-4' />,
+                onSelect: async () => {
+                  await signOut({
+                    fetchOptions: {
+                      onSuccess: () => {
+                        router.refresh()
+                      }
                     }
-                  }
-                })
+                  })
+                }
               }
-            }
-          ]
+            ]
           : [
-            {
-              title: t('common.sign-in'),
-              icon: <LogInIcon className='mr-3 size-4' />,
-              onSelect: () => {
-                setIsOpen(false)
-                setIsSignInOpen(true)
+              {
+                title: t('common.sign-in'),
+                icon: <LogInIcon className='mr-3 size-4' />,
+                onSelect: () => {
+                  setIsOpen(false)
+                  setIsSignInOpen(true)
+                }
               }
-            }
-          ])
+            ])
       ]
     },
     {

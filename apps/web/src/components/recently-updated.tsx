@@ -23,8 +23,8 @@ type UpdatedItem = {
 const RecentlyUpdated = () => {
   const t = useTranslations()
   const locale = useLocale()
-  
-  // Ensure the locale is a valid BCP 47 string by checking for dots, slashes, or other common 
+
+  // Ensure the locale is a valid BCP 47 string by checking for dots, slashes, or other common
   // URL-like characters that might be passed if middleware is bypassed (e.g., favicon.ico)
   const isValidLocale = (l: string) => /^[a-z]{2}(-[A-Z]{2})?$/.test(l)
   const resolvedLocale = useMemo(() => {
@@ -80,27 +80,27 @@ const RecentlyUpdated = () => {
       .slice(0, 3)
   }, [resolvedLocale])
 
-  const dateFormatter = useMemo(
-    () => {
-      try {
-        return new Intl.DateTimeFormat(resolvedLocale, {
-          month: 'short',
-          day: 'numeric',
-          year: 'numeric',
-          timeZone: 'UTC'
-        })
-      } catch (e) {
-        console.warn(`[RecentlyUpdated] Failed to create DateTimeFormat for locale: ${resolvedLocale}`, e)
-        return new Intl.DateTimeFormat('en', {
-          month: 'short',
-          day: 'numeric',
-          year: 'numeric',
-          timeZone: 'UTC'
-        })
-      }
-    },
-    [resolvedLocale]
-  )
+  const dateFormatter = useMemo(() => {
+    try {
+      return new Intl.DateTimeFormat(resolvedLocale, {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+        timeZone: 'UTC'
+      })
+    } catch (e) {
+      console.warn(
+        `[RecentlyUpdated] Failed to create DateTimeFormat for locale: ${resolvedLocale}`,
+        e
+      )
+      return new Intl.DateTimeFormat('en', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+        timeZone: 'UTC'
+      })
+    }
+  }, [resolvedLocale])
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)

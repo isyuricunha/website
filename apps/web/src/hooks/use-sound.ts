@@ -33,7 +33,16 @@ const getAudioContext = (soundType: string): AudioContext => {
 // Generate different sound types using Web Audio API - Minimalist, Modern, Pleasant
 const generateSound = (
   context: AudioContext,
-  type: 'click' | 'success' | 'error' | 'notification' | 'gameClick' | 'gameSuccess' | 'gameOver' | 'navigation' | 'alert'
+  type:
+    | 'click'
+    | 'success'
+    | 'error'
+    | 'notification'
+    | 'gameClick'
+    | 'gameSuccess'
+    | 'gameOver'
+    | 'navigation'
+    | 'alert'
 ): AudioBuffer => {
   const sampleRate = context.sampleRate
 
