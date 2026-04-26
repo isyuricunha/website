@@ -24,16 +24,16 @@
     "class-variance-authority": "^0.7.1",
     "geist": "^1.7.0",
     "hast-util-to-jsx-runtime": "^2.3.6",
-    "lucide-react": "^1.8.0",
+    "lucide-react": "^1.11.0",
     "next": "16.2.4",
     "next-themes": "^0.4.6",
     "react": "19.2.5",
     "react-dom": "19.2.5",
-    "react-hook-form": "^7.72.1",
+    "react-hook-form": "^7.74.0",
     "recharts": "^3.8.1",
     "sharp": "^0.34.5",
     "shiki": "^4.0.2",
-    "zod": "4.3.5"
+    "zod": "4.3.6"
   },
   "devDependencies": {
     "@content-collections/cli": "^0.1.9",
@@ -45,13 +45,13 @@
     "@isyuricunha/shared": "workspace:*",
     "@isyuricunha/tsconfig": "workspace:*",
     "@next/bundle-analyzer": "^16.2.4",
-    "@tailwindcss/postcss": "^4.2.2",
+    "@tailwindcss/postcss": "^4.2.4",
     "@types/node": "^25.6.0",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
     "postcss": "^8.5.10",
     "postcss-load-config": "^6.0.1",
-    "tailwindcss": "^4.2.2"
+    "tailwindcss": "^4.2.4"
   },
   "lint-staged": {
     "*.{cjs,mjs,js,jsx,cts,mts,ts,tsx}": "pnpm -w exec eslint --fix --max-warnings 999"

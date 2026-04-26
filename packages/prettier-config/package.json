@@ -29,7 +29,7 @@
   "types": "./dist/index.d.ts",
   "dependencies": {
     "@isyuricunha/prettier-plugin-package-json": "workspace:*",
-    "prettier-plugin-tailwindcss": "^0.7.2"
+    "prettier-plugin-tailwindcss": "^0.7.3"
   },
   "peerDependencies": {
     "prettier": "3.x"
