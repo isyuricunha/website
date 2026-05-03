@@ -108,14 +108,13 @@ export default function AnnouncementManagement() {
       title,
       content,
       fromLang: 'en',
-      toLang: 'pt',
-      provider: 'auto'
+      toLang: 'pt'
     })
 
     if (createTitlePtRef.current) createTitlePtRef.current.value = result.titlePt ?? ''
     if (createContentPtRef.current) createContentPtRef.current.value = result.contentPt ?? ''
 
-    toast.success(`Filled pt-BR using ${result.provider}`)
+    toast.success('Filled pt-BR using Yue AI')
   }
 
   const handleAiFillEditPt = async () => {
@@ -131,14 +130,13 @@ export default function AnnouncementManagement() {
       title,
       content,
       fromLang: 'en',
-      toLang: 'pt',
-      provider: 'auto'
+      toLang: 'pt'
     })
 
     if (editTitlePtRef.current) editTitlePtRef.current.value = result.titlePt ?? ''
     if (editContentPtRef.current) editContentPtRef.current.value = result.contentPt ?? ''
 
-    toast.success(`Filled pt-BR using ${result.provider}`)
+    toast.success('Filled pt-BR using Yue AI')
   }
 
   const { data: analytics } = api.announcements.getAnnouncementAnalytics.useQuery({})

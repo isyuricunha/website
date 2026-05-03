@@ -1,6 +1,5 @@
 'use client'
 
-import { flags } from '@isyuricunha/env'
 import { useTranslations, useLocale } from '@isyuricunha/i18n/client'
 import { useRouter } from 'next/navigation'
 import {
@@ -56,7 +55,6 @@ import { cn } from '@isyuricunha/utils'
 import {
   type ChatConversation,
   type ChatMessage,
-  type YueChatProvider,
   createEmptyConversation,
   decodeConversationShare,
   encodeConversationShare,
@@ -147,7 +145,6 @@ export default function AIChatInterface({
 
   const [conversations, setConversations] = useState<ChatConversation[]>([])
   const [activeConversationId, setActiveConversationId] = useState<string>('')
-  const [provider, setProvider] = useState<YueChatProvider>('auto')
   const [inputValue, setInputValue] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [typingDots, setTypingDots] = useState('')
@@ -193,7 +190,7 @@ export default function AIChatInterface({
   useEffect(() => {
     const el = messagesEndRef.current
     if (el && typeof (el as any).scrollIntoView === 'function') {
-      ;(el as any).scrollIntoView({ behavior: 'smooth' })
+      ; (el as any).scrollIntoView({ behavior: 'smooth' })
     }
   }, [messages])
 
@@ -211,7 +208,6 @@ export default function AIChatInterface({
     const loaded = loadYueChatState()
     let nextConversations = loaded.conversations
     let nextActiveId = loaded.activeConversationId
-    const nextProvider = loaded.provider
 
     if (globalThis.window !== undefined) {
       const params = new URLSearchParams(globalThis.location.search)
@@ -258,11 +254,10 @@ export default function AIChatInterface({
 
     setConversations(nextConversations)
     setActiveConversationId(nextActiveId)
-    setProvider(nextProvider)
     saveYueChatState({
       conversations: nextConversations,
       activeConversationId: nextActiveId,
-      provider: nextProvider
+      provider: 'mistral'
     })
   }, [getWelcomeMessage, isOpen, t])
 
@@ -270,8 +265,8 @@ export default function AIChatInterface({
     if (!isOpen) return
     if (!activeConversationId) return
 
-    saveYueChatState({ conversations, activeConversationId, provider })
-  }, [activeConversationId, conversations, isOpen, provider])
+    saveYueChatState({ conversations, activeConversationId, provider: 'mistral' })
+  }, [activeConversationId, conversations, isOpen])
 
   const updateActiveConversation = (
     updater: (conversation: ChatConversation) => ChatConversation
@@ -422,7 +417,7 @@ export default function AIChatInterface({
         },
         body: JSON.stringify({
           message: messageText,
-          provider: provider === 'auto' ? undefined : provider,
+          provider: 'mistral',
           stream: should_stream,
           locale,
           context: {
@@ -481,10 +476,10 @@ export default function AIChatInterface({
           messages: c.messages.map((m) =>
             m.id === messageId
               ? {
-                  ...m,
-                  text: accumulated || t('mascot.aiChat.errorMessage'),
-                  latencyMs: latency
-                }
+                ...m,
+                text: accumulated || t('mascot.aiChat.errorMessage'),
+                latencyMs: latency
+              }
               : m
           ),
           updatedAt: new Date().toISOString()
@@ -858,34 +853,6 @@ export default function AIChatInterface({
                   </SelectContent>
                 </Select>
 
-                <Select value={provider} onValueChange={(v) => setProvider(v as YueChatProvider)}>
-                  <SelectTrigger
-                    className='bg-background/30 hover:bg-background/40 border-border/30 focus:ring-primary/30 h-7 max-w-[160px] rounded-full border px-2.5 text-xs shadow-none focus:ring-2 focus:outline-none'
-                    aria-label={t('mascot.aiChat.provider')}
-                  >
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value='auto'>{t('mascot.aiChat.providers.auto')}</SelectItem>
-                    {flags.groq && (
-                      <SelectItem value='groq'>{t('mascot.aiChat.providers.groq')}</SelectItem>
-                    )}
-                    {flags.hf && (
-                      <SelectItem value='hf'>{t('mascot.aiChat.providers.hf')}</SelectItem>
-                    )}
-                    {flags.hfLocal && (
-                      <SelectItem value='hf_local'>
-                        {t('mascot.aiChat.providers.hf_local')}
-                      </SelectItem>
-                    )}
-                    {flags.gemini && (
-                      <SelectItem value='gemini'>{t('mascot.aiChat.providers.gemini')}</SelectItem>
-                    )}
-                    {flags.ollama && (
-                      <SelectItem value='ollama'>{t('mascot.aiChat.providers.ollama')}</SelectItem>
-                    )}
-                  </SelectContent>
-                </Select>
               </div>
             </div>
           </div>
@@ -1146,11 +1113,10 @@ export default function AIChatInterface({
                         onClick={() => handleReaction(message.id, 'like')}
                         aria-label={t('mascot.aiChat.feedback.like')}
                         disabled={feedbackIsSubmittingByMessageId[message.id] === true}
-                        className={`hover:bg-muted/80 flex items-center gap-1 rounded px-2 py-1 text-xs transition-all ${
-                          message.reactions?.userReaction === 'like'
-                            ? 'bg-green-50 text-green-600 dark:bg-green-950'
-                            : 'text-muted-foreground'
-                        }`}
+                        className={`hover:bg-muted/80 flex items-center gap-1 rounded px-2 py-1 text-xs transition-all ${message.reactions?.userReaction === 'like'
+                          ? 'bg-green-50 text-green-600 dark:bg-green-950'
+                          : 'text-muted-foreground'
+                          }`}
                       >
                         <ThumbsUp className='h-3 w-3' />
                         {message.reactions?.likes ?? 0}
@@ -1160,11 +1126,10 @@ export default function AIChatInterface({
                         onClick={() => handleReaction(message.id, 'dislike')}
                         aria-label={t('mascot.aiChat.feedback.dislike')}
                         disabled={feedbackIsSubmittingByMessageId[message.id] === true}
-                        className={`hover:bg-muted/80 flex items-center gap-1 rounded px-2 py-1 text-xs transition-all ${
-                          message.reactions?.userReaction === 'dislike'
-                            ? 'bg-red-50 text-red-600 dark:bg-red-950'
-                            : 'text-muted-foreground'
-                        }`}
+                        className={`hover:bg-muted/80 flex items-center gap-1 rounded px-2 py-1 text-xs transition-all ${message.reactions?.userReaction === 'dislike'
+                          ? 'bg-red-50 text-red-600 dark:bg-red-950'
+                          : 'text-muted-foreground'
+                          }`}
                       >
                         <ThumbsDown className='h-3 w-3' />
                         {message.reactions?.dislikes ?? 0}
@@ -1179,10 +1144,10 @@ export default function AIChatInterface({
                   </div>
                 )}
                 {!message.isUser &&
-                !message.isError &&
-                message.requestId &&
-                feedbackOpenForMessageId === message.id &&
-                message.reactions?.userReaction === 'dislike' ? (
+                  !message.isError &&
+                  message.requestId &&
+                  feedbackOpenForMessageId === message.id &&
+                  message.reactions?.userReaction === 'dislike' ? (
                   <div className='border-border/20 mt-3 space-y-2 border-t pt-2'>
                     <textarea
                       rows={2}
