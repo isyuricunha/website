@@ -16,8 +16,7 @@ const SUPPORTED_LOCALES = ['en', 'pt', 'fr', 'de', 'ja', 'zh']
 const requestSchema = z.object({
   slug: z.string().min(1),
   sourceLocale: z.string().min(1),
-  targetLocales: z.array(z.string().min(1)).optional(),
-  provider: z.enum(['gemini', 'ollama']).optional().default('ollama')
+  targetLocales: z.array(z.string().min(1)).optional()
 })
 
 export async function POST(request: NextRequest) {
@@ -35,7 +34,7 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json()
     const parsed = requestSchema.parse(body)
-    const { slug, sourceLocale, targetLocales, provider } = parsed
+    const { slug, sourceLocale, targetLocales } = parsed
 
     // Get source post
     const sourcePost = await BlogService.getPost(slug, sourceLocale)
@@ -65,24 +64,21 @@ export async function POST(request: NextRequest) {
         const translatedTitle = await aiService.translateContent(
           sourcePost.title,
           sourceLocale,
-          targetLocale,
-          provider
+          targetLocale
         )
-
+        
         // Translate summary
         const translatedSummary = await aiService.translateContent(
           sourcePost.summary,
           sourceLocale,
-          targetLocale,
-          provider
+          targetLocale
         )
-
+        
         // Translate content
         const translatedContent = await aiService.translateContent(
           sourcePost.content,
           sourceLocale,
-          targetLocale,
-          provider
+          targetLocale
         )
 
         // Save translated post

@@ -30,49 +30,16 @@ const is_foreign_key_violation = (error: unknown): boolean => {
 
 export const announcementsRouter = createTRPCRouter({
   translateAnnouncement: adminProcedure
-    .input(
-      z.object({
-        title: z.string().min(1),
-        content: z.string().min(1),
-        fromLang: z.literal('en').default('en'),
-        toLang: z.literal('pt').default('pt'),
-        provider: z.enum(['auto', 'hf', 'hf_local', 'gemini', 'groq', 'ollama']).default('auto'),
-        model: z.string().min(1).optional()
-      })
-    )
-    .mutation(async ({ input }) => {
-      const available_providers = aiService.getAvailableProviders()
-
-      if (available_providers.length === 0) {
-        throw new TRPCError({
-          code: 'SERVICE_UNAVAILABLE',
-          message: 'No AI providers are currently available.'
-        })
-      }
-
-      const requested_provider = input.provider === 'auto' ? undefined : input.provider
-      const default_provider = available_providers[0]
-      const primary_provider =
-        requested_provider && available_providers.includes(requested_provider)
-          ? requested_provider
-          : default_provider
-
-      const provider_candidates = (() => {
-        if (!primary_provider) return [] as typeof available_providers
-
-        if (requested_provider && requested_provider !== primary_provider) {
-          return [primary_provider, ...available_providers.filter((p) => p !== primary_provider)]
-        }
-
-        if (requested_provider) {
-          return [
-            requested_provider,
-            ...available_providers.filter((p) => p !== requested_provider)
-          ]
-        }
-
-        return available_providers
-      })()
+  .input(
+    z.object({
+      title: z.string().min(1),
+      content: z.string().min(1),
+      fromLang: z.literal('en').default('en'),
+      toLang: z.literal('pt').default('pt'),
+      model: z.string().min(1).optional()
+    })
+  )
+  .mutation(async ({ input }) => {
 
       const response_schema = z.object({
         title: z.string().min(1),
@@ -97,40 +64,25 @@ ${input.content}
         locale: input.toLang
       }
 
-      let last_error: unknown = null
-
-      for (const candidate of provider_candidates) {
+      const raw = await aiService.generateResponse(prompt, context)
+      
+      const json = (() => {
         try {
-          const raw = await aiService.generateResponse(prompt, context, {
-            provider: candidate,
-            model: input.model,
-            temperature: 0.2,
-            maxTokens: 512
-          })
-
-          const json = (() => {
-            try {
-              return JSON.parse(raw)
-            } catch {
-              const match = raw.match(/\{[\s\S]*\}/)
-              if (!match) throw new Error('AI response is not valid JSON')
-              return JSON.parse(match[0])
-            }
-          })()
-
-          const parsed = response_schema.parse(json)
-
-          return {
-            titlePt: parsed.title.trim(),
-            contentPt: parsed.content.trim(),
-            provider: candidate
-          }
-        } catch (error) {
-          last_error = error
+          return JSON.parse(raw)
+        } catch {
+          const match = /\{[\s\S]*\}/.exec(raw)
+          if (!match) throw new Error('AI response is not valid JSON')
+          return JSON.parse(match[0])
         }
+      })()
+      
+      const parsed = response_schema.parse(json)
+      
+      return {
+        titlePt: parsed.title.trim(),
+        contentPt: parsed.content.trim(),
+        provider: 'mistral'
       }
-
-      throw last_error instanceof Error ? last_error : new Error('AI provider failed')
     }),
 
   // Get announcements (public endpoint for homepage banners)
@@ -590,8 +542,10 @@ ${input.content}
         }
 
         if (input.dateRange) {
-          conditions.push(gte(announcementInteractions.viewedAt, input.dateRange.start))
-          conditions.push(lte(announcementInteractions.viewedAt, input.dateRange.end))
+          conditions.push(
+            gte(announcementInteractions.viewedAt, input.dateRange.start),
+            lte(announcementInteractions.viewedAt, input.dateRange.end)
+          )
         }
 
         const interactions = await ctx.db.query.announcementInteractions.findMany({

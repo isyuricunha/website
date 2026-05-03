@@ -127,7 +127,7 @@ const pick_last_user_intent = (
 const extract_blog_slugs_from_text = (value: string): string[] => {
   const slugs: string[] = []
   const re = /\/blog\/([a-z0-9-]+)/gi
-  let match: RegExpExecArray | null = null
+  let match: RegExpExecArray | null
   while ((match = re.exec(value)) !== null) {
     const slug = match[1]?.trim()
     if (slug) slugs.push(slug)
@@ -138,7 +138,7 @@ const extract_blog_slugs_from_text = (value: string): string[] => {
 const extract_snippet_slugs_from_text = (value: string): string[] => {
   const slugs: string[] = []
   const re = /\/snippet\/([a-z0-9-]+)/gi
-  let match: RegExpExecArray | null = null
+  let match: RegExpExecArray | null
   while ((match = re.exec(value)) !== null) {
     const slug = match[1]?.trim()
     if (slug) slugs.push(slug)
@@ -237,26 +237,6 @@ export async function POST(req: NextRequest) {
       })
       return NextResponse.json(payload, { status: 503, headers: response_headers })
     }
-
-    const requested_provider = parsed.provider
-    const primary_provider =
-      requested_provider && available_providers.includes(requested_provider)
-        ? requested_provider
-        : default_provider
-
-    const provider_candidates = (() => {
-      if (!primary_provider) return [] as typeof available_providers
-
-      if (requested_provider && requested_provider !== primary_provider) {
-        return [primary_provider, ...available_providers.filter((p) => p !== primary_provider)]
-      }
-
-      if (requested_provider) {
-        return [requested_provider, ...available_providers.filter((p) => p !== requested_provider)]
-      }
-
-      return available_providers
-    })()
 
     const message = parsed.message.trim()
     const current_page = parsed.context?.currentPage ?? 'unknown'
@@ -386,68 +366,53 @@ export async function POST(req: NextRequest) {
         conversation: parsed.context?.conversation,
         locale
       }
-
-      for (const candidate of provider_candidates) {
-        try {
-          const stream = await aiService.generateStream(message, shared_context, {
-            provider: candidate,
-            model: parsed.model
-          })
-
-          const response_headers_stream = {
-            ...response_headers,
-            'content-type': 'text/plain; charset=utf-8',
-            'x-provider': candidate
-          }
-
-          await record_ai_chat_observability({
-            requestId: request_id,
-            endpoint,
-            method,
-            statusCode: 200,
-            responseTimeMs: Date.now() - started_at,
-            provider: candidate,
-            mode,
-            model: parsed.model,
-            ipAddress: ip,
-            userAgent: user_agent,
-            requestSizeBytes: request_size
-          })
-
-          return new Response(stream, { status: 200, headers: response_headers_stream })
-        } catch {
-          // try next provider or fallback to JSON
+    
+      try {
+        const stream = await aiService.generateStream(message, shared_context)
+    
+        const response_headers_stream = {
+          ...response_headers,
+          'content-type': 'text/plain; charset=utf-8',
+          'x-provider': 'mistral'
         }
+    
+        await record_ai_chat_observability({
+          requestId: request_id,
+          endpoint,
+          method,
+          statusCode: 200,
+          responseTimeMs: Date.now() - started_at,
+          provider: 'mistral',
+          mode,
+          model: parsed.model,
+          ipAddress: ip,
+          userAgent: user_agent,
+          requestSizeBytes: request_size
+        })
+    
+        return new Response(stream, { status: 200, headers: response_headers_stream })
+      } catch {
+        // fallback to JSON
       }
     }
 
     const response_text = await (async () => {
-      let last_error: unknown = null
-
-      for (const candidate of provider_candidates) {
-        try {
-          const text = await aiService.generateResponse(
-            message,
-            {
-              currentPage: current_page,
-              pagePath: page_path,
-              pageContext: page_context,
-              citations,
-              conversation: parsed.context?.conversation,
-              locale
-            },
-            {
-              provider: candidate,
-              model: parsed.model
-            }
-          )
-          return { text, provider: candidate }
-        } catch (error) {
-          last_error = error
-        }
+      try {
+        const text = await aiService.generateResponse(
+          message,
+          {
+            currentPage: current_page,
+            pagePath: page_path,
+            pageContext: page_context,
+            citations,
+            conversation: parsed.context?.conversation,
+            locale
+          }
+        )
+        return { text, provider: 'mistral' }
+      } catch (error) {
+        throw error instanceof Error ? error : new Error('AI provider failed')
       }
-
-      throw last_error instanceof Error ? last_error : new Error('AI provider failed')
     })()
 
     const payload = {

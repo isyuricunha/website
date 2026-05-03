@@ -12,7 +12,6 @@ const ContentGenerationSchema = z.object({
   content: z.string().min(1),
   title: z.string().optional(),
   existingTags: z.array(z.string()).optional().default([]),
-  provider: z.enum(['hf', 'hf_local', 'gemini', 'groq', 'ollama']).optional().default('groq'),
   fromLang: z.string().optional().default('en'),
   toLang: z.string().optional().default('pt'),
   maxLength: z.number().min(50).max(500).optional().default(200)
@@ -41,74 +40,58 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { action, content, title, existingTags, provider, fromLang, toLang, maxLength } =
+    const { action, content, title, existingTags, fromLang, toLang, maxLength } =
       ContentGenerationSchema.parse(body)
-
-    // Check if requested provider is available
-    if (!availableProviders.includes(provider)) {
-      return NextResponse.json(
-        {
-          error: `Provider ${provider} is not available. Available: ${availableProviders.join(', ')}`
-        },
-        { status: 400 }
-      )
-    }
-
+    
     switch (action) {
-      case 'tags': {
-        const result: ContentResult = await aiService.generateTags(content, existingTags, provider)
-        return NextResponse.json({
-          action,
-          result,
-          provider,
-          timestamp: new Date().toISOString()
-        })
-      }
-
-      case 'summary': {
-        const result: ContentResult = await aiService.generateSummary(content, maxLength, provider)
-        return NextResponse.json({
-          action,
-          result,
-          provider,
-          timestamp: new Date().toISOString()
-        })
-      }
-
-      case 'meta': {
-        if (!title) {
-          return NextResponse.json(
-            { error: 'Title is required for meta description generation' },
-            { status: 400 }
-          )
-        }
-        const result: ContentResult = await aiService.generateMetaDescription(
-          title,
-          content,
-          provider
+    case 'tags': {
+      const result: ContentResult = await aiService.generateTags(content, existingTags)
+      return NextResponse.json({
+        action,
+        result,
+        timestamp: new Date().toISOString()
+      })
+    }
+    
+    case 'summary': {
+      const result: ContentResult = await aiService.generateSummary(content, maxLength)
+      return NextResponse.json({
+        action,
+        result,
+        timestamp: new Date().toISOString()
+      })
+    }
+    
+    case 'meta': {
+      if (!title) {
+        return NextResponse.json(
+          { error: 'Title is required for meta description generation' },
+          { status: 400 }
         )
-        return NextResponse.json({
-          action,
-          result,
-          provider,
-          timestamp: new Date().toISOString()
-        })
       }
-
-      case 'translate': {
-        const result: ContentResult = await aiService.translateContent(
-          content,
-          fromLang,
-          toLang,
-          provider
-        )
-        return NextResponse.json({
-          action,
-          result,
-          provider,
-          timestamp: new Date().toISOString()
-        })
-      }
+      const result: ContentResult = await aiService.generateMetaDescription(
+        title,
+        content
+      )
+      return NextResponse.json({
+        action,
+        result,
+        timestamp: new Date().toISOString()
+      })
+    }
+    
+    case 'translate': {
+      const result: ContentResult = await aiService.translateContent(
+        content,
+        fromLang,
+        toLang
+      )
+      return NextResponse.json({
+        action,
+        result,
+        timestamp: new Date().toISOString()
+      })
+    }
     }
   } catch (error) {
     logger.error('Content generation API error', error)
