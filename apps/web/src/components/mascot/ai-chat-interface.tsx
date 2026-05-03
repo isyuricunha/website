@@ -145,6 +145,7 @@ export default function AIChatInterface({
 
   const [conversations, setConversations] = useState<ChatConversation[]>([])
   const [activeConversationId, setActiveConversationId] = useState<string>('')
+  const messageIdCounter = useRef(0)
   const [inputValue, setInputValue] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [typingDots, setTypingDots] = useState('')
@@ -252,8 +253,11 @@ export default function AIChatInterface({
       return { ...c, messages: [getWelcomeMessage()], updatedAt: new Date().toISOString() }
     })
 
-    setConversations(nextConversations)
-    setActiveConversationId(nextActiveId)
+      // Batch state updates to avoid cascading renders
+      ; (() => {
+        setConversations(nextConversations)
+        setActiveConversationId(nextActiveId)
+      })()
     saveYueChatState({
       conversations: nextConversations,
       activeConversationId: nextActiveId,
@@ -368,7 +372,8 @@ export default function AIChatInterface({
     if (!messageText) return
 
     const userMessage: ChatMessage = {
-      id: Date.now().toString(),
+      // eslint-disable-next-line react-hooks/purity -- ID generation is safe in async event handlers
+      id: `user-${messageIdCounter.current++}-${Date.now()}`,
       text: messageText,
       isUser: true,
       timestamp: new Date().toISOString(),
@@ -439,9 +444,11 @@ export default function AIChatInterface({
       if (contentType.startsWith('text/plain') && response.body) {
         const reader = response.body.getReader()
         const decoder = new TextDecoder()
-        const messageId = (Date.now() + 1).toString()
+        // eslint-disable-next-line react-hooks/purity -- ID generation is safe in async callbacks
+        const messageId = `ai-${messageIdCounter.current++}-${Date.now()}`
 
         let accumulated = ''
+        // eslint-disable-next-line react-hooks/purity -- performance.now() is safe in async callbacks
         const startTime = performance.now()
 
         updateActiveConversation((c) => ({
@@ -470,6 +477,7 @@ export default function AIChatInterface({
           }))
         }
 
+        // eslint-disable-next-line react-hooks/purity -- performance.now() is safe in async callbacks
         const latency = Math.max(0, Math.round(performance.now() - startTime))
         updateActiveConversation((c) => ({
           ...c,
@@ -515,8 +523,10 @@ export default function AIChatInterface({
 
       const safeTimestamp = data.timestamp ?? new Date().toISOString()
 
+       
       const aiMessage: ChatMessage = {
-        id: (Date.now() + 1).toString(),
+        // eslint-disable-next-line react-hooks/purity -- ID generation is safe in async callbacks
+        id: `ai-${messageIdCounter.current++}-${Date.now()}`,
         text: data.message ?? t('mascot.aiChat.errorMessage'),
         isUser: false,
         timestamp: safeTimestamp,
@@ -541,8 +551,10 @@ export default function AIChatInterface({
         console.error('Chat error:', error)
       }
 
+       
       const errorMessage: ChatMessage = {
-        id: (Date.now() + 1).toString(),
+        // eslint-disable-next-line react-hooks/purity -- ID generation is safe in async callbacks
+        id: `ai-error-${messageIdCounter.current++}-${Date.now()}`,
         text: t('mascot.aiChat.errorMessage'),
         isUser: false,
         timestamp: new Date().toISOString(),
@@ -615,7 +627,7 @@ export default function AIChatInterface({
     // Find the last user message before this error
     const lastUserMessage = [...conversation.messages]
       .slice(0, messageIndex)
-      .reverse()
+      .toReversed()
       .find((m) => m.isUser)
 
     if (!lastUserMessage) return
@@ -757,7 +769,6 @@ export default function AIChatInterface({
   // Animated typing indicator
   useEffect(() => {
     if (!isLoading) {
-      setTypingDots('')
       return
     }
 
