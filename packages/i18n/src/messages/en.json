@@ -1038,14 +1038,15 @@
       "thinking": "Yue is thinking...",
       "placeholder": "Ask me anything...",
       "connectionError": "Having trouble connecting. Please try again.",
-      "footer": "Yue AI by Yuri & Gemini AI",
+      "footer": "Yue AI by Yuri",
       "providers": {
         "auto": "Auto",
         "hf": "Yue (Medium)",
         "hf_local": "Yue (Low)",
         "gemini": "Gemini",
         "groq": "Yue (High)",
-        "ollama": "Ollama"
+        "ollama": "Ollama",
+        "mistral": "Yue"
       },
       "feedback": {
         "like": "Thumbs up",
