@@ -356,7 +356,7 @@ export async function POST(req: NextRequest) {
     const page_context = page_path ? get_page_context(page_path, locale) : null
 
     const stream_requested = parsed.stream === true
-
+  
     if (stream_requested) {
       const shared_context = {
         currentPage: current_page,
@@ -366,16 +366,18 @@ export async function POST(req: NextRequest) {
         conversation: parsed.context?.conversation,
         locale
       }
-    
+  
       try {
+        logger.info('[AI Chat] Calling aiService.generateStream (streaming mode)')
         const stream = await aiService.generateStream(message, shared_context)
-    
+        logger.info('[AI Chat] aiService.generateStream succeeded')
+  
         const response_headers_stream = {
           ...response_headers,
           'content-type': 'text/plain; charset=utf-8',
           'x-provider': 'mistral'
         }
-    
+  
         await record_ai_chat_observability({
           requestId: request_id,
           endpoint,
@@ -389,15 +391,23 @@ export async function POST(req: NextRequest) {
           userAgent: user_agent,
           requestSizeBytes: request_size
         })
-    
+  
         return new Response(stream, { status: 200, headers: response_headers_stream })
-      } catch {
+      } catch (error) {
+        logger.error('[AI Chat] aiService.generateStream failed - falling back to JSON', {
+          errorName: error instanceof Error ? error.name : 'Unknown',
+          errorMessage: error instanceof Error ? error.message : String(error)
+        })
         // fallback to JSON
       }
     }
 
     const response_text = await (async () => {
       try {
+        logger.info('[AI Chat] Calling aiService.generateResponse', {
+          provider: 'mistral',
+          messageLength: message.length
+        })
         const text = await aiService.generateResponse(
           message,
           {
@@ -409,8 +419,17 @@ export async function POST(req: NextRequest) {
             locale
           }
         )
+        logger.info('[AI Chat] aiService.generateResponse succeeded', {
+          responseLength: text.length
+        })
         return { text, provider: 'mistral' }
       } catch (error) {
+        logger.error('[AI Chat] aiService.generateResponse failed', {
+          errorName: error instanceof Error ? error.name : 'Unknown',
+          errorMessage: error instanceof Error ? error.message : String(error),
+          errorStack: error instanceof Error ? error.stack : undefined,
+          cause: error instanceof Error ? error.cause : undefined
+        })
         throw error instanceof Error ? error : new Error('AI provider failed')
       }
     })()
@@ -442,7 +461,18 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(payload, { status: 200, headers: response_headers })
   } catch (error) {
-    logger.error('AI chat error', error, { requestId: request_id })
+    // Enhanced error logging with full error details
+    const errorDetails = {
+      requestId: request_id,
+      errorName: error instanceof Error ? error.name : 'Unknown',
+      errorMessage: error instanceof Error ? error.message : String(error),
+      errorStack: error instanceof Error ? error.stack : undefined,
+      cause: error instanceof Error ? error.cause : undefined,
+      hasMessage: error instanceof Error && 'message' in error,
+      hasCode: error instanceof Error && 'code' in error
+    }
+
+    logger.error('AI chat error', error, errorDetails)
 
     if (error instanceof z.ZodError) {
       const payload = {
@@ -470,7 +500,11 @@ export async function POST(req: NextRequest) {
       message:
         'Oops! Something went wrong on my end. Let me know if you need help with anything else!',
       isError: true,
-      latencyMs: Date.now() - started_at
+      latencyMs: Date.now() - started_at,
+      // Include error details in development
+      ...(process.env.NODE_ENV === 'development' && {
+        debug_error: errorDetails
+      })
     }
 
     await record_ai_chat_observability({
