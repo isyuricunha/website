@@ -1,661 +1,55 @@
-import { GoogleGenerativeAI } from '@google/generative-ai'
-import { env, flags } from '@isyuricunha/env'
+import { type YueSiteContext } from './yue-context'
 
-import {
-  build_yue_gemini_prompt,
-  build_yue_history,
-  build_yue_openai_messages,
-  build_yue_ollama_prompt,
-  build_yue_system_message,
-  type YueSiteContext
-} from './yue-context'
-
-type AIProvider = 'hf' | 'hf_local' | 'gemini' | 'groq' | 'ollama'
-
-interface AIServiceConfig {
-  provider: AIProvider
-  model?: string
-  temperature?: number
-  maxTokens?: number
-}
+import { mistralProvider } from './mistral-provider'
 
 type SiteContext = YueSiteContext
 
 class AIService {
-  private gemini?: GoogleGenerativeAI
-
-  constructor() {
-    // Initialize Gemini only if enabled and API key exists
-    if (flags.gemini && env.GEMINI_API_KEY) {
-      this.gemini = new GoogleGenerativeAI(env.GEMINI_API_KEY)
-    }
-  }
-
   async generateStream(
     message: string,
-    context: SiteContext,
-    config: AIServiceConfig
+    context: SiteContext
   ): Promise<ReadableStream<Uint8Array>> {
-    switch (config.provider) {
-      case 'hf':
-        return this.generateYueLlmStream(message, context, config, 'hf')
-      case 'hf_local':
-        return this.generateYueLlmStream(message, context, config, 'hf_local')
-      case 'gemini':
-        return this.generateGeminiStream(message, context, config)
-      case 'groq':
-        return this.generateGroqStream(message, context, config)
-      case 'ollama':
-        return this.generateOllamaStream(message, context, config)
-      default:
-        throw new Error(`Unsupported AI provider for streaming: ${config.provider}`)
-    }
+    return this.generateMistralStream(message, context)
   }
 
   async generateResponse(
     message: string,
-    context: SiteContext,
-    config?: AIServiceConfig
+    context: SiteContext
   ): Promise<string> {
-    const resolved_config: AIServiceConfig = config ?? { provider: 'gemini' }
-
-    switch (resolved_config.provider) {
-      case 'hf':
-        return this.generateYueLlmResponse(message, context, resolved_config, 'hf')
-      case 'hf_local':
-        return this.generateYueLlmResponse(message, context, resolved_config, 'hf_local')
-      case 'gemini':
-        return this.generateGeminiResponse(message, context, resolved_config)
-      case 'groq':
-        return this.generateGroqResponse(message, context, resolved_config)
-      case 'ollama':
-        return this.generateOllamaResponse(message, context, resolved_config)
-      default:
-        throw new Error(`Unsupported AI provider: ${resolved_config.provider}`)
-    }
+    return this.generateMistralResponse(message, context)
   }
 
-  private getYueLlmTimeoutMs(): number {
-    return env.YUE_LLM_REQUEST_TIMEOUT_MS ?? 300_000
-  }
-
-  private async generateYueLlmResponse(
+  private async generateMistralResponse(
     message: string,
-    context: SiteContext,
-    config: AIServiceConfig,
-    provider: 'hf' | 'hf_local'
+    context: SiteContext
   ): Promise<string> {
-    if (!this.isYueLlmAvailable(provider)) {
-      throw new Error('Yue LLM is not available')
-    }
-
-    const spaceUrl = env.YUE_LLM_SPACE_URL.replace(/\/$/, '')
-    const endpoint = provider === 'hf' ? '/respond/hf' : '/respond/local'
-
-    const system_message = build_yue_system_message(context)
-    const history = build_yue_history(context, 15)
-
-    const controller = new AbortController()
-    const timeout = setTimeout(() => controller.abort(), this.getYueLlmTimeoutMs())
-
-    try {
-      const response = await fetch(`${spaceUrl}${endpoint}`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${env.YUE_LLM_API_TOKEN}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          message,
-          history,
-          system_message,
-          max_tokens: config.maxTokens ?? 256,
-          temperature: config.temperature ?? 0.7,
-          top_p: 0.95,
-          stream: false
-        }),
-        signal: controller.signal
-      })
-
-      const contentType = response.headers.get('content-type') || ''
-
-      if (!response.ok) {
-        const details = contentType.includes('application/json')
-          ? ((await response.json().catch(() => null)) as {
-              detail?: string
-              error?: string
-            } | null)
-          : null
-
-        const msg = details?.error ?? details?.detail ?? response.statusText
-        throw new Error(`Yue LLM API error (${response.status}): ${msg}`)
-      }
-
-      if (!contentType.includes('application/json')) {
-        const text = await response.text()
-        return text.trim()
-      }
-
-      const data = (await response.json()) as { response?: string }
-      return data.response?.trim() || 'Sorry, I could not generate a response.'
-    } finally {
-      clearTimeout(timeout)
-    }
+    return mistralProvider.generateResponse(message, context)
   }
 
-  private async generateYueLlmStream(
+  private async generateMistralStream(
     message: string,
-    context: SiteContext,
-    config: AIServiceConfig,
-    provider: 'hf' | 'hf_local'
+    context: SiteContext
   ): Promise<ReadableStream<Uint8Array>> {
-    if (!this.isYueLlmAvailable(provider)) {
-      throw new Error('Yue LLM is not available')
-    }
-
-    const spaceUrl = env.YUE_LLM_SPACE_URL.replace(/\/$/, '')
-    const endpoint = provider === 'hf' ? '/respond/hf' : '/respond/local'
-
-    const system_message = build_yue_system_message(context)
-    const history = build_yue_history(context, 15)
-
-    const controller = new AbortController()
-    const timeout = setTimeout(() => controller.abort(), this.getYueLlmTimeoutMs())
-
-    try {
-      const response = await fetch(`${spaceUrl}${endpoint}`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${env.YUE_LLM_API_TOKEN}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          message,
-          history,
-          system_message,
-          max_tokens: config.maxTokens ?? 256,
-          temperature: config.temperature ?? 0.7,
-          top_p: 0.95,
-          stream: true
-        }),
-        signal: controller.signal
-      })
-
-      if (!response.ok || !response.body) {
-        const contentType = response.headers.get('content-type') || ''
-        const details = contentType.includes('application/json')
-          ? ((await response.json().catch(() => null)) as {
-              detail?: string
-              error?: string
-            } | null)
-          : null
-        const msg = details?.error ?? details?.detail ?? response.statusText
-        throw new Error(`Yue LLM API error (${response.status}): ${msg}`)
-      }
-
-      const contentType = response.headers.get('content-type') || ''
-      if (contentType.includes('text/event-stream')) {
-        return this.convertOpenAiSseToTextStream(response.body)
-      }
-
-      if (contentType.includes('application/json')) {
-        return this.convertJsonLinesToTextStream(response.body)
-      }
-
-      return response.body
-    } finally {
-      clearTimeout(timeout)
-    }
-  }
-
-  private convertJsonLinesToTextStream(
-    input: ReadableStream<Uint8Array>
-  ): ReadableStream<Uint8Array> {
-    const decoder = new TextDecoder()
-    const encoder = new TextEncoder()
-
-    return new ReadableStream<Uint8Array>({
-      async start(controller) {
-        const reader = input.getReader()
-        let buffer = ''
-
-        try {
-          while (true) {
-            const { value, done } = await reader.read()
-            if (done) break
-
-            buffer += decoder.decode(value, { stream: true })
-            const lines = buffer.split('\n')
-            buffer = lines.pop() ?? ''
-
-            for (const line of lines) {
-              const trimmed = line.trim()
-              if (!trimmed) continue
-              try {
-                const parsed = JSON.parse(trimmed) as {
-                  token?: string
-                  response?: string
-                  text?: string
-                }
-                const chunk = parsed.token ?? parsed.response ?? parsed.text
-                if (chunk) controller.enqueue(encoder.encode(chunk))
-              } catch {
-                controller.enqueue(encoder.encode(trimmed))
-              }
-            }
-          }
-
-          if (buffer.trim()) {
-            try {
-              const parsed = JSON.parse(buffer.trim()) as {
-                token?: string
-                response?: string
-                text?: string
-              }
-              const chunk = parsed.token ?? parsed.response ?? parsed.text
-              if (chunk) controller.enqueue(encoder.encode(chunk))
-            } catch {
-              controller.enqueue(encoder.encode(buffer))
-            }
-          }
-
-          controller.close()
-        } catch (error) {
-          controller.error(error)
-        } finally {
-          reader.releaseLock()
-        }
-      }
-    })
-  }
-
-  private async generateGeminiStream(
-    message: string,
-    context: SiteContext,
-    config: AIServiceConfig
-  ): Promise<ReadableStream<Uint8Array>> {
-    if (!this.gemini || !flags.gemini) {
-      throw new Error('Gemini AI is not available')
-    }
-
-    const model = this.gemini.getGenerativeModel({
-      model: config.model || env.GEMINI_MODEL || 'gemini-2.0-flash-lite'
-    })
-
-    const prompt = build_yue_gemini_prompt(context, message)
-    const result = await model.generateContentStream(prompt)
-    const encoder = new TextEncoder()
-
-    return new ReadableStream<Uint8Array>({
-      async start(controller) {
-        try {
-          for await (const chunk of result.stream) {
-            const text = (chunk as unknown as { text?: () => string }).text?.()
-            if (text) controller.enqueue(encoder.encode(text))
-          }
-          controller.close()
-        } catch (error) {
-          controller.error(error)
-        }
-      }
-    })
-  }
-
-  private async generateGroqStream(
-    message: string,
-    context: SiteContext,
-    config: AIServiceConfig
-  ): Promise<ReadableStream<Uint8Array>> {
-    if (!this.isGroqAvailable()) {
-      throw new Error('Groq AI is not available')
-    }
-
-    const model = config.model || env.GROQ_MODEL || 'llama-3.3-70b-versatile'
-    const controller = new AbortController()
-    const timeout = setTimeout(() => controller.abort(), 60_000)
-
-    try {
-      const apiKeys = this.getGroqApiKeys()
-
-      for (let i = 0; i < apiKeys.length; i++) {
-        const apiKey = apiKeys[i]
-        const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${apiKey}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            model,
-            messages: build_yue_openai_messages(context, message, 15),
-            temperature: config.temperature ?? 0.7,
-            max_tokens: config.maxTokens ?? 256,
-            stream: true
-          }),
-          signal: controller.signal
-        })
-
-        if (response.ok && response.body) {
-          return this.convertOpenAiSseToTextStream(response.body)
-        }
-
-        const contentType = response.headers.get('content-type') || ''
-        const details = contentType.includes('application/json')
-          ? ((await response.json().catch(() => null)) as { error?: { message?: string } } | null)
-          : null
-
-        const msg = details?.error?.message ?? response.statusText
-
-        const shouldTryNextKey =
-          i < apiKeys.length - 1 && this.isGroqKeyFallbackCandidate(response.status, msg)
-
-        if (!shouldTryNextKey) {
-          throw new Error(`Groq API error (${response.status}): ${msg}`)
-        }
-      }
-
-      throw new Error('Groq API error: no API keys available')
-    } finally {
-      clearTimeout(timeout)
-    }
-  }
-
-  private getGroqApiKeys(): string[] {
-    const keys: Array<string | undefined> = [env.GROQ_API_KEY, env.GROQ_API_KEY_FALLBACK]
-    return keys.filter((k): k is string => typeof k === 'string' && k.length > 0)
-  }
-
-  private isGroqKeyFallbackCandidate(status: number, message: string): boolean {
-    if ([401, 403, 429].includes(status)) return true
-
-    const normalized = message.toLowerCase()
-    return (
-      normalized.includes('rate limit') ||
-      normalized.includes('too many requests') ||
-      normalized.includes('quota') ||
-      normalized.includes('insufficient') ||
-      normalized.includes('limit')
-    )
-  }
-
-  private convertOpenAiSseToTextStream(
-    input: ReadableStream<Uint8Array>
-  ): ReadableStream<Uint8Array> {
-    const decoder = new TextDecoder()
-    const encoder = new TextEncoder()
-
-    return new ReadableStream<Uint8Array>({
-      async start(controller) {
-        const reader = input.getReader()
-        let buffer = ''
-
-        try {
-          while (true) {
-            const { value, done } = await reader.read()
-            if (done) break
-
-            buffer += decoder.decode(value, { stream: true })
-            const events = buffer.split('\n\n')
-            buffer = events.pop() ?? ''
-
-            for (const evt of events) {
-              const lines = evt.split('\n')
-              for (const line of lines) {
-                const trimmed = line.trim()
-                if (!trimmed.startsWith('data:')) continue
-                const data = trimmed.slice('data:'.length).trim()
-                if (!data) continue
-                if (data === '[DONE]') {
-                  controller.close()
-                  return
-                }
-
-                try {
-                  const parsed = JSON.parse(data) as {
-                    choices?: Array<{ delta?: { content?: string } }>
-                  }
-                  const chunk = parsed.choices?.[0]?.delta?.content
-                  if (chunk) controller.enqueue(encoder.encode(chunk))
-                } catch {
-                  // ignore malformed chunk
-                }
-              }
-            }
-          }
-
-          controller.close()
-        } catch (error) {
-          controller.error(error)
-        } finally {
-          reader.releaseLock()
-        }
-      }
-    })
-  }
-
-  private async generateGeminiResponse(
-    message: string,
-    context: SiteContext,
-    config: AIServiceConfig
-  ): Promise<string> {
-    if (!this.gemini || !flags.gemini) {
-      throw new Error('Gemini AI is not available')
-    }
-
-    const model = this.gemini.getGenerativeModel({
-      model: config.model || env.GEMINI_MODEL || 'gemini-2.0-flash-lite'
-    })
-
-    const prompt = build_yue_gemini_prompt(context, message)
-    const result = await model.generateContent(prompt)
-    const response = result.response
-
-    return response.text()
-  }
-
-  private async generateGroqResponse(
-    message: string,
-    context: SiteContext,
-    config: AIServiceConfig
-  ): Promise<string> {
-    if (!this.isGroqAvailable()) {
-      throw new Error('Groq AI is not available')
-    }
-
-    const model = config.model || env.GROQ_MODEL || 'llama-3.3-70b-versatile'
-    const controller = new AbortController()
-    const timeout = setTimeout(() => controller.abort(), 60_000)
-
-    const messages = build_yue_openai_messages(context, message, 15)
-
-    try {
-      const apiKeys = this.getGroqApiKeys()
-
-      for (let i = 0; i < apiKeys.length; i++) {
-        const apiKey = apiKeys[i]
-        const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${apiKey}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            model,
-            messages,
-            temperature: config.temperature ?? 0.7,
-            max_tokens: config.maxTokens ?? 256,
-            stream: false
-          }),
-          signal: controller.signal
-        })
-
-        if (response.ok) {
-          const data = (await response.json()) as {
-            choices?: Array<{ message?: { content?: string } }>
-          }
-
-          return (
-            data.choices?.[0]?.message?.content?.trim() || 'Sorry, I could not generate a response.'
-          )
-        }
-
-        const contentType = response.headers.get('content-type') || ''
-        const details = contentType.includes('application/json')
-          ? ((await response.json().catch(() => null)) as { error?: { message?: string } } | null)
-          : null
-
-        const msg = details?.error?.message ?? response.statusText
-
-        const shouldTryNextKey =
-          i < apiKeys.length - 1 && this.isGroqKeyFallbackCandidate(response.status, msg)
-
-        if (!shouldTryNextKey) {
-          throw new Error(`Groq API error (${response.status}): ${msg}`)
-        }
-      }
-
-      throw new Error('Groq API error: no API keys available')
-    } finally {
-      clearTimeout(timeout)
-    }
-  }
-
-  private async generateOllamaResponse(
-    message: string,
-    context: SiteContext,
-    config: AIServiceConfig
-  ): Promise<string> {
-    const ollamaUrl = env.OLLAMA_BASE_URL || 'http://localhost:11434'
-    const ollamaModel = config.model || env.OLLAMA_MODEL || 'llama3.2'
-
-    const fullPrompt = build_yue_ollama_prompt(context, message)
-
-    // Usando endpoint nativo do Ollama
-    const response = await fetch(`${ollamaUrl}/api/generate`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: ollamaModel,
-        prompt: fullPrompt,
-        stream: false,
-        options: {
-          temperature: config.temperature ?? 0.4,
-          num_predict: config.maxTokens ?? 256
-        }
-      })
-    })
-
-    if (!response.ok) {
-      throw new Error(`Ollama API error: ${response.statusText}`)
-    }
-
-    const data = await response.json()
-    return data.response || 'Desculpe, não consegui gerar uma resposta.'
-  }
-
-  async generateOllamaStream(
-    message: string,
-    context: SiteContext,
-    config: AIServiceConfig
-  ): Promise<ReadableStream<Uint8Array>> {
-    if (!this.isOllamaAvailable()) {
-      throw new Error('Ollama AI is not available')
-    }
-
-    const ollamaUrl = env.OLLAMA_BASE_URL || 'http://localhost:11434'
-    const ollamaModel = config.model || env.OLLAMA_MODEL || 'llama3.2'
-
-    const fullPrompt = build_yue_ollama_prompt(context, message)
-
-    const encoder = new TextEncoder()
-    const decoder = new TextDecoder()
-
-    return new ReadableStream<Uint8Array>({
-      async start(controller) {
-        const response = await fetch(`${ollamaUrl}/api/generate`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            model: ollamaModel,
-            prompt: fullPrompt,
-            stream: true,
-            options: {
-              temperature: config.temperature ?? 0.4,
-              num_predict: config.maxTokens ?? 256
-            }
-          })
-        })
-
-        if (!response.ok || !response.body) {
-          throw new Error(`Ollama API error: ${response.statusText}`)
-        }
-
-        const reader = response.body.getReader()
-        let buffer = ''
-
-        while (true) {
-          const { value, done } = await reader.read()
-          if (done) break
-          buffer += decoder.decode(value, { stream: true })
-
-          const lines = buffer.split('\n')
-          buffer = lines.pop() || ''
-
-          for (const line of lines) {
-            if (!line.trim()) continue
-            try {
-              const chunk = JSON.parse(line) as { response?: string; done?: boolean }
-              if (chunk.response) {
-                controller.enqueue(encoder.encode(chunk.response))
-              }
-            } catch {
-              // ignore malformed chunk
-            }
-          }
-        }
-
-        if (buffer.trim()) {
-          try {
-            const chunk = JSON.parse(buffer) as { response?: string }
-            if (chunk.response) {
-              controller.enqueue(encoder.encode(chunk.response))
-            }
-          } catch {
-            // ignore trailing malformed chunk
-          }
-        }
-
-        controller.close()
-      }
-    })
+    return mistralProvider.generateStream(message, context)
   }
 
   // Check if providers are available
   isHfAvailable(): boolean {
-    return !!(flags.hf && env.YUE_LLM_SPACE_URL && env.YUE_LLM_API_TOKEN)
+    return false
   }
 
   isHfLocalAvailable(): boolean {
-    return !!(flags.hfLocal && env.YUE_LLM_SPACE_URL && env.YUE_LLM_API_TOKEN)
-  }
-
-  private isYueLlmAvailable(provider: 'hf' | 'hf_local'): boolean {
-    return provider === 'hf' ? this.isHfAvailable() : this.isHfLocalAvailable()
+    return false
   }
 
   isGroqAvailable(): boolean {
-    return !!(flags.groq && env.GROQ_API_KEY)
+    return false
   }
 
   // Content generation methods
   async generateTags(
     content: string,
-    existingTags: string[] = [],
-    provider: AIProvider = 'gemini'
+    existingTags: string[] = []
   ): Promise<string[]> {
     const prompt = `Analyze this blog post content and suggest 3-6 relevant tags.
 
@@ -677,7 +71,7 @@ Tags:`
       locale: 'en'
     }
 
-    const response = await this.generateResponse(prompt, context, { provider })
+    const response = await this.generateResponse(prompt, context)
 
     // Extract tags from response
     return response
@@ -694,8 +88,7 @@ Tags:`
 
   async generateSummary(
     content: string,
-    maxLength = 200,
-    provider: AIProvider = 'gemini'
+    maxLength = 200
   ): Promise<string> {
     const prompt = `Create a concise summary of this blog post (max ${maxLength} characters):
 
@@ -715,14 +108,13 @@ Summary:`
       locale: 'en'
     }
 
-    const response = await this.generateResponse(prompt, context, { provider })
+    const response = await this.generateResponse(prompt, context)
     return response.slice(0, Math.max(0, maxLength)).trim()
   }
 
   async generateMetaDescription(
     title: string,
-    content: string,
-    provider: AIProvider = 'gemini'
+    content: string
   ): Promise<string> {
     const prompt = `Create an SEO-optimized meta description (120-160 characters) for this blog post:
 
@@ -744,7 +136,7 @@ Meta description:`
       locale: 'en'
     }
 
-    const response = await this.generateResponse(prompt, context, { provider })
+    const response = await this.generateResponse(prompt, context)
 
     // Ensure it's within the character limit
     let description = response.trim()
@@ -760,10 +152,9 @@ Meta description:`
   async translateContent(
     content: string,
     fromLang: string,
-    toLang: string,
-    provider: AIProvider = 'gemini'
+    toLang: string
   ): Promise<string> {
-    const langNames = {
+    const langNames: Record<string, string> = {
       en: 'English',
       pt: 'Portuguese (Brazilian)',
       fr: 'French',
@@ -771,7 +162,7 @@ Meta description:`
       zh: 'Chinese (Simplified)'
     }
 
-    const prompt = `Translate this content from ${langNames[fromLang as keyof typeof langNames]} to ${langNames[toLang as keyof typeof langNames]}:
+    const prompt = `Translate this content from ${langNames[fromLang] || fromLang} to ${langNames[toLang] || toLang}:
 
 ${content}
 
@@ -788,29 +179,24 @@ Translation:`
       locale: toLang
     }
 
-    return this.generateResponse(prompt, context, { provider })
+    return this.generateResponse(prompt, context)
   }
 
   // Check if providers are available
   isGeminiAvailable(): boolean {
-    return !!(flags.gemini && env.GEMINI_API_KEY && this.gemini)
+    return false
   }
 
   isOllamaAvailable(): boolean {
-    return !!(flags.ollama && (env.OLLAMA_BASE_URL || env.OLLAMA_MODEL))
+    return false
   }
 
-  getAvailableProviders(): AIProvider[] {
-    const providers: AIProvider[] = []
-    // Preferred fallback order: groq -> hf -> hf_local -> gemini -> ollama
-    if (this.isGroqAvailable()) providers.push('groq')
-    if (this.isHfAvailable()) providers.push('hf')
-    if (this.isHfLocalAvailable()) providers.push('hf_local')
-    if (this.isGeminiAvailable()) providers.push('gemini')
+  isMistralAvailable(): boolean {
+    return mistralProvider.isAvailable()
+  }
 
-    // Keep Ollama as an optional provider (useful for local dev)
-    if (this.isOllamaAvailable()) providers.push('ollama')
-    return providers
+  getAvailableProviders(): string[] {
+    return ['mistral']
   }
 }
 
