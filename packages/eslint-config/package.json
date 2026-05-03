@@ -62,6 +62,7 @@
   "devDependencies": {
     "@eslint/config-inspector": "^2.0.0",
     "@isyuricunha/tsconfig": "workspace:*",
+    "concurrently": "^9.1.2",
     "eslint": "^10.2.1"
   },
   "publishConfig": {
