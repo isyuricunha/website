@@ -24,6 +24,7 @@
     "@aws-sdk/client-s3": "^3.1032.0",
     "@aws-sdk/s3-request-presigner": "^3.1032.0",
     "@google/generative-ai": "^0.24.1",
+    "@mistralai/mistralai": "^2.0.0",
     "@hookform/resolvers": "5.2.1",
     "@icons-pack/react-simple-icons": "13.13.0",
     "@isyuricunha/db": "workspace:*",
