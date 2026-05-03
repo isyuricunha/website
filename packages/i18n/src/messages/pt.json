@@ -1088,7 +1088,8 @@
       "switchModel": "Trocar Modelo de IA",
       "availableFeatures": "Recursos disponíveis para {model}",
       "featureNotAvailable": "{feature} não disponível para este modelo",
-      "online": "Online"
+      "online": "Online",
+      "retry": "Tentar novamente"
     },
     "chatbot": {
       "title": "Conversar com a Yue",

@@ -1088,7 +1088,8 @@
       "switchModel": "Switch AI Model",
       "availableFeatures": "Available features for {model}",
       "featureNotAvailable": "{feature} not available for this model",
-      "online": "Online"
+      "online": "Online",
+      "retry": "Retry"
     },
     "chatbot": {
       "title": "Chat with Yue",
