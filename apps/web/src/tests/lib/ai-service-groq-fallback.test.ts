@@ -3,9 +3,11 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 vi.mock('@isyuricunha/env', () => {
   return {
     env: {
-      GROQ_API_KEY: 'key_primary',
-      GROQ_API_KEY_FALLBACK: 'key_fallback',
-      GROQ_MODEL: undefined,
+      MISTRAL_API_KEY: 'test-key',
+      MISTRAL_BASE_URL: undefined,
+      MISTRAL_AGENT_ID: undefined,
+      GROQ_API_KEY: undefined,
+      GROQ_API_KEY_FALLBACK: undefined,
       GEMINI_API_KEY: undefined,
       GEMINI_MODEL: undefined,
       YUE_LLM_REQUEST_TIMEOUT_MS: undefined,
@@ -14,10 +16,11 @@ vi.mock('@isyuricunha/env', () => {
     },
     flags: {
       gemini: false,
-      groq: true,
+      groq: false,
       hf: false,
       hfLocal: false,
       ollama: false,
+      mistral: true,
       comment: false,
       auth: false,
       stats: false,
@@ -31,59 +34,33 @@ vi.mock('@isyuricunha/env', () => {
   }
 })
 
-describe('ai-service groq key fallback', () => {
+class MockMistral {
+  chat = {
+    complete: vi.fn().mockResolvedValue({
+      choices: [{ message: { content: 'hello from mistral' } }]
+    })
+  }
+}
+
+vi.mock('@mistralai/mistralai', () => {
+  return {
+    Mistral: MockMistral
+  }
+})
+
+describe('ai-service mistral response', () => {
   beforeEach(() => {
     vi.restoreAllMocks()
   })
 
-  it('tries GROQ_API_KEY_FALLBACK when primary key hits rate limit', async () => {
-    const fetchMock = vi
-      .fn()
-      .mockResolvedValueOnce({
-        ok: false,
-        status: 429,
-        statusText: 'Too Many Requests',
-        headers: new Headers({ 'content-type': 'application/json' }),
-        json: async () => ({ error: { message: 'Rate limit exceeded' } })
-      })
-      .mockResolvedValueOnce({
-        ok: true,
-        status: 200,
-        statusText: 'OK',
-        headers: new Headers({ 'content-type': 'application/json' }),
-        json: async () => ({ choices: [{ message: { content: 'hello' } }] })
-      })
-
-    vi.stubGlobal('fetch', fetchMock)
-
+  it('returns response from mistral provider', async () => {
     const { aiService } = await import('@/lib/ai/ai-service')
 
-    const response = await aiService.generateResponse(
-      'hi',
-      {
-        currentPage: '/test',
-        locale: 'en'
-      },
-      { provider: 'groq' }
-    )
+    const response = await aiService.generateResponse('hi', {
+      currentPage: '/test',
+      locale: 'en'
+    })
 
-    expect(response).toBe('hello')
-    expect(fetchMock).toHaveBeenCalledTimes(2)
-
-    expect(fetchMock).toHaveBeenNthCalledWith(
-      1,
-      'https://api.groq.com/openai/v1/chat/completions',
-      expect.objectContaining({
-        headers: expect.objectContaining({ Authorization: 'Bearer key_primary' })
-      })
-    )
-
-    expect(fetchMock).toHaveBeenNthCalledWith(
-      2,
-      'https://api.groq.com/openai/v1/chat/completions',
-      expect.objectContaining({
-        headers: expect.objectContaining({ Authorization: 'Bearer key_fallback' })
-      })
-    )
+    expect(response).toBe('hello from mistral')
   })
 })

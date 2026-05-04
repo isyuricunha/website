@@ -201,14 +201,14 @@ describe('/api/ai/chat', () => {
     expect(json.details).toBeTruthy()
   })
 
-  it('falls back to first available provider when requested provider is unavailable', async () => {
+  it('uses mistral provider as the only available provider', async () => {
     const { ratelimit } = await import('@/lib/ratelimit')
     const { getClientIp } = await import('@/lib/spam-detection')
     const { aiService } = await import('@/lib/ai/ai-service')
 
     vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
     vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
-    vi.mocked(aiService.getAvailableProviders).mockReturnValue(['ollama'])
+    vi.mocked(aiService.getAvailableProviders).mockReturnValue(['mistral'])
     vi.mocked(aiService.generateResponse).mockResolvedValue('ok')
 
     const { POST } = await import('@/app/api/ai/chat/route')
@@ -217,7 +217,6 @@ describe('/api/ai/chat', () => {
       headers: new Headers(),
       json: async () => ({
         message: 'hello',
-        provider: 'gemini',
         locale: 'pt',
         context: { currentPage: '/test' }
       })
@@ -234,30 +233,20 @@ describe('/api/ai/chat', () => {
 
     expect(res.status).toBe(200)
     expect(json.message).toBe('ok')
-    expect(json.provider).toBe('ollama')
+    expect(json.provider).toBe('mistral')
     expect(typeof json.latencyMs).toBe('number')
     expect(typeof json.requestId).toBe('string')
     expect(json.citations).toBeTruthy()
-
-    expect(aiService.generateResponse).toHaveBeenCalledWith(
-      'hello',
-      expect.objectContaining({
-        currentPage: '/test',
-        locale: 'pt'
-      }),
-      { provider: 'ollama', model: undefined }
-    )
   })
 
-  it('uses requested provider when available', async () => {
+  it('returns 503 when no providers are available', async () => {
     const { ratelimit } = await import('@/lib/ratelimit')
     const { getClientIp } = await import('@/lib/spam-detection')
     const { aiService } = await import('@/lib/ai/ai-service')
 
     vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
     vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
-    vi.mocked(aiService.getAvailableProviders).mockReturnValue(['gemini', 'ollama'])
-    vi.mocked(aiService.generateResponse).mockResolvedValue('ok')
+    vi.mocked(aiService.getAvailableProviders).mockReturnValue([])
 
     const { POST } = await import('@/app/api/ai/chat/route')
 
@@ -265,7 +254,6 @@ describe('/api/ai/chat', () => {
       headers: new Headers(),
       json: async () => ({
         message: 'hello',
-        provider: 'ollama',
         locale: 'en',
         context: { currentPage: '/test' }
       })
@@ -273,35 +261,24 @@ describe('/api/ai/chat', () => {
 
     const res = await POST(req)
     const json = (await res.json()) as {
-      provider: string
+      error: string
       requestId?: string
     }
 
-    expect(res.status).toBe(200)
-    expect(json.provider).toBe('ollama')
+    expect(res.status).toBe(503)
+    expect(json.error).toBe('No AI providers are currently available.')
     expect(typeof json.requestId).toBe('string')
-
-    expect(aiService.generateResponse).toHaveBeenCalledWith(
-      'hello',
-      expect.objectContaining({
-        currentPage: '/test',
-        locale: 'en'
-      }),
-      { provider: 'ollama', model: undefined }
-    )
   })
 
-  it('tries providers in order until one succeeds', async () => {
+  it('handles provider errors correctly', async () => {
     const { ratelimit } = await import('@/lib/ratelimit')
     const { getClientIp } = await import('@/lib/spam-detection')
     const { aiService } = await import('@/lib/ai/ai-service')
 
     vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
     vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
-    vi.mocked(aiService.getAvailableProviders).mockReturnValue(['hf', 'hf_local', 'gemini'])
-    vi.mocked(aiService.generateResponse)
-      .mockRejectedValueOnce(new Error('hf failed'))
-      .mockResolvedValueOnce('ok-local')
+    vi.mocked(aiService.getAvailableProviders).mockReturnValue(['mistral'])
+    vi.mocked(aiService.generateResponse).mockRejectedValue(new Error('Provider error'))
 
     const { POST } = await import('@/app/api/ai/chat/route')
 
@@ -315,24 +292,10 @@ describe('/api/ai/chat', () => {
     } as unknown as Parameters<typeof POST>[0]
 
     const res = await POST(req)
-    const json = (await res.json()) as { message: string; provider: string }
 
-    expect(res.status).toBe(200)
-    expect(json.message).toBe('ok-local')
-    expect(json.provider).toBe('hf_local')
-
-    expect(aiService.generateResponse).toHaveBeenCalledTimes(2)
-    expect(aiService.generateResponse).toHaveBeenNthCalledWith(
-      1,
-      'hello',
-      expect.anything(),
-      expect.objectContaining({ provider: 'hf' })
-    )
-    expect(aiService.generateResponse).toHaveBeenNthCalledWith(
-      2,
-      'hello',
-      expect.anything(),
-      expect.objectContaining({ provider: 'hf_local' })
-    )
+    expect(res.status).toBe(500)
+    const json = (await res.json()) as { message: string; isError?: boolean }
+    expect(json.message).toContain('Something went wrong')
+    expect(json.isError).toBe(true)
   })
 })
