@@ -18,6 +18,7 @@ import { useEffect, useState } from 'react'
 
 import { signIn, signUp } from '@/lib/auth-client'
 import { useDialogsStore } from '@/store/dialogs'
+import { logger } from '@/lib/logger'
 import ForgotPasswordDialog from '@/components/forgot-password-dialog'
 
 type Provider = 'github' | 'google'
@@ -86,7 +87,9 @@ const SignInDialog = () => {
   useEffect(() => {
     if (typeof globalThis !== 'undefined') {
       const provider = localStorage.getItem('last-used-provider') as Provider | null
-      setLastUsedProvider(provider)
+      requestAnimationFrame(() => {
+        setLastUsedProvider(provider)
+      })
     }
   }, [])
 
@@ -130,7 +133,7 @@ const SignInDialog = () => {
           }
         }
       })
-      console.log('Anonymous user:', user)
+      logger.info('Anonymous user:', { user })
     } catch (error: unknown) {
       const errorMsg = error instanceof Error ? error.message : unknown_error_message
       toast.error(errorMsg)

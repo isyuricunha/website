@@ -1,5 +1,7 @@
 /// <reference lib="webworker" />
 
+import { logger } from '@/lib/logger'
+
 declare const self: ServiceWorkerGlobalScope
 
 type BackgroundSyncEvent = ExtendableEvent & { tag: string }
@@ -159,9 +161,9 @@ self.addEventListener('sync', (event) => {
   const syncEvent = event as unknown as BackgroundSyncEvent
   if (syncEvent.tag === 'background-sync') {
     syncEvent.waitUntil(
-      Promise.resolve().then(() => {
-        // Perform any background sync tasks here
-        console.log('Background sync triggered')
+            Promise.resolve().then(() => {
+              // Perform any background sync tasks here
+              logger.debug('Background sync triggered')
       })
     )
   }

@@ -13,6 +13,7 @@ import { SiX, SiFacebook, SiReddit, SiWhatsapp } from '@icons-pack/react-simple-
 import { Share2, Link, Check } from 'lucide-react'
 import { useTranslations } from '@isyuricunha/i18n/client'
 import { toast } from 'sonner'
+import { logger } from '@/lib/logger'
 
 const default_hashtags: string[] = []
 
@@ -75,7 +76,7 @@ export default function SocialShare({
         })
       } catch {
         // User cancelled or error occurred
-        console.log('Share cancelled')
+        logger.debug('Share cancelled')
       }
     }
   }
