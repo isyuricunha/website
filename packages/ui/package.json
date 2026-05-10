@@ -37,7 +37,7 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@ark-ui/react": "^5.36.1",
+    "@ark-ui/react": "^5.36.2",
     "@icons-pack/react-simple-icons": "13.13.0",
     "@radix-ui/react-accordion": "^1.2.12",
     "@radix-ui/react-alert-dialog": "^1.1.15",
@@ -71,10 +71,10 @@
     "embla-carousel-react": "^8.6.0",
     "framer-motion": "^12.38.0",
     "input-otp": "^1.4.2",
-    "lucide-react": "^1.8.0",
+    "lucide-react": "^1.14.0",
     "merge-refs": "^2.0.0",
-    "react-hook-form": "^7.72.1",
-    "react-resizable-panels": "^4.10.0",
+    "react-hook-form": "^7.75.0",
+    "react-resizable-panels": "^4.11.0",
     "react-textarea-autosize": "^8.5.9",
     "sonner": "^2.0.7",
     "vaul": "^1.1.2"
@@ -93,10 +93,10 @@
     "@tanstack/react-table": "^8.21.3",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
-    "next": "16.2.4",
-    "react": "19.2.5",
-    "react-dom": "19.2.5",
-    "tailwindcss": "^4.2.2"
+    "next": "16.2.6",
+    "react": "19.2.6",
+    "react-dom": "19.2.6",
+    "tailwindcss": "^4.3.0"
   },
   "publishConfig": {
     "access": "public"
