@@ -30,17 +30,16 @@ const is_foreign_key_violation = (error: unknown): boolean => {
 
 export const announcementsRouter = createTRPCRouter({
   translateAnnouncement: adminProcedure
-  .input(
-    z.object({
-      title: z.string().min(1),
-      content: z.string().min(1),
-      fromLang: z.literal('en').default('en'),
-      toLang: z.literal('pt').default('pt'),
-      model: z.string().min(1).optional()
-    })
-  )
-  .mutation(async ({ input }) => {
-
+    .input(
+      z.object({
+        title: z.string().min(1),
+        content: z.string().min(1),
+        fromLang: z.literal('en').default('en'),
+        toLang: z.literal('pt').default('pt'),
+        model: z.string().min(1).optional()
+      })
+    )
+    .mutation(async ({ input }) => {
       const response_schema = z.object({
         title: z.string().min(1),
         content: z.string().min(1)
@@ -65,7 +64,7 @@ ${input.content}
       }
 
       const raw = await aiService.generateResponse(prompt, context)
-      
+
       const json = (() => {
         try {
           return JSON.parse(raw)
@@ -75,9 +74,9 @@ ${input.content}
           return JSON.parse(match[0])
         }
       })()
-      
+
       const parsed = response_schema.parse(json)
-      
+
       return {
         titlePt: parsed.title.trim(),
         contentPt: parsed.content.trim(),

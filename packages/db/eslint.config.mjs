@@ -7,6 +7,6 @@ export default isyuricunha(
     turbo: true
   },
   {
-    ignores: ['src/migrations/**']
+    ignores: ['src/migrations/**', 'drizzle.config.ts']
   }
 )

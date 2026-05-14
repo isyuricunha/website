@@ -46,7 +46,7 @@ const generateResponseMock = vi.fn(async () => {
 vi.mock('@/lib/ai/ai-service', () => {
   return {
     aiService: {
-      getAvailableProviders: () => ['groq'],
+      getAvailableProviders: () => ['mistral'],
       generateResponse: generateResponseMock
     }
   }
@@ -423,13 +423,12 @@ describe('announcementsRouter', () => {
       title: 'Hello',
       content: 'English',
       fromLang: 'en',
-      toLang: 'pt',
-      provider: 'auto'
+      toLang: 'pt'
     })
 
     expect(result.titlePt).toBe('Olá')
     expect(result.contentPt).toBe('Português')
-    expect(result.provider).toBe('groq')
+    expect(result.provider).toBe('mistral')
     expect(generateResponseMock).toHaveBeenCalled()
   }, 15_000)
 

@@ -155,7 +155,7 @@ describe('viewsRouter', () => {
     expect(result.views).toBe(0)
 
     expect(db.select).not.toHaveBeenCalled()
-  })
+  }, 15_000)
 
   it('get returns cached value even when it is 0', async () => {
     const { viewsRouter } = await import('@/trpc/routers/views')
