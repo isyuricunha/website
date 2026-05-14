@@ -107,12 +107,10 @@ const DrawerDemo = () => {
                 <BarChart data={data}>
                   <Bar
                     dataKey='goal'
-                    style={
-                      {
-                        fill: 'hsl(var(--foreground))',
-                        opacity: 0.9
-                      } as React.CSSProperties
-                    }
+                    style={{
+                      fill: 'hsl(var(--foreground))',
+                      opacity: 0.9
+                    }}
                   />
                 </BarChart>
               </ResponsiveContainer>
