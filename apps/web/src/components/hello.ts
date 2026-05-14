@@ -5,7 +5,9 @@ import { logger } from '@/lib/logger'
 
 const Hello = () => {
   useEffect(() => {
-    logger.info('Hey there, awesome developer! Check out my GitHub repo: https://github.com/isyuricunha/website and give it a star ⭐')
+    logger.info(
+      'Hey there, awesome developer! Check out my GitHub repo: https://github.com/isyuricunha/website and give it a star ⭐'
+    )
   }, [])
 
   return null

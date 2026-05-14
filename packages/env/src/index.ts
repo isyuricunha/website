@@ -93,25 +93,25 @@ export const env = createEnv({
 
     ...(flags.groq
       ? {
-        GROQ_API_KEY: z.string().min(1),
-        GROQ_API_KEY_FALLBACK: z.string().min(1).optional()
-      }
+          GROQ_API_KEY: z.string().min(1),
+          GROQ_API_KEY_FALLBACK: z.string().min(1).optional()
+        }
       : {}),
-  
+
     ...(flags.hf || flags.hfLocal
       ? {
-        YUE_LLM_SPACE_URL: z.string().url(),
-        YUE_LLM_API_TOKEN: z.string().min(1)
-      }
+          YUE_LLM_SPACE_URL: z.string().url(),
+          YUE_LLM_API_TOKEN: z.string().min(1)
+        }
       : {}),
-  
+
     ...(flags.mistral
       ? {
-        MISTRAL_API_KEY: z.string().min(1),
-        MISTRAL_BASE_URL: z.string().url().optional()
-      }
+          MISTRAL_API_KEY: z.string().min(1),
+          MISTRAL_BASE_URL: z.string().url().optional()
+        }
       : {}),
-  
+
     GEMINI_MODEL: z.string().min(1).optional(),
     GROQ_MODEL: z.string().min(1).optional(),
     MISTRAL_AGENT_ID: z.string().min(1).optional(),

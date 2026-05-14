@@ -66,14 +66,14 @@ export async function POST(request: NextRequest) {
           sourceLocale,
           targetLocale
         )
-        
+
         // Translate summary
         const translatedSummary = await aiService.translateContent(
           sourcePost.summary,
           sourceLocale,
           targetLocale
         )
-        
+
         // Translate content
         const translatedContent = await aiService.translateContent(
           sourcePost.content,

@@ -5,24 +5,15 @@ import { mistralProvider } from './mistral-provider'
 type SiteContext = YueSiteContext
 
 class AIService {
-  async generateStream(
-    message: string,
-    context: SiteContext
-  ): Promise<ReadableStream<Uint8Array>> {
+  async generateStream(message: string, context: SiteContext): Promise<ReadableStream<Uint8Array>> {
     return this.generateMistralStream(message, context)
   }
 
-  async generateResponse(
-    message: string,
-    context: SiteContext
-  ): Promise<string> {
+  async generateResponse(message: string, context: SiteContext): Promise<string> {
     return this.generateMistralResponse(message, context)
   }
 
-  private async generateMistralResponse(
-    message: string,
-    context: SiteContext
-  ): Promise<string> {
+  private async generateMistralResponse(message: string, context: SiteContext): Promise<string> {
     return mistralProvider.generateResponse(message, context)
   }
 
@@ -47,10 +38,7 @@ class AIService {
   }
 
   // Content generation methods
-  async generateTags(
-    content: string,
-    existingTags: string[] = []
-  ): Promise<string[]> {
+  async generateTags(content: string, existingTags: string[] = []): Promise<string[]> {
     const prompt = `Analyze this blog post content and suggest 3-6 relevant tags.
 
 CONTENT:
@@ -86,10 +74,7 @@ Tags:`
       .slice(0, 6)
   }
 
-  async generateSummary(
-    content: string,
-    maxLength = 200
-  ): Promise<string> {
+  async generateSummary(content: string, maxLength = 200): Promise<string> {
     const prompt = `Create a concise summary of this blog post (max ${maxLength} characters):
 
 CONTENT:
@@ -112,10 +97,7 @@ Summary:`
     return response.slice(0, Math.max(0, maxLength)).trim()
   }
 
-  async generateMetaDescription(
-    title: string,
-    content: string
-  ): Promise<string> {
+  async generateMetaDescription(title: string, content: string): Promise<string> {
     const prompt = `Create an SEO-optimized meta description (120-160 characters) for this blog post:
 
 TITLE: ${title}
@@ -149,11 +131,7 @@ Meta description:`
     return description
   }
 
-  async translateContent(
-    content: string,
-    fromLang: string,
-    toLang: string
-  ): Promise<string> {
+  async translateContent(content: string, fromLang: string, toLang: string): Promise<string> {
     const langNames: Record<string, string> = {
       en: 'English',
       pt: 'Portuguese (Brazilian)',

@@ -356,7 +356,7 @@ export async function POST(req: NextRequest) {
     const page_context = page_path ? get_page_context(page_path, locale) : null
 
     const stream_requested = parsed.stream === true
-  
+
     if (stream_requested) {
       const shared_context = {
         currentPage: current_page,
@@ -366,18 +366,18 @@ export async function POST(req: NextRequest) {
         conversation: parsed.context?.conversation,
         locale
       }
-  
+
       try {
         logger.info('[AI Chat] Calling aiService.generateStream (streaming mode)')
         const stream = await aiService.generateStream(message, shared_context)
         logger.info('[AI Chat] aiService.generateStream succeeded')
-  
+
         const response_headers_stream = {
           ...response_headers,
           'content-type': 'text/plain; charset=utf-8',
           'x-provider': 'mistral'
         }
-  
+
         await record_ai_chat_observability({
           requestId: request_id,
           endpoint,
@@ -391,7 +391,7 @@ export async function POST(req: NextRequest) {
           userAgent: user_agent,
           requestSizeBytes: request_size
         })
-  
+
         return new Response(stream, { status: 200, headers: response_headers_stream })
       } catch (error) {
         logger.error('[AI Chat] aiService.generateStream failed - falling back to JSON', {
@@ -408,17 +408,14 @@ export async function POST(req: NextRequest) {
           provider: 'mistral',
           messageLength: message.length
         })
-        const text = await aiService.generateResponse(
-          message,
-          {
-            currentPage: current_page,
-            pagePath: page_path,
-            pageContext: page_context,
-            citations,
-            conversation: parsed.context?.conversation,
-            locale
-          }
-        )
+        const text = await aiService.generateResponse(message, {
+          currentPage: current_page,
+          pagePath: page_path,
+          pageContext: page_context,
+          citations,
+          conversation: parsed.context?.conversation,
+          locale
+        })
         logger.info('[AI Chat] aiService.generateResponse succeeded', {
           responseLength: text.length
         })

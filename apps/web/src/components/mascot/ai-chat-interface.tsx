@@ -191,7 +191,7 @@ export default function AIChatInterface({
   useEffect(() => {
     const el = messagesEndRef.current
     if (el && typeof (el as any).scrollIntoView === 'function') {
-      ; (el as any).scrollIntoView({ behavior: 'smooth' })
+      ;(el as any).scrollIntoView({ behavior: 'smooth' })
     }
   }, [messages])
 
@@ -253,11 +253,11 @@ export default function AIChatInterface({
       return { ...c, messages: [getWelcomeMessage()], updatedAt: new Date().toISOString() }
     })
 
-      // Batch state updates to avoid cascading renders
-      ; (() => {
-        setConversations(nextConversations)
-        setActiveConversationId(nextActiveId)
-      })()
+    // Batch state updates to avoid cascading renders
+    ;(() => {
+      setConversations(nextConversations)
+      setActiveConversationId(nextActiveId)
+    })()
     saveYueChatState({
       conversations: nextConversations,
       activeConversationId: nextActiveId,
@@ -484,10 +484,10 @@ export default function AIChatInterface({
           messages: c.messages.map((m) =>
             m.id === messageId
               ? {
-                ...m,
-                text: accumulated || t('mascot.aiChat.errorMessage'),
-                latencyMs: latency
-              }
+                  ...m,
+                  text: accumulated || t('mascot.aiChat.errorMessage'),
+                  latencyMs: latency
+                }
               : m
           ),
           updatedAt: new Date().toISOString()
@@ -523,7 +523,6 @@ export default function AIChatInterface({
 
       const safeTimestamp = data.timestamp ?? new Date().toISOString()
 
-       
       const aiMessage: ChatMessage = {
         // eslint-disable-next-line react-hooks/purity -- ID generation is safe in async callbacks
         id: `ai-${messageIdCounter.current++}-${Date.now()}`,
@@ -551,7 +550,6 @@ export default function AIChatInterface({
         console.error('Chat error:', error)
       }
 
-       
       const errorMessage: ChatMessage = {
         // eslint-disable-next-line react-hooks/purity -- ID generation is safe in async callbacks
         id: `ai-error-${messageIdCounter.current++}-${Date.now()}`,
@@ -863,7 +861,6 @@ export default function AIChatInterface({
                     ))}
                   </SelectContent>
                 </Select>
-
               </div>
             </div>
           </div>
@@ -1124,10 +1121,11 @@ export default function AIChatInterface({
                         onClick={() => handleReaction(message.id, 'like')}
                         aria-label={t('mascot.aiChat.feedback.like')}
                         disabled={feedbackIsSubmittingByMessageId[message.id] === true}
-                        className={`hover:bg-muted/80 flex items-center gap-1 rounded px-2 py-1 text-xs transition-all ${message.reactions?.userReaction === 'like'
-                          ? 'bg-green-50 text-green-600 dark:bg-green-950'
-                          : 'text-muted-foreground'
-                          }`}
+                        className={`hover:bg-muted/80 flex items-center gap-1 rounded px-2 py-1 text-xs transition-all ${
+                          message.reactions?.userReaction === 'like'
+                            ? 'bg-green-50 text-green-600 dark:bg-green-950'
+                            : 'text-muted-foreground'
+                        }`}
                       >
                         <ThumbsUp className='h-3 w-3' />
                         {message.reactions?.likes ?? 0}
@@ -1137,10 +1135,11 @@ export default function AIChatInterface({
                         onClick={() => handleReaction(message.id, 'dislike')}
                         aria-label={t('mascot.aiChat.feedback.dislike')}
                         disabled={feedbackIsSubmittingByMessageId[message.id] === true}
-                        className={`hover:bg-muted/80 flex items-center gap-1 rounded px-2 py-1 text-xs transition-all ${message.reactions?.userReaction === 'dislike'
-                          ? 'bg-red-50 text-red-600 dark:bg-red-950'
-                          : 'text-muted-foreground'
-                          }`}
+                        className={`hover:bg-muted/80 flex items-center gap-1 rounded px-2 py-1 text-xs transition-all ${
+                          message.reactions?.userReaction === 'dislike'
+                            ? 'bg-red-50 text-red-600 dark:bg-red-950'
+                            : 'text-muted-foreground'
+                        }`}
                       >
                         <ThumbsDown className='h-3 w-3' />
                         {message.reactions?.dislikes ?? 0}
@@ -1155,10 +1154,10 @@ export default function AIChatInterface({
                   </div>
                 )}
                 {!message.isUser &&
-                  !message.isError &&
-                  message.requestId &&
-                  feedbackOpenForMessageId === message.id &&
-                  message.reactions?.userReaction === 'dislike' ? (
+                !message.isError &&
+                message.requestId &&
+                feedbackOpenForMessageId === message.id &&
+                message.reactions?.userReaction === 'dislike' ? (
                   <div className='border-border/20 mt-3 space-y-2 border-t pt-2'>
                     <textarea
                       rows={2}

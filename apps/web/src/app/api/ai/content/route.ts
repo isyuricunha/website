@@ -42,56 +42,49 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const { action, content, title, existingTags, fromLang, toLang, maxLength } =
       ContentGenerationSchema.parse(body)
-    
+
     switch (action) {
-    case 'tags': {
-      const result: ContentResult = await aiService.generateTags(content, existingTags)
-      return NextResponse.json({
-        action,
-        result,
-        timestamp: new Date().toISOString()
-      })
-    }
-    
-    case 'summary': {
-      const result: ContentResult = await aiService.generateSummary(content, maxLength)
-      return NextResponse.json({
-        action,
-        result,
-        timestamp: new Date().toISOString()
-      })
-    }
-    
-    case 'meta': {
-      if (!title) {
-        return NextResponse.json(
-          { error: 'Title is required for meta description generation' },
-          { status: 400 }
-        )
+      case 'tags': {
+        const result: ContentResult = await aiService.generateTags(content, existingTags)
+        return NextResponse.json({
+          action,
+          result,
+          timestamp: new Date().toISOString()
+        })
       }
-      const result: ContentResult = await aiService.generateMetaDescription(
-        title,
-        content
-      )
-      return NextResponse.json({
-        action,
-        result,
-        timestamp: new Date().toISOString()
-      })
-    }
-    
-    case 'translate': {
-      const result: ContentResult = await aiService.translateContent(
-        content,
-        fromLang,
-        toLang
-      )
-      return NextResponse.json({
-        action,
-        result,
-        timestamp: new Date().toISOString()
-      })
-    }
+
+      case 'summary': {
+        const result: ContentResult = await aiService.generateSummary(content, maxLength)
+        return NextResponse.json({
+          action,
+          result,
+          timestamp: new Date().toISOString()
+        })
+      }
+
+      case 'meta': {
+        if (!title) {
+          return NextResponse.json(
+            { error: 'Title is required for meta description generation' },
+            { status: 400 }
+          )
+        }
+        const result: ContentResult = await aiService.generateMetaDescription(title, content)
+        return NextResponse.json({
+          action,
+          result,
+          timestamp: new Date().toISOString()
+        })
+      }
+
+      case 'translate': {
+        const result: ContentResult = await aiService.translateContent(content, fromLang, toLang)
+        return NextResponse.json({
+          action,
+          result,
+          timestamp: new Date().toISOString()
+        })
+      }
     }
   } catch (error) {
     logger.error('Content generation API error', error)

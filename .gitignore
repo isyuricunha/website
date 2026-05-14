@@ -47,3 +47,4 @@ verify-*.js
 # TypeScript
 *.tsbuildinfo
 next-env.d.ts
+AGENTS.md

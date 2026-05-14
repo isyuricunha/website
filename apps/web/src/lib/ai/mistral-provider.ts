@@ -41,10 +41,7 @@ export class MistralProvider {
     return available
   }
 
-  async generateResponse(
-    message: string,
-    context: SiteContext
-  ): Promise<string> {
+  async generateResponse(message: string, context: SiteContext): Promise<string> {
     logger.info('[MistralProvider] generateResponse called', {
       messageLength: message.length,
       hasContext: !!context
@@ -70,10 +67,7 @@ export class MistralProvider {
     try {
       const response = await this.client.chat.complete({
         model: env.MISTRAL_AGENT_ID || this.defaultModel,
-        messages: [
-          { role: 'system', content: systemMessage },
-          ...messages
-        ],
+        messages: [{ role: 'system', content: systemMessage }, ...messages],
         temperature: 0.7,
         maxTokens: 256
       })
@@ -103,10 +97,7 @@ export class MistralProvider {
     }
   }
 
-  async generateStream(
-    message: string,
-    context: SiteContext
-  ): Promise<ReadableStream<Uint8Array>> {
+  async generateStream(message: string, context: SiteContext): Promise<ReadableStream<Uint8Array>> {
     if (!this.client) {
       throw new Error('Mistral AI is not available')
     }
@@ -118,10 +109,7 @@ export class MistralProvider {
     try {
       const stream = await this.client.chat.stream({
         model: env.MISTRAL_AGENT_ID || this.defaultModel,
-        messages: [
-          { role: 'system', content: systemMessage },
-          ...messages
-        ],
+        messages: [{ role: 'system', content: systemMessage }, ...messages],
         temperature: 0.7,
         maxTokens: 256
       })
