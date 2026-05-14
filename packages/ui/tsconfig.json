@@ -1,5 +1,8 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "ignoreDeprecations": "6.0"
+  },
   "exclude": ["node_modules"],
   "extends": "../tsconfig/react-library.json",
   "include": ["**/*.ts", "**/*.tsx", "eslint.config.mjs"]
