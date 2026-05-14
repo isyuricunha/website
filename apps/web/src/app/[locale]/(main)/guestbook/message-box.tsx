@@ -38,10 +38,11 @@ const MessageBox = (props: FormProps) => {
     message: z.string().min(1, {
       message: t('guestbook.message-cannot-be-empty')
     })
-  }) satisfies z.ZodType
+  })
 
   const form = useForm<z.infer<typeof guestbookFormSchema>>({
-    resolver: zodResolver(guestbookFormSchema),
+    // Type assertion to bypass zod v3/v4 version mismatch in @hookform/resolvers
+    resolver: zodResolver(guestbookFormSchema as any),
     defaultValues: {
       message: ''
     }
