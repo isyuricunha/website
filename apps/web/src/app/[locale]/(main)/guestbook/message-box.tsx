@@ -38,7 +38,7 @@ const MessageBox = (props: FormProps) => {
     message: z.string().min(1, {
       message: t('guestbook.message-cannot-be-empty')
     })
-  })
+  }) satisfies z.ZodType
 
   const form = useForm<z.infer<typeof guestbookFormSchema>>({
     resolver: zodResolver(guestbookFormSchema),
