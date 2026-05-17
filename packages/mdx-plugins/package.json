@@ -32,7 +32,7 @@
     "@isyuricunha/tsconfig": "workspace:*",
     "@types/hast": "^3.0.4",
     "@types/mdast": "^4.0.4",
-    "@types/node": "25.6.0"
+    "@types/node": "25.8.0"
   },
   "lint-staged": {
     "*.{cjs,mjs,js,jsx,cts,mts,ts,tsx}": "eslint --fix --max-warnings 999"

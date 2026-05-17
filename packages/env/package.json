@@ -14,12 +14,12 @@
   },
   "dependencies": {
     "@t3-oss/env-nextjs": "^0.13.11",
-    "zod": "4.3.5"
+    "zod": "4.4.3"
   },
   "devDependencies": {
     "@isyuricunha/eslint-config": "workspace:*",
     "@isyuricunha/tsconfig": "workspace:*",
-    "@types/node": "^25.7.0"
+    "@types/node": "^25.8.0"
   },
   "lint-staged": {
     "*.{cjs,mjs,js,jsx,cts,mts,ts,tsx}": "eslint --fix --max-warnings 999"

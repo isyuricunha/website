@@ -50,7 +50,7 @@
     "eslint-plugin-simple-import-sort": "^13.0.0",
     "eslint-plugin-sonarjs": "^4.0.3",
     "eslint-plugin-testing-library": "^7.16.2",
-    "eslint-plugin-turbo": "^2.9.12",
+    "eslint-plugin-turbo": "^2.9.14",
     "eslint-plugin-unicorn": "^64.0.0",
     "eslint-plugin-unused-imports": "^4.4.1",
     "globals": "^17.6.0",
@@ -63,7 +63,7 @@
     "@eslint/config-inspector": "^2.0.1",
     "@isyuricunha/tsconfig": "workspace:*",
     "concurrently": "^9.2.1",
-    "eslint": "^10.3.0"
+    "eslint": "^10.4.0"
   },
   "publishConfig": {
     "access": "public"
