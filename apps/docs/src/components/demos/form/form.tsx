@@ -1,6 +1,6 @@
 'use client'
 
-import { zodResolver } from '@hookform/resolvers/zod'
+import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
 import {
   Button,
   Form,
@@ -23,7 +23,7 @@ const formSchema = z.object({
 
 const FormDemo = () => {
   const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+    resolver: standardSchemaResolver(formSchema),
     defaultValues: {
       username: ''
     }
