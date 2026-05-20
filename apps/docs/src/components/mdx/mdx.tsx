@@ -1,4 +1,4 @@
-import { useMDXComponent } from '@content-collections/mdx/react'
+import { MDXContent } from '@content-collections/mdx/react'
 import * as uiComponents from '@isyuricunha/ui'
 import { cn } from '@isyuricunha/utils'
 
@@ -39,11 +39,10 @@ const components = {
 
 const Mdx = (props: MdxProps) => {
   const { code, className, ...rest } = props
-  const MDXContent = useMDXComponent(code)
 
   return (
     <div className={cn('prose w-full', className)} {...rest}>
-      <MDXContent components={components} />
+      <MDXContent code={code} components={components} />
     </div>
   )
 }
