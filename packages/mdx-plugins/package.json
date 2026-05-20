@@ -17,12 +17,12 @@
   },
   "types": "./dist/index.d.ts",
   "dependencies": {
-    "@shikijs/rehype": "^4.0.2",
-    "@shikijs/transformers": "^4.0.2",
+    "@shikijs/rehype": "^4.1.0",
+    "@shikijs/transformers": "^4.1.0",
     "github-slugger": "^2.0.0",
     "remark": "^15.0.1",
     "remark-gfm": "^4.0.1",
-    "shiki": "^4.0.2",
+    "shiki": "^4.1.0",
     "unified": "^11.0.5",
     "unist-util-visit": "^5.1.0",
     "vfile": "^6.0.3"
@@ -32,7 +32,7 @@
     "@isyuricunha/tsconfig": "workspace:*",
     "@types/hast": "^3.0.4",
     "@types/mdast": "^4.0.4",
-    "@types/node": "25.6.0"
+    "@types/node": "25.9.1"
   },
   "lint-staged": {
     "*.{cjs,mjs,js,jsx,cts,mts,ts,tsx}": "eslint --fix --max-warnings 999"

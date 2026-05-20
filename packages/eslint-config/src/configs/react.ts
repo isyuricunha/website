@@ -2,13 +2,7 @@ import type { Options } from '@/index'
 import type { ESLint, Linter } from 'eslint'
 
 import { GLOB_JS, GLOB_JSX, GLOB_TS, GLOB_TSX } from '@/globs'
-import {
-  jsxA11yPlugin,
-  reactHooksExtraPlugin,
-  reactHooksPlugin,
-  reactPlugin,
-  typescriptParser
-} from '@/plugins'
+import { jsxA11yPlugin, reactHooksPlugin, reactPlugin, typescriptParser } from '@/plugins'
 
 export const react = (options?: Options): Linter.Config[] => {
   const reactPluginAll = reactPlugin.configs.all
@@ -26,9 +20,6 @@ export const react = (options?: Options): Linter.Config[] => {
 
     // @eslint-react/dom (flat names in v4: @eslint-react/dom-*)
     '@eslint-react/dom-no-dangerously-set-innerhtml': 'off',
-
-    // @eslint-react/hooks-extra
-    '@eslint-react/hooks-extra/no-direct-set-state-in-use-effect': 'off',
 
     // react-hooks
     'react-hooks/incompatible-library': 'off',
@@ -73,7 +64,6 @@ export const react = (options?: Options): Linter.Config[] => {
       plugins: {
         // In v4 everything lives in the single @eslint-react plugin
         '@eslint-react': reactPlugin as unknown as ESLint.Plugin,
-        '@eslint-react/hooks-extra': reactHooksExtraPlugin as unknown as ESLint.Plugin,
         'react-hooks': reactHooksPlugin as unknown as ESLint.Plugin,
         'jsx-a11y': jsxA11yPlugin as unknown as ESLint.Plugin
       },

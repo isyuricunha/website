@@ -14,14 +14,14 @@
   },
   "dependencies": {
     "@react-email/components": "^1.0.12",
-    "react": "19.2.5",
-    "react-email": "6.0.0"
+    "react": "19.2.6",
+    "react-email": "6.1.5"
   },
   "devDependencies": {
     "@isyuricunha/eslint-config": "workspace:*",
     "@isyuricunha/tsconfig": "workspace:*",
-    "@types/node": "^25.7.0",
-    "@types/react": "19.2.14"
+    "@types/node": "^25.9.1",
+    "@types/react": "19.2.15"
   },
   "lint-staged": {
     "*.{cjs,mjs,js,jsx,cts,mts,ts,tsx}": "eslint --fix --max-warnings 999"
