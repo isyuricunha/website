@@ -1,7 +1,7 @@
 import { cn } from '@isyuricunha/utils'
 import { CheckIcon, CopyIcon } from 'lucide-react'
 import mergeRefs from 'merge-refs'
-import { useEffect, useRef, useState } from 'react'
+import { createElement, useEffect, useRef, useState } from 'react'
 
 import { Button, type ButtonProps } from './button'
 import { ScrollArea, ScrollBar } from './scroll-area'
@@ -12,11 +12,14 @@ type CodeBlockProps = {
   figureClassName?: string
 } & React.ComponentProps<'pre'>
 
+const renderLanguageIcon = (language: string) => {
+  return createElement(getIconByLanguage(language), { className: 'size-3.5' })
+}
+
 const CodeBlock = (props: CodeBlockProps) => {
   const { children, className, title, 'data-lang': lang, figureClassName, ref, ...rest } = props
 
   const textInputRef = useRef<HTMLPreElement>(null)
-  const Icon = getIconByLanguage(lang ?? '')
 
   const onCopy = () => {
     void navigator.clipboard.writeText(textInputRef.current?.textContent ?? '')
@@ -31,9 +34,7 @@ const CodeBlock = (props: CodeBlockProps) => {
     >
       {title ? (
         <div className='bg-muted/50 flex flex-row items-center gap-2 border-b px-4 py-1.5'>
-          <div className='text-muted-foreground'>
-            <Icon className='size-3.5' />
-          </div>
+          <div className='text-muted-foreground'>{renderLanguageIcon(lang ?? '')}</div>
           <figcaption className='text-muted-foreground flex-1 truncate'>{title}</figcaption>
           <CopyButton className='-me-2' onCopy={onCopy} />
         </div>

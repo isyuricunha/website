@@ -132,4 +132,3 @@ export {
   ComboboxTrigger,
   type ComboboxValueChangeDetails
 }
-export { createListCollection } from '@ark-ui/react/combobox'

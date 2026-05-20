@@ -1,6 +1,6 @@
 import { type Column, flexRender, type Table as TanstackTable } from '@tanstack/react-table'
 import { cn, range } from '@isyuricunha/utils'
-import type { ListCollection } from '@ark-ui/react/combobox'
+import { createListCollection, type ListCollection } from '@ark-ui/react/combobox'
 import {
   ArrowDownIcon,
   ArrowUpIcon,
@@ -27,8 +27,7 @@ import {
   type ComboboxInputValueChangeDetails,
   ComboboxItem,
   ComboboxItemText,
-  type ComboboxValueChangeDetails,
-  createListCollection
+  type ComboboxValueChangeDetails
 } from './combobox'
 import {
   DropdownMenu,
