@@ -33,6 +33,10 @@ vi.mock('@/lib/logger', () => ({
   }
 }))
 
+vi.mock('@/lib/auth', () => ({
+  getSession: vi.fn(async () => null)
+}))
+
 const redisGetMock = vi.fn()
 const redisSetMock = vi.fn(async () => {
   return
