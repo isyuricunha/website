@@ -30,7 +30,7 @@
   "types": "./dist/index.d.ts",
   "dependencies": {
     "@eslint-community/eslint-plugin-eslint-comments": "^4.7.1",
-    "@eslint-react/eslint-plugin": "^5.8.3",
+    "@eslint-react/eslint-plugin": "^5.8.4",
     "@eslint/js": "^10.0.1",
     "@next/eslint-plugin-next": "^16.2.6",
     "@typescript-eslint/eslint-plugin": "^8.59.4",
@@ -41,11 +41,11 @@
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-playwright": "^2.10.4",
     "eslint-plugin-prettier": "^5.5.5",
-    "eslint-plugin-react-dom": "^5.8.3",
+    "eslint-plugin-react-dom": "^5.8.4",
     "eslint-plugin-react-hooks": "^7.1.1",
-    "eslint-plugin-react-naming-convention": "^5.8.3",
-    "eslint-plugin-react-web-api": "^5.8.3",
-    "eslint-plugin-react-x": "^5.8.3",
+    "eslint-plugin-react-naming-convention": "^5.8.4",
+    "eslint-plugin-react-web-api": "^5.8.4",
+    "eslint-plugin-react-x": "^5.8.4",
     "eslint-plugin-simple-import-sort": "^13.0.0",
     "eslint-plugin-sonarjs": "^4.0.3",
     "eslint-plugin-testing-library": "^7.16.2",
@@ -53,7 +53,7 @@
     "eslint-plugin-unicorn": "^64.0.0",
     "eslint-plugin-unused-imports": "^4.4.1",
     "globals": "^17.6.0",
-    "local-pkg": "^1.2.0"
+    "local-pkg": "^1.2.1"
   },
   "peerDependencies": {
     "eslint": "^9.20.0"
