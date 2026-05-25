@@ -1,8 +1,6 @@
 'use client'
 
 import { useTranslations } from '@isyuricunha/i18n/client'
-import { buttonVariants } from '@isyuricunha/ui'
-import { cn } from '@isyuricunha/utils'
 import { motion, useInView } from 'motion/react'
 import { useRef } from 'react'
 
@@ -16,8 +14,8 @@ import StacksCard from './stacks-card'
 
 const variants = {
   initial: {
-    y: 40,
-    opacity: 0
+    y: 0,
+    opacity: 1
   },
   animate: {
     y: 0,
@@ -39,26 +37,16 @@ const AboutMe = () => {
       transition={{
         duration: 0.5
       }}
-      className='relative my-8 sm:my-10 lg:my-12'
+      className='border-t border-[var(--border-faint)] py-24'
     >
-      <motion.h2
-        className='text-center text-lg font-medium sm:text-xl lg:text-2xl'
-        initial={{
-          y: 30,
-          opacity: 0
-        }}
-        animate={{
-          y: 0,
-          opacity: 1
-        }}
-        transition={{
-          duration: 0.3
-        }}
-      >
-        {t('homepage.about-me.title')}
-      </motion.h2>
+      <div className='mb-12 flex max-w-2xl flex-col gap-4'>
+        <span className='label-mono'>{t('homepage.about-me.title')}</span>
+        <h2 className='text-[clamp(28px,3vw,40px)] font-medium tracking-tighter'>
+          {t('homepage.get-in-touch.title')}
+        </h2>
+      </div>
       <motion.div
-        className='mt-12 grid gap-4 md:grid-cols-2'
+        className='grid gap-4 md:grid-cols-2'
         initial={{
           y: 40,
           opacity: 0
@@ -83,15 +71,9 @@ const AboutMe = () => {
           </div>
         </div>
       </motion.div>
-      <div className='my-8 flex items-center justify-center'>
-        <Link
-          href='/about'
-          className={cn(
-            buttonVariants({ variant: 'outline' }),
-            'min-h-[36px] rounded-full px-4 py-2 text-xs sm:text-sm'
-          )}
-        >
-          {t('homepage.about-me.more')}
+      <div className='mt-8'>
+        <Link href='/about' className='cta-link'>
+          {t('homepage.about-me.more')} →
         </Link>
       </div>
     </motion.div>

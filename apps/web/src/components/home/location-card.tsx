@@ -31,27 +31,24 @@ const LocationCard = () => {
       devicePixelRatio: 2,
       width: width * 2,
       height: width * 2,
-      phi: 4.75, // Valor inicial para centralizar SP horizontalmente
-      theta: 0, // Valor inicial para a rotação vertical
+      phi: 4.75,
+      theta: 0,
       dark: 1,
       diffuse: 2,
       mapSamples: 12_000,
       mapBrightness: 2,
-      baseColor: [0.8, 0.8, 0.8],
-      // Alteramos para um azul marinho (valores normalizados)
-      markerColor: [0.8, 0.7, 0],
-      glowColor: [0.8, 0.7, 0],
+      baseColor: [0.61, 0.56, 0.5],
+      markerColor: [0.79, 0.34, 0.16],
+      glowColor: [0.79, 0.34, 0.16],
       markers: [{ location: [-23.5505, -46.6333], size: 0.1 }],
       scale: 0.75,
       onRender: (state: any) => {
-        // Smooth rotation via simple easing (keeps behavior without external animation libs)
         const rotation = rotationRef.current
         const target = rotationTargetRef.current
 
         rotation.r += (target.r - rotation.r) * 0.12
         rotation.v += (target.v - rotation.v) * 0.12
 
-        // Atualiza as rotações horizontal e vertical conforme a interação do usuário
         state.phi = 4.75 + rotation.r
         state.theta = 0 + rotation.v
         state.width = width * 3
@@ -79,7 +76,6 @@ const LocationCard = () => {
     if (pointerInteracting.current) {
       const deltaX = e.clientX - pointerInteracting.current.x
       const deltaY = e.clientY - pointerInteracting.current.y
-      // Atualiza a posição inicial para o próximo movimento
       pointerInteracting.current = { x: e.clientX, y: e.clientY }
       rotationTargetRef.current = {
         r: rotationTargetRef.current.r + deltaX / 200,
@@ -109,10 +105,10 @@ const LocationCard = () => {
   }
 
   return (
-    <div className='shadow-feature-card relative flex h-60 flex-col gap-6 overflow-hidden rounded-xl p-4 lg:p-6'>
+    <div className='shadow-feature-card bg-bg-surface relative flex h-60 flex-col gap-6 overflow-hidden rounded-lg p-4 lg:p-6'>
       <div className='flex items-center gap-2'>
-        <MapPinIcon className='size-[18px]' />
-        <h2 className='text-sm'>{t('homepage.about-me.location')}</h2>
+        <MapPinIcon className='text-accent-earth-text size-[18px]' />
+        <h2 className='text-sm font-medium'>{t('homepage.about-me.location')}</h2>
       </div>
       <div className='absolute inset-x-0 bottom-[-190px] mx-auto aspect-square h-[388px] [@media(max-width:420px)]:bottom-[-140px] [@media(max-width:420px)]:h-[320px] [@media(min-width:768px)_and_(max-width:858px)]:h-[350px]'>
         <div

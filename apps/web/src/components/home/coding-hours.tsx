@@ -15,12 +15,12 @@ const CodingHours = () => {
   const hours = status === 'success' ? Math.round(data.seconds / 60 / 60) : 0
 
   return (
-    <div className='shadow-feature-card flex flex-col gap-4 rounded-xl p-4 sm:gap-6 sm:p-5 lg:p-6'>
+    <div className='shadow-feature-card bg-bg-surface flex flex-col gap-4 rounded-lg p-4 sm:gap-6 sm:p-5 lg:p-6'>
       <div className='flex items-center gap-2'>
-        <ClockIcon className='size-[18px]' />
-        <h2 className='text-sm sm:text-base'>{t('homepage.about-me.coding-hours')}</h2>
+        <ClockIcon className='text-accent-earth-text size-[18px]' />
+        <h2 className='text-sm font-medium sm:text-base'>{t('homepage.about-me.coding-hours')}</h2>
       </div>
-      <div className='flex grow items-center justify-center text-3xl font-semibold sm:text-4xl'>
+      <div className='flex grow items-center justify-center text-3xl font-medium sm:text-4xl'>
         {status === 'pending' ? '--' : null}
         {status === 'error' ? t('common.error') : null}
         {status === 'success' ? t('homepage.about-me.coding-hours-value', { count: hours }) : null}

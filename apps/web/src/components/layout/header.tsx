@@ -3,10 +3,7 @@
 import { useTranslations } from '@isyuricunha/i18n/client'
 import { useRouter } from '@isyuricunha/i18n/routing'
 import { Button, Logo } from '@isyuricunha/ui'
-import { cn } from '@isyuricunha/utils'
 import { LayoutDashboard } from 'lucide-react'
-import { motion } from 'motion/react'
-import { useEffect, useState } from 'react'
 
 import CommandMenu from '@/components/command-menu'
 import SiteSearch from '@/components/site-search'
@@ -22,79 +19,52 @@ import NotificationsDropdown from './notifications-dropdown'
 import ThemeSwitcher from './theme-switcher'
 
 const Header = () => {
-  const [isScrolled, setIsScrolled] = useState(false)
   const t = useTranslations()
   const router = useRouter()
   const { data: session, isPending } = useSession()
   const is_admin = !isPending && session?.user.role === 'admin'
 
-  useEffect(() => {
-    const changeBackground = () => {
-      if (window.scrollY > 100) {
-        setIsScrolled(true)
-      } else {
-        setIsScrolled(false)
-      }
-    }
-
-    document.addEventListener('scroll', changeBackground)
-
-    return () => document.removeEventListener('scroll', changeBackground)
-  }, [])
-
   return (
-    <motion.header
-      className={cn(
-        'bg-background/30 fixed inset-x-0 top-2 z-40 mx-2 flex h-[56px] max-w-5xl items-center justify-between rounded-xl px-4 shadow-xs saturate-100 backdrop-blur-[10px] transition-colors sm:top-4 sm:mx-auto sm:h-[60px] sm:rounded-2xl sm:px-6 lg:px-8',
-        isScrolled && 'bg-background/80'
-      )}
-      initial={{
-        y: -100
-      }}
-      animate={{
-        y: 0
-      }}
-      transition={{
-        duration: 0.3
-      }}
-    >
-      <a
-        href='#skip-nav'
-        className='bg-background focus-visible:ring-ring fixed top-4 left-4 -translate-y-20 rounded-xs border p-2 font-medium shadow-xs transition-transform focus-visible:translate-y-0 focus-visible:ring-3 focus-visible:ring-offset-2'
-      >
-        <span>{t('layout.skip-to-main-content')}</span>
-      </a>
-      <Link
-        href='/'
-        className='focus-visible:ring-ring flex items-center justify-center gap-1 rounded-lg p-1 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none'
-        aria-label={t('layout.home')}
-      >
-        <Logo width={24} height={24} className='sm:h-7 sm:w-7' aria-hidden='true' />
-      </Link>
-      <div className='flex min-w-0 flex-1 items-center justify-end gap-1 sm:gap-2'>
-        <div className='hidden w-64 shrink-0 md:block'>
-          <SiteSearch />
+    <header className='bg-bg-base fixed inset-x-0 top-0 z-40 border-b border-[var(--border-faint)]'>
+      <div className='mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-8'>
+        <a
+          href='#skip-nav'
+          className='bg-bg-elevated focus-visible:ring-ring fixed top-4 left-4 -translate-y-20 rounded-sm border border-[var(--border-default)] p-2 text-sm font-medium transition-transform focus-visible:translate-y-0 focus-visible:ring-2 focus-visible:ring-offset-2'
+        >
+          <span>{t('layout.skip-to-main-content')}</span>
+        </a>
+        <Link
+          href='/'
+          className='focus-visible:ring-ring flex items-center justify-center gap-1 rounded-lg p-1 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none'
+          aria-label={t('layout.home')}
+        >
+          <Logo width={24} height={24} className='sm:h-7 sm:w-7' aria-hidden='true' />
+        </Link>
+        <div className='flex min-w-0 flex-1 items-center justify-end gap-1 sm:gap-2'>
+          <div className='hidden w-64 shrink-0 md:block'>
+            <SiteSearch />
+          </div>
+          <Navbar />
+          {is_admin ? (
+            <Button
+              variant='ghost'
+              className='size-9 p-0'
+              aria-label='Admin'
+              title='Admin'
+              onClick={() => router.push('/admin')}
+            >
+              <LayoutDashboard className='size-4' />
+            </Button>
+          ) : null}
+          <NotificationsDropdown />
+          <ThemeSwitcher />
+          <LocaleSwitcher />
+          <AccountDropdown />
+          <CommandMenu />
+          <MobileNav />
         </div>
-        <Navbar />
-        {is_admin ? (
-          <Button
-            variant='ghost'
-            className='size-9 p-0'
-            aria-label='Admin'
-            title='Admin'
-            onClick={() => router.push('/admin')}
-          >
-            <LayoutDashboard className='size-4' />
-          </Button>
-        ) : null}
-        <NotificationsDropdown />
-        <ThemeSwitcher />
-        <LocaleSwitcher />
-        <AccountDropdown />
-        <CommandMenu />
-        <MobileNav />
       </div>
-    </motion.header>
+    </header>
   )
 }
 

@@ -9,10 +9,10 @@ const Connect = () => {
   const t = useTranslations()
 
   return (
-    <div className='shadow-feature-card flex flex-col gap-6 rounded-xl p-4 lg:p-6'>
+    <div className='shadow-feature-card bg-bg-surface flex flex-col gap-6 rounded-lg p-4 lg:p-6'>
       <div className='flex items-center gap-2'>
-        <LinkIcon className='size-[18px]' />
-        <h2 className='text-sm'>{t('homepage.about-me.connect')}</h2>
+        <LinkIcon className='text-accent-earth-text size-[18px]' />
+        <h2 className='text-sm font-medium'>{t('homepage.about-me.connect')}</h2>
       </div>
       <div className='flex flex-col gap-4 px-2'>
         {SOCIAL_LINKS.map((link) => {

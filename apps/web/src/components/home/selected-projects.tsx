@@ -1,10 +1,9 @@
 'use client'
 
 import { useLocale, useTranslations } from '@isyuricunha/i18n/client'
-import { BlurImage, buttonVariants } from '@isyuricunha/ui'
-import { cn } from '@isyuricunha/utils'
+import { BlurImage } from '@isyuricunha/ui'
 import { allProjects, type Project } from 'content-collections'
-import { ArrowUpRightIcon, LightbulbIcon } from 'lucide-react'
+import { ArrowUpRightIcon } from 'lucide-react'
 import { motion, useInView } from 'motion/react'
 import { useRef } from 'react'
 
@@ -12,8 +11,8 @@ import Link from '../link'
 
 const variants = {
   initial: {
-    y: 40,
-    opacity: 0
+    y: 0,
+    opacity: 1
   },
   animate: {
     y: 0,
@@ -33,9 +32,13 @@ const SelectedProjects = () => {
   const filteredProjects = allProjects.filter(
     (project) => project.selected && project.locale === locale
   )
+  const featuredProject = filteredProjects[0]
+  const supportingProjects = filteredProjects.slice(1, 3)
+
+  if (!featuredProject) return null
 
   return (
-    <motion.div
+    <motion.section
       initial='initial'
       animate={isInView ? 'animate' : 'initial'}
       variants={variants}
@@ -43,101 +46,73 @@ const SelectedProjects = () => {
       transition={{
         duration: 0.5
       }}
-      className='relative my-8 sm:my-10 lg:my-12'
+      className='editorial-section'
     >
-      <motion.h2
-        className='px-4 text-center text-lg font-medium sm:text-xl lg:text-2xl'
-        initial={{
-          y: 30,
-          opacity: 0
-        }}
-        animate={{
-          y: 0,
-          opacity: 1
-        }}
-        transition={{
-          duration: 0.3
-        }}
-      >
-        {t('homepage.selectedProjects.title')}
-      </motion.h2>
-      <motion.div
-        className='mt-8 grid gap-4 px-4 sm:mt-12 sm:gap-6 md:grid-cols-2'
-        initial={{
-          y: 40,
-          opacity: 0
-        }}
-        animate={{
-          y: 0,
-          opacity: 1
-        }}
-        transition={{
-          duration: 0.3
-        }}
-      >
-        {filteredProjects.map((project) => (
-          <Card key={project.slug} project={project} />
-        ))}
-      </motion.div>
-      <div className='my-8 flex items-center justify-center px-4'>
-        <Link
-          href='/projects'
-          className={cn(
-            buttonVariants({
-              variant: 'outline'
-            }),
-            'min-h-[36px] rounded-full px-4 py-2 text-xs sm:text-sm'
-          )}
-        >
-          {t('homepage.selectedProjects.more')}
+      <div className='editorial-text'>
+        <span className='label-mono'>{t('homepage.selectedProjects.card')}</span>
+        <h2>{t('homepage.selectedProjects.title')}</h2>
+        <p>{featuredProject.description}</p>
+        <Link href='/projects' className='cta-link'>
+          {t('homepage.selectedProjects.more')} →
         </Link>
       </div>
-    </motion.div>
+
+      <div className='space-y-4'>
+        <Card project={featuredProject} featured />
+        {supportingProjects.length > 0 ? (
+          <div className='card-grid'>
+            {supportingProjects.map((project) => (
+              <ProjectSummary key={project.slug} project={project} />
+            ))}
+          </div>
+        ) : null}
+      </div>
+    </motion.section>
   )
 }
 
-const Card = (props: CardProps) => {
-  const { project } = props
+const Card = (props: CardProps & { featured?: boolean }) => {
+  const { project, featured } = props
   const { slug, name, description } = project
-  const t = useTranslations()
 
   return (
     <Link
       key={slug}
       href={`/projects/${slug}`}
-      className='shadow-feature-card focus-visible:ring-ring group relative rounded-2xl p-1.5 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none'
+      className='app-window group focus-visible:ring-ring block focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none'
     >
-      <div className='flex items-center justify-between p-2'>
-        <div className='flex items-center gap-1.5'>
-          <LightbulbIcon className='size-3' />
-          <h2 className='text-[10px] sm:text-xs'>{t('homepage.selectedProjects.card')}</h2>
-        </div>
-        <ArrowUpRightIcon className='size-3 opacity-0 transition-opacity group-hover:opacity-100' />
+      <div className='app-window-chrome'>
+        <span className='window-dot' />
+        <span className='window-dot' />
+        <span className='window-dot' />
+        <span className='label-mono ml-2 truncate normal-case'>{name}</span>
       </div>
-      <div className='ring-border relative aspect-[16/9] w-full overflow-hidden rounded-lg shadow-sm ring-1'>
+      <div className='bg-bg-surface relative aspect-[16/9] w-full overflow-hidden'>
         <BlurImage
           width={1280}
           height={832}
           src={`/images/projects/${slug}/cover.png`}
           alt={description}
           className='absolute inset-0 h-full w-full object-cover'
+          imageClassName='object-cover brightness-[0.78] saturate-[0.85]'
         />
       </div>
-      <div className='mt-3 px-2 pb-2'>
-        <h3 className='text-foreground truncate text-sm font-semibold sm:text-base'>{name}</h3>
-        <p
-          className='text-muted-foreground text-xs sm:text-sm'
-          style={{
-            display: '-webkit-box',
-            WebkitLineClamp: 3,
-            WebkitBoxOrient: 'vertical',
-            overflow: 'hidden',
-            minHeight: '60px'
-          }}
-        >
-          {description}
-        </p>
+      <div className='flex items-start justify-between gap-4 p-5'>
+        <div>
+          <h3 className='text-foreground text-base font-medium sm:text-lg'>{name}</h3>
+          {featured ? <p className='text-muted-foreground mt-2 text-sm'>{description}</p> : null}
+        </div>
+        <ArrowUpRightIcon className='text-accent-earth-text mt-1 size-4 shrink-0 opacity-70 transition-opacity group-hover:opacity-100' />
       </div>
+    </Link>
+  )
+}
+
+const ProjectSummary = ({ project }: CardProps) => {
+  return (
+    <Link href={`/projects/${project.slug}`} className='cursor-card block p-5'>
+      <h3 className='text-base font-medium'>{project.name}</h3>
+      <p className='mt-2 line-clamp-2 text-sm'>{project.description}</p>
     </Link>
   )
 }

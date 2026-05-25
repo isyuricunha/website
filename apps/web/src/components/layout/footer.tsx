@@ -21,7 +21,7 @@ const Footer = () => {
   const format = useFormatter()
 
   return (
-    <footer className='bg-background/30 relative mx-auto mb-6 flex w-full max-w-5xl flex-col rounded-2xl p-8 shadow-xs saturate-100 backdrop-blur-[10px]'>
+    <footer className='relative mx-auto flex w-full max-w-6xl flex-col border-t border-[var(--border-faint)] px-4 py-12 sm:px-8'>
       {flags.spotify ? <NowPlaying /> : null}
       <div className='mt-12 grid grid-cols-2 sm:grid-cols-3'>
         {FOOTER_LINKS.map((list) => (
@@ -38,17 +38,17 @@ const Footer = () => {
           </div>
         ))}
       </div>
-      <div className='mt-20 flex items-center justify-between text-xs sm:text-sm'>
+      <div className='text-muted-foreground mt-20 flex items-center justify-between text-xs sm:text-sm'>
         <div>Yuri Cunha | &copy; {new Date().getFullYear()}</div>
         <Link
           href='https://github.com/isyuricunha/website'
-          className='flex items-center justify-center overflow-hidden rounded-md border'
+          className='flex items-center justify-center overflow-hidden rounded-md border border-[var(--border-default)] transition-colors hover:border-[var(--border-strong)]'
         >
-          <div className='bg-muted flex h-8 items-center gap-2 border-r px-2'>
+          <div className='bg-bg-surface flex h-8 items-center gap-2 border-r border-[var(--border-default)] px-2'>
             <StarIcon className='size-4' />
             <span className='font-medium'>{t_layout('star')}</span>
           </div>
-          <div className='bg-background flex h-8 items-center px-3'>
+          <div className='bg-bg-base flex h-8 items-center px-3'>
             {status === 'pending' ? '--' : null}
             {status === 'error' ? t_common('error') : null}
             {status === 'success'

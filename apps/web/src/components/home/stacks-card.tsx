@@ -30,49 +30,52 @@ import {
   SiVmware
 } from '@icons-pack/react-simple-icons'
 import { useTranslations } from '@isyuricunha/i18n/client'
-import { Marquee } from '@isyuricunha/ui'
 import { ZapIcon } from 'lucide-react'
+
+const STACK_ICONS = [
+  ['docker', SiDocker],
+  ['kubernetes', SiKubernetes],
+  ['nginx', SiNginx],
+  ['apache', SiApache],
+  ['google-cloud', SiGooglecloud],
+  ['digitalocean', SiDigitalocean],
+  ['ubuntu', SiUbuntu],
+  ['debian', SiDebian],
+  ['centos', SiCentos],
+  ['redhat', SiRedhat],
+  ['mongodb', SiMongodb],
+  ['mysql', SiMysql],
+  ['mariadb', SiMariadb],
+  ['cassandra', SiApachecassandra],
+  ['heroui', SiHeroui],
+  ['openstack', SiOpenstack],
+  ['terraform', SiTerraform],
+  ['puppet', SiPuppet],
+  ['ansible', SiAnsible],
+  ['cloudflare', SiCloudflare],
+  ['vmware', SiVmware],
+  ['jenkins', SiJenkins],
+  ['firebase', SiFirebase],
+  ['postgresql', SiPostgresql],
+  ['redis', SiRedis],
+  ['prisma', SiPrisma],
+  ['prometheus', SiPrometheus]
+] as const
 
 const StacksCard = () => {
   const t = useTranslations()
 
   return (
-    <div className='shadow-feature-card flex h-60 flex-col gap-2 overflow-hidden rounded-xl p-4 lg:p-6'>
+    <div className='shadow-feature-card bg-bg-surface flex min-h-60 flex-col gap-5 overflow-hidden rounded-lg p-4 lg:p-6'>
       <div className='flex items-center gap-2'>
-        <ZapIcon className='size-[18px]' />
-        <h2 className='text-sm'>{t('homepage.about-me.stacks')}</h2>
+        <ZapIcon className='text-accent-earth-text size-[18px]' />
+        <h2 className='text-sm font-medium'>{t('homepage.about-me.stacks')}</h2>
       </div>
-      <Marquee gap='12px' className='py-2' fade pauseOnHover>
-        <SiDocker className='size-6' />
-        <SiKubernetes className='size-6' />
-        <SiNginx className='size-6' />
-        <SiApache className='size-6' />
-        <SiGooglecloud className='size-6' />
-        <SiDigitalocean className='size-6' />
-        <SiUbuntu className='size-6' />
-        <SiDebian className='size-6' />
-        <SiCentos className='size-6' />
-        <SiRedhat className='size-6' />
-        <SiMongodb className='size-6' />
-        <SiMysql className='size-6' />
-        <SiMariadb className='size-6' />
-      </Marquee>
-      <Marquee gap='12px' className='py-2' reverse fade pauseOnHover>
-        <SiApachecassandra className='size-6' />
-        <SiHeroui className='size-6' />
-        <SiOpenstack className='size-6' />
-        <SiTerraform className='size-6' />
-        <SiPuppet className='size-6' />
-        <SiAnsible className='size-6' />
-        <SiCloudflare className='size-6' />
-        <SiVmware className='size-6' />
-        <SiJenkins className='size-6' />
-        <SiFirebase className='size-6' />
-        <SiPostgresql className='size-6' />
-        <SiRedis className='size-6' />
-        <SiPrisma className='size-6' />
-        <SiPrometheus className='size-6' />
-      </Marquee>
+      <div className='text-muted-foreground grid grid-cols-7 gap-3'>
+        {STACK_ICONS.map(([name, Icon]) => (
+          <Icon key={name} className='size-5' />
+        ))}
+      </div>
     </div>
   )
 }

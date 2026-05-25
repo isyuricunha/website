@@ -5,6 +5,18 @@
 @theme {
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
+  --color-bg-base: var(--bg-base);
+  --color-bg-elevated: var(--bg-elevated);
+  --color-bg-surface: var(--bg-surface);
+  --color-bg-hover: var(--bg-hover);
+  --color-bg-active: var(--bg-active);
+  --color-bg-mockup: var(--bg-mockup);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-tertiary: var(--text-tertiary);
+  --color-accent-earth: var(--accent);
+  --color-accent-earth-hover: var(--accent-hover);
+  --color-accent-earth-text: var(--accent-text);
 
   --color-card: hsl(var(--card));
   --color-card-foreground: hsl(var(--card-foreground));
@@ -40,9 +52,9 @@
   --color-sidebar-border: hsl(var(--sidebar-border));
   --color-sidebar-ring: hsl(var(--sidebar-ring));
 
-  --radius-lg: var(--radius);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-sm: calc(var(--radius) - 4px);
+  --radius-lg: var(--radius-lg);
+  --radius-md: var(--radius-md);
+  --radius-sm: var(--radius-sm);
 
   --animate-accordion-up: accordion-up 0.2s ease-out;
   --animate-accordion-down: accordion-down 0.2s ease-out;
@@ -129,83 +141,84 @@
   }
 
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
+    --bg-base: #14120b;
+    --bg-elevated: #1b1912;
+    --bg-surface: #221f14;
+    --bg-hover: #2a2619;
+    --bg-active: #332e1e;
+    --bg-mockup: #1e1b10;
 
-    --card: 0 0% 99.7%;
-    --card-foreground: 0 0% 3.9%;
+    --border-faint: rgba(240, 230, 200, 0.06);
+    --border-subtle: rgba(240, 230, 200, 0.1);
+    --border-default: rgba(240, 230, 200, 0.15);
+    --border-strong: rgba(240, 230, 200, 0.24);
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 15.1%;
+    --text-primary: #f0ebe0;
+    --text-secondary: #9a9080;
+    --text-tertiary: #6b5e4a;
+    --text-inverse: #14120b;
 
-    --primary: 33 100% 45%;
-    --primary-foreground: 0 0% 100%;
+    --accent-earth: #c9572a;
+    --accent-earth-hover: #d9653a;
+    --accent-earth-dim: rgba(201, 87, 42, 0.18);
+    --accent-earth-text: #e07848;
+    --accent-earth-border: rgba(201, 87, 42, 0.32);
 
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
+    --accent: var(--accent-earth);
+    --accent-hover: var(--accent-earth-hover);
+    --accent-dim: var(--accent-earth-dim);
+    --accent-text: var(--accent-earth-text);
+    --accent-border: var(--accent-earth-border);
 
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    --radius-window: 10px;
+    --transition: 150ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
 
-    --accent: 0 0% 94.1%;
-    --accent-foreground: 0 0% 9%;
+    --background: 46.7 29% 6.1%;
+    --foreground: 41.2 34.8% 91%;
+
+    --card: 47.1 25.9% 10.6%;
+    --card-foreground: 41.2 34.8% 91%;
+
+    --popover: 46.7 20% 8.8%;
+    --popover-foreground: 41.2 34.8% 91%;
+
+    --primary: 17 65.4% 47.6%;
+    --primary-foreground: 46.7 29% 6.1%;
+
+    --secondary: 47.1 25.9% 10.6%;
+    --secondary-foreground: 41.2 34.8% 91%;
+
+    --muted: 45.9 25.4% 13.1%;
+    --muted-foreground: 36.9 11.4% 55.3%;
+
+    --accent: 45.9 25.4% 13.1%;
+    --accent-foreground: 41.2 34.8% 91%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive-foreground: 41.2 34.8% 91%;
 
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 33 100% 45%;
+    --border: 41.2 34.8% 91% / 0.15;
+    --input: 41.2 34.8% 91% / 0.15;
+    --ring: 18.9 71% 58%;
 
-    --radius: 0.5rem;
+    --radius: var(--radius-md);
 
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 33 100% 45%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 33 100% 45%;
+    --sidebar-background: 46.7 20% 8.8%;
+    --sidebar-foreground: 41.2 34.8% 91%;
+    --sidebar-primary: 17 65.4% 47.6%;
+    --sidebar-primary-foreground: 46.7 29% 6.1%;
+    --sidebar-accent: 47.1 25.9% 10.6%;
+    --sidebar-accent-foreground: 41.2 34.8% 91%;
+    --sidebar-border: 41.2 34.8% 91% / 0.15;
+    --sidebar-ring: 18.9 71% 58%;
   }
 
   .dark {
-    --background: 0 0% 2%;
-    --foreground: 0 0% 100%;
-
-    --card: 0 0% 4%;
-    --card-foreground: 0 0% 98%;
-
-    --popover: 0 0% 4%;
-    --popover-foreground: 0 0% 88%;
-
-    --primary: 33 100% 45%;
-    --primary-foreground: 0 0% 8%;
-
-    --secondary: 0 0% 12.9%;
-    --secondary-foreground: 0 0% 98%;
-
-    --muted: 0 0% 12%;
-    --muted-foreground: 0 0% 60%;
-
-    --accent: 0 0% 15%;
-    --accent-foreground: 0 0% 100%;
-
-    --destructive: 6 84% 48%;
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 0 0% 14%;
-    --input: 0 0% 14%;
-    --ring: 33 100% 45%;
-
-    --sidebar-background: 0 0% 3%;
-    --sidebar-foreground: 0 0% 92%;
-    --sidebar-primary: 33 100% 45%;
-    --sidebar-primary-foreground: 0 0% 8%;
-    --sidebar-accent: 0 0% 8%;
-    --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 0 0% 10%;
-    --sidebar-ring: 33 100% 45%;
+    color-scheme: dark;
   }
 
   * {
@@ -215,11 +228,14 @@
   html {
     @apply scroll-smooth;
     scrollbar-gutter: stable;
-    scrollbar-color: hsl(var(--muted-foreground) / 0.55) hsl(var(--background));
+    scrollbar-color: var(--text-tertiary) var(--bg-base);
   }
 
   body {
     @apply bg-background text-foreground antialiased;
+    font-family: var(--font-sans);
+    font-weight: 400;
+    text-rendering: optimizeLegibility;
   }
 
   ::-webkit-scrollbar {
@@ -228,16 +244,16 @@
   }
 
   ::-webkit-scrollbar-track {
-    background: hsl(var(--background));
+    background: var(--bg-base);
   }
 
   ::-webkit-scrollbar-thumb {
-    background: hsl(var(--muted-foreground) / 0.45);
+    background: var(--text-tertiary);
     border-radius: 9999px;
-    border: 3px solid hsl(var(--background));
+    border: 3px solid var(--bg-base);
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: hsl(var(--muted-foreground) / 0.65);
+    background: var(--text-secondary);
   }
 }

@@ -81,31 +81,22 @@ const Navbar = () => {
           const isActive = link.href === pathname
 
           return (
-            <li key={link.key} className='relative flex h-[60px] items-center justify-center'>
+            <li key={link.key} className='flex h-16 items-center justify-center'>
               <Link
-                className={cn(
-                  'rounded-sm px-3 py-2 text-sm font-medium whitespace-nowrap transition-colors',
-                  {
-                    'text-muted-foreground hover:text-foreground': !isActive,
-                    'text-foreground': isActive
-                  }
-                )}
+                className={cn('px-3 py-2 text-sm font-normal whitespace-nowrap transition-colors', {
+                  'text-muted-foreground hover:text-foreground': !isActive,
+                  'text-accent-earth-text': isActive
+                })}
                 href={link.href}
               >
                 {t(`layout.${link.key}`)}
               </Link>
-              {isActive ? (
-                <>
-                  <div className='bg-nav-link-indicator absolute bottom-0 left-1/2 h-px w-12 -translate-x-1/2' />
-                  <div className='absolute bottom-0 left-1/2 size-2.5 -translate-x-1/2 rounded-[4px] bg-[rgb(255_122_151)] blur-sm dark:bg-[rgb(223_29_72)]' />
-                </>
-              ) : null}
             </li>
           )
         })}
 
         {overflowLinks.length > 0 ? (
-          <li className='relative flex h-[60px] items-center justify-center'>
+          <li className='flex h-16 items-center justify-center'>
             <DropdownMenu modal={false}>
               <DropdownMenuTrigger asChild>
                 <Button
@@ -116,7 +107,7 @@ const Navbar = () => {
                     'focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none',
                     {
                       'text-muted-foreground hover:text-foreground': !isOverflowActive,
-                      'text-foreground': isOverflowActive
+                      'text-accent-earth-text': isOverflowActive
                     }
                   )}
                   aria-label={t('layout.more')}
@@ -144,12 +135,6 @@ const Navbar = () => {
                 })}
               </DropdownMenuContent>
             </DropdownMenu>
-            {isOverflowActive ? (
-              <>
-                <div className='bg-nav-link-indicator absolute bottom-0 left-1/2 h-px w-12 -translate-x-1/2' />
-                <div className='absolute bottom-0 left-1/2 size-2.5 -translate-x-1/2 rounded-[4px] bg-[rgb(255_122_151)] blur-sm dark:bg-[rgb(223_29_72)]' />
-              </>
-            ) : null}
           </li>
         ) : null}
       </ul>
@@ -157,16 +142,16 @@ const Navbar = () => {
       <div className='pointer-events-none fixed top-0 left-0 -z-50 opacity-0' aria-hidden='true'>
         <ul ref={measureLinksRef} className='flex gap-2'>
           {HEADER_LINKS.map((link) => (
-            <li key={link.key} className='relative flex h-[60px] items-center justify-center'>
-              <span className='rounded-sm px-3 py-2 text-sm font-medium whitespace-nowrap'>
+            <li key={link.key} className='flex h-16 items-center justify-center'>
+              <span className='rounded-sm px-3 py-2 text-sm font-normal whitespace-nowrap'>
                 {t(`layout.${link.key}`)}
               </span>
             </li>
           ))}
         </ul>
         <ul className='flex gap-2'>
-          <li ref={measureMoreRef} className='relative flex h-[60px] items-center justify-center'>
-            <span className='h-auto rounded-sm px-3 py-2 text-sm font-medium'>
+          <li ref={measureMoreRef} className='flex h-16 items-center justify-center'>
+            <span className='h-auto rounded-sm px-3 py-2 text-sm font-normal'>
               <MenuIcon className='size-4' />
             </span>
           </li>

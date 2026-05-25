@@ -32,9 +32,12 @@ const MobileNav = () => {
           <MenuIcon className='size-4' />
         </Button>
       </SheetTrigger>
-      <SheetContent side='right' className='w-[85vw] max-w-80 p-0'>
-        <SheetHeader className='border-b p-4 sm:p-6'>
-          <SheetTitle className='text-left text-lg font-semibold'>
+      <SheetContent
+        side='right'
+        className='bg-bg-elevated w-[85vw] max-w-80 border-[var(--border-subtle)] p-0'
+      >
+        <SheetHeader className='border-b border-[var(--border-faint)] p-4 sm:p-6'>
+          <SheetTitle className='text-left text-lg font-medium'>
             {t('layout.navigation')}
           </SheetTitle>
         </SheetHeader>
@@ -55,11 +58,11 @@ const MobileNav = () => {
                     href={link.href}
                     onClick={handleLinkClick}
                     className={cn(
-                      'flex min-h-[44px] items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium transition-all duration-200',
-                      'hover:bg-accent hover:text-accent-foreground',
+                      'flex min-h-[44px] items-center gap-3 rounded-md px-3 py-3 text-sm font-normal transition-colors',
+                      'hover:bg-bg-hover hover:text-foreground',
                       'focus-visible:ring-ring focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
                       {
-                        'bg-accent text-accent-foreground': isActive,
+                        'bg-bg-surface text-accent-earth-text': isActive,
                         'text-muted-foreground': !isActive
                       }
                     )}
@@ -71,7 +74,7 @@ const MobileNav = () => {
                     {isActive && (
                       <motion.div
                         layoutId='mobile-nav-indicator'
-                        className='bg-primary h-2 w-2 rounded-full'
+                        className='bg-accent-earth h-2 w-2 rounded-full'
                         transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
                       />
                     )}

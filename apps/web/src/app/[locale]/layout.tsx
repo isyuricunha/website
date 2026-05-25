@@ -7,8 +7,7 @@ import { NextIntlClientProvider } from '@isyuricunha/i18n/client'
 import { i18n } from '@isyuricunha/i18n/config'
 import { getMessages, getTranslations, setRequestLocale } from '@isyuricunha/i18n/server'
 import { cn } from '@isyuricunha/utils'
-import { GeistMono } from 'geist/font/mono'
-import { GeistSans } from 'geist/font/sans'
+import { Geist, Geist_Mono } from 'next/font/google'
 import { notFound } from 'next/navigation'
 import Script from 'next/script'
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
@@ -30,6 +29,9 @@ type LayoutProps = {
     locale: string
   }>
 }
+
+const geist = Geist({ subsets: ['latin'], variable: '--font-geist-sans' })
+const geist_mono = Geist_Mono({ subsets: ['latin'], variable: '--font-geist-mono' })
 
 export const generateStaticParams = (): Array<{ locale: string }> => {
   return i18n.locales.map((locale) => ({ locale }))
@@ -124,8 +126,8 @@ export const generateMetadata = async (props: LayoutProps): Promise<Metadata> =>
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: 'white' },
-    { media: '(prefers-color-scheme: dark)', color: 'black' }
+    { media: '(prefers-color-scheme: light)', color: '#14120b' },
+    { media: '(prefers-color-scheme: dark)', color: '#14120b' }
   ]
 }
 
@@ -134,7 +136,7 @@ const Layout = async (props: LayoutProps) => {
   const { locale } = await props.params
 
   // Fix: Block static assets (like favicon.ico) from falling through into the [locale] handler
-  if (!i18n.locales.includes(locale as any)) {
+  if (!i18n.locales.includes(locale)) {
     notFound()
   }
 
@@ -147,7 +149,7 @@ const Layout = async (props: LayoutProps) => {
   return (
     <html
       lang={locale}
-      className={cn(GeistSans.variable, GeistMono.variable)}
+      className={cn(geist.variable, geist_mono.variable, 'dark')}
       data-scroll-behavior='smooth'
       suppressHydrationWarning
     >
