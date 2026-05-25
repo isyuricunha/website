@@ -15,12 +15,12 @@
   "dependencies": {
     "@react-email/components": "^1.0.12",
     "react": "19.2.6",
-    "react-email": "6.1.5"
+    "react-email": "6.3.3"
   },
   "devDependencies": {
     "@isyuricunha/eslint-config": "workspace:*",
     "@isyuricunha/tsconfig": "workspace:*",
-    "@react-email/ui": "6.1.5",
+    "@react-email/ui": "6.3.3",
     "@types/node": "^25.9.1",
     "@types/react": "19.2.15"
   },
