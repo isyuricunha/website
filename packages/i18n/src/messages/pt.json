@@ -2130,7 +2130,9 @@
       "title": "Contatar meu criador, Yuri",
       "close": "Fechar contato",
       "description": "Encontrou um bug ou quer entrar em contato? Aqui está o e-mail do meu criador:",
-      "copy": "Copiar e-mail"
+      "copy": "Copiar e-mail",
+      "copySuccess": "E-mail copiado para a área de transferência!",
+      "copyError": "Falha ao copiar e-mail. Tente novamente."
     },
     "aiChat": {
       "title": "Conversar com Yue",

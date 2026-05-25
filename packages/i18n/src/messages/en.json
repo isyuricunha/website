@@ -2130,7 +2130,9 @@
       "title": "Contact my creator, Yuri",
       "close": "Close contact",
       "description": "Found a bug or want to get in touch? Here's my creator's email:",
-      "copy": "Copy email"
+      "copy": "Copy email",
+      "copySuccess": "Email copied to clipboard!",
+      "copyError": "Failed to copy email. Please try again."
     },
     "aiChat": {
       "title": "Chat with Yue",

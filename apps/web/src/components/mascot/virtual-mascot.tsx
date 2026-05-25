@@ -27,7 +27,6 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     pageKey,
     updateState,
     handleMascotClick,
-    handleMouseEnter,
     getPositionClasses,
     getBubblePositionClasses,
     restoreMascot,
@@ -101,29 +100,6 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
           aria-label={t('mascot.ariaLabel')}
           className={`relative inline-flex h-12 w-12 items-center justify-center rounded-full border transition-colors focus-visible:ring-2 focus-visible:ring-[var(--accent-border)] focus-visible:outline-none sm:h-14 sm:w-14 lg:h-16 lg:w-16 ${state.isActive ? 'shadow-feature-card scale-110 border-[var(--accent-border)]' : 'shadow-feature-card border-[var(--border-default)]'} ${state.preferences.animations ? 'hover:bg-bg-hover hover:border-[var(--accent-border)]' : ''} ${state.isKonamiMode ? 'animate-pulse border-[var(--accent-border)]' : ''} ${state.isTickled ? 'animate-bounce' : ''} ${state.isDizzy ? 'animate-spin' : ''}`}
           onClick={handleMascotClick}
-          onMouseEnter={handleMouseEnter}
-          onFocus={() => {
-            if (
-              state.preferences.speechBubbles &&
-              !state.autoShowMessage &&
-              !state.showContact &&
-              !state.showSettings &&
-              !state.showMenu
-            ) {
-              updateState({ showBubble: true })
-            }
-          }}
-          onBlur={() => {
-            if (
-              !state.autoShowMessage &&
-              !state.isHovering &&
-              !state.showContact &&
-              !state.showSettings &&
-              !state.showMenu
-            ) {
-              updateState({ showBubble: false })
-            }
-          }}
         >
           {mounted && state.currentMascotImage > 0 ? (
             <div

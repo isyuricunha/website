@@ -20,7 +20,7 @@ export function MascotContactPanel({ mascot }: MascotContactPanelProps) {
           type='button'
           aria-label={t('mascot.contact.close')}
           className='text-text-secondary hover:bg-bg-hover hover:text-text-primary rounded-md p-1.5 transition-colors focus-visible:ring-2 focus-visible:ring-[var(--accent-border)] focus-visible:outline-none'
-          onClick={() => updateState({ showContact: false, showBubble: false })}
+          onClick={() => updateState({ showContact: false })}
         >
           <XIcon className='h-4 w-4' />
         </button>

@@ -1,10 +1,11 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState, useMemo } from 'react'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useTranslations, useMessages, useLocale } from '@isyuricunha/i18n/client'
 import { i18n } from '@isyuricunha/i18n/config'
 import { useSound } from '@/hooks/use-sound'
+import { getLocalizedPath } from '@/utils/get-localized-path'
 
 const STORAGE_KEY = 'vc_mascot_dismissed'
 const HIDE_KEY = 'vc_mascot_hidden'
@@ -17,7 +18,6 @@ const DEFAULT_PREFERENCES: MascotPreferences = {
   animations: true,
   soundEffects: false,
   speechBubbles: true,
-  skin: 'default',
   messageDuration: 7000,
   bubblePosition: 'bottom-right'
 }
@@ -26,7 +26,6 @@ export interface MascotPreferences {
   animations: boolean
   soundEffects: boolean
   speechBubbles: boolean
-  skin: string
   messageDuration: number
   bubblePosition: 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left'
 }
@@ -37,8 +36,6 @@ const createInitialState = () => ({
   isDismissed: false,
   isHiddenPref: false,
   isActive: false,
-  showBubble: false,
-  messageIndex: 0,
   isBlinking: false,
   showSettings: false,
   showGame: false,
@@ -47,12 +44,9 @@ const createInitialState = () => ({
   showAIChat: false,
   isKonamiMode: false,
   konamiSequence: [] as number[],
-  isHovering: false,
-  currentMessage: null as string | null,
   messageQueue: [] as Array<{ id: number; text: string; expiresAt: number }>,
   exitingIds: new Set<number>(),
   autoShowMessage: false,
-  lastMessageIndex: -1,
   currentMascotImage: 0,
   isThinking: false,
   mousePosition: { x: 0, y: 0 },
@@ -73,6 +67,7 @@ export function useMascotState() {
   const locale = useLocale()
   const allMessages = useMessages()
   const pathname = usePathname()
+  const router = useRouter()
 
   const [state, setState] = useState(createInitialState)
   const [mounted, setMounted] = useState(false)
@@ -220,6 +215,9 @@ export function useMascotState() {
     }
 
     if (pathWithoutLocale.startsWith('/blog')) return 'blog'
+    if (pathWithoutLocale.startsWith('/snippet') || pathWithoutLocale.startsWith('/snippets')) {
+      return 'snippet'
+    }
     if (pathWithoutLocale.startsWith('/projects')) return 'projects'
     if (pathWithoutLocale.startsWith('/about')) return 'about'
     if (pathWithoutLocale.startsWith('/uses')) return 'uses'
@@ -325,13 +323,13 @@ export function useMascotState() {
   const copyEmail = useCallback(async (): Promise<void> => {
     try {
       await navigator.clipboard.writeText('me@yuricunha.com')
-      enqueueMessage('Email copied to clipboard!', 2000)
+      enqueueMessage(t('mascot.contact.copySuccess'), 2000)
       successSoundRef.current()
     } catch (error) {
-      enqueueMessage('Failed to copy email. Please try again.', 3000)
+      enqueueMessage(t('mascot.contact.copyError'), 3000)
       if (!isProduction) console.error('Failed to copy email:', error)
     }
-  }, [enqueueMessage, isProduction])
+  }, [enqueueMessage, isProduction, t])
 
   /**
    * Hide mascot permanently
@@ -365,7 +363,6 @@ export function useMascotState() {
   const handleMenuAction = useCallback(
     (action: string) => {
       updateState({
-        showBubble: false,
         showContact: false,
         showSettings: false,
         showMenu: false,
@@ -377,47 +374,43 @@ export function useMascotState() {
         switch (action) {
           case 'contact':
             updateState({
-              showContact: true,
-              showBubble: true
+              showContact: true
             })
             notificationSoundRef.current()
             break
           case 'projects':
-            window.open('https://github.com/isyuricunha', '_blank')
+            router.push(getLocalizedPath({ slug: '/projects', locale }))
             clickSoundRef.current()
             break
           case 'game':
             updateState({
-              showGame: true,
-              showBubble: true
+              showGame: true
             })
             notificationSoundRef.current()
             break
           case 'chat':
             updateState({
-              showAIChat: true,
-              showBubble: true
+              showAIChat: true
             })
             notificationSoundRef.current()
             break
           case 'settings':
             updateState({
-              showSettings: true,
-              showBubble: true
+              showSettings: true
             })
             clickSoundRef.current()
             break
         }
       }, 50)
     },
-    [updateState]
+    [locale, router, updateState]
   )
 
   /**
    * Handle AI Chat close
    */
   const handleAIClose = useCallback(() => {
-    updateState({ showAIChat: false, showBubble: false, isThinking: false })
+    updateState({ showAIChat: false, isThinking: false })
   }, [updateState])
 
   /**
@@ -496,13 +489,6 @@ export function useMascotState() {
     enqueueMessage,
     alertSound
   ])
-
-  /**
-   * Handle mouse enter on mascot
-   */
-  const handleMouseEnter = useCallback(() => {
-    updateState({ isHovering: true })
-  }, [updateState])
 
   /**
    * Get position classes based on user preference
@@ -841,7 +827,7 @@ export function useMascotState() {
       const selection = globalThis.getSelection()
       const text = selection?.toString().trim() ?? ''
 
-      if (text.length > 10 && (pageKey === 'blogPost' || pageKey === 'snippets')) {
+      if (text.length > 10 && (pageKey === 'blogPost' || pageKey === 'snippet')) {
         updateState({ selectedText: text, showSelectionBubble: true })
       } else {
         updateState({ showSelectionBubble: false })
@@ -903,7 +889,6 @@ export function useMascotState() {
     handleThinkingChange,
     explainSelection,
     handleMascotClick,
-    handleMouseEnter,
     getPositionClasses,
     getBubblePositionClasses,
     isProduction
