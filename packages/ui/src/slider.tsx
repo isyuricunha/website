@@ -59,7 +59,7 @@ const SliderThumb = (props: SliderThumbProps) => {
   return (
     <SliderPrimitive.Thumb
       className={cn(
-        'border-primary bg-background ring-offset-background size-5 rounded-full border-2 transition-colors',
+        'border-primary bg-background ring-offset-background size-5 rounded-full border transition-colors',
         'focus-visible:ring-ring focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden',
         'disabled:pointer-events-none disabled:opacity-50',
         className

@@ -20,7 +20,7 @@ const DrawerOverlay = (props: DrawerOverlayProps) => {
 
   return (
     <DrawerPrimitive.Overlay
-      className={cn('fixed inset-0 z-50 bg-black/40', className)}
+      className={cn('fixed inset-0 z-50 bg-[rgba(20,18,11,0.72)]', className)}
       {...rest}
     />
   )

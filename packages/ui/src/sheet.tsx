@@ -37,7 +37,7 @@ const SheetOverlay = (props: SheetOverlayProps) => {
   return (
     <SheetPrimitive.Overlay
       className={cn(
-        'fixed inset-0 z-50 bg-black/40',
+        'fixed inset-0 z-50 bg-[rgba(20,18,11,0.72)]',
         'data-[state=open]:animate-in data-[state=open]:fade-in-0',
         'data-[state=closed]:animate-out data-[state=closed]:fade-out-0',
         className

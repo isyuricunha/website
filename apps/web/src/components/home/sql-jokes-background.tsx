@@ -80,11 +80,11 @@ const SqlJokesBackground = ({ className }: SqlJokesBackgroundProps) => {
       aria-hidden='true'
       className={cn(
         'pointer-events-none absolute inset-0 -z-10 overflow-hidden',
-        '[mask-image:radial-gradient(circle_at_50%_30%,black,transparent_70%)] opacity-60',
+        'opacity-45',
         className
       )}
     >
-      <div className='from-background/70 via-background/10 to-background/70 bg-bg-surface absolute inset-0' />
+      <div className='bg-bg-surface absolute inset-0' />
 
       <div className='absolute inset-0 grid grid-rows-3 gap-6 px-2 py-6 sm:px-6'>
         {rows.map((row, row_index) => {
