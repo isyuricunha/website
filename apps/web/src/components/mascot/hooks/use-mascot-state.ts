@@ -13,6 +13,7 @@ const PREFERENCES_KEY = 'vc_mascot_preferences'
 const KONAMI_MODE_KEY = 'vc_mascot_konami_mode'
 const BLOG_POST_VISITED_KEY = 'vc_mascot_blog_posts_visited'
 const MASCOT_IMAGE_KEY = 'vc_mascot_current_image'
+const LATEST_POST_CHECK_KEY = 'vc_mascot_latest_post_checked'
 
 const DEFAULT_PREFERENCES: MascotPreferences = {
   animations: true,
@@ -84,6 +85,7 @@ export function useMascotState() {
   // Refs
   const blinkTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const resetAutoShowTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const scheduledTimeoutsRef = useRef(new Set<ReturnType<typeof setTimeout>>())
   const clickSoundRef = useRef(clickSound.play)
   const successSoundRef = useRef(successSound.play)
   const notificationSoundRef = useRef(notificationSound.play)
@@ -108,6 +110,27 @@ export function useMascotState() {
     setState((prev) => ({ ...prev, ...updates }))
   }, [])
 
+  const scheduleTimeout = useCallback((callback: () => void, delay: number) => {
+    const timer = setTimeout(() => {
+      scheduledTimeoutsRef.current.delete(timer)
+      callback()
+    }, delay)
+
+    scheduledTimeoutsRef.current.add(timer)
+    return timer
+  }, [])
+
+  useEffect(() => {
+    const scheduledTimeouts = scheduledTimeoutsRef.current
+
+    return () => {
+      for (const timer of scheduledTimeouts) {
+        clearTimeout(timer)
+      }
+      scheduledTimeouts.clear()
+    }
+  }, [])
+
   /**
    * Mark message for exit animation and remove it afterwards
    */
@@ -122,7 +145,7 @@ export function useMascotState() {
       }
     })
 
-    setTimeout(() => {
+    scheduleTimeout(() => {
       setState((prev) => {
         const exitingIds = new Set(prev.exitingIds)
         exitingIds.delete(id)
@@ -134,7 +157,7 @@ export function useMascotState() {
         }
       })
     }, 200)
-  }, [])
+  }, [scheduleTimeout])
 
   /**
    * Add a new message to the display queue
@@ -151,11 +174,11 @@ export function useMascotState() {
         messageQueue: [...prev.messageQueue, { id, text, expiresAt }]
       }))
 
-      setTimeout(() => {
+      scheduleTimeout(() => {
         startExit(id)
       }, d)
     },
-    [startExit, state.preferences.messageDuration]
+    [scheduleTimeout, startExit, state.preferences.messageDuration]
   )
 
   /**
@@ -361,7 +384,7 @@ export function useMascotState() {
         showAIChat: false
       })
 
-      setTimeout(() => {
+      scheduleTimeout(() => {
         switch (action) {
           case 'contact':
             updateState({
@@ -394,7 +417,7 @@ export function useMascotState() {
         }
       }, 50)
     },
-    [locale, router, updateState]
+    [locale, router, scheduleTimeout, updateState]
   )
 
   /**
@@ -449,7 +472,7 @@ export function useMascotState() {
       updateState({ isTickled: true })
       enqueueMessage(t('mascot.interactions.tickle'), 3000)
       notificationSoundRef.current()
-      setTimeout(() => updateState({ isTickled: false }), 1000)
+      scheduleTimeout(() => updateState({ isTickled: false }), 1000)
       return
     }
 
@@ -457,7 +480,7 @@ export function useMascotState() {
       updateState({ isDizzy: true, clickCount: 0 })
       enqueueMessage(t('mascot.interactions.dizzy'), 4000)
       alertSound.play()
-      setTimeout(() => updateState({ isDizzy: false }), 5000)
+      scheduleTimeout(() => updateState({ isDizzy: false }), 5000)
       return
     }
 
@@ -478,7 +501,8 @@ export function useMascotState() {
     t,
     updateState,
     enqueueMessage,
-    alertSound
+    alertSound,
+    scheduleTimeout
   ])
 
   /**
@@ -640,7 +664,7 @@ export function useMascotState() {
   // Contextual skin switching
   useEffect(() => {
     const timer = setTimeout(() => {
-      let nextImage = 1
+      let nextImage = state.currentMascotImage || 1
 
       if (state.isThinking) {
         nextImage = 8
@@ -648,6 +672,16 @@ export function useMascotState() {
         nextImage = 6
       } else if (pageKey === 'projects' || pageKey === 'projectsDetail') {
         nextImage = 7
+      } else {
+        try {
+          const saved = sessionStorage.getItem(MASCOT_IMAGE_KEY)
+          const savedImage = saved ? Number.parseInt(saved, 10) : 0
+          if (savedImage > 0) {
+            nextImage = savedImage
+          }
+        } catch {
+          // ignore storage errors
+        }
       }
 
       if (nextImage !== state.currentMascotImage) {
@@ -708,7 +742,13 @@ export function useMascotState() {
 
     const checkForNewPost = async () => {
       try {
+        const checkKey = `${LATEST_POST_CHECK_KEY}:${locale}`
+        if (sessionStorage.getItem(checkKey) === '1') return
+
         const res = await fetch(`/api/mascot/latest-post?locale=${locale}`)
+        if (!res.ok) return
+
+        sessionStorage.setItem(checkKey, '1')
         const data = await res.json()
 
         if (data.post && data.post.slug) {

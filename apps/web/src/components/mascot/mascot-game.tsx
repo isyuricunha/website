@@ -3,7 +3,7 @@
 import { useTranslations } from '@isyuricunha/i18n/client'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@isyuricunha/ui'
 import { TrophyIcon, XIcon } from 'lucide-react'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 interface MascotGameProps {
   isOpen: boolean
@@ -38,6 +38,7 @@ const MascotGame = ({ isOpen, onClose }: MascotGameProps) => {
   const [gameMode, setGameMode] = useState<'classic' | 'survival' | 'challenge'>('classic')
   const [multiplier, setMultiplier] = useState(1)
   const [achievements, setAchievements] = useState<string[]>([])
+  const multiplierTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // Game timer - Runs continuously without restarting on score changes
   useEffect(() => {
@@ -82,9 +83,23 @@ const MascotGame = ({ isOpen, onClose }: MascotGameProps) => {
     // Challenge mode: occasional multiplier boost
     if (Math.random() < 0.05 && gameMode === 'challenge') {
       setMultiplier(2)
-      setTimeout(() => setMultiplier(1), 3000)
+      if (multiplierTimeoutRef.current) {
+        clearTimeout(multiplierTimeoutRef.current)
+      }
+      multiplierTimeoutRef.current = setTimeout(() => {
+        setMultiplier(1)
+        multiplierTimeoutRef.current = null
+      }, 3000)
     }
   }, [gameMode])
+
+  useEffect(() => {
+    return () => {
+      if (multiplierTimeoutRef.current) {
+        clearTimeout(multiplierTimeoutRef.current)
+      }
+    }
+  }, [])
 
   const startGame = useCallback(() => {
     setScore(0)

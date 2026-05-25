@@ -246,6 +246,27 @@ export default function AIChatInterface({
   >({})
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+  const actionTimeoutsRef = useRef(new Set<ReturnType<typeof setTimeout>>())
+
+  const scheduleActionTimeout = useCallback((callback: () => void, delay: number) => {
+    const timer = setTimeout(() => {
+      actionTimeoutsRef.current.delete(timer)
+      callback()
+    }, delay)
+
+    actionTimeoutsRef.current.add(timer)
+  }, [])
+
+  useEffect(() => {
+    const actionTimeouts = actionTimeoutsRef.current
+
+    return () => {
+      for (const timer of actionTimeouts) {
+        clearTimeout(timer)
+      }
+      actionTimeouts.clear()
+    }
+  }, [])
 
   const getWelcomeMessage = useCallback((): ChatMessage => {
     return createWelcomeMessage(welcomeMessageText)
@@ -395,7 +416,7 @@ export default function AIChatInterface({
       const navMatch = /\[\[NAVIGATE:([^\]]+)\]\]/.exec(text)
       if (navMatch?.[1]) {
         const targetPath = navMatch[1].trim()
-        setTimeout(() => {
+        scheduleActionTimeout(() => {
           navigationPlay()
           router.push(targetPath)
         }, 1500)
@@ -403,7 +424,7 @@ export default function AIChatInterface({
 
       // 2. Theme Toggle
       if (text.includes('[[TOGGLE_THEME]]')) {
-        setTimeout(() => {
+        scheduleActionTimeout(() => {
           setTheme(theme === 'dark' ? 'light' : 'dark')
           successPlay()
         }, 1000)
@@ -413,7 +434,7 @@ export default function AIChatInterface({
       const searchMatch = /\[\[SEARCH:([^\]]+)\]\]/.exec(text)
       if (searchMatch?.[1]) {
         const query = searchMatch[1].trim()
-        setTimeout(() => {
+        scheduleActionTimeout(() => {
           const event = new CustomEvent('yue-open-search', { detail: { query } })
           globalThis.dispatchEvent(event)
           clickPlay()
@@ -422,13 +443,13 @@ export default function AIChatInterface({
 
       // 4. Scroll to Top
       if (text.includes('[[SCROLL_TO_TOP]]')) {
-        setTimeout(() => {
+        scheduleActionTimeout(() => {
           window.scrollTo({ top: 0, behavior: 'smooth' })
           clickPlay()
         }, 800)
       }
     },
-    [clickPlay, navigationPlay, router, setTheme, successPlay, theme]
+    [clickPlay, navigationPlay, router, scheduleActionTimeout, setTheme, successPlay, theme]
   )
 
   const sendMessage = async () => {
