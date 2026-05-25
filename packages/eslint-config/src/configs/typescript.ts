@@ -3,26 +3,13 @@ import type { Linter } from 'eslint'
 
 import { GLOB_TS, GLOB_TSX } from '@/globs'
 import { typescriptParser, typescriptPlugin } from '@/plugins'
+import { withoutDeprecatedPluginRules, withoutRuleIds } from '@/rule-utils'
 
-export const typescript = (options?: Options): Linter.Config[] => [
-  {
-    name: 'isyuricunha:typescript',
-    plugins: {
-      '@typescript-eslint': typescriptPlugin as unknown as Record<string, unknown>
-    },
-    files: [GLOB_TS, GLOB_TSX],
-    languageOptions: {
-      parser: typescriptParser,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true
-        },
-        project: options?.project,
-        tsconfigRootDir: options?.tsconfigRootDir,
-        sourceType: 'module'
-      }
-    },
-    rules: {
+const DEPRECATED_CORE_RULE_IDS = ['no-new-symbol', 'no-return-await'] as const
+
+const rules: Linter.RulesRecord = withoutRuleIds(
+  withoutDeprecatedPluginRules(
+    {
       ...typescriptPlugin.configs['recommended-type-checked']!.rules,
       ...typescriptPlugin.configs['strict-type-checked']!.rules,
       ...typescriptPlugin.configs['stylistic-type-checked']!.rules,
@@ -75,6 +62,32 @@ export const typescript = (options?: Options): Linter.Config[] => [
       // Turn off due to poor performance
       '@typescript-eslint/no-misused-promises': 'off',
       '@typescript-eslint/no-floating-promises': 'off'
+    },
+    {
+      '@typescript-eslint': typescriptPlugin
     }
+  ),
+  DEPRECATED_CORE_RULE_IDS
+)
+
+export const typescript = (options?: Options): Linter.Config[] => [
+  {
+    name: 'isyuricunha:typescript',
+    plugins: {
+      '@typescript-eslint': typescriptPlugin as unknown as Record<string, unknown>
+    },
+    files: [GLOB_TS, GLOB_TSX],
+    languageOptions: {
+      parser: typescriptParser,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true
+        },
+        project: options?.project,
+        tsconfigRootDir: options?.tsconfigRootDir,
+        sourceType: 'module'
+      }
+    },
+    rules
   }
 ]

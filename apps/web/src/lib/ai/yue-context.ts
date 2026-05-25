@@ -96,7 +96,7 @@ Rules:
 Context Data:
 - Recent Posts: ${context.recentPosts?.map((p) => p.title).join(', ') || 'none'}
 - Projects: ${context.projects?.map((p) => p.name).join(', ') || 'none'}
-${pageContextBlock !== 'none' ? `\nPage Details:\n${pageContextBlock}` : ''}
+${pageContextBlock === 'none' ? '' : `\nPage Details:\n${pageContextBlock}`}
 
 Conversation history:
 ${conversationBlock}
@@ -106,7 +106,7 @@ ${sourcesBlock || 'none'}
 `
 }
 
-export const build_yue_history = (
+const build_yue_history = (
   context: YueSiteContext,
   limit = 15
 ): Array<{ role: 'user' | 'assistant'; content: string }> => {
@@ -126,12 +126,4 @@ export const build_yue_openai_messages = (
     ...build_yue_history(context, limit).map((m) => ({ role: m.role, content: m.content })),
     { role: 'user', content: user_message }
   ]
-}
-
-export const build_yue_gemini_prompt = (context: YueSiteContext, user_message: string): string => {
-  return `${build_yue_system_message(context)}\n\nUser message: ${user_message}`
-}
-
-export const build_yue_ollama_prompt = (context: YueSiteContext, user_message: string): string => {
-  return `${build_yue_system_message(context)}\n\nUser: ${user_message}`
 }

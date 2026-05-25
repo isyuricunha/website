@@ -14,7 +14,7 @@
     "build:packages": "turbo build --filter=./packages/*",
     "check": "turbo lint && turbo type-check && pnpm format:check && pnpm check:spelling",
     "check:ci": "pnpm check && pnpm check:knip",
-    "check:all": "concurrently --raw \"turbo lint\" \"turbo type-check\" \"pnpm format:check\" \"pnpm check:spelling\" \"pnpm check:knip\"",
+    "check:all": "pnpm check:ci",
     "check:knip": "pnpm knip",
     "check:spelling": "echo 'Spell checking disabled'",
     "clean": "turbo clean && pnpm clean:cache",

@@ -3,6 +3,7 @@ import type { ESLint, Linter } from 'eslint'
 
 import { GLOB_JS, GLOB_JSX, GLOB_TS, GLOB_TSX } from '@/globs'
 import { jsxA11yPlugin, reactHooksPlugin, reactPlugin, typescriptParser } from '@/plugins'
+import { withoutDeprecatedPluginRules } from '@/rule-utils'
 
 export const react = (options?: Options): Linter.Config[] => {
   const reactPluginAll = reactPlugin.configs.all
@@ -54,8 +55,15 @@ export const react = (options?: Options): Linter.Config[] => {
   }
 
   // Filter out RSC-specific rules
-  const baseRules: Linter.RulesRecord = Object.fromEntries(
-    Object.entries(rawRules).filter(([key]) => !key.startsWith('@eslint-react/rsc'))
+  const baseRules: Linter.RulesRecord = withoutDeprecatedPluginRules(
+    Object.fromEntries(
+      Object.entries(rawRules).filter(([key]) => !key.startsWith('@eslint-react/rsc'))
+    ),
+    {
+      '@eslint-react': reactPlugin,
+      'react-hooks': reactHooksPlugin as unknown as ESLint.Plugin,
+      'jsx-a11y': jsxA11yPlugin
+    }
   )
 
   return [

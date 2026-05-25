@@ -11,12 +11,7 @@ const config: KnipConfig = {
   vitest: {
     config: ['vitest.{config,shared,workspace}.ts']
   },
-  ignoreDependencies: [
-    'sharp',
-    '@isyuricunha/tsconfig',
-    // Can't detect `pnpm with-env tsx`
-    'tsx'
-  ],
+  ignoreDependencies: ['sharp', '@isyuricunha/tsconfig'],
   workspaces: {
     '.': {
       entry: ['scripts/vercel-ignore.js']

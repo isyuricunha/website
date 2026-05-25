@@ -33,7 +33,7 @@ export type ChatConversation = {
   messages: ChatMessage[]
 }
 
-export type YueChatProvider = 'auto' | 'hf' | 'hf_local' | 'gemini' | 'groq' | 'ollama' | 'mistral'
+type YueChatProvider = 'auto' | 'hf' | 'hf_local' | 'gemini' | 'groq' | 'ollama' | 'mistral'
 
 const legacyMessagesSchema = z
   .array(

@@ -9,7 +9,7 @@ import { logger } from '@/lib/logger'
 
 type SiteContext = YueSiteContext
 
-export class MistralProvider {
+class MistralProvider {
   private client: Mistral | null = null
   private readonly defaultModel = 'mistral-large-latest'
 
