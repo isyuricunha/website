@@ -30,6 +30,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     handleMouseEnter,
     getPositionClasses,
     getBubblePositionClasses,
+    restoreMascot,
     handleAIClose,
     handleThinkingChange,
     t
@@ -45,7 +46,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
           type='button'
           aria-label={t('mascot.restore')}
           className='text-accent-earth-text shadow-feature-card hover:bg-bg-hover min-h-[44px] min-w-[44px] rounded-full border border-[var(--accent-border)] bg-[var(--accent-dim)] p-2 transition-colors focus-visible:ring-2 focus-visible:ring-[var(--accent-border)] focus-visible:outline-none sm:p-3'
-          onClick={() => updateState({ isDismissed: false, isHiddenPref: false })}
+          onClick={restoreMascot}
         >
           <EyeIcon className='h-5 w-5 sm:h-6 sm:w-6' />
         </button>

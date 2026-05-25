@@ -114,6 +114,34 @@ export function useMascotState() {
   }, [])
 
   /**
+   * Mark message for exit animation and remove it afterwards
+   */
+  const startExit = useCallback((id: number) => {
+    setState((prev) => {
+      const exitingIds = new Set(prev.exitingIds)
+      exitingIds.add(id)
+
+      return {
+        ...prev,
+        exitingIds
+      }
+    })
+
+    setTimeout(() => {
+      setState((prev) => {
+        const exitingIds = new Set(prev.exitingIds)
+        exitingIds.delete(id)
+
+        return {
+          ...prev,
+          messageQueue: prev.messageQueue.filter((item) => item.id !== id),
+          exitingIds
+        }
+      })
+    }, 200)
+  }, [])
+
+  /**
    * Add a new message to the display queue
    */
   const enqueueMessage = useCallback(
@@ -132,30 +160,8 @@ export function useMascotState() {
         startExit(id)
       }, d)
     },
-    [state.preferences.messageDuration]
+    [startExit, state.preferences.messageDuration]
   )
-
-  /**
-   * Mark message for exit animation and remove it afterwards
-   */
-  const startExit = useCallback((id: number) => {
-    setState((prev) => ({
-      ...prev,
-      exitingIds: new Set(prev.exitingIds).add(id)
-    }))
-
-    setTimeout(() => {
-      setState((prev) => {
-        const newExitingIds = new Set(prev.exitingIds)
-        newExitingIds.delete(id)
-        return {
-          ...prev,
-          messageQueue: prev.messageQueue.filter((item) => item.id !== id),
-          exitingIds: newExitingIds
-        }
-      })
-    }, 200)
-  }, [])
 
   /**
    * Update preferences and persist to localStorage
@@ -195,39 +201,36 @@ export function useMascotState() {
   /**
    * Extract page key from path without locale prefix
    */
-  const getPageKey = useCallback(
-    (path: string) => {
-      const localePattern = new RegExp(`^/(${i18n.locales.join('|')})/`, '')
-      const pathWithoutLocale = path.replace(localePattern, '/')
+  const getPageKey = useCallback((path: string) => {
+    const localePattern = new RegExp(`^/(${i18n.locales.join('|')})/`, '')
+    const pathWithoutLocale = path.replace(localePattern, '/')
 
-      if (pathWithoutLocale === '/' || pathWithoutLocale === '') return 'home'
+    if (pathWithoutLocale === '/' || pathWithoutLocale === '') return 'home'
 
-      const blogPostMatch = /^\/blog\/([^/]+)$/.exec(pathWithoutLocale)
-      if (blogPostMatch) return 'blogPost'
+    const blogPostMatch = /^\/blog\/([^/]+)$/.exec(pathWithoutLocale)
+    if (blogPostMatch) return 'blogPost'
 
-      const DETAIL_SEGMENTS = new Set(['projects'])
-      const detailMatch = /^\/(\w+)\/([^/]+)$/.exec(pathWithoutLocale)
-      if (detailMatch) {
-        const seg = detailMatch[1]
-        if (seg && DETAIL_SEGMENTS.has(seg)) {
-          return `${seg}Detail`
-        }
+    const DETAIL_SEGMENTS = new Set(['projects'])
+    const detailMatch = /^\/(\w+)\/([^/]+)$/.exec(pathWithoutLocale)
+    if (detailMatch) {
+      const seg = detailMatch[1]
+      if (seg && DETAIL_SEGMENTS.has(seg)) {
+        return `${seg}Detail`
       }
+    }
 
-      if (pathWithoutLocale.startsWith('/blog')) return 'blog'
-      if (pathWithoutLocale.startsWith('/projects')) return 'projects'
-      if (pathWithoutLocale.startsWith('/about')) return 'about'
-      if (pathWithoutLocale.startsWith('/uses')) return 'uses'
-      if (pathWithoutLocale.startsWith('/music')) return 'music'
-      if (pathWithoutLocale.startsWith('/guestbook')) return 'guestbook'
-      if (pathWithoutLocale.startsWith('/admin')) return 'admin'
-      if (pathWithoutLocale.includes('search') || pathWithoutLocale.includes('?q=')) return 'search'
-      if (pathWithoutLocale === '/404' || pathWithoutLocale.includes('not-found')) return '404'
+    if (pathWithoutLocale.startsWith('/blog')) return 'blog'
+    if (pathWithoutLocale.startsWith('/projects')) return 'projects'
+    if (pathWithoutLocale.startsWith('/about')) return 'about'
+    if (pathWithoutLocale.startsWith('/uses')) return 'uses'
+    if (pathWithoutLocale.startsWith('/music')) return 'music'
+    if (pathWithoutLocale.startsWith('/guestbook')) return 'guestbook'
+    if (pathWithoutLocale.startsWith('/admin')) return 'admin'
+    if (pathWithoutLocale.includes('search') || pathWithoutLocale.includes('?q=')) return 'search'
+    if (pathWithoutLocale === '/404' || pathWithoutLocale.includes('not-found')) return '404'
 
-      return 'home'
-    },
-    [i18n.locales]
-  )
+    return 'home'
+  }, [])
 
   const pageKey = getPageKey(pathname || '/')
 
@@ -252,7 +255,7 @@ export function useMascotState() {
       const keys = Object.keys(base)
         .filter((k) => /^\d+$/.test(k))
         .map(Number)
-        .sort((a, b) => a - b)
+        .toSorted((a, b) => a - b)
 
       for (const idx of keys) {
         const v = base[String(idx)]
@@ -341,6 +344,20 @@ export function useMascotState() {
       if (!isProduction) console.error('Error hiding mascot:', error)
     }
   }, [updateState, isProduction])
+
+  /**
+   * Restore mascot and clear persisted hidden/dismissed flags
+   */
+  const restoreMascot = useCallback(() => {
+    updateState({ isDismissed: false, isHiddenPref: false })
+
+    try {
+      sessionStorage.removeItem(STORAGE_KEY)
+      localStorage.removeItem(HIDE_KEY)
+    } catch (error) {
+      if (!isProduction) console.error('Error restoring mascot:', error)
+    }
+  }, [isProduction, updateState])
 
   /**
    * Handle menu actions
@@ -521,68 +538,65 @@ export function useMascotState() {
     }
   }, [state.preferences.bubblePosition])
 
-  // Mount effect
+  // Load browser-only preferences and saved state after hydration
   useEffect(() => {
-    setMounted(true)
-
-    try {
-      const saved = sessionStorage.getItem(MASCOT_IMAGE_KEY)
-      if (saved) {
-        updateState({ currentMascotImage: Number.parseInt(saved) })
-      } else {
-        const chosen = Math.floor(Math.random() * 5) + 1
-        sessionStorage.setItem(MASCOT_IMAGE_KEY, String(chosen))
-        updateState({ currentMascotImage: chosen })
+    const timer = setTimeout(() => {
+      const updates: Partial<MascotState> = {
+        preferences: loadPreferences()
       }
-    } catch {
-      // ignore session storage errors
-    }
-  }, [updateState])
 
-  // Load preferences and saved state
-  useEffect(() => {
-    try {
-      const v = sessionStorage.getItem(STORAGE_KEY)
-      if (v === '1') updateState({ isDismissed: true })
+      try {
+        const saved = sessionStorage.getItem(MASCOT_IMAGE_KEY)
+        if (saved) {
+          updates.currentMascotImage = Number.parseInt(saved, 10)
+        } else {
+          const chosen = Math.floor(Math.random() * 5) + 1
+          sessionStorage.setItem(MASCOT_IMAGE_KEY, String(chosen))
+          updates.currentMascotImage = chosen
+        }
 
-      const hiddenPref = localStorage.getItem(HIDE_KEY)
-      if (hiddenPref === '1') updateState({ isHiddenPref: true })
+        const dismissed = sessionStorage.getItem(STORAGE_KEY)
+        if (dismissed === '1') updates.isDismissed = true
 
-      const prefs = loadPreferences()
-      updateState({ preferences: prefs })
+        const hiddenPref = localStorage.getItem(HIDE_KEY)
+        if (hiddenPref === '1') updates.isHiddenPref = true
 
-      const konami = localStorage.getItem(KONAMI_MODE_KEY)
-      if (konami === '1') updateState({ isKonamiMode: true })
+        const konami = localStorage.getItem(KONAMI_MODE_KEY)
+        if (konami === '1') updates.isKonamiMode = true
 
-      const visited = localStorage.getItem(BLOG_POST_VISITED_KEY)
-      if (visited) {
-        updateState({ blogPostsVisited: new Set(JSON.parse(visited)) })
+        const visited = localStorage.getItem(BLOG_POST_VISITED_KEY)
+        if (visited) {
+          updates.blogPostsVisited = new Set(JSON.parse(visited))
+        }
+      } catch {
+        // ignore storage errors
       }
-    } catch {
-      // ignore storage errors
-    }
+
+      setMounted(true)
+      updateState(updates)
+    }, 0)
+
+    return () => clearTimeout(timer)
   }, [loadPreferences, updateState])
 
   // Reduced motion preference
   useEffect(() => {
-    setPrefersReducedMotion(globalThis.matchMedia('(prefers-reduced-motion: reduce)').matches)
-
     const mediaQuery = globalThis.matchMedia('(prefers-reduced-motion: reduce)')
     const handleChange = () => setPrefersReducedMotion(mediaQuery.matches)
+    const timer = setTimeout(handleChange, 0)
 
     mediaQuery.addEventListener('change', handleChange)
-    return () => mediaQuery.removeEventListener('change', handleChange)
+    return () => {
+      clearTimeout(timer)
+      mediaQuery.removeEventListener('change', handleChange)
+    }
   }, [])
 
   // Konami Code detection
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.shiftKey && event.key.toLowerCase() === 'y') {
-        updateState({ isDismissed: false, isHiddenPref: false })
-        try {
-          sessionStorage.removeItem(STORAGE_KEY)
-          localStorage.removeItem(HIDE_KEY)
-        } catch {}
+        restoreMascot()
         return
       }
 
@@ -606,7 +620,7 @@ export function useMascotState() {
 
     globalThis.addEventListener('keydown', handleKeyDown)
     return () => globalThis.removeEventListener('keydown', handleKeyDown)
-  }, [state.konamiSequence, state.isKonamiMode, updateState])
+  }, [restoreMascot, state.konamiSequence, state.isKonamiMode, updateState])
 
   // Blinking animation
   useEffect(() => {
@@ -648,19 +662,23 @@ export function useMascotState() {
 
   // Contextual skin switching
   useEffect(() => {
-    let nextImage = 1
+    const timer = setTimeout(() => {
+      let nextImage = 1
 
-    if (state.isThinking) {
-      nextImage = 8
-    } else if (pageKey === '404') {
-      nextImage = 6
-    } else if (pageKey === 'projects' || pageKey === 'projectsDetail') {
-      nextImage = 7
-    }
+      if (state.isThinking) {
+        nextImage = 8
+      } else if (pageKey === '404') {
+        nextImage = 6
+      } else if (pageKey === 'projects' || pageKey === 'projectsDetail') {
+        nextImage = 7
+      }
 
-    if (nextImage !== state.currentMascotImage) {
-      updateState({ currentMascotImage: nextImage })
-    }
+      if (nextImage !== state.currentMascotImage) {
+        updateState({ currentMascotImage: nextImage })
+      }
+    }, 0)
+
+    return () => clearTimeout(timer)
   }, [pageKey, state.isThinking, state.currentMascotImage, updateState])
 
   // Idle timer for random messages
@@ -708,6 +726,9 @@ export function useMascotState() {
   useEffect(() => {
     if (!mounted || !state.preferences.speechBubbles) return
 
+    let notificationTimer: ReturnType<typeof setTimeout> | null = null
+    let cancelled = false
+
     const checkForNewPost = async () => {
       try {
         const res = await fetch(`/api/mascot/latest-post?locale=${locale}`)
@@ -715,8 +736,8 @@ export function useMascotState() {
 
         if (data.post && data.post.slug) {
           const hasVisited = state.blogPostsVisited.has(data.post.slug)
-          if (!hasVisited) {
-            setTimeout(() => {
+          if (!hasVisited && !cancelled) {
+            notificationTimer = setTimeout(() => {
               const msg = t('mascot.notifications.newPost', { title: data.post.title })
               enqueueMessage(msg, 10_000)
               alertSound.play()
@@ -729,6 +750,11 @@ export function useMascotState() {
     }
 
     void checkForNewPost()
+
+    return () => {
+      cancelled = true
+      if (notificationTimer) clearTimeout(notificationTimer)
+    }
   }, [
     mounted,
     locale,
@@ -751,8 +777,6 @@ export function useMascotState() {
 
   // Page change message effect
   useEffect(() => {
-    updateState({ messageIndex: 0, lastMessageIndex: -1 })
-
     if (state.preferences.speechBubbles) {
       const timer = setTimeout(() => {
         updateState({ autoShowMessage: true })
@@ -795,7 +819,7 @@ export function useMascotState() {
       }
     }
 
-    return undefined
+    return
   }, [
     pageKey,
     state.preferences.speechBubbles,
@@ -873,6 +897,7 @@ export function useMascotState() {
     updatePreferences,
     copyEmail,
     handleHideMascot,
+    restoreMascot,
     handleMenuAction,
     handleAIClose,
     handleThinkingChange,
