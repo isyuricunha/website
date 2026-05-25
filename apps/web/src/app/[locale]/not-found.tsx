@@ -76,14 +76,16 @@ const NotFound = async (props: PageProps) => {
   return (
     <MainLayout>
       <div className='mx-auto flex w-full max-w-4xl flex-col gap-10 pt-10 sm:pt-14'>
-        <div className='flex flex-col items-center text-center'>
-          <div className='text-muted-foreground mb-4 inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-medium tracking-wide'>
+        <div className='flex flex-col items-start'>
+          <div className='label-mono bg-bg-surface mb-4 inline-flex items-center gap-2 rounded-sm border border-[var(--border-subtle)] px-3 py-1'>
             <span>404</span>
-            <span className='text-muted-foreground/70'>·</span>
+            <span className='text-text-tertiary/70'>·</span>
             <span>{t('notFound.badge')}</span>
           </div>
-          <h1 className='text-4xl font-bold tracking-tight sm:text-6xl'>{t('not-found')}</h1>
-          <p className='text-muted-foreground mt-4 max-w-2xl text-base leading-relaxed sm:text-lg'>
+          <h1 className='text-[clamp(32px,4vw,52px)] leading-[1.08] font-normal tracking-tighter'>
+            {t('not-found')}
+          </h1>
+          <p className='mt-4 max-w-2xl text-base leading-relaxed sm:text-lg'>
             {t('notFound.subtitle')}
           </p>
         </div>
@@ -92,7 +94,7 @@ const NotFound = async (props: PageProps) => {
           <SiteSearch />
         </div>
 
-        <div className='flex flex-wrap justify-center gap-3'>
+        <div className='flex flex-wrap gap-3'>
           <GoToHomepage />
           <Link
             href={getLocalizedPath({ slug: '/sitemap', locale })}
@@ -140,7 +142,7 @@ const NotFound = async (props: PageProps) => {
                 <Link
                   key={post.slug}
                   href={getLocalizedPath({ slug: `/blog/${post.slug}`, locale })}
-                  className='hover:bg-muted/40 -mx-2 rounded-lg px-2 py-2 transition-colors'
+                  className='hover:bg-bg-hover -mx-2 rounded-lg px-2 py-2 transition-colors'
                 >
                   <div className='flex items-start justify-between gap-3'>
                     <div className='min-w-0'>
@@ -179,7 +181,7 @@ const NotFound = async (props: PageProps) => {
                 <Link
                   key={snippet.slug}
                   href={getLocalizedPath({ slug: `/snippet/${snippet.slug}`, locale })}
-                  className='hover:bg-muted/40 -mx-2 rounded-lg px-2 py-2 transition-colors'
+                  className='hover:bg-bg-hover -mx-2 rounded-lg px-2 py-2 transition-colors'
                 >
                   <div className='flex items-start justify-between gap-3'>
                     <div className='min-w-0'>
@@ -218,7 +220,7 @@ const NotFound = async (props: PageProps) => {
                 <Link
                   key={project.slug}
                   href={getLocalizedPath({ slug: `/projects/${project.slug}`, locale })}
-                  className='hover:bg-muted/40 -mx-2 rounded-lg px-2 py-2 transition-colors'
+                  className='hover:bg-bg-hover -mx-2 rounded-lg px-2 py-2 transition-colors'
                 >
                   <div className='flex items-start justify-between gap-3'>
                     <div className='min-w-0'>

@@ -47,13 +47,13 @@ const Header = () => {
 
   return (
     <div className='space-y-16 py-16'>
-      <div className='space-y-16 sm:px-8'>
-        <h1 className='bg-linear-to-b from-black via-black/90 to-black/70 to-90% bg-clip-text text-center text-2xl font-bold text-transparent sm:text-3xl md:text-4xl md:leading-[48px] dark:from-white dark:via-white/90 dark:to-white/70'>
+      <div className='space-y-12 sm:px-8'>
+        <h1 className='max-w-4xl text-[clamp(32px,4vw,52px)] font-normal tracking-tighter text-balance'>
           {title}
         </h1>
-        <div className='grid grid-cols-2 text-sm max-md:gap-4 md:grid-cols-4'>
-          <div className='space-y-1 md:mx-auto'>
-            <div className='text-muted-foreground'>{t('blog.header.written-by')}</div>
+        <div className='grid grid-cols-2 gap-6 border-y border-[var(--border-faint)] py-6 text-sm md:grid-cols-4'>
+          <div className='space-y-1'>
+            <div className='label-mono'>{t('blog.header.written-by')}</div>
             <Link href='https://github.com/isyuricunha' className='flex items-center gap-2'>
               <BlurImage
                 src='/images/avatar.png'
@@ -65,20 +65,20 @@ const Header = () => {
               {t('metadata.site-title')}
             </Link>
           </div>
-          <div className='space-y-1 md:mx-auto'>
-            <div className='text-muted-foreground'>{t('blog.header.published-on')}</div>
+          <div className='space-y-1'>
+            <div className='label-mono'>{t('blog.header.published-on')}</div>
             <div>{formattedDate}</div>
           </div>
-          <div className='space-y-1 md:mx-auto'>
-            <div className='text-muted-foreground'>{t('blog.header.views')}</div>
+          <div className='space-y-1'>
+            <div className='label-mono'>{t('blog.header.views')}</div>
             {viewsCountQuery.status === 'pending' ? '--' : null}
             {viewsCountQuery.status === 'error' ? t('common.error') : null}
             {viewsCountQuery.status === 'success' ? (
               <NumberFlow willChange plugins={[continuous]} value={viewsCountQuery.data.views} />
             ) : null}
           </div>
-          <div className='space-y-1 md:mx-auto'>
-            <div className='text-muted-foreground'>{t('blog.header.comments')}</div>
+          <div className='space-y-1'>
+            <div className='label-mono'>{t('blog.header.comments')}</div>
             {commentsCountQuery.status === 'pending' ? '--' : null}
             {commentsCountQuery.status === 'error' ? t('common.error') : null}
             {commentsCountQuery.status === 'success' ? (
@@ -91,7 +91,7 @@ const Header = () => {
           </div>
         </div>
 
-        <div className='flex justify-center'>
+        <div>
           <SocialShare
             title={title}
             url={`/blog/${slug}`}

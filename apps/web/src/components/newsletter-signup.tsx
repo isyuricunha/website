@@ -55,8 +55,8 @@ const NewsletterSignup = () => {
     return (
       <Card>
         <CardContent className='p-6 text-center'>
-          <CheckCircle className='mx-auto mb-4 h-12 w-12 text-green-500' />
-          <h3 className='mb-2 text-base font-semibold sm:text-lg'>
+          <CheckCircle className='text-accent-earth-text mx-auto mb-4 h-12 w-12' />
+          <h3 className='mb-2 text-base font-medium sm:text-lg'>
             {t('homepage.newsletter.success-title')}
           </h3>
           <p className='text-muted-foreground text-xs sm:text-sm'>
@@ -81,7 +81,7 @@ const NewsletterSignup = () => {
       <CardContent>
         <form onSubmit={handleSubmit} className='space-y-4'>
           {error && (
-            <div className='flex items-center gap-2 rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-600'>
+            <div className='text-accent-earth-text flex items-center gap-2 rounded-md border border-[var(--accent-border)] bg-[var(--accent-dim)] p-3 text-sm'>
               <AlertCircle className='h-4 w-4 flex-shrink-0' />
               <span>{error}</span>
             </div>

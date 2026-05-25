@@ -65,8 +65,7 @@ const Page = async (props: PageProps) => {
 
   const snippets = allSnippets
     .filter((snippet) => snippet.locale === locale)
-    .slice()
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .toSorted((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 
   const getSafeDateFormatter = (l: string) => {
     try {
@@ -124,9 +123,9 @@ const Page = async (props: PageProps) => {
             <Link
               key={`${snippet.locale}:${snippet.slug}`}
               href={`/snippet/${snippet.slug}`}
-              className='shadow-feature-card hover:bg-accent/40 block rounded-2xl border p-4 transition-colors'
+              className='shadow-feature-card bg-bg-surface hover:bg-bg-hover block rounded-lg border border-[var(--border-subtle)] p-4 transition-colors'
             >
-              <div className='mb-2 flex items-center justify-between gap-2 text-xs text-zinc-500'>
+              <div className='text-text-tertiary mb-2 flex items-center justify-between gap-2 font-mono text-xs'>
                 <div>{dateFormatter.format(new Date(snippet.date))}</div>
                 {snippet.readingTime ? (
                   <div>{t('min-read', { minutes: snippet.readingTime })}</div>

@@ -26,7 +26,7 @@ const PageTitle = (props: PageTitleProps) => {
   return (
     <div className='mt-6 mb-16 sm:mt-12 sm:mb-24'>
       <motion.h1
-        className='my-4 text-2xl font-bold sm:text-3xl md:text-4xl'
+        className='my-4 text-[clamp(32px,4vw,52px)] font-normal tracking-tighter'
         {...(animate && {
           initial: animation.hide,
           animate: animation.show
@@ -35,7 +35,7 @@ const PageTitle = (props: PageTitleProps) => {
         {title}
       </motion.h1>
       <motion.h2
-        className='text-muted-foreground mb-8 text-sm sm:text-base'
+        className='text-muted-foreground mb-8 max-w-2xl text-sm sm:text-base'
         {...(animate && {
           initial: animation.hide,
           animate: animation.show,

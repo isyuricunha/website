@@ -27,12 +27,12 @@ const ItemGrid = (props: ItemGridProps) => {
         <Link
           key={item.name}
           href={item.url}
-          className='group relative flex min-h-[120px] gap-4 rounded-lg border p-4 no-underline shadow-xs transition-all hover:bg-zinc-100 hover:shadow-md sm:min-h-[160px] sm:flex-col sm:gap-3 dark:bg-zinc-900 dark:hover:bg-zinc-800'
+          className='group bg-bg-surface shadow-feature-card hover:bg-bg-hover relative flex min-h-[120px] gap-4 rounded-lg border border-[var(--border-subtle)] p-4 no-underline transition-colors sm:min-h-[160px] sm:flex-col sm:gap-3'
         >
           {item.isAffiliate && (
             <Badge
               variant='secondary'
-              className='absolute top-2 right-2 bg-blue-100 text-xs text-blue-800 dark:bg-blue-900 dark:text-blue-200'
+              className='text-accent-earth-text absolute top-2 right-2 rounded-sm border-[var(--accent-border)] bg-[var(--accent-dim)] text-xs'
             >
               Affiliate
             </Badge>
@@ -48,7 +48,7 @@ const ItemGrid = (props: ItemGridProps) => {
             />
           </div>
           <div className='flex flex-1 flex-col justify-center gap-2'>
-            <div className='line-clamp-2 flex items-center gap-2 text-sm font-semibold sm:text-base'>
+            <div className='line-clamp-2 flex items-center gap-2 text-sm font-medium sm:text-base'>
               {item.name}
               <ExternalLink className='h-3 w-3 flex-shrink-0 opacity-0 transition-opacity group-hover:opacity-100' />
             </div>

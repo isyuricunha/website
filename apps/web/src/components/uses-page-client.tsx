@@ -40,16 +40,16 @@ type ComparisonItem = {
 const ComparisonTable = ({ items, title }: { items: ComparisonItem[]; title: string }) => {
   const t = useTranslations('component.uses-page')
   return (
-    <div className='my-8 overflow-hidden rounded-lg border'>
-      <div className='bg-muted/50 border-b px-4 py-3'>
-        <h3 className='flex items-center gap-2 text-sm font-semibold sm:text-base'>
-          <Star className='text-primary h-4 w-4' />
+    <div className='bg-bg-surface my-8 overflow-hidden rounded-lg border border-[var(--border-subtle)]'>
+      <div className='bg-bg-elevated border-b border-[var(--border-faint)] px-4 py-3'>
+        <h3 className='flex items-center gap-2 text-sm font-medium sm:text-base'>
+          <Star className='text-accent-earth-text h-4 w-4' />
           {title}
         </h3>
       </div>
       <div className='overflow-x-auto p-1'>
         <table className='w-full min-w-[1100px] table-fixed border-separate border-spacing-0'>
-          <thead className='bg-muted/20'>
+          <thead className='bg-bg-elevated'>
             <tr>
               <th className='text-muted-foreground w-[16%] px-6 py-4 text-left text-xs font-medium tracking-wider uppercase'>
                 {t('table.headers.tool')}
@@ -70,14 +70,14 @@ const ComparisonTable = ({ items, title }: { items: ComparisonItem[]; title: str
           </thead>
           <tbody className='divide-border divide-y'>
             {items.map((item, index) => (
-              <tr key={index} className='hover:bg-muted/30 transition-colors'>
+              <tr key={index} className='hover:bg-bg-hover transition-colors'>
                 <td className='border-border/50 border-r px-8 py-6 align-top'>
                   <div className='mr-4 text-sm leading-relaxed font-medium break-words'>
                     {item.name}
                   </div>
                 </td>
                 <td className='border-border/50 border-r px-8 py-6 align-top'>
-                  <ul className='text-primary mr-4 space-y-2 text-xs leading-relaxed'>
+                  <ul className='text-accent-earth-text mr-4 space-y-2 text-xs leading-relaxed'>
                     {item.pros.map((pro, i) => (
                       <li key={i} className='break-words'>
                         • {pro}
@@ -105,7 +105,7 @@ const ComparisonTable = ({ items, title }: { items: ComparisonItem[]; title: str
                           key={i}
                           className={`h-3 w-3 ${
                             i < item.rating
-                              ? 'text-primary fill-current'
+                              ? 'text-accent-earth-text fill-current'
                               : 'text-muted-foreground/30'
                           }`}
                         />
@@ -142,15 +142,15 @@ const ExpandableSection = ({
   const IconComponent = typeof icon === 'string' ? categoryIcons[icon] : icon
 
   return (
-    <div className='mb-8 overflow-hidden rounded-lg border'>
+    <div className='bg-bg-surface mb-8 overflow-hidden rounded-lg border border-[var(--border-subtle)]'>
       <button
         type='button'
         onClick={() => setIsExpanded(!isExpanded)}
-        className='bg-muted/20 hover:bg-muted/30 flex w-full items-center justify-between px-4 py-4 text-left transition-colors'
+        className='bg-bg-elevated hover:bg-bg-hover flex w-full items-center justify-between px-4 py-4 text-left transition-colors'
       >
         <div className='flex items-center gap-3'>
-          {IconComponent && <IconComponent className='text-primary h-5 w-5' />}
-          <h2 className='text-lg font-semibold sm:text-xl'>{title}</h2>
+          {IconComponent && <IconComponent className='text-accent-earth-text h-5 w-5' />}
+          <h2 className='text-lg font-medium tracking-tighter sm:text-xl'>{title}</h2>
         </div>
         {isExpanded ? (
           <ChevronUp className='text-muted-foreground h-5 w-5' />
@@ -166,11 +166,11 @@ const ExpandableSection = ({
 const AffiliateDisclosure = () => {
   const t = useTranslations('component.uses-page')
   return (
-    <div className='bg-primary/10 border-primary/20 mb-8 rounded-lg border p-4'>
+    <div className='mb-8 rounded-lg border border-[var(--accent-border)] bg-[var(--accent-dim)] p-4'>
       <div className='flex items-start gap-3'>
-        <Info className='text-primary mt-0.5 h-5 w-5 flex-shrink-0' />
+        <Info className='text-accent-earth-text mt-0.5 h-5 w-5 flex-shrink-0' />
         <div>
-          <h3 className='text-foreground mb-1 text-sm font-semibold'>{t('affiliate.title')}</h3>
+          <h3 className='text-text-primary mb-1 text-sm font-medium'>{t('affiliate.title')}</h3>
           <p className='text-muted-foreground text-xs sm:text-sm'>{t('affiliate.description')}</p>
         </div>
       </div>
@@ -220,7 +220,9 @@ const UsesPageClient = ({ title, description, mdxContent }: UsesPageClientProps)
       {/* Header with last updated */}
       <div className='mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-center'>
         <div>
-          <h1 className='mb-2 text-2xl font-bold sm:text-3xl'>{title}</h1>
+          <h1 className='mb-2 text-[clamp(32px,4vw,52px)] leading-[1.08] font-normal tracking-tighter'>
+            {title}
+          </h1>
           <p className='text-muted-foreground text-sm sm:text-base'>{description}</p>
         </div>
         <Badge variant='outline' className='self-start sm:self-auto'>
@@ -249,8 +251,8 @@ const UsesPageClient = ({ title, description, mdxContent }: UsesPageClientProps)
                 className='mx-auto h-48 w-full max-w-xs rounded-lg object-contain shadow-lg'
               />
             </div>
-            <div className='bg-muted/20 rounded-lg p-4'>
-              <h3 className='mb-2 text-sm font-semibold sm:text-base'>
+            <div className='bg-bg-surface rounded-lg border border-[var(--border-subtle)] p-4'>
+              <h3 className='mb-2 text-sm font-medium sm:text-base'>
                 {t('sections.laptop.why-title')}
               </h3>
               <ul className='text-muted-foreground space-y-1 text-xs sm:text-sm'>

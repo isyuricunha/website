@@ -3,8 +3,6 @@
 import type { Project } from 'content-collections'
 
 import { useTranslations } from '@isyuricunha/i18n/client'
-import { buttonVariants } from '@isyuricunha/ui'
-import { cn } from '@isyuricunha/utils'
 import { ArrowUpRightIcon } from 'lucide-react'
 import { motion } from 'motion/react'
 
@@ -31,15 +29,18 @@ const Header = (props: HeaderProps) => {
   const repo = github.split('/').pop()
 
   return (
-    <div className='space-y-8 pt-10'>
+    <div className='space-y-8 border-b border-[var(--border-faint)] pt-10 pb-12'>
       <motion.div
         className='flex items-center gap-3'
         initial={animation.hide}
         animate={animation.show}
       >
         <div className='flex flex-col gap-3'>
-          <h1 className='text-3xl font-bold'>{name}</h1>
-          <h2 className='text-muted-foreground'>{description}</h2>
+          <span className='label-mono'>Project</span>
+          <h1 className='max-w-4xl text-[clamp(32px,4vw,52px)] font-normal tracking-tighter'>
+            {name}
+          </h1>
+          <p className='text-muted-foreground max-w-2xl'>{description}</p>
         </div>
       </motion.div>
       <motion.div
@@ -49,12 +50,12 @@ const Header = (props: HeaderProps) => {
         transition={{ delay: 0.1 }}
       >
         {homepage ? (
-          <Link href={homepage} className={cn(buttonVariants(), 'group')}>
+          <Link href={homepage} className='cta-link group'>
             {t('projects.visit-website')}
             <ArrowUpRightIcon className='ml-2 size-5 transition-transform group-hover:-rotate-12' />
           </Link>
         ) : null}
-        <Link href={github} className={cn(buttonVariants(), 'group')}>
+        <Link href={github} className='cta-link group'>
           {GITHUB_USERNAME}/{repo}
           <ArrowUpRightIcon className='ml-2 size-5 transition-transform group-hover:-rotate-12' />
         </Link>

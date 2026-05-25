@@ -11,10 +11,7 @@ const SignIn = () => {
 
   return (
     <>
-      <Button
-        className='bg-email-button text-primary-foreground inline-block font-extrabold'
-        onClick={() => setIsSignInOpen(true)}
-      >
+      <Button className='inline-block font-medium' onClick={() => setIsSignInOpen(true)}>
         {t('common.sign-in')}
       </Button>
       <span className='ml-2'>{t('guestbook.signin.description')}</span>

@@ -69,7 +69,7 @@ export const getAnnouncementUi = (
       type,
       icon: <AlertCircle className={iconClassName} />,
       iconContainerClassName: 'bg-destructive/10',
-      containerClassName: 'bg-destructive/10 border-destructive/20',
+      containerClassName: 'bg-bg-surface border-destructive/20',
       iconClassName: 'text-destructive',
       titleClassName: 'text-destructive',
       contentClassName: 'text-destructive/80',
@@ -88,13 +88,13 @@ export const getAnnouncementUi = (
         ) : (
           <AlertTriangle className={iconClassName} />
         ),
-      iconContainerClassName: 'bg-primary/10',
-      containerClassName: 'bg-primary/10 border-primary/20',
-      iconClassName: 'text-primary',
+      iconContainerClassName: 'bg-[var(--accent-dim)]',
+      containerClassName: 'bg-bg-surface border-[var(--accent-border)]',
+      iconClassName: 'text-accent-earth-text',
       titleClassName: 'text-foreground',
       contentClassName: 'text-muted-foreground',
       buttonClassName: 'text-muted-foreground hover:text-foreground',
-      badgeClassName: 'bg-primary/10 text-primary border-primary/20',
+      badgeClassName: 'bg-[var(--accent-dim)] text-accent-earth-text border-[var(--accent-border)]',
       badgeVariant: 'secondary'
     }
   }
@@ -103,13 +103,13 @@ export const getAnnouncementUi = (
     return {
       type,
       icon: <CheckCircle className={iconClassName} />,
-      iconContainerClassName: 'bg-primary/10',
-      containerClassName: 'bg-primary/10 border-primary/20',
-      iconClassName: 'text-primary',
+      iconContainerClassName: 'bg-[var(--accent-dim)]',
+      containerClassName: 'bg-bg-surface border-[var(--accent-border)]',
+      iconClassName: 'text-accent-earth-text',
       titleClassName: 'text-foreground',
       contentClassName: 'text-muted-foreground',
       buttonClassName: 'text-muted-foreground hover:text-foreground',
-      badgeClassName: 'bg-primary/10 text-primary border-primary/20',
+      badgeClassName: 'bg-[var(--accent-dim)] text-accent-earth-text border-[var(--accent-border)]',
       badgeVariant: 'default'
     }
   }
@@ -118,13 +118,13 @@ export const getAnnouncementUi = (
     return {
       type,
       icon: <Sparkles className={iconClassName} />,
-      iconContainerClassName: 'bg-primary/10',
-      containerClassName: 'bg-primary/10 border-primary/20',
-      iconClassName: 'text-primary',
+      iconContainerClassName: 'bg-[var(--accent-dim)]',
+      containerClassName: 'bg-bg-surface border-[var(--accent-border)]',
+      iconClassName: 'text-accent-earth-text',
       titleClassName: 'text-foreground',
       contentClassName: 'text-muted-foreground',
       buttonClassName: 'text-muted-foreground hover:text-foreground',
-      badgeClassName: 'bg-primary/10 text-primary border-primary/20',
+      badgeClassName: 'bg-[var(--accent-dim)] text-accent-earth-text border-[var(--accent-border)]',
       badgeVariant: 'secondary'
     }
   }
@@ -133,13 +133,13 @@ export const getAnnouncementUi = (
     return {
       type,
       icon: <RefreshCw className={iconClassName} />,
-      iconContainerClassName: 'bg-primary/10',
-      containerClassName: 'bg-primary/10 border-primary/20',
-      iconClassName: 'text-primary',
+      iconContainerClassName: 'bg-[var(--accent-dim)]',
+      containerClassName: 'bg-bg-surface border-[var(--accent-border)]',
+      iconClassName: 'text-accent-earth-text',
       titleClassName: 'text-foreground',
       contentClassName: 'text-muted-foreground',
       buttonClassName: 'text-muted-foreground hover:text-foreground',
-      badgeClassName: 'bg-primary/10 text-primary border-primary/20',
+      badgeClassName: 'bg-[var(--accent-dim)] text-accent-earth-text border-[var(--accent-border)]',
       badgeVariant: 'outline'
     }
   }
@@ -147,13 +147,13 @@ export const getAnnouncementUi = (
   return {
     type,
     icon: <Info className={iconClassName} />,
-    iconContainerClassName: 'bg-primary/10',
-    containerClassName: 'bg-primary/10 border-primary/20',
-    iconClassName: 'text-primary',
+    iconContainerClassName: 'bg-[var(--accent-dim)]',
+    containerClassName: 'bg-bg-surface border-[var(--accent-border)]',
+    iconClassName: 'text-accent-earth-text',
     titleClassName: 'text-foreground',
     contentClassName: 'text-muted-foreground',
     buttonClassName: 'text-muted-foreground hover:text-foreground',
-    badgeClassName: 'bg-primary/10 text-primary border-primary/20',
+    badgeClassName: 'bg-[var(--accent-dim)] text-accent-earth-text border-[var(--accent-border)]',
     badgeVariant: 'outline'
   }
 }

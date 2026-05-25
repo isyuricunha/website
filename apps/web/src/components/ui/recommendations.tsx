@@ -22,9 +22,9 @@ const typeIcons = {
 }
 
 const typeColors = {
-  post: 'text-blue-600 dark:text-blue-400',
-  project: 'text-green-600 dark:text-green-400',
-  snippet: 'text-purple-600 dark:text-purple-400'
+  post: 'text-accent-earth-text',
+  project: 'text-accent-earth-text',
+  snippet: 'text-accent-earth-text'
 }
 
 const Recommendations = ({
@@ -52,7 +52,7 @@ const Recommendations = ({
     <Card className={className}>
       <CardHeader className='pb-3'>
         <CardTitle className='flex items-center gap-2 text-lg'>
-          <Lightbulb className='h-5 w-5 text-yellow-500' />
+          <Lightbulb className='text-accent-earth-text h-5 w-5' />
           {resolvedTitle}
         </CardTitle>
       </CardHeader>
@@ -70,7 +70,7 @@ const Recommendations = ({
             >
               <Link
                 href={rec.href}
-                className='hover:bg-accent/50 group block rounded-lg border p-3 transition-colors'
+                className='group hover:bg-bg-hover block rounded-md border border-[var(--border-subtle)] p-3 transition-colors'
               >
                 <div className='flex items-start gap-3'>
                   <div className={`mt-0.5 shrink-0 ${colorClass}`}>
@@ -78,10 +78,10 @@ const Recommendations = ({
                   </div>
                   <div className='min-w-0 flex-1'>
                     <div className='mb-1 flex items-center gap-2'>
-                      <h4 className='group-hover:text-primary truncate text-sm font-medium'>
+                      <h4 className='group-hover:text-accent-earth-text truncate text-sm font-medium'>
                         {rec.title}
                       </h4>
-                      <span className='text-muted-foreground bg-muted rounded-full px-2 py-0.5 text-xs'>
+                      <span className='bg-bg-hover text-muted-foreground rounded-sm px-2 py-0.5 text-xs'>
                         {t(`type.${rec.type}`)}
                       </span>
                     </div>

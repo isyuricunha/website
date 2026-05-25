@@ -147,8 +147,11 @@ const Page = async (props: PageProps) => {
       />
 
       <div className='mx-auto max-w-3xl'>
-        <header className='space-y-4 py-12'>
-          <h1 className='text-2xl font-bold sm:text-3xl md:text-4xl'>{snippet.title}</h1>
+        <header className='space-y-4 border-b border-[var(--border-faint)] py-12'>
+          <span className='label-mono'>Snippet</span>
+          <h1 className='text-[clamp(32px,4vw,52px)] font-normal tracking-tighter'>
+            {snippet.title}
+          </h1>
           <div className='text-muted-foreground flex flex-wrap gap-x-4 gap-y-2 text-sm'>
             <div>{dateFormatter.format(new Date(snippet.date))}</div>
             {snippet.readingTime ? (

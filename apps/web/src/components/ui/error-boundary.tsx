@@ -45,7 +45,7 @@ class ErrorBoundary extends Component<Props, State> {
       return (
         <div className='flex min-h-[200px] flex-col items-center justify-center p-6 text-center'>
           <AlertTriangle className='text-destructive mb-4 size-12' />
-          <h2 className='mb-2 text-lg font-semibold'>
+          <h2 className='mb-2 text-lg font-medium tracking-tighter'>
             {t ? t('something-went-wrong') : 'Something went wrong'}
           </h2>
           <p className='text-muted-foreground mb-4 max-w-md text-sm'>
@@ -72,7 +72,7 @@ class ErrorBoundary extends Component<Props, State> {
               <summary className='cursor-pointer text-sm font-medium'>
                 {t ? t('details') : 'Error Details'}
               </summary>
-              <pre className='bg-muted mt-2 max-w-full overflow-auto rounded p-2 text-xs'>
+              <pre className='bg-bg-surface mt-2 max-w-full overflow-auto rounded border border-[var(--border-subtle)] p-2 text-xs'>
                 {this.state.error.stack}
               </pre>
             </details>

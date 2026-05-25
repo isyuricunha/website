@@ -44,7 +44,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         <button
           type='button'
           aria-label={t('mascot.restore')}
-          className='from-primary to-primary/80 text-primary-foreground shadow-primary/30 hover:shadow-primary/40 focus-visible:ring-primary/50 border-primary/20 min-h-[44px] min-w-[44px] rounded-full border-2 bg-linear-to-br p-2 shadow-2xl transition-all duration-300 hover:scale-110 hover:shadow-2xl focus-visible:ring-2 focus-visible:outline-none sm:p-3'
+          className='text-accent-earth-text shadow-feature-card hover:bg-bg-hover min-h-[44px] min-w-[44px] rounded-full border border-[var(--accent-border)] bg-[var(--accent-dim)] p-2 transition-colors focus-visible:ring-2 focus-visible:ring-[var(--accent-border)] focus-visible:outline-none sm:p-3'
           onClick={() => updateState({ isDismissed: false, isHiddenPref: false })}
         >
           <EyeIcon className='h-5 w-5 sm:h-6 sm:w-6' />
@@ -98,7 +98,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         <button
           type='button'
           aria-label={t('mascot.ariaLabel')}
-          className={`focus-visible:ring-primary/50 relative inline-flex h-12 w-12 items-center justify-center rounded-full border-2 transition-all duration-300 focus-visible:ring-2 focus-visible:outline-none sm:h-14 sm:w-14 lg:h-16 lg:w-16 ${state.isActive ? 'border-primary/60 shadow-primary/30 scale-110 shadow-2xl' : 'border-border/40 shadow-xl shadow-black/10'} ${state.preferences.animations ? 'hover:shadow-primary/20 hover:scale-110 hover:shadow-2xl' : ''} ${state.isKonamiMode ? 'animate-pulse border-yellow-400 shadow-yellow-400/20' : ''} ${state.isTickled ? 'animate-bounce' : ''} ${state.isDizzy ? 'animate-spin' : ''}`}
+          className={`relative inline-flex h-12 w-12 items-center justify-center rounded-full border transition-colors focus-visible:ring-2 focus-visible:ring-[var(--accent-border)] focus-visible:outline-none sm:h-14 sm:w-14 lg:h-16 lg:w-16 ${state.isActive ? 'shadow-feature-card scale-110 border-[var(--accent-border)]' : 'shadow-feature-card border-[var(--border-default)]'} ${state.preferences.animations ? 'hover:bg-bg-hover hover:border-[var(--accent-border)]' : ''} ${state.isKonamiMode ? 'animate-pulse border-[var(--accent-border)]' : ''} ${state.isTickled ? 'animate-bounce' : ''} ${state.isDizzy ? 'animate-spin' : ''}`}
           onClick={handleMascotClick}
           onMouseEnter={handleMouseEnter}
           onFocus={() => {

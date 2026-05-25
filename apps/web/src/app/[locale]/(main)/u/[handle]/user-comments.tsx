@@ -40,7 +40,7 @@ const UserComments = (props: UserCommentsProps) => {
   return (
     <section className='space-y-6'>
       <div>
-        <h2 className='text-lg font-semibold'>{t('profile.comments.title')}</h2>
+        <h2 className='text-lg font-medium tracking-tighter'>{t('profile.comments.title')}</h2>
         <p className='text-muted-foreground text-sm'>{t('profile.comments.description')}</p>
       </div>
 
@@ -103,9 +103,12 @@ const CommentItem = (props: CommentItemProps) => {
   })
 
   return (
-    <div className='rounded-lg border p-4'>
+    <div className='bg-bg-surface hover:bg-bg-hover rounded-lg border border-[var(--border-subtle)] p-4 transition-colors'>
       <div className='flex items-center justify-between gap-4'>
-        <Link href={comment.post.url} className='truncate text-sm font-medium hover:underline'>
+        <Link
+          href={comment.post.url}
+          className='hover:text-accent-earth-text truncate text-sm font-medium transition-colors'
+        >
           {comment.post.title}
         </Link>
         <div className='text-muted-foreground shrink-0 text-xs'>

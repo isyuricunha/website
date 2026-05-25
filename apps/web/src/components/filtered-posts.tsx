@@ -43,7 +43,6 @@ const FilteredPosts = (props: FilteredPostsProps) => {
   const [selectedTag, setSelectedTag] = useState<string>('all')
   const [sortBy, setSortBy] = useState<SortOption>('date-desc')
   const [showFilters, setShowFilters] = useState(false)
-  const [isSearching, setIsSearching] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const postsPerPage = 8
   const t = useTranslations()
@@ -52,16 +51,16 @@ const FilteredPosts = (props: FilteredPostsProps) => {
   const debouncedSearch = useMemo(() => {
     return debounce((value: string) => {
       setDebouncedSearchValue(value)
-      setIsSearching(false)
     }, 300)
   }, [])
 
   useEffect(() => {
     if (searchValue !== debouncedSearchValue) {
-      setIsSearching(true)
       debouncedSearch(searchValue)
     }
   }, [searchValue, debouncedSearchValue, debouncedSearch])
+
+  const isSearching = searchValue !== debouncedSearchValue
 
   // Extract unique categories and tags
   const { categories, tags } = useMemo(() => {
@@ -74,8 +73,8 @@ const FilteredPosts = (props: FilteredPostsProps) => {
     })
 
     return {
-      categories: Array.from(categorySet).sort(),
-      tags: Array.from(tagSet).sort()
+      categories: Array.from(categorySet).toSorted(),
+      tags: Array.from(tagSet).toSorted()
     }
   }, [posts])
 
@@ -91,8 +90,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
       return matchesSearch && matchesCategory && matchesTag
     })
 
-    // Sort posts
-    filtered.sort((a, b) => {
+    return filtered.toSorted((a, b) => {
       switch (sortBy) {
         case 'date-desc':
           return new Date(b.date).getTime() - new Date(a.date).getTime()
@@ -108,8 +106,6 @@ const FilteredPosts = (props: FilteredPostsProps) => {
           return 0
       }
     })
-
-    return filtered
   }, [posts, debouncedSearchValue, selectedCategory, selectedTag, sortBy])
 
   const clearAllFilters = () => {
@@ -136,18 +132,13 @@ const FilteredPosts = (props: FilteredPostsProps) => {
     return regularPosts.slice(startIndex, startIndex + postsPerPage)
   }, [regularPosts, currentPage])
 
-  // Reset page when filters change
-  useEffect(() => {
-    setCurrentPage(1)
-  }, [debouncedSearchValue, selectedCategory, selectedTag, sortBy])
-
   return (
     <>
       {/* RSS Feed Link */}
       <div className='mb-6 flex justify-end px-4 sm:px-0'>
         <Link
           href={`/${locale}/rss.xml`}
-          className='text-muted-foreground hover:text-foreground hover:bg-accent inline-flex items-center gap-2 rounded-2xl px-3 py-2 text-xs transition-colors sm:text-sm'
+          className='text-muted-foreground hover:bg-bg-hover hover:text-foreground inline-flex items-center gap-2 rounded-md px-3 py-2 text-xs transition-colors sm:text-sm'
         >
           <Rss className='h-4 w-4' />
           {t('component.filtered-posts.rss')}
@@ -158,8 +149,8 @@ const FilteredPosts = (props: FilteredPostsProps) => {
       {featuredPosts.length > 0 && (
         <div className='mb-8 px-4 sm:mb-12 sm:px-0'>
           <div className='mb-6 flex items-center gap-2'>
-            <Star className='h-5 w-5 text-yellow-500' />
-            <h2 className='text-lg font-semibold sm:text-xl'>
+            <Star className='text-accent-earth-text h-5 w-5' />
+            <h2 className='text-lg font-medium sm:text-xl'>
               {t('component.filtered-posts.featured')}
             </h2>
           </div>
@@ -173,10 +164,13 @@ const FilteredPosts = (props: FilteredPostsProps) => {
           <Input
             type='text'
             value={searchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
+            onChange={(e) => {
+              setSearchValue(e.target.value)
+              setCurrentPage(1)
+            }}
             placeholder={t('component.filtered-posts.placeholder')}
             aria-label={t('component.filtered-posts.placeholder')}
-            className='focus:border-primary/50 h-11 w-full border-2 pl-10 text-sm transition-colors sm:h-12 sm:pl-12'
+            className='h-11 w-full border border-[var(--border-default)] pl-10 text-sm transition-colors focus:border-[var(--accent-border)] sm:h-12 sm:pl-12'
             id='search'
           />
           <Label htmlFor='search'>
@@ -189,7 +183,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
           <button
             type='button'
             onClick={() => setShowFilters(!showFilters)}
-            className='text-muted-foreground hover:text-foreground hover:bg-accent flex min-h-[44px] items-center gap-2 self-start rounded-2xl px-3 py-2 text-sm transition-colors'
+            className='text-muted-foreground hover:bg-bg-hover hover:text-foreground flex min-h-[44px] items-center gap-2 self-start rounded-md px-3 py-2 text-sm transition-colors'
           >
             <SlidersHorizontal className='h-4 w-4 flex-shrink-0' />
             <span className='text-sm'>
@@ -204,7 +198,13 @@ const FilteredPosts = (props: FilteredPostsProps) => {
             <span className='text-muted-foreground text-xs whitespace-nowrap sm:text-sm'>
               {t('component.filtered-posts.sort.label')}
             </span>
-            <Select value={sortBy} onValueChange={(value: SortOption) => setSortBy(value)}>
+            <Select
+              value={sortBy}
+              onValueChange={(value: SortOption) => {
+                setSortBy(value)
+                setCurrentPage(1)
+              }}
+            >
               <SelectTrigger className='min-h-[44px] w-full sm:w-40'>
                 <SelectValue />
               </SelectTrigger>
@@ -240,14 +240,20 @@ const FilteredPosts = (props: FilteredPostsProps) => {
 
         {/* Advanced Filters */}
         {showFilters && (
-          <div className='bg-muted/20 grid grid-cols-1 gap-4 rounded-2xl border p-4 sm:grid-cols-2'>
+          <div className='bg-bg-surface grid grid-cols-1 gap-4 rounded-lg border border-[var(--border-subtle)] p-4 sm:grid-cols-2'>
             {/* Category Filter */}
             {categories.length > 0 && (
               <div>
                 <Label className='mb-2 block text-xs font-medium sm:text-sm'>
                   {t('component.filtered-posts.filters.category.label')}
                 </Label>
-                <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                <Select
+                  value={selectedCategory}
+                  onValueChange={(value) => {
+                    setSelectedCategory(value)
+                    setCurrentPage(1)
+                  }}
+                >
                   <SelectTrigger className='min-h-[44px]'>
                     <SelectValue placeholder={t('component.filtered-posts.filters.category.all')} />
                   </SelectTrigger>
@@ -271,7 +277,13 @@ const FilteredPosts = (props: FilteredPostsProps) => {
                 <Label className='mb-2 block text-xs font-medium sm:text-sm'>
                   {t('component.filtered-posts.filters.tag.label')}
                 </Label>
-                <Select value={selectedTag} onValueChange={setSelectedTag}>
+                <Select
+                  value={selectedTag}
+                  onValueChange={(value) => {
+                    setSelectedTag(value)
+                    setCurrentPage(1)
+                  }}
+                >
                   <SelectTrigger className='min-h-[44px]'>
                     <SelectValue placeholder={t('component.filtered-posts.filters.tag.all')} />
                   </SelectTrigger>
@@ -325,7 +337,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
             <button
               type='button'
               onClick={clearAllFilters}
-              className='text-primary hover:text-primary/80 hover:bg-accent min-h-[44px] self-start rounded-2xl px-3 py-2 transition-colors sm:self-auto'
+              className='text-accent-earth-text hover:bg-bg-hover hover:text-accent-earth-hover min-h-[44px] self-start rounded-md px-3 py-2 transition-colors sm:self-auto'
             >
               {t('component.filtered-posts.clear-all')}
             </button>
@@ -336,7 +348,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
       {filteredAndSortedPosts.length === 0 ? (
         <div className='my-12 space-y-4 px-4 text-center sm:my-16 lg:my-24'>
           <div className='text-4xl sm:text-6xl'>📝</div>
-          <h3 className='text-base font-semibold sm:text-lg'>
+          <h3 className='text-base font-medium sm:text-lg'>
             {t('component.filtered-posts.no-posts-found')}
           </h3>
           <p className='text-muted-foreground mx-auto max-w-md text-xs sm:text-sm'>
@@ -345,7 +357,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
           <button
             type='button'
             onClick={clearAllFilters}
-            className='bg-primary text-primary-foreground hover:bg-primary/90 inline-flex min-h-[44px] items-center justify-center rounded-2xl px-6 py-3 text-sm font-medium transition-colors'
+            className='border-accent-earth-hover bg-accent-earth hover:bg-accent-earth-hover inline-flex min-h-[44px] items-center justify-center rounded-md border px-6 py-3 text-sm font-medium text-[var(--text-primary)] transition-colors'
           >
             {t('component.filtered-posts.empty.show-all')}
           </button>
@@ -356,7 +368,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
       {regularPosts.length > 0 && (
         <div className='px-4 sm:px-0'>
           {featuredPosts.length > 0 && (
-            <h2 className='mb-6 text-lg font-semibold sm:text-xl'>
+            <h2 className='mb-6 text-lg font-medium sm:text-xl'>
               {t('component.filtered-posts.posts.all')}
             </h2>
           )}
@@ -369,7 +381,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
                 type='button'
                 onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                 disabled={currentPage === 1}
-                className='hover:bg-accent flex min-h-[44px] items-center gap-1 rounded-2xl border px-3 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-50'
+                className='hover:bg-bg-hover flex min-h-[44px] items-center gap-1 rounded-md border border-[var(--border-subtle)] px-3 py-2 text-sm transition-colors disabled:cursor-not-allowed disabled:opacity-50'
               >
                 <ChevronLeft className='h-4 w-4' />
                 {t('component.filtered-posts.pagination.previous')}
@@ -381,10 +393,10 @@ const FilteredPosts = (props: FilteredPostsProps) => {
                     type='button'
                     key={page}
                     onClick={() => setCurrentPage(page)}
-                    className={`min-h-[44px] min-w-[44px] rounded-2xl border px-3 py-2 text-sm ${
+                    className={`min-h-[44px] min-w-[44px] rounded-md border px-3 py-2 text-sm ${
                       currentPage === page
-                        ? 'bg-primary text-primary-foreground border-primary'
-                        : 'hover:bg-accent'
+                        ? 'border-accent-earth bg-accent-earth text-[var(--text-primary)]'
+                        : 'hover:bg-bg-hover border-[var(--border-subtle)]'
                     }`}
                   >
                     {page}
@@ -396,7 +408,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
                 type='button'
                 onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
                 disabled={currentPage === totalPages}
-                className='hover:bg-accent flex min-h-[44px] items-center gap-1 rounded-2xl border px-3 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-50'
+                className='hover:bg-bg-hover flex min-h-[44px] items-center gap-1 rounded-md border border-[var(--border-subtle)] px-3 py-2 text-sm transition-colors disabled:cursor-not-allowed disabled:opacity-50'
               >
                 {t('component.filtered-posts.pagination.next')}
                 <ChevronRight className='h-4 w-4' />

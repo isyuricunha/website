@@ -45,13 +45,13 @@ const PostCard = (props: PostCardProps) => {
   return (
     <Link
       href={`/blog/${slug}`}
-      className='shadow-feature-card group relative overflow-hidden rounded-2xl px-1.5 py-2'
+      className='group bg-bg-surface shadow-feature-card hover:bg-bg-hover relative overflow-hidden rounded-lg border border-[var(--border-subtle)] transition-colors'
     >
       {featured && (
         <div className='absolute top-2 right-2 z-10'>
           <Badge
             variant='secondary'
-            className='border-yellow-200 bg-yellow-100 px-1.5 py-0.5 text-[10px] text-yellow-800'
+            className='text-accent-earth-text border-[var(--accent-border)] bg-[var(--accent-dim)] px-1.5 py-0.5 text-[10px]'
           >
             <Star className='mr-0.5 h-2 w-2' />
             {t('component.filtered-posts.featured')}
@@ -61,15 +61,15 @@ const PostCard = (props: PostCardProps) => {
 
       <BlurImage
         src={`/images/blog/${slug}/cover.png`}
-        className='rounded-lg'
+        className='aspect-[16/9] w-full overflow-hidden'
         width={1200}
         height={630}
-        imageClassName='transition-transform group-hover:scale-105'
+        imageClassName='object-cover brightness-[0.78] saturate-[0.85] transition-transform group-hover:scale-[1.03]'
         alt={title}
       />
 
-      <div className='px-2 py-2'>
-        <div className='mb-1.5 flex items-center justify-between gap-1.5 text-[10px] text-zinc-500'>
+      <div className='p-4'>
+        <div className='text-text-tertiary mb-2 flex items-center justify-between gap-1.5 font-mono text-[10px]'>
           {formattedDate}
           <div className='flex gap-1.5'>
             {likesQuery.status === 'pending' ? '--' : null}
@@ -85,7 +85,7 @@ const PostCard = (props: PostCardProps) => {
             ) : null}
           </div>
         </div>
-        <h3 className='group-hover:text-primary mb-1 text-sm font-medium transition-colors duration-200'>
+        <h3 className='group-hover:text-accent-earth-text mb-1 text-sm font-medium transition-colors duration-150'>
           {title}
         </h3>
         <p className='text-muted-foreground line-clamp-2 text-xs'>{summary}</p>

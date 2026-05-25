@@ -47,7 +47,7 @@ const statusConfig = {
   active: {
     labelKey: 'projects.status.active',
     icon: CheckCircle,
-    color: 'bg-primary/10 text-primary border-primary/20'
+    color: 'bg-[var(--accent-dim)] text-accent-earth-text border-[var(--accent-border)]'
   },
   archived: {
     labelKey: 'projects.status.archived',
@@ -57,12 +57,12 @@ const statusConfig = {
   beta: {
     labelKey: 'projects.status.beta',
     icon: Beaker,
-    color: 'bg-primary/10 text-primary border-primary/20'
+    color: 'bg-[var(--accent-dim)] text-accent-earth-text border-[var(--accent-border)]'
   },
   completed: {
     labelKey: 'projects.status.completed',
     icon: CheckCircle,
-    color: 'bg-primary/10 text-primary border-primary/20'
+    color: 'bg-[var(--accent-dim)] text-accent-earth-text border-[var(--accent-border)]'
   }
 } as const
 
@@ -90,9 +90,9 @@ const ProjectCards = (props: ProjectCardsProps) => {
     })
 
     return {
-      categories: Array.from(categorySet).sort(),
-      statuses: Array.from(statusSet).sort(),
-      techStacks: Array.from(techStackSet).sort()
+      categories: Array.from(categorySet).toSorted(),
+      statuses: Array.from(statusSet).toSorted(),
+      techStacks: Array.from(techStackSet).toSorted()
     }
   }, [projects])
 
@@ -112,7 +112,7 @@ const ProjectCards = (props: ProjectCardsProps) => {
 
         return matchesSearch && matchesCategory && matchesStatus && matchesTechStack
       })
-      .sort((a, b) => {
+      .toSorted((a, b) => {
         // Sort featured projects first, then by status priority
         if (a.featured && !b.featured) return -1
         if (!a.featured && b.featured) return 1
@@ -155,8 +155,8 @@ const ProjectCards = (props: ProjectCardsProps) => {
       {featuredProjects.length > 0 && (
         <div className='space-y-6'>
           <div className='flex items-center gap-2'>
-            <Star className='text-primary h-5 w-5' />
-            <h2 className='text-lg font-semibold sm:text-xl'>{t('projects.featured')}</h2>
+            <Star className='text-accent-earth-text h-5 w-5' />
+            <h2 className='text-lg font-medium sm:text-xl'>{t('projects.featured')}</h2>
           </div>
           <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
             {featuredProjects.map((project, index) => (
@@ -176,7 +176,7 @@ const ProjectCards = (props: ProjectCardsProps) => {
       {/* All Projects Section */}
       <div className='space-y-6'>
         {featuredProjects.length > 0 && (
-          <h2 className='text-lg font-semibold sm:text-xl'>{t('projects.all')}</h2>
+          <h2 className='text-lg font-medium sm:text-xl'>{t('projects.all')}</h2>
         )}
 
         {/* Filter Controls */}
@@ -197,7 +197,7 @@ const ProjectCards = (props: ProjectCardsProps) => {
             <button
               type='button'
               onClick={() => setShowFilters(!showFilters)}
-              className='hover:bg-muted/50 flex items-center gap-2 rounded-2xl border px-4 py-2 transition-colors'
+              className='hover:bg-bg-hover flex items-center gap-2 rounded-md border border-[var(--border-subtle)] px-4 py-2 transition-colors'
             >
               <SlidersHorizontal className='h-4 w-4' />
               {showFilters ? t('projects.filters.hide') : t('projects.filters.show')}
@@ -206,7 +206,7 @@ const ProjectCards = (props: ProjectCardsProps) => {
 
           {/* Advanced Filters */}
           {showFilters && (
-            <div className='bg-muted/20 grid grid-cols-1 gap-4 rounded-2xl border p-4 md:grid-cols-3'>
+            <div className='bg-bg-surface grid grid-cols-1 gap-4 rounded-lg border border-[var(--border-subtle)] p-4 md:grid-cols-3'>
               {/* Category Filter */}
               {categories.length > 0 && (
                 <div>
@@ -299,7 +299,7 @@ const ProjectCards = (props: ProjectCardsProps) => {
               <button
                 type='button'
                 onClick={clearFilters}
-                className='text-primary hover:text-primary/80 transition-colors'
+                className='text-accent-earth-text hover:text-accent-earth-hover transition-colors'
               >
                 {t('projects.filters.clear')}
               </button>
@@ -311,7 +311,7 @@ const ProjectCards = (props: ProjectCardsProps) => {
         {regularProjects.length === 0 ? (
           <div className='py-12 text-center'>
             <div className='mb-4 text-6xl'>🔍</div>
-            <h3 className='mb-2 text-base font-semibold sm:text-lg'>{t('projects.empty.title')}</h3>
+            <h3 className='mb-2 text-base font-medium sm:text-lg'>{t('projects.empty.title')}</h3>
             <p className='text-muted-foreground mb-4 text-xs sm:text-sm'>
               {t('projects.empty.description')}
             </p>
@@ -319,7 +319,7 @@ const ProjectCards = (props: ProjectCardsProps) => {
               <button
                 type='button'
                 onClick={clearFilters}
-                className='bg-primary text-primary-foreground hover:bg-primary/90 inline-flex items-center justify-center rounded-2xl px-4 py-2 text-sm font-medium transition-colors'
+                className='border-accent-earth-hover bg-accent-earth hover:bg-accent-earth-hover inline-flex items-center justify-center rounded-md border px-4 py-2 text-sm font-medium text-[var(--text-primary)] transition-colors'
               >
                 {t('projects.empty.show-all')}
               </button>
@@ -367,14 +367,17 @@ const ProjectCard = (props: ProjectCardProps) => {
       <Link
         href={`/projects/${slug}`}
         aria-label={t('projects.card.open-aria', { name })}
-        className='focus-visible:ring-primary/60 absolute inset-0 z-[5] rounded-2xl focus-visible:ring-2 focus-visible:outline-none'
+        className='focus-visible:ring-ring absolute inset-0 z-[5] rounded-lg focus-visible:ring-2 focus-visible:outline-none'
       >
         <span className='sr-only'>{t('projects.card.open', { name })}</span>
       </Link>
       {/* Status and Featured Badges */}
       <div className='absolute top-3 left-3 z-10 flex gap-2'>
         {featured && (
-          <Badge variant='secondary' className='bg-primary/10 text-primary border-primary/20'>
+          <Badge
+            variant='secondary'
+            className='text-accent-earth-text border-[var(--accent-border)] bg-[var(--accent-dim)]'
+          >
             <Star className='mr-1 h-3 w-3' />
             {t('projects.card.featured')}
           </Badge>
@@ -393,11 +396,10 @@ const ProjectCard = (props: ProjectCardProps) => {
             src={`/images/projects/${slug}/cover.png`}
             width={1280}
             height={832}
-            imageClassName='transition-transform duration-500 group-hover:scale-110'
+            imageClassName='brightness-[0.78] saturate-[0.85] transition-transform duration-500 group-hover:scale-[1.03]'
             alt={name}
             className='aspect-video w-full object-cover'
           />
-          <div className='from-background/80 via-background/20 absolute inset-0 bg-gradient-to-t to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100' />
         </div>
       </EnhancedCardHeader>
 
@@ -412,7 +414,7 @@ const ProjectCard = (props: ProjectCardProps) => {
                 rel='noopener noreferrer'
                 title={t('projects.card.github.title')}
                 aria-label={t('projects.card.github.aria')}
-                className='bg-muted text-foreground border-border hover:bg-muted/70 focus-visible:ring-primary/60 inline-flex h-9 items-center gap-2 rounded-full border px-2 shadow-sm transition-all focus-visible:ring-2 focus-visible:outline-none md:px-3'
+                className='bg-bg-hover text-foreground hover:bg-bg-active focus-visible:ring-ring relative z-10 inline-flex h-9 items-center gap-2 rounded-md border border-[var(--border-subtle)] px-2 shadow-sm transition-colors focus-visible:ring-2 focus-visible:outline-none md:px-3'
                 onClick={(e) => e.stopPropagation()}
               >
                 <SiGithub className='h-4 w-4' />
@@ -428,7 +430,7 @@ const ProjectCard = (props: ProjectCardProps) => {
                 rel='noopener noreferrer'
                 title={t('projects.card.live.title')}
                 aria-label={t('projects.card.live.aria')}
-                className='bg-primary text-primary-foreground border-primary/60 hover:bg-primary/90 focus-visible:ring-primary/60 inline-flex h-9 items-center gap-2 rounded-full border px-2 shadow-sm transition-all focus-visible:ring-2 focus-visible:outline-none md:px-3'
+                className='border-accent-earth-hover bg-accent-earth hover:bg-accent-earth-hover focus-visible:ring-ring relative z-10 inline-flex h-9 items-center gap-2 rounded-md border px-2 text-[var(--text-primary)] shadow-sm transition-colors focus-visible:ring-2 focus-visible:outline-none md:px-3'
                 onClick={(e) => e.stopPropagation()}
               >
                 <ExternalLink className='h-4 w-4' />
@@ -441,7 +443,7 @@ const ProjectCard = (props: ProjectCardProps) => {
         )}
         <div className='space-y-2'>
           <div className='flex items-start justify-between gap-2'>
-            <h3 className='group-hover:text-primary text-base font-semibold transition-colors sm:text-lg'>
+            <h3 className='group-hover:text-accent-earth-text text-base font-medium transition-colors sm:text-lg'>
               {name}
             </h3>
             {category && (
@@ -471,13 +473,13 @@ const ProjectCard = (props: ProjectCardProps) => {
           {techstack.slice(0, 4).map((label) => (
             <span
               key={label}
-              className='bg-primary/10 text-primary hover:bg-primary/20 inline-flex items-center rounded-full px-2 py-1 text-xs font-medium transition-colors'
+              className='text-accent-earth-text hover:bg-bg-hover inline-flex items-center rounded-sm bg-[var(--accent-dim)] px-2 py-1 text-xs font-medium transition-colors'
             >
               {label}
             </span>
           ))}
           {techstack.length > 4 && (
-            <span className='bg-muted text-muted-foreground inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium'>
+            <span className='bg-bg-hover text-muted-foreground inline-flex items-center rounded-sm px-2.5 py-1 text-xs font-medium'>
               +{techstack.length - 4}
             </span>
           )}

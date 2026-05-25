@@ -63,8 +63,7 @@ export default function AnnouncementToast() {
         const ui = getAnnouncementUi(announcement.type, { iconSize: 'md' })
         toast.custom(
           (t: string | number) => (
-            <div className='border-border/50 bg-background/95 animate-in slide-in-from-top-5 fade-in group relative max-w-md overflow-hidden rounded-xl border shadow-2xl backdrop-blur-xl'>
-              <div className='from-primary/5 absolute inset-0 bg-linear-to-br via-transparent to-transparent' />
+            <div className='animate-in slide-in-from-top-5 fade-in group bg-bg-elevated shadow-feature-card relative max-w-md overflow-hidden rounded-lg border border-[var(--border-subtle)]'>
               <div className='relative p-5'>
                 <div className='flex items-start gap-4'>
                   <div className={`shrink-0 transition-transform duration-300 ${ui.iconClassName}`}>
@@ -72,7 +71,7 @@ export default function AnnouncementToast() {
                   </div>
 
                   <div className='min-w-0 flex-1 space-y-2'>
-                    <h4 className={`text-base leading-tight font-semibold ${ui.titleClassName}`}>
+                    <h4 className={`text-base leading-tight font-medium ${ui.titleClassName}`}>
                       {announcement.title}
                     </h4>
                     <p className={`text-sm leading-relaxed ${ui.contentClassName}`}>
@@ -109,7 +108,7 @@ export default function AnnouncementToast() {
                   <button
                     type='button'
                     onClick={() => toast.dismiss(t)}
-                    className='hover:bg-accent/50 shrink-0 rounded-lg p-1.5 transition-colors'
+                    className='hover:bg-bg-hover shrink-0 rounded-md p-1.5 transition-colors'
                     aria-label={t_announcement('close')}
                   >
                     <X className='h-4 w-4 opacity-50 transition-opacity hover:opacity-100' />

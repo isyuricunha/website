@@ -31,7 +31,7 @@ const MascotSpeechBubblesComponent = ({ mascot }: MascotSpeechBubblesProps) => {
         return (
           <div
             key={item.id}
-            className={`border-border/20 bg-popover/95 text-popover-foreground shadow-primary/10 rounded-3xl border-2 shadow-2xl ring-0 backdrop-blur-md transition-all duration-200 ease-in-out outline-none ${
+            className={`bg-bg-elevated text-text-primary shadow-feature-card rounded-lg border border-[var(--border-subtle)] ring-0 transition-all duration-200 ease-in-out outline-none ${
               isExiting ? 'translate-y-1 scale-95 opacity-0' : 'translate-y-0 scale-100 opacity-100'
             }`}
             role='dialog'
@@ -48,7 +48,7 @@ const MascotSpeechBubblesComponent = ({ mascot }: MascotSpeechBubblesProps) => {
                     <button
                       type='button'
                       aria-label={t('mascot.menu.open')}
-                      className='text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:ring-ring rounded px-2 py-1 text-xs transition-colors focus-visible:ring-2 focus-visible:outline-none'
+                      className='text-text-secondary hover:bg-bg-hover hover:text-text-primary rounded px-2 py-1 text-xs transition-colors focus-visible:ring-2 focus-visible:ring-[var(--accent-border)] focus-visible:outline-none'
                       onClick={() => updateState({ showMenu: !state.showMenu })}
                     >
                       <MenuIcon className='h-3 w-3' />
@@ -58,7 +58,7 @@ const MascotSpeechBubblesComponent = ({ mascot }: MascotSpeechBubblesProps) => {
                     <button
                       type='button'
                       aria-label={t('mascot.hide')}
-                      className='text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:ring-ring rounded px-2 py-1 text-xs transition-colors focus-visible:ring-2 focus-visible:outline-none'
+                      className='text-text-secondary hover:bg-bg-hover hover:text-text-primary rounded px-2 py-1 text-xs transition-colors focus-visible:ring-2 focus-visible:ring-[var(--accent-border)] focus-visible:outline-none'
                       onClick={handleHideMascot}
                     >
                       {t('mascot.hide')}
@@ -67,7 +67,7 @@ const MascotSpeechBubblesComponent = ({ mascot }: MascotSpeechBubblesProps) => {
                   <button
                     type='button'
                     aria-label={t('mascot.close')}
-                    className='text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:ring-ring rounded p-1 transition-colors focus-visible:ring-2 focus-visible:outline-none'
+                    className='text-text-secondary hover:bg-bg-hover hover:text-text-primary rounded p-1 transition-colors focus-visible:ring-2 focus-visible:ring-[var(--accent-border)] focus-visible:outline-none'
                     onClick={() => startExit(item.id)}
                   >
                     <XIcon className='h-4 w-4' />

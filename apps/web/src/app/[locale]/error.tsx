@@ -17,9 +17,11 @@ const Page = (props: PageProps) => {
   return (
     <MainLayout>
       <div className='space-y-4 px-2 py-8'>
-        <h1 className='text-2xl font-bold'>{t('error.something-went-wrong')}</h1>
+        <h1 className='text-2xl font-medium tracking-tighter'>{t('error.something-went-wrong')}</h1>
         <Button onClick={reset}>{t('error.try-again')}</Button>
-        <p className='rounded-md bg-zinc-100 p-4 break-words dark:bg-zinc-800'>{error.message}</p>
+        <p className='bg-bg-surface rounded-md border border-[var(--border-subtle)] p-4 break-words'>
+          {error.message}
+        </p>
       </div>
     </MainLayout>
   )

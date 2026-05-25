@@ -14,15 +14,13 @@ export function MascotSettingsPanel({ mascot }: MascotSettingsPanelProps) {
   if (!state.showSettings) return null
 
   return (
-    <div
-      className={`border-border/20 bg-popover/95 text-popover-foreground shadow-primary/10 w-60 rounded-3xl border-2 p-3 text-xs shadow-2xl backdrop-blur-md sm:w-64 sm:p-4`}
-    >
+    <div className='bg-bg-elevated text-text-primary shadow-feature-card w-60 rounded-lg border border-[var(--border-subtle)] p-3 text-xs sm:w-64 sm:p-4'>
       <div className='mb-3 flex items-center justify-between'>
         <h3 className='font-medium'>{t('mascot.settings.title')}</h3>
         <button
           type='button'
           aria-label={t('mascot.settings.close')}
-          className='text-muted-foreground hover:bg-muted/80 hover:text-foreground focus-visible:ring-primary/50 rounded-xl p-1.5 transition-all duration-200 hover:scale-105 focus-visible:ring-2 focus-visible:outline-none'
+          className='text-text-secondary hover:bg-bg-hover hover:text-text-primary rounded-md p-1.5 transition-colors focus-visible:ring-2 focus-visible:ring-[var(--accent-border)] focus-visible:outline-none'
           onClick={() => updateState({ showSettings: false, showBubble: false })}
         >
           <XIcon className='h-4 w-4' />
@@ -36,7 +34,7 @@ export function MascotSettingsPanel({ mascot }: MascotSettingsPanelProps) {
             type='checkbox'
             checked={state.preferences.animations}
             onChange={(e) => updatePreferences({ animations: e.target.checked })}
-            className='border-input bg-background text-foreground accent-primary focus:ring-ring rounded focus:ring-2 focus:ring-offset-2'
+            className='bg-bg-base text-text-primary rounded border-[var(--border-default)] accent-[var(--accent)] focus:ring-2 focus:ring-[var(--accent-border)] focus:ring-offset-2'
           />
         </label>
 
@@ -46,7 +44,7 @@ export function MascotSettingsPanel({ mascot }: MascotSettingsPanelProps) {
             type='checkbox'
             checked={state.preferences.speechBubbles}
             onChange={(e) => updatePreferences({ speechBubbles: e.target.checked })}
-            className='border-input bg-background text-foreground accent-primary focus:ring-ring rounded focus:ring-2 focus:ring-offset-2'
+            className='bg-bg-base text-text-primary rounded border-[var(--border-default)] accent-[var(--accent)] focus:ring-2 focus:ring-[var(--accent-border)] focus:ring-offset-2'
           />
         </label>
 
@@ -56,7 +54,7 @@ export function MascotSettingsPanel({ mascot }: MascotSettingsPanelProps) {
             type='checkbox'
             checked={state.preferences.soundEffects}
             onChange={(e) => updatePreferences({ soundEffects: e.target.checked })}
-            className='border-input bg-background text-foreground accent-primary focus:ring-ring rounded focus:ring-2 focus:ring-offset-2'
+            className='bg-bg-base text-text-primary rounded border-[var(--border-default)] accent-[var(--accent)] focus:ring-2 focus:ring-[var(--accent-border)] focus:ring-offset-2'
           />
         </label>
 
@@ -68,7 +66,7 @@ export function MascotSettingsPanel({ mascot }: MascotSettingsPanelProps) {
               updatePreferences({ messageDuration: Number.parseInt(value, 10) })
             }
           >
-            <SelectTrigger className='border-input/50 bg-background/80 text-foreground hover:border-primary/50 focus:ring-primary/30 focus:border-primary cursor-pointer rounded-xl border-2 px-3 py-2.5 text-xs shadow-lg backdrop-blur-sm transition-all duration-200 hover:shadow-xl focus:ring-2 focus:ring-offset-2 focus:outline-none'>
+            <SelectTrigger className='bg-bg-surface text-text-primary cursor-pointer rounded-md border border-[var(--border-default)] px-3 py-2.5 text-xs transition-colors hover:border-[var(--border-strong)] focus:border-[var(--accent-border)] focus:ring-2 focus:ring-[var(--accent-border)] focus:ring-offset-2 focus:outline-none'>
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -90,7 +88,7 @@ export function MascotSettingsPanel({ mascot }: MascotSettingsPanelProps) {
               })
             }
           >
-            <SelectTrigger className='border-input/50 bg-background/80 text-foreground hover:border-primary/50 focus:ring-primary/30 focus:border-primary cursor-pointer rounded-xl border-2 px-3 py-2.5 text-xs shadow-lg backdrop-blur-sm transition-all duration-200 hover:shadow-xl focus:ring-2 focus:ring-offset-2 focus:outline-none'>
+            <SelectTrigger className='bg-bg-surface text-text-primary cursor-pointer rounded-md border border-[var(--border-default)] px-3 py-2.5 text-xs transition-colors hover:border-[var(--border-strong)] focus:border-[var(--accent-border)] focus:ring-2 focus:ring-[var(--accent-border)] focus:ring-offset-2 focus:outline-none'>
               <SelectValue />
             </SelectTrigger>
             <SelectContent>

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, type MouseEvent } from 'react'
+import { useEffect, useRef, useState, type MouseEvent } from 'react'
 import { X, Bell } from 'lucide-react'
 import {
   Card,
@@ -33,13 +33,8 @@ export default function AnnouncementWidget({ className, maxItems = 5 }: Announce
   const locale = useLocale()
   const date_locale = locale === 'pt' ? 'pt-BR' : 'en-US'
 
-  const [dismissedItems, setDismissedItems] = useState<string[]>([])
-  const [viewedAnnouncements, setViewedAnnouncements] = useState<string[]>([])
-
-  useEffect(() => {
-    setDismissedItems(getDismissedAnnouncementIds())
-    setViewedAnnouncements(getViewedAnnouncementIds())
-  }, [])
+  const [dismissedItems, setDismissedItems] = useState(getDismissedAnnouncementIds)
+  const viewedAnnouncementsRef = useRef(getViewedAnnouncementIds())
 
   // Get active announcements
   const { data: announcementsData, isLoading } = api.announcements.getAnnouncements.useQuery({
@@ -73,7 +68,7 @@ export default function AnnouncementWidget({ className, maxItems = 5 }: Announce
     if (activeAnnouncements.length === 0) return
 
     const toMark = activeAnnouncements.filter(
-      (announcement) => !viewedAnnouncements.includes(announcement.id)
+      (announcement) => !viewedAnnouncementsRef.current.includes(announcement.id)
     )
 
     if (toMark.length === 0) return
@@ -84,10 +79,10 @@ export default function AnnouncementWidget({ className, maxItems = 5 }: Announce
 
     const nextViewed = toMark.reduce<string[]>(
       (acc, announcement) => addViewedAnnouncementId(acc, announcement.id),
-      viewedAnnouncements
+      viewedAnnouncementsRef.current
     )
-    setViewedAnnouncements(nextViewed)
-  }, [activeAnnouncements, markViewedMutation, viewedAnnouncements])
+    viewedAnnouncementsRef.current = nextViewed
+  }, [activeAnnouncements, markViewedMutation])
 
   if (isLoading) {
     return (
@@ -129,11 +124,11 @@ export default function AnnouncementWidget({ className, maxItems = 5 }: Announce
     <Card className={className}>
       <CardHeader className='pb-4'>
         <div className='flex items-center gap-3'>
-          <div className='bg-primary/10 flex h-10 w-10 items-center justify-center rounded-xl'>
-            <Bell className='text-primary h-5 w-5' />
+          <div className='flex h-10 w-10 items-center justify-center rounded-lg border border-[var(--accent-border)] bg-[var(--accent-dim)]'>
+            <Bell className='text-accent-earth-text h-5 w-5' />
           </div>
           <div className='flex-1'>
-            <CardTitle className='text-base font-semibold'>{t('title')}</CardTitle>
+            <CardTitle className='text-base font-medium tracking-tighter'>{t('title')}</CardTitle>
             <CardDescription className='text-xs'>{t('description')}</CardDescription>
           </div>
           <Badge variant='secondary' className='text-xs font-medium'>
@@ -149,7 +144,7 @@ export default function AnnouncementWidget({ className, maxItems = 5 }: Announce
               return (
                 <div
                   key={announcement.id}
-                  className='border-border/50 hover:border-border group relative rounded-lg border p-3 transition-all duration-200 hover:shadow-sm'
+                  className='group bg-bg-surface hover:bg-bg-hover relative rounded-lg border border-[var(--border-subtle)] p-3 transition-colors hover:border-[var(--border-default)]'
                 >
                   <div className='flex items-start gap-3'>
                     <div
@@ -160,7 +155,7 @@ export default function AnnouncementWidget({ className, maxItems = 5 }: Announce
 
                     <div className='min-w-0 flex-1 space-y-2'>
                       <div className='flex items-start gap-2'>
-                        <h4 className='flex-1 text-sm leading-tight font-semibold'>
+                        <h4 className='flex-1 text-sm leading-tight font-medium'>
                           {announcement.title}
                         </h4>
                         {announcement.isDismissible && (
@@ -168,7 +163,7 @@ export default function AnnouncementWidget({ className, maxItems = 5 }: Announce
                             type='button'
                             onClick={(e) => handleDismiss(announcement.id, e)}
                             disabled={dismissMutation.isPending}
-                            className='hover:bg-accent shrink-0 rounded-md p-1 opacity-0 transition-opacity group-hover:opacity-100 disabled:opacity-50'
+                            className='hover:bg-bg-active shrink-0 rounded-md p-1 opacity-0 transition-opacity group-hover:opacity-100 disabled:opacity-50'
                             aria-label={t('dismiss')}
                           >
                             <X className='h-3 w-3' />
@@ -190,7 +185,7 @@ export default function AnnouncementWidget({ className, maxItems = 5 }: Announce
                         {hasHighPriorityBadge(announcement.priority) && (
                           <Badge
                             variant='outline'
-                            className='bg-primary/10 text-primary border-primary/20 text-[10px] font-medium'
+                            className='text-accent-earth-text border-[var(--accent-border)] bg-[var(--accent-dim)] text-[10px] font-medium'
                           >
                             {t('high-priority')}
                           </Badge>

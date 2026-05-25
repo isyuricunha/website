@@ -66,7 +66,7 @@ const Page = async (props: PageProps) => {
   const url = `${SITE_URL}${getLocalizedPath({ slug: '/projects', locale })}`
 
   const reqHeaders = await headers()
-  const trpcContext = await createTRPCContext({ headers: reqHeaders as unknown as Headers })
+  const trpcContext = await createTRPCContext({ headers: reqHeaders })
 
   const caller = appRouter.createCaller(trpcContext)
   const repos = (await caller.github.getRepos()).map((repo) => ({
@@ -106,7 +106,9 @@ const Page = async (props: PageProps) => {
       <ProjectCards projects={projects} />
 
       <section className='mt-12'>
-        <h2 className='mb-6 text-lg font-semibold sm:text-xl'>{t('projects.all-repos')}</h2>
+        <h2 className='mb-6 text-lg font-medium tracking-tighter sm:text-xl'>
+          {t('projects.all-repos')}
+        </h2>
         {repos.length === 0 ? (
           <p className='text-muted-foreground text-sm sm:text-base'>{t('projects.repos.empty')}</p>
         ) : (

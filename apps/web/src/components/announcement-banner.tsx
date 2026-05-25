@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useLocale, useTranslations } from '@isyuricunha/i18n/client'
 import { X } from 'lucide-react'
 
@@ -17,13 +17,8 @@ import {
 export default function AnnouncementBanner() {
   const t = useTranslations()
   const locale = useLocale()
-  const [dismissedAnnouncements, setDismissedAnnouncements] = useState<string[]>([])
-  const [viewedAnnouncements, setViewedAnnouncements] = useState<string[]>([])
-
-  useEffect(() => {
-    setDismissedAnnouncements(getDismissedAnnouncementIds())
-    setViewedAnnouncements(getViewedAnnouncementIds())
-  }, [])
+  const [dismissedAnnouncements, setDismissedAnnouncements] = useState(getDismissedAnnouncementIds)
+  const viewedAnnouncementsRef = useRef(getViewedAnnouncementIds())
 
   // Get active announcements
   const { data: announcementsData } = api.announcements.getAnnouncements.useQuery({
@@ -55,7 +50,7 @@ export default function AnnouncementBanner() {
     if (activeAnnouncements.length === 0) return
 
     const toMark = activeAnnouncements.filter(
-      (announcement) => !viewedAnnouncements.includes(announcement.id)
+      (announcement) => !viewedAnnouncementsRef.current.includes(announcement.id)
     )
 
     if (toMark.length === 0) return
@@ -66,10 +61,10 @@ export default function AnnouncementBanner() {
 
     const nextViewed = toMark.reduce<string[]>(
       (acc, announcement) => addViewedAnnouncementId(acc, announcement.id),
-      viewedAnnouncements
+      viewedAnnouncementsRef.current
     )
-    setViewedAnnouncements(nextViewed)
-  }, [activeAnnouncements, markViewedMutation, viewedAnnouncements])
+    viewedAnnouncementsRef.current = nextViewed
+  }, [activeAnnouncements, markViewedMutation])
 
   if (!announcementsData?.announcements) {
     return null
@@ -86,7 +81,7 @@ export default function AnnouncementBanner() {
         return (
           <div
             key={announcement.id}
-            className={`group relative overflow-hidden rounded-xl border backdrop-blur-sm transition-all duration-300 hover:shadow-lg ${ui.containerClassName}`}
+            className={`group hover:bg-bg-hover relative overflow-hidden rounded-lg border transition-colors duration-150 ${ui.containerClassName}`}
           >
             <div className='relative p-4'>
               <div className='flex items-start gap-4'>
@@ -98,11 +93,11 @@ export default function AnnouncementBanner() {
 
                 <div className='min-w-0 flex-1 space-y-1.5'>
                   <div className='flex items-center gap-2'>
-                    <h4 className={`text-base leading-tight font-semibold ${ui.titleClassName}`}>
+                    <h4 className={`text-base leading-tight font-medium ${ui.titleClassName}`}>
                       {announcement.title}
                     </h4>
                     {hasHighPriorityBadge(announcement.priority) && (
-                      <span className='inline-flex items-center rounded-full bg-current/10 px-2 py-0.5 text-xs font-medium'>
+                      <span className='text-accent-earth-text inline-flex items-center rounded-sm bg-[var(--accent-dim)] px-2 py-0.5 text-xs font-medium'>
                         {t('component.announcement-banner.high-priority')}
                       </span>
                     )}

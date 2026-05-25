@@ -28,18 +28,17 @@ const EnhancedCard = ({
   return (
     <motion.div
       ref={ref}
-      whileHover={hover ? { y: -4, scale: 1.02 } : undefined}
-      transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+      whileHover={hover ? { y: -2 } : undefined}
+      transition={{ duration: 0.15, ease: [0.25, 0.46, 0.45, 0.94] }}
       className={cn(
-        'bg-card text-card-foreground relative overflow-hidden rounded-xl border shadow-sm transition-all duration-300',
-        hover && 'hover:shadow-primary/5 hover:shadow-lg',
-        gradient && 'from-card via-card to-card/80 bg-gradient-to-br',
+        'bg-bg-surface text-card-foreground shadow-feature-card relative overflow-hidden rounded-lg border border-[var(--border-subtle)] transition-colors duration-150',
+        hover && 'hover:bg-bg-hover',
         className
       )}
       {...props}
     >
       {gradient && (
-        <div className='from-primary/5 to-secondary/5 absolute inset-0 bg-gradient-to-br via-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100' />
+        <div className='bg-accent-earth absolute inset-x-0 top-0 h-px opacity-0 transition-opacity duration-150 group-hover:opacity-60' />
       )}
       <div className='relative z-10'>{children}</div>
     </motion.div>
@@ -66,7 +65,7 @@ const EnhancedCardTitle = ({
 }) => (
   <h3
     ref={ref}
-    className={cn('text-lg leading-none font-semibold tracking-tight', className)}
+    className={cn('text-lg leading-none font-medium tracking-tighter', className)}
     {...props}
   />
 )

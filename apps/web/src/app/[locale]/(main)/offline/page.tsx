@@ -17,7 +17,7 @@ export default function OfflinePage() {
         <WifiOff className='text-muted-foreground mx-auto size-16' />
 
         <div className='space-y-2'>
-          <h1 className='text-2xl font-bold'>You're offline</h1>
+          <h1 className='text-2xl font-medium tracking-tighter'>You're offline</h1>
           <p className='text-muted-foreground'>
             It looks like you've lost your internet connection. Some features may not work until
             you're back online.
@@ -29,7 +29,7 @@ export default function OfflinePage() {
 
           <Link
             href='/'
-            className='ring-offset-background border-input bg-background hover:bg-accent hover:text-accent-foreground focus-visible:ring-ring inline-flex h-10 w-full items-center justify-center gap-2 rounded-lg border px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50'
+            className='text-text-secondary hover:bg-bg-hover hover:text-text-primary focus-visible:ring-offset-bg-base inline-flex h-10 w-full items-center justify-center gap-2 rounded-md border border-[var(--border-default)] bg-transparent px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors hover:border-[var(--border-strong)] focus-visible:ring-2 focus-visible:ring-[var(--accent-border)] focus-visible:ring-offset-2 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50'
           >
             <Home className='size-4' />
             Go Home

@@ -92,7 +92,7 @@ const Messages = () => {
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className='border-muted-foreground/25 flex min-h-32 flex-col items-center justify-center space-y-3 rounded-lg border-2 border-dashed p-8'
+          className='flex min-h-32 flex-col items-center justify-center space-y-3 rounded-lg border border-dashed border-[var(--border-default)] p-8'
         >
           <MessageCircle className='text-muted-foreground/50 h-8 w-8' />
           <p className='text-muted-foreground text-center'>{t('guestbook.no-messages')}</p>
@@ -141,23 +141,20 @@ const Message = (props: MessageProps) => {
   return (
     <MessageProvider value={context}>
       <div
-        className='bg-card hover:shadow-primary/5 group relative rounded-xl border p-6 shadow-sm transition-all duration-300 hover:shadow-md dark:bg-zinc-900/30'
+        className='group bg-bg-surface shadow-feature-card hover:bg-bg-hover relative rounded-lg border border-[var(--border-subtle)] p-6 transition-colors duration-150'
         id={`message-${id}`}
       >
-        {/* Subtle gradient overlay on hover */}
-        <div className='from-primary/5 to-secondary/5 absolute inset-0 rounded-xl bg-linear-to-br via-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100' />
-
         <div className='relative z-10'>
           <div className='mb-4 flex items-start gap-4'>
             <div className='relative'>
               <Avatar className='h-12 w-12'>
                 <AvatarImage src={image} alt={name} />
-                <AvatarFallback className='bg-primary/10 text-primary font-semibold'>
+                <AvatarFallback className='text-accent-earth-text bg-[var(--accent-dim)] font-medium'>
                   {name?.charAt(0)?.toUpperCase() || '?'}
                 </AvatarFallback>
               </Avatar>
               {/* Online indicator (optional enhancement) */}
-              <div className='border-background absolute -right-0.5 -bottom-0.5 h-3 w-3 rounded-full border-2 bg-green-500' />
+              <div className='border-bg-base bg-accent-earth absolute -right-0.5 -bottom-0.5 h-3 w-3 rounded-full border' />
             </div>
 
             <div className='min-w-0 flex-1'>

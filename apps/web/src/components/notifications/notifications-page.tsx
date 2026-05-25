@@ -86,7 +86,7 @@ export default function NotificationsPage() {
     <div className='space-y-6'>
       <div className='flex flex-col justify-between gap-3 sm:flex-row sm:items-center'>
         <div className='space-y-1'>
-          <h1 className='text-2xl font-bold'>{t('title')}</h1>
+          <h1 className='text-2xl font-medium tracking-tighter'>{t('title')}</h1>
           <p className='text-muted-foreground text-sm'>{isFetching ? 'Refreshing…' : null}</p>
         </div>
 
@@ -124,7 +124,7 @@ export default function NotificationsPage() {
       ) : (
         <div className='space-y-3'>
           {notifications.map((n) => (
-            <Card key={n.id} className={n.read ? undefined : 'border-primary/30'}>
+            <Card key={n.id} className={n.read ? undefined : 'border-[var(--accent-border)]'}>
               <CardHeader className='pb-3'>
                 <div className='flex items-start justify-between gap-3'>
                   <div className='min-w-0 space-y-1'>
@@ -157,7 +157,7 @@ export default function NotificationsPage() {
                 {n.actionUrl ? (
                   <a
                     href={n.actionUrl}
-                    className='text-primary mt-2 inline-block text-sm underline'
+                    className='text-accent-earth-text mt-2 inline-block text-sm underline'
                     target='_blank'
                     rel='noreferrer'
                   >

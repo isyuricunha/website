@@ -26,7 +26,7 @@ type PageProps = {
 
 const get_caller = async () => {
   const req_headers = await headers()
-  const trpc_context = await createTRPCContext({ headers: req_headers as unknown as Headers })
+  const trpc_context = await createTRPCContext({ headers: req_headers })
   return appRouter.createCaller(trpc_context)
 }
 
@@ -155,7 +155,7 @@ const Page = async (props: PageProps) => {
                 className='size-20 shrink-0 rounded-full'
               />
               <div className='min-w-0'>
-                <div className='text-2xl font-bold'>
+                <div className='text-2xl font-medium tracking-tighter'>
                   <UserName
                     name={profile.name}
                     color={profile.nameColor}
