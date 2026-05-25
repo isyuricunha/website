@@ -1,18 +1,18 @@
 'use client'
 
 import { memo } from 'react'
-import { X as XIcon, Menu as MenuIcon } from 'lucide-react'
+import { X as XIcon, Menu as MenuIcon, EyeOff as EyeOffIcon } from 'lucide-react'
 import { UseMascotStateReturn } from '../hooks/use-mascot-state'
 
 type MascotSpeechBubblesProps = {
   mascot: Pick<
     UseMascotStateReturn,
-    'state' | 't' | 'prefersReducedMotion' | 'startExit' | 'updateState' | 'handleHideMascot'
+    'state' | 't' | 'prefersReducedMotion' | 'startExit' | 'updateState' | 'handleDismissMascot'
   >
 }
 
 const MascotSpeechBubblesComponent = ({ mascot }: MascotSpeechBubblesProps) => {
-  const { state, t, prefersReducedMotion, startExit, updateState, handleHideMascot } = mascot
+  const { state, t, prefersReducedMotion, startExit, updateState, handleDismissMascot } = mascot
 
   if (
     !state.preferences.speechBubbles ||
@@ -57,11 +57,12 @@ const MascotSpeechBubblesComponent = ({ mascot }: MascotSpeechBubblesProps) => {
                   {idx === state.messageQueue.length - 1 && (
                     <button
                       type='button'
-                      aria-label={t('mascot.hide')}
+                      aria-label={t('mascot.hideForNow')}
+                      title={t('mascot.hideForNow')}
                       className='text-text-secondary hover:bg-bg-hover hover:text-text-primary rounded px-2 py-1 text-xs transition-colors focus-visible:ring-2 focus-visible:ring-[var(--accent-border)] focus-visible:outline-none'
-                      onClick={handleHideMascot}
+                      onClick={handleDismissMascot}
                     >
-                      {t('mascot.hide')}
+                      <EyeOffIcon className='h-3 w-3' />
                     </button>
                   )}
                   <button

@@ -1,15 +1,18 @@
 'use client'
 
-import { X as XIcon } from 'lucide-react'
+import { X as XIcon, EyeOff as EyeOffIcon } from 'lucide-react'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@isyuricunha/ui'
 import { UseMascotStateReturn, MascotPreferences } from '../hooks/use-mascot-state'
 
 type MascotSettingsPanelProps = {
-  mascot: Pick<UseMascotStateReturn, 'state' | 't' | 'updatePreferences' | 'updateState'>
+  mascot: Pick<
+    UseMascotStateReturn,
+    'state' | 't' | 'updatePreferences' | 'updateState' | 'handleHideMascot'
+  >
 }
 
 export function MascotSettingsPanel({ mascot }: MascotSettingsPanelProps) {
-  const { state, t, updatePreferences, updateState } = mascot
+  const { state, t, updatePreferences, updateState, handleHideMascot } = mascot
 
   if (!state.showSettings) return null
 
@@ -109,6 +112,17 @@ export function MascotSettingsPanel({ mascot }: MascotSettingsPanelProps) {
             <p className='text-muted-foreground text-xs'>{t('mascot.easterEgg.retroMode')}</p>
           </div>
         )}
+
+        <div className='border-t border-[var(--border-subtle)] pt-2'>
+          <button
+            type='button'
+            className='text-text-secondary hover:bg-bg-hover hover:text-text-primary flex w-full items-center gap-2 rounded-md px-2 py-2 text-left transition-colors focus-visible:ring-2 focus-visible:ring-[var(--accent-border)] focus-visible:outline-none'
+            onClick={handleHideMascot}
+          >
+            <EyeOffIcon className='h-4 w-4 shrink-0' />
+            <span>{t('mascot.settings.hideUntilRestored')}</span>
+          </button>
+        </div>
       </div>
     </div>
   )

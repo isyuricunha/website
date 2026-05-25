@@ -2077,6 +2077,7 @@
     "ariaLabel": "Yue - Assistente virtual",
     "close": "Fechar",
     "hide": "Ocultar",
+    "hideForNow": "Ocultar por agora",
     "speechBubble": "Mensagem da Yue",
     "settings": {
       "title": "Configurações da Yue",
@@ -2086,6 +2087,7 @@
       "speechBubbles": "Balões de fala",
       "soundEffects": "Efeitos sonoros",
       "messageDuration": "Duração da mensagem",
+      "hideUntilRestored": "Ocultar até restaurar",
       "bubblePosition": "Posição do balão",
       "positions": {
         "bottomRight": "Canto Inferior Direito",
@@ -2408,6 +2410,16 @@
         "8": "Os insights aqui são realmente valiosos.",
         "9": "Este tipo de conteúdo torna o aprendizado divertido!"
       },
+      "snippet": {
+        "0": "Bem-vindo à prateleira de snippets! ✂️",
+        "1": "Notas pequenas conseguem economizar muito tempo de debugging.",
+        "2": "Precisa de uma receita rápida? Esta seção foi feita para leitura ágil.",
+        "3": "Selecione qualquer trecho confuso e eu posso ajudar a explicar.",
+        "4": "Snippets são onde pequenas lições viram ferramentas reutilizáveis.",
+        "5": "São notas práticas de trabalho real, não peças de museu.",
+        "6": "Curto, direto e fácil de revisitar depois.",
+        "7": "Achou um padrão útil? Salve para o próximo projeto."
+      },
       "projects": {
         "0": "Aqui estão os projetos! 🚀",
         "1": "Tudo foi feito com amor e muito café ☕",
@@ -2474,7 +2486,7 @@
         "14": "A configuração reflete anos tentando diferentes ferramentas e encontrando o que funciona!",
         "15": "Quer recomendações? Essas ferramentas foram testadas em projetos reais!"
       },
-      "spotify": {
+      "music": {
         "0": "Bem-vindo ao cantinho da música! 🎵",
         "1": "Música boa ou ruim? Não sei, mas meu criador, Yuri, gosta!",
         "2": "Música ajuda a focar enquanto código roda.",
@@ -2490,7 +2502,7 @@
         "12": "O gosto musical evolui assim como as habilidades de programação - sempre descobrindo!",
         "13": "Qual é sua trilha sonora para codar? Música pode definir uma sessão produtiva!",
         "14": "De ambient a animado - encontre o ritmo perfeito para seu fluxo! 🎶",
-        "15": "From ambient to upbeat - find the perfect rhythm for your workflow! 🎶"
+        "15": "Do ambiente ao animado - encontre o ritmo perfeito para o seu fluxo! 🎶"
       },
       "guestbook": {
         "0": "Deixe uma mensagem no livro de visitas! 📖",
@@ -2510,13 +2522,51 @@
         "14": "Mensagens aqui já geraram colaborações, amizades e novas ideias!",
         "15": "Não seja tímido - sua voz agrega muito a este espaço! 💬"
       },
+      "now": {
+        "0": "Esta é a página now: foco atual, momento atual.",
+        "1": "Um pequeno retrato do que meu criador, Yuri, anda fazendo.",
+        "2": "Páginas now são honestas: nem tudo precisa ser lançamento.",
+        "3": "Esta seção muda conforme as prioridades mudam.",
+        "4": "Curioso sobre o que está ativo agora? Você está no lugar certo.",
+        "5": "Pense nisso como uma atualização de status com um pouco mais de alma."
+      },
+      "settings": {
+        "0": "Configurações são onde preferências ganham um lar decente.",
+        "1": "Pequenos ajustes podem deixar o site inteiro mais confortável.",
+        "2": "Tire um instante para ajustar tudo do seu jeito.",
+        "3": "Bom software lembra o que importa para você.",
+        "4": "Se algo parecer estranho, esta página é um bom começo.",
+        "5": "Preferências devem ser previsíveis do melhor jeito possível."
+      },
+      "notifications": {
+        "0": "Aqui ficam suas notificações. Sinais recentes aparecem por aqui.",
+        "1": "Uma caixa limpa deixa o site mais fácil de acompanhar.",
+        "2": "Vou tentar manter pouco ruído e deixar o útil visível.",
+        "3": "Notificações funcionam melhor quando respeitam sua atenção.",
+        "4": "Atualizações não lidas? É aqui que elas se juntam.",
+        "5": "Um pouco de contexto no momento certo ajuda bastante."
+      },
+      "sitemap": {
+        "0": "O sitemap é o índice do site.",
+        "1": "Quando a navegação parece confusa, esta página mostra o mapa inteiro.",
+        "2": "Todo canto importante do site deve ser alcançável por aqui.",
+        "3": "A busca é rápida, mas às vezes um mapa é melhor.",
+        "4": "Este é um jeito organizado de descobrir páginas que você talvez tenha perdido.",
+        "5": "Todo caminho uma hora volta para a estrutura."
+      },
+      "offline": {
+        "0": "Parece que a conexão fez uma pausa.",
+        "1": "Sem pânico. Algumas partes do site ainda podem estar disponíveis.",
+        "2": "Quando a rede voltar, a página deve se recuperar.",
+        "3": "Estados offline também merecem cuidado."
+      },
       "admin": {
         "0": "Bem-vindo ao painel admin! 🔧",
         "1": "Esta área é para gestão do site e moderação.",
         "2": "Meu criador, Yuri, usa isso para manter o site funcionando bem.",
         "3": "Ferramentas de admin ajudam a gerenciar usuários, comentários e conteúdo.",
         "4": "O painel admin está em constante melhoria!",
-        "5": "Security and moderation are top priorities here!"
+        "5": "Segurança e moderação são prioridades por aqui!"
       },
       "search": {
         "0": "Procurando algo específico? 🔍",

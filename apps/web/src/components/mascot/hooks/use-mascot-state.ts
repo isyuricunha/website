@@ -222,7 +222,13 @@ export function useMascotState() {
     if (pathWithoutLocale.startsWith('/about')) return 'about'
     if (pathWithoutLocale.startsWith('/uses')) return 'uses'
     if (pathWithoutLocale.startsWith('/music')) return 'music'
+    if (pathWithoutLocale.startsWith('/contact')) return 'contact'
     if (pathWithoutLocale.startsWith('/guestbook')) return 'guestbook'
+    if (pathWithoutLocale.startsWith('/now')) return 'now'
+    if (pathWithoutLocale.startsWith('/settings')) return 'settings'
+    if (pathWithoutLocale.startsWith('/notifications')) return 'notifications'
+    if (pathWithoutLocale.startsWith('/sitemap')) return 'sitemap'
+    if (pathWithoutLocale.startsWith('/offline')) return 'offline'
     if (pathWithoutLocale.startsWith('/admin')) return 'admin'
     if (pathWithoutLocale.includes('search') || pathWithoutLocale.includes('?q=')) return 'search'
     if (pathWithoutLocale === '/404' || pathWithoutLocale.includes('not-found')) return '404'
@@ -332,10 +338,38 @@ export function useMascotState() {
   }, [enqueueMessage, isProduction, t])
 
   /**
-   * Hide mascot permanently
+   * Hide mascot for the current browser session
+   */
+  const handleDismissMascot = useCallback(() => {
+    updateState({
+      isDismissed: true,
+      showContact: false,
+      showSettings: false,
+      showMenu: false,
+      showGame: false,
+      showAIChat: false,
+      messageQueue: []
+    })
+    try {
+      sessionStorage.setItem(STORAGE_KEY, '1')
+    } catch (error) {
+      if (!isProduction) console.error('Error dismissing mascot:', error)
+    }
+  }, [updateState, isProduction])
+
+  /**
+   * Hide mascot until the user restores it
    */
   const handleHideMascot = useCallback(() => {
-    updateState({ isHiddenPref: true })
+    updateState({
+      isHiddenPref: true,
+      showContact: false,
+      showSettings: false,
+      showMenu: false,
+      showGame: false,
+      showAIChat: false,
+      messageQueue: []
+    })
     try {
       localStorage.setItem(HIDE_KEY, '1')
     } catch (error) {
@@ -882,6 +916,7 @@ export function useMascotState() {
     startExit,
     updatePreferences,
     copyEmail,
+    handleDismissMascot,
     handleHideMascot,
     restoreMascot,
     handleMenuAction,

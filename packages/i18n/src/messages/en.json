@@ -2077,6 +2077,7 @@
     "ariaLabel": "Yue - Virtual assistant",
     "close": "Close",
     "hide": "Hide",
+    "hideForNow": "Hide for now",
     "speechBubble": "Yue's message",
     "settings": {
       "title": "Yue's Settings",
@@ -2086,6 +2087,7 @@
       "speechBubbles": "Speech bubbles",
       "soundEffects": "Sound effects",
       "messageDuration": "Message duration",
+      "hideUntilRestored": "Hide until restored",
       "bubblePosition": "Bubble position",
       "positions": {
         "bottomRight": "Bottom Right",
@@ -2408,6 +2410,16 @@
         "8": "The insights here are really valuable.",
         "9": "This is the kind of content that makes learning fun!"
       },
+      "snippet": {
+        "0": "Welcome to the snippets shelf! ✂️",
+        "1": "Small notes can save a surprising amount of debugging time.",
+        "2": "Need a quick recipe? This section is built for scanning.",
+        "3": "Select any confusing bit and I can help explain it.",
+        "4": "Snippets are where tiny lessons become reusable tools.",
+        "5": "These are practical notes from real work, not museum pieces.",
+        "6": "Short, focused, and easy to revisit later.",
+        "7": "Found a useful pattern? Bookmark it for the next project."
+      },
       "projects": {
         "0": "Here are the projects! 🚀",
         "1": "Everything is built with love and lots of coffee ☕",
@@ -2474,7 +2486,7 @@
         "14": "The setup reflects years of trying different tools and finding what works!",
         "15": "Want recommendations? These tools have been battle-tested in real projects!"
       },
-      "spotify": {
+      "music": {
         "0": "Welcome to the music corner! 🎵",
         "1": "Good or bad music? I don't know, but my creator, Yuri likes it!",
         "2": "Music helps focus while coding.",
@@ -2509,6 +2521,44 @@
         "13": "Join the conversation and become part of this growing community!",
         "14": "Messages here have led to collaborations, friendships, and new ideas!",
         "15": "Don't be shy - your voice adds value to this space! 💬"
+      },
+      "now": {
+        "0": "This is the now page: current focus, current season.",
+        "1": "A small snapshot of what my creator, Yuri is doing lately.",
+        "2": "Now pages are wonderfully honest: not everything needs to be a launch.",
+        "3": "This section changes as priorities shift.",
+        "4": "Curious what is active right now? You are in the right place.",
+        "5": "Think of this as a status update with a little more soul."
+      },
+      "settings": {
+        "0": "Settings are where preferences get a proper home.",
+        "1": "Small adjustments can make the whole site feel better.",
+        "2": "Take a moment to tune things the way you like.",
+        "3": "Good software remembers what matters to you.",
+        "4": "If something feels off, this page is a good place to start.",
+        "5": "Preferences should be boring in the best possible way: reliable."
+      },
+      "notifications": {
+        "0": "Here are your notifications. Fresh signals live here.",
+        "1": "A clean inbox keeps the site easier to follow.",
+        "2": "I will try to keep the noise low and the useful bits visible.",
+        "3": "Notifications are best when they respect your attention.",
+        "4": "Unread updates? This is where they gather.",
+        "5": "A little context at the right time can be very handy."
+      },
+      "sitemap": {
+        "0": "The sitemap is the site's table of contents.",
+        "1": "When navigation feels fuzzy, this page gives you the whole map.",
+        "2": "Every important corner of the site should be reachable from here.",
+        "3": "Search is fast, but sometimes a map is better.",
+        "4": "This is a tidy way to discover pages you might have missed.",
+        "5": "All roads eventually lead back to structure."
+      },
+      "offline": {
+        "0": "Looks like the connection took a break.",
+        "1": "No panic. Some parts of the site may still be available.",
+        "2": "Once the network is back, the page should recover.",
+        "3": "Offline states deserve care too."
       },
       "admin": {
         "0": "Welcome to the admin panel! 🔧",
