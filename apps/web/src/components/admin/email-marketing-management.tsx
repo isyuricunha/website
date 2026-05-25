@@ -47,6 +47,7 @@ import {
   CheckCircle,
   Loader2
 } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { toast } from 'sonner'
 
 import { api } from '@/trpc/react'
@@ -65,11 +66,13 @@ const getBroadcastStatusColor = (status: string | undefined) => {
   }
 }
 
-const formatBroadcastSentDate = (sentAt: string | null | undefined) => {
-  return sentAt ? new Date(sentAt).toLocaleDateString() : 'Not sent'
+const formatBroadcastSentDate = (sentAt: string | null | undefined, notSentLabel: string) => {
+  return sentAt ? new Date(sentAt).toLocaleDateString() : notSentLabel
 }
 
 export default function EmailMarketingManagement() {
+  const t = useTranslations('admin.email-marketing-management')
+  const commonT = useTranslations('common')
   const [selectedTab, setSelectedTab] = useState('overview')
   const [isCreateTemplateDialogOpen, setIsCreateTemplateDialogOpen] = useState(false)
   const [isCreateCampaignDialogOpen, setIsCreateCampaignDialogOpen] = useState(false)
@@ -174,75 +177,75 @@ export default function EmailMarketingManagement() {
   // Mutations - Using Resend native APIs
   const createTemplateMutation = api.emailManagement.createEmailTemplate.useMutation({
     onSuccess: () => {
-      toast.success('Template created successfully!')
+      toast.success(t('messages.template-created'))
       setIsCreateTemplateDialogOpen(false)
       refetchTemplates()
     },
     onError: (error) => {
-      toast.error(`Failed to create template: ${error.message}`)
+      toast.error(t('messages.template-create-failed', { message: error.message }))
     }
   })
 
   const createAudienceMutation = api.resendEmail.createAudience.useMutation({
     onSuccess: () => {
-      toast.success('Audience created successfully!')
+      toast.success(t('messages.audience-created'))
       setIsCreateAudienceDialogOpen(false)
       refetchAudiences()
     },
     onError: (error) => {
-      toast.error(`Failed to create audience: ${error.message}`)
+      toast.error(t('messages.audience-create-failed', { message: error.message }))
     }
   })
 
   const createBroadcastMutation = api.resendEmail.createBroadcast.useMutation({
     onSuccess: () => {
-      toast.success('Broadcast created successfully!')
+      toast.success(t('messages.broadcast-created'))
       setIsCreateCampaignDialogOpen(false)
       refetchBroadcasts()
     },
     onError: (error) => {
-      toast.error(`Failed to create broadcast: ${error.message}`)
+      toast.error(t('messages.broadcast-create-failed', { message: error.message }))
     }
   })
 
   const syncUsersMutation = api.resendEmail.syncUsersToAudience.useMutation({
     onSuccess: (data) => {
-      toast.success(`Successfully synced ${data.synced} users to audience!`)
+      toast.success(t('messages.users-synced', { count: data.synced }))
       refetchAudiences()
     },
     onError: (error) => {
-      toast.error(`Failed to sync users: ${error.message}`)
+      toast.error(t('messages.sync-failed', { message: error.message }))
     }
   })
 
   const sendBroadcastMutation = api.resendEmail.sendBroadcast.useMutation({
     onSuccess: () => {
-      toast.success('Broadcast sent successfully!')
+      toast.success(t('messages.broadcast-sent'))
       refetchBroadcasts()
     },
     onError: (error) => {
-      toast.error(`Failed to send broadcast: ${error.message}`)
+      toast.error(t('messages.broadcast-send-failed', { message: error.message }))
     }
   })
 
   const updateBroadcastMutation = api.resendEmail.updateBroadcast.useMutation({
     onSuccess: () => {
-      toast.success('Broadcast updated successfully!')
+      toast.success(t('messages.broadcast-updated'))
       setIsEditBroadcastDialogOpen(false)
       refetchBroadcasts()
     },
     onError: (error) => {
-      toast.error(`Failed to update broadcast: ${error.message}`)
+      toast.error(t('messages.broadcast-update-failed', { message: error.message }))
     }
   })
 
   const deleteBroadcastMutation = api.resendEmail.deleteBroadcast.useMutation({
     onSuccess: () => {
-      toast.success('Broadcast deleted successfully!')
+      toast.success(t('messages.broadcast-deleted'))
       refetchBroadcasts()
     },
     onError: (error) => {
-      toast.error(`Failed to delete broadcast: ${error.message}`)
+      toast.error(t('messages.broadcast-delete-failed', { message: error.message }))
     }
   })
 
@@ -311,7 +314,7 @@ export default function EmailMarketingManagement() {
   }
 
   const handleDeleteBroadcast = (broadcastId: string) => {
-    if (confirm('Are you sure you want to delete this broadcast? This action cannot be undone.')) {
+    if (confirm(t('confirm.delete-broadcast'))) {
       deleteBroadcastMutation.mutate({ broadcastId })
     }
   }
@@ -361,11 +364,9 @@ export default function EmailMarketingManagement() {
             <div className='text-accent-earth-text rounded-xl bg-[var(--accent-dim)] p-2.5'>
               <Mail className='h-8 w-8' />
             </div>
-            Email Marketing
+            {t('title')}
           </h1>
-          <p className='text-muted-foreground text-base'>
-            Manage your email campaigns, audiences, and templates
-          </p>
+          <p className='text-muted-foreground text-base'>{t('description')}</p>
         </div>
       </div>
 
@@ -375,7 +376,7 @@ export default function EmailMarketingManagement() {
           <CardHeader>
             <CardTitle className='flex items-center gap-2 text-base'>
               <Loader2 className='text-accent-earth-text h-5 w-5 animate-spin' />
-              Loading Email Marketing Data...
+              {t('loading.title')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -387,7 +388,7 @@ export default function EmailMarketingManagement() {
                   loadingStage !== 'audiences' && audiences !== undefined
                 )}
                 <span className={loadingStage === 'audiences' ? 'font-medium' : ''}>
-                  Loading Audiences...
+                  {t('loading.audiences')}
                 </span>
               </div>
               <div className='flex items-center gap-3'>
@@ -397,7 +398,7 @@ export default function EmailMarketingManagement() {
                   loadingStage !== 'broadcasts' && broadcasts !== undefined
                 )}
                 <span className={loadingStage === 'broadcasts' ? 'font-medium' : ''}>
-                  Loading Broadcasts...
+                  {t('loading.broadcasts')}
                 </span>
               </div>
               <div className='flex items-center gap-3'>
@@ -407,7 +408,7 @@ export default function EmailMarketingManagement() {
                   loadingStage !== 'templates' && templates !== undefined
                 )}
                 <span className={loadingStage === 'templates' ? 'font-medium' : ''}>
-                  Loading Templates...
+                  {t('loading.templates')}
                 </span>
               </div>
               <div className='flex items-center gap-3'>
@@ -417,7 +418,7 @@ export default function EmailMarketingManagement() {
                   analytics !== undefined
                 )}
                 <span className={loadingStage === 'analytics' ? 'font-medium' : ''}>
-                  Loading Analytics...
+                  {t('loading.analytics')}
                 </span>
               </div>
             </div>
@@ -427,10 +428,10 @@ export default function EmailMarketingManagement() {
 
       <Tabs value={selectedTab} onValueChange={setSelectedTab} className='space-y-6'>
         <TabsList className='grid w-full grid-cols-4'>
-          <TabsTrigger value='overview'>Overview</TabsTrigger>
-          <TabsTrigger value='audiences'>Audiences</TabsTrigger>
-          <TabsTrigger value='broadcasts'>Broadcasts</TabsTrigger>
-          <TabsTrigger value='templates'>Templates</TabsTrigger>
+          <TabsTrigger value='overview'>{t('tabs.overview')}</TabsTrigger>
+          <TabsTrigger value='audiences'>{t('tabs.audiences')}</TabsTrigger>
+          <TabsTrigger value='broadcasts'>{t('tabs.broadcasts')}</TabsTrigger>
+          <TabsTrigger value='templates'>{t('tabs.templates')}</TabsTrigger>
         </TabsList>
 
         {/* Overview Tab */}
@@ -439,7 +440,7 @@ export default function EmailMarketingManagement() {
             <Card className='bg-bg-surface border-[var(--border-subtle)] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl'>
               <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-3'>
                 <CardTitle className='text-muted-foreground text-sm font-semibold'>
-                  Total Audiences
+                  {t('stats.total-audiences.title')}
                 </CardTitle>
                 <div className='text-accent-earth-text rounded-lg bg-[var(--accent-dim)] p-2'>
                   <Users className='h-5 w-5' />
@@ -450,14 +451,14 @@ export default function EmailMarketingManagement() {
                   {analytics?.totalAudiences || 0}
                 </div>
                 <p className='text-muted-foreground text-xs leading-relaxed'>
-                  Active audience segments
+                  {t('stats.total-audiences.description')}
                 </p>
               </CardContent>
             </Card>
             <Card className='bg-bg-surface border-[var(--border-subtle)] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl'>
               <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-3'>
                 <CardTitle className='text-muted-foreground text-sm font-semibold'>
-                  Total Broadcasts
+                  {t('stats.total-broadcasts.title')}
                 </CardTitle>
                 <div className='text-accent-earth-text rounded-lg bg-[var(--accent-dim)] p-2'>
                   <Mail className='h-5 w-5' />
@@ -468,14 +469,14 @@ export default function EmailMarketingManagement() {
                   {analytics?.totalBroadcasts || 0}
                 </div>
                 <p className='text-muted-foreground text-xs leading-relaxed'>
-                  Email campaigns created
+                  {t('stats.total-broadcasts.description')}
                 </p>
               </CardContent>
             </Card>
             <Card className='bg-bg-surface border-[var(--border-subtle)] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl'>
               <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-3'>
                 <CardTitle className='text-muted-foreground text-sm font-semibold'>
-                  Subscribers
+                  {t('stats.subscribers.title')}
                 </CardTitle>
                 <div className='text-accent-earth-text rounded-lg bg-[var(--accent-dim)] p-2'>
                   <TrendingUp className='h-5 w-5' />
@@ -486,14 +487,16 @@ export default function EmailMarketingManagement() {
                   {analytics?.totalSubscribers || 0}
                 </div>
                 <p className='text-muted-foreground text-xs leading-relaxed'>
-                  {analytics?.subscriptionRate || 0}% subscription rate
+                  {t('stats.subscribers.description', {
+                    rate: analytics?.subscriptionRate || 0
+                  })}
                 </p>
               </CardContent>
             </Card>
             <Card className='bg-bg-surface border-[var(--border-subtle)] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl'>
               <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-3'>
                 <CardTitle className='text-muted-foreground text-sm font-semibold'>
-                  Sent Broadcasts
+                  {t('stats.sent-broadcasts.title')}
                 </CardTitle>
                 <div className='text-accent-earth-text rounded-lg bg-[var(--accent-dim)] p-2'>
                   <Send className='h-5 w-5' />
@@ -504,7 +507,7 @@ export default function EmailMarketingManagement() {
                   {analytics?.broadcasts?.sent || 0}
                 </div>
                 <p className='text-muted-foreground text-xs leading-relaxed'>
-                  Successfully delivered
+                  {t('stats.sent-broadcasts.description')}
                 </p>
               </CardContent>
             </Card>
@@ -517,7 +520,7 @@ export default function EmailMarketingManagement() {
                   <div className='text-accent-earth-text rounded-lg bg-[var(--accent-dim)] p-2'>
                     <Clock className='h-4 w-4' />
                   </div>
-                  <CardTitle className='text-base'>Recent Activity</CardTitle>
+                  <CardTitle className='text-base'>{t('overview.recent-activity')}</CardTitle>
                 </div>
               </CardHeader>
               <CardContent>
@@ -532,11 +535,13 @@ export default function EmailMarketingManagement() {
                       <div className='min-w-0 flex-1'>
                         <p className='truncate text-sm font-medium'>{broadcast.name}</p>
                         <p className='text-muted-foreground text-sm'>
-                          {formatBroadcastSentDate(broadcast.sent_at)}
+                          {formatBroadcastSentDate(broadcast.sent_at, t('date.not-sent'))}
                         </p>
                       </div>
                     </div>
-                  )) || <p className='text-muted-foreground text-sm'>No recent activity</p>}
+                  )) || (
+                    <p className='text-muted-foreground text-sm'>{t('overview.no-activity')}</p>
+                  )}
                 </div>
               </CardContent>
             </Card>
@@ -547,7 +552,7 @@ export default function EmailMarketingManagement() {
                   <div className='text-accent-earth-text rounded-lg bg-[var(--accent-dim)] p-2'>
                     <Send className='h-4 w-4' />
                   </div>
-                  <CardTitle className='text-base'>Quick Actions</CardTitle>
+                  <CardTitle className='text-base'>{t('overview.quick-actions')}</CardTitle>
                 </div>
               </CardHeader>
               <CardContent className='space-y-3'>
@@ -557,7 +562,7 @@ export default function EmailMarketingManagement() {
                   disabled={!audiences?.audiences?.length}
                 >
                   <Plus className='mr-2 h-4 w-4' />
-                  Create New Broadcast
+                  {t('actions.create-new-broadcast')}
                 </Button>
                 <Button
                   onClick={() => setIsCreateAudienceDialogOpen(true)}
@@ -565,7 +570,7 @@ export default function EmailMarketingManagement() {
                   className='w-full'
                 >
                   <Users className='mr-2 h-4 w-4' />
-                  Create New Audience
+                  {t('actions.create-new-audience')}
                 </Button>
                 <Button
                   onClick={() => setIsCreateTemplateDialogOpen(true)}
@@ -573,7 +578,7 @@ export default function EmailMarketingManagement() {
                   className='w-full'
                 >
                   <FileText className='mr-2 h-4 w-4' />
-                  Create New Template
+                  {t('actions.create-new-template')}
                 </Button>
               </CardContent>
             </Card>
@@ -583,30 +588,28 @@ export default function EmailMarketingManagement() {
         {/* Audiences Tab */}
         <TabsContent value='audiences' className='space-y-6'>
           <div className='flex items-center justify-between'>
-            <h2 className='text-2xl font-medium'>Audiences</h2>
+            <h2 className='text-2xl font-medium'>{t('audiences.title')}</h2>
             <Dialog open={isCreateAudienceDialogOpen} onOpenChange={setIsCreateAudienceDialogOpen}>
               <DialogTrigger asChild>
                 <Button>
                   <Plus className='mr-2 h-4 w-4' />
-                  Create Audience
+                  {t('actions.create-audience')}
                 </Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
-                  <DialogTitle>Create New Audience</DialogTitle>
-                  <DialogDescription>
-                    Create a new audience segment for your email campaigns
-                  </DialogDescription>
+                  <DialogTitle>{t('audiences.create-title')}</DialogTitle>
+                  <DialogDescription>{t('audiences.create-description')}</DialogDescription>
                 </DialogHeader>
 
                 <form action={handleCreateAudience}>
                   <div className='space-y-4'>
                     <div>
-                      <Label htmlFor='name'>Audience Name</Label>
+                      <Label htmlFor='name'>{t('fields.audience-name')}</Label>
                       <Input
                         id='name'
                         name='name'
-                        placeholder='e.g., Newsletter Subscribers'
+                        placeholder={t('fields.audience-name-placeholder')}
                         required
                       />
                     </div>
@@ -618,9 +621,9 @@ export default function EmailMarketingManagement() {
                       variant='outline'
                       onClick={() => setIsCreateAudienceDialogOpen(false)}
                     >
-                      Cancel
+                      {commonT('cancel')}
                     </Button>
-                    <Button type='submit'>Create Audience</Button>
+                    <Button type='submit'>{t('actions.create-audience')}</Button>
                   </DialogFooter>
                 </form>
               </DialogContent>
@@ -637,14 +640,14 @@ export default function EmailMarketingManagement() {
                   <CardTitle className='flex items-center justify-between text-base'>
                     <span className='font-semibold'>{audience.name}</span>
                     <Badge variant='secondary' className='text-xs'>
-                      0 subscribers
+                      {t('audiences.subscriber-count', { count: 0 })}
                     </Badge>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className='space-y-2'>
                     <p className='text-muted-foreground text-sm'>
-                      Created: {new Date().toLocaleDateString()}
+                      {t('date.created', { date: new Date().toLocaleDateString() })}
                     </p>
                     <Button
                       onClick={() => handleSyncUsers(audience.id)}
@@ -655,12 +658,12 @@ export default function EmailMarketingManagement() {
                       {syncUsersMutation.isPending ? (
                         <>
                           <Loader2 className='mr-2 h-4 w-4 animate-spin' />
-                          Syncing...
+                          {t('actions.syncing')}
                         </>
                       ) : (
                         <>
                           <Users className='mr-2 h-4 w-4' />
-                          Sync Users
+                          {t('actions.sync-users')}
                         </>
                       )}
                     </Button>
@@ -670,7 +673,7 @@ export default function EmailMarketingManagement() {
             )) || (
               <div className='text-muted-foreground col-span-full py-8 text-center'>
                 <Users className='mx-auto mb-4 h-12 w-12 opacity-50' />
-                <p>No audiences yet. Create your first audience to get started!</p>
+                <p>{t('audiences.empty')}</p>
               </div>
             )}
           </div>
@@ -679,18 +682,18 @@ export default function EmailMarketingManagement() {
         {/* Broadcasts Tab */}
         <TabsContent value='broadcasts' className='space-y-6'>
           <div className='flex items-center justify-between'>
-            <h2 className='text-2xl font-medium'>Broadcasts</h2>
+            <h2 className='text-2xl font-medium'>{t('broadcasts.title')}</h2>
             <div className='flex items-center gap-4'>
               <Select value={broadcastFilter} onValueChange={setBroadcastFilter}>
                 <SelectTrigger className='w-[180px]'>
-                  <SelectValue placeholder='Filter by status' />
+                  <SelectValue placeholder={t('broadcasts.filter-placeholder')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value='all'>All Broadcasts</SelectItem>
-                  <SelectItem value='draft'>Draft</SelectItem>
-                  <SelectItem value='sent'>Sent</SelectItem>
-                  <SelectItem value='scheduled'>Scheduled</SelectItem>
-                  <SelectItem value='sending'>Sending</SelectItem>
+                  <SelectItem value='all'>{t('broadcasts.status.all')}</SelectItem>
+                  <SelectItem value='draft'>{t('broadcasts.status.draft')}</SelectItem>
+                  <SelectItem value='sent'>{t('broadcasts.status.sent')}</SelectItem>
+                  <SelectItem value='scheduled'>{t('broadcasts.status.scheduled')}</SelectItem>
+                  <SelectItem value='sending'>{t('broadcasts.status.sending')}</SelectItem>
                 </SelectContent>
               </Select>
 
@@ -701,43 +704,46 @@ export default function EmailMarketingManagement() {
                 <DialogTrigger asChild>
                   <Button disabled={!audiences?.audiences?.length}>
                     <Plus className='mr-2 h-4 w-4' />
-                    Create Broadcast
+                    {t('actions.create-broadcast')}
                   </Button>
                 </DialogTrigger>
                 <DialogContent className='max-w-2xl'>
                   <DialogHeader>
-                    <DialogTitle>Create New Broadcast</DialogTitle>
-                    <DialogDescription>Create a new email broadcast campaign</DialogDescription>
+                    <DialogTitle>{t('broadcasts.create-title')}</DialogTitle>
+                    <DialogDescription>{t('broadcasts.create-description')}</DialogDescription>
                   </DialogHeader>
 
                   <form action={handleCreateBroadcast}>
                     <div className='space-y-4'>
                       <div>
-                        <Label htmlFor='name'>Broadcast Name</Label>
+                        <Label htmlFor='name'>{t('fields.broadcast-name')}</Label>
                         <Input
                           id='name'
                           name='name'
                           defaultValue={selectedBroadcast?.name || ''}
-                          placeholder='Internal name for this broadcast'
+                          placeholder={t('fields.broadcast-name-placeholder')}
                           className='h-11 min-h-[44px] px-3 py-2 text-sm sm:text-base'
                           required
                         />
                       </div>
 
                       <div>
-                        <Label htmlFor='audienceId'>Target Audience</Label>
+                        <Label htmlFor='audienceId'>{t('fields.target-audience')}</Label>
                         <Select
                           name='audienceId'
                           defaultValue={selectedBroadcast?.audienceId || ''}
                           required
                         >
                           <SelectTrigger className='h-11 min-h-[44px] px-3 py-2 text-sm sm:text-base'>
-                            <SelectValue placeholder='Select an audience' />
+                            <SelectValue placeholder={t('fields.select-audience')} />
                           </SelectTrigger>
                           <SelectContent>
                             {audiences?.audiences?.map((audience) => (
                               <SelectItem key={audience.id} value={audience.id}>
-                                {audience.name} (0 subscribers)
+                                {t('audiences.option-subscriber-count', {
+                                  name: audience.name,
+                                  count: 0
+                                })}
                               </SelectItem>
                             ))}
                           </SelectContent>
@@ -745,7 +751,7 @@ export default function EmailMarketingManagement() {
                       </div>
 
                       <div>
-                        <Label htmlFor='from'>From Email</Label>
+                        <Label htmlFor='from'>{t('fields.from-email')}</Label>
                         <Input
                           id='from'
                           name='from'
@@ -758,36 +764,36 @@ export default function EmailMarketingManagement() {
                       </div>
 
                       <div>
-                        <Label htmlFor='subject'>Subject Line</Label>
+                        <Label htmlFor='subject'>{t('fields.subject-line')}</Label>
                         <Input
                           id='subject'
                           name='subject'
                           defaultValue={selectedBroadcast?.subject || ''}
-                          placeholder='Email subject'
+                          placeholder={t('fields.email-subject-placeholder')}
                           className='h-11 min-h-[44px] px-3 py-2 text-sm sm:text-base'
                           required
                         />
                       </div>
 
                       <div>
-                        <Label htmlFor='html'>Email Content (HTML)</Label>
+                        <Label htmlFor='html'>{t('fields.email-content-html')}</Label>
                         <Textarea
                           id='html'
                           name='html'
                           defaultValue={selectedBroadcast?.html || ''}
-                          placeholder='Email HTML content'
+                          placeholder={t('fields.email-html-placeholder')}
                           className='min-h-[120px] px-3 py-2 text-sm sm:text-base'
                           rows={8}
                         />
                       </div>
 
                       <div>
-                        <Label htmlFor='text'>Plain Text Version (Optional)</Label>
+                        <Label htmlFor='text'>{t('fields.plain-text-optional')}</Label>
                         <Textarea
                           id='text'
                           name='text'
                           defaultValue={selectedBroadcast?.text || ''}
-                          placeholder='Plain text version'
+                          placeholder={t('fields.plain-text-placeholder')}
                           className='min-h-[80px] px-3 py-2 text-sm sm:text-base'
                           rows={4}
                         />
@@ -801,10 +807,10 @@ export default function EmailMarketingManagement() {
                         className='min-h-[44px] text-sm sm:text-base'
                         onClick={() => setIsCreateCampaignDialogOpen(false)}
                       >
-                        Cancel
+                        {commonT('cancel')}
                       </Button>
                       <Button type='submit' className='min-h-[44px] text-sm sm:text-base'>
-                        Create Broadcast
+                        {t('actions.create-broadcast')}
                       </Button>
                     </DialogFooter>
                   </form>
@@ -835,16 +841,16 @@ export default function EmailMarketingManagement() {
                             <div className='text-muted-foreground flex items-center gap-4 text-sm'>
                               <span className='flex items-center gap-1'>
                                 <Calendar className='h-3 w-3' />
-                                {formatBroadcastSentDate(broadcast.sent_at)}
+                                {formatBroadcastSentDate(broadcast.sent_at, t('date.not-sent'))}
                               </span>
                               <span className='flex items-center gap-1'>
                                 <Users className='h-3 w-3' />
-                                Audience
+                                {t('fields.audience')}
                               </span>
                               {broadcast.status === 'sent' && (
                                 <span className='flex items-center gap-1'>
                                   <Send className='h-3 w-3' />
-                                  Sent
+                                  {t('broadcasts.status.sent')}
                                 </span>
                               )}
                             </div>
@@ -903,22 +909,20 @@ export default function EmailMarketingManagement() {
                   {filteredBroadcasts.length === 0 && broadcasts?.broadcasts?.length ? (
                     <div className='text-muted-foreground py-8 text-center'>
                       <Mail className='mx-auto mb-4 h-12 w-12 opacity-50' />
-                      <p>No broadcasts match the current filter.</p>
+                      <p>{t('broadcasts.empty-filtered')}</p>
                       <Button
                         variant='outline'
                         onClick={() => setBroadcastFilter('all')}
                         className='mt-2'
                       >
-                        Show All Broadcasts
+                        {t('actions.show-all-broadcasts')}
                       </Button>
                     </div>
                   ) : broadcasts?.broadcasts?.length ? null : (
                     <div className='text-muted-foreground py-8 text-center'>
                       <Mail className='mx-auto mb-4 h-12 w-12 opacity-50' />
-                      <p>No broadcasts yet. Create your first broadcast to get started!</p>
-                      <p className='mt-2 text-sm'>
-                        You'll need to create an audience first before creating broadcasts.
-                      </p>
+                      <p>{t('broadcasts.empty')}</p>
+                      <p className='mt-2 text-sm'>{t('broadcasts.empty-hint')}</p>
                     </div>
                   )}
                 </div>
@@ -930,58 +934,58 @@ export default function EmailMarketingManagement() {
         {/* Templates Tab */}
         <TabsContent value='templates' className='space-y-6'>
           <div className='flex items-center justify-between'>
-            <h2 className='text-2xl font-medium'>Email Templates</h2>
+            <h2 className='text-2xl font-medium'>{t('templates.title')}</h2>
             <Dialog open={isCreateTemplateDialogOpen} onOpenChange={setIsCreateTemplateDialogOpen}>
               <DialogTrigger asChild>
                 <Button>
                   <Plus className='mr-2 h-4 w-4' />
-                  Create Template
+                  {t('actions.create-template')}
                 </Button>
               </DialogTrigger>
               <DialogContent className='max-w-2xl'>
                 <DialogHeader>
-                  <DialogTitle>Create New Template</DialogTitle>
-                  <DialogDescription>Create a reusable email template</DialogDescription>
+                  <DialogTitle>{t('templates.create-title')}</DialogTitle>
+                  <DialogDescription>{t('templates.create-description')}</DialogDescription>
                 </DialogHeader>
 
                 <form action={handleCreateTemplate}>
                   <div className='space-y-4'>
                     <div>
-                      <Label htmlFor='template-name'>Template Name</Label>
+                      <Label htmlFor='template-name'>{t('fields.template-name')}</Label>
                       <Input
                         id='template-name'
                         name='name'
-                        placeholder='e.g., Welcome Email'
+                        placeholder={t('fields.template-name-placeholder')}
                         required
                       />
                     </div>
 
                     <div>
-                      <Label htmlFor='template-subject'>Subject Line</Label>
+                      <Label htmlFor='template-subject'>{t('fields.subject-line')}</Label>
                       <Input
                         id='template-subject'
                         name='subject'
-                        placeholder='Email subject'
+                        placeholder={t('fields.email-subject-placeholder')}
                         required
                       />
                     </div>
 
                     <div>
-                      <Label htmlFor='template-html'>Email Content (HTML)</Label>
+                      <Label htmlFor='template-html'>{t('fields.email-content-html')}</Label>
                       <Textarea
                         id='template-html'
                         name='html'
-                        placeholder='Email HTML content'
+                        placeholder={t('fields.email-html-placeholder')}
                         rows={8}
                       />
                     </div>
 
                     <div>
-                      <Label htmlFor='template-text'>Plain Text Version (Optional)</Label>
+                      <Label htmlFor='template-text'>{t('fields.plain-text-optional')}</Label>
                       <Textarea
                         id='template-text'
                         name='text'
-                        placeholder='Plain text version'
+                        placeholder={t('fields.plain-text-placeholder')}
                         rows={4}
                       />
                     </div>
@@ -993,9 +997,9 @@ export default function EmailMarketingManagement() {
                       variant='outline'
                       onClick={() => setIsCreateTemplateDialogOpen(false)}
                     >
-                      Cancel
+                      {commonT('cancel')}
                     </Button>
-                    <Button type='submit'>Create Template</Button>
+                    <Button type='submit'>{t('actions.create-template')}</Button>
                   </DialogFooter>
                 </form>
               </DialogContent>
@@ -1012,16 +1016,18 @@ export default function EmailMarketingManagement() {
                 <CardContent>
                   <div className='space-y-2'>
                     <p className='text-muted-foreground text-sm'>
-                      Created: {new Date(template.createdAt).toLocaleDateString()}
+                      {t('date.created', {
+                        date: new Date(template.createdAt).toLocaleDateString()
+                      })}
                     </p>
                     <div className='flex gap-2'>
                       <Button variant='outline' size='sm'>
                         <Edit3 className='mr-1 h-4 w-4' />
-                        Edit
+                        {t('actions.edit')}
                       </Button>
                       <Button variant='outline' size='sm'>
                         <Copy className='mr-1 h-4 w-4' />
-                        Use
+                        {t('actions.use')}
                       </Button>
                     </div>
                   </div>
@@ -1030,7 +1036,7 @@ export default function EmailMarketingManagement() {
             )) || (
               <div className='text-muted-foreground col-span-full py-8 text-center'>
                 <FileText className='mx-auto mb-4 h-12 w-12 opacity-50' />
-                <p>No templates yet. Create your first template to get started!</p>
+                <p>{t('templates.empty')}</p>
               </div>
             )}
           </div>
@@ -1041,19 +1047,21 @@ export default function EmailMarketingManagement() {
       <Dialog open={isViewBroadcastDialogOpen} onOpenChange={setIsViewBroadcastDialogOpen}>
         <DialogContent className='max-w-3xl'>
           <DialogHeader>
-            <DialogTitle>Broadcast Details</DialogTitle>
-            <DialogDescription>View broadcast information and content</DialogDescription>
+            <DialogTitle>{t('broadcast-details.title')}</DialogTitle>
+            <DialogDescription>{t('broadcast-details.description')}</DialogDescription>
           </DialogHeader>
 
           {selectedBroadcastData && (
             <div className='space-y-4'>
               <div className='grid grid-cols-2 gap-4'>
                 <div>
-                  <Label className='text-sm font-medium'>Name</Label>
-                  <p className='text-sm'>{selectedBroadcastData?.broadcast?.name || 'N/A'}</p>
+                  <Label className='text-sm font-medium'>{t('fields.name')}</Label>
+                  <p className='text-sm'>
+                    {selectedBroadcastData?.broadcast?.name || t('fields.not-available')}
+                  </p>
                 </div>
                 <div>
-                  <Label className='text-sm font-medium'>Status</Label>
+                  <Label className='text-sm font-medium'>{t('fields.status')}</Label>
                   <Badge
                     className={getBroadcastStatusColor(
                       selectedBroadcastData?.broadcast?.status || 'draft'
@@ -1063,27 +1071,31 @@ export default function EmailMarketingManagement() {
                   </Badge>
                 </div>
                 <div>
-                  <Label className='text-sm font-medium'>Subject</Label>
-                  <p className='text-sm'>{selectedBroadcastData?.broadcast?.subject || 'N/A'}</p>
+                  <Label className='text-sm font-medium'>{t('fields.subject')}</Label>
+                  <p className='text-sm'>
+                    {selectedBroadcastData?.broadcast?.subject || t('fields.not-available')}
+                  </p>
                 </div>
                 <div>
-                  <Label className='text-sm font-medium'>From</Label>
-                  <p className='text-sm'>{selectedBroadcastData?.broadcast?.from || 'N/A'}</p>
+                  <Label className='text-sm font-medium'>{t('fields.from')}</Label>
+                  <p className='text-sm'>
+                    {selectedBroadcastData?.broadcast?.from || t('fields.not-available')}
+                  </p>
                 </div>
               </div>
 
               <div>
-                <Label className='text-sm font-medium'>HTML Content</Label>
+                <Label className='text-sm font-medium'>{t('fields.html-content')}</Label>
                 <div className='bg-muted mt-2 max-h-64 overflow-y-auto rounded-lg p-4'>
                   <pre className='text-xs whitespace-pre-wrap'>
-                    {selectedBroadcastData?.broadcast?.html || 'No content'}
+                    {selectedBroadcastData?.broadcast?.html || t('fields.no-content')}
                   </pre>
                 </div>
               </div>
 
               {selectedBroadcastData?.broadcast?.text && (
                 <div>
-                  <Label className='text-sm font-medium'>Plain Text Content</Label>
+                  <Label className='text-sm font-medium'>{t('fields.plain-text-content')}</Label>
                   <div className='bg-muted mt-2 max-h-64 overflow-y-auto rounded-lg p-4'>
                     <pre className='text-xs whitespace-pre-wrap'>
                       {selectedBroadcastData.broadcast.text}
@@ -1096,7 +1108,7 @@ export default function EmailMarketingManagement() {
 
           <DialogFooter>
             <Button variant='outline' onClick={() => setIsViewBroadcastDialogOpen(false)}>
-              Close
+              {t('actions.close')}
             </Button>
             {selectedBroadcast?.status === 'draft' && (
               <Button
@@ -1106,7 +1118,7 @@ export default function EmailMarketingManagement() {
                 }}
               >
                 <Edit3 className='mr-2 h-4 w-4' />
-                Edit Broadcast
+                {t('actions.edit-broadcast')}
               </Button>
             )}
           </DialogFooter>
@@ -1117,41 +1129,41 @@ export default function EmailMarketingManagement() {
       <Dialog open={isEditBroadcastDialogOpen} onOpenChange={setIsEditBroadcastDialogOpen}>
         <DialogContent className='max-w-2xl'>
           <DialogHeader>
-            <DialogTitle>Edit Broadcast</DialogTitle>
-            <DialogDescription>Update broadcast content and settings</DialogDescription>
+            <DialogTitle>{t('edit-broadcast.title')}</DialogTitle>
+            <DialogDescription>{t('edit-broadcast.description')}</DialogDescription>
           </DialogHeader>
 
           <form action={handleUpdateBroadcast}>
             <div className='space-y-4'>
               <div>
-                <Label htmlFor='edit-subject'>Subject Line</Label>
+                <Label htmlFor='edit-subject'>{t('fields.subject-line')}</Label>
                 <Input
                   id='edit-subject'
                   name='subject'
                   defaultValue={selectedBroadcast?.subject || ''}
-                  placeholder='Email subject'
+                  placeholder={t('fields.email-subject-placeholder')}
                   required
                 />
               </div>
 
               <div>
-                <Label htmlFor='edit-html'>Email Content (HTML)</Label>
+                <Label htmlFor='edit-html'>{t('fields.email-content-html')}</Label>
                 <Textarea
                   id='edit-html'
                   name='html'
                   defaultValue={selectedBroadcast?.html || ''}
-                  placeholder='Email HTML content'
+                  placeholder={t('fields.email-html-placeholder')}
                   rows={12}
                 />
               </div>
 
               <div>
-                <Label htmlFor='edit-text'>Plain Text Version (Optional)</Label>
+                <Label htmlFor='edit-text'>{t('fields.plain-text-optional')}</Label>
                 <Textarea
                   id='edit-text'
                   name='text'
                   defaultValue={selectedBroadcast?.text || ''}
-                  placeholder='Plain text version'
+                  placeholder={t('fields.plain-text-placeholder')}
                   rows={6}
                 />
               </div>
@@ -1163,18 +1175,18 @@ export default function EmailMarketingManagement() {
                 variant='outline'
                 onClick={() => setIsEditBroadcastDialogOpen(false)}
               >
-                Cancel
+                {commonT('cancel')}
               </Button>
               <Button type='submit' disabled={updateBroadcastMutation.isPending}>
                 {updateBroadcastMutation.isPending ? (
                   <>
                     <Loader2 className='mr-2 h-4 w-4 animate-spin' />
-                    Updating...
+                    {t('actions.updating')}
                   </>
                 ) : (
                   <>
                     <Edit3 className='mr-2 h-4 w-4' />
-                    Update Broadcast
+                    {t('actions.update-broadcast')}
                   </>
                 )}
               </Button>

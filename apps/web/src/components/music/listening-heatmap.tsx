@@ -56,11 +56,9 @@ const ListeningHeatmap = () => {
       <CardHeader>
         {/* Title and subtitle */}
         <div>
-          <CardTitle className='text-base sm:text-lg'>
-            {t('spotify.heatmap.title') || 'Listening Heatmap'}
-          </CardTitle>
+          <CardTitle className='text-base sm:text-lg'>{t('spotify.heatmap.title')}</CardTitle>
           <CardDescription className='text-xs sm:text-sm'>
-            {t('spotify.heatmap.subtitle') || 'Hourly activity by day (recent plays)'}
+            {t('spotify.heatmap.subtitle')}
           </CardDescription>
         </div>
         {/* Controls row beneath title, wraps on small screens; extra spacing for clarity */}
@@ -101,10 +99,10 @@ const ListeningHeatmap = () => {
                   <div key={`col-${dayIdx}`} className='flex flex-col items-center gap-2'>
                     <div
                       className={`ring-border/50 aspect-square w-full rounded-md ${cellColors(v, max)} ring-1 transition duration-150 hover:scale-[1.04] hover:ring-4 hover:ring-[var(--accent-border)]`}
-                      title={`${td(`spotify.heatmap.days.${dayKey}`) || dayKey.toUpperCase()} — ${v}`}
+                      title={`${td(`spotify.heatmap.days.${dayKey}`)} — ${v}`}
                     />
                     <div className='text-muted-foreground text-center text-[11px] leading-none'>
-                      {td(`spotify.heatmap.days.${dayKey}`) || dayKey.slice(0, 3).toUpperCase()}
+                      {td(`spotify.heatmap.days.${dayKey}`)}
                     </div>
                   </div>
                 )
@@ -114,7 +112,7 @@ const ListeningHeatmap = () => {
             {/* Legend: communicates scale without taking much space */}
             <div className='flex items-center gap-2'>
               <span className='text-muted-foreground text-[10px]'>
-                {t('spotify.heatmap.legend.low') || 'Low'}
+                {t('spotify.heatmap.legend.low')}
               </span>
               <div className='flex items-center gap-0.5'>
                 {[0, 1, 2, 3, 4].map((i) => (
@@ -125,12 +123,12 @@ const ListeningHeatmap = () => {
                 ))}
               </div>
               <span className='text-muted-foreground text-[10px]'>
-                {t('spotify.heatmap.legend.high') || 'High'}
+                {t('spotify.heatmap.legend.high')}
               </span>
             </div>
           </div>
         ) : (
-          <p className='text-muted-foreground text-sm'>{t('spotify.no-data') || 'No data'}</p>
+          <p className='text-muted-foreground text-sm'>{t('spotify.no-data')}</p>
         )}
       </CardContent>
     </Card>

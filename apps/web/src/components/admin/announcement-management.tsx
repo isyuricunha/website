@@ -47,6 +47,7 @@ import {
   Users,
   BarChart3
 } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { toast } from 'sonner'
 import { cn } from '@isyuricunha/utils'
 import { api } from '@/trpc/react'
@@ -66,6 +67,8 @@ interface EditAnnouncementData {
 }
 
 export default function AnnouncementManagement() {
+  const t = useTranslations('admin.announcement-management')
+  const commonT = useTranslations('common')
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
   const [editingAnnouncement, setEditingAnnouncement] = useState<EditAnnouncementData | null>(null)
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
@@ -91,7 +94,7 @@ export default function AnnouncementManagement() {
 
   const translateMutation = api.announcements.translateAnnouncement.useMutation({
     onError: (error) => {
-      toast.error(`Failed to translate: ${error.message}`)
+      toast.error(t('messages.translate-failed', { message: error.message }))
     }
   })
 
@@ -100,7 +103,7 @@ export default function AnnouncementManagement() {
     const content = createContentRef.current?.value ?? ''
 
     if (!title.trim() || !content.trim()) {
-      toast.error('Title and content are required')
+      toast.error(t('messages.title-content-required'))
       return
     }
 
@@ -114,7 +117,7 @@ export default function AnnouncementManagement() {
     if (createTitlePtRef.current) createTitlePtRef.current.value = result.titlePt ?? ''
     if (createContentPtRef.current) createContentPtRef.current.value = result.contentPt ?? ''
 
-    toast.success('Filled pt-BR using Yue AI')
+    toast.success(t('messages.pt-filled'))
   }
 
   const handleAiFillEditPt = async () => {
@@ -122,7 +125,7 @@ export default function AnnouncementManagement() {
     const content = editContentRef.current?.value ?? editingAnnouncement?.content ?? ''
 
     if (!title.trim() || !content.trim()) {
-      toast.error('Title and content are required')
+      toast.error(t('messages.title-content-required'))
       return
     }
 
@@ -136,7 +139,7 @@ export default function AnnouncementManagement() {
     if (editTitlePtRef.current) editTitlePtRef.current.value = result.titlePt ?? ''
     if (editContentPtRef.current) editContentPtRef.current.value = result.contentPt ?? ''
 
-    toast.success('Filled pt-BR using Yue AI')
+    toast.success(t('messages.pt-filled'))
   }
 
   const { data: analytics } = api.announcements.getAnnouncementAnalytics.useQuery({})
@@ -144,34 +147,34 @@ export default function AnnouncementManagement() {
   // Mutations
   const createMutation = api.announcements.createAnnouncement.useMutation({
     onSuccess: () => {
-      toast.success('Announcement created successfully')
+      toast.success(t('messages.created'))
       setIsCreateDialogOpen(false)
       refetch()
     },
     onError: (error) => {
-      toast.error(`Failed to create announcement: ${error.message}`)
+      toast.error(t('messages.create-failed', { message: error.message }))
     }
   })
 
   const updateMutation = api.announcements.updateAnnouncement.useMutation({
     onSuccess: () => {
-      toast.success('Announcement updated successfully')
+      toast.success(t('messages.updated'))
       setIsEditDialogOpen(false)
       setEditingAnnouncement(null)
       refetch()
     },
     onError: (error) => {
-      toast.error(`Failed to update announcement: ${error.message}`)
+      toast.error(t('messages.update-failed', { message: error.message }))
     }
   })
 
   const deleteMutation = api.announcements.deleteAnnouncement.useMutation({
     onSuccess: () => {
-      toast.success('Announcement deleted successfully')
+      toast.success(t('messages.deleted'))
       refetch()
     },
     onError: (error) => {
-      toast.error(`Failed to delete announcement: ${error.message}`)
+      toast.error(t('messages.delete-failed', { message: error.message }))
     }
   })
 
@@ -185,7 +188,7 @@ export default function AnnouncementManagement() {
     const isDismissible = formData.get('isDismissible') === 'on'
 
     if (!title || !content) {
-      toast.error('Title and content are required')
+      toast.error(t('messages.title-content-required'))
       return
     }
 
@@ -213,7 +216,7 @@ export default function AnnouncementManagement() {
     const isActive = formData.get('isActive') === 'on'
 
     if (!title || !content) {
-      toast.error('Title and content are required')
+      toast.error(t('messages.title-content-required'))
       return
     }
 
@@ -258,7 +261,7 @@ export default function AnnouncementManagement() {
   }
 
   if (isLoading) {
-    return <div className='p-6'>Loading announcements...</div>
+    return <div className='p-6'>{t('loading')}</div>
   }
 
   return (
@@ -270,56 +273,52 @@ export default function AnnouncementManagement() {
             <div className='text-accent-earth-text shrink-0 rounded-xl bg-[var(--accent-dim)] p-2.5'>
               <Megaphone className='h-7 w-7 sm:h-8 sm:w-8' />
             </div>
-            <span className='truncate'>Announcements</span>
+            <span className='truncate'>{t('title')}</span>
           </h1>
-          <p className='text-muted-foreground text-sm sm:text-base'>
-            Manage site-wide announcements and notifications
-          </p>
+          <p className='text-muted-foreground text-sm sm:text-base'>{t('description')}</p>
         </div>
 
         <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
           <DialogTrigger asChild>
             <Button className='min-h-[44px] w-full px-4 text-sm sm:w-auto sm:px-6 sm:text-base'>
               <Plus className='mr-2 h-4 w-4 shrink-0' />
-              <span className='truncate'>Create Announcement</span>
+              <span className='truncate'>{t('actions.create')}</span>
             </Button>
           </DialogTrigger>
           <DialogContent className='mx-4 max-h-[90vh] max-w-2xl overflow-y-auto'>
             <DialogHeader>
-              <DialogTitle>Create New Announcement</DialogTitle>
-              <DialogDescription>
-                Create a new site-wide announcement that will be visible to users.
-              </DialogDescription>
+              <DialogTitle>{t('create.title')}</DialogTitle>
+              <DialogDescription>{t('create.description')}</DialogDescription>
             </DialogHeader>
             <form action={handleCreateAnnouncement}>
               <div className='space-y-4'>
                 <div>
-                  <Label htmlFor='title'>Title</Label>
+                  <Label htmlFor='title'>{t('fields.title')}</Label>
                   <Input
                     id='title'
                     name='title'
-                    placeholder='Announcement title'
+                    placeholder={t('fields.title-placeholder')}
                     required
                     ref={createTitleRef}
                   />
                 </div>
 
                 <div>
-                  <Label htmlFor='title-pt'>Title (pt-BR)</Label>
+                  <Label htmlFor='title-pt'>{t('fields.title-pt')}</Label>
                   <Input
                     id='title-pt'
                     name='titlePt'
-                    placeholder='Título em português (opcional)'
+                    placeholder={t('fields.title-pt-placeholder')}
                     ref={createTitlePtRef}
                   />
                 </div>
 
                 <div>
-                  <Label htmlFor='content'>Content</Label>
+                  <Label htmlFor='content'>{t('fields.content')}</Label>
                   <Textarea
                     id='content'
                     name='content'
-                    placeholder='Announcement content'
+                    placeholder={t('fields.content-placeholder')}
                     rows={4}
                     required
                     ref={createContentRef}
@@ -327,11 +326,11 @@ export default function AnnouncementManagement() {
                 </div>
 
                 <div>
-                  <Label htmlFor='content-pt'>Content (pt-BR)</Label>
+                  <Label htmlFor='content-pt'>{t('fields.content-pt')}</Label>
                   <Textarea
                     id='content-pt'
                     name='contentPt'
-                    placeholder='Conteúdo em português (opcional)'
+                    placeholder={t('fields.content-pt-placeholder')}
                     rows={4}
                     ref={createContentPtRef}
                   />
@@ -344,31 +343,31 @@ export default function AnnouncementManagement() {
                     onClick={handleAiFillCreatePt}
                     disabled={translateMutation.isPending}
                   >
-                    {translateMutation.isPending ? 'Translating...' : 'Fill pt-BR with AI'}
+                    {translateMutation.isPending ? t('actions.translating') : t('actions.fill-pt')}
                   </Button>
                 </div>
 
                 <div className='grid grid-cols-2 gap-4'>
                   <div>
-                    <Label htmlFor='type'>Type</Label>
+                    <Label htmlFor='type'>{t('fields.type')}</Label>
                     <Select name='type' defaultValue='info'>
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value='info'>Info</SelectItem>
-                        <SelectItem value='success'>Success</SelectItem>
-                        <SelectItem value='warning'>Warning</SelectItem>
-                        <SelectItem value='error'>Error</SelectItem>
-                        <SelectItem value='maintenance'>Maintenance</SelectItem>
-                        <SelectItem value='feature'>Feature</SelectItem>
-                        <SelectItem value='update'>Update</SelectItem>
+                        <SelectItem value='info'>{t('types.info')}</SelectItem>
+                        <SelectItem value='success'>{t('types.success')}</SelectItem>
+                        <SelectItem value='warning'>{t('types.warning')}</SelectItem>
+                        <SelectItem value='error'>{t('types.error')}</SelectItem>
+                        <SelectItem value='maintenance'>{t('types.maintenance')}</SelectItem>
+                        <SelectItem value='feature'>{t('types.feature')}</SelectItem>
+                        <SelectItem value='update'>{t('types.update')}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
 
                   <div>
-                    <Label htmlFor='priority'>Priority (0-10)</Label>
+                    <Label htmlFor='priority'>{t('fields.priority')}</Label>
                     <Input
                       id='priority'
                       name='priority'
@@ -388,7 +387,7 @@ export default function AnnouncementManagement() {
                     defaultChecked
                     className='rounded'
                   />
-                  <Label htmlFor='isDismissible'>Allow users to dismiss this announcement</Label>
+                  <Label htmlFor='isDismissible'>{t('fields.dismissible')}</Label>
                 </div>
               </div>
 
@@ -398,9 +397,9 @@ export default function AnnouncementManagement() {
                   variant='outline'
                   onClick={() => setIsCreateDialogOpen(false)}
                 >
-                  Cancel
+                  {commonT('cancel')}
                 </Button>
-                <Button type='submit'>Create Announcement</Button>
+                <Button type='submit'>{t('actions.create')}</Button>
               </DialogFooter>
             </form>
           </DialogContent>
@@ -413,7 +412,7 @@ export default function AnnouncementManagement() {
           <Card className='bg-bg-surface border-[var(--border-subtle)] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl'>
             <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-3'>
               <CardTitle className='text-muted-foreground text-sm font-semibold'>
-                Total Views
+                {t('analytics.total-views.title')}
               </CardTitle>
               <div className='text-accent-earth-text rounded-lg bg-[var(--accent-dim)] p-2'>
                 <BarChart3 className='h-5 w-5' />
@@ -424,7 +423,7 @@ export default function AnnouncementManagement() {
                 {analytics.totalViews}
               </div>
               <p className='text-muted-foreground text-xs leading-relaxed'>
-                Across all announcements
+                {t('analytics.total-views.description')}
               </p>
             </CardContent>
           </Card>
@@ -432,7 +431,7 @@ export default function AnnouncementManagement() {
           <Card className='bg-bg-surface border-[var(--border-subtle)] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl'>
             <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-3'>
               <CardTitle className='text-muted-foreground text-sm font-semibold'>
-                Dismissal Rate
+                {t('analytics.dismissal-rate.title')}
               </CardTitle>
               <div className='text-accent-earth-text rounded-lg bg-[var(--accent-dim)] p-2'>
                 <Users className='h-5 w-5' />
@@ -443,7 +442,9 @@ export default function AnnouncementManagement() {
                 {analytics.dismissalRate.toFixed(1)}%
               </div>
               <p className='text-muted-foreground text-xs leading-relaxed'>
-                {analytics.totalDismissals} total dismissals
+                {t('analytics.dismissal-rate.description', {
+                  count: analytics.totalDismissals
+                })}
               </p>
             </CardContent>
           </Card>
@@ -451,7 +452,7 @@ export default function AnnouncementManagement() {
           <Card className='bg-bg-surface border-[var(--border-subtle)] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl'>
             <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-3'>
               <CardTitle className='text-muted-foreground text-sm font-semibold'>
-                Active Announcements
+                {t('analytics.active.title')}
               </CardTitle>
               <div className='text-accent-earth-text rounded-lg bg-[var(--accent-dim)] p-2'>
                 <Megaphone className='h-5 w-5' />
@@ -462,7 +463,7 @@ export default function AnnouncementManagement() {
                 {announcements?.announcements?.filter((a) => a.isActive).length || 0}
               </div>
               <p className='text-muted-foreground text-xs leading-relaxed'>
-                Currently visible to users
+                {t('analytics.active.description')}
               </p>
             </CardContent>
           </Card>
@@ -476,11 +477,9 @@ export default function AnnouncementManagement() {
             <div className='text-accent-earth-text rounded-lg bg-[var(--accent-dim)] p-2'>
               <Megaphone className='h-4 w-4' />
             </div>
-            <CardTitle className='text-lg font-semibold sm:text-xl'>All Announcements</CardTitle>
+            <CardTitle className='text-lg font-semibold sm:text-xl'>{t('list.title')}</CardTitle>
           </div>
-          <CardDescription className='text-xs sm:text-sm'>
-            Manage your site announcements
-          </CardDescription>
+          <CardDescription className='text-xs sm:text-sm'>{t('list.description')}</CardDescription>
         </CardHeader>
         <CardContent className='p-4 sm:p-6'>
           <ScrollArea className='h-[400px] sm:h-[500px] lg:h-[600px]'>
@@ -518,12 +517,14 @@ export default function AnnouncementManagement() {
                                 </h3>
                                 {!announcement.isActive && (
                                   <Badge variant='secondary' className='text-xs'>
-                                    Inactive
+                                    {t('status.inactive')}
                                   </Badge>
                                 )}
                                 {(has_pt_title || has_pt_content) && (
                                   <Badge variant='outline' className='text-xs'>
-                                    {has_pt_title && has_pt_content ? 'PT' : 'PT partial'}
+                                    {has_pt_title && has_pt_content
+                                      ? t('status.pt')
+                                      : t('status.pt-partial')}
                                   </Badge>
                                 )}
                               </div>
@@ -540,16 +541,18 @@ export default function AnnouncementManagement() {
                               {new Date(announcement.createdAt).toLocaleDateString()}
                             </span>
                             <Badge variant='outline' className='text-xs font-medium'>
-                              Priority {announcement.priority}
+                              {t('fields.priority-value', { priority: announcement.priority })}
                             </Badge>
                             {announcement.targetAudience && (
                               <span className='flex items-center gap-1.5'>
                                 <Users className='h-3.5 w-3.5' />
-                                Targeted
+                                {t('status.targeted')}
                               </span>
                             )}
                             <span>
-                              {announcement.isDismissible ? '✓ Dismissible' : '✗ Not dismissible'}
+                              {announcement.isDismissible
+                                ? t('status.dismissible')
+                                : t('status.not-dismissible')}
                             </span>
                           </div>
                         </div>
@@ -566,7 +569,11 @@ export default function AnnouncementManagement() {
                                 ? 'text-accent-earth-text hover:bg-[var(--accent-dim)]'
                                 : 'text-muted-foreground hover:text-foreground hover:bg-muted'
                             )}
-                            aria-label={announcement.isActive ? 'Deactivate' : 'Activate'}
+                            aria-label={
+                              announcement.isActive
+                                ? t('actions.deactivate')
+                                : t('actions.activate')
+                            }
                           >
                             {announcement.isActive ? (
                               <Eye className='h-4 w-4' />
@@ -580,7 +587,7 @@ export default function AnnouncementManagement() {
                             size='sm'
                             onClick={() => openEditDialog(announcement)}
                             className='text-accent-earth-text h-9 w-9 p-0 transition-all duration-200 hover:bg-[var(--accent-dim)]'
-                            aria-label='Edit announcement'
+                            aria-label={t('actions.edit-aria')}
                           >
                             <Edit className='h-4 w-4' />
                           </Button>
@@ -591,26 +598,25 @@ export default function AnnouncementManagement() {
                                 variant='ghost'
                                 size='sm'
                                 className='text-destructive hover:bg-destructive/10 h-9 w-9 p-0 transition-all duration-200'
-                                aria-label='Delete announcement'
+                                aria-label={t('actions.delete-aria')}
                               >
                                 <Trash2 className='h-4 w-4' />
                               </Button>
                             </AlertDialogTrigger>
                             <AlertDialogContent>
                               <AlertDialogHeader>
-                                <AlertDialogTitle>Delete Announcement</AlertDialogTitle>
+                                <AlertDialogTitle>{t('delete.title')}</AlertDialogTitle>
                                 <AlertDialogDescription>
-                                  Are you sure you want to delete "{announcement.title}"? This
-                                  action cannot be undone.
+                                  {t('delete.description', { title: announcement.title })}
                                 </AlertDialogDescription>
                               </AlertDialogHeader>
                               <AlertDialogFooter>
-                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogCancel>{commonT('cancel')}</AlertDialogCancel>
                                 <AlertDialogAction
                                   onClick={() => handleDeleteAnnouncement(announcement.id)}
                                   className='bg-destructive text-destructive-foreground hover:bg-destructive/90'
                                 >
-                                  Delete
+                                  {commonT('delete')}
                                 </AlertDialogAction>
                               </AlertDialogFooter>
                             </AlertDialogContent>
@@ -625,9 +631,7 @@ export default function AnnouncementManagement() {
               {!announcements?.announcements?.length && (
                 <div className='text-muted-foreground py-8 text-center sm:py-12'>
                   <Megaphone className='mx-auto mb-4 h-8 w-8 opacity-50 sm:h-12 sm:w-12' />
-                  <p className='px-4 text-sm sm:text-base'>
-                    No announcements yet. Create your first announcement to get started!
-                  </p>
+                  <p className='px-4 text-sm sm:text-base'>{t('empty')}</p>
                 </div>
               )}
             </div>
@@ -639,14 +643,14 @@ export default function AnnouncementManagement() {
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
         <DialogContent className='max-w-2xl'>
           <DialogHeader>
-            <DialogTitle>Edit Announcement</DialogTitle>
-            <DialogDescription>Update the announcement details.</DialogDescription>
+            <DialogTitle>{t('edit.title')}</DialogTitle>
+            <DialogDescription>{t('edit.description')}</DialogDescription>
           </DialogHeader>
           {editingAnnouncement && (
             <form action={handleEditAnnouncement}>
               <div className='space-y-4'>
                 <div>
-                  <Label htmlFor='edit-title'>Title</Label>
+                  <Label htmlFor='edit-title'>{t('fields.title')}</Label>
                   <Input
                     id='edit-title'
                     name='title'
@@ -657,7 +661,7 @@ export default function AnnouncementManagement() {
                 </div>
 
                 <div>
-                  <Label htmlFor='edit-title-pt'>Title (pt-BR)</Label>
+                  <Label htmlFor='edit-title-pt'>{t('fields.title-pt')}</Label>
                   <Input
                     id='edit-title-pt'
                     name='titlePt'
@@ -667,7 +671,7 @@ export default function AnnouncementManagement() {
                 </div>
 
                 <div>
-                  <Label htmlFor='edit-content'>Content</Label>
+                  <Label htmlFor='edit-content'>{t('fields.content')}</Label>
                   <Textarea
                     id='edit-content'
                     name='content'
@@ -679,7 +683,7 @@ export default function AnnouncementManagement() {
                 </div>
 
                 <div>
-                  <Label htmlFor='edit-content-pt'>Content (pt-BR)</Label>
+                  <Label htmlFor='edit-content-pt'>{t('fields.content-pt')}</Label>
                   <Textarea
                     id='edit-content-pt'
                     name='contentPt'
@@ -696,31 +700,31 @@ export default function AnnouncementManagement() {
                     onClick={handleAiFillEditPt}
                     disabled={translateMutation.isPending}
                   >
-                    {translateMutation.isPending ? 'Translating...' : 'Fill pt-BR with AI'}
+                    {translateMutation.isPending ? t('actions.translating') : t('actions.fill-pt')}
                   </Button>
                 </div>
 
                 <div className='grid grid-cols-2 gap-4'>
                   <div>
-                    <Label htmlFor='edit-type'>Type</Label>
+                    <Label htmlFor='edit-type'>{t('fields.type')}</Label>
                     <Select name='type' defaultValue={editingAnnouncement.type}>
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value='info'>Info</SelectItem>
-                        <SelectItem value='success'>Success</SelectItem>
-                        <SelectItem value='warning'>Warning</SelectItem>
-                        <SelectItem value='error'>Error</SelectItem>
-                        <SelectItem value='maintenance'>Maintenance</SelectItem>
-                        <SelectItem value='feature'>Feature</SelectItem>
-                        <SelectItem value='update'>Update</SelectItem>
+                        <SelectItem value='info'>{t('types.info')}</SelectItem>
+                        <SelectItem value='success'>{t('types.success')}</SelectItem>
+                        <SelectItem value='warning'>{t('types.warning')}</SelectItem>
+                        <SelectItem value='error'>{t('types.error')}</SelectItem>
+                        <SelectItem value='maintenance'>{t('types.maintenance')}</SelectItem>
+                        <SelectItem value='feature'>{t('types.feature')}</SelectItem>
+                        <SelectItem value='update'>{t('types.update')}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
 
                   <div>
-                    <Label htmlFor='edit-priority'>Priority (0-10)</Label>
+                    <Label htmlFor='edit-priority'>{t('fields.priority')}</Label>
                     <Input
                       id='edit-priority'
                       name='priority'
@@ -741,9 +745,7 @@ export default function AnnouncementManagement() {
                       defaultChecked={editingAnnouncement.isDismissible}
                       className='rounded'
                     />
-                    <Label htmlFor='edit-isDismissible'>
-                      Allow users to dismiss this announcement
-                    </Label>
+                    <Label htmlFor='edit-isDismissible'>{t('fields.dismissible')}</Label>
                   </div>
 
                   <div className='flex items-center space-x-2'>
@@ -754,16 +756,16 @@ export default function AnnouncementManagement() {
                       defaultChecked={editingAnnouncement.isActive}
                       className='rounded'
                     />
-                    <Label htmlFor='edit-isActive'>Announcement is active</Label>
+                    <Label htmlFor='edit-isActive'>{t('fields.active')}</Label>
                   </div>
                 </div>
               </div>
 
               <DialogFooter className='mt-6'>
                 <Button type='button' variant='outline' onClick={() => setIsEditDialogOpen(false)}>
-                  Cancel
+                  {commonT('cancel')}
                 </Button>
-                <Button type='submit'>Update Announcement</Button>
+                <Button type='submit'>{t('actions.update')}</Button>
               </DialogFooter>
             </form>
           )}

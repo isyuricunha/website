@@ -1,9 +1,12 @@
 'use client'
 
+import { useTranslations } from '@isyuricunha/i18n/client'
 import { Card, CardContent, CardHeader, Skeleton, Badge } from '@isyuricunha/ui'
 import { Activity, RefreshCw } from 'lucide-react'
 
 const AdminLoading = () => {
+  const t = useTranslations('admin.common')
+
   return (
     <div className='animate-in fade-in-50 space-y-6 duration-500'>
       {/* Header */}
@@ -15,11 +18,11 @@ const AdminLoading = () => {
         <div className='flex items-center space-x-2'>
           <Badge variant='outline' className='text-xs'>
             <Activity className='mr-1 h-3 w-3' />
-            Loading...
+            {t('loading')}
           </Badge>
           <div className='flex items-center space-x-2 rounded-md border px-3 py-1.5'>
             <RefreshCw className='h-4 w-4 animate-spin' />
-            <span className='text-sm'>Refresh</span>
+            <span className='text-sm'>{t('refresh')}</span>
           </div>
         </div>
       </div>

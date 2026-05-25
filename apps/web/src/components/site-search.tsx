@@ -31,15 +31,9 @@ const SiteSearch = () => {
   const t = useTranslations()
   const router = useRouter()
 
-  const placeholder = t.has('site-search.placeholder')
-    ? t('site-search.placeholder')
-    : 'Search the site...'
-  const recentSearchesLabel = t.has('site-search.recent-searches')
-    ? t('site-search.recent-searches')
-    : 'Recent searches'
-  const noResultsLabel = t.has('site-search.no-results')
-    ? t('site-search.no-results')
-    : 'No results for'
+  const placeholder = t('site-search.placeholder')
+  const recentSearchesLabel = t('site-search.recent-searches')
+  const noResultsLabel = t('site-search.no-results')
 
   // Combine all searchable content
   const searchableContent = useMemo(() => {
@@ -74,32 +68,32 @@ const SiteSearch = () => {
     const staticPages = [
       {
         id: 'about',
-        title: t.has('layout.about') ? t('layout.about') : 'About',
-        description: t.has('about.description') ? t('about.description') : '',
+        title: t('layout.about'),
+        description: t('about.description'),
         href: '/about',
         type: 'page' as const,
         icon: <User className='h-4 w-4' />
       },
       {
         id: 'now',
-        title: t.has('layout.now') ? t('layout.now') : 'Now',
-        description: t.has('now.description') ? t('now.description') : '',
+        title: t('layout.now'),
+        description: t('now.description'),
         href: '/now',
         type: 'page' as const,
         icon: <Calendar className='h-4 w-4' />
       },
       {
         id: 'uses',
-        title: t.has('layout.uses') ? t('layout.uses') : 'Uses',
-        description: t.has('uses.description') ? t('uses.description') : '',
+        title: t('layout.uses'),
+        description: t('uses.description'),
         href: '/uses',
         type: 'page' as const,
         icon: <Code className='h-4 w-4' />
       },
       {
         id: 'music',
-        title: t.has('layout.music') ? t('layout.music') : 'Music',
-        description: t.has('music.description') ? t('music.description') : '',
+        title: t('layout.music'),
+        description: t('music.description'),
         href: '/music',
         type: 'page' as const,
         icon: <Music className='h-4 w-4' />

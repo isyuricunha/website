@@ -37,7 +37,7 @@ const LocalHistoryImport = () => {
       if (!file) return
       const text = await file.text()
       const data: unknown = JSON.parse(text)
-      if (!Array.isArray(data)) throw new Error('Invalid file: expected JSON array')
+      if (!Array.isArray(data)) throw new Error(t('spotify.import.invalid-file'))
       const list = data as LocalPlay[]
       setCount(list.length)
       const artistSet = new Set<string>()
@@ -49,7 +49,7 @@ const LocalHistoryImport = () => {
       setArtists(artistSet.size)
       setDurationMs(total)
     } catch (error_: any) {
-      setError(error_?.message || 'Parse error')
+      setError(error_?.message || t('spotify.import.parse-error'))
     }
   }
 
@@ -60,11 +60,9 @@ const LocalHistoryImport = () => {
       <CardHeader>
         <div className='flex items-center justify-between'>
           <div>
-            <CardTitle className='text-base sm:text-lg'>
-              {t('spotify.import.title') || 'Import Local History'}
-            </CardTitle>
+            <CardTitle className='text-base sm:text-lg'>{t('spotify.import.title')}</CardTitle>
             <CardDescription className='text-xs sm:text-sm'>
-              {t('spotify.import.subtitle') || 'Analyze your exported Music history offline'}
+              {t('spotify.import.subtitle')}
             </CardDescription>
           </div>
         </div>
@@ -73,7 +71,7 @@ const LocalHistoryImport = () => {
         <div className='space-y-3'>
           <div className='flex items-center gap-3'>
             <Label htmlFor='musicHistoryFile' className='text-sm'>
-              {t('spotify.import.choose') || 'Choose JSON file'}
+              {t('spotify.import.choose')}
             </Label>
             <Input
               id='musicHistoryFile'
@@ -86,21 +84,15 @@ const LocalHistoryImport = () => {
           {count !== null && (
             <div className='grid grid-cols-3 gap-3'>
               <div className='bg-muted/50 rounded p-3'>
-                <div className='text-muted-foreground text-xs'>
-                  {t('spotify.import.plays') || 'Total plays'}
-                </div>
+                <div className='text-muted-foreground text-xs'>{t('spotify.import.plays')}</div>
                 <div className='text-lg font-semibold'>{count}</div>
               </div>
               <div className='bg-muted/50 rounded p-3'>
-                <div className='text-muted-foreground text-xs'>
-                  {t('spotify.import.artists') || 'Unique artists'}
-                </div>
+                <div className='text-muted-foreground text-xs'>{t('spotify.import.artists')}</div>
                 <div className='text-lg font-semibold'>{artists ?? '—'}</div>
               </div>
               <div className='bg-muted/50 rounded p-3'>
-                <div className='text-muted-foreground text-xs'>
-                  {t('spotify.import.duration') || 'Total time'}
-                </div>
+                <div className='text-muted-foreground text-xs'>{t('spotify.import.duration')}</div>
                 <div className='text-lg font-semibold'>
                   {durationMs ? Math.round(durationMs / 3_600_000) + 'h' : '—'}
                 </div>

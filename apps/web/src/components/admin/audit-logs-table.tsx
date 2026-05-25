@@ -10,6 +10,7 @@ import {
   getSortedRowModel,
   useReactTable
 } from '@tanstack/react-table'
+import { useTranslations } from '@isyuricunha/i18n/client'
 import {
   Badge,
   DataTable,
@@ -31,6 +32,7 @@ type AuditLogsTableProps = {
 
 const AuditLogsTable = (props: AuditLogsTableProps) => {
   const { data } = props
+  const t = useTranslations('admin.audit-logs')
 
   const { searchTerm, debouncedSearchTerm, updateSearchTerm } = useDebounceSearch()
 
@@ -60,38 +62,46 @@ const AuditLogsTable = (props: AuditLogsTableProps) => {
   const columns: Array<ColumnDef<AuditLog>> = [
     {
       accessorKey: 'createdAt',
-      header: ({ column }) => <DataTableColumnHeader column={column} title='Created At' />,
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={t('columns.createdAt')} />
+      ),
       cell: ({ row }) => <>{new Date(row.original.createdAt).toLocaleString()}</>
     },
     {
       accessorKey: 'action',
-      header: ({ column }) => <DataTableColumnHeader column={column} title='Action' />,
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.action')} />,
       cell: ({ row }) => <Badge variant='secondary'>{row.original.action}</Badge>
     },
     {
       accessorKey: 'adminUser.email',
-      header: ({ column }) => <DataTableColumnHeader column={column} title='Admin' />,
+      header: ({ column }) => <DataTableColumnHeader column={column} title={t('columns.admin')} />,
       cell: ({ row }) => <>{row.original.adminUser.email}</>
     },
     {
       accessorKey: 'targetType',
-      header: ({ column }) => <DataTableColumnHeader column={column} title='Target Type' />
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={t('columns.targetType')} />
+      )
     },
     {
       accessorKey: 'targetId',
-      header: ({ column }) => <DataTableColumnHeader column={column} title='Target ID' />
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={t('columns.targetId')} />
+      )
     },
     {
       accessorKey: 'ipAddress',
-      header: ({ column }) => <DataTableColumnHeader column={column} title='IP Address' />
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={t('columns.ipAddress')} />
+      )
     }
   ]
 
   const filterFields: Array<DataTableFilterField<AuditLog>> = [
     {
       id: 'action',
-      label: 'Action',
-      placeholder: 'Filter actions...'
+      label: t('columns.action'),
+      placeholder: t('filter-actions')
     }
   ]
 
@@ -111,7 +121,7 @@ const AuditLogsTable = (props: AuditLogsTableProps) => {
           <div className='relative'>
             <Search className='text-muted-foreground absolute top-2.5 left-2 h-4 w-4' />
             <Input
-              placeholder='Search audit logs...'
+              placeholder={t('search-placeholder')}
               value={searchTerm}
               onChange={(e) => updateSearchTerm(e.target.value)}
               className='w-80 pl-8'

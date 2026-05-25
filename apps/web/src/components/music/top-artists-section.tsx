@@ -209,7 +209,7 @@ const TopArtistsSection = () => {
             type='button'
             onClick={handleExportCsv}
             className='text-muted-foreground hover:text-foreground hover:bg-muted rounded-md px-2 py-1 text-xs transition-colors'
-            title={t('spotify.export.csv') || 'Export CSV'}
+            title={t('spotify.export.csv')}
           >
             CSV
           </button>
@@ -217,7 +217,7 @@ const TopArtistsSection = () => {
             type='button'
             onClick={handleExportJson}
             className='text-muted-foreground hover:text-foreground hover:bg-muted rounded-md px-2 py-1 text-xs transition-colors'
-            title={t('spotify.export.json') || 'Export JSON'}
+            title={t('spotify.export.json')}
           >
             JSON
           </button>

@@ -80,9 +80,9 @@ const Hero = () => {
             />
           </div>
           <div className='code-block w-full'>
-            <div className='text-text-tertiary'>database_specialist = true</div>
-            <div>region = "America/Sao_Paulo"</div>
-            <div>focus = "reliable data systems"</div>
+            <div className='text-text-tertiary'>{t('homepage.hero.code.database-specialist')}</div>
+            <div>{t('homepage.hero.code.region')}</div>
+            <div>{t('homepage.hero.code.focus')}</div>
           </div>
           <p className='text-muted-foreground text-center text-sm'>
             {t('homepage.hero.location-timezone')}

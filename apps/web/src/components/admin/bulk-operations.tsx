@@ -26,8 +26,10 @@ import {
   Settings
 } from 'lucide-react'
 import Image from 'next/image'
-import { api } from '@/trpc/react'
+import { useTranslations } from 'next-intl'
 import { toast } from 'sonner'
+
+import { api } from '@/trpc/react'
 
 interface BulkOperationStatus {
   id: string
@@ -66,6 +68,8 @@ const exportJson = (fileName: string, data: unknown) => {
 }
 
 export const BulkOperations = () => {
+  const t = useTranslations('admin.bulk-operations')
+  const roleT = useTranslations('admin.modals.edit-user.roles')
   const [selectedUsers, setSelectedUsers] = useState<string[]>([])
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedAction, setSelectedAction] = useState<'delete' | 'ban' | 'unban' | 'update_role'>(
@@ -112,25 +116,28 @@ export const BulkOperations = () => {
   const bulkUserAction = api.bulk.bulkUserAction.useMutation({
     onSuccess: (result) => {
       toast.success(
-        `Bulk operation completed: ${result.summary.successful}/${result.summary.total} successful`
+        t('messages.completed', {
+          successful: result.summary.successful,
+          total: result.summary.total
+        })
       )
       setSelectedUsers([])
       refetchUsers()
       utils.bulk.listBulkOperations.invalidate()
     },
     onError: (error) => {
-      toast.error(error.message || 'Bulk operation failed')
+      toast.error(error.message || t('messages.failed'))
     }
   })
 
   // Cancel bulk operation mutation
   const cancelOperation = api.bulk.cancelBulkOperation.useMutation({
     onSuccess: () => {
-      toast.success('Operation cancelled')
+      toast.success(t('messages.cancelled'))
       utils.bulk.listBulkOperations.invalidate()
     },
     onError: (error) => {
-      toast.error(error.message || 'Failed to cancel operation')
+      toast.error(error.message || t('messages.cancel-failed'))
     }
   })
 
@@ -143,11 +150,14 @@ export const BulkOperations = () => {
 
   const handleBulkAction = async () => {
     if (selectedUsers.length === 0) {
-      toast.error('Please select users to perform bulk actions')
+      toast.error(t('messages.select-users'))
       return
     }
 
-    const confirmMessage = `Are you sure you want to ${selectedAction} ${selectedUsers.length} users? This action cannot be undone.`
+    const confirmMessage = t('confirm.bulk-action', {
+      action: getActionLabel(selectedAction),
+      count: selectedUsers.length
+    })
     if (!confirm(confirmMessage)) {
       return
     }
@@ -162,8 +172,40 @@ export const BulkOperations = () => {
   }
 
   const handleCancelOperation = async (operationId: string) => {
-    if (confirm('Are you sure you want to cancel this operation?')) {
+    if (confirm(t('confirm.cancel-operation'))) {
       await cancelOperation.mutateAsync({ operationId })
+    }
+  }
+
+  const getActionLabel = (action: string) => {
+    switch (action) {
+      case 'delete':
+        return t('actions.delete-users')
+      case 'ban':
+        return t('actions.ban-users')
+      case 'unban':
+        return t('actions.unban-users')
+      case 'update_role':
+        return t('actions.update-role')
+      default:
+        return action
+    }
+  }
+
+  const getStatusLabel = (status: string) => {
+    switch (status) {
+      case 'completed':
+        return t('status.completed')
+      case 'failed':
+        return t('status.failed')
+      case 'running':
+        return t('status.running')
+      case 'cancelled':
+        return t('status.cancelled')
+      case 'pending':
+        return t('status.pending')
+      default:
+        return status
     }
   }
 
@@ -213,7 +255,7 @@ export const BulkOperations = () => {
   }
 
   const formatDate = (date: Date | string | undefined) => {
-    if (!date) return 'Never'
+    if (!date) return t('date.never')
     return new Date(date).toLocaleString()
   }
 
@@ -237,15 +279,15 @@ export const BulkOperations = () => {
       {/* Header */}
       <div className='flex items-center justify-between'>
         <div>
-          <h1 className='text-2xl font-medium'>Bulk Operations</h1>
-          <p className='text-muted-foreground'>Perform bulk actions on users and content</p>
+          <h1 className='text-2xl font-medium'>{t('title')}</h1>
+          <p className='text-muted-foreground'>{t('description')}</p>
         </div>
       </div>
 
       {/* Bulk User Actions */}
       <div className='bg-card border-border rounded-lg border'>
         <div className='border-border border-b px-6 py-4'>
-          <h3 className='text-lg font-medium'>Bulk User Actions</h3>
+          <h3 className='text-lg font-medium'>{t('user-actions.title')}</h3>
         </div>
         <div className='p-6'>
           {/* Search and Filters */}
@@ -255,7 +297,7 @@ export const BulkOperations = () => {
                 <Search className='text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform' />
                 <input
                   type='text'
-                  placeholder='Search users...'
+                  placeholder={t('user-actions.search-placeholder')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className='bg-background border-border text-foreground focus:ring-ring focus:ring-offset-background w-full rounded-md border py-2 pr-4 pl-10 focus:border-transparent focus:ring-2 focus:ring-offset-2'
@@ -264,14 +306,16 @@ export const BulkOperations = () => {
             </div>
             <Button variant='outline' size='sm'>
               <Filter className='mr-2 h-4 w-4' />
-              Filters
+              {t('user-actions.filters')}
             </Button>
           </div>
 
           {/* Action Selection */}
           <div className='bg-bg-surface mb-6 flex flex-col gap-4 rounded-lg p-4 sm:flex-row'>
             <div className='flex-1'>
-              <label className='mb-2 block text-sm font-medium'>Select Action</label>
+              <label className='mb-2 block text-sm font-medium'>
+                {t('user-actions.select-action')}
+              </label>
               <Select
                 value={selectedAction}
                 onValueChange={(value) =>
@@ -282,17 +326,19 @@ export const BulkOperations = () => {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value='ban'>Ban Users</SelectItem>
-                  <SelectItem value='unban'>Unban Users</SelectItem>
-                  <SelectItem value='update_role'>Update Role</SelectItem>
-                  <SelectItem value='delete'>Delete Users</SelectItem>
+                  <SelectItem value='ban'>{t('actions.ban-users')}</SelectItem>
+                  <SelectItem value='unban'>{t('actions.unban-users')}</SelectItem>
+                  <SelectItem value='update_role'>{t('actions.update-role')}</SelectItem>
+                  <SelectItem value='delete'>{t('actions.delete-users')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             {selectedAction === 'update_role' && (
               <div className='flex-1'>
-                <label className='mb-2 block text-sm font-medium'>New Role</label>
+                <label className='mb-2 block text-sm font-medium'>
+                  {t('user-actions.new-role')}
+                </label>
                 <Select
                   value={newRole}
                   onValueChange={(value) => setNewRole(value as 'user' | 'admin')}
@@ -301,8 +347,8 @@ export const BulkOperations = () => {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value='user'>User</SelectItem>
-                    <SelectItem value='admin'>Admin</SelectItem>
+                    <SelectItem value='user'>{roleT('user')}</SelectItem>
+                    <SelectItem value='admin'>{roleT('admin')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -315,7 +361,7 @@ export const BulkOperations = () => {
                 className='flex items-center gap-2'
               >
                 {getActionIcon(selectedAction)}
-                Execute ({selectedUsers.length})
+                {t('actions.execute', { count: selectedUsers.length })}
               </Button>
             </div>
           </div>
@@ -339,13 +385,13 @@ export const BulkOperations = () => {
                     />
                   </th>
                   <th className='text-muted-foreground px-6 py-3 text-left text-xs font-medium tracking-wider uppercase'>
-                    User
+                    {t('table.user')}
                   </th>
                   <th className='text-muted-foreground px-6 py-3 text-left text-xs font-medium tracking-wider uppercase'>
-                    Role
+                    {t('table.role')}
                   </th>
                   <th className='text-muted-foreground px-6 py-3 text-left text-xs font-medium tracking-wider uppercase'>
-                    Joined
+                    {t('table.joined')}
                   </th>
                 </tr>
               </thead>
@@ -406,9 +452,9 @@ export const BulkOperations = () => {
           {(!usersData?.users || usersData.users.length === 0) && (
             <div className='py-12 text-center'>
               <Users className='text-muted-foreground mx-auto h-12 w-12' />
-              <h3 className='mt-2 text-sm font-medium'>No users found</h3>
+              <h3 className='mt-2 text-sm font-medium'>{t('user-actions.no-users')}</h3>
               <p className='text-muted-foreground mt-1 text-sm'>
-                Try adjusting your search criteria.
+                {t('user-actions.no-users-hint')}
               </p>
             </div>
           )}
@@ -418,17 +464,17 @@ export const BulkOperations = () => {
       {/* Operations History */}
       <div className='bg-card border-border rounded-lg border'>
         <div className='border-border border-b px-6 py-4'>
-          <h3 className='text-lg font-medium'>Recent Operations</h3>
+          <h3 className='text-lg font-medium'>{t('operations.title')}</h3>
         </div>
         <div className='divide-border divide-y'>
           {operationsQuery.isError && (
             <div className='text-muted-foreground p-6 text-center'>
-              Failed to load bulk operations.
+              {t('operations.failed-to-load')}
             </div>
           )}
 
           {operationsQuery.isLoading && (
-            <div className='text-muted-foreground p-6 text-center'>Loading bulk operations...</div>
+            <div className='text-muted-foreground p-6 text-center'>{t('operations.loading')}</div>
           )}
 
           {operations.map((operation: BulkOperationStatus) => (
@@ -438,21 +484,22 @@ export const BulkOperations = () => {
                   {getStatusIcon(operation.status)}
                   <div>
                     <div className='flex items-center gap-2'>
-                      <span className='text-sm font-medium'>
-                        {operation.type
-                          .replace('_', ' ')
-                          .replace(/\b\w/g, (l: string) => l.toUpperCase())}
-                      </span>
+                      <span className='text-sm font-medium'>{getActionLabel(operation.type)}</span>
                       <span
                         className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${getStatusColor(operation.status)}`}
                       >
-                        {operation.status}
+                        {getStatusLabel(operation.status)}
                       </span>
                     </div>
                     <div className='text-muted-foreground text-sm'>
-                      {operation.successfulItems}/{operation.totalItems} successful • Created by{' '}
-                      {operation.createdByUser?.name || 'Unknown'} •
-                      {operation.createdAt ? formatDate(operation.createdAt) : 'Unknown date'}
+                      {t('operations.summary', {
+                        successful: operation.successfulItems,
+                        total: operation.totalItems,
+                        creator: operation.createdByUser?.name || t('date.unknown'),
+                        date: operation.createdAt
+                          ? formatDate(operation.createdAt)
+                          : t('date.unknown')
+                      })}
                     </div>
                   </div>
                 </div>
@@ -464,7 +511,7 @@ export const BulkOperations = () => {
                       variant='outline'
                       onClick={() => handleCancelOperation(operation.id)}
                     >
-                      Cancel
+                      {t('actions.cancel')}
                     </Button>
                   )}
                   {operation.status === 'completed' && operation.results != null && (
@@ -474,7 +521,7 @@ export const BulkOperations = () => {
                       onClick={() => handleExportOperation(operation)}
                     >
                       <Download className='mr-2 h-4 w-4' />
-                      Export
+                      {t('actions.export')}
                     </Button>
                   )}
                 </div>
@@ -484,7 +531,7 @@ export const BulkOperations = () => {
               {(operation.status === 'running' || operation.status === 'pending') && (
                 <div className='mt-4'>
                   <div className='text-muted-foreground mb-1 flex justify-between text-sm'>
-                    <span>Progress</span>
+                    <span>{t('operations.progress')}</span>
                     <span>
                       {operation.processedItems}/{operation.totalItems}
                     </span>
@@ -513,7 +560,7 @@ export const BulkOperations = () => {
           ))}
 
           {!operationsQuery.isLoading && !operationsQuery.isError && operations.length === 0 && (
-            <div className='text-muted-foreground p-6 text-center'>No bulk operations found.</div>
+            <div className='text-muted-foreground p-6 text-center'>{t('operations.empty')}</div>
           )}
         </div>
       </div>

@@ -52,19 +52,6 @@ type UsersTableProps = {
   data: User[]
 }
 
-const roles = [
-  {
-    value: 'user',
-    label: 'User',
-    icon: UserIcon
-  },
-  {
-    value: 'admin',
-    label: 'Admin',
-    icon: UserCogIcon
-  }
-]
-
 const UsersTable = (props: UsersTableProps) => {
   const { data } = props
   const t = useTranslations()
@@ -87,6 +74,19 @@ const UsersTable = (props: UsersTableProps) => {
   })
 
   const { searchTerm, debouncedSearchTerm, updateSearchTerm, clearSearch } = useDebounceSearch()
+
+  const roles = [
+    {
+      value: 'user',
+      label: t('admin.table.users.roles.user'),
+      icon: UserIcon
+    },
+    {
+      value: 'admin',
+      label: t('admin.table.users.roles.admin'),
+      icon: UserCogIcon
+    }
+  ]
 
   const deleteUserMutation = api.users.deleteUser.useMutation({
     onSuccess: () => {
@@ -143,8 +143,8 @@ const UsersTable = (props: UsersTableProps) => {
   const handleDeleteUser = (userId: string, userName: string) => {
     setConfirmDialog({
       open: true,
-      title: 'Delete User',
-      description: `Are you sure you want to delete user "${userName}"? This action cannot be undone.`,
+      title: t('admin.table.users.delete'),
+      description: t('admin.table.users.confirm-delete-with-name', { name: userName }),
       variant: 'destructive',
       action: () => {
         deleteUserMutation.mutate({ userId })
@@ -156,8 +156,8 @@ const UsersTable = (props: UsersTableProps) => {
   const handleBanUser = (userId: string, userName: string) => {
     setConfirmDialog({
       open: true,
-      title: 'Ban User',
-      description: `Are you sure you want to ban user "${userName}"?`,
+      title: t('admin.table.users.ban'),
+      description: t('admin.table.users.confirm-ban-with-name', { name: userName }),
       variant: 'destructive',
       action: () => {
         banUserMutation.mutate({ userId })
@@ -169,8 +169,8 @@ const UsersTable = (props: UsersTableProps) => {
   const handleUnbanUser = (userId: string, userName: string) => {
     setConfirmDialog({
       open: true,
-      title: 'Unban User',
-      description: `Are you sure you want to unban user "${userName}"?`,
+      title: t('admin.table.users.unban'),
+      description: t('admin.table.users.confirm-unban-with-name', { name: userName }),
       action: () => {
         unbanUserMutation.mutate({ userId })
         setConfirmDialog((prev) => ({ ...prev, open: false }))
@@ -193,7 +193,7 @@ const UsersTable = (props: UsersTableProps) => {
       `users-${new Date().toISOString().split('T')[0]}`,
       USER_EXPORT_COLUMNS
     )
-    toast.success('Users exported to CSV successfully')
+    toast.success(t('admin.table.users.export-success'))
   }
 
   const columns: Array<ColumnDef<User>> = [
@@ -245,7 +245,7 @@ const UsersTable = (props: UsersTableProps) => {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant='ghost' className='h-8 w-8 p-0'>
-                <span className='sr-only'>Open menu</span>
+                <span className='sr-only'>{t('admin.table.users.open-menu')}</span>
                 <MoreHorizontalIcon className='h-4 w-4' />
               </Button>
             </DropdownMenuTrigger>
@@ -307,7 +307,7 @@ const UsersTable = (props: UsersTableProps) => {
             <div className='relative'>
               <Search className='text-muted-foreground absolute top-2.5 left-2 h-4 w-4' />
               <Input
-                placeholder='Search users...'
+                placeholder={t('admin.table.users.search')}
                 value={searchTerm}
                 onChange={(e) => updateSearchTerm(e.target.value)}
                 className='w-64 pl-8'
@@ -326,7 +326,7 @@ const UsersTable = (props: UsersTableProps) => {
           </div>
           <Button onClick={handleExportCSV} variant='outline' size='sm'>
             <Download className='mr-2 h-4 w-4' />
-            Export CSV
+            {t('admin.table.users.export-csv')}
           </Button>
         </div>
 

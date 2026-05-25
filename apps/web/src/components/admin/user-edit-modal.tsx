@@ -33,14 +33,6 @@ type UserEditModalProps = {
   onOpenChange: (open: boolean) => void
 }
 
-const userSchema = z.object({
-  name: z.string().min(1, 'Name is required'),
-  username: z.string().optional(),
-  email: z.string().email('Invalid email address'),
-  role: z.enum(['user', 'admin']),
-  image: z.string().url('Invalid URL').optional().or(z.literal(''))
-})
-
 const UserEditModal = ({ user, open, onOpenChange }: UserEditModalProps) => {
   const t = useTranslations()
   const utils = api.useUtils()
@@ -70,6 +62,17 @@ const UserEditModal = ({ user, open, onOpenChange }: UserEditModalProps) => {
     e.preventDefault()
 
     try {
+      const userSchema = z.object({
+        name: z.string().min(1, t('admin.modals.edit-user.validation.name-required')),
+        username: z.string().optional(),
+        email: z.string().email(t('admin.modals.edit-user.validation.invalid-email')),
+        role: z.enum(['user', 'admin']),
+        image: z
+          .string()
+          .url(t('admin.modals.edit-user.validation.invalid-url'))
+          .optional()
+          .or(z.literal(''))
+      })
       const validatedData = userSchema.parse(formData)
       setErrors({})
 
@@ -153,8 +156,8 @@ const UserEditModal = ({ user, open, onOpenChange }: UserEditModalProps) => {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value='user'>User</SelectItem>
-                <SelectItem value='admin'>Admin</SelectItem>
+                <SelectItem value='user'>{t('admin.modals.edit-user.roles.user')}</SelectItem>
+                <SelectItem value='admin'>{t('admin.modals.edit-user.roles.admin')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -176,7 +179,9 @@ const UserEditModal = ({ user, open, onOpenChange }: UserEditModalProps) => {
               {t('admin.modals.edit-user.cancel')}
             </Button>
             <Button type='submit' disabled={updateUserMutation.isPending}>
-              {updateUserMutation.isPending ? 'Saving...' : t('admin.modals.edit-user.save')}
+              {updateUserMutation.isPending
+                ? t('admin.modals.edit-user.saving')
+                : t('admin.modals.edit-user.save')}
             </Button>
           </DialogFooter>
         </form>

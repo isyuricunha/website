@@ -22,10 +22,17 @@
       "notifications": "Notificações",
       "monitoring": "Monitoramento",
       "monitoring_dashboard": "Painel de Monitoramento",
+      "system_health": "Saúde do Sistema",
       "data": "Dados",
-      "data_management": "Gerenciamento de Dados"
+      "data_management": "Gerenciamento de Dados",
+      "audit_logs": "Logs de Auditoria",
+      "bulk_operations": "Operações em Massa"
     },
     "page-header": {
+      "audit-logs": {
+        "description": "Revise ações administrativas e mudanças do sistema.",
+        "title": "Logs de Auditoria"
+      },
       "comments": {
         "description": "Gerencie comentários dos usuários",
         "title": "Comentários"
@@ -45,12 +52,18 @@
         "type": "Tipo",
         "userId": "ID do Usuário",
         "actions": "Ações",
+        "open-menu": "Abrir menu",
+        "search": "Pesquisar comentários...",
+        "export-csv": "Exportar CSV",
         "delete": "Excluir",
         "edit": "Editar",
         "view": "Visualizar",
         "confirm-delete": "Tem certeza de que deseja excluir este comentário?",
         "delete-success": "Comentário excluído com sucesso",
-        "delete-error": "Falha ao excluir o comentário"
+        "delete-error": "Falha ao excluir o comentário",
+        "delete-title": "Excluir Comentário",
+        "confirm-delete-with-body": "Tem certeza de que deseja excluir este comentário: \"{body}\"? Esta ação não pode ser desfeita.",
+        "export-success": "Comentários exportados para CSV com sucesso"
       },
       "users": {
         "email": "E-mail",
@@ -65,6 +78,9 @@
         "banned": "Banido",
         "active": "Ativo",
         "actions": "Ações",
+        "open-menu": "Abrir menu",
+        "search": "Pesquisar usuários...",
+        "export-csv": "Exportar CSV",
         "delete": "Excluir Usuário",
         "ban": "Banir Usuário",
         "unban": "Desbanir Usuário",
@@ -83,7 +99,15 @@
         "reset-password-success": "Email de redefinição de senha enviado",
         "reset-password-error": "Falha ao enviar email de redefinição de senha",
         "update-success": "Usuário atualizado com sucesso",
-        "update-error": "Falha ao atualizar usuário"
+        "update-error": "Falha ao atualizar usuário",
+        "roles": {
+          "user": "Usuário",
+          "admin": "Admin"
+        },
+        "confirm-delete-with-name": "Tem certeza de que deseja excluir o usuário \"{name}\"? Esta ação não pode ser desfeita.",
+        "confirm-ban-with-name": "Tem certeza de que deseja banir o usuário \"{name}\"?",
+        "confirm-unban-with-name": "Tem certeza de que deseja desbanir o usuário \"{name}\"?",
+        "export-success": "Usuários exportados para CSV com sucesso"
       }
     },
     "modals": {
@@ -95,13 +119,1042 @@
         "role": "Função",
         "image": "URL da Imagem",
         "save": "Salvar Alterações",
-        "cancel": "Cancelar"
+        "saving": "Salvando...",
+        "cancel": "Cancelar",
+        "roles": {
+          "user": "Usuário",
+          "admin": "Admin"
+        },
+        "validation": {
+          "name-required": "Nome é obrigatório",
+          "invalid-email": "Endereço de email inválido",
+          "invalid-url": "URL inválida"
+        }
       },
       "delete-confirmation": {
         "title": "Confirmar Exclusão",
         "message": "Esta ação não pode ser desfeita. Tem certeza que deseja prosseguir?",
         "confirm": "Excluir",
         "cancel": "Cancelar"
+      }
+    },
+    "audit-logs": {
+      "failed-to-fetch": "Falha ao buscar logs de auditoria.",
+      "columns": {
+        "createdAt": "Criado em",
+        "action": "Ação",
+        "admin": "Admin",
+        "targetType": "Tipo do alvo",
+        "targetId": "ID do alvo",
+        "ipAddress": "Endereço IP"
+      },
+      "filter-actions": "Filtrar ações...",
+      "search-placeholder": "Pesquisar logs de auditoria..."
+    },
+    "common": {
+      "loading": "Carregando...",
+      "refresh": "Atualizar"
+    },
+    "error-boundary": {
+      "title": "Erro no Admin",
+      "description": "Ocorreu um erro ao carregar esta seção administrativa. Tente atualizar a página ou entre em contato com o suporte se o problema persistir.",
+      "refresh-page": "Atualizar página"
+    },
+    "dashboard": {
+      "title": "Painel Admin",
+      "description": "Monitore a performance do site e gerencie operações",
+      "messages": {
+        "refresh-success": "Painel atualizado com sucesso",
+        "refresh-error": "Falha ao atualizar o painel"
+      },
+      "loading": {
+        "title": "Painel",
+        "description": "Visão geral das estatísticas do site",
+        "card": "Carregando...",
+        "error": "Falha ao carregar estatísticas do painel"
+      },
+      "stats": {
+        "this-month": "+{count} este mês",
+        "total-users": {
+          "title": "Total de usuários"
+        },
+        "total-comments": {
+          "title": "Total de comentários"
+        },
+        "guestbook-entries": {
+          "title": "Entradas no livro de visitas",
+          "description": "Entradas de todos os tempos"
+        },
+        "admin-users": {
+          "title": "Usuários admin",
+          "description": "Administradores do sistema"
+        }
+      },
+      "status": {
+        "live": "Ao vivo"
+      },
+      "actions": {
+        "refresh": "Atualizar"
+      },
+      "recent-activity": {
+        "title": "Atividade recente",
+        "description": "Performance dos últimos 7 dias",
+        "weekly": "Semanal",
+        "new-users": "Novos usuários",
+        "new-comments": "Novos comentários"
+      },
+      "quick-actions": {
+        "title": "Ações rápidas",
+        "description": "Acesse tarefas comuns",
+        "manage-users": {
+          "title": "Gerenciar usuários",
+          "description": "Ver e editar contas de usuário"
+        },
+        "moderate-comments": {
+          "title": "Moderar comentários",
+          "description": "Revisar e gerenciar comentários"
+        },
+        "monitoring": {
+          "title": "Monitoramento",
+          "description": "Ver métricas, erros e alertas"
+        }
+      },
+      "system-health": {
+        "title": "Saúde do sistema",
+        "description": "Métricas gerais de performance do sistema",
+        "database": "Performance do banco de dados",
+        "api-response": "Tempo de resposta da API",
+        "storage": "Uso de armazenamento",
+        "excellent": "Excelente",
+        "fast": "Rápido",
+        "moderate": "Moderado"
+      }
+    },
+    "system-health": {
+      "title": "Saúde do Sistema",
+      "description": "Monitore a performance e a saúde do sistema",
+      "auto-refresh": "Atualização automática (30s)",
+      "messages": {
+        "error-resolved": "Erro resolvido",
+        "resolve-error-failed": "Falha ao resolver erro: {message}",
+        "all-errors-resolved": "Todos os erros resolvidos",
+        "resolve-all-errors-failed": "Falha ao resolver todos os erros: {message}",
+        "refreshed": "Saúde do sistema atualizada"
+      },
+      "actions": {
+        "refresh": "Atualizar",
+        "resolve-all": "Resolver todos",
+        "view-all-errors": "Ver todos os erros",
+        "resolve": "Resolver"
+      },
+      "status": {
+        "healthy": "Saudável",
+        "warning": "Atenção",
+        "critical": "Crítico",
+        "unknown": "Desconhecido"
+      },
+      "overall": {
+        "status": "Status do sistema: {status}",
+        "last-checked": "Última verificação: {date}",
+        "uptime": "Disponibilidade"
+      },
+      "stats": {
+        "healthy-checks": "Checks saudáveis",
+        "warnings": "Avisos",
+        "critical-issues": "Problemas críticos",
+        "unresolved-errors": "Erros não resolvidos"
+      },
+      "service-health": {
+        "title": "Saúde dos serviços"
+      },
+      "recent-errors": {
+        "title": "Erros recentes",
+        "url": "URL: {url}",
+        "user": "Usuário: {name} ({email})",
+        "stack-trace": "Stack trace"
+      },
+      "trends": {
+        "title": "Tendências de saúde",
+        "last-checks": "Últimos {count} checks",
+        "filter": "Filtro",
+        "all-services": "Todos os serviços",
+        "empty-title": "Ainda sem histórico de saúde",
+        "empty-description": "Acione uma atualização para registrar checks de saúde",
+        "stats": {
+          "healthy": "Saudáveis",
+          "warnings": "Avisos",
+          "critical": "Críticos",
+          "unknown": "Desconhecidos"
+        },
+        "table": {
+          "time": "Horário",
+          "service": "Serviço",
+          "status": "Status",
+          "latency": "Latência",
+          "message": "Mensagem"
+        }
+      }
+    },
+    "notification-management": {
+      "title": "Notificações",
+      "description": "Gerencie notificações de usuários e alertas do sistema",
+      "loading": "Carregando notificações...",
+      "empty": "Ainda não há notificações. Crie a primeira notificação para começar!",
+      "messages": {
+        "created": "Notificação criada com sucesso",
+        "create-failed": "Falha ao criar notificação: {message}",
+        "mark-read-failed": "Falha ao marcar como lida: {message}",
+        "title-content-required": "Título e conteúdo são obrigatórios"
+      },
+      "actions": {
+        "create": "Criar notificação",
+        "send": "Enviar notificação",
+        "mark-read": "Marcar como lida"
+      },
+      "dialog": {
+        "create-title": "Criar nova notificação",
+        "create-description": "Envie uma notificação para um usuário específico ou todos os usuários."
+      },
+      "fields": {
+        "title": "Título",
+        "title-placeholder": "Título da notificação",
+        "content": "Conteúdo",
+        "content-placeholder": "Conteúdo da notificação",
+        "type": "Tipo",
+        "user-id": "ID do usuário (opcional)",
+        "user-id-placeholder": "Deixe vazio para todos os usuários",
+        "expires-at": "Expira em (opcional)",
+        "action-url": "URL de ação (opcional)"
+      },
+      "types": {
+        "system": "Sistema",
+        "security": "Segurança",
+        "user-action": "Ação do usuário",
+        "content": "Conteúdo",
+        "marketing": "Marketing",
+        "reminder": "Lembrete"
+      },
+      "stats": {
+        "total": {
+          "title": "Total de notificações",
+          "description": "Todas as notificações"
+        },
+        "unread": {
+          "title": "Não lidas",
+          "description": "Notificações pendentes"
+        },
+        "read-rate": {
+          "title": "Taxa de leitura",
+          "description": "Notificações lidas"
+        }
+      },
+      "recent": {
+        "title": "Notificações recentes",
+        "description": "Gerencie notificações de usuários e alertas do sistema",
+        "user": "Usuário: {userId}",
+        "expires": "Expira: {date}"
+      },
+      "status": {
+        "unread": "Não lida"
+      }
+    },
+    "bulk-operations": {
+      "title": "Operações em Massa",
+      "description": "Execute ações em massa em usuários e conteúdo",
+      "messages": {
+        "completed": "Operação em massa concluída: {successful}/{total} com sucesso",
+        "failed": "Operação em massa falhou",
+        "cancelled": "Operação cancelada",
+        "cancel-failed": "Falha ao cancelar operação",
+        "select-users": "Selecione usuários para executar ações em massa"
+      },
+      "confirm": {
+        "bulk-action": "Tem certeza de que deseja executar {action} em {count} usuários? Esta ação não pode ser desfeita.",
+        "cancel-operation": "Tem certeza de que deseja cancelar esta operação?"
+      },
+      "actions": {
+        "delete-users": "Excluir Usuários",
+        "ban-users": "Banir Usuários",
+        "unban-users": "Desbanir Usuários",
+        "update-role": "Atualizar Função",
+        "execute": "Executar ({count})",
+        "cancel": "Cancelar",
+        "export": "Exportar"
+      },
+      "status": {
+        "completed": "Concluída",
+        "failed": "Falhou",
+        "running": "Em execução",
+        "cancelled": "Cancelada",
+        "pending": "Pendente"
+      },
+      "date": {
+        "never": "Nunca",
+        "unknown": "Desconhecido"
+      },
+      "user-actions": {
+        "title": "Ações em massa de usuários",
+        "search-placeholder": "Pesquisar usuários...",
+        "filters": "Filtros",
+        "select-action": "Selecionar ação",
+        "new-role": "Nova função",
+        "no-users": "Nenhum usuário encontrado",
+        "no-users-hint": "Tente ajustar seus critérios de busca."
+      },
+      "table": {
+        "user": "Usuário",
+        "role": "Função",
+        "joined": "Entrou em"
+      },
+      "operations": {
+        "title": "Operações recentes",
+        "failed-to-load": "Falha ao carregar operações em massa.",
+        "loading": "Carregando operações em massa...",
+        "summary": "{successful}/{total} com sucesso • Criado por {creator} • {date}",
+        "progress": "Progresso",
+        "empty": "Nenhuma operação em massa encontrada."
+      }
+    },
+    "data-management": {
+      "title": "Gerenciamento de Dados",
+      "description": "Faça backup, exporte e gerencie seus dados",
+      "loading": "Carregando painel de gerenciamento de dados...",
+      "messages": {
+        "backup-started": "Backup do banco iniciado com sucesso",
+        "backup-failed": "Falha ao iniciar backup: {message}",
+        "export-started": "Exportação de dados iniciada com sucesso",
+        "export-failed": "Falha ao iniciar exportação: {message}",
+        "quality-started": "Verificação de qualidade dos dados iniciada com sucesso",
+        "quality-failed": "Falha ao iniciar verificação de qualidade: {message}",
+        "export-required": "Nome, formato e tabelas são obrigatórios",
+        "quality-required": "Nome, nome da tabela e regras são obrigatórios",
+        "rules-invalid": "Forneça regras válidas no formato: campo:tipo_da_regra"
+      },
+      "file-size": {
+        "zero": "0 Bytes",
+        "bytes": "Bytes",
+        "unknown": "Tamanho desconhecido",
+        "size": "Tamanho: {size}"
+      },
+      "status": {
+        "completed": "Concluído",
+        "in-progress": "Em progresso",
+        "processing": "Processando",
+        "running": "Executando",
+        "pending": "Pendente",
+        "failed": "Falhou"
+      },
+      "backup-types": {
+        "full": "completo",
+        "incremental": "incremental",
+        "differential": "diferencial",
+        "full-backup": "Backup Completo",
+        "incremental-backup": "Backup Incremental",
+        "differential-backup": "Backup Diferencial"
+      },
+      "stats": {
+        "database-backups": "Backups do Banco",
+        "completed-count": "{count} concluídos",
+        "backup-size": "Tamanho dos Backups",
+        "total-storage-used": "Armazenamento total usado",
+        "data-exports": "Exportações de Dados",
+        "records-exported": "Registros exportados",
+        "total-records-processed": "Total de registros processados"
+      },
+      "tabs": {
+        "overview": "Visão geral",
+        "backups": "Backups",
+        "exports": "Exportações",
+        "quality": "Qualidade"
+      },
+      "overview": {
+        "recent-backups": {
+          "title": "Backups recentes",
+          "description": "Atividade recente de backups do banco"
+        },
+        "recent-exports": {
+          "title": "Exportações recentes",
+          "description": "Atividade recente de exportação de dados"
+        }
+      },
+      "backups": {
+        "loading": "Carregando backups...",
+        "empty": "Ainda sem backups",
+        "backup-label": "backup {type}",
+        "create-title": "Criar backup do banco",
+        "create-description": "Faça backup do banco por segurança",
+        "list-title": "Backups do banco",
+        "list-description": "Histórico de backups do banco"
+      },
+      "exports": {
+        "loading": "Carregando exportações...",
+        "empty": "Ainda sem exportações",
+        "create-title": "Criar exportação de dados",
+        "create-description": "Exporte dados em diversos formatos",
+        "list-title": "Exportações de dados",
+        "list-description": "Histórico de exportações de dados",
+        "format": "Formato: {format}",
+        "records": "{count} registros",
+        "processing": "Processando..."
+      },
+      "quality": {
+        "create-title": "Executar verificação de qualidade",
+        "create-description": "Valide integridade e qualidade dos dados",
+        "overview-title": "Visão geral da qualidade",
+        "overview-description": "Métricas e insights de qualidade dos dados",
+        "empty-title": "Execute uma verificação de qualidade para ver resultados aqui",
+        "empty-description": "Verificações de qualidade ajudam a identificar dados ausentes, duplicados e problemas de formato."
+      },
+      "fields": {
+        "backup-type": "Tipo de backup",
+        "description-optional": "Descrição (opcional)",
+        "backup-description-placeholder": "Backup pré-deploy",
+        "export-name": "Nome da exportação",
+        "export-name-placeholder": "Exportação de dados de usuários",
+        "format": "Formato",
+        "tables": "Tabelas (separadas por vírgula)",
+        "tables-placeholder": "users, posts, comments",
+        "check-name": "Nome da verificação",
+        "check-name-placeholder": "Validação de dados de usuários",
+        "table-name": "Nome da tabela",
+        "table-name-placeholder": "users",
+        "rules": "Regras (campo:tipo_da_regra)",
+        "rules-placeholder": "email:not_null, email:format, id:unique",
+        "rules-help": "Regras disponíveis: not_null, unique, format, range"
+      },
+      "actions": {
+        "creating-backup": "Criando backup...",
+        "create-backup": "Criar backup",
+        "creating-export": "Criando exportação...",
+        "create-export": "Criar exportação",
+        "running-check": "Executando verificação...",
+        "run-quality-check": "Executar verificação"
+      },
+      "date": {
+        "completed": "Concluído: {date}"
+      }
+    },
+    "security-management": {
+      "title": "Gerenciamento de Segurança",
+      "description": "Monitore e gerencie a segurança do sistema",
+      "loading": "Carregando painel de segurança...",
+      "messages": {
+        "ip-rule-added": "Regra de acesso por IP adicionada com sucesso",
+        "ip-rule-failed": "Falha ao adicionar regra de IP: {message}",
+        "event-resolved": "Evento de segurança resolvido",
+        "event-resolve-failed": "Falha ao resolver evento: {message}",
+        "account-unlocked": "Conta desbloqueada com sucesso",
+        "account-unlock-failed": "Falha ao desbloquear conta: {message}",
+        "setting-updated": "Configuração de segurança atualizada com sucesso",
+        "setting-update-failed": "Falha ao atualizar configuração de segurança: {message}",
+        "ip-type-required": "Endereço IP e tipo são obrigatórios"
+      },
+      "severity": {
+        "critical": "Crítico",
+        "high": "Alto",
+        "medium": "Médio",
+        "low": "Baixo"
+      },
+      "rule-types": {
+        "whitelist": "Lista de permissão",
+        "blacklist": "Lista de bloqueio",
+        "whitelist-allow": "Lista de permissão (Permitir)",
+        "blacklist-block": "Lista de bloqueio (Bloquear)"
+      },
+      "stats": {
+        "security-events": "Eventos de segurança",
+        "critical-events": "{count} eventos críticos",
+        "login-attempts": "Tentativas de login",
+        "failed-attempts": "{count} tentativas falhas",
+        "account-lockouts": "Bloqueios de conta",
+        "active-lockouts": "Bloqueios ativos",
+        "two-factor-adoption": "Adoção de 2FA",
+        "users-enabled": "{count} usuários habilitados"
+      },
+      "tabs": {
+        "overview": "Visão geral",
+        "events": "Eventos",
+        "ip-control": "Controle de IP",
+        "lockouts": "Bloqueios",
+        "settings": "Configurações"
+      },
+      "overview": {
+        "recent-events": {
+          "title": "Eventos de segurança recentes",
+          "description": "Incidentes e alertas de segurança mais recentes"
+        },
+        "login-attempts": {
+          "title": "Tentativas de login (24h)",
+          "description": "Resumo da atividade de autenticação",
+          "loading": "Carregando tentativas...",
+          "total": "Total de tentativas:",
+          "successful": "Bem-sucedidas:",
+          "failed": "Falhas:",
+          "unique-ips": "IPs únicos:",
+          "success-rate": "Taxa de sucesso:"
+        }
+      },
+      "events": {
+        "title": "Eventos de segurança",
+        "description": "Monitore e resolva incidentes de segurança",
+        "loading": "Carregando eventos...",
+        "loading-security-events": "Carregando eventos de segurança...",
+        "no-recent": "Nenhum evento recente",
+        "ip": "IP: {ip}",
+        "user": "Usuário: {name} ({email})",
+        "resolved": "Resolvido {date}",
+        "empty": "Nenhum evento de segurança encontrado"
+      },
+      "ip-control": {
+        "add-title": "Adicionar regra de acesso por IP",
+        "add-description": "Controle o acesso por endereço IP",
+        "rules-title": "Regras de acesso por IP",
+        "rules-description": "Regras atuais de controle de acesso por IP",
+        "loading-rules": "Carregando regras de IP...",
+        "no-description": "Sem descrição",
+        "empty": "Nenhuma regra de IP configurada"
+      },
+      "lockouts": {
+        "title": "Bloqueios de conta",
+        "description": "Gerencie contas de usuários bloqueadas",
+        "loading": "Carregando bloqueios de conta...",
+        "user-id": "ID do usuário: {userId}",
+        "lockout-id": "ID do bloqueio: {lockoutId}",
+        "locked": "Bloqueado: {date}",
+        "reason": "Motivo: {reason}",
+        "empty": "Nenhum bloqueio de conta ativo"
+      },
+      "settings": {
+        "title": "Configurações de segurança",
+        "description": "Configure políticas e limites de segurança",
+        "search-placeholder": "Pesquisar por chave, valor ou descrição",
+        "all-categories": "Todas as categorias",
+        "loading": "Carregando configurações de segurança...",
+        "empty": "Nenhuma configuração de segurança encontrada",
+        "updated": "Atualizado {date}",
+        "updated-by": "por {name}"
+      },
+      "fields": {
+        "ip-address": "Endereço IP",
+        "rule-type": "Tipo de regra",
+        "rule-type-placeholder": "Selecione o tipo da regra",
+        "description-optional": "Descrição (opcional)",
+        "rule-description-placeholder": "Descrição da regra",
+        "search": "Pesquisar",
+        "category": "Categoria",
+        "value": "Valor",
+        "description": "Descrição",
+        "optional-description-placeholder": "Descrição opcional",
+        "category-placeholder": "Categoria"
+      },
+      "actions": {
+        "resolve": "Resolver",
+        "adding": "Adicionando...",
+        "add-rule": "Adicionar regra",
+        "unlock-account": "Desbloquear conta",
+        "save": "Salvar",
+        "edit": "Editar"
+      }
+    },
+    "monitoring-dashboard": {
+      "title": "Painel de Monitoramento",
+      "description": "Performance e analytics do sistema em tempo real",
+      "loading": "Carregando painel de monitoramento...",
+      "messages": {
+        "error-resolved": "Erro resolvido com sucesso",
+        "resolve-error-failed": "Falha ao resolver erro: {message}",
+        "all-errors-resolved": "Todos os erros resolvidos com sucesso",
+        "resolve-all-errors-failed": "Falha ao resolver todos os erros: {message}"
+      },
+      "time-range": {
+        "last-hour": "Última hora",
+        "last-6-hours": "Últimas 6 horas",
+        "last-24-hours": "Últimas 24 horas",
+        "last-7-days": "Últimos 7 dias",
+        "last-30-days": "Últimos 30 dias"
+      },
+      "stats": {
+        "performance": "Performance",
+        "metrics-recorded": "{count} métricas registradas",
+        "api-requests": "Requisições de API",
+        "error-rate": "{rate}% taxa de erro",
+        "errors": "Erros",
+        "unresolved": "{count} não resolvidos",
+        "active-alerts": "Alertas ativos",
+        "critical-alerts": "{count} alertas críticos"
+      },
+      "tabs": {
+        "overview": "Visão geral",
+        "performance": "Performance",
+        "api": "Uso da API",
+        "errors": "Erros",
+        "resources": "Recursos",
+        "analytics": "Analytics"
+      },
+      "common": {
+        "system": "Sistema",
+        "anonymous": "Anônimo"
+      },
+      "overview": {
+        "system-health": {
+          "title": "Saúde do sistema",
+          "description": "Visão geral do status atual do sistema",
+          "api-response-time": "Tempo de resposta da API",
+          "error-rate": "Taxa de erro",
+          "critical-errors": "Erros críticos",
+          "active-alerts": "Alertas ativos"
+        },
+        "recent-activity": {
+          "title": "Atividade recente",
+          "description": "Eventos e métricas recentes do sistema",
+          "loading": "Carregando atividade recente...",
+          "empty": "Nenhuma atividade recente"
+        }
+      },
+      "performance": {
+        "metrics": {
+          "title": "Métricas de performance",
+          "description": "Performance do sistema ao longo do tempo",
+          "loading": "Carregando métricas de performance...",
+          "empty": "Nenhum dado de performance disponível"
+        },
+        "resources": {
+          "title": "Uso de recursos",
+          "description": "Consumo de recursos do sistema",
+          "threshold-breaches": "{count} violações de limite",
+          "empty": "Nenhum dado de recurso disponível"
+        }
+      },
+      "metrics": {
+        "avg": "Média: {value}",
+        "min": "Mín: {value}",
+        "max": "Máx: {value}",
+        "avg-percent": "Média: {value}%",
+        "max-percent": "Máx: {value}%"
+      },
+      "api": {
+        "loading": "Carregando uso da API...",
+        "stats": {
+          "title": "Estatísticas de uso da API",
+          "description": "Padrões de requisição e performance",
+          "total-requests": "Total de requisições",
+          "unique-users": "Usuários únicos",
+          "avg-response-time": "Tempo médio de resposta",
+          "error-rate": "Taxa de erro"
+        },
+        "top-endpoints": {
+          "title": "Principais endpoints da API",
+          "description": "Endpoints acessados com maior frequência",
+          "loading": "Carregando principais endpoints...",
+          "empty": "Nenhum dado de endpoint disponível"
+        }
+      },
+      "errors": {
+        "title": "Rastreamento de erros",
+        "description": "Erros e exceções do sistema",
+        "loading": "Carregando rastreamento de erros...",
+        "type": "Tipo: {type}",
+        "user": "Usuário: {name} ({email})",
+        "fingerprint": "Fingerprint: {fingerprint}",
+        "resolved": "Resolvido {date}",
+        "empty": "Nenhum erro encontrado"
+      },
+      "actions": {
+        "resolve-all": "Resolver todos",
+        "resolve": "Resolver"
+      },
+      "resources": {
+        "title": "Recursos do sistema",
+        "description": "Uso de CPU e memória",
+        "loading": "Carregando uso de recursos...",
+        "current-usage": "Uso atual:",
+        "average": "Média:",
+        "peak": "Pico:",
+        "alerts": "Alertas:",
+        "empty": "Nenhum dado de uso de recursos disponível"
+      },
+      "analytics": {
+        "event-types": {
+          "title": "Tipos de evento",
+          "description": "Distribuição dos eventos de analytics",
+          "loading": "Carregando eventos de analytics...",
+          "empty": "Nenhum dado de evento disponível"
+        },
+        "recent-events": {
+          "title": "Eventos recentes",
+          "description": "Últimos eventos de analytics",
+          "loading": "Carregando eventos recentes...",
+          "empty": "Nenhum evento recente"
+        }
+      }
+    },
+    "announcement-management": {
+      "title": "Anúncios",
+      "description": "Gerencie anúncios e notificações do site",
+      "loading": "Carregando anúncios...",
+      "empty": "Ainda não há anúncios. Crie o primeiro anúncio para começar!",
+      "messages": {
+        "translate-failed": "Falha ao traduzir: {message}",
+        "title-content-required": "Título e conteúdo são obrigatórios",
+        "pt-filled": "pt-BR preenchido usando Yue AI",
+        "created": "Anúncio criado com sucesso",
+        "create-failed": "Falha ao criar anúncio: {message}",
+        "updated": "Anúncio atualizado com sucesso",
+        "update-failed": "Falha ao atualizar anúncio: {message}",
+        "deleted": "Anúncio excluído com sucesso",
+        "delete-failed": "Falha ao excluir anúncio: {message}"
+      },
+      "actions": {
+        "create": "Criar anúncio",
+        "update": "Atualizar anúncio",
+        "translating": "Traduzindo...",
+        "fill-pt": "Preencher pt-BR com IA",
+        "activate": "Ativar",
+        "deactivate": "Desativar",
+        "edit-aria": "Editar anúncio",
+        "delete-aria": "Excluir anúncio"
+      },
+      "create": {
+        "title": "Criar novo anúncio",
+        "description": "Crie um novo anúncio para todo o site que será visível aos usuários."
+      },
+      "edit": {
+        "title": "Editar anúncio",
+        "description": "Atualize os detalhes do anúncio."
+      },
+      "delete": {
+        "title": "Excluir anúncio",
+        "description": "Tem certeza de que deseja excluir \"{title}\"? Esta ação não pode ser desfeita."
+      },
+      "fields": {
+        "title": "Título",
+        "title-placeholder": "Título do anúncio",
+        "title-pt": "Título (pt-BR)",
+        "title-pt-placeholder": "Título em português (opcional)",
+        "content": "Conteúdo",
+        "content-placeholder": "Conteúdo do anúncio",
+        "content-pt": "Conteúdo (pt-BR)",
+        "content-pt-placeholder": "Conteúdo em português (opcional)",
+        "type": "Tipo",
+        "priority": "Prioridade (0-10)",
+        "priority-value": "Prioridade {priority}",
+        "dismissible": "Permitir que usuários dispensem este anúncio",
+        "active": "Anúncio ativo"
+      },
+      "types": {
+        "info": "Info",
+        "success": "Sucesso",
+        "warning": "Aviso",
+        "error": "Erro",
+        "maintenance": "Manutenção",
+        "feature": "Recurso",
+        "update": "Atualização"
+      },
+      "analytics": {
+        "total-views": {
+          "title": "Total de visualizações",
+          "description": "Em todos os anúncios"
+        },
+        "dismissal-rate": {
+          "title": "Taxa de dispensa",
+          "description": "{count} dispensas no total"
+        },
+        "active": {
+          "title": "Anúncios ativos",
+          "description": "Atualmente visíveis aos usuários"
+        }
+      },
+      "list": {
+        "title": "Todos os anúncios",
+        "description": "Gerencie seus anúncios do site"
+      },
+      "status": {
+        "inactive": "Inativo",
+        "pt": "PT",
+        "pt-partial": "PT parcial",
+        "targeted": "Segmentado",
+        "dismissible": "Dispensável",
+        "not-dismissible": "Não dispensável"
+      }
+    },
+    "communication-management": {
+      "title": "Gerenciamento de Comunicação",
+      "description": "Gerencie emails, anúncios e notificações",
+      "loading": "Carregando painel de comunicação...",
+      "messages": {
+        "template-created": "Template de email criado com sucesso",
+        "template-create-failed": "Falha ao criar template: {message}",
+        "campaign-created": "Campanha de email criada com sucesso",
+        "campaign-create-failed": "Falha ao criar campanha: {message}",
+        "campaign-sent": "Campanha de email enviada com sucesso",
+        "campaign-send-failed": "Falha ao enviar campanha: {message}",
+        "announcement-created": "Anúncio criado com sucesso",
+        "announcement-create-failed": "Falha ao criar anúncio: {message}",
+        "all-fields-required": "Todos os campos são obrigatórios",
+        "campaign-fields-required": "Nome, assunto e conteúdo são obrigatórios",
+        "title-content-required": "Título e conteúdo são obrigatórios"
+      },
+      "stats": {
+        "email-campaigns": "Campanhas de email",
+        "sent-campaigns": "{count} campanhas enviadas",
+        "emails-sent": "Emails enviados",
+        "delivered": "{count} entregues",
+        "announcements": "Anúncios",
+        "active": "{count} ativos",
+        "notifications": "Notificações",
+        "unread": "{count} não lidas"
+      },
+      "tabs": {
+        "overview": "Visão geral",
+        "campaigns": "Campanhas",
+        "templates": "Templates",
+        "announcements": "Anúncios",
+        "notifications": "Notificações"
+      },
+      "overview": {
+        "recent-campaigns": {
+          "title": "Campanhas de email recentes",
+          "description": "Atividade recente de campanhas de email"
+        },
+        "active-announcements": {
+          "title": "Anúncios ativos",
+          "description": "Anúncios atuais do site"
+        }
+      },
+      "campaigns": {
+        "loading": "Carregando campanhas...",
+        "empty": "Ainda sem campanhas",
+        "create-title": "Criar campanha de email",
+        "create-description": "Envie emails em massa para usuários",
+        "list-title": "Campanhas de email",
+        "list-description": "Gerencie suas campanhas de email",
+        "subject": "Assunto: {subject}",
+        "recipients": "Destinatários: {count}"
+      },
+      "templates": {
+        "loading": "Carregando templates...",
+        "empty": "Ainda sem templates",
+        "create-title": "Criar template de email",
+        "create-description": "Crie templates de email reutilizáveis",
+        "list-title": "Templates de email",
+        "list-description": "Seus templates de email salvos",
+        "subject": "Assunto: {subject}"
+      },
+      "announcements": {
+        "loading": "Carregando anúncios...",
+        "no-active": "Nenhum anúncio ativo",
+        "priority": "Prioridade: {priority}",
+        "create-title": "Criar anúncio",
+        "create-description": "Publique anúncios para todo o site",
+        "list-title": "Anúncios do site",
+        "list-description": "Gerencie anúncios do site",
+        "active": "Ativo",
+        "empty": "Ainda sem anúncios"
+      },
+      "notifications": {
+        "title": "Notificações do sistema",
+        "description": "Notificações recentes do sistema",
+        "loading": "Carregando notificações...",
+        "read": "Lida",
+        "unread": "Não lida",
+        "empty": "Sem notificações"
+      },
+      "fields": {
+        "campaign-name": "Nome da campanha",
+        "campaign-name-placeholder": "Newsletter mensal",
+        "email-subject": "Assunto do email",
+        "email-subject-placeholder": "Sua atualização mensal chegou!",
+        "email-content-html": "Conteúdo do email (HTML)",
+        "campaign-content-placeholder": "<h1>Olá!</h1><p>Seu conteúdo de email aqui...</p>",
+        "template-name": "Nome do template",
+        "template-name-placeholder": "Email de boas-vindas",
+        "template-type": "Tipo do template",
+        "template-type-placeholder": "Selecione o tipo do template",
+        "subject-line": "Linha de assunto",
+        "template-subject-placeholder": "Bem-vindo à nossa plataforma!",
+        "html-content": "Conteúdo HTML",
+        "template-content-placeholder": "<h1>Bem-vindo!</h1><p>Obrigado por participar...</p>",
+        "title": "Título",
+        "title-pt": "Título (pt-BR)",
+        "type": "Tipo",
+        "priority": "Prioridade (0-10)",
+        "content": "Conteúdo",
+        "content-pt": "Conteúdo (pt-BR)",
+        "announcement-title-placeholder": "Aviso de manutenção do sistema",
+        "announcement-title-pt-placeholder": "Aviso de manutenção em português (opcional)",
+        "announcement-content-placeholder": "Faremos uma manutenção programada...",
+        "announcement-content-pt-placeholder": "Mensagem de manutenção em português (opcional)"
+      },
+      "actions": {
+        "creating": "Criando...",
+        "create-campaign": "Criar campanha",
+        "send-now": "Enviar agora",
+        "create-template": "Criar template",
+        "create-announcement": "Criar anúncio"
+      },
+      "template-types": {
+        "welcome": "Boas-vindas",
+        "newsletter": "Newsletter",
+        "announcement": "Anúncio",
+        "notification": "Notificação",
+        "marketing": "Marketing",
+        "transactional": "Transacional"
+      },
+      "announcement-types": {
+        "info": "Info",
+        "warning": "Aviso",
+        "success": "Sucesso",
+        "error": "Erro",
+        "maintenance": "Manutenção",
+        "feature": "Recurso",
+        "update": "Atualização"
+      },
+      "date": {
+        "created": "Criado em: {date}"
+      }
+    },
+    "email-marketing-management": {
+      "title": "Email Marketing",
+      "description": "Gerencie campanhas de email, audiências e templates",
+      "messages": {
+        "template-created": "Template criado com sucesso!",
+        "template-create-failed": "Falha ao criar template: {message}",
+        "audience-created": "Audiência criada com sucesso!",
+        "audience-create-failed": "Falha ao criar audiência: {message}",
+        "broadcast-created": "Broadcast criado com sucesso!",
+        "broadcast-create-failed": "Falha ao criar broadcast: {message}",
+        "users-synced": "{count} usuários sincronizados com a audiência!",
+        "sync-failed": "Falha ao sincronizar usuários: {message}",
+        "broadcast-sent": "Broadcast enviado com sucesso!",
+        "broadcast-send-failed": "Falha ao enviar broadcast: {message}",
+        "broadcast-updated": "Broadcast atualizado com sucesso!",
+        "broadcast-update-failed": "Falha ao atualizar broadcast: {message}",
+        "broadcast-deleted": "Broadcast excluído com sucesso!",
+        "broadcast-delete-failed": "Falha ao excluir broadcast: {message}"
+      },
+      "confirm": {
+        "delete-broadcast": "Tem certeza de que deseja excluir este broadcast? Esta ação não pode ser desfeita."
+      },
+      "loading": {
+        "title": "Carregando dados de email marketing...",
+        "audiences": "Carregando audiências...",
+        "broadcasts": "Carregando broadcasts...",
+        "templates": "Carregando templates...",
+        "analytics": "Carregando analytics..."
+      },
+      "tabs": {
+        "overview": "Visão geral",
+        "audiences": "Audiências",
+        "broadcasts": "Broadcasts",
+        "templates": "Templates"
+      },
+      "stats": {
+        "total-audiences": {
+          "title": "Total de audiências",
+          "description": "Segmentos de audiência ativos"
+        },
+        "total-broadcasts": {
+          "title": "Total de broadcasts",
+          "description": "Campanhas de email criadas"
+        },
+        "subscribers": {
+          "title": "Inscritos",
+          "description": "{rate}% taxa de inscrição"
+        },
+        "sent-broadcasts": {
+          "title": "Broadcasts enviados",
+          "description": "Entregues com sucesso"
+        }
+      },
+      "overview": {
+        "recent-activity": "Atividade recente",
+        "no-activity": "Nenhuma atividade recente",
+        "quick-actions": "Ações rápidas"
+      },
+      "actions": {
+        "create-new-broadcast": "Criar novo broadcast",
+        "create-new-audience": "Criar nova audiência",
+        "create-new-template": "Criar novo template",
+        "create-audience": "Criar audiência",
+        "syncing": "Sincronizando...",
+        "sync-users": "Sincronizar usuários",
+        "create-broadcast": "Criar broadcast",
+        "show-all-broadcasts": "Mostrar todos os broadcasts",
+        "create-template": "Criar template",
+        "edit": "Editar",
+        "use": "Usar",
+        "close": "Fechar",
+        "edit-broadcast": "Editar broadcast",
+        "updating": "Atualizando...",
+        "update-broadcast": "Atualizar broadcast"
+      },
+      "audiences": {
+        "title": "Audiências",
+        "create-title": "Criar nova audiência",
+        "create-description": "Crie um novo segmento de audiência para suas campanhas de email",
+        "subscriber-count": "{count} inscritos",
+        "option-subscriber-count": "{name} ({count} inscritos)",
+        "empty": "Ainda não há audiências. Crie a primeira audiência para começar!"
+      },
+      "broadcasts": {
+        "title": "Broadcasts",
+        "filter-placeholder": "Filtrar por status",
+        "create-title": "Criar novo broadcast",
+        "create-description": "Crie uma nova campanha de broadcast por email",
+        "empty-filtered": "Nenhum broadcast corresponde ao filtro atual.",
+        "empty": "Ainda não há broadcasts. Crie o primeiro broadcast para começar!",
+        "empty-hint": "Você precisa criar uma audiência antes de criar broadcasts.",
+        "status": {
+          "all": "Todos os broadcasts",
+          "draft": "Rascunho",
+          "sent": "Enviado",
+          "scheduled": "Agendado",
+          "sending": "Enviando"
+        }
+      },
+      "templates": {
+        "title": "Templates de email",
+        "create-title": "Criar novo template",
+        "create-description": "Crie um template de email reutilizável",
+        "empty": "Ainda não há templates. Crie o primeiro template para começar!"
+      },
+      "fields": {
+        "audience-name": "Nome da audiência",
+        "audience-name-placeholder": "ex.: Inscritos da newsletter",
+        "broadcast-name": "Nome do broadcast",
+        "broadcast-name-placeholder": "Nome interno deste broadcast",
+        "target-audience": "Audiência alvo",
+        "select-audience": "Selecione uma audiência",
+        "from-email": "Email remetente",
+        "subject-line": "Linha de assunto",
+        "email-subject-placeholder": "Assunto do email",
+        "email-content-html": "Conteúdo do email (HTML)",
+        "email-html-placeholder": "Conteúdo HTML do email",
+        "plain-text-optional": "Versão em texto puro (opcional)",
+        "plain-text-placeholder": "Versão em texto puro",
+        "audience": "Audiência",
+        "template-name": "Nome do template",
+        "template-name-placeholder": "ex.: Email de boas-vindas",
+        "name": "Nome",
+        "not-available": "N/D",
+        "status": "Status",
+        "subject": "Assunto",
+        "from": "De",
+        "html-content": "Conteúdo HTML",
+        "no-content": "Sem conteúdo",
+        "plain-text-content": "Conteúdo em texto puro"
+      },
+      "date": {
+        "not-sent": "Não enviado",
+        "created": "Criado em: {date}"
+      },
+      "broadcast-details": {
+        "title": "Detalhes do broadcast",
+        "description": "Veja informações e conteúdo do broadcast"
+      },
+      "edit-broadcast": {
+        "title": "Editar broadcast",
+        "description": "Atualize conteúdo e configurações do broadcast"
       }
     }
   },
@@ -204,6 +1257,10 @@
       "bio": "Bio",
       "bio-placeholder": "Conte um pouco sobre você",
       "new-email": "Novo email",
+      "avatar-url-placeholder": "https://...",
+      "username-placeholder": "seu-usuario",
+      "name-color-placeholder": "#ff0000",
+      "new-email-placeholder": "voce@exemplo.com",
       "current-password": "Senha atual",
       "new-password": "Nova senha",
       "confirm-new-password": "Confirmar nova senha"
@@ -383,6 +1440,8 @@
       "title": "Notificações",
       "sign-in": "Entre para ver suas notificações.",
       "empty": "Sem notificações.",
+      "loading": "Carregando…",
+      "refreshing": "Atualizando…",
       "unread": "Não lida",
       "mark-all-read": "Marcar todas como lidas",
       "view-all": "Ver todas"
@@ -537,6 +1596,60 @@
     "refresh-page": "Atualizar página",
     "details": "Detalhes do erro"
   },
+  "offline": {
+    "metadata": {
+      "title": "Offline - Yuri Cunha",
+      "description": "Você está offline no momento. Verifique sua conexão com a internet."
+    },
+    "title": "Você está offline",
+    "description": "Parece que você perdeu a conexão com a internet. Alguns recursos podem não funcionar até você voltar a ficar online.",
+    "try-again": "Tentar novamente",
+    "go-home": "Ir para o início",
+    "available": {
+      "title": "Enquanto estiver offline, você ainda pode:",
+      "cached-pages": "Navegar por páginas em cache",
+      "loaded-content": "Ler conteúdo carregado anteriormente",
+      "search": "Usar a funcionalidade de busca"
+    }
+  },
+  "reset-password": {
+    "loading": "Carregando...",
+    "messages": {
+      "success": "Senha redefinida com sucesso! Agora você pode entrar com a nova senha.",
+      "failed": "Falha ao redefinir a senha",
+      "invalid-token": "Token de redefinição inválido ou ausente",
+      "passwords-do-not-match": "As senhas não conferem",
+      "password-too-short": "A senha deve ter pelo menos 8 caracteres"
+    },
+    "success": {
+      "title": "Senha atualizada",
+      "description": "Sua senha foi redefinida com sucesso."
+    },
+    "invalid": {
+      "title": "Link de redefinição inválido",
+      "description": "Este link de redefinição de senha é inválido ou expirou."
+    },
+    "actions": {
+      "sign-in": "Entrar",
+      "back-home": "Voltar ao início"
+    },
+    "form": {
+      "title": "Redefinir sua senha",
+      "description": "Digite sua nova senha abaixo.",
+      "new-password": {
+        "label": "Nova senha",
+        "placeholder": "Digite sua nova senha"
+      },
+      "confirm-password": {
+        "label": "Confirmar nova senha",
+        "placeholder": "Confirme sua nova senha"
+      },
+      "submit": {
+        "pending": "Redefinindo senha...",
+        "default": "Redefinir senha"
+      }
+    }
+  },
   "guestbook": {
     "create-message-successfully": "Mensagem criada com sucesso",
     "delete-dialog": {
@@ -548,6 +1661,7 @@
     "failed-to-load-messages": "Falha ao carregar mensagens. Por favor, atualize a página.",
     "message-cannot-be-empty": "A mensagem não pode ficar vazia. Minha culpa ou sua culpa?",
     "no-messages": "Sem mensagens. Seja o primeiro a deixar uma!",
+    "empty-cta": "Seja a primeira pessoa a deixar uma mensagem!",
     "pinned": {
       "description": "Se tiver um momento, por favor faça login com sua conta para deixar um comentário. Obrigado!",
       "greeting": "Ei! 👋"
@@ -572,8 +1686,15 @@
     },
     "get-in-touch": {
       "description": "Sinta-se à vontade para entrar em contato comigo!",
+      "label": "Contato",
+      "availability": "disponibilidade",
       "image-alt": "Eu ou não eu",
-      "title": "Precisando falar?"
+      "title": "Precisando falar?",
+      "code": {
+        "status": "status = \"aberto\"",
+        "email": "email = \"me@yuricunha.com\"",
+        "timezone": "fuso = \"UTC/GMT -3\""
+      }
     },
     "hero": {
       "title-top": "Sou Yuri, especialista em bancos de dados",
@@ -586,7 +1707,12 @@
       "title-bottom": "para infraestruturas modernas",
       "location-timezone": "Brasil • UTC/GMT -3",
       "view-projects": "Ver Projetos",
-      "read-blog": "Ler Blog"
+      "read-blog": "Ler Blog",
+      "code": {
+        "database-specialist": "especialista_banco_de_dados = true",
+        "region": "regiao = \"America/Sao_Paulo\"",
+        "focus": "foco = \"sistemas de dados confiaveis\""
+      }
     },
     "latest-articles": {
       "card": "Artigo",
@@ -631,6 +1757,7 @@
     "title": "Snippets",
     "description": "Notas curtas e receitas práticas de código.",
     "empty": "Nenhum snippet disponível.",
+    "content-label": "Snippet",
     "on-this-page": "Nesta página",
     "min-read": "{minutes} min de leitura"
   },
@@ -646,6 +1773,7 @@
     "uses": "Ferramentas",
     "music": "Música",
     "more": "Mais",
+    "admin": "Admin",
     "contact": "Contato",
     "sitemap": "Mapa do site",
     "skip-to-main-content": "Ir para o conteúdo principal",
@@ -667,6 +1795,11 @@
     "site-description": "DBA Sênior",
     "site-title": "Yuri Cunha",
     "site-short-name": "Yuri"
+  },
+  "og": {
+    "blog-post": "Post do blog",
+    "read-article": "Leia este artigo em yuricunha.com",
+    "summary-fallback": "Leia este artigo em yuricunha.com"
   },
   "not-found": "Nenhuma página por aqui hoje!",
   "notFound": {
@@ -743,6 +1876,7 @@
   "projects": {
     "description": "A lista dos meus projetos. Tudo foi feito com 💙 (esta página ainda em desenvolvimento).",
     "title": "Projetos",
+    "content-label": "Projeto",
     "visit-website": "Visitar Site",
     "all-repos": "Meus repositórios públicos no GitHub",
     "featured": "Projetos em Destaque",
@@ -924,7 +2058,9 @@
       "choose": "Escolher arquivo",
       "plays": "Reproduções",
       "artists": "Artistas",
-      "duration": "Duração"
+      "duration": "Duração",
+      "invalid-file": "Arquivo inválido: esperado um array JSON",
+      "parse-error": "Erro ao interpretar arquivo"
     },
     "no-data": "Nenhum dado disponível",
     "export": {
@@ -986,6 +2122,7 @@
       "open": "Abrir menu",
       "reportBug": "Reportar bug / Contato",
       "viewProjects": "Ver Projetos",
+      "aiChat": "Chat com IA",
       "miniGame": "Minigame",
       "settings": "Configurações"
     },
@@ -1003,6 +2140,7 @@
       "provider": "Provedor",
       "newChat": "Nova conversa",
       "newChatTitle": "Nova conversa",
+      "more": "Mais",
       "rename": "Renomear",
       "renamePrompt": "Renomear conversa",
       "deleteChat": "Excluir conversa",
@@ -1129,7 +2267,25 @@
       "start": "Iniciar Jogo",
       "playAgain": "Jogar Novamente",
       "gameOver": "Fim de jogo! Sua pontuação: {score}",
-      "clickTarget": "Clique no alvo"
+      "clickTarget": "Clique no alvo",
+      "difficulty": {
+        "label": "Dificuldade:",
+        "aria": "Selecionar dificuldade",
+        "options": {
+          "easy": "Fácil",
+          "medium": "Médio",
+          "hard": "Difícil"
+        }
+      },
+      "mode": {
+        "label": "Modo:",
+        "aria": "Selecionar modo",
+        "options": {
+          "classic": "Clássico",
+          "survival": "Sobrevivência",
+          "challenge": "Desafio"
+        }
+      }
     },
     "messages": {
       "0": "Oi! Eu sou a Yue, sua assistente virtual! Precisa de ajuda para navegar?",
@@ -1479,5 +2635,8 @@
         "answer": "Feliz em palestrar em eventos sobre desenvolvimento web e open source."
       }
     }
+  },
+  "music": {
+    "description": "Histórico recente, principais artistas e estatísticas de música"
   }
 }

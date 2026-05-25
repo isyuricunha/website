@@ -36,7 +36,7 @@ const Header = (props: HeaderProps) => {
         animate={animation.show}
       >
         <div className='flex flex-col gap-3'>
-          <span className='label-mono'>Project</span>
+          <span className='label-mono'>{t('projects.content-label')}</span>
           <h1 className='max-w-4xl text-[clamp(32px,4vw,52px)] font-normal tracking-tighter'>
             {name}
           </h1>

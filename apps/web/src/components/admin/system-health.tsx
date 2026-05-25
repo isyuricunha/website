@@ -23,13 +23,17 @@ import {
   Activity,
   AlertCircle
 } from 'lucide-react'
-import { api } from '@/trpc/react'
+import { useTranslations } from 'next-intl'
 import { toast } from 'sonner'
 
+import { api } from '@/trpc/react'
+
 export const SystemHealthDashboard = () => {
+  const t = useTranslations('admin.system-health')
   const [autoRefresh, setAutoRefresh] = useState(false)
   const [selected_check_type, set_selected_check_type] = useState<string>('all')
-  const refresh_interval_ref = useRef<ReturnType<typeof setInterval> | null>(null)
+  const refreshIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const [lastCheckedAt, setLastCheckedAt] = useState(() => new Date().toLocaleString())
 
   const utils = api.useUtils()
 
@@ -55,46 +59,47 @@ export const SystemHealthDashboard = () => {
 
   const resolveErrorMutation = api.system.resolveError.useMutation({
     onSuccess: async () => {
-      toast.success('Error resolved')
+      toast.success(t('messages.error-resolved'))
       await utils.system.getErrorLogs.invalidate()
       await utils.system.getSystemStats.invalidate()
     },
     onError: (error) => {
-      toast.error(`Failed to resolve error: ${error.message}`)
+      toast.error(t('messages.resolve-error-failed', { message: error.message }))
     }
   })
 
   const resolveAllErrorsMutation = api.system.resolveAllErrors.useMutation({
     onSuccess: async () => {
-      toast.success('All errors resolved')
+      toast.success(t('messages.all-errors-resolved'))
       await utils.system.getErrorLogs.invalidate()
       await utils.system.getSystemStats.invalidate()
     },
     onError: (error) => {
-      toast.error(`Failed to resolve all errors: ${error.message}`)
+      toast.error(t('messages.resolve-all-errors-failed', { message: error.message }))
     }
   })
 
   // Auto-refresh functionality
   useEffect(() => {
     if (!autoRefresh) {
-      if (refresh_interval_ref.current) {
-        clearInterval(refresh_interval_ref.current)
-        refresh_interval_ref.current = null
+      if (refreshIntervalRef.current) {
+        clearInterval(refreshIntervalRef.current)
+        refreshIntervalRef.current = null
       }
       return
     }
 
-    refresh_interval_ref.current = setInterval(() => {
+    refreshIntervalRef.current = setInterval(() => {
       refetchHealth()
       refetchStats()
       refetchErrors()
+      setLastCheckedAt(new Date().toLocaleString())
     }, 30_000) // Refresh every 30 seconds
 
     return () => {
-      if (refresh_interval_ref.current) {
-        clearInterval(refresh_interval_ref.current)
-        refresh_interval_ref.current = null
+      if (refreshIntervalRef.current) {
+        clearInterval(refreshIntervalRef.current)
+        refreshIntervalRef.current = null
       }
     }
   }, [autoRefresh, refetchHealth, refetchStats, refetchErrors])
@@ -103,7 +108,21 @@ export const SystemHealthDashboard = () => {
     refetchHealth()
     refetchStats()
     refetchErrors()
-    toast.success('System health refreshed')
+    setLastCheckedAt(new Date().toLocaleString())
+    toast.success(t('messages.refreshed'))
+  }
+
+  const getStatusLabel = (status: string) => {
+    switch (status) {
+      case 'healthy':
+        return t('status.healthy')
+      case 'warning':
+        return t('status.warning')
+      case 'critical':
+        return t('status.critical')
+      default:
+        return t('status.unknown')
+    }
   }
 
   const getStatusIcon = (status: string) => {
@@ -230,8 +249,8 @@ export const SystemHealthDashboard = () => {
       {/* Header */}
       <div className='flex items-center justify-between'>
         <div>
-          <h1 className='text-2xl font-medium'>System Health</h1>
-          <p className='text-muted-foreground'>Monitor system performance and health</p>
+          <h1 className='text-2xl font-medium'>{t('title')}</h1>
+          <p className='text-muted-foreground'>{t('description')}</p>
         </div>
         <div className='flex items-center gap-2'>
           <label className='text-muted-foreground flex items-center gap-2 text-sm'>
@@ -241,11 +260,11 @@ export const SystemHealthDashboard = () => {
               onChange={(e) => setAutoRefresh(e.target.checked)}
               className='border-border rounded'
             />
-            Auto-refresh (30s)
+            {t('auto-refresh')}
           </label>
           <Button onClick={handleRefresh} variant='outline' size='sm'>
             <RefreshCw className='mr-2 h-4 w-4' />
-            Refresh
+            {t('actions.refresh')}
           </Button>
         </div>
       </div>
@@ -258,19 +277,17 @@ export const SystemHealthDashboard = () => {
               {getStatusIcon(healthData.overallStatus)}
               <div>
                 <h2 className='text-lg font-semibold'>
-                  System Status:{' '}
-                  {healthData.overallStatus.charAt(0).toUpperCase() +
-                    healthData.overallStatus.slice(1)}
+                  {t('overall.status', { status: getStatusLabel(healthData.overallStatus) })}
                 </h2>
                 <p className='text-muted-foreground text-sm'>
-                  Last checked: {new Date().toLocaleString()}
+                  {t('overall.last-checked', { date: lastCheckedAt })}
                 </p>
               </div>
             </div>
             {statsData && (
               <div className='text-right'>
                 <div className='text-2xl font-medium'>{formatUptime(statsData.health.uptime)}</div>
-                <div className='text-muted-foreground text-sm'>Uptime</div>
+                <div className='text-muted-foreground text-sm'>{t('overall.uptime')}</div>
               </div>
             )}
           </div>
@@ -284,7 +301,9 @@ export const SystemHealthDashboard = () => {
             <div className='flex items-center'>
               <CheckCircle className='text-accent-earth-text h-8 w-8' />
               <div className='ml-4'>
-                <p className='text-muted-foreground text-sm font-medium'>Healthy Checks</p>
+                <p className='text-muted-foreground text-sm font-medium'>
+                  {t('stats.healthy-checks')}
+                </p>
                 <p className='text-2xl font-medium'>{statsData.health.healthy}</p>
               </div>
             </div>
@@ -294,7 +313,7 @@ export const SystemHealthDashboard = () => {
             <div className='flex items-center'>
               <AlertTriangle className='text-accent-earth-text h-8 w-8' />
               <div className='ml-4'>
-                <p className='text-muted-foreground text-sm font-medium'>Warnings</p>
+                <p className='text-muted-foreground text-sm font-medium'>{t('stats.warnings')}</p>
                 <p className='text-2xl font-medium'>{statsData.health.warning}</p>
               </div>
             </div>
@@ -304,7 +323,9 @@ export const SystemHealthDashboard = () => {
             <div className='flex items-center'>
               <XCircle className='text-destructive h-8 w-8' />
               <div className='ml-4'>
-                <p className='text-muted-foreground text-sm font-medium'>Critical Issues</p>
+                <p className='text-muted-foreground text-sm font-medium'>
+                  {t('stats.critical-issues')}
+                </p>
                 <p className='text-2xl font-medium'>{statsData.health.critical}</p>
               </div>
             </div>
@@ -314,7 +335,9 @@ export const SystemHealthDashboard = () => {
             <div className='flex items-center'>
               <AlertCircle className='text-accent-earth-text h-8 w-8' />
               <div className='ml-4'>
-                <p className='text-muted-foreground text-sm font-medium'>Unresolved Errors</p>
+                <p className='text-muted-foreground text-sm font-medium'>
+                  {t('stats.unresolved-errors')}
+                </p>
                 <p className='text-2xl font-medium'>{statsData.errors.unresolved}</p>
               </div>
             </div>
@@ -326,7 +349,7 @@ export const SystemHealthDashboard = () => {
       {healthData && (
         <div className='bg-card border-border rounded-lg border'>
           <div className='border-border border-b px-6 py-4'>
-            <h3 className='text-lg font-medium'>Service Health</h3>
+            <h3 className='text-lg font-medium'>{t('service-health.title')}</h3>
           </div>
           <div className='p-6'>
             <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
@@ -367,7 +390,7 @@ export const SystemHealthDashboard = () => {
         <div className='bg-card border-border rounded-lg border'>
           <div className='border-border border-b px-6 py-4'>
             <div className='flex items-center justify-between'>
-              <h3 className='text-lg font-medium'>Recent Errors</h3>
+              <h3 className='text-lg font-medium'>{t('recent-errors.title')}</h3>
               <div className='flex items-center gap-2'>
                 <Button
                   variant='outline'
@@ -376,10 +399,10 @@ export const SystemHealthDashboard = () => {
                   disabled={resolveAllErrorsMutation.isPending}
                   onClick={() => resolveAllErrorsMutation.mutate()}
                 >
-                  Resolve all
+                  {t('actions.resolve-all')}
                 </Button>
                 <Button variant='outline' size='sm'>
-                  View All Errors
+                  {t('actions.view-all-errors')}
                 </Button>
               </div>
             </div>
@@ -405,11 +428,16 @@ export const SystemHealthDashboard = () => {
                     </div>
                     <p className='mb-1 text-sm font-medium'>{error.message}</p>
                     {error.url && (
-                      <p className='text-muted-foreground mb-1 text-xs'>URL: {error.url}</p>
+                      <p className='text-muted-foreground mb-1 text-xs'>
+                        {t('recent-errors.url', { url: error.url })}
+                      </p>
                     )}
                     {error.user && (
                       <p className='text-muted-foreground text-xs'>
-                        User: {error.user.name} ({error.user.email})
+                        {t('recent-errors.user', {
+                          name: error.user.name,
+                          email: error.user.email
+                        })}
                       </p>
                     )}
                   </div>
@@ -419,13 +447,13 @@ export const SystemHealthDashboard = () => {
                     isPending={resolveErrorMutation.isPending}
                     onClick={() => resolveErrorMutation.mutate({ errorId: error.id })}
                   >
-                    Resolve
+                    {t('actions.resolve')}
                   </Button>
                 </div>
                 {error.stack && (
                   <details className='mt-3'>
                     <summary className='text-muted-foreground cursor-pointer text-xs'>
-                      Stack trace
+                      {t('recent-errors.stack-trace')}
                     </summary>
                     <pre className='bg-muted mt-2 overflow-x-auto rounded p-2 text-xs'>
                       {error.stack}
@@ -440,20 +468,20 @@ export const SystemHealthDashboard = () => {
 
       {/* Health History Chart Placeholder */}
       <div className='bg-card border-border rounded-lg border p-6'>
-        <h3 className='mb-4 text-lg font-medium'>Health Trends</h3>
+        <h3 className='mb-4 text-lg font-medium'>{t('trends.title')}</h3>
         <div className='space-y-4'>
           <div className='flex flex-wrap items-center justify-between gap-2'>
             <div className='text-muted-foreground text-sm'>
-              Last {filtered_history.length} checks
+              {t('trends.last-checks', { count: filtered_history.length })}
             </div>
             <div className='flex items-center gap-2'>
-              <label className='text-muted-foreground text-sm'>Filter</label>
+              <label className='text-muted-foreground text-sm'>{t('trends.filter')}</label>
               <Select value={selected_check_type} onValueChange={set_selected_check_type}>
                 <SelectTrigger className='bg-background border-border text-foreground h-9 rounded-md border px-3 text-sm'>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value='all'>All services</SelectItem>
+                  <SelectItem value='all'>{t('trends.all-services')}</SelectItem>
                   {available_check_types.map((t) => (
                     <SelectItem key={t} value={t}>
                       {t}
@@ -466,19 +494,19 @@ export const SystemHealthDashboard = () => {
 
           <div className='grid grid-cols-2 gap-3 md:grid-cols-4'>
             <div className='bg-background border-border rounded-md border p-3'>
-              <div className='text-muted-foreground text-xs'>Healthy</div>
+              <div className='text-muted-foreground text-xs'>{t('trends.stats.healthy')}</div>
               <div className='text-foreground text-lg font-semibold'>{history_stats.healthy}</div>
             </div>
             <div className='bg-background border-border rounded-md border p-3'>
-              <div className='text-muted-foreground text-xs'>Warnings</div>
+              <div className='text-muted-foreground text-xs'>{t('trends.stats.warnings')}</div>
               <div className='text-foreground text-lg font-semibold'>{history_stats.warning}</div>
             </div>
             <div className='bg-background border-border rounded-md border p-3'>
-              <div className='text-muted-foreground text-xs'>Critical</div>
+              <div className='text-muted-foreground text-xs'>{t('trends.stats.critical')}</div>
               <div className='text-foreground text-lg font-semibold'>{history_stats.critical}</div>
             </div>
             <div className='bg-background border-border rounded-md border p-3'>
-              <div className='text-muted-foreground text-xs'>Unknown</div>
+              <div className='text-muted-foreground text-xs'>{t('trends.stats.unknown')}</div>
               <div className='text-foreground text-lg font-semibold'>{history_stats.unknown}</div>
             </div>
           </div>
@@ -487,8 +515,8 @@ export const SystemHealthDashboard = () => {
             <div className='text-muted-foreground flex h-40 items-center justify-center'>
               <div className='text-center'>
                 <TrendingUp className='mx-auto mb-2 h-12 w-12 opacity-50' />
-                <p>No health history yet</p>
-                <p className='text-sm'>Trigger a refresh to record health checks</p>
+                <p>{t('trends.empty-title')}</p>
+                <p className='text-sm'>{t('trends.empty-description')}</p>
               </div>
             </div>
           ) : (
@@ -496,11 +524,11 @@ export const SystemHealthDashboard = () => {
               <table className='w-full text-sm'>
                 <thead className='bg-muted text-muted-foreground text-left text-xs'>
                   <tr>
-                    <th className='px-3 py-2'>Time</th>
-                    <th className='px-3 py-2'>Service</th>
-                    <th className='px-3 py-2'>Status</th>
-                    <th className='px-3 py-2'>Latency</th>
-                    <th className='px-3 py-2'>Message</th>
+                    <th className='px-3 py-2'>{t('trends.table.time')}</th>
+                    <th className='px-3 py-2'>{t('trends.table.service')}</th>
+                    <th className='px-3 py-2'>{t('trends.table.status')}</th>
+                    <th className='px-3 py-2'>{t('trends.table.latency')}</th>
+                    <th className='px-3 py-2'>{t('trends.table.message')}</th>
                   </tr>
                 </thead>
                 <tbody className='divide-border divide-y'>
@@ -515,9 +543,7 @@ export const SystemHealthDashboard = () => {
                           className={`inline-flex items-center gap-2 rounded-full px-2 py-0.5 ${getStatusColor(row.status)}`}
                         >
                           {getStatusIcon(row.status)}
-                          <span className='text-xs font-medium'>
-                            {row.status.charAt(0).toUpperCase() + row.status.slice(1)}
-                          </span>
+                          <span className='text-xs font-medium'>{getStatusLabel(row.status)}</span>
                         </span>
                       </td>
                       <td className='text-muted-foreground px-3 py-2'>

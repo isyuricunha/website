@@ -166,7 +166,7 @@ const MascotGame = ({ isOpen, onClose }: MascotGameProps) => {
         <div className='mb-4 space-y-3'>
           <div className='flex items-center justify-between'>
             <label htmlFor='difficulty-select' className='text-sm font-medium'>
-              Difficulty:
+              {t('mascot.game.difficulty.label')}
             </label>
             <Select
               value={difficulty}
@@ -175,20 +175,20 @@ const MascotGame = ({ isOpen, onClose }: MascotGameProps) => {
               <SelectTrigger
                 id='difficulty-select'
                 className='h-9 w-28 rounded border text-xs'
-                aria-label='Select difficulty'
+                aria-label={t('mascot.game.difficulty.aria')}
               >
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value='easy'>Easy</SelectItem>
-                <SelectItem value='medium'>Medium</SelectItem>
-                <SelectItem value='hard'>Hard</SelectItem>
+                <SelectItem value='easy'>{t('mascot.game.difficulty.options.easy')}</SelectItem>
+                <SelectItem value='medium'>{t('mascot.game.difficulty.options.medium')}</SelectItem>
+                <SelectItem value='hard'>{t('mascot.game.difficulty.options.hard')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <div className='flex items-center justify-between'>
             <label htmlFor='mode-select' className='text-sm font-medium'>
-              Mode:
+              {t('mascot.game.mode.label')}
             </label>
             <Select
               value={gameMode}
@@ -197,14 +197,14 @@ const MascotGame = ({ isOpen, onClose }: MascotGameProps) => {
               <SelectTrigger
                 id='mode-select'
                 className='h-9 w-32 rounded border text-xs'
-                aria-label='Select mode'
+                aria-label={t('mascot.game.mode.aria')}
               >
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value='classic'>Classic</SelectItem>
-                <SelectItem value='survival'>Survival</SelectItem>
-                <SelectItem value='challenge'>Challenge</SelectItem>
+                <SelectItem value='classic'>{t('mascot.game.mode.options.classic')}</SelectItem>
+                <SelectItem value='survival'>{t('mascot.game.mode.options.survival')}</SelectItem>
+                <SelectItem value='challenge'>{t('mascot.game.mode.options.challenge')}</SelectItem>
               </SelectContent>
             </Select>
           </div>

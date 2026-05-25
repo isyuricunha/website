@@ -23,6 +23,7 @@ import {
   Separator,
   Progress
 } from '@isyuricunha/ui'
+import { useTranslations } from '@isyuricunha/i18n/client'
 import { toast } from 'sonner'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -33,15 +34,16 @@ import AnnouncementWidget from '../announcement-widget'
 const AdminDashboard = () => {
   const [refreshing, setRefreshing] = useState(false)
   const router = useRouter()
+  const t = useTranslations('admin.dashboard')
   const { data: stats, isLoading, error, refetch } = api.admin.getStats.useQuery()
 
   const handleRefresh = async () => {
     setRefreshing(true)
     try {
       await refetch()
-      toast.success('Dashboard refreshed successfully')
+      toast.success(t('messages.refresh-success'))
     } catch {
-      toast.error('Failed to refresh dashboard')
+      toast.error(t('messages.refresh-error'))
     } finally {
       setRefreshing(false)
     }
@@ -51,14 +53,14 @@ const AdminDashboard = () => {
     return (
       <div className='space-y-6'>
         <div>
-          <h1 className='text-3xl font-medium'>Dashboard</h1>
-          <p className='text-muted-foreground'>Overview of your site statistics</p>
+          <h1 className='text-3xl font-medium'>{t('loading.title')}</h1>
+          <p className='text-muted-foreground'>{t('loading.description')}</p>
         </div>
         <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-4'>
           {Array.from({ length: 4 }).map((_, i) => (
             <Card key={i}>
               <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-                <CardTitle className='text-sm font-medium'>Loading...</CardTitle>
+                <CardTitle className='text-sm font-medium'>{t('loading.card')}</CardTitle>
                 <div className='bg-muted h-4 w-4 animate-pulse rounded' />
               </CardHeader>
               <CardContent>
@@ -76,12 +78,12 @@ const AdminDashboard = () => {
     return (
       <div className='space-y-6'>
         <div>
-          <h1 className='text-3xl font-medium'>Dashboard</h1>
-          <p className='text-muted-foreground'>Overview of your site statistics</p>
+          <h1 className='text-3xl font-medium'>{t('loading.title')}</h1>
+          <p className='text-muted-foreground'>{t('loading.description')}</p>
         </div>
         <Card>
           <CardContent className='pt-6'>
-            <p className='text-destructive'>Failed to load dashboard statistics</p>
+            <p className='text-destructive'>{t('loading.error')}</p>
           </CardContent>
         </Card>
       </div>
@@ -90,33 +92,33 @@ const AdminDashboard = () => {
 
   const statCards = [
     {
-      title: 'Total Users',
+      title: t('stats.total-users.title'),
       value: stats?.totals.users ?? 0,
-      description: `+${stats?.recent.users ?? 0} this month`,
+      description: t('stats.this-month', { count: stats?.recent.users ?? 0 }),
       icon: Users,
       trend: stats?.recent.users ? '+12%' : '0%',
       href: '/admin/users'
     },
     {
-      title: 'Total Comments',
+      title: t('stats.total-comments.title'),
       value: stats?.totals.comments ?? 0,
-      description: `+${stats?.recent.comments ?? 0} this month`,
+      description: t('stats.this-month', { count: stats?.recent.comments ?? 0 }),
       icon: MessageSquare,
       trend: stats?.recent.comments ? '+8%' : '0%',
       href: '/admin/comments'
     },
     {
-      title: 'Guestbook Entries',
+      title: t('stats.guestbook-entries.title'),
       value: stats?.totals.guestbookEntries ?? 0,
-      description: 'All time entries',
+      description: t('stats.guestbook-entries.description'),
       icon: BarChart3,
       trend: '+5%',
       href: '/admin'
     },
     {
-      title: 'Admin Users',
+      title: t('stats.admin-users.title'),
       value: stats?.totals.admins ?? 0,
-      description: 'System administrators',
+      description: t('stats.admin-users.description'),
       icon: Shield,
       trend: '0%',
       href: '/admin/users'
@@ -127,10 +129,8 @@ const AdminDashboard = () => {
     <div className='space-y-8'>
       <div className='flex items-center justify-between'>
         <div className='space-y-1'>
-          <h1 className='text-text-primary text-4xl font-medium tracking-tight'>Admin Dashboard</h1>
-          <p className='text-muted-foreground text-base'>
-            Monitor your site's performance and manage operations
-          </p>
+          <h1 className='text-text-primary text-4xl font-medium tracking-tight'>{t('title')}</h1>
+          <p className='text-muted-foreground text-base'>{t('description')}</p>
         </div>
         <div className='flex items-center gap-3'>
           <Badge
@@ -138,7 +138,7 @@ const AdminDashboard = () => {
             className='text-accent-earth-text border-[var(--accent-border)] bg-[var(--accent-dim)] px-3 py-1.5 text-xs font-medium'
           >
             <Activity className='mr-1.5 h-3.5 w-3.5' />
-            Live
+            {t('status.live')}
           </Badge>
           <Button
             variant='outline'
@@ -148,7 +148,7 @@ const AdminDashboard = () => {
             className='transition-all duration-200 hover:shadow-md'
           >
             <RefreshCw className={`mr-2 h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} />
-            Refresh
+            {t('actions.refresh')}
           </Button>
         </div>
       </div>
@@ -200,12 +200,14 @@ const AdminDashboard = () => {
                   <div className='text-accent-earth-text rounded-lg bg-[var(--accent-dim)] p-2'>
                     <Clock className='h-4 w-4' />
                   </div>
-                  Recent Activity
+                  {t('recent-activity.title')}
                 </CardTitle>
-                <CardDescription className='text-xs'>Last 7 days performance</CardDescription>
+                <CardDescription className='text-xs'>
+                  {t('recent-activity.description')}
+                </CardDescription>
               </div>
               <Badge variant='secondary' className='px-2.5 py-1 text-xs font-medium'>
-                Weekly
+                {t('recent-activity.weekly')}
               </Badge>
             </div>
           </CardHeader>
@@ -215,7 +217,7 @@ const AdminDashboard = () => {
                 <div className='text-accent-earth-text rounded-lg bg-[var(--accent-dim)] p-2'>
                   <Users className='h-4 w-4' />
                 </div>
-                <span className='text-sm font-semibold'>New Users</span>
+                <span className='text-sm font-semibold'>{t('recent-activity.new-users')}</span>
               </div>
               <div className='flex items-center gap-2'>
                 <span className='text-lg font-medium'>{stats?.weekly.users ?? 0}</span>
@@ -227,7 +229,7 @@ const AdminDashboard = () => {
                 <div className='text-accent-earth-text rounded-lg bg-[var(--accent-dim)] p-2'>
                   <MessageSquare className='h-4 w-4' />
                 </div>
-                <span className='text-sm font-semibold'>New Comments</span>
+                <span className='text-sm font-semibold'>{t('recent-activity.new-comments')}</span>
               </div>
               <div className='flex items-center gap-2'>
                 <span className='text-lg font-medium'>{stats?.weekly.comments ?? 0}</span>
@@ -243,9 +245,9 @@ const AdminDashboard = () => {
               <div className='text-accent-earth-text rounded-lg bg-[var(--accent-dim)] p-2'>
                 <ArrowRight className='h-4 w-4' />
               </div>
-              <CardTitle className='text-base'>Quick Actions</CardTitle>
+              <CardTitle className='text-base'>{t('quick-actions.title')}</CardTitle>
             </div>
-            <CardDescription className='text-xs'>Jump to common tasks</CardDescription>
+            <CardDescription className='text-xs'>{t('quick-actions.description')}</CardDescription>
           </CardHeader>
           <CardContent className='space-y-2'>
             <button
@@ -257,8 +259,10 @@ const AdminDashboard = () => {
                 <Users className='h-4 w-4' />
               </div>
               <div className='flex-1 space-y-0.5 text-left'>
-                <div className='text-sm font-semibold'>Manage Users</div>
-                <div className='text-muted-foreground text-xs'>View and edit user accounts</div>
+                <div className='text-sm font-semibold'>{t('quick-actions.manage-users.title')}</div>
+                <div className='text-muted-foreground text-xs'>
+                  {t('quick-actions.manage-users.description')}
+                </div>
               </div>
             </button>
             <button
@@ -270,8 +274,12 @@ const AdminDashboard = () => {
                 <MessageSquare className='h-4 w-4' />
               </div>
               <div className='flex-1 space-y-0.5 text-left'>
-                <div className='text-sm font-semibold'>Moderate Comments</div>
-                <div className='text-muted-foreground text-xs'>Review and manage comments</div>
+                <div className='text-sm font-semibold'>
+                  {t('quick-actions.moderate-comments.title')}
+                </div>
+                <div className='text-muted-foreground text-xs'>
+                  {t('quick-actions.moderate-comments.description')}
+                </div>
               </div>
             </button>
             <button
@@ -283,8 +291,10 @@ const AdminDashboard = () => {
                 <Activity className='h-4 w-4' />
               </div>
               <div className='flex-1 space-y-0.5 text-left'>
-                <div className='text-sm font-semibold'>Monitoring</div>
-                <div className='text-muted-foreground text-xs'>View metrics, errors and alerts</div>
+                <div className='text-sm font-semibold'>{t('quick-actions.monitoring.title')}</div>
+                <div className='text-muted-foreground text-xs'>
+                  {t('quick-actions.monitoring.description')}
+                </div>
               </div>
             </button>
           </CardContent>
@@ -302,31 +312,35 @@ const AdminDashboard = () => {
               <div className='text-accent-earth-text rounded-lg bg-[var(--accent-dim)] p-2'>
                 <BarChart3 className='h-4 w-4' />
               </div>
-              <CardTitle className='text-base'>System Health</CardTitle>
+              <CardTitle className='text-base'>{t('system-health.title')}</CardTitle>
             </div>
-            <CardDescription className='text-xs'>
-              Overall system performance metrics
-            </CardDescription>
+            <CardDescription className='text-xs'>{t('system-health.description')}</CardDescription>
           </CardHeader>
           <CardContent className='space-y-4'>
             <div className='space-y-2.5'>
               <div className='flex justify-between text-sm'>
-                <span className='font-medium'>Database Performance</span>
-                <span className='text-accent-earth-text text-xs font-semibold'>Excellent</span>
+                <span className='font-medium'>{t('system-health.database')}</span>
+                <span className='text-accent-earth-text text-xs font-semibold'>
+                  {t('system-health.excellent')}
+                </span>
               </div>
               <Progress value={95} className='h-2' />
             </div>
             <div className='space-y-2.5'>
               <div className='flex justify-between text-sm'>
-                <span className='font-medium'>API Response Time</span>
-                <span className='text-accent-earth-text text-xs font-semibold'>Fast</span>
+                <span className='font-medium'>{t('system-health.api-response')}</span>
+                <span className='text-accent-earth-text text-xs font-semibold'>
+                  {t('system-health.fast')}
+                </span>
               </div>
               <Progress value={88} className='h-2' />
             </div>
             <div className='space-y-2.5'>
               <div className='flex justify-between text-sm'>
-                <span className='font-medium'>Storage Usage</span>
-                <span className='text-muted-foreground text-xs font-semibold'>Moderate</span>
+                <span className='font-medium'>{t('system-health.storage')}</span>
+                <span className='text-muted-foreground text-xs font-semibold'>
+                  {t('system-health.moderate')}
+                </span>
               </div>
               <Progress value={65} className='h-2' />
             </div>

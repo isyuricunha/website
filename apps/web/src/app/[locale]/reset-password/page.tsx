@@ -11,6 +11,7 @@ import {
   CardHeader,
   CardTitle
 } from '@isyuricunha/ui'
+import { useTranslations } from '@isyuricunha/i18n/client'
 
 import { toast } from 'sonner'
 import { api } from '@/trpc/react'
@@ -25,14 +26,15 @@ function ResetPasswordForm() {
   const searchParams = useSearchParams()
   const token = searchParams.get('token')
   const { setIsSignInOpen } = useDialogsStore()
+  const t = useTranslations('reset-password')
 
   const resetPasswordMutation = api.users.resetPassword.useMutation({
     onSuccess: () => {
-      toast.success('Password reset successfully! You can now sign in with your new password.')
+      toast.success(t('messages.success'))
       setIsSuccess(true)
     },
     onError: (error) => {
-      toast.error(error.message || 'Failed to reset password')
+      toast.error(error.message || t('messages.failed'))
     },
     onSettled: () => {
       setIsLoading(false)
@@ -44,8 +46,8 @@ function ResetPasswordForm() {
       <div className='flex min-h-screen items-center justify-center'>
         <Card className='w-full max-w-md'>
           <CardHeader>
-            <CardTitle>Password updated</CardTitle>
-            <CardDescription>Your password has been reset successfully.</CardDescription>
+            <CardTitle>{t('success.title')}</CardTitle>
+            <CardDescription>{t('success.description')}</CardDescription>
           </CardHeader>
           <CardContent className='space-y-3'>
             <Button
@@ -54,10 +56,10 @@ function ResetPasswordForm() {
               }}
               className='w-full'
             >
-              Sign in
+              {t('actions.sign-in')}
             </Button>
             <Button onClick={() => router.push('/')} className='w-full' variant='outline'>
-              Back to home
+              {t('actions.back-home')}
             </Button>
           </CardContent>
         </Card>
@@ -69,17 +71,17 @@ function ResetPasswordForm() {
     e.preventDefault()
 
     if (!token) {
-      toast.error('Invalid or missing reset token')
+      toast.error(t('messages.invalid-token'))
       return
     }
 
     if (password !== confirmPassword) {
-      toast.error('Passwords do not match')
+      toast.error(t('messages.passwords-do-not-match'))
       return
     }
 
     if (password.length < 8) {
-      toast.error('Password must be at least 8 characters long')
+      toast.error(t('messages.password-too-short'))
       return
     }
 
@@ -95,8 +97,8 @@ function ResetPasswordForm() {
       <div className='flex min-h-screen items-center justify-center'>
         <Card className='w-full max-w-md'>
           <CardHeader>
-            <CardTitle>Invalid Reset Link</CardTitle>
-            <CardDescription>This password reset link is invalid or has expired.</CardDescription>
+            <CardTitle>{t('invalid.title')}</CardTitle>
+            <CardDescription>{t('invalid.description')}</CardDescription>
           </CardHeader>
           <CardContent>
             <Button
@@ -105,7 +107,7 @@ function ResetPasswordForm() {
               }}
               className='w-full'
             >
-              Sign in
+              {t('actions.sign-in')}
             </Button>
           </CardContent>
         </Card>
@@ -117,21 +119,21 @@ function ResetPasswordForm() {
     <div className='flex min-h-screen items-center justify-center'>
       <Card className='w-full max-w-md'>
         <CardHeader>
-          <CardTitle>Reset Your Password</CardTitle>
-          <CardDescription>Enter your new password below.</CardDescription>
+          <CardTitle>{t('form.title')}</CardTitle>
+          <CardDescription>{t('form.description')}</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className='space-y-4'>
             <div>
               <label htmlFor='password' className='mb-2 block text-sm font-medium'>
-                New Password
+                {t('form.new-password.label')}
               </label>
               <Input
                 id='password'
                 type='password'
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder='Enter your new password'
+                placeholder={t('form.new-password.placeholder')}
                 required
                 minLength={8}
                 disabled={isLoading}
@@ -139,14 +141,14 @@ function ResetPasswordForm() {
             </div>
             <div>
               <label htmlFor='confirmPassword' className='mb-2 block text-sm font-medium'>
-                Confirm New Password
+                {t('form.confirm-password.label')}
               </label>
               <Input
                 id='confirmPassword'
                 type='password'
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder='Confirm your new password'
+                placeholder={t('form.confirm-password.placeholder')}
                 required
                 minLength={8}
                 disabled={isLoading}
@@ -157,7 +159,7 @@ function ResetPasswordForm() {
               className='w-full'
               disabled={isLoading || !password || !confirmPassword}
             >
-              {isLoading ? 'Resetting Password...' : 'Reset Password'}
+              {isLoading ? t('form.submit.pending') : t('form.submit.default')}
             </Button>
           </form>
         </CardContent>
@@ -167,9 +169,11 @@ function ResetPasswordForm() {
 }
 
 export default function ResetPasswordPage() {
+  const t = useTranslations('reset-password')
+
   return (
     <Suspense
-      fallback={<div className='flex min-h-screen items-center justify-center'>Loading...</div>}
+      fallback={<div className='flex min-h-screen items-center justify-center'>{t('loading')}</div>}
     >
       <ResetPasswordForm />
     </Suspense>

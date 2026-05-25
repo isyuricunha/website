@@ -148,7 +148,7 @@ const Page = async (props: PageProps) => {
 
       <div className='mx-auto max-w-3xl'>
         <header className='space-y-4 border-b border-[var(--border-faint)] py-12'>
-          <span className='label-mono'>Snippet</span>
+          <span className='label-mono'>{t('content-label')}</span>
           <h1 className='text-[clamp(32px,4vw,52px)] font-normal tracking-tighter'>
             {snippet.title}
           </h1>

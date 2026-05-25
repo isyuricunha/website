@@ -49,8 +49,8 @@ const Header = () => {
             <Button
               variant='ghost'
               className='size-9 p-0'
-              aria-label='Admin'
-              title='Admin'
+              aria-label={t('layout.admin')}
+              title={t('layout.admin')}
               onClick={() => router.push('/admin')}
             >
               <LayoutDashboard className='size-4' />

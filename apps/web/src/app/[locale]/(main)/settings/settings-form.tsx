@@ -253,7 +253,7 @@ const SettingsForm = () => {
               value={profileForm.image}
               disabled={isAnonymous}
               onChange={(e) => setProfileForm((p) => ({ ...p, image: e.target.value }))}
-              placeholder='https://...'
+              placeholder={t('settings.fields.avatar-url-placeholder')}
             />
             <div className='mt-3 flex flex-col gap-2 sm:flex-row sm:items-end'>
               <div className='flex-1'>
@@ -291,7 +291,7 @@ const SettingsForm = () => {
               id='username'
               value={profileForm.username}
               onChange={(e) => setProfileForm((p) => ({ ...p, username: e.target.value }))}
-              placeholder='your-username'
+              placeholder={t('settings.fields.username-placeholder')}
             />
           </div>
 
@@ -321,7 +321,7 @@ const SettingsForm = () => {
               id='nameColor'
               value={profileForm.nameColor}
               onChange={(e) => setProfileForm((p) => ({ ...p, nameColor: e.target.value }))}
-              placeholder='#ff0000'
+              placeholder={t('settings.fields.name-color-placeholder')}
             />
           </div>
 
@@ -375,7 +375,7 @@ const SettingsForm = () => {
             type='email'
             value={emailForm.newEmail}
             onChange={(e) => setEmailForm({ newEmail: e.target.value })}
-            placeholder='you@example.com'
+            placeholder={t('settings.fields.new-email-placeholder')}
           />
         </div>
 

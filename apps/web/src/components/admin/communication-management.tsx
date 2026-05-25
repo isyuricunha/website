@@ -24,12 +24,14 @@ import {
 } from '@isyuricunha/ui'
 
 import { Mail, Megaphone, Bell, Send } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { toast } from 'sonner'
 
 import { api } from '@/trpc/react'
 import { getAnnouncementUi } from '@/lib/announcement-ui'
 
 export default function CommunicationManagement() {
+  const t = useTranslations('admin.communication-management')
   const [selectedTab, setSelectedTab] = useState('overview')
 
   // Communication stats query
@@ -61,37 +63,37 @@ export default function CommunicationManagement() {
   // Mutations
   const createTemplateMutation = api.communication.createEmailTemplate.useMutation({
     onSuccess: () => {
-      toast.success('Email template created successfully')
+      toast.success(t('messages.template-created'))
     },
     onError: (error) => {
-      toast.error(`Failed to create template: ${error.message}`)
+      toast.error(t('messages.template-create-failed', { message: error.message }))
     }
   })
 
   const createCampaignMutation = api.communication.createEmailCampaign.useMutation({
     onSuccess: () => {
-      toast.success('Email campaign created successfully')
+      toast.success(t('messages.campaign-created'))
     },
     onError: (error) => {
-      toast.error(`Failed to create campaign: ${error.message}`)
+      toast.error(t('messages.campaign-create-failed', { message: error.message }))
     }
   })
 
   const sendCampaignMutation = api.communication.sendEmailCampaign.useMutation({
     onSuccess: () => {
-      toast.success('Email campaign sent successfully')
+      toast.success(t('messages.campaign-sent'))
     },
     onError: (error) => {
-      toast.error(`Failed to send campaign: ${error.message}`)
+      toast.error(t('messages.campaign-send-failed', { message: error.message }))
     }
   })
 
   const createAnnouncementMutation = api.announcements.createAnnouncement.useMutation({
     onSuccess: () => {
-      toast.success('Announcement created successfully')
+      toast.success(t('messages.announcement-created'))
     },
     onError: (error) => {
-      toast.error(`Failed to create announcement: ${error.message}`)
+      toast.error(t('messages.announcement-create-failed', { message: error.message }))
     }
   })
 
@@ -102,7 +104,7 @@ export default function CommunicationManagement() {
     const htmlContent = formData.get('htmlContent') as string
 
     if (!name || !type || !subject || !htmlContent) {
-      toast.error('All fields are required')
+      toast.error(t('messages.all-fields-required'))
       return
     }
 
@@ -120,7 +122,7 @@ export default function CommunicationManagement() {
     const htmlContent = formData.get('htmlContent') as string
 
     if (!name || !subject || !htmlContent) {
-      toast.error('Name, subject, and content are required')
+      toast.error(t('messages.campaign-fields-required'))
       return
     }
 
@@ -140,7 +142,7 @@ export default function CommunicationManagement() {
     const priority = Number.parseInt(formData.get('priority') as string) || 0
 
     if (!title || !content) {
-      toast.error('Title and content are required')
+      toast.error(t('messages.title-content-required'))
       return
     }
 
@@ -176,15 +178,15 @@ export default function CommunicationManagement() {
   }
 
   if (statsLoading) {
-    return <div className='p-6'>Loading communication dashboard...</div>
+    return <div className='p-6'>{t('loading')}</div>
   }
 
   return (
     <div className='space-y-6'>
       <div className='flex items-center justify-between'>
         <div>
-          <h1 className='text-3xl font-medium'>Communication Management</h1>
-          <p className='text-muted-foreground'>Manage emails, announcements, and notifications</p>
+          <h1 className='text-3xl font-medium'>{t('title')}</h1>
+          <p className='text-muted-foreground'>{t('description')}</p>
         </div>
       </div>
 
@@ -192,52 +194,54 @@ export default function CommunicationManagement() {
       <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-4'>
         <Card>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-sm font-medium'>Email Campaigns</CardTitle>
+            <CardTitle className='text-sm font-medium'>{t('stats.email-campaigns')}</CardTitle>
             <Mail className='text-muted-foreground h-4 w-4' />
           </CardHeader>
           <CardContent>
             <div className='text-2xl font-medium'>{commStats?.campaigns.total || 0}</div>
             <p className='text-muted-foreground text-xs'>
-              {commStats?.campaigns.sent || 0} sent campaigns
+              {t('stats.sent-campaigns', { count: commStats?.campaigns.sent || 0 })}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-sm font-medium'>Emails Sent</CardTitle>
+            <CardTitle className='text-sm font-medium'>{t('stats.emails-sent')}</CardTitle>
             <Send className='text-muted-foreground h-4 w-4' />
           </CardHeader>
           <CardContent>
             <div className='text-2xl font-medium'>{commStats?.campaigns.totalEmailsSent || 0}</div>
             <p className='text-muted-foreground text-xs'>
-              {commStats?.campaigns.totalEmailsDelivered || 0} delivered
+              {t('stats.delivered', {
+                count: commStats?.campaigns.totalEmailsDelivered || 0
+              })}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-sm font-medium'>Announcements</CardTitle>
+            <CardTitle className='text-sm font-medium'>{t('stats.announcements')}</CardTitle>
             <Megaphone className='text-muted-foreground h-4 w-4' />
           </CardHeader>
           <CardContent>
             <div className='text-2xl font-medium'>{commStats?.announcements.total || 0}</div>
             <p className='text-muted-foreground text-xs'>
-              {commStats?.announcements.active || 0} active
+              {t('stats.active', { count: commStats?.announcements.active || 0 })}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-sm font-medium'>Notifications</CardTitle>
+            <CardTitle className='text-sm font-medium'>{t('stats.notifications')}</CardTitle>
             <Bell className='text-muted-foreground h-4 w-4' />
           </CardHeader>
           <CardContent>
             <div className='text-2xl font-medium'>{commStats?.notifications.total || 0}</div>
             <p className='text-muted-foreground text-xs'>
-              {commStats?.notifications.unread || 0} unread
+              {t('stats.unread', { count: commStats?.notifications.unread || 0 })}
             </p>
           </CardContent>
         </Card>
@@ -246,11 +250,11 @@ export default function CommunicationManagement() {
       {/* Communication Management Tabs */}
       <Tabs value={selectedTab} onValueChange={setSelectedTab}>
         <TabsList className='grid w-full grid-cols-5'>
-          <TabsTrigger value='overview'>Overview</TabsTrigger>
-          <TabsTrigger value='campaigns'>Campaigns</TabsTrigger>
-          <TabsTrigger value='templates'>Templates</TabsTrigger>
-          <TabsTrigger value='announcements'>Announcements</TabsTrigger>
-          <TabsTrigger value='notifications'>Notifications</TabsTrigger>
+          <TabsTrigger value='overview'>{t('tabs.overview')}</TabsTrigger>
+          <TabsTrigger value='campaigns'>{t('tabs.campaigns')}</TabsTrigger>
+          <TabsTrigger value='templates'>{t('tabs.templates')}</TabsTrigger>
+          <TabsTrigger value='announcements'>{t('tabs.announcements')}</TabsTrigger>
+          <TabsTrigger value='notifications'>{t('tabs.notifications')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value='overview' className='space-y-4'>
@@ -258,12 +262,12 @@ export default function CommunicationManagement() {
             {/* Recent Campaigns */}
             <Card>
               <CardHeader>
-                <CardTitle>Recent Email Campaigns</CardTitle>
-                <CardDescription>Latest email campaign activity</CardDescription>
+                <CardTitle>{t('overview.recent-campaigns.title')}</CardTitle>
+                <CardDescription>{t('overview.recent-campaigns.description')}</CardDescription>
               </CardHeader>
               <CardContent>
                 {campaignsLoading ? (
-                  <div>Loading campaigns...</div>
+                  <div>{t('campaigns.loading')}</div>
                 ) : (
                   <div className='space-y-3'>
                     {campaigns?.campaigns.slice(0, 5).map((campaign) => (
@@ -276,7 +280,9 @@ export default function CommunicationManagement() {
                           {new Date(campaign.createdAt).toLocaleDateString()}
                         </span>
                       </div>
-                    )) || <div className='text-muted-foreground text-sm'>No campaigns yet</div>}
+                    )) || (
+                      <div className='text-muted-foreground text-sm'>{t('campaigns.empty')}</div>
+                    )}
                   </div>
                 )}
               </CardContent>
@@ -285,12 +291,12 @@ export default function CommunicationManagement() {
             {/* Active Announcements */}
             <Card>
               <CardHeader>
-                <CardTitle>Active Announcements</CardTitle>
-                <CardDescription>Current site announcements</CardDescription>
+                <CardTitle>{t('overview.active-announcements.title')}</CardTitle>
+                <CardDescription>{t('overview.active-announcements.description')}</CardDescription>
               </CardHeader>
               <CardContent>
                 {announcementsLoading ? (
-                  <div>Loading announcements...</div>
+                  <div>{t('announcements.loading')}</div>
                 ) : (
                   <div className='space-y-3'>
                     {announcements?.announcements
@@ -305,11 +311,13 @@ export default function CommunicationManagement() {
                             <span className='text-sm'>{announcement.title}</span>
                           </div>
                           <span className='text-muted-foreground text-xs'>
-                            Priority: {announcement.priority}
+                            {t('announcements.priority', { priority: announcement.priority })}
                           </span>
                         </div>
                       )) || (
-                      <div className='text-muted-foreground text-sm'>No active announcements</div>
+                      <div className='text-muted-foreground text-sm'>
+                        {t('announcements.no-active')}
+                      </div>
                     )}
                   </div>
                 )}
@@ -323,41 +331,43 @@ export default function CommunicationManagement() {
             {/* Create Campaign Form */}
             <Card>
               <CardHeader>
-                <CardTitle>Create Email Campaign</CardTitle>
-                <CardDescription>Send bulk emails to users</CardDescription>
+                <CardTitle>{t('campaigns.create-title')}</CardTitle>
+                <CardDescription>{t('campaigns.create-description')}</CardDescription>
               </CardHeader>
               <CardContent>
                 <form action={handleCreateCampaign} className='space-y-4'>
                   <div>
-                    <Label htmlFor='campaignName'>Campaign Name</Label>
+                    <Label htmlFor='campaignName'>{t('fields.campaign-name')}</Label>
                     <Input
                       id='campaignName'
                       name='name'
-                      placeholder='Monthly Newsletter'
+                      placeholder={t('fields.campaign-name-placeholder')}
                       required
                     />
                   </div>
                   <div>
-                    <Label htmlFor='campaignSubject'>Email Subject</Label>
+                    <Label htmlFor='campaignSubject'>{t('fields.email-subject')}</Label>
                     <Input
                       id='campaignSubject'
                       name='subject'
-                      placeholder='Your monthly update is here!'
+                      placeholder={t('fields.email-subject-placeholder')}
                       required
                     />
                   </div>
                   <div>
-                    <Label htmlFor='campaignContent'>Email Content (HTML)</Label>
+                    <Label htmlFor='campaignContent'>{t('fields.email-content-html')}</Label>
                     <Textarea
                       id='campaignContent'
                       name='htmlContent'
-                      placeholder='<h1>Hello!</h1><p>Your email content here...</p>'
+                      placeholder={t('fields.campaign-content-placeholder')}
                       rows={6}
                       required
                     />
                   </div>
                   <Button type='submit' disabled={createCampaignMutation.isPending}>
-                    {createCampaignMutation.isPending ? 'Creating...' : 'Create Campaign'}
+                    {createCampaignMutation.isPending
+                      ? t('actions.creating')
+                      : t('actions.create-campaign')}
                   </Button>
                 </form>
               </CardContent>
@@ -366,12 +376,12 @@ export default function CommunicationManagement() {
             {/* Campaigns List */}
             <Card>
               <CardHeader>
-                <CardTitle>Email Campaigns</CardTitle>
-                <CardDescription>Manage your email campaigns</CardDescription>
+                <CardTitle>{t('campaigns.list-title')}</CardTitle>
+                <CardDescription>{t('campaigns.list-description')}</CardDescription>
               </CardHeader>
               <CardContent>
                 {campaignsLoading ? (
-                  <div>Loading campaigns...</div>
+                  <div>{t('campaigns.loading')}</div>
                 ) : (
                   <div className='space-y-3'>
                     {campaigns?.campaigns.map((campaign) => (
@@ -381,14 +391,18 @@ export default function CommunicationManagement() {
                           <Badge variant={getStatusColor(campaign.status)}>{campaign.status}</Badge>
                         </div>
                         <div className='text-muted-foreground mb-2 text-sm'>
-                          Subject: {campaign.subject}
+                          {t('campaigns.subject', { subject: campaign.subject })}
                         </div>
                         <div className='text-muted-foreground mb-2 text-sm'>
-                          Recipients: {campaign.totalRecipients || 0}
+                          {t('campaigns.recipients', {
+                            count: campaign.totalRecipients || 0
+                          })}
                         </div>
                         <div className='flex items-center justify-between'>
                           <span className='text-muted-foreground text-xs'>
-                            Created: {new Date(campaign.createdAt).toLocaleDateString()}
+                            {t('date.created', {
+                              date: new Date(campaign.createdAt).toLocaleDateString()
+                            })}
                           </span>
                           {campaign.status === 'draft' && (
                             <Button
@@ -398,12 +412,16 @@ export default function CommunicationManagement() {
                               }
                               disabled={sendCampaignMutation.isPending}
                             >
-                              Send Now
+                              {t('actions.send-now')}
                             </Button>
                           )}
                         </div>
                       </div>
-                    )) || <div className='text-muted-foreground text-center'>No campaigns yet</div>}
+                    )) || (
+                      <div className='text-muted-foreground text-center'>
+                        {t('campaigns.empty')}
+                      </div>
+                    )}
                   </div>
                 )}
               </CardContent>
@@ -416,52 +434,65 @@ export default function CommunicationManagement() {
             {/* Create Template Form */}
             <Card>
               <CardHeader>
-                <CardTitle>Create Email Template</CardTitle>
-                <CardDescription>Create reusable email templates</CardDescription>
+                <CardTitle>{t('templates.create-title')}</CardTitle>
+                <CardDescription>{t('templates.create-description')}</CardDescription>
               </CardHeader>
               <CardContent>
                 <form action={handleCreateTemplate} className='space-y-4'>
                   <div>
-                    <Label htmlFor='templateName'>Template Name</Label>
-                    <Input id='templateName' name='name' placeholder='Welcome Email' required />
-                  </div>
-                  <div>
-                    <Label htmlFor='templateType'>Template Type</Label>
-                    <Select name='type' required>
-                      <SelectTrigger>
-                        <SelectValue placeholder='Select template type' />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value='welcome'>Welcome</SelectItem>
-                        <SelectItem value='newsletter'>Newsletter</SelectItem>
-                        <SelectItem value='announcement'>Announcement</SelectItem>
-                        <SelectItem value='notification'>Notification</SelectItem>
-                        <SelectItem value='marketing'>Marketing</SelectItem>
-                        <SelectItem value='transactional'>Transactional</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div>
-                    <Label htmlFor='templateSubject'>Subject Line</Label>
+                    <Label htmlFor='templateName'>{t('fields.template-name')}</Label>
                     <Input
-                      id='templateSubject'
-                      name='subject'
-                      placeholder='Welcome to our platform!'
+                      id='templateName'
+                      name='name'
+                      placeholder={t('fields.template-name-placeholder')}
                       required
                     />
                   </div>
                   <div>
-                    <Label htmlFor='templateContent'>HTML Content</Label>
+                    <Label htmlFor='templateType'>{t('fields.template-type')}</Label>
+                    <Select name='type' required>
+                      <SelectTrigger>
+                        <SelectValue placeholder={t('fields.template-type-placeholder')} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value='welcome'>{t('template-types.welcome')}</SelectItem>
+                        <SelectItem value='newsletter'>{t('template-types.newsletter')}</SelectItem>
+                        <SelectItem value='announcement'>
+                          {t('template-types.announcement')}
+                        </SelectItem>
+                        <SelectItem value='notification'>
+                          {t('template-types.notification')}
+                        </SelectItem>
+                        <SelectItem value='marketing'>{t('template-types.marketing')}</SelectItem>
+                        <SelectItem value='transactional'>
+                          {t('template-types.transactional')}
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label htmlFor='templateSubject'>{t('fields.subject-line')}</Label>
+                    <Input
+                      id='templateSubject'
+                      name='subject'
+                      placeholder={t('fields.template-subject-placeholder')}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor='templateContent'>{t('fields.html-content')}</Label>
                     <Textarea
                       id='templateContent'
                       name='htmlContent'
-                      placeholder='<h1>Welcome!</h1><p>Thank you for joining us...</p>'
+                      placeholder={t('fields.template-content-placeholder')}
                       rows={6}
                       required
                     />
                   </div>
                   <Button type='submit' disabled={createTemplateMutation.isPending}>
-                    {createTemplateMutation.isPending ? 'Creating...' : 'Create Template'}
+                    {createTemplateMutation.isPending
+                      ? t('actions.creating')
+                      : t('actions.create-template')}
                   </Button>
                 </form>
               </CardContent>
@@ -470,12 +501,12 @@ export default function CommunicationManagement() {
             {/* Templates List */}
             <Card>
               <CardHeader>
-                <CardTitle>Email Templates</CardTitle>
-                <CardDescription>Your saved email templates</CardDescription>
+                <CardTitle>{t('templates.list-title')}</CardTitle>
+                <CardDescription>{t('templates.list-description')}</CardDescription>
               </CardHeader>
               <CardContent>
                 {templatesLoading ? (
-                  <div>Loading templates...</div>
+                  <div>{t('templates.loading')}</div>
                 ) : (
                   <div className='space-y-3'>
                     {templates?.templates.map((template) => (
@@ -485,13 +516,19 @@ export default function CommunicationManagement() {
                           <Badge variant='outline'>{template.type}</Badge>
                         </div>
                         <div className='text-muted-foreground mb-2 text-sm'>
-                          Subject: {template.subject}
+                          {t('templates.subject', { subject: template.subject })}
                         </div>
                         <div className='text-muted-foreground text-xs'>
-                          Created: {new Date(template.createdAt).toLocaleDateString()}
+                          {t('date.created', {
+                            date: new Date(template.createdAt).toLocaleDateString()
+                          })}
                         </div>
                       </div>
-                    )) || <div className='text-muted-foreground text-center'>No templates yet</div>}
+                    )) || (
+                      <div className='text-muted-foreground text-center'>
+                        {t('templates.empty')}
+                      </div>
+                    )}
                   </div>
                 )}
               </CardContent>
@@ -504,47 +541,49 @@ export default function CommunicationManagement() {
             {/* Create Announcement Form */}
             <Card>
               <CardHeader>
-                <CardTitle>Create Announcement</CardTitle>
-                <CardDescription>Post site-wide announcements</CardDescription>
+                <CardTitle>{t('announcements.create-title')}</CardTitle>
+                <CardDescription>{t('announcements.create-description')}</CardDescription>
               </CardHeader>
               <CardContent>
                 <form action={handleCreateAnnouncement} className='space-y-4'>
                   <div>
-                    <Label htmlFor='announcementTitle'>Title</Label>
+                    <Label htmlFor='announcementTitle'>{t('fields.title')}</Label>
                     <Input
                       id='announcementTitle'
                       name='title'
-                      placeholder='System Maintenance Notice'
+                      placeholder={t('fields.announcement-title-placeholder')}
                       required
                     />
                   </div>
                   <div>
-                    <Label htmlFor='announcementTitlePt'>Title (pt-BR)</Label>
+                    <Label htmlFor='announcementTitlePt'>{t('fields.title-pt')}</Label>
                     <Input
                       id='announcementTitlePt'
                       name='titlePt'
-                      placeholder='Aviso de manutenção (opcional)'
+                      placeholder={t('fields.announcement-title-pt-placeholder')}
                     />
                   </div>
                   <div>
-                    <Label htmlFor='announcementType'>Type</Label>
+                    <Label htmlFor='announcementType'>{t('fields.type')}</Label>
                     <Select name='type' defaultValue='info'>
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value='info'>Info</SelectItem>
-                        <SelectItem value='warning'>Warning</SelectItem>
-                        <SelectItem value='success'>Success</SelectItem>
-                        <SelectItem value='error'>Error</SelectItem>
-                        <SelectItem value='maintenance'>Maintenance</SelectItem>
-                        <SelectItem value='feature'>Feature</SelectItem>
-                        <SelectItem value='update'>Update</SelectItem>
+                        <SelectItem value='info'>{t('announcement-types.info')}</SelectItem>
+                        <SelectItem value='warning'>{t('announcement-types.warning')}</SelectItem>
+                        <SelectItem value='success'>{t('announcement-types.success')}</SelectItem>
+                        <SelectItem value='error'>{t('announcement-types.error')}</SelectItem>
+                        <SelectItem value='maintenance'>
+                          {t('announcement-types.maintenance')}
+                        </SelectItem>
+                        <SelectItem value='feature'>{t('announcement-types.feature')}</SelectItem>
+                        <SelectItem value='update'>{t('announcement-types.update')}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                   <div>
-                    <Label htmlFor='announcementPriority'>Priority (0-10)</Label>
+                    <Label htmlFor='announcementPriority'>{t('fields.priority')}</Label>
                     <Input
                       id='announcementPriority'
                       name='priority'
@@ -555,26 +594,28 @@ export default function CommunicationManagement() {
                     />
                   </div>
                   <div>
-                    <Label htmlFor='announcementContent'>Content</Label>
+                    <Label htmlFor='announcementContent'>{t('fields.content')}</Label>
                     <Textarea
                       id='announcementContent'
                       name='content'
-                      placeholder='We will be performing scheduled maintenance...'
+                      placeholder={t('fields.announcement-content-placeholder')}
                       rows={4}
                       required
                     />
                   </div>
                   <div>
-                    <Label htmlFor='announcementContentPt'>Content (pt-BR)</Label>
+                    <Label htmlFor='announcementContentPt'>{t('fields.content-pt')}</Label>
                     <Textarea
                       id='announcementContentPt'
                       name='contentPt'
-                      placeholder='Vamos realizar uma manutenção programada... (opcional)'
+                      placeholder={t('fields.announcement-content-pt-placeholder')}
                       rows={4}
                     />
                   </div>
                   <Button type='submit' disabled={createAnnouncementMutation.isPending}>
-                    {createAnnouncementMutation.isPending ? 'Creating...' : 'Create Announcement'}
+                    {createAnnouncementMutation.isPending
+                      ? t('actions.creating')
+                      : t('actions.create-announcement')}
                   </Button>
                 </form>
               </CardContent>
@@ -583,12 +624,12 @@ export default function CommunicationManagement() {
             {/* Announcements List */}
             <Card>
               <CardHeader>
-                <CardTitle>Site Announcements</CardTitle>
-                <CardDescription>Manage site announcements</CardDescription>
+                <CardTitle>{t('announcements.list-title')}</CardTitle>
+                <CardDescription>{t('announcements.list-description')}</CardDescription>
               </CardHeader>
               <CardContent>
                 {announcementsLoading ? (
-                  <div>Loading announcements...</div>
+                  <div>{t('announcements.loading')}</div>
                 ) : (
                   <div className='space-y-3'>
                     {announcements?.announcements.map((announcement) => (
@@ -599,21 +640,29 @@ export default function CommunicationManagement() {
                             <Badge variant={getAnnouncementTypeVariant(announcement.type)}>
                               {announcement.type}
                             </Badge>
-                            {announcement.isActive && <Badge variant='default'>Active</Badge>}
+                            {announcement.isActive && (
+                              <Badge variant='default'>{t('announcements.active')}</Badge>
+                            )}
                           </div>
                         </div>
                         <div className='text-muted-foreground mb-2 text-sm'>
                           {announcement.content}
                         </div>
                         <div className='text-muted-foreground flex items-center justify-between text-xs'>
-                          <span>Priority: {announcement.priority}</span>
                           <span>
-                            Created: {new Date(announcement.createdAt).toLocaleDateString()}
+                            {t('announcements.priority', { priority: announcement.priority })}
+                          </span>
+                          <span>
+                            {t('date.created', {
+                              date: new Date(announcement.createdAt).toLocaleDateString()
+                            })}
                           </span>
                         </div>
                       </div>
                     )) || (
-                      <div className='text-muted-foreground text-center'>No announcements yet</div>
+                      <div className='text-muted-foreground text-center'>
+                        {t('announcements.empty')}
+                      </div>
                     )}
                   </div>
                 )}
@@ -625,12 +674,12 @@ export default function CommunicationManagement() {
         <TabsContent value='notifications' className='space-y-4'>
           <Card>
             <CardHeader>
-              <CardTitle>System Notifications</CardTitle>
-              <CardDescription>Recent system notifications</CardDescription>
+              <CardTitle>{t('notifications.title')}</CardTitle>
+              <CardDescription>{t('notifications.description')}</CardDescription>
             </CardHeader>
             <CardContent>
               {notificationsLoading ? (
-                <div>Loading notifications...</div>
+                <div>{t('notifications.loading')}</div>
               ) : (
                 <div className='space-y-3'>
                   {notifications?.notifications.map((notification) => (
@@ -639,7 +688,9 @@ export default function CommunicationManagement() {
                         <div className='font-medium'>{notification.title}</div>
                         <div className='flex items-center space-x-2'>
                           <Badge variant={notification.read ? 'outline' : 'default'}>
-                            {notification.read ? 'Read' : 'Unread'}
+                            {notification.read
+                              ? t('notifications.read')
+                              : t('notifications.unread')}
                           </Badge>
                         </div>
                       </div>
@@ -650,7 +701,11 @@ export default function CommunicationManagement() {
                         {new Date(notification.createdAt).toLocaleString()}
                       </div>
                     </div>
-                  )) || <div className='text-muted-foreground text-center'>No notifications</div>}
+                  )) || (
+                    <div className='text-muted-foreground text-center'>
+                      {t('notifications.empty')}
+                    </div>
+                  )}
                 </div>
               )}
             </CardContent>

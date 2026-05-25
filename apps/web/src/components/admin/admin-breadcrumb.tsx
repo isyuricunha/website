@@ -1,22 +1,27 @@
 'use client'
 
+import { useTranslations } from '@isyuricunha/i18n/client'
+import { usePathname } from '@isyuricunha/i18n/routing'
 import { ChevronRight, Home } from 'lucide-react'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+
+import Link from '../link'
 
 const AdminBreadcrumb = () => {
   const pathname = usePathname()
+  const t = useTranslations()
 
-  // Remove locale from pathname if present
-  const cleanPath = pathname.replace(/^\/[a-z]{2}/, '')
+  const segments = pathname.split('/').filter(Boolean)
 
-  // Split path and filter out empty segments
-  const segments = cleanPath.split('/').filter(Boolean)
-
-  // Generate breadcrumb items
   const breadcrumbs = segments.map((segment, index) => {
     const href = '/' + segments.slice(0, index + 1).join('/')
-    const label = segment.charAt(0).toUpperCase() + segment.slice(1)
+    const titleKey = segment.replaceAll('-', '_')
+    const i18nKey = `admin.nav.${titleKey}` as any
+    const label =
+      segment === 'admin'
+        ? t('admin.nav.dashboard')
+        : t.has(i18nKey)
+          ? t(i18nKey)
+          : segment.replaceAll('-', ' ')
     const isLast = index === segments.length - 1
 
     return {
@@ -26,7 +31,6 @@ const AdminBreadcrumb = () => {
     }
   })
 
-  // Don't show breadcrumbs if we're on the main admin page
   if (breadcrumbs.length <= 1) {
     return null
   }
@@ -35,7 +39,7 @@ const AdminBreadcrumb = () => {
     <nav className='text-muted-foreground mb-6 flex items-center space-x-1 text-sm'>
       <Link href='/admin' className='hover:text-foreground flex items-center transition-colors'>
         <Home className='h-4 w-4' />
-        <span className='ml-1'>Admin</span>
+        <span className='ml-1'>{t('admin.nav.dashboard')}</span>
       </Link>
 
       {breadcrumbs.slice(1).map((breadcrumb) => (

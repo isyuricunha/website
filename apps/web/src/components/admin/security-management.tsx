@@ -24,6 +24,7 @@ import {
 } from '@isyuricunha/ui'
 
 import { AlertTriangle, Shield, Users, Lock } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { toast } from 'sonner'
 
 import { api } from '@/trpc/react'
@@ -59,6 +60,8 @@ type SecuritySetting = {
 const all_categories_value = 'all'
 
 export default function SecurityManagement() {
+  const t = useTranslations('admin.security-management')
+  const commonT = useTranslations('common')
   const [selectedTab, setSelectedTab] = useState('overview')
   const [settingsSearchTerm, setSettingsSearchTerm] = useState('')
   const [selectedSettingsCategory, setSelectedSettingsCategory] =
@@ -97,49 +100,49 @@ export default function SecurityManagement() {
   // Mutations
   const addIpRuleMutation = api.security.addIpAccessRule.useMutation({
     onSuccess: () => {
-      toast.success('IP access rule added successfully')
+      toast.success(t('messages.ip-rule-added'))
       utils.security.getIpAccessRules.invalidate()
       utils.security.getSecurityEvents.invalidate()
       utils.security.getSecurityStats.invalidate()
     },
     onError: (error) => {
-      toast.error(`Failed to add IP rule: ${error.message}`)
+      toast.error(t('messages.ip-rule-failed', { message: error.message }))
     }
   })
 
   const resolveEventMutation = api.security.resolveSecurityEvent.useMutation({
     onSuccess: () => {
-      toast.success('Security event resolved')
+      toast.success(t('messages.event-resolved'))
       utils.security.getSecurityEvents.invalidate()
       utils.security.getSecurityStats.invalidate()
     },
     onError: (error) => {
-      toast.error(`Failed to resolve event: ${error.message}`)
+      toast.error(t('messages.event-resolve-failed', { message: error.message }))
     }
   })
 
   const unlockAccountMutation = api.security.unlockAccount.useMutation({
     onSuccess: () => {
-      toast.success('Account unlocked successfully')
+      toast.success(t('messages.account-unlocked'))
       utils.security.getAccountLockouts.invalidate()
       utils.security.getSecurityStats.invalidate()
       utils.security.getSecurityEvents.invalidate()
     },
     onError: (error) => {
-      toast.error(`Failed to unlock account: ${error.message}`)
+      toast.error(t('messages.account-unlock-failed', { message: error.message }))
     }
   })
 
   const updateSecuritySettingMutation = api.security.updateSecuritySetting.useMutation({
     onSuccess: () => {
-      toast.success('Security setting updated successfully')
+      toast.success(t('messages.setting-updated'))
       setEditingSettingKey(null)
       utils.security.getSecuritySettings.invalidate()
       utils.security.getSecurityEvents.invalidate()
       utils.security.getSecurityStats.invalidate()
     },
     onError: (error) => {
-      toast.error(`Failed to update security setting: ${error.message}`)
+      toast.error(t('messages.setting-update-failed', { message: error.message }))
     }
   })
 
@@ -208,7 +211,7 @@ export default function SecurityManagement() {
     const description = formData.get('description') as string
 
     if (!ipAddress || !type) {
-      toast.error('IP address and type are required')
+      toast.error(t('messages.ip-type-required'))
       return
     }
 
@@ -234,16 +237,42 @@ export default function SecurityManagement() {
     }
   }
 
+  const getSeverityLabel = (severity: string) => {
+    switch (severity) {
+      case 'critical':
+        return t('severity.critical')
+      case 'high':
+        return t('severity.high')
+      case 'medium':
+        return t('severity.medium')
+      case 'low':
+        return t('severity.low')
+      default:
+        return severity
+    }
+  }
+
+  const getRuleTypeLabel = (type: string) => {
+    switch (type) {
+      case 'whitelist':
+        return t('rule-types.whitelist')
+      case 'blacklist':
+        return t('rule-types.blacklist')
+      default:
+        return type
+    }
+  }
+
   if (statsLoading) {
-    return <div className='p-6'>Loading security dashboard...</div>
+    return <div className='p-6'>{t('loading')}</div>
   }
 
   return (
     <div className='space-y-6'>
       <div className='flex items-center justify-between'>
         <div>
-          <h1 className='text-xl font-medium sm:text-2xl'>Security Management</h1>
-          <p className='text-muted-foreground text-sm'>Monitor and manage system security</p>
+          <h1 className='text-xl font-medium sm:text-2xl'>{t('title')}</h1>
+          <p className='text-muted-foreground text-sm'>{t('description')}</p>
         </div>
       </div>
 
@@ -251,44 +280,44 @@ export default function SecurityManagement() {
       <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-4'>
         <Card>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-sm font-medium'>Security Events</CardTitle>
+            <CardTitle className='text-sm font-medium'>{t('stats.security-events')}</CardTitle>
             <AlertTriangle className='text-muted-foreground h-4 w-4' />
           </CardHeader>
           <CardContent>
             <div className='text-2xl font-medium'>{securityStats?.events.total || 0}</div>
             <p className='text-muted-foreground text-xs'>
-              {securityStats?.events.critical || 0} critical events
+              {t('stats.critical-events', { count: securityStats?.events.critical || 0 })}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-sm font-medium'>Login Attempts</CardTitle>
+            <CardTitle className='text-sm font-medium'>{t('stats.login-attempts')}</CardTitle>
             <Users className='text-muted-foreground h-4 w-4' />
           </CardHeader>
           <CardContent>
             <div className='text-2xl font-medium'>{securityStats?.loginAttempts.total || 0}</div>
             <p className='text-muted-foreground text-xs'>
-              {securityStats?.loginAttempts.failed || 0} failed attempts
+              {t('stats.failed-attempts', { count: securityStats?.loginAttempts.failed || 0 })}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-sm font-medium'>Account Lockouts</CardTitle>
+            <CardTitle className='text-sm font-medium'>{t('stats.account-lockouts')}</CardTitle>
             <Lock className='text-muted-foreground h-4 w-4' />
           </CardHeader>
           <CardContent>
             <div className='text-2xl font-medium'>{securityStats?.lockouts.active || 0}</div>
-            <p className='text-muted-foreground text-xs'>Active lockouts</p>
+            <p className='text-muted-foreground text-xs'>{t('stats.active-lockouts')}</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-sm font-medium'>2FA Adoption</CardTitle>
+            <CardTitle className='text-sm font-medium'>{t('stats.two-factor-adoption')}</CardTitle>
             <Shield className='text-muted-foreground h-4 w-4' />
           </CardHeader>
           <CardContent>
@@ -296,7 +325,7 @@ export default function SecurityManagement() {
               {securityStats?.twoFactor.adoptionRate?.toFixed(1) || 0}%
             </div>
             <p className='text-muted-foreground text-xs'>
-              {securityStats?.twoFactor.enabledUsers || 0} users enabled
+              {t('stats.users-enabled', { count: securityStats?.twoFactor.enabledUsers || 0 })}
             </p>
           </CardContent>
         </Card>
@@ -305,11 +334,11 @@ export default function SecurityManagement() {
       {/* Security Management Tabs */}
       <Tabs value={selectedTab} onValueChange={setSelectedTab}>
         <TabsList className='grid w-full grid-cols-5'>
-          <TabsTrigger value='overview'>Overview</TabsTrigger>
-          <TabsTrigger value='events'>Events</TabsTrigger>
-          <TabsTrigger value='ip-control'>IP Control</TabsTrigger>
-          <TabsTrigger value='lockouts'>Lockouts</TabsTrigger>
-          <TabsTrigger value='settings'>Settings</TabsTrigger>
+          <TabsTrigger value='overview'>{t('tabs.overview')}</TabsTrigger>
+          <TabsTrigger value='events'>{t('tabs.events')}</TabsTrigger>
+          <TabsTrigger value='ip-control'>{t('tabs.ip-control')}</TabsTrigger>
+          <TabsTrigger value='lockouts'>{t('tabs.lockouts')}</TabsTrigger>
+          <TabsTrigger value='settings'>{t('tabs.settings')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value='overview' className='space-y-4'>
@@ -317,12 +346,12 @@ export default function SecurityManagement() {
             {/* Recent Security Events */}
             <Card>
               <CardHeader>
-                <CardTitle>Recent Security Events</CardTitle>
-                <CardDescription>Latest security incidents and alerts</CardDescription>
+                <CardTitle>{t('overview.recent-events.title')}</CardTitle>
+                <CardDescription>{t('overview.recent-events.description')}</CardDescription>
               </CardHeader>
               <CardContent>
                 {eventsLoading ? (
-                  <div>Loading events...</div>
+                  <div>{t('events.loading')}</div>
                 ) : (
                   <div className='space-y-3'>
                     {(securityEvents?.events?.length ?? 0) > 0 ? (
@@ -330,7 +359,7 @@ export default function SecurityManagement() {
                         <div key={event.id} className='flex items-center justify-between'>
                           <div className='flex items-center space-x-2'>
                             <Badge variant={getSeverityColor(event.severity)}>
-                              {event.severity}
+                              {getSeverityLabel(event.severity)}
                             </Badge>
                             <span className='text-sm'>{event.eventType}</span>
                           </div>
@@ -340,7 +369,7 @@ export default function SecurityManagement() {
                         </div>
                       ))
                     ) : (
-                      <div className='text-muted-foreground text-sm'>No recent events</div>
+                      <div className='text-muted-foreground text-sm'>{t('events.no-recent')}</div>
                     )}
                   </div>
                 )}
@@ -350,36 +379,36 @@ export default function SecurityManagement() {
             {/* Login Attempts Summary */}
             <Card>
               <CardHeader>
-                <CardTitle>Login Attempts (24h)</CardTitle>
-                <CardDescription>Authentication activity summary</CardDescription>
+                <CardTitle>{t('overview.login-attempts.title')}</CardTitle>
+                <CardDescription>{t('overview.login-attempts.description')}</CardDescription>
               </CardHeader>
               <CardContent>
                 {attemptsLoading ? (
-                  <div>Loading attempts...</div>
+                  <div>{t('overview.login-attempts.loading')}</div>
                 ) : (
                   <div className='space-y-2'>
                     <div className='flex justify-between'>
-                      <span>Total Attempts:</span>
+                      <span>{t('overview.login-attempts.total')}</span>
                       <span className='font-medium'>{loginAttempts?.summary.total || 0}</span>
                     </div>
                     <div className='flex justify-between'>
-                      <span>Successful:</span>
+                      <span>{t('overview.login-attempts.successful')}</span>
                       <span className='text-accent-earth-text font-medium'>
                         {loginAttempts?.summary.successful || 0}
                       </span>
                     </div>
                     <div className='flex justify-between'>
-                      <span>Failed:</span>
+                      <span>{t('overview.login-attempts.failed')}</span>
                       <span className='text-destructive font-medium'>
                         {loginAttempts?.summary.failed || 0}
                       </span>
                     </div>
                     <div className='flex justify-between'>
-                      <span>Unique IPs:</span>
+                      <span>{t('overview.login-attempts.unique-ips')}</span>
                       <span className='font-medium'>{loginAttempts?.summary.uniqueIPs || 0}</span>
                     </div>
                     <div className='flex justify-between'>
-                      <span>Success Rate:</span>
+                      <span>{t('overview.login-attempts.success-rate')}</span>
                       <span className='font-medium'>
                         {loginAttempts?.summary.successRate?.toFixed(1) || 0}%
                       </span>
@@ -394,12 +423,12 @@ export default function SecurityManagement() {
         <TabsContent value='events' className='space-y-4'>
           <Card>
             <CardHeader>
-              <CardTitle>Security Events</CardTitle>
-              <CardDescription>Monitor and resolve security incidents</CardDescription>
+              <CardTitle>{t('events.title')}</CardTitle>
+              <CardDescription>{t('events.description')}</CardDescription>
             </CardHeader>
             <CardContent>
               {eventsLoading ? (
-                <div>Loading security events...</div>
+                <div>{t('events.loading-security-events')}</div>
               ) : (
                 <div className='space-y-4'>
                   {(securityEvents?.events?.length ?? 0) > 0 ? (
@@ -408,7 +437,7 @@ export default function SecurityManagement() {
                         <div className='mb-2 flex items-center justify-between'>
                           <div className='flex items-center space-x-2'>
                             <Badge variant={getSeverityColor(event.severity)}>
-                              {event.severity}
+                              {getSeverityLabel(event.severity)}
                             </Badge>
                             <span className='font-medium'>{event.eventType}</span>
                           </div>
@@ -422,31 +451,37 @@ export default function SecurityManagement() {
                                 onClick={() => resolveEventMutation.mutate({ eventId: event.id })}
                                 disabled={resolveEventMutation.isPending}
                               >
-                                Resolve
+                                {t('actions.resolve')}
                               </Button>
                             )}
                           </div>
                         </div>
                         {event.ipAddress && (
-                          <div className='text-muted-foreground text-sm'>IP: {event.ipAddress}</div>
+                          <div className='text-muted-foreground text-sm'>
+                            {t('events.ip', { ip: event.ipAddress })}
+                          </div>
                         )}
                         {event.user && (
                           <div className='text-muted-foreground text-sm'>
-                            User: {event.user.name} ({event.user.email})
+                            {t('events.user', {
+                              name: event.user.name,
+                              email: event.user.email
+                            })}
                           </div>
                         )}
                         {event.resolved && (
                           <Badge variant='outline' className='mt-2'>
-                            Resolved{' '}
-                            {event.resolvedAt && new Date(event.resolvedAt).toLocaleString()}
+                            {t('events.resolved', {
+                              date: event.resolvedAt
+                                ? new Date(event.resolvedAt).toLocaleString()
+                                : ''
+                            })}
                           </Badge>
                         )}
                       </div>
                     ))
                   ) : (
-                    <div className='text-muted-foreground text-center'>
-                      No security events found
-                    </div>
+                    <div className='text-muted-foreground text-center'>{t('events.empty')}</div>
                   )}
                 </div>
               )}
@@ -459,13 +494,13 @@ export default function SecurityManagement() {
             {/* Add IP Rule Form */}
             <Card>
               <CardHeader>
-                <CardTitle>Add IP Access Rule</CardTitle>
-                <CardDescription>Control access by IP address</CardDescription>
+                <CardTitle>{t('ip-control.add-title')}</CardTitle>
+                <CardDescription>{t('ip-control.add-description')}</CardDescription>
               </CardHeader>
               <CardContent>
                 <form action={handleAddIpRule} className='space-y-4'>
                   <div>
-                    <Label htmlFor='ipAddress'>IP Address</Label>
+                    <Label htmlFor='ipAddress'>{t('fields.ip-address')}</Label>
                     <Input
                       id='ipAddress'
                       name='ipAddress'
@@ -474,23 +509,27 @@ export default function SecurityManagement() {
                     />
                   </div>
                   <div>
-                    <Label htmlFor='type'>Rule Type</Label>
+                    <Label htmlFor='type'>{t('fields.rule-type')}</Label>
                     <Select name='type' required>
                       <SelectTrigger>
-                        <SelectValue placeholder='Select rule type' />
+                        <SelectValue placeholder={t('fields.rule-type-placeholder')} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value='whitelist'>Whitelist (Allow)</SelectItem>
-                        <SelectItem value='blacklist'>Blacklist (Block)</SelectItem>
+                        <SelectItem value='whitelist'>{t('rule-types.whitelist-allow')}</SelectItem>
+                        <SelectItem value='blacklist'>{t('rule-types.blacklist-block')}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                   <div>
-                    <Label htmlFor='description'>Description (Optional)</Label>
-                    <Input id='description' name='description' placeholder='Rule description' />
+                    <Label htmlFor='description'>{t('fields.description-optional')}</Label>
+                    <Input
+                      id='description'
+                      name='description'
+                      placeholder={t('fields.rule-description-placeholder')}
+                    />
                   </div>
                   <Button type='submit' disabled={addIpRuleMutation.isPending}>
-                    {addIpRuleMutation.isPending ? 'Adding...' : 'Add Rule'}
+                    {addIpRuleMutation.isPending ? t('actions.adding') : t('actions.add-rule')}
                   </Button>
                 </form>
               </CardContent>
@@ -499,12 +538,12 @@ export default function SecurityManagement() {
             {/* IP Rules List */}
             <Card>
               <CardHeader>
-                <CardTitle>IP Access Rules</CardTitle>
-                <CardDescription>Current IP access control rules</CardDescription>
+                <CardTitle>{t('ip-control.rules-title')}</CardTitle>
+                <CardDescription>{t('ip-control.rules-description')}</CardDescription>
               </CardHeader>
               <CardContent>
                 {ipRulesLoading ? (
-                  <div>Loading IP rules...</div>
+                  <div>{t('ip-control.loading-rules')}</div>
                 ) : (
                   <div className='space-y-3'>
                     {(ipRules?.rules?.length ?? 0) > 0 ? (
@@ -516,17 +555,17 @@ export default function SecurityManagement() {
                           <div>
                             <div className='font-medium'>{rule.ipAddress}</div>
                             <div className='text-muted-foreground text-sm'>
-                              {rule.description || 'No description'}
+                              {rule.description || t('ip-control.no-description')}
                             </div>
                           </div>
                           <Badge variant={rule.type === 'whitelist' ? 'default' : 'destructive'}>
-                            {rule.type}
+                            {getRuleTypeLabel(rule.type)}
                           </Badge>
                         </div>
                       ))
                     ) : (
                       <div className='text-muted-foreground text-center'>
-                        No IP rules configured
+                        {t('ip-control.empty')}
                       </div>
                     )}
                   </div>
@@ -539,12 +578,12 @@ export default function SecurityManagement() {
         <TabsContent value='lockouts' className='space-y-4'>
           <Card>
             <CardHeader>
-              <CardTitle>Account Lockouts</CardTitle>
-              <CardDescription>Manage locked user accounts</CardDescription>
+              <CardTitle>{t('lockouts.title')}</CardTitle>
+              <CardDescription>{t('lockouts.description')}</CardDescription>
             </CardHeader>
             <CardContent>
               {lockoutsLoading ? (
-                <div>Loading account lockouts...</div>
+                <div>{t('lockouts.loading')}</div>
               ) : (
                 <div className='space-y-4'>
                   {(lockouts?.lockouts?.length ?? 0) > 0 ? (
@@ -552,30 +591,32 @@ export default function SecurityManagement() {
                       <div key={lockout.id} className='rounded-lg border p-4'>
                         <div className='flex items-center justify-between'>
                           <div>
-                            <div className='font-medium'>User ID: {lockout.userId}</div>
-                            <div className='text-muted-foreground text-sm'>
-                              Lockout ID: {lockout.id}
+                            <div className='font-medium'>
+                              {t('lockouts.user-id', { userId: lockout.userId })}
                             </div>
                             <div className='text-muted-foreground text-sm'>
-                              Locked: {new Date(lockout.lockedAt).toLocaleString()}
+                              {t('lockouts.lockout-id', { lockoutId: lockout.id })}
                             </div>
                             <div className='text-muted-foreground text-sm'>
-                              Reason: {lockout.reason}
+                              {t('lockouts.locked', {
+                                date: new Date(lockout.lockedAt).toLocaleString()
+                              })}
+                            </div>
+                            <div className='text-muted-foreground text-sm'>
+                              {t('lockouts.reason', { reason: lockout.reason })}
                             </div>
                           </div>
                           <Button
                             onClick={() => unlockAccountMutation.mutate({ lockoutId: lockout.id })}
                             disabled={unlockAccountMutation.isPending}
                           >
-                            Unlock Account
+                            {t('actions.unlock-account')}
                           </Button>
                         </div>
                       </div>
                     ))
                   ) : (
-                    <div className='text-muted-foreground text-center'>
-                      No active account lockouts
-                    </div>
+                    <div className='text-muted-foreground text-center'>{t('lockouts.empty')}</div>
                   )}
                 </div>
               )}
@@ -586,32 +627,34 @@ export default function SecurityManagement() {
         <TabsContent value='settings' className='space-y-4'>
           <Card>
             <CardHeader>
-              <CardTitle>Security Settings</CardTitle>
-              <CardDescription>Configure security policies and thresholds</CardDescription>
+              <CardTitle>{t('settings.title')}</CardTitle>
+              <CardDescription>{t('settings.description')}</CardDescription>
             </CardHeader>
             <CardContent>
               <div className='space-y-4'>
                 <div className='grid gap-3 md:grid-cols-2'>
                   <div>
-                    <Label htmlFor='security-settings-search'>Search</Label>
+                    <Label htmlFor='security-settings-search'>{t('fields.search')}</Label>
                     <Input
                       id='security-settings-search'
                       value={settingsSearchTerm}
                       onChange={(e) => setSettingsSearchTerm(e.target.value)}
-                      placeholder='Search by key, value, or description'
+                      placeholder={t('settings.search-placeholder')}
                     />
                   </div>
                   <div>
-                    <Label htmlFor='security-settings-category'>Category</Label>
+                    <Label htmlFor='security-settings-category'>{t('fields.category')}</Label>
                     <Select
                       value={selectedSettingsCategory}
                       onValueChange={setSelectedSettingsCategory}
                     >
                       <SelectTrigger id='security-settings-category'>
-                        <SelectValue placeholder='All categories' />
+                        <SelectValue placeholder={t('settings.all-categories')} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value={all_categories_value}>All categories</SelectItem>
+                        <SelectItem value={all_categories_value}>
+                          {t('settings.all-categories')}
+                        </SelectItem>
                         {categories.map((c) => (
                           <SelectItem key={c} value={c}>
                             {c}
@@ -624,11 +667,11 @@ export default function SecurityManagement() {
 
                 {settingsLoading ? (
                   <div className='text-muted-foreground py-8 text-center'>
-                    Loading security settings...
+                    {t('settings.loading')}
                   </div>
                 ) : Object.keys(filteredSettings).length === 0 ? (
                   <div className='text-muted-foreground py-8 text-center'>
-                    No security settings found
+                    {t('settings.empty')}
                   </div>
                 ) : (
                   <div className='space-y-4'>
@@ -657,7 +700,7 @@ export default function SecurityManagement() {
                                         <div className='space-y-3'>
                                           <div>
                                             <Label htmlFor={`setting-value-${setting.id}`}>
-                                              Value
+                                              {t('fields.value')}
                                             </Label>
                                             <Textarea
                                               id={`setting-value-${setting.id}`}
@@ -668,7 +711,7 @@ export default function SecurityManagement() {
                                           </div>
                                           <div>
                                             <Label htmlFor={`setting-description-${setting.id}`}>
-                                              Description
+                                              {t('fields.description')}
                                             </Label>
                                             <Input
                                               id={`setting-description-${setting.id}`}
@@ -676,12 +719,14 @@ export default function SecurityManagement() {
                                               onChange={(e) =>
                                                 setDraftSettingDescription(e.target.value)
                                               }
-                                              placeholder='Optional description'
+                                              placeholder={t(
+                                                'fields.optional-description-placeholder'
+                                              )}
                                             />
                                           </div>
                                           <div>
                                             <Label htmlFor={`setting-category-${setting.id}`}>
-                                              Category
+                                              {t('fields.category')}
                                             </Label>
                                             <Input
                                               id={`setting-category-${setting.id}`}
@@ -689,7 +734,7 @@ export default function SecurityManagement() {
                                               onChange={(e) =>
                                                 setDraftSettingCategory(e.target.value)
                                               }
-                                              placeholder='Category'
+                                              placeholder={t('fields.category-placeholder')}
                                             />
                                           </div>
                                         </div>
@@ -707,9 +752,16 @@ export default function SecurityManagement() {
                                       )}
 
                                       <div className='text-muted-foreground text-xs'>
-                                        Updated {new Date(setting.updatedAt).toLocaleString()}
+                                        {t('settings.updated', {
+                                          date: new Date(setting.updatedAt).toLocaleString()
+                                        })}
                                         {setting.updatedByUser ? (
-                                          <span> by {setting.updatedByUser.name}</span>
+                                          <span>
+                                            {' '}
+                                            {t('settings.updated-by', {
+                                              name: setting.updatedByUser.name
+                                            })}
+                                          </span>
                                         ) : null}
                                       </div>
                                     </div>
@@ -722,7 +774,7 @@ export default function SecurityManagement() {
                                             onClick={saveEditingSetting}
                                             disabled={updateSecuritySettingMutation.isPending}
                                           >
-                                            Save
+                                            {t('actions.save')}
                                           </Button>
                                           <Button
                                             size='sm'
@@ -730,7 +782,7 @@ export default function SecurityManagement() {
                                             onClick={cancelEditingSetting}
                                             disabled={updateSecuritySettingMutation.isPending}
                                           >
-                                            Cancel
+                                            {commonT('cancel')}
                                           </Button>
                                         </>
                                       ) : (
@@ -739,7 +791,7 @@ export default function SecurityManagement() {
                                           variant='outline'
                                           onClick={() => startEditingSetting(setting)}
                                         >
-                                          Edit
+                                          {t('actions.edit')}
                                         </Button>
                                       )}
                                     </div>

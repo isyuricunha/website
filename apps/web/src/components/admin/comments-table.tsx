@@ -89,8 +89,8 @@ const CommentsTable = (props: CommentsTableProps) => {
     const truncatedBody = commentBody.length > 50 ? commentBody.slice(0, 50) + '...' : commentBody
     setConfirmDialog({
       open: true,
-      title: 'Delete Comment',
-      description: `Are you sure you want to delete this comment: "${truncatedBody}"? This action cannot be undone.`,
+      title: t('admin.table.comments.delete-title'),
+      description: t('admin.table.comments.confirm-delete-with-body', { body: truncatedBody }),
       variant: 'destructive',
       action: () => {
         deleteCommentMutation.mutate({ commentId })
@@ -105,7 +105,7 @@ const CommentsTable = (props: CommentsTableProps) => {
       `comments-${new Date().toISOString().split('T')[0]}`,
       COMMENT_EXPORT_COLUMNS
     )
-    toast.success('Comments exported to CSV successfully')
+    toast.success(t('admin.table.comments.export-success'))
   }
 
   const columns: Array<ColumnDef<Comment>> = [
@@ -146,7 +146,7 @@ const CommentsTable = (props: CommentsTableProps) => {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant='ghost' className='h-8 w-8 p-0'>
-                <span className='sr-only'>Open menu</span>
+                <span className='sr-only'>{t('admin.table.comments.open-menu')}</span>
                 <MoreHorizontalIcon className='h-4 w-4' />
               </Button>
             </DropdownMenuTrigger>
@@ -220,7 +220,7 @@ const CommentsTable = (props: CommentsTableProps) => {
             <div className='relative'>
               <Search className='text-muted-foreground absolute top-2.5 left-2 h-4 w-4' />
               <Input
-                placeholder='Search comments...'
+                placeholder={t('admin.table.comments.search')}
                 value={searchTerm}
                 onChange={(e) => updateSearchTerm(e.target.value)}
                 className='w-64 pl-8'
@@ -239,7 +239,7 @@ const CommentsTable = (props: CommentsTableProps) => {
           </div>
           <Button onClick={handleExportCSV} variant='outline' size='sm'>
             <Download className='mr-2 h-4 w-4' />
-            Export CSV
+            {t('admin.table.comments.export-csv')}
           </Button>
         </div>
 

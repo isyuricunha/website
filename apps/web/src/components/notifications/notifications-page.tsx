@@ -87,7 +87,7 @@ export default function NotificationsPage() {
       <div className='flex flex-col justify-between gap-3 sm:flex-row sm:items-center'>
         <div className='space-y-1'>
           <h1 className='text-2xl font-medium tracking-tighter'>{t('title')}</h1>
-          <p className='text-muted-foreground text-sm'>{isFetching ? 'Refreshing…' : null}</p>
+          <p className='text-muted-foreground text-sm'>{isFetching ? t('refreshing') : null}</p>
         </div>
 
         <div className='flex flex-wrap items-center gap-2'>
@@ -113,7 +113,7 @@ export default function NotificationsPage() {
 
       {isLoading ? (
         <Card>
-          <CardContent className='py-6'>Loading…</CardContent>
+          <CardContent className='py-6'>{t('loading')}</CardContent>
         </Card>
       ) : notifications.length === 0 ? (
         <Card>

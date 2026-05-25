@@ -96,9 +96,7 @@ const Messages = () => {
         >
           <MessageCircle className='text-muted-foreground/50 h-8 w-8' />
           <p className='text-muted-foreground text-center'>{t('guestbook.no-messages')}</p>
-          <p className='text-muted-foreground/75 text-center text-sm'>
-            Be the first to leave a message!
-          </p>
+          <p className='text-muted-foreground/75 text-center text-sm'>{t('guestbook.empty-cta')}</p>
         </motion.div>
       ) : null}
       {isError ? (

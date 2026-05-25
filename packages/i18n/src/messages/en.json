@@ -22,10 +22,17 @@
       "notifications": "Notifications",
       "monitoring": "Monitoring",
       "monitoring_dashboard": "Monitoring Dashboard",
+      "system_health": "System Health",
       "data": "Data Management",
-      "data_management": "Data Management"
+      "data_management": "Data Management",
+      "audit_logs": "Audit Logs",
+      "bulk_operations": "Bulk Operations"
     },
     "page-header": {
+      "audit-logs": {
+        "description": "Review administrative actions and system changes.",
+        "title": "Audit Logs"
+      },
       "comments": {
         "description": "Manage comments from users",
         "title": "Comments"
@@ -45,12 +52,18 @@
         "type": "Type",
         "userId": "User ID",
         "actions": "Actions",
+        "open-menu": "Open menu",
+        "search": "Search comments...",
+        "export-csv": "Export CSV",
         "delete": "Delete",
         "edit": "Edit",
         "view": "View",
         "confirm-delete": "Are you sure you want to delete this comment?",
         "delete-success": "Comment deleted successfully",
-        "delete-error": "Failed to delete comment"
+        "delete-error": "Failed to delete comment",
+        "delete-title": "Delete Comment",
+        "confirm-delete-with-body": "Are you sure you want to delete this comment: \"{body}\"? This action cannot be undone.",
+        "export-success": "Comments exported to CSV successfully"
       },
       "users": {
         "email": "Email",
@@ -65,6 +78,9 @@
         "banned": "Banned",
         "active": "Active",
         "actions": "Actions",
+        "open-menu": "Open menu",
+        "search": "Search users...",
+        "export-csv": "Export CSV",
         "delete": "Delete User",
         "ban": "Ban User",
         "unban": "Unban User",
@@ -83,7 +99,15 @@
         "reset-password-success": "Password reset email sent",
         "reset-password-error": "Failed to send password reset email",
         "update-success": "User updated successfully",
-        "update-error": "Failed to update user"
+        "update-error": "Failed to update user",
+        "roles": {
+          "user": "User",
+          "admin": "Admin"
+        },
+        "confirm-delete-with-name": "Are you sure you want to delete user \"{name}\"? This action cannot be undone.",
+        "confirm-ban-with-name": "Are you sure you want to ban user \"{name}\"?",
+        "confirm-unban-with-name": "Are you sure you want to unban user \"{name}\"?",
+        "export-success": "Users exported to CSV successfully"
       }
     },
     "modals": {
@@ -95,13 +119,1042 @@
         "role": "Role",
         "image": "Image URL",
         "save": "Save Changes",
-        "cancel": "Cancel"
+        "saving": "Saving...",
+        "cancel": "Cancel",
+        "roles": {
+          "user": "User",
+          "admin": "Admin"
+        },
+        "validation": {
+          "name-required": "Name is required",
+          "invalid-email": "Invalid email address",
+          "invalid-url": "Invalid URL"
+        }
       },
       "delete-confirmation": {
         "title": "Confirm Deletion",
         "message": "This action cannot be undone. Are you sure you want to proceed?",
         "confirm": "Delete",
         "cancel": "Cancel"
+      }
+    },
+    "audit-logs": {
+      "failed-to-fetch": "Failed to fetch audit logs.",
+      "columns": {
+        "createdAt": "Created At",
+        "action": "Action",
+        "admin": "Admin",
+        "targetType": "Target Type",
+        "targetId": "Target ID",
+        "ipAddress": "IP Address"
+      },
+      "filter-actions": "Filter actions...",
+      "search-placeholder": "Search audit logs..."
+    },
+    "common": {
+      "loading": "Loading...",
+      "refresh": "Refresh"
+    },
+    "error-boundary": {
+      "title": "Admin Error",
+      "description": "An error occurred while loading this admin section. Please try refreshing the page or contact support if the problem persists.",
+      "refresh-page": "Refresh Page"
+    },
+    "dashboard": {
+      "title": "Admin Dashboard",
+      "description": "Monitor your site's performance and manage operations",
+      "messages": {
+        "refresh-success": "Dashboard refreshed successfully",
+        "refresh-error": "Failed to refresh dashboard"
+      },
+      "loading": {
+        "title": "Dashboard",
+        "description": "Overview of your site statistics",
+        "card": "Loading...",
+        "error": "Failed to load dashboard statistics"
+      },
+      "stats": {
+        "this-month": "+{count} this month",
+        "total-users": {
+          "title": "Total Users"
+        },
+        "total-comments": {
+          "title": "Total Comments"
+        },
+        "guestbook-entries": {
+          "title": "Guestbook Entries",
+          "description": "All time entries"
+        },
+        "admin-users": {
+          "title": "Admin Users",
+          "description": "System administrators"
+        }
+      },
+      "status": {
+        "live": "Live"
+      },
+      "actions": {
+        "refresh": "Refresh"
+      },
+      "recent-activity": {
+        "title": "Recent Activity",
+        "description": "Last 7 days performance",
+        "weekly": "Weekly",
+        "new-users": "New Users",
+        "new-comments": "New Comments"
+      },
+      "quick-actions": {
+        "title": "Quick Actions",
+        "description": "Jump to common tasks",
+        "manage-users": {
+          "title": "Manage Users",
+          "description": "View and edit user accounts"
+        },
+        "moderate-comments": {
+          "title": "Moderate Comments",
+          "description": "Review and manage comments"
+        },
+        "monitoring": {
+          "title": "Monitoring",
+          "description": "View metrics, errors and alerts"
+        }
+      },
+      "system-health": {
+        "title": "System Health",
+        "description": "Overall system performance metrics",
+        "database": "Database Performance",
+        "api-response": "API Response Time",
+        "storage": "Storage Usage",
+        "excellent": "Excellent",
+        "fast": "Fast",
+        "moderate": "Moderate"
+      }
+    },
+    "system-health": {
+      "title": "System Health",
+      "description": "Monitor system performance and health",
+      "auto-refresh": "Auto-refresh (30s)",
+      "messages": {
+        "error-resolved": "Error resolved",
+        "resolve-error-failed": "Failed to resolve error: {message}",
+        "all-errors-resolved": "All errors resolved",
+        "resolve-all-errors-failed": "Failed to resolve all errors: {message}",
+        "refreshed": "System health refreshed"
+      },
+      "actions": {
+        "refresh": "Refresh",
+        "resolve-all": "Resolve all",
+        "view-all-errors": "View All Errors",
+        "resolve": "Resolve"
+      },
+      "status": {
+        "healthy": "Healthy",
+        "warning": "Warning",
+        "critical": "Critical",
+        "unknown": "Unknown"
+      },
+      "overall": {
+        "status": "System Status: {status}",
+        "last-checked": "Last checked: {date}",
+        "uptime": "Uptime"
+      },
+      "stats": {
+        "healthy-checks": "Healthy Checks",
+        "warnings": "Warnings",
+        "critical-issues": "Critical Issues",
+        "unresolved-errors": "Unresolved Errors"
+      },
+      "service-health": {
+        "title": "Service Health"
+      },
+      "recent-errors": {
+        "title": "Recent Errors",
+        "url": "URL: {url}",
+        "user": "User: {name} ({email})",
+        "stack-trace": "Stack trace"
+      },
+      "trends": {
+        "title": "Health Trends",
+        "last-checks": "Last {count} checks",
+        "filter": "Filter",
+        "all-services": "All services",
+        "empty-title": "No health history yet",
+        "empty-description": "Trigger a refresh to record health checks",
+        "stats": {
+          "healthy": "Healthy",
+          "warnings": "Warnings",
+          "critical": "Critical",
+          "unknown": "Unknown"
+        },
+        "table": {
+          "time": "Time",
+          "service": "Service",
+          "status": "Status",
+          "latency": "Latency",
+          "message": "Message"
+        }
+      }
+    },
+    "notification-management": {
+      "title": "Notifications",
+      "description": "Manage user notifications and system alerts",
+      "loading": "Loading notifications...",
+      "empty": "No notifications yet. Create your first notification to get started!",
+      "messages": {
+        "created": "Notification created successfully",
+        "create-failed": "Failed to create notification: {message}",
+        "mark-read-failed": "Failed to mark as read: {message}",
+        "title-content-required": "Title and content are required"
+      },
+      "actions": {
+        "create": "Create Notification",
+        "send": "Send Notification",
+        "mark-read": "Mark Read"
+      },
+      "dialog": {
+        "create-title": "Create New Notification",
+        "create-description": "Send a notification to a specific user or all users."
+      },
+      "fields": {
+        "title": "Title",
+        "title-placeholder": "Notification title",
+        "content": "Content",
+        "content-placeholder": "Notification content",
+        "type": "Type",
+        "user-id": "User ID (optional)",
+        "user-id-placeholder": "Leave empty for all users",
+        "expires-at": "Expires At (optional)",
+        "action-url": "Action URL (optional)"
+      },
+      "types": {
+        "system": "System",
+        "security": "Security",
+        "user-action": "User Action",
+        "content": "Content",
+        "marketing": "Marketing",
+        "reminder": "Reminder"
+      },
+      "stats": {
+        "total": {
+          "title": "Total Notifications",
+          "description": "All notifications"
+        },
+        "unread": {
+          "title": "Unread",
+          "description": "Pending notifications"
+        },
+        "read-rate": {
+          "title": "Read Rate",
+          "description": "Notifications read"
+        }
+      },
+      "recent": {
+        "title": "Recent Notifications",
+        "description": "Manage user notifications and system alerts",
+        "user": "User: {userId}",
+        "expires": "Expires: {date}"
+      },
+      "status": {
+        "unread": "Unread"
+      }
+    },
+    "bulk-operations": {
+      "title": "Bulk Operations",
+      "description": "Perform bulk actions on users and content",
+      "messages": {
+        "completed": "Bulk operation completed: {successful}/{total} successful",
+        "failed": "Bulk operation failed",
+        "cancelled": "Operation cancelled",
+        "cancel-failed": "Failed to cancel operation",
+        "select-users": "Please select users to perform bulk actions"
+      },
+      "confirm": {
+        "bulk-action": "Are you sure you want to {action} {count} users? This action cannot be undone.",
+        "cancel-operation": "Are you sure you want to cancel this operation?"
+      },
+      "actions": {
+        "delete-users": "Delete Users",
+        "ban-users": "Ban Users",
+        "unban-users": "Unban Users",
+        "update-role": "Update Role",
+        "execute": "Execute ({count})",
+        "cancel": "Cancel",
+        "export": "Export"
+      },
+      "status": {
+        "completed": "Completed",
+        "failed": "Failed",
+        "running": "Running",
+        "cancelled": "Cancelled",
+        "pending": "Pending"
+      },
+      "date": {
+        "never": "Never",
+        "unknown": "Unknown"
+      },
+      "user-actions": {
+        "title": "Bulk User Actions",
+        "search-placeholder": "Search users...",
+        "filters": "Filters",
+        "select-action": "Select Action",
+        "new-role": "New Role",
+        "no-users": "No users found",
+        "no-users-hint": "Try adjusting your search criteria."
+      },
+      "table": {
+        "user": "User",
+        "role": "Role",
+        "joined": "Joined"
+      },
+      "operations": {
+        "title": "Recent Operations",
+        "failed-to-load": "Failed to load bulk operations.",
+        "loading": "Loading bulk operations...",
+        "summary": "{successful}/{total} successful • Created by {creator} • {date}",
+        "progress": "Progress",
+        "empty": "No bulk operations found."
+      }
+    },
+    "data-management": {
+      "title": "Data Management",
+      "description": "Backup, export, and manage your data",
+      "loading": "Loading data management dashboard...",
+      "messages": {
+        "backup-started": "Database backup started successfully",
+        "backup-failed": "Failed to start backup: {message}",
+        "export-started": "Data export started successfully",
+        "export-failed": "Failed to start export: {message}",
+        "quality-started": "Data quality check started successfully",
+        "quality-failed": "Failed to start quality check: {message}",
+        "export-required": "Name, format, and tables are required",
+        "quality-required": "Name, table name, and rules are required",
+        "rules-invalid": "Please provide valid rules in format: field:rule_type"
+      },
+      "file-size": {
+        "zero": "0 Bytes",
+        "bytes": "Bytes",
+        "unknown": "Size unknown",
+        "size": "Size: {size}"
+      },
+      "status": {
+        "completed": "Completed",
+        "in-progress": "In progress",
+        "processing": "Processing",
+        "running": "Running",
+        "pending": "Pending",
+        "failed": "Failed"
+      },
+      "backup-types": {
+        "full": "full",
+        "incremental": "incremental",
+        "differential": "differential",
+        "full-backup": "Full Backup",
+        "incremental-backup": "Incremental Backup",
+        "differential-backup": "Differential Backup"
+      },
+      "stats": {
+        "database-backups": "Database Backups",
+        "completed-count": "{count} completed",
+        "backup-size": "Backup Size",
+        "total-storage-used": "Total storage used",
+        "data-exports": "Data Exports",
+        "records-exported": "Records Exported",
+        "total-records-processed": "Total records processed"
+      },
+      "tabs": {
+        "overview": "Overview",
+        "backups": "Backups",
+        "exports": "Exports",
+        "quality": "Quality"
+      },
+      "overview": {
+        "recent-backups": {
+          "title": "Recent Backups",
+          "description": "Latest database backup activity"
+        },
+        "recent-exports": {
+          "title": "Recent Exports",
+          "description": "Latest data export activity"
+        }
+      },
+      "backups": {
+        "loading": "Loading backups...",
+        "empty": "No backups yet",
+        "backup-label": "{type} backup",
+        "create-title": "Create Database Backup",
+        "create-description": "Backup your database for safety",
+        "list-title": "Database Backups",
+        "list-description": "Your database backup history"
+      },
+      "exports": {
+        "loading": "Loading exports...",
+        "empty": "No exports yet",
+        "create-title": "Create Data Export",
+        "create-description": "Export data in various formats",
+        "list-title": "Data Exports",
+        "list-description": "Your data export history",
+        "format": "Format: {format}",
+        "records": "{count} records",
+        "processing": "Processing..."
+      },
+      "quality": {
+        "create-title": "Run Data Quality Check",
+        "create-description": "Validate data integrity and quality",
+        "overview-title": "Data Quality Overview",
+        "overview-description": "Data quality metrics and insights",
+        "empty-title": "Run a quality check to see results here",
+        "empty-description": "Quality checks help identify data issues like missing values, duplicates, and format problems."
+      },
+      "fields": {
+        "backup-type": "Backup Type",
+        "description-optional": "Description (Optional)",
+        "backup-description-placeholder": "Pre-deployment backup",
+        "export-name": "Export Name",
+        "export-name-placeholder": "User Data Export",
+        "format": "Format",
+        "tables": "Tables (comma-separated)",
+        "tables-placeholder": "users, posts, comments",
+        "check-name": "Check Name",
+        "check-name-placeholder": "User Data Validation",
+        "table-name": "Table Name",
+        "table-name-placeholder": "users",
+        "rules": "Rules (field:rule_type)",
+        "rules-placeholder": "email:not_null, email:format, id:unique",
+        "rules-help": "Available rules: not_null, unique, format, range"
+      },
+      "actions": {
+        "creating-backup": "Creating Backup...",
+        "create-backup": "Create Backup",
+        "creating-export": "Creating Export...",
+        "create-export": "Create Export",
+        "running-check": "Running Check...",
+        "run-quality-check": "Run Quality Check"
+      },
+      "date": {
+        "completed": "Completed: {date}"
+      }
+    },
+    "security-management": {
+      "title": "Security Management",
+      "description": "Monitor and manage system security",
+      "loading": "Loading security dashboard...",
+      "messages": {
+        "ip-rule-added": "IP access rule added successfully",
+        "ip-rule-failed": "Failed to add IP rule: {message}",
+        "event-resolved": "Security event resolved",
+        "event-resolve-failed": "Failed to resolve event: {message}",
+        "account-unlocked": "Account unlocked successfully",
+        "account-unlock-failed": "Failed to unlock account: {message}",
+        "setting-updated": "Security setting updated successfully",
+        "setting-update-failed": "Failed to update security setting: {message}",
+        "ip-type-required": "IP address and type are required"
+      },
+      "severity": {
+        "critical": "Critical",
+        "high": "High",
+        "medium": "Medium",
+        "low": "Low"
+      },
+      "rule-types": {
+        "whitelist": "Whitelist",
+        "blacklist": "Blacklist",
+        "whitelist-allow": "Whitelist (Allow)",
+        "blacklist-block": "Blacklist (Block)"
+      },
+      "stats": {
+        "security-events": "Security Events",
+        "critical-events": "{count} critical events",
+        "login-attempts": "Login Attempts",
+        "failed-attempts": "{count} failed attempts",
+        "account-lockouts": "Account Lockouts",
+        "active-lockouts": "Active lockouts",
+        "two-factor-adoption": "2FA Adoption",
+        "users-enabled": "{count} users enabled"
+      },
+      "tabs": {
+        "overview": "Overview",
+        "events": "Events",
+        "ip-control": "IP Control",
+        "lockouts": "Lockouts",
+        "settings": "Settings"
+      },
+      "overview": {
+        "recent-events": {
+          "title": "Recent Security Events",
+          "description": "Latest security incidents and alerts"
+        },
+        "login-attempts": {
+          "title": "Login Attempts (24h)",
+          "description": "Authentication activity summary",
+          "loading": "Loading attempts...",
+          "total": "Total Attempts:",
+          "successful": "Successful:",
+          "failed": "Failed:",
+          "unique-ips": "Unique IPs:",
+          "success-rate": "Success Rate:"
+        }
+      },
+      "events": {
+        "title": "Security Events",
+        "description": "Monitor and resolve security incidents",
+        "loading": "Loading events...",
+        "loading-security-events": "Loading security events...",
+        "no-recent": "No recent events",
+        "ip": "IP: {ip}",
+        "user": "User: {name} ({email})",
+        "resolved": "Resolved {date}",
+        "empty": "No security events found"
+      },
+      "ip-control": {
+        "add-title": "Add IP Access Rule",
+        "add-description": "Control access by IP address",
+        "rules-title": "IP Access Rules",
+        "rules-description": "Current IP access control rules",
+        "loading-rules": "Loading IP rules...",
+        "no-description": "No description",
+        "empty": "No IP rules configured"
+      },
+      "lockouts": {
+        "title": "Account Lockouts",
+        "description": "Manage locked user accounts",
+        "loading": "Loading account lockouts...",
+        "user-id": "User ID: {userId}",
+        "lockout-id": "Lockout ID: {lockoutId}",
+        "locked": "Locked: {date}",
+        "reason": "Reason: {reason}",
+        "empty": "No active account lockouts"
+      },
+      "settings": {
+        "title": "Security Settings",
+        "description": "Configure security policies and thresholds",
+        "search-placeholder": "Search by key, value, or description",
+        "all-categories": "All categories",
+        "loading": "Loading security settings...",
+        "empty": "No security settings found",
+        "updated": "Updated {date}",
+        "updated-by": "by {name}"
+      },
+      "fields": {
+        "ip-address": "IP Address",
+        "rule-type": "Rule Type",
+        "rule-type-placeholder": "Select rule type",
+        "description-optional": "Description (Optional)",
+        "rule-description-placeholder": "Rule description",
+        "search": "Search",
+        "category": "Category",
+        "value": "Value",
+        "description": "Description",
+        "optional-description-placeholder": "Optional description",
+        "category-placeholder": "Category"
+      },
+      "actions": {
+        "resolve": "Resolve",
+        "adding": "Adding...",
+        "add-rule": "Add Rule",
+        "unlock-account": "Unlock Account",
+        "save": "Save",
+        "edit": "Edit"
+      }
+    },
+    "monitoring-dashboard": {
+      "title": "Monitoring Dashboard",
+      "description": "Real-time system performance and analytics",
+      "loading": "Loading monitoring dashboard...",
+      "messages": {
+        "error-resolved": "Error resolved successfully",
+        "resolve-error-failed": "Failed to resolve error: {message}",
+        "all-errors-resolved": "All errors resolved successfully",
+        "resolve-all-errors-failed": "Failed to resolve all errors: {message}"
+      },
+      "time-range": {
+        "last-hour": "Last Hour",
+        "last-6-hours": "Last 6 Hours",
+        "last-24-hours": "Last 24 Hours",
+        "last-7-days": "Last 7 Days",
+        "last-30-days": "Last 30 Days"
+      },
+      "stats": {
+        "performance": "Performance",
+        "metrics-recorded": "{count} metrics recorded",
+        "api-requests": "API Requests",
+        "error-rate": "{rate}% error rate",
+        "errors": "Errors",
+        "unresolved": "{count} unresolved",
+        "active-alerts": "Active Alerts",
+        "critical-alerts": "{count} critical alerts"
+      },
+      "tabs": {
+        "overview": "Overview",
+        "performance": "Performance",
+        "api": "API Usage",
+        "errors": "Errors",
+        "resources": "Resources",
+        "analytics": "Analytics"
+      },
+      "common": {
+        "system": "System",
+        "anonymous": "Anonymous"
+      },
+      "overview": {
+        "system-health": {
+          "title": "System Health",
+          "description": "Current system status overview",
+          "api-response-time": "API Response Time",
+          "error-rate": "Error Rate",
+          "critical-errors": "Critical Errors",
+          "active-alerts": "Active Alerts"
+        },
+        "recent-activity": {
+          "title": "Recent Activity",
+          "description": "Latest system events and metrics",
+          "loading": "Loading recent activity...",
+          "empty": "No recent activity"
+        }
+      },
+      "performance": {
+        "metrics": {
+          "title": "Performance Metrics",
+          "description": "System performance over time",
+          "loading": "Loading performance metrics...",
+          "empty": "No performance data available"
+        },
+        "resources": {
+          "title": "Resource Usage",
+          "description": "System resource consumption",
+          "threshold-breaches": "{count} threshold breach(es)",
+          "empty": "No resource data available"
+        }
+      },
+      "metrics": {
+        "avg": "Avg: {value}",
+        "min": "Min: {value}",
+        "max": "Max: {value}",
+        "avg-percent": "Avg: {value}%",
+        "max-percent": "Max: {value}%"
+      },
+      "api": {
+        "loading": "Loading API usage...",
+        "stats": {
+          "title": "API Usage Statistics",
+          "description": "Request patterns and performance",
+          "total-requests": "Total Requests",
+          "unique-users": "Unique Users",
+          "avg-response-time": "Avg Response Time",
+          "error-rate": "Error Rate"
+        },
+        "top-endpoints": {
+          "title": "Top API Endpoints",
+          "description": "Most frequently accessed endpoints",
+          "loading": "Loading top endpoints...",
+          "empty": "No endpoint data available"
+        }
+      },
+      "errors": {
+        "title": "Error Tracking",
+        "description": "System errors and exceptions",
+        "loading": "Loading error tracking...",
+        "type": "Type: {type}",
+        "user": "User: {name} ({email})",
+        "fingerprint": "Fingerprint: {fingerprint}",
+        "resolved": "Resolved {date}",
+        "empty": "No errors found"
+      },
+      "actions": {
+        "resolve-all": "Resolve all",
+        "resolve": "Resolve"
+      },
+      "resources": {
+        "title": "System Resources",
+        "description": "CPU and memory usage",
+        "loading": "Loading resource usage...",
+        "current-usage": "Current Usage:",
+        "average": "Average:",
+        "peak": "Peak:",
+        "alerts": "Alerts:",
+        "empty": "No resource usage data available"
+      },
+      "analytics": {
+        "event-types": {
+          "title": "Event Types",
+          "description": "Distribution of analytics events",
+          "loading": "Loading analytics events...",
+          "empty": "No event data available"
+        },
+        "recent-events": {
+          "title": "Recent Events",
+          "description": "Latest analytics events",
+          "loading": "Loading recent events...",
+          "empty": "No recent events"
+        }
+      }
+    },
+    "announcement-management": {
+      "title": "Announcements",
+      "description": "Manage site-wide announcements and notifications",
+      "loading": "Loading announcements...",
+      "empty": "No announcements yet. Create your first announcement to get started!",
+      "messages": {
+        "translate-failed": "Failed to translate: {message}",
+        "title-content-required": "Title and content are required",
+        "pt-filled": "Filled pt-BR using Yue AI",
+        "created": "Announcement created successfully",
+        "create-failed": "Failed to create announcement: {message}",
+        "updated": "Announcement updated successfully",
+        "update-failed": "Failed to update announcement: {message}",
+        "deleted": "Announcement deleted successfully",
+        "delete-failed": "Failed to delete announcement: {message}"
+      },
+      "actions": {
+        "create": "Create Announcement",
+        "update": "Update Announcement",
+        "translating": "Translating...",
+        "fill-pt": "Fill pt-BR with AI",
+        "activate": "Activate",
+        "deactivate": "Deactivate",
+        "edit-aria": "Edit announcement",
+        "delete-aria": "Delete announcement"
+      },
+      "create": {
+        "title": "Create New Announcement",
+        "description": "Create a new site-wide announcement that will be visible to users."
+      },
+      "edit": {
+        "title": "Edit Announcement",
+        "description": "Update the announcement details."
+      },
+      "delete": {
+        "title": "Delete Announcement",
+        "description": "Are you sure you want to delete \"{title}\"? This action cannot be undone."
+      },
+      "fields": {
+        "title": "Title",
+        "title-placeholder": "Announcement title",
+        "title-pt": "Title (pt-BR)",
+        "title-pt-placeholder": "Portuguese title (optional)",
+        "content": "Content",
+        "content-placeholder": "Announcement content",
+        "content-pt": "Content (pt-BR)",
+        "content-pt-placeholder": "Portuguese content (optional)",
+        "type": "Type",
+        "priority": "Priority (0-10)",
+        "priority-value": "Priority {priority}",
+        "dismissible": "Allow users to dismiss this announcement",
+        "active": "Announcement is active"
+      },
+      "types": {
+        "info": "Info",
+        "success": "Success",
+        "warning": "Warning",
+        "error": "Error",
+        "maintenance": "Maintenance",
+        "feature": "Feature",
+        "update": "Update"
+      },
+      "analytics": {
+        "total-views": {
+          "title": "Total Views",
+          "description": "Across all announcements"
+        },
+        "dismissal-rate": {
+          "title": "Dismissal Rate",
+          "description": "{count} total dismissals"
+        },
+        "active": {
+          "title": "Active Announcements",
+          "description": "Currently visible to users"
+        }
+      },
+      "list": {
+        "title": "All Announcements",
+        "description": "Manage your site announcements"
+      },
+      "status": {
+        "inactive": "Inactive",
+        "pt": "PT",
+        "pt-partial": "PT partial",
+        "targeted": "Targeted",
+        "dismissible": "Dismissible",
+        "not-dismissible": "Not dismissible"
+      }
+    },
+    "communication-management": {
+      "title": "Communication Management",
+      "description": "Manage emails, announcements, and notifications",
+      "loading": "Loading communication dashboard...",
+      "messages": {
+        "template-created": "Email template created successfully",
+        "template-create-failed": "Failed to create template: {message}",
+        "campaign-created": "Email campaign created successfully",
+        "campaign-create-failed": "Failed to create campaign: {message}",
+        "campaign-sent": "Email campaign sent successfully",
+        "campaign-send-failed": "Failed to send campaign: {message}",
+        "announcement-created": "Announcement created successfully",
+        "announcement-create-failed": "Failed to create announcement: {message}",
+        "all-fields-required": "All fields are required",
+        "campaign-fields-required": "Name, subject, and content are required",
+        "title-content-required": "Title and content are required"
+      },
+      "stats": {
+        "email-campaigns": "Email Campaigns",
+        "sent-campaigns": "{count} sent campaigns",
+        "emails-sent": "Emails Sent",
+        "delivered": "{count} delivered",
+        "announcements": "Announcements",
+        "active": "{count} active",
+        "notifications": "Notifications",
+        "unread": "{count} unread"
+      },
+      "tabs": {
+        "overview": "Overview",
+        "campaigns": "Campaigns",
+        "templates": "Templates",
+        "announcements": "Announcements",
+        "notifications": "Notifications"
+      },
+      "overview": {
+        "recent-campaigns": {
+          "title": "Recent Email Campaigns",
+          "description": "Latest email campaign activity"
+        },
+        "active-announcements": {
+          "title": "Active Announcements",
+          "description": "Current site announcements"
+        }
+      },
+      "campaigns": {
+        "loading": "Loading campaigns...",
+        "empty": "No campaigns yet",
+        "create-title": "Create Email Campaign",
+        "create-description": "Send bulk emails to users",
+        "list-title": "Email Campaigns",
+        "list-description": "Manage your email campaigns",
+        "subject": "Subject: {subject}",
+        "recipients": "Recipients: {count}"
+      },
+      "templates": {
+        "loading": "Loading templates...",
+        "empty": "No templates yet",
+        "create-title": "Create Email Template",
+        "create-description": "Create reusable email templates",
+        "list-title": "Email Templates",
+        "list-description": "Your saved email templates",
+        "subject": "Subject: {subject}"
+      },
+      "announcements": {
+        "loading": "Loading announcements...",
+        "no-active": "No active announcements",
+        "priority": "Priority: {priority}",
+        "create-title": "Create Announcement",
+        "create-description": "Post site-wide announcements",
+        "list-title": "Site Announcements",
+        "list-description": "Manage site announcements",
+        "active": "Active",
+        "empty": "No announcements yet"
+      },
+      "notifications": {
+        "title": "System Notifications",
+        "description": "Recent system notifications",
+        "loading": "Loading notifications...",
+        "read": "Read",
+        "unread": "Unread",
+        "empty": "No notifications"
+      },
+      "fields": {
+        "campaign-name": "Campaign Name",
+        "campaign-name-placeholder": "Monthly Newsletter",
+        "email-subject": "Email Subject",
+        "email-subject-placeholder": "Your monthly update is here!",
+        "email-content-html": "Email Content (HTML)",
+        "campaign-content-placeholder": "<h1>Hello!</h1><p>Your email content here...</p>",
+        "template-name": "Template Name",
+        "template-name-placeholder": "Welcome Email",
+        "template-type": "Template Type",
+        "template-type-placeholder": "Select template type",
+        "subject-line": "Subject Line",
+        "template-subject-placeholder": "Welcome to our platform!",
+        "html-content": "HTML Content",
+        "template-content-placeholder": "<h1>Welcome!</h1><p>Thank you for joining us...</p>",
+        "title": "Title",
+        "title-pt": "Title (pt-BR)",
+        "type": "Type",
+        "priority": "Priority (0-10)",
+        "content": "Content",
+        "content-pt": "Content (pt-BR)",
+        "announcement-title-placeholder": "System Maintenance Notice",
+        "announcement-title-pt-placeholder": "Portuguese maintenance notice (optional)",
+        "announcement-content-placeholder": "We will be performing scheduled maintenance...",
+        "announcement-content-pt-placeholder": "Portuguese maintenance message (optional)"
+      },
+      "actions": {
+        "creating": "Creating...",
+        "create-campaign": "Create Campaign",
+        "send-now": "Send Now",
+        "create-template": "Create Template",
+        "create-announcement": "Create Announcement"
+      },
+      "template-types": {
+        "welcome": "Welcome",
+        "newsletter": "Newsletter",
+        "announcement": "Announcement",
+        "notification": "Notification",
+        "marketing": "Marketing",
+        "transactional": "Transactional"
+      },
+      "announcement-types": {
+        "info": "Info",
+        "warning": "Warning",
+        "success": "Success",
+        "error": "Error",
+        "maintenance": "Maintenance",
+        "feature": "Feature",
+        "update": "Update"
+      },
+      "date": {
+        "created": "Created: {date}"
+      }
+    },
+    "email-marketing-management": {
+      "title": "Email Marketing",
+      "description": "Manage your email campaigns, audiences, and templates",
+      "messages": {
+        "template-created": "Template created successfully!",
+        "template-create-failed": "Failed to create template: {message}",
+        "audience-created": "Audience created successfully!",
+        "audience-create-failed": "Failed to create audience: {message}",
+        "broadcast-created": "Broadcast created successfully!",
+        "broadcast-create-failed": "Failed to create broadcast: {message}",
+        "users-synced": "Successfully synced {count} users to audience!",
+        "sync-failed": "Failed to sync users: {message}",
+        "broadcast-sent": "Broadcast sent successfully!",
+        "broadcast-send-failed": "Failed to send broadcast: {message}",
+        "broadcast-updated": "Broadcast updated successfully!",
+        "broadcast-update-failed": "Failed to update broadcast: {message}",
+        "broadcast-deleted": "Broadcast deleted successfully!",
+        "broadcast-delete-failed": "Failed to delete broadcast: {message}"
+      },
+      "confirm": {
+        "delete-broadcast": "Are you sure you want to delete this broadcast? This action cannot be undone."
+      },
+      "loading": {
+        "title": "Loading Email Marketing Data...",
+        "audiences": "Loading Audiences...",
+        "broadcasts": "Loading Broadcasts...",
+        "templates": "Loading Templates...",
+        "analytics": "Loading Analytics..."
+      },
+      "tabs": {
+        "overview": "Overview",
+        "audiences": "Audiences",
+        "broadcasts": "Broadcasts",
+        "templates": "Templates"
+      },
+      "stats": {
+        "total-audiences": {
+          "title": "Total Audiences",
+          "description": "Active audience segments"
+        },
+        "total-broadcasts": {
+          "title": "Total Broadcasts",
+          "description": "Email campaigns created"
+        },
+        "subscribers": {
+          "title": "Subscribers",
+          "description": "{rate}% subscription rate"
+        },
+        "sent-broadcasts": {
+          "title": "Sent Broadcasts",
+          "description": "Successfully delivered"
+        }
+      },
+      "overview": {
+        "recent-activity": "Recent Activity",
+        "no-activity": "No recent activity",
+        "quick-actions": "Quick Actions"
+      },
+      "actions": {
+        "create-new-broadcast": "Create New Broadcast",
+        "create-new-audience": "Create New Audience",
+        "create-new-template": "Create New Template",
+        "create-audience": "Create Audience",
+        "syncing": "Syncing...",
+        "sync-users": "Sync Users",
+        "create-broadcast": "Create Broadcast",
+        "show-all-broadcasts": "Show All Broadcasts",
+        "create-template": "Create Template",
+        "edit": "Edit",
+        "use": "Use",
+        "close": "Close",
+        "edit-broadcast": "Edit Broadcast",
+        "updating": "Updating...",
+        "update-broadcast": "Update Broadcast"
+      },
+      "audiences": {
+        "title": "Audiences",
+        "create-title": "Create New Audience",
+        "create-description": "Create a new audience segment for your email campaigns",
+        "subscriber-count": "{count} subscribers",
+        "option-subscriber-count": "{name} ({count} subscribers)",
+        "empty": "No audiences yet. Create your first audience to get started!"
+      },
+      "broadcasts": {
+        "title": "Broadcasts",
+        "filter-placeholder": "Filter by status",
+        "create-title": "Create New Broadcast",
+        "create-description": "Create a new email broadcast campaign",
+        "empty-filtered": "No broadcasts match the current filter.",
+        "empty": "No broadcasts yet. Create your first broadcast to get started!",
+        "empty-hint": "You'll need to create an audience first before creating broadcasts.",
+        "status": {
+          "all": "All Broadcasts",
+          "draft": "Draft",
+          "sent": "Sent",
+          "scheduled": "Scheduled",
+          "sending": "Sending"
+        }
+      },
+      "templates": {
+        "title": "Email Templates",
+        "create-title": "Create New Template",
+        "create-description": "Create a reusable email template",
+        "empty": "No templates yet. Create your first template to get started!"
+      },
+      "fields": {
+        "audience-name": "Audience Name",
+        "audience-name-placeholder": "e.g., Newsletter Subscribers",
+        "broadcast-name": "Broadcast Name",
+        "broadcast-name-placeholder": "Internal name for this broadcast",
+        "target-audience": "Target Audience",
+        "select-audience": "Select an audience",
+        "from-email": "From Email",
+        "subject-line": "Subject Line",
+        "email-subject-placeholder": "Email subject",
+        "email-content-html": "Email Content (HTML)",
+        "email-html-placeholder": "Email HTML content",
+        "plain-text-optional": "Plain Text Version (Optional)",
+        "plain-text-placeholder": "Plain text version",
+        "audience": "Audience",
+        "template-name": "Template Name",
+        "template-name-placeholder": "e.g., Welcome Email",
+        "name": "Name",
+        "not-available": "N/A",
+        "status": "Status",
+        "subject": "Subject",
+        "from": "From",
+        "html-content": "HTML Content",
+        "no-content": "No content",
+        "plain-text-content": "Plain Text Content"
+      },
+      "date": {
+        "not-sent": "Not sent",
+        "created": "Created: {date}"
+      },
+      "broadcast-details": {
+        "title": "Broadcast Details",
+        "description": "View broadcast information and content"
+      },
+      "edit-broadcast": {
+        "title": "Edit Broadcast",
+        "description": "Update broadcast content and settings"
       }
     }
   },
@@ -204,6 +1257,10 @@
       "bio": "Bio",
       "bio-placeholder": "Tell a bit about yourself",
       "new-email": "New email",
+      "avatar-url-placeholder": "https://...",
+      "username-placeholder": "your-username",
+      "name-color-placeholder": "#ff0000",
+      "new-email-placeholder": "you@example.com",
       "current-password": "Current password",
       "new-password": "New password",
       "confirm-new-password": "Confirm new password"
@@ -458,6 +1515,8 @@
       "title": "Notifications",
       "sign-in": "Sign in to view your notifications.",
       "empty": "No notifications.",
+      "loading": "Loading…",
+      "refreshing": "Refreshing…",
       "unread": "Unread",
       "mark-all-read": "Mark all read",
       "view-all": "View all"
@@ -537,6 +1596,60 @@
     "refresh-page": "Refresh Page",
     "details": "Error Details"
   },
+  "offline": {
+    "metadata": {
+      "title": "Offline - Yuri Cunha",
+      "description": "You are currently offline. Please check your internet connection."
+    },
+    "title": "You're offline",
+    "description": "It looks like you've lost your internet connection. Some features may not work until you're back online.",
+    "try-again": "Try Again",
+    "go-home": "Go Home",
+    "available": {
+      "title": "While offline, you can still:",
+      "cached-pages": "Browse cached pages",
+      "loaded-content": "Read previously loaded content",
+      "search": "Use the search functionality"
+    }
+  },
+  "reset-password": {
+    "loading": "Loading...",
+    "messages": {
+      "success": "Password reset successfully! You can now sign in with your new password.",
+      "failed": "Failed to reset password",
+      "invalid-token": "Invalid or missing reset token",
+      "passwords-do-not-match": "Passwords do not match",
+      "password-too-short": "Password must be at least 8 characters long"
+    },
+    "success": {
+      "title": "Password updated",
+      "description": "Your password has been reset successfully."
+    },
+    "invalid": {
+      "title": "Invalid Reset Link",
+      "description": "This password reset link is invalid or has expired."
+    },
+    "actions": {
+      "sign-in": "Sign in",
+      "back-home": "Back to home"
+    },
+    "form": {
+      "title": "Reset Your Password",
+      "description": "Enter your new password below.",
+      "new-password": {
+        "label": "New Password",
+        "placeholder": "Enter your new password"
+      },
+      "confirm-password": {
+        "label": "Confirm New Password",
+        "placeholder": "Confirm your new password"
+      },
+      "submit": {
+        "pending": "Resetting Password...",
+        "default": "Reset Password"
+      }
+    }
+  },
   "guestbook": {
     "create-message-successfully": "Create message successfully",
     "delete-dialog": {
@@ -548,6 +1661,7 @@
     "failed-to-load-messages": "Failed to load messages. Please refresh the page.",
     "message-cannot-be-empty": "Message cannot be empty. My bad or your bad?",
     "no-messages": "No messages. Be the first to leave a message!",
+    "empty-cta": "Be the first to leave a message!",
     "pinned": {
       "description": "If you have a moment, please log in with your account to leave a comment. Thanks!",
       "greeting": "Hey! 👋"
@@ -572,8 +1686,15 @@
     },
     "get-in-touch": {
       "description": "Feel free to reach out to me!",
+      "label": "Contact",
+      "availability": "availability",
       "image-alt": "Me or not me",
-      "title": "Need to talk?"
+      "title": "Need to talk?",
+      "code": {
+        "status": "status = \"open\"",
+        "email": "email = \"me@yuricunha.com\"",
+        "timezone": "timezone = \"UTC/GMT -3\""
+      }
     },
     "hero": {
       "title-top": "I’m Yuri, a database specialist",
@@ -586,7 +1707,12 @@
       "title-bottom": "for modern infrastructures",
       "location-timezone": "Brazil • UTC/GMT -3",
       "view-projects": "View Projects",
-      "read-blog": "Read Blog"
+      "read-blog": "Read Blog",
+      "code": {
+        "database-specialist": "database_specialist = true",
+        "region": "region = \"America/Sao_Paulo\"",
+        "focus": "focus = \"reliable data systems\""
+      }
     },
     "latest-articles": {
       "card": "Article",
@@ -631,6 +1757,7 @@
     "title": "Snippets",
     "description": "Small, practical notes and code recipes.",
     "empty": "No snippets available.",
+    "content-label": "Snippet",
     "on-this-page": "On this page",
     "min-read": "{minutes} min read"
   },
@@ -646,6 +1773,7 @@
     "uses": "Tools",
     "music": "Music",
     "more": "More",
+    "admin": "Admin",
     "contact": "Contact",
     "sitemap": "Sitemap",
     "skip-to-main-content": "Skip to main content",
@@ -667,6 +1795,11 @@
     "site-description": "Senior DBA",
     "site-title": "Yuri Cunha",
     "site-short-name": "Yuri"
+  },
+  "og": {
+    "blog-post": "Blog Post",
+    "read-article": "Read this article on yuricunha.com",
+    "summary-fallback": "Read this article on yuricunha.com"
   },
   "not-found": "No pages here today!",
   "notFound": {
@@ -743,6 +1876,7 @@
   "projects": {
     "description": "The list of my projects. Everything was made with 💙 (this page still in development).",
     "title": "Projects",
+    "content-label": "Project",
     "visit-website": "Visit Website",
     "all-repos": "My public GitHub repositories",
     "featured": "Featured Projects",
@@ -859,7 +1993,9 @@
       "choose": "Choose file",
       "plays": "Plays",
       "artists": "Artists",
-      "duration": "Duration"
+      "duration": "Duration",
+      "invalid-file": "Invalid file: expected JSON array",
+      "parse-error": "Parse error"
     },
     "stats": {
       "title": "Music Statistics",
@@ -986,6 +2122,7 @@
       "open": "Open menu",
       "reportBug": "Report a bug / Contact",
       "viewProjects": "View Projects",
+      "aiChat": "AI Chat",
       "miniGame": "Mini-game",
       "settings": "Settings"
     },
@@ -1003,6 +2140,7 @@
       "provider": "Provider",
       "newChat": "New chat",
       "newChatTitle": "New chat",
+      "more": "More",
       "rename": "Rename",
       "renamePrompt": "Rename chat",
       "deleteChat": "Delete chat",
@@ -1129,7 +2267,25 @@
       "start": "Start Game",
       "playAgain": "Play Again",
       "gameOver": "Game Over! Your score: {score}",
-      "clickTarget": "Click target"
+      "clickTarget": "Click target",
+      "difficulty": {
+        "label": "Difficulty:",
+        "aria": "Select difficulty",
+        "options": {
+          "easy": "Easy",
+          "medium": "Medium",
+          "hard": "Hard"
+        }
+      },
+      "mode": {
+        "label": "Mode:",
+        "aria": "Select mode",
+        "options": {
+          "classic": "Classic",
+          "survival": "Survival",
+          "challenge": "Challenge"
+        }
+      }
     },
     "messages": {
       "0": "Hi! I'm Yue, your virtual assistant! Need help navigating?",
@@ -1184,6 +2340,24 @@
       "49": "I'm always ready to help with any questions you might have!"
     },
     "pageMessages": {
+      "404": {
+        "0": "Oops! Looks like you're lost! 🗺️",
+        "1": "Don't worry, I can help you find your way back!",
+        "2": "Try using the navigation menu or search feature.",
+        "3": "The homepage is always a good place to start!",
+        "4": "My creator, Yuri is working on making navigation even better!",
+        "5": "Feel free to report any broken links you find!",
+        "6": "Even the best explorers get lost sometimes! 🧭",
+        "7": "This page might have moved or doesn't exist yet!",
+        "8": "Use the search to find what you were looking for!",
+        "9": "The navigation menu has all the main sections organized!",
+        "10": "Sometimes getting lost leads to discovering something even better!",
+        "11": "Check the URL for typos - that's often the culprit!",
+        "12": "The site is constantly growing, so new content appears regularly!",
+        "13": "Broken links happen - thanks for helping improve the site!",
+        "14": "Every 404 is a chance to explore something new instead!",
+        "15": "When in doubt, the homepage has links to everything important! 🏠"
+      },
       "home": {
         "0": "Welcome to the homepage! 👋 I'm Yue, your virtual assistant!",
         "1": "This is where it all begins. Ready to explore?",
@@ -1360,24 +2534,6 @@
         "14": "From technical articles to project details - find it all here!",
         "15": "Search is your friend for navigating large amounts of content! 🗂️"
       },
-      "404": {
-        "0": "Oops! Looks like you're lost! 🗺️",
-        "1": "Don't worry, I can help you find your way back!",
-        "2": "Try using the navigation menu or search feature.",
-        "3": "The homepage is always a good place to start!",
-        "4": "My creator, Yuri is working on making navigation even better!",
-        "5": "Feel free to report any broken links you find!",
-        "6": "Even the best explorers get lost sometimes! 🧭",
-        "7": "This page might have moved or doesn't exist yet!",
-        "8": "Use the search to find what you were looking for!",
-        "9": "The navigation menu has all the main sections organized!",
-        "10": "Sometimes getting lost leads to discovering something even better!",
-        "11": "Check the URL for typos - that's often the culprit!",
-        "12": "The site is constantly growing, so new content appears regularly!",
-        "13": "Broken links happen - thanks for helping improve the site!",
-        "14": "Every 404 is a chance to explore something new instead!",
-        "15": "When in doubt, the homepage has links to everything important! 🏠"
-      },
       "contact": {
         "0": "Want to get in touch? 📧",
         "1": "My creator, Yuri loves hearing from visitors!",
@@ -1479,5 +2635,8 @@
         "answer": "Happy to speak at events about web development and open source."
       }
     }
+  },
+  "music": {
+    "description": "Recent listening history, top artists, and music stats"
   }
 }

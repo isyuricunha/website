@@ -21,6 +21,7 @@ import {
 } from '@isyuricunha/ui'
 
 import { Activity, AlertTriangle, Zap } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { toast } from 'sonner'
 
 import { api } from '@/trpc/react'
@@ -32,12 +33,13 @@ const is_time_range = (value: string): value is TimeRange => {
 }
 
 export default function MonitoringDashboard() {
+  const t = useTranslations('admin.monitoring-dashboard')
   const [selectedTab, setSelectedTab] = useState('overview')
   const [timeRange, setTimeRange] = useState<TimeRange>('24h')
 
-  const snapshot_interval_ref = useRef<ReturnType<typeof setInterval> | null>(null)
-  const has_sent_page_view_ref = useRef(false)
-  const snapshot_in_flight_ref = useRef(false)
+  const snapshotIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const hasSentPageViewRef = useRef(false)
+  const snapshotInFlightRef = useRef(false)
 
   const utils = api.useUtils()
 
@@ -106,31 +108,31 @@ export default function MonitoringDashboard() {
 
   const resolveErrorMutation = api.monitoring.resolveError.useMutation({
     onSuccess: () => {
-      toast.success('Error resolved successfully')
+      toast.success(t('messages.error-resolved'))
 
       utils.monitoring.getErrorTracking.invalidate()
       utils.monitoring.getMonitoringStats.invalidate()
       utils.monitoring.getAlerts.invalidate()
     },
     onError: (error) => {
-      toast.error(`Failed to resolve error: ${error.message}`)
+      toast.error(t('messages.resolve-error-failed', { message: error.message }))
     }
   })
 
   const resolveAllErrorsMutation = api.monitoring.resolveAllErrors.useMutation({
     onSuccess: () => {
-      toast.success('All errors resolved successfully')
+      toast.success(t('messages.all-errors-resolved'))
       utils.monitoring.getErrorTracking.invalidate()
       utils.monitoring.getMonitoringStats.invalidate()
     },
     onError: (error) => {
-      toast.error(`Failed to resolve all errors: ${error.message}`)
+      toast.error(t('messages.resolve-all-errors-failed', { message: error.message }))
     }
   })
 
   useEffect(() => {
-    if (!has_sent_page_view_ref.current) {
-      has_sent_page_view_ref.current = true
+    if (!hasSentPageViewRef.current) {
+      hasSentPageViewRef.current = true
       recordAnalyticsEventMutation.mutate({
         eventType: 'page_view',
         page: '/admin/monitoring',
@@ -140,38 +142,38 @@ export default function MonitoringDashboard() {
         }
       })
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- fire once on mount to avoid request loops
+    // eslint-disable-next-line @eslint-react/exhaustive-deps, react-hooks/exhaustive-deps -- fire once on mount to avoid request loops
   }, [])
 
   useEffect(() => {
     const record_snapshot = async () => {
-      if (snapshot_in_flight_ref.current) return
-      snapshot_in_flight_ref.current = true
+      if (snapshotInFlightRef.current) return
+      snapshotInFlightRef.current = true
 
       try {
         await recordResourceSnapshotMutation.mutateAsync()
       } finally {
-        snapshot_in_flight_ref.current = false
+        snapshotInFlightRef.current = false
       }
     }
 
     void record_snapshot()
 
-    if (snapshot_interval_ref.current) {
-      clearInterval(snapshot_interval_ref.current)
+    if (snapshotIntervalRef.current) {
+      clearInterval(snapshotIntervalRef.current)
     }
 
-    snapshot_interval_ref.current = setInterval(() => {
+    snapshotIntervalRef.current = setInterval(() => {
       void record_snapshot()
     }, 60_000)
 
     return () => {
-      if (snapshot_interval_ref.current) {
-        clearInterval(snapshot_interval_ref.current)
-        snapshot_interval_ref.current = null
+      if (snapshotIntervalRef.current) {
+        clearInterval(snapshotIntervalRef.current)
+        snapshotIntervalRef.current = null
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- interval lifecycle should be mount/unmount
+    // eslint-disable-next-line @eslint-react/exhaustive-deps, react-hooks/exhaustive-deps -- interval lifecycle should be mount/unmount
   }, [])
 
   const getSeverityColor = (severity: string) => {
@@ -190,15 +192,15 @@ export default function MonitoringDashboard() {
   }
 
   if (statsLoading) {
-    return <div className='p-6'>Loading monitoring dashboard...</div>
+    return <div className='p-6'>{t('loading')}</div>
   }
 
   return (
     <div className='space-y-6'>
       <div className='flex items-center justify-between'>
         <div>
-          <h1 className='text-3xl font-medium'>Monitoring Dashboard</h1>
-          <p className='text-muted-foreground'>Real-time system performance and analytics</p>
+          <h1 className='text-3xl font-medium'>{t('title')}</h1>
+          <p className='text-muted-foreground'>{t('description')}</p>
         </div>
         <Select
           value={timeRange}
@@ -212,11 +214,11 @@ export default function MonitoringDashboard() {
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value='1h'>Last Hour</SelectItem>
-            <SelectItem value='6h'>Last 6 Hours</SelectItem>
-            <SelectItem value='24h'>Last 24 Hours</SelectItem>
-            <SelectItem value='7d'>Last 7 Days</SelectItem>
-            <SelectItem value='30d'>Last 30 Days</SelectItem>
+            <SelectItem value='1h'>{t('time-range.last-hour')}</SelectItem>
+            <SelectItem value='6h'>{t('time-range.last-6-hours')}</SelectItem>
+            <SelectItem value='24h'>{t('time-range.last-24-hours')}</SelectItem>
+            <SelectItem value='7d'>{t('time-range.last-7-days')}</SelectItem>
+            <SelectItem value='30d'>{t('time-range.last-30-days')}</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -225,7 +227,7 @@ export default function MonitoringDashboard() {
       <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-4'>
         <Card>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-sm font-medium'>Performance</CardTitle>
+            <CardTitle className='text-sm font-medium'>{t('stats.performance')}</CardTitle>
             <Zap className='text-muted-foreground h-4 w-4' />
           </CardHeader>
           <CardContent>
@@ -233,46 +235,48 @@ export default function MonitoringDashboard() {
               {monitoringStats?.performance.avgResponseTime?.toFixed(0) || 0}ms
             </div>
             <p className='text-muted-foreground text-xs'>
-              {monitoringStats?.performance.totalMetrics || 0} metrics recorded
+              {t('stats.metrics-recorded', {
+                count: monitoringStats?.performance.totalMetrics || 0
+              })}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-sm font-medium'>API Requests</CardTitle>
+            <CardTitle className='text-sm font-medium'>{t('stats.api-requests')}</CardTitle>
             <Activity className='text-muted-foreground h-4 w-4' />
           </CardHeader>
           <CardContent>
             <div className='text-2xl font-medium'>{monitoringStats?.api.totalRequests || 0}</div>
             <p className='text-muted-foreground text-xs'>
-              {monitoringStats?.api.errorRate?.toFixed(1) || 0}% error rate
+              {t('stats.error-rate', { rate: monitoringStats?.api.errorRate?.toFixed(1) || 0 })}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-sm font-medium'>Errors</CardTitle>
+            <CardTitle className='text-sm font-medium'>{t('stats.errors')}</CardTitle>
             <AlertTriangle className='text-muted-foreground h-4 w-4' />
           </CardHeader>
           <CardContent>
             <div className='text-2xl font-medium'>{monitoringStats?.errors.total || 0}</div>
             <p className='text-muted-foreground text-xs'>
-              {monitoringStats?.errors.unresolved || 0} unresolved
+              {t('stats.unresolved', { count: monitoringStats?.errors.unresolved || 0 })}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-sm font-medium'>Active Alerts</CardTitle>
+            <CardTitle className='text-sm font-medium'>{t('stats.active-alerts')}</CardTitle>
             <AlertTriangle className='text-muted-foreground h-4 w-4' />
           </CardHeader>
           <CardContent>
             <div className='text-2xl font-medium'>{monitoringStats?.alerts.total || 0}</div>
             <p className='text-muted-foreground text-xs'>
-              {monitoringStats?.alerts.critical || 0} critical alerts
+              {t('stats.critical-alerts', { count: monitoringStats?.alerts.critical || 0 })}
             </p>
           </CardContent>
         </Card>
@@ -281,12 +285,12 @@ export default function MonitoringDashboard() {
       {/* Monitoring Tabs */}
       <Tabs value={selectedTab} onValueChange={setSelectedTab}>
         <TabsList className='grid w-full grid-cols-6'>
-          <TabsTrigger value='overview'>Overview</TabsTrigger>
-          <TabsTrigger value='performance'>Performance</TabsTrigger>
-          <TabsTrigger value='api'>API Usage</TabsTrigger>
-          <TabsTrigger value='errors'>Errors</TabsTrigger>
-          <TabsTrigger value='resources'>Resources</TabsTrigger>
-          <TabsTrigger value='analytics'>Analytics</TabsTrigger>
+          <TabsTrigger value='overview'>{t('tabs.overview')}</TabsTrigger>
+          <TabsTrigger value='performance'>{t('tabs.performance')}</TabsTrigger>
+          <TabsTrigger value='api'>{t('tabs.api')}</TabsTrigger>
+          <TabsTrigger value='errors'>{t('tabs.errors')}</TabsTrigger>
+          <TabsTrigger value='resources'>{t('tabs.resources')}</TabsTrigger>
+          <TabsTrigger value='analytics'>{t('tabs.analytics')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value='overview' className='space-y-4'>
@@ -294,19 +298,19 @@ export default function MonitoringDashboard() {
             {/* System Health Overview */}
             <Card>
               <CardHeader>
-                <CardTitle>System Health</CardTitle>
-                <CardDescription>Current system status overview</CardDescription>
+                <CardTitle>{t('overview.system-health.title')}</CardTitle>
+                <CardDescription>{t('overview.system-health.description')}</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className='space-y-4'>
                   <div className='flex items-center justify-between'>
-                    <span>API Response Time</span>
+                    <span>{t('overview.system-health.api-response-time')}</span>
                     <Badge variant='default'>
                       {monitoringStats?.api.avgResponseTime?.toFixed(0) || 0}ms
                     </Badge>
                   </div>
                   <div className='flex items-center justify-between'>
-                    <span>Error Rate</span>
+                    <span>{t('overview.system-health.error-rate')}</span>
                     <Badge
                       variant={
                         (monitoringStats?.api.errorRate || 0) > 5 ? 'destructive' : 'default'
@@ -316,7 +320,7 @@ export default function MonitoringDashboard() {
                     </Badge>
                   </div>
                   <div className='flex items-center justify-between'>
-                    <span>Critical Errors</span>
+                    <span>{t('overview.system-health.critical-errors')}</span>
                     <Badge
                       variant={
                         (monitoringStats?.errors.critical || 0) > 0 ? 'destructive' : 'default'
@@ -326,7 +330,7 @@ export default function MonitoringDashboard() {
                     </Badge>
                   </div>
                   <div className='flex items-center justify-between'>
-                    <span>Active Alerts</span>
+                    <span>{t('overview.system-health.active-alerts')}</span>
                     <Badge
                       variant={(monitoringStats?.alerts.total || 0) > 0 ? 'secondary' : 'default'}
                     >
@@ -340,19 +344,19 @@ export default function MonitoringDashboard() {
             {/* Recent Activity */}
             <Card>
               <CardHeader>
-                <CardTitle>Recent Activity</CardTitle>
-                <CardDescription>Latest system events and metrics</CardDescription>
+                <CardTitle>{t('overview.recent-activity.title')}</CardTitle>
+                <CardDescription>{t('overview.recent-activity.description')}</CardDescription>
               </CardHeader>
               <CardContent>
                 {analyticsLoading ? (
-                  <div>Loading recent activity...</div>
+                  <div>{t('overview.recent-activity.loading')}</div>
                 ) : (
                   <div className='space-y-3'>
                     {analyticsEvents?.events.slice(0, 5).map((event) => (
                       <div key={event.id} className='flex items-center justify-between'>
                         <div className='flex items-center space-x-2'>
                           <Badge variant='outline'>{event.eventType}</Badge>
-                          <span className='text-sm'>{event.user?.name || 'System'}</span>
+                          <span className='text-sm'>{event.user?.name || t('common.system')}</span>
                         </div>
                         <span className='text-muted-foreground text-xs'>
                           {new Date(event.createdAt).toLocaleString()}
@@ -360,7 +364,9 @@ export default function MonitoringDashboard() {
                       </div>
                     ))}
                     {(analyticsEvents?.events.length ?? 0) === 0 && (
-                      <div className='text-muted-foreground text-sm'>No recent activity</div>
+                      <div className='text-muted-foreground text-sm'>
+                        {t('overview.recent-activity.empty')}
+                      </div>
                     )}
                   </div>
                 )}
@@ -374,12 +380,12 @@ export default function MonitoringDashboard() {
             {/* Performance Metrics */}
             <Card>
               <CardHeader>
-                <CardTitle>Performance Metrics</CardTitle>
-                <CardDescription>System performance over time</CardDescription>
+                <CardTitle>{t('performance.metrics.title')}</CardTitle>
+                <CardDescription>{t('performance.metrics.description')}</CardDescription>
               </CardHeader>
               <CardContent>
                 {metricsLoading ? (
-                  <div>Loading performance metrics...</div>
+                  <div>{t('performance.metrics.loading')}</div>
                 ) : (
                   <div className='space-y-4'>
                     {Object.entries(performanceMetrics?.metrics || {}).map(
@@ -390,16 +396,16 @@ export default function MonitoringDashboard() {
                             <Badge variant='outline'>{data.latest?.value?.toFixed(2) || 0}</Badge>
                           </div>
                           <div className='text-muted-foreground grid grid-cols-3 gap-2 text-sm'>
-                            <div>Avg: {data.avg?.toFixed(2) || 0}</div>
-                            <div>Min: {data.min?.toFixed(2) || 0}</div>
-                            <div>Max: {data.max?.toFixed(2) || 0}</div>
+                            <div>{t('metrics.avg', { value: data.avg?.toFixed(2) || 0 })}</div>
+                            <div>{t('metrics.min', { value: data.min?.toFixed(2) || 0 })}</div>
+                            <div>{t('metrics.max', { value: data.max?.toFixed(2) || 0 })}</div>
                           </div>
                         </div>
                       )
                     )}
                     {Object.keys(performanceMetrics?.metrics || {}).length === 0 && (
                       <div className='text-muted-foreground text-center'>
-                        No performance data available
+                        {t('performance.metrics.empty')}
                       </div>
                     )}
                   </div>
@@ -410,12 +416,12 @@ export default function MonitoringDashboard() {
             {/* Resource Usage */}
             <Card>
               <CardHeader>
-                <CardTitle>Resource Usage</CardTitle>
-                <CardDescription>System resource consumption</CardDescription>
+                <CardTitle>{t('performance.resources.title')}</CardTitle>
+                <CardDescription>{t('performance.resources.description')}</CardDescription>
               </CardHeader>
               <CardContent>
                 {resourceLoading ? (
-                  <div>Loading resource usage...</div>
+                  <div>{t('resources.loading')}</div>
                 ) : (
                   <div className='space-y-4'>
                     {Object.entries(resourceUsage?.usage || {}).map(
@@ -428,12 +434,18 @@ export default function MonitoringDashboard() {
                             </Badge>
                           </div>
                           <div className='text-muted-foreground grid grid-cols-2 gap-2 text-sm'>
-                            <div>Avg: {data.avgUsage?.toFixed(1) || 0}%</div>
-                            <div>Max: {data.maxUsage?.toFixed(1) || 0}%</div>
+                            <div>
+                              {t('metrics.avg-percent', { value: data.avgUsage?.toFixed(1) || 0 })}
+                            </div>
+                            <div>
+                              {t('metrics.max-percent', { value: data.maxUsage?.toFixed(1) || 0 })}
+                            </div>
                           </div>
                           {data.alerts > 0 && (
                             <div className='text-destructive mt-1 text-xs'>
-                              {data.alerts} threshold breach(es)
+                              {t('performance.resources.threshold-breaches', {
+                                count: data.alerts
+                              })}
                             </div>
                           )}
                         </div>
@@ -441,7 +453,7 @@ export default function MonitoringDashboard() {
                     )}
                     {Object.keys(resourceUsage?.usage || {}).length === 0 && (
                       <div className='text-muted-foreground text-center'>
-                        No resource data available
+                        {t('performance.resources.empty')}
                       </div>
                     )}
                   </div>
@@ -456,12 +468,12 @@ export default function MonitoringDashboard() {
             {/* API Usage Statistics */}
             <Card>
               <CardHeader>
-                <CardTitle>API Usage Statistics</CardTitle>
-                <CardDescription>Request patterns and performance</CardDescription>
+                <CardTitle>{t('api.stats.title')}</CardTitle>
+                <CardDescription>{t('api.stats.description')}</CardDescription>
               </CardHeader>
               <CardContent>
                 {apiLoading ? (
-                  <div>Loading API usage...</div>
+                  <div>{t('api.loading')}</div>
                 ) : (
                   <div className='space-y-4'>
                     <div className='grid grid-cols-2 gap-4'>
@@ -469,13 +481,17 @@ export default function MonitoringDashboard() {
                         <div className='text-2xl font-medium'>
                           {apiUsage?.stats.totalRequests || 0}
                         </div>
-                        <div className='text-muted-foreground text-sm'>Total Requests</div>
+                        <div className='text-muted-foreground text-sm'>
+                          {t('api.stats.total-requests')}
+                        </div>
                       </div>
                       <div className='text-center'>
                         <div className='text-2xl font-medium'>
                           {apiUsage?.stats.uniqueUsers || 0}
                         </div>
-                        <div className='text-muted-foreground text-sm'>Unique Users</div>
+                        <div className='text-muted-foreground text-sm'>
+                          {t('api.stats.unique-users')}
+                        </div>
                       </div>
                     </div>
                     <div className='grid grid-cols-2 gap-4'>
@@ -483,13 +499,17 @@ export default function MonitoringDashboard() {
                         <div className='text-2xl font-medium'>
                           {apiUsage?.stats.avgResponseTime?.toFixed(0) || 0}ms
                         </div>
-                        <div className='text-muted-foreground text-sm'>Avg Response Time</div>
+                        <div className='text-muted-foreground text-sm'>
+                          {t('api.stats.avg-response-time')}
+                        </div>
                       </div>
                       <div className='text-center'>
                         <div className='text-2xl font-medium'>
                           {apiUsage?.stats.errorRate?.toFixed(1) || 0}%
                         </div>
-                        <div className='text-muted-foreground text-sm'>Error Rate</div>
+                        <div className='text-muted-foreground text-sm'>
+                          {t('api.stats.error-rate')}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -500,12 +520,12 @@ export default function MonitoringDashboard() {
             {/* Top Endpoints */}
             <Card>
               <CardHeader>
-                <CardTitle>Top API Endpoints</CardTitle>
-                <CardDescription>Most frequently accessed endpoints</CardDescription>
+                <CardTitle>{t('api.top-endpoints.title')}</CardTitle>
+                <CardDescription>{t('api.top-endpoints.description')}</CardDescription>
               </CardHeader>
               <CardContent>
                 {apiLoading ? (
-                  <div>Loading top endpoints...</div>
+                  <div>{t('api.top-endpoints.loading')}</div>
                 ) : (
                   <div className='space-y-3'>
                     {Object.entries(apiUsage?.stats.topEndpoints || {})
@@ -519,7 +539,7 @@ export default function MonitoringDashboard() {
                       ))}
                     {Object.keys(apiUsage?.stats.topEndpoints || {}).length === 0 && (
                       <div className='text-muted-foreground text-center'>
-                        No endpoint data available
+                        {t('api.top-endpoints.empty')}
                       </div>
                     )}
                   </div>
@@ -534,8 +554,8 @@ export default function MonitoringDashboard() {
             <CardHeader>
               <div className='flex items-center justify-between gap-2'>
                 <div>
-                  <CardTitle>Error Tracking</CardTitle>
-                  <CardDescription>System errors and exceptions</CardDescription>
+                  <CardTitle>{t('errors.title')}</CardTitle>
+                  <CardDescription>{t('errors.description')}</CardDescription>
                 </div>
                 <Button
                   variant='outline'
@@ -544,13 +564,13 @@ export default function MonitoringDashboard() {
                   disabled={resolveAllErrorsMutation.isPending}
                   onClick={() => resolveAllErrorsMutation.mutate()}
                 >
-                  Resolve all
+                  {t('actions.resolve-all')}
                 </Button>
               </div>
             </CardHeader>
             <CardContent>
               {errorsLoading ? (
-                <div>Loading error tracking...</div>
+                <div>{t('errors.loading')}</div>
               ) : (
                 <div className='space-y-4'>
                   {errorTracking?.errors.map((error) => (
@@ -573,35 +593,42 @@ export default function MonitoringDashboard() {
                               disabled={resolveErrorMutation.isPending}
                               isPending={resolveErrorMutation.isPending}
                             >
-                              Resolve
+                              {t('actions.resolve')}
                             </Button>
                           )}
                         </div>
                       </div>
                       {error.errorType && (
                         <div className='text-muted-foreground mb-1 text-sm'>
-                          Type: {error.errorType}
+                          {t('errors.type', { type: error.errorType })}
                         </div>
                       )}
                       {error.user && (
                         <div className='text-muted-foreground mb-1 text-sm'>
-                          User: {error.user.name} ({error.user.email})
+                          {t('errors.user', {
+                            name: error.user.name,
+                            email: error.user.email
+                          })}
                         </div>
                       )}
                       {error.fingerprint && (
                         <div className='text-muted-foreground text-xs'>
-                          Fingerprint: {error.fingerprint}
+                          {t('errors.fingerprint', { fingerprint: error.fingerprint })}
                         </div>
                       )}
                       {error.resolved && (
                         <Badge variant='outline' className='mt-2'>
-                          Resolved {error.resolvedAt && new Date(error.resolvedAt).toLocaleString()}
+                          {t('errors.resolved', {
+                            date: error.resolvedAt
+                              ? new Date(error.resolvedAt).toLocaleString()
+                              : ''
+                          })}
                         </Badge>
                       )}
                     </div>
                   ))}
                   {(errorTracking?.errors.length ?? 0) === 0 && (
-                    <div className='text-muted-foreground text-center'>No errors found</div>
+                    <div className='text-muted-foreground text-center'>{t('errors.empty')}</div>
                   )}
                 </div>
               )}
@@ -612,12 +639,12 @@ export default function MonitoringDashboard() {
         <TabsContent value='resources' className='space-y-4'>
           <Card>
             <CardHeader>
-              <CardTitle>System Resources</CardTitle>
-              <CardDescription>CPU and memory usage</CardDescription>
+              <CardTitle>{t('resources.title')}</CardTitle>
+              <CardDescription>{t('resources.description')}</CardDescription>
             </CardHeader>
             <CardContent>
               {resourceLoading ? (
-                <div>Loading resource usage...</div>
+                <div>{t('resources.loading')}</div>
               ) : (
                 <div className='grid gap-4 md:grid-cols-2'>
                   {Object.entries(resourceUsage?.usage || {}).map(([type, data]: [string, any]) => (
@@ -628,21 +655,21 @@ export default function MonitoringDashboard() {
                       <CardContent>
                         <div className='space-y-2'>
                           <div className='flex justify-between'>
-                            <span>Current Usage:</span>
+                            <span>{t('resources.current-usage')}</span>
                             <Badge variant={data.currentUsage > 80 ? 'destructive' : 'default'}>
                               {data.currentUsage?.toFixed(1) || 0}%
                             </Badge>
                           </div>
                           <div className='flex justify-between'>
-                            <span>Average:</span>
+                            <span>{t('resources.average')}</span>
                             <span>{data.avgUsage?.toFixed(1) || 0}%</span>
                           </div>
                           <div className='flex justify-between'>
-                            <span>Peak:</span>
+                            <span>{t('resources.peak')}</span>
                             <span>{data.maxUsage?.toFixed(1) || 0}%</span>
                           </div>
                           <div className='flex justify-between'>
-                            <span>Alerts:</span>
+                            <span>{t('resources.alerts')}</span>
                             <Badge variant={data.alerts > 0 ? 'destructive' : 'outline'}>
                               {data.alerts || 0}
                             </Badge>
@@ -653,7 +680,7 @@ export default function MonitoringDashboard() {
                   ))}
                   {Object.keys(resourceUsage?.usage || {}).length === 0 && (
                     <div className='text-muted-foreground col-span-2 text-center'>
-                      No resource usage data available
+                      {t('resources.empty')}
                     </div>
                   )}
                 </div>
@@ -667,12 +694,12 @@ export default function MonitoringDashboard() {
             {/* Event Types Distribution */}
             <Card>
               <CardHeader>
-                <CardTitle>Event Types</CardTitle>
-                <CardDescription>Distribution of analytics events</CardDescription>
+                <CardTitle>{t('analytics.event-types.title')}</CardTitle>
+                <CardDescription>{t('analytics.event-types.description')}</CardDescription>
               </CardHeader>
               <CardContent>
                 {analyticsLoading ? (
-                  <div>Loading analytics events...</div>
+                  <div>{t('analytics.event-types.loading')}</div>
                 ) : (
                   <div className='space-y-3'>
                     {Object.entries(analyticsEvents?.eventTypes || {})
@@ -685,7 +712,7 @@ export default function MonitoringDashboard() {
                       ))}
                     {Object.keys(analyticsEvents?.eventTypes || {}).length === 0 && (
                       <div className='text-muted-foreground text-center'>
-                        No event data available
+                        {t('analytics.event-types.empty')}
                       </div>
                     )}
                   </div>
@@ -696,19 +723,21 @@ export default function MonitoringDashboard() {
             {/* Recent Events */}
             <Card>
               <CardHeader>
-                <CardTitle>Recent Events</CardTitle>
-                <CardDescription>Latest analytics events</CardDescription>
+                <CardTitle>{t('analytics.recent-events.title')}</CardTitle>
+                <CardDescription>{t('analytics.recent-events.description')}</CardDescription>
               </CardHeader>
               <CardContent>
                 {analyticsLoading ? (
-                  <div>Loading recent events...</div>
+                  <div>{t('analytics.recent-events.loading')}</div>
                 ) : (
                   <div className='space-y-3'>
                     {analyticsEvents?.events.slice(0, 10).map((event) => (
                       <div key={event.id} className='flex items-center justify-between'>
                         <div className='flex items-center space-x-2'>
                           <Badge variant='outline'>{event.eventType}</Badge>
-                          <span className='text-sm'>{event.user?.name || 'Anonymous'}</span>
+                          <span className='text-sm'>
+                            {event.user?.name || t('common.anonymous')}
+                          </span>
                         </div>
                         <span className='text-muted-foreground text-xs'>
                           {new Date(event.createdAt).toLocaleString()}
@@ -716,7 +745,9 @@ export default function MonitoringDashboard() {
                       </div>
                     ))}
                     {(analyticsEvents?.events.length ?? 0) === 0 && (
-                      <div className='text-muted-foreground text-center'>No recent events</div>
+                      <div className='text-muted-foreground text-center'>
+                        {t('analytics.recent-events.empty')}
+                      </div>
                     )}
                   </div>
                 )}

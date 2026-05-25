@@ -35,7 +35,7 @@ const GetInTouch = () => {
       }}
     >
       <div className='editorial-text'>
-        <span className='label-mono'>Contact</span>
+        <span className='label-mono'>{t('homepage.get-in-touch.label')}</span>
         <h2>{t('homepage.get-in-touch.title')}</h2>
         <p>{t('homepage.get-in-touch.description')}</p>
         <a href='mailto:me@yuricunha.com' className='cta-link'>
@@ -48,7 +48,9 @@ const GetInTouch = () => {
           <span className='window-dot' />
           <span className='window-dot' />
           <span className='window-dot' />
-          <span className='label-mono ml-2 normal-case'>availability</span>
+          <span className='label-mono ml-2 normal-case'>
+            {t('homepage.get-in-touch.availability')}
+          </span>
         </div>
         <div className='grid gap-6 p-6 sm:grid-cols-[180px_1fr] sm:p-8'>
           <div className='bg-bg-surface relative aspect-square overflow-hidden rounded-lg'>
@@ -62,9 +64,9 @@ const GetInTouch = () => {
             />
           </div>
           <div className='code-block self-center'>
-            <div>status = "open"</div>
-            <div>email = "me@yuricunha.com"</div>
-            <div>timezone = "UTC/GMT -3"</div>
+            <div>{t('homepage.get-in-touch.code.status')}</div>
+            <div>{t('homepage.get-in-touch.code.email')}</div>
+            <div>{t('homepage.get-in-touch.code.timezone')}</div>
           </div>
         </div>
       </div>

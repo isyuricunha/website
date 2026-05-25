@@ -899,12 +899,17 @@ export default function AIChatInterface({
               <Tooltip>
                 <TooltipTrigger asChild>
                   <DropdownMenuTrigger asChild>
-                    <Button variant='ghost' size='icon' className='size-8' aria-label='More'>
+                    <Button
+                      variant='ghost'
+                      size='icon'
+                      className='size-8'
+                      aria-label={t('mascot.aiChat.more')}
+                    >
                       <MoreVertical className='size-4' />
                     </Button>
                   </DropdownMenuTrigger>
                 </TooltipTrigger>
-                <TooltipContent>More</TooltipContent>
+                <TooltipContent>{t('mascot.aiChat.more')}</TooltipContent>
               </Tooltip>
               <DropdownMenuContent align='end' className='w-48'>
                 <DropdownMenuItem onClick={renameChat} className='gap-2'>

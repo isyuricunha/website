@@ -1,5 +1,6 @@
 import { ImageResponse } from 'next/og'
 import { NextRequest } from 'next/server'
+import { getTranslations } from '@isyuricunha/i18n/server'
 
 export const runtime = 'nodejs'
 
@@ -20,6 +21,8 @@ export const GET = async (req: NextRequest, props: OGRouteProps) => {
   try {
     const { id } = await props.params
     const { searchParams } = new URL(req.url)
+    const locale = searchParams.get('locale') === 'pt' ? 'pt' : 'en'
+    const t = await getTranslations({ locale, namespace: 'og' })
 
     // Check if this is a content item request (blog/snippet)
     const type = searchParams.get('type')
@@ -83,7 +86,7 @@ export const GET = async (req: NextRequest, props: OGRouteProps) => {
                 lineHeight: 1.4
               }}
             >
-              {summary || 'Read this article on yuricunha.com'}
+              {summary || t('summary-fallback')}
             </div>
           </div>
           <div
@@ -141,7 +144,7 @@ export const GET = async (req: NextRequest, props: OGRouteProps) => {
             fontSize: 30
           }}
         >
-          Blog Post
+          {t('blog-post')}
         </div>
         <div
           style={{
@@ -172,7 +175,7 @@ export const GET = async (req: NextRequest, props: OGRouteProps) => {
               lineHeight: 1.4
             }}
           >
-            Read this article on yuricunha.com
+            {t('read-article')}
           </div>
         </div>
         <div

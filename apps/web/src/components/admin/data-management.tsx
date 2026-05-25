@@ -24,11 +24,13 @@ import {
 } from '@isyuricunha/ui'
 
 import { Database, Download, Upload, CheckCircle, AlertCircle, Clock } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { toast } from 'sonner'
 
 import { api } from '@/trpc/react'
 
 export default function DataManagement() {
+  const t = useTranslations('admin.data-management')
   const [selectedTab, setSelectedTab] = useState('overview')
 
   // Data management stats query
@@ -47,28 +49,28 @@ export default function DataManagement() {
   // Mutations
   const createBackupMutation = api.dataManagement.createDatabaseBackup.useMutation({
     onSuccess: () => {
-      toast.success('Database backup started successfully')
+      toast.success(t('messages.backup-started'))
     },
     onError: (error) => {
-      toast.error(`Failed to start backup: ${error.message}`)
+      toast.error(t('messages.backup-failed', { message: error.message }))
     }
   })
 
   const createExportMutation = api.dataManagement.createDataExport.useMutation({
     onSuccess: () => {
-      toast.success('Data export started successfully')
+      toast.success(t('messages.export-started'))
     },
     onError: (error) => {
-      toast.error(`Failed to start export: ${error.message}`)
+      toast.error(t('messages.export-failed', { message: error.message }))
     }
   })
 
   const runQualityCheckMutation = api.dataManagement.runDataQualityCheck.useMutation({
     onSuccess: () => {
-      toast.success('Data quality check started successfully')
+      toast.success(t('messages.quality-started'))
     },
     onError: (error) => {
-      toast.error(`Failed to start quality check: ${error.message}`)
+      toast.error(t('messages.quality-failed', { message: error.message }))
     }
   })
 
@@ -88,7 +90,7 @@ export default function DataManagement() {
     const tablesInput = formData.get('tables') as string
 
     if (!name || !format || !tablesInput) {
-      toast.error('Name, format, and tables are required')
+      toast.error(t('messages.export-required'))
       return
     }
 
@@ -110,7 +112,7 @@ export default function DataManagement() {
     const rulesInput = formData.get('rules') as string
 
     if (!name || !tableName || !rulesInput) {
-      toast.error('Name, table name, and rules are required')
+      toast.error(t('messages.quality-required'))
       return
     }
 
@@ -131,7 +133,7 @@ export default function DataManagement() {
       }))
 
     if (rules.length === 0) {
-      toast.error('Please provide valid rules in format: field:rule_type')
+      toast.error(t('messages.rules-invalid'))
       return
     }
 
@@ -175,23 +177,55 @@ export default function DataManagement() {
   }
 
   const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return '0 Bytes'
+    if (bytes === 0) return t('file-size.zero')
     const k = 1024
-    const sizes = ['Bytes', 'KB', 'MB', 'GB']
+    const sizes = [t('file-size.bytes'), 'KB', 'MB', 'GB']
     const i = Math.floor(Math.log(bytes) / Math.log(k))
     return Number.parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
   }
 
+  const getStatusLabel = (status: string) => {
+    switch (status) {
+      case 'completed':
+        return t('status.completed')
+      case 'in_progress':
+        return t('status.in-progress')
+      case 'processing':
+        return t('status.processing')
+      case 'running':
+        return t('status.running')
+      case 'pending':
+        return t('status.pending')
+      case 'failed':
+        return t('status.failed')
+      default:
+        return status
+    }
+  }
+
+  const getBackupTypeLabel = (type: string) => {
+    switch (type) {
+      case 'full':
+        return t('backup-types.full')
+      case 'incremental':
+        return t('backup-types.incremental')
+      case 'differential':
+        return t('backup-types.differential')
+      default:
+        return type
+    }
+  }
+
   if (statsLoading) {
-    return <div className='p-6'>Loading data management dashboard...</div>
+    return <div className='p-6'>{t('loading')}</div>
   }
 
   return (
     <div className='space-y-6'>
       <div className='flex items-center justify-between'>
         <div>
-          <h1 className='text-3xl font-medium'>Data Management</h1>
-          <p className='text-muted-foreground'>Backup, export, and manage your data</p>
+          <h1 className='text-3xl font-medium'>{t('title')}</h1>
+          <p className='text-muted-foreground'>{t('description')}</p>
         </div>
       </div>
 
@@ -199,53 +233,53 @@ export default function DataManagement() {
       <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-4'>
         <Card>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-sm font-medium'>Database Backups</CardTitle>
+            <CardTitle className='text-sm font-medium'>{t('stats.database-backups')}</CardTitle>
             <Database className='text-muted-foreground h-4 w-4' />
           </CardHeader>
           <CardContent>
             <div className='text-2xl font-medium'>{dataStats?.backups.total || 0}</div>
             <p className='text-muted-foreground text-xs'>
-              {dataStats?.backups.completed || 0} completed
+              {t('stats.completed-count', { count: dataStats?.backups.completed || 0 })}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-sm font-medium'>Backup Size</CardTitle>
+            <CardTitle className='text-sm font-medium'>{t('stats.backup-size')}</CardTitle>
             <Database className='text-muted-foreground h-4 w-4' />
           </CardHeader>
           <CardContent>
             <div className='text-2xl font-medium'>
               {formatFileSize(dataStats?.backups.totalSize || 0)}
             </div>
-            <p className='text-muted-foreground text-xs'>Total storage used</p>
+            <p className='text-muted-foreground text-xs'>{t('stats.total-storage-used')}</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-sm font-medium'>Data Exports</CardTitle>
+            <CardTitle className='text-sm font-medium'>{t('stats.data-exports')}</CardTitle>
             <Download className='text-muted-foreground h-4 w-4' />
           </CardHeader>
           <CardContent>
             <div className='text-2xl font-medium'>{dataStats?.exports.total || 0}</div>
             <p className='text-muted-foreground text-xs'>
-              {dataStats?.exports.completed || 0} completed
+              {t('stats.completed-count', { count: dataStats?.exports.completed || 0 })}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-sm font-medium'>Records Exported</CardTitle>
+            <CardTitle className='text-sm font-medium'>{t('stats.records-exported')}</CardTitle>
             <Upload className='text-muted-foreground h-4 w-4' />
           </CardHeader>
           <CardContent>
             <div className='text-2xl font-medium'>
               {(dataStats?.exports.totalRecords || 0).toLocaleString()}
             </div>
-            <p className='text-muted-foreground text-xs'>Total records processed</p>
+            <p className='text-muted-foreground text-xs'>{t('stats.total-records-processed')}</p>
           </CardContent>
         </Card>
       </div>
@@ -253,10 +287,10 @@ export default function DataManagement() {
       {/* Data Management Tabs */}
       <Tabs value={selectedTab} onValueChange={setSelectedTab}>
         <TabsList className='grid w-full grid-cols-4'>
-          <TabsTrigger value='overview'>Overview</TabsTrigger>
-          <TabsTrigger value='backups'>Backups</TabsTrigger>
-          <TabsTrigger value='exports'>Exports</TabsTrigger>
-          <TabsTrigger value='quality'>Quality</TabsTrigger>
+          <TabsTrigger value='overview'>{t('tabs.overview')}</TabsTrigger>
+          <TabsTrigger value='backups'>{t('tabs.backups')}</TabsTrigger>
+          <TabsTrigger value='exports'>{t('tabs.exports')}</TabsTrigger>
+          <TabsTrigger value='quality'>{t('tabs.quality')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value='overview' className='space-y-4'>
@@ -264,26 +298,30 @@ export default function DataManagement() {
             {/* Recent Backups */}
             <Card>
               <CardHeader>
-                <CardTitle>Recent Backups</CardTitle>
-                <CardDescription>Latest database backup activity</CardDescription>
+                <CardTitle>{t('overview.recent-backups.title')}</CardTitle>
+                <CardDescription>{t('overview.recent-backups.description')}</CardDescription>
               </CardHeader>
               <CardContent>
                 {backupsLoading ? (
-                  <div>Loading backups...</div>
+                  <div>{t('backups.loading')}</div>
                 ) : (
                   <div className='space-y-3'>
                     {backups?.backups.slice(0, 5).map((backup) => (
                       <div key={backup.id} className='flex items-center justify-between'>
                         <div className='flex items-center space-x-2'>
                           {getStatusIcon(backup.status)}
-                          <Badge variant={getStatusColor(backup.status)}>{backup.status}</Badge>
-                          <span className='text-sm'>{backup.type} backup</span>
+                          <Badge variant={getStatusColor(backup.status)}>
+                            {getStatusLabel(backup.status)}
+                          </Badge>
+                          <span className='text-sm'>
+                            {t('backups.backup-label', { type: getBackupTypeLabel(backup.type) })}
+                          </span>
                         </div>
                         <span className='text-muted-foreground text-xs'>
                           {new Date(backup.createdAt).toLocaleDateString()}
                         </span>
                       </div>
-                    )) || <div className='text-muted-foreground text-sm'>No backups yet</div>}
+                    )) || <div className='text-muted-foreground text-sm'>{t('backups.empty')}</div>}
                   </div>
                 )}
               </CardContent>
@@ -292,12 +330,12 @@ export default function DataManagement() {
             {/* Recent Exports */}
             <Card>
               <CardHeader>
-                <CardTitle>Recent Exports</CardTitle>
-                <CardDescription>Latest data export activity</CardDescription>
+                <CardTitle>{t('overview.recent-exports.title')}</CardTitle>
+                <CardDescription>{t('overview.recent-exports.description')}</CardDescription>
               </CardHeader>
               <CardContent>
                 {exportsLoading ? (
-                  <div>Loading exports...</div>
+                  <div>{t('exports.loading')}</div>
                 ) : (
                   <div className='space-y-3'>
                     {exports?.exports.slice(0, 5).map((exportItem) => (
@@ -305,7 +343,7 @@ export default function DataManagement() {
                         <div className='flex items-center space-x-2'>
                           {getStatusIcon(exportItem.status)}
                           <Badge variant={getStatusColor(exportItem.status)}>
-                            {exportItem.status}
+                            {getStatusLabel(exportItem.status)}
                           </Badge>
                           <span className='text-sm'>{exportItem.name}</span>
                         </div>
@@ -313,7 +351,7 @@ export default function DataManagement() {
                           {new Date(exportItem.createdAt).toLocaleDateString()}
                         </span>
                       </div>
-                    )) || <div className='text-muted-foreground text-sm'>No exports yet</div>}
+                    )) || <div className='text-muted-foreground text-sm'>{t('exports.empty')}</div>}
                   </div>
                 )}
               </CardContent>
@@ -326,34 +364,40 @@ export default function DataManagement() {
             {/* Create Backup Form */}
             <Card>
               <CardHeader>
-                <CardTitle>Create Database Backup</CardTitle>
-                <CardDescription>Backup your database for safety</CardDescription>
+                <CardTitle>{t('backups.create-title')}</CardTitle>
+                <CardDescription>{t('backups.create-description')}</CardDescription>
               </CardHeader>
               <CardContent>
                 <form action={handleCreateBackup} className='space-y-4'>
                   <div>
-                    <Label htmlFor='backupType'>Backup Type</Label>
+                    <Label htmlFor='backupType'>{t('fields.backup-type')}</Label>
                     <Select name='type' defaultValue='full'>
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value='full'>Full Backup</SelectItem>
-                        <SelectItem value='incremental'>Incremental Backup</SelectItem>
-                        <SelectItem value='differential'>Differential Backup</SelectItem>
+                        <SelectItem value='full'>{t('backup-types.full-backup')}</SelectItem>
+                        <SelectItem value='incremental'>
+                          {t('backup-types.incremental-backup')}
+                        </SelectItem>
+                        <SelectItem value='differential'>
+                          {t('backup-types.differential-backup')}
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                   <div>
-                    <Label htmlFor='backupDescription'>Description (Optional)</Label>
+                    <Label htmlFor='backupDescription'>{t('fields.description-optional')}</Label>
                     <Input
                       id='backupDescription'
                       name='description'
-                      placeholder='Pre-deployment backup'
+                      placeholder={t('fields.backup-description-placeholder')}
                     />
                   </div>
                   <Button type='submit' disabled={createBackupMutation.isPending}>
-                    {createBackupMutation.isPending ? 'Creating Backup...' : 'Create Backup'}
+                    {createBackupMutation.isPending
+                      ? t('actions.creating-backup')
+                      : t('actions.create-backup')}
                   </Button>
                 </form>
               </CardContent>
@@ -362,12 +406,12 @@ export default function DataManagement() {
             {/* Backups List */}
             <Card>
               <CardHeader>
-                <CardTitle>Database Backups</CardTitle>
-                <CardDescription>Your database backup history</CardDescription>
+                <CardTitle>{t('backups.list-title')}</CardTitle>
+                <CardDescription>{t('backups.list-description')}</CardDescription>
               </CardHeader>
               <CardContent>
                 {backupsLoading ? (
-                  <div>Loading backups...</div>
+                  <div>{t('backups.loading')}</div>
                 ) : (
                   <div className='space-y-3'>
                     {backups?.backups.map((backup) => (
@@ -375,16 +419,24 @@ export default function DataManagement() {
                         <div className='mb-2 flex items-center justify-between'>
                           <div className='flex items-center space-x-2'>
                             {getStatusIcon(backup.status)}
-                            <span className='font-medium'>{backup.type} backup</span>
+                            <span className='font-medium'>
+                              {t('backups.backup-label', {
+                                type: getBackupTypeLabel(backup.type)
+                              })}
+                            </span>
                           </div>
-                          <Badge variant={getStatusColor(backup.status)}>{backup.status}</Badge>
+                          <Badge variant={getStatusColor(backup.status)}>
+                            {getStatusLabel(backup.status)}
+                          </Badge>
                         </div>
                         {backup.name && (
                           <div className='text-muted-foreground mb-2 text-sm'>{backup.name}</div>
                         )}
                         <div className='flex items-center justify-between text-sm'>
                           <span className='text-muted-foreground'>
-                            {backup.fileSize ? formatFileSize(backup.fileSize) : 'Size unknown'}
+                            {backup.fileSize
+                              ? formatFileSize(backup.fileSize)
+                              : t('file-size.unknown')}
                           </span>
                           <span className='text-muted-foreground'>
                             {new Date(backup.createdAt).toLocaleString()}
@@ -392,11 +444,15 @@ export default function DataManagement() {
                         </div>
                         {backup.completedAt && (
                           <div className='text-muted-foreground mt-1 text-xs'>
-                            Completed: {new Date(backup.completedAt).toLocaleString()}
+                            {t('date.completed', {
+                              date: new Date(backup.completedAt).toLocaleString()
+                            })}
                           </div>
                         )}
                       </div>
-                    )) || <div className='text-muted-foreground text-center'>No backups yet</div>}
+                    )) || (
+                      <div className='text-muted-foreground text-center'>{t('backups.empty')}</div>
+                    )}
                   </div>
                 )}
               </CardContent>
@@ -409,17 +465,22 @@ export default function DataManagement() {
             {/* Create Export Form */}
             <Card>
               <CardHeader>
-                <CardTitle>Create Data Export</CardTitle>
-                <CardDescription>Export data in various formats</CardDescription>
+                <CardTitle>{t('exports.create-title')}</CardTitle>
+                <CardDescription>{t('exports.create-description')}</CardDescription>
               </CardHeader>
               <CardContent>
                 <form action={handleCreateExport} className='space-y-4'>
                   <div>
-                    <Label htmlFor='exportName'>Export Name</Label>
-                    <Input id='exportName' name='name' placeholder='User Data Export' required />
+                    <Label htmlFor='exportName'>{t('fields.export-name')}</Label>
+                    <Input
+                      id='exportName'
+                      name='name'
+                      placeholder={t('fields.export-name-placeholder')}
+                      required
+                    />
                   </div>
                   <div>
-                    <Label htmlFor='exportFormat'>Format</Label>
+                    <Label htmlFor='exportFormat'>{t('fields.format')}</Label>
                     <Select name='format' defaultValue='csv'>
                       <SelectTrigger>
                         <SelectValue />
@@ -433,16 +494,18 @@ export default function DataManagement() {
                     </Select>
                   </div>
                   <div>
-                    <Label htmlFor='exportTables'>Tables (comma-separated)</Label>
+                    <Label htmlFor='exportTables'>{t('fields.tables')}</Label>
                     <Input
                       id='exportTables'
                       name='tables'
-                      placeholder='users, posts, comments'
+                      placeholder={t('fields.tables-placeholder')}
                       required
                     />
                   </div>
                   <Button type='submit' disabled={createExportMutation.isPending}>
-                    {createExportMutation.isPending ? 'Creating Export...' : 'Create Export'}
+                    {createExportMutation.isPending
+                      ? t('actions.creating-export')
+                      : t('actions.create-export')}
                   </Button>
                 </form>
               </CardContent>
@@ -451,12 +514,12 @@ export default function DataManagement() {
             {/* Exports List */}
             <Card>
               <CardHeader>
-                <CardTitle>Data Exports</CardTitle>
-                <CardDescription>Your data export history</CardDescription>
+                <CardTitle>{t('exports.list-title')}</CardTitle>
+                <CardDescription>{t('exports.list-description')}</CardDescription>
               </CardHeader>
               <CardContent>
                 {exportsLoading ? (
-                  <div>Loading exports...</div>
+                  <div>{t('exports.loading')}</div>
                 ) : (
                   <div className='space-y-3'>
                     {exports?.exports.map((exportItem) => (
@@ -467,17 +530,19 @@ export default function DataManagement() {
                             <span className='font-medium'>{exportItem.name}</span>
                           </div>
                           <Badge variant={getStatusColor(exportItem.status)}>
-                            {exportItem.status}
+                            {getStatusLabel(exportItem.status)}
                           </Badge>
                         </div>
                         <div className='text-muted-foreground mb-2 text-sm'>
-                          Format: {exportItem.format.toUpperCase()}
+                          {t('exports.format', { format: exportItem.format.toUpperCase() })}
                         </div>
                         <div className='flex items-center justify-between text-sm'>
                           <span className='text-muted-foreground'>
                             {exportItem.recordCount
-                              ? `${exportItem.recordCount.toLocaleString()} records`
-                              : 'Processing...'}
+                              ? t('exports.records', {
+                                  count: exportItem.recordCount.toLocaleString()
+                                })
+                              : t('exports.processing')}
                           </span>
                           <span className='text-muted-foreground'>
                             {new Date(exportItem.createdAt).toLocaleString()}
@@ -485,16 +550,20 @@ export default function DataManagement() {
                         </div>
                         {exportItem.completedAt && (
                           <div className='text-muted-foreground mt-1 text-xs'>
-                            Completed: {new Date(exportItem.completedAt).toLocaleString()}
+                            {t('date.completed', {
+                              date: new Date(exportItem.completedAt).toLocaleString()
+                            })}
                           </div>
                         )}
                         {exportItem.fileSize && (
                           <div className='text-muted-foreground text-xs'>
-                            Size: {formatFileSize(exportItem.fileSize)}
+                            {t('file-size.size', { size: formatFileSize(exportItem.fileSize) })}
                           </div>
                         )}
                       </div>
-                    )) || <div className='text-muted-foreground text-center'>No exports yet</div>}
+                    )) || (
+                      <div className='text-muted-foreground text-center'>{t('exports.empty')}</div>
+                    )}
                   </div>
                 )}
               </CardContent>
@@ -507,39 +576,46 @@ export default function DataManagement() {
             {/* Run Quality Check Form */}
             <Card>
               <CardHeader>
-                <CardTitle>Run Data Quality Check</CardTitle>
-                <CardDescription>Validate data integrity and quality</CardDescription>
+                <CardTitle>{t('quality.create-title')}</CardTitle>
+                <CardDescription>{t('quality.create-description')}</CardDescription>
               </CardHeader>
               <CardContent>
                 <form action={handleRunQualityCheck} className='space-y-4'>
                   <div>
-                    <Label htmlFor='qualityCheckName'>Check Name</Label>
+                    <Label htmlFor='qualityCheckName'>{t('fields.check-name')}</Label>
                     <Input
                       id='qualityCheckName'
                       name='name'
-                      placeholder='User Data Validation'
+                      placeholder={t('fields.check-name-placeholder')}
                       required
                     />
                   </div>
                   <div>
-                    <Label htmlFor='qualityTableName'>Table Name</Label>
-                    <Input id='qualityTableName' name='tableName' placeholder='users' required />
+                    <Label htmlFor='qualityTableName'>{t('fields.table-name')}</Label>
+                    <Input
+                      id='qualityTableName'
+                      name='tableName'
+                      placeholder={t('fields.table-name-placeholder')}
+                      required
+                    />
                   </div>
                   <div>
-                    <Label htmlFor='qualityRules'>Rules (field:rule_type)</Label>
+                    <Label htmlFor='qualityRules'>{t('fields.rules')}</Label>
                     <Textarea
                       id='qualityRules'
                       name='rules'
-                      placeholder='email:not_null, email:format, id:unique'
+                      placeholder={t('fields.rules-placeholder')}
                       rows={3}
                       required
                     />
                     <div className='text-muted-foreground mt-1 text-xs'>
-                      Available rules: not_null, unique, format, range
+                      {t('fields.rules-help')}
                     </div>
                   </div>
                   <Button type='submit' disabled={runQualityCheckMutation.isPending}>
-                    {runQualityCheckMutation.isPending ? 'Running Check...' : 'Run Quality Check'}
+                    {runQualityCheckMutation.isPending
+                      ? t('actions.running-check')
+                      : t('actions.run-quality-check')}
                   </Button>
                 </form>
               </CardContent>
@@ -548,17 +624,14 @@ export default function DataManagement() {
             {/* Quality Check Results */}
             <Card>
               <CardHeader>
-                <CardTitle>Data Quality Overview</CardTitle>
-                <CardDescription>Data quality metrics and insights</CardDescription>
+                <CardTitle>{t('quality.overview-title')}</CardTitle>
+                <CardDescription>{t('quality.overview-description')}</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className='text-muted-foreground py-8 text-center'>
                   <CheckCircle className='mx-auto mb-4 h-12 w-12 opacity-50' />
-                  <p>Run a quality check to see results here</p>
-                  <p className='mt-2 text-sm'>
-                    Quality checks help identify data issues like missing values, duplicates, and
-                    format problems.
-                  </p>
+                  <p>{t('quality.empty-title')}</p>
+                  <p className='mt-2 text-sm'>{t('quality.empty-description')}</p>
                 </div>
               </CardContent>
             </Card>

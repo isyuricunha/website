@@ -50,7 +50,7 @@ export function MascotMenuPanel({ mascot }: MascotMenuPanelProps) {
             onClick={() => handleMenuAction('chat')}
           >
             <MessageCircleIcon className='h-4 w-4' />
-            AI Chat
+            {t('mascot.menu.aiChat')}
           </button>
         )}
         <button
