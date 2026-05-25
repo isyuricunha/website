@@ -3,9 +3,9 @@
 import { useCallback, useEffect, useRef, useState, useMemo } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import { useTranslations, useMessages, useLocale } from '@isyuricunha/i18n/client'
-import { i18n } from '@isyuricunha/i18n/config'
 import { useSound } from '@/hooks/use-sound'
 import { getLocalizedPath } from '@/utils/get-localized-path'
+import { canExplainSelectionOnPage, getMascotPageKey } from '../mascot-routing'
 
 const STORAGE_KEY = 'vc_mascot_dismissed'
 const HIDE_KEY = 'vc_mascot_hidden'
@@ -193,50 +193,7 @@ export function useMascotState() {
     return { ...DEFAULT_PREFERENCES }
   }, [isProduction])
 
-  /**
-   * Extract page key from path without locale prefix
-   */
-  const getPageKey = useCallback((path: string) => {
-    const localePattern = new RegExp(`^/(${i18n.locales.join('|')})/`, '')
-    const pathWithoutLocale = path.replace(localePattern, '/')
-
-    if (pathWithoutLocale === '/' || pathWithoutLocale === '') return 'home'
-
-    const blogPostMatch = /^\/blog\/([^/]+)$/.exec(pathWithoutLocale)
-    if (blogPostMatch) return 'blogPost'
-
-    const DETAIL_SEGMENTS = new Set(['projects'])
-    const detailMatch = /^\/(\w+)\/([^/]+)$/.exec(pathWithoutLocale)
-    if (detailMatch) {
-      const seg = detailMatch[1]
-      if (seg && DETAIL_SEGMENTS.has(seg)) {
-        return `${seg}Detail`
-      }
-    }
-
-    if (pathWithoutLocale.startsWith('/blog')) return 'blog'
-    if (pathWithoutLocale.startsWith('/snippet') || pathWithoutLocale.startsWith('/snippets')) {
-      return 'snippet'
-    }
-    if (pathWithoutLocale.startsWith('/projects')) return 'projects'
-    if (pathWithoutLocale.startsWith('/about')) return 'about'
-    if (pathWithoutLocale.startsWith('/uses')) return 'uses'
-    if (pathWithoutLocale.startsWith('/music')) return 'music'
-    if (pathWithoutLocale.startsWith('/contact')) return 'contact'
-    if (pathWithoutLocale.startsWith('/guestbook')) return 'guestbook'
-    if (pathWithoutLocale.startsWith('/now')) return 'now'
-    if (pathWithoutLocale.startsWith('/settings')) return 'settings'
-    if (pathWithoutLocale.startsWith('/notifications')) return 'notifications'
-    if (pathWithoutLocale.startsWith('/sitemap')) return 'sitemap'
-    if (pathWithoutLocale.startsWith('/offline')) return 'offline'
-    if (pathWithoutLocale.startsWith('/admin')) return 'admin'
-    if (pathWithoutLocale.includes('search') || pathWithoutLocale.includes('?q=')) return 'search'
-    if (pathWithoutLocale === '/404' || pathWithoutLocale.includes('not-found')) return '404'
-
-    return 'home'
-  }, [])
-
-  const pageKey = getPageKey(pathname || '/')
+  const pageKey = getMascotPageKey(pathname || '/')
 
   /**
    * Get time based greeting message
@@ -861,7 +818,7 @@ export function useMascotState() {
       const selection = globalThis.getSelection()
       const text = selection?.toString().trim() ?? ''
 
-      if (text.length > 10 && (pageKey === 'blogPost' || pageKey === 'snippet')) {
+      if (text.length > 10 && canExplainSelectionOnPage(pageKey)) {
         updateState({ selectedText: text, showSelectionBubble: true })
       } else {
         updateState({ showSelectionBubble: false })
