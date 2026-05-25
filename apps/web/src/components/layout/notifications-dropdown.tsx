@@ -71,7 +71,7 @@ export default function NotificationsDropdown() {
         <Button variant='ghost' className='relative size-9 p-0' aria-label={t('aria')}>
           <Bell className='size-4' />
           {session && unreadCount > 0 ? (
-            <span className='bg-primary text-primary-foreground absolute -top-1 -right-1 inline-flex min-w-5 items-center justify-center rounded-full px-1.5 text-[10px] leading-5 font-semibold'>
+            <span className='bg-accent-earth text-text-primary absolute -top-1 -right-1 inline-flex min-w-5 items-center justify-center rounded-full px-1.5 text-[10px] leading-5 font-semibold'>
               {unreadCount > 99 ? '99+' : unreadCount}
             </span>
           ) : null}
@@ -101,7 +101,7 @@ export default function NotificationsDropdown() {
                       <div className='flex items-center gap-2'>
                         <span className='truncate text-sm font-medium'>{n.title}</span>
                         {n.read ? null : (
-                          <span className='bg-primary/10 text-primary rounded-full px-2 py-0.5 text-[10px] font-semibold'>
+                          <span className='text-accent-earth-text rounded-full bg-[var(--accent-dim)] px-2 py-0.5 text-[10px] font-semibold'>
                             {t('unread')}
                           </span>
                         )}

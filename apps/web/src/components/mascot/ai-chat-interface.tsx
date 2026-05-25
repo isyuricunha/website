@@ -179,12 +179,12 @@ export default function AIChatInterface({
 
   const get_bubble_class_name = (message: ChatMessage) => {
     if (message.isUser) {
-      return 'from-primary to-primary/90 text-primary-foreground rounded-br-md bg-gradient-to-br'
+      return 'text-accent-earth-text rounded-br-md bg-bg-surface'
     }
     if (message.isError) {
-      return 'from-destructive/10 to-destructive/5 text-destructive border-destructive/20 rounded-bl-md border bg-gradient-to-br'
+      return 'text-destructive border-destructive/20 rounded-bl-md border bg-bg-surface'
     }
-    return 'from-muted/80 to-muted/60 text-foreground border-border/30 rounded-bl-md border bg-gradient-to-br'
+    return 'text-foreground border-[var(--border-subtle)] rounded-bl-md border bg-bg-surface'
   }
 
   // Auto-scroll to bottom when new messages arrive
@@ -836,11 +836,11 @@ export default function AIChatInterface({
 
   return (
     <TooltipProvider>
-      <div className='bg-popover/95 absolute right-0 bottom-full mb-2 flex h-[70vh] max-h-[720px] min-h-[460px] w-[420px] max-w-[calc(100vw-1rem)] flex-col overflow-hidden rounded-3xl border shadow-2xl backdrop-blur-sm'>
+      <div className='bg-popover/95 absolute right-0 bottom-full mb-2 flex h-[70vh] max-h-[720px] min-h-[460px] w-[420px] max-w-[calc(100vw-1rem)] flex-col overflow-hidden rounded-lg border shadow-2xl'>
         {/* Header */}
-        <div className='from-primary/10 to-primary/5 flex items-center justify-between gap-3 border-b bg-linear-to-r px-4 py-3'>
+        <div className='bg-bg-surface flex items-center justify-between gap-3 border-b px-4 py-3'>
           <div className='flex min-w-0 items-center gap-2'>
-            <div className='bg-primary/10 rounded-lg p-1.5'>
+            <div className='rounded-lg bg-[var(--accent-dim)] p-1.5'>
               <MessageCircle className='h-4 w-4' />
             </div>
             <div className='flex flex-col'>
@@ -848,7 +848,7 @@ export default function AIChatInterface({
               <div className='text-muted-foreground mt-0.5 flex items-center gap-2 text-xs'>
                 <Select value={activeConversationId} onValueChange={setActiveConversationId}>
                   <SelectTrigger
-                    className='bg-background/30 hover:bg-background/40 border-border/30 focus:ring-primary/30 h-7 max-w-[200px] rounded-full border px-2.5 text-xs shadow-none focus:ring-2 focus:outline-none'
+                    className='bg-background/30 hover:bg-background/40 h-7 max-w-[200px] rounded-full border border-[var(--border-subtle)] px-2.5 text-xs shadow-none focus:ring-2 focus:ring-[var(--accent-border)] focus:outline-none'
                     aria-label={t('mascot.aiChat.conversations')}
                   >
                     <SelectValue />
@@ -946,27 +946,27 @@ export default function AIChatInterface({
         </div>
 
         {/* Messages */}
-        <div className='from-background/50 to-background/80 flex flex-1 flex-col gap-4 overflow-y-auto bg-linear-to-b px-4 py-4'>
+        <div className='bg-bg-surface flex flex-1 flex-col gap-4 overflow-y-auto px-4 py-4'>
           {messages.map((message) => (
             <div
               key={message.id}
               className={`flex ${message.isUser ? 'justify-end' : 'justify-start'} animate-in slide-in-from-bottom-2 duration-300`}
             >
               <div
-                className={`max-w-[90%] rounded-2xl px-3.5 py-3 text-sm shadow-sm sm:max-w-[85%] ${get_bubble_class_name(message)}`}
+                className={`max-w-[90%] rounded-lg px-3.5 py-3 text-sm shadow-sm sm:max-w-[85%] ${get_bubble_class_name(message)}`}
               >
                 {message.isUser && (
-                  <div className='border-border/20 mb-2 flex items-center gap-2 border-b pb-2'>
-                    <span className='text-primary-foreground/80 text-xs font-medium'>
+                  <div className='mb-2 flex items-center gap-2 border-b border-[var(--border-subtle)] pb-2'>
+                    <span className='text-accent-earth-text/80 text-xs font-medium'>
                       {user_display_name}
                     </span>
                   </div>
                 )}
                 {!message.isUser && (
-                  <div className='border-border/20 mb-2 flex items-center gap-2 border-b pb-2'>
+                  <div className='mb-2 flex items-center gap-2 border-b border-[var(--border-subtle)] pb-2'>
                     <Avatar className='h-6 w-6'>
                       <AvatarImage src={yue_avatar_src} alt='Yue' />
-                      <AvatarFallback className='bg-primary/20 text-primary text-[10px] font-bold'>
+                      <AvatarFallback className='text-accent-earth-text bg-[var(--accent-dim)] text-[10px] font-medium'>
                         Y
                       </AvatarFallback>
                     </Avatar>
@@ -1009,7 +1009,7 @@ export default function AIChatInterface({
                 )}
 
                 {!message.isUser && !message.isError && (message.citations?.length ?? 0) > 0 ? (
-                  <div className='border-border/20 mt-3 space-y-2 border-t pt-2'>
+                  <div className='mt-3 space-y-2 border-t border-[var(--border-subtle)] pt-2'>
                     <div className='text-muted-foreground text-[11px] font-medium'>
                       {t('mascot.aiChat.citations.title')}
                     </div>
@@ -1121,7 +1121,7 @@ export default function AIChatInterface({
                         onClick={() => handleReaction(message.id, 'like')}
                         aria-label={t('mascot.aiChat.feedback.like')}
                         disabled={feedbackIsSubmittingByMessageId[message.id] === true}
-                        className={`hover:bg-muted/80 flex items-center gap-1 rounded px-2 py-1 text-xs transition-all ${
+                        className={`hover:bg-bg-hover flex items-center gap-1 rounded px-2 py-1 text-xs transition-all ${
                           message.reactions?.userReaction === 'like'
                             ? 'bg-green-50 text-green-600 dark:bg-green-950'
                             : 'text-muted-foreground'
@@ -1135,7 +1135,7 @@ export default function AIChatInterface({
                         onClick={() => handleReaction(message.id, 'dislike')}
                         aria-label={t('mascot.aiChat.feedback.dislike')}
                         disabled={feedbackIsSubmittingByMessageId[message.id] === true}
-                        className={`hover:bg-muted/80 flex items-center gap-1 rounded px-2 py-1 text-xs transition-all ${
+                        className={`hover:bg-bg-hover flex items-center gap-1 rounded px-2 py-1 text-xs transition-all ${
                           message.reactions?.userReaction === 'dislike'
                             ? 'bg-red-50 text-red-600 dark:bg-red-950'
                             : 'text-muted-foreground'
@@ -1158,7 +1158,7 @@ export default function AIChatInterface({
                 message.requestId &&
                 feedbackOpenForMessageId === message.id &&
                 message.reactions?.userReaction === 'dislike' ? (
-                  <div className='border-border/20 mt-3 space-y-2 border-t pt-2'>
+                  <div className='mt-3 space-y-2 border-t border-[var(--border-subtle)] pt-2'>
                     <textarea
                       rows={2}
                       value={feedbackDraftByMessageId[message.id] ?? ''}
@@ -1169,7 +1169,7 @@ export default function AIChatInterface({
                         }))
                       }
                       placeholder={t('mascot.aiChat.feedback.commentPlaceholder')}
-                      className='bg-background/80 border-border/50 focus:ring-primary/50 focus:border-primary placeholder:text-muted-foreground/60 w-full resize-none rounded-lg border px-3 py-2 text-xs transition-all duration-200 focus:ring-2 focus:outline-none'
+                      className='bg-background/80 placeholder:text-muted-foreground/60 w-full resize-none rounded-lg border border-[var(--border-subtle)] px-3 py-2 text-xs transition-all duration-200 focus:border-[var(--accent-border)] focus:ring-2 focus:ring-[var(--accent-border)] focus:outline-none'
                       disabled={feedbackIsSubmittingByMessageId[message.id] === true}
                     />
                     <div className='flex items-center justify-end gap-2'>
@@ -1197,7 +1197,7 @@ export default function AIChatInterface({
                           setFeedbackOpenForMessageId(null)
                           setFeedbackDraftByMessageId((prev) => ({ ...prev, [message.id]: '' }))
                         }}
-                        className='bg-primary text-primary-foreground hover:bg-primary/90 rounded px-3 py-1 text-xs transition-colors disabled:cursor-not-allowed disabled:opacity-60'
+                        className='bg-accent-earth text-accent-earth-text hover:bg-accent-earth-hover rounded px-3 py-1 text-xs transition-colors disabled:cursor-not-allowed disabled:opacity-60'
                         disabled={feedbackIsSubmittingByMessageId[message.id] === true}
                       >
                         {feedbackIsSubmittingByMessageId[message.id] === true ? (
@@ -1226,18 +1226,18 @@ export default function AIChatInterface({
 
           {isLoading && (
             <div className='animate-in slide-in-from-bottom-2 flex justify-start duration-300'>
-              <div className='from-muted/80 to-muted/60 text-foreground border-border/30 flex items-center gap-2 rounded-2xl rounded-bl-md border bg-linear-to-br p-3'>
-                <div className='border-border/20 mb-2 flex w-full items-center gap-2 border-b pb-2'>
+              <div className='text-foreground bg-bg-surface flex items-center gap-2 rounded-lg rounded-bl-md border border-[var(--border-subtle)] p-3'>
+                <div className='mb-2 flex w-full items-center gap-2 border-b border-[var(--border-subtle)] pb-2'>
                   <Avatar className='h-5 w-5'>
                     <AvatarImage src={yue_avatar_src} alt='Yue' />
-                    <AvatarFallback className='bg-primary/20 text-primary text-[10px] font-bold'>
+                    <AvatarFallback className='text-accent-earth-text bg-[var(--accent-dim)] text-[10px] font-medium'>
                       Y
                     </AvatarFallback>
                   </Avatar>
                   <span className='text-muted-foreground text-xs font-medium'>Yue</span>
                 </div>
                 <div className='flex items-center gap-2'>
-                  <Loader2 className='text-primary h-4 w-4 animate-spin' />
+                  <Loader2 className='text-accent-earth-text h-4 w-4 animate-spin' />
                   <span className='text-xs'>
                     {t('mascot.aiChat.thinking')}
                     {typingDots}
@@ -1251,7 +1251,7 @@ export default function AIChatInterface({
         </div>
 
         {/* Input */}
-        <div className='from-background/80 to-background/60 border-t bg-linear-to-r px-4 py-4 backdrop-blur-sm'>
+        <div className='bg-bg-surface border-t px-4 py-4'>
           <div className='flex gap-2'>
             <input
               ref={inputRef}
@@ -1260,14 +1260,14 @@ export default function AIChatInterface({
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder={t('mascot.aiChat.placeholder')}
-              className='bg-background/80 border-border/50 focus:ring-primary/50 focus:border-primary placeholder:text-muted-foreground/60 flex-1 rounded-xl border px-4 py-3 text-sm transition-all duration-200 focus:ring-2 focus:outline-none'
+              className='bg-background/80 placeholder:text-muted-foreground/60 flex-1 rounded-xl border border-[var(--border-subtle)] px-4 py-3 text-sm transition-all duration-200 focus:border-[var(--accent-border)] focus:ring-2 focus:ring-[var(--accent-border)] focus:outline-none'
               disabled={isLoading}
             />
             <button
               type='button'
               onClick={sendMessage}
               disabled={!inputValue.trim() || isLoading}
-              className='from-primary to-primary/90 text-primary-foreground hover:from-primary/90 hover:to-primary/80 rounded-xl bg-linear-to-r px-4 py-3 shadow-sm transition-all duration-200 hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none'
+              className='text-accent-earth-text bg-bg-surface rounded-xl px-4 py-3 shadow-sm transition-all duration-200 hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none'
             >
               {isLoading ? (
                 <Loader2 className='h-4 w-4 animate-spin' />

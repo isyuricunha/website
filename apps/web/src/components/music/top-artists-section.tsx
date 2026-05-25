@@ -3,7 +3,7 @@
 import { useTranslations } from '@isyuricunha/i18n/client'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@isyuricunha/ui'
 import { UserIcon, Grid3X3, List, Shuffle } from 'lucide-react'
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useSyncExternalStore } from 'react'
 
 import { api } from '@/trpc/react'
 import TimeRangeToggle from './time-range-toggle'
@@ -11,6 +11,22 @@ import { exportJson, exportTopArtistsCsv } from '@/utils/exporters/music'
 
 import Link from '../link'
 import MusicImage from './music-image'
+
+function noopUnsubscribe() {
+  return
+}
+
+const subscribeToMount = () => noopUnsubscribe
+const getClientMountedSnapshot = () => true
+const getServerMountedSnapshot = () => false
+
+const getStableShuffleRank = (value: string) => {
+  let hash = 0
+  for (let index = 0; index < value.length; index += 1) {
+    hash = (hash * 31 + (value.codePointAt(index) ?? 0)) >>> 0
+  }
+  return hash
+}
 
 const TopArtistsSection = () => {
   const t = useTranslations()
@@ -20,11 +36,11 @@ const TopArtistsSection = () => {
   const [timeRange, setTimeRange] = useState<'short_term' | 'medium_term' | 'long_term'>(
     'short_term'
   )
-  const [isMounted, setIsMounted] = useState(false)
-
-  useEffect(() => {
-    setIsMounted(true)
-  }, [])
+  const isMounted = useSyncExternalStore(
+    subscribeToMount,
+    getClientMountedSnapshot,
+    getServerMountedSnapshot
+  )
 
   const {
     data: artists,
@@ -38,11 +54,13 @@ const TopArtistsSection = () => {
   // Shuffle artists when requested
   const displayedArtists = useMemo(() => {
     if (!artists) return []
-    if (isShuffled && isMounted) {
-      return [...artists].sort(() => Math.random() - 0.5)
+    if (isShuffled) {
+      return artists.toSorted(
+        (a, b) => getStableShuffleRank(a.id || a.name) - getStableShuffleRank(b.id || b.name)
+      )
     }
     return artists
-  }, [artists, isShuffled, isMounted])
+  }, [artists, isShuffled])
 
   const handleRefresh = async () => {
     setIsRefreshing(true)
@@ -176,7 +194,7 @@ const TopArtistsSection = () => {
             onClick={() => setIsShuffled(!isShuffled)}
             className={`rounded-md p-1.5 transition-colors ${
               isShuffled
-                ? 'bg-primary text-primary-foreground'
+                ? 'bg-accent-earth text-accent-earth-text'
                 : 'text-muted-foreground hover:text-foreground hover:bg-muted'
             }`}
             title={
@@ -233,7 +251,7 @@ const TopArtistsSection = () => {
                   />
                 </div>
                 <div className='w-full min-w-0 text-center'>
-                  <h3 className='group-hover:text-primary w-full truncate text-xs font-medium sm:text-sm'>
+                  <h3 className='group-hover:text-accent-earth-text w-full truncate text-xs font-medium sm:text-sm'>
                     {artist.name}
                   </h3>
                   {artist.genres && artist.genres.length > 0 && (
@@ -265,7 +283,7 @@ const TopArtistsSection = () => {
                     />
                   </div>
                   <div className='min-w-0 flex-1'>
-                    <h3 className='group-hover:text-primary truncate text-sm font-medium'>
+                    <h3 className='group-hover:text-accent-earth-text truncate text-sm font-medium'>
                       {artist.name}
                     </h3>
                     {artist.genres && artist.genres.length > 0 && (

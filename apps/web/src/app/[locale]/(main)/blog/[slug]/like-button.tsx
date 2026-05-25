@@ -114,7 +114,7 @@ const LikeButton = (props: LikeButtonProps) => {
           viewBox='0 0 24 24'
           strokeWidth='2'
           stroke='currentColor'
-          className='text-primary relative overflow-hidden'
+          className='text-accent-earth-text relative overflow-hidden'
           fill='none'
           strokeLinecap='round'
           strokeLinejoin='round'

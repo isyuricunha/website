@@ -107,7 +107,7 @@ const SocialSharing = () => {
                   title={t('spotify.social.buttons.copy')}
                 >
                   {copiedTrack === currentTrack.songUrl ? (
-                    <span className='text-primary text-xs'>✓</span>
+                    <span className='text-accent-earth-text text-xs'>✓</span>
                   ) : (
                     <Copy className='h-4 w-4' />
                   )}
@@ -127,9 +127,9 @@ const SocialSharing = () => {
               {featuredTracks.map((track: any, index: number) => (
                 <div
                   key={track.url ?? track.id ?? index}
-                  className='bg-muted/30 hover:bg-muted/50 flex items-center gap-3 rounded-lg p-3 transition-colors'
+                  className='bg-bg-surface hover:bg-muted/50 flex items-center gap-3 rounded-lg p-3 transition-colors'
                 >
-                  <div className='bg-primary text-primary-foreground flex h-6 w-6 items-center justify-center rounded-full text-xs font-medium'>
+                  <div className='bg-accent-earth text-accent-earth-text flex h-6 w-6 items-center justify-center rounded-full text-xs font-medium'>
                     {index + 1}
                   </div>
                   <div className='relative h-10 w-10 flex-shrink-0 overflow-hidden rounded-lg'>
@@ -171,7 +171,7 @@ const SocialSharing = () => {
                       title={t('spotify.social.buttons.copy')}
                     >
                       {copiedTrack === track.url ? (
-                        <span className='text-primary text-xs'>✓</span>
+                        <span className='text-accent-earth-text text-xs'>✓</span>
                       ) : (
                         <Copy className='h-3 w-3' />
                       )}

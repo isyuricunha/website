@@ -73,7 +73,7 @@ const NewsletterSignupCompact = () => {
         aria-label={t('cta')}
       >
         {isLoading ? (
-          <div className='size-4 animate-spin rounded-full border-2 border-current border-t-transparent' />
+          <div className='size-4 animate-spin rounded-full border border-current border-t-transparent' />
         ) : (
           <Send className='size-4' />
         )}

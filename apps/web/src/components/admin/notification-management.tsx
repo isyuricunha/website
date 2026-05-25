@@ -86,7 +86,7 @@ export default function NotificationManagement() {
       type,
       userId: userId || undefined,
       expiresAt: expiresAtRaw ? new Date(expiresAtRaw) : undefined,
-      actionUrl: actionUrlRaw ? actionUrlRaw : undefined
+      actionUrl: actionUrlRaw || undefined
     })
   }
 
@@ -97,11 +97,11 @@ export default function NotificationManagement() {
   const getNotificationIcon = (severity: string) => {
     switch (severity) {
       case 'info':
-        return <Bell className='text-primary h-4 w-4' />
+        return <Bell className='text-accent-earth-text h-4 w-4' />
       case 'success':
-        return <Check className='text-primary h-4 w-4' />
+        return <Check className='text-accent-earth-text h-4 w-4' />
       case 'warning':
-        return <Clock className='text-primary h-4 w-4' />
+        return <Clock className='text-accent-earth-text h-4 w-4' />
       case 'error':
         return <X className='text-destructive h-4 w-4' />
       default:
@@ -114,7 +114,7 @@ export default function NotificationManagement() {
       return 'border-destructive/30 bg-destructive/10 text-foreground'
     }
 
-    return 'border-border/60 bg-card text-foreground'
+    return 'border-[var(--border-subtle)] bg-card text-foreground'
   }
 
   if (isLoading) {
@@ -126,8 +126,8 @@ export default function NotificationManagement() {
       {/* Header */}
       <div className='flex items-center justify-between'>
         <div className='space-y-1'>
-          <h1 className='from-foreground to-foreground/70 flex items-center gap-3 bg-gradient-to-r bg-clip-text text-4xl font-bold tracking-tight text-transparent'>
-            <div className='bg-primary/10 text-primary rounded-xl p-2.5'>
+          <h1 className='text-text-primary flex items-center gap-3 text-4xl font-medium tracking-tight'>
+            <div className='text-accent-earth-text rounded-xl bg-[var(--accent-dim)] p-2.5'>
               <Bell className='h-8 w-8' />
             </div>
             Notifications
@@ -228,47 +228,47 @@ export default function NotificationManagement() {
 
       {/* Stats Cards */}
       <div className='grid gap-5 md:grid-cols-3'>
-        <Card className='border-border/50 from-background to-background/50 bg-gradient-to-br backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl'>
+        <Card className='bg-bg-surface border-[var(--border-subtle)] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl'>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-3'>
             <CardTitle className='text-muted-foreground text-sm font-semibold'>
               Total Notifications
             </CardTitle>
-            <div className='bg-primary/10 text-primary rounded-lg p-2'>
+            <div className='text-accent-earth-text rounded-lg bg-[var(--accent-dim)] p-2'>
               <Bell className='h-5 w-5' />
             </div>
           </CardHeader>
           <CardContent className='space-y-2'>
-            <div className='text-primary text-3xl font-bold tracking-tight'>
+            <div className='text-accent-earth-text text-3xl font-medium tracking-tight'>
               {notifications?.notifications?.length || 0}
             </div>
             <p className='text-muted-foreground text-xs leading-relaxed'>All notifications</p>
           </CardContent>
         </Card>
 
-        <Card className='border-border/50 from-background to-background/50 bg-gradient-to-br backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl'>
+        <Card className='bg-bg-surface border-[var(--border-subtle)] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl'>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-3'>
             <CardTitle className='text-muted-foreground text-sm font-semibold'>Unread</CardTitle>
-            <div className='bg-primary/10 text-primary rounded-lg p-2'>
+            <div className='text-accent-earth-text rounded-lg bg-[var(--accent-dim)] p-2'>
               <Clock className='h-5 w-5' />
             </div>
           </CardHeader>
           <CardContent className='space-y-2'>
-            <div className='text-primary text-3xl font-bold tracking-tight'>
+            <div className='text-accent-earth-text text-3xl font-medium tracking-tight'>
               {notifications?.notifications?.filter((n) => !n.read).length || 0}
             </div>
             <p className='text-muted-foreground text-xs leading-relaxed'>Pending notifications</p>
           </CardContent>
         </Card>
 
-        <Card className='border-border/50 from-background to-background/50 bg-gradient-to-br backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl'>
+        <Card className='bg-bg-surface border-[var(--border-subtle)] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl'>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-3'>
             <CardTitle className='text-muted-foreground text-sm font-semibold'>Read Rate</CardTitle>
-            <div className='bg-primary/10 text-primary rounded-lg p-2'>
+            <div className='text-accent-earth-text rounded-lg bg-[var(--accent-dim)] p-2'>
               <BarChart3 className='h-5 w-5' />
             </div>
           </CardHeader>
           <CardContent className='space-y-2'>
-            <div className='text-primary text-3xl font-bold tracking-tight'>
+            <div className='text-accent-earth-text text-3xl font-medium tracking-tight'>
               {notifications?.notifications?.length
                 ? Math.round(
                     (notifications.notifications.filter((n) => n.read).length /
@@ -284,10 +284,10 @@ export default function NotificationManagement() {
       </div>
 
       {/* Notifications List */}
-      <Card className='border-border/50 from-background to-background/80 bg-gradient-to-br backdrop-blur-sm'>
+      <Card className='bg-bg-surface border-[var(--border-subtle)]'>
         <CardHeader>
           <div className='mb-1 flex items-center gap-2'>
-            <div className='bg-primary/10 text-primary rounded-lg p-2'>
+            <div className='text-accent-earth-text rounded-lg bg-[var(--accent-dim)] p-2'>
               <Bell className='h-4 w-4' />
             </div>
             <CardTitle className='text-base font-semibold'>Recent Notifications</CardTitle>
@@ -302,7 +302,7 @@ export default function NotificationManagement() {
               {notifications?.notifications?.map((notification) => (
                 <Card
                   key={notification.id}
-                  className={`${getNotificationTypeColor(notification.severity)} border-2 ${notification.read ? '' : 'ring-primary/30 ring-2'} transition-all duration-200 hover:shadow-md`}
+                  className={`${getNotificationTypeColor(notification.severity)} border ${notification.read ? '' : 'ring-2 ring-[var(--accent-border)]'} transition-all duration-200 hover:shadow-md`}
                 >
                   <CardContent className='p-4'>
                     <div className='flex items-start justify-between'>
@@ -312,7 +312,7 @@ export default function NotificationManagement() {
                           <h3 className='font-semibold'>{notification.title}</h3>
                           <Badge variant='outline'>{notification.type}</Badge>
                           {!notification.read && (
-                            <Badge className='border-primary/20 bg-primary/10 text-primary border'>
+                            <Badge className='text-accent-earth-text border border-[var(--accent-border)] bg-[var(--accent-dim)]'>
                               Unread
                             </Badge>
                           )}

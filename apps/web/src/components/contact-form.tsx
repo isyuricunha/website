@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { env, flags } from '@isyuricunha/env'
 import { useTranslations } from '@isyuricunha/i18n/client'
 import {
@@ -45,13 +45,9 @@ export default function ContactForm() {
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
   const [submitMessage, setSubmitMessage] = useState('')
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
-  const [isTurnstileEnabled, setIsTurnstileEnabled] = useState(false)
-
-  // Check Turnstile availability
-  useEffect(() => {
-    // Check if Turnstile is enabled (client-side only to avoid hydration issues)
-    setIsTurnstileEnabled(flags.turnstile && !!env.NEXT_PUBLIC_TURNSTILE_SITE_KEY)
-  }, [])
+  const [isTurnstileEnabled] = useState(
+    () => flags.turnstile && !!env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
+  )
 
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {}
@@ -179,7 +175,7 @@ export default function ContactForm() {
       </CardHeader>
       <CardContent>
         {submitStatus === 'success' && (
-          <div className='bg-primary/10 border-primary/20 text-primary mb-4 flex items-center gap-2 rounded-lg border p-3'>
+          <div className='text-accent-earth-text mb-4 flex items-center gap-2 rounded-lg border border-[var(--accent-border)] bg-[var(--accent-dim)] p-3'>
             <CheckCircle className='h-4 w-4' />
             <span className='text-sm'>{submitMessage}</span>
           </div>

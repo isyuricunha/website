@@ -197,7 +197,7 @@ export default function MonitoringDashboard() {
     <div className='space-y-6'>
       <div className='flex items-center justify-between'>
         <div>
-          <h1 className='text-3xl font-bold'>Monitoring Dashboard</h1>
+          <h1 className='text-3xl font-medium'>Monitoring Dashboard</h1>
           <p className='text-muted-foreground'>Real-time system performance and analytics</p>
         </div>
         <Select
@@ -229,7 +229,7 @@ export default function MonitoringDashboard() {
             <Zap className='text-muted-foreground h-4 w-4' />
           </CardHeader>
           <CardContent>
-            <div className='text-2xl font-bold'>
+            <div className='text-2xl font-medium'>
               {monitoringStats?.performance.avgResponseTime?.toFixed(0) || 0}ms
             </div>
             <p className='text-muted-foreground text-xs'>
@@ -244,7 +244,7 @@ export default function MonitoringDashboard() {
             <Activity className='text-muted-foreground h-4 w-4' />
           </CardHeader>
           <CardContent>
-            <div className='text-2xl font-bold'>{monitoringStats?.api.totalRequests || 0}</div>
+            <div className='text-2xl font-medium'>{monitoringStats?.api.totalRequests || 0}</div>
             <p className='text-muted-foreground text-xs'>
               {monitoringStats?.api.errorRate?.toFixed(1) || 0}% error rate
             </p>
@@ -257,7 +257,7 @@ export default function MonitoringDashboard() {
             <AlertTriangle className='text-muted-foreground h-4 w-4' />
           </CardHeader>
           <CardContent>
-            <div className='text-2xl font-bold'>{monitoringStats?.errors.total || 0}</div>
+            <div className='text-2xl font-medium'>{monitoringStats?.errors.total || 0}</div>
             <p className='text-muted-foreground text-xs'>
               {monitoringStats?.errors.unresolved || 0} unresolved
             </p>
@@ -270,7 +270,7 @@ export default function MonitoringDashboard() {
             <AlertTriangle className='text-muted-foreground h-4 w-4' />
           </CardHeader>
           <CardContent>
-            <div className='text-2xl font-bold'>{monitoringStats?.alerts.total || 0}</div>
+            <div className='text-2xl font-medium'>{monitoringStats?.alerts.total || 0}</div>
             <p className='text-muted-foreground text-xs'>
               {monitoringStats?.alerts.critical || 0} critical alerts
             </p>
@@ -466,25 +466,27 @@ export default function MonitoringDashboard() {
                   <div className='space-y-4'>
                     <div className='grid grid-cols-2 gap-4'>
                       <div className='text-center'>
-                        <div className='text-2xl font-bold'>
+                        <div className='text-2xl font-medium'>
                           {apiUsage?.stats.totalRequests || 0}
                         </div>
                         <div className='text-muted-foreground text-sm'>Total Requests</div>
                       </div>
                       <div className='text-center'>
-                        <div className='text-2xl font-bold'>{apiUsage?.stats.uniqueUsers || 0}</div>
+                        <div className='text-2xl font-medium'>
+                          {apiUsage?.stats.uniqueUsers || 0}
+                        </div>
                         <div className='text-muted-foreground text-sm'>Unique Users</div>
                       </div>
                     </div>
                     <div className='grid grid-cols-2 gap-4'>
                       <div className='text-center'>
-                        <div className='text-2xl font-bold'>
+                        <div className='text-2xl font-medium'>
                           {apiUsage?.stats.avgResponseTime?.toFixed(0) || 0}ms
                         </div>
                         <div className='text-muted-foreground text-sm'>Avg Response Time</div>
                       </div>
                       <div className='text-center'>
-                        <div className='text-2xl font-bold'>
+                        <div className='text-2xl font-medium'>
                           {apiUsage?.stats.errorRate?.toFixed(1) || 0}%
                         </div>
                         <div className='text-muted-foreground text-sm'>Error Rate</div>
@@ -507,7 +509,7 @@ export default function MonitoringDashboard() {
                 ) : (
                   <div className='space-y-3'>
                     {Object.entries(apiUsage?.stats.topEndpoints || {})
-                      .sort(([, a], [, b]) => b - a)
+                      .toSorted(([, a], [, b]) => b - a)
                       .slice(0, 5)
                       .map(([endpoint, count]) => (
                         <div key={endpoint} className='flex items-center justify-between'>
@@ -674,7 +676,7 @@ export default function MonitoringDashboard() {
                 ) : (
                   <div className='space-y-3'>
                     {Object.entries(analyticsEvents?.eventTypes || {})
-                      .sort(([, a], [, b]) => b - a)
+                      .toSorted(([, a], [, b]) => b - a)
                       .map(([type, count]) => (
                         <div key={type} className='flex items-center justify-between'>
                           <span className='text-sm'>{type}</span>

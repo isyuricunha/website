@@ -190,7 +190,7 @@ export default function DataManagement() {
     <div className='space-y-6'>
       <div className='flex items-center justify-between'>
         <div>
-          <h1 className='text-3xl font-bold'>Data Management</h1>
+          <h1 className='text-3xl font-medium'>Data Management</h1>
           <p className='text-muted-foreground'>Backup, export, and manage your data</p>
         </div>
       </div>
@@ -203,7 +203,7 @@ export default function DataManagement() {
             <Database className='text-muted-foreground h-4 w-4' />
           </CardHeader>
           <CardContent>
-            <div className='text-2xl font-bold'>{dataStats?.backups.total || 0}</div>
+            <div className='text-2xl font-medium'>{dataStats?.backups.total || 0}</div>
             <p className='text-muted-foreground text-xs'>
               {dataStats?.backups.completed || 0} completed
             </p>
@@ -216,7 +216,7 @@ export default function DataManagement() {
             <Database className='text-muted-foreground h-4 w-4' />
           </CardHeader>
           <CardContent>
-            <div className='text-2xl font-bold'>
+            <div className='text-2xl font-medium'>
               {formatFileSize(dataStats?.backups.totalSize || 0)}
             </div>
             <p className='text-muted-foreground text-xs'>Total storage used</p>
@@ -229,7 +229,7 @@ export default function DataManagement() {
             <Download className='text-muted-foreground h-4 w-4' />
           </CardHeader>
           <CardContent>
-            <div className='text-2xl font-bold'>{dataStats?.exports.total || 0}</div>
+            <div className='text-2xl font-medium'>{dataStats?.exports.total || 0}</div>
             <p className='text-muted-foreground text-xs'>
               {dataStats?.exports.completed || 0} completed
             </p>
@@ -242,7 +242,7 @@ export default function DataManagement() {
             <Upload className='text-muted-foreground h-4 w-4' />
           </CardHeader>
           <CardContent>
-            <div className='text-2xl font-bold'>
+            <div className='text-2xl font-medium'>
               {(dataStats?.exports.totalRecords || 0).toLocaleString()}
             </div>
             <p className='text-muted-foreground text-xs'>Total records processed</p>
@@ -276,9 +276,7 @@ export default function DataManagement() {
                       <div key={backup.id} className='flex items-center justify-between'>
                         <div className='flex items-center space-x-2'>
                           {getStatusIcon(backup.status)}
-                          <Badge variant={getStatusColor(backup.status) as any}>
-                            {backup.status}
-                          </Badge>
+                          <Badge variant={getStatusColor(backup.status)}>{backup.status}</Badge>
                           <span className='text-sm'>{backup.type} backup</span>
                         </div>
                         <span className='text-muted-foreground text-xs'>
@@ -306,7 +304,7 @@ export default function DataManagement() {
                       <div key={exportItem.id} className='flex items-center justify-between'>
                         <div className='flex items-center space-x-2'>
                           {getStatusIcon(exportItem.status)}
-                          <Badge variant={getStatusColor(exportItem.status) as any}>
+                          <Badge variant={getStatusColor(exportItem.status)}>
                             {exportItem.status}
                           </Badge>
                           <span className='text-sm'>{exportItem.name}</span>
@@ -379,9 +377,7 @@ export default function DataManagement() {
                             {getStatusIcon(backup.status)}
                             <span className='font-medium'>{backup.type} backup</span>
                           </div>
-                          <Badge variant={getStatusColor(backup.status) as any}>
-                            {backup.status}
-                          </Badge>
+                          <Badge variant={getStatusColor(backup.status)}>{backup.status}</Badge>
                         </div>
                         {backup.name && (
                           <div className='text-muted-foreground mb-2 text-sm'>{backup.name}</div>
@@ -470,7 +466,7 @@ export default function DataManagement() {
                             {getStatusIcon(exportItem.status)}
                             <span className='font-medium'>{exportItem.name}</span>
                           </div>
-                          <Badge variant={getStatusColor(exportItem.status) as any}>
+                          <Badge variant={getStatusColor(exportItem.status)}>
                             {exportItem.status}
                           </Badge>
                         </div>

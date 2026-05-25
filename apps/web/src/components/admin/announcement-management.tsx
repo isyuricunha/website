@@ -266,8 +266,8 @@ export default function AnnouncementManagement() {
       {/* Header */}
       <div className='flex flex-col justify-between gap-4 sm:flex-row sm:items-center'>
         <div className='min-w-0 flex-1 space-y-1'>
-          <h1 className='from-foreground to-foreground/70 flex items-center gap-3 bg-linear-to-r bg-clip-text text-3xl font-bold tracking-tight text-transparent sm:text-4xl'>
-            <div className='bg-primary/10 text-primary shrink-0 rounded-xl p-2.5'>
+          <h1 className='text-text-primary flex items-center gap-3 text-3xl font-medium tracking-tight sm:text-4xl'>
+            <div className='text-accent-earth-text shrink-0 rounded-xl bg-[var(--accent-dim)] p-2.5'>
               <Megaphone className='h-7 w-7 sm:h-8 sm:w-8' />
             </div>
             <span className='truncate'>Announcements</span>
@@ -410,17 +410,17 @@ export default function AnnouncementManagement() {
       {/* Analytics Cards */}
       {analytics && (
         <div className='grid gap-5 sm:grid-cols-2 lg:grid-cols-3'>
-          <Card className='border-border/50 from-background to-background/50 bg-linear-to-br backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl'>
+          <Card className='bg-bg-surface border-[var(--border-subtle)] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl'>
             <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-3'>
               <CardTitle className='text-muted-foreground text-sm font-semibold'>
                 Total Views
               </CardTitle>
-              <div className='bg-primary/10 text-primary rounded-lg p-2'>
+              <div className='text-accent-earth-text rounded-lg bg-[var(--accent-dim)] p-2'>
                 <BarChart3 className='h-5 w-5' />
               </div>
             </CardHeader>
             <CardContent className='space-y-2'>
-              <div className='text-primary text-3xl font-bold tracking-tight'>
+              <div className='text-accent-earth-text text-3xl font-medium tracking-tight'>
                 {analytics.totalViews}
               </div>
               <p className='text-muted-foreground text-xs leading-relaxed'>
@@ -429,17 +429,17 @@ export default function AnnouncementManagement() {
             </CardContent>
           </Card>
 
-          <Card className='border-border/50 from-background to-background/50 bg-linear-to-br backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl'>
+          <Card className='bg-bg-surface border-[var(--border-subtle)] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl'>
             <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-3'>
               <CardTitle className='text-muted-foreground text-sm font-semibold'>
                 Dismissal Rate
               </CardTitle>
-              <div className='bg-primary/10 text-primary rounded-lg p-2'>
+              <div className='text-accent-earth-text rounded-lg bg-[var(--accent-dim)] p-2'>
                 <Users className='h-5 w-5' />
               </div>
             </CardHeader>
             <CardContent className='space-y-2'>
-              <div className='text-primary text-3xl font-bold tracking-tight'>
+              <div className='text-accent-earth-text text-3xl font-medium tracking-tight'>
                 {analytics.dismissalRate.toFixed(1)}%
               </div>
               <p className='text-muted-foreground text-xs leading-relaxed'>
@@ -448,17 +448,17 @@ export default function AnnouncementManagement() {
             </CardContent>
           </Card>
 
-          <Card className='border-border/50 from-background to-background/50 bg-linear-to-br backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl'>
+          <Card className='bg-bg-surface border-[var(--border-subtle)] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl'>
             <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-3'>
               <CardTitle className='text-muted-foreground text-sm font-semibold'>
                 Active Announcements
               </CardTitle>
-              <div className='bg-primary/10 text-primary rounded-lg p-2'>
+              <div className='text-accent-earth-text rounded-lg bg-[var(--accent-dim)] p-2'>
                 <Megaphone className='h-5 w-5' />
               </div>
             </CardHeader>
             <CardContent className='space-y-2'>
-              <div className='text-primary text-3xl font-bold tracking-tight'>
+              <div className='text-accent-earth-text text-3xl font-medium tracking-tight'>
                 {announcements?.announcements?.filter((a) => a.isActive).length || 0}
               </div>
               <p className='text-muted-foreground text-xs leading-relaxed'>
@@ -470,10 +470,10 @@ export default function AnnouncementManagement() {
       )}
 
       {/* Announcements List */}
-      <Card className='border-border/50 from-background to-background/80 bg-linear-to-br backdrop-blur-sm'>
+      <Card className='bg-bg-surface border-[var(--border-subtle)]'>
         <CardHeader className='p-4 sm:p-6'>
           <div className='mb-1 flex items-center gap-2'>
-            <div className='bg-primary/10 text-primary rounded-lg p-2'>
+            <div className='text-accent-earth-text rounded-lg bg-[var(--accent-dim)] p-2'>
               <Megaphone className='h-4 w-4' />
             </div>
             <CardTitle className='text-lg font-semibold sm:text-xl'>All Announcements</CardTitle>
@@ -495,7 +495,7 @@ export default function AnnouncementManagement() {
                 return (
                   <Card
                     key={announcement.id}
-                    className='border-border/40 bg-card hover:border-primary/30 group transition-all duration-300 hover:shadow-lg'
+                    className='border-border/40 bg-card group transition-all duration-300 hover:border-[var(--accent-border)] hover:shadow-lg'
                   >
                     <CardContent className='p-5'>
                       <div className='flex items-start justify-between gap-4'>
@@ -513,7 +513,7 @@ export default function AnnouncementManagement() {
                             </div>
                             <div className='min-w-0 flex-1'>
                               <div className='mb-1.5 flex items-center gap-2'>
-                                <h3 className='group-hover:text-primary truncate text-lg font-semibold transition-colors'>
+                                <h3 className='group-hover:text-accent-earth-text truncate text-lg font-semibold transition-colors'>
                                   {announcement.title}
                                 </h3>
                                 {!announcement.isActive && (
@@ -563,7 +563,7 @@ export default function AnnouncementManagement() {
                             className={cn(
                               'h-9 w-9 p-0 transition-all duration-200',
                               announcement.isActive
-                                ? 'text-primary hover:bg-primary/10'
+                                ? 'text-accent-earth-text hover:bg-[var(--accent-dim)]'
                                 : 'text-muted-foreground hover:text-foreground hover:bg-muted'
                             )}
                             aria-label={announcement.isActive ? 'Deactivate' : 'Activate'}
@@ -579,7 +579,7 @@ export default function AnnouncementManagement() {
                             variant='ghost'
                             size='sm'
                             onClick={() => openEditDialog(announcement)}
-                            className='text-primary hover:bg-primary/10 h-9 w-9 p-0 transition-all duration-200'
+                            className='text-accent-earth-text h-9 w-9 p-0 transition-all duration-200 hover:bg-[var(--accent-dim)]'
                             aria-label='Edit announcement'
                           >
                             <Edit className='h-4 w-4' />

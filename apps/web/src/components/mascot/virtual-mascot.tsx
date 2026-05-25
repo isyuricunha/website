@@ -147,7 +147,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
               />
             </div>
           ) : (
-            <div aria-hidden className='bg-muted/40 h-full w-full rounded-full' />
+            <div aria-hidden className='bg-bg-surface h-full w-full rounded-full' />
           )}
         </button>
       </div>

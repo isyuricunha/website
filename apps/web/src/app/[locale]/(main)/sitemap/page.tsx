@@ -159,18 +159,15 @@ const SitemapPage = async (props: PageProps) => {
 
   const localePosts = allPosts
     .filter((post) => post.locale === locale)
-    .slice()
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .toSorted((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 
   const localeProjects = allProjects
     .filter((project) => project.locale === locale)
-    .slice()
-    .sort((a, b) => a.name.localeCompare(b.name))
+    .toSorted((a, b) => a.name.localeCompare(b.name))
 
   const localeSnippets = allSnippets
     .filter((snippet) => snippet.locale === locale)
-    .slice()
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .toSorted((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 
   return (
     <>
@@ -201,7 +198,7 @@ const SitemapPage = async (props: PageProps) => {
                       {page.icon}
                     </div>
                     <div>
-                      <h3 className='group-hover:text-primary mb-1 text-sm font-medium sm:text-base'>
+                      <h3 className='group-hover:text-accent-earth-text mb-1 text-sm font-medium sm:text-base'>
                         {page.title}
                       </h3>
                       <p className='text-muted-foreground text-xs sm:text-sm'>{page.description}</p>
@@ -234,7 +231,7 @@ const SitemapPage = async (props: PageProps) => {
                 >
                   <div className='flex items-start justify-between gap-4'>
                     <div className='min-w-0 flex-1'>
-                      <h4 className='group-hover:text-primary mb-1 truncate text-sm font-medium sm:text-base'>
+                      <h4 className='group-hover:text-accent-earth-text mb-1 truncate text-sm font-medium sm:text-base'>
                         {post.title}
                       </h4>
                       <p className='text-muted-foreground mb-2 line-clamp-2 text-xs sm:text-sm'>
@@ -282,7 +279,7 @@ const SitemapPage = async (props: PageProps) => {
                     <div className='min-w-0 flex-1'>
                       <Link
                         href={`/projects/${project.slug}`}
-                        className='group-hover:text-primary mb-1 block text-sm font-medium sm:text-base'
+                        className='group-hover:text-accent-earth-text mb-1 block text-sm font-medium sm:text-base'
                       >
                         {project.name}
                       </Link>
@@ -293,7 +290,7 @@ const SitemapPage = async (props: PageProps) => {
                         {project.homepage && (
                           <Link
                             href={project.homepage}
-                            className='text-primary text-xs hover:underline'
+                            className='text-accent-earth-text text-xs hover:underline'
                             target='_blank'
                             rel='noopener noreferrer'
                           >
@@ -340,7 +337,7 @@ const SitemapPage = async (props: PageProps) => {
                 >
                   <div className='flex items-start justify-between gap-4'>
                     <div className='min-w-0 flex-1'>
-                      <h4 className='group-hover:text-primary mb-1 truncate text-sm font-medium sm:text-base'>
+                      <h4 className='group-hover:text-accent-earth-text mb-1 truncate text-sm font-medium sm:text-base'>
                         {snippet.title}
                       </h4>
                       <p className='text-muted-foreground mb-2 line-clamp-2 text-xs sm:text-sm'>

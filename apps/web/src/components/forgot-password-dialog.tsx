@@ -97,8 +97,8 @@ export default function ForgotPasswordDialog({ open, onOpenChange }: ForgotPassw
           <>
             <DialogHeader>
               <div className='mb-2 flex items-center gap-3'>
-                <div className='bg-primary/10 flex h-12 w-12 items-center justify-center rounded-xl'>
-                  <Mail className='text-primary h-6 w-6' />
+                <div className='flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--accent-dim)]'>
+                  <Mail className='text-accent-earth-text h-6 w-6' />
                 </div>
                 <div className='flex-1'>
                   <DialogTitle className='text-left text-xl font-semibold'>

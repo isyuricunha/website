@@ -44,7 +44,7 @@ const MusicStatsSection = () => {
     })
 
     const topGenres = Object.entries(genreCount)
-      .sort(([, a], [, b]) => b - a)
+      .toSorted(([, a], [, b]) => b - a)
       .slice(0, 5)
       .map(([genre]) => genre)
 
@@ -126,11 +126,11 @@ const MusicStatsSection = () => {
         <div className='grid grid-cols-2 gap-6 md:grid-cols-4'>
           {/* Total Listening Time */}
           <div className='space-y-2 text-center'>
-            <div className='bg-primary/10 mx-auto flex h-12 w-12 items-center justify-center rounded-full'>
-              <Clock className='text-primary h-6 w-6' />
+            <div className='mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[var(--accent-dim)]'>
+              <Clock className='text-accent-earth-text h-6 w-6' />
             </div>
             <div>
-              <p className='text-lg font-bold sm:text-xl'>{stats.totalHours}h</p>
+              <p className='text-lg font-medium sm:text-xl'>{stats.totalHours}h</p>
               <p className='text-muted-foreground text-xs sm:text-sm'>
                 {t('spotify.stats.labels.total-hours')}
               </p>
@@ -139,11 +139,11 @@ const MusicStatsSection = () => {
 
           {/* Track Diversity */}
           <div className='space-y-2 text-center'>
-            <div className='bg-primary/10 mx-auto flex h-12 w-12 items-center justify-center rounded-full'>
-              <TrendingUp className='text-primary h-6 w-6' />
+            <div className='mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[var(--accent-dim)]'>
+              <TrendingUp className='text-accent-earth-text h-6 w-6' />
             </div>
             <div>
-              <p className='text-lg font-bold sm:text-xl'>{stats.diversityScore}%</p>
+              <p className='text-lg font-medium sm:text-xl'>{stats.diversityScore}%</p>
               <p className='text-muted-foreground text-xs sm:text-sm'>
                 {t('spotify.stats.labels.diversity')}
               </p>
@@ -152,11 +152,11 @@ const MusicStatsSection = () => {
 
           {/* Average Popularity */}
           <div className='space-y-2 text-center'>
-            <div className='bg-primary/10 mx-auto flex h-12 w-12 items-center justify-center rounded-full'>
-              <Headphones className='text-primary h-6 w-6' />
+            <div className='mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[var(--accent-dim)]'>
+              <Headphones className='text-accent-earth-text h-6 w-6' />
             </div>
             <div>
-              <p className='text-lg font-bold sm:text-xl'>{stats.avgPopularity}%</p>
+              <p className='text-lg font-medium sm:text-xl'>{stats.avgPopularity}%</p>
               <p className='text-muted-foreground text-xs sm:text-sm'>
                 {t('spotify.stats.labels.avg-popularity')}
               </p>
@@ -165,11 +165,11 @@ const MusicStatsSection = () => {
 
           {/* Total Artists */}
           <div className='space-y-2 text-center'>
-            <div className='bg-primary/10 mx-auto flex h-12 w-12 items-center justify-center rounded-full'>
-              <Music className='text-primary h-6 w-6' />
+            <div className='mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[var(--accent-dim)]'>
+              <Music className='text-accent-earth-text h-6 w-6' />
             </div>
             <div>
-              <p className='text-lg font-bold sm:text-xl'>{stats.totalArtists}</p>
+              <p className='text-lg font-medium sm:text-xl'>{stats.totalArtists}</p>
               <p className='text-muted-foreground text-xs sm:text-sm'>
                 {t('spotify.stats.labels.top-artists')}
               </p>
@@ -190,7 +190,7 @@ const MusicStatsSection = () => {
                   key={genre}
                   className={`rounded-full px-3 py-1 text-xs font-medium sm:text-sm ${
                     index === 0
-                      ? 'bg-primary text-primary-foreground'
+                      ? 'bg-accent-earth text-accent-earth-text'
                       : index === 1
                         ? 'bg-secondary text-secondary-foreground'
                         : 'bg-muted text-muted-foreground'

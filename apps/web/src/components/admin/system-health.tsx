@@ -109,9 +109,9 @@ export const SystemHealthDashboard = () => {
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'healthy':
-        return <CheckCircle className='text-primary h-5 w-5' />
+        return <CheckCircle className='text-accent-earth-text h-5 w-5' />
       case 'warning':
-        return <AlertTriangle className='text-primary h-5 w-5' />
+        return <AlertTriangle className='text-accent-earth-text h-5 w-5' />
       case 'critical':
         return <XCircle className='text-destructive h-5 w-5' />
       default:
@@ -122,13 +122,13 @@ export const SystemHealthDashboard = () => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'healthy':
-        return 'text-primary bg-primary/10'
+        return 'text-accent-earth-text bg-[var(--accent-dim)]'
       case 'warning':
-        return 'text-primary bg-primary/10'
+        return 'text-accent-earth-text bg-[var(--accent-dim)]'
       case 'critical':
         return 'text-destructive bg-destructive/10'
       default:
-        return 'text-muted-foreground bg-muted/30'
+        return 'text-muted-foreground bg-bg-surface'
     }
   }
 
@@ -169,7 +169,7 @@ export const SystemHealthDashboard = () => {
         set.add(row.checkType)
       }
     }
-    return Array.from(set).sort((a, b) => a.localeCompare(b))
+    return Array.from(set).toSorted((a, b) => a.localeCompare(b))
   }, [history])
 
   const filtered_history = useMemo(() => {
@@ -230,7 +230,7 @@ export const SystemHealthDashboard = () => {
       {/* Header */}
       <div className='flex items-center justify-between'>
         <div>
-          <h1 className='text-2xl font-bold'>System Health</h1>
+          <h1 className='text-2xl font-medium'>System Health</h1>
           <p className='text-muted-foreground'>Monitor system performance and health</p>
         </div>
         <div className='flex items-center gap-2'>
@@ -269,7 +269,7 @@ export const SystemHealthDashboard = () => {
             </div>
             {statsData && (
               <div className='text-right'>
-                <div className='text-2xl font-bold'>{formatUptime(statsData.health.uptime)}</div>
+                <div className='text-2xl font-medium'>{formatUptime(statsData.health.uptime)}</div>
                 <div className='text-muted-foreground text-sm'>Uptime</div>
               </div>
             )}
@@ -282,20 +282,20 @@ export const SystemHealthDashboard = () => {
         <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4'>
           <div className='bg-card border-border rounded-lg border p-6'>
             <div className='flex items-center'>
-              <CheckCircle className='text-primary h-8 w-8' />
+              <CheckCircle className='text-accent-earth-text h-8 w-8' />
               <div className='ml-4'>
                 <p className='text-muted-foreground text-sm font-medium'>Healthy Checks</p>
-                <p className='text-2xl font-bold'>{statsData.health.healthy}</p>
+                <p className='text-2xl font-medium'>{statsData.health.healthy}</p>
               </div>
             </div>
           </div>
 
           <div className='bg-card border-border rounded-lg border p-6'>
             <div className='flex items-center'>
-              <AlertTriangle className='text-primary h-8 w-8' />
+              <AlertTriangle className='text-accent-earth-text h-8 w-8' />
               <div className='ml-4'>
                 <p className='text-muted-foreground text-sm font-medium'>Warnings</p>
-                <p className='text-2xl font-bold'>{statsData.health.warning}</p>
+                <p className='text-2xl font-medium'>{statsData.health.warning}</p>
               </div>
             </div>
           </div>
@@ -305,17 +305,17 @@ export const SystemHealthDashboard = () => {
               <XCircle className='text-destructive h-8 w-8' />
               <div className='ml-4'>
                 <p className='text-muted-foreground text-sm font-medium'>Critical Issues</p>
-                <p className='text-2xl font-bold'>{statsData.health.critical}</p>
+                <p className='text-2xl font-medium'>{statsData.health.critical}</p>
               </div>
             </div>
           </div>
 
           <div className='bg-card border-border rounded-lg border p-6'>
             <div className='flex items-center'>
-              <AlertCircle className='text-primary h-8 w-8' />
+              <AlertCircle className='text-accent-earth-text h-8 w-8' />
               <div className='ml-4'>
                 <p className='text-muted-foreground text-sm font-medium'>Unresolved Errors</p>
-                <p className='text-2xl font-bold'>{statsData.errors.unresolved}</p>
+                <p className='text-2xl font-medium'>{statsData.errors.unresolved}</p>
               </div>
             </div>
           </div>
@@ -394,7 +394,7 @@ export const SystemHealthDashboard = () => {
                         className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
                           error.level === 'error'
                             ? 'bg-destructive/10 text-destructive'
-                            : 'bg-primary/10 text-primary'
+                            : 'text-accent-earth-text bg-[var(--accent-dim)]'
                         }`}
                       >
                         {error.level.toUpperCase()}

@@ -7,7 +7,7 @@ import { toast } from 'sonner'
 import { useTranslations } from '@isyuricunha/i18n/client'
 
 export default function OfflineIndicator() {
-  const [isOnline, setIsOnline] = useState(true)
+  const [isOnline, setIsOnline] = useState(() => globalThis.navigator?.onLine ?? true)
   const [showIndicator, setShowIndicator] = useState(false)
   const t = useTranslations('component.offline-indicator')
   const hide_timeout_ref = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -29,9 +29,6 @@ export default function OfflineIndicator() {
       setShowIndicator(true)
       toast.error(t('toast.offline'))
     }
-
-    // Set initial state
-    setIsOnline(navigator.onLine)
 
     globalThis.addEventListener('online', handleOnline)
     globalThis.addEventListener('offline', handleOffline)
@@ -55,7 +52,9 @@ export default function OfflineIndicator() {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -50 }}
           className={`fixed top-4 right-4 z-50 flex items-center gap-2 rounded-lg px-4 py-2 shadow-lg ${
-            isOnline ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+            isOnline
+              ? 'text-accent-earth-text bg-[var(--accent-dim)]'
+              : 'bg-bg-active text-text-primary'
           }`}
         >
           {isOnline ? <Wifi className='size-4' /> : <WifiOff className='size-4' />}

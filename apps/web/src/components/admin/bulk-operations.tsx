@@ -170,11 +170,11 @@ export const BulkOperations = () => {
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'completed':
-        return <CheckCircle className='text-primary h-5 w-5' />
+        return <CheckCircle className='text-accent-earth-text h-5 w-5' />
       case 'failed':
         return <XCircle className='text-destructive h-5 w-5' />
       case 'running':
-        return <Play className='text-primary h-5 w-5' />
+        return <Play className='text-accent-earth-text h-5 w-5' />
       case 'cancelled':
         return <Pause className='text-muted-foreground h-5 w-5' />
       default:
@@ -185,15 +185,15 @@ export const BulkOperations = () => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'completed':
-        return 'bg-primary/10 text-primary'
+        return 'bg-[var(--accent-dim)] text-accent-earth-text'
       case 'failed':
         return 'bg-destructive/10 text-destructive'
       case 'running':
-        return 'bg-primary/10 text-primary'
+        return 'bg-[var(--accent-dim)] text-accent-earth-text'
       case 'cancelled':
-        return 'bg-muted/30 text-muted-foreground'
+        return 'bg-bg-surface text-muted-foreground'
       default:
-        return 'bg-muted/30 text-muted-foreground'
+        return 'bg-bg-surface text-muted-foreground'
     }
   }
 
@@ -237,7 +237,7 @@ export const BulkOperations = () => {
       {/* Header */}
       <div className='flex items-center justify-between'>
         <div>
-          <h1 className='text-2xl font-bold'>Bulk Operations</h1>
+          <h1 className='text-2xl font-medium'>Bulk Operations</h1>
           <p className='text-muted-foreground'>Perform bulk actions on users and content</p>
         </div>
       </div>
@@ -269,7 +269,7 @@ export const BulkOperations = () => {
           </div>
 
           {/* Action Selection */}
-          <div className='bg-muted/30 mb-6 flex flex-col gap-4 rounded-lg p-4 sm:flex-row'>
+          <div className='bg-bg-surface mb-6 flex flex-col gap-4 rounded-lg p-4 sm:flex-row'>
             <div className='flex-1'>
               <label className='mb-2 block text-sm font-medium'>Select Action</label>
               <Select
@@ -351,7 +351,7 @@ export const BulkOperations = () => {
               </thead>
               <tbody className='divide-border bg-background divide-y'>
                 {usersData?.users.map((user) => (
-                  <tr key={user.id} className='hover:bg-muted/30'>
+                  <tr key={user.id} className='hover:bg-bg-surface'>
                     <td className='px-6 py-4 whitespace-nowrap'>
                       <input
                         type='checkbox'
@@ -387,8 +387,8 @@ export const BulkOperations = () => {
                       <span
                         className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
                           user.role === 'admin'
-                            ? 'bg-primary/10 text-primary'
-                            : 'bg-muted/30 text-muted-foreground'
+                            ? 'text-accent-earth-text bg-[var(--accent-dim)]'
+                            : 'bg-bg-surface text-muted-foreground'
                         }`}
                       >
                         {user.role}
@@ -491,7 +491,7 @@ export const BulkOperations = () => {
                   </div>
                   <div className='bg-muted h-2 w-full rounded-full'>
                     <div
-                      className='bg-primary h-2 rounded-full transition-all duration-300'
+                      className='bg-accent-earth h-2 rounded-full transition-all duration-300'
                       style={{
                         width: `${operation.progress}%`
                       }}

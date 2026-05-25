@@ -19,11 +19,11 @@ const dayKeys: Array<'sun' | 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat'> = [
 const cellColors = (v: number, max: number) => {
   // Opacity-based single hue (orange) for a cleaner look
   const ratio = max === 0 ? 0 : v / max
-  if (ratio === 0) return 'bg-muted/40'
-  if (ratio < 0.25) return 'bg-primary/10'
-  if (ratio < 0.5) return 'bg-primary/20'
-  if (ratio < 0.75) return 'bg-primary/30'
-  return 'bg-primary/40'
+  if (ratio === 0) return 'bg-bg-surface'
+  if (ratio < 0.25) return 'bg-[var(--accent-dim)]'
+  if (ratio < 0.5) return 'bg-[var(--accent-dim)]'
+  if (ratio < 0.75) return 'bg-[var(--accent-dim)]'
+  return 'bg-[var(--accent-dim)]'
 }
 
 const ListeningHeatmap = () => {
@@ -100,7 +100,7 @@ const ListeningHeatmap = () => {
                 return (
                   <div key={`col-${dayIdx}`} className='flex flex-col items-center gap-2'>
                     <div
-                      className={`ring-border/50 aspect-square w-full rounded-md ${cellColors(v, max)} hover:ring-primary/30 ring-1 transition duration-150 hover:scale-[1.04] hover:ring-4`}
+                      className={`ring-border/50 aspect-square w-full rounded-md ${cellColors(v, max)} ring-1 transition duration-150 hover:scale-[1.04] hover:ring-4 hover:ring-[var(--accent-border)]`}
                       title={`${td(`spotify.heatmap.days.${dayKey}`) || dayKey.toUpperCase()} — ${v}`}
                     />
                     <div className='text-muted-foreground text-center text-[11px] leading-none'>
@@ -120,7 +120,7 @@ const ListeningHeatmap = () => {
                 {[0, 1, 2, 3, 4].map((i) => (
                   <div
                     key={i}
-                    className={`ring-border/50 h-3 w-3 rounded-[3px] ${['bg-muted/40', 'bg-primary/10', 'bg-primary/20', 'bg-primary/30', 'bg-primary/40'][i]} ring-1`}
+                    className={`ring-border/50 h-3 w-3 rounded-[3px] ${['bg-bg-surface', 'bg-[var(--accent-dim)]', 'bg-[var(--accent-dim)]', 'bg-[var(--accent-dim)]', 'bg-[var(--accent-dim)]'][i]} ring-1`}
                   />
                 ))}
               </div>

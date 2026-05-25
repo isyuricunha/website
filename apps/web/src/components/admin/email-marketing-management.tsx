@@ -55,14 +55,18 @@ import { api } from '@/trpc/react'
 const getBroadcastStatusColor = (status: string | undefined) => {
   switch (status ?? 'draft') {
     case 'sent':
-      return 'border border-primary/20 bg-primary/10 text-primary'
+      return 'border border-[var(--accent-border)] bg-[var(--accent-dim)] text-accent-earth-text'
     case 'scheduled':
-      return 'border border-primary/20 bg-primary/10 text-primary'
+      return 'border border-[var(--accent-border)] bg-[var(--accent-dim)] text-accent-earth-text'
     case 'draft':
-      return 'border border-border bg-muted/30 text-muted-foreground'
+      return 'border border-border bg-bg-surface text-muted-foreground'
     default:
-      return 'border border-border bg-muted/30 text-muted-foreground'
+      return 'border border-border bg-bg-surface text-muted-foreground'
   }
+}
+
+const formatBroadcastSentDate = (sentAt: string | null | undefined) => {
+  return sentAt ? new Date(sentAt).toLocaleDateString() : 'Not sent'
 }
 
 export default function EmailMarketingManagement() {
@@ -159,8 +163,12 @@ export default function EmailMarketingManagement() {
 
   useEffect(() => {
     if (analytics !== undefined && loadingStage === 'analytics') {
-      setLoadingStage('complete')
+      const timeoutId = setTimeout(() => {
+        setLoadingStage('complete')
+      }, 0)
+      return () => clearTimeout(timeoutId)
     }
+    return
   }, [analytics, loadingStage])
 
   // Mutations - Using Resend native APIs
@@ -337,9 +345,9 @@ export default function EmailMarketingManagement() {
   // Helper function to render loading indicator for each stage
   const renderLoadingIndicator = (_stage: string, isActive: boolean, isComplete: boolean) => {
     if (isComplete) {
-      return <CheckCircle className='text-primary h-5 w-5' />
+      return <CheckCircle className='text-accent-earth-text h-5 w-5' />
     } else if (isActive) {
-      return <Loader2 className='text-primary h-5 w-5 animate-spin' />
+      return <Loader2 className='text-accent-earth-text h-5 w-5 animate-spin' />
     } else {
       return <Clock className='text-muted-foreground h-5 w-5' />
     }
@@ -349,8 +357,8 @@ export default function EmailMarketingManagement() {
     <div className='space-y-8'>
       <div className='flex items-center justify-between'>
         <div className='space-y-1'>
-          <h1 className='from-foreground to-foreground/70 flex items-center gap-3 bg-gradient-to-r bg-clip-text text-4xl font-bold tracking-tight text-transparent'>
-            <div className='bg-primary/10 text-primary rounded-xl p-2.5'>
+          <h1 className='text-text-primary flex items-center gap-3 text-4xl font-medium tracking-tight'>
+            <div className='text-accent-earth-text rounded-xl bg-[var(--accent-dim)] p-2.5'>
               <Mail className='h-8 w-8' />
             </div>
             Email Marketing
@@ -363,10 +371,10 @@ export default function EmailMarketingManagement() {
 
       {/* Sequential Loading Progress */}
       {loadingStage !== 'complete' && (
-        <Card className='border-border/50 from-background to-background/80 bg-gradient-to-br backdrop-blur-sm'>
+        <Card className='bg-bg-surface border-[var(--border-subtle)]'>
           <CardHeader>
             <CardTitle className='flex items-center gap-2 text-base'>
-              <Loader2 className='text-primary h-5 w-5 animate-spin' />
+              <Loader2 className='text-accent-earth-text h-5 w-5 animate-spin' />
               Loading Email Marketing Data...
             </CardTitle>
           </CardHeader>
@@ -428,17 +436,17 @@ export default function EmailMarketingManagement() {
         {/* Overview Tab */}
         <TabsContent value='overview' className='space-y-6'>
           <div className='grid gap-5 md:grid-cols-2 lg:grid-cols-4'>
-            <Card className='border-border/50 from-background to-background/50 bg-gradient-to-br backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl'>
+            <Card className='bg-bg-surface border-[var(--border-subtle)] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl'>
               <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-3'>
                 <CardTitle className='text-muted-foreground text-sm font-semibold'>
                   Total Audiences
                 </CardTitle>
-                <div className='bg-primary/10 text-primary rounded-lg p-2'>
+                <div className='text-accent-earth-text rounded-lg bg-[var(--accent-dim)] p-2'>
                   <Users className='h-5 w-5' />
                 </div>
               </CardHeader>
               <CardContent className='space-y-2'>
-                <div className='text-3xl font-bold tracking-tight'>
+                <div className='text-3xl font-medium tracking-tight'>
                   {analytics?.totalAudiences || 0}
                 </div>
                 <p className='text-muted-foreground text-xs leading-relaxed'>
@@ -446,17 +454,17 @@ export default function EmailMarketingManagement() {
                 </p>
               </CardContent>
             </Card>
-            <Card className='border-border/50 from-background to-background/50 bg-gradient-to-br backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl'>
+            <Card className='bg-bg-surface border-[var(--border-subtle)] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl'>
               <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-3'>
                 <CardTitle className='text-muted-foreground text-sm font-semibold'>
                   Total Broadcasts
                 </CardTitle>
-                <div className='bg-primary/10 text-primary rounded-lg p-2'>
+                <div className='text-accent-earth-text rounded-lg bg-[var(--accent-dim)] p-2'>
                   <Mail className='h-5 w-5' />
                 </div>
               </CardHeader>
               <CardContent className='space-y-2'>
-                <div className='text-3xl font-bold tracking-tight'>
+                <div className='text-3xl font-medium tracking-tight'>
                   {analytics?.totalBroadcasts || 0}
                 </div>
                 <p className='text-muted-foreground text-xs leading-relaxed'>
@@ -464,17 +472,17 @@ export default function EmailMarketingManagement() {
                 </p>
               </CardContent>
             </Card>
-            <Card className='border-border/50 from-background to-background/50 bg-gradient-to-br backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl'>
+            <Card className='bg-bg-surface border-[var(--border-subtle)] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl'>
               <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-3'>
                 <CardTitle className='text-muted-foreground text-sm font-semibold'>
                   Subscribers
                 </CardTitle>
-                <div className='bg-primary/10 text-primary rounded-lg p-2'>
+                <div className='text-accent-earth-text rounded-lg bg-[var(--accent-dim)] p-2'>
                   <TrendingUp className='h-5 w-5' />
                 </div>
               </CardHeader>
               <CardContent className='space-y-2'>
-                <div className='text-3xl font-bold tracking-tight'>
+                <div className='text-3xl font-medium tracking-tight'>
                   {analytics?.totalSubscribers || 0}
                 </div>
                 <p className='text-muted-foreground text-xs leading-relaxed'>
@@ -482,17 +490,17 @@ export default function EmailMarketingManagement() {
                 </p>
               </CardContent>
             </Card>
-            <Card className='border-border/50 from-background to-background/50 bg-gradient-to-br backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl'>
+            <Card className='bg-bg-surface border-[var(--border-subtle)] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl'>
               <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-3'>
                 <CardTitle className='text-muted-foreground text-sm font-semibold'>
                   Sent Broadcasts
                 </CardTitle>
-                <div className='bg-primary/10 text-primary rounded-lg p-2'>
+                <div className='text-accent-earth-text rounded-lg bg-[var(--accent-dim)] p-2'>
                   <Send className='h-5 w-5' />
                 </div>
               </CardHeader>
               <CardContent className='space-y-2'>
-                <div className='text-3xl font-bold tracking-tight'>
+                <div className='text-3xl font-medium tracking-tight'>
                   {analytics?.broadcasts?.sent || 0}
                 </div>
                 <p className='text-muted-foreground text-xs leading-relaxed'>
@@ -503,10 +511,10 @@ export default function EmailMarketingManagement() {
           </div>
 
           <div className='grid gap-6 md:grid-cols-2'>
-            <Card className='border-border/50 from-background to-background/80 bg-gradient-to-br backdrop-blur-sm'>
+            <Card className='bg-bg-surface border-[var(--border-subtle)]'>
               <CardHeader>
                 <div className='mb-1 flex items-center gap-2'>
-                  <div className='bg-primary/10 text-primary rounded-lg p-2'>
+                  <div className='text-accent-earth-text rounded-lg bg-[var(--accent-dim)] p-2'>
                     <Clock className='h-4 w-4' />
                   </div>
                   <CardTitle className='text-base'>Recent Activity</CardTitle>
@@ -524,7 +532,7 @@ export default function EmailMarketingManagement() {
                       <div className='min-w-0 flex-1'>
                         <p className='truncate text-sm font-medium'>{broadcast.name}</p>
                         <p className='text-muted-foreground text-sm'>
-                          {new Date(broadcast.sent_at || Date.now()).toLocaleDateString()}
+                          {formatBroadcastSentDate(broadcast.sent_at)}
                         </p>
                       </div>
                     </div>
@@ -533,10 +541,10 @@ export default function EmailMarketingManagement() {
               </CardContent>
             </Card>
 
-            <Card className='border-border/50 from-background to-background/80 bg-gradient-to-br backdrop-blur-sm'>
+            <Card className='bg-bg-surface border-[var(--border-subtle)]'>
               <CardHeader>
                 <div className='mb-1 flex items-center gap-2'>
-                  <div className='bg-primary/10 text-primary rounded-lg p-2'>
+                  <div className='text-accent-earth-text rounded-lg bg-[var(--accent-dim)] p-2'>
                     <Send className='h-4 w-4' />
                   </div>
                   <CardTitle className='text-base'>Quick Actions</CardTitle>
@@ -575,7 +583,7 @@ export default function EmailMarketingManagement() {
         {/* Audiences Tab */}
         <TabsContent value='audiences' className='space-y-6'>
           <div className='flex items-center justify-between'>
-            <h2 className='text-2xl font-bold'>Audiences</h2>
+            <h2 className='text-2xl font-medium'>Audiences</h2>
             <Dialog open={isCreateAudienceDialogOpen} onOpenChange={setIsCreateAudienceDialogOpen}>
               <DialogTrigger asChild>
                 <Button>
@@ -623,7 +631,7 @@ export default function EmailMarketingManagement() {
             {audiences?.audiences?.map((audience) => (
               <Card
                 key={audience.id}
-                className='border-border/50 from-background to-background/80 bg-gradient-to-br backdrop-blur-sm transition-all duration-200 hover:shadow-md'
+                className='bg-bg-surface border-[var(--border-subtle)] transition-all duration-200 hover:shadow-md'
               >
                 <CardHeader>
                   <CardTitle className='flex items-center justify-between text-base'>
@@ -671,7 +679,7 @@ export default function EmailMarketingManagement() {
         {/* Broadcasts Tab */}
         <TabsContent value='broadcasts' className='space-y-6'>
           <div className='flex items-center justify-between'>
-            <h2 className='text-2xl font-bold'>Broadcasts</h2>
+            <h2 className='text-2xl font-medium'>Broadcasts</h2>
             <div className='flex items-center gap-4'>
               <Select value={broadcastFilter} onValueChange={setBroadcastFilter}>
                 <SelectTrigger className='w-[180px]'>
@@ -805,14 +813,14 @@ export default function EmailMarketingManagement() {
             </div>
           </div>
 
-          <Card className='border-border/50 from-background to-background/80 bg-gradient-to-br backdrop-blur-sm'>
+          <Card className='bg-bg-surface border-[var(--border-subtle)]'>
             <CardContent className='p-0'>
               <ScrollArea className='h-[500px]'>
                 <div className='space-y-4 p-4'>
                   {filteredBroadcasts.map((broadcast) => (
                     <Card
                       key={broadcast.id}
-                      className='border-2 transition-all duration-200 hover:shadow-md'
+                      className='border transition-all duration-200 hover:shadow-md'
                     >
                       <CardContent className='p-4'>
                         <div className='flex items-start justify-between'>
@@ -827,7 +835,7 @@ export default function EmailMarketingManagement() {
                             <div className='text-muted-foreground flex items-center gap-4 text-sm'>
                               <span className='flex items-center gap-1'>
                                 <Calendar className='h-3 w-3' />
-                                {new Date(broadcast.sent_at || Date.now()).toLocaleDateString()}
+                                {formatBroadcastSentDate(broadcast.sent_at)}
                               </span>
                               <span className='flex items-center gap-1'>
                                 <Users className='h-3 w-3' />
@@ -922,7 +930,7 @@ export default function EmailMarketingManagement() {
         {/* Templates Tab */}
         <TabsContent value='templates' className='space-y-6'>
           <div className='flex items-center justify-between'>
-            <h2 className='text-2xl font-bold'>Email Templates</h2>
+            <h2 className='text-2xl font-medium'>Email Templates</h2>
             <Dialog open={isCreateTemplateDialogOpen} onOpenChange={setIsCreateTemplateDialogOpen}>
               <DialogTrigger asChild>
                 <Button>

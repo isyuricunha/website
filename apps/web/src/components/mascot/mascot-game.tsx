@@ -10,27 +10,34 @@ interface MascotGameProps {
   onClose: () => void
 }
 
+const getSavedHighScore = () => {
+  try {
+    const saved = globalThis.localStorage?.getItem('vc_mascot_game_high_score')
+    return saved ? Number.parseInt(saved) : 0
+  } catch {
+    return 0
+  }
+}
+
+const saveHighScore = (score: number) => {
+  try {
+    globalThis.localStorage?.setItem('vc_mascot_game_high_score', score.toString())
+  } catch {
+    // Ignore localStorage errors
+  }
+}
+
 const MascotGame = ({ isOpen, onClose }: MascotGameProps) => {
   const t = useTranslations()
   const [score, setScore] = useState(0)
   const [timeLeft, setTimeLeft] = useState(30)
   const [isPlaying, setIsPlaying] = useState(false)
   const [targetPosition, setTargetPosition] = useState({ x: 50, y: 50 })
-  const [highScore, setHighScore] = useState(0)
+  const [highScore, setHighScore] = useState(getSavedHighScore)
   const [difficulty, setDifficulty] = useState<'easy' | 'medium' | 'hard'>('easy')
   const [gameMode, setGameMode] = useState<'classic' | 'survival' | 'challenge'>('classic')
   const [multiplier, setMultiplier] = useState(1)
   const [achievements, setAchievements] = useState<string[]>([])
-
-  // Load high score from localStorage
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem('vc_mascot_game_high_score')
-      if (saved) setHighScore(Number.parseInt(saved))
-    } catch {
-      // Ignore localStorage errors
-    }
-  }, [])
 
   // Game timer - Runs continuously without restarting on score changes
   useEffect(() => {
@@ -48,22 +55,6 @@ const MascotGame = ({ isOpen, onClose }: MascotGameProps) => {
 
     return () => clearInterval(timer)
   }, [isPlaying]) // Only depend on isPlaying to prevent timer restarts
-
-  // Handle game end and high score saving separately
-  useEffect(() => {
-    if (
-      !isPlaying &&
-      timeLeft === 0 && // Game ended, check and save high score
-      score > highScore
-    ) {
-      setHighScore(score)
-      try {
-        localStorage.setItem('vc_mascot_game_high_score', score.toString())
-      } catch {
-        // Ignore localStorage errors
-      }
-    }
-  }, [isPlaying, timeLeft, score, highScore])
 
   // Get difficulty settings
   const getDifficultySettings = useCallback(() => {
@@ -108,7 +99,12 @@ const MascotGame = ({ isOpen, onClose }: MascotGameProps) => {
 
     const settings = getDifficultySettings()
     const basePoints = settings.scoreMultiplier * multiplier
-    setScore((prev) => prev + basePoints)
+    const nextScore = score + basePoints
+    setScore(nextScore)
+    if (nextScore > highScore) {
+      setHighScore(nextScore)
+      saveHighScore(nextScore)
+    }
     moveTarget()
 
     // Survival mode: time decreases faster as score increases
@@ -117,18 +113,27 @@ const MascotGame = ({ isOpen, onClose }: MascotGameProps) => {
     }
 
     // Check for achievements
-    if (score === 10 && !achievements.includes('first_10')) {
+    if (nextScore === 10 && !achievements.includes('first_10')) {
       setAchievements((prev) => [...prev, 'first_10'])
     }
-    if (score === 50 && !achievements.includes('speed_demon')) {
+    if (nextScore === 50 && !achievements.includes('speed_demon')) {
       setAchievements((prev) => [...prev, 'speed_demon'])
     }
-  }, [isPlaying, moveTarget, getDifficultySettings, multiplier, score, gameMode, achievements])
+  }, [
+    isPlaying,
+    moveTarget,
+    getDifficultySettings,
+    multiplier,
+    score,
+    highScore,
+    gameMode,
+    achievements
+  ])
 
   if (!isOpen) return null
 
   return (
-    <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/50'>
+    <div className='bg-bg-base/80 fixed inset-0 z-50 flex items-center justify-center'>
       <div className='bg-popover text-popover-foreground relative w-96 max-w-[90vw] rounded-lg border p-6 shadow-lg'>
         <div className='mb-4 flex items-center justify-between'>
           <h2 className='text-lg font-semibold'>{t('mascot.game.title')}</h2>
@@ -209,7 +214,7 @@ const MascotGame = ({ isOpen, onClose }: MascotGameProps) => {
           <div className='bg-muted relative h-64 w-full rounded border'>
             <button
               type='button'
-              className={`bg-primary focus-visible:ring-ring absolute rounded-full transition-all hover:scale-110 focus-visible:ring-2 focus-visible:outline-none ${multiplier > 1 ? 'animate-pulse bg-yellow-500' : ''}`}
+              className={`bg-accent-earth focus-visible:ring-ring absolute rounded-full transition-all hover:scale-110 focus-visible:ring-2 focus-visible:outline-none ${multiplier > 1 ? 'animate-pulse bg-[var(--accent-dim)]' : ''}`}
               style={{
                 left: `${targetPosition.x}%`,
                 top: `${targetPosition.y}%`,
@@ -221,7 +226,7 @@ const MascotGame = ({ isOpen, onClose }: MascotGameProps) => {
               aria-label={t('mascot.game.clickTarget')}
             />
             {multiplier > 1 && (
-              <div className='absolute top-2 left-2 rounded bg-yellow-500 px-2 py-1 text-xs font-bold text-white'>
+              <div className='text-accent-earth-text absolute top-2 left-2 rounded bg-[var(--accent-dim)] px-2 py-1 text-xs font-medium'>
                 {multiplier}x
               </div>
             )}
@@ -235,7 +240,7 @@ const MascotGame = ({ isOpen, onClose }: MascotGameProps) => {
             </p>
             <button
               type='button'
-              className='bg-primary text-primary-foreground hover:bg-primary/90 focus-visible:ring-ring rounded px-4 py-2 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none'
+              className='bg-accent-earth text-accent-earth-text hover:bg-accent-earth-hover focus-visible:ring-ring rounded px-4 py-2 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none'
               onClick={startGame}
             >
               {timeLeft === 0 ? t('mascot.game.playAgain') : t('mascot.game.start')}

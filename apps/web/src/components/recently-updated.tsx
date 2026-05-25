@@ -88,10 +88,10 @@ const RecentlyUpdated = () => {
         year: 'numeric',
         timeZone: 'UTC'
       })
-    } catch (e) {
+    } catch (error) {
       console.warn(
         `[RecentlyUpdated] Failed to create DateTimeFormat for locale: ${resolvedLocale}`,
-        e
+        error
       )
       return new Intl.DateTimeFormat('en', {
         month: 'short',
@@ -132,7 +132,7 @@ const RecentlyUpdated = () => {
                 </div>
                 <div className='min-w-0 flex-1'>
                   <div className='mb-1 flex items-center gap-2'>
-                    <h4 className='group-hover:text-primary truncate text-sm font-medium sm:text-base'>
+                    <h4 className='group-hover:text-accent-earth-text truncate text-sm font-medium sm:text-base'>
                       {item.title}
                     </h4>
                     <span className='text-muted-foreground bg-muted rounded-full px-2 py-0.5 text-xs'>

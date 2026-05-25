@@ -3,21 +3,29 @@
 import { useTranslations } from '@isyuricunha/i18n/client'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@isyuricunha/ui'
 import { Clock, Calendar, TrendingUp, Music } from 'lucide-react'
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useSyncExternalStore } from 'react'
 
 import { api } from '@/trpc/react'
 import Link from '../link'
 import MusicImage from './music-image'
 
+function noopUnsubscribe() {
+  return
+}
+
+const subscribeToMount = () => noopUnsubscribe
+const getClientMountedSnapshot = () => true
+const getServerMountedSnapshot = () => false
+
 const MusicTimeline = () => {
   const t = useTranslations()
   const td = (key: string, values?: Record<string, any>) => (t as any)(key, values) as string
   const [isRefreshing, setIsRefreshing] = useState(false)
-  const [isMounted, setIsMounted] = useState(false)
-
-  useEffect(() => {
-    setIsMounted(true)
-  }, [])
+  const isMounted = useSyncExternalStore(
+    subscribeToMount,
+    getClientMountedSnapshot,
+    getServerMountedSnapshot
+  )
 
   const {
     data: recentTracks,
@@ -197,11 +205,11 @@ const MusicTimeline = () => {
             <div key={period} className='relative'>
               {/* Timeline Header */}
               <div className='mb-4 flex items-center gap-2'>
-                <div className='bg-primary/10 flex h-8 w-8 items-center justify-center rounded-full'>
+                <div className='flex h-8 w-8 items-center justify-center rounded-full bg-[var(--accent-dim)]'>
                   {period === 'last-hour' ? (
-                    <Clock className='text-primary h-4 w-4' />
+                    <Clock className='text-accent-earth-text h-4 w-4' />
                   ) : (
-                    <Calendar className='text-primary h-4 w-4' />
+                    <Calendar className='text-accent-earth-text h-4 w-4' />
                   )}
                 </div>
                 <h3 className='text-sm font-semibold sm:text-base'>
@@ -220,7 +228,7 @@ const MusicTimeline = () => {
                 {tracks.slice(0, 5).map((track) => (
                   <div key={`${track.id}-${track.playedAt}`} className='relative'>
                     {/* Timeline Dot */}
-                    <div className='bg-primary border-background absolute top-2 -left-[1.75rem] h-3 w-3 rounded-full border-2' />
+                    <div className='bg-accent-earth border-bg-base absolute top-2 -left-[1.75rem] h-3 w-3 rounded-full border' />
 
                     {/* Track Item */}
                     <Link
@@ -237,7 +245,7 @@ const MusicTimeline = () => {
                         />
                       </div>
                       <div className='min-w-0 flex-1'>
-                        <h4 className='group-hover:text-primary truncate text-xs font-medium sm:text-sm'>
+                        <h4 className='group-hover:text-accent-earth-text truncate text-xs font-medium sm:text-sm'>
                           {track.name}
                         </h4>
                         <p className='text-muted-foreground truncate text-[10px] sm:text-xs'>
@@ -259,7 +267,7 @@ const MusicTimeline = () => {
                 {/* Show more indicator */}
                 {tracks.length > 5 && (
                   <div className='relative'>
-                    <div className='bg-muted border-background absolute top-2 -left-[1.75rem] h-3 w-3 rounded-full border-2' />
+                    <div className='bg-muted border-bg-base absolute top-2 -left-[1.75rem] h-3 w-3 rounded-full border' />
                     <div className='p-3 text-center'>
                       <p className='text-muted-foreground text-xs sm:text-sm'>
                         {t('spotify.timeline.more-tracks', { count: tracks.length - 5 })}
@@ -282,7 +290,7 @@ const MusicTimeline = () => {
                   {t('spotify.timeline.labels.total-tracks')}
                 </span>
               </div>
-              <p className='text-lg font-bold sm:text-xl'>{recentTracks.length}</p>
+              <p className='text-lg font-medium sm:text-xl'>{recentTracks.length}</p>
             </div>
             <div className='text-center'>
               <div className='mb-1 flex items-center justify-center gap-2'>
@@ -291,7 +299,7 @@ const MusicTimeline = () => {
                   {t('spotify.timeline.labels.unique-artists')}
                 </span>
               </div>
-              <p className='text-lg font-bold sm:text-xl'>
+              <p className='text-lg font-medium sm:text-xl'>
                 {new Set(recentTracks.map((track: any) => track.artist)).size}
               </p>
             </div>

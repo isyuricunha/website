@@ -2,7 +2,7 @@
 
 import { cn } from '@isyuricunha/utils'
 import { motion } from 'motion/react'
-import { useEffect, useState } from 'react'
+import { useSyncExternalStore } from 'react'
 
 type SqlJokesBackgroundProps = {
   className?: string
@@ -45,21 +45,33 @@ const build_rows = () => {
   ]
 }
 
+const reduced_motion_query = '(prefers-reduced-motion: reduce)'
+
+function noop_unsubscribe() {
+  return
+}
+
+const subscribe_to_reduced_motion = (callback: () => void) => {
+  if (typeof globalThis.matchMedia !== 'function') return noop_unsubscribe
+
+  const media_query = globalThis.matchMedia(reduced_motion_query)
+  media_query.addEventListener('change', callback)
+
+  return () => media_query.removeEventListener('change', callback)
+}
+
+const get_reduced_motion_snapshot = () => {
+  return typeof globalThis.matchMedia === 'function'
+    ? globalThis.matchMedia(reduced_motion_query).matches
+    : false
+}
+
 const SqlJokesBackground = ({ className }: SqlJokesBackgroundProps) => {
-  const [prefers_reduced_motion, set_prefers_reduced_motion] = useState(false)
-
-  useEffect(() => {
-    if (typeof globalThis.matchMedia !== 'function') return
-
-    const media_query = globalThis.matchMedia('(prefers-reduced-motion: reduce)')
-
-    set_prefers_reduced_motion(media_query.matches)
-
-    const handle_change = () => set_prefers_reduced_motion(media_query.matches)
-    media_query.addEventListener('change', handle_change)
-
-    return () => media_query.removeEventListener('change', handle_change)
-  }, [])
+  const prefers_reduced_motion = useSyncExternalStore(
+    subscribe_to_reduced_motion,
+    get_reduced_motion_snapshot,
+    () => false
+  )
 
   const rows = build_rows()
 
@@ -72,7 +84,7 @@ const SqlJokesBackground = ({ className }: SqlJokesBackgroundProps) => {
         className
       )}
     >
-      <div className='from-background/70 via-background/10 to-background/70 absolute inset-0 bg-linear-to-b' />
+      <div className='from-background/70 via-background/10 to-background/70 bg-bg-surface absolute inset-0' />
 
       <div className='absolute inset-0 grid grid-rows-3 gap-6 px-2 py-6 sm:px-6'>
         {rows.map((row, row_index) => {

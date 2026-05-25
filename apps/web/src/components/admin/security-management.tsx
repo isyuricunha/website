@@ -145,7 +145,7 @@ export default function SecurityManagement() {
 
   const categories = useMemo(() => {
     const keys = Object.keys(securitySettings?.settings ?? {})
-    return keys.sort((a, b) => a.localeCompare(b))
+    return keys.toSorted((a, b) => a.localeCompare(b))
   }, [securitySettings?.settings])
 
   const filteredSettings = useMemo(() => {
@@ -242,7 +242,7 @@ export default function SecurityManagement() {
     <div className='space-y-6'>
       <div className='flex items-center justify-between'>
         <div>
-          <h1 className='text-xl font-bold sm:text-2xl'>Security Management</h1>
+          <h1 className='text-xl font-medium sm:text-2xl'>Security Management</h1>
           <p className='text-muted-foreground text-sm'>Monitor and manage system security</p>
         </div>
       </div>
@@ -255,7 +255,7 @@ export default function SecurityManagement() {
             <AlertTriangle className='text-muted-foreground h-4 w-4' />
           </CardHeader>
           <CardContent>
-            <div className='text-2xl font-bold'>{securityStats?.events.total || 0}</div>
+            <div className='text-2xl font-medium'>{securityStats?.events.total || 0}</div>
             <p className='text-muted-foreground text-xs'>
               {securityStats?.events.critical || 0} critical events
             </p>
@@ -268,7 +268,7 @@ export default function SecurityManagement() {
             <Users className='text-muted-foreground h-4 w-4' />
           </CardHeader>
           <CardContent>
-            <div className='text-2xl font-bold'>{securityStats?.loginAttempts.total || 0}</div>
+            <div className='text-2xl font-medium'>{securityStats?.loginAttempts.total || 0}</div>
             <p className='text-muted-foreground text-xs'>
               {securityStats?.loginAttempts.failed || 0} failed attempts
             </p>
@@ -281,7 +281,7 @@ export default function SecurityManagement() {
             <Lock className='text-muted-foreground h-4 w-4' />
           </CardHeader>
           <CardContent>
-            <div className='text-2xl font-bold'>{securityStats?.lockouts.active || 0}</div>
+            <div className='text-2xl font-medium'>{securityStats?.lockouts.active || 0}</div>
             <p className='text-muted-foreground text-xs'>Active lockouts</p>
           </CardContent>
         </Card>
@@ -292,7 +292,7 @@ export default function SecurityManagement() {
             <Shield className='text-muted-foreground h-4 w-4' />
           </CardHeader>
           <CardContent>
-            <div className='text-2xl font-bold'>
+            <div className='text-2xl font-medium'>
               {securityStats?.twoFactor.adoptionRate?.toFixed(1) || 0}%
             </div>
             <p className='text-muted-foreground text-xs'>
@@ -364,7 +364,7 @@ export default function SecurityManagement() {
                     </div>
                     <div className='flex justify-between'>
                       <span>Successful:</span>
-                      <span className='text-primary font-medium'>
+                      <span className='text-accent-earth-text font-medium'>
                         {loginAttempts?.summary.successful || 0}
                       </span>
                     </div>

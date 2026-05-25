@@ -33,7 +33,7 @@ const GithubRepoCard = ({ repo }: { repo: Repo }) => {
   return (
     <Link
       href={repo.url}
-      className='hover:border-primary/20 dark:hover:border-primary/20 group relative overflow-hidden rounded-lg border border-gray-200 p-3 transition-all hover:shadow-md dark:border-zinc-700'
+      className='group relative overflow-hidden rounded-lg border border-[var(--border-subtle)] p-3 transition-all hover:border-[var(--accent-border)] hover:shadow-md dark:hover:border-[var(--accent-border)]'
     >
       {/* External link indicator */}
       <div className='absolute top-3 right-3 opacity-0 transition-opacity group-hover:opacity-100'>
@@ -42,7 +42,7 @@ const GithubRepoCard = ({ repo }: { repo: Repo }) => {
 
       <div className='space-y-2'>
         <div className='space-y-1'>
-          <h3 className='group-hover:text-primary line-clamp-1 pr-8 text-sm font-medium transition-colors'>
+          <h3 className='group-hover:text-accent-earth-text line-clamp-1 pr-8 text-sm font-medium transition-colors'>
             {repo.name}
           </h3>
           {repo.description && (
@@ -53,7 +53,7 @@ const GithubRepoCard = ({ repo }: { repo: Repo }) => {
         {/* GitHub Stats */}
         <div className='text-muted-foreground flex items-center gap-3 text-xs'>
           <div className='flex items-center gap-1'>
-            <Star className='h-3 w-3 text-yellow-500' />
+            <Star className='text-accent-earth-text h-3 w-3' />
             <span>{repo.stargazersCount}</span>
           </div>
           {repo.forksCount !== undefined && (

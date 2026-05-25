@@ -21,9 +21,9 @@ const NowPlaying = () => {
       <div className='relative flex h-5 w-5 items-center justify-center'>
         {isPlaying ? (
           <div className='flex h-3 items-end gap-[2px]'>
-            <div className='bg-primary animate-music-bar-1 w-[3px] opacity-80' />
-            <div className='bg-primary animate-music-bar-2 w-[3px] opacity-80' />
-            <div className='bg-primary animate-music-bar-3 w-[3px] opacity-80' />
+            <div className='bg-accent-earth animate-music-bar-1 w-[3px] opacity-80' />
+            <div className='bg-accent-earth animate-music-bar-2 w-[3px] opacity-80' />
+            <div className='bg-accent-earth animate-music-bar-3 w-[3px] opacity-80' />
           </div>
         ) : (
           <Music className='text-muted-foreground h-4 w-4 opacity-50' />

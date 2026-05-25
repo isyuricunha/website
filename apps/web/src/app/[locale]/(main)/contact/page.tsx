@@ -117,7 +117,7 @@ const ContactPage = async (props: PageProps) => {
                     <p className='text-sm font-medium'>{t('contact.direct.email-label')}</p>
                     <Link
                       href='mailto:me@yuricunha.com'
-                      className='text-primary text-xs hover:underline sm:text-sm'
+                      className='text-accent-earth-text text-xs hover:underline sm:text-sm'
                     >
                       me@yuricunha.com
                     </Link>
@@ -155,7 +155,9 @@ const ContactPage = async (props: PageProps) => {
                       {social.icon}
                     </div>
                     <div className='flex-1'>
-                      <p className='group-hover:text-primary text-sm font-medium'>{social.name}</p>
+                      <p className='group-hover:text-accent-earth-text text-sm font-medium'>
+                        {social.name}
+                      </p>
                       <p className='text-muted-foreground text-xs'>{social.description}</p>
                     </div>
                   </Link>

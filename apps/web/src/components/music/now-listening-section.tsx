@@ -155,7 +155,7 @@ const NowListeningSection = () => {
           </div>
 
           <div className='min-w-0 flex-1'>
-            <h3 className='group-hover:text-primary truncate text-sm font-medium sm:text-base'>
+            <h3 className='group-hover:text-accent-earth-text truncate text-sm font-medium sm:text-base'>
               {currentTrack.name}
             </h3>
             <p className='text-muted-foreground truncate text-xs sm:text-sm'>
@@ -167,9 +167,9 @@ const NowListeningSection = () => {
             <div className='relative flex h-6 w-6 items-center justify-center'>
               {currentTrack.isPlaying ? (
                 <div className='flex h-4 items-end gap-[3px]'>
-                  <div className='bg-primary animate-music-bar-1 w-[4px] opacity-80' />
-                  <div className='bg-primary animate-music-bar-2 w-[4px] opacity-80' />
-                  <div className='bg-primary animate-music-bar-3 w-[4px] opacity-80' />
+                  <div className='bg-accent-earth animate-music-bar-1 w-[4px] opacity-80' />
+                  <div className='bg-accent-earth animate-music-bar-2 w-[4px] opacity-80' />
+                  <div className='bg-accent-earth animate-music-bar-3 w-[4px] opacity-80' />
                 </div>
               ) : (
                 <Music className='text-muted-foreground h-5 w-5 opacity-50' />

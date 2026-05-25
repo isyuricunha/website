@@ -183,7 +183,7 @@ export default function CommunicationManagement() {
     <div className='space-y-6'>
       <div className='flex items-center justify-between'>
         <div>
-          <h1 className='text-3xl font-bold'>Communication Management</h1>
+          <h1 className='text-3xl font-medium'>Communication Management</h1>
           <p className='text-muted-foreground'>Manage emails, announcements, and notifications</p>
         </div>
       </div>
@@ -196,7 +196,7 @@ export default function CommunicationManagement() {
             <Mail className='text-muted-foreground h-4 w-4' />
           </CardHeader>
           <CardContent>
-            <div className='text-2xl font-bold'>{commStats?.campaigns.total || 0}</div>
+            <div className='text-2xl font-medium'>{commStats?.campaigns.total || 0}</div>
             <p className='text-muted-foreground text-xs'>
               {commStats?.campaigns.sent || 0} sent campaigns
             </p>
@@ -209,7 +209,7 @@ export default function CommunicationManagement() {
             <Send className='text-muted-foreground h-4 w-4' />
           </CardHeader>
           <CardContent>
-            <div className='text-2xl font-bold'>{commStats?.campaigns.totalEmailsSent || 0}</div>
+            <div className='text-2xl font-medium'>{commStats?.campaigns.totalEmailsSent || 0}</div>
             <p className='text-muted-foreground text-xs'>
               {commStats?.campaigns.totalEmailsDelivered || 0} delivered
             </p>
@@ -222,7 +222,7 @@ export default function CommunicationManagement() {
             <Megaphone className='text-muted-foreground h-4 w-4' />
           </CardHeader>
           <CardContent>
-            <div className='text-2xl font-bold'>{commStats?.announcements.total || 0}</div>
+            <div className='text-2xl font-medium'>{commStats?.announcements.total || 0}</div>
             <p className='text-muted-foreground text-xs'>
               {commStats?.announcements.active || 0} active
             </p>
@@ -235,7 +235,7 @@ export default function CommunicationManagement() {
             <Bell className='text-muted-foreground h-4 w-4' />
           </CardHeader>
           <CardContent>
-            <div className='text-2xl font-bold'>{commStats?.notifications.total || 0}</div>
+            <div className='text-2xl font-medium'>{commStats?.notifications.total || 0}</div>
             <p className='text-muted-foreground text-xs'>
               {commStats?.notifications.unread || 0} unread
             </p>
@@ -269,9 +269,7 @@ export default function CommunicationManagement() {
                     {campaigns?.campaigns.slice(0, 5).map((campaign) => (
                       <div key={campaign.id} className='flex items-center justify-between'>
                         <div className='flex items-center space-x-2'>
-                          <Badge variant={getStatusColor(campaign.status) as any}>
-                            {campaign.status}
-                          </Badge>
+                          <Badge variant={getStatusColor(campaign.status)}>{campaign.status}</Badge>
                           <span className='text-sm'>{campaign.name}</span>
                         </div>
                         <span className='text-muted-foreground text-xs'>
@@ -301,7 +299,7 @@ export default function CommunicationManagement() {
                       .map((announcement) => (
                         <div key={announcement.id} className='flex items-center justify-between'>
                           <div className='flex items-center space-x-2'>
-                            <Badge variant={getAnnouncementTypeVariant(announcement.type) as any}>
+                            <Badge variant={getAnnouncementTypeVariant(announcement.type)}>
                               {announcement.type}
                             </Badge>
                             <span className='text-sm'>{announcement.title}</span>
@@ -380,9 +378,7 @@ export default function CommunicationManagement() {
                       <div key={campaign.id} className='rounded border p-3'>
                         <div className='mb-2 flex items-center justify-between'>
                           <div className='font-medium'>{campaign.name}</div>
-                          <Badge variant={getStatusColor(campaign.status) as any}>
-                            {campaign.status}
-                          </Badge>
+                          <Badge variant={getStatusColor(campaign.status)}>{campaign.status}</Badge>
                         </div>
                         <div className='text-muted-foreground mb-2 text-sm'>
                           Subject: {campaign.subject}
@@ -600,7 +596,7 @@ export default function CommunicationManagement() {
                         <div className='mb-2 flex items-center justify-between'>
                           <div className='font-medium'>{announcement.title}</div>
                           <div className='flex items-center space-x-2'>
-                            <Badge variant={getAnnouncementTypeVariant(announcement.type) as any}>
+                            <Badge variant={getAnnouncementTypeVariant(announcement.type)}>
                               {announcement.type}
                             </Badge>
                             {announcement.isActive && <Badge variant='default'>Active</Badge>}

@@ -149,8 +149,8 @@ const SiteSearch = () => {
       }
     }
 
-    window.addEventListener('yue-open-search' as any, handleYueSearch)
-    return () => window.removeEventListener('yue-open-search' as any, handleYueSearch)
+    globalThis.addEventListener('yue-open-search' as any, handleYueSearch)
+    return () => globalThis.removeEventListener('yue-open-search' as any, handleYueSearch)
   }, [])
 
   // Save search to recent searches
@@ -329,7 +329,7 @@ const SiteSearch = () => {
                       </div>
                       <div className='min-w-0 flex-1'>
                         <div className='mb-1 flex items-center gap-2'>
-                          <h4 className='group-hover:text-primary truncate text-sm font-medium'>
+                          <h4 className='group-hover:text-accent-earth-text truncate text-sm font-medium'>
                             <HighlightText text={result.title} searchTerm={query} />
                           </h4>
                           <span className='text-muted-foreground bg-muted rounded-full px-2 py-0.5 text-xs'>
