@@ -17,12 +17,28 @@ import {
   Textarea,
   toast
 } from '@isyuricunha/ui'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 
 import { changeEmail, changePassword, updateUser, useSession } from '@/lib/auth-client'
 import { api } from '@/trpc/react'
 import { getAvatarAbbreviation } from '@/utils/get-avatar-abbreviation'
 import { getDefaultImage } from '@/utils/get-default-image'
+
+type ProfileForm = {
+  image: string
+  bio: string
+  username: string
+  isPublic: boolean
+  nameColor: string
+  nameEffect: string
+}
+
+type ProfileFormState = {
+  sourceKey: string
+  form: ProfileForm
+}
+
+type ProfileFormUpdater = ProfileForm | ((previous: ProfileForm) => ProfileForm)
 
 const SettingsForm = () => {
   const { data: session, isPending } = useSession()
@@ -30,20 +46,51 @@ const SettingsForm = () => {
   const router = useRouter()
 
   const user = session?.user
+  const userId = user?.id
 
   const defaultImage = useMemo(() => {
-    if (!user?.id) return null
-    return getDefaultImage(user.id)
-  }, [user?.id])
+    if (!userId) return null
+    return getDefaultImage(userId)
+  }, [userId])
 
-  const [profileForm, setProfileForm] = useState({
-    image: '',
-    bio: '',
-    username: '',
-    isPublic: true,
-    nameColor: '',
-    nameEffect: 'none'
+  const profileFormDefaults: ProfileForm = {
+    image: user?.image ?? '',
+    bio: user?.bio ?? '',
+    username: user?.username ?? '',
+    isPublic: user?.isPublic ?? true,
+    nameColor: user?.nameColor ?? '',
+    nameEffect: user?.nameEffect ?? 'none'
+  }
+  const profileFormSourceKey = [
+    userId ?? '',
+    profileFormDefaults.image,
+    profileFormDefaults.bio,
+    profileFormDefaults.username,
+    String(profileFormDefaults.isPublic),
+    profileFormDefaults.nameColor,
+    profileFormDefaults.nameEffect
+  ].join('\u001F')
+
+  const [profileFormState, setProfileFormState] = useState<ProfileFormState>(() => {
+    return {
+      sourceKey: profileFormSourceKey,
+      form: profileFormDefaults
+    }
   })
+  const profileForm =
+    profileFormState.sourceKey === profileFormSourceKey
+      ? profileFormState.form
+      : profileFormDefaults
+
+  const updateProfileForm = (updater: ProfileFormUpdater) => {
+    setProfileFormState((previousState) => {
+      const previousForm =
+        previousState.sourceKey === profileFormSourceKey ? previousState.form : profileFormDefaults
+      const form = typeof updater === 'function' ? updater(previousForm) : updater
+
+      return { sourceKey: profileFormSourceKey, form }
+    })
+  }
 
   const [emailForm, setEmailForm] = useState({
     newEmail: ''
@@ -62,19 +109,6 @@ const SettingsForm = () => {
   const [isSavingPassword, setIsSavingPassword] = useState(false)
 
   const createAvatarUploadUrlMutation = api.users.createAvatarUploadUrl.useMutation()
-
-  useEffect(() => {
-    if (!user) return
-
-    setProfileForm({
-      image: user.image ?? '',
-      bio: user.bio ?? '',
-      username: user.username ?? '',
-      isPublic: user.isPublic ?? true,
-      nameColor: user.nameColor ?? '',
-      nameEffect: user.nameEffect ?? 'none'
-    })
-  }, [user])
 
   if (isPending) return null
   if (!session) return null
@@ -155,7 +189,7 @@ const SettingsForm = () => {
 
       toast.success(t('settings.messages.avatar-updated'))
       setAvatarFile(null)
-      setProfileForm((p) => ({ ...p, image: result.publicUrl }))
+      updateProfileForm((p) => ({ ...p, image: result.publicUrl }))
       router.refresh()
     } catch (error) {
       toast.error(error instanceof Error ? error.message : t('common.unknown-error'))
@@ -252,7 +286,7 @@ const SettingsForm = () => {
               type='url'
               value={profileForm.image}
               disabled={isAnonymous}
-              onChange={(e) => setProfileForm((p) => ({ ...p, image: e.target.value }))}
+              onChange={(e) => updateProfileForm((p) => ({ ...p, image: e.target.value }))}
               placeholder={t('settings.fields.avatar-url-placeholder')}
             />
             <div className='mt-3 flex flex-col gap-2 sm:flex-row sm:items-end'>
@@ -290,7 +324,7 @@ const SettingsForm = () => {
             <Input
               id='username'
               value={profileForm.username}
-              onChange={(e) => setProfileForm((p) => ({ ...p, username: e.target.value }))}
+              onChange={(e) => updateProfileForm((p) => ({ ...p, username: e.target.value }))}
               placeholder={t('settings.fields.username-placeholder')}
             />
           </div>
@@ -300,7 +334,7 @@ const SettingsForm = () => {
             <Select
               value={profileForm.isPublic ? 'public' : 'private'}
               onValueChange={(value) =>
-                setProfileForm((p) => ({ ...p, isPublic: value === 'public' }))
+                updateProfileForm((p) => ({ ...p, isPublic: value === 'public' }))
               }
             >
               <SelectTrigger>
@@ -320,7 +354,7 @@ const SettingsForm = () => {
             <Input
               id='nameColor'
               value={profileForm.nameColor}
-              onChange={(e) => setProfileForm((p) => ({ ...p, nameColor: e.target.value }))}
+              onChange={(e) => updateProfileForm((p) => ({ ...p, nameColor: e.target.value }))}
               placeholder={t('settings.fields.name-color-placeholder')}
             />
           </div>
@@ -329,7 +363,7 @@ const SettingsForm = () => {
             <Label>{t('settings.fields.name-effect')}</Label>
             <Select
               value={profileForm.nameEffect}
-              onValueChange={(value) => setProfileForm((p) => ({ ...p, nameEffect: value }))}
+              onValueChange={(value) => updateProfileForm((p) => ({ ...p, nameEffect: value }))}
             >
               <SelectTrigger>
                 <SelectValue />
@@ -348,7 +382,7 @@ const SettingsForm = () => {
           <Textarea
             id='bio'
             value={profileForm.bio}
-            onChange={(e) => setProfileForm((p) => ({ ...p, bio: e.target.value }))}
+            onChange={(e) => updateProfileForm((p) => ({ ...p, bio: e.target.value }))}
             placeholder={t('settings.fields.bio-placeholder')}
           />
         </div>

@@ -124,6 +124,81 @@ const get_citation_badge_variant = (type: CitationType) => {
   return 'outline'
 }
 
+type InitialChatState = {
+  conversations: ChatConversation[]
+  activeConversationId: string
+  importStatus: 'none' | 'success' | 'failed'
+}
+
+const createWelcomeMessage = (text: string): ChatMessage => {
+  return {
+    id: 'welcome',
+    text,
+    isUser: false,
+    timestamp: new Date().toISOString(),
+    type: 'text'
+  }
+}
+
+const createBrowserId = () => {
+  try {
+    return globalThis.crypto.randomUUID()
+  } catch {
+    return `${Date.now()}-${Math.random().toString(16).slice(2)}`
+  }
+}
+
+const getInitialChatState = (input: {
+  welcomeMessageText: string
+  importedTitle: string
+}): InitialChatState => {
+  const loaded = loadYueChatState()
+  let conversations = loaded.conversations
+  let activeConversationId = loaded.activeConversationId
+  let importStatus: InitialChatState['importStatus'] = 'none'
+
+  if (globalThis.window !== undefined) {
+    const params = new URLSearchParams(globalThis.location.search)
+    const shared = params.get('yue_chat')
+
+    if (shared) {
+      const decoded = decodeConversationShare(shared)
+
+      if (decoded) {
+        const imported: ChatConversation = {
+          ...decoded,
+          id: createBrowserId(),
+          title: decoded.title || input.importedTitle,
+          updatedAt: new Date().toISOString()
+        }
+
+        conversations = [imported, ...conversations].slice(0, 50)
+        activeConversationId = imported.id
+        importStatus = 'success'
+
+        params.delete('yue_chat')
+        const url = `${globalThis.location.pathname}${params.size > 0 ? `?${params.toString()}` : ''}`
+        globalThis.history.replaceState(null, '', url)
+      } else {
+        importStatus = 'failed'
+      }
+    }
+  }
+
+  conversations = conversations.map((conversation) => {
+    if (conversation.id !== activeConversationId) return conversation
+    if (conversation.messages.length > 0) return conversation
+
+    return {
+      ...conversation,
+      messages: [createWelcomeMessage(input.welcomeMessageText)],
+      updatedAt: new Date().toISOString()
+    }
+  })
+
+  return { conversations, activeConversationId, importStatus }
+}
+
 export default function AIChatInterface({
   isOpen,
   onClose,
@@ -138,14 +213,27 @@ export default function AIChatInterface({
   const { play: navigationPlay } = useSound('navigation')
   const { play: successPlay } = useSound('success')
   const { play: clickPlay } = useSound('click')
+  const { theme, setTheme } = useTheme()
 
   const yue_avatar_src = '/images/mascote-3.png'
 
   const user_display_name = locale.startsWith('pt') ? 'Eu' : 'Me'
 
-  const [conversations, setConversations] = useState<ChatConversation[]>([])
-  const [activeConversationId, setActiveConversationId] = useState<string>('')
-  const messageIdCounter = useRef(0)
+  const welcomeMessageText = t('mascot.aiChat.welcomeMessage')
+  const [initialChatState] = useState(() =>
+    getInitialChatState({
+      welcomeMessageText,
+      importedTitle: t('mascot.aiChat.importedTitle')
+    })
+  )
+  const [conversations, setConversations] = useState<ChatConversation[]>(
+    initialChatState.conversations
+  )
+  const [activeConversationId, setActiveConversationId] = useState<string>(
+    initialChatState.activeConversationId
+  )
+  const messageIdCounterRef = useRef(0)
+  const importStatusToastShownRef = useRef(false)
   const [inputValue, setInputValue] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [typingDots, setTypingDots] = useState('')
@@ -160,14 +248,8 @@ export default function AIChatInterface({
   const inputRef = useRef<HTMLInputElement>(null)
 
   const getWelcomeMessage = useCallback((): ChatMessage => {
-    return {
-      id: 'welcome',
-      text: t('mascot.aiChat.welcomeMessage'),
-      isUser: false,
-      timestamp: new Date().toISOString(),
-      type: 'text'
-    }
-  }, [t])
+    return createWelcomeMessage(welcomeMessageText)
+  }, [welcomeMessageText])
 
   const activeConversation = useMemo(() => {
     return conversations.find((c) => c.id === activeConversationId) ?? null
@@ -202,68 +284,20 @@ export default function AIChatInterface({
     return () => clearTimeout(timer)
   }, [isOpen])
 
-  // Load persisted conversations, migrate legacy storage, and optionally import a shared conversation.
+  // Notify the user when a shared conversation was imported from the URL.
   useEffect(() => {
     if (!isOpen) return
+    if (initialChatState.importStatus === 'none') return
+    if (importStatusToastShownRef.current) return
 
-    const loaded = loadYueChatState()
-    let nextConversations = loaded.conversations
-    let nextActiveId = loaded.activeConversationId
+    importStatusToastShownRef.current = true
 
-    if (globalThis.window !== undefined) {
-      const params = new URLSearchParams(globalThis.location.search)
-      const shared = params.get('yue_chat')
-
-      if (shared) {
-        const decoded = decodeConversationShare(shared)
-        if (decoded) {
-          const importedId = (() => {
-            try {
-              return globalThis.crypto.randomUUID()
-            } catch {
-              return `${Date.now()}-${Math.random().toString(16).slice(2)}`
-            }
-          })()
-
-          const imported: ChatConversation = {
-            ...decoded,
-            id: importedId,
-            title: decoded.title || t('mascot.aiChat.importedTitle'),
-            updatedAt: new Date().toISOString()
-          }
-
-          nextConversations = [imported, ...nextConversations].slice(0, 50)
-          nextActiveId = imported.id
-
-          params.delete('yue_chat')
-          const url = `${globalThis.location.pathname}${params.size > 0 ? `?${params.toString()}` : ''}`
-          globalThis.history.replaceState(null, '', url)
-
-          toast.success(t('mascot.aiChat.imported'))
-        } else {
-          toast.error(t('mascot.aiChat.importFailed'))
-        }
-      }
+    if (initialChatState.importStatus === 'success') {
+      toast.success(t('mascot.aiChat.imported'))
+    } else {
+      toast.error(t('mascot.aiChat.importFailed'))
     }
-
-    // Ensure active conversation has at least the welcome message
-    nextConversations = nextConversations.map((c) => {
-      if (c.id !== nextActiveId) return c
-      if (c.messages.length > 0) return c
-      return { ...c, messages: [getWelcomeMessage()], updatedAt: new Date().toISOString() }
-    })
-
-    // Batch state updates to avoid cascading renders
-    ;(() => {
-      setConversations(nextConversations)
-      setActiveConversationId(nextActiveId)
-    })()
-    saveYueChatState({
-      conversations: nextConversations,
-      activeConversationId: nextActiveId,
-      provider: 'mistral'
-    })
-  }, [getWelcomeMessage, isOpen, t])
+  }, [initialChatState.importStatus, isOpen, t])
 
   useEffect(() => {
     if (!isOpen) return
@@ -272,18 +306,19 @@ export default function AIChatInterface({
     saveYueChatState({ conversations, activeConversationId, provider: 'mistral' })
   }, [activeConversationId, conversations, isOpen])
 
-  const updateActiveConversation = (
-    updater: (conversation: ChatConversation) => ChatConversation
-  ) => {
-    if (!activeConversation) return
+  const updateActiveConversation = useCallback(
+    (updater: (conversation: ChatConversation) => ChatConversation) => {
+      if (!activeConversation) return
 
-    setConversations((prev) =>
-      prev.map((c) => {
-        if (c.id !== activeConversation.id) return c
-        return updater(c)
-      })
-    )
-  }
+      setConversations((prev) =>
+        prev.map((c) => {
+          if (c.id !== activeConversation.id) return c
+          return updater(c)
+        })
+      )
+    },
+    [activeConversation]
+  )
 
   const startNewChat = () => {
     const created = createEmptyConversation(t('mascot.aiChat.newChatTitle'))
@@ -354,6 +389,48 @@ export default function AIChatInterface({
     }
   }
 
+  const handleAutonomousActions = useCallback(
+    async (text: string) => {
+      // 1. Navigation
+      const navMatch = /\[\[NAVIGATE:([^\]]+)\]\]/.exec(text)
+      if (navMatch?.[1]) {
+        const targetPath = navMatch[1].trim()
+        setTimeout(() => {
+          navigationPlay()
+          router.push(targetPath)
+        }, 1500)
+      }
+
+      // 2. Theme Toggle
+      if (text.includes('[[TOGGLE_THEME]]')) {
+        setTimeout(() => {
+          setTheme(theme === 'dark' ? 'light' : 'dark')
+          successPlay()
+        }, 1000)
+      }
+
+      // 3. Site Search
+      const searchMatch = /\[\[SEARCH:([^\]]+)\]\]/.exec(text)
+      if (searchMatch?.[1]) {
+        const query = searchMatch[1].trim()
+        setTimeout(() => {
+          const event = new CustomEvent('yue-open-search', { detail: { query } })
+          globalThis.dispatchEvent(event)
+          clickPlay()
+        }, 800)
+      }
+
+      // 4. Scroll to Top
+      if (text.includes('[[SCROLL_TO_TOP]]')) {
+        setTimeout(() => {
+          window.scrollTo({ top: 0, behavior: 'smooth' })
+          clickPlay()
+        }, 800)
+      }
+    },
+    [clickPlay, navigationPlay, router, setTheme, successPlay, theme]
+  )
+
   const sendMessage = async () => {
     const messageText = inputValue.trim()
     if (!messageText || isLoading) return
@@ -364,211 +441,221 @@ export default function AIChatInterface({
     await send_chat_message(messageText)
   }
 
-  const send_chat_message = async (rawText: string) => {
-    if (isLoading) return
-    if (!activeConversation) return
+  const send_chat_message = useCallback(
+    async (rawText: string) => {
+      if (isLoading) return
+      if (!activeConversation) return
 
-    const messageText = rawText.trim()
-    if (!messageText) return
+      const messageText = rawText.trim()
+      if (!messageText) return
 
-    const userMessage: ChatMessage = {
-      // eslint-disable-next-line react-hooks/purity -- ID generation is safe in async event handlers
-      id: `user-${messageIdCounter.current++}-${Date.now()}`,
-      text: messageText,
-      isUser: true,
-      timestamp: new Date().toISOString(),
-      type: 'text'
-    }
-
-    const nextMessages = [...messages, userMessage]
-
-    updateActiveConversation((c) => ({
-      ...c,
-      messages: nextMessages,
-      updatedAt: new Date().toISOString()
-    }))
-    setIsLoading(true)
-    onMessageSent?.(messageText)
-
-    try {
-      // Enhanced context with more conversation history for better memory
-      const recentMessages = nextMessages.slice(-15).map((message) => ({
-        role: message.isUser ? 'user' : 'assistant',
-        content: message.text,
-        timestamp: message.timestamp,
-        reactions: message.reactions
-      }))
-
-      const should_stream = (() => {
-        const lower = messageText.toLowerCase()
-        return !(
-          lower.includes('blog') ||
-          lower.includes('post') ||
-          lower.includes('postagem') ||
-          lower.includes('recomenda') ||
-          lower.includes('sugere') ||
-          lower.includes('link') ||
-          lower.includes('url') ||
-          lower.includes('direciona') ||
-          lower.includes('onde ') ||
-          lower.includes('where ')
-        )
-      })()
-
-      const response = await fetch('/api/ai/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          message: messageText,
-          provider: 'mistral',
-          stream: should_stream,
-          locale,
-          context: {
-            currentPage,
-            pagePath,
-            previousMessages: nextMessages.slice(-8).map((m) => m.text),
-            conversation: recentMessages,
-            conversationLength: nextMessages.length,
-            userPreferences: {
-              hasReactedToMessages: nextMessages.some((m) => m.reactions?.userReaction)
-            }
-          }
-        })
-      })
-
-      const contentType = response.headers.get('content-type') || ''
-
-      // Streaming path
-      if (contentType.startsWith('text/plain') && response.body) {
-        const reader = response.body.getReader()
-        const decoder = new TextDecoder()
-        // eslint-disable-next-line react-hooks/purity -- ID generation is safe in async callbacks
-        const messageId = `ai-${messageIdCounter.current++}-${Date.now()}`
-
-        let accumulated = ''
-        // eslint-disable-next-line react-hooks/purity -- performance.now() is safe in async callbacks
-        const startTime = performance.now()
-
-        updateActiveConversation((c) => ({
-          ...c,
-          messages: [
-            ...c.messages,
-            {
-              id: messageId,
-              text: '',
-              isUser: false,
-              timestamp: new Date().toISOString(),
-              isError: false,
-              type: 'text'
-            }
-          ],
-          updatedAt: new Date().toISOString()
-        }))
-
-        while (true) {
-          const { value, done } = await reader.read()
-          if (done) break
-          accumulated += decoder.decode(value, { stream: true })
-          updateActiveConversation((c) => ({
-            ...c,
-            messages: c.messages.map((m) => (m.id === messageId ? { ...m, text: accumulated } : m))
-          }))
-        }
-
-        // eslint-disable-next-line react-hooks/purity -- performance.now() is safe in async callbacks
-        const latency = Math.max(0, Math.round(performance.now() - startTime))
-        updateActiveConversation((c) => ({
-          ...c,
-          messages: c.messages.map((m) =>
-            m.id === messageId
-              ? {
-                  ...m,
-                  text: accumulated || t('mascot.aiChat.errorMessage'),
-                  latencyMs: latency
-                }
-              : m
-          ),
-          updatedAt: new Date().toISOString()
-        }))
-
-        if (accumulated) {
-          handleAutonomousActions(accumulated)
-        }
-
-        return
-      }
-
-      // JSON path (fallback / non-stream providers)
-      const data: {
-        message?: string
-        timestamp?: string
-        isError?: boolean
-        error?: string
-        requestId?: string
-        latencyMs?: number
-        citations?: Array<{
-          id: string
-          title: string
-          href: string
-          excerpt?: string
-          type: 'post' | 'project' | 'page' | 'snippet'
-        }>
-      } = await response.json()
-
-      if (!response.ok) {
-        throw new Error(data.error ?? 'Failed to get response')
-      }
-
-      const safeTimestamp = data.timestamp ?? new Date().toISOString()
-
-      const aiMessage: ChatMessage = {
-        // eslint-disable-next-line react-hooks/purity -- ID generation is safe in async callbacks
-        id: `ai-${messageIdCounter.current++}-${Date.now()}`,
-        text: data.message ?? t('mascot.aiChat.errorMessage'),
-        isUser: false,
-        timestamp: safeTimestamp,
-        isError: data.isError ?? false,
-        type: 'text',
-        requestId: data.requestId,
-        latencyMs: data.latencyMs,
-        citations: data.citations
-      }
-
-      updateActiveConversation((c) => ({
-        ...c,
-        messages: [...c.messages, aiMessage],
-        updatedAt: new Date().toISOString()
-      }))
-
-      if (data.message) {
-        handleAutonomousActions(data.message)
-      }
-    } catch (error) {
-      if (process.env.NODE_ENV === 'development') {
-        console.error('Chat error:', error)
-      }
-
-      const errorMessage: ChatMessage = {
-        // eslint-disable-next-line react-hooks/purity -- ID generation is safe in async callbacks
-        id: `ai-error-${messageIdCounter.current++}-${Date.now()}`,
-        text: t('mascot.aiChat.errorMessage'),
-        isUser: false,
+      const userMessage: ChatMessage = {
+        id: `user-${messageIdCounterRef.current++}-${Date.now()}`,
+        text: messageText,
+        isUser: true,
         timestamp: new Date().toISOString(),
-        isError: true,
         type: 'text'
       }
 
+      const nextMessages = [...messages, userMessage]
+
       updateActiveConversation((c) => ({
         ...c,
-        messages: [...c.messages, errorMessage],
+        messages: nextMessages,
         updatedAt: new Date().toISOString()
       }))
-    } finally {
-      setIsLoading(false)
-    }
-  }
+      setIsLoading(true)
+      onMessageSent?.(messageText)
+
+      try {
+        // Enhanced context with more conversation history for better memory
+        const recentMessages = nextMessages.slice(-15).map((message) => ({
+          role: message.isUser ? 'user' : 'assistant',
+          content: message.text,
+          timestamp: message.timestamp,
+          reactions: message.reactions
+        }))
+
+        const should_stream = (() => {
+          const lower = messageText.toLowerCase()
+          return !(
+            lower.includes('blog') ||
+            lower.includes('post') ||
+            lower.includes('postagem') ||
+            lower.includes('recomenda') ||
+            lower.includes('sugere') ||
+            lower.includes('link') ||
+            lower.includes('url') ||
+            lower.includes('direciona') ||
+            lower.includes('onde ') ||
+            lower.includes('where ')
+          )
+        })()
+
+        const response = await fetch('/api/ai/chat', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            message: messageText,
+            provider: 'mistral',
+            stream: should_stream,
+            locale,
+            context: {
+              currentPage,
+              pagePath,
+              previousMessages: nextMessages.slice(-8).map((m) => m.text),
+              conversation: recentMessages,
+              conversationLength: nextMessages.length,
+              userPreferences: {
+                hasReactedToMessages: nextMessages.some((m) => m.reactions?.userReaction)
+              }
+            }
+          })
+        })
+
+        const contentType = response.headers.get('content-type') || ''
+
+        // Streaming path
+        if (contentType.startsWith('text/plain') && response.body) {
+          const reader = response.body.getReader()
+          const decoder = new TextDecoder()
+          const messageId = `ai-${messageIdCounterRef.current++}-${Date.now()}`
+
+          let accumulated = ''
+          const startTime = performance.now()
+
+          updateActiveConversation((c) => ({
+            ...c,
+            messages: [
+              ...c.messages,
+              {
+                id: messageId,
+                text: '',
+                isUser: false,
+                timestamp: new Date().toISOString(),
+                isError: false,
+                type: 'text'
+              }
+            ],
+            updatedAt: new Date().toISOString()
+          }))
+
+          while (true) {
+            const { value, done } = await reader.read()
+            if (done) break
+            accumulated += decoder.decode(value, { stream: true })
+            updateActiveConversation((c) => ({
+              ...c,
+              messages: c.messages.map((m) =>
+                m.id === messageId ? { ...m, text: accumulated } : m
+              )
+            }))
+          }
+
+          const latency = Math.max(0, Math.round(performance.now() - startTime))
+          updateActiveConversation((c) => ({
+            ...c,
+            messages: c.messages.map((m) =>
+              m.id === messageId
+                ? {
+                    ...m,
+                    text: accumulated || t('mascot.aiChat.errorMessage'),
+                    latencyMs: latency
+                  }
+                : m
+            ),
+            updatedAt: new Date().toISOString()
+          }))
+
+          if (accumulated) {
+            handleAutonomousActions(accumulated)
+          }
+
+          return
+        }
+
+        // JSON path (fallback / non-stream providers)
+        const data: {
+          message?: string
+          timestamp?: string
+          isError?: boolean
+          error?: string
+          requestId?: string
+          latencyMs?: number
+          citations?: Array<{
+            id: string
+            title: string
+            href: string
+            excerpt?: string
+            type: 'post' | 'project' | 'page' | 'snippet'
+          }>
+        } = await response.json()
+
+        if (!response.ok) {
+          throw new Error(data.error ?? 'Failed to get response')
+        }
+
+        const safeTimestamp = data.timestamp ?? new Date().toISOString()
+
+        const aiMessage: ChatMessage = {
+          id: `ai-${messageIdCounterRef.current++}-${Date.now()}`,
+          text: data.message ?? t('mascot.aiChat.errorMessage'),
+          isUser: false,
+          timestamp: safeTimestamp,
+          isError: data.isError ?? false,
+          type: 'text',
+          requestId: data.requestId,
+          latencyMs: data.latencyMs,
+          citations: data.citations
+        }
+
+        updateActiveConversation((c) => ({
+          ...c,
+          messages: [...c.messages, aiMessage],
+          updatedAt: new Date().toISOString()
+        }))
+
+        if (data.message) {
+          handleAutonomousActions(data.message)
+        }
+      } catch (error) {
+        if (process.env.NODE_ENV === 'development') {
+          console.error('Chat error:', error)
+        }
+
+        const errorMessage: ChatMessage = {
+          id: `ai-error-${messageIdCounterRef.current++}-${Date.now()}`,
+          text: t('mascot.aiChat.errorMessage'),
+          isUser: false,
+          timestamp: new Date().toISOString(),
+          isError: true,
+          type: 'text'
+        }
+
+        updateActiveConversation((c) => ({
+          ...c,
+          messages: [...c.messages, errorMessage],
+          updatedAt: new Date().toISOString()
+        }))
+      } finally {
+        setIsLoading(false)
+      }
+    },
+    [
+      activeConversation,
+      currentPage,
+      handleAutonomousActions,
+      isLoading,
+      locale,
+      messages,
+      onMessageSent,
+      pagePath,
+      t,
+      updateActiveConversation
+    ]
+  )
 
   // Handle pending prompts (like "Explain this selection")
   useEffect(() => {
@@ -786,51 +873,6 @@ export default function AIChatInterface({
   useEffect(() => {
     onThinkingChange?.(isLoading)
   }, [isLoading, onThinkingChange])
-
-  const { theme, setTheme } = useTheme()
-
-  // Handle autonomous navigation commands in AI responses
-  const handleAutonomousActions = useCallback(
-    async (text: string) => {
-      // 1. Navigation
-      const navMatch = /\[\[NAVIGATE:([^\]]+)\]\]/.exec(text)
-      if (navMatch?.[1]) {
-        const targetPath = navMatch[1].trim()
-        setTimeout(() => {
-          navigationPlay()
-          router.push(targetPath)
-        }, 1500)
-      }
-
-      // 2. Theme Toggle
-      if (text.includes('[[TOGGLE_THEME]]')) {
-        setTimeout(() => {
-          setTheme(theme === 'dark' ? 'light' : 'dark')
-          successPlay()
-        }, 1000)
-      }
-
-      // 3. Site Search
-      const searchMatch = /\[\[SEARCH:([^\]]+)\]\]/.exec(text)
-      if (searchMatch?.[1]) {
-        const query = searchMatch[1].trim()
-        setTimeout(() => {
-          const event = new CustomEvent('yue-open-search', { detail: { query } })
-          globalThis.dispatchEvent(event)
-          clickPlay()
-        }, 800)
-      }
-
-      // 4. Scroll to Top
-      if (text.includes('[[SCROLL_TO_TOP]]')) {
-        setTimeout(() => {
-          window.scrollTo({ top: 0, behavior: 'smooth' })
-          clickPlay()
-        }, 800)
-      }
-    },
-    [router, navigationPlay, theme, setTheme, successPlay, clickPlay]
-  )
 
   if (!isOpen) return null
 
