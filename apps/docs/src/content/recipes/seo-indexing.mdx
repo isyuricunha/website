@@ -1,0 +1,58 @@
+---
+title: SEO and indexing
+description: Public crawler surfaces and metadata conventions for the website.
+---
+
+## Public indexes
+
+The website exposes crawler-friendly indexes for traditional search engines and LLM-oriented crawlers.
+
+```text
+/sitemap.xml
+/robots.txt
+/rss.xml
+/llms.txt
+/<locale>/rss.xml
+```
+
+The canonical public app is `apps/web`. The docs app has its own `robots.txt`, `sitemap.xml` and `llms.txt`.
+
+## Metadata contract
+
+Pages should provide:
+
+- a stable canonical URL
+- localized alternates when content exists in more than one locale
+- Open Graph and Twitter metadata
+- structured JSON-LD for article and content pages where applicable
+- a warm theme color that matches the Cursor-inspired site theme
+
+Private or operational routes should not be indexed. Admin, API and reset-password surfaces are covered by `X-Robots-Tag` headers or route metadata.
+
+## Content routes
+
+Localized content lives under:
+
+```text
+apps/web/src/content/blog/<locale>
+apps/web/src/content/pages/<locale>
+apps/web/src/content/projects/<locale>
+apps/web/src/content/snippet/<locale>
+```
+
+After adding, removing or translating content, regenerate MDX output before type-checking.
+
+```bash
+pnpm build:mdx
+```
+
+## Validation
+
+Use the production build, not only development mode, for SEO-sensitive changes.
+
+```bash
+pnpm --filter @isyuricunha/web build
+pnpm --filter @isyuricunha/docs build
+```
+
+Route-level crawler files should return HTTP 200 locally after `next start`.

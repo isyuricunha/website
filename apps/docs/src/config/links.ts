@@ -250,6 +250,22 @@ export const SIDEBAR_LINKS: SidebarLinks = [
     title: 'Recipes',
     links: [
       {
+        href: '/recipes/website-architecture',
+        text: 'Website Architecture'
+      },
+      {
+        href: '/recipes/site-translation',
+        text: 'Site Translation'
+      },
+      {
+        href: '/recipes/seo-indexing',
+        text: 'SEO and Indexing'
+      },
+      {
+        href: '/recipes/validation',
+        text: 'Validation'
+      },
+      {
         href: '/recipes/drizzle',
         text: 'Drizzle'
       },

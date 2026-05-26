@@ -1,0 +1,61 @@
+---
+title: Website architecture
+description: Public structure of the monorepo website, docs app and shared packages.
+---
+
+## Apps
+
+```text
+apps/web   main localized website on port 3000
+apps/docs  documentation site on port 3002
+```
+
+`apps/web` owns the public portfolio, blog, snippets, projects, music, about, contact and authenticated admin surfaces. `apps/docs` documents reusable pieces and operating conventions for this workspace.
+
+## Packages
+
+```text
+packages/db          Drizzle schema and database access
+packages/env         environment validation
+packages/emails      React Email templates
+packages/i18n        locale config, messages and middleware
+packages/ui          shared UI primitives and theme preset
+packages/utils       small shared utilities
+packages/mdx-plugins shared MDX remark/rehype plugins
+```
+
+## Theme
+
+The shared UI preset is Cursor-inspired and warm by default:
+
+- base background `#14120b`
+- warm text and border tokens
+- Geist and Geist Mono
+- 0.5px separators
+- editorial sections instead of generic feature-card grids
+
+Import the preset in app-level CSS:
+
+```css
+@import '@isyuricunha/ui/styles/preset.css';
+@import '@isyuricunha/ui/styles/shiki.css';
+@import '@isyuricunha/ui/styles/typography.css';
+```
+
+## Feature flags
+
+Feature flags are environment-driven and should default to off in shared examples. Keep secret values out of committed files and public docs.
+
+```env
+NEXT_PUBLIC_FLAG_AUTH="false"
+NEXT_PUBLIC_FLAG_ANALYTICS="false"
+NEXT_PUBLIC_FLAG_SPOTIFY="false"
+```
+
+## Content flow
+
+Content collections read MDX from `apps/web/src/content` and `apps/docs/src/content`. Regenerate generated content before type-checking.
+
+```bash
+pnpm build:mdx
+```

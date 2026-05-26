@@ -1,0 +1,46 @@
+---
+title: Validation
+description: Required local checks before committing or deploying website changes.
+---
+
+## Commit gate
+
+Run these commands in order before committing:
+
+```bash
+pnpm build:mdx
+pnpm check
+pnpm test:unit
+```
+
+`pnpm build:mdx` must come first because type-checking imports generated content-collections output.
+
+## Full verification
+
+Use the broader gate for dependency updates, routing changes, docs updates and cleanup work.
+
+```bash
+pnpm check:knip
+pnpm --filter @isyuricunha/web build
+pnpm --filter @isyuricunha/docs build
+```
+
+`pnpm check` covers lint, type-check, format and spelling. `pnpm check:knip` catches unused files, exports and dependencies; review its output carefully before deleting anything because generated content and framework entrypoints can look unused out of context.
+
+## Local servers
+
+Use focused dev servers when checking one app.
+
+```bash
+pnpm dev:web
+pnpm dev:docs
+```
+
+Use production servers only after building.
+
+```bash
+pnpm --filter @isyuricunha/web start
+pnpm --filter @isyuricunha/docs start
+```
+
+Stop local servers after validation so ports `3000` and `3002` are not left occupied.

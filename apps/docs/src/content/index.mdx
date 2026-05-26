@@ -9,6 +9,15 @@ description: Shared packages, UI primitives and operational recipes for this wor
 
 The UI package is not a generic dark theme. It ships a warm Cursor-inspired token system, shared typography defaults, 0.5px borders, code styling, motion utilities and accessible primitives used by both the main site and the docs app.
 
+The website recipes cover the public operating model for `apps/web`: localized content, SEO indexes, local-only translation generation and the validation gates used before deploy. They intentionally use placeholders for environment values and avoid documenting private service data.
+
+## Website recipes
+
+- [Website architecture](/recipes/website-architecture) explains the app/package boundaries and the public route families.
+- [Site translation](/recipes/site-translation) explains the dev-only OpenAI-compatible translation generator and its batch profiles.
+- [SEO and indexing](/recipes/seo-indexing) explains the sitemap, robots, RSS, metadata and crawler-facing files.
+- [Validation](/recipes/validation) lists the commands that must pass before a release or commit.
+
 ## Install
 
 ```bash

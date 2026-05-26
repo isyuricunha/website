@@ -8,16 +8,20 @@ Production:
 
 ## Notice
 
-Please, use your own AI/Mascot nome and your own model/llm. Thanks.
+Please use your own AI/mascot name, model and provider credentials when adapting this project.
 
 ## Table of contents
 
 - [Project overview](#project-overview)
+- [Features](#features)
 - [Repository layout](#repository-layout)
 - [Tech stack](#tech-stack)
 - [Local development](#local-development)
 - [Environment variables](#environment-variables)
+- [Localization and translation](#localization-and-translation)
+- [SEO and indexing](#seo-and-indexing)
 - [Scripts](#scripts)
+- [Validation](#validation)
 - [Deployment](#deployment)
 - [Contributing](#contributing)
 - [License](#license)
@@ -26,9 +30,19 @@ Please, use your own AI/Mascot nome and your own model/llm. Thanks.
 
 ## Project overview
 
-This is the source code for my personal website.
+This is the source code for my personal website, docs app and shared package workspace.
 
 The repository is organized as a monorepo (Turbo + pnpm) so that the main app and internal packages can evolve together.
+
+## Features
+
+- Localized portfolio, blog, projects, snippets, about, music, contact and sitemap pages.
+- Authenticated admin surfaces for content and operational workflows.
+- Cursor-inspired warm visual system shared between the website and docs app.
+- MDX content collections for blog posts, project pages, snippets and docs.
+- SEO surfaces for search engines and LLM crawlers: `sitemap.xml`, `robots.txt`, `rss.xml`, locale RSS feeds and `llms.txt`.
+- Dev-only OpenAI-compatible translation generator for adding new locales locally.
+- Shared UI package with Tailwind v4 preset, typography, code styling and reusable primitives.
 
 ## Repository layout
 
@@ -56,6 +70,8 @@ packages/
 - **Database**: PostgreSQL, Drizzle ORM
 - **Email**: React Email, Resend
 - **i18n**: next-intl (localized routes under `apps/web/src/app/[locale]`)
+- **Content**: content-collections + MDX
+- **Styling**: Tailwind CSS v4 + shared Cursor-inspired UI preset
 - **Testing**: Vitest (unit), Playwright (e2e)
 
 ## Local development
@@ -101,9 +117,12 @@ Recommended upgrade workflow:
 ```bash
 pnpm -r up --latest
 pnpm install
+pnpm build:mdx
 pnpm check
 pnpm test:unit
-pnpm build
+pnpm check:knip
+pnpm --filter @isyuricunha/web build
+pnpm --filter @isyuricunha/docs build
 ```
 
 If upgrades introduce runtime issues, prefer debugging in development mode (`pnpm dev:web`) to get non-minified React errors.
@@ -113,21 +132,21 @@ If upgrades introduce runtime issues, prefer debugging in development mode (`pnp
 Core tooling:
 
 - Node.js: `>=22` (see `package.json#engines.node`)
-- pnpm: `10.26.0` (see `package.json#packageManager`)
-- TypeScript: `^5.9.3`
-- Turbo: `^2.7.1`
-- Vitest: `^4.0.16`
-- ESLint: `^9.39.2`
-- Prettier: `^3.7.4`
+- pnpm: `10.33.2` (see `package.json#packageManager`)
+- TypeScript: `^6.0.3`
+- Turbo: `^2.9.14`
+- Vitest: `^4.1.7`
+- ESLint: `^10.4.0`
+- Prettier: `^3.8.3`
 
 Web apps:
 
-- Next.js: `16.1.1`
-- React: `19.2.3`
-- Zod: `4.2.1`
-- tRPC: `11.8.1`
-- TanStack React Query: `^5.90.12`
-- TailwindCSS: `^4.1.18`
+- Next.js: `16.2.6`
+- React: `19.2.6`
+- Zod: `4.4.3`
+- tRPC: `11.17.0`
+- TanStack React Query: `^5.100.14`
+- TailwindCSS: `^4.3.0`
 
 To list all installed versions in the workspace:
 
@@ -147,19 +166,67 @@ For production URLs (used in emails, canonical links, etc.), set:
 NEXT_PUBLIC_WEBSITE_URL="https://yuricunha.com"
 ```
 
+## Localization and translation
+
+Supported locales are defined in `packages/i18n/src/config.ts`. Message files live in `packages/i18n/src/messages`.
+
+The local translation generator can create a new locale from an OpenAI-compatible endpoint. It is designed for developer machines and refuses production/Vercel environments.
+
+Required local variables:
+
+```env
+OPENAI_COMPATIBLE_BASE_URL="https://provider.example/v1"
+OPENAI_COMPATIBLE_API_KEY="..."
+OPENAI_COMPATIBLE_MODEL="model-name"
+```
+
+Plan a translation without writing files:
+
+```bash
+pnpm translate:site -- --target es --dry-run
+```
+
+Use smaller batches for slower or timeout-prone models:
+
+```bash
+pnpm translate:site -- --target es --batch-size small
+pnpm translate:site -- --target es --batch-size medium
+pnpm translate:site -- --target es --batch-size large
+```
+
+`jp` resolves to `ja`; `cn` and `zh` resolve to `zh-CN`.
+
+## SEO and indexing
+
+The site exposes:
+
+```text
+/sitemap.xml
+/robots.txt
+/rss.xml
+/llms.txt
+/<locale>/rss.xml
+```
+
+Admin, API and password-reset surfaces are marked as non-indexable. Public content pages provide canonical metadata, locale alternates, Open Graph/Twitter data and structured data where applicable.
+
 ## Scripts
 
 Common tasks:
 
 ```bash
 pnpm dev
+pnpm dev:web
+pnpm dev:docs
 pnpm build
+pnpm build:mdx
 pnpm lint
 pnpm type-check
 pnpm test:unit
 pnpm test:e2e
 pnpm format:check
 pnpm check:knip
+pnpm translate:site -- --target es --dry-run
 ```
 
 Database tasks:
@@ -171,6 +238,24 @@ pnpm db:migrate
 pnpm db:push
 pnpm db:seed
 pnpm db:studio
+```
+
+## Validation
+
+Run this sequence before committing:
+
+```bash
+pnpm build:mdx
+pnpm check
+pnpm test:unit
+```
+
+For full verification:
+
+```bash
+pnpm check:knip
+pnpm --filter @isyuricunha/web build
+pnpm --filter @isyuricunha/docs build
 ```
 
 ## Deployment

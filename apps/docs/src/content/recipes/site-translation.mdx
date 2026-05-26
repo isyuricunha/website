@@ -1,0 +1,86 @@
+---
+title: Site translation
+description: Generate new website locales locally with an OpenAI-compatible model.
+---
+
+## Scope
+
+The translation generator is a local development tool. It writes files into the repository so a developer can review, format, type-check and commit the new locale. It is not intended to run on Vercel or inside production runtime code.
+
+It can translate:
+
+- `packages/i18n/src/messages/<locale>.json`
+- `apps/web/src/content/blog/<locale>/*.mdx`
+- `apps/web/src/content/pages/<locale>/*.mdx`
+- `apps/web/src/content/projects/<locale>/*.mdx`
+- `apps/web/src/content/snippet/<locale>/*.mdx`
+
+## Environment
+
+Use placeholder values in shared docs and commit history. Real keys belong only in `.env.local`.
+
+```env
+OPENAI_COMPATIBLE_BASE_URL="https://provider.example/v1"
+OPENAI_COMPATIBLE_API_KEY="..."
+OPENAI_COMPATIBLE_MODEL="model-name"
+OPENAI_COMPATIBLE_TRANSLATION_BATCH_SIZE="small"
+OPENAI_COMPATIBLE_REQUEST_TIMEOUT_MS="180000"
+OPENAI_COMPATIBLE_MAX_RETRIES="2"
+```
+
+## Dry run
+
+Start with a dry run. It resolves locale aliases, counts batches and shows which registry files would be updated.
+
+```bash
+pnpm translate:site -- --target es --dry-run
+```
+
+Useful aliases:
+
+```bash
+pnpm translate:site -- --target jp --dry-run
+pnpm translate:site -- --target cn --dry-run
+```
+
+`jp` resolves to `ja`; `cn` and `zh` resolve to `zh-CN`.
+
+## Batch profiles
+
+Use the smallest profile that keeps the provider stable. Context window is not the only limit; some OpenAI-compatible endpoints time out on large requests even when the model has enough context.
+
+```bash
+pnpm translate:site -- --target es --batch-size small
+pnpm translate:site -- --target es --batch-size medium
+pnpm translate:site -- --target es --batch-size large
+```
+
+Profiles:
+
+- `small`: 4000 chars per batch. Best for slower models, proxy gateways and timeout-prone endpoints.
+- `medium`: 12000 chars per batch. Good default for fast hosted models with stable latency.
+- `large`: 32000 chars per batch. Use only for large-context models and providers that tolerate long requests.
+
+For a precise override:
+
+```bash
+pnpm translate:site -- --target es --batch-chars 6000
+```
+
+## Narrowing work
+
+Translate a subset when validating a new provider.
+
+```bash
+pnpm translate:site -- --target es --collections messages,pages --limit 1 --dry-run
+```
+
+Supported collections are `messages`, `blog`, `pages`, `projects` and `snippet`.
+
+## Review checklist
+
+- Run `pnpm build:mdx` after generating files.
+- Review translated MDX for frontmatter, links, code blocks and JSX.
+- Run `pnpm check`.
+- Run `pnpm test:unit`.
+- Run the web build before deploy when route or content generation changed.
