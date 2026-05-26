@@ -667,9 +667,13 @@ export default function SecurityManagement() {
                   <div className='text-text-secondary py-8 text-center'>
                     {t('settings.loading')}
                   </div>
-                ) : (Object.keys(filteredSettings).length === 0 ? (
+                ) : null}
+
+                {!settingsLoading && Object.keys(filteredSettings).length === 0 ? (
                   <div className='text-text-secondary py-8 text-center'>{t('settings.empty')}</div>
-                ) : (
+                ) : null}
+
+                {!settingsLoading && Object.keys(filteredSettings).length > 0 ? (
                   <div className='space-y-4'>
                     {Object.entries(filteredSettings).map(([category, settings]) => (
                       <Card key={category}>
@@ -800,7 +804,7 @@ export default function SecurityManagement() {
                       </Card>
                     ))}
                   </div>
-                ))}
+                ) : null}
               </div>
             </CardContent>
           </Card>

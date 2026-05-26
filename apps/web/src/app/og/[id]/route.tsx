@@ -11,6 +11,12 @@ const ogTheme = {
   accentBlock: '#c9572a'
 } as const
 
+const getTitleFontSize = (title: string) => {
+  if (title.length > 50) return 36
+  if (title.length > 40) return 48
+  return 64
+}
+
 type OGRouteProps = {
   params: Promise<{
     id: string
@@ -66,7 +72,7 @@ export const GET = async (req: NextRequest, props: OGRouteProps) => {
           >
             <div
               style={{
-                fontSize: title.length > 50 ? 36 : (title.length > 40 ? 48 : 64),
+                fontSize: getTitleFontSize(title),
                 color: ogTheme.accentText,
                 fontWeight: 500,
                 letterSpacing: '-0.03em',

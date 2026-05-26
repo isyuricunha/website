@@ -344,6 +344,9 @@ export default function EmailMarketingManagement() {
       if (broadcastFilter === 'all') return true
       return broadcast.status === broadcastFilter
     }) || []
+  const hasBroadcasts = Boolean(broadcasts?.broadcasts?.length)
+  const shouldShowFilteredBroadcastsEmptyState = filteredBroadcasts.length === 0 && hasBroadcasts
+  const shouldShowBroadcastsEmptyState = !hasBroadcasts
 
   // Helper function to render loading indicator for each stage
   const renderLoadingIndicator = (_stage: string, isActive: boolean, isComplete: boolean) => {
@@ -904,7 +907,7 @@ export default function EmailMarketingManagement() {
                     </Card>
                   ))}
 
-                  {filteredBroadcasts.length === 0 && broadcasts?.broadcasts?.length ? (
+                  {shouldShowFilteredBroadcastsEmptyState ? (
                     <div className='text-text-secondary py-8 text-center'>
                       <Mail className='mx-auto mb-4 h-12 w-12 opacity-50' />
                       <p>{t('broadcasts.empty-filtered')}</p>
@@ -916,13 +919,15 @@ export default function EmailMarketingManagement() {
                         {t('actions.show-all-broadcasts')}
                       </Button>
                     </div>
-                  ) : (broadcasts?.broadcasts?.length ? null : (
+                  ) : null}
+
+                  {shouldShowBroadcastsEmptyState ? (
                     <div className='text-text-secondary py-8 text-center'>
                       <Mail className='mx-auto mb-4 h-12 w-12 opacity-50' />
                       <p>{t('broadcasts.empty')}</p>
                       <p className='mt-2 text-sm'>{t('broadcasts.empty-hint')}</p>
                     </div>
-                  ))}
+                  ) : null}
                 </div>
               </ScrollArea>
             </CardContent>

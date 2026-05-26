@@ -1,6 +1,7 @@
 'use client'
 
 import type { Post } from 'content-collections'
+import type { ReactNode } from 'react'
 
 import { useLocale, useTranslations } from '@isyuricunha/i18n/client'
 import {
@@ -131,6 +132,39 @@ const FilteredPosts = (props: FilteredPostsProps) => {
     const startIndex = (currentPage - 1) * postsPerPage
     return regularPosts.slice(startIndex, startIndex + postsPerPage)
   }, [regularPosts, currentPage])
+
+  const hasActiveFilters = searchValue || selectedCategory !== 'all' || selectedTag !== 'all'
+  const paginationLabel =
+    totalPages > 1
+      ? t('component.filtered-posts.pagination.page-of', {
+          current: currentPage,
+          total: totalPages
+        })
+      : ''
+  const searchLabel = searchValue
+    ? t('component.filtered-posts.results.for', { search: searchValue })
+    : ''
+
+  let resultsSummary: ReactNode = (
+    <>
+      {t('component.filtered-posts.showing.count', { count: regularPosts.length })}
+      {paginationLabel}
+    </>
+  )
+
+  if (hasActiveFilters) {
+    resultsSummary = (
+      <>
+        {t('component.filtered-posts.results.count', { count: regularPosts.length })}
+        {searchLabel}
+        {paginationLabel}
+      </>
+    )
+  }
+
+  if (isSearching) {
+    resultsSummary = t('component.filtered-posts.searching')
+  }
 
   return (
     <>
@@ -305,35 +339,8 @@ const FilteredPosts = (props: FilteredPostsProps) => {
 
         {/* Results Summary */}
         <div className='text-muted-foreground flex flex-col justify-between gap-2 text-xs sm:flex-row sm:items-center sm:text-sm'>
-          <span className='flex-1'>
-            {isSearching ? (
-              t('component.filtered-posts.searching')
-            ) : (searchValue || selectedCategory !== 'all' || selectedTag !== 'all' ? (
-              <>
-                {t('component.filtered-posts.results.count', { count: regularPosts.length })}
-                {searchValue
-                  ? t('component.filtered-posts.results.for', { search: searchValue })
-                  : ''}
-                {totalPages > 1
-                  ? t('component.filtered-posts.pagination.page-of', {
-                      current: currentPage,
-                      total: totalPages
-                    })
-                  : ''}
-              </>
-            ) : (
-              <>
-                {t('component.filtered-posts.showing.count', { count: regularPosts.length })}
-                {totalPages > 1
-                  ? t('component.filtered-posts.pagination.page-of', {
-                      current: currentPage,
-                      total: totalPages
-                    })
-                  : ''}
-              </>
-            ))}
-          </span>
-          {(searchValue || selectedCategory !== 'all' || selectedTag !== 'all') && (
+          <span className='flex-1'>{resultsSummary}</span>
+          {hasActiveFilters && (
             <button
               type='button'
               onClick={clearAllFilters}

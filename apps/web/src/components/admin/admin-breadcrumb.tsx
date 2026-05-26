@@ -16,12 +16,14 @@ const AdminBreadcrumb = () => {
     const href = '/' + segments.slice(0, index + 1).join('/')
     const titleKey = segment.replaceAll('-', '_')
     const i18nKey = `admin.nav.${titleKey}` as any
-    const label =
-      segment === 'admin'
-        ? t('admin.nav.dashboard')
-        : (t.has(i18nKey)
-          ? t(i18nKey)
-          : segment.replaceAll('-', ' '))
+    let label = segment.replaceAll('-', ' ')
+
+    if (segment === 'admin') {
+      label = t('admin.nav.dashboard')
+    } else if (t.has(i18nKey)) {
+      label = t(i18nKey)
+    }
+
     const isLast = index === segments.length - 1
 
     return {

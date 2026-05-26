@@ -7,6 +7,12 @@ import { useState, useMemo } from 'react'
 
 import { api } from '@/trpc/react'
 
+const getGenreBadgeClassName = (index: number) => {
+  if (index === 0) return 'bg-accent-earth text-text-inverse'
+  if (index === 1) return 'bg-bg-surface text-text-primary'
+  return 'bg-bg-hover text-text-secondary'
+}
+
 const MusicStatsSection = () => {
   const t = useTranslations()
   const [isRefreshing, setIsRefreshing] = useState(false)
@@ -188,13 +194,9 @@ const MusicStatsSection = () => {
               {stats.topGenres.map((genre, index) => (
                 <span
                   key={genre}
-                  className={`rounded-full px-3 py-1 text-xs font-medium sm:text-sm ${
-                    index === 0
-                      ? 'bg-accent-earth text-text-inverse'
-                      : (index === 1
-                        ? 'bg-bg-surface text-text-primary'
-                        : 'bg-bg-hover text-text-secondary')
-                  }`}
+                  className={`rounded-full px-3 py-1 text-xs font-medium sm:text-sm ${getGenreBadgeClassName(
+                    index
+                  )}`}
                 >
                   #{index + 1} {genre}
                 </span>
