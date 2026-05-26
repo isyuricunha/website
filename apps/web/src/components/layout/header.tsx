@@ -16,7 +16,6 @@ import LocaleSwitcher from './locale-switcher'
 import MobileNav from './mobile-nav'
 import Navbar from './navbar'
 import NotificationsDropdown from './notifications-dropdown'
-import ThemeSwitcher from './theme-switcher'
 
 const Header = () => {
   const t = useTranslations()
@@ -57,7 +56,6 @@ const Header = () => {
             </Button>
           ) : null}
           <NotificationsDropdown />
-          <ThemeSwitcher />
           <LocaleSwitcher />
           <AccountDropdown />
           <CommandMenu />

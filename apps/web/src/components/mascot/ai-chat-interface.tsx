@@ -47,7 +47,6 @@ import {
   RefreshCw,
   X
 } from 'lucide-react'
-import { useTheme } from 'next-themes'
 import { Fragment, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { toast } from 'sonner'
 
@@ -211,9 +210,7 @@ export default function AIChatInterface({
   const locale = useLocale()
   const router = useRouter()
   const { play: navigationPlay } = useSound('navigation')
-  const { play: successPlay } = useSound('success')
   const { play: clickPlay } = useSound('click')
-  const { theme, setTheme } = useTheme()
 
   const yue_avatar_src = '/images/mascote-3.png'
 
@@ -422,15 +419,7 @@ export default function AIChatInterface({
         }, 1500)
       }
 
-      // 2. Theme Toggle
-      if (text.includes('[[TOGGLE_THEME]]')) {
-        scheduleActionTimeout(() => {
-          setTheme(theme === 'dark' ? 'light' : 'dark')
-          successPlay()
-        }, 1000)
-      }
-
-      // 3. Site Search
+      // 2. Site Search
       const searchMatch = /\[\[SEARCH:([^\]]+)\]\]/.exec(text)
       if (searchMatch?.[1]) {
         const query = searchMatch[1].trim()
@@ -441,7 +430,7 @@ export default function AIChatInterface({
         }, 800)
       }
 
-      // 4. Scroll to Top
+      // 3. Scroll to Top
       if (text.includes('[[SCROLL_TO_TOP]]')) {
         scheduleActionTimeout(() => {
           window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -449,7 +438,7 @@ export default function AIChatInterface({
         }, 800)
       }
     },
-    [clickPlay, navigationPlay, router, scheduleActionTimeout, setTheme, successPlay, theme]
+    [clickPlay, navigationPlay, router, scheduleActionTimeout]
   )
 
   const sendMessage = async () => {

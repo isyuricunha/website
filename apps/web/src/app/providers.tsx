@@ -1,7 +1,6 @@
 'use client'
 
 import { Toaster, TooltipProvider } from '@isyuricunha/ui'
-import { ThemeProvider } from 'next-themes'
 
 import { TRPCReactProvider } from '@/trpc/react'
 
@@ -14,24 +13,16 @@ const Providers = (props: ProvidesProps) => {
 
   return (
     <TRPCReactProvider>
-      <ThemeProvider
-        attribute='class'
-        defaultTheme='system'
-        enableSystem
-        enableColorScheme
-        disableTransitionOnChange
-      >
-        <TooltipProvider>
-          {children}
-          <Toaster
-            toastOptions={{
-              duration: 2500
-            }}
-            visibleToasts={5}
-            expand
-          />
-        </TooltipProvider>
-      </ThemeProvider>
+      <TooltipProvider>
+        {children}
+        <Toaster
+          toastOptions={{
+            duration: 2500
+          }}
+          visibleToasts={5}
+          expand
+        />
+      </TooltipProvider>
     </TRPCReactProvider>
   )
 }

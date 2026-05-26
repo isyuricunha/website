@@ -4,13 +4,12 @@ import { HEADER_LINKS } from '@/config/links'
 
 import MobileNav from './mobile-nav'
 import Search from './search'
-import ThemeToggle from './theme-toggle'
 
 const Header = () => {
   return (
-    <header className='border-border/40 bg-background/95 supports-backdrop-filter:bg-background/60 sticky top-0 z-50 w-full border-b backdrop-blur-sm'>
+    <header className='bg-bg-base sticky top-0 z-50 w-full border-b-[0.5px] border-[var(--border-faint)]'>
       <div className='mx-auto flex h-14 max-w-6xl items-center justify-between px-5 md:px-8'>
-        <div className='flex items-center gap-2 font-semibold md:gap-6'>
+        <div className='flex items-center gap-2 font-medium md:gap-6'>
           <MobileNav />
           <Link href='/' className='tracking-tighter max-md:hidden'>
             @isyuricunha/docs
@@ -18,7 +17,10 @@ const Header = () => {
           <nav>
             <ul className='flex gap-4 text-sm lg:gap-6'>
               {HEADER_LINKS.map((link) => (
-                <li key={link.text} className='hover:text-foreground/80 text-foreground/60'>
+                <li
+                  key={link.text}
+                  className='text-text-secondary hover:text-text-primary transition-colors'
+                >
                   <Link href={link.href}>{link.text}</Link>
                 </li>
               ))}
@@ -27,7 +29,6 @@ const Header = () => {
         </div>
         <div className='flex items-center gap-1 sm:gap-3'>
           <Search />
-          <ThemeToggle />
         </div>
       </div>
     </header>

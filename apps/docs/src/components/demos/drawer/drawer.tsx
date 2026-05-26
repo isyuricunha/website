@@ -88,7 +88,7 @@ const DrawerDemo = () => {
                 <MinusIcon />
               </Button>
               <div className='flex-1 text-center'>
-                <div className='text-7xl font-bold tracking-tighter'>{goal}</div>
+                <div className='text-7xl font-medium tracking-tighter'>{goal}</div>
                 <div className='text-muted-foreground text-[0.70rem] uppercase'>Calories/day</div>
               </div>
               <Button

@@ -4,10 +4,10 @@ import { NextRequest } from 'next/server'
 export const runtime = 'nodejs'
 
 const ogTheme = {
-  background: 'linear-gradient(135deg, hsl(0 0% 2%) 0%, hsl(0 0% 6%) 100%)',
-  text: 'hsl(0 0% 92%)',
-  accentText: 'linear-gradient(91.52deg, hsl(42 100% 56%) 0.79%, hsl(42 100% 72%) 109.05%)',
-  accentBlock: 'linear-gradient(135deg, hsl(42 100% 56%) 0%, hsl(42 100% 72%) 100%)'
+  background: '#14120b',
+  secondaryText: '#9a9080',
+  accentText: '#e07848',
+  accentBlock: '#c9572a'
 } as const
 
 export const GET = async (req: NextRequest) => {
@@ -64,14 +64,15 @@ export const GET = async (req: NextRequest) => {
           padding: '48px 56px',
           justifyContent: 'space-between',
           alignItems: 'center',
-          fontFamily: 'Inter, system-ui, sans-serif',
-          fontWeight: 700
+          fontFamily: 'Geist, system-ui, sans-serif',
+          fontWeight: 400
         }}
       >
         <div
           style={{
-            color: ogTheme.text,
-            fontSize: 30
+            color: ogTheme.secondaryText,
+            fontSize: 30,
+            fontWeight: 500
           }}
         >
           {localeText.subtitle}
@@ -87,11 +88,9 @@ export const GET = async (req: NextRequest) => {
           <div
             style={{
               fontSize: 64,
-              background: ogTheme.accentText,
-              backgroundClip: 'text',
-              WebkitBackgroundClip: 'text',
+              color: ogTheme.accentText,
+              fontWeight: 500,
               letterSpacing: '-0.03em',
-              color: 'transparent',
               marginBottom: 24
             }}
           >
@@ -100,7 +99,7 @@ export const GET = async (req: NextRequest) => {
           <div
             style={{
               fontSize: 24,
-              color: ogTheme.text,
+              color: ogTheme.secondaryText,
               maxWidth: '800px',
               lineHeight: 1.4
             }}
@@ -110,7 +109,7 @@ export const GET = async (req: NextRequest) => {
         </div>
         <div
           style={{
-            color: ogTheme.text,
+            color: ogTheme.secondaryText,
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
@@ -127,7 +126,8 @@ export const GET = async (req: NextRequest) => {
           />
           <div
             style={{
-              fontSize: 30
+              fontSize: 30,
+              fontWeight: 500
             }}
           >
             yuricunha.com

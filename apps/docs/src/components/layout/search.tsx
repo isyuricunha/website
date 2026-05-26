@@ -15,9 +15,8 @@ import {
   Logo
 } from '@isyuricunha/ui'
 import { cn } from '@isyuricunha/utils'
-import { ComponentIcon, MoonIcon, SearchIcon, SunIcon } from 'lucide-react'
+import { ComponentIcon, SearchIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { useTheme } from 'next-themes'
 import { Fragment, useEffect, useState } from 'react'
 
 import { SIDEBAR_LINKS } from '@/config/links'
@@ -25,7 +24,6 @@ import { SIDEBAR_LINKS } from '@/config/links'
 const Search = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [value, setValue] = useState('')
-  const { setTheme } = useTheme()
   const router = useRouter()
 
   const runCommand = (command: () => void) => {
@@ -45,8 +43,6 @@ const Search = () => {
 
     return () => document.removeEventListener('keydown', down)
   }, [])
-
-  const isSelectingTheme = value === 'Light' || value === 'Dark'
 
   return (
     <>
@@ -93,21 +89,11 @@ const Search = () => {
               <CommandSeparator />
             </Fragment>
           ))}
-          <CommandGroup heading='Theme'>
-            <CommandItem onSelect={() => runCommand(() => setTheme('light'))}>
-              <SunIcon />
-              Light
-            </CommandItem>
-            <CommandItem onSelect={() => runCommand(() => setTheme('dark'))}>
-              <MoonIcon />
-              Dark
-            </CommandItem>
-          </CommandGroup>
         </CommandList>
         <CommandFooter>
           <Logo className='size-4' />
           <CommandFooterTrigger triggerKey={<Kbd keys={['enter']} className='py-0' />}>
-            {isSelectingTheme ? 'Switch Theme' : 'Open Link'}
+            Open Link
           </CommandFooterTrigger>
         </CommandFooter>
       </CommandDialog>

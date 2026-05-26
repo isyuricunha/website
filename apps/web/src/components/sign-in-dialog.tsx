@@ -263,9 +263,9 @@ const SignInDialog = () => {
 
           {/* Divider */}
           <div className='flex items-center gap-2'>
-            <div className='h-px flex-1 bg-gray-300' />
-            <span className='text-sm text-gray-500'>{t('dialog.sign-in.or')}</span>
-            <div className='h-px flex-1 bg-gray-300' />
+            <div className='h-px flex-1 bg-[var(--border-default)]' />
+            <span className='text-text-tertiary text-sm'>{t('dialog.sign-in.or')}</span>
+            <div className='h-px flex-1 bg-[var(--border-default)]' />
           </div>
 
           {/* Formulário de Email & Senha */}

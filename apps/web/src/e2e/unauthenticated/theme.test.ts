@@ -1,72 +1,28 @@
-import test from '@playwright/test'
-
-import { checkAppliedTheme, checkStoredTheme, createBrowserContext } from '../utils/theme'
-
-const createThemeTest = (theme: 'light' | 'dark') => {
-  test(`should render ${theme} theme`, async ({ browser, baseURL }) => {
-    const context = await createBrowserContext(browser, {
-      baseURL,
-      localStorage: [{ name: 'theme', value: theme }]
-    })
-
-    const page = await context.newPage()
-    await page.goto('/')
-
-    await page.getByTestId('theme-toggle').click()
-    await page.getByTestId(`theme-${theme}-button`).click()
-
-    await checkStoredTheme(page, theme)
-    await checkAppliedTheme(page, theme)
-
-    await context.close()
-  })
-}
-
-const createSystemThemeTest = (
-  path: string,
-  preferredColorScheme: 'light' | 'dark',
-  expectedTheme: string
-) => {
-  test(`should render ${expectedTheme} theme if preferred-colorscheme is ${preferredColorScheme}`, async ({
-    browser,
-    baseURL
-  }) => {
-    const context = await createBrowserContext(browser, {
-      colorScheme: preferredColorScheme,
-      baseURL,
-      localStorage: [{ name: 'theme', value: 'system' }]
-    })
-
-    const page = await context.newPage()
-    await page.goto(path)
-
-    await checkStoredTheme(page, 'system')
-    await checkAppliedTheme(page, expectedTheme)
-  })
-}
-
-const createStorageThemeTest = (theme: 'light' | 'dark') => {
-  test(`should render ${theme} theme from localStorage`, async ({ browser, baseURL }) => {
-    const context = await createBrowserContext(browser, {
-      baseURL,
-      localStorage: [{ name: 'theme', value: theme }]
-    })
-
-    const page = await context.newPage()
-    await page.goto('/')
-
-    await checkStoredTheme(page, theme)
-    await checkAppliedTheme(page, theme)
-
-    await context.close()
-  })
-}
+import { expect, test } from '@playwright/test'
 
 test.describe('theme', () => {
-  createThemeTest('light')
-  createThemeTest('dark')
-  createSystemThemeTest('/', 'light', 'light')
-  createSystemThemeTest('/', 'dark', 'dark')
-  createStorageThemeTest('light')
-  createStorageThemeTest('dark')
+  test('should render the fixed warm theme shell', async ({ page }) => {
+    await page.goto('/')
+
+    const theme = await page.evaluate(() => {
+      const root = getComputedStyle(document.documentElement)
+      const body = getComputedStyle(document.body)
+
+      return {
+        accent: root.getPropertyValue('--accent').trim(),
+        background: body.backgroundColor,
+        bgBase: root.getPropertyValue('--bg-base').trim(),
+        textPrimary: root.getPropertyValue('--text-primary').trim()
+      }
+    })
+
+    await expect(page.locator('html')).toHaveClass(/dark/)
+    await expect(page.getByTestId('theme-toggle')).toHaveCount(0)
+    expect(theme).toEqual({
+      accent: '#c9572a',
+      background: 'rgb(20, 18, 11)',
+      bgBase: '#14120b',
+      textPrimary: '#f0ebe0'
+    })
+  })
 })

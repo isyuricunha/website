@@ -3,8 +3,7 @@ import type { Metadata, Viewport } from 'next'
 import '@/styles/globals.css'
 
 import { cn } from '@isyuricunha/utils'
-import { GeistMono } from 'geist/font/mono'
-import { GeistSans } from 'geist/font/sans'
+import { Geist, Geist_Mono } from 'next/font/google'
 
 import { SITE_DESCRIPTION, SITE_KEYWORDS, SITE_TITLE, SITE_URL } from '@/lib/constants'
 
@@ -13,6 +12,9 @@ import Providers from './providers'
 type LayoutProps = {
   children: React.ReactNode
 }
+
+const geist = Geist({ subsets: ['latin'], variable: '--font-geist-sans' })
+const geist_mono = Geist_Mono({ subsets: ['latin'], variable: '--font-geist-mono' })
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -98,8 +100,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: 'white' },
-    { media: '(prefers-color-scheme: dark)', color: 'black' }
+    { media: '(prefers-color-scheme: light)', color: '#14120b' },
+    { media: '(prefers-color-scheme: dark)', color: '#14120b' }
   ]
 }
 
@@ -109,13 +111,13 @@ const Layout = (props: LayoutProps) => {
   return (
     <html
       lang='en-US'
-      className={cn(GeistSans.variable, GeistMono.variable)}
+      className={cn(geist.variable, geist_mono.variable, 'dark')}
       suppressHydrationWarning
     >
       <body>
         <Providers>
           {/* eslint-disable-next-line @eslint-react/dom-no-unknown-property -- custom attribute */}
-          <div vaul-drawer-wrapper='' className='bg-background'>
+          <div vaul-drawer-wrapper='' className='bg-bg-base'>
             {children}
           </div>
         </Providers>

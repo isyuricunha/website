@@ -1928,14 +1928,6 @@
       "empty": "Nenhum repositório encontrado."
     }
   },
-  "theme-toggle": {
-    "options": {
-      "dark": "Escuro",
-      "light": "Claro",
-      "system": "Sistema"
-    },
-    "toggle-theme": "Alternar tema"
-  },
   "uses": {
     "description": "Este é o equipamento que eu uso atualmente para jogar, programar, fazer vídeos e no dia a dia.",
     "title": "Equipamentos"
@@ -2304,7 +2296,7 @@
       "9": "Obrigado pela visita! Espero que você esteja tendo um ótimo dia!",
       "10": "Quer ver no que meu criador, Yuri, está trabalhando? Confira os projetos!",
       "11": "Adoro ajudar visitantes e compartilhar conhecimento. E você?",
-      "12": "Modo escuro ou claro? Eu suporte ambos!",
+      "12": "O visual agora é quente, escuro e bem focado.",
       "13": "Este site é totalmente responsivo. Tente redimensionar o navegador!",
       "14": "Encontrou algum bug? Me avise que eu ajudo a reportar!",
       "15": "Estou sempre aprendendo coisas novas com meu criador, Yuri. Qual sua descoberta mais recente?",

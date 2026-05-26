@@ -134,30 +134,33 @@ export function useMascotState() {
   /**
    * Mark message for exit animation and remove it afterwards
    */
-  const startExit = useCallback((id: number) => {
-    setState((prev) => {
-      const exitingIds = new Set(prev.exitingIds)
-      exitingIds.add(id)
-
-      return {
-        ...prev,
-        exitingIds
-      }
-    })
-
-    scheduleTimeout(() => {
+  const startExit = useCallback(
+    (id: number) => {
       setState((prev) => {
         const exitingIds = new Set(prev.exitingIds)
-        exitingIds.delete(id)
+        exitingIds.add(id)
 
         return {
           ...prev,
-          messageQueue: prev.messageQueue.filter((item) => item.id !== id),
           exitingIds
         }
       })
-    }, 200)
-  }, [scheduleTimeout])
+
+      scheduleTimeout(() => {
+        setState((prev) => {
+          const exitingIds = new Set(prev.exitingIds)
+          exitingIds.delete(id)
+
+          return {
+            ...prev,
+            messageQueue: prev.messageQueue.filter((item) => item.id !== id),
+            exitingIds
+          }
+        })
+      }, 200)
+    },
+    [scheduleTimeout]
+  )
 
   /**
    * Add a new message to the display queue

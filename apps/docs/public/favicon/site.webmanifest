@@ -1,5 +1,5 @@
 {
-  "background_color": "black",
+  "background_color": "#14120b",
   "display": "standalone",
   "icons": [
     {
@@ -15,5 +15,5 @@
   ],
   "name": "Docs",
   "short_name": "Docs",
-  "theme_color": "black"
+  "theme_color": "#14120b"
 }
