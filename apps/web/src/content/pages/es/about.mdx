@@ -1,0 +1,277 @@
+---
+---
+title: quién soy
+---
+---
+
+Soy estudiante de tecnología de bases de datos, aspirante a administrador de bases de datos (DBA) de PostgreSQL y MongoDB, dueño de un homelab al que me gusta autoalojar servicios y una persona inmersa en un proyecto a largo plazo para ser más ligero y correr más lejos. Valoro el conocimiento práctico, la documentación, la confiabilidad y tener ejemplos reales a los que recurrir, no solo teoría. Me gusta la tecnología, pero también dormir, así que intento construir sistemas que pueda depurar a las tres de la mañana sin perder la cordura.
+
+---
+
+## un poco de contexto
+
+Algunos datos rápidos sobre mí:
+
+- Soy de Brasil.
+- Normalmente me presento como **DBA PostgreSQL Jr** o roles similares.
+- Disfruto trabajando cerca de la infraestructura y las bases de datos, no solo en la capa superior del stack.
+- Políticamente tiendo a ser más conservador, aunque este sitio trata principalmente sobre tecnología y proyectos personales, no sobre política.
+- El inglés no es mi idioma nativo; probablemente encontrarás algunas frases extrañas aquí y allá.
+
+Me gusta ser honesto sobre en qué punto estoy en mi camino. No soy un arquitecto senior con treinta años de experiencia. Soy alguien que construye ese camino, un laboratorio y un proyecto a la vez.
+
+---
+
+## qué estoy haciendo en tecnología actualmente
+
+En el ámbito formal, estudio **tecnología de bases de datos** en Estácio, una carrera tecnológica enfocada en bases de datos. El plan es terminar alrededor de 2026 o 2027 y, en el camino, conectar lo que estudio en la universidad con proyectos reales en mi homelab y en mis repositorios.
+
+En el ámbito práctico, mi rutina suele incluir:
+
+- Administrar **servidores Linux**, principalmente Ubuntu Server 24.04 LTS.
+- Trabajar con **PostgreSQL** como mi base de datos relacional principal.
+- Usar **MongoDB** para escenarios basados en documentos.
+- Crear y mantener stacks de **Docker Compose**.
+- Practicar copias de seguridad, restauración y recuperación ante desastres.
+- Optimizar consultas y configuraciones de bases de datos para mejorar el rendimiento.
+- Configurar monitoreo y alertas.
+- Documentar todo en Markdown para que mi yo futuro no odie a mi yo pasado.
+
+También dedico tiempo a estudiar y prepararme para certificaciones y oportunidades profesionales relacionadas con bases de datos, infraestructura y seguridad.
+
+---
+
+## mi homelab e infraestructura
+
+Me gusta decir que mi homelab es mi mejor maestro.
+
+Algunas cosas que viven allí:
+
+- Servidores en casa ejecutando **Ubuntu Server 24.04 LTS**, incluyendo:
+  - Una máquina más potente enfocada en bases de datos y servicios.
+  - Una máquina más ligera que aún uso para experimentos.
+- Instancias en **Oracle Cloud** que actúan como nodos adicionales y hosts de bases de datos.
+- **Tailscale** para conectar todo en una superposición segura, incluyendo mi laptop con Windows.
+- Túneles de **Cloudflared** para exponer servicios sin abrir puertos aleatorios a Internet.
+- **Puertos externos aleatorios** mapeados a contenedores, en lugar de los predeterminados, como una pequeña capa adicional contra bots.
+- Un servidor de bases de datos dedicado en Oracle donde centralizo bases de datos como PostgreSQL y otras.
+
+Servicios típicos que aparecen y desaparecen aquí:
+
+- Nextcloud para archivos.
+- Servidor Joplin para notas.
+- PrivateBin para compartir texto rápidamente.
+- Herramientas de monitoreo autoalojadas.
+- Modelos de IA locales a través de Ollama.
+- Pequeñas aplicaciones web para apoyar mi flujo de trabajo.
+
+Soy dueño del dominio **`yuricunha.com`**, y muchos servicios viven en subdominios como `algo.yuricunha.com`. Este sitio es una de las caras visibles de todo eso.
+
+---
+
+## stack tecnológico y preferencias
+
+Estas son algunas herramientas y elecciones que aparecen frecuentemente en mis proyectos:- **sistemas operativos**
+  - ubuntu server 24.04 lts en servidores
+  - windows 10 pro en mi laptop principal
+  - distros basadas en arch para experimentos, como endeavouros, cachyos y garuda
+- **redes y acceso**
+  - tailscale para acceso remoto seguro
+  - cloudflared para publicar servicios sin tocar el reenvío de puertos del router
+- **contenedores y servicios**
+  - docker con **docker compose** (el plugin, no el antiguo comando `docker-compose`)
+  - archivos `docker-compose.yml` sin la antigua clave `version`
+  - postgresql externo en lugar de una base de datos por contenedor
+  - dns fijo en contenedores usando:
+    - `1.1.1.1`
+    - `8.8.8.8`
+- **programación y herramientas**
+  - python para automatización y scripts
+  - `pipx` para instalar herramientas basadas en python de manera global pero limpia
+  - scripts de shell para tareas simples
+- **bases de datos**
+  - postgresql como base de datos principal en mis laboratorios
+  - interés en mongodb y otros motores para comparar enfoques
+- **ia y automatización**
+  - ollama ejecutándose en ubuntu, directamente en el host, no en contenedores
+  - pruebas con diferentes modelos y prompts
+  - planes para automatizaciones y asistentes personales
+
+me gustan las configuraciones que son reproducibles. si escribo un archivo compose o un script, intento hacerlo de manera que pueda recrear el mismo entorno meses después sin adivinar.
+
+---
+
+## laboratorios, repositorios y estilo de documentación
+
+uno de mis proyectos principales a largo plazo es construir un **laboratorio y portafolio de dba**, enfocado en postgresql.
+
+cosas que puedes esperar de mis repositorios:
+
+- directorios estructurados para cada servicio o laboratorio, por ejemplo:
+  - `~/docker/docker-compose/{servicio}`
+  - `~/docker/docker-data/{servicio}`
+- archivos `docker compose` que:
+  - evitan opciones obsoletas
+  - usan bases de datos externas cuando tiene sentido
+  - incluyen valores de entorno de ejemplo, para que quede claro qué va dónde
+- documentación escrita en markdown, generalmente en primera persona, con secciones que explican:
+  - qué cambió
+  - cómo cambió
+  - por qué cambió
+- comentarios en el código en **minúsculas**
+- consultas sql mayormente en **minúsculas**
+- preferencia por licencias de código abierto, a menudo **lgpl 2.1** en proyectos públicos
+
+me gusta tratar estos laboratorios como mini entornos de producción. incluso si nadie más los usa, actúo como si fuera el dba, el sysadmin y la persona de guardia al mismo tiempo.
+
+---
+
+## proyectos secundarios y marcas personales
+
+además de infraestructura pura y bases de datos, también disfruto creando pequeños proyectos y marcas, tanto por diversión como por práctica.
+
+ejemplos:
+
+- ideas en torno a una aplicación de música personal, similar a **yumusic**, usando backends autoalojados
+- conceptos de marcas pequeñas como **yuflow** y otros
+- experimentos con un avatar y asistente de ia personal para soporte o chat
+- servicios bajo nombres al estilo **yc inc.**, para una futura presencia comercial personal
+
+estas cosas evolucionan con el tiempo. algunas de ellas pueden que nunca se hagan públicas, pero el trabajo detrás de ellas me ayuda a aprender sobre pipelines, ci, control de versiones, seguridad y despliegues.
+
+---
+
+## estilo de estudio y mentalidad
+
+cómo me gusta estudiar y crecer en esta área:
+
+- mezclar **teoría y práctica** todo el tiempo
+- romper cosas a propósito, luego arreglarlas
+- mantener **notas detalladas** de comandos, salidas y decisiones
+- crear **libros de procedimientos** para tareas repetitivas o estresantes, por ejemplo:
+  - restaurar copias de seguridad
+  - reconfigurar un clúster
+  - realizar mantenimiento con tiempo de inactividad mínimo
+- enfocarme en **observabilidad**:
+  - registros (logs)
+  - métricas
+  - alertas
+- revisitar laboratorios antiguos con conocimientos nuevos para ver qué haría diferente ahora
+
+prefiero entender cómo funcionan las cosas bajo la superficie en lugar de memorizar una lista de comandos. si sé dónde están los registros, cómo comienza el proceso, cómo se almacenan los datos y qué hace la configuración, me siento mucho más cómodo al manipular sistemas de producción.
+
+---
+
+## dirección profesional
+
+profesionalmente, estoy construyendo mi camino en roles como:
+
+- dba junior de postgresql
+- administrador de bases de datos enfocado en entornos de producción
+- roles donde postgresql y linux sean ciudadanos de primera clase
+- posiciones donde la observabilidad, la optimización del rendimiento y la confiabilidad importentambién mantengo un ojo en áreas relacionadas con:
+
+- ingeniería de datos
+- seguridad y cumplimiento
+- alta disponibilidad y clustering
+
+he pasado por procesos reales de reclutamiento, incluyendo entrevistas de varios pasos para roles de DBA, y uso cada experiencia para refinar mi portafolio, mis laboratorios y cómo presento mis habilidades.
+
+---
+
+## salud, running y metas a largo plazo
+
+la tecnología no es el único proyecto a largo plazo en mi vida.
+
+he estado trabajando en:
+
+- **perder peso**
+- **mejorar mis marcadores de salud**
+- **construir un hábito de running**
+
+algunas herramientas y hábitos que uso:
+
+- reloj **Garmin** y planes de **Garmin Coach**, especialmente para 5k
+- planes de entrenamiento estructurados que combinan correr y caminar
+- seguimiento de **pasos, distancia y ritmo**
+- uso de **basculas de cocina** y aplicaciones para medir calorías y macros
+- planificación de comidas con opciones simples y repetibles como arroz, frijoles, huevos, pasta y guarniciones básicas
+- intento mantener un **déficit calórico** constante sin llegar a extremos
+
+sé que soy un tipo grande y que esto llevará tiempo. mi objetivo no es solo bajar números en la báscula, sino construir un cuerpo que pueda soportar mis planes, incluyendo correr carreras regulares de 5k y, más adelante, distancias más largas.
+
+puede que veas publicaciones sobre:
+
+- resúmenes semanales de entrenamiento
+- cómo me fue en una carrera específica
+- pequeñas mejoras en la frecuencia cardíaca y el ritmo
+- experimentos con dieta y rutina
+
+veo este viaje de salud de la misma manera que veo mi homelab. es un proyecto largo, lleno de iteraciones, métricas y ajustes.
+
+---
+
+## cómo uso este sitio
+
+este sitio existe por varias razones:
+
+- centralizar mis **notas, laboratorios y guías**
+- servir como **portafolio** para quienes quieran saber qué hago realmente
+- mantener un **registro de mi aprendizaje** con el tiempo
+- compartir **configuraciones, archivos compose y scripts** que puedan ayudar a otros
+- documentar mi **viaje de running y salud** de una manera que tenga sentido para mí
+
+aquí puedes encontrar:
+
+- artículos técnicos sobre PostgreSQL, Linux y Docker
+- guías paso a paso para configuraciones específicas
+- pequeñas reflexiones sobre estudio, carrera y vida
+- notas sobre entrenamiento, pérdida de peso y disciplina
+
+prefiero ser honesto antes que perfecto. así que probablemente verás borradores, trabajos en progreso y cosas que cambiaron a mitad de camino. para mí, eso es mejor que fingir que todo está terminado y pulido.
+
+---
+
+## lo que valoro
+
+algunas cosas que guían cómo trabajo y aprendo:
+
+- **claridad** sobre palabras de moda
+- **documentación** sobre improvisación
+- **confiabilidad** sobre configuraciones brillantes pero frágiles
+- **responsabilidad personal** sobre culpar a las herramientas
+- **libertad y privacidad** en la tecnología
+- ser **realista** sobre las habilidades actuales, mientras me esfuerzo por mejorar
+
+en términos prácticos, esto significa que me gustan:
+
+- registros, métricas y alertas en lugar de adivinanzas
+- automatización con comportamiento claro
+- copias de seguridad que he restaurado y probado realmente
+- observabilidad en lugar de fe ciega en los servicios
+- herramientas autoalojadas o al menos controlables cuando sea posible
+
+---
+
+## datos aleatorios sobre mí
+
+solo para hacer esta página un poco más humana:
+
+- puedo perderme felizmente configurando un nuevo entorno Linux durante horas
+- disfruto ajustando kernels y opciones de rendimiento para mi portátil Ryzen
+- me gusta leer sobre bases de datos incluso cuando no es estrictamente necesario
+- prefiero entornos tranquilos antes que lugares ruidosos
+- creo que una buena caminata o carrera resuelve mucho desorden mental
+- uso modelos de IA, tanto locales como en la nube, como herramientas para pensar, redactar y explorar ideas
+
+---
+
+## si leíste todo esto
+
+si llegaste hasta aquí, gracias.
+
+si quieres saludar, comentar algo, proponer un proyecto o simplemente decirme que una publicación te ayudó, puedes ir a la página de [contacto](/contact) y enviar un mensaje.
+
+este sitio probablemente seguirá cambiando con el tiempo, al igual que yo cambio las cosas que hago y la persona en la que me estoy convirtiendo. eso es parte de la diversión.
+
+<Logo />
