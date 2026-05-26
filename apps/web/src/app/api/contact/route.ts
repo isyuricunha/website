@@ -1,6 +1,6 @@
 import type { NextRequest } from 'next/server'
 
-import { render } from '@react-email/components'
+import { render } from '@react-email/render'
 import { ContactConfirmation, ContactForm } from '@isyuricunha/emails'
 import { env, flags } from '@isyuricunha/env'
 import { Resend } from 'resend'

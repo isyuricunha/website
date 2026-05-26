@@ -1,4 +1,4 @@
-import { render } from '@react-email/components'
+import { render } from '@react-email/render'
 import { db } from '@isyuricunha/db'
 import { EmailVerification, PasswordReset } from '@isyuricunha/emails'
 import { env } from '@isyuricunha/env'
