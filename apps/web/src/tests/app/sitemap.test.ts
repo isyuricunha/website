@@ -1,6 +1,10 @@
 import { describe, expect, it, vi } from 'vitest'
 
 vi.mock('@isyuricunha/i18n/config', () => ({
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en', 'pt']
+  },
   supportedLanguages: [
     { code: 'en', label: 'English', default: true },
     { code: 'pt', label: 'Português' }
@@ -78,6 +82,14 @@ describe('app sitemap.xml generator', () => {
     expect(urls.has('https://example.com/pt')).toBe(true)
     expect(urls.has('https://example.com/pt/sitemap')).toBe(true)
     expect(urls.has('https://example.com/pt/rss.xml')).toBe(true)
+
+    const home = entries.find((e) => e.url === 'https://example.com')
+
+    expect(home?.alternates?.languages).toEqual({
+      en: 'https://example.com',
+      pt: 'https://example.com/pt',
+      'x-default': 'https://example.com'
+    })
   })
 
   it('uses post modifiedTime when available', async () => {

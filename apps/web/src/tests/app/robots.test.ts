@@ -5,12 +5,12 @@ vi.mock('@/lib/constants', () => ({
 }))
 
 describe('app robots.txt generator', () => {
-  it('includes sitemap and does not include host', async () => {
+  it('includes sitemap and host', async () => {
     const { default: robots } = await import('@/app/robots')
 
     const result = robots()
 
     expect(result.sitemap).toBe('https://example.com/sitemap.xml')
-    expect('host' in result).toBe(false)
+    expect(result.host).toBe('https://example.com')
   })
 })

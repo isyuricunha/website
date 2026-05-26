@@ -84,7 +84,7 @@ const Page = async (props: PageProps) => {
     <div className='space-y-12'>
       <div className='space-y-4'>
         <h1 className='relative text-3xl font-medium tracking-tighter md:text-4xl'>{title}</h1>
-        <p className='text-muted-foreground'>{description}</p>
+        <p className='text-text-secondary max-w-2xl text-[15px] leading-relaxed'>{description}</p>
         {hasLinks ? <LinkBadges {...link} /> : null}
       </div>
       <Mdx className='my-12' code={code} />

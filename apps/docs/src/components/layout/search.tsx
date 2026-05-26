@@ -49,12 +49,12 @@ const Search = () => {
       <Button
         variant='outline'
         className={cn(
-          'bg-muted/50 text-muted-foreground hidden h-10 items-center justify-between gap-3 rounded-lg pr-2 font-normal sm:flex lg:w-64'
+          'bg-bg-surface text-text-secondary hover:bg-bg-hover hidden h-10 items-center justify-between gap-3 rounded-lg border-[0.5px] border-[var(--border-subtle)] pr-2 font-normal sm:flex lg:w-64'
         )}
         onClick={() => setIsOpen(true)}
       >
         <span>Search documentation</span>
-        <kbd className='bg-muted flex gap-1 rounded-sm border px-1.5 font-mono text-xs font-medium select-none'>
+        <kbd className='bg-bg-base text-text-tertiary flex gap-1 rounded-sm border-[0.5px] border-[var(--border-subtle)] px-1.5 font-mono text-xs font-medium select-none'>
           <span>⌘</span>
           <span>K</span>
         </kbd>

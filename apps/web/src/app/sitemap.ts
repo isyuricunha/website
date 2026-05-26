@@ -4,6 +4,7 @@ import { supportedLanguages } from '@isyuricunha/i18n/config'
 import { allPages, allPosts, allProjects, allSnippets } from 'content-collections'
 
 import { SITE_URL } from '@/lib/constants'
+import { build_absolute_language_alternates } from '@/lib/seo'
 import { getLocalizedPath } from '@/utils/get-localized-path'
 
 const sitemap = (): MetadataRoute.Sitemap => {
@@ -19,6 +20,30 @@ const sitemap = (): MetadataRoute.Sitemap => {
     entries.push(entry)
   }
 
+  const addLocalizedEntry = ({
+    slug,
+    locale,
+    lastModified = buildTime,
+    changeFrequency,
+    priority
+  }: {
+    slug: string
+    locale: string
+    lastModified?: Date
+    changeFrequency?: MetadataRoute.Sitemap[number]['changeFrequency']
+    priority?: number
+  }) => {
+    addEntry({
+      url: `${SITE_URL}${getLocalizedPath({ slug, locale })}`,
+      lastModified,
+      changeFrequency,
+      priority,
+      alternates: {
+        languages: build_absolute_language_alternates({ slug })
+      }
+    })
+  }
+
   // Generate URLs for snippets (group by locale to only generate existing content)
   const snippetsByLocale = new Map<string, Set<string>>()
   for (const snippet of allSnippets) {
@@ -32,9 +57,12 @@ const sitemap = (): MetadataRoute.Sitemap => {
     for (const slug of slugs) {
       const snippet = allSnippets.find((s) => s.slug === slug && s.locale === locale)
 
-      addEntry({
-        url: `${SITE_URL}${getLocalizedPath({ slug: `/snippet/${slug}`, locale })}`,
-        lastModified: snippet ? new Date(snippet.date) : buildTime
+      addLocalizedEntry({
+        slug: `/snippet/${slug}`,
+        locale,
+        lastModified: snippet ? new Date(snippet.date) : buildTime,
+        changeFrequency: 'monthly',
+        priority: 0.6
       })
     }
   }
@@ -58,9 +86,11 @@ const sitemap = (): MetadataRoute.Sitemap => {
   // Generate URLs for base routes (all languages)
   for (const locale of supportedLanguages) {
     for (const route of baseRoutes) {
-      addEntry({
-        url: `${SITE_URL}${getLocalizedPath({ slug: route, locale: locale.code })}`,
-        lastModified: buildTime
+      addLocalizedEntry({
+        slug: route,
+        locale: locale.code,
+        changeFrequency: route === '' ? 'weekly' : 'monthly',
+        priority: route === '' ? 1 : 0.7
       })
     }
   }
@@ -78,9 +108,12 @@ const sitemap = (): MetadataRoute.Sitemap => {
     for (const slug of slugs) {
       const post = allPosts.find((p) => p.slug === slug && p.locale === locale)
 
-      addEntry({
-        url: `${SITE_URL}${getLocalizedPath({ slug: `/blog/${slug}`, locale })}`,
-        lastModified: post ? new Date(post.modifiedTime || post.date) : buildTime
+      addLocalizedEntry({
+        slug: `/blog/${slug}`,
+        locale,
+        lastModified: post ? new Date(post.modifiedTime || post.date) : buildTime,
+        changeFrequency: 'monthly',
+        priority: 0.8
       })
     }
   }
@@ -97,9 +130,11 @@ const sitemap = (): MetadataRoute.Sitemap => {
   for (const [locale, slugs] of projectsByLocale) {
     // Add individual project pages
     for (const slug of slugs) {
-      addEntry({
-        url: `${SITE_URL}${getLocalizedPath({ slug: `/projects/${slug}`, locale })}`,
-        lastModified: buildTime
+      addLocalizedEntry({
+        slug: `/projects/${slug}`,
+        locale,
+        changeFrequency: 'monthly',
+        priority: 0.7
       })
     }
   }
@@ -115,9 +150,11 @@ const sitemap = (): MetadataRoute.Sitemap => {
 
   for (const [locale, slugs] of pagesByLocale) {
     for (const slug of slugs) {
-      addEntry({
-        url: `${SITE_URL}${getLocalizedPath({ slug: `/${slug}`, locale })}`,
-        lastModified: buildTime
+      addLocalizedEntry({
+        slug: `/${slug}`,
+        locale,
+        changeFrequency: 'monthly',
+        priority: 0.6
       })
     }
   }

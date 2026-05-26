@@ -55,6 +55,25 @@ export const build_alternates = ({
   }
 }
 
+export const build_absolute_language_alternates = ({
+  slug,
+  locales
+}: {
+  slug: string
+  locales?: string[]
+}) => {
+  const availableLocales = locales && locales.length > 0 ? locales : i18n.locales
+
+  const languages = availableLocales.reduce<Record<string, string>>((acc, locale) => {
+    acc[locale] = `${SITE_URL}${getLocalizedPath({ slug, locale })}`
+    return acc
+  }, {})
+
+  languages['x-default'] = `${SITE_URL}${getLocalizedPath({ slug, locale: i18n.defaultLocale })}`
+
+  return languages
+}
+
 interface SEOProps {
   title?: string
   description?: string

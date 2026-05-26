@@ -18,6 +18,7 @@ const geist_mono = Geist_Mono({ subsets: ['latin'], variable: '--font-geist-mono
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
+  applicationName: SITE_TITLE,
   title: {
     default: SITE_TITLE,
     template: `%s | ${SITE_TITLE}`
@@ -54,6 +55,7 @@ export const metadata: Metadata = {
   },
   keywords: SITE_KEYWORDS,
   creator: 'isyuricunha',
+  publisher: 'Yuri Cunha',
   openGraph: {
     url: SITE_URL,
     type: 'website',
