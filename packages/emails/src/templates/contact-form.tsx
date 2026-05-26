@@ -16,6 +16,8 @@ import {
 } from '@react-email/components'
 import * as React from 'react'
 
+import { emailThemeVars } from '../theme'
+
 type ContactFormProps = {
   name: string
   email: string
@@ -34,18 +36,9 @@ const ContactForm = (props: ContactFormProps) => {
       <Tailwind>
         <Body
           className='bg-[color:var(--email-bg)] py-[40px] font-sans'
-          style={
-            {
-              '--email-bg': 'hsl(0 0% 0%)',
-              '--email-surface': 'hsl(0 0% 7%)',
-              '--email-fg': 'hsl(0 0% 100%)',
-              '--email-border': 'hsl(0 0% 20%)',
-              '--email-muted': 'hsl(0 0% 55%)',
-              '--email-accent': 'hsl(42 100% 56%)'
-            } as React.CSSProperties
-          }
+          style={emailThemeVars as React.CSSProperties}
         >
-          <Container className='mx-auto max-w-[600px] rounded-[8px] border border-solid border-[color:var(--email-border)] bg-[color:var(--email-bg)]'>
+          <Container className='mx-auto max-w-[600px] rounded-[8px] border-[0.5px] border-solid border-[color:var(--email-border)] bg-[color:var(--email-bg)]'>
             {/* Header with Logo */}
             <Section className='px-[32px] pt-[32px] pb-[24px]'>
               <Img
@@ -57,7 +50,7 @@ const ContactForm = (props: ContactFormProps) => {
 
             {/* Main Content */}
             <Section className='px-[32px] pb-[32px]'>
-              <Heading className='mt-0 mb-[24px] text-[24px] font-bold text-[color:var(--email-fg)]'>
+              <Heading className='mt-0 mb-[24px] text-[24px] font-medium text-[color:var(--email-fg)]'>
                 New Contact Form Submission
               </Heading>
 
@@ -66,10 +59,10 @@ const ContactForm = (props: ContactFormProps) => {
               </Text>
 
               {/* Contact Details Card */}
-              <Section className='mb-[24px] rounded-[8px] border border-solid border-[color:var(--email-border)] bg-[color:var(--email-surface)] p-[24px]'>
+              <Section className='mb-[24px] rounded-[8px] border-[0.5px] border-solid border-[color:var(--email-border)] bg-[color:var(--email-surface)] p-[24px]'>
                 <Row>
                   <Column>
-                    <Text className='mt-0 mb-[8px] text-[14px] font-bold tracking-wide text-[color:var(--email-accent)] uppercase'>
+                    <Text className='mt-0 mb-[8px] text-[14px] font-medium tracking-wide text-[color:var(--email-accent)] uppercase'>
                       From
                     </Text>
                     <Text className='mt-0 mb-[16px] text-[16px] text-[color:var(--email-fg)]'>
@@ -80,7 +73,7 @@ const ContactForm = (props: ContactFormProps) => {
 
                 <Row>
                   <Column>
-                    <Text className='mt-0 mb-[8px] text-[14px] font-bold tracking-wide text-[color:var(--email-accent)] uppercase'>
+                    <Text className='mt-0 mb-[8px] text-[14px] font-medium tracking-wide text-[color:var(--email-accent)] uppercase'>
                       Subject
                     </Text>
                     <Text className='mt-0 mb-[16px] text-[16px] text-[color:var(--email-fg)]'>
@@ -91,7 +84,7 @@ const ContactForm = (props: ContactFormProps) => {
 
                 <Row>
                   <Column>
-                    <Text className='mt-0 mb-[8px] text-[14px] font-bold tracking-wide text-[color:var(--email-accent)] uppercase'>
+                    <Text className='mt-0 mb-[8px] text-[14px] font-medium tracking-wide text-[color:var(--email-accent)] uppercase'>
                       Message
                     </Text>
                     <Text className='mt-0 mb-0 text-[16px] leading-[24px] whitespace-pre-wrap text-[color:var(--email-fg)]'>

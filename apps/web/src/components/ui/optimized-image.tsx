@@ -57,7 +57,7 @@ function OptimizedImage({
     <div className={className} style={{ position: 'relative' }}>
       {isLoading && (
         <div
-          className='bg-muted absolute inset-0 animate-pulse rounded-lg'
+          className='bg-bg-surface absolute inset-0 animate-pulse rounded-lg'
           style={{ aspectRatio: `${width}/${height}` }}
         />
       )}
@@ -69,7 +69,7 @@ function OptimizedImage({
         onError={handleError}
         style={{
           opacity: isLoading ? 0 : 1,
-          transition: 'opacity 0.3s ease-in-out'
+          transition: 'opacity var(--transition)'
         }}
       />
     </div>

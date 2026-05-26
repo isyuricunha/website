@@ -131,13 +131,45 @@
   }
 }
 
+@layer utilities {
+  .border {
+    border-width: 0.5px;
+  }
+
+  .border-x {
+    border-left-width: 0.5px;
+    border-right-width: 0.5px;
+  }
+
+  .border-y {
+    border-top-width: 0.5px;
+    border-bottom-width: 0.5px;
+  }
+
+  .border-t {
+    border-top-width: 0.5px;
+  }
+
+  .border-r {
+    border-right-width: 0.5px;
+  }
+
+  .border-b {
+    border-bottom-width: 0.5px;
+  }
+
+  .border-l {
+    border-left-width: 0.5px;
+  }
+}
+
 @layer base {
   *,
   ::after,
   ::before,
   ::backdrop,
   ::file-selector-button {
-    border-color: var(--color-gray-200, currentColor);
+    border-color: var(--border-subtle);
   }
 
   :root {

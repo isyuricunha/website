@@ -31,7 +31,7 @@ const EnhancedCard = ({
       whileHover={hover ? { y: -2 } : undefined}
       transition={{ duration: 0.15, ease: [0.25, 0.46, 0.45, 0.94] }}
       className={cn(
-        'bg-bg-surface text-card-foreground shadow-feature-card relative overflow-hidden rounded-lg border border-[var(--border-subtle)] transition-colors duration-150',
+        'bg-bg-surface text-text-primary shadow-feature-card relative overflow-hidden rounded-lg border border-[var(--border-subtle)] transition-colors duration-150',
         hover && 'hover:bg-bg-hover',
         className
       )}
@@ -77,7 +77,7 @@ const EnhancedCardDescription = ({
   ...props
 }: React.HTMLAttributes<HTMLParagraphElement> & {
   ref?: React.RefObject<HTMLParagraphElement | null>
-}) => <p ref={ref} className={cn('text-muted-foreground text-sm', className)} {...props} />
+}) => <p ref={ref} className={cn('text-text-secondary text-sm', className)} {...props} />
 EnhancedCardDescription.displayName = 'EnhancedCardDescription'
 
 const EnhancedCardContent = ({

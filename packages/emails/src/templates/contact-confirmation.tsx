@@ -15,6 +15,8 @@ import {
 } from '@react-email/components'
 import * as React from 'react'
 
+import { emailThemeVars } from '../theme'
+
 type ContactConfirmationProps = {
   name?: string
   subject?: string
@@ -62,15 +64,7 @@ const ContactConfirmation = (props: ContactConfirmationProps) => {
       <Tailwind>
         <Body
           className='bg-[color:var(--email-bg)] py-[40px] font-sans'
-          style={
-            {
-              '--email-bg': 'hsl(0 0% 0%)',
-              '--email-fg': 'hsl(0 0% 100%)',
-              '--email-border': 'hsl(0 0% 20%)',
-              '--email-muted': 'hsl(0 0% 55%)',
-              '--email-accent': 'hsl(42 100% 56%)'
-            } as React.CSSProperties
-          }
+          style={emailThemeVars as React.CSSProperties}
         >
           <Container className='mx-auto max-w-[600px] bg-[color:var(--email-bg)] px-[20px]'>
             {/* Header with Logo */}
@@ -84,7 +78,7 @@ const ContactConfirmation = (props: ContactConfirmationProps) => {
 
             {/* Main Content */}
             <Section className='mb-[32px]'>
-              <Heading className='mb-[24px] text-left text-[24px] font-bold text-[color:var(--email-fg)]'>
+              <Heading className='mb-[24px] text-left text-[24px] font-medium text-[color:var(--email-fg)]'>
                 {copy.title}
               </Heading>
 
@@ -109,8 +103,8 @@ const ContactConfirmation = (props: ContactConfirmationProps) => {
             </Section>
 
             {/* Contact Information */}
-            <Section className='mb-[40px] rounded-[8px] border border-solid border-[color:var(--email-border)] p-[20px]'>
-              <Text className='mb-[8px] text-[14px] leading-[20px] font-bold text-[color:var(--email-fg)]'>
+            <Section className='mb-[40px] rounded-[8px] border-[0.5px] border-solid border-[color:var(--email-border)] bg-[color:var(--email-surface)] p-[20px]'>
+              <Text className='mb-[8px] text-[14px] leading-[20px] font-medium text-[color:var(--email-fg)]'>
                 {copy.next_title}
               </Text>
               <Text className='mb-[4px] text-[14px] leading-[20px] text-[color:var(--email-fg)]'>
@@ -153,7 +147,7 @@ const ContactConfirmation = (props: ContactConfirmationProps) => {
             </Section>
 
             {/* Footer */}
-            <Section className='border-t border-solid border-[color:var(--email-border)] pt-[24px]'>
+            <Section className='border-t-[0.5px] border-solid border-[color:var(--email-border)] pt-[24px]'>
               <Text className='m-0 mb-[8px] text-center text-[12px] leading-[16px] text-[color:var(--email-muted)]'>
                 dbA
               </Text>

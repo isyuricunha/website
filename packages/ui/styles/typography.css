@@ -29,7 +29,7 @@
     font-size: 13px;
     border-radius: 6px;
     background: color-mix(in oklab, var(--color-secondary) 50%, transparent);
-    border: 1px solid hsl(var(--border));
+    border: 0.5px solid hsl(var(--border));
 
     &::before,
     &::after {

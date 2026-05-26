@@ -9,34 +9,28 @@ export function HighlightText({
   text,
   searchTerm,
   className = '',
-  highlightClassName = 'bg-yellow-200 dark:bg-yellow-800 px-0.5 rounded'
+  highlightClassName = 'rounded bg-[var(--accent-dim)] px-0.5 text-accent-earth-text'
 }: HighlightTextProps) {
   if (!searchTerm.trim()) {
     return <span className={className}>{text}</span>
   }
 
-  // Escape special regex characters
   const escapedSearchTerm = searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  const regex = new RegExp(`(${escapedSearchTerm})`, 'gi')
+  const parts = text.split(regex)
+  const normalizedSearchTerm = searchTerm.toLowerCase()
 
-  try {
-    const regex = new RegExp(`(${escapedSearchTerm})`, 'gi')
-    const parts = text.split(regex)
-
-    return (
-      <span className={className}>
-        {parts.map((part, index) =>
-          regex.test(part) ? (
-            <mark key={index} className={highlightClassName}>
-              {part}
-            </mark>
-          ) : (
-            part
-          )
-        )}
-      </span>
-    )
-  } catch {
-    // Fallback if regex fails
-    return <span className={className}>{text}</span>
-  }
+  return (
+    <span className={className}>
+      {parts.map((part, index) =>
+        part.toLowerCase() === normalizedSearchTerm ? (
+          <mark key={index} className={highlightClassName}>
+            {part}
+          </mark>
+        ) : (
+          part
+        )
+      )}
+    </span>
+  )
 }
