@@ -46,6 +46,7 @@ export const config = {
   /*
    * Match all request paths except for the ones starting with:
    * - api (API routes)
+   * - .well-known (federation and protocol discovery files)
    * - _next/static (static files)
    * - _next/image (image optimization files)
    * - _vercel (Vercel internal)
@@ -54,8 +55,9 @@ export const config = {
    * - sitemap.xml
    * - robots.txt
    * - rss.xml
+   * - llms.txt
    */
   matcher: [
-    '/((?!api|_next/static|_next/image|_vercel|og|favicon|fonts|images|videos|favicon.ico|sitemap.xml|robots.txt|rss.xml).*)'
+    '/((?!api|\\.well-known|_next/static|_next/image|_vercel|og|favicon|fonts|images|videos|favicon.ico|sitemap.xml|robots.txt|rss.xml|llms.txt).*)'
   ]
 }

@@ -28,7 +28,7 @@ const docs = defineCollection({
       remarkPlugins,
       rehypePlugins
     })
-    const path = document._meta.path
+    const path = document._meta.path.replaceAll('\\', '/')
 
     return {
       ...document,

@@ -7,8 +7,9 @@ type EditOnGitHubProps = {
 
 const EditOnGitHub = (props: EditOnGitHubProps) => {
   const { filePath } = props
+  const normalizedFilePath = filePath.replaceAll('\\', '/')
 
-  const url = `https://github.com/isyuricunha/website/blob/main/apps/docs/src/content/${filePath}`
+  const url = `https://github.com/isyuricunha/website/blob/main/apps/docs/src/content/${normalizedFilePath}`
 
   return (
     <Link href={url} className='inline-flex items-center gap-2 text-sm font-medium' variant='muted'>
