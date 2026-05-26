@@ -1,0 +1,143 @@
+---
+title: 配列から重複を削除する
+date: 2025-11-19
+author: Yuri Cunha
+description: JavaScriptで配列から重複した値を削除するさまざまな方法
+tags:
+  - javascript
+  - 配列
+  - データ構造
+---
+
+配列から重複を削除するのは、JavaScriptでよく行われるタスクです。以下に、これを実現するためのいくつかの効果的な方法を紹介します。
+
+{/* more */}
+
+## 方法1: Setを使用する (推奨)
+
+重複を削除する最もシンプルで高性能な方法は、`Set`を使用することです：
+
+```javascript
+const array = [1, 2, 2, 3, 4, 4, 5]
+const uniqueArray = [...new Set(array)]
+console.log(uniqueArray) // [1, 2, 3, 4, 5]
+```
+
+**メリット:**
+
+- クリーンで簡潔
+- パフォーマンスが良い O(n)
+- プリミティブな値に対応
+
+**デメリット:**
+
+- プリミティブな値(数値、文字列、ブーリアン)にのみ対応
+- オブジェクトは参照で比較される
+
+---
+
+## 方法2: Filterを使用する
+
+より複雑なシナリオや最初の要素を保持したい場合：
+
+```javascript
+const array = [1, 2, 2, 3, 4, 4, 5]
+const uniqueArray = array.filter((value, index, self) => {
+  return self.indexOf(value) === index
+})
+console.log(uniqueArray) // [1, 2, 3, 4, 5]
+```
+
+**メリット:**
+
+- カスタムロジックに柔軟に対応
+- 理解しやすい
+
+**デメリット:**
+
+- `indexOf`のため、パフォーマンスが低い O(n²)
+
+---
+
+## 方法3: Reduceを使用する
+
+`reduce`を使用した関数型アプローチ：
+
+```javascript
+const array = [1, 2, 2, 3, 4, 4, 5]
+const uniqueArray = array.reduce((acc, current) => {
+  if (!acc.includes(current)) {
+    acc.push(current)
+  }
+  return acc
+}, [])
+console.log(uniqueArray) // [1, 2, 3, 4, 5]
+```
+
+**メリット:**
+
+- 関数型プログラミングスタイル
+- 他の変換と組み合わせ可能
+
+**デメリット:**
+
+- `includes`のため、パフォーマンスが低い
+- 記述が冗長
+
+---
+
+## 方法4: オブジェクトの場合 (Mapを使用する)
+
+オブジェクトを扱う場合、特定のプロパティで比較する必要があります：
+
+```javascript
+const users = [
+  { id: 1, name: 'Alice' },
+  { id: 2, name: 'Bob' },
+  { id: 1, name: 'Alice' },
+  { id: 3, name: 'Charlie' }
+]
+
+const uniqueUsers = Array.from(new Map(users.map((user) => [user.id, user])).values())
+
+console.log(uniqueUsers)
+// [
+//   { id: 1, name: 'Alice' },
+//   { id: 2, name: 'Bob' },
+//   { id: 3, name: 'Charlie' }
+// ]
+```
+
+**メリット:**
+
+- オブジェクトに対応
+- 一意性のためのプロパティを指定可能
+- パフォーマンスが良い
+
+**デメリット:**
+
+- 記述が複雑
+- 最後の要素を保持する(最初の要素を保持するように変更可能)
+
+---
+
+## パフォーマンス比較
+
+大規模な配列(10,000以上の要素)の場合：
+
+1. **Set**: ~1ms (最速)
+2. **Map (オブジェクト用)**: ~2ms
+3. **Reduce**: ~50ms
+4. **Filter**: ~100ms (最も遅い)
+
+---
+
+## 推奨事項
+
+- プリミティブな値(数値、文字列、ブーリアン)には**Set**を使用
+- オブジェクトで特定のプロパティで重複を削除する場合は**Map**を使用
+- カスタムロジックが必要な場合や小規模な配列を扱う場合は、**Filter**または**Reduce**を使用
+
+---
+
+**注意:** これらの方法はすべて新しい配列を作成します。元の配列を直接変更する必要がある場合は、別のアプローチが必要です。

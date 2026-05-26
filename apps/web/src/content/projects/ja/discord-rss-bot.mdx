@@ -1,0 +1,288 @@
+---
+name: Discord RSS Bot
+description: RSSフィードを監視し、Webhookを介してDiscordチャンネルに更新を投稿する自動ボット。カスタムフィードやカテゴリで完全に設定可能。遅いRSSフィードによるハングアップを防ぐためのタイムアウト処理機能を備えています。
+homepage: https://github.com/isyuricunha/discord-news-rss-bot
+github: https://github.com/isyuricunha/discord-news-rss-bot
+techstack:
+  - Python
+  - Discord
+  - Docker
+  - SQLite
+  - RSS
+  - Webhooks
+selected: true
+status: completed
+---
+
+## Discord RSS Bot について
+
+Discord RSS Bot は、RSS フィードを監視し、Webhook を介して Discord チャンネルに更新を投稿する自動化ボットです。カスタムフィードやカテゴリを完全に設定可能で、遅い RSS フィードでのハングアップを防ぐためのタイムアウト処理機能を備えています。
+
+### 主な機能
+
+- **自動 RSS モニタリング** - 設定可能な間隔
+- **エレガントな Discord フォーマット** - カテゴリエモジ付き
+- **スマートキャッシング** - 重複投稿を防ぐ
+- **タイムアウト処理** - 遅いフィードでのハングアップを防ぐ
+- **堅牢なエラーハンドリング** - ネットワーク問題に対応
+- **完全コンテナ化** - Docker サポート付き
+- **事前構築済みイメージ** - Docker Hub & GHCR で利用可能
+- **マルチプラットフォーム** (AMD64、ARM64)
+- **柔軟な設定** - ユニバーサルまたはカテゴリベースのフィード
+- **複数のデプロイオプション** (Docker、システムサービス)
+- **包括的なロギング** とヘルスチェック
+- **セキュリティ重視** - 非ルートコンテナ
+
+### クイックスタート
+
+#### 事前構築済みコンテナの使用 (推奨)
+
+```bash
+# Create directories for persistent data/logs
+mkdir -p ~/docker/docker-data/rss-discord-bot/data
+mkdir -p ~/docker/docker-data/rss-discord-bot/logs
+
+# Set permissions for container access (container runs as non-root)
+chmod 777 ~/docker/docker-data/rss-discord-bot/logs
+chmod 777 ~/docker/docker-data/rss-discord-bot/data
+
+# Create .env file with your webhook URL (do not commit this file)
+echo "DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/YOUR_ID/YOUR_TOKEN" > .env
+
+# Run with Docker Compose (for testing with pre-built image)
+docker compose -f docker-compose.test.yml up -d
+
+# View logs
+docker compose -f docker-compose.test.yml logs -f
+```
+
+### コンテナイメージ
+
+事前構築済みイメージは複数のレジストリから利用可能です:
+
+- **Docker Hub**: `isyuricunha/discord-news-rss-bot:latest` | `isyuricunha/discord-news-rss-bot:2.0.8`
+- **GitHub Container Registry**: `ghcr.io/isyuricunha/discord-news-rss-bot:latest` | `ghcr.io/isyuricunha/discord-news-rss-bot:2.0.8`
+
+### サポートされているアーキテクチャ
+
+- `linux/amd64` (x86_64)
+- `linux/arm64` (ARM64/AArch64)
+
+### 自動バージョニング
+
+このプロジェクトは自動化された CI/CD を使用しており、以下の機能を備えています:
+
+- `main` ブランチへのプッシュごとに **Git タグを自動作成** (例: `v2.0.8`)
+- 各タグに対して **GitHub Release を作成**
+- **トリガーコミットメッセージ** をリリースタイトルおよび本文として使用
+- **両レジストリに同時に公開**
+- **Docker Hub と GHCR でバージョンの一貫性を維持**
+- `latest` および特定のバージョンタグを **両方更新**
+
+### デプロイオプション
+
+#### 1. 標準的な Docker Compose (.env ファイル付き)
+
+```bash
+docker compose up -d
+```
+
+#### 2. インライン環境変数
+
+```bash
+# Edit docker-compose.inline.yml with your webhook URL
+docker compose -f docker-compose.inline.yml up -d
+```
+
+#### 3. 事前構築済みイメージ (.env ファイルから)
+
+```bash
+# Edit docker-compose.prebuilt.yml and configure .env file
+docker compose -f docker-compose.prebuilt.yml up -d
+```
+
+#### 4. すべてのデフォルトフィードでのテスト
+
+```bash
+# Use the test configuration with all feeds pre-configured
+# Edit webhook URL in docker-compose.test.yml first
+docker compose -f docker-compose.test.yml up -d
+```
+
+### システムサービスのインストール
+
+本番環境でのデプロイメントでは、ボットをシステムサービスとしてインストールできます:
+
+#### Debian/Ubuntu
+
+```bash
+sudo ./scripts/install-debian.sh --webhook-url "YOUR_WEBHOOK_URL"
+sudo systemctl start discord-news-rss-bot
+```
+
+#### Fedora/RHEL/CentOS
+
+```bash
+sudo ./scripts/install-fedora.sh --webhook-url "YOUR_WEBHOOK_URL"
+sudo systemctl start discord-news-rss-bot
+```
+
+#### Alpine Linux
+
+```bash
+sudo ./scripts/install-alpine.sh --webhook-url "YOUR_WEBHOOK_URL"
+sudo rc-service discord-news-rss-bot start
+```
+
+#### Windows
+
+```powershell
+# Run as Administrator
+.\windows\install.ps1 -WebhookUrl "YOUR_WEBHOOK_URL"
+net start DiscordRSSBot
+```
+
+### 設定
+
+#### 必須変数
+
+| 変数                   | 説明                          |
+| ---------------------- | ----------------------------- |
+| `DISCORD_WEBHOOK_URL`  | **必須**: Discord Webhook URL |
+
+#### パス (推奨)
+
+| 変数             | デフォルト (Docker イメージ)          | 説明                                             |
+| ----------------- | -------------------------------------- | ------------------------------------------------ |
+| `RSS_BOT_DATA`   | `/app/data`                           | SQLite データベースが保存されるディレクトリ       |
+| `RSS_BOT_LOGS`   | `/app/logs`                           | ログファイルが書き込まれるディレクトリ           |
+| `RSS_BOT_PID`    | `/tmp/discord-news-rss-bot.pid`       | PID ファイルパス (非ルートコンテナでは `/var/run` を避ける) |
+
+#### 高度なオーバーライド (オプション)
+
+| 変数         | 説明                                             |
+| ------------ | ------------------------------------------------ |
+| `DB_FILE`    | 明示的な SQLite DB ファイルパス (`RSS_BOT_DATA` をオーバーライド) |
+| `LOG_FILE`   | 明示的なログファイルパス (`RSS_BOT_LOGS` をオーバーライド)       |
+| `DATA_DIR`   | `RSS_BOT_DATA` のレガシアlias                          |
+
+#### オプションのボット設定| 変数                  | デフォルト | 説明                          |
+|-----------------------|------------|-------------------------------|
+| `CHECK_INTERVAL`      | 300        | チェック間隔 (秒)             |
+| `POST_DELAY`          | 3           | 投稿間の遅延 (秒)             |
+| `COOLDOWN_DELAY`      | 60         | レート制限後の遅延 (秒)       |
+| `MAX_POST_LENGTH`     | 1900       | メッセージの最大長            |
+| `MAX_CONTENT_LENGTH`  | 800        | コンテンツの最大長            |
+| `FEED_TIMEOUT`        | 30         | RSS フィード要求のタイムアウト (秒) |
+
+### RSS フィードの設定
+
+ボットは、**2つの設定方法**をサポートし、自動的に優先順位を処理します。
+
+#### オプション 1: 統合フィード (シンプル)
+
+すべてのRSSフィードに単一の変数を使用します:
+
+```bash
+RSS_FEEDS=https://example.com/rss,https://another.com/feed,https://third.com/rss
+```
+
+#### オプション 2: カテゴリ別フィード (整理済み)
+
+異なるカテゴリに別々の変数を使用します:
+
+```bash
+RSS_FEEDS_NEWS=https://g1.globo.com/dynamo/rss2.xml,https://rss.uol.com.br/feed/noticias.xml
+RSS_FEEDS_TECHNOLOGY=https://canaltech.com.br/rss/,https://tecnoblog.net/feed/
+RSS_FEEDS_SPORTS=https://globoesporte.globo.com/rss/ultimas/
+RSS_FEEDS_BUSINESS=https://www.infomoney.com.br/rss/
+RSS_FEEDS_POLITICS=https://www.gazetadopovo.com.br/rss/brasil.xml
+```
+
+#### 優先順位システム
+
+1. **RSS_FEEDS** (統合) - 設定されている場合、優先されます
+2. **RSS_FEEDS_CATEGORY** (カテゴリ別) - 統合フィードがない場合に使用されます
+3. **デフォルトフィード** - カスタム設定がない場合、ブラジルのニュースフィードが使用されます
+
+#### 自動カテゴリ絵文字
+
+- **News/Noticias/General** → 📰
+- **Technology/Tecnologia** → 💻
+- **Politics/Politica** → 🏛️
+- **Sports/Esportes** → ⚽
+- **Business/Economia** → 💼
+- **その他のカテゴリ** → 📢
+
+### 監視対象フィード
+
+#### 📰 一般ニュース
+
+- G1
+- UOL
+- Band
+- CNN Brasil
+- Folha de S.Paulo
+
+#### 🏛️ 政治 & コンサーバティブ
+
+- Gazeta do Povo
+- Jovem Pan
+- Diário do Poder
+- Pragmatismo Político
+- Conexão Política
+- Poder 360
+- Revista Crusoé
+- Veja
+- Metrópoles
+- O Antagonista
+- Terra Politics
+
+#### 💻 テクノロジー
+
+- Canaltech
+- Olhar Digital
+- Tecnoblog
+- Meio Bit
+- ShowMeTech
+- TecMundo
+- Adrenaline
+- Hardware.com.br
+- Tudo Celular
+- Oficina da Net
+
+### 開発
+
+#### Dockerなしでローカル実行
+
+```bash
+# Install dependencies
+pip install -r requirements.txt
+
+# Configure environment variables
+export DISCORD_WEBHOOK_URL="your_webhook_url_here"
+
+# Run the bot
+python bot_service.py
+```
+
+#### フィードのカスタマイズ
+
+フィードをカスタマイズする方法は2つあります:
+
+1. **環境変数 (推奨)**
+   設定セクションで説明されている `RSS_FEEDS_CATEGORY_NAME` の形式を使用します。
+
+2. **コードの変更**
+   `bot_service.py` の `parse_feeds_from_env()` 関数を編集して、デフォルトのフィードを変更します。
+
+### 技術スタック
+
+- **Python** - メインのボットロジック
+- **Discord ウェブフック** - アップデートの投稿
+- **Docker** - コンテナ化とデプロイメント
+- **SQLite** - データの永続化とキャッシュ
+- **RSS パース** - フィードの監視
+- **Systemd** - Linux サービスの管理
+
+Discord RSS Bot は、RSSフィードの更新をDiscordチャンネルに自動的に投稿するための完全なソリューションであり、堅牢なエラーハンドリング、柔軟な設定、および複数のデプロイメントオプションを備えています。

@@ -1,0 +1,306 @@
+---
+title: Cloudflare Worker を使用したヘルスチェック付きロードバランサー（無料）
+date: 2026-01-30
+author: Yuri Cunha
+description: Cloudflare Workers と Cloudflare Tunnel を使用した、定期的なヘルスチェックと自動フェイルオーバー機能を備えた無料の実用的なロードバランサー。
+tags:
+  - cloudflare
+  - workers
+  - tunnel
+  - load-balancing
+  - health-check
+  - devops
+  - javascript
+---
+
+Cloudflare Load Balancerは優れた製品ですが、有料です。「Cloudflare Tunnelの背後に2つのレプリカがあり、1つがダウンした場合にフェイルオーバーしたい」というユースケースの場合、Cloudflare Workerを使用して無料枠でシンプルなエッジロードバランサーを実装できます。
+
+コアとなるアイデアは次のとおりです：
+
+- **2つの異なるホスト名**を公開します（プライマリとレプリカ用に1つずつ）。
+- **3つ目のホスト名**を公開します（ユーザーと共有するもので、Workerを指す）。
+- Workerはヘルスチェックを実行し、各リクエストを最適なターゲットにプロキシします。
+
+{/* more */}
+
+## 推奨アーキテクチャ
+
+通常、3つのホスト名が必要です：
+
+- `service.yourdomain.com`:
+  - **Worker**を指す（公開URL）
+- `service-primary.yourdomain.com`:
+  - **プライマリ**サーバーを指すCloudflare Tunnel
+- `service-replica.yourdomain.com`:
+  - **レプリカ**サーバーを指すCloudflare Tunnel
+
+これにより、Cloudflare Tunnelの一般的な制限が解決されます：同じホスト名を複数のTunnelにバインドできませんが、異なるホスト名をバインドしてWorkerを前に配置することはできます。
+
+## Workerの仕組み
+
+- メモリ内の`serverHealth`マップを維持します：
+  - `healthy`: 最後に確認されたヘルスステータス
+  - `lastCheck`: 最後にヘルスプローブを行ったタイムスタンプ
+- 着信リクエストごとに：
+  - キャッシュが`HEALTH_CHECK_INTERVAL`より古い場合、ヘルスステータスを更新します。
+  - 最初のヘルシーなサーバーを選択します。
+  - ヘルシーなサーバーがない場合、最初のサーバーにフォールバックします。
+- デバッグ用に`X-Served-By`ヘッダーを追加します。
+- プロキシ`fetch`が失敗した場合、もう一方のサーバーに対して1回リトライします。
+
+重要な詳細：キャッシュはWorkerの分離メモリに保存されます。つまり、グローバルキャッシュが保証されるわけではありません（コールドスタート時にリセットされる可能性があります）。シンプルなフェイルオーバーの場合、通常は問題ありません。
+
+## コード
+
+以下のTunnel URLを独自のものに置き換えてください。
+
+```javascript
+```js
+// Cloudflare Worker Load Balancer with Health Check
+// Configure your tunnel URLs here
+const SERVERS = [
+  {
+    url: 'https://your-tunnel-1.yourdomain.com',
+    name: 'Server 1',
+    healthCheckPath: '/health' // or '/' if you don't have a specific endpoint
+  },
+  {
+    url: 'https://your-tunnel-2.yourdomain.com',
+    name: 'Server 2',
+    healthCheckPath: '/health'
+  }
+]
+
+// Settings
+const HEALTH_CHECK_TIMEOUT = 5000 // 5 seconds
+const HEALTH_CHECK_INTERVAL = 30000 // Check every 30 seconds
+
+// Server status cache (kept by the Worker)
+let serverHealth = {}
+
+// Health check
+async function checkHealth(server) {
+  try {
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), HEALTH_CHECK_TIMEOUT)
+
+    const response = await fetch(server.url + server.healthCheckPath, {
+      method: 'GET',
+      signal: controller.signal,
+      headers: {
+        'User-Agent': 'Cloudflare-Worker-HealthCheck'
+      }
+    })
+
+    clearTimeout(timeoutId)
+
+    // Healthy if 2xx or 3xx
+    return response.status >= 200 && response.status < 400
+  } catch (error) {
+    console.log(`Health check failed for ${server.name}:`, error.message)
+    return false
+  }
+}
+
+// Pick an available server
+async function getAvailableServer() {
+  // Refresh health check if needed
+  for (const server of SERVERS) {
+    const lastCheck = serverHealth[server.url]?.lastCheck || 0
+    const now = Date.now()
+
+    if (now - lastCheck > HEALTH_CHECK_INTERVAL) {
+      const isHealthy = await checkHealth(server)
+      serverHealth[server.url] = {
+        healthy: isHealthy,
+        lastCheck: now
+      }
+    }
+  }
+
+  // Pick the first healthy server
+  for (const server of SERVERS) {
+    if (serverHealth[server.url]?.healthy) {
+      return server
+    }
+  }
+
+  // If none are healthy, use the first as fallback
+  console.log('No healthy server found, using fallback')
+  return SERVERS[0]
+}
+
+// Main handler
+export default {
+  async fetch(request, env, ctx) {
+    // Pick server
+    const server = await getAvailableServer()
+
+    // Build target URL keeping original path
+    const url = new URL(request.url)
+    const targetUrl = new URL(url.pathname + url.search, server.url)
+
+    // Clone request for the chosen server
+    const modifiedRequest = new Request(targetUrl, {
+      method: request.method,
+      headers: request.headers,
+      body: request.body,
+      redirect: 'follow'
+    })
+
+    // Debug header (optional)
+    modifiedRequest.headers.set('X-Served-By', server.name)
+
+    try {
+      // Proxy request
+      const response = await fetch(modifiedRequest)
+
+      // Clone response to add headers
+      const newResponse = new Response(response.body, response)
+      newResponse.headers.set('X-Served-By', server.name)
+
+      return newResponse
+    } catch (error) {
+      // If it fails, try the other server
+      console.log(`Error while accessing ${server.name}, trying fallback`)
+
+      const fallbackServer = SERVERS.find((s) => s.url !== server.url)
+      if (fallbackServer) {
+        const fallbackUrl = new URL(url.pathname + url.search, fallbackServer.url)
+        const fallbackRequest = new Request(fallbackUrl, {
+          method: request.method,
+          headers: request.headers,
+          body: request.body,
+          redirect: 'follow'
+        })
+
+        return fetch(fallbackRequest)
+      }
+
+      return new Response('All servers are unavailable', { status: 503 })
+    }
+  }
+}
+```
+```
+
+## セットアップ（手順）
+
+1. **2つのTunnelホスト名を作成**
+   - プライマリTunnelホスト名: `service-primary.yourdomain.com`
+   - レプリカTunnelホスト名: `service-replica.yourdomain.com`
+
+2. **Workerを作成**
+   - Cloudflareダッシュボード
+   - Workers & Pages
+   - Workerの作成
+   - コードを貼り付け、`SERVERS`リストを更新
+
+3. **公開ホスト名をWorkerにルーティング**
+
+   `service.yourdomain.com/*`がこのWorkerによって処理されるようにルート（またはカスタムドメイン）を追加します。
+
+4. **どのサーバーがリクエストを処理しているかテスト**
+
+   ```bash
+   ```bash
+   curl -I https://service.yourdomain.com
+   ```
+   ```
+
+   レスポンスヘッダーに`X-Served-By`を確認します。
+
+5. **フェイルオーバーをテスト**
+
+   プライマリTunnelを一時的に停止し、同じリクエストを再試行します。ヘッダーがレプリカに切り替わるはずです。
+
+## 注意事項と制限事項
+
+- **ステートフルアプリ**：サービスがディスクに状態を保存する（セッション、アップロード、チャット履歴など）場合、共有ストレージまたはプライマリとレプリカ間の同期が必要です。
+- **ヘルスチェックエンドポイント**：軽量なエンドポイント（または`/`）を使用し、重いロジックは避けてください。
+- **WebSocket/長時間接続**：Cloudflareのプランやアプリの動作によっては、長時間接続には追加の注意が必要です。
+- **キャッシュスコープ**：`serverHealth`は分離メモリであり、グローバルデータストアではありません。より信頼性の高い共有ヘルスステートが必要な場合は、KV、Durable Objects、または外部監視を検討してください。
+
+## 別の方法
+
+同じTunnelを2つのサーバー/サービスで使用することもできます。例えば、「Services」という名前のTunnelを作成し、「Server A」と「Server B」に接続することができます。
+一部の人はこの方法が優れていると考え、シンプルさの点では優れています。しかし、Tunnelを分離したい場合は、Cloudflare Worker Load Balancerの方が優れています。
+
+それでもすべてのサーバーにTunnelを使用したい場合は、すべてのマシンに1つのTunnelを使用することについて、次の点に注意してください：
+すべてのマシンで共有Tunnelを使用する場合：
+
+```text
+```text
+
+        ┌─────────────────┐
+        │  Tunnel "main"  │
+        └─────────────────┘
+                │
+    ┌───────────┼───────────┬───────────┐
+    ▼           ▼           ▼           ▼
+┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐
+│Server A │ │Server B │ │Server C │ │Server D │
+│         │ │         │ │         │ │         │
+│Jellyfin │ │Navidrome│ │qBittor. │ │OpenWebUI│
+└─────────┘ └─────────┘ └─────────┘ └─────────┘
+
+```
+```
+
+問題：Cloudflareはjellyfin.domain.comをランダムに（A、B、C、またはDのいずれかのサーバー）にルーティングしますが、JellyfinはServer Aにのみ存在します！ 💥
+結果：- リクエストの75%がエラー502で失敗します（誤ったサーバーにアクセスしたため）
+- 各サービスの実行場所を制御できなくなります
+- 完全な混乱状態になります
+
+動作はしますが、お勧めしません。
+
+この場合、**レプリカを単一のトンネルで正しく使用する方法**は、同じサービスが複数のマシンにレプリケートされている場合にのみトンネルを共有することです：
+
+### シナリオ1：Open WebUIからのフェイルオーバーを希望する場合
+
+```text
+┌─────────────────────┐
+│ Tunnel "openwebui"  │
+└─────────────────────┘
+         │
+    ┌────┴────┐
+    ▼         ▼
+┌─────────┐ ┌─────────┐
+│Server A │ │Server B │
+│         │ │         │  ← Same Open WebUI (PostgreSQL+Redis shared)
+│OpenWebUI│ │OpenWebUI│
+└─────────┘ └─────────┘
+
+```
+
+Open WebUIが2つのサーバーに存在するため、正常に動作します。
+
+### シナリオ2：Jellyfinが1つのサーバーにのみ存在する場合
+
+```text
+┌──────────────────┐
+│ Tunnel "media"   │
+└──────────────────┘
+         │
+         ▼
+    ┌─────────┐
+    │Server A │
+    │         │
+    │Jellyfin │ ← Only here
+    └─────────┘
+
+```
+
+✅ 正解！Jellyfinが1か所にしかないため、専用のトンネルを使用します。
+
+---
+
+### まとめ：
+
+- **マシンごとに1つのトンネル**：異なるマシンで異なるサービスを実行
+- **複数のマシンで1つのトンネル**：同じサービスがレプリケートされている（フェイルオーバー用）
+- **すべてのマシンで1つのトンネル**：絶対に避ける（すべてのサービスがすべてのマシンに存在する場合を除く）
+
+## ご注意ください
+
+すべてのサーバーから共有データにアクセスできるようにしてください。そうしないと、データの不整合が発生します。また、設定が異なる場合や、それぞれを異なる方法で設定しなければならない場合にも注意が必要です。

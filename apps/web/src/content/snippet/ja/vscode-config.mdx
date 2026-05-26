@@ -1,0 +1,543 @@
+---
+title: VSCode の設定ファイル
+date: 2025-12-05
+author: Yuri Cunha
+description: 拡張機能リストと設定のバックアップを含む、VSCode/VSCodium の完全な設定。インストール間の簡単な移行のためのバックアップ。
+tags:
+  - vscode
+  - vscodium
+  - 設定
+  - セッティング
+  - 拡張機能
+---
+
+このスニペットには、**個人的なVSCode設定ファイル**が含まれており、VSCodiumや新しいVSCodeインストールへの簡単な移行が可能です。拡張機能の包括的なリストと詳細なエディタ設定が含まれています。
+
+<Callout type='warning'>
+  これらは**個人的な設定**です。設定を適用する前に、内容を確認し、必要に応じて調整してください。ファイルパス、APIキー、環境に応じた設定など、一部の設定はカスタマイズが必要です。
+</Callout>
+
+{/* more */}
+
+## 拡張機能リスト
+
+すべてのインストール済み拡張機能を追跡するために、`extensions.txt`としてこのファイルを保存してください:
+
+```txt
+ahmadawais.shades-of-purple
+continue.continue
+davidanson.vscode-markdownlint
+donjayamanne.githistory
+dotjoshjohnson.xml
+eamodio.gitlens
+esbenp.prettier-vscode
+garmin.monkey-c
+github.vscode-pull-request-github
+hbenl.vscode-test-explorer
+icrawl.discord-vscode
+lokalise.i18n-ally
+ms-python.autopep8
+ms-python.debugpy
+ms-python.python
+ms-python.vscode-pylance
+ms-python.vscode-python-envs
+ms-vscode.test-adapter-converter
+quick-lint.quick-lint-js
+redhat.vscode-xml
+ritwickdey.liveserver
+saoudrizwan.claude-dev
+sirmspencer.vscode-autohide
+usernamehw.errorlens
+vscode-icons-team.vscode-icons
+wakatime.vscode-wakatime
+```
+
+## 設定構成
+
+このファイルをVSCode/VSCodiumのユーザー設定ディレクトリに`settings.json`として保存してください:
+
+```json
+{
+  "workbench.sideBar.location": "right",
+  "files.autoSave": "onWindowChange",
+  "editor.fontFamily": "'Fira Code'",
+  "editor.fontWeight": "300", // Light
+  "editor.fontLigatures": true,
+  "editor.smoothScrolling": true,
+  "editor.cursorSmoothCaretAnimation": "explicit",
+  "editor.cursorBlinking": "expand",
+  "editor.formatOnSave": true,
+  "workbench.cloudChanges.autoResume": "off",
+  "update.enableWindowsBackgroundUpdates": false,
+  "telemetry.telemetryLevel": "off",
+  "window.restoreWindows": "none",
+  "window.commandCenter": true,
+  "git.autofetch": true,
+  "security.workspace.trust.untrustedFiles": "newWindow",
+  "workbench.colorTheme": "Shades of Purple (Super Dark)",
+  "editor.inlineSuggest.enabled": true,
+  "git.enableSmartCommit": true,
+  "git.confirmSync": false,
+  "liveServer.settings.fullReload": true,
+  "liveServer.settings.useLocalIp": true,
+  "[javascript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+  },
+
+  "github.copilot.enable": {
+    "*": true,
+    "plaintext": true,
+    "markdown": false,
+    "scminput": false,
+    "typescriptreact": true
+  },
+  "git.openRepositoryInParentFolders": "never",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "explorer.confirmDragAndDrop": false,
+  "explorer.confirmDelete": false,
+  "editor.unicodeHighlight.nonBasicASCII": false,
+  "diffEditor.maxComputationTime": 0,
+  "[xml]": {
+    "editor.defaultFormatter": "DotJoshJohnson.xml"
+  },
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.autopep8"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "update.mode": "none",
+  "[typescript]": {},
+  "editor.autoClosingComments": "always",
+  "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
+  "workbench.experimental.cloudChanges.autoStore": "onShutdown",
+  "workbench.list.smoothScrolling": true,
+  "workbench.preferredLightColorTheme": "Shades of Purple",
+  "workbench.cloudChanges.continueOn": "off",
+  "workbench.iconTheme": "vscode-icons",
+  "prettier.endOfLine": "auto",
+  "prettier.useTabs": true,
+  "editor.formatOnPaste": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "workbench.editor.restoreViewState": false,
+  "files.associations": {
+    "*.tpl": "markdown",
+    "*.mdx": "markdown"
+  },
+  "diffEditor.ignoreTrimWhitespace": false,
+  "gitlens.ai.experimental.provider": "anthropic",
+  "gitlens.ai.experimental.anthropic.model": "claude-2.1",
+  "vsicons.dontShowNewVersionMessage": true,
+  "gitCommitSuggestions.openAIKey": "sk-whoKnows",
+  "editor.unicodeHighlight.invisibleCharacters": false,
+  "editor.stickyScroll.enabled": false,
+  "css.lint.unknownAtRules": "ignore",
+  "extensions.ignoreRecommendations": true,
+  "extensions.autoCheckUpdates": false,
+  "extensions.autoUpdate": false,
+  "git.replaceTagsWhenPull": true,
+  "discord.suppressNotifications": true,
+  "discord.removeRemoteRepository": true,
+  "discord.lowerDetailsEditing": " {dir_name}",
+  "discord.lowerDetailsDebugging": "Debugging: {file_name}",
+  "gitlens.advanced.messages": {
+    "suppressLineUncommittedWarning": true
+  },
+  "workbench.editorAssociations": {
+    "*.db-shm": "default",
+    "*.dll": "default"
+  },
+  "editor.unicodeHighlight.ambiguousCharacters": false,
+  "editor.largeFileOptimizations": false,
+  "editor.minimap.size": "fit",
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "security.allowedUNCHosts": ["100.83.216.64"],
+  "workbench.startupEditor": "none",
+  "monkeyC.developerKeyPath": "c:\\Users\\isy\\Documents\\GitHub\\yurounded\\developer_key",
+  "window.confirmSaveUntitledWorkspace": false,
+  "window.customTitleBarVisibility": "windowed",
+  "[html]": {
+    "editor.defaultFormatter": "vscode.html-language-features"
+  },
+  "workbench.secondarySideBar.defaultVisibility": "hidden",
+  "chat.disableAIFeatures": true
+}
+```
+
+## 設定ファイルの場所
+
+### Windows
+
+- **設定**: `%APPDATA%\Code\User\settings.json`
+- **VSCodium**: `%APPDATA%\VSCodium\User\settings.json`
+
+### Linux
+
+- **設定**: `~/.config/Code/User/settings.json`
+- **VSCodium**: `~/.config/VSCodium/User/settings.json`
+
+### macOS
+
+- **設定**: `~/Library/Application Support/Code/User/settings.json`
+- **VSCodium**: `~/Library/Application Support/VSCodium/User/settings.json`
+
+## 自動同期: VSCode → VSCodium
+
+ファイルを手動でコピーしたり拡張機能をインストールする代わりに、このスクリプトを使用してプロセス全体を自動化できます。これらのスクリプトは、すべての設定(設定、キーバインド、スニペット、プロファイル)をVSCodeからVSCodiumにコピーし、すべての拡張機能を自動的にインストールします。
+
+### PowerShellスクリプト(クロスプラットフォーム)
+
+このスクリプトは、WindowsとLinuxの両方でPowerShell 7で動作します。
+
+`sync-vscode-to-vscodium.ps1`として保存してください:
+
+```powershell
+param(
+    [string]$VSCodiumCli = ""
+)
+
+# script to copy vscode configs to vscodium
+# and sync extensions (vscode -> vscodium)
+
+function Get-VSCodeUserDir {
+    if ($IsWindows) {
+        return (Join-Path $env:APPDATA "Code\User")
+    } elseif ($IsLinux -or $IsMacOS) {
+        return "$HOME/.config/Code/User"
+    } else {
+        throw "operating system not supported"
+    }
+}
+
+function Get-VSCodiumUserDir {
+    if ($IsWindows) {
+        return (Join-Path $env:APPDATA "VSCodium\User")
+    } elseif ($IsLinux -or $IsMacOS) {
+        return "$HOME/.config/VSCodium/User"
+    } else {
+        throw "operating system not supported"
+    }
+}
+
+function Find-VSCodiumCli {
+    param([string]$Preferred)
+
+    if ($Preferred) {
+        # if user provided a path, try it first
+        $cmd = Get-Command $Preferred -ErrorAction SilentlyContinue
+        if ($cmd) { return $cmd.Source }
+        if (Test-Path $Preferred) { return $Preferred }
+    }
+
+    # try common names in path
+    foreach ($name in "codium", "vscodium") {
+        $cmd = Get-Command $name -ErrorAction SilentlyContinue
+        if ($cmd) { return $cmd.Source }
+    }
+
+    # try default paths by system
+    if ($IsWindows) {
+        $candidates = @(
+            "$env:LOCALAPPDATA\Programs\VSCodium\VSCodium.exe",
+            "C:\Program Files\VSCodium\VSCodium.exe"
+        )
+    } else {
+        $candidates = @(
+            "/usr/bin/codium",
+            "/usr/local/bin/codium",
+            "/snap/bin/codium"
+        )
+    }
+
+    foreach ($path in $candidates) {
+        if (Test-Path $path) { return $path }
+    }
+
+    throw "could not find vscodium executable. pass the path in -VSCodiumCli"
+}
+
+Write-Host "=== sync vscode -> vscodium ==="
+
+$vsCodeUser = Get-VSCodeUserDir
+$vscodiumUser = Get-VSCodiumUserDir
+
+if (-not (Test-Path $vsCodeUser)) {
+    throw "vscode configuration folder not found: $vsCodeUser"
+}
+
+New-Item -ItemType Directory -Path $vscodiumUser -Force | Out-Null
+
+Write-Host "vscode folder  :" $vsCodeUser
+Write-Host "vscodium folder:" $vscodiumUser
+
+# copy settings.json
+$settings = Join-Path $vsCodeUser "settings.json"
+if (Test-Path $settings) {
+    Copy-Item $settings $vscodiumUser -Force
+    Write-Host "copied settings.json"
+} else {
+    Write-Host "warning: settings.json not found in vscode"
+}
+
+# copy keybindings.json
+$keybindings = Join-Path $vsCodeUser "keybindings.json"
+if (Test-Path $keybindings) {
+    Copy-Item $keybindings $vscodiumUser -Force
+    Write-Host "copied keybindings.json"
+} else {
+    Write-Host "warning: keybindings.json not found in vscode"
+}
+
+# copy snippets
+$snippets = Join-Path $vsCodeUser "snippets"
+if (Test-Path $snippets) {
+    Copy-Item $snippets $vscodiumUser -Recurse -Force
+    Write-Host "copied snippets directory"
+}
+
+# copy profiles (if exists)
+$profiles = Join-Path $vsCodeUser "profiles"
+if (Test-Path $profiles) {
+    Copy-Item $profiles $vscodiumUser -Recurse -Force
+    Write-Host "copied profiles directory"
+}
+
+# export vscode extensions list
+Write-Host ""
+Write-Host "exporting vscode extensions..."
+
+$extensions = @()
+try {
+    $extensions = code --list-extensions
+} catch {
+    Write-Host "error running 'code --list-extensions'. check if the 'code' command works in terminal."
+}
+
+if (-not $extensions -or $extensions.Count -eq 0) {
+    Write-Host "no extensions found or 'code' command did not work."
+} else {
+    $backupFile = Join-Path $HOME "vscode-extensions-$(Get-Date -Format 'yyyyMMdd-HHmmss').txt"
+    $extensions | Set-Content -Encoding UTF8 $backupFile
+    Write-Host "extensions list saved to:" $backupFile
+
+    # find vscodium cli
+    $vscodiumCliPath = Find-VSCodiumCli -Preferred $VSCodiumCli
+    Write-Host ""
+    Write-Host "using vscodium cli:" $vscodiumCliPath
+    Write-Host ""
+    Write-Host "installing extensions in vscodium..."
+
+    foreach ($ext in $extensions) {
+        if ([string]::IsNullOrWhiteSpace($ext)) { continue }
+        Write-Host "  installing $ext"
+        try {
+            & $vscodiumCliPath --install-extension $ext | Out-Null
+        } catch {
+            Write-Host "  failed to install $ext"
+        }
+    }
+
+    Write-Host ""
+    Write-Host "sync completed."
+}
+```
+
+#### Windowsでの使用方法
+
+PowerShell 7でスクリプトを実行してください:
+
+```powershell
+.\sync-vscode-to-vscodium.ps1
+```
+
+スクリプトがVSCodiumを自動的に見つけられない場合は、パスを指定してください:
+
+```powershell
+.\sync-vscode-to-vscodium.ps1 -VSCodiumCli "C:\Program Files\VSCodium\VSCodium.exe"
+```
+
+#### LinuxでのPowerShell 7の使用方法
+
+`pwsh`がインストールされている場合:
+
+```bash
+pwsh ./sync-vscode-to-vscodium.ps1
+```
+
+または、カスタムのVSCodiumコマンドを指定してください:
+
+```bash
+pwsh ./sync-vscode-to-vscodium.ps1 -VSCodiumCli vscodium
+```
+
+### Bashスクリプト(Linuxのみ)
+
+`sync-vscode-to-vscodium.sh`として保存してください:
+
+```bash
+#!/usr/bin/env bash
+set -e
+
+# simple script to sync vscode -> vscodium on linux
+
+VSCODE_USER="$HOME/.config/Code/User"
+VSCODIUM_USER="$HOME/.config/VSCodium/User"
+
+# allow overriding command via environment variable
+VSCODIUM_CLI="${VSCODIUM_CLI:-codium}"
+
+echo "vscode folder   : $VSCODE_USER"
+echo "vscodium folder : $VSCODIUM_USER"
+echo "vscodium cli   : $VSCODIUM_CLI"
+echo
+
+if [ ! -d "$VSCODE_USER" ]; then
+  echo "error: vscode folder not found: $VSCODE_USER"
+  exit 1
+fi
+
+mkdir -p "$VSCODIUM_USER"
+
+# copy settings
+if [ -f "$VSCODE_USER/settings.json" ]; then
+  cp "$VSCODE_USER/settings.json" "$VSCODIUM_USER/"
+  echo "copied settings.json"
+fi
+
+# copy keybindings
+if [ -f "$VSCODE_USER/keybindings.json" ]; then
+  cp "$VSCODE_USER/keybindings.json" "$VSCODIUM_USER/"
+  echo "copied keybindings.json"
+fi
+
+# copy snippets
+if [ -d "$VSCODE_USER/snippet" ]; then
+  cp -r "$VSCODE_USER/snippet" "$VSCODIUM_USER/"
+  echo "copied snippets directory"
+fi
+
+# copy profiles
+if [ -d "$VSCODE_USER/profiles" ]; then
+  cp -r "$VSCODE_USER/profiles" "$VSCODIUM_USER/"
+  echo "copied profiles directory"
+fi
+
+echo
+echo "exporting vscode extensions..."
+
+if ! command -v code >/dev/null 2>&1; then
+  echo "error: 'code' command not found in path."
+  exit 1
+fi
+
+EXT_FILE="$HOME/vscode-extensions-$(date +%Y%m%d-%H%M%S).txt"
+code --list-extensions > "$EXT_FILE"
+
+echo "extensions list saved to: $EXT_FILE"
+echo
+
+if ! command -v "$VSCODIUM_CLI" >/dev/null 2>&1; then
+  echo "error: '$VSCODIUM_CLI' command not found. adjust VSCODIUM_CLI variable."
+  exit 1
+fi
+
+echo "installing extensions in vscodium..."
+
+while IFS= read -r ext; do
+  [ -z "$ext" ] && continue
+  echo "  installing $ext"
+  "$VSCODIUM_CLI" --install-extension "$ext" >/dev/null 2>&1 || echo "  failed to install $ext"
+done < "$EXT_FILE"
+
+echo
+echo "sync completed."
+```
+
+#### Linuxでの使用方法
+
+まず、スクリプトを実行可能にしてください:
+
+```bash
+chmod +x sync-vscode-to-vscodium.sh
+./sync-vscode-to-vscodium.sh
+```
+
+VSCodiumコマンドが`codium`ではなく`vscodium`の場合:
+
+```bash
+VSCODIUM_CLI=vscodium ./sync-vscode-to-vscodium.sh
+```
+
+## 拡張機能の手動インストール
+
+`extensions.txt`ファイルから手動で拡張機能をインストールする場合:
+
+### Bash(Linux/macOS)
+
+```bash
+cat extensions.txt | xargs -L 1 code --install-extension
+```
+
+### PowerShell(Windows)
+
+```powershell
+Get-Content extensions.txt | ForEach-Object { code --install-extension $_ }
+```
+
+### VSCodiumの場合
+
+上記のコマンドで`code`を`codium`に置き換えてください:
+
+```bash
+cat extensions.txt | xargs -L 1 codium --install-extension
+```
+
+## 主な機能
+
+### エディタの強化
+
+- **フォント**: リガチャ有効のFira Code
+- **スムーズなアニメーション**: カーソルとスクロール
+- **自動保存**: ウィンドウ変更時
+- **保存時のフォーマット**: 有効
+
+### Git統合
+
+- 自動フェッチ有効
+- スマートコミット有効
+- 実験的AI機能付きGitLens
+- プルリクエスト統合
+
+### テーマとアイコン
+
+- **テーマ**: Shades of Purple (Super Dark)
+- **アイコン**: vscode-icons
+
+### 言語別フォーマッタ
+
+- **JavaScript/TypeScript**: ビルトインフォーマッタ
+- **Python**: autopep8
+- **Markdown**: markdownlint
+- **XML**: DotJoshJohnson.xml
+- **JSON**: ビルトインフォーマッタ
+- **HTML**: ビルトインフォーマッタ
+
+### プライバシーとパフォーマンス
+
+- テレメトリ無効
+- 自動更新無効
+- クラウド同期無効
+- 拡張機能の推奨を無視
+
+<Callout type='warning'>
+  `settings.json`ファイルにはAPIキー(`gitCommitSuggestions.openAIKey`)が含まれています。このキーを削除するか、独自のキーに置き換えてください。または、機密データには環境変数を使用することをお勧めします。
+</Callout>
+
+<Callout type='info'>
+  これらの設定を新しいインストールに適用する前に、各設定がワークフローや好みに合っているか確認してください。ファイルパスなど、一部の設定は環境に応じて調整が必要です。
+</Callout>

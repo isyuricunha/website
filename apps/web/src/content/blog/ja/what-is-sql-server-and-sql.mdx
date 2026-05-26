@@ -1,0 +1,190 @@
+---
+title: 'SQL Server データベースとは？'
+date: '2023-01-05T09:20:27.751-03:00'
+modifiedTime: '2023-01-05T09:20:27.751-03:00'
+summary: '私のお気に入りのデータベースについて話しましょう。'
+---
+
+# SQL Server Database とは？
+
+SQL Server Database は、Microsoft が提供するリレーショナルデータベース管理システムです。構造化データおよび非構造化データを含む大量のデータを保存および管理するために使用されます。SQL Server は、保存されたデータのセキュリティ、可用性、および整合性を確保するための幅広い機能を提供し、システムのパフォーマンスとスケーラビリティを保証します。
+
+SQL Server には、SQL Server Express、SQL Server Standard、SQL Server Enterprise など、複数のバージョンが存在します。それぞれのバージョンは異なる機能セットを提供し、さまざまな用途に適しています。
+
+SQL Server を使用するには、Structured Query Language（SQL）の知識が必要です。SQL はリレーショナルデータベースを操作するための標準言語であり、データベース内のデータを作成、照会、および変更するために使用されます。
+
+<br />
+<br />
+
+# Structured Query Language（有名な SQL）とは？
+
+Structured Query Language（SQL）は、リレーショナルデータベースに保存されたデータを管理および操作するために使用されるプログラミング言語です。リレーショナルデータベースを操作するための標準言語であり、データベース内のデータを作成、照会、および変更するために使用されます。
+
+SQL は宣言型言語であり、実行すべき内容を記述するために使用され、その実行方法を指定するものではありません。これにより、データベース管理システム（DBMS）は SQL クエリの実行を最適化し、システムリソースを効率的に使用することができます。
+
+SQL は、テーブルやインデックスの作成および変更、データの挿入および更新、データベースからのデータ取得など、幅広いタスクを実行するために使用されます。また、データベース内のデータの構造と関係性を定義し、ユーザーの権限や制御を設定するためにも使用されます。
+
+SQL は、ビジネス、金融、医療、政府など、さまざまな業界で広く使用されている強力で汎用性の高い言語です。データベース管理者や開発者にとって不可欠なツールであり、データアナリストやデータサイエンティストも、分析やレポート作成のためにデータを抽出、変換、およびロードするために使用します。
+
+SQL には、MySQL、Oracle、Microsoft SQL Server など、独自の機能や構文を持つさまざまな方言があります。しかし、SQL のコアコンセプトと原則はすべての方言で共通しており、学習しやすく、幅広く応用可能な言語です。
+
+<br />
+<br />
+
+# SQL クエリの例
+
+以下は、SQL Server Database で実行できる SQL クエリの例です：
+
+## _Select クエリ_
+
+- 以下のクエリは、"Customers" テーブルから "City" フィールドが "São Paulo" に等しいすべてのフィールドを選択します：
+
+```sql
+SELECT * FROM Customers WHERE City = 'São Paulo';
+```
+
+<br />
+
+## _データの挿入_
+
+- 以下のクエリは、"Customers" テーブルに新しいレコードを挿入します：
+
+```sql
+INSERT INTO Customers (Name, Address, City) VALUES ('João da Silva', 'Rua das Flores, 123', 'São Paulo');
+```
+
+<br />
+
+## _データの更新_
+
+- 以下のクエリは、"Customers" テーブルの ID 1 のレコードの "Address" フィールドを更新します：
+
+```sql
+UPDATE Customers SET Address = 'Rua das Oliveiras, 456' WHERE ID = 1;
+```
+
+<br />
+
+## _データの削除_
+
+- 以下のクエリは、"Customers" テーブルから ID 1 のレコードを削除します：
+
+```sql
+DELETE FROM Customers WHERE ID = 1;
+```
+
+<br />
+<br />
+
+# 2 つの簡単な例
+
+<br />
+
+## 最初の例
+
+<br />
+
+> あなたは小規模な顧客データベースのデータベース管理者です。次の情報を使用して新しい顧客レコードを追加する必要があります：
+
+<br />
+
+- 名前: "John Smith"
+- 住所: "123 Main Street"
+- 市: "New York"
+
+<br />
+<br />
+
+## _解決策_
+
+<br />
+
+- 新しい顧客レコードを追加するには、次の SQL クエリを使用できます：
+
+```sql
+INSERT INTO Customers (Name, Address, City) VALUES ('John Smith', '123 Main Street', 'New York');
+```
+
+<br />
+
+*このクエリは、"Customers" テーブルに指定された名前、住所、および市で新しいレコードを挿入します。*
+
+<br />
+<br />
+
+## 2 つ目の例
+
+<br />
+
+> あなたは製品在庫データベースのデータベース管理者です。ID "12345" の製品の数量を 10 に更新する必要があります。
+
+<br />
+<br />
+
+## _解決策_- データベース管理者であり、製品在庫データベースを管理しています。「12345」というIDの製品の数量を10に更新する必要があります。
+
+```sql
+UPDATE Products SET Quantity = 10 WHERE ID = 12345;
+```
+
+<br />
+
+_このクエリは、ID「12345」の製品の「Quantity」フィールドを10に更新します。_
+
+<br />
+<br />
+
+# 複雑な例
+
+SQL Serverデータベースに関する複雑な例と解決策を以下に示します：
+
+> 大規模なオンライン小売業者のデータベース管理者です。この会社は、顧客、注文、製品に関する情報を複数のテーブルに保存するデータベースを持っています。このデータベースは、顧客情報の追跡、注文の処理、およびレポートの生成に使用されています。
+
+> 販売マネージャーの1人が、各顧客の製品カテゴリ別の総売上と注文数を示すレポートを依頼しました。このレポートは過去1年間のデータを表示し、総売上の降順で並べ替える必要があります。
+
+<br />
+<br />
+
+## _解決策_
+
+<br />
+
+- 要求されたレポートを生成するには、次のSQLクエリを使用できます：
+
+```sql
+SELECT c.Name AS 'Customer',
+       SUM(o.Total) AS 'Total Sales',
+       COUNT(o.ID) AS 'Number of Orders',
+       p.Category AS 'Product Category'
+FROM Customers c
+INNER JOIN Orders o ON c.ID = o.CustomerID
+INNER JOIN Products p ON o.ProductID = p.ID
+WHERE o.Date BETWEEN '2022-01-01' AND '2022-12-31'
+GROUP BY c.Name, p.Category
+ORDER BY 'Total Sales' DESC;
+```
+
+<br />
+
+_このクエリは、指定された日付範囲内に注文されたすべての注文について、顧客名、総売上、注文数、および製品カテゴリを選択します。その後、結果を顧客名と製品カテゴリでグループ化し、総売上の降順で結果を並べ替えます。生成されるレポートには、各顧客の製品カテゴリ別の総売上と注文数が表示されます。_
+
+<br />
+
+> これらの例がお役に立てば幸いです。
+
+<br />
+<br />
+
+###### _SQL ServerデータベースとSQL言語についてさらに学ぶのに役立つ追加のリファレンスリンクを以下に示します：_
+
+- SQL Serverホームページ: [https://www.microsoft.com/sql-server/](https://www.microsoft.com/sql-server/)
+
+- SQL Serverドキュメント: [https://docs.microsoft.com/sql/](https://docs.microsoft.com/sql/)
+
+- SQLチュートリアル: [https://www.w3schools.com/sql/](https://www.w3schools.com/sql/)
+
+- MySQLリファレンスガイド: [https://dev.mysql.com/doc/refman/8.0/en/](https://dev.mysql.com/doc/refman/8.0/en/)
+
+- Oracle SQLチュートリアル: [https://docs.oracle.com/en/database/oracle/oracle-database/19/lnpls/index.html](https://docs.oracle.com/en/database/oracle/oracle-database/19/lnpls/index.html)
+
+> これらの追加リファレンスと構文がお役に立てば幸いです。

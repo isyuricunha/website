@@ -1,0 +1,60 @@
+---
+title: 'mkcd: ディレクトリを作成して移動する'
+date: 2025-12-04
+author: Yuri Cunha
+description: 単一のコマンドでディレクトリを作成し、そのディレクトリに移動する簡単なBash関数。
+tags:
+  - bash
+  - ターミナル
+  - 生産性
+  - linux
+---
+
+誰もが経験したことがあるでしょう：`mkdir`で新しいディレクトリを作成し、すぐに`cd`でそのディレクトリに移動する必要がある場面です。
+
+```bash
+mkdir new_directory
+cd new_directory
+```
+
+小さな手間ですが、積み重なると面倒です。ここでは、一度に両方を行う簡単な関数を紹介します。
+
+{/* more */}
+
+## 解決策
+
+次の関数を `.bashrc`（または `.zshrc`）に追加してください：
+
+```bash
+mkcd() {
+    mkdir -p "$1" && cd "$1"
+}
+```
+
+## インストール方法
+
+1. 設定ファイルを開きます：
+   ```bash
+   nano ~/.bashrc
+   ```
+   （または `nano ~/.zshrc`）
+
+2. 上記のコードブロックをファイルの最後に貼り付けます。
+
+3. 保存して終了します（`Ctrl+O`、`Enter`、`Ctrl+X`）。
+
+4. 設定を再読み込みします：
+   ```bash
+   source ~/.bashrc
+   ```
+   （または `source ~/.zshrc`）
+
+## 使い方
+
+これで、深いディレクトリ構造を作成し、すぐにそのディレクトリに移動できます：
+
+```bash
+mkcd -p vault/warden/vaultwarden
+```
+
+すぐに `vaultwarden` ディレクトリ内にいることが確認できます。

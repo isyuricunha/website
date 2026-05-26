@@ -1,0 +1,104 @@
+---
+title: LinuxのCPUガバナーをSchedutilに設定する
+date: 2025-12-04
+author: Yuri Cunha
+description: パフォーマンスと電力効率のバランスを取るためにLinuxのCPUガバナーを「schedutil」に設定するクイックガイド。再起動後も設定が持続する方法を含みます。
+tags:
+  - linux
+  - cpu
+  - performance
+  - systemd
+  - ubuntu
+---
+
+`schedutil` ガバナーは、モダンなカーネルにとって最適な選択肢であることが多く、古いガバナー(例: `ondemand`)よりもスケジューラの利用状況データを使用して、より高速かつ正確な周波数決定を行います。
+
+以下は、`schedutil` を有効化し、永続化する方法です。
+
+{/* more */}
+
+## 1. ツールのインストール
+
+まず、必要なツールがインストールされていることを確認します。Ubuntu/Debian の場合:
+
+```bash
+sudo apt update
+sudo apt install linux-tools-common linux-tools-generic
+```
+
+## 2. ガバナーの設定 (即時適用)
+
+現在のセッションでガバナーを即座に設定できます。また、周波数の制限も設定することをお勧めします。
+
+```bash
+sudo cpupower frequency-set -g schedutil
+# Optional: explicitly set limits if needed, though usually automatic
+# sudo cpupower frequency-set -g powersave
+# sudo cpupower frequency-set -g performance
+```
+
+### 確認
+
+ポリシーが適用されているか確認します:
+
+```bash
+cpupower frequency-info | grep "current policy" -A2
+```
+
+以下のような出力が表示されるはずです:
+
+```text
+current policy: frequency should be within 1.20 GHz and 3.60 GHz.
+                The governor "schedutil" may decide which speed to use
+```
+
+個々のCPUを再確認するには:
+
+```bash
+grep . /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
+```
+
+すべてのコアが `schedutil` を報告しているはずです。
+
+## 3. 永続化 (Systemd)
+
+この設定を再起動後も維持するには、簡単な systemd サービスを作成します。
+
+サービスファイルを作成します:
+
+```bash
+sudo tee /etc/systemd/system/cpupower-schedutil.service >/dev/null << 'EOF'
+[Unit]
+Description=Set CPU governor to schedutil
+After=multi-user.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/cpupower frequency-set -g schedutil
+
+[Install]
+WantedBy=multi-user.target
+EOF
+```
+
+サービスを有効化し、起動します:
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable cpupower-schedutil.service
+sudo systemctl start cpupower-schedutil.service
+```
+
+サービスを起動したら、再度確認コマンドを実行して、正常に動作していることを確認します。
+
+## 4. クリーンアップ (オプション)
+
+以前に高パフォーマンス用のサービス(例: `cpupower-performance.service`)を作成している場合は、競合を避けるために無効化して削除する必要があります。
+
+```bash
+sudo systemctl disable --now cpupower-performance.service
+sudo rm /etc/systemd/system/cpupower-performance.service
+sudo systemctl daemon-reload
+```
+
+これで、サーバーは起動時に自動的に `schedutil` を使用するように設定されました。

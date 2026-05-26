@@ -1,0 +1,96 @@
+---
+title: Bitwardenエクスポートから重複を削除
+date: 2025-11-19
+author: Yuri Cunha
+description: BitwardenのCSVエクスポートから重複エントリをクリーンアップするPythonスクリプト
+tags:
+  - python
+  - bitwarden
+  - csv
+  - データクレンジング
+---
+
+BitwardenのボルトをCSVにエクスポートした際に重複エントリが発生した経験がある場合、このスクリプトはあなたのためのものです。このスクリプトはエクスポートデータをスキャンし、キーとなるフィールドに基づいて重複を削除します。
+
+{/* more */}
+
+## 問題点
+
+Bitwardenのボルトをエクスポートすると、同じ資格情報、同じメモなど、重複したエントリが発生することがあります。このスクリプトは、ユニークなエントリのみを残すことで、これをクリーンアップするのに役立ちます。
+
+## 動作原理
+
+このスクリプトはBitwardenのCSVエクスポートを読み込み、各エントリをキーとなるフィールド（タイプ、名前、URI、ユーザー名、パスワード、メモ）に基づいてチェックし、各ユニークな組み合わせの最初のエントリのみを保持します。非常にシンプルです！
+
+## コード
+
+```python
+import csv
+
+input_file = "bitwarden.csv"          # name of the file you exported
+output_file = "bitwarden_dedup.csv"   # new file, without duplicates
+
+seen = set()
+rows = []
+
+with open(input_file, newline="", encoding="utf-8") as f:
+    reader = csv.DictReader(f)
+    fieldnames = reader.fieldnames
+
+    for row in reader:
+        # key to consider entries "equal"
+        key = (
+            row.get("type", ""),
+            row.get("name", ""),
+            row.get("login_uri", ""),
+            row.get("login_username", ""),
+            row.get("login_password", ""),
+            row.get("notes", ""),
+        )
+
+        if key in seen:
+            continue
+
+        seen.add(key)
+        rows.append(row)
+
+with open(output_file, "w", newline="", encoding="utf-8") as f:
+    writer = csv.DictWriter(f, fieldnames=fieldnames)
+    writer.writeheader()
+    writer.writerows(rows)
+
+print(f"saved {len(rows)} items without duplicates in {output_file}")
+```
+
+## 使い方
+
+1. BitwardenのボルトをCSVにエクスポートします（設定 → ボルトのエクスポート）
+2. スクリプトを`bitwarden_dedup.py`として保存します
+3. エクスポートファイルが`bitwarden.csv`という名前であることを確認します（または`input_file`変数を変更します）
+4. 実行します：`python bitwarden_dedup.py`
+5. クリーンアップされたファイル`bitwarden_dedup.csv`をBitwardenに再度インポートします
+
+## チェックされる項目
+
+スクリプトは、以下の**すべての**フィールドが一致する場合、エントリを重複と見なします：
+
+- タイプ（ログイン、メモ、カードなど）
+- 名前
+- ログインURI
+- ユーザー名
+- パスワード
+- メモ
+
+1つでもフィールドが異なる場合、エントリは別々のアイテムとして保持されます。
+
+## 重要な注意事項
+
+<Callout type='warning'>
+クリーンアップ操作を行う前には、必ずボルトのバックアップを取ってください。重複削除されたファイルをインポートする前に、現在のボルトをエクスポートしておくことをお勧めします。
+</Callout>
+
+<Callout type='info'>
+異なるフィールド（例えばユーザー名とURIのみ）に基づいて重複をチェックしたい場合は、コード内の`key`タプルを変更して、必要なフィールドのみを含めることができます。
+</Callout>
+
+このスクリプトはPythonの組み込み`csv`モジュールと`set`を使用して、既に確認したエントリを追跡するため、大規模なボルトでも効率的に動作します。

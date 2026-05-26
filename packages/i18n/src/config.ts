@@ -11,6 +11,10 @@ export const supportedLanguages = [
   {
     code: 'es',
     label: 'Español'
+  },
+  {
+    code: 'ja',
+    label: '日本語'
   }
 ]
 

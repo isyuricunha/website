@@ -1,0 +1,72 @@
+---
+name: Yue Discord Bot (YueBot)
+description: pnpm モノレポとして構築された Fastify API、React ウェブ UI、共有 Prisma データベースを備えた包括的な Discord ボットと管理パネル。
+homepage: https://yuebot.yuricunha.com/
+github: https://github.com/isyuricunha/yue-discord-bot
+techstack:
+  - Node.js
+  - TypeScript
+  - Discord.js
+  - Fastify
+  - React
+  - Vite
+  - Prisma
+  - PostgreSQL
+  - TailwindCSS
+  - Docker
+selected: true
+status: active
+---
+
+## YueBot について
+
+YueBot は、**pnpm モノレポ**として構築された包括的な Discord ボットと管理パネルで、Discord ボット、Fastify API、React ウェブ UI、共有の Prisma データベースを組み合わせています。本番環境での使用を想定して設計されており、Discord コミュニティ管理のための完全なソリューションを提供します。
+
+### 主な機能
+
+- **モデレーションツール**: バン、キック、ミュート、警告、モデレーション履歴の追跡
+- **サーバー管理**: AutoMod、オートロール、チャンネル、テンプレートの設定
+- **ギブアウェイ**: リアクションベースのギブアウェイ、参加者の追跡、勝者の選出
+- **XP & レベル**: ギルドおよびグローバルリーダーボード、レベル追跡
+- **メンバー管理**: バッジ付きのメンバー詳細とプロファイルの表示
+- **ファンアートシステム**: アローリストを使用したファンアートの提出とレビュー
+- **エコノミー & ゲーム**: 仮想通貨（luazinhas）とコインフリップゲーム
+- **アニメ統合**: AniList からの検索とレコメンデーション
+- **ワイフ/ハズバンドシステム**: キャラクターのロールと結婚システム
+
+### アーキテクチャ
+
+YueBot は現代的なモノレポ構造を採用しています：
+
+- **ボット**: モデレーションと自動化のための Discord.js v14
+- **API**: JWT 認証を備えた Fastify バックエンド
+- **ウェブ UI**: Discord OAuth を使用した React + Vite 管理パネル
+- **データベース**: 共有データのための Prisma + PostgreSQL
+
+### デプロイメント
+
+このプロジェクトには、本番環境向けの Docker イメージが含まれています：
+
+- シングルコンテナデプロイメント（nginx + API + ボット）
+- マルチアーキテクチャサポート（amd64、arm64）
+- 最適化された本番環境用のスリムバリアント
+- 内部および外部データベース用の Docker Compose の例
+
+### 技術スタック
+
+- **Node.js 24+** と TypeScript 5.9+
+- **pnpm 10+** を使用したパッケージ管理
+- **Prisma 7+** を使用したデータベースアクセス
+- **React 19+** と Vite 7+ を使用したウェブインターフェース
+- **TailwindCSS 4+** を使用したスタイリング
+- **Docker** を使用したコンテナ化
+
+### ユニークな機能
+
+- **二言語サポート**: 英語とポルトガル語（pt-BR）の両方でコマンドを利用可能
+- **ウェブ管理パネル**: Discord コマンドなしでサーバーを完全に管理
+- **自動バージョニング**: Conventional Commits に基づくセマンティックリリース
+- **セキュリティ重視**: httpOnly クッキー、CORS アローリスト、CSRF 保護
+- **拡張性**: 新機能を簡単に追加できるモジュール設計
+
+YueBot は、強力な本番環境対応ボットと完全なウェブ管理インターフェースを求める Discord コミュニティに最適です。

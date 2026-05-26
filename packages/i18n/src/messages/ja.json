@@ -1,0 +1,2692 @@
+{
+  "about": {
+    "title": "について",
+    "description": "👋 こんにちは！私はユリ・クーニャです。インターネット上のただの一人です。"
+  },
+  "now": {
+    "title": "現在",
+    "description": "現在、私が注力していることのスナップショット"
+  },
+  "admin": {
+    "nav": {
+      "comments": "コメント",
+      "general": "一般",
+      "users": "ユーザー",
+      "dashboard": "ダッシュボード",
+      "security": "セキュリティ",
+      "security_management": "セキュリティ管理",
+      "communication": "コミュニケーション",
+      "communication_management": "コミュニケーション管理",
+      "email_marketing": "Eメールマーケティング",
+      "announcements": "お知らせ",
+      "notifications": "通知",
+      "monitoring": "モニタリング",
+      "monitoring_dashboard": "モニタリングダッシュボード",
+      "system_health": "システムヘルス",
+      "data": "データ管理",
+      "data_management": "データ管理",
+      "audit_logs": "監査ログ",
+      "bulk_operations": "一括操作"
+    },
+    "page-header": {
+      "audit-logs": {
+        "description": "管理者のアクションとシステムの変更を確認します。",
+        "title": "監査ログ"
+      },
+      "comments": {
+        "description": "ユーザーからのコメントを管理します",
+        "title": "コメント"
+      },
+      "users": {
+        "description": "システムのユーザーを管理します",
+        "title": "ユーザー"
+      }
+    },
+    "table": {
+      "comments": {
+        "body": "本文",
+        "createdAt": "作成日時",
+        "failed-to-fetch-comments-data": "コメントデータの取得に失敗しました。ページを更新してください。",
+        "filter-body": "本文をフィルター...",
+        "filter-userId": "ユーザーIDをフィルター...",
+        "type": "タイプ",
+        "userId": "ユーザーID",
+        "actions": "アクション",
+        "open-menu": "メニューを開く",
+        "search": "コメントを検索...",
+        "export-csv": "CSVエクスポート",
+        "delete": "削除",
+        "edit": "編集",
+        "view": "表示",
+        "confirm-delete": "このコメントを削除しますか？",
+        "delete-success": "コメントが正常に削除されました",
+        "delete-error": "コメントの削除に失敗しました",
+        "delete-title": "コメントを削除",
+        "confirm-delete-with-body": "このコメントを削除しますか？「{body}」この操作は元に戻せません。",
+        "export-success": "コメントがCSVに正常にエクスポートされました"
+      },
+      "users": {
+        "email": "メールアドレス",
+        "failed-to-fetch-users-data": "ユーザーデータの取得に失敗しました。ページを更新してください。",
+        "filter-names": "名前をフィルター...",
+        "name": "名前",
+        "role": "役割",
+        "username": "ユーザー名",
+        "image": "画像",
+        "createdAt": "作成日時",
+        "status": "ステータス",
+        "banned": "停止済み",
+        "active": "アクティブ",
+        "actions": "操作",
+        "open-menu": "メニューを開く",
+        "search": "ユーザーを検索...",
+        "export-csv": "CSVエクスポート",
+        "delete": "ユーザーを削除",
+        "ban": "ユーザーをBan",
+        "unban": "Ban解除",
+        "edit": "ユーザーを編集",
+        "reset-password": "パスワードリセットを送信",
+        "change-role": "ロールを変更",
+        "confirm-delete": "このユーザーを削除しますか？",
+        "confirm-ban": "このユーザーをBanしますか？",
+        "confirm-unban": "このユーザーのBanを解除しますか？",
+        "delete-success": "ユーザーを正常に削除しました",
+        "delete-error": "ユーザーの削除に失敗しました",
+        "ban-success": "ユーザーを正常にBanしました",
+        "ban-error": "ユーザーのBanに失敗しました",
+        "unban-success": "ユーザーのBanを正常に解除しました",
+        "unban-error": "ユーザーのBan解除に失敗しました",
+        "reset-password-success": "パスワードリセットメールを送信しました",
+        "reset-password-error": "パスワードリセットメールの送信に失敗しました",
+        "update-success": "ユーザーを正常に更新しました",
+        "update-error": "ユーザーの更新に失敗しました",
+        "roles": {
+          "user": "ユーザー",
+          "admin": "管理者"
+        },
+        "confirm-delete-with-name": "ユーザー「{name}」を削除しますか？この操作は元に戻せません。",
+        "confirm-ban-with-name": "ユーザー「{name}」をBanしますか？",
+        "confirm-unban-with-name": "ユーザー「{name}」のBanを解除しますか？",
+        "export-success": "ユーザーをCSVに正常にエクスポートしました"
+      }
+    },
+    "modals": {
+      "edit-user": {
+        "title": "ユーザー編集",
+        "name": "名前",
+        "username": "ユーザー名",
+        "email": "メールアドレス",
+        "role": "ロール",
+        "image": "画像URL",
+        "save": "変更を保存",
+        "saving": "保存中...",
+        "cancel": "キャンセル",
+        "roles": {
+          "user": "ユーザー",
+          "admin": "管理者"
+        },
+        "validation": {
+          "name-required": "名前は必須です",
+          "invalid-email": "無効なメールアドレスです",
+          "invalid-url": "無効なURLです"
+        }
+      },
+      "delete-confirmation": {
+        "title": "削除の確認",
+        "message": "この操作は元に戻せません。続行しますか？",
+        "confirm": "削除",
+        "cancel": "キャンセル"
+      }
+    },
+    "audit-logs": {
+      "failed-to-fetch": "監査ログの取得に失敗しました。",
+      "columns": {
+        "createdAt": "作成日時",
+        "action": "アクション",
+        "admin": "管理者",
+        "targetType": "ターゲットタイプ",
+        "targetId": "ターゲットID",
+        "ipAddress": "IPアドレス"
+      },
+      "filter-actions": "アクションをフィルター...",
+      "search-placeholder": "監査ログを検索..."
+    },
+    "common": {
+      "loading": "読み込み中...",
+      "refresh": "更新"
+    },
+    "error-boundary": {
+      "title": "管理エラー",
+      "description": "この管理セクションの読み込み中にエラーが発生しました。ページの更新をお試しください。問題が解決しない場合は、サポートにお問い合わせください。",
+      "refresh-page": "ページを更新"
+    },
+    "dashboard": {
+      "title": "管理ダッシュボード",
+      "description": "サイトのパフォーマンスを監視し、運用を管理します",
+      "messages": {
+        "refresh-success": "ダッシュボードを正常に更新しました",
+        "refresh-error": "ダッシュボードの更新に失敗しました"
+      },
+      "loading": {
+        "title": "ダッシュボード",
+        "description": "サイト統計の概要",
+        "card": "読み込み中...",
+        "error": "ダッシュボード統計の読み込みに失敗しました"
+      },
+      "stats": {
+        "this-month": "今月 +{count}",
+        "total-users": {
+          "title": "総ユーザー数"
+        },
+        "total-comments": {
+          "title": "総コメント数"
+        },
+        "guestbook-entries": {
+          "title": "ゲストブックエントリ",
+          "description": "全期間のエントリ"
+        },
+        "admin-users": {
+          "title": "管理者ユーザー",
+          "description": "システム管理者"
+        }
+      },
+      "status": {
+        "live": "ライブ"
+      },
+      "actions": {
+        "refresh": "更新"
+      },
+      "recent-activity": {
+        "title": "最近のアクティビティ",
+        "description": "過去7日間のパフォーマンス",
+        "weekly": "週次",
+        "new-users": "新規ユーザー",
+        "new-comments": "新規コメント"
+      },
+      "quick-actions": {
+        "title": "クイックアクション",
+        "description": "よく使うタスクにジャンプ",
+        "manage-users": {
+          "title": "ユーザー管理",
+          "description": "ユーザーアカウントを表示および編集"
+        },
+        "moderate-comments": {
+          "title": "コメントの管理",
+          "description": "コメントをレビューおよび管理"
+        },
+        "monitoring": {
+          "title": "監視",
+          "description": "メトリクス、エラー、アラートを表示"
+        }
+      },
+      "system-health": {
+        "title": "システムヘルス",
+        "description": "システムパフォーマンスの全体的なメトリクス",
+        "database": "データベースパフォーマンス",
+        "api-response": "API応答時間",
+        "storage": "ストレージ使用量",
+        "excellent": "優秀",
+        "fast": "高速",
+        "moderate": "普通"
+      }
+    },
+    "system-health": {
+      "title": "システムヘルス",
+      "description": "システムのパフォーマンスとヘルスを監視",
+      "auto-refresh": "自動更新 (30秒)",
+      "messages": {
+        "error-resolved": "エラーが解決しました",
+        "resolve-error-failed": "エラーの解決に失敗しました: {message}",
+        "all-errors-resolved": "すべてのエラーが解決されました",
+        "resolve-all-errors-failed": "すべてのエラーの解決に失敗しました: {message}",
+        "refreshed": "システムヘルスが更新されました"
+      },
+      "actions": {
+        "refresh": "更新",
+        "resolve-all": "すべて解決",
+        "view-all-errors": "すべてのエラーを表示",
+        "resolve": "解決"
+      },
+      "status": {
+        "healthy": "正常",
+        "warning": "警告",
+        "critical": "危険",
+        "unknown": "不明"
+      },
+      "overall": {
+        "status": "システムステータス: {status}",
+        "last-checked": "最終確認日時: {date}",
+        "uptime": "稼働時間"
+      },
+      "stats": {
+        "healthy-checks": "正常チェック",
+        "warnings": "警告",
+        "critical-issues": "危険な問題",
+        "unresolved-errors": "未解決のエラー"
+      },
+      "service-health": {
+        "title": "サービスヘルス"
+      },
+      "recent-errors": {
+        "title": "最近のエラー",
+        "url": "URL: {url}",
+        "user": "ユーザー: {name} ({email})",
+        "stack-trace": "スタックトレース"
+      },
+      "trends": {
+        "title": "ヘルストレンド",
+        "last-checks": "直近 {count} 回のチェック",
+        "filter": "フィルター",
+        "all-services": "すべてのサービス",
+        "empty-title": "ヘルス履歴がありません",
+        "empty-description": "ヘルスチェックを記録するには更新を実行してください",
+        "stats": {
+          "healthy": "正常",
+          "warnings": "警告",
+          "critical": "危険",
+          "unknown": "不明"
+        },
+        "table": {
+          "time": "時間",
+          "service": "サービス",
+          "status": "ステータス",
+          "latency": "レテンシー",
+          "message": "メッセージ"
+        }
+      }
+    },
+    "notification-management": {
+      "title": "通知",
+      "description": "ユーザー通知とシステムアラートを管理",
+      "loading": "通知を読み込み中...",
+      "empty": "通知はまだありません。最初の通知を作成して開始しましょう！",
+      "messages": {
+        "created": "通知が正常に作成されました",
+        "create-failed": "通知の作成に失敗しました: {message}",
+        "mark-read-failed": "既読マークの付与に失敗しました: {message}",
+        "title-content-required": "タイトルと本文は必須です"
+      },
+      "actions": {
+        "create": "通知を作成",
+        "send": "通知を送信",
+        "mark-read": "既読にする"
+      },
+      "dialog": {
+        "create-title": "新規通知を作成",
+        "create-description": "特定のユーザーまたは全ユーザーに通知を送信します。"
+      },
+      "fields": {
+        "title": "タイトル",
+        "title-placeholder": "通知のタイトル",
+        "content": "内容",
+        "content-placeholder": "通知内容",
+        "type": "タイプ",
+        "user-id": "ユーザーID（オプション）",
+        "user-id-placeholder": "全ユーザーに送信する場合は空白",
+        "expires-at": "有効期限（オプション）",
+        "action-url": "アクションURL（オプション）"
+      },
+      "types": {
+        "system": "システム",
+        "security": "セキュリティ",
+        "user-action": "ユーザーアクション",
+        "content": "コンテンツ",
+        "marketing": "マーケティング",
+        "reminder": "リマインダー"
+      },
+      "stats": {
+        "total": {
+          "title": "通知総数",
+          "description": "すべての通知"
+        },
+        "unread": {
+          "title": "未読",
+          "description": "未読の通知"
+        },
+        "read-rate": {
+          "title": "既読率",
+          "description": "既読の通知"
+        }
+      },
+      "recent": {
+        "title": "最近の通知",
+        "description": "ユーザー通知とシステムアラートを管理",
+        "user": "ユーザー: {userId}",
+        "expires": "有効期限: {date}"
+      },
+      "status": {
+        "unread": "未読"
+      }
+    },
+    "bulk-operations": {
+      "title": "一括操作",
+      "description": "ユーザーとコンテンツに対する一括アクションを実行",
+      "messages": {
+        "completed": "一括操作が完了しました: {successful}/{total} 件成功",
+        "failed": "一括操作が失敗しました",
+        "cancelled": "操作がキャンセルされました",
+        "cancel-failed": "操作のキャンセルに失敗しました",
+        "select-users": "一括操作を実行するユーザーを選択してください"
+      },
+      "confirm": {
+        "bulk-action": "{count} 人のユーザーを {action} してもよろしいですか？この操作は元に戻せません。",
+        "cancel-operation": "この操作をキャンセルしてもよろしいですか？"
+      },
+      "actions": {
+        "delete-users": "ユーザーを削除",
+        "ban-users": "ユーザーをBan",
+        "unban-users": "ユーザーのBanを解除",
+        "update-role": "ロールを更新",
+        "execute": "実行 ({count})",
+        "cancel": "キャンセル",
+        "export": "エクスポート"
+      },
+      "status": {
+        "completed": "完了",
+        "failed": "失敗",
+        "running": "実行中",
+        "cancelled": "キャンセル済み",
+        "pending": "保留中"
+      },
+      "date": {
+        "never": "なし",
+        "unknown": "不明"
+      },
+      "user-actions": {
+        "title": "一括ユーザー操作",
+        "search-placeholder": "ユーザーを検索...",
+        "filters": "フィルター",
+        "select-action": "アクションを選択",
+        "new-role": "新しいロール",
+        "no-users": "ユーザーが見つかりません",
+        "no-users-hint": "検索条件を調整してみてください。"
+      },
+      "table": {
+        "user": "ユーザー",
+        "role": "ロール",
+        "joined": "参加日"
+      },
+      "operations": {
+        "title": "最近の操作",
+        "failed-to-load": "一括操作の読み込みに失敗しました。",
+        "loading": "一括操作を読み込み中...",
+        "summary": "{successful}/{total} 件成功 • 作成者: {creator} • {date}",
+        "progress": "進捗状況",
+        "empty": "一括操作が見つかりません。"
+      }
+    },
+    "data-management": {
+      "title": "データ管理",
+      "description": "データのバックアップ、エクスポート、管理を行います",
+      "loading": "データ管理ダッシュボードを読み込み中...",
+      "messages": {
+        "backup-started": "データベースのバックアップを開始しました",
+        "backup-failed": "バックアップの開始に失敗しました: {message}",
+        "export-started": "データのエクスポートを開始しました",
+        "export-failed": "エクスポートの開始に失敗しました: {message}",
+        "quality-started": "データ品質チェックを開始しました",
+        "quality-failed": "品質チェックの開始に失敗しました: {message}",
+        "export-required": "名前、形式、およびテーブルは必須です",
+        "quality-required": "名前、テーブル名、およびルールは必須です",
+        "rules-invalid": "ルールは「フィールド:ルールタイプ」の形式で入力してください"
+      },
+      "file-size": {
+        "zero": "0 バイト",
+        "bytes": "バイト",
+        "unknown": "サイズ不明",
+        "size": "サイズ: {size}"
+      },
+      "status": {
+        "completed": "完了",
+        "in-progress": "進行中",
+        "processing": "処理中",
+        "running": "実行中",
+        "pending": "保留中",
+        "failed": "失敗"
+      },
+      "backup-types": {
+        "full": "完全",
+        "incremental": "増分",
+        "differential": "差分",
+        "full-backup": "完全バックアップ",
+        "incremental-backup": "増分バックアップ",
+        "differential-backup": "差分バックアップ"
+      },
+      "stats": {
+        "database-backups": "データベースのバックアップ",
+        "completed-count": "{count} 件完了",
+        "backup-size": "バックアップサイズ",
+        "total-storage-used": "使用済みストレージ合計",
+        "data-exports": "データエクスポート",
+        "records-exported": "エクスポートされたレコード",
+        "total-records-processed": "処理されたレコード合計"
+      },
+      "tabs": {
+        "overview": "概要",
+        "backups": "バックアップ",
+        "exports": "エクスポート",
+        "quality": "品質"
+      },
+      "overview": {
+        "recent-backups": {
+          "title": "最近のバックアップ",
+          "description": "最新のデータベースバックアップ活動"
+        },
+        "recent-exports": {
+          "title": "最近のエクスポート",
+          "description": "最新のデータエクスポート活動"
+        }
+      },
+      "backups": {
+        "loading": "バックアップを読み込み中...",
+        "empty": "バックアップはまだありません",
+        "backup-label": "{type} バックアップ",
+        "create-title": "データベースバックアップの作成",
+        "create-description": "安全のためにデータベースをバックアップ",
+        "list-title": "データベースバックアップ",
+        "list-description": "データベースバックアップ履歴"
+      },
+      "exports": {
+        "loading": "エクスポートを読み込み中...",
+        "empty": "エクスポートはまだありません",
+        "create-title": "データエクスポートの作成",
+        "create-description": "さまざまな形式でデータをエクスポート",
+        "list-title": "データエクスポート",
+        "list-description": "データエクスポート履歴",
+        "format": "形式: {format}",
+        "records": "{count} レコード",
+        "processing": "処理中..."
+      },
+      "quality": {
+        "create-title": "データ品質チェックの実行",
+        "create-description": "データの整合性と品質を検証",
+        "overview-title": "データ品質の概要",
+        "overview-description": "データ品質の指標とインサイト",
+        "empty-title": "結果を表示するには品質チェックを実行してください",
+        "empty-description": "品質チェックは、欠落値、重複、形式の問題などのデータの問題を特定するのに役立ちます。"
+      },
+      "fields": {
+        "backup-type": "バックアップタイプ",
+        "description-optional": "説明 (オプション)",
+        "backup-description-placeholder": "展開前のバックアップ",
+        "export-name": "エクスポート名",
+        "export-name-placeholder": "ユーザーデータエクスポート",
+        "format": "フォーマット",
+        "tables": "テーブル（カンマ区切り）",
+        "tables-placeholder": "users, posts, comments",
+        "check-name": "チェック名",
+        "check-name-placeholder": "ユーザーデータ検証",
+        "table-name": "テーブル名",
+        "table-name-placeholder": "users",
+        "rules": "ルール（フィールド:ルールタイプ）",
+        "rules-placeholder": "email:not_null, email:format, id:unique",
+        "rules-help": "利用可能なルール: not_null, unique, format, range"
+      },
+      "actions": {
+        "creating-backup": "バックアップを作成中...",
+        "create-backup": "バックアップを作成",
+        "creating-export": "エクスポートを作成中...",
+        "create-export": "エクスポートを作成",
+        "running-check": "チェックを実行中...",
+        "run-quality-check": "品質チェックを実行"
+      },
+      "date": {
+        "completed": "完了: {date}"
+      }
+    },
+    "security-management": {
+      "title": "セキュリティ管理",
+      "description": "システムセキュリティを監視および管理",
+      "loading": "セキュリティダッシュボードを読み込み中...",
+      "messages": {
+        "ip-rule-added": "IPアクセスルールが正常に追加されました",
+        "ip-rule-failed": "IPルールの追加に失敗しました: {message}",
+        "event-resolved": "セキュリティイベントが解決されました",
+        "event-resolve-failed": "イベントの解決に失敗しました: {message}",
+        "account-unlocked": "アカウントのロックが正常に解除されました",
+        "account-unlock-failed": "アカウントのロック解除に失敗しました: {message}",
+        "setting-updated": "セキュリティ設定が正常に更新されました",
+        "setting-update-failed": "セキュリティ設定の更新に失敗しました: {message}",
+        "ip-type-required": "IPアドレスとタイプは必須です"
+      },
+      "severity": {
+        "critical": "クリティカル",
+        "high": "高",
+        "medium": "中",
+        "low": "低"
+      },
+      "rule-types": {
+        "whitelist": "ホワイトリスト",
+        "blacklist": "ブラックリスト",
+        "whitelist-allow": "ホワイトリスト（許可）",
+        "blacklist-block": "ブラックリスト（ブロック）"
+      },
+      "stats": {
+        "security-events": "セキュリティイベント",
+        "critical-events": "{count} 件のクリティカルイベント",
+        "login-attempts": "ログイン試行",
+        "failed-attempts": "{count} 件の失敗試行",
+        "account-lockouts": "アカウントロックアウト",
+        "active-lockouts": "アクティブなロックアウト",
+        "two-factor-adoption": "二要素認証の採用",
+        "users-enabled": "{count} 人のユーザーが有効化されています"
+      },
+      "tabs": {
+        "overview": "概要",
+        "events": "イベント",
+        "ip-control": "IP コントロール",
+        "lockouts": "ロックアウト",
+        "settings": "設定"
+      },
+      "overview": {
+        "recent-events": {
+          "title": "最近のセキュリティイベント",
+          "description": "最新のセキュリティインシデントとアラート"
+        },
+        "login-attempts": {
+          "title": "ログイン試行数 (24時間)",
+          "description": "認証アクティビティの概要",
+          "loading": "試行数を読み込み中...",
+          "total": "総試行数:",
+          "successful": "成功:",
+          "failed": "失敗:",
+          "unique-ips": "ユニークIP:",
+          "success-rate": "成功率:"
+        }
+      },
+      "events": {
+        "title": "セキュリティイベント",
+        "description": "セキュリティインシデントの監視と解決",
+        "loading": "イベントを読み込み中...",
+        "loading-security-events": "セキュリティイベントを読み込み中...",
+        "no-recent": "最近のイベントはありません",
+        "ip": "IP: {ip}",
+        "user": "ユーザー: {name} ({email})",
+        "resolved": "解決済み: {date}",
+        "empty": "セキュリティイベントは見つかりませんでした"
+      },
+      "ip-control": {
+        "add-title": "IP アクセスルールの追加",
+        "add-description": "IP アドレスによるアクセス制御",
+        "rules-title": "IP アクセスルール",
+        "rules-description": "現在の IP アクセス制御ルール",
+        "loading-rules": "IP ルールを読み込み中...",
+        "no-description": "説明なし",
+        "empty": "IP ルールが設定されていません"
+      },
+      "lockouts": {
+        "title": "アカウントロックアウト",
+        "description": "ロックされたユーザーアカウントの管理",
+        "loading": "アカウントロックアウトを読み込み中...",
+        "user-id": "ユーザーID: {userId}",
+        "lockout-id": "ロックアウトID: {lockoutId}",
+        "locked": "ロック日時: {date}",
+        "reason": "理由: {reason}",
+        "empty": "アクティブなアカウントロックアウトはありません"
+      },
+      "settings": {
+        "title": "セキュリティ設定",
+        "description": "セキュリティポリシーとしきい値の設定",
+        "search-placeholder": "キー、値、または説明で検索",
+        "all-categories": "すべてのカテゴリ",
+        "loading": "セキュリティ設定を読み込み中...",
+        "empty": "セキュリティ設定が見つかりません",
+        "updated": "{date} に更新",
+        "updated-by": "{name} によって"
+      },
+      "fields": {
+        "ip-address": "IPアドレス",
+        "rule-type": "ルールタイプ",
+        "rule-type-placeholder": "ルールタイプを選択",
+        "description-optional": "説明（オプション）",
+        "rule-description-placeholder": "ルールの説明",
+        "search": "検索",
+        "category": "カテゴリ",
+        "value": "値",
+        "description": "説明",
+        "optional-description-placeholder": "オプションの説明",
+        "category-placeholder": "カテゴリ"
+      },
+      "actions": {
+        "resolve": "解決",
+        "adding": "追加中...",
+        "add-rule": "ルールを追加",
+        "unlock-account": "アカウントのロック解除",
+        "save": "保存",
+        "edit": "編集"
+      }
+    },
+    "monitoring-dashboard": {
+      "title": "モニタリングダッシュボード",
+      "description": "リアルタイムのシステムパフォーマンスと分析",
+      "loading": "モニタリングダッシュボードを読み込み中...",
+      "messages": {
+        "error-resolved": "エラーが正常に解決されました",
+        "resolve-error-failed": "エラーの解決に失敗しました: {message}",
+        "all-errors-resolved": "すべてのエラーが正常に解決されました",
+        "resolve-all-errors-failed": "すべてのエラーの解決に失敗しました: {message}"
+      },
+      "time-range": {
+        "last-hour": "過去1時間",
+        "last-6-hours": "過去6時間",
+        "last-24-hours": "過去24時間",
+        "last-7-days": "過去7日間",
+        "last-30-days": "過去30日間"
+      },
+      "stats": {
+        "performance": "パフォーマンス",
+        "metrics-recorded": "{count} 件のメトリクスが記録されました",
+        "api-requests": "APIリクエスト",
+        "error-rate": "{rate}% のエラーレート",
+        "errors": "エラー",
+        "unresolved": "{count} 件未解決",
+        "active-alerts": "アクティブアラート",
+        "critical-alerts": "{count} 件のクリティカルアラート"
+      },
+      "tabs": {
+        "overview": "概要",
+        "performance": "パフォーマンス",
+        "api": "API使用状況",
+        "errors": "エラー",
+        "resources": "リソース",
+        "analytics": "分析"
+      },
+      "common": {
+        "system": "システム",
+        "anonymous": "匿名"
+      },
+      "overview": {
+        "system-health": {
+          "title": "システムヘルス",
+          "description": "現在のシステムステータスの概要",
+          "api-response-time": "API応答時間",
+          "error-rate": "エラーレート",
+          "critical-errors": "クリティカルエラー",
+          "active-alerts": "アクティブアラート"
+        },
+        "recent-activity": {
+          "title": "最近のアクティビティ",
+          "description": "最新のシステムイベントとメトリクス",
+          "loading": "最近のアクティビティを読み込み中...",
+          "empty": "最近のアクティビティはありません"
+        }
+      },
+      "performance": {
+        "metrics": {
+          "title": "パフォーマンスメトリクス",
+          "description": "時間経過に伴うシステムパフォーマンス",
+          "loading": "パフォーマンスメトリクスを読み込み中...",
+          "empty": "パフォーマンスデータがありません"
+        },
+        "resources": {
+          "title": "リソース使用状況",
+          "description": "システムリソースの消費状況",
+          "threshold-breaches": "{count} 件のしきい値超過",
+          "empty": "リソースデータがありません"
+        }
+      },
+      "metrics": {
+        "avg": "平均: {value}",
+        "min": "最小: {value}",
+        "max": "最大: {value}",
+        "avg-percent": "平均: {value}%",
+        "max-percent": "最大: {value}%"
+      },
+      "api": {
+        "loading": "API使用状況を読み込み中...",
+        "stats": {
+          "title": "API使用統計",
+          "description": "リクエストパターンとパフォーマンス",
+          "total-requests": "総リクエスト数",
+          "unique-users": "ユニークユーザー数",
+          "avg-response-time": "平均応答時間",
+          "error-rate": "エラーレート"
+        },
+        "top-endpoints": {
+          "title": "トップAPIエンドポイント",
+          "description": "最も頻繁にアクセスされるエンドポイント",
+          "loading": "トップエンドポイントを読み込み中...",
+          "empty": "エンドポイントデータがありません"
+        }
+      },
+      "errors": {
+        "title": "エラートラッキング",
+        "description": "システムエラーと例外",
+        "loading": "エラートラッキングを読み込み中...",
+        "type": "タイプ: {type}",
+        "user": "ユーザー: {name} ({email})",
+        "fingerprint": "フィンガープリント: {fingerprint}",
+        "resolved": "{date} に解決済み",
+        "empty": "エラーは見つかりませんでした"
+      },
+      "actions": {
+        "resolve-all": "すべて解決",
+        "resolve": "解決"
+      },
+      "resources": {
+        "title": "システムリソース",
+        "description": "CPU とメモリの使用状況",
+        "loading": "リソース使用状況を読み込み中...",
+        "current-usage": "現在の使用状況:",
+        "average": "平均:",
+        "peak": "ピーク:",
+        "alerts": "アラート:",
+        "empty": "リソース使用データはありません"
+      },
+      "analytics": {
+        "event-types": {
+          "title": "イベントタイプ",
+          "description": "アナリティクスイベントの分布",
+          "loading": "アナリティクスイベントを読み込み中...",
+          "empty": "イベントデータはありません"
+        },
+        "recent-events": {
+          "title": "最近のイベント",
+          "description": "最新のアナリティクスイベント",
+          "loading": "最近のイベントを読み込み中...",
+          "empty": "最近のイベントはありません"
+        }
+      }
+    },
+    "announcement-management": {
+      "title": "お知らせ",
+      "description": "サイト全体のお知らせと通知を管理",
+      "loading": "お知らせを読み込み中...",
+      "empty": "お知らせはまだありません。最初のお知らせを作成して開始しましょう！",
+      "messages": {
+        "translate-failed": "翻訳に失敗しました: {message}",
+        "title-content-required": "タイトルと本文は必須です",
+        "pt-filled": "Yue AI を使用して pt-BR を入力しました",
+        "created": "お知らせが正常に作成されました",
+        "create-failed": "お知らせの作成に失敗しました: {message}",
+        "updated": "お知らせが正常に更新されました",
+        "update-failed": "お知らせの更新に失敗しました: {message}",
+        "deleted": "お知らせが正常に削除されました",
+        "delete-failed": "お知らせの削除に失敗しました: {message}"
+      },
+      "actions": {
+        "create": "お知らせを作成",
+        "update": "お知らせを更新",
+        "translating": "翻訳中...",
+        "fill-pt": "AI で pt-BR を入力",
+        "activate": "有効化",
+        "deactivate": "無効化",
+        "edit-aria": "お知らせを編集",
+        "delete-aria": "お知らせを削除"
+      },
+      "create": {
+        "title": "新しいお知らせを作成",
+        "description": "サイト全体に表示される新しいお知らせを作成します。"
+      },
+      "edit": {
+        "title": "お知らせを編集",
+        "description": "お知らせの詳細を更新します。"
+      },
+      "delete": {
+        "title": "お知らせを削除",
+        "description": "\"{title}\" を削除してもよろしいですか？この操作は元に戻せません。"
+      },
+      "fields": {
+        "title": "タイトル",
+        "title-placeholder": "お知らせのタイトル",
+        "title-pt": "タイトル (pt-BR)",
+        "title-pt-placeholder": "ポルトガル語のタイトル（オプション）",
+        "content": "内容",
+        "content-placeholder": "お知らせの内容",
+        "content-pt": "内容 (pt-BR)",
+        "content-pt-placeholder": "ポルトガル語の内容（オプション）",
+        "type": "タイプ",
+        "priority": "優先度 (0-10)",
+        "priority-value": "優先度 {priority}",
+        "dismissible": "ユーザーがこのお知らせを閉じられるようにする",
+        "active": "お知らせが有効"
+      },
+      "types": {
+        "info": "情報",
+        "success": "成功",
+        "warning": "警告",
+        "error": "エラー",
+        "maintenance": "メンテナンス",
+        "feature": "機能",
+        "update": "更新"
+      },
+      "analytics": {
+        "total-views": {
+          "title": "総閲覧数",
+          "description": "すべてのお知らせの合計"
+        },
+        "dismissal-rate": {
+          "title": "閉じられた割合",
+          "description": "合計 {count} 回閉じられました"
+        },
+        "active": {
+          "title": "有効なお知らせ",
+          "description": "現在ユーザーに表示されているお知らせ"
+        }
+      },
+      "list": {
+        "title": "すべてのお知らせ",
+        "description": "サイトのお知らせを管理"
+      },
+      "status": {
+        "inactive": "非アクティブ",
+        "pt": "PT",
+        "pt-partial": "PT 部分的",
+        "targeted": "ターゲット指定",
+        "dismissible": "閉じ可能",
+        "not-dismissible": "閉じ不可"
+      }
+    },
+    "communication-management": {
+      "title": "コミュニケーション管理",
+      "description": "メール、お知らせ、通知を管理",
+      "loading": "コミュニケーションダッシュボードを読み込み中...",
+      "messages": {
+        "template-created": "メールテンプレートが正常に作成されました",
+        "template-create-failed": "テンプレートの作成に失敗しました: {message}",
+        "campaign-created": "メールキャンペーンが正常に作成されました",
+        "campaign-create-failed": "キャンペーンの作成に失敗しました: {message}",
+        "campaign-sent": "メールキャンペーンが正常に送信されました",
+        "campaign-send-failed": "キャンペーンの送信に失敗しました: {message}",
+        "announcement-created": "お知らせが正常に作成されました",
+        "announcement-create-failed": "お知らせの作成に失敗しました: {message}",
+        "all-fields-required": "すべての項目は必須です",
+        "campaign-fields-required": "名前、件名、および本文は必須です",
+        "title-content-required": "タイトルと本文は必須です"
+      },
+      "stats": {
+        "email-campaigns": "メールキャンペーン",
+        "sent-campaigns": "{count} 件の送信済みキャンペーン",
+        "emails-sent": "送信済みメール",
+        "delivered": "{count} 件が配信済み",
+        "announcements": "お知らせ",
+        "active": "{count} 件の有効なお知らせ",
+        "notifications": "通知",
+        "unread": "{count} 件の未読"
+      },
+      "tabs": {
+        "overview": "概要",
+        "campaigns": "キャンペーン",
+        "templates": "テンプレート",
+        "announcements": "お知らせ",
+        "notifications": "通知"
+      },
+      "overview": {
+        "recent-campaigns": {
+          "title": "最近のメールキャンペーン",
+          "description": "最新のメールキャンペーンの活動"
+        },
+        "active-announcements": {
+          "title": "有効なお知らせ",
+          "description": "現在のサイトのお知らせ"
+        }
+      },
+      "campaigns": {
+        "loading": "キャンペーンを読み込み中...",
+        "empty": "まだキャンペーンはありません",
+        "create-title": "メールキャンペーンの作成",
+        "create-description": "ユーザーに一括メールを送信",
+        "list-title": "メールキャンペーン",
+        "list-description": "メールキャンペーンを管理",
+        "subject": "件名: {subject}",
+        "recipients": "受信者: {count} 人"
+      },
+      "templates": {
+        "loading": "テンプレートを読み込み中...",
+        "empty": "まだテンプレートはありません",
+        "create-title": "メールテンプレートの作成",
+        "create-description": "再利用可能なメールテンプレートを作成",
+        "list-title": "メールテンプレート",
+        "list-description": "保存されたメールテンプレート",
+        "subject": "件名: {subject}"
+      },
+      "announcements": {
+        "loading": "お知らせを読み込み中...",
+        "no-active": "有効なお知らせはありません",
+        "priority": "優先度: {priority}",
+        "create-title": "お知らせの作成",
+        "create-description": "サイト全体にお知らせを投稿",
+        "list-title": "サイトお知らせ",
+        "list-description": "サイトのお知らせを管理",
+        "active": "有効",
+        "empty": "お知らせはまだありません"
+      },
+      "notifications": {
+        "title": "システム通知",
+        "description": "最近のシステム通知",
+        "loading": "通知を読み込み中...",
+        "read": "既読",
+        "unread": "未読",
+        "empty": "通知はありません"
+      },
+      "fields": {
+        "campaign-name": "キャンペーン名",
+        "campaign-name-placeholder": "月次ニュースレター",
+        "email-subject": "メール件名",
+        "email-subject-placeholder": "月次アップデートが届いています！",
+        "email-content-html": "メールコンテンツ (HTML)",
+        "campaign-content-placeholder": "<h1>こんにちは！</h1><p>ここにメールの内容を入力...</p>",
+        "template-name": "テンプレート名",
+        "template-name-placeholder": "ウェルカムメール",
+        "template-type": "テンプレートタイプ",
+        "template-type-placeholder": "テンプレートタイプを選択",
+        "subject-line": "件名",
+        "template-subject-placeholder": "当プラットフォームへようこそ！",
+        "html-content": "HTMLコンテンツ",
+        "template-content-placeholder": "<h1>ようこそ！</h1><p>ご参加ありがとうございます...</p>",
+        "title": "タイトル",
+        "title-pt": "タイトル (pt-BR)",
+        "type": "タイプ",
+        "priority": "優先度 (0-10)",
+        "content": "コンテンツ",
+        "content-pt": "コンテンツ (pt-BR)",
+        "announcement-title-placeholder": "システムメンテナンスのお知らせ",
+        "announcement-title-pt-placeholder": "ポルトガル語のメンテナンス通知（任意）",
+        "announcement-content-placeholder": "予定されたメンテナンスを実施します...",
+        "announcement-content-pt-placeholder": "ポルトガル語のメンテナンスメッセージ（オプション）"
+      },
+      "actions": {
+        "creating": "作成中...",
+        "create-campaign": "キャンペーンを作成",
+        "send-now": "今すぐ送信",
+        "create-template": "テンプレートを作成",
+        "create-announcement": "アナウンスを作成"
+      },
+      "template-types": {
+        "welcome": "ウェルカム",
+        "newsletter": "ニュースレター",
+        "announcement": "アナウンス",
+        "notification": "通知",
+        "marketing": "マーケティング",
+        "transactional": "トランザクション"
+      },
+      "announcement-types": {
+        "info": "情報",
+        "warning": "警告",
+        "success": "成功",
+        "error": "エラー",
+        "maintenance": "メンテナンス",
+        "feature": "機能",
+        "update": "更新"
+      },
+      "date": {
+        "created": "作成日: {date}"
+      }
+    },
+    "email-marketing-management": {
+      "title": "Eメールマーケティング",
+      "description": "Eメールキャンペーン、オーディエンス、テンプレートを管理",
+      "messages": {
+        "template-created": "テンプレートが正常に作成されました！",
+        "template-create-failed": "テンプレートの作成に失敗しました: {message}",
+        "audience-created": "オーディエンスが正常に作成されました！",
+        "audience-create-failed": "オーディエンスの作成に失敗しました: {message}",
+        "broadcast-created": "ブロードキャストが正常に作成されました！",
+        "broadcast-create-failed": "ブロードキャストの作成に失敗しました: {message}",
+        "users-synced": "{count} 人のユーザーをオーディエンスに同期しました！",
+        "sync-failed": "ユーザーの同期に失敗しました: {message}",
+        "broadcast-sent": "ブロードキャストが正常に送信されました！",
+        "broadcast-send-failed": "ブロードキャストの送信に失敗しました: {message}",
+        "broadcast-updated": "ブロードキャストが正常に更新されました！",
+        "broadcast-update-failed": "ブロードキャストの更新に失敗しました: {message}",
+        "broadcast-deleted": "ブロードキャストが正常に削除されました！",
+        "broadcast-delete-failed": "ブロードキャストの削除に失敗しました: {message}"
+      },
+      "confirm": {
+        "delete-broadcast": "このブロードキャストを削除してもよろしいですか？この操作は元に戻せません。"
+      },
+      "loading": {
+        "title": "Eメールマーケティングデータを読み込み中...",
+        "audiences": "オーディエンスを読み込み中...",
+        "broadcasts": "ブロードキャストを読み込み中...",
+        "templates": "テンプレートを読み込み中...",
+        "analytics": "アナリティクスを読み込み中..."
+      },
+      "tabs": {
+        "overview": "概要",
+        "audiences": "オーディエンス",
+        "broadcasts": "ブロードキャスト",
+        "templates": "テンプレート"
+      },
+      "stats": {
+        "total-audiences": {
+          "title": "オーディエンス総数",
+          "description": "アクティブなオーディエンスセグメント"
+        },
+        "total-broadcasts": {
+          "title": "ブロードキャスト総数",
+          "description": "作成されたメールキャンペーン"
+        },
+        "subscribers": {
+          "title": "購読者",
+          "description": "{rate}% の購読率"
+        },
+        "sent-broadcasts": {
+          "title": "送信済みブロードキャスト",
+          "description": "正常に配信済み"
+        }
+      },
+      "overview": {
+        "recent-activity": "最近のアクティビティ",
+        "no-activity": "最近のアクティビティはありません",
+        "quick-actions": "クイックアクション"
+      },
+      "actions": {
+        "create-new-broadcast": "新規ブロードキャストを作成",
+        "create-new-audience": "新規オーディエンスを作成",
+        "create-new-template": "新規テンプレートを作成",
+        "create-audience": "オーディエンスを作成",
+        "syncing": "同期中...",
+        "sync-users": "ユーザーを同期",
+        "create-broadcast": "ブロードキャストを作成",
+        "show-all-broadcasts": "すべてのブロードキャストを表示",
+        "create-template": "テンプレートを作成",
+        "edit": "編集",
+        "use": "使用",
+        "close": "閉じる",
+        "edit-broadcast": "ブロードキャストを編集",
+        "updating": "更新中...",
+        "update-broadcast": "ブロードキャストを更新"
+      },
+      "audiences": {
+        "title": "オーディエンス",
+        "create-title": "新規オーディエンスを作成",
+        "create-description": "メールキャンペーン用の新しいオーディエンスセグメントを作成",
+        "subscriber-count": "{count} 人の購読者",
+        "option-subscriber-count": "{name} ({count} 人の購読者)",
+        "empty": "オーディエンスがまだありません。最初のオーディエンスを作成して開始しましょう！"
+      },
+      "broadcasts": {
+        "title": "ブロードキャスト",
+        "filter-placeholder": "ステータスでフィルター",
+        "create-title": "新規ブロードキャスト作成",
+        "create-description": "新しいメールブロードキャストキャンペーンを作成",
+        "empty-filtered": "現在のフィルターに一致するブロードキャストはありません。",
+        "empty": "ブロードキャストはまだありません。最初のブロードキャストを作成して開始しましょう！",
+        "empty-hint": "ブロードキャストを作成する前に、まずオーディエンスを作成する必要があります。",
+        "status": {
+          "all": "すべてのブロードキャスト",
+          "draft": "下書き",
+          "sent": "送信済み",
+          "scheduled": "予約済み",
+          "sending": "送信中"
+        }
+      },
+      "templates": {
+        "title": "メールテンプレート",
+        "create-title": "新規テンプレート作成",
+        "create-description": "再利用可能なメールテンプレートを作成",
+        "empty": "テンプレートはまだありません。最初のテンプレートを作成して開始しましょう！"
+      },
+      "fields": {
+        "audience-name": "オーディエンス名",
+        "audience-name-placeholder": "例: ニュースレター購読者",
+        "broadcast-name": "ブロードキャスト名",
+        "broadcast-name-placeholder": "このブロードキャストの内部名",
+        "target-audience": "ターゲットオーディエンス",
+        "select-audience": "オーディエンスを選択",
+        "from-email": "送信元メール",
+        "subject-line": "件名",
+        "email-subject-placeholder": "メールの件名",
+        "email-content-html": "メールコンテンツ（HTML）",
+        "email-html-placeholder": "メールのHTMLコンテンツ",
+        "plain-text-optional": "プレーンテキスト版（オプション）",
+        "plain-text-placeholder": "プレーンテキスト版",
+        "audience": "オーディエンス",
+        "template-name": "テンプレート名",
+        "template-name-placeholder": "例: ウェルカムメール",
+        "name": "名前",
+        "not-available": "N/A",
+        "status": "ステータス",
+        "subject": "件名",
+        "from": "送信元",
+        "html-content": "HTMLコンテンツ",
+        "no-content": "コンテンツなし",
+        "plain-text-content": "プレーンテキストコンテンツ"
+      },
+      "date": {
+        "not-sent": "未送信",
+        "created": "作成日: {date}"
+      },
+      "broadcast-details": {
+        "title": "放送詳細",
+        "description": "放送情報とコンテンツを表示"
+      },
+      "edit-broadcast": {
+        "title": "放送を編集",
+        "description": "放送コンテンツと設定を更新"
+      }
+    }
+  },
+  "blog": {
+    "comments": {
+      "author": "投稿者",
+      "comment-cannot-be-empty": "コメントは空にできません",
+      "comment-posted": "コメントを投稿しました",
+      "comments": "{count, plural, =1 {コメント} other {コメント}}",
+      "confirm-delete-comment": "このコメントを削除しますか？この操作は元に戻せません。",
+      "copy-link": "リンクをコピー",
+      "delete-a-comment": "コメントを削除",
+      "deleted-a-comment": "コメントを削除しました",
+      "dislike": "低評価",
+      "failed-to-load-comments": "コメントの読み込みに失敗しました。ページを更新してください。",
+      "failed-to-load-replies": "返信の読み込みに失敗しました。ページを更新してください。",
+      "like": "高評価",
+      "link-copied": "リンクをクリップボードにコピーしました",
+      "need-logged-in-to-rate": "コメントを評価するにはログインが必要です",
+      "newest": "新着順",
+      "no-comments": "コメントはありません",
+      "oldest": "古い順",
+      "open-menu": "メニューを開く",
+      "placeholder": "コメントを残す",
+      "replies": "{count, plural, =1 {返信} other {返信}}",
+      "reply": "返信",
+      "reply-cannot-be-empty": "返信は空にできません",
+      "reply-to-comment": "コメントに返信",
+      "send-comment": "コメントを送信",
+      "sort-by": "並び替え",
+      "this-comment-has-been-deleted": "[このコメントは削除されました]",
+      "toggle-bold": "太字に切り替え",
+      "toggle-italic": "斜体に切り替え",
+      "toggle-strikethrough": "取り消し線に切り替え"
+    },
+    "description": "テクノロジー、サーバー、クラウド、そして日常生活についての考えを共有する個人的なブログです。2018年に旅を始め、それ以来探求と学習を続けています。データベース、ランナー、またはテクノロジーや生活についての考えを読みたい方はぜひご覧ください！",
+    "footer": {
+      "edit-on-github": "GitHubで編集",
+      "last-updated": "最終更新日: {date}"
+    },
+    "header": {
+      "comments": "コメント",
+      "published-on": "公開日:",
+      "views": "閲覧数",
+      "written-by": "執筆者:"
+    },
+    "like": "高評価",
+    "like-limit-reached": "1つの投稿につき3回まで高評価できます",
+    "like-this-post": "この投稿に高評価",
+    "on-this-page": "このページ内",
+    "share": {
+      "description": "{site}のブログで「{title}」を読む",
+      "hashtags": "ブログ,テクノロジー,開発"
+    },
+    "title": "ブログ"
+  },
+  "command-menu": {
+    "actions": {
+      "copy-link": "リンクをコピー",
+      "settings": "設定",
+      "source-code": "ソースコード"
+    },
+    "groups": {
+      "account": "アカウント",
+      "general": "一般",
+      "social": "ソーシャル"
+    },
+    "no-results": "結果が見つかりませんでした。",
+    "open-menu": "コマンドメニューを開く",
+    "placeholder": "コマンドまたは検索内容を入力",
+    "trigger": {
+      "open-command": "コマンドを開く",
+      "open-link": "リンクを開く"
+    }
+  },
+  "account": {
+    "actions": {
+      "my-profile": "マイプロフィール",
+      "edit-profile": "プロフィールを編集"
+    }
+  },
+  "settings": {
+    "title": "設定",
+    "description": "アカウントとプロフィールを管理",
+    "sections": {
+      "profile": "プロフィール",
+      "profile-description": "他のユーザーに表示されるプロフィールを更新",
+      "security": "セキュリティ",
+      "security-description": "メールアドレスとパスワードを更新"
+    },
+    "fields": {
+      "avatar-url": "アバターURL",
+      "avatar-upload": "アバターをアップロード",
+      "username": "ユーザー名",
+      "public-profile": "公開プロフィール",
+      "public": "公開",
+      "private": "非公開",
+      "name-color": "名前の色",
+      "name-effect": "名前のエフェクト",
+      "bio": "自己紹介",
+      "bio-placeholder": "自己紹介を入力",
+      "new-email": "新しいメールアドレス",
+      "avatar-url-placeholder": "https://...",
+      "username-placeholder": "ユーザー名",
+      "name-color-placeholder": "#ff0000",
+      "new-email-placeholder": "you@example.com",
+      "current-password": "現在のパスワード",
+      "new-password": "新しいパスワード",
+      "confirm-new-password": "新しいパスワードを確認"
+    },
+    "effects": {
+      "none": "なし",
+      "rays": "光線",
+      "glow": "輝き"
+    },
+    "actions": {
+      "save-profile": "プロフィールを保存",
+      "upload-avatar": "アップロード",
+      "change-email": "メールアドレスを変更",
+      "change-password": "パスワードを変更"
+    },
+    "messages": {
+      "profile-updated": "プロフィールを更新しました",
+      "avatar-updated": "アバターを更新しました",
+      "avatar-file-required": "アップロードする画像ファイルを選択してください",
+      "avatar-invalid-type": "PNG、JPG、WebP形式の画像のみサポートされています",
+      "avatar-too-large": "画像は5MB以下である必要があります",
+      "email-required": "メールアドレスは必須です",
+      "email-verification-sent": "確認メールを送信しました",
+      "current-password-required": "現在のパスワードが必要です",
+      "password-too-short": "パスワードは8文字以上である必要があります",
+      "passwords-do-not-match": "パスワードが一致しません",
+      "password-updated": "パスワードを更新しました",
+      "anonymous-avatar-restriction": "匿名ユーザーはメールアドレスを更新するまでアバターを変更できません。"
+    }
+  },
+  "profile": {
+    "title": "{name}",
+    "description": "公開プロフィール",
+    "not-found": {
+      "title": "プロフィールが見つかりません",
+      "description": "このプロフィールは存在しないか、非公開です"
+    },
+    "comments": {
+      "title": "コメント",
+      "description": "最近の活動",
+      "empty": "コメントはまだありません",
+      "error": "コメントの読み込みに失敗しました。もう一度お試しください。",
+      "end": "最新のコメントまで表示しました",
+      "load-more": "さらに読み込む",
+      "type": {
+        "comment": "コメント",
+        "reply": "返信"
+      }
+    }
+  },
+  "common": {
+    "cancel": "キャンセル",
+    "delete": "削除",
+    "error": "エラー",
+    "likes": "{count, plural, =1 {# イイネ} other {# イイネ}}",
+    "sign-in": "ログイン",
+    "sign-in-error": "ログインに失敗しました。もう一度お試しください。",
+    "sign-in-success": "ログインに成功しました！",
+    "sign-out": "ログアウト",
+    "views": "{count, plural, =1 {# ビュー} other {# ビュー}}",
+    "sign-up": "登録",
+    "sign-up-error": "登録に失敗しました。もう一度お試しください。",
+    "unknown-error": "不明なエラー"
+  },
+  "component": {
+    "now-project": {
+      "website": "ウェブサイト",
+      "release": "リリース",
+      "updated": "更新日"
+    },
+    "recommendations": {
+      "title": "おすすめ",
+      "type": {
+        "post": "投稿",
+        "project": "プロジェクト",
+        "snippet": "スニペット"
+      },
+      "reason": {
+        "similar-content": "類似のコンテンツ",
+        "same-category": "同じカテゴリ: {category}",
+        "similar-tags": "類似のタグ: {tags}"
+      }
+    },
+    "social-share": {
+      "button": {
+        "label": "共有",
+        "aria": "コンテンツを共有"
+      },
+      "native": "共有...",
+      "platform": {
+        "twitter": "Twitter",
+        "facebook": "Facebook",
+        "linkedin": "LinkedIn",
+        "reddit": "Reddit",
+        "whatsapp": "WhatsApp"
+      },
+      "copy": {
+        "label": "リンクをコピー",
+        "copied": "コピーしました！"
+      },
+      "toast": {
+        "copied": "リンクをクリップボードにコピーしました！",
+        "copy-failed": "リンクのコピーに失敗しました"
+      }
+    },
+    "uses-page": {
+      "badge": {
+        "updated-recently": "最近更新"
+      },
+      "affiliate": {
+        "title": "アフィリエイト開示",
+        "description": "このページの一部のリンクはアフィリエイトリンクです。これらのリンク経由で購入いただくと、追加料金なしで少額の手数料を受け取る場合があります。私は自分が実際に使用し、信頼できる製品のみをおすすめしています。"
+      },
+      "table": {
+        "headers": {
+          "tool": "ツール",
+          "pros": "メリット",
+          "cons": "デメリット",
+          "price": "価格",
+          "rating": "評価"
+        },
+        "rating-out-of": "({rating}/5)"
+      },
+      "tools": {
+        "common": {
+          "price": {
+            "free": "無料",
+            "free-paid": "無料/有料"
+          }
+        },
+        "docker": {
+          "pros": {
+            "0": "簡単なコンテナ化",
+            "1": "開発に最適",
+            "2": "豊富なエコシステム"
+          },
+          "cons": {
+            "0": "リソースを消費しやすい",
+            "1": "学習曲線"
+          }
+        },
+        "kubernetes": {
+          "pros": {
+            "0": "優れたオーケストレーション",
+            "1": "自動スケーリング",
+            "2": "本番環境対応"
+          },
+          "cons": {
+            "0": "複雑なセットアップ",
+            "1": "学習曲線が急"
+          }
+        },
+        "terraform": {
+          "pros": {
+            "0": "インフラのコード化",
+            "1": "マルチクラウド対応",
+            "2": "優れたプランニング"
+          },
+          "cons": {
+            "0": "ステート管理",
+            "1": "複雑になる可能性あり"
+          }
+        }
+      },
+      "sections": {
+        "laptop": {
+          "title": "ノートパソコン",
+          "why-title": "このノートパソコンを選んだ理由:",
+          "reasons": {
+            "0": "パフォーマンスとポータビリティの完璧なバランス",
+            "1": "開発やたまのゲームに最適",
+            "2": "コストパフォーマンスに優れている"
+          }
+        },
+        "infra-devops": {
+          "title": "インフラ & DevOps",
+          "comparison-title": "インフラツール比較"
+        }
+      }
+    },
+    "filtered-posts": {
+      "no-posts-found": "記事が見つかりません",
+      "placeholder": "記事を検索",
+      "rss": "RSSフィード",
+      "featured": "おすすめ記事",
+      "toggle-filters": {
+        "show": "フィルターを表示",
+        "hide": "フィルターを非表示"
+      },
+      "sort": {
+        "label": "並び替え:",
+        "options": {
+          "date-desc": "新しい順",
+          "date-asc": "古い順",
+          "title-asc": "A-Z",
+          "title-desc": "Z-A",
+          "reading-time": "読了時間"
+        }
+      },
+      "filters": {
+        "category": {
+          "label": "カテゴリ",
+          "all": "すべてのカテゴリ"
+        },
+        "tag": {
+          "label": "タグ",
+          "all": "すべてのタグ"
+        }
+      },
+      "searching": "検索中...",
+      "results": {
+        "count": "{count, plural, =0 {0件} =1 {1件} other {#件}}",
+        "for": " 「{search}」の検索結果"
+      },
+      "showing": {
+        "count": "{count, plural, =0 {0件の記事} =1 {1件の記事} other {#件の記事}} を表示中"
+      },
+      "pagination": {
+        "page-of": "（{current}/{total}ページ目）",
+        "previous": "前へ",
+        "next": "次へ"
+      },
+      "clear-all": "すべてのフィルターをクリア",
+      "empty": {
+        "description": "検索語句やフィルターを調整するか、以下のすべての記事を閲覧してください。",
+        "show-all": "すべての記事を表示"
+      },
+      "posts": {
+        "all": "すべての記事"
+      }
+    },
+    "go-to-homepage": "ホームページへ移動",
+    "announcement-banner": {
+      "dismiss": "お知らせを閉じる",
+      "high-priority": "高優先度"
+    },
+    "announcement-widget": {
+      "title": "お知らせ",
+      "description": "最新の更新情報と重要なお知らせ",
+      "loading": "お知らせを読み込み中...",
+      "empty": "現在、お知らせはありません。",
+      "dismiss": "閉じる",
+      "high-priority": "高優先度"
+    },
+    "announcement-toast": {
+      "dont-show-again": "再表示しない",
+      "dismiss": "閉じる",
+      "close": "閉じる"
+    },
+    "notifications": {
+      "aria": "通知を開く",
+      "title": "通知",
+      "sign-in": "通知を表示するにはサインインしてください。",
+      "empty": "通知はありません。",
+      "loading": "読み込み中...",
+      "refreshing": "更新中...",
+      "unread": "未読",
+      "mark-all-read": "すべて既読にする",
+      "view-all": "すべて表示"
+    },
+    "breadcrumbs": {
+      "aria-label": "パンくずリスト"
+    },
+    "offline-indicator": {
+      "toast": {
+        "restored": "接続が復元されました！",
+        "offline": "オフラインです。一部の機能が利用できない場合があります。"
+      },
+      "status": {
+        "online": "オンラインに戻りました",
+        "offline": "インターネットに接続されていません"
+      }
+    }
+  },
+  "site-search": {
+    "placeholder": "サイト内を検索...",
+    "recent-searches": "最近の検索",
+    "no-results": "「{0}」の検索結果はありません"
+  },
+  "dialog": {
+    "sign-in": {
+      "continue-with": "{provider} で続行",
+      "or": "または",
+      "description": "yuricunha.com にアクセスするには",
+      "here": "ここからサインイン",
+      "anonymous": "ゲスト",
+      "provider": {
+        "github": "GitHub",
+        "google": "Google"
+      },
+      "email-placeholder": "メールアドレス",
+      "password-placeholder": "パスワード",
+      "forgot-password": "パスワードを忘れた場合",
+      "email-submit": "メールアドレスで続行",
+      "last-used": "最後に使用したアカウント"
+    },
+    "sign-up": {
+      "description": "yuricunha.com でアカウントを作成するには",
+      "here": "ここからサインアップ",
+      "name-placeholder": "名前",
+      "email-submit": "サインアップで続行"
+    },
+    "forgot-password": {
+      "title": "パスワードをお忘れですか？",
+      "description": "ご安心ください。パスワードリセットの手順をお送りします。",
+      "email": {
+        "label": "メールアドレス",
+        "placeholder": "メールアドレスを入力"
+      },
+      "submit": {
+        "pending": "送信中...",
+        "default": "リセットリンクを送信"
+      },
+      "back": "サインインに戻る",
+      "errors": {
+        "send-failed": "リセットメールの送信に失敗しました",
+        "no-email": "メールアドレスを入力してください"
+      },
+      "success": {
+        "title": "メールを確認してください",
+        "sent": "パスワードリセットリンクを {0} に送信しました",
+        "instructions": "メールボックスを確認し、手順に従ってください。",
+        "tip": "メールが届かない場合は、スパムフォルダを確認するか、もう一度お試しください。"
+      }
+    },
+    "already-have-account": "すでにアカウントをお持ちですか？",
+    "dont-have-account": "アカウントをお持ちでないですか？"
+  },
+  "error": {
+    "something-went-wrong": "エラーが発生しました！",
+    "try-again": "もう一度試す",
+    "unexpected-description": "予期しないエラーが発生しました。ページを更新するか、問題が解決しない場合はサポートにお問い合わせください。",
+    "refresh-page": "ページを更新",
+    "details": "エラーの詳細"
+  },
+  "offline": {
+    "metadata": {
+      "title": "オフライン - Yuri Cunha",
+      "description": "現在オフラインです。インターネット接続を確認してください。"
+    },
+    "title": "オフラインです",
+    "description": "インターネット接続が切れているようです。オンラインに戻るまで一部の機能が利用できない場合があります。",
+    "try-again": "もう一度試す",
+    "go-home": "ホームに戻る",
+    "available": {
+      "title": "オフライン時でも次のことができます：",
+      "cached-pages": "キャッシュされたページを閲覧",
+      "loaded-content": "以前に読み込んだコンテンツを読む",
+      "search": "検索機能を使用"
+    }
+  },
+  "reset-password": {
+    "loading": "読み込み中...",
+    "messages": {
+      "success": "パスワードの再設定が完了しました！新しいパスワードでサインインできます。",
+      "failed": "パスワードの再設定に失敗しました",
+      "invalid-token": "再設定トークンが無効または不足しています",
+      "passwords-do-not-match": "パスワードが一致しません",
+      "password-too-short": "パスワードは8文字以上である必要があります"
+    },
+    "success": {
+      "title": "パスワードが更新されました",
+      "description": "パスワードが正常に再設定されました。"
+    },
+    "invalid": {
+      "title": "無効な再設定リンク",
+      "description": "このパスワード再設定リンクは無効または期限切れです。"
+    },
+    "actions": {
+      "sign-in": "サインイン",
+      "back-home": "ホームに戻る"
+    },
+    "form": {
+      "title": "パスワードを再設定",
+      "description": "新しいパスワードを入力してください。",
+      "new-password": {
+        "label": "新しいパスワード",
+        "placeholder": "新しいパスワードを入力"
+      },
+      "confirm-password": {
+        "label": "新しいパスワードを確認",
+        "placeholder": "新しいパスワードを確認入力"
+      },
+      "submit": {
+        "pending": "パスワードを再設定中...",
+        "default": "パスワードを再設定"
+      }
+    }
+  },
+  "guestbook": {
+    "create-message-successfully": "メッセージが正常に作成されました",
+    "delete-dialog": {
+      "description": "このコメントを削除しますか？この操作は元に戻せません。",
+      "title": "コメントを削除"
+    },
+    "delete-message-successfully": "メッセージが正常に削除されました",
+    "description": "ゲストブックにサインして、あなたのアイデアを共有してください。ここには何でも書いてOKです！",
+    "failed-to-load-messages": "メッセージの読み込みに失敗しました。ページを更新してください。",
+    "message-cannot-be-empty": "メッセージは空にできません。私のミス？それともあなたのミス？",
+    "no-messages": "メッセージはありません。最初のメッセージを残してください！",
+    "empty-cta": "最初のメッセージを残してください！",
+    "pinned": {
+      "description": "お時間がありましたら、アカウントでログインしてコメントを残してください。よろしくお願いします！",
+      "greeting": "やあ！ 👋"
+    },
+    "placeholder": "メッセージを残す",
+    "signin": {
+      "description": "メッセージを残すには"
+    },
+    "submit": "送信",
+    "title": "ゲストブック"
+  },
+  "homepage": {
+    "about-me": {
+      "coding-hours": "コーディング時間",
+      "coding-hours-value": "{count, plural, =1 {# 時間} other {# 時間}}",
+      "connect": "接続",
+      "fav-framework": "お気に入りのサーバー",
+      "location": "サンパウロ",
+      "more": "私についてもっと知る",
+      "stacks": "技術スタック",
+      "title": "私について"
+    },
+    "get-in-touch": {
+      "description": "お気軽にご連絡ください！",
+      "label": "連絡先",
+      "availability": "対応可能時間",
+      "image-alt": "私（かもしれないし、違うかもしれない）",
+      "title": "話が必要ですか？",
+      "code": {
+        "status": "status = \"open\"",
+        "email": "email = \"me@yuricunha.com\"",
+        "timezone": "timezone = \"UTC/GMT -3\""
+      }
+    },
+    "hero": {
+      "title-top": "データベーススペシャリストのユーリです",
+      "title-middle-left": "最適化する",
+      "title-middle-right": "データソリューション",
+      "amazing": "アジャイルな",
+      "attractive": "高速な",
+      "fantastic": "堅牢な",
+      "stunning": "セキュアな",
+      "title-bottom": "現代的なインフラ向けに",
+      "location-timezone": "ブラジル • UTC/GMT -3",
+      "view-projects": "プロジェクトを見る",
+      "read-blog": "ブログを読む",
+      "code": {
+        "database-specialist": "database_specialist = true",
+        "region": "region = \"America/Sao_Paulo\"",
+        "focus": "focus = \"信頼性の高いデータシステム\""
+      }
+    },
+    "latest-articles": {
+      "card": "記事",
+      "more": "すべての記事を見る",
+      "title": "最新記事"
+    },
+    "selectedProjects": {
+      "card": "プロジェクト",
+      "more": "すべてのプロジェクトを見る",
+      "title": "選択されたプロジェクト"
+    },
+    "recently-updated": {
+      "title": "最近更新されたコンテンツ",
+      "description": "最新のコンテンツ更新と追加",
+      "type": {
+        "post": "投稿",
+        "project": "プロジェクト",
+        "page": "ページ"
+      },
+      "updated-on": "{date} に更新",
+      "empty": "最近の更新はありません"
+    },
+    "newsletter": {
+      "title": "最新情報を受け取る",
+      "description": "新しいブログ投稿やプロジェクトの更新をお知らせします",
+      "placeholder": "メールアドレスを入力",
+      "cta": "購読する",
+      "disclaimer": "スパムは送信しません。いつでも解除できます。プライバシーポリシーが適用されます。",
+      "success-title": "登録ありがとうございます！",
+      "success-description": "新しい投稿やプロジェクトに関する更新情報をお届けします。",
+      "error-default": "登録に失敗しました",
+      "success-compact": "登録完了！"
+    }
+  },
+  "hook": {
+    "copy-to-clipboard": {
+      "copied": "クリップボードにコピーしました！",
+      "error": "クリップボードにコピーできませんでした。もう一度お試しください！"
+    }
+  },
+  "snippets": {
+    "title": "スニペット",
+    "description": "小さな実用的なメモやコードレシピです。",
+    "empty": "スニペットはありません。",
+    "content-label": "スニペット",
+    "on-this-page": "このページ内",
+    "min-read": "{minutes} 分で読めます"
+  },
+  "layout": {
+    "navigation": "ナビゲーション",
+    "home": "ホーム",
+    "blog": "ブログ",
+    "snippets": "スニペット",
+    "projects": "プロジェクト",
+    "about": "について",
+    "now": "現在",
+    "guestbook": "ゲストブック",
+    "uses": "ツール",
+    "music": "音楽",
+    "more": "その他",
+    "admin": "管理",
+    "contact": "連絡先",
+    "sitemap": "サイトマップ",
+    "skip-to-main-content": "メインコンテンツへスキップ",
+    "toggle-menu": "メニューの切り替え",
+    "change-language": "言語を変更",
+    "links": "リンク",
+    "github": "GitHub",
+    "star": "スター",
+    "now-playing": {
+      "error": "Last.fm データの取得に失敗しました",
+      "loading": "読み込み中...",
+      "not-listening": "再生中ではありません — Last.fm"
+    }
+  },
+  "mdx": {
+    "link-to-section": "セクションへのリンク"
+  },
+  "metadata": {
+    "site-description": "シニアデータベース管理者",
+    "site-title": "Yuri Cunha",
+    "site-short-name": "Yuri"
+  },
+  "og": {
+    "blog-post": "ブログ投稿",
+    "read-article": "yuricunha.com でこの記事を読む",
+    "summary-fallback": "yuricunha.com でこの記事を読む"
+  },
+  "not-found": "このページはまだありません！",
+  "notFound": {
+    "badge": "ページが見つかりません",
+    "subtitle": "必要な情報を検索するか、以下のセクションからお選びください。",
+    "viewAll": "すべて表示",
+    "recentPosts": "最近の投稿",
+    "recentPostsDescription": "ブログからの最新記事",
+    "recentSnippets": "最近のスニペット",
+    "recentSnippetsDescription": "短いメモやコードレシピ",
+    "recentProjects": "最近のプロジェクト",
+    "recentProjectsDescription": "私が作成したもの"
+  },
+  "sitemap": {
+    "title": "サイトマップ",
+    "description": "サイト内のすべてのコンテンツとナビゲーションの完全な概要",
+    "main-pages": {
+      "title": "メインページ",
+      "description": "サイトの主要なナビゲーションと機能",
+      "items": {
+        "home": {
+          "description": "プロジェクトや記事の概要を掲載したウェルカムページ"
+        },
+        "blog": {
+          "description": "開発に関する技術記事や考え"
+        },
+        "snippets": {
+          "description": "短い実用的なメモやコードレシピ"
+        },
+        "projects": {
+          "description": "開発プロジェクトやGitHubリポジトリのポートフォリオ"
+        },
+        "guestbook": {
+          "description": "メッセージを残せる公開ゲストブック"
+        },
+        "uses": {
+          "description": "開発に使用しているツール、機器、ソフトウェア"
+        },
+        "now": {
+          "description": "現在取り組んでいることや考えていること"
+        },
+        "music": {
+          "description": "音楽の趣向、リスニング活動、Last.fm の統計情報"
+        },
+        "contact": {
+          "description": "私に連絡を取る方法"
+        },
+        "about": {
+          "title": "について",
+          "description": "私や私の経歴について詳しく知る"
+        },
+        "sitemap": {
+          "description": "ウェブサイト内のすべてのページの完全な概要"
+        }
+      }
+    },
+    "blog-posts": {
+      "title": "ブログ記事",
+      "description": "公開された記事と技術コンテンツ"
+    },
+    "projects": {
+      "title": "プロジェクト",
+      "description": "開発プロジェクトとオープンソースの貢献"
+    },
+    "snippets": {
+      "title": "スニペット",
+      "description": "小さな実用的なメモとコードレシピ"
+    },
+    "labels": {
+      "live-demo": "ライブデモ",
+      "github": "GitHub"
+    }
+  },
+  "projects": {
+    "description": "私のプロジェクト一覧。すべては 💙 を込めて作られています（このページはまだ開発中です）。",
+    "title": "プロジェクト",
+    "content-label": "プロジェクト",
+    "visit-website": "ウェブサイトを訪問",
+    "all-repos": "公開 GitHub リポジトリ",
+    "featured": "注目のプロジェクト",
+    "all": "すべてのプロジェクト",
+    "search": {
+      "placeholder": "プロジェクトを検索..."
+    },
+    "filters": {
+      "show": "フィルターを表示",
+      "hide": "フィルターを非表示",
+      "category": "カテゴリ",
+      "all-categories": "すべてのカテゴリ",
+      "status": "ステータス",
+      "all-statuses": "すべてのステータス",
+      "technology": "テクノロジー",
+      "all-technologies": "すべてのテクノロジー",
+      "clear": "フィルターをクリア"
+    },
+    "results": {
+      "found": "{count, plural, =1 {# 個のプロジェクトが見つかりました} other {# 個のプロジェクトが見つかりました}}",
+      "showing": "{count, plural, =1 {# 個のプロジェクトを表示} other {# 個のプロジェクトを表示}}"
+    },
+    "empty": {
+      "title": "プロジェクトが見つかりません",
+      "description": "フィルターや検索条件を調整してみてください。",
+      "show-all": "すべてのプロジェクトを表示"
+    },
+    "card": {
+      "open": "{name} を開く",
+      "open-aria": "{name} プロジェクトページを開く",
+      "featured": "注目",
+      "github": {
+        "title": "GitHub でソースを表示",
+        "aria": "GitHub でソースを表示（新しいタブで開きます）"
+      },
+      "live": {
+        "title": "ライブデモを開く",
+        "aria": "ライブデモを開く（新しいタブで開きます）"
+      },
+      "started-label": "開始日"
+    },
+    "status": {
+      "active": "アクティブ",
+      "archived": "アーカイブ済み",
+      "beta": "ベータ",
+      "completed": "完了"
+    },
+    "repos": {
+      "empty": "リポジトリが見つかりません。"
+    }
+  },
+  "uses": {
+    "description": "現在、ゲーム、プログラミング、日常で使用している機器です。",
+    "title": "使用機器"
+  },
+  "spotify": {
+    "title": "音楽",
+    "description": "現在聴いている音楽 — Last.fm プロフィールからのトップトラックとアーティストです。",
+    "sections": {
+      "listening-data": {
+        "label": "リスニングデータ",
+        "title": "繰り返し聴くもの、変化するもの、そして今再生中のもの。"
+      }
+    },
+    "now-listening": {
+      "title": "現在再生中",
+      "subtitle": "Last.fm で現在再生中",
+      "not-playing": "現在何も再生していません",
+      "by": "by"
+    },
+    "top-artists": {
+      "title": "トップアーティスト",
+      "subtitle": "過去6ヶ月間で最も聴いたアーティスト",
+      "no-data": "アーティストデータがありません",
+      "tooltips": {
+        "shuffle-on": "元の順序を表示",
+        "shuffle-off": "アーティストをシャッフル",
+        "view-list": "リスト表示に切り替え",
+        "view-grid": "グリッド表示に切り替え"
+      }
+    },
+    "top-songs": {
+      "title": "トップソング",
+      "subtitle": "過去6ヶ月間で最も再生したトラック",
+      "no-data": "ソングデータがありません"
+    },
+    "recently-played": {
+      "title": "最近再生した曲",
+      "subtitle": "最近聴いたトラック",
+      "no-data": "最近再生したトラックがありません"
+    },
+    "heatmap": {
+      "title": "リスニングヒートマップ",
+      "subtitle": "日別のリスニング活動（最近の再生）",
+      "days": {
+        "sun": "日",
+        "mon": "月",
+        "tue": "火",
+        "wed": "水",
+        "thu": "木",
+        "fri": "金",
+        "sat": "土"
+      },
+      "legend": {
+        "low": "低",
+        "high": "高"
+      }
+    },
+    "import": {
+      "title": "ローカル履歴をインポート",
+      "subtitle": "リスニング履歴のCSVをアップロード",
+      "choose": "ファイルを選択",
+      "plays": "再生回数",
+      "artists": "アーティスト",
+      "duration": "時間",
+      "invalid-file": "無効なファイル: JSON配列が期待されます",
+      "parse-error": "解析エラー"
+    },
+    "stats": {
+      "title": "音楽統計",
+      "subtitle": "あなたのリスニング習慣と好み",
+      "labels": {
+        "total-hours": "総時間",
+        "diversity": "多様性",
+        "avg-popularity": "平均人気",
+        "top-artists": "トップアーティスト",
+        "top-genres": "トップジャンル"
+      }
+    },
+    "loading": "音楽データを読み込み中...",
+    "error": "音楽データの読み込みに失敗しました。もう一度お試しください。",
+    "no-data": "データがありません",
+    "refresh": "更新",
+    "export": {
+      "csv": "CSVをエクスポート",
+      "json": "JSONをエクスポート"
+    },
+    "range": {
+      "short": "過去4週間",
+      "medium": "過去6ヶ月",
+      "long": "全期間"
+    },
+    "album": "アルバム",
+    "artist": "アーティスト",
+    "artists": "アーティスト",
+    "song": "曲",
+    "tracks": "トラック",
+    "listeners": "リスナー",
+    "followers": "フォロワー",
+    "timeline": {
+      "title": "音楽タイムライン",
+      "subtitle": "あなたの聴取履歴の可視化",
+      "empty": "最近の聴取履歴はありません",
+      "periods": {
+        "last-hour": "過去1時間",
+        "today": "今日",
+        "yesterday": "昨日",
+        "this-week": "今週",
+        "earlier": "以前"
+      },
+      "more-tracks": "さらに{count}トラック",
+      "count": "({count} {label})",
+      "labels": {
+        "total-tracks": "合計トラック数",
+        "unique-artists": "ユニークアーティスト数",
+        "track": "トラック",
+        "tracks": "トラック"
+      }
+    },
+    "social": {
+      "title": "音楽をシェア",
+      "subtitle": "お気に入りのトラックを友達とシェアしよう",
+      "now-playing": "現在再生中",
+      "top-tracks": "シェアするおすすめトラック",
+      "share-text": "🎵 現在「{name}」by {artist} を聴いています — 私の音楽プロフィールからシェアしました！",
+      "buttons": {
+        "twitter": "Twitterでシェア",
+        "facebook": "Facebookでシェア",
+        "copy": "リンクをコピー",
+        "open": "Last.fmで開く"
+      },
+      "profile": {
+        "title": "音楽プロフィールをシェア",
+        "share-title": "🎵 私の音楽の好みと現在聴いている曲をチェックしてみて！",
+        "share-description": "私の音楽の好みと現在の聴取活動を発見"
+      }
+    },
+    "time-ago": {
+      "just-now": "たった今",
+      "minutes": "{count}分前",
+      "hours": "{count}時間前",
+      "days": "{count}日前"
+    }
+  },
+  "mascot": {
+    "ariaLabel": "ユエ - バーチャルアシスタント",
+    "close": "閉じる",
+    "hide": "非表示",
+    "hideForNow": "今は非表示",
+    "speechBubble": "ユエのメッセージ",
+    "settings": {
+      "title": "ユエの設定",
+      "close": "設定を閉じる",
+      "open": "設定を開く",
+      "animations": "アニメーション",
+      "speechBubbles": "吹き出し",
+      "soundEffects": "効果音",
+      "messageDuration": "メッセージ表示時間",
+      "hideUntilRestored": "復元まで非表示",
+      "bubblePosition": "吹き出しの位置",
+      "positions": {
+        "bottomRight": "右下",
+        "bottomLeft": "左下",
+        "topRight": "右上",
+        "topLeft": "左上"
+      }
+    },
+    "easterEgg": {
+      "retroMode": "レトロモードがアクティベートされました！ 🎮"
+    },
+    "notifications": {
+      "newPost": "こんにちは！新しい記事を公開しました：{title}。読んでみませんか？ 📝"
+    },
+    "actions": {
+      "navigating": "わかりました！{target} に移動します… 🚀"
+    },
+    "interactions": {
+      "tickle": "やっ！くすぐったい！あはは！ 😄",
+      "dizzy": "うお…回りすぎたかも… 😵‍💫",
+      "selectionExplain": "これを説明しましょうか？",
+      "explainButton": "説明",
+      "explainPrompt": "選択したこのテキストの断片を説明してもらえますか？\n\n\"{text}\""
+    },
+    "restore": "ユエを戻す",
+    "idle": {
+      "tip1": "💡 知ってましたか？Shift+Yを押すと、隠れているときでも私を呼び出せます！",
+      "tip2": "🎮 ミニゲームに挑戦！私の吹き出し内のゲームパッドアイコンをクリックしてね。",
+      "tip3": "⚙️ 設定パネルで私の動作をカスタマイズできます。",
+      "tip4": "🎯 お手伝いします！質問があれば何でも聞いてね、またはサイトを探索してみてください。",
+      "tip5": "🌟 バグを見つけたら教えてね！一緒に報告しよう！"
+    },
+    "menu": {
+      "open": "メニューを開く",
+      "reportBug": "バグを報告 / お問い合わせ",
+      "viewProjects": "プロジェクトを表示",
+      "aiChat": "AIチャット",
+      "miniGame": "ミニゲーム",
+      "settings": "設定"
+    },
+    "contact": {
+      "title": "私の作成者、Yuriに連絡",
+      "close": "閉じる",
+      "description": "バグを見つけたり、連絡を取りたい場合は、作成者のメールアドレスです：",
+      "copy": "メールアドレスをコピー",
+      "copySuccess": "メールアドレスをクリップボードにコピーしました！",
+      "copyError": "メールアドレスのコピーに失敗しました。もう一度お試しください。"
+    },
+    "aiChat": {
+      "title": "ユエとチャット",
+      "clear": "クリア",
+      "close": "閉じる",
+      "conversations": "会話",
+      "provider": "プロバイダー",
+      "newChat": "新しいチャット",
+      "newChatTitle": "新しいチャット",
+      "more": "その他",
+      "rename": "名前を変更",
+      "renamePrompt": "チャットの名前を変更",
+      "deleteChat": "チャットを削除",
+      "deleteConfirm": "このチャットを削除しますか？",
+      "share": "共有",
+      "citations": {
+        "title": "ソース",
+        "actions": {
+          "open": "開く",
+          "copyLink": "リンクをコピー",
+          "moreLikeThis": "これと似たもの"
+        },
+        "linkCopied": "リンクをクリップボードにコピーしました",
+        "linkCopyFailed": "リンクのコピーに失敗しました",
+        "moreLikeThisPrompt": "「{title}」と同じような{type}をさらにおすすめします。リンクを含めてください。",
+        "types": {
+          "post": "投稿",
+          "project": "プロジェクト",
+          "page": "ページ",
+          "snippet": "スニペット"
+        }
+      },
+      "shareCopied": "共有リンクをクリップボードにコピーしました",
+      "shareCopyFailed": "共有リンクのコピーに失敗しました",
+      "importedTitle": "インポートされたチャット",
+      "imported": "チャットをインポートしました",
+      "importFailed": "チャットのインポートに失敗しました",
+      "copyMessage": "メッセージをコピー",
+      "messageCopied": "メッセージをクリップボードにコピーしました",
+      "messageCopyFailed": "メッセージのコピーに失敗しました",
+      "welcomeMessage": "こんにちは！私はユエ、あなたのAIアシスタントです！🤖 ウェブサイトについて、テクノロジーの話題、または何でも質問してくださいね！",
+      "errorMessage": "すみません、今ちょっと問題が起きています。しばらくしてからもう一度お試しください！😅",
+      "thinking": "ユエは考えています...",
+      "placeholder": "何でも聞いてね...",
+      "connectionError": "接続に問題が発生しました。もう一度お試しください。",
+      "footer": "由理によるYue AI",
+      "providers": {
+        "auto": "自動",
+        "hf": "Yue（中）",
+        "hf_local": "Yue（低）",
+        "gemini": "Gemini",
+        "groq": "Yue（高）",
+        "ollama": "Ollama",
+        "mistral": "Yue"
+      },
+      "feedback": {
+        "like": "いいね",
+        "dislike": "よくない",
+        "commentPlaceholder": "何が問題だったか教えてください（任意）",
+        "send": "送信",
+        "cancel": "キャンセル",
+        "sent": "フィードバックありがとうございます！",
+        "error": "フィードバックの送信に失敗しました"
+      },
+      "modes": {
+        "chat": "チャット",
+        "imageGen": "生成",
+        "imageAnalyze": "解析",
+        "speech": "音声"
+      },
+      "descriptions": {
+        "chat": "AIとのテキスト会話",
+        "imageGen": "テキストから画像を生成",
+        "imageAnalyze": "画像を解析・説明",
+        "speech": "テキストを音声に変換"
+      },
+      "placeholders": {
+        "chat": "メッセージを入力...",
+        "imageGen": "生成したい画像を説明...",
+        "imageAnalyze": "アップロードした画像について質問...",
+        "speech": "音声に変換するテキストを入力..."
+      },
+      "titles": {
+        "chat": "AIチャット",
+        "imageGen": "画像生成",
+        "imageAnalyze": "画像解析",
+        "speech": "テキスト読み上げ"
+      },
+      "upload": "解析する画像をアップロード",
+      "selected": "選択済み: {filename}",
+      "generatedImage": "生成された画像:",
+      "generatedAudio": "生成されたオーディオ:",
+      "switchModel": "AIモデルを切り替え",
+      "availableFeatures": "{model} の利用可能な機能",
+      "featureNotAvailable": "このモデルでは {feature} は利用できません",
+      "online": "オンライン",
+      "retry": "再試行"
+    },
+    "chatbot": {
+      "title": "Yueとチャット",
+      "close": "チャットを閉じる",
+      "description": "話したいトピックを選択:",
+      "options": {
+        "contact": "連絡を取りたい",
+        "feedback": "フィードバックがある",
+        "help": "助けてほしい",
+        "bug": "バグを見つけた",
+        "feature": "機能リクエストがある",
+        "general": "ただ話したい"
+      },
+      "responses": {
+        "contact": "素晴らしい！私の作成者であるYuriにme@yuricunha.comで連絡できます。訪問者からの連絡を楽しみにしています！",
+        "feedback": "フィードバックありがとうございます！これにより、このサイトが皆さんにとってより良いものになります。詳細をme@yuricunha.comまでメールしてください。",
+        "help": "お手伝いします！何について知りたいですか？サイトを探索するか、具体的な質問をしてください。",
+        "bug": "報告ありがとうございます！発見した内容を詳細に me@yuricunha.com までメールでお知らせください。すべての報告がサイト改善に役立ちます！",
+        "feature": "素晴らしいアイデアですね！私のクリエイター、Yuriは新しいアイデアを聞くのが大好きです。ご提案を me@yuricunha.com までメールでお送りください。",
+        "general": "訪問者の皆さんとお話しするのが大好きです！今日はいかがお過ごしですか？サイトを自由に探索したり、何でも質問してくださいね！"
+      }
+    },
+    "greetings": {
+      "morning": "おはようございます！ユエです！☀️",
+      "afternoon": "こんにちは！ユエです！🌤️",
+      "evening": "こんばんは！ユエです！🌅",
+      "night": "おやすみなさい！ユエです！🌙"
+    },
+    "game": {
+      "title": "ユエのミニゲーム",
+      "close": "ゲームを閉じる",
+      "open": "ゲームを開く",
+      "score": "スコア",
+      "time": "時間",
+      "highScore": "ハイスコア",
+      "instructions": "30秒間でターゲットをできるだけ多くクリックしてください！",
+      "start": "ゲームスタート",
+      "playAgain": "もう一度プレイ",
+      "gameOver": "ゲームオーバー！あなたのスコア: {score}",
+      "clickTarget": "ターゲットをクリック",
+      "difficulty": {
+        "label": "難易度:",
+        "aria": "難易度を選択",
+        "options": {
+          "easy": "簡単",
+          "medium": "普通",
+          "hard": "難しい"
+        }
+      },
+      "mode": {
+        "label": "モード:",
+        "aria": "モードを選択",
+        "options": {
+          "classic": "クラシック",
+          "survival": "サバイバル",
+          "challenge": "チャレンジ"
+        }
+      }
+    },
+    "messages": {
+      "0": "こんにちは！私はユエ、あなたのバーチャルアシスタントです！ナビゲーションのお手伝いが必要ですか？",
+      "1": "コナミコマンドでレトロモードをアクティベートできるのをご存知ですか？",
+      "2": "コーヒーブレイクの時間です！☕",
+      "3": "こんにちは、隠しイースターエッグを見つけました！見たいですか？",
+      "4": "私のクリエイター、Yuriの最新プロジェクトをチェックするのをお忘れなく！",
+      "5": "ウェブサイトへようこそ！今日はいかがお手伝いしましょうか？",
+      "6": "自由に探索してください！たくさんの発見がありますよ。",
+      "7": "連絡を取りたいですか？コンタクトセクションをチェックしてください！",
+      "8": "このサイトはNext.jsとTypeScriptで構築されているのをご存知ですか？",
+      "9": "訪問ありがとうございます！素晴らしい一日をお過ごしください！",
+      "10": "私のクリエイター、Yuriが取り組んでいるプロジェクトを見たいですか？プロジェクトをチェックしてください！",
+      "11": "訪問者の皆さんをお手伝いし、知識を共有するのが大好きです。あなたはどうですか？",
+      "12": "インターフェースが温かく、暗めで、集中しやすくなりました！",
+      "13": "このウェブサイトは完全にレスポンシブです。ブラウザのサイズを変えてみてください！",
+      "14": "バグを見つけましたか？教えてください、報告をお手伝いします！",
+      "15": "私はクリエイターのYuriから常に新しいことを学んでいます。あなたの最新の発見は何ですか？",
+      "16": "私のクリエイター、Yuriはデータベースのスペシャリストです。すごいですよね？",
+      "17": "サイト上の何でも見つけるお手伝いをします！",
+      "18": "私のクリエイター、Yuriがこの旅を2018年に始めたのをご存知ですか？",
+      "19": "ミニゲームは休憩するのに最適な方法です！",
+      "20": "あなたの訪問をもっと楽しいものにするためにここにいます！",
+      "21": "私の作り主のユーリは、ブログでテクノロジーと生活について書いています。",
+      "22": "プロジェクトセクションを見ましたか？作り主の作品は素晴らしいですよ！",
+      "23": "訪問者がさまざまなページを探索するのが大好きです！",
+      "24": "ゲストブックはメッセージを残すのに最適な場所です！",
+      "25": "私の作り主のユーリは、いつも新しいことに取り組んでいます！",
+      "26": "設定で私の動作をカスタマイズできることを知っていましたか？",
+      "27": "あなたの体験をより良くするためにここにいます！",
+      "28": "私の作り主のユーリは、ブログを通じて知識を共有するのが大好きです。",
+      "29": "このサイトは、誰もがアクセスできるように設計されています！",
+      "30": "私は作り主のユーリから毎日新しいことを学んでいます！",
+      "31": "「uses」ページをチェックしましたか？作り主のセットアップは素晴らしいですよ！",
+      "32": "サイト内を案内するためにここにいます！",
+      "33": "私の作り主のユーリは、オープンソースの力を信じています！",
+      "34": "Spotifyページでは、作り主が今何を聞いているかがわかります！",
+      "35": "新しい訪問者に会えるのはいつもワクワクします！",
+      "36": "私の作り主のユーリは、他の人が学ぶのを手助けするのが大好きです！",
+      "37": "メッセージをピン留めして表示し続けることができることを知っていましたか？",
+      "38": "あなたのブラウジング体験をもっと楽しくするためにここにいます！",
+      "39": "私の作り主のユーリは、テクノロジーに情熱を持っています！",
+      "40": "検索機能を使えば、何でもすぐに見つかります！",
+      "41": "私の作り主のユーリは、フィードバックや提案をいつも歓迎しています！",
+      "42": "管理パネルは、サイトを効率的に管理するのに役立ちます！",
+      "43": "サイトに新しいコメントややり取りがあると嬉しいです！",
+      "44": "私の作り主のユーリは、意味のあるものを作ることを信じています！",
+      "45": "サイトは新しい機能で常に進化しています！",
+      "46": "テクノロジーを誰もがアクセスしやすくするためにここにいます！",
+      "47": "私の作り主のユーリは、複雑な問題を解決するのが大好きです！",
+      "48": "このサイトのコミュニティは素晴らしいです！",
+      "49": "あなたの質問にいつでもお答えする準備ができています！"
+    },
+    "pageMessages": {
+      "404": {
+        "0": "おっと！迷子になったようですね！ 🗺️",
+        "1": "心配しないでください、戻るお手伝いをします！",
+        "2": "ナビゲーションメニューや検索機能を使ってみてください。",
+        "3": "ホームページは、いつでもスタートに最適な場所です！",
+        "4": "私の作り主のユーリは、ナビゲーションをさらに良くするために努力しています！",
+        "5": "壊れたリンクを見つけたら、遠慮なく報告してください！",
+        "6": "最高の探検家でも、時々迷子になることがあります！ 🧭",
+        "7": "このページは移動したか、まだ存在しないかもしれません！",
+        "8": "検索を使って、探していたものを見つけてください！",
+        "9": "ナビゲーションメニューには、すべてのメインセクションが整理されています！",
+        "10": "迷子になることで、もっと素晴らしいものを発見できるかもしれません！",
+        "11": "URLにタイプミスがないか確認してみてください。よくある原因です！",
+        "12": "サイトは常に成長しており、新しいコンテンツが定期的に追加されています！",
+        "13": "リンク切れも起こりますが、サイト改善にご協力いただきありがとうございます！",
+        "14": "404エラーは、何か新しいものを探すチャンスでもあります！",
+        "15": "迷ったら、ホームページに重要なリンクがすべてあります！ 🏠"
+      },
+      "home": {
+        "0": "ホームページへようこそ！ 👋 私はユエ、あなたのバーチャルアシスタントです！",
+        "1": "ここからすべてが始まります。探検の準備はできましたか？",
+        "2": "私のクリエイター、ユリはデータベースのスペシャリストです。もっと知りたいですか？",
+        "3": "最新の記事とプロジェクトをチェックしてみてください！",
+        "4": "興味のあるセクションを自由に探索してください！",
+        "5": "ナビゲーションメニューを使って、探しているものを見つけてください！",
+        "6": "我が家にようこそ！ここが魔法が起こる場所です ✨",
+        "7": "何か特定のものをお探しですか？ナビゲートお手伝いします！",
+        "8": "設定で私の位置を変更できることを知っていましたか？ 📍",
+        "9": "新しい訪問者と出会うのが大好きです！立ち寄ってくれてありがとうございます！ 😊",
+        "10": "最新の更新情報やコンテンツは、ここですぐにチェックできます！",
+        "11": "何か気になりますか？各セクションにはユニークなコンテンツがあります！",
+        "12": "プロのヒント：検索機能を使って、必要なものをピンポイントで見つけてください！ 🔍",
+        "13": "このサイトは、新機能やコンテンツで常に進化しています！",
+        "14": "最新情報をチェックしたいですか？新しいコンテンツのために定期的に訪れてください！",
+        "15": "24時間365日、あなたの探索と新しい発見をお手伝いします！"
+      },
+      "blog": {
+        "0": "ブログへようこそ！ 📝",
+        "1": "私のクリエイター、ユリはテクノロジー、データベース、時には生活について書いています。",
+        "2": "記事にコメントを残してくださいね！",
+        "3": "どんなトピックについて読みたいですか？",
+        "4": "ブログは定期的に新しいコンテンツで更新されています！",
+        "5": "タグやカテゴリで記事をフィルタリングできます！",
+        "6": "面白そうな記事がたくさんあります！深く読み込んでみてください！ 📚",
+        "7": "各投稿は、細心の注意と実世界の経験をもとに作成されています！",
+        "8": "価値のある記事を見つけたら、ぜひシェアしてください！ 🔗",
+        "9": "コメントセクションでは、本格的な議論が展開されています！",
+        "10": "何か特定のものをお探しですか？検索やタグを試してみてください！",
+        "11": "新しい記事が定期的に公開されます。お気に入りをブックマークしてください！ ⭐",
+        "12": "初心者向けのヒントから上級者向けのコンセプトまで、誰にでも役立つものがあります！",
+        "13": "データベース、ウェブ開発、テクノロジーの洞察について読むのが好きですか？ここがぴったりの場所です！",
+        "14": "このブログは、長年の学びと実際のプロジェクト経験を反映しています！",
+        "15": "記事について質問がありますか？コメント欄がぴったりです！"
+      },
+      "blogPost": {
+        "0": "これは良い記事です！ 📖",
+        "1": "これを読んで考えさせられます… 🤔",
+        "2": "このトピックに対する興味深い視点ですね！",
+        "3": "私のクリエイターであるYuriは、この記事にたくさんの思いを込めています。",
+        "4": "この記事を楽しんでいただけたら嬉しいです！",
+        "5": "コメントで感想を共有してくださいね！",
+        "6": "このコンテンツはじっくり時間をかけて読む価値があります。",
+        "7": "こんな風にトピックを深掘りするの、大好きです！",
+        "8": "ここにある洞察は本当に価値があります。",
+        "9": "学びが楽しくなるようなコンテンツです！"
+      },
+      "snippet": {
+        "0": "スニペット棚へようこそ！ ✂️",
+        "1": "小さなメモが、驚くほどデバッグ時間を短縮してくれます。",
+        "2": "簡単なレシピが必要ですか？このセクションはさっと見るのに最適です。",
+        "3": "分からない部分があったら選択してください。説明します！",
+        "4": "スニペットは、小さな学びが再利用可能なツールになる場所です。",
+        "5": "これらは実際の仕事から生まれた実用的なメモです。博物館の展示物ではありません。",
+        "6": "短く、集中していて、後で見返しやすいです。",
+        "7": "役立つパターンを見つけたら、次のプロジェクトのためにブックマークしておきましょう。"
+      },
+      "projects": {
+        "0": "プロジェクト一覧です！ 🚀",
+        "1": "すべて愛とたくさんのコーヒー☕で作られています。",
+        "2": "一緒にコラボレーションしませんか？素晴らしいものを作りましょう！",
+        "3": "それぞれのプロジェクトから、私のクリエイターであるYuriは新しいことを学びました。",
+        "4": "すべてのプロジェクトはオープンソースで、GitHubで公開されています！",
+        "5": "ぜひ貢献したり、改善案を提案してください！",
+        "6": "小さなユーティリティからフルスタックアプリケーションまで、多様性が鍵です！ 🛠️",
+        "7": "すべてのプロジェクトは実際の問題を解決したり、新しい技術を探求したりしています！",
+        "8": "テックスタックをチェックしてみてください。常に最新のツールを試しています！",
+        "9": "ほとんどのプロジェクトでライブデモが利用可能です。ぜひ試してみてください！ 🌐",
+        "10": "ソースコードはきれいで、ドキュメントも整っており、貢献の準備ができています！",
+        "11": "バグを見つけたり、アイデアがあったら、IssueやPRを送ってください。いつでも歓迎です！",
+        "12": "これらのプロジェクトは、何年もの学びと実験の結成です！",
+        "13": "気に入ったリポジトリにはスターを付けてください。クリエイターのモチベーションになります！ ⭐",
+        "14": "データベースからWebアプリまで、それぞれのプロジェクトには物語があります！",
+        "15": "一緒に何か作りませんか？コラボレーションはすべてをより良くします！"
+      },
+      "projectsDetail": {
+        "0": "素敵なプロジェクトですね！ 🔧",
+        "1": "このプロジェクトの背後にあるテックスタックに興味はありませんか？",
+        "2": "通常、GitHubでソースコードを見つけることができます。",
+        "3": "ライブデモがある場合は、ぜひ試してみてください！",
+        "4": "オープンソースは、あなたのアイデアを歓迎します。",
+        "5": "改善点を見つけましたか？IssueやPRは大歓迎です！",
+        "6": "コードを読むのは、アプリを使うのと同じくらい楽しいです。",
+        "7": "このプロジェクトは、実世界での学びを反映しています。",
+        "8": "このリポジトリが気に入ったら、スターをお願いします！ ⭐",
+        "9": "これを基に、あなたは何を作りたいですか？"
+      },
+      "about": {
+        "0": "作成者のYuriについてもっと知りたいですか？ 🤔",
+        "1": "私の作成者Yuriは、データベースとコーディングが大好きな人です。",
+        "2": "質問があれば、気軽に聞いてください！",
+        "3": "この旅は2018年に始まりました。今でも毎日学び続けています！",
+        "4": "Yuriは知識を共有し、他の人を助けることが大好きです！",
+        "5": "Aboutページには、旅の詳細がすべて記載されています！",
+        "6": "きれいで効率的なコードを愛するデータベースのスペシャリスト！ 💾",
+        "7": "ブラジルから世界へ - テクノロジーが私たちをつなげます！ 🌎",
+        "8": "常に学び、成長し、新しいテクノロジーに好奇心を持ち続けています！",
+        "9": "オープンソース、知識の共有、そして他の人の成功を支援することを信条としています！",
+        "10": "コーヒーを片手にコーディングし、深夜に問題解決に取り組みます！ ☕",
+        "11": "この物語には、失敗、成功、そしてその間のすべてが含まれています！",
+        "12": "学ぶ最良の方法は、作ることと教えることだと固く信じています！",
+        "13": "データベースが専門ですが、フルスタックが遊び場です！",
+        "14": "すべてのプロジェクトは学びの機会であり、他の人を助けるチャンスです！",
+        "15": "連絡を取りたいですか？連絡先はこのページにあります！"
+      },
+      "uses": {
+        "0": "これがセットアップです！ 💻",
+        "1": "かなりかっこいいセットアップでしょう？Yuriは自分のギアが大好きです！",
+        "2": "開発に使っているものが知りたいですか？",
+        "3": "良いツールがすべてを変えます！",
+        "4": "セットアップは新しいツールで常に進化しています！",
+        "5": "特定のツールやセットアップについて質問があれば、気軽に聞いてください！",
+        "6": "ハードウェアからソフトウェアまで、すべてのツールが慎重に選ばれています！ ⚙️",
+        "7": "パフォーマンス、生産性、美しさの完璧なバランス！",
+        "8": "常に新しいツールやワークフローを試しています！",
+        "9": "これらのツールは、無数のプロジェクトや深夜のコーディングセッションを支えてきました！",
+        "10": "特定のセットアップの選択肢に興味がありますか？それぞれに物語があります！",
+        "11": "セットアップは新しい発見や変化するニーズと共に進化しています！",
+        "12": "コードエディタからデータベースツールまで、すべてが効率化のために最適化されています！",
+        "13": "良いツールがあなたを優れた開発者にするわけではありませんが、確実に助けてくれます！ 🛠️",
+        "14": "このセットアップは、さまざまなツールを試し、自分に合うものを見つけた何年もの結果です！",
+        "15": "おすすめが欲しいですか？これらのツールは実際のプロジェクトで実績があります！"
+      },
+      "music": {
+        "0": "音楽コーナーへようこそ！ 🎵",
+        "1": "良い音楽か悪い音楽かはわかりませんが、私の作成者のユーリは好きみたいです！",
+        "2": "音楽はコーディング中の集中力を高めてくれます。",
+        "3": "最近は何を聞いていますか？",
+        "4": "プレイリストは新しい発見とともに定期的に更新されています！",
+        "5": "音楽は仕事のモチベーションを保つ素晴らしい方法です！",
+        "6": "数え切れないほどのコーディングセッションと創造的なブレークスルーのサウンドトラック！ 🎧",
+        "7": "ローファイビーツからエネルギッシュなトラックまで、コーディングの気分に合わせた音楽があります！",
+        "8": "これらのプレイリストはデバッグセッションや機能開発を乗り越えてきました！",
+        "9": "音楽とコードは、コーヒーと夜更かしのように相性抜群！ ☕",
+        "10": "創造性と集中力を高めてくれる新しいアーティストやジャンルを発見しましょう！",
+        "11": "深い仕事や問題解決セッションに最適なバックグラウンド音楽です！",
+        "12": "各プレイリストは、異なる種類の仕事やエネルギーレベルに合わせてキュレーションされています！",
+        "13": "音楽の好みはコーディングスキルと同じように進化します—常に新しい発見があります！",
+        "14": "あなたのコーディングサウンドトラックは何ですか？音楽は生産性の高いセッションを左右します！",
+        "15": "アンビエントからアップビートまで—あなたのワークフローにぴったりのリズムを見つけましょう！ 🎶"
+      },
+      "guestbook": {
+        "0": "ゲストブックにメッセージを残してください！ 📖",
+        "1": "私の作成者のユーリは、訪問者からのメッセージを読むのが大好きです！",
+        "2": "気軽に挨拶をしたり、質問をしてください！",
+        "3": "あなたのメッセージが彼の一日を明るくします！",
+        "4": "ゲストブックはコミュニティとつながる素晴らしい方法です！",
+        "5": "すべてのメッセージは、フレンドリーな空間を保つために管理されています！",
+        "6": "現代のウェブのためのデジタルゲストブック—とても素敵ですよね？ ✨",
+        "7": "すべてのメッセージは読まれ、感謝されています—あなたもコミュニティの一員です！",
+        "8": "あなたの考え、フィードバック、または単なる挨拶を共有してください—すべて歓迎します！",
+        "9": "ゲストブックは世界中の訪問者をつなげます！ 🌍",
+        "10": "あなたのメッセージが次のブログ記事やプロジェクトのヒントになるかもしれません！",
+        "11": "簡単な挨拶から詳細なフィードバックまで—すべてのメッセージが大切です！",
+        "12": "ゲストブックは、すべてのウェブサイトの背後に実在の人がいることを思い出させてくれます！",
+        "13": "会話に参加して、この成長するコミュニティの一員になりましょう！",
+        "14": "ここでのメッセージがコラボレーション、友情、新しいアイデアにつながっています！",
+        "15": "遠慮しないで—あなたの声がこの場に価値を加えます！ 💬"
+      },
+      "now": {
+        "0": "これは「Now」ページです：現在の焦点、現在のシーズン。",
+        "1": "私の作成者のユーリが最近行っていることの小さなスナップショットです。",
+        "2": "Nowページは素晴らしく正直です：すべてがローンチである必要はありません。",
+        "3": "このセクションは優先事項の変化に応じて変わります。",
+        "4": "今何がアクティブか気になりますか？ここは正しい場所です。",
+        "5": "これを少し魂のこもったステータスアップデートと思ってください。"
+      },
+      "settings": {
+        "0": "設定は、好みが適切に反映される場所です。",
+        "1": "小さな調整が、サイト全体を快適にすることがあります。",
+        "2": "少し時間を取って、お好みに合わせて調整してみてください。",
+        "3": "良いソフトウェアは、あなたにとって大切なことを覚えています。",
+        "4": "何かがしっくり来ない場合、このページから始めると良いでしょう。",
+        "5": "設定は、最も良い意味で退屈であるべきです：信頼できるものであるべきです。"
+      },
+      "notifications": {
+        "0": "こちらがあなたの通知です。新しい情報はここに集まります。",
+        "1": "整理された受信トレイは、サイトを追いかけやすくします。",
+        "2": "ノイズを最小限に抑え、役立つ情報を表示するよう努めます。",
+        "3": "通知は、あなたの注意を尊重する時に最も効果的です。",
+        "4": "未読の更新がありますか？ここが集まる場所です。",
+        "5": "適切なタイミングでの少しのコンテキストは、とても便利です。"
+      },
+      "sitemap": {
+        "0": "サイトマップは、サイトの目次です。",
+        "1": "ナビゲーションが曖昧な時は、このページが全体の地図を提供します。",
+        "2": "サイトの重要なコーナーはすべて、ここからアクセスできるはずです。",
+        "3": "検索は速いですが、時には地図の方が便利です。",
+        "4": "これは、見逃したページを発見するための整然とした方法です。",
+        "5": "すべての道は最終的に構造につながります。"
+      },
+      "offline": {
+        "0": "接続が一時的に切れているようです。",
+        "1": "パニックになる必要はありません。サイトの一部はまだ利用できるかもしれません。",
+        "2": "ネットワークが復旧すれば、ページも回復するはずです。",
+        "3": "オフライン状態も適切にケアされるべきです。"
+      },
+      "admin": {
+        "0": "管理パネルへようこそ！ 🔧",
+        "1": "このエリアはサイトの管理とモデレーションのための場所です。",
+        "2": "私の作成者であるYuriは、このパネルを使ってサイトをスムーズに運営しています。",
+        "3": "管理ツールは、ユーザー、コメント、コンテンツを管理するのに役立ちます。",
+        "4": "管理パネルは常に改善され続けています！",
+        "5": "ここではセキュリティとモデレーションが最優先事項です！"
+      },
+      "search": {
+        "0": "何か特定のものをお探しですか？ 🔍",
+        "1": "検索機能を使えば、何でも素早く見つけることができます！",
+        "2": "さまざまなキーワードを試して、より良い結果を得ましょう。",
+        "3": "検索はサイト内のすべてのコンテンツを対象に機能します！",
+        "4": "この検索は高度なアルゴリズムで動いています！",
+        "5": "お探しのものが見つからない場合は、お知らせください！",
+        "6": "文脈を理解し、関連性の高いコンテンツを見つけるスマート検索！ 🧠",
+        "7": "記事、プロジェクト、ページを一度に検索できます！",
+        "8": "プロのヒント：より具体的な検索結果を得るには、特定の用語を使用しましょう！",
+        "9": "検索インデックスは常に新しいコンテンツで更新されています！",
+        "10": "興味深いものを見つけたら、後で参照できるようブックマークしましょう！",
+        "11": "検索結果は関連性と新しさによってランク付けされています！",
+        "12": "正確なタイトルを覚えていない？トピックやキーワードで検索してみてください！",
+        "13": "検索機能は、検索ごとに学習し、改善されていきます！",
+        "14": "技術記事からプロジェクトの詳細まで、ここですべて見つかります！",
+        "15": "大量のコンテンツをナビゲートするには、検索があなたの味方です！ 🗂️"
+      },
+      "contact": {
+        "0": "連絡を取りたいですか？ 📧",
+        "1": "私のクリエイターであるYuriは、訪問者からの連絡を大歓迎しています！",
+        "2": "コラボレーションや質問など、気軽にお問い合わせください！",
+        "3": "連絡フォームを使えば、簡単にメッセージを送ることができます！",
+        "4": "私のクリエイターであるYuriは、通常24〜48時間以内に返信します！",
+        "5": "ソーシャルメディアプラットフォームでもつながることができます！",
+        "6": "フリーランスの依頼からスピーチの機会まで、すべて歓迎しています！ 💼",
+        "7": "すべてのメッセージは直接読まれます — ボットに送っているわけではありません！",
+        "8": "質問、コラボレーション、またはただの挨拶でも — 気軽に連絡してください！",
+        "9": "連絡チャネルはすべての人に開かれ、歓迎しています！",
+        "10": "バグを見つけたり、フィードバックがありましたか？ここが共有する場所です！",
+        "11": "コラボレーションから素晴らしいプロジェクトが生まれています！",
+        "12": "プロフェッショナルな問い合わせは常に歓迎され、感謝されています！",
+        "13": "あなたのメッセージが、素晴らしい何かの始まりかもしれません！",
+        "14": "遠慮はいりません — 私のクリエイターであるYuriはフレンドリーでレスポンスも早いです！",
+        "15": "最高のつながりは、シンプルなメッセージから始まります！ 🤝"
+      }
+    }
+  },
+  "contact": {
+    "title": "連絡先",
+    "description": "コラボレーション、質問、または単に挨拶のために連絡を取りましょう",
+    "page-title": "連絡先",
+    "page-description": "つながりましょう！コラボレーション、質問、または単に挨拶のために連絡してください",
+    "form": {
+      "title": "メッセージを送る",
+      "description": "以下のフォームに記入して送信してください。すぐに返信します",
+      "name": {
+        "label": "名前",
+        "placeholder": "あなたの名前",
+        "required": "名前は必須です",
+        "max-length": "名前は100文字以内で入力してください"
+      },
+      "email": {
+        "label": "メールアドレス",
+        "placeholder": "your@email.com",
+        "required": "メールアドレスは必須です",
+        "invalid": "有効なメールアドレスを入力してください"
+      },
+      "subject": {
+        "label": "件名",
+        "placeholder": "どのようなご用件ですか？",
+        "required": "件名は必須です",
+        "max-length": "件名は200文字以内で入力してください"
+      },
+      "message": {
+        "label": "メッセージ",
+        "placeholder": "プロジェクト、質問、またはアイデアについて詳しく教えてください...",
+        "required": "メッセージは必須です",
+        "min-length": "メッセージは10文字以上で入力してください",
+        "max-length": "メッセージは2000文字以内で入力してください",
+        "character-count": "{count}/2000文字"
+      },
+      "submit": "メッセージを送信",
+      "submitting": "送信中...",
+      "success": "メッセージを送信しました！",
+      "error": "メッセージの送信に失敗しました。もう一度お試しください。",
+      "network-error": "ネットワークエラーが発生しました。接続を確認してもう一度お試しください。",
+      "turnstile-required": "確認チャレンジを完了してください",
+      "turnstile-error": "セキュリティ確認に失敗しました。もう一度お試しください。"
+    },
+    "direct": {
+      "title": "直接連絡",
+      "description": "メールの方が良いですか？直接ご連絡ください",
+      "email-label": "メールアドレス",
+      "response-time": "通常、24〜48時間以内に返信します。",
+      "urgent": "緊急の場合は、件名にその旨を記載してください。"
+    },
+    "social": {
+      "title": "ソーシャルメディアでつながる",
+      "description": "さまざまなプラットフォームでフォローしてください",
+      "github": {
+        "name": "GitHub",
+        "description": "私のコードやオープンソースプロジェクトをフォロー"
+      },
+      "twitter": {
+        "name": "Twitter",
+        "description": "Twitterでつながりましょう"
+      },
+      "linkedin": {
+        "name": "LinkedIn",
+        "description": "プロフェッショナルなネットワーキングとキャリアの更新情報"
+      }
+    },
+    "faq": {
+      "title": "よくある質問",
+      "description": "よくある質問と回答",
+      "freelance": {
+        "question": "フリーランスの仕事は受けていますか？",
+        "answer": "現在、興味深いプロジェクトを募集中です。ご要望をお聞かせください！"
+      },
+      "collaborations": {
+        "question": "コラボレーションの依頼は受けていますか？",
+        "answer": "常に他の開発者と一緒にクールなプロジェクトに取り組むことに興味があります。"
+      },
+      "speaking": {
+        "question": "スピーキングの機会はありますか？",
+        "answer": "ウェブ開発やオープンソースについてイベントで話す機会を喜んでお引き受けします。"
+      }
+    }
+  },
+  "music": {
+    "description": "最近の聴取履歴、トップアーティスト、音楽統計"
+  }
+}

@@ -1,0 +1,164 @@
+---
+title: OpenWebUIでのMistralエージェント（API経由でパイプ）
+date: 2026-01-16
+author: Yuri Cunha
+description: OpenWebUIにパイプ（関数）をインポートし、API経由でMistralエージェントを使用するための詳細なスニペット。
+tags:
+  - openwebui
+  - mistral
+  - エージェント
+  - python
+  - api
+  - llm
+---
+
+この`pipe`は、[Mistral API](https://api.mistral.ai/v1/agents/completions)を呼び出すことで、OpenWebUI内でネイティブの**Mistral AIエージェント**をサポートします。
+
+Mistralコンソールで作成されたエージェントを選択し、OpenWebUIインスタンスから直接チャットできるようになります。
+
+{/* more */}
+
+## 機能
+
+- MistralエージェントAPI (`/v1/agents/completions`) との直接統合。
+- ストリーミング応答のサポート。
+- バルブを通じた簡単な設定（インポート後にコードを編集する必要はありません）。
+- Mistralコンソールで作成されたすべてのエージェント（ツール、指示、ナレッジベースなど）で動作します。
+
+## 前提条件
+
+- Mistral APIにアクセスできるアカウント。
+- 有効な`MISTRAL_API_KEY`（[https://console.mistral.ai/](https://console.mistral.ai/)で取得できます）。
+- 既存のエージェント（`AGENT_ID`バルブに入力するためのエージェントIDが必要です。通常、`ag_`で始まります）。
+- OpenWebUIインスタンスで関数をインポート/編集する権限。
+
+## エージェントIDの取得方法
+
+1. [https://console.mistral.ai/build/agents](https://console.mistral.ai/build/agents)にアクセスします。
+2. エージェントを作成（または開く）します。
+3. エージェントIDをコピーします。
+
+注：一部の場所では`ag:`と表示される場合がありますが、このパイプは文字列値を期待しており、最も一般的な形式は`ag_...`です。
+
+## OpenWebUIへのインポート方法
+
+通常、2つのオプションがあります：
+
+### オプションA：OpenWebUIページからインポート
+
+公式の関数投稿（ワンクリックインポート）を使用します：
+
+[https://openwebui.com/posts/mistral_agents_integration_pipe_42bce620](https://openwebui.com/posts/mistral_agents_integration_pipe_42bce620)
+
+OpenWebUIで：
+
+1. 上記のページを開きます。
+2. `インポート`をクリックします。
+3. インポートを確認します。
+
+### オプションB：手動インポート（コピー＆ペースト）
+
+1. OpenWebUIで、`管理パネル`に移動します。
+2. `関数`を開きます。
+3. `+`（または`新規`）をクリックして、新しい関数/パイプを作成します。
+4. 以下のコードを貼り付けて保存します。
+
+## 設定（バルブ）
+
+インポート後、バルブを設定します（通常、歯車アイコン`⚙️`から）：
+
+- `MISTRAL_API_KEY`：Mistral APIキー。
+- `AGENT_ID`：エージェントID（例：`ag_...`）。
+
+## コード（パイプ）
+
+重要：
+
+- 実際のAPIキーをファイルにハードコードしないでください。
+- インポート後、OpenWebUIの設定で`MISTRAL_API_KEY`と`AGENT_ID`をバルブに設定してください。
+
+```python
+# title: Mistral Agents
+# author: Yuri Cunha
+# version: 1.0.0
+# license: MIT
+
+import requests
+import json
+from typing import List, Dict, Generator
+from pydantic import BaseModel, Field
+
+
+class Pipe:
+    class Valves(BaseModel):
+        MISTRAL_API_KEY: str = Field(default="")
+        AGENT_ID: str = Field(
+            default="ag_"
+        )  # Your Agent ID aqui or put in var, please, use VAR!
+
+    def __init__(self):
+        self.type = "manifold"
+        self.id = "mistral-agent"
+        self.name = "mistral-agent/"
+        self.valves = self.Valves()
+        self.agents_endpoint = "https://api.mistral.ai/v1/agents/completions"
+
+    def pipes(self) -> List[Dict[str, str]]:
+        return [{"id": "agent", "name": f"Mistral Agent ({self.valves.AGENT_ID[:10]})"}]
+
+    def pipe(self, body: dict) -> Generator:
+        headers = {
+            "Authorization": f"Bearer {self.valves.MISTRAL_API_KEY}",
+            "Content-Type": "application/json",
+        }
+
+        payload = {
+            "agent_id": self.valves.AGENT_ID,
+            "messages": body["messages"],
+            "stream": body.get("stream", False),
+        }
+
+        response = requests.post(
+            self.agents_endpoint, headers=headers, json=payload, stream=True
+        )
+
+        for line in response.iter_lines():
+            if line:
+                yield line.decode("utf-8")
+```
+
+<Callout type='warning'>
+  実際のAPIキーをパブリックリポジトリにコミットしないでください。本番環境では、環境変数とデプロイメントシークレットマネージャーを優先してください。
+</Callout>
+
+## チャットでの使用方法
+
+1. OpenWebUIでチャットを開きます。
+2. モデル/プロバイダーのリストから`mistral agent (...)`パイプを選択します。
+3. 通常通りメッセージを送信します。
+
+OpenWebUIは、`body["messages"]`をMistralに転送し、ロール（`user`、`assistant`など）を保持します。
+
+## 重要な注意事項
+
+- **エージェントIDとモデル**：このパイプはエージェントルート（`/v1/agents/completions`）を使用します。これは標準のチャット完了とは異なります。
+- **ツール**：Mistralコンソールでエージェントにツールが設定されている場合、それらはエージェントによって自動的に適用されます。
+
+## ストリーミングに関する注意事項
+
+- OpenWebUIで`stream`が有効になっている場合、ペイロードは`"stream": true`を送信します。
+- `pipe`はストリーミング要求からの生の応答行（`iter_lines`）を生成します。
+
+生の出力（JSON行）がレンダリングされたテキストの代わりに表示される場合は、OpenWebUIがこのパイプに対して特定のSSE/チャンク形式を期待しているかどうかを確認してください。
+
+## クイックトラブルシューティング
+
+- **401未認証/403禁止**：`MISTRAL_API_KEY`が空、無効、または権限が不足しています。
+- **404/無効なエージェント**：`AGENT_ID`が間違っているか、エージェントが削除されました。
+- **応答なし/タイムアウト**：OpenWebUIサーバーが`https://api.mistral.ai`にアクセスできることを確認してください。
+- **ストリーミングなし**：OpenWebUIがリクエストボディに`stream: true`を送信していることを確認してください。
+
+## 参考資料
+
+- OpenWebUIでのインポート投稿：
+  [https://openwebui.com/posts/mistral_agents_integration_pipe_42bce620](https://openwebui.com/posts/mistral_agents_integration_pipe_42bce620)
