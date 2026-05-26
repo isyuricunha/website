@@ -7,6 +7,10 @@ export const supportedLanguages = [
   {
     code: 'pt',
     label: 'Português'
+  },
+  {
+    code: 'es',
+    label: 'Español'
   }
 ]
 

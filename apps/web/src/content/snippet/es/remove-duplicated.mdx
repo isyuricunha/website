@@ -1,0 +1,143 @@
+---
+title: Eliminar Duplicados de un Array
+date: 2025-11-19
+author: Yuri Cunha
+description: Diferentes métodos para eliminar valores duplicados de arrays en JavaScript
+tags:
+  - javascript
+  - array
+  - estructuras-de-datos
+---
+
+Eliminar duplicados de arrays es una tarea común en JavaScript. Aquí tienes varios métodos efectivos para lograrlo.
+
+{/* more */}
+
+## Método 1: Usando `Set` (Recomendado)
+
+La forma más simple y eficiente de eliminar duplicados es usando un `Set`:
+
+```javascript
+const array = [1, 2, 2, 3, 4, 4, 5]
+const uniqueArray = [...new Set(array)]
+console.log(uniqueArray) // [1, 2, 3, 4, 5]
+```
+
+**Ventajas:**
+
+- Limpio y conciso
+- Buen rendimiento O(n)
+- Funciona con valores primitivos
+
+**Desventajas:**
+
+- Solo funciona con valores primitivos (números, cadenas de texto, booleanos)
+- Los objetos se comparan por referencia
+
+---
+
+## Método 2: Usando `Filter`
+
+Para escenarios más complejos o cuando necesitas mantener la primera ocurrencia:
+
+```javascript
+const array = [1, 2, 2, 3, 4, 4, 5]
+const uniqueArray = array.filter((value, index, self) => {
+  return self.indexOf(value) === index
+})
+console.log(uniqueArray) // [1, 2, 3, 4, 5]
+```
+
+**Ventajas:**
+
+- Más flexible para lógica personalizada
+- Fácil de entender
+
+**Desventajas:**
+
+- Menos eficiente O(n²) debido a `indexOf`
+
+---
+
+## Método 3: Usando `Reduce`
+
+Un enfoque funcional usando `reduce`:
+
+```javascript
+const array = [1, 2, 2, 3, 4, 4, 5]
+const uniqueArray = array.reduce((acc, current) => {
+  if (!acc.includes(current)) {
+    acc.push(current)
+  }
+  return acc
+}, [])
+console.log(uniqueArray) // [1, 2, 3, 4, 5]
+```
+
+**Ventajas:**
+
+- Estilo de programación funcional
+- Puede combinarse con otras transformaciones
+
+**Desventajas:**
+
+- Menos eficiente debido a `includes`
+- Más verboso
+
+---
+
+## Método 4: Para Objetos (Usando `Map`)
+
+Cuando trabajas con objetos, necesitas comparar por una propiedad específica:
+
+```javascript
+const users = [
+  { id: 1, name: 'Alice' },
+  { id: 2, name: 'Bob' },
+  { id: 1, name: 'Alice' },
+  { id: 3, name: 'Charlie' }
+]
+
+const uniqueUsers = Array.from(new Map(users.map((user) => [user.id, user])).values())
+
+console.log(uniqueUsers)
+// [
+//   { id: 1, name: 'Alice' },
+//   { id: 2, name: 'Bob' },
+//   { id: 3, name: 'Charlie' }
+// ]
+```
+
+**Ventajas:**
+
+- Funciona con objetos
+- Permite especificar qué propiedad usar para la unicidad
+- Buen rendimiento
+
+**Desventajas:**
+
+- Sintaxis más compleja
+- Mantiene la última ocurrencia (puede modificarse para mantener la primera)
+
+---
+
+## Comparación de Rendimiento
+
+Para arrays grandes (10,000+ elementos):
+
+1. **Set**: ~1ms (el más rápido)
+2. **Map (para objetos)**: ~2ms
+3. **Reduce**: ~50ms
+4. **Filter**: ~100ms (el más lento)
+
+---
+
+## Recomendación
+
+- Usa **Set** para valores primitivos (números, cadenas de texto, booleanos).
+- Usa **Map** para objetos cuando necesites eliminar duplicados por una propiedad específica.
+- Usa **Filter** o **Reduce** solo cuando necesites lógica personalizada o trabajes con arrays pequeños.
+
+---
+
+**Nota:** Todos estos métodos crean un nuevo array. Si necesitas modificar el array original directamente, necesitarás un enfoque diferente.

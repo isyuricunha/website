@@ -1,0 +1,66 @@
+---
+name: YuPomo
+description: Hermoso temporizador Pomodoro para web y escritorio con React, TypeScript, Vite y Tauri. Diseño minimalista con estadísticas, notificaciones y localización.
+homepage: https://yupomo.yuricunha.com/
+github: https://github.com/isyuricunha/YuPomo
+techstack:
+  - React
+  - TypeScript
+  - Vite
+  - Tauri
+  - TailwindCSS
+  - Chart.js
+  - Rust
+selected: true
+status: active
+---
+
+## Sobre el Proyecto
+
+YuPomo es un temporizador Pomodoro enfocado que te ayuda a trabajar en ciclos y descansar con intención. Funciona como una aplicación web rápida y como una aplicación de escritorio nativa para Windows, macOS y Linux a través de Tauri. La interfaz es limpia y directa para que puedas iniciar una sesión sin fricción y mantenerte concentrado. Las configuraciones y estadísticas se almacenan localmente, por lo que tus datos permanecen en tu dispositivo.
+
+YuPomo sigue el método clásico Pomodoro con valores predeterminados de veinticinco minutos para el trabajo, cinco minutos para un descanso corto y quince minutos para un descanso largo. Puedes cambiar todas las duraciones, habilitar alertas de sonido y notificaciones, y alternar entre temas claros y oscuros. Una vista de estadísticas muestra tu historial diario, semanal y mensual de enfoque con gráficos para que puedas observar tendencias y mejorar tu rutina con el tiempo.
+
+---
+
+## Características Principales
+
+Flujo completo de Pomodoro con trabajo, descanso corto y descanso largo. Cambio de tema con tema oscuro negro verdadero. Duraciones, sonidos y notificaciones configurables. Persistencia local de preferencias e historial. Estadísticas con gráficos para visualizar el tiempo de enfoque y el conteo de sesiones. Diseño adaptable para escritorio y móvil. Interfaz multilingüe con cambio de idioma instantáneo en tiempo de ejecución. Banner opcional de actualización en el escritorio que te informa cuando hay una nueva versión disponible.
+
+---
+
+## Plataformas e Instalación
+
+La versión web está disponible en el enlace de demostración. La aplicación de escritorio se distribuye a través de GitHub Releases con instaladores para Windows, macOS y Linux. En Windows, puedes usar el instalador exe o msi. En macOS, instala a través del dmg correspondiente a tu chip. En Linux, puedes elegir paquetes deb o rpm o ejecutar el AppImage. La aplicación también puede verificar actualizaciones en el escritorio y guiarte para descargar e instalar la última versión.
+
+---
+
+## Desarrollo y Compilación
+
+El proyecto utiliza React y TypeScript con Vite para el cliente web y Tauri para el entorno de escritorio. Puedes clonar el repositorio, instalar las dependencias con tu gestor de paquetes y ejecutar el servidor de desarrollo para la web o el proceso de desarrollo de Tauri para el escritorio. Se proporcionan scripts de compilación para el despliegue web y para los paquetes de escritorio de cada sistema operativo. Los scripts de versionado mantienen sincronizadas las versiones de web y Tauri, y el flujo de lanzamiento compila y publica los artefactos en GitHub Releases.
+
+---
+
+## Actualización Automática de Escritorio
+
+Las compilaciones de escritorio admiten Tauri Updater. La aplicación puede verificar la última versión de GitHub Releases, mostrar un banner dentro de la aplicación con la nueva versión y descargarla e instalarla. Los artefactos del actualizador están firmados y verificados. La configuración utiliza una clave pública en la configuración de Tauri y el archivo JSON más reciente en la versión. Puedes habilitar la instalación automática al iniciar en la configuración del escritorio.
+
+---
+
+## Privacidad
+
+YuPomo no recopila datos personales. Las preferencias y estadísticas se guardan localmente. La versión web utiliza localStorage. La versión de escritorio utiliza el sistema de archivos de Tauri en el directorio de datos de la aplicación. Las notificaciones y sonidos se generan localmente. La verificación opcional de actualizaciones solo consulta la API pública de GitHub Releases.
+
+---
+
+## Contacto y Enlaces
+
+**Demo**: [https://yupomo.yuricunha.com](https://yupomo.yuricunha.com)
+
+**Repositorio**: [https://github.com/isyuricunha/YuPomo](https://github.com/isyuricunha/YuPomo)
+
+**Perfil y actualizaciones**: [https://x.com/isyuricunha](https://x.com/isyuricunha)
+
+**Correo electrónico**: me@yuricunha.com
+
+**Sitio web**: [https://yuricunha.com](https://yuricunha.com)

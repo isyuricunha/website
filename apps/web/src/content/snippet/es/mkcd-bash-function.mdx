@@ -1,0 +1,55 @@
+---
+title: 'mkcd: Crear un Directorio y Entrar en Él'
+date: 2025-12-04
+author: Yuri Cunha
+description: Una función simple de Bash para crear un directorio y acceder a él en un solo comando.
+tags:
+  - bash
+  - terminal
+  - productividad
+  - linux
+---
+
+Todos hemos pasado por esto: creas un nuevo directorio con `mkdir` y luego inmediatamente tienes que usar `cd` para entrar en él.
+
+```bash
+mkdir nuevo_directorio
+cd nuevo_directorio
+```
+
+Es una pequeña fricción, pero se acumula. Aquí tienes una función simple para hacer ambas cosas a la vez.
+
+{/* more */}
+
+## La Solución
+
+Agrega esta función a tu `.bashrc` (o `.zshrc`):
+
+```bash
+mkcd() {
+    mkdir -p "$1" && cd "$1"
+}
+```
+
+## Cómo Instalar
+
+1. Abre tu archivo de configuración:
+   ```bash
+   nano ~/.bashrc
+   ```
+2. Pega el bloque de código anterior al final del archivo.
+3. Guarda y sal (`Ctrl+O`, `Enter`, `Ctrl+X`).
+4. Recarga tu configuración:
+   ```bash
+   source ~/.bashrc
+   ```
+
+## Uso
+
+Ahora puedes crear estructuras de directorios profundos y entrar en ellos al instante:
+
+```bash
+mkcd -p vaultwarden/backups/config
+```
+
+Te encontrarás dentro de `vaultwarden` inmediatamente.

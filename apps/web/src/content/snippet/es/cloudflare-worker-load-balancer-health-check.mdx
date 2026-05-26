@@ -1,0 +1,300 @@
+---
+title: Balanceador de Carga de Cloudflare Worker con Comprobaciones de Estado (Gratis)
+date: 2026-01-30
+author: Yuri Cunha
+description: Un balanceador de carga práctico y gratuito usando Cloudflare Workers + Cloudflare Tunnel, con comprobaciones periódicas de estado y conmutación por error automática.
+tags:
+  - cloudflare
+  - workers
+  - tunnel
+  - balanceo-de-carga
+  - comprobacion-de-estado
+  - devops
+  - javascript
+---
+
+Cloudflare Load Balancer es excelente, pero es un producto de pago. Si tu caso de uso es "Tengo dos réplicas detrás de Cloudflare Tunnel y solo quiero failover si una falla", puedes implementar un balanceador de carga simple en el edge usando un Cloudflare Worker en el nivel gratuito.
+
+La idea central es:
+
+- Expón **dos nombres de host diferentes**, uno por túnel (primario y réplica).
+- Expón un **tercer nombre de host** (el que compartes con los usuarios) que apunte al Worker.
+- El Worker realiza comprobaciones de salud y redirige cada solicitud al mejor destino.
+
+{/* more */}
+
+## Arquitectura (recomendada)
+
+Normalmente, querrás 3 nombres de host:
+
+- `servicio.tudominio.com`:
+  - Apunta al **Worker** (esta es la URL pública).
+- `servicio-principal.tudominio.com`:
+  - Cloudflare Tunnel que apunta a tu servidor **principal**.
+- `servicio-replica.tudominio.com`:
+  - Cloudflare Tunnel que apunta a tu servidor **réplica**.
+
+Esto soluciona una limitación común de Cloudflare Tunnel: no puedes vincular el mismo nombre de host a múltiples túneles, pero _sí_ puedes vincular diferentes nombres de host y colocar un Worker frente a ellos.
+
+## Cómo funciona el Worker
+
+- Mantiene un mapa en memoria `serverHealth` con:
+  - `healthy`: último estado de salud conocido.
+  - `lastCheck`: marca de tiempo de la última comprobación de salud.
+- En cada solicitud entrante:
+  - Actualiza el estado de salud si la caché es más antigua que `HEALTH_CHECK_INTERVAL`.
+  - Elige el primer servidor saludable.
+  - Si ninguno está saludable, retrocede al primer servidor.
+- Agrega un encabezado `X-Served-By` para depuración.
+- Si la solicitud `fetch` del proxy falla, reintenta una vez contra el otro servidor.
+
+Detalle importante: la caché se almacena en la memoria aislada del Worker. Eso significa que no es una caché global garantizada (puede reiniciarse en arranques en frío). Para un failover simple, esto suele estar bien.
+
+## El código
+
+Reemplaza las URLs de los túneles a continuación con las tuyas.
+
+```js
+// Cloudflare Worker Load Balancer with Health Check
+// Configure your tunnel URLs here
+const SERVERS = [
+  {
+    url: 'https://your-tunnel-1.yourdomain.com',
+    name: 'Server 1',
+    healthCheckPath: '/health' // or '/' if you don't have a specific endpoint
+  },
+  {
+    url: 'https://your-tunnel-2.yourdomain.com',
+    name: 'Server 2',
+    healthCheckPath: '/health'
+  }
+]
+
+// Settings
+const HEALTH_CHECK_TIMEOUT = 5000 // 5 seconds
+const HEALTH_CHECK_INTERVAL = 30000 // Check every 30 seconds
+
+// Server status cache (kept by the Worker)
+let serverHealth = {}
+
+// Health check
+async function checkHealth(server) {
+  try {
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), HEALTH_CHECK_TIMEOUT)
+
+    const response = await fetch(server.url + server.healthCheckPath, {
+      method: 'GET',
+      signal: controller.signal,
+      headers: {
+        'User-Agent': 'Cloudflare-Worker-HealthCheck'
+      }
+    })
+
+    clearTimeout(timeoutId)
+
+    // Healthy if 2xx or 3xx
+    return response.status >= 200 && response.status < 400
+  } catch (error) {
+    console.log(`Health check failed for ${server.name}:`, error.message)
+    return false
+  }
+}
+
+// Pick an available server
+async function getAvailableServer() {
+  // Refresh health check if needed
+  for (const server of SERVERS) {
+    const lastCheck = serverHealth[server.url]?.lastCheck || 0
+    const now = Date.now()
+
+    if (now - lastCheck > HEALTH_CHECK_INTERVAL) {
+      const isHealthy = await checkHealth(server)
+      serverHealth[server.url] = {
+        healthy: isHealthy,
+        lastCheck: now
+      }
+    }
+  }
+
+  // Pick the first healthy server
+  for (const server of SERVERS) {
+    if (serverHealth[server.url]?.healthy) {
+      return server
+    }
+  }
+
+  // If none are healthy, use the first as fallback
+  console.log('No healthy server found, using fallback')
+  return SERVERS[0]
+}
+
+// Main handler
+export default {
+  async fetch(request, env, ctx) {
+    // Pick server
+    const server = await getAvailableServer()
+
+    // Build target URL keeping original path
+    const url = new URL(request.url)
+    const targetUrl = new URL(url.pathname + url.search, server.url)
+
+    // Clone request for the chosen server
+    const modifiedRequest = new Request(targetUrl, {
+      method: request.method,
+      headers: request.headers,
+      body: request.body,
+      redirect: 'follow'
+    })
+
+    // Debug header (optional)
+    modifiedRequest.headers.set('X-Served-By', server.name)
+
+    try {
+      // Proxy request
+      const response = await fetch(modifiedRequest)
+
+      // Clone response to add headers
+      const newResponse = new Response(response.body, response)
+      newResponse.headers.set('X-Served-By', server.name)
+
+      return newResponse
+    } catch (error) {
+      // If it fails, try the other server
+      console.log(`Error while accessing ${server.name}, trying fallback`)
+
+      const fallbackServer = SERVERS.find((s) => s.url !== server.url)
+      if (fallbackServer) {
+        const fallbackUrl = new URL(url.pathname + url.search, fallbackServer.url)
+        const fallbackRequest = new Request(fallbackUrl, {
+          method: request.method,
+          headers: request.headers,
+          body: request.body,
+          redirect: 'follow'
+        })
+
+        return fetch(fallbackRequest)
+      }
+
+      return new Response('All servers are unavailable', { status: 503 })
+    }
+  }
+}
+```
+
+## Configuración (paso a paso)
+
+1. **Crea dos nombres de host para los túneles**
+   - Nombre de host del túnel principal: `servicio-principal.tudominio.com`
+   - Nombre de host del túnel réplica: `servicio-replica.tudominio.com`
+
+2. **Crea un Worker**
+   - Panel de control de Cloudflare
+   - Workers & Pages
+   - Crear Worker
+   - Pega el código y actualiza la lista `SERVERS`
+
+3. **Dirige tu nombre de host público al Worker**
+
+   Agrega una ruta (o un dominio personalizado) para que `servicio.tudominio.com/*` sea manejado por este Worker.
+
+4. **Prueba qué servidor está atendiendo las solicitudes**
+
+   ```bash
+   curl -I https://service.yourdomain.com
+   ```
+
+   Busca `X-Served-By` en los encabezados de la respuesta.
+
+5. **Prueba el failover**
+
+   Detén temporalmente el túnel principal y vuelve a intentar la misma solicitud. El encabezado debería cambiar a tu réplica.
+
+## Notas y limitaciones
+
+- **Aplicaciones con estado**: si tu servicio almacena estado en disco (sesiones, cargas, historial de chat, etc.), probablemente querrás almacenamiento compartido o sincronización entre el servidor principal y la réplica.
+- **Endpoint de comprobación de salud**: prefiere un endpoint ligero (o `/`) y evita lógica pesada.
+- **WebSockets / conexiones de larga duración**: dependiendo de tu plan de Cloudflare y del comportamiento de tu aplicación, las conexiones de larga duración pueden requerir atención adicional.
+- **Alcance de la caché**: `serverHealth` es memoria aislada, no un almacén de datos global. Si necesitas un estado de salud compartido más confiable, considera KV, Durable Objects o monitoreo externo.
+
+## Otra forma de hacerlo
+
+Podrías usar el mismo Tunnel en dos servidores/servicios, por lo que podrías tener un Tunnel llamado "Servicios" y conectarlo a "Servidor A" y "Servidor B".
+Algunas personas piensan que esta solución es mejor, y en términos de simplicidad, lo es. Pero si quieres separar los Tunnels, Cloudflare Worker Load Balancer es mejor.
+
+Pero si aún quieres un Tunnel en todos tus servidores, aquí está lo que noté sobre tener 1 Tunnel en todas las máquinas:
+Si usas un Tunnel compartido en todas las máquinas:
+
+```text
+
+        ┌─────────────────┐
+        │  Tunnel "main"  │
+        └─────────────────┘
+                │
+    ┌───────────┼───────────┬───────────┐
+    ▼           ▼           ▼           ▼
+┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐
+│Server A │ │Server B │ │Server C │ │Server D │
+│         │ │         │ │         │ │         │
+│Jellyfin │ │Navidrome│ │qBittor. │ │OpenWebUI│
+└─────────┘ └─────────┘ └─────────┘ └─────────┘
+
+```
+
+Problema: Cloudflare redirigirá jellyfin.dominio.com a CUALQUIER servidor (A, B, C o D aleatoriamente), ¡pero Jellyfin solo está en el Servidor A! 💥
+Resultado:- El 75% de las solicitudes resultarán en el error 502 (caerán en el servidor incorrecto)
+- Pierdes el control de dónde se ejecuta cada servicio
+- Un desastre total
+
+Funciona, pero **no se recomienda**.
+
+En este caso, **LA FORMA CORRECTA** de usar réplicas con un solo Tunnel sería compartir un Tunnel **solo cuando el MISMO servicio esté replicado en MÁQUINAS MÚLTIPLES**:
+
+**Escenario 1:** Quieres failover desde Open WebUI
+
+```text
+┌─────────────────────┐
+│ Tunnel "openwebui"  │
+└─────────────────────┘
+         │
+    ┌────┴────┐
+    ▼         ▼
+┌─────────┐ ┌─────────┐
+│Server A │ │Server B │
+│         │ │         │  ← Same Open WebUI (PostgreSQL+Redis shared)
+│OpenWebUI│ │OpenWebUI│
+└─────────┘ └─────────┘
+
+```
+
+Funciona, porque Open WebUI está en los dos servidores.
+
+**Escenario 2:** Jellyfin solo está en 1 servidor
+
+```text
+┌──────────────────┐
+│ Tunnel "media"   │
+└──────────────────┘
+         │
+         ▼
+    ┌─────────┐
+    │Server A │
+    │         │
+    │Jellyfin │ ← Only here
+    └─────────┘
+
+```
+
+✅ ¡Correcto! Tunnel dedicado porque Jellyfin solo está en un lugar.
+
+---
+
+**Resumen:**
+
+- 1 túnel por máquina: Servicios diferentes en máquinas diferentes.
+- 1 túnel en múltiples máquinas: Mismo servicio replicado (failover).
+- 1 túnel en todas las máquinas: Nunca (a menos que todos los servicios estén en todas las máquinas).
+
+## Recuerda amablemente
+
+No olvides que los datos compartidos deben ser accesibles por todos los servidores, de lo contrario tendrás inconsistencias en los datos. Y hasta que las configuraciones diverjan, o tengas que configurar cada uno de manera diferente.

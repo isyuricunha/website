@@ -1,0 +1,520 @@
+---
+---
+
+esta es una lista completa del hardware que alimenta mi homelab, trabajo de desarrollo y computación diaria.
+
+sin marketing, sin enlaces de afiliados: solo las máquinas reales que uso y por qué existen en mi configuración.
+
+el hardware está organizado en:
+
+- **portátil personal** - mi equipo principal
+- **servidor principal del home lab** - la potencia para bases de datos y servicios
+- **nodo arm64 del home lab** - raspberry pi para pruebas en arm
+- **máquinas en la nube x86-64** - desarrollo y producción en la nube
+- **máquinas en la nube arm64** - cargas de trabajo en la nube basadas en arm
+---
+
+## Hardware personal
+
+### Portátil principal
+
+Este es mi equipo principal. Lo uso para todo lo relacionado con estudio, código, SSH, documentación y trabajo general.
+
+**Especificaciones**
+
+- CPU
+  - **AMD Ryzen 7 7445HS**
+- RAM
+  - **64 GB DDR5**
+- Almacenamiento
+  - **256 GB** SSD
+  - **360 GB** SSD
+  - usado para el sistema, herramientas de desarrollo, bases de datos locales, contenedores y archivos
+- GPU
+  - **Nvidia RTX 4070** (portátil)
+
+Casos de uso principales:
+
+- terminales e IDEs para trabajar en código y documentación
+- SSH a todas las máquinas de laboratorio y en la nube a través de Tailscale
+- clientes de bases de datos, herramientas de administración y paneles de control
+- navegadores y aplicaciones que se comunican con servicios que se ejecutan en el laboratorio
+- algunos contenedores locales y VMs ligeras cuando son necesarias
+
+Este portátil es el lugar desde donde controlo todo lo demás.
+
+---
+
+## Hardware del laboratorio en casa
+
+### Servidor principal en casa
+
+Esta es la máquina principal del laboratorio en casa, enfocada en bases de datos, servicios y experimentos.
+
+**CPU**
+
+- **Intel Xeon W9 3475X**
+
+**Memoria**
+
+- **256 GB ECC R**
+- **256 GB ECC R** en configuración espejo
+- un total de **512 GB** de memoria ECC, configurada para redundancia y evitar fallos
+
+**Almacenamiento**
+
+Almacenamiento rotacional:
+
+- **14 TB HDD** para datos principales
+- **14 TB HDD** para redundancia
+- **14 TB HDD** para copias de seguridad
+
+Almacenamiento NVMe:
+
+- **256 GB NVMe** para el sistema
+- **500 GB NVMe** usado como caché de archivos
+- **4 TB NVMe** para archivos en frío y almacenamiento a largo plazo
+
+**GPUs**
+
+- **Nvidia GT210** para salida de video
+- **Nvidia GT 1050** para pequeñas cargas de trabajo y códecs de video
+- **AMD Radeon RX 7900 XTX** para cargas de trabajo de IA
+
+> nota: planeo reemplazar todo el hardware Nvidia e Intel con componentes AMD en el futuro
+
+**Uso típico:**
+
+- PostgreSQL y otras bases de datos en configuraciones de laboratorio reales
+- Pilas de Docker/contenedores para servicios autoalojados
+- tareas de monitoreo, registro y copias de seguridad
+- experimentos de IA utilizando la RX 7900 XTX
+- almacenamiento para medios, copias de seguridad y datos del laboratorio con redundancia
+
+Este es el núcleo del laboratorio en casa y donde ocurre la mayor parte del trabajo pesado.
+
+---
+
+### Nodo ARM64 en el laboratorio en casa
+
+También mantengo un entorno ARM64 en casa para pruebas y variedad.
+
+**Placa**
+
+- **Raspberry Pi 5**, versión de 16 GB
+
+**SoC**
+
+- **Broadcom BCM2712**
+- quad core **ARM Cortex A76**
+
+**Memoria**
+
+- **16 GB LPDDR4X 4267**
+
+**Almacenamiento**
+
+- Módulo **64 GB eMMC** para el sistema
+- Disco de **512 GB** para contenedores y archivos
+
+Casos de uso:
+
+- ejecución de contenedores ARM
+- pruebas de servicios en ARM64 antes de llevarlos a la nube ARM
+- pequeños servicios siempre encendidos con bajo consumo de energía
+- experimentos con almacenamiento en placas pequeñas
+
+Este nodo me ayuda a asegurarme de que mis configuraciones no sean solo para x86.
+
+---
+
+## Hardware en la nube
+
+También ejecuto cargas de trabajo de desarrollo y producción en la nube. Actualmente hay dos grupos principales de máquinas virtuales.
+
+### x86 64 dev y prod en la nube
+
+Estas son dos máquinas virtuales con el mismo hardware, una para desarrollo y otra para producción.
+
+**Especificaciones por VM**
+
+- CPU
+  - **AMD EPYC 7551**, **8 vCPU**
+- RAM
+  - **16 GB**
+- Almacenamiento
+  - **250 GB** para sistema, datos y registros
+
+Hay **dos** de estas máquinas con la misma configuración.
+
+Uso principal:
+
+- ejecución de bases de datos y servicios en un entorno más realista similar a producción
+- pruebas de implementaciones que se comunican con el laboratorio en casa a través de Tailscale
+- simulación de escenarios donde parte de la pila está en las instalaciones y parte en la nube
+
+---
+
+### ARM64 dev y prod en la nube
+
+También mantengo máquinas ARM64 en la nube para pruebas y cargas de trabajo que tienen sentido en esa arquitectura.
+
+**Especificaciones por VM**
+
+- CPU
+  - **8 vCPU**
+- RAM
+  - **24 GB**
+- Almacenamiento
+  - **150 GB** para sistema y datos
+
+> nota: el modelo exacto de CPU no está especificado por el proveedor de la nube; lo importante es el rendimiento y la arquitectura ARM64
+
+**usado para:**
+
+- ejecución de contenedores y servicios ARM64
+- comprobación de diferencias de rendimiento entre configuraciones ARM y x86
+- experimentos con cargas de trabajo eficientes en energía
+
+Nuevamente, la idea es tener al menos desarrollo y producción separados en este grupo.
+
+---
+
+## ¿Por qué esta mezcla de hardware?
+
+El hardware no es aleatorio. Sigue una idea simple.- el portátil es el centro de control
+- el servidor principal del laboratorio en casa es donde residen el trabajo pesado y el almacenamiento
+- el nodo ARM64 en casa me brinda variedad y experimentos de bajo consumo
+- las máquinas en la nube me permiten simular configuraciones de producción más realistas
+
+Con esta combinación puedo:
+
+- probar bases de datos y servicios con memoria y almacenamiento serios en casa
+- ejecutar cargas de trabajo de IA localmente usando la RX 7900 XTX
+- mantener redundancia y copias de seguridad con RAM espejada y múltiples discos duros
+- comparar el comportamiento de x86 y ARM64
+- practicar la separación de estilos de desarrollo, preparación y producción
+
+---
+
+este inventario me ayuda a recordar lo que realmente tengo y sirve como documentación para mi infraestructura. Si estás leyendo esto y te interesan los laboratorios en casa, ahora sabes qué es lo que funciona detrás de escena en yuricunha.com.
+
+<ExpandableSection title='Portátil' icon='Monitor'>
+
+  <div className='mb-6'>
+    <Image
+      src='/images/uses/ideapad-3i.png'
+      alt='Ideapad Gaming 3 R7'
+      width={1920}
+      height={1080}
+      lazy={false}
+      priority
+      className='mx-auto h-48 w-full max-w-xs rounded-lg object-contain shadow-lg'
+    />
+  </div>
+  <div className='bg-bg-surface rounded-lg border border-[var(--border-subtle)] p-4'>
+    <h3 className='mb-2 text-sm font-medium sm:text-base'>Por qué elegí este portátil:</h3>
+    <ul className='text-text-secondary space-y-1 text-xs sm:text-sm'>
+      <li>Equilibrio perfecto entre rendimiento y portabilidad</li>
+      <li>Excelente para desarrollo y juegos ocasionales</li>
+      <li>Relación calidad-precio inmejorable</li>
+    </ul>
+  </div>
+</ExpandableSection>
+
+<ExpandableSection title='Accesorios' icon='Smartphone'>
+  <ItemGrid
+    items={[
+      {
+        image: '/images/uses/accessories/s10.png',
+        name: 'S10 5G',
+        description: 'Negro, 512 GB',
+        url: 'https://www.samsung.com/uk/smartphones/galaxy-s10.../',
+        isAffiliate: false
+      },
+      {
+        image: '/images/uses/accessories/quietcontrol30.png',
+        name: 'Bose Quiet Control 30',
+        description: 'Auriculares',
+        url: 'https://www.boselatam.com/en_ar/products/headphones/earbuds/quietcontrol-30.html',
+        isAffiliate: true
+      }
+    ]}
+  />
+</ExpandableSection>
+
+<ExpandableSection title='PC Gamer - Hardware' icon='Zap'>x
+<ItemGrid
+  items={[
+    {
+      image: '/images/uses/gaming-pc/monitor.png',
+      name: 'LG 27GR75Q-B',
+      description: 'Monitor de 27" 165Hz',
+      url: 'https://www.lg.com/us/monitors/lg-27gr75q-b-gaming-monitor'
+    },
+    {
+      image: '/images/uses/gaming-pc/mx-ergo.png',
+      name: 'Logitech MX Ergo+',
+      description: 'Ratón',
+      url: 'https://www.logitech.com/en-us/shop/p/mx-ergo-wireless-trackball-mouse.910-005177'
+    },
+    {
+      image: '/images/uses/gaming-pc/wooting-60he.png',
+      name: 'Wooting 60HE+',
+      description: 'Teclado Mecánico Personalizado Sin Cable',
+      url: 'https://wooting.io/wooting-60he'
+    },
+    {
+      image: '/images/uses/gaming-pc/i9.png',
+      name: 'Procesador Intel® Core™ Ultra 9 285K',
+      description: 'CPU',
+      url: 'https://www.intel.com/content/www/us/en/products/sku/241060/intel-core-ultra-9-processor-285k-36m-cache-up-to-5-70-ghz/specifications.html'
+    },
+    {
+      image: '/images/uses/gaming-pc/5070d.png',
+      name: 'RTX 5070D',
+      description: 'Tarjeta gráfica',
+      url: 'https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5070-family/'
+    },
+    {
+      image: '/images/uses/gaming-pc/adata.png',
+      name: 'NVME ADATA Legends',
+      description: '2TB',
+      url: 'https://www.amazon.com/ADATA-800-Internal-Storage-Endurance/dp/B0BWFMXMJR'
+    },
+    {
+      image: '/images/uses/gaming-pc/gamdias.png',
+      name: 'Refrigeración Líquida Gamdias Chione M4-420',
+      description: 'Refrigeración',
+      url: 'https://www.gamdias.com/en/component/cooler/CHIONE_M4-420'
+    },
+    {
+      image: '/images/uses/gaming-pc/fsp-700w.png',
+      name: 'FSP 700W',
+      description: 'Fuente de alimentación, 80+ Bronze',
+      url: 'https://www.fsplifestyle.com/en/product/Hydro700w.html'
+    },
+    {
+      image: '/images/uses/gaming-pc/32gb-ram.png',
+      name: '96GB',
+      description: 'RAM',
+      url: 'https://www.amazon.com/s?k=96gb+ram'
+    },
+    {
+      image: '/images/uses/gaming-pc/case.png',
+      name: 'Duex DX305T',
+      description: 'Caja',
+      url: 'https://www.duex.com.br/produtos/gabinete/gabinete-gamer-dx305t'
+    }
+  ]}
+/>
+
+<div className='mt-6 rounded-lg border border-[var(--accent-border)] bg-[var(--accent-dim)] p-4'>
+  <h3 className='text-accent-earth-text mb-2 text-sm font-medium'>
+    💡 Consejo profesional
+  </h3>
+  <div className='text-text-secondary text-xs sm:text-sm'>
+    Al montar un PC para juegos, invierte más en la GPU y la CPU primero. Siempre puedes actualizar
+    los periféricos después, pero los componentes principales determinan tu rendimiento general.
+  </div>
+</div>
+</ExpandableSection>
+
+<ExpandableSection title='Infraestructura' icon='Shield'><ItemGrid
+  items={[
+    {
+      image: '/images/uses/software/docker.png',
+      name: 'Docker',
+      description: 'Plataforma de Contenedores',
+      url: 'https://www.docker.com/'
+    },
+    {
+      image: '/images/uses/software/kubernetes.png',
+      name: 'Kubernetes',
+      description: 'Orquestación de Contenedores',
+      url: 'https://kubernetes.io/'
+    },
+    {
+      image: '/images/uses/software/ansible.png',
+      name: 'Ansible',
+      description: 'Gestión de Configuraciones',
+      url: 'https://www.ansible.com/'
+    },
+    {
+      image: '/images/uses/software/terraform.png',
+      name: 'Terraform',
+      description: 'Infraestructura como Código',
+      url: 'https://www.terraform.io/'
+    },
+    {
+      image: '/images/uses/software/prometheus.png',
+      name: 'Prometheus',
+      description: 'Monitoreo y Alertas',
+      url: 'https://prometheus.io/'
+    },
+    {
+      image: '/images/uses/software/grafana.png',
+      name: 'Grafana',
+      description: 'Visualización de Métricas',
+      url: 'https://grafana.com/'
+    },
+    {
+      image: '/images/uses/software/nginx.png',
+      name: 'Nginx',
+      description: 'Servidor Web y Proxy Inverso',
+      url: 'https://nginx.org/'
+    },
+    {
+      image: '/images/uses/software/haproxy.png',
+      name: 'HAProxy',
+      description: 'Balanceador de Carga',
+      url: 'https://www.haproxy.org/'
+    },
+    {
+      image: '/images/uses/software/jenkins.png',
+      name: 'Jenkins',
+      description: 'Automatización CI/CD',
+      url: 'https://www.jenkins.io/'
+    },
+    {
+      image: '/images/uses/software/consul.png',
+      name: 'Consul',
+      description: 'Descubrimiento de Servicios y Configuración',
+      url: 'https://www.consul.io/'
+    },
+    {
+      image: '/images/uses/software/vault.png',
+      name: 'Vault',
+      description: 'Gestión de Secretos',
+      url: 'https://www.vaultproject.io/'
+    },
+    {
+      image: '/images/uses/software/chef.png',
+      name: 'Chef',
+      description: 'Automatización de Infraestructura',
+      url: 'https://www.chef.io/'
+    },
+    {
+      image: '/images/uses/software/puppet.png',
+      name: 'Puppet',
+      description: 'Gestión de Configuraciones',
+      url: 'https://puppet.com/'
+    },
+    {
+      image: '/images/uses/software/saltstack.png',
+      name: 'SaltStack',
+      description: 'Automatización y Gestión de Configuraciones',
+      url: 'https://www.saltproject.io/'
+    },
+    {
+      image: '/images/uses/software/vagrant.png',
+      name: 'Vagrant',
+      description: 'Automatización de Máquinas Virtuales',
+      url: 'https://www.vagrantup.com/'
+    },
+    {
+      image: '/images/uses/software/zabbix.png',
+      name: 'Zabbix',
+      description: 'Solución de Monitoreo',
+      url: 'https://www.zabbix.com/'
+    },
+    {
+      image: '/images/uses/software/datadog.png',
+      name: 'Datadog',
+      description: 'Monitoreo en la Nube',
+      url: 'https://www.datadoghq.com/'
+    },
+    {
+      image: '/images/uses/software/rabbitmq.png',
+      name: 'RabbitMQ',
+      description: 'Broker de Mensajes',
+      url: 'https://www.rabbitmq.com/'
+    },
+    {
+      image: '/images/uses/software/kafka.png',
+      name: 'Kafka',
+      description: 'Transmisión Distribuida',
+      url: 'https://kafka.apache.org/'
+    },
+    {
+      image: '/images/uses/software/splunk.png',
+      name: 'Splunk',
+      description: 'Análisis de Registros y Monitoreo',
+      url: 'https://www.splunk.com/'
+    },
+    {
+      image: '/images/uses/software/apache.png',
+      name: 'Apache',
+      description: 'Servidor Web',
+      url: 'https://httpd.apache.org/'
+    }
+  ]}
+/>x
+<ComparisonTable
+  items={[
+    {
+      name: 'Docker',
+      pros: ['Contenerización fácil', 'Excelente para desarrollo', 'Amplio ecosistema'],
+      cons: ['Uso intensivo de recursos', 'Curva de aprendizaje'],
+      price: 'Gratuito',
+      rating: 5
+    },
+    {
+      name: 'Kubernetes',
+      pros: ['Excelente orquestación', 'Autoescalado', 'Listo para producción'],
+      cons: ['Configuración compleja', 'Curva de aprendizaje pronunciada'],
+      price: 'Gratuito',
+      rating: 4
+    },
+    {
+      name: 'Terraform',
+      pros: ['Infraestructura como código', 'Multinube', 'Excelente planificación'],
+      cons: ['Gestión de estado', 'Puede ser complejo'],
+      price: 'Gratuito/De pago',
+      rating: 4
+    }
+  ]}
+  title='Comparación de Herramientas de Infraestructura'
+/>
+
+<ExpandableSection title='Stacks' icon='Code'>
+  <ItemGrid
+    items={[
+      {
+        image: '/images/uses/software/elk.png',
+        name: 'ELK Stack',
+        description: 'Elasticsearch, Logstash y Kibana para análisis de logs',
+        url: 'https://www.elastic.co/es/what-is/elk-stack',
+        isAffiliate: false
+      },
+      {
+        image: '/images/uses/software/lamp.png',
+        name: 'LAMP Stack',
+        description: 'Linux, Apache, MySQL y PHP',
+        url: 'https://es.wikipedia.org/wiki/LAMP',
+        isAffiliate: false
+      },
+      {
+        image: '/images/uses/software/mean.png',
+        name: 'MEAN Stack',
+        description: 'MongoDB, Express, Angular y Node.js',
+        url: 'https://es.wikipedia.org/wiki/MEAN',
+        isAffiliate: false
+      },
+      {
+        image: '/images/uses/software/mern.png',
+        name: 'MERN Stack',
+        description: 'MongoDB, Express, React y Node.js',
+        url: 'https://es.wikipedia.org/wiki/MERN',
+        isAffiliate: false
+      },
+      {
+        image: '/images/uses/software/jam.png',
+        name: 'JAM Stack',
+        description: 'JavaScript, APIs y Markup',
+        url: 'https://jamstack.org/',
+        isAffiliate: false
+      }
+    ]}
+  />
+</ExpandableSection>
