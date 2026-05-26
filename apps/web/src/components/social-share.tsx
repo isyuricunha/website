@@ -135,7 +135,11 @@ export default function SocialShare({
         </DropdownMenuItem>
 
         <DropdownMenuItem onClick={copyToClipboard} className='gap-2'>
-          {copied ? <Check className='size-4 text-green-600' /> : <Link className='size-4' />}
+          {copied ? (
+            <Check className='text-accent-earth-text size-4' />
+          ) : (
+            <Link className='size-4' />
+          )}
           {copied ? t('copy.copied') : t('copy.label')}
         </DropdownMenuItem>
       </DropdownMenuContent>

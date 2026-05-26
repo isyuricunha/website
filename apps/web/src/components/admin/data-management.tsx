@@ -225,7 +225,7 @@ export default function DataManagement() {
       <div className='flex items-center justify-between'>
         <div>
           <h1 className='text-3xl font-medium'>{t('title')}</h1>
-          <p className='text-muted-foreground'>{t('description')}</p>
+          <p className='text-text-secondary'>{t('description')}</p>
         </div>
       </div>
 
@@ -234,11 +234,11 @@ export default function DataManagement() {
         <Card>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
             <CardTitle className='text-sm font-medium'>{t('stats.database-backups')}</CardTitle>
-            <Database className='text-muted-foreground h-4 w-4' />
+            <Database className='text-text-secondary h-4 w-4' />
           </CardHeader>
           <CardContent>
             <div className='text-2xl font-medium'>{dataStats?.backups.total || 0}</div>
-            <p className='text-muted-foreground text-xs'>
+            <p className='text-text-secondary text-xs'>
               {t('stats.completed-count', { count: dataStats?.backups.completed || 0 })}
             </p>
           </CardContent>
@@ -247,24 +247,24 @@ export default function DataManagement() {
         <Card>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
             <CardTitle className='text-sm font-medium'>{t('stats.backup-size')}</CardTitle>
-            <Database className='text-muted-foreground h-4 w-4' />
+            <Database className='text-text-secondary h-4 w-4' />
           </CardHeader>
           <CardContent>
             <div className='text-2xl font-medium'>
               {formatFileSize(dataStats?.backups.totalSize || 0)}
             </div>
-            <p className='text-muted-foreground text-xs'>{t('stats.total-storage-used')}</p>
+            <p className='text-text-secondary text-xs'>{t('stats.total-storage-used')}</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
             <CardTitle className='text-sm font-medium'>{t('stats.data-exports')}</CardTitle>
-            <Download className='text-muted-foreground h-4 w-4' />
+            <Download className='text-text-secondary h-4 w-4' />
           </CardHeader>
           <CardContent>
             <div className='text-2xl font-medium'>{dataStats?.exports.total || 0}</div>
-            <p className='text-muted-foreground text-xs'>
+            <p className='text-text-secondary text-xs'>
               {t('stats.completed-count', { count: dataStats?.exports.completed || 0 })}
             </p>
           </CardContent>
@@ -273,13 +273,13 @@ export default function DataManagement() {
         <Card>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
             <CardTitle className='text-sm font-medium'>{t('stats.records-exported')}</CardTitle>
-            <Upload className='text-muted-foreground h-4 w-4' />
+            <Upload className='text-text-secondary h-4 w-4' />
           </CardHeader>
           <CardContent>
             <div className='text-2xl font-medium'>
               {(dataStats?.exports.totalRecords || 0).toLocaleString()}
             </div>
-            <p className='text-muted-foreground text-xs'>{t('stats.total-records-processed')}</p>
+            <p className='text-text-secondary text-xs'>{t('stats.total-records-processed')}</p>
           </CardContent>
         </Card>
       </div>
@@ -317,11 +317,11 @@ export default function DataManagement() {
                             {t('backups.backup-label', { type: getBackupTypeLabel(backup.type) })}
                           </span>
                         </div>
-                        <span className='text-muted-foreground text-xs'>
+                        <span className='text-text-secondary text-xs'>
                           {new Date(backup.createdAt).toLocaleDateString()}
                         </span>
                       </div>
-                    )) || <div className='text-muted-foreground text-sm'>{t('backups.empty')}</div>}
+                    )) || <div className='text-text-secondary text-sm'>{t('backups.empty')}</div>}
                   </div>
                 )}
               </CardContent>
@@ -347,11 +347,11 @@ export default function DataManagement() {
                           </Badge>
                           <span className='text-sm'>{exportItem.name}</span>
                         </div>
-                        <span className='text-muted-foreground text-xs'>
+                        <span className='text-text-secondary text-xs'>
                           {new Date(exportItem.createdAt).toLocaleDateString()}
                         </span>
                       </div>
-                    )) || <div className='text-muted-foreground text-sm'>{t('exports.empty')}</div>}
+                    )) || <div className='text-text-secondary text-sm'>{t('exports.empty')}</div>}
                   </div>
                 )}
               </CardContent>
@@ -430,20 +430,20 @@ export default function DataManagement() {
                           </Badge>
                         </div>
                         {backup.name && (
-                          <div className='text-muted-foreground mb-2 text-sm'>{backup.name}</div>
+                          <div className='text-text-secondary mb-2 text-sm'>{backup.name}</div>
                         )}
                         <div className='flex items-center justify-between text-sm'>
-                          <span className='text-muted-foreground'>
+                          <span className='text-text-secondary'>
                             {backup.fileSize
                               ? formatFileSize(backup.fileSize)
                               : t('file-size.unknown')}
                           </span>
-                          <span className='text-muted-foreground'>
+                          <span className='text-text-secondary'>
                             {new Date(backup.createdAt).toLocaleString()}
                           </span>
                         </div>
                         {backup.completedAt && (
-                          <div className='text-muted-foreground mt-1 text-xs'>
+                          <div className='text-text-secondary mt-1 text-xs'>
                             {t('date.completed', {
                               date: new Date(backup.completedAt).toLocaleString()
                             })}
@@ -451,7 +451,7 @@ export default function DataManagement() {
                         )}
                       </div>
                     )) || (
-                      <div className='text-muted-foreground text-center'>{t('backups.empty')}</div>
+                      <div className='text-text-secondary text-center'>{t('backups.empty')}</div>
                     )}
                   </div>
                 )}
@@ -533,36 +533,36 @@ export default function DataManagement() {
                             {getStatusLabel(exportItem.status)}
                           </Badge>
                         </div>
-                        <div className='text-muted-foreground mb-2 text-sm'>
+                        <div className='text-text-secondary mb-2 text-sm'>
                           {t('exports.format', { format: exportItem.format.toUpperCase() })}
                         </div>
                         <div className='flex items-center justify-between text-sm'>
-                          <span className='text-muted-foreground'>
+                          <span className='text-text-secondary'>
                             {exportItem.recordCount
                               ? t('exports.records', {
                                   count: exportItem.recordCount.toLocaleString()
                                 })
                               : t('exports.processing')}
                           </span>
-                          <span className='text-muted-foreground'>
+                          <span className='text-text-secondary'>
                             {new Date(exportItem.createdAt).toLocaleString()}
                           </span>
                         </div>
                         {exportItem.completedAt && (
-                          <div className='text-muted-foreground mt-1 text-xs'>
+                          <div className='text-text-secondary mt-1 text-xs'>
                             {t('date.completed', {
                               date: new Date(exportItem.completedAt).toLocaleString()
                             })}
                           </div>
                         )}
                         {exportItem.fileSize && (
-                          <div className='text-muted-foreground text-xs'>
+                          <div className='text-text-secondary text-xs'>
                             {t('file-size.size', { size: formatFileSize(exportItem.fileSize) })}
                           </div>
                         )}
                       </div>
                     )) || (
-                      <div className='text-muted-foreground text-center'>{t('exports.empty')}</div>
+                      <div className='text-text-secondary text-center'>{t('exports.empty')}</div>
                     )}
                   </div>
                 )}
@@ -608,9 +608,7 @@ export default function DataManagement() {
                       rows={3}
                       required
                     />
-                    <div className='text-muted-foreground mt-1 text-xs'>
-                      {t('fields.rules-help')}
-                    </div>
+                    <div className='text-text-secondary mt-1 text-xs'>{t('fields.rules-help')}</div>
                   </div>
                   <Button type='submit' disabled={runQualityCheckMutation.isPending}>
                     {runQualityCheckMutation.isPending
@@ -628,7 +626,7 @@ export default function DataManagement() {
                 <CardDescription>{t('quality.overview-description')}</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className='text-muted-foreground py-8 text-center'>
+                <div className='text-text-secondary py-8 text-center'>
                   <CheckCircle className='mx-auto mb-4 h-12 w-12 opacity-50' />
                   <p>{t('quality.empty-title')}</p>
                   <p className='mt-2 text-sm'>{t('quality.empty-description')}</p>

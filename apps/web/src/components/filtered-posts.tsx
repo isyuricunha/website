@@ -308,7 +308,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
           <span className='flex-1'>
             {isSearching ? (
               t('component.filtered-posts.searching')
-            ) : searchValue || selectedCategory !== 'all' || selectedTag !== 'all' ? (
+            ) : (searchValue || selectedCategory !== 'all' || selectedTag !== 'all' ? (
               <>
                 {t('component.filtered-posts.results.count', { count: regularPosts.length })}
                 {searchValue
@@ -331,7 +331,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
                     })
                   : ''}
               </>
-            )}
+            ))}
           </span>
           {(searchValue || selectedCategory !== 'all' || selectedTag !== 'all') && (
             <button
@@ -357,7 +357,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
           <button
             type='button'
             onClick={clearAllFilters}
-            className='border-accent-earth-hover bg-accent-earth hover:bg-accent-earth-hover inline-flex min-h-[44px] items-center justify-center rounded-md border px-6 py-3 text-sm font-medium text-[var(--text-primary)] transition-colors'
+            className='border-accent-earth-hover bg-accent-earth text-text-inverse hover:bg-accent-earth-hover inline-flex min-h-[44px] items-center justify-center rounded-md border px-6 py-3 text-sm font-medium transition-colors'
           >
             {t('component.filtered-posts.empty.show-all')}
           </button>
@@ -395,7 +395,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
                     onClick={() => setCurrentPage(page)}
                     className={`min-h-[44px] min-w-[44px] rounded-md border px-3 py-2 text-sm ${
                       currentPage === page
-                        ? 'border-accent-earth bg-accent-earth text-[var(--text-primary)]'
+                        ? 'border-accent-earth bg-accent-earth text-text-inverse'
                         : 'hover:bg-bg-hover border-[var(--border-subtle)]'
                     }`}
                   >

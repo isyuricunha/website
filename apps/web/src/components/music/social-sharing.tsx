@@ -64,10 +64,10 @@ const SocialSharing = () => {
         {/* Currently Playing */}
         {currentTrack && (
           <div>
-            <h4 className='mb-3 text-sm font-semibold sm:text-base'>
+            <h4 className='mb-3 text-sm font-medium sm:text-base'>
               {t('spotify.social.now-playing')}
             </h4>
-            <div className='bg-muted/50 flex items-center gap-3 rounded-lg p-3'>
+            <div className='bg-bg-hover flex items-center gap-3 rounded-lg p-3'>
               <div className='relative h-12 w-12 flex-shrink-0 overflow-hidden rounded-lg'>
                 <MusicImage
                   src={currentTrack.albumImage}
@@ -79,7 +79,7 @@ const SocialSharing = () => {
               </div>
               <div className='min-w-0 flex-1'>
                 <h5 className='truncate text-sm font-medium sm:text-base'>{currentTrack.name}</h5>
-                <p className='text-muted-foreground truncate text-xs sm:text-sm'>
+                <p className='text-text-secondary truncate text-xs sm:text-sm'>
                   {currentTrack.artist}
                 </p>
               </div>
@@ -87,7 +87,7 @@ const SocialSharing = () => {
                 <button
                   type='button'
                   onClick={() => shareTrack(currentTrack, 'twitter')}
-                  className='hover:bg-muted rounded-lg p-2 transition-colors'
+                  className='hover:bg-bg-hover rounded-lg p-2 transition-colors'
                   title={t('spotify.social.buttons.twitter')}
                 >
                   <SiX className='h-4 w-4' />
@@ -95,7 +95,7 @@ const SocialSharing = () => {
                 <button
                   type='button'
                   onClick={() => shareTrack(currentTrack, 'facebook')}
-                  className='hover:bg-muted rounded-lg p-2 transition-colors'
+                  className='hover:bg-bg-hover rounded-lg p-2 transition-colors'
                   title={t('spotify.social.buttons.facebook')}
                 >
                   <SiFacebook className='h-4 w-4' />
@@ -103,7 +103,7 @@ const SocialSharing = () => {
                 <button
                   type='button'
                   onClick={() => shareTrack(currentTrack, 'copy')}
-                  className='hover:bg-muted rounded-lg p-2 transition-colors'
+                  className='hover:bg-bg-hover rounded-lg p-2 transition-colors'
                   title={t('spotify.social.buttons.copy')}
                 >
                   {copiedTrack === currentTrack.songUrl ? (
@@ -120,16 +120,16 @@ const SocialSharing = () => {
         {/* Featured Tracks */}
         {featuredTracks.length > 0 && (
           <div>
-            <h4 className='mb-3 text-sm font-semibold sm:text-base'>
+            <h4 className='mb-3 text-sm font-medium sm:text-base'>
               {t('spotify.social.top-tracks')}
             </h4>
             <div className='space-y-3'>
               {featuredTracks.map((track: any, index: number) => (
                 <div
                   key={track.url ?? track.id ?? index}
-                  className='bg-bg-surface hover:bg-muted/50 flex items-center gap-3 rounded-lg p-3 transition-colors'
+                  className='bg-bg-surface hover:bg-bg-hover flex items-center gap-3 rounded-lg p-3 transition-colors'
                 >
-                  <div className='bg-accent-earth text-accent-earth-text flex h-6 w-6 items-center justify-center rounded-full text-xs font-medium'>
+                  <div className='bg-accent-earth text-text-inverse flex h-6 w-6 items-center justify-center rounded-full text-xs font-medium'>
                     {index + 1}
                   </div>
                   <div className='relative h-10 w-10 flex-shrink-0 overflow-hidden rounded-lg'>
@@ -143,7 +143,7 @@ const SocialSharing = () => {
                   </div>
                   <div className='min-w-0 flex-1'>
                     <h5 className='truncate text-xs font-medium sm:text-sm'>{track.name}</h5>
-                    <p className='text-muted-foreground truncate text-[10px] sm:text-xs'>
+                    <p className='text-text-secondary truncate text-[10px] sm:text-xs'>
                       {track.artist}
                     </p>
                   </div>
@@ -151,7 +151,7 @@ const SocialSharing = () => {
                     <button
                       type='button'
                       onClick={() => shareTrack(track, 'twitter')}
-                      className='hover:bg-muted rounded-lg p-1.5 transition-colors'
+                      className='hover:bg-bg-hover rounded-lg p-1.5 transition-colors'
                       title={t('spotify.social.buttons.twitter')}
                     >
                       <SiX className='h-3 w-3' />
@@ -159,7 +159,7 @@ const SocialSharing = () => {
                     <button
                       type='button'
                       onClick={() => shareTrack(track, 'facebook')}
-                      className='hover:bg-muted rounded-lg p-1.5 transition-colors'
+                      className='hover:bg-bg-hover rounded-lg p-1.5 transition-colors'
                       title={t('spotify.social.buttons.facebook')}
                     >
                       <SiFacebook className='h-3 w-3' />
@@ -167,7 +167,7 @@ const SocialSharing = () => {
                     <button
                       type='button'
                       onClick={() => shareTrack(track, 'copy')}
-                      className='hover:bg-muted rounded-lg p-1.5 transition-colors'
+                      className='hover:bg-bg-hover rounded-lg p-1.5 transition-colors'
                       title={t('spotify.social.buttons.copy')}
                     >
                       {copiedTrack === track.url ? (
@@ -178,7 +178,7 @@ const SocialSharing = () => {
                     </button>
                     <Link
                       href={track.url}
-                      className='hover:bg-muted rounded-lg p-1.5 transition-colors'
+                      className='hover:bg-bg-hover rounded-lg p-1.5 transition-colors'
                       title={t('spotify.social.buttons.open')}
                     >
                       <ExternalLink className='h-3 w-3' />
@@ -192,7 +192,7 @@ const SocialSharing = () => {
 
         {/* Share Profile */}
         <div className='border-t pt-4'>
-          <h4 className='mb-3 text-sm font-semibold sm:text-base'>
+          <h4 className='mb-3 text-sm font-medium sm:text-base'>
             {t('spotify.social.profile.title')}
           </h4>
           <div className='flex justify-center'>

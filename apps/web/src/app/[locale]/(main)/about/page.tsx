@@ -92,7 +92,15 @@ const Page = async (props: PageProps) => {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <PageTitle title={title} description={description} />
-      <Mdx code={code} />
+      <section className='grid gap-12 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-20'>
+        <aside className='border-t-[0.5px] border-[var(--border-faint)] pt-6 lg:sticky lg:top-28 lg:self-start'>
+          <span className='label-mono'>{title}</span>
+          <p className='text-text-secondary mt-4 text-[15px] leading-relaxed'>{description}</p>
+        </aside>
+        <article className='cursor-reveal min-w-0'>
+          <Mdx code={code} />
+        </article>
+      </section>
     </>
   )
 }

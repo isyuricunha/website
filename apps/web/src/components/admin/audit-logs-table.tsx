@@ -119,7 +119,7 @@ const AuditLogsTable = (props: AuditLogsTableProps) => {
       <div className='flex items-center justify-between'>
         <div className='flex items-center space-x-2'>
           <div className='relative'>
-            <Search className='text-muted-foreground absolute top-2.5 left-2 h-4 w-4' />
+            <Search className='text-text-secondary absolute top-2.5 left-2 h-4 w-4' />
             <Input
               placeholder={t('search-placeholder')}
               value={searchTerm}

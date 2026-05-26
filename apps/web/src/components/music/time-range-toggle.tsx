@@ -17,7 +17,7 @@ const TimeRangeToggle = ({ value, onChange, className }: Props) => {
   ]
   return (
     <div
-      className={`bg-muted inline-flex items-center gap-1 rounded-md p-1 text-xs ${className ?? ''}`}
+      className={`bg-bg-hover inline-flex items-center gap-1 rounded-md p-1 text-xs ${className ?? ''}`}
     >
       {opts.map((o) => (
         <button
@@ -26,8 +26,8 @@ const TimeRangeToggle = ({ value, onChange, className }: Props) => {
           onClick={() => onChange(o.key)}
           className={`rounded-md px-2 py-1 transition-colors ${
             value === o.key
-              ? 'bg-background text-foreground shadow'
-              : 'text-muted-foreground hover:text-foreground'
+              ? 'bg-bg-base text-text-primary shadow'
+              : 'text-text-secondary hover:text-text-primary'
           }`}
           aria-pressed={value === o.key}
         >

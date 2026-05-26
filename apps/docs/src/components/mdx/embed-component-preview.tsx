@@ -6,7 +6,7 @@ const EmbedComponentPreview = (props: EmbedComponentPreviewProps) => {
   const { name } = props
 
   return (
-    <div className='aspect-[4/2.5] w-full overflow-hidden rounded-md border'>
+    <div className='app-window aspect-[4/2.5] w-full'>
       <iframe
         src={`/embed?component=${name}`}
         title={`${name.split('/')[0]} demo`}

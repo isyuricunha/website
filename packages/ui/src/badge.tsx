@@ -2,11 +2,11 @@ import { cn } from '@isyuricunha/utils'
 import { cva, type VariantProps } from 'cva'
 
 const badgeVariants = cva({
-  base: 'inline-flex items-center justify-center rounded-full border px-2.5 py-0.5 text-xs font-semibold',
+  base: 'inline-flex items-center justify-center rounded-full border px-2.5 py-0.5 text-xs font-medium',
   variants: {
     variant: {
-      default: 'bg-primary text-primary-foreground border-transparent shadow-sm',
-      secondary: 'bg-secondary text-secondary-foreground border-transparent shadow-sm',
+      default: 'bg-accent-earth text-text-inverse border-transparent shadow-sm',
+      secondary: 'bg-bg-surface text-text-secondary border-transparent shadow-sm',
       destructive: 'bg-destructive text-destructive-foreground border-transparent shadow-sm',
       outline: 'text-foreground'
     }

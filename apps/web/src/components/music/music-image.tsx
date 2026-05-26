@@ -29,7 +29,9 @@ const MusicImage = ({
 
   if (!src || hasError) {
     return (
-      <div className={`bg-muted flex items-center justify-center ${className}`}>{fallbackIcon}</div>
+      <div className={`bg-bg-hover flex items-center justify-center ${className}`}>
+        {fallbackIcon}
+      </div>
     )
   }
 
@@ -38,7 +40,7 @@ const MusicImage = ({
     return (
       <div className={`relative ${className}`}>
         {isLoading && (
-          <div className='bg-muted absolute inset-0 flex animate-pulse items-center justify-center'>
+          <div className='bg-bg-hover absolute inset-0 flex animate-pulse items-center justify-center'>
             {fallbackIcon}
           </div>
         )}
@@ -66,7 +68,7 @@ const MusicImage = ({
   return (
     <div className={`relative ${className}`}>
       {isLoading && (
-        <div className='bg-muted absolute inset-0 flex animate-pulse items-center justify-center'>
+        <div className='bg-bg-hover absolute inset-0 flex animate-pulse items-center justify-center'>
           {fallbackIcon}
         </div>
       )}

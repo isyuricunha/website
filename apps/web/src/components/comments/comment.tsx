@@ -121,7 +121,7 @@ const Comment = (props: CommentProps) => {
                   )}
                 </div>
                 {role === 'admin' ? (
-                  <div className='rounded-full border border-red-500/50 bg-red-100/50 px-2 py-0.5 text-sm dark:bg-red-900/50'>
+                  <div className='text-accent-earth-text rounded-full border border-[var(--accent-border)] bg-[var(--accent-dim)] px-2 py-0.5 text-sm'>
                     {t('blog.comments.author')}
                   </div>
                 ) : null}

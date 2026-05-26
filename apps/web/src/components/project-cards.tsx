@@ -319,7 +319,7 @@ const ProjectCards = (props: ProjectCardsProps) => {
               <button
                 type='button'
                 onClick={clearFilters}
-                className='border-accent-earth-hover bg-accent-earth hover:bg-accent-earth-hover inline-flex items-center justify-center rounded-md border px-4 py-2 text-sm font-medium text-[var(--text-primary)] transition-colors'
+                className='border-accent-earth-hover bg-accent-earth text-text-inverse hover:bg-accent-earth-hover inline-flex items-center justify-center rounded-md border px-4 py-2 text-sm font-medium transition-colors'
               >
                 {t('projects.empty.show-all')}
               </button>
@@ -362,7 +362,7 @@ const ProjectCard = (props: ProjectCardProps) => {
   const t = useTranslations()
 
   return (
-    <EnhancedCard className='group relative overflow-hidden' gradient>
+    <EnhancedCard className='group relative overflow-hidden' accentLine>
       {/* Make the whole card clickable to the in-site project page */}
       <Link
         href={`/projects/${slug}`}
@@ -430,7 +430,7 @@ const ProjectCard = (props: ProjectCardProps) => {
                 rel='noopener noreferrer'
                 title={t('projects.card.live.title')}
                 aria-label={t('projects.card.live.aria')}
-                className='border-accent-earth-hover bg-accent-earth hover:bg-accent-earth-hover focus-visible:ring-ring relative z-10 inline-flex h-9 items-center gap-2 rounded-md border px-2 text-[var(--text-primary)] shadow-sm transition-colors focus-visible:ring-2 focus-visible:outline-none md:px-3'
+                className='border-accent-earth-hover bg-accent-earth text-text-inverse hover:bg-accent-earth-hover focus-visible:ring-ring relative z-10 inline-flex h-9 items-center gap-2 rounded-md border px-2 shadow-sm transition-colors focus-visible:ring-2 focus-visible:outline-none md:px-3'
                 onClick={(e) => e.stopPropagation()}
               >
                 <ExternalLink className='h-4 w-4' />

@@ -33,7 +33,7 @@ const AdminLoading = () => {
           <Card key={i} className='animate-pulse'>
             <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
               <Skeleton className='h-4 w-24' />
-              <div className='bg-muted rounded-lg p-2'>
+              <div className='bg-bg-hover rounded-lg p-2'>
                 <Skeleton className='h-4 w-4' />
               </div>
             </CardHeader>
@@ -91,7 +91,7 @@ const AdminLoading = () => {
           </CardHeader>
           <CardContent className='space-y-3'>
             {Array.from({ length: 5 }).map((_, i) => (
-              <div key={i} className='bg-muted flex items-center justify-between rounded-lg p-2'>
+              <div key={i} className='bg-bg-hover flex items-center justify-between rounded-lg p-2'>
                 <div className='flex items-center space-x-2'>
                   <Skeleton className='h-4 w-4' />
                   <Skeleton className='h-4 w-24' />

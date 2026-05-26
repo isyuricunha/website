@@ -1,8 +1,8 @@
 @theme {
-  --color-diff-remove: rgba(244, 63, 94, 0.16);
-  --color-diff-add: rgba(16, 185, 129, 0.16);
-  --color-diff-remove-symbol: rgb(203, 118, 118);
-  --color-diff-add-symbol: rgb(61, 214, 140);
+  --color-diff-remove: rgba(201, 87, 42, 0.14);
+  --color-diff-add: rgba(154, 144, 128, 0.14);
+  --color-diff-remove-symbol: #e07848;
+  --color-diff-add-symbol: #9a9080;
 }
 
 .shiki span {

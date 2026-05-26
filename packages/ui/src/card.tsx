@@ -8,7 +8,7 @@ const Card = (props: CardProps) => {
   return (
     <div
       className={cn(
-        'bg-card text-card-foreground border-border shadow-feature-card rounded-lg border',
+        'bg-card text-card-foreground border-border shadow-feature-card rounded-lg border transition-colors duration-150',
         className
       )}
       {...rest}

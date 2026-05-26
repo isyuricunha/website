@@ -10,9 +10,9 @@ const Layout = (props: LayoutProps) => {
   return (
     <>
       <Header />
-      <div className='mx-auto max-w-6xl px-5 sm:px-8 md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10'>
+      <div className='mx-auto max-w-6xl px-5 sm:px-8 md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-8 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-12'>
         <Sidebar />
-        <main className='py-12'>{children}</main>
+        <main className='cursor-reveal py-14 sm:py-20'>{children}</main>
       </div>
     </>
   )

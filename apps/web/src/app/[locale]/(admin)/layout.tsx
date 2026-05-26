@@ -42,9 +42,9 @@ const Layout = async (props: LayoutProps) => {
   return (
     <SidebarProvider>
       <AdminSidebar />
-      <div className='flex w-full flex-col overflow-x-hidden px-4'>
+      <div className='bg-bg-base text-text-primary flex min-h-svh w-full flex-col overflow-x-hidden px-4 sm:px-6 lg:px-8'>
         <AdminHeader />
-        <main className='py-6'>
+        <main className='mx-auto w-full max-w-7xl border-t-[0.5px] border-[var(--border-faint)] py-8'>
           <AdminBreadcrumb />
           <AdminErrorBoundary>{children}</AdminErrorBoundary>
         </main>

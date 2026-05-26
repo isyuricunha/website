@@ -1,28 +1,37 @@
 ---
-title: Introduction
-description: Welcome to the @isyuricunha/docs.
+title: Documentation
+description: Shared packages, UI primitives and operational recipes for this workspace.
 ---
 
-## UI
+## What lives here
 
-`@isyuricunha/ui` is a modern component library built with [shadcn/ui](https://github.com/shadcn-ui/ui). It provides a collection of reusable, accessible and customizable components to streamline your web development workflow.
+`@isyuricunha/docs` documents the reusable pieces of this monorepo: UI primitives, package recipes and the conventions that keep the website consistent.
 
-### Installation
+The UI package is not a generic dark theme. It ships a warm Cursor-inspired token system, shared typography defaults, 0.5px borders, code styling, motion utilities and accessible primitives used by both the main site and the docs app.
+
+## Install
 
 ```bash
 pnpm add @isyuricunha/ui
 ```
 
-### Usage
+## Use the preset
 
 ```css
 @import 'tailwindcss';
 @import '@isyuricunha/ui/styles/preset.css';
-@import '@isyuricunha/ui/styles/shiki.css'; /* Optional */
-@import '@isyuricunha/ui/styles/typography.css'; /* Optional */
+@import '@isyuricunha/ui/styles/shiki.css';
+@import '@isyuricunha/ui/styles/typography.css';
 @source '../../node_modules/@isyuricunha/ui/dist/**/*.js';
 ```
 
 ```tsx
 import { Button } from '@isyuricunha/ui'
 ```
+
+## Theme contract
+
+- Use `bg-bg-base`, `bg-bg-surface`, `text-text-primary`, `text-text-secondary` and `text-accent-earth-text` instead of raw color families.
+- Keep headings at `font-medium` or lower unless a single inline word needs emphasis.
+- Prefer editorial layouts, text links and app-window surfaces over generic icon-card feature grids.
+- Use `label-mono`, `cta-link`, `app-window`, `cursor-card` and `cursor-reveal` when building new surfaces.

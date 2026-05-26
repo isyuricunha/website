@@ -218,9 +218,9 @@ export const BulkOperations = () => {
       case 'running':
         return <Play className='text-accent-earth-text h-5 w-5' />
       case 'cancelled':
-        return <Pause className='text-muted-foreground h-5 w-5' />
+        return <Pause className='text-text-secondary h-5 w-5' />
       default:
-        return <Clock className='text-muted-foreground h-5 w-5' />
+        return <Clock className='text-text-secondary h-5 w-5' />
     }
   }
 
@@ -233,9 +233,9 @@ export const BulkOperations = () => {
       case 'running':
         return 'bg-[var(--accent-dim)] text-accent-earth-text'
       case 'cancelled':
-        return 'bg-bg-surface text-muted-foreground'
+        return 'bg-bg-surface text-text-secondary'
       default:
-        return 'bg-bg-surface text-muted-foreground'
+        return 'bg-bg-surface text-text-secondary'
     }
   }
 
@@ -263,10 +263,10 @@ export const BulkOperations = () => {
     return (
       <div className='space-y-6'>
         <div className='animate-pulse'>
-          <div className='bg-muted mb-4 h-8 w-1/4 rounded'></div>
+          <div className='bg-bg-hover mb-4 h-8 w-1/4 rounded'></div>
           <div className='space-y-3'>
             {Array.from({ length: 5 }).map((_, i) => (
-              <div key={i} className='bg-muted h-16 rounded'></div>
+              <div key={i} className='bg-bg-hover h-16 rounded'></div>
             ))}
           </div>
         </div>
@@ -280,13 +280,13 @@ export const BulkOperations = () => {
       <div className='flex items-center justify-between'>
         <div>
           <h1 className='text-2xl font-medium'>{t('title')}</h1>
-          <p className='text-muted-foreground'>{t('description')}</p>
+          <p className='text-text-secondary'>{t('description')}</p>
         </div>
       </div>
 
       {/* Bulk User Actions */}
-      <div className='bg-card border-border rounded-lg border'>
-        <div className='border-border border-b px-6 py-4'>
+      <div className='bg-bg-surface rounded-lg border border-[var(--border-subtle)]'>
+        <div className='border-b border-[var(--border-subtle)] px-6 py-4'>
           <h3 className='text-lg font-medium'>{t('user-actions.title')}</h3>
         </div>
         <div className='p-6'>
@@ -294,13 +294,13 @@ export const BulkOperations = () => {
           <div className='mb-6 flex flex-col gap-4 sm:flex-row'>
             <div className='flex-1'>
               <div className='relative'>
-                <Search className='text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform' />
+                <Search className='text-text-secondary absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform' />
                 <input
                   type='text'
                   placeholder={t('user-actions.search-placeholder')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className='bg-background border-border text-foreground focus:ring-ring focus:ring-offset-background w-full rounded-md border py-2 pr-4 pl-10 focus:border-transparent focus:ring-2 focus:ring-offset-2'
+                  className='bg-bg-base text-text-primary focus:ring-ring focus:ring-offset-background w-full rounded-md border border-[var(--border-subtle)] py-2 pr-4 pl-10 focus:border-transparent focus:ring-2 focus:ring-offset-2'
                 />
               </div>
             </div>
@@ -322,7 +322,7 @@ export const BulkOperations = () => {
                   setSelectedAction(value as 'ban' | 'unban' | 'update_role' | 'delete')
                 }
               >
-                <SelectTrigger className='bg-background border-border text-foreground focus:ring-ring focus:ring-offset-background w-full rounded-md border px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-offset-2'>
+                <SelectTrigger className='bg-bg-base text-text-primary focus:ring-ring focus:ring-offset-background w-full rounded-md border border-[var(--border-subtle)] px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-offset-2'>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -343,7 +343,7 @@ export const BulkOperations = () => {
                   value={newRole}
                   onValueChange={(value) => setNewRole(value as 'user' | 'admin')}
                 >
-                  <SelectTrigger className='bg-background border-border text-foreground focus:ring-ring focus:ring-offset-background w-full rounded-md border px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-offset-2'>
+                  <SelectTrigger className='bg-bg-base text-text-primary focus:ring-ring focus:ring-offset-background w-full rounded-md border border-[var(--border-subtle)] px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-offset-2'>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -369,9 +369,9 @@ export const BulkOperations = () => {
           {/* Users Table */}
           <div className='overflow-x-auto'>
             <table className='divide-border min-w-full divide-y'>
-              <thead className='bg-muted'>
+              <thead className='bg-bg-hover'>
                 <tr>
-                  <th className='text-muted-foreground px-6 py-3 text-left text-xs font-medium tracking-wider uppercase'>
+                  <th className='text-text-secondary px-6 py-3 text-left text-xs font-medium tracking-wider uppercase'>
                     <input
                       type='checkbox'
                       onChange={(e) => {
@@ -381,21 +381,21 @@ export const BulkOperations = () => {
                           setSelectedUsers([])
                         }
                       }}
-                      className='border-border rounded'
+                      className='rounded border-[var(--border-subtle)]'
                     />
                   </th>
-                  <th className='text-muted-foreground px-6 py-3 text-left text-xs font-medium tracking-wider uppercase'>
+                  <th className='text-text-secondary px-6 py-3 text-left text-xs font-medium tracking-wider uppercase'>
                     {t('table.user')}
                   </th>
-                  <th className='text-muted-foreground px-6 py-3 text-left text-xs font-medium tracking-wider uppercase'>
+                  <th className='text-text-secondary px-6 py-3 text-left text-xs font-medium tracking-wider uppercase'>
                     {t('table.role')}
                   </th>
-                  <th className='text-muted-foreground px-6 py-3 text-left text-xs font-medium tracking-wider uppercase'>
+                  <th className='text-text-secondary px-6 py-3 text-left text-xs font-medium tracking-wider uppercase'>
                     {t('table.joined')}
                   </th>
                 </tr>
               </thead>
-              <tbody className='divide-border bg-background divide-y'>
+              <tbody className='divide-border bg-bg-base divide-y'>
                 {usersData?.users.map((user) => (
                   <tr key={user.id} className='hover:bg-bg-surface'>
                     <td className='px-6 py-4 whitespace-nowrap'>
@@ -409,7 +409,7 @@ export const BulkOperations = () => {
                             setSelectedUsers(selectedUsers.filter((id) => id !== user.id))
                           }
                         }}
-                        className='border-border rounded'
+                        className='rounded border-[var(--border-subtle)]'
                       />
                     </td>
                     <td className='px-6 py-4 whitespace-nowrap'>
@@ -425,7 +425,7 @@ export const BulkOperations = () => {
                         )}
                         <div>
                           <div className='text-sm font-medium'>{user.name}</div>
-                          <div className='text-muted-foreground text-sm'>{user.email}</div>
+                          <div className='text-text-secondary text-sm'>{user.email}</div>
                         </div>
                       </div>
                     </td>
@@ -434,13 +434,13 @@ export const BulkOperations = () => {
                         className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
                           user.role === 'admin'
                             ? 'text-accent-earth-text bg-[var(--accent-dim)]'
-                            : 'bg-bg-surface text-muted-foreground'
+                            : 'bg-bg-surface text-text-secondary'
                         }`}
                       >
                         {user.role}
                       </span>
                     </td>
-                    <td className='text-muted-foreground px-6 py-4 text-sm whitespace-nowrap'>
+                    <td className='text-text-secondary px-6 py-4 text-sm whitespace-nowrap'>
                       {formatDate(user.createdAt)}
                     </td>
                   </tr>
@@ -451,30 +451,28 @@ export const BulkOperations = () => {
 
           {(!usersData?.users || usersData.users.length === 0) && (
             <div className='py-12 text-center'>
-              <Users className='text-muted-foreground mx-auto h-12 w-12' />
+              <Users className='text-text-secondary mx-auto h-12 w-12' />
               <h3 className='mt-2 text-sm font-medium'>{t('user-actions.no-users')}</h3>
-              <p className='text-muted-foreground mt-1 text-sm'>
-                {t('user-actions.no-users-hint')}
-              </p>
+              <p className='text-text-secondary mt-1 text-sm'>{t('user-actions.no-users-hint')}</p>
             </div>
           )}
         </div>
       </div>
 
       {/* Operations History */}
-      <div className='bg-card border-border rounded-lg border'>
-        <div className='border-border border-b px-6 py-4'>
+      <div className='bg-bg-surface rounded-lg border border-[var(--border-subtle)]'>
+        <div className='border-b border-[var(--border-subtle)] px-6 py-4'>
           <h3 className='text-lg font-medium'>{t('operations.title')}</h3>
         </div>
         <div className='divide-border divide-y'>
           {operationsQuery.isError && (
-            <div className='text-muted-foreground p-6 text-center'>
+            <div className='text-text-secondary p-6 text-center'>
               {t('operations.failed-to-load')}
             </div>
           )}
 
           {operationsQuery.isLoading && (
-            <div className='text-muted-foreground p-6 text-center'>{t('operations.loading')}</div>
+            <div className='text-text-secondary p-6 text-center'>{t('operations.loading')}</div>
           )}
 
           {operations.map((operation: BulkOperationStatus) => (
@@ -491,7 +489,7 @@ export const BulkOperations = () => {
                         {getStatusLabel(operation.status)}
                       </span>
                     </div>
-                    <div className='text-muted-foreground text-sm'>
+                    <div className='text-text-secondary text-sm'>
                       {t('operations.summary', {
                         successful: operation.successfulItems,
                         total: operation.totalItems,
@@ -530,13 +528,13 @@ export const BulkOperations = () => {
               {/* Progress Bar */}
               {(operation.status === 'running' || operation.status === 'pending') && (
                 <div className='mt-4'>
-                  <div className='text-muted-foreground mb-1 flex justify-between text-sm'>
+                  <div className='text-text-secondary mb-1 flex justify-between text-sm'>
                     <span>{t('operations.progress')}</span>
                     <span>
                       {operation.processedItems}/{operation.totalItems}
                     </span>
                   </div>
-                  <div className='bg-muted h-2 w-full rounded-full'>
+                  <div className='bg-bg-hover h-2 w-full rounded-full'>
                     <div
                       className='bg-accent-earth h-2 rounded-full transition-all duration-300'
                       style={{
@@ -560,7 +558,7 @@ export const BulkOperations = () => {
           ))}
 
           {!operationsQuery.isLoading && !operationsQuery.isError && operations.length === 0 && (
-            <div className='text-muted-foreground p-6 text-center'>{t('operations.empty')}</div>
+            <div className='text-text-secondary p-6 text-center'>{t('operations.empty')}</div>
           )}
         </div>
       </div>

@@ -87,8 +87,8 @@ const TopArtistsSection = () => {
           <div className='grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5'>
             {Array.from({ length: 10 }).map((_, i) => (
               <div key={i} className='flex flex-col items-center space-y-2'>
-                <div className='bg-muted h-16 w-16 animate-pulse rounded-full' />
-                <div className='bg-muted h-4 w-20 animate-pulse rounded' />
+                <div className='bg-bg-hover h-16 w-16 animate-pulse rounded-full' />
+                <div className='bg-bg-hover h-4 w-20 animate-pulse rounded' />
               </div>
             ))}
           </div>
@@ -106,12 +106,12 @@ const TopArtistsSection = () => {
         </CardHeader>
         <CardContent>
           <div className='flex items-center justify-between'>
-            <p className='text-muted-foreground'>{t('spotify.error')}</p>
+            <p className='text-text-secondary'>{t('spotify.error')}</p>
             <button
               type='button'
               onClick={handleRefresh}
               disabled={isRefreshing}
-              className='text-muted-foreground hover:text-foreground text-sm disabled:opacity-50'
+              className='text-text-secondary hover:text-text-primary text-sm disabled:opacity-50'
             >
               {t('spotify.refresh')}
             </button>
@@ -130,12 +130,12 @@ const TopArtistsSection = () => {
         </CardHeader>
         <CardContent>
           <div className='flex items-center justify-between'>
-            <p className='text-muted-foreground'>{t('spotify.top-artists.no-data')}</p>
+            <p className='text-text-secondary'>{t('spotify.top-artists.no-data')}</p>
             <button
               type='button'
               onClick={handleRefresh}
               disabled={isRefreshing}
-              className='text-muted-foreground hover:text-foreground text-sm disabled:opacity-50'
+              className='text-text-secondary hover:text-text-primary text-sm disabled:opacity-50'
             >
               {t('spotify.refresh')}
             </button>
@@ -159,14 +159,14 @@ const TopArtistsSection = () => {
         <div className='mt-3 flex flex-wrap items-center gap-2'>
           <TimeRangeToggle value={timeRange} onChange={setTimeRange} />
           {/* View mode toggle: list vs grid */}
-          <div className='bg-muted inline-flex items-center gap-1 rounded-md p-1 text-xs'>
+          <div className='bg-bg-hover inline-flex items-center gap-1 rounded-md p-1 text-xs'>
             <button
               type='button'
               onClick={() => setViewMode('list')}
               className={`rounded-md p-1.5 transition-colors ${
                 viewMode === 'list'
-                  ? 'bg-background text-foreground shadow'
-                  : 'text-muted-foreground hover:text-foreground'
+                  ? 'bg-bg-base text-text-primary shadow'
+                  : 'text-text-secondary hover:text-text-primary'
               }`}
               title={t('spotify.top-artists.tooltips.view-list')}
               aria-label={t('spotify.top-artists.tooltips.view-list')}
@@ -179,8 +179,8 @@ const TopArtistsSection = () => {
               onClick={() => setViewMode('grid')}
               className={`rounded-md p-1.5 transition-colors ${
                 viewMode === 'grid'
-                  ? 'bg-background text-foreground shadow'
-                  : 'text-muted-foreground hover:text-foreground'
+                  ? 'bg-bg-base text-text-primary shadow'
+                  : 'text-text-secondary hover:text-text-primary'
               }`}
               title={t('spotify.top-artists.tooltips.view-grid')}
               aria-label={t('spotify.top-artists.tooltips.view-grid')}
@@ -194,8 +194,8 @@ const TopArtistsSection = () => {
             onClick={() => setIsShuffled(!isShuffled)}
             className={`rounded-md p-1.5 transition-colors ${
               isShuffled
-                ? 'bg-accent-earth text-accent-earth-text'
-                : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+                ? 'bg-accent-earth text-text-inverse'
+                : 'text-text-secondary hover:text-text-primary hover:bg-bg-hover'
             }`}
             title={
               isShuffled
@@ -208,7 +208,7 @@ const TopArtistsSection = () => {
           <button
             type='button'
             onClick={handleExportCsv}
-            className='text-muted-foreground hover:text-foreground hover:bg-muted rounded-md px-2 py-1 text-xs transition-colors'
+            className='text-text-secondary hover:text-text-primary hover:bg-bg-hover rounded-md px-2 py-1 text-xs transition-colors'
             title={t('spotify.export.csv')}
           >
             CSV
@@ -216,7 +216,7 @@ const TopArtistsSection = () => {
           <button
             type='button'
             onClick={handleExportJson}
-            className='text-muted-foreground hover:text-foreground hover:bg-muted rounded-md px-2 py-1 text-xs transition-colors'
+            className='text-text-secondary hover:text-text-primary hover:bg-bg-hover rounded-md px-2 py-1 text-xs transition-colors'
             title={t('spotify.export.json')}
           >
             JSON
@@ -225,7 +225,7 @@ const TopArtistsSection = () => {
             type='button'
             onClick={handleRefresh}
             disabled={isRefreshing}
-            className='text-muted-foreground hover:text-foreground text-sm disabled:opacity-50'
+            className='text-text-secondary hover:text-text-primary text-sm disabled:opacity-50'
           >
             {t('spotify.refresh')}
           </button>
@@ -238,13 +238,13 @@ const TopArtistsSection = () => {
               <Link
                 key={artist.id}
                 href={artist.url}
-                className='hover:bg-muted/50 group flex min-w-0 flex-col items-center space-y-2 rounded-lg p-2 transition-colors'
+                className='hover:bg-bg-hover group flex min-w-0 flex-col items-center space-y-2 rounded-lg p-2 transition-colors'
               >
                 <div className='relative h-16 w-16 overflow-hidden rounded-full'>
                   <MusicImage
                     src={artist.image}
                     alt={`${artist.name} artist photo`}
-                    fallbackIcon={<UserIcon className='text-muted-foreground h-6 w-6' />}
+                    fallbackIcon={<UserIcon className='text-text-secondary h-6 w-6' />}
                     width={64}
                     height={64}
                     sizes='64px'
@@ -255,7 +255,7 @@ const TopArtistsSection = () => {
                     {artist.name}
                   </h3>
                   {artist.genres && artist.genres.length > 0 && (
-                    <p className='text-muted-foreground w-full truncate text-[10px] sm:text-xs'>
+                    <p className='text-text-secondary w-full truncate text-[10px] sm:text-xs'>
                       {artist.genres.slice(0, 2).join(', ')}
                     </p>
                   )}
@@ -269,14 +269,14 @@ const TopArtistsSection = () => {
               <Link
                 key={artist.id}
                 href={artist.url}
-                className='hover:bg-muted/50 group flex items-center gap-4 rounded-lg p-3 transition-colors'
+                className='hover:bg-bg-hover group flex items-center gap-4 rounded-lg p-3 transition-colors'
               >
                 <div className='flex min-w-0 flex-1 items-center gap-4'>
                   <div className='relative h-12 w-12 shrink-0 overflow-hidden rounded-full'>
                     <MusicImage
                       src={artist.image}
                       alt={`${artist.name} artist photo`}
-                      fallbackIcon={<UserIcon className='text-muted-foreground h-4 w-4' />}
+                      fallbackIcon={<UserIcon className='text-text-secondary h-4 w-4' />}
                       width={48}
                       height={48}
                       sizes='48px'
@@ -287,13 +287,13 @@ const TopArtistsSection = () => {
                       {artist.name}
                     </h3>
                     {artist.genres && artist.genres.length > 0 && (
-                      <p className='text-muted-foreground truncate text-xs'>
+                      <p className='text-text-secondary truncate text-xs'>
                         {artist.genres.slice(0, 3).join(', ')}
                       </p>
                     )}
                   </div>
                   <div className='shrink-0 text-right'>
-                    <p className='text-muted-foreground text-xs'>
+                    <p className='text-text-secondary text-xs'>
                       {isMounted ? artist.followers.toLocaleString() : artist.followers}{' '}
                       {t('spotify.followers')}
                     </p>

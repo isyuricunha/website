@@ -1935,6 +1935,12 @@
   "spotify": {
     "title": "Música",
     "description": "Aqui está o que estou ouvindo no momento — principais faixas e artistas do meu perfil no Last.fm.",
+    "sections": {
+      "listening-data": {
+        "label": "Dados de escuta",
+        "title": "O que se repete, o que muda e o que está tocando agora."
+      }
+    },
     "now-listening": {
       "title": "Agora Tocando",
       "subtitle": "Tocando atualmente no Last.fm",

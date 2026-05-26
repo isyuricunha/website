@@ -60,9 +60,9 @@ const getBroadcastStatusColor = (status: string | undefined) => {
     case 'scheduled':
       return 'border border-[var(--accent-border)] bg-[var(--accent-dim)] text-accent-earth-text'
     case 'draft':
-      return 'border border-border bg-bg-surface text-muted-foreground'
+      return 'border border-[var(--border-subtle)] bg-bg-surface text-text-secondary'
     default:
-      return 'border border-border bg-bg-surface text-muted-foreground'
+      return 'border border-[var(--border-subtle)] bg-bg-surface text-text-secondary'
   }
 }
 
@@ -352,7 +352,7 @@ export default function EmailMarketingManagement() {
     } else if (isActive) {
       return <Loader2 className='text-accent-earth-text h-5 w-5 animate-spin' />
     } else {
-      return <Clock className='text-muted-foreground h-5 w-5' />
+      return <Clock className='text-text-secondary h-5 w-5' />
     }
   }
 
@@ -361,12 +361,12 @@ export default function EmailMarketingManagement() {
       <div className='flex items-center justify-between'>
         <div className='space-y-1'>
           <h1 className='text-text-primary flex items-center gap-3 text-4xl font-medium tracking-tight'>
-            <div className='text-accent-earth-text rounded-xl bg-[var(--accent-dim)] p-2.5'>
+            <div className='text-accent-earth-text rounded-lg bg-[var(--accent-dim)] p-2.5'>
               <Mail className='h-8 w-8' />
             </div>
             {t('title')}
           </h1>
-          <p className='text-muted-foreground text-base'>{t('description')}</p>
+          <p className='text-text-secondary text-base'>{t('description')}</p>
         </div>
       </div>
 
@@ -437,9 +437,9 @@ export default function EmailMarketingManagement() {
         {/* Overview Tab */}
         <TabsContent value='overview' className='space-y-6'>
           <div className='grid gap-5 md:grid-cols-2 lg:grid-cols-4'>
-            <Card className='bg-bg-surface border-[var(--border-subtle)] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl'>
+            <Card className='bg-bg-surface hover:shadow-feature-card border-[var(--border-subtle)] transition-all duration-300'>
               <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-3'>
-                <CardTitle className='text-muted-foreground text-sm font-semibold'>
+                <CardTitle className='text-text-secondary text-sm font-medium'>
                   {t('stats.total-audiences.title')}
                 </CardTitle>
                 <div className='text-accent-earth-text rounded-lg bg-[var(--accent-dim)] p-2'>
@@ -450,14 +450,14 @@ export default function EmailMarketingManagement() {
                 <div className='text-3xl font-medium tracking-tight'>
                   {analytics?.totalAudiences || 0}
                 </div>
-                <p className='text-muted-foreground text-xs leading-relaxed'>
+                <p className='text-text-secondary text-xs leading-relaxed'>
                   {t('stats.total-audiences.description')}
                 </p>
               </CardContent>
             </Card>
-            <Card className='bg-bg-surface border-[var(--border-subtle)] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl'>
+            <Card className='bg-bg-surface hover:shadow-feature-card border-[var(--border-subtle)] transition-all duration-300'>
               <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-3'>
-                <CardTitle className='text-muted-foreground text-sm font-semibold'>
+                <CardTitle className='text-text-secondary text-sm font-medium'>
                   {t('stats.total-broadcasts.title')}
                 </CardTitle>
                 <div className='text-accent-earth-text rounded-lg bg-[var(--accent-dim)] p-2'>
@@ -468,14 +468,14 @@ export default function EmailMarketingManagement() {
                 <div className='text-3xl font-medium tracking-tight'>
                   {analytics?.totalBroadcasts || 0}
                 </div>
-                <p className='text-muted-foreground text-xs leading-relaxed'>
+                <p className='text-text-secondary text-xs leading-relaxed'>
                   {t('stats.total-broadcasts.description')}
                 </p>
               </CardContent>
             </Card>
-            <Card className='bg-bg-surface border-[var(--border-subtle)] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl'>
+            <Card className='bg-bg-surface hover:shadow-feature-card border-[var(--border-subtle)] transition-all duration-300'>
               <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-3'>
-                <CardTitle className='text-muted-foreground text-sm font-semibold'>
+                <CardTitle className='text-text-secondary text-sm font-medium'>
                   {t('stats.subscribers.title')}
                 </CardTitle>
                 <div className='text-accent-earth-text rounded-lg bg-[var(--accent-dim)] p-2'>
@@ -486,16 +486,16 @@ export default function EmailMarketingManagement() {
                 <div className='text-3xl font-medium tracking-tight'>
                   {analytics?.totalSubscribers || 0}
                 </div>
-                <p className='text-muted-foreground text-xs leading-relaxed'>
+                <p className='text-text-secondary text-xs leading-relaxed'>
                   {t('stats.subscribers.description', {
                     rate: analytics?.subscriptionRate || 0
                   })}
                 </p>
               </CardContent>
             </Card>
-            <Card className='bg-bg-surface border-[var(--border-subtle)] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl'>
+            <Card className='bg-bg-surface hover:shadow-feature-card border-[var(--border-subtle)] transition-all duration-300'>
               <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-3'>
-                <CardTitle className='text-muted-foreground text-sm font-semibold'>
+                <CardTitle className='text-text-secondary text-sm font-medium'>
                   {t('stats.sent-broadcasts.title')}
                 </CardTitle>
                 <div className='text-accent-earth-text rounded-lg bg-[var(--accent-dim)] p-2'>
@@ -506,7 +506,7 @@ export default function EmailMarketingManagement() {
                 <div className='text-3xl font-medium tracking-tight'>
                   {analytics?.broadcasts?.sent || 0}
                 </div>
-                <p className='text-muted-foreground text-xs leading-relaxed'>
+                <p className='text-text-secondary text-xs leading-relaxed'>
                   {t('stats.sent-broadcasts.description')}
                 </p>
               </CardContent>
@@ -534,14 +534,12 @@ export default function EmailMarketingManagement() {
                       </div>
                       <div className='min-w-0 flex-1'>
                         <p className='truncate text-sm font-medium'>{broadcast.name}</p>
-                        <p className='text-muted-foreground text-sm'>
+                        <p className='text-text-secondary text-sm'>
                           {formatBroadcastSentDate(broadcast.sent_at, t('date.not-sent'))}
                         </p>
                       </div>
                     </div>
-                  )) || (
-                    <p className='text-muted-foreground text-sm'>{t('overview.no-activity')}</p>
-                  )}
+                  )) || <p className='text-text-secondary text-sm'>{t('overview.no-activity')}</p>}
                 </div>
               </CardContent>
             </Card>
@@ -634,11 +632,11 @@ export default function EmailMarketingManagement() {
             {audiences?.audiences?.map((audience) => (
               <Card
                 key={audience.id}
-                className='bg-bg-surface border-[var(--border-subtle)] transition-all duration-200 hover:shadow-md'
+                className='bg-bg-surface hover:shadow-feature-card border-[var(--border-subtle)] transition-all duration-200'
               >
                 <CardHeader>
                   <CardTitle className='flex items-center justify-between text-base'>
-                    <span className='font-semibold'>{audience.name}</span>
+                    <span className='font-medium'>{audience.name}</span>
                     <Badge variant='secondary' className='text-xs'>
                       {t('audiences.subscriber-count', { count: 0 })}
                     </Badge>
@@ -646,7 +644,7 @@ export default function EmailMarketingManagement() {
                 </CardHeader>
                 <CardContent>
                   <div className='space-y-2'>
-                    <p className='text-muted-foreground text-sm'>
+                    <p className='text-text-secondary text-sm'>
                       {t('date.created', { date: new Date().toLocaleDateString() })}
                     </p>
                     <Button
@@ -671,7 +669,7 @@ export default function EmailMarketingManagement() {
                 </CardContent>
               </Card>
             )) || (
-              <div className='text-muted-foreground col-span-full py-8 text-center'>
+              <div className='text-text-secondary col-span-full py-8 text-center'>
                 <Users className='mx-auto mb-4 h-12 w-12 opacity-50' />
                 <p>{t('audiences.empty')}</p>
               </div>
@@ -826,19 +824,19 @@ export default function EmailMarketingManagement() {
                   {filteredBroadcasts.map((broadcast) => (
                     <Card
                       key={broadcast.id}
-                      className='border transition-all duration-200 hover:shadow-md'
+                      className='hover:shadow-feature-card border transition-all duration-200'
                     >
                       <CardContent className='p-4'>
                         <div className='flex items-start justify-between'>
                           <div className='flex-1'>
                             <div className='mb-2 flex items-center gap-2'>
-                              <h3 className='font-semibold'>{broadcast.name}</h3>
+                              <h3 className='font-medium'>{broadcast.name}</h3>
                               <Badge className={getBroadcastStatusColor(broadcast.status)}>
                                 {broadcast.status}
                               </Badge>
                             </div>
 
-                            <div className='text-muted-foreground flex items-center gap-4 text-sm'>
+                            <div className='text-text-secondary flex items-center gap-4 text-sm'>
                               <span className='flex items-center gap-1'>
                                 <Calendar className='h-3 w-3' />
                                 {formatBroadcastSentDate(broadcast.sent_at, t('date.not-sent'))}
@@ -907,7 +905,7 @@ export default function EmailMarketingManagement() {
                   ))}
 
                   {filteredBroadcasts.length === 0 && broadcasts?.broadcasts?.length ? (
-                    <div className='text-muted-foreground py-8 text-center'>
+                    <div className='text-text-secondary py-8 text-center'>
                       <Mail className='mx-auto mb-4 h-12 w-12 opacity-50' />
                       <p>{t('broadcasts.empty-filtered')}</p>
                       <Button
@@ -918,13 +916,13 @@ export default function EmailMarketingManagement() {
                         {t('actions.show-all-broadcasts')}
                       </Button>
                     </div>
-                  ) : broadcasts?.broadcasts?.length ? null : (
-                    <div className='text-muted-foreground py-8 text-center'>
+                  ) : (broadcasts?.broadcasts?.length ? null : (
+                    <div className='text-text-secondary py-8 text-center'>
                       <Mail className='mx-auto mb-4 h-12 w-12 opacity-50' />
                       <p>{t('broadcasts.empty')}</p>
                       <p className='mt-2 text-sm'>{t('broadcasts.empty-hint')}</p>
                     </div>
-                  )}
+                  ))}
                 </div>
               </ScrollArea>
             </CardContent>
@@ -1015,7 +1013,7 @@ export default function EmailMarketingManagement() {
                 </CardHeader>
                 <CardContent>
                   <div className='space-y-2'>
-                    <p className='text-muted-foreground text-sm'>
+                    <p className='text-text-secondary text-sm'>
                       {t('date.created', {
                         date: new Date(template.createdAt).toLocaleDateString()
                       })}
@@ -1034,7 +1032,7 @@ export default function EmailMarketingManagement() {
                 </CardContent>
               </Card>
             )) || (
-              <div className='text-muted-foreground col-span-full py-8 text-center'>
+              <div className='text-text-secondary col-span-full py-8 text-center'>
                 <FileText className='mx-auto mb-4 h-12 w-12 opacity-50' />
                 <p>{t('templates.empty')}</p>
               </div>
@@ -1086,7 +1084,7 @@ export default function EmailMarketingManagement() {
 
               <div>
                 <Label className='text-sm font-medium'>{t('fields.html-content')}</Label>
-                <div className='bg-muted mt-2 max-h-64 overflow-y-auto rounded-lg p-4'>
+                <div className='bg-bg-hover mt-2 max-h-64 overflow-y-auto rounded-lg p-4'>
                   <pre className='text-xs whitespace-pre-wrap'>
                     {selectedBroadcastData?.broadcast?.html || t('fields.no-content')}
                   </pre>
@@ -1096,7 +1094,7 @@ export default function EmailMarketingManagement() {
               {selectedBroadcastData?.broadcast?.text && (
                 <div>
                   <Label className='text-sm font-medium'>{t('fields.plain-text-content')}</Label>
-                  <div className='bg-muted mt-2 max-h-64 overflow-y-auto rounded-lg p-4'>
+                  <div className='bg-bg-hover mt-2 max-h-64 overflow-y-auto rounded-lg p-4'>
                     <pre className='text-xs whitespace-pre-wrap'>
                       {selectedBroadcastData.broadcast.text}
                     </pre>

@@ -14,8 +14,10 @@
   --color-text-primary: var(--text-primary);
   --color-text-secondary: var(--text-secondary);
   --color-text-tertiary: var(--text-tertiary);
+  --color-text-inverse: var(--text-inverse);
   --color-accent-earth: var(--accent);
   --color-accent-earth-hover: var(--accent-hover);
+  --color-accent-earth-dim: var(--accent-dim);
   --color-accent-earth-text: var(--accent-text);
 
   --color-card: hsl(var(--card));
@@ -51,6 +53,8 @@
   --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
   --color-sidebar-border: hsl(var(--sidebar-border));
   --color-sidebar-ring: hsl(var(--sidebar-ring));
+
+  --shadow-feature-card: var(--feature-card);
 
   --radius-lg: var(--radius-lg);
   --radius-md: var(--radius-md);
@@ -161,6 +165,143 @@
   .border-l {
     border-left-width: 0.5px;
   }
+
+  .label-mono {
+    color: var(--text-tertiary);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .cta-link {
+    width: fit-content;
+    color: var(--accent-text);
+    font-size: 14px;
+    text-decoration: none;
+    transition: opacity var(--transition);
+  }
+
+  .cta-link:hover {
+    opacity: 0.75;
+  }
+
+  .tab-group {
+    display: flex;
+    gap: 4px;
+  }
+
+  .editorial-section {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+    gap: 80px;
+    align-items: center;
+    padding: 100px 0;
+    border-top: 0.5px solid var(--border-faint);
+  }
+
+  .editorial-text {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .editorial-text h2 {
+    max-width: 460px;
+    color: var(--text-primary);
+    font-size: clamp(28px, 3vw, 40px);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+  }
+
+  .editorial-text p {
+    max-width: 380px;
+    color: var(--text-secondary);
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  .app-window {
+    overflow: hidden;
+    border: 0.5px solid var(--border-subtle);
+    border-radius: var(--radius-window);
+    background: var(--bg-mockup);
+    box-shadow: 0 32px 80px rgb(0 0 0 / 0.5);
+  }
+
+  .app-window-chrome {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 12px 16px;
+    border-bottom: 0.5px solid var(--border-faint);
+  }
+
+  .window-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--border-default);
+  }
+
+  .code-block {
+    border: 0.5px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    background: var(--bg-surface);
+    color: var(--text-secondary);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.65;
+    padding: 16px 20px;
+  }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1px;
+    overflow: hidden;
+    border: 0.5px solid var(--border-faint);
+    border-radius: var(--radius-lg);
+    background: var(--border-faint);
+  }
+
+  .cursor-card {
+    position: relative;
+    background: var(--bg-base);
+    transition:
+      background var(--transition),
+      border-color var(--transition);
+  }
+
+  .cursor-card:hover {
+    background: var(--bg-hover);
+  }
+
+  .cursor-reveal {
+    animation: cursor-reveal 520ms var(--transition) both;
+  }
+
+  .cursor-reveal-delay-1 {
+    animation-delay: 80ms;
+  }
+
+  .cursor-reveal-delay-2 {
+    animation-delay: 160ms;
+  }
+
+  .cursor-reveal-delay-3 {
+    animation-delay: 240ms;
+  }
+
+  @media (max-width: 900px) {
+    .editorial-section {
+      grid-template-columns: 1fr;
+      gap: 36px;
+      padding: 80px 0;
+    }
+  }
 }
 
 @layer base {
@@ -230,8 +371,8 @@
     --ui-accent: 45.9 25.4% 13.1%;
     --ui-accent-foreground: 41.2 34.8% 91%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 41.2 34.8% 91%;
+    --destructive: 17 65.4% 47.6%;
+    --destructive-foreground: 46.7 29% 6.1%;
 
     --border: 41.2 34.8% 91% / 0.15;
     --input: 41.2 34.8% 91% / 0.15;
@@ -247,6 +388,8 @@
     --sidebar-accent-foreground: 41.2 34.8% 91%;
     --sidebar-border: 41.2 34.8% 91% / 0.15;
     --sidebar-ring: 18.9 71% 58%;
+
+    --feature-card: inset 0 0 0 0.5px var(--border-subtle), 0 24px 60px rgb(0 0 0 / 0.28);
   }
 
   .dark {
@@ -287,5 +430,16 @@
 
   ::-webkit-scrollbar-thumb:hover {
     background: var(--text-secondary);
+  }
+}
+
+@keyframes cursor-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

@@ -83,17 +83,17 @@ const LocalHistoryImport = () => {
           {error && <p className='text-destructive text-sm'>{error}</p>}
           {count !== null && (
             <div className='grid grid-cols-3 gap-3'>
-              <div className='bg-muted/50 rounded p-3'>
-                <div className='text-muted-foreground text-xs'>{t('spotify.import.plays')}</div>
-                <div className='text-lg font-semibold'>{count}</div>
+              <div className='bg-bg-hover rounded p-3'>
+                <div className='text-text-secondary text-xs'>{t('spotify.import.plays')}</div>
+                <div className='text-lg font-medium'>{count}</div>
               </div>
-              <div className='bg-muted/50 rounded p-3'>
-                <div className='text-muted-foreground text-xs'>{t('spotify.import.artists')}</div>
-                <div className='text-lg font-semibold'>{artists ?? '—'}</div>
+              <div className='bg-bg-hover rounded p-3'>
+                <div className='text-text-secondary text-xs'>{t('spotify.import.artists')}</div>
+                <div className='text-lg font-medium'>{artists ?? '—'}</div>
               </div>
-              <div className='bg-muted/50 rounded p-3'>
-                <div className='text-muted-foreground text-xs'>{t('spotify.import.duration')}</div>
-                <div className='text-lg font-semibold'>
+              <div className='bg-bg-hover rounded p-3'>
+                <div className='text-text-secondary text-xs'>{t('spotify.import.duration')}</div>
+                <div className='text-lg font-medium'>
                   {durationMs ? Math.round(durationMs / 3_600_000) + 'h' : '—'}
                 </div>
               </div>

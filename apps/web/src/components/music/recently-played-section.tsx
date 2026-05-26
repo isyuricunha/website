@@ -79,12 +79,12 @@ const RecentlyPlayedSection = () => {
           <div className='space-y-4'>
             {Array.from({ length: 5 }).map((_, i) => (
               <div key={i} className='flex items-center space-x-4'>
-                <div className='bg-muted h-12 w-12 animate-pulse rounded-lg' />
+                <div className='bg-bg-hover h-12 w-12 animate-pulse rounded-lg' />
                 <div className='flex-1 space-y-2'>
-                  <div className='bg-muted h-4 w-48 animate-pulse rounded' />
-                  <div className='bg-muted h-3 w-32 animate-pulse rounded' />
+                  <div className='bg-bg-hover h-4 w-48 animate-pulse rounded' />
+                  <div className='bg-bg-hover h-3 w-32 animate-pulse rounded' />
                 </div>
-                <div className='bg-muted h-3 w-16 animate-pulse rounded' />
+                <div className='bg-bg-hover h-3 w-16 animate-pulse rounded' />
               </div>
             ))}
           </div>
@@ -102,12 +102,12 @@ const RecentlyPlayedSection = () => {
         </CardHeader>
         <CardContent>
           <div className='flex items-center justify-between'>
-            <p className='text-muted-foreground'>{t('spotify.error')}</p>
+            <p className='text-text-secondary'>{t('spotify.error')}</p>
             <button
               type='button'
               onClick={handleRefresh}
               disabled={isRefreshing}
-              className='text-muted-foreground hover:text-foreground text-sm disabled:opacity-50'
+              className='text-text-secondary hover:text-text-primary text-sm disabled:opacity-50'
             >
               {t('spotify.refresh')}
             </button>
@@ -126,12 +126,12 @@ const RecentlyPlayedSection = () => {
         </CardHeader>
         <CardContent>
           <div className='flex items-center justify-between'>
-            <p className='text-muted-foreground'>{t('spotify.recently-played.no-data')}</p>
+            <p className='text-text-secondary'>{t('spotify.recently-played.no-data')}</p>
             <button
               type='button'
               onClick={handleRefresh}
               disabled={isRefreshing}
-              className='text-muted-foreground hover:text-foreground text-sm disabled:opacity-50'
+              className='text-text-secondary hover:text-text-primary text-sm disabled:opacity-50'
             >
               {t('spotify.refresh')}
             </button>
@@ -157,7 +157,7 @@ const RecentlyPlayedSection = () => {
             <button
               type='button'
               onClick={handleExportCsv}
-              className='text-muted-foreground hover:text-foreground hover:bg-muted rounded-md px-2 py-1 text-xs transition-colors'
+              className='text-text-secondary hover:text-text-primary hover:bg-bg-hover rounded-md px-2 py-1 text-xs transition-colors'
               title={t('spotify.export.csv')}
             >
               CSV
@@ -165,7 +165,7 @@ const RecentlyPlayedSection = () => {
             <button
               type='button'
               onClick={handleExportJson}
-              className='text-muted-foreground hover:text-foreground hover:bg-muted rounded-md px-2 py-1 text-xs transition-colors'
+              className='text-text-secondary hover:text-text-primary hover:bg-bg-hover rounded-md px-2 py-1 text-xs transition-colors'
               title={t('spotify.export.json')}
             >
               JSON
@@ -174,7 +174,7 @@ const RecentlyPlayedSection = () => {
               type='button'
               onClick={handleRefresh}
               disabled={isRefreshing}
-              className='text-muted-foreground hover:text-foreground text-sm disabled:opacity-50'
+              className='text-text-secondary hover:text-text-primary text-sm disabled:opacity-50'
             >
               {t('spotify.refresh')}
             </button>
@@ -187,13 +187,13 @@ const RecentlyPlayedSection = () => {
             <Link
               key={`${track.id}-${track.playedAt}`}
               href={track.url}
-              className='hover:bg-muted/50 group flex items-center space-x-4 rounded-lg p-2 transition-colors'
+              className='hover:bg-bg-hover group flex items-center space-x-4 rounded-lg p-2 transition-colors'
             >
               <div className='relative h-12 w-12 flex-shrink-0 overflow-hidden rounded-lg'>
                 <MusicImage
                   src={track.albumImage}
                   alt={`${track.album} album cover`}
-                  fallbackIcon={<PlayIcon className='text-muted-foreground h-4 w-4' />}
+                  fallbackIcon={<PlayIcon className='text-text-secondary h-4 w-4' />}
                   width={48}
                   height={48}
                   sizes='48px'
@@ -204,14 +204,14 @@ const RecentlyPlayedSection = () => {
                 <h3 className='group-hover:text-accent-earth-text truncate text-sm font-medium sm:text-base'>
                   {track.name}
                 </h3>
-                <p className='text-muted-foreground truncate text-xs sm:text-sm'>
+                <p className='text-text-secondary truncate text-xs sm:text-sm'>
                   {track.artist} • {track.album}
                 </p>
               </div>
 
               <div className='flex flex-shrink-0 items-center space-x-2 text-right'>
-                <ClockIcon className='text-muted-foreground h-4 w-4' />
-                <p className='text-muted-foreground text-xs sm:text-sm'>
+                <ClockIcon className='text-text-secondary h-4 w-4' />
+                <p className='text-text-secondary text-xs sm:text-sm'>
                   {isMounted ? formatTimeAgo(track.playedAt) : '...'}
                 </p>
               </div>

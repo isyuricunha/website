@@ -85,9 +85,7 @@ export default function AnnouncementBanner() {
           >
             <div className='relative p-4'>
               <div className='flex items-start gap-4'>
-                <div
-                  className={`shrink-0 transition-transform duration-300 group-hover:scale-110 ${ui.iconClassName}`}
-                >
+                <div className={`shrink-0 transition-colors duration-150 ${ui.iconClassName}`}>
                   {ui.icon}
                 </div>
 

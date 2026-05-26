@@ -20,10 +20,10 @@ const UserName = (props: UserNameProps) => {
 
   const textShadow =
     resolved_effect === 'glow'
-      ? '0 0 12px rgba(255,255,255,0.65), 0 0 28px rgba(255,255,255,0.35)'
-      : resolved_effect === 'rays'
-        ? '0 0 10px rgba(255,122,151,0.65), 0 0 26px rgba(255,122,151,0.35)'
-        : undefined
+      ? '0 0 12px rgba(240,230,200,0.34), 0 0 28px rgba(201,87,42,0.2)'
+      : (resolved_effect === 'rays'
+        ? '0 0 10px rgba(224,120,72,0.42), 0 0 26px rgba(201,87,42,0.22)'
+        : undefined)
 
   const style: CSSProperties | undefined =
     color || textShadow
@@ -34,7 +34,7 @@ const UserName = (props: UserNameProps) => {
       : undefined
 
   return (
-    <span className={cn('font-semibold', className)} style={style}>
+    <span className={cn('font-medium', className)} style={style}>
       {name}
     </span>
   )

@@ -200,7 +200,7 @@ export default function MonitoringDashboard() {
       <div className='flex items-center justify-between'>
         <div>
           <h1 className='text-3xl font-medium'>{t('title')}</h1>
-          <p className='text-muted-foreground'>{t('description')}</p>
+          <p className='text-text-secondary'>{t('description')}</p>
         </div>
         <Select
           value={timeRange}
@@ -228,13 +228,13 @@ export default function MonitoringDashboard() {
         <Card>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
             <CardTitle className='text-sm font-medium'>{t('stats.performance')}</CardTitle>
-            <Zap className='text-muted-foreground h-4 w-4' />
+            <Zap className='text-text-secondary h-4 w-4' />
           </CardHeader>
           <CardContent>
             <div className='text-2xl font-medium'>
               {monitoringStats?.performance.avgResponseTime?.toFixed(0) || 0}ms
             </div>
-            <p className='text-muted-foreground text-xs'>
+            <p className='text-text-secondary text-xs'>
               {t('stats.metrics-recorded', {
                 count: monitoringStats?.performance.totalMetrics || 0
               })}
@@ -245,11 +245,11 @@ export default function MonitoringDashboard() {
         <Card>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
             <CardTitle className='text-sm font-medium'>{t('stats.api-requests')}</CardTitle>
-            <Activity className='text-muted-foreground h-4 w-4' />
+            <Activity className='text-text-secondary h-4 w-4' />
           </CardHeader>
           <CardContent>
             <div className='text-2xl font-medium'>{monitoringStats?.api.totalRequests || 0}</div>
-            <p className='text-muted-foreground text-xs'>
+            <p className='text-text-secondary text-xs'>
               {t('stats.error-rate', { rate: monitoringStats?.api.errorRate?.toFixed(1) || 0 })}
             </p>
           </CardContent>
@@ -258,11 +258,11 @@ export default function MonitoringDashboard() {
         <Card>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
             <CardTitle className='text-sm font-medium'>{t('stats.errors')}</CardTitle>
-            <AlertTriangle className='text-muted-foreground h-4 w-4' />
+            <AlertTriangle className='text-text-secondary h-4 w-4' />
           </CardHeader>
           <CardContent>
             <div className='text-2xl font-medium'>{monitoringStats?.errors.total || 0}</div>
-            <p className='text-muted-foreground text-xs'>
+            <p className='text-text-secondary text-xs'>
               {t('stats.unresolved', { count: monitoringStats?.errors.unresolved || 0 })}
             </p>
           </CardContent>
@@ -271,11 +271,11 @@ export default function MonitoringDashboard() {
         <Card>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
             <CardTitle className='text-sm font-medium'>{t('stats.active-alerts')}</CardTitle>
-            <AlertTriangle className='text-muted-foreground h-4 w-4' />
+            <AlertTriangle className='text-text-secondary h-4 w-4' />
           </CardHeader>
           <CardContent>
             <div className='text-2xl font-medium'>{monitoringStats?.alerts.total || 0}</div>
-            <p className='text-muted-foreground text-xs'>
+            <p className='text-text-secondary text-xs'>
               {t('stats.critical-alerts', { count: monitoringStats?.alerts.critical || 0 })}
             </p>
           </CardContent>
@@ -358,13 +358,13 @@ export default function MonitoringDashboard() {
                           <Badge variant='outline'>{event.eventType}</Badge>
                           <span className='text-sm'>{event.user?.name || t('common.system')}</span>
                         </div>
-                        <span className='text-muted-foreground text-xs'>
+                        <span className='text-text-secondary text-xs'>
                           {new Date(event.createdAt).toLocaleString()}
                         </span>
                       </div>
                     ))}
                     {(analyticsEvents?.events.length ?? 0) === 0 && (
-                      <div className='text-muted-foreground text-sm'>
+                      <div className='text-text-secondary text-sm'>
                         {t('overview.recent-activity.empty')}
                       </div>
                     )}
@@ -395,7 +395,7 @@ export default function MonitoringDashboard() {
                             <span className='font-medium capitalize'>{type.replace('_', ' ')}</span>
                             <Badge variant='outline'>{data.latest?.value?.toFixed(2) || 0}</Badge>
                           </div>
-                          <div className='text-muted-foreground grid grid-cols-3 gap-2 text-sm'>
+                          <div className='text-text-secondary grid grid-cols-3 gap-2 text-sm'>
                             <div>{t('metrics.avg', { value: data.avg?.toFixed(2) || 0 })}</div>
                             <div>{t('metrics.min', { value: data.min?.toFixed(2) || 0 })}</div>
                             <div>{t('metrics.max', { value: data.max?.toFixed(2) || 0 })}</div>
@@ -404,7 +404,7 @@ export default function MonitoringDashboard() {
                       )
                     )}
                     {Object.keys(performanceMetrics?.metrics || {}).length === 0 && (
-                      <div className='text-muted-foreground text-center'>
+                      <div className='text-text-secondary text-center'>
                         {t('performance.metrics.empty')}
                       </div>
                     )}
@@ -433,7 +433,7 @@ export default function MonitoringDashboard() {
                               {data.currentUsage?.toFixed(1) || 0}%
                             </Badge>
                           </div>
-                          <div className='text-muted-foreground grid grid-cols-2 gap-2 text-sm'>
+                          <div className='text-text-secondary grid grid-cols-2 gap-2 text-sm'>
                             <div>
                               {t('metrics.avg-percent', { value: data.avgUsage?.toFixed(1) || 0 })}
                             </div>
@@ -452,7 +452,7 @@ export default function MonitoringDashboard() {
                       )
                     )}
                     {Object.keys(resourceUsage?.usage || {}).length === 0 && (
-                      <div className='text-muted-foreground text-center'>
+                      <div className='text-text-secondary text-center'>
                         {t('performance.resources.empty')}
                       </div>
                     )}
@@ -481,7 +481,7 @@ export default function MonitoringDashboard() {
                         <div className='text-2xl font-medium'>
                           {apiUsage?.stats.totalRequests || 0}
                         </div>
-                        <div className='text-muted-foreground text-sm'>
+                        <div className='text-text-secondary text-sm'>
                           {t('api.stats.total-requests')}
                         </div>
                       </div>
@@ -489,7 +489,7 @@ export default function MonitoringDashboard() {
                         <div className='text-2xl font-medium'>
                           {apiUsage?.stats.uniqueUsers || 0}
                         </div>
-                        <div className='text-muted-foreground text-sm'>
+                        <div className='text-text-secondary text-sm'>
                           {t('api.stats.unique-users')}
                         </div>
                       </div>
@@ -499,7 +499,7 @@ export default function MonitoringDashboard() {
                         <div className='text-2xl font-medium'>
                           {apiUsage?.stats.avgResponseTime?.toFixed(0) || 0}ms
                         </div>
-                        <div className='text-muted-foreground text-sm'>
+                        <div className='text-text-secondary text-sm'>
                           {t('api.stats.avg-response-time')}
                         </div>
                       </div>
@@ -507,7 +507,7 @@ export default function MonitoringDashboard() {
                         <div className='text-2xl font-medium'>
                           {apiUsage?.stats.errorRate?.toFixed(1) || 0}%
                         </div>
-                        <div className='text-muted-foreground text-sm'>
+                        <div className='text-text-secondary text-sm'>
                           {t('api.stats.error-rate')}
                         </div>
                       </div>
@@ -538,7 +538,7 @@ export default function MonitoringDashboard() {
                         </div>
                       ))}
                     {Object.keys(apiUsage?.stats.topEndpoints || {}).length === 0 && (
-                      <div className='text-muted-foreground text-center'>
+                      <div className='text-text-secondary text-center'>
                         {t('api.top-endpoints.empty')}
                       </div>
                     )}
@@ -583,7 +583,7 @@ export default function MonitoringDashboard() {
                           <span className='font-medium'>{error.message}</span>
                         </div>
                         <div className='flex items-center space-x-2'>
-                          <span className='text-muted-foreground text-sm'>
+                          <span className='text-text-secondary text-sm'>
                             {new Date(error.firstSeen).toLocaleString()}
                           </span>
                           {!error.resolved && (
@@ -599,12 +599,12 @@ export default function MonitoringDashboard() {
                         </div>
                       </div>
                       {error.errorType && (
-                        <div className='text-muted-foreground mb-1 text-sm'>
+                        <div className='text-text-secondary mb-1 text-sm'>
                           {t('errors.type', { type: error.errorType })}
                         </div>
                       )}
                       {error.user && (
-                        <div className='text-muted-foreground mb-1 text-sm'>
+                        <div className='text-text-secondary mb-1 text-sm'>
                           {t('errors.user', {
                             name: error.user.name,
                             email: error.user.email
@@ -612,7 +612,7 @@ export default function MonitoringDashboard() {
                         </div>
                       )}
                       {error.fingerprint && (
-                        <div className='text-muted-foreground text-xs'>
+                        <div className='text-text-secondary text-xs'>
                           {t('errors.fingerprint', { fingerprint: error.fingerprint })}
                         </div>
                       )}
@@ -628,7 +628,7 @@ export default function MonitoringDashboard() {
                     </div>
                   ))}
                   {(errorTracking?.errors.length ?? 0) === 0 && (
-                    <div className='text-muted-foreground text-center'>{t('errors.empty')}</div>
+                    <div className='text-text-secondary text-center'>{t('errors.empty')}</div>
                   )}
                 </div>
               )}
@@ -679,7 +679,7 @@ export default function MonitoringDashboard() {
                     </Card>
                   ))}
                   {Object.keys(resourceUsage?.usage || {}).length === 0 && (
-                    <div className='text-muted-foreground col-span-2 text-center'>
+                    <div className='text-text-secondary col-span-2 text-center'>
                       {t('resources.empty')}
                     </div>
                   )}
@@ -711,7 +711,7 @@ export default function MonitoringDashboard() {
                         </div>
                       ))}
                     {Object.keys(analyticsEvents?.eventTypes || {}).length === 0 && (
-                      <div className='text-muted-foreground text-center'>
+                      <div className='text-text-secondary text-center'>
                         {t('analytics.event-types.empty')}
                       </div>
                     )}
@@ -739,13 +739,13 @@ export default function MonitoringDashboard() {
                             {event.user?.name || t('common.anonymous')}
                           </span>
                         </div>
-                        <span className='text-muted-foreground text-xs'>
+                        <span className='text-text-secondary text-xs'>
                           {new Date(event.createdAt).toLocaleString()}
                         </span>
                       </div>
                     ))}
                     {(analyticsEvents?.events.length ?? 0) === 0 && (
-                      <div className='text-muted-foreground text-center'>
+                      <div className='text-text-secondary text-center'>
                         {t('analytics.recent-events.empty')}
                       </div>
                     )}

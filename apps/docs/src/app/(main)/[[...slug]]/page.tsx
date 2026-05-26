@@ -82,8 +82,11 @@ const Page = async (props: PageProps) => {
 
   return (
     <div className='space-y-12'>
-      <div className='space-y-4'>
-        <h1 className='relative text-3xl font-medium tracking-tighter md:text-4xl'>{title}</h1>
+      <div className='space-y-4 border-b-[0.5px] border-[var(--border-faint)] pb-10'>
+        <span className='label-mono'>Documentation</span>
+        <h1 className='relative text-[clamp(32px,4vw,48px)] font-medium tracking-tighter'>
+          {title}
+        </h1>
         <p className='text-text-secondary max-w-2xl text-[15px] leading-relaxed'>{description}</p>
         {hasLinks ? <LinkBadges {...link} /> : null}
       </div>

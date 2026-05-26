@@ -108,16 +108,16 @@ export default function NotificationManagement() {
       case 'error':
         return <X className='text-destructive h-4 w-4' />
       default:
-        return <Bell className='text-muted-foreground h-4 w-4' />
+        return <Bell className='text-text-secondary h-4 w-4' />
     }
   }
 
   const getNotificationTypeColor = (severity: string) => {
     if (severity === 'error') {
-      return 'border-destructive/30 bg-destructive/10 text-foreground'
+      return 'border-destructive/30 bg-destructive/10 text-text-primary'
     }
 
-    return 'border-[var(--border-subtle)] bg-card text-foreground'
+    return 'border-[var(--border-subtle)] bg-bg-surface text-text-primary'
   }
 
   if (isLoading) {
@@ -130,12 +130,12 @@ export default function NotificationManagement() {
       <div className='flex items-center justify-between'>
         <div className='space-y-1'>
           <h1 className='text-text-primary flex items-center gap-3 text-4xl font-medium tracking-tight'>
-            <div className='text-accent-earth-text rounded-xl bg-[var(--accent-dim)] p-2.5'>
+            <div className='text-accent-earth-text rounded-lg bg-[var(--accent-dim)] p-2.5'>
               <Bell className='h-8 w-8' />
             </div>
             {t('title')}
           </h1>
-          <p className='text-muted-foreground text-base'>{t('description')}</p>
+          <p className='text-text-secondary text-base'>{t('description')}</p>
         </div>
 
         <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
@@ -236,9 +236,9 @@ export default function NotificationManagement() {
 
       {/* Stats Cards */}
       <div className='grid gap-5 md:grid-cols-3'>
-        <Card className='bg-bg-surface border-[var(--border-subtle)] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl'>
+        <Card className='bg-bg-surface hover:shadow-feature-card border-[var(--border-subtle)] transition-all duration-300'>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-3'>
-            <CardTitle className='text-muted-foreground text-sm font-semibold'>
+            <CardTitle className='text-text-secondary text-sm font-medium'>
               {t('stats.total.title')}
             </CardTitle>
             <div className='text-accent-earth-text rounded-lg bg-[var(--accent-dim)] p-2'>
@@ -249,15 +249,15 @@ export default function NotificationManagement() {
             <div className='text-accent-earth-text text-3xl font-medium tracking-tight'>
               {notifications?.notifications?.length || 0}
             </div>
-            <p className='text-muted-foreground text-xs leading-relaxed'>
+            <p className='text-text-secondary text-xs leading-relaxed'>
               {t('stats.total.description')}
             </p>
           </CardContent>
         </Card>
 
-        <Card className='bg-bg-surface border-[var(--border-subtle)] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl'>
+        <Card className='bg-bg-surface hover:shadow-feature-card border-[var(--border-subtle)] transition-all duration-300'>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-3'>
-            <CardTitle className='text-muted-foreground text-sm font-semibold'>
+            <CardTitle className='text-text-secondary text-sm font-medium'>
               {t('stats.unread.title')}
             </CardTitle>
             <div className='text-accent-earth-text rounded-lg bg-[var(--accent-dim)] p-2'>
@@ -268,15 +268,15 @@ export default function NotificationManagement() {
             <div className='text-accent-earth-text text-3xl font-medium tracking-tight'>
               {notifications?.notifications?.filter((n) => !n.read).length || 0}
             </div>
-            <p className='text-muted-foreground text-xs leading-relaxed'>
+            <p className='text-text-secondary text-xs leading-relaxed'>
               {t('stats.unread.description')}
             </p>
           </CardContent>
         </Card>
 
-        <Card className='bg-bg-surface border-[var(--border-subtle)] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl'>
+        <Card className='bg-bg-surface hover:shadow-feature-card border-[var(--border-subtle)] transition-all duration-300'>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-3'>
-            <CardTitle className='text-muted-foreground text-sm font-semibold'>
+            <CardTitle className='text-text-secondary text-sm font-medium'>
               {t('stats.read-rate.title')}
             </CardTitle>
             <div className='text-accent-earth-text rounded-lg bg-[var(--accent-dim)] p-2'>
@@ -294,7 +294,7 @@ export default function NotificationManagement() {
                 : 0}
               %
             </div>
-            <p className='text-muted-foreground text-xs leading-relaxed'>
+            <p className='text-text-secondary text-xs leading-relaxed'>
               {t('stats.read-rate.description')}
             </p>
           </CardContent>
@@ -308,7 +308,7 @@ export default function NotificationManagement() {
             <div className='text-accent-earth-text rounded-lg bg-[var(--accent-dim)] p-2'>
               <Bell className='h-4 w-4' />
             </div>
-            <CardTitle className='text-base font-semibold'>{t('recent.title')}</CardTitle>
+            <CardTitle className='text-base font-medium'>{t('recent.title')}</CardTitle>
           </div>
           <CardDescription className='text-xs'>{t('recent.description')}</CardDescription>
         </CardHeader>
@@ -318,14 +318,14 @@ export default function NotificationManagement() {
               {notifications?.notifications?.map((notification) => (
                 <Card
                   key={notification.id}
-                  className={`${getNotificationTypeColor(notification.severity)} border ${notification.read ? '' : 'ring-2 ring-[var(--accent-border)]'} transition-all duration-200 hover:shadow-md`}
+                  className={`${getNotificationTypeColor(notification.severity)} border ${notification.read ? '' : 'ring-2 ring-[var(--accent-border)]'} hover:shadow-feature-card transition-all duration-200`}
                 >
                   <CardContent className='p-4'>
                     <div className='flex items-start justify-between'>
                       <div className='flex-1'>
                         <div className='mb-2 flex items-center gap-2'>
                           {getNotificationIcon(notification.severity)}
-                          <h3 className='font-semibold'>{notification.title}</h3>
+                          <h3 className='font-medium'>{notification.title}</h3>
                           <Badge variant='outline'>{notification.type}</Badge>
                           {!notification.read && (
                             <Badge className='text-accent-earth-text border border-[var(--accent-border)] bg-[var(--accent-dim)]'>
@@ -336,7 +336,7 @@ export default function NotificationManagement() {
 
                         <p className='mb-3 text-sm'>{notification.message}</p>
 
-                        <div className='text-muted-foreground flex items-center gap-4 text-xs'>
+                        <div className='text-text-secondary flex items-center gap-4 text-xs'>
                           <span className='flex items-center gap-1'>
                             <Clock className='h-3 w-3' />
                             {new Date(notification.createdAt).toLocaleDateString()}
@@ -373,7 +373,7 @@ export default function NotificationManagement() {
               ))}
 
               {!notifications?.notifications?.length && (
-                <div className='text-muted-foreground py-8 text-center'>
+                <div className='text-text-secondary py-8 text-center'>
                   <Bell className='mx-auto mb-4 h-12 w-12 opacity-50' />
                   <p>{t('empty')}</p>
                 </div>

@@ -11,7 +11,7 @@ const Header = () => {
       <div className='mx-auto flex h-14 max-w-6xl items-center justify-between px-5 md:px-8'>
         <div className='flex items-center gap-2 font-medium md:gap-6'>
           <MobileNav />
-          <Link href='/' className='tracking-tighter max-md:hidden'>
+          <Link href='/' className='font-medium tracking-tighter max-md:hidden'>
             @isyuricunha/docs
           </Link>
           <nav>

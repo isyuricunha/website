@@ -134,7 +134,7 @@ export const SystemHealthDashboard = () => {
       case 'critical':
         return <XCircle className='text-destructive h-5 w-5' />
       default:
-        return <AlertCircle className='text-muted-foreground h-5 w-5' />
+        return <AlertCircle className='text-text-secondary h-5 w-5' />
     }
   }
 
@@ -147,7 +147,7 @@ export const SystemHealthDashboard = () => {
       case 'critical':
         return 'text-destructive bg-destructive/10'
       default:
-        return 'text-muted-foreground bg-bg-surface'
+        return 'text-text-secondary bg-bg-surface'
     }
   }
 
@@ -228,15 +228,15 @@ export const SystemHealthDashboard = () => {
     return (
       <div className='space-y-6'>
         <div className='animate-pulse'>
-          <div className='bg-muted mb-4 h-8 w-1/4 rounded'></div>
+          <div className='bg-bg-hover mb-4 h-8 w-1/4 rounded'></div>
           <div className='mb-6 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4'>
             {Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className='bg-muted h-24 rounded'></div>
+              <div key={i} className='bg-bg-hover h-24 rounded'></div>
             ))}
           </div>
           <div className='space-y-3'>
             {Array.from({ length: 3 }).map((_, i) => (
-              <div key={i} className='bg-muted h-20 rounded'></div>
+              <div key={i} className='bg-bg-hover h-20 rounded'></div>
             ))}
           </div>
         </div>
@@ -250,15 +250,15 @@ export const SystemHealthDashboard = () => {
       <div className='flex items-center justify-between'>
         <div>
           <h1 className='text-2xl font-medium'>{t('title')}</h1>
-          <p className='text-muted-foreground'>{t('description')}</p>
+          <p className='text-text-secondary'>{t('description')}</p>
         </div>
         <div className='flex items-center gap-2'>
-          <label className='text-muted-foreground flex items-center gap-2 text-sm'>
+          <label className='text-text-secondary flex items-center gap-2 text-sm'>
             <input
               type='checkbox'
               checked={autoRefresh}
               onChange={(e) => setAutoRefresh(e.target.checked)}
-              className='border-border rounded'
+              className='rounded border-[var(--border-subtle)]'
             />
             {t('auto-refresh')}
           </label>
@@ -271,15 +271,15 @@ export const SystemHealthDashboard = () => {
 
       {/* Overall Status */}
       {healthData && (
-        <div className='bg-card border-border rounded-lg border p-6'>
+        <div className='bg-bg-surface rounded-lg border border-[var(--border-subtle)] p-6'>
           <div className='flex items-center justify-between'>
             <div className='flex items-center gap-3'>
               {getStatusIcon(healthData.overallStatus)}
               <div>
-                <h2 className='text-lg font-semibold'>
+                <h2 className='text-lg font-medium'>
                   {t('overall.status', { status: getStatusLabel(healthData.overallStatus) })}
                 </h2>
-                <p className='text-muted-foreground text-sm'>
+                <p className='text-text-secondary text-sm'>
                   {t('overall.last-checked', { date: lastCheckedAt })}
                 </p>
               </div>
@@ -287,7 +287,7 @@ export const SystemHealthDashboard = () => {
             {statsData && (
               <div className='text-right'>
                 <div className='text-2xl font-medium'>{formatUptime(statsData.health.uptime)}</div>
-                <div className='text-muted-foreground text-sm'>{t('overall.uptime')}</div>
+                <div className='text-text-secondary text-sm'>{t('overall.uptime')}</div>
               </div>
             )}
           </div>
@@ -297,11 +297,11 @@ export const SystemHealthDashboard = () => {
       {/* Stats Overview */}
       {statsData && (
         <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4'>
-          <div className='bg-card border-border rounded-lg border p-6'>
+          <div className='bg-bg-surface rounded-lg border border-[var(--border-subtle)] p-6'>
             <div className='flex items-center'>
               <CheckCircle className='text-accent-earth-text h-8 w-8' />
               <div className='ml-4'>
-                <p className='text-muted-foreground text-sm font-medium'>
+                <p className='text-text-secondary text-sm font-medium'>
                   {t('stats.healthy-checks')}
                 </p>
                 <p className='text-2xl font-medium'>{statsData.health.healthy}</p>
@@ -309,21 +309,21 @@ export const SystemHealthDashboard = () => {
             </div>
           </div>
 
-          <div className='bg-card border-border rounded-lg border p-6'>
+          <div className='bg-bg-surface rounded-lg border border-[var(--border-subtle)] p-6'>
             <div className='flex items-center'>
               <AlertTriangle className='text-accent-earth-text h-8 w-8' />
               <div className='ml-4'>
-                <p className='text-muted-foreground text-sm font-medium'>{t('stats.warnings')}</p>
+                <p className='text-text-secondary text-sm font-medium'>{t('stats.warnings')}</p>
                 <p className='text-2xl font-medium'>{statsData.health.warning}</p>
               </div>
             </div>
           </div>
 
-          <div className='bg-card border-border rounded-lg border p-6'>
+          <div className='bg-bg-surface rounded-lg border border-[var(--border-subtle)] p-6'>
             <div className='flex items-center'>
               <XCircle className='text-destructive h-8 w-8' />
               <div className='ml-4'>
-                <p className='text-muted-foreground text-sm font-medium'>
+                <p className='text-text-secondary text-sm font-medium'>
                   {t('stats.critical-issues')}
                 </p>
                 <p className='text-2xl font-medium'>{statsData.health.critical}</p>
@@ -331,11 +331,11 @@ export const SystemHealthDashboard = () => {
             </div>
           </div>
 
-          <div className='bg-card border-border rounded-lg border p-6'>
+          <div className='bg-bg-surface rounded-lg border border-[var(--border-subtle)] p-6'>
             <div className='flex items-center'>
               <AlertCircle className='text-accent-earth-text h-8 w-8' />
               <div className='ml-4'>
-                <p className='text-muted-foreground text-sm font-medium'>
+                <p className='text-text-secondary text-sm font-medium'>
                   {t('stats.unresolved-errors')}
                 </p>
                 <p className='text-2xl font-medium'>{statsData.errors.unresolved}</p>
@@ -347,8 +347,8 @@ export const SystemHealthDashboard = () => {
 
       {/* Service Health Checks */}
       {healthData && (
-        <div className='bg-card border-border rounded-lg border'>
-          <div className='border-border border-b px-6 py-4'>
+        <div className='bg-bg-surface rounded-lg border border-[var(--border-subtle)]'>
+          <div className='border-b border-[var(--border-subtle)] px-6 py-4'>
             <h3 className='text-lg font-medium'>{t('service-health.title')}</h3>
           </div>
           <div className='p-6'>
@@ -356,14 +356,14 @@ export const SystemHealthDashboard = () => {
               {healthData.checks.map((check, index) => (
                 <div
                   key={index}
-                  className={`border-border rounded-lg border p-4 ${getStatusColor(check.status)}`}
+                  className={`rounded-lg border border-[var(--border-subtle)] p-4 ${getStatusColor(check.status)}`}
                 >
                   <div className='flex items-center justify-between'>
                     <div className='flex items-center gap-3'>
                       {getServiceIcon(check.type)}
                       <div>
                         <h4 className='font-medium capitalize'>{check.type.replace('_', ' ')}</h4>
-                        <p className='text-muted-foreground text-sm'>{check.message}</p>
+                        <p className='text-text-secondary text-sm'>{check.message}</p>
                       </div>
                     </div>
                     <div className='text-right'>
@@ -372,7 +372,7 @@ export const SystemHealthDashboard = () => {
                     </div>
                   </div>
                   {check.details && Object.keys(check.details).length > 0 && (
-                    <div className='text-muted-foreground mt-3 text-xs'>
+                    <div className='text-text-secondary mt-3 text-xs'>
                       <pre className='whitespace-pre-wrap'>
                         {JSON.stringify(check.details, null, 2)}
                       </pre>
@@ -387,8 +387,8 @@ export const SystemHealthDashboard = () => {
 
       {/* Recent Errors */}
       {errorLogs && errorLogs.logs.length > 0 && (
-        <div className='bg-card border-border rounded-lg border'>
-          <div className='border-border border-b px-6 py-4'>
+        <div className='bg-bg-surface rounded-lg border border-[var(--border-subtle)]'>
+          <div className='border-b border-[var(--border-subtle)] px-6 py-4'>
             <div className='flex items-center justify-between'>
               <h3 className='text-lg font-medium'>{t('recent-errors.title')}</h3>
               <div className='flex items-center gap-2'>
@@ -422,18 +422,18 @@ export const SystemHealthDashboard = () => {
                       >
                         {error.level.toUpperCase()}
                       </span>
-                      <span className='text-muted-foreground text-sm'>
+                      <span className='text-text-secondary text-sm'>
                         {new Date(error.createdAt).toLocaleString()}
                       </span>
                     </div>
                     <p className='mb-1 text-sm font-medium'>{error.message}</p>
                     {error.url && (
-                      <p className='text-muted-foreground mb-1 text-xs'>
+                      <p className='text-text-secondary mb-1 text-xs'>
                         {t('recent-errors.url', { url: error.url })}
                       </p>
                     )}
                     {error.user && (
-                      <p className='text-muted-foreground text-xs'>
+                      <p className='text-text-secondary text-xs'>
                         {t('recent-errors.user', {
                           name: error.user.name,
                           email: error.user.email
@@ -452,10 +452,10 @@ export const SystemHealthDashboard = () => {
                 </div>
                 {error.stack && (
                   <details className='mt-3'>
-                    <summary className='text-muted-foreground cursor-pointer text-xs'>
+                    <summary className='text-text-secondary cursor-pointer text-xs'>
                       {t('recent-errors.stack-trace')}
                     </summary>
-                    <pre className='bg-muted mt-2 overflow-x-auto rounded p-2 text-xs'>
+                    <pre className='bg-bg-hover mt-2 overflow-x-auto rounded p-2 text-xs'>
                       {error.stack}
                     </pre>
                   </details>
@@ -467,17 +467,17 @@ export const SystemHealthDashboard = () => {
       )}
 
       {/* Health History Chart Placeholder */}
-      <div className='bg-card border-border rounded-lg border p-6'>
+      <div className='bg-bg-surface rounded-lg border border-[var(--border-subtle)] p-6'>
         <h3 className='mb-4 text-lg font-medium'>{t('trends.title')}</h3>
         <div className='space-y-4'>
           <div className='flex flex-wrap items-center justify-between gap-2'>
-            <div className='text-muted-foreground text-sm'>
+            <div className='text-text-secondary text-sm'>
               {t('trends.last-checks', { count: filtered_history.length })}
             </div>
             <div className='flex items-center gap-2'>
-              <label className='text-muted-foreground text-sm'>{t('trends.filter')}</label>
+              <label className='text-text-secondary text-sm'>{t('trends.filter')}</label>
               <Select value={selected_check_type} onValueChange={set_selected_check_type}>
-                <SelectTrigger className='bg-background border-border text-foreground h-9 rounded-md border px-3 text-sm'>
+                <SelectTrigger className='bg-bg-base text-text-primary h-9 rounded-md border border-[var(--border-subtle)] px-3 text-sm'>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -493,26 +493,26 @@ export const SystemHealthDashboard = () => {
           </div>
 
           <div className='grid grid-cols-2 gap-3 md:grid-cols-4'>
-            <div className='bg-background border-border rounded-md border p-3'>
-              <div className='text-muted-foreground text-xs'>{t('trends.stats.healthy')}</div>
-              <div className='text-foreground text-lg font-semibold'>{history_stats.healthy}</div>
+            <div className='bg-bg-base rounded-md border border-[var(--border-subtle)] p-3'>
+              <div className='text-text-secondary text-xs'>{t('trends.stats.healthy')}</div>
+              <div className='text-text-primary text-lg font-medium'>{history_stats.healthy}</div>
             </div>
-            <div className='bg-background border-border rounded-md border p-3'>
-              <div className='text-muted-foreground text-xs'>{t('trends.stats.warnings')}</div>
-              <div className='text-foreground text-lg font-semibold'>{history_stats.warning}</div>
+            <div className='bg-bg-base rounded-md border border-[var(--border-subtle)] p-3'>
+              <div className='text-text-secondary text-xs'>{t('trends.stats.warnings')}</div>
+              <div className='text-text-primary text-lg font-medium'>{history_stats.warning}</div>
             </div>
-            <div className='bg-background border-border rounded-md border p-3'>
-              <div className='text-muted-foreground text-xs'>{t('trends.stats.critical')}</div>
-              <div className='text-foreground text-lg font-semibold'>{history_stats.critical}</div>
+            <div className='bg-bg-base rounded-md border border-[var(--border-subtle)] p-3'>
+              <div className='text-text-secondary text-xs'>{t('trends.stats.critical')}</div>
+              <div className='text-text-primary text-lg font-medium'>{history_stats.critical}</div>
             </div>
-            <div className='bg-background border-border rounded-md border p-3'>
-              <div className='text-muted-foreground text-xs'>{t('trends.stats.unknown')}</div>
-              <div className='text-foreground text-lg font-semibold'>{history_stats.unknown}</div>
+            <div className='bg-bg-base rounded-md border border-[var(--border-subtle)] p-3'>
+              <div className='text-text-secondary text-xs'>{t('trends.stats.unknown')}</div>
+              <div className='text-text-primary text-lg font-medium'>{history_stats.unknown}</div>
             </div>
           </div>
 
           {filtered_history.length === 0 ? (
-            <div className='text-muted-foreground flex h-40 items-center justify-center'>
+            <div className='text-text-secondary flex h-40 items-center justify-center'>
               <div className='text-center'>
                 <TrendingUp className='mx-auto mb-2 h-12 w-12 opacity-50' />
                 <p>{t('trends.empty-title')}</p>
@@ -520,9 +520,9 @@ export const SystemHealthDashboard = () => {
               </div>
             </div>
           ) : (
-            <div className='border-border overflow-x-auto rounded-md border'>
+            <div className='overflow-x-auto rounded-md border border-[var(--border-subtle)]'>
               <table className='w-full text-sm'>
-                <thead className='bg-muted text-muted-foreground text-left text-xs'>
+                <thead className='bg-bg-hover text-text-secondary text-left text-xs'>
                   <tr>
                     <th className='px-3 py-2'>{t('trends.table.time')}</th>
                     <th className='px-3 py-2'>{t('trends.table.service')}</th>
@@ -533,11 +533,11 @@ export const SystemHealthDashboard = () => {
                 </thead>
                 <tbody className='divide-border divide-y'>
                   {filtered_history.slice(0, 15).map((row) => (
-                    <tr key={row.id} className='bg-background'>
-                      <td className='text-muted-foreground px-3 py-2'>
+                    <tr key={row.id} className='bg-bg-base'>
+                      <td className='text-text-secondary px-3 py-2'>
                         {new Date(row.createdAt).toLocaleString()}
                       </td>
-                      <td className='text-foreground px-3 py-2 font-medium'>{row.checkType}</td>
+                      <td className='text-text-primary px-3 py-2 font-medium'>{row.checkType}</td>
                       <td className='px-3 py-2'>
                         <span
                           className={`inline-flex items-center gap-2 rounded-full px-2 py-0.5 ${getStatusColor(row.status)}`}
@@ -546,12 +546,12 @@ export const SystemHealthDashboard = () => {
                           <span className='text-xs font-medium'>{getStatusLabel(row.status)}</span>
                         </span>
                       </td>
-                      <td className='text-muted-foreground px-3 py-2'>
+                      <td className='text-text-secondary px-3 py-2'>
                         {typeof row.responseTime === 'number'
                           ? formatResponseTime(row.responseTime)
                           : '—'}
                       </td>
-                      <td className='text-muted-foreground px-3 py-2'>{row.message}</td>
+                      <td className='text-text-secondary px-3 py-2'>{row.message}</td>
                     </tr>
                   ))}
                 </tbody>

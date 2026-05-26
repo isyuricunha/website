@@ -11,7 +11,7 @@ const buttonVariants = cva({
   variants: {
     variant: {
       default:
-        'border-accent-earth-hover bg-accent-earth hover:bg-accent-earth-hover border text-[var(--text-primary)]',
+        'border-accent-earth-hover bg-accent-earth text-text-inverse hover:bg-accent-earth-hover border',
       destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
       outline:
         'border-border text-muted-foreground hover:border-border hover:bg-bg-hover hover:text-foreground border bg-transparent',

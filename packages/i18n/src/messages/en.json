@@ -1935,6 +1935,12 @@
   "spotify": {
     "title": "Music",
     "description": "Here's what I'm listening to at the moment — top tracks and artists from my Last.fm profile.",
+    "sections": {
+      "listening-data": {
+        "label": "Listening Data",
+        "title": "What repeats, what changes, and what is playing right now."
+      }
+    },
     "now-listening": {
       "title": "Now Listening",
       "subtitle": "Currently playing on Last.fm",

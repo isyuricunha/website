@@ -147,9 +147,7 @@ export default function AnnouncementWidget({ className, maxItems = 5 }: Announce
                   className='group bg-bg-surface hover:bg-bg-hover relative rounded-lg border border-[var(--border-subtle)] p-3 transition-colors hover:border-[var(--border-default)]'
                 >
                   <div className='flex items-start gap-3'>
-                    <div
-                      className={`shrink-0 transition-transform duration-200 group-hover:scale-110 ${ui.iconClassName}`}
-                    >
+                    <div className={`shrink-0 transition-colors duration-150 ${ui.iconClassName}`}>
                       {ui.icon}
                     </div>
 

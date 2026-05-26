@@ -186,7 +186,7 @@ export default function CommunicationManagement() {
       <div className='flex items-center justify-between'>
         <div>
           <h1 className='text-3xl font-medium'>{t('title')}</h1>
-          <p className='text-muted-foreground'>{t('description')}</p>
+          <p className='text-text-secondary'>{t('description')}</p>
         </div>
       </div>
 
@@ -195,11 +195,11 @@ export default function CommunicationManagement() {
         <Card>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
             <CardTitle className='text-sm font-medium'>{t('stats.email-campaigns')}</CardTitle>
-            <Mail className='text-muted-foreground h-4 w-4' />
+            <Mail className='text-text-secondary h-4 w-4' />
           </CardHeader>
           <CardContent>
             <div className='text-2xl font-medium'>{commStats?.campaigns.total || 0}</div>
-            <p className='text-muted-foreground text-xs'>
+            <p className='text-text-secondary text-xs'>
               {t('stats.sent-campaigns', { count: commStats?.campaigns.sent || 0 })}
             </p>
           </CardContent>
@@ -208,11 +208,11 @@ export default function CommunicationManagement() {
         <Card>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
             <CardTitle className='text-sm font-medium'>{t('stats.emails-sent')}</CardTitle>
-            <Send className='text-muted-foreground h-4 w-4' />
+            <Send className='text-text-secondary h-4 w-4' />
           </CardHeader>
           <CardContent>
             <div className='text-2xl font-medium'>{commStats?.campaigns.totalEmailsSent || 0}</div>
-            <p className='text-muted-foreground text-xs'>
+            <p className='text-text-secondary text-xs'>
               {t('stats.delivered', {
                 count: commStats?.campaigns.totalEmailsDelivered || 0
               })}
@@ -223,11 +223,11 @@ export default function CommunicationManagement() {
         <Card>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
             <CardTitle className='text-sm font-medium'>{t('stats.announcements')}</CardTitle>
-            <Megaphone className='text-muted-foreground h-4 w-4' />
+            <Megaphone className='text-text-secondary h-4 w-4' />
           </CardHeader>
           <CardContent>
             <div className='text-2xl font-medium'>{commStats?.announcements.total || 0}</div>
-            <p className='text-muted-foreground text-xs'>
+            <p className='text-text-secondary text-xs'>
               {t('stats.active', { count: commStats?.announcements.active || 0 })}
             </p>
           </CardContent>
@@ -236,11 +236,11 @@ export default function CommunicationManagement() {
         <Card>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
             <CardTitle className='text-sm font-medium'>{t('stats.notifications')}</CardTitle>
-            <Bell className='text-muted-foreground h-4 w-4' />
+            <Bell className='text-text-secondary h-4 w-4' />
           </CardHeader>
           <CardContent>
             <div className='text-2xl font-medium'>{commStats?.notifications.total || 0}</div>
-            <p className='text-muted-foreground text-xs'>
+            <p className='text-text-secondary text-xs'>
               {t('stats.unread', { count: commStats?.notifications.unread || 0 })}
             </p>
           </CardContent>
@@ -276,13 +276,11 @@ export default function CommunicationManagement() {
                           <Badge variant={getStatusColor(campaign.status)}>{campaign.status}</Badge>
                           <span className='text-sm'>{campaign.name}</span>
                         </div>
-                        <span className='text-muted-foreground text-xs'>
+                        <span className='text-text-secondary text-xs'>
                           {new Date(campaign.createdAt).toLocaleDateString()}
                         </span>
                       </div>
-                    )) || (
-                      <div className='text-muted-foreground text-sm'>{t('campaigns.empty')}</div>
-                    )}
+                    )) || <div className='text-text-secondary text-sm'>{t('campaigns.empty')}</div>}
                   </div>
                 )}
               </CardContent>
@@ -310,12 +308,12 @@ export default function CommunicationManagement() {
                             </Badge>
                             <span className='text-sm'>{announcement.title}</span>
                           </div>
-                          <span className='text-muted-foreground text-xs'>
+                          <span className='text-text-secondary text-xs'>
                             {t('announcements.priority', { priority: announcement.priority })}
                           </span>
                         </div>
                       )) || (
-                      <div className='text-muted-foreground text-sm'>
+                      <div className='text-text-secondary text-sm'>
                         {t('announcements.no-active')}
                       </div>
                     )}
@@ -390,16 +388,16 @@ export default function CommunicationManagement() {
                           <div className='font-medium'>{campaign.name}</div>
                           <Badge variant={getStatusColor(campaign.status)}>{campaign.status}</Badge>
                         </div>
-                        <div className='text-muted-foreground mb-2 text-sm'>
+                        <div className='text-text-secondary mb-2 text-sm'>
                           {t('campaigns.subject', { subject: campaign.subject })}
                         </div>
-                        <div className='text-muted-foreground mb-2 text-sm'>
+                        <div className='text-text-secondary mb-2 text-sm'>
                           {t('campaigns.recipients', {
                             count: campaign.totalRecipients || 0
                           })}
                         </div>
                         <div className='flex items-center justify-between'>
-                          <span className='text-muted-foreground text-xs'>
+                          <span className='text-text-secondary text-xs'>
                             {t('date.created', {
                               date: new Date(campaign.createdAt).toLocaleDateString()
                             })}
@@ -418,9 +416,7 @@ export default function CommunicationManagement() {
                         </div>
                       </div>
                     )) || (
-                      <div className='text-muted-foreground text-center'>
-                        {t('campaigns.empty')}
-                      </div>
+                      <div className='text-text-secondary text-center'>{t('campaigns.empty')}</div>
                     )}
                   </div>
                 )}
@@ -515,19 +511,17 @@ export default function CommunicationManagement() {
                           <div className='font-medium'>{template.name}</div>
                           <Badge variant='outline'>{template.type}</Badge>
                         </div>
-                        <div className='text-muted-foreground mb-2 text-sm'>
+                        <div className='text-text-secondary mb-2 text-sm'>
                           {t('templates.subject', { subject: template.subject })}
                         </div>
-                        <div className='text-muted-foreground text-xs'>
+                        <div className='text-text-secondary text-xs'>
                           {t('date.created', {
                             date: new Date(template.createdAt).toLocaleDateString()
                           })}
                         </div>
                       </div>
                     )) || (
-                      <div className='text-muted-foreground text-center'>
-                        {t('templates.empty')}
-                      </div>
+                      <div className='text-text-secondary text-center'>{t('templates.empty')}</div>
                     )}
                   </div>
                 )}
@@ -645,10 +639,10 @@ export default function CommunicationManagement() {
                             )}
                           </div>
                         </div>
-                        <div className='text-muted-foreground mb-2 text-sm'>
+                        <div className='text-text-secondary mb-2 text-sm'>
                           {announcement.content}
                         </div>
-                        <div className='text-muted-foreground flex items-center justify-between text-xs'>
+                        <div className='text-text-secondary flex items-center justify-between text-xs'>
                           <span>
                             {t('announcements.priority', { priority: announcement.priority })}
                           </span>
@@ -660,7 +654,7 @@ export default function CommunicationManagement() {
                         </div>
                       </div>
                     )) || (
-                      <div className='text-muted-foreground text-center'>
+                      <div className='text-text-secondary text-center'>
                         {t('announcements.empty')}
                       </div>
                     )}
@@ -694,15 +688,13 @@ export default function CommunicationManagement() {
                           </Badge>
                         </div>
                       </div>
-                      <div className='text-muted-foreground mb-2 text-sm'>
-                        {notification.message}
-                      </div>
-                      <div className='text-muted-foreground text-xs'>
+                      <div className='text-text-secondary mb-2 text-sm'>{notification.message}</div>
+                      <div className='text-text-secondary text-xs'>
                         {new Date(notification.createdAt).toLocaleString()}
                       </div>
                     </div>
                   )) || (
-                    <div className='text-muted-foreground text-center'>
+                    <div className='text-text-secondary text-center'>
                       {t('notifications.empty')}
                     </div>
                   )}

@@ -888,7 +888,7 @@ export default function AIChatInterface({
 
   return (
     <TooltipProvider>
-      <div className='bg-popover/95 absolute right-0 bottom-full mb-2 flex h-[70vh] max-h-[720px] min-h-[460px] w-[420px] max-w-[calc(100vw-1rem)] flex-col overflow-hidden rounded-lg border shadow-2xl'>
+      <div className='bg-bg-elevated shadow-feature-card absolute right-0 bottom-full mb-2 flex h-[70vh] max-h-[720px] min-h-[460px] w-[420px] max-w-[calc(100vw-1rem)] flex-col overflow-hidden rounded-lg border border-[var(--border-subtle)]'>
         {/* Header */}
         <div className='bg-bg-surface flex items-center justify-between gap-3 border-b px-4 py-3'>
           <div className='flex min-w-0 items-center gap-2'>
@@ -977,7 +977,7 @@ export default function AIChatInterface({
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                   onClick={deleteChat}
-                  className='gap-2 text-red-600 focus:text-red-500'
+                  className='text-accent-earth-text focus:text-accent-earth-hover gap-2'
                 >
                   <Trash2 className='size-4' />
                   {t('mascot.aiChat.deleteChat')}
@@ -1180,7 +1180,7 @@ export default function AIChatInterface({
                         disabled={feedbackIsSubmittingByMessageId[message.id] === true}
                         className={`hover:bg-bg-hover flex items-center gap-1 rounded px-2 py-1 text-xs transition-all ${
                           message.reactions?.userReaction === 'like'
-                            ? 'bg-green-50 text-green-600 dark:bg-green-950'
+                            ? 'text-accent-earth-text bg-[var(--accent-dim)]'
                             : 'text-muted-foreground'
                         }`}
                       >
@@ -1194,7 +1194,7 @@ export default function AIChatInterface({
                         disabled={feedbackIsSubmittingByMessageId[message.id] === true}
                         className={`hover:bg-bg-hover flex items-center gap-1 rounded px-2 py-1 text-xs transition-all ${
                           message.reactions?.userReaction === 'dislike'
-                            ? 'bg-red-50 text-red-600 dark:bg-red-950'
+                            ? 'text-accent-earth-text bg-[var(--accent-dim)]'
                             : 'text-muted-foreground'
                         }`}
                       >
@@ -1254,7 +1254,7 @@ export default function AIChatInterface({
                           setFeedbackOpenForMessageId(null)
                           setFeedbackDraftByMessageId((prev) => ({ ...prev, [message.id]: '' }))
                         }}
-                        className='bg-accent-earth text-accent-earth-text hover:bg-accent-earth-hover rounded px-3 py-1 text-xs transition-colors disabled:cursor-not-allowed disabled:opacity-60'
+                        className='bg-accent-earth text-text-inverse hover:bg-accent-earth-hover rounded px-3 py-1 text-xs transition-colors disabled:cursor-not-allowed disabled:opacity-60'
                         disabled={feedbackIsSubmittingByMessageId[message.id] === true}
                       >
                         {feedbackIsSubmittingByMessageId[message.id] === true ? (
@@ -1324,7 +1324,7 @@ export default function AIChatInterface({
               type='button'
               onClick={sendMessage}
               disabled={!inputValue.trim() || isLoading}
-              className='text-accent-earth-text bg-bg-surface rounded-xl px-4 py-3 shadow-sm transition-all duration-200 hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none'
+              className='text-accent-earth-text bg-bg-surface hover:bg-bg-hover rounded-lg px-4 py-3 shadow-sm transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none'
             >
               {isLoading ? (
                 <Loader2 className='h-4 w-4 animate-spin' />
@@ -1336,7 +1336,7 @@ export default function AIChatInterface({
           <div className='mt-3 flex items-center justify-between'>
             <p className='text-muted-foreground/80 text-xs'>{t('mascot.aiChat.footer')}</p>
             <div className='text-muted-foreground/60 flex items-center gap-1 text-xs'>
-              <div className='h-2 w-2 animate-pulse rounded-full bg-green-500'></div>
+              <div className='bg-accent-earth h-2 w-2 animate-pulse rounded-full'></div>
               <span>{t('mascot.aiChat.online')}</span>
             </div>
           </div>

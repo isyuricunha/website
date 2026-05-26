@@ -172,7 +172,7 @@ const MascotGame = ({ isOpen, onClose }: MascotGameProps) => {
             </span>
           </div>
           <div className='flex items-center gap-1'>
-            <TrophyIcon className='h-4 w-4 text-yellow-500' />
+            <TrophyIcon className='text-accent-earth-text h-4 w-4' />
             <span className='text-sm'>{highScore}</span>
           </div>
         </div>
@@ -229,7 +229,7 @@ const MascotGame = ({ isOpen, onClose }: MascotGameProps) => {
           <div className='bg-muted relative h-64 w-full rounded border'>
             <button
               type='button'
-              className={`bg-accent-earth focus-visible:ring-ring absolute rounded-full transition-all hover:scale-110 focus-visible:ring-2 focus-visible:outline-none ${multiplier > 1 ? 'animate-pulse bg-[var(--accent-dim)]' : ''}`}
+              className={`bg-accent-earth focus-visible:ring-ring hover:bg-accent-earth-hover absolute rounded-full transition-colors focus-visible:ring-2 focus-visible:outline-none ${multiplier > 1 ? 'animate-pulse bg-[var(--accent-dim)]' : ''}`}
               style={{
                 left: `${targetPosition.x}%`,
                 top: `${targetPosition.y}%`,
@@ -255,7 +255,7 @@ const MascotGame = ({ isOpen, onClose }: MascotGameProps) => {
             </p>
             <button
               type='button'
-              className='bg-accent-earth text-accent-earth-text hover:bg-accent-earth-hover focus-visible:ring-ring rounded px-4 py-2 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none'
+              className='bg-accent-earth text-text-inverse hover:bg-accent-earth-hover focus-visible:ring-ring rounded px-4 py-2 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none'
               onClick={startGame}
             >
               {timeLeft === 0 ? t('mascot.game.playAgain') : t('mascot.game.start')}

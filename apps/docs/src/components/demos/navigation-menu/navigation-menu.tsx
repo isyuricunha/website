@@ -61,12 +61,12 @@ const NavigationMenuDemo = () => {
               <li className='row-span-3'>
                 <NavigationMenuLink asChild>
                   <Link
-                    className='from-muted/50 to-muted flex size-full flex-col justify-end rounded-md bg-linear-to-b p-6 no-underline outline-hidden select-none focus:shadow-md'
+                    className='bg-bg-surface focus:shadow-feature-card flex size-full flex-col justify-end rounded-md border border-[var(--border-subtle)] p-6 no-underline outline-hidden select-none'
                     href='/'
                   >
                     <Logo className='size-6' />
                     <div className='mt-4 mb-2 text-lg font-medium'>isyuricunha/ui</div>
-                    <p className='text-muted-foreground text-sm leading-tight'>
+                    <p className='text-text-secondary text-sm leading-tight'>
                       A modern component library.
                     </p>
                   </Link>
@@ -110,13 +110,13 @@ const ListItem = (props: ListItemProps) => {
       <NavigationMenuLink asChild>
         <Link
           className={cn(
-            'hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground block space-y-1 rounded-md p-3 leading-none no-underline outline-hidden transition-colors select-none',
+            'hover:bg-bg-hover hover:text-text-primary focus:bg-bg-hover focus:text-text-primary block space-y-1 rounded-md p-3 leading-none no-underline outline-hidden transition-colors select-none',
             className
           )}
           {...rest}
         >
           <div className='text-sm leading-none font-medium'>{title}</div>
-          <p className='text-muted-foreground line-clamp-2 text-sm leading-snug'>{children}</p>
+          <p className='text-text-secondary line-clamp-2 text-sm leading-snug'>{children}</p>
         </Link>
       </NavigationMenuLink>
     </li>

@@ -88,9 +88,9 @@ const MusicStatsSection = () => {
           <div className='grid grid-cols-2 gap-4 md:grid-cols-4'>
             {Array.from({ length: 4 }).map((_, i) => (
               <div key={i} className='space-y-2 text-center'>
-                <div className='bg-muted mx-auto h-8 w-8 animate-pulse rounded-full' />
-                <div className='bg-muted mx-auto h-4 w-16 animate-pulse rounded' />
-                <div className='bg-muted mx-auto h-3 w-12 animate-pulse rounded' />
+                <div className='bg-bg-hover mx-auto h-8 w-8 animate-pulse rounded-full' />
+                <div className='bg-bg-hover mx-auto h-4 w-16 animate-pulse rounded' />
+                <div className='bg-bg-hover mx-auto h-3 w-12 animate-pulse rounded' />
               </div>
             ))}
           </div>
@@ -116,7 +116,7 @@ const MusicStatsSection = () => {
             type='button'
             onClick={handleRefresh}
             disabled={isRefreshing}
-            className='text-muted-foreground hover:text-foreground text-xs disabled:opacity-50 sm:text-sm'
+            className='text-text-secondary hover:text-text-primary text-xs disabled:opacity-50 sm:text-sm'
           >
             {t('spotify.refresh')}
           </button>
@@ -131,7 +131,7 @@ const MusicStatsSection = () => {
             </div>
             <div>
               <p className='text-lg font-medium sm:text-xl'>{stats.totalHours}h</p>
-              <p className='text-muted-foreground text-xs sm:text-sm'>
+              <p className='text-text-secondary text-xs sm:text-sm'>
                 {t('spotify.stats.labels.total-hours')}
               </p>
             </div>
@@ -144,7 +144,7 @@ const MusicStatsSection = () => {
             </div>
             <div>
               <p className='text-lg font-medium sm:text-xl'>{stats.diversityScore}%</p>
-              <p className='text-muted-foreground text-xs sm:text-sm'>
+              <p className='text-text-secondary text-xs sm:text-sm'>
                 {t('spotify.stats.labels.diversity')}
               </p>
             </div>
@@ -157,7 +157,7 @@ const MusicStatsSection = () => {
             </div>
             <div>
               <p className='text-lg font-medium sm:text-xl'>{stats.avgPopularity}%</p>
-              <p className='text-muted-foreground text-xs sm:text-sm'>
+              <p className='text-text-secondary text-xs sm:text-sm'>
                 {t('spotify.stats.labels.avg-popularity')}
               </p>
             </div>
@@ -170,7 +170,7 @@ const MusicStatsSection = () => {
             </div>
             <div>
               <p className='text-lg font-medium sm:text-xl'>{stats.totalArtists}</p>
-              <p className='text-muted-foreground text-xs sm:text-sm'>
+              <p className='text-text-secondary text-xs sm:text-sm'>
                 {t('spotify.stats.labels.top-artists')}
               </p>
             </div>
@@ -180,7 +180,7 @@ const MusicStatsSection = () => {
         {/* Top Genres */}
         {stats.topGenres.length > 0 && (
           <div className='mt-6 border-t pt-6'>
-            <h4 className='mb-3 flex items-center gap-2 text-sm font-semibold sm:text-base'>
+            <h4 className='mb-3 flex items-center gap-2 text-sm font-medium sm:text-base'>
               <Calendar className='h-4 w-4' />
               {t('spotify.stats.labels.top-genres')}
             </h4>
@@ -190,10 +190,10 @@ const MusicStatsSection = () => {
                   key={genre}
                   className={`rounded-full px-3 py-1 text-xs font-medium sm:text-sm ${
                     index === 0
-                      ? 'bg-accent-earth text-accent-earth-text'
-                      : index === 1
-                        ? 'bg-secondary text-secondary-foreground'
-                        : 'bg-muted text-muted-foreground'
+                      ? 'bg-accent-earth text-text-inverse'
+                      : (index === 1
+                        ? 'bg-bg-surface text-text-primary'
+                        : 'bg-bg-hover text-text-secondary')
                   }`}
                 >
                   #{index + 1} {genre}

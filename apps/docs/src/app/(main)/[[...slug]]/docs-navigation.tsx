@@ -15,7 +15,10 @@ const DocsNavigation = () => {
   const nextLink = links[currentIndex + 1] ?? null
 
   return (
-    <nav aria-label='Documentation navigation' className='flex justify-between'>
+    <nav
+      aria-label='Documentation navigation'
+      className='flex justify-between border-t-[0.5px] border-[var(--border-faint)] pt-8'
+    >
       {prevLink ? (
         <Link href={prevLink.href} className='group flex items-center gap-1.5' variant='muted'>
           <ChevronLeftIcon className='size-4 transition-transform group-hover:-translate-x-0.5' />

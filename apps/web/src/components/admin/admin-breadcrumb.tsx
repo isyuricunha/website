@@ -19,9 +19,9 @@ const AdminBreadcrumb = () => {
     const label =
       segment === 'admin'
         ? t('admin.nav.dashboard')
-        : t.has(i18nKey)
+        : (t.has(i18nKey)
           ? t(i18nKey)
-          : segment.replaceAll('-', ' ')
+          : segment.replaceAll('-', ' '))
     const isLast = index === segments.length - 1
 
     return {
@@ -36,8 +36,8 @@ const AdminBreadcrumb = () => {
   }
 
   return (
-    <nav className='text-muted-foreground mb-6 flex items-center space-x-1 text-sm'>
-      <Link href='/admin' className='hover:text-foreground flex items-center transition-colors'>
+    <nav className='text-text-tertiary mb-6 flex items-center space-x-1 text-sm'>
+      <Link href='/admin' className='hover:text-text-primary flex items-center transition-colors'>
         <Home className='h-4 w-4' />
         <span className='ml-1'>{t('admin.nav.dashboard')}</span>
       </Link>
@@ -46,9 +46,9 @@ const AdminBreadcrumb = () => {
         <div key={breadcrumb.href} className='flex items-center'>
           <ChevronRight className='mx-1 h-4 w-4' />
           {breadcrumb.isLast ? (
-            <span className='text-foreground font-medium'>{breadcrumb.label}</span>
+            <span className='text-text-primary font-medium'>{breadcrumb.label}</span>
           ) : (
-            <Link href={breadcrumb.href} className='hover:text-foreground transition-colors'>
+            <Link href={breadcrumb.href} className='hover:text-text-primary transition-colors'>
               {breadcrumb.label}
             </Link>
           )}

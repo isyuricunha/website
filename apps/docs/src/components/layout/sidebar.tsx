@@ -19,7 +19,7 @@ const Sidebar = () => {
   const pathname = usePathname()
 
   return (
-    <aside className='sticky top-14 max-h-[calc(100vh-3.5rem)] w-full py-8 text-sm max-md:hidden'>
+    <aside className='sticky top-14 max-h-[calc(100vh-3.5rem)] w-full border-r-[0.5px] border-[var(--border-faint)] py-8 pr-4 text-sm max-md:hidden'>
       <ScrollArea className='h-full pr-4'>
         {SIDEBAR_LINKS.map((section) => (
           <div key={section.title} className='mb-8'>

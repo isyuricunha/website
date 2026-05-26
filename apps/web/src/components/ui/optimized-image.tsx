@@ -118,7 +118,7 @@ export function ProjectCoverImage({
       priority={priority}
       fallbackSrc='/images/og.png'
       className='aspect-video w-full object-cover'
-      imageClassName='transition-transform duration-500 group-hover:scale-110'
+      imageClassName='transition-opacity duration-150 group-hover:opacity-90'
     />
   )
 }

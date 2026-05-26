@@ -8,7 +8,6 @@
 import { getErrorMessage } from '@isyuricunha/utils'
 import { ImageResponse } from 'next/og'
 import { NextResponse } from 'next/server'
-import color from 'tinycolor2'
 
 export const runtime = 'nodejs'
 
@@ -26,14 +25,15 @@ const djb2 = (str: string) => {
   return hash
 }
 
-const generateGradient = (id: string) => {
-  const c1 = color({ h: djb2(id) % 360, s: 0.95, l: 0.5 })
-  const second = c1.triad()[1].toHexString()
+const avatarPalettes = [
+  { base: '#14120b', surface: '#221f14', accent: '#c9572a' },
+  { base: '#1b1912', surface: '#2a2619', accent: '#d9653a' },
+  { base: '#1e1b10', surface: '#332e1e', accent: '#e07848' },
+  { base: '#221f14', surface: '#14120b', accent: '#9a9080' }
+] as const
 
-  return {
-    fromColor: c1.toHexString(),
-    toColor: second
-  }
+const getAvatarPalette = (id: string) => {
+  return avatarPalettes[Math.abs(djb2(id)) % avatarPalettes.length] ?? avatarPalettes[0]
 }
 
 export const GET = async (req: Request, props: AvatarRouteProps) => {
@@ -43,7 +43,8 @@ export const GET = async (req: Request, props: AvatarRouteProps) => {
   try {
     const { id } = await props.params
 
-    const gradient = generateGradient(id)
+    const palette = getAvatarPalette(id)
+    const numericSize = Number(size)
 
     return new ImageResponse(
       <svg
@@ -54,18 +55,26 @@ export const GET = async (req: Request, props: AvatarRouteProps) => {
         xmlns='http://www.w3.org/2000/svg'
       >
         <g>
-          <defs>
-            <linearGradient id='gradient' x1='0' y1='0' x2='1' y2='1'>
-              <stop offset='0%' stopColor={gradient.fromColor} />
-              <stop offset='100%' stopColor={gradient.toColor} />
-            </linearGradient>
-          </defs>
-          <rect fill='url(#gradient)' x='0' y='0' width={size} height={size} />
+          <rect fill={palette.base} x='0' y='0' width={size} height={size} />
+          <circle
+            cx={numericSize * 0.72}
+            cy={numericSize * 0.24}
+            r={numericSize * 0.34}
+            fill={palette.surface}
+          />
+          <rect
+            fill={palette.accent}
+            opacity='0.72'
+            x='0'
+            y={numericSize * 0.72}
+            width={size}
+            height={numericSize * 0.28}
+          />
         </g>
       </svg>,
       {
-        width: Number(size),
-        height: Number(size)
+        width: numericSize,
+        height: numericSize
       }
     )
   } catch (error) {

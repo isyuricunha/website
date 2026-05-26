@@ -62,11 +62,11 @@ export default function ForgotPasswordDialog({ open, onOpenChange }: ForgotPassw
           <>
             <DialogHeader>
               <div className='flex flex-col items-center space-y-4 py-4 text-center'>
-                <div className='flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500/10'>
-                  <CheckCircle2 className='h-8 w-8 text-emerald-600 dark:text-emerald-400' />
+                <div className='flex h-16 w-16 items-center justify-center rounded-full bg-[var(--accent-dim)]'>
+                  <CheckCircle2 className='text-accent-earth-text h-8 w-8' />
                 </div>
                 <div>
-                  <DialogTitle className='mb-2 text-xl font-semibold'>
+                  <DialogTitle className='mb-2 text-xl font-medium'>
                     {t('dialog.forgot-password.success.title')}
                   </DialogTitle>
                   <DialogDescription className='text-sm leading-relaxed'>
@@ -101,7 +101,7 @@ export default function ForgotPasswordDialog({ open, onOpenChange }: ForgotPassw
                   <Mail className='text-accent-earth-text h-6 w-6' />
                 </div>
                 <div className='flex-1'>
-                  <DialogTitle className='text-left text-xl font-semibold'>
+                  <DialogTitle className='text-left text-xl font-medium'>
                     {t('dialog.forgot-password.title')}
                   </DialogTitle>
                   <DialogDescription className='text-left text-sm'>
@@ -130,7 +130,7 @@ export default function ForgotPasswordDialog({ open, onOpenChange }: ForgotPassw
 
               <Button
                 type='submit'
-                className='h-11 w-full rounded-xl font-semibold'
+                className='h-11 w-full rounded-lg font-medium'
                 disabled={requestResetMutation.isPending || !email}
               >
                 {requestResetMutation.isPending
@@ -141,7 +141,7 @@ export default function ForgotPasswordDialog({ open, onOpenChange }: ForgotPassw
               <Button
                 type='button'
                 variant='ghost'
-                className='h-11 w-full rounded-xl font-medium'
+                className='h-11 w-full rounded-lg font-medium'
                 onClick={handleClose}
               >
                 <ArrowLeft className='mr-2 h-4 w-4' />

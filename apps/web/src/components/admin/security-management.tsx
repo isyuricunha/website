@@ -272,7 +272,7 @@ export default function SecurityManagement() {
       <div className='flex items-center justify-between'>
         <div>
           <h1 className='text-xl font-medium sm:text-2xl'>{t('title')}</h1>
-          <p className='text-muted-foreground text-sm'>{t('description')}</p>
+          <p className='text-text-secondary text-sm'>{t('description')}</p>
         </div>
       </div>
 
@@ -281,11 +281,11 @@ export default function SecurityManagement() {
         <Card>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
             <CardTitle className='text-sm font-medium'>{t('stats.security-events')}</CardTitle>
-            <AlertTriangle className='text-muted-foreground h-4 w-4' />
+            <AlertTriangle className='text-text-secondary h-4 w-4' />
           </CardHeader>
           <CardContent>
             <div className='text-2xl font-medium'>{securityStats?.events.total || 0}</div>
-            <p className='text-muted-foreground text-xs'>
+            <p className='text-text-secondary text-xs'>
               {t('stats.critical-events', { count: securityStats?.events.critical || 0 })}
             </p>
           </CardContent>
@@ -294,11 +294,11 @@ export default function SecurityManagement() {
         <Card>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
             <CardTitle className='text-sm font-medium'>{t('stats.login-attempts')}</CardTitle>
-            <Users className='text-muted-foreground h-4 w-4' />
+            <Users className='text-text-secondary h-4 w-4' />
           </CardHeader>
           <CardContent>
             <div className='text-2xl font-medium'>{securityStats?.loginAttempts.total || 0}</div>
-            <p className='text-muted-foreground text-xs'>
+            <p className='text-text-secondary text-xs'>
               {t('stats.failed-attempts', { count: securityStats?.loginAttempts.failed || 0 })}
             </p>
           </CardContent>
@@ -307,24 +307,24 @@ export default function SecurityManagement() {
         <Card>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
             <CardTitle className='text-sm font-medium'>{t('stats.account-lockouts')}</CardTitle>
-            <Lock className='text-muted-foreground h-4 w-4' />
+            <Lock className='text-text-secondary h-4 w-4' />
           </CardHeader>
           <CardContent>
             <div className='text-2xl font-medium'>{securityStats?.lockouts.active || 0}</div>
-            <p className='text-muted-foreground text-xs'>{t('stats.active-lockouts')}</p>
+            <p className='text-text-secondary text-xs'>{t('stats.active-lockouts')}</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
             <CardTitle className='text-sm font-medium'>{t('stats.two-factor-adoption')}</CardTitle>
-            <Shield className='text-muted-foreground h-4 w-4' />
+            <Shield className='text-text-secondary h-4 w-4' />
           </CardHeader>
           <CardContent>
             <div className='text-2xl font-medium'>
               {securityStats?.twoFactor.adoptionRate?.toFixed(1) || 0}%
             </div>
-            <p className='text-muted-foreground text-xs'>
+            <p className='text-text-secondary text-xs'>
               {t('stats.users-enabled', { count: securityStats?.twoFactor.enabledUsers || 0 })}
             </p>
           </CardContent>
@@ -363,13 +363,13 @@ export default function SecurityManagement() {
                             </Badge>
                             <span className='text-sm'>{event.eventType}</span>
                           </div>
-                          <span className='text-muted-foreground text-xs'>
+                          <span className='text-text-secondary text-xs'>
                             {new Date(event.createdAt).toLocaleString()}
                           </span>
                         </div>
                       ))
                     ) : (
-                      <div className='text-muted-foreground text-sm'>{t('events.no-recent')}</div>
+                      <div className='text-text-secondary text-sm'>{t('events.no-recent')}</div>
                     )}
                   </div>
                 )}
@@ -442,7 +442,7 @@ export default function SecurityManagement() {
                             <span className='font-medium'>{event.eventType}</span>
                           </div>
                           <div className='flex items-center space-x-2'>
-                            <span className='text-muted-foreground text-sm'>
+                            <span className='text-text-secondary text-sm'>
                               {new Date(event.createdAt).toLocaleString()}
                             </span>
                             {!event.resolved && (
@@ -457,12 +457,12 @@ export default function SecurityManagement() {
                           </div>
                         </div>
                         {event.ipAddress && (
-                          <div className='text-muted-foreground text-sm'>
+                          <div className='text-text-secondary text-sm'>
                             {t('events.ip', { ip: event.ipAddress })}
                           </div>
                         )}
                         {event.user && (
-                          <div className='text-muted-foreground text-sm'>
+                          <div className='text-text-secondary text-sm'>
                             {t('events.user', {
                               name: event.user.name,
                               email: event.user.email
@@ -481,7 +481,7 @@ export default function SecurityManagement() {
                       </div>
                     ))
                   ) : (
-                    <div className='text-muted-foreground text-center'>{t('events.empty')}</div>
+                    <div className='text-text-secondary text-center'>{t('events.empty')}</div>
                   )}
                 </div>
               )}
@@ -554,7 +554,7 @@ export default function SecurityManagement() {
                         >
                           <div>
                             <div className='font-medium'>{rule.ipAddress}</div>
-                            <div className='text-muted-foreground text-sm'>
+                            <div className='text-text-secondary text-sm'>
                               {rule.description || t('ip-control.no-description')}
                             </div>
                           </div>
@@ -564,9 +564,7 @@ export default function SecurityManagement() {
                         </div>
                       ))
                     ) : (
-                      <div className='text-muted-foreground text-center'>
-                        {t('ip-control.empty')}
-                      </div>
+                      <div className='text-text-secondary text-center'>{t('ip-control.empty')}</div>
                     )}
                   </div>
                 )}
@@ -594,15 +592,15 @@ export default function SecurityManagement() {
                             <div className='font-medium'>
                               {t('lockouts.user-id', { userId: lockout.userId })}
                             </div>
-                            <div className='text-muted-foreground text-sm'>
+                            <div className='text-text-secondary text-sm'>
                               {t('lockouts.lockout-id', { lockoutId: lockout.id })}
                             </div>
-                            <div className='text-muted-foreground text-sm'>
+                            <div className='text-text-secondary text-sm'>
                               {t('lockouts.locked', {
                                 date: new Date(lockout.lockedAt).toLocaleString()
                               })}
                             </div>
-                            <div className='text-muted-foreground text-sm'>
+                            <div className='text-text-secondary text-sm'>
                               {t('lockouts.reason', { reason: lockout.reason })}
                             </div>
                           </div>
@@ -616,7 +614,7 @@ export default function SecurityManagement() {
                       </div>
                     ))
                   ) : (
-                    <div className='text-muted-foreground text-center'>{t('lockouts.empty')}</div>
+                    <div className='text-text-secondary text-center'>{t('lockouts.empty')}</div>
                   )}
                 </div>
               )}
@@ -666,13 +664,11 @@ export default function SecurityManagement() {
                 </div>
 
                 {settingsLoading ? (
-                  <div className='text-muted-foreground py-8 text-center'>
+                  <div className='text-text-secondary py-8 text-center'>
                     {t('settings.loading')}
                   </div>
-                ) : Object.keys(filteredSettings).length === 0 ? (
-                  <div className='text-muted-foreground py-8 text-center'>
-                    {t('settings.empty')}
-                  </div>
+                ) : (Object.keys(filteredSettings).length === 0 ? (
+                  <div className='text-text-secondary py-8 text-center'>{t('settings.empty')}</div>
                 ) : (
                   <div className='space-y-4'>
                     {Object.entries(filteredSettings).map(([category, settings]) => (
@@ -740,18 +736,18 @@ export default function SecurityManagement() {
                                         </div>
                                       ) : (
                                         <div className='space-y-1'>
-                                          <div className='text-muted-foreground text-sm break-words'>
+                                          <div className='text-text-secondary text-sm break-words'>
                                             {setting.value}
                                           </div>
                                           {setting.description ? (
-                                            <div className='text-muted-foreground text-xs break-words'>
+                                            <div className='text-text-secondary text-xs break-words'>
                                               {setting.description}
                                             </div>
                                           ) : null}
                                         </div>
                                       )}
 
-                                      <div className='text-muted-foreground text-xs'>
+                                      <div className='text-text-secondary text-xs'>
                                         {t('settings.updated', {
                                           date: new Date(setting.updatedAt).toLocaleString()
                                         })}
@@ -804,7 +800,7 @@ export default function SecurityManagement() {
                       </Card>
                     ))}
                   </div>
-                )}
+                ))}
               </div>
             </CardContent>
           </Card>

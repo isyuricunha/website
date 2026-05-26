@@ -50,7 +50,7 @@ const AdminProfileDropdown = () => {
         <DropdownMenuLabel>
           <div className='flex flex-col gap-1'>
             <p className='text-sm'>{name}</p>
-            <p className='text-muted-foreground text-xs'>{email}</p>
+            <p className='text-text-secondary text-xs'>{email}</p>
           </div>
         </DropdownMenuLabel>
       </DropdownMenuContent>

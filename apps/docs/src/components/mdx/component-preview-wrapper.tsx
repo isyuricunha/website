@@ -14,8 +14,8 @@ const ComponentPreviewWrapper = (props: ComponentPreviewWrapperProps) => {
   const [key, setKey] = useState(0)
 
   return (
-    <Tabs defaultValue='preview'>
-      <TabsList>
+    <Tabs defaultValue='preview' className='my-8'>
+      <TabsList className='tab-group bg-transparent p-0'>
         <TabsTrigger value='preview'>Preview</TabsTrigger>
         <TabsTrigger value='code'>Code</TabsTrigger>
       </TabsList>
@@ -29,8 +29,16 @@ const ComponentPreviewWrapper = (props: ComponentPreviewWrapperProps) => {
         >
           <RotateCcwIcon className='size-4' />
         </Button>
-        <div className='not-prose flex min-h-[350px] items-center justify-center rounded-lg border px-10 py-12'>
-          {Component}
+        <div className='app-window not-prose mt-3'>
+          <div className='app-window-chrome'>
+            <span className='window-dot' />
+            <span className='window-dot' />
+            <span className='window-dot' />
+            <span className='label-mono ml-2 normal-case'>preview</span>
+          </div>
+          <div className='flex min-h-[350px] items-center justify-center px-10 py-12'>
+            {Component}
+          </div>
         </div>
       </TabsContent>
       <TabsContent value='code'>

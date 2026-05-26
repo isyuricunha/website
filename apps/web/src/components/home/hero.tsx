@@ -43,7 +43,7 @@ const Hero = () => {
         <div className='flex flex-col gap-3 sm:flex-row'>
           <Link
             href='/projects'
-            className='border-accent-earth-hover bg-accent-earth hover:bg-accent-earth-hover inline-flex min-h-9 items-center justify-center rounded-md border px-5 py-2 text-[13px] font-medium text-[var(--text-primary)] transition-colors'
+            className='border-accent-earth-hover bg-accent-earth text-text-inverse hover:bg-accent-earth-hover inline-flex min-h-9 items-center justify-center rounded-md border px-5 py-2 text-[13px] font-medium transition-colors'
           >
             {t('homepage.hero.view-projects')}
           </Link>

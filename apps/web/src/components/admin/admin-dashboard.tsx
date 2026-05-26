@@ -54,18 +54,18 @@ const AdminDashboard = () => {
       <div className='space-y-6'>
         <div>
           <h1 className='text-3xl font-medium'>{t('loading.title')}</h1>
-          <p className='text-muted-foreground'>{t('loading.description')}</p>
+          <p className='text-text-secondary'>{t('loading.description')}</p>
         </div>
         <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-4'>
           {Array.from({ length: 4 }).map((_, i) => (
             <Card key={i}>
               <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
                 <CardTitle className='text-sm font-medium'>{t('loading.card')}</CardTitle>
-                <div className='bg-muted h-4 w-4 animate-pulse rounded' />
+                <div className='bg-bg-hover h-4 w-4 animate-pulse rounded' />
               </CardHeader>
               <CardContent>
-                <div className='bg-muted h-7 w-16 animate-pulse rounded' />
-                <div className='bg-muted mt-1 h-3 w-24 animate-pulse rounded' />
+                <div className='bg-bg-hover h-7 w-16 animate-pulse rounded' />
+                <div className='bg-bg-hover mt-1 h-3 w-24 animate-pulse rounded' />
               </CardContent>
             </Card>
           ))}
@@ -79,7 +79,7 @@ const AdminDashboard = () => {
       <div className='space-y-6'>
         <div>
           <h1 className='text-3xl font-medium'>{t('loading.title')}</h1>
-          <p className='text-muted-foreground'>{t('loading.description')}</p>
+          <p className='text-text-secondary'>{t('loading.description')}</p>
         </div>
         <Card>
           <CardContent className='pt-6'>
@@ -127,10 +127,15 @@ const AdminDashboard = () => {
 
   return (
     <div className='space-y-8'>
-      <div className='flex items-center justify-between'>
-        <div className='space-y-1'>
-          <h1 className='text-text-primary text-4xl font-medium tracking-tight'>{t('title')}</h1>
-          <p className='text-muted-foreground text-base'>{t('description')}</p>
+      <div className='flex flex-col gap-4 border-b-[0.5px] border-[var(--border-faint)] pb-8 sm:flex-row sm:items-end sm:justify-between'>
+        <div className='space-y-2'>
+          <span className='label-mono'>{t('status.live')}</span>
+          <h1 className='text-text-primary text-[clamp(32px,4vw,44px)] font-medium tracking-tighter'>
+            {t('title')}
+          </h1>
+          <p className='text-text-secondary max-w-2xl text-[15px] leading-relaxed'>
+            {t('description')}
+          </p>
         </div>
         <div className='flex items-center gap-3'>
           <Badge
@@ -145,7 +150,7 @@ const AdminDashboard = () => {
             size='sm'
             onClick={handleRefresh}
             disabled={refreshing}
-            className='transition-all duration-200 hover:shadow-md'
+            className='transition-colors duration-150'
           >
             <RefreshCw className={`mr-2 h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} />
             {t('actions.refresh')}
@@ -159,15 +164,14 @@ const AdminDashboard = () => {
           return (
             <Card
               key={stat.title}
-              className='group bg-bg-surface relative cursor-pointer overflow-hidden border-[var(--border-subtle)] transition-all duration-300 hover:-translate-y-1 hover:border-[var(--accent-border)] hover:shadow-xl'
+              className='cursor-card group bg-bg-surface relative cursor-pointer overflow-hidden border-[var(--border-subtle)] hover:border-[var(--accent-border)]'
               onClick={() => router.push(stat.href)}
             >
-              <div className='bg-bg-surface absolute inset-0 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100' />
               <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-3'>
-                <CardTitle className='text-muted-foreground group-hover:text-foreground text-sm font-semibold transition-colors'>
+                <CardTitle className='text-text-secondary group-hover:text-text-primary text-sm font-medium transition-colors'>
                   {stat.title}
                 </CardTitle>
-                <div className='text-accent-earth-text rounded-xl bg-[var(--accent-dim)] p-2.5 transition-transform duration-300 group-hover:scale-110'>
+                <div className='text-accent-earth-text rounded-lg bg-[var(--accent-dim)] p-2.5'>
                   <Icon className='h-5 w-5' />
                 </div>
               </CardHeader>
@@ -181,7 +185,7 @@ const AdminDashboard = () => {
                     {stat.trend}
                   </div>
                 </div>
-                <p className='text-muted-foreground text-xs leading-relaxed'>{stat.description}</p>
+                <p className='text-text-secondary text-xs leading-relaxed'>{stat.description}</p>
                 <div className='pt-1'>
                   <Progress value={Math.min((stat.value / 1000) * 100, 100)} className='h-1.5' />
                 </div>
@@ -212,24 +216,24 @@ const AdminDashboard = () => {
             </div>
           </CardHeader>
           <CardContent className='space-y-3'>
-            <div className='bg-bg-surface hover:bg-bg-surface flex items-center justify-between rounded-xl border border-[var(--border-subtle)] p-3 transition-all duration-200 hover:shadow-sm'>
+            <div className='bg-bg-surface hover:bg-bg-hover flex items-center justify-between rounded-lg border border-[var(--border-subtle)] p-3 transition-colors duration-150'>
               <div className='flex items-center gap-3'>
                 <div className='text-accent-earth-text rounded-lg bg-[var(--accent-dim)] p-2'>
                   <Users className='h-4 w-4' />
                 </div>
-                <span className='text-sm font-semibold'>{t('recent-activity.new-users')}</span>
+                <span className='text-sm font-medium'>{t('recent-activity.new-users')}</span>
               </div>
               <div className='flex items-center gap-2'>
                 <span className='text-lg font-medium'>{stats?.weekly.users ?? 0}</span>
                 <CheckCircle className='text-accent-earth-text h-4 w-4' />
               </div>
             </div>
-            <div className='bg-bg-surface hover:bg-bg-surface flex items-center justify-between rounded-xl border border-[var(--border-subtle)] p-3 transition-all duration-200 hover:shadow-sm'>
+            <div className='bg-bg-surface hover:bg-bg-hover flex items-center justify-between rounded-lg border border-[var(--border-subtle)] p-3 transition-colors duration-150'>
               <div className='flex items-center gap-3'>
                 <div className='text-accent-earth-text rounded-lg bg-[var(--accent-dim)] p-2'>
                   <MessageSquare className='h-4 w-4' />
                 </div>
-                <span className='text-sm font-semibold'>{t('recent-activity.new-comments')}</span>
+                <span className='text-sm font-medium'>{t('recent-activity.new-comments')}</span>
               </div>
               <div className='flex items-center gap-2'>
                 <span className='text-lg font-medium'>{stats?.weekly.comments ?? 0}</span>
@@ -252,47 +256,47 @@ const AdminDashboard = () => {
           <CardContent className='space-y-2'>
             <button
               type='button'
-              className='bg-bg-surface hover:bg-bg-surface group flex w-full items-start gap-3 rounded-xl border border-[var(--border-subtle)] p-3 transition-all duration-200 hover:-translate-y-0.5 hover:border-[var(--accent-border)] hover:shadow-md'
+              className='bg-bg-surface hover:bg-bg-hover group flex w-full items-start gap-3 rounded-lg border border-[var(--border-subtle)] p-3 transition-colors duration-150 hover:border-[var(--accent-border)]'
               onClick={() => router.push('/admin/users')}
             >
-              <div className='text-accent-earth-text rounded-lg bg-[var(--accent-dim)] p-2 transition-transform duration-200 group-hover:scale-110'>
+              <div className='text-accent-earth-text rounded-lg bg-[var(--accent-dim)] p-2'>
                 <Users className='h-4 w-4' />
               </div>
               <div className='flex-1 space-y-0.5 text-left'>
-                <div className='text-sm font-semibold'>{t('quick-actions.manage-users.title')}</div>
-                <div className='text-muted-foreground text-xs'>
+                <div className='text-sm font-medium'>{t('quick-actions.manage-users.title')}</div>
+                <div className='text-text-secondary text-xs'>
                   {t('quick-actions.manage-users.description')}
                 </div>
               </div>
             </button>
             <button
               type='button'
-              className='bg-bg-surface hover:bg-bg-surface group flex w-full items-start gap-3 rounded-xl border border-[var(--border-subtle)] p-3 transition-all duration-200 hover:-translate-y-0.5 hover:border-[var(--accent-border)] hover:shadow-md'
+              className='bg-bg-surface hover:bg-bg-hover group flex w-full items-start gap-3 rounded-lg border border-[var(--border-subtle)] p-3 transition-colors duration-150 hover:border-[var(--accent-border)]'
               onClick={() => router.push('/admin/comments')}
             >
-              <div className='text-accent-earth-text rounded-lg bg-[var(--accent-dim)] p-2 transition-transform duration-200 group-hover:scale-110'>
+              <div className='text-accent-earth-text rounded-lg bg-[var(--accent-dim)] p-2'>
                 <MessageSquare className='h-4 w-4' />
               </div>
               <div className='flex-1 space-y-0.5 text-left'>
-                <div className='text-sm font-semibold'>
+                <div className='text-sm font-medium'>
                   {t('quick-actions.moderate-comments.title')}
                 </div>
-                <div className='text-muted-foreground text-xs'>
+                <div className='text-text-secondary text-xs'>
                   {t('quick-actions.moderate-comments.description')}
                 </div>
               </div>
             </button>
             <button
               type='button'
-              className='bg-bg-surface hover:bg-bg-surface group flex w-full items-start gap-3 rounded-xl border border-[var(--border-subtle)] p-3 transition-all duration-200 hover:-translate-y-0.5 hover:border-[var(--accent-border)] hover:shadow-md'
+              className='bg-bg-surface hover:bg-bg-hover group flex w-full items-start gap-3 rounded-lg border border-[var(--border-subtle)] p-3 transition-colors duration-150 hover:border-[var(--accent-border)]'
               onClick={() => router.push('/admin/monitoring')}
             >
-              <div className='text-accent-earth-text rounded-lg bg-[var(--accent-dim)] p-2 transition-transform duration-200 group-hover:scale-110'>
+              <div className='text-accent-earth-text rounded-lg bg-[var(--accent-dim)] p-2'>
                 <Activity className='h-4 w-4' />
               </div>
               <div className='flex-1 space-y-0.5 text-left'>
-                <div className='text-sm font-semibold'>{t('quick-actions.monitoring.title')}</div>
-                <div className='text-muted-foreground text-xs'>
+                <div className='text-sm font-medium'>{t('quick-actions.monitoring.title')}</div>
+                <div className='text-text-secondary text-xs'>
                   {t('quick-actions.monitoring.description')}
                 </div>
               </div>
@@ -320,7 +324,7 @@ const AdminDashboard = () => {
             <div className='space-y-2.5'>
               <div className='flex justify-between text-sm'>
                 <span className='font-medium'>{t('system-health.database')}</span>
-                <span className='text-accent-earth-text text-xs font-semibold'>
+                <span className='text-accent-earth-text text-xs font-medium'>
                   {t('system-health.excellent')}
                 </span>
               </div>
@@ -329,7 +333,7 @@ const AdminDashboard = () => {
             <div className='space-y-2.5'>
               <div className='flex justify-between text-sm'>
                 <span className='font-medium'>{t('system-health.api-response')}</span>
-                <span className='text-accent-earth-text text-xs font-semibold'>
+                <span className='text-accent-earth-text text-xs font-medium'>
                   {t('system-health.fast')}
                 </span>
               </div>
@@ -338,7 +342,7 @@ const AdminDashboard = () => {
             <div className='space-y-2.5'>
               <div className='flex justify-between text-sm'>
                 <span className='font-medium'>{t('system-health.storage')}</span>
-                <span className='text-muted-foreground text-xs font-semibold'>
+                <span className='text-text-secondary text-xs font-medium'>
                   {t('system-health.moderate')}
                 </span>
               </div>

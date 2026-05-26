@@ -7,7 +7,7 @@ import NumberFlow, { continuous } from '@number-flow/react'
 import { useTranslations } from '@isyuricunha/i18n/client'
 import { Separator, toast } from '@isyuricunha/ui'
 import { motion } from 'motion/react'
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'
 
 import { api } from '@/trpc/react'
@@ -19,7 +19,6 @@ type LikeButtonProps = {
 const LikeButton = (props: LikeButtonProps) => {
   const { slug } = props
   const [cacheCount, setCacheCount] = useState(0)
-  const buttonRef = useRef<HTMLButtonElement>(null)
   const utils = api.useUtils()
   const t = useTranslations()
 
@@ -52,29 +51,6 @@ const LikeButton = (props: LikeButtonProps) => {
     onSettled: () => utils.likes.get.invalidate()
   })
 
-  const showConfettiAnimation = async () => {
-    const { clientWidth, clientHeight } = document.documentElement
-    const boundingBox = buttonRef.current?.getBoundingClientRect()
-
-    const targetY = boundingBox?.y ?? 0
-    const targetX = boundingBox?.x ?? 0
-    const targetWidth = boundingBox?.width ?? 0
-
-    const targetCenterX = targetX + targetWidth / 2
-    const confetti = (await import('canvas-confetti')).default
-
-    await confetti({
-      zIndex: 999,
-      particleCount: 100,
-      spread: 100,
-      origin: {
-        y: targetY / clientHeight,
-        x: targetCenterX / clientWidth
-      },
-      shapes: [confetti.shapeFromText({ text: '💙', scalar: 2 })]
-    })
-  }
-
   const onLikeSaving = useDebouncedCallback((value: number) => {
     likesMutation.mutate({ slug, value })
     setCacheCount(0)
@@ -90,18 +66,13 @@ const LikeButton = (props: LikeButtonProps) => {
     const value = cacheCount === 3 ? cacheCount : cacheCount + 1
     setCacheCount(value)
 
-    if (data.currentUserLikes + cacheCount === 2) {
-      void showConfettiAnimation()
-    }
-
     return onLikeSaving(value)
   }
 
   return (
     <div className='mt-12 flex justify-center'>
       <motion.button
-        ref={buttonRef}
-        className='bg-card text-foreground border-border hover:bg-muted/40 flex items-center gap-3 rounded-xl border px-4 py-2 text-lg transition-colors'
+        className='bg-bg-surface text-text-primary hover:bg-bg-hover flex items-center gap-3 rounded-lg border border-[var(--border-subtle)] px-4 py-2 text-lg transition-colors'
         onClick={handleLikeButtonClick}
         aria-label={t('blog.like-this-post')}
         whileTap={{ scale: 0.96 }}

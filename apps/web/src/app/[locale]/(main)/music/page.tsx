@@ -91,30 +91,52 @@ const Page = async (props: PageProps) => {
       />
       <PageTitle title={title} description={description} />
 
-      <div className='space-y-8'>
-        <NowListeningSection />
+      <div className='space-y-20'>
+        <section className='grid gap-8 lg:grid-cols-[1.25fr_0.85fr] lg:items-start'>
+          <div className='cursor-reveal'>
+            <NowListeningSection />
+          </div>
+          <div className='cursor-reveal cursor-reveal-delay-1'>
+            <MusicStatsSection />
+          </div>
+        </section>
 
-        <MusicStatsSection />
+        <section className='grid gap-8 border-t-[0.5px] border-[var(--border-faint)] pt-20 lg:grid-cols-[0.9fr_1.1fr] lg:items-start'>
+          <div className='space-y-3'>
+            <span className='label-mono'>{t('spotify.sections.listening-data.label')}</span>
+            <h2 className='max-w-lg text-[clamp(28px,3vw,40px)] font-medium tracking-tighter'>
+              {t('spotify.sections.listening-data.title')}
+            </h2>
+          </div>
+          <div className='cursor-reveal cursor-reveal-delay-1'>
+            <ListeningHeatmap />
+          </div>
+        </section>
 
-        <div className='grid grid-cols-1 gap-8'>
-          <SocialSharing />
-        </div>
+        <section className='grid gap-8 border-t-[0.5px] border-[var(--border-faint)] pt-20 lg:grid-cols-2'>
+          <div className='cursor-reveal'>
+            <TopArtistsSection />
+          </div>
+          <div className='cursor-reveal cursor-reveal-delay-1'>
+            <TopSongsSection />
+          </div>
+        </section>
 
-        <div className='grid grid-cols-1 gap-8 lg:grid-cols-2'>
-          <TopArtistsSection />
-          <TopSongsSection />
-        </div>
+        <section className='grid gap-8 border-t-[0.5px] border-[var(--border-faint)] pt-20 lg:grid-cols-[0.95fr_1.05fr]'>
+          <div className='cursor-reveal'>
+            <RecentlyPlayedSection />
+          </div>
+          <div className='cursor-reveal cursor-reveal-delay-1'>
+            <MusicTimeline />
+          </div>
+        </section>
 
-        <div className='grid grid-cols-1 gap-8'>
-          <ListeningHeatmap />
-        </div>
-
-        <div className='grid grid-cols-1 gap-8 lg:grid-cols-2'>
-          <RecentlyPlayedSection />
-          <MusicTimeline />
-        </div>
-
-        <LocalHistoryImport />
+        <section className='grid gap-8 border-t-[0.5px] border-[var(--border-faint)] pt-20'>
+          <div className='cursor-reveal'>
+            <SocialSharing />
+          </div>
+          <LocalHistoryImport />
+        </section>
       </div>
     </>
   )

@@ -77,7 +77,7 @@ const CommentMenu = () => {
           <AlertDialogTrigger asChild>
             {isAuthor ? (
               <DropdownMenuItem
-                className='text-red-600 focus:text-red-500'
+                className='text-accent-earth-text focus:text-accent-earth-hover'
                 disabled={deleteCommentMutation.isPending}
                 aria-disabled={deleteCommentMutation.isPending}
               >

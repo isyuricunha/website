@@ -13,7 +13,7 @@ interface EnhancedCardProps extends Omit<
   | 'onAnimationIteration'
 > {
   hover?: boolean
-  gradient?: boolean
+  accentLine?: boolean
   children: React.ReactNode
 }
 
@@ -21,7 +21,7 @@ const EnhancedCard = ({
   ref,
   className,
   hover = true,
-  gradient = false,
+  accentLine = false,
   children,
   ...props
 }: EnhancedCardProps & { ref?: React.RefObject<HTMLDivElement | null> }) => {
@@ -37,7 +37,7 @@ const EnhancedCard = ({
       )}
       {...props}
     >
-      {gradient && (
+      {accentLine && (
         <div className='bg-accent-earth absolute inset-x-0 top-0 h-px opacity-0 transition-opacity duration-150 group-hover:opacity-60' />
       )}
       <div className='relative z-10'>{children}</div>
