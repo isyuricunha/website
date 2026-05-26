@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState, useMemo } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import { useTranslations, useMessages, useLocale } from '@isyuricunha/i18n/client'
+import { i18n } from '@isyuricunha/i18n/config'
 import { useSound } from '@/hooks/use-sound'
 import { getLocalizedPath } from '@/utils/get-localized-path'
 import { canExplainSelectionOnPage, getMascotPageKey } from '../mascot-routing'
@@ -790,7 +791,8 @@ export function useMascotState() {
   // Get current blog post slug
   const currentBlogPostSlug = useMemo(() => {
     if (!isOnBlogPost) return null
-    const pathWithoutLocale = (pathname || '/').replace(/^\/(en|pt|fr|de|zh)\//, '/')
+    const localePattern = new RegExp(`^/(${i18n.locales.join('|')})/`, '')
+    const pathWithoutLocale = (pathname || '/').replace(localePattern, '/')
     const blogPostMatch = /^\/blog\/([^/]+)$/.exec(pathWithoutLocale)
     return blogPostMatch ? blogPostMatch[1] : null
   }, [pathname, isOnBlogPost])

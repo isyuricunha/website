@@ -46,6 +46,7 @@
     "test:unit": "vitest run",
     "test:unit:coverage": "vitest --coverage --ui",
     "test:unit:ui": "vitest --ui",
+    "translate:site": "node ./scripts/translate-site.mjs",
     "type-check": "turbo type-check",
     "verify:deploy": "turbo run build --filter=@isyuricunha/web",
     "version": "changeset version",
