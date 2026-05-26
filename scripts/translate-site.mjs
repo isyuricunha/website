@@ -11,6 +11,15 @@ const messagesDirectory = path.join(i18nDirectory, 'src', 'messages')
 const webContentDirectory = path.join(rootDirectory, 'apps', 'web', 'src', 'content')
 
 const DEFAULT_COLLECTIONS = ['messages', 'blog', 'pages', 'projects', 'snippet']
+const BATCH_SIZE_PROFILES = {
+  small: 4000,
+  medium: 12_000,
+  large: 32_000
+}
+const DEFAULT_BATCH_SIZE = 'small'
+const DEFAULT_REQUEST_TIMEOUT_MS = 180_000
+const DEFAULT_MAX_RETRIES = 2
+const RETRYABLE_STATUS_CODES = new Set([408, 409, 425, 429, 500, 502, 503, 504])
 const LOCALE_ALIASES = new Map([
   ['jp', 'ja'],
   ['cn', 'zh-CN'],
@@ -46,7 +55,10 @@ Options:
   --source <locale>        Source locale. Defaults to en.
   --label <name>           Human label inserted in packages/i18n config.
   --collections <list>     Comma list: ${DEFAULT_COLLECTIONS.join(', ')}.
-  --batch-chars <number>   Approximate max chars per translation batch. Defaults to 12000.
+  --batch-size <profile>   Batch profile: small (${BATCH_SIZE_PROFILES.small}), medium (${BATCH_SIZE_PROFILES.medium}), large (${BATCH_SIZE_PROFILES.large}). Defaults to ${DEFAULT_BATCH_SIZE}.
+  --batch-chars <number>   Advanced override for max chars per batch.
+  --request-timeout-ms <n> Abort a single model request after n ms. Defaults to ${DEFAULT_REQUEST_TIMEOUT_MS}.
+  --max-retries <number>   Retry transient provider failures. Defaults to ${DEFAULT_MAX_RETRIES}.
   --force                  Overwrite existing target files.
   --dry-run                Plan work without calling the model or writing files.
   --limit <number>         Limit files per content collection, useful with --dry-run.
@@ -81,7 +93,11 @@ const parseArguments = (rawArguments) => {
     target: '',
     label: '',
     collections: DEFAULT_COLLECTIONS,
-    batchChars: 12_000,
+    batchSize: process.env.OPENAI_COMPATIBLE_TRANSLATION_BATCH_SIZE ?? DEFAULT_BATCH_SIZE,
+    batchChars: undefined,
+    requestTimeoutMs:
+      process.env.OPENAI_COMPATIBLE_REQUEST_TIMEOUT_MS ?? String(DEFAULT_REQUEST_TIMEOUT_MS),
+    maxRetries: process.env.OPENAI_COMPATIBLE_MAX_RETRIES ?? String(DEFAULT_MAX_RETRIES),
     force: false,
     dryRun: false,
     limit: Number.POSITIVE_INFINITY
@@ -118,8 +134,21 @@ const parseArguments = (rawArguments) => {
           .filter(Boolean)
         break
       }
+      case '--batch-size':
+      case '--batch-profile': {
+        options.batchSize = readValue()
+        break
+      }
       case '--batch-chars': {
-        options.batchChars = Number(readValue())
+        options.batchChars = readValue()
+        break
+      }
+      case '--request-timeout-ms': {
+        options.requestTimeoutMs = readValue()
+        break
+      }
+      case '--max-retries': {
+        options.maxRetries = readValue()
         break
       }
       case '--limit': {
@@ -146,6 +175,36 @@ const parseArguments = (rawArguments) => {
   }
 
   return options
+}
+
+const parsePositiveInteger = (value, name) => {
+  const number = Number(value)
+  if (!Number.isSafeInteger(number) || number <= 0) {
+    throw new Error(`${name} must be a positive integer.`)
+  }
+
+  return number
+}
+
+const parseNonNegativeInteger = (value, name) => {
+  const number = Number(value)
+  if (!Number.isSafeInteger(number) || number < 0) {
+    throw new Error(`${name} must be a non-negative integer.`)
+  }
+
+  return number
+}
+
+const resolveBatchSize = (input) => {
+  const batchSize = String(input).trim().toLowerCase()
+  const batchChars = BATCH_SIZE_PROFILES[batchSize]
+  if (!batchChars) {
+    throw new Error(
+      `Invalid --batch-size "${input}". Use one of: ${Object.keys(BATCH_SIZE_PROFILES).join(', ')}.`
+    )
+  }
+
+  return { batchSize, batchChars }
 }
 
 const normalizeLocale = (input) => {
@@ -207,38 +266,97 @@ const getOpenAiEndpoint = () => {
   return `${baseUrl}/chat/completions`
 }
 
-const translateWithOpenAiCompatible = async ({ messages, temperature = 0.2 }) => {
+const wait = async (milliseconds) => {
+  await new Promise((resolve) => {
+    setTimeout(resolve, milliseconds)
+  })
+}
+
+const getRetryDelayMs = (attempt) => {
+  return Math.min(1000 * 2 ** attempt, 8000)
+}
+
+const isAbortError = (error) => {
+  return error instanceof Error && error.name === 'AbortError'
+}
+
+const translateWithOpenAiCompatible = async ({
+  messages,
+  temperature = 0.2,
+  requestTimeoutMs,
+  maxRetries
+}) => {
   const apiKey = process.env.OPENAI_COMPATIBLE_API_KEY
   const model = process.env.OPENAI_COMPATIBLE_MODEL
 
   if (!apiKey) throw new Error('OPENAI_COMPATIBLE_API_KEY is required.')
   if (!model) throw new Error('OPENAI_COMPATIBLE_MODEL is required.')
 
-  const response = await fetch(getOpenAiEndpoint(), {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      model,
-      messages,
-      temperature
-    })
+  const requestBody = JSON.stringify({
+    model,
+    messages,
+    temperature
   })
 
-  if (!response.ok) {
-    const body = await response.text()
-    throw new Error(`OpenAI-compatible request failed (${response.status}): ${body.slice(0, 600)}`)
+  for (let attempt = 0; attempt <= maxRetries; attempt += 1) {
+    const controller = new AbortController()
+    const timeout = setTimeout(() => controller.abort(), requestTimeoutMs)
+
+    try {
+      const response = await fetch(getOpenAiEndpoint(), {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          'Content-Type': 'application/json'
+        },
+        body: requestBody,
+        signal: controller.signal
+      })
+
+      if (!response.ok) {
+        const body = await response.text()
+        const retryable = RETRYABLE_STATUS_CODES.has(response.status) && attempt < maxRetries
+        if (retryable) {
+          await wait(getRetryDelayMs(attempt))
+          continue
+        }
+
+        const hint =
+          response.status === 413 || response.status === 400
+            ? ' Try --batch-size small or a lower --batch-chars value.'
+            : ''
+        throw new Error(
+          `OpenAI-compatible request failed (${response.status}): ${body.slice(0, 600)}${hint}`
+        )
+      }
+
+      const payload = await response.json()
+      const content = payload?.choices?.[0]?.message?.content
+      if (typeof content !== 'string' || content.trim().length === 0) {
+        throw new Error('OpenAI-compatible response did not include choices[0].message.content.')
+      }
+
+      return content.trim()
+    } catch (error) {
+      if (isAbortError(error)) {
+        if (attempt < maxRetries) {
+          await wait(getRetryDelayMs(attempt))
+          continue
+        }
+
+        throw new Error(
+          `OpenAI-compatible request timed out after ${requestTimeoutMs}ms. Try --batch-size small, lower --batch-chars, or increase --request-timeout-ms.`,
+          { cause: error }
+        )
+      }
+
+      throw error
+    } finally {
+      clearTimeout(timeout)
+    }
   }
 
-  const payload = await response.json()
-  const content = payload?.choices?.[0]?.message?.content
-  if (typeof content !== 'string' || content.trim().length === 0) {
-    throw new Error('OpenAI-compatible response did not include choices[0].message.content.')
-  }
-
-  return content.trim()
+  throw new Error('OpenAI-compatible request failed after retries.')
 }
 
 const stripMarkdownFence = (text) => {
@@ -326,7 +444,9 @@ const translateMessageBatch = async ({
   sourceLocale,
   targetLocale,
   sourceLabel,
-  targetLabel
+  targetLabel,
+  requestTimeoutMs,
+  maxRetries
 }) => {
   const response = await translateWithOpenAiCompatible({
     messages: [
@@ -348,7 +468,9 @@ const translateMessageBatch = async ({
         })
       }
     ],
-    temperature: 0.1
+    temperature: 0.1,
+    requestTimeoutMs,
+    maxRetries
   })
 
   const parsed = parseJsonFromModel(response)
@@ -383,7 +505,9 @@ const translateMessages = async (options) => {
       sourceLocale: options.source,
       targetLocale: options.target,
       sourceLabel: options.sourceLabel,
-      targetLabel: options.targetLabel
+      targetLabel: options.targetLabel,
+      requestTimeoutMs: options.requestTimeoutMs,
+      maxRetries: options.maxRetries
     })
 
     for (const item of translatedBatch) {
@@ -434,23 +558,40 @@ const splitTextByCharacters = (text, maxCharacters) => {
   const chunks = []
   let current = ''
 
-  for (const part of text.split(/(\n{2,})/)) {
-    if (current.length > 0 && current.length + part.length > maxCharacters) {
+  const pushCurrent = () => {
+    if (current.length > 0) {
       chunks.push(current)
       current = ''
+    }
+  }
+
+  const appendSlice = (slice) => {
+    if (current.length > 0 && current.length + slice.length > maxCharacters) {
+      pushCurrent()
+    }
+    current += slice
+  }
+
+  for (const part of text.split(/(\n{2,})/)) {
+    if (current.length > 0 && current.length + part.length > maxCharacters) {
+      pushCurrent()
     }
 
     if (part.length > maxCharacters) {
       const lines = part.split(/(\r?\n)/)
       for (const line of lines) {
-        if (current.length > 0 && current.length + line.length > maxCharacters) {
-          chunks.push(current)
-          current = ''
+        if (line.length > maxCharacters) {
+          pushCurrent()
+          for (let offset = 0; offset < line.length; offset += maxCharacters) {
+            chunks.push(line.slice(offset, offset + maxCharacters))
+          }
+          continue
         }
-        current += line
+
+        appendSlice(line)
       }
     } else {
-      current += part
+      appendSlice(part)
     }
   }
 
@@ -461,7 +602,14 @@ const splitTextByCharacters = (text, maxCharacters) => {
   return chunks
 }
 
-const translatePlainText = async ({ text, sourceLabel, targetLabel, kind }) => {
+const translatePlainText = async ({
+  text,
+  sourceLabel,
+  targetLabel,
+  kind,
+  requestTimeoutMs,
+  maxRetries
+}) => {
   if (text.trim().length === 0) return text
 
   const response = await translateWithOpenAiCompatible({
@@ -476,7 +624,9 @@ const translatePlainText = async ({ text, sourceLabel, targetLabel, kind }) => {
         content: `Translate this ${kind} from ${sourceLabel} to ${targetLabel}.\n\n${text}`
       }
     ],
-    temperature: 0.2
+    temperature: 0.2,
+    requestTimeoutMs,
+    maxRetries
   })
 
   return stripMarkdownFence(response)
@@ -501,7 +651,9 @@ const translateMdxFile = async ({ sourcePath, targetPath, options }) => {
         text: frontmatter,
         sourceLabel: options.sourceLabel,
         targetLabel: options.targetLabel,
-        kind: 'YAML frontmatter'
+        kind: 'YAML frontmatter',
+        requestTimeoutMs: options.requestTimeoutMs,
+        maxRetries: options.maxRetries
       })
     : ''
 
@@ -512,7 +664,9 @@ const translateMdxFile = async ({ sourcePath, targetPath, options }) => {
         text: chunk,
         sourceLabel: options.sourceLabel,
         targetLabel: options.targetLabel,
-        kind: 'MDX markdown body'
+        kind: 'MDX markdown body',
+        requestTimeoutMs: options.requestTimeoutMs,
+        maxRetries: options.maxRetries
       })
     )
   }
@@ -643,7 +797,18 @@ const main = async () => {
   const options = {
     ...parsedOptions,
     source: normalizeLocale(parsedOptions.source),
-    target: normalizeLocale(parsedOptions.target)
+    target: normalizeLocale(parsedOptions.target),
+    requestTimeoutMs: parsePositiveInteger(parsedOptions.requestTimeoutMs, '--request-timeout-ms'),
+    maxRetries: parseNonNegativeInteger(parsedOptions.maxRetries, '--max-retries')
+  }
+  const resolvedBatch = resolveBatchSize(options.batchSize)
+  options.batchSize = resolvedBatch.batchSize
+  options.batchChars =
+    options.batchChars === undefined
+      ? resolvedBatch.batchChars
+      : parsePositiveInteger(options.batchChars, '--batch-chars')
+  if (options.limit !== Number.POSITIVE_INFINITY) {
+    options.limit = parsePositiveInteger(options.limit, '--limit')
   }
   options.sourceLabel = getLanguageLabel(options.source)
   options.targetLabel = getLanguageLabel(options.target, options.label)
@@ -681,6 +846,10 @@ const main = async () => {
     target: options.target,
     targetLabel: options.targetLabel,
     dryRun: options.dryRun,
+    batchSize: options.batchSize,
+    batchChars: options.batchChars,
+    requestTimeoutMs: options.requestTimeoutMs,
+    maxRetries: options.maxRetries,
     collections: results,
     registry
   })
