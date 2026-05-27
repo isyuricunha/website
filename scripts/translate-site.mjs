@@ -373,22 +373,86 @@ const stripMarkdownFence = (text) => {
   return fenceMatch ? fenceMatch[1].trim() : trimmed
 }
 
-const parseJsonFromModel = (text) => {
+const escapeControlCharactersInJsonStrings = (text) => {
+  let output = ''
+  let inString = false
+  let escaped = false
+
+  for (const character of text) {
+    if (escaped) {
+      output += character
+      escaped = false
+      continue
+    }
+
+    if (character === '\\') {
+      output += character
+      escaped = true
+      continue
+    }
+
+    if (character === '"') {
+      output += character
+      inString = !inString
+      continue
+    }
+
+    if (inString) {
+      if (character === '\n') {
+        output += '\\n'
+        continue
+      }
+
+      if (character === '\r') {
+        output += '\\r'
+        continue
+      }
+
+      if (character === '\t') {
+        output += '\\t'
+        continue
+      }
+
+      if (character < ' ') {
+        output += `\\u${character.codePointAt(0).toString(16).padStart(4, '0')}`
+        continue
+      }
+    }
+
+    output += character
+  }
+
+  return output
+}
+
+const parseJsonCandidate = (text) => {
+  try {
+    return JSON.parse(text)
+  } catch (error) {
+    try {
+      return JSON.parse(escapeControlCharactersInJsonStrings(text))
+    } catch {
+      throw error
+    }
+  }
+}
+
+export const parseJsonFromModel = (text) => {
   const stripped = stripMarkdownFence(text)
   try {
-    return JSON.parse(stripped)
+    return parseJsonCandidate(stripped)
   } catch {}
 
   const arrayStart = stripped.indexOf('[')
   const arrayEnd = stripped.lastIndexOf(']')
   if (arrayStart !== -1 && arrayEnd > arrayStart) {
-    return JSON.parse(stripped.slice(arrayStart, arrayEnd + 1))
+    return parseJsonCandidate(stripped.slice(arrayStart, arrayEnd + 1))
   }
 
   const objectStart = stripped.indexOf('{')
   const objectEnd = stripped.lastIndexOf('}')
   if (objectStart !== -1 && objectEnd > objectStart) {
-    return JSON.parse(stripped.slice(objectStart, objectEnd + 1))
+    return parseJsonCandidate(stripped.slice(objectStart, objectEnd + 1))
   }
 
   throw new Error('Could not parse JSON from model response.')
@@ -641,15 +705,36 @@ const translateMessages = async (options) => {
   return { collection: 'messages', status: 'written', batches: batches.length, files: 1 }
 }
 
-const splitFrontmatter = (content) => {
-  const match = /^---\r?\n([\s\S]*?)\r?\n---\r?\n?/.exec(content)
-  if (!match) {
+export const splitFrontmatter = (content) => {
+  const firstLineMatch = /^---\r?\n/.exec(content)
+  if (!firstLineMatch) {
     return { frontmatter: '', body: content, hasFrontmatter: false }
   }
 
+  const firstLineEnd = firstLineMatch[0].length
+  const closingMatch = /(?:^|\r?\n)---\r?\n?/.exec(content.slice(firstLineEnd))
+  if (!closingMatch) {
+    return { frontmatter: '', body: content, hasFrontmatter: false }
+  }
+
+  const closingStart = firstLineEnd + closingMatch.index
+  const closingEnd = firstLineEnd + closingMatch.index + closingMatch[0].length
+  const frontmatter = content.slice(firstLineEnd, closingStart).replace(/\r?\n$/, '')
+
+  if (frontmatter.trim().length > 0) {
+    try {
+      const parsed = yaml.load(frontmatter, { schema: yaml.JSON_SCHEMA })
+      if (!isPlainObject(parsed)) {
+        return { frontmatter: '', body: content, hasFrontmatter: false }
+      }
+    } catch {
+      return { frontmatter: '', body: content, hasFrontmatter: false }
+    }
+  }
+
   return {
-    frontmatter: match[1],
-    body: content.slice(match[0].length),
+    frontmatter,
+    body: content.slice(closingEnd),
     hasFrontmatter: true
   }
 }
@@ -671,6 +756,40 @@ const restoreFencedCode = (markdown, blocks) => {
     restored = restored.replaceAll(token, block)
   }
   return restored
+}
+
+export const postProcessTranslatedMdxBody = (markdown) => {
+  const normalized = markdown
+    .replaceAll('<3', '&lt;3')
+    .replaceAll(/(<ExpandableSection\b[^>]*>)x(?=\r?\n|<)/g, '$1')
+    .replaceAll(/(<ExpandableSection\b[^>]*>)(?=<[A-Z])/g, '$1\n\n')
+
+  const lines = normalized.split(/\r?\n/)
+  const output = []
+  let expandableSectionOpen = false
+
+  for (const line of lines) {
+    if (/^\s*<ExpandableSection\b/.test(line) && expandableSectionOpen) {
+      output.push('</ExpandableSection>', '')
+      expandableSectionOpen = false
+    }
+
+    output.push(line)
+
+    if (/^\s*<ExpandableSection\b/.test(line) && !/\/>\s*$/.test(line)) {
+      expandableSectionOpen = true
+    }
+
+    if (/^\s*<\/ExpandableSection>\s*$/.test(line)) {
+      expandableSectionOpen = false
+    }
+  }
+
+  if (expandableSectionOpen) {
+    output.push('</ExpandableSection>')
+  }
+
+  return output.join('\n')
 }
 
 const splitTextByCharacters = (text, maxCharacters) => {
@@ -765,9 +884,17 @@ const translateMdxFile = async ({ collection, sourcePath, targetPath, options })
     return { status: 'planned', batches: chunks.length + (hasFrontmatter ? 1 : 0) }
   }
 
-  const translatedFrontmatter = hasFrontmatter
-    ? await translateFrontmatter({ frontmatter, collection, options })
-    : ''
+  let translatedFrontmatter = ''
+  if (hasFrontmatter) {
+    try {
+      translatedFrontmatter = await translateFrontmatter({ frontmatter, collection, options })
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error)
+      throw new Error(`Failed to translate frontmatter for ${sourcePath}: ${message}`, {
+        cause: error
+      })
+    }
+  }
 
   const translatedChunks = []
   for (const chunk of chunks) {
@@ -783,7 +910,9 @@ const translateMdxFile = async ({ collection, sourcePath, targetPath, options })
     )
   }
 
-  const translatedBody = restoreFencedCode(translatedChunks.join(''), blocks)
+  const translatedBody = postProcessTranslatedMdxBody(
+    restoreFencedCode(translatedChunks.join(''), blocks)
+  )
   const output = hasFrontmatter
     ? `---\n${translatedFrontmatter.trim()}\n---\n\n${translatedBody.trimStart()}`
     : translatedBody
@@ -967,7 +1096,7 @@ const main = async () => {
   })
 }
 
-if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   try {
     await main()
   } catch (error) {

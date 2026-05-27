@@ -1,6 +1,55 @@
 import { describe, expect, it } from 'vitest'
 
-import { translateFrontmatter } from './translate-site.mjs'
+import {
+  parseJsonFromModel,
+  postProcessTranslatedMdxBody,
+  splitFrontmatter,
+  translateFrontmatter
+} from './translate-site.mjs'
+
+describe('parseJsonFromModel', () => {
+  it('repairs literal control characters inside model JSON strings', () => {
+    expect(parseJsonFromModel('[{"path":"hero","value":"linha 1\nlinha 2"}]')).toEqual([
+      { path: 'hero', value: 'linha 1\nlinha 2' }
+    ])
+  })
+})
+
+describe('splitFrontmatter', () => {
+  it('supports empty MDX frontmatter', () => {
+    expect(splitFrontmatter('---\n---\n\n## About\n')).toEqual({
+      frontmatter: '',
+      body: '\n## About\n',
+      hasFrontmatter: true
+    })
+  })
+
+  it('does not treat markdown dividers as YAML frontmatter', () => {
+    const content = `---\n\nthis is markdown, not frontmatter.\n\nthe list is:\n\n---\n\n## Body\n`
+
+    expect(splitFrontmatter(content)).toEqual({
+      frontmatter: '',
+      body: content,
+      hasFrontmatter: false
+    })
+  })
+})
+
+describe('postProcessTranslatedMdxBody', () => {
+  it('escapes text emoticons that MDX would parse as JSX', () => {
+    expect(postProcessTranslatedMdxBody('texto com “<3”')).toBe('texto com “&lt;3”')
+  })
+
+  it('separates adjacent MDX component tags and closes open expandable sections', () => {
+    expect(
+      postProcessTranslatedMdxBody(
+        "<ExpandableSection title='Infra' icon='Shield'><ItemGrid\n  items={[]}\n/>\n<ExpandableSection title='Stacks' icon='Code'>x\n</ExpandableSection>"
+      )
+    ).toBe(
+      "<ExpandableSection title='Infra' icon='Shield'>\n\n<ItemGrid\n  items={[]}\n/>\n</ExpandableSection>\n\n<ExpandableSection title='Stacks' icon='Code'>\n</ExpandableSection>"
+    )
+  })
+})
 
 describe('translateFrontmatter', () => {
   it('translates only allowlisted project text fields and preserves technical metadata', async () => {
