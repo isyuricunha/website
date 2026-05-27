@@ -1,0 +1,525 @@
+---
+---
+
+这是我家庭实验室、开发工作和日常计算的完整硬件清单。
+
+没有营销，没有联盟链接——只有我实际使用的机器及其在我的设置中存在的原因。
+
+硬件分为以下几类：
+
+- **个人笔记本** - 我的日常驱动设备
+- **家庭实验室主服务器** - 数据库和服务的核心
+- **家庭实验室 ARM64 节点** - 用于 ARM 测试的树莓派
+- **云 x86-64 机器** - 云端的开发和生产环境
+- **云 ARM64 机器** - 基于 ARM 的云工作负载
+
+---
+
+## 个人硬件
+
+### 主笔记本
+
+这是我的日常驱动设备。我用它处理所有与学习、编码、SSH、文档和日常工作相关的事务。
+
+**配置**
+
+- CPU
+  - **AMD Ryzen 7 7445HS**
+- 内存
+  - **64 GB DDR5**
+- 存储
+  - **256 GB** SSD
+  - **360 GB** SSD
+  - 用于系统、开发工具、本地数据库、容器和文件
+- GPU
+  - **Nvidia RTX 4070**（笔记本版）
+
+主要用途：
+
+- 使用终端和 IDE 进行代码和文档工作
+- 通过 Tailscale 连接所有实验室和云机器
+- 数据库客户端、管理工具和仪表盘
+- 与实验室中运行的服务交互的浏览器和应用
+- 根据需要运行一些本地容器和轻量级虚拟机
+
+这台笔记本是我驱动其他一切的地方。
+
+---
+
+## 家庭实验室硬件
+
+### 家庭主服务器
+
+这是家庭实验室中的主力机器，专注于数据库、服务和实验。
+
+**CPU**
+
+- **Intel Xeon W9 3475X**
+
+**内存**
+
+- **256 GB ECC R**
+- **256 GB ECC R**（镜像配置）
+- 总共 **512 GB** ECC 内存，配置为冗余以避免故障
+
+**存储**
+
+机械硬盘存储：
+
+- **14 TB HDD** 主数据
+- **14 TB HDD** 冗余
+- **14 TB HDD** 备份
+
+NVMe 存储：
+
+- **256 GB NVMe** 系统
+- **500 GB NVMe** 用作文件缓存
+- **4 TB NVMe** 冷数据和长期存储
+
+**GPU**
+
+- **Nvidia GT210** 用于视频输出
+- **Nvidia GT 1050** 用于小型工作负载和视频编解码
+- **AMD Radeon RX 7900 XTX** 用于 AI 工作负载
+
+> 注：计划将所有 Nvidia 和 Intel 硬件替换为 AMD 组件
+
+**典型用途：**
+
+- 以真实实验室风格设置 PostgreSQL 和其他数据库
+- 用于自托管服务的 Docker/容器堆栈
+- 监控、日志记录和备份作业
+- 使用 RX 7900 XTX 进行 AI 实验
+- 存储媒体、备份和实验室数据（带冗余）
+
+这是家庭实验室的核心，也是大部分繁重工作的地方。
+
+---
+
+### 家庭实验室中的 ARM64 节点
+
+我在家中还保留了一个 ARM64 环境，用于测试和多样性。
+
+**主板**
+
+- **树莓派 5**，16 GB 版本
+
+**SoC**
+
+- **Broadcom BCM2712**
+- 四核 **ARM Cortex A76**
+
+**内存**
+
+- **16 GB LPDDR4X 4267**
+
+**存储**
+
+- **64 GB eMMC** 模块用于系统
+- **512 GB** 驱动器用于容器和文件
+
+用途：
+
+- 运行 ARM 容器
+- 在 ARM64 上测试服务后再部署到云 ARM
+- 低功耗的小型常开服务
+- 在小型主板上进行存储实验
+
+这个节点帮助我确保我的设置不限于 x86。
+
+---
+
+## 云硬件
+
+我在云端还运行开发和生产工作负载。目前有两大类虚拟机。
+
+### 云端的 x86 64 开发和生产环境
+
+这两台虚拟机硬件相同，一台用于开发，一台用于生产。
+
+**每台虚拟机的配置**
+
+- CPU
+  - **AMD EPYC 7551**，**8 vCPU**
+- 内存
+  - **16 GB**
+- 存储
+  - **250 GB** 用于系统、数据和日志
+
+有 **两台** 相同配置的机器。
+
+主要用途：
+
+- 在更真实的生产环境中运行数据库和服务
+- 测试通过 Tailscale 与家庭实验室通信的部署
+- 模拟部分堆栈在本地、部分在云端的场景
+
+---
+
+### 云端的 ARM64 开发和生产环境
+
+我还在云端保留 ARM64 机器，用于测试和适合该架构的工作负载。
+
+**每台虚拟机的配置**
+
+- CPU
+  - **8 vCPU**
+- 内存
+  - **24 GB**
+- 存储
+  - **150 GB** 用于系统和数据> 注意：云提供商未指定具体的 CPU 型号——重要的是性能和 ARM64 架构。
+
+**用途：**
+
+- 运行 ARM64 容器和服务
+- 检查 ARM 和 x86 设置之间的性能差异
+- 进行能效型工作负载实验
+
+同样，这个群组的理念是至少将开发和生产环境分开。
+
+---
+
+## 为什么选择这种硬件组合
+
+硬件的选择并非随意，而是遵循一个简单的理念：
+
+- 笔记本电脑是控制中心
+- 家庭实验室的主服务器用于承载重负载工作和存储
+- 家庭 ARM64 节点为我提供多样性和低功耗实验
+- 云服务器让我能够模拟更真实的生产环境
+
+通过这种组合，我可以：
+
+- 在家中使用大容量内存和存储来测试数据库和服务
+- 利用 RX 7900 XTX 本地运行 AI 工作负载
+- 通过镜像内存和多个硬盘保持冗余和备份
+- 比较 x86 和 ARM64 的行为
+- 实践开发、暂存和生产环境的分离
+
+---
+
+这份清单帮助我记住自己实际拥有的设备，并作为我的基础设施文档。如果你正在阅读这篇内容并且对家庭实验室感兴趣，现在你了解到 yuricunha.com 幕后运行的设备。
+
+<ExpandableSection title='笔记本电脑' icon='Monitor'>
+
+  <div className='mb-6'>
+    <Image
+      src='/images/uses/ideapad-3i.png'
+      alt='Ideapad Gaming 3 R7'
+      width={1920}
+      height={1080}
+      lazy={false}
+      priority
+      className='mx-auto h-48 w-full max-w-xs rounded-lg object-contain shadow-lg'
+    />
+  </div>
+  <div className='bg-bg-surface rounded-lg border border-[var(--border-subtle)] p-4'>
+    <h3 className='mb-2 text-sm font-medium sm:text-base'>我为什么选择这款笔记本：</h3>
+    <ul className='text-text-secondary space-y-1 text-xs sm:text-sm'>
+      <li>性能和便携性的完美平衡</li>
+      <li>适合开发和偶尔游戏</li>
+      <li>极高的性价比</li>
+    </ul>
+  </div>
+</ExpandableSection>
+
+<ExpandableSection title='配件' icon='Smartphone'>
+  <ItemGrid
+    items={[
+      {
+        image: '/images/uses/accessories/s10.png',
+        name: 'S10 5G',
+        description: '黑色，512GB',
+        url: 'https://www.samsung.com/uk/smartphones/galaxy-s10.../',
+        isAffiliate: false
+      },
+      {
+        image: '/images/uses/accessories/quietcontrol30.png',
+        name: 'Bose Quiet Control 30',
+        description: '耳机',
+        url: 'https://www.boselatam.com/en_ar/products/headphones/earbuds/quietcontrol-30.html',
+        isAffiliate: true
+      }
+    ]}
+  />
+</ExpandableSection>
+
+<ExpandableSection title='游戏 PC - 硬件' icon='Zap'>
+<ItemGrid
+  items={[
+    {
+      image: '/images/uses/gaming-pc/monitor.png',
+      name: 'LG 27GR75Q-B',
+      description: '27 英寸 165Hz 显示器',
+      url: 'https://www.lg.com/us/monitors/lg-27gr75q-b-gaming-monitor'
+    },
+    {
+      image: '/images/uses/gaming-pc/mx-ergo.png',
+      name: '罗技 MX Ergo+',
+      description: '鼠标',
+      url: 'https://www.logitech.com/en-us/shop/p/mx-ergo-wireless-trackball-mouse.910-005177'
+    },
+    {
+      image: '/images/uses/gaming-pc/wooting-60he.png',
+      name: 'Wooting 60HE+',
+      description: '无线机械键盘',
+      url: 'https://wooting.io/wooting-60he'
+    },
+    {
+      image: '/images/uses/gaming-pc/i9.png',
+      name: '英特尔® 至强™ Ultra 9 处理器 285K',
+      description: 'CPU',
+      url: 'https://www.intel.com/content/www/us/en/products/sku/241060/intel-core-ultra-9-processor-285k-36m-cache-up-to-5-70-ghz/specifications.html'
+    },
+    {
+      image: '/images/uses/gaming-pc/5070d.png',
+      name: 'RTX 5070D',
+      description: '显卡',
+      url: 'https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5070-family/'
+    },
+    {
+      image: '/images/uses/gaming-pc/adata.png',
+      name: 'ADATA Legends NVMe',
+      description: '2TB SSD',
+      url: 'https://www.amazon.com/ADATA-800-Internal-Storage-Endurance/dp/B0BWFMXMJR'
+    },
+    {
+      image: '/images/uses/gaming-pc/gamdias.png',
+      name: 'Gamdias Chione M4-420 水冷散热器',
+      description: '散热器',
+      url: 'https://www.gamdias.com/en/component/cooler/CHIONE_M4-420'
+    },
+    {
+      image: '/images/uses/gaming-pc/fsp-700w.png',
+      name: 'FSP 700W',
+      description: '电源，80+ 铜牌认证',
+      url: 'https://www.fsplifestyle.com/en/product/Hydro700w.html'
+    },
+    {
+      image: '/images/uses/gaming-pc/32gb-ram.png',
+      name: '96GB',
+      description: '内存',
+      url: 'https://www.amazon.com/s?k=96gb+ram'
+    },
+    {
+      image: '/images/uses/gaming-pc/case.png',
+      name: 'Duex DX305T',
+      description: '机箱',
+      url: 'https://www.duex.com.br/produtos/gabinete/gabinete-gamer-dx305t'
+    }
+  ]}
+/>
+
+<div className='mt-6 rounded-lg border border-[var(--accent-border)] bg-[var(--accent-dim)] p-4'>
+  <h3 className='text-accent-earth-text mb-2 text-sm font-medium'>
+    💡 专业建议
+  </h3>
+  <div className='text-text-secondary text-xs sm:text-sm'>
+    在组装游戏电脑时，优先投资 GPU 和 CPU。外设可以日后升级，但核心硬件决定了整体性能。
+  </div>
+</div>
+</ExpandableSection>
+
+<ExpandableSection title='基础设施' icon='Shield'>
+
+<ItemGrid
+  items={[
+    {
+      image: '/images/uses/software/docker.png',
+      name: 'Docker',
+      description: '容器平台',
+      url: 'https://www.docker.com/'
+    },
+    {
+      image: '/images/uses/software/kubernetes.png',
+      name: 'Kubernetes',
+      description: '容器编排',
+      url: 'https://kubernetes.io/'
+    },
+    {
+      image: '/images/uses/software/ansible.png',
+      name: 'Ansible',
+      description: '配置管理',
+      url: 'https://www.ansible.com/'
+    },
+    {
+      image: '/images/uses/software/terraform.png',
+      name: 'Terraform',
+      description: '基础设施即代码',
+      url: 'https://www.terraform.io/'
+    },
+    {
+      image: '/images/uses/software/prometheus.png',
+      name: 'Prometheus',
+      description: '监控与告警',
+      url: 'https://prometheus.io/'
+    },
+    {
+      image: '/images/uses/software/grafana.png',
+      name: 'Grafana',
+      description: '指标可视化',
+      url: 'https://grafana.com/'
+    },
+    {
+      image: '/images/uses/software/nginx.png',
+      name: 'Nginx',
+      description: 'Web 服务器与反向代理',
+      url: 'https://nginx.org/'
+    },
+    {
+      image: '/images/uses/software/haproxy.png',
+      name: 'HAProxy',
+      description: '负载均衡器',
+      url: 'https://www.haproxy.org/'
+    },
+    {
+      image: '/images/uses/software/jenkins.png',
+      name: 'Jenkins',
+      description: 'CI/CD 自动化',
+      url: 'https://www.jenkins.io/'
+    },
+    {
+      image: '/images/uses/software/consul.png',
+      name: 'Consul',
+      description: '服务发现与配置',
+      url: 'https://www.consul.io/'
+    },
+    {
+      image: '/images/uses/software/vault.png',
+      name: 'Vault',
+      description: '秘密管理',
+      url: 'https://www.vaultproject.io/'
+    },
+    {
+      image: '/images/uses/software/chef.png',
+      name: 'Chef',
+      description: '基础设施自动化',
+      url: 'https://www.chef.io/'
+    },
+    {
+      image: '/images/uses/software/puppet.png',
+      name: 'Puppet',
+      description: '配置管理',
+      url: 'https://puppet.com/'
+    },
+    {
+      image: '/images/uses/software/saltstack.png',
+      name: 'SaltStack',
+      description: '自动化与配置管理',
+      url: 'https://www.saltproject.io/'
+    },
+    {
+      image: '/images/uses/software/vagrant.png',
+      name: 'Vagrant',
+      description: '虚拟机自动化',
+      url: 'https://www.vagrantup.com/'
+    },
+    {
+      image: '/images/uses/software/zabbix.png',
+      name: 'Zabbix',
+      description: '监控解决方案',
+      url: 'https://www.zabbix.com/'
+    },
+    {
+      image: '/images/uses/software/datadog.png',
+      name: 'Datadog',
+      description: '云监控',
+      url: 'https://www.datadoghq.com/'
+    },
+    {
+      image: '/images/uses/software/rabbitmq.png',
+      name: 'RabbitMQ',
+      description: '消息代理',
+      url: 'https://www.rabbitmq.com/'
+    },
+    {
+      image: '/images/uses/software/kafka.png',
+      name: 'Kafka',
+      description: '分布式流处理',
+      url: 'https://kafka.apache.org/'
+    },
+    {
+      image: '/images/uses/software/splunk.png',
+      name: 'Splunk',
+      description: '日志分析与监控',
+      url: 'https://www.splunk.com/'
+    },
+    {
+      image: '/images/uses/software/apache.png',
+      name: 'Apache',
+      description: 'Web 服务器',
+      url: 'https://httpd.apache.org/'
+    }
+  ]}
+/>
+x
+<ComparisonTable
+  items={[
+    {
+      name: 'Docker',
+      pros: ['轻松实现容器化', '非常适合开发', '生态系统丰富'],
+      cons: ['资源占用较高', '学习曲线较陡'],
+      price: '免费',
+      rating: 5
+    },
+    {
+      name: 'Kubernetes',
+      pros: ['出色的编排能力', '自动扩展', '适合生产环境'],
+      cons: ['配置复杂', '学习曲线陡峭'],
+      price: '免费',
+      rating: 4
+    },
+    {
+      name: 'Terraform',
+      pros: ['基础设施即代码', '多云支持', '出色的规划能力'],
+      cons: ['状态管理复杂', '可能较为复杂'],
+      price: '免费/付费',
+      rating: 4
+    }
+  ]}
+  title='基础设施工具对比'
+/>
+
+</ExpandableSection>
+
+<ExpandableSection title='技术栈' icon='Code'>
+  <ItemGrid
+    items={[
+      {
+        image: '/images/uses/software/elk.png',
+        name: 'ELK Stack',
+        description: 'Elasticsearch、Logstash 和 Kibana 用于日志分析',
+        url: 'https://www.elastic.co/what-is/elk-stack',
+        isAffiliate: false
+      },
+      {
+        image: '/images/uses/software/lamp.png',
+        name: 'LAMP Stack',
+        description: 'Linux、Apache、MySQL 和 PHP',
+        url: 'https://en.wikipedia.org/wiki/LAMP_(software_bundle)',
+        isAffiliate: false
+      },
+      {
+        image: '/images/uses/software/mean.png',
+        name: 'MEAN Stack',
+        description: 'MongoDB、Express、Angular 和 Node.js',
+        url: 'https://en.wikipedia.org/wiki/MEAN_stack',
+        isAffiliate: false
+      },
+      {
+        image: '/images/uses/software/mern.png',
+        name: 'MERN Stack',
+        description: 'MongoDB、Express、React 和 Node.js',
+        url: 'https://en.wikipedia.org/wiki/MERN_stack',
+        isAffiliate: false
+      },
+      {
+        image: '/images/uses/software/jam.png',
+        name: 'JAM Stack',
+        description: 'JavaScript、APIs 和 Markup',
+        url: 'https://jamstack.org/',
+        isAffiliate: false
+      }
+    ]}
+  />
+</ExpandableSection>

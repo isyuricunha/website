@@ -1,0 +1,164 @@
+---
+title: 在 OpenWebUI 中使用 Mistral 代理（通过 API 管道）
+date: 2026-01-16
+author: Yuri Cunha
+description: 一段详细的代码片段，用于在 OpenWebUI 中导入管道（函数）并通过 API 使用 Mistral 代理。
+tags:
+  - openwebui
+  - mistral
+  - agents
+  - python
+  - api
+  - llm
+---
+
+这个 `pipe` 通过调用 [Mistral API](https://api.mistral.ai/v1/agents/completions) 在 OpenWebUI 中实现了对 **Mistral AI 智能体**的原生支持。
+
+它允许你在 OpenWebUI 实例中直接选择在 Mistral 控制台中创建的智能体并与之对话。
+
+{/* more */}
+
+## 功能特性
+
+- 直接与 Mistral 智能体 API (`/v1/agents/completions`) 集成。
+- 支持流式响应。
+- 通过阀门（valves）轻松配置（导入后无需编辑代码）。
+- 适用于在 Mistral 控制台中创建的任何智能体（工具、指令、知识库等）。
+
+## 前提条件
+
+- 拥有 Mistral 账户并具备 API 访问权限。
+- 有效的 `MISTRAL_API_KEY`（可在 [https://console.mistral.ai/](https://console.mistral.ai/) 获取）。
+- 已存在的智能体（需要填写 `AGENT_ID` 阀门，通常以 `ag_` 开头）。
+- 在 OpenWebUI 实例中具备导入/编辑函数的权限。
+
+## 如何获取智能体 ID
+
+1. 访问 [https://console.mistral.ai/build/agents](https://console.mistral.ai/build/agents)。
+2. 创建（或打开）一个智能体。
+3. 复制智能体 ID。
+
+注意：在某些地方，智能体 ID 可能显示为 `ag:`；此 `pipe` 需要字符串值，最常见的格式是 `ag_...`。
+
+## 如何在 OpenWebUI 中导入
+
+通常有两种选择：
+
+### 选项 A：从 OpenWebUI 页面导入
+
+使用官方函数帖子（一键导入）：
+
+[https://openwebui.com/posts/mistral_agents_integration_pipe_42bce620](https://openwebui.com/posts/mistral_agents_integration_pipe_42bce620)
+
+在 OpenWebUI 中：
+
+1. 打开上述页面。
+2. 点击 `导入`。
+3. 确认导入。
+
+### 选项 B：手动导入（复制并粘贴）
+
+1. 在 OpenWebUI 中，进入 `管理面板`。
+2. 打开 `函数`。
+3. 点击 `+`（或 `新建`）创建新的函数/管道。
+4. 粘贴下方代码并保存。
+
+## 配置（阀门）
+
+导入后，配置阀门（通常通过齿轮图标 `⚙️`）：
+
+- `MISTRAL_API_KEY`：你的 Mistral API 密钥。
+- `AGENT_ID`：你的智能体 ID（示例：`ag_...`）。
+
+## 管道代码
+
+重要说明：
+
+- 不要在文件中硬编码你的真实 API 密钥。
+- 导入后在 OpenWebUI 设置中通过阀门设置 `MISTRAL_API_KEY` 和 `AGENT_ID`。
+
+```python
+# title: Mistral Agents
+# author: Yuri Cunha
+# version: 1.0.0
+# license: MIT
+
+import requests
+import json
+from typing import List, Dict, Generator
+from pydantic import BaseModel, Field
+
+
+class Pipe:
+    class Valves(BaseModel):
+        MISTRAL_API_KEY: str = Field(default="")
+        AGENT_ID: str = Field(
+            default="ag_"
+        )  # Your Agent ID aqui or put in var, please, use VAR!
+
+    def __init__(self):
+        self.type = "manifold"
+        self.id = "mistral-agent"
+        self.name = "mistral-agent/"
+        self.valves = self.Valves()
+        self.agents_endpoint = "https://api.mistral.ai/v1/agents/completions"
+
+    def pipes(self) -> List[Dict[str, str]]:
+        return [{"id": "agent", "name": f"Mistral Agent ({self.valves.AGENT_ID[:10]})"}]
+
+    def pipe(self, body: dict) -> Generator:
+        headers = {
+            "Authorization": f"Bearer {self.valves.MISTRAL_API_KEY}",
+            "Content-Type": "application/json",
+        }
+
+        payload = {
+            "agent_id": self.valves.AGENT_ID,
+            "messages": body["messages"],
+            "stream": body.get("stream", False),
+        }
+
+        response = requests.post(
+            self.agents_endpoint, headers=headers, json=payload, stream=True
+        )
+
+        for line in response.iter_lines():
+            if line:
+                yield line.decode("utf-8")
+```
+
+<Callout type='warning'>
+  永远不要将你的真实 API 密钥提交到公共仓库。在生产环境中，优先使用环境变量和部署密钥管理器。
+</Callout>
+
+## 如何在聊天中使用
+
+1. 在 OpenWebUI 中打开一个聊天。
+2. 在模型/提供商列表中选择 `mistral agent (...)` 管道。
+3. 正常发送消息。
+
+OpenWebUI 会将 `body["messages"]` 转发给 Mistral，并保留角色（`user`、`assistant` 等）。
+
+## 重要说明
+
+- **智能体 ID 与模型**：此管道使用智能体路由（`/v1/agents/completions`），与标准聊天补全不同。
+- **工具**：如果你的智能体在 Mistral 控制台中配置了工具，智能体将自动应用这些工具。
+
+## 流式传输说明
+
+- 当 OpenWebUI 中启用 `stream` 时，负载会发送 `"stream": true`。
+- 此 `pipe` 从流式请求（`iter_lines`）中生成原始响应行。
+
+如果你看到“原始”输出（JSON 行）而不是渲染后的文本，请检查 OpenWebUI 是否期望此管道具有特定的 SSE/块格式。
+
+## 快速故障排除
+
+- **401 未授权/403 禁止访问**：`MISTRAL_API_KEY` 为空、无效或缺少权限。
+- **404/无效智能体**：`AGENT_ID` 错误或智能体已被删除。
+- **无响应/超时**：验证你的 OpenWebUI 服务器是否可以访问 `https://api.mistral.ai`。
+- **无流式传输**：确认 OpenWebUI 在请求体中发送了 `stream: true`。
+
+## 参考
+
+- OpenWebUI 上的导入帖子：
+  [https://openwebui.com/posts/mistral_agents_integration_pipe_42bce620](https://openwebui.com/posts/mistral_agents_integration_pipe_42bce620)

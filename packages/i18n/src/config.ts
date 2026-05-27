@@ -15,6 +15,10 @@ export const supportedLanguages = [
   {
     code: 'ja',
     label: '日本語'
+  },
+  {
+    code: 'zh-CN',
+    label: '中文（简体）'
   }
 ]
 

@@ -1,0 +1,97 @@
+---
+title: 从 Bitwarden 导出中删除重复项
+date: 2025-11-19
+author: Yuri Cunha
+description: Python 脚本，用于清理 Bitwarden CSV 导出中的重复条目
+tags:
+  - python
+  - bitwarden
+  - csv
+  - data-cleaning
+---
+
+如果你曾经将 Bitwarden 密码库导出为 CSV 文件，并发现其中有重复的条目，这个脚本正好适合你。它会扫描你的导出文件，并基于关键字段删除重复的条目。
+
+{/* more */}
+
+## 问题描述
+
+有时候，当你导出 Bitwarden 密码库时，可能会出现重复的条目——相同的凭据、相同的备注等。这个脚本可以帮助你清理这些重复项，只保留唯一的条目。
+
+## 工作原理
+
+该脚本会读取你的 Bitwarden CSV 导出文件，根据一组关键字段（类型、名称、URI、用户名、密码和备注）检查每个条目，并仅保留每个唯一组合的第一次出现。非常简单直接！
+
+## 代码
+
+```python
+import csv
+
+input_file = "bitwarden.csv"          # name of the file you exported
+output_file = "bitwarden_dedup.csv"   # new file, without duplicates
+
+seen = set()
+rows = []
+
+with open(input_file, newline="", encoding="utf-8") as f:
+    reader = csv.DictReader(f)
+    fieldnames = reader.fieldnames
+
+    for row in reader:
+        # key to consider entries "equal"
+        key = (
+            row.get("type", ""),
+            row.get("name", ""),
+            row.get("login_uri", ""),
+            row.get("login_username", ""),
+            row.get("login_password", ""),
+            row.get("notes", ""),
+        )
+
+        if key in seen:
+            continue
+
+        seen.add(key)
+        rows.append(row)
+
+with open(output_file, "w", newline="", encoding="utf-8") as f:
+    writer = csv.DictWriter(f, fieldnames=fieldnames)
+    writer.writeheader()
+    writer.writerows(rows)
+
+print(f"saved {len(rows)} items without duplicates in {output_file}")
+```
+
+## 使用方法
+
+1. 将 Bitwarden 密码库导出为 CSV 文件（设置 → 导出密码库）
+2. 将脚本保存为 `bitwarden_dedup.py`
+3. 确保你的导出文件命名为 `bitwarden.csv`（或修改 `input_file` 变量）
+4. 运行：`python bitwarden_dedup.py`
+5. 将清理后的文件 `bitwarden_dedup.csv` 重新导入 Bitwarden
+
+## 检查的字段
+
+如果**所有**以下字段都匹配，脚本会将两个条目视为重复项：
+
+- 类型（登录、备注、卡片等）
+- 名称
+- 登录 URI
+- 用户名
+- 密码
+- 备注
+
+如果其中一个字段不同，则会将这些条目保留为单独的项目。
+
+## 重要说明
+
+<Callout type='warning'>
+  在进行任何清理操作之前，请务必备份你的密码库。在导入去重后的密码库之前，先导出当前的密码库，以确保安全。
+</Callout>
+
+<Callout type='info'>
+  如果你希望基于不同的字段（例如仅用户名 + URI）检查重复项，可以修改代码中的 `key`
+  元组，仅包含你关心的字段。
+</Callout>
+
+该脚本使用 Python 内置的 `csv` 模块和 `set` 来跟踪已处理的条目，即使对于大型密码库也非常高效。

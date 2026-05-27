@@ -1,0 +1,2692 @@
+{
+  "about": {
+    "title": "关于",
+    "description": "👋 嗨！我是 Yuri Cunha，只是互联网上的一个普通人。。"
+  },
+  "now": {
+    "title": "当前",
+    "description": "我当前关注的内容的快照"
+  },
+  "admin": {
+    "nav": {
+      "comments": "评论",
+      "general": "常规",
+      "users": "用户",
+      "dashboard": "仪表盘",
+      "security": "安全",
+      "security_management": "安全管理",
+      "communication": "通信",
+      "communication_management": "通信管理",
+      "email_marketing": "电子邮件营销",
+      "announcements": "公告",
+      "notifications": "通知",
+      "monitoring": "监控",
+      "monitoring_dashboard": "监控仪表盘",
+      "system_health": "系统健康状况",
+      "data": "数据",
+      "data_management": "数据管理",
+      "audit_logs": "审计日志",
+      "bulk_operations": "批量操作"
+    },
+    "page-header": {
+      "audit-logs": {
+        "description": "查看管理操作和系统更改。",
+        "title": "审计日志"
+      },
+      "comments": {
+        "description": "管理用户评论",
+        "title": "评论"
+      },
+      "users": {
+        "description": "管理系统用户",
+        "title": "用户"
+      }
+    },
+    "table": {
+      "comments": {
+        "body": "内容",
+        "createdAt": "创建时间",
+        "failed-to-fetch-comments-data": "无法获取评论数据。请刷新页面。",
+        "filter-body": "过滤内容...",
+        "filter-userId": "过滤用户 ID...",
+        "type": "类型",
+        "userId": "用户 ID",
+        "actions": "操作",
+        "open-menu": "打开菜单",
+        "search": "搜索评论...",
+        "export-csv": "导出 CSV",
+        "delete": "删除",
+        "edit": "编辑",
+        "view": "查看",
+        "confirm-delete": "确定要删除此评论吗？",
+        "delete-success": "评论删除成功",
+        "delete-error": "删除评论失败",
+        "delete-title": "删除评论",
+        "confirm-delete-with-body": "确定要删除此评论：\"{body}\"？此操作无法撤销。",
+        "export-success": "评论已成功导出为 CSV"
+      },
+      "users": {
+        "email": "电子邮件",
+        "failed-to-fetch-users-data": "无法获取用户数据。请刷新页面。",
+        "filter-names": "过滤名称...",
+        "name": "姓名",
+        "role": "角色",
+        "username": "用户名",
+        "image": "图像",
+        "createdAt": "创建时间",
+        "status": "状态",
+        "banned": "已封禁",
+        "active": "活跃",
+        "actions": "操作",
+        "open-menu": "打开菜单",
+        "search": "搜索用户...",
+        "export-csv": "导出 CSV",
+        "delete": "删除用户",
+        "ban": "禁用用户",
+        "unban": "解禁用户",
+        "edit": "编辑用户",
+        "reset-password": "发送重置密码邮件",
+        "change-role": "修改角色",
+        "confirm-delete": "确定要删除此用户吗？",
+        "confirm-ban": "确定要禁用此用户吗？",
+        "confirm-unban": "确定要解禁此用户吗？",
+        "delete-success": "用户删除成功",
+        "delete-error": "删除用户失败",
+        "ban-success": "用户禁用成功",
+        "ban-error": "禁用用户失败",
+        "unban-success": "用户解禁成功",
+        "unban-error": "解禁用户失败",
+        "reset-password-success": "密码重置邮件已发送",
+        "reset-password-error": "发送密码重置邮件失败",
+        "update-success": "用户更新成功",
+        "update-error": "更新用户失败",
+        "roles": {
+          "user": "普通用户",
+          "admin": "管理员"
+        },
+        "confirm-delete-with-name": "确定要删除用户 \"{name}\" 吗？此操作无法撤销。",
+        "confirm-ban-with-name": "确定要禁用用户 \"{name}\" 吗？",
+        "confirm-unban-with-name": "确定要解禁用户 \"{name}\" 吗？",
+        "export-success": "用户已成功导出为 CSV 文件"
+      }
+    },
+    "modals": {
+      "edit-user": {
+        "title": "编辑用户",
+        "name": "姓名",
+        "username": "用户名",
+        "email": "电子邮件",
+        "role": "角色",
+        "image": "图片 URL",
+        "save": "保存更改",
+        "saving": "保存中...",
+        "cancel": "取消",
+        "roles": {
+          "user": "普通用户",
+          "admin": "管理员"
+        },
+        "validation": {
+          "name-required": "姓名为必填项",
+          "invalid-email": "无效的电子邮件地址",
+          "invalid-url": "无效的 URL"
+        }
+      },
+      "delete-confirmation": {
+        "title": "确认删除",
+        "message": "此操作无法撤销。确定要继续吗？",
+        "confirm": "删除",
+        "cancel": "取消"
+      }
+    },
+    "audit-logs": {
+      "failed-to-fetch": "获取审计日志失败。",
+      "columns": {
+        "createdAt": "创建时间",
+        "action": "操作",
+        "admin": "管理员",
+        "targetType": "目标类型",
+        "targetId": "目标 ID",
+        "ipAddress": "IP 地址"
+      },
+      "filter-actions": "筛选操作...",
+      "search-placeholder": "搜索审计日志..."
+    },
+    "common": {
+      "loading": "加载中...",
+      "refresh": "刷新"
+    },
+    "error-boundary": {
+      "title": "管理员错误",
+      "description": "加载管理员部分时发生错误。请尝试刷新页面，或联系支持团队以获取帮助。",
+      "refresh-page": "刷新页面"
+    },
+    "dashboard": {
+      "title": "管理员仪表盘",
+      "description": "监控网站性能并管理操作",
+      "messages": {
+        "refresh-success": "仪表盘刷新成功",
+        "refresh-error": "仪表盘刷新失败"
+      },
+      "loading": {
+        "title": "仪表盘",
+        "description": "网站统计概览",
+        "card": "加载中...",
+        "error": "加载仪表盘统计数据失败"
+      },
+      "stats": {
+        "this-month": "本月 +{count}",
+        "total-users": {
+          "title": "用户总数"
+        },
+        "total-comments": {
+          "title": "评论总数"
+        },
+        "guestbook-entries": {
+          "title": "留言条目",
+          "description": "所有留言"
+        },
+        "admin-users": {
+          "title": "管理员用户",
+          "description": "系统管理员"
+        }
+      },
+      "status": {
+        "live": "运行中"
+      },
+      "actions": {
+        "refresh": "刷新"
+      },
+      "recent-activity": {
+        "title": "近期活动",
+        "description": "过去 7 天的性能",
+        "weekly": "每周",
+        "new-users": "新用户",
+        "new-comments": "新评论"
+      },
+      "quick-actions": {
+        "title": "快速操作",
+        "description": "跳转到常见任务",
+        "manage-users": {
+          "title": "管理用户",
+          "description": "查看和编辑用户账户"
+        },
+        "moderate-comments": {
+          "title": "审核评论",
+          "description": "查看和管理评论"
+        },
+        "monitoring": {
+          "title": "监控",
+          "description": "查看指标、错误和警报"
+        }
+      },
+      "system-health": {
+        "title": "系统健康状况",
+        "description": "整体系统性能指标",
+        "database": "数据库性能",
+        "api-response": "API 响应时间",
+        "storage": "存储使用情况",
+        "excellent": "优秀",
+        "fast": "快速",
+        "moderate": "中等"
+      }
+    },
+    "system-health": {
+      "title": "系统健康状况",
+      "description": "监控系统性能和健康状况",
+      "auto-refresh": "自动刷新 (30 秒)",
+      "messages": {
+        "error-resolved": "错误已解决",
+        "resolve-error-failed": "无法解决错误：{message}",
+        "all-errors-resolved": "所有错误已解决",
+        "resolve-all-errors-failed": "无法解决所有错误：{message}",
+        "refreshed": "系统健康状态已刷新"
+      },
+      "actions": {
+        "refresh": "刷新",
+        "resolve-all": "解决所有",
+        "view-all-errors": "查看所有错误",
+        "resolve": "解决"
+      },
+      "status": {
+        "healthy": "健康",
+        "warning": "警告",
+        "critical": "严重",
+        "unknown": "未知"
+      },
+      "overall": {
+        "status": "系统状态：{status}",
+        "last-checked": "上次检查：{date}",
+        "uptime": "运行时间"
+      },
+      "stats": {
+        "healthy-checks": "健康检查",
+        "warnings": "警告",
+        "critical-issues": "严重问题",
+        "unresolved-errors": "未解决的错误"
+      },
+      "service-health": {
+        "title": "服务健康状况"
+      },
+      "recent-errors": {
+        "title": "最近的错误",
+        "url": "URL：{url}",
+        "user": "用户：{name} ({email})",
+        "stack-trace": "堆栈跟踪"
+      },
+      "trends": {
+        "title": "健康趋势",
+        "last-checks": "最近 {count} 次检查",
+        "filter": "筛选",
+        "all-services": "所有服务",
+        "empty-title": "尚无健康历史记录",
+        "empty-description": "触发刷新以记录健康检查",
+        "stats": {
+          "healthy": "健康",
+          "warnings": "警告",
+          "critical": "严重",
+          "unknown": "未知"
+        },
+        "table": {
+          "time": "时间",
+          "service": "服务",
+          "status": "状态",
+          "latency": "延迟",
+          "message": "消息"
+        }
+      }
+    },
+    "notification-management": {
+      "title": "通知",
+      "description": "管理用户通知和系统警报",
+      "loading": "正在加载通知...",
+      "empty": "暂无通知。创建第一条通知以开始使用！",
+      "messages": {
+        "created": "通知创建成功",
+        "create-failed": "创建通知失败：{message}",
+        "mark-read-failed": "标记为已读失败：{message}",
+        "title-content-required": "标题和内容为必填项"
+      },
+      "actions": {
+        "create": "创建通知",
+        "send": "发送通知",
+        "mark-read": "标记为已读"
+      },
+      "dialog": {
+        "create-title": "创建新通知",
+        "create-description": "向特定用户或所有用户发送通知。"
+      },
+      "fields": {
+        "title": "标题",
+        "title-placeholder": "通知标题",
+        "content": "内容",
+        "content-placeholder": "通知内容",
+        "type": "类型",
+        "user-id": "用户 ID（可选）",
+        "user-id-placeholder": "留空则发送给所有用户",
+        "expires-at": "过期时间（可选）",
+        "action-url": "操作链接（可选）"
+      },
+      "types": {
+        "system": "系统",
+        "security": "安全",
+        "user-action": "用户操作",
+        "content": "内容",
+        "marketing": "营销",
+        "reminder": "提醒"
+      },
+      "stats": {
+        "total": {
+          "title": "通知总数",
+          "description": "所有通知"
+        },
+        "unread": {
+          "title": "未读",
+          "description": "待处理的通知"
+        },
+        "read-rate": {
+          "title": "已读率",
+          "description": "已读的通知"
+        }
+      },
+      "recent": {
+        "title": "最近通知",
+        "description": "管理用户通知和系统警报",
+        "user": "用户：{userId}",
+        "expires": "过期时间：{date}"
+      },
+      "status": {
+        "unread": "未读"
+      }
+    },
+    "bulk-operations": {
+      "title": "批量操作",
+      "description": "对用户和内容执行批量操作",
+      "messages": {
+        "completed": "批量操作完成：{successful}/{total} 成功",
+        "failed": "批量操作失败",
+        "cancelled": "操作已取消",
+        "cancel-failed": "取消操作失败",
+        "select-users": "请选择要执行批量操作的用户"
+      },
+      "confirm": {
+        "bulk-action": "确定要对 {count} 个用户执行“{action}”操作吗？此操作无法撤销。",
+        "cancel-operation": "确定要取消此操作吗？"
+      },
+      "actions": {
+        "delete-users": "删除用户",
+        "ban-users": "封禁用户",
+        "unban-users": "解除封禁用户",
+        "update-role": "更新角色",
+        "execute": "执行（{count}）",
+        "cancel": "取消",
+        "export": "导出"
+      },
+      "status": {
+        "completed": "已完成",
+        "failed": "失败",
+        "running": "运行中",
+        "cancelled": "已取消",
+        "pending": "待处理"
+      },
+      "date": {
+        "never": "从不",
+        "unknown": "未知"
+      },
+      "user-actions": {
+        "title": "批量用户操作",
+        "search-placeholder": "搜索用户...",
+        "filters": "筛选器",
+        "select-action": "选择操作",
+        "new-role": "新角色",
+        "no-users": "未找到用户",
+        "no-users-hint": "尝试调整搜索条件。"
+      },
+      "table": {
+        "user": "用户",
+        "role": "角色",
+        "joined": "加入时间"
+      },
+      "operations": {
+        "title": "最近的操作",
+        "failed-to-load": "加载批量操作失败。",
+        "loading": "正在加载批量操作...",
+        "summary": "{successful}/{total} 成功 • 由 {creator} 创建 • {date}",
+        "progress": "进度",
+        "empty": "未找到批量操作。"
+      }
+    },
+    "data-management": {
+      "title": "数据管理",
+      "description": "备份、导出和管理您的数据",
+      "loading": "正在加载数据管理仪表板...",
+      "messages": {
+        "backup-started": "数据库备份已成功启动",
+        "backup-failed": "启动备份失败：{message}",
+        "export-started": "数据导出已成功启动",
+        "export-failed": "启动导出失败：{message}",
+        "quality-started": "数据质量检查已成功启动",
+        "quality-failed": "启动质量检查失败：{message}",
+        "export-required": "名称、格式和表为必填项",
+        "quality-required": "名称、表名和规则为必填项",
+        "rules-invalid": "请以格式“字段:规则类型”提供有效的规则"
+      },
+      "file-size": {
+        "zero": "0 字节",
+        "bytes": "字节",
+        "unknown": "大小未知",
+        "size": "大小：{size}"
+      },
+      "status": {
+        "completed": "已完成",
+        "in-progress": "进行中",
+        "processing": "处理中",
+        "running": "运行中",
+        "pending": "待处理",
+        "failed": "失败"
+      },
+      "backup-types": {
+        "full": "完全",
+        "incremental": "增量",
+        "differential": "差异",
+        "full-backup": "完全备份",
+        "incremental-backup": "增量备份",
+        "differential-backup": "差异备份"
+      },
+      "stats": {
+        "database-backups": "数据库备份",
+        "completed-count": "已完成 {count} 个",
+        "backup-size": "备份大小",
+        "total-storage-used": "已使用的存储总量",
+        "data-exports": "数据导出",
+        "records-exported": "已导出记录",
+        "total-records-processed": "已处理的记录总数"
+      },
+      "tabs": {
+        "overview": "概览",
+        "backups": "备份",
+        "exports": "导出",
+        "quality": "质量"
+      },
+      "overview": {
+        "recent-backups": {
+          "title": "最近的备份",
+          "description": "最新的数据库备份活动"
+        },
+        "recent-exports": {
+          "title": "最近的导出",
+          "description": "最新的数据导出活动"
+        }
+      },
+      "backups": {
+        "loading": "正在加载备份...",
+        "empty": "暂无备份",
+        "backup-label": "{type} 备份",
+        "create-title": "创建数据库备份",
+        "create-description": "为安全起见备份数据库",
+        "list-title": "数据库备份",
+        "list-description": "数据库备份历史"
+      },
+      "exports": {
+        "loading": "正在加载导出...",
+        "empty": "暂无导出",
+        "create-title": "创建数据导出",
+        "create-description": "以多种格式导出数据",
+        "list-title": "数据导出",
+        "list-description": "数据导出历史",
+        "format": "格式：{format}",
+        "records": "{count} 条记录",
+        "processing": "处理中..."
+      },
+      "quality": {
+        "create-title": "运行数据质量检查",
+        "create-description": "验证数据完整性和质量",
+        "overview-title": "数据质量概览",
+        "overview-description": "数据质量指标和见解",
+        "empty-title": "运行质量检查以查看结果",
+        "empty-description": "质量检查有助于识别数据问题，如缺失值、重复项和格式问题。"
+      },
+      "fields": {
+        "backup-type": "备份类型",
+        "description-optional": "描述（可选）",
+        "backup-description-placeholder": "部署前备份",
+        "export-name": "导出名称",
+        "export-name-placeholder": "用户数据导出",
+        "format": "格式",
+        "tables": "表格（逗号分隔）",
+        "tables-placeholder": "users, posts, comments",
+        "check-name": "检查名称",
+        "check-name-placeholder": "用户数据验证",
+        "table-name": "表名称",
+        "table-name-placeholder": "users",
+        "rules": "规则（字段:规则类型）",
+        "rules-placeholder": "email:not_null, email:format, id:unique",
+        "rules-help": "可用规则：not_null（非空）、unique（唯一）、format（格式）、range（范围）"
+      },
+      "actions": {
+        "creating-backup": "正在创建备份...",
+        "create-backup": "创建备份",
+        "creating-export": "正在创建导出...",
+        "create-export": "创建导出",
+        "running-check": "正在运行检查...",
+        "run-quality-check": "运行质量检查"
+      },
+      "date": {
+        "completed": "完成时间：{date}"
+      }
+    },
+    "security-management": {
+      "title": "安全管理",
+      "description": "监控和管理系统安全",
+      "loading": "正在加载安全仪表盘...",
+      "messages": {
+        "ip-rule-added": "IP 访问规则添加成功",
+        "ip-rule-failed": "添加 IP 规则失败：{message}",
+        "event-resolved": "安全事件已解决",
+        "event-resolve-failed": "解决事件失败：{message}",
+        "account-unlocked": "账户解锁成功",
+        "account-unlock-failed": "解锁账户失败：{message}",
+        "setting-updated": "安全设置更新成功",
+        "setting-update-failed": "更新安全设置失败：{message}",
+        "ip-type-required": "IP 地址和类型为必填项"
+      },
+      "severity": {
+        "critical": "严重",
+        "high": "高",
+        "medium": "中",
+        "low": "低"
+      },
+      "rule-types": {
+        "whitelist": "白名单",
+        "blacklist": "黑名单",
+        "whitelist-allow": "白名单（允许）",
+        "blacklist-block": "黑名单（阻止）"
+      },
+      "stats": {
+        "security-events": "安全事件",
+        "critical-events": "{count} 个严重事件",
+        "login-attempts": "登录尝试",
+        "failed-attempts": "{count} 次失败尝试",
+        "account-lockouts": "账户锁定",
+        "active-lockouts": "活动锁定",
+        "two-factor-adoption": "双因素认证采用率",
+        "users-enabled": "{count} 名用户已启用"
+      },
+      "tabs": {
+        "overview": "概览",
+        "events": "事件",
+        "ip-control": "IP 控制",
+        "lockouts": "账户锁定",
+        "settings": "设置"
+      },
+      "overview": {
+        "recent-events": {
+          "title": "近期安全事件",
+          "description": "最新安全事件和警报"
+        },
+        "login-attempts": {
+          "title": "登录尝试（24小时）",
+          "description": "身份验证活动概要",
+          "loading": "正在加载尝试...",
+          "total": "尝试总数：",
+          "successful": "成功：",
+          "failed": "失败：",
+          "unique-ips": "唯一 IP：",
+          "success-rate": "成功率："
+        }
+      },
+      "events": {
+        "title": "安全事件",
+        "description": "监控和解决安全事件",
+        "loading": "正在加载事件...",
+        "loading-security-events": "正在加载安全事件...",
+        "no-recent": "无近期事件",
+        "ip": "IP：{ip}",
+        "user": "用户：{name}（{email}）",
+        "resolved": "已解决 {date}",
+        "empty": "未找到安全事件"
+      },
+      "ip-control": {
+        "add-title": "添加 IP 访问规则",
+        "add-description": "通过 IP 地址控制访问",
+        "rules-title": "IP 访问规则",
+        "rules-description": "当前 IP 访问控制规则",
+        "loading-rules": "正在加载 IP 规则...",
+        "no-description": "无描述",
+        "empty": "未配置 IP 规则"
+      },
+      "lockouts": {
+        "title": "账户锁定",
+        "description": "管理被锁定的用户账户",
+        "loading": "正在加载账户锁定...",
+        "user-id": "用户 ID：{userId}",
+        "lockout-id": "锁定 ID：{lockoutId}",
+        "locked": "锁定时间：{date}",
+        "reason": "原因：{reason}",
+        "empty": "无活动的账户锁定"
+      },
+      "settings": {
+        "title": "安全设置",
+        "description": "配置安全策略和阈值",
+        "search-placeholder": "按关键字、值或描述搜索",
+        "all-categories": "所有分类",
+        "loading": "正在加载安全设置...",
+        "empty": "未找到安全设置",
+        "updated": "更新于 {date}",
+        "updated-by": "由 {name} 更新"
+      },
+      "fields": {
+        "ip-address": "IP 地址",
+        "rule-type": "规则类型",
+        "rule-type-placeholder": "选择规则类型",
+        "description-optional": "描述（可选）",
+        "rule-description-placeholder": "规则描述",
+        "search": "搜索",
+        "category": "类别",
+        "value": "值",
+        "description": "描述",
+        "optional-description-placeholder": "可选描述",
+        "category-placeholder": "类别"
+      },
+      "actions": {
+        "resolve": "解决",
+        "adding": "正在添加...",
+        "add-rule": "添加规则",
+        "unlock-account": "解锁账户",
+        "save": "保存",
+        "edit": "编辑"
+      }
+    },
+    "monitoring-dashboard": {
+      "title": "监控仪表板",
+      "description": "实时系统性能和分析",
+      "loading": "正在加载监控仪表板...",
+      "messages": {
+        "error-resolved": "错误已成功解决",
+        "resolve-error-failed": "解决错误失败：{message}",
+        "all-errors-resolved": "所有错误已成功解决",
+        "resolve-all-errors-failed": "解决所有错误失败：{message}"
+      },
+      "time-range": {
+        "last-hour": "过去 1 小时",
+        "last-6-hours": "过去 6 小时",
+        "last-24-hours": "过去 24 小时",
+        "last-7-days": "过去 7 天",
+        "last-30-days": "过去 30 天"
+      },
+      "stats": {
+        "performance": "性能",
+        "metrics-recorded": "已记录 {count} 项指标",
+        "api-requests": "API 请求",
+        "error-rate": "{rate}% 错误率",
+        "errors": "错误",
+        "unresolved": "{count} 项未解决",
+        "active-alerts": "活动警报",
+        "critical-alerts": "{count} 项严重警报"
+      },
+      "tabs": {
+        "overview": "概览",
+        "performance": "性能",
+        "api": "API 使用情况",
+        "errors": "错误",
+        "resources": "资源",
+        "analytics": "分析"
+      },
+      "common": {
+        "system": "系统",
+        "anonymous": "匿名"
+      },
+      "overview": {
+        "system-health": {
+          "title": "系统健康状况",
+          "description": "当前系统状态概览",
+          "api-response-time": "API 响应时间",
+          "error-rate": "错误率",
+          "critical-errors": "严重错误",
+          "active-alerts": "活动警报"
+        },
+        "recent-activity": {
+          "title": "最近活动",
+          "description": "最新系统事件和指标",
+          "loading": "正在加载最近活动...",
+          "empty": "无最近活动"
+        }
+      },
+      "performance": {
+        "metrics": {
+          "title": "性能指标",
+          "description": "一段时间内的系统性能",
+          "loading": "正在加载性能指标...",
+          "empty": "无可用性能数据"
+        },
+        "resources": {
+          "title": "资源使用情况",
+          "description": "系统资源消耗",
+          "threshold-breaches": "{count} 次阈值超限",
+          "empty": "无资源数据"
+        }
+      },
+      "metrics": {
+        "avg": "平均：{value}",
+        "min": "最小：{value}",
+        "max": "最大：{value}",
+        "avg-percent": "平均：{value}%",
+        "max-percent": "最大：{value}%"
+      },
+      "api": {
+        "loading": "正在加载 API 使用情况...",
+        "stats": {
+          "title": "API 使用统计",
+          "description": "请求模式和性能",
+          "total-requests": "总请求数",
+          "unique-users": "唯一用户数",
+          "avg-response-time": "平均响应时间",
+          "error-rate": "错误率"
+        },
+        "top-endpoints": {
+          "title": "热门 API 端点",
+          "description": "最常访问的端点",
+          "loading": "正在加载热门端点...",
+          "empty": "无端点数据"
+        }
+      },
+      "errors": {
+        "title": "错误跟踪",
+        "description": "系统错误和异常",
+        "loading": "正在加载错误跟踪...",
+        "type": "类型：{type}",
+        "user": "用户：{name} ({email})",
+        "fingerprint": "指纹：{fingerprint}",
+        "resolved": "已解决 {date}",
+        "empty": "未发现错误"
+      },
+      "actions": {
+        "resolve-all": "解决所有",
+        "resolve": "解决"
+      },
+      "resources": {
+        "title": "系统资源",
+        "description": "CPU 和内存使用情况",
+        "loading": "正在加载资源使用情况...",
+        "current-usage": "当前使用量：",
+        "average": "平均值：",
+        "peak": "峰值：",
+        "alerts": "警报：",
+        "empty": "无资源使用数据"
+      },
+      "analytics": {
+        "event-types": {
+          "title": "事件类型",
+          "description": "分析事件分布",
+          "loading": "正在加载分析事件...",
+          "empty": "无事件数据"
+        },
+        "recent-events": {
+          "title": "最近事件",
+          "description": "最新分析事件",
+          "loading": "正在加载最近事件...",
+          "empty": "无最近事件"
+        }
+      }
+    },
+    "announcement-management": {
+      "title": "公告",
+      "description": "管理全站公告和通知",
+      "loading": "正在加载公告...",
+      "empty": "暂无公告。创建第一条公告开始使用吧！",
+      "messages": {
+        "translate-failed": "翻译失败：{message}",
+        "title-content-required": "标题和内容为必填项",
+        "pt-filled": "使用 Yue AI 填充了 pt-BR 语言内容",
+        "created": "公告创建成功",
+        "create-failed": "创建公告失败：{message}",
+        "updated": "公告更新成功",
+        "update-failed": "更新公告失败：{message}",
+        "deleted": "公告删除成功",
+        "delete-failed": "删除公告失败：{message}"
+      },
+      "actions": {
+        "create": "创建公告",
+        "update": "更新公告",
+        "translating": "正在翻译...",
+        "fill-pt": "使用 AI 填充 pt-BR",
+        "activate": "激活",
+        "deactivate": "停用",
+        "edit-aria": "编辑公告",
+        "delete-aria": "删除公告"
+      },
+      "create": {
+        "title": "创建新公告",
+        "description": "创建一个全站公告，所有用户均可看到。"
+      },
+      "edit": {
+        "title": "编辑公告",
+        "description": "更新公告详情。"
+      },
+      "delete": {
+        "title": "删除公告",
+        "description": "确定要删除“{title}”吗？此操作无法撤销。"
+      },
+      "fields": {
+        "title": "标题",
+        "title-placeholder": "公告标题",
+        "title-pt": "标题（葡萄牙语）",
+        "title-pt-placeholder": "葡萄牙语标题（可选）",
+        "content": "内容",
+        "content-placeholder": "公告内容",
+        "content-pt": "内容（葡萄牙语）",
+        "content-pt-placeholder": "葡萄牙语内容（可选）",
+        "type": "类型",
+        "priority": "优先级（0-10）",
+        "priority-value": "优先级 {priority}",
+        "dismissible": "允许用户关闭此公告",
+        "active": "公告处于活动状态"
+      },
+      "types": {
+        "info": "信息",
+        "success": "成功",
+        "warning": "警告",
+        "error": "错误",
+        "maintenance": "维护",
+        "feature": "功能",
+        "update": "更新"
+      },
+      "analytics": {
+        "total-views": {
+          "title": "总浏览量",
+          "description": "所有公告的总浏览量"
+        },
+        "dismissal-rate": {
+          "title": "关闭率",
+          "description": "共 {count} 次关闭"
+        },
+        "active": {
+          "title": "活动公告",
+          "description": "当前用户可见的公告"
+        }
+      },
+      "list": {
+        "title": "所有公告",
+        "description": "管理站点公告"
+      },
+      "status": {
+        "inactive": "未激活",
+        "pt": "葡萄牙语",
+        "pt-partial": "部分葡萄牙语",
+        "targeted": "定向",
+        "dismissible": "可关闭",
+        "not-dismissible": "不可关闭"
+      }
+    },
+    "communication-management": {
+      "title": "沟通管理",
+      "description": "管理电子邮件、公告和通知",
+      "loading": "正在加载沟通仪表板...",
+      "messages": {
+        "template-created": "电子邮件模板创建成功",
+        "template-create-failed": "创建模板失败：{message}",
+        "campaign-created": "电子邮件活动创建成功",
+        "campaign-create-failed": "创建活动失败：{message}",
+        "campaign-sent": "电子邮件活动发送成功",
+        "campaign-send-failed": "发送活动失败：{message}",
+        "announcement-created": "公告创建成功",
+        "announcement-create-failed": "创建公告失败：{message}",
+        "all-fields-required": "所有字段均为必填项",
+        "campaign-fields-required": "名称、主题和内容为必填项",
+        "title-content-required": "标题和内容为必填项"
+      },
+      "stats": {
+        "email-campaigns": "电子邮件活动",
+        "sent-campaigns": "{count} 次已发送的活动",
+        "emails-sent": "已发送电子邮件",
+        "delivered": "{count} 次已送达",
+        "announcements": "公告",
+        "active": "{count} 条活动中",
+        "notifications": "通知",
+        "unread": "{count} 条未读"
+      },
+      "tabs": {
+        "overview": "概览",
+        "campaigns": "活动",
+        "templates": "模板",
+        "announcements": "公告",
+        "notifications": "通知"
+      },
+      "overview": {
+        "recent-campaigns": {
+          "title": "最近的电子邮件活动",
+          "description": "最新的电子邮件活动动态"
+        },
+        "active-announcements": {
+          "title": "活动中的公告",
+          "description": "当前的站点公告"
+        }
+      },
+      "campaigns": {
+        "loading": "正在加载活动...",
+        "empty": "暂无活动",
+        "create-title": "创建电子邮件活动",
+        "create-description": "向用户群发电子邮件",
+        "list-title": "电子邮件活动",
+        "list-description": "管理您的电子邮件活动",
+        "subject": "主题：{subject}",
+        "recipients": "收件人：{count}"
+      },
+      "templates": {
+        "loading": "正在加载模板...",
+        "empty": "暂无模板",
+        "create-title": "创建电子邮件模板",
+        "create-description": "创建可重复使用的电子邮件模板",
+        "list-title": "电子邮件模板",
+        "list-description": "您保存的电子邮件模板",
+        "subject": "主题：{subject}"
+      },
+      "announcements": {
+        "loading": "正在加载公告...",
+        "no-active": "没有活动的公告",
+        "priority": "优先级：{priority}",
+        "create-title": "创建公告",
+        "create-description": "发布全站公告",
+        "list-title": "站点公告",
+        "list-description": "管理站点公告",
+        "active": "活动",
+        "empty": "暂无公告"
+      },
+      "notifications": {
+        "title": "系统通知",
+        "description": "最近的系统通知",
+        "loading": "正在加载通知...",
+        "read": "已读",
+        "unread": "未读",
+        "empty": "没有通知"
+      },
+      "fields": {
+        "campaign-name": "活动名称",
+        "campaign-name-placeholder": "月度新闻通讯",
+        "email-subject": "电子邮件主题",
+        "email-subject-placeholder": "您的月度更新已送达！",
+        "email-content-html": "电子邮件内容（HTML）",
+        "campaign-content-placeholder": "<h1>你好！</h1><p>您的电子邮件内容在此...</p>",
+        "template-name": "模板名称",
+        "template-name-placeholder": "欢迎邮件",
+        "template-type": "模板类型",
+        "template-type-placeholder": "选择模板类型",
+        "subject-line": "主题行",
+        "template-subject-placeholder": "欢迎使用我们的平台！",
+        "html-content": "HTML 内容",
+        "template-content-placeholder": "<h1>欢迎！</h1><p>感谢您加入我们...</p>",
+        "title": "标题",
+        "title-pt": "标题（葡萄牙语）",
+        "type": "类型",
+        "priority": "优先级（0-10）",
+        "content": "内容",
+        "content-pt": "内容（葡萄牙语）",
+        "announcement-title-placeholder": "系统维护通知",
+        "announcement-title-pt-placeholder": "葡萄牙语维护通知（可选）",
+        "announcement-content-placeholder": "我们将进行计划内的维护...",
+        "announcement-content-pt-placeholder": "葡萄牙语维护消息（可选）"
+      },
+      "actions": {
+        "creating": "正在创建...",
+        "create-campaign": "创建活动",
+        "send-now": "立即发送",
+        "create-template": "创建模板",
+        "create-announcement": "创建公告"
+      },
+      "template-types": {
+        "welcome": "欢迎",
+        "newsletter": "新闻稿",
+        "announcement": "公告",
+        "notification": "通知",
+        "marketing": "营销",
+        "transactional": "事务性"
+      },
+      "announcement-types": {
+        "info": "信息",
+        "warning": "警告",
+        "success": "成功",
+        "error": "错误",
+        "maintenance": "维护",
+        "feature": "功能",
+        "update": "更新"
+      },
+      "date": {
+        "created": "创建时间：{date}"
+      }
+    },
+    "email-marketing-management": {
+      "title": "电子邮件营销",
+      "description": "管理您的电子邮件活动、受众和模板",
+      "messages": {
+        "template-created": "模板创建成功！",
+        "template-create-failed": "创建模板失败：{message}",
+        "audience-created": "受众创建成功！",
+        "audience-create-failed": "创建受众失败：{message}",
+        "broadcast-created": "广播创建成功！",
+        "broadcast-create-failed": "创建广播失败：{message}",
+        "users-synced": "成功将 {count} 名用户同步到受众！",
+        "sync-failed": "同步用户失败：{message}",
+        "broadcast-sent": "广播发送成功！",
+        "broadcast-send-failed": "发送广播失败：{message}",
+        "broadcast-updated": "广播更新成功！",
+        "broadcast-update-failed": "更新广播失败：{message}",
+        "broadcast-deleted": "广播删除成功！",
+        "broadcast-delete-failed": "删除广播失败：{message}"
+      },
+      "confirm": {
+        "delete-broadcast": "确定要删除此广播吗？此操作无法撤销。"
+      },
+      "loading": {
+        "title": "正在加载电子邮件营销数据...",
+        "audiences": "正在加载受众...",
+        "broadcasts": "正在加载广播...",
+        "templates": "正在加载模板...",
+        "analytics": "正在加载分析数据..."
+      },
+      "tabs": {
+        "overview": "概览",
+        "audiences": "受众",
+        "broadcasts": "广播",
+        "templates": "模板"
+      },
+      "stats": {
+        "total-audiences": {
+          "title": "受众总数",
+          "description": "活跃受众群体"
+        },
+        "total-broadcasts": {
+          "title": "广播总数",
+          "description": "已创建的电子邮件活动"
+        },
+        "subscribers": {
+          "title": "订阅者",
+          "description": "{rate}% 的订阅率"
+        },
+        "sent-broadcasts": {
+          "title": "已发送的广播",
+          "description": "成功送达"
+        }
+      },
+      "overview": {
+        "recent-activity": "最近活动",
+        "no-activity": "暂无最近活动",
+        "quick-actions": "快速操作"
+      },
+      "actions": {
+        "create-new-broadcast": "创建新广播",
+        "create-new-audience": "创建新受众",
+        "create-new-template": "创建新模板",
+        "create-audience": "创建受众",
+        "syncing": "同步中...",
+        "sync-users": "同步用户",
+        "create-broadcast": "创建广播",
+        "show-all-broadcasts": "显示所有广播",
+        "create-template": "创建模板",
+        "edit": "编辑",
+        "use": "使用",
+        "close": "关闭",
+        "edit-broadcast": "编辑广播",
+        "updating": "更新中...",
+        "update-broadcast": "更新广播"
+      },
+      "audiences": {
+        "title": "受众",
+        "create-title": "创建新受众",
+        "create-description": "为您的电子邮件活动创建新的受众群体",
+        "subscriber-count": "{count} 位订阅者",
+        "option-subscriber-count": "{name} ({count} 位订阅者)",
+        "empty": "暂无受众。创建您的第一个受众以开始使用！"
+      },
+      "broadcasts": {
+        "title": "广播",
+        "filter-placeholder": "按状态筛选",
+        "create-title": "创建新群发",
+        "create-description": "创建新的电子邮件群发活动",
+        "empty-filtered": "当前筛选条件下没有匹配的群发。",
+        "empty": "尚无群发。创建您的第一个群发以开始使用！",
+        "empty-hint": "创建群发之前，您需要先创建一个受众群体。",
+        "status": {
+          "all": "所有群发",
+          "draft": "草稿",
+          "sent": "已发送",
+          "scheduled": "已计划",
+          "sending": "发送中"
+        }
+      },
+      "templates": {
+        "title": "电子邮件模板",
+        "create-title": "创建新模板",
+        "create-description": "创建可重复使用的电子邮件模板",
+        "empty": "尚无模板。创建您的第一个模板以开始使用！"
+      },
+      "fields": {
+        "audience-name": "受众名称",
+        "audience-name-placeholder": "例如，新闻稿订阅者",
+        "broadcast-name": "群发名称",
+        "broadcast-name-placeholder": "该群发的内部名称",
+        "target-audience": "目标受众",
+        "select-audience": "选择受众",
+        "from-email": "发件人邮箱",
+        "subject-line": "主题行",
+        "email-subject-placeholder": "电子邮件主题",
+        "email-content-html": "电子邮件内容（HTML）",
+        "email-html-placeholder": "电子邮件 HTML 内容",
+        "plain-text-optional": "纯文本版本（可选）",
+        "plain-text-placeholder": "纯文本版本",
+        "audience": "受众",
+        "template-name": "模板名称",
+        "template-name-placeholder": "例如，欢迎邮件",
+        "name": "名称",
+        "not-available": "N/A",
+        "status": "状态",
+        "subject": "主题",
+        "from": "发件人",
+        "html-content": "HTML 内容",
+        "no-content": "无内容",
+        "plain-text-content": "纯文本内容"
+      },
+      "date": {
+        "not-sent": "未发送",
+        "created": "创建时间：{date}"
+      },
+      "broadcast-details": {
+        "title": "广播详情",
+        "description": "查看广播信息和内容"
+      },
+      "edit-broadcast": {
+        "title": "编辑广播",
+        "description": "更新广播内容和设置"
+      }
+    }
+  },
+  "blog": {
+    "comments": {
+      "author": "作者",
+      "comment-cannot-be-empty": "评论不能为空",
+      "comment-posted": "评论已发布",
+      "comments": "{count, plural, =1 {条评论} other {条评论}}",
+      "confirm-delete-comment": "确定要删除此评论吗？此操作无法撤销。",
+      "copy-link": "复制链接",
+      "delete-a-comment": "删除评论",
+      "deleted-a-comment": "已删除评论",
+      "dislike": "不喜欢",
+      "failed-to-load-comments": "加载评论失败，请刷新页面。",
+      "failed-to-load-replies": "加载回复失败，请刷新页面。",
+      "like": "喜欢",
+      "link-copied": "链接已复制到剪贴板",
+      "need-logged-in-to-rate": "需要登录才能评价评论",
+      "newest": "最新",
+      "no-comments": "暂无评论",
+      "oldest": "最早",
+      "open-menu": "打开菜单",
+      "placeholder": "留下评论...",
+      "replies": "{count, plural, =1 {条回复} other {条回复}}",
+      "reply": "回复",
+      "reply-cannot-be-empty": "回复不能为空",
+      "reply-to-comment": "回复评论",
+      "send-comment": "发送评论",
+      "sort-by": "排序方式",
+      "this-comment-has-been-deleted": "[此评论已被删除]",
+      "toggle-bold": "切换粗体",
+      "toggle-italic": "切换斜体",
+      "toggle-strikethrough": "切换删除线"
+    },
+    "description": "我的个人博客，分享关于技术、服务器、云计算以及一点日常生活的思考。我从 2018 年开始我的探索之旅，并一直学习至今。如果你对数据库、运维或只是想阅读一些关于技术和生活的思考感兴趣，欢迎来看看！",
+    "footer": {
+      "edit-on-github": "在 GitHub 上编辑",
+      "last-updated": "最后更新：{date}"
+    },
+    "header": {
+      "comments": "评论",
+      "published-on": "发布于",
+      "views": "阅读量",
+      "written-by": "作者"
+    },
+    "like": "点赞",
+    "like-limit-reached": "每篇文章最多只能点赞 3 次",
+    "like-this-post": "点赞此文章",
+    "on-this-page": "本页内容",
+    "share": {
+      "description": "在 {site} 的博客上阅读「{title}」",
+      "hashtags": "博客, 技术, 开发"
+    },
+    "title": "博客"
+  },
+  "command-menu": {
+    "actions": {
+      "copy-link": "复制链接",
+      "settings": "设置",
+      "source-code": "源代码"
+    },
+    "groups": {
+      "account": "账户",
+      "general": "常规",
+      "social": "社交"
+    },
+    "no-results": "未找到结果。",
+    "open-menu": "打开命令菜单",
+    "placeholder": "输入命令或搜索",
+    "trigger": {
+      "open-command": "打开命令",
+      "open-link": "打开链接"
+    }
+  },
+  "account": {
+    "actions": {
+      "my-profile": "我的个人资料",
+      "edit-profile": "编辑个人资料"
+    }
+  },
+  "settings": {
+    "title": "设置",
+    "description": "管理您的账户和个人资料",
+    "sections": {
+      "profile": "个人资料",
+      "profile-description": "更新您的个人资料对他人的显示方式",
+      "security": "安全性",
+      "security-description": "更新您的电子邮件和密码"
+    },
+    "fields": {
+      "avatar-url": "头像 URL",
+      "avatar-upload": "上传头像",
+      "username": "用户名",
+      "public-profile": "公开个人资料",
+      "public": "公开",
+      "private": "私密",
+      "name-color": "名称颜色",
+      "name-effect": "名称效果",
+      "bio": "个人简介",
+      "bio-placeholder": "介绍一下自己",
+      "new-email": "新电子邮件",
+      "avatar-url-placeholder": "https://...",
+      "username-placeholder": "您的用户名",
+      "name-color-placeholder": "#ff0000",
+      "new-email-placeholder": "you@example.com",
+      "current-password": "当前密码",
+      "new-password": "新密码",
+      "confirm-new-password": "确认新密码"
+    },
+    "effects": {
+      "none": "无",
+      "rays": "光线",
+      "glow": "发光"
+    },
+    "actions": {
+      "save-profile": "保存个人资料",
+      "upload-avatar": "上传",
+      "change-email": "更改电子邮件",
+      "change-password": "更改密码"
+    },
+    "messages": {
+      "profile-updated": "个人资料已更新",
+      "avatar-updated": "头像已更新",
+      "avatar-file-required": "请选择要上传的图片文件",
+      "avatar-invalid-type": "仅支持 PNG、JPG 或 WebP 格式的图片",
+      "avatar-too-large": "图片大小必须为 5MB 或更小",
+      "email-required": "电子邮件为必填项",
+      "email-verification-sent": "验证邮件已发送",
+      "current-password-required": "需要当前密码",
+      "password-too-short": "密码长度至少为 8 个字符",
+      "passwords-do-not-match": "密码不一致",
+      "password-updated": "密码已更新",
+      "anonymous-avatar-restriction": "匿名用户需更新电子邮件后才能更改头像。"
+    }
+  },
+  "profile": {
+    "title": "{name}",
+    "description": "公开个人资料",
+    "not-found": {
+      "title": "未找到个人资料",
+      "description": "该个人资料不存在或为私密状态"
+    },
+    "comments": {
+      "title": "评论",
+      "description": "最近活动",
+      "empty": "暂无评论",
+      "error": "加载评论失败，请重试。",
+      "end": "已加载全部内容",
+      "load-more": "加载更多",
+      "type": {
+        "comment": "评论",
+        "reply": "回复"
+      }
+    }
+  },
+  "common": {
+    "cancel": "取消",
+    "delete": "删除",
+    "error": "错误",
+    "likes": "{count, plural, =1 {# 个赞} other {# 个赞}}",
+    "sign-in": "登录",
+    "sign-in-error": "登录失败，请重试。",
+    "sign-in-success": "登录成功！",
+    "sign-out": "退出登录",
+    "views": "{count, plural, =1 {# 次浏览} other {# 次浏览}}",
+    "sign-up": "注册",
+    "sign-up-error": "注册失败，请重试。",
+    "unknown-error": "未知错误"
+  },
+  "component": {
+    "now-project": {
+      "website": "网站",
+      "release": "发布",
+      "updated": "已更新"
+    },
+    "recommendations": {
+      "title": "为您推荐",
+      "type": {
+        "post": "帖子",
+        "project": "项目",
+        "snippet": "代码片段"
+      },
+      "reason": {
+        "similar-content": "相似内容",
+        "same-category": "相同分类：{category}",
+        "similar-tags": "相似标签：{tags}"
+      }
+    },
+    "social-share": {
+      "button": {
+        "label": "分享",
+        "aria": "分享内容"
+      },
+      "native": "分享...",
+      "platform": {
+        "twitter": "Twitter",
+        "facebook": "Facebook",
+        "linkedin": "LinkedIn",
+        "reddit": "Reddit",
+        "whatsapp": "WhatsApp"
+      },
+      "copy": {
+        "label": "复制链接",
+        "copied": "已复制！"
+      },
+      "toast": {
+        "copied": "链接已复制到剪贴板！",
+        "copy-failed": "复制链接失败"
+      }
+    },
+    "uses-page": {
+      "badge": {
+        "updated-recently": "近期更新"
+      },
+      "affiliate": {
+        "title": "联盟披露",
+        "description": "本页面中的部分链接为联盟链接。这意味着，如果您通过这些链接购买产品，我可能会获得少量佣金，而不会增加您的额外费用。我只推荐我个人使用并信任的产品。"
+      },
+      "table": {
+        "headers": {
+          "tool": "工具",
+          "pros": "优点",
+          "cons": "缺点",
+          "price": "价格",
+          "rating": "评分"
+        },
+        "rating-out-of": "({rating}/5 分)"
+      },
+      "tools": {
+        "common": {
+          "price": {
+            "free": "免费",
+            "free-paid": "免费/付费"
+          }
+        },
+        "docker": {
+          "pros": {
+            "0": "轻松实现容器化",
+            "1": "适合开发",
+            "2": "生态系统丰富"
+          },
+          "cons": {
+            "0": "资源占用较高",
+            "1": "学习曲线"
+          }
+        },
+        "kubernetes": {
+          "pros": {
+            "0": "出色的编排能力",
+            "1": "自动伸缩",
+            "2": "适用于生产环境"
+          },
+          "cons": {
+            "0": "复杂的设置",
+            "1": "陡峭的学习曲线"
+          }
+        },
+        "terraform": {
+          "pros": {
+            "0": "基础设施即代码",
+            "1": "多云支持",
+            "2": "出色的规划功能"
+          },
+          "cons": {
+            "0": "状态管理复杂",
+            "1": "可能比较复杂"
+          }
+        }
+      },
+      "sections": {
+        "laptop": {
+          "title": "笔记本电脑",
+          "why-title": "我选择这款笔记本的原因：",
+          "reasons": {
+            "0": "性能与便携性的完美平衡",
+            "1": "适合开发和偶尔游戏",
+            "2": "性价比极高"
+          }
+        },
+        "infra-devops": {
+          "title": "基础设施与 DevOps",
+          "comparison-title": "基础设施工具对比"
+        }
+      }
+    },
+    "filtered-posts": {
+      "no-posts-found": "未找到文章",
+      "placeholder": "搜索文章",
+      "rss": "RSS 订阅",
+      "featured": "精选文章",
+      "toggle-filters": {
+        "show": "显示筛选器",
+        "hide": "隐藏筛选器"
+      },
+      "sort": {
+        "label": "排序方式：",
+        "options": {
+          "date-desc": "最新优先",
+          "date-asc": "最早优先",
+          "title-asc": "A-Z",
+          "title-desc": "Z-A",
+          "reading-time": "阅读时间"
+        }
+      },
+      "filters": {
+        "category": {
+          "label": "分类",
+          "all": "所有分类"
+        },
+        "tag": {
+          "label": "标签",
+          "all": "所有标签"
+        }
+      },
+      "searching": "搜索中...",
+      "results": {
+        "count": "{count, plural, =0 {0 条结果} =1 {1 条结果} other {# 条结果}}",
+        "for": " 搜索 \"{search}\" 的结果"
+      },
+      "showing": {
+        "count": "显示 {count, plural, =0 {0 篇文章} =1 {1 篇文章} other {# 篇文章}}"
+      },
+      "pagination": {
+        "page-of": "（第 {current} 页，共 {total} 页）",
+        "previous": "上一页",
+        "next": "下一页"
+      },
+      "clear-all": "清除所有筛选条件",
+      "empty": {
+        "description": "尝试调整搜索词或筛选条件，或浏览下方所有文章。",
+        "show-all": "显示所有文章"
+      },
+      "posts": {
+        "all": "所有文章"
+      }
+    },
+    "go-to-homepage": "返回首页",
+    "announcement-banner": {
+      "dismiss": "关闭公告",
+      "high-priority": "高优先级"
+    },
+    "announcement-widget": {
+      "title": "公告",
+      "description": "最新更新和重要信息",
+      "loading": "正在加载公告...",
+      "empty": "当前没有公告。",
+      "dismiss": "忽略",
+      "high-priority": "高优先级"
+    },
+    "announcement-toast": {
+      "dont-show-again": "不再显示",
+      "dismiss": "忽略",
+      "close": "关闭"
+    },
+    "notifications": {
+      "aria": "打开通知",
+      "title": "通知",
+      "sign-in": "登录以查看您的通知。",
+      "empty": "没有通知。",
+      "loading": "加载中...",
+      "refreshing": "刷新中...",
+      "unread": "未读",
+      "mark-all-read": "全部标记为已读",
+      "view-all": "查看全部"
+    },
+    "breadcrumbs": {
+      "aria-label": "面包屑导航"
+    },
+    "offline-indicator": {
+      "toast": {
+        "restored": "连接已恢复！",
+        "offline": "您已离线，部分功能可能无法使用。"
+      },
+      "status": {
+        "online": "已重新连接",
+        "offline": "无网络连接"
+      }
+    }
+  },
+  "site-search": {
+    "placeholder": "搜索网站...",
+    "recent-searches": "最近搜索",
+    "no-results": "未找到"
+  },
+  "dialog": {
+    "sign-in": {
+      "continue-with": "使用 {provider} 继续",
+      "or": "或",
+      "description": "以继续访问 yuricunha.com",
+      "here": "在此登录",
+      "anonymous": "匿名",
+      "provider": {
+        "github": "GitHub",
+        "google": "Google"
+      },
+      "email-placeholder": "电子邮件",
+      "password-placeholder": "密码",
+      "forgot-password": "忘记密码？",
+      "email-submit": "使用电子邮件继续",
+      "last-used": "上次使用"
+    },
+    "sign-up": {
+      "description": "以在 yuricunha.com 创建您的账户",
+      "here": "在此注册",
+      "name-placeholder": "姓名",
+      "email-submit": "继续注册"
+    },
+    "forgot-password": {
+      "title": "忘记密码？",
+      "description": "别担心，我们会向您发送重置说明。",
+      "email": {
+        "label": "电子邮件地址",
+        "placeholder": "输入您的电子邮件"
+      },
+      "submit": {
+        "pending": "发送中...",
+        "default": "发送重置链接"
+      },
+      "back": "返回登录",
+      "errors": {
+        "send-failed": "发送重置邮件失败",
+        "no-email": "请输入您的电子邮件地址"
+      },
+      "success": {
+        "title": "查收您的邮件",
+        "sent": "我们已向以下地址发送了密码重置链接：",
+        "instructions": "请查收您的收件箱并按照说明操作。",
+        "tip": "没有收到邮件？请检查垃圾邮件文件夹或重试。"
+      }
+    },
+    "already-have-account": "已有账号？",
+    "dont-have-account": "没有账号？"
+  },
+  "error": {
+    "something-went-wrong": "出错了！",
+    "try-again": "重试",
+    "unexpected-description": "遇到意外错误。请尝试刷新页面，或联系支持团队以获取帮助。",
+    "refresh-page": "刷新页面",
+    "details": "错误详情"
+  },
+  "offline": {
+    "metadata": {
+      "title": "离线 - Yuri Cunha",
+      "description": "您当前处于离线状态。请检查您的互联网连接。"
+    },
+    "title": "您已离线",
+    "description": "看起来您的互联网连接已断开。在恢复连接之前，部分功能可能无法使用。",
+    "try-again": "重试",
+    "go-home": "返回首页",
+    "available": {
+      "title": "离线时，您仍可以：",
+      "cached-pages": "浏览缓存的页面",
+      "loaded-content": "阅读之前加载的内容",
+      "search": "使用搜索功能"
+    }
+  },
+  "reset-password": {
+    "loading": "加载中...",
+    "messages": {
+      "success": "密码重置成功！您现在可以使用新密码登录。",
+      "failed": "密码重置失败",
+      "invalid-token": "重置令牌无效或缺失",
+      "passwords-do-not-match": "密码不一致",
+      "password-too-short": "密码长度至少需要 8 个字符"
+    },
+    "success": {
+      "title": "密码已更新",
+      "description": "您的密码已成功重置。"
+    },
+    "invalid": {
+      "title": "重置链接无效",
+      "description": "此密码重置链接无效或已过期。"
+    },
+    "actions": {
+      "sign-in": "登录",
+      "back-home": "返回首页"
+    },
+    "form": {
+      "title": "重置密码",
+      "description": "请在下方输入新密码。",
+      "new-password": {
+        "label": "新密码",
+        "placeholder": "输入新密码"
+      },
+      "confirm-password": {
+        "label": "确认新密码",
+        "placeholder": "确认新密码"
+      },
+      "submit": {
+        "pending": "正在重置密码...",
+        "default": "重置密码"
+      }
+    }
+  },
+  "guestbook": {
+    "create-message-successfully": "留言成功",
+    "delete-dialog": {
+      "description": "确定要删除此评论吗？此操作无法撤销。",
+      "title": "删除评论"
+    },
+    "delete-message-successfully": "删除留言成功",
+    "description": "在我的留言板上签名并分享您的想法。在这里，您可以告诉我任何事情！",
+    "failed-to-load-messages": "加载留言失败，请刷新页面。",
+    "message-cannot-be-empty": "留言不能为空。我的错还是您的错？",
+    "no-messages": "暂无留言。快来成为第一个留言的人吧！",
+    "empty-cta": "快来成为第一个留言的人吧！",
+    "pinned": {
+      "description": "如果您有空，请使用您的账号登录并留下评论。谢谢！",
+      "greeting": "嗨！ 👋"
+    },
+    "placeholder": "留下您的消息",
+    "signin": {
+      "description": "以留下消息"
+    },
+    "submit": "提交",
+    "title": "留言板"
+  },
+  "homepage": {
+    "about-me": {
+      "coding-hours": "编码时长",
+      "coding-hours-value": "{count, plural, =1 {# 小时} other {# 小时}}",
+      "connect": "联系我",
+      "fav-framework": "最喜欢的服务器",
+      "location": "圣保罗",
+      "more": "了解更多关于我的信息",
+      "stacks": "技术栈",
+      "title": "关于我"
+    },
+    "get-in-touch": {
+      "description": "欢迎随时与我联系！",
+      "label": "联系方式",
+      "availability": "可联系时间",
+      "image-alt": "是我或不是我",
+      "title": "需要聊聊吗？",
+      "code": {
+        "status": "status = \"open\"",
+        "email": "email = \"me@yuricunha.com\"",
+        "timezone": "timezone = \"UTC/GMT -3\""
+      }
+    },
+    "hero": {
+      "title-top": "我是 Yuri，一名数据库专家",
+      "title-middle-left": "优化",
+      "title-middle-right": "数据解决方案",
+      "amazing": "敏捷",
+      "attractive": "高效",
+      "fantastic": "稳健",
+      "stunning": "安全",
+      "title-bottom": "适用于现代基础设施",
+      "location-timezone": "巴西 • UTC/GMT -3",
+      "view-projects": "查看项目",
+      "read-blog": "阅读博客",
+      "code": {
+        "database-specialist": "database_specialist = true",
+        "region": "region = \"America/Sao_Paulo\"",
+        "focus": "focus = \"reliable data systems\""
+      }
+    },
+    "latest-articles": {
+      "card": "文章",
+      "more": "查看所有文章",
+      "title": "最新文章"
+    },
+    "selectedProjects": {
+      "card": "项目",
+      "more": "查看所有项目",
+      "title": "精选项目"
+    },
+    "recently-updated": {
+      "title": "最近更新",
+      "description": "最新内容更新和添加",
+      "type": {
+        "post": "帖子",
+        "project": "项目",
+        "page": "页面"
+      },
+      "updated-on": "更新于 {date}",
+      "empty": "暂无最近更新"
+    },
+    "newsletter": {
+      "title": "保持更新",
+      "description": "获取关于新博客文章和项目更新的通知",
+      "placeholder": "输入您的电子邮件",
+      "cta": "订阅",
+      "disclaimer": "无垃圾邮件，可随时取消订阅。适用隐私政策。",
+      "success-title": "感谢您的订阅！",
+      "success-description": "您将收到关于新文章和项目的更新。",
+      "error-default": "订阅失败",
+      "success-compact": "已订阅！"
+    }
+  },
+  "hook": {
+    "copy-to-clipboard": {
+      "copied": "已复制到剪贴板！",
+      "error": "无法复制到剪贴板，请重试！"
+    }
+  },
+  "snippets": {
+    "title": "代码片段",
+    "description": "简短实用的笔记和代码示例。",
+    "empty": "暂无代码片段。",
+    "content-label": "代码片段",
+    "on-this-page": "本页内容",
+    "min-read": "{minutes} 分钟阅读"
+  },
+  "layout": {
+    "navigation": "导航",
+    "home": "首页",
+    "blog": "博客",
+    "snippets": "代码片段",
+    "projects": "项目",
+    "about": "关于",
+    "now": "动态",
+    "guestbook": "留言板",
+    "uses": "工具",
+    "music": "音乐",
+    "more": "更多",
+    "admin": "管理",
+    "contact": "联系",
+    "sitemap": "网站地图",
+    "skip-to-main-content": "跳转到主内容",
+    "toggle-menu": "切换菜单",
+    "change-language": "切换语言",
+    "links": "链接",
+    "github": "GitHub",
+    "star": "Star",
+    "now-playing": {
+      "error": "无法获取 Last.fm 数据",
+      "loading": "加载中...",
+      "not-listening": "未在收听 —— Last.fm"
+    }
+  },
+  "mdx": {
+    "link-to-section": "链接到章节"
+  },
+  "metadata": {
+    "site-description": "高级数据库管理员",
+    "site-title": "Yuri Cunha",
+    "site-short-name": "Yuri"
+  },
+  "og": {
+    "blog-post": "博客文章",
+    "read-article": "在 yuricunha.com 上阅读此文章",
+    "summary-fallback": "在 yuricunha.com 上阅读此文章"
+  },
+  "not-found": "此处今日无页面！",
+  "notFound": {
+    "badge": "页面未找到",
+    "subtitle": "尝试搜索您需要的内容，或跳转至以下部分。",
+    "viewAll": "查看全部",
+    "recentPosts": "近期文章",
+    "recentPostsDescription": "博客中的最新文章",
+    "recentSnippets": "近期代码片段",
+    "recentSnippetsDescription": "简短笔记和代码示例",
+    "recentProjects": "近期项目",
+    "recentProjectsDescription": "我最近构建的项目"
+  },
+  "sitemap": {
+    "title": "网站地图",
+    "description": "所有网站内容和导航的完整概览",
+    "main-pages": {
+      "title": "主要页面",
+      "description": "核心网站导航和功能",
+      "items": {
+        "home": {
+          "description": "欢迎页面，概览项目和文章"
+        },
+        "blog": {
+          "description": "技术文章和开发思考"
+        },
+        "snippets": {
+          "description": "简短实用的笔记和代码示例"
+        },
+        "projects": {
+          "description": "开发项目和 GitHub 仓库的作品集"
+        },
+        "guestbook": {
+          "description": "公共留言板，您可以留言"
+        },
+        "uses": {
+          "description": "我用于开发的工具、设备和软件"
+        },
+        "now": {
+          "description": "我当前正在做的事情和思考的内容"
+        },
+        "music": {
+          "description": "音乐品味、收听活动和 Last.fm 统计数据"
+        },
+        "contact": {
+          "description": "如何与我联系"
+        },
+        "about": {
+          "title": "关于",
+          "description": "了解更多关于我和我的背景"
+        },
+        "sitemap": {
+          "description": "网站上所有页面的完整概览"
+        }
+      }
+    },
+    "blog-posts": {
+      "title": "博客文章",
+      "description": "所有已发布的文章和技术内容"
+    },
+    "projects": {
+      "title": "项目",
+      "description": "开发项目和开源贡献"
+    },
+    "snippets": {
+      "title": "代码片段",
+      "description": "小而实用的笔记和代码范例"
+    },
+    "labels": {
+      "live-demo": "在线演示",
+      "github": "GitHub"
+    }
+  },
+  "projects": {
+    "description": "我的项目列表。所有作品都怀着💙制作（本页面仍在开发中）。",
+    "title": "项目",
+    "content-label": "项目",
+    "visit-website": "访问网站",
+    "all-repos": "我的公开 GitHub 仓库",
+    "featured": "精选项目",
+    "all": "所有项目",
+    "search": {
+      "placeholder": "搜索项目..."
+    },
+    "filters": {
+      "show": "显示筛选器",
+      "hide": "隐藏筛选器",
+      "category": "分类",
+      "all-categories": "所有分类",
+      "status": "状态",
+      "all-statuses": "所有状态",
+      "technology": "技术",
+      "all-technologies": "所有技术",
+      "clear": "清除筛选条件"
+    },
+    "results": {
+      "found": "{count, plural, =1 {找到 # 个项目} other {找到 # 个项目}}",
+      "showing": "显示 {count, plural, =1 {# 个项目} other {# 个项目}}"
+    },
+    "empty": {
+      "title": "未找到项目",
+      "description": "尝试调整筛选条件或搜索词。",
+      "show-all": "显示所有项目"
+    },
+    "card": {
+      "open": "打开 {name}",
+      "open-aria": "打开 {name} 项目页面",
+      "featured": "精选",
+      "github": {
+        "title": "在 GitHub 上查看源代码",
+        "aria": "在 GitHub 上查看源代码（在新标签页中打开）"
+      },
+      "live": {
+        "title": "打开在线演示",
+        "aria": "打开在线演示（在新标签页中打开）"
+      },
+      "started-label": "开始于"
+    },
+    "status": {
+      "active": "活跃",
+      "archived": "已归档",
+      "beta": "Beta",
+      "completed": "已完成"
+    },
+    "repos": {
+      "empty": "未找到仓库。"
+    }
+  },
+  "uses": {
+    "description": "这是我目前用于游戏、编程和日常生活的设备。",
+    "title": "使用"
+  },
+  "spotify": {
+    "title": "音乐",
+    "description": "这是我当前正在收听的音乐——来自我的 Last.fm 个人资料的热门曲目和艺术家。",
+    "sections": {
+      "listening-data": {
+        "label": "收听数据",
+        "title": "重复的、变化的，以及正在播放的内容。"
+      }
+    },
+    "now-listening": {
+      "title": "正在收听",
+      "subtitle": "当前在 Last.fm 上播放",
+      "not-playing": "当前未收听任何内容",
+      "by": "由"
+    },
+    "top-artists": {
+      "title": "热门艺术家",
+      "subtitle": "过去 6 个月内最常收听的艺术家",
+      "no-data": "无艺术家数据",
+      "tooltips": {
+        "shuffle-on": "显示原始顺序",
+        "shuffle-off": "随机排列艺术家",
+        "view-list": "切换到列表视图",
+        "view-grid": "切换到网格视图"
+      }
+    },
+    "top-songs": {
+      "title": "热门歌曲",
+      "subtitle": "过去 6 个月内播放次数最多的曲目",
+      "no-data": "无歌曲数据"
+    },
+    "recently-played": {
+      "title": "最近播放",
+      "subtitle": "我最近收听的曲目",
+      "no-data": "无最近播放的曲目"
+    },
+    "heatmap": {
+      "title": "收听热图",
+      "subtitle": "每日收听活动（最近播放）",
+      "days": {
+        "sun": "周日",
+        "mon": "周一",
+        "tue": "周二",
+        "wed": "周三",
+        "thu": "周四",
+        "fri": "周五",
+        "sat": "周六"
+      },
+      "legend": {
+        "low": "低",
+        "high": "高"
+      }
+    },
+    "import": {
+      "title": "导入本地历史记录",
+      "subtitle": "上传您的收听历史记录 CSV 文件",
+      "choose": "选择文件",
+      "plays": "播放次数",
+      "artists": "艺术家",
+      "duration": "时长",
+      "invalid-file": "无效文件：预期为 JSON 数组",
+      "parse-error": "解析错误"
+    },
+    "stats": {
+      "title": "音乐统计",
+      "subtitle": "您的收听习惯和偏好",
+      "labels": {
+        "total-hours": "总时长",
+        "diversity": "多样性",
+        "avg-popularity": "平均热度",
+        "top-artists": "热门艺术家",
+        "top-genres": "热门流派"
+      }
+    },
+    "loading": "正在加载音乐数据...",
+    "error": "加载音乐数据失败，请重试。",
+    "no-data": "无可用数据",
+    "refresh": "刷新",
+    "export": {
+      "csv": "导出为 CSV",
+      "json": "导出为 JSON"
+    },
+    "range": {
+      "short": "最近 4 周",
+      "medium": "最近 6 个月",
+      "long": "所有时间"
+    },
+    "album": "专辑",
+    "artist": "艺术家",
+    "artists": "艺术家",
+    "song": "歌曲",
+    "tracks": "曲目",
+    "listeners": "听众",
+    "followers": "粉丝",
+    "timeline": {
+      "title": "音乐时间线",
+      "subtitle": "您的收听历史可视化",
+      "empty": "暂无近期收听历史",
+      "periods": {
+        "last-hour": "上小时",
+        "today": "今天",
+        "yesterday": "昨天",
+        "this-week": "本周",
+        "earlier": "更早"
+      },
+      "more-tracks": "还有 {count} 首曲目",
+      "count": "（共 {count} {label}）",
+      "labels": {
+        "total-tracks": "曲目总数",
+        "unique-artists": "独立艺术家",
+        "track": "曲目",
+        "tracks": "曲目"
+      }
+    },
+    "social": {
+      "title": "分享你的音乐",
+      "subtitle": "与朋友分享你最爱的曲目",
+      "now-playing": "正在播放",
+      "top-tracks": "热门分享曲目",
+      "share-text": "🎵 正在欣赏「{name}」——{artist} 的作品，来自我的音乐档案！",
+      "buttons": {
+        "twitter": "分享到 Twitter",
+        "facebook": "分享到 Facebook",
+        "copy": "复制链接",
+        "open": "在 Last.fm 中打开"
+      },
+      "profile": {
+        "title": "分享你的音乐档案",
+        "share-title": "🎵 来看看我的音乐品味和正在听的歌曲吧！",
+        "share-description": "发现我的音乐偏好和当前收听动态"
+      }
+    },
+    "time-ago": {
+      "just-now": "刚刚",
+      "minutes": "{count} 分钟前",
+      "hours": "{count} 小时前",
+      "days": "{count} 天前"
+    }
+  },
+  "mascot": {
+    "ariaLabel": "悦 - 虚拟助手",
+    "close": "关闭",
+    "hide": "隐藏",
+    "hideForNow": "暂时隐藏",
+    "speechBubble": "悦的消息",
+    "settings": {
+      "title": "悦的设置",
+      "close": "关闭设置",
+      "open": "打开设置",
+      "animations": "动画",
+      "speechBubbles": "对话气泡",
+      "soundEffects": "音效",
+      "messageDuration": "消息持续时间",
+      "hideUntilRestored": "隐藏直至恢复",
+      "bubblePosition": "气泡位置",
+      "positions": {
+        "bottomRight": "右下",
+        "bottomLeft": "左下",
+        "topRight": "右上",
+        "topLeft": "左上"
+      }
+    },
+    "easterEgg": {
+      "retroMode": "复古模式已激活！🎮"
+    },
+    "notifications": {
+      "newPost": "嗨！我发布了一篇新文章：《{title}》。要来看看吗？📝"
+    },
+    "actions": {
+      "navigating": "收到！正在带你前往 {target}……🚀"
+    },
+    "interactions": {
+      "tickle": "哎哟！好痒！哈哈！😄",
+      "dizzy": "哇……我转得有点晕……😵‍💫",
+      "selectionExplain": "要我解释一下这是什么吗？",
+      "explainButton": "解释",
+      "explainPrompt": "能帮我解释一下我选中的这段文字吗？\n\n「{text}」"
+    },
+    "restore": "让月归来",
+    "idle": {
+      "tip1": "💡 你知道吗？如果我隐藏了，你可以用 Shift+Y 让我回来！",
+      "tip2": "🎮 试试小游戏吧！点击我的对话框中的游戏手柄图标。",
+      "tip3": "⚙️ 在设置面板中自定义我的行为。",
+      "tip4": "🎯 我在这里帮助你！有问题随时问，或者随意探索网站。",
+      "tip5": "🌟 发现 bug 了吗？告诉我，我会帮忙报告的！"
+    },
+    "menu": {
+      "open": "打开菜单",
+      "reportBug": "报告 bug / 联系",
+      "viewProjects": "查看项目",
+      "aiChat": "AI 聊天",
+      "miniGame": "小游戏",
+      "settings": "设置"
+    },
+    "contact": {
+      "title": "联系我的创造者 Yuri",
+      "close": "关闭联系方式",
+      "description": "发现 bug 或者想联系？这是我创造者的邮箱：",
+      "copy": "复制邮箱",
+      "copySuccess": "邮箱已复制到剪贴板！",
+      "copyError": "复制邮箱失败，请重试。"
+    },
+    "aiChat": {
+      "title": "与月聊天",
+      "clear": "清除",
+      "close": "关闭",
+      "conversations": "对话",
+      "provider": "服务提供商",
+      "newChat": "新建聊天",
+      "newChatTitle": "新聊天",
+      "more": "更多",
+      "rename": "重命名",
+      "renamePrompt": "重命名聊天",
+      "deleteChat": "删除聊天",
+      "deleteConfirm": "确定要删除此聊天吗？",
+      "share": "分享",
+      "citations": {
+        "title": "来源",
+        "actions": {
+          "open": "打开",
+          "copyLink": "复制链接",
+          "moreLikeThis": "查看更多类似内容"
+        },
+        "linkCopied": "链接已复制到剪贴板",
+        "linkCopyFailed": "复制链接失败",
+        "moreLikeThisPrompt": "推荐更多类似“{title}”的{type}。请包含链接。",
+        "types": {
+          "post": "帖子",
+          "project": "项目",
+          "page": "页面",
+          "snippet": "代码片段"
+        }
+      },
+      "shareCopied": "分享链接已复制到剪贴板",
+      "shareCopyFailed": "复制分享链接失败",
+      "importedTitle": "已导入的聊天",
+      "imported": "聊天已导入",
+      "importFailed": "导入聊天失败",
+      "copyMessage": "复制消息",
+      "messageCopied": "消息已复制到剪贴板",
+      "messageCopyFailed": "复制消息失败",
+      "welcomeMessage": "嗨！我是月，你的 AI 助手！🤖 关于网站、技术话题或只是聊天，问我任何事吧！",
+      "errorMessage": "抱歉，我现在遇到问题了。请稍后再试！😅",
+      "thinking": "月正在思考...",
+      "placeholder": "问我任何事...",
+      "connectionError": "连接遇到问题，请重试。",
+      "footer": "由 Yuri 开发的 Yue AI",
+      "providers": {
+        "auto": "自动",
+        "hf": "岳（中等）",
+        "hf_local": "岳（低）",
+        "gemini": "Gemini",
+        "groq": "岳（高）",
+        "ollama": "Ollama",
+        "mistral": "岳"
+      },
+      "feedback": {
+        "like": "点赞",
+        "dislike": "点踩",
+        "commentPlaceholder": "告诉我哪里出错了（可选）",
+        "send": "发送",
+        "cancel": "取消",
+        "sent": "感谢您的反馈！",
+        "error": "反馈发送失败"
+      },
+      "modes": {
+        "chat": "聊天",
+        "imageGen": "生成图片",
+        "imageAnalyze": "分析图片",
+        "speech": "语音"
+      },
+      "descriptions": {
+        "chat": "与 AI 进行文本对话",
+        "imageGen": "根据文本提示创建图片",
+        "imageAnalyze": "分析并描述图片",
+        "speech": "将文本转换为语音"
+      },
+      "placeholders": {
+        "chat": "输入您的消息...",
+        "imageGen": "描述您想生成的图片...",
+        "imageAnalyze": "询问关于上传图片的问题...",
+        "speech": "输入要转换为语音的文本..."
+      },
+      "titles": {
+        "chat": "AI 聊天",
+        "imageGen": "图片生成器",
+        "imageAnalyze": "图片分析器",
+        "speech": "文本转语音"
+      },
+      "upload": "上传图片进行分析",
+      "selected": "已选择：{filename}",
+      "generatedImage": "生成的图片：",
+      "generatedAudio": "生成的音频：",
+      "switchModel": "切换 AI 模型",
+      "availableFeatures": "{model} 的可用功能",
+      "featureNotAvailable": "此模型不支持 {feature}",
+      "online": "在线",
+      "retry": "重试"
+    },
+    "chatbot": {
+      "title": "与岳聊天",
+      "close": "关闭聊天",
+      "description": "选择一个话题进行聊天：",
+      "options": {
+        "contact": "我想联系",
+        "feedback": "我有反馈",
+        "help": "我需要帮助",
+        "bug": "我发现了一个 bug",
+        "feature": "我有功能请求",
+        "general": "只是想聊天"
+      },
+      "responses": {
+        "contact": "太好了！您可以通过 me@yuricunha.com 联系我的创造者 Yuri，他们很乐意收到访客的来信！",
+        "feedback": "感谢您的反馈！这将帮助我们改进网站，为所有人提供更好的体验。您可以通过 me@yuricunha.com 发送详细信息。",
+        "help": "我随时为您提供帮助！您想了解什么？您可以探索网站或向我提出具体问题。",
+        "bug": "感谢您的反馈！请将发现的问题详情发送至 me@yuricunha.com。您的每一份报告都有助于改进网站！",
+        "feature": "这个想法太棒了！我的创造者 Yuri 非常乐意听取新点子。请将您的建议发送至 me@yuricunha.com。",
+        "general": "我喜欢与访客聊天！您今天过得怎么样？随意探索网站或问我任何问题！"
+      }
+    },
+    "greetings": {
+      "morning": "早上好！我是悦！☀️",
+      "afternoon": "下午好！我是悦！🌤️",
+      "evening": "晚上好！我是悦！🌅",
+      "night": "晚安！我是悦！🌙"
+    },
+    "game": {
+      "title": "悦的迷你游戏",
+      "close": "关闭游戏",
+      "open": "打开游戏",
+      "score": "得分",
+      "time": "时间",
+      "highScore": "最高分",
+      "instructions": "在 30 秒内尽可能多地点击目标！",
+      "start": "开始游戏",
+      "playAgain": "再玩一次",
+      "gameOver": "游戏结束！您的得分：{score}",
+      "clickTarget": "点击目标",
+      "difficulty": {
+        "label": "难度：",
+        "aria": "选择难度",
+        "options": {
+          "easy": "简单",
+          "medium": "中等",
+          "hard": "困难"
+        }
+      },
+      "mode": {
+        "label": "模式：",
+        "aria": "选择模式",
+        "options": {
+          "classic": "经典",
+          "survival": "生存",
+          "challenge": "挑战"
+        }
+      }
+    },
+    "messages": {
+      "0": "你好！我是悦，你的虚拟助手！需要帮助导航吗？",
+      "1": "你知道吗？可以用 Konami 密码激活复古模式！",
+      "2": "是时候喝杯咖啡休息一下了！☕",
+      "3": "嘿，我发现了一个隐藏的彩蛋！想看看吗？",
+      "4": "别忘了查看我的创造者 Yuri 的最新项目！",
+      "5": "欢迎来到网站！今天我能如何帮助您？",
+      "6": "随意探索吧！这里有很多值得发现的东西。",
+      "7": "需要联系吗？查看联系方式部分！",
+      "8": "你知道吗？这个网站是用 Next.js 和 TypeScript 构建的！",
+      "9": "感谢您的访问！希望您今天过得愉快！",
+      "10": "想看看我的创造者 Yuri 在做什么吗？查看项目！",
+      "11": "我喜欢帮助访客并分享知识。你呢？",
+      "12": "界面现在温暖、暗色且更加专注！",
+      "13": "这个网站完全兼容响应式设计。试试调整浏览器大小！",
+      "14": "发现 bug 了吗？告诉我，我会帮忙报告！",
+      "15": "我总是从我的创造者 Yuri 那里学到新东西。你最近有什么新发现？",
+      "16": "我的创造者 Yuri 是一名数据库专家。很酷吧？",
+      "17": "我可以帮你找到网站上的任何内容！",
+      "18": "你知道吗？我的创造者 Yuri 在 2018 年开始了这段旅程。",
+      "19": "这个迷你游戏是放松的好方式！",
+      "20": "我在这里让你的访问更愉快！",
+      "21": "我的创造者尤里（Yuri）在博客上分享关于科技和生活的内容。",
+      "22": "你看过项目板块吗？我的创造者的作品超级棒！",
+      "23": "我喜欢游客们浏览不同的页面！",
+      "24": "留言板是留言的好地方！",
+      "25": "我的创造者尤里（Yuri）总是在开发新东西！",
+      "26": "你知道吗？你可以在设置中自定义我的行为！",
+      "27": "我在这里帮你提升体验！",
+      "28": "我的创造者尤里（Yuri）喜欢通过博客分享知识。",
+      "29": "这个网站设计得人人都能访问！",
+      "30": "我每天都在向我的创造者尤里（Yuri）学习新知识！",
+      "31": "你看过“使用”页面吗？我的创造者的配置超级酷！",
+      "32": "我在这里带你浏览网站！",
+      "33": "我的创造者尤里（Yuri）相信开源的力量！",
+      "34": "Spotify 页面展示了我的创造者正在听的歌曲！",
+      "35": "我总是很高兴见到新游客！",
+      "36": "我的创造者尤里（Yuri）喜欢帮助他人学习！",
+      "37": "你知道吗？你可以固定消息以保持其可见！",
+      "38": "我在这里让你的浏览体验更有趣！",
+      "39": "我的创造者尤里（Yuri）对科技充满热情！",
+      "40": "搜索功能可以帮你快速找到任何内容！",
+      "41": "我的创造者尤里（Yuri）总是欢迎反馈和建议！",
+      "42": "管理面板可以帮助高效管理网站！",
+      "43": "我喜欢看到网站上有新的评论和互动！",
+      "44": "我的创造者尤里（Yuri）相信创造有意义的事物！",
+      "45": "网站正在不断更新，添加新功能！",
+      "46": "我在这里让科技更易于每个人使用！",
+      "47": "我的创造者尤里（Yuri）喜欢解决复杂的问题！",
+      "48": "这个网站的社区超级棒！",
+      "49": "我随时准备帮你解答任何问题！"
+    },
+    "pageMessages": {
+      "404": {
+        "0": "哎呀！看起来你迷路了！🗺️",
+        "1": "别担心，我可以帮你找到回去的路！",
+        "2": "尝试使用导航菜单或搜索功能。",
+        "3": "主页总是一个好的开始！",
+        "4": "我的创造者尤里（Yuri）正在努力改进导航体验！",
+        "5": "欢迎举报你发现的任何失效链接！",
+        "6": "即使是最优秀的探险家有时也会迷路！🧭",
+        "7": "这个页面可能已移动或尚不存在！",
+        "8": "使用搜索功能找到你想要的内容！",
+        "9": "导航菜单中已整理好所有主要板块！",
+        "10": "有时候迷路会发现更美好的事物！",
+        "11": "检查一下 URL 是否有错字——这通常是问题所在！",
+        "12": "网站不断更新，新内容会定期发布！",
+        "13": "链接失效时有发生——感谢您帮助改进网站！",
+        "14": "每一个 404 错误都是发现新内容的机会！",
+        "15": "不确定时，首页有所有重要内容的链接！🏠"
+      },
+      "home": {
+        "0": "欢迎来到首页！👋 我是 Yue，您的虚拟助手！",
+        "1": "一切从这里开始。准备好探索了吗？",
+        "2": "我的创造者 Yuri 是一位数据库专家。想了解更多吗？",
+        "3": "查看下方的最新文章和项目！",
+        "4": "随意探索您感兴趣的任何板块！",
+        "5": "导航菜单可以帮助您找到所需内容！",
+        "6": "家的感觉真好！这里是所有魔法发生的地方 ✨",
+        "7": "在寻找某些特定内容？我可以帮您导航！",
+        "8": "你知道吗？您可以在设置中更改我的位置！📍",
+        "9": "我喜欢结识新朋友！谢谢您的到访！😊",
+        "10": "最新的更新和内容总是在这里优先展示！",
+        "11": "好奇心爆棚？每个板块都有独特的内容等您发现！",
+        "12": "专业技巧：使用搜索功能精确找到您需要的内容！🔍",
+        "13": "本站不断更新，新功能和内容持续增加！",
+        "14": "想要保持更新？定期回来查看新内容！",
+        "15": "我 24/7 全天候在这里，帮助您探索和发现新事物！"
+      },
+      "blog": {
+        "0": "欢迎来到博客！📝",
+        "1": "我的创造者 Yuri 在这里分享关于技术、数据库，有时还有生活的见解。",
+        "2": "欢迎在文章下方留言！",
+        "3": "您想阅读哪些主题的内容？",
+        "4": "博客定期更新，不断推出新内容！",
+        "5": "您可以通过标签和分类筛选文章！",
+        "6": "这么多有趣的文章等您来探索！📚",
+        "7": "每篇文章都经过精心打磨，并融入真实世界的经验！",
+        "8": "别忘了分享您认为有价值的文章！🔗",
+        "9": "评论区才是真正的讨论热点！",
+        "10": "在寻找某些特定内容？尝试使用搜索或标签！",
+        "11": "新文章定期发布——收藏您的最爱！⭐",
+        "12": "从入门技巧到高级概念，这里总有适合您的内容！",
+        "13": "喜欢阅读关于数据库、Web 开发和技术见解的内容？您来对地方了！",
+        "14": "博客反映了多年的学习和实际项目经验！",
+        "15": "对某篇文章有疑问？评论区正是讨论的好地方！"
+      },
+      "blogPost": {
+        "0": "这篇文章很值得一读！ 📖",
+        "1": "这让我思考起来…… 🤔",
+        "2": "这个话题的视角很有趣！",
+        "3": "我的创造者 Yuri 在这篇文章上花了很多心思。",
+        "4": "希望你喜欢这篇文章！",
+        "5": "欢迎在评论区分享你的想法！",
+        "6": "这篇内容值得你花时间仔细阅读。",
+        "7": "我喜欢人们深入探讨这样的话题！",
+        "8": "这里的见解非常有价值。",
+        "9": "这种内容让学习变得有趣！"
+      },
+      "snippet": {
+        "0": "欢迎来到代码片段区！ ✂️",
+        "1": "小小的笔记能节省意想不到的调试时间。",
+        "2": "需要快速查找解决方案？这个区域就是为浏览而设计的。",
+        "3": "选中任何让你困惑的部分，我可以帮你解释。",
+        "4": "代码片段让小知识变成可复用的工具。",
+        "5": "这些都是来自实际工作的实用笔记，而不是博物馆展品。",
+        "6": "简短、专注，方便日后回顾。",
+        "7": "发现有用的模式？收藏起来，下次项目用！"
+      },
+      "projects": {
+        "0": "这里是项目展示区！ 🚀",
+        "1": "所有项目都倾注了爱和大量咖啡 ☕",
+        "2": "想合作吗？让我们一起创造些了不起的东西！",
+        "3": "每个项目都让我的创造者 Yuri 学到了新东西。",
+        "4": "所有项目都是开源的，并在 GitHub 上可用！",
+        "5": "欢迎贡献或提出改进建议！",
+        "6": "从小工具到全栈应用——多样性是关键！ 🛠️",
+        "7": "每个项目都解决一个实际问题或探索新技术！",
+        "8": "查看技术栈——总在尝试最新的工具！",
+        "9": "大多数项目都有在线演示——快去试试！ 🌐",
+        "10": "源代码整洁、文档齐全，随时欢迎贡献！",
+        "11": "发现 bug 或有新点子？随时提交 Issues 和 PR！",
+        "12": "这些项目代表了多年的学习和实验！",
+        "13": "给喜欢的仓库点星——这真的能激励创作者！ ⭐",
+        "14": "从数据库到网络应用，每个项目都有自己的故事！",
+        "15": "想一起创造点什么？合作让一切变得更好！"
+      },
+      "projectsDetail": {
+        "0": "这个项目很棒！ 🔧",
+        "1": "想了解背后的技术栈吗？",
+        "2": "通常可以在 GitHub 上找到源代码。",
+        "3": "如果有在线演示，快去试试吧！",
+        "4": "开源意味着欢迎您的想法。",
+        "5": "发现可以改进的地方？欢迎提交问题和拉取请求！",
+        "6": "阅读代码可以和使用应用一样有趣。",
+        "7": "这个项目反映了现实世界中的学习成果。",
+        "8": "如果喜欢这个项目，别忘了给仓库点星！ ⭐",
+        "9": "你会基于这个项目构建什么？"
+      },
+      "about": {
+        "0": "想了解更多关于我的创造者尤里的信息吗？🤔",
+        "1": "我的创造者尤里只是一个热爱数据库和编程的人。",
+        "2": "有任何问题，随时问吧！",
+        "3": "这段旅程始于 2018 年，至今仍在不断学习！",
+        "4": "我的创造者尤里热衷于分享知识和帮助他人！",
+        "5": "关于页面有这段旅程的所有细节！",
+        "6": "一位热衷于编写简洁、高效代码的数据库专家！💾",
+        "7": "从巴西到全世界——科技将我们紧密相连！🌎",
+        "8": "始终在学习，始终在成长，始终对新技术充满好奇！",
+        "9": "相信开源、知识共享，并帮助他人取得成功！",
+        "10": "咖啡驱动的编程马拉松和深夜的问题解决！☕",
+        "11": "这个故事包含失败、成功以及其中的一切！",
+        "12": "坚信最好的学习方式是通过实践和教学！",
+        "13": "数据库可能是专长，但全栈开发才是游乐场！",
+        "14": "每个项目都是学习的机会，也是帮助他人的机会！",
+        "15": "想要联系？联系方式就在这个页面！"
+      },
+      "uses": {
+        "0": "这就是我的装备！💻",
+        "1": "装备很酷吧？我的创造者尤里很喜欢这些设备！",
+        "2": "想知道开发中使用了什么吗？",
+        "3": "好的工具能带来完全不同的体验！",
+        "4": "装备随着新工具的加入不断进化！",
+        "5": "欢迎询问任何特定的工具或装备！",
+        "6": "从硬件到软件——每个工具都经过精心挑选！⚙️",
+        "7": "性能、效率和美感的完美平衡！",
+        "8": "始终在尝试新工具和新工作流！",
+        "9": "这些工具助力无数项目和深夜编程！",
+        "10": "对某个装备选择感到好奇？每个选择背后都有故事！",
+        "11": "装备随着新发现和需求变化不断进化！",
+        "12": "从代码编辑器到数据库工具——一切都为效率优化！",
+        "13": "好的工具不会让你成为更好的开发者，但确实能提供很大帮助！🛠️",
+        "14": "装备反映了多年尝试不同工具并找到最适合的结果！",
+        "15": "想要推荐？这些工具已在实际项目中经过验证，效果拔群！"
+      },
+      "music": {
+        "0": "欢迎来到音乐角落！🎵",
+        "1": "好听还是难听？我不知道，但我的创造者 Yuri 很喜欢！",
+        "2": "音乐有助于编程时集中注意力。",
+        "3": "你最近都在听什么？",
+        "4": "播放列表会定期更新，加入新发现的音乐！",
+        "5": "音乐是工作时保持动力的绝佳方式！",
+        "6": "无数编程时光和创意突破的背景音乐！🎧",
+        "7": "从 lo-fi 节拍到充满活力的曲目——适合每一种编程心情的音乐！",
+        "8": "这些播放列表助力过无数次调试和功能开发！",
+        "9": "音乐和代码就像咖啡和深夜一样相得益彰！☕",
+        "10": "发现新的艺术家和流派，激发创造力和专注力！",
+        "11": "深度工作和解决问题的完美背景音！",
+        "12": "每个播放列表都是为不同的工作类型和精力水平精心策划的！",
+        "13": "音乐品味和编程技能一样不断进化——总有新发现！",
+        "14": "你的编程背景音乐是什么？音乐可以成就或破坏一个高效的工作时段！",
+        "15": "从环境音乐到欢快节奏——找到最适合你工作流的韵律！🎶"
+      },
+      "guestbook": {
+        "0": "在留言板上留言吧！📖",
+        "1": "我的创造者 Yuri 很喜欢阅读访客的留言！",
+        "2": "随时打招呼或提问！",
+        "3": "你的留言会让他们的一天更美好！",
+        "4": "留言板是与社区联系的绝佳方式！",
+        "5": "所有留言都会经过审核，以保持友好的氛围！",
+        "6": "现代网络的数字留言板——是不是很酷？✨",
+        "7": "每一条留言都会被阅读和珍视——你也是社区的一员！",
+        "8": "分享你的想法、反馈，或只是打个招呼——所有内容都欢迎！",
+        "9": "留言板连接着来自世界各地的访客！🌍",
+        "10": "你的留言可能会激发下一篇博文或项目！",
+        "11": "从简单的问好到详细的反馈——每一条留言都很重要！",
+        "12": "留言板提醒我们，每个网站背后都有真实的人！",
+        "13": "加入对话，成为这个不断壮大的社区的一员！",
+        "14": "这里的留言曾催生过合作、友谊和新点子！",
+        "15": "别害羞——你的声音为这里增添了价值！💬"
+      },
+      "now": {
+        "0": "这是“当下”页面：当前的关注点，当前的季节。",
+        "1": "我的创造者 Yuri 近期动态的小剪影。",
+        "2": "“Now”页面真诚而美好：并非所有事情都需要成为一个发布。",
+        "3": "此部分会随着优先事项的变化而更新。",
+        "4": "想知道当前有哪些活动？你来对地方了。",
+        "5": "可以将此视为一个带有更多情感的状态更新。"
+      },
+      "settings": {
+        "0": "设置是偏好的归宿。",
+        "1": "小小的调整可以让整个网站体验更佳。",
+        "2": "花点时间调整到自己喜欢的样子。",
+        "3": "好的软件会记住你在意的事。",
+        "4": "如果感觉哪里不对劲，这个页面是个不错的起点。",
+        "5": "偏好设置应该以最好的方式变得“无聊”：可靠。"
+      },
+      "notifications": {
+        "0": "这里是你的通知。新鲜的信号都在这里。",
+        "1": "保持收件箱整洁，让网站更易跟进。",
+        "2": "我会尽量减少噪音，突出有用的信息。",
+        "3": "通知在尊重你的注意力时最有效。",
+        "4": "未读更新？都在这里汇集。",
+        "5": "在合适的时机提供一点背景信息，会非常有用。"
+      },
+      "sitemap": {
+        "0": "网站地图是网站的目录。",
+        "1": "当导航变得模糊时，这个页面会为你展示完整的地图。",
+        "2": "网站的每一个重要角落都应该从这里可以到达。",
+        "3": "搜索很快，但有时地图更有用。",
+        "4": "这是一个整洁的方式，发现你可能错过的页面。",
+        "5": "所有道路最终都会回到结构。"
+      },
+      "offline": {
+        "0": "看起来连接暂时中断了。",
+        "1": "别慌。网站的部分功能可能仍然可用。",
+        "2": "网络恢复后，页面应会自动恢复。",
+        "3": "离线状态也值得关注。"
+      },
+      "admin": {
+        "0": "欢迎来到管理面板！🔧",
+        "1": "此区域用于网站管理和内容审核。",
+        "2": "我的创造者 Yuri 在这里保持网站平稳运行。",
+        "3": "管理工具可帮助管理用户、评论和内容。",
+        "4": "管理面板正在不断改进！",
+        "5": "安全和审核在这里是重中之重！"
+      },
+      "search": {
+        "0": "在寻找某些特定内容？🔍",
+        "1": "搜索功能可以帮你快速找到任何内容！",
+        "2": "尝试不同的关键词，获得更好的结果。",
+        "3": "搜索涵盖网站上的所有内容！",
+        "4": "搜索由先进的算法驱动！",
+        "5": "找不到你想要的？告诉我吧！",
+        "6": "智能搜索，理解上下文并找到相关内容！🧠",
+        "7": "一站式搜索文章、项目和页面！",
+        "8": "高级技巧：使用具体术语获取更精准的结果！",
+        "9": "搜索索引不断更新，持续添加新内容！",
+        "10": "发现有趣内容？收藏以备后续查看！",
+        "11": "搜索结果按相关性和时效性排序！",
+        "12": "不记得确切标题？尝试按主题或关键词搜索！",
+        "13": "搜索功能会随着每次查询不断学习和改进！",
+        "14": "从技术文章到项目细节——这里应有尽有！",
+        "15": "搜索是您浏览海量内容的好帮手！🗂️"
+      },
+      "contact": {
+        "0": "想要联系我们？📧",
+        "1": "我的创造者 Yuri 很乐意收到访客的消息！",
+        "2": "欢迎随时联系，合作或提问！",
+        "3": "联系表单让发送消息变得轻松简单！",
+        "4": "我的创造者 Yuri 通常会在 24-48 小时内回复！",
+        "5": "您也可以通过社交媒体平台联系！",
+        "6": "从自由职业咨询到演讲机会——欢迎一切合作！💼",
+        "7": "每一条消息都会被亲自阅读——您联系的不是机器人！",
+        "8": "无论是提问、合作还是打招呼——欢迎联系！",
+        "9": "联系渠道对所有人开放且友好！",
+        "10": "发现 bug 或有反馈？这里是分享的地方！",
+        "11": "合作催生了一些最佳项目！",
+        "12": "专业咨询总是受欢迎且备受赞赏！",
+        "13": "您的消息可能是精彩合作的开始！",
+        "14": "别犹豫——我的创造者 Yuri 友好且回应及时！",
+        "15": "最好的联系从一条简单的消息开始！🤝"
+      }
+    }
+  },
+  "contact": {
+    "title": "联系",
+    "description": "联系我们进行合作、提问或只是打个招呼",
+    "page-title": "联系",
+    "page-description": "让我们联系吧！欢迎合作、提问或只是打个招呼",
+    "form": {
+      "title": "发送消息",
+      "description": "填写下方表单，我会尽快回复您",
+      "name": {
+        "label": "姓名",
+        "placeholder": "您的姓名",
+        "required": "姓名为必填项",
+        "max-length": "姓名必须少于 100 个字符"
+      },
+      "email": {
+        "label": "电子邮件",
+        "placeholder": "your@email.com",
+        "required": "电子邮件为必填项",
+        "invalid": "请输入有效的电子邮件地址"
+      },
+      "subject": {
+        "label": "主题",
+        "placeholder": "请问有什么事？",
+        "required": "主题为必填项",
+        "max-length": "主题必须少于 200 个字符"
+      },
+      "message": {
+        "label": "消息",
+        "placeholder": "详细说明您的项目、问题或想法...",
+        "required": "消息为必填项",
+        "min-length": "消息至少需要 10 个字符",
+        "max-length": "消息必须少于 2000 个字符",
+        "character-count": "{count}/2000 个字符"
+      },
+      "submit": "发送消息",
+      "submitting": "发送中...",
+      "success": "消息发送成功！",
+      "error": "消息发送失败，请重试。",
+      "network-error": "网络错误，请检查您的连接并重试。",
+      "turnstile-required": "请完成验证挑战",
+      "turnstile-error": "安全验证失败，请重试。"
+    },
+    "direct": {
+      "title": "直接联系",
+      "description": "更喜欢用电子邮件？直接联系我",
+      "email-label": "电子邮件",
+      "response-time": "我通常会在 24-48 小时内回复。",
+      "urgent": "对于紧急事项，请在主题中注明。"
+    },
+    "social": {
+      "title": "社交媒体联系",
+      "description": "在各大平台上关注我",
+      "github": {
+        "name": "GitHub",
+        "description": "关注我的代码和开源项目"
+      },
+      "twitter": {
+        "name": "Twitter",
+        "description": "在 Twitter 上与我联系"
+      },
+      "linkedin": {
+        "name": "LinkedIn",
+        "description": "职业交流和职业动态更新"
+      }
+    },
+    "faq": {
+      "title": "常见问题",
+      "description": "常见问题及回答",
+      "freelance": {
+        "question": "是否接受自由职业工作？",
+        "answer": "目前对有趣的项目持开放态度，我们可以讨论您的需求！"
+      },
+      "collaborations": {
+        "question": "是否接受合作？",
+        "answer": "一直有兴趣与其他开发者合作开发酷炫的项目。"
+      },
+      "speaking": {
+        "question": "是否接受演讲邀请？",
+        "answer": "很乐意在活动中分享关于网络开发和开源的内容。"
+      }
+    }
+  },
+  "music": {
+    "description": "最近收听记录、热门艺术家和音乐统计"
+  }
+}

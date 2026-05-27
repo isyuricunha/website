@@ -1,0 +1,256 @@
+---
+name: DBeaver 代理到 Mistral
+description: 一个小型 FastAPI 代理，使 DBeaver CE（及其他兼容 OpenAI 的客户端）能够与 Mistral API 配合使用。
+homepage: https://github.com/isyuricunha/dbeaver-proxy-to-mistral
+github: https://github.com/isyuricunha/dbeaver-proxy-to-mistral
+techstack:
+  - Python
+  - FastAPI
+  - Mistral AI
+  - DBeaver
+  - Docker
+selected: true
+status: active
+---
+
+## 关于 DBeaver 代理到 Mistral
+
+DBeaver 代理到 Mistral 是一个小型的 FastAPI 代理，使 **DBeaver CE**（及其他与 OpenAI 兼容的客户端）能够与 **Mistral API** 一起使用。
+
+DBeaver 的 AI 助手使用类似 OpenAI 的 API，但它需要一些非常特定的 JSON 字段和 SSE 事件类型。此代理：
+
+- 提供 **OpenAI 兼容**的端点（`/responses`、`/models`、旧版 `/chat/completions`）
+- 将 `POST /responses`（DBeaver 使用的 OpenAI Responses API 格式）转换为 **Mistral** 的 `POST /chat/completions`
+- 将 Mistral 的响应转换回 DBeaver 可以解析且不会产生 `NullPointerException` 的有效负载
+- 支持**流式传输**（Server-Sent Events）和非流式传输
+- 可通过环境变量配置，并可作为 **systemd** 服务运行
+
+![预览](https://i.imgur.com/yXR2G0n.png)
+
+## 支持的端点
+
+代理公开了以下端点（根路径和 `/v1/*` 别名，适用时）：
+
+### 模型端点
+
+- `GET /models`
+- `GET /v1/models`
+
+返回广告模型列表（通过 `MISTRAL_MODELS` 配置）。
+
+### 响应端点
+
+- `POST /responses`
+- `POST /v1/responses`
+
+接受 DBeaver/OpenAI Responses API 请求并将其转发到 Mistral `chat/completions`。
+
+### 旧版端点
+
+- `POST /chat/completions`
+- `POST /v1/chat/completions`
+
+直接传递到 Mistral `chat/completions`（无格式转换）。
+
+## 配置
+
+配置通过环境变量完成。您可以使用本地 `.env` 文件（通过 `python-dotenv` 加载）或在 shell/systemd 环境中设置变量。
+
+### 环境变量
+
+#### 必需
+
+- `MISTRAL_API_KEY`
+
+#### 可选
+
+- `MISTRAL_BASE_URL` - 默认：`https://api.mistral.ai/v1`
+- `MISTRAL_MODEL` - 默认：`mistral-large-latest`（请求未指定模型时使用）
+- `MISTRAL_MODELS` - 代理将通过 `GET /models` 公告的模型 ID 列表，以逗号分隔
+- `HOST` - 默认：`0.0.0.0`
+- `PORT` - 默认：`60916`
+- `REQUEST_TIMEOUT_SECONDS` - 默认：`60`
+
+### 配置说明
+
+- 即使未设置 `MISTRAL_API_KEY`，`GET /models` 仍可正常工作
+- 调用 Mistral API 的任何路由（`/responses`、`/chat/completions`）在缺少 `MISTRAL_API_KEY` 时将返回 **401**
+
+## 本地开发
+
+### 要求
+
+- Python **3.12+**
+
+### 设置
+
+```bash
+python -m venv .venv
+. .venv/bin/activate
+pip install -r requirements.txt -r requirements-dev.txt
+pip install -e .
+```
+
+### 配置
+
+```bash
+cp .env.example .env
+# edit .env
+```
+
+### 运行
+
+```bash
+python -m dbeaver_mistral_proxy
+```
+
+服务器默认监听 `http://0.0.0.0:60916`。
+
+### 代码检查与测试
+
+```bash
+ruff check .
+pytest
+```
+
+## 与 DBeaver 一起使用
+
+在 DBeaver CE 中：
+
+- 将 OpenAI 端点/基本 URL 设置为：`http://<your-server>:60916/v1/`
+- 设置任意令牌值（DBeaver 需要一个），但代理使用服务器环境中的 `MISTRAL_API_KEY`
+
+DBeaver 使用：
+
+- `GET /v1/models`
+- `POST /v1/responses`
+
+## Systemd 服务
+
+此仓库包含一个示例 unit 文件和 env 文件模板：
+
+- `deploy/systemd/dbeaver-mistral-proxy.service`
+- `deploy/systemd/dbeaver-mistral-proxy.env.example`
+
+### 安装
+
+1. 创建虚拟环境并安装依赖（见本地开发部分）
+2. 创建服务使用的环境文件：
+
+```bash
+cp .env.example /home/cloud/not-safe/github/dbeaver-proxy-to-mistral/.env
+# edit the file and set MISTRAL_API_KEY
+```
+
+3. 安装 unit 文件：
+
+```bash
+sudo cp deploy/systemd/dbeaver-mistral-proxy.service /etc/systemd/system/dbeaver-mistral-proxy.service
+sudo systemctl daemon-reload
+sudo systemctl enable dbeaver-mistral-proxy
+sudo systemctl restart dbeaver-mistral-proxy
+```
+
+### 日志
+
+```bash
+journalctl -u dbeaver-mistral-proxy -f
+```
+
+## Docker
+
+此项目可以作为轻量级容器运行。
+
+### 构建
+
+```bash
+docker build -t dbeaver-proxy-to-mistral:local .
+```
+
+### 运行（Docker）
+
+```bash
+docker run --rm -p 60916:60916 \
+  -e MISTRAL_API_KEY="..." \
+  -e MISTRAL_MODEL="mistral-large-latest" \
+  dbeaver-proxy-to-mistral:local
+```
+
+### Docker Compose
+
+```bash
+docker compose up --build
+```
+
+## 版本控制和发布
+
+此项目使用**语义化版本控制（SemVer）** 和 **约定式提交**。发布通过 GitHub Actions 中的 **python-semantic-release** 自动化。
+
+### 工作原理- 推送到 `main` 分支会触发发布工作流
+
+- `python-semantic-release` 分析提交消息并确定下一个版本
+- 如果创建了发布，它会：
+  - 创建一个格式为 `vX.Y.Z` 的 Git 标签
+  - 更新 `pyproject.toml` 中的 `project.version`
+  - 从模板生成 `CHANGELOG.md`
+  - 发布带有 `latest` 和 `vX.Y.Z` 标签的 Docker 镜像
+
+### 规范化提交示例
+
+- `feat(proxy): 添加 tool_choice 转发` -> 次要版本更新
+- `fix(api): 处理 gzip 数据体` -> 补丁版本更新
+- `perf(proxy): 减少内存分配` -> 补丁版本更新
+- `docs: 更新自述文件` -> 无版本更新
+
+### 重大变更
+
+在提交正文中包含 `BREAKING CHANGE:` 以触发主要版本更新。
+
+### GitHub Actions 密钥
+
+- `GITHUB_TOKEN` - 由 GitHub 自动提供
+- `RELEASE_TOKEN`（可选） - 具有推送提交/标签权限的 PAT（个人访问令牌）
+- `DOCKERHUB_USERNAME`（可选）
+- `DOCKERHUB_TOKEN`（可选）
+
+### 发布说明
+
+- GHCR 发布使用 `github.token`，并在创建发布时运行
+- Docker Hub 发布仅在设置了 `DOCKERHUB_USERNAME` 和 `DOCKERHUB_TOKEN` 时运行
+
+## 故障排除
+
+### DBeaver 错误："HTTP/1.1 头解析器未接收到字节" / "连接重置"
+
+这通常表示代理在写入响应之前失败。
+
+**已实施的缓解措施：**
+
+- 对 `/responses` 和 `/chat/completions` 的健壮请求解析
+- 处理空数据体和 `Content-Encoding: gzip`
+- 强制 Uvicorn 使用 `h11` HTTP 实现以提高兼容性
+
+**调试：**
+
+```bash
+# 检查代理日志
+journalctl -u dbeaver-proxy --no-pager -n 50
+
+# 手动测试端点
+curl -v http://localhost:8000/chat/completions -H "Content-Type: application/json" -d '{"model": "mistral-tiny", "messages": [{"role": "user", "content": "Hello"}]}'
+```
+
+### 日志中出现 "Unsupported upgrade request"
+
+当客户端尝试升级（例如 h2c/WebSocket 风格的升级）时可能会发生这种情况。对于正常的 DBeaver 使用来说，这是预期且无害的。
+
+## 技术栈
+
+- **Python 3.12+** 和 FastAPI 用于代理服务器
+- **Mistral AI API** 集成用于 AI 补全
+- **DBeaver CE** 兼容层
+- **Docker** 用于容器化部署
+- **Systemd** 用于 Linux 服务管理
+- **语义化版本控制** 与 规范化提交 用于自动化发布
+
+DBeaver Proxy to Mistral 在 DBeaver 的 OpenAI 兼容 API 期望与 Mistral API 之间提供无缝桥接，使开发人员能够在 DBeaver CE 中直接使用 Mistral 的 AI 功能。

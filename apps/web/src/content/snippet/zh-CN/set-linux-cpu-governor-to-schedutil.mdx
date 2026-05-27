@@ -1,0 +1,104 @@
+---
+title: 将 Linux CPU 调控器设置为 Schedutil
+date: 2025-12-04
+author: Yuri Cunha
+description: 一份快速指南，介绍如何将 Linux CPU 调控器设置为「schedutil」，以平衡性能和能效，并确保设置在重启后持续生效。
+tags:
+  - linux
+  - cpu
+  - performance
+  - systemd
+  - ubuntu
+---
+
+`schedutil` 调度器通常是现代内核的最佳选择，它利用调度器的利用率数据，比旧的调度器（如 `ondemand`）更快、更准确地进行频率决策。
+
+以下是启用它并使其持久化的方法。
+
+{/* more */}
+
+## 1. 安装工具
+
+首先，确保已安装必要的工具。在 Ubuntu/Debian 上：
+
+```bash
+sudo apt update
+sudo apt install linux-tools-common linux-tools-generic
+```
+
+## 2. 设置调度器（立即生效）
+
+您可以立即为当前会话设置调度器。最佳实践是同时设置频率限制。
+
+```bash
+sudo cpupower frequency-set -g schedutil
+# Optional: explicitly set limits if needed, though usually automatic
+# sudo cpupower frequency-set -g powersave
+# sudo cpupower frequency-set -g performance
+```
+
+### 验证
+
+检查策略是否已应用：
+
+```bash
+cpupower frequency-info | grep "current policy" -A2
+```
+
+您应看到类似以下的输出：
+
+```text
+current policy: frequency should be within 1.20 GHz and 3.60 GHz.
+                The governor "schedutil" may decide which speed to use
+```
+
+要逐个检查 CPU：
+
+```bash
+grep . /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
+```
+
+所有内核应显示 `schedutil`。
+
+## 3. 使设置持久化（Systemd）
+
+为了确保此设置在重启后仍然生效，请创建一个简单的 systemd 服务。
+
+创建服务文件：
+
+```bash
+sudo tee /etc/systemd/system/cpupower-schedutil.service >/dev/null << 'EOF'
+[Unit]
+Description=Set CPU governor to schedutil
+After=multi-user.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/cpupower frequency-set -g schedutil
+
+[Install]
+WantedBy=multi-user.target
+EOF
+```
+
+启用并启动服务：
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable cpupower-schedutil.service
+sudo systemctl start cpupower-schedutil.service
+```
+
+启动后，再次运行验证命令以确认其正常工作。
+
+## 4. 清理（可选）
+
+如果您之前创建了高性能服务（例如 `cpupower-performance.service`），应禁用并删除它以避免冲突。
+
+```bash
+sudo systemctl disable --now cpupower-performance.service
+sudo rm /etc/systemd/system/cpupower-performance.service
+sudo systemctl daemon-reload
+```
+
+现在，您的服务器已配置为在每次启动时自动使用 `schedutil`。

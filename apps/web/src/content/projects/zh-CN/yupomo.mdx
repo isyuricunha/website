@@ -1,0 +1,61 @@
+---
+name: YuPomo
+description: 基于 React、TypeScript、Vite 和 Tauri 的网页与桌面美观番茄钟。极简设计，包含统计数据、通知和本地化功能。
+homepage: https://yupomo.yuricunha.com/
+github: https://github.com/isyuricunha/YuPomo
+techstack:
+  - React
+  - TypeScript
+  - Vite
+  - Tauri
+  - TailwindCSS
+  - Chart.js
+  - Rust
+selected: true
+status: active
+---
+
+## 关于项目
+
+YuPomo 是一款专注的番茄工作法计时器，帮助你以周期性工作和有意识的休息。它作为快速的 Web 应用运行，也通过 Tauri 作为 Windows、macOS 和 Linux 的原生桌面应用运行。界面简洁直观，让你可以无缝开始会话并保持专注。设置和统计数据存储在本地，确保你的数据留在你的设备上。
+
+YuPomo 遵循经典的番茄工作法，默认工作时间为 25 分钟，短休息 5 分钟，长休息 15 分钟。你可以更改所有时长、启用声音提示和通知，并切换浅色和深色主题。统计视图展示你的每日、每周和每月专注历史，并通过图表呈现，帮助你观察趋势并随时间改进你的工作习惯。
+
+## 主要功能
+
+- 完整的番茄工作流，包括工作、短休息和长休息。
+- 主题切换，支持真正的黑色深色主题。
+- 可配置的时长、声音和通知。
+- 本地存储偏好设置和历史数据。
+- 统计数据与图表，可视化专注时间和会话次数。
+- 响应式布局，适配桌面和移动设备。
+- 多语言界面，运行时即时切换语言。
+- 桌面端可选的更新横幅，在有新版本发布时通知你。
+
+## 平台与安装
+
+Web 版本可在演示链接中访问。桌面应用通过 GitHub Releases 分发，提供 Windows、macOS 和 Linux 的安装程序。在 Windows 上，可以使用 setup exe 或 msi 安装程序。在 macOS 上，通过对应芯片的 dmg 文件安装。在 Linux 上，可以选择 deb 或 rpm 包，或运行 AppImage。应用还可以在桌面端检查更新，并引导你下载和安装最新版本。
+
+## 开发与构建
+
+项目使用 React 和 TypeScript，并通过 Vite 构建 Web 客户端，使用 Tauri 作为桌面外壳。你可以克隆仓库，使用包管理器安装依赖，并运行 Web 开发服务器或 Tauri 开发进程。构建脚本提供了 Web 部署和各操作系统的桌面应用打包。版本控制脚本保持 Web 和 Tauri 版本同步，发布工作流构建并发布工件到 GitHub Releases。
+
+## 桌面自动更新
+
+桌面版本支持 Tauri Updater。应用可以检查最新的 GitHub 发布版本，在应用内显示新版本的横幅，并下载和安装。更新工件经过签名和验证。配置使用 Tauri 配置中的公钥和发布版本中的最新 JSON 文件。你可以在桌面端的设置中启用启动时自动安装。
+
+## 隐私
+
+YuPomo 不收集个人数据。偏好设置和统计数据保存在本地。Web 版本使用 localStorage。桌面版本使用 Tauri 文件系统在应用数据目录中。通知和声音在本地生成。可选的更新检查仅调用公开的 GitHub Releases API。
+
+## 联系与链接
+
+**演示**：https://yupomo.yuricunha.com
+
+**仓库**：https://github.com/isyuricunha/YuPomo
+
+**个人资料与更新**：https://x.com/isyuricunha
+
+**电子邮件**：me@yuricunha.com
+
+**网站**：https://yuricunha.com

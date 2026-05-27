@@ -1,0 +1,72 @@
+---
+name: Yue Discord 机器人（YueBot）
+description: 一个全面的 Discord 机器人 + 管理面板，基于 pnpm monorepo 构建，包含 Fastify API、React 网页 UI 以及共享的 Prisma 数据库。
+homepage: https://yuebot.yuricunha.com/
+github: https://github.com/isyuricunha/yue-discord-bot
+techstack:
+  - Node.js
+  - TypeScript
+  - Discord.js
+  - Fastify
+  - React
+  - Vite
+  - Prisma
+  - PostgreSQL
+  - TailwindCSS
+  - Docker
+selected: true
+status: active
+---
+
+## 关于 YueBot
+
+YueBot 是一款综合性 Discord 机器人 + 管理面板，采用 **pnpm monorepo** 架构构建，集成了 Discord 机器人、Fastify API 和 React 网页 UI，并共享 Prisma 数据库。它专为生产环境设计，为 Discord 社区管理提供完整的解决方案。
+
+### 核心功能
+
+- **管理工具**：封禁、踢出、禁言、警告，并跟踪管理历史记录
+- **服务器管理**：配置 AutoMod、自动角色、频道和模板
+- **抽奖活动**：基于反应的抽奖活动，支持参与者跟踪和获胜者选择
+- **经验值与等级**：公会和全局排行榜，支持等级跟踪
+- **成员管理**：查看成员详情和个人资料，包含徽章
+- **同人艺术系统**：提交和审核同人艺术，支持允许名单
+- **经济与游戏**：虚拟货币（luazinhas）和掷币游戏
+- **动漫集成**：从 AniList 搜索和推荐动漫
+- **老婆/老公系统**：趣味角色抽取和结婚系统
+
+### 架构
+
+YueBot 采用现代化的 monorepo 结构：
+
+- **机器人**：使用 Discord.js v14 实现管理和自动化
+- **API**：Fastify 后端，支持 JWT 身份验证
+- **网页 UI**：React + Vite 管理面板，支持 Discord OAuth
+- **数据库**：Prisma + PostgreSQL 共享数据
+
+### 部署
+
+项目提供生产就绪的 Docker 镜像，包含：
+
+- 单容器部署（nginx + API + 机器人）
+- 多架构支持（amd64、arm64）
+- 精简变体，适用于优化的生产环境
+- Docker Compose 示例，支持内部和外部数据库
+
+### 技术栈
+
+- **Node.js 24+**，搭配 TypeScript 5.9+
+- **pnpm 10+**，用于包管理
+- **Prisma 7+**，用于数据库访问
+- **React 19+**，搭配 Vite 7+，用于网页界面
+- **TailwindCSS 4+**，用于样式设计
+- **Docker**，用于容器化
+
+### 特色功能
+
+- **双语支持**：命令支持英语和葡萄牙语（pt-BR）
+- **网页管理面板**：无需 Discord 命令，即可实现完整的服务器管理
+- **自动化版本控制**：基于 Conventional Commits 的语义化发布
+- **安全性**：httpOnly cookies、CORS 允许名单和 CSRF 防护
+- **可扩展性**：模块化设计，便于添加新功能
+
+YueBot 非常适合寻求功能强大且生产就绪的 Discord 机器人，并配备完整网页管理界面的 Discord 社区。

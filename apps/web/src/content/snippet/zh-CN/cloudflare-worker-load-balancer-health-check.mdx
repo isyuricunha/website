@@ -1,0 +1,301 @@
+---
+title: 带健康检查的 Cloudflare Worker 负载均衡（免费）
+date: 2026-01-30
+author: Yuri Cunha
+description: 一个免费的实用负载均衡解决方案，使用 Cloudflare Workers + Cloudflare Tunnel，支持定期健康检查和自动故障转移。
+tags:
+  - cloudflare
+  - workers
+  - tunnel
+  - load-balancing
+  - health-check
+  - devops
+  - javascript
+---
+
+Cloudflare Load Balancer 是一个优秀的产品，但它是一个付费服务。如果你的使用场景是“我有两个通过 Cloudflare Tunnel 连接的副本，只希望在一个副本宕机时进行故障转移”，那么你可以在免费层级上使用 Cloudflare Worker 实现一个简单的边缘负载均衡器。
+
+核心思路是：
+
+- 暴露**两个不同的主机名**，每个隧道一个（主服务器和副本服务器）。
+- 暴露**第三个主机名**（与用户共享的主机名），指向 Worker。
+- Worker 执行健康检查并将每个请求代理到最佳目标。
+
+{/* more */}
+
+## 推荐架构
+
+通常，你需要三个主机名：
+
+- `service.yourdomain.com`：
+  - 指向 **Worker**（这是公共 URL）
+- `service-primary.yourdomain.com`：
+  - Cloudflare Tunnel 指向你的**主**服务器
+- `service-replica.yourdomain.com`：
+  - Cloudflare Tunnel 指向你的**副本**服务器
+
+这解决了 Cloudflare Tunnel 的一个常见限制：你无法将同一个主机名绑定到多个隧道，但你可以绑定不同的主机名并在前面放置一个 Worker。
+
+## Worker 的工作原理
+
+- 它在内存中保存一个 `serverHealth` 映射，包含：
+  - `healthy`：上次已知的健康状态
+  - `lastCheck`：上次健康探测的时间戳
+- 对于每个传入请求：
+  - 如果缓存的健康状态超过 `HEALTH_CHECK_INTERVAL`，则刷新健康状态。
+  - 选择第一个健康的服务器。
+  - 如果没有健康的服务器，则回退到第一个服务器。
+- 它添加一个 `X-Served-By` 头用于调试。
+- 如果代理 `fetch` 失败，它会对另一个服务器重试一次。
+
+重要细节：缓存存储在 Worker 的隔离内存中。这意味着它不是一个全局保证的缓存（可能在冷启动时重置）。对于简单的故障转移，这通常是可以接受的。
+
+## 代码
+
+将下面的隧道 URL 替换为你自己的。
+
+```js
+// Cloudflare Worker Load Balancer with Health Check
+// Configure your tunnel URLs here
+const SERVERS = [
+  {
+    url: 'https://your-tunnel-1.yourdomain.com',
+    name: 'Server 1',
+    healthCheckPath: '/health' // or '/' if you don't have a specific endpoint
+  },
+  {
+    url: 'https://your-tunnel-2.yourdomain.com',
+    name: 'Server 2',
+    healthCheckPath: '/health'
+  }
+]
+
+// Settings
+const HEALTH_CHECK_TIMEOUT = 5000 // 5 seconds
+const HEALTH_CHECK_INTERVAL = 30000 // Check every 30 seconds
+
+// Server status cache (kept by the Worker)
+let serverHealth = {}
+
+// Health check
+async function checkHealth(server) {
+  try {
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), HEALTH_CHECK_TIMEOUT)
+
+    const response = await fetch(server.url + server.healthCheckPath, {
+      method: 'GET',
+      signal: controller.signal,
+      headers: {
+        'User-Agent': 'Cloudflare-Worker-HealthCheck'
+      }
+    })
+
+    clearTimeout(timeoutId)
+
+    // Healthy if 2xx or 3xx
+    return response.status >= 200 && response.status < 400
+  } catch (error) {
+    console.log(`Health check failed for ${server.name}:`, error.message)
+    return false
+  }
+}
+
+// Pick an available server
+async function getAvailableServer() {
+  // Refresh health check if needed
+  for (const server of SERVERS) {
+    const lastCheck = serverHealth[server.url]?.lastCheck || 0
+    const now = Date.now()
+
+    if (now - lastCheck > HEALTH_CHECK_INTERVAL) {
+      const isHealthy = await checkHealth(server)
+      serverHealth[server.url] = {
+        healthy: isHealthy,
+        lastCheck: now
+      }
+    }
+  }
+
+  // Pick the first healthy server
+  for (const server of SERVERS) {
+    if (serverHealth[server.url]?.healthy) {
+      return server
+    }
+  }
+
+  // If none are healthy, use the first as fallback
+  console.log('No healthy server found, using fallback')
+  return SERVERS[0]
+}
+
+// Main handler
+export default {
+  async fetch(request, env, ctx) {
+    // Pick server
+    const server = await getAvailableServer()
+
+    // Build target URL keeping original path
+    const url = new URL(request.url)
+    const targetUrl = new URL(url.pathname + url.search, server.url)
+
+    // Clone request for the chosen server
+    const modifiedRequest = new Request(targetUrl, {
+      method: request.method,
+      headers: request.headers,
+      body: request.body,
+      redirect: 'follow'
+    })
+
+    // Debug header (optional)
+    modifiedRequest.headers.set('X-Served-By', server.name)
+
+    try {
+      // Proxy request
+      const response = await fetch(modifiedRequest)
+
+      // Clone response to add headers
+      const newResponse = new Response(response.body, response)
+      newResponse.headers.set('X-Served-By', server.name)
+
+      return newResponse
+    } catch (error) {
+      // If it fails, try the other server
+      console.log(`Error while accessing ${server.name}, trying fallback`)
+
+      const fallbackServer = SERVERS.find((s) => s.url !== server.url)
+      if (fallbackServer) {
+        const fallbackUrl = new URL(url.pathname + url.search, fallbackServer.url)
+        const fallbackRequest = new Request(fallbackUrl, {
+          method: request.method,
+          headers: request.headers,
+          body: request.body,
+          redirect: 'follow'
+        })
+
+        return fetch(fallbackRequest)
+      }
+
+      return new Response('All servers are unavailable', { status: 503 })
+    }
+  }
+}
+```
+
+## 设置步骤
+
+1. **创建两个隧道主机名**
+   - 主隧道主机名：`service-primary.yourdomain.com`
+   - 副本隧道主机名：`service-replica.yourdomain.com`
+
+2. **创建一个 Worker**
+   - 进入 Cloudflare 控制面板
+   - 选择 Workers & Pages
+   - 创建 Worker
+   - 粘贴代码并更新 `SERVERS` 列表
+
+3. **将你的公共主机名路由到 Worker**
+
+   添加一条路由（或自定义域），使 `service.yourdomain.com/*` 由该 Worker 处理。
+
+4. **测试哪个服务器正在处理请求**
+
+   ```bash
+   curl -I https://service.yourdomain.com
+   ```
+
+   在响应头中查找 `X-Served-By`。
+
+5. **测试故障转移**
+
+   临时停止主隧道并重试相同的请求。响应头应切换到你的副本服务器。
+
+## 注意事项和限制
+
+- **有状态应用**：如果你的服务在磁盘上存储状态（会话、上传、聊天记录等），你可能需要共享存储或主服务器和副本服务器之间的同步。
+- **健康检查端点**：优先选择轻量级端点（或 `/`）并避免复杂逻辑。
+- **WebSockets/长连接**：根据你的 Cloudflare 计划和应用行为，长连接可能需要额外的注意。
+- **缓存范围**：`serverHealth` 是隔离内存，不是全局数据存储。如果你需要更可靠的共享健康状态，请考虑使用 KV、Durable Objects 或外部监控。
+
+## 另一种实现方式
+
+你可以在两个服务器/服务中使用同一个隧道，这样你可以有一个名为“Services”的隧道，并将其连接到“服务器 A”和“服务器 B”。
+有些人认为这种方案更好，在简单性方面确实如此。但如果你希望分离隧道，Cloudflare Worker 负载均衡器更好。
+
+如果你仍然希望在所有服务器上使用一个隧道，以下是我注意到的在所有机器上使用 1 个隧道的情况：
+如果你在所有机器上使用共享隧道：
+
+```text
+
+        ┌─────────────────┐
+        │  Tunnel "main"  │
+        └─────────────────┘
+                │
+    ┌───────────┼───────────┬───────────┐
+    ▼           ▼           ▼           ▼
+┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐
+│Server A │ │Server B │ │Server C │ │Server D │
+│         │ │         │ │         │ │         │
+│Jellyfin │ │Navidrome│ │qBittor. │ │OpenWebUI│
+└─────────┘ └─────────┘ └─────────┘ └─────────┘
+
+```
+
+问题：Cloudflare 会将 jellyfin.domain.com 路由到**任何**服务器（A、B、C 或 D 随机选择），但 Jellyfin 仅在服务器 A 上！💥
+结果：- 75% 的请求将返回 502 错误（它们落在了错误的服务器上）
+
+- 你无法控制每个服务在哪里运行
+- 完全混乱
+
+虽然可以运行，但不推荐这样使用。
+
+在这种情况下，**正确的方式**是使用单个隧道共享复制服务，**仅当相同服务在多台机器上复制时**才这样操作：
+
+**场景 1**：你希望 Open WebUI 实现故障转移
+
+```text
+┌─────────────────────┐
+│ Tunnel "openwebui"  │
+└─────────────────────┘
+         │
+    ┌────┴────┐
+    ▼         ▼
+┌─────────┐ ┌─────────┐
+│Server A │ │Server B │
+│         │ │         │  ← Same Open WebUI (PostgreSQL+Redis shared)
+│OpenWebUI│ │OpenWebUI│
+└─────────┘ └─────────┘
+
+```
+
+**可行**，因为 Open WebUI 部署在两台服务器上。
+
+**场景 2**：Jellyfin 仅在一台服务器上
+
+```text
+┌──────────────────┐
+│ Tunnel "media"   │
+└──────────────────┘
+         │
+         ▼
+    ┌─────────┐
+    │Server A │
+    │         │
+    │Jellyfin │ ← Only here
+    └─────────┘
+
+```
+
+✅ **正确**！因为 Jellyfin 仅部署在一台服务器上，所以使用专用隧道。
+
+---
+
+**总结**：
+
+- 每台机器一个隧道：不同机器上的不同服务
+- 多台机器共用一个隧道：相同服务被复制（故障转移）
+- 所有机器共用一个隧道：永远不要（除非所有服务都部署在所有机器上）
+
+## 友情提示
+
+请记得，所有服务器都需要能够访问共享数据，否则数据会出现不一致。此外，在配置出现分歧或需要分别配置每台服务器时，也要特别注意。

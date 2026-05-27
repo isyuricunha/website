@@ -1,0 +1,497 @@
+---
+name: WhatsApp AI 机器人
+description: 一款与 Mistral Agents API 集成的、可投产的 WhatsApp AI 机器人，支持通过 Mistral Agent 指令配置助手行为，具备高级监控功能和企业级安全性。
+homepage: https://github.com/isyuricunha/whatsapp-ai
+github: https://github.com/isyuricunha/whatsapp-ai
+techstack:
+  - Node.js
+  - TypeScript
+  - WhatsApp Web.js
+  - Mistral AI
+  - SQLite
+  - Puppeteer
+selected: true
+status: beta
+---
+
+## 关于 WhatsApp AI 机器人
+
+WhatsApp AI 机器人是一款与 Mistral Agents API 集成的、可投入生产环境的 WhatsApp AI 机器人，支持通过 Mistral Agent 指令配置助手行为、高级监控和企业级安全功能。
+
+**重要说明**：提供的所有配置均为示例。在部署之前，您必须配置自己的 API 端点、模型、业务信息和其他设置。
+
+## 功能特性
+
+### 核心 AI 集成
+
+- **自然对话**：直接与 Mistral Agent（Agent ID）集成
+- **Agent 指令**：在 Mistral Agent 指令中配置 AI 人设、策略和领域知识
+- **对话持久化**：通过 SQLite 实现持久化对话存储
+- **智能消息处理**：自动消息拆分、格式化和表情符号过滤
+- **上下文管理**：智能对话上下文，支持可配置的消息限制
+
+### 企业级安全
+
+- **管理员访问控制**：仅管理员可访问的命令，通过 WhatsApp 号码进行身份验证
+- **安全日志**：经过清理的日志，防止 API 数据泄露和敏感信息暴露
+- **命令保护**：所有管理命令仅限授权用户使用
+- **错误处理**：全面的错误管理，不泄露信息
+- **数据处理**：通过 SQLite 实现本地持久化，并通过外部 API 调用配置的集成
+
+### 性能与监控
+
+- **实时监控**：系统健康检查、组件状态跟踪和性能指标
+- **高级分析**：全面的使用情况分析、命令跟踪和用户参与度报告
+- **性能优化**：智能缓存、内存管理和响应时间优化
+- **超时管理**：长时间运行请求的智能超时处理和用户通知
+- **SQLite 持久化**：通过 SQLite 实现持久化对话存储
+- **资源管理**：自动清理、垃圾回收和内存优化
+
+### 生产环境功能
+
+- **错误恢复**：自动错误检测、分类和恢复机制
+- **健康监控**：持续的系统健康监控和警报跟踪
+- **性能指标**：实时性能跟踪和优化建议
+- **数据管理**：自动数据清理和保留策略
+- **可扩展性**：针对高流量生产环境部署的优化架构
+- **消息处理优化**：响应缓存和消息处理优化
+
+## 📋 前提条件
+
+- 已安装 Node.js 20+
+- Chrome/Chromium 浏览器
+- 稳定的互联网连接
+- 访问 WhatsApp Web 的权限
+
+## 安装步骤
+
+### 1. 克隆仓库
+
+```bash
+git clone <repository-url>
+cd whatsapp-ai
+```
+
+### 2. 安装依赖
+
+```bash
+pnpm install
+```
+
+### 3. 环境配置
+
+复制示例环境文件并配置您的设置：
+
+```bash
+cp .env.example .env
+```
+
+编辑 `.env` 文件，输入您的配置：
+
+```bash
+# Mistral Agents Configuration (REQUIRED)
+MISTRAL_API_KEY=your_mistral_api_key
+MISTRAL_AGENT_ID=ag_your_agent_id
+
+# Bot Configuration
+BOT_NAME=Your Bot Name
+MAX_CONTEXT_MESSAGES=20
+MESSAGE_SPLIT_LENGTH=1500
+
+# WhatsApp / Puppeteer
+# Where WhatsApp Web auth/session cache will be stored
+WHATSAPP_SESSION_PATH=./session
+PUPPETEER_HEADLESS=true
+# Optional. Useful in servers where chromium path is custom.
+PUPPETEER_EXECUTABLE_PATH=
+
+# Admin Configuration (REQUIRED)
+ADMIN_WHATSAPP_NUMBER=5511999999999@c.us
+
+# Development
+NODE_ENV=production
+DEBUG=false
+```
+
+**重要**：请将示例值替换为您的实际配置。
+
+### 4. 助手设置
+
+在 **Mistral Agent 指令** 中配置您的助手行为（人设、策略、业务知识）。
+
+### 5. 启动机器人
+
+```bash
+pnpm start
+```
+
+### 6. WhatsApp 身份验证
+
+1. 终端中将显示一个二维码
+2. 在手机上打开 WhatsApp
+3. 前往 设置 > 链接设备 > 链接设备
+4. 扫描终端中显示的二维码
+5. 等待“WhatsApp 机器人已就绪！”的消息
+
+## 使用方法
+
+### 可用命令
+
+**注意**：出于安全考虑，所有命令均为管理员专用。只有配置的管理员 WhatsApp 号码才能使用这些命令。
+
+#### 基础命令
+
+- `/help` - 显示可用命令和使用说明
+- `/status` - 检查机器人状态、API 连接和系统概览
+- `/about` - 关于机器人及其功能的信息
+- `/reset` - 清除当前聊天的对话历史
+- `/clear` - `/reset` 的别名#### 上下文管理
+
+- `/context` - 查看当前机器人配置（代理 ID 和运行时设置）
+
+#### 分析与报告
+
+- `/analytics` - 详细的对话分析和使用报告（7 天周期）
+- `/cleanup` - 清理 30 天以上的旧对话数据以优化存储
+
+#### 系统监控
+
+- `/health` - 系统健康检查和组件状态
+- `/monitor` - 综合监控仪表板，包含实时指标
+- `/performance` - 性能指标、内存使用情况和优化状态
+- `/errors` - 错误日志、诊断和系统问题
+
+#### 高级管理
+
+- `/admin` - 管理员命令统计和访问控制信息
+- `/sqlite` - SQLite 状态和性能信息
+
+### 普通对话
+
+用户可以发送普通文本消息与 AI 助手进行交互。机器人：
+
+- 在消息间保持对话上下文
+- 使用业务相关知识进行回复
+- 采用配置的个性和语气
+- 自动处理长消息，通过拆分进行发送
+
+### 使用示例
+
+```text
+User: Hello! What services do you offer?
+AI: Hello! I'm [AI Name], your assistant for [Company]. We offer:
+- Website Development: Custom design ($2,500, 2 weeks)
+- Hosting Package: Managed hosting ($29/month)
+...
+
+User: /status
+AI: 📊 Bot Status
+    Mistral Agent API: ✅ Connected
+    Active conversations: 3
+    Total messages: 127
+    ...
+```
+
+## 配置
+
+### 环境变量
+
+| 变量                        | 描述                                               | 默认值            | 必需 |
+| --------------------------- | -------------------------------------------------- | ----------------- | ---- |
+| `MISTRAL_API_KEY`           | Mistral API 密钥                                   | 无                | 是   |
+| `MISTRAL_AGENT_ID`          | Mistral 代理 ID（格式：ag\_...）                   | 无                | 是   |
+| `BOT_NAME`                  | 机器人显示名称                                     | `WhatsApp AI Bot` | 否   |
+| `MAX_CONTEXT_MESSAGES`      | 上下文中保留的最大消息数                           | `20`              | 否   |
+| `MESSAGE_SPLIT_LENGTH`      | 拆分消息前的最大长度                               | `1500`            | 否   |
+| `WHATSAPP_SESSION_PATH`     | WhatsApp Web 会话/认证缓存存储路径                 | `./session`       | 否   |
+| `PUPPETEER_HEADLESS`        | 以无头模式运行浏览器                               | `true`            | 否   |
+| `PUPPETEER_EXECUTABLE_PATH` | 自定义 Chromium 可执行文件路径                     | 无                | 否   |
+| `ADMIN_WHATSAPP_NUMBER`     | 管理员 WhatsApp 号码（格式：`5511999999999@c.us`） | 无                | 是   |
+| `NODE_ENV`                  | 环境模式                                           | `development`     | 否   |
+| `DEBUG`                     | 启用调试日志                                       | `false`           | 否   |
+
+### 完整配置结构
+
+助手行为（角色、策略、业务知识和工具使用）在 **Mistral 代理指令** 中配置。此仓库仅通过环境变量保存运行时配置（API 密钥、机器人设置、WhatsApp/Puppeteer 和集成）。
+
+## 架构
+
+### 项目结构
+
+```text
+whatsapp-ai/
+├── src/
+│   ├── bot/
+│   │   └── whatsappBot.js           # Main WhatsApp bot implementation
+│   ├── commands/
+│   │   └── commandHandler.js        # Command processing and routing
+│   ├── config/
+│   │   └── config.js               # System configuration loader
+│   ├── services/
+│   │   ├── mistralAgentService.js  # Mistral Agents API client
+│   │   ├── conversationService.js  # Conversation context management
+│   │   ├── messageService.js       # Message processing and formatting
+│   │   ├── adminService.js         # Admin access control and security
+│   │   ├── errorHandler.js         # Centralized error handling
+│   │   ├── monitoringService.js    # System monitoring and health checks
+│   │   ├── performanceOptimizer.js # Performance optimization
+│   │   ├── sqlitePersistenceService.js # SQLite persistence and analytics
+│   │   └── timeoutHandler.js       # Request timeout management
+│   └── index.js                    # Application entry point
+├── data/                           # Persistent data storage (auto-created)
+├── session/                        # WhatsApp session data (auto-created)
+├── .env                           # Environment configuration
+├── package.json                   # Node.js dependencies
+└── README.md                      # Documentation
+```
+
+### 数据持久化与分析
+
+#### 存储系统
+
+- **对话持久化**：通过 SQLite 自动持久化
+- **跨会话连续性**：对话在机器人重启后仍然保留
+- **按需加载**：根据需要加载对话以优化内存
+- **数据完整性**：强大的错误处理和验证
+
+#### 分析功能
+
+- **消息跟踪**：完整的消息历史，包含时间戳和元数据
+- **用户分析**：参与度跟踪、活动模式和使用统计
+- **命令监控**：热门命令跟踪和使用分析
+- **性能指标**：响应时间分析和系统性能
+- **每日统计**：聚合的每日统计数据以进行趋势分析
+- **错误监控**：自动错误分类和跟踪
+
+#### 数据管理- **自动清理**：内置存储优化维护功能
+
+- **数据存储**：对话本地存储在 SQLite 中（消息发送到外部 API）
+- **备份就绪**：基于文件的数据库存储，便于备份和迁移
+- **可扩展设计**：高效处理数千条对话
+
+## 开发
+
+### 可用脚本
+
+```bash
+pnpm start      # Start the bot in production mode
+pnpm dev        # Start with nodemon for development (auto-reload)
+pnpm test       # Run unit tests
+pnpm run check:secrets  # Scan staged files for accidental secrets before committing
+pnpm run hooks:install  # Enable repo git hooks (.githooks) for secret scanning
+```
+
+### Git 钩子（秘钥扫描）
+
+此仓库包含一个可选的预提交钩子，用于对暂存文件运行轻量级秘钥扫描。
+
+```bash
+pnpm run hooks:install
+```
+
+如果检测到类似秘钥的模式（例如 `MISTRAL_API_KEY=...`），提交将被阻止。
+
+### CI
+
+GitHub Actions 在每个 Pull Request 和推送到 `main` 分支时运行：
+
+- **安装**：`pnpm install --frozen-lockfile`
+- **测试**：`pnpm test`
+- **Node 版本**：18 和 20
+
+### 开发工作流
+
+1. **代理更改**：更新 Mistral 代理的指令（角色和业务知识）
+2. **验证运行时**：使用 `/context` 命令检查当前运行时设置
+3. **监控系统**：使用 `/health` 和 `/monitor` 命令查看系统状态
+4. **调试问题**：在 `.env` 中启用 `DEBUG=true` 以获取详细日志
+
+### 开发技巧
+
+- **增量测试**：在上线前使用 `/context` 测试更改
+- **性能监控**：使用 `/performance` 监控系统资源
+- **错误跟踪**：使用 `/errors` 命令检查系统问题
+- **管理员安全**：确保管理员 WhatsApp 号码正确配置
+
+### 调试
+
+#### 启用调试模式
+
+```bash
+# In .env file
+DEBUG=true
+NODE_ENV=development
+
+# Then start the bot
+pnpm start
+```
+
+#### 常用调试命令
+
+- `/health` —— 系统组件状态
+- `/errors` —— 最近的错误日志
+- `/performance` —— 性能指标
+- `/admin status` —— 管理员配置状态
+
+## 安全与隐私
+
+### 安全功能
+
+- **管理员访问控制**：所有命令仅限配置的管理员 WhatsApp 号码使用
+- **日志脱敏**：API URL 和敏感数据自动从日志中删除
+- **安全错误处理**：错误消息防止信息泄露
+- **本地数据存储**：对话持久化存储在本地 SQLite 中
+- **加密通信**：所有 API 通信使用 HTTPS
+
+### 隐私保护
+
+- **外部处理**：消息发送到配置的 API（Mistral 及可选集成）
+- **可配置保留**：自动清理旧的对话数据
+- **用户控制**：用户可随时重置对话历史
+- **运行时配置**：运行时配置保留在环境变量中
+
+### 安全最佳实践
+
+1. **管理员配置**：仅添加受信任的 WhatsApp 号码为管理员
+2. **环境安全**：保护 `.env` 文件安全，切勿提交到版本控制
+3. **API 安全**：使用带有适当身份验证的安全 API 端点
+4. **定期更新**：保持依赖项更新以获取安全补丁
+5. **访问监控**：通过 `/admin` 命令监控管理员命令使用情况
+
+## 故障排除
+
+### 常见问题
+
+#### 安装与设置
+
+##### 二维码未显示
+
+- 确保已安装 Chrome/Chromium
+- 以调试模式运行：`DEBUG=true pnpm start`
+- 确认 Node.js 版本为 20+
+
+##### 机器人不响应消息
+
+- 使用 `/status` 命令检查 API 连接
+- 确认 `.env` 中的 `MISTRAL_API_KEY` 和 `MISTRAL_AGENT_ID` 是否正确
+- 检查互联网连接是否稳定
+
+##### 身份验证失败
+
+- 删除 `session/` 文件夹并重新扫描二维码
+- 确保 WhatsApp Web 未在其他浏览器中打开
+- 检查 WhatsApp 账户是否支持链接设备
+- 确认手机网络连接稳定
+
+#### 配置问题
+
+##### AI 响应过于通用
+
+- 使用您的业务信息更新 Mistral 代理的指令
+- 使用 `/context` 命令验证运行时设置
+
+##### 命令无效- 验证管理员 WhatsApp 号码格式：`5511999999999@c.us`
+
+- 检查 `.env` 文件中号码是否完全匹配
+- 确保命令以 `/`（正斜杠）开头
+- 使用 `/help` 查看可用命令
+
+##### 配置文件错误
+
+- 验证所需的环境变量是否正确设置
+- 检查控制台中的具体启动错误
+
+#### 性能问题
+
+##### 响应时间慢
+
+- 检查 API 服务器性能
+- 使用 `/performance` 监控系统资源
+- 使用 `/errors` 命令查看错误日志
+- 考虑启用 SQLite 以提高性能
+
+##### 内存使用率高
+
+- 使用 `/cleanup` 删除旧的对话数据
+- 使用 `/monitor` 查看内存使用统计
+- 如果内存使用过高，请重启机器人
+- 查看配置中的对话上下文限制
+
+### 调试模式
+
+启用详细日志以进行故障排除：
+
+```bash
+DEBUG=app:* npm start
+```
+
+### 获取帮助
+
+1. **检查系统状态**：使用 `/health` 命令查看组件状态
+2. **查看日志**：启用调试模式并检查控制台输出
+3. **验证运行时**：使用 `/context` 验证运行时设置
+4. **监控性能**：使用 `/monitor` 查看系统指标
+5. **检查错误**：使用 `/errors` 查看最近的错误报告
+
+## 支持
+
+### 支持资源
+
+- **文档**：本 README 包含全面的设置和使用信息
+- **配置**：在 Mistral Agent 指令中配置助手行为
+- **故障排除**：查看故障排除部分以了解常见问题和解决方案
+- **系统监控**：使用内置命令（`/health`、`/monitor`、`/errors`）进行诊断
+
+### 技术支持
+
+- **GitHub Issues**：通过 GitHub Issues 报告错误和技术问题
+- **API 文档**：查阅 Mistral API 文档以解决 API 相关问题
+- **社区**：查看现有问题和讨论以寻找类似问题
+
+### 自诊断工具
+
+- `/health` - 完整的系统健康检查
+- `/status` - 机器人和 API 连接状态
+- `/errors` - 最近的错误日志和诊断
+- `/performance` - 系统性能指标
+- `/admin status` - 管理员配置验证
+
+## 许可证
+
+LGPL-2.1 许可证 - 详情请参见 LICENSE 文件。
+
+---
+
+### 使用 Node.js + WhatsApp Web + Mistral Agents API 搭建，并倾注 ❤️
+
+## 使用场景
+
+### 商业应用
+
+- **客户服务**：24/7 自动化客户支持，具备业务专业知识
+- **销售助手**：产品信息、价格和服务详情
+- **技术支持**：具备您的产品和服务专业知识的 AI 助手
+- **潜在客户开发**：通过自然对话捕获和筛选潜在客户
+- **常见问题自动化**：自动回复常见问题
+
+### 不同用户的功能
+
+- **企业主**：在 Mistral Agent 指令中配置助手行为，无需代码更改
+- **开发人员**：全面的 API 集成，带有监控和分析功能
+- **系统管理员**：高级监控、性能优化和安全控制
+- **非技术用户**：在 Mistral Agent 指令中配置助手行为
+- **企业用户**：具备安全性和合规性的生产就绪功能
+
+### 技术能力
+
+- **可扩展架构**：高效处理大量对话
+- **性能监控**：实时系统监控和优化
+- **安全优先设计**：管理员控制和安全数据处理
+
+---
+
+### 使用 Node.js、WhatsApp Web.js 和 Mistral Agents API 集成构建
+
+---
+
+代码无 AI 参与。

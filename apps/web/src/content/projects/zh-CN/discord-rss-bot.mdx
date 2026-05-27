@@ -1,0 +1,385 @@
+---
+name: Discord RSS 机器人
+description: 自动化机器人，用于监控 RSS 源并通过 webhook 将更新发布到 Discord 频道。支持完全自定义源和分类。具备超时处理功能，防止在加载缓慢的 RSS 源时卡顿。
+homepage: https://github.com/isyuricunha/discord-news-rss-bot
+github: https://github.com/isyuricunha/discord-news-rss-bot
+techstack:
+  - Python
+  - Discord
+  - Docker
+  - SQLite
+  - RSS
+  - Webhooks
+selected: true
+status: completed
+---
+
+## 关于 Discord RSS 机器人
+
+Discord RSS 机器人是一个自动化机器人，用于监控 RSS 源并通过 Webhook 将更新发布到 Discord 频道。它完全可配置，支持自定义源和分类，并具有超时处理功能，以防在加载缓慢的 RSS 源时卡顿。
+
+### 主要功能
+
+- **自动 RSS 监控**，可配置监控间隔
+- **优雅的 Discord 格式化**，带有分类表情符号
+- **智能缓存**，防止重复发布
+- **超时处理**，防止在加载缓慢的源时卡顿
+- **强大的错误处理**，应对网络问题
+- **完全容器化**，支持 Docker
+- **预构建镜像**，可在 Docker Hub 和 GHCR 上获取
+- **多平台支持**（AMD64、ARM64）
+- **灵活的配置**，支持通用或基于分类的源
+- **多种部署选项**（Docker、系统服务）
+- **全面的日志记录**和健康检查
+- **以安全为重**，使用非 root 容器
+
+### 快速开始
+
+#### 使用预构建容器（推荐）
+
+```bash
+docker run -d \
+  --name discord-rss-bot \
+  -e DISCORD_WEBHOOK_URL="https://discord.com/api/webhooks/..." \
+  -v "$(pwd)/data:/app/data" \
+  -v "$(pwd)/logs:/app/logs" \
+  isyuricunha/discord-news-rss-bot:latest
+```
+
+### 容器镜像
+
+预构建镜像可从多个注册表获取：
+
+- **Docker Hub**：`isyuricunha/discord-news-rss-bot:latest` | `isyuricunha/discord-news-rss-bot:2.0.8`
+- **GitHub 容器注册表**：`ghcr.io/isyuricunha/discord-news-rss-bot:latest` | `ghcr.io/isyuricunha/discord-news-rss-bot:2.0.8`
+
+### 支持的架构
+
+- `linux/amd64`（x86_64）
+- `linux/arm64`（ARM64/AArch64）
+
+### 自动版本控制
+
+项目使用自动化 CI/CD，实现以下功能：
+
+- **每次推送到 `main` 分支时自动创建 Git 标签**（例如 `v2.0.8`）
+- **为每个标签创建 GitHub 发布**
+- **使用触发提交的消息**作为发布标题和内容
+- **同时发布到两个注册表**
+- **保持 Docker Hub 和 GHCR 版本一致**
+- **更新 `latest` 和特定版本标签**
+
+### 部署选项
+
+#### 1. 标准 Docker Compose（使用 .env 文件）
+
+```yaml
+version: '3.8'
+services:
+  discord-rss-bot:
+    image: isyuricunha/discord-news-rss-bot:latest
+    container_name: discord-rss-bot
+    env_file: .env
+    volumes:
+      - './data:/app/data'
+      - './logs:/app/logs'
+    restart: unless-stopped
+```
+
+#### 2. 内联环境变量
+
+```bash
+docker run -d \
+  --name discord-rss-bot \
+  -e DISCORD_WEBHOOK_URL="https://discord.com/api/webhooks/..." \
+  -e RSS_FEEDS="[...]" \
+  -v "$(pwd)/data:/app/data" \
+  -v "$(pwd)/logs:/app/logs" \
+  isyuricunha/discord-news-rss-bot:latest
+```
+
+#### 3. 预构建镜像（使用 .env 文件）
+
+```bash
+docker run -d \
+  --name discord-rss-bot \
+  --env-file .env \
+  -v "$(pwd)/data:/app/data" \
+  -v "$(pwd)/logs:/app/logs" \
+  isyuricunha/discord-news-rss-bot:latest
+```
+
+#### 4. 使用所有默认源进行测试
+
+```bash
+docker run -d \
+  --name discord-rss-bot \
+  -e DISCORD_WEBHOOK_URL="https://discord.com/api/webhooks/..." \
+  isyuricunha/discord-news-rss-bot:latest
+```
+
+### 系统服务安装
+
+对于生产环境部署，可以将机器人安装为系统服务：
+
+#### Debian/Ubuntu
+
+```bash
+sudo nano /etc/systemd/system/discord-rss-bot.service
+```
+
+```ini
+[Unit]
+Description=Discord RSS Bot
+After=network.target
+
+[Service]
+User=discord-bot
+Group=discord-bot
+WorkingDirectory=/opt/discord-rss-bot
+ExecStart=/usr/bin/docker run --rm \
+  --name discord-rss-bot \
+  -v "/opt/discord-rss-bot/data:/app/data" \
+  -v "/opt/discord-rss-bot/logs:/app/logs" \
+  -e DISCORD_WEBHOOK_URL="https://discord.com/api/webhooks/..." \
+  isyuricunha/discord-news-rss-bot:latest
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+```
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable discord-rss-bot
+sudo systemctl start discord-rss-bot
+```
+
+#### Fedora/RHEL/CentOS
+
+```bash
+sudo nano /etc/systemd/system/discord-rss-bot.service
+```
+
+```ini
+[Unit]
+Description=Discord RSS Bot
+After=network.target docker.service
+
+[Service]
+User=discord-bot
+Group=discord-bot
+ExecStartPre=-/usr/bin/docker rm -f discord-rss-bot
+ExecStart=/usr/bin/docker run --rm \
+  --name discord-rss-bot \
+  -v "/opt/discord-rss-bot/data:/app/data" \
+  -v "/opt/discord-rss-bot/logs:/app/logs" \
+  -e DISCORD_WEBHOOK_URL="https://discord.com/api/webhooks/..." \
+  isyuricunha/discord-news-rss-bot:latest
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+```
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable discord-rss-bot
+sudo systemctl start discord-rss-bot
+```
+
+#### Alpine Linux
+
+```bash
+sudo rc-update add docker boot
+sudo nano /etc/init.d/discord-rss-bot
+```
+
+```sh
+#!/sbin/openrc-run
+
+name="discord-rss-bot"
+command="/usr/bin/docker"
+command_args="run --rm \
+  --name discord-rss-bot \
+  -v /opt/discord-rss-bot/data:/app/data \
+  -v /opt/discord-rss-bot/logs:/app/logs \
+  -e DISCORD_WEBHOOK_URL='https://discord.com/api/webhooks/...' \
+  isyuricunha/discord-news-rss-bot:latest"
+
+depend() {
+  need docker
+}
+
+start_pre() {
+  mkdir -p /opt/discord-rss-bot/{data,logs}
+}
+```
+
+```bash
+chmod +x /etc/init.d/discord-rss-bot
+rc-service discord-rss-bot start
+rc-update add discord-rss-bot
+```
+
+#### Windows
+
+```powershell
+$container = docker run -d `
+  --name discord-rss-bot `
+  -e DISCORD_WEBHOOK_URL="https://discord.com/api/webhooks/..." `
+  -v "${PWD}\data:C:\app\data" `
+  -v "${PWD}\logs:C:\app\logs" `
+  isyuricunha/discord-news-rss-bot:latest
+
+# 创建计划任务以在启动时运行容器
+$action = New-ScheduledTaskAction -Execute "docker" -Argument "start -a $container"
+$trigger = New-ScheduledTaskTrigger -AtStartup
+Register-ScheduledTask -TaskName "Start Discord RSS Bot" -Action $action -Trigger $trigger -RunLevel Highest -Force
+```
+
+### 配置
+
+#### 必需变量
+
+| 变量                  | 描述                          |
+| --------------------- | ----------------------------- |
+| `DISCORD_WEBHOOK_URL` | **必需**：Discord Webhook URL |
+
+#### 路径（推荐）
+
+| 变量           | 默认值（Docker 镜像）           | 描述                                              |
+| -------------- | ------------------------------- | ------------------------------------------------- |
+| `RSS_BOT_DATA` | `/app/data`                     | 存储 SQLite 数据库的目录                          |
+| `RSS_BOT_LOGS` | `/app/logs`                     | 写入日志文件的目录                                |
+| `RSS_BOT_PID`  | `/tmp/discord-news-rss-bot.pid` | PID 文件路径（非 root 容器中避免使用 `/var/run`） |
+
+#### 高级覆盖（可选）
+
+| 变量       | 描述                                              |
+| ---------- | ------------------------------------------------- |
+| `DB_FILE`  | 显式 SQLite 数据库文件路径（覆盖 `RSS_BOT_DATA`） |
+| `LOG_FILE` | 显式日志文件路径（覆盖 `RSS_BOT_LOGS`）           |
+| `DATA_DIR` | `RSS_BOT_DATA` 的旧别名                           |
+
+#### 可选机器人设置| 变量 | 默认值 | 描述 |
+
+|-----------------------|--------|-------------------------------------|
+| `CHECK_INTERVAL` | 300 | 检查间隔（秒） |
+| `POST_DELAY` | 3 | 帖子发布间隔（秒） |
+| `COOLDOWN_DELAY` | 60 | 触发限速后的延迟（秒） |
+| `MAX_POST_LENGTH` | 1900 | 消息最大长度 |
+| `MAX_CONTENT_LENGTH` | 800 | 内容最大长度 |
+| `FEED_TIMEOUT` | 30 | RSS Feed 请求超时时间（秒） |
+
+### RSS Feed 配置
+
+机器人支持**两种配置方法**，并自动处理优先级：
+
+#### 选项 1：通用 Feed（简单）
+
+使用单个变量配置所有 RSS Feed：
+
+```bash
+RSS_FEEDS=https://example.com/rss,https://another.com/feed,https://third.com/rss
+```
+
+#### 选项 2：基于分类的 Feed（有序）
+
+为不同分类使用单独的变量：
+
+```bash
+RSS_FEEDS_NEWS=https://g1.globo.com/dynamo/rss2.xml,https://rss.uol.com.br/feed/noticias.xml
+RSS_FEEDS_TECHNOLOGY=https://canaltech.com.br/rss/,https://tecnoblog.net/feed/
+RSS_FEEDS_SPORTS=https://globoesporte.globo.com/rss/ultimas/
+RSS_FEEDS_BUSINESS=https://www.infomoney.com.br/rss/
+RSS_FEEDS_POLITICS=https://www.gazetadopovo.com.br/rss/brasil.xml
+```
+
+#### 优先级系统
+
+1. **RSS_FEEDS**（通用） - 如果已设置，则优先使用
+2. **RSS_FEEDS_CATEGORY**（分类） - 如果没有通用 Feed，则使用
+3. **默认 Feed** - 如果没有自定义配置，则使用巴西新闻 Feed
+
+#### 自动分类 Emoji
+
+- **News/Noticias/General**（新闻/通用） → 📰
+- **Technology/Tecnologia**（技术） → 💻
+- **Politics/Politica**（政治） → 🏛️
+- **Sports/Esportes**（体育） → ⚽
+- **Business/Economia**（商业/经济） → 💼
+- **其他分类** → 📢
+
+### 监控的 Feed
+
+#### 📰 综合新闻
+
+- G1
+- UOL
+- Band
+- CNN Brasil
+- Folha de S.Paulo
+
+#### 🏛️ 政治与保守派
+
+- Gazeta do Povo
+- Jovem Pan
+- Diário do Poder
+- Pragmatismo Político
+- Conexão Política
+- Poder 360
+- Revista Crusoé
+- Veja
+- Metrópoles
+- O Antagonista
+- Terra Politics
+
+#### 💻 技术
+
+- Canaltech
+- Olhar Digital
+- Tecnoblog
+- Meio Bit
+- ShowMeTech
+- TecMundo
+- Adrenaline
+- Hardware.com.br
+- Tudo Celular
+- Oficina da Net
+
+### 开发
+
+#### 本地运行（无 Docker）
+
+```bash
+# Install dependencies
+pip install -r requirements.txt
+
+# Configure environment variables
+export DISCORD_WEBHOOK_URL="your_webhook_url_here"
+
+# Run the bot
+python bot_service.py
+```
+
+#### 自定义 Feed
+
+可以通过以下两种方式自定义 Feed：
+
+1. **环境变量（推荐）**
+   使用 `RSS_FEEDS_CATEGORY_NAME` 格式，如上所述的配置部分。
+
+2. **代码修改**
+   编辑 `bot_service.py` 中的 `parse_feeds_from_env()` 函数以修改默认 Feed。
+
+### 技术栈
+
+- **Python** 用于主要机器人逻辑
+- **Discord Webhook** 用于发布更新
+- **Docker** 用于容器化和部署
+- **SQLite** 用于数据持久化和缓存
+- **RSS 解析** 用于 Feed 监控
+- **Systemd** 用于 Linux 服务管理
+
+Discord RSS Bot 是一个完整的解决方案，用于自动将 RSS Feed 更新发布到 Discord 频道，具有强大的错误处理、灵活的配置和多种部署选项。

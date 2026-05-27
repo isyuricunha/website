@@ -1,0 +1,69 @@
+---
+title: mkcd：创建目录并进入
+date: 2025-12-04
+author: Yuri Cunha
+description: 一个简单的 Bash 函数，用于在单个命令中创建目录并切换到该目录。
+tags:
+  - bash
+  - terminal
+  - productivity
+  - linux
+---
+
+我们都遇到过这种情况：使用 `mkdir` 创建一个新目录后，立即需要 `cd` 进入该目录。
+
+```bash
+mkdir myproject
+cd myproject
+```
+
+虽然这是一个小麻烦，但日积月累会变得烦人。这里有一个简单的函数，可以同时完成这两个操作。
+
+{/* more */}
+
+## 解决方案
+
+将以下函数添加到你的 `.bashrc`（或 `.zshrc`）中：
+
+```bash
+mkcd() {
+  mkdir -p "$1" && cd "$1"
+}
+```
+
+## 安装方法
+
+1. 打开你的配置文件：
+
+   ```bash
+   nano ~/.bashrc
+   ```
+
+   或
+
+   ```bash
+   nano ~/.zshrc
+   ```
+
+2. 将上述代码块粘贴到文件末尾。
+
+3. 保存并退出（`Ctrl+O`，`Enter`，`Ctrl+X`）。
+
+4. 重新加载配置：
+   ```bash
+   source ~/.bashrc
+   ```
+   或
+   ```bash
+   source ~/.zshrc
+   ```
+
+## 使用方法
+
+现在，你可以创建深层目录结构并立即进入：
+
+```bash
+mkcd -p vault/warden/vaultwarden
+```
+
+你会发现自己已经进入了 `vaultwarden` 目录。
