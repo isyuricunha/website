@@ -1,0 +1,264 @@
+---
+name: Proxy DBeaver vers Mistral
+description: Un petit proxy FastAPI qui permet à DBeaver CE (et à d'autres clients compatibles OpenAI) de fonctionner avec l'API Mistral.
+homepage: https://github.com/isyuricunha/dbeaver-proxy-to-mistral
+github: https://github.com/isyuricunha/dbeaver-proxy-to-mistral
+techstack:
+  - Python
+  - FastAPI
+  - Mistral AI
+  - DBeaver
+  - Docker
+selected: true
+status: active
+---
+
+## À propos de DBeaver Proxy to Mistral
+
+DBeaver Proxy to Mistral est un petit proxy FastAPI qui permet à **DBeaver CE** (et à d'autres clients compatibles OpenAI) de fonctionner avec l'**API Mistral**.
+
+L'assistant IA de DBeaver utilise une API de type _OpenAI_, mais il attend des champs JSON et des types d'événements SSE très spécifiques. Ce proxy :
+
+- Expose des points de terminaison **compatibles OpenAI** (`/responses`, `/models`, `/chat/completions` hérité)
+- Traduit `POST /responses` (format d'API OpenAI Responses utilisé par DBeaver) en **Mistral** `POST /chat/completions`
+- Traduit les réponses de Mistral en une charge utile que DBeaver peut analyser sans `NullPointerException`
+- Prend en charge le **streaming** (Server-Sent Events) et le mode non-streaming
+- Est configurable via des variables d'environnement et peut s'exécuter en tant que service **systemd**
+
+![Aperçu](https://i.imgur.com/yXR2G0n.png)
+
+## Points de terminaison pris en charge
+
+Le proxy expose les points de terminaison suivants (à la fois à la racine et sous les alias `/v1/*` le cas échéant) :
+
+### Points de terminaison des modèles
+
+- `GET /models`
+- `GET /v1/models`
+
+Retourne une liste des modèles annoncés (configurés via `MISTRAL_MODELS`).
+
+### Points de terminaison des réponses
+
+- `POST /responses`
+- `POST /v1/responses`
+
+Accepte une requête d'API DBeaver/OpenAI Responses et la transmet à Mistral `chat/completions`.
+
+### Points de terminaison hérités
+
+- `POST /chat/completions`
+- `POST /v1/chat/completions`
+
+Transmission directe héritée vers Mistral `chat/completions` (sans conversion de format).
+
+## Configuration
+
+La configuration se fait via des variables d'environnement. Vous pouvez utiliser un fichier `.env` local (chargé via `python-dotenv`) ou définir des variables dans votre environnement shell/systemd.
+
+### Variables d'environnement
+
+#### Obligatoires
+
+- `MISTRAL_API_KEY`
+
+#### Optionnelles
+
+- `MISTRAL_BASE_URL` - Par défaut : `https://api.mistral.ai/v1`
+- `MISTRAL_MODEL` - Par défaut : `mistral-large-latest` (utilisé lorsque la requête ne spécifie pas de modèle)
+- `MISTRAL_MODELS` - Liste séparée par des virgules des identifiants de modèles que le proxy annoncerait via `GET /models`
+- `HOST` - Par défaut : `0.0.0.0`
+- `PORT` - Par défaut : `60916`
+- `REQUEST_TIMEOUT_SECONDS` - Par défaut : `60`
+
+### Notes de configuration
+
+- `GET /models` fonctionne même si `MISTRAL_API_KEY` n'est pas défini
+- Toute route qui appelle l'API Mistral (`/responses`, `/chat/completions`) retournera une erreur **401** si `MISTRAL_API_KEY` est manquant
+
+## Développement local
+
+### Prérequis
+
+- Python **3.12+**
+
+### Installation
+
+```bash
+python -m venv .venv
+. .venv/bin/activate
+pip install -r requirements.txt -r requirements-dev.txt
+pip install -e .
+```
+
+### Configuration
+
+```bash
+cp .env.example .env
+# edit .env
+```
+
+### Exécution
+
+```bash
+python -m dbeaver_mistral_proxy
+```
+
+Le serveur écoutera par défaut sur `http://0.0.0.0:60916`.
+
+### Lint & Test
+
+```bash
+ruff check .
+pytest
+```
+
+## Utilisation avec DBeaver
+
+Dans DBeaver CE :
+
+- Définissez le point de terminaison/base URL OpenAI sur : `http://<votre-serveur>:60916/v1/`
+- Définissez n'importe quelle valeur de jeton (DBeaver en nécessite une), mais le proxy utilise `MISTRAL_API_KEY` de l'environnement du serveur
+
+DBeaver utilise :
+
+- `GET /v1/models`
+- `POST /v1/responses`
+
+## Service Systemd
+
+Ce dépôt inclut un exemple de fichier unit et un modèle de fichier d'environnement :
+
+- `deploy/systemd/dbeaver-mistral-proxy.service`
+- `deploy/systemd/dbeaver-mistral-proxy.env.example`
+
+### Installation
+
+1. Créez un virtualenv et installez les dépendances (voir Développement local)
+2. Créez le fichier d'environnement utilisé par le service :
+
+```bash
+cp .env.example /home/cloud/not-safe/github/dbeaver-proxy-to-mistral/.env
+# edit the file and set MISTRAL_API_KEY
+```
+
+3. Installez le fichier unit :
+
+```bash
+sudo cp deploy/systemd/dbeaver-mistral-proxy.service /etc/systemd/system/dbeaver-mistral-proxy.service
+sudo systemctl daemon-reload
+sudo systemctl enable dbeaver-mistral-proxy
+sudo systemctl restart dbeaver-mistral-proxy
+```
+
+### Journaux
+
+```bash
+journalctl -u dbeaver-mistral-proxy -f
+```
+
+## Docker
+
+Ce projet peut s'exécuter en tant que conteneur léger.
+
+### Construction
+
+```bash
+docker build -t dbeaver-proxy-to-mistral:local .
+```
+
+### Exécution (Docker)
+
+```bash
+docker run --rm -p 60916:60916 \
+  -e MISTRAL_API_KEY="..." \
+  -e MISTRAL_MODEL="mistral-large-latest" \
+  dbeaver-proxy-to-mistral:local
+```
+
+### Docker Compose
+
+```bash
+docker compose up --build
+```
+
+## Gestion des versions et des releases
+
+Ce projet utilise le **Versionnage Sémantique (SemVer)** et les **Conventional Commits**. Les releases sont automatisées via **python-semantic-release** dans GitHub Actions.
+
+### Fonctionnement- Un *push* vers `main` déclenche le workflow de publication
+- `python-semantic-release` analyse les messages de commit et détermine la prochaine version
+- Si une publication est créée, elle :
+  - Crée une étiquette (*tag*) Git au format `vX.Y.Z`
+  - Met à jour `project.version` dans `pyproject.toml`
+  - Génère `CHANGELOG.md` à partir de modèles
+  - Publie les images Docker avec les étiquettes `latest` et `vX.Y.Z`
+
+---
+
+### Exemples de *Conventional Commits*
+
+- `feat(proxy): add tool_choice forwarding` → incrémentation mineure
+- `fix(api): handle gzip bodies` → incrémentation de correctif
+- `perf(proxy): reduce allocations` → incrémentation de correctif
+- `docs: update readme` → pas d'incrémentation de version
+
+---
+
+### Changements cassants (*Breaking Changes*)
+
+Incluez `BREAKING CHANGE:` dans le corps du commit pour déclencher une incrémentation majeure.
+
+---
+
+### Secrets des *GitHub Actions*
+
+- `GITHUB_TOKEN` – Fournis automatiquement par GitHub
+- `RELEASE_TOKEN` (optionnel) – *PAT* avec les permissions pour pousser des commits/étiquettes
+- `DOCKERHUB_USERNAME` (optionnel)
+- `DOCKERHUB_TOKEN` (optionnel)
+
+---
+
+### Notes de publication
+
+- La publication sur GHCR utilise `github.token` et s'exécute lorsqu'une publication est créée.
+- La publication sur Docker Hub ne s'exécute que si `DOCKERHUB_USERNAME` et `DOCKERHUB_TOKEN` sont définis.
+
+---
+
+## Résolution des problèmes
+
+### Erreur DBeaver : *"HTTP/1.1 header parser received no bytes"* / *"Connection reset"*
+
+Cela indique généralement que le proxy a échoué avant d'écrire une réponse.
+
+**Mesures d'atténuation mises en œuvre :**
+- Analyse robuste des requêtes pour `/responses` et `/chat/completions`
+- Gestion des corps vides et de `Content-Encoding: gzip`
+- Uvicorn forcé à utiliser l'implémentation HTTP `h11` pour une meilleure compatibilité
+
+**Débogage :**
+```bash
+journalctl -u dbeaver-mistral-proxy -n 200 --no-pager
+```
+
+---
+
+### *"Unsupported upgrade request"* dans les logs
+
+Cela peut se produire lorsqu'un client tente une mise à niveau (par exemple, des mises à niveau de type *h2c* ou *websocket*). Cela est attendu et sans danger pour une utilisation normale de DBeaver.
+
+---
+
+## Stack technique
+
+- **Python 3.12+** avec FastAPI pour le serveur proxy
+- Intégration de l'**API Mistral AI** pour les complétions IA
+- Couche de compatibilité **DBeaver CE**
+- **Docker** pour le déploiement conteneurisé
+- **Systemd** pour la gestion des services Linux
+- **Versionnage sémantique** avec *Conventional Commits* pour les publications automatisées
+
+---
+*DBeaver Proxy to Mistral* offre un pont transparent entre les attentes de l'API compatible OpenAI de DBeaver et l'API Mistral, permettant aux développeurs d'utiliser directement les capacités IA de Mistral dans DBeaver CE.

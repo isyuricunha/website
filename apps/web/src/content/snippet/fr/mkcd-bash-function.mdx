@@ -1,0 +1,55 @@
+---
+title: 'mkcd : Créer un Répertoire et Y Accéder'
+date: 2025-12-04
+author: Yuri Cunha
+description: Une fonction Bash simple pour créer un répertoire et s'y déplacer en une seule commande.
+tags:
+  - bash
+  - terminal
+  - productivity
+  - linux
+---
+
+Nous avons tous déjà vécu cette situation : vous créez un nouveau répertoire avec `mkdir`, puis vous devez immédiatement utiliser `cd` pour y accéder.
+
+```bash
+mkdir mon_nouveau_dossier
+cd mon_nouveau_dossier
+```
+
+C'est une petite friction, mais cela s'accumule. Voici une fonction simple pour faire les deux en une seule fois.
+
+{/* more */}
+
+## La Solution
+
+Ajoutez cette fonction à votre `.bashrc` (ou `.zshrc`) :
+
+```bash
+mkcd() {
+    mkdir -p "$1" && cd "$1"
+}
+```
+
+## Comment installer
+
+1. Ouvrez votre fichier de configuration :
+   ```bash
+   nano ~/.bashrc
+   ```
+2. Collez le bloc de code ci-dessus à la fin du fichier.
+3. Enregistrez et quittez (`Ctrl+O`, `Entrée`, `Ctrl+X`).
+4. Rechargez votre configuration :
+   ```bash
+   source ~/.bashrc
+   ```
+
+## Utilisation
+
+Maintenant, vous pouvez créer des structures de répertoires profonds et y accéder instantanément :
+
+```bash
+mkcd vaultwarden/backup
+```
+
+Vous vous retrouverez immédiatement à l'intérieur de `vaultwarden`.

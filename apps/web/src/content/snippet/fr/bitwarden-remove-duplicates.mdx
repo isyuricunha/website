@@ -1,0 +1,96 @@
+---
+title: Supprimer les doublons d'une exportation Bitwarden
+date: 2025-11-19
+author: Yuri Cunha
+description: Script Python pour nettoyer les entrées en double des exportations CSV Bitwarden
+tags:
+  - python
+  - bitwarden
+  - csv
+  - data-cleaning
+---
+
+Si vous avez déjà exporté votre coffre Bitwarden au format CSV et que vous vous êtes retrouvé avec des entrées en double, ce script est fait pour vous. Il parcourra votre export et supprimera les doublons en se basant sur les champs clés.
+
+{/* more */}
+
+## Le Problème
+
+Parfois, lorsque vous exportez votre coffre Bitwarden, vous pouvez obtenir des entrées en double — mêmes identifiants, mêmes notes, tout y est. Ce script vous aide à nettoyer cela en ne conservant que les entrées uniques.
+
+## Fonctionnement
+
+Le script lit votre export CSV de Bitwarden, vérifie chaque entrée par rapport à un ensemble de champs clés (type, nom, URI, nom d'utilisateur, mot de passe et notes), et ne conserve que la première occurrence de chaque combinaison unique. Rien de plus simple !
+
+## Le Code
+
+```python
+import csv
+
+input_file = "bitwarden.csv"          # name of the file you exported
+output_file = "bitwarden_dedup.csv"   # new file, without duplicates
+
+seen = set()
+rows = []
+
+with open(input_file, newline="", encoding="utf-8") as f:
+    reader = csv.DictReader(f)
+    fieldnames = reader.fieldnames
+
+    for row in reader:
+        # key to consider entries "equal"
+        key = (
+            row.get("type", ""),
+            row.get("name", ""),
+            row.get("login_uri", ""),
+            row.get("login_username", ""),
+            row.get("login_password", ""),
+            row.get("notes", ""),
+        )
+
+        if key in seen:
+            continue
+
+        seen.add(key)
+        rows.append(row)
+
+with open(output_file, "w", newline="", encoding="utf-8") as f:
+    writer = csv.DictWriter(f, fieldnames=fieldnames)
+    writer.writeheader()
+    writer.writerows(rows)
+
+print(f"saved {len(rows)} items without duplicates in {output_file}")
+```
+
+## Utilisation
+
+1. Exportez votre coffre Bitwarden au format CSV (Paramètres → Exporter le coffre)
+2. Enregistrez le script sous le nom `bitwarden_dedup.py`
+3. Assurez-vous que votre fichier d'export s'appelle `bitwarden.csv` (ou modifiez la variable `input_file`)
+4. Exécutez : `python bitwarden_dedup.py`
+5. Importez le fichier nettoyé `bitwarden_dedup.csv` dans Bitwarden
+
+## Champs Vérifiés
+
+Le script considère deux entrées comme des doublons si **tous** ces champs correspondent :
+
+- Type (connexion, note, carte, etc.)
+- Nom
+- URI de connexion
+- Nom d'utilisateur
+- Mot de passe
+- Notes
+
+Si même un seul champ est différent, les entrées sont conservées en tant qu'éléments distincts.
+
+## Notes Importantes
+
+<Callout type='warning'>
+  Faites toujours une sauvegarde de votre coffre avant d'effectuer des opérations de nettoyage. Exportez votre coffre actuel avant d'importer celui dédoublonné, par précaution.
+</Callout>
+
+<Callout type='info'>
+  Si vous souhaitez vérifier les doublons en fonction de champs différents (comme uniquement le nom d'utilisateur + URI), vous pouvez modifier le tuple `key` dans le code pour n'inclure que les champs qui vous intéressent.
+</Callout>
+
+Le script utilise le module `csv` intégré de Python et un `set` pour suivre ce que nous avons déjà vu, ce qui le rend assez efficace même pour les grands coffres.

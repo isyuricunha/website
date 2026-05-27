@@ -1,0 +1,165 @@
+---
+title: agents Mistral dans OpenWebUI (pipe via API)
+date: 2026-01-16
+author: Yuri Cunha
+description: un extrait détaillé pour importer un pipe (fonction) dans OpenWebUI et utiliser un agent Mistral via l'API.
+tags:
+  - openwebui
+  - mistral
+  - agents
+  - python
+  - api
+  - llm
+---
+
+Ce `pipe` permet de prendre en charge nativement les **agents mistral ai** dans OpenWebUI en appelant l'[API Mistral](https://api.mistral.ai/v1/agents/completions).
+
+Il vous permet de sélectionner un agent créé dans la console Mistral et de discuter directement avec lui depuis votre instance OpenWebUI.
+
+{/* more */}
+
+## fonctionnalités
+
+- intégration directe avec l'API des agents Mistral (`/v1/agents/completions`).
+- prise en charge des réponses en streaming.
+- configuration facile via les valves (pas besoin de modifier le code après l'import).
+- compatible avec n'importe quel agent créé dans la console Mistral (outils, instructions, base de connaissances, etc.).
+
+## prérequis
+
+- un compte Mistral avec accès à l'API.
+- une clé `MISTRAL_API_KEY` valide (obtenez-la sur [https://console.mistral.ai/](https://console.mistral.ai/)).
+- un agent existant (vous avez besoin de l'ID de l'agent pour remplir la valve `AGENT_ID`, il commence généralement par `ag_`).
+- les permissions pour importer/modifier des fonctions dans votre instance OpenWebUI.
+
+## où obtenir l'ID de l'agent
+
+1. allez sur [https://console.mistral.ai/build/agents](https://console.mistral.ai/build/agents).
+2. créez (ou ouvrez) un agent.
+3. copiez l'ID de l'agent.
+
+Remarque : dans certains cas, il peut apparaître sous la forme `ag:` ; ce `pipe` attend une valeur de type chaîne de caractères et le format le plus courant est `ag_...`.
+
+## comment importer dans OpenWebUI
+
+Vous avez généralement deux options :
+
+### option a : importer depuis la page OpenWebUI
+
+Utilisez la publication officielle de la fonction (import en un clic) :
+
+[https://openwebui.com/posts/mistral_agents_integration_pipe_42bce620](https://openwebui.com/posts/mistral_agents_integration_pipe_42bce620)
+
+Dans OpenWebUI :
+
+1. ouvrez la page ci-dessus.
+2. cliquez sur `importer`.
+3. confirmez l'import.
+
+### option b : import manuel (copier et coller)
+
+1. dans OpenWebUI, allez dans le `panneau d'administration`.
+2. ouvrez `fonctions`.
+3. cliquez sur `+` (ou `nouveau`) pour créer une nouvelle fonction/pipe.
+4. collez le code ci-dessous et enregistrez.
+
+## configuration (valves)
+
+Après l'import, configurez les valves (généralement via l'icône d'engrenage `⚙️`) :
+
+- `MISTRAL_API_KEY` : votre clé API Mistral.
+- `AGENT_ID` : l'ID de votre agent (exemple : `ag_...`).
+
+## le code (pipe)
+
+Important :
+
+- ne codez pas en dur votre vraie clé API dans les fichiers.
+- définissez `MISTRAL_API_KEY` et `AGENT_ID` dans les valves (paramètres OpenWebUI) après l'import.
+
+```python
+# title: Mistral Agents
+# author: Yuri Cunha
+# version: 1.0.0
+# license: MIT
+
+import requests
+import json
+from typing import List, Dict, Generator
+from pydantic import BaseModel, Field
+
+
+class Pipe:
+    class Valves(BaseModel):
+        MISTRAL_API_KEY: str = Field(default="")
+        AGENT_ID: str = Field(
+            default="ag_"
+        )  # Your Agent ID aqui or put in var, please, use VAR!
+
+    def __init__(self):
+        self.type = "manifold"
+        self.id = "mistral-agent"
+        self.name = "mistral-agent/"
+        self.valves = self.Valves()
+        self.agents_endpoint = "https://api.mistral.ai/v1/agents/completions"
+
+    def pipes(self) -> List[Dict[str, str]]:
+        return [{"id": "agent", "name": f"Mistral Agent ({self.valves.AGENT_ID[:10]})"}]
+
+    def pipe(self, body: dict) -> Generator:
+        headers = {
+            "Authorization": f"Bearer {self.valves.MISTRAL_API_KEY}",
+            "Content-Type": "application/json",
+        }
+
+        payload = {
+            "agent_id": self.valves.AGENT_ID,
+            "messages": body["messages"],
+            "stream": body.get("stream", False),
+        }
+
+        response = requests.post(
+            self.agents_endpoint, headers=headers, json=payload, stream=True
+        )
+
+        for line in response.iter_lines():
+            if line:
+                yield line.decode("utf-8")
+```
+
+<Callout type='warning'>
+  Ne commitez jamais votre vraie clé API dans un dépôt public. En production, privilégiez les variables d'environnement
+  et le gestionnaire de secrets de votre déploiement.
+</Callout>
+
+## comment utiliser dans le chat
+
+1. ouvrez un chat dans OpenWebUI.
+2. sélectionnez le `pipe` `mistral agent (...)` dans la liste des modèles/fournisseurs.
+3. envoyez des messages normalement.
+
+OpenWebUI transmettra `body["messages"]` à Mistral, en conservant les rôles (`user`, `assistant`, etc.).
+
+## notes importantes
+
+- **ID de l'agent vs modèle** : ce `pipe` utilise la route des agents (`/v1/agents/completions`), qui est différente des complétions de chat standard.
+- **outils** : si votre agent a des outils configurés dans la console Mistral, ils seront appliqués automatiquement par l'agent.
+
+## notes sur le streaming
+
+- lorsque `stream` est activé dans OpenWebUI, la charge utile envoie `"stream": true`.
+- le `pipe` renvoie les lignes de réponse brutes de la requête de streaming (`iter_lines`).
+
+Si vous voyez une sortie "brute" (lignes JSON) au lieu de texte rendu, vérifiez si OpenWebUI attend un format spécifique de sse/chunk pour ce `pipe`.
+
+## dépannage rapide
+
+- **401 non autorisé / 403 interdit** : `MISTRAL_API_KEY` est vide, invalide ou manque de permissions.
+- **404 / agent invalide** : `AGENT_ID` est incorrect ou l'agent a été supprimé.
+- **pas de réponse / délai dépassé** : vérifiez que votre serveur OpenWebUI peut atteindre `https://api.mistral.ai`.
+- **pas de streaming** : confirmez qu'OpenWebUI envoie `stream: true` dans le corps de la requête.
+
+## références
+
+- publication d'import sur OpenWebUI :
+  [https://openwebui.com/posts/mistral_agents_integration_pipe_42bce620](https://openwebui.com/posts/mistral_agents_integration_pipe_42bce620)

@@ -1,0 +1,190 @@
+---
+title: Qu'est-ce que la base de données SQL Server ?
+date: 2023-01-05T09:20:27.751-03:00
+modifiedTime: 2023-01-05T09:20:27.751-03:00
+summary: Parlons de ma base de données préférée.
+---
+
+# Qu'est-ce que la base de données SQL Server ?
+
+SQL Server Database est un système de gestion de bases de données relationnelles produit par Microsoft. Il est utilisé pour stocker et gérer de grandes quantités de données, y compris des données structurées et non structurées. SQL Server offre une large gamme de fonctionnalités pour garantir la sécurité, la disponibilité et l'intégrité des données stockées, ainsi que pour assurer les performances et l'évolutivité du système.
+
+Plusieurs versions de SQL Server sont disponibles, notamment SQL Server Express, SQL Server Standard et SQL Server Enterprise. Chacune de ces versions offre un ensemble différent de fonctionnalités et convient à différents types d'utilisation.
+
+Pour travailler avec SQL Server, il est nécessaire de connaître le langage Structured Query Language (SQL). SQL est le langage standard pour travailler avec les bases de données relationnelles et est utilisé pour créer, interroger et modifier les données stockées dans la base de données.
+
+<br />
+<br />
+
+# Qu'est-ce que le langage Structured Query Language (le célèbre SQL) ?
+
+Le langage Structured Query Language (SQL) est un langage de programmation utilisé pour gérer et manipuler les données stockées dans les bases de données relationnelles. C'est le langage standard pour travailler avec les bases de données relationnelles et il est utilisé pour créer, interroger et modifier les données stockées dans la base de données.
+
+SQL est un langage déclaratif, ce qui signifie qu'il est utilisé pour décrire ce qui doit être fait, plutôt que de spécifier comment cela doit être fait. Cela permet au système de gestion de bases de données (SGBD) d'optimiser l'exécution des requêtes SQL et d'assurer une utilisation efficace des ressources du système.
+
+SQL est utilisé pour effectuer une large gamme de tâches, notamment la création et la modification de tables et d'index, l'insertion et la mise à jour de données, ainsi que la récupération de données à partir de la base de données. Il est également utilisé pour définir la structure et les relations des données au sein de la base de données, ainsi que pour définir les autorisations et les contrôles pour les utilisateurs.
+
+SQL est un langage puissant et polyvalent, largement utilisé dans divers secteurs, notamment les affaires, la finance, la santé et le gouvernement. C'est un outil essentiel pour les administrateurs de bases de données et les développeurs, et il est également utilisé par les analystes de données et les scientifiques des données pour extraire, transformer et charger des données à des fins d'analyse et de rapport.
+
+Il existe plusieurs dialectes de SQL, notamment MySQL, Oracle et Microsoft SQL Server, chacun avec ses propres caractéristiques et syntaxes uniques. Cependant, les concepts et principes de base de SQL restent les mêmes dans tous les dialectes, ce qui en fait un langage facile à apprendre et largement applicable.
+
+<br />
+<br />
+
+# Exemples de requêtes SQL
+
+Voici quelques exemples de requêtes SQL qui peuvent être exécutées sur la base de données SQL Server :
+
+## _Requête de sélection_
+
+- La requête suivante sélectionne tous les champs de la table "Customers" où le champ "City" est égal à "São Paulo" :
+
+```sql
+SELECT * FROM Customers WHERE City = 'São Paulo';
+```
+
+<br />
+
+## _Insertion de données_
+
+- La requête suivante insère un nouvel enregistrement dans la table "Customers" :
+
+```sql
+INSERT INTO Customers (Name, Address, City) VALUES ('João da Silva', 'Rua das Flores, 123', 'São Paulo');
+```
+
+<br />
+
+## _Mise à jour des données_
+
+- La requête suivante met à jour le champ "Address" de l'enregistrement avec l'ID 1 dans la table "Customers" :
+
+```sql
+UPDATE Customers SET Address = 'Rua das Oliveiras, 456' WHERE ID = 1;
+```
+
+<br />
+
+## _Suppression de données_
+
+- La requête suivante supprime l'enregistrement avec l'ID 1 de la table "Customers" :
+
+```sql
+DELETE FROM Customers WHERE ID = 1;
+```
+
+<br />
+<br />
+
+# Deux exemples simples
+
+<br />
+
+## Premier exemple
+
+<br />
+
+> Vous êtes l'administrateur de base de données pour une petite base de données clients. Vous devez ajouter un nouvel enregistrement client avec les informations suivantes :
+
+<br />
+
+- Nom : "John Smith"
+- Adresse : "123 Main Street"
+- Ville : "New York"
+
+<br />
+<br />
+
+## _Solution_
+
+<br />
+
+- Pour ajouter le nouvel enregistrement client, vous pouvez utiliser la requête SQL suivante :
+
+```sql
+INSERT INTO Customers (Name, Address, City) VALUES ('John Smith', '123 Main Street', 'New York');
+```
+
+<br />
+
+*Cette requête insérera un nouvel enregistrement dans la table "Customers" avec le nom, l'adresse et la ville spécifiés.*
+
+<br />
+<br />
+
+## Deuxième exemple
+
+<br />
+
+> Vous êtes l'administrateur de base de données pour une base de données d'inventaire de produits. Vous devez mettre à jour la quantité d'un produit avec l'ID "12345" à 10.
+
+<br />
+<br />
+
+## _Solution_- Vous êtes l'administrateur de base de données pour une base de données d'inventaire de produits. Vous devez mettre à jour la quantité d'un produit avec l'ID « 12345 » à 10.
+
+```sql
+UPDATE Products SET Quantity = 10 WHERE ID = 12345;
+```
+
+<br />
+
+_Cette requête mettra à jour le champ « Quantity » (Quantité) du produit avec l'ID « 12345 » avec la valeur 10._
+
+<br />
+<br />
+
+# Exemple complexe
+
+Voici un exemple complexe et sa solution impliquant la base de données SQL Server :
+
+> Vous êtes l'administrateur de base de données pour un grand détaillant en ligne. L'entreprise dispose d'une base de données avec plusieurs tables stockant des informations sur les clients, les commandes et les produits. La base de données est utilisée pour suivre les informations clients, traiter les commandes et générer des rapports.
+
+> L'un des responsables des ventes de l'entreprise a demandé un rapport montrant le chiffre d'affaires total et le nombre de commandes pour chaque client, ventilés par catégorie de produits. Le rapport doit afficher les données de l'année écoulée et doit être trié par chiffre d'affaires total en ordre décroissant.
+
+<br />
+<br />
+
+## _Solution_
+
+<br />
+
+- Pour générer le rapport demandé, vous pouvez utiliser la requête SQL suivante :
+
+```sql
+SELECT c.Name AS 'Customer',
+       SUM(o.Total) AS 'Total Sales',
+       COUNT(o.ID) AS 'Number of Orders',
+       p.Category AS 'Product Category'
+FROM Customers c
+INNER JOIN Orders o ON c.ID = o.CustomerID
+INNER JOIN Products p ON o.ProductID = p.ID
+WHERE o.Date BETWEEN '2022-01-01' AND '2022-12-31'
+GROUP BY c.Name, p.Category
+ORDER BY 'Total Sales' DESC;
+```
+
+<br />
+
+_Cette requête sélectionnera le nom du client, le chiffre d'affaires total, le nombre de commandes et la catégorie de produit pour toutes les commandes passées dans la plage de dates spécifiée. Elle regroupera ensuite les résultats par nom de client et catégorie de produit, et triera les résultats par chiffre d'affaires total en ordre décroissant. Le rapport résultant affichera le chiffre d'affaires total et le nombre de commandes pour chaque client, ventilés par catégorie de produit._
+
+<br />
+
+> J'espère que ces exemples vous ont été utiles.
+
+<br />
+<br />
+
+###### _Voici quelques liens de référence supplémentaires que vous pourriez trouver utiles pour en savoir plus sur la base de données SQL Server et le langage SQL :_
+
+- La page d'accueil de SQL Server : https://www.microsoft.com/fr-fr/sql-server/
+
+- La documentation de SQL Server : https://docs.microsoft.com/fr-fr/sql/
+
+- Le tutoriel SQL : https://www.w3schools.com/sql/
+
+- Le guide de référence MySQL : https://dev.mysql.com/doc/refman/8.0/en/
+
+- Le tutoriel Oracle SQL : https://docs.oracle.com/fr-fr/database/oracle/oracle-database/19/lnpls/index.html
+
+> J'espère que ces références et cette syntaxe supplémentaires vous seront utiles.

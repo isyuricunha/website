@@ -1,0 +1,133 @@
+---
+title: Supprimer les doublons d'un tableau
+date: 2025-11-19
+author: Yuri Cunha
+description: Différentes méthodes pour supprimer les valeurs en double des tableaux en JavaScript
+tags:
+  - javascript
+  - array
+  - data-structures
+---
+
+Supprimer les doublons des tableaux est une tâche courante en JavaScript. Voici plusieurs méthodes efficaces pour y parvenir.
+
+{/* more */}
+
+## Méthode 1 : Utiliser `Set` (Recommandé)
+
+La manière la plus simple et performante de supprimer les doublons est d'utiliser un `Set` :
+
+```javascript
+const array = [1, 2, 2, 3, 4, 4, 5]
+const uniqueArray = [...new Set(array)]
+console.log(uniqueArray) // [1, 2, 3, 4, 5]
+```
+
+**Avantages :**
+
+- Propre et concis
+- Bonne performance O(n)
+- Fonctionne avec les valeurs primitives
+
+**Inconvénients :**
+
+- Ne fonctionne qu'avec les valeurs primitives (nombres, chaînes de caractères, booléens)
+- Les objets sont comparés par référence
+
+## Méthode 2 : Utiliser `Filter`
+
+Pour des scénarios plus complexes ou lorsque vous souhaitez conserver la première occurrence :
+
+```javascript
+const array = [1, 2, 2, 3, 4, 4, 5]
+const uniqueArray = array.filter((value, index, self) => {
+  return self.indexOf(value) === index
+})
+console.log(uniqueArray) // [1, 2, 3, 4, 5]
+```
+
+**Avantages :**
+
+- Plus flexible pour une logique personnalisée
+- Facile à comprendre
+
+**Inconvénients :**
+
+- Moins performant O(n²) en raison de `indexOf`
+
+## Méthode 3 : Utiliser `Reduce`
+
+Une approche fonctionnelle utilisant `reduce` :
+
+```javascript
+const array = [1, 2, 2, 3, 4, 4, 5]
+const uniqueArray = array.reduce((acc, current) => {
+  if (!acc.includes(current)) {
+    acc.push(current)
+  }
+  return acc
+}, [])
+console.log(uniqueArray) // [1, 2, 3, 4, 5]
+```
+
+**Avantages :**
+
+- Style de programmation fonctionnelle
+- Peut être combiné avec d'autres transformations
+
+**Inconvénients :**
+
+- Moins performant en raison de `includes`
+- Plus verbeux
+
+## Méthode 4 : Pour les objets (Utiliser `Map`)
+
+Lorsque vous travaillez avec des objets, vous devez comparer par une propriété spécifique :
+
+```javascript
+const users = [
+  { id: 1, name: 'Alice' },
+  { id: 2, name: 'Bob' },
+  { id: 1, name: 'Alice' },
+  { id: 3, name: 'Charlie' }
+]
+
+const uniqueUsers = Array.from(new Map(users.map((user) => [user.id, user])).values())
+
+console.log(uniqueUsers)
+// [
+//   { id: 1, name: 'Alice' },
+//   { id: 2, name: 'Bob' },
+//   { id: 3, name: 'Charlie' }
+// ]
+```
+
+**Avantages :**
+
+- Fonctionne avec les objets
+- Peut spécifier quelle propriété utiliser pour l'unicité
+- Bonne performance
+
+**Inconvénients :**
+
+- Syntaxe plus complexe
+- Conserve la dernière occurrence (peut être modifié pour conserver la première)
+
+## Comparaison des performances
+
+Pour les grands tableaux (10 000+ éléments) :
+
+1. **Set** : ~1 ms (le plus rapide)
+2. **Map (pour les objets)** : ~2 ms
+3. **Reduce** : ~50 ms
+4. **Filter** : ~100 ms (le plus lent)
+
+## Recommandation
+
+- Utilisez **Set** pour les valeurs primitives (nombres, chaînes de caractères, booléens)
+- Utilisez **Map** pour les objets lorsque vous devez supprimer les doublons par une propriété spécifique
+- Utilisez **Filter** ou **Reduce** uniquement lorsque vous avez besoin d'une logique personnalisée ou travaillez avec de petits tableaux
+
+---
+
+**Remarque :** Toutes ces méthodes créent un nouveau tableau. Si vous devez modifier le tableau original directement, vous aurez besoin d'une approche différente.

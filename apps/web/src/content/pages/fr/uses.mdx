@@ -1,0 +1,527 @@
+---
+
+---
+
+Voici un inventaire complet du matériel qui alimente mon homelab, mon travail de développement et mon informatique quotidienne.
+
+Pas de marketing, pas de liens d'affiliation — juste les machines que j'utilise réellement et pourquoi elles font partie de ma configuration.
+
+Le matériel est organisé en :
+
+- **ordinateur portable personnel** — mon outil de travail quotidien
+- **serveur principal du homelab** — la machine puissante pour les bases de données et les services
+- **nœud ARM64 du homelab** — Raspberry Pi pour les tests ARM
+- **machines x86-64 dans le cloud** — dev et prod dans le cloud
+- **machines ARM64 dans le cloud** — charges de travail ARM dans le cloud
+
+---
+
+## Matériel personnel
+
+### Ordinateur portable principal
+
+C'est mon outil de travail quotidien. Je l'utilise pour tout ce qui concerne l'étude, le code, SSH, les documents et le travail général.
+
+**Caractéristiques**
+
+- CPU
+  - **AMD Ryzen 7 7445HS**
+- RAM
+  - **64 Go DDR5**
+- Stockage
+  - **256 Go** SSD
+  - **360 Go** SSD
+  - utilisé pour le système, les outils de développement, les bases de données locales, les conteneurs et les fichiers
+- GPU
+  - **Nvidia RTX 4070** (portable)
+
+Principaux cas d'utilisation :
+
+- terminaux et IDE pour travailler sur le code et la documentation
+- connexion SSH à toutes les machines du labo et du cloud via Tailscale
+- clients de bases de données, outils d'administration et tableaux de bord
+- navigateurs et applications qui communiquent avec les services exécutés dans le labo
+- quelques conteneurs locaux et VM légères lorsque nécessaire
+
+Cet ordinateur portable est l'endroit d'où je contrôle tout le reste.
+
+---
+
+## Matériel du homelab
+
+### Serveur principal à la maison
+
+C'est la grosse machine du homelab, axée sur les bases de données, les services et les expériences.
+
+**CPU**
+
+- **Intel Xeon W9 3475X**
+
+**Mémoire**
+
+- **256 Go ECC R**
+- **256 Go ECC R** en configuration miroir
+- un total de **512 Go** de mémoire ECC, configurée pour la redondance afin d'éviter les pannes
+
+**Stockage**
+
+Stockage rotatif :
+
+- **14 To HDD** pour les données principales
+- **14 To HDD** pour la redondance
+- **14 To HDD** pour les sauvegardes
+
+Stockage NVMe :
+
+- **256 Go NVMe** pour le système
+- **500 Go NVMe** utilisé comme cache de fichiers
+- **4 To NVMe** pour les fichiers froids et le stockage à long terme
+
+**GPU**
+
+- **Nvidia GT210** pour la sortie vidéo
+- **Nvidia GT 1050** pour les petites charges de travail et les codecs vidéo
+- **AMD Radeon RX 7900 XTX** pour les charges de travail IA
+
+> Remarque : je prévois de remplacer tout le matériel Nvidia et Intel par des composants AMD à l'avenir
+
+**Utilisation typique :**
+
+- PostgreSQL et autres bases de données dans des configurations de labo réalistes
+- Piles Docker/Conteneurs pour les services auto-hébergés
+- Surveillance, journalisation et tâches de sauvegarde
+- Expériences d'IA utilisant la RX 7900 XTX
+- Stockage pour les médias, les sauvegardes et les données du labo avec redondance
+
+C'est le cœur du homelab et l'endroit où se déroule la plupart des travaux intensifs.
+
+---
+
+### Nœud ARM64 dans le homelab
+
+Je possède également un environnement ARM64 à la maison pour les tests et la diversité.
+
+**Carte**
+
+- **Raspberry Pi 5**, version 16 Go
+
+**SoC**
+
+- **Broadcom BCM2712**
+- quad core **ARM Cortex A76**
+
+**Mémoire**
+
+- **16 Go LPDDR4X 4267**
+
+**Stockage**
+
+- Module **64 Go eMMC** pour le système
+- Disque **512 Go** pour les conteneurs et les fichiers
+
+Cas d'utilisation :
+
+- Exécution de conteneurs ARM
+- Test des services sur ARM64 avant de les déployer sur le cloud ARM
+- Petits services toujours actifs avec une faible consommation d'énergie
+- Expériences de stockage sur de petites cartes
+
+Ce nœud m'aide à m'assurer que mes configurations ne sont pas uniquement x86.
+
+---
+
+## Matériel cloud
+
+J'exécute également des charges de travail de développement et de production dans le cloud. Actuellement, il y a deux principaux groupes de VM.
+
+### Machines x86 64 dev et prod dans le cloud
+
+Ce sont deux machines virtuelles avec le même matériel, une pour le développement et une pour la production.
+
+**Caractéristiques par VM**
+
+- CPU
+  - **AMD EPYC 7551**, **8 vCPU**
+- RAM
+  - **16 Go**
+- Stockage
+  - **250 Go** pour le système, les données et les logs
+
+Il y a **deux** de ces machines avec la même configuration.
+
+Utilisation principale :
+
+- Exécution de bases de données et de services dans un environnement plus réaliste de type production
+- Test des déploiements qui communiquent avec le homelab via Tailscale
+- Simulation de scénarios où une partie de la pile est sur site et une autre partie dans le cloud
+
+---
+
+### Machines ARM64 dev et prod dans le cloud
+
+Je possède également des machines ARM64 dans le cloud pour les tests et les charges de travail qui ont du sens sur cette architecture.
+
+**Caractéristiques par VM**
+
+- CPU
+  - **8 vCPU**
+- RAM
+  - **24 Go**
+- Stockage
+  - **150 Go** pour le système et les données> **Remarque** : le modèle exact du CPU n'est pas spécifié par le fournisseur cloud - ce qui compte, ce sont les performances et l'architecture ARM64.
+
+**Utilisé pour :**
+
+- exécuter des conteneurs et services ARM64
+- vérifier les différences de performance entre les configurations ARM et x86
+- expérimenter des charges de travail écoénergétiques
+
+Encore une fois, l'idée est d'avoir au moins les environnements de développement et de production séparés dans ce groupe.
+
+---
+
+## Pourquoi ce mélange de matériel
+
+Le matériel n'est pas choisi au hasard. Il suit une idée simple.
+
+- le notebook est le centre de contrôle
+- le serveur principal du labo maison est l'endroit où se trouvent les travaux lourds et le stockage
+- le nœud ARM64 maison me permet de varier les expériences et de travailler avec une faible consommation d'énergie
+- les machines cloud me permettent de simuler des configurations de production plus réalistes
+
+Avec cette combinaison, je peux :
+
+- tester des bases de données et des services avec une mémoire et un stockage sérieux à la maison
+- exécuter des charges de travail d'IA localement en utilisant la RX 7900 XTX
+- maintenir la redondance et les sauvegardes avec une RAM en miroir et plusieurs disques durs
+- comparer le comportement des architectures x86 et ARM64
+- pratiquer la séparation des environnements de développement, de pré-production et de production
+
+---
+
+Cet inventaire m'aide à me souvenir de ce que je possède réellement et sert de documentation pour mon infrastructure. Si vous lisez ceci et que vous êtes passionné par les labos maison, vous savez maintenant ce qui tourne en coulisses sur yuricunha.com.
+
+<ExpandableSection title='Notebook' icon='Monitor'>
+
+  <div className='mb-6'>
+    <Image
+      src='/images/uses/ideapad-3i.png'
+      alt='Ideapad Gaming 3 R7'
+      width={1920}
+      height={1080}
+      lazy={false}
+      priority
+      className='mx-auto h-48 w-full max-w-xs rounded-lg object-contain shadow-lg'
+    />
+  </div>
+  <div className='bg-bg-surface rounded-lg border border-[var(--border-subtle)] p-4'>
+    <h3 className='mb-2 text-sm font-medium sm:text-base'>Pourquoi j'ai choisi ce notebook :</h3>
+    <ul className='text-text-secondary space-y-1 text-xs sm:text-sm'>
+      <li>Équilibre parfait entre performance et portabilité</li>
+      <li>Idéal pour le développement et les jeux occasionnels</li>
+      <li>Excellent rapport qualité-prix</li>
+    </ul>
+  </div>
+</ExpandableSection>
+
+<ExpandableSection title='Accessoires' icon='Smartphone'>
+  <ItemGrid
+    items={[
+      {
+        image: '/images/uses/accessories/s10.png',
+        name: 'S10 5G',
+        description: 'Noir, 512 Go',
+        url: 'https://www.samsung.com/uk/smartphones/galaxy-s10.../',
+        isAffiliate: false
+      },
+      {
+        image: '/images/uses/accessories/quietcontrol30.png',
+        name: 'Bose Quiet Control 30',
+        description: 'Écouteurs',
+        url: 'https://www.boselatam.com/en_ar/products/headphones/earbuds/quietcontrol-30.html',
+        isAffiliate: true
+      }
+    ]}
+  />
+</ExpandableSection>
+
+<ExpandableSection title='PC Gamer - Matériel' icon='Zap'>
+<ItemGrid
+  items={[
+    {
+      image: '/images/uses/gaming-pc/monitor.png',
+      name: 'LG 27GR75Q-B',
+      description: 'Moniteur 27" 165Hz',
+      url: 'https://www.lg.com/us/monitors/lg-27gr75q-b-gaming-monitor'
+    },
+    {
+      image: '/images/uses/gaming-pc/mx-ergo.png',
+      name: 'Logitech MX Ergo+',
+      description: 'Souris',
+      url: 'https://www.logitech.com/en-us/shop/p/mx-ergo-wireless-trackball-mouse.910-005177'
+    },
+    {
+      image: '/images/uses/gaming-pc/wooting-60he.png',
+      name: 'Wooting 60HE+',
+      description: 'Clavier mécanique personnalisé sans fil',
+      url: 'https://wooting.io/wooting-60he'
+    },
+    {
+      image: '/images/uses/gaming-pc/i9.png',
+      name: 'Processeur Intel® Core™ Ultra 9 285K',
+      description: 'CPU',
+      url: 'https://www.intel.com/content/www/us/en/products/sku/241060/intel-core-ultra-9-processor-285k-36m-cache-up-to-5-70-ghz/specifications.html'
+    },
+    {
+      image: '/images/uses/gaming-pc/5070d.png',
+      name: 'RTX 5070D',
+      description: 'Carte graphique',
+      url: 'https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5070-family/'
+    },
+    {
+      image: '/images/uses/gaming-pc/adata.png',
+      name: 'NVME ADATA Legends',
+      description: '2 To',
+      url: 'https://www.amazon.com/ADATA-800-Internal-Storage-Endurance/dp/B0BWFMXMJR'
+    },
+    {
+      image: '/images/uses/gaming-pc/gamdias.png',
+      name: 'Water Cooler Gamdias Chione M4-420',
+      description: 'Refroidisseur',
+      url: 'https://www.gamdias.com/en/component/cooler/CHIONE_M4-420'
+    },
+    {
+      image: '/images/uses/gaming-pc/fsp-700w.png',
+      name: 'FSP 700W',
+      description: 'Alimentation, 80+ Bronze',
+      url: 'https://www.fsplifestyle.com/en/product/Hydro700w.html'
+    },
+    {
+      image: '/images/uses/gaming-pc/32gb-ram.png',
+      name: '96 Go',
+      description: 'RAM',
+      url: 'https://www.amazon.com/s?k=96gb+ram'
+    },
+    {
+      image: '/images/uses/gaming-pc/case.png',
+      name: 'Duex DX305T',
+      description: 'Boîtier',
+      url: 'https://www.duex.com.br/produtos/gabinete/gabinete-gamer-dx305t'
+    }
+  ]}
+/>
+
+<div className='mt-6 rounded-lg border border-[var(--accent-border)] bg-[var(--accent-dim)] p-4'>
+  <h3 className='text-accent-earth-text mb-2 text-sm font-medium'>
+    💡 Astuce Pro
+  </h3>
+  <div className='text-text-secondary text-xs sm:text-sm'>
+    Lors de l'assemblage d'un PC gamer, investissez d'abord davantage dans la GPU et le CPU.
+    Vous pourrez toujours mettre à niveau les périphériques plus tard, mais les composants principaux
+    déterminent vos performances globales.
+  </div>
+</div>
+</ExpandableSection>
+
+<ExpandableSection title='Infrastructure' icon='Shield'>
+
+<ItemGrid
+  items={[
+    {
+      image: '/images/uses/software/docker.png',
+      name: 'Docker',
+      description: 'Plateforme de Conteneurs',
+      url: 'https://www.docker.com/'
+    },
+    {
+      image: '/images/uses/software/kubernetes.png',
+      name: 'Kubernetes',
+      description: "Orchestration de Conteneurs",
+      url: 'https://kubernetes.io/'
+    },
+    {
+      image: '/images/uses/software/ansible.png',
+      name: 'Ansible',
+      description: 'Gestion de Configuration',
+      url: 'https://www.ansible.com/'
+    },
+    {
+      image: '/images/uses/software/terraform.png',
+      name: 'Terraform',
+      description: "Infrastructure en tant que Code",
+      url: 'https://www.terraform.io/'
+    },
+    {
+      image: '/images/uses/software/prometheus.png',
+      name: 'Prometheus',
+      description: 'Surveillance et Alertes',
+      url: 'https://prometheus.io/'
+    },
+    {
+      image: '/images/uses/software/grafana.png',
+      name: 'Grafana',
+      description: 'Visualisation de Métriques',
+      url: 'https://grafana.com/'
+    },
+    {
+      image: '/images/uses/software/nginx.png',
+      name: 'Nginx',
+      description: 'Serveur Web et Proxy Inverse',
+      url: 'https://nginx.org/'
+    },
+    {
+      image: '/images/uses/software/haproxy.png',
+      name: 'HAProxy',
+      description: 'Répartiteur de Charge',
+      url: 'https://www.haproxy.org/'
+    },
+    {
+      image: '/images/uses/software/jenkins.png',
+      name: 'Jenkins',
+      description: "Automatisation CI/CD",
+      url: 'https://www.jenkins.io/'
+    },
+    {
+      image: '/images/uses/software/consul.png',
+      name: 'Consul',
+      description: 'Découverte de Services et Configuration',
+      url: 'https://www.consul.io/'
+    },
+    {
+      image: '/images/uses/software/vault.png',
+      name: 'Vault',
+      description: 'Gestion des Secrets',
+      url: 'https://www.vaultproject.io/'
+    },
+    {
+      image: '/images/uses/software/chef.png',
+      name: 'Chef',
+      description: "Automatisation d'Infrastructure",
+      url: 'https://www.chef.io/'
+    },
+    {
+      image: '/images/uses/software/puppet.png',
+      name: 'Puppet',
+      description: 'Gestion de Configuration',
+      url: 'https://puppet.com/'
+    },
+    {
+      image: '/images/uses/software/saltstack.png',
+      name: 'SaltStack',
+      description: "Automatisation et Gestion de Configuration",
+      url: 'https://www.saltproject.io/'
+    },
+    {
+      image: '/images/uses/software/vagrant.png',
+      name: 'Vagrant',
+      description: "Automatisation de Machines Virtuelles",
+      url: 'https://www.vagrantup.com/'
+    },
+    {
+      image: '/images/uses/software/zabbix.png',
+      name: 'Zabbix',
+      description: 'Solution de Surveillance',
+      url: 'https://www.zabbix.com/'
+    },
+    {
+      image: '/images/uses/software/datadog.png',
+      name: 'Datadog',
+      description: 'Surveillance Cloud',
+      url: 'https://www.datadoghq.com/'
+    },
+    {
+      image: '/images/uses/software/rabbitmq.png',
+      name: 'RabbitMQ',
+      description: 'Courtier de Messages',
+      url: 'https://www.rabbitmq.com/'
+    },
+    {
+      image: '/images/uses/software/kafka.png',
+      name: 'Kafka',
+      description: 'Streaming Distribué',
+      url: 'https://kafka.apache.org/'
+    },
+    {
+      image: '/images/uses/software/splunk.png',
+      name: 'Splunk',
+      description: 'Analyse de Logs et Surveillance',
+      url: 'https://www.splunk.com/'
+    },
+    {
+      image: '/images/uses/software/apache.png',
+      name: 'Apache',
+      description: 'Serveur Web',
+      url: 'https://httpd.apache.org/'
+    }
+  ]}
+/>x
+<ComparisonTable
+  items={[
+    {
+      name: 'Docker',
+      pros: ['Conteneurisation facile', 'Excellent pour le développement', 'Large écosystème'],
+      cons: ['Utilisation intensive des ressources', 'Courbe dʼapprentissage'],
+      price: 'Gratuit',
+      rating: 5
+    },
+    {
+      name: 'Kubernetes',
+      pros: ['Orchestration excellente', 'Auto-scaling', 'Prêt pour la production'],
+      cons: ['Configuration complexe', 'Courbe dʼapprentissage abrupte'],
+      price: 'Gratuit',
+      rating: 4
+    },
+    {
+      name: 'Terraform',
+      pros: ['Infrastructure en tant que code', 'Multi-cloud', 'Excellente planification'],
+      cons: ['Gestion de lʼétat', 'Peut être complexe'],
+      price: 'Gratuit/Payant',
+      rating: 4
+    }
+  ]}
+  title='Comparaison des outils dʼinfrastructure'
+/>
+
+</ExpandableSection>
+
+<ExpandableSection title='Stacks' icon='Code'>
+  <ItemGrid
+    items={[
+      {
+        image: '/images/uses/software/elk.png',
+        name: 'ELK Stack',
+        description: 'Elasticsearch, Logstash et Kibana pour lʼanalyse des logs',
+        url: 'https://www.elastic.co/fr/what-is/elk-stack',
+        isAffiliate: false
+      },
+      {
+        image: '/images/uses/software/lamp.png',
+        name: 'LAMP Stack',
+        description: 'Linux, Apache, MySQL et PHP',
+        url: 'https://fr.wikipedia.org/wiki/LAMP_(informatique)',
+        isAffiliate: false
+      },
+      {
+        image: '/images/uses/software/mean.png',
+        name: 'MEAN Stack',
+        description: 'MongoDB, Express, Angular et Node.js',
+        url: 'https://fr.wikipedia.org/wiki/MEAN',
+        isAffiliate: false
+      },
+      {
+        image: '/images/uses/software/mern.png',
+        name: 'MERN Stack',
+        description: 'MongoDB, Express, React et Node.js',
+        url: 'https://fr.wikipedia.org/wiki/MERN_stack',
+        isAffiliate: false
+      },
+      {
+        image: '/images/uses/software/jam.png',
+        name: 'JAM Stack',
+        description: 'JavaScript, API et Markup',
+        url: 'https://jamstack.org/',
+        isAffiliate: false
+      }
+    ]}
+  />
+</ExpandableSection>

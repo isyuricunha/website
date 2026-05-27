@@ -1,0 +1,54 @@
+---
+name: YuPomo
+description: Minuterie Pomodoro élégante pour le web et le bureau avec React, TypeScript, Vite et Tauri. Design minimal avec statistiques, notifications et localisation.
+homepage: https://yupomo.yuricunha.com/
+github: https://github.com/isyuricunha/YuPomo
+techstack:
+  - React
+  - TypeScript
+  - Vite
+  - Tauri
+  - TailwindCSS
+  - Chart.js
+  - Rust
+selected: true
+status: active
+---
+
+## À propos du projet
+
+YuPomo est un minuteur Pomodoro axé sur la productivité qui vous aide à travailler par cycles et à vous reposer de manière intentionnelle. Il fonctionne comme une application web rapide et comme une application native pour Windows, macOS et Linux grâce à Tauri. L'interface est épurée et intuitive, vous permettant de démarrer une session sans friction et de rester concentré. Les paramètres et les statistiques sont stockés localement, de sorte que vos données restent sur votre appareil.
+
+YuPomo suit la méthode Pomodoro classique avec des valeurs par défaut de vingt-cinq minutes pour le travail, cinq minutes pour une courte pause et quinze minutes pour une longue pause. Vous pouvez modifier toutes les durées, activer les alertes sonores et les notifications, et basculer entre les thèmes clair et sombre. Une vue statistique affiche votre historique de concentration quotidien, hebdomadaire et mensuel avec des graphiques, afin que vous puissiez observer les tendances et améliorer votre routine au fil du temps.
+
+## Fonctionnalités principales
+
+Flux Pomodoro complet avec travail, courte pause et longue pause. Changement de thème avec un thème sombre en vrai noir. Durées, sons et notifications configurables. Persistance locale des préférences et de l'historique. Statistiques avec graphiques pour visualiser le temps de concentration et le nombre de sessions. Mise en page adaptative pour ordinateur et mobile. Interface multilingue avec changement de langue instantané à l'exécution. Bannière de mise à jour optionnelle sur le bureau qui vous informe lorsqu'une nouvelle version est disponible.
+
+## Plateformes et installation
+
+La version web est disponible via le lien de démonstration. L'application de bureau est distribuée via GitHub Releases avec des installateurs pour Windows, macOS et Linux. Sous Windows, vous pouvez utiliser l'installateur setup exe ou msi. Sous macOS, installez via le fichier dmg correspondant à votre puce. Sous Linux, vous pouvez choisir les paquets deb ou rpm ou exécuter l'AppImage. L'application peut également vérifier les mises à jour sur le bureau et vous guider pour télécharger et installer la dernière version.
+
+## Développement et construction
+
+Le projet utilise React et TypeScript avec Vite pour le client web et Tauri pour l'enveloppe de bureau. Vous pouvez cloner le dépôt, installer les dépendances avec votre gestionnaire de paquets et lancer le serveur de développement pour le web ou le processus de développement Tauri pour le bureau. Des scripts de construction sont fournis pour le déploiement web et pour les bundles de bureau pour chaque système d'exploitation. Les scripts de gestion des versions maintiennent les versions web et Tauri synchronisées, et le flux de publication construit et publie les artefacts sur GitHub Releases.
+
+## Mise à jour automatique du bureau
+
+Les versions de bureau prennent en charge Tauri Updater. L'application peut vérifier la dernière version publiée sur GitHub, afficher une bannière dans l'application avec la nouvelle version et la télécharger et l'installer. Les artefacts de mise à jour sont signés et vérifiés. La configuration utilise une clé publique dans la configuration Tauri et le fichier JSON le plus récent de la version. Vous pouvez activer l'installation automatique au démarrage dans les paramètres sur le bureau.
+
+## Vie privée
+
+YuPomo ne collecte pas de données personnelles. Les préférences et les statistiques sont sauvegardées localement. La version web utilise localStorage. La version de bureau utilise le système de fichiers Tauri dans le répertoire des données de l'application. Les notifications et les sons sont générés localement. La vérification optionnelle des mises à jour n'appelle que l'API publique GitHub Releases.
+
+## Contact et liens
+
+**Démonstration** : https://yupomo.yuricunha.com
+
+**Dépôt** : https://github.com/isyuricunha/YuPomo
+
+**Profil et mises à jour** : https://x.com/isyuricunha
+
+**Email** : me@yuricunha.com
+
+**Site web** : https://yuricunha.com
