@@ -8,7 +8,7 @@ export default mergeConfig(
     test: {
       name: 'scripts',
       environment: 'node',
-      include: ['scripts/**/*.test.ts']
+      include: ['*.test.ts']
     }
   })
 )

@@ -187,6 +187,7 @@ docker compose up --build
 このプロジェクトは **セマンティックバージョニング (SemVer)** と **Conventional Commits** を使用しています。リリースは GitHub Actions の **python-semantic-release** を介して自動化されています。
 
 ### 動作原理- `main` ブランチへのプッシュがリリースワークフローをトリガーします
+
 - `python-semantic-release` がコミットメッセージを解析し、次のバージョンを決定します
 - リリースが作成されると、以下が実行されます:
   - `vX.Y.Z` 形式の Git タグを作成

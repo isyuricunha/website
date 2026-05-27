@@ -86,11 +86,13 @@ Si incluso un campo es diferente, las entradas se mantienen como elementos separ
 ## Notas Importantes
 
 <Callout type='warning'>
-Siempre haz una copia de seguridad de tu bóveda antes de realizar cualquier operación de limpieza. Exporta tu bóveda actual antes de importar la desduplicada, solo para estar seguro.
+  Siempre haz una copia de seguridad de tu bóveda antes de realizar cualquier operación de limpieza.
+  Exporta tu bóveda actual antes de importar la desduplicada, solo para estar seguro.
 </Callout>
 
 <Callout type='info'>
-Si deseas verificar duplicados en función de diferentes campos (como solo nombre de usuario + URI), puedes modificar la tupla `key` en el código para incluir solo los campos que te interesan.
+  Si deseas verificar duplicados en función de diferentes campos (como solo nombre de usuario +
+  URI), puedes modificar la tupla `key` en el código para incluir solo los campos que te interesan.
 </Callout>
 
 El script utiliza el módulo `csv` integrado de Python y un `set` para realizar un seguimiento de lo que ya hemos visto, lo que lo hace bastante eficiente incluso para bóvedas grandes.

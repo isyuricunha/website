@@ -301,10 +301,11 @@ if __name__ == "__main__":
 1. **依存関係のインストール**:
    ```bash
     pip install discord.py httpx aiofiles
-    ```
+   ```
 2. **Ollama**: Ollamaが実行中であることを確認してください (`ollama serve`) そしてモデルをプルしてください（例: `ollama pull llama3`)。
 3. **トークン**: `Config` クラス内の `DISCORD_TOKEN` を、Discord Developer Portalから取得した実際のボットトークンに置き換えてください。
 
 <Callout type='warning'>
-  実際のDiscordトークンをパブリックリポジトリにコミットしないでください。本番環境では環境変数（例: `python-dotenv`）を使用してください。
+  実際のDiscordトークンをパブリックリポジトリにコミットしないでください。本番環境では環境変数（例:
+  `python-dotenv`）を使用してください。
 </Callout>

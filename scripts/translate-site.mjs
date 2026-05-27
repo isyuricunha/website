@@ -2,7 +2,9 @@
 
 import { access, mkdir, readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
-import { fileURLToPath } from 'node:url'
+import { fileURLToPath, pathToFileURL } from 'node:url'
+
+import yaml from 'js-yaml'
 
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url))
 const rootDirectory = path.resolve(scriptDirectory, '..')
@@ -41,6 +43,12 @@ const LANGUAGE_LABELS = new Map([
   ['zh-CN', '中文（简体）'],
   ['zh-TW', '中文（繁體）']
 ])
+const TRANSLATABLE_FRONTMATTER_FIELDS = {
+  blog: new Set(['title', 'summary']),
+  pages: new Set(),
+  projects: new Set(['name', 'description']),
+  snippet: new Set(['title', 'description'])
+}
 
 const usage = `Usage:
   pnpm translate:site -- --target es [--source en] [--label "Español"]
@@ -386,6 +394,10 @@ const parseJsonFromModel = (text) => {
   throw new Error('Could not parse JSON from model response.')
 }
 
+const isPlainObject = (value) => {
+  return value !== null && typeof value === 'object' && !Array.isArray(value)
+}
+
 const flattenMessages = (value, prefix = []) => {
   const entries = []
 
@@ -479,6 +491,113 @@ const translateMessageBatch = async ({
   }
 
   return parsed
+}
+
+const translateFrontmatterBatch = async ({
+  batch,
+  collection,
+  sourceLocale,
+  targetLocale,
+  sourceLabel,
+  targetLabel,
+  requestTimeoutMs,
+  maxRetries
+}) => {
+  const response = await translateWithOpenAiCompatible({
+    messages: [
+      {
+        role: 'system',
+        content:
+          'You translate MDX frontmatter text fields for a multilingual site. Return only valid JSON. Preserve placeholders, markdown, HTML tags, URLs, code identifiers, and product names.'
+      },
+      {
+        role: 'user',
+        content: JSON.stringify({
+          collection,
+          sourceLocale,
+          targetLocale,
+          sourceLanguage: sourceLabel,
+          targetLanguage: targetLabel,
+          instructions:
+            'Translate only each value. Return a JSON array with the exact same path values and translated value strings. Do not add, remove, rename, or translate frontmatter keys or technical metadata.',
+          items: batch
+        })
+      }
+    ],
+    temperature: 0.1,
+    requestTimeoutMs,
+    maxRetries
+  })
+
+  const parsed = parseJsonFromModel(response)
+  if (!Array.isArray(parsed)) {
+    throw new TypeError('Frontmatter translation response must be a JSON array.')
+  }
+
+  return parsed
+}
+
+const collectTranslatableFrontmatterFields = (frontmatter, collection) => {
+  const allowedFields = TRANSLATABLE_FRONTMATTER_FIELDS[collection]
+  if (!allowedFields) {
+    throw new Error(`Missing frontmatter translation rules for collection: ${collection}`)
+  }
+
+  return Object.entries(frontmatter)
+    .filter(([key, value]) => allowedFields.has(key) && typeof value === 'string')
+    .map(([path, value]) => ({ path, value }))
+}
+
+export const translateFrontmatter = async ({ frontmatter, collection, options }) => {
+  if (frontmatter.trim().length === 0) return frontmatter
+
+  const parsed = yaml.load(frontmatter, { schema: yaml.JSON_SCHEMA })
+  if (!isPlainObject(parsed)) {
+    throw new TypeError('MDX frontmatter must be a YAML object.')
+  }
+
+  const translatableFields = collectTranslatableFrontmatterFields(parsed, collection)
+  if (translatableFields.length === 0) {
+    return yaml.dump(parsed, {
+      lineWidth: -1,
+      noRefs: true,
+      schema: yaml.JSON_SCHEMA,
+      sortKeys: false
+    })
+  }
+
+  const translateBatch = options.translateFrontmatterBatch ?? translateFrontmatterBatch
+  const translatedFields = await translateBatch({
+    batch: translatableFields,
+    collection,
+    sourceLocale: options.source,
+    targetLocale: options.target,
+    sourceLabel: options.sourceLabel,
+    targetLabel: options.targetLabel,
+    requestTimeoutMs: options.requestTimeoutMs,
+    maxRetries: options.maxRetries
+  })
+  const allowedPaths = new Set(translatableFields.map(({ path }) => path))
+
+  for (const item of translatedFields) {
+    if (
+      !isPlainObject(item) ||
+      typeof item.path !== 'string' ||
+      typeof item.value !== 'string' ||
+      !allowedPaths.has(item.path)
+    ) {
+      throw new TypeError('Invalid translated frontmatter item.')
+    }
+
+    parsed[item.path] = item.value
+  }
+
+  return yaml.dump(parsed, {
+    lineWidth: -1,
+    noRefs: true,
+    schema: yaml.JSON_SCHEMA,
+    sortKeys: false
+  })
 }
 
 const translateMessages = async (options) => {
@@ -632,7 +751,7 @@ const translatePlainText = async ({
   return stripMarkdownFence(response)
 }
 
-const translateMdxFile = async ({ sourcePath, targetPath, options }) => {
+const translateMdxFile = async ({ collection, sourcePath, targetPath, options }) => {
   if (!options.force && (await pathExists(targetPath))) {
     return { status: 'skipped', reason: 'target exists' }
   }
@@ -647,14 +766,7 @@ const translateMdxFile = async ({ sourcePath, targetPath, options }) => {
   }
 
   const translatedFrontmatter = hasFrontmatter
-    ? await translatePlainText({
-        text: frontmatter,
-        sourceLabel: options.sourceLabel,
-        targetLabel: options.targetLabel,
-        kind: 'YAML frontmatter',
-        requestTimeoutMs: options.requestTimeoutMs,
-        maxRetries: options.maxRetries
-      })
+    ? await translateFrontmatter({ frontmatter, collection, options })
     : ''
 
   const translatedChunks = []
@@ -717,7 +829,7 @@ const translateContentCollection = async (collection, options) => {
   for (const sourcePath of sourceFiles) {
     const relativePath = path.relative(sourceDirectory, sourcePath)
     const targetPath = path.join(targetDirectory, relativePath)
-    const result = await translateMdxFile({ sourcePath, targetPath, options })
+    const result = await translateMdxFile({ collection, sourcePath, targetPath, options })
 
     if (result.status === 'written') written += 1
     if (result.status === 'skipped') skipped += 1
@@ -855,9 +967,11 @@ const main = async () => {
   })
 }
 
-try {
-  await main()
-} catch (error) {
-  console.error(error instanceof Error ? error.message : error)
-  process.exitCode = 1
+if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+  try {
+    await main()
+  } catch (error) {
+    console.error(error instanceof Error ? error.message : error)
+    process.exitCode = 1
+  }
 }

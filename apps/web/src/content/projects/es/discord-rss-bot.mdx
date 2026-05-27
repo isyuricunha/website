@@ -11,7 +11,7 @@ techstack:
   - RSS
   - Webhooks
 selected: true
-status: completado
+status: completed
 ---
 
 ## Acerca de Discord RSS Bot
@@ -146,34 +146,35 @@ net start DiscordRSSBot
 
 #### Variables Requeridas
 
-| Variable              | Descripción                       |
-| --------------------- | --------------------------------- |
+| Variable              | Descripción                               |
+| --------------------- | ----------------------------------------- |
 | `DISCORD_WEBHOOK_URL` | **Requerido**: URL del webhook de Discord |
 
 #### Rutas (recomendadas)
 
-| Variable       | Valor por Defecto (imagen Docker) | Descripción                                             |
-| -------------- | ------------------------------- | ------------------------------------------------------- |
-| `RSS_BOT_DATA` | `/app/data`                     | Directorio donde se almacena la base de datos SQLite    |
-| `RSS_BOT_LOGS` | `/app/logs`                     | Directorio donde se escriben los archivos de registro   |
-| `RSS_BOT_PID`  | `/tmp/discord-news-rss-bot.pid` | Ruta del archivo PID (evitar `/var/run` en contenedores sin root) |
+| Variable       | Valor por Defecto (imagen Docker) | Descripción                                                       |
+| -------------- | --------------------------------- | ----------------------------------------------------------------- |
+| `RSS_BOT_DATA` | `/app/data`                       | Directorio donde se almacena la base de datos SQLite              |
+| `RSS_BOT_LOGS` | `/app/logs`                       | Directorio donde se escriben los archivos de registro             |
+| `RSS_BOT_PID`  | `/tmp/discord-news-rss-bot.pid`   | Ruta del archivo PID (evitar `/var/run` en contenedores sin root) |
 
 #### Anulaciones Avanzadas (opcionales)
 
-| Variable   | Descripción                                             |
-| ---------- | ------------------------------------------------------- |
+| Variable   | Descripción                                                                  |
+| ---------- | ---------------------------------------------------------------------------- |
 | `DB_FILE`  | Ruta explícita del archivo de la base de datos SQLite (anula `RSS_BOT_DATA`) |
-| `LOG_FILE` | Ruta explícita del archivo de registro (anula `RSS_BOT_LOGS`)       |
-| `DATA_DIR` | Alias heredado para `RSS_BOT_DATA`                         |
+| `LOG_FILE` | Ruta explícita del archivo de registro (anula `RSS_BOT_LOGS`)                |
+| `DATA_DIR` | Alias heredado para `RSS_BOT_DATA`                                           |
 
-#### Configuraciones Opcionales del Bot| Variable             | Predeterminado | Descripción                        |
+#### Configuraciones Opcionales del Bot| Variable | Predeterminado | Descripción |
+
 | -------------------- | -------------- | ---------------------------------- |
-| `CHECK_INTERVAL`     | 300            | Intervalo entre verificaciones (segundos)  |
-| `POST_DELAY`         | 3               | Retraso entre publicaciones (segundos)      |
-| `COOLDOWN_DELAY`     | 60             | Retraso tras límite de velocidad (segundos)   |
-| `MAX_POST_LENGTH`    | 1900           | Longitud máxima del mensaje             |
-| `MAX_CONTENT_LENGTH` | 800            | Longitud máxima del contenido             |
-| `FEED_TIMEOUT`       | 30             | Tiempo de espera para solicitud de RSS (segundos) |
+| `CHECK_INTERVAL` | 300 | Intervalo entre verificaciones (segundos) |
+| `POST_DELAY` | 3 | Retraso entre publicaciones (segundos) |
+| `COOLDOWN_DELAY` | 60 | Retraso tras límite de velocidad (segundos) |
+| `MAX_POST_LENGTH` | 1900 | Longitud máxima del mensaje |
+| `MAX_CONTENT_LENGTH` | 800 | Longitud máxima del contenido |
+| `FEED_TIMEOUT` | 30 | Tiempo de espera para solicitud de RSS (segundos) |
 
 ### Configuración de Feeds RSS
 

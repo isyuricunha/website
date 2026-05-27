@@ -200,35 +200,36 @@ docker compose up --build
 
 Este proyecto utiliza **Versionado Semántico (SemVer)** y **Commits Convencionales**. Los lanzamientos se automatizan mediante **python-semantic-release** en GitHub Actions.
 
-### Funcionamiento- Un *push* a `main` activa el flujo de trabajo de lanzamiento (*release workflow*)
-- `python-semantic-release` analiza los mensajes de confirmación (*commit messages*) y determina la siguiente versión
-- Si se crea un lanzamiento (*release*), este:
-  - Crea una etiqueta (*tag*) de Git en el formato `vX.Y.Z`
+### Funcionamiento- Un _push_ a `main` activa el flujo de trabajo de lanzamiento (_release workflow_)
+
+- `python-semantic-release` analiza los mensajes de confirmación (_commit messages_) y determina la siguiente versión
+- Si se crea un lanzamiento (_release_), este:
+  - Crea una etiqueta (_tag_) de Git en el formato `vX.Y.Z`
   - Actualiza `project.version` en `pyproject.toml`
   - Genera `CHANGELOG.md` a partir de plantillas
   - Publica imágenes de Docker etiquetadas con `latest` y `vX.Y.Z`
 
 ---
 
-### Ejemplos de *Conventional Commits*
+### Ejemplos de _Conventional Commits_
 
-- `feat(proxy): add tool_choice forwarding` → incremento de versión *minor*
-- `fix(api): handle gzip bodies` → incremento de versión *patch*
-- `perf(proxy): reduce allocations` → incremento de versión *patch*
+- `feat(proxy): add tool_choice forwarding` → incremento de versión _minor_
+- `fix(api): handle gzip bodies` → incremento de versión _patch_
+- `perf(proxy): reduce allocations` → incremento de versión _patch_
 - `docs: update readme` → sin incremento de versión
 
 ---
 
-### Cambios Importantes (*Breaking Changes*)
+### Cambios Importantes (_Breaking Changes_)
 
-Incluye `BREAKING CHANGE:` en el cuerpo del *commit* para activar un incremento de versión *major*.
+Incluye `BREAKING CHANGE:` en el cuerpo del _commit_ para activar un incremento de versión _major_.
 
 ---
 
 ### Secretos de GitHub Actions
 
 - `GITHUB_TOKEN` — Proporcionado automáticamente por GitHub
-- `RELEASE_TOKEN` (opcional) — *PAT* con permisos para subir *commits* y *tags*
+- `RELEASE_TOKEN` (opcional) — _PAT_ con permisos para subir _commits_ y _tags_
 - `DOCKERHUB_USERNAME` (opcional)
 - `DOCKERHUB_TOKEN` (opcional)
 
@@ -236,16 +237,16 @@ Incluye `BREAKING CHANGE:` en el cuerpo del *commit* para activar un incremento 
 
 ### Notas sobre Publicación
 
-- La publicación en GHCR usa `github.token` y se ejecuta cuando se crea un lanzamiento (*release*)
+- La publicación en GHCR usa `github.token` y se ejecuta cuando se crea un lanzamiento (_release_)
 - La publicación en Docker Hub solo se ejecuta cuando están configurados `DOCKERHUB_USERNAME` y `DOCKERHUB_TOKEN`
 
 ---
 
 ## Solución de Problemas
 
-### Error de DBeaver: *"HTTP/1.1 header parser received no bytes"* / *"Connection reset"*
+### Error de DBeaver: _"HTTP/1.1 header parser received no bytes"_ / _"Connection reset"_
 
-Esto generalmente indica que el *proxy* falló antes de escribir una respuesta.
+Esto generalmente indica que el _proxy_ falló antes de escribir una respuesta.
 
 **Mitigaciones implementadas:**
 
@@ -261,20 +262,21 @@ curl -v http://localhost:8000/responses -H "Content-Type: application/json" -d '
 
 ---
 
-### *"Unsupported upgrade request"* en los registros (*logs*)
+### _"Unsupported upgrade request"_ en los registros (_logs_)
 
-Esto puede ocurrir cuando un cliente intenta una actualización (por ejemplo, actualizaciones de estilo *h2c/websocket*). Es esperado e inofensivo para el uso normal de DBeaver.
+Esto puede ocurrir cuando un cliente intenta una actualización (por ejemplo, actualizaciones de estilo _h2c/websocket_). Es esperado e inofensivo para el uso normal de DBeaver.
 
 ---
 
 ## Stack Tecnológico
 
-- **Python 3.12+** con FastAPI para el servidor *proxy*
+- **Python 3.12+** con FastAPI para el servidor _proxy_
 - Integración con la **API de Mistral AI** para completados de IA
 - Capa de compatibilidad con **DBeaver CE**
 - **Docker** para despliegue en contenedores
 - **Systemd** para la gestión de servicios en Linux
-- **Versionado Semántico** con *Conventional Commits* para lanzamientos automatizados
+- **Versionado Semántico** con _Conventional Commits_ para lanzamientos automatizados
 
 ---
-*DBeaver Proxy to Mistral* proporciona un puente fluido entre las expectativas de la API compatible con OpenAI de DBeaver y la API de Mistral, permitiendo a los desarrolladores utilizar las capacidades de IA de Mistral directamente dentro de DBeaver CE.
+
+_DBeaver Proxy to Mistral_ proporciona un puente fluido entre las expectativas de la API compatible con OpenAI de DBeaver y la API de Mistral, permitiendo a los desarrolladores utilizar las capacidades de IA de Mistral directamente dentro de DBeaver CE.

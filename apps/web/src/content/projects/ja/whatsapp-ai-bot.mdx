@@ -11,7 +11,7 @@ techstack:
   - SQLite
   - Puppeteer
 selected: true
-status: ベータ
+status: beta
 ---
 
 ## WhatsApp AI Bot について
@@ -196,19 +196,19 @@ AI: 📊 Bot Status
 
 ### 環境変数
 
-| 変数                      | 説明                                          | デフォルト           | 必須   |
-| ------------------------- | --------------------------------------------- | -------------------- | ------ |
-| `MISTRAL_API_KEY`         | Mistral APIキー                               | None                | はい   |
-| `MISTRAL_AGENT_ID`        | Mistral エージェントID（形式: ag\_...）       | None                | はい   |
-| `BOT_NAME`                | ボットの表示名                               | `WhatsApp AI Bot`   | いいえ |
-| `MAX_CONTEXT_MESSAGES`    | コンテキストに保持する最大メッセージ数        | `20`                | いいえ |
-| `MESSAGE_SPLIT_LENGTH`    | メッセージを分割する前の最大長                | `1500`              | いいえ |
-| `WHATSAPP_SESSION_PATH`   | WhatsApp Webセッション/認証キャッシュの保存場所 | `./session`         | いいえ |
-| `PUPPETEER_HEADLESS`      | ブラウザをヘッドレスモードで実行              | `true`              | いいえ |
-| `PUPPETEER_EXECUTABLE_PATH` | カスタムChromium実行ファイルのパス           | None                | いいえ |
-| `ADMIN_WHATSAPP_NUMBER`   | 管理者WhatsApp番号（形式: `5511999999999@c.us`） | None            | はい   |
-| `NODE_ENV`                | 環境モード                                    | `development`       | いいえ |
-| `DEBUG`                   | デバッグログを有効化                          | `false`             | いいえ |
+| 変数                        | 説明                                             | デフォルト        | 必須   |
+| --------------------------- | ------------------------------------------------ | ----------------- | ------ |
+| `MISTRAL_API_KEY`           | Mistral APIキー                                  | None              | はい   |
+| `MISTRAL_AGENT_ID`          | Mistral エージェントID（形式: ag\_...）          | None              | はい   |
+| `BOT_NAME`                  | ボットの表示名                                   | `WhatsApp AI Bot` | いいえ |
+| `MAX_CONTEXT_MESSAGES`      | コンテキストに保持する最大メッセージ数           | `20`              | いいえ |
+| `MESSAGE_SPLIT_LENGTH`      | メッセージを分割する前の最大長                   | `1500`            | いいえ |
+| `WHATSAPP_SESSION_PATH`     | WhatsApp Webセッション/認証キャッシュの保存場所  | `./session`       | いいえ |
+| `PUPPETEER_HEADLESS`        | ブラウザをヘッドレスモードで実行                 | `true`            | いいえ |
+| `PUPPETEER_EXECUTABLE_PATH` | カスタムChromium実行ファイルのパス               | None              | いいえ |
+| `ADMIN_WHATSAPP_NUMBER`     | 管理者WhatsApp番号（形式: `5511999999999@c.us`） | None              | はい   |
+| `NODE_ENV`                  | 環境モード                                       | `development`     | いいえ |
+| `DEBUG`                     | デバッグログを有効化                             | `false`           | いいえ |
 
 ### 完全な設定構造
 
@@ -264,6 +264,7 @@ whatsapp-ai/
 - **エラー監視**: 自動エラーカテゴリ化と追跡
 
 #### データ管理- **自動クリーンアップ**: ストレージ最適化のための組み込みメンテナンス
+
 - **データストレージ**: 会話は SQLite にローカルで保存（メッセージは外部 API に送信）
 - **バックアップ対応**: ファイルベースのデータベースストレージで簡単なバックアップと移行が可能
 - **スケーラブルな設計**: 数千の会話を効率的に処理
@@ -390,6 +391,7 @@ pnpm start
 - `/context` コマンドでランタイム設定を確認
 
 ##### コマンドが機能しない- 管理者WhatsApp番号の形式を確認: `5511999999999@c.us`
+
 - `.env`ファイル内で番号が完全に一致しているか確認
 - コマンドが `/` (スラッシュ) で始まっているか確認
 - 利用可能なコマンドを確認するには `/help` を使用

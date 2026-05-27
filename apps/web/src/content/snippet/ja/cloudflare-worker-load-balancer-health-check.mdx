@@ -54,7 +54,7 @@ Cloudflare Load Balancerは優れた製品ですが、有料です。「Cloudfla
 
 以下のTunnel URLを独自のものに置き換えてください。
 
-```javascript
+````javascript
 ```js
 // Cloudflare Worker Load Balancer with Health Check
 // Configure your tunnel URLs here
@@ -181,8 +181,9 @@ export default {
     }
   }
 }
-```
-```
+````
+
+````
 
 ## セットアップ（手順）
 
@@ -205,14 +206,15 @@ export default {
    ```bash
    ```bash
    curl -I https://service.yourdomain.com
-   ```
-   ```
+````
 
-   レスポンスヘッダーに`X-Served-By`を確認します。
+````
+
+レスポンスヘッダーに`X-Served-By`を確認します。
 
 5. **フェイルオーバーをテスト**
 
-   プライマリTunnelを一時的に停止し、同じリクエストを再試行します。ヘッダーがレプリカに切り替わるはずです。
+プライマリTunnelを一時的に停止し、同じリクエストを再試行します。ヘッダーがレプリカに切り替わるはずです。
 
 ## 注意事項と制限事項
 
@@ -232,20 +234,21 @@ export default {
 ```text
 ```text
 
-        ┌─────────────────┐
-        │  Tunnel "main"  │
-        └─────────────────┘
-                │
-    ┌───────────┼───────────┬───────────┐
-    ▼           ▼           ▼           ▼
+     ┌─────────────────┐
+     │  Tunnel "main"  │
+     └─────────────────┘
+             │
+ ┌───────────┼───────────┬───────────┐
+ ▼           ▼           ▼           ▼
 ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐
 │Server A │ │Server B │ │Server C │ │Server D │
 │         │ │         │ │         │ │         │
 │Jellyfin │ │Navidrome│ │qBittor. │ │OpenWebUI│
 └─────────┘ └─────────┘ └─────────┘ └─────────┘
 
-```
-```
+````
+
+````
 
 問題：Cloudflareはjellyfin.domain.comをランダムに（A、B、C、またはDのいずれかのサーバー）にルーティングしますが、JellyfinはServer Aにのみ存在します！ 💥
 結果：- リクエストの75%がエラー502で失敗します（誤ったサーバーにアクセスしたため）
@@ -271,7 +274,7 @@ export default {
 │OpenWebUI│ │OpenWebUI│
 └─────────┘ └─────────┘
 
-```
+````
 
 Open WebUIが2つのサーバーに存在するため、正常に動作します。
 

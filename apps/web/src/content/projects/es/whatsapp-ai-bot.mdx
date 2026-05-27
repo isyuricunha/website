@@ -204,19 +204,19 @@ AI: 📊 Bot Status
 
 ### Variables de Entorno
 
-| Variable                    | Descripción                                          | Valor por Defecto | Requerido |
-| --------------------------- | ---------------------------------------------------- | ----------------- | --------- |
-| `MISTRAL_API_KEY`           | Clave de API de Mistral                              | None              | Sí        |
-| `MISTRAL_AGENT_ID`          | ID del Agente de Mistral (formato: ag\_...)          | None              | Sí        |
-| `BOT_NAME`                  | Nombre visible del bot                               | `WhatsApp AI Bot` | No        |
-| `MAX_CONTEXT_MESSAGES`      | Máximo de mensajes para mantener en el contexto       | `20`              | No        |
-| `MESSAGE_SPLIT_LENGTH`      | Longitud máxima antes de dividir los mensajes        | `1500`            | No        |
-| `WHATSAPP_SESSION_PATH`     | Ubicación donde se almacena la caché de sesión/auth de WhatsApp Web | `./session` | No        |
-| `PUPPETEER_HEADLESS`        | Ejecutar el navegador en modo sin cabeza             | `true`            | No        |
-| `PUPPETEER_EXECUTABLE_PATH` | Ruta personalizada del ejecutable de Chromium        | None              | No        |
-| `ADMIN_WHATSAPP_NUMBER`     | Número de WhatsApp del administrador (formato: `5511999999999@c.us`) | None | Sí        |
-| `NODE_ENV`                  | Modo de entorno                                      | `development`     | No        |
-| `DEBUG`                     | Habilitar registro de depuración                     | `false`           | No        |
+| Variable                    | Descripción                                                          | Valor por Defecto | Requerido |
+| --------------------------- | -------------------------------------------------------------------- | ----------------- | --------- |
+| `MISTRAL_API_KEY`           | Clave de API de Mistral                                              | None              | Sí        |
+| `MISTRAL_AGENT_ID`          | ID del Agente de Mistral (formato: ag\_...)                          | None              | Sí        |
+| `BOT_NAME`                  | Nombre visible del bot                                               | `WhatsApp AI Bot` | No        |
+| `MAX_CONTEXT_MESSAGES`      | Máximo de mensajes para mantener en el contexto                      | `20`              | No        |
+| `MESSAGE_SPLIT_LENGTH`      | Longitud máxima antes de dividir los mensajes                        | `1500`            | No        |
+| `WHATSAPP_SESSION_PATH`     | Ubicación donde se almacena la caché de sesión/auth de WhatsApp Web  | `./session`       | No        |
+| `PUPPETEER_HEADLESS`        | Ejecutar el navegador en modo sin cabeza                             | `true`            | No        |
+| `PUPPETEER_EXECUTABLE_PATH` | Ruta personalizada del ejecutable de Chromium                        | None              | No        |
+| `ADMIN_WHATSAPP_NUMBER`     | Número de WhatsApp del administrador (formato: `5511999999999@c.us`) | None              | Sí        |
+| `NODE_ENV`                  | Modo de entorno                                                      | `development`     | No        |
+| `DEBUG`                     | Habilitar registro de depuración                                     | `false`           | No        |
 
 ### Estructura de Configuración Completa
 
@@ -272,6 +272,7 @@ whatsapp-ai/
 - **Monitoreo de Errores**: Categorización y seguimiento automático de errores
 
 #### Gestión de Datos- **Limpieza automática**: Mantenimiento integrado para la optimización del almacenamiento
+
 - **Almacenamiento de datos**: Las conversaciones se almacenan localmente en SQLite (mientras que los mensajes se envían a APIs externas)
 - **Listo para copia de seguridad**: Almacenamiento de base de datos basado en archivos para copias de seguridad y migración fáciles
 - **Diseño escalable**: Maneja miles de conversaciones de manera eficiente
@@ -294,19 +295,19 @@ pnpm run hooks:install  # Enable repo git hooks (.githooks) for secret scanning
 
 ### Git Hooks (Escaneo de secretos)
 
-Este repositorio incluye un *hook* opcional *pre-commit* que ejecuta un escaneo ligero de secretos en los archivos preparados (*staged*).
+Este repositorio incluye un _hook_ opcional _pre-commit_ que ejecuta un escaneo ligero de secretos en los archivos preparados (_staged_).
 
 ```bash
 pnpm run hooks:install
 ```
 
-Si se detecta un patrón similar a un secreto (por ejemplo, `MISTRAL_API_KEY=...`), el *commit* será bloqueado.
+Si se detecta un patrón similar a un secreto (por ejemplo, `MISTRAL_API_KEY=...`), el _commit_ será bloqueado.
 
 ---
 
 ### CI
 
-GitHub Actions se ejecuta en cada *Pull Request* y en los *pushes* a `main`:
+GitHub Actions se ejecuta en cada _Pull Request_ y en los _pushes_ a `main`:
 
 - **Instalación**: `pnpm install --frozen-lockfile`
 - **Pruebas**: `pnpm test`
@@ -426,6 +427,7 @@ pnpm start
 - Verifica la configuración del entorno de ejecución con el comando `/context`.
 
 ##### Los comandos no funcionan- Verificar el formato del número de WhatsApp del administrador: `5511999999999@c.us`
+
 - Confirmar que el número coincida exactamente en el archivo `.env`
 - Asegurarse de que los comandos comiencen con `/` (barra inclinada hacia adelante)
 - Usar `/help` para ver los comandos disponibles
