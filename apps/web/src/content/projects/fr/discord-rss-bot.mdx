@@ -1,5 +1,5 @@
 ---
-name: Bot RSS Discord
+name: Discord RSS Bot
 description: Bot automatisé qui surveille les flux RSS et publie les mises à jour sur les canaux Discord via webhook. Entièrement configurable avec des flux et des catégories personnalisés. Comprend une gestion des timeouts pour éviter les blocages sur les flux RSS lents.
 homepage: https://github.com/isyuricunha/discord-news-rss-bot
 github: https://github.com/isyuricunha/discord-news-rss-bot
@@ -146,37 +146,37 @@ net start DiscordRSSBot
 
 #### Variables requises
 
-| Variable              | Description                       |
-| --------------------- | --------------------------------- |
+| Variable              | Description                         |
+| --------------------- | ----------------------------------- |
 | `DISCORD_WEBHOOK_URL` | **Requis** : URL du webhook Discord |
 
 #### Chemins (recommandés)
 
-| Variable       | Défaut (image Docker)            | Description                                             |
-| -------------- | -------------------------------- | ------------------------------------------------------- |
-| `RSS_BOT_DATA` | `/app/data`                      | Répertoire où la base de données SQLite est stockée     |
-| `RSS_BOT_LOGS` | `/app/logs`                      | Répertoire où les fichiers de log sont écrits          |
-| `RSS_BOT_PID`  | `/tmp/discord-news-rss-bot.pid`  | Chemin du fichier PID (éviter `/var/run` dans les conteneurs non-root) |
+| Variable       | Défaut (image Docker)           | Description                                                            |
+| -------------- | ------------------------------- | ---------------------------------------------------------------------- |
+| `RSS_BOT_DATA` | `/app/data`                     | Répertoire où la base de données SQLite est stockée                    |
+| `RSS_BOT_LOGS` | `/app/logs`                     | Répertoire où les fichiers de log sont écrits                          |
+| `RSS_BOT_PID`  | `/tmp/discord-news-rss-bot.pid` | Chemin du fichier PID (éviter `/var/run` dans les conteneurs non-root) |
 
 #### Surcharges avancées (optionnelles)
 
-| Variable   | Description                                             |
-| ---------- | ------------------------------------------------------- |
+| Variable   | Description                                                                        |
+| ---------- | ---------------------------------------------------------------------------------- |
 | `DB_FILE`  | Chemin explicite du fichier de la base de données SQLite (remplace `RSS_BOT_DATA`) |
-| `LOG_FILE` | Chemin explicite du fichier de log (remplace `RSS_BOT_LOGS`) |
-| `DATA_DIR` | Ancien alias pour `RSS_BOT_DATA`                        |
+| `LOG_FILE` | Chemin explicite du fichier de log (remplace `RSS_BOT_LOGS`)                       |
+| `DATA_DIR` | Ancien alias pour `RSS_BOT_DATA`                                                   |
 
 #### Paramètres optionnels du botVoici la traduction en français :
 
 ---
 
-| Variable             | Défaut | Description                        |
-| -------------------- | ------ | ---------------------------------- |
-| `CHECK_INTERVAL`     | 300    | Intervalle entre les vérifications (secondes) |
-| `POST_DELAY`         | 3      | Délai entre les publications (secondes) |
-| `COOLDOWN_DELAY`     | 60     | Délai après limitation de débit (secondes) |
-| `MAX_POST_LENGTH`    | 1900   | Longueur maximale d'un message |
-| `MAX_CONTENT_LENGTH` | 800    | Longueur maximale du contenu |
+| Variable             | Défaut | Description                                    |
+| -------------------- | ------ | ---------------------------------------------- |
+| `CHECK_INTERVAL`     | 300    | Intervalle entre les vérifications (secondes)  |
+| `POST_DELAY`         | 3      | Délai entre les publications (secondes)        |
+| `COOLDOWN_DELAY`     | 60     | Délai après limitation de débit (secondes)     |
+| `MAX_POST_LENGTH`    | 1900   | Longueur maximale d'un message                 |
+| `MAX_CONTENT_LENGTH` | 800    | Longueur maximale du contenu                   |
 | `FEED_TIMEOUT`       | 30     | Délai d'expiration des requêtes RSS (secondes) |
 
 ---

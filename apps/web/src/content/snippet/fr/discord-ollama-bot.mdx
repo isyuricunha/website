@@ -301,10 +301,11 @@ if __name__ == "__main__":
 1. **Installer les Dépendances** :
    ```bash
     pip install discord.py httpx aiofiles
-    ```
+   ```
 2. **Ollama** : Assurez-vous qu'Ollama est en cours d'exécution (`ollama serve`) et que vous avez téléchargé le modèle (par exemple, `ollama pull llama3`).
 3. **Token** : Remplacez `DISCORD_TOKEN` dans la classe `Config` par le token réel de votre bot depuis le Portail des Développeurs Discord.
 
 <Callout type='warning'>
-  Ne commitez jamais votre token Discord réel dans un dépôt public. Utilisez des variables d'environnement (par exemple, `python-dotenv`) pour les déploiements en production.
+  Ne commitez jamais votre token Discord réel dans un dépôt public. Utilisez des variables
+  d'environnement (par exemple, `python-dotenv`) pour les déploiements en production.
 </Callout>

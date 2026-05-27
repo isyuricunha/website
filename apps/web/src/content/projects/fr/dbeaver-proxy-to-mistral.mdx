@@ -1,5 +1,5 @@
 ---
-name: Proxy DBeaver vers Mistral
+name: DBeaver Proxy to Mistral
 description: Un petit proxy FastAPI qui permet à DBeaver CE (et à d'autres clients compatibles OpenAI) de fonctionner avec l'API Mistral.
 homepage: https://github.com/isyuricunha/dbeaver-proxy-to-mistral
 github: https://github.com/isyuricunha/dbeaver-proxy-to-mistral
@@ -186,17 +186,18 @@ docker compose up --build
 
 Ce projet utilise le **Versionnage Sémantique (SemVer)** et les **Conventional Commits**. Les releases sont automatisées via **python-semantic-release** dans GitHub Actions.
 
-### Fonctionnement- Un *push* vers `main` déclenche le workflow de publication
+### Fonctionnement- Un _push_ vers `main` déclenche le workflow de publication
+
 - `python-semantic-release` analyse les messages de commit et détermine la prochaine version
 - Si une publication est créée, elle :
-  - Crée une étiquette (*tag*) Git au format `vX.Y.Z`
+  - Crée une étiquette (_tag_) Git au format `vX.Y.Z`
   - Met à jour `project.version` dans `pyproject.toml`
   - Génère `CHANGELOG.md` à partir de modèles
   - Publie les images Docker avec les étiquettes `latest` et `vX.Y.Z`
 
 ---
 
-### Exemples de *Conventional Commits*
+### Exemples de _Conventional Commits_
 
 - `feat(proxy): add tool_choice forwarding` → incrémentation mineure
 - `fix(api): handle gzip bodies` → incrémentation de correctif
@@ -205,16 +206,16 @@ Ce projet utilise le **Versionnage Sémantique (SemVer)** et les **Conventional 
 
 ---
 
-### Changements cassants (*Breaking Changes*)
+### Changements cassants (_Breaking Changes_)
 
 Incluez `BREAKING CHANGE:` dans le corps du commit pour déclencher une incrémentation majeure.
 
 ---
 
-### Secrets des *GitHub Actions*
+### Secrets des _GitHub Actions_
 
 - `GITHUB_TOKEN` – Fournis automatiquement par GitHub
-- `RELEASE_TOKEN` (optionnel) – *PAT* avec les permissions pour pousser des commits/étiquettes
+- `RELEASE_TOKEN` (optionnel) – _PAT_ avec les permissions pour pousser des commits/étiquettes
 - `DOCKERHUB_USERNAME` (optionnel)
 - `DOCKERHUB_TOKEN` (optionnel)
 
@@ -229,25 +230,27 @@ Incluez `BREAKING CHANGE:` dans le corps du commit pour déclencher une incréme
 
 ## Résolution des problèmes
 
-### Erreur DBeaver : *"HTTP/1.1 header parser received no bytes"* / *"Connection reset"*
+### Erreur DBeaver : _"HTTP/1.1 header parser received no bytes"_ / _"Connection reset"_
 
 Cela indique généralement que le proxy a échoué avant d'écrire une réponse.
 
 **Mesures d'atténuation mises en œuvre :**
+
 - Analyse robuste des requêtes pour `/responses` et `/chat/completions`
 - Gestion des corps vides et de `Content-Encoding: gzip`
 - Uvicorn forcé à utiliser l'implémentation HTTP `h11` pour une meilleure compatibilité
 
 **Débogage :**
+
 ```bash
 journalctl -u dbeaver-mistral-proxy -n 200 --no-pager
 ```
 
 ---
 
-### *"Unsupported upgrade request"* dans les logs
+### _"Unsupported upgrade request"_ dans les logs
 
-Cela peut se produire lorsqu'un client tente une mise à niveau (par exemple, des mises à niveau de type *h2c* ou *websocket*). Cela est attendu et sans danger pour une utilisation normale de DBeaver.
+Cela peut se produire lorsqu'un client tente une mise à niveau (par exemple, des mises à niveau de type _h2c_ ou _websocket_). Cela est attendu et sans danger pour une utilisation normale de DBeaver.
 
 ---
 
@@ -258,7 +261,8 @@ Cela peut se produire lorsqu'un client tente une mise à niveau (par exemple, de
 - Couche de compatibilité **DBeaver CE**
 - **Docker** pour le déploiement conteneurisé
 - **Systemd** pour la gestion des services Linux
-- **Versionnage sémantique** avec *Conventional Commits* pour les publications automatisées
+- **Versionnage sémantique** avec _Conventional Commits_ pour les publications automatisées
 
 ---
-*DBeaver Proxy to Mistral* offre un pont transparent entre les attentes de l'API compatible OpenAI de DBeaver et l'API Mistral, permettant aux développeurs d'utiliser directement les capacités IA de Mistral dans DBeaver CE.
+
+_DBeaver Proxy to Mistral_ offre un pont transparent entre les attentes de l'API compatible OpenAI de DBeaver et l'API Mistral, permettant aux développeurs d'utiliser directement les capacités IA de Mistral dans DBeaver CE.

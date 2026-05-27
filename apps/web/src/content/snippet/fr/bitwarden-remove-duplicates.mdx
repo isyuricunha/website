@@ -86,11 +86,14 @@ Si même un seul champ est différent, les entrées sont conservées en tant qu'
 ## Notes Importantes
 
 <Callout type='warning'>
-  Faites toujours une sauvegarde de votre coffre avant d'effectuer des opérations de nettoyage. Exportez votre coffre actuel avant d'importer celui dédoublonné, par précaution.
+  Faites toujours une sauvegarde de votre coffre avant d'effectuer des opérations de nettoyage.
+  Exportez votre coffre actuel avant d'importer celui dédoublonné, par précaution.
 </Callout>
 
 <Callout type='info'>
-  Si vous souhaitez vérifier les doublons en fonction de champs différents (comme uniquement le nom d'utilisateur + URI), vous pouvez modifier le tuple `key` dans le code pour n'inclure que les champs qui vous intéressent.
+  Si vous souhaitez vérifier les doublons en fonction de champs différents (comme uniquement le nom
+  d'utilisateur + URI), vous pouvez modifier le tuple `key` dans le code pour n'inclure que les
+  champs qui vous intéressent.
 </Callout>
 
 Le script utilise le module `csv` intégré de Python et un `set` pour suivre ce que nous avons déjà vu, ce qui le rend assez efficace même pour les grands coffres.

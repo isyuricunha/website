@@ -1,5 +1,5 @@
 ---
-name: Robot IA WhatsApp
+name: WhatsApp AI Bot
 description: Un robot IA WhatsApp prêt pour la production, intégré à l'API Mistral Agents, avec un comportement d'assistant configurable via les instructions Mistral Agent, une surveillance avancée et une sécurité de niveau entreprise.
 homepage: https://github.com/isyuricunha/whatsapp-ai
 github: https://github.com/isyuricunha/whatsapp-ai
@@ -196,19 +196,19 @@ AI: 📊 Bot Status
 
 ### Variables d'Environnement
 
-| Variable                    | Description                                          | Défaut            | Requis  |
-| --------------------------- | ---------------------------------------------------- | ----------------- | ------- |
-| `MISTRAL_API_KEY`           | Clé API Mistral                                      | Aucune            | Oui     |
-| `MISTRAL_AGENT_ID`          | ID de l'Agent Mistral (format : ag\_...)             | Aucune            | Oui     |
-| `BOT_NAME`                  | Nom d'affichage du bot                               | `WhatsApp AI Bot` | Non     |
-| `MAX_CONTEXT_MESSAGES`      | Nombre maximum de messages à conserver dans le contexte | `20`           | Non     |
-| `MESSAGE_SPLIT_LENGTH`      | Longueur maximale avant la division des messages     | `1500`           | Non     |
-| `WHATSAPP_SESSION_PATH`     | Où la session/cache d'authentification WhatsApp Web est stockée | `./session` | Non |
-| `PUPPETEER_HEADLESS`        | Exécuter le navigateur en mode sans tête             | `true`           | Non     |
-| `PUPPETEER_EXECUTABLE_PATH` | Chemin personnalisé de l'exécutable Chromium         | Aucune            | Non     |
-| `ADMIN_WHATSAPP_NUMBER`     | Numéro WhatsApp de l'administrateur (format : `5511999999999@c.us`) | Aucune | Oui |
-| `NODE_ENV`                  | Mode d'environnement                                  | `development`     | Non     |
-| `DEBUG`                     | Activer la journalisation de débogage                | `false`           | Non     |
+| Variable                    | Description                                                         | Défaut            | Requis |
+| --------------------------- | ------------------------------------------------------------------- | ----------------- | ------ |
+| `MISTRAL_API_KEY`           | Clé API Mistral                                                     | Aucune            | Oui    |
+| `MISTRAL_AGENT_ID`          | ID de l'Agent Mistral (format : ag\_...)                            | Aucune            | Oui    |
+| `BOT_NAME`                  | Nom d'affichage du bot                                              | `WhatsApp AI Bot` | Non    |
+| `MAX_CONTEXT_MESSAGES`      | Nombre maximum de messages à conserver dans le contexte             | `20`              | Non    |
+| `MESSAGE_SPLIT_LENGTH`      | Longueur maximale avant la division des messages                    | `1500`            | Non    |
+| `WHATSAPP_SESSION_PATH`     | Où la session/cache d'authentification WhatsApp Web est stockée     | `./session`       | Non    |
+| `PUPPETEER_HEADLESS`        | Exécuter le navigateur en mode sans tête                            | `true`            | Non    |
+| `PUPPETEER_EXECUTABLE_PATH` | Chemin personnalisé de l'exécutable Chromium                        | Aucune            | Non    |
+| `ADMIN_WHATSAPP_NUMBER`     | Numéro WhatsApp de l'administrateur (format : `5511999999999@c.us`) | Aucune            | Oui    |
+| `NODE_ENV`                  | Mode d'environnement                                                | `development`     | Non    |
+| `DEBUG`                     | Activer la journalisation de débogage                               | `false`           | Non    |
 
 ### Structure de Configuration Complète
 
@@ -264,6 +264,7 @@ whatsapp-ai/
 - **Surveillance des Erreurs** : Catégorisation et suivi automatiques des erreurs
 
 #### Gestion des Données- **Nettoyage automatique** : Maintenance intégrée pour l'optimisation du stockage
+
 - **Stockage des données** : Les conversations sont stockées localement dans SQLite (tandis que les messages sont envoyés à des API externes)
 - **Prêt pour la sauvegarde** : Stockage de la base de données basé sur des fichiers pour une sauvegarde et une migration faciles
 - **Conception évolutive** : Gère efficacement des milliers de conversations
@@ -410,6 +411,7 @@ pnpm start
 - Vérifier les paramètres du runtime avec la commande `/context`
 
 ##### Les commandes ne fonctionnent pas- Vérifiez le format du numéro WhatsApp de l'admin : `5511999999999@c.us`
+
 - Vérifiez si le numéro correspond exactement dans le fichier `.env`
 - Assurez-vous que les commandes commencent par `/` (barre oblique)
 - Utilisez `/help` pour voir les commandes disponibles

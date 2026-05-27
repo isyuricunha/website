@@ -46,9 +46,18 @@ const LANGUAGE_LABELS = new Map([
 const TRANSLATABLE_FRONTMATTER_FIELDS = {
   blog: new Set(['title', 'summary']),
   pages: new Set(),
-  projects: new Set(['name', 'description']),
+  projects: new Set(['description']),
   snippet: new Set(['title', 'description'])
 }
+const TRANSLATABLE_MDX_JSX_ATTRIBUTES = new Set([
+  'alt',
+  'aria-label',
+  'label',
+  'placeholder',
+  'title'
+])
+const TRANSLATABLE_MDX_JSX_PROPERTIES = new Set(['description', 'price', 'title'])
+const TRANSLATABLE_MDX_JSX_ARRAY_PROPERTIES = new Set(['cons', 'pros'])
 
 const usage = `Usage:
   pnpm translate:site -- --target es [--source en] [--label "Español"]
@@ -601,6 +610,48 @@ const translateFrontmatterBatch = async ({
   return parsed
 }
 
+const translateMdxJsxBatch = async ({
+  batch,
+  sourceLocale,
+  targetLocale,
+  sourceLabel,
+  targetLabel,
+  requestTimeoutMs,
+  maxRetries
+}) => {
+  const response = await translateWithOpenAiCompatible({
+    messages: [
+      {
+        role: 'system',
+        content:
+          'You translate isolated MDX JSX text values for a multilingual site. Return only valid JSON. Preserve placeholders, markdown, inline code, HTML tags, URLs, code identifiers, product names, package names, and brand names.'
+      },
+      {
+        role: 'user',
+        content: JSON.stringify({
+          sourceLocale,
+          targetLocale,
+          sourceLanguage: sourceLabel,
+          targetLanguage: targetLabel,
+          instructions:
+            'Translate only each value. Return a JSON array with the exact same path values and translated value strings. Do not add, remove, rename, or translate paths. Do not translate technical metadata, URLs, images, class names, component names, product names, repository names, or package names.',
+          items: batch
+        })
+      }
+    ],
+    temperature: 0.1,
+    requestTimeoutMs,
+    maxRetries
+  })
+
+  const parsed = parseJsonFromModel(response)
+  if (!Array.isArray(parsed)) {
+    throw new TypeError('MDX JSX translation response must be a JSON array.')
+  }
+
+  return parsed
+}
+
 const collectTranslatableFrontmatterFields = (frontmatter, collection) => {
   const allowedFields = TRANSLATABLE_FRONTMATTER_FIELDS[collection]
   if (!allowedFields) {
@@ -750,7 +801,7 @@ const protectFencedCode = (markdown) => {
   return { text, blocks }
 }
 
-const restoreFencedCode = (markdown, blocks) => {
+const restoreProtectedBlocks = (markdown, blocks) => {
   let restored = markdown
   for (const { token, block } of blocks) {
     restored = restored.replaceAll(token, block)
@@ -758,9 +809,360 @@ const restoreFencedCode = (markdown, blocks) => {
   return restored
 }
 
+export const protectMdxJsxBlocks = (markdown) => {
+  const blocks = []
+  let text = ''
+
+  const readTag = (startIndex) => {
+    let braceDepth = 0
+    let quote = ''
+    let index = startIndex
+
+    while (index < markdown.length) {
+      const char = markdown[index]
+      const next = markdown[index + 1]
+
+      if (quote) {
+        if (char === '\\') {
+          index += 2
+          continue
+        }
+
+        if (char === quote) quote = ''
+        index += 1
+        continue
+      }
+
+      if (char === '"' || char === "'" || char === '`') {
+        quote = char
+        index += 1
+        continue
+      }
+
+      if (char === '{') {
+        braceDepth += 1
+        index += 1
+        continue
+      }
+
+      if (char === '}') {
+        braceDepth = Math.max(0, braceDepth - 1)
+        index += 1
+        continue
+      }
+
+      if (char === '>' && braceDepth === 0) {
+        return markdown.slice(startIndex, index + 1)
+      }
+
+      if (char === '/' && next === '>' && braceDepth === 0) {
+        return markdown.slice(startIndex, index + 2)
+      }
+
+      index += 1
+    }
+
+    return ''
+  }
+
+  for (let index = 0; index < markdown.length; ) {
+    const char = markdown[index]
+    const next = markdown[index + 1] ?? ''
+    if (char !== '<' || !/[A-Za-z/]/.test(next)) {
+      text += char
+      index += 1
+      continue
+    }
+
+    const block = readTag(index)
+    if (!block) {
+      text += char
+      index += 1
+      continue
+    }
+
+    const token = `@@SITE_TRANSLATION_MDX_BLOCK_${blocks.length}@@`
+    blocks.push({ token, block })
+    text += token
+    index += block.length
+  }
+
+  return { text, blocks }
+}
+
+const isIdentifierStart = (char) => /[A-Za-z_$]/.test(char)
+
+const isIdentifierPart = (char) => /[\w$-]/.test(char)
+
+const skipWhitespace = (text, startIndex) => {
+  let index = startIndex
+  while (index < text.length && /\s/.test(text[index] ?? '')) index += 1
+  return index
+}
+
+const readIdentifier = (text, startIndex) => {
+  let index = startIndex
+  while (index < text.length && isIdentifierPart(text[index] ?? '')) index += 1
+  return { value: text.slice(startIndex, index), end: index }
+}
+
+const readQuotedString = (text, startIndex) => {
+  const quote = text[startIndex]
+  if (quote !== "'" && quote !== '"' && quote !== '`') return
+
+  let index = startIndex + 1
+  while (index < text.length) {
+    const char = text[index]
+    if (char === '\\') {
+      index += 2
+      continue
+    }
+
+    if (char === quote) {
+      return {
+        quote,
+        value: text.slice(startIndex + 1, index),
+        valueEnd: index,
+        valueStart: startIndex + 1,
+        end: index + 1
+      }
+    }
+
+    index += 1
+  }
+
+  return
+}
+
+const escapeQuotedStringValue = (value, quote) =>
+  value
+    .replaceAll('\\', '\\\\')
+    .replaceAll('\r', '\\r')
+    .replaceAll('\n', '\\n')
+    .replaceAll(quote, `\\${quote}`)
+
+const isTranslatableMdxJsxValue = (value) => {
+  const trimmed = value.trim()
+  if (!trimmed) return false
+  if (trimmed.includes('@@SITE_TRANSLATION_')) return false
+  if (/^(?:https?:|\/|#|[A-Z]:\\)/i.test(trimmed)) return false
+  return true
+}
+
+const collectAttributeFields = (block) => {
+  const fields = []
+
+  for (let index = 0; index < block.length; ) {
+    const char = block[index] ?? ''
+    if (char === "'" || char === '"' || char === '`') {
+      index = readQuotedString(block, index)?.end ?? index + 1
+      continue
+    }
+
+    if (!isIdentifierStart(char)) {
+      index += 1
+      continue
+    }
+
+    const identifier = readIdentifier(block, index)
+    let valueStart = skipWhitespace(block, identifier.end)
+    if (block[valueStart] !== '=') {
+      index = identifier.end
+      continue
+    }
+
+    valueStart = skipWhitespace(block, valueStart + 1)
+    const quoted = readQuotedString(block, valueStart)
+    if (
+      quoted &&
+      TRANSLATABLE_MDX_JSX_ATTRIBUTES.has(identifier.value) &&
+      isTranslatableMdxJsxValue(quoted.value)
+    ) {
+      fields.push({
+        quote: quoted.quote,
+        value: quoted.value,
+        valueEnd: quoted.valueEnd,
+        valueStart: quoted.valueStart
+      })
+    }
+
+    index = quoted?.end ?? identifier.end
+  }
+
+  return fields
+}
+
+const collectArrayStringFields = (block, startIndex) => {
+  const fields = []
+  let bracketDepth = 0
+
+  for (let index = startIndex; index < block.length; ) {
+    const char = block[index] ?? ''
+
+    if (char === '[') {
+      bracketDepth += 1
+      index += 1
+      continue
+    }
+
+    if (char === ']') {
+      bracketDepth -= 1
+      index += 1
+      if (bracketDepth === 0) break
+      continue
+    }
+
+    const quoted = readQuotedString(block, index)
+    if (quoted) {
+      if (bracketDepth > 0 && isTranslatableMdxJsxValue(quoted.value)) {
+        fields.push({
+          quote: quoted.quote,
+          value: quoted.value,
+          valueEnd: quoted.valueEnd,
+          valueStart: quoted.valueStart
+        })
+      }
+      index = quoted.end
+      continue
+    }
+
+    index += 1
+  }
+
+  return fields
+}
+
+const collectPropertyFields = (block) => {
+  const fields = []
+
+  for (let index = 0; index < block.length; ) {
+    const quoted = readQuotedString(block, index)
+    if (quoted) {
+      index = quoted.end
+      continue
+    }
+
+    const char = block[index] ?? ''
+    if (!isIdentifierStart(char)) {
+      index += 1
+      continue
+    }
+
+    const identifier = readIdentifier(block, index)
+    let valueStart = skipWhitespace(block, identifier.end)
+    if (block[valueStart] !== ':') {
+      index = identifier.end
+      continue
+    }
+
+    valueStart = skipWhitespace(block, valueStart + 1)
+    if (TRANSLATABLE_MDX_JSX_PROPERTIES.has(identifier.value)) {
+      const value = readQuotedString(block, valueStart)
+      if (value && isTranslatableMdxJsxValue(value.value)) {
+        fields.push({
+          quote: value.quote,
+          value: value.value,
+          valueEnd: value.valueEnd,
+          valueStart: value.valueStart
+        })
+        index = value.end
+        continue
+      }
+    }
+
+    if (TRANSLATABLE_MDX_JSX_ARRAY_PROPERTIES.has(identifier.value) && block[valueStart] === '[') {
+      fields.push(...collectArrayStringFields(block, valueStart))
+    }
+
+    index = identifier.end
+  }
+
+  return fields
+}
+
+const collectTranslatableMdxJsxFields = (block, blockIndex) => {
+  const fields = [...collectAttributeFields(block), ...collectPropertyFields(block)]
+    .toSorted((left, right) => left.valueStart - right.valueStart)
+    .filter(
+      (field, index, allFields) =>
+        index === 0 || field.valueStart !== allFields[index - 1].valueStart
+    )
+
+  return fields.map((field, fieldIndex) => ({
+    ...field,
+    path: `${blockIndex}.${fieldIndex}`
+  }))
+}
+
+const applyTranslatedMdxJsxFields = (block, fields, translatedValues) => {
+  let translated = block
+
+  for (const field of fields.toReversed()) {
+    const value = translatedValues.get(field.path) ?? field.value
+    translated = `${translated.slice(0, field.valueStart)}${escapeQuotedStringValue(
+      value,
+      field.quote
+    )}${translated.slice(field.valueEnd)}`
+  }
+
+  return translated
+}
+
+export const translateMdxJsxBlocks = async ({ blocks, options }) => {
+  const fieldsByBlock = blocks.map((block, blockIndex) =>
+    collectTranslatableMdxJsxFields(block.block, blockIndex)
+  )
+  const batchItems = fieldsByBlock.flatMap((fields) =>
+    fields.map(({ path, value }) => ({ path, value }))
+  )
+
+  if (batchItems.length === 0) return blocks
+
+  const translateBatch = options.translateMdxJsxBatch ?? translateMdxJsxBatch
+  const translatedItems = []
+  for (const batch of batchByCharacters(batchItems, options.batchChars)) {
+    translatedItems.push(
+      ...(await translateBatch({
+        batch,
+        sourceLocale: options.source,
+        targetLocale: options.target,
+        sourceLabel: options.sourceLabel,
+        targetLabel: options.targetLabel,
+        requestTimeoutMs: options.requestTimeoutMs,
+        maxRetries: options.maxRetries
+      }))
+    )
+  }
+
+  const allowedPaths = new Set(batchItems.map(({ path }) => path))
+  const translatedValues = new Map()
+  for (const item of translatedItems) {
+    if (
+      !isPlainObject(item) ||
+      typeof item.path !== 'string' ||
+      typeof item.value !== 'string' ||
+      !allowedPaths.has(item.path)
+    ) {
+      throw new TypeError('Invalid translated MDX JSX item.')
+    }
+
+    translatedValues.set(item.path, item.value)
+  }
+
+  return blocks.map((block, blockIndex) => ({
+    ...block,
+    block: applyTranslatedMdxJsxFields(
+      block.block,
+      fieldsByBlock[blockIndex] ?? [],
+      translatedValues
+    )
+  }))
+}
+
 export const postProcessTranslatedMdxBody = (markdown) => {
   const normalized = markdown
     .replaceAll('<3', '&lt;3')
+    .replaceAll(/^(\s*\/>)x\s*$/gm, '$1')
     .replaceAll(/(<ExpandableSection\b[^>]*>)x(?=\r?\n|<)/g, '$1')
     .replaceAll(/(<ExpandableSection\b[^>]*>)(?=<[A-Z])/g, '$1\n\n')
 
@@ -877,7 +1279,8 @@ const translateMdxFile = async ({ collection, sourcePath, targetPath, options })
 
   const content = await readFile(sourcePath, 'utf8')
   const { frontmatter, body, hasFrontmatter } = splitFrontmatter(content)
-  const { text: protectedBody, blocks } = protectFencedCode(body)
+  const { text: protectedCodeBody, blocks: codeBlocks } = protectFencedCode(body)
+  const { text: protectedBody, blocks: mdxBlocks } = protectMdxJsxBlocks(protectedCodeBody)
   const chunks = splitTextByCharacters(protectedBody, options.batchChars)
 
   if (options.dryRun) {
@@ -910,8 +1313,12 @@ const translateMdxFile = async ({ collection, sourcePath, targetPath, options })
     )
   }
 
+  const translatedMdxBlocks = await translateMdxJsxBlocks({ blocks: mdxBlocks, options })
   const translatedBody = postProcessTranslatedMdxBody(
-    restoreFencedCode(translatedChunks.join(''), blocks)
+    restoreProtectedBlocks(
+      restoreProtectedBlocks(translatedChunks.join(''), translatedMdxBlocks),
+      codeBlocks
+    )
   )
   const output = hasFrontmatter
     ? `---\n${translatedFrontmatter.trim()}\n---\n\n${translatedBody.trimStart()}`
