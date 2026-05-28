@@ -1,0 +1,54 @@
+---
+title: 'mkcd: Verzeichnis erstellen und betreten'
+date: 2025-12-04
+author: Yuri Cunha
+description: Eine einfache Bash-Funktion, um ein Verzeichnis zu erstellen und direkt in dieses zu wechseln – alles mit einem Befehl.
+tags:
+  - bash
+  - terminal
+  - productivity
+  - linux
+---
+
+Wir alle kennen das: Man erstellt ein neues Verzeichnis mit `mkdir` und muss dann sofort mit `cd` in dieses wechseln.
+
+```bash
+mkdir my_project && cd my_project
+```
+
+Es ist eine kleine Unannehmlichkeit, aber sie summiert sich. Hier ist eine einfache Funktion, um beides auf einmal zu erledigen.
+
+{/* more */}
+
+## Die Lösung
+
+Füge diese Funktion zu deiner `.bashrc` (oder `.zshrc`) hinzu:
+
+```bash
+mkcd() {
+    mkdir -p "$1" && cd "$1"
+}
+```
+
+## Installation
+
+1. Öffne deine Konfigurationsdatei:
+   ```bash
+   nano ~/.bashrc
+   ```
+2. Füge den obigen Codeblock am Ende der Datei ein.
+3. Speichere und verlasse den Editor (`Strg+O`, `Enter`, `Strg+X`).
+4. Lade deine Konfiguration neu:
+   ```bash
+   source ~/.bashrc
+   ```
+
+## Verwendung
+
+Jetzt kannst du tiefe Verzeichnisstrukturen erstellen und sofort in sie wechseln:
+
+```bash
+mkcd vaultwarden
+```
+
+Du befindest dich dann sofort im Verzeichnis `vaultwarden`.

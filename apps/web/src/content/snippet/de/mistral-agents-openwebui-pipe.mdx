@@ -1,0 +1,164 @@
+---
+title: Mistral-Agenten in OpenWebUI (Pipe über API)
+date: 2026-01-16
+author: Yuri Cunha
+description: Ein detaillierter Code-Ausschnitt, um eine Pipe (Funktion) in OpenWebUI zu importieren und einen Mistral-Agenten über die API zu nutzen.
+tags:
+  - openwebui
+  - mistral
+  - agents
+  - python
+  - api
+  - llm
+---
+
+Dieses `pipe` ermöglicht die native Unterstützung von **Mistral-KI-Agenten** in OpenWebUI durch Aufrufe der [Mistral-API](https://api.mistral.ai/v1/agents/completions).
+
+Es erlaubt Ihnen, einen in der Mistral-Konsole erstellten Agenten auszuwählen und direkt von Ihrer OpenWebUI-Instanz aus mit ihm zu chatten.
+
+{/* mehr */}
+
+## Funktionen
+
+- Direkte Integration mit der Mistral-Agenten-API (`/v1/agents/completions`).
+- Unterstützung von Streaming-Antworten.
+- Einfache Konfiguration über Ventile (keine Notwendigkeit, den Code nach dem Import zu bearbeiten).
+- Funktioniert mit jedem in der Mistral-Konsole erstellten Agenten (Tools, Anweisungen, Wissensdatenbank usw.).
+
+## Voraussetzungen
+
+- Ein Mistral-Konto mit API-Zugriff.
+- Ein gültiger `MISTRAL_API_KEY` (erhältlich unter [https://console.mistral.ai/](https://console.mistral.ai/)).
+- Ein vorhandener Agent (Sie benötigen die Agenten-ID, um das `AGENT_ID`-Ventil zu füllen, beginnt normalerweise mit `ag_`).
+- Berechtigungen zum Importieren/Bearbeiten von Funktionen in Ihrer OpenWebUI-Instanz.
+
+## Wo erhält man die Agenten-ID?
+
+1. Gehen Sie zu [https://console.mistral.ai/build/agents](https://console.mistral.ai/build/agents).
+2. Erstellen (oder öffnen) Sie einen Agenten.
+3. Kopieren Sie die Agenten-ID.
+
+Hinweis: An einigen Stellen kann sie als `ag:` angezeigt werden; dieses `pipe` erwartet einen String-Wert, und das häufigste Format ist `ag_...`.
+
+## Wie importiert man in OpenWebUI?
+
+In der Regel haben Sie zwei Möglichkeiten:
+
+### Option A: Import über die OpenWebUI-Seite
+
+Verwenden Sie den offiziellen Funktionsbeitrag (Ein-Klick-Import):
+
+[https://openwebui.com/posts/mistral_agents_integration_pipe_42bce620](https://openwebui.com/posts/mistral_agents_integration_pipe_42bce620)
+
+In OpenWebUI:
+
+1. Öffnen Sie die oben genannte Seite.
+2. Klicken Sie auf `Importieren`.
+3. Bestätigen Sie den Import.
+
+### Option B: Manueller Import (Kopieren und Einfügen)
+
+1. Gehen Sie in OpenWebUI zum `Admin-Panel`.
+2. Öffnen Sie `Funktionen`.
+3. Klicken Sie auf `+` (oder `Neu`), um eine neue Funktion/Pipe zu erstellen.
+4. Fügen Sie den unten stehenden Code ein und speichern Sie ihn.
+
+## Konfiguration (Ventile)
+
+Nach dem Import konfigurieren Sie die Ventile (normalerweise über das Zahnrad-Symbol `⚙️`):
+
+- `MISTRAL_API_KEY`: Ihr Mistral-API-Schlüssel.
+- `AGENT_ID`: Ihre Agenten-ID (Beispiel: `ag_...`).
+
+## Der Code (Pipe)
+
+Wichtig:
+
+- Codieren Sie Ihren echten API-Schlüssel nicht hart in Dateien.
+- Setzen Sie `MISTRAL_API_KEY` und `AGENT_ID` in den Ventilen (OpenWebUI-Einstellungen) nach dem Import.
+
+```python
+# title: Mistral Agents
+# author: Yuri Cunha
+# version: 1.0.0
+# license: MIT
+
+import requests
+import json
+from typing import List, Dict, Generator
+from pydantic import BaseModel, Field
+
+
+class Pipe:
+    class Valves(BaseModel):
+        MISTRAL_API_KEY: str = Field(default="")
+        AGENT_ID: str = Field(
+            default="ag_"
+        )  # Your Agent ID aqui or put in var, please, use VAR!
+
+    def __init__(self):
+        self.type = "manifold"
+        self.id = "mistral-agent"
+        self.name = "mistral-agent/"
+        self.valves = self.Valves()
+        self.agents_endpoint = "https://api.mistral.ai/v1/agents/completions"
+
+    def pipes(self) -> List[Dict[str, str]]:
+        return [{"id": "agent", "name": f"Mistral Agent ({self.valves.AGENT_ID[:10]})"}]
+
+    def pipe(self, body: dict) -> Generator:
+        headers = {
+            "Authorization": f"Bearer {self.valves.MISTRAL_API_KEY}",
+            "Content-Type": "application/json",
+        }
+
+        payload = {
+            "agent_id": self.valves.AGENT_ID,
+            "messages": body["messages"],
+            "stream": body.get("stream", False),
+        }
+
+        response = requests.post(
+            self.agents_endpoint, headers=headers, json=payload, stream=True
+        )
+
+        for line in response.iter_lines():
+            if line:
+                yield line.decode("utf-8")
+```
+
+<Callout type='warning'>
+  Fügen Sie Ihren echten API-Schlüssel niemals in ein öffentliches Repository ein. Bevorzugen Sie in der Produktion Umgebungsvariablen und Ihren Bereitstellungsgeheimnis-Manager.
+</Callout>
+
+## Verwendung im Chat
+
+1. Öffnen Sie einen Chat in OpenWebUI.
+2. Wählen Sie die Pipe `Mistral-Agent (...)` in der Modell/Anbieter-Liste aus.
+3. Senden Sie Nachrichten wie gewohnt.
+
+OpenWebUI leitet `body["messages"]` an Mistral weiter und bewahrt die Rollen (`user`, `assistant` usw.) bei.
+
+## Wichtige Hinweise
+
+- **Agenten-ID vs. Modell**: Diese Pipe verwendet die Agenten-Route (`/v1/agents/completions`), die sich von den Standard-Chat-Completions unterscheidet.
+- **Tools**: Wenn Ihr Agent in der Mistral-Konsole Tools konfiguriert hat, werden diese automatisch vom Agenten angewendet.
+
+## Hinweise zum Streaming
+
+- Wenn `stream` in OpenWebUI aktiviert ist, sendet die Nutzlast `"stream": true`.
+- Die `Pipe` gibt die Rohantwortzeilen aus der Streaming-Anfrage zurück (`iter_lines`).
+
+Falls Sie "Roh"-Ausgaben (JSON-Zeilen) anstelle von gerendertem Text sehen, überprüfen Sie, ob OpenWebUI ein bestimmtes SSE/Chunk-Format für diese Pipe erwartet.
+
+## Schnelle Fehlerbehebung
+
+- **401 Unauthorized / 403 Forbidden**: `MISTRAL_API_KEY` ist leer, ungültig oder hat keine Berechtigungen.
+- **404 / Ungültiger Agent**: `AGENT_ID` ist falsch oder der Agent wurde entfernt.
+- **Keine Antwort / Timeout**: Überprüfen Sie, ob Ihr OpenWebUI-Server `https://api.mistral.ai` erreichen kann.
+- **Kein Streaming**: Bestätigen Sie, dass OpenWebUI `stream: true` im Anfragekörper sendet.
+
+## Referenzen
+
+- Import-Beitrag auf OpenWebUI:
+  [https://openwebui.com/posts/mistral_agents_integration_pipe_42bce620](https://openwebui.com/posts/mistral_agents_integration_pipe_42bce620)

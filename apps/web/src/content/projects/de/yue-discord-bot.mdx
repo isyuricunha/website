@@ -1,0 +1,72 @@
+---
+name: Yue Discord Bot (YueBot)
+description: Ein umfassender Discord-Bot + Admin-Panel, aufgebaut als pnpm-Monorepo mit Fastify-API, React-Web-UI und gemeinsamer Prisma-Datenbank.
+homepage: https://yuebot.yuricunha.com/
+github: https://github.com/isyuricunha/yue-discord-bot
+techstack:
+  - Node.js
+  - TypeScript
+  - Discord.js
+  - Fastify
+  - React
+  - Vite
+  - Prisma
+  - PostgreSQL
+  - TailwindCSS
+  - Docker
+selected: true
+status: active
+---
+
+## Über YueBot
+
+YueBot ist ein umfassender Discord-Bot mit Admin-Panel, der als **pnpm-Monorepo** entwickelt wurde und einen Discord-Bot, eine Fastify-API und eine React-Web-Oberfläche mit einer gemeinsamen Prisma-Datenbank kombiniert. Es ist für den Produktiveinsatz konzipiert und bietet eine vollständige Lösung für das Management von Discord-Communities.
+
+### Hauptmerkmale
+
+- **Moderations-Tools**: Bannen, Kicken, Stummschalten, Verwarnungen und Verfolgung des Moderationsverlaufs
+- **Serververwaltung**: Konfiguration von AutoMod, Autorollen, Kanälen und Vorlagen
+- **Giveaways**: Reaktionsbasierte Giveaways mit Teilnahmeverfolgung und Gewinnerauswahl
+- **XP & Levels**: Gilde- und globale Ranglisten mit Levelverfolgung
+- **Mitgliederverwaltung**: Anzeige von Mitgliedsdetails und Profilen mit Abzeichen
+- **Fan-Art-System**: Einreichen und Überprüfen von Fan-Arts mit Allowlists
+- **Wirtschaft & Spiele**: Virtuelle Währung (Luazinhas) und Münzwurfspiele
+- **Anime-Integration**: Suche und Empfehlungen von AniList
+- **Waifu/Husbando-System**: Unterhaltsames Charakter-Rollenspiel und Heiratssystem
+
+### Architektur
+
+YueBot folgt einer modernen Monorepo-Struktur:
+
+- **Bot**: Discord.js v14 für Moderation und Automatisierung
+- **API**: Fastify-Backend mit JWT-Authentifizierung
+- **Web-Oberfläche**: React + Vite Admin-Panel mit Discord OAuth
+- **Datenbank**: Prisma + PostgreSQL für gemeinsame Daten
+
+### Bereitstellung
+
+Das Projekt enthält produktionsfertige Docker-Images mit:
+
+- Single-Container-Bereitstellung (nginx + API + Bot)
+- Multi-Arch-Unterstützung (amd64, arm64)
+- Optimierte Varianten für den Produktiveinsatz
+- Docker-Compose-Beispiele für interne und externe Datenbanken
+
+### Technologie-Stack
+
+- **Node.js 24+** mit TypeScript 5.9+
+- **pnpm 10+** für das Paketmanagement
+- **Prisma 7+** für den Datenbankzugriff
+- **React 19+** mit Vite 7+ für die Weboberfläche
+- **TailwindCSS 4+** für das Styling
+- **Docker** für die Containerisierung
+
+### Einzigartige Funktionen
+
+- **Zweisprachige Unterstützung**: Befehle verfügbar auf Englisch und Portugiesisch (pt-BR)
+- **Web-Admin-Panel**: Vollständige Serververwaltung ohne Discord-Befehle
+- **Automatisierte Versionierung**: Semantic-Release basierend auf Conventional Commits
+- **Sicherheitsfokus**: httpOnly-Cookies, CORS-Allowlist und CSRF-Schutz
+- **Erweiterbar**: Modulares Design für einfache Hinzufügung neuer Funktionen
+
+YueBot ist ideal für Discord-Communities, die nach einem leistungsstarken, produktionsbereiten Bot mit einer vollständigen Web-Verwaltungsoberfläche suchen.

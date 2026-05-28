@@ -23,6 +23,10 @@ export const supportedLanguages = [
   {
     code: 'fr',
     label: 'Français'
+  },
+  {
+    code: 'de',
+    label: 'Deutsch'
   }
 ]
 

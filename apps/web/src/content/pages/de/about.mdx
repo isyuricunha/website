@@ -1,0 +1,292 @@
+---
+
+---
+
+## Wer bin ich?
+
+Ich bin Yuri Cunha, ein Brasilianer, der sich entschieden hat, Computer, Datenbanken und Homelabs etwas zu ernst zu nehmen.
+
+Im Internet trete ich meistens als **"Yuri Cunha"** auf, obwohl mein vollständiger Name im echten Leben länger ist. Auf dieser Website stelle ich einen großen Teil meiner Experimente, Notizen, Labs und zufälligen Ideen zur Verfügung.
+
+Wenn du Datenbanken, Linux, Self-Hosting, lokale KI und langfristige Projekte magst, die nicht von Anfang an perfekt aussehen, bist du hier genau richtig.
+
+---
+
+## In einem Absatz
+
+Ich bin ein Student der Datenbanktechnologie, ein angehender PostgreSQL- und MongoDB-DBA, ein Homelab-Besitzer, der gerne Dinge selbst hostet, und eine Person, die an einem langfristigen Projekt arbeitet, um leichter und weiter zu laufen. Mir sind praktisches Wissen, Dokumentation, Zuverlässigkeit und echte Beispiele wichtig, auf die ich verweisen kann – nicht nur Theorie. Ich mag Technik, aber ich mag auch Schlaf, also versuche ich, Systeme aufzubauen, die ich um drei Uhr morgens debuggen kann, ohne verrückt zu werden.
+
+---
+
+## Ein bisschen Hintergrund
+
+Einige schnelle Fakten über mich:
+
+- Ich komme aus Brasilien.
+- Ich stelle mich normalerweise als **DBA PostgreSQL Jr.** oder in ähnlichen Rollen vor.
+- Ich arbeite gerne nah an der Infrastruktur und Datenbanken, nicht nur an der obersten Schicht des Stacks.
+- Politisch tendiere ich eher zu konservativ, obwohl diese Website hauptsächlich über Technik und persönliche Projekte handelt, nicht über Politik.
+- Englisch ist nicht meine Muttersprache; du wirst wahrscheinlich hier und da einige seltsame Sätze finden.
+
+Ich stehe dazu, ehrlich darüber zu sein, wo ich mich auf meiner Reise befinde. Ich bin kein Senior-Architekt mit dreißig Jahren Erfahrung. Ich bin jemand, der diesen Weg Schritt für Schritt aufbaut – ein Labor und ein Projekt nach dem anderen.
+
+---
+
+## Was ich gerade in der Technik mache
+
+Auf der formellen Seite studiere ich **Datenbanktechnologie** an der Estácio, einem technologisch ausgerichteten Studiengang mit Fokus auf Datenbanken. Der Plan ist, um 2026 oder 2027 abzuschließen und unterwegs das, was ich im Studium lerne, mit echten Projekten in meinem Homelab und in meinen Repositories zu verbinden.
+
+Auf der praktischen Seite umfasst meine Routine normalerweise:
+
+- Betreuung von **Linux-Servern**, hauptsächlich Ubuntu Server 24.04 LTS.
+- Arbeit mit **PostgreSQL** als meiner Haupt-Datenbank für relationale Daten.
+- Nutzung von **MongoDB** für dokumentenbasierte Szenarien.
+- Erstellen und Verwalten von **Docker Compose**-Stacks.
+- Üben von Backup, Wiederherstellung und Disaster Recovery.
+- Optimierung von Abfragen und Datenbankeinstellungen für bessere Leistung.
+- Einrichtung von Monitoring und Warnmeldungen.
+- Dokumentation von allem in Markdown, damit mein zukünftiges Ich mein vergangenes Ich nicht hasst.
+
+Ich verbringe auch Zeit damit, mich auf Zertifizierungen und berufliche Möglichkeiten im Bereich Datenbanken, Infrastruktur und Sicherheit vorzubereiten.
+
+---
+
+## Mein Homelab und meine Infrastruktur
+
+Ich sage gerne, dass mein Homelab mein bester Lehrer ist.
+
+Einige Dinge, die dort zu finden sind:
+
+- Heimserver, die **Ubuntu Server 24.04 LTS** ausführen, darunter:
+  - Ein leistungsfähigerer Rechner, der auf Datenbanken und Dienste spezialisiert ist.
+  - Ein leichterer Rechner, den ich immer noch für Experimente nutze.
+- **Oracle Cloud**-Instanzen, die als zusätzliche Knoten und Datenbank-Hosts dienen.
+- **Tailscale**, um alles in einem sicheren Overlay zu verbinden, einschließlich meines Windows-Laptops.
+- **Cloudflared**-Tunnel, um Dienste zu exponieren, ohne zufällige Ports für das Internet zu öffnen.
+- **Zufällige externe Ports**, die Containern zugeordnet sind, anstelle von Standardports, als kleine zusätzliche Schutzschicht gegen Bots.
+- Ein dedizierter Datenbankserver bei Oracle, auf dem ich Datenbanken wie PostgreSQL und andere zentralisiere.
+
+Typische Dienste, die hier kommen und gehen:
+
+- Nextcloud für Dateien.
+- Joplin-Server für Notizen.
+- PrivateBin für schnelles Teilen von Texten.
+- Selbstgehostete Monitoring-Tools.
+- Lokale KI-Modelle über Ollama.
+- Kleine Web-Apps zur Unterstützung meines Workflows.
+
+Ich besitze die Domain **`yuricunha.com`**, und viele Dienste leben auf Subdomains wie `something.yuricunha.com`. Diese Website ist eines der sichtbaren Gesichter all dessen.
+
+---
+
+## Tech-Stack und Präferenzen
+
+Das sind einige Tools und Entscheidungen, die in meinen Projekten häufig vorkommen:- **Betriebssysteme**
+  - Ubuntu Server 24.04 LTS auf Servern
+  - Windows 10 Pro auf meinem Haupt-Laptop
+  - Arch-basierte Distributionen für Experimente, wie EndeavourOS, CachyOS und Garuda
+
+- **Netzwerk und Zugriff**
+  - Tailscale für sicheren Fernzugriff
+  - Cloudflared zum Veröffentlichen von Diensten ohne Änderungen an der Portweiterleitung des Routers
+
+- **Container und Dienste**
+  - Docker mit **Docker Compose** (das Plugin, nicht der alte `docker-compose`-Befehl)
+  - `docker-compose.yml`-Dateien ohne den alten `version`-Schlüssel
+  - Externe PostgreSQL-Datenbank anstelle einer Datenbank pro Container
+  - Feste DNS-Einstellungen in Containern mit:
+    - `1.1.1.1`
+    - `8.8.8.8`
+
+- **Programmierung und Tools**
+  - Python für Automatisierung und Skripte
+  - `pipx` zum sauberen, globalen Installieren von Python-basierten Tools
+  - Shell-Skripte für einfache Aufgaben
+
+- **Datenbanken**
+  - PostgreSQL als Hauptdatenbank in meinen Labs
+  - Interesse an MongoDB und anderen Engines zum Vergleich von Ansätzen
+
+- **KI und Automatisierung**
+  - Ollama, das direkt auf Ubuntu auf dem Host (nicht in Containern) läuft
+  - Tests mit verschiedenen Modellen und Prompts
+  - Pläne für persönliche Automatisierungen und Assistenten
+
+Ich mag Setups, die reproduzierbar sind. Wenn ich eine Compose-Datei oder ein Skript schreibe, versuche ich, es so zu gestalten, dass ich die gleiche Umgebung Monate später ohne Raten nachbauen kann.
+
+---
+
+## Labs, Repos und Dokumentationsstil
+
+Eines meiner Haupt-Langzeitprojekte ist der Aufbau eines **DBA-Labs und Portfolios**, das sich auf PostgreSQL konzentriert.
+
+Was du von meinen Repos erwarten kannst:
+
+- Strukturierte Verzeichnisse für jeden Dienst oder jedes Lab, zum Beispiel:
+  - `~/docker/docker-compose/{service}`
+  - `~/docker/docker-data/{service}`
+- `docker compose`-Dateien, die:
+  - Veraltete Optionen vermeiden
+  - Externe Datenbanken verwenden, wo es sinnvoll ist
+  - Beispielhafte Umgebungsvariablen enthalten, sodass klar ist, was wohin gehört
+- Dokumentation in Markdown, meist in der Ich-Form, mit Abschnitten, die erklären:
+  - Was sich geändert hat
+  - Wie es sich geändert hat
+  - Warum es sich geändert hat
+- Kommentare im Code in **Kleinschreibung**
+- SQL-Abfragen meist in **Kleinschreibung**
+- Bevorzugung von Open-Source-Lizenzen, oft **LGPL 2.1** in öffentlichen Projekten
+
+Ich behandle diese Labs wie Mini-Produktionsumgebungen. Selbst wenn niemand anderes sie nutzt, handle ich so, als wäre ich gleichzeitig der DBA, der Sysadmin und die Person im Bereitschaftsdienst.
+
+---
+
+## Nebenprojekte und persönliche Marken
+
+Neben reiner Infrastruktur und Datenbanken mache ich auch Spaß daran, kleine Projekte und Marken zu erstellen – sowohl zum Vergnügen als auch zur Übung.
+
+Beispiele:
+
+- Ideen für eine persönliche Musik-App, ähnlich wie **Yumusic**, mit selbstgehosteten Backends
+- Kleine Markenkonzepte wie **Yuflow** und andere
+- Experimente mit einem persönlichen KI-Avatar und Assistenten für Support oder Chat
+- Dienste im Stil von **YC Inc.** für eine zukünftige persönliche Geschäftspräsenz
+
+Diese Dinge entwickeln sich im Laufe der Zeit weiter. Manche davon werden vielleicht nie öffentlich, aber die Arbeit daran hilft mir, etwas über Pipelines, CI, Versionierung, Sicherheit und Bereitstellungen zu lernen.
+
+---
+
+## Lernstil und Denkweise
+
+Wie ich gerne lerne und mich in diesem Bereich weiterentwickle:
+
+- **Theorie und Praxis** ständig kombinieren
+- Dinge mit Absicht kaputt machen und dann reparieren
+- **Detaillierte Notizen** über Befehle, Ausgaben und Entscheidungen führen
+- **Runbooks** für repetitive oder stressige Aufgaben erstellen, zum Beispiel:
+  - Wiederherstellen von Backups
+  - Neukonfiguration eines Clusters
+  - Wartung mit minimaler Ausfallzeit
+- Fokus auf **Observability**:
+  - Logs
+  - Metriken
+  - Warnmeldungen
+- Alte Labs mit neuem Wissen besuchen, um zu sehen, was ich heute anders machen würde
+
+Ich bevorzuge es, zu verstehen, wie Dinge unter der Oberfläche funktionieren, anstatt eine Liste von Befehlen auswendig zu lernen. Wenn ich weiß, wo die Logs sind, wie der Prozess startet, wie die Daten gespeichert werden und was die Konfiguration bewirkt, fühle ich mich viel wohler, wenn ich Produktionssysteme berühre.
+
+---
+
+## Berufliche Ausrichtung
+
+Beruflich baue ich meinen Weg in Rollen wie:
+
+- Junior DBA PostgreSQL
+- Datenbankadministrator mit Fokus auf Produktionsumgebungen
+- Rollen, in denen PostgreSQL und Linux eine zentrale Rolle spielen
+- Positionen, in denen Observability, Performance-Tuning und Zuverlässigkeit wichtig sindIch behalte auch folgende Bereiche im Auge:
+
+- **Data Engineering**
+- **Sicherheit und Compliance**
+- **Hochverfügbarkeit und Clustering**
+
+Ich habe echte Bewerbungsprozesse durchlaufen, einschließlich mehrstufiger Vorstellungsgespräche für DBA-Rollen, und nutze jede Erfahrung, um mein Portfolio, meine Labs und die Präsentation meiner Fähigkeiten zu verbessern.
+
+---
+
+## Gesundheit, Laufen und langfristige Ziele
+
+Technik ist nicht das einzige langfristige Projekt in meinem Leben.
+
+Ich arbeite an:
+
+- **Gewichtsverlust**
+- **Verbesserung meiner Gesundheitswerte**
+- **Aufbau einer Laufroutine**
+
+Einige Tools und Gewohnheiten, die ich nutze:
+
+- **Garmin**-Uhr und **Garmin Coach**-Pläne, insbesondere für 5 km
+- Strukturierte Trainingspläne, die Laufen und Gehen kombinieren
+- Verfolgung von **Schritten, Distanz und Tempo**
+- Verwendung von **Küchenwaagen** und Apps zur Messung von Kalorien und Makronährstoffen
+- Planung von Mahlzeiten mit einfachen, wiederholbaren Optionen wie Reis, Bohnen, Eiern, Nudeln und einfachen Beilagen
+- Versuch, ein konstantes **Kaloriendefizit** zu halten, ohne in Extreme zu verfallen
+
+Ich weiß, dass ich ein großer Typ bin und dass dies Zeit brauchen wird. Mein Ziel ist nicht nur, Zahlen auf der Waage zu reduzieren, sondern einen Körper aufzubauen, der meine Pläne bewältigen kann, einschließlich regelmäßiger 5-km-Läufe und später längerer Distanzen.
+
+Ihr könnt Beiträge über folgende Themen sehen:
+
+- Wöchentliche Trainingszusammenfassungen
+- Wie ein bestimmter Lauf verlief
+- Kleine Verbesserungen bei Herzfrequenz und Tempo
+- Experimente mit Ernährung und Routine
+
+Ich sehe diese Gesundheitsreise auf die gleiche Weise wie mein Homelab. Es ist ein langes Projekt, voller Iterationen, Metriken und Anpassungen.
+
+---
+
+## Wie ich diese Seite nutze
+
+Diese Seite existiert aus einigen Gründen:
+
+- Um meine **Notizen, Labs und Anleitungen** zu zentralisieren
+- Um als **Portfolio** für Menschen zu dienen, die wissen möchten, was ich tatsächlich tue
+- Um ein **Protokoll meines Lernens** über die Zeit zu führen
+- Um **Konfigurationen, Compose-Dateien und Skripte** zu teilen, die anderen helfen könnten
+- Um meine **Lauf- und Gesundheitsreise** auf eine für mich sinnvolle Weise zu dokumentieren
+
+Ihr könnt hier finden:
+
+- Technische Artikel über PostgreSQL, Linux und Docker
+- Schritt-für-Schritt-Anleitungen für spezifische Setups
+- Kleine Reflexionen über Studium, Karriere und Leben
+- Notizen über Training, Gewichtsverlust und Disziplin
+
+Ich bevorzuge Ehrlichkeit gegenüber Perfektion. Ihr werdet also wahrscheinlich Entwürfe, Arbeiten in Bearbeitung und Dinge sehen, die sich unterwegs verändert haben. Für mich ist das besser, als so zu tun, als wäre alles fertig und perfekt.
+
+---
+
+## Was ich schätze
+
+Einige Dinge, die meine Arbeits- und Lernweise leiten:
+
+- **Klarheit** über Buzzwords
+- **Dokumentation** über Improvisation
+- **Zuverlässigkeit** über glänzende, aber fragile Setups
+- **Persönliche Verantwortung** über das Beschuldigen von Tools
+- **Freiheit und Privatsphäre** in der Technik
+- **Realistisch** sein über die aktuellen Fähigkeiten, während ich mich gleichzeitig verbessere
+
+In der Praxis bedeutet das, dass ich Folgendes mag:
+
+- Logs, Metriken und Warnungen statt Raten
+- Automatisierung mit klarem Verhalten
+- Backups, die ich tatsächlich wiederhergestellt und getestet habe
+- Beobachtbarkeit statt blindes Vertrauen in Dienste
+- Selbstgehostete oder zumindest kontrollierbare Tools, wann immer möglich
+
+---
+
+## Zufällige Fakten über mich
+
+Nur um dieser Seite etwas menschlicher zu machen:
+
+- Ich kann mich stundenlang glücklich verlieren, wenn ich eine neue Linux-Umgebung konfiguriere
+- Ich genieße es, an Kernels und Performance-Optionen für meinen Ryzen-Laptop zu feilen
+- Ich lese gerne über Datenbanken, auch wenn ich es nicht unbedingt muss
+- Ich bevorzuge ruhige Umgebungen gegenüber lauten Orten
+- Ich denke, dass ein guter Spaziergang oder Lauf viele mentale Blockaden löst
+- Ich nutze KI-Modelle, sowohl lokal als auch in der Cloud, als Tools zum Denken, Entwerfen und Erkunden von Ideen
+
+---
+
+## Wenn du das alles gelesen hast
+
+Wenn du es bis hierher geschafft hast, danke ich dir.
+
+Wenn du Hallo sagen, etwas kommentieren, ein Projekt vorschlagen oder mir einfach mitteilen möchtest, dass dir ein Beitrag geholfen hat, kannst du auf die [Kontakt](/contact)-Seite gehen und eine Nachricht senden.
+
+Diese Seite wird sich wahrscheinlich im Laufe der Zeit weiter verändern, genau wie ich die Dinge, die ich tue, und die Person, die ich werde, verändere. Das ist Teil des Spaßes.
+
+<Logo />

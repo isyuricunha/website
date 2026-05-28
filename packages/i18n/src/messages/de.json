@@ -1,0 +1,2692 @@
+{
+  "about": {
+    "title": "Über",
+    "description": "👋 Hey! Ich bin Yuri Cunha, einfach ein zufälliger Typ im Internet..."
+  },
+  "now": {
+    "title": "Aktuell",
+    "description": "Ein Einblick, worauf ich mich gerade konzentriere"
+  },
+  "admin": {
+    "nav": {
+      "comments": "Kommentare",
+      "general": "Allgemein",
+      "users": "Benutzer",
+      "dashboard": "Dashboard",
+      "security": "Sicherheit",
+      "security_management": "Sicherheitsverwaltung",
+      "communication": "Kommunikation",
+      "communication_management": "Kommunikationsverwaltung",
+      "email_marketing": "E-Mail-Marketing",
+      "announcements": "Ankündigungen",
+      "notifications": "Benachrichtigungen",
+      "monitoring": "Überwachung",
+      "monitoring_dashboard": "Überwachungs-Dashboard",
+      "system_health": "Systemzustand",
+      "data": "Datenverwaltung",
+      "data_management": "Datenverwaltung",
+      "audit_logs": "Protokolle",
+      "bulk_operations": "Massenoperationen"
+    },
+    "page-header": {
+      "audit-logs": {
+        "description": "Überprüfen Sie administrative Aktionen und Systemänderungen.",
+        "title": "Protokolle"
+      },
+      "comments": {
+        "description": "Kommentare von Benutzern verwalten",
+        "title": "Kommentare"
+      },
+      "users": {
+        "description": "Systembenutzer verwalten",
+        "title": "Benutzer"
+      }
+    },
+    "table": {
+      "comments": {
+        "body": "Inhalt",
+        "createdAt": "Erstellt am",
+        "failed-to-fetch-comments-data": "Fehler beim Abrufen der Kommentardaten. Bitte aktualisieren Sie die Seite.",
+        "filter-body": "Inhalt filtern...",
+        "filter-userId": "Benutzer-ID filtern...",
+        "type": "Typ",
+        "userId": "Benutzer-ID",
+        "actions": "Aktionen",
+        "open-menu": "Menü öffnen",
+        "search": "Kommentare durchsuchen...",
+        "export-csv": "CSV exportieren",
+        "delete": "Löschen",
+        "edit": "Bearbeiten",
+        "view": "Anzeigen",
+        "confirm-delete": "Möchten Sie diesen Kommentar wirklich löschen?",
+        "delete-success": "Kommentar erfolgreich gelöscht",
+        "delete-error": "Fehler beim Löschen des Kommentars",
+        "delete-title": "Kommentar löschen",
+        "confirm-delete-with-body": "Möchten Sie diesen Kommentar wirklich löschen: \"{body}\"? Diese Aktion kann nicht rückgängig gemacht werden.",
+        "export-success": "Kommentare erfolgreich als CSV exportiert"
+      },
+      "users": {
+        "email": "E-Mail",
+        "failed-to-fetch-users-data": "Fehler beim Abrufen der Benutzerdaten. Bitte aktualisieren Sie die Seite.",
+        "filter-names": "Namen filtern...",
+        "name": "Name",
+        "role": "Rolle",
+        "username": "Benutzername",
+        "image": "Bild",
+        "createdAt": "Erstellt am",
+        "status": "Status",
+        "banned": "Gesperrt",
+        "active": "Aktiv",
+        "actions": "Aktionen",
+        "open-menu": "Menü öffnen",
+        "search": "Benutzer suchen...",
+        "export-csv": "CSV exportieren",
+        "delete": "Benutzer löschen",
+        "ban": "Benutzer sperren",
+        "unban": "Benutzer entsperren",
+        "edit": "Benutzer bearbeiten",
+        "reset-password": "Passwort-Zurücksetzlink senden",
+        "change-role": "Rolle ändern",
+        "confirm-delete": "Möchten Sie diesen Benutzer wirklich löschen?",
+        "confirm-ban": "Möchten Sie diesen Benutzer wirklich sperren?",
+        "confirm-unban": "Möchten Sie diesen Benutzer wirklich entsperren?",
+        "delete-success": "Benutzer erfolgreich gelöscht",
+        "delete-error": "Fehler beim Löschen des Benutzers",
+        "ban-success": "Benutzer erfolgreich gesperrt",
+        "ban-error": "Fehler beim Sperren des Benutzers",
+        "unban-success": "Benutzer erfolgreich entsperrt",
+        "unban-error": "Fehler beim Entsperren des Benutzers",
+        "reset-password-success": "Passwort-Zurücksetz-E-Mail gesendet",
+        "reset-password-error": "Fehler beim Senden der Passwort-Zurücksetz-E-Mail",
+        "update-success": "Benutzer erfolgreich aktualisiert",
+        "update-error": "Fehler beim Aktualisieren des Benutzers",
+        "roles": {
+          "user": "Benutzer",
+          "admin": "Administrator"
+        },
+        "confirm-delete-with-name": "Möchten Sie den Benutzer \"{name}\" wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
+        "confirm-ban-with-name": "Möchten Sie den Benutzer \"{name}\" wirklich sperren?",
+        "confirm-unban-with-name": "Möchten Sie den Benutzer \"{name}\" wirklich entsperren?",
+        "export-success": "Benutzer erfolgreich als CSV exportiert"
+      }
+    },
+    "modals": {
+      "edit-user": {
+        "title": "Benutzer bearbeiten",
+        "name": "Name",
+        "username": "Benutzername",
+        "email": "E-Mail",
+        "role": "Rolle",
+        "image": "Bild-URL",
+        "save": "Änderungen speichern",
+        "saving": "Speichere...",
+        "cancel": "Abbrechen",
+        "roles": {
+          "user": "Benutzer",
+          "admin": "Administrator"
+        },
+        "validation": {
+          "name-required": "Name ist erforderlich",
+          "invalid-email": "Ungültige E-Mail-Adresse",
+          "invalid-url": "Ungültige URL"
+        }
+      },
+      "delete-confirmation": {
+        "title": "Löschung bestätigen",
+        "message": "Diese Aktion kann nicht rückgängig gemacht werden. Möchten Sie wirklich fortfahren?",
+        "confirm": "Löschen",
+        "cancel": "Abbrechen"
+      }
+    },
+    "audit-logs": {
+      "failed-to-fetch": "Fehler beim Abrufen der Prüfprotokolle.",
+      "columns": {
+        "createdAt": "Erstellt am",
+        "action": "Aktion",
+        "admin": "Administrator",
+        "targetType": "Zieltyp",
+        "targetId": "Ziel-ID",
+        "ipAddress": "IP-Adresse"
+      },
+      "filter-actions": "Aktionen filtern...",
+      "search-placeholder": "Protokolle durchsuchen..."
+    },
+    "common": {
+      "loading": "Wird geladen...",
+      "refresh": "Aktualisieren"
+    },
+    "error-boundary": {
+      "title": "Admin-Fehler",
+      "description": "Beim Laden dieses Admin-Bereichs ist ein Fehler aufgetreten. Bitte versuchen Sie, die Seite zu aktualisieren, oder kontaktieren Sie den Support, wenn das Problem weiterhin besteht.",
+      "refresh-page": "Seite aktualisieren"
+    },
+    "dashboard": {
+      "title": "Admin-Dashboard",
+      "description": "Überwachen Sie die Leistung Ihrer Website und verwalten Sie Operationen",
+      "messages": {
+        "refresh-success": "Dashboard erfolgreich aktualisiert",
+        "refresh-error": "Fehler beim Aktualisieren des Dashboards"
+      },
+      "loading": {
+        "title": "Dashboard",
+        "description": "Übersicht Ihrer Websites-Statistiken",
+        "card": "Wird geladen...",
+        "error": "Fehler beim Laden der Dashboard-Statistiken"
+      },
+      "stats": {
+        "this-month": "+{count} diesen Monat",
+        "total-users": {
+          "title": "Gesamtzahl der Nutzer"
+        },
+        "total-comments": {
+          "title": "Gesamtzahl der Kommentare"
+        },
+        "guestbook-entries": {
+          "title": "Gästebucheinträge",
+          "description": "Alle Einträge"
+        },
+        "admin-users": {
+          "title": "Admin-Nutzer",
+          "description": "Systemadministratoren"
+        }
+      },
+      "status": {
+        "live": "Live"
+      },
+      "actions": {
+        "refresh": "Aktualisieren"
+      },
+      "recent-activity": {
+        "title": "Kürzliche Aktivitäten",
+        "description": "Leistung der letzten 7 Tage",
+        "weekly": "Wöchentlich",
+        "new-users": "Neue Nutzer",
+        "new-comments": "Neue Kommentare"
+      },
+      "quick-actions": {
+        "title": "Schnellzugriff",
+        "description": "Direkt zu häufigen Aufgaben",
+        "manage-users": {
+          "title": "Nutzer verwalten",
+          "description": "Nutzerkonten anzeigen und bearbeiten"
+        },
+        "moderate-comments": {
+          "title": "Kommentare moderieren",
+          "description": "Kommentare prüfen und verwalten"
+        },
+        "monitoring": {
+          "title": "Überwachung",
+          "description": "Metriken, Fehler und Warnungen anzeigen"
+        }
+      },
+      "system-health": {
+        "title": "Systemstatus",
+        "description": "Gesamtleistungsmetriken des Systems",
+        "database": "Datenbankleistung",
+        "api-response": "API-Antwortzeit",
+        "storage": "Speichernutzung",
+        "excellent": "Hervorragend",
+        "fast": "Schnell",
+        "moderate": "Mäßig"
+      }
+    },
+    "system-health": {
+      "title": "Systemstatus",
+      "description": "Systemleistung und -status überwachen",
+      "auto-refresh": "Automatisch aktualisieren (30s)",
+      "messages": {
+        "error-resolved": "Fehler behoben",
+        "resolve-error-failed": "Fehler konnte nicht behoben werden: {message}",
+        "all-errors-resolved": "Alle Fehler behoben",
+        "resolve-all-errors-failed": "Fehler beim Beheben aller Fehler: {message}",
+        "refreshed": "Systemstatus aktualisiert"
+      },
+      "actions": {
+        "refresh": "Aktualisieren",
+        "resolve-all": "Alle beheben",
+        "view-all-errors": "Alle Fehler anzeigen",
+        "resolve": "Beheben"
+      },
+      "status": {
+        "healthy": "Intakt",
+        "warning": "Warnung",
+        "critical": "Kritisch",
+        "unknown": "Unbekannt"
+      },
+      "overall": {
+        "status": "Systemstatus: {status}",
+        "last-checked": "Letzte Prüfung: {date}",
+        "uptime": "Betriebszeit"
+      },
+      "stats": {
+        "healthy-checks": "Intakte Prüfungen",
+        "warnings": "Warnungen",
+        "critical-issues": "Kritische Probleme",
+        "unresolved-errors": "Unbehobene Fehler"
+      },
+      "service-health": {
+        "title": "Dienststatus"
+      },
+      "recent-errors": {
+        "title": "Kürzliche Fehler",
+        "url": "URL: {url}",
+        "user": "Benutzer: {name} ({email})",
+        "stack-trace": "Stack-Trace"
+      },
+      "trends": {
+        "title": "Statusverlauf",
+        "last-checks": "Letzte {count} Prüfungen",
+        "filter": "Filter",
+        "all-services": "Alle Dienste",
+        "empty-title": "Noch kein Statusverlauf vorhanden",
+        "empty-description": "Aktualisieren Sie den Status, um Prüfungen aufzuzeichnen",
+        "stats": {
+          "healthy": "Intakt",
+          "warnings": "Warnungen",
+          "critical": "Kritisch",
+          "unknown": "Unbekannt"
+        },
+        "table": {
+          "time": "Zeit",
+          "service": "Dienst",
+          "status": "Status",
+          "latency": "Latenz",
+          "message": "Meldung"
+        }
+      }
+    },
+    "notification-management": {
+      "title": "Benachrichtigungen",
+      "description": "Benutzerbenachrichtigungen und Systemwarnungen verwalten",
+      "loading": "Benachrichtigungen werden geladen...",
+      "empty": "Noch keine Benachrichtigungen vorhanden. Erstellen Sie Ihre erste Benachrichtigung, um zu beginnen!",
+      "messages": {
+        "created": "Benachrichtigung erfolgreich erstellt",
+        "create-failed": "Fehler beim Erstellen der Benachrichtigung: {message}",
+        "mark-read-failed": "Fehler beim Markieren als gelesen: {message}",
+        "title-content-required": "Titel und Inhalt sind erforderlich"
+      },
+      "actions": {
+        "create": "Benachrichtigung erstellen",
+        "send": "Benachrichtigung senden",
+        "mark-read": "Als gelesen markieren"
+      },
+      "dialog": {
+        "create-title": "Neue Benachrichtigung erstellen",
+        "create-description": "Sende eine Benachrichtigung an einen bestimmten Benutzer oder alle Benutzer."
+      },
+      "fields": {
+        "title": "Titel",
+        "title-placeholder": "Benachrichtigungstitel",
+        "content": "Inhalt",
+        "content-placeholder": "Benachrichtigungsinhalt",
+        "type": "Typ",
+        "user-id": "Benutzer-ID (optional)",
+        "user-id-placeholder": "Leer lassen für alle Benutzer",
+        "expires-at": "Läuft ab am (optional)",
+        "action-url": "Aktions-URL (optional)"
+      },
+      "types": {
+        "system": "System",
+        "security": "Sicherheit",
+        "user-action": "Benutzeraktion",
+        "content": "Inhalt",
+        "marketing": "Marketing",
+        "reminder": "Erinnerung"
+      },
+      "stats": {
+        "total": {
+          "title": "Gesamtbenachrichtigungen",
+          "description": "Alle Benachrichtigungen"
+        },
+        "unread": {
+          "title": "Ungelesen",
+          "description": "Ausstehende Benachrichtigungen"
+        },
+        "read-rate": {
+          "title": "Lesequote",
+          "description": "Gelesene Benachrichtigungen"
+        }
+      },
+      "recent": {
+        "title": "Kürzliche Benachrichtigungen",
+        "description": "Benutzerbenachrichtigungen und Systemwarnungen verwalten",
+        "user": "Benutzer: {userId}",
+        "expires": "Läuft ab: {date}"
+      },
+      "status": {
+        "unread": "Ungelesen"
+      }
+    },
+    "bulk-operations": {
+      "title": "Massenoperationen",
+      "description": "Massenaktionen für Benutzer und Inhalte durchführen",
+      "messages": {
+        "completed": "Massenoperation abgeschlossen: {successful}/{total} erfolgreich",
+        "failed": "Massenoperation fehlgeschlagen",
+        "cancelled": "Operation abgebrochen",
+        "cancel-failed": "Abbruch der Operation fehlgeschlagen",
+        "select-users": "Bitte wählen Sie Benutzer für Massenaktionen aus"
+      },
+      "confirm": {
+        "bulk-action": "Möchten Sie wirklich {action} für {count} Benutzer durchführen? Diese Aktion kann nicht rückgängig gemacht werden.",
+        "cancel-operation": "Möchten Sie diese Operation wirklich abbrechen?"
+      },
+      "actions": {
+        "delete-users": "Benutzer löschen",
+        "ban-users": "Benutzer sperren",
+        "unban-users": "Benutzer entsperren",
+        "update-role": "Rolle aktualisieren",
+        "execute": "Ausführen ({count})",
+        "cancel": "Abbrechen",
+        "export": "Exportieren"
+      },
+      "status": {
+        "completed": "Abgeschlossen",
+        "failed": "Fehlgeschlagen",
+        "running": "Wird ausgeführt",
+        "cancelled": "Abgebrochen",
+        "pending": "Ausstehend"
+      },
+      "date": {
+        "never": "Nie",
+        "unknown": "Unbekannt"
+      },
+      "user-actions": {
+        "title": "Massenbenutzeraktionen",
+        "search-placeholder": "Benutzer suchen...",
+        "filters": "Filter",
+        "select-action": "Aktion auswählen",
+        "new-role": "Neue Rolle",
+        "no-users": "Keine Benutzer gefunden",
+        "no-users-hint": "Versuchen Sie, Ihre Suchkriterien anzupassen."
+      },
+      "table": {
+        "user": "Benutzer",
+        "role": "Rolle",
+        "joined": "Beigetreten"
+      },
+      "operations": {
+        "title": "Kürzliche Vorgänge",
+        "failed-to-load": "Massenvorgänge konnten nicht geladen werden.",
+        "loading": "Massenvorgänge werden geladen...",
+        "summary": "{successful}/{total} erfolgreich • Erstellt von {creator} • {date}",
+        "progress": "Fortschritt",
+        "empty": "Keine Massenvorgänge gefunden."
+      }
+    },
+    "data-management": {
+      "title": "Datenverwaltung",
+      "description": "Sichern, exportieren und verwalten Sie Ihre Daten",
+      "loading": "Datenverwaltungs-Dashboard wird geladen...",
+      "messages": {
+        "backup-started": "Datenbanksicherung erfolgreich gestartet",
+        "backup-failed": "Fehler beim Starten der Sicherung: {message}",
+        "export-started": "Datenexport erfolgreich gestartet",
+        "export-failed": "Fehler beim Starten des Exports: {message}",
+        "quality-started": "Datenqualitätsprüfung erfolgreich gestartet",
+        "quality-failed": "Fehler beim Starten der Qualitätsprüfung: {message}",
+        "export-required": "Name, Format und Tabellen sind erforderlich",
+        "quality-required": "Name, Tabellenname und Regeln sind erforderlich",
+        "rules-invalid": "Bitte geben Sie gültige Regeln im Format ein: Feld:Regeltyp"
+      },
+      "file-size": {
+        "zero": "0 Bytes",
+        "bytes": "Bytes",
+        "unknown": "Größe unbekannt",
+        "size": "Größe: {size}"
+      },
+      "status": {
+        "completed": "Abgeschlossen",
+        "in-progress": "In Bearbeitung",
+        "processing": "Wird verarbeitet",
+        "running": "Wird ausgeführt",
+        "pending": "Ausstehend",
+        "failed": "Fehlgeschlagen"
+      },
+      "backup-types": {
+        "full": "vollständig",
+        "incremental": "inkrementell",
+        "differential": "differentiell",
+        "full-backup": "Vollständiges Backup",
+        "incremental-backup": "Inkrementelles Backup",
+        "differential-backup": "Differentielles Backup"
+      },
+      "stats": {
+        "database-backups": "Datenbank-Backups",
+        "completed-count": "{count} abgeschlossen",
+        "backup-size": "Backup-Größe",
+        "total-storage-used": "Gesamter verwendeter Speicher",
+        "data-exports": "Datenexporte",
+        "records-exported": "Exportierte Datensätze",
+        "total-records-processed": "Gesamtverarbeitete Datensätze"
+      },
+      "tabs": {
+        "overview": "Übersicht",
+        "backups": "Backups",
+        "exports": "Exporte",
+        "quality": "Qualität"
+      },
+      "overview": {
+        "recent-backups": {
+          "title": "Kürzliche Backups",
+          "description": "Aktuelle Datenbank-Backup-Aktivitäten"
+        },
+        "recent-exports": {
+          "title": "Kürzliche Exporte",
+          "description": "Aktuelle Datenexport-Aktivitäten"
+        }
+      },
+      "backups": {
+        "loading": "Backups werden geladen...",
+        "empty": "Noch keine Backups vorhanden",
+        "backup-label": "{type}-Backup",
+        "create-title": "Datenbank-Backup erstellen",
+        "create-description": "Sichern Sie Ihre Datenbank für die Sicherheit",
+        "list-title": "Datenbank-Backups",
+        "list-description": "Ihr Datenbank-Backup-Verlauf"
+      },
+      "exports": {
+        "loading": "Exporte werden geladen...",
+        "empty": "Noch keine Exporte vorhanden",
+        "create-title": "Datenexport erstellen",
+        "create-description": "Daten in verschiedenen Formaten exportieren",
+        "list-title": "Datenexporte",
+        "list-description": "Ihr Datenexport-Verlauf",
+        "format": "Format: {format}",
+        "records": "{count} Datensätze",
+        "processing": "Wird verarbeitet..."
+      },
+      "quality": {
+        "create-title": "Datenqualitätsprüfung durchführen",
+        "create-description": "Validieren Sie Datenintegrität und -qualität",
+        "overview-title": "Datenqualitätsübersicht",
+        "overview-description": "Datenqualitätsmetriken und Erkenntnisse",
+        "empty-title": "Führen Sie eine Qualitätsprüfung durch, um hier Ergebnisse zu sehen",
+        "empty-description": "Qualitätsprüfungen helfen, Datenprobleme wie fehlende Werte, Duplikate und Formatierungsprobleme zu identifizieren."
+      },
+      "fields": {
+        "backup-type": "Backup-Typ",
+        "description-optional": "Beschreibung (optional)",
+        "backup-description-placeholder": "Backup vor der Bereitstellung",
+        "export-name": "Exportname",
+        "export-name-placeholder": "Benutzerdatenexport",
+        "format": "Format",
+        "tables": "Tabellen (kommagetrennt)",
+        "tables-placeholder": "benutzer, beiträge, kommentare",
+        "check-name": "Prüfname",
+        "check-name-placeholder": "Benutzerdatenvalidierung",
+        "table-name": "Tabellenname",
+        "table-name-placeholder": "benutzer",
+        "rules": "Regeln (Feld:Regel_Typ)",
+        "rules-placeholder": "email:nicht_leer, email:format, id:eindeutig",
+        "rules-help": "Verfügbare Regeln: nicht_leer, eindeutig, format, bereich"
+      },
+      "actions": {
+        "creating-backup": "Sichere Daten...",
+        "create-backup": "Sicherung erstellen",
+        "creating-export": "Exportiere Daten...",
+        "create-export": "Export erstellen",
+        "running-check": "Führe Prüfung aus...",
+        "run-quality-check": "Qualitätsprüfung ausführen"
+      },
+      "date": {
+        "completed": "Abgeschlossen: {date}"
+      }
+    },
+    "security-management": {
+      "title": "Sicherheitsverwaltung",
+      "description": "Systemsecurity überwachen und verwalten",
+      "loading": "Lade Sicherheitsdashboard...",
+      "messages": {
+        "ip-rule-added": "IP-Zugriffsregel erfolgreich hinzugefügt",
+        "ip-rule-failed": "Fehler beim Hinzufügen der IP-Regel: {message}",
+        "event-resolved": "Sicherheitsereignis behoben",
+        "event-resolve-failed": "Fehler beim Beheben des Ereignisses: {message}",
+        "account-unlocked": "Konto erfolgreich entsperrt",
+        "account-unlock-failed": "Fehler beim Entsperren des Kontos: {message}",
+        "setting-updated": "Sicherheitseinstellung erfolgreich aktualisiert",
+        "setting-update-failed": "Fehler beim Aktualisieren der Sicherheitseinstellung: {message}",
+        "ip-type-required": "IP-Adresse und Typ sind erforderlich"
+      },
+      "severity": {
+        "critical": "Kritisch",
+        "high": "Hoch",
+        "medium": "Mittel",
+        "low": "Niedrig"
+      },
+      "rule-types": {
+        "whitelist": "Whitelist",
+        "blacklist": "Blacklist",
+        "whitelist-allow": "Whitelist (Erlauben)",
+        "blacklist-block": "Blacklist (Blockieren)"
+      },
+      "stats": {
+        "security-events": "Sicherheitsereignisse",
+        "critical-events": "{count} kritische Ereignisse",
+        "login-attempts": "Anmeldeversuche",
+        "failed-attempts": "{count} fehlgeschlagene Versuche",
+        "account-lockouts": "Kontosperrungen",
+        "active-lockouts": "Aktive Sperrungen",
+        "two-factor-adoption": "2FA-Nutzung",
+        "users-enabled": "{count} Benutzer aktiviert"
+      },
+      "tabs": {
+        "overview": "Übersicht",
+        "events": "Ereignisse",
+        "ip-control": "IP-Steuerung",
+        "lockouts": "Sperrungen",
+        "settings": "Einstellungen"
+      },
+      "overview": {
+        "recent-events": {
+          "title": "Kürzliche Sicherheitsereignisse",
+          "description": "Neuste Sicherheitsvorfälle und Warnmeldungen"
+        },
+        "login-attempts": {
+          "title": "Anmeldeversuche (24 Std.)",
+          "description": "Zusammenfassung der Authentifizierungsaktivitäten",
+          "loading": "Lade Versuche...",
+          "total": "Gesamtversuche:",
+          "successful": "Erfolgreich:",
+          "failed": "Fehlgeschlagen:",
+          "unique-ips": "Einzigartige IPs:",
+          "success-rate": "Erfolgsquote:"
+        }
+      },
+      "events": {
+        "title": "Sicherheitsereignisse",
+        "description": "Sicherheitsvorfälle überwachen und lösen",
+        "loading": "Lade Ereignisse...",
+        "loading-security-events": "Lade Sicherheitsereignisse...",
+        "no-recent": "Keine aktuellen Ereignisse",
+        "ip": "IP: {ip}",
+        "user": "Benutzer: {name} ({email})",
+        "resolved": "Gelöst am {date}",
+        "empty": "Keine Sicherheitsereignisse gefunden"
+      },
+      "ip-control": {
+        "add-title": "IP-Zugriffsregel hinzufügen",
+        "add-description": "Zugriff nach IP-Adresse steuern",
+        "rules-title": "IP-Zugriffsregeln",
+        "rules-description": "Aktuelle IP-Zugriffsregeln",
+        "loading-rules": "Lade IP-Regeln...",
+        "no-description": "Keine Beschreibung",
+        "empty": "Keine IP-Regeln konfiguriert"
+      },
+      "lockouts": {
+        "title": "Kontosperrungen",
+        "description": "Gesperrte Benutzerkonten verwalten",
+        "loading": "Lade Kontosperrungen...",
+        "user-id": "Benutzer-ID: {userId}",
+        "lockout-id": "Sperrungs-ID: {lockoutId}",
+        "locked": "Gesperrt am: {date}",
+        "reason": "Grund: {reason}",
+        "empty": "Keine aktiven Kontosperrungen"
+      },
+      "settings": {
+        "title": "Sicherheitseinstellungen",
+        "description": "Sicherheitsrichtlinien und Schwellenwerte konfigurieren",
+        "search-placeholder": "Suche nach Schlüssel, Wert oder Beschreibung",
+        "all-categories": "Alle Kategorien",
+        "loading": "Sicherheitseinstellungen werden geladen...",
+        "empty": "Keine Sicherheitseinstellungen gefunden",
+        "updated": "Aktualisiert am {date}",
+        "updated-by": "von {name}"
+      },
+      "fields": {
+        "ip-address": "IP-Adresse",
+        "rule-type": "Regeltyp",
+        "rule-type-placeholder": "Regeltyp auswählen",
+        "description-optional": "Beschreibung (optional)",
+        "rule-description-placeholder": "Regelbeschreibung",
+        "search": "Suche",
+        "category": "Kategorie",
+        "value": "Wert",
+        "description": "Beschreibung",
+        "optional-description-placeholder": "Optionale Beschreibung",
+        "category-placeholder": "Kategorie"
+      },
+      "actions": {
+        "resolve": "Lösen",
+        "adding": "Wird hinzugefügt...",
+        "add-rule": "Regel hinzufügen",
+        "unlock-account": "Konto entsperren",
+        "save": "Speichern",
+        "edit": "Bearbeiten"
+      }
+    },
+    "monitoring-dashboard": {
+      "title": "Überwachungs-Dashboard",
+      "description": "Echtzeit-Systemleistung und -Analysen",
+      "loading": "Überwachungs-Dashboard wird geladen...",
+      "messages": {
+        "error-resolved": "Fehler erfolgreich behoben",
+        "resolve-error-failed": "Fehler konnte nicht behoben werden: {message}",
+        "all-errors-resolved": "Alle Fehler erfolgreich behoben",
+        "resolve-all-errors-failed": "Fehler beim Beheben aller Fehler: {message}"
+      },
+      "time-range": {
+        "last-hour": "Letzte Stunde",
+        "last-6-hours": "Letzte 6 Stunden",
+        "last-24-hours": "Letzte 24 Stunden",
+        "last-7-days": "Letzte 7 Tage",
+        "last-30-days": "Letzte 30 Tage"
+      },
+      "stats": {
+        "performance": "Leistung",
+        "metrics-recorded": "{count} Metriken aufgezeichnet",
+        "api-requests": "API-Anfragen",
+        "error-rate": "{rate} % Fehlerrate",
+        "errors": "Fehler",
+        "unresolved": "{count} ungelöst",
+        "active-alerts": "Aktive Warnmeldungen",
+        "critical-alerts": "{count} kritische Warnmeldungen"
+      },
+      "tabs": {
+        "overview": "Übersicht",
+        "performance": "Leistung",
+        "api": "API-Nutzung",
+        "errors": "Fehler",
+        "resources": "Ressourcen",
+        "analytics": "Analysen"
+      },
+      "common": {
+        "system": "System",
+        "anonymous": "Anonym"
+      },
+      "overview": {
+        "system-health": {
+          "title": "Systemgesundheit",
+          "description": "Aktueller Überblick über den Systemstatus",
+          "api-response-time": "API-Antwortzeit",
+          "error-rate": "Fehlerrate",
+          "critical-errors": "Kritische Fehler",
+          "active-alerts": "Aktive Warnmeldungen"
+        },
+        "recent-activity": {
+          "title": "Letzte Aktivitäten",
+          "description": "Neueste Systemereignisse und Metriken",
+          "loading": "Lade letzte Aktivitäten...",
+          "empty": "Keine aktuellen Aktivitäten"
+        }
+      },
+      "performance": {
+        "metrics": {
+          "title": "Leistungsmetriken",
+          "description": "Systemleistung über die Zeit",
+          "loading": "Lade Leistungsmetriken...",
+          "empty": "Keine Leistungsdaten verfügbar"
+        },
+        "resources": {
+          "title": "Ressourcennutzung",
+          "description": "Systemressourcenverbrauch",
+          "threshold-breaches": "{count} Grenzwertverletzung(en)",
+          "empty": "Keine Ressourcendaten verfügbar"
+        }
+      },
+      "metrics": {
+        "avg": "Durchschnitt: {value}",
+        "min": "Minimum: {value}",
+        "max": "Maximum: {value}",
+        "avg-percent": "Durchschnitt: {value}%",
+        "max-percent": "Maximum: {value}%"
+      },
+      "api": {
+        "loading": "Lade API-Nutzung...",
+        "stats": {
+          "title": "API-Nutzungsstatistiken",
+          "description": "Anfragemuster und Leistung",
+          "total-requests": "Gesamtanfragen",
+          "unique-users": "Einzigartige Benutzer",
+          "avg-response-time": "Durchschnittliche Antwortzeit",
+          "error-rate": "Fehlerrate"
+        },
+        "top-endpoints": {
+          "title": "Top-API-Endpunkte",
+          "description": "Am häufigsten aufgerufene Endpunkte",
+          "loading": "Lade Top-Endpunkte...",
+          "empty": "Keine Endpunkt-Daten verfügbar"
+        }
+      },
+      "errors": {
+        "title": "Fehlerverfolgung",
+        "description": "Systemfehler und Ausnahmen",
+        "loading": "Lade Fehlerverfolgung...",
+        "type": "Typ: {type}",
+        "user": "Benutzer: {name} ({email})",
+        "fingerprint": "Fingerabdruck: {fingerprint}",
+        "resolved": "Behoben am {date}",
+        "empty": "Keine Fehler gefunden"
+      },
+      "actions": {
+        "resolve-all": "Alle beheben",
+        "resolve": "Beheben"
+      },
+      "resources": {
+        "title": "Systemressourcen",
+        "description": "CPU- und Speichernutzung",
+        "loading": "Lade Ressourcennutzung...",
+        "current-usage": "Aktuelle Nutzung:",
+        "average": "Durchschnitt:",
+        "peak": "Spitze:",
+        "alerts": "Warnungen:",
+        "empty": "Keine Ressourcennutzungsdaten verfügbar"
+      },
+      "analytics": {
+        "event-types": {
+          "title": "Ereignistypen",
+          "description": "Verteilung der Analyseereignisse",
+          "loading": "Lade Analyseereignisse...",
+          "empty": "Keine Ereignisdaten verfügbar"
+        },
+        "recent-events": {
+          "title": "Kürzliche Ereignisse",
+          "description": "Neueste Analyseereignisse",
+          "loading": "Lade kürzliche Ereignisse...",
+          "empty": "Keine kürzlichen Ereignisse"
+        }
+      }
+    },
+    "announcement-management": {
+      "title": "Bekanntmachungen",
+      "description": "Site-weite Bekanntmachungen und Benachrichtigungen verwalten",
+      "loading": "Lade Bekanntmachungen...",
+      "empty": "Noch keine Bekanntmachungen. Erstelle deine erste Bekanntmachung, um zu beginnen!",
+      "messages": {
+        "translate-failed": "Übersetzen fehlgeschlagen: {message}",
+        "title-content-required": "Titel und Inhalt sind erforderlich",
+        "pt-filled": "pt-BR mit Yue AI ausgefüllt",
+        "created": "Bekanntmachung erfolgreich erstellt",
+        "create-failed": "Erstellen der Bekanntmachung fehlgeschlagen: {message}",
+        "updated": "Bekanntmachung erfolgreich aktualisiert",
+        "update-failed": "Aktualisierung der Bekanntmachung fehlgeschlagen: {message}",
+        "deleted": "Bekanntmachung erfolgreich gelöscht",
+        "delete-failed": "Löschen der Bekanntmachung fehlgeschlagen: {message}"
+      },
+      "actions": {
+        "create": "Bekanntmachung erstellen",
+        "update": "Bekanntmachung aktualisieren",
+        "translating": "Übersetze...",
+        "fill-pt": "pt-BR mit KI ausfüllen",
+        "activate": "Aktivieren",
+        "deactivate": "Deaktivieren",
+        "edit-aria": "Bekanntmachung bearbeiten",
+        "delete-aria": "Bekanntmachung löschen"
+      },
+      "create": {
+        "title": "Neue Bekanntmachung erstellen",
+        "description": "Erstelle eine neue siteweite Bekanntmachung, die für Benutzer sichtbar sein wird."
+      },
+      "edit": {
+        "title": "Bekanntmachung bearbeiten",
+        "description": "Aktualisiere die Details der Bekanntmachung."
+      },
+      "delete": {
+        "title": "Bekanntmachung löschen",
+        "description": "Möchtest du \"{title}\" wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden."
+      },
+      "fields": {
+        "title": "Titel",
+        "title-placeholder": "Titel der Bekanntmachung",
+        "title-pt": "Titel (pt-BR)",
+        "title-pt-placeholder": "Portugiesischer Titel (optional)",
+        "content": "Inhalt",
+        "content-placeholder": "Inhalt der Bekanntmachung",
+        "content-pt": "Inhalt (pt-BR)",
+        "content-pt-placeholder": "Portugiesischer Inhalt (optional)",
+        "type": "Typ",
+        "priority": "Priorität (0-10)",
+        "priority-value": "Priorität {priority}",
+        "dismissible": "Benutzern erlauben, diese Bekanntmachung zu schließen",
+        "active": "Bekanntmachung ist aktiv"
+      },
+      "types": {
+        "info": "Info",
+        "success": "Erfolg",
+        "warning": "Warnung",
+        "error": "Fehler",
+        "maintenance": "Wartung",
+        "feature": "Funktion",
+        "update": "Aktualisierung"
+      },
+      "analytics": {
+        "total-views": {
+          "title": "Gesamtansichten",
+          "description": "Über alle Bekanntmachungen hinweg"
+        },
+        "dismissal-rate": {
+          "title": "Schließrate",
+          "description": "{count} Schließungen insgesamt"
+        },
+        "active": {
+          "title": "Aktive Bekanntmachungen",
+          "description": "Derzeit für Benutzer sichtbar"
+        }
+      },
+      "list": {
+        "title": "Alle Bekanntmachungen",
+        "description": "Verwalte deine Site-Bekanntmachungen"
+      },
+      "status": {
+        "inactive": "Inaktiv",
+        "pt": "PT",
+        "pt-partial": "PT teilweise",
+        "targeted": "Zielgerichtet",
+        "dismissible": "Schließbar",
+        "not-dismissible": "Nicht schließbar"
+      }
+    },
+    "communication-management": {
+      "title": "Kommunikationsverwaltung",
+      "description": "Verwalte E-Mails, Bekanntmachungen und Benachrichtigungen",
+      "loading": "Lade Kommunikations-Dashboard...",
+      "messages": {
+        "template-created": "E-Mail-Vorlage erfolgreich erstellt",
+        "template-create-failed": "Fehler beim Erstellen der Vorlage: {message}",
+        "campaign-created": "E-Mail-Kampagne erfolgreich erstellt",
+        "campaign-create-failed": "Fehler beim Erstellen der Kampagne: {message}",
+        "campaign-sent": "E-Mail-Kampagne erfolgreich gesendet",
+        "campaign-send-failed": "Fehler beim Senden der Kampagne: {message}",
+        "announcement-created": "Bekanntmachung erfolgreich erstellt",
+        "announcement-create-failed": "Fehler beim Erstellen der Bekanntmachung: {message}",
+        "all-fields-required": "Alle Felder sind Pflichtfelder",
+        "campaign-fields-required": "Name, Betreff und Inhalt sind Pflichtfelder",
+        "title-content-required": "Titel und Inhalt sind Pflichtfelder"
+      },
+      "stats": {
+        "email-campaigns": "E-Mail-Kampagnen",
+        "sent-campaigns": "{count} gesendete Kampagnen",
+        "emails-sent": "Gesendete E-Mails",
+        "delivered": "{count} zugestellt",
+        "announcements": "Bekanntmachungen",
+        "active": "{count} aktiv",
+        "notifications": "Benachrichtigungen",
+        "unread": "{count} ungelesen"
+      },
+      "tabs": {
+        "overview": "Übersicht",
+        "campaigns": "Kampagnen",
+        "templates": "Vorlagen",
+        "announcements": "Bekanntmachungen",
+        "notifications": "Benachrichtigungen"
+      },
+      "overview": {
+        "recent-campaigns": {
+          "title": "Kürzliche E-Mail-Kampagnen",
+          "description": "Aktuelle Aktivitäten der E-Mail-Kampagnen"
+        },
+        "active-announcements": {
+          "title": "Aktive Bekanntmachungen",
+          "description": "Aktuelle Bekanntmachungen der Website"
+        }
+      },
+      "campaigns": {
+        "loading": "Kampagnen werden geladen...",
+        "empty": "Noch keine Kampagnen vorhanden",
+        "create-title": "E-Mail-Kampagne erstellen",
+        "create-description": "Massen-E-Mails an Nutzer senden",
+        "list-title": "E-Mail-Kampagnen",
+        "list-description": "Verwalten Sie Ihre E-Mail-Kampagnen",
+        "subject": "Betreff: {subject}",
+        "recipients": "Empfänger: {count}"
+      },
+      "templates": {
+        "loading": "Vorlagen werden geladen...",
+        "empty": "Noch keine Vorlagen vorhanden",
+        "create-title": "E-Mail-Vorlage erstellen",
+        "create-description": "Wiederverwendbare E-Mail-Vorlagen erstellen",
+        "list-title": "E-Mail-Vorlagen",
+        "list-description": "Ihre gespeicherten E-Mail-Vorlagen",
+        "subject": "Betreff: {subject}"
+      },
+      "announcements": {
+        "loading": "Ankündigungen werden geladen...",
+        "no-active": "Keine aktiven Ankündigungen",
+        "priority": "Priorität: {priority}",
+        "create-title": "Ankündigung erstellen",
+        "create-description": "Seitenweite Ankündigungen veröffentlichen",
+        "list-title": "Seitenankündigungen",
+        "list-description": "Seitenankündigungen verwalten",
+        "active": "Aktiv",
+        "empty": "Noch keine Ankündigungen"
+      },
+      "notifications": {
+        "title": "Systembenachrichtigungen",
+        "description": "Kürzliche Systembenachrichtigungen",
+        "loading": "Benachrichtigungen werden geladen...",
+        "read": "Gelesen",
+        "unread": "Ungelesen",
+        "empty": "Keine Benachrichtigungen"
+      },
+      "fields": {
+        "campaign-name": "Kampagnenname",
+        "campaign-name-placeholder": "Monatlicher Newsletter",
+        "email-subject": "E-Mail-Betreff",
+        "email-subject-placeholder": "Ihr monatliches Update ist da!",
+        "email-content-html": "E-Mail-Inhalt (HTML)",
+        "campaign-content-placeholder": "<h1>Hallo!</h1><p>Ihr E-Mail-Inhalt hier...</p>",
+        "template-name": "Vorlagenname",
+        "template-name-placeholder": "Willkommens-E-Mail",
+        "template-type": "Vorlagentyp",
+        "template-type-placeholder": "Vorlagentyp auswählen",
+        "subject-line": "Betreffzeile",
+        "template-subject-placeholder": "Willkommen auf unserer Plattform!",
+        "html-content": "HTML-Inhalt",
+        "template-content-placeholder": "<h1>Willkommen!</h1><p>Vielen Dank, dass Sie uns beigetreten sind...</p>",
+        "title": "Titel",
+        "title-pt": "Titel (pt-BR)",
+        "type": "Typ",
+        "priority": "Priorität (0-10)",
+        "content": "Inhalt",
+        "content-pt": "Inhalt (pt-BR)",
+        "announcement-title-placeholder": "Hinweis zur Systemwartung",
+        "announcement-title-pt-placeholder": "Portugiesischer Wartungshinweis (optional)",
+        "announcement-content-placeholder": "Wir führen geplante Wartungsarbeiten durch...",
+        "announcement-content-pt-placeholder": "Portugiesische Wartungsmeldung (optional)"
+      },
+      "actions": {
+        "creating": "Wird erstellt...",
+        "create-campaign": "Kampagne erstellen",
+        "send-now": "Jetzt senden",
+        "create-template": "Vorlage erstellen",
+        "create-announcement": "Bekanntmachung erstellen"
+      },
+      "template-types": {
+        "welcome": "Willkommen",
+        "newsletter": "Newsletter",
+        "announcement": "Bekanntmachung",
+        "notification": "Benachrichtigung",
+        "marketing": "Marketing",
+        "transactional": "Transaktional"
+      },
+      "announcement-types": {
+        "info": "Info",
+        "warning": "Warnung",
+        "success": "Erfolg",
+        "error": "Fehler",
+        "maintenance": "Wartung",
+        "feature": "Funktion",
+        "update": "Aktualisierung"
+      },
+      "date": {
+        "created": "Erstellt: {date}"
+      }
+    },
+    "email-marketing-management": {
+      "title": "E-Mail-Marketing",
+      "description": "Verwalten Sie Ihre E-Mail-Kampagnen, Zielgruppen und Vorlagen",
+      "messages": {
+        "template-created": "Vorlage erfolgreich erstellt!",
+        "template-create-failed": "Fehler beim Erstellen der Vorlage: {message}",
+        "audience-created": "Zielgruppe erfolgreich erstellt!",
+        "audience-create-failed": "Fehler beim Erstellen der Zielgruppe: {message}",
+        "broadcast-created": "Rundsendung erfolgreich erstellt!",
+        "broadcast-create-failed": "Fehler beim Erstellen der Rundsendung: {message}",
+        "users-synced": "{count} Benutzer erfolgreich mit der Zielgruppe synchronisiert!",
+        "sync-failed": "Fehler beim Synchronisieren der Benutzer: {message}",
+        "broadcast-sent": "Rundsendung erfolgreich versendet!",
+        "broadcast-send-failed": "Fehler beim Senden der Rundsendung: {message}",
+        "broadcast-updated": "Rundsendung erfolgreich aktualisiert!",
+        "broadcast-update-failed": "Fehler beim Aktualisieren der Rundsendung: {message}",
+        "broadcast-deleted": "Rundsendung erfolgreich gelöscht!",
+        "broadcast-delete-failed": "Fehler beim Löschen der Rundsendung: {message}"
+      },
+      "confirm": {
+        "delete-broadcast": "Möchten Sie diese Rundsendung wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden."
+      },
+      "loading": {
+        "title": "E-Mail-Marketing-Daten werden geladen...",
+        "audiences": "Zielgruppen werden geladen...",
+        "broadcasts": "Broadcasts werden geladen...",
+        "templates": "Vorlagen werden geladen...",
+        "analytics": "Analysen werden geladen..."
+      },
+      "tabs": {
+        "overview": "Übersicht",
+        "audiences": "Zielgruppen",
+        "broadcasts": "Broadcasts",
+        "templates": "Vorlagen"
+      },
+      "stats": {
+        "total-audiences": {
+          "title": "Gesamtzahl der Zielgruppen",
+          "description": "Aktive Zielgruppensegmente"
+        },
+        "total-broadcasts": {
+          "title": "Gesamtzahl der Broadcasts",
+          "description": "Erstellte E-Mail-Kampagnen"
+        },
+        "subscribers": {
+          "title": "Abonnenten",
+          "description": "{rate} % Abonnementrate"
+        },
+        "sent-broadcasts": {
+          "title": "Gesendete Broadcasts",
+          "description": "Erfolgreich zugestellt"
+        }
+      },
+      "overview": {
+        "recent-activity": "Letzte Aktivitäten",
+        "no-activity": "Keine aktuellen Aktivitäten",
+        "quick-actions": "Schnellaktionen"
+      },
+      "actions": {
+        "create-new-broadcast": "Neuen Broadcast erstellen",
+        "create-new-audience": "Neue Zielgruppe erstellen",
+        "create-new-template": "Neue Vorlage erstellen",
+        "create-audience": "Zielgruppe erstellen",
+        "syncing": "Wird synchronisiert...",
+        "sync-users": "Benutzer synchronisieren",
+        "create-broadcast": "Broadcast erstellen",
+        "show-all-broadcasts": "Alle Broadcasts anzeigen",
+        "create-template": "Vorlage erstellen",
+        "edit": "Bearbeiten",
+        "use": "Verwenden",
+        "close": "Schließen",
+        "edit-broadcast": "Broadcast bearbeiten",
+        "updating": "Wird aktualisiert...",
+        "update-broadcast": "Broadcast aktualisieren"
+      },
+      "audiences": {
+        "title": "Zielgruppen",
+        "create-title": "Neue Zielgruppe erstellen",
+        "create-description": "Erstellen Sie ein neues Zielgruppensegment für Ihre E-Mail-Kampagnen",
+        "subscriber-count": "{count} Abonnenten",
+        "option-subscriber-count": "{name} ({count} Abonnenten)",
+        "empty": "Noch keine Zielgruppen vorhanden. Erstellen Sie Ihre erste Zielgruppe, um zu beginnen!"
+      },
+      "broadcasts": {
+        "title": "Broadcasts",
+        "filter-placeholder": "Nach Status filtern",
+        "create-title": "Neuen Broadcast erstellen",
+        "create-description": "Erstelle eine neue E-Mail-Broadcast-Kampagne",
+        "empty-filtered": "Keine Broadcasts entsprechen dem aktuellen Filter.",
+        "empty": "Noch keine Broadcasts. Erstelle deinen ersten Broadcast, um loszulegen!",
+        "empty-hint": "Du musst zuerst eine Zielgruppe erstellen, bevor du Broadcasts erstellen kannst.",
+        "status": {
+          "all": "Alle Broadcasts",
+          "draft": "Entwurf",
+          "sent": "Gesendet",
+          "scheduled": "Geplant",
+          "sending": "Wird gesendet"
+        }
+      },
+      "templates": {
+        "title": "E-Mail-Vorlagen",
+        "create-title": "Neue Vorlage erstellen",
+        "create-description": "Erstelle eine wiederverwendbare E-Mail-Vorlage",
+        "empty": "Noch keine Vorlagen. Erstelle deine erste Vorlage, um loszulegen!"
+      },
+      "fields": {
+        "audience-name": "Name der Zielgruppe",
+        "audience-name-placeholder": "z. B. Newsletter-Abonnenten",
+        "broadcast-name": "Broadcast-Name",
+        "broadcast-name-placeholder": "Interner Name für diesen Broadcast",
+        "target-audience": "Zielgruppe",
+        "select-audience": "Wähle eine Zielgruppe aus",
+        "from-email": "Absender-E-Mail",
+        "subject-line": "Betreffzeile",
+        "email-subject-placeholder": "E-Mail-Betreff",
+        "email-content-html": "E-Mail-Inhalt (HTML)",
+        "email-html-placeholder": "HTML-Inhalt der E-Mail",
+        "plain-text-optional": "Nur-Text-Version (optional)",
+        "plain-text-placeholder": "Nur-Text-Version",
+        "audience": "Zielgruppe",
+        "template-name": "Vorlagenname",
+        "template-name-placeholder": "z. B. Willkommens-E-Mail",
+        "name": "Name",
+        "not-available": "N/V",
+        "status": "Status",
+        "subject": "Betreff",
+        "from": "Von",
+        "html-content": "HTML-Inhalt",
+        "no-content": "Kein Inhalt",
+        "plain-text-content": "Nur-Text-Inhalt"
+      },
+      "date": {
+        "not-sent": "Nicht gesendet",
+        "created": "Erstellt: {date}"
+      },
+      "broadcast-details": {
+        "title": "Sendungdetails",
+        "description": "Sendungsinformationen und Inhalte anzeigen"
+      },
+      "edit-broadcast": {
+        "title": "Sendung bearbeiten",
+        "description": "Sendungsinhalte und Einstellungen aktualisieren"
+      }
+    }
+  },
+  "blog": {
+    "comments": {
+      "author": "Autor:in",
+      "comment-cannot-be-empty": "Der Kommentar darf nicht leer sein",
+      "comment-posted": "Kommentar veröffentlicht",
+      "comments": "{count, plural, =1 {Kommentar} other {Kommentare}}",
+      "confirm-delete-comment": "Möchten Sie diesen Kommentar wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
+      "copy-link": "Link kopieren",
+      "delete-a-comment": "Kommentar löschen",
+      "deleted-a-comment": "Kommentar gelöscht",
+      "dislike": "Gefällt mir nicht",
+      "failed-to-load-comments": "Kommentare konnten nicht geladen werden. Bitte aktualisieren Sie die Seite.",
+      "failed-to-load-replies": "Antworten konnten nicht geladen werden. Bitte aktualisieren Sie die Seite.",
+      "like": "Gefällt mir",
+      "link-copied": "Link in die Zwischenablage kopiert",
+      "need-logged-in-to-rate": "Sie müssen angemeldet sein, um Kommentare zu bewerten",
+      "newest": "Neueste",
+      "no-comments": "Keine Kommentare",
+      "oldest": "Älteste",
+      "open-menu": "Menü öffnen",
+      "placeholder": "Hinterlassen Sie einen Kommentar",
+      "replies": "{count, plural, =1 {Antwort} other {Antworten}}",
+      "reply": "Antworten",
+      "reply-cannot-be-empty": "Die Antwort darf nicht leer sein",
+      "reply-to-comment": "Auf Kommentar antworten",
+      "send-comment": "Kommentar absenden",
+      "sort-by": "Sortieren nach",
+      "this-comment-has-been-deleted": "[Dieser Kommentar wurde gelöscht]",
+      "toggle-bold": "Fett formatieren",
+      "toggle-italic": "Kursiv formatieren",
+      "toggle-strikethrough": "Durchgestrichen formatieren"
+    },
+    "description": "Mein persönlicher Blog, in dem ich Gedanken zu Technologie, Servern, Cloud und ein bisschen aus meinem Alltag teile. Ich habe meine Reise 2018 begonnen und entdecke und lerne seitdem ständig dazu. Wenn Sie sich für Datenbanken, Läufer oder einfach nur für einige Gedanken zu Technik und Leben interessieren, schauen Sie vorbei!",
+    "footer": {
+      "edit-on-github": "Auf GitHub bearbeiten",
+      "last-updated": "Zuletzt aktualisiert: {date}"
+    },
+    "header": {
+      "comments": "Kommentare",
+      "published-on": "Veröffentlicht am",
+      "views": "Aufrufe",
+      "written-by": "Verfasst von"
+    },
+    "like": "Gefällt mir",
+    "like-limit-reached": "Sie können einen Beitrag nur 3 Mal mit \"Gefällt mir\" markieren",
+    "like-this-post": "Dieser Beitrag gefällt mir",
+    "on-this-page": "Auf dieser Seite",
+    "share": {
+      "description": "Lesen Sie \"{title}\" auf dem Blog von {site}",
+      "hashtags": "blog,technik,entwicklung"
+    },
+    "title": "Blog"
+  },
+  "command-menu": {
+    "actions": {
+      "copy-link": "Link kopieren",
+      "settings": "Einstellungen",
+      "source-code": "Quellcode"
+    },
+    "groups": {
+      "account": "Konto",
+      "general": "Allgemein",
+      "social": "Soziales"
+    },
+    "no-results": "Keine Ergebnisse gefunden.",
+    "open-menu": "Befehlsmenü öffnen",
+    "placeholder": "Befehl eingeben oder suchen",
+    "trigger": {
+      "open-command": "Befehl öffnen",
+      "open-link": "Link öffnen"
+    }
+  },
+  "account": {
+    "actions": {
+      "my-profile": "Mein Profil",
+      "edit-profile": "Profil bearbeiten"
+    }
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "description": "Verwalte dein Konto und Profil",
+    "sections": {
+      "profile": "Profil",
+      "profile-description": "Aktualisiere, wie dein Profil für andere angezeigt wird",
+      "security": "Sicherheit",
+      "security-description": "Aktualisiere deine E-Mail und dein Passwort"
+    },
+    "fields": {
+      "avatar-url": "Avatar-URL",
+      "avatar-upload": "Avatar hochladen",
+      "username": "Benutzername",
+      "public-profile": "Öffentliches Profil",
+      "public": "Öffentlich",
+      "private": "Privat",
+      "name-color": "Namenfarbe",
+      "name-effect": "Namenseffekt",
+      "bio": "Biografie",
+      "bio-placeholder": "Erzähl etwas über dich",
+      "new-email": "Neue E-Mail",
+      "avatar-url-placeholder": "https://...",
+      "username-placeholder": "dein-benutzername",
+      "name-color-placeholder": "#ff0000",
+      "new-email-placeholder": "du@example.com",
+      "current-password": "Aktuelles Passwort",
+      "new-password": "Neues Passwort",
+      "confirm-new-password": "Neues Passwort bestätigen"
+    },
+    "effects": {
+      "none": "Keiner",
+      "rays": "Strahlen",
+      "glow": "Glühen"
+    },
+    "actions": {
+      "save-profile": "Profil speichern",
+      "upload-avatar": "Hochladen",
+      "change-email": "E-Mail ändern",
+      "change-password": "Passwort ändern"
+    },
+    "messages": {
+      "profile-updated": "Profil aktualisiert",
+      "avatar-updated": "Avatar aktualisiert",
+      "avatar-file-required": "Wähle eine Bilddatei zum Hochladen aus",
+      "avatar-invalid-type": "Nur PNG-, JPG- oder WebP-Bilder werden unterstützt",
+      "avatar-too-large": "Das Bild muss 5 MB oder kleiner sein",
+      "email-required": "E-Mail ist erforderlich",
+      "email-verification-sent": "Bestätigungs-E-Mail gesendet",
+      "current-password-required": "Aktuelles Passwort ist erforderlich",
+      "password-too-short": "Das Passwort muss mindestens 8 Zeichen lang sein",
+      "passwords-do-not-match": "Passwörter stimmen nicht überein",
+      "password-updated": "Passwort aktualisiert",
+      "anonymous-avatar-restriction": "Anonyme Benutzer können ihren Avatar erst ändern, nachdem sie ihre E-Mail aktualisiert haben."
+    }
+  },
+  "profile": {
+    "title": "{name}",
+    "description": "Öffentliches Profil",
+    "not-found": {
+      "title": "Profil nicht gefunden",
+      "description": "Dieses Profil existiert nicht oder ist privat"
+    },
+    "comments": {
+      "title": "Kommentare",
+      "description": "Aktuelle Aktivitäten",
+      "empty": "Noch keine Kommentare",
+      "error": "Kommentare konnten nicht geladen werden. Bitte versuche es erneut.",
+      "end": "Du hast alle Kommentare gesehen.",
+      "load-more": "Mehr laden",
+      "type": {
+        "comment": "Kommentar",
+        "reply": "Antwort"
+      }
+    }
+  },
+  "common": {
+    "cancel": "Abbrechen",
+    "delete": "Löschen",
+    "error": "Fehler",
+    "likes": "{count, plural, =1 {# Gefällt mir} other {# Gefällt mir-Anzahl}}",
+    "sign-in": "Anmelden",
+    "sign-in-error": "Anmeldung fehlgeschlagen. Bitte versuche es erneut.",
+    "sign-in-success": "Anmeldung erfolgreich!",
+    "sign-out": "Abmelden",
+    "views": "{count, plural, =1 {# Aufruf} other {# Aufrufe}}",
+    "sign-up": "Registrieren",
+    "sign-up-error": "Registrierung fehlgeschlagen. Bitte versuche es erneut.",
+    "unknown-error": "Unbekannter Fehler"
+  },
+  "component": {
+    "now-project": {
+      "website": "Website",
+      "release": "Veröffentlichung",
+      "updated": "Aktualisiert"
+    },
+    "recommendations": {
+      "title": "Empfohlen für dich",
+      "type": {
+        "post": "Beitrag",
+        "project": "Projekt",
+        "snippet": "Code-Snippet"
+      },
+      "reason": {
+        "similar-content": "Ähnlicher Inhalt",
+        "same-category": "Gleiche Kategorie: {category}",
+        "similar-tags": "Ähnliche Tags: {tags}"
+      }
+    },
+    "social-share": {
+      "button": {
+        "label": "Teilen",
+        "aria": "Inhalt teilen"
+      },
+      "native": "Teilen…",
+      "platform": {
+        "twitter": "Twitter",
+        "facebook": "Facebook",
+        "linkedin": "LinkedIn",
+        "reddit": "Reddit",
+        "whatsapp": "WhatsApp"
+      },
+      "copy": {
+        "label": "Link kopieren",
+        "copied": "Kopiert!"
+      },
+      "toast": {
+        "copied": "Link in die Zwischenablage kopiert!",
+        "copy-failed": "Link konnte nicht kopiert werden"
+      }
+    },
+    "uses-page": {
+      "badge": {
+        "updated-recently": "Kürzlich aktualisiert"
+      },
+      "affiliate": {
+        "title": "Affiliate-Hinweis",
+        "description": "Einige Links auf dieser Seite sind Affiliate-Links. Das bedeutet, dass ich eine kleine Provision erhalte, wenn du über diese Links kaufst, ohne dass dir zusätzliche Kosten entstehen. Ich empfehle nur Produkte, die ich persönlich nutze und von denen ich überzeugt bin."
+      },
+      "table": {
+        "headers": {
+          "tool": "Tool",
+          "pros": "Vorteile",
+          "cons": "Nachteile",
+          "price": "Preis",
+          "rating": "Bewertung"
+        },
+        "rating-out-of": "({rating}/5)"
+      },
+      "tools": {
+        "common": {
+          "price": {
+            "free": "Kostenlos",
+            "free-paid": "Kostenlos/Kostenpflichtig"
+          }
+        },
+        "docker": {
+          "pros": {
+            "0": "Einfache Containerisierung",
+            "1": "Ideal für die Entwicklung",
+            "2": "Großes Ökosystem"
+          },
+          "cons": {
+            "0": "Ressourcenintensiv",
+            "1": "Lernkurve"
+          }
+        },
+        "kubernetes": {
+          "pros": {
+            "0": "Hervorragende Orchestrierung",
+            "1": "Automatische Skalierung",
+            "2": "Produktionsreif"
+          },
+          "cons": {
+            "0": "Komplexe Einrichtung",
+            "1": "Steile Lernkurve"
+          }
+        },
+        "terraform": {
+          "pros": {
+            "0": "Infrastruktur als Code",
+            "1": "Multi-Cloud-Unterstützung",
+            "2": "Hervorragende Planung"
+          },
+          "cons": {
+            "0": "Zustandsverwaltung",
+            "1": "Kann komplex sein"
+          }
+        }
+      },
+      "sections": {
+        "laptop": {
+          "title": "Laptop",
+          "why-title": "Warum ich diesen Laptop gewählt habe:",
+          "reasons": {
+            "0": "Perfektes Gleichgewicht zwischen Leistung und Portabilität",
+            "1": "Ideal für Entwicklung und gelegentliches Gaming",
+            "2": "Hervorragendes Preis-Leistungs-Verhältnis"
+          }
+        },
+        "infra-devops": {
+          "title": "Infrastruktur & DevOps",
+          "comparison-title": "Vergleich der Infrastruktur-Tools"
+        }
+      }
+    },
+    "filtered-posts": {
+      "no-posts-found": "Keine Beiträge gefunden",
+      "placeholder": "Artikel durchsuchen",
+      "rss": "RSS-Feed",
+      "featured": "Empfohlene Beiträge",
+      "toggle-filters": {
+        "show": "Filter anzeigen",
+        "hide": "Filter ausblenden"
+      },
+      "sort": {
+        "label": "Sortieren nach:",
+        "options": {
+          "date-desc": "Neueste zuerst",
+          "date-asc": "Älteste zuerst",
+          "title-asc": "A-Z",
+          "title-desc": "Z-A",
+          "reading-time": "Lesezeit"
+        }
+      },
+      "filters": {
+        "category": {
+          "label": "Kategorie",
+          "all": "Alle Kategorien"
+        },
+        "tag": {
+          "label": "Tag",
+          "all": "Alle Tags"
+        }
+      },
+      "searching": "Suche läuft...",
+      "results": {
+        "count": "{count, plural, =0 {0 Ergebnisse} =1 {1 Ergebnis} other {# Ergebnisse}}",
+        "for": " für \"{search}\""
+      },
+      "showing": {
+        "count": "Zeige {count, plural, =0 {0 Beiträge} =1 {1 Beitrag} other {# Beiträge}}"
+      },
+      "pagination": {
+        "page-of": " (Seite {current} von {total})",
+        "previous": "Zurück",
+        "next": "Weiter"
+      },
+      "clear-all": "Alle Filter zurücksetzen",
+      "empty": {
+        "description": "Versuche, deine Suchbegriffe oder Filter anzupassen, oder durchstöbere alle Beiträge unten.",
+        "show-all": "Alle Beiträge anzeigen"
+      },
+      "posts": {
+        "all": "Alle Beiträge"
+      }
+    },
+    "go-to-homepage": "Zur Startseite",
+    "announcement-banner": {
+      "dismiss": "Ankündigung schließen",
+      "high-priority": "Hohe Priorität"
+    },
+    "announcement-widget": {
+      "title": "Ankündigungen",
+      "description": "Neueste Updates und wichtige Informationen",
+      "loading": "Ankündigungen werden geladen...",
+      "empty": "Derzeit keine Ankündigungen.",
+      "dismiss": "Schließen",
+      "high-priority": "Hohe Priorität"
+    },
+    "announcement-toast": {
+      "dont-show-again": "Nicht mehr anzeigen",
+      "dismiss": "Schließen",
+      "close": "Schließen"
+    },
+    "notifications": {
+      "aria": "Benachrichtigungen öffnen",
+      "title": "Benachrichtigungen",
+      "sign-in": "Anmelden, um Ihre Benachrichtigungen anzuzeigen.",
+      "empty": "Keine Benachrichtigungen.",
+      "loading": "Wird geladen…",
+      "refreshing": "Wird aktualisiert…",
+      "unread": "Ungelesen",
+      "mark-all-read": "Alle als gelesen markieren",
+      "view-all": "Alle anzeigen"
+    },
+    "breadcrumbs": {
+      "aria-label": "Breadcrumbs"
+    },
+    "offline-indicator": {
+      "toast": {
+        "restored": "Verbindung wiederhergestellt!",
+        "offline": "Sie sind offline. Einige Funktionen sind möglicherweise nicht verfügbar."
+      },
+      "status": {
+        "online": "Wieder online",
+        "offline": "Keine Internetverbindung"
+      }
+    }
+  },
+  "site-search": {
+    "placeholder": "Website durchsuchen...",
+    "recent-searches": "Letzte Suchanfragen",
+    "no-results": "Keine Ergebnisse für"
+  },
+  "dialog": {
+    "sign-in": {
+      "continue-with": "Weiter mit {provider}",
+      "or": "oder",
+      "description": "um zu yuricunha.com fortzufahren",
+      "here": "Hier anmelden",
+      "anonymous": "Anonym",
+      "provider": {
+        "github": "GitHub",
+        "google": "Google"
+      },
+      "email-placeholder": "E-Mail",
+      "password-placeholder": "Passwort",
+      "forgot-password": "Passwort vergessen?",
+      "email-submit": "Mit E-Mail fortfahren",
+      "last-used": "Zuletzt verwendet"
+    },
+    "sign-up": {
+      "description": "um Ihr Konto auf yuricunha.com zu erstellen",
+      "here": "Hier registrieren",
+      "name-placeholder": "Name",
+      "email-submit": "Mit Registrierung fortfahren"
+    },
+    "forgot-password": {
+      "title": "Passwort vergessen?",
+      "description": "Kein Problem, wir senden Ihnen Anweisungen zum Zurücksetzen.",
+      "email": {
+        "label": "E-Mail-Adresse",
+        "placeholder": "Geben Sie Ihre E-Mail-Adresse ein"
+      },
+      "submit": {
+        "pending": "Wird gesendet...",
+        "default": "Link zum Zurücksetzen senden"
+      },
+      "back": "Zurück zur Anmeldung",
+      "errors": {
+        "send-failed": "Fehler beim Senden der E-Mail zum Zurücksetzen",
+        "no-email": "Bitte geben Sie Ihre E-Mail-Adresse ein"
+      },
+      "success": {
+        "title": "Überprüfen Sie Ihre E-Mails",
+        "sent": "Wir haben Ihnen einen Link zum Zurücksetzen des Passworts an",
+        "instructions": "Bitte überprüfe deinen Posteingang und folge den Anweisungen.",
+        "tip": "Keine E-Mail erhalten? Überprüfe deinen Spam-Ordner oder versuche es erneut."
+      }
+    },
+    "already-have-account": "Bereits ein Konto?",
+    "dont-have-account": "Kein Konto?"
+  },
+  "error": {
+    "something-went-wrong": "Etwas ist schiefgelaufen!",
+    "try-again": "Erneut versuchen",
+    "unexpected-description": "Ein unerwarteter Fehler ist aufgetreten. Bitte aktualisiere die Seite oder kontaktiere den Support, wenn das Problem weiterhin besteht.",
+    "refresh-page": "Seite aktualisieren",
+    "details": "Fehlerdetails"
+  },
+  "offline": {
+    "metadata": {
+      "title": "Offline - Yuri Cunha",
+      "description": "Du bist derzeit offline. Bitte überprüfe deine Internetverbindung."
+    },
+    "title": "Du bist offline",
+    "description": "Es sieht so aus, als hättest du deine Internetverbindung verloren. Einige Funktionen sind möglicherweise nicht verfügbar, bis du wieder online bist.",
+    "try-again": "Erneut versuchen",
+    "go-home": "Zur Startseite",
+    "available": {
+      "title": "Auch offline kannst du:",
+      "cached-pages": "Zwischengespeicherte Seiten durchsuchen",
+      "loaded-content": "Bereits geladene Inhalte lesen",
+      "search": "Die Suchfunktion nutzen"
+    }
+  },
+  "reset-password": {
+    "loading": "Wird geladen...",
+    "messages": {
+      "success": "Passwort erfolgreich zurückgesetzt! Du kannst dich jetzt mit deinem neuen Passwort anmelden.",
+      "failed": "Passwortzurücksetzung fehlgeschlagen",
+      "invalid-token": "Ungültiges oder fehlendes Zurücksetzungstoken",
+      "passwords-do-not-match": "Passwörter stimmen nicht überein",
+      "password-too-short": "Das Passwort muss mindestens 8 Zeichen lang sein"
+    },
+    "success": {
+      "title": "Passwort aktualisiert",
+      "description": "Dein Passwort wurde erfolgreich zurückgesetzt."
+    },
+    "invalid": {
+      "title": "Ungültiger Zurücksetzungslink",
+      "description": "Dieser Passwortzurücksetzungslink ist ungültig oder abgelaufen."
+    },
+    "actions": {
+      "sign-in": "Anmelden",
+      "back-home": "Zurück zur Startseite"
+    },
+    "form": {
+      "title": "Passwort zurücksetzen",
+      "description": "Gib dein neues Passwort unten ein.",
+      "new-password": {
+        "label": "Neues Passwort",
+        "placeholder": "Gib dein neues Passwort ein"
+      },
+      "confirm-password": {
+        "label": "Neues Passwort bestätigen",
+        "placeholder": "Bestätige dein neues Passwort"
+      },
+      "submit": {
+        "pending": "Setze Passwort zurück...",
+        "default": "Passwort zurücksetzen"
+      }
+    }
+  },
+  "guestbook": {
+    "create-message-successfully": "Nachricht erfolgreich erstellt",
+    "delete-dialog": {
+      "description": "Möchtest du diesen Kommentar wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
+      "title": "Kommentar löschen"
+    },
+    "delete-message-successfully": "Nachricht erfolgreich gelöscht",
+    "description": "Trage dich in mein Gästebuch ein und teile deine Ideen. Du kannst mir hier alles erzählen!",
+    "failed-to-load-messages": "Fehler beim Laden der Nachrichten. Bitte aktualisiere die Seite.",
+    "message-cannot-be-empty": "Nachricht darf nicht leer sein. Mein Fehler oder deiner?",
+    "no-messages": "Keine Nachrichten. Sei der Erste, der eine Nachricht hinterlässt!",
+    "empty-cta": "Sei der Erste, der eine Nachricht hinterlässt!",
+    "pinned": {
+      "description": "Wenn du einen Moment Zeit hast, melde dich bitte mit deinem Konto an, um einen Kommentar zu hinterlassen. Danke!",
+      "greeting": "Hey! 👋"
+    },
+    "placeholder": "Hinterlasse eine Nachricht",
+    "signin": {
+      "description": "um eine Nachricht zu hinterlassen"
+    },
+    "submit": "Absenden",
+    "title": "Gästebuch"
+  },
+  "homepage": {
+    "about-me": {
+      "coding-hours": "Programmierstunden",
+      "coding-hours-value": "{count, plural, =1 {# Std.} other {# Std.}}",
+      "connect": "Vernetzen",
+      "fav-framework": "Lieblings-Server",
+      "location": "São Paulo",
+      "more": "Mehr über mich erfahren",
+      "stacks": "Technologien",
+      "title": "Über mich"
+    },
+    "get-in-touch": {
+      "description": "Zögere nicht, mich zu kontaktieren!",
+      "label": "Kontakt",
+      "availability": "Verfügbarkeit",
+      "image-alt": "Ich oder nicht ich",
+      "title": "Möchtest du reden?",
+      "code": {
+        "status": "status = \"offen\"",
+        "email": "email = \"me@yuricunha.com\"",
+        "timezone": "timezone = \"UTC/GMT -3\""
+      }
+    },
+    "hero": {
+      "title-top": "Ich bin Yuri, ein Datenbankspezialist",
+      "title-middle-left": "optimiert",
+      "title-middle-right": "Datenlösungen",
+      "amazing": "agil",
+      "attractive": "schnell",
+      "fantastic": "robust",
+      "stunning": "sicher",
+      "title-bottom": "für moderne Infrastrukturen",
+      "location-timezone": "Brasilien • UTC/GMT -3",
+      "view-projects": "Projekte anzeigen",
+      "read-blog": "Blog lesen",
+      "code": {
+        "database-specialist": "datenbank_spezialist = true",
+        "region": "region = \"America/Sao_Paulo\"",
+        "focus": "fokus = \"zuverlässige Datensysteme\""
+      }
+    },
+    "latest-articles": {
+      "card": "Artikel",
+      "more": "Alle Artikel anzeigen",
+      "title": "Neueste Artikel"
+    },
+    "selectedProjects": {
+      "card": "Projekt",
+      "more": "Alle Projekte anzeigen",
+      "title": "Ausgewählte Projekte"
+    },
+    "recently-updated": {
+      "title": "Kürzlich aktualisiert",
+      "description": "Neueste Inhaltsaktualisierungen und Ergänzungen",
+      "type": {
+        "post": "Beitrag",
+        "project": "Projekt",
+        "page": "Seite"
+      },
+      "updated-on": "Aktualisiert am {date}",
+      "empty": "Keine aktuellen Aktualisierungen verfügbar"
+    },
+    "newsletter": {
+      "title": "Bleib auf dem Laufenden",
+      "description": "Erhalte Benachrichtigungen über neue Blogbeiträge und Projektupdates",
+      "placeholder": "Gib deine E-Mail-Adresse ein",
+      "cta": "Abonnieren",
+      "disclaimer": "Kein Spam, Abmeldung jederzeit möglich. Es gelten die Datenschutzbestimmungen.",
+      "success-title": "Danke für deine Anmeldung!",
+      "success-description": "Du erhältst Updates zu neuen Beiträgen und Projekten.",
+      "error-default": "Anmeldung fehlgeschlagen",
+      "success-compact": "Angemeldet!"
+    }
+  },
+  "hook": {
+    "copy-to-clipboard": {
+      "copied": "In die Zwischenablage kopiert!",
+      "error": "Konnte nicht in die Zwischenablage kopiert werden. Bitte versuche es erneut!"
+    }
+  },
+  "snippets": {
+    "title": "Code-Snippets",
+    "description": "Kleine, praktische Notizen und Code-Rezepte.",
+    "empty": "Keine Snippets verfügbar.",
+    "content-label": "Snippet",
+    "on-this-page": "Auf dieser Seite",
+    "min-read": "{minutes} Min. Lesezeit"
+  },
+  "layout": {
+    "navigation": "Navigation",
+    "home": "Startseite",
+    "blog": "Blog",
+    "snippets": "Snippets",
+    "projects": "Projekte",
+    "about": "Über mich",
+    "now": "Aktuell",
+    "guestbook": "Gästebuch",
+    "uses": "Tools",
+    "music": "Musik",
+    "more": "Mehr",
+    "admin": "Admin",
+    "contact": "Kontakt",
+    "sitemap": "Seitenübersicht",
+    "skip-to-main-content": "Zum Hauptinhalt springen",
+    "toggle-menu": "Menü umschalten",
+    "change-language": "Sprache ändern",
+    "links": "Links",
+    "github": "GitHub",
+    "star": "Stern",
+    "now-playing": {
+      "error": "Fehler beim Abrufen der Last.fm-Daten",
+      "loading": "Lädt ...",
+      "not-listening": "Nichts wird gehört – Last.fm"
+    }
+  },
+  "mdx": {
+    "link-to-section": "Link zum Abschnitt"
+  },
+  "metadata": {
+    "site-description": "Senior DBA",
+    "site-title": "Yuri Cunha",
+    "site-short-name": "Yuri"
+  },
+  "og": {
+    "blog-post": "Blog-Beitrag",
+    "read-article": "Diesen Artikel auf yuricunha.com lesen",
+    "summary-fallback": "Diesen Artikel auf yuricunha.com lesen"
+  },
+  "not-found": "Hier gibt es heute keine Seiten!",
+  "notFound": {
+    "badge": "Seite nicht gefunden",
+    "subtitle": "Versuche, nach dem Gesuchten zu suchen, oder springe zu einem der folgenden Abschnitte.",
+    "viewAll": "Alle anzeigen",
+    "recentPosts": "Aktuelle Beiträge",
+    "recentPostsDescription": "Neueste Artikel aus dem Blog",
+    "recentSnippets": "Aktuelle Snippets",
+    "recentSnippetsDescription": "Kurze Notizen und Code-Rezepte",
+    "recentProjects": "Aktuelle Projekte",
+    "recentProjectsDescription": "Dinge, die ich gebaut habe"
+  },
+  "sitemap": {
+    "title": "Seitenübersicht",
+    "description": "Vollständige Übersicht über alle Inhalte und Navigation der Website",
+    "main-pages": {
+      "title": "Hauptseiten",
+      "description": "Hauptnavigation und Funktionen der Website",
+      "items": {
+        "home": {
+          "description": "Willkommensseite mit einer Übersicht über Projekte und Artikel"
+        },
+        "blog": {
+          "description": "Technische Artikel und Gedanken zur Entwicklung"
+        },
+        "snippets": {
+          "description": "Kurze, praktische Notizen und Code-Rezepte"
+        },
+        "projects": {
+          "description": "Portfolio von Entwicklungsprojekten und GitHub-Repositories"
+        },
+        "guestbook": {
+          "description": "Öffentliches Gästebuch, in dem du eine Nachricht hinterlassen kannst"
+        },
+        "uses": {
+          "description": "Tools, Ausrüstung und Software, die ich für die Entwicklung verwende"
+        },
+        "now": {
+          "description": "Woran ich gerade arbeite und worüber ich nachdenke"
+        },
+        "music": {
+          "description": "Musikgeschmack, Höraktivitäten und Last.fm-Statistiken"
+        },
+        "contact": {
+          "description": "Wie du mich erreichen kannst"
+        },
+        "about": {
+          "title": "Über mich",
+          "description": "Erfahre mehr über mich und meinen Hintergrund"
+        },
+        "sitemap": {
+          "description": "Eine vollständige Übersicht aller Seiten auf der Website"
+        }
+      }
+    },
+    "blog-posts": {
+      "title": "Blog-Beiträge",
+      "description": "Alle veröffentlichten Artikel und technischen Inhalte"
+    },
+    "projects": {
+      "title": "Projekte",
+      "description": "Entwicklungsprojekte und Open-Source-Beiträge"
+    },
+    "snippets": {
+      "title": "Code-Snippets",
+      "description": "Kleine, praktische Notizen und Code-Beispiele"
+    },
+    "labels": {
+      "live-demo": "Live-Demo",
+      "github": "GitHub"
+    }
+  },
+  "projects": {
+    "description": "Die Liste meiner Projekte. Alles wurde mit 💙 gemacht (diese Seite befindet sich noch in Entwicklung).",
+    "title": "Projekte",
+    "content-label": "Projekt",
+    "visit-website": "Website besuchen",
+    "all-repos": "Meine öffentlichen GitHub-Repositories",
+    "featured": "Hervorgehobene Projekte",
+    "all": "Alle Projekte",
+    "search": {
+      "placeholder": "Projekte durchsuchen..."
+    },
+    "filters": {
+      "show": "Filter anzeigen",
+      "hide": "Filter ausblenden",
+      "category": "Kategorie",
+      "all-categories": "Alle Kategorien",
+      "status": "Status",
+      "all-statuses": "Alle Stati",
+      "technology": "Technologie",
+      "all-technologies": "Alle Technologien",
+      "clear": "Filter zurücksetzen"
+    },
+    "results": {
+      "found": "{count, plural, =1 {# Projekt gefunden} other {# Projekte gefunden}}",
+      "showing": "Zeige {count, plural, =1 {# Projekt} other {# Projekte}}"
+    },
+    "empty": {
+      "title": "Keine Projekte gefunden",
+      "description": "Versuche, deine Filter oder Suchbegriffe anzupassen.",
+      "show-all": "Alle Projekte anzeigen"
+    },
+    "card": {
+      "open": "{name} öffnen",
+      "open-aria": "Projektseite {name} öffnen",
+      "featured": "Hervorgehoben",
+      "github": {
+        "title": "Quellcode auf GitHub anzeigen",
+        "aria": "Quellcode auf GitHub anzeigen (öffnet in einem neuen Tab)"
+      },
+      "live": {
+        "title": "Live-Demo öffnen",
+        "aria": "Live-Demo öffnen (öffnet in einem neuen Tab)"
+      },
+      "started-label": "Begonnen"
+    },
+    "status": {
+      "active": "Aktiv",
+      "archived": "Archiviert",
+      "beta": "Beta",
+      "completed": "Abgeschlossen"
+    },
+    "repos": {
+      "empty": "Keine Repositorys gefunden."
+    }
+  },
+  "uses": {
+    "description": "Das ist die Ausrüstung, die ich derzeit für Gaming, Programmierung und den Alltag verwende.",
+    "title": "Verwendete Tools"
+  },
+  "spotify": {
+    "title": "Musik",
+    "description": "Hier ist das, was ich gerade höre – Top-Titel und Künstler von meinem Last.fm-Profil.",
+    "sections": {
+      "listening-data": {
+        "label": "Hördaten",
+        "title": "Was wiederholt sich, was ändert sich und was läuft gerade?"
+      }
+    },
+    "now-listening": {
+      "title": "Aktuell gehört",
+      "subtitle": "Aktuell auf Last.fm gespielt",
+      "not-playing": "Höre gerade nichts",
+      "by": "von"
+    },
+    "top-artists": {
+      "title": "Top-Künstler",
+      "subtitle": "Meistgehörte Künstler in den letzten 6 Monaten",
+      "no-data": "Keine Künstlersdaten verfügbar",
+      "tooltips": {
+        "shuffle-on": "Originalreihenfolge anzeigen",
+        "shuffle-off": "Künstler mischen",
+        "view-list": "Zur Listenansicht wechseln",
+        "view-grid": "Zur Rasteransicht wechseln"
+      }
+    },
+    "top-songs": {
+      "title": "Top-Titel",
+      "subtitle": "Meistgespielte Titel in den letzten 6 Monaten",
+      "no-data": "Keine Titeldaten verfügbar"
+    },
+    "recently-played": {
+      "title": "Kürzlich gehört",
+      "subtitle": "Titel, die ich kürzlich gehört habe",
+      "no-data": "Keine kürzlich gehörten Titel verfügbar"
+    },
+    "heatmap": {
+      "title": "Höraktivitäts-Hitmap",
+      "subtitle": "Tägliche Höraktivität (kürzliche Wiedergaben)",
+      "days": {
+        "sun": "So",
+        "mon": "Mo",
+        "tue": "Di",
+        "wed": "Mi",
+        "thu": "Do",
+        "fri": "Fr",
+        "sat": "Sa"
+      },
+      "legend": {
+        "low": "Niedrig",
+        "high": "Hoch"
+      }
+    },
+    "import": {
+      "title": "Lokale Verlaufsdaten importieren",
+      "subtitle": "Lade eine CSV-Datei deines Hörverlaufs hoch",
+      "choose": "Datei auswählen",
+      "plays": "Wiedergaben",
+      "artists": "Künstler",
+      "duration": "Dauer",
+      "invalid-file": "Ungültige Datei: JSON-Array erwartet",
+      "parse-error": "Parse-Fehler"
+    },
+    "stats": {
+      "title": "Musikstatistiken",
+      "subtitle": "Deine Hörgewohnheiten und Vorlieben",
+      "labels": {
+        "total-hours": "Gesamtstunden",
+        "diversity": "Vielfalt",
+        "avg-popularity": "Durchschnittliche Beliebtheit",
+        "top-artists": "Top-Künstler",
+        "top-genres": "Top-Genres"
+      }
+    },
+    "loading": "Lade Musikdaten...",
+    "error": "Fehler beim Laden der Musikdaten. Bitte versuche es erneut.",
+    "no-data": "Keine Daten verfügbar",
+    "refresh": "Aktualisieren",
+    "export": {
+      "csv": "Als CSV exportieren",
+      "json": "Als JSON exportieren"
+    },
+    "range": {
+      "short": "Letzte 4 Wochen",
+      "medium": "Letzte 6 Monate",
+      "long": "Gesamter Zeitraum"
+    },
+    "album": "Album",
+    "artist": "Künstler",
+    "artists": "Künstler",
+    "song": "Titel",
+    "tracks": "Titel",
+    "listeners": "Hörer",
+    "followers": "Follower",
+    "timeline": {
+      "title": "Musik-Zeitleiste",
+      "subtitle": "Deine Hörverlaufsvisualisierung",
+      "empty": "Kein aktueller Hörverlauf verfügbar",
+      "periods": {
+        "last-hour": "Letzte Stunde",
+        "today": "Heute",
+        "yesterday": "Gestern",
+        "this-week": "Diese Woche",
+        "earlier": "Früher"
+      },
+      "more-tracks": "+{count} weitere Titel",
+      "count": "({count} {label})",
+      "labels": {
+        "total-tracks": "Gesamtzahl der Titel",
+        "unique-artists": "Einzigartige Künstler",
+        "track": "Titel",
+        "tracks": "Titel"
+      }
+    },
+    "social": {
+      "title": "Teile deine Musik",
+      "subtitle": "Teile deine Lieblingstitel mit Freunden",
+      "now-playing": "Aktuell spielt",
+      "top-tracks": "Top-Titel zum Teilen",
+      "share-text": "🎵 Höre gerade \"{name}\" von {artist} – geteilter Titel von meinem Musikprofil!",
+      "buttons": {
+        "twitter": "Auf Twitter teilen",
+        "facebook": "Auf Facebook teilen",
+        "copy": "Link kopieren",
+        "open": "In Last.fm öffnen"
+      },
+      "profile": {
+        "title": "Teile dein Musikprofil",
+        "share-title": "🎵 Schau dir meinen Musikgeschmack und an, was ich gerade höre!",
+        "share-description": "Entdecke meine Musikvorlieben und meine aktuelle Höraktivität"
+      }
+    },
+    "time-ago": {
+      "just-now": "Gerade jetzt",
+      "minutes": "Vor {count} Min.",
+      "hours": "Vor {count} Std.",
+      "days": "Vor {count} Tagen"
+    }
+  },
+  "mascot": {
+    "ariaLabel": "Yue – Virtueller Assistent",
+    "close": "Schließen",
+    "hide": "Ausblenden",
+    "hideForNow": "Vorläufig ausblenden",
+    "speechBubble": "Yues Nachricht",
+    "settings": {
+      "title": "Yues Einstellungen",
+      "close": "Einstellungen schließen",
+      "open": "Einstellungen öffnen",
+      "animations": "Animationen",
+      "speechBubbles": "Sprechblasen",
+      "soundEffects": "Soundeffekte",
+      "messageDuration": "Nachrichtendauer",
+      "hideUntilRestored": "Ausblenden, bis wiederhergestellt",
+      "bubblePosition": "Position der Sprechblase",
+      "positions": {
+        "bottomRight": "Unten rechts",
+        "bottomLeft": "Unten links",
+        "topRight": "Oben rechts",
+        "topLeft": "Oben links"
+      }
+    },
+    "easterEgg": {
+      "retroMode": "Retro-Modus aktiviert! 🎮"
+    },
+    "notifications": {
+      "newPost": "Hey! Ich habe einen neuen Artikel veröffentlicht: {title}. Möchtest du ihn dir anschauen? 📝"
+    },
+    "actions": {
+      "navigating": "Verstanden! Bringe dich in Kürze zu {target} ... 🚀"
+    },
+    "interactions": {
+      "tickle": "Hey! Das kitzelt! Haha! 😄",
+      "dizzy": "Huch... Ich glaube, ich habe mich zu oft im Kreis gedreht... 😵‍💫",
+      "selectionExplain": "Soll ich erklären, was das ist?",
+      "explainButton": "Erklären",
+      "explainPrompt": "Kannst du diesen von mir ausgewählten Textausschnitt erklären?\n\n\"{text}\""
+    },
+    "restore": "Yue zurückbringen",
+    "idle": {
+      "tip1": "💡 Wusstest du schon? Du kannst **Umschalt+Y** drücken, um mich zurückzuholen, falls ich versteckt bin!",
+      "tip2": "🎮 Probier das Mini-Spiel aus! Klicke auf das Gamepad-Symbol in meiner Sprechblase.",
+      "tip3": "⚙️ Passe mein Verhalten in den Einstellungen an.",
+      "tip4": "🎯 Ich bin hier, um zu helfen! Stell gerne Fragen oder erkunde die Seite.",
+      "tip5": "🌟 Einen Bug gefunden? Lass es mich wissen – ich helfe dabei, ihn zu melden!"
+    },
+    "menu": {
+      "open": "Menü öffnen",
+      "reportBug": "Bug melden / Kontakt",
+      "viewProjects": "Projekte anzeigen",
+      "aiChat": "KI-Chat",
+      "miniGame": "Mini-Spiel",
+      "settings": "Einstellungen"
+    },
+    "contact": {
+      "title": "Kontaktiere meinen Erfinder, Yuri",
+      "close": "Kontakt schließen",
+      "description": "Einen Bug gefunden oder Lust, Kontakt aufzunehmen? Hier ist die E-Mail-Adresse meines Erfinders:",
+      "copy": "E-Mail kopieren",
+      "copySuccess": "E-Mail in die Zwischenablage kopiert!",
+      "copyError": "Fehler beim Kopieren der E-Mail. Bitte versuche es erneut."
+    },
+    "aiChat": {
+      "title": "Chat mit Yue",
+      "clear": "Leeren",
+      "close": "Schließen",
+      "conversations": "Unterhaltungen",
+      "provider": "Anbieter",
+      "newChat": "Neuer Chat",
+      "newChatTitle": "Neuer Chat",
+      "more": "Mehr",
+      "rename": "Umbenennen",
+      "renamePrompt": "Chat umbenennen",
+      "deleteChat": "Chat löschen",
+      "deleteConfirm": "Bist du sicher, dass du diesen Chat löschen möchtest?",
+      "share": "Teilen",
+      "citations": {
+        "title": "Quellen",
+        "actions": {
+          "open": "Öffnen",
+          "copyLink": "Link kopieren",
+          "moreLikeThis": "Mehr davon"
+        },
+        "linkCopied": "Link in die Zwischenablage kopiert",
+        "linkCopyFailed": "Fehler beim Kopieren des Links",
+        "moreLikeThisPrompt": "Empfiehl mehr {type} wie „{title}“. Bitte füge Links hinzu.",
+        "types": {
+          "post": "Beitrag",
+          "project": "Projekt",
+          "page": "Seite",
+          "snippet": "Codeausschnitt"
+        }
+      },
+      "shareCopied": "Teilen-Link in die Zwischenablage kopiert",
+      "shareCopyFailed": "Fehler beim Kopieren des Teilen-Links",
+      "importedTitle": "Importierter Chat",
+      "imported": "Chat importiert",
+      "importFailed": "Fehler beim Importieren des Chats",
+      "copyMessage": "Nachricht kopieren",
+      "messageCopied": "Nachricht in die Zwischenablage kopiert",
+      "messageCopyFailed": "Fehler beim Kopieren der Nachricht",
+      "welcomeMessage": "Hallo! Ich bin Yue, dein KI-Assistent! 🤖 Frag mich alles über die Website, technische Themen oder plaudere einfach!",
+      "errorMessage": "Entschuldige, ich habe gerade Probleme. Bitte versuche es später noch einmal! 😅",
+      "thinking": "Yue denkt nach...",
+      "placeholder": "Frag mich alles...",
+      "connectionError": "Verbindungsprobleme. Bitte versuche es erneut.",
+      "footer": "Yue AI von Yuri",
+      "providers": {
+        "auto": "Automatisch",
+        "hf": "Yue (Mittel)",
+        "hf_local": "Yue (Niedrig)",
+        "gemini": "Gemini",
+        "groq": "Yue (Hoch)",
+        "ollama": "Ollama",
+        "mistral": "Yue"
+      },
+      "feedback": {
+        "like": "Daumen hoch",
+        "dislike": "Daumen runter",
+        "commentPlaceholder": "Erzähl mir, was schiefgelaufen ist (optional)",
+        "send": "Senden",
+        "cancel": "Abbrechen",
+        "sent": "Vielen Dank für dein Feedback!",
+        "error": "Feedback konnte nicht gesendet werden"
+      },
+      "modes": {
+        "chat": "Chat",
+        "imageGen": "Generieren",
+        "imageAnalyze": "Analysieren",
+        "speech": "Sprache"
+      },
+      "descriptions": {
+        "chat": "Textkonversation mit KI",
+        "imageGen": "Erstelle Bilder aus Textbeschreibungen",
+        "imageAnalyze": "Analysiere und beschreibe Bilder",
+        "speech": "Wandle Text in Sprache um"
+      },
+      "placeholders": {
+        "chat": "Gib deine Nachricht ein...",
+        "imageGen": "Beschreibe das Bild, das du generieren möchtest...",
+        "imageAnalyze": "Stelle eine Frage zum hochgeladenen Bild...",
+        "speech": "Gib Text ein, der in Sprache umgewandelt werden soll..."
+      },
+      "titles": {
+        "chat": "KI-Chat",
+        "imageGen": "Bildgenerator",
+        "imageAnalyze": "Bildanalysator",
+        "speech": "Text zu Sprache"
+      },
+      "upload": "Bild hochladen zur Analyse",
+      "selected": "Ausgewählt: {filename}",
+      "generatedImage": "Generiertes Bild:",
+      "generatedAudio": "Generierte Audiodatei:",
+      "switchModel": "KI-Modell wechseln",
+      "availableFeatures": "Verfügbare Funktionen für {model}",
+      "featureNotAvailable": "{feature} ist für dieses Modell nicht verfügbar",
+      "online": "Online",
+      "retry": "Erneut versuchen"
+    },
+    "chatbot": {
+      "title": "Chat mit Yue",
+      "close": "Chat schließen",
+      "description": "Wähle ein Thema zum Chatten aus:",
+      "options": {
+        "contact": "Ich möchte Kontakt aufnehmen",
+        "feedback": "Ich habe Feedback",
+        "help": "Ich brauche Hilfe",
+        "bug": "Ich habe einen Fehler gefunden",
+        "feature": "Ich habe einen Funktionswunsch",
+        "general": "Möchte einfach nur chatten"
+      },
+      "responses": {
+        "contact": "Super! Du kannst meinen Erschaffer, Yuri, unter me@yuricunha.com erreichen. Sie freuen sich über Nachrichten von Besuchern!",
+        "feedback": "Vielen Dank für dein Feedback! Es hilft, diese Seite für alle besser zu machen. Du kannst Details auch per E-Mail an me@yuricunha.com senden.",
+        "help": "Ich bin hier, um zu helfen! Wobei möchtest du Unterstützung? Du kannst die Seite erkunden oder mir spezifische Fragen stellen.",
+        "bug": "Danke für deine Meldung! Bitte sende eine E-Mail mit Details an me@yuricunha.com. Jede Meldung hilft, die Seite zu verbessern!",
+        "feature": "Das klingt spannend! Mein Erschaffer Yuri freut sich immer über neue Ideen. Schicke deine Vorschläge an me@yuricunha.com.",
+        "general": "Ich liebe es, mit Besuchern zu plaudern! Wie läuft dein Tag? Schau dich gerne auf der Seite um oder frag mich alles!"
+      }
+    },
+    "greetings": {
+      "morning": "Guten Morgen! Ich bin Yue! ☀️",
+      "afternoon": "Guten Tag! Ich bin Yue! 🌤️",
+      "evening": "Guten Abend! Ich bin Yue! 🌅",
+      "night": "Gute Nacht! Ich bin Yue! 🌙"
+    },
+    "game": {
+      "title": "Yues Mini-Spiel",
+      "close": "Spiel schließen",
+      "open": "Spiel öffnen",
+      "score": "Punkte",
+      "time": "Zeit",
+      "highScore": "Rekord",
+      "instructions": "Klicke das Ziel so oft wie möglich in 30 Sekunden an!",
+      "start": "Spiel starten",
+      "playAgain": "Nochmal spielen",
+      "gameOver": "Spiel vorbei! Deine Punktzahl: {score}",
+      "clickTarget": "Ziel anklicken",
+      "difficulty": {
+        "label": "Schwierigkeit:",
+        "aria": "Schwierigkeit auswählen",
+        "options": {
+          "easy": "Einfach",
+          "medium": "Mittel",
+          "hard": "Schwer"
+        }
+      },
+      "mode": {
+        "label": "Modus:",
+        "aria": "Modus auswählen",
+        "options": {
+          "classic": "Klassisch",
+          "survival": "Überlebensmodus",
+          "challenge": "Herausforderung"
+        }
+      }
+    },
+    "messages": {
+      "0": "Hallo! Ich bin Yue, dein virtueller Assistent! Brauchst du Hilfe bei der Navigation?",
+      "1": "Wusstest du, dass du den Retro-Modus mit dem Konami-Code aktivieren kannst?",
+      "2": "Zeit für eine Kaffeepause! ☕",
+      "3": "Hey, ich habe ein verstecktes Osterei gefunden! Möchtest du es sehen?",
+      "4": "Vergiss nicht, dir die neuesten Projekte meines Erschaffers Yuri anzuschauen!",
+      "5": "Willkommen auf der Website! Wie kann ich dir heute helfen?",
+      "6": "Schau dich gerne um! Es gibt viel zu entdecken.",
+      "7": "Möchtest du Kontakt aufnehmen? Schau dir den Kontaktbereich an!",
+      "8": "Wusstest du, dass diese Seite mit Next.js und TypeScript erstellt wurde?",
+      "9": "Danke für deinen Besuch! Ich hoffe, du hast einen tollen Tag!",
+      "10": "Möchtest du sehen, woran mein Erschaffer Yuri gerade arbeitet? Schau dir die Projekte an!",
+      "11": "Ich liebe es, Besuchern zu helfen und Wissen zu teilen. Und du?",
+      "12": "Das Interface ist jetzt warm, dunkel und fokussiert!",
+      "13": "Diese Website ist vollständig responsiv. Probiere aus, die Browsergröße zu ändern!",
+      "14": "Fehler gefunden? Lass es mich wissen, ich helfe dir, sie zu melden!",
+      "15": "Ich lerne immer wieder Neues von meinem Erschaffer Yuri. Was ist deine neueste Entdeckung?",
+      "16": "Mein Erschaffer Yuri ist Datenbankspezialist. Ziemlich cool, oder?",
+      "17": "Ich kann dir helfen, alles auf der Seite zu finden!",
+      "18": "Wusstest du, dass mein Erschaffer Yuri diese Reise 2018 begonnen hat?",
+      "19": "Das Mini-Spiel ist eine tolle Möglichkeit, um eine Pause zu machen!",
+      "20": "Ich bin hier, um deinen Besuch angenehmer zu gestalten!",
+      "21": "Mein Schöpfer, Yuri, schreibt auf dem Blog über Technik und Leben.",
+      "22": "Hast du den Projektabschnitt gesehen? Die Arbeit meines Schöpfers ist beeindruckend!",
+      "23": "Ich liebe es, wenn Besucher verschiedene Seiten erkunden!",
+      "24": "Das Gästebuch ist ein toller Ort, um eine Nachricht zu hinterlassen!",
+      "25": "Mein Schöpfer, Yuri, arbeitet immer an etwas Neuem!",
+      "26": "Wusstest du, dass du mein Verhalten in den Einstellungen anpassen kannst?",
+      "27": "Ich bin hier, um dein Erlebnis besser zu machen!",
+      "28": "Mein Schöpfer, Yuri, liebt es, Wissen über den Blog zu teilen.",
+      "29": "Die Seite ist so gestaltet, dass sie für jeden zugänglich ist!",
+      "30": "Ich lerne jeden Tag neue Dinge von meinem Schöpfer, Yuri!",
+      "31": "Hast du die Uses-Seite besucht? Die Einrichtung meines Schöpfers ist beeindruckend!",
+      "32": "Ich bin hier, um dich durch die Seite zu führen!",
+      "33": "Mein Schöpfer, Yuri, glaubt an die Kraft von Open Source!",
+      "34": "Auf der Spotify-Seite siehst du, was mein Schöpfer gerade hört!",
+      "35": "Ich freue mich immer, neue Besucher kennenzulernen!",
+      "36": "Mein Schöpfer, Yuri, liebt es, anderen beim Lernen zu helfen!",
+      "37": "Wusstest du, dass du Nachrichten anheften kannst, um sie sichtbar zu halten?",
+      "38": "Ich bin hier, um dein Surferlebnis unterhaltsamer zu gestalten!",
+      "39": "Mein Schöpfer, Yuri, ist leidenschaftlich an Technologie interessiert!",
+      "40": "Die Suchfunktion hilft dir, alles schnell zu finden!",
+      "41": "Mein Schöpfer, Yuri, ist immer offen für Feedback und Vorschläge!",
+      "42": "Das Admin-Panel hilft, die Seite effizient zu verwalten!",
+      "43": "Ich liebe es, neue Kommentare und Interaktionen auf der Seite zu sehen!",
+      "44": "Mein Schöpfer, Yuri, glaubt daran, Dinge zu schaffen, die einen Unterschied machen!",
+      "45": "Die Seite entwickelt sich ständig mit neuen Funktionen weiter!",
+      "46": "Ich bin hier, um Technologie für jeden zugänglicher zu machen!",
+      "47": "Mein Schöpfer, Yuri, liebt es, komplexe Probleme zu lösen!",
+      "48": "Die Community rund um diese Seite ist großartig!",
+      "49": "Ich bin immer bereit, bei Fragen zu helfen!"
+    },
+    "pageMessages": {
+      "404": {
+        "0": "Hoppala! Sieht so aus, als ob du dich verlaufen hast! 🗺️",
+        "1": "Keine Sorge, ich helfe dir, den Weg zurückzufinden!",
+        "2": "Versuche, das Navigationsmenü oder die Suchfunktion zu verwenden.",
+        "3": "Die Startseite ist immer ein guter Ort, um anzufangen!",
+        "4": "Mein Schöpfer, Yuri, arbeitet daran, die Navigation noch besser zu machen!",
+        "5": "Fühl dich frei, kaputte Links zu melden, die du findest!",
+        "6": "Selbst die besten Entdecker verlaufen sich manchmal! 🧭",
+        "7": "Diese Seite wurde möglicherweise verschoben oder existiert noch nicht!",
+        "8": "Nutze die Suche, um zu finden, was du gesucht hast!",
+        "9": "Im Navigationsmenü sind alle Hauptabschnitte organisiert!",
+        "10": "Manchmal führt Verlorengehen zur Entdeckung von etwas noch Besserem!",
+        "11": "Überprüfe die URL auf Tippfehler – das ist oft der Übeltäter!",
+        "12": "Die Seite wächst ständig, daher erscheint regelmäßig neuer Inhalt!",
+        "13": "Kaputte Links passieren – danke, dass du hilfst, die Seite zu verbessern!",
+        "14": "Jede 404-Fehlermeldung ist eine Chance, stattdessen etwas Neues zu entdecken!",
+        "15": "Im Zweifel findest du auf der Startseite Links zu allem Wichtigen! 🏠"
+      },
+      "home": {
+        "0": "Willkommen auf der Startseite! 👋 Ich bin Yue, dein virtueller Assistent!",
+        "1": "Hier beginnt alles. Bereit zum Erkunden?",
+        "2": "Mein Schöpfer, Yuri, ist Datenbank-Spezialist. Möchtest du mehr wissen?",
+        "3": "Schau dir die neuesten Artikel und Projekte unten an!",
+        "4": "Fühl dich frei, jeden Bereich zu erkunden, der dich interessiert!",
+        "5": "Das Navigationsmenü hilft dir, das Gesuchte zu finden!",
+        "6": "Zuhause ist es am schönsten! Hier passiert die ganze Magie ✨",
+        "7": "Suchst du etwas Bestimmtes? Ich helfe dir bei der Navigation!",
+        "8": "Wusstest du, dass du meine Position in den Einstellungen ändern kannst? 📍",
+        "9": "Ich liebe es, neue Besucher kennenzulernen! Danke für deinen Besuch! 😊",
+        "10": "Die neuesten Updates und Inhalte werden hier immer zuerst präsentiert!",
+        "11": "Neugierig? Jeder Bereich hat etwas Einzigartiges zu bieten!",
+        "12": "Profitätipp: Nutze die Suchfunktion, um genau das zu finden, was du brauchst! 🔍",
+        "13": "Diese Seite entwickelt sich ständig weiter – mit neuen Funktionen und Inhalten!",
+        "14": "Möchtest du auf dem Laufenden bleiben? Schau regelmäßig vorbei für frische Inhalte!",
+        "15": "Ich bin 24/7 hier, um dir beim Entdecken und Erkunden zu helfen!"
+      },
+      "blog": {
+        "0": "Willkommen im Blog! 📝",
+        "1": "Mein Schöpfer, Yuri, schreibt über Technik, Datenbanken und manchmal auch über das Leben.",
+        "2": "Fühl dich frei, Kommentare zu den Artikeln zu hinterlassen!",
+        "3": "Welche Themen würdest du gerne lesen?",
+        "4": "Der Blog wird regelmäßig mit frischem Inhalt aktualisiert!",
+        "5": "Du kannst Artikel nach Tags und Kategorien filtern!",
+        "6": "So viele interessante Artikel zum Eintauchen! 📚",
+        "7": "Jeder Beitrag wird mit Sorgfalt und echter Erfahrung verfasst!",
+        "8": "Vergiss nicht, wertvolle Artikel zu teilen! 🔗",
+        "9": "Im Kommentarbereich finden die echten Diskussionen statt!",
+        "10": "Suchst du etwas Bestimmtes? Probier die Suche oder die Tags!",
+        "11": "Neue Artikel erscheinen regelmäßig – merk dir deine Favoriten! ⭐",
+        "12": "Von Anfängertipps bis zu fortgeschrittenen Konzepten – hier ist für jeden etwas dabei!",
+        "13": "Liebst du es, über Datenbanken, Webentwicklung und technische Einblicke zu lesen? Dann bist du hier richtig!",
+        "14": "Der Blog spiegelt Jahre des Lernens und echter Projekterfahrungen wider!",
+        "15": "Fragen zu einem Artikel? Die Kommentare sind perfekt dafür!"
+      },
+      "blogPost": {
+        "0": "Das ist eine gute Lektüre! 📖",
+        "1": "Das bringt mich zum Nachdenken... 🤔",
+        "2": "Eine interessante Perspektive zu diesem Thema!",
+        "3": "Mein Erschaffer, Yuri, hat sich bei diesem Artikel besonders viel Gedanken gemacht.",
+        "4": "Hoffentlich gefällt dir dieser Artikel!",
+        "5": "Teile gerne deine Gedanken in den Kommentaren!",
+        "6": "Dieser Inhalt ist es wert, sich Zeit dafür zu nehmen.",
+        "7": "Ich liebe es, wenn Menschen sich so intensiv mit Themen wie diesem beschäftigen!",
+        "8": "Die Erkenntnisse hier sind wirklich wertvoll.",
+        "9": "Solche Inhalte machen das Lernen richtig spaß!"
+      },
+      "snippet": {
+        "0": "Willkommen im Snippet-Regal! ✂️",
+        "1": "Kleine Notizen können überraschend viel Debugging-Zeit sparen.",
+        "2": "Brauchst du ein schnelles Rezept? Dieser Abschnitt ist zum Überfliegen gemacht.",
+        "3": "Wähle eine verwirrende Stelle aus, und ich helfe dir, sie zu erklären.",
+        "4": "Snippets sind der Ort, an dem kleine Lektionen zu wiederverwendbaren Werkzeugen werden.",
+        "5": "Das sind praktische Notizen aus der echten Arbeit, keine Museumsstücke.",
+        "6": "Kurz, präzise und leicht später wiederzufinden.",
+        "7": "Ein nützliches Muster gefunden? Lesezeichen setzen für das nächste Projekt!"
+      },
+      "projects": {
+        "0": "Hier sind die Projekte! 🚀",
+        "1": "Alles ist mit Liebe und viel Kaffee ☕ gemacht.",
+        "2": "Lust auf Zusammenarbeit? Lass uns etwas Großartiges bauen!",
+        "3": "Jedes Projekt hat meinem Erschaffer, Yuri, etwas Neues beigebracht.",
+        "4": "Alle Projekte sind Open Source und auf GitHub verfügbar!",
+        "5": "Fühl dich frei, beizutragen oder Verbesserungen vorzuschlagen!",
+        "6": "Von kleinen Hilfsprogrammen bis hin zu Full-Stack-Anwendungen – Vielfalt ist der Schlüssel! 🛠️",
+        "7": "Jedes Projekt löst ein echtes Problem oder erkundet neue Technologien!",
+        "8": "Schau dir die Tech-Stacks an – immer am Experimentieren mit den neuesten Tools!",
+        "9": "Live-Demos sind für die meisten Projekte verfügbar – probier sie aus! 🌐",
+        "10": "Der Quellcode ist sauber, dokumentiert und bereit für Beiträge!",
+        "11": "Einen Bug gefunden oder eine Idee? Issues und Pull Requests sind immer willkommen!",
+        "12": "Diese Projekte repräsentieren Jahre des Lernens und Experimentierens!",
+        "13": "Star die Repos, die dir gefallen – das motiviert den Erschaffer wirklich! ⭐",
+        "14": "Von Datenbanken bis zu Web-Apps – jedes Projekt hat seine eigene Geschichte!",
+        "15": "Lust, gemeinsam etwas zu bauen? Zusammenarbeit macht alles besser!"
+      },
+      "projectsDetail": {
+        "0": "Tolles Projekt! 🔧",
+        "1": "Interessiert an dem Tech-Stack dahinter?",
+        "2": "Den Quellcode findest du normalerweise auf GitHub.",
+        "3": "Falls es eine Live-Demo gibt, probier sie aus!",
+        "4": "Open Source bedeutet, dass deine Ideen willkommen sind.",
+        "5": "Etwas zu verbessern gefunden? Issues und Pull Requests sind sehr willkommen!",
+        "6": "Code zu lesen kann genauso viel Spaß machen wie die App zu nutzen.",
+        "7": "Dieses Projekt spiegelt echte Erfahrungen aus der Praxis wider.",
+        "8": "Gib dem Repository einen Stern, wenn es dir gefällt! ⭐",
+        "9": "Was würdest du darauf aufbauen?"
+      },
+      "about": {
+        "0": "Möchtest du mehr über meinen Schöpfer, Yuri, wissen? 🤔",
+        "1": "Mein Schöpfer, Yuri, ist einfach ein Mensch, der Datenbanken und Programmieren liebt.",
+        "2": "Frag gerne alles, was du wissen möchtest!",
+        "3": "Die Reise begann 2018. Jeden Tag wird noch gelernt!",
+        "4": "Mein Schöpfer, Yuri, liebt es, Wissen zu teilen und anderen zu helfen!",
+        "5": "Auf der Über-mich-Seite findest du alle Details über die Reise!",
+        "6": "Ein Datenbank-Spezialist mit Leidenschaft für sauberen, effizienten Code! 💾",
+        "7": "Von Brasilien in die Welt – Technologie verbindet uns alle! 🌎",
+        "8": "Immer am Lernen, immer am Wachsen, immer neugierig auf neue Technologien!",
+        "9": "Glaubt an Open Source, Wissensaustausch und daran, anderen zum Erfolg zu verhelfen!",
+        "10": "Kaffeegetriebene Programmiersessions und nächtelanges Problemlösen! ☕",
+        "11": "Die Geschichte umfasst Misserfolge, Erfolge und alles dazwischen!",
+        "12": "Eine feste Überzeugung: Der beste Weg zu lernen ist durch Bauen und Lehren!",
+        "13": "Datenbanken mögen die Spezialität sein, aber Full-Stack ist das Spielfeld!",
+        "14": "Jedes Projekt ist eine Lernmöglichkeit und eine Chance, anderen zu helfen!",
+        "15": "Kontakt aufnehmen? Die Kontaktdaten findest du direkt auf dieser Seite!"
+      },
+      "uses": {
+        "0": "Das ist das Setup! 💻",
+        "1": "Ziemlich cooles Setup, oder? Mein Schöpfer, Yuri, liebt seine Ausrüstung!",
+        "2": "Möchtest du wissen, was für die Entwicklung genutzt wird?",
+        "3": "Gute Werkzeuge machen den Unterschied!",
+        "4": "Das Setup entwickelt sich ständig mit neuen Werkzeugen weiter!",
+        "5": "Frag gerne nach einem bestimmten Werkzeug oder Setup!",
+        "6": "Von Hardware bis Software – jedes Werkzeug wurde sorgfältig ausgewählt! ⚙️",
+        "7": "Die perfekte Balance aus Leistung, Produktivität und Ästhetik!",
+        "8": "Immer am Experimentieren mit neuen Werkzeugen und Arbeitsabläufen!",
+        "9": "Diese Werkzeuge haben unzählige Projekte und nächtelange Programmiersessions ermöglicht!",
+        "10": "Neugierig auf eine bestimmte Setup-Entscheidung? Jedes hat seine eigene Geschichte!",
+        "11": "Das Setup entwickelt sich mit neuen Entdeckungen und sich ändernden Bedürfnissen weiter!",
+        "12": "Von Code-Editoren bis zu Datenbank-Tools – alles für maximale Effizienz optimiert!",
+        "13": "Gute Werkzeuge machen dich nicht zu einem besseren Entwickler, aber sie helfen definitiv! 🛠️",
+        "14": "Das Setup spiegelt Jahre des Ausprobierens verschiedener Werkzeuge und des Findens dessen wider, was funktioniert!",
+        "15": "Du brauchst Empfehlungen? Diese Tools wurden in echten Projekten erprobt und für gut befunden!"
+      },
+      "music": {
+        "0": "Willkommen in der Musik-Ecke! 🎵",
+        "1": "Gute oder schlechte Musik? Keine Ahnung, aber mein Erschaffer, Yuri, mag sie!",
+        "2": "Musik hilft, sich beim Programmieren zu konzentrieren.",
+        "3": "Was hörst du zurzeit?",
+        "4": "Die Playlist wird regelmäßig mit neuen Entdeckungen aktualisiert!",
+        "5": "Musik ist eine großartige Möglichkeit, um bei der Arbeit motiviert zu bleiben!",
+        "6": "Der Soundtrack unzähliger Programmiersessions und kreativer Durchbrüche! 🎧",
+        "7": "Von Lo-Fi-Beats bis zu energiegeladenen Tracks – Musik für jede Programmierstimmung!",
+        "8": "Diese Playlists haben schon viele Debugging-Sessions und Feature-Entwicklungen begleitet!",
+        "9": "Musik und Code gehören zusammen wie Kaffee und lange Nächte! ☕",
+        "10": "Entdecke neue Künstler und Genres, die Kreativität und Konzentration fördern!",
+        "11": "Die perfekte Hintergrundmusik für intensive Arbeits- und Problemlösungsphasen!",
+        "12": "Jede Playlist ist auf verschiedene Arbeitsarten und Energielevel abgestimmt!",
+        "13": "Musikgeschmack entwickelt sich weiter – genau wie Programmierfähigkeiten. Immer wieder etwas Neues entdecken!",
+        "14": "Was ist dein Programmier-Soundtrack? Musik kann eine produktive Session machen oder brechen!",
+        "15": "Von entspannt bis mitreißend – finde den perfekten Rhythmus für deinen Workflow! 🎶"
+      },
+      "guestbook": {
+        "0": "Hinterlasse eine Nachricht im Gästebuch! 📖",
+        "1": "Mein Erschaffer, Yuri, liebt es, Nachrichten von Besuchern zu lesen!",
+        "2": "Fühl dich frei, Hallo zu sagen oder Fragen zu stellen!",
+        "3": "Deine Nachricht wird seinen Tag versüßen!",
+        "4": "Das Gästebuch ist eine tolle Möglichkeit, um mit der Community in Kontakt zu treten!",
+        "5": "Alle Nachrichten werden moderiert, um den Raum freundlich zu halten!",
+        "6": "Ein digitales Gästebuch für das moderne Web – wie cool ist das denn? ✨",
+        "7": "Jede Nachricht wird gelesen und geschätzt – du bist Teil der Community!",
+        "8": "Teile deine Gedanken, dein Feedback oder sag einfach Hallo – alles ist willkommen!",
+        "9": "Das Gästebuch verbindet Besucher aus der ganzen Welt! 🌍",
+        "10": "Deine Nachricht könnte den nächsten Blogbeitrag oder das nächste Projekt inspirieren!",
+        "11": "Von schnellen Hallos bis zu ausführlichem Feedback – jede Nachricht zählt!",
+        "12": "Das Gästebuch erinnert uns daran, dass hinter jeder Website echte Menschen stehen!",
+        "13": "Mach mit beim Gespräch und werde Teil dieser wachsenden Community!",
+        "14": "Nachrichten hier haben zu Kollaborationen, Freundschaften und neuen Ideen geführt!",
+        "15": "Sei nicht schüchtern – deine Stimme bereichert diesen Ort! 💬"
+      },
+      "now": {
+        "0": "Dies ist die \"Now“-Seite: aktueller Fokus, aktuelle Saison.",
+        "1": "Ein kleiner Einblick, was mein Erschaffer, Yuri, gerade macht.",
+        "2": "„Now“-Seiten sind wunderbar ehrlich: Nicht alles muss ein großer Launch sein.",
+        "3": "Dieser Bereich ändert sich, wenn sich die Prioritäten verschieben.",
+        "4": "Neugierig, was gerade aktiv ist? Dann bist du hier genau richtig.",
+        "5": "Stell dir das wie ein Statusupdate vor – nur mit etwas mehr Seele."
+      },
+      "settings": {
+        "0": "Einstellungen sind der Ort, an dem Vorlieben ein Zuhause finden.",
+        "1": "Kleine Anpassungen können das gesamte Erlebnis der Seite verbessern.",
+        "2": "Nimm dir einen Moment Zeit, um alles nach deinen Wünschen einzurichten.",
+        "3": "Gute Software merkt sich, was dir wichtig ist.",
+        "4": "Wenn etwas nicht stimmt, ist diese Seite ein guter Ausgangspunkt.",
+        "5": "Einstellungen sollten auf die bestmögliche Weise langweilig sein: zuverlässig."
+      },
+      "notifications": {
+        "0": "Hier sind deine Benachrichtigungen. Frische Signale findest du hier.",
+        "1": "Ein aufgeräumtes Postfach macht die Seite leichter nachvollziehbar.",
+        "2": "Ich werde versuchen, den Lärm niedrig und die nützlichen Infos sichtbar zu halten.",
+        "3": "Benachrichtigungen sind am besten, wenn sie deine Aufmerksamkeit respektieren.",
+        "4": "Ungelesene Updates? Hier sammeln sie sich.",
+        "5": "Ein wenig Kontext zur richtigen Zeit kann sehr hilfreich sein."
+      },
+      "sitemap": {
+        "0": "Die Sitemap ist das Inhaltsverzeichnis der Seite.",
+        "1": "Wenn die Navigation unklar erscheint, gibt dir diese Seite den vollständigen Überblick.",
+        "2": "Jede wichtige Ecke der Seite sollte von hier aus erreichbar sein.",
+        "3": "Suche ist schnell, aber manchmal ist eine Karte besser.",
+        "4": "Eine ordentliche Möglichkeit, Seiten zu entdecken, die du vielleicht verpasst hast.",
+        "5": "Alle Wege führen irgendwann zurück zur Struktur."
+      },
+      "offline": {
+        "0": "Sieht so aus, als hätte die Verbindung eine Pause eingelegt.",
+        "1": "Keine Panik. Einige Teile der Seite sind möglicherweise weiterhin verfügbar.",
+        "2": "Sobald das Netzwerk wieder da ist, sollte sich die Seite erholen.",
+        "3": "Auch Offline-Zustände verdienen Aufmerksamkeit."
+      },
+      "admin": {
+        "0": "Willkommen im Admin-Bereich! 🔧",
+        "1": "Dieser Bereich dient der Seitenverwaltung und Moderation.",
+        "2": "Mein Erschaffer, Yuri, nutzt diesen Bereich, um die Seite reibungslos am Laufen zu halten.",
+        "3": "Admin-Tools helfen bei der Verwaltung von Nutzern, Kommentaren und Inhalten.",
+        "4": "Der Admin-Bereich wird ständig verbessert!",
+        "5": "Sicherheit und Moderation haben hier höchste Priorität!"
+      },
+      "search": {
+        "0": "Suchst du etwas Bestimmtes? 🔍",
+        "1": "Die Suchfunktion hilft dir, alles schnell zu finden!",
+        "2": "Probiere verschiedene Stichwörter aus, um bessere Ergebnisse zu erhalten.",
+        "3": "Die Suche funktioniert über alle Inhalte der Seite hinweg!",
+        "4": "Die Suche wird von fortschrittlichen Algorithmen unterstützt!",
+        "5": "Falls du nicht findest, wonach du suchst, lass es mich wissen!",
+        "6": "Intelligente Suche, die den Kontext versteht und relevante Inhalte findet! 🧠",
+        "7": "Durchsuche Artikel, Projekte und Seiten an einem Ort!",
+        "8": "Profitätipp: Verwende spezifische Begriffe für gezieltere Ergebnisse!",
+        "9": "Der Suchindex wird ständig mit neuen Inhalten aktualisiert!",
+        "10": "Etwas Interessantes gefunden? Lesezeichen setzen für spätere Referenz!",
+        "11": "Suchergebnisse werden nach Relevanz und Aktualität sortiert!",
+        "12": "Kannst du dich nicht an den genauen Titel erinnern? Versuche, nach Thema oder Stichwort zu suchen!",
+        "13": "Die Suchfunktion lernt und verbessert sich mit jeder Anfrage!",
+        "14": "Von technischen Artikeln bis zu Projektinformationen – hier findest du alles!",
+        "15": "Suche ist dein Freund, um große Mengen an Inhalten zu durchforsten! 🗂️"
+      },
+      "contact": {
+        "0": "Möchtest du in Kontakt treten? 📧",
+        "1": "Mein Erschaffer, Yuri, freut sich über Nachrichten von Besuchern!",
+        "2": "Zögere nicht, dich für Kooperationen oder Fragen zu melden!",
+        "3": "Das Kontaktformular macht das Senden einer Nachricht ganz einfach!",
+        "4": "Mein Erschaffer, Yuri, antwortet normalerweise innerhalb von 24–48 Stunden!",
+        "5": "Du kannst dich auch auf Social-Media-Plattformen vernetzen!",
+        "6": "Von freiberuflichen Anfragen bis hin zu Vortragsmöglichkeiten – alles willkommen! 💼",
+        "7": "Jede Nachricht wird persönlich gelesen – du schreibst nicht nur an einen Bot!",
+        "8": "Egal, ob es eine Frage, eine Kooperation oder einfach nur ein Hallo ist – melde dich!",
+        "9": "Die Kontaktkanäle sind für alle offen und einladend!",
+        "10": "Einen Fehler gefunden oder Feedback? Hier ist der richtige Ort, um es zu teilen!",
+        "11": "Kooperationen haben zu einigen der besten Projekte geführt!",
+        "12": "Berufliche Anfragen sind immer willkommen und werden geschätzt!",
+        "13": "Deine Nachricht könnte der Beginn von etwas Großartigem sein!",
+        "14": "Zögere nicht – mein Erschaffer, Yuri, ist freundlich und antwortet schnell!",
+        "15": "Die besten Verbindungen beginnen mit einer einfachen Nachricht! 🤝"
+      }
+    }
+  },
+  "contact": {
+    "title": "Kontakt",
+    "description": "Tritt in Kontakt für Kooperationen, Fragen oder einfach, um Hallo zu sagen",
+    "page-title": "Kontakt",
+    "page-description": "Lass uns in Kontakt treten! Melde dich für Kooperationen, Fragen oder einfach, um Hallo zu sagen",
+    "form": {
+      "title": "Nachricht senden",
+      "description": "Fülle das folgende Formular aus, und ich melde mich bald bei dir",
+      "name": {
+        "label": "Name",
+        "placeholder": "Dein Name",
+        "required": "Name ist erforderlich",
+        "max-length": "Der Name muss weniger als 100 Zeichen haben"
+      },
+      "email": {
+        "label": "E-Mail",
+        "placeholder": "deine@email.com",
+        "required": "E-Mail ist erforderlich",
+        "invalid": "Bitte gib eine gültige E-Mail-Adresse ein"
+      },
+      "subject": {
+        "label": "Betreff",
+        "placeholder": "Worum geht es?",
+        "required": "Betreff ist erforderlich",
+        "max-length": "Der Betreff darf nicht länger als 200 Zeichen sein"
+      },
+      "message": {
+        "label": "Nachricht",
+        "placeholder": "Erzählen Sie mir mehr über Ihr Projekt, Ihre Frage oder Idee...",
+        "required": "Nachricht ist erforderlich",
+        "min-length": "Die Nachricht muss mindestens 10 Zeichen lang sein",
+        "max-length": "Die Nachricht darf nicht länger als 2000 Zeichen sein",
+        "character-count": "{count}/2000 Zeichen"
+      },
+      "submit": "Nachricht senden",
+      "submitting": "Wird gesendet...",
+      "success": "Nachricht erfolgreich gesendet!",
+      "error": "Fehler beim Senden der Nachricht. Bitte versuchen Sie es erneut.",
+      "network-error": "Netzwerkfehler. Bitte überprüfen Sie Ihre Verbindung und versuchen Sie es erneut.",
+      "turnstile-required": "Bitte absolvieren Sie die Überprüfung",
+      "turnstile-error": "Sicherheitsüberprüfung fehlgeschlagen. Bitte versuchen Sie es erneut."
+    },
+    "direct": {
+      "title": "Direkter Kontakt",
+      "description": "Bevorzugen Sie E-Mails? Kontaktieren Sie mich direkt",
+      "email-label": "E-Mail",
+      "response-time": "Ich antworte in der Regel innerhalb von 24–48 Stunden.",
+      "urgent": "Bei dringenden Angelegenheiten geben Sie dies bitte in der Betreffzeile an."
+    },
+    "social": {
+      "title": "Soziale Netzwerke",
+      "description": "Folgen Sie mir auf verschiedenen Plattformen",
+      "github": {
+        "name": "GitHub",
+        "description": "Verfolgen Sie meinen Code und Open-Source-Projekte"
+      },
+      "twitter": {
+        "name": "Twitter",
+        "description": "Vernetzen Sie sich mit mir auf Twitter"
+      },
+      "linkedin": {
+        "name": "LinkedIn",
+        "description": "Berufliches Netzwerken und Karriere-Updates"
+      }
+    },
+    "faq": {
+      "title": "Schnelle Fragen",
+      "description": "Häufige Fragen und Antworten",
+      "freelance": {
+        "question": "Verfügbar für Freelance-Arbeit?",
+        "answer": "Aktuell offen für interessante Projekte. Lassen Sie uns über Ihre Anforderungen sprechen!"
+      },
+      "collaborations": {
+        "question": "Offen für Kooperationen?",
+        "answer": "Immer interessiert, mit anderen Entwicklern an spannenden Projekten zu arbeiten."
+      },
+      "speaking": {
+        "question": "Vortragsmöglichkeiten?",
+        "answer": "Ich spreche gerne auf Veranstaltungen über Webentwicklung und Open Source."
+      }
+    }
+  },
+  "music": {
+    "description": "Aktuelle Hörhistorie, Top-Künstler und Musikstatistiken"
+  }
+}

@@ -1,0 +1,54 @@
+---
+name: YuPomo
+description: Schöner Pomodoro-Timer für Web und Desktop mit React, TypeScript, Vite und Tauri. Minimalistisches Design mit Statistiken, Benachrichtigungen und Lokalisierung.
+homepage: https://yupomo.yuricunha.com/
+github: https://github.com/isyuricunha/YuPomo
+techstack:
+  - React
+  - TypeScript
+  - Vite
+  - Tauri
+  - TailwindCSS
+  - Chart.js
+  - Rust
+selected: true
+status: active
+---
+
+## Über das Projekt
+
+YuPomo ist ein fokussierter Pomodoro-Timer, der dir hilft, in Zyklen zu arbeiten und bewusst Pausen einzulegen. Er läuft als schnelle Web-App und als native Desktop-App für Windows, macOS und Linux über Tauri. Die Benutzeroberfläche ist sauber und direkt, sodass du eine Sitzung ohne Reibungsverluste starten und konzentriert bleiben kannst. Einstellungen und Statistiken werden lokal gespeichert, sodass deine Daten auf deinem Gerät bleiben.
+
+YuPomo folgt der klassischen Pomodoro-Methode mit Standardwerten von 25 Minuten für die Arbeitsphase, 5 Minuten für eine kurze Pause und 15 Minuten für eine lange Pause. Du kannst alle Zeitdauern anpassen, Sound-Benachrichtigungen und Benachrichtigungen aktivieren sowie zwischen hellen und dunklen Themen wechseln. Eine Statistikansicht zeigt deine täglichen, wöchentlichen und monatlichen Fokusverläufe mit Diagrammen an, sodass du Trends beobachten und deine Routine im Laufe der Zeit verbessern kannst.
+
+## Hauptmerkmale
+
+Kompletter Pomodoro-Ablauf mit Arbeitsphase, kurzer Pause und langer Pause. Themenwechsel mit echtem Schwarz im dunklen Thema. Konfigurierbare Zeitdauern, Sounds und Benachrichtigungen. Lokale Speicherung von Einstellungen und Verlauf. Statistiken mit Diagrammen zur Visualisierung der Fokuszeit und Sitzungsanzahl. Reaktionsfähiges Layout für Desktop und Mobilgeräte. Mehrsprachige Benutzeroberfläche mit sofortigem Sprachwechsel zur Laufzeit. Optionales Update-Banner auf dem Desktop, das dich über neue Versionen informiert.
+
+## Plattformen und Installation
+
+Die Webversion ist unter dem Demo-Link verfügbar. Die Desktop-App wird über GitHub Releases mit Installationsprogrammen für Windows, macOS und Linux verteilt. Unter Windows kannst du das Setup-EXE- oder MSI-Installationsprogramm verwenden. Unter macOS installierst du über das DMG für deinen Chip. Unter Linux kannst du zwischen DEB- oder RPM-Paketen wählen oder das AppImage ausführen. Die App kann auch auf dem Desktop nach Updates suchen und dich zum Herunterladen und Installieren der neuesten Version anleiten.
+
+## Entwicklung und Build
+
+Das Projekt verwendet React und TypeScript mit Vite für den Webclient und Tauri für die Desktop-Shell. Du kannst das Repository klonen, die Abhängigkeiten mit deinem Paketmanager installieren und den Entwicklungsserver für das Web oder den Tauri-Entwicklungsprozess für den Desktop ausführen. Build-Skripte sind für die Webbereitstellung und für Desktop-Bundles für jedes Betriebssystem vorhanden. Versionsskripte halten die Web- und Tauri-Versionen synchron, und der Release-Workflow erstellt und veröffentlicht die Artefakte auf GitHub Releases.
+
+## Desktop-Auto-Update
+
+Desktop-Builds unterstützen Tauri Updater. Die App kann die neueste GitHub-Version prüfen, ein Banner in der App mit der neuen Version anzeigen und diese herunterladen und installieren. Die Updater-Artefakte sind signiert und verifiziert. Die Konfiguration verwendet einen öffentlichen Schlüssel in der Tauri-Konfiguration und die neueste JSON-Datei im Release. Du kannst die automatische Installation beim Start in den Einstellungen auf dem Desktop aktivieren.
+
+## Datenschutz
+
+YuPomo sammelt keine persönlichen Daten. Einstellungen und Statistiken werden lokal gespeichert. Die Webversion verwendet localStorage. Die Desktop-Version nutzt das Tauri-Dateisystem im App-Datenverzeichnis. Benachrichtigungen und Sounds werden lokal generiert. Die optionale Update-Prüfung ruft nur die öffentliche GitHub Releases API auf.
+
+## Kontakt und Links
+
+**Demo**: https://yupomo.yuricunha.com
+
+**Repository**: https://github.com/isyuricunha/YuPomo
+
+**Profil und Updates**: https://x.com/isyuricunha
+
+**E-Mail**: me@yuricunha.com
+
+**Website**: https://yuricunha.com

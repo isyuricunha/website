@@ -17,7 +17,8 @@
     "./messages/es.json": "./src/messages/es.json",
     "./messages/ja.json": "./src/messages/ja.json",
     "./messages/zh-CN.json": "./src/messages/zh-CN.json",
-    "./messages/fr.json": "./src/messages/fr.json"
+    "./messages/fr.json": "./src/messages/fr.json",
+    "./messages/de.json": "./src/messages/de.json"
   },
   "scripts": {
     "clean": "rm -rf .turbo",

@@ -1,0 +1,133 @@
+---
+title: Dublette aus Array entfernen
+date: 2025-11-19
+author: Yuri Cunha
+description: Verschiedene Methoden, um doppelte Werte aus Arrays in JavaScript zu entfernen
+tags:
+  - javascript
+  - array
+  - data-structures
+---
+
+Das Entfernen von Duplikaten aus Arrays ist eine häufige Aufgabe in JavaScript. Hier sind mehrere effektive Methoden, um dies zu erreichen.
+
+{/* more */}
+
+## Methode १: Verwendung von `Set` (empfohlen)
+
+Die einfachste und leistungsfähigste Methode, um Duplikate zu entfernen, ist die Verwendung eines `Set`:
+
+```javascript
+const array = [1, 2, 2, 3, 4, 4, 5]
+const uniqueArray = [...new Set(array)]
+console.log(uniqueArray) // [1, 2, 3, 4, 5]
+```
+
+**Vorteile:**
+
+- Sauber und prägnant
+- Gute Performance O(n)
+- Funktioniert mit primitiven Werten
+
+**Nachteile:**
+
+- Funktioniert nur mit primitiven Werten (Zahlen, Zeichenketten, Booleans)
+- Objekte werden nach Referenz verglichen
+
+## Methode २: Verwendung von `Filter`
+
+Für komplexere Szenarien oder wenn die erste Vorkommnis beibehalten werden soll:
+
+```javascript
+const array = [1, 2, 2, 3, 4, 4, 5]
+const uniqueArray = array.filter((value, index, self) => {
+  return self.indexOf(value) === index
+})
+console.log(uniqueArray) // [1, 2, 3, 4, 5]
+```
+
+**Vorteile:**
+
+- Flexibler für benutzerdefinierte Logik
+- Einfach zu verstehen
+
+**Nachteile:**
+
+- Weniger performant O(n²) aufgrund von `indexOf`
+
+## Methode ३: Verwendung von `Reduce`
+
+Ein funktionaler Ansatz mit `reduce`:
+
+```javascript
+const array = [1, 2, 2, 3, 4, 4, 5]
+const uniqueArray = array.reduce((acc, current) => {
+  if (!acc.includes(current)) {
+    acc.push(current)
+  }
+  return acc
+}, [])
+console.log(uniqueArray) // [1, 2, 3, 4, 5]
+```
+
+**Vorteile:**
+
+- Funktionale Programmierweise
+- Kann mit anderen Transformationen kombiniert werden
+
+**Nachteile:**
+
+- Weniger performant aufgrund von `includes`
+- Ausführlicher
+
+## Methode ४: Für Objekte (Verwendung von `Map`)
+
+Beim Umgang mit Objekten müssen diese nach einer bestimmten Eigenschaft verglichen werden:
+
+```javascript
+const users = [
+  { id: 1, name: 'Alice' },
+  { id: 2, name: 'Bob' },
+  { id: 1, name: 'Alice' },
+  { id: 3, name: 'Charlie' }
+]
+
+const uniqueUsers = Array.from(new Map(users.map((user) => [user.id, user])).values())
+
+console.log(uniqueUsers)
+// [
+//   { id: 1, name: 'Alice' },
+//   { id: 2, name: 'Bob' },
+//   { id: 3, name: 'Charlie' }
+// ]
+```
+
+**Vorteile:**
+
+- Funktioniert mit Objekten
+- Ermöglicht die Angabe, welche Eigenschaft für die Eindeutigkeit verwendet werden soll
+- Gute Performance
+
+**Nachteile:**
+
+- Komplexere Syntax
+- Behält die letzte Vorkommnis bei (kann angepasst werden, um die erste zu behalten)
+
+## Performance-Vergleich
+
+Für große Arrays (10.000+ Elemente):
+
+1. **Set**: ~1ms (schnellste Methode)
+2. **Map (für Objekte)**: ~2ms
+3. **Reduce**: ~50ms
+4. **Filter**: ~100ms (langsamste Methode)
+
+## Empfehlung
+
+- Verwenden Sie **Set** für primitive Werte (Zahlen, Zeichenketten, Booleans)
+- Verwenden Sie **Map** für Objekte, wenn Sie nach einer bestimmten Eigenschaft deduplizieren müssen
+- Verwenden Sie **Filter** oder **Reduce** nur, wenn Sie benutzerdefinierte Logik benötigen oder mit kleinen Arrays arbeiten
+
+---
+
+**Hinweis:** Alle diese Methoden erstellen ein neues Array. Wenn Sie das ursprüngliche Array direkt ändern müssen, benötigen Sie einen anderen Ansatz.

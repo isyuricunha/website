@@ -1,0 +1,299 @@
+---
+title: Cloudflare Worker Load Balancer mit Gesundheitsprüfungen (Kostenlos)
+date: 2026-01-30
+author: Yuri Cunha
+description: Ein kostenloser, praktischer Load Balancer mit Cloudflare Workers + Cloudflare Tunnel, inklusive periodischer Gesundheitsprüfungen und automatischem Failover.
+tags:
+  - cloudflare
+  - workers
+  - tunnel
+  - load-balancing
+  - health-check
+  - devops
+  - javascript
+---
+
+Cloudflare Load Balancer ist großartig, aber es ist ein kostenpflichtiges Produkt. Wenn dein Anwendungsfall „Ich habe zwei Replikate hinter Cloudflare Tunnel und möchte einfach nur Failover, falls eines ausfällt“ lautet, kannst du einen einfachen Edge-Load-Balancer mit einem Cloudflare Worker auf der kostenlosen Stufe implementieren.
+
+Die Kernidee ist:
+
+- Du exponierst **zwei verschiedene Hostnamen**, einen pro Tunnel (primär und Replikat).
+- Du exponierst einen **dritten Hostnamen** (den du mit Nutzern teilst), der auf den Worker zeigt.
+- Der Worker führt Gesundheitsprüfungen durch und leitet jede Anfrage an das beste Ziel weiter.
+
+{/* mehr */}
+
+## Architektur (empfohlen)
+
+Normalerweise möchtest du drei Hostnamen:
+
+- `service.yourdomain.com`:
+  - Zeigt auf den **Worker** (dies ist die öffentliche URL)
+- `service-primary.yourdomain.com`:
+  - Cloudflare Tunnel, der auf deinen **primären** Server zeigt
+- `service-replica.yourdomain.com`:
+  - Cloudflare Tunnel, der auf deinen **Replikat**-Server zeigt
+
+Damit wird die gängige Einschränkung von Cloudflare Tunnel gelöst: Du kannst nicht denselben Hostnamen an mehrere Tunnel binden, aber du kannst verschiedene Hostnamen binden und einen Worker davor schalten.
+
+## Funktionsweise des Workers
+
+- Er hält eine `serverHealth`-Map im Speicher mit:
+  - `healthy`: Letzter bekannter Gesundheitsstatus
+  - `lastCheck`: Zeitstempel der letzten Gesundheitsprüfung
+- Bei jeder eingehenden Anfrage:
+  - Er aktualisiert den Gesundheitsstatus, wenn der Cache älter als `HEALTH_CHECK_INTERVAL` ist.
+  - Er wählt den ersten gesunden Server aus.
+  - Falls keiner gesund ist, fällt er auf den ersten Server zurück.
+- Er fügt einen `X-Served-By`-Header für Debugging-Zwecke hinzu.
+- Falls der Proxy-`fetch` fehlschlägt, versucht er es einmal mit dem anderen Server.
+
+Wichtiger Hinweis: Der Cache wird im Worker-Isolate-Speicher gespeichert. Das bedeutet, dass es sich nicht um einen garantiert globalen Cache handelt (er kann bei Kaltstarts zurückgesetzt werden). Für einfache Failover-Lösungen ist dies normalerweise in Ordnung.
+
+## Der Code
+
+Ersetze die Tunnel-URLs unten durch deine eigenen.
+
+```js
+// Cloudflare Worker Load Balancer with Health Check
+// Configure your tunnel URLs here
+const SERVERS = [
+  {
+    url: 'https://your-tunnel-1.yourdomain.com',
+    name: 'Server 1',
+    healthCheckPath: '/health' // or '/' if you don't have a specific endpoint
+  },
+  {
+    url: 'https://your-tunnel-2.yourdomain.com',
+    name: 'Server 2',
+    healthCheckPath: '/health'
+  }
+]
+
+// Settings
+const HEALTH_CHECK_TIMEOUT = 5000 // 5 seconds
+const HEALTH_CHECK_INTERVAL = 30000 // Check every 30 seconds
+
+// Server status cache (kept by the Worker)
+let serverHealth = {}
+
+// Health check
+async function checkHealth(server) {
+  try {
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), HEALTH_CHECK_TIMEOUT)
+
+    const response = await fetch(server.url + server.healthCheckPath, {
+      method: 'GET',
+      signal: controller.signal,
+      headers: {
+        'User-Agent': 'Cloudflare-Worker-HealthCheck'
+      }
+    })
+
+    clearTimeout(timeoutId)
+
+    // Healthy if 2xx or 3xx
+    return response.status >= 200 && response.status < 400
+  } catch (error) {
+    console.log(`Health check failed for ${server.name}:`, error.message)
+    return false
+  }
+}
+
+// Pick an available server
+async function getAvailableServer() {
+  // Refresh health check if needed
+  for (const server of SERVERS) {
+    const lastCheck = serverHealth[server.url]?.lastCheck || 0
+    const now = Date.now()
+
+    if (now - lastCheck > HEALTH_CHECK_INTERVAL) {
+      const isHealthy = await checkHealth(server)
+      serverHealth[server.url] = {
+        healthy: isHealthy,
+        lastCheck: now
+      }
+    }
+  }
+
+  // Pick the first healthy server
+  for (const server of SERVERS) {
+    if (serverHealth[server.url]?.healthy) {
+      return server
+    }
+  }
+
+  // If none are healthy, use the first as fallback
+  console.log('No healthy server found, using fallback')
+  return SERVERS[0]
+}
+
+// Main handler
+export default {
+  async fetch(request, env, ctx) {
+    // Pick server
+    const server = await getAvailableServer()
+
+    // Build target URL keeping original path
+    const url = new URL(request.url)
+    const targetUrl = new URL(url.pathname + url.search, server.url)
+
+    // Clone request for the chosen server
+    const modifiedRequest = new Request(targetUrl, {
+      method: request.method,
+      headers: request.headers,
+      body: request.body,
+      redirect: 'follow'
+    })
+
+    // Debug header (optional)
+    modifiedRequest.headers.set('X-Served-By', server.name)
+
+    try {
+      // Proxy request
+      const response = await fetch(modifiedRequest)
+
+      // Clone response to add headers
+      const newResponse = new Response(response.body, response)
+      newResponse.headers.set('X-Served-By', server.name)
+
+      return newResponse
+    } catch (error) {
+      // If it fails, try the other server
+      console.log(`Error while accessing ${server.name}, trying fallback`)
+
+      const fallbackServer = SERVERS.find((s) => s.url !== server.url)
+      if (fallbackServer) {
+        const fallbackUrl = new URL(url.pathname + url.search, fallbackServer.url)
+        const fallbackRequest = new Request(fallbackUrl, {
+          method: request.method,
+          headers: request.headers,
+          body: request.body,
+          redirect: 'follow'
+        })
+
+        return fetch(fallbackRequest)
+      }
+
+      return new Response('All servers are unavailable', { status: 503 })
+    }
+  }
+}
+```
+
+## Einrichtung (Schritt-für-Schritt)
+
+1. **Erstelle zwei Tunnel-Hostnamen**
+   - Primärer Tunnel-Hostname: `service-primary.yourdomain.com`
+   - Replikat-Tunnel-Hostname: `service-replica.yourdomain.com`
+
+2. **Erstelle einen Worker**
+   - Cloudflare Dashboard
+   - Workers & Pages
+   - Worker erstellen
+   - Füge den Code ein und aktualisiere die `SERVERS`-Liste
+
+3. **Leite deinen öffentlichen Hostnamen an den Worker weiter**
+
+   Füge eine Route (oder eine benutzerdefinierte Domain) hinzu, sodass `service.yourdomain.com/*` von diesem Worker bearbeitet wird.
+
+4. **Teste, welcher Server Anfragen bedient**
+
+   ```bash
+   curl -I https://service.yourdomain.com
+   ```
+
+   Suche nach `X-Served-By` in den Antwortheadern.
+
+5. **Teste das Failover**
+
+   Stoppe den primären Tunnel vorübergehend und wiederhole dieselbe Anfrage. Der Header sollte zu deinem Replikat wechseln.
+
+## Hinweise und Einschränkungen
+
+- **Zustandsbehaftete Anwendungen**: Wenn dein Service Zustand auf der Festplatte speichert (Sitzungen, Uploads, Chatverlauf usw.), benötigst du wahrscheinlich gemeinsamen Speicher oder Synchronisation zwischen primärem Server und Replikat.
+- **Gesundheitsprüfungs-Endpoint**: Bevorzuge einen leichtgewichtigen Endpunkt (oder `/`) und vermeide schwere Logik.
+- **WebSockets / langlebige Verbindungen**: Abhängig von deinem Cloudflare-Tarif und dem Verhalten deiner Anwendung können langlebige Verbindungen zusätzliche Aufmerksamkeit erfordern.
+- **Cache-Bereich**: `serverHealth` ist Isolate-Speicher, kein globaler Datenspeicher. Wenn du einen zuverlässigeren gemeinsamen Gesundheitsstatus benötigst, solltest du KV, Durable Objects oder externe Überwachung in Betracht ziehen.
+
+## Eine andere Möglichkeit
+
+Du könntest denselben Tunnel in zwei Servern/Diensten verwenden, sodass du einen Tunnel namens „Services“ hast und ihn mit „Server A“ und „Server B“ verbindest.
+Manche Leute halten diese Lösung für besser, und in Bezug auf Einfachheit ist sie tatsächlich besser. Wenn du die Tunnel jedoch trennen möchtest, ist Cloudflare Worker Load Balancer die bessere Wahl.
+
+Falls du trotzdem einen Tunnel in allen deinen Servern verwenden möchtest, hier ist, was ich über die Verwendung eines gemeinsamen Tunnels in allen Maschinen festgestellt habe:
+
+```text
+
+        ┌─────────────────┐
+        │  Tunnel "main"  │
+        └─────────────────┘
+                │
+    ┌───────────┼───────────┬───────────┐
+    ▼           ▼           ▼           ▼
+┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐
+│Server A │ │Server B │ │Server C │ │Server D │
+│         │ │         │ │         │ │         │
+│Jellyfin │ │Navidrome│ │qBittor. │ │OpenWebUI│
+└─────────┘ └─────────┘ └─────────┘ └─────────┘
+
+```
+
+Problem: Cloudflare wird jellyfin.domain.com an **IRGENDEINEN** Server (A, B, C oder D zufällig) weiterleiten, aber Jellyfin ist nur auf Server A! 💥
+Ergebnis:- 75 % der Anfragen führen zu Fehler 502 (sie landeten auf dem falschen Server)
+- Du verlierst die Kontrolle darüber, wo jeder Dienst ausgeführt wird
+- Totales Chaos
+
+Funktioniert, wird aber **nicht empfohlen**.
+
+In diesem Fall wäre die **RICHTIGE Vorgehensweise** für die Verwendung von Replikaten mit einem einzigen Tunnel, einen Tunnel **nur dann gemeinsam zu nutzen**, wenn der **GLEICHE Dienst auf MEHREREN Maschinen repliziert** wird:
+
+### Szenario 1: Du möchtest Failover für Open WebUI
+
+```text
+┌─────────────────────┐
+│ Tunnel "openwebui"  │
+└─────────────────────┘
+         │
+    ┌────┴────┐
+    ▼         ▼
+┌─────────┐ ┌─────────┐
+│Server A │ │Server B │
+│         │ │         │  ← Same Open WebUI (PostgreSQL+Redis shared)
+│OpenWebUI│ │OpenWebUI│
+└─────────┘ └─────────┘
+
+```
+
+Funktioniert, weil Open WebUI auf beiden Servern verfügbar ist.
+
+### Szenario 2: Jellyfin ist nur auf 1 Server
+
+```text
+┌──────────────────┐
+│ Tunnel "media"   │
+└──────────────────┘
+         │
+         ▼
+    ┌─────────┐
+    │Server A │
+    │         │
+    │Jellyfin │ ← Only here
+    └─────────┘
+
+```
+
+✅ Korrekt! Dedizierter Tunnel, weil Jellyfin nur an einem Ort verfügbar ist.
+
+---
+
+### Zusammenfassung:
+
+- **1 Tunnel pro Maschine**: Unterschiedliche Dienste auf verschiedenen Maschinen
+- **1 Tunnel auf mehreren Maschinen**: Gleiche Dienste repliziert (Failover)
+- **1 Tunnel auf allen Maschinen**: Niemals (außer alle Dienste sind auf allen Maschinen)
+
+## Wichtig zu beachten
+
+Vergiss nicht, dass gemeinsame Daten für alle Server zugänglich sein müssen, sonst gibt es Inkonsistenzen in den Daten. Und solange sich die Konfigurationen unterscheiden oder du jeden Server anders konfigurieren musst.

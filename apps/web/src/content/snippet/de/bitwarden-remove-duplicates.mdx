@@ -1,0 +1,96 @@
+---
+title: Dublette aus Bitwarden-Export entfernen
+date: 2025-11-19
+author: Yuri Cunha
+description: Python-Skript zum Bereinigen doppelter Einträge aus Bitwarden-CSV-Exporten
+tags:
+  - python
+  - bitwarden
+  - csv
+  - data-cleaning
+---
+
+Wenn Sie Ihre Bitwarden-Datenbank jemals als CSV exportiert und dabei doppelte Einträge erhalten haben, ist dieses Skript genau das Richtige für Sie. Es durchsucht Ihren Export und entfernt alle Duplikate basierend auf den Schlüsselfeldern.
+
+{/* more */}
+
+## Das Problem
+
+Manchmal erhalten Sie beim Exportieren Ihrer Bitwarden-Datenbank doppelte Einträge – dieselben Anmeldedaten, dieselben Notizen, einfach alles. Dieses Skript hilft Ihnen, diese Duplikate zu bereinigen, indem es nur eindeutige Einträge behält.
+
+## Funktionsweise
+
+Das Skript liest Ihren Bitwarden-CSV-Export, überprüft jeden Eintrag anhand einer Reihe von Schlüsselfeldern (Typ, Name, URI, Benutzername, Passwort und Notizen) und behält nur das erste Vorkommen jeder eindeutigen Kombination. Ganz einfach!
+
+## Der Code
+
+```python
+import csv
+
+input_file = "bitwarden.csv"          # name of the file you exported
+output_file = "bitwarden_dedup.csv"   # new file, without duplicates
+
+seen = set()
+rows = []
+
+with open(input_file, newline="", encoding="utf-8") as f:
+    reader = csv.DictReader(f)
+    fieldnames = reader.fieldnames
+
+    for row in reader:
+        # key to consider entries "equal"
+        key = (
+            row.get("type", ""),
+            row.get("name", ""),
+            row.get("login_uri", ""),
+            row.get("login_username", ""),
+            row.get("login_password", ""),
+            row.get("notes", ""),
+        )
+
+        if key in seen:
+            continue
+
+        seen.add(key)
+        rows.append(row)
+
+with open(output_file, "w", newline="", encoding="utf-8") as f:
+    writer = csv.DictWriter(f, fieldnames=fieldnames)
+    writer.writeheader()
+    writer.writerows(rows)
+
+print(f"saved {len(rows)} items without duplicates in {output_file}")
+```
+
+## Verwendung
+
+1. Exportieren Sie Ihre Bitwarden-Datenbank als CSV (Einstellungen → Datenbank exportieren)
+2. Speichern Sie das Skript als `bitwarden_dedup.py`
+3. Stellen Sie sicher, dass Ihre Exportdatei `bitwarden.csv` heißt (oder ändern Sie die Variable `input_file`)
+4. Führen Sie das Skript aus: `python bitwarden_dedup.py`
+5. Importieren Sie die bereinigte Datei `bitwarden_dedup.csv` zurück in Bitwarden
+
+## Welche Felder werden überprüft?
+
+Das Skript betrachtet zwei Einträge als Duplikate, wenn **alle** dieser Felder übereinstimmen:
+
+- Typ (Anmeldung, Notiz, Karte usw.)
+- Name
+- Anmelde-URI
+- Benutzername
+- Passwort
+- Notizen
+
+Wenn auch nur ein Feld unterschiedlich ist, werden die Einträge als separate Elemente beibehalten.
+
+## Wichtige Hinweise
+
+<Callout type='warning'>
+  Sichern Sie Ihre Datenbank immer, bevor Sie Bereinigungsvorgänge durchführen. Exportieren Sie Ihre aktuelle Datenbank, bevor Sie die deduplizierte Version importieren – nur zur Sicherheit.
+</Callout>
+
+<Callout type='info'>
+  Wenn Sie Duplikate basierend auf anderen Feldern prüfen möchten (z. B. nur Benutzername + URI), können Sie das `key`-Tuple im Code anpassen, um nur die Felder aufzunehmen, die für Sie relevant sind.
+</Callout>
+
+Das Skript verwendet das integrierte `csv`-Modul von Python und ein `set`, um nachzuverfolgen, was bereits gesehen wurde. Dadurch ist es selbst für große Datenbanken recht effizient.
