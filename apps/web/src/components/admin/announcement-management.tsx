@@ -59,12 +59,31 @@ interface EditAnnouncementData {
   content: string
   titlePt?: string
   contentPt?: string
+  titleEs?: string
+  contentEs?: string
+  titleFr?: string
+  contentFr?: string
+  titleDe?: string
+  contentDe?: string
+  titleJa?: string
+  contentJa?: string
+  titleZhCn?: string
+  contentZhCn?: string
   type: string
   priority: number
   isDismissible: boolean
   isActive: boolean
   targetAudience?: any
 }
+
+const ANNOUNCEMENT_LOCALES = [
+  { code: 'pt', label: 'Português', fieldSuffix: 'Pt' },
+  { code: 'es', label: 'Español', fieldSuffix: 'Es' },
+  { code: 'fr', label: 'Français', fieldSuffix: 'Fr' },
+  { code: 'de', label: 'Deutsch', fieldSuffix: 'De' },
+  { code: 'ja', label: '日本語', fieldSuffix: 'Ja' },
+  { code: 'zh-CN', label: '中文（简体）', fieldSuffix: 'ZhCn' }
+] as const
 
 export default function AnnouncementManagement() {
   const t = useTranslations('admin.announcement-management')
@@ -75,13 +94,11 @@ export default function AnnouncementManagement() {
 
   const createTitleRef = useRef<HTMLInputElement>(null)
   const createContentRef = useRef<HTMLTextAreaElement>(null)
-  const createTitlePtRef = useRef<HTMLInputElement>(null)
-  const createContentPtRef = useRef<HTMLTextAreaElement>(null)
+  const createTranslationRefsRef = useRef<Record<string, { title: HTMLInputElement | null; content: HTMLTextAreaElement | null }>>({})
 
   const editTitleRef = useRef<HTMLInputElement>(null)
   const editContentRef = useRef<HTMLTextAreaElement>(null)
-  const editTitlePtRef = useRef<HTMLInputElement>(null)
-  const editContentPtRef = useRef<HTMLTextAreaElement>(null)
+  const editTranslationRefsRef = useRef<Record<string, { title: HTMLInputElement | null; content: HTMLTextAreaElement | null }>>({})
 
   // Queries
   const {
@@ -98,48 +115,50 @@ export default function AnnouncementManagement() {
     }
   })
 
-  const handleAiFillCreatePt = async () => {
-    const title = createTitleRef.current?.value ?? ''
-    const content = createContentRef.current?.value ?? ''
+  const handleTranslateAll = async (
+    titleRef: React.RefObject<HTMLInputElement | null>,
+    contentRef: React.RefObject<HTMLTextAreaElement | null>,
+    translationRefsRef: React.RefObject<Record<string, { title: HTMLInputElement | null; content: HTMLTextAreaElement | null } | undefined>>
+  ) => {
+    const title = titleRef.current?.value ?? ''
+    const content = contentRef.current?.value ?? ''
 
     if (!title.trim() || !content.trim()) {
       toast.error(t('messages.title-content-required'))
       return
     }
 
-    const result = await translateMutation.mutateAsync({
-      title,
-      content,
-      fromLang: 'en',
-      toLang: 'pt'
-    })
+    const refs = translationRefsRef.current ?? {}
 
-    if (createTitlePtRef.current) createTitlePtRef.current.value = result.titlePt ?? ''
-    if (createContentPtRef.current) createContentPtRef.current.value = result.contentPt ?? ''
+    // Translate to all languages in parallel
+    const results = await Promise.allSettled(
+      ANNOUNCEMENT_LOCALES.map(async (locale) => {
+        const result = await translateMutation.mutateAsync({
+          title,
+          content,
+          fromLang: 'en',
+          toLang: locale.code
+        })
+        return { locale: locale.code, result }
+      })
+    )
 
-    toast.success(t('messages.pt-filled'))
-  }
-
-  const handleAiFillEditPt = async () => {
-    const title = editTitleRef.current?.value ?? editingAnnouncement?.title ?? ''
-    const content = editContentRef.current?.value ?? editingAnnouncement?.content ?? ''
-
-    if (!title.trim() || !content.trim()) {
-      toast.error(t('messages.title-content-required'))
-      return
+    let successCount = 0
+    for (const settled of results) {
+      if (settled.status === 'fulfilled') {
+        const { locale, result } = settled.value
+        const ref = refs[locale]
+        if (ref?.title) ref.title.value = result.titleTranslated
+        if (ref?.content) ref.content.value = result.contentTranslated
+        successCount++
+      }
     }
 
-    const result = await translateMutation.mutateAsync({
-      title,
-      content,
-      fromLang: 'en',
-      toLang: 'pt'
-    })
-
-    if (editTitlePtRef.current) editTitlePtRef.current.value = result.titlePt ?? ''
-    if (editContentPtRef.current) editContentPtRef.current.value = result.contentPt ?? ''
-
-    toast.success(t('messages.pt-filled'))
+    if (successCount > 0) {
+      toast.success(t('messages.all-languages-filled', { count: successCount }))
+    } else {
+      toast.error(t('messages.translate-failed', { message: 'All translations failed' }))
+    }
   }
 
   const { data: analytics } = api.announcements.getAnnouncementAnalytics.useQuery({})
@@ -181,8 +200,6 @@ export default function AnnouncementManagement() {
   const handleCreateAnnouncement = (formData: FormData) => {
     const title = formData.get('title') as string
     const content = formData.get('content') as string
-    const title_pt = (formData.get('titlePt') as string | null) ?? ''
-    const content_pt = (formData.get('contentPt') as string | null) ?? ''
     const type = formData.get('type') as any
     const priority = Number.parseInt(formData.get('priority') as string) || 0
     const isDismissible = formData.get('isDismissible') === 'on'
@@ -192,11 +209,26 @@ export default function AnnouncementManagement() {
       return
     }
 
+    const getLocaleField = (locale: string, field: 'title' | 'content'): string | undefined => {
+      const val = formData.get(`${field}_${locale}`) as string | null
+      return val?.trim() ? val : undefined
+    }
+
     createMutation.mutate({
       title,
       content,
-      titlePt: title_pt.trim() ? title_pt : undefined,
-      contentPt: content_pt.trim() ? content_pt : undefined,
+      titlePt: getLocaleField('pt', 'title'),
+      contentPt: getLocaleField('pt', 'content'),
+      titleEs: getLocaleField('es', 'title'),
+      contentEs: getLocaleField('es', 'content'),
+      titleFr: getLocaleField('fr', 'title'),
+      contentFr: getLocaleField('fr', 'content'),
+      titleDe: getLocaleField('de', 'title'),
+      contentDe: getLocaleField('de', 'content'),
+      titleJa: getLocaleField('ja', 'title'),
+      contentJa: getLocaleField('ja', 'content'),
+      titleZhCn: getLocaleField('zh-CN', 'title'),
+      contentZhCn: getLocaleField('zh-CN', 'content'),
       type,
       priority,
       isDismissible
@@ -208,8 +240,6 @@ export default function AnnouncementManagement() {
 
     const title = formData.get('title') as string
     const content = formData.get('content') as string
-    const title_pt = (formData.get('titlePt') as string | null) ?? ''
-    const content_pt = (formData.get('contentPt') as string | null) ?? ''
     const type = formData.get('type') as any
     const priority = Number.parseInt(formData.get('priority') as string) || 0
     const isDismissible = formData.get('isDismissible') === 'on'
@@ -220,12 +250,27 @@ export default function AnnouncementManagement() {
       return
     }
 
+    const getLocaleField = (locale: string, field: 'title' | 'content'): string | undefined => {
+      const val = formData.get(`${field}_${locale}`) as string | null
+      return val?.trim() ? val : undefined
+    }
+
     updateMutation.mutate({
       id: editingAnnouncement.id,
       title,
       content,
-      titlePt: title_pt.trim() ? title_pt : undefined,
-      contentPt: content_pt.trim() ? content_pt : undefined,
+      titlePt: getLocaleField('pt', 'title'),
+      contentPt: getLocaleField('pt', 'content'),
+      titleEs: getLocaleField('es', 'title'),
+      contentEs: getLocaleField('es', 'content'),
+      titleFr: getLocaleField('fr', 'title'),
+      contentFr: getLocaleField('fr', 'content'),
+      titleDe: getLocaleField('de', 'title'),
+      contentDe: getLocaleField('de', 'content'),
+      titleJa: getLocaleField('ja', 'title'),
+      contentJa: getLocaleField('ja', 'content'),
+      titleZhCn: getLocaleField('zh-CN', 'title'),
+      contentZhCn: getLocaleField('zh-CN', 'content'),
       type,
       priority,
       isDismissible,
@@ -251,6 +296,16 @@ export default function AnnouncementManagement() {
       content: announcement.content,
       titlePt: announcement.titlePt ?? undefined,
       contentPt: announcement.contentPt ?? undefined,
+      titleEs: announcement.titleEs ?? undefined,
+      contentEs: announcement.contentEs ?? undefined,
+      titleFr: announcement.titleFr ?? undefined,
+      contentFr: announcement.contentFr ?? undefined,
+      titleDe: announcement.titleDe ?? undefined,
+      contentDe: announcement.contentDe ?? undefined,
+      titleJa: announcement.titleJa ?? undefined,
+      contentJa: announcement.contentJa ?? undefined,
+      titleZhCn: announcement.titleZhCn ?? undefined,
+      contentZhCn: announcement.contentZhCn ?? undefined,
       type: announcement.type,
       priority: announcement.priority,
       isDismissible: announcement.isDismissible,
@@ -304,16 +359,6 @@ export default function AnnouncementManagement() {
                 </div>
 
                 <div>
-                  <Label htmlFor='title-pt'>{t('fields.title-pt')}</Label>
-                  <Input
-                    id='title-pt'
-                    name='titlePt'
-                    placeholder={t('fields.title-pt-placeholder')}
-                    ref={createTitlePtRef}
-                  />
-                </div>
-
-                <div>
                   <Label htmlFor='content'>{t('fields.content')}</Label>
                   <Textarea
                     id='content'
@@ -325,25 +370,58 @@ export default function AnnouncementManagement() {
                   />
                 </div>
 
-                <div>
-                  <Label htmlFor='content-pt'>{t('fields.content-pt')}</Label>
-                  <Textarea
-                    id='content-pt'
-                    name='contentPt'
-                    placeholder={t('fields.content-pt-placeholder')}
-                    rows={4}
-                    ref={createContentPtRef}
-                  />
-                </div>
+                {ANNOUNCEMENT_LOCALES.map((locale) => (
+                  <div key={locale.code} className='space-y-3 rounded-lg border border-[var(--border-subtle)] p-3'>
+                    <div className='flex items-center justify-between'>
+                      <Label className='text-sm font-medium'>{locale.label}</Label>
+                      <Badge variant='outline' className='text-xs'>
+                        {locale.code}
+                      </Badge>
+                    </div>
+                    <div>
+                      <Input
+                        name={`title_${locale.code}`}
+                        placeholder={t('fields.title-placeholder')}
+                        ref={(el: HTMLInputElement | null) => {
+                          if (!createTranslationRefsRef.current) createTranslationRefsRef.current = {}
+                          const existing = createTranslationRefsRef.current[locale.code] ?? {
+                            title: null,
+                            content: null
+                          }
+                          createTranslationRefsRef.current[locale.code] = { ...existing, title: el }
+                        }}
+                      />
+                    </div>
+                    <div>
+                      <Textarea
+                        name={`content_${locale.code}`}
+                        placeholder={t('fields.content-placeholder')}
+                        rows={2}
+                        ref={(el: HTMLTextAreaElement | null) => {
+                          if (!createTranslationRefsRef.current) createTranslationRefsRef.current = {}
+                          const existing = createTranslationRefsRef.current[locale.code] ?? {
+                            title: null,
+                            content: null
+                          }
+                          createTranslationRefsRef.current[locale.code] = { ...existing, content: el }
+                        }}
+                      />
+                    </div>
+                  </div>
+                ))}
 
                 <div>
                   <Button
                     type='button'
                     variant='outline'
-                    onClick={handleAiFillCreatePt}
+                    onClick={() =>
+                      handleTranslateAll(createTitleRef, createContentRef, createTranslationRefsRef)
+                    }
                     disabled={translateMutation.isPending}
                   >
-                    {translateMutation.isPending ? t('actions.translating') : t('actions.fill-pt')}
+                    {translateMutation.isPending
+                      ? t('actions.translating')
+                      : t('actions.translate-all')}
                   </Button>
                 </div>
 
@@ -486,11 +564,15 @@ export default function AnnouncementManagement() {
             <div className='space-y-4'>
               {announcements?.announcements?.map((announcement) => {
                 const ui = getAnnouncementUi(announcement.type, { iconSize: 'sm' })
-                const has_pt_title =
-                  typeof announcement.titlePt === 'string' && announcement.titlePt.trim().length > 0
-                const has_pt_content =
-                  typeof announcement.contentPt === 'string' &&
-                  announcement.contentPt.trim().length > 0
+                const hasTranslations = ANNOUNCEMENT_LOCALES.some((locale) => {
+                   const titleKey = `title${locale.fieldSuffix}` as keyof EditAnnouncementData
+                   const contentKey = `content${locale.fieldSuffix}` as keyof EditAnnouncementData
+                   const titleValue = announcement[titleKey]
+                   const contentValue = announcement[contentKey]
+                   const hasTitle = typeof titleValue === 'string' && titleValue.trim().length > 0
+                   const hasContent = typeof contentValue === 'string' && contentValue.trim().length > 0
+                  return hasTitle || hasContent
+                })
                 return (
                   <Card
                     key={announcement.id}
@@ -520,11 +602,9 @@ export default function AnnouncementManagement() {
                                     {t('status.inactive')}
                                   </Badge>
                                 )}
-                                {(has_pt_title || has_pt_content) && (
+                                {hasTranslations && (
                                   <Badge variant='outline' className='text-xs'>
-                                    {has_pt_title && has_pt_content
-                                      ? t('status.pt')
-                                      : t('status.pt-partial')}
+                                    {t('status.translated')}
                                   </Badge>
                                 )}
                               </div>
@@ -661,16 +741,6 @@ export default function AnnouncementManagement() {
                 </div>
 
                 <div>
-                  <Label htmlFor='edit-title-pt'>{t('fields.title-pt')}</Label>
-                  <Input
-                    id='edit-title-pt'
-                    name='titlePt'
-                    defaultValue={editingAnnouncement.titlePt ?? ''}
-                    ref={editTitlePtRef}
-                  />
-                </div>
-
-                <div>
                   <Label htmlFor='edit-content'>{t('fields.content')}</Label>
                   <Textarea
                     id='edit-content'
@@ -682,22 +752,59 @@ export default function AnnouncementManagement() {
                   />
                 </div>
 
-                <div>
-                  <Label htmlFor='edit-content-pt'>{t('fields.content-pt')}</Label>
-                  <Textarea
-                    id='edit-content-pt'
-                    name='contentPt'
-                    defaultValue={editingAnnouncement.contentPt ?? ''}
-                    rows={4}
-                    ref={editContentPtRef}
-                  />
-                </div>
+                {ANNOUNCEMENT_LOCALES.map((locale) => {
+                  const titleKey = `title${locale.fieldSuffix}` as keyof EditAnnouncementData
+                  const contentKey = `content${locale.fieldSuffix}` as keyof EditAnnouncementData
+                  return (
+                    <div key={locale.code} className='space-y-3 rounded-lg border border-[var(--border-subtle)] p-3'>
+                      <div className='flex items-center justify-between'>
+                        <Label className='text-sm font-medium'>{locale.label}</Label>
+                        <Badge variant='outline' className='text-xs'>
+                          {locale.code}
+                        </Badge>
+                      </div>
+                      <div>
+                        <Input
+                          name={`title_${locale.code}`}
+                          placeholder={t('fields.title-placeholder')}
+                          defaultValue={(editingAnnouncement[titleKey] as string) ?? ''}
+                          ref={(el: HTMLInputElement | null) => {
+                            if (!editTranslationRefsRef.current) editTranslationRefsRef.current = {}
+                            const existing = editTranslationRefsRef.current[locale.code] ?? {
+                              title: null,
+                              content: null
+                            }
+                            editTranslationRefsRef.current[locale.code] = { ...existing, title: el }
+                          }}
+                        />
+                      </div>
+                      <div>
+                        <Textarea
+                          name={`content_${locale.code}`}
+                          placeholder={t('fields.content-placeholder')}
+                          rows={2}
+                          defaultValue={(editingAnnouncement[contentKey] as string) ?? ''}
+                          ref={(el: HTMLTextAreaElement | null) => {
+                            if (!editTranslationRefsRef.current) editTranslationRefsRef.current = {}
+                            const existing = editTranslationRefsRef.current[locale.code] ?? {
+                              title: null,
+                              content: null
+                            }
+                            editTranslationRefsRef.current[locale.code] = { ...existing, content: el }
+                          }}
+                        />
+                      </div>
+                    </div>
+                  )
+                })}
 
                 <div>
                   <Button
                     type='button'
                     variant='outline'
-                    onClick={handleAiFillEditPt}
+                    onClick={() =>
+                      handleTranslateAll(editTitleRef, editContentRef, editTranslationRefsRef)
+                    }
                     disabled={translateMutation.isPending}
                   >
                     {translateMutation.isPending ? t('actions.translating') : t('actions.fill-pt')}

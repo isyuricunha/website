@@ -426,9 +426,9 @@ describe('announcementsRouter', () => {
       toLang: 'pt'
     })
 
-    expect(result.titlePt).toBe('Olá')
-    expect(result.contentPt).toBe('Português')
-    expect(result.provider).toBe('mistral')
+    expect(result.titleTranslated).toBe('Olá')
+    expect(result.contentTranslated).toBe('Português')
+    expect(result.locale).toBe('pt')
     expect(generateResponseMock).toHaveBeenCalled()
   }, 15_000)
 
