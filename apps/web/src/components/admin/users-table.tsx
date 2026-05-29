@@ -228,8 +228,8 @@ const UsersTable = (props: UsersTableProps) => {
         <DataTableColumnHeader column={column} title={t('admin.table.users.status')} />
       ),
       cell: ({ row }) => (
-        <Badge variant={row.original.role === 'admin' ? 'secondary' : 'default'}>
-          {row.original.role}
+        <Badge variant={row.original.banned ? 'destructive' : 'default'}>
+          {row.original.banned ? t('admin.table.users.banned') : t('admin.table.users.active')}
         </Badge>
       )
     },
@@ -258,14 +258,17 @@ const UsersTable = (props: UsersTableProps) => {
                 <MailIcon className='mr-2 h-4 w-4' />
                 {t('admin.table.users.reset-password')}
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleBanUser(user.id, user.name)}>
-                <BanIcon className='mr-2 h-4 w-4' />
-                {t('admin.table.users.ban')}
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleUnbanUser(user.id, user.name)}>
-                <BanIcon className='mr-2 h-4 w-4' />
-                {t('admin.table.users.unban')}
-              </DropdownMenuItem>
+              {user.banned ? (
+                <DropdownMenuItem onClick={() => handleUnbanUser(user.id, user.name)}>
+                  <BanIcon className='mr-2 h-4 w-4' />
+                  {t('admin.table.users.unban')}
+                </DropdownMenuItem>
+              ) : (
+                <DropdownMenuItem onClick={() => handleBanUser(user.id, user.name)}>
+                  <BanIcon className='mr-2 h-4 w-4' />
+                  {t('admin.table.users.ban')}
+                </DropdownMenuItem>
+              )}
               <DropdownMenuItem onClick={() => handleDeleteUser(user.id, user.name)}>
                 <TrashIcon className='mr-2 h-4 w-4' />
                 {t('admin.table.users.delete')}

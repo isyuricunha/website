@@ -70,9 +70,9 @@ export const usersRouter = createTRPCRouter({
       const ext =
         input.contentType === 'image/png'
           ? 'png'
-          : input.contentType === 'image/webp'
+          : (input.contentType === 'image/webp'
             ? 'webp'
-            : 'jpg'
+            : 'jpg')
 
       const key = `avatars/${ctx.session.user.id}/${randomUUID()}.${ext}`
 
@@ -256,7 +256,8 @@ export const usersRouter = createTRPCRouter({
         username: true,
         image: true,
         createdAt: true,
-        updatedAt: true
+        updatedAt: true,
+        banned: true
       }
     })
 
@@ -354,8 +355,8 @@ export const usersRouter = createTRPCRouter({
           })
         }
 
-        // For now, we'll delete all user sessions to effectively "ban" them
-        // In a more sophisticated system, you'd add a 'banned' field to users table
+        // Set the banned flag and delete all user sessions to effectively "ban" them
+        await ctx.db.update(users).set({ banned: true }).where(eq(users.id, input.userId))
         await ctx.db.delete(sessions).where(eq(sessions.userId, input.userId))
 
         // Log the audit trail
@@ -406,9 +407,8 @@ export const usersRouter = createTRPCRouter({
           })
         }
 
-        // Since we "ban" by deleting sessions, "unbanning" means the user can sign in again
-        // In a more sophisticated system, you'd update a 'banned' field to false
-        // For now, we'll just log the unban action
+        // Clear the banned flag so the user can sign in again
+        await ctx.db.update(users).set({ banned: false }).where(eq(users.id, input.userId))
 
         // Log the audit trail
         await auditLogger.logUserAction(
