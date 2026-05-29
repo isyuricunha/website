@@ -12,7 +12,7 @@ const AdminNavLink = (props: AdminNavLinkProps) => {
   const { titleKey, url, icon: Icon } = props
   const pathname = usePathname()
   const t = useTranslations('admin.nav')
-  const isActive = url === pathname
+  const isActive = pathname === url || pathname.startsWith(`${url}/`)
   const label = t(titleKey)
 
   return (
