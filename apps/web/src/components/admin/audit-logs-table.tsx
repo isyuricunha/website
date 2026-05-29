@@ -13,13 +13,14 @@ import {
 import { useTranslations } from '@isyuricunha/i18n/client'
 import {
   Badge,
+  Button,
   DataTable,
   DataTableColumnHeader,
   type DataTableFilterField,
   DataTableToolbar,
   Input
 } from '@isyuricunha/ui'
-import { Search } from 'lucide-react'
+import { Search, X } from 'lucide-react'
 import { useMemo } from 'react'
 
 import { useDebounceSearch } from '@/hooks/use-debounced-search'
@@ -34,7 +35,7 @@ const AuditLogsTable = (props: AuditLogsTableProps) => {
   const { data } = props
   const t = useTranslations('admin.audit-logs')
 
-  const { searchTerm, debouncedSearchTerm, updateSearchTerm } = useDebounceSearch()
+  const { searchTerm, debouncedSearchTerm, updateSearchTerm, clearSearch } = useDebounceSearch()
 
   const filteredData = useMemo(() => {
     if (!debouncedSearchTerm) return data
@@ -126,6 +127,16 @@ const AuditLogsTable = (props: AuditLogsTableProps) => {
               onChange={(e) => updateSearchTerm(e.target.value)}
               className='w-80 pl-8'
             />
+            {searchTerm && (
+              <Button
+                variant='ghost'
+                size='sm'
+                className='absolute top-1 right-1 h-6 w-6 p-0'
+                onClick={clearSearch}
+              >
+                <X className='h-3 w-3' />
+              </Button>
+            )}
           </div>
         </div>
       </div>
