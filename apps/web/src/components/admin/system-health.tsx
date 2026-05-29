@@ -23,7 +23,7 @@ import {
   Activity,
   AlertCircle
 } from 'lucide-react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@isyuricunha/i18n/client'
 import { toast } from 'sonner'
 
 import { api } from '@/trpc/react'
@@ -482,9 +482,9 @@ export const SystemHealthDashboard = () => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value='all'>{t('trends.all-services')}</SelectItem>
-                  {available_check_types.map((t) => (
-                    <SelectItem key={t} value={t}>
-                      {t}
+                  {available_check_types.map((checkType) => (
+                    <SelectItem key={checkType} value={checkType}>
+                      {checkType}
                     </SelectItem>
                   ))}
                 </SelectContent>
