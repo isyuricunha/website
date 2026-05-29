@@ -47,7 +47,7 @@ import {
   Users,
   BarChart3
 } from 'lucide-react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@isyuricunha/i18n/client'
 import { toast } from 'sonner'
 import { cn } from '@isyuricunha/utils'
 import { api } from '@/trpc/react'

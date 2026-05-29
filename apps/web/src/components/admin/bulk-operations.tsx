@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react'
 import {
   Button,
+  Input,
   Select,
   SelectContent,
   SelectItem,
@@ -26,10 +27,11 @@ import {
   Settings
 } from 'lucide-react'
 import Image from 'next/image'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@isyuricunha/i18n/client'
 import { toast } from 'sonner'
 
 import { api } from '@/trpc/react'
+import ConfirmationDialog from './confirmation-dialog'
 
 interface BulkOperationStatus {
   id: string
@@ -76,6 +78,13 @@ export const BulkOperations = () => {
     'ban'
   )
   const [newRole, setNewRole] = useState<'user' | 'admin'>('user')
+  const [confirmDialog, setConfirmDialog] = useState<{
+    open: boolean
+    title: string
+    description: string
+    action: () => void
+    variant?: 'default' | 'destructive'
+  }>({ open: false, title: '', description: '', action: () => { /* no-op */ } })
 
   const utils = api.useUtils()
 
@@ -158,23 +167,35 @@ export const BulkOperations = () => {
       action: getActionLabel(selectedAction),
       count: selectedUsers.length
     })
-    if (!confirm(confirmMessage)) {
-      return
-    }
 
-    const parameters = selectedAction === 'update_role' ? { role: newRole } : undefined
-
-    await bulkUserAction.mutateAsync({
-      userIds: selectedUsers,
-      action: selectedAction,
-      parameters
+    setConfirmDialog({
+      open: true,
+      title: t('confirm.bulk-action-title'),
+      description: confirmMessage,
+      variant: 'destructive',
+      action: async () => {
+        setConfirmDialog((prev) => ({ ...prev, open: false }))
+        const parameters = selectedAction === 'update_role' ? { role: newRole } : undefined
+        await bulkUserAction.mutateAsync({
+          userIds: selectedUsers,
+          action: selectedAction,
+          parameters
+        })
+      }
     })
   }
 
   const handleCancelOperation = async (operationId: string) => {
-    if (confirm(t('confirm.cancel-operation'))) {
-      await cancelOperation.mutateAsync({ operationId })
-    }
+    setConfirmDialog({
+      open: true,
+      title: t('confirm.cancel-operation-title'),
+      description: t('confirm.cancel-operation'),
+      variant: 'destructive',
+      action: async () => {
+        setConfirmDialog((prev) => ({ ...prev, open: false }))
+        await cancelOperation.mutateAsync({ operationId })
+      }
+    })
   }
 
   const getActionLabel = (action: string) => {
@@ -294,13 +315,12 @@ export const BulkOperations = () => {
           <div className='mb-6 flex flex-col gap-4 sm:flex-row'>
             <div className='flex-1'>
               <div className='relative'>
-                <Search className='text-text-secondary absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform' />
-                <input
-                  type='text'
+                <Search className='text-text-secondary absolute top-2.5 left-2 h-4 w-4' />
+                <Input
                   placeholder={t('user-actions.search-placeholder')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className='bg-bg-base text-text-primary focus:ring-ring focus:ring-offset-background w-full rounded-md border border-[var(--border-subtle)] py-2 pr-4 pl-10 focus:border-transparent focus:ring-2 focus:ring-offset-2'
+                  className='pl-8'
                 />
               </div>
             </div>
@@ -562,6 +582,16 @@ export const BulkOperations = () => {
           )}
         </div>
       </div>
+
+      <ConfirmationDialog
+        open={confirmDialog.open}
+        onOpenChange={(open) => setConfirmDialog((prev) => ({ ...prev, open }))}
+        title={confirmDialog.title}
+        description={confirmDialog.description}
+        variant={confirmDialog.variant}
+        onConfirm={confirmDialog.action}
+        loading={bulkUserAction.isPending || cancelOperation.isPending}
+      />
     </div>
   )
 }

@@ -47,10 +47,11 @@ import {
   CheckCircle,
   Loader2
 } from 'lucide-react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@isyuricunha/i18n/client'
 import { toast } from 'sonner'
 
 import { api } from '@/trpc/react'
+import ConfirmationDialog from './confirmation-dialog'
 
 // Helper function for broadcast status colors
 const getBroadcastStatusColor = (status: string | undefined) => {
@@ -81,6 +82,13 @@ export default function EmailMarketingManagement() {
   const [isViewBroadcastDialogOpen, setIsViewBroadcastDialogOpen] = useState(false)
   const [selectedBroadcast, setSelectedBroadcast] = useState<any>(null)
   const [broadcastFilter, setBroadcastFilter] = useState('all')
+  const [confirmDialog, setConfirmDialog] = useState<{
+    open: boolean
+    title: string
+    description: string
+    action: () => void
+    variant?: 'default' | 'destructive'
+  }>({ open: false, title: '', description: '', action: () => { /* no-op */ } })
 
   // Sequential loading states
   const [loadingStage, setLoadingStage] = useState<
@@ -314,9 +322,16 @@ export default function EmailMarketingManagement() {
   }
 
   const handleDeleteBroadcast = (broadcastId: string) => {
-    if (confirm(t('confirm.delete-broadcast'))) {
-      deleteBroadcastMutation.mutate({ broadcastId })
-    }
+    setConfirmDialog({
+      open: true,
+      title: t('confirm.delete-broadcast-title'),
+      description: t('confirm.delete-broadcast'),
+      variant: 'destructive',
+      action: () => {
+        deleteBroadcastMutation.mutate({ broadcastId })
+        setConfirmDialog((prev) => ({ ...prev, open: false }))
+      }
+    })
   }
 
   const handleDuplicateBroadcast = (broadcast: any) => {
@@ -648,7 +663,7 @@ export default function EmailMarketingManagement() {
                 <CardContent>
                   <div className='space-y-2'>
                     <p className='text-text-secondary text-sm'>
-                      {t('date.created', { date: new Date().toLocaleDateString() })}
+                      {t('date.created', { date: '—' })}
                     </p>
                     <Button
                       onClick={() => handleSyncUsers(audience.id)}
@@ -1197,6 +1212,16 @@ export default function EmailMarketingManagement() {
           </form>
         </DialogContent>
       </Dialog>
+
+      <ConfirmationDialog
+        open={confirmDialog.open}
+        onOpenChange={(open) => setConfirmDialog((prev) => ({ ...prev, open }))}
+        title={confirmDialog.title}
+        description={confirmDialog.description}
+        variant={confirmDialog.variant}
+        onConfirm={confirmDialog.action}
+        loading={deleteBroadcastMutation.isPending}
+      />
     </div>
   )
 }

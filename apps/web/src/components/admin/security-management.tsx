@@ -24,7 +24,7 @@ import {
 } from '@isyuricunha/ui'
 
 import { AlertTriangle, Shield, Users, Lock } from 'lucide-react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@isyuricunha/i18n/client'
 import { toast } from 'sonner'
 
 import { api } from '@/trpc/react'
