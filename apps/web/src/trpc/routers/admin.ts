@@ -1,6 +1,24 @@
-import { auditLogs as audit_logs_table, desc, gte } from '@isyuricunha/db'
+import {
+  auditLogs as audit_logs_table,
+  comments,
+  count,
+  desc,
+  eq,
+  gte,
+  guestbook,
+  users
+} from '@isyuricunha/db'
 import { adminProcedure, createTRPCRouter } from '../trpc'
 import { logger } from '@/lib/logger'
+
+const safeJsonParse = (str: string | null): unknown => {
+  if (!str) return null
+  try {
+    return JSON.parse(str)
+  } catch {
+    return null
+  }
+}
 
 export const adminRouter = createTRPCRouter({
   getStats: adminProcedure.query(async ({ ctx }) => {
@@ -9,82 +27,85 @@ export const adminRouter = createTRPCRouter({
     const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000)
 
     try {
-      // Get all users with creation dates
-      const allUsers = await ctx.db.query.users.findMany({
-        columns: {
-          id: true,
-          role: true,
-          createdAt: true
-        }
-      })
+      // Use COUNT queries instead of loading all rows into memory
+      const [totalUsersRow] = await ctx.db
+        .select({ value: count() })
+        .from(users)
 
-      // Get all comments with creation dates
-      const allComments = await ctx.db.query.comments.findMany({
-        columns: {
-          id: true,
-          createdAt: true
-        }
-      })
+      const [totalCommentsRow] = await ctx.db
+        .select({ value: count() })
+        .from(comments)
 
-      // Get all guestbook entries
-      const allGuestbookEntries = await ctx.db.query.guestbook.findMany({
-        columns: {
-          id: true,
-          createdAt: true
-        }
-      })
+      const [totalGuestbookRow] = await ctx.db
+        .select({ value: count() })
+        .from(guestbook)
 
-      // Calculate basic stats
-      const totalUsers = allUsers.length
-      const totalComments = allComments.length
-      const totalGuestbookEntries = allGuestbookEntries.length
-      const adminUsers = allUsers.filter((user) => user.role === 'admin').length
+      const [adminUsersRow] = await ctx.db
+        .select({ value: count() })
+        .from(users)
+        .where(eq(users.role, 'admin'))
 
-      // Calculate recent activity (last 30 days)
-      const recentUsers = allUsers.filter(
-        (user) => user.createdAt && new Date(user.createdAt) >= thirtyDaysAgo
-      ).length
+      const [recentUsersRow] = await ctx.db
+        .select({ value: count() })
+        .from(users)
+        .where(gte(users.createdAt, thirtyDaysAgo))
 
-      const recentComments = allComments.filter(
-        (comment) => comment.createdAt && new Date(comment.createdAt) >= thirtyDaysAgo
-      ).length
+      const [recentCommentsRow] = await ctx.db
+        .select({ value: count() })
+        .from(comments)
+        .where(gte(comments.createdAt, thirtyDaysAgo))
 
-      // Calculate weekly activity (last 7 days)
-      const weeklyUsers = allUsers.filter(
-        (user) => user.createdAt && new Date(user.createdAt) >= sevenDaysAgo
-      ).length
+      const [weeklyUsersRow] = await ctx.db
+        .select({ value: count() })
+        .from(users)
+        .where(gte(users.createdAt, sevenDaysAgo))
 
-      const weeklyComments = allComments.filter(
-        (comment) => comment.createdAt && new Date(comment.createdAt) >= sevenDaysAgo
-      ).length
+      const [weeklyCommentsRow] = await ctx.db
+        .select({ value: count() })
+        .from(comments)
+        .where(gte(comments.createdAt, sevenDaysAgo))
 
-      // Calculate user growth trends (monthly data for the past year)
-      const userGrowthData = []
-      for (let i = 11; i >= 0; i--) {
-        const monthStart = new Date(now.getFullYear(), now.getMonth() - i, 1)
-        const monthEnd = new Date(now.getFullYear(), now.getMonth() - i + 1, 0)
+      const totalUsers = totalUsersRow?.value ?? 0
+      const totalComments = totalCommentsRow?.value ?? 0
+      const totalGuestbookEntries = totalGuestbookRow?.value ?? 0
+      const adminUsers = adminUsersRow?.value ?? 0
+      const recentUsers = recentUsersRow?.value ?? 0
+      const recentComments = recentCommentsRow?.value ?? 0
+      const weeklyUsers = weeklyUsersRow?.value ?? 0
+      const weeklyComments = weeklyCommentsRow?.value ?? 0
 
-        const monthlyUsers = allUsers.filter(
-          (user) =>
-            user.createdAt &&
-            new Date(user.createdAt) >= monthStart &&
-            new Date(user.createdAt) <= monthEnd
-        ).length
+      // Calculate previous month counts for trend computation
+      const sixtyDaysAgo = new Date(now.getTime() - 60 * 24 * 60 * 60 * 1000)
 
-        userGrowthData.push({
-          month: monthStart.toISOString().slice(0, 7), // YYYY-MM format
-          users: monthlyUsers,
-          cumulative: allUsers.filter(
-            (user) => user.createdAt && new Date(user.createdAt) <= monthEnd
-          ).length
-        })
-      }
+      const [prevUsersRow] = await ctx.db
+        .select({ value: count() })
+        .from(users)
+        .where(gte(users.createdAt, sixtyDaysAgo))
+
+      const [prevCommentsRow] = await ctx.db
+        .select({ value: count() })
+        .from(comments)
+        .where(gte(comments.createdAt, sixtyDaysAgo))
+
+      // Previous month = total in 60d window - total in 30d window
+      const prevMonthUsers = Math.max(0, (prevUsersRow?.value ?? 0) - recentUsers)
+      const prevMonthComments = Math.max(0, (prevCommentsRow?.value ?? 0) - recentComments)
+
+      // Compute real trend percentages
+      const userTrend =
+        prevMonthUsers > 0
+          ? Math.round(((recentUsers - prevMonthUsers) / prevMonthUsers) * 100)
+          : (recentUsers > 0
+            ? 100
+            : 0)
+      const commentTrend =
+        prevMonthComments > 0
+          ? Math.round(((recentComments - prevMonthComments) / prevMonthComments) * 100)
+          : (recentComments > 0
+            ? 100
+            : 0)
 
       // Calculate engagement metrics
-      const activeUsers = allUsers.filter(
-        (user) => user.createdAt && new Date(user.createdAt) >= thirtyDaysAgo
-      ).length
-
       const engagementRate = totalUsers > 0 ? totalComments / totalUsers : 0
 
       // Get recent audit logs for admin activity
@@ -112,14 +133,17 @@ export const adminRouter = createTRPCRouter({
         recent: {
           users: recentUsers,
           comments: recentComments,
-          activeUsers
+          activeUsers: recentUsers
         },
         weekly: {
           users: weeklyUsers,
           comments: weeklyComments
         },
+        trends: {
+          users: userTrend,
+          comments: commentTrend
+        },
         growth: {
-          userGrowthData,
           engagementRate: Math.round(engagementRate * 100) / 100
         },
         recentActivity: recentAuditLogs.map((log) => ({
@@ -127,9 +151,9 @@ export const adminRouter = createTRPCRouter({
           action: log.action,
           targetType: log.targetType,
           targetId: log.targetId,
-          adminName: log.adminUser.name,
+          adminName: log.adminUser?.name ?? 'Unknown',
           createdAt: log.createdAt,
-          details: log.details ? JSON.parse(log.details) : null
+          details: safeJsonParse(log.details)
         }))
       }
     } catch (error) {
@@ -150,8 +174,11 @@ export const adminRouter = createTRPCRouter({
           users: 0,
           comments: 0
         },
+        trends: {
+          users: 0,
+          comments: 0
+        },
         growth: {
-          userGrowthData: [],
           engagementRate: 0
         },
         recentActivity: []
@@ -186,7 +213,7 @@ export const adminRouter = createTRPCRouter({
             email: log.adminUser.email,
             image: log.adminUser.image
           },
-          details: log.details ? JSON.parse(log.details) : null,
+          details: safeJsonParse(log.details),
           ipAddress: log.ipAddress,
           userAgent: log.userAgent,
           createdAt: log.createdAt
