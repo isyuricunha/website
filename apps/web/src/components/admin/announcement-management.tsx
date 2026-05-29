@@ -107,6 +107,8 @@ export default function AnnouncementManagement() {
     refetch
   } = api.announcements.getAnnouncements.useQuery({
     adminView: true
+  }, {
+    staleTime: 30_000
   })
 
   const translateMutation = api.announcements.translateAnnouncement.useMutation({
@@ -161,7 +163,9 @@ export default function AnnouncementManagement() {
     }
   }
 
-  const { data: analytics } = api.announcements.getAnnouncementAnalytics.useQuery({})
+  const { data: analytics } = api.announcements.getAnnouncementAnalytics.useQuery({}, {
+    staleTime: 30_000
+  })
 
   // Mutations
   const createMutation = api.announcements.createAnnouncement.useMutation({

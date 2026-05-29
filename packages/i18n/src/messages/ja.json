@@ -153,7 +153,8 @@
     },
     "common": {
       "loading": "読み込み中...",
-      "refresh": "更新"
+      "refresh": "更新",
+      "admin-label": "Admin"
     },
     "error-boundary": {
       "title": "管理エラー",
@@ -802,7 +803,8 @@
         "updated": "お知らせが正常に更新されました",
         "update-failed": "お知らせの更新に失敗しました: {message}",
         "deleted": "お知らせが正常に削除されました",
-        "delete-failed": "お知らせの削除に失敗しました: {message}"
+        "delete-failed": "お知らせの削除に失敗しました: {message}",
+        "all-languages-filled": "Translated to {count} languages"
       },
       "actions": {
         "create": "お知らせを作成",
@@ -812,7 +814,8 @@
         "activate": "有効化",
         "deactivate": "無効化",
         "edit-aria": "お知らせを編集",
-        "delete-aria": "お知らせを削除"
+        "delete-aria": "お知らせを削除",
+        "translate-all": "Translate to all languages"
       },
       "create": {
         "title": "新しいお知らせを作成",
@@ -870,11 +873,10 @@
       },
       "status": {
         "inactive": "非アクティブ",
-        "pt": "PT",
-        "pt-partial": "PT 部分的",
         "targeted": "ターゲット指定",
         "dismissible": "閉じ可能",
-        "not-dismissible": "閉じ不可"
+        "not-dismissible": "閉じ不可",
+        "translated": "Translated"
       }
     },
     "communication-management": {
@@ -1156,6 +1158,9 @@
         "title": "放送を編集",
         "description": "放送コンテンツと設定を更新"
       }
+    },
+    "sidebar": {
+      "control": "Control"
     }
   },
   "blog": {

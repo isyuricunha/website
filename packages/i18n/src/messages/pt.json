@@ -153,7 +153,8 @@
     },
     "common": {
       "loading": "Carregando...",
-      "refresh": "Atualizar"
+      "refresh": "Atualizar",
+      "admin-label": "Admin"
     },
     "error-boundary": {
       "title": "Erro no Admin",
@@ -802,7 +803,8 @@
         "updated": "Anúncio atualizado com sucesso",
         "update-failed": "Falha ao atualizar anúncio: {message}",
         "deleted": "Anúncio excluído com sucesso",
-        "delete-failed": "Falha ao excluir anúncio: {message}"
+        "delete-failed": "Falha ao excluir anúncio: {message}",
+        "all-languages-filled": "Translated to {count} languages"
       },
       "actions": {
         "create": "Criar anúncio",
@@ -812,7 +814,8 @@
         "activate": "Ativar",
         "deactivate": "Desativar",
         "edit-aria": "Editar anúncio",
-        "delete-aria": "Excluir anúncio"
+        "delete-aria": "Excluir anúncio",
+        "translate-all": "Translate to all languages"
       },
       "create": {
         "title": "Criar novo anúncio",
@@ -870,11 +873,10 @@
       },
       "status": {
         "inactive": "Inativo",
-        "pt": "PT",
-        "pt-partial": "PT parcial",
         "targeted": "Segmentado",
         "dismissible": "Dispensável",
-        "not-dismissible": "Não dispensável"
+        "not-dismissible": "Não dispensável",
+        "translated": "Translated"
       }
     },
     "communication-management": {
@@ -1156,6 +1158,9 @@
         "title": "Editar broadcast",
         "description": "Atualize conteúdo e configurações do broadcast"
       }
+    },
+    "sidebar": {
+      "control": "Control"
     }
   },
   "blog": {

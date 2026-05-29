@@ -28,6 +28,9 @@
       "audit_logs": "Audit Logs",
       "bulk_operations": "Bulk Operations"
     },
+    "sidebar": {
+      "control": "Control"
+    },
     "page-header": {
       "audit-logs": {
         "description": "Review administrative actions and system changes.",
@@ -153,7 +156,8 @@
     },
     "common": {
       "loading": "Loading...",
-      "refresh": "Refresh"
+      "refresh": "Refresh",
+      "admin-label": "Admin"
     },
     "error-boundary": {
       "title": "Admin Error",
@@ -797,6 +801,7 @@
         "translate-failed": "Failed to translate: {message}",
         "title-content-required": "Title and content are required",
         "pt-filled": "Filled pt-BR using Yue AI",
+        "all-languages-filled": "Translated to {count} languages",
         "created": "Announcement created successfully",
         "create-failed": "Failed to create announcement: {message}",
         "updated": "Announcement updated successfully",
@@ -809,6 +814,7 @@
         "update": "Update Announcement",
         "translating": "Translating...",
         "fill-pt": "Fill pt-BR with AI",
+        "translate-all": "Translate to all languages",
         "activate": "Activate",
         "deactivate": "Deactivate",
         "edit-aria": "Edit announcement",
@@ -870,8 +876,7 @@
       },
       "status": {
         "inactive": "Inactive",
-        "pt": "PT",
-        "pt-partial": "PT partial",
+        "translated": "Translated",
         "targeted": "Targeted",
         "dismissible": "Dismissible",
         "not-dismissible": "Not dismissible"

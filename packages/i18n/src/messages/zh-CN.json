@@ -153,7 +153,8 @@
     },
     "common": {
       "loading": "加载中...",
-      "refresh": "刷新"
+      "refresh": "刷新",
+      "admin-label": "Admin"
     },
     "error-boundary": {
       "title": "管理员错误",
@@ -802,7 +803,8 @@
         "updated": "公告更新成功",
         "update-failed": "更新公告失败：{message}",
         "deleted": "公告删除成功",
-        "delete-failed": "删除公告失败：{message}"
+        "delete-failed": "删除公告失败：{message}",
+        "all-languages-filled": "Translated to {count} languages"
       },
       "actions": {
         "create": "创建公告",
@@ -812,7 +814,8 @@
         "activate": "激活",
         "deactivate": "停用",
         "edit-aria": "编辑公告",
-        "delete-aria": "删除公告"
+        "delete-aria": "删除公告",
+        "translate-all": "Translate to all languages"
       },
       "create": {
         "title": "创建新公告",
@@ -870,11 +873,10 @@
       },
       "status": {
         "inactive": "未激活",
-        "pt": "葡萄牙语",
-        "pt-partial": "部分葡萄牙语",
         "targeted": "定向",
         "dismissible": "可关闭",
-        "not-dismissible": "不可关闭"
+        "not-dismissible": "不可关闭",
+        "translated": "Translated"
       }
     },
     "communication-management": {
@@ -1156,6 +1158,9 @@
         "title": "编辑广播",
         "description": "更新广播内容和设置"
       }
+    },
+    "sidebar": {
+      "control": "Control"
     }
   },
   "blog": {
