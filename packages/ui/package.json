@@ -37,7 +37,7 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@ark-ui/react": "^5.36.2",
+    "@ark-ui/react": "^5.37.0",
     "@icons-pack/react-simple-icons": "13.13.0",
     "@radix-ui/react-accordion": "^1.2.12",
     "@radix-ui/react-alert-dialog": "^1.1.15",
@@ -71,7 +71,7 @@
     "embla-carousel-react": "^8.6.0",
     "framer-motion": "^12.40.0",
     "input-otp": "^1.4.2",
-    "lucide-react": "^1.16.0",
+    "lucide-react": "^1.17.0",
     "merge-refs": "^2.0.0",
     "react-hook-form": "^7.76.1",
     "react-resizable-panels": "^4.11.2",
