@@ -84,7 +84,14 @@ export const BulkOperations = () => {
     description: string
     action: () => void
     variant?: 'default' | 'destructive'
-  }>({ open: false, title: '', description: '', action: () => { /* no-op */ } })
+  }>({
+    open: false,
+    title: '',
+    description: '',
+    action: () => {
+      /* no-op */
+    }
+  })
 
   const utils = api.useUtils()
 
@@ -233,11 +240,11 @@ export const BulkOperations = () => {
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'completed':
-        return <CheckCircle className='text-accent-earth-text h-5 w-5' />
+        return <CheckCircle className='text-status-success h-5 w-5' />
       case 'failed':
-        return <XCircle className='text-destructive h-5 w-5' />
+        return <XCircle className='text-status-danger h-5 w-5' />
       case 'running':
-        return <Play className='text-accent-earth-text h-5 w-5' />
+        return <Play className='text-status-info h-5 w-5' />
       case 'cancelled':
         return <Pause className='text-text-secondary h-5 w-5' />
       default:
@@ -248,11 +255,11 @@ export const BulkOperations = () => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'completed':
-        return 'bg-[var(--accent-dim)] text-accent-earth-text'
+        return 'bg-status-success-soft text-status-success'
       case 'failed':
-        return 'bg-destructive/10 text-destructive'
+        return 'bg-status-danger-soft text-status-danger'
       case 'running':
-        return 'bg-[var(--accent-dim)] text-accent-earth-text'
+        return 'bg-status-info-soft text-status-info'
       case 'cancelled':
         return 'bg-bg-surface text-text-secondary'
       default:
@@ -453,7 +460,7 @@ export const BulkOperations = () => {
                       <span
                         className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
                           user.role === 'admin'
-                            ? 'text-accent-earth-text bg-[var(--accent-dim)]'
+                            ? 'text-status-agent bg-status-agent-soft'
                             : 'bg-bg-surface text-text-secondary'
                         }`}
                       >
@@ -556,7 +563,7 @@ export const BulkOperations = () => {
                   </div>
                   <div className='bg-bg-hover h-2 w-full rounded-full'>
                     <div
-                      className='bg-accent-earth h-2 rounded-full transition-all duration-300'
+                      className='bg-status-info h-2 rounded-full transition-all duration-300'
                       style={{
                         width: `${operation.progress}%`
                       }}
@@ -567,10 +574,10 @@ export const BulkOperations = () => {
 
               {/* Error Message */}
               {typeof operation.errorMessage === 'string' && operation.errorMessage.length > 0 && (
-                <div className='border-destructive/20 bg-destructive/10 mt-4 rounded-md border p-3'>
+                <div className='bg-status-danger-soft mt-4 rounded-md border border-[var(--status-danger-border)] p-3'>
                   <div className='flex items-center gap-2'>
-                    <AlertTriangle className='text-destructive h-4 w-4' />
-                    <span className='text-destructive text-sm'>{operation.errorMessage}</span>
+                    <AlertTriangle className='text-status-danger h-4 w-4' />
+                    <span className='text-status-danger text-sm'>{operation.errorMessage}</span>
                   </div>
                 </div>
               )}

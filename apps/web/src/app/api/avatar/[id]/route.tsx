@@ -26,10 +26,10 @@ const djb2 = (str: string) => {
 }
 
 const avatarPalettes = [
-  { base: '#14120b', surface: '#221f14', accent: '#c9572a' },
-  { base: '#1b1912', surface: '#2a2619', accent: '#d9653a' },
-  { base: '#1e1b10', surface: '#332e1e', accent: '#e07848' },
-  { base: '#221f14', surface: '#14120b', accent: '#9a9080' }
+  { base: '#1a1813', surface: '#201e17', accent: '#d6a84f' },
+  { base: '#1b1913', surface: '#2a271f', accent: '#31d158' },
+  { base: '#191811', surface: '#332f25', accent: '#bf5af2' },
+  { base: '#1f1d17', surface: '#201e17', accent: '#64d2ff' }
 ] as const
 
 const getAvatarPalette = (id: string) => {

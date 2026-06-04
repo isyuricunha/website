@@ -5,10 +5,10 @@ import { getTranslations } from '@isyuricunha/i18n/server'
 export const runtime = 'nodejs'
 
 const ogTheme = {
-  background: '#14120b',
-  secondaryText: '#9a9080',
-  accentText: '#e07848',
-  accentBlock: '#c9572a'
+  background: '#1a1813',
+  secondaryText: '#b8b2a4',
+  accentText: '#64d2ff',
+  accentBlock: '#d6a84f'
 } as const
 
 const getTitleFontSize = (title: string) => {

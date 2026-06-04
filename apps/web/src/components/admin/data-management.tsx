@@ -147,13 +147,13 @@ export default function DataManagement() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'completed':
-        return 'default'
+        return 'success'
       case 'in_progress':
       case 'processing':
       case 'running':
-        return 'secondary'
+        return 'info'
       case 'pending':
-        return 'outline'
+        return 'warning'
       case 'failed':
         return 'destructive'
       default:

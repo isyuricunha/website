@@ -5,8 +5,13 @@ import NextLink from 'next/link'
 const linkVariants = cva({
   variants: {
     variant: {
+      default:
+        'text-status-info hover:text-accent-cyan-hover underline-offset-4 transition-colors hover:underline',
       muted: 'text-muted-foreground hover:text-foreground transition-colors'
     }
+  },
+  defaultVariants: {
+    variant: 'default'
   }
 })
 

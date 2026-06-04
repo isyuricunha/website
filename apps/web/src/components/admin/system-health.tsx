@@ -128,11 +128,11 @@ export const SystemHealthDashboard = () => {
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'healthy':
-        return <CheckCircle className='text-accent-earth-text h-5 w-5' />
+        return <CheckCircle className='text-status-success h-5 w-5' />
       case 'warning':
-        return <AlertTriangle className='text-accent-earth-text h-5 w-5' />
+        return <AlertTriangle className='text-accent-gold h-5 w-5' />
       case 'critical':
-        return <XCircle className='text-destructive h-5 w-5' />
+        return <XCircle className='text-status-danger h-5 w-5' />
       default:
         return <AlertCircle className='text-text-secondary h-5 w-5' />
     }
@@ -141,11 +141,11 @@ export const SystemHealthDashboard = () => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'healthy':
-        return 'text-accent-earth-text bg-[var(--accent-dim)]'
+        return 'text-status-success bg-status-success-soft'
       case 'warning':
-        return 'text-accent-earth-text bg-[var(--accent-dim)]'
+        return 'text-accent-gold bg-action-primary-soft'
       case 'critical':
-        return 'text-destructive bg-destructive/10'
+        return 'text-status-danger bg-status-danger-soft'
       default:
         return 'text-text-secondary bg-bg-surface'
     }
@@ -299,7 +299,7 @@ export const SystemHealthDashboard = () => {
         <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4'>
           <div className='bg-bg-surface rounded-lg border border-[var(--border-subtle)] p-6'>
             <div className='flex items-center'>
-              <CheckCircle className='text-accent-earth-text h-8 w-8' />
+              <CheckCircle className='text-status-success h-8 w-8' />
               <div className='ml-4'>
                 <p className='text-text-secondary text-sm font-medium'>
                   {t('stats.healthy-checks')}
@@ -311,7 +311,7 @@ export const SystemHealthDashboard = () => {
 
           <div className='bg-bg-surface rounded-lg border border-[var(--border-subtle)] p-6'>
             <div className='flex items-center'>
-              <AlertTriangle className='text-accent-earth-text h-8 w-8' />
+              <AlertTriangle className='text-accent-gold h-8 w-8' />
               <div className='ml-4'>
                 <p className='text-text-secondary text-sm font-medium'>{t('stats.warnings')}</p>
                 <p className='text-2xl font-medium'>{statsData.health.warning}</p>
@@ -321,7 +321,7 @@ export const SystemHealthDashboard = () => {
 
           <div className='bg-bg-surface rounded-lg border border-[var(--border-subtle)] p-6'>
             <div className='flex items-center'>
-              <XCircle className='text-destructive h-8 w-8' />
+              <XCircle className='text-status-danger h-8 w-8' />
               <div className='ml-4'>
                 <p className='text-text-secondary text-sm font-medium'>
                   {t('stats.critical-issues')}
@@ -333,7 +333,7 @@ export const SystemHealthDashboard = () => {
 
           <div className='bg-bg-surface rounded-lg border border-[var(--border-subtle)] p-6'>
             <div className='flex items-center'>
-              <AlertCircle className='text-accent-earth-text h-8 w-8' />
+              <AlertCircle className='text-status-danger h-8 w-8' />
               <div className='ml-4'>
                 <p className='text-text-secondary text-sm font-medium'>
                   {t('stats.unresolved-errors')}
@@ -416,8 +416,8 @@ export const SystemHealthDashboard = () => {
                       <span
                         className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
                           error.level === 'error'
-                            ? 'bg-destructive/10 text-destructive'
-                            : 'text-accent-earth-text bg-[var(--accent-dim)]'
+                            ? 'bg-status-danger-soft text-status-danger'
+                            : 'text-accent-gold bg-action-primary-soft'
                         }`}
                       >
                         {error.level.toUpperCase()}

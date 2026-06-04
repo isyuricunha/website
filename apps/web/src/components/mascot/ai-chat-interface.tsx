@@ -279,10 +279,10 @@ export default function AIChatInterface({
 
   const get_bubble_class_name = (message: ChatMessage) => {
     if (message.isUser) {
-      return 'text-accent-earth-text rounded-br-md bg-bg-surface'
+      return 'text-status-info rounded-br-md border border-[var(--status-info-border)] bg-status-info-soft'
     }
     if (message.isError) {
-      return 'text-destructive border-destructive/20 rounded-bl-md border bg-bg-surface'
+      return 'text-status-danger border-[var(--status-danger-border)] rounded-bl-md border bg-status-danger-soft'
     }
     return 'text-foreground border-[var(--border-subtle)] rounded-bl-md border bg-bg-surface'
   }
@@ -892,7 +892,7 @@ export default function AIChatInterface({
         {/* Header */}
         <div className='bg-bg-surface flex items-center justify-between gap-3 border-b px-4 py-3'>
           <div className='flex min-w-0 items-center gap-2'>
-            <div className='rounded-lg bg-[var(--accent-dim)] p-1.5'>
+            <div className='bg-status-agent-soft text-status-agent rounded-lg p-1.5'>
               <MessageCircle className='h-4 w-4' />
             </div>
             <div className='flex flex-col'>
@@ -900,7 +900,7 @@ export default function AIChatInterface({
               <div className='text-muted-foreground mt-0.5 flex items-center gap-2 text-xs'>
                 <Select value={activeConversationId} onValueChange={setActiveConversationId}>
                   <SelectTrigger
-                    className='bg-background/30 hover:bg-background/40 h-7 max-w-[200px] rounded-full border border-[var(--border-subtle)] px-2.5 text-xs shadow-none focus:ring-2 focus:ring-[var(--accent-border)] focus:outline-none'
+                    className='bg-background/30 hover:bg-background/40 h-7 max-w-[200px] rounded-full border border-[var(--border-subtle)] px-2.5 text-xs shadow-none focus:ring-2 focus:ring-[var(--action-primary-border)] focus:outline-none'
                     aria-label={t('mascot.aiChat.conversations')}
                   >
                     <SelectValue />
@@ -977,7 +977,7 @@ export default function AIChatInterface({
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                   onClick={deleteChat}
-                  className='text-accent-earth-text focus:text-accent-earth-hover gap-2'
+                  className='text-status-info focus:text-accent-cyan-hover gap-2'
                 >
                   <Trash2 className='size-4' />
                   {t('mascot.aiChat.deleteChat')}
@@ -1014,7 +1014,7 @@ export default function AIChatInterface({
               >
                 {message.isUser && (
                   <div className='mb-2 flex items-center gap-2 border-b border-[var(--border-subtle)] pb-2'>
-                    <span className='text-accent-earth-text/80 text-xs font-medium'>
+                    <span className='text-status-info/80 text-xs font-medium'>
                       {user_display_name}
                     </span>
                   </div>
@@ -1023,7 +1023,7 @@ export default function AIChatInterface({
                   <div className='mb-2 flex items-center gap-2 border-b border-[var(--border-subtle)] pb-2'>
                     <Avatar className='h-6 w-6'>
                       <AvatarImage src={yue_avatar_src} alt='Yue' />
-                      <AvatarFallback className='text-accent-earth-text bg-[var(--accent-dim)] text-[10px] font-medium'>
+                      <AvatarFallback className='text-status-agent bg-status-agent-soft text-[10px] font-medium'>
                         Y
                       </AvatarFallback>
                     </Avatar>
@@ -1180,7 +1180,7 @@ export default function AIChatInterface({
                         disabled={feedbackIsSubmittingByMessageId[message.id] === true}
                         className={`hover:bg-bg-hover flex items-center gap-1 rounded px-2 py-1 text-xs transition-all ${
                           message.reactions?.userReaction === 'like'
-                            ? 'text-accent-earth-text bg-[var(--accent-dim)]'
+                            ? 'text-status-success bg-status-success-soft'
                             : 'text-muted-foreground'
                         }`}
                       >
@@ -1194,7 +1194,7 @@ export default function AIChatInterface({
                         disabled={feedbackIsSubmittingByMessageId[message.id] === true}
                         className={`hover:bg-bg-hover flex items-center gap-1 rounded px-2 py-1 text-xs transition-all ${
                           message.reactions?.userReaction === 'dislike'
-                            ? 'text-accent-earth-text bg-[var(--accent-dim)]'
+                            ? 'text-status-danger bg-status-danger-soft'
                             : 'text-muted-foreground'
                         }`}
                       >
@@ -1226,7 +1226,7 @@ export default function AIChatInterface({
                         }))
                       }
                       placeholder={t('mascot.aiChat.feedback.commentPlaceholder')}
-                      className='bg-background/80 placeholder:text-muted-foreground/60 w-full resize-none rounded-lg border border-[var(--border-subtle)] px-3 py-2 text-xs transition-all duration-200 focus:border-[var(--accent-border)] focus:ring-2 focus:ring-[var(--accent-border)] focus:outline-none'
+                      className='placeholder:text-muted-foreground/60 w-full resize-none rounded-lg border border-[var(--border-subtle)] bg-[var(--yu-bg-input)] px-3 py-2 text-xs transition-all duration-200 focus:border-[var(--action-primary-border)] focus:ring-2 focus:ring-[var(--action-primary-border)] focus:outline-none'
                       disabled={feedbackIsSubmittingByMessageId[message.id] === true}
                     />
                     <div className='flex items-center justify-end gap-2'>
@@ -1254,7 +1254,7 @@ export default function AIChatInterface({
                           setFeedbackOpenForMessageId(null)
                           setFeedbackDraftByMessageId((prev) => ({ ...prev, [message.id]: '' }))
                         }}
-                        className='bg-accent-earth text-text-inverse hover:bg-accent-earth-hover rounded px-3 py-1 text-xs transition-colors disabled:cursor-not-allowed disabled:opacity-60'
+                        className='bg-action-primary text-text-inverse hover:bg-action-primary-hover rounded px-3 py-1 text-xs transition-colors disabled:cursor-not-allowed disabled:opacity-60'
                         disabled={feedbackIsSubmittingByMessageId[message.id] === true}
                       >
                         {feedbackIsSubmittingByMessageId[message.id] === true ? (
@@ -1287,15 +1287,15 @@ export default function AIChatInterface({
                 <div className='mb-2 flex w-full items-center gap-2 border-b border-[var(--border-subtle)] pb-2'>
                   <Avatar className='h-5 w-5'>
                     <AvatarImage src={yue_avatar_src} alt='Yue' />
-                    <AvatarFallback className='text-accent-earth-text bg-[var(--accent-dim)] text-[10px] font-medium'>
+                    <AvatarFallback className='text-status-agent bg-status-agent-soft text-[10px] font-medium'>
                       Y
                     </AvatarFallback>
                   </Avatar>
                   <span className='text-muted-foreground text-xs font-medium'>Yue</span>
                 </div>
                 <div className='flex items-center gap-2'>
-                  <Loader2 className='text-accent-earth-text h-4 w-4 animate-spin' />
-                  <span className='text-xs'>
+                  <Loader2 className='text-status-agent h-4 w-4 animate-spin' />
+                  <span className='yu-text-shimmer text-xs'>
                     {t('mascot.aiChat.thinking')}
                     {typingDots}
                   </span>
@@ -1317,14 +1317,14 @@ export default function AIChatInterface({
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder={t('mascot.aiChat.placeholder')}
-              className='bg-background/80 placeholder:text-muted-foreground/60 flex-1 rounded-xl border border-[var(--border-subtle)] px-4 py-3 text-sm transition-all duration-200 focus:border-[var(--accent-border)] focus:ring-2 focus:ring-[var(--accent-border)] focus:outline-none'
+              className='placeholder:text-muted-foreground/60 flex-1 rounded-xl border border-[var(--border-subtle)] bg-[var(--yu-bg-input)] px-4 py-3 text-sm transition-all duration-200 hover:bg-[var(--yu-bg-input-hover)] focus:border-[var(--action-primary-border)] focus:ring-2 focus:ring-[var(--action-primary-border)] focus:outline-none'
               disabled={isLoading}
             />
             <button
               type='button'
               onClick={sendMessage}
               disabled={!inputValue.trim() || isLoading}
-              className='text-accent-earth-text bg-bg-surface hover:bg-bg-hover rounded-lg px-4 py-3 shadow-sm transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none'
+              className='text-text-inverse bg-action-primary hover:bg-action-primary-hover rounded-lg px-4 py-3 shadow-sm transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none'
             >
               {isLoading ? (
                 <Loader2 className='h-4 w-4 animate-spin' />
@@ -1336,7 +1336,7 @@ export default function AIChatInterface({
           <div className='mt-3 flex items-center justify-between'>
             <p className='text-muted-foreground/80 text-xs'>{t('mascot.aiChat.footer')}</p>
             <div className='text-muted-foreground/60 flex items-center gap-1 text-xs'>
-              <div className='bg-accent-earth h-2 w-2 animate-pulse rounded-full'></div>
+              <div className='bg-status-success h-2 w-2 animate-pulse rounded-full'></div>
               <span>{t('mascot.aiChat.online')}</span>
             </div>
           </div>

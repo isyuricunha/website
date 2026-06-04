@@ -159,11 +159,11 @@ export default function CommunicationManagement() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'sent':
-        return 'default'
+        return 'success'
       case 'sending':
-        return 'secondary'
+        return 'agent'
       case 'scheduled':
-        return 'outline'
+        return 'info'
       case 'draft':
         return 'outline'
       case 'failed':

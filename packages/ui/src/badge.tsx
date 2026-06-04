@@ -5,10 +5,14 @@ const badgeVariants = cva({
   base: 'inline-flex items-center justify-center rounded-full border px-2.5 py-0.5 text-xs font-medium',
   variants: {
     variant: {
-      default: 'bg-accent-earth text-text-inverse border-transparent shadow-sm',
-      secondary: 'bg-bg-surface text-text-secondary border-transparent shadow-sm',
-      destructive: 'bg-destructive text-destructive-foreground border-transparent shadow-sm',
-      outline: 'text-foreground'
+      default: 'bg-action-primary-soft text-accent-gold border-[var(--action-primary-border)]',
+      secondary: 'bg-bg-chip text-text-secondary border-[var(--border-subtle)]',
+      destructive: 'bg-status-danger-soft text-status-danger border-[var(--status-danger-border)]',
+      outline: 'text-foreground border-[var(--border-default)]',
+      success: 'bg-status-success-soft text-status-success border-[var(--status-success-border)]',
+      info: 'bg-status-info-soft text-status-info border-[var(--status-info-border)]',
+      agent: 'bg-status-agent-soft text-status-agent border-[var(--status-agent-border)]',
+      warning: 'bg-action-primary-soft text-accent-gold border-[var(--action-primary-border)]'
     }
   },
   defaultVariants: {

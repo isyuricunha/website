@@ -2,6 +2,7 @@ import { CodeBlock } from '@isyuricunha/ui'
 import { useEffect, useState } from 'react'
 import { type BundledLanguage, bundledLanguages } from 'shiki'
 
+import { YU_DARK_SHIKI_THEME } from '@/lib/yu-dark-shiki-theme'
 import { useHighlighterStore } from '@/store/highlighter'
 
 type CommentCodeBlockProps = {
@@ -41,7 +42,7 @@ const CommentCodeBlock = (props: CommentCodeBlockProps) => {
         lang: lang in bundledLanguages ? lang : 'plaintext',
         themes: {
           light: 'github-light-default',
-          dark: 'github-dark-default'
+          dark: YU_DARK_SHIKI_THEME
         },
         defaultColor: false
       })

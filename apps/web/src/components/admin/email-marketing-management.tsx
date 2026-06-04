@@ -57,9 +57,9 @@ import ConfirmationDialog from './confirmation-dialog'
 const getBroadcastStatusColor = (status: string | undefined) => {
   switch (status ?? 'draft') {
     case 'sent':
-      return 'border border-[var(--accent-border)] bg-[var(--accent-dim)] text-accent-earth-text'
+      return 'border border-[var(--status-success-border)] bg-status-success-soft text-status-success'
     case 'scheduled':
-      return 'border border-[var(--accent-border)] bg-[var(--accent-dim)] text-accent-earth-text'
+      return 'border border-[var(--status-info-border)] bg-status-info-soft text-status-info'
     case 'draft':
       return 'border border-[var(--border-subtle)] bg-bg-surface text-text-secondary'
     default:
@@ -88,7 +88,14 @@ export default function EmailMarketingManagement() {
     description: string
     action: () => void
     variant?: 'default' | 'destructive'
-  }>({ open: false, title: '', description: '', action: () => { /* no-op */ } })
+  }>({
+    open: false,
+    title: '',
+    description: '',
+    action: () => {
+      /* no-op */
+    }
+  })
 
   // Sequential loading states
   const [loadingStage, setLoadingStage] = useState<
@@ -366,9 +373,9 @@ export default function EmailMarketingManagement() {
   // Helper function to render loading indicator for each stage
   const renderLoadingIndicator = (_stage: string, isActive: boolean, isComplete: boolean) => {
     if (isComplete) {
-      return <CheckCircle className='text-accent-earth-text h-5 w-5' />
+      return <CheckCircle className='text-status-success h-5 w-5' />
     } else if (isActive) {
-      return <Loader2 className='text-accent-earth-text h-5 w-5 animate-spin' />
+      return <Loader2 className='text-status-agent h-5 w-5 animate-spin' />
     } else {
       return <Clock className='text-text-secondary h-5 w-5' />
     }
@@ -393,7 +400,7 @@ export default function EmailMarketingManagement() {
         <Card className='bg-bg-surface border-[var(--border-subtle)]'>
           <CardHeader>
             <CardTitle className='flex items-center gap-2 text-base'>
-              <Loader2 className='text-accent-earth-text h-5 w-5 animate-spin' />
+              <Loader2 className='text-status-agent h-5 w-5 animate-spin' />
               {t('loading.title')}
             </CardTitle>
           </CardHeader>

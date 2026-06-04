@@ -14,7 +14,7 @@ const Command = (props: CommandProps) => {
   return (
     <CommandPrimitive
       className={cn(
-        'bg-popover text-popover-foreground flex size-full flex-col overflow-hidden rounded-lg border pt-2 shadow-md',
+        'bg-popover text-popover-foreground flex size-full flex-col overflow-hidden rounded-lg border border-[var(--border-default)] pt-2 shadow-[var(--shadow-floating)]',
         '[&_[cmdk-group]:not([hidden])_~[cmdk-group]]:mt-2',
         className
       )}
@@ -121,9 +121,9 @@ const CommandItem = (props: CommandItemProps) => {
   return (
     <CommandPrimitive.Item
       className={cn(
-        'flex h-10 cursor-default items-center rounded-lg px-2 text-sm outline-hidden select-none not-first:mt-1',
+        'flex h-9 cursor-default items-center rounded-md px-2 text-sm outline-hidden transition-colors select-none not-first:mt-1',
         '[&_svg]:pointer-events-none [&_svg]:mr-2 [&_svg]:size-3.5',
-        'aria-selected:bg-accent',
+        'aria-selected:bg-bg-hover aria-selected:text-foreground',
         'data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50',
         '[&_kbd]:text-muted-foreground [&_kbd]:ml-auto [&_kbd]:text-xs',
         className

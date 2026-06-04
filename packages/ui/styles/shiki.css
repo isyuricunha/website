@@ -1,8 +1,8 @@
 @theme {
-  --color-diff-remove: rgba(201, 87, 42, 0.14);
-  --color-diff-add: rgba(154, 144, 128, 0.14);
-  --color-diff-remove-symbol: #e07848;
-  --color-diff-add-symbol: #9a9080;
+  --color-diff-remove: rgba(255, 105, 97, 0.14);
+  --color-diff-add: rgba(49, 209, 88, 0.14);
+  --color-diff-remove-symbol: var(--syntax-git-deleted);
+  --color-diff-add-symbol: var(--syntax-git-added);
 }
 
 .shiki span {
@@ -11,6 +11,11 @@
 
 .dark .shiki span {
   color: var(--shiki-dark);
+}
+
+pre.shiki,
+.shiki {
+  color: var(--syntax-fg);
 }
 
 /* Highlighted, Diff */
@@ -24,7 +29,7 @@ pre.shiki .diff {
 }
 
 pre.shiki .highlighted {
-  background-color: color-mix(in oklab, var(--color-primary) 10%, transparent);
+  background-color: var(--syntax-find-match);
 }
 
 /* Diff */
@@ -55,8 +60,8 @@ pre.shiki .highlighted {
 .shiki .highlighted-word {
   padding: 1px 2px;
   margin: -1px -3px;
-  border: 0.5px solid color-mix(in oklab, var(--color-primary) 50%, transparent);
-  background-color: color-mix(in oklab, var(--color-primary) 10%, transparent);
+  border: 0.5px solid var(--syntax-bracket-match);
+  background-color: var(--syntax-find-match);
   border-radius: 2px;
 }
 

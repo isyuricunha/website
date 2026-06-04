@@ -11,3 +11,4 @@ export const rehypePlugins: PluggableList = [rehypeCode, rehypeInlineCode]
 
 export * from './types'
 export * from './utils'
+export * from './shiki-theme'

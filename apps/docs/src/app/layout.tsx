@@ -102,8 +102,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#14120b' },
-    { media: '(prefers-color-scheme: dark)', color: '#14120b' }
+    { media: '(prefers-color-scheme: light)', color: '#1a1813' },
+    { media: '(prefers-color-scheme: dark)', color: '#1a1813' }
   ]
 }
 
@@ -114,6 +114,7 @@ const Layout = (props: LayoutProps) => {
     <html
       lang='en-US'
       className={cn(geist.variable, geist_mono.variable, 'dark')}
+      data-theme='yu-dark'
       suppressHydrationWarning
     >
       <body>
