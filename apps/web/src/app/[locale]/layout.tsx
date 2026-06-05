@@ -126,8 +126,8 @@ export const generateMetadata = async (props: LayoutProps): Promise<Metadata> =>
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#14120b' },
-    { media: '(prefers-color-scheme: dark)', color: '#14120b' }
+    { media: '(prefers-color-scheme: light)', color: '#1a1813' },
+    { media: '(prefers-color-scheme: dark)', color: '#1a1813' }
   ]
 }
 
@@ -150,6 +150,7 @@ const Layout = async (props: LayoutProps) => {
     <html
       lang={locale}
       className={cn(geist.variable, geist_mono.variable, 'dark')}
+      data-theme='yu-dark'
       data-scroll-behavior='smooth'
       suppressHydrationWarning
     >

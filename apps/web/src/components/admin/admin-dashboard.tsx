@@ -96,7 +96,7 @@ const AdminDashboard = () => {
       value: stats?.totals.users ?? 0,
       description: t('stats.this-month', { count: stats?.recent.users ?? 0 }),
       icon: Users,
-      trend: stats?.recent.users ? '+12%' : '0%',
+      trend: stats?.trends?.users ?? 0,
       href: '/admin/users'
     },
     {
@@ -104,7 +104,7 @@ const AdminDashboard = () => {
       value: stats?.totals.comments ?? 0,
       description: t('stats.this-month', { count: stats?.recent.comments ?? 0 }),
       icon: MessageSquare,
-      trend: stats?.recent.comments ? '+8%' : '0%',
+      trend: stats?.trends?.comments ?? 0,
       href: '/admin/comments'
     },
     {
@@ -112,7 +112,7 @@ const AdminDashboard = () => {
       value: stats?.totals.guestbookEntries ?? 0,
       description: t('stats.guestbook-entries.description'),
       icon: BarChart3,
-      trend: '+5%',
+      trend: 0,
       href: '/admin'
     },
     {
@@ -120,7 +120,7 @@ const AdminDashboard = () => {
       value: stats?.totals.admins ?? 0,
       description: t('stats.admin-users.description'),
       icon: Shield,
-      trend: '0%',
+      trend: 0,
       href: '/admin/users'
     }
   ]
@@ -182,7 +182,7 @@ const AdminDashboard = () => {
                   </div>
                   <div className='text-accent-earth-text flex items-center gap-1 text-xs font-medium'>
                     <TrendingUp className='h-3.5 w-3.5' />
-                    {stat.trend}
+                    {stat.trend > 0 ? `+${stat.trend}%` : (stat.trend < 0 ? `${stat.trend}%` : '0%')}
                   </div>
                 </div>
                 <p className='text-text-secondary text-xs leading-relaxed'>{stat.description}</p>
@@ -323,31 +323,48 @@ const AdminDashboard = () => {
           <CardContent className='space-y-4'>
             <div className='space-y-2.5'>
               <div className='flex justify-between text-sm'>
-                <span className='font-medium'>{t('system-health.database')}</span>
+                <span className='font-medium'>{t('system-health.engagement')}</span>
                 <span className='text-accent-earth-text text-xs font-medium'>
-                  {t('system-health.excellent')}
+                  {stats?.growth?.engagementRate ?? 0} {t('system-health.per-user')}
                 </span>
               </div>
-              <Progress value={95} className='h-2' />
+              <Progress
+                value={Math.min((stats?.growth?.engagementRate ?? 0) * 100, 100)}
+                className='h-2'
+              />
             </div>
             <div className='space-y-2.5'>
               <div className='flex justify-between text-sm'>
-                <span className='font-medium'>{t('system-health.api-response')}</span>
+                <span className='font-medium'>{t('system-health.monthly-users')}</span>
                 <span className='text-accent-earth-text text-xs font-medium'>
-                  {t('system-health.fast')}
+                  {stats?.recent?.users ?? 0}
                 </span>
               </div>
-              <Progress value={88} className='h-2' />
+              <Progress
+                value={Math.min(((stats?.recent?.users ?? 0) / Math.max(stats?.totals?.users ?? 1, 1)) * 100, 100)}
+                className='h-2'
+              />
             </div>
             <div className='space-y-2.5'>
               <div className='flex justify-between text-sm'>
-                <span className='font-medium'>{t('system-health.storage')}</span>
+                <span className='font-medium'>{t('system-health.monthly-comments')}</span>
                 <span className='text-text-secondary text-xs font-medium'>
-                  {t('system-health.moderate')}
+                  {stats?.recent?.comments ?? 0}
                 </span>
               </div>
-              <Progress value={65} className='h-2' />
+              <Progress
+                value={Math.min(((stats?.recent?.comments ?? 0) / Math.max(stats?.totals?.comments ?? 1, 1)) * 100, 100)}
+                className='h-2'
+              />
             </div>
+            <button
+              type='button'
+              className='text-accent-earth-text mt-2 flex items-center gap-1 text-xs font-medium hover:underline'
+              onClick={() => router.push('/admin/system-health')}
+            >
+              {t('system-health.view-details')}
+              <ArrowRight className='h-3 w-3' />
+            </button>
           </CardContent>
         </Card>
       </div>

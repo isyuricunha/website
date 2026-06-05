@@ -47,7 +47,7 @@ const ProgressRange = (props: ProgressRangeProps) => {
 
   return (
     <ProgressPrimitive.Range
-      className={cn('bg-primary size-full flex-1 transition-all', className)}
+      className={cn('bg-status-success size-full flex-1 transition-all', className)}
       {...rest}
     />
   )
@@ -83,7 +83,7 @@ const ProgressCircleRange = (props: ProgressCircleRangeProps) => {
 
   return (
     <ProgressPrimitive.CircleRange
-      className={cn('stroke-primary transition-all', className)}
+      className={cn('stroke-status-success transition-all', className)}
       {...rest}
     />
   )

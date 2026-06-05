@@ -1,17 +1,20 @@
 'use client'
 
 import { SidebarTrigger } from '@isyuricunha/ui'
+import { useTranslations } from '@isyuricunha/i18n/client'
 
 import LocaleSwitcher from '../layout/locale-switcher'
 
 import AdminProfileDropdown from './admin-profile-dropdown'
 
 const AdminHeader = () => {
+  const t = useTranslations()
+
   return (
     <header className='bg-bg-base sticky top-0 z-40 flex items-center justify-between py-4'>
       <div className='flex items-center gap-3'>
         <SidebarTrigger variant='outline' />
-        <span className='label-mono hidden sm:inline'>Admin</span>
+        <span className='label-mono hidden sm:inline'>{t('admin.common.admin-label')}</span>
       </div>
       <div className='flex items-center gap-3'>
         <LocaleSwitcher />

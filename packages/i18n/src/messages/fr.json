@@ -153,7 +153,8 @@
     },
     "common": {
       "loading": "Chargement...",
-      "refresh": "Actualiser"
+      "refresh": "Actualiser",
+      "admin-label": "Admin"
     },
     "error-boundary": {
       "title": "Erreur administrative",
@@ -802,7 +803,8 @@
         "updated": "Annonce mise à jour avec succès",
         "update-failed": "Échec de la mise à jour de l'annonce : {message}",
         "deleted": "Annonce supprimée avec succès",
-        "delete-failed": "Échec de la suppression de l'annonce : {message}"
+        "delete-failed": "Échec de la suppression de l'annonce : {message}",
+        "all-languages-filled": "Translated to {count} languages"
       },
       "actions": {
         "create": "Créer une annonce",
@@ -812,7 +814,8 @@
         "activate": "Activer",
         "deactivate": "Désactiver",
         "edit-aria": "Modifier l'annonce",
-        "delete-aria": "Supprimer l'annonce"
+        "delete-aria": "Supprimer l'annonce",
+        "translate-all": "Translate to all languages"
       },
       "create": {
         "title": "Créer une nouvelle annonce",
@@ -870,11 +873,10 @@
       },
       "status": {
         "inactive": "Inactive",
-        "pt": "PT",
-        "pt-partial": "PT partiel",
         "targeted": "Ciblé",
         "dismissible": "Ignorable",
-        "not-dismissible": "Non ignorable"
+        "not-dismissible": "Non ignorable",
+        "translated": "Translated"
       }
     },
     "communication-management": {
@@ -1156,6 +1158,9 @@
         "title": "Modifier la diffusion",
         "description": "Mettre à jour le contenu et les paramètres de la diffusion"
       }
+    },
+    "sidebar": {
+      "control": "Control"
     }
   },
   "blog": {

@@ -11,16 +11,23 @@ const Callout = (props: CalloutProps) => {
   const { title, type = 'info', icon, className, children, ...rest } = props
 
   const icons = {
-    info: <InfoIcon className='text-primary size-4' />,
-    warning: <AlertTriangleIcon className='text-primary/80 size-4' />,
-    error: <AlertOctagonIcon className='text-destructive size-4' />
+    info: <InfoIcon className='text-status-info size-4' />,
+    warning: <AlertTriangleIcon className='text-accent-gold size-4' />,
+    error: <AlertOctagonIcon className='text-status-danger size-4' />
+  }
+
+  const variants = {
+    info: 'border-[var(--status-info-border)] bg-status-info-soft',
+    warning: 'border-[var(--action-primary-border)] bg-action-primary-soft',
+    error: 'border-[var(--status-danger-border)] bg-status-danger-soft'
   }
 
   return (
     <div
       role='alert'
       className={cn(
-        'bg-card text-muted-foreground my-6 flex w-full flex-row items-start gap-2 rounded-lg border p-3 text-sm shadow-xs',
+        'text-muted-foreground my-6 flex w-full flex-row items-start gap-2 rounded-lg border p-3 text-sm shadow-xs',
+        variants[type],
         className
       )}
       {...rest}

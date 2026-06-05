@@ -12,15 +12,15 @@ const Toaster = (props: ToasterProps) => {
       style={
         {
           '--normal-border': 'var(--color-border)',
-          '--normal-bg': 'var(--color-background)',
+          '--normal-bg': 'var(--yu-bg-popover)',
           '--normal-text': 'var(--color-foreground)'
         } as React.CSSProperties
       }
       icons={{
-        success: <CheckCircle2Icon className='text-primary size-5' />,
-        error: <AlertCircleIcon className='text-destructive size-5' />,
-        warning: <AlertTriangleIcon className='text-primary size-5' />,
-        info: <InfoIcon className='text-muted-foreground size-5' />
+        success: <CheckCircle2Icon className='text-status-success size-5' />,
+        error: <AlertCircleIcon className='text-status-danger size-5' />,
+        warning: <AlertTriangleIcon className='text-accent-gold size-5' />,
+        info: <InfoIcon className='text-status-info size-5' />
       }}
       {...rest}
     />

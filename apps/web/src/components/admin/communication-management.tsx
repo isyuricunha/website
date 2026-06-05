@@ -24,7 +24,7 @@ import {
 } from '@isyuricunha/ui'
 
 import { Mail, Megaphone, Bell, Send } from 'lucide-react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@isyuricunha/i18n/client'
 import { toast } from 'sonner'
 
 import { api } from '@/trpc/react'
@@ -159,11 +159,11 @@ export default function CommunicationManagement() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'sent':
-        return 'default'
+        return 'success'
       case 'sending':
-        return 'secondary'
+        return 'agent'
       case 'scheduled':
-        return 'outline'
+        return 'info'
       case 'draft':
         return 'outline'
       case 'failed':

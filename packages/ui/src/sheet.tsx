@@ -5,7 +5,7 @@ import { XIcon } from 'lucide-react'
 
 const sheetVariants = cva({
   base: [
-    'bg-background fixed z-50 p-6 shadow-lg transition ease-in-out',
+    'fixed z-50 border-[var(--border-default)] bg-[var(--yu-bg-modal)] p-6 shadow-[var(--shadow-floating)] transition ease-in-out',
     'data-[state=open]:animate-in data-[state=open]:duration-500',
     'data-[state=closed]:animate-out data-[state=closed]:duration-300'
   ],
@@ -37,7 +37,7 @@ const SheetOverlay = (props: SheetOverlayProps) => {
   return (
     <SheetPrimitive.Overlay
       className={cn(
-        'fixed inset-0 z-50 bg-[rgba(20,18,11,0.72)]',
+        'fixed inset-0 z-50 bg-[var(--overlay)]',
         'data-[state=open]:animate-in data-[state=open]:fade-in-0',
         'data-[state=closed]:animate-out data-[state=closed]:fade-out-0',
         className

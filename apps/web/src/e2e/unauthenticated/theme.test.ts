@@ -12,6 +12,7 @@ test.describe('theme', () => {
         accent: root.getPropertyValue('--accent').trim(),
         background: body.backgroundColor,
         bgBase: root.getPropertyValue('--bg-base').trim(),
+        themeName: document.documentElement.dataset.theme,
         textPrimary: root.getPropertyValue('--text-primary').trim()
       }
     })
@@ -19,10 +20,11 @@ test.describe('theme', () => {
     await expect(page.locator('html')).toHaveClass(/dark/)
     await expect(page.getByTestId('theme-toggle')).toHaveCount(0)
     expect(theme).toEqual({
-      accent: '#c9572a',
-      background: 'rgb(20, 18, 11)',
-      bgBase: '#14120b',
-      textPrimary: '#f0ebe0'
+      accent: '#d6a84f',
+      background: 'rgb(26, 24, 19)',
+      bgBase: '#1a1813',
+      themeName: 'yu-dark',
+      textPrimary: '#f4f1e8'
     })
   })
 })

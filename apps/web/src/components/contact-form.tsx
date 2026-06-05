@@ -175,14 +175,14 @@ export default function ContactForm() {
       </CardHeader>
       <CardContent>
         {submitStatus === 'success' && (
-          <div className='text-accent-earth-text mb-4 flex items-center gap-2 rounded-lg border border-[var(--accent-border)] bg-[var(--accent-dim)] p-3'>
+          <div className='text-status-success bg-status-success-soft mb-4 flex items-center gap-2 rounded-lg border border-[var(--status-success-border)] p-3'>
             <CheckCircle className='h-4 w-4' />
             <span className='text-sm'>{submitMessage}</span>
           </div>
         )}
 
         {submitStatus === 'error' && submitMessage && (
-          <div className='border-destructive/20 bg-destructive/10 text-destructive mb-4 flex items-center gap-2 rounded-lg border p-3'>
+          <div className='text-status-danger bg-status-danger-soft mb-4 flex items-center gap-2 rounded-lg border border-[var(--status-danger-border)] p-3'>
             <AlertCircle className='h-4 w-4' />
             <span className='text-sm'>{submitMessage}</span>
           </div>

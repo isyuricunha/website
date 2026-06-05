@@ -62,8 +62,8 @@ export default function ForgotPasswordDialog({ open, onOpenChange }: ForgotPassw
           <>
             <DialogHeader>
               <div className='flex flex-col items-center space-y-4 py-4 text-center'>
-                <div className='flex h-16 w-16 items-center justify-center rounded-full bg-[var(--accent-dim)]'>
-                  <CheckCircle2 className='text-accent-earth-text h-8 w-8' />
+                <div className='bg-status-success-soft flex h-16 w-16 items-center justify-center rounded-full'>
+                  <CheckCircle2 className='text-status-success h-8 w-8' />
                 </div>
                 <div>
                   <DialogTitle className='mb-2 text-xl font-medium'>

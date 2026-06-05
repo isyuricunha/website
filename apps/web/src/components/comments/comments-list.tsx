@@ -6,11 +6,11 @@ import { useEffect } from 'react'
 import { useInView } from 'react-intersection-observer'
 import { getSingletonHighlighterCore } from 'shiki'
 import { createOnigurumaEngine } from 'shiki/engine/oniguruma'
-import githubDarkDefault from 'shiki/themes/github-dark-default.mjs'
 import githubLightDefault from 'shiki/themes/github-light-default.mjs'
 
 import { useCommentsContext } from '@/contexts/comments'
 import { useCommentParams } from '@/hooks/use-comment-params'
+import { YU_DARK_SHIKI_THEME } from '@/lib/yu-dark-shiki-theme'
 import { useHighlighterStore } from '@/store/highlighter'
 import { api } from '@/trpc/react'
 
@@ -49,7 +49,7 @@ const CommentsList = () => {
     let cancelled = false
 
     getSingletonHighlighterCore({
-      themes: [githubLightDefault, githubDarkDefault],
+      themes: [githubLightDefault, YU_DARK_SHIKI_THEME],
       engine: createOnigurumaEngine(import('shiki/wasm'))
     }).then((instance) => {
       if (cancelled) return

@@ -153,7 +153,8 @@
     },
     "common": {
       "loading": "Wird geladen...",
-      "refresh": "Aktualisieren"
+      "refresh": "Aktualisieren",
+      "admin-label": "Admin"
     },
     "error-boundary": {
       "title": "Admin-Fehler",
@@ -802,7 +803,8 @@
         "updated": "Bekanntmachung erfolgreich aktualisiert",
         "update-failed": "Aktualisierung der Bekanntmachung fehlgeschlagen: {message}",
         "deleted": "Bekanntmachung erfolgreich gelöscht",
-        "delete-failed": "Löschen der Bekanntmachung fehlgeschlagen: {message}"
+        "delete-failed": "Löschen der Bekanntmachung fehlgeschlagen: {message}",
+        "all-languages-filled": "Translated to {count} languages"
       },
       "actions": {
         "create": "Bekanntmachung erstellen",
@@ -812,7 +814,8 @@
         "activate": "Aktivieren",
         "deactivate": "Deaktivieren",
         "edit-aria": "Bekanntmachung bearbeiten",
-        "delete-aria": "Bekanntmachung löschen"
+        "delete-aria": "Bekanntmachung löschen",
+        "translate-all": "Translate to all languages"
       },
       "create": {
         "title": "Neue Bekanntmachung erstellen",
@@ -870,11 +873,10 @@
       },
       "status": {
         "inactive": "Inaktiv",
-        "pt": "PT",
-        "pt-partial": "PT teilweise",
         "targeted": "Zielgerichtet",
         "dismissible": "Schließbar",
-        "not-dismissible": "Nicht schließbar"
+        "not-dismissible": "Nicht schließbar",
+        "translated": "Translated"
       }
     },
     "communication-management": {
@@ -1156,6 +1158,9 @@
         "title": "Sendung bearbeiten",
         "description": "Sendungsinhalte und Einstellungen aktualisieren"
       }
+    },
+    "sidebar": {
+      "control": "Control"
     }
   },
   "blog": {

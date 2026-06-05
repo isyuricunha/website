@@ -20,7 +20,10 @@ import { DEFAULT_SHIKI_THEMES } from './rehype-code'
 
 const inlineShikiRegex = /^(.*?){:(.*)}$/
 
-const themeNames = Object.values(DEFAULT_SHIKI_THEMES)
+const themeRegistrations = Object.values(DEFAULT_SHIKI_THEMES)
+const themeNames = themeRegistrations.map((theme) =>
+  typeof theme === 'string' ? theme : (theme.name ?? 'yu-dark')
+)
 const themeKeys = Object.keys(DEFAULT_SHIKI_THEMES)
 
 let cachedHighlighter: Highlighter | null = null
@@ -29,7 +32,7 @@ const getHighlighter = async () => {
   if (cachedHighlighter) return cachedHighlighter
 
   cachedHighlighter = await getSingletonHighlighter({
-    themes: themeNames,
+    themes: themeRegistrations,
     langs: Object.keys(bundledLanguages)
   })
 

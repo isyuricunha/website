@@ -20,11 +20,13 @@ import {
 import { bundledLanguages, getSingletonHighlighter, type ShikiTransformer } from 'shiki'
 import { createOnigurumaEngine } from 'shiki/engine/oniguruma'
 
+import { YU_DARK_SHIKI_THEME } from '../shiki-theme'
+
 const titleRegex = /title=["']([^"']*)["']/
 
 export const DEFAULT_SHIKI_THEMES = {
   light: 'github-light-default',
-  dark: 'github-dark-default'
+  dark: YU_DARK_SHIKI_THEME
 }
 
 export const rehypeCode: Plugin<[RehypeShikiOptions], Root> = () => {

@@ -46,42 +46,30 @@ export async function POST(request: NextRequest) {
     const targets = targetLocales || SUPPORTED_LOCALES.filter((locale) => locale !== sourceLocale)
     const results: Array<{ locale: string; success: boolean; error?: string }> = []
 
-    // Translate to each target language
+    // Filter out targets that already have translations
+    const targetsToTranslate: string[] = []
     for (const targetLocale of targets) {
-      try {
-        // Check if translation already exists
-        const existingPost = await BlogService.getPost(slug, targetLocale)
-        if (existingPost) {
-          results.push({
-            locale: targetLocale,
-            success: false,
-            error: 'Translation already exists'
-          })
-          continue
-        }
+      const existingPost = await BlogService.getPost(slug, targetLocale)
+      if (existingPost) {
+        results.push({
+          locale: targetLocale,
+          success: false,
+          error: 'Translation already exists'
+        })
+      } else {
+        targetsToTranslate.push(targetLocale)
+      }
+    }
 
-        // Translate title
-        const translatedTitle = await aiService.translateContent(
-          sourcePost.title,
-          sourceLocale,
-          targetLocale
-        )
+    // Translate all targets in parallel
+    const translationResults = await Promise.allSettled(
+      targetsToTranslate.map(async (targetLocale) => {
+        const [translatedTitle, translatedSummary, translatedContent] = await Promise.all([
+          aiService.translateContent(sourcePost.title, sourceLocale, targetLocale),
+          aiService.translateContent(sourcePost.summary, sourceLocale, targetLocale),
+          aiService.translateContent(sourcePost.content, sourceLocale, targetLocale)
+        ])
 
-        // Translate summary
-        const translatedSummary = await aiService.translateContent(
-          sourcePost.summary,
-          sourceLocale,
-          targetLocale
-        )
-
-        // Translate content
-        const translatedContent = await aiService.translateContent(
-          sourcePost.content,
-          sourceLocale,
-          targetLocale
-        )
-
-        // Save translated post
         const saveSuccess = await BlogService.savePost({
           slug: sourcePost.slug,
           title: translatedTitle,
@@ -92,15 +80,25 @@ export async function POST(request: NextRequest) {
           modifiedTime: new Date().toISOString()
         })
 
+        return { locale: targetLocale, success: saveSuccess }
+      })
+    )
+
+    for (const [i, element] of targetsToTranslate.entries()) {
+      const locale = element
+      const settledResult = translationResults[i]
+      if (!settledResult) continue
+
+      if (settledResult.status === 'fulfilled') {
         results.push({
-          locale: targetLocale,
-          success: saveSuccess,
-          error: saveSuccess ? undefined : 'Failed to save translation'
+          locale,
+          success: settledResult.value.success,
+          error: settledResult.value.success ? undefined : 'Failed to save translation'
         })
-      } catch (error) {
-        logger.error('Translation error', error, { locale: targetLocale })
+      } else {
+        logger.error('Translation error', settledResult.reason, { locale })
         results.push({
-          locale: targetLocale,
+          locale,
           success: false,
           error: 'Translation failed'
         })

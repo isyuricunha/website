@@ -28,14 +28,16 @@ const CodeBlock = (props: CodeBlockProps) => {
   return (
     <figure
       className={cn(
-        'not-prose bg-secondary/50 group relative my-6 overflow-hidden rounded-lg border text-sm',
+        'not-prose bg-bg-editor group shadow-feature-card relative my-6 overflow-hidden rounded-lg border border-[var(--border-subtle)] text-sm',
         figureClassName
       )}
     >
       {title ? (
-        <div className='bg-muted/50 flex flex-row items-center gap-2 border-b px-4 py-1.5'>
+        <div className='flex min-h-8 flex-row items-center gap-2 border-b border-[var(--border-faint)] bg-[var(--yu-bg-titlebar)] px-4 py-1.5'>
           <div className='text-muted-foreground'>{renderLanguageIcon(lang ?? '')}</div>
-          <figcaption className='text-muted-foreground flex-1 truncate'>{title}</figcaption>
+          <figcaption className='text-muted-foreground flex-1 truncate font-mono text-xs'>
+            {title}
+          </figcaption>
           <CopyButton className='-me-2' onCopy={onCopy} />
         </div>
       ) : (
@@ -45,7 +47,10 @@ const CodeBlock = (props: CodeBlockProps) => {
       <ScrollArea>
         <pre
           ref={mergeRefs(textInputRef, ref)}
-          className={cn('p-4 text-[13px]', className)}
+          className={cn(
+            'p-4 font-mono text-[13px] leading-relaxed text-[var(--syntax-fg)]',
+            className
+          )}
           {...rest}
         >
           {children}

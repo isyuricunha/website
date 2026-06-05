@@ -1,3 +1,5 @@
+'use client'
+
 import { useTranslations } from '@isyuricunha/i18n/client'
 import {
   Avatar,
@@ -6,12 +8,15 @@ import {
   Button,
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
   Skeleton
 } from '@isyuricunha/ui'
+import { LogOut } from 'lucide-react'
 
-import { useSession } from '@/lib/auth-client'
+import { useSession, signOut } from '@/lib/auth-client'
 import { useDialogsStore } from '@/store/dialogs'
 import { getAvatarAbbreviation } from '@/utils/get-avatar-abbreviation'
 import { getDefaultImage } from '@/utils/get-default-image'
@@ -36,6 +41,10 @@ const AdminProfileDropdown = () => {
   const { id, image, name, email } = session.user
   const defaultImage = getDefaultImage(id)
 
+  const handleSignOut = async () => {
+    await signOut()
+  }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -53,6 +62,11 @@ const AdminProfileDropdown = () => {
             <p className='text-text-secondary text-xs'>{email}</p>
           </div>
         </DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem onClick={handleSignOut}>
+          <LogOut className='mr-2 h-4 w-4' />
+          {t('common.sign-out')}
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   )

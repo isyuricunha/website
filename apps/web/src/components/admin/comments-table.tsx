@@ -23,15 +23,6 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
   toast
 } from '@isyuricunha/ui'
 import { useState, useMemo } from 'react'
@@ -151,34 +142,13 @@ const CommentsTable = (props: CommentsTableProps) => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align='end'>
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                    <TrashIcon className='mr-2 h-4 w-4' />
-                    {t('admin.table.comments.delete')}
-                  </DropdownMenuItem>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>
-                      {t('admin.modals.delete-confirmation.title')}
-                    </AlertDialogTitle>
-                    <AlertDialogDescription>
-                      {t('admin.table.comments.confirm-delete')}
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>
-                      {t('admin.modals.delete-confirmation.cancel')}
-                    </AlertDialogCancel>
-                    <AlertDialogAction
-                      onClick={() => handleDeleteComment(comment.id, comment.body)}
-                    >
-                      {t('admin.modals.delete-confirmation.confirm')}
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
+              <DropdownMenuItem
+                onClick={() => handleDeleteComment(comment.id, comment.body)}
+                className='text-destructive'
+              >
+                <TrashIcon className='mr-2 h-4 w-4' />
+                {t('admin.table.comments.delete')}
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         )

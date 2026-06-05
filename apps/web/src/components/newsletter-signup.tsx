@@ -55,7 +55,7 @@ const NewsletterSignup = () => {
     return (
       <Card>
         <CardContent className='p-6 text-center'>
-          <CheckCircle className='text-accent-earth-text mx-auto mb-4 h-12 w-12' />
+          <CheckCircle className='text-status-success mx-auto mb-4 h-12 w-12' />
           <h3 className='mb-2 text-base font-medium sm:text-lg'>
             {t('homepage.newsletter.success-title')}
           </h3>

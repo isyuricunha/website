@@ -20,7 +20,7 @@ const DrawerOverlay = (props: DrawerOverlayProps) => {
 
   return (
     <DrawerPrimitive.Overlay
-      className={cn('fixed inset-0 z-50 bg-[rgba(20,18,11,0.72)]', className)}
+      className={cn('fixed inset-0 z-50 bg-[var(--overlay)]', className)}
       {...rest}
     />
   )
@@ -36,7 +36,7 @@ const DrawerContent = (props: DrawerContentProps) => {
       <DrawerOverlay />
       <DrawerPrimitive.Content
         className={cn(
-          'bg-background fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col rounded-t-[10px] border',
+          'fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col rounded-t-[10px] border border-[var(--border-default)] bg-[var(--yu-bg-modal)] shadow-[var(--shadow-floating)]',
           className
         )}
         {...rest}

@@ -17,6 +17,28 @@ import { aiService } from '@/lib/ai/ai-service'
 import { logger } from '@/lib/logger'
 import { adminProcedure, publicProcedure, createTRPCRouter } from '../trpc'
 
+const _ANNOUNCEMENT_LOCALES = ['en', 'pt', 'es', 'fr', 'de', 'ja', 'zh-CN'] as const
+type AnnouncementLocale = (typeof _ANNOUNCEMENT_LOCALES)[number]
+
+const localeFieldMap: Record<Exclude<AnnouncementLocale, 'en'>, { title: string; content: string }> = {
+  pt: { title: 'titlePt', content: 'contentPt' },
+  es: { title: 'titleEs', content: 'contentEs' },
+  fr: { title: 'titleFr', content: 'contentFr' },
+  de: { title: 'titleDe', content: 'contentDe' },
+  ja: { title: 'titleJa', content: 'contentJa' },
+  'zh-CN': { title: 'titleZhCn', content: 'contentZhCn' }
+}
+
+const _localeNameMap: Record<AnnouncementLocale, string> = {
+  en: 'English',
+  pt: 'Brazilian Portuguese',
+  es: 'Spanish',
+  fr: 'French',
+  de: 'German',
+  ja: 'Japanese',
+  'zh-CN': 'Simplified Chinese'
+}
+
 const is_foreign_key_violation = (error: unknown): boolean => {
   if (!error || typeof error !== 'object') return false
   const maybe = error as { code?: unknown; cause?: unknown }
@@ -35,7 +57,7 @@ export const announcementsRouter = createTRPCRouter({
         title: z.string().min(1),
         content: z.string().min(1),
         fromLang: z.literal('en').default('en'),
-        toLang: z.literal('pt').default('pt'),
+        toLang: z.enum(['pt', 'es', 'fr', 'de', 'ja', 'zh-CN']).default('pt'),
         model: z.string().min(1).optional()
       })
     )
@@ -45,7 +67,9 @@ export const announcementsRouter = createTRPCRouter({
         content: z.string().min(1)
       })
 
-      const prompt = `Translate this announcement from English to Brazilian Portuguese.
+      const targetName = _localeNameMap[input.toLang] ?? input.toLang
+
+      const prompt = `Translate this announcement from English to ${targetName}.
 
 Return ONLY valid JSON (no markdown, no code fences) with exactly these keys:
 - title
@@ -78,9 +102,9 @@ ${input.content}
       const parsed = response_schema.parse(json)
 
       return {
-        titlePt: parsed.title.trim(),
-        contentPt: parsed.content.trim(),
-        provider: 'mistral'
+        titleTranslated: parsed.title.trim(),
+        contentTranslated: parsed.content.trim(),
+        locale: input.toLang
       }
     }),
 
@@ -98,7 +122,15 @@ ${input.content}
         const isAdmin = ctx.session?.user?.role === 'admin'
         const adminView = input.adminView && isAdmin
         const locale = input.locale ?? 'en'
-        const should_use_pt = locale.toLowerCase().startsWith('pt')
+        const normalizedLocale = locale.startsWith('zh') ? 'zh-CN' : locale.split('-')[0] ?? locale
+
+        const getLocalizedField = (obj: Record<string, unknown>, baseField: string): string => {
+          if (normalizedLocale === 'en') return (obj[baseField] as string) ?? ''
+          const fields = localeFieldMap[normalizedLocale as Exclude<AnnouncementLocale, 'en'>]
+          if (!fields) return (obj[baseField] as string) ?? ''
+          const key = baseField === 'title' ? fields.title : fields.content
+          return (obj[key] as string) ?? (obj[baseField] as string) ?? ''
+        }
 
         const isRecord = (value: unknown): value is Record<string, unknown> => {
           return typeof value === 'object' && value !== null
@@ -198,14 +230,12 @@ ${input.content}
         return {
           announcements: filteredAnnouncements.map((announcement) => ({
             ...announcement,
-            title:
-              !adminView && should_use_pt
-                ? (announcement.titlePt ?? announcement.title)
-                : announcement.title,
-            content:
-              !adminView && should_use_pt
-                ? (announcement.contentPt ?? announcement.content)
-                : announcement.content,
+            title: adminView
+              ? announcement.title
+              : getLocalizedField(announcement as unknown as Record<string, unknown>, 'title'),
+            content: adminView
+              ? announcement.content
+              : getLocalizedField(announcement as unknown as Record<string, unknown>, 'content'),
             targetAudience: announcement.targetAudience
               ? (() => {
                   const parsed = parseTargetAudience(announcement.targetAudience)
@@ -241,6 +271,16 @@ ${input.content}
         content: z.string().min(1),
         titlePt: z.string().min(1).optional(),
         contentPt: z.string().min(1).optional(),
+        titleEs: z.string().min(1).optional(),
+        contentEs: z.string().min(1).optional(),
+        titleFr: z.string().min(1).optional(),
+        contentFr: z.string().min(1).optional(),
+        titleDe: z.string().min(1).optional(),
+        contentDe: z.string().min(1).optional(),
+        titleJa: z.string().min(1).optional(),
+        contentJa: z.string().min(1).optional(),
+        titleZhCn: z.string().min(1).optional(),
+        contentZhCn: z.string().min(1).optional(),
         type: z
           .enum(['info', 'warning', 'success', 'error', 'maintenance', 'feature', 'update'])
           .default('info'),
@@ -268,10 +308,20 @@ ${input.content}
           content: input.content,
           titlePt: input.titlePt,
           contentPt: input.contentPt,
+          titleEs: input.titleEs,
+          contentEs: input.contentEs,
+          titleFr: input.titleFr,
+          contentFr: input.contentFr,
+          titleDe: input.titleDe,
+          contentDe: input.contentDe,
+          titleJa: input.titleJa,
+          contentJa: input.contentJa,
+          titleZhCn: input.titleZhCn,
+          contentZhCn: input.contentZhCn,
           type: input.type,
           priority: input.priority,
           isDismissible: input.isDismissible,
-          isActive: true, // Explicitly set new announcements as active
+          isActive: true,
           targetAudience: input.targetAudience ? JSON.stringify(input.targetAudience) : null,
           createdBy: ctx.session.user.id
         })
@@ -427,6 +477,16 @@ ${input.content}
         content: z.string().min(1).optional(),
         titlePt: z.string().min(1).optional(),
         contentPt: z.string().min(1).optional(),
+        titleEs: z.string().min(1).optional(),
+        contentEs: z.string().min(1).optional(),
+        titleFr: z.string().min(1).optional(),
+        contentFr: z.string().min(1).optional(),
+        titleDe: z.string().min(1).optional(),
+        contentDe: z.string().min(1).optional(),
+        titleJa: z.string().min(1).optional(),
+        contentJa: z.string().min(1).optional(),
+        titleZhCn: z.string().min(1).optional(),
+        contentZhCn: z.string().min(1).optional(),
         type: z
           .enum(['info', 'warning', 'success', 'error', 'maintenance', 'feature', 'update'])
           .optional(),

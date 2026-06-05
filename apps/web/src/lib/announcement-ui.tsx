@@ -18,7 +18,15 @@ type AnnouncementType =
   | 'feature'
   | 'update'
 
-type BadgeVariant = 'default' | 'secondary' | 'destructive' | 'outline'
+type BadgeVariant =
+  | 'default'
+  | 'secondary'
+  | 'destructive'
+  | 'outline'
+  | 'success'
+  | 'info'
+  | 'agent'
+  | 'warning'
 
 type IconSize = 'sm' | 'md'
 
@@ -68,13 +76,14 @@ export const getAnnouncementUi = (
     return {
       type,
       icon: <AlertCircle className={iconClassName} />,
-      iconContainerClassName: 'bg-destructive/10',
-      containerClassName: 'bg-bg-surface border-destructive/20',
-      iconClassName: 'text-destructive',
-      titleClassName: 'text-destructive',
-      contentClassName: 'text-destructive/80',
-      buttonClassName: 'text-destructive/80 hover:text-destructive',
-      badgeClassName: 'bg-destructive/10 text-destructive border-destructive/20',
+      iconContainerClassName: 'bg-status-danger-soft',
+      containerClassName: 'bg-bg-surface border-[var(--status-danger-border)]',
+      iconClassName: 'text-status-danger',
+      titleClassName: 'text-status-danger',
+      contentClassName: 'text-status-danger/80',
+      buttonClassName: 'text-status-danger/80 hover:text-status-danger',
+      badgeClassName:
+        'bg-status-danger-soft text-status-danger border-[var(--status-danger-border)]',
       badgeVariant: 'destructive'
     }
   }
@@ -88,14 +97,15 @@ export const getAnnouncementUi = (
         ) : (
           <AlertTriangle className={iconClassName} />
         ),
-      iconContainerClassName: 'bg-[var(--accent-dim)]',
-      containerClassName: 'bg-bg-surface border-[var(--accent-border)]',
-      iconClassName: 'text-accent-earth-text',
+      iconContainerClassName: 'bg-action-primary-soft',
+      containerClassName: 'bg-bg-surface border-[var(--action-primary-border)]',
+      iconClassName: 'text-accent-gold',
       titleClassName: 'text-foreground',
       contentClassName: 'text-muted-foreground',
       buttonClassName: 'text-muted-foreground hover:text-foreground',
-      badgeClassName: 'bg-[var(--accent-dim)] text-accent-earth-text border-[var(--accent-border)]',
-      badgeVariant: 'secondary'
+      badgeClassName:
+        'bg-action-primary-soft text-accent-gold border-[var(--action-primary-border)]',
+      badgeVariant: 'warning'
     }
   }
 
@@ -103,14 +113,15 @@ export const getAnnouncementUi = (
     return {
       type,
       icon: <CheckCircle className={iconClassName} />,
-      iconContainerClassName: 'bg-[var(--accent-dim)]',
-      containerClassName: 'bg-bg-surface border-[var(--accent-border)]',
-      iconClassName: 'text-accent-earth-text',
+      iconContainerClassName: 'bg-status-success-soft',
+      containerClassName: 'bg-bg-surface border-[var(--status-success-border)]',
+      iconClassName: 'text-status-success',
       titleClassName: 'text-foreground',
       contentClassName: 'text-muted-foreground',
       buttonClassName: 'text-muted-foreground hover:text-foreground',
-      badgeClassName: 'bg-[var(--accent-dim)] text-accent-earth-text border-[var(--accent-border)]',
-      badgeVariant: 'default'
+      badgeClassName:
+        'bg-status-success-soft text-status-success border-[var(--status-success-border)]',
+      badgeVariant: 'success'
     }
   }
 
@@ -118,14 +129,14 @@ export const getAnnouncementUi = (
     return {
       type,
       icon: <Sparkles className={iconClassName} />,
-      iconContainerClassName: 'bg-[var(--accent-dim)]',
-      containerClassName: 'bg-bg-surface border-[var(--accent-border)]',
-      iconClassName: 'text-accent-earth-text',
+      iconContainerClassName: 'bg-status-agent-soft',
+      containerClassName: 'bg-bg-surface border-[var(--status-agent-border)]',
+      iconClassName: 'text-status-agent',
       titleClassName: 'text-foreground',
       contentClassName: 'text-muted-foreground',
       buttonClassName: 'text-muted-foreground hover:text-foreground',
-      badgeClassName: 'bg-[var(--accent-dim)] text-accent-earth-text border-[var(--accent-border)]',
-      badgeVariant: 'secondary'
+      badgeClassName: 'bg-status-agent-soft text-status-agent border-[var(--status-agent-border)]',
+      badgeVariant: 'agent'
     }
   }
 
@@ -133,27 +144,27 @@ export const getAnnouncementUi = (
     return {
       type,
       icon: <RefreshCw className={iconClassName} />,
-      iconContainerClassName: 'bg-[var(--accent-dim)]',
-      containerClassName: 'bg-bg-surface border-[var(--accent-border)]',
-      iconClassName: 'text-accent-earth-text',
+      iconContainerClassName: 'bg-status-info-soft',
+      containerClassName: 'bg-bg-surface border-[var(--status-info-border)]',
+      iconClassName: 'text-status-info',
       titleClassName: 'text-foreground',
       contentClassName: 'text-muted-foreground',
       buttonClassName: 'text-muted-foreground hover:text-foreground',
-      badgeClassName: 'bg-[var(--accent-dim)] text-accent-earth-text border-[var(--accent-border)]',
-      badgeVariant: 'outline'
+      badgeClassName: 'bg-status-info-soft text-status-info border-[var(--status-info-border)]',
+      badgeVariant: 'info'
     }
   }
 
   return {
     type,
     icon: <Info className={iconClassName} />,
-    iconContainerClassName: 'bg-[var(--accent-dim)]',
-    containerClassName: 'bg-bg-surface border-[var(--accent-border)]',
-    iconClassName: 'text-accent-earth-text',
+    iconContainerClassName: 'bg-status-info-soft',
+    containerClassName: 'bg-bg-surface border-[var(--status-info-border)]',
+    iconClassName: 'text-status-info',
     titleClassName: 'text-foreground',
     contentClassName: 'text-muted-foreground',
     buttonClassName: 'text-muted-foreground hover:text-foreground',
-    badgeClassName: 'bg-[var(--accent-dim)] text-accent-earth-text border-[var(--accent-border)]',
-    badgeVariant: 'outline'
+    badgeClassName: 'bg-status-info-soft text-status-info border-[var(--status-info-border)]',
+    badgeVariant: 'info'
   }
 }

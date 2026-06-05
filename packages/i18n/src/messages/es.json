@@ -153,7 +153,8 @@
     },
     "common": {
       "loading": "Cargando...",
-      "refresh": "Actualizar"
+      "refresh": "Actualizar",
+      "admin-label": "Admin"
     },
     "error-boundary": {
       "title": "Error de administración",
@@ -802,7 +803,8 @@
         "updated": "Anuncio actualizado con éxito",
         "update-failed": "Error al actualizar el anuncio: {message}",
         "deleted": "Anuncio eliminado con éxito",
-        "delete-failed": "Error al eliminar el anuncio: {message}"
+        "delete-failed": "Error al eliminar el anuncio: {message}",
+        "all-languages-filled": "Translated to {count} languages"
       },
       "actions": {
         "create": "Crear anuncio",
@@ -812,7 +814,8 @@
         "activate": "Activar",
         "deactivate": "Desactivar",
         "edit-aria": "Editar anuncio",
-        "delete-aria": "Eliminar anuncio"
+        "delete-aria": "Eliminar anuncio",
+        "translate-all": "Translate to all languages"
       },
       "create": {
         "title": "Crear nuevo anuncio",
@@ -870,11 +873,10 @@
       },
       "status": {
         "inactive": "Inactivo",
-        "pt": "PT",
-        "pt-partial": "PT parcial",
         "targeted": "Dirigido",
         "dismissible": "Descartable",
-        "not-dismissible": "No descartable"
+        "not-dismissible": "No descartable",
+        "translated": "Translated"
       }
     },
     "communication-management": {
@@ -1156,6 +1158,9 @@
         "title": "Editar transmisión",
         "description": "Actualizar contenido y configuración de la transmisión"
       }
+    },
+    "sidebar": {
+      "control": "Control"
     }
   },
   "blog": {

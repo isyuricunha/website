@@ -7,6 +7,7 @@ import { jsx, jsxs } from 'react/jsx-runtime'
 import { codeToHast } from 'shiki/bundle/web'
 
 import ComponentPreviewWrapper from './component-preview-wrapper'
+import { YU_DARK_SHIKI_THEME } from '@/lib/yu-dark-shiki-theme'
 
 type ComponentPreviewProps = {
   name: string
@@ -22,7 +23,7 @@ const ComponentPreview = async (props: ComponentPreviewProps) => {
     lang: 'tsx',
     themes: {
       light: 'github-light',
-      dark: 'github-dark'
+      dark: YU_DARK_SHIKI_THEME
     },
     defaultColor: false
   })

@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from '@isyuricunha/i18n/client'
 import { AlertTriangle } from 'lucide-react'
 import {
   AlertDialog,
@@ -30,13 +31,16 @@ const ConfirmationDialog = ({
   onOpenChange,
   title,
   description,
-  confirmText = 'Confirm',
-  cancelText = 'Cancel',
+  confirmText,
+  cancelText,
   variant = 'default',
   onConfirm,
   loading = false
 }: ConfirmationDialogProps) => {
+  const t = useTranslations()
   const is_confirm_disabled = loading || !onConfirm
+  const resolvedConfirmText = confirmText ?? t('common.confirm')
+  const resolvedCancelText = cancelText ?? t('common.cancel')
 
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
@@ -49,10 +53,10 @@ const ConfirmationDialog = ({
           <AlertDialogDescription>{description}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={loading}>{cancelText}</AlertDialogCancel>
+          <AlertDialogCancel disabled={loading}>{resolvedCancelText}</AlertDialogCancel>
           <AlertDialogAction asChild>
             <Button variant={variant} onClick={onConfirm} disabled={is_confirm_disabled}>
-              {loading ? 'Processing...' : confirmText}
+              {loading ? t('common.processing') : resolvedConfirmText}
             </Button>
           </AlertDialogAction>
         </AlertDialogFooter>

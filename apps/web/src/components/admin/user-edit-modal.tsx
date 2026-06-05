@@ -103,7 +103,7 @@ const UserEditModal = ({ user, open, onOpenChange }: UserEditModalProps) => {
   }
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={onOpenChange} key={user?.id ?? 'none'}>
       <DialogContent className='sm:max-w-[425px]'>
         <DialogHeader>
           <DialogTitle>{t('admin.modals.edit-user.title')}</DialogTitle>

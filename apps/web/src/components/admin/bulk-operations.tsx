@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react'
 import {
   Button,
+  Input,
   Select,
   SelectContent,
   SelectItem,
@@ -26,10 +27,11 @@ import {
   Settings
 } from 'lucide-react'
 import Image from 'next/image'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from '@isyuricunha/i18n/client'
 import { toast } from 'sonner'
 
 import { api } from '@/trpc/react'
+import ConfirmationDialog from './confirmation-dialog'
 
 interface BulkOperationStatus {
   id: string
@@ -76,6 +78,20 @@ export const BulkOperations = () => {
     'ban'
   )
   const [newRole, setNewRole] = useState<'user' | 'admin'>('user')
+  const [confirmDialog, setConfirmDialog] = useState<{
+    open: boolean
+    title: string
+    description: string
+    action: () => void
+    variant?: 'default' | 'destructive'
+  }>({
+    open: false,
+    title: '',
+    description: '',
+    action: () => {
+      /* no-op */
+    }
+  })
 
   const utils = api.useUtils()
 
@@ -158,23 +174,35 @@ export const BulkOperations = () => {
       action: getActionLabel(selectedAction),
       count: selectedUsers.length
     })
-    if (!confirm(confirmMessage)) {
-      return
-    }
 
-    const parameters = selectedAction === 'update_role' ? { role: newRole } : undefined
-
-    await bulkUserAction.mutateAsync({
-      userIds: selectedUsers,
-      action: selectedAction,
-      parameters
+    setConfirmDialog({
+      open: true,
+      title: t('confirm.bulk-action-title'),
+      description: confirmMessage,
+      variant: 'destructive',
+      action: async () => {
+        setConfirmDialog((prev) => ({ ...prev, open: false }))
+        const parameters = selectedAction === 'update_role' ? { role: newRole } : undefined
+        await bulkUserAction.mutateAsync({
+          userIds: selectedUsers,
+          action: selectedAction,
+          parameters
+        })
+      }
     })
   }
 
   const handleCancelOperation = async (operationId: string) => {
-    if (confirm(t('confirm.cancel-operation'))) {
-      await cancelOperation.mutateAsync({ operationId })
-    }
+    setConfirmDialog({
+      open: true,
+      title: t('confirm.cancel-operation-title'),
+      description: t('confirm.cancel-operation'),
+      variant: 'destructive',
+      action: async () => {
+        setConfirmDialog((prev) => ({ ...prev, open: false }))
+        await cancelOperation.mutateAsync({ operationId })
+      }
+    })
   }
 
   const getActionLabel = (action: string) => {
@@ -212,11 +240,11 @@ export const BulkOperations = () => {
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'completed':
-        return <CheckCircle className='text-accent-earth-text h-5 w-5' />
+        return <CheckCircle className='text-status-success h-5 w-5' />
       case 'failed':
-        return <XCircle className='text-destructive h-5 w-5' />
+        return <XCircle className='text-status-danger h-5 w-5' />
       case 'running':
-        return <Play className='text-accent-earth-text h-5 w-5' />
+        return <Play className='text-status-info h-5 w-5' />
       case 'cancelled':
         return <Pause className='text-text-secondary h-5 w-5' />
       default:
@@ -227,11 +255,11 @@ export const BulkOperations = () => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'completed':
-        return 'bg-[var(--accent-dim)] text-accent-earth-text'
+        return 'bg-status-success-soft text-status-success'
       case 'failed':
-        return 'bg-destructive/10 text-destructive'
+        return 'bg-status-danger-soft text-status-danger'
       case 'running':
-        return 'bg-[var(--accent-dim)] text-accent-earth-text'
+        return 'bg-status-info-soft text-status-info'
       case 'cancelled':
         return 'bg-bg-surface text-text-secondary'
       default:
@@ -294,13 +322,12 @@ export const BulkOperations = () => {
           <div className='mb-6 flex flex-col gap-4 sm:flex-row'>
             <div className='flex-1'>
               <div className='relative'>
-                <Search className='text-text-secondary absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform' />
-                <input
-                  type='text'
+                <Search className='text-text-secondary absolute top-2.5 left-2 h-4 w-4' />
+                <Input
                   placeholder={t('user-actions.search-placeholder')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className='bg-bg-base text-text-primary focus:ring-ring focus:ring-offset-background w-full rounded-md border border-[var(--border-subtle)] py-2 pr-4 pl-10 focus:border-transparent focus:ring-2 focus:ring-offset-2'
+                  className='pl-8'
                 />
               </div>
             </div>
@@ -433,7 +460,7 @@ export const BulkOperations = () => {
                       <span
                         className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
                           user.role === 'admin'
-                            ? 'text-accent-earth-text bg-[var(--accent-dim)]'
+                            ? 'text-status-agent bg-status-agent-soft'
                             : 'bg-bg-surface text-text-secondary'
                         }`}
                       >
@@ -536,7 +563,7 @@ export const BulkOperations = () => {
                   </div>
                   <div className='bg-bg-hover h-2 w-full rounded-full'>
                     <div
-                      className='bg-accent-earth h-2 rounded-full transition-all duration-300'
+                      className='bg-status-info h-2 rounded-full transition-all duration-300'
                       style={{
                         width: `${operation.progress}%`
                       }}
@@ -547,10 +574,10 @@ export const BulkOperations = () => {
 
               {/* Error Message */}
               {typeof operation.errorMessage === 'string' && operation.errorMessage.length > 0 && (
-                <div className='border-destructive/20 bg-destructive/10 mt-4 rounded-md border p-3'>
+                <div className='bg-status-danger-soft mt-4 rounded-md border border-[var(--status-danger-border)] p-3'>
                   <div className='flex items-center gap-2'>
-                    <AlertTriangle className='text-destructive h-4 w-4' />
-                    <span className='text-destructive text-sm'>{operation.errorMessage}</span>
+                    <AlertTriangle className='text-status-danger h-4 w-4' />
+                    <span className='text-status-danger text-sm'>{operation.errorMessage}</span>
                   </div>
                 </div>
               )}
@@ -562,6 +589,16 @@ export const BulkOperations = () => {
           )}
         </div>
       </div>
+
+      <ConfirmationDialog
+        open={confirmDialog.open}
+        onOpenChange={(open) => setConfirmDialog((prev) => ({ ...prev, open }))}
+        title={confirmDialog.title}
+        description={confirmDialog.description}
+        variant={confirmDialog.variant}
+        onConfirm={confirmDialog.action}
+        loading={bulkUserAction.isPending || cancelOperation.isPending}
+      />
     </div>
   )
 }
