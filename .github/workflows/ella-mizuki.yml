@@ -1,0 +1,79 @@
+name: Ella Mizuki
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  issues: read
+  pull-requests: read
+  actions: read
+
+jobs:
+  ella-mizuki:
+    if: >
+      startsWith(github.event.comment.body, '/ella') &&
+      github.event.comment.user.login == 'isyuricunha'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    concurrency:
+      group: ella-mizuki-${{ github.repository }}-${{ github.event.issue.number }}
+      cancel-in-progress: false
+
+    steps:
+      - name: Create app token
+        id: ella_token
+        uses: actions/create-github-app-token@v3
+        with:
+          client-id: ${{ secrets.ELLA_APP_CLIENT_ID }}
+          private-key: ${{ secrets.ELLA_APP_PRIVATE_KEY }}
+          permission-contents: write
+          permission-issues: write
+          permission-pull-requests: write
+          permission-actions: read
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ steps.ella_token.outputs.token }}
+          fetch-depth: 0
+
+      - name: Run Ella
+        env:
+          GH_TOKEN: ${{ steps.ella_token.outputs.token }}
+
+          ELLA_AI_BASE_URL: ${{ secrets.ELLA_AI_BASE_URL }}
+          ELLA_AI_MODEL: ${{ secrets.ELLA_AI_MODEL }}
+          ELLA_AI_API_KEY: ${{ secrets.ELLA_AI_API_KEY }}
+
+          YURI_COMMIT_NAME: ${{ secrets.YURI_COMMIT_NAME }}
+          YURI_COMMIT_EMAIL: ${{ secrets.YURI_COMMIT_EMAIL }}
+
+          ELLA_MAX_ATTEMPTS: ${{ secrets.ELLA_MAX_ATTEMPTS }}
+          ELLA_TIME_LIMIT_SECONDS: ${{ secrets.ELLA_TIME_LIMIT_SECONDS }}
+
+          ELLA_MAX_TOKENS_ASK: ${{ secrets.ELLA_MAX_TOKENS_ASK }}
+          ELLA_MAX_TOKENS_PR: ${{ secrets.ELLA_MAX_TOKENS_PR }}
+          ELLA_MAX_TOKENS_REVIEW: ${{ secrets.ELLA_MAX_TOKENS_REVIEW }}
+          ELLA_MAX_TOKENS_PLAN: ${{ secrets.ELLA_MAX_TOKENS_PLAN }}
+          ELLA_MAX_TOKENS_LABEL: ${{ secrets.ELLA_MAX_TOKENS_LABEL }}
+          ELLA_MAX_TOKENS_FIX: ${{ secrets.ELLA_MAX_TOKENS_FIX }}
+          ELLA_MAX_TOKENS_SOLVE: ${{ secrets.ELLA_MAX_TOKENS_SOLVE }}
+
+          ELLA_MAX_CONTEXT_PR_DIFF_BYTES: ${{ secrets.ELLA_MAX_CONTEXT_PR_DIFF_BYTES }}
+          ELLA_MAX_CONTEXT_FILE_BYTES: ${{ secrets.ELLA_MAX_CONTEXT_FILE_BYTES }}
+          ELLA_MAX_CONTEXT_REQUESTED_FILE_BYTES: ${{ secrets.ELLA_MAX_CONTEXT_REQUESTED_FILE_BYTES }}
+          ELLA_MAX_CONTEXT_REPO_FILES_BYTES: ${{ secrets.ELLA_MAX_CONTEXT_REPO_FILES_BYTES }}
+        run: |
+          python3 .ella/agent.py
+
+      - name: Upload debug artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ella-mizuki-debug-${{ github.run_id }}
+          path: ${{ runner.temp }}/ella-output
+          if-no-files-found: ignore
+          retention-days: 3

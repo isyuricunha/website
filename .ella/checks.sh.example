@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Optional override.
+# Rename this file to .ella/checks.sh only when you want full manual control.
+#
+# If .ella/checks.sh does not exist, Ella auto-detects checks for Node,
+# Python, Go, Rust, Docker, .NET, Java, PHP, etc.
+
+# Examples:
+# pnpm lint
+# pnpm typecheck
+# pnpm test
+# pnpm build

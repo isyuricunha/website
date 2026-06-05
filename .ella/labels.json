@@ -1,0 +1,87 @@
+[
+  {
+    "name": "bug",
+    "color": "d73a4a",
+    "description": "Something is not working"
+  },
+  {
+    "name": "enhancement",
+    "color": "a2eeef",
+    "description": "New feature or request"
+  },
+  {
+    "name": "documentation",
+    "color": "0075ca",
+    "description": "Improvements or additions to documentation"
+  },
+  {
+    "name": "dependencies",
+    "color": "0366d6",
+    "description": "Dependency updates or package changes"
+  },
+  {
+    "name": "security",
+    "color": "b60205",
+    "description": "Security related changes"
+  },
+  {
+    "name": "performance",
+    "color": "fbca04",
+    "description": "Performance related changes"
+  },
+  {
+    "name": "refactor",
+    "color": "cfd3d7",
+    "description": "Code refactoring without behavior changes"
+  },
+  {
+    "name": "tests",
+    "color": "0e8a16",
+    "description": "Testing related changes"
+  },
+  {
+    "name": "ui",
+    "color": "c2e0c6",
+    "description": "User interface related changes"
+  },
+  {
+    "name": "frontend",
+    "color": "1d76db",
+    "description": "Frontend related changes"
+  },
+  {
+    "name": "backend",
+    "color": "5319e7",
+    "description": "Backend related changes"
+  },
+  {
+    "name": "i18n",
+    "color": "bfd4f2",
+    "description": "Internationalization or localization"
+  },
+  {
+    "name": "ci",
+    "color": "fef2c0",
+    "description": "CI/CD or workflow changes"
+  },
+  {
+    "name": "chore",
+    "color": "ededed",
+    "description": "Maintenance or cleanup"
+  },
+  {
+    "name": "question",
+    "color": "d876e3",
+    "description": "Further information is requested"
+  },
+  {
+    "name": "good first issue",
+    "color": "7057ff",
+    "description": "Good for newcomers"
+  },
+  {
+    "name": "help wanted",
+    "color": "008672",
+    "description": "Extra attention is needed"
+  }
+]
