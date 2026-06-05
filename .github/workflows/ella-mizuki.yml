@@ -40,6 +40,15 @@ jobs:
           token: ${{ steps.ella_token.outputs.token }}
           fetch-depth: 0
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Enable Corepack
+        run: corepack enable
+
       - name: Run Ella
         env:
           GH_TOKEN: ${{ steps.ella_token.outputs.token }}
