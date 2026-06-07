@@ -95,7 +95,7 @@
     "@types/react-dom": "19.2.3",
     "@types/rss": "^0.0.32",
     "@vitejs/plugin-react": "^6.0.2",
-    "better-call": "1.3.5",
+    "better-call": "2.0.3",
     "esbuild": "0.28.0",
     "fast-xml-parser": "^5.8.0",
     "jiti": "^2.7.0",
