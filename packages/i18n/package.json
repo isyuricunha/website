@@ -27,7 +27,7 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "next-intl": "^4.12.0"
+    "next-intl": "^4.13.0"
   },
   "peerDependencies": {
     "next": "^15"
@@ -35,9 +35,9 @@
   "devDependencies": {
     "@isyuricunha/eslint-config": "workspace:*",
     "@isyuricunha/tsconfig": "workspace:*",
-    "@types/node": "25.9.1",
-    "@types/react": "19.2.15",
-    "next": "16.2.6"
+    "@types/node": "25.9.2",
+    "@types/react": "19.2.17",
+    "next": "16.2.7"
   },
   "lint-staged": {
     "*.{cjs,mjs,js,jsx,cts,mts,ts,tsx}": "eslint --fix --max-warnings 999"
