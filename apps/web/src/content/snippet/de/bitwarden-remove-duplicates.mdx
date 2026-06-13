@@ -86,11 +86,14 @@ Wenn auch nur ein Feld unterschiedlich ist, werden die Einträge als separate El
 ## Wichtige Hinweise
 
 <Callout type='warning'>
-  Sichern Sie Ihre Datenbank immer, bevor Sie Bereinigungsvorgänge durchführen. Exportieren Sie Ihre aktuelle Datenbank, bevor Sie die deduplizierte Version importieren – nur zur Sicherheit.
+  Sichern Sie Ihre Datenbank immer, bevor Sie Bereinigungsvorgänge durchführen. Exportieren Sie Ihre
+  aktuelle Datenbank, bevor Sie die deduplizierte Version importieren – nur zur Sicherheit.
 </Callout>
 
 <Callout type='info'>
-  Wenn Sie Duplikate basierend auf anderen Feldern prüfen möchten (z. B. nur Benutzername + URI), können Sie das `key`-Tuple im Code anpassen, um nur die Felder aufzunehmen, die für Sie relevant sind.
+  Wenn Sie Duplikate basierend auf anderen Feldern prüfen möchten (z. B. nur Benutzername + URI),
+  können Sie das `key`-Tuple im Code anpassen, um nur die Felder aufzunehmen, die für Sie relevant
+  sind.
 </Callout>
 
 Das Skript verwendet das integrierte `csv`-Modul von Python und ein `set`, um nachzuverfolgen, was bereits gesehen wurde. Dadurch ist es selbst für große Datenbanken recht effizient.

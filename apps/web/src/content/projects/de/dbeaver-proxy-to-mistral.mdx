@@ -187,6 +187,7 @@ docker compose up --build
 Dieses Projekt verwendet **Semantic Versioning (SemVer)** und **Conventional Commits**. Releases werden über **python-semantic-release** in GitHub Actions automatisiert.
 
 ### Funktionsweise- Ein Push zu `main` löst den Release-Workflow aus
+
 - `python-semantic-release` analysiert Commit-Nachrichten und bestimmt die nächste Version
 - Wenn ein Release erstellt wird, werden folgende Aktionen ausgeführt:
   - Erstellt ein Git-Tag im Format `vX.Y.Z`

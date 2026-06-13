@@ -28,17 +28,11 @@ export const adminRouter = createTRPCRouter({
 
     try {
       // Use COUNT queries instead of loading all rows into memory
-      const [totalUsersRow] = await ctx.db
-        .select({ value: count() })
-        .from(users)
+      const [totalUsersRow] = await ctx.db.select({ value: count() }).from(users)
 
-      const [totalCommentsRow] = await ctx.db
-        .select({ value: count() })
-        .from(comments)
+      const [totalCommentsRow] = await ctx.db.select({ value: count() }).from(comments)
 
-      const [totalGuestbookRow] = await ctx.db
-        .select({ value: count() })
-        .from(guestbook)
+      const [totalGuestbookRow] = await ctx.db.select({ value: count() }).from(guestbook)
 
       const [adminUsersRow] = await ctx.db
         .select({ value: count() })

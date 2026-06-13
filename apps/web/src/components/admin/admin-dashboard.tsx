@@ -341,7 +341,10 @@ const AdminDashboard = () => {
                 </span>
               </div>
               <Progress
-                value={Math.min(((stats?.recent?.users ?? 0) / Math.max(stats?.totals?.users ?? 1, 1)) * 100, 100)}
+                value={Math.min(
+                  ((stats?.recent?.users ?? 0) / Math.max(stats?.totals?.users ?? 1, 1)) * 100,
+                  100
+                )}
                 className='h-2'
               />
             </div>
@@ -353,7 +356,11 @@ const AdminDashboard = () => {
                 </span>
               </div>
               <Progress
-                value={Math.min(((stats?.recent?.comments ?? 0) / Math.max(stats?.totals?.comments ?? 1, 1)) * 100, 100)}
+                value={Math.min(
+                  ((stats?.recent?.comments ?? 0) / Math.max(stats?.totals?.comments ?? 1, 1)) *
+                    100,
+                  100
+                )}
                 className='h-2'
               />
             </div>

@@ -204,19 +204,19 @@ AI: 📊 Bot Status
 
 ### Umgebungsvariablen
 
-| Variable                    | Beschreibung                                         | Standardwert      | Erforderlich |
-| --------------------------- | ---------------------------------------------------- | ----------------- | ------------ |
-| `MISTRAL_API_KEY`           | Mistral-API-Schlüssel                                | Keiner            | Ja           |
-| `MISTRAL_AGENT_ID`          | Mistral-Agent-ID (Format: ag\_...)                   | Keiner            | Ja           |
-| `BOT_NAME`                  | Anzeigename des Bots                                 | `WhatsApp AI Bot` | Nein         |
-| `MAX_CONTEXT_MESSAGES`      | Maximale Anzahl der im Kontext zu behaltenden Nachrichten | `20`          | Nein         |
-| `MESSAGE_SPLIT_LENGTH`      | Maximale Länge vor dem Aufteilen von Nachrichten     | `1500`           | Nein         |
-| `WHATSAPP_SESSION_PATH`     | Speicherort für WhatsApp Web-Sitzung/Auth-Cache      | `./session`      | Nein         |
-| `PUPPETEER_HEADLESS`        | Browser im Headless-Modus ausführen                  | `true`           | Nein         |
-| `PUPPETEER_EXECUTABLE_PATH` | Benutzerdefinierter Pfad zur Chromium-Executable      | Keiner           | Nein         |
-| `ADMIN_WHATSAPP_NUMBER`     | Admin-WhatsApp-Nummer (Format: `5511999999999@c.us`) | Keiner           | Ja           |
-| `NODE_ENV`                  | Umgebungsmodus                                       | `development`    | Nein         |
-| `DEBUG`                     | Debug-Protokollierung aktivieren                     | `false`          | Nein         |
+| Variable                    | Beschreibung                                              | Standardwert      | Erforderlich |
+| --------------------------- | --------------------------------------------------------- | ----------------- | ------------ |
+| `MISTRAL_API_KEY`           | Mistral-API-Schlüssel                                     | Keiner            | Ja           |
+| `MISTRAL_AGENT_ID`          | Mistral-Agent-ID (Format: ag\_...)                        | Keiner            | Ja           |
+| `BOT_NAME`                  | Anzeigename des Bots                                      | `WhatsApp AI Bot` | Nein         |
+| `MAX_CONTEXT_MESSAGES`      | Maximale Anzahl der im Kontext zu behaltenden Nachrichten | `20`              | Nein         |
+| `MESSAGE_SPLIT_LENGTH`      | Maximale Länge vor dem Aufteilen von Nachrichten          | `1500`            | Nein         |
+| `WHATSAPP_SESSION_PATH`     | Speicherort für WhatsApp Web-Sitzung/Auth-Cache           | `./session`       | Nein         |
+| `PUPPETEER_HEADLESS`        | Browser im Headless-Modus ausführen                       | `true`            | Nein         |
+| `PUPPETEER_EXECUTABLE_PATH` | Benutzerdefinierter Pfad zur Chromium-Executable          | Keiner            | Nein         |
+| `ADMIN_WHATSAPP_NUMBER`     | Admin-WhatsApp-Nummer (Format: `5511999999999@c.us`)      | Keiner            | Ja           |
+| `NODE_ENV`                  | Umgebungsmodus                                            | `development`     | Nein         |
+| `DEBUG`                     | Debug-Protokollierung aktivieren                          | `false`           | Nein         |
 
 ### Komplette Konfigurationsstruktur
 
@@ -272,6 +272,7 @@ whatsapp-ai/
 - **Fehlerüberwachung**: Automatische Fehlerkategorisierung und -verfolgung
 
 #### Datenverwaltung- **Automatische Bereinigung**: Integrierte Wartung zur Speicheroptimierung
+
 - **Datenspeicherung**: Gespräche werden lokal in SQLite gespeichert (während Nachrichten an externe APIs gesendet werden)
 - **Backup-bereit**: Dateibasierte Datenbankspeicherung für einfache Sicherung und Migration
 - **Skalierbares Design**: Verarbeitet effizient Tausende von Gesprächen
@@ -398,6 +399,7 @@ pnpm start
 - Überprüfen Sie die Runtime-Einstellungen mit dem Befehl `/context`
 
 ##### Befehle funktionieren nicht- Überprüfe das Format der Admin-WhatsApp-Nummer: `5511999999999@c.us`
+
 - Prüfe, ob die Nummer exakt in der `.env`-Datei übereinstimmt
 - Stelle sicher, dass Befehle mit `/` (Schrägstrich) beginnen
 - Verwende `/help`, um die verfügbaren Befehle anzuzeigen

@@ -94,22 +94,29 @@ export default function AnnouncementManagement() {
 
   const createTitleRef = useRef<HTMLInputElement>(null)
   const createContentRef = useRef<HTMLTextAreaElement>(null)
-  const createTranslationRefsRef = useRef<Record<string, { title: HTMLInputElement | null; content: HTMLTextAreaElement | null }>>({})
+  const createTranslationRefsRef = useRef<
+    Record<string, { title: HTMLInputElement | null; content: HTMLTextAreaElement | null }>
+  >({})
 
   const editTitleRef = useRef<HTMLInputElement>(null)
   const editContentRef = useRef<HTMLTextAreaElement>(null)
-  const editTranslationRefsRef = useRef<Record<string, { title: HTMLInputElement | null; content: HTMLTextAreaElement | null }>>({})
+  const editTranslationRefsRef = useRef<
+    Record<string, { title: HTMLInputElement | null; content: HTMLTextAreaElement | null }>
+  >({})
 
   // Queries
   const {
     data: announcements,
     isLoading,
     refetch
-  } = api.announcements.getAnnouncements.useQuery({
-    adminView: true
-  }, {
-    staleTime: 30_000
-  })
+  } = api.announcements.getAnnouncements.useQuery(
+    {
+      adminView: true
+    },
+    {
+      staleTime: 30_000
+    }
+  )
 
   const translateMutation = api.announcements.translateAnnouncement.useMutation({
     onError: (error) => {
@@ -120,7 +127,12 @@ export default function AnnouncementManagement() {
   const handleTranslateAll = async (
     titleRef: React.RefObject<HTMLInputElement | null>,
     contentRef: React.RefObject<HTMLTextAreaElement | null>,
-    translationRefsRef: React.RefObject<Record<string, { title: HTMLInputElement | null; content: HTMLTextAreaElement | null } | undefined>>
+    translationRefsRef: React.RefObject<
+      Record<
+        string,
+        { title: HTMLInputElement | null; content: HTMLTextAreaElement | null } | undefined
+      >
+    >
   ) => {
     const title = titleRef.current?.value ?? ''
     const content = contentRef.current?.value ?? ''
@@ -163,9 +175,12 @@ export default function AnnouncementManagement() {
     }
   }
 
-  const { data: analytics } = api.announcements.getAnnouncementAnalytics.useQuery({}, {
-    staleTime: 30_000
-  })
+  const { data: analytics } = api.announcements.getAnnouncementAnalytics.useQuery(
+    {},
+    {
+      staleTime: 30_000
+    }
+  )
 
   // Mutations
   const createMutation = api.announcements.createAnnouncement.useMutation({
@@ -375,7 +390,10 @@ export default function AnnouncementManagement() {
                 </div>
 
                 {ANNOUNCEMENT_LOCALES.map((locale) => (
-                  <div key={locale.code} className='space-y-3 rounded-lg border border-[var(--border-subtle)] p-3'>
+                  <div
+                    key={locale.code}
+                    className='space-y-3 rounded-lg border border-[var(--border-subtle)] p-3'
+                  >
                     <div className='flex items-center justify-between'>
                       <Label className='text-sm font-medium'>{locale.label}</Label>
                       <Badge variant='outline' className='text-xs'>
@@ -387,7 +405,8 @@ export default function AnnouncementManagement() {
                         name={`title_${locale.code}`}
                         placeholder={t('fields.title-placeholder')}
                         ref={(el: HTMLInputElement | null) => {
-                          if (!createTranslationRefsRef.current) createTranslationRefsRef.current = {}
+                          if (!createTranslationRefsRef.current)
+                            createTranslationRefsRef.current = {}
                           const existing = createTranslationRefsRef.current[locale.code] ?? {
                             title: null,
                             content: null
@@ -402,12 +421,16 @@ export default function AnnouncementManagement() {
                         placeholder={t('fields.content-placeholder')}
                         rows={2}
                         ref={(el: HTMLTextAreaElement | null) => {
-                          if (!createTranslationRefsRef.current) createTranslationRefsRef.current = {}
+                          if (!createTranslationRefsRef.current)
+                            createTranslationRefsRef.current = {}
                           const existing = createTranslationRefsRef.current[locale.code] ?? {
                             title: null,
                             content: null
                           }
-                          createTranslationRefsRef.current[locale.code] = { ...existing, content: el }
+                          createTranslationRefsRef.current[locale.code] = {
+                            ...existing,
+                            content: el
+                          }
                         }}
                       />
                     </div>
@@ -569,12 +592,13 @@ export default function AnnouncementManagement() {
               {announcements?.announcements?.map((announcement) => {
                 const ui = getAnnouncementUi(announcement.type, { iconSize: 'sm' })
                 const hasTranslations = ANNOUNCEMENT_LOCALES.some((locale) => {
-                   const titleKey = `title${locale.fieldSuffix}` as keyof EditAnnouncementData
-                   const contentKey = `content${locale.fieldSuffix}` as keyof EditAnnouncementData
-                   const titleValue = announcement[titleKey]
-                   const contentValue = announcement[contentKey]
-                   const hasTitle = typeof titleValue === 'string' && titleValue.trim().length > 0
-                   const hasContent = typeof contentValue === 'string' && contentValue.trim().length > 0
+                  const titleKey = `title${locale.fieldSuffix}` as keyof EditAnnouncementData
+                  const contentKey = `content${locale.fieldSuffix}` as keyof EditAnnouncementData
+                  const titleValue = announcement[titleKey]
+                  const contentValue = announcement[contentKey]
+                  const hasTitle = typeof titleValue === 'string' && titleValue.trim().length > 0
+                  const hasContent =
+                    typeof contentValue === 'string' && contentValue.trim().length > 0
                   return hasTitle || hasContent
                 })
                 return (
@@ -760,7 +784,10 @@ export default function AnnouncementManagement() {
                   const titleKey = `title${locale.fieldSuffix}` as keyof EditAnnouncementData
                   const contentKey = `content${locale.fieldSuffix}` as keyof EditAnnouncementData
                   return (
-                    <div key={locale.code} className='space-y-3 rounded-lg border border-[var(--border-subtle)] p-3'>
+                    <div
+                      key={locale.code}
+                      className='space-y-3 rounded-lg border border-[var(--border-subtle)] p-3'
+                    >
                       <div className='flex items-center justify-between'>
                         <Label className='text-sm font-medium'>{locale.label}</Label>
                         <Badge variant='outline' className='text-xs'>
@@ -794,7 +821,10 @@ export default function AnnouncementManagement() {
                               title: null,
                               content: null
                             }
-                            editTranslationRefsRef.current[locale.code] = { ...existing, content: el }
+                            editTranslationRefsRef.current[locale.code] = {
+                              ...existing,
+                              content: el
+                            }
                           }}
                         />
                       </div>

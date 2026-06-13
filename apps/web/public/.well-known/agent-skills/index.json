@@ -1,0 +1,12 @@
+{
+  "$schema": "https://schemas.agentskills.io/discovery/0.2.0/schema.json",
+  "skills": [
+    {
+      "name": "yuricunha-site-navigation",
+      "type": "skill-md",
+      "description": "Use this skill when navigating Yuri Cunha's personal website, portfolio, blog, projects, snippets, RSS feeds, sitemap, robots.txt, and LLM-readable discovery files.",
+      "url": "/.well-known/agent-skills/site-navigation/SKILL.md",
+      "digest": "sha256:0c216b6864b2c5369e448a7bb5fa268730014535d997f1327d3d597230176ec2"
+    }
+  ]
+}

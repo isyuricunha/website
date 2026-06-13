@@ -146,36 +146,36 @@ net start DiscordRSSBot
 
 #### Erforderliche Variablen
 
-| Variable              | Beschreibung                     |
-| --------------------- | -------------------------------- |
+| Variable              | Beschreibung                          |
+| --------------------- | ------------------------------------- |
 | `DISCORD_WEBHOOK_URL` | **Erforderlich**: Discord-Webhook-URL |
 
 #### Pfade (empfohlen)
 
-| Variable       | Standard (Docker-Image)          | Beschreibung                                             |
-| -------------- | ------------------------------- | ------------------------------------------------------- |
-| `RSS_BOT_DATA` | `/app/data`                     | Verzeichnis, in dem die SQLite-Datenbank gespeichert wird |
-| `RSS_BOT_LOGS` | `/app/logs`                     | Verzeichnis, in dem Logdateien geschrieben werden        |
+| Variable       | Standard (Docker-Image)         | Beschreibung                                                    |
+| -------------- | ------------------------------- | --------------------------------------------------------------- |
+| `RSS_BOT_DATA` | `/app/data`                     | Verzeichnis, in dem die SQLite-Datenbank gespeichert wird       |
+| `RSS_BOT_LOGS` | `/app/logs`                     | Verzeichnis, in dem Logdateien geschrieben werden               |
 | `RSS_BOT_PID`  | `/tmp/discord-news-rss-bot.pid` | PID-Dateipfad (vermeiden Sie `/var/run` in Non-Root-Containern) |
 
 #### Erweiterte Überschreibungen (optional)
 
-| Variable   | Beschreibung                                             |
-| ---------- | ------------------------------------------------------- |
+| Variable   | Beschreibung                                                      |
+| ---------- | ----------------------------------------------------------------- |
 | `DB_FILE`  | Expliziter Pfad zur SQLite-DB-Datei (überschreibt `RSS_BOT_DATA`) |
-| `LOG_FILE` | Expliziter Pfad zur Logdatei (überschreibt `RSS_BOT_LOGS`)       |
-| `DATA_DIR` | Veraltetes Alias für `RSS_BOT_DATA`                         |
+| `LOG_FILE` | Expliziter Pfad zur Logdatei (überschreibt `RSS_BOT_LOGS`)        |
+| `DATA_DIR` | Veraltetes Alias für `RSS_BOT_DATA`                               |
 
 #### Optionale Bot-EinstellungenHier ist die übersetzte MDX-Markdown-Inhalt auf Deutsch:
 
 ---
 
-| Variable             | Standard | Beschreibung                        |
-| -------------------- | -------- | ----------------------------------- |
-| `CHECK_INTERVAL`     | 300      | Intervall zwischen Überprüfungen (Sekunden)  |
+| Variable             | Standard | Beschreibung                                |
+| -------------------- | -------- | ------------------------------------------- |
+| `CHECK_INTERVAL`     | 300      | Intervall zwischen Überprüfungen (Sekunden) |
 | `POST_DELAY`         | 3        | Verzögerung zwischen Posts (Sekunden)       |
 | `COOLDOWN_DELAY`     | 60       | Verzögerung nach Rate-Limit (Sekunden)      |
-| `MAX_POST_LENGTH`    | 1900     | Maximale Nachrichtenlänge                    |
+| `MAX_POST_LENGTH`    | 1900     | Maximale Nachrichtenlänge                   |
 | `MAX_CONTENT_LENGTH` | 800      | Maximale Inhaltslänge                       |
 | `FEED_TIMEOUT`       | 30       | Timeout für RSS-Feed-Anfragen (Sekunden)    |
 

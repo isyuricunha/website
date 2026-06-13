@@ -20,7 +20,10 @@ import { adminProcedure, publicProcedure, createTRPCRouter } from '../trpc'
 const _ANNOUNCEMENT_LOCALES = ['en', 'pt', 'es', 'fr', 'de', 'ja', 'zh-CN'] as const
 type AnnouncementLocale = (typeof _ANNOUNCEMENT_LOCALES)[number]
 
-const localeFieldMap: Record<Exclude<AnnouncementLocale, 'en'>, { title: string; content: string }> = {
+const localeFieldMap: Record<
+  Exclude<AnnouncementLocale, 'en'>,
+  { title: string; content: string }
+> = {
   pt: { title: 'titlePt', content: 'contentPt' },
   es: { title: 'titleEs', content: 'contentEs' },
   fr: { title: 'titleFr', content: 'contentFr' },
@@ -122,7 +125,9 @@ ${input.content}
         const isAdmin = ctx.session?.user?.role === 'admin'
         const adminView = input.adminView && isAdmin
         const locale = input.locale ?? 'en'
-        const normalizedLocale = locale.startsWith('zh') ? 'zh-CN' : locale.split('-')[0] ?? locale
+        const normalizedLocale = locale.startsWith('zh')
+          ? 'zh-CN'
+          : (locale.split('-')[0] ?? locale)
 
         const getLocalizedField = (obj: Record<string, unknown>, baseField: string): string => {
           if (normalizedLocale === 'en') return (obj[baseField] as string) ?? ''
