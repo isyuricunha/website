@@ -2190,8 +2190,7 @@
         "hf_local": "Yue (Niedrig)",
         "gemini": "Gemini",
         "groq": "Yue (Hoch)",
-        "ollama": "Ollama",
-        "mistral": "Yue"
+        "ollama": "Ollama"
       },
       "feedback": {
         "like": "Daumen hoch",
@@ -2234,6 +2233,97 @@
       "availableFeatures": "Verfügbare Funktionen für {model}",
       "featureNotAvailable": "{feature} ist für dieses Modell nicht verfügbar",
       "online": "Online",
+      "sendMessage": "Nachricht senden",
+      "cancelResponse": "Antwort abbrechen",
+      "cancelledMessage": "Antwort abgebrochen.",
+      "status": {
+        "checking": "Yue AI wird geprüft...",
+        "ready": "Yue AI ist bereit",
+        "responding": "Yue AI antwortet...",
+        "unavailable": "Yue AI nicht verfügbar",
+        "offline": "Offline"
+      },
+      "quickPrompts": {
+        "title": "Schnellstarts",
+        "items": {
+          "siteGuide": {
+            "label": "Führe mich",
+            "prompt": "Zeige mir die Hauptbereiche dieser Website und schlage vor, wo ich anfangen soll."
+          },
+          "projects": {
+            "label": "Projekte zeigen",
+            "prompt": "Führe mich durch Yuris Projekte und empfehle eines, das ich zuerst öffnen sollte."
+          },
+          "recentPosts": {
+            "label": "Neue Beiträge",
+            "prompt": "Empfiehl einen aktuellen Blogbeitrag und füge den Link hinzu."
+          },
+          "recommendPost": {
+            "label": "Beitrag empfehlen",
+            "prompt": "Empfiehl einen Blogbeitrag zu Datenbanken, Infrastruktur oder Webentwicklung."
+          },
+          "topicSearch": {
+            "label": "Nach Thema suchen",
+            "prompt": "Hilf mir, Inhalte zu Datenbanken oder Infrastruktur zu finden."
+          },
+          "summarizePage": {
+            "label": "Zusammenfassen",
+            "prompt": "Fasse diese Seite in einigen Stichpunkten zusammen."
+          },
+          "relatedPost": {
+            "label": "Ähnliche Beiträge",
+            "prompt": "Empfiehl Beiträge, die zu dem passen, was ich gerade lese."
+          },
+          "keyTakeaway": {
+            "label": "Kernaussage",
+            "prompt": "Was ist die wichtigste Aussage dieses Beitrags?"
+          },
+          "explainSnippet": {
+            "label": "Snippet erklären",
+            "prompt": "Erkläre dieses Snippet und wann ich es verwenden sollte."
+          },
+          "applySnippet": {
+            "label": "So nutzen",
+            "prompt": "Zeige mir eine praktische Möglichkeit, dieses Snippet zu verwenden."
+          },
+          "relatedSnippet": {
+            "label": "Ähnliche Snippets",
+            "prompt": "Empfiehl Snippets, die zu diesem passen."
+          },
+          "recommendProject": {
+            "label": "Projekt empfehlen",
+            "prompt": "Empfiehl ein Projekt von der Website und erkläre warum."
+          },
+          "projectStack": {
+            "label": "Tech-Stack",
+            "prompt": "Sag mir, welche Technologien in diesem Projekt oder auf dieser Seite auffallen."
+          },
+          "summarizeProject": {
+            "label": "Projekt zusammenfassen",
+            "prompt": "Fasse dieses Projekt und seinen Hauptwert zusammen."
+          },
+          "relatedProject": {
+            "label": "Ähnliche Projekte",
+            "prompt": "Empfiehl Projekte, die zu diesem passen."
+          },
+          "aboutYuri": {
+            "label": "Über Yuri",
+            "prompt": "Sag mir anhand dieser Website, wer Yuri ist."
+          },
+          "currentFocus": {
+            "label": "Aktueller Fokus",
+            "prompt": "Worauf konzentriert sich Yuri gerade?"
+          },
+          "contactYuri": {
+            "label": "Kontakt",
+            "prompt": "Wie kann ich Yuri kontaktieren?"
+          },
+          "recommendContent": {
+            "label": "Inhalt empfehlen",
+            "prompt": "Empfiehl etwas Nützliches zum Lesen oder Erkunden auf dieser Website."
+          }
+        }
+      },
       "retry": "Erneut versuchen"
     },
     "chatbot": {

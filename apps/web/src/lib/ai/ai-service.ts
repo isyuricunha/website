@@ -174,7 +174,7 @@ Translation:`
   }
 
   getAvailableProviders(): string[] {
-    return ['mistral']
+    return this.isMistralAvailable() ? ['mistral'] : []
   }
 }
 

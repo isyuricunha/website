@@ -33,7 +33,7 @@ export type ChatConversation = {
   messages: ChatMessage[]
 }
 
-type YueChatProvider = 'auto' | 'hf' | 'hf_local' | 'gemini' | 'groq' | 'ollama' | 'mistral'
+type YueChatProvider = 'auto'
 
 const legacyMessagesSchema = z
   .array(
@@ -77,8 +77,6 @@ const conversationSchema = z.object({
   messages: legacyMessagesSchema
 })
 
-const providerSchema = z.enum(['auto', 'hf', 'hf_local', 'gemini', 'groq', 'ollama', 'mistral'])
-
 const storageSchemaV2 = z.object({
   version: z.literal(2),
   conversations: z.array(conversationSchema).max(50),
@@ -89,7 +87,7 @@ const storageSchemaV3 = z.object({
   version: z.literal(3),
   conversations: z.array(conversationSchema).max(50),
   activeConversationId: z.string().min(1).optional(),
-  provider: providerSchema.optional()
+  provider: z.string().optional()
 })
 
 const sharePayloadSchema = z.object({
@@ -171,7 +169,7 @@ export const loadYueChatState = (): YueChatState => {
           conversations: parsedV3.data.conversations,
           activeConversationId:
             parsedV3.data.activeConversationId ?? parsedV3.data.conversations[0]?.id ?? '',
-          provider: parsedV3.data.provider ?? 'auto'
+          provider: 'auto'
         })
       }
 

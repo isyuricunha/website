@@ -115,12 +115,62 @@ const ChatMarkdown = memo((props: ChatMarkdownProps) => {
 ChatMarkdown.displayName = 'ChatMarkdown'
 
 type CitationType = 'post' | 'project' | 'page' | 'snippet'
+type ChatConnectionStatus = 'checking' | 'ready' | 'unavailable' | 'offline'
+type QuickPromptId =
+  | 'siteGuide'
+  | 'projects'
+  | 'recentPosts'
+  | 'recommendPost'
+  | 'topicSearch'
+  | 'summarizePage'
+  | 'relatedPost'
+  | 'keyTakeaway'
+  | 'explainSnippet'
+  | 'applySnippet'
+  | 'relatedSnippet'
+  | 'recommendProject'
+  | 'projectStack'
+  | 'summarizeProject'
+  | 'relatedProject'
+  | 'aboutYuri'
+  | 'currentFocus'
+  | 'contactYuri'
+  | 'recommendContent'
 
 const get_citation_badge_variant = (type: CitationType) => {
   if (type === 'post') return 'default'
   if (type === 'project') return 'secondary'
   if (type === 'snippet') return 'outline'
   return 'outline'
+}
+
+const is_abort_error = (error: unknown) => {
+  if (error instanceof Error && error.name === 'AbortError') return true
+  if (typeof DOMException !== 'undefined' && error instanceof DOMException) {
+    return error.name === 'AbortError'
+  }
+  return false
+}
+
+const is_browser_offline = () => !(globalThis.navigator?.onLine)
+
+const DEFAULT_QUICK_PROMPT_IDS: QuickPromptId[] = ['siteGuide', 'recommendContent', 'contactYuri']
+
+const QUICK_PROMPTS_BY_PAGE: Record<string, QuickPromptId[]> = {
+  home: ['siteGuide', 'projects', 'recentPosts'],
+  blog: ['recommendPost', 'recentPosts', 'topicSearch'],
+  blogPost: ['summarizePage', 'relatedPost', 'keyTakeaway'],
+  snippet: ['explainSnippet', 'applySnippet', 'relatedSnippet'],
+  projects: ['recommendProject', 'projectStack', 'contactYuri'],
+  projectsDetail: ['summarizeProject', 'projectStack', 'relatedProject'],
+  about: ['aboutYuri', 'currentFocus', 'contactYuri'],
+  now: ['currentFocus', 'projects', 'recentPosts'],
+  contact: ['contactYuri', 'siteGuide', 'projects'],
+  default: DEFAULT_QUICK_PROMPT_IDS
+}
+
+const get_quick_prompt_ids = (pageKey: string): QuickPromptId[] => {
+  return QUICK_PROMPTS_BY_PAGE[pageKey] ?? DEFAULT_QUICK_PROMPT_IDS
 }
 
 type InitialChatState = {
@@ -233,6 +283,8 @@ export default function AIChatInterface({
   const importStatusToastShownRef = useRef(false)
   const [inputValue, setInputValue] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [isCancelling, setIsCancelling] = useState(false)
+  const [connectionStatus, setConnectionStatus] = useState<ChatConnectionStatus>('checking')
   const [typingDots, setTypingDots] = useState('')
   const [feedbackOpenForMessageId, setFeedbackOpenForMessageId] = useState<string | null>(null)
   const [feedbackDraftByMessageId, setFeedbackDraftByMessageId] = useState<Record<string, string>>(
@@ -244,6 +296,7 @@ export default function AIChatInterface({
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const actionTimeoutsRef = useRef(new Set<ReturnType<typeof setTimeout>>())
+  const abortControllerRef = useRef<AbortController | null>(null)
 
   const scheduleActionTimeout = useCallback((callback: () => void, delay: number) => {
     const timer = setTimeout(() => {
@@ -276,6 +329,24 @@ export default function AIChatInterface({
   const messages = useMemo(() => {
     return activeConversation?.messages ?? []
   }, [activeConversation])
+
+  const chatStatusKey = isLoading ? 'responding' : connectionStatus
+  const canUseChat = connectionStatus !== 'unavailable' && connectionStatus !== 'offline'
+  const shouldShowQuickPrompts =
+    canUseChat && !isLoading && messages.every((message) => !message.isUser)
+  const quickPrompts = useMemo(() => {
+    return get_quick_prompt_ids(currentPage).map((id) => ({
+      id,
+      label: t(`mascot.aiChat.quickPrompts.items.${id}.label` as any),
+      prompt: t(`mascot.aiChat.quickPrompts.items.${id}.prompt` as any)
+    }))
+  }, [currentPage, t])
+  const statusDotClassName =
+    chatStatusKey === 'ready'
+      ? 'bg-status-success'
+      : (chatStatusKey === 'responding' || chatStatusKey === 'checking'
+        ? 'bg-status-warning'
+        : 'bg-status-danger')
 
   const get_bubble_class_name = (message: ChatMessage) => {
     if (message.isUser) {
@@ -321,21 +392,138 @@ export default function AIChatInterface({
     if (!isOpen) return
     if (!activeConversationId) return
 
-    saveYueChatState({ conversations, activeConversationId, provider: 'mistral' })
+    saveYueChatState({ conversations, activeConversationId, provider: 'auto' })
   }, [activeConversationId, conversations, isOpen])
 
-  const updateActiveConversation = useCallback(
-    (updater: (conversation: ChatConversation) => ChatConversation) => {
-      if (!activeConversation) return
-
+  const updateConversationById = useCallback(
+    (conversationId: string, updater: (conversation: ChatConversation) => ChatConversation) => {
       setConversations((prev) =>
         prev.map((c) => {
-          if (c.id !== activeConversation.id) return c
+          if (c.id !== conversationId) return c
           return updater(c)
         })
       )
     },
-    [activeConversation]
+    []
+  )
+
+  const updateActiveConversation = useCallback(
+    (updater: (conversation: ChatConversation) => ChatConversation) => {
+      if (!activeConversation) return
+      updateConversationById(activeConversation.id, updater)
+    },
+    [activeConversation, updateConversationById]
+  )
+
+  const refreshChatStatus = useCallback(async () => {
+    if (is_browser_offline()) {
+      setConnectionStatus('offline')
+      return
+    }
+
+    setConnectionStatus('checking')
+
+    try {
+      const response = await fetch('/api/ai/chat/status', {
+        method: 'GET',
+        cache: 'no-store'
+      })
+
+      if (!response.ok) {
+        setConnectionStatus('unavailable')
+        return
+      }
+
+      const data = (await response.json()) as { available?: boolean }
+      setConnectionStatus(data.available === true ? 'ready' : 'unavailable')
+    } catch {
+      setConnectionStatus(is_browser_offline() ? 'offline' : 'unavailable')
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!isOpen) return
+
+    const handleOnline = () => {
+      void refreshChatStatus()
+    }
+    const handleOffline = () => {
+      setConnectionStatus('offline')
+    }
+
+    globalThis.addEventListener('online', handleOnline)
+    globalThis.addEventListener('offline', handleOffline)
+
+    // Check status when opening; use setTimeout to avoid set-state-in-effect lint warning
+    const timer = setTimeout(() => {
+      void refreshChatStatus()
+    }, 0)
+
+    return () => {
+      globalThis.removeEventListener('online', handleOnline)
+      globalThis.removeEventListener('offline', handleOffline)
+      clearTimeout(timer)
+    }
+  }, [isOpen, refreshChatStatus])
+
+  useEffect(() => {
+    return () => {
+      abortControllerRef.current?.abort()
+      abortControllerRef.current = null
+    }
+  }, [])
+
+  const cancelCurrentResponse = useCallback(() => {
+    const controller = abortControllerRef.current
+    if (!controller || controller.signal.aborted) return
+
+    setIsCancelling(true)
+    controller.abort()
+  }, [])
+
+  const appendCancelledResponse = useCallback(
+    (conversationId: string, assistantMessageId: string | null) => {
+      const cancelledText = t('mascot.aiChat.cancelledMessage')
+
+      updateConversationById(conversationId, (conversation) => {
+        const existingAssistantMessage =
+          assistantMessageId &&
+          conversation.messages.some((message) => message.id === assistantMessageId)
+
+        if (existingAssistantMessage && assistantMessageId) {
+          return {
+            ...conversation,
+            messages: conversation.messages.map((message) => {
+              if (message.id !== assistantMessageId) return message
+
+              const text = message.text.trim()
+              return {
+                ...message,
+                text: text ? `${text}\n\n${cancelledText}` : cancelledText,
+                isError: false
+              }
+            }),
+            updatedAt: new Date().toISOString()
+          }
+        }
+
+        const cancelledMessage: ChatMessage = {
+          id: `ai-cancelled-${messageIdCounterRef.current++}-${Date.now()}`,
+          text: cancelledText,
+          isUser: false,
+          timestamp: new Date().toISOString(),
+          isError: false,
+          type: 'text'
+        }
+
+        return {
+          ...conversation,
+          messages: [...conversation.messages, cancelledMessage],
+          updatedAt: new Date().toISOString()
+        }
+      })
+    },
+    [t, updateConversationById]
   )
 
   const startNewChat = () => {
@@ -443,7 +631,7 @@ export default function AIChatInterface({
 
   const sendMessage = async () => {
     const messageText = inputValue.trim()
-    if (!messageText || isLoading) return
+    if (!messageText || isLoading || !canUseChat) return
     if (!activeConversation) return
 
     setInputValue('')
@@ -453,11 +641,12 @@ export default function AIChatInterface({
 
   const send_chat_message = useCallback(
     async (rawText: string) => {
-      if (isLoading) return
+      if (isLoading || !canUseChat) return
       if (!activeConversation) return
 
       const messageText = rawText.trim()
       if (!messageText) return
+      const conversationId = activeConversation.id
 
       const userMessage: ChatMessage = {
         id: `user-${messageIdCounterRef.current++}-${Date.now()}`,
@@ -467,15 +656,20 @@ export default function AIChatInterface({
         type: 'text'
       }
 
-      const nextMessages = [...messages, userMessage]
+      const nextMessages = [...activeConversation.messages, userMessage]
 
-      updateActiveConversation((c) => ({
+      updateConversationById(conversationId, (c) => ({
         ...c,
         messages: nextMessages,
         updatedAt: new Date().toISOString()
       }))
       setIsLoading(true)
+      setIsCancelling(false)
       onMessageSent?.(messageText)
+
+      const abortController = new AbortController()
+      abortControllerRef.current = abortController
+      let assistantMessageId: string | null = null
 
       try {
         // Enhanced context with more conversation history for better memory
@@ -504,12 +698,12 @@ export default function AIChatInterface({
 
         const response = await fetch('/api/ai/chat', {
           method: 'POST',
+          signal: abortController.signal,
           headers: {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
             message: messageText,
-            provider: 'mistral',
             stream: should_stream,
             locale,
             context: {
@@ -532,11 +726,12 @@ export default function AIChatInterface({
           const reader = response.body.getReader()
           const decoder = new TextDecoder()
           const messageId = `ai-${messageIdCounterRef.current++}-${Date.now()}`
+          assistantMessageId = messageId
 
           let accumulated = ''
           const startTime = performance.now()
 
-          updateActiveConversation((c) => ({
+          updateConversationById(conversationId, (c) => ({
             ...c,
             messages: [
               ...c.messages,
@@ -556,7 +751,7 @@ export default function AIChatInterface({
             const { value, done } = await reader.read()
             if (done) break
             accumulated += decoder.decode(value, { stream: true })
-            updateActiveConversation((c) => ({
+            updateConversationById(conversationId, (c) => ({
               ...c,
               messages: c.messages.map((m) =>
                 m.id === messageId ? { ...m, text: accumulated } : m
@@ -565,7 +760,7 @@ export default function AIChatInterface({
           }
 
           const latency = Math.max(0, Math.round(performance.now() - startTime))
-          updateActiveConversation((c) => ({
+          updateConversationById(conversationId, (c) => ({
             ...c,
             messages: c.messages.map((m) =>
               m.id === messageId
@@ -620,8 +815,9 @@ export default function AIChatInterface({
           latencyMs: data.latencyMs,
           citations: data.citations
         }
+        assistantMessageId = aiMessage.id
 
-        updateActiveConversation((c) => ({
+        updateConversationById(conversationId, (c) => ({
           ...c,
           messages: [...c.messages, aiMessage],
           updatedAt: new Date().toISOString()
@@ -631,6 +827,11 @@ export default function AIChatInterface({
           handleAutonomousActions(data.message)
         }
       } catch (error) {
+        if (is_abort_error(error)) {
+          appendCancelledResponse(conversationId, assistantMessageId)
+          return
+        }
+
         if (process.env.NODE_ENV === 'development') {
           console.error('Chat error:', error)
         }
@@ -644,39 +845,44 @@ export default function AIChatInterface({
           type: 'text'
         }
 
-        updateActiveConversation((c) => ({
+        updateConversationById(conversationId, (c) => ({
           ...c,
           messages: [...c.messages, errorMessage],
           updatedAt: new Date().toISOString()
         }))
       } finally {
+        if (abortControllerRef.current === abortController) {
+          abortControllerRef.current = null
+        }
+        setIsCancelling(false)
         setIsLoading(false)
       }
     },
     [
       activeConversation,
+      appendCancelledResponse,
+      canUseChat,
       currentPage,
       handleAutonomousActions,
       isLoading,
       locale,
-      messages,
       onMessageSent,
       pagePath,
       t,
-      updateActiveConversation
+      updateConversationById
     ]
   )
 
   // Handle pending prompts (like "Explain this selection")
   useEffect(() => {
-    if (isOpen && !isLoading) {
+    if (isOpen && !isLoading && canUseChat) {
       const pending = sessionStorage.getItem('yue_pending_prompt')
       if (pending) {
         sessionStorage.removeItem('yue_pending_prompt')
         void send_chat_message(pending)
       }
     }
-  }, [isOpen, isLoading, send_chat_message])
+  }, [canUseChat, isOpen, isLoading, send_chat_message])
 
   const copyLink = async (href: string) => {
     try {
@@ -1309,6 +1515,26 @@ export default function AIChatInterface({
 
         {/* Input */}
         <div className='bg-bg-surface border-t px-4 py-4'>
+          {shouldShowQuickPrompts && (
+            <div className='mb-3 space-y-2'>
+              <div className='text-muted-foreground/80 flex items-center gap-1.5 text-xs font-medium'>
+                <Sparkles className='h-3.5 w-3.5' />
+                {t('mascot.aiChat.quickPrompts.title')}
+              </div>
+              <div className='flex flex-wrap gap-2'>
+                {quickPrompts.map((prompt) => (
+                  <button
+                    key={prompt.id}
+                    type='button'
+                    onClick={() => void send_chat_message(prompt.prompt)}
+                    className='bg-bg-elevated hover:bg-bg-hover text-text-primary rounded-full border border-[var(--border-subtle)] px-3 py-1.5 text-xs transition-colors focus-visible:ring-2 focus-visible:ring-[var(--accent-border)] focus-visible:outline-none'
+                  >
+                    {prompt.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
           <div className='flex gap-2'>
             <input
               ref={inputRef}
@@ -1318,26 +1544,31 @@ export default function AIChatInterface({
               onKeyDown={handleKeyDown}
               placeholder={t('mascot.aiChat.placeholder')}
               className='placeholder:text-muted-foreground/60 flex-1 rounded-xl border border-[var(--border-subtle)] bg-[var(--yu-bg-input)] px-4 py-3 text-sm transition-all duration-200 hover:bg-[var(--yu-bg-input-hover)] focus:border-[var(--action-primary-border)] focus:ring-2 focus:ring-[var(--action-primary-border)] focus:outline-none'
-              disabled={isLoading}
+              disabled={isLoading || !canUseChat}
             />
             <button
               type='button'
-              onClick={sendMessage}
-              disabled={!inputValue.trim() || isLoading}
-              className='text-text-inverse bg-action-primary hover:bg-action-primary-hover rounded-lg px-4 py-3 shadow-sm transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none'
-            >
-              {isLoading ? (
-                <Loader2 className='h-4 w-4 animate-spin' />
-              ) : (
-                <Send className='h-4 w-4' />
+              onClick={isLoading ? cancelCurrentResponse : sendMessage}
+              disabled={isLoading ? isCancelling : !inputValue.trim() || !canUseChat}
+              aria-label={
+                isLoading ? t('mascot.aiChat.cancelResponse') : t('mascot.aiChat.sendMessage')
+              }
+              title={isLoading ? t('mascot.aiChat.cancelResponse') : t('mascot.aiChat.sendMessage')}
+              className={cn(
+                'text-text-inverse rounded-lg px-4 py-3 shadow-sm transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none',
+                isLoading
+                  ? 'bg-status-danger hover:bg-status-danger/90'
+                  : 'bg-action-primary hover:bg-action-primary-hover'
               )}
+            >
+              {isLoading ? <X className='h-4 w-4' /> : <Send className='h-4 w-4' />}
             </button>
           </div>
           <div className='mt-3 flex items-center justify-between'>
             <p className='text-muted-foreground/80 text-xs'>{t('mascot.aiChat.footer')}</p>
             <div className='text-muted-foreground/60 flex items-center gap-1 text-xs'>
-              <div className='bg-status-success h-2 w-2 animate-pulse rounded-full'></div>
-              <span>{t('mascot.aiChat.online')}</span>
+              <div className={cn('h-2 w-2 rounded-full', statusDotClassName)}></div>
+              <span>{t(`mascot.aiChat.status.${chatStatusKey}` as any)}</span>
             </div>
           </div>
         </div>

@@ -6,3 +6,6 @@
 - [x] Audit admin and mascot surfaces after the public theme migration.
 - [x] Add static Agent Skills Discovery files for site navigation.
 - [x] Fix validation blockers found during Agent Skills Discovery work.
+- [x] Add real Yue AI chat status and cancellation controls.
+- [x] Add localized contextual quick prompts to the Mascot chat.
+- [x] Validate Mascot chat status, cancellation, and quick prompts.

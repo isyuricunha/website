@@ -2190,8 +2190,7 @@
         "hf_local": "岳（低）",
         "gemini": "Gemini",
         "groq": "岳（高）",
-        "ollama": "Ollama",
-        "mistral": "岳"
+        "ollama": "Ollama"
       },
       "feedback": {
         "like": "点赞",
@@ -2234,6 +2233,97 @@
       "availableFeatures": "{model} 的可用功能",
       "featureNotAvailable": "此模型不支持 {feature}",
       "online": "在线",
+      "sendMessage": "发送消息",
+      "cancelResponse": "取消回复",
+      "cancelledMessage": "回复已取消。",
+      "status": {
+        "checking": "正在检查 Yue AI...",
+        "ready": "Yue AI 已就绪",
+        "responding": "Yue AI 正在回复...",
+        "unavailable": "Yue AI 不可用",
+        "offline": "离线"
+      },
+      "quickPrompts": {
+        "title": "快速开始",
+        "items": {
+          "siteGuide": {
+            "label": "带我看看",
+            "prompt": "介绍这个网站的主要区域，并建议我从哪里开始。"
+          },
+          "projects": {
+            "label": "查看项目",
+            "prompt": "带我了解 Yuri 的项目，并推荐一个先打开。"
+          },
+          "recentPosts": {
+            "label": "最新文章",
+            "prompt": "推荐一篇最近的博客文章，并附上链接。"
+          },
+          "recommendPost": {
+            "label": "推荐文章",
+            "prompt": "推荐一篇关于数据库、基础设施或 Web 开发的博客文章。"
+          },
+          "topicSearch": {
+            "label": "按主题查找",
+            "prompt": "帮我查找关于数据库或基础设施的内容。"
+          },
+          "summarizePage": {
+            "label": "总结此页",
+            "prompt": "用几个要点总结这个页面。"
+          },
+          "relatedPost": {
+            "label": "相关文章",
+            "prompt": "推荐与我正在阅读的文章相关的文章。"
+          },
+          "keyTakeaway": {
+            "label": "关键结论",
+            "prompt": "这篇文章的主要结论是什么？"
+          },
+          "explainSnippet": {
+            "label": "解释代码片段",
+            "prompt": "解释这个代码片段，以及我什么时候应该使用它。"
+          },
+          "applySnippet": {
+            "label": "如何使用",
+            "prompt": "展示一种实际使用这个代码片段的方法。"
+          },
+          "relatedSnippet": {
+            "label": "相关片段",
+            "prompt": "推荐与这个片段相关的代码片段。"
+          },
+          "recommendProject": {
+            "label": "推荐项目",
+            "prompt": "推荐网站上的一个项目，并说明原因。"
+          },
+          "projectStack": {
+            "label": "技术栈",
+            "prompt": "告诉我这个项目或页面中突出的技术。"
+          },
+          "summarizeProject": {
+            "label": "总结项目",
+            "prompt": "总结这个项目及其主要价值。"
+          },
+          "relatedProject": {
+            "label": "相关项目",
+            "prompt": "推荐与这个项目相关的项目。"
+          },
+          "aboutYuri": {
+            "label": "关于 Yuri",
+            "prompt": "根据这个网站告诉我 Yuri 是谁。"
+          },
+          "currentFocus": {
+            "label": "当前重点",
+            "prompt": "Yuri 现在专注于什么？"
+          },
+          "contactYuri": {
+            "label": "联系",
+            "prompt": "我怎样联系 Yuri？"
+          },
+          "recommendContent": {
+            "label": "推荐内容",
+            "prompt": "推荐这个网站上值得阅读或探索的内容。"
+          }
+        }
+      },
       "retry": "重试"
     },
     "chatbot": {

@@ -2190,8 +2190,7 @@
         "hf_local": "Yue (Low)",
         "gemini": "Gemini",
         "groq": "Yue (High)",
-        "ollama": "Ollama",
-        "mistral": "Yue"
+        "ollama": "Ollama"
       },
       "feedback": {
         "like": "Thumbs up",
@@ -2234,6 +2233,97 @@
       "availableFeatures": "Available features for {model}",
       "featureNotAvailable": "{feature} not available for this model",
       "online": "Online",
+      "sendMessage": "Send message",
+      "cancelResponse": "Cancel response",
+      "cancelledMessage": "Response canceled.",
+      "status": {
+        "checking": "Checking Yue AI...",
+        "ready": "Yue AI ready",
+        "responding": "Yue AI is responding...",
+        "unavailable": "Yue AI unavailable",
+        "offline": "Offline"
+      },
+      "quickPrompts": {
+        "title": "Quick starts",
+        "items": {
+          "siteGuide": {
+            "label": "Guide me",
+            "prompt": "Show me the main areas of this site and suggest where to start."
+          },
+          "projects": {
+            "label": "Show projects",
+            "prompt": "Take me through Yuri's projects and recommend one to open first."
+          },
+          "recentPosts": {
+            "label": "Recent posts",
+            "prompt": "Recommend a recent blog post and include the link."
+          },
+          "recommendPost": {
+            "label": "Recommend a post",
+            "prompt": "Recommend a blog post based on databases, infrastructure, or web development."
+          },
+          "topicSearch": {
+            "label": "Find by topic",
+            "prompt": "Help me find content about databases or infrastructure."
+          },
+          "summarizePage": {
+            "label": "Summarize this",
+            "prompt": "Summarize this page in a few bullet points."
+          },
+          "relatedPost": {
+            "label": "Related posts",
+            "prompt": "Recommend posts related to the one I am reading now."
+          },
+          "keyTakeaway": {
+            "label": "Key takeaway",
+            "prompt": "What is the main takeaway from this post?"
+          },
+          "explainSnippet": {
+            "label": "Explain snippet",
+            "prompt": "Explain this snippet and when I should use it."
+          },
+          "applySnippet": {
+            "label": "How to use it",
+            "prompt": "Show me a practical way to use this snippet."
+          },
+          "relatedSnippet": {
+            "label": "Related snippets",
+            "prompt": "Recommend snippets related to this one."
+          },
+          "recommendProject": {
+            "label": "Recommend a project",
+            "prompt": "Recommend a project from the site and explain why."
+          },
+          "projectStack": {
+            "label": "Tech stack",
+            "prompt": "Tell me which technologies stand out on this project or page."
+          },
+          "summarizeProject": {
+            "label": "Summarize project",
+            "prompt": "Summarize this project and its main value."
+          },
+          "relatedProject": {
+            "label": "Related projects",
+            "prompt": "Recommend projects related to this one."
+          },
+          "aboutYuri": {
+            "label": "About Yuri",
+            "prompt": "Tell me who Yuri is based on this site."
+          },
+          "currentFocus": {
+            "label": "Current focus",
+            "prompt": "What is Yuri focused on right now?"
+          },
+          "contactYuri": {
+            "label": "Contact",
+            "prompt": "How can I contact Yuri?"
+          },
+          "recommendContent": {
+            "label": "Recommend content",
+            "prompt": "Recommend something useful to read or explore on this site."
+          }
+        }
+      },
       "retry": "Retry"
     },
     "chatbot": {

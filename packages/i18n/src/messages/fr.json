@@ -2190,8 +2190,7 @@
         "hf_local": "Yue (Bas)",
         "gemini": "Gemini",
         "groq": "Yue (Élevé)",
-        "ollama": "Ollama",
-        "mistral": "Yue"
+        "ollama": "Ollama"
       },
       "feedback": {
         "like": "Pouce levé",
@@ -2234,6 +2233,97 @@
       "availableFeatures": "Fonctionnalités disponibles pour {model}",
       "featureNotAvailable": "{feature} non disponible pour ce modèle",
       "online": "En ligne",
+      "sendMessage": "Envoyer le message",
+      "cancelResponse": "Annuler la réponse",
+      "cancelledMessage": "Réponse annulée.",
+      "status": {
+        "checking": "Vérification de Yue AI...",
+        "ready": "Yue AI est prête",
+        "responding": "Yue AI répond...",
+        "unavailable": "Yue AI indisponible",
+        "offline": "Hors ligne"
+      },
+      "quickPrompts": {
+        "title": "Démarrages rapides",
+        "items": {
+          "siteGuide": {
+            "label": "Guide-moi",
+            "prompt": "Montre-moi les principales zones de ce site et suggère par où commencer."
+          },
+          "projects": {
+            "label": "Voir les projets",
+            "prompt": "Présente-moi les projets de Yuri et recommande-en un à ouvrir en premier."
+          },
+          "recentPosts": {
+            "label": "Articles récents",
+            "prompt": "Recommande un article récent du blog et inclus le lien."
+          },
+          "recommendPost": {
+            "label": "Recommander un article",
+            "prompt": "Recommande un article sur les bases de données, l'infrastructure ou le développement web."
+          },
+          "topicSearch": {
+            "label": "Chercher par sujet",
+            "prompt": "Aide-moi à trouver du contenu sur les bases de données ou l'infrastructure."
+          },
+          "summarizePage": {
+            "label": "Résumer ceci",
+            "prompt": "Résume cette page en quelques points."
+          },
+          "relatedPost": {
+            "label": "Articles liés",
+            "prompt": "Recommande des articles liés à celui que je lis maintenant."
+          },
+          "keyTakeaway": {
+            "label": "Idée clé",
+            "prompt": "Quelle est l'idée principale de cet article ?"
+          },
+          "explainSnippet": {
+            "label": "Expliquer le snippet",
+            "prompt": "Explique ce snippet et quand je devrais l'utiliser."
+          },
+          "applySnippet": {
+            "label": "Comment l'utiliser",
+            "prompt": "Montre-moi une façon pratique d'utiliser ce snippet."
+          },
+          "relatedSnippet": {
+            "label": "Snippets liés",
+            "prompt": "Recommande des snippets liés à celui-ci."
+          },
+          "recommendProject": {
+            "label": "Recommander un projet",
+            "prompt": "Recommande un projet du site et explique pourquoi."
+          },
+          "projectStack": {
+            "label": "Stack technique",
+            "prompt": "Dis-moi quelles technologies ressortent dans ce projet ou cette page."
+          },
+          "summarizeProject": {
+            "label": "Résumer le projet",
+            "prompt": "Résume ce projet et sa valeur principale."
+          },
+          "relatedProject": {
+            "label": "Projets liés",
+            "prompt": "Recommande des projets liés à celui-ci."
+          },
+          "aboutYuri": {
+            "label": "À propos de Yuri",
+            "prompt": "Dis-moi qui est Yuri d'après ce site."
+          },
+          "currentFocus": {
+            "label": "Focus actuel",
+            "prompt": "Sur quoi Yuri se concentre-t-il maintenant ?"
+          },
+          "contactYuri": {
+            "label": "Contact",
+            "prompt": "Comment puis-je contacter Yuri ?"
+          },
+          "recommendContent": {
+            "label": "Recommander du contenu",
+            "prompt": "Recommande quelque chose d'utile à lire ou explorer sur ce site."
+          }
+        }
+      },
       "retry": "Réessayer"
     },
     "chatbot": {

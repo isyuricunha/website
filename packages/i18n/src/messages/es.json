@@ -2190,8 +2190,7 @@
         "hf_local": "Yue (Bajo)",
         "gemini": "Gemini",
         "groq": "Yue (Alto)",
-        "ollama": "Ollama",
-        "mistral": "Yue"
+        "ollama": "Ollama"
       },
       "feedback": {
         "like": "Pulgar arriba",
@@ -2234,6 +2233,97 @@
       "availableFeatures": "Características disponibles para {model}",
       "featureNotAvailable": "{feature} no está disponible para este modelo",
       "online": "En línea",
+      "sendMessage": "Enviar mensaje",
+      "cancelResponse": "Cancelar respuesta",
+      "cancelledMessage": "Respuesta cancelada.",
+      "status": {
+        "checking": "Comprobando Yue AI...",
+        "ready": "Yue AI lista",
+        "responding": "Yue AI está respondiendo...",
+        "unavailable": "Yue AI no disponible",
+        "offline": "Sin conexión"
+      },
+      "quickPrompts": {
+        "title": "Inicios rápidos",
+        "items": {
+          "siteGuide": {
+            "label": "Guíame",
+            "prompt": "Muéstrame las áreas principales de este sitio y sugiere por dónde empezar."
+          },
+          "projects": {
+            "label": "Ver proyectos",
+            "prompt": "Muéstrame los proyectos de Yuri y recomienda uno para abrir primero."
+          },
+          "recentPosts": {
+            "label": "Posts recientes",
+            "prompt": "Recomienda un post reciente del blog e incluye el enlace."
+          },
+          "recommendPost": {
+            "label": "Recomendar post",
+            "prompt": "Recomienda un post sobre bases de datos, infraestructura o desarrollo web."
+          },
+          "topicSearch": {
+            "label": "Buscar por tema",
+            "prompt": "Ayúdame a encontrar contenido sobre bases de datos o infraestructura."
+          },
+          "summarizePage": {
+            "label": "Resumir esto",
+            "prompt": "Resume esta página en algunos puntos."
+          },
+          "relatedPost": {
+            "label": "Posts relacionados",
+            "prompt": "Recomienda posts relacionados con lo que estoy leyendo ahora."
+          },
+          "keyTakeaway": {
+            "label": "Idea principal",
+            "prompt": "¿Cuál es la idea principal de este post?"
+          },
+          "explainSnippet": {
+            "label": "Explicar snippet",
+            "prompt": "Explica este snippet y cuándo debería usarlo."
+          },
+          "applySnippet": {
+            "label": "Cómo usarlo",
+            "prompt": "Muéstrame una forma práctica de usar este snippet."
+          },
+          "relatedSnippet": {
+            "label": "Snippets relacionados",
+            "prompt": "Recomienda snippets relacionados con este."
+          },
+          "recommendProject": {
+            "label": "Recomendar proyecto",
+            "prompt": "Recomienda un proyecto del sitio y explica por qué."
+          },
+          "projectStack": {
+            "label": "Stack técnico",
+            "prompt": "Dime qué tecnologías destacan en este proyecto o página."
+          },
+          "summarizeProject": {
+            "label": "Resumir proyecto",
+            "prompt": "Resume este proyecto y su valor principal."
+          },
+          "relatedProject": {
+            "label": "Proyectos relacionados",
+            "prompt": "Recomienda proyectos relacionados con este."
+          },
+          "aboutYuri": {
+            "label": "Sobre Yuri",
+            "prompt": "Dime quién es Yuri según este sitio."
+          },
+          "currentFocus": {
+            "label": "Foco actual",
+            "prompt": "¿En qué está enfocado Yuri ahora?"
+          },
+          "contactYuri": {
+            "label": "Contacto",
+            "prompt": "¿Cómo puedo contactar con Yuri?"
+          },
+          "recommendContent": {
+            "label": "Recomendar contenido",
+            "prompt": "Recomienda algo útil para leer o explorar en este sitio."
+          }
+        }
+      },
       "retry": "Reintentar"
     },
     "chatbot": {

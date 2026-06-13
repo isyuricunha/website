@@ -17,6 +17,8 @@ import { ratelimit } from '@/lib/ratelimit'
 import { rate_limit_keys } from '@/lib/rate-limit-keys'
 import { getClientIp } from '@/lib/spam-detection'
 
+const PUBLIC_ASSISTANT_PROVIDER = 'Yue AI'
+
 const conversationMessageSchema = z.object({
   role: z.enum(['user', 'assistant']),
   content: z.string().min(1).max(4000),
@@ -26,7 +28,6 @@ const conversationMessageSchema = z.object({
 const requestSchema = z.object({
   message: z.string().min(1).max(2000),
   mode: z.enum(['chat', 'navigate', 'recommend']).optional(),
-  provider: z.enum(['hf', 'hf_local', 'gemini', 'groq', 'ollama', 'mistral']).optional(),
   model: z.string().max(100).optional(),
   stream: z.boolean().optional(),
   locale: z.string().min(2).max(10).optional(),
@@ -375,7 +376,7 @@ export async function POST(req: NextRequest) {
         const response_headers_stream = {
           ...response_headers,
           'content-type': 'text/plain; charset=utf-8',
-          'x-provider': 'mistral'
+          'x-assistant': PUBLIC_ASSISTANT_PROVIDER
         }
 
         await record_ai_chat_observability({
@@ -419,7 +420,7 @@ export async function POST(req: NextRequest) {
         logger.info('[AI Chat] aiService.generateResponse succeeded', {
           responseLength: text.length
         })
-        return { text, provider: 'mistral' }
+        return { text, provider: PUBLIC_ASSISTANT_PROVIDER, internalProvider: 'mistral' }
       } catch (error) {
         logger.error('[AI Chat] aiService.generateResponse failed', {
           errorName: error instanceof Error ? error.name : 'Unknown',
@@ -446,7 +447,7 @@ export async function POST(req: NextRequest) {
       method,
       statusCode: 200,
       responseTimeMs: Date.now() - started_at,
-      provider: response_text.provider,
+      provider: response_text.internalProvider,
       mode,
       model: parsed.model,
       ipAddress: ip,
@@ -497,11 +498,7 @@ export async function POST(req: NextRequest) {
       message:
         'Oops! Something went wrong on my end. Let me know if you need help with anything else!',
       isError: true,
-      latencyMs: Date.now() - started_at,
-      // Include error details in development
-      ...(process.env.NODE_ENV === 'development' && {
-        debug_error: errorDetails
-      })
+      latencyMs: Date.now() - started_at
     }
 
     await record_ai_chat_observability({

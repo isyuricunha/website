@@ -62,11 +62,19 @@ vi.mock('@/utils/yue-chat-storage', () => {
 
 describe('<AIChatInterface /> feedback', () => {
   it('submits like feedback on thumbs up click', async () => {
-    const fetchMock = vi.fn(async () => {
-      return {
-        ok: true,
-        json: async () => ({})
-      } as Response
+    const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
+      const inputUrl = typeof input === 'string' ? input : ''
+      if (inputUrl === '/api/ai/chat/status') {
+        return Response.json({ available: true }, {
+          status: 200,
+          headers: { 'content-type': 'application/json' }
+        })
+      }
+
+      return Response.json({}, {
+        status: 200,
+        headers: { 'content-type': 'application/json' }
+      })
     })
 
     vi.stubGlobal('fetch', fetchMock)
@@ -83,7 +91,7 @@ describe('<AIChatInterface /> feedback', () => {
       expect(fetchMock).toHaveBeenCalled()
     })
 
-    const call = fetchMock.mock.calls[0]
+    const call = fetchMock.mock.calls.find(([url]) => url === '/api/ai/chat/feedback')
     expect(call).toBeTruthy()
     const [url, init] = call as unknown as [string, RequestInit]
     expect(url).toBe('/api/ai/chat/feedback')
@@ -98,11 +106,19 @@ describe('<AIChatInterface /> feedback', () => {
   })
 
   it('opens comment box on thumbs down and submits dislike feedback with comment', async () => {
-    const fetchMock = vi.fn(async () => {
-      return {
-        ok: true,
-        json: async () => ({})
-      } as Response
+    const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
+      const inputUrl = typeof input === 'string' ? input : ''
+      if (inputUrl === '/api/ai/chat/status') {
+        return Response.json({ available: true }, {
+          status: 200,
+          headers: { 'content-type': 'application/json' }
+        })
+      }
+
+      return Response.json({}, {
+        status: 200,
+        headers: { 'content-type': 'application/json' }
+      })
     })
 
     vi.stubGlobal('fetch', fetchMock)
@@ -124,7 +140,7 @@ describe('<AIChatInterface /> feedback', () => {
       expect(fetchMock).toHaveBeenCalled()
     })
 
-    const call = fetchMock.mock.calls[0]
+    const call = fetchMock.mock.calls.find(([url]) => url === '/api/ai/chat/feedback')
     expect(call).toBeTruthy()
     const [url, init] = call as unknown as [string, RequestInit]
     expect(url).toBe('/api/ai/chat/feedback')
@@ -134,5 +150,104 @@ describe('<AIChatInterface /> feedback', () => {
     expect(parsed.messageId).toBe('m1')
     expect(parsed.rating).toBe('dislike')
     expect(parsed.comment).toBe('not helpful')
+  })
+
+  it('shows contextual quick prompts and sends the selected prompt without exposing the provider', async () => {
+    const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
+      const inputUrl = typeof input === 'string' ? input : ''
+      if (inputUrl === '/api/ai/chat/status') {
+        return Response.json({ available: true }, {
+          status: 200,
+          headers: { 'content-type': 'application/json' }
+        })
+      }
+
+      return Response.json(
+        {
+          message: 'ok',
+          provider: 'Yue AI',
+          timestamp: new Date().toISOString()
+        },
+        {
+          status: 200,
+          headers: { 'content-type': 'application/json' }
+        }
+      )
+    })
+
+    vi.stubGlobal('fetch', fetchMock)
+
+    render(
+      <NextIntlClientProvider locale='en' messages={messages}>
+        <AIChatInterface
+          isOpen
+          onClose={vi.fn()}
+          currentPage='blogPost'
+          pagePath='/en/blog/hello'
+        />
+      </NextIntlClientProvider>
+    )
+
+    expect(await screen.findByText('Yue AI ready')).toBeInTheDocument()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Summarize this' }))
+
+    await waitFor(() => {
+      expect(fetchMock.mock.calls.some(([url]) => url === '/api/ai/chat')).toBe(true)
+    })
+
+    const call = fetchMock.mock.calls.find(([url]) => url === '/api/ai/chat')
+    expect(call).toBeTruthy()
+    const [, init] = call as unknown as [string, RequestInit]
+    const parsed = JSON.parse(init.body as string) as Record<string, unknown>
+
+    expect(parsed.message).toBe('Summarize this page in a few bullet points.')
+    expect(parsed.provider).toBeUndefined()
+    expect(JSON.stringify(parsed)).not.toContain('mistral')
+  })
+
+  it('cancels an in-flight chat response', async () => {
+    let chatSignal: AbortSignal | null | undefined
+
+    const fetchMock = vi.fn((input: RequestInfo | URL, init?: RequestInit) => {
+      const inputUrl = typeof input === 'string' ? input : ''
+      if (inputUrl === '/api/ai/chat/status') {
+        return Promise.resolve(
+          Response.json({ available: true }, {
+            status: 200,
+            headers: { 'content-type': 'application/json' }
+          })
+        )
+      }
+
+      chatSignal = init?.signal ?? undefined
+
+      return new Promise<Response>((_, reject) => {
+        chatSignal?.addEventListener('abort', () => {
+          reject(new DOMException('Aborted', 'AbortError'))
+        })
+      })
+    })
+
+    vi.stubGlobal('fetch', fetchMock)
+
+    render(
+      <NextIntlClientProvider locale='en' messages={messages}>
+        <AIChatInterface isOpen onClose={vi.fn()} currentPage='home' pagePath='/en' />
+      </NextIntlClientProvider>
+    )
+
+    expect(await screen.findByText('Yue AI ready')).toBeInTheDocument()
+
+    fireEvent.change(screen.getByPlaceholderText('Ask me anything...'), {
+      target: { value: 'hello' }
+    })
+    fireEvent.click(screen.getByRole('button', { name: 'Send message' }))
+
+    await waitFor(() => expect(chatSignal).toBeTruthy())
+    fireEvent.click(screen.getByRole('button', { name: 'Cancel response' }))
+
+    await screen.findByText('Response canceled.')
+    expect(chatSignal?.aborted).toBe(true)
   })
 })

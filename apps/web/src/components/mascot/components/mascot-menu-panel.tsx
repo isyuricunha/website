@@ -7,7 +7,6 @@ import {
   Settings as SettingsIcon
 } from 'lucide-react'
 import { SiGithub } from '@icons-pack/react-simple-icons'
-import { flags } from '@isyuricunha/env'
 import { UseMascotStateReturn } from '../hooks/use-mascot-state'
 
 type MascotMenuPanelProps = {
@@ -38,21 +37,14 @@ export function MascotMenuPanel({ mascot }: MascotMenuPanelProps) {
           <SiGithub className='h-4 w-4' />
           {t('mascot.menu.viewProjects')}
         </button>
-        {(flags.mistral ||
-          flags.gemini ||
-          flags.groq ||
-          flags.hf ||
-          flags.hfLocal ||
-          flags.ollama) && (
-          <button
-            type='button'
-            className='hover:bg-bg-hover flex w-full items-center gap-2 rounded-md px-3 py-2.5 text-left transition-colors focus-visible:ring-2 focus-visible:ring-[var(--accent-border)] focus-visible:outline-none'
-            onClick={() => handleMenuAction('chat')}
-          >
-            <MessageCircleIcon className='h-4 w-4' />
-            {t('mascot.menu.aiChat')}
-          </button>
-        )}
+        <button
+          type='button'
+          className='hover:bg-bg-hover flex w-full items-center gap-2 rounded-md px-3 py-2.5 text-left transition-colors focus-visible:ring-2 focus-visible:ring-[var(--accent-border)] focus-visible:outline-none'
+          onClick={() => handleMenuAction('chat')}
+        >
+          <MessageCircleIcon className='h-4 w-4' />
+          {t('mascot.menu.aiChat')}
+        </button>
         <button
           type='button'
           className='hover:bg-bg-hover flex w-full items-center gap-2 rounded-md px-3 py-2.5 text-left transition-colors focus-visible:ring-2 focus-visible:ring-[var(--accent-border)] focus-visible:outline-none'

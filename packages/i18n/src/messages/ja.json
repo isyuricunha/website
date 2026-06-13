@@ -2190,8 +2190,7 @@
         "hf_local": "Yue（低）",
         "gemini": "Gemini",
         "groq": "Yue（高）",
-        "ollama": "Ollama",
-        "mistral": "Yue"
+        "ollama": "Ollama"
       },
       "feedback": {
         "like": "いいね",
@@ -2234,6 +2233,97 @@
       "availableFeatures": "{model} の利用可能な機能",
       "featureNotAvailable": "このモデルでは {feature} は利用できません",
       "online": "オンライン",
+      "sendMessage": "メッセージを送信",
+      "cancelResponse": "応答をキャンセル",
+      "cancelledMessage": "応答をキャンセルしました。",
+      "status": {
+        "checking": "Yue AI を確認中...",
+        "ready": "Yue AI は準備完了",
+        "responding": "Yue AI が応答中...",
+        "unavailable": "Yue AI は利用できません",
+        "offline": "オフライン"
+      },
+      "quickPrompts": {
+        "title": "クイックスタート",
+        "items": {
+          "siteGuide": {
+            "label": "案内して",
+            "prompt": "このサイトの主なエリアを紹介し、どこから始めるべきか提案してください。"
+          },
+          "projects": {
+            "label": "プロジェクトを見る",
+            "prompt": "Yuri のプロジェクトを案内し、最初に開くものを1つ勧めてください。"
+          },
+          "recentPosts": {
+            "label": "最近の記事",
+            "prompt": "最近のブログ記事を1つ勧め、リンクも含めてください。"
+          },
+          "recommendPost": {
+            "label": "記事を勧める",
+            "prompt": "データベース、インフラ、Web 開発に関するブログ記事を勧めてください。"
+          },
+          "topicSearch": {
+            "label": "トピックで探す",
+            "prompt": "データベースやインフラに関するコンテンツを探すのを手伝ってください。"
+          },
+          "summarizePage": {
+            "label": "要約して",
+            "prompt": "このページをいくつかの箇条書きで要約してください。"
+          },
+          "relatedPost": {
+            "label": "関連記事",
+            "prompt": "今読んでいる記事に関連する記事を勧めてください。"
+          },
+          "keyTakeaway": {
+            "label": "要点",
+            "prompt": "この記事の主な要点は何ですか？"
+          },
+          "explainSnippet": {
+            "label": "スニペットを説明",
+            "prompt": "このスニペットと、いつ使うべきかを説明してください。"
+          },
+          "applySnippet": {
+            "label": "使い方",
+            "prompt": "このスニペットの実用的な使い方を示してください。"
+          },
+          "relatedSnippet": {
+            "label": "関連スニペット",
+            "prompt": "これに関連するスニペットを勧めてください。"
+          },
+          "recommendProject": {
+            "label": "プロジェクトを勧める",
+            "prompt": "サイト内のプロジェクトを1つ勧め、その理由を説明してください。"
+          },
+          "projectStack": {
+            "label": "技術スタック",
+            "prompt": "このプロジェクトまたはページで目立つ技術を教えてください。"
+          },
+          "summarizeProject": {
+            "label": "プロジェクト要約",
+            "prompt": "このプロジェクトと主な価値を要約してください。"
+          },
+          "relatedProject": {
+            "label": "関連プロジェクト",
+            "prompt": "これに関連するプロジェクトを勧めてください。"
+          },
+          "aboutYuri": {
+            "label": "Yuri について",
+            "prompt": "このサイトをもとに Yuri がどんな人か教えてください。"
+          },
+          "currentFocus": {
+            "label": "現在の注力",
+            "prompt": "Yuri は今何に注力していますか？"
+          },
+          "contactYuri": {
+            "label": "連絡先",
+            "prompt": "Yuri に連絡するにはどうすればいいですか？"
+          },
+          "recommendContent": {
+            "label": "コンテンツ推薦",
+            "prompt": "このサイトで読む、または探索する価値のあるものを勧めてください。"
+          }
+        }
+      },
       "retry": "再試行"
     },
     "chatbot": {
