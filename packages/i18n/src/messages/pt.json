@@ -804,7 +804,7 @@
         "update-failed": "Falha ao atualizar anúncio: {message}",
         "deleted": "Anúncio excluído com sucesso",
         "delete-failed": "Falha ao excluir anúncio: {message}",
-        "all-languages-filled": "Translated to {count} languages"
+        "all-languages-filled": "Traduzido para {count} idiomas"
       },
       "actions": {
         "create": "Criar anúncio",
@@ -815,7 +815,7 @@
         "deactivate": "Desativar",
         "edit-aria": "Editar anúncio",
         "delete-aria": "Excluir anúncio",
-        "translate-all": "Translate to all languages"
+        "translate-all": "Traduzir para todos os idiomas"
       },
       "create": {
         "title": "Criar novo anúncio",
@@ -876,7 +876,7 @@
         "targeted": "Segmentado",
         "dismissible": "Dispensável",
         "not-dismissible": "Não dispensável",
-        "translated": "Translated"
+        "translated": "Traduzido"
       }
     },
     "communication-management": {

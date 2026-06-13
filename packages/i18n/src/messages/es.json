@@ -804,7 +804,7 @@
         "update-failed": "Error al actualizar el anuncio: {message}",
         "deleted": "Anuncio eliminado con éxito",
         "delete-failed": "Error al eliminar el anuncio: {message}",
-        "all-languages-filled": "Translated to {count} languages"
+        "all-languages-filled": "Traducido a {count} idiomas"
       },
       "actions": {
         "create": "Crear anuncio",
@@ -815,7 +815,7 @@
         "deactivate": "Desactivar",
         "edit-aria": "Editar anuncio",
         "delete-aria": "Eliminar anuncio",
-        "translate-all": "Translate to all languages"
+        "translate-all": "Traducir a todos los idiomas"
       },
       "create": {
         "title": "Crear nuevo anuncio",
@@ -876,7 +876,7 @@
         "targeted": "Dirigido",
         "dismissible": "Descartable",
         "not-dismissible": "No descartable",
-        "translated": "Translated"
+        "translated": "Traducido"
       }
     },
     "communication-management": {

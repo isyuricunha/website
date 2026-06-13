@@ -804,7 +804,7 @@
         "update-failed": "Échec de la mise à jour de l'annonce : {message}",
         "deleted": "Annonce supprimée avec succès",
         "delete-failed": "Échec de la suppression de l'annonce : {message}",
-        "all-languages-filled": "Translated to {count} languages"
+        "all-languages-filled": "Traduit en {count} langues"
       },
       "actions": {
         "create": "Créer une annonce",
@@ -815,7 +815,7 @@
         "deactivate": "Désactiver",
         "edit-aria": "Modifier l'annonce",
         "delete-aria": "Supprimer l'annonce",
-        "translate-all": "Translate to all languages"
+        "translate-all": "Traduire dans toutes les langues"
       },
       "create": {
         "title": "Créer une nouvelle annonce",
@@ -876,7 +876,7 @@
         "targeted": "Ciblé",
         "dismissible": "Ignorable",
         "not-dismissible": "Non ignorable",
-        "translated": "Translated"
+        "translated": "Traduit"
       }
     },
     "communication-management": {

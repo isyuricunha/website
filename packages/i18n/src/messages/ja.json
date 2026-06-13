@@ -804,7 +804,7 @@
         "update-failed": "お知らせの更新に失敗しました: {message}",
         "deleted": "お知らせが正常に削除されました",
         "delete-failed": "お知らせの削除に失敗しました: {message}",
-        "all-languages-filled": "Translated to {count} languages"
+        "all-languages-filled": "{count}言語に翻訳済み"
       },
       "actions": {
         "create": "お知らせを作成",
@@ -815,7 +815,7 @@
         "deactivate": "無効化",
         "edit-aria": "お知らせを編集",
         "delete-aria": "お知らせを削除",
-        "translate-all": "Translate to all languages"
+        "translate-all": "すべての言語に翻訳"
       },
       "create": {
         "title": "新しいお知らせを作成",
@@ -876,7 +876,7 @@
         "targeted": "ターゲット指定",
         "dismissible": "閉じ可能",
         "not-dismissible": "閉じ不可",
-        "translated": "Translated"
+        "translated": "翻訳済み"
       }
     },
     "communication-management": {

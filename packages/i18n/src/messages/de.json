@@ -804,7 +804,7 @@
         "update-failed": "Aktualisierung der Bekanntmachung fehlgeschlagen: {message}",
         "deleted": "Bekanntmachung erfolgreich gelöscht",
         "delete-failed": "Löschen der Bekanntmachung fehlgeschlagen: {message}",
-        "all-languages-filled": "Translated to {count} languages"
+        "all-languages-filled": "In {count} Sprachen übersetzt"
       },
       "actions": {
         "create": "Bekanntmachung erstellen",
@@ -815,7 +815,7 @@
         "deactivate": "Deaktivieren",
         "edit-aria": "Bekanntmachung bearbeiten",
         "delete-aria": "Bekanntmachung löschen",
-        "translate-all": "Translate to all languages"
+        "translate-all": "In alle Sprachen übersetzen"
       },
       "create": {
         "title": "Neue Bekanntmachung erstellen",
@@ -876,7 +876,7 @@
         "targeted": "Zielgerichtet",
         "dismissible": "Schließbar",
         "not-dismissible": "Nicht schließbar",
-        "translated": "Translated"
+        "translated": "Übersetzt"
       }
     },
     "communication-management": {

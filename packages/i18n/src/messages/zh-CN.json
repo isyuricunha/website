@@ -804,7 +804,7 @@
         "update-failed": "更新公告失败：{message}",
         "deleted": "公告删除成功",
         "delete-failed": "删除公告失败：{message}",
-        "all-languages-filled": "Translated to {count} languages"
+        "all-languages-filled": "已翻译成{count}种语言"
       },
       "actions": {
         "create": "创建公告",
@@ -815,7 +815,7 @@
         "deactivate": "停用",
         "edit-aria": "编辑公告",
         "delete-aria": "删除公告",
-        "translate-all": "Translate to all languages"
+        "translate-all": "翻译成所有语言"
       },
       "create": {
         "title": "创建新公告",
@@ -876,7 +876,7 @@
         "targeted": "定向",
         "dismissible": "可关闭",
         "not-dismissible": "不可关闭",
-        "translated": "Translated"
+        "translated": "已翻译"
       }
     },
     "communication-management": {
