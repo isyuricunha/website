@@ -18,7 +18,7 @@ const AdminNavGroup = (props: AdminNavGroupProps) => {
       <SidebarGroupContent>
         <SidebarMenu>
           {links.map((link) => (
-            <AdminNavLink key={link.titleKey} {...link} />
+            <AdminNavLink key={link.url} {...link} />
           ))}
         </SidebarMenu>
       </SidebarGroupContent>
