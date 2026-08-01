@@ -228,7 +228,12 @@
         "storage": "存储使用情况",
         "excellent": "优秀",
         "fast": "快速",
-        "moderate": "中等"
+        "moderate": "中等",
+        "engagement": "互动率",
+        "per-user": "每位用户",
+        "monthly-users": "月度用户",
+        "monthly-comments": "月度评论",
+        "view-details": "查看详情"
       }
     },
     "system-health": {
