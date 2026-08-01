@@ -20,7 +20,10 @@ const rules: Linter.RulesRecord = withoutDeprecatedPluginRules(
     'unicorn/prefer-export-from': ['error', { checkUsedVariables: true }],
     'unicorn/prevent-abbreviations': 'off',
     'unicorn/prefer-string-raw': 'off',
-    'unicorn/prefer-spread': 'off'
+    'unicorn/prefer-spread': 'off',
+    'unicorn/better-dom-traversing': 'off',
+    'unicorn/no-this-outside-of-class': 'off',
+    'unicorn/no-confusing-array-splice': 'off'
   },
   {
     unicorn: unicornPlugin
