@@ -237,7 +237,12 @@ export const AiSettings = () => {
         <CardContent className='space-y-4'>
           <div className='space-y-2'>
             <Label htmlFor='selected-model'>Selected model</Label>
-            <Input id='selected-model' value={model} readOnly placeholder='Load and select a model' />
+            <Input
+              id='selected-model'
+              value={model}
+              readOnly
+              placeholder='Load and select a model'
+            />
           </div>
 
           <div className='space-y-2'>

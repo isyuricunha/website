@@ -45,11 +45,7 @@ const get_runtime_config = async () => {
   return config
 }
 
-const create_chat_request = async (
-  message: string,
-  context: YueSiteContext,
-  stream: boolean
-) => {
+const create_chat_request = async (message: string, context: YueSiteContext, stream: boolean) => {
   const config = await get_runtime_config()
   const controller = new AbortController()
   const timeout = setTimeout(() => controller.abort(), CHAT_REQUEST_TIMEOUT_MS)

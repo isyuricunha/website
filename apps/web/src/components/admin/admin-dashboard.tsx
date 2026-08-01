@@ -182,7 +182,7 @@ const AdminDashboard = () => {
                   </div>
                   <div className='text-accent-earth-text flex items-center gap-1 text-xs font-medium'>
                     <TrendingUp className='h-3.5 w-3.5' />
-                    {stat.trend > 0 ? `+${stat.trend}%` : (stat.trend < 0 ? `${stat.trend}%` : '0%')}
+                    {stat.trend > 0 ? `+${stat.trend}%` : stat.trend < 0 ? `${stat.trend}%` : '0%'}
                   </div>
                 </div>
                 <p className='text-text-secondary text-xs leading-relaxed'>{stat.description}</p>

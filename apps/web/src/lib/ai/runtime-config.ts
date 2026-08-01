@@ -170,9 +170,7 @@ export const get_ai_runtime_config = async (): Promise<AiRuntimeConfig | null> =
   const modelValue = values.get(AI_CONFIG_KEYS.model)
 
   const apiKey = encryptedApiKey ? decrypt_ai_api_key(encryptedApiKey) : environment?.apiKey
-  const endpoint = endpointValue
-    ? normalize_ai_endpoint(endpointValue)
-    : environment?.endpoint
+  const endpoint = endpointValue ? normalize_ai_endpoint(endpointValue) : environment?.endpoint
   const model = modelValue || environment?.model
 
   if (!apiKey || !endpoint || !model) return null
@@ -212,13 +210,14 @@ const parse_models_response = (payload: unknown) => {
   const data = Reflect.get(payload, 'data')
   if (!Array.isArray(data)) return []
 
-  const models = data
-    .map((item) => {
-      if (!item || typeof item !== 'object') return null
-      const id = Reflect.get(item, 'id')
-      return typeof id === 'string' ? id.trim() : null
-    })
-    .filter((id): id is string => Boolean(id))
+  const models: string[] = []
+  for (const item of data) {
+    if (!item || typeof item !== 'object') continue
+    const id = Reflect.get(item, 'id')
+    if (typeof id !== 'string') continue
+    const normalizedId = id.trim()
+    if (normalizedId) models.push(normalizedId)
+  }
 
   return Array.from(new Set(models)).toSorted((a, b) => a.localeCompare(b))
 }

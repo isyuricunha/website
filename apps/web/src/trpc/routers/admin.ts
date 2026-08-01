@@ -89,15 +89,15 @@ export const adminRouter = createTRPCRouter({
       const userTrend =
         prevMonthUsers > 0
           ? Math.round(((recentUsers - prevMonthUsers) / prevMonthUsers) * 100)
-          : (recentUsers > 0
+          : recentUsers > 0
             ? 100
-            : 0)
+            : 0
       const commentTrend =
         prevMonthComments > 0
           ? Math.round(((recentComments - prevMonthComments) / prevMonthComments) * 100)
-          : (recentComments > 0
+          : recentComments > 0
             ? 100
-            : 0)
+            : 0
 
       // Calculate engagement metrics
       const engagementRate = totalUsers > 0 ? totalComments / totalUsers : 0

@@ -152,7 +152,7 @@ const is_abort_error = (error: unknown) => {
   return false
 }
 
-const is_browser_offline = () => !(globalThis.navigator?.onLine)
+const is_browser_offline = () => !globalThis.navigator?.onLine
 
 const DEFAULT_QUICK_PROMPT_IDS: QuickPromptId[] = ['siteGuide', 'recommendContent', 'contactYuri']
 
@@ -344,9 +344,9 @@ export default function AIChatInterface({
   const statusDotClassName =
     chatStatusKey === 'ready'
       ? 'bg-status-success'
-      : (chatStatusKey === 'responding' || chatStatusKey === 'checking'
+      : chatStatusKey === 'responding' || chatStatusKey === 'checking'
         ? 'bg-status-warning'
-        : 'bg-status-danger')
+        : 'bg-status-danger'
 
   const get_bubble_class_name = (message: ChatMessage) => {
     if (message.isUser) {
@@ -926,10 +926,7 @@ export default function AIChatInterface({
     if (messageIndex === -1) return
 
     // Find the last user message before this error
-    const lastUserMessage = [...conversation.messages]
-      .slice(0, messageIndex)
-      .toReversed()
-      .find((m) => m.isUser)
+    const lastUserMessage = conversation.messages.slice(0, messageIndex).findLast((m) => m.isUser)
 
     if (!lastUserMessage) return
 
