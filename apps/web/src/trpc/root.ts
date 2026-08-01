@@ -1,4 +1,5 @@
 import { adminRouter } from './routers/admin'
+import { aiSettingsRouter } from './routers/ai-settings'
 import { announcementsRouter } from './routers/announcements'
 import { bulkRouter } from './routers/bulk'
 import { commentsRouter } from './routers/comments'
@@ -6,14 +7,14 @@ import { communicationRouter } from './routers/communication'
 import { contentRouter } from './routers/content'
 import { dataManagementRouter } from './routers/data-management'
 import { emailManagementRouter } from './routers/email-management'
-import { resendEmailRouter } from './routers/resend-email'
 import { githubRouter } from './routers/github'
 import { guestbookRouter } from './routers/guestbook'
+import { lastfmRouter } from './routers/lastfm'
 import { likesRouter } from './routers/likes'
 import { monitoringRouter } from './routers/monitoring'
 import { ratesRouter } from './routers/rates'
+import { resendEmailRouter } from './routers/resend-email'
 import { securityRouter } from './routers/security'
-import { lastfmRouter } from './routers/lastfm'
 import { systemRouter } from './routers/system'
 import { usersRouter } from './routers/users'
 import { viewsRouter } from './routers/views'
@@ -22,6 +23,7 @@ import { createTRPCRouter } from './trpc'
 
 export const appRouter = createTRPCRouter({
   admin: adminRouter,
+  aiSettings: aiSettingsRouter,
   announcements: announcementsRouter,
   bulk: bulkRouter,
   communication: communicationRouter,
