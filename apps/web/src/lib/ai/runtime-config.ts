@@ -1,5 +1,3 @@
-import 'server-only'
-
 import { createCipheriv, createDecipheriv, createHash, randomBytes } from 'node:crypto'
 
 import { db, inArray, siteConfig } from '@isyuricunha/db'
@@ -37,9 +35,16 @@ export type AiModelsResult = ModelsCacheValue & {
 }
 
 const get_encryption_key = () => {
-  const secret = process.env.BETTER_AUTH_SECRET?.trim()
+  const secret = [
+    process.env.BETTER_AUTH_SECRET,
+    process.env.CRON_SECRET,
+    process.env.UPSTASH_REDIS_REST_TOKEN
+  ]
+    .find((value) => value?.trim())
+    ?.trim()
+
   if (!secret) {
-    throw new Error('BETTER_AUTH_SECRET is required to protect the runtime API key')
+    throw new Error('A server secret is required to protect the runtime API key')
   }
 
   return createHash('sha256').update(`website:runtime-ai:${secret}`).digest()
