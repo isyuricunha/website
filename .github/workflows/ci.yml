@@ -55,6 +55,34 @@ jobs:
           if-no-files-found: error
           retention-days: 1
 
+      - name: Format pending files
+        run: |
+          pnpm exec prettier --write \
+            apps/web/src/components/admin/admin-dashboard.tsx \
+            apps/web/src/components/admin/ai-settings.tsx \
+            apps/web/src/components/mascot/ai-chat-interface.tsx \
+            apps/web/src/lib/ai/runtime-config.ts \
+            apps/web/src/lib/ai/runtime-provider.ts \
+            apps/web/src/tests/components/mascot/ai-chat-interface-feedback.test.tsx \
+            apps/web/src/trpc/routers/admin.ts \
+            apps/web/src/trpc/routers/users.ts
+
+      - name: Upload formatted files
+        uses: actions/upload-artifact@v4
+        with:
+          name: formatted-source
+          path: |
+            apps/web/src/components/admin/admin-dashboard.tsx
+            apps/web/src/components/admin/ai-settings.tsx
+            apps/web/src/components/mascot/ai-chat-interface.tsx
+            apps/web/src/lib/ai/runtime-config.ts
+            apps/web/src/lib/ai/runtime-provider.ts
+            apps/web/src/tests/components/mascot/ai-chat-interface-feedback.test.tsx
+            apps/web/src/trpc/routers/admin.ts
+            apps/web/src/trpc/routers/users.ts
+          if-no-files-found: error
+          retention-days: 1
+
       - name: Check formatting
         run: pnpm format:check
 
