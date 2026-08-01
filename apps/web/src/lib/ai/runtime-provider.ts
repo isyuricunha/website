@@ -1,5 +1,3 @@
-import 'server-only'
-
 import { build_yue_openai_messages, type YueSiteContext } from './yue-context'
 import { get_ai_runtime_config } from './runtime-config'
 
