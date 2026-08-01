@@ -23,7 +23,9 @@ const rules: Linter.RulesRecord = withoutDeprecatedPluginRules(
     'unicorn/prefer-spread': 'off',
     'unicorn/better-dom-traversing': 'off',
     'unicorn/no-this-outside-of-class': 'off',
-    'unicorn/no-confusing-array-splice': 'off'
+    'unicorn/no-confusing-array-splice': 'off',
+    'unicorn/no-exports-in-scripts': 'off',
+    'unicorn/prefer-includes-over-repeated-comparisons': 'off'
   },
   {
     unicorn: unicornPlugin
