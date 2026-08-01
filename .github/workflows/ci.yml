@@ -76,13 +76,14 @@ jobs:
           config = config_path.read_text()
           config_start = config.index('  const models = data')
           config_end = config.index('\n\n  return Array.from', config_start)
-          config_replacement = """  const models = data.flatMap((item) => {
-              if (!item || typeof item !== 'object') return []
+          config_replacement = """  const models: string[] = []
+            for (const item of data) {
+              if (!item || typeof item !== 'object') continue
               const id = Reflect.get(item, 'id')
-              if (typeof id !== 'string') return []
+              if (typeof id !== 'string') continue
               const normalizedId = id.trim()
-              return normalizedId ? [normalizedId] : []
-            })"""
+              if (normalizedId) models.push(normalizedId)
+            }"""
           config_path.write_text(
               config[:config_start] + config_replacement + config[config_end:]
           )
