@@ -228,7 +228,12 @@
         "storage": "Uso de armazenamento",
         "excellent": "Excelente",
         "fast": "Rápido",
-        "moderate": "Moderado"
+        "moderate": "Moderado",
+        "engagement": "Engajamento",
+        "per-user": "por usuário",
+        "monthly-users": "Usuários mensais",
+        "monthly-comments": "Comentários mensais",
+        "view-details": "Ver detalhes"
       }
     },
     "system-health": {

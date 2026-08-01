@@ -228,7 +228,12 @@
         "storage": "ストレージ使用量",
         "excellent": "優秀",
         "fast": "高速",
-        "moderate": "普通"
+        "moderate": "普通",
+        "engagement": "エンゲージメント",
+        "per-user": "ユーザーあたり",
+        "monthly-users": "月間ユーザー",
+        "monthly-comments": "月間コメント",
+        "view-details": "詳細を表示"
       }
     },
     "system-health": {
