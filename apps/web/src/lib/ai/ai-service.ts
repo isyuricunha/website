@@ -1,43 +1,17 @@
+import { runtimeProvider } from './runtime-provider'
 import { type YueSiteContext } from './yue-context'
-
-import { mistralProvider } from './mistral-provider'
 
 type SiteContext = YueSiteContext
 
 class AIService {
   async generateStream(message: string, context: SiteContext): Promise<ReadableStream<Uint8Array>> {
-    return this.generateMistralStream(message, context)
+    return runtimeProvider.generateStream(message, context)
   }
 
   async generateResponse(message: string, context: SiteContext): Promise<string> {
-    return this.generateMistralResponse(message, context)
+    return runtimeProvider.generateResponse(message, context)
   }
 
-  private async generateMistralResponse(message: string, context: SiteContext): Promise<string> {
-    return mistralProvider.generateResponse(message, context)
-  }
-
-  private async generateMistralStream(
-    message: string,
-    context: SiteContext
-  ): Promise<ReadableStream<Uint8Array>> {
-    return mistralProvider.generateStream(message, context)
-  }
-
-  // Check if providers are available
-  isHfAvailable(): boolean {
-    return false
-  }
-
-  isHfLocalAvailable(): boolean {
-    return false
-  }
-
-  isGroqAvailable(): boolean {
-    return false
-  }
-
-  // Content generation methods
   async generateTags(content: string, existingTags: string[] = []): Promise<string[]> {
     const prompt = `Analyze this blog post content and suggest 3-6 relevant tags.
 
@@ -61,7 +35,6 @@ Tags:`
 
     const response = await this.generateResponse(prompt, context)
 
-    // Extract tags from response
     return response
       .split(',')
       .map((tag) =>
@@ -120,7 +93,6 @@ Meta description:`
 
     const response = await this.generateResponse(prompt, context)
 
-    // Ensure it's within the character limit
     let description = response.trim()
     if (description.length > 160) {
       description = description.slice(0, 157) + '...'
@@ -160,21 +132,8 @@ Translation:`
     return this.generateResponse(prompt, context)
   }
 
-  // Check if providers are available
-  isGeminiAvailable(): boolean {
-    return false
-  }
-
-  isOllamaAvailable(): boolean {
-    return false
-  }
-
-  isMistralAvailable(): boolean {
-    return mistralProvider.isAvailable()
-  }
-
   getAvailableProviders(): string[] {
-    return this.isMistralAvailable() ? ['mistral'] : []
+    return ['runtime']
   }
 }
 
