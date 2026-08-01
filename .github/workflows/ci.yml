@@ -65,40 +65,27 @@ jobs:
 
           chat_path = Path('apps/web/src/components/mascot/ai-chat-interface.tsx')
           chat = chat_path.read_text()
-          old_chat = """    const lastUserMessage = [...conversation.messages]
+          chat_start = chat.index('    const lastUserMessage =')
+          chat_end = chat.index('\n\n    if (!lastUserMessage)', chat_start)
+          chat_replacement = """    const lastUserMessage = conversation.messages
               .slice(0, messageIndex)
-              .toReversed()
-              .find((m) => m.isUser)
-          """
-          new_chat = """    const lastUserMessage = conversation.messages
-              .slice(0, messageIndex)
-              .findLast((m) => m.isUser)
-          """
-          if old_chat not in chat:
-              raise SystemExit('Expected retry message block was not found')
-          chat_path.write_text(chat.replace(old_chat, new_chat))
+              .findLast((m) => m.isUser)"""
+          chat_path.write_text(chat[:chat_start] + chat_replacement + chat[chat_end:])
 
           config_path = Path('apps/web/src/lib/ai/runtime-config.ts')
           config = config_path.read_text()
-          old_config = """  const models = data
-              .map((item) => {
-                if (!item || typeof item !== 'object') return null
-                const id = Reflect.get(item, 'id')
-                return typeof id === 'string' ? id.trim() : null
-              })
-              .filter((id): id is string => Boolean(id))
-          """
-          new_config = """  const models = data.flatMap((item) => {
+          config_start = config.index('  const models = data')
+          config_end = config.index('\n\n  return Array.from', config_start)
+          config_replacement = """  const models = data.flatMap((item) => {
               if (!item || typeof item !== 'object') return []
               const id = Reflect.get(item, 'id')
               if (typeof id !== 'string') return []
               const normalizedId = id.trim()
               return normalizedId ? [normalizedId] : []
-            })
-          """
-          if old_config not in config:
-              raise SystemExit('Expected model parsing block was not found')
-          config_path.write_text(config.replace(old_config, new_config))
+            })"""
+          config_path.write_text(
+              config[:config_start] + config_replacement + config[config_end:]
+          )
           PY
 
           pnpm exec prettier --write \
