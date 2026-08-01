@@ -68,7 +68,7 @@ export const encrypt_ai_api_key = (apiKey: string) => {
   ].join(':')
 }
 
-export const decrypt_ai_api_key = (storedValue: string) => {
+const decrypt_ai_api_key = (storedValue: string) => {
   const value = storedValue.trim()
   if (!value.startsWith(`${ENCRYPTION_PREFIX}:${ENCRYPTION_VERSION}:`)) {
     return value
