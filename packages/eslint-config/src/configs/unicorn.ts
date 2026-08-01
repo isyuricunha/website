@@ -17,10 +17,18 @@ const rules: Linter.RulesRecord = withoutDeprecatedPluginRules(
     'unicorn/no-array-reduce': 'off',
     'unicorn/prefer-string-replace-all': 'off',
     'unicorn/switch-case-braces': 'off',
-    'unicorn/prefer-export-from': ['error', { ignoreUsedVariables: true }],
+    'unicorn/prefer-export-from': ['error', { checkUsedVariables: true }],
     'unicorn/prevent-abbreviations': 'off',
     'unicorn/prefer-string-raw': 'off',
-    'unicorn/prefer-spread': 'off'
+    'unicorn/prefer-spread': 'off',
+    'unicorn/better-dom-traversing': 'off',
+    'unicorn/no-this-outside-of-class': 'off',
+    'unicorn/no-confusing-array-splice': 'off',
+    'unicorn/no-exports-in-scripts': 'off',
+    'unicorn/prefer-includes-over-repeated-comparisons': 'off',
+    'unicorn/prefer-split-limit': 'off',
+    'unicorn/no-unused-array-method-return': 'off',
+    'unicorn/prefer-top-level-await': 'off'
   },
   {
     unicorn: unicornPlugin

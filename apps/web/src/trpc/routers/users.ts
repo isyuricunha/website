@@ -70,9 +70,9 @@ export const usersRouter = createTRPCRouter({
       const ext =
         input.contentType === 'image/png'
           ? 'png'
-          : (input.contentType === 'image/webp'
+          : input.contentType === 'image/webp'
             ? 'webp'
-            : 'jpg')
+            : 'jpg'
 
       const key = `avatars/${ctx.session.user.id}/${randomUUID()}.${ext}`
 

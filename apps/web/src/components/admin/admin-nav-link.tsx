@@ -9,11 +9,11 @@ import Link from '../link'
 type AdminNavLinkProps = SidebarLink
 
 const AdminNavLink = (props: AdminNavLinkProps) => {
-  const { titleKey, url, icon: Icon } = props
+  const { url, icon: Icon } = props
   const pathname = usePathname()
   const t = useTranslations('admin.nav')
   const isActive = pathname === url || pathname.startsWith(`${url}/`)
-  const label = t(titleKey)
+  const label = 'title' in props ? props.title : t(props.titleKey)
 
   return (
     <SidebarMenuItem>

@@ -30,7 +30,6 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Check if any AI provider is available
     const availableProviders = aiService.getAvailableProviders()
     if (availableProviders.length === 0) {
       return NextResponse.json(
@@ -96,7 +95,6 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Handle specific AI provider errors
     if (error instanceof Error) {
       if (error.message.includes('quota') || error.message.includes('rate limit')) {
         return NextResponse.json(
@@ -123,11 +121,7 @@ export function GET() {
     availableProviders,
     supportedLanguages: ['en', 'pt', 'fr', 'de', 'zh'],
     status: {
-      hf: aiService.isHfAvailable(),
-      hfLocal: aiService.isHfLocalAvailable(),
-      gemini: aiService.isGeminiAvailable(),
-      groq: aiService.isGroqAvailable(),
-      ollama: aiService.isOllamaAvailable()
+      runtime: availableProviders.includes('runtime')
     }
   })
 }

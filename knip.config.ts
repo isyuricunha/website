@@ -25,7 +25,8 @@ const config: KnipConfig = {
       ]
     },
     'apps/web': {
-      entry: ['content-collections.ts', 'src/app/**/*.{ts,tsx}', 'src/e2e/auth.setup.ts']
+      entry: ['content-collections.ts', 'src/app/**/*.{ts,tsx}', 'src/e2e/auth.setup.ts'],
+      ignoreDependencies: ['@mistralai/mistralai']
     },
     'packages/db': {
       entry: ['src/seed.ts']

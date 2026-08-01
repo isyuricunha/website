@@ -38,7 +38,7 @@ type YueChatMessage = {
   content: string
 }
 
-export const build_yue_system_message = (context: YueSiteContext): string => {
+const build_yue_system_message = (context: YueSiteContext): string => {
   const localeInstructions = {
     en: 'Respond in English',
     pt: 'Responda em português brasileiro',

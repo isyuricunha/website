@@ -65,16 +65,22 @@ describe('<AIChatInterface /> feedback', () => {
     const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
       const inputUrl = typeof input === 'string' ? input : ''
       if (inputUrl === '/api/ai/chat/status') {
-        return Response.json({ available: true }, {
-          status: 200,
-          headers: { 'content-type': 'application/json' }
-        })
+        return Response.json(
+          { available: true },
+          {
+            status: 200,
+            headers: { 'content-type': 'application/json' }
+          }
+        )
       }
 
-      return Response.json({}, {
-        status: 200,
-        headers: { 'content-type': 'application/json' }
-      })
+      return Response.json(
+        {},
+        {
+          status: 200,
+          headers: { 'content-type': 'application/json' }
+        }
+      )
     })
 
     vi.stubGlobal('fetch', fetchMock)
@@ -109,16 +115,22 @@ describe('<AIChatInterface /> feedback', () => {
     const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
       const inputUrl = typeof input === 'string' ? input : ''
       if (inputUrl === '/api/ai/chat/status') {
-        return Response.json({ available: true }, {
-          status: 200,
-          headers: { 'content-type': 'application/json' }
-        })
+        return Response.json(
+          { available: true },
+          {
+            status: 200,
+            headers: { 'content-type': 'application/json' }
+          }
+        )
       }
 
-      return Response.json({}, {
-        status: 200,
-        headers: { 'content-type': 'application/json' }
-      })
+      return Response.json(
+        {},
+        {
+          status: 200,
+          headers: { 'content-type': 'application/json' }
+        }
+      )
     })
 
     vi.stubGlobal('fetch', fetchMock)
@@ -156,10 +168,13 @@ describe('<AIChatInterface /> feedback', () => {
     const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
       const inputUrl = typeof input === 'string' ? input : ''
       if (inputUrl === '/api/ai/chat/status') {
-        return Response.json({ available: true }, {
-          status: 200,
-          headers: { 'content-type': 'application/json' }
-        })
+        return Response.json(
+          { available: true },
+          {
+            status: 200,
+            headers: { 'content-type': 'application/json' }
+          }
+        )
       }
 
       return Response.json(
@@ -213,10 +228,13 @@ describe('<AIChatInterface /> feedback', () => {
       const inputUrl = typeof input === 'string' ? input : ''
       if (inputUrl === '/api/ai/chat/status') {
         return Promise.resolve(
-          Response.json({ available: true }, {
-            status: 200,
-            headers: { 'content-type': 'application/json' }
-          })
+          Response.json(
+            { available: true },
+            {
+              status: 200,
+              headers: { 'content-type': 'application/json' }
+            }
+          )
         )
       }
 

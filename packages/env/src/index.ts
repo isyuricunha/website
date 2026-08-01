@@ -9,16 +9,10 @@ export const flags = {
   spotify: process.env.NEXT_PUBLIC_FLAG_SPOTIFY === 'true',
   lastfm: process.env.NEXT_PUBLIC_FLAG_LASTFM === 'true',
   lastfmImport: process.env.NEXT_PUBLIC_FLAG_LASTFM_IMPORT === 'true',
-  gemini: process.env.NEXT_PUBLIC_FLAG_GEMINI === 'true',
-  groq: process.env.NEXT_PUBLIC_FLAG_GROQ === 'true',
-  hf: process.env.NEXT_PUBLIC_FLAG_HF === 'true',
-  hfLocal: process.env.NEXT_PUBLIC_FLAG_HF_LOCAL === 'true',
-  ollama: process.env.NEXT_PUBLIC_FLAG_OLLAMA === 'true',
   analytics: process.env.NEXT_PUBLIC_FLAG_ANALYTICS === 'true',
   guestbookNotification: process.env.NEXT_PUBLIC_FLAG_GUESTBOOK_NOTIFICATION === 'true',
   likeButton: process.env.NEXT_PUBLIC_FLAG_LIKE_BUTTON === 'true',
-  turnstile: process.env.NEXT_PUBLIC_FLAG_TURNSTILE === 'true',
-  mistral: process.env.NEXT_PUBLIC_FLAG_MISTRAL === 'true'
+  turnstile: process.env.NEXT_PUBLIC_FLAG_TURNSTILE === 'true'
 }
 
 export const env = createEnv({
@@ -85,40 +79,6 @@ export const env = createEnv({
         }
       : {}),
 
-    ...(flags.gemini
-      ? {
-          GEMINI_API_KEY: z.string().min(1)
-        }
-      : {}),
-
-    ...(flags.groq
-      ? {
-          GROQ_API_KEY: z.string().min(1),
-          GROQ_API_KEY_FALLBACK: z.string().min(1).optional()
-        }
-      : {}),
-
-    ...(flags.hf || flags.hfLocal
-      ? {
-          YUE_LLM_SPACE_URL: z.string().url(),
-          YUE_LLM_API_TOKEN: z.string().min(1)
-        }
-      : {}),
-
-    ...(flags.mistral
-      ? {
-          MISTRAL_API_KEY: z.string().min(1),
-          MISTRAL_BASE_URL: z.string().url().optional()
-        }
-      : {}),
-
-    GEMINI_MODEL: z.string().min(1).optional(),
-    GROQ_MODEL: z.string().min(1).optional(),
-    MISTRAL_AGENT_ID: z.string().min(1).optional(),
-    YUE_LLM_REQUEST_TIMEOUT_MS: z.coerce.number().int().min(1000).optional(),
-    OLLAMA_BASE_URL: z.string().url().optional(),
-    OLLAMA_MODEL: z.string().min(1).optional(),
-
     DATABASE_URL: z.string().url(),
     UPSTASH_REDIS_REST_URL: z.string().url(),
     UPSTASH_REDIS_REST_TOKEN: z.string().min(1),
@@ -147,12 +107,6 @@ export const env = createEnv({
     NEXT_PUBLIC_FLAG_STATS: z.string().min(1).optional(),
     NEXT_PUBLIC_FLAG_LASTFM: z.string().min(1).optional(),
     NEXT_PUBLIC_FLAG_LASTFM_IMPORT: z.string().min(1).optional(),
-    NEXT_PUBLIC_FLAG_GEMINI: z.string().min(1).optional(),
-    NEXT_PUBLIC_FLAG_GROQ: z.string().min(1).optional(),
-    NEXT_PUBLIC_FLAG_HF: z.string().min(1).optional(),
-    NEXT_PUBLIC_FLAG_HF_LOCAL: z.string().min(1).optional(),
-    NEXT_PUBLIC_FLAG_OLLAMA: z.string().min(1).optional(),
-    NEXT_PUBLIC_FLAG_MISTRAL: z.string().min(1).optional(),
     NEXT_PUBLIC_FLAG_ANALYTICS: z.string().min(1).optional(),
     NEXT_PUBLIC_FLAG_GUESTBOOK_NOTIFICATION: z.string().min(1).optional(),
     NEXT_PUBLIC_FLAG_LIKE_BUTTON: z.string().min(1).optional(),
@@ -180,12 +134,6 @@ export const env = createEnv({
     NEXT_PUBLIC_FLAG_STATS: process.env.NEXT_PUBLIC_FLAG_STATS,
     NEXT_PUBLIC_FLAG_LASTFM: process.env.NEXT_PUBLIC_FLAG_LASTFM,
     NEXT_PUBLIC_FLAG_LASTFM_IMPORT: process.env.NEXT_PUBLIC_FLAG_LASTFM_IMPORT,
-    NEXT_PUBLIC_FLAG_GEMINI: process.env.NEXT_PUBLIC_FLAG_GEMINI,
-    NEXT_PUBLIC_FLAG_GROQ: process.env.NEXT_PUBLIC_FLAG_GROQ,
-    NEXT_PUBLIC_FLAG_HF: process.env.NEXT_PUBLIC_FLAG_HF,
-    NEXT_PUBLIC_FLAG_HF_LOCAL: process.env.NEXT_PUBLIC_FLAG_HF_LOCAL,
-    NEXT_PUBLIC_FLAG_OLLAMA: process.env.NEXT_PUBLIC_FLAG_OLLAMA,
-    NEXT_PUBLIC_FLAG_MISTRAL: process.env.NEXT_PUBLIC_FLAG_MISTRAL,
     NEXT_PUBLIC_FLAG_ANALYTICS: process.env.NEXT_PUBLIC_FLAG_ANALYTICS,
     NEXT_PUBLIC_FLAG_GUESTBOOK_NOTIFICATION: process.env.NEXT_PUBLIC_FLAG_GUESTBOOK_NOTIFICATION,
     NEXT_PUBLIC_FLAG_LIKE_BUTTON: process.env.NEXT_PUBLIC_FLAG_LIKE_BUTTON,

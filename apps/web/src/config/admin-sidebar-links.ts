@@ -1,17 +1,18 @@
 import {
-  MessagesSquareIcon,
-  UsersIcon,
-  ShieldIcon,
   ActivityIcon,
-  DatabaseIcon,
   BarChart3Icon,
-  MegaphoneIcon,
   BellIcon,
-  SendIcon,
   BoxesIcon,
+  DatabaseIcon,
   HeartPulseIcon,
+  MegaphoneIcon,
   MessageCircleMoreIcon,
-  ScrollTextIcon
+  MessagesSquareIcon,
+  ScrollTextIcon,
+  SendIcon,
+  Settings2Icon,
+  ShieldIcon,
+  UsersIcon
 } from 'lucide-react'
 
 export const ADMIN_SIDEBAR_LINKS = [
@@ -22,6 +23,11 @@ export const ADMIN_SIDEBAR_LINKS = [
         titleKey: 'dashboard',
         url: '/admin',
         icon: BarChart3Icon
+      },
+      {
+        title: 'AI Settings',
+        url: '/admin/configuration',
+        icon: Settings2Icon
       },
       {
         titleKey: 'users',

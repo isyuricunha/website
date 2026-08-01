@@ -38,8 +38,17 @@ jobs:
       - name: Build MDX
         run: pnpm build:mdx
 
-      - name: Run checks
-        run: pnpm check
+      - name: Lint
+        run: pnpm turbo lint
+
+      - name: Type check
+        run: pnpm turbo type-check
+
+      - name: Check formatting
+        run: pnpm format:check
+
+      - name: Check spelling
+        run: pnpm check:spelling
 
   knip:
     name: Knip
