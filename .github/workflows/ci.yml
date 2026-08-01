@@ -42,7 +42,18 @@ jobs:
         run: pnpm turbo lint
 
       - name: Type check
-        run: pnpm turbo type-check
+        run: |
+          set -o pipefail
+          pnpm turbo type-check 2>&1 | tee type-check.log
+
+      - name: Upload type-check log
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: type-check-log
+          path: type-check.log
+          if-no-files-found: error
+          retention-days: 1
 
       - name: Check formatting
         run: pnpm format:check
