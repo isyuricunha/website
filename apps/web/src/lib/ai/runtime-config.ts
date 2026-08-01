@@ -13,7 +13,8 @@ export const AI_CONFIG_KEYS = {
   model: 'ai.model'
 } as const
 
-const ENCRYPTION_PREFIX = 'enc:v1'
+const ENCRYPTION_PREFIX = 'enc'
+const ENCRYPTION_VERSION = 'v1'
 const MODELS_CACHE_TTL_SECONDS = 60 * 60
 const MODELS_REQUEST_TIMEOUT_MS = 15_000
 
@@ -55,6 +56,7 @@ export const encrypt_ai_api_key = (apiKey: string) => {
 
   return [
     ENCRYPTION_PREFIX,
+    ENCRYPTION_VERSION,
     iv.toString('base64url'),
     authTag.toString('base64url'),
     encrypted.toString('base64url')
@@ -63,17 +65,23 @@ export const encrypt_ai_api_key = (apiKey: string) => {
 
 export const decrypt_ai_api_key = (storedValue: string) => {
   const value = storedValue.trim()
-  if (!value.startsWith(`${ENCRYPTION_PREFIX}:`)) {
+  if (!value.startsWith(`${ENCRYPTION_PREFIX}:${ENCRYPTION_VERSION}:`)) {
     return value
   }
 
   const parts = value.split(':')
-  if (parts.length !== 6) {
+  if (parts.length !== 5) {
     throw new Error('Stored API key has an invalid encrypted format')
   }
 
-  const [, , version, ivValue, authTagValue, encryptedValue] = parts
-  if (version !== 'v1' || !ivValue || !authTagValue || !encryptedValue) {
+  const [prefix, version, ivValue, authTagValue, encryptedValue] = parts
+  if (
+    prefix !== ENCRYPTION_PREFIX ||
+    version !== ENCRYPTION_VERSION ||
+    !ivValue ||
+    !authTagValue ||
+    !encryptedValue
+  ) {
     throw new Error('Stored API key has an invalid encrypted format')
   }
 
