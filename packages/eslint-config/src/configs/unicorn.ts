@@ -17,7 +17,7 @@ const rules: Linter.RulesRecord = withoutDeprecatedPluginRules(
     'unicorn/no-array-reduce': 'off',
     'unicorn/prefer-string-replace-all': 'off',
     'unicorn/switch-case-braces': 'off',
-    'unicorn/prefer-export-from': ['error', { ignoreUsedVariables: true }],
+    'unicorn/prefer-export-from': ['error', { checkUsedVariables: true }],
     'unicorn/prevent-abbreviations': 'off',
     'unicorn/prefer-string-raw': 'off',
     'unicorn/prefer-spread': 'off'
