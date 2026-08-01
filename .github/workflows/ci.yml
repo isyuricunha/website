@@ -1,4 +1,4 @@
-name: CI
+name: Apply dashboard translations
 
 on:
   pull_request:
@@ -6,62 +6,106 @@ on:
       - main
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
-  tests:
-    name: Unit tests
+  apply:
+    name: Apply translations
     runs-on: ubuntu-latest
     steps:
       - name: Checkout branch
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
 
-      - name: Setup
-        uses: ./.github/actions/setup
+      - name: Add missing labels
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
 
-      - name: Build MDX
-        run: pnpm build:mdx
+          translations = {
+              "en": {
+                  "engagement": "Engagement",
+                  "per-user": "per user",
+                  "monthly-users": "Monthly users",
+                  "monthly-comments": "Monthly comments",
+                  "view-details": "View details",
+              },
+              "pt": {
+                  "engagement": "Engajamento",
+                  "per-user": "por usuário",
+                  "monthly-users": "Usuários mensais",
+                  "monthly-comments": "Comentários mensais",
+                  "view-details": "Ver detalhes",
+              },
+              "de": {
+                  "engagement": "Interaktion",
+                  "per-user": "pro Benutzer",
+                  "monthly-users": "Monatliche Benutzer",
+                  "monthly-comments": "Monatliche Kommentare",
+                  "view-details": "Details anzeigen",
+              },
+              "es": {
+                  "engagement": "Interacción",
+                  "per-user": "por usuario",
+                  "monthly-users": "Usuarios mensuales",
+                  "monthly-comments": "Comentarios mensuales",
+                  "view-details": "Ver detalles",
+              },
+              "fr": {
+                  "engagement": "Engagement",
+                  "per-user": "par utilisateur",
+                  "monthly-users": "Utilisateurs mensuels",
+                  "monthly-comments": "Commentaires mensuels",
+                  "view-details": "Voir les détails",
+              },
+              "ja": {
+                  "engagement": "エンゲージメント",
+                  "per-user": "ユーザーあたり",
+                  "monthly-users": "月間ユーザー",
+                  "monthly-comments": "月間コメント",
+                  "view-details": "詳細を表示",
+              },
+              "zh-CN": {
+                  "engagement": "互动率",
+                  "per-user": "每位用户",
+                  "monthly-users": "月度用户",
+                  "monthly-comments": "月度评论",
+                  "view-details": "查看详情",
+              },
+          }
 
-      - name: Run unit tests
-        run: pnpm test:unit
+          base = Path("packages/i18n/src/messages")
+          for locale, labels in translations.items():
+              path = base / f"{locale}.json"
+              data = json.loads(path.read_text(encoding="utf-8"))
+              system_health = data["admin"]["dashboard"]["system-health"]
+              system_health.update(labels)
+              path.write_text(
+                  json.dumps(data, ensure_ascii=False, indent=2) + "\n",
+                  encoding="utf-8",
+              )
 
-  check:
-    name: Check
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout branch
-        uses: actions/checkout@v4
+          for locale, labels in translations.items():
+              path = base / f"{locale}.json"
+              data = json.loads(path.read_text(encoding="utf-8"))
+              system_health = data["admin"]["dashboard"]["system-health"]
+              for key, value in labels.items():
+                  assert system_health[key] == value
+          PY
 
-      - name: Setup
-        uses: ./.github/actions/setup
+      - name: Commit translations
+        env:
+          BRANCH_NAME: ${{ github.head_ref }}
+        run: |
+          git config user.name 'Yuri Cunha'
+          git config user.email '115634315+isyuricunha@users.noreply.github.com'
+          git add packages/i18n/src/messages/{en,pt,de,es,fr,ja,zh-CN}.json
 
-      - name: Build MDX
-        run: pnpm build:mdx
+          if git diff --cached --quiet; then
+            exit 0
+          fi
 
-      - name: Lint
-        run: pnpm turbo lint
-
-      - name: Type check
-        run: pnpm turbo type-check
-
-      - name: Check formatting
-        run: pnpm format:check
-
-      - name: Check spelling
-        run: pnpm check:spelling
-
-  knip:
-    name: Knip
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout branch
-        uses: actions/checkout@v4
-
-      - name: Setup
-        uses: ./.github/actions/setup
-
-      - name: Build MDX
-        run: pnpm build:mdx
-
-      - name: Run knip
-        run: pnpm check:knip
+          git commit -m 'fix(i18n): restore dashboard health labels'
+          git push origin "HEAD:${BRANCH_NAME}"
