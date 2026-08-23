@@ -63,7 +63,7 @@ const create_chat_request = async (message: string, context: YueSiteContext, str
         model: config.model,
         messages: build_yue_openai_messages(context, message, 15),
         temperature: 0.7,
-        max_tokens: 256,
+        max_tokens: 16_353,
         stream
       }),
       signal: controller.signal
