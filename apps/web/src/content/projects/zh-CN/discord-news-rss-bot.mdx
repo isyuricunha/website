@@ -1,0 +1,29 @@
+---
+name: Discord News RSS Bot
+description: 一个小型Go服务，用于监控RSS和Atom订阅源，并通过webhook将新文章发送到Discord频道，支持按类别配置，占用资源少。
+homepage: https://github.com/isyuricunha/discord-news-rss-bot
+github: https://github.com/isyuricunha/discord-news-rss-bot
+techstack:
+  - Go
+  - Discord Webhooks
+  - RSS / Atom
+  - Docker
+selected: true
+status: active
+---
+
+## 关于 Discord News RSS Bot
+
+一个小型的Go服务，用于监控RSS/Atom订阅源，并通过webhook将新项目推送到一个或多个Discord频道，支持可配置的类别、发布频率和健壮的错误处理。旨在保持不被注意：一个单一的二进制文件，一个YAML文件，无需数据库。
+
+### 关键功能
+
+- 按每个订阅源的类别进行路由的RSS + Atom订阅源监控
+- 可配置的类别（新闻、科技、体育…），带有emoji标签的帖子
+- 去重，确保同一文章不会被发布两次
+- 可配置的间隔、超时和带退避的重试机制
+- 以单一静态二进制文件交付 — — 非常适合容器
+
+### 技术栈
+
+Go、Discord webhook和一个简单的YAML配置。设计为在小型VPS或容器内安静运行，可与其他机器人并存。

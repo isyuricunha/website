@@ -1,0 +1,36 @@
+---
+name: Aster
+description: 一个私有的、自托管的AI工作区，用于聊天、记忆、工具、媒体、通信、自动化和有界代理。
+homepage: https://github.com/isyuricunha/aster
+github: https://github.com/isyuricunha/aster
+techstack:
+  - Python
+  - PostgreSQL
+  - Docker
+  - OpenAI-compatible APIs
+selected: true
+status: active
+---
+
+## 关于 Aster
+
+Aster 是您自己运行的自托管 AI 工作区。一个耐用的地方，单个所有者可以：
+
+- 持有带有流式响应的持久 AI 对话
+- 插入任何 OpenAI 兼容的模型端点，并进行显式角色路由
+- 在会话之间保持可查询的已批准记忆
+- 附带词法 + 嵌入搜索的私人文档
+- 运行可以调用工具但仍在您设定的限制内的有界代理
+- 针对 IMAP / Discord / 其他渠道进行自动化
+
+### 亮点
+
+- **提供者中立** — 模型目录、每个模型的配置文件、有序回退
+- **已批准的记忆** — 代理不能记住您未允许的任何内容
+- **受控工具** — 通过可流式 HTTP 或 stdio 的 MCP，按工具启用，确认流程，完整的审计历史
+- **私有媒体** — 图像生成和编辑保存在您的本地存储中
+- **持久工作区** — 自动化、IMAP/Discord 通信、手动和 AI 辅助调度
+
+### 部署
+
+`docker compose up` — 一个 Postgres，一个用于媒体的卷，一个 Aster 服务。无需外部 SaaS。

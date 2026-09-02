@@ -1,0 +1,29 @@
+---
+name: Discord News RSS Bot
+description: Pequeno serviço em Go que monitora feeds RSS e Atom e posta novos artigos em canais do Discord via webhook, com configuração por categoria e footprint enxuto.
+homepage: https://github.com/isyuricunha/discord-news-rss-bot
+github: https://github.com/isyuricunha/discord-news-rss-bot
+techstack:
+  - Go
+  - Discord Webhooks
+  - RSS / Atom
+  - Docker
+selected: true
+status: active
+---
+
+## Sobre o Discord News RSS Bot
+
+Um serviço minúsculo em Go que vigia feeds RSS/Atom e empurra novos itens para um ou mais canais do Discord como webhooks, com categorias configuráveis, cadência de postagem e tratamento robusto de erros. Feito para ficar fora do caminho: um único binário, um arquivo YAML, sem banco de dados.
+
+### Principais Recursos
+
+- Monitoramento de feeds RSS + Atom com roteamento por categoria por feed
+- Categorias configuráveis (notícias, tech, esportes…) com posts marcados por emoji
+- Desduplicação para que o mesmo artigo nunca poste duas vezes
+- Intervalos, timeouts e retry com backoff configuráveis
+- Entrega como um único binário estático — perfeito para containers
+
+### Stack
+
+Go, Discord webhooks e um YAML de configuração simples. Projetado para rodar quietinho num VPS pequeno ou dentro de um container, junto com outros bots.

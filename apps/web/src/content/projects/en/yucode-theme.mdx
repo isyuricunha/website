@@ -1,0 +1,33 @@
+---
+name: YuCode Theme
+description: A minimal skin for Hermes Agent's CLI, styled after Claude Code — coral accent, neutral grays, quiet output, and a custom banner.
+homepage: https://github.com/isyuricunha/yucode-theme
+github: https://github.com/isyuricunha/yucode-theme
+techstack:
+  - Hermes Agent
+  - Shell
+  - YAML
+selected: true
+status: active
+---
+
+## About YuCode Theme
+
+Hermes Agent's default output is loud: lots of red/green diff blocks stacked on top of stacked progress comments. **yucode** is a minimal reskin styled after Claude Code — calm coral accent, neutral grays, no rainbow diff colors fighting each other, and a small custom banner in place of the default mascot art.
+
+### What the installer does
+
+- Copies the skin file to `~/.hermes/skins/`
+- Switches display to the **TUI** (much more readable than the classic CLI)
+- Flips a few display settings — compact mode, new tool-progress style
+- Uses the yucode banner instead of the default art
+
+### Files
+
+- `yucode.yaml` — the skin
+- `install.sh` — one-shot installer
+- `EOF.md` — a paste-able quick-install snippet
+
+### Requirement
+
+A working Hermes Agent install with `~/.hermes/config.yaml` present.

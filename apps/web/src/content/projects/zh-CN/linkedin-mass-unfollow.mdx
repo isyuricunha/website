@@ -1,0 +1,28 @@
+---
+name: LinkedIn Mass Unfollow
+description: 一款用于安全批量取消关注LinkedIn连接的浏览器脚本，具有进度跟踪、安全限制和可配置的速率限制。
+homepage: https://github.com/isyuricunha/linkedin-mass-unfollow
+github: https://github.com/isyuricunha/linkedin-mass-unfollow
+techstack:
+  - JavaScript
+  - Browser DevTools
+selected: true
+status: active
+---
+
+## 关于 LinkedIn Mass Unfollow
+
+LinkedIn 使得清理您的人脉网络变得痛苦 — — 逐个点击“取消关注”成千上万的连接是不可行的。此工具提供两种浏览器脚本模式：一种安全的“软模式”，仅作用于当前页面可见的连接；另一种“硬模式”，会自动滚动并处理完整列表。
+
+### 功能
+
+- **软模式** — 仅取消关注已渲染的连接（适用于审计）
+- **硬模式** — 自动滚动遍历完整的连接列表
+- **进度跟踪** — 实时计数器和会话摘要
+- **可配置的延迟和限制** — 以避免触发 LinkedIn 的速率限制
+- **随时暂停 / 恢复 / 停止**
+- **详细的带时间戳日志** — 让您确切知道发生了什么
+
+### 安全
+
+内置上限（软模式下为 50，硬模式下为 500）可防止您意外耗尽人脉网络，默认延迟设置为保守值以避免被标记。请负责任地使用。

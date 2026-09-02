@@ -1,0 +1,30 @@
+---
+name: Beta Website (Astro)
+description: Uma iteração antiga e arquivada do meu site pessoal — Astro + MDX + i18n, mantida como referência de content routing limpo e tooling estrito de tradução.
+homepage: https://github.com/isyuricunha/beta-website
+github: https://github.com/isyuricunha/beta-website
+techstack:
+  - Astro
+  - MDX
+  - TypeScript
+  - Tailwind CSS
+  - RSS / Sitemap
+selected: false
+status: archived
+---
+
+## Sobre o Beta Website
+
+Uma iteração anterior do meu site pessoal, refeita em **Astro** como um site estático menor e mais estrito — sem runtime React, sem banco, sem CMS, sem server functions. Conteúdo vive em MDX, traduções são arquivos side-by-side por locale, e validação garante que toda entrada publicada em inglês tenha suas traduções obrigatórias.
+
+### Stack
+
+- **Astro** (output estático, sem adapter)
+- **Astro Content Collections** com validação estrita de frontmatter
+- **Astro i18n routing** — uma pasta por locale
+- **Tailwind CSS** pra estilos
+- **Shiki** pra code highlighting
+
+### Por que está arquivado
+
+O site atual (o que você está lendo agora) é construído em Next.js, que dá um runtime de servidor pra comentários, webmentions, OG images dinâmicas, etc. A reescrita em Astro foi uma abordagem mais simples que alguns projetos ainda usam como referência — ela sobrevive aqui por isso, não porque eu ainda a mantenho.

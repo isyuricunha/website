@@ -1,0 +1,37 @@
+---
+name: YuFlow
+description: Tauri と PWA で構築されたプライバシーファーストのタスク管理 — 100% ローカルストレージ、テレメトリ ゼロ、クラウドへの依存なし。
+homepage: https://github.com/isyuricunha/yuflow
+github: https://github.com/isyuricunha/yuflow
+techstack:
+  - TypeScript
+  - Tauri
+  - PWA
+  - SQLite
+selected: true
+status: active
+---
+
+## YuFlow について
+
+YuFlow は 1 つの公理を中心に構築されたタスクマネージャーです: **あなたのデータはあなたのもの**。アカウントなし、クラウドなし、テレメトリなし、分析なし。アプリは完全にデバイス上で動作し — Tauri 2.0 のデスクトップアプリ、または web PWA として — すべてを SQLite/IndexedDB にローカル保存します。
+
+### プライバシー宣言
+
+- 常に 100% ローカルストレージ
+- テレメトリ ゼロ — トラッキングなし、分析なし、フィンガープリンティングなし
+- クラウド依存なし — 完全にオフラインで動作
+- 完全なデータ所有権 — いつでもエクスポート、バックアップ、移行が可能
+- 監査可能なオープンソースコードベース
+
+### 機能
+
+- サブタスクと添付ファイルを備えたカンバンスタイルのタスクボード
+- 繰り返しタスク、期限、優先度、タグ
+- アクセントカラー付きのダーク「True Pure Black」テーマ
+- 同じコードベースからのネイティブデスクトップ（Tauri）+ web（PWA）ビルド
+- すべてのプロジェクトにわたる全文検索
+
+### スタック
+
+TypeScript、Tauri 2（Rust シェル）、デスクトップでは SQLite、ブラウザでは IndexedDB。サーバーサイドコンポーネントはありません。

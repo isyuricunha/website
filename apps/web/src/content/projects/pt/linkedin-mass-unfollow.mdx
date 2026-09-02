@@ -1,0 +1,28 @@
+---
+name: LinkedIn Mass Unfollow
+description: Script de browser pra unfollow em massa de conexões do LinkedIn com progresso, limites de segurança e rate limiting configurável.
+homepage: https://github.com/isyuricunha/linkedin-mass-unfollow
+github: https://github.com/isyuricunha/linkedin-mass-unfollow
+techstack:
+  - JavaScript
+  - Browser DevTools
+selected: true
+status: active
+---
+
+## Sobre o LinkedIn Mass Unfollow
+
+O LinkedIn torna doloroso limpar sua rede — clicar "deixar de seguir" um a um em milhares de conexões não é viável. Esta ferramenta te dá dois modos via script de browser: um **modo soft** seguro que só toca as conexões visíveis na página atual, e um **modo hard** que auto-scrolla e processa a lista completa.
+
+### Recursos
+
+- **Modo soft** — unfollow só do que está renderizado (seguro pra auditorias)
+- **Modo hard** — auto-scrola pela lista completa de conexões
+- **Rastreamento de progresso** com contadores ao vivo e resumo de sessão
+- **Delays e limites configuráveis** pra ficar longe dos limites de rate do LinkedIn
+- **Pausa / retoma / para** a qualquer momento
+- **Logs detalhados com timestamp** pra você saber exatamente o que aconteceu
+
+### Segurança
+
+Limites embutidos (50 no modo soft, 500 no hard) impedem que você queime sua rede por acidente, e delays padrão são deliberadamente conservadores pra evitar flaggar sua conta. Use com responsabilidade.
