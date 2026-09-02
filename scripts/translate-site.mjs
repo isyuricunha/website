@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-/* eslint-disable sonarjs/super-linear-regex, unicorn/no-declarations-before-early-exit, unicorn/no-unsafe-string-replacement, unicorn/prefer-simple-condition-first, unicorn/no-break-in-nested-loop, unicorn/max-nested-calls, unicorn/require-array-sort-compare, unicorn/prefer-else-if -- bounded-input script */
+/* eslint-disable sonarjs/super-linear-regex, unicorn/no-unsafe-string-replacement, unicorn/prefer-simple-condition-first, unicorn/no-break-in-nested-loop, unicorn/max-nested-calls, unicorn/require-array-sort-compare, unicorn/prefer-else-if -- bounded-input script */
 
 import { access, mkdir, readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
@@ -1531,4 +1531,4 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
   }
 }
 
-/* eslint-enable sonarjs/super-linear-regex, unicorn/no-declarations-before-early-exit, unicorn/no-unsafe-string-replacement, unicorn/prefer-simple-condition-first, unicorn/no-break-in-nested-loop, unicorn/max-nested-calls, unicorn/require-array-sort-compare, unicorn/prefer-else-if -- re-enable after the disable block at the top */
+/* eslint-enable sonarjs/super-linear-regex, unicorn/no-unsafe-string-replacement, unicorn/prefer-simple-condition-first, unicorn/no-break-in-nested-loop, unicorn/max-nested-calls, unicorn/require-array-sort-compare, unicorn/prefer-else-if -- re-enable after the disable block at the top */
