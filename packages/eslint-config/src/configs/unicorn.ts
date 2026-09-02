@@ -25,6 +25,7 @@ const rules: Linter.RulesRecord = withoutDeprecatedPluginRules(
     'unicorn/prefer-string-raw': 'off',
     'unicorn/single-line-block-comment-style': 'off',
     'unicorn/prefer-spread': 'off',
+    'unicorn/no-declarations-before-early-exit': 'off',
     'unicorn/better-dom-traversing': 'off',
     'unicorn/no-this-outside-of-class': 'off',
     'unicorn/no-confusing-array-splice': 'off',

@@ -1,14 +1,14 @@
 packages:
-- apps/*
-- packages/*
+  - apps/*
+  - packages/*
 onlyBuiltDependencies:
-- '@parcel/watcher'
-- '@prisma/engines'
-- '@swc/core'
-- esbuild
-- prisma
-- sharp
-- simple-git-hooks
+  - '@parcel/watcher'
+  - '@prisma/engines'
+  - '@swc/core'
+  - esbuild
+  - prisma
+  - sharp
+  - simple-git-hooks
 overrides:
   drizzle-kit: 0.31.10
   preact: 10.28.2
