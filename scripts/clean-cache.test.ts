@@ -9,7 +9,7 @@ const ensure_dir = async (absolute_path: string) => {
   await fs.mkdir(absolute_path, { recursive: true })
 }
 
-const path_exists = async (absolute_path: string) => {
+const is_path_exists = async (absolute_path: string) => {
   try {
     await fs.stat(absolute_path)
     return true
@@ -30,15 +30,15 @@ describe('clean_cache', () => {
     await ensure_dir(web_next)
     await ensure_dir(utils_dist)
 
-    expect(await path_exists(root_turbo)).toBe(true)
-    expect(await path_exists(web_next)).toBe(true)
-    expect(await path_exists(utils_dist)).toBe(true)
+    expect(await is_path_exists(root_turbo)).toBe(true)
+    expect(await is_path_exists(web_next)).toBe(true)
+    expect(await is_path_exists(utils_dist)).toBe(true)
 
     await clean_cache({ root, verbose: false })
 
-    expect(await path_exists(root_turbo)).toBe(false)
-    expect(await path_exists(web_next)).toBe(false)
-    expect(await path_exists(utils_dist)).toBe(false)
+    expect(await is_path_exists(root_turbo)).toBe(false)
+    expect(await is_path_exists(web_next)).toBe(false)
+    expect(await is_path_exists(utils_dist)).toBe(false)
 
     await fs.rm(root, { recursive: true, force: true })
   })

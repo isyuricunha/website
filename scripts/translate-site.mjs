@@ -120,75 +120,83 @@ const parseArguments = (rawArguments) => {
     limit: Infinity
   }
 
-  for (let index = 0; index < rawArguments.length; index += 1) {
-    const argument = rawArguments[index]
-    if (argument === '--') continue
+  // A cursor so the switch handler can consume the next argument for
+  // multi-token flags while keeping the outer loop simple.
+  let cursor = 0
+  const readValue = (inlineValue) => {
+    if (inlineValue !== undefined) return inlineValue
+    cursor += 1
+    return rawArguments[cursor] ?? ''
+  }
 
-    const [key, inlineValue] = argument.split('=', 2)
-    const readValue = () => {
-      if (inlineValue !== undefined) return inlineValue
-      index += 1
-      return rawArguments[index] ?? ''
-    }
-
+  const applyFlag = (key, inlineValue) => {
     switch (key) {
       case '--target': {
-        options.target = readValue()
-        break
+        options.target = readValue(inlineValue)
+        return
       }
       case '--source': {
-        options.source = readValue()
-        break
+        options.source = readValue(inlineValue)
+        return
       }
       case '--label': {
-        options.label = readValue()
-        break
+        options.label = readValue(inlineValue)
+        return
       }
       case '--collections': {
-        options.collections = readValue()
+        options.collections = readValue(inlineValue)
           .split(',')
           .map((collection) => collection.trim())
           .filter(Boolean)
-        break
+        return
       }
       case '--batch-size':
       case '--batch-profile': {
-        options.batchSize = readValue()
-        break
+        options.batchSize = readValue(inlineValue)
+        return
       }
       case '--batch-chars': {
-        options.batchChars = readValue()
-        break
+        options.batchChars = readValue(inlineValue)
+        return
       }
       case '--request-timeout-ms': {
-        options.requestTimeoutMs = readValue()
-        break
+        options.requestTimeoutMs = readValue(inlineValue)
+        return
       }
       case '--max-retries': {
-        options.maxRetries = readValue()
-        break
+        options.maxRetries = readValue(inlineValue)
+        return
       }
       case '--limit': {
-        options.limit = Number(readValue())
-        break
+        options.limit = Number(readValue(inlineValue))
+        return
       }
       case '--force': {
         options.force = true
-        break
+        return
       }
       case '--dry-run': {
         options.dryRun = true
-        break
+        return
       }
       case '--help':
       case '-h': {
         options.help = true
-        break
+        return
       }
       default: {
-        throw new Error(`Unknown option: ${argument}`)
+        throw new Error(`Unknown option: ${key}`)
       }
     }
+  }
+
+  while (cursor < rawArguments.length) {
+    const argument = rawArguments[cursor]
+    cursor += 1
+    if (argument === '--') continue
+
+    const [key, inlineValue] = argument.split('=', 2)
+    applyFlag(key, inlineValue)
   }
 
   return options
@@ -378,6 +386,8 @@ const translateWithOpenAiCompatible = async ({
 
 const stripMarkdownFence = (text) => {
   const trimmed = text.trim()
+  // The alternation is deliberately simple: an optional language tag, then a lazy body. Not actually super-linear.
+  // eslint-disable-next-line sonarjs/super-linear-regex -- bounded input (LLM response), no pathological cases.
   const fenceMatch = /^```(?:json|yaml|yml|md|markdown)?\s*([\s\S]*?)\s*```$/i.exec(trimmed)
   return fenceMatch ? fenceMatch[1].trim() : trimmed
 }

@@ -87,13 +87,7 @@ const list_workspaces = async (repo_root) => {
       continue
     }
 
-    for (const entry of entries) {
-      if (!entry.isDirectory()) {
-        continue
-      }
-
-      workspaces.push(path.join(absolute_workspace_root, entry.name))
-    }
+    workspaces.push(...entries.filter((e) => e.isDirectory()).map((entry) => path.join(absolute_workspace_root, entry.name)))
   }
 
   return workspaces
