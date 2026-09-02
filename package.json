@@ -111,10 +111,13 @@
       "js-yaml": "^4.1.1"
     },
     "onlyBuiltDependencies": [
+      "@parcel/watcher",
       "@prisma/engines",
       "@swc/core",
       "esbuild",
-      "prisma"
+      "prisma",
+      "sharp",
+      "simple-git-hooks"
     ]
   },
   "simple-git-hooks": {
