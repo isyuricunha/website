@@ -102,11 +102,7 @@ const list_workspaces = async (repo_root) => {
 export const clean_cache = async ({ root, verbose }) => {
   const repo_root = path.resolve(root)
 
-  const delete_targets = []
-
-  for (const cache_entry of cache_entries) {
-    delete_targets.push(path.join(repo_root, cache_entry))
-  }
+  const delete_targets = Array.from(cache_entries, cache_entry => path.join(repo_root, cache_entry));
 
   const workspaces = await list_workspaces(repo_root)
   for (const workspace of workspaces) {

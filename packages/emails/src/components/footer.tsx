@@ -2,7 +2,7 @@ import { Column, Hr, Img, Link, Row, Section, Text } from 'react-email'
 
 const currentYear = new Date().getFullYear()
 
-const Footer = () => {
+export default function Footer() {
   return (
     <>
       <Hr className='mt-6 mb-3 border-t-[0.5px] border-solid border-[color:var(--email-border)]' />
@@ -41,5 +41,3 @@ const Footer = () => {
     </>
   )
 }
-
-export default Footer

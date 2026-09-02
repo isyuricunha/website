@@ -117,7 +117,7 @@ const parseArguments = (rawArguments) => {
     maxRetries: process.env.OPENAI_COMPATIBLE_MAX_RETRIES ?? String(DEFAULT_MAX_RETRIES),
     force: false,
     dryRun: false,
-    limit: Number.POSITIVE_INFINITY
+    limit: Infinity
   }
 
   for (let index = 0; index < rawArguments.length; index += 1) {
@@ -332,8 +332,8 @@ const translateWithOpenAiCompatible = async ({
 
       if (!response.ok) {
         const body = await response.text()
-        const retryable = RETRYABLE_STATUS_CODES.has(response.status) && attempt < maxRetries
-        if (retryable) {
+        const isRetryable = RETRYABLE_STATUS_CODES.has(response.status) && attempt < maxRetries
+        if (isRetryable) {
           await wait(getRetryDelayMs(attempt))
           continue
         }
@@ -384,29 +384,29 @@ const stripMarkdownFence = (text) => {
 
 const escapeControlCharactersInJsonStrings = (text) => {
   let output = ''
-  let inString = false
-  let escaped = false
+  let isInString = false
+  let isEscaped = false
 
   for (const character of text) {
-    if (escaped) {
+    if (isEscaped) {
       output += character
-      escaped = false
+      isEscaped = false
       continue
     }
 
     if (character === '\\') {
       output += character
-      escaped = true
+      isEscaped = true
       continue
     }
 
     if (character === '"') {
       output += character
-      inString = !inString
+      isInString = !isInString
       continue
     }
 
-    if (inString) {
+    if (isInString) {
       if (character === '\n') {
         output += '\\n'
         continue
@@ -1168,26 +1168,26 @@ export const postProcessTranslatedMdxBody = (markdown) => {
 
   const lines = normalized.split(/\r?\n/)
   const output = []
-  let expandableSectionOpen = false
+  let isExpandableSectionOpen = false
 
   for (const line of lines) {
-    if (/^\s*<ExpandableSection\b/.test(line) && expandableSectionOpen) {
+    if (/^\s*<ExpandableSection\b/.test(line) && isExpandableSectionOpen) {
       output.push('</ExpandableSection>', '')
-      expandableSectionOpen = false
+      isExpandableSectionOpen = false
     }
 
     output.push(line)
 
     if (/^\s*<ExpandableSection\b/.test(line) && !/\/>\s*$/.test(line)) {
-      expandableSectionOpen = true
+      isExpandableSectionOpen = true
     }
 
     if (/^\s*<\/ExpandableSection>\s*$/.test(line)) {
-      expandableSectionOpen = false
+      isExpandableSectionOpen = false
     }
   }
 
-  if (expandableSectionOpen) {
+  if (isExpandableSectionOpen) {
     output.push('</ExpandableSection>')
   }
 
@@ -1199,10 +1199,12 @@ const splitTextByCharacters = (text, maxCharacters) => {
   let current = ''
 
   const pushCurrent = () => {
-    if (current.length > 0) {
-      chunks.push(current)
-      current = ''
+    if (current.length === 0) {
+    	return;
     }
+
+    chunks.push(current)
+    current = ''
   }
 
   const appendSlice = (slice) => {
@@ -1455,7 +1457,7 @@ const main = async () => {
     options.batchChars === undefined
       ? resolvedBatch.batchChars
       : parsePositiveInteger(options.batchChars, '--batch-chars')
-  if (options.limit !== Number.POSITIVE_INFINITY) {
+  if (options.limit !== Infinity) {
     options.limit = parsePositiveInteger(options.limit, '--limit')
   }
   options.sourceLabel = getLanguageLabel(options.source)

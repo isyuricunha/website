@@ -26,18 +26,22 @@ const themeNames = themeRegistrations.map((theme) =>
 )
 const themeKeys = Object.keys(DEFAULT_SHIKI_THEMES)
 
-let cachedHighlighter: Highlighter | null = null
-
-const getHighlighter = async () => {
-  if (cachedHighlighter) return cachedHighlighter
-
-  cachedHighlighter = await getSingletonHighlighter({
-    themes: themeRegistrations,
-    langs: Object.keys(bundledLanguages)
-  })
-
-  return cachedHighlighter
+// The singleton cache needs to live across calls, so the highlighter creation
+// stays wrapped in a function that owns its own initialization state. This
+// avoids assigning to a top-level `let` from inside an async function (which
+// unicorn/no-top-level-assignment-in-function flags as unclear ownership).
+const createHighlighterCache = () => {
+  let cached: Highlighter | null = null
+  return async () => {
+    if (cached) return cached
+    cached = await getSingletonHighlighter({
+      themes: themeRegistrations,
+      langs: Object.keys(bundledLanguages)
+    })
+    return cached
+  }
 }
+const getHighlighter = createHighlighterCache()
 
 export const rehypeInlineCode: Plugin<[RehypeShikiCoreOptions], Root> = () => {
   return async (tree) => {

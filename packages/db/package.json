@@ -25,7 +25,7 @@
   "dependencies": {
     "@isyuricunha/env": "workspace:*",
     "drizzle-orm": "^0.45.2",
-    "nanoid": "^5.1.11"
+    "nanoid": "^6.0.1"
   },
   "peerDependencies": {
     "pg": "^8"
@@ -33,10 +33,10 @@
   "devDependencies": {
     "@isyuricunha/eslint-config": "workspace:*",
     "@isyuricunha/tsconfig": "workspace:*",
-    "@types/node": "^25.9.1",
-    "@types/pg": "^8.20.0",
+    "@types/node": "^26.4.1",
+    "@types/pg": "^8.23.1",
     "drizzle-kit": "0.31.10",
-    "pg": "^8.21.0"
+    "pg": "^8.23.0"
   },
   "lint-staged": {
     "*.{cjs,mjs,js,jsx,cts,mts,ts,tsx}": "eslint --fix --max-warnings 999"

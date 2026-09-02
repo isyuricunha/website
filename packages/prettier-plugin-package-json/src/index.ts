@@ -44,16 +44,16 @@ const parsePersonString = (value: string): Record<string, string> | string => {
     name = removeSegment(name, urlStart, urlEnd + 1)
   }
 
-  const obj: Record<string, string> = {}
-  if (name) obj.name = name
-  if (email) obj.email = email
-  if (url) obj.url = url
+  const result: Record<string, string> = {}
+  if (name) result.name = name
+  if (email) result.email = email
+  if (url) result.url = url
 
-  return Object.keys(obj).length > 0 ? obj : value
+  return Object.keys(result).length > 0 ? result : value
 }
 
-const expandUsers = (pkg: PackageJson): PackageJson => {
-  const next: PackageJson = { ...pkg }
+const expandUsers = (packageJson: PackageJson): PackageJson => {
+  const next: PackageJson = { ...packageJson }
 
   const author = next.author
   if (typeof author === 'string') {
@@ -70,17 +70,17 @@ const expandUsers = (pkg: PackageJson): PackageJson => {
   return next
 }
 
-const applyKeyOrder = (pkg: PackageJson, keyOrder: string[] | undefined): PackageJson => {
-  if (!keyOrder || keyOrder.length === 0) return pkg
+const applyKeyOrder = (packageJson: PackageJson, keyOrder: string[] | undefined): PackageJson => {
+  if (!keyOrder || keyOrder.length === 0) return packageJson
 
   const ordered: PackageJson = {}
   for (const key of keyOrder) {
-    if (Object.prototype.hasOwnProperty.call(pkg, key)) {
-      ordered[key] = pkg[key]
+    if (Object.prototype.hasOwnProperty.call(packageJson, key)) {
+      ordered[key] = packageJson[key]
     }
   }
 
-  for (const [key, value] of Object.entries(pkg)) {
+  for (const [key, value] of Object.entries(packageJson)) {
     if (!Object.prototype.hasOwnProperty.call(ordered, key)) {
       ordered[key] = value
     }
