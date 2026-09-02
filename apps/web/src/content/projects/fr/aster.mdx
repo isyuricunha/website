@@ -1,0 +1,36 @@
+---
+name: Aster
+description: Un espace de travail IA privé et auto-hébergé pour le chat, la mémoire, les outils, les médias, les communications, les automatisations et des agents restreints.
+homepage: https://github.com/isyuricunha/aster
+github: https://github.com/isyuricunha/aster
+techstack:
+  - Python
+  - PostgreSQL
+  - Docker
+  - OpenAI-compatible APIs
+selected: true
+status: active
+---
+
+## À propos d'Aster
+
+Aster est un espace de travail IA auto-hébergé que vous faites tourner vous-même. Un endroit durable et unique où un seul propriétaire peut :
+
+- mener des conversations IA persistantes avec des réponses en streaming
+- brancher n'importe quel endpoint de modèle compatible OpenAI, avec un routage explicite par rôle
+- maintenir une mémoire approuvée et interrogeable d'une session à l'autre
+- joindre des documents privés avec recherche lexicale + par embeddings
+- exécuter des agents restreints qui peuvent appeler des outils tout en restant dans les limites que vous fixez
+- automatiser des actions via IMAP / Discord / d'autres canaux
+
+### Points forts
+
+- **Neutre vis-à-vis des fournisseurs** — catalogues de modèles, profils par modèle, fallbacks ordonnés
+- **Mémoire approuvée** — l'agent ne peut rien retenir que vous n'ayez autorisé
+- **Outils contrôlés** — MCP via Streamable HTTP ou stdio, activation outil par outil, flux de confirmation, historique d'audit complet
+- **Médias privés** — génération et retouche d'images conservées dans votre stockage local
+- **Espace de travail durable** — automatisations, communications IMAP/Discord, planification manuelle et assistée par IA
+
+### Déploiement
+
+`docker compose up` — un Postgres, un volume pour les médias, un service Aster. Aucun SaaS externe requis.

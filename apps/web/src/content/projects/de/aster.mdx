@@ -1,0 +1,36 @@
+---
+name: Aster
+description: Ein privater, selbst gehosteter KI-Arbeitsplatz für Chat, Gedächtnis, Werkzeuge, Medien, Kommunikation, Automatisierungen und begrenzte Agenten.
+homepage: https://github.com/isyuricunha/aster
+github: https://github.com/isyuricunha/aster
+techstack:
+  - Python
+  - PostgreSQL
+  - Docker
+  - OpenAI-compatible APIs
+selected: true
+status: active
+---
+
+## Über Aster
+
+Aster ist ein selbst gehosteter KI-Arbeitsplatz, den du selbst betreibst. Ein dauerhafter Ort, an dem ein einzelner Eigentümer:
+
+- persistente KI-Unterhaltungen mit gestreamten Antworten führen kann
+- jeden OpenAI-kompatiblen Modell-Endpunkt einbinden kann, mit explizitem Rollen-Routing
+- ein genehmigtes, abfragbares Gedächtnis über Sitzungen hinweg pflegen kann
+- private Dokumente mit lexikalischer und Embedding-Suche anhängen kann
+- begrenzte Agenten laufen lassen kann, die Werkzeuge aufrufen dürfen, aber innerhalb der von dir gesetzten Grenzen bleiben
+- Automatisierungen über IMAP / Discord / andere Kanäle abwickeln kann
+
+### Highlights
+
+- **Provider-neutral** – Modellkataloge, Profile pro Modell, geordnete Fallbacks
+- **Genehmigtes Gedächtnis** – der Agent kann sich nichts merken, was du nicht erlaubt hast
+- **Kontrollierte Werkzeuge** – MCP über Streamable HTTP oder stdio, Aktivierung pro Werkzeug, Bestätigungsablauf, vollständige Audit-Historie
+- **Private Medien** – Bildgenerierung und -bearbeitung bleiben in deinem lokalen Speicher
+- **Dauerhafter Arbeitsplatz** – Automatisierungen, IMAP-/Discord-Kommunikation, manuelle und KI-gestützte Terminplanung
+
+### Deployment
+
+`docker compose up` – ein Postgres, ein Volume für Medien, ein Aster-Dienst. Kein externes SaaS nötig.

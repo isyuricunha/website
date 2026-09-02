@@ -1,0 +1,36 @@
+---
+name: Aster
+description: Um workspace de IA privado e auto-hospedado para chat, memória, ferramentas, mídia, comunicações, automações e agentes limitados.
+homepage: https://github.com/isyuricunha/aster
+github: https://github.com/isyuricunha/aster
+techstack:
+  - Python
+  - PostgreSQL
+  - Docker
+  - OpenAI-compatible APIs
+selected: true
+status: active
+---
+
+## Sobre o Aster
+
+O Aster é um workspace de IA que você roda sozinho. Um único lugar durável onde um único dono pode:
+
+- manter conversas persistentes de IA com respostas streamadas
+- plugar qualquer endpoint OpenAI-compatível, com roteamento explícito de papéis
+- manter memória aprovada e consultável entre sessões
+- anexar documentos privados com busca léxica + embeddings
+- rodar agentes limitados que chamam ferramentas mas ficam dentro dos limites que você define
+- automatizar contra IMAP / Discord / outros canais
+
+### Destaques
+
+- **Provider-neutro** — catálogos de modelos, perfis por modelo, fallbacks ordenados
+- **Memória aprovada** — o agente não lembra nada que você não permitiu
+- **Ferramentas controladas** — MCP sobre Streamable HTTP ou stdio, enablement por ferramenta, fluxo de confirmação, histórico de auditoria completo
+- **Mídia privada** — geração e edição de imagem mantidas no seu armazenamento local
+- **Workspace durável** — automações, comunicações IMAP/Discord, agendamento manual e assistido por IA
+
+### Deploy
+
+`docker compose up` — um Postgres, um volume pra mídia, um serviço Aster. Nenhum SaaS externo necessário.

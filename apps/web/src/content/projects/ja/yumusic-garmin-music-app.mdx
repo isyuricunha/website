@@ -1,0 +1,31 @@
+---
+name: YuMusic
+description: Garmin スマートウォッチ向けの洗練されたスタンドアロンの音楽ストリーミングアプリ。Subsonic 互換サーバー用の本物のオフラインプレイヤーにウォッチを変えます。
+homepage: https://apps.garmin.com/apps/cdb7dbb1-66d9-4bd3-8894-f44e507cdd01
+github: https://github.com/isyuricunha/yumusic-garmin-music-app
+techstack:
+  - Monkey C
+  - Garmin Connect IQ
+  - Subsonic API
+selected: true
+status: active
+---
+
+## YuMusic について
+
+YuMusic は Garmin ウォッチを、個人の **Subsonic 互換**メディアサーバー（Navidrome、Gonic、Airsonic、Nextcloud Music）向けのスタンドアロンのオフライン音楽プレイヤーに変えます。Garmin Connect スマートフォンアプリ経由で接続すれば、ウォッチ上でプレイリストを直接閲覧し、Wi-Fi 経由でトラックをダウンロードして、スマートフォンは家に置いていけます。
+
+### 主な機能
+
+- **サーバーとの直接同期** — 自宅のサーバーから直接腕にプレイリストをダウンロード
+- **オフライン再生** — インターネットがなくてもどこでも聴ける
+- **滑らかなネイティブ UI** — 余計なものを排し、音楽にすばやくアクセスできるレイアウト
+- ダウンロード済みライブラリ全体の**シャッフル再生**
+- サーバーに同期される**オフライン scrobble の自動記録**
+- ウォッチのストレージに合わせた**音質設定**（320 / 192 / 128 / 96 kbps）
+- **コンパクトなマルチプレイリストライブラリ** — 共有トラックはプレイリストごとではなく 1 回だけ保存
+- 他のプレイリストを壊さない**安全なプレイリスト削除**
+
+### スタック
+
+Garmin の Connect IQ SDK を使い Monkey C で構築され、Subsonic API と通信します。Navidrome と Gonic で動作確認済み。ほとんどの Subsonic API 実装と互換性があります。

@@ -1,0 +1,27 @@
+---
+name: List All Followers and Following
+description: ページネーション、ソート、GitHub Actions による自動更新を備え、GitHub のフォロワーとフォロー中の完全なリストを表示・フィルタリングできます。
+homepage: https://github.com/isyuricunha/list-all-followers-and-following
+github: https://github.com/isyuricunha/list-all-followers-and-following
+techstack:
+  - JavaScript
+  - GitHub Actions
+  - GitHub API
+selected: true
+status: active
+---
+
+## List All Followers and Following について
+
+GitHub のネイティブ UI では、フォロワーやフォロー中の人々をすべて閲覧するのが苦痛です — フィルタリングなし、ソートなし、使いにくいページネーション。この小さなプロジェクトは、ソート可能・フィルタリング可能なテーブルとしてフォロー/フォロワーの完全なリストを表示し、スケジュールに従って自動更新することでそれを解決します。
+
+### 主な機能
+
+- すべてのフォロワーとフォロー中を 1 つの長いテーブルで表示（「さらに読み込む」クリックは不要）
+- 名前、会社、場所、ブログ、bio でライブフィルタリングとソート
+- スケジュールされた GitHub Action による毎日の自動更新
+- バックエンド不要 — データは静的アセットとしてリポジトリにコミット
+
+### なぜ作ったか
+
+GitHub では何百人もフォローできますが、組み込みのページは 50 人を超えると使い物になりません。これがフォロワーリストの本来あるべき姿です。
