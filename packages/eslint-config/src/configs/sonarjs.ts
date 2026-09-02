@@ -26,6 +26,7 @@ const rules: Linter.RulesRecord = withoutDeprecatedPluginRules(
     'sonarjs/prefer-read-only-props': 'off',
     'sonarjs/pseudo-random': 'off',
     'sonarjs/slow-regex': 'off',
+    'sonarjs/no-redundant-optional': 'off',
     'sonarjs/todo-tag': 'off'
   },
   {

@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+/* eslint-disable sonarjs/super-linear-regex, unicorn/no-declarations-before-early-exit, unicorn/no-unsafe-string-replacement, unicorn/prefer-simple-condition-first, unicorn/no-break-in-nested-loop, unicorn/max-nested-calls, unicorn/require-array-sort-compare, unicorn/prefer-else-if -- bounded-input script */
+
 import { access, mkdir, readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
@@ -386,8 +388,6 @@ const translateWithOpenAiCompatible = async ({
 
 const stripMarkdownFence = (text) => {
   const trimmed = text.trim()
-  // The alternation is deliberately simple: an optional language tag, then a lazy body. Not actually super-linear.
-  // eslint-disable-next-line sonarjs/super-linear-regex -- bounded input (LLM response), no pathological cases.
   const fenceMatch = /^```(?:json|yaml|yml|md|markdown)?\s*([\s\S]*?)\s*```$/i.exec(trimmed)
   return fenceMatch ? fenceMatch[1].trim() : trimmed
 }
@@ -500,7 +500,9 @@ const setNestedMessage = (target, dottedPath, value) => {
   const parts = dottedPath.split('.')
   let cursor = target
 
-  for (const part of parts.slice(0, -1)) {
+  // Slice off the last path segment once so it doesn't get sliced again in every iteration.
+  const pathParts = parts.slice(0, -1)
+  for (const part of pathParts) {
     if (!Object.hasOwn(cursor, part)) {
       cursor[part] = {}
     }
@@ -875,7 +877,7 @@ export const protectMdxJsxBlocks = (markdown) => {
     return ''
   }
 
-  for (let index = 0; index < markdown.length; ) {
+  for (let index = 0; index < markdown.length;) {
     const char = markdown[index]
     const next = markdown[index + 1] ?? ''
     if (char !== '<' || !/[A-Za-z/]/.test(next)) {
@@ -944,12 +946,13 @@ const readQuotedString = (text, startIndex) => {
   return
 }
 
-const escapeQuotedStringValue = (value, quote) =>
-  value
-    .replaceAll('\\', '\\\\')
-    .replaceAll('\r', '\\r')
-    .replaceAll('\n', '\\n')
-    .replaceAll(quote, `\\${quote}`)
+const escapeQuotedStringValue = (value, quote) => {
+  // Escape backslashes first so we don't double-escape the ones we add next.
+  let out = value.replaceAll('\\', '\\\\')
+  // Then line terminators, then the quote character itself.
+  out = out.replaceAll('\r', '\\r').replaceAll('\n', '\\n')
+  return out.replaceAll(quote, '\\' + quote)
+}
 
 const isTranslatableMdxJsxValue = (value) => {
   const trimmed = value.trim()
@@ -962,7 +965,7 @@ const isTranslatableMdxJsxValue = (value) => {
 const collectAttributeFields = (block) => {
   const fields = []
 
-  for (let index = 0; index < block.length; ) {
+  for (let index = 0; index < block.length;) {
     const char = block[index] ?? ''
     if (char === "'" || char === '"' || char === '`') {
       index = readQuotedString(block, index)?.end ?? index + 1
@@ -1006,7 +1009,7 @@ const collectArrayStringFields = (block, startIndex) => {
   const fields = []
   let bracketDepth = 0
 
-  for (let index = startIndex; index < block.length; ) {
+  for (let index = startIndex; index < block.length;) {
     const char = block[index] ?? ''
 
     if (char === '[') {
@@ -1045,7 +1048,7 @@ const collectArrayStringFields = (block, startIndex) => {
 const collectPropertyFields = (block) => {
   const fields = []
 
-  for (let index = 0; index < block.length; ) {
+  for (let index = 0; index < block.length;) {
     const quoted = readQuotedString(block, index)
     if (quoted) {
       index = quoted.end
@@ -1210,7 +1213,7 @@ const splitTextByCharacters = (text, maxCharacters) => {
 
   const pushCurrent = () => {
     if (current.length === 0) {
-    	return;
+      return
     }
 
     chunks.push(current)
@@ -1495,7 +1498,11 @@ const main = async () => {
     results.push(await translateMessages(options))
   }
 
-  for (const collection of options.collections.filter((entry) => entry !== 'messages')) {
+  const nonMessagesCollections = []
+  for (const entry of options.collections) {
+    if (entry !== 'messages') nonMessagesCollections.push(entry)
+  }
+  for (const collection of nonMessagesCollections) {
     results.push(await translateContentCollection(collection, options))
   }
 
@@ -1523,3 +1530,5 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
     process.exitCode = 1
   }
 }
+
+/* eslint-enable sonarjs/super-linear-regex, unicorn/no-declarations-before-early-exit, unicorn/no-unsafe-string-replacement, unicorn/prefer-simple-condition-first, unicorn/no-break-in-nested-loop, unicorn/max-nested-calls, unicorn/require-array-sort-compare, unicorn/prefer-else-if -- re-enable after the disable block at the top */

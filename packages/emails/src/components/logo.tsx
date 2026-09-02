@@ -1,6 +1,6 @@
 import { Img, Section } from 'react-email'
 
-export default function Logo() {
+const Logo = () => {
   return (
     <Section className='mb-6'>
       <Img
@@ -14,3 +14,6 @@ export default function Logo() {
     </Section>
   )
 }
+
+export default Logo
+
