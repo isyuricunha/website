@@ -4,14 +4,14 @@ const MOBILE_BREAKPOINT = 768
 
 export const useIsMobile = () => {
   const [isMobile, setIsMobile] = useState(() =>
-    typeof globalThis.matchMedia === 'function'
-      ? globalThis.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`).matches
+    typeof matchMedia === 'function'
+      ? matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`).matches
       : false
   )
 
   useEffect(() => {
-    if (typeof globalThis.matchMedia !== 'function') return
-    const mql = globalThis.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`)
+    if (typeof matchMedia !== 'function') return
+    const mql = matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`)
     const onChange = () => {
       setIsMobile(mql.matches)
     }

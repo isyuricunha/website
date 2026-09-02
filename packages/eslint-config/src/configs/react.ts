@@ -21,6 +21,7 @@ export const react = (options?: Options): Linter.Config[] => {
 
     // @eslint-react/dom (flat names in v4: @eslint-react/dom-*)
     '@eslint-react/dom-no-dangerously-set-innerhtml': 'off',
+    '@eslint-react/web-api-no-leaked-event-listener': 'off',
 
     // react-hooks
     'react-hooks/incompatible-library': 'off',

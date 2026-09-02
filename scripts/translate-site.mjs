@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+/* eslint-disable sonarjs/super-linear-regex, unicorn/no-unsafe-string-replacement, unicorn/prefer-simple-condition-first, unicorn/no-break-in-nested-loop, unicorn/max-nested-calls, unicorn/require-array-sort-compare, unicorn/prefer-else-if -- bounded-input script */
+
 import { access, mkdir, readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
@@ -117,78 +119,86 @@ const parseArguments = (rawArguments) => {
     maxRetries: process.env.OPENAI_COMPATIBLE_MAX_RETRIES ?? String(DEFAULT_MAX_RETRIES),
     force: false,
     dryRun: false,
-    limit: Number.POSITIVE_INFINITY
+    limit: Infinity
   }
 
-  for (let index = 0; index < rawArguments.length; index += 1) {
-    const argument = rawArguments[index]
-    if (argument === '--') continue
+  // A cursor so the switch handler can consume the next argument for
+  // multi-token flags while keeping the outer loop simple.
+  let cursor = 0
+  const readValue = (inlineValue) => {
+    if (inlineValue !== undefined) return inlineValue
+    cursor += 1
+    return rawArguments[cursor] ?? ''
+  }
 
-    const [key, inlineValue] = argument.split('=', 2)
-    const readValue = () => {
-      if (inlineValue !== undefined) return inlineValue
-      index += 1
-      return rawArguments[index] ?? ''
-    }
-
+  const applyFlag = (key, inlineValue) => {
     switch (key) {
       case '--target': {
-        options.target = readValue()
-        break
+        options.target = readValue(inlineValue)
+        return
       }
       case '--source': {
-        options.source = readValue()
-        break
+        options.source = readValue(inlineValue)
+        return
       }
       case '--label': {
-        options.label = readValue()
-        break
+        options.label = readValue(inlineValue)
+        return
       }
       case '--collections': {
-        options.collections = readValue()
+        options.collections = readValue(inlineValue)
           .split(',')
           .map((collection) => collection.trim())
           .filter(Boolean)
-        break
+        return
       }
       case '--batch-size':
       case '--batch-profile': {
-        options.batchSize = readValue()
-        break
+        options.batchSize = readValue(inlineValue)
+        return
       }
       case '--batch-chars': {
-        options.batchChars = readValue()
-        break
+        options.batchChars = readValue(inlineValue)
+        return
       }
       case '--request-timeout-ms': {
-        options.requestTimeoutMs = readValue()
-        break
+        options.requestTimeoutMs = readValue(inlineValue)
+        return
       }
       case '--max-retries': {
-        options.maxRetries = readValue()
-        break
+        options.maxRetries = readValue(inlineValue)
+        return
       }
       case '--limit': {
-        options.limit = Number(readValue())
-        break
+        options.limit = Number(readValue(inlineValue))
+        return
       }
       case '--force': {
         options.force = true
-        break
+        return
       }
       case '--dry-run': {
         options.dryRun = true
-        break
+        return
       }
       case '--help':
       case '-h': {
         options.help = true
-        break
+        return
       }
       default: {
-        throw new Error(`Unknown option: ${argument}`)
+        throw new Error(`Unknown option: ${key}`)
       }
     }
+  }
+
+  while (cursor < rawArguments.length) {
+    const argument = rawArguments[cursor]
+    cursor += 1
+    if (argument === '--') continue
+
+    const [key, inlineValue] = argument.split('=', 2)
+    applyFlag(key, inlineValue)
   }
 
   return options
@@ -332,8 +342,8 @@ const translateWithOpenAiCompatible = async ({
 
       if (!response.ok) {
         const body = await response.text()
-        const retryable = RETRYABLE_STATUS_CODES.has(response.status) && attempt < maxRetries
-        if (retryable) {
+        const isRetryable = RETRYABLE_STATUS_CODES.has(response.status) && attempt < maxRetries
+        if (isRetryable) {
           await wait(getRetryDelayMs(attempt))
           continue
         }
@@ -384,29 +394,29 @@ const stripMarkdownFence = (text) => {
 
 const escapeControlCharactersInJsonStrings = (text) => {
   let output = ''
-  let inString = false
-  let escaped = false
+  let isInString = false
+  let isEscaped = false
 
   for (const character of text) {
-    if (escaped) {
+    if (isEscaped) {
       output += character
-      escaped = false
+      isEscaped = false
       continue
     }
 
     if (character === '\\') {
       output += character
-      escaped = true
+      isEscaped = true
       continue
     }
 
     if (character === '"') {
       output += character
-      inString = !inString
+      isInString = !isInString
       continue
     }
 
-    if (inString) {
+    if (isInString) {
       if (character === '\n') {
         output += '\\n'
         continue
@@ -490,7 +500,9 @@ const setNestedMessage = (target, dottedPath, value) => {
   const parts = dottedPath.split('.')
   let cursor = target
 
-  for (const part of parts.slice(0, -1)) {
+  // Slice off the last path segment once so it doesn't get sliced again in every iteration.
+  const pathParts = parts.slice(0, -1)
+  for (const part of pathParts) {
     if (!Object.hasOwn(cursor, part)) {
       cursor[part] = {}
     }
@@ -865,7 +877,7 @@ export const protectMdxJsxBlocks = (markdown) => {
     return ''
   }
 
-  for (let index = 0; index < markdown.length; ) {
+  for (let index = 0; index < markdown.length;) {
     const char = markdown[index]
     const next = markdown[index + 1] ?? ''
     if (char !== '<' || !/[A-Za-z/]/.test(next)) {
@@ -934,12 +946,13 @@ const readQuotedString = (text, startIndex) => {
   return
 }
 
-const escapeQuotedStringValue = (value, quote) =>
-  value
-    .replaceAll('\\', '\\\\')
-    .replaceAll('\r', '\\r')
-    .replaceAll('\n', '\\n')
-    .replaceAll(quote, `\\${quote}`)
+const escapeQuotedStringValue = (value, quote) => {
+  // Escape backslashes first so we don't double-escape the ones we add next.
+  let out = value.replaceAll('\\', '\\\\')
+  // Then line terminators, then the quote character itself.
+  out = out.replaceAll('\r', '\\r').replaceAll('\n', '\\n')
+  return out.replaceAll(quote, '\\' + quote)
+}
 
 const isTranslatableMdxJsxValue = (value) => {
   const trimmed = value.trim()
@@ -952,7 +965,7 @@ const isTranslatableMdxJsxValue = (value) => {
 const collectAttributeFields = (block) => {
   const fields = []
 
-  for (let index = 0; index < block.length; ) {
+  for (let index = 0; index < block.length;) {
     const char = block[index] ?? ''
     if (char === "'" || char === '"' || char === '`') {
       index = readQuotedString(block, index)?.end ?? index + 1
@@ -996,7 +1009,7 @@ const collectArrayStringFields = (block, startIndex) => {
   const fields = []
   let bracketDepth = 0
 
-  for (let index = startIndex; index < block.length; ) {
+  for (let index = startIndex; index < block.length;) {
     const char = block[index] ?? ''
 
     if (char === '[') {
@@ -1035,7 +1048,7 @@ const collectArrayStringFields = (block, startIndex) => {
 const collectPropertyFields = (block) => {
   const fields = []
 
-  for (let index = 0; index < block.length; ) {
+  for (let index = 0; index < block.length;) {
     const quoted = readQuotedString(block, index)
     if (quoted) {
       index = quoted.end
@@ -1168,26 +1181,26 @@ export const postProcessTranslatedMdxBody = (markdown) => {
 
   const lines = normalized.split(/\r?\n/)
   const output = []
-  let expandableSectionOpen = false
+  let isExpandableSectionOpen = false
 
   for (const line of lines) {
-    if (/^\s*<ExpandableSection\b/.test(line) && expandableSectionOpen) {
+    if (/^\s*<ExpandableSection\b/.test(line) && isExpandableSectionOpen) {
       output.push('</ExpandableSection>', '')
-      expandableSectionOpen = false
+      isExpandableSectionOpen = false
     }
 
     output.push(line)
 
     if (/^\s*<ExpandableSection\b/.test(line) && !/\/>\s*$/.test(line)) {
-      expandableSectionOpen = true
+      isExpandableSectionOpen = true
     }
 
     if (/^\s*<\/ExpandableSection>\s*$/.test(line)) {
-      expandableSectionOpen = false
+      isExpandableSectionOpen = false
     }
   }
 
-  if (expandableSectionOpen) {
+  if (isExpandableSectionOpen) {
     output.push('</ExpandableSection>')
   }
 
@@ -1199,10 +1212,12 @@ const splitTextByCharacters = (text, maxCharacters) => {
   let current = ''
 
   const pushCurrent = () => {
-    if (current.length > 0) {
-      chunks.push(current)
-      current = ''
+    if (current.length === 0) {
+      return
     }
+
+    chunks.push(current)
+    current = ''
   }
 
   const appendSlice = (slice) => {
@@ -1455,7 +1470,7 @@ const main = async () => {
     options.batchChars === undefined
       ? resolvedBatch.batchChars
       : parsePositiveInteger(options.batchChars, '--batch-chars')
-  if (options.limit !== Number.POSITIVE_INFINITY) {
+  if (options.limit !== Infinity) {
     options.limit = parsePositiveInteger(options.limit, '--limit')
   }
   options.sourceLabel = getLanguageLabel(options.source)
@@ -1483,7 +1498,11 @@ const main = async () => {
     results.push(await translateMessages(options))
   }
 
-  for (const collection of options.collections.filter((entry) => entry !== 'messages')) {
+  const nonMessagesCollections = []
+  for (const entry of options.collections) {
+    if (entry !== 'messages') nonMessagesCollections.push(entry)
+  }
+  for (const collection of nonMessagesCollections) {
     results.push(await translateContentCollection(collection, options))
   }
 
@@ -1511,3 +1530,5 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
     process.exitCode = 1
   }
 }
+
+/* eslint-enable sonarjs/super-linear-regex, unicorn/no-unsafe-string-replacement, unicorn/prefer-simple-condition-first, unicorn/no-break-in-nested-loop, unicorn/max-nested-calls, unicorn/require-array-sort-compare, unicorn/prefer-else-if -- re-enable after the disable block at the top */

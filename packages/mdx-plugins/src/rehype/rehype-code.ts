@@ -78,8 +78,8 @@ export const rehypeCode: Plugin<[RehypeShikiOptions], Root> = () => {
     langs: Object.keys(bundledLanguages)
   })
 
-  const transformer = highlighter.then((instance) =>
-    rehypeShikiFromHighlighter(instance, {
+  const transformer = (async () =>
+    rehypeShikiFromHighlighter(await highlighter, {
       themes: DEFAULT_SHIKI_THEMES,
       defaultColor: false,
       defaultLanguage: 'plaintext',
@@ -90,8 +90,7 @@ export const rehypeCode: Plugin<[RehypeShikiOptions], Root> = () => {
 
         return { title }
       }
-    })
-  )
+    }))()
 
   return async (tree: Root, file: VFile) => {
     await (

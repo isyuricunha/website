@@ -53,32 +53,32 @@
     "update": "pnpm -r up --latest"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.31.0",
-    "@commitlint/cli": "^21.0.1",
-    "@commitlint/config-conventional": "^21.0.1",
+    "@changesets/cli": "^3.0.1",
+    "@commitlint/cli": "^21.2.2",
+    "@commitlint/config-conventional": "^21.2.2",
     "@isyuricunha/eslint-config": "workspace:*",
     "@isyuricunha/prettier-config": "workspace:*",
     "@isyuricunha/tsconfig": "workspace:*",
-    "@playwright/test": "^1.60.0",
-    "@types/node": "^25.9.1",
-    "@vitest/coverage-v8": "^4.1.7",
-    "@vitest/ui": "^4.1.7",
+    "@playwright/test": "^1.62.1",
+    "@types/node": "^26.4.1",
+    "@vitest/coverage-v8": "^4.1.11",
+    "@vitest/ui": "^4.1.11",
     "cross-env": "^10.1.0",
-    "czg": "^1.13.1",
+    "czg": "^1.14.0",
     "dotenv-cli": "^11.0.0",
-    "eslint": "^10.4.0",
-    "jsdom": "^29.1.1",
-    "js-yaml": "^4.1.1",
-    "knip": "^6.14.2",
-    "lint-staged": "^17.0.5",
-    "prettier": "^3.8.3",
-    "simple-git-hooks": "^2.13.1",
+    "eslint": "^10.9.1",
+    "js-yaml": "^5.4.1",
+    "jsdom": "^30.0.1",
+    "knip": "^6.34.0",
+    "lint-staged": "^17.4.1",
+    "prettier": "^3.9.6",
+    "simple-git-hooks": "^2.14.0",
     "tsup": "^8.5.1",
-    "tsx": "^4.22.3",
-    "turbo": "^2.9.14",
+    "tsx": "^4.23.13",
+    "turbo": "^2.10.12",
     "typescript": "^6.0.3",
-    "vite": "^8.0.14",
-    "vitest": "^4.1.7"
+    "vite": "^8.2.2",
+    "vitest": "^4.1.11"
   },
   "engines": {
     "node": ">=24"
@@ -91,32 +91,6 @@
     ]
   },
   "packageManager": "pnpm@10.33.2",
-  "pnpm": {
-    "packageExtensions": {
-      "@hookform/resolvers": {
-        "peerDependencies": {
-          "zod": "^3.25.0 || ^4.0.0"
-        },
-        "peerDependenciesMeta": {
-          "zod": {
-            "optional": true
-          }
-        }
-      }
-    },
-    "overrides": {
-      "better-call": "1.3.5",
-      "drizzle-kit": "0.31.10",
-      "preact": "10.28.2",
-      "js-yaml": "^4.1.1"
-    },
-    "onlyBuiltDependencies": [
-      "@prisma/engines",
-      "@swc/core",
-      "esbuild",
-      "prisma"
-    ]
-  },
   "simple-git-hooks": {
     "pre-commit": "pnpm lint-staged --concurrent false",
     "commit-msg": "pnpm commitlint --edit $1 && pnpm check:spelling $1"

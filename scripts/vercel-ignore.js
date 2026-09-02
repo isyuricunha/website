@@ -17,6 +17,7 @@ function commitExists(rev) {
   if (!rev) return false
 
   try {
+    // eslint-disable-next-line unicorn/no-incorrect-template-string-interpolation -- 'commit' is part of git ref syntax, not a JS variable.
     execFileSync('git', ['cat-file', '-e', `${rev}^{commit}`], {
       stdio: ['ignore', 'ignore', 'ignore']
     })

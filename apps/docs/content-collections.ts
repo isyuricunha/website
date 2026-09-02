@@ -7,22 +7,24 @@ const contentSchema = z.object({
   content: z.string()
 })
 
+const linkSchema = z
+  .object({
+    doc: z.string().optional(),
+    api: z.string().optional()
+  })
+  .optional()
+
+const docMetaSchema = z.object({
+  title: z.string(),
+  description: z.string(),
+  link: linkSchema
+})
+
 const docs = defineCollection({
   name: 'Doc',
   directory: 'src/content',
   include: '**/*.mdx',
-  schema: contentSchema.merge(
-    z.object({
-      title: z.string(),
-      description: z.string(),
-      link: z
-        .object({
-          doc: z.string().optional(),
-          api: z.string().optional()
-        })
-        .optional()
-    })
-  ),
+  schema: contentSchema.merge(docMetaSchema),
   transform: async (document, context) => {
     const code = await compileMDX(context, document, {
       remarkPlugins,

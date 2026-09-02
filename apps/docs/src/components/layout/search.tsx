@@ -33,10 +33,10 @@ const Search = () => {
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
-      if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault()
-        setIsOpen((prev) => !prev)
-      }
+      if (e.key !== 'k' || (!e.metaKey && !e.ctrlKey)) return
+
+      e.preventDefault()
+      setIsOpen((prev) => !prev)
     }
 
     document.addEventListener('keydown', down)

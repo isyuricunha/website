@@ -10,23 +10,10 @@ import {
 } from 'lucide-react'
 
 type AnnouncementType =
-  | 'info'
-  | 'warning'
-  | 'success'
-  | 'error'
-  | 'maintenance'
-  | 'feature'
-  | 'update'
+  'info' | 'warning' | 'success' | 'error' | 'maintenance' | 'feature' | 'update'
 
 type BadgeVariant =
-  | 'default'
-  | 'secondary'
-  | 'destructive'
-  | 'outline'
-  | 'success'
-  | 'info'
-  | 'agent'
-  | 'warning'
+  'default' | 'secondary' | 'destructive' | 'outline' | 'success' | 'info' | 'agent' | 'warning'
 
 type IconSize = 'sm' | 'md'
 

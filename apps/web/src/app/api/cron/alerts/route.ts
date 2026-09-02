@@ -25,10 +25,7 @@ export const runtime = 'nodejs'
 type Operator = 'gt' | 'gte' | 'lt' | 'lte'
 
 type Metric =
-  | 'api_error_rate'
-  | 'avg_response_time'
-  | 'unresolved_error_count'
-  | 'security_critical_events'
+  'api_error_rate' | 'avg_response_time' | 'unresolved_error_count' | 'security_critical_events'
 
 type AlertConditions = {
   metric: Metric
@@ -82,22 +79,18 @@ const parse_conditions = (raw: string): AlertConditions | null => {
       return null
     }
 
-    const timeRangeMinutes =
-      typeof obj.timeRangeMinutes === 'number' && obj.timeRangeMinutes > 0
-        ? Math.floor(obj.timeRangeMinutes)
-        : undefined
-
-    const cooldownMinutes =
-      typeof obj.cooldownMinutes === 'number' && obj.cooldownMinutes > 0
-        ? Math.floor(obj.cooldownMinutes)
-        : undefined
-
     return {
       metric,
       operator,
       threshold,
-      timeRangeMinutes,
-      cooldownMinutes
+      timeRangeMinutes:
+        typeof obj.timeRangeMinutes === 'number' && obj.timeRangeMinutes > 0
+          ? Math.floor(obj.timeRangeMinutes)
+          : undefined,
+      cooldownMinutes:
+        typeof obj.cooldownMinutes === 'number' && obj.cooldownMinutes > 0
+          ? Math.floor(obj.cooldownMinutes)
+          : undefined
     }
   } catch {
     return null

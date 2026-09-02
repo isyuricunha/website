@@ -120,7 +120,7 @@ const DataTablePagination = <TData,>(props: DataTablePaginationProps<TData>) => 
         <div className='flex items-center gap-2'>
           <p className='text-sm font-medium whitespace-nowrap'>Rows per page</p>
           <Select
-            value={`${table.getState().pagination.pageSize}`}
+            value={String(table.getState().pagination.pageSize)}
             onValueChange={(value) => {
               table.setPageSize(Number(value))
             }}
@@ -130,7 +130,7 @@ const DataTablePagination = <TData,>(props: DataTablePaginationProps<TData>) => 
             </SelectTrigger>
             <SelectContent side='top'>
               {pageSizeOptions.map((pageSize) => (
-                <SelectItem key={pageSize} value={`${pageSize}`}>
+                <SelectItem key={pageSize} value={String(pageSize)}>
                   {pageSize}
                 </SelectItem>
               ))}
