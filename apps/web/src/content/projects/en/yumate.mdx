@@ -1,0 +1,29 @@
+---
+name: YuMate
+description: A Windows-first Electron AI desktop pet that renders animated sprites, chats via OpenAI-compatible providers, and speaks with EdgeTTS.
+homepage: https://github.com/isyuricunha/yumate
+github: https://github.com/isyuricunha/yumate
+techstack:
+  - TypeScript
+  - Electron
+  - OpenAI
+  - EdgeTTS
+selected: true
+status: active
+---
+
+## About YuMate
+
+YuMate is a floating AI desktop companion for Windows. It's rendered as a transparent animated sprite pack, chats with you through OpenAI-compatible providers, and speaks aloud using Microsoft EdgeTTS when speech is enabled. State, conversations, and pet packs live in a local SQLite database.
+
+### Features
+
+- **Animated pet packs** — drop-your-own sprite format with configurable idle, walk, talk frames
+- **AI chat** — talk to your pet via any OpenAI-compatible endpoint
+- **Voice output** — EdgeTTS-powered speech so the pet actually talks back
+- **Persistent state** — SQLite-backed history, settings, and pets
+- **Desktop transparency** — rendered above any window, custom-positionable
+
+### Architecture
+
+Electron shell with a TypeScript backend. Pet packs are folder-based with a `pet.json` descriptor and a sprite sheet (or PNG/WebP image). Adding a new pet is as simple as dropping a folder.

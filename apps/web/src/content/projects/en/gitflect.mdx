@@ -1,0 +1,28 @@
+---
+name: Gitflect
+description: A lightweight Go container that automatically mirrors your GitHub repositories to GitLab, including large file storage (LFS) objects.
+homepage: https://github.com/isyuricunha/gitflect
+github: https://github.com/isyuricunha/gitflect
+techstack:
+  - Go
+  - Docker
+  - GitLab API
+  - GitHub API
+selected: true
+status: active
+---
+
+## About Gitflect
+
+Gitflect is a tiny Go container that keeps your GitHub repositories mirrored to GitLab automatically — including LFS objects. You run it once, point it at your accounts, and it walks through every repo you own, mirroring branches, tags, wikis, and even large binary assets.
+
+### Why it exists
+
+I wanted a reliable mirror of my work on a separate platform without depending on an external SaaS. Gitflect runs as a cron-friendly container that you can drop into any infrastructure.
+
+### Features
+
+- Incremental sync — only pushes changes after the first full mirror
+- LFS support — large binaries follow along
+- Cron-compatible — set it and forget it
+- Multiple GitLab targets — mirror the same repo to several places
