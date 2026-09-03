@@ -1,0 +1,28 @@
+---
+name: MCP DDG Research
+description: Um servidor MCP leve para busca HTML no DuckDuckGo com modo opcional ddgs, fetch seguro de páginas, cache e extração limpa de texto.
+homepage: https://github.com/isyuricunha/mcp-ddg-research
+github: https://github.com/isyuricunha/mcp-ddg-research
+techstack:
+  - TypeScript
+  - MCP
+  - DuckDuckGo
+selected: true
+status: active
+---
+
+## Sobre o MCP DDG Research
+
+Um servidor Model Context Protocol (MCP) minimalista que traz a busca do DuckDuckGo para seus agentes de IA, com fetch limpo de páginas, extração de texto de HTML e um cache local para nunca requisitar a mesma página duas vezes.
+
+### Recursos
+
+- Busca HTML no DuckDuckGo via endpoint sem rastreamento
+- Modo opcional com a biblioteca `ddgs` para resultados mais ricos
+- Fetch seguro de páginas com User-Agent sensato, filtro por content-type e timeout
+- Cache de resultados embutido — a mesma URL nunca é buscada duas vezes
+- Extração de texto pronta para Markdown da maioria das páginas HTML
+
+### Por que MCP
+
+Conecte no Claude Desktop, Cursor ou qualquer outro cliente compatível com MCP e a IA para de alucinar URLs. Em vez de lembrar informação desatualizada, ela pode buscar conteúdo fresco sob demanda e citar suas descobertas.

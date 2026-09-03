@@ -1,0 +1,28 @@
+---
+name: Gitflect
+description: GitHub リポジトリを GitLab に自動ミラーリングする軽量 Go コンテナ。LFS にも対応。
+homepage: https://github.com/isyuricunha/gitflect
+github: https://github.com/isyuricunha/gitflect
+techstack:
+  - Go
+  - Docker
+  - GitLab API
+  - GitHub API
+selected: true
+status: active
+---
+
+## Gitflect について
+
+Gitflect は小さな Go コンテナで、あなたの GitHub リポジトリを GitLab に自動ミラーリングします。LFS オブジェクトを含みます。一度動かせば、ブランチ、タグ、wiki、大きなバイナリファイルまで、あなたのリポジトリすべてを同期します。
+
+### 特徴
+
+- インクリメンタル同期 — 初回ミラー後、変更があった部分だけ更新
+- LFS サポート — 大きなバイナリも同期
+- Cron 対応 — 設定して忘れるだけ
+- 複数の GitLab ミラー先も OK
+
+### なぜ
+
+外部の SaaS に依存せず、自分の作ったものを別プラットフォームにミラーリングしたかった。Gitflect は任意のインフラに落とせる cron フレンドリーなコンテナとして動作します。

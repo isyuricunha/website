@@ -1,0 +1,31 @@
+---
+name: Return to Moria (Docker)
+description: Un setup Docker autonome pour héberger un serveur dédié Lord of the Rings — Return to Moria avec SteamCMD et Wine.
+homepage: https://github.com/isyuricunha/return-to-mortia
+github: https://github.com/isyuricunha/return-to-mortia
+techstack:
+  - Docker
+  - Shell
+  - SteamCMD
+selected: true
+status: active
+---
+
+## À propos du serveur dédié Return to Moria
+
+Une stack Docker autonome pour héberger votre propre serveur **Lord of the Rings: Return to Moria** — sans bidouiller manuellement SteamCMD.
+
+### Ce que vous obtenez
+
+- Un `Dockerfile` basé sur `ghcr.io/ptero-eggs/yolks:wine_latest`
+- Un `entrypoint.sh` qui amorce SteamCMD, installe/met à jour le serveur et le lance via Wine
+- Un `docker-compose.yml` avec un volume `./data` persistant pour que la partie survive aux redémarrages
+- Un `.env.example` avec tous les réglages — nom du serveur, port, mot de passe, politique de mise à jour
+
+### Comment ça marche
+
+Au premier lancement, le conteneur télécharge SteamCMD et les fichiers du serveur dédié dans `./data`. Ensuite, il peut se mettre à jour automatiquement (configurable) et lance le serveur sous Wine. L'image elle-même reste légère ; tout le travail lourd se fait sur le disque de l'hôte.
+
+### Compatibilité
+
+Testé sur Ubuntu Server 24.04 LTS. Devrait tourner sur n'importe quel Linux x86_64 moderne avec Docker installé.

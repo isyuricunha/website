@@ -1,0 +1,29 @@
+---
+name: YuMate
+description: Ein Windows-first Electron-KI-Desktop-Pet, das animierte Sprites rendert, über OpenAI-kompatible Anbieter chattet und mit EdgeTTS spricht.
+homepage: https://github.com/isyuricunha/yumate
+github: https://github.com/isyuricunha/yumate
+techstack:
+  - TypeScript
+  - Electron
+  - OpenAI
+  - EdgeTTS
+selected: true
+status: active
+---
+
+## Über YuMate
+
+YuMate ist ein schwebender KI-Desktop-Begleiter für Windows. Er wird als transparentes animiertes Sprite-Paket gerendert, chattet über OpenAI-kompatible Anbieter mit dir und spricht bei aktivierter Sprachausgabe über Microsoft EdgeTTS laut mit dir. Zustand, Unterhaltungen und Pet-Pakete liegen in einer lokalen SQLite-Datenbank.
+
+### Funktionen
+
+- **Animierte Pet-Pakete** – eigenes Sprite-Format zum Selbsteinbinden mit konfigurierbaren Idle-, Lauf- und Sprech-Frames
+- **KI-Chat** – sprich mit deinem Pet über jeden OpenAI-kompatiblen Endpunkt
+- **Sprachausgabe** – EdgeTTS-gestützte Sprache, damit das Pet tatsächlich zurückredet
+- **Persistenter Zustand** – SQLite-gestützter Verlauf, Einstellungen und Pets
+- **Desktop-Transparenz** – wird über jedem Fenster gerendert, frei positionierbar
+
+### Architektur
+
+Electron-Shell mit TypeScript-Backend. Pet-Pakete sind ordnerbasiert, mit einem `pet.json`-Deskriptor und einem Sprite-Sheet (oder PNG/WebP-Bild). Ein neues Pet hinzuzufügen ist so einfach wie einen Ordner hineinzulegen.

@@ -1,0 +1,31 @@
+---
+name: Return to Moria (Docker)
+description: SteamCMD と Wine で Return to Moria 専用サーバーを動かす Docker セットアップ。
+homepage: https://github.com/isyuricunha/return-to-mortia
+github: https://github.com/isyuricunha/return-to-mortia
+techstack:
+  - Docker
+  - Shell
+  - SteamCMD
+selected: true
+status: active
+---
+
+## Return to Moria (Docker) について
+
+Lord of the Rings: Return to Moria の専用サーバーを Docker でホストする自己完結セットアップ。SteamCMD の設定格闘は不要。
+
+### 特徴
+
+- `Dockerfile` は `ghcr.io/ptero-eggs/yolks:wine_latest` ベース
+- `entrypoint.sh` が SteamCMD を起動、サーバーをインストール・更新・起動
+- `docker-compose.yml` で `./data` を永続ボリュームとして保持
+- `.env.example` には全設定（サーバー名、ポート、パスワードなど）
+
+### 動作
+
+初回起動で SteamCMD がサーバーファイルを `./data` にダウンロード。以降は自動更新（任意）と共に Wine で起動。イメージは小さいまま、重いデータはホストのディスクに置かれます。
+
+### 動作確認
+
+Ubuntu Server 24.04 LTS で動作確認済み。x86_64 であれば大抵の現行 Linux で動きます。

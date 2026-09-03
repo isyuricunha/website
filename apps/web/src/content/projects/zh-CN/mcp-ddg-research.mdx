@@ -1,0 +1,28 @@
+---
+name: MCP DDG Research
+description: 一个轻量级的 MCP 服务器,提供 DuckDuckGo HTML 搜索、可选的 ddgs 模式、安全的网页抓取、缓存和干净的文本提取。
+homepage: https://github.com/isyuricunha/mcp-ddg-research
+github: https://github.com/isyuricunha/mcp-ddg-research
+techstack:
+  - TypeScript
+  - MCP
+  - DuckDuckGo
+selected: true
+status: active
+---
+
+## 关于 MCP DDG Research
+
+一个极简的 Model Context Protocol(MCP)服务器,把 DuckDuckGo 搜索带进你的 AI 代理,支持干净的页面抓取、HTML 转文本提取,以及本地缓存 —— 同一个页面绝不重复抓取。
+
+### 特性
+
+- 通过零追踪端点进行 DuckDuckGo HTML 搜索
+- 可选的 `ddgs` 库模式,获取更丰富的查询结果
+- 安全的页面抓取:合理的 User-Agent、内容类型过滤和超时控制
+- 内置结果缓存 —— 同一个 URL 绝不抓取两次
+- 从大多数 HTML 页面提取出适合 Markdown 的文本
+
+### 为什么是 MCP
+
+把它接入 Claude Desktop、Cursor 或任何兼容 MCP 的客户端,AI 就不会再胡编 URL 了。它可以按需搜索最新内容并引用来源,而不是回忆起过时的信息。

@@ -1,0 +1,29 @@
+---
+name: YuMate
+description: Windows 向け Elecron AI ペット。アニメーションスプライト、OpenAI 対応プロバイダーで会話、EdgeTTS で発話。
+homepage: https://github.com/isyuricunha/yumate
+github: https://github.com/isyuricunha/yumate
+techstack:
+  - TypeScript
+  - Electron
+  - OpenAI
+  - EdgeTTS
+selected: true
+status: active
+---
+
+## YuMate について
+
+YuMate は Windows 向けフローティング AI デスクトップペット。透過アニメーションスプライトとして描かれ、OpenAI 対応プロバイダーでチャット、音声は Microsoft EdgeTTS を使用。会話履歴やペット設定はローカル SQLite に保存。
+
+### 特徴
+
+- **アニメーションペットパック** — idle/walk/talk のフレームを自由に設定
+- **AI チャット** — OpenAI 対応エンドポイントで会話
+- **音声出力** — EdgeTTS でペットが本当に返事をします
+- **永続状態** — SQLite で履歴と設定を保持
+- **デスクトップ透明度** — どのウィンドウの上にも表示
+
+### アーキテクチャ
+
+Electron 製シェル＋ TypeScript バックエンド。ペットパックは pet.json とスプライトシート（または PNG/WebP）だけのシンプルなフォルダー。新しいペットを追加するのはフォルダを置くだけです。
