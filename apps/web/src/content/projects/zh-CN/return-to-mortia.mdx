@@ -1,0 +1,31 @@
+---
+name: Return to Moria (Docker)
+description: 一个自包含的 Docker 方案,通过 SteamCMD 和 Wine 运行《指环王:重返摩瑞亚》专属服务器。
+homepage: https://github.com/isyuricunha/return-to-mortia
+github: https://github.com/isyuricunha/return-to-mortia
+techstack:
+  - Docker
+  - Shell
+  - SteamCMD
+selected: true
+status: active
+---
+
+## 关于 Return to Moria 专属服务器
+
+一个自包含的 Docker 方案,用于托管你自己的《指环王:重返摩瑞亚》服务器 —— 无需手动折腾 SteamCMD。
+
+### 包含内容
+
+- 基于 `ghcr.io/ptero-eggs/yolks:wine_latest` 的 `Dockerfile`
+- `entrypoint.sh`:引导 SteamCMD,安装/更新服务器,并通过 Wine 启动
+- `docker-compose.yml`,带持久化的 `./data` 卷,游戏状态重启后不丢失
+- `.env.example`,包含所有可调项 —— 服务器名、端口、密码、更新策略
+
+### 工作原理
+
+首次运行时,容器会把 SteamCMD 和专属服务器文件下载到 `./data`。之后可以(可配置地)自动更新,并在 Wine 下启动服务器。镜像本身保持小巧,繁重的数据都放在宿主机磁盘上。
+
+### 兼容性
+
+已在 Ubuntu Server 24.04 LTS 上测试。任何安装了 Docker 的现代 x86_64 Linux 机器应该都能运行。

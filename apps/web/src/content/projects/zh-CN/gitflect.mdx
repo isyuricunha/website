@@ -1,0 +1,28 @@
+---
+name: Gitflect
+description: 一个轻量级的 Go 容器,自动将你的 GitHub 仓库镜像到 GitLab,包括大文件存储(LFS)对象。
+homepage: https://github.com/isyuricunha/gitflect
+github: https://github.com/isyuricunha/gitflect
+techstack:
+  - Go
+  - Docker
+  - GitLab API
+  - GitHub API
+selected: true
+status: active
+---
+
+## 关于 Gitflect
+
+Gitflect 是一个小型 Go 容器,可以自动将你的 GitHub 仓库镜像到 GitLab —— 包括 LFS 对象。你只需运行一次,指向你的账号,它就会遍历你拥有的每个仓库,镜像分支、标签、wiki,甚至大型二进制资源。
+
+### 为什么做这个项目
+
+我希望在另一个平台上可靠地镜像自己的作品,而不依赖外部 SaaS。Gitflect 是一个适合 cron 调度的容器,可以放进任何基础设施中运行。
+
+### 特性
+
+- 增量同步 —— 首次完整镜像后只推送变更
+- LFS 支持 —— 大型二进制文件一并跟随
+- 兼容 cron —— 设置好就不用管
+- 多个 GitLab 目标 —— 同一个仓库可以镜像到多个地方

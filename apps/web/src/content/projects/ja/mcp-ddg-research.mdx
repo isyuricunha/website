@@ -1,0 +1,28 @@
+---
+name: MCP DDG Research
+description: DuckDuckGo 検索を AI エージェントに導入する軽量 MCP サーバー。安全なページ取得、キャッシュ、テキスト抽出を搭載。
+homepage: https://github.com/isyuricunha/mcp-ddg-research
+github: https://github.com/isyuricunha/mcp-ddg-research
+techstack:
+  - TypeScript
+  - MCP
+  - DuckDuckGo
+selected: true
+status: active
+---
+
+## MCP DDG Research について
+
+DuckDuckGo 検索を AI エージェントに導入する最小の MCP サーバー。ページの HTML をきれいにテキストに変換し、ローカルキャッシュで同じ URL を再度取得しません。
+
+### 特徴
+
+- トラッキングなしの DuckDuckGo HTML 検索
+- ddgs ライブラリ経由のリッチ検索モード
+- User-Agent、Content-Type フィルタ、タイムアウト付きの安全なフェッチ
+- 同じ URL を二度取らない内蔵キャッシュ
+- Markdown 対応テキスト抽出
+
+### なぜ
+
+Claude Desktop、Cursor、または任意の MCP クライアントに接続すれば、AI は URL をでっち上げなくなります。古い知識に頼る代わりに、リアルタイムで検索して出典を示せます。

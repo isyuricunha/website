@@ -1,0 +1,29 @@
+---
+name: YuMate
+description: 一个 Windows 优先的 Electron AI 桌面宠物,渲染动画精灵,通过 OpenAI 兼容服务商聊天,并用 EdgeTTS 开口说话。
+homepage: https://github.com/isyuricunha/yumate
+github: https://github.com/isyuricunha/yumate
+techstack:
+  - TypeScript
+  - Electron
+  - OpenAI
+  - EdgeTTS
+selected: true
+status: active
+---
+
+## 关于 YuMate
+
+YuMate 是一个 Windows 上的悬浮 AI 桌面伙伴。它以透明动画精灵包的形式呈现,通过 OpenAI 兼容服务商与你聊天,并在开启语音时用微软 EdgeTTS 把话说出来。状态、对话记录和宠物包都存放在本地 SQLite 数据库中。
+
+### 特性
+
+- **动画宠物包** —— 自定义精灵格式,可配置待机、行走、说话等帧
+- **AI 聊天** —— 通过任意 OpenAI 兼容端点与宠物对话
+- **语音输出** —— EdgeTTS 驱动的语音,让宠物真的开口回应
+- **持久化状态** —— 基于 SQLite 的历史记录、设置和宠物数据
+- **桌面透明** —— 渲染在任何窗口之上,可自由摆放位置
+
+### 架构
+
+Electron 外壳 + TypeScript 后端。宠物包基于文件夹,包含一个 `pet.json` 描述文件和一张精灵图(或 PNG/WebP 图片)。添加新宠物就像丢一个文件夹进去那么简单。

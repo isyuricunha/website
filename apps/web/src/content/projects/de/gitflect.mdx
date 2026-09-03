@@ -1,0 +1,28 @@
+---
+name: Gitflect
+description: Ein schlanker Go-Container, der deine GitHub-Repositories automatisch nach GitLab spiegelt – inklusive Large File Storage (LFS)-Objekten.
+homepage: https://github.com/isyuricunha/gitflect
+github: https://github.com/isyuricunha/gitflect
+techstack:
+  - Go
+  - Docker
+  - GitLab API
+  - GitHub API
+selected: true
+status: active
+---
+
+## Über Gitflect
+
+Gitflect ist ein kleiner Go-Container, der deine GitHub-Repositories automatisch nach GitLab spiegelt – inklusive LFS-Objekten. Einmal starten, auf deine Accounts zeigen lassen, und er geht durch alle deine Repos und spiegelt Branches, Tags, Wikis und sogar große Binärdateien.
+
+### Warum es das gibt
+
+Ich wollte einen zuverlässigen Spiegel meiner Arbeit auf einer separaten Plattform, ohne von einem externen SaaS abhängig zu sein. Gitflect läuft als cron-freundlicher Container, den du in jede Infrastruktur einhängen kannst.
+
+### Funktionen
+
+- Inkrementelle Synchronisierung – nach dem ersten vollständigen Spiegel werden nur Änderungen gepusht
+- LFS-Unterstützung – große Binärdateien wandern mit
+- Cron-kompatibel – einrichten und vergessen
+- Mehrere GitLab-Ziele – dasselbe Repo an mehrere Orte spiegeln

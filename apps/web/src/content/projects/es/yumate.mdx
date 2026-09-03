@@ -1,0 +1,29 @@
+---
+name: YuMate
+description: Una mascota de escritorio con IA basada en Electron y enfocada en Windows, que renderiza sprites animados, conversa mediante proveedores compatibles con OpenAI y habla con EdgeTTS.
+homepage: https://github.com/isyuricunha/yumate
+github: https://github.com/isyuricunha/yumate
+techstack:
+  - TypeScript
+  - Electron
+  - OpenAI
+  - EdgeTTS
+selected: true
+status: active
+---
+
+## Acerca de YuMate
+
+YuMate es un compañero de escritorio flotante con IA para Windows. Se renderiza como un paquete de sprites animados transparente, conversa contigo a través de proveedores compatibles con OpenAI y habla en voz alta usando Microsoft EdgeTTS cuando la voz está activada. El estado, las conversaciones y los paquetes de mascotas viven en una base de datos SQLite local.
+
+### Características
+
+- **Paquetes de mascotas animadas**: formato de sprites personalizable con frames configurables para reposo, caminar y hablar
+- **Chat con IA**: habla con tu mascota a través de cualquier endpoint compatible con OpenAI
+- **Salida de voz**: voz con EdgeTTS para que la mascota realmente te responda
+- **Estado persistente**: historial, ajustes y mascotas respaldados por SQLite
+- **Transparencia de escritorio**: se renderiza sobre cualquier ventana, con posición personalizable
+
+### Arquitectura
+
+Shell de Electron con un backend en TypeScript. Los paquetes de mascotas se organizan en carpetas con un descriptor `pet.json` y una hoja de sprites (o imagen PNG/WebP). Agregar una mascota nueva es tan simple como soltar una carpeta.

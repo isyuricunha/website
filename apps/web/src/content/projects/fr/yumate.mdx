@@ -1,0 +1,29 @@
+---
+name: YuMate
+description: Un compagnon de bureau IA pour Windows construit en Electron, qui affiche des sprites animés, discute via des fournisseurs compatibles OpenAI et parle grâce à EdgeTTS.
+homepage: https://github.com/isyuricunha/yumate
+github: https://github.com/isyuricunha/yumate
+techstack:
+  - TypeScript
+  - Electron
+  - OpenAI
+  - EdgeTTS
+selected: true
+status: active
+---
+
+## À propos de YuMate
+
+YuMate est un compagnon de bureau IA flottant pour Windows. Il s'affiche comme un pack de sprites animés transparents, discute avec vous via des fournisseurs compatibles OpenAI, et parle à voix haute grâce à Microsoft EdgeTTS quand la voix est activée. L'état, les conversations et les packs de mascottes sont stockés dans une base SQLite locale.
+
+### Fonctionnalités
+
+- **Packs de mascottes animées** — format de sprites personnalisable avec des poses d'attente, de marche et de parole configurables
+- **Chat IA** — parlez à votre mascotte via n'importe quel point d'entrée compatible OpenAI
+- **Sortie vocale** — la mascotte parle vraiment grâce à EdgeTTS
+- **État persistant** — historique, réglages et mascottes sauvegardés dans SQLite
+- **Transparence bureau** — affichée au-dessus de n'importe quelle fenêtre, positionnable à volonté
+
+### Architecture
+
+Shell Electron avec un backend TypeScript. Les packs de mascottes sont organisés en dossiers avec un descripteur `pet.json` et une feuille de sprites (ou image PNG/WebP). Ajouter une nouvelle mascotte revient simplement à déposer un dossier.
