@@ -1,6 +1,6 @@
 ---
 name: Return to Moria (Docker)
-description: Um setup Docker self-contained pra rodar um servidor dedicado de Lord of the Rings — Return to Moria com SteamCMD e Wine.
+description: Um setup Docker autocontido para rodar um servidor dedicado de Lord of the Rings — Return to Moria com SteamCMD e Wine.
 homepage: https://github.com/isyuricunha/return-to-mortia
 github: https://github.com/isyuricunha/return-to-mortia
 techstack:
@@ -11,21 +11,21 @@ selected: true
 status: active
 ---
 
-## Sobre o Return to Moria Dedicated Server
+## Sobre o servidor dedicado de Return to Moria
 
-Um stack Docker self-contained pra hospedar seu próprio servidor de **Lord of the Rings: Return to Moria** — sem precisar brigar com SteamCMD manualmente.
+Uma stack Docker autocontida para hospedar seu próprio servidor de **Lord of the Rings: Return to Moria** — sem precisar mexer manualmente no SteamCMD.
 
-### O que você ganha
+### O que você recebe
 
 - `Dockerfile` baseado em `ghcr.io/ptero-eggs/yolks:wine_latest`
-- `entrypoint.sh` que bootstrap SteamCMD, instala/atualiza o servidor, e starta via Wine
-- `docker-compose.yml` com volume `./data` persistido pro state do jogo sobreviver a restart
-- `.env.example` com todos os knobs — nome do servidor, porta, senha, política de update
+- `entrypoint.sh` que prepara o SteamCMD, instala/atualiza o servidor e o inicia via Wine
+- `docker-compose.yml` com volume persistido em `./data` para o estado do jogo sobreviver a reinicializações
+- `.env.example` com todos os ajustes — nome do servidor, porta, senha, política de atualização
 
 ### Como funciona
 
-No primeiro run, o container baixa SteamCMD e os arquivos do servidor dedicado pra `./data`. Daí em diante, pode auto-update (configurável) e starta o servidor sob Wine. A imagem fica pequena; o pesado mora no disco do host.
+Na primeira execução, o container baixa o SteamCMD e os arquivos do servidor dedicado em `./data`. A partir daí, ele pode se atualizar automaticamente (configurável) e inicia o servidor sob Wine. A imagem em si fica pequena; o peso fica no disco do host.
 
 ### Compatibilidade
 
-Testado em Ubuntu Server 24.04 LTS. Deve rodar em qualquer Linux x86_64 moderno com Docker instalado.
+Testado no Ubuntu Server 24.04 LTS. Deve funcionar em qualquer Linux x86_64 moderno com Docker instalado.
