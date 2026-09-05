@@ -16,7 +16,7 @@ const createRedisMock = () => {
 
   return {
     set: vi.fn(async (_key: string, value: string, opts?: { nx?: boolean; ex?: number }) => {
-      if (opts?.nx && lockValue) return null
+      if (lockValue && opts?.nx) return null
       lockValue = value
       return 'OK'
     }),
@@ -31,7 +31,7 @@ const createRedisMock = () => {
 type DeleteCall = { table: string; rowCount: number }
 
 const createDbMock = (rowCountsByTable: Record<string, number> = {}) => {
-  const deleteCalls: DeleteCall[] = []
+  const removalHistory: DeleteCall[] = []
 
   const analytics_events_table: Table = { [Symbol.for('drizzle:Name')]: 'analytics_events' }
   const performance_metrics_table: Table = { [Symbol.for('drizzle:Name')]: 'performance_metrics' }
@@ -45,7 +45,7 @@ const createDbMock = (rowCountsByTable: Record<string, number> = {}) => {
     return {
       where: vi.fn(async () => {
         const rowCount = rowCountsByTable[name] ?? 0
-        deleteCalls.push({ table: name, rowCount })
+        removalHistory.push({ table: name, rowCount })
         return { rowCount }
       })
     }
@@ -53,7 +53,7 @@ const createDbMock = (rowCountsByTable: Record<string, number> = {}) => {
 
   return {
     delete: del,
-    __deleteCalls: deleteCalls,
+    __removalHistory: removalHistory,
     __tables: {
       analytics_events_table,
       performance_metrics_table,
@@ -70,13 +70,19 @@ type DbMock = ReturnType<typeof createDbMock>
 const createDbModuleMock = (db: DbMock) => {
   return {
     db: { delete: db.delete },
-    analyticsEvents: { ...db.__tables.analytics_events_table, createdAt: 'analytics_events.createdAt' },
+    analyticsEvents: {
+      ...db.__tables.analytics_events_table,
+      createdAt: 'analytics_events.createdAt'
+    },
     performanceMetrics: {
       ...db.__tables.performance_metrics_table,
       createdAt: 'performance_metrics.createdAt'
     },
     loginAttempts: { ...db.__tables.login_attempts_table, createdAt: 'login_attempts.createdAt' },
-    aiChatFeedback: { ...db.__tables.ai_chat_feedback_table, createdAt: 'ai_chat_feedback.createdAt' },
+    aiChatFeedback: {
+      ...db.__tables.ai_chat_feedback_table,
+      createdAt: 'ai_chat_feedback.createdAt'
+    },
     securityEvents: {
       ...db.__tables.security_events_table,
       resolved: 'security_events.resolved',
@@ -138,8 +144,8 @@ describe('/api/cron/data-retention', () => {
     const db = createDbMock()
 
     const redis = createRedisMock()
-    vi.mocked(redis.set).mockResolvedValueOnce('OK' as never)
-    vi.mocked(redis.set).mockResolvedValueOnce(null as never)
+    vi.mocked(redis.set).mockResolvedValueOnce('OK')
+    vi.mocked(redis.set).mockResolvedValueOnce(null)
 
     vi.doMock('@isyuricunha/db', () => createDbModuleMock(db))
     vi.doMock('@isyuricunha/kv', () => ({ redis }))
@@ -195,7 +201,7 @@ describe('/api/cron/data-retention', () => {
     })
 
     // All six tables must have been targeted, in this order.
-    expect(db.__deleteCalls.map((c) => c.table)).toEqual([
+    expect(db.__removalHistory.map((c) => c.table)).toEqual([
       'analytics_events',
       'performance_metrics',
       'login_attempts',
