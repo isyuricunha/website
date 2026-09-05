@@ -17,12 +17,12 @@ export function checkRateLimit(ip: string): { allowed: boolean; retryAfter?: num
 
   // Clean up old entries periodically
   if (rateLimitMap.size > 1000) {
-    const entries = Array.from(rateLimitMap.entries())
-    entries.forEach(([key, value]) => {
+    const entries = Array.from(rateLimitMap)
+    for (const [key, value] of entries) {
       if (value.resetTime < now) {
         rateLimitMap.delete(key)
       }
-    })
+    }
   }
 
   if (!record || record.resetTime < now) {
@@ -57,10 +57,21 @@ export function getClientIp(headers: Headers): string {
     const bracketedIpv6 = /^\[(.+)]:(\d+)$/.exec(first)
     if (bracketedIpv6?.[1]) return bracketedIpv6[1]
 
-    const looksLikeIpv4WithPort = first.includes('.') && first.includes(':')
-    if (looksLikeIpv4WithPort) {
-      const [ip] = first.split(':')
-      return ip?.trim() || null
+    // Only strip a trailing ":<port>" when what's left of the last colon is an
+    // actual dotted-quad IPv4 address. A bare `.includes('.') && .includes(':')`
+    // check also matches IPv4-mapped IPv6 (`::ffff:192.168.1.1`) and NAT64
+    // (`64:ff9b::203.0.113.5`) addresses, silently truncating them to `null` or
+    // a garbage fragment (e.g. `"64"`) since they contain both characters
+    // without carrying a port at all.
+    const lastColonIndex = first.lastIndexOf(':')
+    if (lastColonIndex !== -1) {
+      const beforeColon = first.slice(0, lastColonIndex)
+      const afterColon = first.slice(lastColonIndex + 1)
+      const isDottedQuadIpv4 = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(beforeColon)
+      const isNumericPort = /^\d+$/.test(afterColon)
+      if (isDottedQuadIpv4 && isNumericPort) {
+        return beforeColon
+      }
     }
 
     return first
