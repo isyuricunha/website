@@ -41,4 +41,32 @@ describe('getClientIp', () => {
 
     expect(getClientIp(headers)).toBe('unknown')
   })
+
+  it('does not truncate an IPv4-mapped IPv6 address', () => {
+    // Regression: `.includes('.') && .includes(':')` matched this shape too,
+    // wrongly treating it as "IPv4 with a port" and truncating it to `null`.
+    const headers = new Headers({
+      'x-forwarded-for': '::ffff:192.168.1.1'
+    })
+
+    expect(getClientIp(headers)).toBe('::ffff:192.168.1.1')
+  })
+
+  it('does not truncate a NAT64 address with an embedded IPv4 suffix', () => {
+    // Regression: the same broad heuristic reduced this to the garbage
+    // fragment "64" (everything before the first colon).
+    const headers = new Headers({
+      'x-forwarded-for': '64:ff9b::203.0.113.5'
+    })
+
+    expect(getClientIp(headers)).toBe('64:ff9b::203.0.113.5')
+  })
+
+  it('still strips the port from a genuine IPv4:port pair', () => {
+    const headers = new Headers({
+      'true-client-ip': '203.0.113.10:8443'
+    })
+
+    expect(getClientIp(headers)).toBe('203.0.113.10')
+  })
 })
