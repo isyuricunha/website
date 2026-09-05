@@ -3,6 +3,10 @@
     "title": "About",
     "description": "👋 Hey! I am Yuri Cunha, just a random guy on the internet.."
   },
+  "privacy": {
+    "title": "Privacy Notice",
+    "description": "What this site does and does not do with your data, including AI chat conversations."
+  },
   "now": {
     "title": "Now",
     "description": "A snapshot of what I'm focusing on right now"
@@ -1786,6 +1790,7 @@
     "admin": "Admin",
     "contact": "Contact",
     "sitemap": "Sitemap",
+    "privacy": "Privacy",
     "skip-to-main-content": "Skip to main content",
     "toggle-menu": "Toggle menu",
     "change-language": "Change language",

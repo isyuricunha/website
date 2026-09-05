@@ -3,6 +3,10 @@
     "title": "关于",
     "description": "👋 嗨！我是 Yuri Cunha，只是互联网上的一个普通人。。"
   },
+  "privacy": {
+    "title": "隐私声明",
+    "description": "本网站对您数据的处理方式（包括 AI 聊天对话），以及不会做的事情。"
+  },
   "now": {
     "title": "当前",
     "description": "我当前关注的内容的快照"
@@ -1786,6 +1790,7 @@
     "admin": "管理",
     "contact": "联系",
     "sitemap": "网站地图",
+    "privacy": "隐私",
     "skip-to-main-content": "跳转到主内容",
     "toggle-menu": "切换菜单",
     "change-language": "切换语言",

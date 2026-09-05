@@ -3,6 +3,10 @@
     "title": "Über",
     "description": "👋 Hey! Ich bin Yuri Cunha, einfach ein zufälliger Typ im Internet..."
   },
+  "privacy": {
+    "title": "Datenschutzhinweis",
+    "description": "Was diese Website mit deinen Daten macht und nicht macht, einschließlich KI-Chat-Unterhaltungen."
+  },
   "now": {
     "title": "Aktuell",
     "description": "Ein Einblick, worauf ich mich gerade konzentriere"
@@ -1786,6 +1790,7 @@
     "admin": "Admin",
     "contact": "Kontakt",
     "sitemap": "Seitenübersicht",
+    "privacy": "Datenschutz",
     "skip-to-main-content": "Zum Hauptinhalt springen",
     "toggle-menu": "Menü umschalten",
     "change-language": "Sprache ändern",

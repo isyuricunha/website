@@ -81,7 +81,8 @@ export const FOOTER_LINKS = [
       { href: '/uses', key: 'uses' },
       { href: '/projects', key: 'projects' },
       { href: '/music', key: 'music' },
-      { href: '/sitemap', key: 'sitemap' }
+      { href: '/sitemap', key: 'sitemap' },
+      { href: '/privacy', key: 'privacy' }
     ]
   },
   {

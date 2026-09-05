@@ -3,6 +3,10 @@
     "title": "について",
     "description": "👋 こんにちは！私はユリ・クーニャです。インターネット上のただの一人です。"
   },
+  "privacy": {
+    "title": "プライバシー通知",
+    "description": "このサイトがAIチャットの会話を含め、あなたのデータをどう扱うか（扱わないか）についての説明です。"
+  },
   "now": {
     "title": "現在",
     "description": "現在、私が注力していることのスナップショット"
@@ -1786,6 +1790,7 @@
     "admin": "管理",
     "contact": "連絡先",
     "sitemap": "サイトマップ",
+    "privacy": "プライバシー",
     "skip-to-main-content": "メインコンテンツへスキップ",
     "toggle-menu": "メニューの切り替え",
     "change-language": "言語を変更",

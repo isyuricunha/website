@@ -3,6 +3,10 @@
     "title": "À propos",
     "description": "👋 Salut ! Je suis Yuri Cunha, juste un gars lambda sur Internet."
   },
+  "privacy": {
+    "title": "Avis de confidentialité",
+    "description": "Ce que ce site fait et ne fait pas avec vos données, y compris les conversations du chat IA."
+  },
   "now": {
     "title": "Actuellement",
     "description": "Un aperçu de ce sur quoi je me concentre en ce moment"
@@ -1786,6 +1790,7 @@
     "admin": "Admin",
     "contact": "Contact",
     "sitemap": "Plan du site",
+    "privacy": "Confidentialité",
     "skip-to-main-content": "Aller au contenu principal",
     "toggle-menu": "Afficher/masquer le menu",
     "change-language": "Changer de langue",
