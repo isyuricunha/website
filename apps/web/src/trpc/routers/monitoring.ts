@@ -19,6 +19,7 @@ import os from 'node:os'
 import { z } from 'zod'
 
 import { AuditLogger, getIpFromHeaders, getUserAgentFromHeaders } from '@/lib/audit-logger'
+import { hashIpForAnalytics } from '@/lib/ip-hash'
 import { logger } from '@/lib/logger'
 import { adminProcedure, createTRPCRouter } from '../trpc'
 
@@ -55,7 +56,7 @@ export const monitoringRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       try {
         const eventId = randomBytes(16).toString('hex')
-        const ipAddress = getIpFromHeaders(ctx.headers) ?? null
+        const ipAddress = hashIpForAnalytics(getIpFromHeaders(ctx.headers))
         const userAgent = getUserAgentFromHeaders(ctx.headers) ?? null
 
         await ctx.db.insert(analyticsEvents).values({
