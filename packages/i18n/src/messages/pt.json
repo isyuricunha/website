@@ -3,6 +3,10 @@
     "title": "Sobre",
     "description": "👋 Oi! Eu sou Yuri Cunha, apenas um cara aleatório na internet.."
   },
+  "privacy": {
+    "title": "Aviso de Privacidade",
+    "description": "O que este site faz e não faz com os seus dados, incluindo conversas do chat de IA."
+  },
   "now": {
     "title": "Agora",
     "description": "Um retrato do que eu estou focando no momento"
@@ -1786,6 +1790,7 @@
     "admin": "Admin",
     "contact": "Contato",
     "sitemap": "Mapa do site",
+    "privacy": "Privacidade",
     "skip-to-main-content": "Ir para o conteúdo principal",
     "toggle-menu": "Alternar menu",
     "change-language": "Mudar idioma",

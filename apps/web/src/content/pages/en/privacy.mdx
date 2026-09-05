@@ -1,0 +1,35 @@
+---
+---
+
+_Last updated: September 5, 2026_
+
+This page explains, in plain language, what this site does and does not do with your data. It is not a substitute for legal advice, but it is an honest description of the actual code running this site.
+
+---
+
+## AI chat ("Yue AI")
+
+- Conversations with the AI assistant on this site are stored **only in your browser's local storage**, never on the server.
+- The server does not persist your messages or the assistant's replies. Each request is processed and the response is streamed back to you; the conversation text itself is not written to any database.
+- The server does record lightweight, content-free metrics for reliability and cost monitoring: response time, an estimated token count, which AI provider/model handled the request, the request status, and the endpoint. These records never contain your message text.
+- Your data is **not used to train any AI model**. Nothing you type here is sent anywhere for model training, fine-tuning, or evaluation datasets.
+- If you use the like/dislike feedback buttons on a chat reply, we store the rating (like or dislike) and an optional comment you write, tied to that specific message, together with the page, provider, model, and locale. This feedback does not include the rest of the conversation.
+
+## What we do collect
+
+To keep the site working, secure, and free of spam, some requests are logged:
+
+- **IP address, user agent, and timestamps** for rate-limiting (e.g. contact form, newsletter, AI chat) and for error/security logs when something goes wrong.
+- **Basic analytics events** (page views and similar interactions), including IP address and user agent, to understand how the site is used.
+- **Contact form submissions** are verified with Cloudflare Turnstile before being processed, to filter out automated spam.
+- If you create an account (for commenting, the guestbook, etc.), standard account data (email, session tokens, login attempts) is stored to make authentication work.
+
+## What we don't do
+
+- We don't sell your data.
+- We don't use your AI chat messages for advertising or profiling.
+- We don't train or fine-tune any AI model on data collected from this site.
+
+## Questions
+
+If you have questions about this notice or want something about your data clarified or removed, reach out through the [contact](/contact) page.
