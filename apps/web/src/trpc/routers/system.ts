@@ -155,7 +155,8 @@ async function performHealthCheck(type: string, ctx: { db: any; headers: Headers
         break
       }
 
-      case 'storage': { // Verify write/read/delete in temp directory
+      case 'storage': {
+        // Verify write/read/delete in temp directory
         const tempDir = os.tmpdir()
         const testFile = path.join(tempDir, `health-${randomBytes(8).toString('hex')}.txt`)
         const payload = `health-check:${Date.now()}`
