@@ -3,20 +3,6 @@
  */
 
 /**
- * Debounce function for search inputs
- */
-export function debounce<T extends (...args: any[]) => any>(
-  func: T,
-  wait: number
-): (...args: Parameters<T>) => void {
-  let timeout: NodeJS.Timeout
-  return (...args: Parameters<T>) => {
-    clearTimeout(timeout)
-    timeout = setTimeout(() => func(...args), wait)
-  }
-}
-
-/**
  * Optimize image loading with proper sizing
  */
 export function getOptimizedImageProps(
