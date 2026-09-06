@@ -1,7 +1,19 @@
 'use client'
 
 import { useTranslations } from '@isyuricunha/i18n/client'
-import { Button, Input, Label, buttonVariants, toast } from '@isyuricunha/ui'
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  Input,
+  Label,
+  buttonVariants,
+  toast
+} from '@isyuricunha/ui'
 import { DownloadIcon, ShieldCheckIcon, Trash2Icon } from 'lucide-react'
 import { useState } from 'react'
 
@@ -15,6 +27,7 @@ type PrivacyControlsProps = {
 const PrivacyControls = ({ email, canDelete }: PrivacyControlsProps) => {
   const t = useTranslations('settings.privacy')
   const [confirmation, setConfirmation] = useState('')
+  const [isDeletionDialogOpen, setIsDeletionDialogOpen] = useState(false)
   const [isRequestingDeletion, setIsRequestingDeletion] = useState(false)
   const [deletionRequested, setDeletionRequested] = useState(false)
 
@@ -32,6 +45,7 @@ const PrivacyControls = ({ email, canDelete }: PrivacyControlsProps) => {
 
     setDeletionRequested(true)
     setConfirmation('')
+    setIsDeletionDialogOpen(false)
     toast.success(t('delete-sent'))
   }
 
@@ -62,7 +76,7 @@ const PrivacyControls = ({ email, canDelete }: PrivacyControlsProps) => {
         </a>
       </div>
 
-      <div className='border-destructive/40 space-y-4 rounded-lg border p-4'>
+      <div className='space-y-4 rounded-lg border p-4'>
         <div className='space-y-1'>
           <h3 className='font-medium'>{t('delete-title')}</h3>
           <p className='text-muted-foreground text-sm'>{t('delete-description')}</p>
@@ -70,32 +84,57 @@ const PrivacyControls = ({ email, canDelete }: PrivacyControlsProps) => {
 
         {canDelete ? (
           <>
-            <div className='space-y-2'>
-              <Label htmlFor='account-deletion-confirmation'>{t('confirm-label')}</Label>
-              <Input
-                id='account-deletion-confirmation'
-                type='email'
-                value={confirmation}
-                onChange={(event) => setConfirmation(event.target.value)}
-                autoComplete='off'
-                spellCheck={false}
-                disabled={isRequestingDeletion || deletionRequested}
-              />
-            </div>
             <Button
               type='button'
               variant='destructive'
-              disabled={confirmation !== email || isRequestingDeletion || deletionRequested}
-              onClick={requestDeletion}
+              disabled={deletionRequested}
+              onClick={() => setIsDeletionDialogOpen(true)}
             >
               <Trash2Icon aria-hidden='true' className='size-4' />
-              {t(isRequestingDeletion ? 'delete-pending' : 'delete-action')}
+              {t('delete-trigger')}
             </Button>
+            <p className='text-muted-foreground text-sm'>{t('delete-export-reminder')}</p>
             {deletionRequested ? (
               <p className='text-muted-foreground text-sm' role='status'>
                 {t('delete-sent')}
               </p>
             ) : null}
+            <Dialog
+              open={isDeletionDialogOpen}
+              onOpenChange={(open) => {
+                setIsDeletionDialogOpen(open)
+                if (!open) setConfirmation('')
+              }}
+            >
+              <DialogContent className='sm:max-w-md'>
+                <DialogHeader>
+                  <DialogTitle>{t('delete-dialog-title')}</DialogTitle>
+                  <DialogDescription>{t('delete-dialog-description')}</DialogDescription>
+                </DialogHeader>
+                <div className='space-y-2'>
+                  <Label htmlFor='account-deletion-confirmation'>{t('confirm-label')}</Label>
+                  <Input
+                    id='account-deletion-confirmation'
+                    type='email'
+                    value={confirmation}
+                    onChange={(event) => setConfirmation(event.target.value)}
+                    autoComplete='off'
+                    spellCheck={false}
+                    disabled={isRequestingDeletion}
+                  />
+                </div>
+                <DialogFooter>
+                  <Button
+                    type='button'
+                    variant='destructive'
+                    disabled={confirmation !== email || isRequestingDeletion}
+                    onClick={requestDeletion}
+                  >
+                    {t(isRequestingDeletion ? 'delete-pending' : 'delete-action')}
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
           </>
         ) : (
           <p className='text-muted-foreground text-sm'>{t('delete-unavailable')}</p>

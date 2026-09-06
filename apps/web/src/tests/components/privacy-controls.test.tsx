@@ -34,13 +34,17 @@ describe('<PrivacyControls />', () => {
     )
   })
 
-  it('requires the exact account email before requesting deletion', async () => {
+  it('keeps deletion confirmation in a separate dialog', async () => {
     await renderControls()
 
-    const button = screen.getByRole('button', { name: 'Request account deletion' })
+    expect(screen.queryByLabelText('Type your email to continue')).toBeNull()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Delete account' }))
+
+    const button = screen.getByRole('button', { name: 'Send confirmation email' })
     expect(button).toBeDisabled()
 
-    fireEvent.change(screen.getByLabelText('Type your email to confirm'), {
+    fireEvent.change(screen.getByLabelText('Type your email to continue'), {
       target: { value: 'alice@example.com' }
     })
     expect(button).toBeEnabled()
