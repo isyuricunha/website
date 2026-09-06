@@ -1,6 +1,6 @@
 import { mergeConfig } from 'vitest/config'
 
-import { sharedProjectConfig } from '../../vitest.shared'
+import { sharedProjectConfig } from '../../vitest.shared.ts'
 
 const resolve = (path: string) => new URL(path, import.meta.url).pathname
 

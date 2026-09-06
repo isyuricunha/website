@@ -3,6 +3,7 @@
   "compilerOptions": {
     "ignoreDeprecations": "5.0",
     "allowJs": true,
+    "allowImportingTsExtensions": true,
     "allowSyntheticDefaultImports": true,
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
