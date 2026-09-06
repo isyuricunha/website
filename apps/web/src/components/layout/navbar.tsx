@@ -49,6 +49,13 @@ const Navbar = () => {
 
     const gapPx = 8
 
+    /* eslint-disable @eslint-react/set-state-in-effect
+       --
+       ResizeObserver-derived state updates inside a measurement loop; the
+       observer callback legitimately calls setState with layout-derived
+       values. This is exactly what layout/measurement effects are for.
+    */
+
     const recalc = () => {
       const availableWidth = container.getBoundingClientRect().width
 
@@ -71,6 +78,7 @@ const Navbar = () => {
 
     return () => ro.disconnect()
   }, [t])
+  /* eslint-enable @eslint-react/set-state-in-effect -- re-enable after the layout measurement effect above */
 
   return (
     <nav className='hidden min-w-0 flex-1 items-center md:flex'>

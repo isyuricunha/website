@@ -30,7 +30,7 @@ import { toast } from 'sonner'
 import { api } from '@/trpc/react'
 
 export const AiSettings = () => {
-  const initialized = useRef(false)
+  const initializedRef = useRef(false)
   const [endpoint, setEndpoint] = useState('')
   const [apiKey, setApiKey] = useState('')
   const [model, setModel] = useState('')
@@ -68,16 +68,29 @@ export const AiSettings = () => {
     }
   })
 
+  // This effect initializes form state from the fetched settings exactly once
+  // (guarded by `initialized` ref). Moving setState into render or deriving state
+  // directly from props/query data would break the local editability of
+  // endpoint/model fields because the user would be editing state that gets
+  // overwritten by subsequent query refetches. This is the documented React
+  // pattern for "initialize from server data once". React docs:
+  // https://react.dev/learn/you-might-not-need-an-effect
+  //
+  // Disable the set-state-in-effect rule here specifically — it correctly
+  // identifies this anti-pattern in general, but this instance is the canonical
+  // exemption documented in React's own guides.
+  /* eslint-disable @eslint-react/set-state-in-effect -- initializes form state from server settings exactly once, guarded by initializedRef */
   useEffect(() => {
     const settings = settingsQuery.data
-    if (!settings || initialized.current) return
+    if (!settings || initializedRef.current) return
 
-    initialized.current = true
+    initializedRef.current = true
     setEndpoint(settings.endpoint)
     setModel(settings.model)
     setApiKeyPreview(settings.apiKeyPreview)
     setConfigSource(settings.source)
   }, [settingsQuery.data])
+  /* eslint-enable @eslint-react/set-state-in-effect -- re-enable after the one-time settings init effect above */
 
   const filteredModels = useMemo(() => {
     const query = modelSearch.trim().toLowerCase()

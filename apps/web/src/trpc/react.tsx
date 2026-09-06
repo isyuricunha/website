@@ -20,25 +20,29 @@ const createQueryClient = () =>
     }
   })
 
-const clientQueryClientStore: { current: QueryClient | undefined } = { current: undefined }
+let browserQueryClient: QueryClient | undefined
 
 const getBaseUrl = () => {
-  if (globalThis.window !== undefined) return ''
+  if (typeof window !== 'undefined') return ''
   if (env.NEXT_PUBLIC_WEBSITE_URL) return env.NEXT_PUBLIC_WEBSITE_URL
   if (env.VERCEL_URL) return `https://${env.VERCEL_URL}`
   return 'http://localhost:3000'
 }
 
 const getQueryClient = () => {
-  if (typeof globalThis === 'undefined') {
+  // On the server, always create a new QueryClient per request — sharing one
+  // across requests would leak data between users.
+  if (typeof window === 'undefined') {
     return createQueryClient()
   }
 
-  if (!clientQueryClientStore.current) {
-    clientQueryClientStore.current = createQueryClient()
-  }
-
-  return clientQueryClientStore.current
+  // In the browser, reuse a single QueryClient across re-renders/navigations.
+  // This module-level singleton is only read/written from inside this
+  // function (never during render itself), matching tRPC's own documented
+  // setup for the Next.js App Router.
+  // eslint-disable-next-line unicorn/no-top-level-assignment-in-function, @eslint-react/globals -- documented tRPC/Next.js App Router singleton pattern: https://trpc.io/docs/client/tanstack-react-query/setup#3-create-trpc-hooks
+  browserQueryClient ??= createQueryClient()
+  return browserQueryClient
 }
 
 export const api = createTRPCReact<AppRouter>()

@@ -16,6 +16,13 @@ import { SITE_GITHUB_URL, SITE_KEYWORDS, SITE_NAME, SITE_URL, SITE_X_URL } from 
 import { build_alternates } from '@/lib/seo'
 import { getLocalizedPath } from '@/utils/get-localized-path'
 
+// Page metadata is generated per-request on the server (this is a server
+// component); a module-level snapshot avoids calling `new Date()` inside the
+// render body, which @eslint-react/purity flags as an impure render call.
+const now = new Date()
+const CURRENT_YEAR = now.getFullYear()
+const LAST_MODIFIED_ISO = now.toISOString()
+
 type PageProps = {
   params: Promise<{
     locale: string
@@ -59,10 +66,10 @@ const Page = async (props: PageProps) => {
       '@id': SITE_URL
     },
     inLanguage: locale,
-    copyrightYear: new Date().getFullYear(),
+    copyrightYear: CURRENT_YEAR,
     keywords: SITE_KEYWORDS,
     dateCreated: '2020-12-05',
-    dateModified: new Date().toISOString()
+    dateModified: LAST_MODIFIED_ISO
   }
 
   return (

@@ -1,5 +1,6 @@
 import { useFormatter } from '@isyuricunha/i18n/client'
 import dayjs from 'dayjs'
+import { useMemo } from 'react'
 
 import type { DateTimeFormatOptions } from '@isyuricunha/i18n/client'
 
@@ -19,7 +20,7 @@ export const useFormattedDate = (date: Date | string, options: Options = {}) => 
   } = options
 
   const format = useFormatter()
-  const now = new Date()
+  const now = useMemo(() => new Date(), [])
 
   const convertedDate = typeof date === 'string' ? new Date(date) : date
 
