@@ -31,18 +31,57 @@ const get_site_url = (headers: Headers) => {
   return 'http://localhost:3000'
 }
 
+const getAvatarExtension = (contentType: 'image/png' | 'image/jpeg' | 'image/webp') => {
+  switch (contentType) {
+    case 'image/png':
+      return 'png'
+    case 'image/webp':
+      return 'webp'
+    default:
+      return 'jpg'
+  }
+}
+
+const avatarUploadUrlInputSchema = z.object({
+  contentType: z.enum(['image/png', 'image/jpeg', 'image/webp']),
+  size: z
+    .number()
+    .int()
+    .positive()
+    .max(5 * 1024 * 1024)
+})
+
+const publicProfileHandleInputSchema = z.object({
+  handle: z.string().min(1)
+})
+
+const infiniteUserCommentsInputSchema = z.object({
+  handle: z.string().min(1),
+  cursor: z.date().nullish(),
+  limit: z.number().min(1).max(50).default(10)
+})
+
+const userIdInputSchema = z.object({ userId: z.string() })
+
+const updateUserInputSchema = z.object({
+  userId: z.string(),
+  name: z.string().optional(),
+  username: z.string().optional(),
+  email: z.string().email().optional(),
+  role: z.enum(['user', 'admin']).optional(),
+  image: z.string().optional()
+})
+
+const emailInputSchema = z.object({ email: z.string().email() })
+
+const resetPasswordInputSchema = z.object({
+  token: z.string(),
+  newPassword: z.string().min(8)
+})
+
 export const usersRouter = createTRPCRouter({
   createAvatarUploadUrl: protectedProcedure
-    .input(
-      z.object({
-        contentType: z.enum(['image/png', 'image/jpeg', 'image/webp']),
-        size: z
-          .number()
-          .int()
-          .positive()
-          .max(5 * 1024 * 1024)
-      })
-    )
+    .input(avatarUploadUrlInputSchema)
     .mutation(async ({ ctx, input }) => {
       const is_anonymous = ctx.session.user.isAnonymous === true
       if (is_anonymous) {
@@ -67,12 +106,7 @@ export const usersRouter = createTRPCRouter({
         })
       }
 
-      const ext =
-        input.contentType === 'image/png'
-          ? 'png'
-          : input.contentType === 'image/webp'
-            ? 'webp'
-            : 'jpg'
+      const ext = getAvatarExtension(input.contentType)
 
       const key = `avatars/${ctx.session.user.id}/${randomUUID()}.${ext}`
 
@@ -102,11 +136,7 @@ export const usersRouter = createTRPCRouter({
     }),
 
   getPublicProfile: publicProcedure
-    .input(
-      z.object({
-        handle: z.string().min(1)
-      })
-    )
+    .input(publicProfileHandleInputSchema)
     .query(async ({ ctx, input }) => {
       const handle_lower = input.handle.toLowerCase()
 
@@ -162,13 +192,7 @@ export const usersRouter = createTRPCRouter({
     }),
 
   getInfiniteUserComments: publicProcedure
-    .input(
-      z.object({
-        handle: z.string().min(1),
-        cursor: z.date().nullish(),
-        limit: z.number().min(1).max(50).default(10)
-      })
-    )
+    .input(infiniteUserCommentsInputSchema)
     .query(async ({ ctx, input }) => {
       const locale = get_request_locale(ctx.headers)
 
@@ -266,386 +290,358 @@ export const usersRouter = createTRPCRouter({
     }
   }),
 
-  deleteUser: adminProcedure
-    .input(z.object({ userId: z.string() }))
-    .mutation(async ({ ctx, input }) => {
-      try {
-        const auditLogger = new AuditLogger(ctx.db)
-        const ipAddress = getIpFromHeaders(ctx.headers)
-        const userAgent = getUserAgentFromHeaders(ctx.headers)
+  deleteUser: adminProcedure.input(userIdInputSchema).mutation(async ({ ctx, input }) => {
+    try {
+      const auditLogger = new AuditLogger(ctx.db)
+      const ipAddress = getIpFromHeaders(ctx.headers)
+      const userAgent = getUserAgentFromHeaders(ctx.headers)
 
-        // Check if user exists and get user details for audit log
-        const user = await ctx.db.query.users.findFirst({
-          where: (users, { eq }) => eq(users.id, input.userId),
-          columns: { id: true, name: true, email: true, role: true }
-        })
-
-        if (!user) {
-          throw new TRPCError({
-            code: 'NOT_FOUND',
-            message: 'User not found'
-          })
-        }
-
-        // Prevent deletion of admin users (safety check)
-        if (user.role === 'admin') {
-          throw new TRPCError({
-            code: 'FORBIDDEN',
-            message: 'Cannot delete admin users'
-          })
-        }
-
-        // Actually delete the user from database
-        await ctx.db.delete(users).where(eq(users.id, input.userId))
-
-        // Log the audit trail
-        await auditLogger.logUserAction(
-          ctx.session.user.id,
-          'user_delete',
-          input.userId,
-          {
-            deletedUser: {
-              name: user.name,
-              email: user.email,
-              role: user.role
-            }
-          },
-          ipAddress,
-          userAgent
-        )
-
-        return { success: true }
-      } catch (error) {
-        if (error instanceof TRPCError) {
-          throw error
-        }
-        throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: 'Failed to delete user'
-        })
-      }
-    }),
-
-  banUser: adminProcedure
-    .input(z.object({ userId: z.string() }))
-    .mutation(async ({ ctx, input }) => {
-      try {
-        const auditLogger = new AuditLogger(ctx.db)
-        const ipAddress = getIpFromHeaders(ctx.headers)
-        const userAgent = getUserAgentFromHeaders(ctx.headers)
-
-        // Check if user exists
-        const user = await ctx.db.query.users.findFirst({
-          where: (users, { eq }) => eq(users.id, input.userId),
-          columns: { id: true, name: true, email: true, role: true }
-        })
-
-        if (!user) {
-          throw new TRPCError({
-            code: 'NOT_FOUND',
-            message: 'User not found'
-          })
-        }
-
-        // Prevent banning admin users
-        if (user.role === 'admin') {
-          throw new TRPCError({
-            code: 'FORBIDDEN',
-            message: 'Cannot ban admin users'
-          })
-        }
-
-        // Set the banned flag and delete all user sessions to effectively "ban" them
-        await ctx.db.update(users).set({ banned: true }).where(eq(users.id, input.userId))
-        await ctx.db.delete(sessions).where(eq(sessions.userId, input.userId))
-
-        // Log the audit trail
-        await auditLogger.logUserAction(
-          ctx.session.user.id,
-          'user_ban',
-          input.userId,
-          {
-            bannedUser: {
-              name: user.name,
-              email: user.email
-            }
-          },
-          ipAddress,
-          userAgent
-        )
-
-        return { success: true }
-      } catch (error) {
-        if (error instanceof TRPCError) {
-          throw error
-        }
-        throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: 'Failed to ban user'
-        })
-      }
-    }),
-
-  unbanUser: adminProcedure
-    .input(z.object({ userId: z.string() }))
-    .mutation(async ({ ctx, input }) => {
-      try {
-        const auditLogger = new AuditLogger(ctx.db)
-        const ipAddress = getIpFromHeaders(ctx.headers)
-        const userAgent = getUserAgentFromHeaders(ctx.headers)
-
-        // Check if user exists
-        const user = await ctx.db.query.users.findFirst({
-          where: (users, { eq }) => eq(users.id, input.userId),
-          columns: { id: true, name: true, email: true }
-        })
-
-        if (!user) {
-          throw new TRPCError({
-            code: 'NOT_FOUND',
-            message: 'User not found'
-          })
-        }
-
-        // Clear the banned flag so the user can sign in again
-        await ctx.db.update(users).set({ banned: false }).where(eq(users.id, input.userId))
-
-        // Log the audit trail
-        await auditLogger.logUserAction(
-          ctx.session.user.id,
-          'user_unban',
-          input.userId,
-          {
-            unbannedUser: {
-              name: user.name,
-              email: user.email
-            }
-          },
-          ipAddress,
-          userAgent
-        )
-
-        return { success: true }
-      } catch (error) {
-        if (error instanceof TRPCError) {
-          throw error
-        }
-        throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: 'Failed to unban user'
-        })
-      }
-    }),
-
-  updateUser: adminProcedure
-    .input(
-      z.object({
-        userId: z.string(),
-        name: z.string().optional(),
-        username: z.string().optional(),
-        email: z.string().email().optional(),
-        role: z.enum(['user', 'admin']).optional(),
-        image: z.string().optional()
+      // Check if user exists and get user details for audit log
+      const user = await ctx.db.query.users.findFirst({
+        where: (users, { eq }) => eq(users.id, input.userId),
+        columns: { id: true, name: true, email: true, role: true }
       })
-    )
-    .mutation(async ({ ctx, input }) => {
-      try {
-        const auditLogger = new AuditLogger(ctx.db)
-        const ipAddress = getIpFromHeaders(ctx.headers)
-        const userAgent = getUserAgentFromHeaders(ctx.headers)
-        const { userId, ...updateData } = input
 
-        // Check if user exists and get current data
-        const user = await ctx.db.query.users.findFirst({
-          where: (users, { eq }) => eq(users.id, userId),
-          columns: { id: true, name: true, email: true, username: true, role: true, image: true }
-        })
-
-        if (!user) {
-          throw new TRPCError({
-            code: 'NOT_FOUND',
-            message: 'User not found'
-          })
-        }
-
-        // Check for email uniqueness if email is being updated
-        if (updateData.email && updateData.email !== user.email) {
-          const existingUser = await ctx.db.query.users.findFirst({
-            where: eq(users.email, updateData.email)
-          })
-          if (existingUser) {
-            throw new TRPCError({
-              code: 'CONFLICT',
-              message: 'Email already exists'
-            })
-          }
-        }
-
-        // Check for username uniqueness if username is being updated
-        if (updateData.username && updateData.username !== user.username) {
-          const existingUser = await ctx.db.query.users.findFirst({
-            where: eq(users.username, updateData.username)
-          })
-          if (existingUser) {
-            throw new TRPCError({
-              code: 'CONFLICT',
-              message: 'Username already exists'
-            })
-          }
-        }
-
-        // Filter out undefined values for the update
-        const filteredUpdateData = Object.fromEntries(
-          Object.entries(updateData).filter(([_, value]) => value !== undefined)
-        )
-
-        if (Object.keys(filteredUpdateData).length === 0) {
-          throw new TRPCError({
-            code: 'BAD_REQUEST',
-            message: 'No valid update data provided'
-          })
-        }
-
-        // Perform the actual update
-        await ctx.db
-          .update(users)
-          .set({ ...filteredUpdateData, updatedAt: new Date() })
-          .where(eq(users.id, userId))
-
-        // Log the audit trail
-        await auditLogger.logUserAction(
-          ctx.session.user.id,
-          'user_update',
-          userId,
-          {
-            previousData: user,
-            updatedData: filteredUpdateData
-          },
-          ipAddress,
-          userAgent
-        )
-
-        return { success: true }
-      } catch (error) {
-        if (error instanceof TRPCError) {
-          throw error
-        }
+      if (!user) {
         throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: 'Failed to update user'
+          code: 'NOT_FOUND',
+          message: 'User not found'
         })
       }
-    }),
 
-  requestPasswordReset: publicProcedure
-    .input(z.object({ email: z.string().email() }))
-    .mutation(async ({ ctx, input }) => {
-      try {
-        const locale = get_request_locale(ctx.headers)
-        const baseUrl = get_site_url(ctx.headers)
-        const resetPath = getLocalizedPath({ slug: '/reset-password', locale })
-        const redirectTo = `${baseUrl}${resetPath}`
-
-        await auth.api.requestPasswordReset({
-          body: {
-            email: input.email,
-            redirectTo
-          }
+      // Prevent deletion of admin users (safety check)
+      if (user.role === 'admin') {
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message: 'Cannot delete admin users'
         })
-
-        return { success: true }
-      } catch (error) {
-        logger.error('Request password reset error', error)
-        // Always return success to prevent email enumeration
-        return { success: true }
       }
-    }),
 
-  sendPasswordReset: adminProcedure
-    .input(z.object({ userId: z.string() }))
-    .mutation(async ({ ctx, input }) => {
-      try {
-        const locale = get_request_locale(ctx.headers)
-        const auditLogger = new AuditLogger(ctx.db)
-        const ipAddress = getIpFromHeaders(ctx.headers)
-        const userAgent = getUserAgentFromHeaders(ctx.headers)
+      // Actually delete the user from database
+      await ctx.db.delete(users).where(eq(users.id, input.userId))
 
-        // Get user details
-        const user = await ctx.db.query.users.findFirst({
-          where: (users, { eq }) => eq(users.id, input.userId),
-          columns: { email: true, name: true }
-        })
-
-        if (!user) {
-          throw new TRPCError({
-            code: 'NOT_FOUND',
-            message: 'User not found'
-          })
-        }
-
-        const baseUrl = get_site_url(ctx.headers)
-        const resetPath = getLocalizedPath({ slug: '/reset-password', locale })
-        const redirectTo = `${baseUrl}${resetPath}`
-
-        await auth.api.requestPasswordReset({
-          body: {
+      // Log the audit trail
+      await auditLogger.logUserAction(
+        ctx.session.user.id,
+        'user_delete',
+        input.userId,
+        {
+          deletedUser: {
+            name: user.name,
             email: user.email,
-            redirectTo
+            role: user.role
           }
-        })
+        },
+        ipAddress,
+        userAgent
+      )
 
-        // Log the audit trail for password reset initiation
-        await auditLogger.logUserAction(
-          ctx.session.user.id,
-          'user_password_reset',
-          input.userId,
-          {
-            targetUser: {
-              name: user.name,
-              email: user.email
-            },
-            resetInitiated: true
-          },
-          ipAddress,
-          userAgent
-        )
-
-        return { success: true }
-      } catch (error) {
-        logger.error('Password reset error', error)
-        throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: 'Failed to send password reset email'
-        })
+      return { success: true }
+    } catch (error) {
+      if (error instanceof TRPCError) {
+        throw error
       }
-    }),
-
-  resetPassword: publicProcedure
-    .input(
-      z.object({
-        token: z.string(),
-        newPassword: z.string().min(8)
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Failed to delete user'
       })
-    )
-    .mutation(async ({ input }) => {
-      try {
-        await auth.api.resetPassword({
-          body: {
-            token: input.token,
-            newPassword: input.newPassword
-          }
-        })
+    }
+  }),
 
-        return { success: true }
-      } catch (error) {
-        logger.error('Reset password error', error)
-        if (error instanceof TRPCError) throw error
+  banUser: adminProcedure.input(userIdInputSchema).mutation(async ({ ctx, input }) => {
+    try {
+      const auditLogger = new AuditLogger(ctx.db)
+      const ipAddress = getIpFromHeaders(ctx.headers)
+      const userAgent = getUserAgentFromHeaders(ctx.headers)
+
+      // Check if user exists
+      const user = await ctx.db.query.users.findFirst({
+        where: (users, { eq }) => eq(users.id, input.userId),
+        columns: { id: true, name: true, email: true, role: true }
+      })
+
+      if (!user) {
         throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: 'Failed to reset password'
+          code: 'NOT_FOUND',
+          message: 'User not found'
         })
       }
-    })
+
+      // Prevent banning admin users
+      if (user.role === 'admin') {
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message: 'Cannot ban admin users'
+        })
+      }
+
+      // Set the banned flag and delete all user sessions to effectively "ban" them
+      await ctx.db.update(users).set({ banned: true }).where(eq(users.id, input.userId))
+      await ctx.db.delete(sessions).where(eq(sessions.userId, input.userId))
+
+      // Log the audit trail
+      await auditLogger.logUserAction(
+        ctx.session.user.id,
+        'user_ban',
+        input.userId,
+        {
+          bannedUser: {
+            name: user.name,
+            email: user.email
+          }
+        },
+        ipAddress,
+        userAgent
+      )
+
+      return { success: true }
+    } catch (error) {
+      if (error instanceof TRPCError) {
+        throw error
+      }
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Failed to ban user'
+      })
+    }
+  }),
+
+  unbanUser: adminProcedure.input(userIdInputSchema).mutation(async ({ ctx, input }) => {
+    try {
+      const auditLogger = new AuditLogger(ctx.db)
+      const ipAddress = getIpFromHeaders(ctx.headers)
+      const userAgent = getUserAgentFromHeaders(ctx.headers)
+
+      // Check if user exists
+      const user = await ctx.db.query.users.findFirst({
+        where: (users, { eq }) => eq(users.id, input.userId),
+        columns: { id: true, name: true, email: true }
+      })
+
+      if (!user) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'User not found'
+        })
+      }
+
+      // Clear the banned flag so the user can sign in again
+      await ctx.db.update(users).set({ banned: false }).where(eq(users.id, input.userId))
+
+      // Log the audit trail
+      await auditLogger.logUserAction(
+        ctx.session.user.id,
+        'user_unban',
+        input.userId,
+        {
+          unbannedUser: {
+            name: user.name,
+            email: user.email
+          }
+        },
+        ipAddress,
+        userAgent
+      )
+
+      return { success: true }
+    } catch (error) {
+      if (error instanceof TRPCError) {
+        throw error
+      }
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Failed to unban user'
+      })
+    }
+  }),
+
+  updateUser: adminProcedure.input(updateUserInputSchema).mutation(async ({ ctx, input }) => {
+    try {
+      const auditLogger = new AuditLogger(ctx.db)
+      const ipAddress = getIpFromHeaders(ctx.headers)
+      const userAgent = getUserAgentFromHeaders(ctx.headers)
+      const { userId, ...updateData } = input
+
+      // Check if user exists and get current data
+      const user = await ctx.db.query.users.findFirst({
+        where: (users, { eq }) => eq(users.id, userId),
+        columns: { id: true, name: true, email: true, username: true, role: true, image: true }
+      })
+
+      if (!user) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'User not found'
+        })
+      }
+
+      // Check for email uniqueness if email is being updated
+      if (updateData.email && updateData.email !== user.email) {
+        const existingUser = await ctx.db.query.users.findFirst({
+          where: eq(users.email, updateData.email)
+        })
+        if (existingUser) {
+          throw new TRPCError({
+            code: 'CONFLICT',
+            message: 'Email already exists'
+          })
+        }
+      }
+
+      // Check for username uniqueness if username is being updated
+      if (updateData.username && updateData.username !== user.username) {
+        const existingUser = await ctx.db.query.users.findFirst({
+          where: eq(users.username, updateData.username)
+        })
+        if (existingUser) {
+          throw new TRPCError({
+            code: 'CONFLICT',
+            message: 'Username already exists'
+          })
+        }
+      }
+
+      // Filter out undefined values for the update
+      const filteredUpdateData = Object.fromEntries(
+        Object.entries(updateData).filter(([_, value]) => value !== undefined)
+      )
+
+      if (Object.keys(filteredUpdateData).length === 0) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'No valid update data provided'
+        })
+      }
+
+      // Perform the actual update
+      await ctx.db
+        .update(users)
+        .set({ ...filteredUpdateData, updatedAt: new Date() })
+        .where(eq(users.id, userId))
+
+      // Log the audit trail
+      await auditLogger.logUserAction(
+        ctx.session.user.id,
+        'user_update',
+        userId,
+        {
+          previousData: user,
+          updatedData: filteredUpdateData
+        },
+        ipAddress,
+        userAgent
+      )
+
+      return { success: true }
+    } catch (error) {
+      if (error instanceof TRPCError) {
+        throw error
+      }
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Failed to update user'
+      })
+    }
+  }),
+
+  requestPasswordReset: publicProcedure.input(emailInputSchema).mutation(async ({ ctx, input }) => {
+    try {
+      const locale = get_request_locale(ctx.headers)
+      const baseUrl = get_site_url(ctx.headers)
+      const resetPath = getLocalizedPath({ slug: '/reset-password', locale })
+      const redirectTo = `${baseUrl}${resetPath}`
+
+      await auth.api.requestPasswordReset({
+        body: {
+          email: input.email,
+          redirectTo
+        }
+      })
+
+      return { success: true }
+    } catch (error) {
+      logger.error('Request password reset error', error)
+      // Always return success to prevent email enumeration
+      return { success: true }
+    }
+  }),
+
+  sendPasswordReset: adminProcedure.input(userIdInputSchema).mutation(async ({ ctx, input }) => {
+    try {
+      const locale = get_request_locale(ctx.headers)
+      const auditLogger = new AuditLogger(ctx.db)
+      const ipAddress = getIpFromHeaders(ctx.headers)
+      const userAgent = getUserAgentFromHeaders(ctx.headers)
+
+      // Get user details
+      const user = await ctx.db.query.users.findFirst({
+        where: (users, { eq }) => eq(users.id, input.userId),
+        columns: { email: true, name: true }
+      })
+
+      if (!user) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'User not found'
+        })
+      }
+
+      const baseUrl = get_site_url(ctx.headers)
+      const resetPath = getLocalizedPath({ slug: '/reset-password', locale })
+      const redirectTo = `${baseUrl}${resetPath}`
+
+      await auth.api.requestPasswordReset({
+        body: {
+          email: user.email,
+          redirectTo
+        }
+      })
+
+      // Log the audit trail for password reset initiation
+      await auditLogger.logUserAction(
+        ctx.session.user.id,
+        'user_password_reset',
+        input.userId,
+        {
+          targetUser: {
+            name: user.name,
+            email: user.email
+          },
+          resetInitiated: true
+        },
+        ipAddress,
+        userAgent
+      )
+
+      return { success: true }
+    } catch (error) {
+      logger.error('Password reset error', error)
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Failed to send password reset email'
+      })
+    }
+  }),
+
+  resetPassword: publicProcedure.input(resetPasswordInputSchema).mutation(async ({ input }) => {
+    try {
+      await auth.api.resetPassword({
+        body: {
+          token: input.token,
+          newPassword: input.newPassword
+        }
+      })
+
+      return { success: true }
+    } catch (error) {
+      logger.error('Reset password error', error)
+      if (error instanceof TRPCError) throw error
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Failed to reset password'
+      })
+    }
+  })
 })
 
 export type GetUsersOutput = RouterOutputs['users']['getUsers']

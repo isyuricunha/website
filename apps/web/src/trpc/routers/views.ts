@@ -10,6 +10,8 @@ import { createTRPCRouter, publicProcedure } from '../trpc'
 
 const getKey = (id: string) => `views:${id}`
 
+const slugInputSchema = z.object({ slug: z.string().min(1) })
+
 export const viewsRouter = createTRPCRouter({
   getCount: publicProcedure.query(async ({ ctx }) => {
     const ip = getIp(ctx.headers)
@@ -40,63 +42,59 @@ export const viewsRouter = createTRPCRouter({
       views: value
     }
   }),
-  get: publicProcedure
-    .input(z.object({ slug: z.string().min(1) }))
-    .query(async ({ ctx, input }) => {
-      const ip = getIp(ctx.headers)
+  get: publicProcedure.input(slugInputSchema).query(async ({ ctx, input }) => {
+    const ip = getIp(ctx.headers)
 
-      const { success } = await ratelimit.limit(getKey(`get:${ip}`))
+    const { success } = await ratelimit.limit(getKey(`get:${ip}`))
 
-      if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+    if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
 
-      const cachedViews = await redis.get<number>(redisKeys.postViews(input.slug))
+    const cachedViews = await redis.get<number>(redisKeys.postViews(input.slug))
 
-      if (typeof cachedViews === 'number') {
-        return {
-          views: cachedViews
-        }
-      }
-
-      const post = await ctx.db
-        .select({ views: posts.views })
-        .from(posts)
-        .where(eq(posts.slug, input.slug))
-
-      const views = post[0]?.views ?? 0
-
-      await redis.set(redisKeys.postViews(input.slug), views)
-
+    if (typeof cachedViews === 'number') {
       return {
-        views
+        views: cachedViews
       }
-    }),
-  increment: publicProcedure
-    .input(z.object({ slug: z.string().min(1) }))
-    .mutation(async ({ ctx, input }) => {
-      const ip = ctx.headers.get('x-forwarded-for') ?? '0.0.0.0'
+    }
 
-      const { success } = await ratelimit.limit(getKey(`increment:${ip}`))
+    const post = await ctx.db
+      .select({ views: posts.views })
+      .from(posts)
+      .where(eq(posts.slug, input.slug))
 
-      if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+    const views = post[0]?.views ?? 0
 
-      const upserted = await ctx.db
-        .insert(posts)
-        .values({
-          id: randomUUID(),
-          slug: input.slug,
-          views: 1
-        })
-        .onConflictDoUpdate({
-          target: posts.slug,
-          set: {
-            views: sql<number>`${posts.views} + 1`
-          }
-        })
-        .returning({ views: posts.views })
+    await redis.set(redisKeys.postViews(input.slug), views)
 
-      const nextViews = upserted[0]?.views
-      if (typeof nextViews === 'number') {
-        await redis.set(redisKeys.postViews(input.slug), nextViews)
-      }
-    })
+    return {
+      views
+    }
+  }),
+  increment: publicProcedure.input(slugInputSchema).mutation(async ({ ctx, input }) => {
+    const ip = ctx.headers.get('x-forwarded-for') ?? '0.0.0.0'
+
+    const { success } = await ratelimit.limit(getKey(`increment:${ip}`))
+
+    if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+
+    const upserted = await ctx.db
+      .insert(posts)
+      .values({
+        id: randomUUID(),
+        slug: input.slug,
+        views: 1
+      })
+      .onConflictDoUpdate({
+        target: posts.slug,
+        set: {
+          views: sql<number>`${posts.views} + 1`
+        }
+      })
+      .returning({ views: posts.views })
+
+    const nextViews = upserted[0]?.views
+    if (typeof nextViews === 'number') {
+      await redis.set(redisKeys.postViews(input.slug), nextViews)
+    }
+  })
 })

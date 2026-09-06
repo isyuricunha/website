@@ -138,21 +138,24 @@ const createDbMock = () => {
 
         if (
           tableName === 'security_events' ||
-          (value?.eventType && value?.severity && value?.createdAt)
+          (value?.eventType && value.severity && value.createdAt)
         ) {
           security_events.push(value)
         }
 
-        if (tableName === 'ip_access_control') {
-          ip_rules.push(value)
-        }
-
-        if (tableName === 'account_lockouts') {
-          lockouts.push(value)
-        }
-
-        if (tableName === 'security_settings') {
-          security_settings.push(value)
+        switch (tableName) {
+          case 'ip_access_control': {
+            ip_rules.push(value)
+            break
+          }
+          case 'account_lockouts': {
+            lockouts.push(value)
+            break
+          }
+          case 'security_settings': {
+            security_settings.push(value)
+            break
+          }
         }
 
         await insertValues(value)

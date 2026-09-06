@@ -33,8 +33,9 @@ const config: NextConfig = {
 
         try {
           const url = new URL(env.R2_PUBLIC_BASE_URL)
-          const protocol =
-            url.protocol === 'http:' ? 'http' : url.protocol === 'https:' ? 'https' : null
+          let protocol: 'http' | 'https' | null = null
+          if (url.protocol === 'http:') protocol = 'http'
+          else if (url.protocol === 'https:') protocol = 'https'
 
           if (!protocol) return []
 

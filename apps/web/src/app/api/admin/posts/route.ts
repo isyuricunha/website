@@ -17,7 +17,7 @@ const postBodySchema = z.object({
   modifiedTime: z.string().optional()
 })
 
-const deleteQuerySchema = z.object({
+const postDeleteQuerySchema = z.object({
   slug: z.string().min(1),
   locale: z.string().min(1)
 })
@@ -153,7 +153,7 @@ export async function DELETE(request: NextRequest) {
     const slug = searchParams.get('slug')
     const locale = searchParams.get('locale')
 
-    const parsed = deleteQuerySchema.parse({ slug, locale })
+    const parsed = postDeleteQuerySchema.parse({ slug, locale })
 
     // Check if post exists
     const exists = await BlogService.postExists(parsed.slug, parsed.locale)
@@ -162,9 +162,9 @@ export async function DELETE(request: NextRequest) {
     }
 
     // Delete the post
-    const deleteSuccess = await BlogService.deletePost(parsed.slug, parsed.locale)
+    const wasDeleted = await BlogService.deletePost(parsed.slug, parsed.locale)
 
-    if (!deleteSuccess) {
+    if (!wasDeleted) {
       return NextResponse.json({ error: 'Failed to delete post' }, { status: 500 })
     }
 

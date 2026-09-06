@@ -52,26 +52,122 @@ const getNotificationSeverity = (
   }
 }
 
+const emailTemplateTypeSchema = z.enum([
+  'welcome',
+  'password_reset',
+  'email_verification',
+  'newsletter',
+  'announcement',
+  'notification',
+  'marketing',
+  'transactional'
+])
+const notificationTypeSchema = z.enum([
+  'system',
+  'user_action',
+  'content',
+  'security',
+  'marketing',
+  'reminder'
+])
+const campaignStatusSchema = z.enum([
+  'draft',
+  'scheduled',
+  'sending',
+  'sent',
+  'paused',
+  'cancelled',
+  'failed'
+])
+const requiredStringSchema = z.string().min(1)
+const optionalStringListSchema = z.array(z.string()).optional()
+const defaultStringListSchema = z.array(z.string()).default([])
+const notificationLimitSchema = z.number().min(1).max(200)
+const campaignLimitSchema = z.number().min(1).max(100)
+const notificationOffsetSchema = z.number().min(0).default(0)
+const optionalActionUrlSchema = z.string().url().optional()
+const optionalNotificationDataSchema = z.record(z.string(), z.unknown()).optional()
+
+const emailTemplatesQuerySchema = z.object({
+  type: emailTemplateTypeSchema.optional(),
+  active: z.boolean().optional()
+})
+
+const allNotificationsQuerySchema = z.object({
+  userId: z.string().optional(),
+  unreadOnly: z.boolean().default(false),
+  includeExpired: z.boolean().default(false),
+  type: notificationTypeSchema.optional(),
+  limit: notificationLimitSchema.default(50),
+  offset: notificationOffsetSchema
+})
+
+const emailTemplateCreationInputSchema = z.object({
+  name: requiredStringSchema,
+  type: emailTemplateTypeSchema,
+  subject: requiredStringSchema,
+  htmlContent: requiredStringSchema,
+  textContent: z.string().optional(),
+  variables: defaultStringListSchema
+})
+
+const emailTemplateUpdateInputSchema = z.object({
+  id: z.string(),
+  name: requiredStringSchema.optional(),
+  subject: requiredStringSchema.optional(),
+  htmlContent: requiredStringSchema.optional(),
+  textContent: z.string().optional(),
+  variables: optionalStringListSchema,
+  isActive: z.boolean().optional()
+})
+
+const emailCampaignsQuerySchema = z.object({
+  status: campaignStatusSchema.optional(),
+  limit: campaignLimitSchema.default(20)
+})
+
+const targetAudienceSchema = z
+  .object({
+    userRoles: optionalStringListSchema,
+    userIds: optionalStringListSchema,
+    emailList: optionalStringListSchema
+  })
+  .optional()
+
+const emailCampaignCreationInputSchema = z.object({
+  name: requiredStringSchema,
+  subject: requiredStringSchema,
+  templateId: z.string().optional(),
+  htmlContent: z.string().optional(),
+  textContent: z.string().optional(),
+  targetAudience: targetAudienceSchema,
+  scheduledAt: z.date().optional()
+})
+
+const campaignIdInputSchema = z.object({ campaignId: z.string() })
+
+const notificationsQuerySchema = z.object({
+  unreadOnly: z.boolean().default(false),
+  limit: campaignLimitSchema.default(20),
+  offset: notificationOffsetSchema
+})
+
+const notificationIdInputSchema = z.object({ notificationId: z.string() })
+
+const notificationCreationInputSchema = z.object({
+  title: requiredStringSchema,
+  content: requiredStringSchema,
+  type: notificationTypeSchema.default('system'),
+  userId: z.string().optional(),
+  expiresAt: z.date().optional(),
+  actionUrl: optionalActionUrlSchema,
+  data: optionalNotificationDataSchema
+})
+
 export const communicationRouter = createTRPCRouter({
   // Email Templates
   getEmailTemplates: adminProcedure
-    .input(
-      z.object({
-        type: z
-          .enum([
-            'welcome',
-            'password_reset',
-            'email_verification',
-            'newsletter',
-            'announcement',
-            'notification',
-            'marketing',
-            'transactional'
-          ])
-          .optional(),
-        active: z.boolean().optional()
-      })
-    )
+    .input(emailTemplatesQuerySchema)
     .query(async ({ ctx, input }) => {
       try {
         const conditions = []
@@ -116,18 +212,7 @@ export const communicationRouter = createTRPCRouter({
     }),
 
   getAllNotifications: adminProcedure
-    .input(
-      z.object({
-        userId: z.string().optional(),
-        unreadOnly: z.boolean().default(false),
-        includeExpired: z.boolean().default(false),
-        type: z
-          .enum(['system', 'user_action', 'content', 'security', 'marketing', 'reminder'])
-          .optional(),
-        limit: z.number().min(1).max(200).default(50),
-        offset: z.number().min(0).default(0)
-      })
-    )
+    .input(allNotificationsQuerySchema)
     .query(async ({ ctx, input }) => {
       try {
         const now = new Date()
@@ -182,25 +267,7 @@ export const communicationRouter = createTRPCRouter({
     }),
 
   createEmailTemplate: adminProcedure
-    .input(
-      z.object({
-        name: z.string().min(1),
-        type: z.enum([
-          'welcome',
-          'password_reset',
-          'email_verification',
-          'newsletter',
-          'announcement',
-          'notification',
-          'marketing',
-          'transactional'
-        ]),
-        subject: z.string().min(1),
-        htmlContent: z.string().min(1),
-        textContent: z.string().optional(),
-        variables: z.array(z.string()).default([])
-      })
-    )
+    .input(emailTemplateCreationInputSchema)
     .mutation(async ({ ctx, input }) => {
       try {
         const auditLogger = new AuditLogger(ctx.db)
@@ -245,17 +312,7 @@ export const communicationRouter = createTRPCRouter({
     }),
 
   updateEmailTemplate: adminProcedure
-    .input(
-      z.object({
-        id: z.string(),
-        name: z.string().min(1).optional(),
-        subject: z.string().min(1).optional(),
-        htmlContent: z.string().min(1).optional(),
-        textContent: z.string().optional(),
-        variables: z.array(z.string()).optional(),
-        isActive: z.boolean().optional()
-      })
-    )
+    .input(emailTemplateUpdateInputSchema)
     .mutation(async ({ ctx, input }) => {
       try {
         const auditLogger = new AuditLogger(ctx.db)
@@ -266,7 +323,7 @@ export const communicationRouter = createTRPCRouter({
 
         // Filter out undefined values
         const filteredUpdateData: any = {}
-        Object.entries(updateData).forEach(([key, value]) => {
+        for (const [key, value] of Object.entries(updateData)) {
           if (value !== undefined) {
             if (key === 'variables') {
               filteredUpdateData[key] = JSON.stringify(value)
@@ -274,7 +331,7 @@ export const communicationRouter = createTRPCRouter({
               filteredUpdateData[key] = value
             }
           }
-        })
+        }
 
         filteredUpdateData.updatedAt = new Date()
 
@@ -306,14 +363,7 @@ export const communicationRouter = createTRPCRouter({
 
   // Email Campaigns
   getEmailCampaigns: adminProcedure
-    .input(
-      z.object({
-        status: z
-          .enum(['draft', 'scheduled', 'sending', 'sent', 'paused', 'cancelled', 'failed'])
-          .optional(),
-        limit: z.number().min(1).max(100).default(20)
-      })
-    )
+    .input(emailCampaignsQuerySchema)
     .query(async ({ ctx, input }) => {
       try {
         const conditions = []
@@ -362,23 +412,7 @@ export const communicationRouter = createTRPCRouter({
     }),
 
   createEmailCampaign: adminProcedure
-    .input(
-      z.object({
-        name: z.string().min(1),
-        subject: z.string().min(1),
-        templateId: z.string().optional(),
-        htmlContent: z.string().optional(),
-        textContent: z.string().optional(),
-        targetAudience: z
-          .object({
-            userRoles: z.array(z.string()).optional(),
-            userIds: z.array(z.string()).optional(),
-            emailList: z.array(z.string()).optional()
-          })
-          .optional(),
-        scheduledAt: z.date().optional()
-      })
-    )
+    .input(emailCampaignCreationInputSchema)
     .mutation(async ({ ctx, input }) => {
       try {
         const auditLogger = new AuditLogger(ctx.db)
@@ -448,7 +482,7 @@ export const communicationRouter = createTRPCRouter({
     }),
 
   sendEmailCampaign: adminProcedure
-    .input(z.object({ campaignId: z.string() }))
+    .input(campaignIdInputSchema)
     .mutation(async ({ ctx, input }) => {
       try {
         const auditLogger = new AuditLogger(ctx.db)
@@ -501,7 +535,9 @@ export const communicationRouter = createTRPCRouter({
         }
 
         if (targetAudience?.emailList?.length) {
-          targetAudience.emailList.forEach((email) => addRecipient(email, null))
+          for (const email of targetAudience.emailList) {
+            addRecipient(email, null)
+          }
         }
 
         if (targetAudience?.userIds?.length) {
@@ -509,7 +545,9 @@ export const communicationRouter = createTRPCRouter({
             where: inArray(users.id, targetAudience.userIds),
             columns: { id: true, email: true }
           })
-          selectedUsers.forEach((u) => addRecipient(u.email, u.id))
+          for (const user of selectedUsers) {
+            addRecipient(user.email, user.id)
+          }
         }
 
         if (targetAudience?.userRoles?.length) {
@@ -521,7 +559,9 @@ export const communicationRouter = createTRPCRouter({
               where: inArray(users.role, roles),
               columns: { id: true, email: true }
             })
-            roleUsers.forEach((u) => addRecipient(u.email, u.id))
+            for (const user of roleUsers) {
+              addRecipient(user.email, user.id)
+            }
           }
         }
 
@@ -529,7 +569,9 @@ export const communicationRouter = createTRPCRouter({
           const allUsers = await ctx.db.query.users.findMany({
             columns: { id: true, email: true }
           })
-          allUsers.forEach((u) => addRecipient(u.email, u.id))
+          for (const user of allUsers) {
+            addRecipient(user.email, user.id)
+          }
         }
 
         const recipients = Array.from(recipientMap.values())
@@ -693,13 +735,7 @@ export const communicationRouter = createTRPCRouter({
 
   // Notifications
   getNotifications: protectedProcedure
-    .input(
-      z.object({
-        unreadOnly: z.boolean().default(false),
-        limit: z.number().min(1).max(100).default(20),
-        offset: z.number().min(0).default(0)
-      })
-    )
+    .input(notificationsQuerySchema)
     .query(async ({ ctx, input }) => {
       try {
         const now = new Date()
@@ -759,7 +795,7 @@ export const communicationRouter = createTRPCRouter({
     }),
 
   markNotificationRead: protectedProcedure
-    .input(z.object({ notificationId: z.string() }))
+    .input(notificationIdInputSchema)
     .mutation(async ({ ctx, input }) => {
       try {
         await ctx.db
@@ -786,7 +822,7 @@ export const communicationRouter = createTRPCRouter({
     }),
 
   adminMarkNotificationRead: adminProcedure
-    .input(z.object({ notificationId: z.string() }))
+    .input(notificationIdInputSchema)
     .mutation(async ({ ctx, input }) => {
       try {
         await ctx.db
@@ -829,19 +865,7 @@ export const communicationRouter = createTRPCRouter({
 
   // Create notification (admin only)
   createNotification: adminProcedure
-    .input(
-      z.object({
-        title: z.string().min(1),
-        content: z.string().min(1),
-        type: z
-          .enum(['system', 'user_action', 'content', 'security', 'marketing', 'reminder'])
-          .default('system'),
-        userId: z.string().optional(),
-        expiresAt: z.date().optional(),
-        actionUrl: z.string().url().optional(),
-        data: z.record(z.string(), z.unknown()).optional()
-      })
-    )
+    .input(notificationCreationInputSchema)
     .mutation(async ({ ctx, input }) => {
       try {
         const auditLogger = new AuditLogger(ctx.db)

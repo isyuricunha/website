@@ -23,8 +23,7 @@ import {
   ChevronLeft,
   ChevronRight
 } from 'lucide-react'
-import { useState, useMemo, useEffect } from 'react'
-import { debounce } from '@/lib/performance'
+import { useState, useMemo, useDeferredValue } from 'react'
 
 import PostCards from './post-cards'
 import Link from './link'
@@ -35,11 +34,16 @@ type FilteredPostsProps = {
 
 type SortOption = 'date-desc' | 'date-asc' | 'title-asc' | 'title-desc' | 'reading-time'
 
+const compareStrings = (a: string, b: string) => {
+  if (a < b) return -1
+  if (a > b) return 1
+  return 0
+}
+
 const FilteredPosts = (props: FilteredPostsProps) => {
   const { posts } = props
   const locale = useLocale()
   const [searchValue, setSearchValue] = useState('')
-  const [debouncedSearchValue, setDebouncedSearchValue] = useState('')
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
   const [selectedTag, setSelectedTag] = useState<string>('all')
   const [sortBy, setSortBy] = useState<SortOption>('date-desc')
@@ -48,43 +52,36 @@ const FilteredPosts = (props: FilteredPostsProps) => {
   const postsPerPage = 8
   const t = useTranslations()
 
-  // Debounced search to improve performance
-  const debouncedSearch = useMemo(() => {
-    return debounce((value: string) => {
-      setDebouncedSearchValue(value)
-    }, 300)
-  }, [])
-
-  useEffect(() => {
-    if (searchValue !== debouncedSearchValue) {
-      debouncedSearch(searchValue)
-    }
-  }, [searchValue, debouncedSearchValue, debouncedSearch])
-
-  const isSearching = searchValue !== debouncedSearchValue
+  // React 18+ built-in: defers rendering of heavy derived values until after
+  // the urgent (input keystroke) render settles. Replaces the previous
+  // manual debounce + setState-in-effect pattern.
+  const deferredSearchValue = useDeferredValue(searchValue)
+  const isSearching = searchValue !== deferredSearchValue
 
   // Extract unique categories and tags
   const { categories, tags } = useMemo(() => {
     const categorySet = new Set<string>()
     const tagSet = new Set<string>()
 
-    posts.forEach((post) => {
+    for (const post of posts) {
       if (post.category) categorySet.add(post.category)
-      if (post.tags) post.tags.forEach((tag) => tagSet.add(tag))
-    })
+      if (post.tags) {
+        for (const tag of post.tags) tagSet.add(tag)
+      }
+    }
 
     return {
-      categories: Array.from(categorySet).toSorted(),
-      tags: Array.from(tagSet).toSorted()
+      categories: Array.from(categorySet).toSorted(compareStrings),
+      tags: Array.from(tagSet).toSorted(compareStrings)
     }
   }, [posts])
 
   const filteredAndSortedPosts = useMemo(() => {
     const filtered = posts.filter((post) => {
       const matchesSearch =
-        debouncedSearchValue === '' ||
-        post.title.toLowerCase().includes(debouncedSearchValue.toLowerCase()) ||
-        post.summary.toLowerCase().includes(debouncedSearchValue.toLowerCase())
+        deferredSearchValue === '' ||
+        post.title.toLowerCase().includes(deferredSearchValue.toLowerCase()) ||
+        post.summary.toLowerCase().includes(deferredSearchValue.toLowerCase())
       const matchesCategory = selectedCategory === 'all' || post.category === selectedCategory
       const matchesTag = selectedTag === 'all' || (post.tags && post.tags.includes(selectedTag))
 
@@ -107,7 +104,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
           return 0
       }
     })
-  }, [posts, debouncedSearchValue, selectedCategory, selectedTag, sortBy])
+  }, [posts, deferredSearchValue, selectedCategory, selectedTag, sortBy])
 
   const clearAllFilters = () => {
     setSearchValue('')
@@ -221,9 +218,11 @@ const FilteredPosts = (props: FilteredPostsProps) => {
           >
             <SlidersHorizontal className='h-4 w-4 flex-shrink-0' />
             <span className='text-sm'>
-              {showFilters
-                ? t('component.filtered-posts.toggle-filters.hide')
-                : t('component.filtered-posts.toggle-filters.show')}
+              {t(
+                showFilters
+                  ? 'component.filtered-posts.toggle-filters.hide'
+                  : 'component.filtered-posts.toggle-filters.show'
+              )}
             </span>
           </button>
 

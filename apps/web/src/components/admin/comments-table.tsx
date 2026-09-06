@@ -54,7 +54,7 @@ const CommentsTable = (props: CommentsTableProps) => {
 
   const { searchTerm, debouncedSearchTerm, updateSearchTerm, clearSearch } = useDebounceSearch()
 
-  const deleteCommentMutation = api.comments.deleteComment.useMutation({
+  const commentDeleteMutation = api.comments.deleteComment.useMutation({
     onSuccess: () => {
       toast.success(t('admin.table.comments.delete-success'))
       utils.comments.getComments.invalidate()
@@ -84,7 +84,7 @@ const CommentsTable = (props: CommentsTableProps) => {
       description: t('admin.table.comments.confirm-delete-with-body', { body: truncatedBody }),
       variant: 'destructive',
       action: () => {
-        deleteCommentMutation.mutate({ commentId })
+        commentDeleteMutation.mutate({ commentId })
         setConfirmDialog((prev) => ({ ...prev, open: false }))
       }
     })
@@ -225,7 +225,7 @@ const CommentsTable = (props: CommentsTableProps) => {
         description={confirmDialog.description}
         variant={confirmDialog.variant}
         onConfirm={confirmDialog.action}
-        loading={deleteCommentMutation.isPending}
+        loading={commentDeleteMutation.isPending}
       />
     </>
   )

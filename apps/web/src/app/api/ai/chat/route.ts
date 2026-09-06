@@ -25,23 +25,23 @@ const conversationMessageSchema = z.object({
   timestamp: z.string().optional()
 })
 
+const requestContextSchema = z.object({
+  currentPage: z.string().max(500).optional(),
+  pagePath: z.string().max(500).optional(),
+  previousMessages: z.array(z.string().max(4000)).max(20).optional(),
+  conversation: z.array(conversationMessageSchema).max(30).optional(),
+  conversationLength: z.number().int().min(0).max(5000).optional(),
+  userPreferences: z.record(z.string(), z.unknown()).optional(),
+  pageContext: z.record(z.string(), z.unknown()).optional()
+})
+
 const requestSchema = z.object({
   message: z.string().min(1).max(2000),
   mode: z.enum(['chat', 'navigate', 'recommend']).optional(),
   model: z.string().max(100).optional(),
   stream: z.boolean().optional(),
   locale: z.string().min(2).max(10).optional(),
-  context: z
-    .object({
-      currentPage: z.string().max(500).optional(),
-      pagePath: z.string().max(500).optional(),
-      previousMessages: z.array(z.string().max(4000)).max(20).optional(),
-      conversation: z.array(conversationMessageSchema).max(30).optional(),
-      conversationLength: z.number().int().min(0).max(5000).optional(),
-      userPreferences: z.record(z.string(), z.unknown()).optional(),
-      pageContext: z.record(z.string(), z.unknown()).optional()
-    })
-    .optional()
+  context: requestContextSchema.optional()
 })
 
 const create_request_id = (): string => {
@@ -261,11 +261,13 @@ export async function POST(req: NextRequest) {
 
         // Exclude posts already suggested in the conversation history.
         const texts: string[] = []
-        for (const msg of parsed.context?.conversation ?? []) {
+        const conversationMessages = parsed.context?.conversation ?? []
+        for (const msg of conversationMessages) {
           if (!msg?.content) continue
           texts.push(msg.content)
         }
-        for (const text of parsed.context?.previousMessages ?? []) {
+        const previousMessages = parsed.context?.previousMessages ?? []
+        for (const text of previousMessages) {
           if (!text) continue
           texts.push(text)
         }

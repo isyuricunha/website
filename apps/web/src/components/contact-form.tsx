@@ -31,6 +31,19 @@ interface FormErrors {
   general?: string
 }
 
+const isValidEmailFormat = (value: string): boolean => {
+  if (/\s/.test(value)) return false
+
+  const atIndex = value.indexOf('@')
+  if (atIndex <= 0 || atIndex === value.length - 1) return false
+  if (value.includes('@', atIndex + 1)) return false
+
+  const domain = value.slice(atIndex + 1)
+  const dotIndex = domain.lastIndexOf('.')
+
+  return dotIndex > 0 && dotIndex < domain.length - 1
+}
+
 export default function ContactForm() {
   const t = useTranslations()
   const [formData, setFormData] = useState<FormData>({
@@ -60,7 +73,7 @@ export default function ContactForm() {
 
     if (!formData.email.trim()) {
       newErrors.email = t('contact.form.email.required')
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+    } else if (!isValidEmailFormat(formData.email)) {
       newErrors.email = t('contact.form.email.invalid')
     }
 
@@ -130,11 +143,11 @@ export default function ContactForm() {
         if (result.details) {
           // Handle validation errors from server
           const serverErrors: FormErrors = {}
-          result.details.forEach((error: any) => {
+          for (const error of result.details as any[]) {
             if (error.path && error.path.length > 0) {
               serverErrors[error.path[0] as keyof FormErrors] = error.message
             }
-          })
+          }
           setErrors(serverErrors)
         } else {
           setSubmitMessage(result.error || t('contact.form.error'))
@@ -152,7 +165,7 @@ export default function ContactForm() {
   const handleInputChange = (field: keyof FormData, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
     // Clear error when user starts typing
-    if (errors[field]) {
+    if (Object.hasOwn(errors, field)) {
       setErrors((prev) => ({ ...prev, [field]: undefined }))
     }
     // Clear submit status when user makes changes

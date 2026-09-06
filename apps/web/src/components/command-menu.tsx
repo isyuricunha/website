@@ -57,10 +57,9 @@ const CommandMenu = () => {
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
-      if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault()
-        setIsOpen((value) => !value)
-      }
+      if (e.key !== 'k' || (!e.metaKey && !e.ctrlKey)) return
+      e.preventDefault()
+      setIsOpen((value) => !value)
     }
 
     document.addEventListener('keydown', down)
@@ -131,7 +130,7 @@ const CommandMenu = () => {
           onSelect: async () => {
             setIsOpen(false)
 
-            await copy({ text: globalThis.location.href })
+            await copy({ text: location.href })
           }
         },
         {
@@ -194,9 +193,11 @@ const CommandMenu = () => {
         <CommandFooter>
           <Logo className='size-4' />
           <CommandFooterTrigger triggerKey={<Kbd keys={['enter']} className='py-0' />}>
-            {isSelectingCommand
-              ? t('command-menu.trigger.open-command')
-              : t('command-menu.trigger.open-link')}
+            {t(
+              isSelectingCommand
+                ? 'command-menu.trigger.open-command'
+                : 'command-menu.trigger.open-link'
+            )}
           </CommandFooterTrigger>
         </CommandFooter>
       </CommandDialog>

@@ -85,7 +85,7 @@ const TopArtistsSection = () => {
         </CardHeader>
         <CardContent>
           <div className='grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5'>
-            {Array.from({ length: 10 }).map((_, i) => (
+            {Array.from({ length: 10 }, (_, i) => (
               <div key={i} className='flex flex-col items-center space-y-2'>
                 <div className='bg-bg-hover h-16 w-16 animate-pulse rounded-full' />
                 <div className='bg-bg-hover h-4 w-20 animate-pulse rounded' />
@@ -197,11 +197,11 @@ const TopArtistsSection = () => {
                 ? 'bg-accent-earth text-text-inverse'
                 : 'text-text-secondary hover:text-text-primary hover:bg-bg-hover'
             }`}
-            title={
+            title={t(
               isShuffled
-                ? t('spotify.top-artists.tooltips.shuffle-on')
-                : t('spotify.top-artists.tooltips.shuffle-off')
-            }
+                ? 'spotify.top-artists.tooltips.shuffle-on'
+                : 'spotify.top-artists.tooltips.shuffle-off'
+            )}
           >
             <Shuffle className='h-4 w-4' />
           </button>

@@ -20,6 +20,14 @@ const safeJsonParse = (str: string | null): unknown => {
   }
 }
 
+const calculateTrend = (recent: number, previous: number) => {
+  if (previous > 0) {
+    return Math.round(((recent - previous) / previous) * 100)
+  }
+
+  return recent > 0 ? 100 : 0
+}
+
 export const adminRouter = createTRPCRouter({
   getStats: adminProcedure.query(async ({ ctx }) => {
     const now = new Date()
@@ -86,18 +94,8 @@ export const adminRouter = createTRPCRouter({
       const prevMonthComments = Math.max(0, (prevCommentsRow?.value ?? 0) - recentComments)
 
       // Compute real trend percentages
-      const userTrend =
-        prevMonthUsers > 0
-          ? Math.round(((recentUsers - prevMonthUsers) / prevMonthUsers) * 100)
-          : recentUsers > 0
-            ? 100
-            : 0
-      const commentTrend =
-        prevMonthComments > 0
-          ? Math.round(((recentComments - prevMonthComments) / prevMonthComments) * 100)
-          : recentComments > 0
-            ? 100
-            : 0
+      const userTrend = calculateTrend(recentUsers, prevMonthUsers)
+      const commentTrend = calculateTrend(recentComments, prevMonthComments)
 
       // Calculate engagement metrics
       const engagementRate = totalUsers > 0 ? totalComments / totalUsers : 0

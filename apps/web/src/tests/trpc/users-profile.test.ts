@@ -234,7 +234,7 @@ describe('usersRouter public profile', () => {
               }
             ]
 
-            return rows as unknown as any
+            return rows
           })
         }
       }

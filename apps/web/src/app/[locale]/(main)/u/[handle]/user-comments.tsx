@@ -117,9 +117,9 @@ const CommentItem = (props: CommentItemProps) => {
       </div>
 
       <div className='text-muted-foreground mt-1 text-xs'>
-        {comment.type === 'reply'
-          ? t('profile.comments.type.reply')
-          : t('profile.comments.type.comment')}
+        {t(
+          comment.type === 'reply' ? 'profile.comments.type.reply' : 'profile.comments.type.comment'
+        )}
       </div>
 
       <p className='mt-3 text-sm leading-relaxed whitespace-pre-wrap'>{comment.body}</p>

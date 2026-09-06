@@ -105,7 +105,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
             <div
               className='relative h-full w-full rounded-full transition-transform duration-500 ease-out'
               style={
-                state.preferences.animations && !prefersReducedMotion
+                !prefersReducedMotion && state.preferences.animations
                   ? {
                       transform: `translate(${state.mousePosition.x * 5}px, ${state.mousePosition.y * 5}px) rotate(${state.mousePosition.x * 5}deg)`
                     }

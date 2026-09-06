@@ -7,6 +7,30 @@ import { Fragment, type ReactElement } from 'react'
 
 import Link from './link'
 
+const getSegmentLabel = (segment: string, t: ReturnType<typeof useTranslations>): string => {
+  switch (segment) {
+    case 'blog':
+      return t('layout.blog')
+    case 'projects':
+      return t('layout.projects')
+    case 'now':
+      return t('layout.now')
+    case 'uses':
+      return t('layout.uses')
+    case 'music':
+      return t('layout.music')
+    case 'about':
+      return t('layout.about')
+    case 'sitemap':
+      return t('layout.sitemap')
+    case 'contact':
+      return t('layout.contact')
+    default:
+      // Capitalize and format segment
+      return segment.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase())
+  }
+}
+
 const Breadcrumbs = () => {
   const pathname = usePathname()
   const t = useTranslations()
@@ -26,46 +50,17 @@ const Breadcrumbs = () => {
 
   // Build breadcrumb path
   let currentPath = ''
-  pathSegments.forEach((segment) => {
+  for (const segment of pathSegments) {
     currentPath += `/${segment}`
 
     // Get translated label for common paths
-    let label = segment
-    switch (segment) {
-      case 'blog':
-        label = t('layout.blog')
-        break
-      case 'projects':
-        label = t('layout.projects')
-        break
-      case 'now':
-        label = t('layout.now')
-        break
-      case 'uses':
-        label = t('layout.uses')
-        break
-      case 'music':
-        label = t('layout.music')
-        break
-      case 'about':
-        label = t('layout.about')
-        break
-      case 'sitemap':
-        label = t('layout.sitemap')
-        break
-      case 'contact':
-        label = t('layout.contact')
-        break
-      default:
-        // Capitalize and format segment
-        label = segment.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase())
-    }
+    const label = getSegmentLabel(segment, t)
 
     breadcrumbItems.push({
       label,
       href: currentPath
     })
-  })
+  }
 
   return (
     <nav aria-label={t('component.breadcrumbs.aria-label')} className='mb-4'>

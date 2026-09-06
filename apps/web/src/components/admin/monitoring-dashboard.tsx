@@ -131,17 +131,16 @@ export default function MonitoringDashboard() {
   })
 
   useEffect(() => {
-    if (!hasSentPageViewRef.current) {
-      hasSentPageViewRef.current = true
-      recordAnalyticsEventMutation.mutate({
-        eventType: 'page_view',
-        page: '/admin/monitoring',
-        properties: {
-          tab: selectedTab,
-          timeRange
-        }
-      })
-    }
+    if (hasSentPageViewRef.current) return
+    hasSentPageViewRef.current = true
+    recordAnalyticsEventMutation.mutate({
+      eventType: 'page_view',
+      page: '/admin/monitoring',
+      properties: {
+        tab: selectedTab,
+        timeRange
+      }
+    })
     // eslint-disable-next-line @eslint-react/exhaustive-deps, react-hooks/exhaustive-deps -- fire once on mount to avoid request loops
   }, [])
 
@@ -168,10 +167,9 @@ export default function MonitoringDashboard() {
     }, 60_000)
 
     return () => {
-      if (snapshotIntervalRef.current) {
-        clearInterval(snapshotIntervalRef.current)
-        snapshotIntervalRef.current = null
-      }
+      if (!snapshotIntervalRef.current) return
+      clearInterval(snapshotIntervalRef.current)
+      snapshotIntervalRef.current = null
     }
     // eslint-disable-next-line @eslint-react/exhaustive-deps, react-hooks/exhaustive-deps -- interval lifecycle should be mount/unmount
   }, [])

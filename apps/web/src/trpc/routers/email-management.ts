@@ -11,17 +11,29 @@ import { logger } from '@/lib/logger'
 // Only keeping basic template management for system emails
 // All campaign management now handled by Resend's native APIs
 
+const emailTemplateFilterSchema = z.object({
+  type: z.enum(['welcome', 'password_reset', 'email_verification', 'notification']).optional(),
+  active: z.boolean().optional()
+})
+
+const newEmailTemplateSchema = z.object({
+  name: z.string().min(1),
+  subject: z.string().min(1),
+  content: z.string().min(1),
+  type: z.enum(['welcome', 'password_reset', 'email_verification', 'notification']),
+  variables: z.array(z.string()).optional()
+})
+
+const emailSubscriptionFilterSchema = z.object({
+  active: z.boolean().optional(),
+  limit: z.number().min(1).max(100).default(50),
+  offset: z.number().min(0).default(0)
+})
+
 export const emailManagementRouter = createTRPCRouter({
   // Email Templates (System emails only - newsletters/campaigns use Resend)
   getEmailTemplates: adminProcedure
-    .input(
-      z.object({
-        type: z
-          .enum(['welcome', 'password_reset', 'email_verification', 'notification'])
-          .optional(),
-        active: z.boolean().optional()
-      })
-    )
+    .input(emailTemplateFilterSchema)
     .query(async ({ ctx, input }) => {
       try {
         const conditions = []
@@ -53,15 +65,7 @@ export const emailManagementRouter = createTRPCRouter({
 
   // Create system email templates only (not marketing campaigns)
   createEmailTemplate: adminProcedure
-    .input(
-      z.object({
-        name: z.string().min(1),
-        subject: z.string().min(1),
-        content: z.string().min(1),
-        type: z.enum(['welcome', 'password_reset', 'email_verification', 'notification']),
-        variables: z.array(z.string()).optional()
-      })
-    )
+    .input(newEmailTemplateSchema)
     .mutation(async ({ ctx, input }) => {
       try {
         const auditLogger = new AuditLogger(ctx.db)
@@ -103,13 +107,7 @@ export const emailManagementRouter = createTRPCRouter({
 
   // Email Subscriptions (kept for local subscription tracking)
   getEmailSubscriptions: adminProcedure
-    .input(
-      z.object({
-        active: z.boolean().optional(),
-        limit: z.number().min(1).max(100).default(50),
-        offset: z.number().min(0).default(0)
-      })
-    )
+    .input(emailSubscriptionFilterSchema)
     .query(async ({ ctx, input }) => {
       try {
         const conditions = []

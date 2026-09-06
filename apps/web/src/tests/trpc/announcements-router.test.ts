@@ -206,9 +206,7 @@ const createDbMock = () => {
             viewedAt: value.viewedAt ?? null,
             dismissedAt: value.dismissedAt ?? null
           })
-        }
-
-        if (tableName === 'announcements') {
+        } else if (tableName === 'announcements') {
           announcementsRows.push(value)
         }
 
@@ -227,11 +225,11 @@ const createDbMock = () => {
       typeof (updateWhere as any).__pendingSet === 'object' &&
       (updateWhere as any).__pendingSet
     ) {
-      const setData = (updateWhere as any).__pendingSet as Record<string, unknown>
-      if (typeof setData.viewed === 'boolean') first.viewed = setData.viewed
-      if (typeof setData.dismissed === 'boolean') first.dismissed = setData.dismissed
-      if (setData.viewedAt instanceof Date) first.viewedAt = setData.viewedAt
-      if (setData.dismissedAt instanceof Date) first.dismissedAt = setData.dismissedAt
+      const pendingData = (updateWhere as any).__pendingSet as Record<string, unknown>
+      if (typeof pendingData.viewed === 'boolean') first.viewed = pendingData.viewed
+      if (typeof pendingData.dismissed === 'boolean') first.dismissed = pendingData.dismissed
+      if (pendingData.viewedAt instanceof Date) first.viewedAt = pendingData.viewedAt
+      if (pendingData.dismissedAt instanceof Date) first.dismissedAt = pendingData.dismissedAt
     }
 
     return

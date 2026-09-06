@@ -75,7 +75,7 @@ export const BlogService = {
         })
       )
 
-      return posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+      return posts.toSorted((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     } catch (error) {
       if (is_enoent(error)) return []
       logger.error('Error reading posts for locale', error, { locale })
@@ -199,14 +199,14 @@ export const BlogService = {
     const allPosts = await this.getAllPosts()
     const groupedPosts: Record<string, BlogPostMetadata[]> = {}
 
-    allPosts.forEach((post) => {
+    for (const post of allPosts) {
       const slug = post.slug
       const group = groupedPosts[slug] ?? []
-      if (!groupedPosts[slug]) {
+      if (!Object.hasOwn(groupedPosts, slug)) {
         groupedPosts[slug] = group
       }
       group.push(post)
-    })
+    }
 
     return groupedPosts
   },

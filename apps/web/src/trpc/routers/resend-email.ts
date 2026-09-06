@@ -7,6 +7,49 @@ import { resendService } from '@/lib/resend-service'
 import { AuditLogger, type AuditAction } from '@/lib/audit-logger'
 import { logger } from '@/lib/logger'
 
+const newAudienceSchema = z.object({
+  name: z.string().min(1, 'Audience name is required')
+})
+
+const audienceIdSchema = z.object({
+  audienceId: z.string()
+})
+
+const syncUsersToAudienceSchema = z.object({
+  audienceId: z.string(),
+  includeUnsubscribed: z.boolean().default(false)
+})
+
+const audienceContactSchema = z.object({
+  audienceId: z.string(),
+  contactId: z.string()
+})
+
+const newBroadcastSchema = z.object({
+  name: z.string().min(1, 'Broadcast name is required'),
+  audienceId: z.string().min(1, 'Audience is required'),
+  from: z.string().email('Valid from email is required'),
+  subject: z.string().min(1, 'Subject is required'),
+  html: z.string().optional(),
+  text: z.string().optional(),
+  replyTo: z.string().email().optional()
+})
+
+const broadcastIdSchema = z.object({
+  broadcastId: z.string()
+})
+
+const scheduleBroadcastSchema = z.object({
+  broadcastId: z.string(),
+  scheduledAt: z.string().min(1, 'Schedule time is required')
+})
+
+const updateBroadcastSchema = z.object({
+  broadcastId: z.string(),
+  html: z.string().optional(),
+  subject: z.string().optional()
+})
+
 export const resendEmailRouter = createTRPCRouter({
   /**
    * Audience Management
@@ -27,122 +70,99 @@ export const resendEmailRouter = createTRPCRouter({
   }),
 
   // Create new audience
-  createAudience: adminProcedure
-    .input(
-      z.object({
-        name: z.string().min(1, 'Audience name is required')
-      })
-    )
-    .mutation(async ({ ctx, input }) => {
-      try {
-        const auditLogger = new AuditLogger(ctx.db)
+  createAudience: adminProcedure.input(newAudienceSchema).mutation(async ({ ctx, input }) => {
+    try {
+      const auditLogger = new AuditLogger(ctx.db)
 
-        const audience = await resendService.createAudience(input.name)
+      const audience = await resendService.createAudience(input.name)
 
-        if (!audience) {
-          throw new TRPCError({
-            code: 'INTERNAL_SERVER_ERROR',
-            message: 'Failed to create audience'
-          })
-        }
-
-        // Log audit trail
-        const action: AuditAction = 'settings_update'
-        await auditLogger.logSystemAction(
-          ctx.session.user.id,
-          action,
-          'email_audience',
-          audience.id,
-          {
-            action: 'audience_created',
-            name: input.name
-          }
-        )
-
-        return { success: true, audience }
-      } catch (error) {
-        logger.error('Error creating Resend audience', error)
+      if (!audience) {
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to create audience'
         })
       }
-    }),
+
+      // Log audit trail
+      const action: AuditAction = 'settings_update'
+      await auditLogger.logSystemAction(
+        ctx.session.user.id,
+        action,
+        'email_audience',
+        audience.id,
+        {
+          action: 'audience_created',
+          name: input.name
+        }
+      )
+
+      return { success: true, audience }
+    } catch (error) {
+      logger.error('Error creating Resend audience', error)
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Failed to create audience'
+      })
+    }
+  }),
 
   // Delete audience
-  deleteAudience: adminProcedure
-    .input(
-      z.object({
-        audienceId: z.string()
-      })
-    )
-    .mutation(async ({ ctx, input }) => {
-      try {
-        const auditLogger = new AuditLogger(ctx.db)
+  deleteAudience: adminProcedure.input(audienceIdSchema).mutation(async ({ ctx, input }) => {
+    try {
+      const auditLogger = new AuditLogger(ctx.db)
 
-        const success = await resendService.deleteAudience(input.audienceId)
+      const success = await resendService.deleteAudience(input.audienceId)
 
-        if (!success) {
-          throw new TRPCError({
-            code: 'INTERNAL_SERVER_ERROR',
-            message: 'Failed to delete audience'
-          })
-        }
-
-        // Log audit trail
-        const action: AuditAction = 'settings_update'
-        await auditLogger.logSystemAction(
-          ctx.session.user.id,
-          action,
-          'email_audience',
-          input.audienceId,
-          {
-            action: 'audience_deleted'
-          }
-        )
-
-        return { success: true }
-      } catch (error) {
-        logger.error('Error deleting Resend audience', error)
+      if (!success) {
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to delete audience'
         })
       }
-    }),
+
+      // Log audit trail
+      const action: AuditAction = 'settings_update'
+      await auditLogger.logSystemAction(
+        ctx.session.user.id,
+        action,
+        'email_audience',
+        input.audienceId,
+        {
+          action: 'audience_deleted'
+        }
+      )
+
+      return { success: true }
+    } catch (error) {
+      logger.error('Error deleting Resend audience', error)
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Failed to delete audience'
+      })
+    }
+  }),
 
   /**
    * Contact Management
    */
 
   // Get contacts in audience
-  getAudienceContacts: adminProcedure
-    .input(
-      z.object({
-        audienceId: z.string()
+  getAudienceContacts: adminProcedure.input(audienceIdSchema).query(async ({ input }) => {
+    try {
+      const contacts = await resendService.listContacts(input.audienceId)
+      return { contacts }
+    } catch (error) {
+      logger.error('Error fetching audience contacts', error)
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Failed to fetch contacts'
       })
-    )
-    .query(async ({ input }) => {
-      try {
-        const contacts = await resendService.listContacts(input.audienceId)
-        return { contacts }
-      } catch (error) {
-        logger.error('Error fetching audience contacts', error)
-        throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: 'Failed to fetch contacts'
-        })
-      }
-    }),
+    }
+  }),
 
   // Sync all users to Resend audience
   syncUsersToAudience: adminProcedure
-    .input(
-      z.object({
-        audienceId: z.string(),
-        includeUnsubscribed: z.boolean().default(false)
-      })
-    )
+    .input(syncUsersToAudienceSchema)
     .mutation(async ({ ctx, input }) => {
       try {
         const auditLogger = new AuditLogger(ctx.db)
@@ -201,12 +221,7 @@ export const resendEmailRouter = createTRPCRouter({
 
   // Add contact to audience
   addContactToAudience: adminProcedure
-    .input(
-      z.object({
-        audienceId: z.string(),
-        contactId: z.string()
-      })
-    )
+    .input(audienceContactSchema)
     .mutation(async ({ ctx, input }) => {
       try {
         const auditLogger = new AuditLogger(ctx.db)
@@ -247,12 +262,7 @@ export const resendEmailRouter = createTRPCRouter({
 
   // Remove contact from audience
   removeContactFromAudience: adminProcedure
-    .input(
-      z.object({
-        audienceId: z.string(),
-        contactId: z.string()
-      })
-    )
+    .input(audienceContactSchema)
     .mutation(async ({ ctx, input }) => {
       try {
         const auditLogger = new AuditLogger(ctx.db)
@@ -307,112 +317,89 @@ export const resendEmailRouter = createTRPCRouter({
   }),
 
   // Create broadcast
-  createBroadcast: adminProcedure
-    .input(
-      z.object({
-        name: z.string().min(1, 'Broadcast name is required'),
-        audienceId: z.string().min(1, 'Audience is required'),
-        from: z.string().email('Valid from email is required'),
-        subject: z.string().min(1, 'Subject is required'),
-        html: z.string().optional(),
-        text: z.string().optional(),
-        replyTo: z.string().email().optional()
+  createBroadcast: adminProcedure.input(newBroadcastSchema).mutation(async ({ ctx, input }) => {
+    try {
+      const auditLogger = new AuditLogger(ctx.db)
+
+      const broadcast = await resendService.createBroadcast({
+        name: input.name,
+        audience_id: input.audienceId,
+        from: input.from,
+        subject: input.subject,
+        html: input.html,
+        text: input.text,
+        reply_to: input.replyTo
       })
-    )
-    .mutation(async ({ ctx, input }) => {
-      try {
-        const auditLogger = new AuditLogger(ctx.db)
 
-        const broadcast = await resendService.createBroadcast({
-          name: input.name,
-          audience_id: input.audienceId,
-          from: input.from,
-          subject: input.subject,
-          html: input.html,
-          text: input.text,
-          reply_to: input.replyTo
-        })
-
-        if (!broadcast) {
-          throw new TRPCError({
-            code: 'INTERNAL_SERVER_ERROR',
-            message: 'Failed to create broadcast'
-          })
-        }
-
-        // Log audit trail
-        await auditLogger.logSystemAction(
-          ctx.session.user.id,
-          'settings_update',
-          'email_broadcast',
-          broadcast.id,
-          {
-            action: 'broadcast_created',
-            name: input.name,
-            subject: input.subject,
-            audienceId: input.audienceId
-          }
-        )
-
-        return { success: true, broadcast }
-      } catch (error) {
-        logger.error('Error creating Resend broadcast', error)
+      if (!broadcast) {
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to create broadcast'
         })
       }
-    }),
+
+      // Log audit trail
+      await auditLogger.logSystemAction(
+        ctx.session.user.id,
+        'settings_update',
+        'email_broadcast',
+        broadcast.id,
+        {
+          action: 'broadcast_created',
+          name: input.name,
+          subject: input.subject,
+          audienceId: input.audienceId
+        }
+      )
+
+      return { success: true, broadcast }
+    } catch (error) {
+      logger.error('Error creating Resend broadcast', error)
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Failed to create broadcast'
+      })
+    }
+  }),
 
   // Send broadcast immediately
-  sendBroadcast: adminProcedure
-    .input(
-      z.object({
-        broadcastId: z.string()
-      })
-    )
-    .mutation(async ({ ctx, input }) => {
-      try {
-        const auditLogger = new AuditLogger(ctx.db)
+  sendBroadcast: adminProcedure.input(broadcastIdSchema).mutation(async ({ ctx, input }) => {
+    try {
+      const auditLogger = new AuditLogger(ctx.db)
 
-        const success = await resendService.sendBroadcast(input.broadcastId)
+      const success = await resendService.sendBroadcast(input.broadcastId)
 
-        if (!success) {
-          throw new TRPCError({
-            code: 'INTERNAL_SERVER_ERROR',
-            message: 'Failed to send broadcast'
-          })
-        }
-
-        // Log audit trail
-        await auditLogger.logSystemAction(
-          ctx.session.user.id,
-          'settings_update',
-          'email_broadcast',
-          input.broadcastId,
-          {
-            action: 'broadcast_sent'
-          }
-        )
-
-        return { success: true }
-      } catch (error) {
-        logger.error('Error sending Resend broadcast', error)
+      if (!success) {
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to send broadcast'
         })
       }
-    }),
+
+      // Log audit trail
+      await auditLogger.logSystemAction(
+        ctx.session.user.id,
+        'settings_update',
+        'email_broadcast',
+        input.broadcastId,
+        {
+          action: 'broadcast_sent'
+        }
+      )
+
+      return { success: true }
+    } catch (error) {
+      logger.error('Error sending Resend broadcast', error)
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Failed to send broadcast'
+      })
+    }
+  }),
 
   // Schedule broadcast
   scheduleBroadcast: adminProcedure
-    .input(
-      z.object({
-        broadcastId: z.string(),
-        scheduledAt: z.string().min(1, 'Schedule time is required')
-      })
-    )
+    .input(scheduleBroadcastSchema)
     .mutation(async ({ ctx, input }) => {
       try {
         const auditLogger = new AuditLogger(ctx.db)
@@ -449,164 +436,138 @@ export const resendEmailRouter = createTRPCRouter({
     }),
 
   // Cancel broadcast
-  cancelBroadcast: adminProcedure
-    .input(
-      z.object({
-        broadcastId: z.string()
-      })
-    )
-    .mutation(async ({ ctx, input }) => {
-      try {
-        const auditLogger = new AuditLogger(ctx.db)
+  cancelBroadcast: adminProcedure.input(broadcastIdSchema).mutation(async ({ ctx, input }) => {
+    try {
+      const auditLogger = new AuditLogger(ctx.db)
 
-        const success = await resendService.cancelBroadcast(input.broadcastId)
+      const success = await resendService.cancelBroadcast(input.broadcastId)
 
-        if (!success) {
-          throw new TRPCError({
-            code: 'INTERNAL_SERVER_ERROR',
-            message: 'Failed to cancel broadcast'
-          })
-        }
-
-        // Log audit trail
-        await auditLogger.logSystemAction(
-          ctx.session.user.id,
-          'settings_update',
-          'email_broadcast',
-          input.broadcastId,
-          {
-            action: 'broadcast_cancelled'
-          }
-        )
-
-        return { success: true }
-      } catch (error) {
-        logger.error('Error cancelling Resend broadcast', error)
+      if (!success) {
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to cancel broadcast'
         })
       }
-    }),
+
+      // Log audit trail
+      await auditLogger.logSystemAction(
+        ctx.session.user.id,
+        'settings_update',
+        'email_broadcast',
+        input.broadcastId,
+        {
+          action: 'broadcast_cancelled'
+        }
+      )
+
+      return { success: true }
+    } catch (error) {
+      logger.error('Error cancelling Resend broadcast', error)
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Failed to cancel broadcast'
+      })
+    }
+  }),
 
   // Get single broadcast
-  getBroadcast: adminProcedure
-    .input(
-      z.object({
-        broadcastId: z.string()
-      })
-    )
-    .query(async ({ input }) => {
-      try {
-        const broadcast = await resendService.getBroadcast(input.broadcastId)
+  getBroadcast: adminProcedure.input(broadcastIdSchema).query(async ({ input }) => {
+    try {
+      const broadcast = await resendService.getBroadcast(input.broadcastId)
 
-        if (!broadcast) {
-          throw new TRPCError({
-            code: 'NOT_FOUND',
-            message: 'Broadcast not found'
-          })
-        }
-
-        return { broadcast }
-      } catch (error) {
-        logger.error('Error fetching Resend broadcast', error)
+      if (!broadcast) {
         throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: 'Failed to fetch broadcast'
+          code: 'NOT_FOUND',
+          message: 'Broadcast not found'
         })
       }
-    }),
+
+      return { broadcast }
+    } catch (error) {
+      logger.error('Error fetching Resend broadcast', error)
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Failed to fetch broadcast'
+      })
+    }
+  }),
 
   // Update broadcast
-  updateBroadcast: adminProcedure
-    .input(
-      z.object({
-        broadcastId: z.string(),
-        html: z.string().optional(),
-        subject: z.string().optional()
+  updateBroadcast: adminProcedure.input(updateBroadcastSchema).mutation(async ({ ctx, input }) => {
+    try {
+      const auditLogger = new AuditLogger(ctx.db)
+
+      const broadcast = await resendService.updateBroadcast(input.broadcastId, {
+        html: input.html,
+        subject: input.subject
       })
-    )
-    .mutation(async ({ ctx, input }) => {
-      try {
-        const auditLogger = new AuditLogger(ctx.db)
 
-        const broadcast = await resendService.updateBroadcast(input.broadcastId, {
-          html: input.html,
-          subject: input.subject
-        })
-
-        if (!broadcast) {
-          throw new TRPCError({
-            code: 'INTERNAL_SERVER_ERROR',
-            message: 'Failed to update broadcast'
-          })
-        }
-
-        // Log audit trail
-        await auditLogger.logSystemAction(
-          ctx.session.user.id,
-          'settings_update',
-          'email_broadcast',
-          input.broadcastId,
-          {
-            action: 'broadcast_updated',
-            updates: {
-              html: !!input.html,
-              subject: !!input.subject
-            }
-          }
-        )
-
-        return { success: true, broadcast }
-      } catch (error) {
-        logger.error('Error updating Resend broadcast', error)
+      if (!broadcast) {
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to update broadcast'
         })
       }
-    }),
+
+      // Log audit trail
+      await auditLogger.logSystemAction(
+        ctx.session.user.id,
+        'settings_update',
+        'email_broadcast',
+        input.broadcastId,
+        {
+          action: 'broadcast_updated',
+          updates: {
+            html: !!input.html,
+            subject: !!input.subject
+          }
+        }
+      )
+
+      return { success: true, broadcast }
+    } catch (error) {
+      logger.error('Error updating Resend broadcast', error)
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Failed to update broadcast'
+      })
+    }
+  }),
 
   // Delete broadcast
-  deleteBroadcast: adminProcedure
-    .input(
-      z.object({
-        broadcastId: z.string()
-      })
-    )
-    .mutation(async ({ ctx, input }) => {
-      try {
-        const auditLogger = new AuditLogger(ctx.db)
+  deleteBroadcast: adminProcedure.input(broadcastIdSchema).mutation(async ({ ctx, input }) => {
+    try {
+      const auditLogger = new AuditLogger(ctx.db)
 
-        const success = await resendService.deleteBroadcast(input.broadcastId)
+      const success = await resendService.deleteBroadcast(input.broadcastId)
 
-        if (!success) {
-          throw new TRPCError({
-            code: 'INTERNAL_SERVER_ERROR',
-            message: 'Failed to delete broadcast'
-          })
-        }
-
-        // Log audit trail
-        await auditLogger.logSystemAction(
-          ctx.session.user.id,
-          'settings_update',
-          'email_broadcast',
-          input.broadcastId,
-          {
-            action: 'broadcast_deleted'
-          }
-        )
-
-        return { success: true }
-      } catch (error) {
-        logger.error('Error deleting Resend broadcast', error)
+      if (!success) {
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to delete broadcast'
         })
       }
-    }),
+
+      // Log audit trail
+      await auditLogger.logSystemAction(
+        ctx.session.user.id,
+        'settings_update',
+        'email_broadcast',
+        input.broadcastId,
+        {
+          action: 'broadcast_deleted'
+        }
+      )
+
+      return { success: true }
+    } catch (error) {
+      logger.error('Error deleting Resend broadcast', error)
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Failed to delete broadcast'
+      })
+    }
+  }),
 
   /**
    * Analytics & Stats

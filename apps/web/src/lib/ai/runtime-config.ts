@@ -121,7 +121,7 @@ export const normalize_ai_endpoint = (rawEndpoint: string) => {
   endpoint.search = ''
   endpoint.hash = ''
 
-  return endpoint.toString().replace(/\/$/, '')
+  return endpoint.href.replace(/\/$/, '')
 }
 
 const normalize_environment_endpoint = (rawEndpoint: string | undefined) => {
@@ -132,7 +132,7 @@ const normalize_environment_endpoint = (rawEndpoint: string | undefined) => {
     endpoint.pathname = '/v1'
   }
 
-  return normalize_ai_endpoint(endpoint.toString())
+  return normalize_ai_endpoint(endpoint.href)
 }
 
 const get_environment_fallback = (): AiRuntimeConfig | null => {
@@ -251,7 +251,6 @@ export const get_ai_models = async (input: {
 
   try {
     const response = await fetch(`${endpoint}/models`, {
-      method: 'GET',
       cache: 'no-store',
       headers: {
         accept: 'application/json',

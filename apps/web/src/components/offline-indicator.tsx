@@ -10,7 +10,7 @@ export default function OfflineIndicator() {
   const [isOnline, setIsOnline] = useState(() => globalThis.navigator?.onLine ?? true)
   const [showIndicator, setShowIndicator] = useState(false)
   const t = useTranslations('component.offline-indicator')
-  const hide_timeout_ref = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const hideTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
     const handleOnline = () => {
@@ -18,10 +18,10 @@ export default function OfflineIndicator() {
       setShowIndicator(true)
       toast.success(t('toast.restored'))
 
-      if (hide_timeout_ref.current) {
-        clearTimeout(hide_timeout_ref.current)
+      if (hideTimeoutRef.current) {
+        clearTimeout(hideTimeoutRef.current)
       }
-      hide_timeout_ref.current = setTimeout(() => setShowIndicator(false), 3000)
+      hideTimeoutRef.current = setTimeout(() => setShowIndicator(false), 3000)
     }
 
     const handleOffline = () => {
@@ -30,16 +30,16 @@ export default function OfflineIndicator() {
       toast.error(t('toast.offline'))
     }
 
-    globalThis.addEventListener('online', handleOnline)
-    globalThis.addEventListener('offline', handleOffline)
+    addEventListener('online', handleOnline)
+    addEventListener('offline', handleOffline)
 
     return () => {
-      globalThis.removeEventListener('online', handleOnline)
-      globalThis.removeEventListener('offline', handleOffline)
+      removeEventListener('online', handleOnline)
+      removeEventListener('offline', handleOffline)
 
-      if (hide_timeout_ref.current) {
-        clearTimeout(hide_timeout_ref.current)
-        hide_timeout_ref.current = null
+      if (hideTimeoutRef.current) {
+        clearTimeout(hideTimeoutRef.current)
+        hideTimeoutRef.current = null
       }
     }
   }, [t])
@@ -59,7 +59,7 @@ export default function OfflineIndicator() {
         >
           {isOnline ? <Wifi className='size-4' /> : <WifiOff className='size-4' />}
           <span className='text-sm font-medium'>
-            {isOnline ? t('status.online') : t('status.offline')}
+            {t(isOnline ? 'status.online' : 'status.offline')}
           </span>
         </motion.div>
       )}

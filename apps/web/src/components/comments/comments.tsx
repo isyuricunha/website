@@ -17,18 +17,18 @@ type CommentsProps = {
 
 const Comments = (props: CommentsProps) => {
   const { slug } = props
-  const mutationCount = useRef(0)
+  const mutationCountRef = useRef(0)
   const [sort, setSort] = useState<GetInfiniteCommentsInput['sort']>('newest')
 
   const increment = useCallback(() => {
-    mutationCount.current += 1
+    mutationCountRef.current += 1
   }, [])
 
   const decrement = useCallback(() => {
-    mutationCount.current -= 1
+    mutationCountRef.current -= 1
   }, [])
 
-  const getCount = useCallback(() => mutationCount.current, [])
+  const getCount = useCallback(() => mutationCountRef.current, [])
 
   return (
     <RatesProvider value={{ increment, decrement, getCount }}>

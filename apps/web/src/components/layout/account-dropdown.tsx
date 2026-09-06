@@ -32,8 +32,8 @@ const AccountDropdown = () => {
 
   const [mounted, setMounted] = useState(false)
   useEffect(() => {
-    const id = globalThis.requestAnimationFrame(() => setMounted(true))
-    return () => globalThis.cancelAnimationFrame(id)
+    const id = requestAnimationFrame(() => setMounted(true))
+    return () => cancelAnimationFrame(id)
   }, [])
 
   if (!mounted || isPending) {

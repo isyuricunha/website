@@ -83,7 +83,7 @@ describe('/api/newsletter/unsubscribe', () => {
 
     vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
     vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
-    vi.mocked(resendService.getMainAudienceId).mockResolvedValue(null as never)
+    vi.mocked(resendService.getMainAudienceId).mockResolvedValue(null)
 
     const { POST } = await import('@/app/api/newsletter/unsubscribe/route')
 
@@ -104,9 +104,9 @@ describe('/api/newsletter/unsubscribe', () => {
 
     vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
     vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
-    vi.mocked(resendService.getMainAudienceId).mockResolvedValue('aud-1' as never)
-    vi.mocked(resendService.findContactByEmail).mockResolvedValue({ id: 'c-1' } as never)
-    vi.mocked(resendService.updateContact).mockResolvedValue({ id: 'c-1' } as never)
+    vi.mocked(resendService.getMainAudienceId).mockResolvedValue('aud-1')
+    vi.mocked(resendService.findContactByEmail).mockResolvedValue({ id: 'c-1' })
+    vi.mocked(resendService.updateContact).mockResolvedValue({ id: 'c-1' })
 
     const { POST } = await import('@/app/api/newsletter/unsubscribe/route')
 

@@ -3,7 +3,7 @@
 import { useTranslations } from '@isyuricunha/i18n/client'
 import { Button, toast } from '@isyuricunha/ui'
 import { SendIcon } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useSyncExternalStore, useState } from 'react'
 
 import { useCommentsContext } from '@/contexts/comments'
 import { useSession } from '@/lib/auth-client'
@@ -12,10 +12,21 @@ import { api } from '@/trpc/react'
 import CommentEditor from './comment-editor'
 import UnauthorizedOverlay from './unauthorized-overlay'
 
+function noopUnsubscribe() {
+  return
+}
+const subscribeToMount = () => noopUnsubscribe
+const getClientMountedSnapshot = () => true
+const getServerMountedSnapshot = () => false
+
 const CommentPost = () => {
   const { slug } = useCommentsContext()
   const [content, setContent] = useState('')
-  const [isMounted, setIsMounted] = useState(false)
+  const isMounted = useSyncExternalStore(
+    subscribeToMount,
+    getClientMountedSnapshot,
+    getServerMountedSnapshot
+  )
   const { data: session, isPending } = useSession()
   const utils = api.useUtils()
   const t = useTranslations()
@@ -46,12 +57,6 @@ const CommentPost = () => {
       })
     })
   }
-
-  useEffect(() => {
-    setIsMounted(true)
-
-    return () => setIsMounted(false)
-  }, [])
 
   if (isPending || !isMounted) return null
 

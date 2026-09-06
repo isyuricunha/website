@@ -115,59 +115,63 @@ export default function NotificationsPage() {
         <Card>
           <CardContent className='py-6'>{t('loading')}</CardContent>
         </Card>
-      ) : notifications.length === 0 ? (
-        <Card>
-          <CardContent className='py-6'>
-            <p className='text-muted-foreground text-sm'>{t('empty')}</p>
-          </CardContent>
-        </Card>
       ) : (
-        <div className='space-y-3'>
-          {notifications.map((n) => (
-            <Card key={n.id} className={n.read ? undefined : 'border-[var(--accent-border)]'}>
-              <CardHeader className='pb-3'>
-                <div className='flex items-start justify-between gap-3'>
-                  <div className='min-w-0 space-y-1'>
-                    <CardTitle className='truncate text-base'>{n.title}</CardTitle>
-                    <CardDescription className='text-xs'>
-                      {formatDateTime(n.createdAt)}
-                    </CardDescription>
-                  </div>
-                  <div className='flex items-center gap-2'>
-                    {n.read ? null : (
-                      <Badge variant='secondary' className='text-xs'>
-                        {t('unread')}
-                      </Badge>
-                    )}
-                    {n.read ? null : (
-                      <Button
-                        size='sm'
-                        variant='outline'
-                        onClick={() => markReadMutation.mutate({ notificationId: n.id })}
-                        disabled={markReadMutation.isPending}
-                      >
-                        <Check className='size-4' />
-                      </Button>
-                    )}
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent className='pt-0'>
-                <p className='text-sm'>{n.message}</p>
-                {n.actionUrl ? (
-                  <a
-                    href={n.actionUrl}
-                    className='text-accent-earth-text mt-2 inline-block text-sm underline'
-                    target='_blank'
-                    rel='noreferrer'
-                  >
-                    {n.actionUrl}
-                  </a>
-                ) : null}
+        <>
+          {notifications.length === 0 ? (
+            <Card>
+              <CardContent className='py-6'>
+                <p className='text-muted-foreground text-sm'>{t('empty')}</p>
               </CardContent>
             </Card>
-          ))}
-        </div>
+          ) : (
+            <div className='space-y-3'>
+              {notifications.map((n) => (
+                <Card key={n.id} className={n.read ? undefined : 'border-[var(--accent-border)]'}>
+                  <CardHeader className='pb-3'>
+                    <div className='flex items-start justify-between gap-3'>
+                      <div className='min-w-0 space-y-1'>
+                        <CardTitle className='truncate text-base'>{n.title}</CardTitle>
+                        <CardDescription className='text-xs'>
+                          {formatDateTime(n.createdAt)}
+                        </CardDescription>
+                      </div>
+                      <div className='flex items-center gap-2'>
+                        {n.read ? null : (
+                          <Badge variant='secondary' className='text-xs'>
+                            {t('unread')}
+                          </Badge>
+                        )}
+                        {n.read ? null : (
+                          <Button
+                            size='sm'
+                            variant='outline'
+                            onClick={() => markReadMutation.mutate({ notificationId: n.id })}
+                            disabled={markReadMutation.isPending}
+                          >
+                            <Check className='size-4' />
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent className='pt-0'>
+                    <p className='text-sm'>{n.message}</p>
+                    {n.actionUrl ? (
+                      <a
+                        href={n.actionUrl}
+                        className='text-accent-earth-text mt-2 inline-block text-sm underline'
+                        target='_blank'
+                        rel='noreferrer'
+                      >
+                        {n.actionUrl}
+                      </a>
+                    ) : null}
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
+        </>
       )}
     </div>
   )

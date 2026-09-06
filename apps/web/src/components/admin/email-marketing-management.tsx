@@ -190,7 +190,7 @@ export default function EmailMarketingManagement() {
   }, [analytics, loadingStage])
 
   // Mutations - Using Resend native APIs
-  const createTemplateMutation = api.emailManagement.createEmailTemplate.useMutation({
+  const templateCreateMutation = api.emailManagement.createEmailTemplate.useMutation({
     onSuccess: () => {
       toast.success(t('messages.template-created'))
       setIsCreateTemplateDialogOpen(false)
@@ -201,7 +201,7 @@ export default function EmailMarketingManagement() {
     }
   })
 
-  const createAudienceMutation = api.resendEmail.createAudience.useMutation({
+  const audienceCreateMutation = api.resendEmail.createAudience.useMutation({
     onSuccess: () => {
       toast.success(t('messages.audience-created'))
       setIsCreateAudienceDialogOpen(false)
@@ -212,7 +212,7 @@ export default function EmailMarketingManagement() {
     }
   })
 
-  const createBroadcastMutation = api.resendEmail.createBroadcast.useMutation({
+  const broadcastCreateMutation = api.resendEmail.createBroadcast.useMutation({
     onSuccess: () => {
       toast.success(t('messages.broadcast-created'))
       setIsCreateCampaignDialogOpen(false)
@@ -254,7 +254,7 @@ export default function EmailMarketingManagement() {
     }
   })
 
-  const deleteBroadcastMutation = api.resendEmail.deleteBroadcast.useMutation({
+  const broadcastDeleteMutation = api.resendEmail.deleteBroadcast.useMutation({
     onSuccess: () => {
       toast.success(t('messages.broadcast-deleted'))
       refetchBroadcasts()
@@ -275,7 +275,7 @@ export default function EmailMarketingManagement() {
     const html = formData.get('html') as string
     // const text = formData.get('text') as string // Unused variable
 
-    createTemplateMutation.mutate({
+    templateCreateMutation.mutate({
       name,
       subject,
       content: html,
@@ -287,7 +287,7 @@ export default function EmailMarketingManagement() {
   const handleCreateAudience = async (formData: FormData) => {
     const name = formData.get('name') as string
 
-    createAudienceMutation.mutate({ name })
+    audienceCreateMutation.mutate({ name })
   }
 
   const handleCreateBroadcast = async (formData: FormData) => {
@@ -300,7 +300,7 @@ export default function EmailMarketingManagement() {
     // const scheduleOption = formData.get('scheduleOption') as string // Unused variable
     // const scheduledAt = formData.get('scheduledAt') as string // Unused variable
 
-    createBroadcastMutation.mutate({
+    broadcastCreateMutation.mutate({
       audienceId,
       name,
       subject,
@@ -335,7 +335,7 @@ export default function EmailMarketingManagement() {
       description: t('confirm.delete-broadcast'),
       variant: 'destructive',
       action: () => {
-        deleteBroadcastMutation.mutate({ broadcastId })
+        broadcastDeleteMutation.mutate({ broadcastId })
         setConfirmDialog((prev) => ({ ...prev, open: false }))
       }
     })
@@ -374,11 +374,11 @@ export default function EmailMarketingManagement() {
   const renderLoadingIndicator = (_stage: string, isActive: boolean, isComplete: boolean) => {
     if (isComplete) {
       return <CheckCircle className='text-status-success h-5 w-5' />
-    } else if (isActive) {
-      return <Loader2 className='text-status-agent h-5 w-5 animate-spin' />
-    } else {
-      return <Clock className='text-text-secondary h-5 w-5' />
     }
+    if (isActive) {
+      return <Loader2 className='text-status-agent h-5 w-5 animate-spin' />
+    }
+    return <Clock className='text-text-secondary h-5 w-5' />
   }
 
   return (
@@ -1227,7 +1227,7 @@ export default function EmailMarketingManagement() {
         description={confirmDialog.description}
         variant={confirmDialog.variant}
         onConfirm={confirmDialog.action}
-        loading={deleteBroadcastMutation.isPending}
+        loading={broadcastDeleteMutation.isPending}
       />
     </div>
   )

@@ -58,7 +58,7 @@ const MusicTimeline = () => {
       earlier: []
     }
 
-    recentTracks.forEach((track: RecentTrack) => {
+    for (const track of recentTracks) {
       const playedAt = new Date(track.playedAt)
       const diffInHours = (now.getTime() - playedAt.getTime()) / (1000 * 60 * 60)
       const diffInDays = diffInHours / 24
@@ -74,7 +74,7 @@ const MusicTimeline = () => {
       } else {
         groups['earlier'].push(track)
       }
-    })
+    }
 
     return Object.entries(groups)
       .filter(([, tracks]) => tracks.length > 0)
@@ -105,7 +105,7 @@ const MusicTimeline = () => {
         </CardHeader>
         <CardContent>
           <div className='space-y-4'>
-            {Array.from({ length: 3 }).map((_, i) => (
+            {Array.from({ length: 3 }, (_, i) => (
               <div key={i} className='space-y-3'>
                 <div className='bg-bg-hover h-4 w-32 animate-pulse rounded' />
                 <div className='ml-4 space-y-3'>

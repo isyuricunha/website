@@ -12,3 +12,5 @@ export function GET() {
     }
   )
 }
+
+export type MatrixServerRouteHandler = typeof GET

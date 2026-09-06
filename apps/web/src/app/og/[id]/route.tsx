@@ -36,7 +36,7 @@ export const GET = async (req: NextRequest, props: OGRouteProps) => {
     const date = searchParams.get('date')
     const summary = searchParams.get('summary')
 
-    if ((type === 'post' || type === 'snippet') && title && date) {
+    if (title && date && (type === 'post' || type === 'snippet')) {
       // Generate content specific OG image
       return new ImageResponse(
         <div

@@ -23,6 +23,8 @@ import { generateWebsiteJsonLd } from '@/lib/seo'
 
 import Providers from '../providers'
 
+export type { MatrixServerRouteHandler } from '../.well-known/matrix/server/route'
+
 type LayoutProps = {
   children: React.ReactNode
   params: Promise<{
@@ -166,7 +168,7 @@ const Layout = async (props: LayoutProps) => {
         />
       </head>
       <body className='relative flex min-h-screen flex-col'>
-        {env.NODE_ENV === 'development' && react_scan_api_key ? (
+        {react_scan_api_key && env.NODE_ENV === 'development' ? (
           <Script
             id='react-scan-auto'
             src='https://unpkg.com/react-scan/dist/auto.global.js'

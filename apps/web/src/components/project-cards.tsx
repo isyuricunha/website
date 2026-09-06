@@ -66,6 +66,12 @@ const statusConfig = {
   }
 } as const
 
+const compareStrings = (a: string, b: string) => {
+  if (a < b) return -1
+  if (a > b) return 1
+  return 0
+}
+
 const ProjectCards = (props: ProjectCardsProps) => {
   const { projects } = props
   const t = useTranslations()
@@ -83,16 +89,16 @@ const ProjectCards = (props: ProjectCardsProps) => {
     const statusSet = new Set<string>()
     const techStackSet = new Set<string>()
 
-    projects.forEach((project) => {
+    for (const project of projects) {
       if (project.category) categorySet.add(project.category)
       if (project.status) statusSet.add(project.status)
-      project.techstack.forEach((tech) => techStackSet.add(tech))
-    })
+      for (const tech of project.techstack) techStackSet.add(tech)
+    }
 
     return {
-      categories: Array.from(categorySet).toSorted(),
-      statuses: Array.from(statusSet).toSorted(),
-      techStacks: Array.from(techStackSet).toSorted()
+      categories: Array.from(categorySet).toSorted(compareStrings),
+      statuses: Array.from(statusSet).toSorted(compareStrings),
+      techStacks: Array.from(techStackSet).toSorted(compareStrings)
     }
   }, [projects])
 
@@ -200,7 +206,7 @@ const ProjectCards = (props: ProjectCardsProps) => {
               className='hover:bg-bg-hover flex items-center gap-2 rounded-md border border-[var(--border-subtle)] px-4 py-2 transition-colors'
             >
               <SlidersHorizontal className='h-4 w-4' />
-              {showFilters ? t('projects.filters.hide') : t('projects.filters.show')}
+              {t(showFilters ? 'projects.filters.hide' : 'projects.filters.show')}
             </button>
           </div>
 

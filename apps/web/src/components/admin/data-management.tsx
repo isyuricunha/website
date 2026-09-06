@@ -47,7 +47,7 @@ export default function DataManagement() {
   )
 
   // Mutations
-  const createBackupMutation = api.dataManagement.createDatabaseBackup.useMutation({
+  const backupMutation = api.dataManagement.createDatabaseBackup.useMutation({
     onSuccess: () => {
       toast.success(t('messages.backup-started'))
     },
@@ -56,7 +56,7 @@ export default function DataManagement() {
     }
   })
 
-  const createExportMutation = api.dataManagement.createDataExport.useMutation({
+  const exportMutation = api.dataManagement.createDataExport.useMutation({
     onSuccess: () => {
       toast.success(t('messages.export-started'))
     },
@@ -78,7 +78,7 @@ export default function DataManagement() {
     const type = formData.get('type') as 'full' | 'incremental' | 'differential'
     const description = formData.get('description') as string
 
-    createBackupMutation.mutate({
+    backupMutation.mutate({
       type,
       description: description || undefined
     })
@@ -99,7 +99,7 @@ export default function DataManagement() {
       .map((t) => t.trim())
       .filter(Boolean)
 
-    createExportMutation.mutate({
+    exportMutation.mutate({
       name,
       format,
       tables
@@ -181,7 +181,7 @@ export default function DataManagement() {
     const k = 1024
     const sizes = [t('file-size.bytes'), 'KB', 'MB', 'GB']
     const i = Math.floor(Math.log(bytes) / Math.log(k))
-    return Number.parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
+    return Number((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
   }
 
   const getStatusLabel = (status: string) => {
@@ -394,10 +394,10 @@ export default function DataManagement() {
                       placeholder={t('fields.backup-description-placeholder')}
                     />
                   </div>
-                  <Button type='submit' disabled={createBackupMutation.isPending}>
-                    {createBackupMutation.isPending
-                      ? t('actions.creating-backup')
-                      : t('actions.create-backup')}
+                  <Button type='submit' disabled={backupMutation.isPending}>
+                    {t(
+                      backupMutation.isPending ? 'actions.creating-backup' : 'actions.create-backup'
+                    )}
                   </Button>
                 </form>
               </CardContent>
@@ -502,10 +502,10 @@ export default function DataManagement() {
                       required
                     />
                   </div>
-                  <Button type='submit' disabled={createExportMutation.isPending}>
-                    {createExportMutation.isPending
-                      ? t('actions.creating-export')
-                      : t('actions.create-export')}
+                  <Button type='submit' disabled={exportMutation.isPending}>
+                    {t(
+                      exportMutation.isPending ? 'actions.creating-export' : 'actions.create-export'
+                    )}
                   </Button>
                 </form>
               </CardContent>
@@ -611,9 +611,11 @@ export default function DataManagement() {
                     <div className='text-text-secondary mt-1 text-xs'>{t('fields.rules-help')}</div>
                   </div>
                   <Button type='submit' disabled={runQualityCheckMutation.isPending}>
-                    {runQualityCheckMutation.isPending
-                      ? t('actions.running-check')
-                      : t('actions.run-quality-check')}
+                    {t(
+                      runQualityCheckMutation.isPending
+                        ? 'actions.running-check'
+                        : 'actions.run-quality-check'
+                    )}
                   </Button>
                 </form>
               </CardContent>

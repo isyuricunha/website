@@ -48,13 +48,16 @@ const CommentsList = () => {
 
     let cancelled = false
 
-    getSingletonHighlighterCore({
-      themes: [githubLightDefault, YU_DARK_SHIKI_THEME],
-      engine: createOnigurumaEngine(import('shiki/wasm'))
-    }).then((instance) => {
+    const loadHighlighter = async () => {
+      const instance = await getSingletonHighlighterCore({
+        themes: [githubLightDefault, YU_DARK_SHIKI_THEME],
+        engine: createOnigurumaEngine(import('shiki/wasm'))
+      })
       if (cancelled) return
       setHighlighter(instance)
-    })
+    }
+
+    void loadHighlighter()
 
     return () => {
       cancelled = true

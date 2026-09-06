@@ -54,7 +54,7 @@ export const create_presigned_r2_put_url = async (opts: PresignedPutOptions) => 
     url,
     requiredHeaders: {
       'Content-Type': opts.contentType,
-      ...(opts.cacheControl ? { 'Cache-Control': opts.cacheControl } : {})
+      ...(opts.cacheControl && { 'Cache-Control': opts.cacheControl })
     }
   }
 }

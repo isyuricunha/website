@@ -24,39 +24,37 @@ const STATIC_ASSETS = [
 // Install event - cache critical resources
 self.addEventListener('install', (event: ExtendableEvent) => {
   event.waitUntil(
-    Promise.all([
-      caches.open(STATIC_CACHE).then((cache) => {
-        return cache.addAll(STATIC_ASSETS)
-      }),
-      caches.open(DYNAMIC_CACHE).then((cache) => {
-        return cache.addAll(CRITICAL_PAGES)
-      })
-    ]).then(() => {
+    (async () => {
+      await Promise.all([
+        (async () => {
+          const cache = await caches.open(STATIC_CACHE)
+          await cache.addAll(STATIC_ASSETS)
+        })(),
+        (async () => {
+          const cache = await caches.open(DYNAMIC_CACHE)
+          await cache.addAll(CRITICAL_PAGES)
+        })()
+      ])
       self.skipWaiting()
-    })
+    })()
   )
 })
 
 // Activate event - clean up old caches
 self.addEventListener('activate', (event: ExtendableEvent) => {
   event.waitUntil(
-    caches
-      .keys()
-      .then((cacheNames) => {
-        return Promise.all(
-          cacheNames
-            .filter(
-              (cacheName) =>
-                cacheName !== STATIC_CACHE &&
-                cacheName !== DYNAMIC_CACHE &&
-                cacheName !== CACHE_NAME
-            )
-            .map((cacheName) => caches.delete(cacheName))
-        )
-      })
-      .then(() => {
-        self.clients.claim()
-      })
+    (async () => {
+      const cacheNames = await caches.keys()
+      await Promise.all(
+        cacheNames
+          .filter(
+            (cacheName) =>
+              cacheName !== STATIC_CACHE && cacheName !== DYNAMIC_CACHE && cacheName !== CACHE_NAME
+          )
+          .map((cacheName) => caches.delete(cacheName))
+      )
+      self.clients.claim()
+    })()
   )
 })
 
@@ -77,51 +75,52 @@ self.addEventListener('fetch', (event: FetchEvent) => {
   }
 
   event.respondWith(
-    caches.match(request).then((cachedResponse) => {
+    (async () => {
+      const cachedResponse = await caches.match(request)
       // Return cached version if available
       if (cachedResponse) {
         // Update cache in background for next time
-        fetch(request)
-          .then((response) => {
-            if (response.ok) {
-              const responseClone = response.clone()
-              caches.open(DYNAMIC_CACHE).then((cache) => {
-                cache.put(request, responseClone)
-              })
+        ;(async () => {
+          try {
+            const response = await fetch(request)
+            if (!response.ok) {
+              return
             }
-          })
-          .catch(() => {
+
+            const responseClone = response.clone()
+            const cache = await caches.open(DYNAMIC_CACHE)
+            await cache.put(request, responseClone)
+          } catch {
             // Network failed, but we have cache
-          })
+          }
+        })()
 
         return cachedResponse
       }
 
       // Try network first
-      return fetch(request)
-        .then((response) => {
-          // Don't cache non-successful responses
-          if (!response.ok) {
-            throw new Error('Network response was not ok')
-          }
+      try {
+        const response = await fetch(request)
+        // Don't cache non-successful responses
+        if (!response.ok) {
+          throw new Error('Network response was not ok')
+        }
 
-          const responseClone = response.clone()
+        const responseClone = response.clone()
 
-          // Cache successful responses
-          caches.open(DYNAMIC_CACHE).then((cache) => {
-            cache.put(request, responseClone)
-          })
+        // Cache successful responses
+        const cache = await caches.open(DYNAMIC_CACHE)
+        await cache.put(request, responseClone)
 
-          return response
-        })
-        .catch(() => {
-          // Network failed and no cache - show offline page for navigation requests
-          if (request.mode === 'navigate') {
-            return caches.match('/offline').then((offline) => {
-              return (
-                offline ??
-                new Response(
-                  `<!DOCTYPE html>
+        return response
+      } catch {
+        // Network failed and no cache - show offline page for navigation requests
+        if (request.mode === 'navigate') {
+          const offline = await caches.match('/offline')
+          return (
+            offline ??
+            new Response(
+              `<!DOCTYPE html>
                 <html>
                 <head>
                   <title>Offline - Yuri Cunha</title>
@@ -141,18 +140,17 @@ self.addEventListener('fetch', (event: FetchEvent) => {
                   </div>
                 </body>
                 </html>`,
-                  {
-                    headers: { 'Content-Type': 'text/html' }
-                  }
-                )
-              )
-            })
-          }
+              {
+                headers: { 'Content-Type': 'text/html' }
+              }
+            )
+          )
+        }
 
-          // For other requests, just fail
-          throw new Error('Network request failed and no cache available')
-        })
-    })
+        // For other requests, just fail
+        throw new Error('Network request failed and no cache available')
+      }
+    })()
   )
 })
 
@@ -161,29 +159,31 @@ self.addEventListener('sync', (event) => {
   const syncEvent = event as unknown as BackgroundSyncEvent
   if (syncEvent.tag === 'background-sync') {
     syncEvent.waitUntil(
-      Promise.resolve().then(() => {
+      (async () => {
         // Perform any background sync tasks here
         logger.debug('Background sync triggered')
-      })
+      })()
     )
   }
 })
 
 // Push notifications (if needed in the future)
 self.addEventListener('push', (event: PushEvent) => {
-  if (event.data) {
-    const data = event.data.json()
-
-    event.waitUntil(
-      self.registration.showNotification(data.title, {
-        body: data.body,
-        icon: '/favicon/android-chrome-192x192.png',
-        badge: '/favicon/android-chrome-192x192.png',
-        tag: data.tag || 'default',
-        data: data.url || '/'
-      })
-    )
+  if (!event.data) {
+    return
   }
+
+  const data = event.data.json()
+
+  event.waitUntil(
+    self.registration.showNotification(data.title, {
+      body: data.body,
+      icon: '/favicon/android-chrome-192x192.png',
+      badge: '/favicon/android-chrome-192x192.png',
+      tag: data.tag || 'default',
+      data: data.url || '/'
+    })
+  )
 })
 
 // Notification click handler

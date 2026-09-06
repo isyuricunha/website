@@ -20,13 +20,13 @@ interface State {
 }
 
 class ErrorBoundary extends Component<Props, State> {
+  static getDerivedStateFromError(error: Error): State {
+    return { hasError: true, error }
+  }
+
   constructor(props: Props) {
     super(props)
     this.state = { hasError: false }
-  }
-
-  static getDerivedStateFromError(error: Error): State {
-    return { hasError: true, error }
   }
 
   override componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
@@ -54,12 +54,7 @@ class ErrorBoundary extends Component<Props, State> {
               : 'We encountered an unexpected error. Please try refreshing the page or contact support if the problem persists.'}
           </p>
           <div className='flex gap-2'>
-            <Button
-              onClick={() => globalThis.location.reload()}
-              variant='outline'
-              size='sm'
-              className='gap-2'
-            >
+            <Button onClick={() => location.reload()} variant='outline' size='sm' className='gap-2'>
               <RefreshCw className='size-4' />
               {t ? t('refresh-page') : 'Refresh Page'}
             </Button>

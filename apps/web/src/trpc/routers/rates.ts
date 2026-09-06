@@ -7,41 +7,39 @@ import { createTRPCRouter, protectedProcedure } from '../trpc'
 
 const getKey = (id: string) => `rates:${id}`
 
+const rateSetSchema = z.object({
+  id: z.string(),
+  like: z.boolean().nullable()
+})
+
 export const ratesRouter = createTRPCRouter({
-  set: protectedProcedure
-    .input(
-      z.object({
-        id: z.string(),
-        like: z.boolean().nullable()
-      })
-    )
-    .mutation(async ({ ctx, input }) => {
-      const user = ctx.session.user
+  set: protectedProcedure.input(rateSetSchema).mutation(async ({ ctx, input }) => {
+    const user = ctx.session.user
 
-      const { success } = await ratelimit.limit(getKey(`set:${user.id}`))
+    const { success } = await ratelimit.limit(getKey(`set:${user.id}`))
 
-      if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+    if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
 
-      if (input.like === null) {
-        await ctx.db
-          .delete(rates)
-          .where(and(eq(rates.commentId, input.id), eq(rates.userId, user.id)))
-
-        return
-      }
-
+    if (input.like === null) {
       await ctx.db
-        .insert(rates)
-        .values({
-          commentId: input.id,
-          userId: user.id,
+        .delete(rates)
+        .where(and(eq(rates.commentId, input.id), eq(rates.userId, user.id)))
+
+      return
+    }
+
+    await ctx.db
+      .insert(rates)
+      .values({
+        commentId: input.id,
+        userId: user.id,
+        like: input.like
+      })
+      .onConflictDoUpdate({
+        target: [rates.userId, rates.commentId],
+        set: {
           like: input.like
-        })
-        .onConflictDoUpdate({
-          target: [rates.userId, rates.commentId],
-          set: {
-            like: input.like
-          }
-        })
-    })
+        }
+      })
+  })
 })

@@ -39,8 +39,9 @@ const ListeningHeatmap = () => {
 
   // Aggregate plays per weekday (0=Sun..6=Sat) for a simpler, compact heatmap
   const { byDay, max } = useMemo(() => {
-    const byDay = Array.from({ length: 7 }).fill(0) as number[]
-    for (const tr of tracks ?? []) {
+    const byDay: number[] = Array.from({ length: 7 }, () => 0)
+    const playedTracks = tracks ?? []
+    for (const tr of playedTracks) {
       const d = new Date(tr.playedAt)
       const idx = d.getDay()
       if (typeof byDay[idx] === 'number') {
@@ -55,7 +56,7 @@ const ListeningHeatmap = () => {
     if (isLoading) {
       return (
         <div className='space-y-2'>
-          {Array.from({ length: 7 }).map((_, r) => (
+          {Array.from({ length: 7 }, (_, r) => (
             <div key={r} className='bg-bg-hover h-5 w-full animate-pulse rounded' />
           ))}
         </div>

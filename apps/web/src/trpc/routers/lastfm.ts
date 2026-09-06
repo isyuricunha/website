@@ -10,7 +10,7 @@ import { createTRPCRouter, publicProcedure } from '../trpc'
 
 const API_KEY = env.LASTFM_API_KEY
 const USERNAME = env.LASTFM_USER
-const BASE_URL = 'http://ws.audioscrobbler.com/2.0/'
+const BASE_URL = 'https://ws.audioscrobbler.com/2.0/'
 
 const lastfmFetch = async (method: string, params: Record<string, string> = {}) => {
   const url = new URL(BASE_URL)
@@ -23,7 +23,7 @@ const lastfmFetch = async (method: string, params: Record<string, string> = {}) 
     url.searchParams.set(key, value)
   }
 
-  const response = await fetch(url.toString(), {
+  const response = await fetch(url.href, {
     signal: AbortSignal.timeout(10_000)
   })
 
@@ -39,18 +39,82 @@ const lastfmFetch = async (method: string, params: Record<string, string> = {}) 
   return response.json()
 }
 
+const isWhitespace = (character: string | undefined): boolean =>
+  character !== undefined && /\s/u.test(character)
+
+const truncateAtFeatureCredit = (name: string): string => {
+  const lowerName = name.toLowerCase()
+  const keywords = ['feat', 'ft', 'with', 'prod']
+
+  for (let index = 0; index < name.length; index++) {
+    if (!isWhitespace(name[index])) continue
+
+    let cursor = index
+    while (isWhitespace(name[cursor])) cursor++
+    if (name[cursor] === '(' || name[cursor] === '[') cursor++
+
+    const keyword = keywords.find((candidate) => lowerName.startsWith(candidate, cursor))
+    if (!keyword) continue
+
+    cursor += keyword.length
+    if (name[cursor] === '.') cursor++
+    if (isWhitespace(name[cursor])) return name.slice(0, index)
+  }
+
+  return name
+}
+
+const truncateAtVersionSuffix = (name: string): string => {
+  const lowerName = name.toLowerCase()
+  const suffixes = ['remaster', 'live', 'radio edit', 'original mix']
+
+  for (let index = 0; index < name.length; index++) {
+    if (!isWhitespace(name[index])) continue
+
+    let cursor = index
+    while (isWhitespace(name[cursor])) cursor++
+    if (name[cursor] !== '-') continue
+
+    cursor++
+    if (!isWhitespace(name[cursor])) continue
+    while (isWhitespace(name[cursor])) cursor++
+
+    if (suffixes.some((suffix) => lowerName.startsWith(suffix, cursor))) {
+      return name.slice(0, index)
+    }
+  }
+
+  return name
+}
+
+const removeTrailingParenthesizedText = (name: string): string => {
+  let suffixEnd = name.length
+  while (suffixEnd > 0 && isWhitespace(name[suffixEnd - 1])) suffixEnd--
+
+  const closingCharacter = name[suffixEnd - 1]
+  if (closingCharacter !== ')' && closingCharacter !== ']') return name
+
+  let lineStart = suffixEnd - 1
+  while (lineStart > 0 && !['\n', '\r', '\u{2028}', '\u{2029}'].includes(name[lineStart - 1]!)) {
+    lineStart--
+  }
+
+  const relativeOpenIndex = name.slice(lineStart, suffixEnd - 1).search(/[([]/u)
+  if (relativeOpenIndex === -1) return name
+
+  let matchStart = lineStart + relativeOpenIndex
+  while (matchStart > 0 && isWhitespace(name[matchStart - 1])) matchStart--
+  return name.slice(0, matchStart)
+}
+
 /**
  * Cleans track and artist names to improve matching hit rate.
  * Removes common suffixes like (feat. ...), (ft. ...), - Remastered, etc.
  */
 const cleanName = (name: string): string => {
-  return (
-    name
-      .split(/\s+[\(\[]?(?:feat|ft|with|prod)\.?\s+/i)[0]
-      ?.split(/\s+-\s+(?:remaster|live|radio edit|original mix)/i)[0]
-      ?.replace(/\s*[\(\[].*[\)\]]\s*$/, '')
-      ?.trim() || name
-  )
+  const withoutFeatureCredit = truncateAtFeatureCredit(name)
+  const withoutVersionSuffix = truncateAtVersionSuffix(withoutFeatureCredit)
+  return removeTrailingParenthesizedText(withoutVersionSuffix).trim() || name
 }
 
 const fetchRecentTracksImageMap = async (limit = 200): Promise<Map<string, string>> => {
@@ -59,13 +123,13 @@ const fetchRecentTracksImageMap = async (limit = 200): Promise<Map<string, strin
     const data = await lastfmFetch('user.getrecenttracks', { limit: String(limit) })
     const tracks = data.recenttracks?.track || []
 
-    tracks.forEach((t: any) => {
+    for (const t of tracks) {
       const key = `${t.artist['#text']}:${t.name}`.toLowerCase()
       const img = t.image?.find((i: any) => i.size === 'extralarge')?.['#text']
       if (img && !img.includes('2a96cbd8b46e442fc41c2b86b821562f')) {
         imageMap.set(key, img)
       }
-    })
+    }
   } catch (error) {
     logger.warn('Failed to fetch recent tracks for image enrichment', error as any)
   }
@@ -115,7 +179,7 @@ const fetchTrackFallbackImage = async (
     if (albumImage && !albumImage.includes('2a96cbd8b46e442fc41c2b86b821562f')) {
       return albumImage
     }
-  } catch (error) {
+  } catch {
     // Fail silently to try search fallback
   }
 
@@ -158,6 +222,10 @@ const mapTimeRangeToPeriod = (range: 'short_term' | 'medium_term' | 'long_term')
   }
 }
 
+const timeRangeInputSchema = z.object({
+  time_range: z.enum(['short_term', 'medium_term', 'long_term']).default('short_term')
+})
+
 export const lastfmRouter = createTRPCRouter({
   get: publicProcedure.query(async ({ ctx }) => {
     const ip = getIp(ctx.headers)
@@ -187,7 +255,7 @@ export const lastfmRouter = createTRPCRouter({
         artist: track.artist['#text'] as string
       }
     } catch (error) {
-      logger.error('Error in lastfm.get', error as any)
+      logger.error('Error in lastfm.get', error)
       return {
         isPlaying: false,
         songUrl: null,
@@ -228,7 +296,7 @@ export const lastfmRouter = createTRPCRouter({
         progress: 0
       }
     } catch (error) {
-      logger.error('Error in lastfm.getCurrentlyPlaying', error as any)
+      logger.error('Error in lastfm.getCurrentlyPlaying', error)
       return null
     }
   }),
@@ -265,7 +333,7 @@ export const lastfmRouter = createTRPCRouter({
 
       return withFallbacks
     } catch (error) {
-      logger.error('Error in lastfm.getTopArtists', error as any)
+      logger.error('Error in lastfm.getTopArtists', error)
       return []
     }
   }),
@@ -324,7 +392,7 @@ export const lastfmRouter = createTRPCRouter({
 
       return withFallbacks
     } catch (error) {
-      logger.error('Error in lastfm.getTopTracks', error as any)
+      logger.error('Error in lastfm.getTopTracks', error)
       return []
     }
   }),
@@ -352,17 +420,13 @@ export const lastfmRouter = createTRPCRouter({
           : new Date().toISOString()
       }))
     } catch (error) {
-      logger.error('Error in lastfm.getRecentlyPlayed', error as any)
+      logger.error('Error in lastfm.getRecentlyPlayed', error)
       return []
     }
   }),
 
   getTopArtistsByRange: publicProcedure
-    .input(
-      z.object({
-        time_range: z.enum(['short_term', 'medium_term', 'long_term']).default('short_term')
-      })
-    )
+    .input(timeRangeInputSchema)
     .query(async ({ ctx, input }) => {
       const ip = getIp(ctx.headers)
       const { success } = await ratelimit.limit(getKey(ip, 'getTopArtistsByRange'))
@@ -396,93 +460,78 @@ export const lastfmRouter = createTRPCRouter({
 
         return withFallbacks
       } catch (error) {
-        logger.error('Error in lastfm.getTopArtistsByRange', error as any)
+        logger.error('Error in lastfm.getTopArtistsByRange', error)
         return []
       }
     }),
 
-  getTopTracksByRange: publicProcedure
-    .input(
-      z.object({
-        time_range: z.enum(['short_term', 'medium_term', 'long_term']).default('short_term')
-      })
-    )
-    .query(async ({ ctx, input }) => {
-      const ip = getIp(ctx.headers)
-      const { success } = await ratelimit.limit(getKey(ip, 'getTopTracksByRange'))
+  getTopTracksByRange: publicProcedure.input(timeRangeInputSchema).query(async ({ ctx, input }) => {
+    const ip = getIp(ctx.headers)
+    const { success } = await ratelimit.limit(getKey(ip, 'getTopTracksByRange'))
 
-      if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+    if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
 
-      try {
-        const period = mapTimeRangeToPeriod(input.time_range)
-        const data = await lastfmFetch('user.gettoptracks', { limit: '20', period })
-        const tracks = data.toptracks?.track || []
+    try {
+      const period = mapTimeRangeToPeriod(input.time_range)
+      const data = await lastfmFetch('user.gettoptracks', { limit: '20', period })
+      const tracks = data.toptracks?.track || []
 
-        // Enrichment: Fetch recent tracks to use as a primary image source
-        const recentImageMap = await fetchRecentTracksImageMap(200)
+      // Enrichment: Fetch recent tracks to use as a primary image source
+      const recentImageMap = await fetchRecentTracksImageMap(200)
 
-        const trackList = tracks.map((track: any) => ({
-          id: track.mbid || `${track.artist.name}-${track.name}`,
-          name: track.name as string,
-          artist: track.artist.name as string,
-          album: '',
-          albumImage: track.image?.find((img: any) => img.size === 'extralarge')?.['#text'] || null,
-          url: track.url as string,
-          duration: parseInt(track.duration) * 1000 || 0,
-          popularity: parseInt(track.playcount) || 0
-        }))
+      const trackList = tracks.map((track: any) => ({
+        id: track.mbid || `${track.artist.name}-${track.name}`,
+        name: track.name as string,
+        artist: track.artist.name as string,
+        album: '',
+        albumImage: track.image?.find((img: any) => img.size === 'extralarge')?.['#text'] || null,
+        url: track.url as string,
+        duration: parseInt(track.duration) * 1000 || 0,
+        popularity: parseInt(track.playcount) || 0
+      }))
 
-        // Request-level cache to avoid duplicate calls for identical tracks
-        const fallbackCache = new Map<string, Promise<string | null>>()
+      // Request-level cache to avoid duplicate calls for identical tracks
+      const fallbackCache = new Map<string, Promise<string | null>>()
 
-        const withFallbacks = await Promise.all(
-          trackList.map(async (track: any) => {
-            const cacheKey = `${track.artist}:${track.name}`.toLowerCase()
+      const withFallbacks = await Promise.all(
+        trackList.map(async (track: any) => {
+          const cacheKey = `${track.artist}:${track.name}`.toLowerCase()
 
-            if (
-              track.albumImage &&
-              !track.albumImage.includes('2a96cbd8b46e442fc41c2b86b821562f')
-            ) {
-              return track
-            }
+          if (track.albumImage && !track.albumImage.includes('2a96cbd8b46e442fc41c2b86b821562f')) {
+            return track
+          }
 
-            const recentImg = recentImageMap.get(cacheKey)
-            if (recentImg) {
-              return { ...track, albumImage: recentImg }
-            }
+          const recentImg = recentImageMap.get(cacheKey)
+          if (recentImg) {
+            return { ...track, albumImage: recentImg }
+          }
 
-            if (!fallbackCache.has(cacheKey)) {
-              fallbackCache.set(cacheKey, fetchTrackFallbackImage(track.artist, track.name))
-            }
+          if (!fallbackCache.has(cacheKey)) {
+            fallbackCache.set(cacheKey, fetchTrackFallbackImage(track.artist, track.name))
+          }
 
-            const fallback = await fallbackCache.get(cacheKey)!
-            return { ...track, albumImage: fallback || track.albumImage }
-          })
-        )
+          const fallback = await fallbackCache.get(cacheKey)!
+          return { ...track, albumImage: fallback || track.albumImage }
+        })
+      )
 
-        return withFallbacks
-      } catch (error) {
-        logger.error('Error in lastfm.getTopTracksByRange', error as any)
-        return []
-      }
-    }),
+      return withFallbacks
+    } catch (error) {
+      logger.error('Error in lastfm.getTopTracksByRange', error)
+      return []
+    }
+  }),
 
   // Audio features fallback
-  getAudioFeaturesSummaryByRange: publicProcedure
-    .input(
-      z.object({
-        time_range: z.enum(['short_term', 'medium_term', 'long_term']).default('short_term')
-      })
-    )
-    .query(async () => {
-      return {
-        sampleSize: 0,
-        danceability: null,
-        energy: null,
-        valence: null,
-        tempo: null,
-        acousticness: null,
-        instrumentalness: null
-      }
-    })
+  getAudioFeaturesSummaryByRange: publicProcedure.input(timeRangeInputSchema).query(async () => {
+    return {
+      sampleSize: 0,
+      danceability: null,
+      energy: null,
+      valence: null,
+      tempo: null,
+      acousticness: null,
+      instrumentalness: null
+    }
+  })
 })

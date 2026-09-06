@@ -48,7 +48,7 @@ export default function AnnouncementToast() {
     )
 
     // Show toast for each urgent announcement
-    urgentAnnouncements.forEach((announcement) => {
+    for (const announcement of urgentAnnouncements) {
       const toastId = `announcement-${announcement.id}`
 
       if (!viewedAnnouncements.includes(announcement.id)) {
@@ -127,7 +127,7 @@ export default function AnnouncementToast() {
         // Mark as shown in this session
         addShownAnnouncementToastId(shownToasts, announcement.id)
       }
-    })
+    }
   }, [announcementsData, dismissMutation, markViewedMutation, t_announcement])
 
   return null // This component doesn't render anything directly

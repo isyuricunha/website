@@ -69,7 +69,7 @@ const SettingsForm = () => {
     String(profileFormDefaults.isPublic),
     profileFormDefaults.nameColor,
     profileFormDefaults.nameEffect
-  ].join('\u001F')
+  ].join('\u{1F}')
 
   const [profileFormState, setProfileFormState] = useState<ProfileFormState>(() => {
     return {
@@ -108,7 +108,7 @@ const SettingsForm = () => {
   const [isSavingEmail, setIsSavingEmail] = useState(false)
   const [isSavingPassword, setIsSavingPassword] = useState(false)
 
-  const createAvatarUploadUrlMutation = api.users.createAvatarUploadUrl.useMutation()
+  const avatarUploadUrlMutation = api.users.createAvatarUploadUrl.useMutation()
 
   if (isPending) return null
   if (!session) return null
@@ -163,7 +163,7 @@ const SettingsForm = () => {
     }
 
     try {
-      const result = await createAvatarUploadUrlMutation.mutateAsync({
+      const result = await avatarUploadUrlMutation.mutateAsync({
         contentType: avatarFile.type as 'image/png' | 'image/jpeg' | 'image/webp',
         size: avatarFile.size
       })
@@ -296,15 +296,15 @@ const SettingsForm = () => {
                   id='avatarFile'
                   type='file'
                   accept='image/png,image/jpeg,image/webp'
-                  disabled={isAnonymous || createAvatarUploadUrlMutation.isPending}
+                  disabled={isAnonymous || avatarUploadUrlMutation.isPending}
                   onChange={(e) => setAvatarFile(e.target.files?.[0] ?? null)}
                 />
               </div>
               <Button
                 type='button'
                 variant='secondary'
-                disabled={isAnonymous || createAvatarUploadUrlMutation.isPending || !avatarFile}
-                isPending={createAvatarUploadUrlMutation.isPending}
+                disabled={isAnonymous || avatarUploadUrlMutation.isPending || !avatarFile}
+                isPending={avatarUploadUrlMutation.isPending}
                 onClick={upload_avatar}
               >
                 {t('settings.actions.upload-avatar')}

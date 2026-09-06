@@ -133,9 +133,11 @@ export default function ForgotPasswordDialog({ open, onOpenChange }: ForgotPassw
                 className='h-11 w-full rounded-lg font-medium'
                 disabled={requestResetMutation.isPending || !email}
               >
-                {requestResetMutation.isPending
-                  ? t('dialog.forgot-password.submit.pending')
-                  : t('dialog.forgot-password.submit.default')}
+                {t(
+                  requestResetMutation.isPending
+                    ? 'dialog.forgot-password.submit.pending'
+                    : 'dialog.forgot-password.submit.default'
+                )}
               </Button>
 
               <Button

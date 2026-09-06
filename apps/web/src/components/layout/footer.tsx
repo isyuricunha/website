@@ -4,6 +4,7 @@ import { flags } from '@isyuricunha/env'
 import { useFormatter, useTranslations } from '@isyuricunha/i18n/client'
 import { linkVariants } from '@isyuricunha/ui'
 import { StarIcon } from 'lucide-react'
+import { useMemo } from 'react'
 
 import { FOOTER_LINKS } from '@/config/links'
 import { api } from '@/trpc/react'
@@ -19,6 +20,7 @@ const Footer = () => {
   const t_layout = useTranslations('layout')
   const t_common = useTranslations('common')
   const format = useFormatter()
+  const currentYear = useMemo(() => new Date().getFullYear(), [])
 
   return (
     <footer className='relative mx-auto flex w-full max-w-6xl flex-col border-t border-[var(--border-faint)] px-4 py-12 sm:px-8'>
@@ -39,7 +41,7 @@ const Footer = () => {
         ))}
       </div>
       <div className='text-muted-foreground mt-20 flex items-center justify-between text-xs sm:text-sm'>
-        <div>Yuri Cunha | &copy; {new Date().getFullYear()}</div>
+        <div>Yuri Cunha | &copy; {currentYear}</div>
         <Link
           href='https://github.com/isyuricunha/website'
           className='flex items-center justify-center overflow-hidden rounded-md border border-[var(--border-default)] transition-colors hover:border-[var(--border-strong)]'

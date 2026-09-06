@@ -85,11 +85,11 @@ const UserEditModal = ({ user, open, onOpenChange }: UserEditModalProps) => {
     } catch (error) {
       if (error instanceof z.ZodError) {
         const newErrors: Record<string, string> = {}
-        error.issues.forEach((err) => {
+        for (const err of error.issues) {
           if (err.path[0]) {
             newErrors[err.path[0] as string] = err.message
           }
-        })
+        }
         setErrors(newErrors)
       }
     }
@@ -97,7 +97,7 @@ const UserEditModal = ({ user, open, onOpenChange }: UserEditModalProps) => {
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
-    if (errors[field]) {
+    if (Object.hasOwn(errors, field)) {
       setErrors((prev) => ({ ...prev, [field]: '' }))
     }
   }
@@ -179,9 +179,11 @@ const UserEditModal = ({ user, open, onOpenChange }: UserEditModalProps) => {
               {t('admin.modals.edit-user.cancel')}
             </Button>
             <Button type='submit' disabled={updateUserMutation.isPending}>
-              {updateUserMutation.isPending
-                ? t('admin.modals.edit-user.saving')
-                : t('admin.modals.edit-user.save')}
+              {t(
+                updateUserMutation.isPending
+                  ? 'admin.modals.edit-user.saving'
+                  : 'admin.modals.edit-user.save'
+              )}
             </Button>
           </DialogFooter>
         </form>

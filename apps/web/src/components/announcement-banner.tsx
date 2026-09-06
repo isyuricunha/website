@@ -55,9 +55,9 @@ export default function AnnouncementBanner() {
 
     if (toMark.length === 0) return
 
-    toMark.forEach((announcement) => {
+    for (const announcement of toMark) {
       markViewedMutation.mutate({ announcementId: announcement.id })
-    })
+    }
 
     const nextViewed = toMark.reduce<string[]>(
       (acc, announcement) => addViewedAnnouncementId(acc, announcement.id),

@@ -198,8 +198,7 @@ function unique<T>(items: T[]): T[] {
 function extract_quoted_phrases(value: string): string[] {
   const phrases: string[] = []
   const re = /["“”']([^"“”']+)["“”']/g
-  let match: RegExpExecArray | null = null
-  while ((match = re.exec(value)) !== null) {
+  for (let match = re.exec(value); match !== null; match = re.exec(value)) {
     const phrase = match[1]?.trim()
     if (phrase) phrases.push(phrase)
   }
@@ -212,8 +211,7 @@ function infer_excluded_post_slugs_from_query(params: { query: string; locale: s
 
   // /blog/<slug>
   const blog_re = /\/blog\/([a-z0-9-]+)/gi
-  let match: RegExpExecArray | null = null
-  while ((match = blog_re.exec(query)) !== null) {
+  for (let match = blog_re.exec(query); match !== null; match = blog_re.exec(query)) {
     const slug = match[1]?.trim()
     if (slug) slugs.push(slug)
   }
@@ -231,18 +229,14 @@ function infer_excluded_post_slugs_from_query(params: { query: string; locale: s
 }
 
 export const build_site_index = (locale: string): SiteEntry[] => {
-  const entries: SiteEntry[] = []
-
-  for (const route of get_static_routes(locale)) {
-    entries.push({
-      type: 'page',
-      title: route.title,
-      description: route.description,
-      href: getLocalizedPath({ slug: route.slug, locale }),
-      slug: route.slug.replace(/^\//, ''),
-      locale
-    })
-  }
+  const entries: SiteEntry[] = Array.from(get_static_routes(locale), (route) => ({
+    type: 'page',
+    title: route.title,
+    description: route.description,
+    href: getLocalizedPath({ slug: route.slug, locale }),
+    slug: route.slug.replace(/^\//, ''),
+    locale
+  }))
 
   for (const post of allPosts) {
     if (post.locale !== locale) continue
@@ -361,8 +355,7 @@ export const get_page_context = (page_path: string, locale: string): PageContext
 function extract_snippet_slugs_from_query(query: string): string[] {
   const slugs: string[] = []
   const snippet_re = /\/snippet\/([a-z0-9-]+)/gi
-  let match: RegExpExecArray | null = null
-  while ((match = snippet_re.exec(query)) !== null) {
+  for (let match = snippet_re.exec(query); match !== null; match = snippet_re.exec(query)) {
     const slug = match[1]?.trim()
     if (slug) slugs.push(slug)
   }
@@ -410,7 +403,8 @@ export const find_citations = (params: {
     })
   }
 
-  for (const item of scored.slice(0, Math.max(0, limit - citations.length))) {
+  const remainingItems = scored.slice(0, Math.max(0, limit - citations.length))
+  for (const item of remainingItems) {
     citations.push({
       id: `${item.entry.type}:${item.entry.slug}`,
       title: item.entry.title,

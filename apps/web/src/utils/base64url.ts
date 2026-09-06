@@ -1,5 +1,5 @@
 const encodeBase64 = (bytes: Uint8Array): string => {
-  const buffer = (globalThis as unknown as { Buffer?: typeof Buffer }).Buffer
+  const buffer = typeof Buffer === 'undefined' ? undefined : Buffer
   if (buffer !== undefined) {
     return buffer.from(bytes).toString('base64')
   }
@@ -13,7 +13,7 @@ const encodeBase64 = (bytes: Uint8Array): string => {
 }
 
 const decodeBase64 = (base64: string): Uint8Array => {
-  const buffer = (globalThis as unknown as { Buffer?: typeof Buffer }).Buffer
+  const buffer = typeof Buffer === 'undefined' ? undefined : Buffer
   if (buffer !== undefined) {
     return new Uint8Array(buffer.from(base64, 'base64'))
   }
@@ -31,7 +31,7 @@ export const base64urlEncode = (input: string | Uint8Array): string => {
   const bytes = typeof input === 'string' ? new TextEncoder().encode(input) : input
   const base64 = encodeBase64(bytes)
 
-  return base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '')
+  return base64.replace(/\+/g, '-').replace(/\//g, '_').replaceAll('=', '')
 }
 
 const base64urlDecodeToBytes = (encoded: string): Uint8Array => {

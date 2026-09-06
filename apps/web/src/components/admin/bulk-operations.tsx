@@ -293,7 +293,7 @@ export const BulkOperations = () => {
         <div className='animate-pulse'>
           <div className='bg-bg-hover mb-4 h-8 w-1/4 rounded'></div>
           <div className='space-y-3'>
-            {Array.from({ length: 5 }).map((_, i) => (
+            {Array.from({ length: 5 }, (_, i) => (
               <div key={i} className='bg-bg-hover h-16 rounded'></div>
             ))}
           </div>

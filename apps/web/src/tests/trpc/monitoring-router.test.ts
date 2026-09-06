@@ -83,9 +83,7 @@ const createDbMock = () => {
 
         if (tableName === 'analytics_events') {
           state.analytics_events.push(value)
-        }
-
-        if (tableName === 'resource_usage') {
+        } else if (tableName === 'resource_usage') {
           state.resource_usage.push(...(Array.isArray(value) ? value : [value]))
         }
 

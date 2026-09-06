@@ -97,10 +97,9 @@ export const SystemHealthDashboard = () => {
     }, 30_000) // Refresh every 30 seconds
 
     return () => {
-      if (refreshIntervalRef.current) {
-        clearInterval(refreshIntervalRef.current)
-        refreshIntervalRef.current = null
-      }
+      if (!refreshIntervalRef.current) return
+      clearInterval(refreshIntervalRef.current)
+      refreshIntervalRef.current = null
     }
   }, [autoRefresh, refetchHealth, refetchStats, refetchErrors])
 
@@ -204,8 +203,8 @@ export const SystemHealthDashboard = () => {
       unknown: 0
     }
 
-    for (const row of filtered_history) {
-      switch (row.status) {
+    const bump_stat = (status: string) => {
+      switch (status) {
         case 'healthy':
           stats.healthy += 1
           break
@@ -221,6 +220,10 @@ export const SystemHealthDashboard = () => {
       }
     }
 
+    for (const row of filtered_history) {
+      bump_stat(row.status)
+    }
+
     return stats
   }, [filtered_history])
 
@@ -230,12 +233,12 @@ export const SystemHealthDashboard = () => {
         <div className='animate-pulse'>
           <div className='bg-bg-hover mb-4 h-8 w-1/4 rounded'></div>
           <div className='mb-6 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4'>
-            {Array.from({ length: 4 }).map((_, i) => (
+            {Array.from({ length: 4 }, (_, i) => (
               <div key={i} className='bg-bg-hover h-24 rounded'></div>
             ))}
           </div>
           <div className='space-y-3'>
-            {Array.from({ length: 3 }).map((_, i) => (
+            {Array.from({ length: 3 }, (_, i) => (
               <div key={i} className='bg-bg-hover h-20 rounded'></div>
             ))}
           </div>

@@ -126,9 +126,9 @@ const createDbMock = () => {
       typeof (updateWhere as any).__pendingSet === 'object' &&
       (updateWhere as any).__pendingSet
     ) {
-      const setData = (updateWhere as any).__pendingSet as Record<string, unknown>
-      if (typeof setData.read === 'boolean') target.read = setData.read
-      if (setData.readAt instanceof Date) target.readAt = setData.readAt
+      const pendingSetData = (updateWhere as any).__pendingSet as Record<string, unknown>
+      if (typeof pendingSetData.read === 'boolean') target.read = pendingSetData.read
+      if (pendingSetData.readAt instanceof Date) target.readAt = pendingSetData.readAt
     }
 
     return
@@ -150,7 +150,7 @@ const createDbMock = () => {
   const insert = vi.fn(() => ({
     values: vi.fn(async (value: any) => {
       if (Array.isArray(value)) {
-        value.forEach((v) => notification_rows.push(v))
+        for (const v of value) notification_rows.push(v)
       } else {
         notification_rows.push(value)
       }
@@ -201,33 +201,34 @@ describe('communicationRouter notifications', () => {
     const db = createDbMock()
 
     const now = new Date()
-    db.__state.notifications.push({
-      id: 'n-expired',
-      userId: 'user-1',
-      title: 'Old',
-      message: 'Expired message',
-      type: 'system',
-      data: null,
-      read: false,
-      readAt: null,
-      actionUrl: null,
-      expiresAt: new Date(now.getTime() - 60_000),
-      createdAt: now
-    })
-
-    db.__state.notifications.push({
-      id: 'n-read',
-      userId: 'user-1',
-      title: 'Read',
-      message: 'Already read',
-      type: 'system',
-      data: null,
-      read: true,
-      readAt: now,
-      actionUrl: null,
-      expiresAt: null,
-      createdAt: now
-    })
+    db.__state.notifications.push(
+      {
+        id: 'n-expired',
+        userId: 'user-1',
+        title: 'Old',
+        message: 'Expired message',
+        type: 'system',
+        data: null,
+        read: false,
+        readAt: null,
+        actionUrl: null,
+        expiresAt: new Date(now.getTime() - 60_000),
+        createdAt: now
+      },
+      {
+        id: 'n-read',
+        userId: 'user-1',
+        title: 'Read',
+        message: 'Already read',
+        type: 'system',
+        data: null,
+        read: true,
+        readAt: now,
+        actionUrl: null,
+        expiresAt: null,
+        createdAt: now
+      }
+    )
 
     const caller = communicationRouter.createCaller({
       db: db as unknown,
@@ -249,33 +250,34 @@ describe('communicationRouter notifications', () => {
     const db = createDbMock()
     const now = new Date()
 
-    db.__state.notifications.push({
-      id: 'n-expired',
-      userId: 'user-1',
-      title: 'Old',
-      message: 'Expired message',
-      type: 'system',
-      data: null,
-      read: false,
-      readAt: null,
-      actionUrl: null,
-      expiresAt: new Date(now.getTime() - 60_000),
-      createdAt: now
-    })
-
-    db.__state.notifications.push({
-      id: 'n-read',
-      userId: 'user-1',
-      title: 'Read',
-      message: 'Already read',
-      type: 'system',
-      data: null,
-      read: true,
-      readAt: now,
-      actionUrl: null,
-      expiresAt: null,
-      createdAt: now
-    })
+    db.__state.notifications.push(
+      {
+        id: 'n-expired',
+        userId: 'user-1',
+        title: 'Old',
+        message: 'Expired message',
+        type: 'system',
+        data: null,
+        read: false,
+        readAt: null,
+        actionUrl: null,
+        expiresAt: new Date(now.getTime() - 60_000),
+        createdAt: now
+      },
+      {
+        id: 'n-read',
+        userId: 'user-1',
+        title: 'Read',
+        message: 'Already read',
+        type: 'system',
+        data: null,
+        read: true,
+        readAt: now,
+        actionUrl: null,
+        expiresAt: null,
+        createdAt: now
+      }
+    )
 
     const caller = communicationRouter.createCaller({
       db: db as unknown,
@@ -287,7 +289,7 @@ describe('communicationRouter notifications', () => {
 
     expect(result.notifications.every((n) => n.userId === 'user-1')).toBe(true)
     expect(result.notifications.some((n) => n.id === 'n-expired')).toBe(false)
-    expect(result.notifications.some((n) => n.read === true)).toBe(false)
+    expect(result.notifications.some((n) => n.read)).toBe(false)
     expect(result.total).toBe(1)
     expect(result.hasMore).toBe(false)
   })

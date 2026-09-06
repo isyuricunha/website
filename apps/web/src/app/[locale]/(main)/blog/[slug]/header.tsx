@@ -36,13 +36,15 @@ const Header = () => {
     slug
   })
 
-  const incremented = useRef(false)
+  const incrementedRef = useRef(false)
 
   useEffect(() => {
-    if (!incremented.current) {
-      incrementMutation.mutate({ slug })
-      incremented.current = true
+    if (incrementedRef.current) {
+      return
     }
+
+    incrementMutation.mutate({ slug })
+    incrementedRef.current = true
   }, [incrementMutation, slug])
 
   return (

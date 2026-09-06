@@ -57,7 +57,7 @@ const AdminDashboard = () => {
           <p className='text-text-secondary'>{t('loading.description')}</p>
         </div>
         <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-4'>
-          {Array.from({ length: 4 }).map((_, i) => (
+          {Array.from({ length: 4 }, (_, i) => (
             <Card key={i}>
               <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
                 <CardTitle className='text-sm font-medium'>{t('loading.card')}</CardTitle>
@@ -182,7 +182,7 @@ const AdminDashboard = () => {
                   </div>
                   <div className='text-accent-earth-text flex items-center gap-1 text-xs font-medium'>
                     <TrendingUp className='h-3.5 w-3.5' />
-                    {stat.trend > 0 ? `+${stat.trend}%` : stat.trend < 0 ? `${stat.trend}%` : '0%'}
+                    {formatTrend(stat.trend)}
                   </div>
                 </div>
                 <p className='text-text-secondary text-xs leading-relaxed'>{stat.description}</p>
@@ -377,6 +377,12 @@ const AdminDashboard = () => {
       </div>
     </div>
   )
+}
+
+const formatTrend = (trend: number): string => {
+  if (trend > 0) return `+${trend}%`
+  if (trend < 0) return `${trend}%`
+  return '0%'
 }
 
 export default AdminDashboard

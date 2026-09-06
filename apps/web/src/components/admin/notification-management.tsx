@@ -50,7 +50,7 @@ export default function NotificationManagement() {
   })
 
   // Mutations
-  const createNotificationMutation = api.communication.createNotification.useMutation({
+  const notificationMutation = api.communication.createNotification.useMutation({
     onSuccess: () => {
       toast.success(t('messages.created'))
       setIsCreateDialogOpen(false)
@@ -83,7 +83,7 @@ export default function NotificationManagement() {
       return
     }
 
-    createNotificationMutation.mutate({
+    notificationMutation.mutate({
       title,
       content,
       type,

@@ -35,6 +35,20 @@ export type ChatConversation = {
 
 type YueChatProvider = 'auto'
 
+const legacyCitationSchema = z.object({
+  id: z.string().min(1),
+  title: z.string().min(1),
+  href: z.string().min(1),
+  excerpt: z.string().optional(),
+  type: z.enum(['post', 'project', 'page', 'snippet'])
+})
+
+const legacyReactionsSchema = z.object({
+  likes: z.number().int().min(0),
+  dislikes: z.number().int().min(0),
+  userReaction: z.enum(['like', 'dislike']).nullable().optional()
+})
+
 const legacyMessagesSchema = z
   .array(
     z.object({
@@ -46,25 +60,8 @@ const legacyMessagesSchema = z
       type: z.literal('text').optional(),
       requestId: z.string().optional(),
       latencyMs: z.number().int().min(0).optional(),
-      citations: z
-        .array(
-          z.object({
-            id: z.string().min(1),
-            title: z.string().min(1),
-            href: z.string().min(1),
-            excerpt: z.string().optional(),
-            type: z.enum(['post', 'project', 'page', 'snippet'])
-          })
-        )
-        .max(10)
-        .optional(),
-      reactions: z
-        .object({
-          likes: z.number().int().min(0),
-          dislikes: z.number().int().min(0),
-          userReaction: z.enum(['like', 'dislike']).nullable().optional()
-        })
-        .optional()
+      citations: z.array(legacyCitationSchema).max(10).optional(),
+      reactions: legacyReactionsSchema.optional()
     })
   )
   .max(200)
@@ -102,7 +99,7 @@ const getNowIso = () => new Date().toISOString()
 
 const createId = (): string => {
   try {
-    return globalThis.crypto.randomUUID()
+    return crypto.randomUUID()
   } catch {
     return `${Date.now()}-${Math.random().toString(16).slice(2)}`
   }

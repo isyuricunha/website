@@ -81,7 +81,9 @@ const MascotGame = ({ isOpen, onClose }: MascotGameProps) => {
     setTargetPosition({ x, y })
 
     // Challenge mode: occasional multiplier boost
-    if (Math.random() < 0.05 && gameMode === 'challenge') {
+    const boostRoll = Math.random()
+    if (boostRoll < 0.05) {
+      if (gameMode !== 'challenge') return
       setMultiplier(2)
       if (multiplierTimeoutRef.current) {
         clearTimeout(multiplierTimeoutRef.current)
@@ -258,7 +260,7 @@ const MascotGame = ({ isOpen, onClose }: MascotGameProps) => {
               className='bg-accent-earth text-text-inverse hover:bg-accent-earth-hover focus-visible:ring-ring rounded px-4 py-2 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none'
               onClick={startGame}
             >
-              {timeLeft === 0 ? t('mascot.game.playAgain') : t('mascot.game.start')}
+              {t(timeLeft === 0 ? 'mascot.game.playAgain' : 'mascot.game.start')}
             </button>
           </div>
         )}

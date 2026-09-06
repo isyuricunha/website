@@ -22,6 +22,35 @@ const bulk_operation_statuses = ['pending', 'running', 'completed', 'failed', 'c
 
 type Database = typeof import('@isyuricunha/db').db
 
+const listBulkOperationsInputSchema = z.object({
+  status: z.enum(bulk_operation_statuses).optional(),
+  type: z.string().max(100).optional(),
+  limit: z.number().int().min(1).max(100).default(20),
+  offset: z.number().int().min(0).default(0)
+})
+
+const bulkUserActionInputSchema = z.object({
+  userIds: z.array(z.string()).min(1).max(100),
+  action: z.enum(['delete', 'ban', 'unban', 'update_role']),
+  parameters: z.record(z.string(), z.any()).optional() // For additional parameters like new role
+})
+
+const bulkPostActionInputSchema = z
+  .object({
+    postIds: z.array(z.string()).min(1).max(100),
+    action: z.enum(['publish', 'archive', 'delete'])
+  })
+  .strict()
+
+const bulkOperationUsersQuerySchema = z.object({
+  search: z.string().optional(),
+  role: z.enum(['user', 'admin']).optional(),
+  excludeAdmins: z.boolean().default(true),
+  limit: z.number().min(1).max(1000).default(100)
+})
+
+const bulkOperationIdInputSchema = z.object({ operationId: z.string() })
+
 const isBulkOperationCancelled = async (db: Database, operationId: string): Promise<boolean> => {
   const op = await db.query.bulkOperations.findFirst({
     where: eq(bulkOperations.id, operationId),
@@ -31,16 +60,124 @@ const isBulkOperationCancelled = async (db: Database, operationId: string): Prom
   return op?.status === 'cancelled'
 }
 
+type BulkUserActionUser = {
+  id: string
+  name: string | null
+  email: string
+  role: string
+}
+
+const applyBulkUserAction = async (params: {
+  db: Database
+  auditLogger: AuditLogger
+  action: 'delete' | 'ban' | 'unban' | 'update_role'
+  adminUserId: string
+  userId: string
+  user: BulkUserActionUser
+  operationId: string
+  parameters?: Record<string, any>
+  ipAddress: string | undefined
+  userAgent: string | undefined
+}) => {
+  const {
+    db,
+    auditLogger,
+    action,
+    adminUserId,
+    userId,
+    user,
+    operationId,
+    parameters,
+    ipAddress,
+    userAgent
+  } = params
+
+  switch (action) {
+    case 'delete':
+      await db.delete(users).where(eq(users.id, userId))
+      await auditLogger.logUserAction(
+        adminUserId,
+        'user_delete',
+        userId,
+        {
+          bulkOperation: true,
+          operationId,
+          deletedUser: { name: user.name, email: user.email, role: user.role }
+        },
+        ipAddress,
+        userAgent
+      )
+      return
+
+    case 'ban':
+      // Delete all user sessions to effectively "ban" them
+      await db.delete(sessions).where(eq(sessions.userId, userId))
+      await auditLogger.logUserAction(
+        adminUserId,
+        'user_ban',
+        userId,
+        {
+          bulkOperation: true,
+          operationId,
+          bannedUser: { name: user.name, email: user.email }
+        },
+        ipAddress,
+        userAgent
+      )
+      return
+
+    case 'unban':
+      // For unban, we just log the action (sessions will be created on next login)
+      await auditLogger.logUserAction(
+        adminUserId,
+        'user_unban',
+        userId,
+        {
+          bulkOperation: true,
+          operationId,
+          unbannedUser: { name: user.name, email: user.email }
+        },
+        ipAddress,
+        userAgent
+      )
+      return
+
+    case 'update_role': {
+      const newRole = parameters?.role
+      if (!newRole || !['user', 'admin'].includes(newRole)) {
+        throw new Error('Invalid role specified')
+      }
+
+      await db
+        .update(users)
+        .set({ role: newRole, updatedAt: new Date() })
+        .where(eq(users.id, userId))
+
+      await auditLogger.logUserAction(
+        adminUserId,
+        'user_update',
+        userId,
+        {
+          bulkOperation: true,
+          operationId,
+          previousRole: user.role,
+          newRole,
+          user: { name: user.name, email: user.email }
+        },
+        ipAddress,
+        userAgent
+      )
+      return
+    }
+
+    default:
+      throw new Error(`Unknown action: ${action}`)
+  }
+}
+
 export const bulkRouter = createTRPCRouter({
   listBulkOperations: adminProcedure
-    .input(
-      z.object({
-        status: z.enum(bulk_operation_statuses).optional(),
-        type: z.string().max(100).optional(),
-        limit: z.number().int().min(1).max(100).default(20),
-        offset: z.number().int().min(0).default(0)
-      })
-    )
+    .input(listBulkOperationsInputSchema)
     .query(async ({ ctx, input }) => {
       const conditions = []
 
@@ -80,13 +217,7 @@ export const bulkRouter = createTRPCRouter({
 
   // Bulk user operations
   bulkUserAction: adminProcedure
-    .input(
-      z.object({
-        userIds: z.array(z.string()).min(1).max(100),
-        action: z.enum(['delete', 'ban', 'unban', 'update_role']),
-        parameters: z.record(z.string(), z.any()).optional() // For additional parameters like new role
-      })
-    )
+    .input(bulkUserActionInputSchema)
     .mutation(async ({ ctx, input }) => {
       const operationId = randomBytes(16).toString('hex')
       try {
@@ -181,87 +312,18 @@ export const bulkRouter = createTRPCRouter({
               continue
             }
 
-            switch (input.action) {
-              case 'delete':
-                await ctx.db.delete(users).where(eq(users.id, userId))
-                await auditLogger.logUserAction(
-                  ctx.session.user.id,
-                  'user_delete',
-                  userId,
-                  {
-                    bulkOperation: true,
-                    operationId,
-                    deletedUser: { name: user.name, email: user.email, role: user.role }
-                  },
-                  ipAddress,
-                  userAgent
-                )
-                break
-
-              case 'ban':
-                // Delete all user sessions to effectively "ban" them
-                await ctx.db.delete(sessions).where(eq(sessions.userId, userId))
-                await auditLogger.logUserAction(
-                  ctx.session.user.id,
-                  'user_ban',
-                  userId,
-                  {
-                    bulkOperation: true,
-                    operationId,
-                    bannedUser: { name: user.name, email: user.email }
-                  },
-                  ipAddress,
-                  userAgent
-                )
-                break
-
-              case 'unban':
-                // For unban, we just log the action (sessions will be created on next login)
-                await auditLogger.logUserAction(
-                  ctx.session.user.id,
-                  'user_unban',
-                  userId,
-                  {
-                    bulkOperation: true,
-                    operationId,
-                    unbannedUser: { name: user.name, email: user.email }
-                  },
-                  ipAddress,
-                  userAgent
-                )
-                break
-
-              case 'update_role': {
-                const newRole = input.parameters?.role
-                if (!newRole || !['user', 'admin'].includes(newRole)) {
-                  throw new Error('Invalid role specified')
-                }
-
-                await ctx.db
-                  .update(users)
-                  .set({ role: newRole, updatedAt: new Date() })
-                  .where(eq(users.id, userId))
-
-                await auditLogger.logUserAction(
-                  ctx.session.user.id,
-                  'user_update',
-                  userId,
-                  {
-                    bulkOperation: true,
-                    operationId,
-                    previousRole: user.role,
-                    newRole,
-                    user: { name: user.name, email: user.email }
-                  },
-                  ipAddress,
-                  userAgent
-                )
-                break
-              }
-
-              default:
-                throw new Error(`Unknown action: ${input.action}`)
-            }
+            await applyBulkUserAction({
+              db: ctx.db,
+              auditLogger,
+              action: input.action,
+              adminUserId: ctx.session.user.id,
+              userId,
+              user,
+              operationId,
+              parameters: input.parameters,
+              ipAddress,
+              userAgent
+            })
 
             results.push({
               userId,
@@ -350,14 +412,7 @@ export const bulkRouter = createTRPCRouter({
     }),
 
   bulkPostAction: adminProcedure
-    .input(
-      z
-        .object({
-          postIds: z.array(z.string()).min(1).max(100),
-          action: z.enum(['publish', 'archive', 'delete'])
-        })
-        .strict()
-    )
+    .input(bulkPostActionInputSchema)
     .mutation(async ({ ctx, input }) => {
       const operationId = randomBytes(16).toString('hex')
 
@@ -423,8 +478,8 @@ export const bulkRouter = createTRPCRouter({
           processedItems++
 
           try {
-            const post = targetPosts.find((p) => p.id === postId)
-            if (!post) {
+            const postExists = targetPosts.some((p) => p.id === postId)
+            if (!postExists) {
               results.push({ postId, success: false, error: 'Post not found' })
               failedItems++
             } else if (input.action === 'delete') {
@@ -527,14 +582,7 @@ export const bulkRouter = createTRPCRouter({
 
   // Get users for bulk operations (with filtering)
   getUsersForBulkOperation: adminProcedure
-    .input(
-      z.object({
-        search: z.string().optional(),
-        role: z.enum(['user', 'admin']).optional(),
-        excludeAdmins: z.boolean().default(true),
-        limit: z.number().min(1).max(1000).default(100)
-      })
-    )
+    .input(bulkOperationUsersQuerySchema)
     .query(async ({ ctx, input }) => {
       try {
         const conditions = []
@@ -586,7 +634,7 @@ export const bulkRouter = createTRPCRouter({
 
   // Cancel bulk operation
   cancelBulkOperation: adminProcedure
-    .input(z.object({ operationId: z.string() }))
+    .input(bulkOperationIdInputSchema)
     .mutation(async ({ ctx, input }) => {
       try {
         const auditLogger = new AuditLogger(ctx.db)
@@ -646,7 +694,7 @@ export const bulkRouter = createTRPCRouter({
 
   // Get bulk operation status
   getBulkOperationStatus: adminProcedure
-    .input(z.object({ operationId: z.string() }))
+    .input(bulkOperationIdInputSchema)
     .query(async ({ ctx, input }) => {
       try {
         const operation = await ctx.db.query.bulkOperations.findFirst({
