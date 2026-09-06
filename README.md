@@ -132,7 +132,7 @@ If upgrades introduce runtime issues, prefer debugging in development mode (`pnp
 Core tooling:
 
 - Node.js: `>=22` (see `package.json#engines.node`)
-- pnpm: `10.33.2` (see `package.json#packageManager`)
+- pnpm: `12.3.4` (see `package.json#packageManager`)
 - TypeScript: `^6.0.3`
 - Turbo: `^2.9.14`
 - Vitest: `^4.1.7`
