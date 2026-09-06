@@ -30,7 +30,7 @@ export const comments = pgTable(
       columns: [comment.userId],
       foreignColumns: [users.id],
       name: 'comment_user_id_user_id_fk'
-    })
+    }).onDelete('cascade')
   ]
 )
 
@@ -51,7 +51,7 @@ export const rates = pgTable(
       columns: [rate.userId],
       foreignColumns: [users.id],
       name: 'rate_user_id_user_id_fk'
-    }),
+    }).onDelete('cascade'),
     primaryKey({ columns: [rate.userId, rate.commentId], name: 'rate_user_id_comment_id_pk' })
   ]
 )

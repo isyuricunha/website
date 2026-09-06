@@ -1,6 +1,6 @@
 import { render } from '@react-email/render'
 import { db } from '@isyuricunha/db'
-import { EmailVerification, PasswordReset } from '@isyuricunha/emails'
+import { AccountDeletion, EmailVerification, PasswordReset } from '@isyuricunha/emails'
 import { env } from '@isyuricunha/env'
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
@@ -10,6 +10,7 @@ import { headers } from 'next/headers'
 import { Resend } from 'resend'
 
 import { logger } from '@/lib/logger'
+import { getSelfServiceDeletionBlockReason } from '@/lib/privacy/account-deletion-policy'
 import { get_request_locale } from '@/lib/request-locale'
 
 const is_anonymous_email = (email: string) => {
@@ -19,6 +20,12 @@ const is_anonymous_email = (email: string) => {
 const resend = new Resend(env.RESEND_API_KEY)
 
 export const auth = betterAuth({
+  rateLimit: {
+    customRules: {
+      '/delete-user': { window: 3600, max: 3 },
+      '/delete-user/callback': { window: 3600, max: 10 }
+    }
+  },
   database: drizzleAdapter(db, {
     provider: 'pg',
     usePlural: true
@@ -141,6 +148,60 @@ export const auth = betterAuth({
   user: {
     changeEmail: {
       enabled: true
+    },
+    deleteUser: {
+      enabled: true,
+      deleteTokenExpiresIn: 15 * 60,
+      sendDeleteAccountVerification: async ({ user, url }, request) => {
+        const candidate = user as typeof user & {
+          role?: string | null
+          isAnonymous?: boolean | null
+        }
+        const blockReason = getSelfServiceDeletionBlockReason(candidate)
+
+        if (blockReason) {
+          throw new APIError('FORBIDDEN', {
+            message: 'Self-service account deletion is unavailable for this account.'
+          })
+        }
+
+        const locale = request?.headers ? get_request_locale(request.headers) : 'en'
+        const subject =
+          locale === 'pt' ? 'Confirme a exclusão da sua conta' : 'Confirm account deletion'
+        const html = await render(
+          AccountDeletion({
+            name: user.name,
+            confirmationUrl: url,
+            locale
+          })
+        )
+        const { error } = await resend.emails.send({
+          from: 'yuricunha.com <noreply@yuricunha.com>',
+          to: user.email,
+          subject,
+          html
+        })
+
+        if (error) {
+          logger.error('Failed to send account deletion confirmation email')
+          throw new APIError('INTERNAL_SERVER_ERROR', {
+            message: 'Unable to send account deletion confirmation.'
+          })
+        }
+      },
+      beforeDelete: async (user) => {
+        const candidate = user as typeof user & {
+          role?: string | null
+          isAnonymous?: boolean | null
+        }
+        const blockReason = getSelfServiceDeletionBlockReason(candidate)
+
+        if (blockReason) {
+          throw new APIError('FORBIDDEN', {
+            message: 'Self-service account deletion is unavailable for this account.'
+          })
+        }
+      }
     },
     additionalFields: {
       role: { type: 'string', required: true, input: false, defaultValue: 'user' },

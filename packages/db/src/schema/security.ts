@@ -129,7 +129,7 @@ export const securityEvents = pgTable(
       columns: [securityEvent.userId],
       foreignColumns: [users.id],
       name: 'security_events_user_id_fkey'
-    })
+    }).onDelete('cascade')
   ]
 )
 

@@ -19,6 +19,7 @@ import {
 } from '@isyuricunha/ui'
 import { useMemo, useState } from 'react'
 
+import PrivacyControls from '@/components/account/privacy-controls'
 import { changeEmail, changePassword, updateUser, useSession } from '@/lib/auth-client'
 import { api } from '@/trpc/react'
 import { getAvatarAbbreviation } from '@/utils/get-avatar-abbreviation'
@@ -467,6 +468,11 @@ const SettingsForm = () => {
           </Button>
         </div>
       </section>
+
+      <PrivacyControls
+        email={user.email}
+        canDelete={user.role === 'user' && user.emailVerified && !user.isAnonymous}
+      />
     </div>
   )
 }
