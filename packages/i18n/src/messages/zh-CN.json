@@ -1279,6 +1279,21 @@
       "new-password": "新密码",
       "confirm-new-password": "确认新密码"
     },
+    "privacy": {
+      "title": "隐私与数据",
+      "description": "下载与账户关联的个人数据副本，或申请永久删除账户。",
+      "export-title": "下载你的数据",
+      "export-description": "生成包含账户、内容、反馈和偏好设置的 JSON 文件。身份验证令牌、安全日志、内部指标、内部配额以及其他用户的数据绝不会包含在内。",
+      "download": "下载我的数据",
+      "delete-title": "删除账户",
+      "delete-description": "请在下方输入账户电子邮箱。我们会发送一个 15 分钟后失效的确认链接。账户删除后无法恢复。",
+      "confirm-label": "输入电子邮箱以确认",
+      "delete-action": "申请删除账户",
+      "delete-pending": "正在发送确认邮件…",
+      "delete-sent": "请查看邮件并确认删除账户。",
+      "delete-error": "无法发送确认邮件，请重试。",
+      "delete-unavailable": "请联系我们以删除账户。"
+    },
     "effects": {
       "none": "无",
       "rays": "光线",

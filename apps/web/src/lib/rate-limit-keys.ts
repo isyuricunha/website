@@ -7,6 +7,8 @@ export const rate_limit_keys = {
   contact_submit: (ip: string) => `contact:submit:${normalize(ip)}`,
   newsletter_subscribe: (ip: string) => `newsletter:subscribe:${normalize(ip)}`,
   newsletter_unsubscribe: (ip: string) => `newsletter:unsubscribe:${normalize(ip)}`,
+  privacy_data_export: (userId: string, ip: string) =>
+    `privacy:data-export:${normalize(userId)}:${normalize(ip)}`,
   admin_posts_create: (ip: string) => `admin:posts:create:${normalize(ip)}`,
   admin_posts_update: (ip: string) => `admin:posts:update:${normalize(ip)}`,
   admin_posts_delete: (ip: string) => `admin:posts:delete:${normalize(ip)}`,

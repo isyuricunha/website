@@ -1279,6 +1279,21 @@
       "new-password": "Neues Passwort",
       "confirm-new-password": "Neues Passwort bestätigen"
     },
+    "privacy": {
+      "title": "Datenschutz und Daten",
+      "description": "Laden Sie eine übertragbare Kopie der mit Ihrem Konto verknüpften personenbezogenen Daten herunter oder beantragen Sie die endgültige Löschung.",
+      "export-title": "Daten herunterladen",
+      "export-description": "Erstellt eine JSON-Datei mit Ihrem Konto, Ihren Inhalten, Rückmeldungen und Einstellungen. Authentifizierungstoken, Sicherheitsprotokolle, interne Messwerte, Kontingente und Daten anderer Nutzer sind nie enthalten.",
+      "download": "Meine Daten herunterladen",
+      "delete-title": "Konto löschen",
+      "delete-description": "Geben Sie unten die E-Mail-Adresse Ihres Kontos ein. Wir senden einen Bestätigungslink, der nach 15 Minuten abläuft. Die Löschung ist endgültig.",
+      "confirm-label": "E-Mail-Adresse zur Bestätigung eingeben",
+      "delete-action": "Kontolöschung beantragen",
+      "delete-pending": "Bestätigung wird gesendet…",
+      "delete-sent": "Prüfen Sie Ihre E-Mails, um die Kontolöschung zu bestätigen.",
+      "delete-error": "Die Bestätigung konnte nicht gesendet werden. Versuchen Sie es erneut.",
+      "delete-unavailable": "Kontaktieren Sie uns, um Ihr Konto zu löschen."
+    },
     "effects": {
       "none": "Keiner",
       "rays": "Strahlen",

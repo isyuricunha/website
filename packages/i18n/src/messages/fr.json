@@ -1279,6 +1279,21 @@
       "new-password": "Nouveau mot de passe",
       "confirm-new-password": "Confirmer le nouveau mot de passe"
     },
+    "privacy": {
+      "title": "Confidentialité et données",
+      "description": "Téléchargez une copie portable des données personnelles liées à votre compte ou demandez sa suppression définitive.",
+      "export-title": "Télécharger vos données",
+      "export-description": "Crée un fichier JSON contenant votre compte, vos contenus, vos avis et vos préférences. Les jetons d’authentification, journaux de sécurité, métriques internes, quotas et données d’autres utilisateurs ne sont jamais inclus.",
+      "download": "Télécharger mes données",
+      "delete-title": "Supprimer votre compte",
+      "delete-description": "Saisissez ci-dessous l’adresse e-mail de votre compte. Nous enverrons un lien de confirmation valable 15 minutes. La suppression est définitive.",
+      "confirm-label": "Saisissez votre e-mail pour confirmer",
+      "delete-action": "Demander la suppression du compte",
+      "delete-pending": "Envoi de la confirmation…",
+      "delete-sent": "Consultez votre messagerie pour confirmer la suppression du compte.",
+      "delete-error": "Impossible d’envoyer la confirmation. Veuillez réessayer.",
+      "delete-unavailable": "Contactez-nous pour supprimer votre compte."
+    },
     "effects": {
       "none": "Aucun",
       "rays": "Rayons",

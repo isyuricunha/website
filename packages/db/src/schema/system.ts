@@ -93,7 +93,7 @@ export const errorLogs = pgTable(
       columns: [errorLog.userId],
       foreignColumns: [users.id],
       name: 'error_logs_user_id_fkey'
-    })
+    }).onDelete('cascade')
   ]
 )
 

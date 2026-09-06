@@ -21,7 +21,7 @@ export const guestbook = pgTable(
       columns: [guestbookRow.userId],
       foreignColumns: [users.id],
       name: 'guestbook_user_id_user_id_fk'
-    })
+    }).onDelete('cascade')
   ]
 )
 

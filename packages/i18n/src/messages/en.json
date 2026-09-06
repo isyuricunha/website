@@ -1279,6 +1279,21 @@
       "new-password": "New password",
       "confirm-new-password": "Confirm new password"
     },
+    "privacy": {
+      "title": "Privacy and data",
+      "description": "Access a portable copy of the personal data linked to your account or request permanent account deletion.",
+      "export-title": "Download your data",
+      "export-description": "Creates a JSON file with your account, content, feedback, and preferences. Authentication tokens, security logs, internal metrics, quotas, and other users' data are never included.",
+      "download": "Download my data",
+      "delete-title": "Delete your account",
+      "delete-description": "Type your account email below. We will send a confirmation link that expires in 15 minutes. Deletion is permanent.",
+      "confirm-label": "Type your email to confirm",
+      "delete-action": "Request account deletion",
+      "delete-pending": "Sending confirmation…",
+      "delete-sent": "Check your email to confirm account deletion.",
+      "delete-error": "Could not send the deletion confirmation. Please try again.",
+      "delete-unavailable": "Contact support for account deletion."
+    },
     "effects": {
       "none": "None",
       "rays": "Rays",

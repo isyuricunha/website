@@ -40,7 +40,7 @@ export const performanceMetrics = pgTable(
       columns: [performanceMetric.userId],
       foreignColumns: [users.id],
       name: 'performance_metrics_user_id_fkey'
-    })
+    }).onDelete('cascade')
   ]
 )
 
@@ -80,7 +80,7 @@ export const analyticsEvents = pgTable(
       columns: [analyticsEvent.userId],
       foreignColumns: [users.id],
       name: 'analytics_events_user_id_fkey'
-    })
+    }).onDelete('cascade')
   ]
 )
 
@@ -141,7 +141,7 @@ export const apiUsage = pgTable(
       columns: [apiUsageRow.userId],
       foreignColumns: [users.id],
       name: 'api_usage_user_id_fkey'
-    })
+    }).onDelete('cascade')
   ]
 )
 
@@ -167,7 +167,7 @@ export const queryPerformance = pgTable(
       columns: [queryPerformanceRow.userId],
       foreignColumns: [users.id],
       name: 'query_performance_user_id_fkey'
-    })
+    }).onDelete('cascade')
   ]
 )
 
@@ -219,7 +219,7 @@ export const errorTracking = pgTable(
       columns: [errorTrackingRow.userId],
       foreignColumns: [users.id],
       name: 'error_tracking_user_id_fkey'
-    })
+    }).onDelete('cascade')
   ]
 )
 

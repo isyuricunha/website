@@ -137,7 +137,7 @@ export const emailCampaignRecipients = pgTable(
       columns: [emailCampaignRecipient.userId],
       foreignColumns: [users.id],
       name: 'email_campaign_recipients_user_id_fkey'
-    })
+    }).onDelete('cascade')
   ]
 )
 
@@ -316,7 +316,7 @@ export const emailSubscriptions = pgTable(
       columns: [emailSubscription.userId],
       foreignColumns: [users.id],
       name: 'email_subscriptions_user_id_fkey'
-    }),
+    }).onDelete('cascade'),
     unique('email_subscriptions_email_key').on(emailSubscription.email),
     unique('email_subscriptions_unsubscribe_token_key').on(emailSubscription.unsubscribeToken)
   ]

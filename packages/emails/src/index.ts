@@ -1,3 +1,4 @@
+export { default as AccountDeletion } from './templates/account-deletion'
 export { default as Comment } from './templates/comment'
 export { default as ContactConfirmation } from './templates/contact-confirmation'
 export { default as ContactForm } from './templates/contact-form'

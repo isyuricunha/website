@@ -1279,6 +1279,21 @@
       "new-password": "Nova senha",
       "confirm-new-password": "Confirmar nova senha"
     },
+    "privacy": {
+      "title": "Privacidade e dados",
+      "description": "Baixe uma cópia portátil dos dados pessoais ligados à sua conta ou solicite a exclusão permanente dela.",
+      "export-title": "Baixar seus dados",
+      "export-description": "Cria um arquivo JSON com sua conta, conteúdo, feedback e preferências. Tokens de autenticação, logs de segurança, métricas internas, cotas e dados de outros usuários nunca são incluídos.",
+      "download": "Baixar meus dados",
+      "delete-title": "Excluir sua conta",
+      "delete-description": "Digite abaixo o e-mail da sua conta. Enviaremos um link de confirmação que expira em 15 minutos. A exclusão é permanente.",
+      "confirm-label": "Digite seu e-mail para confirmar",
+      "delete-action": "Solicitar exclusão da conta",
+      "delete-pending": "Enviando confirmação…",
+      "delete-sent": "Confira seu e-mail para confirmar a exclusão da conta.",
+      "delete-error": "Não foi possível enviar a confirmação de exclusão. Tente novamente.",
+      "delete-unavailable": "Entre em contato para excluir sua conta."
+    },
     "effects": {
       "none": "Nenhum",
       "rays": "Raios",

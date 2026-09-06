@@ -45,6 +45,6 @@ export const aiChatFeedback = pgTable(
       columns: [aiChatFeedbackRow.userId],
       foreignColumns: [users.id],
       name: 'ai_chat_feedback_user_id_fkey'
-    })
+    }).onDelete('cascade')
   ]
 )
