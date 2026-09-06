@@ -1,35 +1,89 @@
 ---
 ---
 
-_Last updated: September 5, 2026_
+_Last updated: September 6, 2026_
 
-This page explains, in plain language, what this site does and does not do with your data. It is not a substitute for legal advice, but it is an honest description of the actual code running this site.
+This notice explains what data this site uses, why it is needed, and how long it is kept.
 
----
+## Who runs this site
 
-## AI chat ("Yue AI")
+Yuri Cunha operates yuricunha.com and is responsible for the data described here. Questions and privacy requests can be sent through the [contact](/contact) page.
 
-- Conversations with the AI assistant on this site are stored **only in your browser's local storage**, never on the server.
-- The server does not persist your messages or the assistant's replies. Each request is processed and the response is streamed back to you; the conversation text itself is not written to any database.
-- The server does record lightweight, content-free metrics for reliability and cost monitoring: response time, an estimated token count, which AI provider/model handled the request, the request status, and the endpoint. These records never contain your message text.
-- Your data is **not used to train any AI model**. Nothing you type here is sent anywhere for model training, fine-tuning, or evaluation datasets.
-- If you use the like/dislike feedback buttons on a chat reply, we store the rating (like or dislike) and an optional comment you write, tied to that specific message, together with the page, provider, model, and locale. This feedback does not include the rest of the conversation.
+## When you browse the site
 
-## What we do collect
+The site records basic technical information needed to operate securely and understand general usage. This can include the page visited, referrer, timestamp, browser, operating system, device type, user agent, approximate location, and IP address.
 
-To keep the site working, secure, and free of spam, some requests are logged:
+Analytics are handled through an Umami installation served from `analytics.yuricunha.com`. The site's internal analytics database does not store your plain IP address. It stores a salted, one-way hash so repeat visits can be counted without keeping the original address.
 
-- **IP address, user agent, and timestamps** for rate-limiting (e.g. contact form, newsletter, AI chat) and for error/security logs when something goes wrong.
-- **Basic analytics events** (page views and similar interactions), including IP address and user agent, to understand how the site is used.
-- **Contact form submissions** are verified with Cloudflare Turnstile before being processed, to filter out automated spam.
-- If you create an account (for commenting, the guestbook, etc.), standard account data (email, session tokens, login attempts) is stored to make authentication work.
+The full IP address may still be used where it is necessary to prevent abuse, apply rate limits, investigate errors, or protect accounts. It may appear temporarily in security, authentication, performance, and error records.
 
-## What we don't do
+The site does not use advertising trackers or build advertising profiles.
 
-- We don't sell your data.
-- We don't use your AI chat messages for advertising or profiling.
-- We don't train or fine-tune any AI model on data collected from this site.
+## Accounts and public contributions
 
-## Questions
+If you create an account, the site stores the information needed to authenticate you and maintain your profile. This may include your name, email address, username, profile image, authentication provider, session details, and login history. Signing in with Google or GitHub also involves those providers under their own privacy terms.
 
-If you have questions about this notice or want something about your data clarified or removed, reach out through the [contact](/contact) page.
+Comments and guestbook messages are public. They remain visible with your public profile information until they are removed. Guestbook messages may also generate a private Discord notification so Yuri knows that a new message was posted.
+
+## Contact and newsletter
+
+When you use the contact form, the site processes your name, email address, subject, and message to deliver and answer your request. The message is sent by email through Resend rather than saved in the site's application database. Cloudflare Turnstile may process technical request data to check for automated spam.
+
+If you subscribe to the newsletter, your email address is stored with Resend until you unsubscribe. A record of the unsubscribe request may be kept so the site does not subscribe you again by mistake.
+
+## Yue AI
+
+Your Yue AI conversation history is stored in your browser's local storage. The site does not save the conversation text in its database.
+
+When you send a message, the current message and the recent context needed to answer it pass through the site server to self-hosted AI models. The text is used only to produce the response. It is not used to train or fine-tune a model.
+
+The server keeps content-free operational records such as response time, status, model, estimated token count, endpoint, IP address, and user agent. These records do not contain your prompt or the generated answer.
+
+If you send feedback about an answer, the site stores the rating, any comment you add, technical identifiers for that answer, the current page and language, model information, IP address, user agent, and your account ID when signed in. The rest of the conversation is not included.
+
+## Cookies and browser storage
+
+The site uses necessary cookies for language selection and signed-in sessions. Local and session storage may keep your Yue AI history, recent searches, interface preferences, dismissed announcements, and small local features such as game progress. This information stays in your browser unless a feature explicitly sends it to the server.
+
+The site does not use advertising cookies.
+
+## How long data is kept
+
+Automated cleanup currently applies these limits:
+
+- internal analytics events: 180 days;
+- performance and AI operational metrics: 90 days;
+- login attempts: 90 days;
+- Yue AI feedback: 365 days;
+- resolved security events and error logs: 180 days after resolution.
+
+Unresolved security events and errors may be kept until they are resolved. Account data and public contributions are kept while the account or contribution remains active. Contact messages are kept only as long as reasonably needed to handle the conversation. Newsletter data is kept until you unsubscribe, subject to a limited suppression record.
+
+Backups may retain deleted data for a limited period until they rotate out.
+
+## Service providers
+
+The site relies on a small number of services to operate: Vercel for hosting, Upstash for rate limiting and cache, Resend for email and newsletter delivery, Cloudflare for Turnstile and related infrastructure, and Google or GitHub when you choose social sign-in. These services receive only the information needed for their role and may process it in other countries under their own privacy and security terms.
+
+The AI models used by Yue AI are self-hosted. Chat messages are not sent to a third-party AI provider.
+
+## Why data is processed
+
+Depending on the feature, data is processed to provide something you requested, protect the site and its users, keep the service reliable, understand aggregate usage, send communications you asked for, or comply with legal obligations. Newsletter messages rely on your choice to subscribe, which you can withdraw at any time.
+
+## Your choices and rights
+
+You can ask whether the site holds personal data about you and request access, correction, deletion, portability, restriction, or information about how it was used or shared, where applicable. You can also object to certain processing or withdraw consent.
+
+Send a request through the [contact](/contact) page. Identity may need to be verified before account data is disclosed or deleted. You may also contact the Brazilian National Data Protection Authority (ANPD) or the data protection authority where you live.
+
+## What this site does not do
+
+- It does not sell personal data.
+- It does not use personal data for targeted advertising.
+- It does not use Yue AI conversations to train models.
+- It does not make decisions with legal or similarly significant effects about visitors through automated profiling.
+
+## Changes to this notice
+
+This notice may change when the site's features or data practices change. The date at the top shows the latest revision.

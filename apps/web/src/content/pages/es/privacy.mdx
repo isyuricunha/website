@@ -1,35 +1,89 @@
 ---
 ---
 
-_Última actualización: 5 de septiembre de 2026_
+_Última actualización: 6 de septiembre de 2026_
 
-Esta página explica, en un lenguaje simple, qué hace y qué no hace este sitio con tus datos. No sustituye un asesoramiento legal, pero es una descripción honesta del código que realmente ejecuta este sitio.
+Este aviso explica qué datos utiliza el sitio, por qué son necesarios y durante cuánto tiempo se conservan.
 
----
+## Quién administra este sitio
 
-## Chat de IA ("Yue AI")
+Yuri Cunha administra yuricunha.com y es responsable de los datos descritos aquí. Las preguntas y solicitudes sobre privacidad pueden enviarse a través de la página de [contacto](/contact).
 
-- Las conversaciones con el asistente de IA de este sitio se almacenan **únicamente en el almacenamiento local de tu navegador**, nunca en el servidor.
-- El servidor no guarda tus mensajes ni las respuestas del asistente. Cada solicitud se procesa y la respuesta se transmite de vuelta a ti; el texto de la conversación en sí no se escribe en ninguna base de datos.
-- El servidor registra métricas ligeras y sin contenido, para fiabilidad y monitoreo de costos: tiempo de respuesta, una estimación de tokens, qué proveedor/modelo de IA atendió la solicitud, el estado de la solicitud y el endpoint. Estos registros nunca contienen el texto de tu mensaje.
-- Tus datos **no se usan para entrenar ningún modelo de IA**. Nada de lo que escribes aquí se envía para entrenamiento de modelos, fine-tuning o conjuntos de datos de evaluación.
-- Si usas los botones de me gusta/no me gusta en una respuesta del chat, almacenamos la valoración (me gusta o no me gusta) y un comentario opcional que escribas, vinculados a ese mensaje específico, junto con la página, proveedor, modelo e idioma. Este feedback no incluye el resto de la conversación.
+## Cuando navegas por el sitio
 
-## Qué recopilamos
+El sitio registra información técnica básica necesaria para funcionar de forma segura y entender su uso general. Esto puede incluir la página visitada, la procedencia de la visita, la hora, el navegador, el sistema operativo, el tipo de dispositivo, el agente de usuario, la ubicación aproximada y la dirección IP.
 
-Para mantener el sitio funcionando, seguro y libre de spam, algunas solicitudes se registran:
+Las estadísticas se recopilan mediante una instalación de Umami servida desde `analytics.yuricunha.com`. La base de datos interna de estadísticas no almacena tu dirección IP original. Guarda un hash unidireccional con salt que permite contar visitas recurrentes sin conservar la dirección original.
 
-- **Dirección IP, user agent y marcas de tiempo** para limitación de tasa (por ejemplo, formulario de contacto, newsletter, chat de IA) y para logs de error/seguridad cuando algo falla.
-- **Eventos básicos de analítica** (vistas de página e interacciones similares), incluyendo dirección IP y user agent, para entender cómo se usa el sitio.
-- Los **envíos del formulario de contacto** se verifican con Cloudflare Turnstile antes de procesarse, para filtrar spam automatizado.
-- Si creas una cuenta (para comentar, usar el guestbook, etc.), se almacenan datos estándar de cuenta (correo electrónico, tokens de sesión, intentos de inicio de sesión) para que funcione la autenticación.
+La dirección IP completa todavía puede utilizarse cuando sea necesario para impedir abusos, aplicar límites de solicitudes, investigar errores o proteger cuentas. En esos casos, puede aparecer temporalmente en registros de seguridad, autenticación, rendimiento y errores.
 
-## Qué no hacemos
+El sitio no utiliza rastreadores publicitarios ni crea perfiles para anuncios.
 
-- No vendemos tus datos.
-- No usamos tus mensajes del chat de IA para publicidad ni perfilamiento.
-- No entrenamos ni hacemos fine-tuning de ningún modelo de IA con datos recopilados en este sitio.
+## Cuentas y contribuciones públicas
 
-## Preguntas
+Si creas una cuenta, el sitio almacena los datos necesarios para autenticarte y mantener tu perfil. Esto puede incluir nombre, correo electrónico, nombre de usuario, imagen de perfil, proveedor de autenticación, datos de sesión e historial de inicio de sesión. Iniciar sesión con Google o GitHub también implica a esos proveedores conforme a sus propias políticas de privacidad.
 
-Si tienes preguntas sobre este aviso o quieres que se aclare o elimine algo relacionado con tus datos, contáctanos a través de la página de [contacto](/contact).
+Los comentarios y mensajes del libro de visitas son públicos. Permanecen visibles junto con la información pública de tu perfil hasta que se eliminan. Los mensajes del libro de visitas también pueden generar una notificación privada en Discord para avisar a Yuri de una nueva publicación.
+
+## Contacto y boletín
+
+Cuando utilizas el formulario de contacto, el sitio procesa tu nombre, correo electrónico, asunto y mensaje para entregar y responder a tu solicitud. El mensaje se envía por correo mediante Resend, en lugar de guardarse en la base de datos de la aplicación. Cloudflare Turnstile puede procesar datos técnicos de la solicitud para detectar spam automatizado.
+
+Si te suscribes al boletín, tu correo electrónico se almacena en Resend hasta que canceles la suscripción. Puede conservarse un registro de la baja para evitar que tu dirección vuelva a suscribirse por error.
+
+## Yue AI
+
+El historial de tus conversaciones con Yue AI se guarda en el almacenamiento local de tu navegador. El sitio no guarda el texto de esas conversaciones en su base de datos.
+
+Cuando envías un mensaje, el texto actual y el contexto reciente necesario para responder pasan por el servidor del sitio hasta modelos de IA alojados en infraestructura propia. El contenido se utiliza únicamente para generar la respuesta. No se usa para entrenar ni ajustar modelos.
+
+El servidor conserva registros operativos sin el contenido de la conversación, como el tiempo de respuesta, el estado, el modelo, una estimación de tokens, el endpoint, la dirección IP y el agente de usuario. Estos registros no contienen tu pregunta ni la respuesta generada.
+
+Si envías una valoración sobre una respuesta, el sitio almacena la valoración, cualquier comentario opcional, identificadores técnicos de esa respuesta, la página y el idioma actuales, información del modelo, dirección IP, agente de usuario y el ID de tu cuenta cuando hayas iniciado sesión. El resto de la conversación no se incluye.
+
+## Cookies y almacenamiento del navegador
+
+El sitio utiliza cookies necesarias para seleccionar el idioma y mantener sesiones iniciadas. El almacenamiento local y de sesión puede guardar el historial de Yue AI, búsquedas recientes, preferencias de la interfaz, avisos descartados y pequeñas funciones locales, como el progreso de juegos. Esta información permanece en tu navegador, salvo que una función indique claramente que la enviará al servidor.
+
+El sitio no utiliza cookies publicitarias.
+
+## Durante cuánto tiempo se conservan los datos
+
+La limpieza automática aplica actualmente estos límites:
+
+- eventos internos de estadísticas: 180 días;
+- métricas de rendimiento y operación de la IA: 90 días;
+- intentos de inicio de sesión: 90 días;
+- valoraciones de Yue AI: 365 días;
+- eventos de seguridad y registros de errores resueltos: 180 días después de su resolución.
+
+Los eventos de seguridad y errores no resueltos pueden conservarse hasta que se resuelvan. Los datos de la cuenta y las contribuciones públicas se mantienen mientras la cuenta o la contribución sigan activas. Los mensajes de contacto se conservan solo durante el tiempo razonablemente necesario para gestionar la conversación. Los datos del boletín permanecen hasta que canceles la suscripción, con la posible conservación de un registro limitado de exclusión.
+
+Las copias de seguridad pueden conservar datos eliminados durante un periodo limitado, hasta que sean sustituidas.
+
+## Proveedores de servicios
+
+El sitio depende de algunos servicios para funcionar: Vercel para el alojamiento, Upstash para los límites de solicitudes y la caché, Resend para la entrega de correos y del boletín, Cloudflare para Turnstile y la infraestructura relacionada, y Google o GitHub cuando eliges el inicio de sesión social. Estos servicios reciben únicamente la información necesaria para cumplir su función y pueden procesarla en otros países de acuerdo con sus propias condiciones de privacidad y seguridad.
+
+Los modelos utilizados por Yue AI están alojados en infraestructura propia. Los mensajes del chat no se envían a un proveedor externo de IA.
+
+## Por qué se utilizan los datos
+
+Según la función, los datos se utilizan para ofrecer algo que hayas solicitado, proteger el sitio y a sus usuarios, mantener el servicio fiable, entender el uso de forma agregada, enviar comunicaciones solicitadas o cumplir obligaciones legales. El envío del boletín depende de tu decisión de suscribirte, que puedes retirar en cualquier momento.
+
+## Tus opciones y derechos
+
+Puedes preguntar si el sitio conserva datos personales sobre ti y solicitar acceso, corrección, eliminación, portabilidad, restricción o información sobre cómo se utilizaron o compartieron, cuando corresponda. También puedes oponerte a determinados tratamientos o retirar tu consentimiento.
+
+Envía la solicitud mediante la página de [contacto](/contact). Puede ser necesario verificar tu identidad antes de entregar o eliminar datos de la cuenta. También puedes contactar con la Autoridad Nacional de Protección de Datos de Brasil (ANPD) o con la autoridad de protección de datos del lugar donde resides.
+
+## Lo que este sitio no hace
+
+- No vende datos personales.
+- No utiliza datos personales para publicidad dirigida.
+- No utiliza conversaciones de Yue AI para entrenar modelos.
+- No toma decisiones con efectos jurídicos o similares sobre los visitantes mediante perfiles automatizados.
+
+## Cambios en este aviso
+
+Este aviso puede cambiar cuando cambien las funciones o las prácticas de tratamiento de datos del sitio. La fecha al inicio de la página indica la revisión más reciente.
