@@ -85,12 +85,12 @@ const SignInDialog = () => {
   const unknown_error_message = t('common.unknown-error')
 
   useEffect(() => {
-    if (typeof globalThis !== 'undefined') {
-      const provider = localStorage.getItem('last-used-provider') as Provider | null
-      requestAnimationFrame(() => {
-        setLastUsedProvider(provider)
-      })
-    }
+    if (typeof globalThis === 'undefined') return
+
+    const provider = localStorage.getItem('last-used-provider') as Provider | null
+    requestAnimationFrame(() => {
+      setLastUsedProvider(provider)
+    })
   }, [])
 
   const handleSocialSignIn = async (provider: Provider) => {
@@ -218,10 +218,10 @@ const SignInDialog = () => {
         <DialogContent className='sm:max-w-[425px]'>
           <DialogHeader>
             <DialogTitle className='text-left text-2xl'>
-              {isSignup ? t('common.sign-up') : t('common.sign-in')}
+              {t(isSignup ? 'common.sign-up' : 'common.sign-in')}
             </DialogTitle>
             <DialogDescription className='text-left'>
-              {isSignup ? t('dialog.sign-up.description') : t('dialog.sign-in.description')}
+              {t(isSignup ? 'dialog.sign-up.description' : 'dialog.sign-in.description')}
             </DialogDescription>
           </DialogHeader>
 
@@ -314,7 +314,7 @@ const SignInDialog = () => {
               onClick={isSignup ? handleEmailSignUp : handleEmailSignIn}
               isPending={isEmailPending}
             >
-              {isSignup ? t('dialog.sign-up.email-submit') : t('dialog.sign-in.email-submit')}
+              {t(isSignup ? 'dialog.sign-up.email-submit' : 'dialog.sign-in.email-submit')}
             </Button>
           </div>
 

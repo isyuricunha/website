@@ -32,22 +32,22 @@ const transform = async <D extends BaseDoc>(document: D, context: Context) => {
   }
 }
 
+const postFieldsSchema = z.object({
+  title: z.string(),
+  date: z.string(),
+  modifiedTime: z.string(),
+  summary: z.string(),
+  category: z.string().optional(),
+  tags: z.array(z.string()).optional().default([]),
+  readingTime: z.number().optional(),
+  featured: z.boolean().optional().default(false)
+})
+
 const posts = defineCollection({
   name: 'Post',
   directory: 'src/content/blog',
   include: '**/*.mdx',
-  schema: contentSchema.merge(
-    z.object({
-      title: z.string(),
-      date: z.string(),
-      modifiedTime: z.string(),
-      summary: z.string(),
-      category: z.string().optional(),
-      tags: z.array(z.string()).optional().default([]),
-      readingTime: z.number().optional(),
-      featured: z.boolean().optional().default(false)
-    })
-  ),
+  schema: contentSchema.merge(postFieldsSchema),
   transform: async (document, context) => {
     const baseTransform = await transform(document, context)
 
@@ -60,26 +60,28 @@ const posts = defineCollection({
       readingTime
     }
   }
+})
+
+const snippetDateSchema = z
+  .union([z.string(), z.date()])
+  .transform((value) =>
+    typeof value === 'string' ? value : (value.toISOString().split('T')[0] ?? '')
+  )
+
+const snippetFieldsSchema = z.object({
+  title: z.string(),
+  date: snippetDateSchema,
+  author: z.string().optional(),
+  description: z.string(),
+  tags: z.array(z.string()).optional().default([]),
+  readingTime: z.number().optional()
 })
 
 const snippets = defineCollection({
   name: 'Snippet',
   directory: 'src/content/snippet',
   include: '**/*.mdx',
-  schema: contentSchema.merge(
-    z.object({
-      title: z.string(),
-      date: z
-        .union([z.string(), z.date()])
-        .transform((value) =>
-          typeof value === 'string' ? value : (value.toISOString().split('T')[0] ?? '')
-        ),
-      author: z.string().optional(),
-      description: z.string(),
-      tags: z.array(z.string()).optional().default([]),
-      readingTime: z.number().optional()
-    })
-  ),
+  schema: contentSchema.merge(snippetFieldsSchema),
   transform: async (document, context) => {
     const baseTransform = await transform(document, context)
 
@@ -94,26 +96,26 @@ const snippets = defineCollection({
   }
 })
 
+const projectFieldsSchema = z.object({
+  name: z.string(),
+  description: z.string(),
+  homepage: z.string().optional(),
+  github: z.string(),
+  repository: z.string().optional(), // For compatibility
+  techstack: z.array(z.string()),
+  selected: z.boolean().optional().default(false),
+  status: z.enum(['active', 'archived', 'beta', 'completed']).optional().default('active'),
+  category: z.string().optional(),
+  featured: z.boolean().optional().default(false),
+  startDate: z.string().optional(),
+  endDate: z.string().optional()
+})
+
 const projects = defineCollection({
   name: 'Project',
   directory: 'src/content/projects',
   include: '**/*.mdx',
-  schema: contentSchema.merge(
-    z.object({
-      name: z.string(),
-      description: z.string(),
-      homepage: z.string().optional(),
-      github: z.string(),
-      repository: z.string().optional(), // For compatibility
-      techstack: z.array(z.string()),
-      selected: z.boolean().optional().default(false),
-      status: z.enum(['active', 'archived', 'beta', 'completed']).optional().default('active'),
-      category: z.string().optional(),
-      featured: z.boolean().optional().default(false),
-      startDate: z.string().optional(),
-      endDate: z.string().optional()
-    })
-  ),
+  schema: contentSchema.merge(projectFieldsSchema),
   transform: async (document, context) => {
     const baseTransform = await transform(document, context)
 

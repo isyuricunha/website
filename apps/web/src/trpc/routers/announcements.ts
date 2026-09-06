@@ -53,23 +53,96 @@ const is_foreign_key_violation = (error: unknown): boolean => {
   return false
 }
 
+const translateAnnouncementSchema = z.object({
+  title: z.string().min(1),
+  content: z.string().min(1),
+  fromLang: z.literal('en').default('en'),
+  toLang: z.enum(['pt', 'es', 'fr', 'de', 'ja', 'zh-CN']).default('pt'),
+  model: z.string().min(1).optional()
+})
+
+const translateAnnouncementResponseSchema = z.object({
+  title: z.string().min(1),
+  content: z.string().min(1)
+})
+
+const announcementsQuerySchema = z.object({
+  active: z.boolean().optional(),
+  adminView: z.boolean().default(false),
+  locale: z.string().min(2).max(10).optional()
+})
+
+const announcementTargetAudienceSchema = z.object({
+  userRoles: z.array(z.string()).optional(),
+  userIds: z.array(z.string()).optional()
+})
+
+const announcementCreateSchema = z.object({
+  title: z.string().min(1),
+  content: z.string().min(1),
+  titlePt: z.string().min(1).optional(),
+  contentPt: z.string().min(1).optional(),
+  titleEs: z.string().min(1).optional(),
+  contentEs: z.string().min(1).optional(),
+  titleFr: z.string().min(1).optional(),
+  contentFr: z.string().min(1).optional(),
+  titleDe: z.string().min(1).optional(),
+  contentDe: z.string().min(1).optional(),
+  titleJa: z.string().min(1).optional(),
+  contentJa: z.string().min(1).optional(),
+  titleZhCn: z.string().min(1).optional(),
+  contentZhCn: z.string().min(1).optional(),
+  type: z
+    .enum(['info', 'warning', 'success', 'error', 'maintenance', 'feature', 'update'])
+    .default('info'),
+  priority: z.number().min(0).max(10).default(0),
+  isDismissible: z.boolean().default(true),
+  targetAudience: announcementTargetAudienceSchema.optional()
+})
+
+const announcementIdSchema = z.object({ announcementId: z.string() })
+
+const updateAnnouncementSchema = z.object({
+  id: z.string(),
+  title: z.string().min(1).optional(),
+  content: z.string().min(1).optional(),
+  titlePt: z.string().min(1).optional(),
+  contentPt: z.string().min(1).optional(),
+  titleEs: z.string().min(1).optional(),
+  contentEs: z.string().min(1).optional(),
+  titleFr: z.string().min(1).optional(),
+  contentFr: z.string().min(1).optional(),
+  titleDe: z.string().min(1).optional(),
+  contentDe: z.string().min(1).optional(),
+  titleJa: z.string().min(1).optional(),
+  contentJa: z.string().min(1).optional(),
+  titleZhCn: z.string().min(1).optional(),
+  contentZhCn: z.string().min(1).optional(),
+  type: z
+    .enum(['info', 'warning', 'success', 'error', 'maintenance', 'feature', 'update'])
+    .optional(),
+  priority: z.number().min(0).max(10).optional(),
+  isDismissible: z.boolean().optional(),
+  isActive: z.boolean().optional(),
+  targetAudience: announcementTargetAudienceSchema.optional()
+})
+
+const announcementIdParamSchema = z.object({ id: z.string() })
+
+const announcementAnalyticsQuerySchema = z.object({
+  announcementId: z.string().optional(),
+  dateRange: z
+    .object({
+      start: z.date(),
+      end: z.date()
+    })
+    .optional()
+})
+
 export const announcementsRouter = createTRPCRouter({
   translateAnnouncement: adminProcedure
-    .input(
-      z.object({
-        title: z.string().min(1),
-        content: z.string().min(1),
-        fromLang: z.literal('en').default('en'),
-        toLang: z.enum(['pt', 'es', 'fr', 'de', 'ja', 'zh-CN']).default('pt'),
-        model: z.string().min(1).optional()
-      })
-    )
+    .input(translateAnnouncementSchema)
     .mutation(async ({ input }) => {
-      const response_schema = z.object({
-        title: z.string().min(1),
-        content: z.string().min(1)
-      })
-
       const targetName = _localeNameMap[input.toLang] ?? input.toLang
 
       const prompt = `Translate this announcement from English to ${targetName}.
@@ -96,13 +169,16 @@ ${input.content}
         try {
           return JSON.parse(raw)
         } catch {
-          const match = /\{[\s\S]*\}/.exec(raw)
-          if (!match) throw new Error('AI response is not valid JSON')
-          return JSON.parse(match[0])
+          const start = raw.indexOf('{')
+          const end = raw.lastIndexOf('}')
+          if (start === -1 || end === -1 || end < start) {
+            throw new Error('AI response is not valid JSON')
+          }
+          return JSON.parse(raw.slice(start, end + 1))
         }
       })()
 
-      const parsed = response_schema.parse(json)
+      const parsed = translateAnnouncementResponseSchema.parse(json)
 
       return {
         titleTranslated: parsed.title.trim(),
@@ -113,13 +189,7 @@ ${input.content}
 
   // Get announcements (public endpoint for homepage banners)
   getAnnouncements: publicProcedure
-    .input(
-      z.object({
-        active: z.boolean().optional(),
-        adminView: z.boolean().default(false),
-        locale: z.string().min(2).max(10).optional()
-      })
-    )
+    .input(announcementsQuerySchema)
     .query(async ({ ctx, input }) => {
       try {
         const isAdmin = ctx.session?.user?.role === 'admin'
@@ -145,7 +215,7 @@ ${input.content}
           if (!isRecord(value)) return null
           const raw = value[key]
           if (!Array.isArray(raw)) return null
-          if (!raw.every((item) => typeof item === 'string')) return null
+          if (raw.some((item) => typeof item !== 'string')) return null
           return raw
         }
 
@@ -181,7 +251,7 @@ ${input.content}
 
         // Filter announcements based on user targeting
         const filteredAnnouncements = visibleAnnouncements.filter((announcement) => {
-          if (!announcement.targetAudience || adminView) {
+          if (adminView || !announcement.targetAudience) {
             return true // Show all if no targeting or admin view
           }
 
@@ -216,13 +286,11 @@ ${input.content}
         // Get user interactions for non-admin view (only for authenticated users)
         let userInteractions: any = {}
         if (!adminView && ctx.session?.user) {
+          const filteredAnnouncementIds = filteredAnnouncements.map((a) => a.id)
           const interactions = await ctx.db.query.announcementInteractions.findMany({
             where: and(
               eq(announcementInteractions.userId, ctx.session.user.id),
-              inArray(
-                announcementInteractions.announcementId,
-                filteredAnnouncements.map((a) => a.id)
-              )
+              inArray(announcementInteractions.announcementId, filteredAnnouncementIds)
             )
           })
 
@@ -270,35 +338,7 @@ ${input.content}
 
   // Create announcement (admin only)
   createAnnouncement: adminProcedure
-    .input(
-      z.object({
-        title: z.string().min(1),
-        content: z.string().min(1),
-        titlePt: z.string().min(1).optional(),
-        contentPt: z.string().min(1).optional(),
-        titleEs: z.string().min(1).optional(),
-        contentEs: z.string().min(1).optional(),
-        titleFr: z.string().min(1).optional(),
-        contentFr: z.string().min(1).optional(),
-        titleDe: z.string().min(1).optional(),
-        contentDe: z.string().min(1).optional(),
-        titleJa: z.string().min(1).optional(),
-        contentJa: z.string().min(1).optional(),
-        titleZhCn: z.string().min(1).optional(),
-        contentZhCn: z.string().min(1).optional(),
-        type: z
-          .enum(['info', 'warning', 'success', 'error', 'maintenance', 'feature', 'update'])
-          .default('info'),
-        priority: z.number().min(0).max(10).default(0),
-        isDismissible: z.boolean().default(true),
-        targetAudience: z
-          .object({
-            userRoles: z.array(z.string()).optional(),
-            userIds: z.array(z.string()).optional()
-          })
-          .optional()
-      })
-    )
+    .input(announcementCreateSchema)
     .mutation(async ({ ctx, input }) => {
       try {
         const auditLogger = new AuditLogger(ctx.db)
@@ -358,7 +398,7 @@ ${input.content}
     }),
 
   markAnnouncementViewed: publicProcedure
-    .input(z.object({ announcementId: z.string() }))
+    .input(announcementIdSchema)
     .mutation(async ({ ctx, input }) => {
       try {
         if (!ctx.session?.user) {
@@ -417,7 +457,7 @@ ${input.content}
 
   // Dismiss announcement (works for both authenticated and guest users)
   dismissAnnouncement: publicProcedure
-    .input(z.object({ announcementId: z.string() }))
+    .input(announcementIdSchema)
     .mutation(async ({ ctx, input }) => {
       try {
         // For authenticated users, store dismissal in database
@@ -475,37 +515,7 @@ ${input.content}
 
   // Update announcement (admin only)
   updateAnnouncement: adminProcedure
-    .input(
-      z.object({
-        id: z.string(),
-        title: z.string().min(1).optional(),
-        content: z.string().min(1).optional(),
-        titlePt: z.string().min(1).optional(),
-        contentPt: z.string().min(1).optional(),
-        titleEs: z.string().min(1).optional(),
-        contentEs: z.string().min(1).optional(),
-        titleFr: z.string().min(1).optional(),
-        contentFr: z.string().min(1).optional(),
-        titleDe: z.string().min(1).optional(),
-        contentDe: z.string().min(1).optional(),
-        titleJa: z.string().min(1).optional(),
-        contentJa: z.string().min(1).optional(),
-        titleZhCn: z.string().min(1).optional(),
-        contentZhCn: z.string().min(1).optional(),
-        type: z
-          .enum(['info', 'warning', 'success', 'error', 'maintenance', 'feature', 'update'])
-          .optional(),
-        priority: z.number().min(0).max(10).optional(),
-        isDismissible: z.boolean().optional(),
-        isActive: z.boolean().optional(),
-        targetAudience: z
-          .object({
-            userRoles: z.array(z.string()).optional(),
-            userIds: z.array(z.string()).optional()
-          })
-          .optional()
-      })
-    )
+    .input(updateAnnouncementSchema)
     .mutation(async ({ ctx, input }) => {
       try {
         const auditLogger = new AuditLogger(ctx.db)
@@ -551,7 +561,7 @@ ${input.content}
 
   // Delete announcement (admin only)
   deleteAnnouncement: adminProcedure
-    .input(z.object({ id: z.string() }))
+    .input(announcementIdParamSchema)
     .mutation(async ({ ctx, input }) => {
       try {
         const auditLogger = new AuditLogger(ctx.db)
@@ -585,17 +595,7 @@ ${input.content}
 
   // Get announcement analytics (admin only)
   getAnnouncementAnalytics: adminProcedure
-    .input(
-      z.object({
-        announcementId: z.string().optional(),
-        dateRange: z
-          .object({
-            start: z.date(),
-            end: z.date()
-          })
-          .optional()
-      })
-    )
+    .input(announcementAnalyticsQuerySchema)
     .query(async ({ ctx, input }) => {
       try {
         // Get announcement engagement stats
@@ -622,38 +622,48 @@ ${input.content}
         const totalViews = interactions.filter((i) => i.viewed).length
         const totalDismissals = interactions.filter((i) => i.dismissed).length
 
-        const analytics = {
+        type AnnouncementAnalytics = {
+          title: string
+          views: number
+          dismissals: number
+          dismissalRate: number
+        }
+
+        const analytics: {
+          totalViews: number
+          totalDismissals: number
+          dismissalRate: number
+          byAnnouncement: Record<string, AnnouncementAnalytics>
+        } = {
           totalViews,
           totalDismissals,
           dismissalRate: totalViews > 0 ? (totalDismissals / totalViews) * 100 : 0,
-          byAnnouncement: {} as any
+          byAnnouncement: {}
         }
 
         // Group by announcement
-        interactions.forEach((interaction) => {
+        for (const interaction of interactions) {
           const announcementId = interaction.announcementId
-          if (!analytics.byAnnouncement[announcementId]) {
-            analytics.byAnnouncement[announcementId] = {
-              title: interaction.announcement?.title || 'Unknown',
-              views: 0,
-              dismissals: 0,
-              dismissalRate: 0
-            }
+          analytics.byAnnouncement[announcementId] ??= {
+            title: interaction.announcement?.title || 'Unknown',
+            views: 0,
+            dismissals: 0,
+            dismissalRate: 0
           }
+          const entry = analytics.byAnnouncement[announcementId]
 
           if (interaction.viewed) {
-            analytics.byAnnouncement[announcementId].views++
+            entry.views++
           }
           if (interaction.dismissed) {
-            analytics.byAnnouncement[announcementId].dismissals++
+            entry.dismissals++
           }
-        })
+        }
 
         // Calculate dismissal rates
-        Object.keys(analytics.byAnnouncement).forEach((announcementId) => {
-          const data = analytics.byAnnouncement[announcementId]
+        for (const data of Object.values(analytics.byAnnouncement)) {
           data.dismissalRate = data.views > 0 ? (data.dismissals / data.views) * 100 : 0
-        })
+        }
 
         return analytics
       } catch (error) {

@@ -159,7 +159,7 @@ function ResetPasswordForm() {
               className='w-full'
               disabled={isLoading || !password || !confirmPassword}
             >
-              {isLoading ? t('form.submit.pending') : t('form.submit.default')}
+              {t(isLoading ? 'form.submit.pending' : 'form.submit.default')}
             </Button>
           </form>
         </CardContent>

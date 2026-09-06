@@ -59,7 +59,7 @@ class ResendService {
       return response.data as unknown as ResendAudience
     } catch (error) {
       logger.error('Error creating Resend audience', error)
-      throw new Error('Failed to create audience')
+      throw new Error('Failed to create audience', { cause: error })
     }
   }
 
@@ -69,10 +69,10 @@ class ResendService {
       await this.rateLimitDelay()
       const response = await resend.audiences.list()
       const audiences = response.data?.data || []
-      return audiences as unknown as ResendAudience[]
+      return audiences
     } catch (error) {
       logger.error('Error listing Resend audiences', error)
-      throw new Error('Failed to list audiences')
+      throw new Error('Failed to list audiences', { cause: error })
     }
   }
 
@@ -86,7 +86,7 @@ class ResendService {
   async getAudience(audienceId: string): Promise<ResendAudience | null> {
     try {
       const response = await resend.audiences.get(audienceId)
-      return response.data as unknown as ResendAudience
+      return response.data
     } catch (error) {
       logger.error('Error getting Resend audience', error)
       return null
@@ -126,7 +126,7 @@ class ResendService {
         lastName: contact.last_name,
         unsubscribed: contact.unsubscribed || false
       })
-      return response.data as unknown as ResendContact
+      return response.data
     } catch (error) {
       logger.error('Error adding contact to Resend audience', error)
       return null
@@ -151,7 +151,7 @@ class ResendService {
         lastName: updates.last_name,
         unsubscribed: updates.unsubscribed
       })
-      return response.data as unknown as ResendContact
+      return response.data
     } catch (error) {
       logger.error('Error updating contact in Resend audience', error)
       return null
@@ -177,7 +177,7 @@ class ResendService {
     try {
       await this.rateLimitDelay()
       const response = await resend.contacts.list({ audienceId })
-      const contacts = response.data?.data || []
+      const contacts: ResendContact[] = response.data?.data || []
       return contacts
     } catch (error) {
       logger.error('Error listing contacts in Resend audience', error)
@@ -289,7 +289,7 @@ class ResendService {
         html: updates.html,
         subject: updates.subject
       })
-      return response.data as unknown as ResendBroadcast
+      return response.data
     } catch (error) {
       logger.error('Error updating Resend broadcast', error)
       return null
@@ -356,15 +356,14 @@ class ResendService {
           last_name: user.lastName,
           unsubscribed: !user.subscribed
         })
-      } else {
-        // Add new contact
-        return await this.addContact(audienceId, {
-          email: user.email,
-          first_name: user.firstName,
-          last_name: user.lastName,
-          unsubscribed: !user.subscribed
-        })
       }
+      // Add new contact
+      return await this.addContact(audienceId, {
+        email: user.email,
+        first_name: user.firstName,
+        last_name: user.lastName,
+        unsubscribed: !user.subscribed
+      })
     } catch (error) {
       logger.error('Error syncing user to Resend audience', error)
       return null

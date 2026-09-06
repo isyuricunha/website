@@ -17,7 +17,7 @@ export const GET = async (_request: NextRequest, context: RouteContext) => {
   const { locale } = await context.params
 
   // Validate locale
-  if (!supportedLanguages.some((lang) => lang.code === locale)) {
+  if (supportedLanguages.every((lang) => lang.code !== locale)) {
     return new NextResponse('Not Found', { status: 404 })
   }
 
@@ -34,7 +34,7 @@ export const GET = async (_request: NextRequest, context: RouteContext) => {
 
   const posts = allPosts
     .filter((p) => p.locale === locale)
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .toSorted((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 
   for (const post of posts) {
     const { title, summary, date, slug } = post

@@ -7,12 +7,24 @@ export const createNavigation = () => {
       return React.createElement('a', { href, ...rest }, children)
     },
     useRouter: () => ({
-      push: () => {},
-      replace: () => {},
-      prefetch: () => {},
-      back: () => {},
-      forward: () => {},
-      refresh: () => {}
+      push: () => {
+        return
+      },
+      replace: () => {
+        return
+      },
+      prefetch: () => {
+        return
+      },
+      back: () => {
+        return
+      },
+      forward: () => {
+        return
+      },
+      refresh: () => {
+        return
+      }
     }),
     usePathname: () => '/',
     useSearchParams: () => new URLSearchParams(),

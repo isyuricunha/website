@@ -20,7 +20,7 @@ const createQueryClient = () =>
     }
   })
 
-let clientQueryClientSingleton: QueryClient | undefined
+const clientQueryClientStore: { current: QueryClient | undefined } = { current: undefined }
 
 const getBaseUrl = () => {
   if (globalThis.window !== undefined) return ''
@@ -34,11 +34,11 @@ const getQueryClient = () => {
     return createQueryClient()
   }
 
-  if (!clientQueryClientSingleton) {
-    clientQueryClientSingleton = createQueryClient()
+  if (!clientQueryClientStore.current) {
+    clientQueryClientStore.current = createQueryClient()
   }
 
-  return clientQueryClientSingleton
+  return clientQueryClientStore.current
 }
 
 export const api = createTRPCReact<AppRouter>()
@@ -87,7 +87,6 @@ export const TRPCReactProvider = (props: TRPCReactProviderProps) => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* eslint-disable-next-line @eslint-react/no-context-provider -- custom context */}
       <api.Provider client={trpcClient} queryClient={queryClient}>
         {children}
         <ReactQueryDevtools />

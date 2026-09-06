@@ -35,6 +35,12 @@ type FilteredPostsProps = {
 
 type SortOption = 'date-desc' | 'date-asc' | 'title-asc' | 'title-desc' | 'reading-time'
 
+const compareStrings = (a: string, b: string) => {
+  if (a < b) return -1
+  if (a > b) return 1
+  return 0
+}
+
 const FilteredPosts = (props: FilteredPostsProps) => {
   const { posts } = props
   const locale = useLocale()
@@ -68,14 +74,16 @@ const FilteredPosts = (props: FilteredPostsProps) => {
     const categorySet = new Set<string>()
     const tagSet = new Set<string>()
 
-    posts.forEach((post) => {
+    for (const post of posts) {
       if (post.category) categorySet.add(post.category)
-      if (post.tags) post.tags.forEach((tag) => tagSet.add(tag))
-    })
+      if (post.tags) {
+        for (const tag of post.tags) tagSet.add(tag)
+      }
+    }
 
     return {
-      categories: Array.from(categorySet).toSorted(),
-      tags: Array.from(tagSet).toSorted()
+      categories: Array.from(categorySet).toSorted(compareStrings),
+      tags: Array.from(tagSet).toSorted(compareStrings)
     }
   }, [posts])
 
@@ -221,9 +229,11 @@ const FilteredPosts = (props: FilteredPostsProps) => {
           >
             <SlidersHorizontal className='h-4 w-4 flex-shrink-0' />
             <span className='text-sm'>
-              {showFilters
-                ? t('component.filtered-posts.toggle-filters.hide')
-                : t('component.filtered-posts.toggle-filters.show')}
+              {t(
+                showFilters
+                  ? 'component.filtered-posts.toggle-filters.hide'
+                  : 'component.filtered-posts.toggle-filters.show'
+              )}
             </span>
           </button>
 

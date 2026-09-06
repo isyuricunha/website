@@ -37,6 +37,31 @@ const extract_text_content = (content: unknown): string | null => {
   return null
 }
 
+const enqueue_stream_lines = (
+  lines: string[],
+  controller: ReadableStreamDefaultController<Uint8Array>,
+  encoder: TextEncoder
+): boolean => {
+  for (const line of lines) {
+    const trimmed = line.trim()
+    if (!trimmed.startsWith('data:')) continue
+
+    const data = trimmed.slice(5).trim()
+    if (!data) continue
+    if (data === '[DONE]') return true
+
+    try {
+      const payload = JSON.parse(data) as ChatStreamPayload
+      const content = extract_text_content(payload.choices?.[0]?.delta?.content)
+      if (content) controller.enqueue(encoder.encode(content))
+    } catch {
+      // Ignore malformed event lines and continue reading the stream.
+    }
+  }
+
+  return false
+}
+
 const get_runtime_config = async () => {
   const config = await get_ai_runtime_config()
   if (!config) {
@@ -118,24 +143,10 @@ class RuntimeProvider {
             const lines = buffer.split(/\r?\n/)
             buffer = lines.pop() ?? ''
 
-            for (const line of lines) {
-              const trimmed = line.trim()
-              if (!trimmed.startsWith('data:')) continue
-
-              const data = trimmed.slice(5).trim()
-              if (!data) continue
-              if (data === '[DONE]') {
-                controller.close()
-                return
-              }
-
-              try {
-                const payload = JSON.parse(data) as ChatStreamPayload
-                const content = extract_text_content(payload.choices?.[0]?.delta?.content)
-                if (content) controller.enqueue(encoder.encode(content))
-              } catch {
-                // Ignore malformed event lines and continue reading the stream.
-              }
+            const streamDone = enqueue_stream_lines(lines, controller, encoder)
+            if (streamDone) {
+              controller.close()
+              return
             }
           }
 

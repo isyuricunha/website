@@ -15,14 +15,24 @@ import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc'
 
 const getKey = (id: string) => `guestbook:${id}`
 
+const infiniteMessagesQuerySchema = z.object({
+  cursor: z.date().nullish(),
+  limit: z.number().min(1).max(50).default(10)
+})
+
+const messageCreateSchema = z.object({
+  message: z.string().min(1, {
+    message: 'Message is required'
+  })
+})
+
+const messageIdSchema = z.object({
+  id: z.string().min(1)
+})
+
 export const guestbookRouter = createTRPCRouter({
   getInfiniteMessages: publicProcedure
-    .input(
-      z.object({
-        cursor: z.date().nullish(),
-        limit: z.number().min(1).max(50).default(10)
-      })
-    )
+    .input(infiniteMessagesQuerySchema)
     .query(async ({ ctx, input }) => {
       const ip = getIp(ctx.headers)
 
@@ -66,82 +76,68 @@ export const guestbookRouter = createTRPCRouter({
         nextCursor: result.at(-1)?.updatedAt ?? null
       }
     }),
-  create: protectedProcedure
-    .input(
-      z.object({
-        message: z.string().min(1, {
-          message: 'Message is required'
-        })
-      })
-    )
-    .mutation(async ({ ctx, input }) => {
-      const user = ctx.session.user
+  create: protectedProcedure.input(messageCreateSchema).mutation(async ({ ctx, input }) => {
+    const user = ctx.session.user
 
-      const { success } = await ratelimit.limit(getKey(`create:${user.id}`))
+    const { success } = await ratelimit.limit(getKey(`create:${user.id}`))
 
-      if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+    if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
 
-      await ctx.db.insert(guestbook).values({
-        id: createId(),
-        body: input.message,
-        userId: user.id
-      })
-
-      if (flags.guestbookNotification && isProduction) {
-        await fetch(env.DISCORD_WEBHOOK_URL, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            content: null,
-            embeds: [
-              {
-                title: 'New comment!',
-                description: input.message,
-                url: 'https://yuricunha.com/guestbook',
-                color: '6609519',
-                author: {
-                  name: user.name,
-                  icon_url: user.image
-                },
-                timestamp: new Date().toISOString()
-              }
-            ],
-            username: 'Blog',
-            avatar_url:
-              'https://cdn.discordapp.com/avatars/1123845082672537751/8af603a10f1d2f86ebc922ede339cd3a.webp',
-            attachments: []
-          })
-        })
-      }
-    }),
-  delete: protectedProcedure
-    .input(
-      z.object({
-        id: z.string().min(1)
-      })
-    )
-    .mutation(async ({ ctx, input }) => {
-      const user = ctx.session.user
-
-      const { success } = await ratelimit.limit(getKey(`delete:${user.id}`))
-
-      if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
-
-      const message = await ctx.db.query.guestbook.findFirst({
-        where: and(eq(guestbook.id, input.id), eq(guestbook.userId, user.id))
-      })
-
-      if (!message) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'Message not found'
-        })
-      }
-
-      await ctx.db.delete(guestbook).where(eq(guestbook.id, input.id))
+    await ctx.db.insert(guestbook).values({
+      id: createId(),
+      body: input.message,
+      userId: user.id
     })
+
+    if (isProduction && flags.guestbookNotification) {
+      await fetch(env.DISCORD_WEBHOOK_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          content: null,
+          embeds: [
+            {
+              title: 'New comment!',
+              description: input.message,
+              url: 'https://yuricunha.com/guestbook',
+              color: '6609519',
+              author: {
+                name: user.name,
+                icon_url: user.image
+              },
+              timestamp: new Date().toISOString()
+            }
+          ],
+          username: 'Blog',
+          avatar_url:
+            'https://cdn.discordapp.com/avatars/1123845082672537751/8af603a10f1d2f86ebc922ede339cd3a.webp',
+          attachments: []
+        })
+      })
+    }
+  }),
+  delete: protectedProcedure.input(messageIdSchema).mutation(async ({ ctx, input }) => {
+    const user = ctx.session.user
+
+    const { success } = await ratelimit.limit(getKey(`delete:${user.id}`))
+
+    if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+
+    const message = await ctx.db.query.guestbook.findFirst({
+      where: and(eq(guestbook.id, input.id), eq(guestbook.userId, user.id))
+    })
+
+    if (!message) {
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: 'Message not found'
+      })
+    }
+
+    await ctx.db.delete(guestbook).where(eq(guestbook.id, input.id))
+  })
 })
 
 export type GetInfiniteMessagesOutput = RouterOutputs['guestbook']['getInfiniteMessages']

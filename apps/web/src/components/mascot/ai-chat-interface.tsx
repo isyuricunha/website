@@ -191,7 +191,7 @@ const createWelcomeMessage = (text: string): ChatMessage => {
 
 const createBrowserId = () => {
   try {
-    return globalThis.crypto.randomUUID()
+    return crypto.randomUUID()
   } catch {
     return `${Date.now()}-${Math.random().toString(16).slice(2)}`
   }
@@ -207,7 +207,7 @@ const getInitialChatState = (input: {
   let importStatus: InitialChatState['importStatus'] = 'none'
 
   if (globalThis.window !== undefined) {
-    const params = new URLSearchParams(globalThis.location.search)
+    const params = new URLSearchParams(location.search)
     const shared = params.get('yue_chat')
 
     if (shared) {
@@ -226,8 +226,8 @@ const getInitialChatState = (input: {
         importStatus = 'success'
 
         params.delete('yue_chat')
-        const url = `${globalThis.location.pathname}${params.size > 0 ? `?${params.toString()}` : ''}`
-        globalThis.history.replaceState(null, '', url)
+        const url = `${location.pathname}${params.size > 0 ? `?${params.toString()}` : ''}`
+        history.replaceState(null, '', url)
       } else {
         importStatus = 'failed'
       }
@@ -341,12 +341,11 @@ export default function AIChatInterface({
       prompt: t(`mascot.aiChat.quickPrompts.items.${id}.prompt` as any)
     }))
   }, [currentPage, t])
-  const statusDotClassName =
-    chatStatusKey === 'ready'
-      ? 'bg-status-success'
-      : chatStatusKey === 'responding' || chatStatusKey === 'checking'
-        ? 'bg-status-warning'
-        : 'bg-status-danger'
+  const statusDotClassName = (() => {
+    if (chatStatusKey === 'ready') return 'bg-status-success'
+    if (chatStatusKey === 'responding' || chatStatusKey === 'checking') return 'bg-status-warning'
+    return 'bg-status-danger'
+  })()
 
   const get_bubble_class_name = (message: ChatMessage) => {
     if (message.isUser) {
@@ -425,7 +424,6 @@ export default function AIChatInterface({
 
     try {
       const response = await fetch('/api/ai/chat/status', {
-        method: 'GET',
         cache: 'no-store'
       })
 
@@ -451,8 +449,8 @@ export default function AIChatInterface({
       setConnectionStatus('offline')
     }
 
-    globalThis.addEventListener('online', handleOnline)
-    globalThis.addEventListener('offline', handleOffline)
+    addEventListener('online', handleOnline)
+    addEventListener('offline', handleOffline)
 
     // Check status when opening; use setTimeout to avoid set-state-in-effect lint warning
     const timer = setTimeout(() => {
@@ -460,8 +458,8 @@ export default function AIChatInterface({
     }, 0)
 
     return () => {
-      globalThis.removeEventListener('online', handleOnline)
-      globalThis.removeEventListener('offline', handleOffline)
+      removeEventListener('online', handleOnline)
+      removeEventListener('offline', handleOffline)
       clearTimeout(timer)
     }
   }, [isOpen, refreshChatStatus])
@@ -538,7 +536,7 @@ export default function AIChatInterface({
     setActiveConversationId(withWelcome.id)
   }
 
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
 
   const renameChat = () => {
     if (!activeConversation) return
@@ -551,12 +549,12 @@ export default function AIChatInterface({
 
   const deleteChat = () => {
     if (!activeConversation) return
-    setDeleteDialogOpen(true)
+    setIsDeleteDialogOpen(true)
   }
 
   const confirmDeleteChat = () => {
     if (!activeConversation) return
-    setDeleteDialogOpen(false)
+    setIsDeleteDialogOpen(false)
     setConversations((prev) => {
       const remaining = prev.filter((c) => c.id !== activeConversation.id)
       if (remaining.length > 0) {
@@ -584,11 +582,11 @@ export default function AIChatInterface({
       messages: activeConversation.messages.slice(-50)
     })
 
-    const url = new URL(globalThis.location.href)
+    const url = new URL(location.href)
     url.searchParams.set('yue_chat', payload)
 
     try {
-      await navigator.clipboard.writeText(url.toString())
+      await navigator.clipboard.writeText(url.href)
       toast.success(t('mascot.aiChat.shareCopied'))
     } catch {
       toast.error(t('mascot.aiChat.shareCopyFailed'))
@@ -613,7 +611,7 @@ export default function AIChatInterface({
         const query = searchMatch[1].trim()
         scheduleActionTimeout(() => {
           const event = new CustomEvent('yue-open-search', { detail: { query } })
-          globalThis.dispatchEvent(event)
+          dispatchEvent(event)
           clickPlay()
         }, 800)
       }
@@ -875,12 +873,11 @@ export default function AIChatInterface({
 
   // Handle pending prompts (like "Explain this selection")
   useEffect(() => {
-    if (isOpen && !isLoading && canUseChat) {
-      const pending = sessionStorage.getItem('yue_pending_prompt')
-      if (pending) {
-        sessionStorage.removeItem('yue_pending_prompt')
-        void send_chat_message(pending)
-      }
+    if (!isOpen || isLoading || !canUseChat) return
+    const pending = sessionStorage.getItem('yue_pending_prompt')
+    if (pending) {
+      sessionStorage.removeItem('yue_pending_prompt')
+      void send_chat_message(pending)
     }
   }, [canUseChat, isOpen, isLoading, send_chat_message])
 
@@ -889,7 +886,7 @@ export default function AIChatInterface({
       const absolute = (() => {
         if (globalThis.window === undefined) return href
         try {
-          return new URL(href, globalThis.location.origin).toString()
+          return new URL(href, location.origin).href
         } catch {
           return href
         }
@@ -912,11 +909,14 @@ export default function AIChatInterface({
   }
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault()
-      sendMessage()
-    }
+    if (e.key !== 'Enter' || e.shiftKey) return
+    e.preventDefault()
+    sendMessage()
   }
+
+  const sendButtonLabel = t(
+    isLoading ? 'mascot.aiChat.cancelResponse' : 'mascot.aiChat.sendMessage'
+  )
 
   const retry_message = async (messageId: string) => {
     const conversation = conversations.find((c) => c.id === activeConversationId)
@@ -1547,10 +1547,8 @@ export default function AIChatInterface({
               type='button'
               onClick={isLoading ? cancelCurrentResponse : sendMessage}
               disabled={isLoading ? isCancelling : !inputValue.trim() || !canUseChat}
-              aria-label={
-                isLoading ? t('mascot.aiChat.cancelResponse') : t('mascot.aiChat.sendMessage')
-              }
-              title={isLoading ? t('mascot.aiChat.cancelResponse') : t('mascot.aiChat.sendMessage')}
+              aria-label={sendButtonLabel}
+              title={sendButtonLabel}
               className={cn(
                 'text-text-inverse rounded-lg px-4 py-3 shadow-sm transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none',
                 isLoading
@@ -1571,8 +1569,8 @@ export default function AIChatInterface({
         </div>
       </div>
       <ConfirmationDialog
-        open={deleteDialogOpen}
-        onOpenChange={setDeleteDialogOpen}
+        open={isDeleteDialogOpen}
+        onOpenChange={setIsDeleteDialogOpen}
         title={t('mascot.aiChat.deleteChat')}
         description={t('mascot.aiChat.deleteConfirm')}
         confirmText={t('common.delete') ?? 'Delete'}

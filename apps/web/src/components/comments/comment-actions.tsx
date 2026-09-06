@@ -45,9 +45,9 @@ const CommentActions = () => {
           parentId: comment.parentId,
           sort: 'oldest',
           type: 'replies',
-          ...(params.reply ? { highlightedCommentId: params.reply } : {})
+          ...(params.reply && { highlightedCommentId: params.reply })
         }
-      : { sort, ...(params.comment ? { highlightedCommentId: params.comment } : {}) })
+      : { sort, ...(params.comment && { highlightedCommentId: params.comment }) })
   }
 
   const ratesSetMutation = api.rates.set.useMutation({
@@ -77,10 +77,10 @@ const CommentActions = () => {
                   let dislikes: number = c.dislikes
 
                   if (c.liked === true) likes--
-                  if (c.liked === false) dislikes--
+                  else if (c.liked === false) dislikes--
 
                   if (newData.like === true) likes++
-                  if (newData.like === false) dislikes++
+                  else if (newData.like === false) dislikes++
 
                   return {
                     ...c,

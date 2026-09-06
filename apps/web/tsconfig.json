@@ -27,6 +27,7 @@
     "next.config.mjs",
     "postcss.config.mjs",
     "scripts/**/*.js",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "src/app/.well-known/**/*.ts"
   ]
 }

@@ -32,7 +32,18 @@ export interface MascotPreferences {
   bubblePosition: 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left'
 }
 
-const KONAMI_CODE = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65]
+const KONAMI_CODE = [
+  'ArrowUp',
+  'ArrowUp',
+  'ArrowDown',
+  'ArrowDown',
+  'ArrowLeft',
+  'ArrowRight',
+  'ArrowLeft',
+  'ArrowRight',
+  'b',
+  'a'
+]
 
 const createInitialState = () => ({
   isDismissed: false,
@@ -45,7 +56,7 @@ const createInitialState = () => ({
   showContact: false,
   showAIChat: false,
   isKonamiMode: false,
-  konamiSequence: [] as number[],
+  konamiSequence: [] as string[],
   messageQueue: [] as Array<{ id: number; text: string; expiresAt: number }>,
   exitingIds: new Set<number>(),
   autoShowMessage: false,
@@ -553,7 +564,7 @@ export function useMascotState() {
       try {
         const saved = sessionStorage.getItem(MASCOT_IMAGE_KEY)
         if (saved) {
-          updates.currentMascotImage = Number.parseInt(saved, 10)
+          updates.currentMascotImage = Number(saved)
         } else {
           const chosen = Math.floor(Math.random() * 5) + 1
           sessionStorage.setItem(MASCOT_IMAGE_KEY, String(chosen))
@@ -586,7 +597,7 @@ export function useMascotState() {
 
   // Reduced motion preference
   useEffect(() => {
-    const mediaQuery = globalThis.matchMedia('(prefers-reduced-motion: reduce)')
+    const mediaQuery = matchMedia('(prefers-reduced-motion: reduce)')
     const handleChange = () => setPrefersReducedMotion(mediaQuery.matches)
     const timer = setTimeout(handleChange, 0)
 
@@ -605,11 +616,13 @@ export function useMascotState() {
         return
       }
 
-      const newSequence = [...state.konamiSequence, event.keyCode]
+      const newSequence = [...state.konamiSequence, event.key]
       updateState({ konamiSequence: newSequence })
 
       if (newSequence.length === KONAMI_CODE.length) {
-        const isKonami = newSequence.every((key, index) => key === KONAMI_CODE[index])
+        const isKonami = newSequence.every(
+          (key, index) => key.toLowerCase() === KONAMI_CODE[index]?.toLowerCase()
+        )
         if (isKonami) {
           const newMode = !state.isKonamiMode
           updateState({ isKonamiMode: newMode })
@@ -623,13 +636,13 @@ export function useMascotState() {
       }
     }
 
-    globalThis.addEventListener('keydown', handleKeyDown)
-    return () => globalThis.removeEventListener('keydown', handleKeyDown)
+    addEventListener('keydown', handleKeyDown)
+    return () => removeEventListener('keydown', handleKeyDown)
   }, [restoreMascot, state.konamiSequence, state.isKonamiMode, updateState])
 
   // Blinking animation
   useEffect(() => {
-    if (!state.preferences.animations || prefersReducedMotion) return
+    if (prefersReducedMotion || !state.preferences.animations) return
 
     const blinkInterval = setInterval(
       () => {
@@ -653,7 +666,7 @@ export function useMascotState() {
 
   // Mouse follow effect
   useEffect(() => {
-    if (!state.preferences.animations || prefersReducedMotion || !state.isActive) return
+    if (prefersReducedMotion || !state.preferences.animations || !state.isActive) return
 
     const handleMouseMove = (e: MouseEvent) => {
       const x = (e.clientX / window.innerWidth) * 2 - 1
@@ -661,8 +674,8 @@ export function useMascotState() {
       updateState({ mousePosition: { x, y } })
     }
 
-    globalThis.addEventListener('mousemove', handleMouseMove)
-    return () => globalThis.removeEventListener('mousemove', handleMouseMove)
+    addEventListener('mousemove', handleMouseMove)
+    return () => removeEventListener('mousemove', handleMouseMove)
   }, [state.preferences.animations, prefersReducedMotion, state.isActive, updateState])
 
   // Contextual skin switching
@@ -679,7 +692,7 @@ export function useMascotState() {
       } else {
         try {
           const saved = sessionStorage.getItem(MASCOT_IMAGE_KEY)
-          const savedImage = saved ? Number.parseInt(saved, 10) : 0
+          const savedImage = saved ? Number(saved) : 0
           if (savedImage > 0) {
             nextImage = savedImage
           }
@@ -860,7 +873,7 @@ export function useMascotState() {
     if (!mounted || !state.preferences.speechBubbles) return
 
     const handleSelectionChange = () => {
-      const selection = globalThis.getSelection()
+      const selection = getSelection()
       const text = selection?.toString().trim() ?? ''
 
       if (text.length > 10 && canExplainSelectionOnPage(pageKey)) {

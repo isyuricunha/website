@@ -40,7 +40,7 @@ describe('/api/admin/posts', () => {
   it('returns 401 when not authenticated', async () => {
     const { getSession } = await import('@/lib/auth')
 
-    vi.mocked(getSession).mockResolvedValue(null as never)
+    vi.mocked(getSession).mockResolvedValue(null)
 
     const { POST } = await import('@/app/api/admin/posts/route')
 

@@ -98,7 +98,7 @@ export default function SecurityManagement() {
     api.security.getSecuritySettings.useQuery()
 
   // Mutations
-  const addIpRuleMutation = api.security.addIpAccessRule.useMutation({
+  const ipRuleAdditionMutation = api.security.addIpAccessRule.useMutation({
     onSuccess: () => {
       toast.success(t('messages.ip-rule-added'))
       utils.security.getIpAccessRules.invalidate()
@@ -215,7 +215,7 @@ export default function SecurityManagement() {
       return
     }
 
-    addIpRuleMutation.mutate({
+    ipRuleAdditionMutation.mutate({
       ipAddress,
       type,
       description: description || undefined
@@ -528,8 +528,8 @@ export default function SecurityManagement() {
                       placeholder={t('fields.rule-description-placeholder')}
                     />
                   </div>
-                  <Button type='submit' disabled={addIpRuleMutation.isPending}>
-                    {addIpRuleMutation.isPending ? t('actions.adding') : t('actions.add-rule')}
+                  <Button type='submit' disabled={ipRuleAdditionMutation.isPending}>
+                    {t(ipRuleAdditionMutation.isPending ? 'actions.adding' : 'actions.add-rule')}
                   </Button>
                 </form>
               </CardContent>

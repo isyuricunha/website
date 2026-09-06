@@ -15,15 +15,42 @@ import { AuditLogger, getIpFromHeaders, getUserAgentFromHeaders } from '@/lib/au
 import { logger } from '@/lib/logger'
 import { adminProcedure, createTRPCRouter } from '../trpc'
 
+const databaseBackupsQuerySchema = z.object({
+  status: z.enum(['pending', 'running', 'completed', 'failed', 'cancelled']).optional(),
+  limit: z.number().min(1).max(100).default(20)
+})
+
+const databaseBackupCreateSchema = z.object({
+  type: z.enum(['full', 'incremental', 'differential']).default('full'),
+  description: z.string().optional()
+})
+
+const dataExportsQuerySchema = z.object({
+  status: z.enum(['pending', 'running', 'completed', 'failed', 'cancelled']).optional(),
+  limit: z.number().min(1).max(100).default(20)
+})
+
+const dataExportCreateSchema = z.object({
+  name: z.string().min(1),
+  format: z.enum(['csv', 'json', 'xml', 'sql', 'excel']).default('csv'),
+  tables: z.array(z.string())
+})
+
+const dataQualityCheckRuleSchema = z.object({
+  field: z.string(),
+  rule: z.enum(['not_null', 'unique', 'format', 'range'])
+})
+
+const dataQualityCheckRunSchema = z.object({
+  name: z.string().min(1),
+  tableName: z.string(),
+  checkRules: z.array(dataQualityCheckRuleSchema)
+})
+
 export const dataManagementRouter = createTRPCRouter({
   // Database Backups
   getDatabaseBackups: adminProcedure
-    .input(
-      z.object({
-        status: z.enum(['pending', 'running', 'completed', 'failed', 'cancelled']).optional(),
-        limit: z.number().min(1).max(100).default(20)
-      })
-    )
+    .input(databaseBackupsQuerySchema)
     .query(async ({ ctx, input }) => {
       try {
         const conditions = []
@@ -58,12 +85,7 @@ export const dataManagementRouter = createTRPCRouter({
     }),
 
   createDatabaseBackup: adminProcedure
-    .input(
-      z.object({
-        type: z.enum(['full', 'incremental', 'differential']).default('full'),
-        description: z.string().optional()
-      })
-    )
+    .input(databaseBackupCreateSchema)
     .mutation(async ({ ctx, input }) => {
       try {
         const auditLogger = new AuditLogger(ctx.db)
@@ -116,54 +138,41 @@ export const dataManagementRouter = createTRPCRouter({
     }),
 
   // Data Exports
-  getDataExports: adminProcedure
-    .input(
-      z.object({
-        status: z.enum(['pending', 'running', 'completed', 'failed', 'cancelled']).optional(),
-        limit: z.number().min(1).max(100).default(20)
-      })
-    )
-    .query(async ({ ctx, input }) => {
-      try {
-        const conditions = []
-        if (input.status) {
-          conditions.push(eq(dataExports.status, input.status))
-        }
-
-        const exports = await ctx.db.query.dataExports.findMany({
-          where: conditions.length > 0 ? and(...conditions) : undefined,
-          orderBy: desc(dataExports.createdAt),
-          limit: input.limit,
-          with: {
-            createdByUser: {
-              columns: { id: true, name: true, email: true }
-            }
-          }
-        })
-
-        return {
-          exports: exports.map((exportItem) => ({
-            ...exportItem,
-            metadata: exportItem.metadata ? JSON.parse(exportItem.metadata) : null
-          }))
-        }
-      } catch (error) {
-        logger.error('Error fetching data exports', error)
-        throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: 'Failed to fetch data exports'
-        })
+  getDataExports: adminProcedure.input(dataExportsQuerySchema).query(async ({ ctx, input }) => {
+    try {
+      const conditions = []
+      if (input.status) {
+        conditions.push(eq(dataExports.status, input.status))
       }
-    }),
+
+      const exports = await ctx.db.query.dataExports.findMany({
+        where: conditions.length > 0 ? and(...conditions) : undefined,
+        orderBy: desc(dataExports.createdAt),
+        limit: input.limit,
+        with: {
+          createdByUser: {
+            columns: { id: true, name: true, email: true }
+          }
+        }
+      })
+
+      return {
+        exports: exports.map((exportItem) => ({
+          ...exportItem,
+          metadata: exportItem.metadata ? JSON.parse(exportItem.metadata) : null
+        }))
+      }
+    } catch (error) {
+      logger.error('Error fetching data exports', error)
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Failed to fetch data exports'
+      })
+    }
+  }),
 
   createDataExport: adminProcedure
-    .input(
-      z.object({
-        name: z.string().min(1),
-        format: z.enum(['csv', 'json', 'xml', 'sql', 'excel']).default('csv'),
-        tables: z.array(z.string())
-      })
-    )
+    .input(dataExportCreateSchema)
     .mutation(async ({ ctx, input }) => {
       try {
         const auditLogger = new AuditLogger(ctx.db)
@@ -221,18 +230,7 @@ export const dataManagementRouter = createTRPCRouter({
 
   // Data Quality Checks
   runDataQualityCheck: adminProcedure
-    .input(
-      z.object({
-        name: z.string().min(1),
-        tableName: z.string(),
-        checkRules: z.array(
-          z.object({
-            field: z.string(),
-            rule: z.enum(['not_null', 'unique', 'format', 'range'])
-          })
-        )
-      })
-    )
+    .input(dataQualityCheckRunSchema)
     .mutation(async ({ ctx, input }) => {
       try {
         const auditLogger = new AuditLogger(ctx.db)

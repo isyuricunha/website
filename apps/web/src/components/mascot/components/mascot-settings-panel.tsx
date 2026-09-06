@@ -64,10 +64,8 @@ export function MascotSettingsPanel({ mascot }: MascotSettingsPanelProps) {
         <label className='flex items-center justify-between'>
           <span>{t('mascot.settings.messageDuration')}</span>
           <Select
-            value={`${state.preferences.messageDuration}`}
-            onValueChange={(value) =>
-              updatePreferences({ messageDuration: Number.parseInt(value, 10) })
-            }
+            value={String(state.preferences.messageDuration)}
+            onValueChange={(value) => updatePreferences({ messageDuration: Number(value) })}
           >
             <SelectTrigger className='bg-bg-surface text-text-primary cursor-pointer rounded-md border border-[var(--border-default)] px-3 py-2.5 text-xs transition-colors hover:border-[var(--border-strong)] focus:border-[var(--accent-border)] focus:ring-2 focus:ring-[var(--accent-border)] focus:ring-offset-2 focus:outline-none'>
               <SelectValue />

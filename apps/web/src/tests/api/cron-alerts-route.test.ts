@@ -21,7 +21,7 @@ const createRedisMock = () => {
 
   return {
     set: vi.fn(async (_key: string, value: string, opts?: { nx?: boolean; ex?: number }) => {
-      if (opts?.nx && lockValue) return null
+      if (lockValue && opts?.nx) return null
       lockValue = value
       return 'OK'
     }),
@@ -52,9 +52,7 @@ const createDbMock = () => {
 
         if (name === 'alert_instances') {
           inserted.alert_instances.push(value)
-        }
-
-        if (name === 'notifications') {
+        } else if (name === 'notifications') {
           inserted.notifications.push(...(Array.isArray(value) ? value : [value]))
         }
 
@@ -169,8 +167,8 @@ describe('/api/cron/alerts', () => {
     const db = createDbMock()
 
     const redis = createRedisMock()
-    vi.mocked(redis.set).mockResolvedValueOnce('OK' as never)
-    vi.mocked(redis.set).mockResolvedValueOnce(null as never)
+    vi.mocked(redis.set).mockResolvedValueOnce('OK')
+    vi.mocked(redis.set).mockResolvedValueOnce(null)
 
     vi.doMock('@isyuricunha/db', () => createDbModuleMock(db))
     vi.doMock('@isyuricunha/kv', () => ({ redis }))

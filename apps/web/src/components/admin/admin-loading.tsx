@@ -29,7 +29,7 @@ const AdminLoading = () => {
 
       {/* Stats Cards */}
       <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-4'>
-        {Array.from({ length: 4 }).map((_, i) => (
+        {Array.from({ length: 4 }, (_, i) => (
           <Card key={i} className='animate-pulse'>
             <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
               <Skeleton className='h-4 w-24' />
@@ -54,7 +54,7 @@ const AdminLoading = () => {
 
       {/* Content Grid */}
       <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
-        {Array.from({ length: 3 }).map((_, i) => (
+        {Array.from({ length: 3 }, (_, i) => (
           <Card key={i} className='animate-pulse'>
             <CardHeader>
               <div className='flex items-center justify-between'>
@@ -90,7 +90,7 @@ const AdminLoading = () => {
             <Skeleton className='h-3 w-48' />
           </CardHeader>
           <CardContent className='space-y-3'>
-            {Array.from({ length: 5 }).map((_, i) => (
+            {Array.from({ length: 5 }, (_, i) => (
               <div key={i} className='bg-bg-hover flex items-center justify-between rounded-lg p-2'>
                 <div className='flex items-center space-x-2'>
                   <Skeleton className='h-4 w-4' />
@@ -111,7 +111,7 @@ const AdminLoading = () => {
             <Skeleton className='h-3 w-52' />
           </CardHeader>
           <CardContent className='space-y-4'>
-            {Array.from({ length: 3 }).map((_, i) => (
+            {Array.from({ length: 3 }, (_, i) => (
               <div key={i} className='space-y-2'>
                 <div className='flex justify-between'>
                   <Skeleton className='h-3 w-32' />

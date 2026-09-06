@@ -75,6 +75,50 @@ function generateBackupCodes(): string[] {
   return codes
 }
 
+const verify2FAInputSchema = z.object({
+  token: z.string(),
+  backupCode: z.string().optional()
+})
+
+const disable2FAInputSchema = z.object({
+  password: z.string().min(1)
+})
+
+const ipAccessRuleInputSchema = z.object({
+  ipAddress: z.string().min(1),
+  ipRange: z.string().optional(),
+  type: z.enum(['whitelist', 'blacklist']),
+  description: z.string().optional()
+})
+
+const ruleIdInputSchema = z.object({ ruleId: z.string() })
+
+const securityEventsQuerySchema = z.object({
+  severity: z.enum(['low', 'medium', 'high', 'critical']).optional(),
+  resolved: z.boolean().optional(),
+  limit: z.number().min(1).max(100).default(50),
+  offset: z.number().min(0).default(0)
+})
+
+const eventIdInputSchema = z.object({ eventId: z.string() })
+
+const userIdOptionalInputSchema = z.object({ userId: z.string().optional() })
+
+const lockAccountInputSchema = z.object({
+  userId: z.string(),
+  reason: z.string(),
+  duration: z.number().optional()
+})
+
+const lockoutIdInputSchema = z.object({ lockoutId: z.string() })
+
+const updateSecuritySettingInputSchema = z.object({
+  key: z.string(),
+  value: z.string(),
+  description: z.string().optional(),
+  category: z.string().optional()
+})
+
 export const securityRouter = createTRPCRouter({
   // Two-Factor Authentication
   enable2FA: protectedProcedure.mutation(async ({ ctx }) => {
@@ -150,135 +194,122 @@ export const securityRouter = createTRPCRouter({
     }
   }),
 
-  verify2FA: protectedProcedure
-    .input(
-      z.object({
-        token: z.string(),
-        backupCode: z.string().optional()
+  verify2FA: protectedProcedure.input(verify2FAInputSchema).mutation(async ({ ctx, input }) => {
+    try {
+      const auditLogger = new AuditLogger(ctx.db)
+      const ipAddress = getIpFromHeaders(ctx.headers)
+      const userAgent = getUserAgentFromHeaders(ctx.headers)
+
+      const twoFARecord = await ctx.db.query.twoFactorTokens.findFirst({
+        where: eq(twoFactorTokens.userId, ctx.session.user.id)
       })
-    )
-    .mutation(async ({ ctx, input }) => {
-      try {
-        const auditLogger = new AuditLogger(ctx.db)
-        const ipAddress = getIpFromHeaders(ctx.headers)
-        const userAgent = getUserAgentFromHeaders(ctx.headers)
 
-        const twoFARecord = await ctx.db.query.twoFactorTokens.findFirst({
-          where: eq(twoFactorTokens.userId, ctx.session.user.id)
-        })
-
-        if (!twoFARecord) {
-          throw new TRPCError({
-            code: 'NOT_FOUND',
-            message: '2FA not set up'
-          })
-        }
-
-        // Verify TOTP token
-        const verified = speakeasy.totp.verify({
-          secret: twoFARecord.secret,
-          encoding: 'base32',
-          token: input.token,
-          window: 2 // Allow 2 time steps of variance
-        })
-
-        if (!verified) {
-          throw new TRPCError({
-            code: 'BAD_REQUEST',
-            message: 'Invalid 2FA token'
-          })
-        }
-
-        // Enable 2FA
-        await ctx.db
-          .update(twoFactorTokens)
-          .set({ isEnabled: true, lastUsedAt: new Date() })
-          .where(eq(twoFactorTokens.userId, ctx.session.user.id))
-
-        await create_security_event({
-          db: ctx.db,
-          eventType: 'two_factor_enabled',
-          severity: 'medium',
-          userId: ctx.session.user.id,
-          ipAddress,
-          userAgent,
-          details: { action: '2fa_enabled' }
-        })
-
-        // Log security event
-        await auditLogger.logSystemAction(
-          ctx.session.user.id,
-          'settings_update',
-          'security',
-          '2fa_enabled',
-          { action: '2fa_enabled' },
-          ipAddress,
-          userAgent
-        )
-
-        return { success: true }
-      } catch (error) {
-        if (error instanceof TRPCError) {
-          throw error
-        }
-        logger.error('Error verifying 2FA', error)
+      if (!twoFARecord) {
         throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: 'Failed to verify 2FA'
+          code: 'NOT_FOUND',
+          message: '2FA not set up'
         })
       }
-    }),
 
-  disable2FA: protectedProcedure
-    .input(
-      z.object({
-        password: z.string().min(1)
+      // Verify TOTP token
+      const verified = speakeasy.totp.verify({
+        secret: twoFARecord.secret,
+        encoding: 'base32',
+        token: input.token,
+        window: 2 // Allow 2 time steps of variance
       })
-    )
-    .mutation(async ({ ctx }) => {
-      try {
-        const auditLogger = new AuditLogger(ctx.db)
-        const ipAddress = getIpFromHeaders(ctx.headers)
-        const userAgent = getUserAgentFromHeaders(ctx.headers)
 
-        // In a real app, verify the password here
-        // For now, we'll just disable 2FA
-
-        await ctx.db
-          .update(twoFactorTokens)
-          .set({ backupCodes: JSON.stringify(generateBackupCodes()) })
-          .where(eq(twoFactorTokens.userId, ctx.session.user.id))
-
-        await create_security_event({
-          db: ctx.db,
-          eventType: 'two_factor_disabled',
-          severity: 'medium',
-          userId: ctx.session.user.id,
-          ipAddress,
-          userAgent,
-          details: { action: '2fa_disabled' }
-        })
-
-        // Log security event
-        await auditLogger.logSystemAction(
-          ctx.session.user.id,
-          'settings_update',
-          'security',
-          '2fa_disabled',
-          { action: '2fa_disabled' },
-          ipAddress,
-          userAgent
-        )
-
-        return { success: true }
-      } catch (error) {
-        logger.error('Error disabling 2FA', error)
+      if (!verified) {
         throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: 'Failed to disable 2FA'
+          code: 'BAD_REQUEST',
+          message: 'Invalid 2FA token'
         })
       }
-    }),
+
+      // Enable 2FA
+      await ctx.db
+        .update(twoFactorTokens)
+        .set({ isEnabled: true, lastUsedAt: new Date() })
+        .where(eq(twoFactorTokens.userId, ctx.session.user.id))
+
+      await create_security_event({
+        db: ctx.db,
+        eventType: 'two_factor_enabled',
+        severity: 'medium',
+        userId: ctx.session.user.id,
+        ipAddress,
+        userAgent,
+        details: { action: '2fa_enabled' }
+      })
+
+      // Log security event
+      await auditLogger.logSystemAction(
+        ctx.session.user.id,
+        'settings_update',
+        'security',
+        '2fa_enabled',
+        { action: '2fa_enabled' },
+        ipAddress,
+        userAgent
+      )
+
+      return { success: true }
+    } catch (error) {
+      if (error instanceof TRPCError) {
+        throw error
+      }
+      logger.error('Error verifying 2FA', error)
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Failed to verify 2FA'
+      })
+    }
+  }),
+
+  disable2FA: protectedProcedure.input(disable2FAInputSchema).mutation(async ({ ctx }) => {
+    try {
+      const auditLogger = new AuditLogger(ctx.db)
+      const ipAddress = getIpFromHeaders(ctx.headers)
+      const userAgent = getUserAgentFromHeaders(ctx.headers)
+
+      // In a real app, verify the password here
+      // For now, we'll just disable 2FA
+
+      await ctx.db
+        .update(twoFactorTokens)
+        .set({ backupCodes: JSON.stringify(generateBackupCodes()) })
+        .where(eq(twoFactorTokens.userId, ctx.session.user.id))
+
+      await create_security_event({
+        db: ctx.db,
+        eventType: 'two_factor_disabled',
+        severity: 'medium',
+        userId: ctx.session.user.id,
+        ipAddress,
+        userAgent,
+        details: { action: '2fa_disabled' }
+      })
+
+      // Log security event
+      await auditLogger.logSystemAction(
+        ctx.session.user.id,
+        'settings_update',
+        'security',
+        '2fa_disabled',
+        { action: '2fa_disabled' },
+        ipAddress,
+        userAgent
+      )
+
+      return { success: true }
+    } catch (error) {
+      logger.error('Error disabling 2FA', error)
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Failed to disable 2FA'
+      })
+    }
+  }),
 
   // IP Access Control
   getIpAccessRules: adminProcedure.query(async ({ ctx }) => {
@@ -307,14 +338,7 @@ export const securityRouter = createTRPCRouter({
   }),
 
   addIpAccessRule: adminProcedure
-    .input(
-      z.object({
-        ipAddress: z.string().min(1),
-        ipRange: z.string().optional(),
-        type: z.enum(['whitelist', 'blacklist']),
-        description: z.string().optional()
-      })
-    )
+    .input(ipAccessRuleInputSchema)
     .mutation(async ({ ctx, input }) => {
       try {
         const auditLogger = new AuditLogger(ctx.db)
@@ -367,57 +391,48 @@ export const securityRouter = createTRPCRouter({
       }
     }),
 
-  removeIpAccessRule: adminProcedure
-    .input(z.object({ ruleId: z.string() }))
-    .mutation(async ({ ctx, input }) => {
-      try {
-        const auditLogger = new AuditLogger(ctx.db)
-        const ipAddress = getIpFromHeaders(ctx.headers)
-        const userAgent = getUserAgentFromHeaders(ctx.headers)
+  removeIpAccessRule: adminProcedure.input(ruleIdInputSchema).mutation(async ({ ctx, input }) => {
+    try {
+      const auditLogger = new AuditLogger(ctx.db)
+      const ipAddress = getIpFromHeaders(ctx.headers)
+      const userAgent = getUserAgentFromHeaders(ctx.headers)
 
-        await ctx.db.delete(ipAccessControl).where(eq(ipAccessControl.id, input.ruleId))
+      await ctx.db.delete(ipAccessControl).where(eq(ipAccessControl.id, input.ruleId))
 
-        await create_security_event({
-          db: ctx.db,
-          eventType: 'admin_action',
-          severity: 'medium',
-          userId: ctx.session.user.id,
-          ipAddress,
-          userAgent,
-          details: { action: 'ip_rule_removed', ruleId: input.ruleId }
-        })
+      await create_security_event({
+        db: ctx.db,
+        eventType: 'admin_action',
+        severity: 'medium',
+        userId: ctx.session.user.id,
+        ipAddress,
+        userAgent,
+        details: { action: 'ip_rule_removed', ruleId: input.ruleId }
+      })
 
-        // Log security event
-        await auditLogger.logSystemAction(
-          ctx.session.user.id,
-          'settings_update',
-          'security',
-          'ip_rule_removed',
-          { ruleId: input.ruleId },
-          ipAddress,
-          userAgent
-        )
+      // Log security event
+      await auditLogger.logSystemAction(
+        ctx.session.user.id,
+        'settings_update',
+        'security',
+        'ip_rule_removed',
+        { ruleId: input.ruleId },
+        ipAddress,
+        userAgent
+      )
 
-        return { success: true }
-      } catch (error) {
-        logger.error('Error removing IP access rule', error)
-        throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: 'Failed to remove IP access rule'
-        })
-      }
-    }),
+      return { success: true }
+    } catch (error) {
+      logger.error('Error removing IP access rule', error)
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Failed to remove IP access rule'
+      })
+    }
+  }),
 
   // Security Events
   getSecurityEvents: adminProcedure
-    .input(
-      z.object({
-        severity: z.enum(['low', 'medium', 'high', 'critical']).optional(),
-        resolved: z.boolean().optional(),
-        limit: z.number().min(1).max(100).default(50),
-        offset: z.number().min(0).default(0)
-      })
-    )
+    .input(securityEventsQuerySchema)
     .query(async ({ ctx, input }) => {
       try {
         const conditions = []
@@ -478,7 +493,7 @@ export const securityRouter = createTRPCRouter({
     }),
 
   resolveSecurityEvent: adminProcedure
-    .input(z.object({ eventId: z.string() }))
+    .input(eventIdInputSchema)
     .mutation(async ({ ctx, input }) => {
       try {
         const auditLogger = new AuditLogger(ctx.db)
@@ -554,7 +569,7 @@ export const securityRouter = createTRPCRouter({
 
   // Account Lockouts
   getAccountLockouts: adminProcedure
-    .input(z.object({ userId: z.string().optional() }))
+    .input(userIdOptionalInputSchema)
     .query(async ({ ctx, input }) => {
       try {
         const conditions = []
@@ -582,118 +597,108 @@ export const securityRouter = createTRPCRouter({
       }
     }),
 
-  lockAccount: adminProcedure
-    .input(
-      z.object({
-        userId: z.string(),
-        reason: z.string(),
-        duration: z.number().optional()
+  lockAccount: adminProcedure.input(lockAccountInputSchema).mutation(async ({ ctx, input }) => {
+    try {
+      const auditLogger = new AuditLogger(ctx.db)
+      const ipAddress = getIpFromHeaders(ctx.headers)
+      const userAgent = getUserAgentFromHeaders(ctx.headers)
+
+      const lockoutId = randomBytes(16).toString('hex')
+      await ctx.db.insert(accountLockouts).values({
+        id: lockoutId,
+        userId: input.userId,
+        reason: input.reason,
+        lockedBy: ctx.session.user.id,
+        lockedUntil: input.duration ? new Date(Date.now() + input.duration * 60 * 1000) : null
       })
-    )
-    .mutation(async ({ ctx, input }) => {
-      try {
-        const auditLogger = new AuditLogger(ctx.db)
-        const ipAddress = getIpFromHeaders(ctx.headers)
-        const userAgent = getUserAgentFromHeaders(ctx.headers)
 
-        const lockoutId = randomBytes(16).toString('hex')
-        await ctx.db.insert(accountLockouts).values({
-          id: lockoutId,
-          userId: input.userId,
-          reason: input.reason,
-          lockedBy: ctx.session.user.id,
-          lockedUntil: input.duration ? new Date(Date.now() + input.duration * 60 * 1000) : null
-        })
+      await create_security_event({
+        db: ctx.db,
+        eventType: 'account_locked',
+        severity: 'high',
+        userId: input.userId,
+        ipAddress,
+        userAgent,
+        details: { lockoutId, lockedBy: ctx.session.user.id, reason: input.reason }
+      })
 
-        await create_security_event({
-          db: ctx.db,
-          eventType: 'account_locked',
-          severity: 'high',
-          userId: input.userId,
-          ipAddress,
-          userAgent,
-          details: { lockoutId, lockedBy: ctx.session.user.id, reason: input.reason }
-        })
+      // Log security event
+      await auditLogger.logSystemAction(
+        ctx.session.user.id,
+        'user_ban',
+        'security',
+        'account_locked',
+        { lockoutId, userId: input.userId },
+        ipAddress,
+        userAgent
+      )
 
-        // Log security event
-        await auditLogger.logSystemAction(
-          ctx.session.user.id,
-          'user_ban',
-          'security',
-          'account_locked',
-          { lockoutId, userId: input.userId },
-          ipAddress,
-          userAgent
-        )
+      return { success: true }
+    } catch (error) {
+      logger.error('Error locking account', error)
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Failed to lock account'
+      })
+    }
+  }),
 
-        return { success: true }
-      } catch (error) {
-        logger.error('Error locking account', error)
+  unlockAccount: adminProcedure.input(lockoutIdInputSchema).mutation(async ({ ctx, input }) => {
+    try {
+      const auditLogger = new AuditLogger(ctx.db)
+      const ipAddress = getIpFromHeaders(ctx.headers)
+      const userAgent = getUserAgentFromHeaders(ctx.headers)
+
+      const lockout = await ctx.db.query.accountLockouts.findFirst({
+        where: eq(accountLockouts.id, input.lockoutId)
+      })
+
+      if (!lockout) {
         throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: 'Failed to lock account'
+          code: 'NOT_FOUND',
+          message: 'Lockout not found'
         })
       }
-    }),
 
-  unlockAccount: adminProcedure
-    .input(z.object({ lockoutId: z.string() }))
-    .mutation(async ({ ctx, input }) => {
-      try {
-        const auditLogger = new AuditLogger(ctx.db)
-        const ipAddress = getIpFromHeaders(ctx.headers)
-        const userAgent = getUserAgentFromHeaders(ctx.headers)
-
-        const lockout = await ctx.db.query.accountLockouts.findFirst({
-          where: eq(accountLockouts.id, input.lockoutId)
+      await ctx.db
+        .update(accountLockouts)
+        .set({
+          unlocked: true,
+          unlockedAt: new Date(),
+          unlockedBy: ctx.session.user.id
         })
+        .where(eq(accountLockouts.id, input.lockoutId))
 
-        if (!lockout) {
-          throw new TRPCError({
-            code: 'NOT_FOUND',
-            message: 'Lockout not found'
-          })
-        }
+      await create_security_event({
+        db: ctx.db,
+        eventType: 'account_unlocked',
+        severity: 'medium',
+        userId: lockout.userId,
+        ipAddress,
+        userAgent,
+        details: { lockoutId: input.lockoutId, unlockedBy: ctx.session.user.id }
+      })
 
-        await ctx.db
-          .update(accountLockouts)
-          .set({
-            unlocked: true,
-            unlockedAt: new Date(),
-            unlockedBy: ctx.session.user.id
-          })
-          .where(eq(accountLockouts.id, input.lockoutId))
+      // Log security event
+      await auditLogger.logSystemAction(
+        ctx.session.user.id,
+        'user_unban',
+        'security',
+        'account_unlocked',
+        { lockoutId: input.lockoutId },
+        ipAddress,
+        userAgent
+      )
 
-        await create_security_event({
-          db: ctx.db,
-          eventType: 'account_unlocked',
-          severity: 'medium',
-          userId: lockout.userId,
-          ipAddress,
-          userAgent,
-          details: { lockoutId: input.lockoutId, unlockedBy: ctx.session.user.id }
-        })
-
-        // Log security event
-        await auditLogger.logSystemAction(
-          ctx.session.user.id,
-          'user_unban',
-          'security',
-          'account_unlocked',
-          { lockoutId: input.lockoutId },
-          ipAddress,
-          userAgent
-        )
-
-        return { success: true }
-      } catch (error) {
-        logger.error('Error unlocking account', error)
-        throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: 'Failed to unlock account'
-        })
-      }
-    }),
+      return { success: true }
+    } catch (error) {
+      logger.error('Error unlocking account', error)
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Failed to unlock account'
+      })
+    }
+  }),
 
   // Security Settings
   getSecuritySettings: adminProcedure.query(async ({ ctx }) => {
@@ -713,14 +718,14 @@ export const securityRouter = createTRPCRouter({
 
       // Group by category
       const groupedSettings: Record<string, any[]> = {}
-      settings.forEach((setting) => {
+      for (const setting of settings) {
         const category = setting.category
         const group = groupedSettings[category] ?? []
-        if (!groupedSettings[category]) {
+        if (!Object.hasOwn(groupedSettings, category)) {
           groupedSettings[category] = group
         }
         group.push(setting)
-      })
+      }
 
       return { settings: groupedSettings }
     } catch (error) {
@@ -733,14 +738,7 @@ export const securityRouter = createTRPCRouter({
   }),
 
   updateSecuritySetting: adminProcedure
-    .input(
-      z.object({
-        key: z.string(),
-        value: z.string(),
-        description: z.string().optional(),
-        category: z.string().optional()
-      })
-    )
+    .input(updateSecuritySettingInputSchema)
     .mutation(async ({ ctx, input }) => {
       try {
         const auditLogger = new AuditLogger(ctx.db)

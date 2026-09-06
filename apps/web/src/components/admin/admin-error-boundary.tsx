@@ -27,11 +27,7 @@ const AdminErrorBoundary = ({ children, fallback }: AdminErrorBoundaryProps) => 
         </CardHeader>
         <CardContent className='space-y-4'>
           <div className='flex gap-2'>
-            <Button
-              onClick={() => globalThis.location.reload()}
-              className='flex-1'
-              variant='outline'
-            >
+            <Button onClick={() => location.reload()} className='flex-1' variant='outline'>
               <RefreshCw className='mr-2 h-4 w-4' />
               {t('refresh-page')}
             </Button>

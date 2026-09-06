@@ -31,7 +31,7 @@ describe('BlogService', () => {
     const { BlogService } = await import('@/lib/blog/blog-service')
 
     const err = Object.assign(new Error('ENOENT: no such file or directory'), { code: 'ENOENT' })
-    vi.mocked(fs.readdir).mockRejectedValue(err as never)
+    vi.mocked(fs.readdir).mockRejectedValue(err)
 
     const posts = await BlogService.getPostsByLocale('fr')
 
@@ -45,7 +45,7 @@ describe('BlogService', () => {
     const { BlogService } = await import('@/lib/blog/blog-service')
 
     const err = Object.assign(new Error('ENOENT: no such file or directory'), { code: 'ENOENT' })
-    vi.mocked(fs.readFile).mockRejectedValue(err as never)
+    vi.mocked(fs.readFile).mockRejectedValue(err)
 
     const post = await BlogService.getPost('missing', 'fr')
 

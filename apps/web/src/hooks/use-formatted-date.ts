@@ -29,7 +29,7 @@ export const useFormattedDate = (date: Date | string, options: Options = {}) => 
     return Math.abs(weeksDiff) > 1
       ? format.dateTime(convertedDate, formatOptions)
       : format.relativeTime(convertedDate, now)
-  } else {
-    return format.dateTime(convertedDate, formatOptions)
   }
+
+  return format.dateTime(convertedDate, formatOptions)
 }

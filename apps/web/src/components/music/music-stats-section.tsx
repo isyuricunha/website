@@ -41,13 +41,13 @@ const MusicStatsSection = () => {
 
     // Extract top genres from artists
     const genreCount: Record<string, number> = {}
-    topArtists.forEach((artist: any) => {
+    for (const artist of topArtists) {
       if (artist.genres && artist.genres.length > 0) {
-        artist.genres.forEach((genre: string) => {
+        for (const genre of artist.genres) {
           genreCount[genre] = (genreCount[genre] || 0) + 1
-        })
+        }
       }
-    })
+    }
 
     const topGenres = Object.entries(genreCount)
       .toSorted(([, a], [, b]) => b - a)
@@ -92,7 +92,7 @@ const MusicStatsSection = () => {
         </CardHeader>
         <CardContent>
           <div className='grid grid-cols-2 gap-4 md:grid-cols-4'>
-            {Array.from({ length: 4 }).map((_, i) => (
+            {Array.from({ length: 4 }, (_, i) => (
               <div key={i} className='space-y-2 text-center'>
                 <div className='bg-bg-hover mx-auto h-8 w-8 animate-pulse rounded-full' />
                 <div className='bg-bg-hover mx-auto h-4 w-16 animate-pulse rounded' />

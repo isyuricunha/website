@@ -25,7 +25,7 @@ export async function GET(request: Request) {
         date: latest.date
       }
     })
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: 'Failed to fetch latest post' }, { status: 500 })
   }
 }

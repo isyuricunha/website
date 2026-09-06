@@ -35,7 +35,7 @@ export default function SocialShare({
   const [copied, setCopied] = useState(false)
   const t = useTranslations('component.social-share')
 
-  const shareUrl = globalThis.window === undefined ? url : `${globalThis.location.origin}${url}`
+  const shareUrl = globalThis.window === undefined ? url : `${location.origin}${url}`
   const encodedTitle = encodeURIComponent(title)
   const encodedUrl = encodeURIComponent(shareUrl)
   const encodedDescription = encodeURIComponent(description || '')
@@ -140,7 +140,7 @@ export default function SocialShare({
           ) : (
             <Link className='size-4' />
           )}
-          {copied ? t('copy.copied') : t('copy.label')}
+          {t(copied ? 'copy.copied' : 'copy.label')}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

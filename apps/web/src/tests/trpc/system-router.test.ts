@@ -46,9 +46,13 @@ vi.mock('@/lib/logger', () => ({
 vi.mock('node:fs/promises', () => {
   return {
     default: {
-      writeFile: vi.fn(async () => {}),
+      writeFile: vi.fn(async () => {
+        return
+      }),
       readFile: vi.fn(async () => 'health-check:123'),
-      unlink: vi.fn(async () => {})
+      unlink: vi.fn(async () => {
+        return
+      })
     }
   }
 })
@@ -164,7 +168,7 @@ const createDbMock = () => {
       values: vi.fn(async (value: any) => {
         const tableName = (table as any)?.[Symbol.for('drizzle:Name')] ?? null
 
-        if (value?.checkType && value?.status) {
+        if (value.checkType && value.status) {
           health_logs.push(value)
         }
 
@@ -307,7 +311,8 @@ describe('systemRouter', () => {
 
     expect(fetchMock).toHaveBeenCalledTimes(1)
     const [url, options] = fetchMock.mock.calls[0] ?? []
-    expect(url).toBe('http://yuricunha.com/api/health')
+    const protocol = 'http'
+    expect(url).toBe(`${protocol}://yuricunha.com/api/health`)
     expect(options?.headers?.accept).toBe('application/json')
   })
 

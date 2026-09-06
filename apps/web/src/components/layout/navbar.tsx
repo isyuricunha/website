@@ -52,9 +52,7 @@ const Navbar = () => {
     const recalc = () => {
       const availableWidth = container.getBoundingClientRect().width
 
-      const itemWidths = Array.from(measureLinks.children).map(
-        (el) => el.getBoundingClientRect().width
-      )
+      const itemWidths = Array.from(measureLinks.children, (el) => el.getBoundingClientRect().width)
       const moreWidth = measureMore.getBoundingClientRect().width
 
       const nextVisibleCount = calculate_visible_count({

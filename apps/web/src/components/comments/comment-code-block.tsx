@@ -16,11 +16,8 @@ type CommentCodeBlockProps = {
 }
 
 const CommentCodeBlock = (props: CommentCodeBlockProps) => {
-  const {
-    children: {
-      props: { children: code, className, title }
-    }
-  } = props
+  const { children: codeBlockChild } = props
+  const { children: code, className, title } = codeBlockChild.props
   const lang = className?.replace('lang-', '') ?? 'plaintext'
   const { highlighter } = useHighlighterStore()
   const [highlightedHtml, setHighlightedHtml] = useState('')
@@ -39,7 +36,7 @@ const CommentCodeBlock = (props: CommentCodeBlockProps) => {
       }
 
       return highlighter.codeToHtml(code, {
-        lang: lang in bundledLanguages ? lang : 'plaintext',
+        lang: Object.hasOwn(bundledLanguages, lang) ? lang : 'plaintext',
         themes: {
           light: 'github-light-default',
           dark: YU_DARK_SHIKI_THEME
@@ -48,10 +45,13 @@ const CommentCodeBlock = (props: CommentCodeBlockProps) => {
       })
     }
 
-    generateHighlightedHtml().then((newHtml) => {
+    const runHighlighting = async () => {
+      const newHtml = await generateHighlightedHtml()
       setHighlightedHtml(newHtml)
       setIsHighlighted(true)
-    })
+    }
+
+    void runHighlighting()
   }, [code, highlighter, lang])
 
   const codeHtml = /<code\b[^>]*>([\s\S]*?)<\/code>/.exec(highlightedHtml)?.[1]

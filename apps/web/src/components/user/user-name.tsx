@@ -6,7 +6,7 @@ import { cn } from '@isyuricunha/utils'
 
 type NameEffect = 'none' | 'rays' | 'glow'
 
-type UserNameProps = {
+type UsernameProps = {
   name: string
   color?: string | null
   effect?: NameEffect | null
@@ -25,7 +25,7 @@ const getTextShadow = (effect: NameEffect) => {
   return
 }
 
-const UserName = (props: UserNameProps) => {
+const Username = (props: UsernameProps) => {
   const { name, color, effect, className } = props
 
   const resolved_effect = effect ?? 'none'
@@ -46,4 +46,4 @@ const UserName = (props: UserNameProps) => {
   )
 }
 
-export default UserName
+export default Username

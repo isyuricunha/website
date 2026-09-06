@@ -35,7 +35,7 @@ describe('yue-chat-storage', () => {
 
     const state = loadYueChatState()
 
-    expect(state.conversations.length).toBe(1)
+    expect(state.conversations).toHaveLength(1)
     expect(state.activeConversationId).toBe(state.conversations[0]?.id)
     expect(state.provider).toBe('auto')
 

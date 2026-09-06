@@ -92,9 +92,9 @@ export default function AnnouncementManagement() {
   const [editingAnnouncement, setEditingAnnouncement] = useState<EditAnnouncementData | null>(null)
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
 
-  const createTitleRef = useRef<HTMLInputElement>(null)
-  const createContentRef = useRef<HTMLTextAreaElement>(null)
-  const createTranslationRefsRef = useRef<
+  const creationTitleRef = useRef<HTMLInputElement>(null)
+  const creationContentRef = useRef<HTMLTextAreaElement>(null)
+  const creationTranslationRefsRef = useRef<
     Record<string, { title: HTMLInputElement | null; content: HTMLTextAreaElement | null }>
   >({})
 
@@ -159,13 +159,13 @@ export default function AnnouncementManagement() {
 
     let successCount = 0
     for (const settled of results) {
-      if (settled.status === 'fulfilled') {
-        const { locale, result } = settled.value
-        const ref = refs[locale]
-        if (ref?.title) ref.title.value = result.titleTranslated
-        if (ref?.content) ref.content.value = result.contentTranslated
-        successCount++
-      }
+      if (settled.status !== 'fulfilled') continue
+
+      const { locale, result } = settled.value
+      const ref = refs[locale]
+      if (ref?.title) ref.title.value = result.titleTranslated
+      if (ref?.content) ref.content.value = result.contentTranslated
+      successCount++
     }
 
     if (successCount > 0) {
@@ -183,7 +183,7 @@ export default function AnnouncementManagement() {
   )
 
   // Mutations
-  const createMutation = api.announcements.createAnnouncement.useMutation({
+  const announcementCreateMutation = api.announcements.createAnnouncement.useMutation({
     onSuccess: () => {
       toast.success(t('messages.created'))
       setIsCreateDialogOpen(false)
@@ -206,7 +206,7 @@ export default function AnnouncementManagement() {
     }
   })
 
-  const deleteMutation = api.announcements.deleteAnnouncement.useMutation({
+  const announcementDeleteMutation = api.announcements.deleteAnnouncement.useMutation({
     onSuccess: () => {
       toast.success(t('messages.deleted'))
       refetch()
@@ -233,7 +233,7 @@ export default function AnnouncementManagement() {
       return val?.trim() ? val : undefined
     }
 
-    createMutation.mutate({
+    announcementCreateMutation.mutate({
       title,
       content,
       titlePt: getLocaleField('pt', 'title'),
@@ -305,7 +305,7 @@ export default function AnnouncementManagement() {
   }
 
   const handleDeleteAnnouncement = (id: string) => {
-    deleteMutation.mutate({ id })
+    announcementDeleteMutation.mutate({ id })
   }
 
   const openEditDialog = (announcement: any) => {
@@ -373,7 +373,7 @@ export default function AnnouncementManagement() {
                     name='title'
                     placeholder={t('fields.title-placeholder')}
                     required
-                    ref={createTitleRef}
+                    ref={creationTitleRef}
                   />
                 </div>
 
@@ -385,7 +385,7 @@ export default function AnnouncementManagement() {
                     placeholder={t('fields.content-placeholder')}
                     rows={4}
                     required
-                    ref={createContentRef}
+                    ref={creationContentRef}
                   />
                 </div>
 
@@ -405,13 +405,16 @@ export default function AnnouncementManagement() {
                         name={`title_${locale.code}`}
                         placeholder={t('fields.title-placeholder')}
                         ref={(el: HTMLInputElement | null) => {
-                          if (!createTranslationRefsRef.current)
-                            createTranslationRefsRef.current = {}
-                          const existing = createTranslationRefsRef.current[locale.code] ?? {
+                          if (!creationTranslationRefsRef.current)
+                            creationTranslationRefsRef.current = {}
+                          const existing = creationTranslationRefsRef.current[locale.code] ?? {
                             title: null,
                             content: null
                           }
-                          createTranslationRefsRef.current[locale.code] = { ...existing, title: el }
+                          creationTranslationRefsRef.current[locale.code] = {
+                            ...existing,
+                            title: el
+                          }
                         }}
                       />
                     </div>
@@ -421,13 +424,13 @@ export default function AnnouncementManagement() {
                         placeholder={t('fields.content-placeholder')}
                         rows={2}
                         ref={(el: HTMLTextAreaElement | null) => {
-                          if (!createTranslationRefsRef.current)
-                            createTranslationRefsRef.current = {}
-                          const existing = createTranslationRefsRef.current[locale.code] ?? {
+                          if (!creationTranslationRefsRef.current)
+                            creationTranslationRefsRef.current = {}
+                          const existing = creationTranslationRefsRef.current[locale.code] ?? {
                             title: null,
                             content: null
                           }
-                          createTranslationRefsRef.current[locale.code] = {
+                          creationTranslationRefsRef.current[locale.code] = {
                             ...existing,
                             content: el
                           }
@@ -442,13 +445,17 @@ export default function AnnouncementManagement() {
                     type='button'
                     variant='outline'
                     onClick={() =>
-                      handleTranslateAll(createTitleRef, createContentRef, createTranslationRefsRef)
+                      handleTranslateAll(
+                        creationTitleRef,
+                        creationContentRef,
+                        creationTranslationRefsRef
+                      )
                     }
                     disabled={translateMutation.isPending}
                   >
-                    {translateMutation.isPending
-                      ? t('actions.translating')
-                      : t('actions.translate-all')}
+                    {t(
+                      translateMutation.isPending ? 'actions.translating' : 'actions.translate-all'
+                    )}
                   </Button>
                 </div>
 
@@ -658,9 +665,11 @@ export default function AnnouncementManagement() {
                               </span>
                             )}
                             <span>
-                              {announcement.isDismissible
-                                ? t('status.dismissible')
-                                : t('status.not-dismissible')}
+                              {t(
+                                announcement.isDismissible
+                                  ? 'status.dismissible'
+                                  : 'status.not-dismissible'
+                              )}
                             </span>
                           </div>
                         </div>
@@ -677,11 +686,9 @@ export default function AnnouncementManagement() {
                                 ? 'text-accent-earth-text hover:bg-[var(--accent-dim)]'
                                 : 'text-text-secondary hover:text-text-primary hover:bg-bg-hover'
                             )}
-                            aria-label={
-                              announcement.isActive
-                                ? t('actions.deactivate')
-                                : t('actions.activate')
-                            }
+                            aria-label={t(
+                              announcement.isActive ? 'actions.deactivate' : 'actions.activate'
+                            )}
                           >
                             {announcement.isActive ? (
                               <Eye className='h-4 w-4' />
@@ -841,7 +848,7 @@ export default function AnnouncementManagement() {
                     }
                     disabled={translateMutation.isPending}
                   >
-                    {translateMutation.isPending ? t('actions.translating') : t('actions.fill-pt')}
+                    {t(translateMutation.isPending ? 'actions.translating' : 'actions.fill-pt')}
                   </Button>
                 </div>
 

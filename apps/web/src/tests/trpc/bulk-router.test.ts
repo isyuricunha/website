@@ -125,20 +125,20 @@ const createDbMock = () => {
   }))
 
   const update = vi.fn(() => ({
-    set: vi.fn((setValue: Partial<BulkOperationRow> | Partial<PostRow>) => ({
+    set: vi.fn((updateValue: Partial<BulkOperationRow> | Partial<PostRow>) => ({
       where: vi.fn(async () => {
-        const isPostUpdate = 'updatedAt' in setValue || 'publishedAt' in setValue
+        const isPostUpdate = 'updatedAt' in updateValue || 'publishedAt' in updateValue
 
         if (isPostUpdate) {
           for (const p of posts) {
-            Object.assign(p, setValue)
+            Object.assign(p, updateValue)
           }
           return
         }
 
         const op = operations[0]
         if (op) {
-          Object.assign(op, setValue)
+          Object.assign(op, updateValue)
         }
       })
     }))
@@ -146,7 +146,7 @@ const createDbMock = () => {
 
   const del = vi.fn(() => ({
     where: vi.fn(async () => {
-      posts.splice(0, posts.length)
+      posts.length = 0
       return
     })
   }))

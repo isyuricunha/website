@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { useMDXComponent } from '@content-collections/mdx/react'
+import { MDXContent } from '@content-collections/mdx/react'
 import { BlurImage, Callout as UiCallout, CodeBlock, Kbd } from '@isyuricunha/ui'
 
 import ImageZoom from '../image-zoom'
@@ -72,11 +72,10 @@ const components = {
 
 const Mdx = (props: MdxProps) => {
   const { code } = props
-  const MDXContent = useMDXComponent(code)
 
   return (
     <div className='prose w-full'>
-      <MDXContent components={components} />
+      <MDXContent code={code} components={components} />
     </div>
   )
 }

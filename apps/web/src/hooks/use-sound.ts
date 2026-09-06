@@ -2,6 +2,17 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
+type SoundType =
+  | 'click'
+  | 'success'
+  | 'error'
+  | 'notification'
+  | 'gameClick'
+  | 'gameSuccess'
+  | 'gameOver'
+  | 'navigation'
+  | 'alert'
+
 interface SoundOptions {
   volume?: number
   loop?: boolean
@@ -19,31 +30,100 @@ interface SoundHookReturn {
 
 const AUDIO_CONTEXTS = new Map<string, AudioContext>()
 
+const ignoreCleanupError = (_error: unknown): void => {
+  return
+}
+
 // Create a singleton audio context per sound type to avoid multiple contexts
 const getAudioContext = (soundType: string): AudioContext => {
   if (AUDIO_CONTEXTS.has(soundType)) {
     return AUDIO_CONTEXTS.get(soundType)!
   }
 
-  const context = new (window.AudioContext || (window as any).webkitAudioContext)()
+  const context = new (globalThis.AudioContext || (globalThis as any).webkitAudioContext)()
   AUDIO_CONTEXTS.set(soundType, context)
   return context
 }
 
+type AdsrEnvelope = (
+  t: number,
+  attack: number,
+  decay: number,
+  sustain: number,
+  release: number
+) => number
+
+const generateSample = (
+  type: SoundType,
+  t: number,
+  duration: number,
+  adsr: AdsrEnvelope
+): number => {
+  switch (type) {
+    case 'click': {
+      // Soft, modern click - gentle high frequency with quick decay
+      const clickEnvelope = Math.exp(-t * 15) * (1 - t / duration)
+      return Math.sin(2 * Math.PI * 1200 * t) * clickEnvelope * 0.4
+    }
+    case 'success': {
+      // Pleasant, modern success - gentle chord with smooth envelope
+      const successEnvelope = adsr(t, 0.02, 0.1, 0.3, 0.15)
+      // Major chord: C4, E4, G4
+      const c4 = Math.sin(2 * Math.PI * 261.63 * t) * Math.exp(-t * 2)
+      const e4 = Math.sin(2 * Math.PI * 329.63 * t) * Math.exp(-t * 2) * 0.7
+      const g4 = Math.sin(2 * Math.PI * 392 * t) * Math.exp(-t * 2) * 0.5
+      return (c4 + e4 + g4) * successEnvelope * 0.25
+    }
+    case 'error': {
+      // Subtle, modern error - low, gentle tone
+      const errorEnvelope = adsr(t, 0.05, 0.15, 0.2, 0.1)
+      return Math.sin(2 * Math.PI * 180 * t) * errorEnvelope * 0.35
+    }
+    case 'notification': {
+      // Gentle, modern notification - soft bell-like tone
+      const notifEnvelope = adsr(t, 0.03, 0.1, 0.4, 0.12)
+      // Fundamental + octave harmonic
+      const fundamental = Math.sin(2 * Math.PI * 440 * t) * Math.exp(-t * 3)
+      const octave = Math.sin(2 * Math.PI * 880 * t) * Math.exp(-t * 4) * 0.3
+      return (fundamental + octave) * notifEnvelope * 0.3
+    }
+    case 'gameClick': {
+      // Clean, modern game click - crisp and responsive
+      const gameClickEnvelope = Math.exp(-t * 20) * (1 - t / duration)
+      return Math.sin(2 * Math.PI * 800 * t) * gameClickEnvelope * 0.35
+    }
+    case 'gameSuccess': {
+      // Bright, modern game success - uplifting chord
+      const gameSuccessEnvelope = adsr(t, 0.02, 0.08, 0.5, 0.2)
+      // Perfect fifth: C4 + G4
+      const c4Game = Math.sin(2 * Math.PI * 261.63 * t) * Math.exp(-t * 2.5)
+      const g4Game = Math.sin(2 * Math.PI * 392 * t) * Math.exp(-t * 3) * 0.8
+      return (c4Game + g4Game) * gameSuccessEnvelope * 0.28
+    }
+    case 'gameOver': {
+      // Gentle, modern game over - descending, peaceful
+      const gameOverEnvelope = adsr(t, 0.04, 0.2, 0.1, 0.26)
+      // Slowly descending from G4 to C4
+      const descendingFrequency = 392 - t * 80
+      return Math.sin(2 * Math.PI * descendingFrequency * t) * gameOverEnvelope * 0.3
+    }
+    case 'navigation': {
+      // Modern, sliding navigation sound - soft sweep up
+      const navigationEnvelope = adsr(t, 0.05, 0.1, 0.5, 0.45)
+      const sweepFrequency = 300 + t * 400
+      return Math.sin(2 * Math.PI * sweepFrequency * t) * navigationEnvelope * 0.2
+    }
+    case 'alert': {
+      // Distinct alert sound - two pulses
+      const alertEnvelope = adsr(t, 0.02, 0.08, 0.4, 0.3)
+      const pulse = Math.sin(t * 40) > 0 ? 1 : 0.5
+      return Math.sin(2 * Math.PI * 550 * t) * alertEnvelope * 0.25 * pulse
+    }
+  }
+}
+
 // Generate different sound types using Web Audio API - Minimalist, Modern, Pleasant
-const generateSound = (
-  context: AudioContext,
-  type:
-    | 'click'
-    | 'success'
-    | 'error'
-    | 'notification'
-    | 'gameClick'
-    | 'gameSuccess'
-    | 'gameOver'
-    | 'navigation'
-    | 'alert'
-): AudioBuffer => {
+const generateSound = (context: AudioContext, type: SoundType): AudioBuffer => {
   const sampleRate = context.sampleRate
 
   // Determine duration based on sound type first
@@ -95,75 +175,7 @@ const generateSound = (
 
   for (let i = 0; i < frameCount; i++) {
     const t = i / sampleRate
-    let sample = 0
-
-    switch (type) {
-      case 'click':
-        // Soft, modern click - gentle high frequency with quick decay
-        const clickEnvelope = Math.exp(-t * 15) * (1 - t / duration)
-        sample = Math.sin(2 * Math.PI * 1200 * t) * clickEnvelope * 0.4
-        break
-
-      case 'success':
-        // Pleasant, modern success - gentle chord with smooth envelope
-        const successEnvelope = adsr(t, 0.02, 0.1, 0.3, 0.15)
-        // Major chord: C4, E4, G4
-        const c4 = Math.sin(2 * Math.PI * 261.63 * t) * Math.exp(-t * 2)
-        const e4 = Math.sin(2 * Math.PI * 329.63 * t) * Math.exp(-t * 2) * 0.7
-        const g4 = Math.sin(2 * Math.PI * 392.0 * t) * Math.exp(-t * 2) * 0.5
-        sample = (c4 + e4 + g4) * successEnvelope * 0.25
-        break
-
-      case 'error':
-        // Subtle, modern error - low, gentle tone
-        const errorEnvelope = adsr(t, 0.05, 0.15, 0.2, 0.1)
-        sample = Math.sin(2 * Math.PI * 180 * t) * errorEnvelope * 0.35
-        break
-
-      case 'notification':
-        // Gentle, modern notification - soft bell-like tone
-        const notifEnvelope = adsr(t, 0.03, 0.1, 0.4, 0.12)
-        // Fundamental + octave harmonic
-        const fundamental = Math.sin(2 * Math.PI * 440 * t) * Math.exp(-t * 3)
-        const octave = Math.sin(2 * Math.PI * 880 * t) * Math.exp(-t * 4) * 0.3
-        sample = (fundamental + octave) * notifEnvelope * 0.3
-        break
-
-      case 'gameClick':
-        // Clean, modern game click - crisp and responsive
-        const gameClickEnvelope = Math.exp(-t * 20) * (1 - t / duration)
-        sample = Math.sin(2 * Math.PI * 800 * t) * gameClickEnvelope * 0.35
-        break
-
-      case 'gameSuccess':
-        // Bright, modern game success - uplifting chord
-        const gameSuccessEnvelope = adsr(t, 0.02, 0.08, 0.5, 0.2)
-        // Perfect fifth: C4 + G4
-        const c4_game = Math.sin(2 * Math.PI * 261.63 * t) * Math.exp(-t * 2.5)
-        const g4_game = Math.sin(2 * Math.PI * 392.0 * t) * Math.exp(-t * 3) * 0.8
-        sample = (c4_game + g4_game) * gameSuccessEnvelope * 0.28
-        break
-
-      case 'gameOver':
-        // Gentle, modern game over - descending, peaceful
-        const gameOverEnvelope = adsr(t, 0.04, 0.2, 0.1, 0.26)
-        // Slowly descending from G4 to C4
-        const descendingFreq = 392 - t * 80 // Descend from G4 to C4
-        sample = Math.sin(2 * Math.PI * descendingFreq * t) * gameOverEnvelope * 0.3
-        break
-      case 'navigation':
-        // Modern, sliding navigation sound - soft sweep up
-        const navEnvelope = adsr(t, 0.05, 0.1, 0.5, 0.45)
-        const sweepFreq = 300 + t * 400 // Sweep from 300Hz to 700Hz
-        sample = Math.sin(2 * Math.PI * sweepFreq * t) * navEnvelope * 0.2
-        break
-      case 'alert':
-        // Distinct alert sound - two pulses
-        const alertEnvelope = adsr(t, 0.02, 0.08, 0.4, 0.3)
-        const pulse = Math.sin(t * 40) > 0 ? 1 : 0.5
-        sample = Math.sin(2 * Math.PI * 550 * t) * alertEnvelope * 0.25 * pulse
-        break
-    }
+    const sample = generateSample(type, t, duration, adsr)
 
     // Additional subtle fade out for all sounds to prevent any clicks
     const finalFade = Math.max(0, 1 - Math.pow(t / duration, 2) * 0.1)
@@ -176,31 +188,19 @@ const generateSound = (
 // Cache for generated sounds
 const soundCache = new Map<string, AudioBuffer>()
 
-const getSoundBuffer = (context: AudioContext, soundType: string): AudioBuffer => {
+const getSoundBuffer = (context: AudioContext, soundType: SoundType): AudioBuffer => {
   const cacheKey = `${context.sampleRate}_${soundType}`
 
   if (soundCache.has(cacheKey)) {
     return soundCache.get(cacheKey)!
   }
 
-  const buffer = generateSound(context, soundType as any)
+  const buffer = generateSound(context, soundType)
   soundCache.set(cacheKey, buffer)
   return buffer
 }
 
-export const useSound = (
-  soundType:
-    | 'click'
-    | 'success'
-    | 'error'
-    | 'notification'
-    | 'gameClick'
-    | 'gameSuccess'
-    | 'gameOver'
-    | 'navigation'
-    | 'alert',
-  enabled: boolean = true
-): SoundHookReturn => {
+export const useSound = (soundType: SoundType, enabled = true): SoundHookReturn => {
   const [isPlaying, setIsPlaying] = useState(false)
   const [volume, setVolume] = useState(0.5)
   const sourceRef = useRef<AudioBufferSourceNode | null>(null)
@@ -264,11 +264,11 @@ export const useSound = (
         gainRef.current = gain
 
         // Handle completion
-        source.onended = () => {
+        source.addEventListener('ended', () => {
           setIsPlaying(false)
           sourceRef.current = null
           gainRef.current = null
-        }
+        })
 
         // Start playback
         source.start()
@@ -281,7 +281,7 @@ export const useSound = (
   )
 
   const stop = useCallback(
-    (fadeOut: number = 0.1) => {
+    (fadeOut = 0.1) => {
       if (!sourceRef.current || !gainRef.current) return
 
       try {
@@ -330,14 +330,14 @@ export const useSound = (
           sourceRef.current.stop()
           sourceRef.current.disconnect()
         } catch (error) {
-          // Ignore errors during cleanup
+          ignoreCleanupError(error)
         }
       }
       if (gainRef.current) {
         try {
           gainRef.current.disconnect()
         } catch (error) {
-          // Ignore errors during cleanup
+          ignoreCleanupError(error)
         }
       }
     }
@@ -345,10 +345,28 @@ export const useSound = (
 
   // Stop sound when disabled
   useEffect(() => {
-    if (!enabled && isPlaying) {
-      stop(0.05)
+    if (!enabled && isPlaying && sourceRef.current && gainRef.current) {
+      try {
+        const context = getAudioContext(soundType)
+        gainRef.current.gain.linearRampToValueAtTime(0, context.currentTime + 0.05)
+
+        fadeTimeoutRef.current = setTimeout(() => {
+          if (sourceRef.current) {
+            sourceRef.current.stop()
+            sourceRef.current.disconnect()
+            sourceRef.current = null
+          }
+          if (gainRef.current) {
+            gainRef.current.disconnect()
+            gainRef.current = null
+          }
+          setIsPlaying(false)
+        }, 50)
+      } catch (error) {
+        console.warn('Failed to stop sound:', error)
+      }
     }
-  }, [enabled, isPlaying, stop])
+  }, [enabled, isPlaying, soundType])
 
   return useMemo(
     () => ({

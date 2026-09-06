@@ -1,8 +1,8 @@
 import { Ratelimit } from '@upstash/ratelimit'
 
-import { ratelimit, redis } from '@isyuricunha/kv'
+import { redis } from '@isyuricunha/kv'
 
-export { ratelimit }
+export { ratelimit } from '@isyuricunha/kv'
 
 export const contactRatelimit = new Ratelimit({
   redis,

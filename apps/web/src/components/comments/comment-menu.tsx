@@ -33,7 +33,7 @@ const CommentMenu = () => {
   const [copy] = useCopyToClipboard()
   const t = useTranslations()
 
-  const deleteCommentMutation = api.comments.delete.useMutation({
+  const commentDeleteMutation = api.comments.delete.useMutation({
     onSuccess: () => toast.success(t('blog.comments.deleted-a-comment')),
     onError: (error) => toast.error(error.message),
     onSettled: () => utils.comments.invalidate()
@@ -67,7 +67,7 @@ const CommentMenu = () => {
           <DropdownMenuItem
             onClick={() =>
               void copy({
-                text: `${globalThis.location.origin}/blog/${slug}?${commentQuery}`,
+                text: `${location.origin}/blog/${slug}?${commentQuery}`,
                 successMessage: t('blog.comments.link-copied')
               })
             }
@@ -78,8 +78,8 @@ const CommentMenu = () => {
             {isAuthor ? (
               <DropdownMenuItem
                 className='text-accent-earth-text focus:text-accent-earth-hover'
-                disabled={deleteCommentMutation.isPending}
-                aria-disabled={deleteCommentMutation.isPending}
+                disabled={commentDeleteMutation.isPending}
+                aria-disabled={commentDeleteMutation.isPending}
               >
                 {t('common.delete')}
               </DropdownMenuItem>
@@ -97,7 +97,7 @@ const CommentMenu = () => {
         <AlertDialogFooter>
           <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
           <AlertDialogAction
-            onClick={() => deleteCommentMutation.mutate({ id })}
+            onClick={() => commentDeleteMutation.mutate({ id })}
             className={buttonVariants({ variant: 'destructive' })}
           >
             {t('common.delete')}

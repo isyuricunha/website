@@ -55,7 +55,7 @@ const TopSongsSection = () => {
         </CardHeader>
         <CardContent>
           <div className='space-y-4'>
-            {Array.from({ length: 5 }).map((_, i) => (
+            {Array.from({ length: 5 }, (_, i) => (
               <div key={i} className='flex items-center space-x-4'>
                 <div className='bg-bg-hover h-12 w-12 animate-pulse rounded-lg' />
                 <div className='flex-1 space-y-2'>

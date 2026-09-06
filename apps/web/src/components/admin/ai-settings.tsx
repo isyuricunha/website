@@ -90,7 +90,7 @@ export const AiSettings = () => {
       toast.error('Enter an endpoint before loading models')
       return
     }
-    if (!apiKey.trim() && !apiKeyPreview) {
+    if (!apiKeyPreview && !apiKey.trim()) {
       toast.error('Enter an API key before loading models')
       return
     }
@@ -107,7 +107,7 @@ export const AiSettings = () => {
       toast.error('Endpoint and model are required')
       return
     }
-    if (!apiKey.trim() && !apiKeyPreview) {
+    if (!apiKeyPreview && !apiKey.trim()) {
       toast.error('API key is required')
       return
     }
@@ -219,12 +219,12 @@ export const AiSettings = () => {
             >
               Refresh cache
             </Button>
-            {modelsCached !== null ? (
+            {modelsCached === null ? null : (
               <span className='text-text-tertiary self-center text-xs'>
                 {modelsCached ? 'Loaded from cache' : 'Loaded from endpoint'}
                 {modelsFetchedAt ? ` · ${new Date(modelsFetchedAt).toLocaleString()}` : ''}
               </span>
-            ) : null}
+            )}
           </div>
         </CardContent>
       </Card>

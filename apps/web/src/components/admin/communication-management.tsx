@@ -61,7 +61,7 @@ export default function CommunicationManagement() {
     })
 
   // Mutations
-  const createTemplateMutation = api.communication.createEmailTemplate.useMutation({
+  const templateCreateMutation = api.communication.createEmailTemplate.useMutation({
     onSuccess: () => {
       toast.success(t('messages.template-created'))
     },
@@ -70,7 +70,7 @@ export default function CommunicationManagement() {
     }
   })
 
-  const createCampaignMutation = api.communication.createEmailCampaign.useMutation({
+  const campaignCreateMutation = api.communication.createEmailCampaign.useMutation({
     onSuccess: () => {
       toast.success(t('messages.campaign-created'))
     },
@@ -88,7 +88,7 @@ export default function CommunicationManagement() {
     }
   })
 
-  const createAnnouncementMutation = api.announcements.createAnnouncement.useMutation({
+  const announcementCreateMutation = api.announcements.createAnnouncement.useMutation({
     onSuccess: () => {
       toast.success(t('messages.announcement-created'))
     },
@@ -108,7 +108,7 @@ export default function CommunicationManagement() {
       return
     }
 
-    createTemplateMutation.mutate({
+    templateCreateMutation.mutate({
       name,
       type,
       subject,
@@ -126,7 +126,7 @@ export default function CommunicationManagement() {
       return
     }
 
-    createCampaignMutation.mutate({
+    campaignCreateMutation.mutate({
       name,
       subject,
       htmlContent
@@ -146,7 +146,7 @@ export default function CommunicationManagement() {
       return
     }
 
-    createAnnouncementMutation.mutate({
+    announcementCreateMutation.mutate({
       title,
       content,
       titlePt: title_pt.trim() ? title_pt : undefined,
@@ -362,10 +362,12 @@ export default function CommunicationManagement() {
                       required
                     />
                   </div>
-                  <Button type='submit' disabled={createCampaignMutation.isPending}>
-                    {createCampaignMutation.isPending
-                      ? t('actions.creating')
-                      : t('actions.create-campaign')}
+                  <Button type='submit' disabled={campaignCreateMutation.isPending}>
+                    {t(
+                      campaignCreateMutation.isPending
+                        ? 'actions.creating'
+                        : 'actions.create-campaign'
+                    )}
                   </Button>
                 </form>
               </CardContent>
@@ -485,10 +487,12 @@ export default function CommunicationManagement() {
                       required
                     />
                   </div>
-                  <Button type='submit' disabled={createTemplateMutation.isPending}>
-                    {createTemplateMutation.isPending
-                      ? t('actions.creating')
-                      : t('actions.create-template')}
+                  <Button type='submit' disabled={templateCreateMutation.isPending}>
+                    {t(
+                      templateCreateMutation.isPending
+                        ? 'actions.creating'
+                        : 'actions.create-template'
+                    )}
                   </Button>
                 </form>
               </CardContent>
@@ -606,10 +610,12 @@ export default function CommunicationManagement() {
                       rows={4}
                     />
                   </div>
-                  <Button type='submit' disabled={createAnnouncementMutation.isPending}>
-                    {createAnnouncementMutation.isPending
-                      ? t('actions.creating')
-                      : t('actions.create-announcement')}
+                  <Button type='submit' disabled={announcementCreateMutation.isPending}>
+                    {t(
+                      announcementCreateMutation.isPending
+                        ? 'actions.creating'
+                        : 'actions.create-announcement'
+                    )}
                   </Button>
                 </form>
               </CardContent>
@@ -682,9 +688,7 @@ export default function CommunicationManagement() {
                         <div className='font-medium'>{notification.title}</div>
                         <div className='flex items-center space-x-2'>
                           <Badge variant={notification.read ? 'outline' : 'default'}>
-                            {notification.read
-                              ? t('notifications.read')
-                              : t('notifications.unread')}
+                            {t(notification.read ? 'notifications.read' : 'notifications.unread')}
                           </Badge>
                         </div>
                       </div>

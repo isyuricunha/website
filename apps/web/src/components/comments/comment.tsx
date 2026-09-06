@@ -73,11 +73,10 @@ const Comment = (props: CommentProps) => {
   )
 
   useEffect(() => {
-    if (isHighlighted && commentRef.current) {
-      const top = commentRef.current.getBoundingClientRect().top + window.scrollY - 128
+    if (!isHighlighted || !commentRef.current) return
+    const top = commentRef.current.getBoundingClientRect().top + window.scrollY - 128
 
-      window.scrollTo({ top, behavior: 'smooth' })
-    }
+    window.scrollTo({ top, behavior: 'smooth' })
   }, [isHighlighted])
 
   const hasReplies = !parentId && replies > 0

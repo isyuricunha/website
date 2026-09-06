@@ -32,7 +32,7 @@ const stable_pick_by_seed = <T extends { id: string }>(
 ): T[] => {
   return items
     .map((item) => ({ item, key: hash_string_to_uint32(`${seed}:${item.id}`) }))
-    .sort((a, b) => a.key - b.key)
+    .toSorted((a, b) => a.key - b.key)
     .map(({ item }) => item)
     .slice(0, limit)
 }
@@ -106,7 +106,7 @@ export function getRecommendedPosts(params: {
       }
     })
     .filter((rec) => rec.score > 0)
-    .sort((a, b) => b.score - a.score)
+    .toSorted((a, b) => b.score - a.score)
     .slice(0, limit)
 
   if (related.length >= limit) return related
@@ -180,7 +180,7 @@ export function getRecommendedSnippets(params: {
       }
     })
     .filter((rec) => rec.score > 0)
-    .sort((a, b) => b.score - a.score)
+    .toSorted((a, b) => b.score - a.score)
     .slice(0, limit)
 
   if (related.length >= limit) return related

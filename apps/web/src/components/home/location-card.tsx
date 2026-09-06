@@ -7,7 +7,7 @@ import { useEffect, useRef } from 'react'
 
 const LocationCard = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const pointerInteracting = useRef<{ x: number; y: number } | null>(null)
+  const pointerInteractingRef = useRef<{ x: number; y: number } | null>(null)
   const fadeMask = 'radial-gradient(circle at 50% 50%, rgb(0, 0, 0) 60%, rgb(0, 0, 0, 0) 70%)'
   const t = useTranslations()
 
@@ -16,18 +16,17 @@ const LocationCard = () => {
 
   useEffect(() => {
     let width = 0
+    const canvas = canvasRef.current
+    if (!canvas) return
 
     const onResize = () => {
-      if (canvasRef.current) {
-        width = canvasRef.current.offsetWidth
-      }
+      width = canvas.offsetWidth
     }
     onResize()
-    window.addEventListener('resize', onResize)
+    const resizeObserver = new ResizeObserver(onResize)
+    resizeObserver.observe(canvas)
 
-    if (!canvasRef.current) return
-
-    const globe = createGlobe(canvasRef.current, {
+    const globe = createGlobe(canvas, {
       devicePixelRatio: 2,
       width: width * 2,
       height: width * 2,
@@ -58,49 +57,50 @@ const LocationCard = () => {
 
     return () => {
       globe.destroy()
-      window.removeEventListener('resize', onResize)
+      resizeObserver.disconnect()
     }
   }, [])
 
   const handlePointerDown = (e: React.PointerEvent<HTMLCanvasElement>) => {
-    pointerInteracting.current = { x: e.clientX, y: e.clientY }
+    pointerInteractingRef.current = { x: e.clientX, y: e.clientY }
     if (canvasRef.current) canvasRef.current.style.cursor = 'grabbing'
   }
 
   const handlePointerUpOrOut = () => {
-    pointerInteracting.current = null
+    pointerInteractingRef.current = null
     if (canvasRef.current) canvasRef.current.style.cursor = 'grab'
   }
 
   const handlePointerMove = (e: React.PointerEvent<HTMLCanvasElement>) => {
-    if (pointerInteracting.current) {
-      const deltaX = e.clientX - pointerInteracting.current.x
-      const deltaY = e.clientY - pointerInteracting.current.y
-      pointerInteracting.current = { x: e.clientX, y: e.clientY }
-      rotationTargetRef.current = {
-        r: rotationTargetRef.current.r + deltaX / 200,
-        v: rotationTargetRef.current.v + deltaY / 200
-      }
+    if (!pointerInteractingRef.current) return
+
+    const deltaX = e.clientX - pointerInteractingRef.current.x
+    const deltaY = e.clientY - pointerInteractingRef.current.y
+    pointerInteractingRef.current = { x: e.clientX, y: e.clientY }
+    rotationTargetRef.current = {
+      r: rotationTargetRef.current.r + deltaX / 200,
+      v: rotationTargetRef.current.v + deltaY / 200
     }
   }
 
   const handleTouchStart = (e: React.TouchEvent<HTMLCanvasElement>) => {
-    if (e.touches[0]) {
-      pointerInteracting.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }
-      if (canvasRef.current) canvasRef.current.style.cursor = 'grabbing'
-    }
+    const touch = e.touches[0]
+    if (!touch) return
+
+    pointerInteractingRef.current = { x: touch.clientX, y: touch.clientY }
+    if (canvasRef.current) canvasRef.current.style.cursor = 'grabbing'
   }
 
   const handleTouchMove = (e: React.TouchEvent<HTMLCanvasElement>) => {
-    if (pointerInteracting.current && e.touches[0]) {
-      const touch = e.touches[0]
-      const deltaX = touch.clientX - pointerInteracting.current.x
-      const deltaY = touch.clientY - pointerInteracting.current.y
-      pointerInteracting.current = { x: touch.clientX, y: touch.clientY }
-      rotationTargetRef.current = {
-        r: rotationTargetRef.current.r + deltaX / 100,
-        v: rotationTargetRef.current.v + deltaY / 100
-      }
+    const touch = e.touches[0]
+    if (!touch || !pointerInteractingRef.current) return
+
+    const deltaX = touch.clientX - pointerInteractingRef.current.x
+    const deltaY = touch.clientY - pointerInteractingRef.current.y
+    pointerInteractingRef.current = { x: touch.clientX, y: touch.clientY }
+    rotationTargetRef.current = {
+      r: rotationTargetRef.current.r + deltaX / 100,
+      v: rotationTargetRef.current.v + deltaY / 100
     }
   }
 

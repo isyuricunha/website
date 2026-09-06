@@ -118,14 +118,8 @@ const Message = (props: MessageProps) => {
   const { message } = props
   const { data: session } = useSession()
 
-  const {
-    message: {
-      id,
-      user: { name, image, id: userId, username, nameColor, nameEffect },
-      updatedAt,
-      body
-    }
-  } = props
+  const { id, user, updatedAt, body } = message
+  const { name, image, id: userId, username, nameColor, nameEffect } = user
 
   const context = useMemo<MessageContext>(
     () => ({

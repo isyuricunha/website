@@ -20,7 +20,7 @@ const Table = (props: TableProps) => {
       <TableHeader>
         <TableRow>
           {headers.map((header, i) => (
-            <TableHead key={`${i}`}>{header}</TableHead>
+            <TableHead key={i}>{header}</TableHead>
           ))}
         </TableRow>
       </TableHeader>

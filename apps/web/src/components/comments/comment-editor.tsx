@@ -38,9 +38,7 @@ const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>, command:
 
     setRangeText(textarea, tabSpace, selectionStart, selectionEnd, 'end')
     textarea.setSelectionRange(selectionStart + tabSpace.length, selectionStart + tabSpace.length)
-  }
-
-  if (event.key === 'Escape') {
+  } else if (event.key === 'Escape') {
     event.preventDefault()
     onEscape?.()
 
@@ -73,7 +71,7 @@ const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>, command:
     const orderedList = currentLine?.match(/^(\d+)\.\s/)
 
     if (orderedList?.[1]) {
-      const number = Number.parseInt(orderedList[1], 10) + 1
+      const number = Number(orderedList[1]) + 1
       const insertText = `\n${number}. `
 
       event.preventDefault()

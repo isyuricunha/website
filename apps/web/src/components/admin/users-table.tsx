@@ -88,7 +88,7 @@ const UsersTable = (props: UsersTableProps) => {
     }
   ]
 
-  const deleteUserMutation = api.users.deleteUser.useMutation({
+  const userDeletionMutation = api.users.deleteUser.useMutation({
     onSuccess: () => {
       toast.success(t('admin.table.users.delete-success'))
       utils.users.getUsers.invalidate()
@@ -140,24 +140,24 @@ const UsersTable = (props: UsersTableProps) => {
     )
   }, [data, debouncedSearchTerm])
 
-  const handleDeleteUser = (userId: string, userName: string) => {
+  const handleDeleteUser = (userId: string, username: string) => {
     setConfirmDialog({
       open: true,
       title: t('admin.table.users.delete'),
-      description: t('admin.table.users.confirm-delete-with-name', { name: userName }),
+      description: t('admin.table.users.confirm-delete-with-name', { name: username }),
       variant: 'destructive',
       action: () => {
-        deleteUserMutation.mutate({ userId })
+        userDeletionMutation.mutate({ userId })
         setConfirmDialog((prev) => ({ ...prev, open: false }))
       }
     })
   }
 
-  const handleBanUser = (userId: string, userName: string) => {
+  const handleBanUser = (userId: string, username: string) => {
     setConfirmDialog({
       open: true,
       title: t('admin.table.users.ban'),
-      description: t('admin.table.users.confirm-ban-with-name', { name: userName }),
+      description: t('admin.table.users.confirm-ban-with-name', { name: username }),
       variant: 'destructive',
       action: () => {
         banUserMutation.mutate({ userId })
@@ -166,11 +166,11 @@ const UsersTable = (props: UsersTableProps) => {
     })
   }
 
-  const handleUnbanUser = (userId: string, userName: string) => {
+  const handleUnbanUser = (userId: string, username: string) => {
     setConfirmDialog({
       open: true,
       title: t('admin.table.users.unban'),
-      description: t('admin.table.users.confirm-unban-with-name', { name: userName }),
+      description: t('admin.table.users.confirm-unban-with-name', { name: username }),
       action: () => {
         unbanUserMutation.mutate({ userId })
         setConfirmDialog((prev) => ({ ...prev, open: false }))
@@ -229,7 +229,7 @@ const UsersTable = (props: UsersTableProps) => {
       ),
       cell: ({ row }) => (
         <Badge variant={row.original.banned ? 'destructive' : 'default'}>
-          {row.original.banned ? t('admin.table.users.banned') : t('admin.table.users.active')}
+          {t(row.original.banned ? 'admin.table.users.banned' : 'admin.table.users.active')}
         </Badge>
       )
     },
@@ -346,7 +346,7 @@ const UsersTable = (props: UsersTableProps) => {
         variant={confirmDialog.variant}
         onConfirm={confirmDialog.action}
         loading={
-          deleteUserMutation.isPending || banUserMutation.isPending || unbanUserMutation.isPending
+          userDeletionMutation.isPending || banUserMutation.isPending || unbanUserMutation.isPending
         }
       />
 

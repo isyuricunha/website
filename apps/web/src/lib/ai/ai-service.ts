@@ -97,7 +97,7 @@ Meta description:`
     if (description.length > 160) {
       description = description.slice(0, 157) + '...'
     } else if (description.length < 120) {
-      description = description + " - Yuri Cunha's Blog"
+      description += " - Yuri Cunha's Blog"
     }
 
     return description

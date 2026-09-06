@@ -40,7 +40,7 @@ const SiteSearch = () => {
     const results: SearchResult[] = []
 
     // Add blog posts
-    allPosts.forEach((post) => {
+    for (const post of allPosts) {
       results.push({
         id: post.slug,
         title: post.title,
@@ -50,10 +50,10 @@ const SiteSearch = () => {
         icon: <FileText className='h-4 w-4' />,
         date: post.date
       })
-    })
+    }
 
     // Add projects
-    allProjects.forEach((project) => {
+    for (const project of allProjects) {
       results.push({
         id: project.slug,
         title: project.name,
@@ -62,7 +62,7 @@ const SiteSearch = () => {
         type: 'project',
         icon: <Code className='h-4 w-4' />
       })
-    })
+    }
 
     // Add static pages
     const staticPages = [
@@ -109,13 +109,13 @@ const SiteSearch = () => {
 
   // Load recent searches from localStorage
   useEffect(() => {
-    let timeoutId: ReturnType<typeof globalThis.setTimeout> | undefined
+    let timeoutId: ReturnType<typeof setTimeout> | undefined
 
     try {
       const saved = localStorage.getItem(RECENT_SEARCHES_KEY)
       if (saved) {
         const parsed = JSON.parse(saved) as unknown
-        timeoutId = globalThis.setTimeout(() => {
+        timeoutId = setTimeout(() => {
           if (Array.isArray(parsed) && parsed.every((x) => typeof x === 'string')) {
             setRecentSearches(parsed)
           }
@@ -127,7 +127,7 @@ const SiteSearch = () => {
 
     return () => {
       if (timeoutId !== undefined) {
-        globalThis.clearTimeout(timeoutId)
+        clearTimeout(timeoutId)
       }
     }
   }, [])
@@ -143,8 +143,8 @@ const SiteSearch = () => {
       }
     }
 
-    globalThis.addEventListener('yue-open-search' as any, handleYueSearch)
-    return () => globalThis.removeEventListener('yue-open-search' as any, handleYueSearch)
+    addEventListener('yue-open-search' as any, handleYueSearch)
+    return () => removeEventListener('yue-open-search' as any, handleYueSearch)
   }, [])
 
   // Save search to recent searches
@@ -218,9 +218,7 @@ const SiteSearch = () => {
       if (e.key === 'ArrowDown') {
         e.preventDefault()
         setSelectedIndex((prev) => (prev < totalItems - 1 ? prev + 1 : prev))
-      }
-
-      if (e.key === 'ArrowUp') {
+      } else if (e.key === 'ArrowUp') {
         e.preventDefault()
         setSelectedIndex((prev) => (prev > -1 ? prev - 1 : -1))
       }

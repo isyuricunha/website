@@ -17,7 +17,7 @@ const parseStringArray = (raw: string | null): string[] => {
   try {
     const parsed = JSON.parse(raw) as unknown
     if (!Array.isArray(parsed)) return []
-    if (!parsed.every((item) => typeof item === 'string')) return []
+    if (parsed.some((item) => typeof item !== 'string')) return []
     return parsed
   } catch {
     return []

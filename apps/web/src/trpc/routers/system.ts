@@ -53,8 +53,8 @@ const get_api_health_urls = (headers: Headers) => {
 // Helper function to perform health checks
 async function performHealthCheck(type: string, ctx: { db: any; headers: Headers }) {
   const startTime = Date.now()
-  let status: 'healthy' | 'warning' | 'critical' | 'unknown' = 'unknown'
-  let message = ''
+  let status: 'healthy' | 'warning' | 'critical' | 'unknown'
+  let message: string
   let details = {}
 
   try {
@@ -99,7 +99,6 @@ async function performHealthCheck(type: string, ctx: { db: any; headers: Headers
 
           try {
             res = await fetch(url, {
-              method: 'GET',
               cache: 'no-store',
               headers: {
                 accept: 'application/json',
@@ -131,13 +130,17 @@ async function performHealthCheck(type: string, ctx: { db: any; headers: Headers
         const responseTime = Date.now() - startTime
         const ok = attempts.some((a) => a.ok)
 
-        status = ok
-          ? responseTime < 1000
-            ? 'healthy'
-            : responseTime < 3000
-              ? 'warning'
-              : 'critical'
-          : 'critical'
+        let apiStatus: 'healthy' | 'warning' | 'critical' = 'critical'
+        if (ok) {
+          if (responseTime < 1000) {
+            apiStatus = 'healthy'
+          } else if (responseTime < 3000) {
+            apiStatus = 'warning'
+          } else {
+            apiStatus = 'critical'
+          }
+        }
+        status = apiStatus
 
         message = ok
           ? `API health endpoint OK (${responseTime}ms)`
@@ -152,26 +155,24 @@ async function performHealthCheck(type: string, ctx: { db: any; headers: Headers
         break
       }
 
-      case 'storage':
-        // Verify write/read/delete in temp directory
-        {
-          const tempDir = os.tmpdir()
-          const testFile = path.join(tempDir, `health-${randomBytes(8).toString('hex')}.txt`)
-          const payload = `health-check:${Date.now()}`
+      case 'storage': { // Verify write/read/delete in temp directory
+        const tempDir = os.tmpdir()
+        const testFile = path.join(tempDir, `health-${randomBytes(8).toString('hex')}.txt`)
+        const payload = `health-check:${Date.now()}`
 
-          await fs.writeFile(testFile, payload, 'utf8')
-          const readBack = await fs.readFile(testFile, 'utf8')
-          await fs.unlink(testFile)
+        await fs.writeFile(testFile, payload, 'utf8')
+        const readBack = await fs.readFile(testFile, 'utf8')
+        await fs.unlink(testFile)
 
-          if (readBack !== payload) {
-            throw new Error('Storage read/write mismatch')
-          }
-
-          status = 'healthy'
-          message = 'Storage write/read/delete OK'
-          details = { dir: tempDir }
+        if (readBack !== payload) {
+          throw new Error('Storage read/write mismatch')
         }
+
+        status = 'healthy'
+        message = 'Storage write/read/delete OK'
+        details = { dir: tempDir }
         break
+      }
 
       default:
         status = 'unknown'
@@ -190,6 +191,33 @@ async function performHealthCheck(type: string, ctx: { db: any; headers: Headers
     responseTime: Date.now() - startTime
   }
 }
+
+const errorLogsQuerySchema = z.object({
+  level: z.enum(['error', 'warning', 'info']).optional(),
+  resolved: z.boolean().optional(),
+  limit: z.number().min(1).max(100).default(50),
+  offset: z.number().min(0).default(0)
+})
+
+const errorLogCreateSchema = z.object({
+  level: z.enum(['error', 'warning', 'info']),
+  message: z.string(),
+  stack: z.string().optional(),
+  url: z.string().optional(),
+  metadata: z.record(z.string(), z.any()).optional()
+})
+
+const errorIdSchema = z.object({ errorId: z.string() })
+
+const siteConfigUpdateSchema = z.object({
+  key: z.string(),
+  value: z.string(),
+  type: z
+    .enum(['general', 'seo', 'social', 'email', 'analytics', 'security', 'features'])
+    .optional(),
+  description: z.string().optional(),
+  isPublic: z.boolean().optional()
+})
 
 export const systemRouter = createTRPCRouter({
   // Get system health overview
@@ -276,152 +304,131 @@ export const systemRouter = createTRPCRouter({
   }),
 
   // Get error logs
-  getErrorLogs: adminProcedure
-    .input(
-      z.object({
-        level: z.enum(['error', 'warning', 'info']).optional(),
-        resolved: z.boolean().optional(),
-        limit: z.number().min(1).max(100).default(50),
-        offset: z.number().min(0).default(0)
-      })
-    )
-    .query(async ({ ctx, input }) => {
-      try {
-        const conditions = []
+  getErrorLogs: adminProcedure.input(errorLogsQuerySchema).query(async ({ ctx, input }) => {
+    try {
+      const conditions = []
 
-        if (input.level) {
-          conditions.push(eq(errorLogs.level, input.level))
-        }
+      if (input.level) {
+        conditions.push(eq(errorLogs.level, input.level))
+      }
 
-        if (input.resolved !== undefined) {
-          conditions.push(eq(errorLogs.resolved, input.resolved))
-        }
+      if (input.resolved !== undefined) {
+        conditions.push(eq(errorLogs.resolved, input.resolved))
+      }
 
-        const whereClause = conditions.length > 0 ? and(...conditions) : undefined
+      const whereClause = conditions.length > 0 ? and(...conditions) : undefined
 
-        const logs = await ctx.db.query.errorLogs.findMany({
-          where: whereClause,
-          orderBy: desc(errorLogs.createdAt),
-          limit: input.limit,
-          offset: input.offset,
-          with: {
-            user: {
-              columns: {
-                id: true,
-                name: true,
-                email: true
-              }
-            },
-            resolvedByUser: {
-              columns: {
-                id: true,
-                name: true,
-                email: true
-              }
+      const logs = await ctx.db.query.errorLogs.findMany({
+        where: whereClause,
+        orderBy: desc(errorLogs.createdAt),
+        limit: input.limit,
+        offset: input.offset,
+        with: {
+          user: {
+            columns: {
+              id: true,
+              name: true,
+              email: true
+            }
+          },
+          resolvedByUser: {
+            columns: {
+              id: true,
+              name: true,
+              email: true
             }
           }
-        })
-
-        const totalCount = await ctx.db.query.errorLogs.findMany({
-          where: whereClause,
-          columns: { id: true }
-        })
-
-        return {
-          logs: logs.map((log) => ({
-            ...log,
-            metadata: log.metadata ? JSON.parse(log.metadata) : null
-          })),
-          total: totalCount.length,
-          hasMore: totalCount.length > input.offset + input.limit
         }
-      } catch (error) {
-        logger.error('Error fetching error logs', error)
-        throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: 'Failed to fetch error logs'
-        })
+      })
+
+      const totalCount = await ctx.db.query.errorLogs.findMany({
+        where: whereClause,
+        columns: { id: true }
+      })
+
+      return {
+        logs: logs.map((log) => ({
+          ...log,
+          metadata: log.metadata ? JSON.parse(log.metadata) : null
+        })),
+        total: totalCount.length,
+        hasMore: totalCount.length > input.offset + input.limit
       }
-    }),
+    } catch (error) {
+      logger.error('Error fetching error logs', error)
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Failed to fetch error logs'
+      })
+    }
+  }),
 
   // Log an error
-  logError: adminProcedure
-    .input(
-      z.object({
-        level: z.enum(['error', 'warning', 'info']),
-        message: z.string(),
-        stack: z.string().optional(),
-        url: z.string().optional(),
-        metadata: z.record(z.string(), z.any()).optional()
+  logError: adminProcedure.input(errorLogCreateSchema).mutation(async ({ ctx, input }) => {
+    try {
+      const errorId = randomBytes(16).toString('hex')
+      const ipAddress = getIpFromHeaders(ctx.headers)
+      const userAgent = getUserAgentFromHeaders(ctx.headers)
+
+      await ctx.db.insert(errorLogs).values({
+        id: errorId,
+        level: input.level,
+        message: input.message,
+        stack: input.stack,
+        url: input.url,
+        userId: ctx.session.user.id,
+        ipAddress,
+        userAgent: userAgent,
+        metadata: input.metadata ? JSON.stringify(input.metadata) : null,
+        createdAt: new Date()
       })
-    )
-    .mutation(async ({ ctx, input }) => {
-      try {
-        const errorId = randomBytes(16).toString('hex')
-        const ipAddress = getIpFromHeaders(ctx.headers)
-        const userAgent = getUserAgentFromHeaders(ctx.headers)
 
-        await ctx.db.insert(errorLogs).values({
-          id: errorId,
-          level: input.level,
-          message: input.message,
-          stack: input.stack,
-          url: input.url,
-          userId: ctx.session.user.id,
-          ipAddress,
-          userAgent: userAgent,
-          metadata: input.metadata ? JSON.stringify(input.metadata) : null,
-          createdAt: new Date()
-        })
-
-        return { success: true, errorId }
-      } catch (error) {
-        logger.error('Error logging error', error)
-        throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: 'Failed to log error'
-        })
-      }
-    }),
+      return { success: true, errorId }
+    } catch (error) {
+      logger.error('Error logging error', error)
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Failed to log error'
+      })
+    }
+  }),
 
   // Resolve error
-  resolveError: adminProcedure
-    .input(z.object({ errorId: z.string() }))
-    .mutation(async ({ ctx, input }) => {
-      try {
-        const auditLogger = new AuditLogger(ctx.db)
-        const ipAddress = getIpFromHeaders(ctx.headers)
-        const userAgent = getUserAgentFromHeaders(ctx.headers)
+  resolveError: adminProcedure.input(errorIdSchema).mutation(async ({ ctx, input }) => {
+    try {
+      const auditLogger = new AuditLogger(ctx.db)
+      const ipAddress = getIpFromHeaders(ctx.headers)
+      const userAgent = getUserAgentFromHeaders(ctx.headers)
 
-        await ctx.db
-          .update(errorLogs)
-          .set({
-            resolved: true,
-            resolvedBy: ctx.session.user.id,
-            resolvedAt: new Date()
-          })
-          .where(eq(errorLogs.id, input.errorId))
-
-        // Log the audit trail
-        await auditLogger.log({
-          adminUserId: ctx.session.user.id,
-          action: 'settings_update', // We can extend this to 'error_resolve' later
-          targetType: 'error',
-          targetId: input.errorId,
-          details: { action: 'resolved' },
-          ipAddress,
-          userAgent
+      await ctx.db
+        .update(errorLogs)
+        .set({
+          resolved: true,
+          resolvedBy: ctx.session.user.id,
+          resolvedAt: new Date()
         })
+        .where(eq(errorLogs.id, input.errorId))
 
-        return { success: true }
-      } catch (error) {
-        logger.error('Error resolving error', error)
-        throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: 'Failed to resolve error'
-        })
-      }
-    }),
+      // Log the audit trail
+      await auditLogger.log({
+        adminUserId: ctx.session.user.id,
+        action: 'settings_update', // We can extend this to 'error_resolve' later
+        targetType: 'error',
+        targetId: input.errorId,
+        details: { action: 'resolved' },
+        ipAddress,
+        userAgent
+      })
+
+      return { success: true }
+    } catch (error) {
+      logger.error('Error resolving error', error)
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Failed to resolve error'
+      })
+    }
+  }),
 
   resolveAllErrors: adminProcedure.mutation(async ({ ctx }) => {
     try {
@@ -490,10 +497,10 @@ export const systemRouter = createTRPCRouter({
 
       // Group by type
       const groupedConfig: Record<string, any[]> = {}
-      config.forEach((item) => {
+      for (const item of config) {
         const type = item.type
         const group = groupedConfig[type] ?? []
-        if (!groupedConfig[type]) {
+        if (!Object.hasOwn(groupedConfig, type)) {
           groupedConfig[type] = group
         }
         group.push({
@@ -502,7 +509,7 @@ export const systemRouter = createTRPCRouter({
             ? parse_config_value(item.value, { key: item.key, type: item.type })
             : null
         })
-      })
+      }
 
       return { config: groupedConfig }
     } catch (error) {
@@ -516,17 +523,7 @@ export const systemRouter = createTRPCRouter({
 
   // Update site configuration
   updateSiteConfig: adminProcedure
-    .input(
-      z.object({
-        key: z.string(),
-        value: z.string(),
-        type: z
-          .enum(['general', 'seo', 'social', 'email', 'analytics', 'security', 'features'])
-          .optional(),
-        description: z.string().optional(),
-        isPublic: z.boolean().optional()
-      })
-    )
+    .input(siteConfigUpdateSchema)
     .mutation(async ({ ctx, input }) => {
       try {
         const auditLogger = new AuditLogger(ctx.db)
