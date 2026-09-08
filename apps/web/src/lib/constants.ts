@@ -10,7 +10,7 @@ export const GITHUB_USERNAME = 'isyuricunha'
 
 export const SITE_NAME = 'Yuri Cunha'
 export const SITE_DESCRIPTION =
-  'Yuri Cunha — Senior Cloud & Infrastructure Architect. Sharing projects, articles, and notes on web development.'
+  'Yuri Cunha — Infrastructure & Platform Engineer. Building and operating systems from hardware to services.'
 export const SITE_KEYWORDS = [
   'isyuricunha',
   'Yuri Cunha',

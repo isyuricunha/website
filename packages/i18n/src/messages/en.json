@@ -1,7 +1,7 @@
 {
   "about": {
     "title": "About",
-    "description": "👋 Hey! I am Yuri Cunha, just a random guy on the internet.."
+    "description": "Yuri Cunha is an Infrastructure & Platform Engineer who builds and operates systems from hardware to services."
   },
   "privacy": {
     "title": "Privacy Notice",
@@ -1730,21 +1730,21 @@
       }
     },
     "hero": {
-      "title-top": "I’m Yuri, a database specialist",
-      "title-middle-left": "optimizing",
-      "title-middle-right": "data solutions",
-      "amazing": "agile",
+      "title-top": "I’m Yuri, an Infrastructure & Platform Engineer",
+      "title-middle-left": "building",
+      "title-middle-right": "systems",
+      "amazing": "reliable",
       "attractive": "fast",
       "fantastic": "robust",
       "stunning": "secure",
-      "title-bottom": "for modern infrastructures",
+      "title-bottom": "from hardware to services",
       "location-timezone": "Brazil • UTC/GMT -3",
       "view-projects": "View Projects",
       "read-blog": "Read Blog",
       "code": {
-        "database-specialist": "database_specialist = true",
+        "database-specialist": "infrastructure_platform_engineer = true",
         "region": "region = \"America/Sao_Paulo\"",
-        "focus": "focus = \"reliable data systems\""
+        "focus": "focus = \"reliable systems\""
       }
     },
     "latest-articles": {
@@ -1826,7 +1826,7 @@
     "link-to-section": "Link to section"
   },
   "metadata": {
-    "site-description": "Senior DBA",
+    "site-description": "Infrastructure & Platform Engineer building and operating systems across Linux, servers, containers, networking, automation, and databases.",
     "site-title": "Yuri Cunha",
     "site-short-name": "Yuri"
   },
@@ -2430,7 +2430,7 @@
       "13": "This website is fully responsive. Try resizing your browser!",
       "14": "Found any bugs? Let me know and I'll help report them!",
       "15": "I'm always learning new things from my creator, Yuri. What's your latest discovery?",
-      "16": "My creator, Yuri, is a database specialist. Pretty cool, right?",
+      "16": "My creator, Yuri, builds and runs systems from hardware to services. Pretty cool, right?",
       "17": "I can help you find anything on the site!",
       "18": "Did you know my creator, Yuri started this journey in 2018?",
       "19": "The mini-game is a great way to take a break!",
@@ -2487,7 +2487,7 @@
       "home": {
         "0": "Welcome to the homepage! 👋 I'm Yue, your virtual assistant!",
         "1": "This is where it all begins. Ready to explore?",
-        "2": "My creator, Yuri is a database specialist. Want to know more?",
+        "2": "My creator, Yuri, is an Infrastructure & Platform Engineer. Want to know more?",
         "3": "Check out the latest articles and projects below!",
         "4": "Feel free to explore any section that interests you!",
         "5": "The navigation menu can help you find what you're looking for!",
@@ -2579,14 +2579,14 @@
         "3": "The journey started in 2018. Still learning every day!",
         "4": "My creator, Yuri loves sharing knowledge and helping others!",
         "5": "The about page has all the details about the journey!",
-        "6": "A database specialist with a passion for clean, efficient code! 💾",
+        "6": "Linux, servers, containers, and databases: Yuri likes seeing how the whole system fits together.",
         "7": "From Brazil to the world - technology connects us all! 🌎",
         "8": "Always learning, always growing, always curious about new tech!",
         "9": "Believes in open source, knowledge sharing, and helping others succeed!",
         "10": "Coffee-fueled coding sessions and late-night problem solving! ☕",
         "11": "The story includes failures, successes, and everything in between!",
         "12": "A firm believer that the best way to learn is by building and teaching!",
-        "13": "Databases might be the specialty, but full-stack is the playground!",
+        "13": "Databases are part of the work, but systems are the bigger picture.",
         "14": "Every project is a learning opportunity and a chance to help others!",
         "15": "Want to connect? The contact info is right here on this page!"
       },

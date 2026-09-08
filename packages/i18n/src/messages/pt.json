@@ -1,7 +1,7 @@
 {
   "about": {
     "title": "Sobre",
-    "description": "👋 Oi! Eu sou Yuri Cunha, apenas um cara aleatório na internet.."
+    "description": "Yuri Cunha é um Infrastructure & Platform Engineer que constrói e opera sistemas do hardware aos serviços."
   },
   "privacy": {
     "title": "Aviso de Privacidade",
@@ -1730,21 +1730,21 @@
       }
     },
     "hero": {
-      "title-top": "Sou Yuri, especialista em bancos de dados",
-      "title-middle-left": "otimizando",
-      "title-middle-right": "soluções de dados",
-      "amazing": "ágeis",
+      "title-top": "Sou Yuri, um Infrastructure & Platform Engineer",
+      "title-middle-left": "construindo",
+      "title-middle-right": "sistemas",
+      "amazing": "confiáveis",
       "attractive": "rápidas",
       "fantastic": "robustas",
       "stunning": "seguras",
-      "title-bottom": "para infraestruturas modernas",
+      "title-bottom": "do hardware aos serviços",
       "location-timezone": "Brasil • UTC/GMT -3",
       "view-projects": "Ver Projetos",
       "read-blog": "Ler Blog",
       "code": {
-        "database-specialist": "especialista_banco_de_dados = true",
+        "database-specialist": "infraestrutura_e_plataforma = true",
         "region": "regiao = \"America/Sao_Paulo\"",
-        "focus": "foco = \"sistemas de dados confiaveis\""
+        "focus": "foco = \"sistemas confiáveis\""
       }
     },
     "latest-articles": {
@@ -1826,7 +1826,7 @@
     "link-to-section": "Link para a seção"
   },
   "metadata": {
-    "site-description": "DBA Sênior",
+    "site-description": "Infrastructure & Platform Engineer construindo e operando sistemas entre Linux, servidores, containers, redes, automação e bancos de dados.",
     "site-title": "Yuri Cunha",
     "site-short-name": "Yuri"
   },
@@ -2430,7 +2430,7 @@
       "13": "Este site é totalmente responsivo. Tente redimensionar o navegador!",
       "14": "Encontrou algum bug? Me avise que eu ajudo a reportar!",
       "15": "Estou sempre aprendendo coisas novas com meu criador, Yuri. Qual sua descoberta mais recente?",
-      "16": "Meu criador, Yuri, é especialista em bancos de dados. Legal, né?",
+      "16": "Meu criador, Yuri, constrói e opera sistemas do hardware aos serviços. Legal, né?",
       "17": "Posso te ajudar a encontrar qualquer coisa no site!",
       "18": "Sabia que meu criador, Yuri, começou essa jornada em 2018?",
       "19": "O minigame é uma ótima maneira de fazer uma pausa!",
@@ -2487,7 +2487,7 @@
       "home": {
         "0": "Bem-vindo à página inicial! 👋 Eu sou a Yue, sua assistente virtual!",
         "1": "Aqui é onde tudo começa. Pronto para explorar?",
-        "2": "Meu criador, Yuri, é especialista em bancos de dados. Quer saber mais?",
+        "2": "Meu criador, Yuri, é Infrastructure & Platform Engineer. Quer saber mais?",
         "3": "Confira os artigos e projetos mais recentes abaixo!",
         "4": "Sinta-se à vontade para explorar qualquer seção que te interesse!",
         "5": "O menu de navegação pode te ajudar a encontrar o que procura!",
@@ -2579,14 +2579,14 @@
         "3": "A jornada começou em 2018. Ainda aprendendo todo dia!",
         "4": "Meu criador, Yuri, adora compartilhar conhecimento e ajudar os outros!",
         "5": "A página sobre traz todos os detalhes da jornada!",
-        "6": "Um especialista em bancos de dados com paixão por código limpo e eficiente! 💾",
+        "6": "Linux, servidores, containers e bancos de dados: Yuri gosta de ver como o sistema inteiro se encaixa.",
         "7": "Do Brasil para o mundo - tecnologia nos conecta! 🌎",
         "8": "Sempre aprendendo, sempre crescendo, sempre curioso por novas tecnologias!",
         "9": "Acredita em open source, compartilhamento de conhecimento e ajudar os outros a vencer!",
         "10": "Sessões de programação com cafeína e resolução de problemas até tarde! ☕",
         "11": "A história inclui falhas, sucessos e tudo mais!",
         "12": "Acredita que a melhor forma de aprender é construindo e ensinando!",
-        "13": "Bancos de dados são a especialidade, mas full-stack é o playground!",
+        "13": "Bancos de dados fazem parte do trabalho, mas sistemas são o quadro maior.",
         "14": "Cada projeto é uma oportunidade de aprendizado e ajudar outras pessoas!",
         "15": "Quer se conectar? As informações de contato estão nesta página!"
       },
