@@ -34,7 +34,7 @@ interface ResendBroadcast {
   status?: 'draft' | 'scheduled' | 'sending' | 'sent' | 'cancelled'
 }
 
-class ResendService {
+export class ResendService {
   private lastRequestTime = 0
   private readonly minRequestInterval = 500 // 500ms between requests (2 requests per second)
 
@@ -244,7 +244,8 @@ class ResendService {
   // Send broadcast immediately
   async sendBroadcast(broadcastId: string): Promise<boolean> {
     try {
-      await resend.broadcasts.send(broadcastId)
+      const { error } = await resend.broadcasts.send(broadcastId)
+      if (error) throw new Error(error.message || 'Broadcast delivery failed')
       return true
     } catch (error) {
       logger.error('Error sending Resend broadcast', error)
@@ -255,7 +256,8 @@ class ResendService {
   // Schedule broadcast
   async scheduleBroadcast(broadcastId: string, scheduledAt: string): Promise<boolean> {
     try {
-      await resend.broadcasts.send(broadcastId, { scheduledAt })
+      const { error } = await resend.broadcasts.send(broadcastId, { scheduledAt })
+      if (error) throw new Error(error.message || 'Broadcast scheduling failed')
       return true
     } catch (error) {
       logger.error('Error scheduling Resend broadcast', error)

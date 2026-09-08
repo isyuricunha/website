@@ -1,21 +1,21 @@
 import {
   Body,
-  Column,
+  Button,
   Container,
+  Font,
   Head,
   Heading,
-  Hr,
   Html,
-  Img,
   Link,
   Preview,
-  Row,
   Section,
   Tailwind,
   Text
 } from 'react-email'
-import * as React from 'react'
+import type { CSSProperties } from 'react'
 
+import Footer from '../components/footer'
+import Logo from '../components/logo'
 import { emailThemeVars } from '../theme'
 
 type ContactFormProps = {
@@ -27,120 +27,76 @@ type ContactFormProps = {
 }
 
 const ContactForm = (props: ContactFormProps) => {
-  const { name: senderName, email: senderEmail, subject, message } = props
+  const { name, email, subject, message, date } = props
+  const sender = name ? `${name} <${email}>` : email
 
   return (
     <Html lang='en' dir='ltr'>
-      <Head />
-      <Preview>New contact form submission from {senderName || senderEmail}</Preview>
+      <Head>
+        <Font
+          fontFamily='Geist'
+          fallbackFontFamily='Arial'
+          webFont={{
+            url: 'https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap',
+            format: 'woff2'
+          }}
+          fontWeight={400}
+          fontStyle='normal'
+        />
+      </Head>
+      <Preview>New contact message from {name || email}</Preview>
       <Tailwind>
         <Body
-          className='bg-[color:var(--email-bg)] py-[40px] font-sans'
-          style={emailThemeVars as React.CSSProperties}
+          className='mx-auto my-auto bg-[color:var(--email-bg)] px-2 font-sans'
+          style={emailThemeVars as CSSProperties}
         >
-          <Container className='mx-auto max-w-[600px] rounded-[8px] border-[0.5px] border-solid border-[color:var(--email-border)] bg-[color:var(--email-bg)]'>
-            {/* Header with Logo */}
-            <Section className='px-[32px] pt-[32px] pb-[24px]'>
-              <Img
-                src='https://di867tnz6fwga.cloudfront.net/brand-kits/fcb0c687-f9fb-478b-ac69-67bdccfcd37a/primary/63d1ccea-870c-4147-a2c6-695fe9b6e9fa.png'
-                alt='Yuri'
-                className='h-auto w-full max-w-[200px] object-cover'
-              />
-            </Section>
-
-            {/* Main Content */}
-            <Section className='px-[32px] pb-[32px]'>
-              <Heading className='mt-0 mb-[24px] text-[24px] font-medium text-[color:var(--email-fg)]'>
-                New Contact Form Submission
-              </Heading>
-
-              <Text className='mt-0 mb-[24px] text-[16px] text-[color:var(--email-fg)]'>
-                You have received a new message through your contact form on yuricunha.com.
+          <Container className='mx-auto my-[40px] max-w-[465px] rounded-[8px] border-[0.5px] border-solid border-[color:var(--email-border)] bg-[color:var(--email-bg)] p-[20px]'>
+            <Logo />
+            <Heading className='m-0 text-[22px] leading-[30px] font-medium text-[color:var(--email-fg)]'>
+              New contact message
+            </Heading>
+            <Text className='mb-0 text-[14px] leading-[24px] text-[color:var(--email-muted)]'>
+              Sent from your contact form{date ? ` on ${date}` : ''}.
+            </Text>
+            <Section className='mt-6 rounded-[8px] border-[0.5px] border-solid border-[color:var(--email-border)] bg-[color:var(--email-surface)] p-4'>
+              <Text className='m-0 text-[12px] leading-[18px] text-[color:var(--email-muted)]'>
+                From
               </Text>
-
-              {/* Contact Details Card */}
-              <Section className='mb-[24px] rounded-[8px] border-[0.5px] border-solid border-[color:var(--email-border)] bg-[color:var(--email-surface)] p-[24px]'>
-                <Row>
-                  <Column>
-                    <Text className='mt-0 mb-[8px] text-[14px] font-medium tracking-wide text-[color:var(--email-accent)] uppercase'>
-                      From
-                    </Text>
-                    <Text className='mt-0 mb-[16px] text-[16px] text-[color:var(--email-fg)]'>
-                      {senderName ? `${senderName} <${senderEmail}>` : senderEmail}
-                    </Text>
-                  </Column>
-                </Row>
-
-                <Row>
-                  <Column>
-                    <Text className='mt-0 mb-[8px] text-[14px] font-medium tracking-wide text-[color:var(--email-accent)] uppercase'>
-                      Subject
-                    </Text>
-                    <Text className='mt-0 mb-[16px] text-[16px] text-[color:var(--email-fg)]'>
-                      {subject}
-                    </Text>
-                  </Column>
-                </Row>
-
-                <Row>
-                  <Column>
-                    <Text className='mt-0 mb-[8px] text-[14px] font-medium tracking-wide text-[color:var(--email-accent)] uppercase'>
-                      Message
-                    </Text>
-                    <Text className='mt-0 mb-0 text-[16px] leading-[24px] whitespace-pre-wrap text-[color:var(--email-fg)]'>
-                      {message}
-                    </Text>
-                  </Column>
-                </Row>
-              </Section>
-
-              {/* Quick Actions */}
-              <Text className='mt-0 mb-[16px] text-[16px] text-[color:var(--email-fg)]'>
-                You can reply directly to this email to respond to {senderName || 'the sender'}.
+              <Text className='m-0 mb-3 text-[14px] leading-[21px] font-medium text-[color:var(--email-fg)]'>
+                {sender}
               </Text>
-
-              <Text className='mt-0 mb-0 text-[14px] text-[color:var(--email-muted)]'>
-                This notification was automatically generated from your contact form at{' '}
-                <Link
-                  href='https://yuricunha.com'
-                  className='text-[color:var(--email-accent)] underline'
-                >
-                  yuricunha.com
-                </Link>
+              <Text className='m-0 text-[12px] leading-[18px] text-[color:var(--email-muted)]'>
+                Subject
+              </Text>
+              <Text className='m-0 mb-3 text-[14px] leading-[21px] font-medium text-[color:var(--email-fg)]'>
+                {subject}
+              </Text>
+              <Text className='m-0 text-[12px] leading-[18px] text-[color:var(--email-muted)]'>
+                Message
+              </Text>
+              <Text className='m-0 text-[14px] leading-[21px] whitespace-pre-wrap text-[color:var(--email-fg)]'>
+                {message}
               </Text>
             </Section>
-
-            <Hr className='mx-[32px] border-[color:var(--email-border)]' />
-
-            {/* Footer */}
-            <Section className='px-[32px] py-[24px]'>
-              <Text className='mt-0 mb-[16px] text-[12px] text-[color:var(--email-muted)]'>
-                Database Administrator (DBA) and Server Infrastructure Specialist
-              </Text>
-
-              <Text className='m-0 text-[12px] text-[color:var(--email-muted)]'>Brazil</Text>
-
-              <Row className='mt-[16px]'>
-                <Column className='w-auto pr-[16px]'>
-                  <Link href='https://github.com/isyuricunha'>
-                    <Img
-                      src='https://new.email/static/emails/social/social-github.png'
-                      alt='GitHub'
-                      className='h-[24px] w-[24px]'
-                    />
-                  </Link>
-                </Column>
-                <Column className='w-auto'>
-                  <Link href='https://x.com/isyuricunha'>
-                    <Img
-                      src='https://new.email/static/emails/social/social-x.png'
-                      alt='X (Twitter)'
-                      className='h-[24px] w-[24px]'
-                    />
-                  </Link>
-                </Column>
-              </Row>
+            <Section className='mt-6 text-center'>
+              <Button
+                className='rounded-[8px] bg-[color:var(--email-accent-bg)] px-5 py-3 text-center text-[12px] font-medium text-[color:var(--email-inverse)] no-underline'
+                href={`mailto:${email}?subject=${encodeURIComponent(`Re: ${subject}`)}`}
+              >
+                Reply to {name || 'sender'}
+              </Button>
             </Section>
+            <Text className='mb-0 text-[12px] leading-[20px] text-[color:var(--email-muted)]'>
+              This notification was generated by{' '}
+              <Link
+                href='https://yuricunha.com'
+                className='text-[color:var(--email-accent)] no-underline'
+              >
+                yuricunha.com
+              </Link>
+              .
+            </Text>
+            <Footer />
           </Container>
         </Body>
       </Tailwind>
@@ -151,9 +107,9 @@ const ContactForm = (props: ContactFormProps) => {
 ContactForm.PreviewProps = {
   name: 'John Doe',
   email: 'john.doe@example.com',
-  subject: 'Interested in your cloud infrastructure services',
-  message:
-    "Hello Yuri,\n\nI came across your website and I'm very impressed with your expertise in server infrastructure and database administration.\n\nI'm currently working on a project that requires cloud migration and would love to discuss potential collaboration opportunities.\n\nLooking forward to hearing from you.\n\nBest regards,\nJohn Doe"
-}
+  subject: 'Project inquiry',
+  message: 'Hello Yuri,\n\nI would like to discuss a project.',
+  date: 'January 1, 2026'
+} satisfies ContactFormProps
 
 export default ContactForm

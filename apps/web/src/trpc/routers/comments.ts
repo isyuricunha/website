@@ -23,7 +23,9 @@ import { allPosts } from 'content-collections'
 import { z } from 'zod'
 
 import { isProduction, SITE_URL } from '@/lib/constants'
+import { logger } from '@/lib/logger'
 import { get_request_locale } from '@/lib/request-locale'
+import { sendBestEffortEmail } from '@/lib/transactional-email'
 import { resend } from '@/lib/resend'
 import { getDefaultImage } from '@/utils/get-default-image'
 import { getIp } from '@/utils/get-ip'
@@ -315,20 +317,24 @@ export const commentsRouter = createTRPCRouter({
       if (!input.parentId && user.role === 'user') {
         if (!isProduction || !resend) return
 
-        await resend.emails.send({
-          from: 'yuricunha.com <me@yuricunha.com>',
-          to: env.AUTHOR_EMAIL,
-          subject:
-            locale === 'pt' ? 'Novo comentário no seu post' : 'New comment on your blog post',
-          react: Comment({
-            comment: input.content,
-            commenter: userProfile,
-            id: `comment=${commentId}`,
-            date: input.date,
-            post,
-            locale
-          })
-        })
+        await sendBestEffortEmail(
+          resend,
+          {
+            from: 'yuricunha.com <me@yuricunha.com>',
+            to: env.AUTHOR_EMAIL,
+            subject:
+              locale === 'pt' ? 'Novo comentário no seu post' : 'New comment on your blog post',
+            react: Comment({
+              comment: input.content,
+              commenter: userProfile,
+              id: `comment=${commentId}`,
+              date: input.date,
+              post,
+              locale
+            })
+          },
+          (error) => logger.error('Failed to send new comment notification email', error)
+        )
       }
 
       // Notify the parent comment owner via email
@@ -343,21 +349,25 @@ export const commentsRouter = createTRPCRouter({
         })
 
         if (parentComment && parentComment.user.email !== user.email) {
-          await resend.emails.send({
-            from: 'yuricunha.com <me@yuricunha.com>',
-            to: parentComment.user.email,
-            subject:
-              locale === 'pt' ? 'Nova resposta ao seu comentário' : 'New reply to your comment',
-            react: Reply({
-              reply: input.content,
-              replier: userProfile,
-              comment: parentComment.body,
-              id: `comment=${input.parentId}&reply=${commentId}`,
-              date: input.date,
-              post,
-              locale
-            })
-          })
+          await sendBestEffortEmail(
+            resend,
+            {
+              from: 'yuricunha.com <me@yuricunha.com>',
+              to: parentComment.user.email,
+              subject:
+                locale === 'pt' ? 'Nova resposta ao seu comentário' : 'New reply to your comment',
+              react: Reply({
+                reply: input.content,
+                replier: userProfile,
+                comment: parentComment.body,
+                id: `comment=${input.parentId}&reply=${commentId}`,
+                date: input.date,
+                post,
+                locale
+              })
+            },
+            (error) => logger.error('Failed to send comment reply notification email', error)
+          )
         }
       }
     })

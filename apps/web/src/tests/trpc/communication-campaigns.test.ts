@@ -238,7 +238,7 @@ describe('communicationRouter campaigns', () => {
   beforeEach(() => {
     vi.resetModules()
     resendSendMock.mockReset()
-    resendSendMock.mockResolvedValue({})
+    resendSendMock.mockResolvedValue({ data: { id: 'email-default' }, error: null })
     logUserActionMock.mockClear()
   })
 
@@ -274,7 +274,7 @@ describe('communicationRouter campaigns', () => {
     const db = createDbMock()
 
     resendSendMock.mockRejectedValueOnce(new Error('smtp error'))
-    resendSendMock.mockResolvedValueOnce({})
+    resendSendMock.mockResolvedValueOnce({ data: { id: 'email-2' }, error: null })
 
     const caller = communicationRouter.createCaller({
       db: db as unknown,
@@ -292,5 +292,32 @@ describe('communicationRouter campaigns', () => {
     expect(db.__state.campaign.status).toBe('sent')
     expect(db.__state.campaign.sentCount).toBe(1)
     expect(db.__state.campaign.deliveredCount).toBe(1)
+  })
+
+  it('marks a returned Resend error as failed instead of counting it as sent', async () => {
+    const { communicationRouter } = await import('@/trpc/routers/communication')
+
+    const db = createDbMock()
+
+    resendSendMock.mockResolvedValueOnce({
+      data: null,
+      error: { message: 'The sending domain is not verified' }
+    })
+    resendSendMock.mockResolvedValueOnce({ data: { id: 'email-2' }, error: null })
+
+    const caller = communicationRouter.createCaller({
+      db: db as unknown,
+      headers: new Headers(),
+      session: { user: { id: 'admin-1', role: 'admin' } }
+    } as any)
+
+    const result = await caller.sendEmailCampaign({ campaignId: 'c-1' })
+
+    expect(result).toMatchObject({ success: true, sent: 1, failed: 1, total: 2 })
+    expect(db.__state.campaign.sentCount).toBe(1)
+    expect(db.__state.recipients[0]).toMatchObject({
+      status: 'failed',
+      errorMessage: 'The sending domain is not verified'
+    })
   })
 })

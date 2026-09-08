@@ -21,6 +21,7 @@ import { z } from 'zod'
 
 import { AuditLogger, getIpFromHeaders, getUserAgentFromHeaders } from '@/lib/audit-logger'
 import { logger } from '@/lib/logger'
+import { sendTransactionalEmail } from '@/lib/transactional-email'
 import { adminProcedure, protectedProcedure, createTRPCRouter } from '../trpc'
 
 const resend = new Resend(env.RESEND_API_KEY)
@@ -654,14 +655,14 @@ export const communicationRouter = createTRPCRouter({
         for (const recipient of recipients) {
           try {
             if (html) {
-              await resend.emails.send({
+              await sendTransactionalEmail(resend, {
                 from: 'yuricunha.com <noreply@yuricunha.com>',
                 to: [recipient.email],
                 subject: campaign.subject,
                 html
               })
             } else {
-              await resend.emails.send({
+              await sendTransactionalEmail(resend, {
                 from: 'yuricunha.com <noreply@yuricunha.com>',
                 to: [recipient.email],
                 subject: campaign.subject,

@@ -12,6 +12,7 @@ import { Resend } from 'resend'
 import { logger } from '@/lib/logger'
 import { getSelfServiceDeletionBlockReason } from '@/lib/privacy/account-deletion-policy'
 import { get_request_locale } from '@/lib/request-locale'
+import { sendTransactionalEmail } from '@/lib/transactional-email'
 
 const is_anonymous_email = (email: string) => {
   return /^temp-[^@]+@yuricunha\.com$/i.test(email)
@@ -87,7 +88,7 @@ export const auth = betterAuth({
       const locale = request?.headers ? get_request_locale(request.headers) : 'en'
       const subject = locale === 'pt' ? 'Redefina sua senha' : 'Reset your password'
 
-      void (async () => {
+      try {
         const html = await render(
           PasswordReset({
             name: user.name,
@@ -96,15 +97,16 @@ export const auth = betterAuth({
           })
         )
 
-        await resend.emails.send({
+        await sendTransactionalEmail(resend, {
           from: 'yuricunha.com <noreply@yuricunha.com>',
           to: user.email,
           subject,
           html
         })
-      })().catch((error) => {
+      } catch (error) {
         logger.error('Failed to send password reset email', error)
-      })
+        throw error
+      }
     },
     onPasswordReset: async ({ user }) => {
       logger.info('Password reset completed', { userId: user.id })
@@ -115,7 +117,7 @@ export const auth = betterAuth({
       const locale = request?.headers ? get_request_locale(request.headers) : 'en'
       const subject = locale === 'pt' ? 'Verifique seu e-mail' : 'Verify your email'
 
-      void (async () => {
+      try {
         const html = await render(
           EmailVerification({
             name: user.name,
@@ -124,15 +126,16 @@ export const auth = betterAuth({
           })
         )
 
-        await resend.emails.send({
+        await sendTransactionalEmail(resend, {
           from: 'yuricunha.com <noreply@yuricunha.com>',
           to: user.email,
           subject,
           html
         })
-      })().catch((error) => {
+      } catch (error) {
         logger.error('Failed to send verification email', error)
-      })
+        throw error
+      }
     }
   },
   socialProviders: {
@@ -175,15 +178,15 @@ export const auth = betterAuth({
             locale
           })
         )
-        const { error } = await resend.emails.send({
-          from: 'yuricunha.com <noreply@yuricunha.com>',
-          to: user.email,
-          subject,
-          html
-        })
-
-        if (error) {
-          logger.error('Failed to send account deletion confirmation email')
+        try {
+          await sendTransactionalEmail(resend, {
+            from: 'yuricunha.com <noreply@yuricunha.com>',
+            to: user.email,
+            subject,
+            html
+          })
+        } catch (error) {
+          logger.error('Failed to send account deletion confirmation email', error)
           throw new APIError('INTERNAL_SERVER_ERROR', {
             message: 'Unable to send account deletion confirmation.'
           })

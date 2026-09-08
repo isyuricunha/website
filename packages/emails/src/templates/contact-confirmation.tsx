@@ -1,20 +1,20 @@
 import {
   Body,
-  Column,
   Container,
+  Font,
   Head,
   Heading,
   Html,
-  Img,
   Link,
   Preview,
-  Row,
   Section,
   Tailwind,
   Text
 } from 'react-email'
-import * as React from 'react'
+import type { CSSProperties } from 'react'
 
+import Footer from '../components/footer'
+import Logo from '../components/logo'
 import { emailThemeVars } from '../theme'
 
 type ContactConfirmationProps = {
@@ -24,148 +24,104 @@ type ContactConfirmationProps = {
   locale?: 'en' | 'pt'
 }
 
-const currentYear = new Date().getFullYear()
-
 const ContactConfirmation = (props: ContactConfirmationProps) => {
-  const { name: contactName = 'there' } = props
+  const { name = 'there', subject, message } = props
   const locale = props.locale ?? 'en'
 
   const copy =
     locale === 'pt'
       ? {
-          preview: 'Obrigado por entrar em contato com yuricunha.com — respondo em até 48h',
-          title: `Obrigado por entrar em contato, ${contactName}!`,
-          p1: 'Recebi sua mensagem com sucesso e queria confirmar pessoalmente que ela já está na minha fila para análise.',
-          p2: 'Vou responder em até 48 horas, provavelmente bem antes (~).',
-          p3: 'Enquanto isso, você pode explorar meu site em',
-          next_title: 'O que acontece agora?',
-          next_1: 'Vou analisar sua mensagem com atenção',
-          next_2: 'Vou responder em até 48 horas, provavelmente bem antes (~)',
-          next_3: 'Se for urgente, coloque no ASSUNTO',
-          outro: 'para saber mais sobre meu trabalho com infraestrutura cloud e bancos de dados.'
+          preview: 'Recebi sua mensagem — vou responder em até 48 horas.',
+          title: `Obrigado por entrar em contato, ${name}!`,
+          intro: 'Recebi sua mensagem e ela já está na minha fila para análise.',
+          responseTime: 'Vou responder em até 48 horas.',
+          messageLabel: 'Sua mensagem',
+          subjectLabel: 'Assunto',
+          messageLabelText: 'Mensagem',
+          visit: 'Enquanto isso, você pode conhecer mais do meu trabalho em',
+          site: 'yuricunha.com'
         }
       : {
-          preview: "Thank you for contacting yuricunha.com - I'll respond within 48 hours",
-          title: `Thank you for reaching out, ${contactName}!`,
-          p1: 'I have successfully received your contact inquiry and wanted to personally confirm that your message is now in my queue for review.',
-          p2: 'I will respond within 48 hours, probably much less (~)',
-          p3: 'In the meantime, feel free to explore my website at',
-          next_title: 'What happens next?',
-          next_1: 'I will review your inquiry thoroughly',
-          next_2: 'I will respond within 48 hours, probably much less (~)',
-          next_3: 'If urgent, please, put in the SUBJECT',
-          outro: 'to learn more about my expertise in cloud infrastructure and database solutions.'
+          preview: 'I received your message — I will reply within 48 hours.',
+          title: `Thank you for reaching out, ${name}!`,
+          intro: 'I received your message and it is now in my review queue.',
+          responseTime: 'I will reply within 48 hours.',
+          messageLabel: 'Your message',
+          subjectLabel: 'Subject',
+          messageLabelText: 'Message',
+          visit: 'In the meantime, you can learn more about my work at',
+          site: 'yuricunha.com'
         }
 
   return (
     <Html lang={locale} dir='ltr'>
-      <Head />
+      <Head>
+        <Font
+          fontFamily='Geist'
+          fallbackFontFamily='Arial'
+          webFont={{
+            url: 'https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap',
+            format: 'woff2'
+          }}
+          fontWeight={400}
+          fontStyle='normal'
+        />
+      </Head>
       <Preview>{copy.preview}</Preview>
       <Tailwind>
         <Body
-          className='bg-[color:var(--email-bg)] py-[40px] font-sans'
-          style={emailThemeVars as React.CSSProperties}
+          className='mx-auto my-auto bg-[color:var(--email-bg)] px-2 font-sans'
+          style={emailThemeVars as CSSProperties}
         >
-          <Container className='mx-auto max-w-[600px] bg-[color:var(--email-bg)] px-[20px]'>
-            {/* Header with Logo */}
-            <Section className='mb-[32px] text-center'>
-              <Img
-                src='https://di867tnz6fwga.cloudfront.net/brand-kits/fcb0c687-f9fb-478b-ac69-67bdccfcd37a/primary/63d1ccea-870c-4147-a2c6-695fe9b6e9fa.png'
-                alt='yuricunha.com'
-                className='mx-auto h-auto w-full max-w-[200px] object-cover'
-              />
-            </Section>
-
-            {/* Main Content */}
-            <Section className='mb-[32px]'>
-              <Heading className='mb-[24px] text-left text-[24px] font-medium text-[color:var(--email-fg)]'>
-                {copy.title}
-              </Heading>
-
-              <Text className='mb-[16px] text-[16px] leading-[24px] text-[color:var(--email-fg)]'>
-                {copy.p1}
-              </Text>
-
-              <Text className='mb-[16px] text-[16px] leading-[24px] text-[color:var(--email-fg)]'>
-                {copy.p2}
-              </Text>
-
-              <Text className='mb-[24px] text-[16px] leading-[24px] text-[color:var(--email-fg)]'>
-                {copy.p3}{' '}
-                <Link
-                  href='https://yuricunha.com'
-                  className='text-[color:var(--email-accent)] underline'
-                >
-                  yuricunha.com
-                </Link>{' '}
-                {copy.outro}
-              </Text>
-            </Section>
-
-            {/* Contact Information */}
-            <Section className='mb-[40px] rounded-[8px] border-[0.5px] border-solid border-[color:var(--email-border)] bg-[color:var(--email-surface)] p-[20px]'>
-              <Text className='mb-[8px] text-[14px] leading-[20px] font-medium text-[color:var(--email-fg)]'>
-                {copy.next_title}
-              </Text>
-              <Text className='mb-[4px] text-[14px] leading-[20px] text-[color:var(--email-fg)]'>
-                • {copy.next_1}
-              </Text>
-              <Text className='mb-[4px] text-[14px] leading-[20px] text-[color:var(--email-fg)]'>
-                • {copy.next_2}
-              </Text>
-              <Text className='text-[14px] leading-[20px] text-[color:var(--email-fg)]'>
-                • {copy.next_3}
-              </Text>
-            </Section>
-
-            {/* Social Links */}
-            <Section className='mb-[40px] text-center'>
-              <Row>
-                <Column className='text-center'>
-                  <Link href='https://github.com/isyuricunha' className='mx-[8px] inline-block'>
-                    <Img
-                      src='https://yuricunha.com/images/email/github.png'
-                      alt='GitHub'
-                      width={32}
-                      height={32}
-                      className='h-[32px] w-[32px]'
-                      style={{ display: 'block', border: 0, outline: 'none' }}
-                    />
-                  </Link>
-                  <Link href='https://x.com/isyuricunha' className='mx-[8px] inline-block'>
-                    <Img
-                      src='https://yuricunha.com/images/email/x.png'
-                      alt='X (Twitter)'
-                      width={32}
-                      height={32}
-                      className='h-[32px] w-[32px]'
-                      style={{ display: 'block', border: 0, outline: 'none' }}
-                    />
-                  </Link>
-                </Column>
-              </Row>
-            </Section>
-
-            {/* Footer */}
-            <Section className='border-t-[0.5px] border-solid border-[color:var(--email-border)] pt-[24px]'>
-              <Text className='m-0 mb-[8px] text-center text-[12px] leading-[16px] text-[color:var(--email-muted)]'>
-                dbA
-              </Text>
-              <Text className='m-0 mb-[8px] text-center text-[12px] leading-[16px] text-[color:var(--email-muted)]'>
-                Brazil
-              </Text>
-              <Text className='m-0 text-center text-[12px] leading-[16px] text-[color:var(--email-muted)]'>
-                © {currentYear} yuricunha.com. All rights reserved.
-              </Text>
-              <Text className='m-0 mt-[8px] text-center text-[12px] leading-[16px] text-[color:var(--email-muted)]'>
-                <Link
-                  href='https://yuricunha.com'
-                  className='text-[color:var(--email-accent)] underline'
-                >
-                  Unsubscribe
-                </Link>
-              </Text>
-            </Section>
+          <Container className='mx-auto my-[40px] max-w-[465px] rounded-[8px] border-[0.5px] border-solid border-[color:var(--email-border)] bg-[color:var(--email-bg)] p-[20px]'>
+            <Logo />
+            <Heading className='m-0 text-[22px] leading-[30px] font-medium text-[color:var(--email-fg)]'>
+              {copy.title}
+            </Heading>
+            <Text className='mb-0 text-[14px] leading-[24px] text-[color:var(--email-fg)]'>
+              {copy.intro}
+            </Text>
+            <Text className='mt-3 text-[14px] leading-[24px] text-[color:var(--email-fg)]'>
+              {copy.responseTime}
+            </Text>
+            {subject || message ? (
+              <Section className='mt-6 rounded-[8px] border-[0.5px] border-solid border-[color:var(--email-border)] bg-[color:var(--email-surface)] p-4'>
+                <Text className='m-0 mb-3 text-[12px] font-medium tracking-wide text-[color:var(--email-muted)] uppercase'>
+                  {copy.messageLabel}
+                </Text>
+                {subject ? (
+                  <>
+                    <Text className='m-0 text-[12px] leading-[18px] text-[color:var(--email-muted)]'>
+                      {copy.subjectLabel}
+                    </Text>
+                    <Text className='m-0 mb-3 text-[14px] leading-[21px] font-medium text-[color:var(--email-fg)]'>
+                      {subject}
+                    </Text>
+                  </>
+                ) : null}
+                {message ? (
+                  <>
+                    <Text className='m-0 text-[12px] leading-[18px] text-[color:var(--email-muted)]'>
+                      {copy.messageLabelText}
+                    </Text>
+                    <Text className='m-0 text-[14px] leading-[21px] whitespace-pre-wrap text-[color:var(--email-fg)]'>
+                      {message}
+                    </Text>
+                  </>
+                ) : null}
+              </Section>
+            ) : null}
+            <Text className='mb-0 text-[14px] leading-[24px] text-[color:var(--email-muted)]'>
+              {copy.visit}{' '}
+              <Link
+                href='https://yuricunha.com'
+                className='text-[color:var(--email-accent)] no-underline'
+              >
+                {copy.site}
+              </Link>
+              .
+            </Text>
+            <Footer />
           </Container>
         </Body>
       </Tailwind>
@@ -174,7 +130,10 @@ const ContactConfirmation = (props: ContactConfirmationProps) => {
 }
 
 ContactConfirmation.PreviewProps = {
-  name: 'John'
-}
+  name: 'John',
+  subject: 'Project inquiry',
+  message: 'I would like to discuss a project.',
+  locale: 'en'
+} satisfies ContactConfirmationProps
 
 export default ContactConfirmation

@@ -9,6 +9,7 @@ import { z } from 'zod'
 import { logger } from '@/lib/logger'
 import { get_request_locale } from '@/lib/request-locale'
 import { contactRatelimit } from '@/lib/ratelimit'
+import { sendBestEffortEmail } from '@/lib/transactional-email'
 import { rate_limit_keys } from '@/lib/rate-limit-keys'
 import { checkRateLimit, getClientIp, verifyTurnstileToken } from '@/lib/spam-detection'
 
@@ -110,6 +111,7 @@ export async function POST(request: NextRequest) {
     const emailResult = await resend.emails.send({
       from: 'Contact Form <noreply@yuricunha.com>',
       to: ['me@yuricunha.com'],
+      replyTo: validatedData.email,
       subject: `Contact Form: ${validatedData.subject}`,
       html: await render(
         ContactForm({
@@ -144,19 +146,37 @@ Sent at: ${currentDate}
     }
 
     // Send confirmation email to the user using the template
-    await resend.emails.send({
-      from: 'Yuri Cunha <noreply@yuricunha.com>',
-      to: [validatedData.email],
-      subject: locale === 'pt' ? 'Obrigado por entrar em contato!' : 'Thank you for contacting me!',
-      html: await render(
-        ContactConfirmation({
-          name: validatedData.name,
-          subject: validatedData.subject,
-          message: validatedData.message,
-          locale
-        })
-      ),
-      text: `
+    await sendBestEffortEmail(
+      resend,
+      {
+        from: 'Yuri Cunha <noreply@yuricunha.com>',
+        to: [validatedData.email],
+        subject:
+          locale === 'pt' ? 'Obrigado por entrar em contato!' : 'Thank you for contacting me!',
+        html: await render(
+          ContactConfirmation({
+            name: validatedData.name,
+            subject: validatedData.subject,
+            message: validatedData.message,
+            locale
+          })
+        ),
+        text:
+          locale === 'pt'
+            ? `
+Olá ${validatedData.name},
+
+Recebi sua mensagem e responderei em até 48 horas. Segue uma cópia do que você enviou:
+
+Assunto: ${validatedData.subject}
+Mensagem: ${validatedData.message}
+
+Atenciosamente,
+Yuri Cunha
+
+Este é um e-mail de confirmação automática. Por favor, não responda a esta mensagem.
+      `
+            : `
 Hi ${validatedData.name},
 
 I've received your message and will get back to you within 24-48 hours. Here's a copy of what you sent:
@@ -169,7 +189,9 @@ Yuri Cunha
 
 This is an automated confirmation email. Please do not reply to this email.
       `
-    })
+      },
+      (error) => logger.error('Contact confirmation email failed', error)
+    )
 
     return Response.json({
       success: true,
