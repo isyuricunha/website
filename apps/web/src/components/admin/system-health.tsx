@@ -478,9 +478,14 @@ export const SystemHealthDashboard = () => {
               {t('trends.last-checks', { count: filtered_history.length })}
             </div>
             <div className='flex items-center gap-2'>
-              <label className='text-text-secondary text-sm'>{t('trends.filter')}</label>
+              <label htmlFor='health-check-filter' className='text-text-secondary text-sm'>
+                {t('trends.filter')}
+              </label>
               <Select value={selected_check_type} onValueChange={set_selected_check_type}>
-                <SelectTrigger className='bg-bg-base text-text-primary h-9 rounded-md border border-[var(--border-subtle)] px-3 text-sm'>
+                <SelectTrigger
+                  id='health-check-filter'
+                  className='bg-bg-base text-text-primary h-9 rounded-md border border-[var(--border-subtle)] px-3 text-sm'
+                >
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -495,7 +500,7 @@ export const SystemHealthDashboard = () => {
             </div>
           </div>
 
-          <div className='grid grid-cols-2 gap-3 md:grid-cols-4'>
+          <div className='grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-4'>
             <div className='bg-bg-base rounded-md border border-[var(--border-subtle)] p-3'>
               <div className='text-text-secondary text-xs'>{t('trends.stats.healthy')}</div>
               <div className='text-text-primary text-lg font-medium'>{history_stats.healthy}</div>

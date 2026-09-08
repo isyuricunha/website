@@ -12,6 +12,7 @@ import {
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
   Skeleton,
   Textarea,
@@ -80,6 +81,7 @@ const MessageBox = (props: FormProps) => {
             name='message'
             render={({ field }) => (
               <FormItem>
+                <FormLabel className='sr-only'>{t('guestbook.message-label')}</FormLabel>
                 <FormControl>
                   <Textarea placeholder={t('guestbook.placeholder')} {...field} />
                 </FormControl>

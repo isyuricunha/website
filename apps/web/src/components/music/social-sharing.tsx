@@ -89,27 +89,32 @@ const SocialSharing = () => {
                   onClick={() => shareTrack(currentTrack, 'twitter')}
                   className='hover:bg-bg-hover rounded-lg p-2 transition-colors'
                   title={t('spotify.social.buttons.twitter')}
+                  aria-label={t('spotify.social.buttons.twitter')}
                 >
-                  <SiX className='h-4 w-4' />
+                  <SiX aria-hidden='true' className='h-4 w-4' />
                 </button>
                 <button
                   type='button'
                   onClick={() => shareTrack(currentTrack, 'facebook')}
                   className='hover:bg-bg-hover rounded-lg p-2 transition-colors'
                   title={t('spotify.social.buttons.facebook')}
+                  aria-label={t('spotify.social.buttons.facebook')}
                 >
-                  <SiFacebook className='h-4 w-4' />
+                  <SiFacebook aria-hidden='true' className='h-4 w-4' />
                 </button>
                 <button
                   type='button'
                   onClick={() => shareTrack(currentTrack, 'copy')}
                   className='hover:bg-bg-hover rounded-lg p-2 transition-colors'
                   title={t('spotify.social.buttons.copy')}
+                  aria-label={t('spotify.social.buttons.copy')}
                 >
                   {copiedTrack === currentTrack.songUrl ? (
-                    <span className='text-accent-earth-text text-xs'>✓</span>
+                    <span aria-hidden='true' className='text-accent-earth-text text-xs'>
+                      ✓
+                    </span>
                   ) : (
-                    <Copy className='h-4 w-4' />
+                    <Copy aria-hidden='true' className='h-4 w-4' />
                   )}
                 </button>
               </div>
@@ -153,35 +158,41 @@ const SocialSharing = () => {
                       onClick={() => shareTrack(track, 'twitter')}
                       className='hover:bg-bg-hover rounded-lg p-1.5 transition-colors'
                       title={t('spotify.social.buttons.twitter')}
+                      aria-label={t('spotify.social.buttons.twitter')}
                     >
-                      <SiX className='h-3 w-3' />
+                      <SiX aria-hidden='true' className='h-3 w-3' />
                     </button>
                     <button
                       type='button'
                       onClick={() => shareTrack(track, 'facebook')}
                       className='hover:bg-bg-hover rounded-lg p-1.5 transition-colors'
                       title={t('spotify.social.buttons.facebook')}
+                      aria-label={t('spotify.social.buttons.facebook')}
                     >
-                      <SiFacebook className='h-3 w-3' />
+                      <SiFacebook aria-hidden='true' className='h-3 w-3' />
                     </button>
                     <button
                       type='button'
                       onClick={() => shareTrack(track, 'copy')}
                       className='hover:bg-bg-hover rounded-lg p-1.5 transition-colors'
                       title={t('spotify.social.buttons.copy')}
+                      aria-label={t('spotify.social.buttons.copy')}
                     >
                       {copiedTrack === track.url ? (
-                        <span className='text-accent-earth-text text-xs'>✓</span>
+                        <span aria-hidden='true' className='text-accent-earth-text text-xs'>
+                          ✓
+                        </span>
                       ) : (
-                        <Copy className='h-3 w-3' />
+                        <Copy aria-hidden='true' className='h-3 w-3' />
                       )}
                     </button>
                     <Link
                       href={track.url}
                       className='hover:bg-bg-hover rounded-lg p-1.5 transition-colors'
                       title={t('spotify.social.buttons.open')}
+                      aria-label={t('spotify.social.buttons.open')}
                     >
-                      <ExternalLink className='h-3 w-3' />
+                      <ExternalLink aria-hidden='true' className='h-3 w-3' />
                     </Link>
                   </div>
                 </div>

@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import {
   Button,
   Input,
@@ -32,6 +32,7 @@ import { toast } from 'sonner'
 
 import { api } from '@/trpc/react'
 import ConfirmationDialog from './confirmation-dialog'
+import { getSelectionState, reconcileSelection } from './admin-integrity'
 
 interface BulkOperationStatus {
   id: string
@@ -78,6 +79,7 @@ export const BulkOperations = () => {
     'ban'
   )
   const [newRole, setNewRole] = useState<'user' | 'admin'>('user')
+  const selectAllRef = useRef<HTMLInputElement>(null)
   const [confirmDialog, setConfirmDialog] = useState<{
     open: boolean
     title: string
@@ -128,6 +130,22 @@ export const BulkOperations = () => {
     return (operationsQuery.data ?? []) as unknown as BulkOperationStatus[]
   }, [operationsQuery.data])
 
+  const visibleUserIds = useMemo(
+    () => usersData?.users.map((user) => user.id) ?? [],
+    [usersData?.users]
+  )
+  const visibleSelectedUsers = useMemo(
+    () => reconcileSelection(selectedUsers, visibleUserIds),
+    [selectedUsers, visibleUserIds]
+  )
+  const selectionState = getSelectionState(visibleSelectedUsers, visibleUserIds)
+
+  useEffect(() => {
+    if (selectAllRef.current) {
+      selectAllRef.current.indeterminate = selectionState.indeterminate
+    }
+  }, [selectionState.indeterminate])
+
   // Bulk user action mutation
   const bulkUserAction = api.bulk.bulkUserAction.useMutation({
     onSuccess: (result) => {
@@ -165,14 +183,14 @@ export const BulkOperations = () => {
   }
 
   const handleBulkAction = async () => {
-    if (selectedUsers.length === 0) {
+    if (visibleSelectedUsers.length === 0) {
       toast.error(t('messages.select-users'))
       return
     }
 
     const confirmMessage = t('confirm.bulk-action', {
       action: getActionLabel(selectedAction),
-      count: selectedUsers.length
+      count: visibleSelectedUsers.length
     })
 
     setConfirmDialog({
@@ -184,7 +202,7 @@ export const BulkOperations = () => {
         setConfirmDialog((prev) => ({ ...prev, open: false }))
         const parameters = selectedAction === 'update_role' ? { role: newRole } : undefined
         await bulkUserAction.mutateAsync({
-          userIds: selectedUsers,
+          userIds: visibleSelectedUsers,
           action: selectedAction,
           parameters
         })
@@ -324,6 +342,7 @@ export const BulkOperations = () => {
               <div className='relative'>
                 <Search className='text-text-secondary absolute top-2.5 left-2 h-4 w-4' />
                 <Input
+                  aria-label={t('user-actions.search-placeholder')}
                   placeholder={t('user-actions.search-placeholder')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
@@ -340,7 +359,7 @@ export const BulkOperations = () => {
           {/* Action Selection */}
           <div className='bg-bg-surface mb-6 flex flex-col gap-4 rounded-lg p-4 sm:flex-row'>
             <div className='flex-1'>
-              <label className='mb-2 block text-sm font-medium'>
+              <label htmlFor='bulk-action' className='mb-2 block text-sm font-medium'>
                 {t('user-actions.select-action')}
               </label>
               <Select
@@ -349,7 +368,10 @@ export const BulkOperations = () => {
                   setSelectedAction(value as 'ban' | 'unban' | 'update_role' | 'delete')
                 }
               >
-                <SelectTrigger className='bg-bg-base text-text-primary focus:ring-ring focus:ring-offset-background w-full rounded-md border border-[var(--border-subtle)] px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-offset-2'>
+                <SelectTrigger
+                  id='bulk-action'
+                  className='bg-bg-base text-text-primary focus:ring-ring focus:ring-offset-background w-full rounded-md border border-[var(--border-subtle)] px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-offset-2'
+                >
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -363,14 +385,17 @@ export const BulkOperations = () => {
 
             {selectedAction === 'update_role' && (
               <div className='flex-1'>
-                <label className='mb-2 block text-sm font-medium'>
+                <label htmlFor='bulk-new-role' className='mb-2 block text-sm font-medium'>
                   {t('user-actions.new-role')}
                 </label>
                 <Select
                   value={newRole}
                   onValueChange={(value) => setNewRole(value as 'user' | 'admin')}
                 >
-                  <SelectTrigger className='bg-bg-base text-text-primary focus:ring-ring focus:ring-offset-background w-full rounded-md border border-[var(--border-subtle)] px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-offset-2'>
+                  <SelectTrigger
+                    id='bulk-new-role'
+                    className='bg-bg-base text-text-primary focus:ring-ring focus:ring-offset-background w-full rounded-md border border-[var(--border-subtle)] px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-offset-2'
+                  >
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -384,11 +409,11 @@ export const BulkOperations = () => {
             <div className='flex items-end'>
               <Button
                 onClick={handleBulkAction}
-                disabled={selectedUsers.length === 0 || bulkUserAction.isPending}
+                disabled={visibleSelectedUsers.length === 0 || bulkUserAction.isPending}
                 className='flex items-center gap-2'
               >
                 {getActionIcon(selectedAction)}
-                {t('actions.execute', { count: selectedUsers.length })}
+                {t('actions.execute', { count: visibleSelectedUsers.length })}
               </Button>
             </div>
           </div>
@@ -400,10 +425,13 @@ export const BulkOperations = () => {
                 <tr>
                   <th className='text-text-secondary px-6 py-3 text-left text-xs font-medium tracking-wider uppercase'>
                     <input
+                      ref={selectAllRef}
                       type='checkbox'
+                      checked={selectionState.checked}
+                      aria-label={t('table.select-all')}
                       onChange={(e) => {
                         if (e.target.checked) {
-                          setSelectedUsers(usersData?.users.map((u) => u.id) || [])
+                          setSelectedUsers(visibleUserIds)
                         } else {
                           setSelectedUsers([])
                         }
@@ -428,12 +456,13 @@ export const BulkOperations = () => {
                     <td className='px-6 py-4 whitespace-nowrap'>
                       <input
                         type='checkbox'
-                        checked={selectedUsers.includes(user.id)}
+                        checked={visibleSelectedUsers.includes(user.id)}
+                        aria-label={`${t('table.user')}: ${user.name}`}
                         onChange={(e) => {
                           if (e.target.checked) {
-                            setSelectedUsers([...selectedUsers, user.id])
+                            setSelectedUsers([...visibleSelectedUsers, user.id])
                           } else {
-                            setSelectedUsers(selectedUsers.filter((id) => id !== user.id))
+                            setSelectedUsers(visibleSelectedUsers.filter((id) => id !== user.id))
                           }
                         }}
                         className='rounded border-[var(--border-subtle)]'

@@ -310,6 +310,7 @@
       "description": "管理用户通知和系统警报",
       "loading": "正在加载通知...",
       "empty": "暂无通知。创建第一条通知以开始使用！",
+      "error": "加载通知失败。",
       "messages": {
         "created": "通知创建成功",
         "create-failed": "创建通知失败：{message}",
@@ -345,17 +346,18 @@
         "reminder": "提醒"
       },
       "stats": {
+        "current-page": "当前页面",
         "total": {
           "title": "通知总数",
           "description": "所有通知"
         },
         "unread": {
           "title": "未读",
-          "description": "待处理的通知"
+          "description": "{scope}未读通知"
         },
         "read-rate": {
           "title": "已读率",
-          "description": "已读的通知"
+          "description": "{scope}已读通知"
         }
       },
       "recent": {
@@ -413,6 +415,7 @@
       },
       "table": {
         "user": "用户",
+        "select-all": "选择所有用户",
         "role": "角色",
         "joined": "加入时间"
       },
@@ -429,6 +432,7 @@
       "title": "数据管理",
       "description": "备份、导出和管理您的数据",
       "loading": "正在加载数据管理仪表板...",
+      "error": "部分数据不可用，请重试。",
       "messages": {
         "backup-started": "数据库备份已成功启动",
         "backup-failed": "启动备份失败：{message}",
@@ -463,6 +467,7 @@
         "differential-backup": "差异备份"
       },
       "stats": {
+        "error": "数据管理统计不可用。",
         "database-backups": "数据库备份",
         "completed-count": "已完成 {count} 个",
         "backup-size": "备份大小",
@@ -489,6 +494,7 @@
       },
       "backups": {
         "loading": "正在加载备份...",
+        "error": "加载备份失败。",
         "empty": "暂无备份",
         "backup-label": "{type} 备份",
         "create-title": "创建数据库备份",
@@ -498,6 +504,7 @@
       },
       "exports": {
         "loading": "正在加载导出...",
+        "error": "加载导出失败。",
         "empty": "暂无导出",
         "create-title": "创建数据导出",
         "create-description": "以多种格式导出数据",
@@ -548,6 +555,13 @@
       "title": "安全管理",
       "description": "监控和管理系统安全",
       "loading": "正在加载安全仪表盘...",
+      "error": "部分安全数据不可用，请重试。",
+      "confirm": {
+        "resolve-title": "解决安全事件？",
+        "resolve-event": "这会将安全事件 {type} 标记为已解决。",
+        "unlock-title": "解锁账户？",
+        "unlock-account": "这会解锁用户 {userId} 的账户。"
+      },
       "messages": {
         "ip-rule-added": "IP 访问规则添加成功",
         "ip-rule-failed": "添加 IP 规则失败：{message}",
@@ -670,6 +684,7 @@
       "title": "监控仪表板",
       "description": "实时系统性能和分析",
       "loading": "正在加载监控仪表板...",
+      "error": "部分监控数据不可用，请重试。",
       "messages": {
         "error-resolved": "错误已成功解决",
         "resolve-error-failed": "解决错误失败：{message}",
@@ -1175,6 +1190,8 @@
   "blog": {
     "comments": {
       "author": "作者",
+      "comment-label": "评论",
+      "reply-label": "回复",
       "comment-cannot-be-empty": "评论不能为空",
       "comment-posted": "评论已发布",
       "comments": "{count, plural, =1 {条评论} other {条评论}}",
@@ -1226,6 +1243,10 @@
     "title": "博客"
   },
   "command-menu": {
+    "dialog-title": "命令菜单",
+    "dialog-description": "搜索命令",
+    "input-label": "搜索命令",
+    "list-label": "命令建议",
     "actions": {
       "copy-link": "复制链接",
       "settings": "设置",
@@ -1288,6 +1309,7 @@
       "delete-title": "删除账户",
       "delete-description": "这会永久删除你的账户及其关联数据。",
       "delete-trigger": "删除账户",
+      "cancel": "取消",
       "delete-export-reminder": "想保留一份副本？请在继续前下载你的数据。",
       "delete-dialog-title": "要删除账户吗？",
       "delete-dialog-description": "删除前，我们会向你的邮箱发送确认链接。链接将在 15 分钟后失效。",
@@ -1569,6 +1591,8 @@
     }
   },
   "site-search": {
+    "label": "搜索网站",
+    "results-label": "搜索结果",
     "placeholder": "搜索网站...",
     "recent-searches": "最近搜索",
     "no-results": "未找到"
@@ -1684,6 +1708,7 @@
     }
   },
   "guestbook": {
+    "message-label": "留言板消息",
     "create-message-successfully": "留言成功",
     "delete-dialog": {
       "description": "确定要删除此评论吗？此操作无法撤销。",
@@ -1771,6 +1796,7 @@
     "newsletter": {
       "title": "保持更新",
       "description": "获取关于新博客文章和项目更新的通知",
+      "email-label": "电子邮件地址",
       "placeholder": "输入您的电子邮件",
       "cta": "订阅",
       "disclaimer": "无垃圾邮件，可随时取消订阅。适用隐私政策。",

@@ -22,6 +22,7 @@ const AccordionTrigger = (props: AccordionTriggerProps) => {
       <AccordionPrimitive.Trigger
         className={cn(
           'flex flex-1 items-center justify-between py-4 text-left text-sm font-medium',
+          'focus-visible:ring-ring focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden',
           '[&[data-state=open]>svg]:rotate-180',
           className
         )}

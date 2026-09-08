@@ -50,6 +50,7 @@ const Marquee = (props: MarqueeProps) => {
           className={cn(
             'flex shrink-0 justify-around gap-[var(--gap)]',
             direction === 'left' ? 'animate-marquee-left flex-row' : 'animate-marquee-up flex-col',
+            'motion-reduce:animate-none',
             pauseOnHover && 'group-hover:[animation-play-state:paused]',
             reverse && 'direction-reverse'
           )}

@@ -111,8 +111,21 @@ const SettingsForm = () => {
 
   const avatarUploadUrlMutation = api.users.createAvatarUploadUrl.useMutation()
 
-  if (isPending) return null
-  if (!session) return null
+  if (isPending) {
+    return (
+      <p className='text-muted-foreground' role='status'>
+        {t('settings.description')}
+      </p>
+    )
+  }
+  if (!session) {
+    return (
+      <div className='space-y-2' role='status'>
+        <h3 className='text-lg font-semibold'>{t('settings.title')}</h3>
+        <p className='text-muted-foreground text-sm'>{t('common.sign-in')}</p>
+      </div>
+    )
+  }
   if (!user) return null
 
   const effectiveImage = profileForm.image || defaultImage || ''
@@ -277,7 +290,7 @@ const SettingsForm = () => {
 
         <div className='flex items-center gap-4'>
           <Avatar className='size-12'>
-            <AvatarImage src={effectiveImage} />
+            <AvatarImage src={effectiveImage} alt={user.name} />
             <AvatarFallback>{getAvatarAbbreviation(user.name)}</AvatarFallback>
           </Avatar>
           <div className='flex-1'>

@@ -48,7 +48,7 @@ const SegmentGroupItem = (props: SegmentGroupItemProps) => {
   return (
     <SegmentGroupPrimitive.Item
       className={cn(
-        'text-muted-foreground hover:text-accent-foreground cursor-pointer font-medium transition-colors',
+        'text-muted-foreground hover:text-accent-foreground focus-visible:ring-ring cursor-pointer font-medium transition-colors focus-visible:ring-2 focus-visible:outline-hidden focus-visible:ring-inset',
         'data-[orientation=horizontal]:px-1 data-[orientation=horizontal]:pb-3',
         'data-[orientation=vertical]:px-3 data-[orientation=vertical]:py-1.5',
         'data-[state=checked]:text-foreground',

@@ -50,7 +50,7 @@ const AdminProfileDropdown = () => {
       <DropdownMenuTrigger asChild>
         <Button className='size-9 rounded-full' variant='ghost'>
           <Avatar className='size-9'>
-            <AvatarImage className='size-9' src={image ?? defaultImage} />
+            <AvatarImage className='size-9' src={image ?? defaultImage} alt={name} />
             <AvatarFallback>{getAvatarAbbreviation(name)}</AvatarFallback>
           </Avatar>
         </Button>

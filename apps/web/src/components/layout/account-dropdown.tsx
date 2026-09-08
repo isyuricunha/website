@@ -65,7 +65,7 @@ const AccountDropdown = () => {
       <DropdownMenuTrigger asChild>
         <Button className='size-9 rounded-full p-0' variant='ghost' aria-label={displayName}>
           <Avatar className='size-9'>
-            <AvatarImage className='size-9' src={image ?? defaultImage} />
+            <AvatarImage className='size-9' src={image ?? defaultImage} alt={displayName} />
             <AvatarFallback>{getAvatarAbbreviation(displayName)}</AvatarFallback>
           </Avatar>
         </Button>

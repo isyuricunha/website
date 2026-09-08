@@ -45,7 +45,7 @@ const InputOTPSlot = (props: InputOTPSlotProps) => {
     <div
       role='presentation'
       className={cn(
-        'border-input relative flex size-9 items-center justify-center border-y border-r shadow-xs transition-all',
+        'border-input shadow-control relative flex size-9 items-center justify-center border-y border-r transition-all',
         'first:rounded-l-md first:border-l',
         'last:rounded-r-md',
         isActive && 'ring-ring z-10 ring-1',

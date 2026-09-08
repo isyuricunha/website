@@ -122,6 +122,7 @@ const AuditLogsTable = (props: AuditLogsTableProps) => {
           <div className='relative'>
             <Search className='text-text-secondary absolute top-2.5 left-2 h-4 w-4' />
             <Input
+              aria-label={t('search-placeholder')}
               placeholder={t('search-placeholder')}
               value={searchTerm}
               onChange={(e) => updateSearchTerm(e.target.value)}
@@ -132,6 +133,7 @@ const AuditLogsTable = (props: AuditLogsTableProps) => {
                 variant='ghost'
                 size='sm'
                 className='absolute top-1 right-1 h-6 w-6 p-0'
+                aria-label={t('search-placeholder')}
                 onClick={clearSearch}
               >
                 <X className='h-3 w-3' />

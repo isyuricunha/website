@@ -42,7 +42,7 @@ const TreeViewNode = (props: TreeViewNodeProps) => {
     <TreeViewPrimitive.NodeProvider key={node.id} node={node} indexPath={indexPath}>
       {node.children ? (
         <TreeViewPrimitive.Branch>
-          <TreeViewPrimitive.BranchControl className='hover:bg-accent hover:text-accent-foreground flex items-center justify-between rounded-md px-2 py-1.5 pl-[calc(var(--depth)*8px)] text-sm'>
+          <TreeViewPrimitive.BranchControl className='hover:bg-accent hover:text-accent-foreground focus-visible:ring-ring flex items-center justify-between rounded-md px-2 py-1.5 pl-[calc(var(--depth)*8px)] text-sm focus-visible:ring-2 focus-visible:outline-hidden focus-visible:ring-inset'>
             <TreeViewPrimitive.BranchText className='flex items-center gap-2'>
               <FolderIcon className='size-4' /> {node.name}
             </TreeViewPrimitive.BranchText>
@@ -58,7 +58,7 @@ const TreeViewNode = (props: TreeViewNodeProps) => {
           </TreeViewPrimitive.BranchContent>
         </TreeViewPrimitive.Branch>
       ) : (
-        <TreeViewPrimitive.Item className='hover:bg-accent hover:text-accent-foreground data-selected:bg-accent relative rounded-md px-2 py-1.5 pl-[calc(var(--depth)*8px)] text-sm'>
+        <TreeViewPrimitive.Item className='hover:bg-accent hover:text-accent-foreground focus-visible:ring-ring data-selected:bg-accent relative rounded-md px-2 py-1.5 pl-[calc(var(--depth)*8px)] text-sm focus-visible:ring-2 focus-visible:outline-hidden focus-visible:ring-inset'>
           <TreeViewPrimitive.ItemText className='flex items-center gap-2'>
             <FileIcon className='size-4' />
             {node.name}

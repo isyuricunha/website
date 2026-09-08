@@ -4,7 +4,7 @@ import { LoaderIcon } from 'lucide-react'
 
 const buttonVariants = cva({
   base: [
-    'ring-offset-background inline-flex items-center justify-center rounded-md text-[13px] font-medium whitespace-nowrap shadow-xs transition-colors',
+    'ring-offset-background shadow-control inline-flex items-center justify-center rounded-md text-[13px] font-medium whitespace-nowrap transition-colors',
     'focus-visible:ring-ring focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden',
     'disabled:pointer-events-none disabled:opacity-50'
   ],
@@ -58,7 +58,7 @@ const Button = (props: ButtonProps) => {
     <button
       className={cn(buttonVariants({ variant, size, className }))}
       type={type}
-      disabled={disabled ?? isPending}
+      disabled={disabled || isPending}
       {...rest}
     >
       {isPending && <LoaderIcon className='mr-2 size-4 animate-spin' />}

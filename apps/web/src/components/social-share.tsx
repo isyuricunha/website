@@ -91,30 +91,31 @@ export default function SocialShare({
           aria-label={t('button.aria')}
           type='button'
         >
-          <Share2 className='size-4' />
+          <Share2 aria-hidden='true' className='size-4' />
           {t('button.label')}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align='end' className='w-48'>
         {globalThis.window !== undefined && typeof navigator.share === 'function' && (
           <DropdownMenuItem onClick={handleNativeShare} className='gap-2'>
-            <Share2 className='size-4' />
+            <Share2 aria-hidden='true' className='size-4' />
             {t('native')}
           </DropdownMenuItem>
         )}
 
         <DropdownMenuItem onClick={() => openShare('twitter')} className='gap-2'>
-          <SiX className='size-4' />
+          <SiX aria-hidden='true' className='size-4' />
           {t('platform.twitter')}
         </DropdownMenuItem>
 
         <DropdownMenuItem onClick={() => openShare('facebook')} className='gap-2'>
-          <SiFacebook className='size-4' />
+          <SiFacebook aria-hidden='true' className='size-4' />
           {t('platform.facebook')}
         </DropdownMenuItem>
 
         <DropdownMenuItem onClick={() => openShare('linkedin')} className='gap-2'>
           <svg
+            aria-hidden='true'
             viewBox='0 0 24 24'
             className='size-4 fill-current'
             xmlns='http://www.w3.org/2000/svg'
@@ -125,20 +126,20 @@ export default function SocialShare({
         </DropdownMenuItem>
 
         <DropdownMenuItem onClick={() => openShare('reddit')} className='gap-2'>
-          <SiReddit className='size-4' />
+          <SiReddit aria-hidden='true' className='size-4' />
           {t('platform.reddit')}
         </DropdownMenuItem>
 
         <DropdownMenuItem onClick={() => openShare('whatsapp')} className='gap-2'>
-          <SiWhatsapp className='size-4' />
+          <SiWhatsapp aria-hidden='true' className='size-4' />
           {t('platform.whatsapp')}
         </DropdownMenuItem>
 
         <DropdownMenuItem onClick={copyToClipboard} className='gap-2'>
           {copied ? (
-            <Check className='text-accent-earth-text size-4' />
+            <Check aria-hidden='true' className='text-accent-earth-text size-4' />
           ) : (
-            <Link className='size-4' />
+            <Link aria-hidden='true' className='size-4' />
           )}
           {t(copied ? 'copy.copied' : 'copy.label')}
         </DropdownMenuItem>

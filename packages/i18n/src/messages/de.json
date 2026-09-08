@@ -310,6 +310,7 @@
       "description": "Benutzerbenachrichtigungen und Systemwarnungen verwalten",
       "loading": "Benachrichtigungen werden geladen...",
       "empty": "Noch keine Benachrichtigungen vorhanden. Erstellen Sie Ihre erste Benachrichtigung, um zu beginnen!",
+      "error": "Benachrichtigungen konnten nicht geladen werden.",
       "messages": {
         "created": "Benachrichtigung erfolgreich erstellt",
         "create-failed": "Fehler beim Erstellen der Benachrichtigung: {message}",
@@ -345,17 +346,18 @@
         "reminder": "Erinnerung"
       },
       "stats": {
+        "current-page": "Aktuelle Seite",
         "total": {
           "title": "Gesamtbenachrichtigungen",
           "description": "Alle Benachrichtigungen"
         },
         "unread": {
           "title": "Ungelesen",
-          "description": "Ausstehende Benachrichtigungen"
+          "description": "Ungelesene Benachrichtigungen auf {scope}"
         },
         "read-rate": {
           "title": "Lesequote",
-          "description": "Gelesene Benachrichtigungen"
+          "description": "Gelesene Benachrichtigungen auf {scope}"
         }
       },
       "recent": {
@@ -413,6 +415,7 @@
       },
       "table": {
         "user": "Benutzer",
+        "select-all": "Alle Benutzer auswählen",
         "role": "Rolle",
         "joined": "Beigetreten"
       },
@@ -429,6 +432,7 @@
       "title": "Datenverwaltung",
       "description": "Sichern, exportieren und verwalten Sie Ihre Daten",
       "loading": "Datenverwaltungs-Dashboard wird geladen...",
+      "error": "Einige Daten sind nicht verfügbar. Bitte versuchen Sie es erneut.",
       "messages": {
         "backup-started": "Datenbanksicherung erfolgreich gestartet",
         "backup-failed": "Fehler beim Starten der Sicherung: {message}",
@@ -463,6 +467,7 @@
         "differential-backup": "Differentielles Backup"
       },
       "stats": {
+        "error": "Datenverwaltungsstatistiken sind nicht verfügbar.",
         "database-backups": "Datenbank-Backups",
         "completed-count": "{count} abgeschlossen",
         "backup-size": "Backup-Größe",
@@ -489,6 +494,7 @@
       },
       "backups": {
         "loading": "Backups werden geladen...",
+        "error": "Backups konnten nicht geladen werden.",
         "empty": "Noch keine Backups vorhanden",
         "backup-label": "{type}-Backup",
         "create-title": "Datenbank-Backup erstellen",
@@ -498,6 +504,7 @@
       },
       "exports": {
         "loading": "Exporte werden geladen...",
+        "error": "Exporte konnten nicht geladen werden.",
         "empty": "Noch keine Exporte vorhanden",
         "create-title": "Datenexport erstellen",
         "create-description": "Daten in verschiedenen Formaten exportieren",
@@ -548,6 +555,13 @@
       "title": "Sicherheitsverwaltung",
       "description": "Systemsecurity überwachen und verwalten",
       "loading": "Lade Sicherheitsdashboard...",
+      "error": "Einige Sicherheitsdaten sind nicht verfügbar. Bitte versuchen Sie es erneut.",
+      "confirm": {
+        "resolve-title": "Sicherheitsereignis lösen?",
+        "resolve-event": "Dadurch wird das Sicherheitsereignis {type} als gelöst markiert.",
+        "unlock-title": "Konto entsperren?",
+        "unlock-account": "Dadurch wird das Konto für Benutzer {userId} entsperrt."
+      },
       "messages": {
         "ip-rule-added": "IP-Zugriffsregel erfolgreich hinzugefügt",
         "ip-rule-failed": "Fehler beim Hinzufügen der IP-Regel: {message}",
@@ -670,6 +684,7 @@
       "title": "Überwachungs-Dashboard",
       "description": "Echtzeit-Systemleistung und -Analysen",
       "loading": "Überwachungs-Dashboard wird geladen...",
+      "error": "Einige Überwachungsdaten sind nicht verfügbar. Bitte versuchen Sie es erneut.",
       "messages": {
         "error-resolved": "Fehler erfolgreich behoben",
         "resolve-error-failed": "Fehler konnte nicht behoben werden: {message}",
@@ -1175,6 +1190,8 @@
   "blog": {
     "comments": {
       "author": "Autor:in",
+      "comment-label": "Kommentar",
+      "reply-label": "Antwort",
       "comment-cannot-be-empty": "Der Kommentar darf nicht leer sein",
       "comment-posted": "Kommentar veröffentlicht",
       "comments": "{count, plural, =1 {Kommentar} other {Kommentare}}",
@@ -1226,6 +1243,10 @@
     "title": "Blog"
   },
   "command-menu": {
+    "dialog-title": "Befehlsmenü",
+    "dialog-description": "Befehle durchsuchen",
+    "input-label": "Befehle durchsuchen",
+    "list-label": "Befehlsvorschläge",
     "actions": {
       "copy-link": "Link kopieren",
       "settings": "Einstellungen",
@@ -1288,6 +1309,7 @@
       "delete-title": "Konto löschen",
       "delete-description": "Dadurch werden Ihr Konto und die damit verbundenen Daten dauerhaft gelöscht.",
       "delete-trigger": "Konto löschen",
+      "cancel": "Abbrechen",
       "delete-export-reminder": "Möchten Sie eine Kopie behalten? Laden Sie Ihre Daten herunter, bevor Sie fortfahren.",
       "delete-dialog-title": "Konto löschen?",
       "delete-dialog-description": "Bevor etwas gelöscht wird, senden wir Ihnen einen Bestätigungslink per E-Mail. Er läuft nach 15 Minuten ab.",
@@ -1569,6 +1591,8 @@
     }
   },
   "site-search": {
+    "label": "Website durchsuchen",
+    "results-label": "Suchergebnisse",
     "placeholder": "Website durchsuchen...",
     "recent-searches": "Letzte Suchanfragen",
     "no-results": "Keine Ergebnisse für"
@@ -1684,6 +1708,7 @@
     }
   },
   "guestbook": {
+    "message-label": "Gästebuchnachricht",
     "create-message-successfully": "Nachricht erfolgreich erstellt",
     "delete-dialog": {
       "description": "Möchtest du diesen Kommentar wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
@@ -1771,6 +1796,7 @@
     "newsletter": {
       "title": "Bleib auf dem Laufenden",
       "description": "Erhalte Benachrichtigungen über neue Blogbeiträge und Projektupdates",
+      "email-label": "E-Mail-Adresse",
       "placeholder": "Gib deine E-Mail-Adresse ein",
       "cta": "Abonnieren",
       "disclaimer": "Kein Spam, Abmeldung jederzeit möglich. Es gelten die Datenschutzbestimmungen.",

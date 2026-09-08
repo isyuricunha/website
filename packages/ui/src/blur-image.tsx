@@ -42,12 +42,17 @@ const BlurImage = (props: ImageProps) => {
       className={cn(
         'overflow-hidden',
         fill && 'relative h-full w-full',
-        isLoading && 'animate-pulse',
+        isLoading && 'animate-pulse motion-reduce:animate-none',
         className
       )}
     >
       <NextImage
-        className={cn(isLoading && 'scale-[1.02] blur-xl grayscale', imageClassName)}
+        className={cn(
+          isLoading &&
+            'scale-[1.02] blur-xl grayscale motion-reduce:scale-100 motion-reduce:blur-none motion-reduce:grayscale-0',
+          'motion-reduce:!transition-none',
+          imageClassName
+        )}
         style={{
           transition: 'filter 700ms ease, scale 150ms ease',
           ...style

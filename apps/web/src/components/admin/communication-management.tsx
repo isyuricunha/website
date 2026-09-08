@@ -249,7 +249,7 @@ export default function CommunicationManagement() {
 
       {/* Communication Management Tabs */}
       <Tabs value={selectedTab} onValueChange={setSelectedTab}>
-        <TabsList className='grid w-full grid-cols-5'>
+        <TabsList className='grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-5'>
           <TabsTrigger value='overview'>{t('tabs.overview')}</TabsTrigger>
           <TabsTrigger value='campaigns'>{t('tabs.campaigns')}</TabsTrigger>
           <TabsTrigger value='templates'>{t('tabs.templates')}</TabsTrigger>

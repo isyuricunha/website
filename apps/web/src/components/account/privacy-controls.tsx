@@ -126,6 +126,14 @@ const PrivacyControls = ({ email, canDelete }: PrivacyControlsProps) => {
                 <DialogFooter>
                   <Button
                     type='button'
+                    variant='outline'
+                    disabled={isRequestingDeletion}
+                    onClick={() => setIsDeletionDialogOpen(false)}
+                  >
+                    {t('cancel')}
+                  </Button>
+                  <Button
+                    type='button'
                     variant='destructive'
                     disabled={confirmation !== email || isRequestingDeletion}
                     onClick={requestDeletion}

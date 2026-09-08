@@ -5,7 +5,7 @@ import { useTranslations } from '@isyuricunha/i18n/client'
 import { useRouter } from '@isyuricunha/i18n/routing'
 import {
   Button,
-  CommandDialog,
+  Command,
   CommandEmpty,
   CommandFooter,
   CommandFooterTrigger,
@@ -14,6 +14,10 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
   Kbd,
   Logo
 } from '@isyuricunha/ui'
@@ -80,7 +84,7 @@ const CommandMenu = () => {
           ? [
               {
                 title: t('account.actions.my-profile'),
-                icon: <UserIcon className='mr-3 size-4' />,
+                icon: <UserIcon aria-hidden='true' className='mr-3 size-4' />,
                 onSelect: () => {
                   const handle = session.user.username ?? session.user.id
                   setIsOpen(false)
@@ -89,7 +93,7 @@ const CommandMenu = () => {
               },
               {
                 title: t('command-menu.actions.settings'),
-                icon: <SettingsIcon className='mr-3 size-4' />,
+                icon: <SettingsIcon aria-hidden='true' className='mr-3 size-4' />,
                 onSelect: () => {
                   setIsOpen(false)
                   router.push('/settings')
@@ -97,7 +101,7 @@ const CommandMenu = () => {
               },
               {
                 title: t('common.sign-out'),
-                icon: <LogOutIcon className='mr-3 size-4' />,
+                icon: <LogOutIcon aria-hidden='true' className='mr-3 size-4' />,
                 onSelect: async () => {
                   await signOut({
                     fetchOptions: {
@@ -112,7 +116,7 @@ const CommandMenu = () => {
           : [
               {
                 title: t('common.sign-in'),
-                icon: <LogInIcon className='mr-3 size-4' />,
+                icon: <LogInIcon aria-hidden='true' className='mr-3 size-4' />,
                 onSelect: () => {
                   setIsOpen(false)
                   setIsSignInOpen(true)
@@ -126,7 +130,7 @@ const CommandMenu = () => {
       actions: [
         {
           title: t('command-menu.actions.copy-link'),
-          icon: <LinkIcon className='mr-3 size-4' />,
+          icon: <LinkIcon aria-hidden='true' className='mr-3 size-4' />,
           onSelect: async () => {
             setIsOpen(false)
 
@@ -135,7 +139,7 @@ const CommandMenu = () => {
         },
         {
           title: t('command-menu.actions.source-code'),
-          icon: <CodeIcon className='mr-3 size-4' />,
+          icon: <CodeIcon aria-hidden='true' className='mr-3 size-4' />,
           onSelect: () => openLink('https://github.com/isyuricunha/website')
         }
       ]
@@ -145,12 +149,12 @@ const CommandMenu = () => {
       actions: [
         {
           title: 'GitHub',
-          icon: <SiGithub className='mr-3 size-4' />,
+          icon: <SiGithub aria-hidden='true' className='mr-3 size-4' />,
           onSelect: () => openLink(SITE_GITHUB_URL)
         },
         {
           title: 'X',
-          icon: <SiX className='mr-3 size-4' />,
+          icon: <SiX aria-hidden='true' className='mr-3 size-4' />,
           onSelect: () => openLink(SITE_X_URL)
         }
       ]
@@ -165,42 +169,53 @@ const CommandMenu = () => {
         onClick={() => setIsOpen(true)}
         aria-label={t('command-menu.open-menu')}
       >
-        <CommandIcon className='size-4' />
+        <CommandIcon aria-hidden='true' className='size-4' />
       </Button>
-      <CommandDialog
-        open={isOpen}
-        onOpenChange={setIsOpen}
-        value={selectingValue}
-        onValueChange={setSelectingValue}
-      >
-        <CommandInput placeholder={t('command-menu.placeholder')} />
-        <CommandList>
-          <CommandEmpty>{t('command-menu.no-results')}</CommandEmpty>
-          {groups.map((group, i) => (
-            <Fragment key={group.name}>
-              <CommandGroup heading={group.name}>
-                {group.actions.map((action) => (
-                  <CommandItem key={action.title} onSelect={action.onSelect}>
-                    {action.icon}
-                    {action.title}
-                  </CommandItem>
-                ))}
-              </CommandGroup>
-              {i === groups.length - 1 ? null : <CommandSeparator />}
-            </Fragment>
-          ))}
-        </CommandList>
-        <CommandFooter>
-          <Logo className='size-4' />
-          <CommandFooterTrigger triggerKey={<Kbd keys={['enter']} className='py-0' />}>
-            {t(
-              isSelectingCommand
-                ? 'command-menu.trigger.open-command'
-                : 'command-menu.trigger.open-link'
-            )}
-          </CommandFooterTrigger>
-        </CommandFooter>
-      </CommandDialog>
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogContent className='overflow-hidden p-0 shadow-lg'>
+          <DialogTitle className='sr-only'>{t('command-menu.dialog-title')}</DialogTitle>
+          <DialogDescription className='sr-only'>
+            {t('command-menu.dialog-description')}
+          </DialogDescription>
+          <Command
+            label={t('command-menu.input-label')}
+            value={selectingValue}
+            onValueChange={setSelectingValue}
+            className='border-0 shadow-none'
+          >
+            <CommandInput
+              aria-label={t('command-menu.input-label')}
+              placeholder={t('command-menu.placeholder')}
+            />
+            <CommandList label={t('command-menu.list-label')}>
+              <CommandEmpty>{t('command-menu.no-results')}</CommandEmpty>
+              {groups.map((group, i) => (
+                <Fragment key={group.name}>
+                  <CommandGroup heading={group.name}>
+                    {group.actions.map((action) => (
+                      <CommandItem key={action.title} onSelect={action.onSelect}>
+                        {action.icon}
+                        {action.title}
+                      </CommandItem>
+                    ))}
+                  </CommandGroup>
+                  {i === groups.length - 1 ? null : <CommandSeparator />}
+                </Fragment>
+              ))}
+            </CommandList>
+            <CommandFooter>
+              <Logo className='size-4' />
+              <CommandFooterTrigger triggerKey={<Kbd keys={['enter']} className='py-0' />}>
+                {t(
+                  isSelectingCommand
+                    ? 'command-menu.trigger.open-command'
+                    : 'command-menu.trigger.open-link'
+                )}
+              </CommandFooterTrigger>
+            </CommandFooter>
+          </Command>
+        </DialogContent>
+      </Dialog>
     </>
   )
 }

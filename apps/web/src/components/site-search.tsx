@@ -32,6 +32,8 @@ const SiteSearch = () => {
   const router = useRouter()
 
   const placeholder = t('site-search.placeholder')
+  const searchLabel = t('site-search.label')
+  const resultsLabel = t('site-search.results-label')
   const recentSearchesLabel = t('site-search.recent-searches')
   const noResultsLabel = t('site-search.no-results')
 
@@ -186,6 +188,8 @@ const SiteSearch = () => {
     return showRecentSearches ? [] : filteredResults
   }, [showRecentSearches, filteredResults])
   const totalItems = showRecentSearches ? recentSearches.length : allResults.length
+  const resultsId = 'site-search-results'
+  const activeDescendant = selectedIndex >= 0 ? `site-search-option-${selectedIndex}` : undefined
 
   const handleResultClick = useCallback(
     (href: string, searchTerm?: string) => {
@@ -253,9 +257,21 @@ const SiteSearch = () => {
   return (
     <div className='relative'>
       <div className='relative'>
-        <Search className='text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform' />
+        <label htmlFor='site-search-input' className='sr-only'>
+          {searchLabel}
+        </label>
+        <Search
+          aria-hidden='true'
+          className='text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform'
+        />
         <Input
+          id='site-search-input'
           type='text'
+          role='combobox'
+          aria-autocomplete='list'
+          aria-controls={resultsId}
+          aria-expanded={isOpen && (showRecentSearches || filteredResults.length > 0)}
+          aria-activedescendant={activeDescendant}
           placeholder={placeholder}
           value={query}
           onChange={(e) => {
@@ -278,7 +294,12 @@ const SiteSearch = () => {
               setSelectedIndex(-1)
             }}
           />
-          <Card className='absolute top-full z-50 mt-2 max-h-96 w-full overflow-y-auto'>
+          <Card
+            id={resultsId}
+            role='listbox'
+            aria-label={resultsLabel}
+            className='absolute top-full z-50 mt-2 max-h-96 w-full overflow-y-auto'
+          >
             <CardContent className='p-2'>
               <div className='space-y-1'>
                 {/* Recent Searches */}
@@ -289,6 +310,9 @@ const SiteSearch = () => {
                     </div>
                     {recentSearches.map((searchTerm, index) => (
                       <button
+                        id={`site-search-option-${index}`}
+                        role='option'
+                        aria-selected={selectedIndex === index}
                         type='button'
                         key={`recent-${searchTerm}-${index}`}
                         onClick={() => handleRecentSearchClick(searchTerm)}
@@ -297,7 +321,7 @@ const SiteSearch = () => {
                         }`}
                       >
                         <div className='flex items-center gap-3'>
-                          <Search className='text-muted-foreground h-4 w-4' />
+                          <Search aria-hidden='true' className='text-muted-foreground h-4 w-4' />
                           <span className='text-sm'>{searchTerm}</span>
                         </div>
                       </button>
@@ -308,6 +332,9 @@ const SiteSearch = () => {
                 {/* Search Results */}
                 {filteredResults.map((result, index) => (
                   <button
+                    id={`site-search-option-${index}`}
+                    role='option'
+                    aria-selected={selectedIndex === index}
                     type='button'
                     key={`result-${result.href}`}
                     onClick={() => handleResultClick(result.href, query)}
@@ -317,7 +344,7 @@ const SiteSearch = () => {
                   >
                     <div className='flex items-start gap-3'>
                       <div className='text-muted-foreground group-hover:text-foreground mt-0.5 flex-shrink-0'>
-                        {result.icon}
+                        <span aria-hidden='true'>{result.icon}</span>
                       </div>
                       <div className='min-w-0 flex-1'>
                         <div className='mb-1 flex items-center gap-2'>
@@ -333,7 +360,10 @@ const SiteSearch = () => {
                         </p>
                         {result.date && (
                           <div className='mt-1 flex items-center gap-1'>
-                            <Calendar className='text-muted-foreground h-3 w-3' />
+                            <Calendar
+                              aria-hidden='true'
+                              className='text-muted-foreground h-3 w-3'
+                            />
                             <span className='text-muted-foreground text-xs'>
                               {new Date(result.date).toLocaleDateString()}
                             </span>
@@ -360,7 +390,7 @@ const SiteSearch = () => {
           />
           <Card className='absolute top-full z-50 mt-2 w-full'>
             <CardContent className='p-4 text-center'>
-              <Search className='text-muted-foreground mx-auto mb-2 h-8 w-8' />
+              <Search aria-hidden='true' className='text-muted-foreground mx-auto mb-2 h-8 w-8' />
               <p className='text-muted-foreground text-sm'>
                 {noResultsLabel} "{query}"
               </p>

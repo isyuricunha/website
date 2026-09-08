@@ -310,6 +310,7 @@
       "description": "ユーザー通知とシステムアラートを管理",
       "loading": "通知を読み込み中...",
       "empty": "通知はまだありません。最初の通知を作成して開始しましょう！",
+      "error": "通知の読み込みに失敗しました。",
       "messages": {
         "created": "通知が正常に作成されました",
         "create-failed": "通知の作成に失敗しました: {message}",
@@ -345,17 +346,18 @@
         "reminder": "リマインダー"
       },
       "stats": {
+        "current-page": "現在のページ",
         "total": {
           "title": "通知総数",
           "description": "すべての通知"
         },
         "unread": {
           "title": "未読",
-          "description": "未読の通知"
+          "description": "{scope}の未読通知"
         },
         "read-rate": {
           "title": "既読率",
-          "description": "既読の通知"
+          "description": "{scope}で読まれた通知"
         }
       },
       "recent": {
@@ -413,6 +415,7 @@
       },
       "table": {
         "user": "ユーザー",
+        "select-all": "すべてのユーザーを選択",
         "role": "ロール",
         "joined": "参加日"
       },
@@ -429,6 +432,7 @@
       "title": "データ管理",
       "description": "データのバックアップ、エクスポート、管理を行います",
       "loading": "データ管理ダッシュボードを読み込み中...",
+      "error": "一部のデータを利用できません。もう一度お試しください。",
       "messages": {
         "backup-started": "データベースのバックアップを開始しました",
         "backup-failed": "バックアップの開始に失敗しました: {message}",
@@ -463,6 +467,7 @@
         "differential-backup": "差分バックアップ"
       },
       "stats": {
+        "error": "データ管理の統計を利用できません。",
         "database-backups": "データベースのバックアップ",
         "completed-count": "{count} 件完了",
         "backup-size": "バックアップサイズ",
@@ -489,6 +494,7 @@
       },
       "backups": {
         "loading": "バックアップを読み込み中...",
+        "error": "バックアップの読み込みに失敗しました。",
         "empty": "バックアップはまだありません",
         "backup-label": "{type} バックアップ",
         "create-title": "データベースバックアップの作成",
@@ -498,6 +504,7 @@
       },
       "exports": {
         "loading": "エクスポートを読み込み中...",
+        "error": "エクスポートの読み込みに失敗しました。",
         "empty": "エクスポートはまだありません",
         "create-title": "データエクスポートの作成",
         "create-description": "さまざまな形式でデータをエクスポート",
@@ -548,6 +555,13 @@
       "title": "セキュリティ管理",
       "description": "システムセキュリティを監視および管理",
       "loading": "セキュリティダッシュボードを読み込み中...",
+      "error": "一部のセキュリティデータを利用できません。もう一度お試しください。",
+      "confirm": {
+        "resolve-title": "セキュリティイベントを解決しますか？",
+        "resolve-event": "セキュリティイベント {type} を解決済みにします。",
+        "unlock-title": "アカウントのロックを解除しますか？",
+        "unlock-account": "ユーザー {userId} のアカウントのロックを解除します。"
+      },
       "messages": {
         "ip-rule-added": "IPアクセスルールが正常に追加されました",
         "ip-rule-failed": "IPルールの追加に失敗しました: {message}",
@@ -670,6 +684,7 @@
       "title": "モニタリングダッシュボード",
       "description": "リアルタイムのシステムパフォーマンスと分析",
       "loading": "モニタリングダッシュボードを読み込み中...",
+      "error": "一部の監視データを利用できません。もう一度お試しください。",
       "messages": {
         "error-resolved": "エラーが正常に解決されました",
         "resolve-error-failed": "エラーの解決に失敗しました: {message}",
@@ -1175,6 +1190,8 @@
   "blog": {
     "comments": {
       "author": "投稿者",
+      "comment-label": "コメント",
+      "reply-label": "返信",
       "comment-cannot-be-empty": "コメントは空にできません",
       "comment-posted": "コメントを投稿しました",
       "comments": "{count, plural, =1 {コメント} other {コメント}}",
@@ -1226,6 +1243,10 @@
     "title": "ブログ"
   },
   "command-menu": {
+    "dialog-title": "コマンドメニュー",
+    "dialog-description": "コマンドを検索",
+    "input-label": "コマンドを検索",
+    "list-label": "コマンドの候補",
     "actions": {
       "copy-link": "リンクをコピー",
       "settings": "設定",
@@ -1288,6 +1309,7 @@
       "delete-title": "アカウントを削除",
       "delete-description": "アカウントと関連するデータが完全に削除されます。",
       "delete-trigger": "アカウントを削除",
+      "cancel": "キャンセル",
       "delete-export-reminder": "コピーを残しますか？続行する前にデータをダウンロードしてください。",
       "delete-dialog-title": "アカウントを削除しますか？",
       "delete-dialog-description": "削除する前に、確認用リンクをメールで送信します。リンクは15分で期限切れになります。",
@@ -1569,6 +1591,8 @@
     }
   },
   "site-search": {
+    "label": "サイトを検索",
+    "results-label": "検索結果",
     "placeholder": "サイト内を検索...",
     "recent-searches": "最近の検索",
     "no-results": "「{0}」の検索結果はありません"
@@ -1684,6 +1708,7 @@
     }
   },
   "guestbook": {
+    "message-label": "ゲストブックのメッセージ",
     "create-message-successfully": "メッセージが正常に作成されました",
     "delete-dialog": {
       "description": "このコメントを削除しますか？この操作は元に戻せません。",
@@ -1771,6 +1796,7 @@
     "newsletter": {
       "title": "最新情報を受け取る",
       "description": "新しいブログ投稿やプロジェクトの更新をお知らせします",
+      "email-label": "メールアドレス",
       "placeholder": "メールアドレスを入力",
       "cta": "購読する",
       "disclaimer": "スパムは送信しません。いつでも解除できます。プライバシーポリシーが適用されます。",

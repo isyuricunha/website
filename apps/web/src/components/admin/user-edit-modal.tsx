@@ -119,8 +119,14 @@ const UserEditModal = ({ user, open, onOpenChange }: UserEditModalProps) => {
               value={formData.name}
               onChange={(e) => handleInputChange('name', e.target.value)}
               className={errors.name ? 'border-destructive' : ''}
+              aria-invalid={Boolean(errors.name)}
+              aria-describedby={errors.name ? 'name-error' : undefined}
             />
-            {errors.name && <p className='text-destructive text-sm'>{errors.name}</p>}
+            {errors.name && (
+              <p id='name-error' className='text-destructive text-sm'>
+                {errors.name}
+              </p>
+            )}
           </div>
 
           <div className='space-y-2'>
@@ -130,8 +136,14 @@ const UserEditModal = ({ user, open, onOpenChange }: UserEditModalProps) => {
               value={formData.username}
               onChange={(e) => handleInputChange('username', e.target.value)}
               className={errors.username ? 'border-destructive' : ''}
+              aria-invalid={Boolean(errors.username)}
+              aria-describedby={errors.username ? 'username-error' : undefined}
             />
-            {errors.username && <p className='text-destructive text-sm'>{errors.username}</p>}
+            {errors.username && (
+              <p id='username-error' className='text-destructive text-sm'>
+                {errors.username}
+              </p>
+            )}
           </div>
 
           <div className='space-y-2'>
@@ -142,8 +154,14 @@ const UserEditModal = ({ user, open, onOpenChange }: UserEditModalProps) => {
               value={formData.email}
               onChange={(e) => handleInputChange('email', e.target.value)}
               className={errors.email ? 'border-destructive' : ''}
+              aria-invalid={Boolean(errors.email)}
+              aria-describedby={errors.email ? 'email-error' : undefined}
             />
-            {errors.email && <p className='text-destructive text-sm'>{errors.email}</p>}
+            {errors.email && (
+              <p id='email-error' className='text-destructive text-sm'>
+                {errors.email}
+              </p>
+            )}
           </div>
 
           <div className='space-y-2'>
@@ -152,7 +170,7 @@ const UserEditModal = ({ user, open, onOpenChange }: UserEditModalProps) => {
               value={formData.role}
               onValueChange={(value) => handleInputChange('role', value)}
             >
-              <SelectTrigger>
+              <SelectTrigger id='role'>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -170,8 +188,14 @@ const UserEditModal = ({ user, open, onOpenChange }: UserEditModalProps) => {
               value={formData.image}
               onChange={(e) => handleInputChange('image', e.target.value)}
               className={errors.image ? 'border-destructive' : ''}
+              aria-invalid={Boolean(errors.image)}
+              aria-describedby={errors.image ? 'image-error' : undefined}
             />
-            {errors.image && <p className='text-destructive text-sm'>{errors.image}</p>}
+            {errors.image && (
+              <p id='image-error' className='text-destructive text-sm'>
+                {errors.image}
+              </p>
+            )}
           </div>
 
           <DialogFooter>
