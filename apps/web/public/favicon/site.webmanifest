@@ -1,7 +1,7 @@
 {
-  "name": "Yuri Cunha - Developer Portfolio",
+  "name": "Yuri Cunha — Systems, Projects & Notes",
   "short_name": "Yuri Cunha",
-  "description": "Full-stack developer portfolio with blog, projects, and Spotify integration",
+  "description": "A personal site for projects, notes, systems, and experiments by Infrastructure & Platform Engineer Yuri Cunha.",
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait-primary",

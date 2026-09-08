@@ -17,31 +17,35 @@ describe('<Hero />', () => {
     expect(screen.getByAltText('Yuri Cunha')).toBeInTheDocument()
   })
 
-  it('should render english hero title with adjective before “data solutions”', () => {
+  it('should render the English Infrastructure & Platform hero title in order', () => {
     render(
       <NextIntlClientProvider locale='en' messages={messages}>
         <Hero />
       </NextIntlClientProvider>
     )
 
-    const left = screen.getByText('optimizing')
-    const dynamic = screen.getByText('agile')
-    const right = screen.getByText('data solutions')
+    expect(screen.getByText('I’m Yuri, an Infrastructure & Platform Engineer')).toBeInTheDocument()
+
+    const left = screen.getByText('building')
+    const dynamic = screen.getByText('reliable')
+    const right = screen.getByText('systems')
 
     expect(left.compareDocumentPosition(dynamic) & Node.DOCUMENT_POSITION_FOLLOWING).not.toBe(0)
     expect(dynamic.compareDocumentPosition(right) & Node.DOCUMENT_POSITION_FOLLOWING).not.toBe(0)
   })
 
-  it('should render portuguese hero title with adjective after “soluções de dados”', () => {
+  it('should render the Portuguese Infrastructure & Platform hero title in order', () => {
     render(
       <NextIntlClientProvider locale='pt' messages={pt_messages}>
         <Hero />
       </NextIntlClientProvider>
     )
 
-    const left = screen.getByText('otimizando')
-    const right = screen.getByText('soluções de dados')
-    const dynamic = screen.getByText('ágeis')
+    expect(screen.getByText('Sou Yuri, um Infrastructure & Platform Engineer')).toBeInTheDocument()
+
+    const left = screen.getByText('construindo')
+    const right = screen.getByText('sistemas')
+    const dynamic = screen.getByText('confiáveis')
 
     expect(left.compareDocumentPosition(right) & Node.DOCUMENT_POSITION_FOLLOWING).not.toBe(0)
     expect(right.compareDocumentPosition(dynamic) & Node.DOCUMENT_POSITION_FOLLOWING).not.toBe(0)

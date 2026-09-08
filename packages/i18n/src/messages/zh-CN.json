@@ -1,7 +1,7 @@
 {
   "about": {
     "title": "关于",
-    "description": "👋 嗨！我是 Yuri Cunha，只是互联网上的一个普通人。。"
+    "description": "Yuri Cunha 是一名 Infrastructure & Platform Engineer，构建和运行从硬件到服务的系统。"
   },
   "privacy": {
     "title": "隐私声明",
@@ -1730,21 +1730,21 @@
       }
     },
     "hero": {
-      "title-top": "我是 Yuri，一名数据库专家",
-      "title-middle-left": "优化",
-      "title-middle-right": "数据解决方案",
-      "amazing": "敏捷",
+      "title-top": "我是 Yuri，一名 Infrastructure & Platform Engineer，",
+      "title-middle-left": "构建",
+      "title-middle-right": "系统",
+      "amazing": "可靠的",
       "attractive": "高效",
       "fantastic": "稳健",
       "stunning": "安全",
-      "title-bottom": "适用于现代基础设施",
+      "title-bottom": "从硬件到服务",
       "location-timezone": "巴西 • UTC/GMT -3",
       "view-projects": "查看项目",
       "read-blog": "阅读博客",
       "code": {
-        "database-specialist": "database_specialist = true",
+        "database-specialist": "infrastructure_platform_engineer = true",
         "region": "region = \"America/Sao_Paulo\"",
-        "focus": "focus = \"reliable data systems\""
+        "focus": "focus = \"reliable systems\""
       }
     },
     "latest-articles": {
@@ -1826,7 +1826,7 @@
     "link-to-section": "链接到章节"
   },
   "metadata": {
-    "site-description": "高级数据库管理员",
+    "site-description": "Infrastructure & Platform Engineer，构建和运行涵盖 Linux、服务器、容器、网络、自动化与数据库的系统。",
     "site-title": "Yuri Cunha",
     "site-short-name": "Yuri"
   },
@@ -2430,7 +2430,7 @@
       "13": "这个网站完全兼容响应式设计。试试调整浏览器大小！",
       "14": "发现 bug 了吗？告诉我，我会帮忙报告！",
       "15": "我总是从我的创造者 Yuri 那里学到新东西。你最近有什么新发现？",
-      "16": "我的创造者 Yuri 是一名数据库专家。很酷吧？",
+      "16": "我的创造者 Yuri 构建并运行从硬件到服务的系统。很酷吧？",
       "17": "我可以帮你找到网站上的任何内容！",
       "18": "你知道吗？我的创造者 Yuri 在 2018 年开始了这段旅程。",
       "19": "这个迷你游戏是放松的好方式！",
@@ -2487,7 +2487,7 @@
       "home": {
         "0": "欢迎来到首页！👋 我是 Yue，您的虚拟助手！",
         "1": "一切从这里开始。准备好探索了吗？",
-        "2": "我的创造者 Yuri 是一位数据库专家。想了解更多吗？",
+        "2": "我的创造者 Yuri 是一名 Infrastructure & Platform Engineer。想了解更多吗？",
         "3": "查看下方的最新文章和项目！",
         "4": "随意探索您感兴趣的任何板块！",
         "5": "导航菜单可以帮助您找到所需内容！",
@@ -2579,14 +2579,14 @@
         "3": "这段旅程始于 2018 年，至今仍在不断学习！",
         "4": "我的创造者尤里热衷于分享知识和帮助他人！",
         "5": "关于页面有这段旅程的所有细节！",
-        "6": "一位热衷于编写简洁、高效代码的数据库专家！💾",
+        "6": "Linux、服务器、容器和数据库：Yuri 喜欢了解整个系统如何协作。",
         "7": "从巴西到全世界——科技将我们紧密相连！🌎",
         "8": "始终在学习，始终在成长，始终对新技术充满好奇！",
         "9": "相信开源、知识共享，并帮助他人取得成功！",
         "10": "咖啡驱动的编程马拉松和深夜的问题解决！☕",
         "11": "这个故事包含失败、成功以及其中的一切！",
         "12": "坚信最好的学习方式是通过实践和教学！",
-        "13": "数据库可能是专长，但全栈开发才是游乐场！",
+        "13": "数据库是工作的一部分，但系统才是更大的图景。",
         "14": "每个项目都是学习的机会，也是帮助他人的机会！",
         "15": "想要联系？联系方式就在这个页面！"
       },

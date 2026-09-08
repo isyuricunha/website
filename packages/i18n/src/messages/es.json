@@ -1,7 +1,7 @@
 {
   "about": {
     "title": "Acerca de",
-    "description": "👋 ¡Hola! Soy Yuri Cunha, solo un tipo más en internet."
+    "description": "Yuri Cunha es un Infrastructure & Platform Engineer que construye y opera sistemas desde el hardware hasta los servicios."
   },
   "privacy": {
     "title": "Aviso de Privacidad",
@@ -1730,21 +1730,21 @@
       }
     },
     "hero": {
-      "title-top": "Soy Yuri, especialista en bases de datos",
-      "title-middle-left": "optimizando",
-      "title-middle-right": "soluciones de datos",
-      "amazing": "ágil",
+      "title-top": "Soy Yuri, Infrastructure & Platform Engineer",
+      "title-middle-left": "construyendo",
+      "title-middle-right": "fiables",
+      "amazing": "sistemas",
       "attractive": "rápido",
       "fantastic": "robusto",
       "stunning": "seguro",
-      "title-bottom": "para infraestructuras modernas",
+      "title-bottom": "desde el hardware hasta los servicios",
       "location-timezone": "Brasil • UTC/GMT -3",
       "view-projects": "Ver proyectos",
       "read-blog": "Leer blog",
       "code": {
-        "database-specialist": "especialista_en_bases_de_datos = true",
+        "database-specialist": "infraestructura_y_plataforma = true",
         "region": "región = \"America/Sao_Paulo\"",
-        "focus": "enfoque = \"sistemas de datos confiables\""
+        "focus": "enfoque = \"sistemas fiables\""
       }
     },
     "latest-articles": {
@@ -1826,7 +1826,7 @@
     "link-to-section": "Enlace a la sección"
   },
   "metadata": {
-    "site-description": "DBA Senior",
+    "site-description": "Infrastructure & Platform Engineer que construye y opera sistemas con Linux, servidores, contenedores, redes, automatización y bases de datos.",
     "site-title": "Yuri Cunha",
     "site-short-name": "Yuri"
   },
@@ -2430,7 +2430,7 @@
       "13": "Este sitio web es completamente responsivo. ¡Prueba redimensionando tu navegador!",
       "14": "¿Encontraste algún error? ¡Avísame y te ayudo a reportarlo!",
       "15": "Siempre aprendo cosas nuevas de mi creador, Yuri. ¿Cuál ha sido tu último descubrimiento?",
-      "16": "Mi creador, Yuri, es especialista en bases de datos. ¿No es genial?",
+      "16": "Mi creador, Yuri, construye y opera sistemas desde el hardware hasta los servicios. ¿No es genial?",
       "17": "¡Puedo ayudarte a encontrar cualquier cosa en el sitio!",
       "18": "¿Sabías que mi creador, Yuri, comenzó este viaje en 2018?",
       "19": "¡El mini-juego es una gran manera de tomar un descanso!",
@@ -2487,7 +2487,7 @@
       "home": {
         "0": "¡Bienvenido a la página de inicio! 👋 Soy Yue, tu asistente virtual.",
         "1": "Aquí es donde todo comienza. ¿Listo para explorar?",
-        "2": "Mi creador, Yuri, es especialista en bases de datos. ¿Quieres saber más?",
+        "2": "Mi creador, Yuri, es Infrastructure & Platform Engineer. ¿Quieres saber más?",
         "3": "¡Échale un vistazo a los últimos artículos y proyectos a continuación!",
         "4": "¡Siéntete libre de explorar cualquier sección que te interese!",
         "5": "El menú de navegación puede ayudarte a encontrar lo que buscas.",
@@ -2579,14 +2579,14 @@
         "3": "El viaje comenzó en 2018. ¡Todavía aprendiendo cada día!",
         "4": "¡A mi creador, Yuri, le encanta compartir conocimientos y ayudar a los demás!",
         "5": "¡La página 'Acerca de' tiene todos los detalles sobre el viaje!",
-        "6": "¡Un especialista en bases de datos con pasión por el código limpio y eficiente! 💾",
+        "6": "Linux, servidores, contenedores y bases de datos: a Yuri le gusta ver cómo encaja todo el sistema.",
         "7": "De Brasil al mundo: ¡la tecnología nos conecta a todos! 🌎",
         "8": "¡Siempre aprendiendo, siempre creciendo y siempre curioso sobre las nuevas tecnologías!",
         "9": "¡Cree en el código abierto, en compartir conocimientos y en ayudar a otros a tener éxito!",
         "10": "¡Sesiones de programación impulsadas por café y resolución de problemas hasta tarde! ☕",
         "11": "¡La historia incluye fracasos, éxitos y todo lo que hay en medio!",
         "12": "¡Una firme creencia de que la mejor manera de aprender es construyendo y enseñando!",
-        "13": "Las bases de datos pueden ser su especialidad, ¡pero el desarrollo full-stack es su terreno de juego!",
+        "13": "Las bases de datos son parte del trabajo, pero los sistemas son el panorama más amplio.",
         "14": "¡Cada proyecto es una oportunidad de aprendizaje y una forma de ayudar a los demás!",
         "15": "¿Quieres conectarte? ¡La información de contacto está aquí mismo en esta página!"
       },
