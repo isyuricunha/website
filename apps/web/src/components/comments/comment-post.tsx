@@ -76,6 +76,7 @@ const CommentPost = () => {
             setContent(e.target.value)
           }}
           onModEnter={submitComment}
+          label={t('blog.comments.comment-label')}
           placeholder={t('blog.comments.placeholder')}
           disabled={disabled}
         />
@@ -88,7 +89,7 @@ const CommentPost = () => {
           aria-label={t('blog.comments.send-comment')}
           aria-disabled={disabled || !content}
         >
-          <SendIcon className='size-4' />
+          <SendIcon aria-hidden='true' className='size-4' />
         </Button>
         {session === null ? <UnauthorizedOverlay /> : null}
       </div>

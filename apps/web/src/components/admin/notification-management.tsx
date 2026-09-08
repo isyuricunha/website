@@ -32,6 +32,7 @@ import { useTranslations } from '@isyuricunha/i18n/client'
 import { toast } from 'sonner'
 
 import { api } from '@/trpc/react'
+import { getNotificationPageStats } from './admin-integrity'
 
 export default function NotificationManagement() {
   const t = useTranslations('admin.notification-management')
@@ -42,12 +43,17 @@ export default function NotificationManagement() {
   const {
     data: notifications,
     isLoading,
+    isError,
     refetch
   } = api.communication.getAllNotifications.useQuery({
     limit: 50,
     offset: 0,
     includeExpired: false
   })
+
+  const notificationStats = notifications
+    ? getNotificationPageStats(notifications)
+    : { total: 0, loaded: 0, unread: 0, readRate: 0, isPageScoped: true }
 
   // Mutations
   const notificationMutation = api.communication.createNotification.useMutation({
@@ -124,6 +130,10 @@ export default function NotificationManagement() {
     return <div className='p-6'>{t('loading')}</div>
   }
 
+  if (isError || !notifications) {
+    return <div className='text-destructive p-6'>{t('error')}</div>
+  }
+
   return (
     <div className='space-y-8'>
       {/* Header */}
@@ -173,11 +183,11 @@ export default function NotificationManagement() {
                   />
                 </div>
 
-                <div className='grid grid-cols-2 gap-4'>
+                <div className='grid gap-4 sm:grid-cols-2'>
                   <div>
                     <Label htmlFor='type'>{t('fields.type')}</Label>
                     <Select name='type' defaultValue='system'>
-                      <SelectTrigger>
+                      <SelectTrigger id='type'>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -201,7 +211,7 @@ export default function NotificationManagement() {
                   </div>
                 </div>
 
-                <div className='grid grid-cols-2 gap-4'>
+                <div className='grid gap-4 sm:grid-cols-2'>
                   <div>
                     <Label htmlFor='expiresAt'>{t('fields.expires-at')}</Label>
                     <Input id='expiresAt' name='expiresAt' type='datetime-local' />
@@ -235,7 +245,7 @@ export default function NotificationManagement() {
       </div>
 
       {/* Stats Cards */}
-      <div className='grid gap-5 md:grid-cols-3'>
+      <div className='grid gap-5 sm:grid-cols-2 md:grid-cols-3'>
         <Card className='bg-bg-surface hover:shadow-feature-card border-[var(--border-subtle)] transition-all duration-300'>
           <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-3'>
             <CardTitle className='text-text-secondary text-sm font-medium'>
@@ -247,7 +257,7 @@ export default function NotificationManagement() {
           </CardHeader>
           <CardContent className='space-y-2'>
             <div className='text-accent-earth-text text-3xl font-medium tracking-tight'>
-              {notifications?.notifications?.length || 0}
+              {notificationStats.total}
             </div>
             <p className='text-text-secondary text-xs leading-relaxed'>
               {t('stats.total.description')}
@@ -266,10 +276,10 @@ export default function NotificationManagement() {
           </CardHeader>
           <CardContent className='space-y-2'>
             <div className='text-accent-earth-text text-3xl font-medium tracking-tight'>
-              {notifications?.notifications?.filter((n) => !n.read).length || 0}
+              {notificationStats.unread}
             </div>
             <p className='text-text-secondary text-xs leading-relaxed'>
-              {t('stats.unread.description')}
+              {t('stats.unread.description', { scope: t('stats.current-page') })}
             </p>
           </CardContent>
         </Card>
@@ -285,17 +295,10 @@ export default function NotificationManagement() {
           </CardHeader>
           <CardContent className='space-y-2'>
             <div className='text-accent-earth-text text-3xl font-medium tracking-tight'>
-              {notifications?.notifications?.length
-                ? Math.round(
-                    (notifications.notifications.filter((n) => n.read).length /
-                      notifications.notifications.length) *
-                      100
-                  )
-                : 0}
-              %
+              {notificationStats.readRate}%
             </div>
             <p className='text-text-secondary text-xs leading-relaxed'>
-              {t('stats.read-rate.description')}
+              {t('stats.read-rate.description', { scope: t('stats.current-page') })}
             </p>
           </CardContent>
         </Card>

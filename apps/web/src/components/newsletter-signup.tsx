@@ -81,18 +81,28 @@ const NewsletterSignup = () => {
       <CardContent>
         <form onSubmit={handleSubmit} className='space-y-4'>
           {error && (
-            <div className='text-accent-earth-text flex items-center gap-2 rounded-md border border-[var(--accent-border)] bg-[var(--accent-dim)] p-3 text-sm'>
-              <AlertCircle className='h-4 w-4 flex-shrink-0' />
+            <div
+              id='newsletter-email-error'
+              role='alert'
+              className='text-accent-earth-text flex items-center gap-2 rounded-md border border-[var(--accent-border)] bg-[var(--accent-dim)] p-3 text-sm'
+            >
+              <AlertCircle aria-hidden='true' className='h-4 w-4 flex-shrink-0' />
               <span>{error}</span>
             </div>
           )}
           <div className='flex flex-col gap-2 sm:flex-row'>
+            <label htmlFor='newsletter-email' className='sr-only'>
+              {t('homepage.newsletter.email-label')}
+            </label>
             <Input
+              id='newsletter-email'
               type='email'
               placeholder={t('homepage.newsletter.placeholder')}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              aria-invalid={!!error}
+              aria-describedby={error ? 'newsletter-email-error' : undefined}
               className='flex-1 text-sm'
               disabled={isLoading}
             />
@@ -102,9 +112,12 @@ const NewsletterSignup = () => {
               className='flex items-center gap-2 text-sm'
             >
               {isLoading ? (
-                <div className='h-4 w-4 animate-spin rounded-full border border-current border-t-transparent' />
+                <div
+                  aria-hidden='true'
+                  className='h-4 w-4 animate-spin rounded-full border border-current border-t-transparent'
+                />
               ) : (
-                <Send className='h-4 w-4' />
+                <Send aria-hidden='true' className='h-4 w-4' />
               )}
               {t('homepage.newsletter.cta')}
             </Button>

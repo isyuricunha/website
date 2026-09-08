@@ -26,6 +26,8 @@ import { toast } from 'sonner'
 
 import { api } from '@/trpc/react'
 
+/* eslint-disable unicorn/no-nested-ternary -- Prettier removes the parentheses this rule requires; colocated loading/error/data branches keep each query state explicit. */
+
 type TimeRange = '1h' | '6h' | '24h' | '7d' | '30d'
 
 const is_time_range = (value: string): value is TimeRange => {
@@ -44,20 +46,30 @@ export default function MonitoringDashboard() {
   const utils = api.useUtils()
 
   // Monitoring stats query
-  const { data: monitoringStats, isLoading: statsLoading } =
-    api.monitoring.getMonitoringStats.useQuery(undefined, { refetchInterval: 30_000 })
+  const {
+    data: monitoringStats,
+    isLoading: statsLoading,
+    isError: statsError
+  } = api.monitoring.getMonitoringStats.useQuery(undefined, { refetchInterval: 30_000 })
 
   // Performance metrics query
-  const { data: performanceMetrics, isLoading: metricsLoading } =
-    api.monitoring.getPerformanceMetrics.useQuery(
-      {
-        timeRange
-      },
-      { refetchInterval: 30_000 }
-    )
+  const {
+    data: performanceMetrics,
+    isLoading: metricsLoading,
+    isError: metricsError
+  } = api.monitoring.getPerformanceMetrics.useQuery(
+    {
+      timeRange
+    },
+    { refetchInterval: 30_000 }
+  )
 
   // API usage query
-  const { data: apiUsage, isLoading: apiLoading } = api.monitoring.getApiUsage.useQuery(
+  const {
+    data: apiUsage,
+    isLoading: apiLoading,
+    isError: apiError
+  } = api.monitoring.getApiUsage.useQuery(
     {
       timeRange
     },
@@ -65,31 +77,40 @@ export default function MonitoringDashboard() {
   )
 
   // Error tracking query
-  const { data: errorTracking, isLoading: errorsLoading } =
-    api.monitoring.getErrorTracking.useQuery(
-      {
-        timeRange
-      },
-      { refetchInterval: 30_000 }
-    )
+  const {
+    data: errorTracking,
+    isLoading: errorsLoading,
+    isError: errorsError
+  } = api.monitoring.getErrorTracking.useQuery(
+    {
+      timeRange
+    },
+    { refetchInterval: 30_000 }
+  )
 
   // Resource usage query
-  const { data: resourceUsage, isLoading: resourceLoading } =
-    api.monitoring.getResourceUsage.useQuery(
-      {
-        timeRange
-      },
-      { refetchInterval: 30_000 }
-    )
+  const {
+    data: resourceUsage,
+    isLoading: resourceLoading,
+    isError: resourceError
+  } = api.monitoring.getResourceUsage.useQuery(
+    {
+      timeRange
+    },
+    { refetchInterval: 30_000 }
+  )
 
   // Analytics events query
-  const { data: analyticsEvents, isLoading: analyticsLoading } =
-    api.monitoring.getAnalyticsEvents.useQuery(
-      {
-        timeRange
-      },
-      { refetchInterval: 30_000 }
-    )
+  const {
+    data: analyticsEvents,
+    isLoading: analyticsLoading,
+    isError: analyticsError
+  } = api.monitoring.getAnalyticsEvents.useQuery(
+    {
+      timeRange
+    },
+    { refetchInterval: 30_000 }
+  )
 
   // Mutations
   const recordAnalyticsEventMutation = api.monitoring.recordAnalyticsEvent.useMutation({
@@ -221,6 +242,13 @@ export default function MonitoringDashboard() {
         </Select>
       </div>
 
+      {(statsError ||
+        metricsError ||
+        apiError ||
+        errorsError ||
+        resourceError ||
+        analyticsError) && <div className='text-destructive text-sm'>{t('error')}</div>}
+
       {/* Monitoring Overview Cards */}
       <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-4'>
         <Card>
@@ -230,11 +258,11 @@ export default function MonitoringDashboard() {
           </CardHeader>
           <CardContent>
             <div className='text-2xl font-medium'>
-              {monitoringStats?.performance.avgResponseTime?.toFixed(0) || 0}ms
+              {monitoringStats?.performance.avgResponseTime?.toFixed(0) ?? '—'}ms
             </div>
             <p className='text-text-secondary text-xs'>
               {t('stats.metrics-recorded', {
-                count: monitoringStats?.performance.totalMetrics || 0
+                count: monitoringStats?.performance.totalMetrics ?? '—'
               })}
             </p>
           </CardContent>
@@ -246,9 +274,9 @@ export default function MonitoringDashboard() {
             <Activity className='text-text-secondary h-4 w-4' />
           </CardHeader>
           <CardContent>
-            <div className='text-2xl font-medium'>{monitoringStats?.api.totalRequests || 0}</div>
+            <div className='text-2xl font-medium'>{monitoringStats?.api.totalRequests ?? '—'}</div>
             <p className='text-text-secondary text-xs'>
-              {t('stats.error-rate', { rate: monitoringStats?.api.errorRate?.toFixed(1) || 0 })}
+              {t('stats.error-rate', { rate: monitoringStats?.api.errorRate?.toFixed(1) ?? '—' })}
             </p>
           </CardContent>
         </Card>
@@ -259,9 +287,9 @@ export default function MonitoringDashboard() {
             <AlertTriangle className='text-text-secondary h-4 w-4' />
           </CardHeader>
           <CardContent>
-            <div className='text-2xl font-medium'>{monitoringStats?.errors.total || 0}</div>
+            <div className='text-2xl font-medium'>{monitoringStats?.errors.total ?? '—'}</div>
             <p className='text-text-secondary text-xs'>
-              {t('stats.unresolved', { count: monitoringStats?.errors.unresolved || 0 })}
+              {t('stats.unresolved', { count: monitoringStats?.errors.unresolved ?? '—' })}
             </p>
           </CardContent>
         </Card>
@@ -272,9 +300,9 @@ export default function MonitoringDashboard() {
             <AlertTriangle className='text-text-secondary h-4 w-4' />
           </CardHeader>
           <CardContent>
-            <div className='text-2xl font-medium'>{monitoringStats?.alerts.total || 0}</div>
+            <div className='text-2xl font-medium'>{monitoringStats?.alerts.total ?? '—'}</div>
             <p className='text-text-secondary text-xs'>
-              {t('stats.critical-alerts', { count: monitoringStats?.alerts.critical || 0 })}
+              {t('stats.critical-alerts', { count: monitoringStats?.alerts.critical ?? '—' })}
             </p>
           </CardContent>
         </Card>
@@ -282,7 +310,7 @@ export default function MonitoringDashboard() {
 
       {/* Monitoring Tabs */}
       <Tabs value={selectedTab} onValueChange={setSelectedTab}>
-        <TabsList className='grid w-full grid-cols-6'>
+        <TabsList className='grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-6'>
           <TabsTrigger value='overview'>{t('tabs.overview')}</TabsTrigger>
           <TabsTrigger value='performance'>{t('tabs.performance')}</TabsTrigger>
           <TabsTrigger value='api'>{t('tabs.api')}</TabsTrigger>
@@ -304,35 +332,35 @@ export default function MonitoringDashboard() {
                   <div className='flex items-center justify-between'>
                     <span>{t('overview.system-health.api-response-time')}</span>
                     <Badge variant='default'>
-                      {monitoringStats?.api.avgResponseTime?.toFixed(0) || 0}ms
+                      {monitoringStats?.api.avgResponseTime?.toFixed(0) ?? '—'}ms
                     </Badge>
                   </div>
                   <div className='flex items-center justify-between'>
                     <span>{t('overview.system-health.error-rate')}</span>
                     <Badge
                       variant={
-                        (monitoringStats?.api.errorRate || 0) > 5 ? 'destructive' : 'default'
+                        (monitoringStats?.api.errorRate ?? 0) > 5 ? 'destructive' : 'default'
                       }
                     >
-                      {monitoringStats?.api.errorRate?.toFixed(1) || 0}%
+                      {monitoringStats?.api.errorRate?.toFixed(1) ?? '—'}%
                     </Badge>
                   </div>
                   <div className='flex items-center justify-between'>
                     <span>{t('overview.system-health.critical-errors')}</span>
                     <Badge
                       variant={
-                        (monitoringStats?.errors.critical || 0) > 0 ? 'destructive' : 'default'
+                        (monitoringStats?.errors.critical ?? 0) > 0 ? 'destructive' : 'default'
                       }
                     >
-                      {monitoringStats?.errors.critical || 0}
+                      {monitoringStats?.errors.critical ?? '—'}
                     </Badge>
                   </div>
                   <div className='flex items-center justify-between'>
                     <span>{t('overview.system-health.active-alerts')}</span>
                     <Badge
-                      variant={(monitoringStats?.alerts.total || 0) > 0 ? 'secondary' : 'default'}
+                      variant={(monitoringStats?.alerts.total ?? 0) > 0 ? 'secondary' : 'default'}
                     >
-                      {monitoringStats?.alerts.total || 0}
+                      {monitoringStats?.alerts.total ?? '—'}
                     </Badge>
                   </div>
                 </div>
@@ -348,6 +376,8 @@ export default function MonitoringDashboard() {
               <CardContent>
                 {analyticsLoading ? (
                   <div>{t('overview.recent-activity.loading')}</div>
+                ) : analyticsError ? (
+                  <div className='text-destructive text-sm'>{t('error')}</div>
                 ) : (
                   <div className='space-y-3'>
                     {analyticsEvents?.events.slice(0, 5).map((event) => (
@@ -384,6 +414,8 @@ export default function MonitoringDashboard() {
               <CardContent>
                 {metricsLoading ? (
                   <div>{t('performance.metrics.loading')}</div>
+                ) : metricsError ? (
+                  <div className='text-destructive text-sm'>{t('error')}</div>
                 ) : (
                   <div className='space-y-4'>
                     {Object.entries(performanceMetrics?.metrics || {}).map(
@@ -391,12 +423,12 @@ export default function MonitoringDashboard() {
                         <div key={type} className='rounded border p-3'>
                           <div className='mb-2 flex items-center justify-between'>
                             <span className='font-medium capitalize'>{type.replace('_', ' ')}</span>
-                            <Badge variant='outline'>{data.latest?.value?.toFixed(2) || 0}</Badge>
+                            <Badge variant='outline'>{data.latest?.value?.toFixed(2) ?? '—'}</Badge>
                           </div>
                           <div className='text-text-secondary grid grid-cols-3 gap-2 text-sm'>
-                            <div>{t('metrics.avg', { value: data.avg?.toFixed(2) || 0 })}</div>
-                            <div>{t('metrics.min', { value: data.min?.toFixed(2) || 0 })}</div>
-                            <div>{t('metrics.max', { value: data.max?.toFixed(2) || 0 })}</div>
+                            <div>{t('metrics.avg', { value: data.avg?.toFixed(2) ?? '—' })}</div>
+                            <div>{t('metrics.min', { value: data.min?.toFixed(2) ?? '—' })}</div>
+                            <div>{t('metrics.max', { value: data.max?.toFixed(2) ?? '—' })}</div>
                           </div>
                         </div>
                       )
@@ -420,6 +452,8 @@ export default function MonitoringDashboard() {
               <CardContent>
                 {resourceLoading ? (
                   <div>{t('resources.loading')}</div>
+                ) : resourceError ? (
+                  <div className='text-destructive text-sm'>{t('error')}</div>
                 ) : (
                   <div className='space-y-4'>
                     {Object.entries(resourceUsage?.usage || {}).map(
@@ -428,15 +462,19 @@ export default function MonitoringDashboard() {
                           <div className='mb-2 flex items-center justify-between'>
                             <span className='font-medium capitalize'>{type}</span>
                             <Badge variant={data.alerts > 0 ? 'destructive' : 'default'}>
-                              {data.currentUsage?.toFixed(1) || 0}%
+                              {data.currentUsage?.toFixed(1) ?? '—'}%
                             </Badge>
                           </div>
                           <div className='text-text-secondary grid grid-cols-2 gap-2 text-sm'>
                             <div>
-                              {t('metrics.avg-percent', { value: data.avgUsage?.toFixed(1) || 0 })}
+                              {t('metrics.avg-percent', {
+                                value: data.avgUsage?.toFixed(1) ?? '—'
+                              })}
                             </div>
                             <div>
-                              {t('metrics.max-percent', { value: data.maxUsage?.toFixed(1) || 0 })}
+                              {t('metrics.max-percent', {
+                                value: data.maxUsage?.toFixed(1) ?? '—'
+                              })}
                             </div>
                           </div>
                           {data.alerts > 0 && (
@@ -472,12 +510,14 @@ export default function MonitoringDashboard() {
               <CardContent>
                 {apiLoading ? (
                   <div>{t('api.loading')}</div>
+                ) : apiError ? (
+                  <div className='text-destructive text-sm'>{t('error')}</div>
                 ) : (
                   <div className='space-y-4'>
-                    <div className='grid grid-cols-2 gap-4'>
+                    <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
                       <div className='text-center'>
                         <div className='text-2xl font-medium'>
-                          {apiUsage?.stats.totalRequests || 0}
+                          {apiUsage?.stats.totalRequests ?? '—'}
                         </div>
                         <div className='text-text-secondary text-sm'>
                           {t('api.stats.total-requests')}
@@ -485,17 +525,17 @@ export default function MonitoringDashboard() {
                       </div>
                       <div className='text-center'>
                         <div className='text-2xl font-medium'>
-                          {apiUsage?.stats.uniqueUsers || 0}
+                          {apiUsage?.stats.uniqueUsers ?? '—'}
                         </div>
                         <div className='text-text-secondary text-sm'>
                           {t('api.stats.unique-users')}
                         </div>
                       </div>
                     </div>
-                    <div className='grid grid-cols-2 gap-4'>
+                    <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
                       <div className='text-center'>
                         <div className='text-2xl font-medium'>
-                          {apiUsage?.stats.avgResponseTime?.toFixed(0) || 0}ms
+                          {apiUsage?.stats.avgResponseTime?.toFixed(0) ?? '—'}ms
                         </div>
                         <div className='text-text-secondary text-sm'>
                           {t('api.stats.avg-response-time')}
@@ -503,7 +543,7 @@ export default function MonitoringDashboard() {
                       </div>
                       <div className='text-center'>
                         <div className='text-2xl font-medium'>
-                          {apiUsage?.stats.errorRate?.toFixed(1) || 0}%
+                          {apiUsage?.stats.errorRate?.toFixed(1) ?? '—'}%
                         </div>
                         <div className='text-text-secondary text-sm'>
                           {t('api.stats.error-rate')}
@@ -524,6 +564,8 @@ export default function MonitoringDashboard() {
               <CardContent>
                 {apiLoading ? (
                   <div>{t('api.top-endpoints.loading')}</div>
+                ) : apiError ? (
+                  <div className='text-destructive text-sm'>{t('error')}</div>
                 ) : (
                   <div className='space-y-3'>
                     {Object.entries(apiUsage?.stats.topEndpoints || {})
@@ -569,6 +611,8 @@ export default function MonitoringDashboard() {
             <CardContent>
               {errorsLoading ? (
                 <div>{t('errors.loading')}</div>
+              ) : errorsError ? (
+                <div className='text-destructive text-sm'>{t('error')}</div>
               ) : (
                 <div className='space-y-4'>
                   {errorTracking?.errors.map((error) => (
@@ -643,6 +687,8 @@ export default function MonitoringDashboard() {
             <CardContent>
               {resourceLoading ? (
                 <div>{t('resources.loading')}</div>
+              ) : resourceError ? (
+                <div className='text-destructive text-sm'>{t('error')}</div>
               ) : (
                 <div className='grid gap-4 md:grid-cols-2'>
                   {Object.entries(resourceUsage?.usage || {}).map(([type, data]: [string, any]) => (
@@ -655,21 +701,21 @@ export default function MonitoringDashboard() {
                           <div className='flex justify-between'>
                             <span>{t('resources.current-usage')}</span>
                             <Badge variant={data.currentUsage > 80 ? 'destructive' : 'default'}>
-                              {data.currentUsage?.toFixed(1) || 0}%
+                              {data.currentUsage?.toFixed(1) ?? '—'}%
                             </Badge>
                           </div>
                           <div className='flex justify-between'>
                             <span>{t('resources.average')}</span>
-                            <span>{data.avgUsage?.toFixed(1) || 0}%</span>
+                            <span>{data.avgUsage?.toFixed(1) ?? '—'}%</span>
                           </div>
                           <div className='flex justify-between'>
                             <span>{t('resources.peak')}</span>
-                            <span>{data.maxUsage?.toFixed(1) || 0}%</span>
+                            <span>{data.maxUsage?.toFixed(1) ?? '—'}%</span>
                           </div>
                           <div className='flex justify-between'>
                             <span>{t('resources.alerts')}</span>
                             <Badge variant={data.alerts > 0 ? 'destructive' : 'outline'}>
-                              {data.alerts || 0}
+                              {data.alerts ?? '—'}
                             </Badge>
                           </div>
                         </div>
@@ -698,6 +744,8 @@ export default function MonitoringDashboard() {
               <CardContent>
                 {analyticsLoading ? (
                   <div>{t('analytics.event-types.loading')}</div>
+                ) : analyticsError ? (
+                  <div className='text-destructive text-sm'>{t('error')}</div>
                 ) : (
                   <div className='space-y-3'>
                     {Object.entries(analyticsEvents?.eventTypes || {})
@@ -727,6 +775,8 @@ export default function MonitoringDashboard() {
               <CardContent>
                 {analyticsLoading ? (
                   <div>{t('analytics.recent-events.loading')}</div>
+                ) : analyticsError ? (
+                  <div className='text-destructive text-sm'>{t('error')}</div>
                 ) : (
                   <div className='space-y-3'>
                     {analyticsEvents?.events.slice(0, 10).map((event) => (
@@ -757,3 +807,5 @@ export default function MonitoringDashboard() {
     </div>
   )
 }
+
+/* eslint-enable unicorn/no-nested-ternary -- End colocated query-state branches. */

@@ -203,7 +203,12 @@
   .bubble-float,
   .shimmer::before,
   .gentle-pulse,
-  .scale-in {
+  .scale-in,
+  .animate-pulse,
+  .animate-spin,
+  .animate-music-bar-1,
+  .animate-music-bar-2,
+  .animate-music-bar-3 {
     animation: none !important;
   }
 

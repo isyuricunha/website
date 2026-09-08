@@ -78,7 +78,7 @@ const TopArtistsSection = () => {
 
   if (isLoading) {
     return (
-      <Card>
+      <Card className='max-w-full min-w-0'>
         <CardHeader>
           <CardTitle>{t('spotify.top-artists.title')}</CardTitle>
           <CardDescription>{t('spotify.top-artists.subtitle')}</CardDescription>
@@ -99,7 +99,7 @@ const TopArtistsSection = () => {
 
   if (error) {
     return (
-      <Card>
+      <Card className='max-w-full min-w-0'>
         <CardHeader>
           <CardTitle>{t('spotify.top-artists.title')}</CardTitle>
           <CardDescription>{t('spotify.top-artists.subtitle')}</CardDescription>
@@ -123,7 +123,7 @@ const TopArtistsSection = () => {
 
   if (!artists || artists.length === 0) {
     return (
-      <Card>
+      <Card className='max-w-full min-w-0'>
         <CardHeader>
           <CardTitle>{t('spotify.top-artists.title')}</CardTitle>
           <CardDescription>{t('spotify.top-artists.subtitle')}</CardDescription>
@@ -146,8 +146,8 @@ const TopArtistsSection = () => {
   }
 
   return (
-    <Card>
-      <CardHeader>
+    <Card className='max-w-full min-w-0'>
+      <CardHeader className='min-w-0'>
         {/* Title and subtitle */}
         <div>
           <CardTitle className='text-base sm:text-lg'>{t('spotify.top-artists.title')}</CardTitle>
@@ -156,7 +156,7 @@ const TopArtistsSection = () => {
           </CardDescription>
         </div>
         {/* Controls row beneath title, wraps on small screens */}
-        <div className='mt-3 flex flex-wrap items-center gap-2'>
+        <div className='mt-3 flex min-w-0 flex-wrap items-center gap-2'>
           <TimeRangeToggle value={timeRange} onChange={setTimeRange} />
           {/* View mode toggle: list vs grid */}
           <div className='bg-bg-hover inline-flex items-center gap-1 rounded-md p-1 text-xs'>
@@ -231,9 +231,9 @@ const TopArtistsSection = () => {
           </button>
         </div>
       </CardHeader>
-      <CardContent>
+      <CardContent className='min-w-0'>
         {viewMode === 'grid' ? (
-          <div className='grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5'>
+          <div className='grid min-w-0 grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5'>
             {displayedArtists.map((artist: Artist) => (
               <Link
                 key={artist.id}
@@ -264,7 +264,7 @@ const TopArtistsSection = () => {
             ))}
           </div>
         ) : (
-          <div className='space-y-3'>
+          <div className='min-w-0 space-y-3'>
             {displayedArtists.map((artist: Artist) => (
               <Link
                 key={artist.id}

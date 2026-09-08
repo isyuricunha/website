@@ -15,7 +15,7 @@ const TooltipContent = (props: TooltipContentProps) => {
       <TooltipPrimitive.Content
         sideOffset={sideOffset}
         className={cn(
-          'text-popover-foreground animate-in fade-in-0 zoom-in-95 z-50 max-w-[280px] rounded-md border border-[var(--border-default)] bg-[var(--yu-bg-tooltip)] px-2 py-1.5 text-xs wrap-break-word whitespace-normal shadow-[var(--shadow-tooltip)]',
+          'text-popover-foreground animate-in fade-in-0 zoom-in-95 shadow-tooltip z-50 max-w-[280px] rounded-md border border-[var(--border-default)] bg-[var(--yu-bg-tooltip)] px-2 py-1.5 text-xs wrap-break-word whitespace-normal',
           'data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95',
           'data-[side=top]:slide-in-from-bottom-2',
           'data-[side=right]:slide-in-from-left-2',

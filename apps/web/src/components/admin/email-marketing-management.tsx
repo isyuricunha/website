@@ -452,7 +452,7 @@ export default function EmailMarketingManagement() {
       )}
 
       <Tabs value={selectedTab} onValueChange={setSelectedTab} className='space-y-6'>
-        <TabsList className='grid w-full grid-cols-4'>
+        <TabsList className='grid w-full grid-cols-2 sm:grid-cols-4'>
           <TabsTrigger value='overview'>{t('tabs.overview')}</TabsTrigger>
           <TabsTrigger value='audiences'>{t('tabs.audiences')}</TabsTrigger>
           <TabsTrigger value='broadcasts'>{t('tabs.broadcasts')}</TabsTrigger>
@@ -1078,7 +1078,7 @@ export default function EmailMarketingManagement() {
 
           {selectedBroadcastData && (
             <div className='space-y-4'>
-              <div className='grid grid-cols-2 gap-4'>
+              <div className='grid gap-4 sm:grid-cols-2'>
                 <div>
                   <Label className='text-sm font-medium'>{t('fields.name')}</Label>
                   <p className='text-sm'>

@@ -28,6 +28,9 @@ import { useTranslations } from '@isyuricunha/i18n/client'
 import { toast } from 'sonner'
 
 import { api } from '@/trpc/react'
+import ConfirmationDialog from './confirmation-dialog'
+
+/* eslint-disable unicorn/no-nested-ternary -- Prettier removes the parentheses this rule requires; colocated loading/error/data branches keep each query state explicit. */
 
 type SecurityLockout = {
   id: string
@@ -70,32 +73,64 @@ export default function SecurityManagement() {
   const [draftSettingValue, setDraftSettingValue] = useState('')
   const [draftSettingDescription, setDraftSettingDescription] = useState('')
   const [draftSettingCategory, setDraftSettingCategory] = useState('')
+  const [confirmDialog, setConfirmDialog] = useState<{
+    open: boolean
+    title: string
+    description: string
+    action: () => void
+  }>({
+    open: false,
+    title: '',
+    description: '',
+    action: () => {
+      /* no-op */
+    }
+  })
 
   const utils = api.useUtils()
 
   // Security stats query
-  const { data: securityStats, isLoading: statsLoading } = api.security.getSecurityStats.useQuery()
+  const {
+    data: securityStats,
+    isLoading: statsLoading,
+    isError: statsError
+  } = api.security.getSecurityStats.useQuery()
 
   // Security events query
-  const { data: securityEvents, isLoading: eventsLoading } =
-    api.security.getSecurityEvents.useQuery({
-      limit: 10
-    })
+  const {
+    data: securityEvents,
+    isLoading: eventsLoading,
+    isError: eventsError
+  } = api.security.getSecurityEvents.useQuery({
+    limit: 10
+  })
 
   // IP access rules query
-  const { data: ipRules, isLoading: ipRulesLoading } = api.security.getIpAccessRules.useQuery()
+  const {
+    data: ipRules,
+    isLoading: ipRulesLoading,
+    isError: ipRulesError
+  } = api.security.getIpAccessRules.useQuery()
 
   // Login attempts query
-  const { data: loginAttempts, isLoading: attemptsLoading } =
-    api.security.getLoginAttempts.useQuery()
+  const {
+    data: loginAttempts,
+    isLoading: attemptsLoading,
+    isError: attemptsError
+  } = api.security.getLoginAttempts.useQuery()
 
   // Account lockouts query - get all active lockouts for admin view
-  const { data: lockouts, isLoading: lockoutsLoading } = api.security.getAccountLockouts.useQuery(
-    {}
-  )
+  const {
+    data: lockouts,
+    isLoading: lockoutsLoading,
+    isError: lockoutsError
+  } = api.security.getAccountLockouts.useQuery({})
 
-  const { data: securitySettings, isLoading: settingsLoading } =
-    api.security.getSecuritySettings.useQuery()
+  const {
+    data: securitySettings,
+    isLoading: settingsLoading,
+    isError: settingsError
+  } = api.security.getSecuritySettings.useQuery()
 
   // Mutations
   const ipRuleAdditionMutation = api.security.addIpAccessRule.useMutation({
@@ -222,6 +257,30 @@ export default function SecurityManagement() {
     })
   }
 
+  const confirmResolveEvent = (eventId: string, eventType: string) => {
+    setConfirmDialog({
+      open: true,
+      title: t('confirm.resolve-title'),
+      description: t('confirm.resolve-event', { type: eventType }),
+      action: () => {
+        resolveEventMutation.mutate({ eventId })
+        setConfirmDialog((previous) => ({ ...previous, open: false }))
+      }
+    })
+  }
+
+  const confirmUnlockAccount = (lockoutId: string, userId: string) => {
+    setConfirmDialog({
+      open: true,
+      title: t('confirm.unlock-title'),
+      description: t('confirm.unlock-account', { userId }),
+      action: () => {
+        unlockAccountMutation.mutate({ lockoutId })
+        setConfirmDialog((previous) => ({ ...previous, open: false }))
+      }
+    })
+  }
+
   const getSeverityColor = (severity: string): BadgeVariant => {
     switch (severity) {
       case 'critical':
@@ -276,6 +335,13 @@ export default function SecurityManagement() {
         </div>
       </div>
 
+      {(statsError ||
+        eventsError ||
+        ipRulesError ||
+        attemptsError ||
+        lockoutsError ||
+        settingsError) && <div className='text-destructive text-sm'>{t('error')}</div>}
+
       {/* Security Overview Cards */}
       <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-4'>
         <Card>
@@ -284,9 +350,9 @@ export default function SecurityManagement() {
             <AlertTriangle className='text-text-secondary h-4 w-4' />
           </CardHeader>
           <CardContent>
-            <div className='text-2xl font-medium'>{securityStats?.events.total || 0}</div>
+            <div className='text-2xl font-medium'>{securityStats?.events.total ?? '—'}</div>
             <p className='text-text-secondary text-xs'>
-              {t('stats.critical-events', { count: securityStats?.events.critical || 0 })}
+              {t('stats.critical-events', { count: securityStats?.events.critical ?? '—' })}
             </p>
           </CardContent>
         </Card>
@@ -297,9 +363,9 @@ export default function SecurityManagement() {
             <Users className='text-text-secondary h-4 w-4' />
           </CardHeader>
           <CardContent>
-            <div className='text-2xl font-medium'>{securityStats?.loginAttempts.total || 0}</div>
+            <div className='text-2xl font-medium'>{securityStats?.loginAttempts.total ?? '—'}</div>
             <p className='text-text-secondary text-xs'>
-              {t('stats.failed-attempts', { count: securityStats?.loginAttempts.failed || 0 })}
+              {t('stats.failed-attempts', { count: securityStats?.loginAttempts.failed ?? '—' })}
             </p>
           </CardContent>
         </Card>
@@ -310,7 +376,7 @@ export default function SecurityManagement() {
             <Lock className='text-text-secondary h-4 w-4' />
           </CardHeader>
           <CardContent>
-            <div className='text-2xl font-medium'>{securityStats?.lockouts.active || 0}</div>
+            <div className='text-2xl font-medium'>{securityStats?.lockouts.active ?? '—'}</div>
             <p className='text-text-secondary text-xs'>{t('stats.active-lockouts')}</p>
           </CardContent>
         </Card>
@@ -322,10 +388,10 @@ export default function SecurityManagement() {
           </CardHeader>
           <CardContent>
             <div className='text-2xl font-medium'>
-              {securityStats?.twoFactor.adoptionRate?.toFixed(1) || 0}%
+              {securityStats?.twoFactor.adoptionRate?.toFixed(1) ?? '—'}%
             </div>
             <p className='text-text-secondary text-xs'>
-              {t('stats.users-enabled', { count: securityStats?.twoFactor.enabledUsers || 0 })}
+              {t('stats.users-enabled', { count: securityStats?.twoFactor.enabledUsers ?? '—' })}
             </p>
           </CardContent>
         </Card>
@@ -333,7 +399,7 @@ export default function SecurityManagement() {
 
       {/* Security Management Tabs */}
       <Tabs value={selectedTab} onValueChange={setSelectedTab}>
-        <TabsList className='grid w-full grid-cols-5'>
+        <TabsList className='grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-5'>
           <TabsTrigger value='overview'>{t('tabs.overview')}</TabsTrigger>
           <TabsTrigger value='events'>{t('tabs.events')}</TabsTrigger>
           <TabsTrigger value='ip-control'>{t('tabs.ip-control')}</TabsTrigger>
@@ -352,6 +418,8 @@ export default function SecurityManagement() {
               <CardContent>
                 {eventsLoading ? (
                   <div>{t('events.loading')}</div>
+                ) : eventsError ? (
+                  <div className='text-destructive text-sm'>{t('error')}</div>
                 ) : (
                   <div className='space-y-3'>
                     {(securityEvents?.events?.length ?? 0) > 0 ? (
@@ -385,32 +453,34 @@ export default function SecurityManagement() {
               <CardContent>
                 {attemptsLoading ? (
                   <div>{t('overview.login-attempts.loading')}</div>
+                ) : attemptsError ? (
+                  <div className='text-destructive text-sm'>{t('error')}</div>
                 ) : (
                   <div className='space-y-2'>
                     <div className='flex justify-between'>
                       <span>{t('overview.login-attempts.total')}</span>
-                      <span className='font-medium'>{loginAttempts?.summary.total || 0}</span>
+                      <span className='font-medium'>{loginAttempts?.summary.total ?? '—'}</span>
                     </div>
                     <div className='flex justify-between'>
                       <span>{t('overview.login-attempts.successful')}</span>
                       <span className='text-accent-earth-text font-medium'>
-                        {loginAttempts?.summary.successful || 0}
+                        {loginAttempts?.summary.successful ?? '—'}
                       </span>
                     </div>
                     <div className='flex justify-between'>
                       <span>{t('overview.login-attempts.failed')}</span>
                       <span className='text-destructive font-medium'>
-                        {loginAttempts?.summary.failed || 0}
+                        {loginAttempts?.summary.failed ?? '—'}
                       </span>
                     </div>
                     <div className='flex justify-between'>
                       <span>{t('overview.login-attempts.unique-ips')}</span>
-                      <span className='font-medium'>{loginAttempts?.summary.uniqueIPs || 0}</span>
+                      <span className='font-medium'>{loginAttempts?.summary.uniqueIPs ?? '—'}</span>
                     </div>
                     <div className='flex justify-between'>
                       <span>{t('overview.login-attempts.success-rate')}</span>
                       <span className='font-medium'>
-                        {loginAttempts?.summary.successRate?.toFixed(1) || 0}%
+                        {loginAttempts?.summary.successRate?.toFixed(1) ?? '—'}%
                       </span>
                     </div>
                   </div>
@@ -429,6 +499,8 @@ export default function SecurityManagement() {
             <CardContent>
               {eventsLoading ? (
                 <div>{t('events.loading-security-events')}</div>
+              ) : eventsError ? (
+                <div className='text-destructive text-sm'>{t('error')}</div>
               ) : (
                 <div className='space-y-4'>
                   {(securityEvents?.events?.length ?? 0) > 0 ? (
@@ -448,7 +520,7 @@ export default function SecurityManagement() {
                             {!event.resolved && (
                               <Button
                                 size='sm'
-                                onClick={() => resolveEventMutation.mutate({ eventId: event.id })}
+                                onClick={() => confirmResolveEvent(event.id, event.eventType)}
                                 disabled={resolveEventMutation.isPending}
                               >
                                 {t('actions.resolve')}
@@ -509,9 +581,9 @@ export default function SecurityManagement() {
                     />
                   </div>
                   <div>
-                    <Label htmlFor='type'>{t('fields.rule-type')}</Label>
+                    <Label htmlFor='security-rule-type'>{t('fields.rule-type')}</Label>
                     <Select name='type' required>
-                      <SelectTrigger>
+                      <SelectTrigger id='security-rule-type'>
                         <SelectValue placeholder={t('fields.rule-type-placeholder')} />
                       </SelectTrigger>
                       <SelectContent>
@@ -544,6 +616,8 @@ export default function SecurityManagement() {
               <CardContent>
                 {ipRulesLoading ? (
                   <div>{t('ip-control.loading-rules')}</div>
+                ) : ipRulesError ? (
+                  <div className='text-destructive text-sm'>{t('error')}</div>
                 ) : (
                   <div className='space-y-3'>
                     {(ipRules?.rules?.length ?? 0) > 0 ? (
@@ -582,6 +656,8 @@ export default function SecurityManagement() {
             <CardContent>
               {lockoutsLoading ? (
                 <div>{t('lockouts.loading')}</div>
+              ) : lockoutsError ? (
+                <div className='text-destructive text-sm'>{t('error')}</div>
               ) : (
                 <div className='space-y-4'>
                   {(lockouts?.lockouts?.length ?? 0) > 0 ? (
@@ -605,7 +681,7 @@ export default function SecurityManagement() {
                             </div>
                           </div>
                           <Button
-                            onClick={() => unlockAccountMutation.mutate({ lockoutId: lockout.id })}
+                            onClick={() => confirmUnlockAccount(lockout.id, lockout.userId)}
                             disabled={unlockAccountMutation.isPending}
                           >
                             {t('actions.unlock-account')}
@@ -635,6 +711,7 @@ export default function SecurityManagement() {
                     <Label htmlFor='security-settings-search'>{t('fields.search')}</Label>
                     <Input
                       id='security-settings-search'
+                      aria-label={t('fields.search')}
                       value={settingsSearchTerm}
                       onChange={(e) => setSettingsSearchTerm(e.target.value)}
                       placeholder={t('settings.search-placeholder')}
@@ -667,13 +744,17 @@ export default function SecurityManagement() {
                   <div className='text-text-secondary py-8 text-center'>
                     {t('settings.loading')}
                   </div>
+                ) : settingsError ? (
+                  <div className='text-destructive py-8 text-center text-sm'>{t('error')}</div>
                 ) : null}
 
-                {!settingsLoading && Object.keys(filteredSettings).length === 0 ? (
+                {!settingsLoading &&
+                !settingsError &&
+                Object.keys(filteredSettings).length === 0 ? (
                   <div className='text-text-secondary py-8 text-center'>{t('settings.empty')}</div>
                 ) : null}
 
-                {!settingsLoading && Object.keys(filteredSettings).length > 0 ? (
+                {!settingsLoading && !settingsError && Object.keys(filteredSettings).length > 0 ? (
                   <div className='space-y-4'>
                     {Object.entries(filteredSettings).map(([category, settings]) => (
                       <Card key={category}>
@@ -810,6 +891,17 @@ export default function SecurityManagement() {
           </Card>
         </TabsContent>
       </Tabs>
+      <ConfirmationDialog
+        open={confirmDialog.open}
+        onOpenChange={(open) => setConfirmDialog((previous) => ({ ...previous, open }))}
+        title={confirmDialog.title}
+        description={confirmDialog.description}
+        variant='destructive'
+        onConfirm={confirmDialog.action}
+        loading={resolveEventMutation.isPending || unlockAccountMutation.isPending}
+      />
     </div>
   )
 }
+
+/* eslint-enable unicorn/no-nested-ternary -- End colocated query-state branches. */

@@ -313,6 +313,7 @@
       "description": "Manage user notifications and system alerts",
       "loading": "Loading notifications...",
       "empty": "No notifications yet. Create your first notification to get started!",
+      "error": "Failed to load notifications.",
       "messages": {
         "created": "Notification created successfully",
         "create-failed": "Failed to create notification: {message}",
@@ -348,17 +349,18 @@
         "reminder": "Reminder"
       },
       "stats": {
+        "current-page": "Current page",
         "total": {
           "title": "Total Notifications",
           "description": "All notifications"
         },
         "unread": {
           "title": "Unread",
-          "description": "Pending notifications"
+          "description": "{scope} unread notifications"
         },
         "read-rate": {
           "title": "Read Rate",
-          "description": "Notifications read"
+          "description": "Notifications read on {scope}"
         }
       },
       "recent": {
@@ -416,6 +418,7 @@
       },
       "table": {
         "user": "User",
+        "select-all": "Select all users",
         "role": "Role",
         "joined": "Joined"
       },
@@ -432,6 +435,7 @@
       "title": "Data Management",
       "description": "Backup, export, and manage your data",
       "loading": "Loading data management dashboard...",
+      "error": "Some data is unavailable. Please try again.",
       "messages": {
         "backup-started": "Database backup started successfully",
         "backup-failed": "Failed to start backup: {message}",
@@ -466,6 +470,7 @@
         "differential-backup": "Differential Backup"
       },
       "stats": {
+        "error": "Data management statistics are unavailable.",
         "database-backups": "Database Backups",
         "completed-count": "{count} completed",
         "backup-size": "Backup Size",
@@ -492,6 +497,7 @@
       },
       "backups": {
         "loading": "Loading backups...",
+        "error": "Failed to load backups.",
         "empty": "No backups yet",
         "backup-label": "{type} backup",
         "create-title": "Create Database Backup",
@@ -501,6 +507,7 @@
       },
       "exports": {
         "loading": "Loading exports...",
+        "error": "Failed to load exports.",
         "empty": "No exports yet",
         "create-title": "Create Data Export",
         "create-description": "Export data in various formats",
@@ -551,6 +558,13 @@
       "title": "Security Management",
       "description": "Monitor and manage system security",
       "loading": "Loading security dashboard...",
+      "error": "Some security data is unavailable. Please try again.",
+      "confirm": {
+        "resolve-title": "Resolve security event?",
+        "resolve-event": "This will mark the {type} security event as resolved.",
+        "unlock-title": "Unlock account?",
+        "unlock-account": "This will unlock the account for user {userId}."
+      },
       "messages": {
         "ip-rule-added": "IP access rule added successfully",
         "ip-rule-failed": "Failed to add IP rule: {message}",
@@ -673,6 +687,7 @@
       "title": "Monitoring Dashboard",
       "description": "Real-time system performance and analytics",
       "loading": "Loading monitoring dashboard...",
+      "error": "Some monitoring data is unavailable. Please try again.",
       "messages": {
         "error-resolved": "Error resolved successfully",
         "resolve-error-failed": "Failed to resolve error: {message}",
@@ -1175,6 +1190,8 @@
   "blog": {
     "comments": {
       "author": "Author",
+      "comment-label": "Comment",
+      "reply-label": "Reply",
       "comment-cannot-be-empty": "Comment cannot be empty",
       "comment-posted": "Comment posted",
       "comments": "{count, plural, =1 {comment} other {comments}}",
@@ -1226,6 +1243,10 @@
     "title": "Blog"
   },
   "command-menu": {
+    "dialog-title": "Command menu",
+    "dialog-description": "Search commands",
+    "input-label": "Search commands",
+    "list-label": "Command suggestions",
     "actions": {
       "copy-link": "Copy link",
       "settings": "Settings",
@@ -1288,6 +1309,7 @@
       "delete-title": "Delete your account",
       "delete-description": "This permanently removes your account and its associated data.",
       "delete-trigger": "Delete account",
+      "cancel": "Cancel",
       "delete-export-reminder": "Want to keep a copy? Download your data before continuing.",
       "delete-dialog-title": "Delete your account?",
       "delete-dialog-description": "We will email a confirmation link before anything is deleted. It expires in 15 minutes.",
@@ -1569,6 +1591,8 @@
     }
   },
   "site-search": {
+    "label": "Search the site",
+    "results-label": "Search results",
     "placeholder": "Search the site...",
     "recent-searches": "Recent searches",
     "no-results": "No results for"
@@ -1684,6 +1708,7 @@
     }
   },
   "guestbook": {
+    "message-label": "Guestbook message",
     "create-message-successfully": "Create message successfully",
     "delete-dialog": {
       "description": "Are you sure you want to delete this comment? This action cannot be undone.",
@@ -1771,6 +1796,7 @@
     "newsletter": {
       "title": "Stay Updated",
       "description": "Get notified about new blog posts and project updates",
+      "email-label": "Email address",
       "placeholder": "Enter your email",
       "cta": "Subscribe",
       "disclaimer": "No spam, unsubscribe at any time. Privacy policy applies.",

@@ -1,14 +1,17 @@
 import { cn } from '@isyuricunha/utils'
 
-type CardProps = React.ComponentProps<'div'>
+type CardProps = {
+  variant?: 'default' | 'feature' | 'elevated'
+} & React.ComponentProps<'div'>
 
 const Card = (props: CardProps) => {
-  const { className, ...rest } = props
+  const { className, variant = 'default', ...rest } = props
 
   return (
     <div
       className={cn(
-        'bg-card text-card-foreground border-border shadow-feature-card rounded-lg border transition-colors duration-150',
+        'bg-card text-card-foreground border-border rounded-lg border transition-colors duration-150',
+        (variant === 'feature' || variant === 'elevated') && 'shadow-feature-card',
         className
       )}
       {...rest}

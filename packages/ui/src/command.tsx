@@ -14,7 +14,7 @@ const Command = (props: CommandProps) => {
   return (
     <CommandPrimitive
       className={cn(
-        'bg-popover text-popover-foreground flex size-full flex-col overflow-hidden rounded-lg border border-[var(--border-default)] pt-2 shadow-[var(--shadow-floating)]',
+        'bg-popover text-popover-foreground shadow-floating flex size-full flex-col overflow-hidden rounded-lg border border-[var(--border-default)] pt-2',
         '[&_[cmdk-group]:not([hidden])_~[cmdk-group]]:mt-2',
         className
       )}
@@ -30,7 +30,7 @@ const CommandDialog = (props: CommandDialogProps) => {
 
   return (
     <Dialog {...rest}>
-      <DialogContent className='overflow-hidden p-0 shadow-lg'>
+      <DialogContent className='shadow-floating overflow-hidden p-0'>
         <VisuallyHidden>
           <DialogTitle>Command Menu</DialogTitle>
           <DialogDescription>Search a command</DialogDescription>
@@ -124,6 +124,7 @@ const CommandItem = (props: CommandItemProps) => {
         'flex h-9 cursor-default items-center rounded-md px-2 text-sm outline-hidden transition-colors select-none not-first:mt-1',
         '[&_svg]:pointer-events-none [&_svg]:mr-2 [&_svg]:size-3.5',
         'aria-selected:bg-bg-hover aria-selected:text-foreground',
+        'focus-visible:ring-ring focus-visible:ring-2 focus-visible:outline-hidden focus-visible:ring-inset',
         'data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50',
         '[&_kbd]:text-muted-foreground [&_kbd]:ml-auto [&_kbd]:text-xs',
         className

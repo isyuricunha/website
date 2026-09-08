@@ -15,9 +15,9 @@ const SelectTrigger = (props: SelectTriggerProps) => {
   return (
     <SelectPrimitive.Trigger
       className={cn(
-        'border-input bg-background ring-offset-background flex h-10 w-full items-center justify-between rounded-lg border px-3 py-2 text-sm',
+        'border-input bg-background ring-offset-background flex h-9 w-full items-center justify-between rounded-lg border px-3 py-2 text-sm',
         'placeholder:text-muted-foreground',
-        'focus:ring-ring focus:ring-2 focus:ring-offset-2 focus:outline-hidden',
+        'focus-visible:ring-ring focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden',
         'disabled:cursor-not-allowed disabled:opacity-50',
         '[&>span]:line-clamp-1',
         className
@@ -71,7 +71,7 @@ const SelectContent = (props: SelectContentProps) => {
     <SelectPortal>
       <SelectPrimitive.Content
         className={cn(
-          'bg-popover text-popover-foreground relative z-50 max-h-96 min-w-32 overflow-hidden rounded-lg border border-[var(--border-default)] shadow-[var(--shadow-floating)]',
+          'bg-popover text-popover-foreground shadow-floating relative z-50 max-h-96 min-w-32 overflow-hidden rounded-lg border border-[var(--border-default)]',
           'data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95',
           'data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95',
           'data-[side=top]:slide-in-from-bottom-2',
@@ -123,7 +123,7 @@ const SelectItem = (props: SelectItemProps) => {
     <SelectPrimitive.Item
       className={cn(
         'relative flex w-full cursor-default items-center rounded-md py-1.5 pr-2 pl-8 text-sm outline-hidden transition-colors select-none',
-        'focus:bg-accent focus:text-accent-foreground',
+        'focus:bg-accent focus:text-accent-foreground focus-visible:ring-ring focus-visible:ring-2 focus-visible:outline-hidden focus-visible:ring-inset',
         'data-disabled:pointer-events-none data-disabled:opacity-50',
         className
       )}

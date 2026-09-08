@@ -459,7 +459,7 @@ export default function AnnouncementManagement() {
                   </Button>
                 </div>
 
-                <div className='grid grid-cols-2 gap-4'>
+                <div className='grid gap-4 sm:grid-cols-2'>
                   <div>
                     <Label htmlFor='type'>{t('fields.type')}</Label>
                     <Select name='type' defaultValue='info'>
@@ -852,7 +852,7 @@ export default function AnnouncementManagement() {
                   </Button>
                 </div>
 
-                <div className='grid grid-cols-2 gap-4'>
+                <div className='grid gap-4 sm:grid-cols-2'>
                   <div>
                     <Label htmlFor='edit-type'>{t('fields.type')}</Label>
                     <Select name='type' defaultValue={editingAnnouncement.type}>

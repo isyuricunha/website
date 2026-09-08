@@ -106,6 +106,7 @@ const CommentReply = () => {
           }}
           onModEnter={submitCommentReply}
           onEscape={() => setIsReplying(false)}
+          label={t('blog.comments.reply-label')}
           placeholder={t('blog.comments.reply-to-comment')}
           disabled={disabled}
           focusOnMount

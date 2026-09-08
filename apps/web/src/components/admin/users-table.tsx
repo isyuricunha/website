@@ -310,6 +310,7 @@ const UsersTable = (props: UsersTableProps) => {
             <div className='relative'>
               <Search className='text-text-secondary absolute top-2.5 left-2 h-4 w-4' />
               <Input
+                aria-label={t('admin.table.users.search')}
                 placeholder={t('admin.table.users.search')}
                 value={searchTerm}
                 onChange={(e) => updateSearchTerm(e.target.value)}
@@ -320,6 +321,7 @@ const UsersTable = (props: UsersTableProps) => {
                   variant='ghost'
                   size='sm'
                   className='absolute top-1 right-1 h-6 w-6 p-0'
+                  aria-label={t('admin.table.users.search')}
                   onClick={clearSearch}
                 >
                   <X className='h-3 w-3' />

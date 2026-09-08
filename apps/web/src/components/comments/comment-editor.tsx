@@ -2,7 +2,7 @@ import { useTranslations } from '@isyuricunha/i18n/client'
 import { Button, Textarea } from '@isyuricunha/ui'
 import { cn } from '@isyuricunha/utils'
 import { BoldIcon, ItalicIcon, StrikethroughIcon } from 'lucide-react'
-import { useEffect, useRef } from 'react'
+import { useEffect, useId, useRef } from 'react'
 
 type Command = {
   onModEnter?: () => void
@@ -12,6 +12,8 @@ type Command = {
 type CommentEditorProps = {
   initialValue?: string
   focusOnMount?: boolean
+  label?: string
+  error?: string
 } & Command &
   React.ComponentProps<typeof Textarea>
 
@@ -120,9 +122,12 @@ const decorateText = (
 }
 
 const CommentEditor = (props: CommentEditorProps) => {
-  const { onModEnter, onEscape, initialValue, focusOnMount, ...rest } = props
+  const { onModEnter, onEscape, initialValue, focusOnMount, label, error, ...rest } = props
   const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const generatedId = useId()
   const t = useTranslations()
+  const inputId = rest.id ?? generatedId
+  const errorId = `${inputId}-error`
 
   useEffect(() => {
     if (!focusOnMount) return
@@ -137,6 +142,9 @@ const CommentEditor = (props: CommentEditorProps) => {
         'aria-disabled:cursor-not-allowed aria-disabled:opacity-80'
       )}
     >
+      <label htmlFor={inputId} className='sr-only'>
+        {label ?? t('blog.comments.placeholder')}
+      </label>
       <Textarea
         rows={1}
         onKeyDown={(e) => {
@@ -150,7 +158,15 @@ const CommentEditor = (props: CommentEditorProps) => {
         autoCapitalize='off'
         spellCheck='false'
         {...rest}
+        id={inputId}
+        aria-invalid={error ? true : rest['aria-invalid']}
+        aria-describedby={error ? errorId : rest['aria-describedby']}
       />
+      {error ? (
+        <p id={errorId} role='alert' className='text-destructive px-3 text-sm'>
+          {error}
+        </p>
+      ) : null}
       <div className='flex flex-row items-center gap-1 px-2 py-1 sm:px-1.5'>
         <Button
           aria-label={t('blog.comments.toggle-bold')}

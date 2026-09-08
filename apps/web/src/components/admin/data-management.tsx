@@ -34,17 +34,25 @@ export default function DataManagement() {
   const [selectedTab, setSelectedTab] = useState('overview')
 
   // Data management stats query
-  const { data: dataStats, isLoading: statsLoading } =
-    api.dataManagement.getDataManagementStats.useQuery()
+  const {
+    data: dataStats,
+    isLoading: statsLoading,
+    isError: statsError
+  } = api.dataManagement.getDataManagementStats.useQuery()
 
   // Database backups query
-  const { data: backups, isLoading: backupsLoading } =
-    api.dataManagement.getDatabaseBackups.useQuery({})
+  const {
+    data: backups,
+    isLoading: backupsLoading,
+    isError: backupsError
+  } = api.dataManagement.getDatabaseBackups.useQuery({})
 
   // Data exports query
-  const { data: exports, isLoading: exportsLoading } = api.dataManagement.getDataExports.useQuery(
-    {}
-  )
+  const {
+    data: exports,
+    isLoading: exportsLoading,
+    isError: exportsError
+  } = api.dataManagement.getDataExports.useQuery({})
 
   // Mutations
   const backupMutation = api.dataManagement.createDatabaseBackup.useMutation({
@@ -229,6 +237,8 @@ export default function DataManagement() {
         </div>
       </div>
 
+      {statsError && <div className='text-destructive text-sm'>{t('stats.error')}</div>}
+
       {/* Data Management Overview Cards */}
       <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-4'>
         <Card>
@@ -237,9 +247,9 @@ export default function DataManagement() {
             <Database className='text-text-secondary h-4 w-4' />
           </CardHeader>
           <CardContent>
-            <div className='text-2xl font-medium'>{dataStats?.backups.total || 0}</div>
+            <div className='text-2xl font-medium'>{dataStats?.backups.total ?? '—'}</div>
             <p className='text-text-secondary text-xs'>
-              {t('stats.completed-count', { count: dataStats?.backups.completed || 0 })}
+              {t('stats.completed-count', { count: dataStats?.backups.completed ?? '—' })}
             </p>
           </CardContent>
         </Card>
@@ -251,7 +261,7 @@ export default function DataManagement() {
           </CardHeader>
           <CardContent>
             <div className='text-2xl font-medium'>
-              {formatFileSize(dataStats?.backups.totalSize || 0)}
+              {dataStats ? formatFileSize(dataStats.backups.totalSize) : '—'}
             </div>
             <p className='text-text-secondary text-xs'>{t('stats.total-storage-used')}</p>
           </CardContent>
@@ -263,9 +273,9 @@ export default function DataManagement() {
             <Download className='text-text-secondary h-4 w-4' />
           </CardHeader>
           <CardContent>
-            <div className='text-2xl font-medium'>{dataStats?.exports.total || 0}</div>
+            <div className='text-2xl font-medium'>{dataStats?.exports.total ?? '—'}</div>
             <p className='text-text-secondary text-xs'>
-              {t('stats.completed-count', { count: dataStats?.exports.completed || 0 })}
+              {t('stats.completed-count', { count: dataStats?.exports.completed ?? '—' })}
             </p>
           </CardContent>
         </Card>
@@ -277,7 +287,7 @@ export default function DataManagement() {
           </CardHeader>
           <CardContent>
             <div className='text-2xl font-medium'>
-              {(dataStats?.exports.totalRecords || 0).toLocaleString()}
+              {dataStats ? dataStats.exports.totalRecords.toLocaleString() : '—'}
             </div>
             <p className='text-text-secondary text-xs'>{t('stats.total-records-processed')}</p>
           </CardContent>
@@ -286,7 +296,7 @@ export default function DataManagement() {
 
       {/* Data Management Tabs */}
       <Tabs value={selectedTab} onValueChange={setSelectedTab}>
-        <TabsList className='grid w-full grid-cols-4'>
+        <TabsList className='grid w-full grid-cols-2 sm:grid-cols-4'>
           <TabsTrigger value='overview'>{t('tabs.overview')}</TabsTrigger>
           <TabsTrigger value='backups'>{t('tabs.backups')}</TabsTrigger>
           <TabsTrigger value='exports'>{t('tabs.exports')}</TabsTrigger>
@@ -302,26 +312,32 @@ export default function DataManagement() {
                 <CardDescription>{t('overview.recent-backups.description')}</CardDescription>
               </CardHeader>
               <CardContent>
-                {backupsLoading ? (
-                  <div>{t('backups.loading')}</div>
-                ) : (
+                {backupsLoading && <div>{t('backups.loading')}</div>}
+                {!backupsLoading && backupsError && (
+                  <div className='text-destructive text-sm'>{t('backups.error')}</div>
+                )}
+                {!backupsLoading && !backupsError && (
                   <div className='space-y-3'>
-                    {backups?.backups.slice(0, 5).map((backup) => (
-                      <div key={backup.id} className='flex items-center justify-between'>
-                        <div className='flex items-center space-x-2'>
-                          {getStatusIcon(backup.status)}
-                          <Badge variant={getStatusColor(backup.status)}>
-                            {getStatusLabel(backup.status)}
-                          </Badge>
-                          <span className='text-sm'>
-                            {t('backups.backup-label', { type: getBackupTypeLabel(backup.type) })}
+                    {backups && backups.backups.length > 0 ? (
+                      backups.backups.slice(0, 5).map((backup) => (
+                        <div key={backup.id} className='flex items-center justify-between'>
+                          <div className='flex items-center space-x-2'>
+                            {getStatusIcon(backup.status)}
+                            <Badge variant={getStatusColor(backup.status)}>
+                              {getStatusLabel(backup.status)}
+                            </Badge>
+                            <span className='text-sm'>
+                              {t('backups.backup-label', { type: getBackupTypeLabel(backup.type) })}
+                            </span>
+                          </div>
+                          <span className='text-text-secondary text-xs'>
+                            {new Date(backup.createdAt).toLocaleDateString()}
                           </span>
                         </div>
-                        <span className='text-text-secondary text-xs'>
-                          {new Date(backup.createdAt).toLocaleDateString()}
-                        </span>
-                      </div>
-                    )) || <div className='text-text-secondary text-sm'>{t('backups.empty')}</div>}
+                      ))
+                    ) : (
+                      <div className='text-text-secondary text-sm'>{t('backups.empty')}</div>
+                    )}
                   </div>
                 )}
               </CardContent>
@@ -334,24 +350,30 @@ export default function DataManagement() {
                 <CardDescription>{t('overview.recent-exports.description')}</CardDescription>
               </CardHeader>
               <CardContent>
-                {exportsLoading ? (
-                  <div>{t('exports.loading')}</div>
-                ) : (
+                {exportsLoading && <div>{t('exports.loading')}</div>}
+                {!exportsLoading && exportsError && (
+                  <div className='text-destructive text-sm'>{t('exports.error')}</div>
+                )}
+                {!exportsLoading && !exportsError && (
                   <div className='space-y-3'>
-                    {exports?.exports.slice(0, 5).map((exportItem) => (
-                      <div key={exportItem.id} className='flex items-center justify-between'>
-                        <div className='flex items-center space-x-2'>
-                          {getStatusIcon(exportItem.status)}
-                          <Badge variant={getStatusColor(exportItem.status)}>
-                            {getStatusLabel(exportItem.status)}
-                          </Badge>
-                          <span className='text-sm'>{exportItem.name}</span>
+                    {exports && exports.exports.length > 0 ? (
+                      exports.exports.slice(0, 5).map((exportItem) => (
+                        <div key={exportItem.id} className='flex items-center justify-between'>
+                          <div className='flex items-center space-x-2'>
+                            {getStatusIcon(exportItem.status)}
+                            <Badge variant={getStatusColor(exportItem.status)}>
+                              {getStatusLabel(exportItem.status)}
+                            </Badge>
+                            <span className='text-sm'>{exportItem.name}</span>
+                          </div>
+                          <span className='text-text-secondary text-xs'>
+                            {new Date(exportItem.createdAt).toLocaleDateString()}
+                          </span>
                         </div>
-                        <span className='text-text-secondary text-xs'>
-                          {new Date(exportItem.createdAt).toLocaleDateString()}
-                        </span>
-                      </div>
-                    )) || <div className='text-text-secondary text-sm'>{t('exports.empty')}</div>}
+                      ))
+                    ) : (
+                      <div className='text-text-secondary text-sm'>{t('exports.empty')}</div>
+                    )}
                   </div>
                 )}
               </CardContent>
@@ -372,7 +394,7 @@ export default function DataManagement() {
                   <div>
                     <Label htmlFor='backupType'>{t('fields.backup-type')}</Label>
                     <Select name='type' defaultValue='full'>
-                      <SelectTrigger>
+                      <SelectTrigger id='backupType'>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -410,47 +432,51 @@ export default function DataManagement() {
                 <CardDescription>{t('backups.list-description')}</CardDescription>
               </CardHeader>
               <CardContent>
-                {backupsLoading ? (
-                  <div>{t('backups.loading')}</div>
-                ) : (
+                {backupsLoading && <div>{t('backups.loading')}</div>}
+                {!backupsLoading && backupsError && (
+                  <div className='text-destructive text-sm'>{t('backups.error')}</div>
+                )}
+                {!backupsLoading && !backupsError && (
                   <div className='space-y-3'>
-                    {backups?.backups.map((backup) => (
-                      <div key={backup.id} className='rounded border p-3'>
-                        <div className='mb-2 flex items-center justify-between'>
-                          <div className='flex items-center space-x-2'>
-                            {getStatusIcon(backup.status)}
-                            <span className='font-medium'>
-                              {t('backups.backup-label', {
-                                type: getBackupTypeLabel(backup.type)
-                              })}
+                    {backups && backups.backups.length > 0 ? (
+                      backups.backups.map((backup) => (
+                        <div key={backup.id} className='rounded border p-3'>
+                          <div className='mb-2 flex items-center justify-between'>
+                            <div className='flex items-center space-x-2'>
+                              {getStatusIcon(backup.status)}
+                              <span className='font-medium'>
+                                {t('backups.backup-label', {
+                                  type: getBackupTypeLabel(backup.type)
+                                })}
+                              </span>
+                            </div>
+                            <Badge variant={getStatusColor(backup.status)}>
+                              {getStatusLabel(backup.status)}
+                            </Badge>
+                          </div>
+                          {backup.name && (
+                            <div className='text-text-secondary mb-2 text-sm'>{backup.name}</div>
+                          )}
+                          <div className='flex items-center justify-between text-sm'>
+                            <span className='text-text-secondary'>
+                              {backup.fileSize
+                                ? formatFileSize(backup.fileSize)
+                                : t('file-size.unknown')}
+                            </span>
+                            <span className='text-text-secondary'>
+                              {new Date(backup.createdAt).toLocaleString()}
                             </span>
                           </div>
-                          <Badge variant={getStatusColor(backup.status)}>
-                            {getStatusLabel(backup.status)}
-                          </Badge>
+                          {backup.completedAt && (
+                            <div className='text-text-secondary mt-1 text-xs'>
+                              {t('date.completed', {
+                                date: new Date(backup.completedAt).toLocaleString()
+                              })}
+                            </div>
+                          )}
                         </div>
-                        {backup.name && (
-                          <div className='text-text-secondary mb-2 text-sm'>{backup.name}</div>
-                        )}
-                        <div className='flex items-center justify-between text-sm'>
-                          <span className='text-text-secondary'>
-                            {backup.fileSize
-                              ? formatFileSize(backup.fileSize)
-                              : t('file-size.unknown')}
-                          </span>
-                          <span className='text-text-secondary'>
-                            {new Date(backup.createdAt).toLocaleString()}
-                          </span>
-                        </div>
-                        {backup.completedAt && (
-                          <div className='text-text-secondary mt-1 text-xs'>
-                            {t('date.completed', {
-                              date: new Date(backup.completedAt).toLocaleString()
-                            })}
-                          </div>
-                        )}
-                      </div>
-                    )) || (
+                      ))
+                    ) : (
                       <div className='text-text-secondary text-center'>{t('backups.empty')}</div>
                     )}
                   </div>
@@ -482,7 +508,7 @@ export default function DataManagement() {
                   <div>
                     <Label htmlFor='exportFormat'>{t('fields.format')}</Label>
                     <Select name='format' defaultValue='csv'>
-                      <SelectTrigger>
+                      <SelectTrigger id='exportFormat'>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -518,50 +544,54 @@ export default function DataManagement() {
                 <CardDescription>{t('exports.list-description')}</CardDescription>
               </CardHeader>
               <CardContent>
-                {exportsLoading ? (
-                  <div>{t('exports.loading')}</div>
-                ) : (
+                {exportsLoading && <div>{t('exports.loading')}</div>}
+                {!exportsLoading && exportsError && (
+                  <div className='text-destructive text-sm'>{t('exports.error')}</div>
+                )}
+                {!exportsLoading && !exportsError && (
                   <div className='space-y-3'>
-                    {exports?.exports.map((exportItem) => (
-                      <div key={exportItem.id} className='rounded border p-3'>
-                        <div className='mb-2 flex items-center justify-between'>
-                          <div className='flex items-center space-x-2'>
-                            {getStatusIcon(exportItem.status)}
-                            <span className='font-medium'>{exportItem.name}</span>
+                    {exports && exports.exports.length > 0 ? (
+                      exports.exports.map((exportItem) => (
+                        <div key={exportItem.id} className='rounded border p-3'>
+                          <div className='mb-2 flex items-center justify-between'>
+                            <div className='flex items-center space-x-2'>
+                              {getStatusIcon(exportItem.status)}
+                              <span className='font-medium'>{exportItem.name}</span>
+                            </div>
+                            <Badge variant={getStatusColor(exportItem.status)}>
+                              {getStatusLabel(exportItem.status)}
+                            </Badge>
                           </div>
-                          <Badge variant={getStatusColor(exportItem.status)}>
-                            {getStatusLabel(exportItem.status)}
-                          </Badge>
-                        </div>
-                        <div className='text-text-secondary mb-2 text-sm'>
-                          {t('exports.format', { format: exportItem.format.toUpperCase() })}
-                        </div>
-                        <div className='flex items-center justify-between text-sm'>
-                          <span className='text-text-secondary'>
-                            {exportItem.recordCount
-                              ? t('exports.records', {
-                                  count: exportItem.recordCount.toLocaleString()
-                                })
-                              : t('exports.processing')}
-                          </span>
-                          <span className='text-text-secondary'>
-                            {new Date(exportItem.createdAt).toLocaleString()}
-                          </span>
-                        </div>
-                        {exportItem.completedAt && (
-                          <div className='text-text-secondary mt-1 text-xs'>
-                            {t('date.completed', {
-                              date: new Date(exportItem.completedAt).toLocaleString()
-                            })}
+                          <div className='text-text-secondary mb-2 text-sm'>
+                            {t('exports.format', { format: exportItem.format.toUpperCase() })}
                           </div>
-                        )}
-                        {exportItem.fileSize && (
-                          <div className='text-text-secondary text-xs'>
-                            {t('file-size.size', { size: formatFileSize(exportItem.fileSize) })}
+                          <div className='flex items-center justify-between text-sm'>
+                            <span className='text-text-secondary'>
+                              {exportItem.recordCount
+                                ? t('exports.records', {
+                                    count: exportItem.recordCount.toLocaleString()
+                                  })
+                                : t('exports.processing')}
+                            </span>
+                            <span className='text-text-secondary'>
+                              {new Date(exportItem.createdAt).toLocaleString()}
+                            </span>
                           </div>
-                        )}
-                      </div>
-                    )) || (
+                          {exportItem.completedAt && (
+                            <div className='text-text-secondary mt-1 text-xs'>
+                              {t('date.completed', {
+                                date: new Date(exportItem.completedAt).toLocaleString()
+                              })}
+                            </div>
+                          )}
+                          {exportItem.fileSize && (
+                            <div className='text-text-secondary text-xs'>
+                              {t('file-size.size', { size: formatFileSize(exportItem.fileSize) })}
+                            </div>
+                          )}
+                        </div>
+                      ))
+                    ) : (
                       <div className='text-text-secondary text-center'>{t('exports.empty')}</div>
                     )}
                   </div>

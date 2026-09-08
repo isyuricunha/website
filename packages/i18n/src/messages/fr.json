@@ -310,6 +310,7 @@
       "description": "Gérer les notifications utilisateur et les alertes système",
       "loading": "Chargement des notifications...",
       "empty": "Aucune notification pour l'instant. Créez votre première notification pour commencer !",
+      "error": "Échec du chargement des notifications.",
       "messages": {
         "created": "Notification créée avec succès",
         "create-failed": "Échec de la création de la notification : {message}",
@@ -345,17 +346,18 @@
         "reminder": "Rappel"
       },
       "stats": {
+        "current-page": "Page actuelle",
         "total": {
           "title": "Notifications totales",
           "description": "Toutes les notifications"
         },
         "unread": {
           "title": "Non lues",
-          "description": "Notifications en attente"
+          "description": "Notifications non lues sur {scope}"
         },
         "read-rate": {
           "title": "Taux de lecture",
-          "description": "Notifications lues"
+          "description": "Notifications lues sur {scope}"
         }
       },
       "recent": {
@@ -413,6 +415,7 @@
       },
       "table": {
         "user": "Utilisateur",
+        "select-all": "Sélectionner tous les utilisateurs",
         "role": "Rôle",
         "joined": "Rejoint"
       },
@@ -429,6 +432,7 @@
       "title": "Gestion des données",
       "description": "Sauvegardez, exportez et gérez vos données",
       "loading": "Chargement du tableau de bord de gestion des données...",
+      "error": "Certaines données sont indisponibles. Veuillez réessayer.",
       "messages": {
         "backup-started": "Sauvegarde de la base de données démarrée avec succès",
         "backup-failed": "Échec du démarrage de la sauvegarde : {message}",
@@ -463,6 +467,7 @@
         "differential-backup": "Sauvegarde différentielle"
       },
       "stats": {
+        "error": "Les statistiques de gestion des données sont indisponibles.",
         "database-backups": "Sauvegardes de la base de données",
         "completed-count": "{count} terminées",
         "backup-size": "Taille de la sauvegarde",
@@ -489,6 +494,7 @@
       },
       "backups": {
         "loading": "Chargement des sauvegardes...",
+        "error": "Échec du chargement des sauvegardes.",
         "empty": "Aucune sauvegarde pour l'instant",
         "backup-label": "Sauvegarde {type}",
         "create-title": "Créer une sauvegarde de la base de données",
@@ -498,6 +504,7 @@
       },
       "exports": {
         "loading": "Chargement des exportations...",
+        "error": "Échec du chargement des exportations.",
         "empty": "Aucune exportation pour l'instant",
         "create-title": "Créer une exportation de données",
         "create-description": "Exportez des données dans divers formats",
@@ -548,6 +555,13 @@
       "title": "Gestion de la sécurité",
       "description": "Surveiller et gérer la sécurité du système",
       "loading": "Chargement du tableau de bord de sécurité...",
+      "error": "Certaines données de sécurité sont indisponibles. Veuillez réessayer.",
+      "confirm": {
+        "resolve-title": "Résoudre l’événement de sécurité ?",
+        "resolve-event": "Cela marquera l’événement de sécurité {type} comme résolu.",
+        "unlock-title": "Déverrouiller le compte ?",
+        "unlock-account": "Cela déverrouillera le compte de l’utilisateur {userId}."
+      },
       "messages": {
         "ip-rule-added": "Règle d'accès IP ajoutée avec succès",
         "ip-rule-failed": "Échec de l'ajout de la règle IP : {message}",
@@ -670,6 +684,7 @@
       "title": "Tableau de bord de surveillance",
       "description": "Performances et analyses du système en temps réel",
       "loading": "Chargement du tableau de bord de surveillance...",
+      "error": "Certaines données de surveillance sont indisponibles. Veuillez réessayer.",
       "messages": {
         "error-resolved": "Erreur résolue avec succès",
         "resolve-error-failed": "Échec de la résolution de l'erreur : {message}",
@@ -1175,6 +1190,8 @@
   "blog": {
     "comments": {
       "author": "Auteur",
+      "comment-label": "Commentaire",
+      "reply-label": "Réponse",
       "comment-cannot-be-empty": "Le commentaire ne peut pas être vide",
       "comment-posted": "Commentaire publié",
       "comments": "{count, plural, =1 {commentaire} other {commentaires}}",
@@ -1226,6 +1243,10 @@
     "title": "Blog"
   },
   "command-menu": {
+    "dialog-title": "Menu de commandes",
+    "dialog-description": "Rechercher des commandes",
+    "input-label": "Rechercher des commandes",
+    "list-label": "Suggestions de commandes",
     "actions": {
       "copy-link": "Copier le lien",
       "settings": "Paramètres",
@@ -1288,6 +1309,7 @@
       "delete-title": "Supprimer votre compte",
       "delete-description": "Cette action supprime définitivement votre compte et les données qui y sont associées.",
       "delete-trigger": "Supprimer le compte",
+      "cancel": "Annuler",
       "delete-export-reminder": "Vous voulez garder une copie ? Téléchargez vos données avant de continuer.",
       "delete-dialog-title": "Supprimer votre compte ?",
       "delete-dialog-description": "Nous vous enverrons un lien de confirmation avant toute suppression. Il expire dans 15 minutes.",
@@ -1569,6 +1591,8 @@
     }
   },
   "site-search": {
+    "label": "Rechercher sur le site",
+    "results-label": "Résultats de recherche",
     "placeholder": "Rechercher sur le site...",
     "recent-searches": "Recherches récentes",
     "no-results": "Aucun résultat pour"
@@ -1684,6 +1708,7 @@
     }
   },
   "guestbook": {
+    "message-label": "Message du livre d’or",
     "create-message-successfully": "Message créé avec succès",
     "delete-dialog": {
       "description": "Êtes-vous sûr de vouloir supprimer ce commentaire ? Cette action est irréversible.",
@@ -1771,6 +1796,7 @@
     "newsletter": {
       "title": "Restez informé",
       "description": "Recevez des notifications sur les nouveaux articles de blog et les mises à jour de projets",
+      "email-label": "Adresse e-mail",
       "placeholder": "Entrez votre email",
       "cta": "S'abonner",
       "disclaimer": "Pas de spam, désabonnement possible à tout moment. Politique de confidentialité applicable.",

@@ -310,6 +310,7 @@
       "description": "Gerencie notificações de usuários e alertas do sistema",
       "loading": "Carregando notificações...",
       "empty": "Ainda não há notificações. Crie a primeira notificação para começar!",
+      "error": "Falha ao carregar notificações.",
       "messages": {
         "created": "Notificação criada com sucesso",
         "create-failed": "Falha ao criar notificação: {message}",
@@ -345,17 +346,18 @@
         "reminder": "Lembrete"
       },
       "stats": {
+        "current-page": "Página atual",
         "total": {
           "title": "Total de notificações",
           "description": "Todas as notificações"
         },
         "unread": {
           "title": "Não lidas",
-          "description": "Notificações pendentes"
+          "description": "Notificações não lidas em {scope}"
         },
         "read-rate": {
           "title": "Taxa de leitura",
-          "description": "Notificações lidas"
+          "description": "Notificações lidas em {scope}"
         }
       },
       "recent": {
@@ -413,6 +415,7 @@
       },
       "table": {
         "user": "Usuário",
+        "select-all": "Selecionar todos os usuários",
         "role": "Função",
         "joined": "Entrou em"
       },
@@ -429,6 +432,7 @@
       "title": "Gerenciamento de Dados",
       "description": "Faça backup, exporte e gerencie seus dados",
       "loading": "Carregando painel de gerenciamento de dados...",
+      "error": "Alguns dados estão indisponíveis. Tente novamente.",
       "messages": {
         "backup-started": "Backup do banco iniciado com sucesso",
         "backup-failed": "Falha ao iniciar backup: {message}",
@@ -463,6 +467,7 @@
         "differential-backup": "Backup Diferencial"
       },
       "stats": {
+        "error": "As estatísticas de gerenciamento de dados estão indisponíveis.",
         "database-backups": "Backups do Banco",
         "completed-count": "{count} concluídos",
         "backup-size": "Tamanho dos Backups",
@@ -489,6 +494,7 @@
       },
       "backups": {
         "loading": "Carregando backups...",
+        "error": "Falha ao carregar backups.",
         "empty": "Ainda sem backups",
         "backup-label": "backup {type}",
         "create-title": "Criar backup do banco",
@@ -498,6 +504,7 @@
       },
       "exports": {
         "loading": "Carregando exportações...",
+        "error": "Falha ao carregar exportações.",
         "empty": "Ainda sem exportações",
         "create-title": "Criar exportação de dados",
         "create-description": "Exporte dados em diversos formatos",
@@ -548,6 +555,13 @@
       "title": "Gerenciamento de Segurança",
       "description": "Monitore e gerencie a segurança do sistema",
       "loading": "Carregando painel de segurança...",
+      "error": "Alguns dados de segurança estão indisponíveis. Tente novamente.",
+      "confirm": {
+        "resolve-title": "Resolver evento de segurança?",
+        "resolve-event": "Isso marcará o evento de segurança {type} como resolvido.",
+        "unlock-title": "Desbloquear conta?",
+        "unlock-account": "Isso desbloqueará a conta do usuário {userId}."
+      },
       "messages": {
         "ip-rule-added": "Regra de acesso por IP adicionada com sucesso",
         "ip-rule-failed": "Falha ao adicionar regra de IP: {message}",
@@ -670,6 +684,7 @@
       "title": "Painel de Monitoramento",
       "description": "Performance e analytics do sistema em tempo real",
       "loading": "Carregando painel de monitoramento...",
+      "error": "Alguns dados de monitoramento estão indisponíveis. Tente novamente.",
       "messages": {
         "error-resolved": "Erro resolvido com sucesso",
         "resolve-error-failed": "Falha ao resolver erro: {message}",
@@ -1175,6 +1190,8 @@
   "blog": {
     "comments": {
       "author": "Autor",
+      "comment-label": "Comentário",
+      "reply-label": "Resposta",
       "comment-cannot-be-empty": "O comentário não pode ficar vazio",
       "comment-posted": "Comentário publicado",
       "comments": "{count, plural, =1 {comentário} other {comentários}}",
@@ -1226,6 +1243,10 @@
     "title": "Blog"
   },
   "command-menu": {
+    "dialog-title": "Menu de comandos",
+    "dialog-description": "Pesquisar comandos",
+    "input-label": "Pesquisar comandos",
+    "list-label": "Sugestões de comandos",
     "actions": {
       "copy-link": "Copiar link",
       "settings": "Configurações",
@@ -1288,6 +1309,7 @@
       "delete-title": "Excluir sua conta",
       "delete-description": "Isso remove permanentemente sua conta e os dados ligados a ela.",
       "delete-trigger": "Excluir conta",
+      "cancel": "Cancelar",
       "delete-export-reminder": "Quer guardar uma cópia? Baixe seus dados antes de continuar.",
       "delete-dialog-title": "Excluir sua conta?",
       "delete-dialog-description": "Antes de excluir qualquer coisa, enviaremos um link de confirmação para seu e-mail. Ele expira em 15 minutos.",
@@ -1569,6 +1591,8 @@
     }
   },
   "site-search": {
+    "label": "Pesquisar no site",
+    "results-label": "Resultados da pesquisa",
     "placeholder": "Pesquisar no site...",
     "recent-searches": "Pesquisas recentes",
     "no-results": "Nenhum resultado para"
@@ -1684,6 +1708,7 @@
     }
   },
   "guestbook": {
+    "message-label": "Mensagem do livro de visitas",
     "create-message-successfully": "Mensagem criada com sucesso",
     "delete-dialog": {
       "description": "Tem certeza de que deseja excluir este comentário? Esta ação não pode ser desfeita.",
@@ -1771,6 +1796,7 @@
     "newsletter": {
       "title": "Fique atualizado",
       "description": "Receba notificações sobre novos posts e atualizações de projetos",
+      "email-label": "Endereço de e-mail",
       "placeholder": "Digite seu e-mail",
       "cta": "Inscrever-se",
       "disclaimer": "Sem spam, cancele a inscrição a qualquer momento. A política de privacidade se aplica.",

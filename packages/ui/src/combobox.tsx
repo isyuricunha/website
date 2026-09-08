@@ -36,7 +36,7 @@ const ComboboxInput = (props: ComboboxInputProps) => {
   return (
     <ComboboxPrimitive.Input
       className={cn(
-        'border-input bg-background ring-offset-background flex h-10 w-full items-center justify-between rounded-lg border px-3 py-2 text-sm',
+        'border-input bg-background ring-offset-background flex h-9 w-full items-center justify-between rounded-lg border px-3 py-2 text-sm',
         'placeholder:text-muted-foreground',
         'focus-visible:ring-ring focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden',
         'disabled:cursor-not-allowed disabled:opacity-50',
@@ -68,7 +68,7 @@ const ComboboxContent = (props: ComboboxContentProps) => {
   return (
     <ComboboxPrimitive.Content
       className={cn(
-        'bg-popover text-popover-foreground z-50 min-w-32 overflow-hidden rounded-lg border border-[var(--border-default)] p-1 shadow-[var(--shadow-floating)]',
+        'bg-popover text-popover-foreground shadow-floating z-50 min-w-32 overflow-hidden rounded-lg border border-[var(--border-default)] p-1',
         'data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95',
         'data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95',
         className

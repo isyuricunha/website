@@ -3,7 +3,7 @@
 import type { Post } from 'content-collections'
 import type { ReactNode } from 'react'
 
-import { useLocale, useTranslations } from '@isyuricunha/i18n/client'
+import { useTranslations } from '@isyuricunha/i18n/client'
 import {
   Input,
   Label,
@@ -42,7 +42,6 @@ const compareStrings = (a: string, b: string) => {
 
 const FilteredPosts = (props: FilteredPostsProps) => {
   const { posts } = props
-  const locale = useLocale()
   const [searchValue, setSearchValue] = useState('')
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
   const [selectedTag, setSelectedTag] = useState<string>('all')
@@ -168,7 +167,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
       {/* RSS Feed Link */}
       <div className='mb-6 flex justify-end px-4 sm:px-0'>
         <Link
-          href={`/${locale}/rss.xml`}
+          href='/rss.xml'
           className='text-muted-foreground hover:bg-bg-hover hover:text-foreground inline-flex items-center gap-2 rounded-md px-3 py-2 text-xs transition-colors sm:text-sm'
         >
           <Rss className='h-4 w-4' />
@@ -382,7 +381,7 @@ const FilteredPosts = (props: FilteredPostsProps) => {
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className='mt-8 flex items-center justify-center gap-2'>
+            <div className='mt-8 flex flex-wrap items-center justify-center gap-2'>
               <button
                 type='button'
                 onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}

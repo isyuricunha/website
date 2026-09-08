@@ -5,9 +5,10 @@ import { XIcon } from 'lucide-react'
 
 const sheetVariants = cva({
   base: [
-    'fixed z-50 border-[var(--border-default)] bg-[var(--yu-bg-modal)] p-6 shadow-[var(--shadow-floating)] transition ease-in-out',
-    'data-[state=open]:animate-in data-[state=open]:duration-500',
-    'data-[state=closed]:animate-out data-[state=closed]:duration-300'
+    'shadow-floating fixed z-50 border-[var(--border-default)] bg-[var(--yu-bg-modal)] p-6 transition ease-in-out',
+    // Keep the open/close motion aligned with the shared YuTheme duration token.
+    'data-[state=open]:animate-in data-[state=open]:duration-[var(--duration-sheet)]',
+    'data-[state=closed]:animate-out data-[state=closed]:duration-[var(--duration-sheet)]'
   ],
   variants: {
     side: {

@@ -21,30 +21,31 @@ type LinkProps = {
   VariantProps<typeof linkVariants>
 
 const Link = (props: LinkProps) => {
-  const { href, className, children, variant, ...rest } = props
+  const { href, className, children, variant, target, rel, ...rest } = props
 
-  if (href.startsWith('/')) {
+  const isRootRelative = href.startsWith('/') && !href.startsWith('//')
+  const isExternalHttp = /^(?:https?:)?\/\//i.test(href)
+
+  if (isRootRelative) {
     return (
-      <NextLink className={cn(linkVariants({ variant, className }))} href={href} {...rest}>
+      <NextLink
+        className={cn(linkVariants({ variant, className }))}
+        href={href}
+        target={target}
+        rel={rel}
+        {...rest}
+      >
         {children}
       </NextLink>
-    )
-  }
-
-  if (href.startsWith('#')) {
-    return (
-      <a className={cn(linkVariants({ variant, className }))} href={href} {...rest}>
-        {children}
-      </a>
     )
   }
 
   return (
     <a
       className={cn(linkVariants({ variant, className }))}
-      target='_blank'
-      rel='noopener noreferrer'
       href={href}
+      target={target ?? (isExternalHttp ? '_blank' : undefined)}
+      rel={rel ?? (isExternalHttp ? 'noopener noreferrer' : undefined)}
       {...rest}
     >
       {children}

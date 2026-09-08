@@ -310,6 +310,7 @@
       "description": "Gestionar notificaciones de usuarios y alertas del sistema",
       "loading": "Cargando notificaciones...",
       "empty": "Aún no hay notificaciones. ¡Crea tu primera notificación para empezar!",
+      "error": "No se pudieron cargar las notificaciones.",
       "messages": {
         "created": "Notificación creada con éxito",
         "create-failed": "No se pudo crear la notificación: {message}",
@@ -345,17 +346,18 @@
         "reminder": "Recordatorio"
       },
       "stats": {
+        "current-page": "Página actual",
         "total": {
           "title": "Notificaciones Totales",
           "description": "Todas las notificaciones"
         },
         "unread": {
           "title": "No leídas",
-          "description": "Notificaciones pendientes"
+          "description": "Notificaciones no leídas en {scope}"
         },
         "read-rate": {
           "title": "Tasa de Lectura",
-          "description": "Notificaciones leídas"
+          "description": "Notificaciones leídas en {scope}"
         }
       },
       "recent": {
@@ -413,6 +415,7 @@
       },
       "table": {
         "user": "Usuario",
+        "select-all": "Seleccionar todos los usuarios",
         "role": "Rol",
         "joined": "Unido"
       },
@@ -429,6 +432,7 @@
       "title": "Gestión de datos",
       "description": "Realiza copias de seguridad, exporta y gestiona tus datos",
       "loading": "Cargando el panel de gestión de datos...",
+      "error": "Algunos datos no están disponibles. Inténtalo de nuevo.",
       "messages": {
         "backup-started": "Copia de seguridad de la base de datos iniciada correctamente",
         "backup-failed": "Error al iniciar la copia de seguridad: {message}",
@@ -463,6 +467,7 @@
         "differential-backup": "Copia de seguridad diferencial"
       },
       "stats": {
+        "error": "Las estadísticas de gestión de datos no están disponibles.",
         "database-backups": "Copias de seguridad de la base de datos",
         "completed-count": "{count} completadas",
         "backup-size": "Tamaño de la copia de seguridad",
@@ -489,6 +494,7 @@
       },
       "backups": {
         "loading": "Cargando copias de seguridad...",
+        "error": "No se pudieron cargar las copias de seguridad.",
         "empty": "Aún no hay copias de seguridad",
         "backup-label": "Copia de seguridad {type}",
         "create-title": "Crear copia de seguridad de la base de datos",
@@ -498,6 +504,7 @@
       },
       "exports": {
         "loading": "Cargando exportaciones...",
+        "error": "No se pudieron cargar las exportaciones.",
         "empty": "Aún no hay exportaciones",
         "create-title": "Crear exportación de datos",
         "create-description": "Exporta datos en varios formatos",
@@ -548,6 +555,13 @@
       "title": "Gestión de seguridad",
       "description": "Monitorea y gestiona la seguridad del sistema",
       "loading": "Cargando panel de seguridad...",
+      "error": "Algunos datos de seguridad no están disponibles. Inténtalo de nuevo.",
+      "confirm": {
+        "resolve-title": "¿Resolver evento de seguridad?",
+        "resolve-event": "Esto marcará el evento de seguridad {type} como resuelto.",
+        "unlock-title": "¿Desbloquear cuenta?",
+        "unlock-account": "Esto desbloqueará la cuenta del usuario {userId}."
+      },
       "messages": {
         "ip-rule-added": "Regla de acceso IP agregada con éxito",
         "ip-rule-failed": "Error al agregar la regla IP: {message}",
@@ -670,6 +684,7 @@
       "title": "Panel de monitoreo",
       "description": "Rendimiento y análisis del sistema en tiempo real",
       "loading": "Cargando panel de monitoreo...",
+      "error": "Algunos datos de monitoreo no están disponibles. Inténtalo de nuevo.",
       "messages": {
         "error-resolved": "Error resuelto correctamente",
         "resolve-error-failed": "No se pudo resolver el error: {message}",
@@ -1175,6 +1190,8 @@
   "blog": {
     "comments": {
       "author": "Autor",
+      "comment-label": "Comentario",
+      "reply-label": "Respuesta",
       "comment-cannot-be-empty": "El comentario no puede estar vacío",
       "comment-posted": "Comentario publicado",
       "comments": "{count, plural, =1 {comentario} other {comentarios}}",
@@ -1226,6 +1243,10 @@
     "title": "Blog"
   },
   "command-menu": {
+    "dialog-title": "Menú de comandos",
+    "dialog-description": "Buscar comandos",
+    "input-label": "Buscar comandos",
+    "list-label": "Sugerencias de comandos",
     "actions": {
       "copy-link": "Copiar enlace",
       "settings": "Configuración",
@@ -1288,6 +1309,7 @@
       "delete-title": "Eliminar tu cuenta",
       "delete-description": "Esto elimina permanentemente tu cuenta y los datos vinculados a ella.",
       "delete-trigger": "Eliminar cuenta",
+      "cancel": "Cancelar",
       "delete-export-reminder": "¿Quieres guardar una copia? Descarga tus datos antes de continuar.",
       "delete-dialog-title": "¿Eliminar tu cuenta?",
       "delete-dialog-description": "Te enviaremos un enlace de confirmación por correo antes de eliminar nada. Caduca en 15 minutos.",
@@ -1569,6 +1591,8 @@
     }
   },
   "site-search": {
+    "label": "Buscar en el sitio",
+    "results-label": "Resultados de búsqueda",
     "placeholder": "Buscar en el sitio...",
     "recent-searches": "Búsquedas recientes",
     "no-results": "No hay resultados para"
@@ -1684,6 +1708,7 @@
     }
   },
   "guestbook": {
+    "message-label": "Mensaje del libro de visitas",
     "create-message-successfully": "Mensaje creado con éxito",
     "delete-dialog": {
       "description": "¿Estás seguro de que deseas eliminar este comentario? Esta acción no se puede deshacer.",
@@ -1771,6 +1796,7 @@
     "newsletter": {
       "title": "Mantente actualizado",
       "description": "Recibe notificaciones sobre nuevas publicaciones en el blog y actualizaciones de proyectos",
+      "email-label": "Dirección de correo electrónico",
       "placeholder": "Ingresa tu correo electrónico",
       "cta": "Suscribirse",
       "disclaimer": "Sin spam, puedes cancelar la suscripción en cualquier momento. Aplica la política de privacidad.",

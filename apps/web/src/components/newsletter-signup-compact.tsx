@@ -46,7 +46,7 @@ const NewsletterSignupCompact = () => {
   if (isSubscribed) {
     return (
       <div className='text-accent-earth-text flex items-center gap-2 text-sm'>
-        <CheckCircle className='h-4 w-4' />
+        <CheckCircle aria-hidden='true' className='h-4 w-4' />
         <span>{t('success-compact')}</span>
       </div>
     )
@@ -54,12 +54,18 @@ const NewsletterSignupCompact = () => {
 
   return (
     <div className='flex items-center gap-2'>
+      <label htmlFor='newsletter-compact-email' className='sr-only'>
+        {t('email-label')}
+      </label>
       <Input
+        id='newsletter-compact-email'
         type='email'
         placeholder={t('placeholder')}
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         required
+        aria-invalid={!!error}
+        aria-describedby={error ? 'newsletter-compact-email-error' : undefined}
         className='border-input bg-background h-9 w-40 border px-3 py-2 text-sm'
         disabled={isLoading}
       />
@@ -73,15 +79,22 @@ const NewsletterSignupCompact = () => {
         aria-label={t('cta')}
       >
         {isLoading ? (
-          <div className='size-4 animate-spin rounded-full border border-current border-t-transparent' />
+          <div
+            aria-hidden='true'
+            className='size-4 animate-spin rounded-full border border-current border-t-transparent'
+          />
         ) : (
-          <Send className='size-4' />
+          <Send aria-hidden='true' className='size-4' />
         )}
       </Button>
 
       {error && (
-        <div className='text-destructive absolute mt-10 flex items-center gap-1 text-xs'>
-          <AlertCircle className='h-3 w-3' />
+        <div
+          id='newsletter-compact-email-error'
+          role='alert'
+          className='text-destructive absolute mt-10 flex items-center gap-1 text-xs'
+        >
+          <AlertCircle aria-hidden='true' className='h-3 w-3' />
           <span>{error}</span>
         </div>
       )}

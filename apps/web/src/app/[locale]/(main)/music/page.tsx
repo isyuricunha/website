@@ -92,32 +92,32 @@ const Page = async (props: PageProps) => {
       <PageTitle title={title} description={description} />
 
       <div className='space-y-20'>
-        <section className='grid gap-8 lg:grid-cols-[1.25fr_0.85fr] lg:items-start'>
-          <div className='cursor-reveal'>
+        <section className='grid min-w-0 gap-8 lg:grid-cols-[1.25fr_0.85fr] lg:items-start'>
+          <div className='cursor-reveal min-w-0'>
             <NowListeningSection />
           </div>
-          <div className='cursor-reveal cursor-reveal-delay-1'>
+          <div className='cursor-reveal cursor-reveal-delay-1 min-w-0'>
             <MusicStatsSection />
           </div>
         </section>
 
-        <section className='grid gap-8 border-t-[0.5px] border-[var(--border-faint)] pt-20 lg:grid-cols-[0.9fr_1.1fr] lg:items-start'>
+        <section className='grid min-w-0 gap-8 border-t-[0.5px] border-[var(--border-faint)] pt-20 lg:grid-cols-[0.9fr_1.1fr] lg:items-start'>
           <div className='space-y-3'>
             <span className='label-mono'>{t('spotify.sections.listening-data.label')}</span>
             <h2 className='max-w-lg text-[clamp(28px,3vw,40px)] font-medium tracking-tighter'>
               {t('spotify.sections.listening-data.title')}
             </h2>
           </div>
-          <div className='cursor-reveal cursor-reveal-delay-1'>
+          <div className='cursor-reveal cursor-reveal-delay-1 min-w-0'>
             <ListeningHeatmap />
           </div>
         </section>
 
-        <section className='grid gap-8 border-t-[0.5px] border-[var(--border-faint)] pt-20 lg:grid-cols-2'>
-          <div className='cursor-reveal'>
+        <section className='grid min-w-0 gap-8 border-t-[0.5px] border-[var(--border-faint)] pt-20 lg:grid-cols-2'>
+          <div className='cursor-reveal min-w-0'>
             <TopArtistsSection />
           </div>
-          <div className='cursor-reveal cursor-reveal-delay-1'>
+          <div className='cursor-reveal cursor-reveal-delay-1 min-w-0'>
             <TopSongsSection />
           </div>
         </section>

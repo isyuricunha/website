@@ -240,7 +240,7 @@ const Sidebar = (props: SidebarProps) => {
       >
         <div
           data-sidebar='sidebar'
-          className='bg-sidebar group-data-[variant=floating]:border-sidebar-border flex size-full flex-col group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:shadow-sm'
+          className='bg-sidebar group-data-[variant=floating]:border-sidebar-border group-data-[variant=floating]:shadow-floating flex size-full flex-col group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border'
         >
           {children}
         </div>
@@ -283,7 +283,7 @@ const SidebarRail = (props: SidebarRailProps) => {
     <button
       data-sidebar='rail'
       aria-label='Toggle Sidebar'
-      tabIndex={-1}
+      tabIndex={0}
       onClick={toggleSidebar}
       title='Toggle Sidebar'
       type='button'
@@ -294,6 +294,7 @@ const SidebarRail = (props: SidebarRailProps) => {
         'hover:group-data-[collapsible=offcanvas]:bg-sidebar group-data-[collapsible=offcanvas]:translate-x-0 group-data-[collapsible=offcanvas]:after:left-full',
         '[[data-side=left][data-collapsible=offcanvas]_&]:-right-2',
         '[[data-side=right][data-collapsible=offcanvas]_&]:-left-2',
+        'focus-visible:ring-sidebar-ring focus-visible:ring-2 focus-visible:outline-hidden focus-visible:ring-inset',
         className
       )}
       {...rest}
@@ -310,7 +311,7 @@ const SidebarInset = (props: SidebarInsetProps) => {
     <main
       className={cn(
         'bg-background relative flex min-h-svh flex-1 flex-col',
-        'peer-data-[variant=inset]:min-h-[calc(100svh-(--spacing(4)))] md:peer-data-[variant=inset]:m-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-xl md:peer-data-[variant=inset]:shadow-sm md:peer-data-[variant=inset]:peer-data-[state=collapsed]:ml-2',
+        'peer-data-[variant=inset]:min-h-[calc(100svh-(--spacing(4)))] md:peer-data-[variant=inset]:m-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-xl md:peer-data-[variant=inset]:shadow-none md:peer-data-[variant=inset]:peer-data-[state=collapsed]:ml-2',
         className
       )}
       {...rest}
@@ -498,7 +499,7 @@ const sidebarMenuButtonVariants = cva({
     variant: {
       default: 'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground',
       outline:
-        'bg-background hover:bg-sidebar-accent hover:text-sidebar-accent-foreground shadow-[0_0_0_1px_hsl(var(--sidebar-border))] hover:shadow-[0_0_0_1px_hsl(var(--sidebar-accent))]'
+        'bg-background hover:bg-sidebar-accent hover:text-sidebar-accent-foreground shadow-sidebar-outline hover:shadow-sidebar-outline-hover'
     },
     size: {
       default: 'h-8 text-sm',

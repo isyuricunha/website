@@ -17,7 +17,6 @@ import GoToHomepage from '@/components/go-to-homepage'
 import Link from '@/components/link'
 import MainLayout from '@/components/main-layout'
 import SiteSearch from '@/components/site-search'
-import { getLocalizedPath } from '@/utils/get-localized-path'
 
 type PageProps = {
   params?: Promise<{
@@ -75,14 +74,14 @@ const NotFound = async (props: PageProps) => {
 
   return (
     <MainLayout>
-      <div className='mx-auto flex w-full max-w-4xl flex-col gap-10 pt-10 sm:pt-14'>
-        <div className='flex flex-col items-start'>
+      <div className='mx-auto flex w-full max-w-4xl min-w-0 flex-col gap-10 pt-10 sm:pt-14'>
+        <div className='flex min-w-0 flex-col items-start'>
           <div className='label-mono bg-bg-surface mb-4 inline-flex items-center gap-2 rounded-sm border border-[var(--border-subtle)] px-3 py-1'>
             <span>404</span>
             <span className='text-text-tertiary/70'>·</span>
             <span>{t('notFound.badge')}</span>
           </div>
-          <h1 className='text-[clamp(32px,4vw,52px)] leading-[1.08] font-normal tracking-tighter'>
+          <h1 className='text-[clamp(32px,4vw,52px)] leading-[1.08] font-normal tracking-tighter break-words'>
             {t('not-found')}
           </h1>
           <p className='mt-4 max-w-2xl text-base leading-relaxed sm:text-lg'>
@@ -90,58 +89,43 @@ const NotFound = async (props: PageProps) => {
           </p>
         </div>
 
-        <div className='mx-auto w-full max-w-lg'>
+        <div className='mx-auto w-full max-w-lg min-w-0'>
           <SiteSearch />
         </div>
 
         <div className='flex flex-wrap gap-3'>
           <GoToHomepage />
-          <Link
-            href={getLocalizedPath({ slug: '/sitemap', locale })}
-            className={buttonVariants({ variant: 'outline' })}
-          >
+          <Link href='/sitemap' className={buttonVariants({ variant: 'outline' })}>
             {t('layout.sitemap')}
           </Link>
-          <Link
-            href={getLocalizedPath({ slug: '/blog', locale })}
-            className={buttonVariants({ variant: 'outline' })}
-          >
+          <Link href='/blog' className={buttonVariants({ variant: 'outline' })}>
             {t('layout.blog')}
           </Link>
-          <Link
-            href={getLocalizedPath({ slug: '/snippet', locale })}
-            className={buttonVariants({ variant: 'outline' })}
-          >
+          <Link href='/snippet' className={buttonVariants({ variant: 'outline' })}>
             {t('layout.snippets')}
           </Link>
-          <Link
-            href={getLocalizedPath({ slug: '/projects', locale })}
-            className={buttonVariants({ variant: 'outline' })}
-          >
+          <Link href='/projects' className={buttonVariants({ variant: 'outline' })}>
             {t('layout.projects')}
           </Link>
-          <Link
-            href={getLocalizedPath({ slug: '/guestbook', locale })}
-            className={buttonVariants({ variant: 'outline' })}
-          >
+          <Link href='/guestbook' className={buttonVariants({ variant: 'outline' })}>
             {t('layout.guestbook')}
           </Link>
         </div>
 
-        <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-3'>
-          <Card>
-            <CardHeader className='pb-3'>
+        <div className='grid min-w-0 gap-4 sm:grid-cols-2 lg:grid-cols-3'>
+          <Card className='min-w-0'>
+            <CardHeader className='min-w-0 pb-3'>
               <CardTitle className='flex items-center gap-2 text-lg'>
                 <FileText className='size-4' />
                 {t('notFound.recentPosts')}
               </CardTitle>
               <CardDescription>{t('notFound.recentPostsDescription')}</CardDescription>
             </CardHeader>
-            <CardContent className='flex flex-col gap-3'>
+            <CardContent className='flex min-w-0 flex-col gap-3'>
               {recent_posts.map((post) => (
                 <Link
                   key={post.slug}
-                  href={getLocalizedPath({ slug: `/blog/${post.slug}`, locale })}
+                  href={`/blog/${post.slug}`}
                   className='hover:bg-bg-hover -mx-2 rounded-lg px-2 py-2 transition-colors'
                 >
                   <div className='flex items-start justify-between gap-3'>
@@ -156,7 +140,7 @@ const NotFound = async (props: PageProps) => {
                 </Link>
               ))}
               <Link
-                href={getLocalizedPath({ slug: '/blog', locale })}
+                href='/blog'
                 className={buttonVariants({
                   variant: 'ghost',
                   size: 'sm',
@@ -168,19 +152,19 @@ const NotFound = async (props: PageProps) => {
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader className='pb-3'>
+          <Card className='min-w-0'>
+            <CardHeader className='min-w-0 pb-3'>
               <CardTitle className='flex items-center gap-2 text-lg'>
                 <Code className='size-4' />
                 {t('notFound.recentSnippets')}
               </CardTitle>
               <CardDescription>{t('notFound.recentSnippetsDescription')}</CardDescription>
             </CardHeader>
-            <CardContent className='flex flex-col gap-3'>
+            <CardContent className='flex min-w-0 flex-col gap-3'>
               {recent_snippets.map((snippet) => (
                 <Link
                   key={snippet.slug}
-                  href={getLocalizedPath({ slug: `/snippet/${snippet.slug}`, locale })}
+                  href={`/snippet/${snippet.slug}`}
                   className='hover:bg-bg-hover -mx-2 rounded-lg px-2 py-2 transition-colors'
                 >
                   <div className='flex items-start justify-between gap-3'>
@@ -195,7 +179,7 @@ const NotFound = async (props: PageProps) => {
                 </Link>
               ))}
               <Link
-                href={getLocalizedPath({ slug: '/snippet', locale })}
+                href='/snippet'
                 className={buttonVariants({
                   variant: 'ghost',
                   size: 'sm',
@@ -207,19 +191,19 @@ const NotFound = async (props: PageProps) => {
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader className='pb-3'>
+          <Card className='min-w-0'>
+            <CardHeader className='min-w-0 pb-3'>
               <CardTitle className='flex items-center gap-2 text-lg'>
                 <FolderGit2 className='size-4' />
                 {t('notFound.recentProjects')}
               </CardTitle>
               <CardDescription>{t('notFound.recentProjectsDescription')}</CardDescription>
             </CardHeader>
-            <CardContent className='flex flex-col gap-3'>
+            <CardContent className='flex min-w-0 flex-col gap-3'>
               {recent_projects.map((project) => (
                 <Link
                   key={project.slug}
-                  href={getLocalizedPath({ slug: `/projects/${project.slug}`, locale })}
+                  href={`/projects/${project.slug}`}
                   className='hover:bg-bg-hover -mx-2 rounded-lg px-2 py-2 transition-colors'
                 >
                   <div className='flex items-start justify-between gap-3'>
@@ -234,7 +218,7 @@ const NotFound = async (props: PageProps) => {
                 </Link>
               ))}
               <Link
-                href={getLocalizedPath({ slug: '/projects', locale })}
+                href='/projects'
                 className={buttonVariants({
                   variant: 'ghost',
                   size: 'sm',

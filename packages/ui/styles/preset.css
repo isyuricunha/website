@@ -90,6 +90,11 @@
   --color-sidebar-ring: hsl(var(--sidebar-ring));
 
   --shadow-feature-card: var(--feature-card);
+  --shadow-control: var(--shadow-control);
+  --shadow-floating: var(--shadow-floating);
+  --shadow-tooltip: var(--shadow-tooltip);
+  --shadow-sidebar-outline: var(--shadow-sidebar-outline);
+  --shadow-sidebar-outline-hover: var(--shadow-sidebar-outline-hover);
 
   --radius-lg: var(--radius-lg);
   --radius-md: var(--radius-md);
@@ -579,10 +584,14 @@
     --radius-xl: 12px;
     --radius-window: 8px;
     --transition: 160ms cubic-bezier(0.2, 0, 0, 1);
+    --duration-sheet: 220ms;
 
     --shadow-window: 0 32px 80px rgb(0 0 0 / 0.48);
+    --shadow-control: 0 1px 2px rgb(0 0 0 / 0.18);
     --shadow-floating: 0 18px 48px rgb(0 0 0 / 0.42);
     --shadow-tooltip: 0 8px 24px rgb(0 0 0 / 0.35);
+    --shadow-sidebar-outline: 0 0 0 1px hsl(var(--sidebar-border));
+    --shadow-sidebar-outline-hover: 0 0 0 1px hsl(var(--sidebar-accent));
     --overlay: rgba(0, 0, 0, 0.32);
 
     --background: 42.9 15.6% 8.8%;
