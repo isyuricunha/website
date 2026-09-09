@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 
+import { requireAdmin } from '@/lib/admin-auth'
 import { aiService } from '@/lib/ai/ai-service'
 import { logger } from '@/lib/logger'
 import { ratelimit } from '@/lib/ratelimit'
@@ -20,6 +21,11 @@ type ContentResult = string | string[]
 
 export async function POST(request: NextRequest) {
   try {
+    // This endpoint generates AI content at real provider cost and has no
+    // public caller; gate it to admins like the other AI routes.
+    const authResponse = await requireAdmin()
+    if (authResponse) return authResponse
+
     const ip = getClientIp(request.headers)
     const { success } = await ratelimit.limit(rate_limit_keys.ai_content(ip))
 

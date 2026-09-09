@@ -19,6 +19,10 @@ vi.mock('@/lib/spam-detection', () => ({
   getClientIp: vi.fn()
 }))
 
+vi.mock('@/lib/admin-auth', () => ({
+  requireAdmin: vi.fn()
+}))
+
 vi.mock('@/lib/ai/ai-service', () => ({
   aiService: {
     getAvailableProviders: vi.fn(),
@@ -39,10 +43,31 @@ describe('/api/ai/content', () => {
     vi.clearAllMocks()
   })
 
+  it('returns 401 when the caller is not an authenticated admin', async () => {
+    const { requireAdmin } = await import('@/lib/admin-auth')
+    const { POST } = await import('@/app/api/ai/content/route')
+
+    vi.mocked(requireAdmin).mockResolvedValue(
+      Response.json({ error: 'Unauthorized' }, { status: 401 }) as never
+    )
+
+    const req = {
+      headers: new Headers(),
+      json: async () => ({ action: 'tags', content: 'hello world' })
+    } as unknown as Parameters<typeof POST>[0]
+
+    const res = await POST(req)
+
+    expect(res.status).toBe(401)
+    expect(await res.json()).toEqual({ error: 'Unauthorized' })
+  })
+
   it('returns 429 when rate limited', async () => {
+    const { requireAdmin } = await import('@/lib/admin-auth')
     const { ratelimit } = await import('@/lib/ratelimit')
     const { getClientIp } = await import('@/lib/spam-detection')
 
+    vi.mocked(requireAdmin).mockResolvedValue(null)
     vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
     vi.mocked(ratelimit.limit).mockResolvedValue({ success: false } as never)
 
@@ -62,10 +87,12 @@ describe('/api/ai/content', () => {
   })
 
   it('returns 400 on invalid payload (zod)', async () => {
+    const { requireAdmin } = await import('@/lib/admin-auth')
     const { ratelimit } = await import('@/lib/ratelimit')
     const { getClientIp } = await import('@/lib/spam-detection')
     const { aiService } = await import('@/lib/ai/ai-service')
 
+    vi.mocked(requireAdmin).mockResolvedValue(null)
     vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
     vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
     vi.mocked(aiService.getAvailableProviders).mockReturnValue(['ollama'])
