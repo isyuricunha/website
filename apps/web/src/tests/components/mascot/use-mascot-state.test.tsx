@@ -101,4 +101,34 @@ describe('useMascotState', () => {
     expect(sessionStorage.getItem(DISMISSED_KEY)).toBeNull()
     expect(localStorage.getItem(HIDDEN_KEY)).toBe('1')
   })
+
+  it('activates konami even when the sequence is preceded by wrong keys', async () => {
+    const { result } = renderHook(() => useMascotState(), { wrapper })
+
+    await waitFor(() => expect(result.current.mounted).toBe(true))
+
+    const konami = [
+      'ArrowUp',
+      'ArrowUp',
+      'ArrowDown',
+      'ArrowDown',
+      'ArrowLeft',
+      'ArrowRight',
+      'ArrowLeft',
+      'ArrowRight',
+      'b',
+      'a'
+    ]
+
+    act(() => {
+      // A wrong key first: the classic sliding-window must recover and still activate.
+      dispatchEvent(new KeyboardEvent('keydown', { key: 'x' }))
+      for (const key of konami) {
+        dispatchEvent(new KeyboardEvent('keydown', { key }))
+      }
+    })
+
+    await waitFor(() => expect(result.current.state.isKonamiMode).toBe(true))
+    expect(localStorage.getItem('vc_mascot_konami_mode')).toBe('1')
+  })
 })
