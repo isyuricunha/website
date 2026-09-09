@@ -42,6 +42,12 @@ const redisSetMock = vi.fn(async () => {
   return
 })
 
+vi.mock('content-collections', () => {
+  return {
+    allPosts: [{ slug: 'ok-post' }, { slug: 'hello' }]
+  }
+})
+
 vi.mock('@isyuricunha/kv', () => {
   return {
     ratelimit: {
@@ -180,7 +186,6 @@ describe('viewsRouter', () => {
     const { viewsRouter } = await import('@/trpc/routers/views')
 
     const db = createDbMock()
-    db.__mocks.insertReturning.mockResolvedValueOnce([{ views: 1 }])
 
     const headers = new Headers()
     headers.set('x-forwarded-for', '203.0.113.10')
@@ -190,9 +195,9 @@ describe('viewsRouter', () => {
       headers
     } as unknown as Parameters<typeof viewsRouter.createCaller>[0])
 
-    await expect(caller.increment({ slug: 'missing-post' })).resolves.toBeUndefined()
+    await expect(caller.increment({ slug: 'missing-post' })).rejects.toThrow('Post not found')
 
-    expect(redisSetMock).toHaveBeenCalledWith('post:views:missing-post', 1)
+    expect(redisSetMock).not.toHaveBeenCalled()
   })
 
   it('increment writes numeric nextViews to redis on success', async () => {

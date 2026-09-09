@@ -39,6 +39,7 @@ const createDbMock = (rowCountsByTable: Record<string, number> = {}) => {
   const ai_chat_feedback_table: Table = { [Symbol.for('drizzle:Name')]: 'ai_chat_feedback' }
   const security_events_table: Table = { [Symbol.for('drizzle:Name')]: 'security_events' }
   const error_logs_table: Table = { [Symbol.for('drizzle:Name')]: 'error_logs' }
+  const api_usage_table: Table = { [Symbol.for('drizzle:Name')]: 'api_usage' }
 
   const del = vi.fn((table: Table) => {
     const name = table?.[Symbol.for('drizzle:Name')] as string
@@ -60,7 +61,8 @@ const createDbMock = (rowCountsByTable: Record<string, number> = {}) => {
       login_attempts_table,
       ai_chat_feedback_table,
       security_events_table,
-      error_logs_table
+      error_logs_table,
+      api_usage_table
     }
   }
 }
@@ -88,6 +90,7 @@ const createDbModuleMock = (db: DbMock) => {
       resolved: 'security_events.resolved',
       createdAt: 'security_events.createdAt'
     },
+    apiUsage: { ...db.__tables.api_usage_table, createdAt: 'api_usage.createdAt' },
     errorLogs: {
       ...db.__tables.error_logs_table,
       resolved: 'error_logs.resolved',
@@ -170,6 +173,7 @@ describe('/api/cron/data-retention', () => {
     const db = createDbMock({
       analytics_events: 12,
       performance_metrics: 3,
+      api_usage: 7,
       login_attempts: 5,
       ai_chat_feedback: 1,
       security_events: 2,
@@ -194,16 +198,18 @@ describe('/api/cron/data-retention', () => {
     expect(json.deleted).toEqual({
       analyticsEvents: 12,
       performanceMetrics: 3,
+      apiUsage: 7,
       loginAttempts: 5,
       aiChatFeedback: 1,
       securityEvents: 2,
       errorLogs: 4
     })
 
-    // All six tables must have been targeted, in this order.
+    // All seven tables must have been targeted, in this order.
     expect(db.__removalHistory.map((c) => c.table)).toEqual([
       'analytics_events',
       'performance_metrics',
+      'api_usage',
       'login_attempts',
       'ai_chat_feedback',
       'security_events',

@@ -24,7 +24,7 @@ const Footer = () => {
 
   return (
     <footer className='relative mx-auto flex w-full max-w-6xl flex-col border-t border-[var(--border-faint)] px-4 py-12 sm:px-8'>
-      {flags.spotify ? <NowPlaying /> : null}
+      {flags.lastfm ? <NowPlaying /> : null}
       <div className='mt-12 grid grid-cols-2 sm:grid-cols-3'>
         {FOOTER_LINKS.map((list) => (
           <div key={list.id} className='mb-10 flex flex-col items-start gap-4 pr-4'>

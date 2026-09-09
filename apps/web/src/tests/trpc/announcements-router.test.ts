@@ -30,6 +30,12 @@ vi.mock('@/lib/auth', () => {
   }
 })
 
+vi.mock('@isyuricunha/kv', () => ({
+  ratelimit: {
+    limit: vi.fn(async () => ({ success: true }))
+  }
+}))
+
 vi.mock('@/lib/logger', () => ({
   logger: {
     error: vi.fn(),

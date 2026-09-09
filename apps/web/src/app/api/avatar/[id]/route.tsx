@@ -5,7 +5,6 @@
  *
  * Modified by: isyuricunha
  */
-import { getErrorMessage } from '@isyuricunha/utils'
 import { ImageResponse } from 'next/og'
 import { NextResponse } from 'next/server'
 
@@ -38,13 +37,19 @@ const getAvatarPalette = (id: string) => {
 
 export const GET = async (req: Request, props: AvatarRouteProps) => {
   const params = new URL(req.url)
-  const size = params.searchParams.get('size') ?? '40'
+  const rawSize = params.searchParams.get('size') ?? '40'
+  // Unvalidated values (`?size=abc`, `?size=99999999`) crash ImageResponse and
+  // allow unbounded render work; clamp to a sane square avatar range instead.
+  const numericSize = Number(rawSize)
+  const size = Number.isFinite(numericSize)
+    ? String(Math.min(Math.max(numericSize, 16), 512))
+    : '40'
 
   try {
     const { id } = await props.params
 
     const palette = getAvatarPalette(id)
-    const numericSize = Number(size)
+    const dimension = Number(size)
 
     return new ImageResponse(
       <svg
@@ -57,34 +62,28 @@ export const GET = async (req: Request, props: AvatarRouteProps) => {
         <g>
           <rect fill={palette.base} x='0' y='0' width={size} height={size} />
           <circle
-            cx={numericSize * 0.72}
-            cy={numericSize * 0.24}
-            r={numericSize * 0.34}
+            cx={dimension * 0.72}
+            cy={dimension * 0.24}
+            r={dimension * 0.34}
             fill={palette.surface}
           />
           <rect
             fill={palette.accent}
             opacity='0.72'
             x='0'
-            y={numericSize * 0.72}
+            y={dimension * 0.72}
             width={size}
-            height={numericSize * 0.28}
+            height={dimension * 0.28}
           />
         </g>
       </svg>,
       {
-        width: numericSize,
-        height: numericSize
+        width: dimension,
+        height: dimension
       }
     )
-  } catch (error) {
-    return NextResponse.json(
-      {
-        error: 'Failed to generate avatar: ' + getErrorMessage(error)
-      },
-      {
-        status: 500
-      }
-    )
+  } catch {
+    // Generic error body: never reflect internal exception text to callers.
+    return NextResponse.json({ error: 'Failed to generate avatar' }, { status: 500 })
   }
 }

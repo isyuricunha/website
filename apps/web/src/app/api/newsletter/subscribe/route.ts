@@ -5,7 +5,7 @@ import { Resend } from 'resend'
 
 import { env } from '@isyuricunha/env'
 import { NewsletterConfirmation, resolve_email_locale } from '@isyuricunha/emails'
-import { ratelimit } from '@/lib/ratelimit'
+import { newsletterRatelimit } from '@/lib/ratelimit'
 import { rate_limit_keys } from '@/lib/rate-limit-keys'
 import { getClientIp } from '@/lib/spam-detection'
 import { logger } from '@/lib/logger'
@@ -21,7 +21,7 @@ const CONFIRM_TTL_SECONDS = 60 * 60 * 24
 export async function POST(request: NextRequest) {
   try {
     const ip = getClientIp(request.headers)
-    const { success } = await ratelimit.limit(rate_limit_keys.newsletter_subscribe(ip))
+    const { success } = await newsletterRatelimit.limit(rate_limit_keys.newsletter_subscribe(ip))
 
     if (!success) {
       return NextResponse.json(

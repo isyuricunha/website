@@ -6,6 +6,7 @@ import {
   aiChatFeedback,
   analyticsEvents,
   and,
+  apiUsage,
   db,
   errorLogs,
   eq,
@@ -37,6 +38,7 @@ const DAY_MS = 24 * 60 * 60 * 1000
 const RETENTION = {
   analyticsEventsDays: 180,
   performanceMetricsDays: 90,
+  apiUsageDays: 90,
   loginAttemptsDays: 90,
   aiChatFeedbackDays: 365,
   resolvedSecurityEventsDays: 180,
@@ -76,6 +78,11 @@ export async function GET(request: NextRequest) {
         .delete(performanceMetrics)
         .where(lt(performanceMetrics.createdAt, cutoff(now, RETENTION.performanceMetricsDays)))
       deleted.performanceMetrics = performanceResult.rowCount ?? 0
+
+      const apiUsageResult = await db
+        .delete(apiUsage)
+        .where(lt(apiUsage.createdAt, cutoff(now, RETENTION.apiUsageDays)))
+      deleted.apiUsage = apiUsageResult.rowCount ?? 0
 
       const loginAttemptsResult = await db
         .delete(loginAttempts)

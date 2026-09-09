@@ -2,6 +2,7 @@ import type { RouterOutputs } from '../react'
 
 import { TRPCError } from '@trpc/server'
 import { and, comments, desc, eq, lt, users, sessions, sql } from '@isyuricunha/db'
+import { ratelimit } from '@isyuricunha/kv'
 import { z } from 'zod'
 
 import { env } from '@isyuricunha/env'
@@ -138,6 +139,12 @@ export const usersRouter = createTRPCRouter({
   getPublicProfile: publicProcedure
     .input(publicProfileHandleInputSchema)
     .query(async ({ ctx, input }) => {
+      // DB-backed public lookup: rate limit so anonymous traffic cannot hammer
+      // the profile query (and the timing/apiUsage telemetry rows it creates).
+      const ip = getIpFromHeaders(ctx.headers)
+      const { success: rl_ok } = await ratelimit.limit(`users:public-profile:${ip}`)
+      if (!rl_ok) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+
       const handle_lower = input.handle.toLowerCase()
 
       const user = await ctx.db.query.users.findFirst({
@@ -545,6 +552,10 @@ export const usersRouter = createTRPCRouter({
   }),
 
   requestPasswordReset: publicProcedure.input(emailInputSchema).mutation(async ({ ctx, input }) => {
+    const ip = getIpFromHeaders(ctx.headers)
+    const { success: rl_ok } = await ratelimit.limit(`users:password-reset:${ip}`)
+    if (!rl_ok) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+
     try {
       const locale = get_request_locale(ctx.headers)
       const baseUrl = get_site_url(ctx.headers)

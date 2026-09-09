@@ -1,6 +1,13 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 
 import { hashIpForAnalytics } from '@/lib/ip-hash'
+
+vi.mock('@isyuricunha/env', () => ({
+  env: {
+    NODE_ENV: 'test',
+    ANALYTICS_IP_HASH_SALT: 'test-salt-0123456789abcdef'
+  }
+}))
 
 describe('hashIpForAnalytics', () => {
   it('returns null for null/undefined/empty input', () => {

@@ -1,4 +1,5 @@
 import { TRPCError } from '@trpc/server'
+import { allPosts } from 'content-collections'
 import { eq, posts, sql, sum } from '@isyuricunha/db'
 import { ratelimit, redis, redisKeys } from '@isyuricunha/kv'
 import { randomUUID } from 'crypto'
@@ -76,6 +77,13 @@ export const viewsRouter = createTRPCRouter({
     const { success } = await ratelimit.limit(getKey(`increment:${ip}`))
 
     if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+
+    // Only count views for slugs that actually exist in the content collection;
+    // otherwise public calls would create rows for arbitrary invented slugs.
+    const post_exists = allPosts.every((post) => post.slug !== input.slug)
+    if (post_exists) {
+      throw new TRPCError({ code: 'NOT_FOUND', message: 'Post not found' })
+    }
 
     const upserted = await ctx.db
       .insert(posts)

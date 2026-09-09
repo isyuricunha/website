@@ -1,14 +1,18 @@
 import { createHash } from 'node:crypto'
 
+import { env } from '@isyuricunha/env'
+
+import { logger } from '@/lib/logger'
+
 /**
  * Salt used for one-way hashing of IP addresses before they are stored in
  * tables that never need the plaintext value back (currently only
- * `analytics_events`). Set a real secret in production via
- * `ANALYTICS_IP_HASH_SALT`; the fallback exists only so local/dev/test runs
- * without the env var configured still produce a stable (not reversible)
- * hash instead of throwing.
+ * `analytics_events`). Must be a real secret in production: hashing with a
+ * publicly-known salt would make IPs trivially reversible. In production a
+ * missing salt disables IP hashing (returns null) instead of using a
+ * guessable value; the static fallback keeps local/dev/test runs working.
  */
-const HASH_SALT = process.env.ANALYTICS_IP_HASH_SALT ?? 'yuricunha-analytics-dev-salt'
+const DEV_FALLBACK_SALT = 'yuricunha-analytics-dev-salt'
 
 /**
  * One-way, deterministic hash for an IP address destined for a
@@ -26,5 +30,16 @@ const HASH_SALT = process.env.ANALYTICS_IP_HASH_SALT ?? 'yuricunha-analytics-dev
  */
 export const hashIpForAnalytics = (ip: string | null | undefined): string | null => {
   if (!ip) return null
-  return createHash('sha256').update(`${HASH_SALT}:${ip}`).digest('hex')
+
+  const is_production = env.NODE_ENV === 'production'
+  const salt = env.ANALYTICS_IP_HASH_SALT ?? (is_production ? null : DEV_FALLBACK_SALT)
+
+  if (!salt) {
+    logger.warn(
+      'ANALYTICS_IP_HASH_SALT is not set in production: analytics IP hashing is disabled.'
+    )
+    return null
+  }
+
+  return createHash('sha256').update(`${salt}:${ip}`).digest('hex')
 }
