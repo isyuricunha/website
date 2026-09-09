@@ -1,6 +1,7 @@
+import type { EmailLocale } from '@isyuricunha/emails'
 import { i18n } from '@isyuricunha/i18n/config'
 
-type request_locale = 'en' | 'pt'
+type request_locale = EmailLocale
 
 const normalize_locale = (value: string): request_locale | null => {
   const trimmed = value.trim().toLowerCase()
@@ -9,10 +10,12 @@ const normalize_locale = (value: string): request_locale | null => {
   const [base] = trimmed.split('-')
   if (!base) return null
 
-  if (!i18n.locales.includes(base)) return null
+  if (base === 'zh') return 'zh-CN'
 
-  if (base === 'en' || base === 'pt') return base
-  return null
+  const match = i18n.locales.find((locale) => locale.toLowerCase() === base)
+  if (!match) return null
+
+  return match as EmailLocale
 }
 
 const get_cookie_value = (cookie_header: string | null, name: string): string | null => {

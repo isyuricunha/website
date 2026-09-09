@@ -19,6 +19,7 @@ import type { CSSProperties } from 'react'
 import Footer from '../components/footer'
 import Logo from '../components/logo'
 import { emailThemeVars } from '../theme'
+import { EMAIL_LANG, resolve_email_locale, type EmailLocale } from '../locales'
 
 type ReplyProps = {
   reply: string
@@ -33,30 +34,72 @@ type ReplyProps = {
     title: string
     url: string
   }
-  locale?: 'en' | 'pt'
+  locale?: EmailLocale
+}
+
+const copy_by_locale: Record<
+  EmailLocale,
+  {
+    title: string
+    intro_after_name: string
+    button: string
+  }
+> = {
+  en: {
+    title: 'Reply to Your Comment',
+    intro_after_name: 'replied to your comment on',
+    button: 'View Reply'
+  },
+  pt: {
+    title: 'Resposta ao seu comentário',
+    intro_after_name: 'respondeu ao seu comentário em',
+    button: 'Ver resposta'
+  },
+  es: {
+    title: 'Respuesta a tu comentario',
+    intro_after_name: 'respondió a tu comentario en',
+    button: 'Ver respuesta'
+  },
+  ja: {
+    title: 'コメントへの返信',
+    intro_after_name: 'さんが次の記事のコメントに返信しました：',
+    button: '返信を見る'
+  },
+  'zh-CN': {
+    title: '您的评论收到回复',
+    intro_after_name: '回复了您在以下文章的评论：',
+    button: '查看回复'
+  },
+  fr: {
+    title: 'Réponse à votre commentaire',
+    intro_after_name: 'a répondu à votre commentaire sur',
+    button: 'Voir la réponse'
+  },
+  de: {
+    title: 'Antwort auf deinen Kommentar',
+    intro_after_name: 'hat auf deinen Kommentar geantwortet bei',
+    button: 'Antwort ansehen'
+  }
+}
+
+const previews: Record<EmailLocale, (title: string) => string> = {
+  en: (title) => `New reply on the post "${title}" on yuricunha.com`,
+  pt: (title) => `Nova resposta no post "${title}" em yuricunha.com`,
+  es: (title) => `Nueva respuesta en la publicación "${title}" en yuricunha.com`,
+  ja: (title) => `記事「${title}」に新しい返信があります（yuricunha.com）`,
+  'zh-CN': (title) => `文章「${title}」在 yuricunha.com 上有新回复`,
+  fr: (title) => `Nouvelle réponse sur l’article « ${title} » sur yuricunha.com`,
+  de: (title) => `Neue Antwort zum Beitrag „${title}“ auf yuricunha.com`
 }
 
 const Reply = (props: ReplyProps) => {
   const { reply, replier, comment, date, id, post } = props
-  const locale = props.locale ?? 'en'
-
-  const copy =
-    locale === 'pt'
-      ? {
-          preview: `Nova resposta no post "${post.title}" em yuricunha.com`,
-          title: 'Resposta ao seu comentário',
-          intro_after_name: 'respondeu ao seu comentário em',
-          button: 'Ver resposta'
-        }
-      : {
-          preview: `New reply on the post "${post.title}" on yuricunha.com`,
-          title: 'Reply to Your Comment',
-          intro_after_name: 'replied to your comment on',
-          button: 'View Reply'
-        }
+  const locale = resolve_email_locale(props.locale)
+  const copy = copy_by_locale[locale]
+  const preview = previews[locale](post.title)
 
   return (
-    <Html lang={locale} dir='ltr'>
+    <Html lang={EMAIL_LANG[locale]} dir='ltr'>
       <Head>
         <Font
           fontFamily='Geist'
@@ -69,7 +112,7 @@ const Reply = (props: ReplyProps) => {
           fontStyle='normal'
         />
       </Head>
-      <Preview>{copy.preview}</Preview>
+      <Preview>{preview}</Preview>
       <Tailwind>
         <Body
           className='m-auto bg-[color:var(--email-bg)] p-1'

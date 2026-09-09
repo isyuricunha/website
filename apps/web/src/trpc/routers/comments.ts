@@ -323,7 +323,17 @@ export const commentsRouter = createTRPCRouter({
             from: 'yuricunha.com <me@yuricunha.com>',
             to: env.AUTHOR_EMAIL,
             subject:
-              locale === 'pt' ? 'Novo comentário no seu post' : 'New comment on your blog post',
+              (
+                {
+                  en: 'New comment on your blog post',
+                  pt: 'Novo comentário no seu post',
+                  es: 'Nuevo comentario en tu publicación',
+                  ja: 'ブログ記事に新しいコメント',
+                  'zh-CN': '您的博客文章有新评论',
+                  fr: 'Nouveau commentaire sur votre article',
+                  de: 'Neuer Kommentar zu deinem Blogbeitrag'
+                } as Record<string, string>
+              )[locale] ?? 'New comment on your blog post',
             react: Comment({
               comment: input.content,
               commenter: userProfile,
@@ -355,7 +365,17 @@ export const commentsRouter = createTRPCRouter({
               from: 'yuricunha.com <me@yuricunha.com>',
               to: parentComment.user.email,
               subject:
-                locale === 'pt' ? 'Nova resposta ao seu comentário' : 'New reply to your comment',
+                (
+                  {
+                    en: 'New reply to your comment',
+                    pt: 'Nova resposta ao seu comentário',
+                    es: 'Nueva respuesta a tu comentario',
+                    ja: 'コメントに新しい返信',
+                    'zh-CN': '您的评论有新回复',
+                    fr: 'Nouvelle réponse à votre commentaire',
+                    de: 'Neue Antwort auf deinen Kommentar'
+                  } as Record<string, string>
+                )[locale] ?? 'New reply to your comment',
               react: Reply({
                 reply: input.content,
                 replier: userProfile,
