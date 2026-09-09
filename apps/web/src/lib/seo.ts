@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 
 import { i18n } from '@isyuricunha/i18n/config'
 
-import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from '@/lib/constants'
+import { SITE_DESCRIPTION, SITE_GITHUB_URL, SITE_NAME, SITE_URL, SITE_X_URL } from '@/lib/constants'
 import { getLocalizedPath } from '@/utils/get-localized-path'
 
 const strip_locale_prefix = (pathname: string) => {
@@ -179,7 +179,14 @@ export function generateWebsiteJsonLd() {
     '@type': 'WebSite',
     name: SITE_NAME,
     description: SITE_DESCRIPTION,
-    url: SITE_URL
+    url: SITE_URL,
+    author: {
+      '@type': 'Person',
+      name: SITE_NAME,
+      url: SITE_URL,
+      sameAs: [SITE_X_URL, SITE_GITHUB_URL]
+    },
+    inLanguage: i18n.defaultLocale
   }
 }
 

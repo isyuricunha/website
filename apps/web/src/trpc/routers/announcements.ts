@@ -1,4 +1,5 @@
 import { TRPCError } from '@trpc/server'
+import { ratelimit } from '@isyuricunha/kv'
 import {
   and,
   announcements,
@@ -191,9 +192,16 @@ ${input.content}
   getAnnouncements: publicProcedure
     .input(announcementsQuerySchema)
     .query(async ({ ctx, input }) => {
+      const ip = getIpFromHeaders(ctx.headers)
+      const { success: rl_ok } = await ratelimit.limit(`announcements:list:${ip}`)
+      if (!rl_ok) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+
       try {
         const isAdmin = ctx.session?.user?.role === 'admin'
         const adminView = input.adminView && isAdmin
+        // Non-admin callers always get active announcements only: an omitted
+        // `active` must never leak inactive/draft content publicly.
+        const activeFilter = adminView ? input.active : (input.active ?? true)
         const locale = input.locale ?? 'en'
         const normalizedLocale = locale.startsWith('zh')
           ? 'zh-CN'
@@ -229,8 +237,8 @@ ${input.content}
 
         const conditions = []
 
-        if (input.active !== undefined) {
-          conditions.push(eq(announcements.isActive, input.active))
+        if (activeFilter !== undefined) {
+          conditions.push(eq(announcements.isActive, activeFilter))
         }
 
         const whereClause = conditions.length > 0 ? and(...conditions) : undefined
@@ -243,9 +251,9 @@ ${input.content}
         let visibleAnnouncements = announcementList
 
         // Apply active filtering defensively (useful in tests and prevents relying solely on DB where clause)
-        if (input.active !== undefined) {
+        if (activeFilter !== undefined) {
           visibleAnnouncements = visibleAnnouncements.filter(
-            (announcement) => announcement.isActive === input.active
+            (announcement) => announcement.isActive === activeFilter
           )
         }
 
@@ -400,6 +408,10 @@ ${input.content}
   markAnnouncementViewed: publicProcedure
     .input(announcementIdSchema)
     .mutation(async ({ ctx, input }) => {
+      const ip = getIpFromHeaders(ctx.headers)
+      const { success: rl_ok } = await ratelimit.limit(`announcements:viewed:${ip}`)
+      if (!rl_ok) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+
       try {
         if (!ctx.session?.user) {
           return { success: true }
@@ -459,6 +471,10 @@ ${input.content}
   dismissAnnouncement: publicProcedure
     .input(announcementIdSchema)
     .mutation(async ({ ctx, input }) => {
+      const dip = getIpFromHeaders(ctx.headers)
+      const { success: rl_ok } = await ratelimit.limit(`announcements:dismiss:${dip}`)
+      if (!rl_ok) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+
       try {
         // For authenticated users, store dismissal in database
         if (ctx.session?.user) {

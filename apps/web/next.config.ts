@@ -58,6 +58,12 @@ const config: NextConfig = {
         hostname: 'lastfm.freetls.fastly.net'
       },
       {
+        // Last.fm's image CDN serves covers from lastfm-img.* — without this,
+        // /_next/image returns 400 for every music cover on /music.
+        protocol: 'https',
+        hostname: 'lastfm-img.freetls.fastly.net'
+      },
+      {
         protocol: 'https',
         hostname: 'avatars.githubusercontent.com'
       },

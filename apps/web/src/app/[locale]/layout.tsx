@@ -62,6 +62,16 @@ export const generateMetadata = async (props: LayoutProps): Promise<Metadata> =>
       }
     },
     manifest: '/favicon/site.webmanifest',
+    alternates: {
+      types: {
+        'application/rss+xml': [
+          {
+            url: locale === i18n.defaultLocale ? '/rss.xml' : `/${locale}/rss.xml`,
+            title: t('site-title')
+          }
+        ]
+      }
+    },
     twitter: {
       card: 'summary_large_image',
       title: SITE_NAME,

@@ -48,6 +48,9 @@ vi.mock('@react-email/render', () => ({
 vi.mock('@/lib/ratelimit', () => ({
   ratelimit: {
     limit: vi.fn()
+  },
+  newsletterRatelimit: {
+    limit: vi.fn()
   }
 }))
 
@@ -67,11 +70,11 @@ describe('/api/newsletter/subscribe (double opt-in)', () => {
     }) as unknown as Parameters<typeof import('@/app/api/newsletter/subscribe/route').POST>[0]
 
   it('returns 429 when rate limited', async () => {
-    const { ratelimit } = await import('@/lib/ratelimit')
+    const { newsletterRatelimit } = await import('@/lib/ratelimit')
     const { getClientIp } = await import('@/lib/spam-detection')
 
     vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
-    vi.mocked(ratelimit.limit).mockResolvedValue({ success: false } as never)
+    vi.mocked(newsletterRatelimit.limit).mockResolvedValue({ success: false } as never)
 
     const { POST } = await import('@/app/api/newsletter/subscribe/route')
 
@@ -84,11 +87,11 @@ describe('/api/newsletter/subscribe (double opt-in)', () => {
   })
 
   it('returns 400 on invalid email', async () => {
-    const { ratelimit } = await import('@/lib/ratelimit')
+    const { newsletterRatelimit } = await import('@/lib/ratelimit')
     const { getClientIp } = await import('@/lib/spam-detection')
 
     vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
-    vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
+    vi.mocked(newsletterRatelimit.limit).mockResolvedValue({ success: true } as never)
 
     const { POST } = await import('@/app/api/newsletter/subscribe/route')
 
@@ -100,12 +103,12 @@ describe('/api/newsletter/subscribe (double opt-in)', () => {
   })
 
   it('stores a confirmation token and tells the user to check their inbox', async () => {
-    const { ratelimit } = await import('@/lib/ratelimit')
+    const { newsletterRatelimit } = await import('@/lib/ratelimit')
     const { getClientIp } = await import('@/lib/spam-detection')
     const { redisKeys } = await import('@isyuricunha/kv')
 
     vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
-    vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
+    vi.mocked(newsletterRatelimit.limit).mockResolvedValue({ success: true } as never)
     redisSet.mockResolvedValue('OK')
 
     const { POST } = await import('@/app/api/newsletter/subscribe/route')
@@ -126,11 +129,11 @@ describe('/api/newsletter/subscribe (double opt-in)', () => {
   })
 
   it('does NOT add the contact to the audience on subscribe', async () => {
-    const { ratelimit } = await import('@/lib/ratelimit')
+    const { newsletterRatelimit } = await import('@/lib/ratelimit')
     const { getClientIp } = await import('@/lib/spam-detection')
 
     vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
-    vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
+    vi.mocked(newsletterRatelimit.limit).mockResolvedValue({ success: true } as never)
 
     const { POST } = await import('@/app/api/newsletter/subscribe/route')
     await POST(makeRequest({ email: 'a@b.com' }))

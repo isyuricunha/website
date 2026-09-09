@@ -1,8 +1,7 @@
 import type { Metadata } from 'next'
-import type { WebSite, WithContext } from 'schema-dts'
 
 import { i18n } from '@isyuricunha/i18n/config'
-import { getTranslations, setRequestLocale } from '@isyuricunha/i18n/server'
+import { setRequestLocale } from '@isyuricunha/i18n/server'
 
 import AboutMe from '@/components/home/about-me'
 import GetInTouch from '@/components/home/get-in-touch'
@@ -12,16 +11,7 @@ import SelectedProjects from '@/components/home/selected-projects'
 import AnnouncementBanner from '@/components/announcement-banner'
 import RecentlyUpdated from '@/components/recently-updated'
 import NewsletterSignup from '@/components/newsletter-signup'
-import { SITE_GITHUB_URL, SITE_KEYWORDS, SITE_NAME, SITE_URL, SITE_X_URL } from '@/lib/constants'
 import { build_alternates } from '@/lib/seo'
-import { getLocalizedPath } from '@/utils/get-localized-path'
-
-// Page metadata is generated per-request on the server (this is a server
-// component); a module-level snapshot avoids calling `new Date()` inside the
-// render body, which @eslint-react/purity flags as an impure render call.
-const now = new Date()
-const CURRENT_YEAR = now.getFullYear()
-const LAST_MODIFIED_ISO = now.toISOString()
 
 type PageProps = {
   params: Promise<{
@@ -45,39 +35,9 @@ export const generateMetadata = async (props: PageProps): Promise<Metadata> => {
 const Page = async (props: PageProps) => {
   const { locale } = await props.params
   setRequestLocale(locale)
-  const t = await getTranslations('metadata')
-
-  const url = `${SITE_URL}${getLocalizedPath({ slug: '', locale })}`
-
-  const jsonLd: WithContext<WebSite> = {
-    '@context': 'https://schema.org',
-    '@type': 'WebSite',
-    name: t('site-title'),
-    description: t('site-description'),
-    url,
-    author: {
-      '@type': 'Person',
-      name: SITE_NAME,
-      url: SITE_URL,
-      sameAs: [SITE_X_URL, SITE_GITHUB_URL]
-    },
-    mainEntityOfPage: {
-      '@type': 'WebPage',
-      '@id': SITE_URL
-    },
-    inLanguage: locale,
-    copyrightYear: CURRENT_YEAR,
-    keywords: SITE_KEYWORDS,
-    dateCreated: '2020-12-05',
-    dateModified: LAST_MODIFIED_ISO
-  }
 
   return (
     <>
-      <script
-        type='application/ld+json'
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
       <div className='mb-6'>
         <AnnouncementBanner />
       </div>

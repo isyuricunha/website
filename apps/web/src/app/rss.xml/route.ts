@@ -18,7 +18,9 @@ export const GET = async () => {
     image_url: `${SITE_URL}/images/og.png`
   })
 
-  const posts = allPosts.filter((p) => p.locale === i18n.defaultLocale)
+  const posts = allPosts
+    .filter((p) => p.locale === i18n.defaultLocale)
+    .toSorted((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 
   for (const post of posts) {
     const { title, summary, date, slug } = post

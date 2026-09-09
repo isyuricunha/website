@@ -6,6 +6,12 @@ vi.mock('@/lib/auth', () => {
   }
 })
 
+vi.mock('@isyuricunha/kv', () => ({
+  ratelimit: {
+    limit: vi.fn(async () => ({ success: true }))
+  }
+}))
+
 describe('usersRouter avatar upload', () => {
   it('createAvatarUploadUrl rejects anonymous users', async () => {
     const { usersRouter } = await import('@/trpc/routers/users')

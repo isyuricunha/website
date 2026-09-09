@@ -6,7 +6,6 @@ export const flags = {
   comment: process.env.NEXT_PUBLIC_FLAG_COMMENT === 'true',
   auth: process.env.NEXT_PUBLIC_FLAG_AUTH === 'true',
   stats: process.env.NEXT_PUBLIC_FLAG_STATS === 'true',
-  spotify: process.env.NEXT_PUBLIC_FLAG_SPOTIFY === 'true',
   lastfm: process.env.NEXT_PUBLIC_FLAG_LASTFM === 'true',
   lastfmImport: process.env.NEXT_PUBLIC_FLAG_LASTFM_IMPORT === 'true',
   analytics: process.env.NEXT_PUBLIC_FLAG_ANALYTICS === 'true',
@@ -24,11 +23,6 @@ export const env = createEnv({
   },
 
   server: {
-    ...(flags.spotify && {
-      SPOTIFY_CLIENT_ID: z.string().min(1),
-      SPOTIFY_CLIENT_SECRET: z.string().min(1),
-      SPOTIFY_REFRESH_TOKEN: z.string().min(1)
-    }),
     ...(flags.lastfm && {
       LASTFM_API_KEY: z.string().min(1),
       LASTFM_USER: z.string().min(1)
@@ -77,11 +71,15 @@ export const env = createEnv({
     R2_PUBLIC_BASE_URL: z.string().url().optional(),
 
     REACT_SCAN_MONITOR_API_KEY: z.string().optional(),
-    CRON_SECRET: z.string().min(16).optional()
+    CRON_SECRET: z.string().min(16).optional(),
+    ANALYTICS_IP_HASH_SALT: z.string().min(16).optional()
   },
   client: {
     ...(flags.analytics && {
-      NEXT_PUBLIC_UMAMI_URL: z.string().url(),
+      NEXT_PUBLIC_UMAMI_URL: z
+        .string()
+        .url()
+        .transform((url) => (url.endsWith('/') ? url.slice(0, -1) : url)),
       NEXT_PUBLIC_UMAMI_WEBSITE_ID: z.string().uuid()
     }),
 
