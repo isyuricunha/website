@@ -40,14 +40,18 @@ export const build_alternates = ({
   locale: string
   locales?: string[]
 }): SeoAlternates => {
-  const availableLocales = locales && locales.length > 0 ? locales : i18n.locales
+  const availableLocales = locales && locales.length > 0 ? locales : [...i18n.locales]
 
   const languages = availableLocales.reduce<Record<string, string>>((acc, loc) => {
     acc[loc] = getLocalizedPath({ slug, locale: loc })
     return acc
   }, {})
 
-  languages['x-default'] = getLocalizedPath({ slug, locale: i18n.defaultLocale })
+  // x-default should point at a variant that actually exists; when the default
+  // locale has no translation, fall back to the first available one.
+  const first_available = availableLocales[0] ?? i18n.defaultLocale
+  const defaultTarget = languages[i18n.defaultLocale] ?? languages[first_available] ?? ''
+  languages['x-default'] = defaultTarget
 
   return {
     canonical: getLocalizedPath({ slug, locale }),
@@ -62,14 +66,15 @@ export const build_absolute_language_alternates = ({
   slug: string
   locales?: string[]
 }) => {
-  const availableLocales = locales && locales.length > 0 ? locales : i18n.locales
+  const availableLocales = locales && locales.length > 0 ? locales : [...i18n.locales]
 
   const languages = availableLocales.reduce<Record<string, string>>((acc, locale) => {
     acc[locale] = `${SITE_URL}${getLocalizedPath({ slug, locale })}`
     return acc
   }, {})
 
-  languages['x-default'] = `${SITE_URL}${getLocalizedPath({ slug, locale: i18n.defaultLocale })}`
+  const fallback_locale = availableLocales[0] ?? i18n.defaultLocale
+  languages['x-default'] = `${SITE_URL}${getLocalizedPath({ slug, locale: fallback_locale })}`
 
   return languages
 }

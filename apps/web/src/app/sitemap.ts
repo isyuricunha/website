@@ -25,13 +25,15 @@ const sitemap = (): MetadataRoute.Sitemap => {
     locale,
     lastModified = buildTime,
     changeFrequency,
-    priority
+    priority,
+    locales = []
   }: {
     slug: string
     locale: string
     lastModified?: Date
     changeFrequency?: MetadataRoute.Sitemap[number]['changeFrequency']
     priority?: number
+    locales?: string[]
   }) => {
     addEntry({
       url: `${SITE_URL}${getLocalizedPath({ slug, locale })}`,
@@ -39,7 +41,7 @@ const sitemap = (): MetadataRoute.Sitemap => {
       changeFrequency,
       priority,
       alternates: {
-        languages: build_absolute_language_alternates({ slug })
+        languages: build_absolute_language_alternates({ slug, locales: [locale, ...locales] })
       }
     })
   }
@@ -53,13 +55,20 @@ const sitemap = (): MetadataRoute.Sitemap => {
     snippetsByLocale.get(snippet.locale)?.add(snippet.slug)
   }
 
-  for (const [locale, slugs] of snippetsByLocale) {
+  for (const locale of snippetsByLocale.keys()) {
+    const slugs = snippetsByLocale.get(locale) ?? []
     for (const slug of slugs) {
       const snippet = allSnippets.find((s) => s.slug === slug && s.locale === locale)
+
+      const snippetLocales: string[] = []
+      for (const [loc, set] of snippetsByLocale) {
+        if (set.has(slug)) snippetLocales.push(loc)
+      }
 
       addLocalizedEntry({
         slug: `/snippet/${slug}`,
         locale,
+        locales: snippetLocales,
         lastModified: snippet ? new Date(snippet.date) : buildTime,
         changeFrequency: 'monthly',
         priority: 0.6
@@ -84,11 +93,13 @@ const sitemap = (): MetadataRoute.Sitemap => {
   ]
 
   // Generate URLs for base routes (all languages)
-  for (const locale of supportedLanguages) {
+  const allLocaleCodes = supportedLanguages.map((language) => language.code)
+  for (const locale of allLocaleCodes) {
     for (const route of baseRoutes) {
       addLocalizedEntry({
         slug: route,
-        locale: locale.code,
+        locale,
+        locales: allLocaleCodes,
         changeFrequency: route === '' ? 'weekly' : 'monthly',
         priority: route === '' ? 1 : 0.7
       })
@@ -104,6 +115,13 @@ const sitemap = (): MetadataRoute.Sitemap => {
     postsByLocale.get(post.locale)?.add(post.slug)
   }
 
+  const postLocalesBySlug = new Map<string, string[]>()
+  for (const [locale, slugs] of postsByLocale) {
+    for (const slug of slugs) {
+      postLocalesBySlug.set(slug, [...(postLocalesBySlug.get(slug) ?? []), locale])
+    }
+  }
+
   for (const [locale, slugs] of postsByLocale) {
     for (const slug of slugs) {
       const post = allPosts.find((p) => p.slug === slug && p.locale === locale)
@@ -111,6 +129,7 @@ const sitemap = (): MetadataRoute.Sitemap => {
       addLocalizedEntry({
         slug: `/blog/${slug}`,
         locale,
+        locales: postLocalesBySlug.get(slug) ?? [locale],
         lastModified: post ? new Date(post.modifiedTime || post.date) : buildTime,
         changeFrequency: 'monthly',
         priority: 0.8
@@ -127,12 +146,20 @@ const sitemap = (): MetadataRoute.Sitemap => {
     projectsByLocale.get(project.locale)?.add(project.slug)
   }
 
+  const projectLocalesBySlug = new Map<string, string[]>()
+  for (const [locale, slugs] of projectsByLocale) {
+    for (const slug of slugs) {
+      projectLocalesBySlug.set(slug, [...(projectLocalesBySlug.get(slug) ?? []), locale])
+    }
+  }
+
   for (const [locale, slugs] of projectsByLocale) {
     // Add individual project pages
     for (const slug of slugs) {
       addLocalizedEntry({
         slug: `/projects/${slug}`,
         locale,
+        locales: projectLocalesBySlug.get(slug) ?? [locale],
         changeFrequency: 'monthly',
         priority: 0.7
       })
@@ -148,11 +175,19 @@ const sitemap = (): MetadataRoute.Sitemap => {
     pagesByLocale.get(page.locale)?.add(page.slug)
   }
 
+  const pageLocalesBySlug = new Map<string, string[]>()
+  for (const [locale, slugs] of pagesByLocale) {
+    for (const slug of slugs) {
+      pageLocalesBySlug.set(slug, [...(pageLocalesBySlug.get(slug) ?? []), locale])
+    }
+  }
+
   for (const [locale, slugs] of pagesByLocale) {
     for (const slug of slugs) {
       addLocalizedEntry({
         slug: `/${slug}`,
         locale,
+        locales: pageLocalesBySlug.get(slug) ?? [locale],
         changeFrequency: 'monthly',
         priority: 0.6
       })
