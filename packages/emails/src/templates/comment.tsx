@@ -19,6 +19,7 @@ import type { CSSProperties } from 'react'
 import Footer from '../components/footer'
 import Logo from '../components/logo'
 import { emailThemeVars } from '../theme'
+import { EMAIL_LANG, resolve_email_locale, type EmailLocale } from '../locales'
 
 type CommentProps = {
   comment: string
@@ -32,30 +33,68 @@ type CommentProps = {
     title: string
     url: string
   }
-  locale?: 'en' | 'pt'
+  locale?: EmailLocale
+}
+
+const copy_by_locale: Record<
+  EmailLocale,
+  {
+    title: string
+    intro_before: string
+    button: string
+  }
+> = {
+  en: {
+    title: 'New Comment on Your Blog Post',
+    intro_before: 'Someone has commented on',
+    button: 'View Comment'
+  },
+  pt: {
+    title: 'Novo comentário no seu post',
+    intro_before: 'Alguém comentou em',
+    button: 'Ver comentário'
+  },
+  es: {
+    title: 'Nuevo comentario en tu publicación',
+    intro_before: 'Alguien ha comentado en',
+    button: 'Ver comentario'
+  },
+  ja: {
+    title: 'ブログ記事に新しいコメント',
+    intro_before: '次の記事にコメントがありました：',
+    button: 'コメントを見る'
+  },
+  'zh-CN': { title: '您的博客文章有新评论', intro_before: '有人评论了', button: '查看评论' },
+  fr: {
+    title: 'Nouveau commentaire sur votre article',
+    intro_before: 'Quelqu’un a commenté',
+    button: 'Voir le commentaire'
+  },
+  de: {
+    title: 'Neuer Kommentar zu deinem Blogbeitrag',
+    intro_before: 'Jemand hat kommentiert bei',
+    button: 'Kommentar ansehen'
+  }
+}
+
+const previews: Record<EmailLocale, (title: string) => string> = {
+  en: (title) => `New comment on the post "${title}" on yuricunha.com`,
+  pt: (title) => `Novo comentário no post "${title}" em yuricunha.com`,
+  es: (title) => `Nuevo comentario en la publicación "${title}" en yuricunha.com`,
+  ja: (title) => `記事「${title}」に新しいコメントがつきました（yuricunha.com）`,
+  'zh-CN': (title) => `文章「${title}」在 yuricunha.com 上有新评论`,
+  fr: (title) => `Nouveau commentaire sur l’article « ${title} » sur yuricunha.com`,
+  de: (title) => `Neuer Kommentar zum Beitrag „${title}“ auf yuricunha.com`
 }
 
 const Comment = (props: CommentProps) => {
   const { comment, commenter, date, id, post } = props
-  const locale = props.locale ?? 'en'
-
-  const copy =
-    locale === 'pt'
-      ? {
-          preview: `Novo comentário no post "${post.title}" em yuricunha.com`,
-          title: 'Novo comentário no seu post',
-          intro_before: 'Alguém comentou em',
-          button: 'Ver comentário'
-        }
-      : {
-          preview: `New comment on the post "${post.title}" on yuricunha.com`,
-          title: 'New Comment on Your Blog Post',
-          intro_before: 'Someone has commented on',
-          button: 'View Comment'
-        }
+  const locale = resolve_email_locale(props.locale)
+  const copy = copy_by_locale[locale]
+  const preview = previews[locale](post.title)
 
   return (
-    <Html lang={locale} dir='ltr'>
+    <Html lang={EMAIL_LANG[locale]} dir='ltr'>
       <Head>
         <Font
           fontFamily='Geist'
@@ -68,7 +107,7 @@ const Comment = (props: CommentProps) => {
           fontStyle='normal'
         />
       </Head>
-      <Preview>{copy.preview}</Preview>
+      <Preview>{preview}</Preview>
       <Tailwind>
         <Body
           className='m-auto bg-[color:var(--email-bg)] p-1'

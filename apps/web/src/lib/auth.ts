@@ -86,7 +86,16 @@ export const auth = betterAuth({
     enabled: true,
     sendResetPassword: async ({ user, url }, request) => {
       const locale = request?.headers ? get_request_locale(request.headers) : 'en'
-      const subject = locale === 'pt' ? 'Redefina sua senha' : 'Reset your password'
+      const subject_by_locale: Partial<Record<string, string>> = {
+        en: 'Reset your password',
+        pt: 'Redefina sua senha',
+        es: 'Restablece tu contraseña',
+        ja: 'パスワードのリセット',
+        'zh-CN': '重置密码',
+        fr: 'Réinitialisez votre mot de passe',
+        de: 'Passwort zurücksetzen'
+      }
+      const subject = subject_by_locale[locale] ?? 'Reset your password'
 
       try {
         const html = await render(
@@ -115,7 +124,16 @@ export const auth = betterAuth({
   emailVerification: {
     sendVerificationEmail: async ({ user, url }, request) => {
       const locale = request?.headers ? get_request_locale(request.headers) : 'en'
-      const subject = locale === 'pt' ? 'Verifique seu e-mail' : 'Verify your email'
+      const subject_by_locale: Partial<Record<string, string>> = {
+        en: 'Verify your email',
+        pt: 'Verifique seu e-mail',
+        es: 'Verifica tu correo electrónico',
+        ja: 'メールアドレスの確認',
+        'zh-CN': '验证您的电子邮箱',
+        fr: 'Vérifiez votre e-mail',
+        de: 'Bestätigen Sie Ihre E-Mail-Adresse'
+      }
+      const subject = subject_by_locale[locale] ?? 'Verify your email'
 
       try {
         const html = await render(
@@ -170,7 +188,17 @@ export const auth = betterAuth({
 
         const locale = request?.headers ? get_request_locale(request.headers) : 'en'
         const subject =
-          locale === 'pt' ? 'Confirme a exclusão da sua conta' : 'Confirm account deletion'
+          (
+            {
+              en: 'Confirm account deletion',
+              pt: 'Confirme a exclusão da sua conta',
+              es: 'Confirma la eliminación de tu cuenta',
+              ja: 'アカウント削除の確認',
+              'zh-CN': '确认删除账户',
+              fr: 'Confirmer la suppression du compte',
+              de: 'Kontolöschung bestätigen'
+            } as Record<string, string>
+          )[locale] ?? 'Confirm account deletion'
         const html = await render(
           AccountDeletion({
             name: user.name,

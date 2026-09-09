@@ -23,6 +23,24 @@ describe('get_request_locale', () => {
     expect(get_request_locale(headers)).toBe('pt')
   })
 
+  it('supports every website locale, not just en/pt', () => {
+    for (const [locale, header] of [
+      ['es', 'es'],
+      ['ja', 'ja'],
+      ['zh-CN', 'zh-CN'],
+      ['fr', 'fr'],
+      ['de', 'de']
+    ] as const) {
+      const headers = new Headers({ 'x-locale': header })
+      expect(get_request_locale(headers), `x-locale: ${header}`).toBe(locale)
+    }
+  })
+
+  it('normalizes zh-* variants to the canonical zh-CN', () => {
+    const headers = new Headers({ 'x-locale': 'zh-tw' })
+    expect(get_request_locale(headers)).toBe('zh-CN')
+  })
+
   it('falls back to default locale on invalid inputs', () => {
     const headers = new Headers({
       'x-locale': 'xx',
