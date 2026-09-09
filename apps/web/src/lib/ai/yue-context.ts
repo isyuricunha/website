@@ -39,12 +39,14 @@ type YueChatMessage = {
 }
 
 const build_yue_system_message = (context: YueSiteContext): string => {
-  const localeInstructions = {
+  const localeInstructions: Record<string, string> = {
     en: 'Respond in English',
     pt: 'Responda em português brasileiro',
+    es: 'Responde en español',
+    ja: '日本語で回答してください',
+    'zh-CN': '请用中文回答',
     fr: 'Répondez en français',
-    de: 'Antworten Sie auf Deutsch',
-    zh: '请用中文回答'
+    de: 'Antworten Sie auf Deutsch'
   }
 
   const conversationBlock = (() => {
@@ -76,7 +78,7 @@ const build_yue_system_message = (context: YueSiteContext): string => {
   return `You are Yue, Yuri Cunha's friendly virtual mascot.
 Yuri is an Infrastructure & Platform Engineer from Brazil who works across Linux, servers, containers, networking, automation, self-hosting, databases, and software development.
 
-Personality: Friendly, tech-savvy, casual, uses emojis. ${localeInstructions[context.locale as keyof typeof localeInstructions] || ''}
+Personality: Friendly, tech-savvy, casual, uses emojis. ${localeInstructions[context.locale] ?? ''}
 
 Context:
 - Current Page: ${context.currentPage}

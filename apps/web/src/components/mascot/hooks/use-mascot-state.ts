@@ -98,6 +98,7 @@ export function useMascotState() {
   const blinkTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const resetAutoShowTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const scheduledTimeoutsRef = useRef(new Set<ReturnType<typeof setTimeout>>())
+  const konamiSequenceRef = useRef<string[]>([])
   const clickSoundRef = useRef(clickSound.play)
   const successSoundRef = useRef(successSound.play)
   const notificationSoundRef = useRef(notificationSound.play)
@@ -616,29 +617,39 @@ export function useMascotState() {
         return
       }
 
-      const newSequence = [...state.konamiSequence, event.key]
-      updateState({ konamiSequence: newSequence })
-
-      if (newSequence.length === KONAMI_CODE.length) {
-        const isKonami = newSequence.every(
-          (key, index) => key.toLowerCase() === KONAMI_CODE[index]?.toLowerCase()
-        )
-        if (isKonami) {
-          const newMode = !state.isKonamiMode
-          updateState({ isKonamiMode: newMode })
-          try {
-            localStorage.setItem(KONAMI_MODE_KEY, newMode ? '1' : '0')
-          } catch {}
+      // Classic sliding-window matching: keep only the longest suffix of the
+      // typed keys that matches a prefix of the code. A wrong key shifts the
+      // window instead of poisoning the buffer. The sequence lives in a ref so
+      // rapid key events never read a stale closure.
+      const next = [...konamiSequenceRef.current, event.key]
+      let keep = 0
+      for (let size = Math.min(next.length, KONAMI_CODE.length); size > 0; size -= 1) {
+        const matches = next
+          .slice(-size)
+          .every((key, index) => key.toLowerCase() === KONAMI_CODE[index]?.toLowerCase())
+        if (matches) {
+          keep = size
+          break
         }
-        updateState({ konamiSequence: [] })
-      } else if (newSequence.length > KONAMI_CODE.length) {
-        updateState({ konamiSequence: [] })
       }
+      konamiSequenceRef.current = keep > 0 ? next.slice(-keep) : []
+
+      if (next.length === KONAMI_CODE.length) {
+        konamiSequenceRef.current = []
+        const newMode = !state.isKonamiMode
+        updateState({ isKonamiMode: newMode, konamiSequence: [] })
+        try {
+          localStorage.setItem(KONAMI_MODE_KEY, newMode ? '1' : '0')
+        } catch {}
+        return
+      }
+
+      updateState({ konamiSequence: next })
     }
 
     addEventListener('keydown', handleKeyDown)
     return () => removeEventListener('keydown', handleKeyDown)
-  }, [restoreMascot, state.konamiSequence, state.isKonamiMode, updateState])
+  }, [restoreMascot, state.isKonamiMode, updateState])
 
   // Blinking animation
   useEffect(() => {
