@@ -7,6 +7,7 @@ import {
   MonitorIcon,
   MusicIcon,
   PencilIcon,
+  SparklesIcon,
   UserCircleIcon
 } from 'lucide-react'
 
@@ -59,6 +60,11 @@ export const HEADER_LINKS = [
     icon: <MusicIcon className='size-3.5' />,
     href: '/music',
     key: 'music'
+  },
+  {
+    icon: <SparklesIcon className='size-3.5' />,
+    href: '/recap',
+    key: 'recap'
   }
 ] as const
 
@@ -81,6 +87,7 @@ export const FOOTER_LINKS = [
       { href: '/uses', key: 'uses' },
       { href: '/projects', key: 'projects' },
       { href: '/music', key: 'music' },
+      { href: '/recap', key: 'recap' },
       { href: '/sitemap', key: 'sitemap' },
       { href: '/privacy', key: 'privacy' }
     ]

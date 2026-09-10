@@ -40,5 +40,67 @@ export const wakatimeRouter = createTRPCRouter({
     } catch {
       return { seconds: 0 }
     }
+  }),
+
+  // Rolling stats for a range. The documented `last_year` range matches the
+  // recap page's rolling 12-month window (verified against the current API
+  // docs; the older `last_12_months` range no longer exists).
+  getStats: publicProcedure.query(async ({ ctx }) => {
+    const ip = getIp(ctx.headers)
+    const { success } = await ratelimit.limit(getKey(`${ip}:stats`))
+
+    if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+
+    try {
+      const res = await fetch('https://api.wakatime.com/api/v1/users/current/stats/last_year', {
+        headers: {
+          Authorization: `Basic ${Buffer.from(env.WAKATIME_API_KEY).toString('base64')}`
+        },
+        signal: AbortSignal.timeout(10_000)
+      })
+
+      if (!res.ok) {
+        return null
+      }
+
+      const { data } = await res.json()
+
+      return {
+        isUpToDate: Boolean(data.is_up_to_date),
+        range: (data.range as string | undefined) ?? null,
+        totalSeconds:
+          (data.total_seconds_including_other_language as number | undefined) ??
+          (data.total_seconds as number | undefined) ??
+          0,
+        humanReadableTotal:
+          (data.human_readable_total_including_other_language as string | undefined) ??
+          (data.human_readable_total as string | undefined) ??
+          null,
+        dailyAverageSeconds:
+          (data.daily_average_including_other_language as number | undefined) ??
+          (data.daily_average as number | undefined) ??
+          0,
+        humanReadableDailyAverage:
+          (data.human_readable_daily_average_including_other_language as string | undefined) ??
+          (data.human_readable_daily_average as string | undefined) ??
+          null,
+        languages: ((data.languages ?? []) as Array<Record<string, unknown>>)
+          .slice(0, 5)
+          .map((language) => ({
+            name: language.name as string,
+            percent: language.percent as number,
+            text: language.text as string
+          })),
+        projects: ((data.projects ?? []) as Array<Record<string, unknown>>)
+          .slice(0, 5)
+          .map((project) => ({
+            name: project.name as string,
+            percent: project.percent as number,
+            text: project.text as string
+          }))
+      }
+    } catch {
+      return null
+    }
   })
 })

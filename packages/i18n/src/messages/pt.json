@@ -1846,7 +1846,8 @@
       "error": "Falha ao buscar dados do Last.fm",
       "loading": "Carregando ...",
       "not-listening": "Não ouvindo — Last.fm"
-    }
+    },
+    "recap": "Retrospectiva"
   },
   "mdx": {
     "link-to-section": "Link para a seção"
@@ -2838,5 +2839,35 @@
   },
   "music": {
     "description": "Histórico recente, principais artistas e estatísticas de música"
+  },
+  "recap": {
+    "title": "Retrospectiva",
+    "description": "Uma janela contínua dos últimos doze meses — o que construí, o que ouvi e o que escrevi — além de alguns recordes de todos os tempos.",
+    "period": "Últimos 12 meses",
+    "all-time": "De todos os tempos",
+    "loading": "Carregando ...",
+    "no-data": "Sem dados ainda",
+    "coding": {
+      "title": "Código",
+      "total": "Total programado",
+      "daily-average": "Média diária",
+      "top-languages": "Linguagens mais usadas",
+      "top-projects": "Projetos principais"
+    },
+    "listening": {
+      "title": "Escuta",
+      "top-artists": "Artistas mais ouvidos",
+      "top-tracks": "Músicas mais ouvidas",
+      "plays": "reproduções"
+    },
+    "content": {
+      "title": "Escrita",
+      "published-last-year": "posts publicados nos últimos 12 meses",
+      "total-posts": "posts no arquivo",
+      "most-read": "Mais lidos",
+      "most-liked": "Mais curtidos",
+      "views": "visualizações",
+      "likes": "curtidas"
+    }
   }
 }

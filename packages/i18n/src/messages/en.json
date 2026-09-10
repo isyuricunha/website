@@ -1846,7 +1846,8 @@
       "error": "Failed to fetch Last.fm data",
       "loading": "Loading ...",
       "not-listening": "Not Listening — Last.fm"
-    }
+    },
+    "recap": "Recap"
   },
   "mdx": {
     "link-to-section": "Link to section"
@@ -2838,5 +2839,35 @@
   },
   "music": {
     "description": "Recent listening history, top artists, and music stats"
+  },
+  "recap": {
+    "title": "Recap",
+    "description": "A rolling window on the last twelve months — what I built, what I listened to, and what I wrote — plus a few all-time records.",
+    "period": "Last 12 months",
+    "all-time": "All-time",
+    "loading": "Loading ...",
+    "no-data": "No data yet",
+    "coding": {
+      "title": "Coding",
+      "total": "Total coded",
+      "daily-average": "Daily average",
+      "top-languages": "Top languages",
+      "top-projects": "Top projects"
+    },
+    "listening": {
+      "title": "Listening",
+      "top-artists": "Top artists",
+      "top-tracks": "Top tracks",
+      "plays": "plays"
+    },
+    "content": {
+      "title": "Writing",
+      "published-last-year": "posts published in the last 12 months",
+      "total-posts": "posts in the archive",
+      "most-read": "Most read",
+      "most-liked": "Most liked",
+      "views": "views",
+      "likes": "likes"
+    }
   }
 }

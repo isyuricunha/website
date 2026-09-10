@@ -13,6 +13,7 @@ import { lastfmRouter } from './routers/lastfm'
 import { likesRouter } from './routers/likes'
 import { monitoringRouter } from './routers/monitoring'
 import { ratesRouter } from './routers/rates'
+import { recapRouter } from './routers/recap'
 import { resendEmailRouter } from './routers/resend-email'
 import { securityRouter } from './routers/security'
 import { systemRouter } from './routers/system'
@@ -42,6 +43,7 @@ export const appRouter = createTRPCRouter({
   comments: commentsRouter,
   guestbook: guestbookRouter,
   rates: ratesRouter,
+  recap: recapRouter,
   users: usersRouter
 })
 
