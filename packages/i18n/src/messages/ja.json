@@ -1846,7 +1846,8 @@
       "error": "Last.fm データの取得に失敗しました",
       "loading": "読み込み中...",
       "not-listening": "再生中ではありません — Last.fm"
-    }
+    },
+    "recap": "ふりかえり"
   },
   "mdx": {
     "link-to-section": "セクションへのリンク"
@@ -2838,5 +2839,35 @@
   },
   "music": {
     "description": "最近の聴取履歴、トップアーティスト、音楽統計"
+  },
+  "recap": {
+    "title": "ふりかえり",
+    "description": "直近12か月の振り返り — 作ったもの、聴いた音楽、書いた記事、そして歴代の記録。",
+    "period": "直近12か月",
+    "all-time": "歴代",
+    "loading": "読み込み中 ...",
+    "no-data": "データがまだありません",
+    "coding": {
+      "title": "コーディング",
+      "total": "合計コーディング時間",
+      "daily-average": "1日平均",
+      "top-languages": "よく使った言語",
+      "top-projects": "主なプロジェクト"
+    },
+    "listening": {
+      "title": "リスニング",
+      "top-artists": "よく聴いたアーティスト",
+      "top-tracks": "よく聴いた曲",
+      "plays": "再生回数"
+    },
+    "content": {
+      "title": "執筆",
+      "published-last-year": "過去12か月に公開した投稿",
+      "total-posts": "アーカイブの投稿",
+      "most-read": "最も読まれた記事",
+      "most-liked": "最もいいねされた記事",
+      "views": "閲覧数",
+      "likes": "いいね"
+    }
   }
 }

@@ -1846,7 +1846,8 @@
       "error": "无法获取 Last.fm 数据",
       "loading": "加载中...",
       "not-listening": "未在收听 —— Last.fm"
-    }
+    },
+    "recap": "回顾"
   },
   "mdx": {
     "link-to-section": "链接到章节"
@@ -2838,5 +2839,35 @@
   },
   "music": {
     "description": "最近收听记录、热门艺术家和音乐统计"
+  },
+  "recap": {
+    "title": "回顾",
+    "description": "一扇持续滚动的窗，回望过去十二个月：我构建了什么、听了什么、写了什么，以及一些历史记录。",
+    "period": "过去 12 个月",
+    "all-time": "历史总计",
+    "loading": "加载中 ...",
+    "no-data": "暂无数据",
+    "coding": {
+      "title": "编码",
+      "total": "编码总时长",
+      "daily-average": "日均时长",
+      "top-languages": "常用语言",
+      "top-projects": "主要项目"
+    },
+    "listening": {
+      "title": "聆听",
+      "top-artists": "最常听的艺人",
+      "top-tracks": "最常听的曲目",
+      "plays": "次播放"
+    },
+    "content": {
+      "title": "写作",
+      "published-last-year": "过去 12 个月发布的文章",
+      "total-posts": "档案中的文章",
+      "most-read": "阅读最多",
+      "most-liked": "点赞最多",
+      "views": "次浏览",
+      "likes": "个赞"
+    }
   }
 }

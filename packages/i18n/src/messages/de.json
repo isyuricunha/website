@@ -1846,7 +1846,8 @@
       "error": "Fehler beim Abrufen der Last.fm-Daten",
       "loading": "Lädt ...",
       "not-listening": "Nichts wird gehört – Last.fm"
-    }
+    },
+    "recap": "Rückblick"
   },
   "mdx": {
     "link-to-section": "Link zum Abschnitt"
@@ -2838,5 +2839,35 @@
   },
   "music": {
     "description": "Aktuelle Hörhistorie, Top-Künstler und Musikstatistiken"
+  },
+  "recap": {
+    "title": "Rückblick",
+    "description": "Ein fortlaufender Blick auf die letzten zwölf Monate — was ich gebaut, gehört und geschrieben habe — plus ein paar Rekorde seit Beginn.",
+    "period": "Letzte 12 Monate",
+    "all-time": "Seit Beginn",
+    "loading": "Wird geladen ...",
+    "no-data": "Noch keine Daten",
+    "coding": {
+      "title": "Coding",
+      "total": "Gesamt programmiert",
+      "daily-average": "Tagesdurchschnitt",
+      "top-languages": "Top-Sprachen",
+      "top-projects": "Top-Projekte"
+    },
+    "listening": {
+      "title": "Musik",
+      "top-artists": "Top-Künstler",
+      "top-tracks": "Top-Tracks",
+      "plays": "Wiedergaben"
+    },
+    "content": {
+      "title": "Schreiben",
+      "published-last-year": "in den letzten 12 Monaten veröffentlichte Posts",
+      "total-posts": "Posts im Archiv",
+      "most-read": "Am meisten gelesen",
+      "most-liked": "Am meisten gelikt",
+      "views": "Aufrufe",
+      "likes": "Likes"
+    }
   }
 }

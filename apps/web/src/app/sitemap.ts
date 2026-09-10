@@ -86,6 +86,7 @@ const sitemap = (): MetadataRoute.Sitemap => {
     '/uses',
     '/now',
     '/music',
+    '/recap',
     '/rss.xml',
     '/about',
     '/contact',

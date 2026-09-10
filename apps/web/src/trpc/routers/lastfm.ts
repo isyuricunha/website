@@ -211,19 +211,21 @@ const fetchTrackFallbackImage = async (
 
 const getKey = (id: string, scope: string) => `lastfm:${scope}:${id}`
 
-const mapTimeRangeToPeriod = (range: 'short_term' | 'medium_term' | 'long_term') => {
+const mapTimeRangeToPeriod = (range: 'short_term' | 'medium_term' | 'long_term' | 'year_term') => {
   switch (range) {
     case 'short_term':
       return '1month'
     case 'medium_term':
       return '6month'
+    case 'year_term':
+      return '12month'
     default:
       return 'overall'
   }
 }
 
 const timeRangeInputSchema = z.object({
-  time_range: z.enum(['short_term', 'medium_term', 'long_term']).default('short_term')
+  time_range: z.enum(['short_term', 'medium_term', 'long_term', 'year_term']).default('short_term')
 })
 
 export const lastfmRouter = createTRPCRouter({
