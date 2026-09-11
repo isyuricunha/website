@@ -1,0 +1,41 @@
+---
+title: Logo
+description: The Yue logo as a scalable SVG component.
+---
+
+<ComponentPreview name='logo/logo' />
+
+## Usage
+
+```tsx
+import { Logo } from '@isyuricunha/ui'
+```
+
+```tsx
+<Logo className='h-8 w-8' />
+```
+
+## Examples
+
+### Sizes
+
+It is an SVG, so it scales cleanly. Control the size with `className`:
+
+```tsx
+<Logo className='h-8 w-8' />
+<Logo className='h-12 w-12' />
+<Logo className='h-16 w-16' />
+```
+
+### Color
+
+The logo inherits the current text color and defaults to `text-primary`:
+
+```tsx
+<Logo className='text-accent' />
+```
+
+## Props
+
+It extends `React.SVGAttributes<SVGElement>`, so every standard SVG prop
+(`className`, `aria-label`, `width`, `height`, etc.) works as expected.

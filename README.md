@@ -37,6 +37,7 @@ The repository is organized as a monorepo (Turbo + pnpm) so that the main app an
 ## Features
 
 - Localized portfolio, blog, projects, snippets, about, music, contact and sitemap pages.
+- Rolling 12-month recap page aggregating Last.fm, WakaTime and site stats.
 - Authenticated admin surfaces for content and operational workflows.
 - Cursor-inspired warm visual system shared between the website and docs app.
 - MDX content collections for blog posts, project pages, snippets and docs.
