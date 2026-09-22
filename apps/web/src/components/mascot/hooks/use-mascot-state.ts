@@ -831,10 +831,9 @@ export function useMascotState() {
         updateState({ autoShowMessage: true })
 
         if (isOnBlogPost && currentBlogPostSlug) {
-          const msg = getBlogPostMessage()
-          enqueueMessage(msg)
-
           if (!state.blogPostsVisited.has(currentBlogPostSlug)) {
+            const msg = getBlogPostMessage()
+            enqueueMessage(msg)
             const newVisited = new Set(state.blogPostsVisited)
             newVisited.add(currentBlogPostSlug)
             updateState({ blogPostsVisited: newVisited })
