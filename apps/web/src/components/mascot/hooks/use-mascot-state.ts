@@ -634,7 +634,10 @@ export function useMascotState() {
       }
       konamiSequenceRef.current = keep > 0 ? next.slice(-keep) : []
 
-      if (next.length === KONAMI_CODE.length) {
+      // `keep` is the length of the longest typed suffix that matches a code
+      // prefix; only a full 10-key match may toggle the mode. Checking the
+      // raw buffer length would fire on 9 correct keys + any 10th key.
+      if (keep === KONAMI_CODE.length) {
         konamiSequenceRef.current = []
         const newMode = !state.isKonamiMode
         updateState({ isKonamiMode: newMode, konamiSequence: [] })
