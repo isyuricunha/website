@@ -2054,7 +2054,8 @@
       "artists": "艺术家",
       "duration": "时长",
       "invalid-file": "无效文件：预期为 JSON 数组",
-      "parse-error": "解析错误"
+      "parse-error": "解析错误",
+      "file-too-large": "文件过大，无法解析。"
     },
     "stats": {
       "title": "音乐统计",

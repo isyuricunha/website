@@ -2054,7 +2054,8 @@
       "artists": "アーティスト",
       "duration": "時間",
       "invalid-file": "無効なファイル: JSON配列が期待されます",
-      "parse-error": "解析エラー"
+      "parse-error": "解析エラー",
+      "file-too-large": "ファイルが大きすぎて解析できません。"
     },
     "stats": {
       "title": "音楽統計",

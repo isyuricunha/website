@@ -2054,7 +2054,8 @@
       "artists": "Artists",
       "duration": "Duration",
       "invalid-file": "Invalid file: expected JSON array",
-      "parse-error": "Parse error"
+      "parse-error": "Parse error",
+      "file-too-large": "This file is too large to parse."
     },
     "stats": {
       "title": "Music Statistics",

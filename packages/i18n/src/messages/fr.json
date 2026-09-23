@@ -2054,7 +2054,8 @@
       "artists": "Artistes",
       "duration": "Durée",
       "invalid-file": "Fichier invalide : un tableau JSON est attendu",
-      "parse-error": "Erreur d'analyse"
+      "parse-error": "Erreur d'analyse",
+      "file-too-large": "Ce fichier est trop volumineux pour être analysé."
     },
     "stats": {
       "title": "Statistiques musicales",

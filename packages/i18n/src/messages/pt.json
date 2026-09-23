@@ -2119,7 +2119,8 @@
       "artists": "Artistas",
       "duration": "Duração",
       "invalid-file": "Arquivo inválido: esperado um array JSON",
-      "parse-error": "Erro ao interpretar arquivo"
+      "parse-error": "Erro ao interpretar arquivo",
+      "file-too-large": "Este arquivo é grande demais para interpretar."
     },
     "no-data": "Nenhum dado disponível",
     "export": {

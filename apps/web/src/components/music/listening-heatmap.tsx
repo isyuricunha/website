@@ -102,7 +102,15 @@ const ListeningHeatmap = () => {
             {[0, 1, 2, 3, 4].map((i) => (
               <div
                 key={i}
-                className={`ring-border/50 h-3 w-3 rounded-[3px] ${['bg-bg-surface', 'bg-[var(--accent-dim)]', 'bg-[var(--accent-dim)]', 'bg-[var(--accent-dim)]', 'bg-[var(--accent-dim)]'][i]} ring-1`}
+                className={`ring-border/50 h-3 w-3 rounded-[3px] ${
+                  [
+                    'bg-bg-surface',
+                    'bg-[var(--accent-dim)] opacity-25',
+                    'bg-[var(--accent-dim)] opacity-50',
+                    'bg-[var(--accent-dim)] opacity-75',
+                    'bg-[var(--accent-dim)]'
+                  ][i]
+                } ring-1`}
               />
             ))}
           </div>

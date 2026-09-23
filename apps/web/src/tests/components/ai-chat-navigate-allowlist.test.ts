@@ -21,6 +21,15 @@ describe('is_safe_internal_path', () => {
     expect(is_safe_internal_path('/data:text/html,<script>')).toBe(false)
   })
 
+  it('rejects backslash and control-character bypasses that parse as external origins', () => {
+    // WHATWG parser quirks: backslash enters the authority state and
+    // tab/newline are stripped before host detection.
+    expect(is_safe_internal_path('/\\evil.com')).toBe(false)
+    expect(is_safe_internal_path('/\\t/evil.com')).toBe(false)
+    expect(is_safe_internal_path('/\\n/evil.com')).toBe(false)
+    expect(is_safe_internal_path('/\\r//evil.com')).toBe(false)
+  })
+
   it('rejects non-slash prefixes', () => {
     expect(is_safe_internal_path('blog/hello')).toBe(false)
     expect(is_safe_internal_path('')).toBe(false)

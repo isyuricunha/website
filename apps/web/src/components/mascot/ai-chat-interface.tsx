@@ -127,7 +127,16 @@ export const is_safe_internal_path = (path: string): boolean => {
   if (path.startsWith('//')) return false
   // Reject any scheme prefix (e.g. javascript:alert(1)) even after a slash.
   if (/^\/[a-zA-Z][a-zA-Z0-9+.-]*:/.test(path)) return false
-  return true
+  // WHATWG parser quirks: a backslash enters the authority state and ASCII
+  // tab/newline are stripped before host detection, so inputs like
+  // '/\\evil.com' or '/\\t/evil.com' parse as EXTERNAL origins. Validate
+  // with the same parser the browser router uses and require same-origin.
+  try {
+    const parsed = new URL(path, 'https://local.invalid')
+    return parsed.origin === 'https://local.invalid'
+  } catch {
+    return false
+  }
 }
 
 type CitationType = 'post' | 'project' | 'page' | 'snippet'
@@ -959,14 +968,7 @@ export default function AIChatInterface({
         }
       })
     }
-  }, [
-    canUseChat,
-    isOpen,
-    isLoading,
-    isTurnstileEnabled,
-    send_chat_message,
-    turnstileToken
-  ])
+  }, [canUseChat, isOpen, isLoading, isTurnstileEnabled, send_chat_message, turnstileToken])
 
   const copyLink = async (href: string) => {
     try {
