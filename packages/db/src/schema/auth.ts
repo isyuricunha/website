@@ -71,7 +71,8 @@ export const accounts = pgTable(
       foreignColumns: [users.id],
       name: 'account_user_id_user_id_fk'
     }).onDelete('cascade'),
-    unique('account_provider_id_account_id_unique').on(account.providerId, account.accountId)
+    unique('account_provider_id_account_id_unique').on(account.providerId, account.accountId),
+    index('account_user_id_idx').on(account.userId)
   ]
 )
 
@@ -93,18 +94,27 @@ export const sessions = pgTable(
       foreignColumns: [users.id],
       name: 'session_user_id_user_id_fk'
     }).onDelete('cascade'),
-    unique('session_token_unique').on(session.token)
+    unique('session_token_unique').on(session.token),
+    index('session_user_id_idx').on(session.userId),
+    index('session_expires_at_idx').on(session.expiresAt)
   ]
 )
 
-export const verifications = pgTable('verification', {
-  id: text('id').primaryKey(),
-  identifier: text('identifier').notNull(),
-  value: text('value').notNull(),
-  expiresAt: timestamp('expires_at').notNull(),
-  createdAt: timestamp('created_at'),
-  updatedAt: timestamp('updated_at')
-})
+export const verifications = pgTable(
+  'verification',
+  {
+    id: text('id').primaryKey(),
+    identifier: text('identifier').notNull(),
+    value: text('value').notNull(),
+    expiresAt: timestamp('expires_at').notNull(),
+    createdAt: timestamp('created_at'),
+    updatedAt: timestamp('updated_at')
+  },
+  (verification) => [
+    index('verification_identifier_idx').on(verification.identifier),
+    index('verification_expires_at_idx').on(verification.expiresAt)
+  ]
+)
 
 export const passwordResetTokens = pgTable(
   'password_reset_tokens',

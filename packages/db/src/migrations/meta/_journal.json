@@ -92,6 +92,13 @@
       "when": 1790196294953,
       "tag": "0012_lush_mister_fear",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1790197293358,
+      "tag": "0013_spotty_magus",
+      "breakpoints": true
     }
   ]
 }
