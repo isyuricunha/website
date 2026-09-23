@@ -35,7 +35,13 @@ export async function POST(request: NextRequest) {
     const contact = await resendService.findContactByEmail(mainAudienceId, email)
 
     if (!contact) {
-      return NextResponse.json({ error: 'Email not found in newsletter' }, { status: 404 })
+      // Uniform success: a 404 here would let anyone probe which addresses
+      // are subscribed (existence oracle). Unsubscribing a non-subscriber is
+      // a no-op from the caller's perspective.
+      return NextResponse.json({
+        success: true,
+        message: 'Successfully unsubscribed from newsletter'
+      })
     }
 
     // Update contact to unsubscribed in Resend
