@@ -15,7 +15,10 @@ export const flags = {
 }
 
 export const env = createEnv({
-  skipValidation: !!process.env.CI,
+  // Vercel sets CI=true on every build, so gating validation on CI alone
+  // disabled it exactly where it matters: production/preview deploys. Skip
+  // validation only on non-Vercel CI runs that legitimately lack secrets.
+  skipValidation: process.env.CI === 'true' && process.env.VERCEL !== '1',
   extends: [vercel()],
 
   shared: {

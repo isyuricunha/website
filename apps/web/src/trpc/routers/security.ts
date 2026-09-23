@@ -1,6 +1,7 @@
 import { TRPCError } from '@trpc/server'
 import {
   accountLockouts,
+  accounts,
   and,
   desc,
   eq,
@@ -15,8 +16,10 @@ import { env } from '@isyuricunha/env'
 import { randomBytes } from 'crypto'
 import { z } from 'zod'
 
+import { auth } from '@/lib/auth'
 import { AuditLogger, getIpFromHeaders, getUserAgentFromHeaders } from '@/lib/audit-logger'
 import { logger } from '@/lib/logger'
+import { decrypt_2fa_value, encrypt_2fa_value } from '@/lib/two-factor-crypto'
 import { adminProcedure, protectedProcedure, createTRPCRouter } from '../trpc'
 
 const speakeasy = require('speakeasy')
@@ -151,8 +154,8 @@ export const securityRouter = createTRPCRouter({
       await ctx.db.insert(twoFactorTokens).values({
         id: tokenId,
         userId: ctx.session.user.id,
-        secret: secret.base32,
-        backupCodes: JSON.stringify(backupCodes),
+        secret: encrypt_2fa_value(secret.base32),
+        backupCodes: encrypt_2fa_value(JSON.stringify(backupCodes)),
         isEnabled: false
       })
 
@@ -211,9 +214,9 @@ export const securityRouter = createTRPCRouter({
         })
       }
 
-      // Verify TOTP token
+      // Verify TOTP token (the stored secret is encrypted at rest)
       const verified = speakeasy.totp.verify({
-        secret: twoFARecord.secret,
+        secret: decrypt_2fa_value(twoFARecord.secret),
         encoding: 'base32',
         token: input.token,
         window: 2 // Allow 2 time steps of variance
@@ -266,19 +269,40 @@ export const securityRouter = createTRPCRouter({
     }
   }),
 
-  disable2FA: protectedProcedure.input(disable2FAInputSchema).mutation(async ({ ctx }) => {
+  disable2FA: protectedProcedure.input(disable2FAInputSchema).mutation(async ({ ctx, input }) => {
     try {
       const auditLogger = new AuditLogger(ctx.db)
       const ipAddress = getIpFromHeaders(ctx.headers)
       const userAgent = getUserAgentFromHeaders(ctx.headers)
 
-      // In a real app, verify the password here
-      // For now, we'll just disable 2FA
+      // Removing 2FA weakens account security, so the account password is
+      // required as proof of ownership before the record is destroyed.
+      const credentialAccount = await ctx.db.query.accounts.findFirst({
+        where: and(eq(accounts.userId, ctx.session.user.id), eq(accounts.providerId, 'credential'))
+      })
 
-      await ctx.db
-        .update(twoFactorTokens)
-        .set({ backupCodes: JSON.stringify(generateBackupCodes()) })
-        .where(eq(twoFactorTokens.userId, ctx.session.user.id))
+      if (!credentialAccount?.password) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Password verification is unavailable for this account'
+        })
+      }
+
+      const authContext = await auth.$context
+      const passwordValid = await authContext.password.verify({
+        password: input.password,
+        hash: credentialAccount.password
+      })
+
+      if (!passwordValid) {
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+          message: 'Invalid password'
+        })
+      }
+
+      // Delete the row so a fresh enable2FA can start a clean setup.
+      await ctx.db.delete(twoFactorTokens).where(eq(twoFactorTokens.userId, ctx.session.user.id))
 
       await create_security_event({
         db: ctx.db,
