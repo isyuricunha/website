@@ -24,7 +24,7 @@ export const users = pgTable(
     id: text('id').primaryKey(),
     username: text('username'),
     name: text('name').notNull(),
-    email: text('email').notNull(),
+    email: text('email').unique('user_email_unique').notNull(),
     emailVerified: boolean('email_verified').notNull(),
     image: text('image'),
     createdAt: timestamp('created_at').notNull(),
@@ -70,7 +70,8 @@ export const accounts = pgTable(
       columns: [account.userId],
       foreignColumns: [users.id],
       name: 'account_user_id_user_id_fk'
-    }).onDelete('cascade')
+    }).onDelete('cascade'),
+    unique('account_provider_id_account_id_unique').on(account.providerId, account.accountId)
   ]
 )
 

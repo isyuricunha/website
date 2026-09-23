@@ -85,6 +85,13 @@
       "when": 1788711084149,
       "tag": "0011_uneven_nitro",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1790196294953,
+      "tag": "0012_lush_mister_fear",
+      "breakpoints": true
     }
   ]
 }
