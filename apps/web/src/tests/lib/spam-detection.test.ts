@@ -3,50 +3,64 @@ import { describe, expect, it } from 'vitest'
 import { getClientIp } from '@/lib/spam-detection'
 
 describe('getClientIp', () => {
-  it('prefers cf-connecting-ip when present', () => {
+  it('trusts x-vercel-forwarded-for (platform-set header)', () => {
     const headers = new Headers({
-      'cf-connecting-ip': '203.0.113.10',
-      'x-forwarded-for': '198.51.100.1'
+      'x-vercel-forwarded-for': '203.0.113.10'
     })
 
     expect(getClientIp(headers)).toBe('203.0.113.10')
   })
 
-  it('uses the first IP from x-forwarded-for list', () => {
+  it('ignores all client-suppliable headers when no Cloudflare transit proof exists', () => {
     const headers = new Headers({
-      'x-forwarded-for': '198.51.100.1, 203.0.113.10'
+      'cf-connecting-ip': '203.0.113.10',
+      'true-client-ip': '203.0.113.11',
+      'x-forwarded-for': '198.51.100.1, 203.0.113.10',
+      'x-real-ip': '203.0.113.12',
+      'x-client-ip': '203.0.113.13'
     })
-
-    expect(getClientIp(headers)).toBe('198.51.100.1')
-  })
-
-  it('strips port from ipv4 value', () => {
-    const headers = new Headers({
-      'x-forwarded-for': '198.51.100.1:1234'
-    })
-
-    expect(getClientIp(headers)).toBe('198.51.100.1')
-  })
-
-  it('strips port from bracketed ipv6 value', () => {
-    const headers = new Headers({
-      'x-forwarded-for': '[2001:db8::1]:1234'
-    })
-
-    expect(getClientIp(headers)).toBe('2001:db8::1')
-  })
-
-  it('returns unknown when no known headers are present', () => {
-    const headers = new Headers()
 
     expect(getClientIp(headers)).toBe('unknown')
+  })
+
+  it('trusts cf-connecting-ip only when cf-ray proves Cloudflare transit', () => {
+    const headers = new Headers({
+      'cf-connecting-ip': '203.0.113.10',
+      'cf-ray': 'abc123-FRA'
+    })
+
+    expect(getClientIp(headers)).toBe('203.0.113.10')
+  })
+
+  it('prefers cf-connecting-ip over x-vercel-forwarded-for when transit is proven', () => {
+    const headers = new Headers({
+      'cf-connecting-ip': '203.0.113.10',
+      'cf-ray': 'abc123-FRA',
+      'x-vercel-forwarded-for': '198.51.100.1'
+    })
+
+    expect(getClientIp(headers)).toBe('203.0.113.10')
+  })
+
+  it('returns unknown when no trusted headers are present', () => {
+    expect(getClientIp(new Headers())).toBe('unknown')
+  })
+
+  it.each([
+    ['strips the port from an ipv4 value', '203.0.113.10:1234', '203.0.113.10'],
+    ['strips the port from a bracketed ipv6 value', '[2001:db8::1]:1234', '2001:db8::1'],
+    ['strips the port from a genuine ipv4:port pair', '203.0.113.10:8443', '203.0.113.10']
+  ])('%s', (_name, headerValue, expected) => {
+    const headers = new Headers({ 'x-vercel-forwarded-for': headerValue })
+
+    expect(getClientIp(headers)).toBe(expected)
   })
 
   it('does not truncate an IPv4-mapped IPv6 address', () => {
     // Regression: `.includes('.') && .includes(':')` matched this shape too,
     // wrongly treating it as "IPv4 with a port" and truncating it to `null`.
     const headers = new Headers({
-      'x-forwarded-for': '::ffff:192.168.1.1'
+      'x-vercel-forwarded-for': '::ffff:192.168.1.1'
     })
 
     expect(getClientIp(headers)).toBe('::ffff:192.168.1.1')
@@ -56,17 +70,9 @@ describe('getClientIp', () => {
     // Regression: the same broad heuristic reduced this to the garbage
     // fragment "64" (everything before the first colon).
     const headers = new Headers({
-      'x-forwarded-for': '64:ff9b::203.0.113.5'
+      'x-vercel-forwarded-for': '64:ff9b::203.0.113.5'
     })
 
     expect(getClientIp(headers)).toBe('64:ff9b::203.0.113.5')
-  })
-
-  it('still strips the port from a genuine IPv4:port pair', () => {
-    const headers = new Headers({
-      'true-client-ip': '203.0.113.10:8443'
-    })
-
-    expect(getClientIp(headers)).toBe('203.0.113.10')
   })
 })

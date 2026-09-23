@@ -38,6 +38,17 @@ vi.mock('@isyuricunha/env', () => ({
   env: {
     RESEND_API_KEY: 'test-key',
     NEXT_PUBLIC_WEBSITE_URL: 'https://yuricunha.com'
+  },
+  flags: {
+    comment: false,
+    auth: false,
+    stats: false,
+    lastfm: false,
+    lastfmImport: false,
+    analytics: false,
+    guestbookNotification: false,
+    likeButton: false,
+    turnstile: false
   }
 }))
 

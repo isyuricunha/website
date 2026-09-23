@@ -3,6 +3,8 @@ import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 
+import { env, flags } from '@isyuricunha/env'
+
 import { aiService } from '@/lib/ai/ai-service'
 import { estimate_tokens, record_ai_chat_observability } from '@/lib/ai/ai-observability'
 import {
@@ -15,7 +17,7 @@ import {
 import { logger } from '@/lib/logger'
 import { ratelimit } from '@/lib/ratelimit'
 import { rate_limit_keys } from '@/lib/rate-limit-keys'
-import { getClientIp } from '@/lib/spam-detection'
+import { getClientIp, verifyTurnstileToken } from '@/lib/spam-detection'
 
 const PUBLIC_ASSISTANT_PROVIDER = 'Yue AI'
 
@@ -41,7 +43,8 @@ const requestSchema = z.object({
   model: z.string().max(100).optional(),
   stream: z.boolean().optional(),
   locale: z.string().min(2).max(10).optional(),
-  context: requestContextSchema.optional()
+  context: requestContextSchema.optional(),
+  turnstileToken: z.string().optional()
 })
 
 const create_request_id = (): string => {
@@ -196,6 +199,56 @@ export async function POST(req: NextRequest) {
     const body = await req.json()
     const parsed = requestSchema.parse(body)
     const request_size = byte_length(JSON.stringify(body))
+
+    if (flags.turnstile) {
+      if (!parsed.turnstileToken) {
+        const payload = {
+          error: 'Turnstile verification required.',
+          requestId: request_id
+        }
+        await record_ai_chat_observability({
+          requestId: request_id,
+          endpoint,
+          method,
+          statusCode: 400,
+          responseTimeMs: Date.now() - started_at,
+          provider: 'n/a',
+          mode: 'n/a',
+          ipAddress: ip,
+          userAgent: user_agent,
+          responseSizeBytes: byte_length(JSON.stringify(payload)),
+          errorMessage: 'turnstile_token_missing'
+        })
+        return NextResponse.json(payload, { status: 400, headers: response_headers })
+      }
+
+      const turnstile_result = await verifyTurnstileToken(
+        parsed.turnstileToken,
+        env.TURNSTILE_SECRET_KEY,
+        ip
+      )
+
+      if (!turnstile_result.success) {
+        const payload = {
+          error: turnstile_result.error ?? 'Turnstile verification failed.',
+          requestId: request_id
+        }
+        await record_ai_chat_observability({
+          requestId: request_id,
+          endpoint,
+          method,
+          statusCode: 403,
+          responseTimeMs: Date.now() - started_at,
+          provider: 'n/a',
+          mode: 'n/a',
+          ipAddress: ip,
+          userAgent: user_agent,
+          responseSizeBytes: byte_length(JSON.stringify(payload)),
+          errorMessage: 'turnstile_verification_failed'
+        })
+        return NextResponse.json(payload, { status: 403, headers: response_headers })
+      }
+    }
 
     const available_providers = aiService.getAvailableProviders()
     if (available_providers.length === 0) {

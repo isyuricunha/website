@@ -3,17 +3,18 @@ import { z } from 'zod'
 import { render } from '@react-email/render'
 import { Resend } from 'resend'
 
-import { env } from '@isyuricunha/env'
+import { env, flags } from '@isyuricunha/env'
 import { NewsletterConfirmation, resolve_email_locale } from '@isyuricunha/emails'
 import { newsletterRatelimit } from '@/lib/ratelimit'
 import { rate_limit_keys } from '@/lib/rate-limit-keys'
-import { getClientIp } from '@/lib/spam-detection'
+import { getClientIp, verifyTurnstileToken } from '@/lib/spam-detection'
 import { logger } from '@/lib/logger'
 import { redis, redisKeys } from '@isyuricunha/kv'
 
 const subscribeSchema = z.object({
   email: z.string().email('Invalid email address'),
-  locale: z.string().optional()
+  locale: z.string().optional(),
+  turnstileToken: z.string().optional()
 })
 
 const CONFIRM_TTL_SECONDS = 60 * 60 * 24
@@ -31,7 +32,30 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { email, locale: rawLocale } = subscribeSchema.parse(body)
+    const { email, locale: rawLocale, turnstileToken } = subscribeSchema.parse(body)
+
+    if (flags.turnstile) {
+      if (!turnstileToken) {
+        return NextResponse.json(
+          { error: 'Turnstile verification required.' },
+          { status: 400 }
+        )
+      }
+
+      const turnstile_result = await verifyTurnstileToken(
+        turnstileToken,
+        env.TURNSTILE_SECRET_KEY,
+        ip
+      )
+
+      if (!turnstile_result.success) {
+        return NextResponse.json(
+          { error: turnstile_result.error ?? 'Turnstile verification failed.' },
+          { status: 403 }
+        )
+      }
+    }
+
     const locale = resolve_email_locale(rawLocale)
 
     // Double opt-in: store a one-time confirmation token instead of adding the

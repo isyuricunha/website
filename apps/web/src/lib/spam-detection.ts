@@ -77,22 +77,26 @@ export function getClientIp(headers: Headers): string {
     return first
   }
 
-  const cfConnectingIp = normalizeIp(headers.get('cf-connecting-ip'))
-  if (cfConnectingIp) return cfConnectingIp
-
-  const trueClientIp = normalizeIp(headers.get('true-client-ip'))
-  if (trueClientIp) return trueClientIp
+  // Only platform-set headers are trustworthy. A client can send
+  // cf-connecting-ip, true-client-ip, x-forwarded-for, x-real-ip and
+  // x-client-ip on any request that does not transit the edge that owns
+  // those headers, forging the identity every rate limiter keys on.
+  //
+  // - x-vercel-forwarded-for is injected by Vercel's edge from the actual
+  //   connection and cannot be spoofed by clients.
+  // - cf-connecting-ip is written by Cloudflare's edge (overwriting anything
+  //   the client sent) and is only trusted when cf-ray proves the request
+  //   actually transited Cloudflare.
+  const cfRay = headers.get('cf-ray')
+  if (cfRay) {
+    const cfConnectingIp = normalizeIp(headers.get('cf-connecting-ip'))
+    if (cfConnectingIp) return cfConnectingIp
+  }
 
   const vercelForwardedFor = normalizeIp(headers.get('x-vercel-forwarded-for'))
   if (vercelForwardedFor) return vercelForwardedFor
 
-  const forwardedFor = normalizeIp(headers.get('x-forwarded-for'))
-  if (forwardedFor) return forwardedFor
-
-  const realIp = normalizeIp(headers.get('x-real-ip'))
-  if (realIp) return realIp
-
-  return normalizeIp(headers.get('x-client-ip')) ?? 'unknown'
+  return 'unknown'
 }
 
 /**
