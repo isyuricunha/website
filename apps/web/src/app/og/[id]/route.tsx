@@ -1,5 +1,6 @@
 import { ImageResponse } from 'next/og'
 import { NextRequest } from 'next/server'
+import { i18n } from '@isyuricunha/i18n/config'
 import { getTranslations } from '@isyuricunha/i18n/server'
 
 export const runtime = 'nodejs'
@@ -10,6 +11,17 @@ const ogTheme = {
   accentText: '#64d2ff',
   accentBlock: '#d6a84f'
 } as const
+
+// User-controlled query values are capped so crafted URLs cannot force
+// arbitrarily large text into the image renderer (CPU cost per request).
+const TITLE_MAX = 80
+const SUMMARY_MAX = 300
+const DATE_MAX = 20
+
+const clamp = (value: string | null, max: number): string => {
+  if (!value) return ''
+  return value.trim().slice(0, max)
+}
 
 const getTitleFontSize = (title: string) => {
   if (title.length > 50) return 36
@@ -27,14 +39,16 @@ export const GET = async (req: NextRequest, props: OGRouteProps) => {
   try {
     const { id } = await props.params
     const { searchParams } = new URL(req.url)
-    const locale = searchParams.get('locale') === 'pt' ? 'pt' : 'en'
+    const locales = i18n.locales as readonly string[]
+    const requestedLocale = searchParams.get('locale') ?? ''
+    const locale = locales.includes(requestedLocale) ? requestedLocale : i18n.defaultLocale
     const t = await getTranslations({ locale, namespace: 'og' })
 
     // Check if this is a content item request (blog/snippet)
     const type = searchParams.get('type')
-    const title = searchParams.get('title')
-    const date = searchParams.get('date')
-    const summary = searchParams.get('summary')
+    const title = clamp(searchParams.get('title'), TITLE_MAX)
+    const date = clamp(searchParams.get('date'), DATE_MAX)
+    const summary = clamp(searchParams.get('summary'), SUMMARY_MAX)
 
     if (title && date && (type === 'post' || type === 'snippet')) {
       // Generate content specific OG image

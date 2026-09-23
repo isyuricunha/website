@@ -16,6 +16,10 @@ import {
 // Simple parser for Spotify extended streaming history JSON files (array of plays)
 // This runs entirely client-side; no upload.
 
+// Parsing is done on the main thread, so huge exports would freeze the tab.
+// Spotify history exports do not need to exceed this size in practice.
+const MAX_IMPORT_BYTES = 100 * 1024 * 1024
+
 type LocalPlay = {
   ts: string
   master_metadata_track_name?: string
@@ -35,6 +39,9 @@ const LocalHistoryImport = () => {
     try {
       setError(null)
       if (!file) return
+      if (file.size > MAX_IMPORT_BYTES) {
+        throw new Error(t('spotify.import.file-too-large') || 'This file is too large to parse.')
+      }
       const text = await file.text()
       const data: unknown = JSON.parse(text)
       if (!Array.isArray(data)) throw new Error(t('spotify.import.invalid-file'))

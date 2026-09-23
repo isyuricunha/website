@@ -215,8 +215,14 @@ export default function ContactForm() {
                 onChange={(e) => handleInputChange('name', e.target.value)}
                 className={`text-sm ${errors.name ? 'border-destructive' : ''}`}
                 disabled={isSubmitting}
+                aria-invalid={errors.name ? true : undefined}
+                aria-describedby={errors.name ? 'contact-name-error' : undefined}
               />
-              {errors.name && <p className='text-destructive mt-1 text-xs'>{errors.name}</p>}
+              {errors.name && (
+                <p id='contact-name-error' className='text-destructive mt-1 text-xs'>
+                  {errors.name}
+                </p>
+              )}
             </div>
             <div>
               <label htmlFor='email' className='mb-2 block text-xs font-medium sm:text-sm'>
@@ -230,8 +236,14 @@ export default function ContactForm() {
                 onChange={(e) => handleInputChange('email', e.target.value)}
                 className={`text-sm ${errors.email ? 'border-destructive' : ''}`}
                 disabled={isSubmitting}
+                aria-invalid={errors.email ? true : undefined}
+                aria-describedby={errors.email ? 'contact-email-error' : undefined}
               />
-              {errors.email && <p className='text-destructive mt-1 text-xs'>{errors.email}</p>}
+              {errors.email && (
+                <p id='contact-email-error' className='text-destructive mt-1 text-xs'>
+                  {errors.email}
+                </p>
+              )}
             </div>
           </div>
 
@@ -247,8 +259,14 @@ export default function ContactForm() {
               onChange={(e) => handleInputChange('subject', e.target.value)}
               className={`text-sm ${errors.subject ? 'border-destructive' : ''}`}
               disabled={isSubmitting}
+              aria-invalid={errors.subject ? true : undefined}
+              aria-describedby={errors.subject ? 'contact-subject-error' : undefined}
             />
-            {errors.subject && <p className='text-destructive mt-1 text-xs'>{errors.subject}</p>}
+            {errors.subject && (
+              <p id='contact-subject-error' className='text-destructive mt-1 text-xs'>
+                {errors.subject}
+              </p>
+            )}
           </div>
 
           <div>
@@ -263,8 +281,14 @@ export default function ContactForm() {
               onChange={(e) => handleInputChange('message', e.target.value)}
               className={`resize-none text-sm ${errors.message ? 'border-destructive' : ''}`}
               disabled={isSubmitting}
+              aria-invalid={errors.message ? true : undefined}
+              aria-describedby={errors.message ? 'contact-message-error' : undefined}
             />
-            {errors.message && <p className='text-destructive mt-1 text-xs'>{errors.message}</p>}
+            {errors.message && (
+              <p id='contact-message-error' className='text-destructive mt-1 text-xs'>
+                {errors.message}
+              </p>
+            )}
             <p className='text-muted-foreground mt-1 text-xs'>
               {t('contact.form.message.character-count', { count: formData.message.length })}
             </p>

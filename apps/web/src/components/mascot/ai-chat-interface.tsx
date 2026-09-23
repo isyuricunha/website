@@ -116,6 +116,20 @@ const ChatMarkdown = memo((props: ChatMarkdownProps) => {
 
 ChatMarkdown.displayName = 'ChatMarkdown'
 
+/**
+ * Allowlist for NAVIGATE: tokens emitted by the assistant. Only same-origin
+ * absolute paths are accepted: a leading slash, no scheme (javascript:,
+ * data:, etc.), and no protocol-relative or external URLs. Prompt injection
+ * must never steer the client router onto an attacker-controlled origin.
+ */
+export const is_safe_internal_path = (path: string): boolean => {
+  if (!path.startsWith('/')) return false
+  if (path.startsWith('//')) return false
+  // Reject any scheme prefix (e.g. javascript:alert(1)) even after a slash.
+  if (/^\/[a-zA-Z][a-zA-Z0-9+.-]*:/.test(path)) return false
+  return true
+}
+
 type CitationType = 'post' | 'project' | 'page' | 'snippet'
 type ChatConnectionStatus = 'checking' | 'ready' | 'unavailable' | 'offline'
 type QuickPromptId =
@@ -606,10 +620,12 @@ export default function AIChatInterface({
       const navMatch = /\[\[NAVIGATE:([^\]]+)\]\]/.exec(text)
       if (navMatch?.[1]) {
         const targetPath = navMatch[1].trim()
-        scheduleActionTimeout(() => {
-          navigationPlay()
-          router.push(targetPath)
-        }, 1500)
+        if (is_safe_internal_path(targetPath)) {
+          scheduleActionTimeout(() => {
+            navigationPlay()
+            router.push(targetPath)
+          }, 1500)
+        }
       }
 
       // 2. Site Search
@@ -660,24 +676,33 @@ export default function AIChatInterface({
       // Turnstile must be armed before any UI mutation: without a token the
       // message would be swallowed after the optimistic update and a pending
       // prompt would be lost, so reject visibly and keep the input intact.
+      // Repeated clicks while the widget is still arming must not stack
+      // identical bubbles, so only push one when the last message is not
+      // already a turnstile-pending notice.
       if (isTurnstileEnabled && !turnstileToken) {
-        updateConversationById(conversationId, (c) => ({
-          ...c,
-          messages: [
-            ...c.messages,
-            {
-              id: `turnstile-pending-${messageIdCounterRef.current++}-${Date.now()}`,
-              text: t.has('mascot.aiChat.turnstilePending')
-                ? t('mascot.aiChat.turnstilePending')
-                : 'Security verification pending - please retry in a moment.',
-              isUser: false,
-              timestamp: new Date().toISOString(),
-              isError: true,
-              type: 'text'
-            }
-          ],
-          updatedAt: new Date().toISOString()
-        }))
+        const lastMessage = activeConversation.messages.at(-1)
+        const alreadyPending =
+          lastMessage !== undefined && lastMessage.id.startsWith('turnstile-pending-')
+
+        if (!alreadyPending) {
+          updateConversationById(conversationId, (c) => ({
+            ...c,
+            messages: [
+              ...c.messages,
+              {
+                id: `turnstile-pending-${messageIdCounterRef.current++}-${Date.now()}`,
+                text: t.has('mascot.aiChat.turnstilePending')
+                  ? t('mascot.aiChat.turnstilePending')
+                  : 'Security verification pending - please retry in a moment.',
+                isUser: false,
+                timestamp: new Date().toISOString(),
+                isError: true,
+                type: 'text'
+              }
+            ],
+            updatedAt: new Date().toISOString()
+          }))
+        }
         return false
       }
 

@@ -17,12 +17,13 @@ const dayKeys: Array<'sun' | 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat'> = [
 ]
 
 const cellColors = (v: number, max: number) => {
-  // Opacity-based single hue (orange) for a cleaner look
+  // Opacity-based single hue (orange) for a cleaner look: four distinct
+  // intensity bands so the heatmap actually communicates play frequency.
   const ratio = max === 0 ? 0 : v / max
   if (ratio === 0) return 'bg-bg-surface'
-  if (ratio < 0.25) return 'bg-[var(--accent-dim)]'
-  if (ratio < 0.5) return 'bg-[var(--accent-dim)]'
-  if (ratio < 0.75) return 'bg-[var(--accent-dim)]'
+  if (ratio < 0.25) return 'bg-[var(--accent-dim)] opacity-25'
+  if (ratio < 0.5) return 'bg-[var(--accent-dim)] opacity-50'
+  if (ratio < 0.75) return 'bg-[var(--accent-dim)] opacity-75'
   return 'bg-[var(--accent-dim)]'
 }
 

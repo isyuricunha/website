@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { NextIntlClientProvider } from '@isyuricunha/i18n/client'
 import messages from '@isyuricunha/i18n/messages/en.json'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
@@ -10,8 +10,15 @@ const turnstileState = vi.hoisted(() => ({
   reset: vi.fn()
 }))
 
+// Mutable flag so one file can cover both flag-on and flag-off behaviour:
+// the component reads flags.turnstile lazily (useState initializer), so a
+// fresh mount after flipping the flag picks the new value.
+const envState = vi.hoisted(() => ({ turnstile: true }))
+
 vi.mock('@isyuricunha/env', () => ({
-  flags: { turnstile: true },
+  get flags() {
+    return { turnstile: envState.turnstile }
+  },
   env: { NEXT_PUBLIC_TURNSTILE_SITE_KEY: 'test-site-key' }
 }))
 
@@ -80,6 +87,7 @@ describe('<AIChatInterface /> with Turnstile enabled', () => {
     vi.clearAllMocks()
     turnstileState.onSuccess = null
     turnstileState.reset.mockReset()
+    envState.turnstile = true
     sessionStorage.clear()
     vi.stubGlobal('fetch', fetchMock)
   })
@@ -96,7 +104,9 @@ describe('<AIChatInterface /> with Turnstile enabled', () => {
 
   it('sends the Turnstile token in the chat request body when armed', async () => {
     await renderChat()
-    turnstileState.onSuccess?.('token-abc')
+    act(() => {
+      turnstileState.onSuccess?.('token-abc')
+    })
 
     await waitFor(() => {
       expect(fetchMock).toHaveBeenCalledWith(statusPath, expect.anything())
@@ -148,7 +158,9 @@ describe('<AIChatInterface /> with Turnstile enabled', () => {
     expect(chatRequested()).toBe(false)
 
     // The widget arms: the pending prompt is now dispatched with a token.
-    turnstileState.onSuccess?.('token-pending')
+    act(() => {
+      turnstileState.onSuccess?.('token-pending')
+    })
 
     await waitFor(() => {
       expect(chatRequested()).toBe(true)
@@ -156,5 +168,27 @@ describe('<AIChatInterface /> with Turnstile enabled', () => {
 
     expect(chatRequestBody().turnstileToken).toBe('token-pending')
     expect(sessionStorage.getItem('yue_pending_prompt')).toBeNull()
+  })
+
+  it('sends the message without a turnstile token when the flag is off', async () => {
+    envState.turnstile = false
+    await renderChat()
+
+    await waitFor(() => {
+      expect(fetchMock).toHaveBeenCalledWith(statusPath, expect.anything())
+    })
+
+    // No widget is mounted and the send is not gated on a token.
+    expect(screen.queryByTestId('turnstile-widget')).toBeNull()
+
+    fireEvent.change(screen.getByPlaceholderText(/ask/i), { target: { value: 'no captcha here' } })
+    fireEvent.click(screen.getByRole('button', { name: /send/i }))
+
+    await waitFor(() => {
+      expect(fetchMock).toHaveBeenCalledWith(chatPath, expect.objectContaining({ method: 'POST' }))
+    })
+
+    expect(chatRequestBody().message).toBe('no captcha here')
+    expect(chatRequestBody().turnstileToken).toBeUndefined()
   })
 })

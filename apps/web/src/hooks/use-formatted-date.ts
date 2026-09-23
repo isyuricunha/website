@@ -24,6 +24,12 @@ export const useFormattedDate = (date: Date | string, options: Options = {}) => 
 
   const convertedDate = typeof date === 'string' ? new Date(date) : date
 
+  // An invalid date would make dayjs diff to NaN and then crash the
+  // relative-time formatter; fall back to a plain string instead.
+  if (Number.isNaN(convertedDate.getTime())) {
+    return typeof date === 'string' ? date : ''
+  }
+
   if (relative) {
     const weeksDiff = dayjs().diff(convertedDate, 'week')
 

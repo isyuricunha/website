@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { NextIntlClientProvider } from '@isyuricunha/i18n/client'
 import messages from '@isyuricunha/i18n/messages/en.json'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
@@ -10,8 +10,15 @@ const turnstileState = vi.hoisted(() => ({
   reset: vi.fn()
 }))
 
+// Mutable flag so one file can cover both flag-on and flag-off behaviour:
+// the component reads flags.turnstile lazily (useState initializer), so a
+// fresh mount after flipping the flag picks the new value.
+const envState = vi.hoisted(() => ({ turnstile: true }))
+
 vi.mock('@isyuricunha/env', () => ({
-  flags: { turnstile: true },
+  get flags() {
+    return { turnstile: envState.turnstile }
+  },
   env: { NEXT_PUBLIC_TURNSTILE_SITE_KEY: 'test-site-key' }
 }))
 
@@ -57,6 +64,7 @@ describe('<NewsletterSignup /> with Turnstile enabled', () => {
     turnstileState.onError = null
     turnstileState.onExpire = null
     turnstileState.reset.mockReset()
+    envState.turnstile = true
     vi.stubGlobal('fetch', fetchMock)
   })
 
@@ -84,7 +92,9 @@ describe('<NewsletterSignup /> with Turnstile enabled', () => {
     const button = screen.getByRole('button', { name: /subscribe/i })
     expect(button).toBeDisabled()
 
-    turnstileState.onSuccess?.('fresh-token')
+    act(() => {
+      turnstileState.onSuccess?.('fresh-token')
+    })
 
     await waitFor(() => {
       expect(button).toBeEnabled()
@@ -93,7 +103,9 @@ describe('<NewsletterSignup /> with Turnstile enabled', () => {
 
   it('sends the Turnstile token in the subscribe request body', async () => {
     await renderSignup()
-    turnstileState.onSuccess?.('token-abc')
+    act(() => {
+      turnstileState.onSuccess?.('token-abc')
+    })
 
     fireEvent.change(screen.getByLabelText(/email/i), { target: { value: 'alice@example.com' } })
     fireEvent.click(screen.getByRole('button', { name: /subscribe/i }))
@@ -116,7 +128,9 @@ describe('<NewsletterSignup /> with Turnstile enabled', () => {
     )
 
     await renderSignup()
-    turnstileState.onSuccess?.('single-use-token')
+    act(() => {
+      turnstileState.onSuccess?.('single-use-token')
+    })
 
     fireEvent.change(screen.getByLabelText(/email/i), { target: { value: 'alice@example.com' } })
     fireEvent.click(screen.getByRole('button', { name: /subscribe/i }))
@@ -133,7 +147,9 @@ describe('<NewsletterSignup /> with Turnstile enabled', () => {
     expect(button).toBeDisabled()
 
     // A fresh token re-enables the retry and goes out in the new request.
-    turnstileState.onSuccess?.('token-xyz')
+    act(() => {
+      turnstileState.onSuccess?.('token-xyz')
+    })
     await waitFor(() => {
       expect(button).toBeEnabled()
     })
@@ -152,5 +168,27 @@ describe('<NewsletterSignup /> with Turnstile enabled', () => {
     expect(body.turnstileToken).toBe('token-xyz')
 
     vi.unstubAllGlobals()
+  })
+
+  it('subscribes without a turnstile token when the flag is off', async () => {
+    envState.turnstile = false
+    await renderSignup()
+
+    // No widget is mounted and the submit is not gated on a token.
+    expect(screen.queryByTestId('turnstile-widget')).toBeNull()
+
+    fireEvent.change(screen.getByLabelText(/email/i), { target: { value: 'bob@example.com' } })
+    fireEvent.click(screen.getByRole('button', { name: /subscribe/i }))
+
+    await waitFor(() => {
+      expect(fetchMock).toHaveBeenCalledWith(
+        subscribePath,
+        expect.objectContaining({ method: 'POST' })
+      )
+    })
+
+    const body = subscribeRequestBody()
+    expect(body.email).toBe('bob@example.com')
+    expect(body.turnstileToken).toBeUndefined()
   })
 })
