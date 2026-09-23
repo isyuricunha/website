@@ -122,4 +122,33 @@ describe('/api/newsletter/unsubscribe', () => {
       message: 'Successfully unsubscribed from newsletter'
     })
   })
+
+  it('returns the same success response for an unknown email (no subscription oracle)', async () => {
+    const { ratelimit } = await import('@/lib/ratelimit')
+    const { getClientIp } = await import('@/lib/spam-detection')
+    const { resendService } = await import('@/lib/resend-service')
+
+    vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
+    vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
+    vi.mocked(resendService.getMainAudienceId).mockResolvedValue('aud-1')
+    vi.mocked(resendService.findContactByEmail).mockResolvedValue(null)
+
+    const { POST } = await import('@/app/api/newsletter/unsubscribe/route')
+
+    const req = {
+      headers: new Headers(),
+      json: async () => ({ email: 'not-subscribed@example.com' })
+    } as unknown as Parameters<typeof POST>[0]
+
+    const res = await POST(req)
+
+    // A 404 here would let anyone probe which addresses are subscribed.
+    // Unknown emails must look identical to a successful unsubscription.
+    expect(res.status).toBe(200)
+    expect(await res.json()).toEqual({
+      success: true,
+      message: 'Successfully unsubscribed from newsletter'
+    })
+    expect(vi.mocked(resendService.updateContact)).not.toHaveBeenCalled()
+  })
 })

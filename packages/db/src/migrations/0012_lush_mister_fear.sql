@@ -15,6 +15,15 @@ DO $$ BEGIN
   IF NOT EXISTS (
     SELECT 1 FROM pg_constraint WHERE conname = 'account_provider_id_account_id_unique'
   ) THEN
+    -- A concurrent OAuth flow could have created duplicate rows before this
+    -- migration ran; ADD CONSTRAINT would fail on duplicates. Keep the oldest
+    -- row per (provider_id, account_id) and drop the rest, then add the
+    -- constraint guarded so re-runs and already-fixed databases are no-ops.
+    DELETE FROM "account" a
+      USING "account" b
+      WHERE a."provider_id" = b."provider_id"
+        AND a."account_id" = b."account_id"
+        AND a."id" > b."id";
     ALTER TABLE "account" ADD CONSTRAINT "account_provider_id_account_id_unique" UNIQUE("provider_id","account_id");
   END IF;
 END $$;--> statement-breakpoint

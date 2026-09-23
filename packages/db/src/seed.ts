@@ -39,10 +39,7 @@ const main = async () => {
       views: 0
     }
 
-    await db
-      .insert(posts)
-      .values(examplePost)
-      .onConflictDoNothing({ target: posts.slug })
+    await db.insert(posts).values(examplePost).onConflictDoNothing({ target: posts.slug })
 
     console.log('🎉 Data inserted successfully!')
 

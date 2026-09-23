@@ -16,8 +16,14 @@ vi.mock('@isyuricunha/env', () => ({
 // A redis that never resolves: simulates a degraded/slow Upstash where the
 // limiter's script call hangs past the configured timeout.
 const hangingRedis = {
-  eval: () => new Promise(() => { /* never settles: simulates a degraded Upstash */ }),
-  evalsha: () => new Promise(() => { /* never settles */ })
+  eval: () =>
+    new Promise(() => {
+      /* never settles: simulates a degraded Upstash */
+    }),
+  evalsha: () =>
+    new Promise(() => {
+      /* never settles */
+    })
 }
 
 const makeRaw = () =>
