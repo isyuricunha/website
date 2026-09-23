@@ -4,6 +4,18 @@ import matter from 'gray-matter'
 import * as yaml from 'js-yaml'
 import { logger } from '@/lib/logger'
 
+// Slug and locale flow into path.join(CONTENT_DIR, locale, `${slug}.mdx`).
+// Reject anything that could traverse out of the content tree even if a caller
+// skips validation (admin routes pass user input here).
+const SAFE_SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/i
+const SAFE_LOCALE = /^[a-z]{2}(?:-[a-z]{2})?$/i
+
+const assert_safe_path_piece = (value: string, pattern: RegExp, label: string): void => {
+  if (!pattern.test(value)) {
+    throw new Error(`Invalid ${label}: ${value}`)
+  }
+}
+
 interface BlogPost {
   slug: string
   title: string
@@ -101,6 +113,9 @@ export const BlogService = {
    * Get a specific blog post by slug and locale
    */
   async getPost(slug: string, locale: string): Promise<BlogPost | null> {
+    assert_safe_path_piece(slug, SAFE_SLUG, 'slug')
+    assert_safe_path_piece(locale, SAFE_LOCALE, 'locale')
+
     const filePath = path.join(CONTENT_DIR, locale, `${slug}.mdx`)
 
     try {
