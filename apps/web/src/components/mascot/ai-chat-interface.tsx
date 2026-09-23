@@ -2,6 +2,8 @@
 
 import { useTranslations, useLocale } from '@isyuricunha/i18n/client'
 import { useRouter } from 'next/navigation'
+import { Turnstile } from '@marsidev/react-turnstile'
+import { env, flags } from '@isyuricunha/env'
 import {
   Avatar,
   AvatarFallback,
@@ -286,6 +288,11 @@ export default function AIChatInterface({
   const [isCancelling, setIsCancelling] = useState(false)
   const [connectionStatus, setConnectionStatus] = useState<ChatConnectionStatus>('checking')
   const [typingDots, setTypingDots] = useState('')
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
+  const [isTurnstileEnabled] = useState(
+    () => flags.turnstile && !!env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
+  )
+  const turnstileRef = useRef<React.ElementRef<typeof Turnstile>>(null)
   const [feedbackOpenForMessageId, setFeedbackOpenForMessageId] = useState<string | null>(null)
   const [feedbackDraftByMessageId, setFeedbackDraftByMessageId] = useState<Record<string, string>>(
     {}
@@ -694,6 +701,8 @@ export default function AIChatInterface({
           )
         })()
 
+        if (isTurnstileEnabled && !turnstileToken) return
+
         const response = await fetch('/api/ai/chat', {
           method: 'POST',
           signal: abortController.signal,
@@ -704,6 +713,7 @@ export default function AIChatInterface({
             message: messageText,
             stream: should_stream,
             locale,
+            ...(isTurnstileEnabled && { turnstileToken }),
             context: {
               currentPage,
               pagePath,
@@ -852,6 +862,12 @@ export default function AIChatInterface({
         if (abortControllerRef.current === abortController) {
           abortControllerRef.current = null
         }
+        // Consume the turnstile token per request: reset the widget so the
+        // next message carries a fresh token.
+        if (isTurnstileEnabled) {
+          turnstileRef.current?.reset()
+          setTurnstileToken(null)
+        }
         setIsCancelling(false)
         setIsLoading(false)
       }
@@ -863,10 +879,12 @@ export default function AIChatInterface({
       currentPage,
       handleAutonomousActions,
       isLoading,
+      isTurnstileEnabled,
       locale,
       onMessageSent,
       pagePath,
       t,
+      turnstileToken,
       updateConversationById
     ]
   )
@@ -1532,6 +1550,24 @@ export default function AIChatInterface({
               </div>
             </div>
           )}
+          {isTurnstileEnabled && (
+            <div className='mb-3' aria-hidden='true'>
+              <Turnstile
+                ref={turnstileRef}
+                siteKey={env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? ''}
+                onSuccess={(token: string) => setTurnstileToken(token)}
+                onError={() => {
+                  setTurnstileToken(null)
+                  turnstileRef.current?.reset()
+                }}
+                onExpire={() => setTurnstileToken(null)}
+                options={{
+                  theme: 'auto',
+                  size: 'invisible'
+                }}
+              />
+            </div>
+          )}
           <div className='flex gap-2'>
             <input
               ref={inputRef}
@@ -1546,7 +1582,13 @@ export default function AIChatInterface({
             <button
               type='button'
               onClick={isLoading ? cancelCurrentResponse : sendMessage}
-              disabled={isLoading ? isCancelling : !inputValue.trim() || !canUseChat}
+              disabled={
+                isLoading
+                  ? isCancelling
+                  : !inputValue.trim() ||
+                    !canUseChat ||
+                    (isTurnstileEnabled && !turnstileToken)
+              }
               aria-label={sendButtonLabel}
               title={sendButtonLabel}
               className={cn(

@@ -1,6 +1,8 @@
 'use client'
 
 import { useTranslations } from '@isyuricunha/i18n/client'
+import { Turnstile } from '@marsidev/react-turnstile'
+import { env, flags } from '@isyuricunha/env'
 import {
   Card,
   CardContent,
@@ -19,10 +21,19 @@ const NewsletterSignup = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [isSubscribed, setIsSubscribed] = useState(false)
   const [error, setError] = useState('')
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
+  const [isTurnstileEnabled] = useState(
+    () => flags.turnstile && !!env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
+  )
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!email.trim()) return
+
+    if (isTurnstileEnabled && !turnstileToken) {
+      setError(t('homepage.newsletter.turnstile-required') || 'Please complete the security check.')
+      return
+    }
 
     setIsLoading(true)
     setError('')
@@ -33,7 +44,10 @@ const NewsletterSignup = () => {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ email: email.trim() })
+        body: JSON.stringify({
+          email: email.trim(),
+          ...(isTurnstileEnabled && { turnstileToken })
+        })
       })
 
       const data = await response.json()
@@ -44,6 +58,7 @@ const NewsletterSignup = () => {
 
       setIsSubscribed(true)
       setEmail('')
+      setTurnstileToken(null)
     } catch (error_) {
       setError(error_ instanceof Error ? error_.message : t('homepage.newsletter.error-default'))
     } finally {
@@ -108,7 +123,7 @@ const NewsletterSignup = () => {
             />
             <Button
               type='submit'
-              disabled={isLoading || !email.trim()}
+              disabled={isLoading || !email.trim() || (isTurnstileEnabled && !turnstileToken)}
               className='flex items-center gap-2 text-sm'
             >
               {isLoading ? (
@@ -122,6 +137,26 @@ const NewsletterSignup = () => {
               {t('homepage.newsletter.cta')}
             </Button>
           </div>
+          {isTurnstileEnabled && env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && (
+            <div className='flex justify-center'>
+              <Turnstile
+                siteKey={env.NEXT_PUBLIC_TURNSTILE_SITE_KEY}
+                onSuccess={(token: string) => setTurnstileToken(token)}
+                onError={() => {
+                  setTurnstileToken(null)
+                  setError(
+                    t('homepage.newsletter.turnstile-error') ||
+                      'Security verification failed. Please try again.'
+                  )
+                }}
+                onExpire={() => setTurnstileToken(null)}
+                options={{
+                  theme: 'auto',
+                  size: 'normal'
+                }}
+              />
+            </div>
+          )}
           <p className='text-muted-foreground text-xs'>{t('homepage.newsletter.disclaimer')}</p>
         </form>
       </CardContent>
