@@ -17,9 +17,15 @@ export default function proxy(request: NextRequest) {
     return NextResponse.rewrite(url)
   }
 
+  // Hardening (P3): report-only remains the rollout strategy because the app
+  // relies on Next.js inline scripts/styles, which need nonces before
+  // enforcement can go live. 'unsafe-eval' was removed: production bundles
+  // must not depend on eval, and in report-only mode a violation only writes
+  // a report instead of breaking the page. Flipping to 'Content-Security-
+  // Policy' (enforce) is the next step once reports are clean.
   const csp = [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval' *.yuricunha.com *.umami.is vercel.live va.vercel-scripts.com unpkg.com challenges.cloudflare.com",
+    "script-src 'self' 'unsafe-inline' *.yuricunha.com *.umami.is vercel.live va.vercel-scripts.com unpkg.com challenges.cloudflare.com",
     "style-src 'self' 'unsafe-inline' vercel.live",
     "img-src 'self' https: data: blob:",
     "font-src 'self' data: assets.vercel.com vercel.live",
