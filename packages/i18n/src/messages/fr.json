@@ -2380,7 +2380,8 @@
           }
         }
       },
-      "retry": "Réessayer"
+      "retry": "Réessayer",
+      "turnstilePending": "Vérification de sécurité en attente - veuillez réessayer dans un instant."
     },
     "chatbot": {
       "title": "Discuter avec Yue",

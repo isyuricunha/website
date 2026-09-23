@@ -11,9 +11,11 @@ const get_encryption_key = (): Buffer => {
     throw new Error('2FA storage requires BETTER_AUTH_SECRET to be configured')
   }
 
-  return createHash('sha256')
-    .update(`website:two-factor:${env.BETTER_AUTH_SECRET}`)
-    .digest()
+  // NOTE: the key is derived directly from BETTER_AUTH_SECRET. Rotating that
+  // secret invalidates every stored 2FA record (they become undecryptable);
+  // users must re-enroll. A multi-key migration scheme was deemed out of
+  // scope for this codebase size.
+  return createHash('sha256').update(`website:two-factor:${env.BETTER_AUTH_SECRET}`).digest()
 }
 
 export const encrypt_2fa_value = (value: string): string => {
@@ -22,7 +24,12 @@ export const encrypt_2fa_value = (value: string): string => {
   const encrypted = Buffer.concat([cipher.update(value, 'utf8'), cipher.final()])
   const authTag = cipher.getAuthTag()
 
-  return [ENCRYPTION_PREFIX.replace(':', ''), iv.toString('base64'), encrypted.toString('base64'), authTag.toString('base64')].join(':')
+  return [
+    ENCRYPTION_PREFIX.replace(':', ''),
+    iv.toString('base64'),
+    encrypted.toString('base64'),
+    authTag.toString('base64')
+  ].join(':')
 }
 
 export const decrypt_2fa_value = (stored: string): string => {
@@ -36,8 +43,15 @@ export const decrypt_2fa_value = (stored: string): string => {
     throw new Error('Malformed encrypted 2FA value')
   }
 
-  const decipher = createDecipheriv('aes-256-gcm', get_encryption_key(), Buffer.from(parts[1], 'base64'))
+  const decipher = createDecipheriv(
+    'aes-256-gcm',
+    get_encryption_key(),
+    Buffer.from(parts[1], 'base64')
+  )
   decipher.setAuthTag(Buffer.from(parts[3], 'base64'))
 
-  return Buffer.concat([decipher.update(Buffer.from(parts[2], 'base64')), decipher.final()]).toString('utf8')
+  return Buffer.concat([
+    decipher.update(Buffer.from(parts[2], 'base64')),
+    decipher.final()
+  ]).toString('utf8')
 }

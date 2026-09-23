@@ -13,7 +13,7 @@ import {
   Button
 } from '@isyuricunha/ui'
 import { Mail, Send, CheckCircle, AlertCircle } from 'lucide-react'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 
 const NewsletterSignup = () => {
   const t = useTranslations()
@@ -25,6 +25,7 @@ const NewsletterSignup = () => {
   const [isTurnstileEnabled] = useState(
     () => flags.turnstile && !!env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
   )
+  const turnstileRef = useRef<React.ElementRef<typeof Turnstile>>(null)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -59,8 +60,13 @@ const NewsletterSignup = () => {
       setIsSubscribed(true)
       setEmail('')
       setTurnstileToken(null)
+      turnstileRef.current?.reset()
     } catch (error_) {
       setError(error_ instanceof Error ? error_.message : t('homepage.newsletter.error-default'))
+      // A single-use token is consumed server-side on a 4xx; the retry must
+      // carry a fresh token or it loops into the same rejection forever.
+      setTurnstileToken(null)
+      turnstileRef.current?.reset()
     } finally {
       setIsLoading(false)
     }
@@ -140,16 +146,21 @@ const NewsletterSignup = () => {
           {isTurnstileEnabled && env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && (
             <div className='flex justify-center'>
               <Turnstile
+                ref={turnstileRef}
                 siteKey={env.NEXT_PUBLIC_TURNSTILE_SITE_KEY}
                 onSuccess={(token: string) => setTurnstileToken(token)}
                 onError={() => {
                   setTurnstileToken(null)
+                  turnstileRef.current?.reset()
                   setError(
                     t('homepage.newsletter.turnstile-error') ||
                       'Security verification failed. Please try again.'
                   )
                 }}
-                onExpire={() => setTurnstileToken(null)}
+                onExpire={() => {
+                  setTurnstileToken(null)
+                  turnstileRef.current?.reset()
+                }}
                 options={{
                   theme: 'auto',
                   size: 'normal'

@@ -640,18 +640,46 @@ export default function AIChatInterface({
     if (!activeConversation) return
 
     setInputValue('')
-
-    await send_chat_message(messageText)
+    const accepted = await send_chat_message(messageText)
+    // Restore the draft when the send was rejected (e.g. turnstile still
+    // arming) so the user's text is never swallowed.
+    if (!accepted) {
+      setInputValue(messageText)
+    }
   }
 
   const send_chat_message = useCallback(
-    async (rawText: string) => {
-      if (isLoading || !canUseChat) return
-      if (!activeConversation) return
+    async (rawText: string): Promise<boolean> => {
+      if (isLoading || !canUseChat) return false
+      if (!activeConversation) return false
 
       const messageText = rawText.trim()
-      if (!messageText) return
+      if (!messageText) return false
       const conversationId = activeConversation.id
+
+      // Turnstile must be armed before any UI mutation: without a token the
+      // message would be swallowed after the optimistic update and a pending
+      // prompt would be lost, so reject visibly and keep the input intact.
+      if (isTurnstileEnabled && !turnstileToken) {
+        updateConversationById(conversationId, (c) => ({
+          ...c,
+          messages: [
+            ...c.messages,
+            {
+              id: `turnstile-pending-${messageIdCounterRef.current++}-${Date.now()}`,
+              text: t.has('mascot.aiChat.turnstilePending')
+                ? t('mascot.aiChat.turnstilePending')
+                : 'Security verification pending - please retry in a moment.',
+              isUser: false,
+              timestamp: new Date().toISOString(),
+              isError: true,
+              type: 'text'
+            }
+          ],
+          updatedAt: new Date().toISOString()
+        }))
+        return false
+      }
 
       const userMessage: ChatMessage = {
         id: `user-${messageIdCounterRef.current++}-${Date.now()}`,
@@ -700,8 +728,6 @@ export default function AIChatInterface({
             lower.includes('where ')
           )
         })()
-
-        if (isTurnstileEnabled && !turnstileToken) return
 
         const response = await fetch('/api/ai/chat', {
           method: 'POST',
@@ -786,7 +812,7 @@ export default function AIChatInterface({
             handleAutonomousActions(accumulated)
           }
 
-          return
+          return true
         }
 
         // JSON path (fallback / non-stream providers)
@@ -834,10 +860,12 @@ export default function AIChatInterface({
         if (data.message) {
           handleAutonomousActions(data.message)
         }
+
+        return true
       } catch (error) {
         if (is_abort_error(error)) {
           appendCancelledResponse(conversationId, assistantMessageId)
-          return
+          return true
         }
 
         if (process.env.NODE_ENV === 'development') {
@@ -858,6 +886,7 @@ export default function AIChatInterface({
           messages: [...c.messages, errorMessage],
           updatedAt: new Date().toISOString()
         }))
+        return true
       } finally {
         if (abortControllerRef.current === abortController) {
           abortControllerRef.current = null
@@ -889,15 +918,30 @@ export default function AIChatInterface({
     ]
   )
 
-  // Handle pending prompts (like "Explain this selection")
+  // Handle pending prompts (like "Explain this selection").
+  // The pending value is only consumed when the message was actually
+  // accepted: a turnstile-unarmed rejection leaves it in sessionStorage so
+  // the effect retries once the widget produces a token. The effect is
+  // gated on the token so a rejection bubble cannot loop the retry.
   useEffect(() => {
     if (!isOpen || isLoading || !canUseChat) return
+    if (isTurnstileEnabled && !turnstileToken) return
     const pending = sessionStorage.getItem('yue_pending_prompt')
     if (pending) {
-      sessionStorage.removeItem('yue_pending_prompt')
-      void send_chat_message(pending)
+      void send_chat_message(pending).then((accepted) => {
+        if (accepted) {
+          sessionStorage.removeItem('yue_pending_prompt')
+        }
+      })
     }
-  }, [canUseChat, isOpen, isLoading, send_chat_message])
+  }, [
+    canUseChat,
+    isOpen,
+    isLoading,
+    isTurnstileEnabled,
+    send_chat_message,
+    turnstileToken
+  ])
 
   const copyLink = async (href: string) => {
     try {
@@ -1582,13 +1626,7 @@ export default function AIChatInterface({
             <button
               type='button'
               onClick={isLoading ? cancelCurrentResponse : sendMessage}
-              disabled={
-                isLoading
-                  ? isCancelling
-                  : !inputValue.trim() ||
-                    !canUseChat ||
-                    (isTurnstileEnabled && !turnstileToken)
-              }
+              disabled={isLoading ? isCancelling : !inputValue.trim() || !canUseChat}
               aria-label={sendButtonLabel}
               title={sendButtonLabel}
               className={cn(

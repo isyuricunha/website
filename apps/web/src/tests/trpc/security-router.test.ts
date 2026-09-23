@@ -63,6 +63,12 @@ vi.mock('@/lib/audit-logger', () => {
   }
 })
 
+vi.mock('@/lib/ratelimit', () => ({
+  securityRatelimit: {
+    limit: vi.fn(async () => ({ success: true, reset: 0, remaining: 10, total: 10 }))
+  }
+}))
+
 vi.mock('crypto', async (importOriginal) => {
   const actual = await importOriginal<typeof import('crypto')>()
 
@@ -394,14 +400,17 @@ describe('securityRouter admin events', () => {
       expect(stored).not.toBeNull()
 
       let rejected = false
+      let rejectedMessage = ''
       try {
         await caller.disable2FA({ password: 'wrong' })
-      } catch {
+      } catch (error) {
         // Expected: an invalid password must never reach the deletion step.
         rejected = true
+        rejectedMessage = error instanceof Error ? error.message : ''
       }
 
       expect(rejected).toBe(true)
+      expect(rejectedMessage).toContain('Invalid password')
       expect(db.__mocks.deleteWhere).not.toHaveBeenCalled()
       expect(db.__state.two_factor_tokens).toHaveLength(1)
     })
@@ -420,12 +429,12 @@ describe('securityRouter admin events', () => {
       expect(db.__mocks.deleteWhere).toHaveBeenCalled()
       expect(db.__state.two_factor_tokens).toHaveLength(0)
 
-      const event = db.__state.security_events.find(e => e.eventType === 'two_factor_disabled')
+      const event = db.__state.security_events.find((e) => e.eventType === 'two_factor_disabled')
       expect(event).toBeTruthy()
     })
   })
 })
 
 async function process_frame() {
-  await new Promise(resolve => setTimeout(resolve, 0))
+  await new Promise((resolve) => setTimeout(resolve, 0))
 }

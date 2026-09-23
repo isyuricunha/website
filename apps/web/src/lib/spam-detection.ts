@@ -118,7 +118,10 @@ export async function verifyTurnstileToken(
 
     const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
       method: 'POST',
-      body: formData
+      body: formData,
+      // Interactive routes call this mid-request; do not let a hung siteverify
+      // hold the response until the platform timeout.
+      signal: AbortSignal.timeout(10_000)
     })
 
     const data = await response.json()

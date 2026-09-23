@@ -18,3 +18,11 @@ export const newsletterRatelimit = new Ratelimit({
   limiter: Ratelimit.slidingWindow(3, '1 h'),
   analytics: true
 })
+
+// Password-protected destructive operations (disabling 2FA) get a tight
+// window so a stolen session cannot brute-force the account password.
+export const securityRatelimit = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(5, '15 m'),
+  analytics: true
+})

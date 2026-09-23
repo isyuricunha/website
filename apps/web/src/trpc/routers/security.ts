@@ -19,6 +19,7 @@ import { z } from 'zod'
 import { auth } from '@/lib/auth'
 import { AuditLogger, getIpFromHeaders, getUserAgentFromHeaders } from '@/lib/audit-logger'
 import { logger } from '@/lib/logger'
+import { securityRatelimit } from '@/lib/ratelimit'
 import { decrypt_2fa_value, encrypt_2fa_value } from '@/lib/two-factor-crypto'
 import { adminProcedure, protectedProcedure, createTRPCRouter } from '../trpc'
 
@@ -83,9 +84,14 @@ const verify2FAInputSchema = z.object({
   backupCode: z.string().optional()
 })
 
-const disable2FAInputSchema = z.object({
-  password: z.string().min(1)
-})
+const disable2FAInputSchema = z
+  .object({
+    password: z.string().optional(),
+    totpCode: z.string().optional()
+  })
+  .refine((data) => Boolean(data.password || data.totpCode), {
+    message: 'Password or TOTP code is required'
+  })
 
 const ipAccessRuleInputSchema = z.object({
   ipAddress: z.string().min(1),
@@ -275,30 +281,79 @@ export const securityRouter = createTRPCRouter({
       const ipAddress = getIpFromHeaders(ctx.headers)
       const userAgent = getUserAgentFromHeaders(ctx.headers)
 
-      // Removing 2FA weakens account security, so the account password is
-      // required as proof of ownership before the record is destroyed.
+      // A stolen session must not be able to brute-force the ownership proof,
+      // and removing 2FA weakens account security, so proof is required before
+      // the record is destroyed: password for credential accounts, a valid TOTP
+      // code for OAuth-only accounts (which have no password to verify).
+      const { success: rl_ok } = await securityRatelimit.limit(
+        `security:disable-2fa:${ipAddress}:${ctx.session.user.id}`
+      )
+
+      if (!rl_ok) {
+        throw new TRPCError({
+          code: 'TOO_MANY_REQUESTS',
+          message: 'Too many attempts. Please try again later.'
+        })
+      }
+
+      const twoFARecord = await ctx.db.query.twoFactorTokens.findFirst({
+        where: eq(twoFactorTokens.userId, ctx.session.user.id)
+      })
+
+      if (!twoFARecord) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: '2FA not set up'
+        })
+      }
+
       const credentialAccount = await ctx.db.query.accounts.findFirst({
         where: and(eq(accounts.userId, ctx.session.user.id), eq(accounts.providerId, 'credential'))
       })
 
-      if (!credentialAccount?.password) {
-        throw new TRPCError({
-          code: 'BAD_REQUEST',
-          message: 'Password verification is unavailable for this account'
-        })
-      }
+      if (credentialAccount?.password) {
+        if (!input.password) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Password is required for this account'
+          })
+        }
 
-      const authContext = await auth.$context
-      const passwordValid = await authContext.password.verify({
-        password: input.password,
-        hash: credentialAccount.password
-      })
-
-      if (!passwordValid) {
-        throw new TRPCError({
-          code: 'UNAUTHORIZED',
-          message: 'Invalid password'
+        const authContext = await auth.$context
+        const passwordValid = await authContext.password.verify({
+          password: input.password,
+          hash: credentialAccount.password
         })
+
+        if (!passwordValid) {
+          throw new TRPCError({
+            code: 'UNAUTHORIZED',
+            message: 'Invalid password'
+          })
+        }
+      } else {
+        // OAuth-only account: there is no password to verify, so the exit path
+        // is a valid TOTP code instead of leaving 2FA permanently stuck on.
+        if (!input.totpCode) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'TOTP code is required to disable 2FA on this account'
+          })
+        }
+
+        const totpValid = speakeasy.totp.verify({
+          secret: decrypt_2fa_value(twoFARecord.secret),
+          encoding: 'base32',
+          token: input.totpCode,
+          window: 2
+        })
+
+        if (!totpValid) {
+          throw new TRPCError({
+            code: 'UNAUTHORIZED',
+            message: 'Invalid TOTP code'
+          })
+        }
       }
 
       // Delete the row so a fresh enable2FA can start a clean setup.
@@ -327,6 +382,9 @@ export const securityRouter = createTRPCRouter({
 
       return { success: true }
     } catch (error) {
+      if (error instanceof TRPCError) {
+        throw error
+      }
       logger.error('Error disabling 2FA', error)
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
