@@ -265,7 +265,10 @@ pnpm --filter @isyuricunha/docs build
 
 ## Deployment
 
-The project deploys on Vercel. The project `website-web` is monorepo-aware with Root Directory `apps/web` and Node.js 24.x.
+The project deploys on Vercel. The project deploys on Vercel as two monorepo-aware projects with Node.js 24.x:
+
+- `website-web`: Root Directory `apps/web`, serving `yuricunha.com`
+- `website-docs`: Root Directory `apps/docs`, serving `docs.yuricunha.com`
 
 The repository is mirrored across three git sources. GitLab is the deploy source connected to Vercel's Git integration:
 

@@ -1,13 +1,13 @@
 ---
 title: Vercel deploy
-description: Git sources, automatic deploy wiring and manual production deploys for the monorepo.
+description: Git sources, both Vercel projects, ignore wiring and manual production deploys for the monorepo.
 ---
 
 ## Git sources
 
 The repository is mirrored across three sources:
 
-- **GitLab** (`gitlab.com:isyuricunha/website`): the deploy source. Vercel's Git integration is connected to this repository, so pushes to `main` trigger production builds.
+- **GitLab** (`gitlab.com:isyuricunha/website`): the deploy source. Both Vercel projects connect their Git integration to this repository, so pushes to `main` trigger production builds.
 - **GitHub** (`github.com/isyuricunha/website`): mirror and CI surface. The account is rate-limited, so GitHub Actions runs are not relied on.
 - **YuGit/Forgejo** (`ssh.git.yuricunha.com:2222`): self-hosted mirror.
 
@@ -19,33 +19,63 @@ git push origin main
 git push yugit main
 ```
 
-## Project settings
+## Projects
 
-The Vercel project is `website-web`, monorepo-aware:
+Two Vercel projects serve this monorepo:
 
-- Root Directory: `apps/web`
-- Node.js 24.x
-- Next.js framework preset
+| Project        | Root Directory | Production domain    | Serves       |
+| -------------- | -------------- | -------------------- | ------------ |
+| `website-web`  | `apps/web`     | `yuricunha.com`      | the website  |
+| `website-docs` | `apps/docs`    | `docs.yuricunha.com` | the docs app |
 
-The `vercel.json` at the repository root adds an ignore command (docs-only changes skip builds) and cron schedules for `/api/cron/alerts` and `/api/cron/data-retention`.
+Both are Node.js 24.x with the Next.js framework preset. `apps/docs/vercel.json` carries its own install and build commands because the build needs the monorepo root:
+
+```json
+{
+  "installCommand": "pnpm -C ../.. install --frozen-lockfile",
+  "buildCommand": "pnpm -C ../.. --filter @isyuricunha/docs build"
+}
+```
+
+## Ignore wiring
+
+Each project skips builds when a push only touches the other app:
+
+- The root `vercel.json` (used by `website-web`) ignores `apps/docs/`, README, license and metadata-only paths, and adds cron schedules for `/api/cron/alerts` and `/api/cron/data-retention`.
+- `apps/docs/vercel.json` (used by `website-docs`) mirrors the pattern: its ignore script skips changes that only touch `apps/web/`.
+
+A docs-only change therefore builds `website-docs` and skips `website-web`; a web-only change does the opposite.
 
 ## Automatic deploys
 
-A push to GitLab `main` triggers a Vercel production build. If a push did not trigger a deploy (integration freshly connected or webhooks missing), run a manual production deploy:
+A push to GitLab `main` triggers production builds in both projects, filtered by the ignore wiring. If a push did not trigger a deploy (integration freshly connected or webhooks missing), run a manual production deploy.
+
+Run manual deploys from the repository root, not from inside the app directory. A CLI deploy from `apps/web` uploads only that subdirectory and fails with `The specified Root Directory "apps/web" does not exist. Please update your Project Settings.` because the project's Root Directory setting is applied on top of the uploaded tree.
+
+`website-web` is the repository-root link by default:
 
 ```bash
 pnpm exec vercel deploy --prod --yes
 ```
 
-Run it from the repository root, not from `apps/web`. The project Root Directory is `apps/web`; a CLI deploy from inside that directory uploads only the subdirectory and fails with `The specified Root Directory "apps/web" does not exist. Please update your Project Settings.`
+`website-docs` needs a temporary link swap because the root link points at `website-web`:
 
-Avoid leaving `vercel link` artifacts inside `apps/web` (`.vercel/`, `.env.local`): they are local tooling files and can confuse later CLI deploys.
+```bash
+mv .vercel .vercel-web
+pnpm exec vercel link --project website-docs --yes
+pnpm exec vercel deploy --prod --yes
+rm -rf .vercel
+mv .vercel-web .vercel
+```
+
+Avoid leaving `vercel link` artifacts inside app directories (`.vercel/`, `.env.local`): they are local tooling files and can confuse later CLI deploys.
 
 ## Verify the serving revision
 
 Probes confirm which revision is live:
 
 - Call an endpoint whose response shape changed in the release and check the new behavior.
+- For docs releases, request a newly added recipe page on `docs.yuricunha.com`.
 - Inspect response headers; CSP changes appear immediately.
 
 Do not rely on deployment dashboard status alone: a Ready deployment is promoted to production traffic only when it becomes the production alias.
