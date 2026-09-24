@@ -385,7 +385,9 @@
       },
       "confirm": {
         "bulk-action": "Are you sure you want to {action} {count} users? This action cannot be undone.",
-        "cancel-operation": "Are you sure you want to cancel this operation?"
+        "cancel-operation": "Are you sure you want to cancel this operation?",
+        "bulk-action-title": "Confirm bulk action",
+        "cancel-operation-title": "Cancel operation"
       },
       "actions": {
         "delete-users": "Delete Users",
@@ -1062,7 +1064,8 @@
         "broadcast-delete-failed": "Failed to delete broadcast: {message}"
       },
       "confirm": {
-        "delete-broadcast": "Are you sure you want to delete this broadcast? This action cannot be undone."
+        "delete-broadcast": "Are you sure you want to delete this broadcast? This action cannot be undone.",
+        "delete-broadcast-title": "Delete broadcast"
       },
       "loading": {
         "title": "Loading Email Marketing Data...",
@@ -1378,7 +1381,9 @@
     "views": "{count, plural, =1 {# view} other {# views}}",
     "sign-up": "Sign up",
     "sign-up-error": "Failed to sign up. Please try again.",
-    "unknown-error": "Unknown error"
+    "unknown-error": "Unknown error",
+    "confirm": "Confirm",
+    "processing": "Processing..."
   },
   "component": {
     "now-project": {
@@ -1803,7 +1808,9 @@
       "success-title": "Thanks for subscribing!",
       "success-description": "You'll receive updates about new posts and projects.",
       "error-default": "Failed to subscribe",
-      "success-compact": "Subscribed!"
+      "success-compact": "Subscribed!",
+      "turnstile-required": "Please complete the security check.",
+      "turnstile-error": "Security verification failed. Please try again."
     }
   },
   "hook": {

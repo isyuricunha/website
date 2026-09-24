@@ -32,7 +32,7 @@ const NewsletterSignup = () => {
     if (!email.trim()) return
 
     if (isTurnstileEnabled && !turnstileToken) {
-      setError(t('homepage.newsletter.turnstile-required') || 'Please complete the security check.')
+      setError(t('homepage.newsletter.turnstile-required'))
       return
     }
 
@@ -152,10 +152,7 @@ const NewsletterSignup = () => {
                 onError={() => {
                   setTurnstileToken(null)
                   turnstileRef.current?.reset()
-                  setError(
-                    t('homepage.newsletter.turnstile-error') ||
-                      'Security verification failed. Please try again.'
-                  )
+                  setError(t('homepage.newsletter.turnstile-error'))
                 }}
                 onExpire={() => {
                   setTurnstileToken(null)

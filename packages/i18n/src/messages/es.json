@@ -382,7 +382,9 @@
       },
       "confirm": {
         "bulk-action": "¿Estás seguro de que deseas {action} a {count} usuarios? Esta acción no se puede deshacer.",
-        "cancel-operation": "¿Estás seguro de que deseas cancelar esta operación?"
+        "cancel-operation": "¿Estás seguro de que deseas cancelar esta operación?",
+        "bulk-action-title": "Confirmar acción masiva",
+        "cancel-operation-title": "Cancelar operación"
       },
       "actions": {
         "delete-users": "Eliminar Usuarios",
@@ -1059,7 +1061,8 @@
         "broadcast-delete-failed": "Error al eliminar la transmisión: {message}"
       },
       "confirm": {
-        "delete-broadcast": "¿Estás seguro de que deseas eliminar esta transmisión? Esta acción no se puede deshacer."
+        "delete-broadcast": "¿Estás seguro de que deseas eliminar esta transmisión? Esta acción no se puede deshacer.",
+        "delete-broadcast-title": "Eliminar transmisión"
       },
       "loading": {
         "title": "Cargando datos de marketing por correo electrónico...",
@@ -1378,7 +1381,9 @@
     "views": "{count, plural, =1 {# vista} other {# vistas}}",
     "sign-up": "Registrarse",
     "sign-up-error": "Error al registrarse. Por favor, inténtalo de nuevo.",
-    "unknown-error": "Error desconocido"
+    "unknown-error": "Error desconocido",
+    "confirm": "Confirmar",
+    "processing": "Procesando..."
   },
   "component": {
     "now-project": {
@@ -1803,7 +1808,9 @@
       "success-title": "¡Gracias por suscribirte!",
       "success-description": "Recibirás actualizaciones sobre nuevas publicaciones y proyectos.",
       "error-default": "Error al suscribirse",
-      "success-compact": "¡Suscripción exitosa!"
+      "success-compact": "¡Suscripción exitosa!",
+      "turnstile-required": "Por favor, completa la verificación de seguridad.",
+      "turnstile-error": "Fallo en la verificación de seguridad. Por favor, inténtalo de nuevo."
     }
   },
   "hook": {

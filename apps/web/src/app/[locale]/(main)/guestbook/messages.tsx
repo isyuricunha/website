@@ -52,6 +52,11 @@ const Messages = () => {
     api.guestbook.getInfiniteMessages.useInfiniteQuery(
       {},
       {
+        // tRPC 11.18 regression: without an explicit initialCursor the first
+        // page never resolves for cursor-style endpoints, leaving the guestbook
+        // stuck on an eternal pending state. null mirrors the router's
+        // undefined start-of-cursor convention while satisfying the new types.
+        initialCursor: null,
         getNextPageParam: (lastPage) => lastPage.nextCursor,
         placeholderData: keepPreviousData
       }

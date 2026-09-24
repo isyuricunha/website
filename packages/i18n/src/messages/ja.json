@@ -382,7 +382,9 @@
       },
       "confirm": {
         "bulk-action": "{count} 人のユーザーを {action} してもよろしいですか？この操作は元に戻せません。",
-        "cancel-operation": "この操作をキャンセルしてもよろしいですか？"
+        "cancel-operation": "この操作をキャンセルしてもよろしいですか？",
+        "bulk-action-title": "一括操作を確認",
+        "cancel-operation-title": "操作をキャンセル"
       },
       "actions": {
         "delete-users": "ユーザーを削除",
@@ -1059,7 +1061,8 @@
         "broadcast-delete-failed": "ブロードキャストの削除に失敗しました: {message}"
       },
       "confirm": {
-        "delete-broadcast": "このブロードキャストを削除してもよろしいですか？この操作は元に戻せません。"
+        "delete-broadcast": "このブロードキャストを削除してもよろしいですか？この操作は元に戻せません。",
+        "delete-broadcast-title": "配信を削除"
       },
       "loading": {
         "title": "Eメールマーケティングデータを読み込み中...",
@@ -1378,7 +1381,9 @@
     "views": "{count, plural, =1 {# ビュー} other {# ビュー}}",
     "sign-up": "登録",
     "sign-up-error": "登録に失敗しました。もう一度お試しください。",
-    "unknown-error": "不明なエラー"
+    "unknown-error": "不明なエラー",
+    "confirm": "確認",
+    "processing": "処理中..."
   },
   "component": {
     "now-project": {
@@ -1803,7 +1808,9 @@
       "success-title": "登録ありがとうございます！",
       "success-description": "新しい投稿やプロジェクトに関する更新情報をお届けします。",
       "error-default": "登録に失敗しました",
-      "success-compact": "登録完了！"
+      "success-compact": "登録完了！",
+      "turnstile-required": "セキュリティ確認を完了してください。",
+      "turnstile-error": "セキュリティ確認に失敗しました。もう一度お試しください。"
     }
   },
   "hook": {

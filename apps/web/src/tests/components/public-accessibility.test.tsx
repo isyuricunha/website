@@ -3,7 +3,7 @@ import { NextIntlClientProvider } from '@isyuricunha/i18n/client'
 import messages from '@isyuricunha/i18n/messages/en.json'
 import ptMessages from '@isyuricunha/i18n/messages/pt.json'
 import { describe, expect, it, vi } from 'vitest'
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import path from 'node:path'
 import type { ReactNode } from 'react'
 
@@ -102,7 +102,19 @@ describe('public accessibility contracts', () => {
   })
 
   it('disables Tailwind pulse and spin animations for reduced motion', () => {
-    const css = readFileSync(path.resolve(process.cwd(), 'apps/web/src/styles/globals.css'), 'utf8')
+    // Resolve the stylesheet from the repository root marker (turbo.json)
+    // instead of process.cwd(): running the suite from another directory
+    // (e.g. `pnpm --filter @isyuricunha/web exec`) would otherwise double
+    // the apps/web prefix and fail with ENOENT.
+    const repoRoot = (() => {
+      let dir = process.cwd()
+      while (dir !== path.parse(dir).root && !existsSync(path.join(dir, 'turbo.json'))) {
+        dir = path.dirname(dir)
+      }
+      return dir
+    })()
+    const globalsCssPath = path.join(repoRoot, 'apps/web/src/styles/globals.css')
+    const css = readFileSync(globalsCssPath, 'utf8')
     const reducedMotionBlock = css.slice(css.indexOf('@media (prefers-reduced-motion: reduce)'))
 
     expect(reducedMotionBlock).toContain('.animate-pulse')

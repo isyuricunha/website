@@ -382,7 +382,9 @@
       },
       "confirm": {
         "bulk-action": "确定要对 {count} 个用户执行“{action}”操作吗？此操作无法撤销。",
-        "cancel-operation": "确定要取消此操作吗？"
+        "cancel-operation": "确定要取消此操作吗？",
+        "bulk-action-title": "确认批量操作",
+        "cancel-operation-title": "取消操作"
       },
       "actions": {
         "delete-users": "删除用户",
@@ -1059,7 +1061,8 @@
         "broadcast-delete-failed": "删除广播失败：{message}"
       },
       "confirm": {
-        "delete-broadcast": "确定要删除此广播吗？此操作无法撤销。"
+        "delete-broadcast": "确定要删除此广播吗？此操作无法撤销。",
+        "delete-broadcast-title": "删除广播"
       },
       "loading": {
         "title": "正在加载电子邮件营销数据...",
@@ -1378,7 +1381,9 @@
     "views": "{count, plural, =1 {# 次浏览} other {# 次浏览}}",
     "sign-up": "注册",
     "sign-up-error": "注册失败，请重试。",
-    "unknown-error": "未知错误"
+    "unknown-error": "未知错误",
+    "confirm": "确认",
+    "processing": "处理中..."
   },
   "component": {
     "now-project": {
@@ -1803,7 +1808,9 @@
       "success-title": "感谢您的订阅！",
       "success-description": "您将收到关于新文章和项目的更新。",
       "error-default": "订阅失败",
-      "success-compact": "已订阅！"
+      "success-compact": "已订阅！",
+      "turnstile-required": "请完成安全验证。",
+      "turnstile-error": "安全验证失败，请重试。"
     }
   },
   "hook": {

@@ -739,8 +739,12 @@ export default function AIChatInterface({
       let assistantMessageId: string | null = null
 
       try {
-        // Enhanced context with more conversation history for better memory
-        const recentMessages = nextMessages.slice(-15).map((message) => ({
+        // Enhanced context with more conversation history for better memory.
+        // The welcome bubble is UI chrome, not assistant speech: excluding it
+        // stops the model from echoing it verbatim ("who are you" -> welcome
+        // text) and keeps real turns only.
+        const conversationMessages = nextMessages.filter((message) => message.id !== 'welcome')
+        const recentMessages = conversationMessages.slice(-15).map((message) => ({
           role: message.isUser ? 'user' : 'assistant',
           content: message.text,
           timestamp: message.timestamp,
@@ -777,7 +781,7 @@ export default function AIChatInterface({
             context: {
               currentPage,
               pagePath,
-              previousMessages: nextMessages.slice(-8).map((m) => m.text),
+              previousMessages: conversationMessages.slice(-8).map((m) => m.text),
               conversation: recentMessages,
               conversationLength: nextMessages.length,
               userPreferences: {

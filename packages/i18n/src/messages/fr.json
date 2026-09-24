@@ -382,7 +382,9 @@
       },
       "confirm": {
         "bulk-action": "Êtes-vous sûr de vouloir {action} {count} utilisateurs ? Cette action est irréversible.",
-        "cancel-operation": "Êtes-vous sûr de vouloir annuler cette opération ?"
+        "cancel-operation": "Êtes-vous sûr de vouloir annuler cette opération ?",
+        "bulk-action-title": "Confirmer l'action groupée",
+        "cancel-operation-title": "Annuler l'opération"
       },
       "actions": {
         "delete-users": "Supprimer les utilisateurs",
@@ -1059,7 +1061,8 @@
         "broadcast-delete-failed": "Échec de la suppression de la diffusion : {message}"
       },
       "confirm": {
-        "delete-broadcast": "Êtes-vous sûr de vouloir supprimer cette diffusion ? Cette action est irréversible."
+        "delete-broadcast": "Êtes-vous sûr de vouloir supprimer cette diffusion ? Cette action est irréversible.",
+        "delete-broadcast-title": "Supprimer la diffusion"
       },
       "loading": {
         "title": "Chargement des données de marketing par e-mail...",
@@ -1378,7 +1381,9 @@
     "views": "{count, plural, =1 {# vue} other {# vues}}",
     "sign-up": "S'inscrire",
     "sign-up-error": "Échec de l'inscription. Veuillez réessayer.",
-    "unknown-error": "Erreur inconnue"
+    "unknown-error": "Erreur inconnue",
+    "confirm": "Confirmer",
+    "processing": "Traitement en cours..."
   },
   "component": {
     "now-project": {
@@ -1803,7 +1808,9 @@
       "success-title": "Merci pour votre abonnement !",
       "success-description": "Vous recevrez des mises à jour concernant les nouveaux articles et projets.",
       "error-default": "Échec de l'abonnement",
-      "success-compact": "Abonné !"
+      "success-compact": "Abonné !",
+      "turnstile-required": "Veuillez effectuer la vérification de sécurité.",
+      "turnstile-error": "La vérification de sécurité a échoué. Veuillez réessayer."
     }
   },
   "hook": {

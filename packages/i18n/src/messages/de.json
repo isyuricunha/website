@@ -382,7 +382,9 @@
       },
       "confirm": {
         "bulk-action": "Möchten Sie wirklich {action} für {count} Benutzer durchführen? Diese Aktion kann nicht rückgängig gemacht werden.",
-        "cancel-operation": "Möchten Sie diese Operation wirklich abbrechen?"
+        "cancel-operation": "Möchten Sie diese Operation wirklich abbrechen?",
+        "bulk-action-title": "Massenaktion bestätigen",
+        "cancel-operation-title": "Vorgang abbrechen"
       },
       "actions": {
         "delete-users": "Benutzer löschen",
@@ -1059,7 +1061,8 @@
         "broadcast-delete-failed": "Fehler beim Löschen der Rundsendung: {message}"
       },
       "confirm": {
-        "delete-broadcast": "Möchten Sie diese Rundsendung wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden."
+        "delete-broadcast": "Möchten Sie diese Rundsendung wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
+        "delete-broadcast-title": "Sendung löschen"
       },
       "loading": {
         "title": "E-Mail-Marketing-Daten werden geladen...",
@@ -1378,7 +1381,9 @@
     "views": "{count, plural, =1 {# Aufruf} other {# Aufrufe}}",
     "sign-up": "Registrieren",
     "sign-up-error": "Registrierung fehlgeschlagen. Bitte versuche es erneut.",
-    "unknown-error": "Unbekannter Fehler"
+    "unknown-error": "Unbekannter Fehler",
+    "confirm": "Bestätigen",
+    "processing": "Verarbeitung..."
   },
   "component": {
     "now-project": {
@@ -1803,7 +1808,9 @@
       "success-title": "Danke für deine Anmeldung!",
       "success-description": "Du erhältst Updates zu neuen Beiträgen und Projekten.",
       "error-default": "Anmeldung fehlgeschlagen",
-      "success-compact": "Angemeldet!"
+      "success-compact": "Angemeldet!",
+      "turnstile-required": "Bitte schließen Sie die Sicherheitsüberprüfung ab.",
+      "turnstile-error": "Sicherheitsüberprüfung fehlgeschlagen. Bitte versuchen Sie es erneut."
     }
   },
   "hook": {

@@ -382,7 +382,9 @@
       },
       "confirm": {
         "bulk-action": "Tem certeza de que deseja executar {action} em {count} usuários? Esta ação não pode ser desfeita.",
-        "cancel-operation": "Tem certeza de que deseja cancelar esta operação?"
+        "cancel-operation": "Tem certeza de que deseja cancelar esta operação?",
+        "bulk-action-title": "Confirmar ação em massa",
+        "cancel-operation-title": "Cancelar operação"
       },
       "actions": {
         "delete-users": "Excluir Usuários",
@@ -1059,7 +1061,8 @@
         "broadcast-delete-failed": "Falha ao excluir broadcast: {message}"
       },
       "confirm": {
-        "delete-broadcast": "Tem certeza de que deseja excluir este broadcast? Esta ação não pode ser desfeita."
+        "delete-broadcast": "Tem certeza de que deseja excluir este broadcast? Esta ação não pode ser desfeita.",
+        "delete-broadcast-title": "Excluir transmissão"
       },
       "loading": {
         "title": "Carregando dados de email marketing...",
@@ -1378,7 +1381,9 @@
     "views": "{count, plural, =1 {# visualização} other {# visualizações}}",
     "sign-up": "Criar conta",
     "sign-up-error": "Falha ao criar conta. Por favor, tente novamente.",
-    "unknown-error": "Erro desconhecido"
+    "unknown-error": "Erro desconhecido",
+    "confirm": "Confirmar",
+    "processing": "Processando..."
   },
   "component": {
     "now-project": {
@@ -1803,7 +1808,9 @@
       "success-title": "Obrigado por se inscrever!",
       "success-description": "Você receberá atualizações sobre novos posts e projetos.",
       "error-default": "Falha ao inscrever-se",
-      "success-compact": "Inscrito!"
+      "success-compact": "Inscrito!",
+      "turnstile-required": "Conclua a verificação de segurança.",
+      "turnstile-error": "Falha na verificação de segurança. Por favor, tente novamente."
     }
   },
   "hook": {
