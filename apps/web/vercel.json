@@ -1,0 +1,14 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "ignoreCommand": "node ./scripts/vercel-ignore.js",
+  "crons": [
+    {
+      "path": "/api/cron/alerts",
+      "schedule": "0 3 * * *"
+    },
+    {
+      "path": "/api/cron/data-retention",
+      "schedule": "30 3 * * *"
+    }
+  ]
+}
