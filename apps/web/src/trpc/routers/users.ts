@@ -142,7 +142,9 @@ export const usersRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       // DB-backed public lookup: rate limit so anonymous traffic cannot hammer
       // the profile query (and the timing/apiUsage telemetry rows it creates).
-      const ip = getIpFromHeaders(ctx.headers)
+      // getIp trusts only platform headers; getIpFromHeaders honours the
+      // client-forgeable x-forwarded-for.
+      const ip = getIp(ctx.headers)
       const { success: rl_ok } = await ratelimit.limit(`users:public-profile:${ip}`)
       if (!rl_ok) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
 
@@ -560,7 +562,9 @@ export const usersRouter = createTRPCRouter({
   }),
 
   requestPasswordReset: publicProcedure.input(emailInputSchema).mutation(async ({ ctx, input }) => {
-    const ip = getIpFromHeaders(ctx.headers)
+    // This endpoint sends real email: the limit must not key on a header the
+    // client can rotate (x-forwarded-for). getIp uses platform headers only.
+    const ip = getIp(ctx.headers)
     const { success: rl_ok } = await ratelimit.limit(`users:password-reset:${ip}`)
     if (!rl_ok) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
 
