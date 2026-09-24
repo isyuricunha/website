@@ -270,6 +270,14 @@ export const SIDEBAR_LINKS: SidebarLinks = [
         text: 'Drizzle'
       },
       {
+        href: '/recipes/abuse-protection',
+        text: 'Abuse Protection'
+      },
+      {
+        href: '/recipes/vercel-deploy',
+        text: 'Vercel Deploy'
+      },
+      {
         href: '/recipes/env',
         text: 'env'
       }

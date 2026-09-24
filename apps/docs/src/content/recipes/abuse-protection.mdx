@@ -1,0 +1,42 @@
+---
+title: Abuse protection
+description: How the website trusts client identity, limits request rates and verifies human traffic.
+---
+
+## Trusted client IP
+
+Rate limiters key on the client IP, so a forgeable identity header turns every limit into a per-request knob. `getClientIp` (`apps/web/src/lib/spam-detection.ts`) only trusts headers set by the platform that terminated the connection:
+
+- `cf-connecting-ip` is accepted only when `cf-ray` proves the request transited Cloudflare's edge. Cloudflare overwrites that header, so a client-sent value cannot survive a real Cloudflare hop.
+- `x-vercel-forwarded-for` is injected by Vercel's edge from the actual connection and cannot be spoofed by clients.
+- Everything else (`x-forwarded-for`, `x-real-ip`, `true-client-ip`, `x-client-ip`) is ignored when sent by clients. Without a platform header the IP is `unknown`.
+
+The parser handles bracketed IPv6 (`[::1]:443`), IPv4-mapped IPv6 and NAT64 forms without truncating them into garbage fragments.
+
+## Rate limiting
+
+Limiters live in `@isyuricunha/kv` and wrap Upstash sliding windows with a 2 second timeout. The `withFailClosed` wrapper converts a timeout result into a denial: when Redis degrades, requests fail closed instead of silently bypassing every limit on the site.
+
+- Global limiter: 50 requests per 10 seconds.
+- Sensitive routes (newsletter, auth) use stricter windows such as 3 per hour or 5 per 15 minutes.
+
+## Turnstile verification
+
+Turnstile is feature-flagged via `NEXT_PUBLIC_FLAG_TURNSTILE`. When enabled, mutating routes require a `turnstileToken` field and verify it server-side against Cloudflare's `siteverify` endpoint with a 10 second abort timeout. A client-sent token alone is never accepted as proof of humanity.
+
+## Newsletter double opt-in
+
+Subscribing stores a one-time confirmation token in Redis with a 24 hour TTL; the contact enters the audience only after confirming the email link. Nobody can subscribe a third-party address on their behalf.
+
+The unsubscribe flow returns the same response for known and unknown addresses, so the endpoint cannot be probed to discover which emails are subscribed.
+
+## Chat navigation allowlist
+
+AI chat actions may trigger navigation only through `is_safe_internal_path` (`apps/web/src/components/mascot/ai-chat-interface.tsx`):
+
+- The path must start with a single `/`; `//` prefixes and scheme prefixes like `javascript:` are rejected.
+- The path is parsed with `new URL(path, fixed-origin)` and required to resolve same-origin, mirroring the WHATWG parser the router uses. Backslash and control-character quirks cannot steer navigation to an external origin.
+
+## Content-Security-Policy
+
+Production responses send a hardened CSP in `Content-Security-Policy-Report-Only` mode (`apps/web/src/proxy.ts`). `unsafe-eval` is not part of the policy. Report-only stays the rollout strategy because Next.js inline scripts need nonce infrastructure before enforcement can go live; flip to enforcing mode once reports are clean.

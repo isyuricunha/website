@@ -186,3 +186,17 @@ export * from './users'
 pnpm db:generate
 pnpm db:migrate
 ```
+
+## Preflight for an existing production database
+
+`drizzle-kit migrate` applies every journal entry with a timestamp newer than the last applied migration. Before running it against a database that already holds schema, check:
+
+1. **Journal order**: timestamps must ascend with `idx`. A stale `when` on an old entry makes the migrator skip it forever and start at a later migration whose statements reference objects that do not exist.
+2. **Push-synced schema**: if the database was ever updated with `drizzle-kit push`, later migrations may fail with `column already exists` or reference constraints that were created under different names.
+3. **Missing tables the code references**: grep the schema exports and compare against `information_schema.tables`.
+4. **Duplicate rows**: any new `UNIQUE` constraint fails to add when duplicates exist for its columns. Check with `GROUP BY ... HAVING count(*) > 1` and dedupe first.
+5. **Orphan rows**: re-created foreign keys with `ON DELETE CASCADE` fail when child rows reference missing parents.
+
+Inspect the divergence with catalog queries (`pg_constraint`, `pg_indexes`, `information_schema.columns`) rather than assuming the journal reflects the database. Apply repairs in a transaction with pre-checks, then register applied migrations in the migrations table with the same sha256 hash the migrator uses so future runs stay no-ops.
+
+After any schema change, `pnpm db:check` must pass and a no-op `pnpm db:migrate` must succeed.

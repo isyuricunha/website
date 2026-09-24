@@ -1,0 +1,62 @@
+---
+title: Vercel deploy
+description: Git sources, automatic deploy wiring and manual production deploys for the monorepo.
+---
+
+## Git sources
+
+The repository is mirrored across three sources:
+
+- **GitLab** (`gitlab.com:isyuricunha/website`): the deploy source. Vercel's Git integration is connected to this repository, so pushes to `main` trigger production builds.
+- **GitHub** (`github.com/isyuricunha/website`): mirror and CI surface. The account is rate-limited, so GitHub Actions runs are not relied on.
+- **YuGit/Forgejo** (`ssh.git.yuricunha.com:2222`): self-hosted mirror.
+
+Push to all three:
+
+```bash
+git push gitlab main
+git push origin main
+git push yugit main
+```
+
+## Project settings
+
+The Vercel project is `website-web`, monorepo-aware:
+
+- Root Directory: `apps/web`
+- Node.js 24.x
+- Next.js framework preset
+
+The `vercel.json` at the repository root adds an ignore command (docs-only changes skip builds) and cron schedules for `/api/cron/alerts` and `/api/cron/data-retention`.
+
+## Automatic deploys
+
+A push to GitLab `main` triggers a Vercel production build. If a push did not trigger a deploy (integration freshly connected or webhooks missing), run a manual production deploy:
+
+```bash
+pnpm exec vercel deploy --prod --yes
+```
+
+Run it from the repository root, not from `apps/web`. The project Root Directory is `apps/web`; a CLI deploy from inside that directory uploads only the subdirectory and fails with `The specified Root Directory "apps/web" does not exist. Please update your Project Settings.`
+
+Avoid leaving `vercel link` artifacts inside `apps/web` (`.vercel/`, `.env.local`): they are local tooling files and can confuse later CLI deploys.
+
+## Verify the serving revision
+
+Probes confirm which revision is live:
+
+- Call an endpoint whose response shape changed in the release and check the new behavior.
+- Inspect response headers; CSP changes appear immediately.
+
+Do not rely on deployment dashboard status alone: a Ready deployment is promoted to production traffic only when it becomes the production alias.
+
+## Migrations are not run on deploy
+
+Vercel builds do not run database migrations. After merging schema changes, apply them manually:
+
+```bash
+pnpm db:check
+pnpm db:migrate
+```
+
+Run the preflight checklist in [Drizzle](/recipes/drizzle) first; the migrator stops mid-journal if a migration references objects that already exist or constraints that do not.
