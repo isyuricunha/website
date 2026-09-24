@@ -104,7 +104,10 @@ export const contentRouter = createTRPCRouter({
 
       // Get total count for pagination (aggregate in SQL instead of
       // materializing every matching row's id just to take its length).
-      const totalResult = await ctx.db.select({ value: count() }).from(posts).where(whereClause)
+      const totalResult = await ctx.db
+        .select({ value: count().mapWith(Number) })
+        .from(posts)
+        .where(whereClause)
       const totalPosts = totalResult[0]?.value ?? 0
 
       return {

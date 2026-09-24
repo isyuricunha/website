@@ -12,6 +12,7 @@ import { get_request_locale } from '@/lib/request-locale'
 import { create_presigned_r2_put_url, get_r2_public_base_url } from '@/lib/r2'
 import { getLocalizedPath } from '@/utils/get-localized-path'
 import { getDefaultImage } from '@/utils/get-default-image'
+import { getIp } from '@/utils/get-ip'
 import { auth } from '@/lib/auth'
 import { adminProcedure, createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc'
 import { randomUUID } from 'node:crypto'
@@ -204,7 +205,9 @@ export const usersRouter = createTRPCRouter({
       const locale = get_request_locale(ctx.headers)
 
       // Public DB-touching endpoint: rate limit like the other public queries.
-      const ip = getIpFromHeaders(ctx.headers)
+      // getIp trusts only platform headers; getIpFromHeaders honours the
+      // client-forgeable x-forwarded-for and would let callers rotate keys.
+      const ip = getIp(ctx.headers)
       const { success: rl_ok } = await ratelimit.limit(`users:public-comments:${ip}`)
       if (!rl_ok) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
 

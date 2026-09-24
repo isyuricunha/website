@@ -858,7 +858,7 @@ export const monitoringRouter = createTRPCRouter({
         ctx.db
           .select({
             metricName: performanceMetrics.metricName,
-            total: count(),
+            total: count().mapWith(Number),
             avgValue: avg(performanceMetrics.value)
           })
           .from(performanceMetrics)
@@ -866,24 +866,40 @@ export const monitoringRouter = createTRPCRouter({
           .groupBy(performanceMetrics.metricName),
         ctx.db
           .select({
-            total: count(),
-            resolved: sql<number>`count(*) filter (where ${errorTracking.resolved})`,
-            server: sql<number>`count(*) filter (where ${errorTracking.errorType} = 'server')`,
-            critical: sql<number>`count(*) filter (where ${errorTracking.errorType} = 'server' and not ${errorTracking.resolved})`,
-            javascript: sql<number>`count(*) filter (where ${errorTracking.errorType} = 'javascript')`,
-            database: sql<number>`count(*) filter (where ${errorTracking.errorType} = 'database')`
+            total: count().mapWith(Number),
+            resolved: sql<number>`count(*) filter (where ${errorTracking.resolved})`.mapWith(
+              Number
+            ),
+            server:
+              sql<number>`count(*) filter (where ${errorTracking.errorType} = 'server')`.mapWith(
+                Number
+              ),
+            critical:
+              sql<number>`count(*) filter (where ${errorTracking.errorType} = 'server' and not ${errorTracking.resolved})`.mapWith(
+                Number
+              ),
+            javascript:
+              sql<number>`count(*) filter (where ${errorTracking.errorType} = 'javascript')`.mapWith(
+                Number
+              ),
+            database:
+              sql<number>`count(*) filter (where ${errorTracking.errorType} = 'database')`.mapWith(
+                Number
+              )
           })
           .from(errorTracking)
           .where(gte(errorTracking.firstSeen, oneHourAgo)),
         ctx.db
-          .select({ severity: alerts.severity, total: count() })
+          .select({ severity: alerts.severity, total: count().mapWith(Number) })
           .from(alerts)
           .where(eq(alerts.isActive, true))
           .groupBy(alerts.severity),
         ctx.db
           .select({
-            total: count(),
-            errors: sql<number>`count(*) filter (where ${apiUsage.statusCode} >= 400)`,
+            total: count().mapWith(Number),
+            errors: sql<number>`count(*) filter (where ${apiUsage.statusCode} >= 400)`.mapWith(
+              Number
+            ),
             avgResponse: avg(apiUsage.responseTime)
           })
           .from(apiUsage)

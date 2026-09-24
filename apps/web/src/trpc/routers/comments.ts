@@ -184,14 +184,14 @@ export const commentsRouter = createTRPCRouter({
 
       const count_replies = (ids: string[]) =>
         ctx.db
-          .select({ commentId: comments.parentId, value: count() })
+          .select({ commentId: comments.parentId, value: count().mapWith(Number) })
           .from(comments)
           .where(inArray(comments.parentId, ids))
           .groupBy(comments.parentId)
 
       const count_rates = (ids: string[], like: boolean) =>
         ctx.db
-          .select({ commentId: rates.commentId, value: count() })
+          .select({ commentId: rates.commentId, value: count().mapWith(Number) })
           .from(rates)
           .where(and(inArray(rates.commentId, ids), eq(rates.like, like)))
           .groupBy(rates.commentId)
