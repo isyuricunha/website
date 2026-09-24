@@ -76,12 +76,13 @@ describe('app sitemap.xml generator', () => {
     // default locale (en) has no prefix
     expect(urls.has('https://example.com')).toBe(true)
     expect(urls.has('https://example.com/sitemap')).toBe(true)
-    expect(urls.has('https://example.com/rss.xml')).toBe(true)
+    // RSS feeds are discoverable via robots.txt, not sitemap entries
+    expect(urls.has('https://example.com/rss.xml')).toBe(false)
 
     // non-default locale is prefixed
     expect(urls.has('https://example.com/pt')).toBe(true)
     expect(urls.has('https://example.com/pt/sitemap')).toBe(true)
-    expect(urls.has('https://example.com/pt/rss.xml')).toBe(true)
+    expect(urls.has('https://example.com/pt/rss.xml')).toBe(false)
 
     const home = entries.find((e) => e.url === 'https://example.com')
 

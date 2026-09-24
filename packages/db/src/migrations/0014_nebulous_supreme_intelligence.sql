@@ -1,0 +1,2 @@
+CREATE INDEX "idx_error_tracking_first_seen" ON "error_tracking" USING btree ("first_seen");--> statement-breakpoint
+CREATE INDEX "idx_query_performance_created_exec" ON "query_performance" USING btree ("created_at","execution_time");

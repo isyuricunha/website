@@ -11,6 +11,10 @@ import { createTRPCRouter, publicProcedure } from '../trpc'
 
 const getKey = (id: string) => `views:${id}`
 
+// Precomputed once at module load: increment runs per page view, so checking
+// membership must stay O(1) instead of scanning the whole content collection.
+const postSlugSet = new Set(allPosts.map((post) => post.slug))
+
 const slugInputSchema = z.object({ slug: z.string().min(1) })
 
 export const viewsRouter = createTRPCRouter({
@@ -37,7 +41,7 @@ export const viewsRouter = createTRPCRouter({
 
     const value = result[0]?.value ? Number(result[0].value) : 0
 
-    await redis.set(redisKeys.postViewCount, value)
+    await redis.set(redisKeys.postViewCount, value, { ex: 60 })
 
     return {
       views: value
@@ -65,14 +69,17 @@ export const viewsRouter = createTRPCRouter({
 
     const views = post[0]?.views ?? 0
 
-    await redis.set(redisKeys.postViews(input.slug), views)
+    await redis.set(redisKeys.postViews(input.slug), views, { ex: 60 })
 
     return {
       views
     }
   }),
   increment: publicProcedure.input(slugInputSchema).mutation(async ({ ctx, input }) => {
-    const ip = ctx.headers.get('x-forwarded-for') ?? '0.0.0.0'
+    // Trust only platform headers (x-vercel-forwarded-for / cf-connecting-ip);
+    // the raw x-forwarded-for is client-controlled and would let callers rotate
+    // the rate-limit key to bypass it entirely.
+    const ip = getIp(ctx.headers)
 
     const { success } = await ratelimit.limit(getKey(`increment:${ip}`))
 
@@ -80,8 +87,7 @@ export const viewsRouter = createTRPCRouter({
 
     // Only count views for slugs that actually exist in the content collection;
     // otherwise public calls would create rows for arbitrary invented slugs.
-    const post_exists = allPosts.every((post) => post.slug !== input.slug)
-    if (post_exists) {
+    if (!postSlugSet.has(input.slug)) {
       throw new TRPCError({ code: 'NOT_FOUND', message: 'Post not found' })
     }
 
@@ -102,7 +108,11 @@ export const viewsRouter = createTRPCRouter({
 
     const nextViews = upserted[0]?.views
     if (typeof nextViews === 'number') {
-      await redis.set(redisKeys.postViews(input.slug), nextViews)
+      await redis.set(redisKeys.postViews(input.slug), nextViews, { ex: 60 })
     }
+
+    // The global counter caches SUM(posts.views); dropping it makes the next
+    // getCount recompute from the database instead of serving a stale total.
+    await redis.del(redisKeys.postViewCount)
   })
 })

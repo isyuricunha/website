@@ -1,5 +1,5 @@
 import { TRPCError } from '@trpc/server'
-import { and, desc, eq, ilike, inArray, isNull, ne, or, posts } from '@isyuricunha/db'
+import { and, count, desc, eq, ilike, inArray, isNull, ne, or, posts } from '@isyuricunha/db'
 import { randomBytes } from 'crypto'
 import { z } from 'zod'
 
@@ -85,6 +85,11 @@ export const contentRouter = createTRPCRouter({
         orderBy: desc(posts.updatedAt),
         limit: input.limit,
         offset: input.offset,
+        // Admin list view never renders the full markdown body; the edit form
+        // loads it via getPost. Dropping the column keeps payloads small.
+        columns: {
+          content: false
+        },
         with: {
           author: {
             columns: {
@@ -97,19 +102,18 @@ export const contentRouter = createTRPCRouter({
         }
       })
 
-      // Get total count for pagination
-      const totalPosts = await ctx.db.query.posts.findMany({
-        where: whereClause,
-        columns: { id: true }
-      })
+      // Get total count for pagination (aggregate in SQL instead of
+      // materializing every matching row's id just to take its length).
+      const totalResult = await ctx.db.select({ value: count() }).from(posts).where(whereClause)
+      const totalPosts = totalResult[0]?.value ?? 0
 
       return {
         posts: allPosts.map((post) => ({
           ...post,
           tags: post.tags ? JSON.parse(post.tags) : []
         })),
-        total: totalPosts.length,
-        hasMore: totalPosts.length > input.offset + input.limit
+        total: totalPosts,
+        hasMore: totalPosts > input.offset + input.limit
       }
     } catch (error) {
       logger.error('Error fetching posts', error)

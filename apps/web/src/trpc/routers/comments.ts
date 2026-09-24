@@ -10,6 +10,7 @@ import {
   desc,
   eq,
   gt,
+  inArray,
   isNotNull,
   isNull,
   lt,
@@ -177,46 +178,54 @@ export const commentsRouter = createTRPCRouter({
         if (highlightedComment) query.unshift(highlightedComment)
       }
 
-      const result = await Promise.all(
-        query.map(async (comment) => {
-          const replies = await ctx.db
-            .select({
-              value: count()
-            })
-            .from(comments)
-            .where(eq(comments.parentId, comment.id))
+      // Aggregate reply/like/dislike counts for the whole page in three
+      // GROUP BY queries instead of three queries per comment (N+1).
+      const commentIds = query.map((comment) => comment.id)
 
-          const selfRate = comment.rates.length > 0 ? comment.rates[0] : null
-          const likes = await ctx.db
-            .select({
-              value: count()
-            })
-            .from(rates)
-            .where(and(eq(rates.commentId, comment.id), eq(rates.like, true)))
-          const dislikes = await ctx.db
-            .select({
-              value: count()
-            })
-            .from(rates)
-            .where(and(eq(rates.commentId, comment.id), eq(rates.like, false)))
+      const count_replies = (ids: string[]) =>
+        ctx.db
+          .select({ commentId: comments.parentId, value: count() })
+          .from(comments)
+          .where(inArray(comments.parentId, ids))
+          .groupBy(comments.parentId)
 
-          const defaultImage = getDefaultImage(comment.user.id)
+      const count_rates = (ids: string[], like: boolean) =>
+        ctx.db
+          .select({ commentId: rates.commentId, value: count() })
+          .from(rates)
+          .where(and(inArray(rates.commentId, ids), eq(rates.like, like)))
+          .groupBy(rates.commentId)
 
-          return {
-            ...comment,
-            body: comment.body,
-            replies: replies[0]?.value ?? 0,
-            likes: likes[0]?.value ?? 0,
-            dislikes: dislikes[0]?.value ?? 0,
-            liked: selfRate?.like ?? null,
-            user: {
-              ...comment.user,
-              image: comment.user.image ?? defaultImage,
-              name: comment.user.name
-            }
-          }
-        })
+      const [replyCounts, likeCounts, dislikeCounts] = await Promise.all([
+        commentIds.length > 0 ? count_replies(commentIds) : Promise.resolve([]),
+        commentIds.length > 0 ? count_rates(commentIds, true) : Promise.resolve([]),
+        commentIds.length > 0 ? count_rates(commentIds, false) : Promise.resolve([])
+      ])
+
+      const replyCountBy = new Map(replyCounts.map((row) => [row.commentId, row.value] as const))
+      const likeCountBy = new Map(likeCounts.map((row) => [row.commentId, row.value] as const))
+      const dislikeCountBy = new Map(
+        dislikeCounts.map((row) => [row.commentId, row.value] as const)
       )
+
+      const result = query.map((comment) => {
+        const selfRate = comment.rates.length > 0 ? comment.rates[0] : null
+        const defaultImage = getDefaultImage(comment.user.id)
+
+        return {
+          ...comment,
+          body: comment.body,
+          replies: replyCountBy.get(comment.id) ?? 0,
+          likes: likeCountBy.get(comment.id) ?? 0,
+          dislikes: dislikeCountBy.get(comment.id) ?? 0,
+          liked: selfRate?.like ?? null,
+          user: {
+            ...comment.user,
+            image: comment.user.image ?? defaultImage,
+            name: comment.user.name
+          }
+        }
+      })
 
       return {
         comments: result,

@@ -73,8 +73,14 @@ export const build_absolute_language_alternates = ({
     return acc
   }, {})
 
-  const fallback_locale = availableLocales[0] ?? i18n.defaultLocale
-  languages['x-default'] = `${SITE_URL}${getLocalizedPath({ slug, locale: fallback_locale })}`
+  // x-default should point at the default locale when a variant exists there
+  // (matching build_alternates), otherwise the first available one.
+  const fallback_locale = availableLocales.includes(i18n.defaultLocale)
+    ? i18n.defaultLocale
+    : availableLocales[0]
+  languages['x-default'] = fallback_locale
+    ? `${SITE_URL}${getLocalizedPath({ slug, locale: fallback_locale })}`
+    : ''
 
   return languages
 }

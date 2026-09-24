@@ -36,7 +36,7 @@ export const GET = async () => {
 
   return new NextResponse(feed.xml({ indent: true }), {
     headers: {
-      'Content-Type': 'application/xml'
+      'Content-Type': 'application/xml; charset=utf-8'
     }
   })
 }

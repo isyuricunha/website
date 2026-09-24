@@ -41,6 +41,9 @@ const redisGetMock = vi.fn()
 const redisSetMock = vi.fn(async () => {
   return
 })
+const redisDelMock = vi.fn(async () => {
+  return
+})
 
 vi.mock('content-collections', () => {
   return {
@@ -55,7 +58,8 @@ vi.mock('@isyuricunha/kv', () => {
     },
     redis: {
       get: redisGetMock,
-      set: redisSetMock
+      set: redisSetMock,
+      del: redisDelMock
     },
     redisKeys: {
       postViews: (slug: string) => `post:views:${slug}`,
@@ -216,6 +220,8 @@ describe('viewsRouter', () => {
 
     await expect(caller.increment({ slug: 'ok-post' })).resolves.toBeUndefined()
 
-    expect(redisSetMock).toHaveBeenCalledWith('post:views:ok-post', 42)
+    expect(redisSetMock).toHaveBeenCalledWith('post:views:ok-post', 42, { ex: 60 })
+    // The site-wide total is invalidated so the next getCount recomputes it.
+    expect(redisDelMock).toHaveBeenCalledWith('post:views:count')
   })
 })

@@ -5,6 +5,8 @@ import {
   analyticsEvents,
   and,
   apiUsage,
+  avg,
+  count,
   desc,
   eq,
   errorTracking,
@@ -12,6 +14,7 @@ import {
   performanceMetrics,
   queryPerformance,
   resourceUsage,
+  sql,
   userActivity
 } from '@isyuricunha/db'
 import { randomBytes } from 'crypto'
@@ -849,75 +852,76 @@ export const monitoringRouter = createTRPCRouter({
       const now = new Date()
       const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000)
 
-      // Get recent performance metrics
-      const recentMetrics = await ctx.db.query.performanceMetrics.findMany({
-        where: gte(performanceMetrics.createdAt, oneHourAgo),
-        columns: { id: true, metricName: true, value: true }
-      })
+      // Aggregate in SQL: these tables hold ~300k rows each, so materializing
+      // the last hour into memory just to count/average is wasteful.
+      const [metricRows, errorStats, alertRows, apiStats] = await Promise.all([
+        ctx.db
+          .select({
+            metricName: performanceMetrics.metricName,
+            total: count(),
+            avgValue: avg(performanceMetrics.value)
+          })
+          .from(performanceMetrics)
+          .where(gte(performanceMetrics.createdAt, oneHourAgo))
+          .groupBy(performanceMetrics.metricName),
+        ctx.db
+          .select({
+            total: count(),
+            resolved: sql<number>`count(*) filter (where ${errorTracking.resolved})`,
+            server: sql<number>`count(*) filter (where ${errorTracking.errorType} = 'server')`,
+            critical: sql<number>`count(*) filter (where ${errorTracking.errorType} = 'server' and not ${errorTracking.resolved})`,
+            javascript: sql<number>`count(*) filter (where ${errorTracking.errorType} = 'javascript')`,
+            database: sql<number>`count(*) filter (where ${errorTracking.errorType} = 'database')`
+          })
+          .from(errorTracking)
+          .where(gte(errorTracking.firstSeen, oneHourAgo)),
+        ctx.db
+          .select({ severity: alerts.severity, total: count() })
+          .from(alerts)
+          .where(eq(alerts.isActive, true))
+          .groupBy(alerts.severity),
+        ctx.db
+          .select({
+            total: count(),
+            errors: sql<number>`count(*) filter (where ${apiUsage.statusCode} >= 400)`,
+            avgResponse: avg(apiUsage.responseTime)
+          })
+          .from(apiUsage)
+          .where(gte(apiUsage.createdAt, oneHourAgo))
+      ])
 
-      // Get recent errors
-      const recentErrors = await ctx.db.query.errorTracking.findMany({
-        where: gte(errorTracking.firstSeen, oneHourAgo),
-        columns: { id: true, errorType: true, resolved: true }
-      })
-
-      // Get active alerts
-      const activeAlerts = await ctx.db.query.alerts.findMany({
-        where: eq(alerts.isActive, true),
-        columns: { id: true, severity: true }
-      })
-
-      // Get recent API usage
-      const recentApiCalls = await ctx.db.query.apiUsage.findMany({
-        where: gte(apiUsage.createdAt, oneHourAgo),
-        columns: { id: true, statusCode: true, responseTime: true }
-      })
-
-      const totalErrors = recentErrors.length
-      const resolvedErrors = recentErrors.filter((e) => e.resolved).length
-      const serverErrors = recentErrors.filter((e) => e.errorType === 'server').length
-      const criticalErrors = recentErrors.filter(
-        (e) => e.errorType === 'server' && !e.resolved
-      ).length
-
-      const responseTimeMetrics = recentMetrics.filter((m) => m.metricName === 'response_time')
-      const throughputMetrics = recentMetrics.filter((m) => m.metricName === 'throughput')
+      const errorRow = errorStats[0]
+      const alertTotal = alertRows.reduce((sum, row) => sum + row.total, 0)
+      const metricTotal = metricRows.reduce((sum, row) => sum + row.total, 0)
+      const responseTimeRow = metricRows.find((row) => row.metricName === 'response_time')
+      const throughputRow = metricRows.find((row) => row.metricName === 'throughput')
+      const apiRow = apiStats[0]
+      const apiTotal = apiRow?.total ?? 0
+      const apiErrors = apiRow?.errors ?? 0
 
       return {
         performance: {
-          totalMetrics: recentMetrics.length,
-          avgResponseTime:
-            responseTimeMetrics.reduce((sum, m) => sum + m.value, 0) /
-            Math.max(responseTimeMetrics.length, 1),
-          throughput:
-            throughputMetrics.reduce((sum, m) => sum + m.value, 0) /
-            Math.max(throughputMetrics.length, 1)
+          totalMetrics: metricTotal,
+          avgResponseTime: Number(responseTimeRow?.avgValue ?? 0),
+          throughput: Number(throughputRow?.avgValue ?? 0)
         },
         errors: {
-          total: totalErrors,
-          unresolved: totalErrors - resolvedErrors,
-          critical: criticalErrors,
-          javascript: recentErrors.filter((e) => e.errorType === 'javascript').length,
-          database: recentErrors.filter((e) => e.errorType === 'database').length,
-          server: serverErrors
+          total: errorRow?.total ?? 0,
+          unresolved: (errorRow?.total ?? 0) - (errorRow?.resolved ?? 0),
+          critical: errorRow?.critical ?? 0,
+          javascript: errorRow?.javascript ?? 0,
+          database: errorRow?.database ?? 0,
+          server: errorRow?.server ?? 0
         },
         alerts: {
-          total: activeAlerts.length,
-          critical: activeAlerts.filter((a) => a.severity === 'critical').length,
-          warning: activeAlerts.filter((a) => a.severity === 'warning').length
+          total: alertTotal,
+          critical: alertRows.find((row) => row.severity === 'critical')?.total ?? 0,
+          warning: alertRows.find((row) => row.severity === 'warning')?.total ?? 0
         },
         api: {
-          totalRequests: recentApiCalls.length,
-          errorRate:
-            recentApiCalls.length > 0
-              ? (recentApiCalls.filter((u) => u.statusCode >= 400).length / recentApiCalls.length) *
-                100
-              : 0,
-          avgResponseTime:
-            recentApiCalls.length > 0
-              ? recentApiCalls.reduce((sum, u) => sum + (u.responseTime || 0), 0) /
-                recentApiCalls.length
-              : 0
+          totalRequests: apiTotal,
+          errorRate: apiTotal > 0 ? (apiErrors / apiTotal) * 100 : 0,
+          avgResponseTime: Number(apiRow?.avgResponse ?? 0)
         }
       }
     } catch (error) {

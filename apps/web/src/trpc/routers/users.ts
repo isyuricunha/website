@@ -203,6 +203,11 @@ export const usersRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       const locale = get_request_locale(ctx.headers)
 
+      // Public DB-touching endpoint: rate limit like the other public queries.
+      const ip = getIpFromHeaders(ctx.headers)
+      const { success: rl_ok } = await ratelimit.limit(`users:public-comments:${ip}`)
+      if (!rl_ok) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+
       const profile = await ctx.db.query.users.findFirst({
         where: (users, { and, eq }) =>
           and(

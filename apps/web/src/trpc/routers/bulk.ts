@@ -110,7 +110,9 @@ const applyBulkUserAction = async (params: {
       return
 
     case 'ban':
-      // Delete all user sessions to effectively "ban" them
+      // Flag the user first, then drop sessions: without the flag the user
+      // could simply log back in, making this operation a no-op.
+      await db.update(users).set({ banned: true }).where(eq(users.id, userId))
       await db.delete(sessions).where(eq(sessions.userId, userId))
       await auditLogger.logUserAction(
         adminUserId,
@@ -127,7 +129,8 @@ const applyBulkUserAction = async (params: {
       return
 
     case 'unban':
-      // For unban, we just log the action (sessions will be created on next login)
+      // Clear the flag so login succeeds again; sessions are created on next login.
+      await db.update(users).set({ banned: false }).where(eq(users.id, userId))
       await auditLogger.logUserAction(
         adminUserId,
         'user_unban',

@@ -163,6 +163,12 @@ export const queryPerformance = pgTable(
       .default(sql`CURRENT_TIMESTAMP`)
   },
   (queryPerformanceRow) => [
+    // Monitoring queries filter by created_at range and sort by execution_time;
+    // the compound index covers both without a full sort on a growing table.
+    index('idx_query_performance_created_exec').on(
+      queryPerformanceRow.createdAt,
+      queryPerformanceRow.executionTime
+    ),
     foreignKey({
       columns: [queryPerformanceRow.userId],
       foreignColumns: [users.id],
@@ -210,6 +216,9 @@ export const errorTracking = pgTable(
       'btree',
       errorTrackingRow.fingerprint.asc().nullsLast().op('text_ops')
     ),
+    // Monitoring stats query error_tracking by first_seen range; without this
+    // index that filter scans the whole table.
+    index('idx_error_tracking_first_seen').on(errorTrackingRow.firstSeen),
     foreignKey({
       columns: [errorTrackingRow.resolvedBy],
       foreignColumns: [users.id],

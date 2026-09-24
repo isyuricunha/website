@@ -1,5 +1,5 @@
 import { TRPCError } from '@trpc/server'
-import { eq, likesSessions, posts, sql, sum } from '@isyuricunha/db'
+import { eq, likesSessions, lte, posts, sql, sum } from '@isyuricunha/db'
 import { env } from '@isyuricunha/env'
 import { ratelimit, redis, redisKeys } from '@isyuricunha/kv'
 import { sha512 } from 'js-sha512'
@@ -36,21 +36,24 @@ export const likesRouter = createTRPCRouter({
 
     const cachedLikeCount = await redis.get<number>(redisKeys.postLikeCount)
 
-    if (cachedLikeCount) {
+    if (typeof cachedLikeCount === 'number') {
       return {
         likes: cachedLikeCount
       }
     }
 
+    // Aggregate over posts directly: it is a small table and avoids the
+    // cartesian blowup of aggregating likesSessions against it (the previous
+    // form multiplied the total by the number of posts).
     const result = await ctx.db
       .select({
-        value: sum(likesSessions.likes)
+        value: sum(posts.likes)
       })
       .from(posts)
 
     const likes = result[0]?.value ? Number(result[0].value) : 0
 
-    await redis.set(redisKeys.postLikeCount, likes)
+    await redis.set(redisKeys.postLikeCount, likes, { ex: 60 })
 
     return {
       likes
@@ -69,7 +72,7 @@ export const likesRouter = createTRPCRouter({
       redisKeys.currentUserLikes(input.slug, sessionId)
     )
 
-    if (cachedLikes && cachedCurrentUserLikes) {
+    if (typeof cachedLikes === 'number' && typeof cachedCurrentUserLikes === 'number') {
       return {
         likes: cachedLikes,
         currentUserLikes: cachedCurrentUserLikes
@@ -91,8 +94,10 @@ export const likesRouter = createTRPCRouter({
         .where(eq(likesSessions.id, sessionId))
     ])
 
-    await redis.set(redisKeys.postLikes(input.slug), post[0]?.likes ?? 0)
-    await redis.set(redisKeys.currentUserLikes(input.slug, sessionId), user[0]?.likes ?? 0)
+    await redis.set(redisKeys.postLikes(input.slug), post[0]?.likes ?? 0, { ex: 60 })
+    await redis.set(redisKeys.currentUserLikes(input.slug, sessionId), user[0]?.likes ?? 0, {
+      ex: 60
+    })
 
     return {
       likes: post[0]?.likes ?? 0,
@@ -107,43 +112,55 @@ export const likesRouter = createTRPCRouter({
 
     if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
 
-    const session = await ctx.db
-      .select({
-        likes: likesSessions.likes
-      })
-      .from(likesSessions)
-      .where(eq(likesSessions.id, getSessionId(input.slug, ip)))
+    // The 3-like cap is enforced inside the upsert (setWhere) so concurrent
+    // requests cannot both pass a read-then-write check; the transaction keeps
+    // posts.likes and likesSessions.likes consistent under the same commit.
+    const result = await ctx.db.transaction(async (tx) => {
+      const upserted = await tx
+        .insert(likesSessions)
+        .values({
+          id: sessionId,
+          likes: input.value
+        })
+        .onConflictDoUpdate({
+          target: likesSessions.id,
+          set: {
+            likes: sql<number>`${likesSessions.likes} + ${input.value}`
+          },
+          setWhere: lte(likesSessions.likes, 3 - input.value)
+        })
+        .returning({ likes: likesSessions.likes })
 
-    if (session[0] && session[0].likes + input.value > 3) {
-      throw new TRPCError({
-        code: 'BAD_REQUEST',
-        message: 'You can only like a post 3 times'
-      })
-    }
+      const currentUserLikes = upserted[0]?.likes
+      if (typeof currentUserLikes !== 'number') {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'You can only like a post 3 times'
+        })
+      }
 
-    const likes = await ctx.db
-      .update(posts)
-      .set({
-        likes: sql<number>`${posts.likes} + ${input.value}`
-      })
-      .where(eq(posts.slug, input.slug))
-      .returning()
+      const updated = await tx
+        .update(posts)
+        .set({
+          likes: sql<number>`${posts.likes} + ${input.value}`
+        })
+        .where(eq(posts.slug, input.slug))
+        .returning({ likes: posts.likes })
 
-    const currentUserLikes = await ctx.db
-      .insert(likesSessions)
-      .values({
-        id: sessionId,
-        likes: input.value
-      })
-      .onConflictDoUpdate({
-        target: likesSessions.id,
-        set: {
-          likes: sql<number>`${likesSessions.likes} + ${input.value}`
-        }
-      })
-      .returning()
+      const postLikes = updated[0]?.likes
+      if (typeof postLikes !== 'number') {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Post not found' })
+      }
 
-    await redis.set(redisKeys.postLikes(input.slug), likes[0]?.likes)
-    await redis.set(redisKeys.currentUserLikes(input.slug, sessionId), currentUserLikes[0]?.likes)
+      return { postLikes, currentUserLikes }
+    })
+
+    await redis.set(redisKeys.postLikes(input.slug), result.postLikes, { ex: 60 })
+    await redis.set(redisKeys.currentUserLikes(input.slug, sessionId), result.currentUserLikes, {
+      ex: 60
+    })
+
+    // Drop the cached site-wide total so the next getCount recomputes it.
+    await redis.del(redisKeys.postLikeCount)
   })
 })

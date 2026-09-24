@@ -199,9 +199,10 @@ ${input.content}
       try {
         const isAdmin = ctx.session?.user?.role === 'admin'
         const adminView = input.adminView && isAdmin
-        // Non-admin callers always get active announcements only: an omitted
-        // `active` must never leak inactive/draft content publicly.
-        const activeFilter = adminView ? input.active : (input.active ?? true)
+        // Non-admin callers always get active announcements only. The caller
+        // supplied `active` value is deliberately ignored here: honouring
+        // `active: false` publicly would leak inactive/draft content.
+        const activeFilter = adminView ? input.active : true
         const locale = input.locale ?? 'en'
         const normalizedLocale = locale.startsWith('zh')
           ? 'zh-CN'
@@ -245,7 +246,10 @@ ${input.content}
 
         const announcementList = await ctx.db.query.announcements.findMany({
           where: whereClause,
-          orderBy: [desc(announcements.priority), desc(announcements.createdAt)]
+          orderBy: [desc(announcements.priority), desc(announcements.createdAt)],
+          // Public banners only ever render a handful of items; admins keep the
+          // unbounded view for management.
+          limit: adminView ? undefined : 10
         })
 
         let visibleAnnouncements = announcementList
