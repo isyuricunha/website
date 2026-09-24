@@ -37,14 +37,14 @@ Both are Node.js 24.x with the Next.js framework preset. `apps/docs/vercel.json`
 }
 ```
 
-## Ignore wiring
+## Ignore wiring and crons
 
-Each project skips builds when a push only touches the other app:
+In a monorepo with Root Directory set, Vercel reads `vercel.json` from inside the Root Directory and runs the ignore command from there; a repository-root `vercel.json` is dead config for git-triggered builds.
 
-- The root `vercel.json` (used by `website-web`) ignores `apps/docs/`, README, license and metadata-only paths, and adds cron schedules for `/api/cron/alerts` and `/api/cron/data-retention`.
+- `apps/web/vercel.json` (used by `website-web`) declares the ignore command and the cron schedules for `/api/cron/alerts` and `/api/cron/data-retention`. Its ignore script (`apps/web/scripts/vercel-ignore.js`) is a wrapper that executes the repository-root script, which skips changes that only touch `apps/docs/`, README, license and metadata-only paths.
 - `apps/docs/vercel.json` (used by `website-docs`) mirrors the pattern: its ignore script skips changes that only touch `apps/web/`.
 
-A docs-only change therefore builds `website-docs` and skips `website-web`; a web-only change does the opposite.
+A docs-only change therefore builds `website-docs` and skips `website-web`; a web-only change does the opposite. Declaring crons in the app-level `vercel.json` keeps them attached on every deployment instead of relying on dashboard state.
 
 ## Automatic deploys
 
