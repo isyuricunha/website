@@ -62,6 +62,36 @@ describe('/api/ai/content', () => {
     expect(await res.json()).toEqual({ error: 'Unauthorized' })
   })
 
+  it('returns 401 on GET when the caller is not an authenticated admin', async () => {
+    const { requireAdmin } = await import('@/lib/admin-auth')
+    const { GET } = await import('@/app/api/ai/content/route')
+
+    vi.mocked(requireAdmin).mockResolvedValue(
+      Response.json({ error: 'Unauthorized' }, { status: 401 }) as never
+    )
+
+    const res = await GET()
+
+    expect(res.status).toBe(401)
+    expect(await res.json()).toEqual({ error: 'Unauthorized' })
+  })
+
+  it('returns 200 on GET with provider info when the caller is an admin', async () => {
+    const { requireAdmin } = await import('@/lib/admin-auth')
+    const { aiService } = await import('@/lib/ai/ai-service')
+
+    vi.mocked(requireAdmin).mockResolvedValue(null)
+    vi.mocked(aiService.getAvailableProviders).mockReturnValue(['runtime'])
+
+    const { GET } = await import('@/app/api/ai/content/route')
+
+    const res = await GET()
+
+    expect(res.status).toBe(200)
+    const json = (await res.json()) as { availableProviders?: string[] }
+    expect(json.availableProviders).toEqual(['runtime'])
+  })
+
   it('returns 429 when rate limited', async () => {
     const { requireAdmin } = await import('@/lib/admin-auth')
     const { ratelimit } = await import('@/lib/ratelimit')

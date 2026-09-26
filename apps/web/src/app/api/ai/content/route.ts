@@ -118,7 +118,12 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export function GET() {
+export async function GET() {
+  // Same admin gate as POST: this endpoint exposes provider topology and
+  // has no public caller.
+  const authResponse = await requireAdmin()
+  if (authResponse) return authResponse
+
   const availableProviders = aiService.getAvailableProviders()
 
   return NextResponse.json({
