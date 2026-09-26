@@ -64,6 +64,7 @@ describe('/api/ai/content', () => {
 
   it('returns 401 on GET when the caller is not an authenticated admin', async () => {
     const { requireAdmin } = await import('@/lib/admin-auth')
+    const { aiService } = await import('@/lib/ai/ai-service')
     const { GET } = await import('@/app/api/ai/content/route')
 
     vi.mocked(requireAdmin).mockResolvedValue(
@@ -74,6 +75,9 @@ describe('/api/ai/content', () => {
 
     expect(res.status).toBe(401)
     expect(await res.json()).toEqual({ error: 'Unauthorized' })
+    // The gate must run before any provider inspection: a compute-then-gate
+    // reordering would fail this assertion even if the response stayed 401.
+    expect(aiService.getAvailableProviders).not.toHaveBeenCalled()
   })
 
   it('returns 200 on GET with provider info when the caller is an admin', async () => {
