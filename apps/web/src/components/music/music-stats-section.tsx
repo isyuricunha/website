@@ -1,7 +1,14 @@
 'use client'
 
 import { useTranslations } from '@isyuricunha/i18n/client'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@isyuricunha/ui'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  Skeleton
+} from '@isyuricunha/ui'
 import { BarChart3, Clock, Music, TrendingUp, Headphones, Calendar } from 'lucide-react'
 import { useState, useMemo } from 'react'
 
@@ -94,9 +101,9 @@ const MusicStatsSection = () => {
           <div className='grid grid-cols-2 gap-4 md:grid-cols-4'>
             {Array.from({ length: 4 }, (_, i) => (
               <div key={i} className='space-y-2 text-center'>
-                <div className='bg-bg-hover mx-auto h-8 w-8 animate-pulse rounded-full' />
-                <div className='bg-bg-hover mx-auto h-4 w-16 animate-pulse rounded' />
-                <div className='bg-bg-hover mx-auto h-3 w-12 animate-pulse rounded' />
+                <Skeleton className='mx-auto h-8 w-8 rounded-full' />
+                <Skeleton className='mx-auto h-4 w-16' />
+                <Skeleton className='mx-auto h-3 w-12' />
               </div>
             ))}
           </div>

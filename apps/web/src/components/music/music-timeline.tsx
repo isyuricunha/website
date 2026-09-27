@@ -1,7 +1,14 @@
 'use client'
 
 import { useTranslations } from '@isyuricunha/i18n/client'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@isyuricunha/ui'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  Skeleton
+} from '@isyuricunha/ui'
 import { Clock, Calendar, TrendingUp, Music } from 'lucide-react'
 import { useState, useMemo, useSyncExternalStore } from 'react'
 
@@ -107,13 +114,13 @@ const MusicTimeline = () => {
           <div className='space-y-4'>
             {Array.from({ length: 3 }, (_, i) => (
               <div key={i} className='space-y-3'>
-                <div className='bg-bg-hover h-4 w-32 animate-pulse rounded' />
+                <Skeleton className='h-4 w-32' />
                 <div className='ml-4 space-y-3'>
                   <div className='flex items-center gap-3'>
-                    <div className='bg-bg-hover h-10 w-10 animate-pulse rounded-lg' />
+                    <Skeleton className='h-10 w-10 rounded-lg' />
                     <div className='flex-1 space-y-2'>
-                      <div className='bg-bg-hover h-3 w-40 animate-pulse rounded' />
-                      <div className='bg-bg-hover h-3 w-24 animate-pulse rounded' />
+                      <Skeleton className='h-3 w-40' />
+                      <Skeleton className='h-3 w-24' />
                     </div>
                   </div>
                 </div>

@@ -3,7 +3,7 @@
 import type { Post } from 'content-collections'
 
 import { useTranslations } from '@isyuricunha/i18n/client'
-import { BlurImage, Badge } from '@isyuricunha/ui'
+import { BlurImage, Badge, Skeleton } from '@isyuricunha/ui'
 import { Star } from 'lucide-react'
 
 import { useFormattedDate } from '@/hooks/use-formatted-date'
@@ -72,13 +72,17 @@ const PostCard = (props: PostCardProps) => {
         <div className='text-text-tertiary mb-2 flex items-center justify-between gap-1.5 font-mono text-[10px]'>
           {formattedDate}
           <div className='flex gap-1.5'>
-            {likesQuery.status === 'pending' ? '--' : null}
+            {likesQuery.status === 'pending' ? (
+              <Skeleton data-testid='counter-skeleton' className='h-3 w-10' />
+            ) : null}
             {likesQuery.status === 'error' ? t('common.error') : null}
             {likesQuery.status === 'success' ? (
               <div>{t('common.likes', { count: likesQuery.data.likes })}</div>
             ) : null}
             <div>&middot;</div>
-            {viewsQuery.status === 'pending' ? '--' : null}
+            {viewsQuery.status === 'pending' ? (
+              <Skeleton data-testid='counter-skeleton' className='h-3 w-10' />
+            ) : null}
             {viewsQuery.status === 'error' ? t('common.error') : null}
             {viewsQuery.status === 'success' ? (
               <div>{t('common.views', { count: viewsQuery.data.views })}</div>

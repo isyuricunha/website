@@ -2,7 +2,7 @@
 
 import NumberFlow, { continuous } from '@number-flow/react'
 import { useTranslations } from '@isyuricunha/i18n/client'
-import { BlurImage } from '@isyuricunha/ui'
+import { BlurImage, Skeleton } from '@isyuricunha/ui'
 import { useEffect, useRef } from 'react'
 
 import ImageZoom from '@/components/image-zoom'
@@ -73,7 +73,7 @@ const Header = () => {
           </div>
           <div className='space-y-1'>
             <div className='label-mono'>{t('blog.header.views')}</div>
-            {viewsCountQuery.status === 'pending' ? '--' : null}
+            {viewsCountQuery.status === 'pending' ? <Skeleton className='h-4 w-14' /> : null}
             {viewsCountQuery.status === 'error' ? t('common.error') : null}
             {viewsCountQuery.status === 'success' ? (
               <NumberFlow willChange plugins={[continuous]} value={viewsCountQuery.data.views} />
@@ -81,7 +81,7 @@ const Header = () => {
           </div>
           <div className='space-y-1'>
             <div className='label-mono'>{t('blog.header.comments')}</div>
-            {commentsCountQuery.status === 'pending' ? '--' : null}
+            {commentsCountQuery.status === 'pending' ? <Skeleton className='h-4 w-14' /> : null}
             {commentsCountQuery.status === 'error' ? t('common.error') : null}
             {commentsCountQuery.status === 'success' ? (
               <NumberFlow

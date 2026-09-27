@@ -2,7 +2,14 @@
 
 import { useMemo } from 'react'
 import { useTranslations } from '@isyuricunha/i18n/client'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@isyuricunha/ui'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  Skeleton
+} from '@isyuricunha/ui'
 import { api } from '@/trpc/react'
 
 // Day keys for i18n lookups (Sun..Sat)
@@ -58,7 +65,7 @@ const ListeningHeatmap = () => {
       return (
         <div className='space-y-2'>
           {Array.from({ length: 7 }, (_, r) => (
-            <div key={r} className='bg-bg-hover h-5 w-full animate-pulse rounded' />
+            <Skeleton key={r} className='h-5 w-full' />
           ))}
         </div>
       )

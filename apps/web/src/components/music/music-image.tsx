@@ -40,7 +40,7 @@ const MusicImage = ({
     return (
       <div className={`relative ${className}`}>
         {isLoading && (
-          <div className='bg-bg-hover absolute inset-0 flex animate-pulse items-center justify-center'>
+          <div className='yu-skeleton absolute inset-0 flex items-center justify-center'>
             {fallbackIcon}
           </div>
         )}
@@ -68,7 +68,7 @@ const MusicImage = ({
   return (
     <div className={`relative ${className}`}>
       {isLoading && (
-        <div className='bg-bg-hover absolute inset-0 flex animate-pulse items-center justify-center'>
+        <div className='yu-skeleton absolute inset-0 flex items-center justify-center'>
           {fallbackIcon}
         </div>
       )}

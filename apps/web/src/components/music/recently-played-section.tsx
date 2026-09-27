@@ -1,7 +1,14 @@
 'use client'
 
 import { useTranslations } from '@isyuricunha/i18n/client'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@isyuricunha/ui'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  Skeleton
+} from '@isyuricunha/ui'
 import { PlayIcon, ClockIcon } from 'lucide-react'
 import { useState, useSyncExternalStore } from 'react'
 
@@ -79,12 +86,12 @@ const RecentlyPlayedSection = () => {
           <div className='space-y-4'>
             {Array.from({ length: 5 }, (_, i) => (
               <div key={i} className='flex items-center space-x-4'>
-                <div className='bg-bg-hover h-12 w-12 animate-pulse rounded-lg' />
+                <Skeleton className='h-12 w-12 rounded-lg' />
                 <div className='flex-1 space-y-2'>
-                  <div className='bg-bg-hover h-4 w-48 animate-pulse rounded' />
-                  <div className='bg-bg-hover h-3 w-32 animate-pulse rounded' />
+                  <Skeleton className='h-4 w-48' />
+                  <Skeleton className='h-3 w-32' />
                 </div>
-                <div className='bg-bg-hover h-3 w-16 animate-pulse rounded' />
+                <Skeleton className='h-3 w-16' />
               </div>
             ))}
           </div>

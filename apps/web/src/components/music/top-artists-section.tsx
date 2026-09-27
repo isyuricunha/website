@@ -1,7 +1,14 @@
 'use client'
 
 import { useTranslations } from '@isyuricunha/i18n/client'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@isyuricunha/ui'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  Skeleton
+} from '@isyuricunha/ui'
 import { UserIcon, Grid3X3, List, Shuffle } from 'lucide-react'
 import { useState, useMemo, useSyncExternalStore } from 'react'
 
@@ -87,8 +94,8 @@ const TopArtistsSection = () => {
           <div className='grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5'>
             {Array.from({ length: 10 }, (_, i) => (
               <div key={i} className='flex flex-col items-center space-y-2'>
-                <div className='bg-bg-hover h-16 w-16 animate-pulse rounded-full' />
-                <div className='bg-bg-hover h-4 w-20 animate-pulse rounded' />
+                <Skeleton className='h-16 w-16 rounded-full' />
+                <Skeleton className='h-4 w-20' />
               </div>
             ))}
           </div>

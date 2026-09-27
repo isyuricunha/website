@@ -1,7 +1,7 @@
 'use client'
 
 import { useLocale, useTranslations } from '@isyuricunha/i18n/client'
-import { BlurImage } from '@isyuricunha/ui'
+import { BlurImage, Skeleton } from '@isyuricunha/ui'
 import { allPosts, type Post } from 'content-collections'
 import { ArrowUpRightIcon } from 'lucide-react'
 import { motion, useInView } from 'motion/react'
@@ -106,13 +106,13 @@ const ArticleCard = (props: CardProps) => {
       </div>
       <div className='p-5'>
         <div className='text-text-tertiary mb-3 flex items-center gap-1.5 font-mono text-[11px]'>
-          {likesQuery.status === 'pending' ? '--' : null}
+          {likesQuery.status === 'pending' ? <Skeleton className='h-3 w-10' /> : null}
           {likesQuery.status === 'error' ? t('common.error') : null}
           {likesQuery.status === 'success' ? (
             <div>{t('common.likes', { count: likesQuery.data.likes })}</div>
           ) : null}
           <div>&middot;</div>
-          {viewsQuery.status === 'pending' ? '--' : null}
+          {viewsQuery.status === 'pending' ? <Skeleton className='h-3 w-10' /> : null}
           {viewsQuery.status === 'error' ? t('common.error') : null}
           {viewsQuery.status === 'success' ? (
             <div>{t('common.views', { count: viewsQuery.data.views })}</div>
