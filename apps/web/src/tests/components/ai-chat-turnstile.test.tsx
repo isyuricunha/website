@@ -79,8 +79,7 @@ const chatRequestBody = (): Record<string, unknown> => {
   return JSON.parse(init.body) as Record<string, unknown>
 }
 
-const chatRequested = (): boolean =>
-  fetchMock.mock.calls.some(([input]) => input === chatPath)
+const chatRequested = (): boolean => fetchMock.mock.calls.some(([input]) => input === chatPath)
 
 describe('<AIChatInterface /> with Turnstile enabled', () => {
   beforeEach(() => {

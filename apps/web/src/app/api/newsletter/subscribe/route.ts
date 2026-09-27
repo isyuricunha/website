@@ -36,10 +36,7 @@ export async function POST(request: NextRequest) {
 
     if (flags.turnstile) {
       if (!turnstileToken) {
-        return NextResponse.json(
-          { error: 'Turnstile verification required.' },
-          { status: 400 }
-        )
+        return NextResponse.json({ error: 'Turnstile verification required.' }, { status: 400 })
       }
 
       const turnstile_result = await verifyTurnstileToken(

@@ -43,9 +43,8 @@ vi.mock('@marsidev/react-turnstile', () => {
 
 const subscribePath = '/api/newsletter/subscribe'
 
-const fetchMock = vi.fn(
-  async (_input: RequestInfo | URL, _init?: RequestInit): Promise<Response> =>
-    Response.json({ ok: true })
+const fetchMock = vi.fn(async (_input: RequestInfo | URL, _init?: RequestInit): Promise<Response> =>
+  Response.json({ ok: true })
 )
 
 const subscribeRequestBody = (): Record<string, unknown> => {
@@ -123,9 +122,7 @@ describe('<NewsletterSignup /> with Turnstile enabled', () => {
   })
 
   it('clears the token and resets the widget when the subscribe request fails', async () => {
-    fetchMock.mockImplementationOnce(async () =>
-      Response.json({ error: 'nope' }, { status: 403 })
-    )
+    fetchMock.mockImplementationOnce(async () => Response.json({ error: 'nope' }, { status: 403 }))
 
     await renderSignup()
     act(() => {
