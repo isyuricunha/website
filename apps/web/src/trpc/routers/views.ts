@@ -6,6 +6,7 @@ import { randomUUID } from 'crypto'
 import { z } from 'zod'
 
 import { getIp } from '@/utils/get-ip'
+import { is_bot_user_agent } from '@/lib/spam-detection'
 
 import { createTRPCRouter, publicProcedure } from '../trpc'
 
@@ -76,6 +77,15 @@ export const viewsRouter = createTRPCRouter({
     }
   }),
   increment: publicProcedure.input(slugInputSchema).mutation(async ({ ctx, input }) => {
+    // Crawlers and duplicated client calls (the blog header can mount twice)
+    // must not inflate view counts. Checked BEFORE the rate limiter so bot
+    // traffic does not burn a real visitor's quota for the same IP.
+    // A missing user agent counts as noise here.
+    const user_agent = ctx.headers.get('user-agent')
+    if (!user_agent || is_bot_user_agent(user_agent)) {
+      return
+    }
+
     // Trust only platform headers (x-vercel-forwarded-for / cf-connecting-ip);
     // the raw x-forwarded-for is client-controlled and would let callers rotate
     // the rate-limit key to bypass it entirely.
@@ -89,6 +99,19 @@ export const viewsRouter = createTRPCRouter({
     // otherwise public calls would create rows for arbitrary invented slugs.
     if (!postSlugSet.has(input.slug)) {
       throw new TRPCError({ code: 'NOT_FOUND', message: 'Post not found' })
+    }
+
+    // One view per IP+slug per minute, which also absorbs a double mount.
+    // On Vercel the platform headers are always present. Readers sharing a
+    // public IP (carrier CGNAT, offices) collapse into one view per window,
+    // so this metric under-reports shared-IP audiences by design: a stable
+    // undercount is preferable to counting one reader many times.
+    // If the upsert below throws, the key still expires on its own within
+    // 60s, so a failed write cannot lock a slug out permanently.
+    const dedupe_key = `views:increment:dedupe:${ip}:${input.slug}`
+    const first_view_in_window = await redis.set(dedupe_key, '1', { nx: true, ex: 60 })
+    if (!first_view_in_window) {
+      return
     }
 
     const upserted = await ctx.db

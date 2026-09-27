@@ -11,7 +11,6 @@ import {
   eq,
   errorTracking,
   gte,
-  performanceMetrics,
   securityEvents,
   users,
   notifications
@@ -105,6 +104,9 @@ const get_metric_value = async (metric: Metric, now: Date, timeRangeMinutes: num
   const start = get_time_range_start(now, timeRangeMinutes)
 
   if (metric === 'api_error_rate') {
+    // Population note: rate-limit rejections (429) are no longer recorded in
+    // api_usage, so this rate covers genuine failures only. A flood shows up
+    // as a drop in recorded volume, not as a spike in error rate.
     const rows = await db.query.apiUsage.findMany({
       where: gte(apiUsage.createdAt, start),
       columns: { statusCode: true }
@@ -117,16 +119,20 @@ const get_metric_value = async (metric: Metric, now: Date, timeRangeMinutes: num
   }
 
   if (metric === 'avg_response_time') {
-    const rows = await db.query.performanceMetrics.findMany({
-      where: eq(performanceMetrics.metricName, 'response_time'),
-      columns: { value: true, createdAt: true }
+    // Per-request tRPC durations live in api_usage: performance_metrics is no
+    // longer written per request, only by the AI chat route and the admin
+    // recorder. NOTE: getMonitoringStats still averages performance_metrics,
+    // so the admin card reflects AI-chat latency while this alert reflects
+    // tRPC request latency. They are intentionally different populations.
+    const rows = await db.query.apiUsage.findMany({
+      where: gte(apiUsage.createdAt, start),
+      columns: { responseTime: true }
     })
 
-    const windowed = rows.filter((r) => r.createdAt >= start)
-    if (windowed.length === 0) return 0
+    if (rows.length === 0) return 0
 
-    const sum = windowed.reduce((acc, r) => acc + r.value, 0)
-    return sum / windowed.length
+    const sum = rows.reduce((acc, r) => acc + r.responseTime, 0)
+    return sum / rows.length
   }
 
   if (metric === 'unresolved_error_count') {

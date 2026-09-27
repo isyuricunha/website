@@ -10,6 +10,7 @@ import {
   db,
   errorLogs,
   eq,
+  errorTracking,
   loginAttempts,
   lt,
   performanceMetrics,
@@ -31,18 +32,23 @@ const DAY_MS = 24 * 60 * 60 * 1000
  * metadata are collected for rate-limiting, abuse prevention, and debugging,
  * not for indefinite storage.
  *
- * `security_events` and `error_logs` are pruned only when RESOLVED — an
- * unresolved security event or error is kept regardless of age, since an
- * admin may still need to act on it.
+ * `security_events` is pruned only when RESOLVED: an unresolved security event
+ * is kept regardless of age, since an admin may still need to act on it.
+ *
+ * `error_logs` and `error_tracking` are pruned by AGE alone past the hard cap.
+ * Resolution state buys an error time, not immortality: a Dec 2025 incident
+ * left 908 unresolved rows sitting in the tables for nine months after the
+ * underlying bug was fixed, which is noise, not signal.
  */
 const RETENTION = {
   analyticsEventsDays: 180,
-  performanceMetricsDays: 90,
-  apiUsageDays: 90,
+  performanceMetricsDays: 30,
+  apiUsageDays: 30,
   loginAttemptsDays: 90,
   aiChatFeedbackDays: 365,
   resolvedSecurityEventsDays: 180,
-  resolvedErrorLogsDays: 180
+  errorLogsDays: 180,
+  errorTrackingDays: 180
 } as const
 
 const cutoff = (now: Date, days: number) => new Date(now.getTime() - days * DAY_MS)
@@ -102,11 +108,18 @@ export async function GET(request: NextRequest) {
         )
       deleted.securityEvents = securityEventsResult.rowCount ?? 0
 
-      const errorLogsCutoff = cutoff(now, RETENTION.resolvedErrorLogsDays)
+      // Errors are pruned by age alone (see RETENTION above): a single pass
+      // per table, no resolved-only pass, since the age predicate is a
+      // superset of it and two passes would scan error_logs twice.
       const errorLogsResult = await db
         .delete(errorLogs)
-        .where(and(eq(errorLogs.resolved, true), lt(errorLogs.createdAt, errorLogsCutoff)))
+        .where(lt(errorLogs.createdAt, cutoff(now, RETENTION.errorLogsDays)))
       deleted.errorLogs = errorLogsResult.rowCount ?? 0
+
+      const errorTrackingResult = await db
+        .delete(errorTracking)
+        .where(lt(errorTracking.createdAt, cutoff(now, RETENTION.errorTrackingDays)))
+      deleted.errorTracking = errorTrackingResult.rowCount ?? 0
 
       logger.info('Data retention cron completed', { deleted })
 

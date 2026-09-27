@@ -38,9 +38,7 @@ vi.mock('@/lib/auth', () => ({
 }))
 
 const redisGetMock = vi.fn()
-const redisSetMock = vi.fn(async () => {
-  return
-})
+const redisSetMock = vi.fn(async () => 'OK')
 const redisDelMock = vi.fn(async () => {
   return
 })
@@ -152,6 +150,7 @@ describe('viewsRouter', () => {
     vi.resetModules()
     redisGetMock.mockReset()
     redisSetMock.mockClear()
+    redisDelMock.mockClear()
   })
 
   it('getCount returns cached value even when it is 0', async () => {
@@ -192,7 +191,8 @@ describe('viewsRouter', () => {
     const db = createDbMock()
 
     const headers = new Headers()
-    headers.set('x-forwarded-for', '203.0.113.10')
+    headers.set('x-vercel-forwarded-for', '203.0.113.10')
+    headers.set('user-agent', 'Mozilla/5.0 regular browser')
 
     const caller = viewsRouter.createCaller({
       db: db as unknown,
@@ -211,7 +211,8 @@ describe('viewsRouter', () => {
     db.__mocks.insertReturning.mockResolvedValueOnce([{ views: 42 }])
 
     const headers = new Headers()
-    headers.set('x-forwarded-for', '203.0.113.10')
+    headers.set('x-vercel-forwarded-for', '203.0.113.10')
+    headers.set('user-agent', 'Mozilla/5.0 regular browser')
 
     const caller = viewsRouter.createCaller({
       db: db as unknown,
@@ -223,5 +224,50 @@ describe('viewsRouter', () => {
     expect(redisSetMock).toHaveBeenCalledWith('post:views:ok-post', 42, { ex: 60 })
     // The site-wide total is invalidated so the next getCount recomputes it.
     expect(redisDelMock).toHaveBeenCalledWith('post:views:count')
+  })
+
+  it('increment skips counting for bot user agents', async () => {
+    const { viewsRouter } = await import('@/trpc/routers/views')
+
+    const db = createDbMock()
+
+    const headers = new Headers()
+    headers.set('x-vercel-forwarded-for', '203.0.113.10')
+    headers.set(
+      'user-agent',
+      'Sogou web spider/4.0(+http://www.sogou.com/docs/help/webmasters.html#crawler)'
+    )
+
+    const caller = viewsRouter.createCaller({
+      db: db as unknown,
+      headers
+    } as unknown as Parameters<typeof viewsRouter.createCaller>[0])
+
+    await expect(caller.increment({ slug: 'ok-post' })).resolves.toBeUndefined()
+
+    expect(db.insert).not.toHaveBeenCalled()
+    expect(redisSetMock).not.toHaveBeenCalled()
+    expect(redisDelMock).not.toHaveBeenCalled()
+  })
+
+  it('increment skips counting when the ip+slug was already counted in the window', async () => {
+    const { viewsRouter } = await import('@/trpc/routers/views')
+
+    const db = createDbMock()
+    redisSetMock.mockResolvedValueOnce(null as unknown as string)
+
+    const headers = new Headers()
+    headers.set('x-vercel-forwarded-for', '203.0.113.10')
+    headers.set('user-agent', 'Mozilla/5.0 regular browser')
+
+    const caller = viewsRouter.createCaller({
+      db: db as unknown,
+      headers
+    } as unknown as Parameters<typeof viewsRouter.createCaller>[0])
+
+    await expect(caller.increment({ slug: 'ok-post' })).resolves.toBeUndefined()
+
+    expect(db.insert).not.toHaveBeenCalled()
+    expect(redisDelMock).not.toHaveBeenCalled()
   })
 })

@@ -41,6 +41,26 @@ export const ratelimit = withFailClosed(
   })
 )
 
+/**
+ * Telemetry writes are the ONLY limiter here that must fail OPEN.
+ * Every other limiter protects a resource, so a degraded Redis must deny
+ * (that is what withFailClosed above is for). This one protects Postgres from
+ * write amplification: if Redis is slow or unreachable we would rather record
+ * the observability rows than lose the data needed to debug whatever is
+ * degrading Redis. Raw @upstash/ratelimit resolves { success: true,
+ * reason: 'timeout' } on timeout, which is exactly that behavior, so this
+ * limiter is deliberately NOT wrapped in withFailClosed.
+ *
+ * The short timeout keeps a degraded datastore from adding latency to every
+ * request: telemetry is best-effort and must never hold up a response.
+ */
+export const telemetryRatelimit = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(50, '10 s'),
+  analytics: false,
+  timeout: 400
+})
+
 export const redisKeys = {
   postViews: (slug: string) => `post:views:${slug}`,
   postViewCount: 'post:views:count',

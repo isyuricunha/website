@@ -39,6 +39,7 @@ const createDbMock = (rowCountsByTable: Record<string, number> = {}) => {
   const ai_chat_feedback_table: Table = { [Symbol.for('drizzle:Name')]: 'ai_chat_feedback' }
   const security_events_table: Table = { [Symbol.for('drizzle:Name')]: 'security_events' }
   const error_logs_table: Table = { [Symbol.for('drizzle:Name')]: 'error_logs' }
+  const error_tracking_table: Table = { [Symbol.for('drizzle:Name')]: 'error_tracking' }
   const api_usage_table: Table = { [Symbol.for('drizzle:Name')]: 'api_usage' }
 
   const del = vi.fn((table: Table) => {
@@ -62,6 +63,7 @@ const createDbMock = (rowCountsByTable: Record<string, number> = {}) => {
       ai_chat_feedback_table,
       security_events_table,
       error_logs_table,
+      error_tracking_table,
       api_usage_table
     }
   }
@@ -95,6 +97,10 @@ const createDbModuleMock = (db: DbMock) => {
       ...db.__tables.error_logs_table,
       resolved: 'error_logs.resolved',
       createdAt: 'error_logs.createdAt'
+    },
+    errorTracking: {
+      ...db.__tables.error_tracking_table,
+      createdAt: 'error_tracking.createdAt'
     },
     and: (...args: unknown[]) => args,
     eq: (...args: unknown[]) => args,
@@ -202,10 +208,12 @@ describe('/api/cron/data-retention', () => {
       loginAttempts: 5,
       aiChatFeedback: 1,
       securityEvents: 2,
-      errorLogs: 4
+      errorLogs: 4,
+      errorTracking: 0
     })
 
-    // All seven tables must have been targeted, in this order.
+    // All retention-managed tables must have been targeted, in this order.
+    // Errors are pruned by age alone, so exactly one pass per error table.
     expect(db.__removalHistory.map((c) => c.table)).toEqual([
       'analytics_events',
       'performance_metrics',
@@ -213,7 +221,8 @@ describe('/api/cron/data-retention', () => {
       'login_attempts',
       'ai_chat_feedback',
       'security_events',
-      'error_logs'
+      'error_logs',
+      'error_tracking'
     ])
   })
 

@@ -17,7 +17,7 @@ import {
 import { logger } from '@/lib/logger'
 import { ratelimit } from '@/lib/ratelimit'
 import { rate_limit_keys } from '@/lib/rate-limit-keys'
-import { getClientIp, verifyTurnstileToken } from '@/lib/spam-detection'
+import { getClientIp, is_bot_user_agent, verifyTurnstileToken } from '@/lib/spam-detection'
 
 const PUBLIC_ASSISTANT_PROVIDER = 'Yue AI'
 
@@ -172,6 +172,15 @@ export async function POST(req: NextRequest) {
   }
 
   try {
+    // Cheap bot gate before anything costly: crawlers get no AI responses,
+    // no rate-limit quota and no provider spend, even with Turnstile off.
+    if (is_bot_user_agent(req.headers.get('user-agent'))) {
+      return NextResponse.json(
+        { error: 'Automated access is not allowed.', requestId: request_id },
+        { status: 403, headers: response_headers }
+      )
+    }
+
     const ip = getClientIp(req.headers)
     const { success } = await ratelimit.limit(rate_limit_keys.ai_chat(ip))
 

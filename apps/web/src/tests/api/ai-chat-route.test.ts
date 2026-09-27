@@ -15,7 +15,8 @@ vi.mock('@/lib/ratelimit', () => ({
 }))
 
 vi.mock('@/lib/spam-detection', () => ({
-  getClientIp: vi.fn()
+  getClientIp: vi.fn(),
+  is_bot_user_agent: vi.fn(() => false)
 }))
 
 vi.mock('@/lib/ai/site-index', () => ({

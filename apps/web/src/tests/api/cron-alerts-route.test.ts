@@ -248,6 +248,111 @@ describe('/api/cron/alerts', () => {
     expect(db.__inserted.notifications).toHaveLength(2)
   })
 
+  it('evaluates avg_response_time from api_usage rows and triggers above threshold', async () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date('2026-01-01T00:00:00.000Z'))
+
+    process.env.CRON_SECRET = '0123456789abcdef'
+
+    const db = createDbMock()
+    const redis = createRedisMock()
+
+    db.query.alerts.findMany.mockResolvedValue([
+      {
+        id: 'alert-avg',
+        name: 'API latency',
+        description: 'Average API response time is too high',
+        type: 'performance',
+        severity: 'critical',
+        conditions: JSON.stringify({
+          metric: 'avg_response_time',
+          operator: 'gt',
+          threshold: 1000,
+          timeRangeMinutes: 10,
+          cooldownMinutes: 60
+        }),
+        isActive: true,
+        createdBy: 'admin-1',
+        createdAt: new Date('2026-01-01T00:00:00.000Z'),
+        updatedAt: new Date('2026-01-01T00:00:00.000Z')
+      }
+    ])
+
+    // Average of 2000 and 4000 is 3000ms: above the 1000ms threshold.
+    db.query.apiUsage.findMany.mockResolvedValue([{ responseTime: 2000 }, { responseTime: 4000 }])
+
+    db.query.users.findMany.mockResolvedValue([{ id: 'admin-1' }, { id: 'admin-2' }])
+
+    vi.doMock('@isyuricunha/db', () => createDbModuleMock(db))
+    vi.doMock('@isyuricunha/kv', () => ({ redis }))
+
+    const { GET } = await import('@/app/api/cron/alerts/route')
+
+    const res = await GET({
+      headers: new Headers([['authorization', 'Bearer 0123456789abcdef']])
+    } as unknown as Parameters<typeof GET>[0])
+
+    expect(res.status).toBe(200)
+
+    const json = (await res.json()) as { triggered?: number }
+
+    expect(json.triggered).toBe(1)
+    expect(db.__inserted.alert_instances[0]?.triggeredValue).toBe(3000)
+  })
+
+  it('avg_response_time does not trigger on an empty window', async () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date('2026-01-01T00:00:00.000Z'))
+
+    process.env.CRON_SECRET = '0123456789abcdef'
+
+    const db = createDbMock()
+    const redis = createRedisMock()
+
+    db.query.alerts.findMany.mockResolvedValue([
+      {
+        id: 'alert-avg-empty',
+        name: 'API latency',
+        description: 'Average API response time is too high',
+        type: 'performance',
+        severity: 'critical',
+        conditions: JSON.stringify({
+          metric: 'avg_response_time',
+          operator: 'gt',
+          threshold: 0.5,
+          timeRangeMinutes: 10,
+          cooldownMinutes: 60
+        }),
+        isActive: true,
+        createdBy: 'admin-1',
+        createdAt: new Date('2026-01-01T00:00:00.000Z'),
+        updatedAt: new Date('2026-01-01T00:00:00.000Z')
+      }
+    ])
+
+    db.query.apiUsage.findMany.mockResolvedValue([])
+    db.query.users.findMany.mockResolvedValue([{ id: 'admin-1' }, { id: 'admin-2' }])
+
+    vi.doMock('@isyuricunha/db', () => createDbModuleMock(db))
+    vi.doMock('@isyuricunha/kv', () => ({ redis }))
+
+    const { GET } = await import('@/app/api/cron/alerts/route')
+
+    const res = await GET({
+      headers: new Headers([['authorization', 'Bearer 0123456789abcdef']])
+    } as unknown as Parameters<typeof GET>[0])
+
+    expect(res.status).toBe(200)
+
+    const json = (await res.json()) as { evaluated?: number; triggered?: number }
+
+    expect(json.evaluated).toBe(1)
+    // No rows in the window means value 0, and 0 does not exceed the
+    // threshold: silence is not an incident.
+    expect(json.triggered).toBe(0)
+    expect(db.__inserted.alert_instances).toHaveLength(0)
+  })
+
   it('does not create a new instance when within cooldown', async () => {
     vi.useFakeTimers()
     vi.setSystemTime(new Date('2026-01-01T00:00:00.000Z'))

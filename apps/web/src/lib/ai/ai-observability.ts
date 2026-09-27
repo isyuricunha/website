@@ -1,5 +1,7 @@
 import { db, performanceMetrics } from '@isyuricunha/db'
 
+import { is_bot_user_agent } from '@/lib/spam-detection'
+
 type AiChatObservabilityInput = {
   requestId: string
   endpoint: string
@@ -35,6 +37,9 @@ export const estimate_tokens = (input: string): number => {
 
 export async function record_ai_chat_observability(input: AiChatObservabilityInput): Promise<void> {
   try {
+    // Crawler traffic must not grow the telemetry tables.
+    if (is_bot_user_agent(input.userAgent) || !input.userAgent) return
+
     const now = new Date()
 
     await db.insert(performanceMetrics).values({

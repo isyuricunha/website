@@ -852,8 +852,9 @@ export const monitoringRouter = createTRPCRouter({
       const now = new Date()
       const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000)
 
-      // Aggregate in SQL: these tables hold ~300k rows each, so materializing
-      // the last hour into memory just to count/average is wasteful.
+      // Aggregate in SQL instead of materializing the window in memory.
+      // performance_metrics now receives AI-chat latency only (tRPC requests
+      // are recorded in api_usage), so this card is AI-centric by design.
       const [metricRows, errorStats, alertRows, apiStats] = await Promise.all([
         ctx.db
           .select({
