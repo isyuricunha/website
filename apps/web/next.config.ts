@@ -15,6 +15,9 @@ const withBundleAnalyzer = bundleAnalyzer({
 })
 
 const config: NextConfig = {
+  // dev server is reached over the tailnet IP (QA browser and Yuri's machine)
+  allowedDevOrigins: ['100.78.106.99'],
+
   experimental: {
     optimizePackageImports: ['shiki']
   },
