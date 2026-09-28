@@ -1,5 +1,7 @@
 {
   "$schema": "https://turbo.build/schema.json",
+  "cacheMaxAge": "1d",
+  "cacheMaxSize": "5GB",
   "globalDependencies": [".env.*local"],
   "globalEnv": [
     "NODE_ENV",
@@ -61,11 +63,17 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [".next/**", "!.next/cache/**", "dist/**", ".content-collections/**"]
+      "outputs": [
+        ".next/**",
+        "!.next/cache/**",
+        "!.next/dev/**",
+        "dist/**",
+        ".content-collections/**"
+      ]
     },
     "build:apps": {
       "dependsOn": ["^build:apps"],
-      "outputs": [".next/**", "!.next/cache/**", ".content-collections/**"]
+      "outputs": [".next/**", "!.next/cache/**", "!.next/dev/**", ".content-collections/**"]
     },
     "build:mdx": {
       "outputs": [".content-collections/**"]
