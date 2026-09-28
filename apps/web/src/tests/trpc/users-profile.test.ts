@@ -262,4 +262,42 @@ describe('usersRouter public profile', () => {
     expect(result.comments[0]?.type).toBe('comment')
     expect(result.comments[1]?.type).toBe('reply')
   })
+
+  it('getInfiniteUserComments returns unprefixed post urls for localized requests', async () => {
+    const { usersRouter } = await import('@/trpc/routers/users')
+
+    const db = {
+      query: {
+        users: {
+          findFirst: vi.fn().mockResolvedValueOnce({ id: 'user-1' })
+        },
+        comments: {
+          findMany: vi.fn(async () => [
+            {
+              id: 'c1',
+              body: 'hello',
+              createdAt: new Date('2025-01-01T00:00:00.000Z'),
+              postId: 'my-post',
+              parentId: null,
+              post: { slug: 'my-post', title: 'My Post' }
+            }
+          ])
+        }
+      }
+    }
+
+    // The localized Link component prefixes internal hrefs with the active
+    // locale, so the router must hand out unprefixed paths.
+    const caller = usersRouter.createCaller({
+      db: db as unknown,
+      headers: new Headers({ 'x-locale': 'pt' })
+    } as unknown as Parameters<typeof usersRouter.createCaller>[0])
+
+    const result = await caller.getInfiniteUserComments({
+      handle: 'user-1',
+      limit: 10
+    })
+
+    expect(result.comments[0]?.post.url).toBe('/blog/my-post')
+  })
 })

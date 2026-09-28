@@ -204,8 +204,6 @@ export const usersRouter = createTRPCRouter({
   getInfiniteUserComments: publicProcedure
     .input(infiniteUserCommentsInputSchema)
     .query(async ({ ctx, input }) => {
-      const locale = get_request_locale(ctx.headers)
-
       // Public DB-touching endpoint: rate limit like the other public queries.
       // getIp trusts only platform headers; getIpFromHeaders honours the
       // client-forgeable x-forwarded-for and would let callers rotate keys.
@@ -269,7 +267,10 @@ export const usersRouter = createTRPCRouter({
       })
 
       const result = query.map((comment) => {
-        const post_url = getLocalizedPath({ slug: `/blog/${comment.postId}`, locale })
+        // Unprefixed on purpose: the localized Link component adds the active
+        // locale prefix on the client, so a localized path here would render
+        // as /pt/pt/blog/... on prefixed locales.
+        const post_url = `/blog/${comment.postId}`
         return {
           ...comment,
           type: comment.parentId ? ('reply' as const) : ('comment' as const),
