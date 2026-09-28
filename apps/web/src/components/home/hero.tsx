@@ -12,7 +12,7 @@ const Hero = () => {
   const t_metadata = useTranslations('metadata')
 
   return (
-    <section className='relative grid min-h-[calc(100vh-10rem)] items-center gap-12 py-16 sm:py-20 lg:grid-cols-[1fr_0.7fr] lg:py-24'>
+    <section className='overflow-x-clip relative grid min-h-[calc(100vh-10rem)] items-center gap-12 py-16 sm:py-20 lg:grid-cols-[1fr_0.7fr] lg:py-24'>
       <motion.div
         className='yu-rise yu-d1 flex flex-col items-start gap-6'
         initial={false}
