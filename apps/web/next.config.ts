@@ -18,6 +18,9 @@ const config: NextConfig = {
   // dev server is reached over the tailnet IP (QA browser and Yuri's machine)
   allowedDevOrigins: ['100.78.106.99'],
 
+  // generated agent rule files are noise in a two-maintainer repo
+  agentRules: false,
+
   experimental: {
     optimizePackageImports: ['shiki']
   },
