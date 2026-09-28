@@ -370,7 +370,7 @@
         var(--text-tertiary) 62%,
         var(--text-tertiary) 100%
       );
-      animation: yu2-shimmer 3.6s var(--yu-ease-shimmer) infinite;
+      animation: yu-shimmer 3.6s var(--yu-ease-shimmer) infinite;
     }
 
     .yu-shimmer-gold {
@@ -382,7 +382,7 @@
         #d6a84f 60%,
         #d6a84f 100%
       );
-      animation: yu2-shimmer 6s var(--yu-ease-shimmer) infinite;
+      animation: yu-shimmer 6s var(--yu-ease-shimmer) infinite;
     }
 
     .yu-shimmer-agent {
@@ -394,7 +394,7 @@
         #b58ad0 62%,
         #b58ad0 100%
       );
-      animation: yu2-shimmer 2.8s var(--yu-ease-shimmer) infinite;
+      animation: yu-shimmer 2.8s var(--yu-ease-shimmer) infinite;
     }
   }
 
@@ -406,7 +406,7 @@
       var(--yu-bg-input) 100%
     );
     background-size: 200% 100%;
-    animation: yu2-skeleton 1.4s linear infinite;
+    animation: yu-skeleton 1.4s linear infinite;
   }
 
   .yu-sheen-border {
@@ -425,11 +425,11 @@
     background-size:
       100% 100%,
       300% 100%;
-    animation: yu2-border-sheen 5s linear infinite;
+    animation: yu-border-sheen 5s linear infinite;
   }
 
   .yu-pulse {
-    animation: yu2-pulse 2.4s ease-in-out infinite;
+    animation: yu-pulse 2.4s ease-in-out infinite;
   }
 
   .yu-caret {
@@ -439,11 +439,11 @@
     margin-left: 3px;
     vertical-align: -0.15em;
     background: var(--accent-gold);
-    animation: yu2-caret 1.1s steps(1) infinite;
+    animation: yu-caret 1.1s steps(1) infinite;
   }
 
   .yu-rise {
-    animation: yu2-rise 0.9s var(--yu-ease) both;
+    animation: yu-rise 0.9s var(--yu-ease) both;
   }
 
   .yu-d1 {
@@ -481,7 +481,7 @@
     );
     pointer-events: none;
     z-index: -1;
-    animation: yu2-breathe 9s ease-in-out infinite;
+    animation: yu-breathe 9s ease-in-out infinite;
   }
 
   .yu-lift {
@@ -856,7 +856,7 @@
   }
 }
 
-@keyframes yu2-shimmer {
+@keyframes yu-shimmer {
   0% {
     background-position: 100% 0;
   }
@@ -866,7 +866,7 @@
   }
 }
 
-@keyframes yu2-border-sheen {
+@keyframes yu-border-sheen {
   0% {
     background-position:
       0 0,
@@ -879,7 +879,7 @@
   }
 }
 
-@keyframes yu2-rise {
+@keyframes yu-rise {
   from {
     opacity: 0;
     transform: translateY(12px);
@@ -892,7 +892,7 @@
   }
 }
 
-@keyframes yu2-breathe {
+@keyframes yu-breathe {
   0%,
   100% {
     opacity: 0.7;
@@ -902,7 +902,7 @@
   }
 }
 
-@keyframes yu2-pulse {
+@keyframes yu-pulse {
   0%,
   100% {
     box-shadow: 0 0 0 0 rgba(49, 209, 88, 0.55);
@@ -912,13 +912,13 @@
   }
 }
 
-@keyframes yu2-caret {
+@keyframes yu-caret {
   50% {
     opacity: 0;
   }
 }
 
-@keyframes yu2-skeleton {
+@keyframes yu-skeleton {
   from {
     background-position: 100% 0;
   }
