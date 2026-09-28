@@ -60,7 +60,10 @@ const LatestArticles = () => {
         <h2>{t('homepage.latest-articles.title')}</h2>
         <p>{featuredPost.summary}</p>
         <Link href='/blog' className='cta-link'>
-          {t('homepage.latest-articles.more')} →
+          {t('homepage.latest-articles.more')}{' '}
+          <span className='yu-arrow' aria-hidden='true'>
+            →
+          </span>
         </Link>
       </div>
 
@@ -87,7 +90,7 @@ const ArticleCard = (props: CardProps) => {
   })
 
   return (
-    <Link href={`/blog/${slug}`} className='app-window group block'>
+    <Link href={`/blog/${slug}`} className='app-window yu-lift group block'>
       <div className='app-window-chrome'>
         <span className='window-dot' />
         <span className='window-dot' />

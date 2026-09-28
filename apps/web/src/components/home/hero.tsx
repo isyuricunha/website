@@ -14,7 +14,7 @@ const Hero = () => {
   return (
     <section className='relative grid min-h-[calc(100vh-10rem)] items-center gap-12 py-16 sm:py-20 lg:grid-cols-[1fr_0.7fr] lg:py-24'>
       <motion.div
-        className='flex flex-col items-start gap-6'
+        className='yu-rise yu-d1 flex flex-col items-start gap-6'
         initial={false}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
@@ -26,11 +26,11 @@ const Hero = () => {
           {locale === 'pt' ? (
             <>
               <span>{t('homepage.hero.title-middle-right')}</span>{' '}
-              <span className='text-accent-earth-text'>{t('homepage.hero.amazing')}</span>
+              <span className='yu-shimmer-gold'>{t('homepage.hero.amazing')}</span>
             </>
           ) : (
             <>
-              <span className='text-accent-earth-text'>{t('homepage.hero.amazing')}</span>{' '}
+              <span className='yu-shimmer-gold'>{t('homepage.hero.amazing')}</span>{' '}
               <span>{t('homepage.hero.title-middle-right')}</span>
             </>
           )}{' '}
@@ -56,39 +56,47 @@ const Hero = () => {
         </div>
       </motion.div>
 
-      <motion.div
-        className='app-window mx-auto w-full max-w-sm'
-        initial={false}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
-      >
-        <div className='app-window-chrome'>
-          <span className='window-dot' />
-          <span className='window-dot' />
-          <span className='window-dot' />
-        </div>
-        <div className='flex flex-col items-center gap-6 p-8'>
-          <div className='relative size-28'>
-            <BlurImage
-              src='/images/avatar.png'
-              fill
-              sizes='112px'
-              className='rounded-lg'
-              imageClassName='object-cover'
-              alt={t_metadata('site-title')}
-              lazy={false}
-            />
+      <div className='yu-rise yu-d2 relative mx-auto w-full max-w-sm'>
+        <div className='yu-glow' aria-hidden='true' />
+        <motion.div
+          className='app-window w-full'
+          initial={false}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
+        >
+          <div className='app-window-chrome'>
+            <span className='window-dot' />
+            <span className='window-dot' />
+            <span className='window-dot' />
           </div>
-          <div className='code-block w-full'>
-            <div className='text-text-tertiary'>{t('homepage.hero.code.database-specialist')}</div>
-            <div>{t('homepage.hero.code.region')}</div>
-            <div>{t('homepage.hero.code.focus')}</div>
+          <div className='flex flex-col items-center gap-6 p-8'>
+            <div className='relative size-28'>
+              <BlurImage
+                src='/images/avatar.png'
+                fill
+                sizes='112px'
+                className='rounded-lg'
+                imageClassName='object-cover'
+                alt={t_metadata('site-title')}
+                lazy={false}
+              />
+            </div>
+            <div className='code-block w-full'>
+              <div className='text-text-tertiary'>
+                {t('homepage.hero.code.database-specialist')}
+              </div>
+              <div>{t('homepage.hero.code.region')}</div>
+              <div>
+                {t('homepage.hero.code.focus')}
+                <span className='yu-caret' aria-hidden='true' />
+              </div>
+            </div>
+            <p className='text-muted-foreground text-center text-sm'>
+              {t('homepage.hero.location-timezone')}
+            </p>
           </div>
-          <p className='text-muted-foreground text-center text-sm'>
-            {t('homepage.hero.location-timezone')}
-          </p>
-        </div>
-      </motion.div>
+        </motion.div>
+      </div>
     </section>
   )
 }

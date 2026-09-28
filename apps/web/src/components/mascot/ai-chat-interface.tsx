@@ -1591,7 +1591,7 @@ export default function AIChatInterface({
                 </div>
                 <div className='flex items-center gap-2'>
                   <Loader2 className='text-status-agent h-4 w-4 animate-spin' />
-                  <span className='yu-text-shimmer text-xs'>
+                  <span className='yu-shimmer-agent text-xs'>
                     {t('mascot.aiChat.thinking')}
                     {typingDots}
                   </span>

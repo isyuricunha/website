@@ -53,7 +53,10 @@ const SelectedProjects = () => {
         <h2>{t('homepage.selectedProjects.title')}</h2>
         <p>{featuredProject.description}</p>
         <Link href='/projects' className='cta-link'>
-          {t('homepage.selectedProjects.more')} →
+          {t('homepage.selectedProjects.more')}{' '}
+          <span className='yu-arrow' aria-hidden='true'>
+            →
+          </span>
         </Link>
       </div>
 
@@ -79,7 +82,7 @@ const Card = (props: CardProps & { featured?: boolean }) => {
     <Link
       key={slug}
       href={`/projects/${slug}`}
-      className='app-window group focus-visible:ring-ring block focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none'
+      className='app-window yu-lift group focus-visible:ring-ring block focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none'
     >
       <div className='app-window-chrome'>
         <span className='window-dot' />

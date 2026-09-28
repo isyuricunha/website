@@ -39,7 +39,10 @@ const GetInTouch = () => {
         <h2>{t('homepage.get-in-touch.title')}</h2>
         <p>{t('homepage.get-in-touch.description')}</p>
         <a href='mailto:me@yuricunha.com' className='cta-link'>
-          me@yuricunha.com →
+          me@yuricunha.com{' '}
+          <span className='yu-arrow' aria-hidden='true'>
+            →
+          </span>
         </a>
       </div>
 

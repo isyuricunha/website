@@ -1,7 +1,7 @@
 'use client'
 
 import { useTranslations } from '@isyuricunha/i18n/client'
-import { motion, useInView } from 'motion/react'
+import { motion, useInView, useReducedMotion } from 'motion/react'
 import { useRef } from 'react'
 
 import Link from '../link'
@@ -26,6 +26,7 @@ const variants = {
 const AboutMe = () => {
   const cardsRef = useRef<HTMLDivElement>(null)
   const isInView = useInView(cardsRef, { once: true, margin: '-100px' })
+  const prefersReducedMotion = useReducedMotion()
   const t = useTranslations()
 
   return (
@@ -47,10 +48,7 @@ const AboutMe = () => {
       </div>
       <motion.div
         className='grid gap-4 md:grid-cols-2'
-        initial={{
-          y: 40,
-          opacity: 0
-        }}
+        initial={prefersReducedMotion ? { y: 0, opacity: 1 } : { y: 40, opacity: 0 }}
         animate={{
           y: 0,
           opacity: 1
@@ -73,7 +71,10 @@ const AboutMe = () => {
       </motion.div>
       <div className='mt-8'>
         <Link href='/about' className='cta-link'>
-          {t('homepage.about-me.more')} →
+          {t('homepage.about-me.more')}{' '}
+          <span className='yu-arrow' aria-hidden='true'>
+            →
+          </span>
         </Link>
       </div>
     </motion.div>
