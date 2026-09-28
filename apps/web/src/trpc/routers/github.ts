@@ -10,6 +10,7 @@ import { createTRPCRouter, publicProcedure } from '../trpc'
 
 const getKey = (id: string) => `github:${id}`
 
+// The isyuricunha account is spam-flagged upstream, so GitHub API lookups of it can 404 (and rate limits happen): failures here can be upstream conditions, not site bugs.
 export const githubRouter = createTRPCRouter({
   get: publicProcedure.query(async ({ ctx }) => {
     const ip = getIp(ctx.headers)
