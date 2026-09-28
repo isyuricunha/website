@@ -1739,7 +1739,7 @@
   "homepage": {
     "about-me": {
       "coding-hours": "Horas de codificación",
-      "coding-hours-value": "{count, plural, =1 {# hr} other {# hrs}}",
+      "coding-hours-value": "{count, plural, =1 {# hora} other {# horas}}",
       "connect": "Conectar",
       "fav-framework": "Servidor favorito",
       "location": "São Paulo",
@@ -1754,16 +1754,16 @@
       "image-alt": "Yo o no yo",
       "title": "¿Necesitas hablar?",
       "code": {
-        "status": "estado = \"abierto\"",
+        "status": "status = \"open\"",
         "email": "email = \"me@yuricunha.com\"",
-        "timezone": "zona_horaria = \"UTC/GMT -3\""
+        "timezone": "timezone = \"UTC/GMT -3\""
       }
     },
     "hero": {
       "title-top": "Soy Yuri, Infrastructure & Platform Engineer",
       "title-middle-left": "construyendo",
-      "title-middle-right": "fiables",
-      "amazing": "sistemas",
+      "title-middle-right": "sistemas",
+      "amazing": "fiables",
       "attractive": "rápido",
       "fantastic": "robusto",
       "stunning": "seguro",
@@ -1772,9 +1772,9 @@
       "view-projects": "Ver proyectos",
       "read-blog": "Leer blog",
       "code": {
-        "database-specialist": "infraestructura_y_plataforma = true",
-        "region": "región = \"America/Sao_Paulo\"",
-        "focus": "enfoque = \"sistemas fiables\""
+        "database-specialist": "infrastructure_platform_engineer = true",
+        "region": "region = \"America/Sao_Paulo\"",
+        "focus": "focus = \"reliable systems\""
       }
     },
     "latest-articles": {

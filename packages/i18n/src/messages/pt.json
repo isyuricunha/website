@@ -1723,7 +1723,7 @@
     "description": "Assine meu livro de visitas e compartilhe sua ideia. Você pode me contar qualquer coisa aqui!",
     "failed-to-load-messages": "Falha ao carregar mensagens. Por favor, atualize a página.",
     "message-cannot-be-empty": "A mensagem não pode ficar vazia. Minha culpa ou sua culpa?",
-    "no-messages": "Sem mensagens. Seja o primeiro a deixar uma!",
+    "no-messages": "Sem mensagens. Seja a primeira pessoa a deixar uma!",
     "empty-cta": "Seja a primeira pessoa a deixar uma mensagem!",
     "pinned": {
       "description": "Se tiver um momento, por favor faça login com sua conta para deixar um comentário. Obrigado!",
@@ -1741,7 +1741,7 @@
       "coding-hours": "Horas de programação",
       "coding-hours-value": "{count, plural, =1 {# hora} other {# horas}}",
       "connect": "Conectar",
-      "fav-framework": "Fav. Servidor",
+      "fav-framework": "Servidor favorito",
       "location": "São Paulo",
       "more": "Saiba mais sobre mim",
       "stacks": "Stacks",
@@ -1754,9 +1754,9 @@
       "image-alt": "Eu ou não eu",
       "title": "Precisando falar?",
       "code": {
-        "status": "status = \"aberto\"",
+        "status": "status = \"open\"",
         "email": "email = \"me@yuricunha.com\"",
-        "timezone": "fuso = \"UTC/GMT -3\""
+        "timezone": "timezone = \"UTC/GMT -3\""
       }
     },
     "hero": {
@@ -1772,9 +1772,9 @@
       "view-projects": "Ver Projetos",
       "read-blog": "Ler Blog",
       "code": {
-        "database-specialist": "infraestrutura_e_plataforma = true",
-        "region": "regiao = \"America/Sao_Paulo\"",
-        "focus": "foco = \"sistemas confiáveis\""
+        "database-specialist": "infrastructure_platform_engineer = true",
+        "region": "region = \"America/Sao_Paulo\"",
+        "focus": "focus = \"reliable systems\""
       }
     },
     "latest-articles": {
@@ -1997,7 +1997,7 @@
     }
   },
   "uses": {
-    "description": "Este é o equipamento que eu uso atualmente para jogar, programar, fazer vídeos e no dia a dia.",
+    "description": "Este é o equipamento que eu uso atualmente para jogar, programar e no dia a dia.",
     "title": "Equipamentos"
   },
   "spotify": {

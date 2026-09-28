@@ -1373,7 +1373,7 @@
     "cancel": "Abbrechen",
     "delete": "Löschen",
     "error": "Fehler",
-    "likes": "{count, plural, =1 {# Gefällt mir} other {# Gefällt mir-Anzahl}}",
+    "likes": "{count, plural, =1 {Gefällt # Mal} other {Gefällt # Mal}}",
     "sign-in": "Anmelden",
     "sign-in-error": "Anmeldung fehlgeschlagen. Bitte versuche es erneut.",
     "sign-in-success": "Anmeldung erfolgreich!",
@@ -1754,7 +1754,7 @@
       "image-alt": "Ich oder nicht ich",
       "title": "Möchtest du reden?",
       "code": {
-        "status": "status = \"offen\"",
+        "status": "status = \"open\"",
         "email": "email = \"me@yuricunha.com\"",
         "timezone": "timezone = \"UTC/GMT -3\""
       }
@@ -1772,9 +1772,9 @@
       "view-projects": "Projekte anzeigen",
       "read-blog": "Blog lesen",
       "code": {
-        "database-specialist": "infrastruktur_und_plattform = true",
+        "database-specialist": "infrastructure_platform_engineer = true",
         "region": "region = \"America/Sao_Paulo\"",
-        "focus": "fokus = \"zuverlässige Systeme\""
+        "focus": "focus = \"reliable systems\""
       }
     },
     "latest-articles": {
@@ -1809,8 +1809,8 @@
       "success-description": "Du erhältst Updates zu neuen Beiträgen und Projekten.",
       "error-default": "Anmeldung fehlgeschlagen",
       "success-compact": "Angemeldet!",
-      "turnstile-required": "Bitte schließen Sie die Sicherheitsüberprüfung ab.",
-      "turnstile-error": "Sicherheitsüberprüfung fehlgeschlagen. Bitte versuchen Sie es erneut."
+      "turnstile-required": "Bitte schließe die Sicherheitsüberprüfung ab.",
+      "turnstile-error": "Sicherheitsüberprüfung fehlgeschlagen. Bitte versuche es erneut."
     }
   },
   "hook": {
@@ -2404,7 +2404,7 @@
         "general": "Möchte einfach nur chatten"
       },
       "responses": {
-        "contact": "Super! Du kannst meinen Erschaffer, Yuri, unter me@yuricunha.com erreichen. Sie freuen sich über Nachrichten von Besuchern!",
+        "contact": "Super! Du kannst meinen Erschaffer, Yuri, unter me@yuricunha.com erreichen. Er freut sich über Nachrichten von Besuchern!",
         "feedback": "Vielen Dank für dein Feedback! Es hilft, diese Seite für alle besser zu machen. Du kannst Details auch per E-Mail an me@yuricunha.com senden.",
         "help": "Ich bin hier, um zu helfen! Wobei möchtest du Unterstützung? Du kannst die Seite erkunden oder mir spezifische Fragen stellen.",
         "bug": "Danke für deine Meldung! Bitte sende eine E-Mail mit Details an me@yuricunha.com. Jede Meldung hilft, die Seite zu verbessern!",

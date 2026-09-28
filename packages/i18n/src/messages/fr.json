@@ -898,7 +898,7 @@
         "description": "Gérer les annonces de votre site"
       },
       "status": {
-        "inactive": "Inactive",
+        "inactive": "Inactif",
         "targeted": "Ciblé",
         "dismissible": "Ignorable",
         "not-dismissible": "Non ignorable",
@@ -1754,16 +1754,16 @@
       "image-alt": "Moi ou pas moi",
       "title": "Besoin de discuter ?",
       "code": {
-        "status": "statut = \"ouvert\"",
+        "status": "status = \"open\"",
         "email": "email = \"me@yuricunha.com\"",
-        "timezone": "fuseau_horaire = \"UTC/GMT -3\""
+        "timezone": "timezone = \"UTC/GMT -3\""
       }
     },
     "hero": {
       "title-top": "Je suis Yuri, Infrastructure & Platform Engineer",
       "title-middle-left": "et je construis",
-      "title-middle-right": "fiables",
-      "amazing": "des systèmes",
+      "title-middle-right": "des systèmes",
+      "amazing": "fiables",
       "attractive": "rapide",
       "fantastic": "robuste",
       "stunning": "sécurisé",
@@ -1772,9 +1772,9 @@
       "view-projects": "Voir les projets",
       "read-blog": "Lire le blog",
       "code": {
-        "database-specialist": "infrastructure_et_plateforme = true",
+        "database-specialist": "infrastructure_platform_engineer = true",
         "region": "region = \"America/Sao_Paulo\"",
-        "focus": "focus = \"systèmes fiables\""
+        "focus": "focus = \"reliable systems\""
       }
     },
     "latest-articles": {
