@@ -23,7 +23,7 @@ const Hero = () => {
         <h1 className='max-w-4xl text-[clamp(32px,4vw,52px)] font-normal tracking-tighter text-balance'>
           <span>{t('homepage.hero.title-top')}</span>{' '}
           <span>{t('homepage.hero.title-middle-left')}</span>{' '}
-          {locale === 'pt' ? (
+          {['pt', 'es', 'fr'].includes(locale) ? (
             <>
               <span>{t('homepage.hero.title-middle-right')}</span>{' '}
               <span className='yu-shimmer-gold'>{t('homepage.hero.amazing')}</span>
