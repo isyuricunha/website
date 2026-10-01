@@ -7,10 +7,12 @@
 
 .shiki span {
   color: var(--shiki-light);
+  font-style: var(--shiki-light-font-style, inherit);
 }
 
 .dark .shiki span {
   color: var(--shiki-dark);
+  font-style: var(--shiki-dark-font-style, inherit);
 }
 
 pre.shiki,

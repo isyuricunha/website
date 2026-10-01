@@ -25,11 +25,10 @@
   }
 
   :where(code):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
-    padding: 2px 4px;
-    font-size: 13px;
+    padding: 0.1em 0.4em;
+    font-size: 0.86em;
     border-radius: var(--radius-md);
-    background: var(--yu-bg-input);
-    border: 0.5px solid hsl(var(--border));
+    background: var(--yu-bg-chip);
 
     &::before,
     &::after {

@@ -25,7 +25,7 @@ export const YU_DARK_SHIKI_THEME: ThemeRegistration = {
     {
       scope: ['comment', 'punctuation.definition.comment'],
       settings: {
-        foreground: '#7d786c',
+        foreground: '#87826f',
         fontStyle: 'italic'
       }
     },

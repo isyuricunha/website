@@ -673,7 +673,7 @@
     --accent-border: var(--action-primary-border);
 
     --syntax-fg: #f4f1e8;
-    --syntax-comment: #7d786c;
+    --syntax-comment: #87826f;
     --syntax-keyword: #d9a8f5;
     --syntax-keyword-alt: #d9a8f5;
     --syntax-string: #8fd6a0;
@@ -941,7 +941,7 @@
 @keyframes yu-pop-in {
   from {
     opacity: 0;
-    transform: translateY(4px) scale(0.98);
+    transform: translateY(-4px) scale(0.98);
   }
   to {
     opacity: 1;
