@@ -4,7 +4,7 @@ import { BlurImage, Callout as UiCallout, CodeBlock, Kbd } from '@isyuricunha/ui
 
 import ImageZoom from '../image-zoom'
 import Link from '../link'
-import { ExpandableSection, ComparisonTable, AffiliateDisclosure } from '../uses-page-client'
+import { ExpandableSection, ComparisonTable } from '../uses-page-client'
 
 import Heading from './heading'
 import ItemGrid from './item-grid'
@@ -66,8 +66,7 @@ const components = {
     <UiCallout className='[&_p]:m-0' {...props} />
   ),
   ExpandableSection,
-  ComparisonTable,
-  AffiliateDisclosure
+  ComparisonTable
 }
 
 const Mdx = (props: MdxProps) => {

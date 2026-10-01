@@ -1,7 +1,7 @@
 /**
  * Inspired by: https://jahir.dev/uses
  */
-import { BlurImage, Badge } from '@isyuricunha/ui'
+import { BlurImage } from '@isyuricunha/ui'
 import { ExternalLink } from 'lucide-react'
 
 import Link from '../link'
@@ -11,7 +11,6 @@ type Items = Array<{
   name: string
   description: string
   url: string
-  isAffiliate?: boolean
 }>
 
 type ItemGridProps = {
@@ -29,14 +28,6 @@ const ItemGrid = (props: ItemGridProps) => {
           href={item.url}
           className='group bg-bg-surface shadow-feature-card hover:bg-bg-hover relative flex min-h-[120px] gap-4 rounded-lg border border-[var(--border-subtle)] p-4 no-underline transition-colors sm:min-h-[160px] sm:flex-col sm:gap-3'
         >
-          {item.isAffiliate && (
-            <Badge
-              variant='secondary'
-              className='text-accent-earth-text absolute top-2 right-2 rounded-sm border-[var(--accent-border)] bg-[var(--accent-dim)] text-xs'
-            >
-              Affiliate
-            </Badge>
-          )}
           <div className='bg-muted/10 flex h-16 w-16 shrink-0 items-center justify-center rounded-lg p-3 sm:h-20 sm:w-20'>
             <BlurImage
               src={item.image}

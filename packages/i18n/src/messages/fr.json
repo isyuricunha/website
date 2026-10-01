@@ -1430,10 +1430,6 @@
       "badge": {
         "updated-recently": "Mis à jour récemment"
       },
-      "affiliate": {
-        "title": "Divulgation d'affiliation",
-        "description": "Certains liens sur cette page sont des liens d'affiliation. Cela signifie que je peux gagner une petite commission si vous achetez via ces liens, sans frais supplémentaires pour vous. Je ne recommande que les produits que j'utilise personnellement et auxquels je crois."
-      },
       "table": {
         "headers": {
           "tool": "Outil",

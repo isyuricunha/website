@@ -1430,10 +1430,6 @@
       "badge": {
         "updated-recently": "Kürzlich aktualisiert"
       },
-      "affiliate": {
-        "title": "Affiliate-Hinweis",
-        "description": "Einige Links auf dieser Seite sind Affiliate-Links. Das bedeutet, dass ich eine kleine Provision erhalte, wenn du über diese Links kaufst, ohne dass dir zusätzliche Kosten entstehen. Ich empfehle nur Produkte, die ich persönlich nutze und von denen ich überzeugt bin."
-      },
       "table": {
         "headers": {
           "tool": "Tool",

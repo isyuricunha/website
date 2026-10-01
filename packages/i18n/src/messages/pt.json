@@ -1513,10 +1513,6 @@
       "badge": {
         "updated-recently": "Atualizado recentemente"
       },
-      "affiliate": {
-        "title": "Divulgação de Afiliados",
-        "description": "Alguns links nesta página são links de afiliados. Isso significa que posso ganhar uma pequena comissão se você comprar através desses links, sem custo adicional para você. Eu só recomendo produtos que uso pessoalmente e nos quais acredito."
-      },
       "table": {
         "headers": {
           "tool": "Ferramenta",

@@ -1430,10 +1430,6 @@
       "badge": {
         "updated-recently": "Updated recently"
       },
-      "affiliate": {
-        "title": "Affiliate Disclosure",
-        "description": "Some links on this page are affiliate links. This means I may earn a small commission if you purchase through these links, at no additional cost to you. I only recommend products I personally use and believe in."
-      },
       "table": {
         "headers": {
           "tool": "Tool",

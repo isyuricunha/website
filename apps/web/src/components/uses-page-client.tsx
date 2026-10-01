@@ -4,7 +4,6 @@ import { useState } from 'react'
 import {
   ChevronDown,
   ChevronUp,
-  Info,
   Calendar,
   Star,
   Zap,
@@ -163,21 +162,6 @@ const ExpandableSection = ({
   )
 }
 
-const AffiliateDisclosure = () => {
-  const t = useTranslations('component.uses-page')
-  return (
-    <div className='mb-8 rounded-lg border border-[var(--accent-border)] bg-[var(--accent-dim)] p-4'>
-      <div className='flex items-start gap-3'>
-        <Info className='text-accent-earth-text mt-0.5 h-5 w-5 flex-shrink-0' />
-        <div>
-          <h3 className='text-text-primary mb-1 text-sm font-medium'>{t('affiliate.title')}</h3>
-          <p className='text-muted-foreground text-xs sm:text-sm'>{t('affiliate.description')}</p>
-        </div>
-      </div>
-    </div>
-  )
-}
-
 type UsesPageClientProps = {
   title: string
   description: string
@@ -231,8 +215,6 @@ const UsesPageClient = ({ title, description, mdxContent }: UsesPageClientProps)
         </Badge>
       </div>
 
-      <AffiliateDisclosure />
-
       {/* Enhanced MDX content wrapper with interactive sections */}
       {mdxContent && <div className='uses-content-wrapper'>{mdxContent}</div>}
 
@@ -277,4 +259,4 @@ const UsesPageClient = ({ title, description, mdxContent }: UsesPageClientProps)
 }
 
 export default UsesPageClient
-export { ExpandableSection, ComparisonTable, AffiliateDisclosure }
+export { ExpandableSection, ComparisonTable }
