@@ -4,12 +4,12 @@ export const YU_DARK_SHIKI_THEME: ThemeRegistration = {
   name: 'yu-dark',
   displayName: 'Yu Dark',
   type: 'dark',
-  fg: '#f1ede3',
-  bg: '#1a1912',
+  fg: '#f4f1e8',
+  bg: '#10100f',
   colors: {
-    'editor.background': '#1a1912',
-    'editor.foreground': '#f1ede3',
-    'editorLineNumber.foreground': '#5f5a50',
+    'editor.background': '#10100f',
+    'editor.foreground': '#f4f1e8',
+    'editorLineNumber.foreground': '#666157',
     'editorLineNumber.activeForeground': '#b8b2a4',
     'editor.selectionBackground': '#50789647',
     'editor.lineHighlightBackground': '#ffffff08',
@@ -18,38 +18,39 @@ export const YU_DARK_SHIKI_THEME: ThemeRegistration = {
   settings: [
     {
       settings: {
-        foreground: '#f1ede3',
-        background: '#1a1912'
+        foreground: '#f4f1e8',
+        background: '#10100f'
       }
     },
     {
       scope: ['comment', 'punctuation.definition.comment'],
       settings: {
-        foreground: '#7e8a69'
+        foreground: '#7d786c',
+        fontStyle: 'italic'
       }
     },
     {
       scope: ['keyword', 'storage', 'storage.type', 'entity.name.tag'],
       settings: {
-        foreground: '#c792ea'
+        foreground: '#d9a8f5'
       }
     },
     {
       scope: ['string', 'constant.other.symbol', 'markup.heading'],
       settings: {
-        foreground: '#f2b36f'
+        foreground: '#8fd6a0'
       }
     },
     {
       scope: ['constant.numeric', 'constant.language.boolean', 'constant.language.null'],
       settings: {
-        foreground: '#a3d48e'
+        foreground: '#e8c07a'
       }
     },
     {
       scope: ['entity.name.function', 'support.function', 'variable.function'],
       settings: {
-        foreground: '#f3d97b'
+        foreground: '#7fdcff'
       }
     },
     {
@@ -71,25 +72,25 @@ export const YU_DARK_SHIKI_THEME: ThemeRegistration = {
         'entity.other.attribute-name'
       ],
       settings: {
-        foreground: '#88d8f5'
+        foreground: '#e8c07a'
       }
     },
     {
-      scope: [
-        'entity.name.type',
-        'entity.name.class',
-        'support.class',
-        'support.type',
-        'entity.name.namespace'
-      ],
+      scope: ['entity.name.class', 'support.class', 'entity.name.namespace'],
       settings: {
-        foreground: '#7ee2c5'
+        foreground: '#7fdcff'
+      }
+    },
+    {
+      scope: ['entity.name.type', 'support.type'],
+      settings: {
+        foreground: '#f0b35a'
       }
     },
     {
       scope: ['keyword.operator', 'punctuation', 'meta.brace'],
       settings: {
-        foreground: '#c8c1b1'
+        foreground: '#9a9488'
       }
     },
     {

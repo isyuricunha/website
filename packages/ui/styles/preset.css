@@ -291,7 +291,7 @@
 
   .code-block {
     border: 0.5px solid var(--border-subtle);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-window);
     background: var(--yu-bg-editor);
     color: var(--syntax-fg);
     font-family: var(--font-mono);
@@ -399,27 +399,32 @@
   }
 
   .yu-skeleton {
+    border-radius: 6px;
     background: linear-gradient(
       90deg,
-      var(--yu-bg-input) 0%,
-      var(--yu-bg-surface-active) 50%,
-      var(--yu-bg-input) 100%
+      var(--yu-skel-a) 0%,
+      var(--yu-skel-b) 50%,
+      var(--yu-skel-a) 100%
     );
     background-size: 200% 100%;
     animation: yu-skeleton 1.4s linear infinite;
   }
 
+  .yu-pop-in {
+    animation: yu-pop-in 160ms var(--yu-ease) both;
+  }
+
   .yu-sheen-border {
     border: 1px solid transparent;
     background:
-      linear-gradient(var(--yu-bg-canvas), var(--yu-bg-canvas)) padding-box,
+      linear-gradient(var(--yu-bg-surface), var(--yu-bg-surface)) padding-box,
       linear-gradient(
           90deg,
-          var(--border-default) 0%,
-          var(--border-default) 35%,
+          var(--yu-sheen-rest) 0%,
+          var(--yu-sheen-rest) 35%,
           rgba(214, 168, 79, 0.75) 50%,
-          var(--border-default) 65%,
-          var(--border-default) 100%
+          var(--yu-sheen-rest) 65%,
+          var(--yu-sheen-rest) 100%
         )
         border-box;
     background-size:
@@ -489,9 +494,9 @@
     overflow: hidden;
     box-shadow: var(--yu-highlight);
     transition:
-      transform 250ms var(--yu-ease),
-      border-color 250ms var(--yu-ease),
-      background-color 250ms var(--yu-ease);
+      transform 220ms var(--yu-ease),
+      border-color 220ms var(--yu-ease),
+      background-color 220ms var(--yu-ease);
   }
 
   .yu-lift::after {
@@ -511,6 +516,7 @@
   .yu-lift:hover {
     transform: translateY(-3px);
     border-color: var(--border-strong);
+    background-color: var(--yu-bg-surface-hover);
   }
 
   .yu-lift:hover::after {
@@ -593,8 +599,8 @@
 
     --text-primary: #f4f1e8;
     --text-strong: #fffdf7;
-    --text-secondary: #b3ad9f;
-    --text-tertiary: #8e887c;
+    --text-secondary: #b8b2a4;
+    --text-tertiary: #9a9488;
     --text-dim: #666157;
     --text-disabled: #54504a;
     --text-inverse: #15130f;
@@ -666,26 +672,26 @@
     --accent-text: var(--action-primary);
     --accent-border: var(--action-primary-border);
 
-    --syntax-fg: #f1ede3;
-    --syntax-comment: #7e8a69;
-    --syntax-keyword: #c792ea;
-    --syntax-keyword-alt: #78c6ff;
-    --syntax-string: #f2b36f;
-    --syntax-number: #a3d48e;
-    --syntax-boolean: #78c6ff;
-    --syntax-constant: #82d4f8;
-    --syntax-function: #f3d97b;
-    --syntax-method: #f3d97b;
+    --syntax-fg: #f4f1e8;
+    --syntax-comment: #7d786c;
+    --syntax-keyword: #d9a8f5;
+    --syntax-keyword-alt: #d9a8f5;
+    --syntax-string: #8fd6a0;
+    --syntax-number: #e8c07a;
+    --syntax-boolean: #e8c07a;
+    --syntax-constant: #e8c07a;
+    --syntax-function: #7fdcff;
+    --syntax-method: #7fdcff;
     --syntax-variable: #f4f1e8;
     --syntax-parameter: #f0d2a2;
-    --syntax-property: #88d8f5;
-    --syntax-class: #7ee2c5;
-    --syntax-interface: #7ee2c5;
-    --syntax-type: #7ee2c5;
-    --syntax-namespace: #7ee2c5;
-    --syntax-module: #7ee2c5;
-    --syntax-operator: #d8d2c3;
-    --syntax-punctuation: #c8c1b1;
+    --syntax-property: #e8c07a;
+    --syntax-class: #7fdcff;
+    --syntax-interface: #f0b35a;
+    --syntax-type: #f0b35a;
+    --syntax-namespace: #7fdcff;
+    --syntax-module: #7fdcff;
+    --syntax-operator: #9a9488;
+    --syntax-punctuation: #9a9488;
     --syntax-regex: #ff9f7e;
     --syntax-decorator: #bf5af2;
     --syntax-invalid: #ff6961;
@@ -712,6 +718,10 @@
     --yu-ease-shimmer: cubic-bezier(0.4, 0, 0.2, 1);
     --yu-scrollbar: #2a2926;
     --yu-scrollbar-hover: #3a3935;
+
+    --yu-sheen-rest: rgba(222, 220, 209, 0.14);
+    --yu-skel-a: #121211;
+    --yu-skel-b: #1f1f1d;
 
     --shadow-window: none;
     --shadow-control: 0 1px 2px rgb(0 0 0 / 0.18);
@@ -822,7 +832,8 @@
   .yu-caret,
   .yu-rise,
   .yu-glow,
-  .yu-skeleton {
+  .yu-skeleton,
+  .yu-pop-in {
     animation: none !important;
     opacity: 1 !important;
     filter: none !important;
@@ -908,7 +919,7 @@
     box-shadow: 0 0 0 0 rgba(49, 209, 88, 0.55);
   }
   50% {
-    box-shadow: 0 0 0 4px rgba(49, 209, 88, 0);
+    box-shadow: 0 0 0 5px rgba(49, 209, 88, 0);
   }
 }
 
@@ -924,6 +935,17 @@
   }
   to {
     background-position: -100% 0;
+  }
+}
+
+@keyframes yu-pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }
 
