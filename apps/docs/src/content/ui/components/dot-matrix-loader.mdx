@@ -1,0 +1,26 @@
+---
+title: Dot Matrix Loader
+description: A 3x3 dot grid with a clockwise ring sweep for thinking and working states.
+---
+
+<ComponentPreview name='dot-matrix-loader/dot-matrix-loader' />
+
+## Usage
+
+```tsx
+import { DotMatrixLoader } from '@isyuricunha/ui'
+```
+
+```tsx
+<DotMatrixLoader label='Loading' />
+```
+
+## Examples
+
+### Agent
+
+Use the agent variant for AI thinking and working states. The loader never goes inside buttons; pending buttons keep their spinner.
+
+```tsx
+<DotMatrixLoader agent label='Thinking' />
+```

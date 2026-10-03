@@ -13,6 +13,7 @@ import {
   buttonVariants,
   Card,
   CodeBlock,
+  DotMatrixLoader,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -310,7 +311,6 @@ export default function AIChatInterface({
   const [isLoading, setIsLoading] = useState(false)
   const [isCancelling, setIsCancelling] = useState(false)
   const [connectionStatus, setConnectionStatus] = useState<ChatConnectionStatus>('checking')
-  const [typingDots, setTypingDots] = useState('')
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
   const [isTurnstileEnabled] = useState(
     () => flags.turnstile && !!env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
@@ -1157,24 +1157,6 @@ export default function AIChatInterface({
     }
   }
 
-  // Animated typing indicator
-  useEffect(() => {
-    if (!isLoading) {
-      return
-    }
-
-    const interval = setInterval(() => {
-      setTypingDots((prev) => {
-        if (prev === '...') return '.'
-        if (prev === '..') return '...'
-        if (prev === '.') return '..'
-        return '.'
-      })
-    }, 500)
-
-    return () => clearInterval(interval)
-  }, [isLoading])
-
   // Report thinking state to parent
   useEffect(() => {
     onThinkingChange?.(isLoading)
@@ -1590,11 +1572,8 @@ export default function AIChatInterface({
                   <span className='text-muted-foreground text-xs font-medium'>Yue</span>
                 </div>
                 <div className='flex items-center gap-2'>
-                  <Loader2 className='text-status-agent h-4 w-4 animate-spin' />
-                  <span className='yu-shimmer-agent text-xs'>
-                    {t('mascot.aiChat.thinking')}
-                    {typingDots}
-                  </span>
+                  <DotMatrixLoader agent label={t('mascot.aiChat.thinking')} />
+                  <span className='yu-shimmer-agent text-xs'>{t('mascot.aiChat.thinking')}</span>
                 </div>
               </div>
             </div>

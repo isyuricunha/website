@@ -410,6 +410,57 @@
     animation: yu-skeleton 1.4s linear infinite;
   }
 
+  .yu-dot-matrix {
+    --yu-dot-size: 4px;
+    --yu-dot-gap: 4px;
+    --yu-dot-cycle: 3s;
+    --yu-dot-stagger: 140ms;
+    --yu-dot-color: var(--text-tertiary);
+    display: inline-grid;
+    grid-template-columns: repeat(3, var(--yu-dot-size));
+    gap: var(--yu-dot-gap);
+  }
+
+  .yu-dot-matrix > span {
+    width: var(--yu-dot-size);
+    height: var(--yu-dot-size);
+    border-radius: 50%;
+    background: var(--yu-dot-color);
+    opacity: 0.35;
+    animation: yu-dot-matrix-pulse var(--yu-dot-cycle) ease-in-out infinite;
+    animation-delay: calc(var(--ring, 0) * var(--yu-dot-stagger));
+  }
+
+  .yu-dot-matrix--agent {
+    --yu-dot-color: #b58ad0;
+  }
+
+  /* Ring order: perimeter clockwise from the top-left, center dot last. */
+  .yu-dot-matrix > span:nth-child(2) {
+    --ring: 1;
+  }
+  .yu-dot-matrix > span:nth-child(3) {
+    --ring: 2;
+  }
+  .yu-dot-matrix > span:nth-child(6) {
+    --ring: 3;
+  }
+  .yu-dot-matrix > span:nth-child(9) {
+    --ring: 4;
+  }
+  .yu-dot-matrix > span:nth-child(8) {
+    --ring: 5;
+  }
+  .yu-dot-matrix > span:nth-child(7) {
+    --ring: 6;
+  }
+  .yu-dot-matrix > span:nth-child(4) {
+    --ring: 7;
+  }
+  .yu-dot-matrix > span:nth-child(5) {
+    --ring: 8;
+  }
+
   .yu-pop-in {
     animation: yu-pop-in 160ms var(--yu-ease) both;
   }
@@ -833,7 +884,8 @@
   .yu-rise,
   .yu-glow,
   .yu-skeleton,
-  .yu-pop-in {
+  .yu-pop-in,
+  .yu-dot-matrix > span {
     animation: none !important;
     opacity: 1 !important;
     filter: none !important;
@@ -852,6 +904,10 @@
   .yu-shimmer-agent {
     background: none !important;
     color: #b58ad0 !important;
+  }
+
+  .yu-dot-matrix > span {
+    opacity: 0.35 !important;
   }
 
   .yu-lift:hover {
@@ -874,6 +930,19 @@
   65%,
   100% {
     background-position: 0% 0;
+  }
+}
+
+@keyframes yu-dot-matrix-pulse {
+  0% {
+    opacity: 0.35;
+  }
+  12% {
+    opacity: 1;
+  }
+  28%,
+  100% {
+    opacity: 0.35;
   }
 }
 
