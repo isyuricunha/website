@@ -1,0 +1,22 @@
+{
+  "name": "Next.js (apps/web)",
+  "kind": "nextjs",
+  "bootstrap": ["pnpm install"],
+  "build": ["pnpm build"],
+  "test": [
+    "pnpm check",
+    "pnpm -C apps/web exec vitest run src/tests/api",
+    "pnpm -C apps/web exec vitest run --config vitest.trpc.config.ts"
+  ],
+  "start": "pnpm -C apps/web run start",
+  "port": 3000,
+  "readinessPath": "/api/health",
+  "evidence": [
+    "Turborepo monorepo; the deployable app is apps/web (Next.js App Router), deployed on Vercel.",
+    "Vite/vitest are dev dependencies used for unit tests only, so automatic detection misreads this as a Vite app and polls port 5173.",
+    "apps/web/package.json: dev and start both bind -p 3000.",
+    "/api/health returns {ok:true} and is the cheapest readiness probe (no DB or Redis dependency).",
+    "Test phase runs the real unit suites; the repo has no single script that covers both vitest projects.",
+    "Known pre-existing failures outside these suites: src/tests/app/og-route.test.ts, src/tests/components/mascot/use-mascot-state.test.tsx, src/tests/utils/announcement-storage.test.ts, src/tests/utils/yue-chat-storage.test.ts."
+  ]
+}
