@@ -48,3 +48,4 @@ verify-*.js
 *.tsbuildinfo
 next-env.d.ts
 AGENTS.md
+.hermes/
