@@ -2,7 +2,6 @@ import type { KnipConfig } from 'knip'
 
 const config: KnipConfig = {
   ignore: [
-    '**/*.css',
     'apps/web/public/sw.js',
     'apps/web/scripts/vercel-ignore.js',
     'apps/web/src/tests/stubs/**',
@@ -33,10 +32,6 @@ const config: KnipConfig = {
     },
     'packages/eslint-config': {
       // @see https://github.com/francoismassart/eslint-plugin-tailwindcss/issues/325
-    },
-    'packages/ui': {
-      // @see https://github.com/shadcn-ui/ui/issues/4792
-      ignoreDependencies: ['@radix-ui/react-context']
     }
   }
 }
