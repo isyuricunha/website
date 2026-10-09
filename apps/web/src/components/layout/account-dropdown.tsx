@@ -14,7 +14,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
   Skeleton
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 import { PencilIcon, SettingsIcon, UserIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
 

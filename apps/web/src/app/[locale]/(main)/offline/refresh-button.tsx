@@ -1,7 +1,7 @@
 'use client'
 
 import { useTranslations } from '@isyuricunha/i18n/client'
-import { Button } from '@isyuricunha/ui'
+import { Button } from '@isyuricunha/yutheme'
 import { RefreshCw } from 'lucide-react'
 
 export default function RefreshButton() {

@@ -9,7 +9,7 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 import { useState } from 'react'
 
 const DropdownMenuRadioGroupDemo = () => {

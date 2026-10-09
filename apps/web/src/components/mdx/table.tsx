@@ -5,7 +5,7 @@ import {
   TableHead,
   TableHeader,
   TableRow
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 
 type TableProps = {
   headers: string[]

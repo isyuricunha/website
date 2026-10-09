@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 
-import { DotMatrixLoader } from '@isyuricunha/ui'
+import { DotMatrixLoader } from '@isyuricunha/yutheme'
 
 /*
  * The dot matrix loader is the canonical thinking/working indicator: a 3x3

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { MDXContent } from '@content-collections/mdx/react'
-import { BlurImage, Callout as UiCallout, CodeBlock, Kbd } from '@isyuricunha/ui'
+import { BlurImage, Callout as UiCallout, CodeBlock, Kbd } from '@isyuricunha/yutheme'
 
 import ImageZoom from '../image-zoom'
 import Link from '../link'

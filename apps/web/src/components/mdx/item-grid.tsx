@@ -1,7 +1,7 @@
 /**
  * Inspired by: https://jahir.dev/uses
  */
-import { BlurImage } from '@isyuricunha/ui'
+import { BlurImage } from '@isyuricunha/yutheme'
 import { ExternalLink } from 'lucide-react'
 
 import Link from '../link'

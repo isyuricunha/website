@@ -2,7 +2,7 @@
 
 import type { Doc } from 'content-collections'
 
-import { badgeVariants, Link } from '@isyuricunha/ui'
+import { badgeVariants, Link } from '@isyuricunha/yutheme'
 import { cn } from '@isyuricunha/utils'
 import { ExternalLinkIcon } from 'lucide-react'
 

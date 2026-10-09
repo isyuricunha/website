@@ -13,7 +13,7 @@ import {
   Label,
   buttonVariants,
   toast
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 import { DownloadIcon, ShieldCheckIcon, Trash2Icon } from 'lucide-react'
 import { useState } from 'react'
 

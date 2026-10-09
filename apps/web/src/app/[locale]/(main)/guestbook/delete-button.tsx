@@ -12,7 +12,7 @@ import {
   Button,
   buttonVariants,
   toast
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 
 import { useMessageContext } from '@/contexts/message'
 import { api } from '@/trpc/react'

@@ -1,4 +1,4 @@
-import { Slider, SliderControl, SliderRange, SliderThumb, SliderTrack } from '@isyuricunha/ui'
+import { Slider, SliderControl, SliderRange, SliderThumb, SliderTrack } from '@isyuricunha/yutheme'
 
 const SliderDemo = () => {
   return (

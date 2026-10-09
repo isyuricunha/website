@@ -9,7 +9,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
   Button
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 
 const AlertDialogDemo = () => {
   return (

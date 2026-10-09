@@ -1,4 +1,4 @@
-import { Button } from '@isyuricunha/ui'
+import { Button } from '@isyuricunha/yutheme'
 
 const ButtonDisabledDemo = () => {
   return <Button disabled>Disabled</Button>

@@ -1,7 +1,7 @@
 'use client'
 
 import { X as XIcon, EyeOff as EyeOffIcon } from 'lucide-react'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@isyuricunha/ui'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@isyuricunha/yutheme'
 import { UseMascotStateReturn, MascotPreferences } from '../hooks/use-mascot-state'
 
 type MascotSettingsPanelProps = {

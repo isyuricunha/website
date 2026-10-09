@@ -2,7 +2,7 @@
 
 import { useLocale, useTranslations } from '@isyuricunha/i18n/client'
 import { i18n } from '@isyuricunha/i18n/config'
-import { linkVariants } from '@isyuricunha/ui'
+import { linkVariants } from '@isyuricunha/yutheme'
 
 import Link from '@/components/link'
 import NewsletterSignupCompact from '@/components/newsletter-signup-compact'

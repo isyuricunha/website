@@ -1,4 +1,4 @@
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@isyuricunha/ui'
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@isyuricunha/yutheme'
 
 const ResizableHandleDemo = () => {
   return (

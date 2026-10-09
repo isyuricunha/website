@@ -12,7 +12,7 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 
 const TabsDemo = () => {
   return (

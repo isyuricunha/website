@@ -1,4 +1,4 @@
-import { Button, Input, Label, Popover, PopoverContent, PopoverTrigger } from '@isyuricunha/ui'
+import { Button, Input, Label, Popover, PopoverContent, PopoverTrigger } from '@isyuricunha/yutheme'
 
 const PopoverDemo = () => {
   return (

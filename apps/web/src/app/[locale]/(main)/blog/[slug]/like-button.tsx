@@ -5,7 +5,7 @@
  */
 import NumberFlow, { continuous } from '@number-flow/react'
 import { useTranslations } from '@isyuricunha/i18n/client'
-import { Separator, toast } from '@isyuricunha/ui'
+import { Separator, toast } from '@isyuricunha/yutheme'
 import { motion } from 'motion/react'
 import { useState } from 'react'
 import { useDebouncedCallback } from 'use-debounce'

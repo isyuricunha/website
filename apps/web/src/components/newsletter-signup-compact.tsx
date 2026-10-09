@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useTranslations } from '@isyuricunha/i18n/client'
-import { Input, Button } from '@isyuricunha/ui'
+import { Input, Button } from '@isyuricunha/yutheme'
 import { CheckCircle, AlertCircle, Send } from 'lucide-react'
 
 const NewsletterSignupCompact = () => {

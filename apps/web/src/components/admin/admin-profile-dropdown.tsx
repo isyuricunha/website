@@ -13,7 +13,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
   Skeleton
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 import { LogOut } from 'lucide-react'
 
 import { useSession, signOut } from '@/lib/auth-client'

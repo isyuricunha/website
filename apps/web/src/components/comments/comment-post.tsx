@@ -1,7 +1,7 @@
 'use client'
 
 import { useTranslations } from '@isyuricunha/i18n/client'
-import { Button, toast } from '@isyuricunha/ui'
+import { Button, toast } from '@isyuricunha/yutheme'
 import { SendIcon } from 'lucide-react'
 import { useSyncExternalStore, useState } from 'react'
 

@@ -1,5 +1,5 @@
 import { useTranslations } from '@isyuricunha/i18n/client'
-import { Skeleton } from '@isyuricunha/ui'
+import { Skeleton } from '@isyuricunha/yutheme'
 
 import PageTitle from '@/components/page-title'
 

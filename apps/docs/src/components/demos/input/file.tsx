@@ -1,4 +1,4 @@
-import { Input, Label } from '@isyuricunha/ui'
+import { Input, Label } from '@isyuricunha/yutheme'
 
 const InputFileDemo = () => {
   return (

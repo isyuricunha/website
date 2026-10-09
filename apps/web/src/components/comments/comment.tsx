@@ -3,7 +3,7 @@
 import type { GetInfiniteCommentsOutput } from '@/trpc/routers/comments'
 
 import { useTranslations } from '@isyuricunha/i18n/client'
-import { Skeleton, Tooltip, TooltipContent, TooltipTrigger } from '@isyuricunha/ui'
+import { Skeleton, Tooltip, TooltipContent, TooltipTrigger } from '@isyuricunha/yutheme'
 import { cn } from '@isyuricunha/utils'
 import Image from 'next/image'
 import { useEffect, useMemo, useRef, useState } from 'react'

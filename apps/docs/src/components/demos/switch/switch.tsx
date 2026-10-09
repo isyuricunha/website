@@ -1,4 +1,4 @@
-import { Label, Switch } from '@isyuricunha/ui'
+import { Label, Switch } from '@isyuricunha/yutheme'
 
 const SwitchDemo = () => {
   return (

@@ -1,4 +1,4 @@
-import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from '@isyuricunha/ui'
+import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from '@isyuricunha/yutheme'
 
 const InputOTPSeparatorDemo = () => {
   return (

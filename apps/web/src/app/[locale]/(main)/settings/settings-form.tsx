@@ -16,7 +16,7 @@ import {
   SelectValue,
   Textarea,
   toast
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 import { useMemo, useState } from 'react'
 
 import PrivacyControls from '@/components/account/privacy-controls'

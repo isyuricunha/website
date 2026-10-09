@@ -1,4 +1,4 @@
-import { Link } from '@isyuricunha/ui'
+import { Link } from '@isyuricunha/yutheme'
 
 const LinkMutedDemo = () => {
   return (

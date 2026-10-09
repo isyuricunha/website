@@ -4,7 +4,7 @@ import * as React from 'react'
 import { Component, type ReactNode } from 'react'
 import { env } from '@isyuricunha/env'
 import { useTranslations } from '@isyuricunha/i18n/client'
-import { Button } from '@isyuricunha/ui'
+import { Button } from '@isyuricunha/yutheme'
 import { AlertTriangle, RefreshCw } from 'lucide-react'
 
 interface Props {

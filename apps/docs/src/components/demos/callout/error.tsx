@@ -1,4 +1,4 @@
-import { Callout } from '@isyuricunha/ui'
+import { Callout } from '@isyuricunha/yutheme'
 
 const CalloutErrorDemo = () => {
   return (

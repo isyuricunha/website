@@ -24,7 +24,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
   toast
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 import { useState, useMemo } from 'react'
 import { MoreHorizontalIcon, TrashIcon, Download, Search, X } from 'lucide-react'
 

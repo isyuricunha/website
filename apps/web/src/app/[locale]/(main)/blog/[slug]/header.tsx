@@ -2,7 +2,7 @@
 
 import NumberFlow, { continuous } from '@number-flow/react'
 import { useTranslations } from '@isyuricunha/i18n/client'
-import { BlurImage, Skeleton } from '@isyuricunha/ui'
+import { BlurImage, Skeleton } from '@isyuricunha/yutheme'
 import { useEffect, useRef } from 'react'
 
 import ImageZoom from '@/components/image-zoom'

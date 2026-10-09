@@ -1,4 +1,4 @@
-import { Button } from '@isyuricunha/ui'
+import { Button } from '@isyuricunha/yutheme'
 
 const ButtonSecondaryDemo = () => {
   return <Button variant='secondary'>Secondary</Button>

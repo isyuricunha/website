@@ -1,4 +1,4 @@
-import { Kbd } from '@isyuricunha/ui'
+import { Kbd } from '@isyuricunha/yutheme'
 
 const KbdDemo = () => {
   return (

@@ -1,4 +1,4 @@
-import { Skeleton } from '@isyuricunha/ui'
+import { Skeleton } from '@isyuricunha/yutheme'
 import { cn, range } from '@isyuricunha/utils'
 
 const Placeholder = () => (

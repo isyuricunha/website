@@ -1,6 +1,6 @@
 'use client'
 
-import { getAvatarAbbreviation, Input } from '@isyuricunha/ui'
+import { getAvatarAbbreviation, Input } from '@isyuricunha/yutheme'
 import { useState } from 'react'
 
 const GetAvatarAbbreviationDemo = () => {

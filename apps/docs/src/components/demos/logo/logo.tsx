@@ -1,4 +1,4 @@
-import { Logo } from '@isyuricunha/ui'
+import { Logo } from '@isyuricunha/yutheme'
 
 const LogoDemo = () => {
   return (

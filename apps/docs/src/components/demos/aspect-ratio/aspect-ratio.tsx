@@ -1,4 +1,4 @@
-import { AspectRatio } from '@isyuricunha/ui'
+import { AspectRatio } from '@isyuricunha/yutheme'
 import Image from 'next/image'
 
 const AspectRatioDemo = () => {

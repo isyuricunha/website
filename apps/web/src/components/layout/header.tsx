@@ -2,7 +2,7 @@
 
 import { useTranslations } from '@isyuricunha/i18n/client'
 import { useRouter } from '@isyuricunha/i18n/routing'
-import { Button, Logo } from '@isyuricunha/ui'
+import { Button, Logo } from '@isyuricunha/yutheme'
 import { LayoutDashboard } from 'lucide-react'
 
 import CommandMenu from '@/components/command-menu'

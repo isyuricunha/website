@@ -1,7 +1,7 @@
 'use client'
 
 import { useTranslations } from '@isyuricunha/i18n/client'
-import { DataTableSkeleton } from '@isyuricunha/ui'
+import { DataTableSkeleton } from '@isyuricunha/yutheme'
 
 import AdminPageHeader from '@/components/admin/admin-page-header'
 import UsersTable from '@/components/admin/users-table'

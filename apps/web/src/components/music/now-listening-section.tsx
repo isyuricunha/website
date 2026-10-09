@@ -1,7 +1,7 @@
 'use client'
 
 import { useTranslations } from '@isyuricunha/i18n/client'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@isyuricunha/ui'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@isyuricunha/yutheme'
 import { Music, PlayIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
 

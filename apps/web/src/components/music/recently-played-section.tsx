@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
   Skeleton
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 import { PlayIcon, ClockIcon } from 'lucide-react'
 import { useState, useSyncExternalStore } from 'react'
 

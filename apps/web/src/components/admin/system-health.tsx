@@ -8,7 +8,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 import {
   RefreshCw,
   AlertTriangle,

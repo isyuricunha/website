@@ -9,7 +9,7 @@ import {
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
   DropdownMenuTrigger
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 import { ListFilterIcon } from 'lucide-react'
 
 import { useCommentsContext } from '@/contexts/comments'

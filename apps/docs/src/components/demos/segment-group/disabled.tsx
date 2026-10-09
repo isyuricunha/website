@@ -1,4 +1,4 @@
-import { SegmentGroup, SegmentGroupItem } from '@isyuricunha/ui'
+import { SegmentGroup, SegmentGroupItem } from '@isyuricunha/yutheme'
 
 const frameworks = [
   { label: 'React', value: 'react' },

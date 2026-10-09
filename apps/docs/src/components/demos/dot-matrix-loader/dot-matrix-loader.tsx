@@ -1,4 +1,4 @@
-import { DotMatrixLoader } from '@isyuricunha/ui'
+import { DotMatrixLoader } from '@isyuricunha/yutheme'
 
 const DotMatrixLoaderDemo = () => {
   return (

@@ -12,7 +12,7 @@ import {
   MenubarSubContent,
   MenubarSubTrigger,
   MenubarTrigger
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 
 const MenubarDemo = () => {
   return (

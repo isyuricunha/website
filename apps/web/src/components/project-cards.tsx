@@ -12,7 +12,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 import { SiGithub } from '@icons-pack/react-simple-icons'
 import {
   ExternalLink,

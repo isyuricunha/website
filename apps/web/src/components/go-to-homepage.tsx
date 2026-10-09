@@ -1,7 +1,7 @@
 'use client'
 
 import { useTranslations } from '@isyuricunha/i18n/client'
-import { buttonVariants } from '@isyuricunha/ui'
+import { buttonVariants } from '@isyuricunha/yutheme'
 
 import Link from './link'
 

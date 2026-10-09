@@ -1,6 +1,6 @@
 import type { Auth } from './auth'
 
-import { toast } from '@isyuricunha/ui'
+import { toast } from '@isyuricunha/yutheme'
 import {
   adminClient,
   anonymousClient,

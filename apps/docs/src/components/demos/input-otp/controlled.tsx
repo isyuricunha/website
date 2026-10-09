@@ -1,6 +1,6 @@
 'use client'
 
-import { InputOTP, InputOTPGroup, InputOTPSlot } from '@isyuricunha/ui'
+import { InputOTP, InputOTPGroup, InputOTPSlot } from '@isyuricunha/yutheme'
 import { useState } from 'react'
 
 const InputOTPControlledDemo = () => {

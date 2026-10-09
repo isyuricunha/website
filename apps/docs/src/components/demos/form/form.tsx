@@ -11,7 +11,7 @@ import {
   FormLabel,
   FormMessage,
   Input
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 

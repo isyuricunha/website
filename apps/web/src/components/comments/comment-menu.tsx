@@ -16,7 +16,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
   toast
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 import { MoreVerticalIcon } from 'lucide-react'
 
 import { useCommentContext } from '@/contexts/comment'

@@ -17,7 +17,7 @@ import {
   Skeleton,
   Textarea,
   toast
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 

@@ -1,6 +1,6 @@
 'use client'
 
-import { Card, CardContent, CardHeader, CardTitle } from '@isyuricunha/ui'
+import { Card, CardContent, CardHeader, CardTitle } from '@isyuricunha/yutheme'
 import { useTranslations } from '@isyuricunha/i18n/client'
 import { FileText, Code, TrendingUp, Lightbulb } from 'lucide-react'
 import { motion } from 'motion/react'

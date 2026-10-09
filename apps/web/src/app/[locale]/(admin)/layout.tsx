@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 
 import { redirect } from '@isyuricunha/i18n/routing'
-import { SidebarProvider } from '@isyuricunha/ui'
+import { SidebarProvider } from '@isyuricunha/yutheme'
 
 import AdminBreadcrumb from '@/components/admin/admin-breadcrumb'
 import AdminErrorBoundary from '@/components/admin/admin-error-boundary'

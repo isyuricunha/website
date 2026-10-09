@@ -1,7 +1,7 @@
 'use client'
 
 import { useTranslations } from '@isyuricunha/i18n/client'
-import { Card, CardContent, Input } from '@isyuricunha/ui'
+import { Card, CardContent, Input } from '@isyuricunha/yutheme'
 import { Search, FileText, User, Music, Code, Calendar } from 'lucide-react'
 import { useState, useMemo, useCallback, useEffect } from 'react'
 import { useRouter } from '@isyuricunha/i18n/routing'

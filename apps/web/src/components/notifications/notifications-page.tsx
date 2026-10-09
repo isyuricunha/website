@@ -9,7 +9,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 import { Check, Bell } from 'lucide-react'
 import { useMemo, useState } from 'react'
 

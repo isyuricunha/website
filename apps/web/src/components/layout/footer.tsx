@@ -2,7 +2,7 @@
 
 import { flags } from '@isyuricunha/env'
 import { useFormatter, useTranslations } from '@isyuricunha/i18n/client'
-import { linkVariants } from '@isyuricunha/ui'
+import { linkVariants } from '@isyuricunha/yutheme'
 import { StarIcon } from 'lucide-react'
 import { useMemo } from 'react'
 

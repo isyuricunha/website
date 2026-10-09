@@ -1,6 +1,6 @@
 'use client'
 
-import { Sidebar, SidebarContent, SidebarHeader } from '@isyuricunha/ui'
+import { Sidebar, SidebarContent, SidebarHeader } from '@isyuricunha/yutheme'
 import { useTranslations } from '@isyuricunha/i18n/client'
 
 import { ADMIN_SIDEBAR_LINKS } from '@/config/admin-sidebar-links'

@@ -1,6 +1,6 @@
 'use client'
 
-import { Link } from '@isyuricunha/ui'
+import { Link } from '@isyuricunha/yutheme'
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 

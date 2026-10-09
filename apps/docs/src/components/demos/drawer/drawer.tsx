@@ -10,7 +10,7 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 import { MinusIcon, PlusIcon } from 'lucide-react'
 import { useState } from 'react'
 import { Bar, BarChart, ResponsiveContainer } from 'recharts'

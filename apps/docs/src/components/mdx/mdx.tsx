@@ -1,5 +1,5 @@
 import { MDXContent } from '@content-collections/mdx/react'
-import * as uiComponents from '@isyuricunha/ui'
+import * as uiComponents from '@isyuricunha/yutheme'
 import { cn } from '@isyuricunha/utils'
 
 import ComponentPreview from './component-preview'

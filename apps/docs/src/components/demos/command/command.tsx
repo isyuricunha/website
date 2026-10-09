@@ -10,7 +10,7 @@ import {
   CommandSeparator,
   Kbd,
   Logo
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 import {
   CalculatorIcon,
   CalendarIcon,

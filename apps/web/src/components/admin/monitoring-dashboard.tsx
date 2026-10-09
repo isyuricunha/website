@@ -18,7 +18,7 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 
 import { Activity, AlertTriangle, Zap } from 'lucide-react'
 import { useTranslations } from '@isyuricunha/i18n/client'

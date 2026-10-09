@@ -6,7 +6,7 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 import { range } from '@isyuricunha/utils'
 
 const CarouselDemo = () => {

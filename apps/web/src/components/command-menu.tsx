@@ -20,7 +20,7 @@ import {
   DialogTitle,
   Kbd,
   Logo
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 import {
   CodeIcon,
   CommandIcon,

@@ -1,5 +1,5 @@
 import { useTranslations } from '@isyuricunha/i18n/client'
-import { Card } from '@isyuricunha/ui'
+import { Card } from '@isyuricunha/yutheme'
 import { MessageCircleIcon, PinIcon } from 'lucide-react'
 
 const Pinned = () => {

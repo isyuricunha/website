@@ -13,7 +13,7 @@ import {
   DialogTitle,
   Input,
   toast
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 import { useEffect, useState } from 'react'
 
 import { signIn, signUp } from '@/lib/auth-client'

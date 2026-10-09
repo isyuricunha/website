@@ -7,7 +7,7 @@ import {
   PaginationItem,
   PaginationNextTrigger,
   PaginationPrevTrigger
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 
 const PaginationDemo = () => {
   return (

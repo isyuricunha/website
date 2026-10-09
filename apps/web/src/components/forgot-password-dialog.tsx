@@ -11,7 +11,7 @@ import {
   Input,
   Button,
   toast
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 import { Mail, ArrowLeft, CheckCircle2 } from 'lucide-react'
 
 import { api } from '@/trpc/react'

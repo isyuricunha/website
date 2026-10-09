@@ -3,7 +3,7 @@
 import type { Post } from 'content-collections'
 
 import { useTranslations } from '@isyuricunha/i18n/client'
-import { BlurImage, Badge, Skeleton } from '@isyuricunha/ui'
+import { BlurImage, Badge, Skeleton } from '@isyuricunha/yutheme'
 import { Star } from 'lucide-react'
 
 import { useFormattedDate } from '@/hooks/use-formatted-date'

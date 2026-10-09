@@ -12,7 +12,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   Button
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 
 interface ConfirmationDialogProps {
   open: boolean

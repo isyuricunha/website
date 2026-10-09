@@ -1,4 +1,4 @@
-import { Label, RadioGroup, RadioGroupItem } from '@isyuricunha/ui'
+import { Label, RadioGroup, RadioGroupItem } from '@isyuricunha/yutheme'
 
 const RadioGroupDemo = () => {
   return (

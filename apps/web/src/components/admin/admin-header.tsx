@@ -1,6 +1,6 @@
 'use client'
 
-import { SidebarTrigger } from '@isyuricunha/ui'
+import { SidebarTrigger } from '@isyuricunha/yutheme'
 import { useTranslations } from '@isyuricunha/i18n/client'
 
 import LocaleSwitcher from '../layout/locale-switcher'

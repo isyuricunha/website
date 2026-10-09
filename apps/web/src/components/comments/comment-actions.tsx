@@ -2,7 +2,7 @@ import type { GetInfiniteCommentsInput } from '@/trpc/routers/comments'
 
 import NumberFlow, { continuous } from '@number-flow/react'
 import { useTranslations } from '@isyuricunha/i18n/client'
-import { Button, buttonVariants, toast } from '@isyuricunha/ui'
+import { Button, buttonVariants, toast } from '@isyuricunha/yutheme'
 import { cn } from '@isyuricunha/utils'
 import { cva } from 'class-variance-authority'
 import { ChevronDownIcon, MessageSquareIcon, ThumbsDownIcon, ThumbsUpIcon } from 'lucide-react'
