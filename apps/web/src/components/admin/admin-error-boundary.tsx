@@ -3,7 +3,14 @@
 import * as React from 'react'
 import { useTranslations } from '@isyuricunha/i18n/client'
 import { AlertTriangle, RefreshCw } from 'lucide-react'
-import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle } from '@isyuricunha/yutheme'
+import {
+  Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from '@isyuricunha/yutheme'
 import ErrorBoundary from '../ui/error-boundary'
 
 interface AdminErrorBoundaryProps {

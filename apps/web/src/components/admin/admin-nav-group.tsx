@@ -1,7 +1,12 @@
 import type { SidebarGroup as SidebarGroupConfig } from '@/config/admin-sidebar-links'
 
 import { useTranslations } from '@isyuricunha/i18n/client'
-import { SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu } from '@isyuricunha/yutheme'
+import {
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarMenu
+} from '@isyuricunha/yutheme'
 
 import AdminNavLink from './admin-nav-link'
 

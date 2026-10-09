@@ -2,7 +2,13 @@ import type { Metadata, ResolvingMetadata } from 'next'
 
 import { i18n } from '@isyuricunha/i18n/config'
 import { getTranslations, setRequestLocale } from '@isyuricunha/i18n/server'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@isyuricunha/yutheme/server'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from '@isyuricunha/yutheme/server'
 import { Mail, User } from 'lucide-react'
 import { SiGithub, SiX } from '@icons-pack/react-simple-icons'
 
