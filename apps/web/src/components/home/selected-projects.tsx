@@ -1,7 +1,7 @@
 'use client'
 
 import { useLocale, useTranslations } from '@isyuricunha/i18n/client'
-import { BlurImage } from '@isyuricunha/ui'
+import { BlurImage } from '@isyuricunha/yutheme'
 import { allProjects, type Project } from 'content-collections'
 import { ArrowUpRightIcon } from 'lucide-react'
 import { motion, useInView } from 'motion/react'

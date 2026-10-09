@@ -1,6 +1,6 @@
 'use client'
 
-import { Progress, ProgressRange, ProgressTrack, ProgressValueText } from '@isyuricunha/ui'
+import { Progress, ProgressRange, ProgressTrack, ProgressValueText } from '@isyuricunha/yutheme'
 import { useEffect, useState } from 'react'
 
 const ProgressDemo = () => {

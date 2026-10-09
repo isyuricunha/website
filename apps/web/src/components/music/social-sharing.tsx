@@ -1,7 +1,7 @@
 'use client'
 
 import { useTranslations } from '@isyuricunha/i18n/client'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@isyuricunha/ui'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@isyuricunha/yutheme'
 import { SiX, SiFacebook } from '@icons-pack/react-simple-icons'
 import { Share2, Copy, ExternalLink } from 'lucide-react'
 import { useState } from 'react'

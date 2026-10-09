@@ -21,7 +21,7 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 
 import { Database, Download, Upload, CheckCircle, AlertCircle, Clock } from 'lucide-react'
 import { useTranslations } from '@isyuricunha/i18n/client'

@@ -23,7 +23,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 
 type User = GetUsersOutput['users'][number]
 

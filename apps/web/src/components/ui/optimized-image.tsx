@@ -1,6 +1,6 @@
 'use client'
 
-import { BlurImage } from '@isyuricunha/ui'
+import { BlurImage } from '@isyuricunha/yutheme'
 import { useState, useCallback } from 'react'
 import { getOptimizedImageProps } from '@/lib/performance'
 

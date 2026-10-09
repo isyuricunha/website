@@ -2,7 +2,7 @@ import type { SidebarLink } from '@/config/admin-sidebar-links'
 
 import { useTranslations } from '@isyuricunha/i18n/client'
 import { usePathname } from '@isyuricunha/i18n/routing'
-import { SidebarMenuButton, SidebarMenuItem } from '@isyuricunha/ui'
+import { SidebarMenuButton, SidebarMenuItem } from '@isyuricunha/yutheme'
 
 import Link from '../link'
 

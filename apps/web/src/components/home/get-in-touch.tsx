@@ -1,7 +1,7 @@
 'use client'
 
 import { useTranslations } from '@isyuricunha/i18n/client'
-import { BlurImage } from '@isyuricunha/ui'
+import { BlurImage } from '@isyuricunha/yutheme'
 import { motion, useInView } from 'motion/react'
 import { useRef } from 'react'
 

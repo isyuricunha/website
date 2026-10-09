@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-import { Badge } from '@isyuricunha/ui'
+import { Badge } from '@isyuricunha/yutheme'
 import { getLocale, getTranslations } from '@isyuricunha/i18n/server'
 import { Clock, ExternalLink, Globe, Tag } from 'lucide-react'
 import { SiGithub } from '@icons-pack/react-simple-icons'

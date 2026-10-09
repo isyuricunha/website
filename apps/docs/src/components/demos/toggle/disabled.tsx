@@ -1,4 +1,4 @@
-import { Toggle } from '@isyuricunha/ui'
+import { Toggle } from '@isyuricunha/yutheme'
 import { UnderlineIcon } from 'lucide-react'
 
 const ToggleDisabledDemo = () => {

@@ -9,7 +9,7 @@ import {
   SheetTitle,
   SheetTrigger,
   VisuallyHidden
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 import { MenuIcon } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'

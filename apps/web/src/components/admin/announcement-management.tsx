@@ -34,7 +34,7 @@ import {
   DialogTitle,
   DialogTrigger,
   ScrollArea
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 
 import {
   Megaphone,

@@ -12,7 +12,7 @@ import {
   ContextMenuSubContent,
   ContextMenuSubTrigger,
   ContextMenuTrigger
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 
 const ContextMenuDemo = () => {
   return (

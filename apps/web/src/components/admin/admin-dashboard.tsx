@@ -22,7 +22,7 @@ import {
   Badge,
   Separator,
   Progress
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 import { useTranslations } from '@isyuricunha/i18n/client'
 import { toast } from 'sonner'
 import { useState } from 'react'

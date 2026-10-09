@@ -10,7 +10,7 @@ import {
   CardTitle,
   Badge,
   ScrollArea
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 import { useLocale, useTranslations } from '@isyuricunha/i18n/client'
 
 import { api } from '@/trpc/react'

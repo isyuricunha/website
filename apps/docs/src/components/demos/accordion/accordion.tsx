@@ -1,4 +1,4 @@
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@isyuricunha/ui'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@isyuricunha/yutheme'
 
 const AccordionDemo = () => {
   return (

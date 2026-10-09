@@ -11,7 +11,7 @@ import {
   SidebarMenuItem,
   SidebarProvider,
   SidebarTrigger
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 import { CalendarIcon, HomeIcon, InboxIcon, SearchIcon, SettingsIcon } from 'lucide-react'
 
 import TeamSwitcher from './components/team-switcher'

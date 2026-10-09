@@ -1,4 +1,4 @@
-import { Logo as HongLogo } from '@isyuricunha/ui'
+import { Logo as HongLogo } from '@isyuricunha/yutheme'
 
 const Logo = () => {
   return (

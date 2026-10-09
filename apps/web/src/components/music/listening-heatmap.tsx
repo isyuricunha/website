@@ -9,7 +9,7 @@ import {
   CardHeader,
   CardTitle,
   Skeleton
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 import { api } from '@/trpc/react'
 
 // Day keys for i18n lookups (Sun..Sat)

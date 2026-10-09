@@ -9,7 +9,7 @@ import {
   DialogTrigger,
   Input,
   Label
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 
 const DialogDemo = () => {
   return (

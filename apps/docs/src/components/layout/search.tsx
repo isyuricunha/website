@@ -13,7 +13,7 @@ import {
   CommandSeparator,
   Kbd,
   Logo
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 import { cn } from '@isyuricunha/utils'
 import { ComponentIcon, SearchIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'

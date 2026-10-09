@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@isyuricunha/ui'
+import { Avatar, AvatarFallback, AvatarImage } from '@isyuricunha/yutheme'
 
 const AvatarDemo = () => {
   return (

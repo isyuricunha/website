@@ -9,7 +9,7 @@ import {
   CardHeader,
   CardTitle,
   buttonVariants
-} from '@isyuricunha/ui/server'
+} from '@isyuricunha/yutheme/server'
 import { ArrowRight, FileText, Code, FolderGit2 } from 'lucide-react'
 import { allPosts, allProjects, allSnippets } from 'content-collections'
 

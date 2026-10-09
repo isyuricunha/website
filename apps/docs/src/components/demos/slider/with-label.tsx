@@ -5,7 +5,7 @@ import {
   SliderRange,
   SliderThumb,
   SliderTrack
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 
 const SliderWithLabelDemo = () => {
   return (

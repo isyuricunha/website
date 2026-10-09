@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
   Skeleton
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 import { Clock, Calendar, TrendingUp, Music } from 'lucide-react'
 import { useState, useMemo, useSyncExternalStore } from 'react'
 

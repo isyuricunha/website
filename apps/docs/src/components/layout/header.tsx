@@ -1,4 +1,4 @@
-import { Link } from '@isyuricunha/ui'
+import { Link } from '@isyuricunha/yutheme'
 
 import { HEADER_LINKS } from '@/config/links'
 

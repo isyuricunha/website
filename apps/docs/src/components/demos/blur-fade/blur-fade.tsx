@@ -1,4 +1,4 @@
-import { BlurFade } from '@isyuricunha/ui'
+import { BlurFade } from '@isyuricunha/yutheme'
 
 const BlurFadeDemo = () => {
   return (

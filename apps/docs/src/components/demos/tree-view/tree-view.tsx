@@ -1,6 +1,6 @@
 'use client'
 
-import { createTreeCollection, type Node, TreeView } from '@isyuricunha/ui'
+import { createTreeCollection, type Node, TreeView } from '@isyuricunha/yutheme'
 
 const collection = createTreeCollection<Node>({
   nodeToValue: (node) => node.id,

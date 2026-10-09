@@ -2,7 +2,7 @@
 
 import { useTranslations } from '@isyuricunha/i18n/client'
 import { usePathname } from '@isyuricunha/i18n/routing'
-import { Button, Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@isyuricunha/ui'
+import { Button, Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@isyuricunha/yutheme'
 import { cn } from '@isyuricunha/utils'
 import { MenuIcon } from 'lucide-react'
 import { motion } from 'motion/react'

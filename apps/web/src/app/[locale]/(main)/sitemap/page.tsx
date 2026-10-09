@@ -2,7 +2,7 @@ import type { Metadata, ResolvingMetadata } from 'next'
 
 import { i18n } from '@isyuricunha/i18n/config'
 import { getTranslations, setRequestLocale } from '@isyuricunha/i18n/server'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@isyuricunha/ui/server'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@isyuricunha/yutheme/server'
 import {
   FileText,
   Code,

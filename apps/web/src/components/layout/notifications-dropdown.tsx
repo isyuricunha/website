@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger,
   ScrollArea,
   Badge
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 import { Bell, Check } from 'lucide-react'
 import { useState } from 'react'
 

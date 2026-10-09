@@ -38,8 +38,8 @@ vi.mock('@/hooks/use-formatted-date', () => ({
   useFormattedDate: vi.fn(() => 'Jan 1, 2026')
 }))
 
-vi.mock('@isyuricunha/ui', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('@isyuricunha/ui')>()
+vi.mock('@isyuricunha/yutheme', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@isyuricunha/yutheme')>()
 
   const FakeBlurImage = (props: { alt?: string }) => {
     const React = require('react') as typeof import('react')

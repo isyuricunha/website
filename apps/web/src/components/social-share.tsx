@@ -7,7 +7,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 
 import { SiX, SiFacebook, SiReddit, SiWhatsapp } from '@icons-pack/react-simple-icons'
 import { Share2, Link, Check } from 'lucide-react'

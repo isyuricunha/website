@@ -29,7 +29,7 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 
 import MarkdownToJSX from 'markdown-to-jsx'
 import {

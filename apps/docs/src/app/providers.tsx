@@ -1,6 +1,6 @@
 'use client'
 
-import { Toaster } from '@isyuricunha/ui'
+import { Toaster } from '@isyuricunha/yutheme'
 
 type ProvidesProps = {
   children: React.ReactNode

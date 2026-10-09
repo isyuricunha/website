@@ -11,7 +11,7 @@ import {
   CardTitle,
   Input,
   Label
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 
 // Simple parser for Spotify extended streaming history JSON files (array of plays)
 // This runs entirely client-side; no upload.

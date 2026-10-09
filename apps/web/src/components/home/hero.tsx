@@ -1,7 +1,7 @@
 'use client'
 
 import { useLocale, useTranslations } from '@isyuricunha/i18n/client'
-import { BlurImage } from '@isyuricunha/ui'
+import { BlurImage } from '@isyuricunha/yutheme'
 import { motion } from 'motion/react'
 
 import Link from '../link'

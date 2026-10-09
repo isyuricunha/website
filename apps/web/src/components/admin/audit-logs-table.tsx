@@ -19,7 +19,7 @@ import {
   type DataTableFilterField,
   DataTableToolbar,
   Input
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 import { Search, X } from 'lucide-react'
 import { useMemo } from 'react'
 

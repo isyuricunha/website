@@ -1,6 +1,6 @@
 'use client'
 
-import { Link, ScrollArea } from '@isyuricunha/ui'
+import { Link, ScrollArea } from '@isyuricunha/yutheme'
 import { cva } from 'class-variance-authority'
 import { usePathname } from 'next/navigation'
 

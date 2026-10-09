@@ -11,7 +11,7 @@ import {
   CardTitle,
   Input,
   Button
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 import { Mail, Send, CheckCircle, AlertCircle } from 'lucide-react'
 import { useRef, useState } from 'react'
 

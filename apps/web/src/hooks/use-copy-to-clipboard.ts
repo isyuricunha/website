@@ -1,5 +1,5 @@
 import { useTranslations } from '@isyuricunha/i18n/client'
-import { toast } from '@isyuricunha/ui'
+import { toast } from '@isyuricunha/yutheme'
 import { useState } from 'react'
 
 type CopyOptions = {

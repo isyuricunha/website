@@ -13,7 +13,7 @@ import {
   Input,
   Label,
   ScrollArea
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 import { cn } from '@isyuricunha/utils'
 import {
   CheckIcon,

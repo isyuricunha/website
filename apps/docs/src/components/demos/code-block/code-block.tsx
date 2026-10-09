@@ -1,4 +1,4 @@
-import { CodeBlock } from '@isyuricunha/ui'
+import { CodeBlock } from '@isyuricunha/yutheme'
 
 const CodeBlockDemo = () => {
   return (

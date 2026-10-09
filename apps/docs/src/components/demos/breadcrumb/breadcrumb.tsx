@@ -10,7 +10,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 
 const BreadcrumbDemo = () => {
   return (

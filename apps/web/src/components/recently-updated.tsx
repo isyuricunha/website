@@ -1,7 +1,7 @@
 'use client'
 
 import { useLocale, useTranslations } from '@isyuricunha/i18n/client'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@isyuricunha/ui'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@isyuricunha/yutheme'
 import { Clock, FileText, Code, Calendar } from 'lucide-react'
 import { useMemo } from 'react'
 import type { ReactNode } from 'react'

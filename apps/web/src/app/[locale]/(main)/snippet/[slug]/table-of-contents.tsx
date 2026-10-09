@@ -4,7 +4,7 @@ import type { TOC } from '@isyuricunha/mdx-plugins'
 
 import { useTranslations } from '@isyuricunha/i18n/client'
 import { useRouter } from '@isyuricunha/i18n/routing'
-import { SegmentGroup, SegmentGroupItem } from '@isyuricunha/ui'
+import { SegmentGroup, SegmentGroupItem } from '@isyuricunha/yutheme'
 
 import { useScrollspy } from '@/hooks/use-scrollspy'
 

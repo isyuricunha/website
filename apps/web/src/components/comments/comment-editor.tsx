@@ -1,5 +1,5 @@
 import { useTranslations } from '@isyuricunha/i18n/client'
-import { Button, Textarea } from '@isyuricunha/ui'
+import { Button, Textarea } from '@isyuricunha/yutheme'
 import { cn } from '@isyuricunha/utils'
 import { BoldIcon, ItalicIcon, StrikethroughIcon } from 'lucide-react'
 import { useEffect, useId, useRef } from 'react'

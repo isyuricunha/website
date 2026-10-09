@@ -9,7 +9,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
   navigationMenuTriggerVariants
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 import { cn } from '@isyuricunha/utils'
 import Link from 'next/link'
 

@@ -4,7 +4,7 @@ import type { GetInfiniteMessagesOutput } from '@/trpc/routers/guestbook'
 
 import { keepPreviousData } from '@tanstack/react-query'
 import { useTranslations } from '@isyuricunha/i18n/client'
-import { Avatar, AvatarFallback, AvatarImage, Skeleton } from '@isyuricunha/ui'
+import { Avatar, AvatarFallback, AvatarImage, Skeleton } from '@isyuricunha/yutheme'
 import { MessageCircle } from 'lucide-react'
 import { motion } from 'motion/react'
 import { useEffect, useMemo } from 'react'

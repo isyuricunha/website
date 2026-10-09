@@ -24,7 +24,7 @@ import {
   DropdownMenuTrigger,
   Input,
   toast
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 import {
   BanIcon,
   Download,

@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
   Skeleton
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 import { UserIcon, Grid3X3, List, Shuffle } from 'lucide-react'
 import { useState, useMemo, useSyncExternalStore } from 'react'
 

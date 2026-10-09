@@ -12,7 +12,7 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 import {
   CloudIcon,
   CreditCardIcon,

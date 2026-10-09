@@ -1,4 +1,4 @@
-import { Button } from '@isyuricunha/ui'
+import { Button } from '@isyuricunha/yutheme'
 import { CopyIcon } from 'lucide-react'
 
 const ButtonIconDemo = () => {

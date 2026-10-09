@@ -1,4 +1,4 @@
-import { BlurImage } from '@isyuricunha/ui'
+import { BlurImage } from '@isyuricunha/yutheme'
 
 const BlurImageDemo = () => {
   return (

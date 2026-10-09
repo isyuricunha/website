@@ -108,8 +108,8 @@ vi.mock('next/navigation', () => {
 })
 // eslint-enable react-hooks/rules-of-hooks
 
-vi.mock('@isyuricunha/ui', async (importOriginal) => {
-  const mod = await importOriginal<typeof import('@isyuricunha/ui')>()
+vi.mock('@isyuricunha/yutheme', async (importOriginal) => {
+  const mod = await importOriginal<typeof import('@isyuricunha/yutheme')>()
 
   return {
     ...mod,

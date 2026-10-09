@@ -25,7 +25,7 @@ import {
   DialogTitle,
   DialogTrigger,
   ScrollArea
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 
 import { Bell, Plus, Check, X, Clock, User, BarChart3 } from 'lucide-react'
 import { useTranslations } from '@isyuricunha/i18n/client'

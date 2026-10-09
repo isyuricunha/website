@@ -12,7 +12,7 @@ import {
   Input,
   Button,
   Textarea
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 import { Send, MessageSquare, Loader2, CheckCircle, AlertCircle } from 'lucide-react'
 import { Turnstile } from '@marsidev/react-turnstile'
 

@@ -1,6 +1,6 @@
 'use client'
 
-import { createTreeCollection, type Node, TreeView as UITreeView } from '@isyuricunha/ui'
+import { createTreeCollection, type Node, TreeView as UITreeView } from '@isyuricunha/yutheme'
 
 type TreeViewProps = { collection: Node } & Omit<
   React.ComponentProps<typeof UITreeView>,

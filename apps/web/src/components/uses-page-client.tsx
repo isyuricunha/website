@@ -12,7 +12,7 @@ import {
   Monitor,
   Smartphone
 } from 'lucide-react'
-import { Badge } from '@isyuricunha/ui'
+import { Badge } from '@isyuricunha/yutheme'
 import { useTranslations } from '@isyuricunha/i18n/client'
 import Image from 'next/image'
 

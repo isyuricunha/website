@@ -10,7 +10,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 
 const SheetDemo = () => {
   return (

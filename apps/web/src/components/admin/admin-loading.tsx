@@ -1,7 +1,7 @@
 'use client'
 
 import { useTranslations } from '@isyuricunha/i18n/client'
-import { Card, CardContent, CardHeader, Skeleton, Badge } from '@isyuricunha/ui'
+import { Card, CardContent, CardHeader, Skeleton, Badge } from '@isyuricunha/yutheme'
 import { Activity, RefreshCw } from 'lucide-react'
 
 const AdminLoading = () => {

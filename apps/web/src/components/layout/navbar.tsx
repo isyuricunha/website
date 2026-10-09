@@ -8,7 +8,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 import { cn } from '@isyuricunha/utils'
 import { MenuIcon } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState } from 'react'

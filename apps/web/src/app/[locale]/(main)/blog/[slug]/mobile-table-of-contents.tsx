@@ -4,7 +4,7 @@ import type { TOC } from '@isyuricunha/mdx-plugins'
 
 import { useTranslations } from '@isyuricunha/i18n/client'
 import { useRouter } from '@isyuricunha/i18n/routing'
-import { Button, Popover, PopoverContent, PopoverTrigger } from '@isyuricunha/ui'
+import { Button, Popover, PopoverContent, PopoverTrigger } from '@isyuricunha/yutheme'
 import { AlignLeftIcon } from 'lucide-react'
 import { useState } from 'react'
 

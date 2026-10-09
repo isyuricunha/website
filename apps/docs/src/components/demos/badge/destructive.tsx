@@ -1,4 +1,4 @@
-import { Badge } from '@isyuricunha/ui'
+import { Badge } from '@isyuricunha/yutheme'
 
 const BadgeDestructiveDemo = () => {
   return <Badge variant='destructive'>Badge</Badge>

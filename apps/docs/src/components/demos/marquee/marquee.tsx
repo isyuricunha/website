@@ -1,4 +1,4 @@
-import { Marquee } from '@isyuricunha/ui'
+import { Marquee } from '@isyuricunha/yutheme'
 import Image from 'next/image'
 
 const reviews = [

@@ -1,4 +1,4 @@
-import { Separator } from '@isyuricunha/ui'
+import { Separator } from '@isyuricunha/yutheme'
 
 const SeparatorDemo = () => {
   return (

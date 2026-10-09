@@ -7,7 +7,7 @@ import {
   TableHead,
   TableHeader,
   TableRow
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 
 const invoices = [
   {

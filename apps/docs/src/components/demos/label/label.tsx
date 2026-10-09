@@ -1,4 +1,4 @@
-import { Checkbox, Label } from '@isyuricunha/ui'
+import { Checkbox, Label } from '@isyuricunha/yutheme'
 
 const LabelDemo = () => {
   return (

@@ -1,4 +1,4 @@
-import { ToggleGroup, ToggleGroupItem } from '@isyuricunha/ui'
+import { ToggleGroup, ToggleGroupItem } from '@isyuricunha/yutheme'
 import { BoldIcon, ItalicIcon, UnderlineIcon } from 'lucide-react'
 
 const ToggleGroupDisabledDemo = () => {

@@ -3,7 +3,7 @@ import {
   InputOTPGroup,
   InputOTPSlot,
   REGEXP_ONLY_DIGITS_AND_CHARS
-} from '@isyuricunha/ui'
+} from '@isyuricunha/yutheme'
 
 const InputOTPPatternDemo = () => {
   return (
