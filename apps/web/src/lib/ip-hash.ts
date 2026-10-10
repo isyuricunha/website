@@ -3,6 +3,7 @@ import { createHash } from 'node:crypto'
 import { env } from '@isyuricunha/env'
 
 import { logger } from '@/lib/logger'
+import { is_placeholder_secret } from '@/lib/secrets'
 
 /**
  * Salt used for one-way hashing of IP addresses before they are stored in
@@ -32,11 +33,19 @@ export const hashIpForAnalytics = (ip: string | null | undefined): string | null
   if (!ip) return null
 
   const is_production = env.NODE_ENV === 'production'
-  const salt = env.ANALYTICS_IP_HASH_SALT ?? (is_production ? null : DEV_FALLBACK_SALT)
+  const configured = env.ANALYTICS_IP_HASH_SALT
+  // A publicly-known placeholder salt makes hashes trivially reversible, so
+  // in production it is treated exactly like a missing salt (fail closed).
+  let salt: string | null = null
+  if (configured && !(is_production && is_placeholder_secret(configured))) {
+    salt = configured
+  } else if (!is_production) {
+    salt = DEV_FALLBACK_SALT
+  }
 
   if (!salt) {
     logger.warn(
-      'ANALYTICS_IP_HASH_SALT is not set in production: analytics IP hashing is disabled.'
+      'ANALYTICS_IP_HASH_SALT is not set (or is still the documented placeholder) in production: analytics IP hashing is disabled.'
     )
     return null
   }

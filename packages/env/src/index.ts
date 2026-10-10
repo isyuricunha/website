@@ -74,21 +74,8 @@ export const env = createEnv({
     R2_PUBLIC_BASE_URL: z.string().url().optional(),
 
     REACT_SCAN_MONITOR_API_KEY: z.string().optional(),
-    CRON_SECRET: z
-      .string()
-      .min(16)
-      .refine((value) => !value.toLowerCase().includes('change-me'), {
-        message: 'CRON_SECRET is still the documented placeholder: generate a real secret.'
-      })
-      .optional(),
-    ANALYTICS_IP_HASH_SALT: z
-      .string()
-      .min(16)
-      .refine((value) => !value.toLowerCase().includes('change-me'), {
-        message:
-          'ANALYTICS_IP_HASH_SALT is still the documented placeholder: generate a real secret.'
-      })
-      .optional()
+    CRON_SECRET: z.string().min(16).optional(),
+    ANALYTICS_IP_HASH_SALT: z.string().min(16).optional()
   },
   client: {
     ...(flags.analytics && {

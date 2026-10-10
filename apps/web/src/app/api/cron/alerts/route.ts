@@ -18,6 +18,7 @@ import {
 import { redis } from '@isyuricunha/kv'
 
 import { logger } from '@/lib/logger'
+import { is_placeholder_secret } from '@/lib/secrets'
 
 export const runtime = 'nodejs'
 
@@ -171,7 +172,13 @@ export async function GET(request: NextRequest) {
     const cron_secret = process.env.CRON_SECRET
     const auth_header = request.headers.get('authorization')
 
-    if (!cron_secret || auth_header !== `Bearer ${cron_secret}`) {
+    // A publicly-known placeholder secret authenticates everyone, so it is
+    // treated exactly like a missing secret (fail closed).
+    if (
+      !cron_secret ||
+      is_placeholder_secret(cron_secret) ||
+      auth_header !== `Bearer ${cron_secret}`
+    ) {
       return new Response('Unauthorized', { status: 401 })
     }
 

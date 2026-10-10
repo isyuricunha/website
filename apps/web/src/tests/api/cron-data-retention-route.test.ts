@@ -129,6 +129,26 @@ describe('/api/cron/data-retention', () => {
     expect(res.status).toBe(401)
   })
 
+  it('returns 401 when CRON_SECRET is the documented placeholder', async () => {
+    process.env.CRON_SECRET = 'change-me-to-a-random-string-with-at-least-16-chars'
+
+    const db = createDbMock()
+    const redis = createRedisMock()
+
+    vi.doMock('@isyuricunha/db', () => createDbModuleMock(db))
+    vi.doMock('@isyuricunha/kv', () => ({ redis }))
+
+    const { GET } = await import('@/app/api/cron/data-retention/route')
+
+    const res = await GET({
+      headers: new Headers([
+        ['authorization', 'Bearer change-me-to-a-random-string-with-at-least-16-chars']
+      ])
+    } as unknown as Parameters<typeof GET>[0])
+
+    expect(res.status).toBe(401)
+  })
+
   it('returns 401 when Authorization header is invalid', async () => {
     process.env.CRON_SECRET = '0123456789abcdef'
 
