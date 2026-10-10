@@ -112,6 +112,7 @@ overrides:
   '@types/hast': ^3.0.5
   shell-quote: '>=1.11.0'
   esbuild: '>=0.28.1'
+  postcss-selector-parser: '>=7.1.6'
 
 packageExtensionsChecksum: sha256-LjAhMTi/grSbp0LvXYR/zjN1ObmuxmPaGZGhU7pkQZQ=
 
@@ -8094,8 +8095,8 @@ packages:
       yaml:
         optional: true
 
-  postcss-selector-parser@6.0.10:
-    resolution: {integrity: sha512-IQ7TZdoaqbT+LCpShg46jnZVlhWD2w6iQYAcYXfHARZ7X1t/UGhhceQDs5X0cGqKvYlHNOuv7Oa1xmb0oQuA3w==}
+  postcss-selector-parser@7.1.6:
+    resolution: {integrity: sha512-7qASPzhKF2l2KLboRZux8CCTRMdGiV08vWmyKzPz22qZ7ZjQBOeY7rNzNoCLSUiftJ7HUq0GERHmxw/t0dCdMw==}
     engines: {node: '>=4'}
 
   postcss@8.5.23:
@@ -12733,7 +12734,7 @@ snapshots:
 
   '@tailwindcss/typography@0.5.20(tailwindcss@4.3.3)':
     dependencies:
-      postcss-selector-parser: 6.0.10
+      postcss-selector-parser: 7.1.6
       tailwindcss: 4.3.3
 
   '@tanstack/match-sorter-utils@9.2.6':
@@ -16911,7 +16912,7 @@ snapshots:
       tsx: 4.23.15
       yaml: 2.9.1
 
-  postcss-selector-parser@6.0.10:
+  postcss-selector-parser@7.1.6:
     dependencies:
       cssesc: 3.0.0
       util-deprecate: 1.0.2

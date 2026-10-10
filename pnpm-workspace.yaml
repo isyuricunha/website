@@ -19,6 +19,7 @@ overrides:
   '@types/hast': ^3.0.5
   shell-quote: '>=1.11.0'
   esbuild: '>=0.28.1'
+  postcss-selector-parser: '>=7.1.6'
 audit:
   ignore:
     - GHSA-vfj7-8cjw-p6xm

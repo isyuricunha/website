@@ -83,6 +83,7 @@
       "outputs": [".next/**", "!.next/cache/**", "!.next/dev/**", ".content-collections/**"]
     },
     "build:mdx": {
+      "dependsOn": ["^build"],
       "outputs": [".content-collections/**"]
     },
     "build:packages": {
