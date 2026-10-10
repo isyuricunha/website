@@ -31,7 +31,7 @@ runs:
 
     - name: Install dependencies
       shell: bash
-      run: pnpm install
+      run: pnpm install --frozen-lockfile
 
     - name: Create environment variables file
       shell: bash
@@ -46,6 +46,5 @@ runs:
         NEXT_PUBLIC_FLAG_COMMENT=true
         NEXT_PUBLIC_FLAG_AUTH=true
         NEXT_PUBLIC_FLAG_STATS=true
-        NEXT_PUBLIC_FLAG_SPOTIFY=true
         NEXT_PUBLIC_FLAG_LIKE_BUTTON=true
         EOF

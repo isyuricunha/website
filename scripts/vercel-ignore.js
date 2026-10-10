@@ -27,6 +27,17 @@ function commitExists(rev) {
   }
 }
 
+function isAncestor(base, head) {
+  try {
+    execFileSync('git', ['merge-base', '--is-ancestor', base, head], {
+      stdio: ['ignore', 'ignore', 'ignore']
+    })
+    return true
+  } catch {
+    return false
+  }
+}
+
 function getChangedFiles(base, head) {
   try {
     const output = execFileSync('git', ['diff', '--name-only', base, head], {
@@ -80,6 +91,14 @@ function main() {
 
   if (!commitExists(base) || !commitExists(head)) {
     console.log('vercel-ignore: base/head sha not available in this clone; proceeding with build')
+    process.exitCode = 1
+    return
+  }
+
+  if (!isAncestor(base, head)) {
+    console.log(
+      'vercel-ignore: base sha is not an ancestor of head (interleaved branch deploy); proceeding with build'
+    )
     process.exitCode = 1
     return
   }

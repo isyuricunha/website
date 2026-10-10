@@ -52,6 +52,12 @@
     "MISTRAL_API_KEY",
     "MISTRAL_AGENT_ID",
     "MISTRAL_BASE_URL",
+    "R2_ACCOUNT_ID",
+    "R2_ACCESS_KEY_ID",
+    "R2_SECRET_ACCESS_KEY",
+    "R2_BUCKET_NAME",
+    "R2_ENDPOINT",
+    "R2_PUBLIC_BASE_URL",
     "OPENAI_COMPATIBLE_API_KEY",
     "OPENAI_COMPATIBLE_BASE_URL",
     "OPENAI_COMPATIBLE_MAX_RETRIES",
@@ -62,7 +68,7 @@
   ],
   "tasks": {
     "build": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["^build", "build:mdx"],
       "outputs": [
         ".next/**",
         "!.next/cache/**",

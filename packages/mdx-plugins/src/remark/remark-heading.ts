@@ -25,12 +25,34 @@ export const remarkHeading: Plugin<[], Root> = () => {
       node.data ??= { hProperties: {} }
       node.data.hProperties ??= {}
 
-      const childNode = node.children[0]
+      // Collect text from the whole heading (emphasis, strong, inline code,
+      // links, …), not just a leading plain-text child: headings like
+      // `## _Select Query_` otherwise get no id and vanish from the TOC.
+      const text = node.children
+        .map((child) => {
+          if (child.type === 'text' || child.type === 'inlineCode') return child.value
+          if (
+            child.type === 'emphasis' ||
+            child.type === 'strong' ||
+            child.type === 'delete' ||
+            child.type === 'link'
+          ) {
+            return child.children
+              .map((grandchild) =>
+                grandchild.type === 'text' || grandchild.type === 'inlineCode'
+                  ? grandchild.value
+                  : ''
+              )
+              .join('')
+          }
+          return ''
+        })
+        .join('')
+        .trim()
 
-      if (childNode?.type !== 'text') return
+      if (!text) return
 
-      const text = childNode.value
-      const id = slugger.slug(childNode.value)
+      const id = slugger.slug(text)
 
       node.data.hProperties.id = id
 

@@ -21,9 +21,14 @@ const infiniteMessagesQuerySchema = z.object({
 })
 
 const messageCreateSchema = z.object({
-  message: z.string().min(1, {
-    message: 'Message is required'
-  })
+  message: z
+    .string()
+    .min(1, {
+      message: 'Message is required'
+    })
+    .max(1000, {
+      message: 'Message must be at most 1000 characters'
+    })
 })
 
 const messageIdSchema = z.object({

@@ -51,9 +51,20 @@ const posts = defineCollection({
   transform: async (document, context) => {
     const baseTransform = await transform(document, context)
 
-    // Calculate reading time (average 200 words per minute)
-    const wordCount = document.content.split(/\s+/).length
-    const readingTime = Math.ceil(wordCount / 200)
+    // Calculate reading time: Latin scripts average ~200 wpm, CJK scripts
+    // have no whitespace boundaries so whitespace counting collapses a whole
+    // article into a handful of "words". Count CJK characters separately at
+    // ~500 cpm and combine.
+    const cjkCount = (
+      document.content.match(
+        /[\u{3040}-\u{30FF}\u{3400}-\u{4DBF}\u{4E00}-\u{9FFF}\u{F900}-\u{FAFF}]/gu
+      ) ?? []
+    ).length
+    const latinWords = document.content
+      .replace(/[\u{3040}-\u{30FF}\u{3400}-\u{4DBF}\u{4E00}-\u{9FFF}\u{F900}-\u{FAFF}]/gu, ' ')
+      .split(/\s+/)
+      .filter(Boolean).length
+    const readingTime = Math.max(1, Math.ceil(latinWords / 200 + cjkCount / 500))
 
     return {
       ...baseTransform,
@@ -85,9 +96,17 @@ const snippets = defineCollection({
   transform: async (document, context) => {
     const baseTransform = await transform(document, context)
 
-    // Calculate reading time (average 200 words per minute)
-    const wordCount = document.content.split(/\s+/).length
-    const readingTime = Math.ceil(wordCount / 200)
+    // Same CJK-aware counting as posts above.
+    const cjkCount = (
+      document.content.match(
+        /[\u{3040}-\u{30FF}\u{3400}-\u{4DBF}\u{4E00}-\u{9FFF}\u{F900}-\u{FAFF}]/gu
+      ) ?? []
+    ).length
+    const latinWords = document.content
+      .replace(/[\u{3040}-\u{30FF}\u{3400}-\u{4DBF}\u{4E00}-\u{9FFF}\u{F900}-\u{FAFF}]/gu, ' ')
+      .split(/\s+/)
+      .filter(Boolean).length
+    const readingTime = Math.max(1, Math.ceil(latinWords / 200 + cjkCount / 500))
 
     return {
       ...baseTransform,

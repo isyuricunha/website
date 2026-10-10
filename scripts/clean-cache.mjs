@@ -14,8 +14,7 @@ const cache_entries = [
   '.eslintcache',
   '.tsbuildinfo',
   'test-results',
-  'playwright-report',
-  '.vercel'
+  'playwright-report'
 ]
 
 const workspace_roots = ['apps', 'packages']

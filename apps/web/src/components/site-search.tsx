@@ -1,6 +1,6 @@
 'use client'
 
-import { useTranslations } from '@isyuricunha/i18n/client'
+import { useLocale, useTranslations } from '@isyuricunha/i18n/client'
 import { Card, CardContent, Input } from '@isyuricunha/yutheme'
 import { Search, FileText, User, Music, Code, Calendar } from 'lucide-react'
 import { useState, useMemo, useCallback, useEffect } from 'react'
@@ -30,6 +30,7 @@ const SiteSearch = () => {
   const [selectedIndex, setSelectedIndex] = useState(-1)
   const t = useTranslations()
   const router = useRouter()
+  const locale = useLocale()
 
   const placeholder = t('site-search.placeholder')
   const searchLabel = t('site-search.label')
@@ -37,12 +38,15 @@ const SiteSearch = () => {
   const recentSearchesLabel = t('site-search.recent-searches')
   const noResultsLabel = t('site-search.no-results')
 
-  // Combine all searchable content
+  // Combine all searchable content (current locale only: allPosts/allProjects
+  // hold every locale and hrefs are locale-neutral, so unfiltered results mix
+  // languages and land on the wrong locale variant).
   const searchableContent = useMemo(() => {
     const results: SearchResult[] = []
 
     // Add blog posts
     for (const post of allPosts) {
+      if (post.locale !== locale) continue
       results.push({
         id: post.slug,
         title: post.title,
@@ -56,6 +60,7 @@ const SiteSearch = () => {
 
     // Add projects
     for (const project of allProjects) {
+      if (project.locale !== locale) continue
       results.push({
         id: project.slug,
         title: project.name,
@@ -107,7 +112,7 @@ const SiteSearch = () => {
     // Deduplicate by href to avoid duplicate keys/entries across locales or sources
     const uniqueByHref = Array.from(new Map(results.map((r) => [r.href, r])).values())
     return uniqueByHref
-  }, [t])
+  }, [t, locale])
 
   // Load recent searches from localStorage
   useEffect(() => {

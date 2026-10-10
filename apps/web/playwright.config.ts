@@ -18,11 +18,9 @@ export default defineConfig({
     video: 'on'
   },
   projects: [
-    { name: 'authenticated', testMatch: /\.authenticated\.test\.ts$/ },
-    { name: 'unauthenticated', testMatch: /\.unauthenticated\.test\.ts$/ },
-    { name: 'setup', testMatch: /\.setup\.ts$/ },
     {
-      name: 'chromium',
+      name: 'authenticated',
+      testMatch: /\.authenticated\.test\.ts$/,
       use: {
         ...devices['Desktop Chrome'],
         storageState: './src/e2e/.auth/user.json',
@@ -31,7 +29,19 @@ export default defineConfig({
         }
       },
       dependencies: ['setup']
-    }
+    },
+    {
+      name: 'unauthenticated',
+      testMatch: /unauthenticated\/.*\.test\.ts$/,
+      use: {
+        ...devices['Desktop Chrome'],
+        contextOptions: {
+          permissions: ['clipboard-read', 'clipboard-write']
+        }
+      },
+      dependencies: ['setup']
+    },
+    { name: 'setup', testMatch: /\.setup\.ts$/ }
   ],
   webServer: {
     command: `pnpm ${CI ? 'start' : 'dev'}`,

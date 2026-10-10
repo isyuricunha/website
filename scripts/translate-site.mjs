@@ -485,6 +485,13 @@ const flattenMessages = (value, prefix = []) => {
   const entries = []
 
   for (const [key, child] of Object.entries(value)) {
+    // Dots are the flattening separator: a literal dot in a key would be
+    // silently rewritten into nested objects by setNestedMessage. Fail loudly.
+    if (key.includes('.')) {
+      throw new Error(
+        `Message key contains a dot, which breaks translate/untranslate round-trips: ${[...prefix, key].join('.')}`
+      )
+    }
     const pathParts = [...prefix, key]
     if (typeof child === 'string') {
       entries.push({ path: pathParts.join('.'), value: child })
@@ -1237,8 +1244,33 @@ const splitTextByCharacters = (text, maxCharacters) => {
       for (const line of lines) {
         if (line.length > maxCharacters) {
           pushCurrent()
-          for (let offset = 0; offset < line.length; offset += maxCharacters) {
-            chunks.push(line.slice(offset, offset + maxCharacters))
+          // Hard-split only outside protection tokens (@@SITE_TRANSLATION_*@@):
+          // cutting one mid-token corrupts the restore step downstream.
+          const tokenPattern = /@@SITE_TRANSLATION_[A-Z_]+_\d+@@/g
+          let sliceStart = 0
+          const pushSlice = (end) => {
+            if (end > sliceStart) chunks.push(line.slice(sliceStart, end))
+            sliceStart = end
+          }
+          let cursor = 0
+          while (cursor < line.length) {
+            let cut = Math.min(cursor + maxCharacters, line.length)
+            if (cut < line.length) {
+              tokenPattern.lastIndex = 0
+              let m
+              while ((m = tokenPattern.exec(line)) !== null) {
+                if (m.index < cut && cut < m.index + m[0].length) {
+                  // Cut lands inside a token: end the chunk before it when
+                  // there is room, otherwise carry the whole token along.
+                  cut = m.index > cursor ? m.index : Math.min(m.index + m[0].length, line.length)
+                  break
+                }
+              }
+            }
+            // Guard against zero-length slices (token longer than the window).
+            if (cut <= cursor) cut = Math.min(cursor + maxCharacters, line.length)
+            pushSlice(cut)
+            cursor = cut
           }
           continue
         }

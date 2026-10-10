@@ -14,6 +14,7 @@ import { randomBytes } from 'crypto'
 import { z } from 'zod'
 
 import { AuditLogger, getIpFromHeaders, getUserAgentFromHeaders } from '@/lib/audit-logger'
+import { getIp } from '@/utils/get-ip'
 import { aiService } from '@/lib/ai/ai-service'
 import { logger } from '@/lib/logger'
 import { adminProcedure, publicProcedure, createTRPCRouter } from '../trpc'
@@ -192,7 +193,9 @@ ${input.content}
   getAnnouncements: publicProcedure
     .input(announcementsQuerySchema)
     .query(async ({ ctx, input }) => {
-      const ip = getIpFromHeaders(ctx.headers)
+      // Rate-limit keys must use the platform-trusted IP: x-forwarded-for is
+      // client-forgeable, so keying on it lets callers rotate identities.
+      const ip = getIp(ctx.headers)
       const { success: rl_ok } = await ratelimit.limit(`announcements:list:${ip}`)
       if (!rl_ok) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
 
@@ -267,27 +270,26 @@ ${input.content}
             return true // Show all if no targeting or admin view
           }
 
-          // If user is not authenticated, only show announcements with no specific targeting
-          if (!ctx.session?.user) {
-            return true // Show to unauthenticated users if no specific targeting
-          }
-
           const targetAudience = parseTargetAudience(announcement.targetAudience)
           if (!targetAudience) {
             return true
           }
-
-          const userRole = ctx.session.user.role
 
           const roleTargets =
             getStringArray(targetAudience, 'userRoles') ?? getStringArray(targetAudience, 'roles')
 
           const userTargets = getStringArray(targetAudience, 'userIds')
 
-          // If explicit targets exist, user must match at least one
+          // If explicit targets exist, the caller must match at least one.
+          // Unauthenticated callers match nothing, so targeted content stays
+          // hidden from anonymous traffic.
           if (roleTargets || userTargets) {
-            const matchesRole = roleTargets ? roleTargets.includes(userRole) : false
-            const matchesUser = userTargets ? userTargets.includes(ctx.session.user.id) : false
+            const user = ctx.session?.user
+            if (!user) {
+              return false
+            }
+            const matchesRole = roleTargets ? roleTargets.includes(user.role) : false
+            const matchesUser = userTargets ? userTargets.includes(user.id) : false
             return matchesRole || matchesUser
           }
 
@@ -412,7 +414,7 @@ ${input.content}
   markAnnouncementViewed: publicProcedure
     .input(announcementIdSchema)
     .mutation(async ({ ctx, input }) => {
-      const ip = getIpFromHeaders(ctx.headers)
+      const ip = getIp(ctx.headers)
       const { success: rl_ok } = await ratelimit.limit(`announcements:viewed:${ip}`)
       if (!rl_ok) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
 
@@ -475,7 +477,7 @@ ${input.content}
   dismissAnnouncement: publicProcedure
     .input(announcementIdSchema)
     .mutation(async ({ ctx, input }) => {
-      const dip = getIpFromHeaders(ctx.headers)
+      const dip = getIp(ctx.headers)
       const { success: rl_ok } = await ratelimit.limit(`announcements:dismiss:${dip}`)
       if (!rl_ok) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
 

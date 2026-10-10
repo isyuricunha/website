@@ -12,11 +12,10 @@
     "build:apps": "turbo build --filter=./apps/*",
     "build:mdx": "turbo build:mdx",
     "build:packages": "turbo build --filter=./packages/*",
-    "check": "turbo lint && turbo type-check && pnpm format:check && pnpm check:spelling",
+    "check": "turbo lint && turbo type-check && pnpm format:check",
     "check:ci": "pnpm check && pnpm check:knip",
     "check:all": "pnpm check:ci",
     "check:knip": "pnpm knip",
-    "check:spelling": "echo 'Spell checking disabled'",
     "clean": "turbo clean && pnpm clean:cache",
     "clean:cache": "node ./scripts/clean-cache.mjs",
     "commit": "czg",
@@ -86,13 +85,12 @@
   "lint-staged": {
     "*.{cjs,mjs,js,jsx,cts,mts,ts,tsx}": "eslint --fix --max-warnings 999",
     "**/*": [
-      "prettier --write --ignore-unknown",
-      "pnpm check:spelling"
+      "prettier --write --ignore-unknown"
     ]
   },
   "packageManager": "pnpm@12.3.4",
   "simple-git-hooks": {
     "pre-commit": "pnpm lint-staged --concurrent false",
-    "commit-msg": "pnpm commitlint --edit $1 && pnpm check:spelling $1"
+    "commit-msg": "pnpm commitlint --edit $1"
   }
 }

@@ -21,6 +21,7 @@ import { AuditLogger, getIpFromHeaders, getUserAgentFromHeaders } from '@/lib/au
 import { logger } from '@/lib/logger'
 import { securityRatelimit } from '@/lib/ratelimit'
 import { decrypt_2fa_value, encrypt_2fa_value } from '@/lib/two-factor-crypto'
+import { getIp } from '@/utils/get-ip'
 import { adminProcedure, protectedProcedure, createTRPCRouter } from '../trpc'
 
 const speakeasy = require('speakeasy')
@@ -285,8 +286,10 @@ export const securityRouter = createTRPCRouter({
       // and removing 2FA weakens account security, so proof is required before
       // the record is destroyed: password for credential accounts, a valid TOTP
       // code for OAuth-only accounts (which have no password to verify).
+      // Keyed on the platform-trusted IP so callers cannot rotate
+      // x-forwarded-for to escape the window.
       const { success: rl_ok } = await securityRatelimit.limit(
-        `security:disable-2fa:${ipAddress}:${ctx.session.user.id}`
+        `security:disable-2fa:${getIp(ctx.headers)}:${ctx.session.user.id}`
       )
 
       if (!rl_ok) {

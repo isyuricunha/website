@@ -2,7 +2,7 @@ import { Ratelimit } from '@upstash/ratelimit'
 
 import { redis, withFailClosed } from '@isyuricunha/kv'
 
-export { ratelimit, telemetryRatelimit } from '@isyuricunha/kv'
+export { ratelimit } from '@isyuricunha/kv'
 
 export const contactRatelimit = withFailClosed(
   new Ratelimit({

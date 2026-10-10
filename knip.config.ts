@@ -27,9 +27,6 @@ const config: KnipConfig = {
       entry: ['content-collections.ts', 'src/app/**/*.{ts,tsx}', 'src/e2e/auth.setup.ts'],
       ignoreDependencies: ['@mistralai/mistralai']
     },
-    'packages/db': {
-      entry: ['src/seed.ts']
-    },
     'packages/eslint-config': {
       // @see https://github.com/francoismassart/eslint-plugin-tailwindcss/issues/325
     }

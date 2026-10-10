@@ -1,20 +1,33 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { WifiOff, Wifi } from 'lucide-react'
 import { toast } from 'sonner'
 import { useTranslations } from '@isyuricunha/i18n/client'
 
+const subscribeOnlineStatus = (callback: () => void) => {
+  addEventListener('online', callback)
+  addEventListener('offline', callback)
+  return () => {
+    removeEventListener('online', callback)
+    removeEventListener('offline', callback)
+  }
+}
+
+const getOnlineSnapshot = () => globalThis.navigator?.onLine ?? true
+
 export default function OfflineIndicator() {
-  const [isOnline, setIsOnline] = useState(() => globalThis.navigator?.onLine ?? true)
+  // Server snapshot is always online (SSR has no navigator), so the first
+  // paint matches the server HTML and there is no hydration mismatch; the
+  // client snapshot syncs on hydration without a setState-in-effect.
+  const isOnline = useSyncExternalStore(subscribeOnlineStatus, getOnlineSnapshot, () => true)
   const [showIndicator, setShowIndicator] = useState(false)
   const t = useTranslations('component.offline-indicator')
   const hideTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
     const handleOnline = () => {
-      setIsOnline(true)
       setShowIndicator(true)
       toast.success(t('toast.restored'))
 
@@ -25,7 +38,6 @@ export default function OfflineIndicator() {
     }
 
     const handleOffline = () => {
-      setIsOnline(false)
       setShowIndicator(true)
       toast.error(t('toast.offline'))
     }

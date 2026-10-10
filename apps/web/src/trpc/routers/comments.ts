@@ -52,7 +52,7 @@ const slugSchema = z.object({ slug: z.string().min(1) })
 
 const postCommentSchema = z.object({
   slug: z.string().min(1),
-  content: z.string().min(1),
+  content: z.string().min(1).max(10_000),
   date: z.string().min(1),
   parentId: z.string().optional()
 })

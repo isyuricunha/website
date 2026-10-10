@@ -148,6 +148,8 @@ export const BlogService = {
    */
   async savePost(post: Omit<BlogPost, 'filePath'>): Promise<boolean> {
     const { slug, title, date, modifiedTime, summary, content, locale } = post
+    assert_safe_path_piece(slug, SAFE_SLUG, 'slug')
+    assert_safe_path_piece(locale, SAFE_LOCALE, 'locale')
     const localeDir = path.join(CONTENT_DIR, locale)
     const filePath = path.join(localeDir, `${slug}.mdx`)
 
@@ -182,6 +184,8 @@ export const BlogService = {
    * Delete a blog post
    */
   async deletePost(slug: string, locale: string): Promise<boolean> {
+    assert_safe_path_piece(slug, SAFE_SLUG, 'slug')
+    assert_safe_path_piece(locale, SAFE_LOCALE, 'locale')
     const filePath = path.join(CONTENT_DIR, locale, `${slug}.mdx`)
 
     try {
@@ -197,6 +201,8 @@ export const BlogService = {
    * Check if a post exists in a specific locale
    */
   async postExists(slug: string, locale: string): Promise<boolean> {
+    assert_safe_path_piece(slug, SAFE_SLUG, 'slug')
+    assert_safe_path_piece(locale, SAFE_LOCALE, 'locale')
     const filePath = path.join(CONTENT_DIR, locale, `${slug}.mdx`)
 
     try {
