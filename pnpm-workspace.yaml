@@ -1,6 +1,7 @@
 packages:
   - apps/*
   - packages/*
+dedupePeerDependents: false
 allowBuilds:
   '@parcel/watcher': true
   '@prisma/engines': true
@@ -16,6 +17,14 @@ overrides:
   preact: 10.28.2
   js-yaml: ^4.1.1
   '@types/hast': ^3.0.5
+  shell-quote: '>=1.11.0'
+  esbuild: '>=0.28.1'
+audit:
+  ignore:
+    - GHSA-vfj7-8cjw-p6xm
+peerDependencyRules:
+  allowedVersions:
+    eslint: '10'
 packageExtensions:
   '@hookform/resolvers':
     peerDependencies:

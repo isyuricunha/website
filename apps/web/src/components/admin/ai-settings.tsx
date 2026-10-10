@@ -79,7 +79,7 @@ export const AiSettings = () => {
   // Disable the set-state-in-effect rule here specifically — it correctly
   // identifies this anti-pattern in general, but this instance is the canonical
   // exemption documented in React's own guides.
-  /* eslint-disable @eslint-react/set-state-in-effect -- initializes form state from server settings exactly once, guarded by initializedRef */
+
   useEffect(() => {
     const settings = settingsQuery.data
     if (!settings || initializedRef.current) return
@@ -90,7 +90,6 @@ export const AiSettings = () => {
     setApiKeyPreview(settings.apiKeyPreview)
     setConfigSource(settings.source)
   }, [settingsQuery.data])
-  /* eslint-enable @eslint-react/set-state-in-effect -- re-enable after the one-time settings init effect above */
 
   const filteredModels = useMemo(() => {
     const query = modelSearch.trim().toLowerCase()

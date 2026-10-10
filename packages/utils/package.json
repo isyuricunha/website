@@ -29,12 +29,12 @@
   "types": "./dist/index.d.ts",
   "dependencies": {
     "clsx": "^2.1.1",
-    "tailwind-merge": "^3.6.0"
+    "tailwind-merge": "^3.7.0"
   },
   "devDependencies": {
     "@isyuricunha/eslint-config": "workspace:*",
     "@isyuricunha/tsconfig": "workspace:*",
-    "@types/node": "^26.4.1"
+    "@types/node": "^26.6.4"
   },
   "publishConfig": {
     "access": "public"
