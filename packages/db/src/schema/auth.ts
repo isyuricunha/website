@@ -29,6 +29,7 @@ export const users = pgTable(
     image: text('image'),
     createdAt: timestamp('created_at').notNull(),
     updatedAt: timestamp('updated_at').notNull(),
+    displayUsername: text('display_username'),
     // Custom
     isAnonymous: boolean('isAnonymous').default(false),
     bio: text('bio'),
@@ -86,7 +87,8 @@ export const sessions = pgTable(
     updatedAt: timestamp('updated_at').notNull(),
     ipAddress: text('ip_address'),
     userAgent: text('user_agent'),
-    userId: text('user_id').notNull()
+    userId: text('user_id').notNull(),
+    impersonatedBy: text('impersonated_by')
   },
   (session) => [
     foreignKey({
