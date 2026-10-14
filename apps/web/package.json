@@ -31,7 +31,7 @@
     "@isyuricunha/env": "workspace:*",
     "@isyuricunha/i18n": "workspace:*",
     "@isyuricunha/utils": "workspace:*",
-    "@isyuricunha/yutheme": "^0.2.0",
+    "@isyuricunha/yutheme": "^0.2.1",
     "@marsidev/react-turnstile": "^1.6.1",
     "@mistralai/mistralai": "^2.7.0",
     "@number-flow/react": "^0.6.2",

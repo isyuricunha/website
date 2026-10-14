@@ -214,8 +214,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/utils
       '@isyuricunha/yutheme':
-        specifier: ^0.2.0
-        version: 0.2.0(70f412c91fbef115a42d0fd166c21686)
+        specifier: ^0.2.1
+        version: 0.2.1(70f412c91fbef115a42d0fd166c21686)
       '@radix-ui/react-accordion':
         specifier: ^1.2.21
         version: 1.2.21(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
@@ -446,8 +446,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/utils
       '@isyuricunha/yutheme':
-        specifier: ^0.2.0
-        version: 0.2.0(70f412c91fbef115a42d0fd166c21686)
+        specifier: ^0.2.1
+        version: 0.2.1(70f412c91fbef115a42d0fd166c21686)
       '@marsidev/react-turnstile':
         specifier: ^1.6.1
         version: 1.6.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
@@ -2293,8 +2293,8 @@ packages:
   '@internationalized/number@3.6.9':
     resolution: {integrity: sha512-GgWy2caO/+hV9sT/oCTWGHvbjmJMPT9kkXzoKRLnkEq7adghhR7UprhvY9sXrKfrp3NcDfhF6QQHXR1KfQbB8g==}
 
-  '@isyuricunha/yutheme@0.2.0':
-    resolution: {integrity: sha512-LUFtuokoMj0LCvZbNv4RmEmKew/oYNIm2mKz6u9ekPvtXEquZx0xp7RHS2MOsbHvhp142hltxajej9LIqp34uA==}
+  '@isyuricunha/yutheme@0.2.1':
+    resolution: {integrity: sha512-UlXMzFDDk5vCvCaEbI+DIXTLqrvyTGYdSllRe61Y0z9UwYbJkF4Nw2cNAeppK9aRRjEzD/fqdWu2KY5N08djew==}
     engines: {node: '>=24'}
     peerDependencies:
       '@ark-ui/react': ^5.39.1
@@ -10837,7 +10837,7 @@ snapshots:
     dependencies:
       '@swc/helpers': 0.5.23
 
-  '@isyuricunha/yutheme@0.2.0(70f412c91fbef115a42d0fd166c21686)':
+  '@isyuricunha/yutheme@0.2.1(70f412c91fbef115a42d0fd166c21686)':
     dependencies:
       clsx: 2.1.1
       react: 19.3.0
