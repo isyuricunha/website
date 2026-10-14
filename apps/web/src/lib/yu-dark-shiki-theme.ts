@@ -5,9 +5,9 @@ export const YU_DARK_SHIKI_THEME: ThemeRegistration = {
   displayName: 'Yu Dark',
   type: 'dark',
   fg: '#f4f1e8',
-  bg: '#10100f',
+  bg: '#1d1b15',
   colors: {
-    'editor.background': '#10100f',
+    'editor.background': '#1d1b15',
     'editor.foreground': '#f4f1e8',
     'editorLineNumber.foreground': '#666157',
     'editorLineNumber.activeForeground': '#b8b2a4',
@@ -19,7 +19,7 @@ export const YU_DARK_SHIKI_THEME: ThemeRegistration = {
     {
       settings: {
         foreground: '#f4f1e8',
-        background: '#10100f'
+        background: '#1d1b15'
       }
     },
     {
