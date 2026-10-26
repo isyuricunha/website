@@ -292,10 +292,10 @@ The project deploys on Vercel as two monorepo-aware projects with Node.js 24.x:
 - `website-web`: Root Directory `apps/web`, serving `yuricunha.com`
 - `website-docs`: Root Directory `apps/docs`, serving `docs.yuricunha.com`
 
-The repository is mirrored across three git sources. GitLab is the deploy source connected to Vercel's Git integration:
+The repository is mirrored across three git sources. GitHub is the primary source, where GitHub Actions CI runs; GitLab is the deploy source connected to Vercel's Git integration:
 
-- **GitLab**: `gitlab.com:isyuricunha/website` (deploy source)
-- **GitHub**: `github.com/isyuricunha/website` (mirror; the account is rate-limited, so its CI is not relied on)
+- **GitHub**: `github.com/isyuricunha/website` (primary source; GitHub Actions CI)
+- **GitLab**: `gitlab.com:isyuricunha/website` (deploy source for Vercel)
 - **YuGit/Forgejo**: self-hosted mirror at `ssh.git.yuricunha.com`
 
 Push to all three:
