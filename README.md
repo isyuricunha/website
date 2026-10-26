@@ -55,13 +55,18 @@ apps/
   docs/       documentation site
 packages/
   db/         database access (Drizzle)
-  env/        env validation
   emails/     email templates
+  env/        env validation
+  eslint-config/  shared ESLint config
   i18n/       internationalization
   kv/         Upstash Redis client, rate limiters and fail-closed wrapper
+  mdx-plugins/  rehype/remark MDX plugins and the shared Shiki theme
+  prettier-config/  shared Prettier config
+  prettier-plugin-package-json/  Prettier plugin for package.json files
+  shared/     shared constants and helpers
+  tsconfig/   shared TypeScript config
   ui/         shared UI components
   utils/      shared utilities
-  ...
 ```
 
 ## Tech stack
@@ -139,18 +144,19 @@ Core tooling:
 - Node.js: `>=24` (see `package.json#engines.node` and `.nvmrc`)
 - pnpm: `12.3.4` (see `package.json#packageManager`)
 - TypeScript: `^6.0.3`
-- Turbo: `^2.10.12`
-- Vitest: `^4.1.11`
-- ESLint: `^10.9.1`
-- Prettier: `^3.9.6`
+- Turbo: `^2.11.7`
+- Vitest: `^5.0.3`
+- ESLint: `^10.12.0`
+- Prettier: `^3.9.9`
 
 Web apps:
 
-- Next.js: `16.3.4`
-- React: `19.2.8`
-- Zod: `4.5.4`
-- tRPC: `11.18.0`
-- TanStack React Query: `^5.102.8`
+- Next.js: `16.4.0`
+- React: `19.3.0`
+- Zod: `4.6.5`
+- tRPC: `11.19.0`
+- TanStack React Query: `^5.104.1`
+- better-auth: `1.7.7`
 - TailwindCSS: `^4.3.3`
 
 To list all installed versions in the workspace:
@@ -265,7 +271,7 @@ pnpm --filter @isyuricunha/docs build
 
 ## Deployment
 
-The project deploys on Vercel. The project deploys on Vercel as two monorepo-aware projects with Node.js 24.x:
+The project deploys on Vercel as two monorepo-aware projects with Node.js 24.x:
 
 - `website-web`: Root Directory `apps/web`, serving `yuricunha.com`
 - `website-docs`: Root Directory `apps/docs`, serving `docs.yuricunha.com`
@@ -288,6 +294,7 @@ Notes:
 
 - Ensure all required environment variables are set; the canonical schema is `packages/env/src/index.ts` and examples live in `.env.example`.
 - Vercel builds do not run database migrations. Apply schema changes manually with `pnpm db:migrate` after merging; run the production preflight checklist from the Drizzle recipe (`apps/docs/src/content/recipes/drizzle.mdx`) first.
+- Two Vercel cron jobs are defined in `vercel.json`: `/api/cron/alerts` daily at 03:00 UTC and `/api/cron/data-retention` daily at 03:30 UTC.
 - If a push does not trigger a deploy, run a manual production deploy from the repository root: `pnpm exec vercel deploy --prod --yes`. Deploying from inside `apps/web` fails because the project Root Directory is `apps/web`.
 - Verify the serving revision with endpoint probes and response headers rather than dashboard status alone.
 
