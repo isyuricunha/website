@@ -1,10 +1,19 @@
+<div align="center">
+
 # yuricunha.com
 
-Source code for my personal website.
+Personal website, documentation site and shared package workspace.
 
-Production:
+[![License](https://img.shields.io/badge/license-AGPL--3.0-blue)](./license.md)
+[![Node](https://img.shields.io/badge/Node.js-%3E%3D24-339933?logo=node.js&logoColor=white)](.nvmrc)
+[![pnpm](https://img.shields.io/badge/pnpm-12.3.4-F69220?logo=pnpm&logoColor=white)](package.json)
+[![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js&logoColor=white)](apps/web)
+[![TypeScript](https://img.shields.io/badge/TypeScript-6-3178C6?logo=typescript&logoColor=white)](tsconfig.json)
+[![Vercel](https://img.shields.io/badge/deployed%20on-Vercel-black?logo=vercel&logoColor=white)](https://yuricunha.com)
 
-- **Website**: <https://yuricunha.com>
+**[Website](https://yuricunha.com)** · **[Docs](https://docs.yuricunha.com)**
+
+</div>
 
 ## Notice
 
@@ -22,7 +31,9 @@ Please use your own AI/mascot name, model and provider credentials when adapting
 - [SEO and indexing](#seo-and-indexing)
 - [Scripts](#scripts)
 - [Validation](#validation)
+- [Maintenance](#maintenance)
 - [Deployment](#deployment)
+- [Troubleshooting](#troubleshooting)
 - [Contributing](#contributing)
 - [License](#license)
 - [Credits](#credits)
@@ -38,25 +49,24 @@ The repository is organized as a monorepo (Turbo + pnpm) so that the main app an
 
 - Localized portfolio, blog, projects, snippets, about, music, contact and sitemap pages.
 - Rolling 12-month recap page aggregating Last.fm, WakaTime and site stats.
-- Authenticated admin surfaces for content and operational workflows.
+- Authenticated admin area covering content, users, security, monitoring, communication and operational workflows.
 - Layered abuse protection: platform-trusted client IP extraction, fail-closed Upstash rate limiting, server-side Turnstile verification and newsletter double opt-in.
 - Hardened Content-Security-Policy in report-only mode, with `unsafe-eval` removed from the policy.
 - Cursor-inspired warm visual system shared between the website and docs app.
 - MDX content collections for blog posts, project pages, snippets and docs.
 - SEO surfaces for search engines and LLM crawlers: `sitemap.xml`, `robots.txt`, `rss.xml`, locale RSS feeds and `llms.txt`.
 - Dev-only OpenAI-compatible translation generator for adding new locales locally.
-- Shared UI package with Tailwind v4 preset, typography, code styling and reusable primitives.
 
 ## Repository layout
 
 ```text
 apps/
-  web/        main website
-  docs/       documentation site
+  web/        main website (Next.js App Router)
+  docs/       documentation site (docs.yuricunha.com)
 packages/
   db/         database access (Drizzle)
-  emails/     email templates
-  env/        env validation
+  emails/     email templates (React Email)
+  env/        validated environment variables
   eslint-config/  shared ESLint config
   i18n/       internationalization
   kv/         Upstash Redis client, rate limiters and fail-closed wrapper
@@ -65,24 +75,59 @@ packages/
   prettier-plugin-package-json/  Prettier plugin for package.json files
   shared/     shared constants and helpers
   tsconfig/   shared TypeScript config
-  ui/         shared UI components
   utils/      shared utilities
+scripts/
+  translate-site.mjs  OpenAI-compatible locale translation generator
+  vercel-ignore.js    Vercel ignore command
+  clean-cache.mjs     Turborepo cache cleaner
 ```
+
+Reusable UI primitives live in `apps/web/src/components`; the warm visual system comes from the published [`@isyuricunha/yutheme`](https://www.npmjs.com/package/@isyuricunha/yutheme) package.
 
 ## Tech stack
 
-- **Runtime**: Node.js (see `.nvmrc`)
-- **Package manager**: pnpm (see `packageManager` in `package.json`)
-- **Monorepo**: Turborepo
-- **Web**: Next.js App Router, React, TypeScript
-- **API**: tRPC
-- **Database**: PostgreSQL, Drizzle ORM
-- **Rate limiting**: Upstash Redis sliding windows with a fail-closed wrapper (`@isyuricunha/kv`)
-- **Email**: React Email, Resend
-- **i18n**: next-intl (localized routes under `apps/web/src/app/[locale]`)
-- **Content**: content-collections + MDX
-- **Styling**: Tailwind CSS v4 + shared Cursor-inspired UI preset
-- **Testing**: Vitest (unit), Playwright (e2e)
+| Layer         | Technology                                                                   |
+| ------------- | ---------------------------------------------------------------------------- |
+| Monorepo      | Turborepo + pnpm                                                             |
+| Web           | Next.js App Router, React, TypeScript                                        |
+| API           | tRPC                                                                         |
+| Database      | PostgreSQL, Drizzle ORM                                                      |
+| Auth          | better-auth                                                                  |
+| Rate limiting | Upstash Redis sliding windows with a fail-closed wrapper (`@isyuricunha/kv`) |
+| Email         | React Email, Resend                                                          |
+| i18n          | next-intl (localized routes under `apps/web/src/app/[locale]`)               |
+| Content       | content-collections + MDX                                                    |
+| Styling       | Tailwind CSS v4 + shared Cursor-inspired UI preset                           |
+| Testing       | Vitest (unit), Playwright (e2e)                                              |
+| Hosting       | Vercel                                                                       |
+
+### Versions
+
+Core tooling:
+
+- Node.js: `>=24` (see `package.json#engines.node` and `.nvmrc`)
+- pnpm: `12.3.4` (see `package.json#packageManager`)
+- TypeScript: `^6.0.3`
+- Turbo: `^2.11.7`
+- Vitest: `^5.0.3`
+- ESLint: `^10.12.0`
+- Prettier: `^3.9.9`
+
+Web apps:
+
+- Next.js: `16.4.0`
+- React: `19.3.0`
+- Zod: `4.6.5`
+- tRPC: `11.19.0`
+- TanStack React Query: `^5.104.1`
+- better-auth: `1.7.7`
+- TailwindCSS: `^4.3.3`
+
+To list all installed versions in the workspace:
+
+```bash
+pnpm -r list --depth 0
+```
 
 ## Local development
 
@@ -117,53 +162,6 @@ packages/
    ```bash
    pnpm dev
    ```
-
-## Maintenance
-
-This repository is actively maintained and dependencies across all apps and packages are updated regularly.
-
-Recommended upgrade workflow:
-
-```bash
-pnpm -r up --latest
-pnpm install
-pnpm build:mdx
-pnpm check
-pnpm test:unit
-pnpm check:knip
-pnpm --filter @isyuricunha/web build
-pnpm --filter @isyuricunha/docs build
-```
-
-If upgrades introduce runtime issues, prefer debugging in development mode (`pnpm dev:web`) to get non-minified React errors.
-
-## Tech stack (versions)
-
-Core tooling:
-
-- Node.js: `>=24` (see `package.json#engines.node` and `.nvmrc`)
-- pnpm: `12.3.4` (see `package.json#packageManager`)
-- TypeScript: `^6.0.3`
-- Turbo: `^2.11.7`
-- Vitest: `^5.0.3`
-- ESLint: `^10.12.0`
-- Prettier: `^3.9.9`
-
-Web apps:
-
-- Next.js: `16.4.0`
-- React: `19.3.0`
-- Zod: `4.6.5`
-- tRPC: `11.19.0`
-- TanStack React Query: `^5.104.1`
-- better-auth: `1.7.7`
-- TailwindCSS: `^4.3.3`
-
-To list all installed versions in the workspace:
-
-```bash
-pnpm -r list --depth 0
-```
 
 ## Environment variables
 
@@ -223,22 +221,21 @@ Admin, API and password-reset surfaces are marked as non-indexable. Public conte
 
 ## Scripts
 
-Common tasks:
-
-```bash
-pnpm dev
-pnpm dev:web
-pnpm dev:docs
-pnpm build
-pnpm build:mdx
-pnpm lint
-pnpm type-check
-pnpm test:unit
-pnpm test:e2e
-pnpm format:check
-pnpm check:knip
-pnpm translate:site -- --target es --dry-run
-```
+| Task                                      | Command                                        |
+| ----------------------------------------- | ---------------------------------------------- |
+| Dev servers                               | `pnpm dev`                                     |
+| Web app only                              | `pnpm dev:web`                                 |
+| Docs app only                             | `pnpm dev:docs`                                |
+| Build everything                          | `pnpm build`                                   |
+| Build MDX content                         | `pnpm build:mdx`                               |
+| Lint                                      | `pnpm lint`                                    |
+| Type check                                | `pnpm type-check`                              |
+| Format check / write                      | `pnpm format:check` / `pnpm format:write`      |
+| Unit tests                                | `pnpm test:unit`                               |
+| E2E tests                                 | `pnpm test:e2e`                                |
+| Unused exports check                      | `pnpm check:knip`                              |
+| Full check (lint + types + format + knip) | `pnpm check:all`                               |
+| Translation generator                     | `pnpm translate:site -- --target es --dry-run` |
 
 Database tasks:
 
@@ -268,6 +265,25 @@ pnpm check:knip
 pnpm --filter @isyuricunha/web build
 pnpm --filter @isyuricunha/docs build
 ```
+
+## Maintenance
+
+This repository is actively maintained and dependencies across all apps and packages are updated regularly.
+
+Recommended upgrade workflow:
+
+```bash
+pnpm -r up --latest
+pnpm install
+pnpm build:mdx
+pnpm check
+pnpm test:unit
+pnpm check:knip
+pnpm --filter @isyuricunha/web build
+pnpm --filter @isyuricunha/docs build
+```
+
+If upgrades introduce runtime issues, prefer debugging in development mode (`pnpm dev:web`) to get non-minified React errors.
 
 ## Deployment
 
@@ -319,7 +335,7 @@ If you want to contribute:
 
 ## License
 
-See `license.md`.
+Distributed under the [GNU AGPL-3.0](./license.md). See `license.md` for the full text.
 
 ## Credits
 
