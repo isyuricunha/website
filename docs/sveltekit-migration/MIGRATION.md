@@ -73,16 +73,15 @@ names); TypeScript 6 minimum; Node 22+ minimum.
   Verified in dev: / serves en, /pt serves pt with lang="pt" and translated
   content, cookie redirect / -> /pt matches next-intl behavior.
 
-- 2026-11-15: Stage 4 (content) reached post parity (2ec5424b, 8fa5b801):
-  content-collections runs through its official Vite adapter with an
-  app-local config compiling the shared MDX source (544 documents, 4
-  collections, ~25-33s) into build-time HTML via a custom string JSX runtime
-  (no React anywhere in the content path). Blog listing and every localized
-  blog post are prerendered from that HTML; verified /pt/blog and a full
-  post visually (title, localized date, Shiki blocks, prose). Interactive
-  behavior (copy buttons) ships as a delegated client script in stage 5.
-  Prerender logs pre-existing broken content links (verified 404 on the live
-  Next.js site too) as warnings instead of failing the build.
+- 2026-11-15: Stage 4 (content) complete for the web app (8fa5b801, 5a60baf3):
+  snippets list + detail, projects list + detail, about/privacy/uses pages
+  (shared content page loader) are all prerendered from the build-time HTML
+  render; /snippets keeps its permanent redirect to /snippet. The now page
+  resolves the NowProject slots with live GitHub data (repo, stars, latest
+  release, push date, website) cached one hour, cards as divs with link
+  titles (nested anchors are invalid HTML and split cards). Verified
+  visually: uses prose, now cards with real GitHub data. Remaining in this
+  stage: apps/docs.
 
 ## Stage state
 
@@ -90,8 +89,7 @@ names); TypeScript 6 minimum; Node 22+ minimum.
 2. SvelteKit architecture and dependency preparation: DONE
 3. Shared utilities, configuration, themes, localization: DONE (i18n; theme
    tokens ship with the styles import, Svelte components follow in stage 5)
-4. Documentation and content migration: IN PROGRESS (posts fully prerendered;
-   snippets, projects, pages collections and the docs app pending)
+4. Documentation and content migration: web app DONE; apps/docs PENDING
 5. Public website and interactive components: PENDING
 6. Authentication and backend integration: PENDING
 7. Administrative panel and remaining features: PENDING
