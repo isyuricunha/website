@@ -104,6 +104,15 @@ names); TypeScript 6 minimum; Node 22+ minimum.
   link labels legitimately fill the available width, same as the Next
   navbar.
 
+- 2026-11-15: Stage 5 second milestone (a681a135): the two client behaviors
+  the static content needs now work through one delegated document listener
+  per app (no hydration of content): code-block copy buttons (clipboard +
+  two-second copied feedback) and docs preview/code tabs (build-time slots
+  with data attributes). Verified on production previews: tabs swap panels,
+  clipboard receives the code, feedback clears. Scoped-style note: Svelte
+  scoped CSS never reaches {@html} content; those controls live in the
+  global app.css of each app.
+
 ## Stage state
 
 1. Baseline and full feature inventory: DONE
@@ -111,10 +120,11 @@ names); TypeScript 6 minimum; Node 22+ minimum.
 3. Shared utilities, configuration, themes, localization: DONE (i18n; theme
    tokens ship with the styles import, Svelte components follow in stage 5)
 4. Documentation and content migration: DONE
-5. Public website and interactive components: IN PROGRESS (home + header/
-   footer done; guestbook, music, recap, contact, copy-button delegation,
-   interactive doc preview tabs, mascot pending)
-6. Authentication and backend integration: PENDING
+5. Public website and interactive components: IN PROGRESS (home, header/
+   footer, copy buttons, doc tabs done; guestbook, music, recap, contact
+   need the backend stage and follow it)
+6. Authentication and backend integration: NEXT (Better Auth SvelteKit
+   integration, tRPC fetch adapter mount, DB access)
 7. Administrative panel and remaining features: PENDING
 8. API, SEO, cron, caching, Vercel compatibility: PENDING
 9. Dependency removal and architectural consolidation: PENDING
