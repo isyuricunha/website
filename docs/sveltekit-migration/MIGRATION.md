@@ -89,6 +89,21 @@ names); TypeScript 6 minimum; Node 22+ minimum.
   invalid (rest is always optional, use [...rest]); rest-param entries are
   plain strings, not arrays.
 
+- 2026-11-15: Stage 5 first milestone (dcda2ad9), done by Ella directly
+  (Yuri asked for no delegation on this one): header with skip link, yutheme
+  logo, responsive overflow navbar (measure row + more dropdown), locale
+  switcher (NEXT_LOCALE cookie + client navigation), mobile drawer; footer
+  with link columns and star badge placeholder (tRPC data lands in stage 6);
+  home with hero (CSS rise/shimmer/glow/caret, reversed word order for
+  pt/es/fr), selected projects, latest articles and get in touch. The
+  banner/about-cards/recently-updated/newsletter/search/account widgets wait
+  for the backend stage by design. Static assets served from apps/web/public
+  via kit files.assets. Verified: svelte-check clean, 37 tests green, build
+  green, zero horizontal overflow at 375/768/1024/1440/1920, desktop and
+  mobile screenshots match the Next.js design. Navbar note: the wide PT-BR
+  link labels legitimately fill the available width, same as the Next
+  navbar.
+
 ## Stage state
 
 1. Baseline and full feature inventory: DONE
@@ -96,8 +111,9 @@ names); TypeScript 6 minimum; Node 22+ minimum.
 3. Shared utilities, configuration, themes, localization: DONE (i18n; theme
    tokens ship with the styles import, Svelte components follow in stage 5)
 4. Documentation and content migration: DONE
-5. Public website and interactive components: NEXT (home, header/footer,
-   interactive widgets, copy-button delegation, interactive doc previews)
+5. Public website and interactive components: IN PROGRESS (home + header/
+   footer done; guestbook, music, recap, contact, copy-button delegation,
+   interactive doc preview tabs, mascot pending)
 6. Authentication and backend integration: PENDING
 7. Administrative panel and remaining features: PENDING
 8. API, SEO, cron, caching, Vercel compatibility: PENDING
