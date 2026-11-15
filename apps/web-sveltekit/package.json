@@ -5,6 +5,10 @@
   "description": "SvelteKit implementation of yuricunha.com (migration target)",
   "license": "AGPL-3.0",
   "type": "module",
+  "imports": {
+    "#lib": "./src/lib/index.ts",
+    "#lib/*": "./src/lib/*"
+  },
   "scripts": {
     "dev": "vite dev --port 3010",
     "build": "vite build",
@@ -13,6 +17,7 @@
     "type-check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json"
   },
   "devDependencies": {
+    "@isyuricunha/i18n": "workspace:*",
     "@isyuricunha/tsconfig": "workspace:*",
     "@sveltejs/adapter-vercel": "^7.0.3",
     "@sveltejs/kit": "^3.2.0",

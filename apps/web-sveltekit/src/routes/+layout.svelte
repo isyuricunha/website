@@ -1,7 +1,8 @@
 <script lang="ts">
 	import '../app.css'
+	import type { LayoutData } from './$types'
 
-	let { children } = $props()
+	let { data, children } = $props()
 </script>
 
 {@render children()}

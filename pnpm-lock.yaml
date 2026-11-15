@@ -779,6 +779,9 @@ importers:
 
   apps/web-sveltekit:
     devDependencies:
+      '@isyuricunha/i18n':
+        specifier: workspace:*
+        version: link:../../packages/i18n
       '@isyuricunha/tsconfig':
         specifier: workspace:*
         version: link:../../packages/tsconfig
