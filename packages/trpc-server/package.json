@@ -41,6 +41,7 @@
     "@content-collections/core": "^0.15.3",
     "@isyuricunha/eslint-config": "workspace:*",
     "@isyuricunha/tsconfig": "workspace:*",
-    "@types/node": "26.6.4"
+    "@types/node": "26.6.4",
+    "@types/speakeasy": "^2.0.6"
   }
 }
