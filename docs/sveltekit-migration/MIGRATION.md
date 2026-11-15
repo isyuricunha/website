@@ -73,15 +73,16 @@ names); TypeScript 6 minimum; Node 22+ minimum.
   Verified in dev: / serves en, /pt serves pt with lang="pt" and translated
   content, cookie redirect / -> /pt matches next-intl behavior.
 
-- 2026-11-15: Stage 4 started (2ec5424b + a7c38d2e): content-collections now
-  runs through its official Vite adapter pointed at the shared apps/web
-  config, so both apps compile the single MDX source (544 documents, 4
-  collections, ~35s compile). Typed content helpers and the localized blog
-  listing render real catalog data; verified /pt/blog shows translated titles
-  and dates. The listing stays on-demand SSR until the post route exists
-  (prerender crawl follows links); MDX-to-HTML rendering for post/snippet/
-  project pages is the next work item, together with the public components
-  of stage 5.
+- 2026-11-15: Stage 4 (content) reached post parity (2ec5424b, 8fa5b801):
+  content-collections runs through its official Vite adapter with an
+  app-local config compiling the shared MDX source (544 documents, 4
+  collections, ~25-33s) into build-time HTML via a custom string JSX runtime
+  (no React anywhere in the content path). Blog listing and every localized
+  blog post are prerendered from that HTML; verified /pt/blog and a full
+  post visually (title, localized date, Shiki blocks, prose). Interactive
+  behavior (copy buttons) ships as a delegated client script in stage 5.
+  Prerender logs pre-existing broken content links (verified 404 on the live
+  Next.js site too) as warnings instead of failing the build.
 
 ## Stage state
 
@@ -89,8 +90,8 @@ names); TypeScript 6 minimum; Node 22+ minimum.
 2. SvelteKit architecture and dependency preparation: DONE
 3. Shared utilities, configuration, themes, localization: DONE (i18n; theme
    tokens ship with the styles import, Svelte components follow in stage 5)
-4. Documentation and content migration: IN PROGRESS (pipeline + blog list
-   done; post/snippet/project rendering and docs app pending)
+4. Documentation and content migration: IN PROGRESS (posts fully prerendered;
+   snippets, projects, pages collections and the docs app pending)
 5. Public website and interactive components: PENDING
 6. Authentication and backend integration: PENDING
 7. Administrative panel and remaining features: PENDING
