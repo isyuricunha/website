@@ -61,10 +61,12 @@ function resolvePreviewSlot(name: string): Promise<PreviewSlot> {
     )
 
     const previewHtml = demo ? renderToStaticMarkup(demo) : ''
-    const windowChrome = `<div class="app-window not-prose mt-3"><div class="app-window-chrome"><span class="window-dot"></span><span class="window-dot"></span><span class="window-dot"></span><span class="label-mono ml-2 normal-case">preview</span></div><div class="flex min-h-[350px] items-center justify-center px-10 py-12">${previewHtml}</div></div>`
+    const windowChrome = `<div class="app-window not-prose"><div class="app-window-chrome"><span class="window-dot"></span><span class="window-dot"></span><span class="window-dot"></span><span class="label-mono ml-2 normal-case">preview</span></div><div class="flex min-h-[350px] items-center justify-center px-10 py-12">${previewHtml}</div></div>`
 
+    // Tabbed preview/code pair; the tab switching is a tiny delegated script
+    // in the layout, no hydration needed for the static content.
     return {
-      wrapper: `<div class="my-8">${windowChrome}<div class="[&_figure]:m-0 [&_pre]:max-h-[350px] [&_pre]:overflow-auto">${codeHtml}</div></div>`
+      wrapper: `<div class="my-8" data-doc-preview><div class="bg-bg-surface mb-3 inline-flex rounded-md border border-[var(--border-default)] p-0.5"><button type="button" data-doc-tab="preview" data-tab-active="true" class="inline-flex min-h-8 items-center rounded px-3 text-sm font-medium">Preview</button><button type="button" data-doc-tab="code" class="text-muted-foreground inline-flex min-h-8 items-center rounded px-3 text-sm font-medium">Code</button></div><div data-doc-panel="preview">${windowChrome}</div><div data-doc-panel="code" hidden class="[&_figure]:m-0 [&_pre]:max-h-[350px] [&_pre]:overflow-auto">${codeHtml}</div></div>`
     }
   })()
 
