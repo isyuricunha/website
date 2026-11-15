@@ -12,7 +12,7 @@
     "module": "esnext",
     "moduleResolution": "bundler",
     "paths": {
-      "content-collections": ["../web/.content-collections/generated"]
+      "content-collections": ["./.content-collections/generated"]
     }
   }
 }

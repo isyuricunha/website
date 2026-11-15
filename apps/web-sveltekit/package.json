@@ -12,15 +12,20 @@
   "scripts": {
     "dev": "vite dev --port 3010",
     "build": "vite build",
+    "build:mdx": "content-collections build",
     "preview": "vite preview --port 3010",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "type-check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json"
   },
   "devDependencies": {
+    "@content-collections/cli": "^0.1.9",
     "@content-collections/core": "^0.15.3",
     "@content-collections/vite": "^0.3.1",
     "@isyuricunha/i18n": "workspace:*",
+    "@isyuricunha/mdx-plugins": "workspace:*",
     "@isyuricunha/tsconfig": "workspace:*",
+    "@mdx-js/mdx": "^3.1.1",
+    "zod": "^4.6.5",
     "@sveltejs/adapter-vercel": "^7.0.3",
     "@sveltejs/kit": "^3.2.0",
     "@sveltejs/vite-plugin-svelte": "^7.0.0",
