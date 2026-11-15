@@ -16,8 +16,8 @@ type ComponentPreviewProps = {
 const ComponentPreview = async (props: ComponentPreviewProps) => {
   const { name } = props
 
-  const Component = (await import(`@/components/demos/${name}`)).default
-  const code = await fs.readFile(`src/components/demos/${name}.tsx`, 'utf8')
+  const Component = (await import(`../../../../docs-sveltekit/src/demos/${name}`)).default
+  const code = await fs.readFile(`../docs-sveltekit/src/demos/${name}.tsx`, 'utf8')
 
   const out = await codeToHast(code, {
     lang: 'tsx',
