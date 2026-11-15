@@ -17,7 +17,7 @@ const privateHeaders = {
 }
 
 export const GET = async (request: Request) => {
-  const session = await getSession()
+  const session = await getSession(request.headers)
 
   if (!session?.user) {
     return NextResponse.json(

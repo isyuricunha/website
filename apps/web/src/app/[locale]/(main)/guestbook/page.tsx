@@ -1,3 +1,4 @@
+import { headers } from 'next/headers'
 import type { Metadata, ResolvingMetadata } from 'next'
 import type { WebPage, WithContext } from 'schema-dts'
 
@@ -63,7 +64,7 @@ const Page = async (props: PageProps) => {
 
   const { locale } = await props.params
   setRequestLocale(locale)
-  const session = await getSession()
+  const session = await getSession(await headers())
   const t = await getTranslations()
   const title = t('guestbook.title')
   const description = t('guestbook.description')

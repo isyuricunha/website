@@ -21,7 +21,7 @@ const requestSchema = z.object({
 
 export async function POST(request: NextRequest) {
   try {
-    const authResponse = await requireAdmin()
+    const authResponse = await requireAdmin(request)
     if (authResponse) return authResponse
 
     // Rate limiting

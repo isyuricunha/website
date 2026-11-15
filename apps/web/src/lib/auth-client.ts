@@ -1,4 +1,4 @@
-import type { Auth } from './auth'
+import type { Auth } from '@/lib/auth'
 
 import { toast } from '@isyuricunha/yutheme'
 import {

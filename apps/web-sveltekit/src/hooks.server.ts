@@ -1,5 +1,8 @@
 import type { Handle } from '@sveltejs/kit/hooks'
+import { svelteKitHandler } from 'better-auth/svelte-kit'
+import { building } from '$app/env'
 import { i18n } from '@isyuricunha/i18n/config'
+import { auth, getSession } from '@isyuricunha/trpc-server/auth'
 import { isLocale, localeFromPathname } from '#lib/i18n/config.ts'
 import { LOCALE_COOKIE, negotiateLocale } from '#lib/i18n/locale.ts'
 
@@ -51,6 +54,11 @@ const contentSecurityPolicy = [
 export const handle: Handle = async ({ event, resolve }) => {
   const { pathname } = event.url
 
+  // Better Auth mounts its own endpoints (sign-in, sessions, OAuth...).
+  if (pathname.startsWith('/api/auth/')) {
+    return svelteKitHandler({ event, resolve, auth, building })
+  }
+
   if (isSkippedPath(pathname)) {
     return resolve(event)
   }
@@ -84,6 +92,11 @@ export const handle: Handle = async ({ event, resolve }) => {
       return new Response(null, { status: 307, headers: { location: target } })
     }
   }
+
+  // Request-scoped session for every rendered route.
+  const session = await getSession(event.request.headers)
+  event.locals.user = session?.user ?? null
+  event.locals.session = session?.session ?? null
 
   const response = await resolve(event, {
     transformPageChunk: ({ html }) => html.replace('%lang%', event.locals.locale)

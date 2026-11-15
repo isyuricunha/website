@@ -1,0 +1,46 @@
+{
+  "private": true,
+  "name": "@isyuricunha/trpc-server",
+  "version": "0.0.0",
+  "description": "Framework-agnostic tRPC server, Better Auth instance and server helpers",
+  "license": "AGPL-3.0",
+  "type": "module",
+  "exports": {
+    "./trpc": "./src/trpc/trpc.ts",
+    "./root": "./src/trpc/root.ts",
+    "./auth": "./src/lib/auth.ts"
+  },
+  "scripts": {
+    "clean": "rm -rf .turbo",
+    "lint": "eslint . --max-warnings 0",
+    "lint:fix": "eslint --fix .",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.1148.0",
+    "@aws-sdk/s3-request-presigner": "^3.1148.0",
+    "@isyuricunha/db": "workspace:*",
+    "@isyuricunha/emails": "workspace:*",
+    "@isyuricunha/env": "workspace:*",
+    "@isyuricunha/i18n": "workspace:*",
+    "@isyuricunha/kv": "workspace:*",
+    "@isyuricunha/utils": "workspace:*",
+    "@octokit/rest": "^22.0.1",
+    "@paralleldrive/cuid2": "^3.3.0",
+    "@react-email/render": "^2.1.0",
+    "@trpc/server": "11.19.0",
+    "@upstash/ratelimit": "^2.2.0",
+    "better-auth": "1.7.7",
+    "js-sha512": "^0.9.0",
+    "resend": "^6.32.1",
+    "speakeasy": "^2.0.0",
+    "superjson": "^2.2.6",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@content-collections/core": "^0.15.3",
+    "@isyuricunha/eslint-config": "workspace:*",
+    "@isyuricunha/tsconfig": "workspace:*",
+    "@types/node": "26.6.4"
+  }
+}

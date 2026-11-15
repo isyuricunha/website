@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json()
     const parsed = requestSchema.parse(body)
 
-    const session = await getSession()
+    const session = await getSession(req.headers)
     const user_agent = req.headers.get('user-agent') ?? undefined
 
     await db.insert(aiChatFeedback).values({

@@ -1,0 +1,15 @@
+{
+  "extends": "@isyuricunha/tsconfig/base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "types": ["node"],
+    "paths": {
+      "content-collections": ["../../apps/web-sveltekit/.content-collections/generated/index.d.ts"]
+    },
+    "jsx": "react-jsx",
+    "declaration": false,
+    "declarationMap": false
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", ".turbo"]
+}

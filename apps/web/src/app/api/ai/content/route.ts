@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
   try {
     // This endpoint generates AI content at real provider cost and has no
     // public caller; gate it to admins like the other AI routes.
-    const authResponse = await requireAdmin()
+    const authResponse = await requireAdmin(request)
     if (authResponse) return authResponse
 
     const ip = getClientIp(request.headers)
@@ -118,10 +118,10 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   // Same admin gate as POST: this endpoint exposes provider topology and
   // has no public caller.
-  const authResponse = await requireAdmin()
+  const authResponse = await requireAdmin(request)
   if (authResponse) return authResponse
 
   const availableProviders = aiService.getAvailableProviders()

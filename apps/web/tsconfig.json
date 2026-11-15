@@ -4,9 +4,81 @@
     "ignoreDeprecations": "6.0",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
-      "content-collections": ["./.content-collections/generated"],
-      "~/*": ["./public/*"]
+      "@/*": [
+        "./src/*"
+      ],
+      "@/trpc/trpc": [
+        "../../packages/trpc-server/src/trpc/trpc.ts"
+      ],
+      "@/trpc/root": [
+        "../../packages/trpc-server/src/trpc/root.ts"
+      ],
+      "@/trpc/routers/*": [
+        "../../packages/trpc-server/src/trpc/routers/*.ts"
+      ],
+      "@/lib/auth": [
+        "../../packages/trpc-server/src/lib/auth.ts"
+      ],
+      "@/lib/audit-logger": [
+        "../../packages/trpc-server/src/lib/audit-logger.ts"
+      ],
+      "@/lib/constants": [
+        "../../packages/trpc-server/src/lib/constants.ts"
+      ],
+      "@/lib/ip-hash": [
+        "../../packages/trpc-server/src/lib/ip-hash.ts"
+      ],
+      "@/lib/logger": [
+        "../../packages/trpc-server/src/lib/logger.ts"
+      ],
+      "@/lib/r2": [
+        "../../packages/trpc-server/src/lib/r2.ts"
+      ],
+      "@/lib/ratelimit": [
+        "../../packages/trpc-server/src/lib/ratelimit.ts"
+      ],
+      "@/lib/request-locale": [
+        "../../packages/trpc-server/src/lib/request-locale.ts"
+      ],
+      "@/lib/resend": [
+        "../../packages/trpc-server/src/lib/resend.ts"
+      ],
+      "@/lib/resend-service": [
+        "../../packages/trpc-server/src/lib/resend-service.ts"
+      ],
+      "@/lib/secrets": [
+        "../../packages/trpc-server/src/lib/secrets.ts"
+      ],
+      "@/lib/spam-detection": [
+        "../../packages/trpc-server/src/lib/spam-detection.ts"
+      ],
+      "@/lib/transactional-email": [
+        "../../packages/trpc-server/src/lib/transactional-email.ts"
+      ],
+      "@/lib/two-factor-crypto": [
+        "../../packages/trpc-server/src/lib/two-factor-crypto.ts"
+      ],
+      "@/lib/ai/*": [
+        "../../packages/trpc-server/src/lib/ai/*.ts"
+      ],
+      "@/lib/privacy/account-deletion-policy": [
+        "../../packages/trpc-server/src/lib/privacy/account-deletion-policy.ts"
+      ],
+      "@/utils/get-default-image": [
+        "../../packages/trpc-server/src/utils/get-default-image.ts"
+      ],
+      "@/utils/get-ip": [
+        "../../packages/trpc-server/src/utils/get-ip.ts"
+      ],
+      "@/utils/get-localized-path": [
+        "../../packages/trpc-server/src/utils/get-localized-path.ts"
+      ],
+      "content-collections": [
+        "./.content-collections/generated"
+      ],
+      "~/*": [
+        "./public/*"
+      ]
     },
     "plugins": [
       {
@@ -17,7 +89,10 @@
     "declarationMap": false,
     "skipLibCheck": true
   },
-  "exclude": ["node_modules", ".next"],
+  "exclude": [
+    "node_modules",
+    ".next"
+  ],
   "extends": "../../packages/tsconfig/nextjs.json",
   "include": [
     "**/*.ts",

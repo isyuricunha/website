@@ -1,6 +1,6 @@
 'use client'
 
-import type { AppRouter } from './root'
+import type { AppRouter } from '@/trpc/root'
 import type { inferRouterInputs, inferRouterOutputs } from '@trpc/server'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'

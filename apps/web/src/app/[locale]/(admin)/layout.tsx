@@ -1,3 +1,4 @@
+import { headers } from 'next/headers'
 import type { Metadata } from 'next'
 
 import { redirect } from '@isyuricunha/i18n/routing'
@@ -30,7 +31,7 @@ export const metadata: Metadata = {
 const Layout = async (props: LayoutProps) => {
   const { children } = props
   const { locale } = await props.params
-  const session = await getSession()
+  const session = await getSession(await headers())
 
   if (!session || session.user.role !== 'admin') {
     redirect({

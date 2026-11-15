@@ -85,7 +85,7 @@ function heading(tag: string) {
 }
 
 function codeBlock(props: Props): string {
-  const { 'data-lang': lang, title, children, className, ...rest } = props
+  const { 'data-lang': lang, title, children, className } = props
   const langString = typeof lang === 'string' ? lang : ''
 
   const titleBar =
@@ -93,29 +93,33 @@ function codeBlock(props: Props): string {
       ? `<div class="flex min-h-8 flex-row items-center gap-2 border-b border-[var(--border-faint)] bg-[var(--yu-bg-titlebar)] px-4 py-1.5"><div class="text-muted-foreground font-mono text-xs">${escapeHtml(langString)}</div><figcaption class="text-muted-foreground flex-1 truncate font-mono text-xs">${escapeHtml(String(title))}</figcaption><button type="button" data-mdx-copy aria-label="Copy code" class="inline-flex h-7 w-7 items-center justify-center rounded-md hover:bg-accent/50">${icon(COPY_ICON, 'size-3.5')}</button></div>`
       : `<button type="button" data-mdx-copy aria-label="Copy code" class="absolute top-2 right-2 z-10 inline-flex h-7 w-7 items-center justify-center rounded-md hover:bg-accent/50">${icon(COPY_ICON, 'size-3.5')}</button>`
 
-  void rest
-
   return `<figure class="not-prose bg-bg-editor group shadow-feature-card relative my-6 overflow-hidden rounded-lg border border-[var(--border-subtle)] text-sm">${titleBar}<div class="overflow-x-auto"><pre class="p-4 font-mono text-[13px] leading-relaxed text-[var(--syntax-fg)] ${escapeHtml(String(className ?? ''))}">${childrenToString(children)}</pre></div></figure>`
 }
 
 function callout(props: Props): string {
   const { title, type = 'info', icon: iconProp, className, children } = props
-  const calloutType = typeof type === 'string' ? type : 'info'
 
-  const icons: Record<string, { paths: string; className: string }> = {
+  type CalloutType = 'info' | 'warning' | 'error'
+
+  const isCalloutType = (value: unknown): value is CalloutType =>
+    value === 'info' || value === 'warning' || value === 'error'
+
+  const calloutType: CalloutType = isCalloutType(type) ? type : 'info'
+
+  const icons = {
     info: { paths: INFO_ICON, className: 'text-status-info size-4' },
     warning: { paths: WARNING_ICON, className: 'text-accent-gold size-4' },
     error: { paths: ERROR_ICON, className: 'text-status-danger size-4' }
   }
 
-  const variants: Record<string, string> = {
+  const variants = {
     info: 'border-[var(--status-info-border)] bg-status-info-soft',
     warning: 'border-[var(--action-primary-border)] bg-action-primary-soft',
     error: 'border-[var(--status-danger-border)] bg-status-danger-soft'
   }
 
-  const variant = variants[calloutType] ?? variants.info
-  const iconData = icons[calloutType] ?? icons.info
+  const variant = variants[calloutType]
+  const iconData = icons[calloutType]
   const iconHtml =
     typeof iconProp === 'string' ? iconProp : icon(iconData.paths, iconData.className)
 
@@ -227,7 +231,7 @@ function nowProject(props: Props): string {
 }
 
 function video(props: Props): string {
-  const { src, children, ...rest } = props
+  const { src, children } = props
 
   if (typeof src === 'string') {
     return `<div class="not-prose my-6 overflow-hidden rounded-lg border border-[var(--border-subtle)]"><iframe src="${escapeHtml(src)}" loading="lazy" allowfullscreen class="aspect-video w-full"></iframe></div>`

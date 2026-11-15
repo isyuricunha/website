@@ -13,6 +13,8 @@
     "moduleResolution": "bundler",
     "paths": {
       "content-collections": ["./.content-collections/generated"]
-    }
+    },
+    "jsx": "react-jsx",
+    "jsxImportSource": "react"
   }
 }

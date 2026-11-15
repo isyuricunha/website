@@ -2,8 +2,8 @@ import { NextResponse } from 'next/server'
 
 import { getSession } from '@/lib/auth'
 
-export const requireAdmin = async (): Promise<NextResponse | null> => {
-  const session = await getSession()
+export const requireAdmin = async (request: Request): Promise<NextResponse | null> => {
+  const session = await getSession(request.headers)
 
   if (!session?.user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
