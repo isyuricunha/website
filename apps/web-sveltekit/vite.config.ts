@@ -14,6 +14,11 @@ export default defineConfig({
     contentCollections(),
     sveltekit({
       adapter: adapter(),
+      files: {
+        // Static assets (images, fonts, favicon) live in the Next.js app
+        // until the consolidation stage; serve them from there.
+        assets: '../web/public'
+      },
       prerender: {
         // Broken relative links and missing images already 404 in the live
         // Next.js site; keep the build green while preserving parity and log
