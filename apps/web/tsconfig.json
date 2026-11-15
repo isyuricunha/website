@@ -64,6 +64,9 @@
       "@/lib/privacy/account-deletion-policy": [
         "../../packages/trpc-server/src/lib/privacy/account-deletion-policy.ts"
       ],
+      "@/utils/exporters/music": [
+        "../../packages/trpc-server/src/utils/exporters/music.ts"
+      ],
       "@/utils/get-default-image": [
         "../../packages/trpc-server/src/utils/get-default-image.ts"
       ],

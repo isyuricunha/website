@@ -8,7 +8,8 @@
   "exports": {
     "./trpc": "./src/trpc/trpc.ts",
     "./root": "./src/trpc/root.ts",
-    "./auth": "./src/lib/auth.ts"
+    "./auth": "./src/lib/auth.ts",
+    "./utils/exporters/music": "./src/utils/exporters/music.ts"
   },
   "scripts": {
     "clean": "rm -rf .turbo",
