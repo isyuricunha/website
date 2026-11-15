@@ -4,7 +4,7 @@ import { evaluate } from '@mdx-js/mdx'
 import { z } from 'zod'
 
 import { createContentComponents } from './mdx/content-components'
-import { Fragment, jsx, jsxs } from './mdx/html-runtime'
+import { Fragment, jsx, jsxs } from '@isyuricunha/mdx-render/runtime'
 
 const contentSchema = z.object({
   content: z.string()

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { Fragment, escapeHtml, jsx, jsxs } from '../../../mdx/html-runtime.ts'
+import { Fragment, escapeHtml, jsx, jsxs } from '@isyuricunha/mdx-render/runtime'
 
 describe('escapeHtml', () => {
   it('escapes HTML-sensitive characters', () => {

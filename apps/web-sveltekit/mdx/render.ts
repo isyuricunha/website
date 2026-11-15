@@ -2,7 +2,7 @@ import { evaluate } from '@mdx-js/mdx'
 import { rehypePlugins, remarkPlugins } from '@isyuricunha/mdx-plugins'
 
 import { createContentComponents } from './content-components'
-import { Fragment, jsx, jsxs } from './html-runtime'
+import { Fragment, jsx, jsxs } from '@isyuricunha/mdx-render/runtime'
 
 /**
  * Renders one MDX document to static HTML using the custom string runtime.

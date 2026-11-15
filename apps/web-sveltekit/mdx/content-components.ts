@@ -7,7 +7,7 @@
  * client script instead of a React runtime.
  */
 
-import { childrenToString, escapeHtml, jsx } from './html-runtime'
+import { childrenToString, escapeHtml, jsx } from '@isyuricunha/mdx-render/runtime'
 
 type Props = Record<string, unknown>
 

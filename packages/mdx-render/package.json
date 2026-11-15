@@ -1,0 +1,19 @@
+{
+  "private": true,
+  "name": "@isyuricunha/mdx-render",
+  "version": "0.0.0",
+  "description": "Build-time MDX to static HTML renderer with a custom string JSX runtime",
+  "license": "AGPL-3.0",
+  "type": "module",
+  "exports": {
+    "./runtime": "./src/html-runtime.ts"
+  },
+  "scripts": {
+    "lint": "eslint . --max-warnings 0",
+    "type-check": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@isyuricunha/eslint-config": "workspace:*",
+    "@isyuricunha/tsconfig": "workspace:*"
+  }
+}
