@@ -24,7 +24,9 @@ describe('localeFromPathname', () => {
 
   it('uses the default locale for unprefixed paths', () => {
     expect(localeFromPathname('/blog')).toEqual({ locale: 'en', unprefixed: '/blog' })
-    expect(localeFromPathname('/')).toEqual({ locale: 'en', unprefixed: '/' })
+    // The empty tail keeps redirects slash-free: / redirects to /pt, /pt/ was
+    // the old double-slash bug.
+    expect(localeFromPathname('/')).toEqual({ locale: 'en', unprefixed: '' })
   })
 
   it('does not treat other first segments as locales', () => {

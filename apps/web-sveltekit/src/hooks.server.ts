@@ -49,7 +49,7 @@ const contentSecurityPolicy = [
 ].join('; ')
 
 export const handle: Handle = async ({ event, resolve }) => {
-  const { pathname, search } = event.url
+  const { pathname } = event.url
 
   if (isSkippedPath(pathname)) {
     return resolve(event)
@@ -78,7 +78,9 @@ export const handle: Handle = async ({ event, resolve }) => {
     event.locals.locale = negotiated
 
     if (negotiated !== i18n.defaultLocale) {
-      const target = `/${negotiated}${unprefixed}${search}`
+      // Reading url.search is forbidden while prerendering; the redirect only
+      // runs for live requests, where the query string matters.
+      const target = `/${negotiated}${unprefixed}${event.url.search}`
       return new Response(null, { status: 307, headers: { location: target } })
     }
   }

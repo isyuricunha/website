@@ -17,6 +17,8 @@
     "type-check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json"
   },
   "devDependencies": {
+    "@content-collections/core": "^0.15.3",
+    "@content-collections/vite": "^0.3.1",
     "@isyuricunha/i18n": "workspace:*",
     "@isyuricunha/tsconfig": "workspace:*",
     "@sveltejs/adapter-vercel": "^7.0.3",
