@@ -48,13 +48,10 @@ const LABEL_KEYS = [
   'social.linkedin.description'
 ] as const
 
-const socialCatalogKey = (key: string) =>
-  key.startsWith('social.') ? `contact.${key.replace('social.', 'social.')}` : `contact.${key}`
-
 export const load: PageServerLoad = async ({ locals }) => {
   const locale = locals.locale
   const t = await getServerTranslator(locale)
-  const labels = buildLabels(t, 'contact', LABEL_KEYS.map(socialCatalogKey))
+  const labels = buildLabels(t, 'contact', LABEL_KEYS)
 
   // Re-key labels back to the component's flat naming (strip 'contact.' prefix).
   const flat: Record<string, string> = {}
