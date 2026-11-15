@@ -923,6 +923,9 @@ importers:
       '@tailwindcss/vite':
         specifier: ^4.3.3
         version: 4.3.5(vite@8.3.8(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1))
+      '@trpc/client':
+        specifier: 11.19.0
+        version: 11.19.0(@trpc/server@11.19.0(typescript@6.0.3))(typescript@6.0.3)
       '@trpc/server':
         specifier: 11.19.0
         version: 11.19.0(typescript@6.0.3)
@@ -932,6 +935,9 @@ importers:
       dotenv-cli:
         specifier: ^11.0.0
         version: 11.0.0
+      superjson:
+        specifier: ^2.2.6
+        version: 2.2.6
       svelte:
         specifier: ^5.57.3
         version: 5.57.3(@typescript-eslint/types@8.71.1)
@@ -1320,6 +1326,9 @@ importers:
       '@types/node':
         specifier: 26.6.4
         version: 26.6.4
+      '@types/speakeasy':
+        specifier: ^2.0.6
+        version: 2.0.10
 
   packages/tsconfig:
     dependencies:
@@ -5380,6 +5389,9 @@ packages:
 
   '@types/rss@0.0.32':
     resolution: {integrity: sha512-2oKNqKyUY4RSdvl5eZR1n2Q9yvw3XTe3mQHsFPn9alaNBxfPnbXBtGP8R0SV8pK1PrVnLul0zx7izbm5/gF5Qw==}
+
+  '@types/speakeasy@2.0.10':
+    resolution: {integrity: sha512-QVRlDW5r4yl7p7xkNIbAIC/JtyOcClDIIdKfuG7PWdDT1MmyhtXSANsildohy0K+Lmvf/9RUtLbNLMacvrVwxA==}
 
   '@types/unist@2.0.11':
     resolution: {integrity: sha512-CmBKiL6NNo/OqgmMn95Fk9Whlp2mtvIv+KNpQKN2F4SjvrEesubTRWGYSg+BnWZOnlCaSTU1sMpsBOzgbYhnsA==}
@@ -13934,6 +13946,10 @@ snapshots:
   '@types/resolve@1.20.6': {}
 
   '@types/rss@0.0.32': {}
+
+  '@types/speakeasy@2.0.10':
+    dependencies:
+      '@types/node': 26.6.4
 
   '@types/unist@2.0.11': {}
 
