@@ -61,7 +61,31 @@ names); TypeScript 6 minimum; Node 22+ minimum.
   security, cron and test inventory captured in `INVENTORY.md`.
 - 2026-11-15: Target stack verified against current official releases
   (SvelteKit 3.2.0, Svelte 5.57.3, adapter-vercel 7.x line, vite-plugin-svelte
-  7). Baseline build running; measurements land in `BASELINE.md`.
+  7). Baseline build recorded in `BASELINE.md` (d0f58016).
+- 2026-11-15: Stage 2 done (8a187f51): apps/web-sveltekit scaffold with
+  SvelteKit 3.2.0, Svelte 5.57.3, adapter-vercel 7.0.3, Vite 8, Tailwind 4,
+  yutheme style presets. Build and svelte-check green.
+- 2026-11-15: Stage 3 (framework layer) done (cb45c05e): i18n library
+  (catalogs as on-demand chunks, ICU subset formatter, English fallback,
+  26 unit tests), [[lang=locale]] optional routing with param matcher,
+  hooks.server.ts (locale negotiation + 307 redirect + NEXT_LOCALE cookie +
+  lang injection + report-only CSP port), /api/health parity route.
+  Verified in dev: / serves en, /pt serves pt with lang="pt" and translated
+  content, cookie redirect / -> /pt matches next-intl behavior.
+
+## Stage state
+
+1. Baseline and full feature inventory: DONE
+2. SvelteKit architecture and dependency preparation: DONE
+3. Shared utilities, configuration, themes, localization: DONE (i18n; theme
+   tokens ship with the styles import, Svelte components follow in stage 5)
+4. Documentation and content migration: NEXT
+5. Public website and interactive components: PENDING
+6. Authentication and backend integration: PENDING
+7. Administrative panel and remaining features: PENDING
+8. API, SEO, cron, caching, Vercel compatibility: PENDING
+9. Dependency removal and architectural consolidation: PENDING
+10. Comprehensive validation, optimization, final review: PENDING
 
 ## Decisions log
 
@@ -71,3 +95,15 @@ names); TypeScript 6 minimum; Node 22+ minimum.
   edited destructively during the transition.
 - Message catalogs stay the single i18n source of truth; the parity suite keeps
   running against them.
+- SvelteKit 3 specifics verified from official docs: configuration lives in
+  `vite.config.ts`; tsconfig extends `$app/tsconfig`; `#lib` is declared in the
+  app package.json `imports` field with explicit extensions; hook types come
+  from `@sveltejs/kit/hooks`; param matchers use `defineParams` from
+  `@sveltejs/kit/params`.
+- `<svelte:document html>` is not supported by the installed Svelte; the lang
+  attribute is injected through `transformPageChunk` in hooks.server.ts.
+- Locale routing uses a single route tree under `[[lang=locale]]` (optional
+  segment, param matcher) instead of duplicating routes per locale; the
+  default locale serves unprefixed URLs like today.
+- The i18n formatter only implements what the catalogs use (simple placeholders
+  and plural selectors with `#`); ICU quoting is intentionally absent.
