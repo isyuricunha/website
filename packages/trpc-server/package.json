@@ -9,7 +9,9 @@
     "./trpc": "./src/trpc/trpc.ts",
     "./root": "./src/trpc/root.ts",
     "./auth": "./src/lib/auth.ts",
-    "./utils/exporters/music": "./src/utils/exporters/music.ts"
+    "./utils/exporters/music": "./src/utils/exporters/music.ts",
+    "./utils/get-default-image": "./src/utils/get-default-image.ts",
+    "./utils/get-avatar-abbreviation": "./src/utils/get-avatar-abbreviation.ts"
   },
   "scripts": {
     "clean": "rm -rf .turbo",

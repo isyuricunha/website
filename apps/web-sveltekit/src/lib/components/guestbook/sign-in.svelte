@@ -4,11 +4,11 @@
 
 	type Props = {
 		labels: Record<string, string>
+		open?: boolean
+		showTrigger?: boolean
 	}
 
-	let { labels }: Props = $props()
-
-	let open = $state(false)
+	let { labels, open = $bindable(false), showTrigger = true }: Props = $props()
 	let mode = $state<'sign-in' | 'sign-up'>('sign-in')
 	let email = $state('')
 	let password = $state('')
@@ -46,16 +46,18 @@
 	}
 </script>
 
-<div class="flex items-center">
-	<button
-		type="button"
-		class="bg-accent-earth text-text-inverse hover:bg-accent-earth-hover inline-block rounded-md border border-[var(--border-default)] px-4 py-2 text-sm font-medium transition-colors"
-		onclick={() => (open = true)}
-	>
-		{labels['sign-in'] ?? 'Sign in'}
-	</button>
-	<span class="ml-2">{labels['signin-description']}</span>
-</div>
+{#if showTrigger}
+	<div class="flex items-center">
+		<button
+			type="button"
+			class="bg-accent-earth text-text-inverse hover:bg-accent-earth-hover inline-block rounded-md border border-[var(--border-default)] px-4 py-2 text-sm font-medium transition-colors"
+			onclick={() => (open = true)}
+		>
+			{labels['sign-in'] ?? 'Sign in'}
+		</button>
+		<span class="ml-2">{labels['signin-description']}</span>
+	</div>
+{/if}
 
 {#if open}
 	<div class="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -74,23 +76,23 @@
 			<h2 class="text-lg font-medium">{mode === 'sign-in' ? labels['sign-in'] : labels['sign-up']}</h2>
 
 			<form class="mt-4 flex flex-col gap-3" onsubmit={submit}>
-				<label class="sr-only" for="auth-email">{labels['email']}</label>
+				<label class="sr-only" for="auth-email">{labels['email-placeholder']}</label>
 				<input
 					id="auth-email"
 					type="email"
 					required
 					bind:value={email}
-					placeholder={labels['email']}
+					placeholder={labels['email-placeholder']}
 					class="bg-bg-surface rounded-md border border-[var(--border-default)] px-3 py-2 text-sm focus-visible:ring-ring focus-visible:ring-2 focus-visible:outline-none"
 				/>
-				<label class="sr-only" for="auth-password">{labels['password']}</label>
+				<label class="sr-only" for="auth-password">{labels['password-placeholder']}</label>
 				<input
 					id="auth-password"
 					type="password"
 					required
 					minlength="8"
 					bind:value={password}
-					placeholder={labels['password']}
+					placeholder={labels['password-placeholder']}
 					class="bg-bg-surface rounded-md border border-[var(--border-default)] px-3 py-2 text-sm focus-visible:ring-ring focus-visible:ring-2 focus-visible:outline-none"
 				/>
 				<button
@@ -107,7 +109,7 @@
 				class="text-muted-foreground hover:text-foreground mt-4 w-full text-center text-sm"
 				onclick={() => (mode = mode === 'sign-in' ? 'sign-up' : 'sign-in')}
 			>
-				{mode === 'sign-in' ? labels['create-account'] : labels['have-account']}
+				{mode === 'sign-in' ? labels['dont-have-account'] : labels['already-have-account']}
 			</button>
 		</div>
 	</div>

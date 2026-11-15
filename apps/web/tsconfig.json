@@ -67,6 +67,9 @@
       "@/utils/exporters/music": [
         "../../packages/trpc-server/src/utils/exporters/music.ts"
       ],
+      "@/utils/get-avatar-abbreviation": [
+        "../../packages/trpc-server/src/utils/get-avatar-abbreviation.ts"
+      ],
       "@/utils/get-default-image": [
         "../../packages/trpc-server/src/utils/get-default-image.ts"
       ],
