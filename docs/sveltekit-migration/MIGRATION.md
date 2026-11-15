@@ -164,3 +164,5 @@ names); TypeScript 6 minimum; Node 22+ minimum.
 - The i18n formatter only implements what the catalogs use (simple placeholders
   and plural selectors with `#`); ICU quoting is intentionally absent.
 - Stage 5/6: contact page ported (3d7f54a7): localized form with client validation and toasts, direct contact and social cards
+
+- Stage 5/6: music page ported (all nine Last.fm widgets, shared social-share component, build-time feature flags)
