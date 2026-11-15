@@ -1,0 +1,27 @@
+{
+  "private": true,
+  "name": "@isyuricunha/web-sveltekit",
+  "version": "0.0.0",
+  "description": "SvelteKit implementation of yuricunha.com (migration target)",
+  "license": "AGPL-3.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite dev --port 3010",
+    "build": "vite build",
+    "preview": "vite preview --port 3010",
+    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+    "type-check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json"
+  },
+  "devDependencies": {
+    "@isyuricunha/tsconfig": "workspace:*",
+    "@sveltejs/adapter-vercel": "^7.0.3",
+    "@sveltejs/kit": "^3.2.0",
+    "@sveltejs/vite-plugin-svelte": "^7.0.0",
+    "@tailwindcss/vite": "^4.3.3",
+    "svelte": "^5.57.3",
+    "svelte-check": "^4.3.4",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^6.0.3",
+    "vite": "^8.3.6"
+  }
+}

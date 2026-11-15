@@ -1,0 +1,1 @@
+{"version":3,"file":"_layout.svelte.js","names":[],"sources":["../../../../../src/routes/+layout.svelte"],"sourcesContent":["<script lang=\"ts\">\n\timport '../app.css'\n\n\tlet { children } = $props()\n</script>\n\n{@render children()}\n"],"mappings":";;AAAA,SAAA,QAAA,YAAA,SAAA;CAGC,IAAI,EAAE,aAAU;CAGR,SAAQ,UAAA;;AAFT"}
