@@ -73,15 +73,21 @@ names); TypeScript 6 minimum; Node 22+ minimum.
   Verified in dev: / serves en, /pt serves pt with lang="pt" and translated
   content, cookie redirect / -> /pt matches next-intl behavior.
 
-- 2026-11-15: Stage 4 (content) complete for the web app (8fa5b801, 5a60baf3):
-  snippets list + detail, projects list + detail, about/privacy/uses pages
-  (shared content page loader) are all prerendered from the build-time HTML
-  render; /snippets keeps its permanent redirect to /snippet. The now page
-  resolves the NowProject slots with live GitHub data (repo, stars, latest
-  release, push date, website) cached one hour, cards as divs with link
-  titles (nested anchors are invalid HTML and split cards). Verified
-  visually: uses prose, now cards with real GitHub data. Remaining in this
-  stage: apps/docs.
+- 2026-11-15: Stage 4 COMPLETE (267e6ae6, c4cfce98): apps/docs-sveltekit
+  ships the docs app on SvelteKit 3: docs collection compiled with the
+  custom HTML runtime (66 documents), component previews resolved at build
+  time with React SSR of the demos plus Shiki source (React isolated to that
+  build step; documented exception, the docs demonstrate the published React
+  yutheme package; pure Node ESM cannot resolve its extensionless next/link
+  import, so the yutheme is bundled server-side via ssr.noExternal). The 106
+  component demos moved to apps/docs-sveltekit/src/demos (the Vite JSX loader
+  covers only files inside the app root) and the Next.js docs app follows
+  via adjusted import paths. Sidebar navigation reuses the docs links
+  config; Edit on GitHub and prev/next preserved. Verified visually
+  (accordion page: sidebar hierarchy, preview window chrome, live demo
+  markup, highlighted code). SvelteKit 3 notes learned: [[...rest]] is
+  invalid (rest is always optional, use [...rest]); rest-param entries are
+  plain strings, not arrays.
 
 ## Stage state
 
@@ -89,8 +95,9 @@ names); TypeScript 6 minimum; Node 22+ minimum.
 2. SvelteKit architecture and dependency preparation: DONE
 3. Shared utilities, configuration, themes, localization: DONE (i18n; theme
    tokens ship with the styles import, Svelte components follow in stage 5)
-4. Documentation and content migration: web app DONE; apps/docs PENDING
-5. Public website and interactive components: PENDING
+4. Documentation and content migration: DONE
+5. Public website and interactive components: NEXT (home, header/footer,
+   interactive widgets, copy-button delegation, interactive doc previews)
 6. Authentication and backend integration: PENDING
 7. Administrative panel and remaining features: PENDING
 8. API, SEO, cron, caching, Vercel compatibility: PENDING
