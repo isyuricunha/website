@@ -166,3 +166,5 @@ names); TypeScript 6 minimum; Node 22+ minimum.
 - Stage 5/6: contact page ported (3d7f54a7): localized form with client validation and toasts, direct contact and social cards
 
 - Stage 5/6: music page ported (all nine Last.fm widgets, shared social-share component, build-time feature flags)
+
+- Stage 5/6: notifications and settings ported (sign-in dialog reused via bindable open; privacy controls included)
