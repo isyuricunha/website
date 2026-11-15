@@ -113,6 +113,13 @@ names); TypeScript 6 minimum; Node 22+ minimum.
   scoped CSS never reaches {@html} content; those controls live in the
   global app.css of each app.
 
+- 2026-11-15: Stage 5/6: guestbook ported (4de74b7a, 481d190b): vanilla tRPC
+  client and Better Auth Svelte client (same plugin set as the React one),
+  minimal toast store replacing react-sonner, infinite-scroll message list
+  with owner/admin delete, Zod-validated message form, sign-in dialog with
+  sign-up toggle, pinned card and catalog-driven error card. Verified
+  visually in pt (fail-closed 429 error state renders the catalog message).
+
 ## Stage state
 
 1. Baseline and full feature inventory: DONE
