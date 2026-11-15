@@ -120,6 +120,12 @@ names); TypeScript 6 minimum; Node 22+ minimum.
   sign-up toggle, pinned card and catalog-driven error card. Verified
   visually in pt (fail-closed 429 error state renders the catalog message).
 
+- 2026-11-15: Stage 5/6: offline + recap ported (35369e79): noindex offline
+  fallback (prerendered) and recap with wakatime/lastfm/recap tRPC queries,
+  catalog states verified in pt; shared buildLabels helper added. Dev server
+  now runs with 4 GB heap (content-collections watcher OOMed at 2 GB).
+  JSON-LD schemas deferred to stage 8 SEO surfaces.
+
 ## Stage state
 
 1. Baseline and full feature inventory: DONE
