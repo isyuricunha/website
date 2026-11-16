@@ -1,5 +1,5 @@
 <script lang="ts">
-	import PageTitle from '#lib/components/blog/page-title.svelte'
+	import UsesPageClient from '#lib/components/uses/uses-page-client.svelte'
 	import type { PageData } from './$types'
 
 	let { data }: { data: PageData } = $props()
@@ -11,10 +11,11 @@
 	<link rel="canonical" href={data.canonicalPath} />
 </svelte:head>
 
-	<PageTitle title={data.title} description={data.description} />
-
-	<main class="mx-auto max-w-4xl px-6 py-16">
-	<article class="prose prose-invert w-full">
-		{@html data.html}
-	</article>
+<main class="mx-auto w-full max-w-6xl px-4 pt-28 pb-20 sm:px-8">
+	<UsesPageClient
+		title={data.title}
+		description={data.description}
+		mdxHtml={data.html}
+		locale={data.locale}
+	/>
 </main>
