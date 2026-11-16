@@ -1,6 +1,7 @@
 import { error } from '@sveltejs/kit'
 import { getProject, getProjectSlugs } from '#lib/content.ts'
 import { buildSeoHead } from '#lib/seo.ts'
+import { getServerTranslator } from '#lib/i18n/server.ts'
 import type { EntryGenerator, PageServerLoad } from './$types'
 
 export const entries: EntryGenerator = () => {
@@ -24,9 +25,21 @@ export const load: PageServerLoad = async ({ params, parent }) => {
     description: project.description
   })
 
+  const t = await getServerTranslator(locale)
+
   return {
     ...head,
     locale,
-    html: project.html
+    html: project.html,
+    project: {
+      name: project.name,
+      description: project.description,
+      github: project.github,
+      homepage: project.homepage
+    },
+    strings: {
+      label: t('projects.content-label'),
+      visitWebsite: t('projects.visit-website')
+    }
   }
 }
