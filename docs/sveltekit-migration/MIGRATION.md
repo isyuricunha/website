@@ -170,3 +170,5 @@ names); TypeScript 6 minimum; Node 22+ minimum.
 - Stage 5/6: notifications and settings ported (sign-in dialog reused via bindable open; privacy controls included)
 
 - Stage 5/6: projects listing completed (filters, cover cards, GitHub repos via server tRPC caller, JSON-LD). Dev-local 500 on /projects is the preserved fail-closed Upstash rate limit with placeholder envs; verification with real envs pending integration stage.
+
+- Stage 5/6: public profile (u/[handle]) ported with infinite comments. Dev script raises the Vite heap to 4 GB after two OOM crashes in full-bundle dev mode.
