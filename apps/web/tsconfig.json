@@ -73,6 +73,9 @@
       "@/utils/get-avatar-abbreviation": [
         "../../packages/trpc-server/src/utils/get-avatar-abbreviation.ts"
       ],
+      "@/utils/csv-export": [
+        "../../packages/trpc-server/src/utils/csv/csv-export.ts"
+      ],
       "@/lib/announcement-priority": [
         "../../packages/trpc-server/src/utils/announcements/announcement-priority.ts"
       ],

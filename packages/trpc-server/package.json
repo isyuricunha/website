@@ -13,7 +13,8 @@
     "./utils/get-default-image": "./src/utils/get-default-image.ts",
     "./utils/get-avatar-abbreviation": "./src/utils/get-avatar-abbreviation.ts",
     "./utils/announcements/announcement-storage": "./src/utils/announcements/announcement-storage.ts",
-    "./utils/announcements/announcement-priority": "./src/utils/announcements/announcement-priority.ts"
+    "./utils/announcements/announcement-priority": "./src/utils/announcements/announcement-priority.ts",
+    "./utils/csv/csv-export": "./src/utils/csv/csv-export.ts"
   },
   "scripts": {
     "clean": "rm -rf .turbo",
