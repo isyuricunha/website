@@ -52,7 +52,12 @@ const RETENTION = {
 
 const cutoff = (now: Date, days: number) => new Date(now.getTime() - days * DAY_MS)
 
-export async function runDataRetentionCron(requestHeaders: Headers): Promise<Response> {
+export async function runDataRetentionCron(
+  requestHeaders: Headers,
+  deps?: { db?: unknown; redis?: unknown }
+): Promise<Response> {
+  const activeDb = (deps?.db ?? db) as typeof db
+  const activeRedis = (deps?.redis ?? redis) as typeof redis
   const started_at = Date.now()
 
   try {
@@ -71,7 +76,7 @@ export async function runDataRetentionCron(requestHeaders: Headers): Promise<Res
 
     const lock_id = randomBytes(16).toString('hex')
 
-    const lock = await redis.set(lock_key, lock_id, { nx: true, ex: 9 * 60 })
+    const lock = await activeRedis.set(lock_key, lock_id, { nx: true, ex: 9 * 60 })
     if (!lock) {
       return Response.json({ success: true, skipped: true, reason: 'locked' })
     }
@@ -80,33 +85,33 @@ export async function runDataRetentionCron(requestHeaders: Headers): Promise<Res
       const now = new Date()
       const deleted: Record<string, number> = {}
 
-      const analyticsResult = await db
+      const analyticsResult = await activeDb
         .delete(analyticsEvents)
         .where(lt(analyticsEvents.createdAt, cutoff(now, RETENTION.analyticsEventsDays)))
       deleted.analyticsEvents = analyticsResult.rowCount ?? 0
 
-      const performanceResult = await db
+      const performanceResult = await activeDb
         .delete(performanceMetrics)
         .where(lt(performanceMetrics.createdAt, cutoff(now, RETENTION.performanceMetricsDays)))
       deleted.performanceMetrics = performanceResult.rowCount ?? 0
 
-      const apiUsageResult = await db
+      const apiUsageResult = await activeDb
         .delete(apiUsage)
         .where(lt(apiUsage.createdAt, cutoff(now, RETENTION.apiUsageDays)))
       deleted.apiUsage = apiUsageResult.rowCount ?? 0
 
-      const loginAttemptsResult = await db
+      const loginAttemptsResult = await activeDb
         .delete(loginAttempts)
         .where(lt(loginAttempts.createdAt, cutoff(now, RETENTION.loginAttemptsDays)))
       deleted.loginAttempts = loginAttemptsResult.rowCount ?? 0
 
-      const feedbackResult = await db
+      const feedbackResult = await activeDb
         .delete(aiChatFeedback)
         .where(lt(aiChatFeedback.createdAt, cutoff(now, RETENTION.aiChatFeedbackDays)))
       deleted.aiChatFeedback = feedbackResult.rowCount ?? 0
 
       const securityEventsCutoff = cutoff(now, RETENTION.resolvedSecurityEventsDays)
-      const securityEventsResult = await db
+      const securityEventsResult = await activeDb
         .delete(securityEvents)
         .where(
           and(eq(securityEvents.resolved, true), lt(securityEvents.createdAt, securityEventsCutoff))
@@ -116,12 +121,12 @@ export async function runDataRetentionCron(requestHeaders: Headers): Promise<Res
       // Errors are pruned by age alone (see RETENTION above): a single pass
       // per table, no resolved-only pass, since the age predicate is a
       // superset of it and two passes would scan error_logs twice.
-      const errorLogsResult = await db
+      const errorLogsResult = await activeDb
         .delete(errorLogs)
         .where(lt(errorLogs.createdAt, cutoff(now, RETENTION.errorLogsDays)))
       deleted.errorLogs = errorLogsResult.rowCount ?? 0
 
-      const errorTrackingResult = await db
+      const errorTrackingResult = await activeDb
         .delete(errorTracking)
         .where(lt(errorTracking.createdAt, cutoff(now, RETENTION.errorTrackingDays)))
       deleted.errorTracking = errorTrackingResult.rowCount ?? 0
@@ -135,9 +140,9 @@ export async function runDataRetentionCron(requestHeaders: Headers): Promise<Res
       })
     } finally {
       try {
-        const current = await redis.get<string>(lock_key)
+        const current = await activeRedis.get<string>(lock_key)
         if (current === lock_id) {
-          await redis.del(lock_key)
+          await activeRedis.del(lock_key)
         }
       } catch (error) {
         logger.warn('Failed to release cron lock', {

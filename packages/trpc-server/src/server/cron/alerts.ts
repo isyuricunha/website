@@ -106,7 +106,7 @@ const get_metric_value = async (metric: Metric, now: Date, timeRangeMinutes: num
     // Population note: rate-limit rejections (429) are no longer recorded in
     // api_usage, so this rate covers genuine failures only. A flood shows up
     // as a drop in recorded volume, not as a spike in error rate.
-    const rows = await db.query.apiUsage.findMany({
+    const rows = await activeDb.query.apiUsage.findMany({
       where: gte(apiUsage.createdAt, start),
       columns: { statusCode: true }
     })
@@ -123,7 +123,7 @@ const get_metric_value = async (metric: Metric, now: Date, timeRangeMinutes: num
     // recorder. NOTE: getMonitoringStats still averages performance_metrics,
     // so the admin card reflects AI-chat latency while this alert reflects
     // tRPC request latency. They are intentionally different populations.
-    const rows = await db.query.apiUsage.findMany({
+    const rows = await activeDb.query.apiUsage.findMany({
       where: gte(apiUsage.createdAt, start),
       columns: { responseTime: true }
     })
@@ -135,7 +135,7 @@ const get_metric_value = async (metric: Metric, now: Date, timeRangeMinutes: num
   }
 
   if (metric === 'unresolved_error_count') {
-    const rows = await db.query.errorTracking.findMany({
+    const rows = await activeDb.query.errorTracking.findMany({
       where: eq(errorTracking.resolved, false),
       columns: { lastSeen: true }
     })
@@ -144,7 +144,7 @@ const get_metric_value = async (metric: Metric, now: Date, timeRangeMinutes: num
   }
 
   if (metric === 'security_critical_events') {
-    const rows = await db.query.securityEvents.findMany({
+    const rows = await activeDb.query.securityEvents.findMany({
       where: eq(securityEvents.resolved, false),
       columns: { severity: true, createdAt: true }
     })
@@ -163,7 +163,12 @@ const get_notification_action_url = (type: string): string => {
   return type === 'security' ? '/admin/security' : '/admin/monitoring'
 }
 
-export async function runAlertsCron(requestHeaders: Headers): Promise<Response> {
+export async function runAlertsCron(
+  requestHeaders: Headers,
+  deps?: { db?: unknown; redis?: unknown }
+): Promise<Response> {
+  const activeDb = (deps?.db ?? db) as typeof db
+  const activeRedis = (deps?.redis ?? redis) as typeof redis
   const started_at = Date.now()
 
   try {
@@ -182,7 +187,7 @@ export async function runAlertsCron(requestHeaders: Headers): Promise<Response> 
 
     const lock_id = randomBytes(16).toString('hex')
 
-    const lock = await redis.set(lock_key, lock_id, { nx: true, ex: 9 * 60 })
+    const lock = await activeRedis.set(lock_key, lock_id, { nx: true, ex: 9 * 60 })
     if (!lock) {
       return Response.json({ success: true, skipped: true, reason: 'locked' })
     }
@@ -190,12 +195,12 @@ export async function runAlertsCron(requestHeaders: Headers): Promise<Response> 
     try {
       const now = new Date()
 
-      const active_alerts = await db.query.alerts.findMany({
+      const active_alerts = await activeDb.query.alerts.findMany({
         where: eq(alerts.isActive, true),
         orderBy: desc(alerts.createdAt)
       })
 
-      const admins = await db.query.users.findMany({
+      const admins = await activeDb.query.users.findMany({
         where: eq(users.role, 'admin'),
         columns: { id: true }
       })
@@ -222,7 +227,7 @@ export async function runAlertsCron(requestHeaders: Headers): Promise<Response> 
         if (!is_triggered) continue
         triggered += 1
 
-        const last_instance = await db.query.alertInstances.findFirst({
+        const last_instance = await activeDb.query.alertInstances.findFirst({
           where: eq(alertInstances.alertId, alert.id),
           orderBy: desc(alertInstances.triggeredAt),
           columns: { triggeredAt: true }
@@ -270,7 +275,7 @@ export async function runAlertsCron(requestHeaders: Headers): Promise<Response> 
           }
         })
 
-        await db.transaction(async (tx) => {
+        await activeDb.transaction(async (tx) => {
           await tx.insert(alertInstances).values({
             id: instance_id,
             alertId: alert.id,
@@ -308,9 +313,9 @@ export async function runAlertsCron(requestHeaders: Headers): Promise<Response> 
       })
     } finally {
       try {
-        const current = await redis.get<string>(lock_key)
+        const current = await activeRedis.get<string>(lock_key)
         if (current === lock_id) {
-          await redis.del(lock_key)
+          await activeRedis.del(lock_key)
         }
       } catch (error) {
         logger.warn('Failed to release cron lock', {

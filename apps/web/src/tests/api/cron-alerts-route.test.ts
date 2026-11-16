@@ -157,14 +157,9 @@ describe('/api/cron/alerts', () => {
     const db = createDbMock()
     const redis = createRedisMock()
 
-    vi.doMock('@isyuricunha/db', () => createDbModuleMock(db))
-    vi.doMock('@isyuricunha/kv', () => ({ redis }))
+    const { runAlertsCron } = await import('@isyuricunha/trpc-server/server/cron/alerts')
 
-    const { GET } = await import('@/routes/api/cron/alerts/+server')
-
-    const res = await GET({
-      request: new Request('http://test/api/cron/alerts', { headers: new Headers() })
-    } as unknown as Parameters<typeof GET>[0])
+    const res = await runAlertsCron(new Headers(), { db: db as never, redis: redis as never })
 
     expect(res.status).toBe(401)
   })
@@ -175,18 +170,14 @@ describe('/api/cron/alerts', () => {
     const db = createDbMock()
     const redis = createRedisMock()
 
-    vi.doMock('@isyuricunha/db', () => createDbModuleMock(db))
-    vi.doMock('@isyuricunha/kv', () => ({ redis }))
+    const { runAlertsCron } = await import('@isyuricunha/trpc-server/server/cron/alerts')
 
-    const { GET } = await import('@/routes/api/cron/alerts/+server')
-
-    const res = await GET({
-      request: new Request('http://test', {
-        headers: new Headers([
-          ['authorization', 'Bearer change-me-to-a-random-string-with-at-least-16-chars']
-        ])
-      })
-    } as unknown as Parameters<typeof GET>[0])
+    const res = await runAlertsCron(
+      new Headers([
+        ['authorization', 'Bearer change-me-to-a-random-string-with-at-least-16-chars']
+      ]),
+      { db: db as never, redis: redis as never }
+    )
 
     expect(res.status).toBe(401)
   })
@@ -197,16 +188,12 @@ describe('/api/cron/alerts', () => {
     const db = createDbMock()
     const redis = createRedisMock()
 
-    vi.doMock('@isyuricunha/db', () => createDbModuleMock(db))
-    vi.doMock('@isyuricunha/kv', () => ({ redis }))
+    const { runAlertsCron } = await import('@isyuricunha/trpc-server/server/cron/alerts')
 
-    const { GET } = await import('@/routes/api/cron/alerts/+server')
-
-    const res = await GET({
-      request: new Request('http://test', {
-        headers: new Headers([['authorization', 'Bearer wrong']])
-      })
-    } as unknown as Parameters<typeof GET>[0])
+    const res = await runAlertsCron(new Headers([['authorization', 'Bearer wrong']]), {
+      db: db as never,
+      redis: redis as never
+    })
 
     expect(res.status).toBe(401)
   })
@@ -218,23 +205,17 @@ describe('/api/cron/alerts', () => {
 
     const redis = createRedisMock()
 
-    vi.doMock('@isyuricunha/db', () => createDbModuleMock(db))
-    vi.doMock('@isyuricunha/kv', () => ({ redis }))
     vi.mocked(redis.set).mockResolvedValueOnce('OK')
     vi.mocked(redis.set).mockResolvedValueOnce(null)
 
-    const { GET } = await import('@/routes/api/cron/alerts/+server')
+    const { runAlertsCron } = await import('@isyuricunha/trpc-server/server/cron/alerts')
 
     const headers = new Headers([['authorization', 'Bearer 0123456789abcdef']])
 
-    const res1 = await GET({
-      request: new Request('http://test/api/cron/alerts', { headers })
-    } as unknown as Parameters<typeof GET>[0])
+    const res1 = await runAlertsCron(headers, { db: db as never, redis: redis as never })
     expect(res1.status).toBe(200)
 
-    const res2 = await GET({
-      request: new Request('http://test/api/cron/alerts', { headers })
-    } as unknown as Parameters<typeof GET>[0])
+    const res2 = await runAlertsCron(headers, { db: db as never, redis: redis as never })
     const json2 = (await res2.json()) as { skipped?: boolean; reason?: string }
 
     expect(json2.skipped).toBe(true)
@@ -249,9 +230,6 @@ describe('/api/cron/alerts', () => {
 
     const db = createDbMock()
     const redis = createRedisMock()
-
-    vi.doMock('@isyuricunha/db', () => createDbModuleMock(db))
-    vi.doMock('@isyuricunha/kv', () => ({ redis }))
 
     db.query.alerts.findMany.mockResolvedValue([
       {
@@ -278,13 +256,12 @@ describe('/api/cron/alerts', () => {
 
     db.query.users.findMany.mockResolvedValue([{ id: 'admin-1' }, { id: 'admin-2' }])
 
-    const { GET } = await import('@/routes/api/cron/alerts/+server')
+    const { runAlertsCron } = await import('@isyuricunha/trpc-server/server/cron/alerts')
 
-    const res = await GET({
-      request: new Request('http://test', {
-        headers: new Headers([['authorization', 'Bearer 0123456789abcdef']])
-      })
-    } as unknown as Parameters<typeof GET>[0])
+    const res = await runAlertsCron(new Headers([['authorization', 'Bearer 0123456789abcdef']]), {
+      db: db as never,
+      redis: redis as never
+    })
 
     expect(res.status).toBe(200)
 
@@ -313,9 +290,6 @@ describe('/api/cron/alerts', () => {
     const db = createDbMock()
     const redis = createRedisMock()
 
-    vi.doMock('@isyuricunha/db', () => createDbModuleMock(db))
-    vi.doMock('@isyuricunha/kv', () => ({ redis }))
-
     db.query.alerts.findMany.mockResolvedValue([
       {
         id: 'alert-avg',
@@ -342,13 +316,12 @@ describe('/api/cron/alerts', () => {
 
     db.query.users.findMany.mockResolvedValue([{ id: 'admin-1' }, { id: 'admin-2' }])
 
-    const { GET } = await import('@/routes/api/cron/alerts/+server')
+    const { runAlertsCron } = await import('@isyuricunha/trpc-server/server/cron/alerts')
 
-    const res = await GET({
-      request: new Request('http://test', {
-        headers: new Headers([['authorization', 'Bearer 0123456789abcdef']])
-      })
-    } as unknown as Parameters<typeof GET>[0])
+    const res = await runAlertsCron(new Headers([['authorization', 'Bearer 0123456789abcdef']]), {
+      db: db as never,
+      redis: redis as never
+    })
 
     expect(res.status).toBe(200)
 
@@ -366,9 +339,6 @@ describe('/api/cron/alerts', () => {
 
     const db = createDbMock()
     const redis = createRedisMock()
-
-    vi.doMock('@isyuricunha/db', () => createDbModuleMock(db))
-    vi.doMock('@isyuricunha/kv', () => ({ redis }))
 
     db.query.alerts.findMany.mockResolvedValue([
       {
@@ -394,13 +364,12 @@ describe('/api/cron/alerts', () => {
     db.query.apiUsage.findMany.mockResolvedValue([])
     db.query.users.findMany.mockResolvedValue([{ id: 'admin-1' }, { id: 'admin-2' }])
 
-    const { GET } = await import('@/routes/api/cron/alerts/+server')
+    const { runAlertsCron } = await import('@isyuricunha/trpc-server/server/cron/alerts')
 
-    const res = await GET({
-      request: new Request('http://test', {
-        headers: new Headers([['authorization', 'Bearer 0123456789abcdef']])
-      })
-    } as unknown as Parameters<typeof GET>[0])
+    const res = await runAlertsCron(new Headers([['authorization', 'Bearer 0123456789abcdef']]), {
+      db: db as never,
+      redis: redis as never
+    })
 
     expect(res.status).toBe(200)
 
@@ -421,9 +390,6 @@ describe('/api/cron/alerts', () => {
 
     const db = createDbMock()
     const redis = createRedisMock()
-
-    vi.doMock('@isyuricunha/db', () => createDbModuleMock(db))
-    vi.doMock('@isyuricunha/kv', () => ({ redis }))
 
     db.query.alerts.findMany.mockResolvedValue([
       {
@@ -457,18 +423,14 @@ describe('/api/cron/alerts', () => {
       return { triggeredAt: new Date('2026-01-01T00:00:00.000Z') }
     })
 
-    const { GET } = await import('@/routes/api/cron/alerts/+server')
+    const { runAlertsCron } = await import('@isyuricunha/trpc-server/server/cron/alerts')
 
     const headers = new Headers([['authorization', 'Bearer 0123456789abcdef']])
 
-    const res1 = await GET({
-      request: new Request('http://test/api/cron/alerts', { headers })
-    } as unknown as Parameters<typeof GET>[0])
+    const res1 = await runAlertsCron(headers, { db: db as never, redis: redis as never })
     expect(res1.status).toBe(200)
 
-    const res2 = await GET({
-      request: new Request('http://test/api/cron/alerts', { headers })
-    } as unknown as Parameters<typeof GET>[0])
+    const res2 = await runAlertsCron(headers, { db: db as never, redis: redis as never })
     expect(res2.status).toBe(200)
 
     expect(db.__inserted.alert_instances).toHaveLength(1)

@@ -28,7 +28,7 @@ vi.mock('@isyuricunha/env', () => ({
 
 vi.mock('@/lib/logger', () => ({
   logger: {
-    error: vi.fn((...args: unknown[]) => console.error('[LOGGER-ERROR]', ...args)),
+    error: vi.fn(),
     warn: vi.fn(),
     info: vi.fn(),
     debug: vi.fn()
@@ -143,14 +143,13 @@ describe('/api/cron/data-retention', () => {
     const db = createDbMock()
     const redis = createRedisMock()
 
-    vi.doMock('@isyuricunha/db', () => createDbModuleMock(db))
-    vi.doMock('@isyuricunha/kv', () => ({ redis }))
+    const { runDataRetentionCron } =
+      await import('@isyuricunha/trpc-server/server/cron/data-retention')
 
-    const { GET } = await import('@/routes/api/cron/data-retention/+server')
-
-    const res = await GET({
-      request: new Request('http://test/api/cron/data-retention', { headers: new Headers() })
-    } as unknown as Parameters<typeof GET>[0])
+    const res = await runDataRetentionCron(new Headers(), {
+      db: db as never,
+      redis: redis as never
+    })
 
     expect(res.status).toBe(401)
   })
@@ -161,18 +160,15 @@ describe('/api/cron/data-retention', () => {
     const db = createDbMock()
     const redis = createRedisMock()
 
-    vi.doMock('@isyuricunha/db', () => createDbModuleMock(db))
-    vi.doMock('@isyuricunha/kv', () => ({ redis }))
+    const { runDataRetentionCron } =
+      await import('@isyuricunha/trpc-server/server/cron/data-retention')
 
-    const { GET } = await import('@/routes/api/cron/data-retention/+server')
-
-    const res = await GET({
-      request: new Request('http://test', {
-        headers: new Headers([
-          ['authorization', 'Bearer change-me-to-a-random-string-with-at-least-16-chars']
-        ])
-      })
-    } as unknown as Parameters<typeof GET>[0])
+    const res = await runDataRetentionCron(
+      new Headers([
+        ['authorization', 'Bearer change-me-to-a-random-string-with-at-least-16-chars']
+      ]),
+      { db: db as never, redis: redis as never }
+    )
 
     expect(res.status).toBe(401)
   })
@@ -183,16 +179,13 @@ describe('/api/cron/data-retention', () => {
     const db = createDbMock()
     const redis = createRedisMock()
 
-    vi.doMock('@isyuricunha/db', () => createDbModuleMock(db))
-    vi.doMock('@isyuricunha/kv', () => ({ redis }))
+    const { runDataRetentionCron } =
+      await import('@isyuricunha/trpc-server/server/cron/data-retention')
 
-    const { GET } = await import('@/routes/api/cron/data-retention/+server')
-
-    const res = await GET({
-      request: new Request('http://test', {
-        headers: new Headers([['authorization', 'Bearer wrong']])
-      })
-    } as unknown as Parameters<typeof GET>[0])
+    const res = await runDataRetentionCron(new Headers([['authorization', 'Bearer wrong']]), {
+      db: db as never,
+      redis: redis as never
+    })
 
     expect(res.status).toBe(401)
   })
@@ -204,21 +197,18 @@ describe('/api/cron/data-retention', () => {
 
     const redis = createRedisMock()
 
-    vi.doMock('@isyuricunha/db', () => createDbModuleMock(db))
-    vi.doMock('@isyuricunha/kv', () => ({ redis }))
     vi.mocked(redis.set).mockResolvedValueOnce('OK')
     vi.mocked(redis.set).mockResolvedValueOnce(null)
 
-    const { GET } = await import('@/routes/api/cron/data-retention/+server')
+    const { runDataRetentionCron } =
+      await import('@isyuricunha/trpc-server/server/cron/data-retention')
 
     const headers = new Headers([['authorization', 'Bearer 0123456789abcdef']])
 
-    const res1 = await GET({
-      request: new Request('http://test/api/cron/data-retention', { headers })
-    } as unknown as Parameters<typeof GET>[0])
+    const res1 = await runDataRetentionCron(headers, { db: db as never, redis: redis as never })
     expect(res1.status).toBe(200)
 
-    const res2 = await GET({ headers } as unknown as Parameters<typeof GET>[0])
+    const res2 = await runDataRetentionCron(headers, { db: db as never, redis: redis as never })
     const json2 = (await res2.json()) as { skipped?: boolean; reason?: string }
 
     expect(json2.skipped).toBe(true)
@@ -239,16 +229,13 @@ describe('/api/cron/data-retention', () => {
     })
     const redis = createRedisMock()
 
-    vi.doMock('@isyuricunha/db', () => createDbModuleMock(db))
-    vi.doMock('@isyuricunha/kv', () => ({ redis }))
+    const { runDataRetentionCron } =
+      await import('@isyuricunha/trpc-server/server/cron/data-retention')
 
-    const { GET } = await import('@/routes/api/cron/data-retention/+server')
-
-    const res = await GET({
-      request: new Request('http://test', {
-        headers: new Headers([['authorization', 'Bearer 0123456789abcdef']])
-      })
-    } as unknown as Parameters<typeof GET>[0])
+    const res = await runDataRetentionCron(
+      new Headers([['authorization', 'Bearer 0123456789abcdef']]),
+      { db: db as never, redis: redis as never }
+    )
 
     expect(res.status).toBe(200)
 
@@ -286,16 +273,13 @@ describe('/api/cron/data-retention', () => {
     const db = createDbMock()
     const redis = createRedisMock()
 
-    vi.doMock('@isyuricunha/db', () => createDbModuleMock(db))
-    vi.doMock('@isyuricunha/kv', () => ({ redis }))
+    const { runDataRetentionCron } =
+      await import('@isyuricunha/trpc-server/server/cron/data-retention')
 
-    const { GET } = await import('@/routes/api/cron/data-retention/+server')
-
-    const res = await GET({
-      request: new Request('http://test', {
-        headers: new Headers([['authorization', 'Bearer 0123456789abcdef']])
-      })
-    } as unknown as Parameters<typeof GET>[0])
+    const res = await runDataRetentionCron(
+      new Headers([['authorization', 'Bearer 0123456789abcdef']]),
+      { db: db as never, redis: redis as never }
+    )
 
     const json = (await res.json()) as { deleted: Record<string, number> }
 
