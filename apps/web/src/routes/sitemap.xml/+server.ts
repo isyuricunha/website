@@ -220,7 +220,7 @@ export const _sitemapXml = (): string => {
 }
 
 export const GET: RequestHandler = async () => {
-  return new Response(sitemapXml(), {
+  return new Response(_sitemapXml(), {
     headers: {
       'content-type': 'application/xml',
       'cache-control': 'public, max-age=0, must-revalidate'

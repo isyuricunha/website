@@ -1,9 +1,15 @@
 import { buildLabels } from '#lib/labels.ts'
 import { getServerTranslator } from '#lib/i18n/server.ts'
 import { buildSeoHead } from '#lib/seo.ts'
-import type { PageServerLoad } from './$types'
+import { i18n } from '@isyuricunha/i18n/config'
+import type { EntryGenerator, PageServerLoad } from './$types'
 
 // Notifications are user-specific; the page shell stays static per locale.
+// The default crawl evaluates the optional [[lang=locale]] param as empty,
+// so only the unprefixed variant gets prerendered without an explicit list.
+export const entries: EntryGenerator = () =>
+  i18n.locales.map((locale) => ({ lang: locale as never }))
+
 export const prerender = true
 
 const LABEL_KEYS = [

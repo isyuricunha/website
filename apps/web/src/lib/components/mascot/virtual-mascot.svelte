@@ -1,59 +1,59 @@
 <script lang="ts">
-	import { page } from '$app/state'
-	import MascotIcon from './mascot-icon.svelte'
-	import MascotGame from './mascot-game.svelte'
-	import MascotSettingsPanel from './mascot-settings-panel.svelte'
-	import MascotContactPanel from './mascot-contact-panel.svelte'
-	import MascotMenuPanel from './mascot-menu-panel.svelte'
-	import MascotSpeechBubbles from './mascot-speech-bubbles.svelte'
-	import MascotSelectionBubble from './mascot-selection-bubble.svelte'
-	import { MascotStateController } from './mascot-state.svelte'
-	import AIChatInterface from './ai-chat-interface.svelte'
-	import { createTranslator } from '#lib/i18n/translator'
-	import { loadMessages } from '#lib/i18n/catalog'
-	import { i18n } from '@isyuricunha/i18n/config'
+import { page } from '$app/state'
+import MascotIcon from './mascot-icon.svelte'
+import MascotGame from './mascot-game.svelte'
+import MascotSettingsPanel from './mascot-settings-panel.svelte'
+import MascotContactPanel from './mascot-contact-panel.svelte'
+import MascotMenuPanel from './mascot-menu-panel.svelte'
+import MascotSpeechBubbles from './mascot-speech-bubbles.svelte'
+import MascotSelectionBubble from './mascot-selection-bubble.svelte'
+import { MascotStateController } from './mascot-state.svelte'
+import AIChatInterface from './ai-chat-interface.svelte'
+import { createTranslator } from '#lib/i18n/translator'
+import { loadMessages } from '#lib/i18n/catalog'
+import { i18n } from '@isyuricunha/i18n/config'
 
-	let { hidden = false }: { hidden?: boolean } = $props()
+let { hidden = false }: { hidden?: boolean } = $props()
 
-	const mascot = new MascotStateController()
-	let mascotLocale = $state(i18n.defaultLocale)
-	let labels = $state(null)
+let mascotLocale = $state(i18n.defaultLocale)
+let labels = $state(null)
+const mascot = new MascotStateController()
 
-	// Configure translations from the server-provided labels after hydration.
-	$effect(() => {
-		const data = page.data as { labels?: Record<string, unknown> }
-		if (data.labels && data.labels.mascot) {
-			labels = data.labels.mascot as Record<string, unknown>
-		}
-	})
+// Configure translations from the server-provided labels after hydration.
+$effect(() => {
+const data = page.data as { labels?: Record<string, unknown> }
+if (data.labels && data.labels.mascot) {
+labels = data.labels.mascot as Record<string, unknown>
+}
+})
 
-	$effect(() => {
-		mascot.syncPathname(page.url.pathname)
-	})
+$effect(() => {
+mascot.syncPathname(page.url.pathname)
+})
 
-	$effect(() => {
-		// Build the translator from the raw mascot catalog and wire the controller.
-		let cancelled = false
-		void (async () => {
-			const messages = labels ?? (await loadMessages(mascotLocale))
-			if (cancelled) return
-			const translator = createTranslator(mascotLocale, messages as never)
-			mascot.configure({ translator, locale: mascotLocale, allMessages: { mascot: messages } })
-		})()
-		return () => {
-			cancelled = true
-		}
-	})
+$effect(() => {
+// Build the translator from the raw mascot catalog and wire the controller.
+let cancelled = false
+void (async () => {
+const messages = labels ?? (await loadMessages(mascotLocale))
+if (cancelled) return
+const translator = createTranslator(mascotLocale, messages as never)
+mascot.configure({ translator, locale: mascotLocale, allMessages: { mascot: messages } })
+})()
+return () => {
+cancelled = true
+}
+})
 
-	$effect(() => {
-		const cleanup = mascot.initialize()
-		mascot.startReactiveEffects()
-		return cleanup
-	})
+$effect(() => {
+const cleanup = mascot.initialize()
+mascot.startReactiveEffects()
+return cleanup
+})
 
-	const state = $derived(mascot.state)
-	const mounted = $derived(mascot.mounted)
-	const prefersReducedMotion = $derived(mascot.prefersReducedMotion)
+const state = $derived(mascot.state)
+const mounted = $derived(mascot.mounted)
+const prefersReducedMotion = $derived(mascot.prefersReducedMotion)
 </script>
 
 {#if !hidden}
@@ -89,6 +89,7 @@
 			{#if state.showAIChat}
 				<div class={mascot.getBubblePositionClasses()}>
 					<AIChatInterface
+						{mascot}
 						isOpen={state.showAIChat}
 						onClose={() => mascot.handleAIClose()}
 						onThinkingChange={(thinking) => mascot.handleThinkingChange(thinking)}
@@ -145,6 +146,6 @@
 		</div>
 
 		<!-- Mini Game -->
-		<MascotGame isOpen={state.showGame} onClose={() => mascot.updateState({ showGame: false })} />
+		<MascotGame {mascot} isOpen={state.showGame} onClose={() => mascot.updateState({ showGame: false })} />
 	{/if}
 {/if}
