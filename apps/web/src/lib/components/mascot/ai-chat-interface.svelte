@@ -162,7 +162,7 @@
 	const chatStatusKey = $derived(isLoading ? 'responding' : connectionStatus)
 	const canUseChat = $derived(connectionStatus !== 'unavailable' && connectionStatus !== 'offline')
 	const shouldShowQuickPrompts = $derived(
-		canUseChat && !isLoading && messages.every((message) => !message.isUser)
+		canUseChat && !isLoading && messages.every((message: ChatMessage) => !message.isUser)
 	)
 	const quickPrompts = $derived(
 		get_quick_prompt_ids(currentPage).map((id) => ({
@@ -1318,7 +1318,7 @@
 			{/if}
 			{#if isTurnstileEnabled}
 				<div class="mb-3" aria-hidden="true">
-					<Turnstile onSuccess={afterTurnstileSuccess} onError={handleTurnstileError} onExpire={handleTurnstileExpire} options={{ theme: 'auto', size: 'invisible' }} />
+					<Turnstile siteKey={env.NEXT_PUBLIC_TURNSTILE_SITE_KEY} onSuccess={afterTurnstileSuccess} onError={handleTurnstileError} onExpire={handleTurnstileExpire} />
 				</div>
 			{/if}
 			<div class="flex gap-2">

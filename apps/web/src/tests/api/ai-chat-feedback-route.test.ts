@@ -106,7 +106,7 @@ describe('/api/ai/chat/feedback', () => {
     const { ratelimit } = await import('@/lib/ratelimit')
     const { getClientIp } = await import('@/lib/spam-detection')
     const { getSession } = await import('@/lib/auth')
-    const db = feedbackDb as never
+    const db = feedbackDb
 
     vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
     vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)

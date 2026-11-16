@@ -24,7 +24,11 @@ const contactFormSchema = z.object({
 
 export async function contactPost(
   request: Request,
-  deps?: { resend?: { emails: { send: (payload: unknown) => Promise<unknown> } } }
+  deps?: {
+    resend?: {
+      emails: { send: (payload: unknown) => Promise<{ error?: unknown; data?: unknown }> }
+    }
+  }
 ): Promise<Response> {
   const activeResend = deps?.resend ?? resend
   try {
@@ -149,7 +153,7 @@ Sent at: ${currentDate}
 
     // Send confirmation email to the user using the template
     await sendBestEffortEmail(
-      activeResend,
+      activeResend as Parameters<typeof sendBestEffortEmail>[0],
       {
         from: 'Yuri Cunha <noreply@yuricunha.com>',
         to: [validatedData.email],

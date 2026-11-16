@@ -156,7 +156,6 @@ describe('createPrivacyDataExport', () => {
     const { createPrivacyDataExport } = await import('@/lib/privacy/create-privacy-data-export')
 
     const result = await createPrivacyDataExport('user-1', {
-      database,
       database: database as never,
       generatedAt: new Date('2026-09-06T16:00:00.000Z')
     })

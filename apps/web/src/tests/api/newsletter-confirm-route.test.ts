@@ -41,9 +41,7 @@ describe('/api/newsletter/confirm (double opt-in)', () => {
   })
 
   const makeRequest = (token?: string) =>
-    new Request(
-      `https://yuricunha.com/api/newsletter/confirm${token ? `?token=${token}` : ''}`
-    ) as unknown as Parameters<typeof import('@/routes/api/newsletter/confirm/+server').GET>[0]
+    new Request(`https://yuricunha.com/api/newsletter/confirm${token ? `?token=${token}` : ''}`)
 
   const setup = async () => {
     const { ratelimit } = await import('@/lib/ratelimit')

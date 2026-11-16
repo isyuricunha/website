@@ -31,7 +31,7 @@ const create_id = (): string => {
 
 export async function aiFeedbackPost(
   request: Request,
-  deps?: { db?: Pick<typeof db, 'insert'> }
+  deps?: { db?: { insert: (table: unknown) => { values: (values: unknown) => Promise<unknown> } } }
 ): Promise<Response> {
   const activeDb = deps?.db ?? db
   const started_at = Date.now()

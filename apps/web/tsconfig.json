@@ -34,7 +34,7 @@
       "#lib/ai/*": ["../../packages/trpc-server/src/lib/ai/*"],
       "#trpc/routers/*": ["../../packages/trpc-server/src/trpc/routers/*"],
       "#lib/components/*": ["./src/lib/components/*"],
-      "#lib/*": ["./src/lib/*"],
+      "#lib/*": ["./src/lib/*", "../../packages/trpc-server/src/lib/*"],
       "#tests/*": ["./src/tests/*"],
       "@/*": ["./src/*"],
       "@/lib/ratelimit": ["../../packages/trpc-server/src/lib/ratelimit.ts"],
@@ -67,7 +67,17 @@
       "@/lib/admin/integrity": ["./src/lib/components/admin/admin-integrity.ts"],
       "@isyuricunha/db": ["../../packages/db/src/index.ts"],
       "next/server": ["./src/tests/stubs/next-server.ts"],
-      "next/navigation": ["./src/tests/stubs/next-navigation.ts"]
+      "next/navigation": ["./src/tests/stubs/next-navigation.ts"],
+      "@/lib/*": ["./src/lib/*", "../../packages/trpc-server/src/lib/*"],
+      "@/utils/*": ["../../packages/trpc-server/src/utils/*"],
+      "#lib/utils/*": ["./src/lib/utils/*", "../../packages/trpc-server/src/utils/*"],
+      "@upstash/ratelimit": ["../../packages/trpc-server/node_modules/@upstash/ratelimit"],
+      "#lib/utils/announcement-storage": [
+        "../../packages/trpc-server/src/utils/announcements/announcement-storage.ts"
+      ],
+      "#lib/announcement-priority": [
+        "../../packages/trpc-server/src/utils/announcements/announcement-priority.ts"
+      ]
     },
     "jsx": "react-jsx",
     "jsxImportSource": "react"

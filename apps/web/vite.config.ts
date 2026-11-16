@@ -33,10 +33,9 @@ flagDefine['import.meta.env.PUBLIC_TURNSTILE_SITE_KEY'] = JSON.stringify(
 )
 
 // Explicit annotation keeps the '*' literal from widening to plain string.
-const prerenderSeeds: Array<'*' | `/${string}`> = [
-  '*',
-  ...i18n.locales.map((locale) => `/${locale}`)
-]
+const prerenderSeeds = ['*', ...i18n.locales.map((locale) => `/${locale}`)] as Array<
+  '*' | `/${string}`
+>
 
 // SvelteKit 3 keeps all framework configuration in vite.config.ts. The
 // repository standard is Vite 8, TypeScript 6 and Node.js 24.

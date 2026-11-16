@@ -50,7 +50,7 @@ describe('/api/admin/posts', () => {
       body: JSON.stringify({ slug: 'test', title: 'Test', content: 'Hello', locale: 'en' })
     })
 
-    const res = await POST({ request: req })
+    const res = await POST({ request: req } as unknown as Parameters<typeof POST>[0])
 
     expect(res.status).toBe(401)
   })
@@ -68,7 +68,7 @@ describe('/api/admin/posts', () => {
       body: JSON.stringify({ slug: 'test', title: 'Test', content: 'Hello', locale: 'en' })
     })
 
-    const res = await POST({ request: req })
+    const res = await POST({ request: req } as unknown as Parameters<typeof POST>[0])
 
     expect(res.status).toBe(403)
   })
@@ -95,7 +95,7 @@ describe('/api/admin/posts', () => {
       })
     })
 
-    const res = await POST({ request: req })
+    const res = await POST({ request: req } as unknown as Parameters<typeof POST>[0])
 
     expect(res.status).toBe(429)
   })
@@ -117,7 +117,7 @@ describe('/api/admin/posts', () => {
       body: JSON.stringify({ slug: '', title: '', content: '', locale: '' })
     })
 
-    const res = await POST({ request: req })
+    const res = await POST({ request: req } as unknown as Parameters<typeof POST>[0])
 
     expect(res.status).toBe(400)
     const json = (await res.json()) as { error?: string }
@@ -137,7 +137,7 @@ describe('/api/admin/posts', () => {
 
     const req = new Request('https://example.com/api/admin/posts', { method: 'DELETE' })
 
-    const res = await DELETE({ request: req })
+    const res = await DELETE({ request: req } as unknown as Parameters<typeof DELETE>[0])
 
     expect(res.status).toBe(400)
     const json = (await res.json()) as { error?: string }

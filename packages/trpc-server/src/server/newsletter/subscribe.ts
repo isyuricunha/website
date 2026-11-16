@@ -16,13 +16,20 @@ const subscribeSchema = z.object({
   turnstileToken: z.string().optional()
 })
 
+const resend = new Resend(env.RESEND_API_KEY)
+
 const CONFIRM_TTL_SECONDS = 60 * 60 * 24
 
 export async function newsletterSubscribePost(
   request: Request,
   deps?: {
-    kv?: { redis: Pick<typeof redis, 'set' | 'get' | 'del'>; redisKeys: typeof redisKeys }
-    resend?: { emails: { send: (payload: unknown) => Promise<unknown> } }
+    kv?: {
+      redis: Pick<typeof redis, 'set' | 'get' | 'del'>
+      redisKeys: Pick<typeof redisKeys, 'newsletterConfirm'>
+    }
+    resend?: {
+      emails: { send: (payload: unknown) => Promise<{ error?: unknown; data?: unknown }> }
+    }
   }
 ): Promise<Response> {
   const activeRedis = deps?.kv?.redis ?? redis
@@ -75,7 +82,6 @@ export async function newsletterSubscribePost(
     const siteUrl = env.NEXT_PUBLIC_WEBSITE_URL ?? 'https://yuricunha.com'
     const confirmUrl = `${siteUrl}/api/newsletter/confirm?token=${token}`
 
-    const resend = new Resend(env.RESEND_API_KEY)
     const html = await render(NewsletterConfirmation({ confirmUrl, locale }))
 
     const subject_by_locale: Partial<Record<string, string>> = {
@@ -101,7 +107,9 @@ export async function newsletterSubscribePost(
       return Response.json({ error: 'Failed to subscribe to newsletter' }, { status: 500 })
     }
 
-    logger.info('Newsletter confirmation email sent', { messageId: data?.id })
+    logger.info('Newsletter confirmation email sent', {
+      messageId: (data as { id?: string } | undefined)?.id
+    })
 
     return Response.json({
       success: true,

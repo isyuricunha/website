@@ -11,7 +11,10 @@ import { redis, redisKeys } from '@isyuricunha/kv'
 export async function newsletterConfirmGet(
   request: Request,
   deps?: {
-    kv?: { redis: Pick<typeof redis, 'get' | 'del' | 'set'>; redisKeys: typeof redisKeys }
+    kv?: {
+      redis: Pick<typeof redis, 'get' | 'del' | 'set'>
+      redisKeys: Pick<typeof redisKeys, 'newsletterConfirm'>
+    }
   }
 ): Promise<Response> {
   const activeRedis = deps?.kv?.redis ?? redis

@@ -22,15 +22,23 @@ function createMemoryStorage(): Storage {
 }
 
 // Client-side helpers gate on window being defined before touching storage.
-Object.defineProperty(globalThis, 'window', {
-  configurable: true,
-  value: globalThis
-})
-Object.defineProperty(globalThis, 'localStorage', {
-  configurable: true,
-  value: createMemoryStorage()
-})
-Object.defineProperty(globalThis, 'sessionStorage', {
-  configurable: true,
-  value: createMemoryStorage()
-})
+// DOM test environments (happy-dom) already provide window and storage, so
+// only stub them when the runner environment does not.
+if (globalThis.window === undefined) {
+  Object.defineProperty(globalThis, 'window', {
+    configurable: true,
+    value: globalThis
+  })
+}
+if (globalThis.localStorage === undefined) {
+  Object.defineProperty(globalThis, 'localStorage', {
+    configurable: true,
+    value: createMemoryStorage()
+  })
+}
+if (globalThis.sessionStorage === undefined) {
+  Object.defineProperty(globalThis, 'sessionStorage', {
+    configurable: true,
+    value: createMemoryStorage()
+  })
+}

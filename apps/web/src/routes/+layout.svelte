@@ -55,13 +55,13 @@ if (typeof navigator !== 'undefined' && 'serviceWorker' in navigator) {
 
 <svelte:document onclick={handleDocumentClick} />
 
-<Header labels={data.labels} />
+<Header labels={data.labels as unknown as Record<string, string>} />
 
 <main id="skip-nav" class="mx-auto w-full max-w-6xl flex-1 px-4 pt-28 pb-20 sm:px-8">
 	{@render children()}
 </main>
 
-<Footer labels={data.labels} />
+<Footer labels={data.labels as unknown as Record<string, string>} />
 
 <VirtualMascot />
 

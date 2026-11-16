@@ -241,7 +241,7 @@ export default defineConfig(
         name: 'web-sveltekit',
         environment: 'node',
         setupFiles: ['src/tests/setup-storage.ts'],
-        include: ['src/tests/**/*.test.ts'],
+        include: ['src/tests/**/*.test.ts', 'src/tests/**/*.test.tsx'],
         // Workspace packages must run through the Vite transform, otherwise
         // their imports bypass vi mocks and hit real db/redis clients.
         server: {

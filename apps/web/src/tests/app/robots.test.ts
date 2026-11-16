@@ -9,7 +9,9 @@ describe('app robots.txt generator', () => {
   it('includes sitemap, host, and Content-Signal', async () => {
     const { GET } = await import('@/routes/robots.txt/+server')
 
-    const response = (await GET()) as Response
+    const response = (await GET({
+      request: new Request('http://test/robots.txt')
+    } as unknown as Parameters<typeof GET>[0])) as Response
     const body = await response.text()
 
     expect(response.headers.get('Content-Type')).toBe('text/plain')
