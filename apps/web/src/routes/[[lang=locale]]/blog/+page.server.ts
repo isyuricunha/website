@@ -14,12 +14,19 @@ export const load: PageServerLoad = async ({ parent }) => {
   return {
     title: t('blog.title'),
     description: t('blog.description'),
+    strings: {
+      home: t('layout.home'),
+      blog: t('layout.blog'),
+      rss: t('blog.filtered-posts.rss'),
+      error: t('common.error')
+    },
     posts: getPosts(locale).map(({ slug, title, summary, date, readingTime }) => ({
       slug,
       title,
       summary,
       date,
-      readingTime
+      readingTime,
+      readingTimeLabel: t('snippets.min-read', { minutes: readingTime })
     }))
   }
 }

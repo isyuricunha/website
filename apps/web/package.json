@@ -27,6 +27,7 @@
     "@isyuricunha/mdx-render": "workspace:*",
     "@isyuricunha/trpc-server": "workspace:*",
     "@isyuricunha/tsconfig": "workspace:*",
+    "@isyuricunha/yutheme": "^0.2.1",
     "@mdx-js/mdx": "^3.1.1",
     "@react-email/render": "^2.3.1",
     "@sveltejs/adapter-vercel": "^7.0.3",
@@ -36,6 +37,7 @@
     "@trpc/client": "11.19.0",
     "@trpc/server": "11.19.0",
     "@types/react": "19.3.0",
+    "@upstash/ratelimit": "^2.2.0",
     "better-auth": "1.7.7",
     "dotenv-cli": "^11.0.0",
     "happy-dom": "^21.0.4",
@@ -47,12 +49,11 @@
     "tailwindcss": "^4.3.3",
     "typescript": "^6.0.3",
     "vite": "^8.3.6",
-    "zod": "^4.6.5",
-    "@isyuricunha/yutheme": "^0.2.1",
-    "@upstash/ratelimit": "^2.2.0"
+    "zod": "^4.6.5"
   },
   "dependencies": {
     "@isyuricunha/emails": "workspace:*",
+    "@isyuricunha/env": "workspace:*",
     "@isyuricunha/i18n": "workspace:*",
     "@isyuricunha/kv": "workspace:*",
     "@isyuricunha/utils": "workspace:*",
@@ -63,7 +64,6 @@
     "rss": "^1.2.2",
     "satori": "^0.63.2",
     "satori-html": "^0.3.2",
-    "simple-icons": "^16.37.0",
-    "@isyuricunha/env": "workspace:*"
+    "simple-icons": "^16.37.0"
   }
 }

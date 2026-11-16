@@ -2,6 +2,288 @@
 @import '@isyuricunha/yutheme/styles/preset.css';
 @import '@isyuricunha/yutheme/styles/shiki.css';
 @import '@isyuricunha/yutheme/styles/typography.css';
+@source '../../node_modules/@isyuricunha/yutheme/dist/**/*.{js,mjs}';
+
+/* Geist typefaces, same faces the Next app loaded through next/font/google.
+ * The two custom properties keep the yutheme token names unchanged. */
+@font-face {
+  font-family: 'Geist Sans';
+  src: url('/fonts/geist-sans/Geist-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Geist Sans';
+  src: url('/fonts/geist-sans/Geist-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Geist Sans';
+  src: url('/fonts/geist-sans/Geist-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Geist Sans';
+  src: url('/fonts/geist-sans/Geist-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Geist Mono';
+  src: url('/fonts/geist-mono/GeistMono-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Geist Mono';
+  src: url('/fonts/geist-mono/GeistMono-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Geist Mono';
+  src: url('/fonts/geist-mono/GeistMono-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Geist Mono';
+  src: url('/fonts/geist-mono/GeistMono-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --color-anchor: var(--anchor);
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  --tracking-tighter: -0.03em;
+  --tracking-mono: 0.08em;
+  --tracking-label: 0.12em;
+}
+
+@layer base {
+  :root {
+    --font-geist-sans: 'Geist Sans', ui-sans-serif, system-ui, sans-serif;
+    --font-geist-mono: 'Geist Mono', ui-monospace, monospace;
+    --anchor: var(--status-info);
+  }
+
+  .dark {
+    --anchor: var(--status-info);
+  }
+
+  h1,
+  h2 {
+    letter-spacing: -0.03em;
+    line-height: 1.08;
+  }
+
+  h1,
+  h2,
+  h3 {
+    color: var(--text-primary);
+  }
+
+  p {
+    color: var(--text-secondary);
+    line-height: 1.65;
+  }
+
+  strong {
+    font-weight: 600;
+  }
+}
+
+@layer utilities {
+  .animation-delay-150 {
+    animation-delay: 150ms;
+  }
+
+  .animation-delay-300 {
+    animation-delay: 300ms;
+  }
+
+  .bubble-float {
+    animation: bubbleFloat 3s ease-in-out infinite;
+  }
+
+  .shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .shimmer::before {
+    content: '';
+    position: absolute;
+    inset-block: 0;
+    width: 36%;
+    background: linear-gradient(90deg, transparent, rgba(244, 241, 232, 0.32), transparent);
+    opacity: 0.8;
+    transform: translateX(-100%);
+    animation: shimmer 2s infinite;
+  }
+
+  .gentle-pulse {
+    animation: gentlePulse 2s ease-in-out infinite;
+  }
+
+  .scale-in {
+    animation: scaleIn 0.2s ease-out;
+  }
+
+  .line-clamp-1 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+  }
+
+  .line-clamp-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+  }
+
+  .line-clamp-3 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+  }
+
+  .focus-enhanced:focus-visible {
+    outline: 2px solid var(--action-primary);
+    outline-offset: 2px;
+    border-radius: 0.375rem;
+  }
+
+  .transition-smooth {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  @keyframes music-bar {
+    0%,
+    100% {
+      height: 20%;
+    }
+    50% {
+      height: 100%;
+    }
+  }
+
+  .animate-music-bar-1 {
+    animation: music-bar 0.8s ease-in-out infinite;
+  }
+  .animate-music-bar-2 {
+    animation: music-bar 0.7s ease-in-out infinite;
+    animation-delay: 0.1s;
+  }
+  .animate-music-bar-3 {
+    animation: music-bar 0.9s ease-in-out infinite;
+    animation-delay: 0.2s;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Subtle floating animation for speech bubbles */
+@keyframes bubbleFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+/* Shimmer animation for skeleton loading */
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Gentle pulse for loading states */
+@keyframes gentlePulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* Scale animation for interactive elements */
+@keyframes scaleIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .bubble-float,
+  .shimmer::before,
+  .gentle-pulse,
+  .scale-in,
+  .animate-pulse,
+  .animate-spin,
+  .animate-music-bar-1,
+  .animate-music-bar-2,
+  .animate-music-bar-3 {
+    animation: none !important;
+  }
+
+  .transition-smooth {
+    transition: none !important;
+  }
+}
+
+/* Image zoom overlay, ported from the Next styles. */
+[data-rmiz-modal-overlay='visible'] {
+  background-color: rgb(20, 18, 11, 0.88) !important;
+}
+
+[data-rmiz-btn-unzoom] {
+  visibility: hidden;
+}
+
+[data-rmiz-modal-img] {
+  border-radius: 8px;
+}
 
 /* Delegated-content controls: rendered via {@html}, outside Svelte scoping. */
 button[data-mdx-copy] {

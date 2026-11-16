@@ -111,7 +111,8 @@ export const load: PageServerLoad = async ({ params, parent }) => {
           strings: {
             card: t('homepage.latest-articles.card'),
             title: t('homepage.latest-articles.title'),
-            more: t('homepage.latest-articles.more')
+            more: t('homepage.latest-articles.more'),
+            error: t('common.error')
           },
           featured: {
             slug: latestPosts[0].slug,
