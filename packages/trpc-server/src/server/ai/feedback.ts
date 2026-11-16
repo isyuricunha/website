@@ -29,7 +29,11 @@ const create_id = (): string => {
   }
 }
 
-export async function aiFeedbackPost(request: Request): Promise<Response> {
+export async function aiFeedbackPost(
+  request: Request,
+  deps?: { db?: Pick<typeof db, 'insert'> }
+): Promise<Response> {
+  const activeDb = deps?.db ?? db
   const started_at = Date.now()
 
   try {
@@ -49,7 +53,7 @@ export async function aiFeedbackPost(request: Request): Promise<Response> {
     const session = await getSession(request.headers)
     const user_agent = request.headers.get('user-agent') ?? undefined
 
-    await db.insert(aiChatFeedback).values({
+    await activeDb.insert(aiChatFeedback).values({
       id: create_id(),
       requestId: parsed.requestId,
       messageId: parsed.messageId,

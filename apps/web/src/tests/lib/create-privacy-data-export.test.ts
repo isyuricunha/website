@@ -1,5 +1,26 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
+vi.mock('@isyuricunha/env', () => ({
+  flags: {
+    comment: false,
+    auth: false,
+    stats: false,
+    lastfm: false,
+    lastfmImport: false,
+    analytics: false,
+    guestbookNotification: false,
+    likeButton: false,
+    turnstile: false
+  },
+  env: {
+    NODE_ENV: 'test',
+    DATABASE_URL: 'postgres://user:pass@localhost:5432/test',
+    UPSTASH_REDIS_REST_URL: 'https://example.upstash.io',
+    UPSTASH_REDIS_REST_TOKEN: 'test-token',
+    RESEND_API_KEY: 're_test_key'
+  }
+}))
+
 const database = {
   query: {
     users: { findFirst: vi.fn() },
@@ -135,6 +156,7 @@ describe('createPrivacyDataExport', () => {
     const { createPrivacyDataExport } = await import('@/lib/privacy/create-privacy-data-export')
 
     const result = await createPrivacyDataExport('user-1', {
+      database,
       database: database as never,
       generatedAt: new Date('2026-09-06T16:00:00.000Z')
     })
