@@ -3,23 +3,23 @@
  * Svelte 5 class-based shared state.
  */
 
-export type ToastKind = 'success' | 'error' | 'info'
+type ToastKind = 'success' | 'error' | 'info'
 
-export type ToastItem = {
+type ToastItem = {
   id: number
   kind: ToastKind
   message: string
 }
 
-let nextId = 1
-
 class ToastStore {
+  #nextId = 1
+
   items = $state<ToastItem[]>([])
 
   push(kind: ToastKind, message: string): void {
-    this.items = [...this.items, { id: nextId++, kind, message }].slice(-5)
+    this.items = [...this.items, { id: this.#nextId++, kind, message }].slice(-5)
 
-    window.setTimeout(() => {
+    setTimeout(() => {
       this.dismiss(this.items[0]?.id)
     }, 2500)
   }

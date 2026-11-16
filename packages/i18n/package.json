@@ -6,12 +6,7 @@
   "license": "MIT",
   "type": "module",
   "exports": {
-    "./client": "./src/client.ts",
     "./config": "./src/config.ts",
-    "./middleware": "./src/middleware.ts",
-    "./request": "./src/request.ts",
-    "./routing": "./src/routing.ts",
-    "./server": "./src/server.ts",
     "./messages/en.json": "./src/messages/en.json",
     "./messages/pt.json": "./src/messages/pt.json",
     "./messages/es.json": "./src/messages/es.json",

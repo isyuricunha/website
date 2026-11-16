@@ -1,5 +1,3 @@
-import type { RouterOutputs } from '../root'
-
 import { createId } from '@paralleldrive/cuid2'
 import { TRPCError } from '@trpc/server'
 import { and, desc, eq, guestbook, lt } from '@isyuricunha/db'
@@ -144,5 +142,3 @@ export const guestbookRouter = createTRPCRouter({
     await ctx.db.delete(guestbook).where(eq(guestbook.id, input.id))
   })
 })
-
-export type GetInfiniteMessagesOutput = RouterOutputs['guestbook']['getInfiniteMessages']

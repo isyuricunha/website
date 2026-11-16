@@ -23,7 +23,6 @@
     "@content-collections/cli": "^0.1.9",
     "@content-collections/core": "^0.15.3",
     "@content-collections/vite": "^0.3.1",
-    "@isyuricunha/i18n": "workspace:*",
     "@isyuricunha/mdx-plugins": "workspace:*",
     "@isyuricunha/mdx-render": "workspace:*",
     "@isyuricunha/trpc-server": "workspace:*",
@@ -34,15 +33,12 @@
     "@sveltejs/kit": "^3.2.0",
     "@sveltejs/vite-plugin-svelte": "^7.0.0",
     "@tailwindcss/vite": "^4.3.3",
-    "@testing-library/jest-dom": "^7.0.1",
-    "@testing-library/react": "^16.3.3",
     "@trpc/client": "11.19.0",
     "@trpc/server": "11.19.0",
     "@types/react": "19.3.0",
     "better-auth": "1.7.7",
     "dotenv-cli": "^11.0.0",
     "happy-dom": "^21.0.4",
-    "lucide-static": "^1.73.0",
     "react": "19.3.0",
     "sharp": "^0.34.5",
     "superjson": "^2.2.6",
@@ -52,11 +48,11 @@
     "typescript": "^6.0.3",
     "vite": "^8.3.6",
     "zod": "^4.6.5",
-    "@isyuricunha/yutheme": "^0.2.1"
+    "@isyuricunha/yutheme": "^0.2.1",
+    "@upstash/ratelimit": "^2.2.0"
   },
   "dependencies": {
     "@isyuricunha/emails": "workspace:*",
-    "@isyuricunha/env": "workspace:*",
     "@isyuricunha/i18n": "workspace:*",
     "@isyuricunha/kv": "workspace:*",
     "@isyuricunha/utils": "workspace:*",
@@ -67,6 +63,7 @@
     "rss": "^1.2.2",
     "satori": "^0.63.2",
     "satori-html": "^0.3.2",
-    "simple-icons": "^16.37.0"
+    "simple-icons": "^16.37.0",
+    "@isyuricunha/env": "workspace:*"
   }
 }

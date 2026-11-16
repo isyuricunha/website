@@ -1,6 +1,6 @@
 import { i18n } from '@isyuricunha/i18n/config'
 
-import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from './constants'
+import { SITE_URL } from './constants'
 
 type LocalizedDocument = {
   slug: string
@@ -109,9 +109,3 @@ export function buildSeoHead({
     alternates: build_alternates({ slug, locale })
   }
 }
-
-export function siteUrl(): string {
-  return SITE_URL
-}
-
-export { SITE_DESCRIPTION, SITE_NAME, SITE_URL }

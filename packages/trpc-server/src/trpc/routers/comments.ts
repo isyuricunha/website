@@ -1,5 +1,3 @@
-import type { RouterInputs, RouterOutputs } from '../root'
-
 import { createId } from '@paralleldrive/cuid2'
 import { TRPCError } from '@trpc/server'
 import {
@@ -460,7 +458,3 @@ export const commentsRouter = createTRPCRouter({
     }
   })
 })
-
-export type GetInfiniteCommentsInput = RouterInputs['comments']['getInfiniteComments']
-export type GetInfiniteCommentsOutput = RouterOutputs['comments']['getInfiniteComments']
-export type GetCommentsOutput = RouterOutputs['comments']['getComments']

@@ -1,6 +1,6 @@
 // Admin sidebar navigation config. Icons are referenced by id and resolved by
 // the shared lucide-style icon component.
-export type SidebarLink = {
+type SidebarLink = {
   titleKey?: string
   title?: string
   url: string

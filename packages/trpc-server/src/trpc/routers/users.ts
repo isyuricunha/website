@@ -1,5 +1,3 @@
-import type { RouterOutputs } from '../root'
-
 import { TRPCError } from '@trpc/server'
 import { and, comments, desc, eq, lt, users, sessions, sql } from '@isyuricunha/db'
 import { ratelimit } from '@isyuricunha/kv'
@@ -667,5 +665,3 @@ export const usersRouter = createTRPCRouter({
     }
   })
 })
-
-export type GetUsersOutput = RouterOutputs['users']['getUsers']
