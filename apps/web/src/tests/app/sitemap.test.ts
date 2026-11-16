@@ -71,18 +71,18 @@ const extractUrlBlock = (xml: string, url: string): string => {
 
 describe('app sitemap.xml generator', () => {
   it('does not generate duplicate URLs', async () => {
-    const { sitemapXml } = await import('@/routes/sitemap.xml/+server')
+    const { _sitemapXml } = await import('@/routes/sitemap.xml/+server')
 
-    const xml = sitemapXml()
+    const xml = _sitemapXml()
     const urls = extractUrls(xml)
 
     expect(new Set(urls).size).toBe(urls.length)
   })
 
   it('includes critical routes for each supported locale', async () => {
-    const { sitemapXml } = await import('@/routes/sitemap.xml/+server')
+    const { _sitemapXml } = await import('@/routes/sitemap.xml/+server')
 
-    const xml = sitemapXml()
+    const xml = _sitemapXml()
     const urls = new Set(extractUrls(xml))
 
     // default locale (en) has no prefix
@@ -104,9 +104,9 @@ describe('app sitemap.xml generator', () => {
   })
 
   it('uses post modifiedTime when available', async () => {
-    const { sitemapXml } = await import('@/routes/sitemap.xml/+server')
+    const { _sitemapXml } = await import('@/routes/sitemap.xml/+server')
 
-    const xml = sitemapXml()
+    const xml = _sitemapXml()
     const post = extractUrlBlock(xml, 'https://example.com/blog/hello')
 
     expect(post).toBeTruthy()
@@ -114,9 +114,9 @@ describe('app sitemap.xml generator', () => {
   })
 
   it('uses post date when modifiedTime is missing', async () => {
-    const { sitemapXml } = await import('@/routes/sitemap.xml/+server')
+    const { _sitemapXml } = await import('@/routes/sitemap.xml/+server')
 
-    const xml = sitemapXml()
+    const xml = _sitemapXml()
     const post = extractUrlBlock(xml, 'https://example.com/pt/blog/ola')
 
     expect(post).toBeTruthy()
