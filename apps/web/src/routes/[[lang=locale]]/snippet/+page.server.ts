@@ -12,8 +12,8 @@ export const load: PageServerLoad = async ({ parent, url }) => {
   const head = buildSeoHead({
     slug: '/snippet',
     locale,
-    title: t('snippet.title'),
-    description: t('snippet.description')
+    title: t('snippets.title'),
+    description: t('snippets.description')
   })
 
   return {
