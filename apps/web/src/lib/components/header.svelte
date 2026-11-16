@@ -4,6 +4,8 @@
 	import MobileNav from './mobile-nav.svelte'
 	import Navbar from './navbar.svelte'
 	import SiteSearch from './site-search.svelte'
+	import NotificationsDropdown from './notifications-dropdown.svelte'
+	import AccountDropdown from './account-dropdown.svelte'
 
 	type Props = {
 		labels: Record<string, string>
@@ -33,7 +35,9 @@
 				<SiteSearch locale={locale} />
 			</div>
 			<Navbar labels={labels} />
+			<NotificationsDropdown locale={locale} />
 			<LocaleSwitcher />
+			<AccountDropdown locale={locale} />
 			<MobileNav labels={labels} />
 		</div>
 	</div>

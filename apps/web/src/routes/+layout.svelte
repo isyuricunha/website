@@ -2,6 +2,7 @@
 	import '../app.css'
 	import { type Snippet } from 'svelte'
 	import Footer from '#lib/components/footer.svelte'
+	import SignInDialog from '#lib/components/sign-in-dialog.svelte'
 	import Header from '#lib/components/header.svelte'
 	import VirtualMascot from '#lib/components/mascot/virtual-mascot.svelte'
 	import type { LayoutData } from './$types'
@@ -64,4 +65,6 @@ if (typeof navigator !== 'undefined' && 'serviceWorker' in navigator) {
 <Footer labels={data.labels as unknown as Record<string, string>} />
 
 <VirtualMascot />
+
+<SignInDialog locale={data.locale} />
 
