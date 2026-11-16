@@ -4,8 +4,12 @@
 	import MobileNav from './mobile-nav.svelte'
 	import Navbar from './navbar.svelte'
 	import SiteSearch from './site-search.svelte'
+	import CommandMenu from './command-menu.svelte'
 	import NotificationsDropdown from './notifications-dropdown.svelte'
 	import AccountDropdown from './account-dropdown.svelte'
+
+	import { authClient } from '#lib/auth-client.ts'
+	import { goto } from '$app/navigation'
 
 	type Props = {
 		labels: Record<string, string>
@@ -13,6 +17,9 @@
 	}
 
 	let { labels, locale }: Props = $props()
+
+	const session = authClient.useSession()
+	const isAdmin = $derived(!$session.isPending && $session.data?.user?.role === 'admin')
 </script>
 
 <header class="bg-bg-base fixed inset-x-0 top-0 z-40 border-b border-[var(--border-faint)]">
@@ -35,9 +42,21 @@
 				<SiteSearch locale={locale} />
 			</div>
 			<Navbar labels={labels} />
+			{#if isAdmin}
+				<button
+					type="button"
+					aria-label={labels['admin'] ?? 'Admin'}
+					title={labels['admin'] ?? 'Admin'}
+					class="text-foreground hover:bg-bg-hover inline-flex size-9 items-center justify-center rounded-lg p-0 transition-colors"
+					onclick={() => goto('/admin')}
+				>
+					<svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"></rect><path d="M7 12h10"></path><path d="M12 7v10"></path></svg>
+				</button>
+			{/if}
 			<NotificationsDropdown locale={locale} />
 			<LocaleSwitcher />
 			<AccountDropdown locale={locale} />
+			<CommandMenu locale={locale} />
 			<MobileNav labels={labels} />
 		</div>
 	</div>
