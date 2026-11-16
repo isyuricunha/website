@@ -2,7 +2,6 @@
 	import { is_safe_internal_path } from './ai-chat-navigate-allowlist'
 	import { tick } from 'svelte'
 	import { goto } from '$app/navigation'
-	import { env, flags } from '@isyuricunha/env'
 	import { cn } from '@isyuricunha/utils'
 	import { marked } from 'marked'
 	import MascotIcon from './mascot-icon.svelte'
@@ -130,7 +129,9 @@
 	let isCancelling = $state(false)
 	let connectionStatus = $state<ChatConnectionStatus>('checking')
 	let turnstileToken = $state<string | null>(null)
-	let isTurnstileEnabled = $state(flags.turnstile && !!env.NEXT_PUBLIC_TURNSTILE_SITE_KEY)
+	let isTurnstileEnabled = $state(
+    import.meta.env.PUBLIC_FLAG_TURNSTILE === 'true' && import.meta.env.PUBLIC_TURNSTILE_SITE_KEY !== ''
+  )
 	let feedbackOpenForMessageId = $state<string | null>(null)
 	let feedbackDraftByMessageId = $state<Record<string, string>>({})
 	let feedbackIsSubmittingByMessageId = $state<Record<string, boolean>>({})
@@ -1318,7 +1319,7 @@
 			{/if}
 			{#if isTurnstileEnabled}
 				<div class="mb-3" aria-hidden="true">
-					<Turnstile siteKey={env.NEXT_PUBLIC_TURNSTILE_SITE_KEY} onSuccess={afterTurnstileSuccess} onError={handleTurnstileError} onExpire={handleTurnstileExpire} />
+					<Turnstile siteKey={import.meta.env.PUBLIC_TURNSTILE_SITE_KEY} onSuccess={afterTurnstileSuccess} onError={handleTurnstileError} onExpire={handleTurnstileExpire} />
 				</div>
 			{/if}
 			<div class="flex gap-2">

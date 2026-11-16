@@ -46,7 +46,7 @@
 		widgetId = window.turnstile.render(target, {
 			sitekey: siteKey,
 			theme: 'auto',
-			size: 'normal',
+			size: 'invisible',
 			callback: (token: string) => onSuccess(token),
 			'error-callback': () => {
 				onError()
