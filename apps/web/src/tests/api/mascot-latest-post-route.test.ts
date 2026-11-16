@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 vi.mock('@/lib/blog/blog-service', () => ({
+  setBlogContentDir: vi.fn(),
   BlogService: {
     getPostsByLocale: vi.fn()
   }
