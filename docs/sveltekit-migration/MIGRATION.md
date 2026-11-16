@@ -267,3 +267,4 @@ Remaining known gaps (open, tracked):
 - Announcement banner: component ported; requires announcement rows in the database to render content (the production "GitHub back" banner is data-driven).
 - framer-motion reveals: home sections use CSS yu-rise/yu-d* animations (verified active in the browser); the scroll-reveal equivalents for deeper sections still need a page-by-page port.
 - Full per-page audit for snippets, guestbook, projects, uses, now, music, recap, settings and admin routes is still pending.
+- Page titles: about now renders the two-column composition (label sidebar + MDX article) with the shared animated page title; now gained the same title block; snippets heading reads from snippets.title/description instead of the missing snippet.* keys (raw key leak fixed).
