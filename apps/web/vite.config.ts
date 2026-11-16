@@ -2,6 +2,7 @@ import adapter from '@sveltejs/adapter-vercel'
 import contentCollections from '@content-collections/vite'
 import tailwindcss from '@tailwindcss/vite'
 import { sveltekit } from '@sveltejs/kit/vite'
+import { i18n } from '@isyuricunha/i18n/config'
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite'
 
@@ -31,6 +32,12 @@ flagDefine['import.meta.env.PUBLIC_TURNSTILE_SITE_KEY'] = JSON.stringify(
   process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? ''
 )
 
+// Explicit annotation keeps the '*' literal from widening to plain string.
+const prerenderSeeds: Array<'*' | `/${string}`> = [
+  '*',
+  ...i18n.locales.map((locale) => `/${locale}`)
+]
+
 // SvelteKit 3 keeps all framework configuration in vite.config.ts. The
 // repository standard is Vite 8, TypeScript 6 and Node.js 24.
 export default defineConfig({
@@ -46,6 +53,10 @@ export default defineConfig({
         assets: 'public'
       },
       prerender: {
+        // The default '*' seed evaluates the optional [[lang=locale]] param as
+        // empty, so localized home variants never enter the crawl. Seed them
+        // explicitly; each localized page then discovers its own links.
+        entries: prerenderSeeds,
         // Broken relative links and missing images already 404 in the live
         // Next.js site; keep the build green while preserving parity and log
         // each occurrence instead of failing.
