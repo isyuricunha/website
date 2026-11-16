@@ -1,5 +1,7 @@
 import { allPosts, allSnippets } from 'content-collections'
 
+import { getLocalizedPath } from '#lib/seo.ts'
+
 export interface Recommendation {
   id: string
   title: string
@@ -99,7 +101,7 @@ export function getRecommendedPosts(params: {
         id: post.slug,
         title: post.title,
         description: post.summary,
-        href: `/blog/${post.slug}`,
+        href: getLocalizedPath({ slug: `/blog/${post.slug}`, locale: post.locale }),
         type: 'post' as const,
         score,
         reason
@@ -118,7 +120,7 @@ export function getRecommendedPosts(params: {
       id: post.slug,
       title: post.title,
       description: post.summary,
-      href: `/blog/${post.slug}`,
+      href: getLocalizedPath({ slug: `/blog/${post.slug}`, locale: post.locale }),
       type: 'post' as const,
       score: 0,
       isFallback: true,
@@ -173,7 +175,7 @@ export function getRecommendedSnippets(params: {
         id: snippet.slug,
         title: snippet.title,
         description: snippet.description,
-        href: `/snippet/${snippet.slug}`,
+        href: getLocalizedPath({ slug: `/snippet/${snippet.slug}`, locale: snippet.locale }),
         type: 'snippet' as const,
         score,
         reason
@@ -192,7 +194,7 @@ export function getRecommendedSnippets(params: {
       id: snippet.slug,
       title: snippet.title,
       description: snippet.description,
-      href: `/snippet/${snippet.slug}`,
+      href: getLocalizedPath({ slug: `/snippet/${snippet.slug}`, locale: snippet.locale }),
       type: 'snippet' as const,
       score: 0,
       isFallback: true,
