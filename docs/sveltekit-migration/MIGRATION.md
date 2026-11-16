@@ -249,3 +249,21 @@ names); TypeScript 6 minimum; Node 22+ minimum.
 10. Production/rollback: documentation-only. Deploy target remains the two Vercel projects; rollback = point Vercel to the previous GitLab deployment (no code changes required).
 
 - Dev server stall: root cause confirmed as the upstream Vite SSR module-runner bug (vitejs/vite#23131): the in-process fetchModule transport has a hard-coded 60s timeout and no configuration knob, and when the first cold SSR compile exceeds it, the failure is cached permanently (every later request replays it until restart). Measured on cloud-arm during the 2026-11-16 probe: first GET after `ready` spins the vite process at 122-158% CPU with RSS growing 1.2 -> 5.3GB and the server closes the connection without ever responding (curl exit 52 after 70-154s across 10 runs); during the whole request the process opens zero outbound TCP connections, so no DB/Redis/network involvement. Mitigations tested and rejected with evidence: `optimizeDeps.include` (still 70-80s first request, unchanged), `server.warmup` with explicit paths (runs async after ready in SvelteKit middleware mode, request still fails) and with `src/**` globs (never fires). Production is unaffected: `pnpm build && pnpm preview` served every route 200, and the suite/build/check gates are green. Operational workaround: use `pnpm dev --host` with a long-lived terminal and wait for HMR warmup, or run `pnpm build && pnpm preview` for local serving; track vite#23131 for the upstream fix.
+
+## Parity status after visual comparison round (2026-11-16)
+
+Side-by-side comparison between production yuricunha.com (original Next) and the local dev build was performed for the home page and blog listing at desktop and mobile viewports.
+
+Verified fixed this round:
+
+- Global header: site search restored (posts + projects + static pages, locale-scoped, recents, keyboard navigation, Yue prefill event). Notifications dropdown (unread badge, mark-read, mark-all, view-all), account dropdown (avatar, profile, edit-profile, settings, sign-out), command menu (Cmd/Ctrl+K with account/general/social groups) and the admin-only dashboard shortcut now render from Svelte components with the better-auth session and trpc vanilla client.
+- Global stylesheet: Geist Sans/Mono font faces, base typography (h1/h2 tracking, paragraph leading), all six keyframes from the original globals.css, focus/transition utilities, music visualizer bars, reduced-motion block, and the image-zoom overlay were ported to app.css. The full-catalog fix also restored the mascot speech bubbles and aria labels that were rendering as raw keys.
+- Blog listing: month-short dates (fixed the UTC day-shift), likes/views stats with shimmer placeholders through trpc, featured section, search input, category/tag filters, five sort options, 8-per-page pagination with numbered buttons, empty state with clear-filters, RSS link, breadcrumb and catalog-driven reading time. Verified live: searching "sublime" narrows the grid to the matching post.
+- Home article card: month-short date, likes/views stats, up-right arrow, supporting summary with date, matching the original composition.
+- Mascot: speech-bubble text, aria labels and the new-post notification now resolve from the full message catalog with the EN fallback; the translator is reactive so pre-configure renders update once hydrated.
+
+Remaining known gaps (open, tracked):
+
+- Announcement banner: component ported; requires announcement rows in the database to render content (the production "GitHub back" banner is data-driven).
+- framer-motion reveals: home sections use CSS yu-rise/yu-d* animations (verified active in the browser); the scroll-reveal equivalents for deeper sections still need a page-by-page port.
+- Full per-page audit for snippets, guestbook, projects, uses, now, music, recap, settings and admin routes is still pending.
