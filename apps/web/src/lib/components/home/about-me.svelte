@@ -6,6 +6,7 @@
 	import StacksCard from './stacks-card.svelte'
 
 	let { labels, locale }: { labels: Record<string, string>; locale: string } = $props()
+	import { reveal } from '#lib/actions/reveal.ts'
 </script>
 
 <div class="border-t border-[var(--border-faint)] py-24">
@@ -15,7 +16,7 @@
 			{labels['get-in-touch.title']}
 		</h2>
 	</div>
-	<div class="grid gap-4 md:grid-cols-2">
+	<div class="grid gap-4 md:grid-cols-2" use:reveal>
 		<div class="grid gap-4">
 			<LocationCard {labels} />
 			<StacksCard {labels} />

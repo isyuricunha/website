@@ -253,6 +253,20 @@
   }
 }
 
+/* Scroll reveal, mirrors the original framer-motion y:40 enter */
+.yu-reveal-pending {
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+.yu-reveal-pending.yu-reveal-in {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    transform 0.3s ease-out,
+    opacity 0.3s ease-out;
+}
+
 /* Respect reduced motion preferences */
 @media (prefers-reduced-motion: reduce) {
   .bubble-float,
