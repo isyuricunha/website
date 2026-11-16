@@ -10,7 +10,7 @@
     "#lib/*": "./src/lib/*"
   },
   "scripts": {
-    "dev": "dotenv -e ../../.env.local -- vite dev --port 3010",
+    "dev": "NODE_OPTIONS=--max-old-space-size=4096 dotenv -e ../../.env.local -- vite dev --port 3010",
     "build": "dotenv -e ../../.env.local -- vite build",
     "build:mdx": "content-collections build",
     "preview": "dotenv -e ../../.env.local -- vite preview --port 3010",
