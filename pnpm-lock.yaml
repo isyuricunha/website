@@ -321,9 +321,6 @@ importers:
       '@isyuricunha/utils':
         specifier: workspace:*
         version: link:../../packages/utils
-      '@isyuricunha/yutheme':
-        specifier: ^0.2.1
-        version: 0.2.1(70f412c91fbef115a42d0fd166c21686)
       '@resvg/resvg-js':
         specifier: ^2.6.2
         version: 2.6.2
@@ -370,6 +367,9 @@ importers:
       '@isyuricunha/tsconfig':
         specifier: workspace:*
         version: link:../../packages/tsconfig
+      '@isyuricunha/yutheme':
+        specifier: ^0.2.1
+        version: 0.2.1(70f412c91fbef115a42d0fd166c21686)
       '@mdx-js/mdx':
         specifier: ^3.1.1
         version: 3.1.1(supports-color@10.2.2)

@@ -13,7 +13,10 @@ export default defineConfig({
     sveltekit({
       adapter: adapter(),
       prerender: {
-        handleHttpError: 'warn'
+        handleHttpError: 'warn',
+        // The catch-all docs route prerenders whatever the crawl reaches and
+        // serves the rest on demand.
+        handleUnseenRoutes: 'warn'
       }
     }),
     tailwindcss()

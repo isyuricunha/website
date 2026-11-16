@@ -51,7 +51,8 @@
     "tailwindcss": "^4.3.3",
     "typescript": "^6.0.3",
     "vite": "^8.3.6",
-    "zod": "^4.6.5"
+    "zod": "^4.6.5",
+    "@isyuricunha/yutheme": "^0.2.1"
   },
   "dependencies": {
     "@isyuricunha/emails": "workspace:*",
@@ -59,7 +60,6 @@
     "@isyuricunha/i18n": "workspace:*",
     "@isyuricunha/kv": "workspace:*",
     "@isyuricunha/utils": "workspace:*",
-    "@isyuricunha/yutheme": "^0.2.1",
     "@resvg/resvg-js": "^2.6.2",
     "@types/rss": "^0.0.32",
     "cobe": "^2.0.1",
