@@ -168,3 +168,5 @@ names); TypeScript 6 minimum; Node 22+ minimum.
 - Stage 5/6: music page ported (all nine Last.fm widgets, shared social-share component, build-time feature flags)
 
 - Stage 5/6: notifications and settings ported (sign-in dialog reused via bindable open; privacy controls included)
+
+- Stage 5/6: projects listing completed (filters, cover cards, GitHub repos via server tRPC caller, JSON-LD). Dev-local 500 on /projects is the preserved fail-closed Upstash rate limit with placeholder envs; verification with real envs pending integration stage.
