@@ -12,6 +12,7 @@ const LABEL_KEYS = [
   'nav.users',
   'nav.comments',
   'nav.security_management',
+  'nav.security',
   'nav.audit_logs',
   'nav.communication',
   'nav.email_marketing',
