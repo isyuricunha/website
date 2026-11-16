@@ -3,12 +3,14 @@
 	import Logo from './logo.svelte'
 	import MobileNav from './mobile-nav.svelte'
 	import Navbar from './navbar.svelte'
+	import SiteSearch from './site-search.svelte'
 
 	type Props = {
 		labels: Record<string, string>
+		locale: string
 	}
 
-	let { labels }: Props = $props()
+	let { labels, locale }: Props = $props()
 </script>
 
 <header class="bg-bg-base fixed inset-x-0 top-0 z-40 border-b border-[var(--border-faint)]">
@@ -27,6 +29,9 @@
 			<Logo class="h-6 w-6 sm:h-7 sm:w-7" />
 		</a>
 		<div class="flex min-w-0 flex-1 items-center justify-end gap-1 sm:gap-2">
+			<div class="hidden w-64 shrink-0 md:block">
+				<SiteSearch locale={locale} />
+			</div>
 			<Navbar labels={labels} />
 			<LocaleSwitcher />
 			<MobileNav labels={labels} />
