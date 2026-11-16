@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { getLocalizedPath } from '@/utils/get-localized-path'
+import { getLocalizedPath } from '#lib/utils/get-localized-path'
 
 describe('getLocalizedPath', () => {
   it('does not duplicate a locale already present in a path', () => {

@@ -9,16 +9,12 @@ vi.mock('@/lib/logger', () => ({
   }
 }))
 
-vi.mock('@isyuricunha/kv', () => ({
-  redis: {
-    set: vi.fn(),
-    get: vi.fn(),
-    del: vi.fn()
-  },
-  redisKeys: {
-    newsletterConfirm: (token: string) => `newsletter:confirm:${token}`
-  }
+const newsKv = vi.hoisted(() => ({
+  redis: { set: vi.fn(), get: vi.fn(), del: vi.fn() },
+  redisKeys: { newsletterConfirm: (token: string) => `newsletter:confirm:${token}` }
 }))
+
+vi.mock('@isyuricunha/kv', () => newsKv)
 
 vi.mock('@/lib/ratelimit', () => ({
   ratelimit: {
@@ -45,9 +41,7 @@ describe('/api/newsletter/confirm (double opt-in)', () => {
   })
 
   const makeRequest = (token?: string) =>
-    new Request(
-      `https://yuricunha.com/api/newsletter/confirm${token ? `?token=${token}` : ''}`
-    ) as unknown as Parameters<typeof import('@/app/api/newsletter/confirm/route').GET>[0]
+    new Request(`https://yuricunha.com/api/newsletter/confirm${token ? `?token=${token}` : ''}`)
 
   const setup = async () => {
     const { ratelimit } = await import('@/lib/ratelimit')
@@ -66,33 +60,37 @@ describe('/api/newsletter/confirm (double opt-in)', () => {
 
   it('returns 400 when the token is missing', async () => {
     await setup()
-    const { GET } = await import('@/app/api/newsletter/confirm/route')
+    const { newsletterConfirmGet } =
+      await import('@isyuricunha/trpc-server/server/newsletter/confirm')
 
-    const res = await GET(makeRequest())
+    const res = await newsletterConfirmGet(makeRequest(), { kv: newsKv })
     expect(res.status).toBe(400)
   })
 
   it('returns 400 when the token is unknown or expired', async () => {
-    const { redis } = await import('@isyuricunha/kv')
+    const redis = newsKv.redis
     vi.mocked(redis.get).mockResolvedValue(null)
 
     await setup()
-    const { GET } = await import('@/app/api/newsletter/confirm/route')
+    const { newsletterConfirmGet } =
+      await import('@isyuricunha/trpc-server/server/newsletter/confirm')
 
-    const res = await GET(makeRequest('bad-token'))
+    const res = await newsletterConfirmGet(makeRequest('bad-token'), { kv: newsKv })
     expect(res.status).toBe(400)
     expect(await res.json()).toEqual({ error: 'Invalid or expired confirmation token' })
   })
 
   it('adds the contact and burns the token on success', async () => {
-    const { redis, redisKeys } = await import('@isyuricunha/kv')
+    const redis = newsKv.redis
+    const redisKeys = newsKv.redisKeys
     const { resendService } = await setup()
 
     vi.mocked(redis.get).mockResolvedValue('a@b.com')
 
-    const { GET } = await import('@/app/api/newsletter/confirm/route')
+    const { newsletterConfirmGet } =
+      await import('@isyuricunha/trpc-server/server/newsletter/confirm')
 
-    const res = await GET(makeRequest('good-token'))
+    const res = await newsletterConfirmGet(makeRequest('good-token'), { kv: newsKv })
 
     expect(res.status).toBe(200)
     expect(await res.json()).toEqual({
@@ -108,7 +106,7 @@ describe('/api/newsletter/confirm (double opt-in)', () => {
   })
 
   it('re-enables a previously unsubscribed contact', async () => {
-    const { redis } = await import('@isyuricunha/kv')
+    const redis = newsKv.redis
     const { resendService } = await setup()
 
     vi.mocked(redis.get).mockResolvedValue('a@b.com')
@@ -118,9 +116,10 @@ describe('/api/newsletter/confirm (double opt-in)', () => {
       unsubscribed: true
     })
 
-    const { GET } = await import('@/app/api/newsletter/confirm/route')
+    const { newsletterConfirmGet } =
+      await import('@isyuricunha/trpc-server/server/newsletter/confirm')
 
-    const res = await GET(makeRequest('good-token'))
+    const res = await newsletterConfirmGet(makeRequest('good-token'), { kv: newsKv })
     expect(res.status).toBe(200)
     expect(resendService.updateContact).toHaveBeenCalledWith('aud-1', 'c-existing', {
       unsubscribed: false
@@ -129,7 +128,7 @@ describe('/api/newsletter/confirm (double opt-in)', () => {
   })
 
   it('burns the token and reports success for an already-subscribed email', async () => {
-    const { redis } = await import('@isyuricunha/kv')
+    const redis = newsKv.redis
     const { resendService } = await setup()
 
     vi.mocked(redis.get).mockResolvedValue('a@b.com')
@@ -139,9 +138,10 @@ describe('/api/newsletter/confirm (double opt-in)', () => {
       unsubscribed: false
     })
 
-    const { GET } = await import('@/app/api/newsletter/confirm/route')
+    const { newsletterConfirmGet } =
+      await import('@isyuricunha/trpc-server/server/newsletter/confirm')
 
-    const res = await GET(makeRequest('good-token'))
+    const res = await newsletterConfirmGet(makeRequest('good-token'), { kv: newsKv })
     expect(res.status).toBe(200)
     expect(await res.json()).toEqual({ success: true, message: 'Email is already subscribed' })
     expect(redis.del).toHaveBeenCalled()

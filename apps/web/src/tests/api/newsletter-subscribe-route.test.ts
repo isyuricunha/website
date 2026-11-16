@@ -12,6 +12,12 @@ vi.mock('@/lib/logger', () => ({
 const redisSet = vi.fn()
 const redisGet = vi.fn()
 const redisDel = vi.fn()
+const resendSend = vi.fn(async () => ({ data: { id: 'email-1' }, error: null }))
+const kvFake = {
+  redis: { set: redisSet, get: redisGet, del: redisDel },
+  redisKeys: { newsletterConfirm: (token: string) => `newsletter:confirm:${token}` }
+}
+const resendFake = { emails: { send: resendSend } }
 
 vi.mock('@isyuricunha/kv', () => ({
   redis: {
@@ -75,10 +81,11 @@ describe('/api/newsletter/subscribe (double opt-in)', () => {
   })
 
   const makeRequest = (body: Record<string, unknown>) =>
-    ({
-      headers: new Headers(),
-      json: async () => body
-    }) as unknown as Parameters<typeof import('@/app/api/newsletter/subscribe/route').POST>[0]
+    new Request('http://test/api/newsletter/subscribe', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(body)
+    })
 
   it('returns 429 when rate limited', async () => {
     const { newsletterRatelimit } = await import('@/lib/ratelimit')
@@ -87,9 +94,13 @@ describe('/api/newsletter/subscribe (double opt-in)', () => {
     vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
     vi.mocked(newsletterRatelimit.limit).mockResolvedValue({ success: false } as never)
 
-    const { POST } = await import('@/app/api/newsletter/subscribe/route')
+    const { newsletterSubscribePost } =
+      await import('@isyuricunha/trpc-server/server/newsletter/subscribe')
 
-    const res = await POST(makeRequest({ email: 'a@b.com' }))
+    const res = await newsletterSubscribePost(makeRequest({ email: 'a@b.com' }), {
+      kv: kvFake,
+      resend: resendFake
+    })
 
     expect(res.status).toBe(429)
     expect(await res.json()).toEqual({
@@ -104,9 +115,13 @@ describe('/api/newsletter/subscribe (double opt-in)', () => {
     vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
     vi.mocked(newsletterRatelimit.limit).mockResolvedValue({ success: true } as never)
 
-    const { POST } = await import('@/app/api/newsletter/subscribe/route')
+    const { newsletterSubscribePost } =
+      await import('@isyuricunha/trpc-server/server/newsletter/subscribe')
 
-    const res = await POST(makeRequest({ email: 'not-an-email' }))
+    const res = await newsletterSubscribePost(makeRequest({ email: 'not-an-email' }), {
+      kv: kvFake,
+      resend: resendFake
+    })
 
     expect(res.status).toBe(400)
     const json = (await res.json()) as { error?: string }
@@ -122,9 +137,13 @@ describe('/api/newsletter/subscribe (double opt-in)', () => {
     vi.mocked(newsletterRatelimit.limit).mockResolvedValue({ success: true } as never)
     redisSet.mockResolvedValue('OK')
 
-    const { POST } = await import('@/app/api/newsletter/subscribe/route')
+    const { newsletterSubscribePost } =
+      await import('@isyuricunha/trpc-server/server/newsletter/subscribe')
 
-    const res = await POST(makeRequest({ email: 'a@b.com' }))
+    const res = await newsletterSubscribePost(makeRequest({ email: 'a@b.com' }), {
+      kv: kvFake,
+      resend: resendFake
+    })
 
     expect(res.status).toBe(200)
     const json = (await res.json()) as { success: boolean }
@@ -146,12 +165,19 @@ describe('/api/newsletter/subscribe (double opt-in)', () => {
     vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
     vi.mocked(newsletterRatelimit.limit).mockResolvedValue({ success: true } as never)
 
-    const { POST } = await import('@/app/api/newsletter/subscribe/route')
-    await POST(makeRequest({ email: 'a@b.com' }))
+    const { newsletterSubscribePost } =
+      await import('@isyuricunha/trpc-server/server/newsletter/subscribe')
+    await newsletterSubscribePost(makeRequest({ email: 'a@b.com' }), {
+      kv: kvFake,
+      resend: resendFake
+    })
 
     redisSet.mockResolvedValue('OK')
 
-    const res = await POST(makeRequest({ email: 'a@b.com' }))
+    const res = await newsletterSubscribePost(makeRequest({ email: 'a@b.com' }), {
+      kv: kvFake,
+      resend: resendFake
+    })
 
     // Double opt-in contract: the response directs the user to their inbox and
     // a confirmation token is stored instead of writing to the audience.

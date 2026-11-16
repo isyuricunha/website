@@ -46,14 +46,15 @@ describe('/api/admin/translate', () => {
 
     vi.mocked(getSession).mockResolvedValue(null)
 
-    const { POST } = await import('@/app/api/admin/translate/route')
+    const { POST } = await import('@/routes/api/admin/translate/+server')
 
-    const req = {
-      headers: new Headers(),
-      json: async () => ({ slug: 'test', sourceLocale: 'en' })
-    } as unknown as Parameters<typeof POST>[0]
+    const req = new Request('http://test/api/admin/translate', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ slug: 'test', sourceLocale: 'en' })
+    })
 
-    const res = await POST(req)
+    const res = await POST({ request: req } as unknown as Parameters<typeof POST>[0])
 
     expect(res.status).toBe(401)
   })
@@ -63,14 +64,15 @@ describe('/api/admin/translate', () => {
 
     vi.mocked(getSession).mockResolvedValue({ user: { role: 'user' } } as never)
 
-    const { POST } = await import('@/app/api/admin/translate/route')
+    const { POST } = await import('@/routes/api/admin/translate/+server')
 
-    const req = {
-      headers: new Headers(),
-      json: async () => ({ slug: 'test', sourceLocale: 'en' })
-    } as unknown as Parameters<typeof POST>[0]
+    const req = new Request('http://test/api/admin/translate', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ slug: 'test', sourceLocale: 'en' })
+    })
 
-    const res = await POST(req)
+    const res = await POST({ request: req } as unknown as Parameters<typeof POST>[0])
 
     expect(res.status).toBe(403)
   })
@@ -84,14 +86,15 @@ describe('/api/admin/translate', () => {
     vi.mocked(getSession).mockResolvedValue({ user: { role: 'admin' } } as never)
     vi.mocked(ratelimit.limit).mockResolvedValue({ success: false } as never)
 
-    const { POST } = await import('@/app/api/admin/translate/route')
+    const { POST } = await import('@/routes/api/admin/translate/+server')
 
-    const req = {
-      headers: new Headers(),
-      json: async () => ({ slug: 'test', sourceLocale: 'en' })
-    } as unknown as Parameters<typeof POST>[0]
+    const req = new Request('http://test/api/admin/translate', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ slug: 'test', sourceLocale: 'en' })
+    })
 
-    const res = await POST(req)
+    const res = await POST({ request: req } as unknown as Parameters<typeof POST>[0])
 
     expect(res.status).toBe(429)
   })
@@ -105,14 +108,15 @@ describe('/api/admin/translate', () => {
     vi.mocked(getSession).mockResolvedValue({ user: { role: 'admin' } } as never)
     vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
 
-    const { POST } = await import('@/app/api/admin/translate/route')
+    const { POST } = await import('@/routes/api/admin/translate/+server')
 
-    const req = {
-      headers: new Headers(),
-      json: async () => ({ slug: '', sourceLocale: '' })
-    } as unknown as Parameters<typeof POST>[0]
+    const req = new Request('http://test/api/admin/translate', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ slug: '', sourceLocale: '' })
+    })
 
-    const res = await POST(req)
+    const res = await POST({ request: req } as unknown as Parameters<typeof POST>[0])
 
     expect(res.status).toBe(400)
     const json = (await res.json()) as { error?: string }

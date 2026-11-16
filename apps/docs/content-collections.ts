@@ -1,7 +1,10 @@
 import { defineCollection, defineConfig } from '@content-collections/core'
-import { compileMDX } from '@content-collections/mdx'
-import { rehypePlugins, remarkPlugins } from '@isyuricunha/mdx-plugins'
+import { getTOC, rehypePlugins, remarkPlugins } from '@isyuricunha/mdx-plugins'
+import { evaluate } from '@mdx-js/mdx'
 import { z } from 'zod'
+
+import { createDocsComponents } from './mdx/docs-components'
+import { Fragment, jsx, jsxs } from '@isyuricunha/mdx-render/runtime'
 
 const contentSchema = z.object({
   content: z.string()
@@ -22,19 +25,26 @@ const docMetaSchema = z.object({
 
 const docs = defineCollection({
   name: 'Doc',
-  directory: 'src/content',
+  directory: '../docs/src/content',
   include: '**/*.mdx',
   schema: contentSchema.merge(docMetaSchema),
-  transform: async (document, context) => {
-    const code = await compileMDX(context, document, {
+  transform: async (document) => {
+    const path = document._meta.path.replaceAll('\\', '/')
+
+    const components = createDocsComponents()
+    const { default: Content } = await evaluate(document.content, {
+      Fragment,
+      jsx,
+      jsxs,
       remarkPlugins,
       rehypePlugins
     })
-    const path = document._meta.path.replaceAll('\\', '/')
+
+    const html = Content({ components }).html
 
     return {
       ...document,
-      code,
+      html,
       slug: path === 'index' ? '' : path
     }
   }

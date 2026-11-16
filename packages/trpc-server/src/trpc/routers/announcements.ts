@@ -1,0 +1,699 @@
+import { TRPCError } from '@trpc/server'
+import { ratelimit } from '@isyuricunha/kv'
+import {
+  and,
+  announcements,
+  announcementInteractions,
+  desc,
+  eq,
+  gte,
+  lte,
+  inArray
+} from '@isyuricunha/db'
+import { randomBytes } from 'crypto'
+import { z } from 'zod'
+
+import { AuditLogger, getIpFromHeaders, getUserAgentFromHeaders } from '../../lib/audit-logger'
+import { getIp } from '../../utils/get-ip'
+import { aiService } from '../../lib/ai/ai-service'
+import { logger } from '../../lib/logger'
+import { adminProcedure, publicProcedure, createTRPCRouter } from '../trpc'
+
+const _ANNOUNCEMENT_LOCALES = ['en', 'pt', 'es', 'fr', 'de', 'ja', 'zh-CN'] as const
+type AnnouncementLocale = (typeof _ANNOUNCEMENT_LOCALES)[number]
+
+const localeFieldMap: Record<
+  Exclude<AnnouncementLocale, 'en'>,
+  { title: string; content: string }
+> = {
+  pt: { title: 'titlePt', content: 'contentPt' },
+  es: { title: 'titleEs', content: 'contentEs' },
+  fr: { title: 'titleFr', content: 'contentFr' },
+  de: { title: 'titleDe', content: 'contentDe' },
+  ja: { title: 'titleJa', content: 'contentJa' },
+  'zh-CN': { title: 'titleZhCn', content: 'contentZhCn' }
+}
+
+const _localeNameMap: Record<AnnouncementLocale, string> = {
+  en: 'English',
+  pt: 'Brazilian Portuguese',
+  es: 'Spanish',
+  fr: 'French',
+  de: 'German',
+  ja: 'Japanese',
+  'zh-CN': 'Simplified Chinese'
+}
+
+const is_foreign_key_violation = (error: unknown): boolean => {
+  if (!error || typeof error !== 'object') return false
+  const maybe = error as { code?: unknown; cause?: unknown }
+  if (maybe.code === '23503') return true
+  if (maybe.cause && typeof maybe.cause === 'object') {
+    const cause = maybe.cause as { code?: unknown }
+    return cause.code === '23503'
+  }
+  return false
+}
+
+const translateAnnouncementSchema = z.object({
+  title: z.string().min(1),
+  content: z.string().min(1),
+  fromLang: z.literal('en').default('en'),
+  toLang: z.enum(['pt', 'es', 'fr', 'de', 'ja', 'zh-CN']).default('pt'),
+  model: z.string().min(1).optional()
+})
+
+const translateAnnouncementResponseSchema = z.object({
+  title: z.string().min(1),
+  content: z.string().min(1)
+})
+
+const announcementsQuerySchema = z.object({
+  active: z.boolean().optional(),
+  adminView: z.boolean().default(false),
+  locale: z.string().min(2).max(10).optional()
+})
+
+const announcementTargetAudienceSchema = z.object({
+  userRoles: z.array(z.string()).optional(),
+  userIds: z.array(z.string()).optional()
+})
+
+const announcementCreateSchema = z.object({
+  title: z.string().min(1),
+  content: z.string().min(1),
+  titlePt: z.string().min(1).optional(),
+  contentPt: z.string().min(1).optional(),
+  titleEs: z.string().min(1).optional(),
+  contentEs: z.string().min(1).optional(),
+  titleFr: z.string().min(1).optional(),
+  contentFr: z.string().min(1).optional(),
+  titleDe: z.string().min(1).optional(),
+  contentDe: z.string().min(1).optional(),
+  titleJa: z.string().min(1).optional(),
+  contentJa: z.string().min(1).optional(),
+  titleZhCn: z.string().min(1).optional(),
+  contentZhCn: z.string().min(1).optional(),
+  type: z
+    .enum(['info', 'warning', 'success', 'error', 'maintenance', 'feature', 'update'])
+    .default('info'),
+  priority: z.number().min(0).max(10).default(0),
+  isDismissible: z.boolean().default(true),
+  targetAudience: announcementTargetAudienceSchema.optional()
+})
+
+const announcementIdSchema = z.object({ announcementId: z.string() })
+
+const updateAnnouncementSchema = z.object({
+  id: z.string(),
+  title: z.string().min(1).optional(),
+  content: z.string().min(1).optional(),
+  titlePt: z.string().min(1).optional(),
+  contentPt: z.string().min(1).optional(),
+  titleEs: z.string().min(1).optional(),
+  contentEs: z.string().min(1).optional(),
+  titleFr: z.string().min(1).optional(),
+  contentFr: z.string().min(1).optional(),
+  titleDe: z.string().min(1).optional(),
+  contentDe: z.string().min(1).optional(),
+  titleJa: z.string().min(1).optional(),
+  contentJa: z.string().min(1).optional(),
+  titleZhCn: z.string().min(1).optional(),
+  contentZhCn: z.string().min(1).optional(),
+  type: z
+    .enum(['info', 'warning', 'success', 'error', 'maintenance', 'feature', 'update'])
+    .optional(),
+  priority: z.number().min(0).max(10).optional(),
+  isDismissible: z.boolean().optional(),
+  isActive: z.boolean().optional(),
+  targetAudience: announcementTargetAudienceSchema.optional()
+})
+
+const announcementIdParamSchema = z.object({ id: z.string() })
+
+const announcementAnalyticsQuerySchema = z.object({
+  announcementId: z.string().optional(),
+  dateRange: z
+    .object({
+      start: z.date(),
+      end: z.date()
+    })
+    .optional()
+})
+
+export const announcementsRouter = createTRPCRouter({
+  translateAnnouncement: adminProcedure
+    .input(translateAnnouncementSchema)
+    .mutation(async ({ input }) => {
+      const targetName = _localeNameMap[input.toLang] ?? input.toLang
+
+      const prompt = `Translate this announcement from English to ${targetName}.
+
+Return ONLY valid JSON (no markdown, no code fences) with exactly these keys:
+- title
+- content
+
+TITLE:
+${input.title}
+
+CONTENT:
+${input.content}
+`
+
+      const context = {
+        currentPage: '/admin/announcements',
+        locale: input.toLang
+      }
+
+      const raw = await aiService.generateResponse(prompt, context)
+
+      const json = (() => {
+        try {
+          return JSON.parse(raw)
+        } catch {
+          const start = raw.indexOf('{')
+          const end = raw.lastIndexOf('}')
+          if (start === -1 || end === -1 || end < start) {
+            throw new Error('AI response is not valid JSON')
+          }
+          return JSON.parse(raw.slice(start, end + 1))
+        }
+      })()
+
+      const parsed = translateAnnouncementResponseSchema.parse(json)
+
+      return {
+        titleTranslated: parsed.title.trim(),
+        contentTranslated: parsed.content.trim(),
+        locale: input.toLang
+      }
+    }),
+
+  // Get announcements (public endpoint for homepage banners)
+  getAnnouncements: publicProcedure
+    .input(announcementsQuerySchema)
+    .query(async ({ ctx, input }) => {
+      // Rate-limit keys must use the platform-trusted IP: x-forwarded-for is
+      // client-forgeable, so keying on it lets callers rotate identities.
+      const ip = getIp(ctx.headers)
+      const { success: rl_ok } = await ratelimit.limit(`announcements:list:${ip}`)
+      if (!rl_ok) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+
+      try {
+        const isAdmin = ctx.session?.user?.role === 'admin'
+        const adminView = input.adminView && isAdmin
+        // Non-admin callers always get active announcements only. The caller
+        // supplied `active` value is deliberately ignored here: honouring
+        // `active: false` publicly would leak inactive/draft content.
+        const activeFilter = adminView ? input.active : true
+        const locale = input.locale ?? 'en'
+        const normalizedLocale = locale.startsWith('zh')
+          ? 'zh-CN'
+          : (locale.split('-')[0] ?? locale)
+
+        const getLocalizedField = (obj: Record<string, unknown>, baseField: string): string => {
+          if (normalizedLocale === 'en') return (obj[baseField] as string) ?? ''
+          const fields = localeFieldMap[normalizedLocale as Exclude<AnnouncementLocale, 'en'>]
+          if (!fields) return (obj[baseField] as string) ?? ''
+          const key = baseField === 'title' ? fields.title : fields.content
+          return (obj[key] as string) ?? (obj[baseField] as string) ?? ''
+        }
+
+        const isRecord = (value: unknown): value is Record<string, unknown> => {
+          return typeof value === 'object' && value !== null
+        }
+
+        const getStringArray = (value: unknown, key: string): string[] | null => {
+          if (!isRecord(value)) return null
+          const raw = value[key]
+          if (!Array.isArray(raw)) return null
+          if (raw.some((item) => typeof item !== 'string')) return null
+          return raw
+        }
+
+        const parseTargetAudience = (raw: string) => {
+          try {
+            return JSON.parse(raw)
+          } catch {
+            return null
+          }
+        }
+
+        const conditions = []
+
+        if (activeFilter !== undefined) {
+          conditions.push(eq(announcements.isActive, activeFilter))
+        }
+
+        const whereClause = conditions.length > 0 ? and(...conditions) : undefined
+
+        const announcementList = await ctx.db.query.announcements.findMany({
+          where: whereClause,
+          orderBy: [desc(announcements.priority), desc(announcements.createdAt)],
+          // Public banners only ever render a handful of items; admins keep the
+          // unbounded view for management.
+          limit: adminView ? undefined : 10
+        })
+
+        let visibleAnnouncements = announcementList
+
+        // Apply active filtering defensively (useful in tests and prevents relying solely on DB where clause)
+        if (activeFilter !== undefined) {
+          visibleAnnouncements = visibleAnnouncements.filter(
+            (announcement) => announcement.isActive === activeFilter
+          )
+        }
+
+        // Filter announcements based on user targeting
+        const filteredAnnouncements = visibleAnnouncements.filter((announcement) => {
+          if (adminView || !announcement.targetAudience) {
+            return true // Show all if no targeting or admin view
+          }
+
+          const targetAudience = parseTargetAudience(announcement.targetAudience)
+          if (!targetAudience) {
+            return true
+          }
+
+          const roleTargets =
+            getStringArray(targetAudience, 'userRoles') ?? getStringArray(targetAudience, 'roles')
+
+          const userTargets = getStringArray(targetAudience, 'userIds')
+
+          // If explicit targets exist, the caller must match at least one.
+          // Unauthenticated callers match nothing, so targeted content stays
+          // hidden from anonymous traffic.
+          if (roleTargets || userTargets) {
+            const user = ctx.session?.user
+            if (!user) {
+              return false
+            }
+            const matchesRole = roleTargets ? roleTargets.includes(user.role) : false
+            const matchesUser = userTargets ? userTargets.includes(user.id) : false
+            return matchesRole || matchesUser
+          }
+
+          // If no specific targeting, show to all
+          return true
+        })
+
+        // Get user interactions for non-admin view (only for authenticated users)
+        let userInteractions: any = {}
+        if (!adminView && ctx.session?.user) {
+          const filteredAnnouncementIds = filteredAnnouncements.map((a) => a.id)
+          const interactions = await ctx.db.query.announcementInteractions.findMany({
+            where: and(
+              eq(announcementInteractions.userId, ctx.session.user.id),
+              inArray(announcementInteractions.announcementId, filteredAnnouncementIds)
+            )
+          })
+
+          userInteractions = interactions.reduce<any>((acc, interaction) => {
+            acc[interaction.announcementId] = interaction
+            return acc
+          }, {})
+        }
+
+        return {
+          announcements: filteredAnnouncements.map((announcement) => ({
+            ...announcement,
+            title: adminView
+              ? announcement.title
+              : getLocalizedField(announcement as unknown as Record<string, unknown>, 'title'),
+            content: adminView
+              ? announcement.content
+              : getLocalizedField(announcement as unknown as Record<string, unknown>, 'content'),
+            targetAudience: announcement.targetAudience
+              ? (() => {
+                  const parsed = parseTargetAudience(announcement.targetAudience)
+                  if (!parsed) return null
+                  if (!isRecord(parsed)) return null
+                  const userRoles =
+                    getStringArray(parsed, 'userRoles') ??
+                    getStringArray(parsed, 'roles') ??
+                    undefined
+                  return {
+                    ...parsed,
+                    userRoles
+                  }
+                })()
+              : null,
+            userInteraction: userInteractions[announcement.id] || null
+          }))
+        }
+      } catch (error) {
+        logger.error('Error fetching announcements', error)
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to fetch announcements'
+        })
+      }
+    }),
+
+  // Create announcement (admin only)
+  createAnnouncement: adminProcedure
+    .input(announcementCreateSchema)
+    .mutation(async ({ ctx, input }) => {
+      try {
+        const auditLogger = new AuditLogger(ctx.db)
+        const ipAddress = getIpFromHeaders(ctx.headers)
+        const userAgent = getUserAgentFromHeaders(ctx.headers)
+
+        const announcementId = randomBytes(16).toString('hex')
+
+        await ctx.db.insert(announcements).values({
+          id: announcementId,
+          title: input.title,
+          content: input.content,
+          titlePt: input.titlePt,
+          contentPt: input.contentPt,
+          titleEs: input.titleEs,
+          contentEs: input.contentEs,
+          titleFr: input.titleFr,
+          contentFr: input.contentFr,
+          titleDe: input.titleDe,
+          contentDe: input.contentDe,
+          titleJa: input.titleJa,
+          contentJa: input.contentJa,
+          titleZhCn: input.titleZhCn,
+          contentZhCn: input.contentZhCn,
+          type: input.type,
+          priority: input.priority,
+          isDismissible: input.isDismissible,
+          isActive: true,
+          targetAudience: input.targetAudience ? JSON.stringify(input.targetAudience) : null,
+          createdBy: ctx.session.user.id
+        })
+
+        // Log audit trail
+        await auditLogger.logSystemAction(
+          ctx.session.user.id,
+          'settings_update',
+          'announcement',
+          announcementId,
+          {
+            action: 'announcement_created',
+            title: input.title,
+            type: input.type,
+            priority: input.priority
+          },
+          ipAddress,
+          userAgent
+        )
+
+        return { success: true, announcementId }
+      } catch (error) {
+        logger.error('Error creating announcement', error)
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to create announcement'
+        })
+      }
+    }),
+
+  markAnnouncementViewed: publicProcedure
+    .input(announcementIdSchema)
+    .mutation(async ({ ctx, input }) => {
+      const ip = getIp(ctx.headers)
+      const { success: rl_ok } = await ratelimit.limit(`announcements:viewed:${ip}`)
+      if (!rl_ok) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+
+      try {
+        if (!ctx.session?.user) {
+          return { success: true }
+        }
+
+        const existing = await ctx.db.query.announcementInteractions.findFirst({
+          where: and(
+            eq(announcementInteractions.announcementId, input.announcementId),
+            eq(announcementInteractions.userId, ctx.session.user.id)
+          )
+        })
+
+        if (existing) {
+          if (existing.viewed) {
+            return { success: true }
+          }
+
+          await ctx.db
+            .update(announcementInteractions)
+            .set({
+              viewed: true,
+              viewedAt: new Date()
+            })
+            .where(eq(announcementInteractions.id, existing.id))
+
+          return { success: true }
+        }
+
+        const interactionId = randomBytes(16).toString('hex')
+        await ctx.db.insert(announcementInteractions).values({
+          id: interactionId,
+          announcementId: input.announcementId,
+          userId: ctx.session.user.id,
+          viewed: true,
+          dismissed: false,
+          viewedAt: new Date()
+        })
+
+        return { success: true }
+      } catch (error) {
+        if (is_foreign_key_violation(error)) {
+          logger.warn('Skipping announcement viewed update due to missing announcement', {
+            announcementId: input.announcementId,
+            userId: ctx.session?.user?.id
+          })
+          return { success: true }
+        }
+        logger.error('Error marking announcement viewed', error)
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to mark announcement viewed'
+        })
+      }
+    }),
+
+  // Dismiss announcement (works for both authenticated and guest users)
+  dismissAnnouncement: publicProcedure
+    .input(announcementIdSchema)
+    .mutation(async ({ ctx, input }) => {
+      const dip = getIp(ctx.headers)
+      const { success: rl_ok } = await ratelimit.limit(`announcements:dismiss:${dip}`)
+      if (!rl_ok) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+
+      try {
+        // For authenticated users, store dismissal in database
+        if (ctx.session?.user) {
+          // Check if interaction already exists
+          const existing = await ctx.db.query.announcementInteractions.findFirst({
+            where: and(
+              eq(announcementInteractions.announcementId, input.announcementId),
+              eq(announcementInteractions.userId, ctx.session.user.id)
+            )
+          })
+
+          if (existing) {
+            // Update existing interaction
+            await ctx.db
+              .update(announcementInteractions)
+              .set({
+                dismissed: true,
+                dismissedAt: new Date()
+              })
+              .where(eq(announcementInteractions.id, existing.id))
+          } else {
+            // Create new interaction
+            const interactionId = randomBytes(16).toString('hex')
+            await ctx.db.insert(announcementInteractions).values({
+              id: interactionId,
+              announcementId: input.announcementId,
+              userId: ctx.session.user.id,
+              viewed: true,
+              dismissed: true,
+              viewedAt: new Date(),
+              dismissedAt: new Date()
+            })
+          }
+        }
+        // For guest users, dismissal is handled client-side via localStorage
+        // No server-side action needed, just return success
+
+        return { success: true }
+      } catch (error) {
+        if (is_foreign_key_violation(error)) {
+          logger.warn('Skipping announcement dismissal due to missing announcement', {
+            announcementId: input.announcementId,
+            userId: ctx.session?.user?.id
+          })
+          return { success: true }
+        }
+        logger.error('Error dismissing announcement', error)
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to dismiss announcement'
+        })
+      }
+    }),
+
+  // Update announcement (admin only)
+  updateAnnouncement: adminProcedure
+    .input(updateAnnouncementSchema)
+    .mutation(async ({ ctx, input }) => {
+      try {
+        const auditLogger = new AuditLogger(ctx.db)
+        const ipAddress = getIpFromHeaders(ctx.headers)
+        const userAgent = getUserAgentFromHeaders(ctx.headers)
+
+        const { id, ...updateData } = input
+
+        await ctx.db
+          .update(announcements)
+          .set({
+            ...updateData,
+            targetAudience: updateData.targetAudience
+              ? JSON.stringify(updateData.targetAudience)
+              : undefined,
+            updatedAt: new Date()
+          })
+          .where(eq(announcements.id, id))
+
+        // Log audit trail
+        await auditLogger.logSystemAction(
+          ctx.session.user.id,
+          'settings_update',
+          'announcement',
+          id,
+          {
+            action: 'announcement_updated',
+            changes: updateData
+          },
+          ipAddress,
+          userAgent
+        )
+
+        return { success: true }
+      } catch (error) {
+        logger.error('Error updating announcement', error)
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to update announcement'
+        })
+      }
+    }),
+
+  // Delete announcement (admin only)
+  deleteAnnouncement: adminProcedure
+    .input(announcementIdParamSchema)
+    .mutation(async ({ ctx, input }) => {
+      try {
+        const auditLogger = new AuditLogger(ctx.db)
+        const ipAddress = getIpFromHeaders(ctx.headers)
+        const userAgent = getUserAgentFromHeaders(ctx.headers)
+
+        await ctx.db.delete(announcements).where(eq(announcements.id, input.id))
+
+        // Log audit trail
+        await auditLogger.logSystemAction(
+          ctx.session.user.id,
+          'settings_update',
+          'announcement',
+          input.id,
+          {
+            action: 'announcement_deleted'
+          },
+          ipAddress,
+          userAgent
+        )
+
+        return { success: true }
+      } catch (error) {
+        logger.error('Error deleting announcement', error)
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to delete announcement'
+        })
+      }
+    }),
+
+  // Get announcement analytics (admin only)
+  getAnnouncementAnalytics: adminProcedure
+    .input(announcementAnalyticsQuerySchema)
+    .query(async ({ ctx, input }) => {
+      try {
+        // Get announcement engagement stats
+        const conditions = []
+
+        if (input.announcementId) {
+          conditions.push(eq(announcementInteractions.announcementId, input.announcementId))
+        }
+
+        if (input.dateRange) {
+          conditions.push(
+            gte(announcementInteractions.viewedAt, input.dateRange.start),
+            lte(announcementInteractions.viewedAt, input.dateRange.end)
+          )
+        }
+
+        const interactions = await ctx.db.query.announcementInteractions.findMany({
+          where: conditions.length > 0 ? and(...conditions) : undefined,
+          with: {
+            announcement: true
+          }
+        })
+
+        const totalViews = interactions.filter((i) => i.viewed).length
+        const totalDismissals = interactions.filter((i) => i.dismissed).length
+
+        type AnnouncementAnalytics = {
+          title: string
+          views: number
+          dismissals: number
+          dismissalRate: number
+        }
+
+        const analytics: {
+          totalViews: number
+          totalDismissals: number
+          dismissalRate: number
+          byAnnouncement: Record<string, AnnouncementAnalytics>
+        } = {
+          totalViews,
+          totalDismissals,
+          dismissalRate: totalViews > 0 ? (totalDismissals / totalViews) * 100 : 0,
+          byAnnouncement: {}
+        }
+
+        // Group by announcement
+        for (const interaction of interactions) {
+          const announcementId = interaction.announcementId
+          analytics.byAnnouncement[announcementId] ??= {
+            title: interaction.announcement?.title || 'Unknown',
+            views: 0,
+            dismissals: 0,
+            dismissalRate: 0
+          }
+          const entry = analytics.byAnnouncement[announcementId]
+
+          if (interaction.viewed) {
+            entry.views++
+          }
+          if (interaction.dismissed) {
+            entry.dismissals++
+          }
+        }
+
+        // Calculate dismissal rates
+        for (const data of Object.values(analytics.byAnnouncement)) {
+          data.dismissalRate = data.views > 0 ? (data.dismissals / data.views) * 100 : 0
+        }
+
+        return analytics
+      } catch (error) {
+        logger.error('Error fetching announcement analytics', error)
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to fetch announcement analytics'
+        })
+      }
+    })
+})

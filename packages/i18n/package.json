@@ -6,12 +6,7 @@
   "license": "MIT",
   "type": "module",
   "exports": {
-    "./client": "./src/client.ts",
     "./config": "./src/config.ts",
-    "./middleware": "./src/middleware.ts",
-    "./request": "./src/request.ts",
-    "./routing": "./src/routing.ts",
-    "./server": "./src/server.ts",
     "./messages/en.json": "./src/messages/en.json",
     "./messages/pt.json": "./src/messages/pt.json",
     "./messages/es.json": "./src/messages/es.json",
@@ -26,18 +21,10 @@
     "lint:fix": "eslint --fix .",
     "type-check": "tsc --noEmit"
   },
-  "dependencies": {
-    "next-intl": "^4.14.9"
-  },
-  "peerDependencies": {
-    "next": "^15 || ^16"
-  },
   "devDependencies": {
     "@isyuricunha/eslint-config": "workspace:*",
     "@isyuricunha/tsconfig": "workspace:*",
-    "@types/node": "26.6.4",
-    "@types/react": "19.3.0",
-    "next": "16.4.0"
+    "@types/node": "26.6.4"
   },
   "lint-staged": {
     "*.{cjs,mjs,js,jsx,cts,mts,ts,tsx}": "eslint --fix --max-warnings 999"

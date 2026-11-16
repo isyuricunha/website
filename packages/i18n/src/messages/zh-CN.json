@@ -2874,5 +2874,8 @@
       "views": "次浏览",
       "likes": "个赞"
     }
+  },
+  "recommendations": {
+    "title": "推荐文章"
   }
 }

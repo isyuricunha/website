@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { is_placeholder_secret } from '@/lib/secrets'
+import { is_placeholder_secret } from '#lib/secrets'
 
 describe('is_placeholder_secret', () => {
   it('flags the documented change-me placeholders', () => {

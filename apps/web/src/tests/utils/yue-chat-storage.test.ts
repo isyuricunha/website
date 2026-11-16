@@ -6,7 +6,7 @@ import {
   loadYueChatState,
   type ChatConversation,
   type ChatMessage
-} from '@/utils/yue-chat-storage'
+} from '#lib/utils/yue-chat-storage'
 
 describe('yue-chat-storage', () => {
   beforeEach(() => {

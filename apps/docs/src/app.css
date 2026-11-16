@@ -1,0 +1,23 @@
+@import 'tailwindcss';
+@import '@isyuricunha/yutheme/styles/preset.css';
+@import '@isyuricunha/yutheme/styles/shiki.css';
+@import '@isyuricunha/yutheme/styles/typography.css';
+@import '@isyuricunha/yutheme/styles/site.css';
+
+/* Delegated-content controls: rendered via {@html}, outside Svelte scoping. */
+button[data-mdx-copy] {
+  color: var(--muted-foreground);
+}
+
+button[data-mdx-copy]:hover {
+  color: var(--foreground);
+}
+
+button[data-mdx-copy][data-copied='true'] {
+  color: var(--success);
+}
+
+button[data-doc-tab][data-tab-active='true'] {
+  background: var(--accent);
+  color: var(--foreground);
+}

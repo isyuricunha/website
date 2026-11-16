@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { get_request_locale } from '@/lib/request-locale'
+import { get_request_locale } from '#lib/request-locale'
 
 describe('get_request_locale', () => {
   it('prefers x-locale header', () => {

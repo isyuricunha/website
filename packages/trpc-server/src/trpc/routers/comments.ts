@@ -1,0 +1,460 @@
+import { createId } from '@paralleldrive/cuid2'
+import { TRPCError } from '@trpc/server'
+import {
+  and,
+  asc,
+  comments,
+  count,
+  desc,
+  eq,
+  gt,
+  inArray,
+  isNotNull,
+  isNull,
+  lt,
+  ne,
+  rates
+} from '@isyuricunha/db'
+import { Comment, Reply } from '@isyuricunha/emails'
+import { env } from '@isyuricunha/env'
+import { ratelimit } from '@isyuricunha/kv'
+import { allPosts } from 'content-collections'
+import { z } from 'zod'
+
+import { isProduction, SITE_URL } from '../../lib/constants'
+import { logger } from '../../lib/logger'
+import { get_request_locale } from '../../lib/request-locale'
+import { sendBestEffortEmail } from '../../lib/transactional-email'
+import { resend } from '../../lib/resend'
+import { getDefaultImage } from '../../utils/get-default-image'
+import { getIp } from '../../utils/get-ip'
+import { getLocalizedPath } from '../../utils/get-localized-path'
+
+import { adminProcedure, createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc'
+
+const getKey = (id: string) => `comments:${id}`
+
+const commentDeleteSchema = z.object({ commentId: z.string() })
+
+const infiniteCommentsSchema = z.object({
+  slug: z.string().min(1),
+  parentId: z.string().optional(),
+  sort: z.enum(['newest', 'oldest']).default('newest'),
+  cursor: z.date().nullish(),
+  limit: z.number().min(1).max(50).default(10),
+  type: z.enum(['comments', 'replies']).default('comments'),
+  highlightedCommentId: z.string().optional()
+})
+
+const slugSchema = z.object({ slug: z.string().min(1) })
+
+const postCommentSchema = z.object({
+  slug: z.string().min(1),
+  content: z.string().min(1).max(10_000),
+  date: z.string().min(1),
+  parentId: z.string().optional()
+})
+
+const commentIdSchema = z.object({ id: z.string().min(1) })
+
+export const commentsRouter = createTRPCRouter({
+  getComments: adminProcedure.query(async ({ ctx }) => {
+    const query = await ctx.db.query.comments.findMany({
+      columns: {
+        id: true,
+        userId: true,
+        parentId: true,
+        body: true,
+        createdAt: true
+      }
+    })
+
+    const result = query.map((comment) => ({
+      ...comment,
+      type: comment.parentId ? 'reply' : 'comment'
+    }))
+
+    return {
+      comments: result
+    }
+  }),
+
+  deleteComment: adminProcedure.input(commentDeleteSchema).mutation(async ({ ctx, input }) => {
+    try {
+      await ctx.db.delete(comments).where(eq(comments.id, input.commentId))
+      return { success: true }
+    } catch {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Failed to delete comment'
+      })
+    }
+  }),
+  getInfiniteComments: publicProcedure
+    .input(infiniteCommentsSchema)
+    .query(async ({ ctx, input }) => {
+      const session = ctx.session
+
+      const ip = getIp(ctx.headers)
+
+      const { success } = await ratelimit.limit(getKey(`getInfiniteComments:${ip}`))
+
+      if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+
+      const getCursorFilter = () => {
+        if (!input.cursor) return
+        return input.sort === 'newest'
+          ? lt(comments.createdAt, input.cursor)
+          : gt(comments.createdAt, input.cursor)
+      }
+
+      const query = await ctx.db.query.comments.findMany({
+        where: and(
+          eq(comments.postId, input.slug),
+          input.parentId ? eq(comments.parentId, input.parentId) : isNull(comments.parentId),
+          input.type === 'comments' ? isNull(comments.parentId) : isNotNull(comments.parentId),
+          getCursorFilter(),
+          input.highlightedCommentId ? ne(comments.id, input.highlightedCommentId) : undefined
+        ),
+        limit: input.limit,
+        with: {
+          user: {
+            columns: {
+              name: true,
+              image: true,
+              role: true,
+              id: true,
+              username: true,
+              nameColor: true,
+              nameEffect: true
+            }
+          },
+          rates: {
+            where: eq(rates.userId, session?.user.id ?? '')
+          }
+        },
+        orderBy: input.sort === 'newest' ? desc(comments.createdAt) : asc(comments.createdAt),
+        columns: {
+          id: true,
+          userId: true,
+          parentId: true,
+          body: true,
+          createdAt: true,
+          isDeleted: true
+        }
+      })
+
+      if (input.highlightedCommentId && !input.cursor) {
+        const highlightedComment = await ctx.db.query.comments.findFirst({
+          where: eq(comments.id, input.highlightedCommentId),
+          with: {
+            user: {
+              columns: {
+                name: true,
+                image: true,
+                role: true,
+                id: true,
+                username: true,
+                nameColor: true,
+                nameEffect: true
+              }
+            },
+            rates: {
+              where: eq(rates.userId, session?.user.id ?? '')
+            }
+          },
+          columns: {
+            id: true,
+            userId: true,
+            parentId: true,
+            body: true,
+            createdAt: true,
+            isDeleted: true
+          }
+        })
+
+        if (highlightedComment) query.unshift(highlightedComment)
+      }
+
+      // Aggregate reply/like/dislike counts for the whole page in three
+      // GROUP BY queries instead of three queries per comment (N+1).
+      const commentIds = query.map((comment) => comment.id)
+
+      const count_replies = (ids: string[]) =>
+        ctx.db
+          .select({ commentId: comments.parentId, value: count().mapWith(Number) })
+          .from(comments)
+          .where(inArray(comments.parentId, ids))
+          .groupBy(comments.parentId)
+
+      const count_rates = (ids: string[], like: boolean) =>
+        ctx.db
+          .select({ commentId: rates.commentId, value: count().mapWith(Number) })
+          .from(rates)
+          .where(and(inArray(rates.commentId, ids), eq(rates.like, like)))
+          .groupBy(rates.commentId)
+
+      const [replyCounts, likeCounts, dislikeCounts] = await Promise.all([
+        commentIds.length > 0 ? count_replies(commentIds) : Promise.resolve([]),
+        commentIds.length > 0 ? count_rates(commentIds, true) : Promise.resolve([]),
+        commentIds.length > 0 ? count_rates(commentIds, false) : Promise.resolve([])
+      ])
+
+      const replyCountBy = new Map(replyCounts.map((row) => [row.commentId, row.value] as const))
+      const likeCountBy = new Map(likeCounts.map((row) => [row.commentId, row.value] as const))
+      const dislikeCountBy = new Map(
+        dislikeCounts.map((row) => [row.commentId, row.value] as const)
+      )
+
+      const result = query.map((comment) => {
+        const selfRate = comment.rates.length > 0 ? comment.rates[0] : null
+        const defaultImage = getDefaultImage(comment.user.id)
+
+        return {
+          ...comment,
+          body: comment.body,
+          replies: replyCountBy.get(comment.id) ?? 0,
+          likes: likeCountBy.get(comment.id) ?? 0,
+          dislikes: dislikeCountBy.get(comment.id) ?? 0,
+          liked: selfRate?.like ?? null,
+          user: {
+            ...comment.user,
+            image: comment.user.image ?? defaultImage,
+            name: comment.user.name
+          }
+        }
+      })
+
+      return {
+        comments: result,
+        nextCursor: result.at(-1)?.createdAt ?? null
+      }
+    }),
+  getTotalCommentsCount: publicProcedure.input(slugSchema).query(async ({ ctx, input }) => {
+    const ip = getIp(ctx.headers)
+
+    const { success } = await ratelimit.limit(getKey(`getTotalCommentsCount:${ip}`))
+
+    if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+
+    const value = await ctx.db
+      .select({
+        value: count()
+      })
+      .from(comments)
+      .where(eq(comments.postId, input.slug))
+
+    return {
+      comments: value[0]?.value ?? 0
+    }
+  }),
+  getCommentsCount: publicProcedure.input(slugSchema).query(async ({ ctx, input }) => {
+    const ip = getIp(ctx.headers)
+
+    const { success } = await ratelimit.limit(getKey(`getCommentsCount:${ip}`))
+
+    if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+
+    const value = await ctx.db
+      .select({
+        value: count()
+      })
+      .from(comments)
+      .where(and(eq(comments.postId, input.slug), isNull(comments.parentId)))
+
+    return {
+      comments: value[0]?.value ?? 0
+    }
+  }),
+  getRepliesCount: publicProcedure.input(slugSchema).query(async ({ ctx, input }) => {
+    const ip = getIp(ctx.headers)
+
+    const { success } = await ratelimit.limit(getKey(`getRepliesCount:${ip}`))
+
+    if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+
+    const value = await ctx.db
+      .select({
+        value: count()
+      })
+      .from(comments)
+      .where(and(eq(comments.postId, input.slug), isNotNull(comments.parentId)))
+
+    return {
+      replies: value[0]?.value ?? 0
+    }
+  }),
+  post: protectedProcedure.input(postCommentSchema).mutation(async ({ ctx, input }) => {
+    const user = ctx.session.user
+    const locale = get_request_locale(ctx.headers)
+
+    const { success } = await ratelimit.limit(getKey(`post:${user.id}`))
+
+    if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+
+    const commentId = createId()
+
+    const page = allPosts.find((post) => post.slug === input.slug)
+
+    if (!page) throw new TRPCError({ code: 'NOT_FOUND', message: 'Blog post not found' })
+
+    const title = page.title
+    const defaultImage = getDefaultImage(user.id)
+
+    const userProfile = {
+      name: user.name,
+      image: user.image ?? defaultImage
+    }
+
+    const post = {
+      title,
+      url: `${SITE_URL}${getLocalizedPath({ slug: `/blog/${input.slug}`, locale })}`
+    }
+
+    await ctx.db.transaction(async (tx) => {
+      await tx.insert(comments).values({
+        id: commentId,
+        body: input.content,
+        userId: user.id,
+        postId: input.slug,
+        parentId: input.parentId
+      })
+
+      // Notify the author of the blog post via email
+      if (!input.parentId && user.role === 'user') {
+        if (!isProduction || !resend) return
+
+        await sendBestEffortEmail(
+          resend,
+          {
+            from: 'yuricunha.com <me@yuricunha.com>',
+            to: env.AUTHOR_EMAIL,
+            subject:
+              (
+                {
+                  en: 'New comment on your blog post',
+                  pt: 'Novo comentário no seu post',
+                  es: 'Nuevo comentario en tu publicación',
+                  ja: 'ブログ記事に新しいコメント',
+                  'zh-CN': '您的博客文章有新评论',
+                  fr: 'Nouveau commentaire sur votre article',
+                  de: 'Neuer Kommentar zu deinem Blogbeitrag'
+                } as Record<string, string>
+              )[locale] ?? 'New comment on your blog post',
+            react: Comment({
+              comment: input.content,
+              commenter: userProfile,
+              id: `comment=${commentId}`,
+              date: input.date,
+              post,
+              locale
+            })
+          },
+          (error) => logger.error('Failed to send new comment notification email', error)
+        )
+      }
+
+      // Notify the parent comment owner via email
+      if (input.parentId) {
+        if (!isProduction || !resend) return
+
+        const parentComment = await tx.query.comments.findFirst({
+          where: eq(comments.id, input.parentId),
+          with: {
+            user: true
+          }
+        })
+
+        if (parentComment && parentComment.user.email !== user.email) {
+          await sendBestEffortEmail(
+            resend,
+            {
+              from: 'yuricunha.com <me@yuricunha.com>',
+              to: parentComment.user.email,
+              subject:
+                (
+                  {
+                    en: 'New reply to your comment',
+                    pt: 'Nova resposta ao seu comentário',
+                    es: 'Nueva respuesta a tu comentario',
+                    ja: 'コメントに新しい返信',
+                    'zh-CN': '您的评论有新回复',
+                    fr: 'Nouvelle réponse à votre commentaire',
+                    de: 'Neue Antwort auf deinen Kommentar'
+                  } as Record<string, string>
+                )[locale] ?? 'New reply to your comment',
+              react: Reply({
+                reply: input.content,
+                replier: userProfile,
+                comment: parentComment.body,
+                id: `comment=${input.parentId}&reply=${commentId}`,
+                date: input.date,
+                post,
+                locale
+              })
+            },
+            (error) => logger.error('Failed to send comment reply notification email', error)
+          )
+        }
+      }
+    })
+  }),
+  delete: protectedProcedure.input(commentIdSchema).mutation(async ({ ctx, input }) => {
+    const user = ctx.session.user
+
+    const { success } = await ratelimit.limit(getKey(`delete:${user.id}`))
+
+    if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+
+    const email = ctx.session.user.email
+
+    const comment = await ctx.db.query.comments.findFirst({
+      where: eq(comments.id, input.id),
+      with: {
+        user: true,
+        replies: true,
+        parent: true
+      }
+    })
+
+    if (!comment) {
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: 'Comment not found'
+      })
+    }
+
+    // Check if the user is the owner of the comment
+    if (comment.user.email !== email) {
+      throw new TRPCError({
+        code: 'UNAUTHORIZED'
+      })
+    }
+
+    // If the comment has replies, just mark it as deleted.
+    // And keep the replies.
+    if (comment.replies.length > 0) {
+      await ctx.db.update(comments).set({ isDeleted: true }).where(eq(comments.id, input.id))
+
+      return
+    }
+
+    // Otherwise, delete the comment
+    await ctx.db.delete(comments).where(eq(comments.id, input.id))
+
+    // Case: deleting a reply
+    if (comment.parentId) {
+      const parentComment = await ctx.db.query.comments.findFirst({
+        where: and(eq(comments.id, comment.parentId), eq(comments.isDeleted, true)),
+        with: {
+          replies: true
+        }
+      })
+
+      // If the parent comment (which is marked as deleted) has no replies, delete it also.
+      if (parentComment?.replies.length === 0) {
+        await ctx.db.delete(comments).where(eq(comments.id, comment.parentId))
+      }
+    }
+  })
+})

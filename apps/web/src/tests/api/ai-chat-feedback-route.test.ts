@@ -1,5 +1,26 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
+vi.mock('@isyuricunha/env', () => ({
+  flags: {
+    comment: false,
+    auth: false,
+    stats: false,
+    lastfm: false,
+    lastfmImport: false,
+    analytics: false,
+    guestbookNotification: false,
+    likeButton: false,
+    turnstile: false
+  },
+  env: {
+    NODE_ENV: 'test',
+    DATABASE_URL: 'postgres://user:pass@localhost:5432/test',
+    UPSTASH_REDIS_REST_URL: 'https://example.upstash.io',
+    UPSTASH_REDIS_REST_TOKEN: 'test-token',
+    RESEND_API_KEY: 're_test_key'
+  }
+}))
+
 vi.mock('@/lib/logger', () => ({
   logger: {
     error: vi.fn(),
@@ -22,18 +43,13 @@ vi.mock('@/lib/auth', () => ({
   getSession: vi.fn()
 }))
 
-vi.mock('@isyuricunha/db', () => ({
-  db: {
-    insert: vi.fn(() => ({
-      values: vi.fn(async () => {
-        return
-      })
-    }))
-  },
-  aiChatFeedback: {
-    id: 'ai_chat_feedback'
-  }
-}))
+const feedbackDb = {
+  insert: vi.fn(() => ({
+    values: vi.fn(async () => {
+      return
+    })
+  }))
+}
 
 describe('/api/ai/chat/feedback', () => {
   beforeEach(() => {
@@ -47,14 +63,15 @@ describe('/api/ai/chat/feedback', () => {
     vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
     vi.mocked(ratelimit.limit).mockResolvedValue({ success: false } as never)
 
-    const { POST } = await import('@/app/api/ai/chat/feedback/route')
+    const { aiFeedbackPost } = await import('@isyuricunha/trpc-server/server/ai/feedback')
 
-    const req = {
-      headers: new Headers(),
-      json: async () => ({ requestId: 'r1', messageId: 'm1', rating: 'like' })
-    } as unknown as Parameters<typeof POST>[0]
+    const req = new Request('http://test/api/ai/chat/feedback', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ requestId: 'r1', messageId: 'm1', rating: 'like' })
+    })
 
-    const res = await POST(req)
+    const res = await aiFeedbackPost(req, { db: feedbackDb })
     expect(res.status).toBe(429)
 
     const json = (await res.json()) as { error?: string }
@@ -69,14 +86,15 @@ describe('/api/ai/chat/feedback', () => {
     vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
     vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
 
-    const { POST } = await import('@/app/api/ai/chat/feedback/route')
+    const { aiFeedbackPost } = await import('@isyuricunha/trpc-server/server/ai/feedback')
 
-    const req = {
-      headers: new Headers(),
-      json: async () => ({ requestId: '', messageId: '', rating: 'like' })
-    } as unknown as Parameters<typeof POST>[0]
+    const req = new Request('http://test/api/ai/chat/feedback', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ requestId: '', messageId: '', rating: 'like' })
+    })
 
-    const res = await POST(req)
+    const res = await aiFeedbackPost(req, { db: feedbackDb })
     expect(res.status).toBe(400)
 
     const json = (await res.json()) as { error?: string; details?: unknown }
@@ -88,17 +106,18 @@ describe('/api/ai/chat/feedback', () => {
     const { ratelimit } = await import('@/lib/ratelimit')
     const { getClientIp } = await import('@/lib/spam-detection')
     const { getSession } = await import('@/lib/auth')
-    const { db } = await import('@isyuricunha/db')
+    const db = feedbackDb
 
     vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
     vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
     vi.mocked(getSession).mockResolvedValue({ user: { id: 'u1' } } as never)
 
-    const { POST } = await import('@/app/api/ai/chat/feedback/route')
+    const { aiFeedbackPost } = await import('@isyuricunha/trpc-server/server/ai/feedback')
 
-    const req = {
-      headers: new Headers([['user-agent', 'test']]),
-      json: async () => ({
+    const req = new Request('http://test/api/ai/chat/feedback', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
         requestId: 'r1',
         messageId: 'm1',
         rating: 'dislike',
@@ -108,9 +127,9 @@ describe('/api/ai/chat/feedback', () => {
         model: 'g',
         locale: 'en'
       })
-    } as unknown as Parameters<typeof POST>[0]
+    })
 
-    const res = await POST(req)
+    const res = await aiFeedbackPost(req, { db: feedbackDb })
     expect(res.status).toBe(200)
 
     const json = (await res.json()) as { success?: boolean }

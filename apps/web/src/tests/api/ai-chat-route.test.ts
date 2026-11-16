@@ -1,5 +1,26 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
+vi.mock('@isyuricunha/env', () => ({
+  flags: {
+    comment: false,
+    auth: false,
+    stats: false,
+    lastfm: false,
+    lastfmImport: false,
+    analytics: false,
+    guestbookNotification: false,
+    likeButton: false,
+    turnstile: false
+  },
+  env: {
+    NODE_ENV: 'test',
+    DATABASE_URL: 'postgres://user:pass@localhost:5432/test',
+    UPSTASH_REDIS_REST_URL: 'https://example.upstash.io',
+    UPSTASH_REDIS_REST_TOKEN: 'test-token',
+    RESEND_API_KEY: 're_test_key'
+  }
+}))
+
 vi.mock('@/lib/logger', () => ({
   logger: {
     error: vi.fn(),
@@ -68,14 +89,17 @@ describe('/api/ai/chat', () => {
     vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
     vi.mocked(aiService.getAvailableProviders).mockReturnValue(['gemini'])
 
-    const { POST } = await import('@/app/api/ai/chat/route')
+    const { POST } = await import('@/routes/api/ai/chat/+server')
 
     const req = {
-      headers: new Headers(),
-      json: async () => ({
-        message: 'me recomenda uma postagem bacana',
-        locale: 'pt',
-        context: { currentPage: '/test' }
+      request: new Request('http://test/api/ai/chat', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          message: 'me recomenda uma postagem bacana',
+          locale: 'pt',
+          context: { currentPage: '/test' }
+        })
       })
     } as unknown as Parameters<typeof POST>[0]
 
@@ -100,14 +124,17 @@ describe('/api/ai/chat', () => {
     vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
     vi.mocked(aiService.getAvailableProviders).mockReturnValue(['gemini'])
 
-    const { POST } = await import('@/app/api/ai/chat/route')
+    const { POST } = await import('@/routes/api/ai/chat/+server')
 
     const req = {
-      headers: new Headers(),
-      json: async () => ({
-        message: 'me recomenda um snipper de docker',
-        locale: 'pt',
-        context: { currentPage: '/test' }
+      request: new Request('http://test/api/ai/chat', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          message: 'me recomenda um snipper de docker',
+          locale: 'pt',
+          context: { currentPage: '/test' }
+        })
       })
     } as unknown as Parameters<typeof POST>[0]
 
@@ -130,23 +157,26 @@ describe('/api/ai/chat', () => {
     vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
 
     const { build_navigation_answer } = await import('@/lib/ai/site-index')
-    const { POST } = await import('@/app/api/ai/chat/route')
+    const { POST } = await import('@/routes/api/ai/chat/+server')
 
     const req = {
-      headers: new Headers(),
-      json: async () => ({
-        message: 'direciona então',
-        locale: 'pt',
-        context: {
-          currentPage: '/test',
-          conversation: [
-            {
-              role: 'user',
-              content: 'fala uma postagem bacana de infra',
-              timestamp: new Date().toISOString()
-            }
-          ]
-        }
+      request: new Request('http://test/api/ai/chat', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          message: 'direciona então',
+          locale: 'pt',
+          context: {
+            currentPage: '/test',
+            conversation: [
+              {
+                role: 'user',
+                content: 'fala uma postagem bacana de infra',
+                timestamp: new Date().toISOString()
+              }
+            ]
+          }
+        })
       })
     } as unknown as Parameters<typeof POST>[0]
 
@@ -164,11 +194,14 @@ describe('/api/ai/chat', () => {
     vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
     vi.mocked(ratelimit.limit).mockResolvedValue({ success: false } as never)
 
-    const { POST } = await import('@/app/api/ai/chat/route')
+    const { POST } = await import('@/routes/api/ai/chat/+server')
 
     const req = {
-      headers: new Headers(),
-      json: async () => ({ message: 'hello' })
+      request: new Request('http://test/api/ai/chat', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ message: 'hello' })
+      })
     } as unknown as Parameters<typeof POST>[0]
 
     const res = await POST(req)
@@ -187,11 +220,14 @@ describe('/api/ai/chat', () => {
     vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
     vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
 
-    const { POST } = await import('@/app/api/ai/chat/route')
+    const { POST } = await import('@/routes/api/ai/chat/+server')
 
     const req = {
-      headers: new Headers(),
-      json: async () => ({ message: '' })
+      request: new Request('http://test/api/ai/chat', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ message: '' })
+      })
     } as unknown as Parameters<typeof POST>[0]
 
     const res = await POST(req)
@@ -212,14 +248,17 @@ describe('/api/ai/chat', () => {
     vi.mocked(aiService.getAvailableProviders).mockReturnValue(['mistral'])
     vi.mocked(aiService.generateResponse).mockResolvedValue('ok')
 
-    const { POST } = await import('@/app/api/ai/chat/route')
+    const { POST } = await import('@/routes/api/ai/chat/+server')
 
     const req = {
-      headers: new Headers(),
-      json: async () => ({
-        message: 'hello',
-        locale: 'pt',
-        context: { currentPage: '/test' }
+      request: new Request('http://test/api/ai/chat', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          message: 'hello',
+          locale: 'pt',
+          context: { currentPage: '/test' }
+        })
       })
     } as unknown as Parameters<typeof POST>[0]
 
@@ -249,14 +288,17 @@ describe('/api/ai/chat', () => {
     vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
     vi.mocked(aiService.getAvailableProviders).mockReturnValue([])
 
-    const { POST } = await import('@/app/api/ai/chat/route')
+    const { POST } = await import('@/routes/api/ai/chat/+server')
 
     const req = {
-      headers: new Headers(),
-      json: async () => ({
-        message: 'hello',
-        locale: 'en',
-        context: { currentPage: '/test' }
+      request: new Request('http://test/api/ai/chat', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          message: 'hello',
+          locale: 'en',
+          context: { currentPage: '/test' }
+        })
       })
     } as unknown as Parameters<typeof POST>[0]
 
@@ -281,14 +323,17 @@ describe('/api/ai/chat', () => {
     vi.mocked(aiService.getAvailableProviders).mockReturnValue(['mistral'])
     vi.mocked(aiService.generateResponse).mockRejectedValue(new Error('Provider error'))
 
-    const { POST } = await import('@/app/api/ai/chat/route')
+    const { POST } = await import('@/routes/api/ai/chat/+server')
 
     const req = {
-      headers: new Headers(),
-      json: async () => ({
-        message: 'hello',
-        locale: 'en',
-        context: { currentPage: '/test' }
+      request: new Request('http://test/api/ai/chat', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          message: 'hello',
+          locale: 'en',
+          context: { currentPage: '/test' }
+        })
       })
     } as unknown as Parameters<typeof POST>[0]
 

@@ -1,0 +1,254 @@
+import fs from 'fs/promises'
+import path from 'path'
+import matter from 'gray-matter'
+import * as yaml from 'js-yaml'
+import { logger } from '../logger'
+
+// Slug and locale flow into path.join(blogConfig.contentDir, locale, `${slug}.mdx`).
+// Reject anything that could traverse out of the content tree even if a caller
+// skips validation (admin routes pass user input here).
+const SAFE_SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/i
+const SAFE_LOCALE = /^[a-z]{2}(?:-[a-z]{2})?$/i
+
+const assert_safe_path_piece = (value: string, pattern: RegExp, label: string): void => {
+  if (!pattern.test(value)) {
+    throw new Error(`Invalid ${label}: ${value}`)
+  }
+}
+
+interface BlogPost {
+  slug: string
+  title: string
+  date: string
+  modifiedTime?: string
+  summary: string
+  content: string
+  locale: string
+  filePath: string
+}
+
+interface BlogPostMetadata {
+  slug: string
+  title: string
+  date: string
+  modifiedTime?: string
+  summary: string
+  locale: string
+  filePath: string
+}
+
+// Content lives in apps/web/src/content/blog for the Next app (cwd-based
+// default). Shared consumers outside apps/web override it via setContentDir.
+const blogConfig = {
+  contentDir: path.join(process.cwd(), 'src/content/blog')
+}
+
+export function setBlogContentDir(dir: string): void {
+  blogConfig.contentDir = path.resolve(dir)
+}
+const SUPPORTED_LOCALES = ['en', 'pt', 'fr', 'de', 'ja', 'zh']
+
+const yaml_engine = {
+  parse: (input: string) => yaml.load(input) as Record<string, unknown>,
+  stringify: (data: unknown) => yaml.dump(data)
+}
+
+const is_enoent = (error: unknown): boolean => {
+  return (
+    typeof error === 'object' &&
+    error !== null &&
+    'code' in error &&
+    (error as { code?: unknown }).code === 'ENOENT'
+  )
+}
+
+export const BlogService = {
+  /**
+   * Get all blog posts for a specific locale
+   */
+  async getPostsByLocale(locale: string): Promise<BlogPostMetadata[]> {
+    const localeDir = path.join(blogConfig.contentDir, locale)
+
+    try {
+      const files = await fs.readdir(localeDir)
+      const mdxFiles = files.filter((file) => file.endsWith('.mdx'))
+
+      const posts = await Promise.all(
+        mdxFiles.map(async (file) => {
+          const filePath = path.join(localeDir, file)
+          const fileContent = await fs.readFile(filePath, 'utf8')
+          const { data } = matter(fileContent, {
+            engines: {
+              yaml: yaml_engine
+            }
+          })
+
+          return {
+            slug: file.replace('.mdx', ''),
+            title: data.title || 'Untitled',
+            date: data.date || new Date().toISOString(),
+            modifiedTime: data.modifiedTime,
+            summary: data.summary || '',
+            locale,
+            filePath
+          }
+        })
+      )
+
+      return posts.toSorted((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    } catch (error) {
+      if (is_enoent(error)) return []
+      logger.error('Error reading posts for locale', error, { locale })
+      return []
+    }
+  },
+
+  /**
+   * Get all blog posts across all locales
+   */
+  async getAllPosts(): Promise<BlogPostMetadata[]> {
+    const allPosts: BlogPostMetadata[] = []
+
+    for (const locale of SUPPORTED_LOCALES) {
+      const posts = await this.getPostsByLocale(locale)
+      allPosts.push(...posts)
+    }
+
+    return allPosts
+  },
+
+  /**
+   * Get a specific blog post by slug and locale
+   */
+  async getPost(slug: string, locale: string): Promise<BlogPost | null> {
+    assert_safe_path_piece(slug, SAFE_SLUG, 'slug')
+    assert_safe_path_piece(locale, SAFE_LOCALE, 'locale')
+
+    const filePath = path.join(blogConfig.contentDir, locale, `${slug}.mdx`)
+
+    try {
+      const fileContent = await fs.readFile(filePath, 'utf8')
+      const { data, content } = matter(fileContent, {
+        engines: {
+          yaml: yaml_engine
+        }
+      })
+
+      return {
+        slug,
+        title: data.title || 'Untitled',
+        date: data.date || new Date().toISOString(),
+        modifiedTime: data.modifiedTime,
+        summary: data.summary || '',
+        content,
+        locale,
+        filePath
+      }
+    } catch (error) {
+      if (is_enoent(error)) return null
+      logger.error('Error reading post', error, { slug, locale })
+      return null
+    }
+  },
+
+  /**
+   * Save a blog post to file system
+   */
+  async savePost(post: Omit<BlogPost, 'filePath'>): Promise<boolean> {
+    const { slug, title, date, modifiedTime, summary, content, locale } = post
+    assert_safe_path_piece(slug, SAFE_SLUG, 'slug')
+    assert_safe_path_piece(locale, SAFE_LOCALE, 'locale')
+    const localeDir = path.join(blogConfig.contentDir, locale)
+    const filePath = path.join(localeDir, `${slug}.mdx`)
+
+    // Ensure directory exists
+    await fs.mkdir(localeDir, { recursive: true })
+
+    // Create frontmatter
+    const frontmatter = {
+      title,
+      date,
+      ...(modifiedTime && { modifiedTime }),
+      summary
+    }
+
+    // Combine frontmatter and content
+    const fileContent = matter.stringify(content, frontmatter, {
+      engines: {
+        yaml: yaml_engine
+      }
+    })
+
+    try {
+      await fs.writeFile(filePath, fileContent, 'utf8')
+      return true
+    } catch (error) {
+      logger.error('Error saving post', error, { slug, locale })
+      return false
+    }
+  },
+
+  /**
+   * Delete a blog post
+   */
+  async deletePost(slug: string, locale: string): Promise<boolean> {
+    assert_safe_path_piece(slug, SAFE_SLUG, 'slug')
+    assert_safe_path_piece(locale, SAFE_LOCALE, 'locale')
+    const filePath = path.join(blogConfig.contentDir, locale, `${slug}.mdx`)
+
+    try {
+      await fs.unlink(filePath)
+      return true
+    } catch (error) {
+      logger.error('Error deleting post', error, { slug, locale })
+      return false
+    }
+  },
+
+  /**
+   * Check if a post exists in a specific locale
+   */
+  async postExists(slug: string, locale: string): Promise<boolean> {
+    assert_safe_path_piece(slug, SAFE_SLUG, 'slug')
+    assert_safe_path_piece(locale, SAFE_LOCALE, 'locale')
+    const filePath = path.join(blogConfig.contentDir, locale, `${slug}.mdx`)
+
+    try {
+      await fs.access(filePath)
+      return true
+    } catch {
+      return false
+    }
+  },
+
+  /**
+   * Get posts grouped by slug (for translation management)
+   */
+  async getPostsBySlug(): Promise<Record<string, BlogPostMetadata[]>> {
+    const allPosts = await this.getAllPosts()
+    const groupedPosts: Record<string, BlogPostMetadata[]> = {}
+
+    for (const post of allPosts) {
+      const slug = post.slug
+      const group = groupedPosts[slug] ?? []
+      if (!Object.hasOwn(groupedPosts, slug)) {
+        groupedPosts[slug] = group
+      }
+      group.push(post)
+    }
+
+    return groupedPosts
+  },
+
+  /**
+   * Generate a unique slug from title
+   */
+  generateSlug(title: string): string {
+    return title
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .trim()
+  }
+}

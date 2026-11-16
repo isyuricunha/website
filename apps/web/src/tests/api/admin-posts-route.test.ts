@@ -42,14 +42,15 @@ describe('/api/admin/posts', () => {
 
     vi.mocked(getSession).mockResolvedValue(null)
 
-    const { POST } = await import('@/app/api/admin/posts/route')
+    const { POST } = await import('@/routes/api/admin/posts/+server')
 
-    const req = {
-      headers: new Headers(),
-      json: async () => ({ slug: 'test', title: 'Test', content: 'Hello', locale: 'en' })
-    } as unknown as Parameters<typeof POST>[0]
+    const req = new Request('http://test/api/admin/posts', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ slug: 'test', title: 'Test', content: 'Hello', locale: 'en' })
+    })
 
-    const res = await POST(req)
+    const res = await POST({ request: req } as unknown as Parameters<typeof POST>[0])
 
     expect(res.status).toBe(401)
   })
@@ -59,14 +60,15 @@ describe('/api/admin/posts', () => {
 
     vi.mocked(getSession).mockResolvedValue({ user: { role: 'user' } } as never)
 
-    const { POST } = await import('@/app/api/admin/posts/route')
+    const { POST } = await import('@/routes/api/admin/posts/+server')
 
-    const req = {
-      headers: new Headers(),
-      json: async () => ({ slug: 'test', title: 'Test', content: 'Hello', locale: 'en' })
-    } as unknown as Parameters<typeof POST>[0]
+    const req = new Request('http://test/api/admin/posts', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ slug: 'test', title: 'Test', content: 'Hello', locale: 'en' })
+    })
 
-    const res = await POST(req)
+    const res = await POST({ request: req } as unknown as Parameters<typeof POST>[0])
 
     expect(res.status).toBe(403)
   })
@@ -80,19 +82,20 @@ describe('/api/admin/posts', () => {
     vi.mocked(getSession).mockResolvedValue({ user: { role: 'admin' } } as never)
     vi.mocked(ratelimit.limit).mockResolvedValue({ success: false } as never)
 
-    const { POST } = await import('@/app/api/admin/posts/route')
+    const { POST } = await import('@/routes/api/admin/posts/+server')
 
-    const req = {
-      headers: new Headers(),
-      json: async () => ({
+    const req = new Request('http://test/api/admin/posts', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
         slug: 'test',
         title: 'Test',
         content: 'Hello',
         locale: 'en'
       })
-    } as unknown as Parameters<typeof POST>[0]
+    })
 
-    const res = await POST(req)
+    const res = await POST({ request: req } as unknown as Parameters<typeof POST>[0])
 
     expect(res.status).toBe(429)
   })
@@ -106,14 +109,15 @@ describe('/api/admin/posts', () => {
     vi.mocked(getSession).mockResolvedValue({ user: { role: 'admin' } } as never)
     vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
 
-    const { POST } = await import('@/app/api/admin/posts/route')
+    const { POST } = await import('@/routes/api/admin/posts/+server')
 
-    const req = {
-      headers: new Headers(),
-      json: async () => ({ slug: '', title: '', content: '', locale: '' })
-    } as unknown as Parameters<typeof POST>[0]
+    const req = new Request('http://test/api/admin/posts', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ slug: '', title: '', content: '', locale: '' })
+    })
 
-    const res = await POST(req)
+    const res = await POST({ request: req } as unknown as Parameters<typeof POST>[0])
 
     expect(res.status).toBe(400)
     const json = (await res.json()) as { error?: string }
@@ -129,14 +133,11 @@ describe('/api/admin/posts', () => {
     vi.mocked(getSession).mockResolvedValue({ user: { role: 'admin' } } as never)
     vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
 
-    const { DELETE } = await import('@/app/api/admin/posts/route')
+    const { DELETE } = await import('@/routes/api/admin/posts/+server')
 
-    const req = {
-      headers: new Headers(),
-      url: 'https://example.com/api/admin/posts'
-    } as unknown as Parameters<typeof DELETE>[0]
+    const req = new Request('https://example.com/api/admin/posts', { method: 'DELETE' })
 
-    const res = await DELETE(req)
+    const res = await DELETE({ request: req } as unknown as Parameters<typeof DELETE>[0])
 
     expect(res.status).toBe(400)
     const json = (await res.json()) as { error?: string }

@@ -36,47 +36,46 @@ describe('seo helpers', () => {
     expect(alternates.languages?.['x-default']).toBe('/blog/hello')
   })
 
-  it('generateSEO builds canonical and hreflang without double locale prefix', async () => {
-    const { generateSEO } = await import('@/lib/seo')
+  it('buildSeoHead builds canonical and hreflang without double locale prefix', async () => {
+    const { buildSeoHead } = await import('@/lib/seo')
 
-    const seo = generateSEO({
-      title: 'Hello',
-      url: '/pt/blog/hello',
+    const seo = buildSeoHead({
+      slug: '/blog/hello',
       locale: 'pt',
-      alternateLocales: ['en']
+      title: 'Hello',
+      description: 'Hi'
     })
 
-    expect(seo.alternates?.canonical).toBe('/pt/blog/hello')
-    expect(seo.alternates?.languages?.pt).toBe('/pt/blog/hello')
-    expect(seo.alternates?.languages?.en).toBe('/blog/hello')
-    expect(seo.alternates?.languages?.['x-default']).toBe('/blog/hello')
-
-    expect(seo.openGraph?.url).toBe('https://example.com/pt/blog/hello')
+    expect(seo.canonicalPath).toBe('/pt/blog/hello')
+    expect(seo.alternates.languages.pt).toBe('/pt/blog/hello')
+    expect(seo.alternates.languages.en).toBe('/blog/hello')
+    expect(seo.alternates.languages['x-default']).toBe('/blog/hello')
   })
 
-  it('generateSEO accepts absolute URLs and normalizes the pathname', async () => {
-    const { generateSEO } = await import('@/lib/seo')
+  it('buildSeoHead does not double the locale prefix when the slug already carries it', async () => {
+    const { buildSeoHead } = await import('@/lib/seo')
 
-    const seo = generateSEO({
-      title: 'Hello',
-      url: 'https://example.com/pt/blog/hello',
+    const seo = buildSeoHead({
+      slug: '/pt/blog/hello',
       locale: 'pt',
-      alternateLocales: ['en']
+      title: 'Hello',
+      description: 'Hi'
     })
 
-    expect(seo.alternates?.canonical).toBe('/pt/blog/hello')
-    expect(seo.openGraph?.url).toBe('https://example.com/pt/blog/hello')
+    expect(seo.canonicalPath).toBe('/pt/blog/hello')
   })
 
-  it('generateSEO sets metadata.title without appending site name to avoid double templating', async () => {
-    const { generateSEO } = await import('@/lib/seo')
+  it('buildSeoHead keeps the title as provided without appending the site name', async () => {
+    const { buildSeoHead } = await import('@/lib/seo')
 
-    const seo = generateSEO({
-      title: 'Hello'
+    const seo = buildSeoHead({
+      slug: '/',
+      locale: 'en',
+      title: 'Hello',
+      description: 'Hi'
     })
 
     expect(seo.title).toBe('Hello')
-    expect(seo.openGraph?.title).toBe('Hello | Example')
-    expect(seo.twitter?.title).toBe('Hello | Example')
+    expect(seo.description).toBe('Hi')
   })
 })

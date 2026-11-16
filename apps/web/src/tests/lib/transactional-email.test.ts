@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 
-import { sendBestEffortEmail, sendTransactionalEmail } from '@/lib/transactional-email'
+import { sendBestEffortEmail, sendTransactionalEmail } from '#lib/transactional-email'
 
 const email = {
   from: 'yuricunha.com <noreply@yuricunha.com>',

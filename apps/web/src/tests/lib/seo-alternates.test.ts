@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { build_alternates, build_absolute_language_alternates } from '@/lib/seo'
+import { build_alternates, build_absolute_language_alternates } from '#lib/seo'
 
 describe('alternates with partial translations', () => {
   it('never advertises a locale that has no translation', () => {

@@ -1,0 +1,134 @@
+import { z } from 'zod'
+
+import { requireAdmin } from '../../lib/admin-auth'
+import { aiService } from '../../lib/ai/ai-service'
+import { logger } from '../../lib/logger'
+import { ratelimit } from '../../lib/ratelimit'
+import { rate_limit_keys } from '../../lib/rate-limit-keys'
+import { getClientIp } from '../../lib/spam-detection'
+
+const ContentGenerationSchema = z.object({
+  action: z.enum(['tags', 'summary', 'meta', 'translate']),
+  content: z.string().min(1),
+  title: z.string().optional(),
+  existingTags: z.array(z.string()).optional().default([]),
+  fromLang: z.string().optional().default('en'),
+  toLang: z.string().optional().default('pt'),
+  maxLength: z.number().min(50).max(500).optional().default(200)
+})
+type ContentResult = string | string[]
+
+export async function aiContentPost(request: Request): Promise<Response> {
+  try {
+    // This endpoint generates AI content at real provider cost and has no
+    // public caller; gate it to admins like the other AI routes.
+    const authResponse = await requireAdmin(request)
+    if (authResponse) return authResponse
+
+    const ip = getClientIp(request.headers)
+    const { success } = await ratelimit.limit(rate_limit_keys.ai_content(ip))
+
+    if (!success) {
+      return Response.json(
+        { error: 'Rate limit exceeded. Please try again later.' },
+        { status: 429 }
+      )
+    }
+
+    const availableProviders = aiService.getAvailableProviders()
+    if (availableProviders.length === 0) {
+      return Response.json({ error: 'No AI providers are currently available' }, { status: 503 })
+    }
+
+    const body = await request.json()
+    const { action, content, title, existingTags, fromLang, toLang, maxLength } =
+      ContentGenerationSchema.parse(body)
+
+    switch (action) {
+      case 'tags': {
+        const result: ContentResult = await aiService.generateTags(content, existingTags)
+        return Response.json({
+          action,
+          result,
+          timestamp: new Date().toISOString()
+        })
+      }
+
+      case 'summary': {
+        const result: ContentResult = await aiService.generateSummary(content, maxLength)
+        return Response.json({
+          action,
+          result,
+          timestamp: new Date().toISOString()
+        })
+      }
+
+      case 'meta': {
+        if (!title) {
+          return Response.json(
+            { error: 'Title is required for meta description generation' },
+            { status: 400 }
+          )
+        }
+        const result: ContentResult = await aiService.generateMetaDescription(title, content)
+        return Response.json({
+          action,
+          result,
+          timestamp: new Date().toISOString()
+        })
+      }
+
+      case 'translate': {
+        const result: ContentResult = await aiService.translateContent(content, fromLang, toLang)
+        return Response.json({
+          action,
+          result,
+          timestamp: new Date().toISOString()
+        })
+      }
+    }
+  } catch (error) {
+    logger.error('Content generation API error', error)
+
+    if (error instanceof z.ZodError) {
+      return Response.json(
+        { error: 'Invalid request format', details: error.issues },
+        { status: 400 }
+      )
+    }
+
+    if (error instanceof Error) {
+      if (error.message.includes('quota') || error.message.includes('rate limit')) {
+        return Response.json(
+          { error: 'AI service is temporarily unavailable. Please try again later.' },
+          { status: 429 }
+        )
+      }
+
+      if (error.message.includes('not available')) {
+        return Response.json({ error: error.message }, { status: 503 })
+      }
+    }
+
+    return Response.json({ error: 'Internal server error' }, { status: 500 })
+  }
+}
+
+export async function aiContentGet(request: Request): Promise<Response> {
+  // Same admin gate as POST: this endpoint exposes provider topology and
+  // has no public caller.
+  const authResponse = await requireAdmin(request)
+  if (authResponse) return authResponse
+
+  const availableProviders = aiService.getAvailableProviders()
+
+  return Response.json({
+    message: 'AI Content Generation API',
+    actions: ['tags', 'summary', 'meta', 'translate'],
+    availableProviders,
+    supportedLanguages: ['en', 'pt', 'fr', 'de', 'zh'],
+    status: {
+      runtime: availableProviders.includes('runtime')
+    }
+  })
+}

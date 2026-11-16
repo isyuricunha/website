@@ -40,14 +40,15 @@ describe('/api/newsletter/unsubscribe', () => {
     vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
     vi.mocked(ratelimit.limit).mockResolvedValue({ success: false } as never)
 
-    const { POST } = await import('@/app/api/newsletter/unsubscribe/route')
+    const { POST } = await import('@/routes/api/newsletter/unsubscribe/+server')
 
-    const req = {
-      headers: new Headers(),
-      json: async () => ({ email: 'a@b.com' })
-    } as unknown as Parameters<typeof POST>[0]
+    const req = new Request('http://test/api/newsletter/unsubscribe', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ email: 'a@b.com' })
+    })
 
-    const res = await POST(req)
+    const res = await POST({ request: req } as unknown as Parameters<typeof POST>[0])
 
     expect(res.status).toBe(429)
     expect(await res.json()).toEqual({
@@ -62,14 +63,15 @@ describe('/api/newsletter/unsubscribe', () => {
     vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
     vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
 
-    const { POST } = await import('@/app/api/newsletter/unsubscribe/route')
+    const { POST } = await import('@/routes/api/newsletter/unsubscribe/+server')
 
-    const req = {
-      headers: new Headers(),
-      json: async () => ({ email: 'not-an-email' })
-    } as unknown as Parameters<typeof POST>[0]
+    const req = new Request('http://test/api/newsletter/unsubscribe', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ email: 'not-an-email' })
+    })
 
-    const res = await POST(req)
+    const res = await POST({ request: req } as unknown as Parameters<typeof POST>[0])
 
     expect(res.status).toBe(400)
     const json = (await res.json()) as { error?: string }
@@ -85,14 +87,15 @@ describe('/api/newsletter/unsubscribe', () => {
     vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
     vi.mocked(resendService.getMainAudienceId).mockResolvedValue(null)
 
-    const { POST } = await import('@/app/api/newsletter/unsubscribe/route')
+    const { POST } = await import('@/routes/api/newsletter/unsubscribe/+server')
 
-    const req = {
-      headers: new Headers(),
-      json: async () => ({ email: 'a@b.com' })
-    } as unknown as Parameters<typeof POST>[0]
+    const req = new Request('http://test/api/newsletter/unsubscribe', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ email: 'a@b.com' })
+    })
 
-    const res = await POST(req)
+    const res = await POST({ request: req } as unknown as Parameters<typeof POST>[0])
     expect(res.status).toBe(500)
     expect(await res.json()).toEqual({ error: 'No newsletter audience available' })
   })
@@ -108,14 +111,15 @@ describe('/api/newsletter/unsubscribe', () => {
     vi.mocked(resendService.findContactByEmail).mockResolvedValue({ id: 'c-1' })
     vi.mocked(resendService.updateContact).mockResolvedValue({ id: 'c-1' })
 
-    const { POST } = await import('@/app/api/newsletter/unsubscribe/route')
+    const { POST } = await import('@/routes/api/newsletter/unsubscribe/+server')
 
-    const req = {
-      headers: new Headers(),
-      json: async () => ({ email: 'a@b.com' })
-    } as unknown as Parameters<typeof POST>[0]
+    const req = new Request('http://test/api/newsletter/unsubscribe', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ email: 'a@b.com' })
+    })
 
-    const res = await POST(req)
+    const res = await POST({ request: req } as unknown as Parameters<typeof POST>[0])
     expect(res.status).toBe(200)
     expect(await res.json()).toEqual({
       success: true,
@@ -133,14 +137,15 @@ describe('/api/newsletter/unsubscribe', () => {
     vi.mocked(resendService.getMainAudienceId).mockResolvedValue('aud-1')
     vi.mocked(resendService.findContactByEmail).mockResolvedValue(null)
 
-    const { POST } = await import('@/app/api/newsletter/unsubscribe/route')
+    const { POST } = await import('@/routes/api/newsletter/unsubscribe/+server')
 
-    const req = {
-      headers: new Headers(),
-      json: async () => ({ email: 'not-subscribed@example.com' })
-    } as unknown as Parameters<typeof POST>[0]
+    const req = new Request('http://test/api/newsletter/unsubscribe', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ email: 'not-subscribed@example.com' })
+    })
 
-    const res = await POST(req)
+    const res = await POST({ request: req } as unknown as Parameters<typeof POST>[0])
 
     // A 404 here would let anyone probe which addresses are subscribed.
     // Unknown emails must look identical to a successful unsubscription.

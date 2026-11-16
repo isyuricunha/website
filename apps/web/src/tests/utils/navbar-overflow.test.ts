@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { calculate_visible_count } from '@/utils/navbar-overflow'
+import { calculate_visible_count } from '#lib/navbar-overflow'
 
 describe('calculate_visible_count', () => {
   it('returns all items when everything fits', () => {

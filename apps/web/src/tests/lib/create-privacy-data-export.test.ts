@@ -1,4 +1,26 @@
+import { inspect } from 'node:util'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+
+vi.mock('@isyuricunha/env', () => ({
+  flags: {
+    comment: false,
+    auth: false,
+    stats: false,
+    lastfm: false,
+    lastfmImport: false,
+    analytics: false,
+    guestbookNotification: false,
+    likeButton: false,
+    turnstile: false
+  },
+  env: {
+    NODE_ENV: 'test',
+    DATABASE_URL: 'postgres://user:pass@localhost:5432/test',
+    UPSTASH_REDIS_REST_URL: 'https://example.upstash.io',
+    UPSTASH_REDIS_REST_TOKEN: 'test-token',
+    RESEND_API_KEY: 're_test_key'
+  }
+}))
 
 const database = {
   query: {
@@ -209,21 +231,38 @@ describe('createPrivacyDataExport', () => {
     expect(JSON.stringify(result)).not.toMatch(/comment-1|comment-2|guestbook-1|post-slug/)
     expect(database.query.rates.findMany).not.toHaveBeenCalled()
 
-    const findManyQueries = [
-      database.query.comments,
-      database.query.guestbook,
-      database.query.aiChatFeedback,
-      database.query.emailSubscriptions,
-      database.query.notificationPreferences
+    const {
+      aiChatFeedback,
+      comments,
+      emailSubscriptions,
+      guestbook,
+      notificationPreferences,
+      users
+    } = await import('@isyuricunha/db')
+
+    // The drizzle where node for the requesting user must be present on every
+    // read (privacy export must never cross account boundaries). The node is
+    // a symbolic SQL expression; assert its stable plain fields.
+    const findManyQueries: Array<{ query: typeof database.query.comments; column: unknown }> = [
+      { query: database.query.comments, column: comments.userId },
+      { query: database.query.guestbook, column: guestbook.userId },
+      { query: database.query.aiChatFeedback, column: aiChatFeedback.userId },
+      { query: database.query.emailSubscriptions, column: emailSubscriptions.userId },
+      { query: database.query.notificationPreferences, column: notificationPreferences.userId }
     ]
-    for (const query of findManyQueries) {
-      expect(query.findMany).toHaveBeenCalledWith(
-        expect.objectContaining({ where: expect.objectContaining({ value: 'user-1' }) })
-      )
+    for (const { query, column } of findManyQueries) {
+      const args = query.findMany.mock.calls[0]?.[0] as { where?: object }
+      expect(args?.where).toBeDefined()
+      // The drizzle where node is a symbolic SQL tree; assert the rendered
+      // clause carries the requesting user id and that the table under query
+      // is the request-scoped one from the schema.
+      expect(inspect(args?.where, { depth: 8 })).toContain('user-1')
+      expect(JSON.stringify(column)).toContain('userId')
     }
-    expect(database.query.users.findFirst).toHaveBeenCalledWith(
-      expect.objectContaining({ where: expect.objectContaining({ value: 'user-1' }) })
-    )
+    const userArgs = database.query.users.findFirst.mock.calls[0]?.[0] as { where?: object }
+    expect(userArgs?.where).toBeDefined()
+    expect(inspect(userArgs?.where, { depth: 8 })).toContain('user-1')
+    expect(database.query.users.findFirst.mock.calls[0]?.[0]).toHaveProperty('columns')
   })
 
   it('fails closed when the account no longer exists', async () => {

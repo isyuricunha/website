@@ -10,7 +10,7 @@ import {
   setDismissedAnnouncementIds,
   setShownAnnouncementToastIds,
   setViewedAnnouncementIds
-} from '@/utils/announcement-storage'
+} from '#lib/utils/announcement-storage'
 
 describe('announcement-storage', () => {
   beforeEach(() => {

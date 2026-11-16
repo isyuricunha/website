@@ -1,0 +1,55 @@
+import { adminRouter } from './routers/admin'
+import { aiSettingsRouter } from './routers/ai-settings'
+import { announcementsRouter } from './routers/announcements'
+import { bulkRouter } from './routers/bulk'
+import { commentsRouter } from './routers/comments'
+import { communicationRouter } from './routers/communication'
+import { contentRouter } from './routers/content'
+import { dataManagementRouter } from './routers/data-management'
+import { emailManagementRouter } from './routers/email-management'
+import { githubRouter } from './routers/github'
+import { guestbookRouter } from './routers/guestbook'
+import { lastfmRouter } from './routers/lastfm'
+import { likesRouter } from './routers/likes'
+import { monitoringRouter } from './routers/monitoring'
+import { ratesRouter } from './routers/rates'
+import { recapRouter } from './routers/recap'
+import { resendEmailRouter } from './routers/resend-email'
+import { securityRouter } from './routers/security'
+import { systemRouter } from './routers/system'
+import { usersRouter } from './routers/users'
+import { viewsRouter } from './routers/views'
+import { wakatimeRouter } from './routers/wakatime'
+import type { inferRouterInputs, inferRouterOutputs } from '@trpc/server'
+
+import { createTRPCRouter } from './trpc'
+
+export const appRouter = createTRPCRouter({
+  admin: adminRouter,
+  aiSettings: aiSettingsRouter,
+  announcements: announcementsRouter,
+  bulk: bulkRouter,
+  communication: communicationRouter,
+  content: contentRouter,
+  dataManagement: dataManagementRouter,
+  emailManagement: emailManagementRouter,
+  resendEmail: resendEmailRouter,
+  monitoring: monitoringRouter,
+  security: securityRouter,
+  system: systemRouter,
+  github: githubRouter,
+  wakatime: wakatimeRouter,
+  views: viewsRouter,
+  likes: likesRouter,
+  lastfm: lastfmRouter,
+  comments: commentsRouter,
+  guestbook: guestbookRouter,
+  rates: ratesRouter,
+  recap: recapRouter,
+  users: usersRouter
+})
+
+export type AppRouter = typeof appRouter
+
+export type RouterInputs = inferRouterInputs<AppRouter>
+export type RouterOutputs = inferRouterOutputs<AppRouter>

@@ -10,6 +10,9 @@ node_modules/
 # Turbo
 .turbo/
 
+# SvelteKit build output and generated files
+.svelte-kit/
+
 # Vercel
 .vercel/
 
