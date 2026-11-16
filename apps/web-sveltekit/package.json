@@ -44,7 +44,12 @@
     "zod": "^4.6.5"
   },
   "dependencies": {
+    "@resvg/resvg-js": "^2.6.2",
+    "@types/rss": "^0.0.32",
     "cobe": "^2.0.1",
+    "rss": "^1.2.2",
+    "satori": "^0.63.2",
+    "satori-html": "^0.3.2",
     "simple-icons": "^16.37.0"
   }
 }

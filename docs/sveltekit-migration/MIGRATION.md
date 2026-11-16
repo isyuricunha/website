@@ -178,3 +178,15 @@ names); TypeScript 6 minimum; Node 22+ minimum.
 - Stage 7 started: admin shell (RBAC layout, sidebar, header, breadcrumbs) and dashboard ported; verified with an admin session locally. Remaining admin pages: users, comments, posts, security, audit-logs, communication, email-marketing, announcements, notifications, monitoring, system-health, data-management, bulk-operations, configuration.
 
 - Stage 7: users page ported (search, role filter, sort, pagination, row actions with confirmation dialogs, edit modal with Zod, CSV export). Remaining admin pages: comments, posts, posts/new, security, audit-logs, communication, email-marketing, announcements, notifications, monitoring, system-health, data-management, bulk-operations, configuration.
+
+- Stage 7 completed: all remaining admin panels ported (comments, audit logs, bulk operations, security, communication, monitoring, system health, data management, configuration, announcements, notifications, email marketing with staged sequential loading and icon-button aria-labels).
+
+- Stage 8: shared backend runners moved into the package: cron alerts and data retention (Bearer CRON_SECRET, fail-closed, verified 401 without and with wrong secret), AI chat (Zod validation, Turnstile, rate limits, site index, streaming; POST 403 fail-closed on Turnstile), chat status, mascot latest post (reads the MDX corpus through an overridable content dir), contact form, newsletter subscribe/confirm/unsubscribe, account data export, AI feedback, AI content generation (GET+POST), admin posts (POST+PUT+DELETE), admin translate. Each has a thin Next wrapper plus a matching SvelteKit +server route; Next wrappers keep `runtime = 'nodejs'` and vitest configs gained package aliases with specific entries before the generic `@/lib/ai/(.*)` wildcard.
+
+- Stage 8: avatar endpoint renders the same deterministic identicon as plain SVG (content-type image/svg+xml, immutable cache) instead of ImageResponse, removing the OG renderer dependency from that route; size query clamped to 16-512.
+
+- Stage 8: OG image endpoint (/og/[id]) ported without React: satori + satori-html templates + resvg render the same card design (1200x630, Geist font shipped as a vendored TTF read via $app/server). satori needed explicit box-sizing:border-box because width:100% plus padding rendered 1312px wide and clipped the footer text; values are HTML-escaped and length-clamped as before.
+
+- Stage 8: SEO endpoints ported: sitemap.xml (same entry logic, xhtml alternate links, prerendered), rss.xml (rss package), robots.txt (same directives plus Content-Signal), llms.txt (same collections and limits). All verified 200 in dev with real content.
+
+- Stage 8: static/sw.js copied unchanged from the Next app and registered from the root layout with a readyState fallback, because after hydration the load event has usually already fired; registration verified in Playwright (registration present after page load).

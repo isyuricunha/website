@@ -28,6 +28,31 @@ export const getLocalizedPath = (doc: LocalizedDocument) => {
   return path
 }
 
+export const build_absolute_language_alternates = ({
+  slug,
+  locales
+}: {
+  slug: string
+  locales?: string[]
+}) => {
+  const availableLocales = locales && locales.length > 0 ? locales : [...i18n.locales]
+
+  const languages = availableLocales.reduce<Record<string, string>>((acc, locale) => {
+    acc[locale] = `${SITE_URL}${getLocalizedPath({ slug, locale })}`
+    return acc
+  }, {})
+
+  // x-default should point at the default locale when a variant exists there
+  // (matching build_alternates), otherwise the first available one.
+  const fallback_locale = availableLocales.includes(i18n.defaultLocale)
+    ? i18n.defaultLocale
+    : availableLocales[0]
+
+  languages['x-default'] = `${SITE_URL}${getLocalizedPath({ slug, locale: fallback_locale ?? '' })}`
+
+  return languages
+}
+
 type SeoAlternates = {
   canonical: string
   languages: Record<string, string>

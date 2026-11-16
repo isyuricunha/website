@@ -5,6 +5,22 @@
 	import Header from '#lib/components/header.svelte'
 	import type { LayoutData } from './$types'
 
+// Same registration intent as the Next app. By the time the client bundle
+// hydrates, the window load event has often already fired, so register
+// immediately in that case instead of listening for an event that never comes.
+if (typeof navigator !== 'undefined' && 'serviceWorker' in navigator) {
+	const register = function () {
+		navigator.serviceWorker.register('/sw.js').catch(function (registrationError) {
+			void registrationError
+		})
+	}
+	if (document.readyState === 'complete') {
+		register()
+	} else {
+		window.addEventListener('load', register)
+	}
+}
+
 	let { data, children }: { data: LayoutData; children: Snippet } = $props()
 
 	// Delegated copy handler for build-rendered code blocks: one listener for
