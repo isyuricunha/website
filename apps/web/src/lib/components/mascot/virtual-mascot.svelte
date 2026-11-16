@@ -16,7 +16,7 @@ import { i18n } from '@isyuricunha/i18n/config'
 let { hidden = false }: { hidden?: boolean } = $props()
 
 let mascotLocale = $state(i18n.defaultLocale)
-let labels = $state(null)
+let labels = $state<Record<string, unknown> | null>(null)
 const mascot = new MascotStateController()
 
 // Configure translations from the server-provided labels after hydration.
@@ -51,13 +51,13 @@ mascot.startReactiveEffects()
 return cleanup
 })
 
-const state = $derived(mascot.state)
+const ui = $derived(mascot.state)
 const mounted = $derived(mascot.mounted)
 const prefersReducedMotion = $derived(mascot.prefersReducedMotion)
 </script>
 
 {#if !hidden}
-	{#if state.isHiddenPref || state.isDismissed}
+	{#if ui.isHiddenPref || ui.isDismissed}
 		<div class={mascot.getPositionClasses() + ' z-50'}>
 			<button
 				type="button"
@@ -86,11 +86,11 @@ const prefersReducedMotion = $derived(mascot.prefersReducedMotion)
 			</div>
 
 			<!-- AI Chat Interface -->
-			{#if state.showAIChat}
+			{#if ui.showAIChat}
 				<div class={mascot.getBubblePositionClasses()}>
 					<AIChatInterface
 						{mascot}
-						isOpen={state.showAIChat}
+						isOpen={ui.showAIChat}
 						onClose={() => mascot.handleAIClose()}
 						onThinkingChange={(thinking) => mascot.handleThinkingChange(thinking)}
 						currentPage={mascot.pageKey}
@@ -113,30 +113,30 @@ const prefersReducedMotion = $derived(mascot.prefersReducedMotion)
 			<button
 				type="button"
 				aria-label={mascot.t('mascot.ariaLabel')}
-				class="focus-visible:ring-2 focus-visible:ring-[var(--accent-border)] focus-visible:outline-none relative inline-flex h-12 w-12 items-center justify-center rounded-full border transition-colors sm:h-14 sm:w-14 lg:h-16 lg:w-16 {state.isActive
+				class="focus-visible:ring-2 focus-visible:ring-[var(--accent-border)] focus-visible:outline-none relative inline-flex h-12 w-12 items-center justify-center rounded-full border transition-colors sm:h-14 sm:w-14 lg:h-16 lg:w-16 {ui.isActive
 					? 'shadow-feature-card border-[var(--accent-border)] bg-[var(--accent-dim)]'
-					: 'shadow-feature-card border-[var(--border-default)]'} {state.preferences.animations
+					: 'shadow-feature-card border-[var(--border-default)]'} {ui.preferences.animations
 					? 'hover:bg-bg-hover hover:border-[var(--accent-border)]'
-					: ''} {state.isKonamiMode ? 'animate-pulse border-[var(--accent-border)]' : ''} {state.isTickled ? 'animate-bounce' : ''} {state.isDizzy ? 'animate-spin' : ''}"
+					: ''} {ui.isKonamiMode ? 'animate-pulse border-[var(--accent-border)]' : ''} {ui.isTickled ? 'animate-bounce' : ''} {ui.isDizzy ? 'animate-spin' : ''}"
 				onclick={() => mascot.handleMascotClick()}
 			>
-				{#if mounted && state.currentMascotImage > 0}
+				{#if mounted && ui.currentMascotImage > 0}
 					<div
 						class="relative h-full w-full rounded-full transition-transform duration-500 ease-out"
-						style={!prefersReducedMotion && state.preferences.animations
-							? `transform: translate(${state.mousePosition.x * 5}px, ${state.mousePosition.y * 5}px) rotate(${state.mousePosition.x * 5}deg)`
+						style={!prefersReducedMotion && ui.preferences.animations
+							? `transform: translate(${ui.mousePosition.x * 5}px, ${ui.mousePosition.y * 5}px) rotate(${ui.mousePosition.x * 5}deg)`
 							: undefined}
 					>
 						<img
-							src="/images/mascote-{state.currentMascotImage}.png"
+							src="/images/mascote-{ui.currentMascotImage}.png"
 							alt=""
 							role="presentation"
 							width={64}
 							height={64}
-							loading={state.isActive ? 'eager' : 'lazy'}
-							class="h-full w-full rounded-full object-cover transition-all duration-500 {state.isBlinking
+							loading={ui.isActive ? 'eager' : 'lazy'}
+							class="h-full w-full rounded-full object-cover transition-all duration-500 {ui.isBlinking
 								? 'animate-pulse'
-								: ''} {state.isKonamiMode ? 'hue-rotate-180 sepia filter' : ''}"
+								: ''} {ui.isKonamiMode ? 'hue-rotate-180 sepia filter' : ''}"
 						/>
 					</div>
 				{:else}
@@ -146,6 +146,6 @@ const prefersReducedMotion = $derived(mascot.prefersReducedMotion)
 		</div>
 
 		<!-- Mini Game -->
-		<MascotGame {mascot} isOpen={state.showGame} onClose={() => mascot.updateState({ showGame: false })} />
+		<MascotGame {mascot} isOpen={ui.showGame} onClose={() => mascot.updateState({ showGame: false })} />
 	{/if}
 {/if}
