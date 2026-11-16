@@ -4,6 +4,7 @@
 	import Footer from '#lib/components/footer.svelte'
 	import SignInDialog from '#lib/components/sign-in-dialog.svelte'
 	import Header from '#lib/components/header.svelte'
+	import OfflineIndicator from '#lib/components/offline-indicator.svelte'
 	import VirtualMascot from '#lib/components/mascot/virtual-mascot.svelte'
 	import type { LayoutData } from './$types'
 
@@ -66,5 +67,6 @@ if (typeof navigator !== 'undefined' && 'serviceWorker' in navigator) {
 
 <VirtualMascot />
 
+<OfflineIndicator locale={data.locale} />
 <SignInDialog locale={data.locale} />
 
