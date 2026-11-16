@@ -271,6 +271,7 @@ export const communicationRouter = createTRPCRouter({
     .input(emailTemplateCreationInputSchema)
     .mutation(async ({ ctx, input }) => {
       try {
+        const activeResend = ctx.resend ?? resend
         const auditLogger = new AuditLogger(ctx.db)
         const ipAddress = getIpFromHeaders(ctx.headers)
         const userAgent = getUserAgentFromHeaders(ctx.headers)
@@ -316,6 +317,7 @@ export const communicationRouter = createTRPCRouter({
     .input(emailTemplateUpdateInputSchema)
     .mutation(async ({ ctx, input }) => {
       try {
+        const activeResend = ctx.resend ?? resend
         const auditLogger = new AuditLogger(ctx.db)
         const ipAddress = getIpFromHeaders(ctx.headers)
         const userAgent = getUserAgentFromHeaders(ctx.headers)
@@ -416,6 +418,7 @@ export const communicationRouter = createTRPCRouter({
     .input(emailCampaignCreationInputSchema)
     .mutation(async ({ ctx, input }) => {
       try {
+        const activeResend = ctx.resend ?? resend
         const auditLogger = new AuditLogger(ctx.db)
         const ipAddress = getIpFromHeaders(ctx.headers)
         const userAgent = getUserAgentFromHeaders(ctx.headers)
@@ -486,6 +489,7 @@ export const communicationRouter = createTRPCRouter({
     .input(campaignIdInputSchema)
     .mutation(async ({ ctx, input }) => {
       try {
+        const activeResend = ctx.resend ?? resend
         const auditLogger = new AuditLogger(ctx.db)
         const ipAddress = getIpFromHeaders(ctx.headers)
         const userAgent = getUserAgentFromHeaders(ctx.headers)
@@ -655,14 +659,14 @@ export const communicationRouter = createTRPCRouter({
         for (const recipient of recipients) {
           try {
             if (html) {
-              await sendTransactionalEmail(resend, {
+              await sendTransactionalEmail(activeResend, {
                 from: 'yuricunha.com <noreply@yuricunha.com>',
                 to: [recipient.email],
                 subject: campaign.subject,
                 html
               })
             } else {
-              await sendTransactionalEmail(resend, {
+              await sendTransactionalEmail(activeResend, {
                 from: 'yuricunha.com <noreply@yuricunha.com>',
                 to: [recipient.email],
                 subject: campaign.subject,
@@ -869,6 +873,7 @@ export const communicationRouter = createTRPCRouter({
     .input(notificationCreationInputSchema)
     .mutation(async ({ ctx, input }) => {
       try {
+        const activeResend = ctx.resend ?? resend
         const auditLogger = new AuditLogger(ctx.db)
         const notificationId = randomBytes(16).toString('hex')
 

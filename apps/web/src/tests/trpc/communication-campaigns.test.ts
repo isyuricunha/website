@@ -249,6 +249,7 @@ describe('communicationRouter campaigns', () => {
 
     const caller = communicationRouter.createCaller({
       db: db as unknown,
+      resend: { emails: { send: resendSendMock } },
       headers: new Headers(),
       session: { user: { id: 'admin-1', role: 'admin' } }
     } as any)
@@ -278,6 +279,7 @@ describe('communicationRouter campaigns', () => {
 
     const caller = communicationRouter.createCaller({
       db: db as unknown,
+      resend: { emails: { send: resendSendMock } },
       headers: new Headers(),
       session: { user: { id: 'admin-1', role: 'admin' } }
     } as any)
@@ -307,6 +309,7 @@ describe('communicationRouter campaigns', () => {
 
     const caller = communicationRouter.createCaller({
       db: db as unknown,
+      resend: { emails: { send: resendSendMock } },
       headers: new Headers(),
       session: { user: { id: 'admin-1', role: 'admin' } }
     } as any)

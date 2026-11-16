@@ -79,9 +79,13 @@ const makeCtx = (user_agent?: string, ip = '203.0.113.7') => {
   const inserted: InsertedRow[] = []
   const db = {
     select: vi.fn(() => ({ from: vi.fn(async () => [{ value: 5, views: 10 }]) })),
-    insert: vi.fn((table: { name: string }) => ({
+    insert: vi.fn((table: { name?: string }) => ({
       values: vi.fn(async (values: Record<string, unknown>) => {
-        inserted.push({ table: table.name, values })
+        const name =
+          (table as unknown as { [key: symbol]: string })[Symbol.for('drizzle:Name')] ??
+          table.name ??
+          'unknown'
+        inserted.push({ table: name, values })
         return { rowCount: 1 }
       })
     }))
@@ -110,7 +114,7 @@ describe('trpc observability middleware', () => {
 
     await viewsRouter.createCaller(ctx as never).getCount()
 
-    expect(inserted.map((r) => r.table)).toEqual(['apiUsage'])
+    expect(inserted.map((r) => r.table)).toEqual(['api_usage'])
   })
 
   it('records the platform-trusted ip, not a client-supplied header', async () => {
@@ -163,7 +167,7 @@ describe('trpc observability middleware', () => {
       viewsRouter.createCaller(ctx as never).increment({ slug: 'missing-post' })
     ).rejects.toMatchObject({ code: 'NOT_FOUND' })
 
-    expect(inserted.map((r) => r.table)).toEqual(['apiUsage'])
+    expect(inserted.map((r) => r.table)).toEqual(['api_usage'])
   })
 
   it('stops writing when the telemetry limiter is exhausted', async () => {
@@ -183,7 +187,7 @@ describe('trpc observability middleware', () => {
 
     await viewsRouter.createCaller(ctx as never).getCount()
 
-    expect(inserted.map((r) => r.table)).toEqual(['apiUsage'])
+    expect(inserted.map((r) => r.table)).toEqual(['api_usage'])
   })
 
   it('KEEPS telemetry when the limiter throws (redis unreachable)', async () => {
@@ -193,7 +197,7 @@ describe('trpc observability middleware', () => {
 
     await viewsRouter.createCaller(ctx as never).getCount()
 
-    expect(inserted.map((r) => r.table)).toEqual(['apiUsage'])
+    expect(inserted.map((r) => r.table)).toEqual(['api_usage'])
   })
 
   it('skips the per-ip cap when no platform header is present (dev fallback)', async () => {
@@ -205,6 +209,6 @@ describe('trpc observability middleware', () => {
 
     // The whole site would otherwise share a single 0.0.0.0 bucket.
     expect(limits.telemetry_keys).toHaveLength(0)
-    expect(inserted.map((r) => r.table)).toEqual(['apiUsage'])
+    expect(inserted.map((r) => r.table)).toEqual(['api_usage'])
   })
 })

@@ -7,6 +7,7 @@ import { logger } from '../lib/logger'
 import { randomBytes } from 'crypto'
 
 import { getSession } from '../lib/auth'
+import { resend } from '../lib/resend'
 import { telemetryRatelimit } from '@isyuricunha/kv'
 import { is_bot_user_agent } from '../lib/spam-detection'
 import { getIp } from '../utils/get-ip'
@@ -30,6 +31,7 @@ export const createTRPCContext = async (opts: trpc_context_opts) => {
 
   return {
     db,
+    resend,
     session,
     method: opts.method,
     url: opts.url,
