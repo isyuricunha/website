@@ -97,7 +97,8 @@ export const _sitemapXml = (): string => {
     '/music',
     '/recap',
     '/about',
-    '/contact'
+    '/contact',
+    '/sitemap'
   ]
 
   const allLocaleCodes = supportedLanguages.map((language) => language.code)
