@@ -7,10 +7,10 @@ import { existsSync, readFileSync } from 'node:fs'
 import path from 'node:path'
 import type { ReactNode } from 'react'
 
-import CommentEditor from '#lib/components/comments/comment-editor'
-import CommandMenu from '#lib/components/command-menu'
-import NewsletterSignup from '#lib/components/newsletter-signup'
-import SiteSearch from '#lib/components/site-search'
+import CommentEditor from '@/components/comments/comment-editor'
+import CommandMenu from '@/components/command-menu'
+import NewsletterSignup from '@/components/newsletter-signup'
+import SiteSearch from '@/components/site-search'
 
 class ResizeObserverMock {
   observe() {

@@ -3,7 +3,7 @@ import { NextIntlClientProvider } from '@isyuricunha/i18n/client'
 import messages from '@isyuricunha/i18n/messages/en.json'
 import { describe, expect, it, vi } from 'vitest'
 
-import NotificationsDropdown from '#lib/components/layout/notifications-dropdown'
+import NotificationsDropdown from '@/components/layout/notifications-dropdown'
 
 const { setIsSignInOpenMock } = vi.hoisted(() => {
   return {

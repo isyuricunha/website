@@ -19,7 +19,7 @@ const escapeXml = (value: string) =>
 
 const toW3CDate = (date: Date) => date.toISOString()
 
-const sitemapXml = (): string => {
+export const sitemapXml = (): string => {
   const entries: SitemapEntry[] = []
   const buildTime = new Date()
   const seen = new Set<string>()

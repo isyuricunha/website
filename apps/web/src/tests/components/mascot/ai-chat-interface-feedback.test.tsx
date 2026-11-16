@@ -3,7 +3,7 @@ import { NextIntlClientProvider } from '@isyuricunha/i18n/client'
 import messages from '@isyuricunha/i18n/messages/en.json'
 import { describe, expect, it, vi } from 'vitest'
 
-import AIChatInterface from '#lib/components/mascot/ai-chat-interface'
+import AIChatInterface from '@/components/mascot/ai-chat-interface'
 
 vi.mock('sonner', () => ({
   toast: {

@@ -12,10 +12,65 @@
     "module": "esnext",
     "moduleResolution": "bundler",
     "paths": {
-      "content-collections": ["./.content-collections/generated"]
+      "content-collections": ["./.content-collections/generated"],
+      "@/trpc/trpc": ["../../packages/trpc-server/src/trpc/trpc.ts"],
+      "#trpc/trpc": ["../../packages/trpc-server/src/trpc/trpc.ts"],
+      "@/trpc/root": ["../../packages/trpc-server/src/trpc/root.ts"],
+      "#trpc/root": ["../../packages/trpc-server/src/trpc/root.ts"],
+      "@/lib/auth": ["../../packages/trpc-server/src/lib/auth.ts"],
+      "#lib/auth": ["../../packages/trpc-server/src/lib/auth.ts"],
+      "@/lib/ip-hash": ["../../packages/trpc-server/src/lib/ip-hash.ts"],
+      "#lib/ip-hash": ["../../packages/trpc-server/src/lib/ip-hash.ts"],
+      "@/lib/logger": ["../../packages/trpc-server/src/lib/logger.ts"],
+      "#lib/logger": ["../../packages/trpc-server/src/lib/logger.ts"],
+      "@/lib/r2": ["../../packages/trpc-server/src/lib/r2.ts"],
+      "#lib/r2": ["../../packages/trpc-server/src/lib/r2.ts"],
+      "@/lib/resend": ["../../packages/trpc-server/src/lib/resend.ts"],
+      "#lib/resend": ["../../packages/trpc-server/src/lib/resend.ts"],
+      "@/lib/secrets": ["../../packages/trpc-server/src/lib/secrets.ts"],
+      "#lib/secrets": ["../../packages/trpc-server/src/lib/secrets.ts"],
+      "@/trpc/routers/*": ["../../packages/trpc-server/src/trpc/routers/*"],
+      "@/lib/ai/*": ["../../packages/trpc-server/src/lib/ai/*"],
+      "#lib/ai/*": ["../../packages/trpc-server/src/lib/ai/*"],
+      "#trpc/routers/*": ["../../packages/trpc-server/src/trpc/routers/*"],
+      "#lib/components/*": ["./src/lib/components/*"],
+      "#lib/*": ["./src/lib/*"],
+      "#tests/*": ["./src/tests/*"],
+      "@/*": ["./src/*"],
+      "@/lib/ratelimit": ["../../packages/trpc-server/src/lib/ratelimit.ts"],
+      "@/lib/spam-detection": ["../../packages/trpc-server/src/lib/spam-detection.ts"],
+      "@/lib/resend-service": ["../../packages/trpc-server/src/lib/resend-service.ts"],
+      "@/lib/admin-auth": ["../../packages/trpc-server/src/lib/admin-auth.ts"],
+      "@/lib/blog/blog-service": ["../../packages/trpc-server/src/lib/blog/blog-service.ts"],
+      "@/lib/rate-limit-keys": ["../../packages/trpc-server/src/lib/rate-limit-keys.ts"],
+      "@/lib/privacy/create-privacy-data-export": [
+        "../../packages/trpc-server/src/lib/privacy/create-privacy-data-export.ts"
+      ],
+      "@/lib/privacy/account-deletion-policy": [
+        "../../packages/trpc-server/src/lib/privacy/account-deletion-policy.ts"
+      ],
+      "@/lib/cron/alerts": ["../../packages/trpc-server/src/server/cron/alerts.ts"],
+      "@/lib/cron/data-retention": ["../../packages/trpc-server/src/server/cron/data-retention.ts"],
+      "@/lib/contact": ["../../packages/trpc-server/src/server/contact.ts"],
+      "@/lib/newsletter/subscribe": [
+        "../../packages/trpc-server/src/server/newsletter/subscribe.ts"
+      ],
+      "@/lib/newsletter/confirm": ["../../packages/trpc-server/src/server/newsletter/confirm.ts"],
+      "@/lib/newsletter/unsubscribe": [
+        "../../packages/trpc-server/src/server/newsletter/unsubscribe.ts"
+      ],
+      "@/lib/account/data-export": ["../../packages/trpc-server/src/server/account/data-export.ts"],
+      "@/lib/ai/feedback": ["../../packages/trpc-server/src/server/ai/feedback.ts"],
+      "@/lib/ai/content": ["../../packages/trpc-server/src/server/ai/content.ts"],
+      "@/lib/ai/chat": ["../../packages/trpc-server/src/server/ai/chat.ts"],
+      "@/lib/recommendations": ["./src/lib/recommendations.ts"],
+      "@/lib/admin/integrity": ["./src/lib/components/admin/admin-integrity.ts"],
+      "@isyuricunha/db": ["../../packages/db/src/index.ts"],
+      "next/server": ["./src/tests/stubs/next-server.ts"],
+      "next/navigation": ["./src/tests/stubs/next-navigation.ts"]
     },
     "jsx": "react-jsx",
     "jsxImportSource": "react"
   },
-  "exclude": ["static", "node_modules"]
+  "exclude": ["node_modules", "public", "static"]
 }

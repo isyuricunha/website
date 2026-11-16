@@ -30,8 +30,11 @@ describe('/api/account/data-export', () => {
     const { createPrivacyDataExport } = await import('@/lib/privacy/create-privacy-data-export')
     vi.mocked(getSession).mockResolvedValue(null)
 
-    const { GET } = await import('@/routes/api/account/data-export/+server')
-    const response = await GET(new Request('https://yuricunha.com/api/account/data-export'))
+    const { accountDataExportGet } =
+      await import('@isyuricunha/trpc-server/server/account/data-export')
+    const response = await accountDataExportGet(
+      new Request('https://yuricunha.com/api/account/data-export')
+    )
 
     expect(response.status).toBe(401)
     expect(response.headers.get('cache-control')).toContain('no-store')
@@ -46,8 +49,11 @@ describe('/api/account/data-export', () => {
     vi.mocked(getClientIp).mockReturnValue('203.0.113.1')
     vi.mocked(ratelimit.limit).mockResolvedValue({ success: false } as never)
 
-    const { GET } = await import('@/routes/api/account/data-export/+server')
-    const response = await GET(new Request('https://yuricunha.com/api/account/data-export'))
+    const { accountDataExportGet } =
+      await import('@isyuricunha/trpc-server/server/account/data-export')
+    const response = await accountDataExportGet(
+      new Request('https://yuricunha.com/api/account/data-export')
+    )
 
     expect(response.status).toBe(429)
     expect(ratelimit.limit).toHaveBeenCalledWith('privacy:data-export:user-1:203.0.113.1')
@@ -68,8 +74,11 @@ describe('/api/account/data-export', () => {
       account: { email: 'alice@example.com' }
     } as never)
 
-    const { GET } = await import('@/routes/api/account/data-export/+server')
-    const response = await GET(new Request('https://yuricunha.com/api/account/data-export'))
+    const { accountDataExportGet } =
+      await import('@isyuricunha/trpc-server/server/account/data-export')
+    const response = await accountDataExportGet(
+      new Request('https://yuricunha.com/api/account/data-export')
+    )
 
     expect(response.status).toBe(200)
     expect(response.headers.get('content-type')).toBe('application/json; charset=utf-8')

@@ -1,0 +1,349 @@
+type SoundType =
+  | 'click'
+  | 'success'
+  | 'error'
+  | 'notification'
+  | 'gameClick'
+  | 'gameSuccess'
+  | 'gameOver'
+  | 'navigation'
+  | 'alert'
+
+interface SoundOptions {
+  volume?: number
+  loop?: boolean
+  fadeIn?: number
+  fadeOut?: number
+}
+
+const AUDIO_CONTEXTS = new Map<string, AudioContext>()
+
+const ignoreCleanupError = (_error: unknown): void => {
+  return
+}
+
+// Create a singleton audio context per sound type to avoid multiple contexts
+const getAudioContext = (soundType: string): AudioContext => {
+  if (AUDIO_CONTEXTS.has(soundType)) {
+    return AUDIO_CONTEXTS.get(soundType)!
+  }
+
+  const context = new (
+    globalThis.AudioContext ||
+    (globalThis as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext
+  )()
+  AUDIO_CONTEXTS.set(soundType, context)
+  return context
+}
+
+type AdsrEnvelope = (
+  t: number,
+  attack: number,
+  decay: number,
+  sustain: number,
+  release: number
+) => number
+
+const generateSample = (
+  type: SoundType,
+  t: number,
+  duration: number,
+  adsr: AdsrEnvelope
+): number => {
+  switch (type) {
+    case 'click': {
+      // Soft, modern click - gentle high frequency with quick decay
+      const clickEnvelope = Math.exp(-t * 15) * (1 - t / duration)
+      return Math.sin(2 * Math.PI * 1200 * t) * clickEnvelope * 0.4
+    }
+    case 'success': {
+      // Pleasant, modern success - gentle chord with smooth envelope
+      const successEnvelope = adsr(t, 0.02, 0.1, 0.3, 0.15)
+      // Major chord: C4, E4, G4
+      const c4 = Math.sin(2 * Math.PI * 261.63 * t) * Math.exp(-t * 2)
+      const e4 = Math.sin(2 * Math.PI * 329.63 * t) * Math.exp(-t * 2) * 0.7
+      const g4 = Math.sin(2 * Math.PI * 392 * t) * Math.exp(-t * 2) * 0.5
+      return (c4 + e4 + g4) * successEnvelope * 0.25
+    }
+    case 'error': {
+      // Subtle, modern error - low, gentle tone
+      const errorEnvelope = adsr(t, 0.05, 0.15, 0.2, 0.1)
+      return Math.sin(2 * Math.PI * 180 * t) * errorEnvelope * 0.35
+    }
+    case 'notification': {
+      // Gentle, modern notification - soft bell-like tone
+      const notifEnvelope = adsr(t, 0.03, 0.1, 0.4, 0.12)
+      // Fundamental + octave harmonic
+      const fundamental = Math.sin(2 * Math.PI * 440 * t) * Math.exp(-t * 3)
+      const octave = Math.sin(2 * Math.PI * 880 * t) * Math.exp(-t * 4) * 0.3
+      return (fundamental + octave) * notifEnvelope * 0.3
+    }
+    case 'gameClick': {
+      // Clean, modern game click - crisp and responsive
+      const gameClickEnvelope = Math.exp(-t * 20) * (1 - t / duration)
+      return Math.sin(2 * Math.PI * 800 * t) * gameClickEnvelope * 0.35
+    }
+    case 'gameSuccess': {
+      // Bright, modern game success - uplifting chord
+      const gameSuccessEnvelope = adsr(t, 0.02, 0.08, 0.5, 0.2)
+      // Perfect fifth: C4 + G4
+      const c4Game = Math.sin(2 * Math.PI * 261.63 * t) * Math.exp(-t * 2.5)
+      const g4Game = Math.sin(2 * Math.PI * 392 * t) * Math.exp(-t * 3) * 0.8
+      return (c4Game + g4Game) * gameSuccessEnvelope * 0.28
+    }
+    case 'gameOver': {
+      // Gentle, modern game over - descending, peaceful
+      const gameOverEnvelope = adsr(t, 0.04, 0.2, 0.1, 0.26)
+      // Slowly descending from G4 to C4
+      const descendingFrequency = 392 - t * 80
+      return Math.sin(2 * Math.PI * descendingFrequency * t) * gameOverEnvelope * 0.3
+    }
+    case 'navigation': {
+      // Modern, sliding navigation sound - soft sweep up
+      const navigationEnvelope = adsr(t, 0.05, 0.1, 0.5, 0.45)
+      const sweepFrequency = 300 + t * 400
+      return Math.sin(2 * Math.PI * sweepFrequency * t) * navigationEnvelope * 0.2
+    }
+    case 'alert': {
+      // Distinct alert sound - two pulses
+      const alertEnvelope = adsr(t, 0.02, 0.08, 0.4, 0.3)
+      const pulse = Math.sin(t * 40) > 0 ? 1 : 0.5
+      return Math.sin(2 * Math.PI * 550 * t) * alertEnvelope * 0.25 * pulse
+    }
+  }
+}
+
+// Generate different sound types using Web Audio API - Minimalist, Modern, Pleasant
+const generateSound = (context: AudioContext, type: SoundType): AudioBuffer => {
+  const sampleRate = context.sampleRate
+
+  // Determine duration based on sound type first
+  let duration: number
+  switch (type) {
+    case 'click':
+      duration = 0.15
+      break
+    case 'success':
+      duration = 0.4
+      break
+    case 'error':
+      duration = 0.3
+      break
+    case 'notification':
+      duration = 0.25
+      break
+    case 'gameClick':
+      duration = 0.12
+      break
+    case 'gameSuccess':
+      duration = 0.35
+      break
+    case 'gameOver':
+      duration = 0.5
+      break
+    default:
+      duration = 0.2
+  }
+
+  // Calculate frame count based on actual duration
+  const frameCount = Math.ceil(sampleRate * duration)
+  const buffer = context.createBuffer(1, frameCount, sampleRate)
+  const channelData = buffer.getChannelData(0)
+
+  // ADSR envelope for more natural sound
+  const adsr: AdsrEnvelope = (
+    t: number,
+    attack: number,
+    decay: number,
+    sustain: number,
+    release: number
+  ): number => {
+    if (t < attack) return t / attack // Attack
+    if (t < attack + decay) return 1 - ((1 - sustain) * (t - attack)) / decay // Decay
+    if (t < duration - release) return sustain // Sustain
+    return sustain * Math.max(0, (duration - t) / release) // Release
+  }
+
+  for (let i = 0; i < frameCount; i++) {
+    const t = i / sampleRate
+    const sample = generateSample(type, t, duration, adsr)
+
+    // Additional subtle fade out for all sounds to prevent any clicks
+    const finalFade = Math.max(0, 1 - Math.pow(t / duration, 2) * 0.1)
+    channelData[i] = sample * finalFade
+  }
+
+  return buffer
+}
+
+// Cache for generated sounds
+const soundCache = new Map<string, AudioBuffer>()
+
+const getSoundBuffer = (context: AudioContext, soundType: SoundType): AudioBuffer => {
+  const cacheKey = `${context.sampleRate}_${soundType}`
+
+  if (soundCache.has(cacheKey)) {
+    return soundCache.get(cacheKey)!
+  }
+
+  const buffer = generateSound(context, soundType)
+  soundCache.set(cacheKey, buffer)
+  return buffer
+}
+
+/**
+ * Framework-free WebAudio sound player ported from the React hook of the same
+ * name. One instance per sound type; state fields are plain (Svelte components
+ * read them where needed).
+ */
+export class SoundManager {
+  private soundType: SoundType
+  private enabled: boolean
+  private source: AudioBufferSourceNode | null = null
+  private gain: GainNode | null = null
+  private fadeTimeout: ReturnType<typeof setTimeout> | null = null
+  isPlaying = false
+  volume = 0.5
+
+  constructor(soundType: SoundType, enabled = true) {
+    this.soundType = soundType
+    this.enabled = enabled
+  }
+
+  setEnabled(enabled: boolean): void {
+    this.enabled = enabled
+    if (!enabled) this.stop()
+  }
+
+  setVolume(volume: number): void {
+    this.volume = volume
+  }
+
+  private async resumeContext(context: AudioContext): Promise<void> {
+    if (context.state === 'suspended') {
+      try {
+        await context.resume()
+      } catch (error) {
+        console.warn('Failed to resume audio context:', error)
+      }
+    }
+  }
+
+  async play(options: SoundOptions = {}): Promise<void> {
+    if (!this.enabled) return
+
+    try {
+      const context = getAudioContext(this.soundType)
+      await this.resumeContext(context)
+
+      // Stop any currently playing sound
+      if (this.source) {
+        this.source.stop()
+        this.source.disconnect()
+      }
+      if (this.gain) {
+        this.gain.disconnect()
+      }
+
+      const buffer = getSoundBuffer(context, this.soundType)
+
+      // Create nodes
+      const source = context.createBufferSource()
+      const gain = context.createGain()
+
+      source.buffer = buffer
+      source.connect(gain)
+      gain.connect(context.destination)
+
+      // Apply options
+      const finalVolume = (options.volume ?? this.volume) * 0.3 // Additional safety reduction
+      gain.gain.setValueAtTime(0, context.currentTime)
+
+      if (options.fadeIn && options.fadeIn > 0) {
+        gain.gain.linearRampToValueAtTime(finalVolume, context.currentTime + options.fadeIn)
+      } else {
+        gain.gain.setValueAtTime(finalVolume, context.currentTime)
+      }
+
+      if (options.loop) {
+        source.loop = true
+      }
+
+      // Store references
+      this.source = source
+      this.gain = gain
+
+      // Handle completion
+      source.addEventListener('ended', () => {
+        this.isPlaying = false
+        this.source = null
+        this.gain = null
+      })
+
+      // Start playback
+      source.start()
+      this.isPlaying = true
+    } catch (error) {
+      console.warn('Failed to play sound:', error)
+    }
+  }
+
+  stop(fadeOut = 0.1): void {
+    if (!this.source || !this.gain) return
+
+    try {
+      const context = getAudioContext(this.soundType)
+
+      if (fadeOut > 0) {
+        this.gain.gain.linearRampToValueAtTime(0, context.currentTime + fadeOut)
+
+        this.fadeTimeout = setTimeout(() => {
+          if (this.source) {
+            this.source.stop()
+            this.source.disconnect()
+            this.source = null
+          }
+          if (this.gain) {
+            this.gain.disconnect()
+            this.gain = null
+          }
+          this.isPlaying = false
+        }, fadeOut * 1000)
+      } else {
+        this.source.stop()
+        this.source.disconnect()
+        this.source = null
+        if (this.gain) {
+          this.gain.disconnect()
+          this.gain = null
+        }
+        this.isPlaying = false
+      }
+    } catch (error) {
+      console.warn('Failed to stop sound:', error)
+    }
+  }
+
+  dispose(): void {
+    if (this.fadeTimeout) {
+      clearTimeout(this.fadeTimeout)
+    }
+    if (this.source) {
+      try {
+        this.source.stop()
+        this.source.disconnect()
+      } catch (error) {
+        ignoreCleanupError(error)
+      }
+    }
+    if (this.gain) {
+      try {
+        this.gain.disconnect()
+      } catch (error) {
+        ignoreCleanupError(error)
+      }
+    }
+  }
+}
+
+export type { SoundOptions, SoundType }

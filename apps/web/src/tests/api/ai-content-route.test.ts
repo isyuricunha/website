@@ -46,7 +46,7 @@ describe('/api/ai/content', () => {
 
   it('returns 401 when the caller is not an authenticated admin', async () => {
     const { requireAdmin } = await import('@/lib/admin-auth')
-    const { POST } = await import('@/routes/api/ai/content/+server')
+    const { aiContentPost } = await import('@isyuricunha/trpc-server/server/ai/content')
 
     vi.mocked(requireAdmin).mockResolvedValue(
       Response.json({ error: 'Unauthorized' }, { status: 401 }) as never
@@ -55,9 +55,9 @@ describe('/api/ai/content', () => {
     const req = {
       headers: new Headers(),
       json: async () => ({ action: 'tags', content: 'hello world' })
-    } as unknown as Parameters<typeof POST>[0]
+    } as unknown as Request
 
-    const res = await POST(req)
+    const res = await aiContentPost(req)
 
     expect(res.status).toBe(401)
     expect(await res.json()).toEqual({ error: 'Unauthorized' })
@@ -66,13 +66,13 @@ describe('/api/ai/content', () => {
   it('returns 401 on GET when the caller is not an authenticated admin', async () => {
     const { requireAdmin } = await import('@/lib/admin-auth')
     const { aiService } = await import('@/lib/ai/ai-service')
-    const { GET } = await import('@/routes/api/ai/content/+server')
+    const { aiContentGet } = await import('@isyuricunha/trpc-server/server/ai/content')
 
     vi.mocked(requireAdmin).mockResolvedValue(
       Response.json({ error: 'Unauthorized' }, { status: 401 }) as never
     )
 
-    const res = await GET(new NextRequest('http://localhost/api/ai/content'))
+    const res = await aiContentGet(new NextRequest('http://localhost/api/ai/content'))
 
     expect(res.status).toBe(401)
     expect(await res.json()).toEqual({ error: 'Unauthorized' })
@@ -88,9 +88,9 @@ describe('/api/ai/content', () => {
     vi.mocked(requireAdmin).mockResolvedValue(null)
     vi.mocked(aiService.getAvailableProviders).mockReturnValue(['runtime'])
 
-    const { GET } = await import('@/routes/api/ai/content/+server')
+    const { aiContentGet } = await import('@isyuricunha/trpc-server/server/ai/content')
 
-    const res = await GET(new NextRequest('http://localhost/api/ai/content'))
+    const res = await aiContentGet(new NextRequest('http://localhost/api/ai/content'))
 
     expect(res.status).toBe(200)
     const json = (await res.json()) as { availableProviders?: string[] }
@@ -106,14 +106,14 @@ describe('/api/ai/content', () => {
     vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
     vi.mocked(ratelimit.limit).mockResolvedValue({ success: false } as never)
 
-    const { POST } = await import('@/routes/api/ai/content/+server')
+    const { aiContentPost } = await import('@isyuricunha/trpc-server/server/ai/content')
 
     const req = {
       headers: new Headers(),
       json: async () => ({ action: 'summary', content: 'hello world' })
-    } as unknown as Parameters<typeof POST>[0]
+    } as unknown as Request
 
-    const res = await POST(req)
+    const res = await aiContentPost(req)
 
     expect(res.status).toBe(429)
     expect(await res.json()).toEqual({
@@ -132,14 +132,14 @@ describe('/api/ai/content', () => {
     vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
     vi.mocked(aiService.getAvailableProviders).mockReturnValue(['ollama'])
 
-    const { POST } = await import('@/routes/api/ai/content/+server')
+    const { aiContentPost } = await import('@isyuricunha/trpc-server/server/ai/content')
 
     const req = {
       headers: new Headers(),
       json: async () => ({ action: 'meta', content: '' })
-    } as unknown as Parameters<typeof POST>[0]
+    } as unknown as Request
 
-    const res = await POST(req)
+    const res = await aiContentPost(req)
 
     expect(res.status).toBe(400)
     const json = (await res.json()) as { error?: string }

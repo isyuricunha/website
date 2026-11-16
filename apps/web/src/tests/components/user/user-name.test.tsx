@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 
-import UserName from '#lib/components/user/user-name'
+import UserName from '@/components/user/user-name'
 
 describe('<UserName />', () => {
   it.each([

@@ -43,7 +43,12 @@
     "tailwindcss": "^4.3.3",
     "typescript": "^6.0.3",
     "vite": "^8.3.6",
-    "zod": "^4.6.5"
+    "zod": "^4.6.5",
+    "react": "19.3.0",
+    "@types/react": "19.3.0",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "sharp": "^0.34.5"
   },
   "dependencies": {
     "@resvg/resvg-js": "^2.6.2",
@@ -52,6 +57,10 @@
     "rss": "^1.2.2",
     "satori": "^0.63.2",
     "satori-html": "^0.3.2",
-    "simple-icons": "^16.37.0"
+    "simple-icons": "^16.37.0",
+    "@isyuricunha/kv": "workspace:*",
+    "@isyuricunha/emails": "workspace:*",
+    "@isyuricunha/i18n": "workspace:*",
+    "@isyuricunha/yutheme": "^0.2.1"
   }
 }
