@@ -42,12 +42,13 @@ describe('/api/newsletter/unsubscribe', () => {
 
     const { POST } = await import('@/routes/api/newsletter/unsubscribe/+server')
 
-    const req = {
-      headers: new Headers(),
-      json: async () => ({ email: 'a@b.com' })
-    } as unknown as Parameters<typeof POST>[0]
+    const req = new Request('http://test/api/newsletter/unsubscribe', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ email: 'a@b.com' })
+    })
 
-    const res = await POST(req)
+    const res = await POST({ request: req })
 
     expect(res.status).toBe(429)
     expect(await res.json()).toEqual({
@@ -64,12 +65,13 @@ describe('/api/newsletter/unsubscribe', () => {
 
     const { POST } = await import('@/routes/api/newsletter/unsubscribe/+server')
 
-    const req = {
-      headers: new Headers(),
-      json: async () => ({ email: 'not-an-email' })
-    } as unknown as Parameters<typeof POST>[0]
+    const req = new Request('http://test/api/newsletter/unsubscribe', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ email: 'not-an-email' })
+    })
 
-    const res = await POST(req)
+    const res = await POST({ request: req })
 
     expect(res.status).toBe(400)
     const json = (await res.json()) as { error?: string }
@@ -87,12 +89,13 @@ describe('/api/newsletter/unsubscribe', () => {
 
     const { POST } = await import('@/routes/api/newsletter/unsubscribe/+server')
 
-    const req = {
-      headers: new Headers(),
-      json: async () => ({ email: 'a@b.com' })
-    } as unknown as Parameters<typeof POST>[0]
+    const req = new Request('http://test/api/newsletter/unsubscribe', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ email: 'a@b.com' })
+    })
 
-    const res = await POST(req)
+    const res = await POST({ request: req })
     expect(res.status).toBe(500)
     expect(await res.json()).toEqual({ error: 'No newsletter audience available' })
   })
@@ -110,12 +113,13 @@ describe('/api/newsletter/unsubscribe', () => {
 
     const { POST } = await import('@/routes/api/newsletter/unsubscribe/+server')
 
-    const req = {
-      headers: new Headers(),
-      json: async () => ({ email: 'a@b.com' })
-    } as unknown as Parameters<typeof POST>[0]
+    const req = new Request('http://test/api/newsletter/unsubscribe', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ email: 'a@b.com' })
+    })
 
-    const res = await POST(req)
+    const res = await POST({ request: req })
     expect(res.status).toBe(200)
     expect(await res.json()).toEqual({
       success: true,
@@ -135,12 +139,13 @@ describe('/api/newsletter/unsubscribe', () => {
 
     const { POST } = await import('@/routes/api/newsletter/unsubscribe/+server')
 
-    const req = {
-      headers: new Headers(),
-      json: async () => ({ email: 'not-subscribed@example.com' })
-    } as unknown as Parameters<typeof POST>[0]
+    const req = new Request('http://test/api/newsletter/unsubscribe', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ email: 'not-subscribed@example.com' })
+    })
 
-    const res = await POST(req)
+    const res = await POST({ request: req })
 
     // A 404 here would let anyone probe which addresses are subscribed.
     // Unknown emails must look identical to a successful unsubscription.

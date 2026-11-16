@@ -8,7 +8,14 @@ import { redis, redisKeys } from '@isyuricunha/kv'
 // Double opt-in confirmation: the token was created by /api/newsletter/subscribe
 // and stored in Redis with a 24h TTL. A valid token exchanges the pending email
 // for an actual audience contact; the token is single-use (deleted on success).
-export async function newsletterConfirmGet(request: Request): Promise<Response> {
+export async function newsletterConfirmGet(
+  request: Request,
+  deps?: {
+    kv?: { redis: Pick<typeof redis, 'get' | 'del' | 'set'>; redisKeys: typeof redisKeys }
+  }
+): Promise<Response> {
+  const activeRedis = deps?.kv?.redis ?? redis
+  const activeRedisKeys = deps?.kv?.redisKeys ?? redisKeys
   try {
     const ip = getClientIp(request.headers)
     const { success } = await ratelimit.limit(rate_limit_keys.newsletter_subscribe(ip))
@@ -25,8 +32,8 @@ export async function newsletterConfirmGet(request: Request): Promise<Response> 
       return Response.json({ error: 'Confirmation token is required' }, { status: 400 })
     }
 
-    const redisKey = redisKeys.newsletterConfirm(token)
-    const email = await redis.get<string>(redisKey)
+    const redisKey = activeRedisKeys.newsletterConfirm(token)
+    const email = await activeRedis.get<string>(redisKey)
 
     if (!email) {
       return Response.json({ error: 'Invalid or expired confirmation token' }, { status: 400 })
@@ -41,7 +48,7 @@ export async function newsletterConfirmGet(request: Request): Promise<Response> 
     if (existingContact && !existingContact.unsubscribed) {
       // Already subscribed: burn the token and report success so the user is
       // not stuck re-clicking an email whose token still exists.
-      await redis.del(redisKey)
+      await activeRedis.del(redisKey)
       return Response.json({
         success: true,
         message: 'Email is already subscribed'
@@ -67,7 +74,7 @@ export async function newsletterConfirmGet(request: Request): Promise<Response> 
     }
 
     // Single-use: the token must not confirm twice.
-    await redis.del(redisKey)
+    await activeRedis.del(redisKey)
 
     logger.info('Newsletter subscription confirmed', { email })
 

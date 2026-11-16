@@ -18,7 +18,16 @@ const subscribeSchema = z.object({
 
 const CONFIRM_TTL_SECONDS = 60 * 60 * 24
 
-export async function newsletterSubscribePost(request: Request): Promise<Response> {
+export async function newsletterSubscribePost(
+  request: Request,
+  deps?: {
+    kv?: { redis: Pick<typeof redis, 'set' | 'get' | 'del'>; redisKeys: typeof redisKeys }
+    resend?: { emails: { send: (payload: unknown) => Promise<unknown> } }
+  }
+): Promise<Response> {
+  const activeRedis = deps?.kv?.redis ?? redis
+  const activeRedisKeys = deps?.kv?.redisKeys ?? redisKeys
+  const activeResend = deps?.resend ?? resend
   try {
     const ip = getClientIp(request.headers)
     const { success } = await newsletterRatelimit.limit(rate_limit_keys.newsletter_subscribe(ip))
@@ -59,7 +68,7 @@ export async function newsletterSubscribePost(request: Request): Promise<Respons
     // is confirmed, so nobody can subscribe a third-party address on their
     // behalf and the list stays clean.
     const token = crypto.randomUUID()
-    await redis.set(redisKeys.newsletterConfirm(token), email.toLowerCase(), {
+    await activeRedis.set(activeRedisKeys.newsletterConfirm(token), email.toLowerCase(), {
       ex: CONFIRM_TTL_SECONDS
     })
 
@@ -80,7 +89,7 @@ export async function newsletterSubscribePost(request: Request): Promise<Respons
     }
     const subject = subject_by_locale[locale] ?? 'Confirm your newsletter subscription'
 
-    const { data, error } = await resend.emails.send({
+    const { data, error } = await activeResend.emails.send({
       from: 'yuricunha.com <noreply@yuricunha.com>',
       to: email,
       subject,
