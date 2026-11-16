@@ -62,6 +62,7 @@
 	}
 </script>
 
+<div id="newsletter">
 {#if isSubscribed}
 	<div class="bg-bg-surface rounded-lg border border-[var(--border-subtle)]">
 		<div class="p-6 text-center">
@@ -148,3 +149,4 @@
 		</div>
 	</div>
 {/if}
+</div>
