@@ -201,6 +201,26 @@
   }
 }
 
+/* Project header slide-in, mirrors the original x:-30 framer-motion entrance */
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.slide-in-left {
+  animation: slideInLeft 0.5s ease-out both;
+}
+
+.slide-in-left-delay {
+  animation-delay: 0.1s;
+}
+
 /* Project grid entrance, mirrors the original opacity/y:20 staggered reveal */
 @keyframes projectCardEnter {
   from {
@@ -311,7 +331,8 @@
   .animate-music-bar-2,
   .animate-music-bar-3,
   .project-card-enter,
-  .card-enter {
+  .card-enter,
+  .slide-in-left {
     animation: none !important;
   }
 

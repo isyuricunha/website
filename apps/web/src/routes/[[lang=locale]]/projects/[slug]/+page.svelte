@@ -3,15 +3,6 @@
 
 	let { data, params }: { data: PageData; params: { slug: string } } = $props()
 
-	// Header entrance, the same slide-from-left the original animates with
-	// framer-motion (x:-30, opacity:0 -> x:0, opacity:1), staggered 100ms
-	// between the title block and the links row.
-	let revealed = $state(false)
-	$effect(() => {
-		const id = requestAnimationFrame(() => (revealed = true))
-		return () => cancelAnimationFrame(id)
-	})
-
 	const repo = $derived(data.project.github.split('/').pop() ?? data.project.github)
 
 	const jsonLd = $derived({
@@ -32,10 +23,7 @@
 
 <div class="mx-auto max-w-3xl">
 	<div class="border-[var(--border-faint)] space-y-8 border-b pt-10 pb-12">
-		<div
-			class="flex items-center gap-3"
-			style={`opacity: ${revealed ? 1 : 0}; transform: translateX(${revealed ? 0 : -30}px); transition: opacity 0.5s ease-out, transform 0.5s ease-out;`}
-		>
+		<div class="slide-in-left flex items-center gap-3">
 			<div class="flex flex-col gap-3">
 				<span class="label-mono">{data.strings.label}</span>
 				<h1 class="max-w-4xl text-[clamp(32px,4vw,52px)] font-normal tracking-tighter">
@@ -44,10 +32,7 @@
 				<p class="text-muted-foreground max-w-2xl">{data.project.description}</p>
 			</div>
 		</div>
-		<div
-			class="flex flex-col items-start gap-2 sm:flex-row sm:gap-4"
-			style={`opacity: ${revealed ? 1 : 0}; transform: translateX(${revealed ? 0 : -30}px); transition: all 0.5s ease-out; transition-delay: 0.1s;`}
-		>
+		<div class="slide-in-left slide-in-left-delay flex flex-col items-start gap-2 sm:flex-row sm:gap-4">
 			{#if data.project.homepage}
 				<a href={data.project.homepage} class="cta-link group">
 					{data.strings.visitWebsite}
