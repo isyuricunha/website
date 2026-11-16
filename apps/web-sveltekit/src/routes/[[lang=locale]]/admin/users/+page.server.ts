@@ -14,7 +14,6 @@ const TABLE_KEYS = [
   'actions',
   'search',
   'filter-names',
-  'filter-all-roles',
   'export-csv',
   'open-menu',
   'edit',
