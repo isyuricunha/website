@@ -4,7 +4,7 @@ import matter from 'gray-matter'
 import * as yaml from 'js-yaml'
 import { logger } from '../logger'
 
-// Slug and locale flow into path.join(CONTENT_DIR, locale, `${slug}.mdx`).
+// Slug and locale flow into path.join(blogConfig.contentDir, locale, `${slug}.mdx`).
 // Reject anything that could traverse out of the content tree even if a caller
 // skips validation (admin routes pass user input here).
 const SAFE_SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/i
@@ -39,10 +39,12 @@ interface BlogPostMetadata {
 
 // Content lives in apps/web/src/content/blog for the Next app (cwd-based
 // default). Shared consumers outside apps/web override it via setContentDir.
-let CONTENT_DIR = path.join(process.cwd(), 'src/content/blog')
+const blogConfig = {
+  contentDir: path.join(process.cwd(), 'src/content/blog')
+}
 
 export function setBlogContentDir(dir: string): void {
-  CONTENT_DIR = path.resolve(dir)
+  blogConfig.contentDir = path.resolve(dir)
 }
 const SUPPORTED_LOCALES = ['en', 'pt', 'fr', 'de', 'ja', 'zh']
 
@@ -65,7 +67,7 @@ export const BlogService = {
    * Get all blog posts for a specific locale
    */
   async getPostsByLocale(locale: string): Promise<BlogPostMetadata[]> {
-    const localeDir = path.join(CONTENT_DIR, locale)
+    const localeDir = path.join(blogConfig.contentDir, locale)
 
     try {
       const files = await fs.readdir(localeDir)
@@ -122,7 +124,7 @@ export const BlogService = {
     assert_safe_path_piece(slug, SAFE_SLUG, 'slug')
     assert_safe_path_piece(locale, SAFE_LOCALE, 'locale')
 
-    const filePath = path.join(CONTENT_DIR, locale, `${slug}.mdx`)
+    const filePath = path.join(blogConfig.contentDir, locale, `${slug}.mdx`)
 
     try {
       const fileContent = await fs.readFile(filePath, 'utf8')
@@ -156,7 +158,7 @@ export const BlogService = {
     const { slug, title, date, modifiedTime, summary, content, locale } = post
     assert_safe_path_piece(slug, SAFE_SLUG, 'slug')
     assert_safe_path_piece(locale, SAFE_LOCALE, 'locale')
-    const localeDir = path.join(CONTENT_DIR, locale)
+    const localeDir = path.join(blogConfig.contentDir, locale)
     const filePath = path.join(localeDir, `${slug}.mdx`)
 
     // Ensure directory exists
@@ -192,7 +194,7 @@ export const BlogService = {
   async deletePost(slug: string, locale: string): Promise<boolean> {
     assert_safe_path_piece(slug, SAFE_SLUG, 'slug')
     assert_safe_path_piece(locale, SAFE_LOCALE, 'locale')
-    const filePath = path.join(CONTENT_DIR, locale, `${slug}.mdx`)
+    const filePath = path.join(blogConfig.contentDir, locale, `${slug}.mdx`)
 
     try {
       await fs.unlink(filePath)
@@ -209,7 +211,7 @@ export const BlogService = {
   async postExists(slug: string, locale: string): Promise<boolean> {
     assert_safe_path_piece(slug, SAFE_SLUG, 'slug')
     assert_safe_path_piece(locale, SAFE_LOCALE, 'locale')
-    const filePath = path.join(CONTENT_DIR, locale, `${slug}.mdx`)
+    const filePath = path.join(blogConfig.contentDir, locale, `${slug}.mdx`)
 
     try {
       await fs.access(filePath)

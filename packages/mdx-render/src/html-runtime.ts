@@ -102,7 +102,11 @@ function attrsToString(props: Record<string, unknown>): string {
       continue
     }
 
-    result += ` ${name}="${escapeHtml(String(value))}"`
+    if (isStringable(value)) {
+      result += ` ${name}="${escapeHtml(String(value))}"`
+    }
+    // Non-stringable attributes are dropped instead of rendering as
+    // "[object Object]".
   }
 
   return result
@@ -110,6 +114,15 @@ function attrsToString(props: Record<string, unknown>): string {
 
 function kebab(property: string): string {
   return property.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase()
+}
+
+function isStringable(value: unknown): value is string | number | bigint | boolean {
+  return (
+    typeof value === 'string' ||
+    typeof value === 'number' ||
+    typeof value === 'bigint' ||
+    typeof value === 'boolean'
+  )
 }
 
 export function childrenToString(children: unknown): string {
@@ -133,11 +146,21 @@ export function childrenToString(children: unknown): string {
     return String(children)
   }
 
-  if (typeof children === 'object') {
+  if (typeof children === 'bigint' || typeof children === 'symbol') {
     return String(children)
   }
 
-  return escapeHtml(String(children))
+  if (typeof children === 'object') {
+    // Non-serializable values (objects, plain nodes already handled above)
+    // have no static HTML representation; render nothing.
+    return ''
+  }
+
+  if (isStringable(children)) {
+    return escapeHtml(String(children))
+  }
+
+  return ''
 }
 
 export function jsx(type: unknown, props: Record<string, unknown>): HtmlNode {

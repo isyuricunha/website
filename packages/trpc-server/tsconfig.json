@@ -4,7 +4,7 @@
     "noEmit": true,
     "types": ["node"],
     "paths": {
-      "content-collections": ["../../apps/web-sveltekit/.content-collections/generated/index.d.ts"]
+      "content-collections": ["../../apps/web/.content-collections/generated/index.d.ts"]
     },
     "jsx": "react-jsx",
     "declaration": false,

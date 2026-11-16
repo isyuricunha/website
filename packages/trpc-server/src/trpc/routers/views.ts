@@ -14,7 +14,7 @@ const getKey = (id: string) => `views:${id}`
 
 // Precomputed once at module load: increment runs per page view, so checking
 // membership must stay O(1) instead of scanning the whole content collection.
-const postSlugSet = new Set(allPosts.map((post) => post.slug))
+const postSlugSet = new Set(allPosts.map((post: { slug: string }) => post.slug))
 
 const slugInputSchema = z.object({ slug: z.string().min(1) })
 

@@ -1,9 +1,11 @@
-import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 
 import sharp from 'sharp'
 import { describe, expect, it } from 'vitest'
 
-const ogImagePath = path.resolve(process.cwd(), 'public/images/og.png')
+// Resolve against this file so the suite also passes when the root vitest
+// config loads projects with cwd at the monorepo root.
+const ogImagePath = fileURLToPath(new URL('../../../public/images/og.png', import.meta.url))
 
 describe('site Open Graph image', () => {
   it('uses the standard 1200 by 630 social-card dimensions', async () => {

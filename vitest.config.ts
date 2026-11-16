@@ -1,25 +1,10 @@
 import { coverageConfigDefaults, defineConfig } from 'vitest/config'
-import { fileURLToPath } from 'node:url'
 
 export default defineConfig({
   oxc: {
     jsx: {
       runtime: 'automatic'
     }
-  },
-  resolve: {
-    alias: [
-      {
-        find: /^@\//,
-        replacement: fileURLToPath(new URL('apps/web/src/', import.meta.url))
-      },
-      {
-        find: /^content-collections$/,
-        replacement: fileURLToPath(
-          new URL('apps/web/.content-collections/generated/', import.meta.url)
-        )
-      }
-    ]
   },
   test: {
     projects: [

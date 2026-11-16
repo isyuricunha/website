@@ -14,17 +14,13 @@ import {
   isNull,
   or
 } from '@isyuricunha/db'
-import { env } from '@isyuricunha/env'
 import { randomBytes } from 'crypto'
-import { Resend } from 'resend'
 import { z } from 'zod'
 
 import { AuditLogger, getIpFromHeaders, getUserAgentFromHeaders } from '../../lib/audit-logger'
 import { logger } from '../../lib/logger'
 import { sendTransactionalEmail } from '../../lib/transactional-email'
 import { adminProcedure, protectedProcedure, createTRPCRouter } from '../trpc'
-
-const resend = new Resend(env.RESEND_API_KEY)
 
 const parseJson = (raw: string | null): unknown => {
   if (!raw) return null
@@ -271,7 +267,6 @@ export const communicationRouter = createTRPCRouter({
     .input(emailTemplateCreationInputSchema)
     .mutation(async ({ ctx, input }) => {
       try {
-        const activeResend = ctx.resend
         const auditLogger = new AuditLogger(ctx.db)
         const ipAddress = getIpFromHeaders(ctx.headers)
         const userAgent = getUserAgentFromHeaders(ctx.headers)
@@ -317,7 +312,6 @@ export const communicationRouter = createTRPCRouter({
     .input(emailTemplateUpdateInputSchema)
     .mutation(async ({ ctx, input }) => {
       try {
-        const activeResend = ctx.resend
         const auditLogger = new AuditLogger(ctx.db)
         const ipAddress = getIpFromHeaders(ctx.headers)
         const userAgent = getUserAgentFromHeaders(ctx.headers)
@@ -418,7 +412,6 @@ export const communicationRouter = createTRPCRouter({
     .input(emailCampaignCreationInputSchema)
     .mutation(async ({ ctx, input }) => {
       try {
-        const activeResend = ctx.resend
         const auditLogger = new AuditLogger(ctx.db)
         const ipAddress = getIpFromHeaders(ctx.headers)
         const userAgent = getUserAgentFromHeaders(ctx.headers)
@@ -489,7 +482,6 @@ export const communicationRouter = createTRPCRouter({
     .input(campaignIdInputSchema)
     .mutation(async ({ ctx, input }) => {
       try {
-        const activeResend = ctx.resend
         const auditLogger = new AuditLogger(ctx.db)
         const ipAddress = getIpFromHeaders(ctx.headers)
         const userAgent = getUserAgentFromHeaders(ctx.headers)
@@ -653,6 +645,7 @@ export const communicationRouter = createTRPCRouter({
             )
         }
 
+        const activeResend = ctx.resend
         let sentCount = 0
         let failedCount = 0
 
@@ -879,7 +872,6 @@ export const communicationRouter = createTRPCRouter({
     .input(notificationCreationInputSchema)
     .mutation(async ({ ctx, input }) => {
       try {
-        const activeResend = ctx.resend
         const auditLogger = new AuditLogger(ctx.db)
         const notificationId = randomBytes(16).toString('hex')
 
