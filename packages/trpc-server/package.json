@@ -19,9 +19,21 @@
     "./server/cron/alerts": "./src/server/cron/alerts.ts",
     "./server/cron/data-retention": "./src/server/cron/data-retention.ts",
     "./server/ai/chat": "./src/server/ai/chat.ts",
+    "./server/avatar": "./src/server/avatar.ts",
     "./lib/rate-limit-keys": "./src/lib/rate-limit-keys.ts",
     "./lib/blog/blog-service": "./src/lib/blog/blog-service.ts",
-    "./lib/ai/ai-service": "./src/lib/ai/ai-service.ts"
+    "./lib/ai/ai-service": "./src/lib/ai/ai-service.ts",
+    "./lib/admin-auth": "./src/lib/admin-auth.ts",
+    "./lib/privacy/create-privacy-data-export": "./src/lib/privacy/create-privacy-data-export.ts",
+    "./server/contact": "./src/server/contact.ts",
+    "./server/newsletter/subscribe": "./src/server/newsletter/subscribe.ts",
+    "./server/newsletter/confirm": "./src/server/newsletter/confirm.ts",
+    "./server/newsletter/unsubscribe": "./src/server/newsletter/unsubscribe.ts",
+    "./server/account/data-export": "./src/server/account/data-export.ts",
+    "./server/ai/feedback": "./src/server/ai/feedback.ts",
+    "./server/ai/content": "./src/server/ai/content.ts",
+    "./server/admin/posts": "./src/server/admin/posts.ts",
+    "./server/admin/translate": "./src/server/admin/translate.ts"
   },
   "scripts": {
     "clean": "rm -rf .turbo",

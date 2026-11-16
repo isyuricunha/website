@@ -73,6 +73,39 @@
       "@/utils/get-avatar-abbreviation": [
         "../../packages/trpc-server/src/utils/get-avatar-abbreviation.ts"
       ],
+      "@/lib/admin-auth": [
+        "../../packages/trpc-server/src/lib/admin-auth.ts"
+      ],
+"@/lib/privacy/create-privacy-data-export": [
+        "../../packages/trpc-server/src/lib/privacy/create-privacy-data-export.ts"
+      ],
+            "@/lib/contact": [
+        "../../packages/trpc-server/src/server/contact.ts"
+      ],
+      "@/lib/newsletter/subscribe": [
+        "../../packages/trpc-server/src/server/newsletter/subscribe.ts"
+      ],
+      "@/lib/newsletter/confirm": [
+        "../../packages/trpc-server/src/server/newsletter/confirm.ts"
+      ],
+      "@/lib/newsletter/unsubscribe": [
+        "../../packages/trpc-server/src/server/newsletter/unsubscribe.ts"
+      ],
+      "@/lib/account/data-export": [
+        "../../packages/trpc-server/src/server/account/data-export.ts"
+      ],
+      "@/lib/ai/feedback": [
+        "../../packages/trpc-server/src/server/ai/feedback.ts"
+      ],
+      "@/lib/ai/content": [
+        "../../packages/trpc-server/src/server/ai/content.ts"
+      ],
+      "@/lib/admin/posts": [
+        "../../packages/trpc-server/src/server/admin/posts.ts"
+      ],
+      "@/lib/admin/translate": [
+        "../../packages/trpc-server/src/server/admin/translate.ts"
+      ],
       "@/lib/ai/chat": [
         "../../packages/trpc-server/src/server/ai/chat.ts"
       ],
