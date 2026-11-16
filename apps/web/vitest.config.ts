@@ -191,6 +191,10 @@ const aliases = [
     replacement: resolve('../../packages/trpc-server/src/trpc/routers/views.ts')
   },
   { find: '@/lib/ai', replacement: resolve('../../packages/trpc-server/src/lib/ai') },
+  {
+    find: '@/lib/admin-auth',
+    replacement: resolve('../../packages/trpc-server/src/lib/admin-auth.ts')
+  },
   { find: '@/lib/blog', replacement: resolve('../../packages/trpc-server/src/lib/blog') },
   { find: '@/lib/privacy', replacement: resolve('../../packages/trpc-server/src/lib/privacy') },
   { find: '#lib/ai', replacement: resolve('../../packages/trpc-server/src/lib/ai') },
