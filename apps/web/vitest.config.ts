@@ -218,7 +218,14 @@ export default defineConfig(
       test: {
         name: 'web-sveltekit',
         environment: 'node',
-        include: ['src/tests/**/*.test.ts']
+        include: ['src/tests/**/*.test.ts'],
+        // Workspace packages must run through the Vite transform, otherwise
+        // their imports bypass vi mocks and hit real db/redis clients.
+        server: {
+          deps: {
+            inline: [/@isyuricunha\/(env|db|kv|trpc-server)/]
+          }
+        }
       },
       resolve: { alias: aliases }
     })

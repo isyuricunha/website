@@ -1,5 +1,26 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
+vi.mock('@isyuricunha/env', () => ({
+  flags: {
+    comment: false,
+    auth: false,
+    stats: false,
+    lastfm: false,
+    lastfmImport: false,
+    analytics: false,
+    guestbookNotification: false,
+    likeButton: false,
+    turnstile: false
+  },
+  env: {
+    NODE_ENV: 'test',
+    DATABASE_URL: 'postgres://user:pass@localhost:5432/test',
+    UPSTASH_REDIS_REST_URL: 'https://example.upstash.io',
+    UPSTASH_REDIS_REST_TOKEN: 'test-token',
+    RESEND_API_KEY: 're_test_key'
+  }
+}))
+
 vi.mock('@/lib/logger', () => ({
   logger: {
     error: vi.fn(),
@@ -71,11 +92,14 @@ describe('/api/ai/chat', () => {
     const { POST } = await import('@/routes/api/ai/chat/+server')
 
     const req = {
-      headers: new Headers(),
-      json: async () => ({
-        message: 'me recomenda uma postagem bacana',
-        locale: 'pt',
-        context: { currentPage: '/test' }
+      request: new Request('http://test/api/ai/chat', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          message: 'me recomenda uma postagem bacana',
+          locale: 'pt',
+          context: { currentPage: '/test' }
+        })
       })
     } as unknown as Parameters<typeof POST>[0]
 
@@ -103,11 +127,14 @@ describe('/api/ai/chat', () => {
     const { POST } = await import('@/routes/api/ai/chat/+server')
 
     const req = {
-      headers: new Headers(),
-      json: async () => ({
-        message: 'me recomenda um snipper de docker',
-        locale: 'pt',
-        context: { currentPage: '/test' }
+      request: new Request('http://test/api/ai/chat', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          message: 'me recomenda um snipper de docker',
+          locale: 'pt',
+          context: { currentPage: '/test' }
+        })
       })
     } as unknown as Parameters<typeof POST>[0]
 
@@ -133,20 +160,23 @@ describe('/api/ai/chat', () => {
     const { POST } = await import('@/routes/api/ai/chat/+server')
 
     const req = {
-      headers: new Headers(),
-      json: async () => ({
-        message: 'direciona então',
-        locale: 'pt',
-        context: {
-          currentPage: '/test',
-          conversation: [
-            {
-              role: 'user',
-              content: 'fala uma postagem bacana de infra',
-              timestamp: new Date().toISOString()
-            }
-          ]
-        }
+      request: new Request('http://test/api/ai/chat', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          message: 'direciona então',
+          locale: 'pt',
+          context: {
+            currentPage: '/test',
+            conversation: [
+              {
+                role: 'user',
+                content: 'fala uma postagem bacana de infra',
+                timestamp: new Date().toISOString()
+              }
+            ]
+          }
+        })
       })
     } as unknown as Parameters<typeof POST>[0]
 
@@ -167,8 +197,11 @@ describe('/api/ai/chat', () => {
     const { POST } = await import('@/routes/api/ai/chat/+server')
 
     const req = {
-      headers: new Headers(),
-      json: async () => ({ message: 'hello' })
+      request: new Request('http://test/api/ai/chat', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ message: 'hello' })
+      })
     } as unknown as Parameters<typeof POST>[0]
 
     const res = await POST(req)
@@ -190,8 +223,11 @@ describe('/api/ai/chat', () => {
     const { POST } = await import('@/routes/api/ai/chat/+server')
 
     const req = {
-      headers: new Headers(),
-      json: async () => ({ message: '' })
+      request: new Request('http://test/api/ai/chat', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ message: '' })
+      })
     } as unknown as Parameters<typeof POST>[0]
 
     const res = await POST(req)
@@ -215,11 +251,14 @@ describe('/api/ai/chat', () => {
     const { POST } = await import('@/routes/api/ai/chat/+server')
 
     const req = {
-      headers: new Headers(),
-      json: async () => ({
-        message: 'hello',
-        locale: 'pt',
-        context: { currentPage: '/test' }
+      request: new Request('http://test/api/ai/chat', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          message: 'hello',
+          locale: 'pt',
+          context: { currentPage: '/test' }
+        })
       })
     } as unknown as Parameters<typeof POST>[0]
 
@@ -252,11 +291,14 @@ describe('/api/ai/chat', () => {
     const { POST } = await import('@/routes/api/ai/chat/+server')
 
     const req = {
-      headers: new Headers(),
-      json: async () => ({
-        message: 'hello',
-        locale: 'en',
-        context: { currentPage: '/test' }
+      request: new Request('http://test/api/ai/chat', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          message: 'hello',
+          locale: 'en',
+          context: { currentPage: '/test' }
+        })
       })
     } as unknown as Parameters<typeof POST>[0]
 
@@ -284,11 +326,14 @@ describe('/api/ai/chat', () => {
     const { POST } = await import('@/routes/api/ai/chat/+server')
 
     const req = {
-      headers: new Headers(),
-      json: async () => ({
-        message: 'hello',
-        locale: 'en',
-        context: { currentPage: '/test' }
+      request: new Request('http://test/api/ai/chat', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          message: 'hello',
+          locale: 'en',
+          context: { currentPage: '/test' }
+        })
       })
     } as unknown as Parameters<typeof POST>[0]
 

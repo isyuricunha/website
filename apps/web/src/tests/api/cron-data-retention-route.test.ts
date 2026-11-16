@@ -2,9 +2,33 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 type Table = Record<string | symbol, unknown>
 
+vi.mock('@isyuricunha/env', () => ({
+  flags: {
+    comment: false,
+    auth: false,
+    stats: false,
+    lastfm: false,
+    lastfmImport: false,
+    analytics: false,
+    guestbookNotification: false,
+    likeButton: false,
+    turnstile: false
+  },
+  env: {
+    NODE_ENV: 'test',
+    DATABASE_URL: 'postgres://user:pass@localhost:5432/test',
+    UPSTASH_REDIS_REST_URL: 'https://example.upstash.io',
+    UPSTASH_REDIS_REST_TOKEN: 'test-token',
+    RESEND_API_KEY: 're_test_key'
+  }
+}))
+
+// Per-test db/redis instances are swapped through hoisted hooks; the
+// hoisted vi.mock factories re-run on every resetModules() reload.
+
 vi.mock('@/lib/logger', () => ({
   logger: {
-    error: vi.fn(),
+    error: vi.fn((...args: unknown[]) => console.error('[LOGGER-ERROR]', ...args)),
     warn: vi.fn(),
     info: vi.fn(),
     debug: vi.fn()
@@ -124,7 +148,9 @@ describe('/api/cron/data-retention', () => {
 
     const { GET } = await import('@/routes/api/cron/data-retention/+server')
 
-    const res = await GET({ headers: new Headers() } as unknown as Parameters<typeof GET>[0])
+    const res = await GET({
+      request: new Request('http://test/api/cron/data-retention', { headers: new Headers() })
+    } as unknown as Parameters<typeof GET>[0])
 
     expect(res.status).toBe(401)
   })
@@ -141,9 +167,11 @@ describe('/api/cron/data-retention', () => {
     const { GET } = await import('@/routes/api/cron/data-retention/+server')
 
     const res = await GET({
-      headers: new Headers([
-        ['authorization', 'Bearer change-me-to-a-random-string-with-at-least-16-chars']
-      ])
+      request: new Request('http://test', {
+        headers: new Headers([
+          ['authorization', 'Bearer change-me-to-a-random-string-with-at-least-16-chars']
+        ])
+      })
     } as unknown as Parameters<typeof GET>[0])
 
     expect(res.status).toBe(401)
@@ -161,7 +189,9 @@ describe('/api/cron/data-retention', () => {
     const { GET } = await import('@/routes/api/cron/data-retention/+server')
 
     const res = await GET({
-      headers: new Headers([['authorization', 'Bearer wrong']])
+      request: new Request('http://test', {
+        headers: new Headers([['authorization', 'Bearer wrong']])
+      })
     } as unknown as Parameters<typeof GET>[0])
 
     expect(res.status).toBe(401)
@@ -173,17 +203,19 @@ describe('/api/cron/data-retention', () => {
     const db = createDbMock()
 
     const redis = createRedisMock()
-    vi.mocked(redis.set).mockResolvedValueOnce('OK')
-    vi.mocked(redis.set).mockResolvedValueOnce(null)
 
     vi.doMock('@isyuricunha/db', () => createDbModuleMock(db))
     vi.doMock('@isyuricunha/kv', () => ({ redis }))
+    vi.mocked(redis.set).mockResolvedValueOnce('OK')
+    vi.mocked(redis.set).mockResolvedValueOnce(null)
 
     const { GET } = await import('@/routes/api/cron/data-retention/+server')
 
     const headers = new Headers([['authorization', 'Bearer 0123456789abcdef']])
 
-    const res1 = await GET({ headers } as unknown as Parameters<typeof GET>[0])
+    const res1 = await GET({
+      request: new Request('http://test/api/cron/data-retention', { headers })
+    } as unknown as Parameters<typeof GET>[0])
     expect(res1.status).toBe(200)
 
     const res2 = await GET({ headers } as unknown as Parameters<typeof GET>[0])
@@ -213,7 +245,9 @@ describe('/api/cron/data-retention', () => {
     const { GET } = await import('@/routes/api/cron/data-retention/+server')
 
     const res = await GET({
-      headers: new Headers([['authorization', 'Bearer 0123456789abcdef']])
+      request: new Request('http://test', {
+        headers: new Headers([['authorization', 'Bearer 0123456789abcdef']])
+      })
     } as unknown as Parameters<typeof GET>[0])
 
     expect(res.status).toBe(200)
@@ -258,7 +292,9 @@ describe('/api/cron/data-retention', () => {
     const { GET } = await import('@/routes/api/cron/data-retention/+server')
 
     const res = await GET({
-      headers: new Headers([['authorization', 'Bearer 0123456789abcdef']])
+      request: new Request('http://test', {
+        headers: new Headers([['authorization', 'Bearer 0123456789abcdef']])
+      })
     } as unknown as Parameters<typeof GET>[0])
 
     const json = (await res.json()) as { deleted: Record<string, number> }
