@@ -32,7 +32,7 @@ import { toast } from 'sonner'
 
 import { api } from '@/trpc/react'
 import ConfirmationDialog from './confirmation-dialog'
-import { getSelectionState, reconcileSelection } from './admin-integrity'
+import { getSelectionState, reconcileSelection } from '@/components/admin/admin-integrity'
 
 interface BulkOperationStatus {
   id: string

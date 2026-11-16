@@ -32,7 +32,7 @@ import { useTranslations } from '@isyuricunha/i18n/client'
 import { toast } from 'sonner'
 
 import { api } from '@/trpc/react'
-import { getNotificationPageStats } from './admin-integrity'
+import { getNotificationPageStats } from '@/components/admin/admin-integrity'
 
 export default function NotificationManagement() {
   const t = useTranslations('admin.notification-management')

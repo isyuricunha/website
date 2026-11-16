@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { NextRequest } from 'next/server'
 
 vi.mock('@/lib/logger', () => ({
   logger: {
@@ -71,7 +72,7 @@ describe('/api/ai/content', () => {
       Response.json({ error: 'Unauthorized' }, { status: 401 }) as never
     )
 
-    const res = await GET()
+    const res = await GET(new NextRequest('http://localhost/api/ai/content'))
 
     expect(res.status).toBe(401)
     expect(await res.json()).toEqual({ error: 'Unauthorized' })
@@ -89,7 +90,7 @@ describe('/api/ai/content', () => {
 
     const { GET } = await import('@/app/api/ai/content/route')
 
-    const res = await GET()
+    const res = await GET(new NextRequest('http://localhost/api/ai/content'))
 
     expect(res.status).toBe(200)
     const json = (await res.json()) as { availableProviders?: string[] }

@@ -73,6 +73,9 @@
       "@/utils/get-avatar-abbreviation": [
         "../../packages/trpc-server/src/utils/get-avatar-abbreviation.ts"
       ],
+      "@/components/admin/admin-integrity": [
+        "../../packages/trpc-server/src/utils/admin/integrity.ts"
+      ],
       "@/utils/csv-export": [
         "../../packages/trpc-server/src/utils/csv/csv-export.ts"
       ],

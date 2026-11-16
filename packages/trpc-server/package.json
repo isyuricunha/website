@@ -14,7 +14,8 @@
     "./utils/get-avatar-abbreviation": "./src/utils/get-avatar-abbreviation.ts",
     "./utils/announcements/announcement-storage": "./src/utils/announcements/announcement-storage.ts",
     "./utils/announcements/announcement-priority": "./src/utils/announcements/announcement-priority.ts",
-    "./utils/csv/csv-export": "./src/utils/csv/csv-export.ts"
+    "./utils/csv/csv-export": "./src/utils/csv/csv-export.ts",
+    "./utils/admin/integrity": "./src/utils/admin/integrity.ts"
   },
   "scripts": {
     "clean": "rm -rf .turbo",
