@@ -2874,5 +2874,8 @@
       "views": "visualizações",
       "likes": "curtidas"
     }
+  },
+  "recommendations": {
+    "title": "Posts recomendados"
   }
 }
