@@ -3,6 +3,7 @@
 	import { type Snippet } from 'svelte'
 	import Footer from '#lib/components/footer.svelte'
 	import Header from '#lib/components/header.svelte'
+	import VirtualMascot from '#lib/components/mascot/virtual-mascot.svelte'
 	import type { LayoutData } from './$types'
 
 // Same registration intent as the Next app. By the time the client bundle
@@ -61,4 +62,6 @@ if (typeof navigator !== 'undefined' && 'serviceWorker' in navigator) {
 </main>
 
 <Footer labels={data.labels} />
+
+<VirtualMascot />
 
