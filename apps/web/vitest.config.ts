@@ -173,7 +173,6 @@ const aliases = [
     find: '#lib/utils/get-localized-path',
     replacement: resolve('../../packages/trpc-server/src/utils/get-localized-path.ts')
   },
-  { find: '@', replacement: resolve('./src') },
   { find: 'next/navigation', replacement: resolve('./src/tests/stubs/next-navigation.ts') },
   {
     find: 'next-intl/navigation',
@@ -184,25 +183,32 @@ const aliases = [
     replacement: resolve('./.content-collections/generated/index.js')
   },
   {
-    find: /^@\/trpc\/routers\/(.*)$/,
-    replacement: resolve('../../packages/trpc-server/src/trpc/routers/$1')
+    find: '@/trpc/routers',
+    replacement: resolve('../../packages/trpc-server/src/trpc/routers')
   },
-  { find: /^@\/lib\/ai\/(.*)$/, replacement: resolve('../../packages/trpc-server/src/lib/ai/$1') },
-  { find: /^#lib\/ai\/(.*)$/, replacement: resolve('../../packages/trpc-server/src/lib/ai/$1') },
   {
-    find: /^#trpc\/routers\/(.*)$/,
-    replacement: resolve('../../packages/trpc-server/src/trpc/routers/$1')
+    find: '@/trpc/routers/views',
+    replacement: resolve('../../packages/trpc-server/src/trpc/routers/views.ts')
   },
-  { find: '@', replacement: resolve('./src') },
-  { find: /^#lib\/components\/(.*)$/, replacement: resolve('./src/lib/components/$1') },
-  { find: /^#lib\/(.*)$/, replacement: resolve('./src/lib/$1') },
-  { find: /^#tests\/(.*)$/, replacement: resolve('./src/tests/$1') },
+  { find: '@/lib/ai', replacement: resolve('../../packages/trpc-server/src/lib/ai') },
+  { find: '#lib/ai', replacement: resolve('../../packages/trpc-server/src/lib/ai') },
+  {
+    find: '#trpc/routers',
+    replacement: resolve('../../packages/trpc-server/src/trpc/routers')
+  },
+  { find: '#lib/components', replacement: resolve('./src/lib/components') },
+  { find: '#lib', replacement: resolve('./src/lib') },
+  { find: '#tests', replacement: resolve('./src/tests') },
   { find: 'next/navigation', replacement: resolve('./src/tests/stubs/next-navigation.ts') },
   {
     find: 'next-intl/navigation',
     replacement: resolve('./src/tests/stubs/next-intl-navigation.ts')
   },
-  { find: 'content-collections', replacement: resolve('./.content-collections/generated/index.js') }
+  {
+    find: 'content-collections',
+    replacement: resolve('./.content-collections/generated/index.js')
+  },
+  { find: '@', replacement: resolve('./src') }
 ]
 
 export default defineConfig(
