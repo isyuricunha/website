@@ -85,7 +85,7 @@ export class MascotStateController {
   prefersReducedMotion = $state(false)
 
   private translator: Translator = createTranslator(i18n.defaultLocale, {} as never)
-  private locale = i18n.defaultLocale
+  locale = i18n.defaultLocale
   private allMessages: Record<string, unknown> | null = null
   private currentPathname = '/'
   private isProduction = false

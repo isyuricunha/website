@@ -1,4 +1,5 @@
 import { getServerTranslator } from '#lib/i18n/server.ts'
+import { loadMessages } from '#lib/i18n/catalog.ts'
 import type { LayoutServerLoad } from './$types'
 
 // Locale negotiation lives in hooks.server.ts; this load surfaces the locale
@@ -35,5 +36,10 @@ export const load: LayoutServerLoad = async ({ locals }) => {
     labels[key] = t(`layout.${key}`)
   }
 
-  return { locale, labels }
+  // The mascot is a client component that builds its own translator from the
+  // raw mascot namespace (messages are dynamic, not enumerated keys).
+  const messages = await loadMessages(locale)
+  const mascot = (messages.mascot ?? {}) as Record<string, unknown>
+
+  return { locale, labels: { ...labels, mascot } }
 }
