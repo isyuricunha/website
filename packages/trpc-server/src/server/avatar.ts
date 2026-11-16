@@ -20,7 +20,7 @@ export async function avatarGet(request: Request, path_params: { id: string }): 
   const djb2 = (value: string) => {
     let hash = 5381
     for (let index = 0; index < value.length; index += 1) {
-      hash = ((hash << 5) + hash + (value.codePointAt(index) ?? 0)) & 0xff_ff_ff_ff
+      hash = ((hash << 5) + hash + (value.codePointAt(index) ?? 0)) & 4_294_967_295
     }
     return hash
   }
