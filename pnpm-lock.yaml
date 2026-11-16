@@ -883,6 +883,13 @@ importers:
         version: 8.3.4(@types/node@26.6.4)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1)
 
   apps/web-sveltekit:
+    dependencies:
+      cobe:
+        specifier: ^2.0.1
+        version: 2.0.1
+      simple-icons:
+        specifier: ^16.37.0
+        version: 16.37.0
     devDependencies:
       '@content-collections/cli':
         specifier: ^0.1.9
@@ -9307,6 +9314,10 @@ packages:
   simple-git-hooks@2.14.0:
     resolution: {integrity: sha512-kkTORPAuxQz2g1QUuN0J8yGWT28tjGBfPOdJ4xT7Vbeu30veKUZQIoID2qGgCDAakaQn59UeZJJ4cFGB8PVP2A==}
     hasBin: true
+
+  simple-icons@16.37.0:
+    resolution: {integrity: sha512-8mCJIhpMYOL9g13GW59EiL3sVXJnTEKGCTZFaekl9UQ3Qo0SwVjnLaJ82QiaH8BKBdouEDzrHMXIWh8cBIy48A==}
+    engines: {node: '>=0.12.18'}
 
   sirv@2.0.4:
     resolution: {integrity: sha512-94Bdh3cC2PKrbgSOUqTiGPWVZeSiXfKOVZNJniWoqrWrRkB1CJzBU3NEbiTsPcYy1lDsANA/THzS+9WBiy5nfQ==}
@@ -18856,6 +18867,8 @@ snapshots:
   signal-exit@4.1.0: {}
 
   simple-git-hooks@2.14.0: {}
+
+  simple-icons@16.37.0: {}
 
   sirv@2.0.4:
     dependencies:

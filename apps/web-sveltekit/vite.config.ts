@@ -26,6 +26,11 @@ const flagDefine = Object.fromEntries(
   ])
 )
 
+// Public Turnstile site key (safe to inline: it is public by design).
+flagDefine['import.meta.env.PUBLIC_TURNSTILE_SITE_KEY'] = JSON.stringify(
+  process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? ''
+)
+
 // SvelteKit 3 keeps all framework configuration in vite.config.ts. The
 // repository standard is Vite 8, TypeScript 6 and Node.js 24.
 export default defineConfig({

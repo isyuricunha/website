@@ -1,5 +1,6 @@
 import { i18n } from '@isyuricunha/i18n/config'
 import { getPage, getPosts, getProjects } from '#lib/content.ts'
+import { buildRecentlyUpdated } from './recently-updated.ts'
 import { buildSeoHead } from '#lib/seo.ts'
 import { getServerTranslator } from '#lib/i18n/server.ts'
 import type { PageServerLoad } from './$types'
@@ -15,6 +16,38 @@ export const load: PageServerLoad = async ({ params, parent }) => {
   const posts = getPosts(locale)
   const latestPosts = posts.slice(0, 2)
   const projects = getProjects(locale).filter((project) => project.selected)
+  const recentlyUpdated = buildRecentlyUpdated(locale, posts, getProjects(locale))
+
+  const aboutLabels: Record<string, string> = {
+    'about-me.title': t('homepage.about-me.title'),
+    'about-me.more': t('homepage.about-me.more'),
+    'about-me.location': t('homepage.about-me.location'),
+    'about-me.stacks': t('homepage.about-me.stacks'),
+    'about-me.connect': t('homepage.about-me.connect'),
+    'about-me.coding-hours': t('homepage.about-me.coding-hours'),
+    'about-me.coding-hours-value': t('homepage.about-me.coding-hours-value'),
+    'about-me.fav-framework': t('homepage.about-me.fav-framework'),
+    'common-error': t('common.error'),
+    'newsletter.title': t('homepage.newsletter.title'),
+    'newsletter.description': t('homepage.newsletter.description'),
+    'newsletter.email-label': t('homepage.newsletter.email-label'),
+    'newsletter.placeholder': t('homepage.newsletter.placeholder'),
+    'newsletter.cta': t('homepage.newsletter.cta'),
+    'newsletter.disclaimer': t('homepage.newsletter.disclaimer'),
+    'newsletter.success-title': t('homepage.newsletter.success-title'),
+    'newsletter.success-description': t('homepage.newsletter.success-description'),
+    'newsletter.error-default': t('homepage.newsletter.error-default'),
+    'newsletter.turnstile-required': t('homepage.newsletter.turnstile-required'),
+    'newsletter.turnstile-error': t('homepage.newsletter.turnstile-error'),
+    'recently-updated.title': t('homepage.recently-updated.title'),
+    'recently-updated.description': t('homepage.recently-updated.description'),
+    'recently-updated.type.post': t('homepage.recently-updated.type.post'),
+    'recently-updated.type.project': t('homepage.recently-updated.type.project'),
+    'recently-updated.updated-on': t('homepage.recently-updated.updated-on'),
+    'recently-updated.empty': t('homepage.recently-updated.empty'),
+    'announcement.high-priority': t('component.announcement-banner.high-priority'),
+    'announcement.dismiss': t('component.announcement-banner.dismiss')
+  }
 
   const featuredProject = projects[0]
   const supportingProjects = projects.slice(1, 3)
@@ -29,6 +62,8 @@ export const load: PageServerLoad = async ({ params, parent }) => {
       description: t_metadata('site-description')
     }),
     locale,
+    recentlyUpdated,
+    aboutLabels,
     hero: {
       strings: {
         locationTimezone: t('homepage.hero.location-timezone'),
