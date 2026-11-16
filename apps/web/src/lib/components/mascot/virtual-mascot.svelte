@@ -35,10 +35,14 @@ $effect(() => {
 // Build the translator from the raw mascot catalog and wire the controller.
 let cancelled = false
 void (async () => {
-const messages = labels ?? (await loadMessages(mascotLocale))
+// The server data already scopes labels to the mascot namespace, which
+// breaks the translator's dotted lookup; always use the full catalog.
+const messages = await loadMessages(mascotLocale)
 if (cancelled) return
-const translator = createTranslator(mascotLocale, messages as never)
-mascot.configure({ translator, locale: mascotLocale, allMessages: { mascot: messages } })
+const fallback = await loadMessages(i18n.defaultLocale)
+if (cancelled) return
+const translator = createTranslator(mascotLocale, messages as never, fallback as never)
+mascot.configure({ translator, locale: mascotLocale, allMessages: { mascot: messages.mascot } })
 })()
 return () => {
 cancelled = true

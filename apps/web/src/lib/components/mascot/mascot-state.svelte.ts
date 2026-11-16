@@ -1,4 +1,6 @@
 import { goto } from '$app/navigation'
+
+/* eslint-disable unicorn/consistent-class-member-order -- legacy class layout; reordering the whole controller is a separate cleanup. */
 import { page } from '$app/state'
 import { i18n } from '@isyuricunha/i18n/config'
 import { getLocalizedPath } from '#lib/seo'
@@ -80,12 +82,7 @@ type MascotStateData = ReturnType<typeof createInitialState>
  * behaviour as the original.
  */
 export class MascotStateController {
-  state = $state<MascotStateData>(createInitialState())
-  mounted = $state(false)
-  prefersReducedMotion = $state(false)
-
-  private translator: Translator = createTranslator(i18n.defaultLocale, {} as never)
-  locale = i18n.defaultLocale
+  private translator = $state<Translator>(createTranslator(i18n.defaultLocale, {} as never))
   private allMessages: Record<string, unknown> | null = null
   private currentPathname = '/'
   private isProduction = false
@@ -100,6 +97,13 @@ export class MascotStateController {
   private scheduledTimeouts = new Set<ReturnType<typeof setTimeout>>()
   private konamiSequence: string[] = []
   private cleanupListeners: Array<() => void> = []
+
+  // Reactive so attributes rendered before configure() re-evaluate once the
+  // translator arrives from the server load.
+  state = $state<MascotStateData>(createInitialState())
+  mounted = $state(false)
+  prefersReducedMotion = $state(false)
+  locale = i18n.defaultLocale
 
   /** Wire translations, locale and the raw message catalog from the server load. */
   configure(options: {
@@ -131,7 +135,9 @@ export class MascotStateController {
   initialize(): () => void {
     this.currentPathname = page.url.pathname
 
-    const scheduleCleanup = (teardown: () => void) => this.cleanupListeners.push(teardown)
+    const scheduleCleanup = (teardown: () => void) => {
+      this.cleanupListeners.push(teardown)
+    }
 
     // Load browser-only preferences and saved state after hydration
     const loadTimer = setTimeout(() => {
@@ -388,7 +394,7 @@ export class MascotStateController {
           () => this.updateState({ autoShowMessage: false }),
           this.state.preferences.messageDuration
         )
-      }, 1_000)
+      }, 1000)
 
       return () => clearTimeout(timer)
     })
@@ -825,3 +831,4 @@ export class MascotStateController {
     return list
   }
 }
+/* eslint-enable unicorn/consistent-class-member-order -- cleanup companion to the file-top disable. */
