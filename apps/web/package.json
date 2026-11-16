@@ -12,7 +12,7 @@
   "scripts": {
     "dev": "NODE_OPTIONS=--max-old-space-size=4096 dotenv -e ../../.env.local -- vite dev --port 3010",
     "build": "dotenv -e ../../.env.local -- vite build",
-    "build:mdx": "content-collections build",
+    "build:mdx": "svelte-kit sync && content-collections build",
     "preview": "dotenv -e ../../.env.local -- vite preview --port 3010",
     "check": "content-collections build && svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "type-check": "content-collections build && svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
