@@ -174,3 +174,5 @@ names); TypeScript 6 minimum; Node 22+ minimum.
 - Stage 5/6: public profile (u/[handle]) ported with infinite comments. Dev script raises the Vite heap to 4 GB after two OOM crashes in full-bundle dev mode.
 
 - Stage 5/6: home completed (announcement banner, about-me cards with cobe globe, recently updated server-computed, newsletter with native Turnstile, simple-icons data-only). Visual verified in PT at 1440.
+
+- Stage 7 started: admin shell (RBAC layout, sidebar, header, breadcrumbs) and dashboard ported; verified with an admin session locally. Remaining admin pages: users, comments, posts, security, audit-logs, communication, email-marketing, announcements, notifications, monitoring, system-health, data-management, bulk-operations, configuration.
