@@ -201,6 +201,38 @@
   }
 }
 
+/* Project grid entrance, mirrors the original opacity/y:20 staggered reveal */
+@keyframes projectCardEnter {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.project-card-enter {
+  animation: projectCardEnter 0.5s ease-out both;
+}
+
+/* Guestbook/project card entrance, mirrors the original y:20 staggered reveal */
+@keyframes cardEnter {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card-enter {
+  animation: cardEnter 0.4s ease-out both;
+}
+
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -277,7 +309,9 @@
   .animate-spin,
   .animate-music-bar-1,
   .animate-music-bar-2,
-  .animate-music-bar-3 {
+  .animate-music-bar-3,
+  .project-card-enter,
+  .card-enter {
     animation: none !important;
   }
 

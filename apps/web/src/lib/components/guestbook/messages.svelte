@@ -99,7 +99,7 @@
 	{#each pages as page, pageIndex (page.messages.map((m) => m.id).join('|'))}
 		{#each page.messages as message, messageIndex (message.id)}
 			<div
-				class="bg-bg-surface rounded-lg border border-[var(--border-subtle)] p-4"
+				class="bg-bg-surface card-enter rounded-lg border border-[var(--border-subtle)] p-4"
 				style={`animation-delay:${(pageIndex * 10 + messageIndex) * 0.05}s`}
 				data-testid="guestbook-message"
 			>

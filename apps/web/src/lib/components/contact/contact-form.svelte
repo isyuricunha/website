@@ -1,5 +1,7 @@
 <script lang="ts">
+	import Turnstile from '#lib/components/turnstile.svelte'
 	import { toastError, toastSuccess } from '#lib/toasts.svelte.ts'
+	import { flags } from '#lib/flags.ts'
 
 	type Props = {
 		labels: Record<string, string>
@@ -13,6 +15,10 @@
 	let subject = $state('')
 	let message = $state('')
 	let errors = $state<Record<string, string>>({})
+	let turnstileToken = $state<string | null>(null)
+	let turnstileEnabled = $derived(
+		flags.turnstile && (import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '') !== ''
+	)
 	let isSubmitting = $state(false)
 	let submitStatus = $state<'idle' | 'success' | 'error'>('idle')
 	let submitMessage = $state('')
@@ -46,6 +52,13 @@
 
 	async function submit(event: SubmitEvent) {
 		event.preventDefault()
+
+		if (turnstileEnabled && !turnstileToken) {
+			submitStatus = 'error'
+			submitMessage = labels['form.turnstile.required'] ?? labels['form.error']
+			toastError(submitMessage)
+			return
+		}
 
 		const newErrors: Record<string, string> = {}
 		if (!name.trim()) {
@@ -86,7 +99,7 @@
 					'Content-Type': 'application/json',
 					'x-locale': document.documentElement.lang || locale
 				},
-				body: JSON.stringify({ name, email, subject, message })
+				body: JSON.stringify({ name, email, subject, message, ...(turnstileEnabled && { turnstileToken }) })
 			})
 			const result = await response.json()
 
