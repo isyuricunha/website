@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { is_safe_internal_path } from '#lib/components/mascot/ai-chat-interface'
+import { is_safe_internal_path } from '#lib/components/mascot/ai-chat-navigate-allowlist'
 
 describe('is_safe_internal_path', () => {
   it('accepts same-origin absolute paths', () => {

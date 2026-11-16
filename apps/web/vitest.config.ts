@@ -195,6 +195,22 @@ const aliases = [
     find: '@/lib/admin-auth',
     replacement: resolve('../../packages/trpc-server/src/lib/admin-auth.ts')
   },
+  {
+    find: '#lib/announcement-priority',
+    replacement: resolve(
+      '../../packages/trpc-server/src/utils/announcements/announcement-priority.ts'
+    )
+  },
+  {
+    find: '#lib/utils/announcement-storage',
+    replacement: resolve(
+      '../../packages/trpc-server/src/utils/announcements/announcement-storage.ts'
+    )
+  },
+  {
+    find: '@upstash/ratelimit',
+    replacement: resolve('../../packages/trpc-server/node_modules/@upstash/ratelimit')
+  },
   { find: '@/lib/blog', replacement: resolve('../../packages/trpc-server/src/lib/blog') },
   { find: '@/lib/privacy', replacement: resolve('../../packages/trpc-server/src/lib/privacy') },
   { find: '#lib/ai', replacement: resolve('../../packages/trpc-server/src/lib/ai') },
@@ -224,6 +240,7 @@ export default defineConfig(
       test: {
         name: 'web-sveltekit',
         environment: 'node',
+        setupFiles: ['src/tests/setup-storage.ts'],
         include: ['src/tests/**/*.test.ts'],
         // Workspace packages must run through the Vite transform, otherwise
         // their imports bypass vi mocks and hit real db/redis clients.
