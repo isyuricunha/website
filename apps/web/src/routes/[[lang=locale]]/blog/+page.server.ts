@@ -20,13 +20,17 @@ export const load: PageServerLoad = async ({ parent }) => {
       rss: t('blog.filtered-posts.rss'),
       error: t('common.error')
     },
-    posts: getPosts(locale).map(({ slug, title, summary, date, readingTime }) => ({
-      slug,
-      title,
-      summary,
-      date,
-      readingTime,
-      readingTimeLabel: t('snippets.min-read', { minutes: readingTime })
-    }))
+    posts: getPosts(locale).map(
+      ({ slug, title, summary, date, readingTime, category, tags, featured }) => ({
+        slug,
+        title,
+        summary,
+        date,
+        readingTime,
+        category,
+        tags,
+        featured
+      })
+    )
   }
 }

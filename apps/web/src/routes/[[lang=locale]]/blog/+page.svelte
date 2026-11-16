@@ -1,7 +1,31 @@
 <script lang="ts">
+	import FilteredPosts from '#lib/components/blog/filtered-posts.svelte'
+	import { loadMessages } from '#lib/i18n/catalog'
+	import { createTranslator } from '#lib/i18n/translator'
+	import { i18n } from '@isyuricunha/i18n/config'
+	import PageTitle from '#lib/components/blog/page-title.svelte'
 	import type { PageData } from './$types'
 
 	let { data }: { data: PageData } = $props()
+
+	let t = $state<(key: string, variables?: Record<string, string | number>) => string>(
+		(key) => key
+	)
+
+	$effect(() => {
+		let cancelled = false
+		void (async () => {
+			const [messages, fallback] = await Promise.all([
+				loadMessages(data.locale),
+				loadMessages(i18n.defaultLocale)
+			])
+			if (cancelled) return
+			t = createTranslator(data.locale, messages as never, fallback as never)
+		})()
+		return () => {
+			cancelled = true
+		}
+	})
 
 	// Frontmatter dates are plain YYYY-MM-DD. Parsing without a time treats
 	// them as UTC midnight, which shifts the day a day back in UTC-3.
@@ -20,11 +44,10 @@
 	<meta name="description" content={data.description} />
 </svelte:head>
 
-<main class="mx-auto max-w-4xl px-6 py-16">
 	<nav aria-label="Breadcrumb" class="mb-6 flex items-center gap-2 text-sm">
 		<a
 			href={data.locale === 'en' ? '/' : `/${data.locale}`}
-			class="inline-flex items-center gap-1.5 text-muted-foreground transition-colors hover:text-foreground"
+			class="text-muted-foreground inline-flex items-center gap-1.5 transition-colors hover:text-foreground"
 		>
 			<svg
 				class="size-4"
@@ -45,48 +68,6 @@
 		<span class="text-foreground">{data.strings.blog}</span>
 	</nav>
 
-	<h1 class="mb-3 text-3xl font-bold tracking-tight">{data.title}</h1>
-	<p class="text-muted-foreground mb-10">{data.description}</p>
+	<PageTitle title={data.title} description={data.description} />
 
-	<div class="mb-8 flex items-center justify-end">
-		<a
-			href="/rss.xml"
-			class="inline-flex items-center gap-1.5 text-sm text-accent transition-colors hover:underline"
-		>
-			<svg
-				class="size-4"
-				xmlns="http://www.w3.org/2000/svg"
-				viewBox="0 0 24 24"
-				fill="none"
-				stroke="currentColor"
-				stroke-width="2"
-				stroke-linecap="round"
-				stroke-linejoin="round"
-				aria-hidden="true"
-			>
-				<path d="M13 19a6 6 0 0 0-6-6"></path><path d="M19 19a12 12 0 0 0-12-12"></path><circle cx="6.5" cy="17.5" r="1.5" fill="currentColor" stroke="none"></circle>
-			</svg>
-			{data.strings.rss}
-		</a>
-	</div>
-
-	<ul class="flex flex-col gap-6">
-		{#each data.posts as post (post.slug)}
-			<li>
-				<a
-					href={data.locale === 'en' ? `/blog/${post.slug}` : `/${data.locale}/blog/${post.slug}`}
-					class="cursor-card shadow-feature-card block rounded-lg p-5"
-				>
-					<h2 class="text-xl font-semibold">{post.title}</h2>
-					<p class="text-muted-foreground mt-1 text-sm">{post.summary}</p>
-					<div class="mt-3 flex items-center gap-3 text-xs text-muted-foreground">
-						<time datetime={post.date}>{formatDate(post.date)}</time>
-						{#if post.readingTime}
-							<span>{post.readingTimeLabel}</span>
-						{/if}
-					</div>
-				</a>
-			</li>
-		{/each}
-	</ul>
-</main>
+	<FilteredPosts posts={data.posts} locale={data.locale} />
