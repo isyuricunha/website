@@ -73,6 +73,21 @@
       "@/utils/get-avatar-abbreviation": [
         "../../packages/trpc-server/src/utils/get-avatar-abbreviation.ts"
       ],
+      "@/lib/ai/chat": [
+        "../../packages/trpc-server/src/server/ai/chat.ts"
+      ],
+      "@/lib/rate-limit-keys": [
+        "../../packages/trpc-server/src/lib/rate-limit-keys.ts"
+      ],
+"@/lib/blog/blog-service": [
+        "../../packages/trpc-server/src/lib/blog/blog-service.ts"
+      ],
+"@/lib/cron/alerts": [
+        "../../packages/trpc-server/src/server/cron/alerts.ts"
+      ],
+      "@/lib/cron/data-retention": [
+        "../../packages/trpc-server/src/server/cron/data-retention.ts"
+      ],
       "@/components/admin/admin-integrity": [
         "../../packages/trpc-server/src/utils/admin/integrity.ts"
       ],

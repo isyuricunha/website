@@ -15,7 +15,13 @@
     "./utils/announcements/announcement-storage": "./src/utils/announcements/announcement-storage.ts",
     "./utils/announcements/announcement-priority": "./src/utils/announcements/announcement-priority.ts",
     "./utils/csv/csv-export": "./src/utils/csv/csv-export.ts",
-    "./utils/admin/integrity": "./src/utils/admin/integrity.ts"
+    "./utils/admin/integrity": "./src/utils/admin/integrity.ts",
+    "./server/cron/alerts": "./src/server/cron/alerts.ts",
+    "./server/cron/data-retention": "./src/server/cron/data-retention.ts",
+    "./server/ai/chat": "./src/server/ai/chat.ts",
+    "./lib/rate-limit-keys": "./src/lib/rate-limit-keys.ts",
+    "./lib/blog/blog-service": "./src/lib/blog/blog-service.ts",
+    "./lib/ai/ai-service": "./src/lib/ai/ai-service.ts"
   },
   "scripts": {
     "clean": "rm -rf .turbo",
@@ -36,8 +42,10 @@
     "@paralleldrive/cuid2": "^3.3.0",
     "@react-email/render": "^2.1.0",
     "@trpc/server": "11.19.0",
+    "@types/js-yaml": "^4.0.9",
     "@upstash/ratelimit": "^2.2.0",
     "better-auth": "1.7.7",
+    "gray-matter": "^4.0.3",
     "js-sha512": "^0.9.0",
     "resend": "^6.32.1",
     "speakeasy": "^2.0.0",

@@ -2,7 +2,7 @@ import fs from 'fs/promises'
 import path from 'path'
 import matter from 'gray-matter'
 import * as yaml from 'js-yaml'
-import { logger } from '@/lib/logger'
+import { logger } from '../logger'
 
 // Slug and locale flow into path.join(CONTENT_DIR, locale, `${slug}.mdx`).
 // Reject anything that could traverse out of the content tree even if a caller
@@ -37,7 +37,13 @@ interface BlogPostMetadata {
   filePath: string
 }
 
-const CONTENT_DIR = path.join(process.cwd(), 'src/content/blog')
+// Content lives in apps/web/src/content/blog for the Next app (cwd-based
+// default). Shared consumers outside apps/web override it via setContentDir.
+let CONTENT_DIR = path.join(process.cwd(), 'src/content/blog')
+
+export function setBlogContentDir(dir: string): void {
+  CONTENT_DIR = path.resolve(dir)
+}
 const SUPPORTED_LOCALES = ['en', 'pt', 'fr', 'de', 'ja', 'zh']
 
 const yaml_engine = {
