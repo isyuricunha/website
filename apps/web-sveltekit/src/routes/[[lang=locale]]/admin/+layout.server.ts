@@ -18,6 +18,7 @@ const LABEL_KEYS = [
   'nav.announcements',
   'nav.notifications',
   'nav.monitoring_dashboard',
+  'nav.monitoring',
   'nav.system_health',
   'nav.data_management',
   'nav.bulk_operations',
