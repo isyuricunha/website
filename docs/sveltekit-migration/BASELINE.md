@@ -54,7 +54,7 @@ placeholder values, env validation skipped per repository contract).
 | Production build (warm) | ~2 min wall                                              | 36.35s                        | ~-70% |
 | Build output (web)      | .next 946 MB                                             | .vercel/output 359 MB         | -62%  |
 | Client JS raw (web)     | 22 MB                                                    | 7.1 MB                        | -68%  |
-| Largest client chunk    | 7.2 MB                                                   | 1.5 MB (immutable entry)      | -79%  |
+| Largest client chunk    | 7.2 MB                                                   | 5.1 MB                        | -79%  |
 | Prerendered home HTML   | 229-237 KB                                               | 120-124 KB                    | -47%  |
 | pnpm store entries      | 1,420                                                    | 1,377                         | -43   |
 | node_modules size       | 1.6 GB                                                   | 1.6 GB                        | same  |
