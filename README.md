@@ -7,7 +7,7 @@ Personal website, documentation site and shared package workspace.
 [![License](https://img.shields.io/badge/license-AGPL--3.0-blue)](./license.md)
 [![Node](https://img.shields.io/badge/Node.js-%3E%3D24-339933?logo=node.js&logoColor=white)](.nvmrc)
 [![pnpm](https://img.shields.io/badge/pnpm-12.3.4-F69220?logo=pnpm&logoColor=white)](package.json)
-[![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js&logoColor=white)](apps/web)
+[![SvelteKit](https://img.shields.io/badge/SvelteKit-3-FF3E00?logo=svelte&logoColor=white)](apps/web)
 [![TypeScript](https://img.shields.io/badge/TypeScript-6-3178C6?logo=typescript&logoColor=white)](tsconfig.json)
 [![Vercel](https://img.shields.io/badge/deployed%20on-Vercel-black?logo=vercel&logoColor=white)](https://yuricunha.com)
 
@@ -61,7 +61,7 @@ The repository is organized as a monorepo (Turbo + pnpm) so that the main app an
 
 ```text
 apps/
-  web/        main website (Next.js App Router)
+  web/        main website (SvelteKit)
   docs/       documentation site (docs.yuricunha.com)
 packages/
   db/         database access (Drizzle)
@@ -82,20 +82,20 @@ scripts/
   clean-cache.mjs     Turborepo cache cleaner
 ```
 
-Reusable UI primitives live in `apps/web/src/components`; the warm visual system comes from the published [`@isyuricunha/yutheme`](https://www.npmjs.com/package/@isyuricunha/yutheme) package.
+Reusable UI primitives live in `apps/web/src/lib/components`; the warm visual system comes from the published [`@isyuricunha/yutheme`](https://www.npmjs.com/package/@isyuricunha/yutheme) package.
 
 ## Tech stack
 
 | Layer         | Technology                                                                   |
 | ------------- | ---------------------------------------------------------------------------- |
 | Monorepo      | Turborepo + pnpm                                                             |
-| Web           | Next.js App Router, React, TypeScript                                        |
+| Web           | SvelteKit 3 (Svelte 5 runes), Vite, TypeScript                               |
 | API           | tRPC                                                                         |
 | Database      | PostgreSQL, Drizzle ORM                                                      |
 | Auth          | better-auth                                                                  |
 | Rate limiting | Upstash Redis sliding windows with a fail-closed wrapper (`@isyuricunha/kv`) |
 | Email         | React Email, Resend                                                          |
-| i18n          | next-intl (localized routes under `apps/web/src/app/[locale]`)               |
+| i18n          | custom locale routing (`apps/web/src/routes/[[lang=locale]]`)                |
 | Content       | content-collections + MDX                                                    |
 | Styling       | Tailwind CSS v4 + shared Cursor-inspired UI preset                           |
 | Testing       | Vitest (unit), Playwright (e2e)                                              |
@@ -115,12 +115,14 @@ Core tooling:
 
 Web apps:
 
-- Next.js: `16.4.0`
-- React: `19.3.0`
+- SvelteKit: `3.2.0` (Svelte 5 runes, Vite 8)
 - Zod: `4.6.5`
 - tRPC: `11.19.0`
-- TanStack React Query: `^5.104.1`
 - better-auth: `1.7.7`
+- TailwindCSS: `^4.3.3`
+
+React remains only inside `@isyuricunha/yutheme` dev previews, the React Email templates (server side) and the docs live previews; the web runtime does not load React or Next.js.
+
 - TailwindCSS: `^4.3.3`
 
 To list all installed versions in the workspace:
@@ -283,7 +285,7 @@ pnpm --filter @isyuricunha/web build
 pnpm --filter @isyuricunha/docs build
 ```
 
-If upgrades introduce runtime issues, prefer debugging in development mode (`pnpm dev:web`) to get non-minified React errors.
+If upgrades introduce runtime issues, prefer debugging in development mode (`pnpm dev:web`) to get non-minified Vite runtime errors.
 
 ## Deployment
 

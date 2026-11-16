@@ -46,3 +46,22 @@ placeholder values, env validation skipped per repository contract).
   apps complete; numbers recorded here will be duplicated there).
 - Lighthouse/Core Web Vitals: not yet measured (requires both apps runnable
   side by side; will be captured in stage 10 with identical conditions).
+
+## Post-migration comparison (measured 2026-11-16, same host)
+
+| Metric                  | Next.js baseline                                         | SvelteKit now                 | Delta |
+| ----------------------- | -------------------------------------------------------- | ----------------------------- | ----- |
+| Production build (warm) | ~2 min wall                                              | 36.35s                        | ~-70% |
+| Build output (web)      | .next 946 MB                                             | .vercel/output 359 MB         | -62%  |
+| Client JS raw (web)     | 22 MB                                                    | 7.1 MB                        | -68%  |
+| Largest client chunk    | 7.2 MB                                                   | 1.5 MB (immutable entry)      | -79%  |
+| Prerendered home HTML   | 229-237 KB                                               | 120-124 KB                    | -47%  |
+| pnpm store entries      | 1,420                                                    | 1,377                         | -43   |
+| node_modules size       | 1.6 GB                                                   | 1.6 GB                        | same  |
+| Test suite (web)        | N/A (vitest suite was at 154 passing at migration start) | 344 passing, 68 files, exit 0 | n/a   |
+| Type check              | n/a (Next build type-checks)                             | svelte-check 0 errors         | n/a   |
+
+The React runtime was removed from web production UI; `pnpm why react next`
+in apps/web resolves react and next only through devDependencies (yutheme
+dev previews, React Email templates, docs previews). Docs build exits 0
+(SvelteKit + Vite).
