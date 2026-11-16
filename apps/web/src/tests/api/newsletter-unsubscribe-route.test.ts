@@ -40,7 +40,7 @@ describe('/api/newsletter/unsubscribe', () => {
     vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
     vi.mocked(ratelimit.limit).mockResolvedValue({ success: false } as never)
 
-    const { POST } = await import('@/app/api/newsletter/unsubscribe/route')
+    const { POST } = await import('@/routes/api/newsletter/unsubscribe/+server')
 
     const req = {
       headers: new Headers(),
@@ -62,7 +62,7 @@ describe('/api/newsletter/unsubscribe', () => {
     vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
     vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
 
-    const { POST } = await import('@/app/api/newsletter/unsubscribe/route')
+    const { POST } = await import('@/routes/api/newsletter/unsubscribe/+server')
 
     const req = {
       headers: new Headers(),
@@ -85,7 +85,7 @@ describe('/api/newsletter/unsubscribe', () => {
     vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
     vi.mocked(resendService.getMainAudienceId).mockResolvedValue(null)
 
-    const { POST } = await import('@/app/api/newsletter/unsubscribe/route')
+    const { POST } = await import('@/routes/api/newsletter/unsubscribe/+server')
 
     const req = {
       headers: new Headers(),
@@ -108,7 +108,7 @@ describe('/api/newsletter/unsubscribe', () => {
     vi.mocked(resendService.findContactByEmail).mockResolvedValue({ id: 'c-1' })
     vi.mocked(resendService.updateContact).mockResolvedValue({ id: 'c-1' })
 
-    const { POST } = await import('@/app/api/newsletter/unsubscribe/route')
+    const { POST } = await import('@/routes/api/newsletter/unsubscribe/+server')
 
     const req = {
       headers: new Headers(),
@@ -133,7 +133,7 @@ describe('/api/newsletter/unsubscribe', () => {
     vi.mocked(resendService.getMainAudienceId).mockResolvedValue('aud-1')
     vi.mocked(resendService.findContactByEmail).mockResolvedValue(null)
 
-    const { POST } = await import('@/app/api/newsletter/unsubscribe/route')
+    const { POST } = await import('@/routes/api/newsletter/unsubscribe/+server')
 
     const req = {
       headers: new Headers(),

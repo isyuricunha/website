@@ -78,7 +78,7 @@ describe('/api/newsletter/subscribe (double opt-in)', () => {
     ({
       headers: new Headers(),
       json: async () => body
-    }) as unknown as Parameters<typeof import('@/app/api/newsletter/subscribe/route').POST>[0]
+    }) as unknown as Parameters<typeof import('@/routes/api/newsletter/subscribe/+server').POST>[0]
 
   it('returns 429 when rate limited', async () => {
     const { newsletterRatelimit } = await import('@/lib/ratelimit')
@@ -87,7 +87,7 @@ describe('/api/newsletter/subscribe (double opt-in)', () => {
     vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
     vi.mocked(newsletterRatelimit.limit).mockResolvedValue({ success: false } as never)
 
-    const { POST } = await import('@/app/api/newsletter/subscribe/route')
+    const { POST } = await import('@/routes/api/newsletter/subscribe/+server')
 
     const res = await POST(makeRequest({ email: 'a@b.com' }))
 
@@ -104,7 +104,7 @@ describe('/api/newsletter/subscribe (double opt-in)', () => {
     vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
     vi.mocked(newsletterRatelimit.limit).mockResolvedValue({ success: true } as never)
 
-    const { POST } = await import('@/app/api/newsletter/subscribe/route')
+    const { POST } = await import('@/routes/api/newsletter/subscribe/+server')
 
     const res = await POST(makeRequest({ email: 'not-an-email' }))
 
@@ -122,7 +122,7 @@ describe('/api/newsletter/subscribe (double opt-in)', () => {
     vi.mocked(newsletterRatelimit.limit).mockResolvedValue({ success: true } as never)
     redisSet.mockResolvedValue('OK')
 
-    const { POST } = await import('@/app/api/newsletter/subscribe/route')
+    const { POST } = await import('@/routes/api/newsletter/subscribe/+server')
 
     const res = await POST(makeRequest({ email: 'a@b.com' }))
 
@@ -146,7 +146,7 @@ describe('/api/newsletter/subscribe (double opt-in)', () => {
     vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
     vi.mocked(newsletterRatelimit.limit).mockResolvedValue({ success: true } as never)
 
-    const { POST } = await import('@/app/api/newsletter/subscribe/route')
+    const { POST } = await import('@/routes/api/newsletter/subscribe/+server')
     await POST(makeRequest({ email: 'a@b.com' }))
 
     redisSet.mockResolvedValue('OK')

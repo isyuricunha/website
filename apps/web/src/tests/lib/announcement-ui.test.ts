@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { getAnnouncementUi } from '@/lib/announcement-ui'
+import { getAnnouncementUi } from '#lib/announcement-ui'
 
 describe('announcement ui helpers', () => {
   it('normalizes unknown types to info', async () => {

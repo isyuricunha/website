@@ -1,31 +1,45 @@
-import { type Context, defineCollection, defineConfig, type Meta } from '@content-collections/core'
-import { compileMDX } from '@content-collections/mdx'
+import { defineCollection, defineConfig } from '@content-collections/core'
 import { getTOC, rehypePlugins, remarkPlugins } from '@isyuricunha/mdx-plugins'
+import { evaluate } from '@mdx-js/mdx'
 import { z } from 'zod'
+
+import { createContentComponents } from './mdx/content-components'
+import { Fragment, jsx, jsxs } from '@isyuricunha/mdx-render/runtime'
 
 const contentSchema = z.object({
   content: z.string()
 })
 
 type BaseDoc = {
-  _meta: Meta
+  _meta: {
+    path: string
+  }
   content: string
 }
 
-const transform = async <D extends BaseDoc>(document: D, context: Context) => {
-  const code = await compileMDX(context, document, {
-    remarkPlugins,
-    rehypePlugins
-  })
+// Shared MDX-to-HTML step: evaluates the document with the same remark/rehype
+// pipeline the Next.js app uses, but through the custom string JSX runtime so
+// no React ends up anywhere in the render path.
+const transform = async <D extends BaseDoc>(document: D, _context: unknown) => {
   const [locale, path] = document._meta.path.split(/[/\\]/)
 
   if (!locale || !path) {
     throw new Error(`Invalid path: ${document._meta.path}`)
   }
 
+  const components = createContentComponents(locale)
+  const { default: Content } = await evaluate(document.content, {
+    Fragment,
+    jsx,
+    jsxs,
+    remarkPlugins,
+    rehypePlugins
+  })
+  const html = Content({ components }).html
+
   return {
     ...document,
-    code,
+    html,
     locale,
     slug: path,
     toc: await getTOC(document.content)
@@ -43,76 +57,15 @@ const postFieldsSchema = z.object({
   featured: z.boolean().optional().default(false)
 })
 
-const posts = defineCollection({
-  name: 'Post',
-  directory: 'src/content/blog',
-  include: '**/*.mdx',
-  schema: contentSchema.merge(postFieldsSchema),
-  transform: async (document, context) => {
-    const baseTransform = await transform(document, context)
-
-    // Calculate reading time: Latin scripts average ~200 wpm, CJK scripts
-    // have no whitespace boundaries so whitespace counting collapses a whole
-    // article into a handful of "words". Count CJK characters separately at
-    // ~500 cpm and combine.
-    const cjkCount = (
-      document.content.match(
-        /[\u{3040}-\u{30FF}\u{3400}-\u{4DBF}\u{4E00}-\u{9FFF}\u{F900}-\u{FAFF}]/gu
-      ) ?? []
-    ).length
-    const latinWords = document.content
-      .replace(/[\u{3040}-\u{30FF}\u{3400}-\u{4DBF}\u{4E00}-\u{9FFF}\u{F900}-\u{FAFF}]/gu, ' ')
-      .split(/\s+/)
-      .filter(Boolean).length
-    const readingTime = Math.max(1, Math.ceil(latinWords / 200 + cjkCount / 500))
-
-    return {
-      ...baseTransform,
-      readingTime
-    }
-  }
-})
-
-const snippetDateSchema = z
-  .union([z.string(), z.date()])
-  .transform((value) =>
-    typeof value === 'string' ? value : (value.toISOString().split('T')[0] ?? '')
-  )
-
 const snippetFieldsSchema = z.object({
   title: z.string(),
-  date: snippetDateSchema,
+  date: z
+    .union([z.string(), z.date()])
+    .transform((value) => (typeof value === 'string' ? value : value.toISOString())),
   author: z.string().optional(),
   description: z.string(),
   tags: z.array(z.string()).optional().default([]),
   readingTime: z.number().optional()
-})
-
-const snippets = defineCollection({
-  name: 'Snippet',
-  directory: 'src/content/snippet',
-  include: '**/*.mdx',
-  schema: contentSchema.merge(snippetFieldsSchema),
-  transform: async (document, context) => {
-    const baseTransform = await transform(document, context)
-
-    // Same CJK-aware counting as posts above.
-    const cjkCount = (
-      document.content.match(
-        /[\u{3040}-\u{30FF}\u{3400}-\u{4DBF}\u{4E00}-\u{9FFF}\u{F900}-\u{FAFF}]/gu
-      ) ?? []
-    ).length
-    const latinWords = document.content
-      .replace(/[\u{3040}-\u{30FF}\u{3400}-\u{4DBF}\u{4E00}-\u{9FFF}\u{F900}-\u{FAFF}]/gu, ' ')
-      .split(/\s+/)
-      .filter(Boolean).length
-    const readingTime = Math.max(1, Math.ceil(latinWords / 200 + cjkCount / 500))
-
-    return {
-      ...baseTransform,
-      readingTime
-    }
-  }
 })
 
 const projectFieldsSchema = z.object({
@@ -130,9 +83,47 @@ const projectFieldsSchema = z.object({
   endDate: z.string().optional()
 })
 
+const posts = defineCollection({
+  name: 'Post',
+  directory: '../web/src/content/blog',
+  include: '**/*.mdx',
+  schema: contentSchema.merge(postFieldsSchema),
+  transform: async (document, context) => {
+    const baseTransform = await transform(document, context)
+
+    // Reading time: Latin scripts average ~200 wpm, CJK scripts have no
+    // whitespace boundaries so whitespace counting collapses a whole article
+    // into a handful of "words". Count CJK characters separately at ~500 cpm
+    // and combine.
+    const cjkCount = (
+      document.content.match(
+        /[\u{3040}-\u{30FF}\u{3400}-\u{4DBF}\u{4E00}-\u{9FFF}\u{F900}-\u{FAFF}]/gu
+      ) ?? []
+    ).length
+    const latinWords = document.content
+      .replace(/[\u{3040}-\u{30FF}\u{3400}-\u{4DBF}\u{4E00}-\u{9FFF}\u{F900}-\u{FAFF}]/gu, ' ')
+      .split(/\s+/)
+      .filter(Boolean).length
+    const readingTime = Math.max(1, Math.ceil(latinWords / 200 + cjkCount / 500))
+
+    return {
+      ...baseTransform,
+      readingTime
+    }
+  }
+})
+
+const snippets = defineCollection({
+  name: 'Snippet',
+  directory: '../web/src/content/snippet',
+  include: '**/*.mdx',
+  schema: contentSchema.merge(snippetFieldsSchema),
+  transform
+})
+
 const projects = defineCollection({
   name: 'Project',
-  directory: 'src/content/projects',
+  directory: '../web/src/content/projects',
   include: '**/*.mdx',
   schema: contentSchema.merge(projectFieldsSchema),
   transform: async (document, context) => {
@@ -147,7 +138,7 @@ const projects = defineCollection({
 
 const pages = defineCollection({
   name: 'Page',
-  directory: 'src/content/pages',
+  directory: '../web/src/content/pages',
   include: '**/*.mdx',
   schema: contentSchema,
   transform

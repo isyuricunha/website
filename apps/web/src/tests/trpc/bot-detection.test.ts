@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { is_bot_user_agent } from '@/lib/spam-detection'
+import { is_bot_user_agent } from '#lib/spam-detection'
 
 /*
  * Crawler detection is used to deny AI-chat access, skip view counting and

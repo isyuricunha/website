@@ -15,7 +15,7 @@ describe('/api/ai/chat/status', () => {
     const { aiService } = await import('@/lib/ai/ai-service')
     vi.mocked(aiService.getAvailableProviders).mockReturnValue(['internal'])
 
-    const { GET } = await import('@/app/api/ai/chat/status/route')
+    const { GET } = await import('@/routes/api/ai/chat/status/+server')
     const res = GET()
     const json = (await res.json()) as Record<string, unknown>
 
@@ -30,7 +30,7 @@ describe('/api/ai/chat/status', () => {
     const { aiService } = await import('@/lib/ai/ai-service')
     vi.mocked(aiService.getAvailableProviders).mockReturnValue([])
 
-    const { GET } = await import('@/app/api/ai/chat/status/route')
+    const { GET } = await import('@/routes/api/ai/chat/status/+server')
     const res = GET()
     const json = (await res.json()) as Record<string, unknown>
 

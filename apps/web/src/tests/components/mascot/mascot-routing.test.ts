@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { canExplainSelectionOnPage, getMascotPageKey } from '@/components/mascot/mascot-routing'
+import { canExplainSelectionOnPage, getMascotPageKey } from '#lib/components/mascot/mascot-routing'
 
 describe('mascot routing helpers', () => {
   it.each([

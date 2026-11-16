@@ -18,9 +18,6 @@
     "nextjs.json",
     "react-library.json"
   ],
-  "dependencies": {
-    "next": "16.4.0"
-  },
   "peerDependencies": {
     "typescript": "5.x || 6.x"
   },

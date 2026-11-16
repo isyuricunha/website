@@ -8,7 +8,7 @@ import {
   isCriticalAnnouncement,
   isUrgentAnnouncement,
   urgentAnnouncementPriorityThreshold
-} from '@/lib/announcement-priority'
+} from '#lib/announcement-priority'
 
 describe('announcement-priority', () => {
   it('keeps thresholds stable', () => {

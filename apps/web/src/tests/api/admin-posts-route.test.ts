@@ -42,7 +42,7 @@ describe('/api/admin/posts', () => {
 
     vi.mocked(getSession).mockResolvedValue(null)
 
-    const { POST } = await import('@/app/api/admin/posts/route')
+    const { POST } = await import('@/routes/api/admin/posts/+server')
 
     const req = {
       headers: new Headers(),
@@ -59,7 +59,7 @@ describe('/api/admin/posts', () => {
 
     vi.mocked(getSession).mockResolvedValue({ user: { role: 'user' } } as never)
 
-    const { POST } = await import('@/app/api/admin/posts/route')
+    const { POST } = await import('@/routes/api/admin/posts/+server')
 
     const req = {
       headers: new Headers(),
@@ -80,7 +80,7 @@ describe('/api/admin/posts', () => {
     vi.mocked(getSession).mockResolvedValue({ user: { role: 'admin' } } as never)
     vi.mocked(ratelimit.limit).mockResolvedValue({ success: false } as never)
 
-    const { POST } = await import('@/app/api/admin/posts/route')
+    const { POST } = await import('@/routes/api/admin/posts/+server')
 
     const req = {
       headers: new Headers(),
@@ -106,7 +106,7 @@ describe('/api/admin/posts', () => {
     vi.mocked(getSession).mockResolvedValue({ user: { role: 'admin' } } as never)
     vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
 
-    const { POST } = await import('@/app/api/admin/posts/route')
+    const { POST } = await import('@/routes/api/admin/posts/+server')
 
     const req = {
       headers: new Headers(),
@@ -129,7 +129,7 @@ describe('/api/admin/posts', () => {
     vi.mocked(getSession).mockResolvedValue({ user: { role: 'admin' } } as never)
     vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
 
-    const { DELETE } = await import('@/app/api/admin/posts/route')
+    const { DELETE } = await import('@/routes/api/admin/posts/+server')
 
     const req = {
       headers: new Headers(),

@@ -46,7 +46,7 @@ describe('/api/ai/content', () => {
 
   it('returns 401 when the caller is not an authenticated admin', async () => {
     const { requireAdmin } = await import('@/lib/admin-auth')
-    const { POST } = await import('@/app/api/ai/content/route')
+    const { POST } = await import('@/routes/api/ai/content/+server')
 
     vi.mocked(requireAdmin).mockResolvedValue(
       Response.json({ error: 'Unauthorized' }, { status: 401 }) as never
@@ -66,7 +66,7 @@ describe('/api/ai/content', () => {
   it('returns 401 on GET when the caller is not an authenticated admin', async () => {
     const { requireAdmin } = await import('@/lib/admin-auth')
     const { aiService } = await import('@/lib/ai/ai-service')
-    const { GET } = await import('@/app/api/ai/content/route')
+    const { GET } = await import('@/routes/api/ai/content/+server')
 
     vi.mocked(requireAdmin).mockResolvedValue(
       Response.json({ error: 'Unauthorized' }, { status: 401 }) as never
@@ -88,7 +88,7 @@ describe('/api/ai/content', () => {
     vi.mocked(requireAdmin).mockResolvedValue(null)
     vi.mocked(aiService.getAvailableProviders).mockReturnValue(['runtime'])
 
-    const { GET } = await import('@/app/api/ai/content/route')
+    const { GET } = await import('@/routes/api/ai/content/+server')
 
     const res = await GET(new NextRequest('http://localhost/api/ai/content'))
 
@@ -106,7 +106,7 @@ describe('/api/ai/content', () => {
     vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
     vi.mocked(ratelimit.limit).mockResolvedValue({ success: false } as never)
 
-    const { POST } = await import('@/app/api/ai/content/route')
+    const { POST } = await import('@/routes/api/ai/content/+server')
 
     const req = {
       headers: new Headers(),
@@ -132,7 +132,7 @@ describe('/api/ai/content', () => {
     vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
     vi.mocked(aiService.getAvailableProviders).mockReturnValue(['ollama'])
 
-    const { POST } = await import('@/app/api/ai/content/route')
+    const { POST } = await import('@/routes/api/ai/content/+server')
 
     const req = {
       headers: new Headers(),

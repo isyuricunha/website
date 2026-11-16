@@ -47,7 +47,7 @@ describe('/api/newsletter/confirm (double opt-in)', () => {
   const makeRequest = (token?: string) =>
     new Request(
       `https://yuricunha.com/api/newsletter/confirm${token ? `?token=${token}` : ''}`
-    ) as unknown as Parameters<typeof import('@/app/api/newsletter/confirm/route').GET>[0]
+    ) as unknown as Parameters<typeof import('@/routes/api/newsletter/confirm/+server').GET>[0]
 
   const setup = async () => {
     const { ratelimit } = await import('@/lib/ratelimit')
@@ -66,7 +66,7 @@ describe('/api/newsletter/confirm (double opt-in)', () => {
 
   it('returns 400 when the token is missing', async () => {
     await setup()
-    const { GET } = await import('@/app/api/newsletter/confirm/route')
+    const { GET } = await import('@/routes/api/newsletter/confirm/+server')
 
     const res = await GET(makeRequest())
     expect(res.status).toBe(400)
@@ -77,7 +77,7 @@ describe('/api/newsletter/confirm (double opt-in)', () => {
     vi.mocked(redis.get).mockResolvedValue(null)
 
     await setup()
-    const { GET } = await import('@/app/api/newsletter/confirm/route')
+    const { GET } = await import('@/routes/api/newsletter/confirm/+server')
 
     const res = await GET(makeRequest('bad-token'))
     expect(res.status).toBe(400)
@@ -90,7 +90,7 @@ describe('/api/newsletter/confirm (double opt-in)', () => {
 
     vi.mocked(redis.get).mockResolvedValue('a@b.com')
 
-    const { GET } = await import('@/app/api/newsletter/confirm/route')
+    const { GET } = await import('@/routes/api/newsletter/confirm/+server')
 
     const res = await GET(makeRequest('good-token'))
 
@@ -118,7 +118,7 @@ describe('/api/newsletter/confirm (double opt-in)', () => {
       unsubscribed: true
     })
 
-    const { GET } = await import('@/app/api/newsletter/confirm/route')
+    const { GET } = await import('@/routes/api/newsletter/confirm/+server')
 
     const res = await GET(makeRequest('good-token'))
     expect(res.status).toBe(200)
@@ -139,7 +139,7 @@ describe('/api/newsletter/confirm (double opt-in)', () => {
       unsubscribed: false
     })
 
-    const { GET } = await import('@/app/api/newsletter/confirm/route')
+    const { GET } = await import('@/routes/api/newsletter/confirm/+server')
 
     const res = await GET(makeRequest('good-token'))
     expect(res.status).toBe(200)

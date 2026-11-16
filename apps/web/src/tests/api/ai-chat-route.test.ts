@@ -68,7 +68,7 @@ describe('/api/ai/chat', () => {
     vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
     vi.mocked(aiService.getAvailableProviders).mockReturnValue(['gemini'])
 
-    const { POST } = await import('@/app/api/ai/chat/route')
+    const { POST } = await import('@/routes/api/ai/chat/+server')
 
     const req = {
       headers: new Headers(),
@@ -100,7 +100,7 @@ describe('/api/ai/chat', () => {
     vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
     vi.mocked(aiService.getAvailableProviders).mockReturnValue(['gemini'])
 
-    const { POST } = await import('@/app/api/ai/chat/route')
+    const { POST } = await import('@/routes/api/ai/chat/+server')
 
     const req = {
       headers: new Headers(),
@@ -130,7 +130,7 @@ describe('/api/ai/chat', () => {
     vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
 
     const { build_navigation_answer } = await import('@/lib/ai/site-index')
-    const { POST } = await import('@/app/api/ai/chat/route')
+    const { POST } = await import('@/routes/api/ai/chat/+server')
 
     const req = {
       headers: new Headers(),
@@ -164,7 +164,7 @@ describe('/api/ai/chat', () => {
     vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
     vi.mocked(ratelimit.limit).mockResolvedValue({ success: false } as never)
 
-    const { POST } = await import('@/app/api/ai/chat/route')
+    const { POST } = await import('@/routes/api/ai/chat/+server')
 
     const req = {
       headers: new Headers(),
@@ -187,7 +187,7 @@ describe('/api/ai/chat', () => {
     vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
     vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
 
-    const { POST } = await import('@/app/api/ai/chat/route')
+    const { POST } = await import('@/routes/api/ai/chat/+server')
 
     const req = {
       headers: new Headers(),
@@ -212,7 +212,7 @@ describe('/api/ai/chat', () => {
     vi.mocked(aiService.getAvailableProviders).mockReturnValue(['mistral'])
     vi.mocked(aiService.generateResponse).mockResolvedValue('ok')
 
-    const { POST } = await import('@/app/api/ai/chat/route')
+    const { POST } = await import('@/routes/api/ai/chat/+server')
 
     const req = {
       headers: new Headers(),
@@ -249,7 +249,7 @@ describe('/api/ai/chat', () => {
     vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
     vi.mocked(aiService.getAvailableProviders).mockReturnValue([])
 
-    const { POST } = await import('@/app/api/ai/chat/route')
+    const { POST } = await import('@/routes/api/ai/chat/+server')
 
     const req = {
       headers: new Headers(),
@@ -281,7 +281,7 @@ describe('/api/ai/chat', () => {
     vi.mocked(aiService.getAvailableProviders).mockReturnValue(['mistral'])
     vi.mocked(aiService.generateResponse).mockRejectedValue(new Error('Provider error'))
 
-    const { POST } = await import('@/app/api/ai/chat/route')
+    const { POST } = await import('@/routes/api/ai/chat/+server')
 
     const req = {
       headers: new Headers(),

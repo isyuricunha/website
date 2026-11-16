@@ -122,7 +122,7 @@ describe('/api/cron/data-retention', () => {
     vi.doMock('@isyuricunha/db', () => createDbModuleMock(db))
     vi.doMock('@isyuricunha/kv', () => ({ redis }))
 
-    const { GET } = await import('@/app/api/cron/data-retention/route')
+    const { GET } = await import('@/routes/api/cron/data-retention/+server')
 
     const res = await GET({ headers: new Headers() } as unknown as Parameters<typeof GET>[0])
 
@@ -138,7 +138,7 @@ describe('/api/cron/data-retention', () => {
     vi.doMock('@isyuricunha/db', () => createDbModuleMock(db))
     vi.doMock('@isyuricunha/kv', () => ({ redis }))
 
-    const { GET } = await import('@/app/api/cron/data-retention/route')
+    const { GET } = await import('@/routes/api/cron/data-retention/+server')
 
     const res = await GET({
       headers: new Headers([
@@ -158,7 +158,7 @@ describe('/api/cron/data-retention', () => {
     vi.doMock('@isyuricunha/db', () => createDbModuleMock(db))
     vi.doMock('@isyuricunha/kv', () => ({ redis }))
 
-    const { GET } = await import('@/app/api/cron/data-retention/route')
+    const { GET } = await import('@/routes/api/cron/data-retention/+server')
 
     const res = await GET({
       headers: new Headers([['authorization', 'Bearer wrong']])
@@ -179,7 +179,7 @@ describe('/api/cron/data-retention', () => {
     vi.doMock('@isyuricunha/db', () => createDbModuleMock(db))
     vi.doMock('@isyuricunha/kv', () => ({ redis }))
 
-    const { GET } = await import('@/app/api/cron/data-retention/route')
+    const { GET } = await import('@/routes/api/cron/data-retention/+server')
 
     const headers = new Headers([['authorization', 'Bearer 0123456789abcdef']])
 
@@ -210,7 +210,7 @@ describe('/api/cron/data-retention', () => {
     vi.doMock('@isyuricunha/db', () => createDbModuleMock(db))
     vi.doMock('@isyuricunha/kv', () => ({ redis }))
 
-    const { GET } = await import('@/app/api/cron/data-retention/route')
+    const { GET } = await import('@/routes/api/cron/data-retention/+server')
 
     const res = await GET({
       headers: new Headers([['authorization', 'Bearer 0123456789abcdef']])
@@ -255,7 +255,7 @@ describe('/api/cron/data-retention', () => {
     vi.doMock('@isyuricunha/db', () => createDbModuleMock(db))
     vi.doMock('@isyuricunha/kv', () => ({ redis }))
 
-    const { GET } = await import('@/app/api/cron/data-retention/route')
+    const { GET } = await import('@/routes/api/cron/data-retention/+server')
 
     const res = await GET({
       headers: new Headers([['authorization', 'Bearer 0123456789abcdef']])

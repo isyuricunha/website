@@ -4,7 +4,7 @@ import messages from '@isyuricunha/i18n/messages/en.json'
 import pt_messages from '@isyuricunha/i18n/messages/pt.json'
 import { describe, expect, it } from 'vitest'
 
-import Hero from '@/components/home/hero'
+import Hero from '#lib/components/home/hero'
 
 describe('<Hero />', () => {
   it('should have a hero image', () => {

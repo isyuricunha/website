@@ -4,7 +4,7 @@ import { act, renderHook, waitFor } from '@testing-library/react'
 import type { ReactNode } from 'react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { useMascotState } from '@/components/mascot/hooks/use-mascot-state'
+import { useMascotState } from '#lib/components/mascot/hooks/use-mascot-state'
 
 const DISMISSED_KEY = 'vc_mascot_dismissed'
 const HIDDEN_KEY = 'vc_mascot_hidden'

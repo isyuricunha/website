@@ -47,7 +47,7 @@ describe('/api/ai/chat/feedback', () => {
     vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
     vi.mocked(ratelimit.limit).mockResolvedValue({ success: false } as never)
 
-    const { POST } = await import('@/app/api/ai/chat/feedback/route')
+    const { POST } = await import('@/routes/api/ai/chat/feedback/+server')
 
     const req = {
       headers: new Headers(),
@@ -69,7 +69,7 @@ describe('/api/ai/chat/feedback', () => {
     vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
     vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
 
-    const { POST } = await import('@/app/api/ai/chat/feedback/route')
+    const { POST } = await import('@/routes/api/ai/chat/feedback/+server')
 
     const req = {
       headers: new Headers(),
@@ -94,7 +94,7 @@ describe('/api/ai/chat/feedback', () => {
     vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
     vi.mocked(getSession).mockResolvedValue({ user: { id: 'u1' } } as never)
 
-    const { POST } = await import('@/app/api/ai/chat/feedback/route')
+    const { POST } = await import('@/routes/api/ai/chat/feedback/+server')
 
     const req = {
       headers: new Headers([['user-agent', 'test']]),

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { getClientIp } from '@/lib/spam-detection'
+import { getClientIp } from '#lib/spam-detection'
 
 describe('getClientIp', () => {
   it('trusts x-vercel-forwarded-for (platform-set header)', () => {

@@ -24,7 +24,7 @@ describe('/api/mascot/latest-post locale handling', () => {
     const { BlogService } = await import('@/lib/blog/blog-service')
     vi.mocked(BlogService.getPostsByLocale).mockResolvedValue([fakePost])
 
-    const { GET } = await import('@/app/api/mascot/latest-post/route')
+    const { GET } = await import('@/routes/api/mascot/latest-post/+server')
 
     const request = new Request('https://yuricunha.com/api/mascot/latest-post?locale=xx')
     const res = await GET(request)
@@ -39,7 +39,7 @@ describe('/api/mascot/latest-post locale handling', () => {
     const { BlogService } = await import('@/lib/blog/blog-service')
     vi.mocked(BlogService.getPostsByLocale).mockResolvedValue([fakePost])
 
-    const { GET } = await import('@/app/api/mascot/latest-post/route')
+    const { GET } = await import('@/routes/api/mascot/latest-post/+server')
     const { i18n } = await import('@isyuricunha/i18n/config')
 
     for (const locale of i18n.locales) {
@@ -55,7 +55,7 @@ describe('/api/mascot/latest-post locale handling', () => {
     const { BlogService } = await import('@/lib/blog/blog-service')
     vi.mocked(BlogService.getPostsByLocale).mockResolvedValue([])
 
-    const { GET } = await import('@/app/api/mascot/latest-post/route')
+    const { GET } = await import('@/routes/api/mascot/latest-post/+server')
 
     const request = new Request('https://yuricunha.com/api/mascot/latest-post?locale=pt')
     const res = await GET(request)

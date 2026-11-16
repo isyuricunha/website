@@ -1,174 +1,21 @@
 {
-  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "$app/tsconfig",
   "compilerOptions": {
-    "ignoreDeprecations": "6.0",
-    "baseUrl": ".",
+    "allowJs": true,
+    "checkJs": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strict": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "paths": {
-      "@/*": [
-        "./src/*"
-      ],
-      "@/trpc/trpc": [
-        "../../packages/trpc-server/src/trpc/trpc.ts"
-      ],
-      "@/trpc/root": [
-        "../../packages/trpc-server/src/trpc/root.ts"
-      ],
-      "@/trpc/routers/*": [
-        "../../packages/trpc-server/src/trpc/routers/*.ts"
-      ],
-      "@/lib/auth": [
-        "../../packages/trpc-server/src/lib/auth.ts"
-      ],
-      "@/lib/audit-logger": [
-        "../../packages/trpc-server/src/lib/audit-logger.ts"
-      ],
-      "@/lib/constants": [
-        "../../packages/trpc-server/src/lib/constants.ts"
-      ],
-      "@/lib/ip-hash": [
-        "../../packages/trpc-server/src/lib/ip-hash.ts"
-      ],
-      "@/lib/logger": [
-        "../../packages/trpc-server/src/lib/logger.ts"
-      ],
-      "@/lib/r2": [
-        "../../packages/trpc-server/src/lib/r2.ts"
-      ],
-      "@/lib/ratelimit": [
-        "../../packages/trpc-server/src/lib/ratelimit.ts"
-      ],
-      "@/lib/request-locale": [
-        "../../packages/trpc-server/src/lib/request-locale.ts"
-      ],
-      "@/lib/resend": [
-        "../../packages/trpc-server/src/lib/resend.ts"
-      ],
-      "@/lib/resend-service": [
-        "../../packages/trpc-server/src/lib/resend-service.ts"
-      ],
-      "@/lib/secrets": [
-        "../../packages/trpc-server/src/lib/secrets.ts"
-      ],
-      "@/lib/spam-detection": [
-        "../../packages/trpc-server/src/lib/spam-detection.ts"
-      ],
-      "@/lib/transactional-email": [
-        "../../packages/trpc-server/src/lib/transactional-email.ts"
-      ],
-      "@/lib/two-factor-crypto": [
-        "../../packages/trpc-server/src/lib/two-factor-crypto.ts"
-      ],
-      "@/lib/ai/*": [
-        "../../packages/trpc-server/src/lib/ai/*.ts"
-      ],
-      "@/lib/privacy/account-deletion-policy": [
-        "../../packages/trpc-server/src/lib/privacy/account-deletion-policy.ts"
-      ],
-      "@/utils/announcement-storage": [
-        "../../packages/trpc-server/src/utils/announcements/announcement-storage.ts"
-      ],
-      "@/utils/exporters/music": [
-        "../../packages/trpc-server/src/utils/exporters/music.ts"
-      ],
-      "@/utils/get-avatar-abbreviation": [
-        "../../packages/trpc-server/src/utils/get-avatar-abbreviation.ts"
-      ],
-      "@/lib/admin-auth": [
-        "../../packages/trpc-server/src/lib/admin-auth.ts"
-      ],
-"@/lib/privacy/create-privacy-data-export": [
-        "../../packages/trpc-server/src/lib/privacy/create-privacy-data-export.ts"
-      ],
-            "@/lib/contact": [
-        "../../packages/trpc-server/src/server/contact.ts"
-      ],
-      "@/lib/newsletter/subscribe": [
-        "../../packages/trpc-server/src/server/newsletter/subscribe.ts"
-      ],
-      "@/lib/newsletter/confirm": [
-        "../../packages/trpc-server/src/server/newsletter/confirm.ts"
-      ],
-      "@/lib/newsletter/unsubscribe": [
-        "../../packages/trpc-server/src/server/newsletter/unsubscribe.ts"
-      ],
-      "@/lib/account/data-export": [
-        "../../packages/trpc-server/src/server/account/data-export.ts"
-      ],
-      "@/lib/ai/feedback": [
-        "../../packages/trpc-server/src/server/ai/feedback.ts"
-      ],
-      "@/lib/ai/content": [
-        "../../packages/trpc-server/src/server/ai/content.ts"
-      ],
-      "@/lib/admin/posts": [
-        "../../packages/trpc-server/src/server/admin/posts.ts"
-      ],
-      "@/lib/admin/translate": [
-        "../../packages/trpc-server/src/server/admin/translate.ts"
-      ],
-      "@/lib/ai/chat": [
-        "../../packages/trpc-server/src/server/ai/chat.ts"
-      ],
-      "@/lib/rate-limit-keys": [
-        "../../packages/trpc-server/src/lib/rate-limit-keys.ts"
-      ],
-"@/lib/blog/blog-service": [
-        "../../packages/trpc-server/src/lib/blog/blog-service.ts"
-      ],
-"@/lib/cron/alerts": [
-        "../../packages/trpc-server/src/server/cron/alerts.ts"
-      ],
-      "@/lib/cron/data-retention": [
-        "../../packages/trpc-server/src/server/cron/data-retention.ts"
-      ],
-      "@/components/admin/admin-integrity": [
-        "../../packages/trpc-server/src/utils/admin/integrity.ts"
-      ],
-      "@/utils/csv-export": [
-        "../../packages/trpc-server/src/utils/csv/csv-export.ts"
-      ],
-      "@/lib/announcement-priority": [
-        "../../packages/trpc-server/src/utils/announcements/announcement-priority.ts"
-      ],
-      "@/utils/get-default-image": [
-        "../../packages/trpc-server/src/utils/get-default-image.ts"
-      ],
-      "@/utils/get-ip": [
-        "../../packages/trpc-server/src/utils/get-ip.ts"
-      ],
-      "@/utils/get-localized-path": [
-        "../../packages/trpc-server/src/utils/get-localized-path.ts"
-      ],
-      "content-collections": [
-        "./.content-collections/generated"
-      ],
-      "~/*": [
-        "./public/*"
-      ]
+      "content-collections": ["./.content-collections/generated"]
     },
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
-    "declaration": false,
-    "declarationMap": false,
-    "skipLibCheck": true
+    "jsx": "react-jsx",
+    "jsxImportSource": "react"
   },
-  "exclude": [
-    "node_modules",
-    ".next"
-  ],
-  "extends": "../../packages/tsconfig/nextjs.json",
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "eslint.config.mjs",
-    "next-env.d.ts",
-    "next.config.mjs",
-    "postcss.config.mjs",
-    "scripts/**/*.js",
-    ".next/types/**/*.ts",
-    "src/app/.well-known/**/*.ts"
-  ]
+  "exclude": ["static", "node_modules"]
 }

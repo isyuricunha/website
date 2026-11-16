@@ -52,7 +52,7 @@ describe('/api/contact', () => {
     vi.mocked(contactRatelimit.limit).mockResolvedValue({ success: true } as never)
     send.mockResolvedValue({ data: { id: 'email-1' }, error: null })
 
-    const { POST } = await import('@/app/api/contact/route')
+    const { POST } = await import('@/routes/api/contact/+server')
     const request = {
       headers: new Headers({ 'accept-language': 'en' }),
       json: async () => ({
@@ -87,7 +87,7 @@ describe('/api/contact', () => {
       error: { message: 'Recipient is unavailable' }
     })
 
-    const { POST } = await import('@/app/api/contact/route')
+    const { POST } = await import('@/routes/api/contact/+server')
     const request = {
       headers: new Headers({ 'accept-language': 'en' }),
       json: async () => ({
@@ -116,7 +116,7 @@ describe('/api/contact', () => {
     vi.mocked(contactRatelimit.limit).mockResolvedValue({ success: true } as never)
     send.mockResolvedValue({ data: { id: 'email-1' }, error: null })
 
-    const { POST } = await import('@/app/api/contact/route')
+    const { POST } = await import('@/routes/api/contact/+server')
     const request = {
       headers: new Headers({ 'accept-language': 'pt-BR,pt;q=0.9' }),
       json: async () => ({

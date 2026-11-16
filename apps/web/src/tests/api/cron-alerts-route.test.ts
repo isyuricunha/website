@@ -136,7 +136,7 @@ describe('/api/cron/alerts', () => {
     vi.doMock('@isyuricunha/db', () => createDbModuleMock(db))
     vi.doMock('@isyuricunha/kv', () => ({ redis }))
 
-    const { GET } = await import('@/app/api/cron/alerts/route')
+    const { GET } = await import('@/routes/api/cron/alerts/+server')
 
     const res = await GET({ headers: new Headers() } as unknown as Parameters<typeof GET>[0])
 
@@ -152,7 +152,7 @@ describe('/api/cron/alerts', () => {
     vi.doMock('@isyuricunha/db', () => createDbModuleMock(db))
     vi.doMock('@isyuricunha/kv', () => ({ redis }))
 
-    const { GET } = await import('@/app/api/cron/alerts/route')
+    const { GET } = await import('@/routes/api/cron/alerts/+server')
 
     const res = await GET({
       headers: new Headers([
@@ -172,7 +172,7 @@ describe('/api/cron/alerts', () => {
     vi.doMock('@isyuricunha/db', () => createDbModuleMock(db))
     vi.doMock('@isyuricunha/kv', () => ({ redis }))
 
-    const { GET } = await import('@/app/api/cron/alerts/route')
+    const { GET } = await import('@/routes/api/cron/alerts/+server')
 
     const res = await GET({
       headers: new Headers([['authorization', 'Bearer wrong']])
@@ -193,7 +193,7 @@ describe('/api/cron/alerts', () => {
     vi.doMock('@isyuricunha/db', () => createDbModuleMock(db))
     vi.doMock('@isyuricunha/kv', () => ({ redis }))
 
-    const { GET } = await import('@/app/api/cron/alerts/route')
+    const { GET } = await import('@/routes/api/cron/alerts/+server')
 
     const headers = new Headers([['authorization', 'Bearer 0123456789abcdef']])
 
@@ -244,7 +244,7 @@ describe('/api/cron/alerts', () => {
     vi.doMock('@isyuricunha/db', () => createDbModuleMock(db))
     vi.doMock('@isyuricunha/kv', () => ({ redis }))
 
-    const { GET } = await import('@/app/api/cron/alerts/route')
+    const { GET } = await import('@/routes/api/cron/alerts/+server')
 
     const res = await GET({
       headers: new Headers([['authorization', 'Bearer 0123456789abcdef']])
@@ -306,7 +306,7 @@ describe('/api/cron/alerts', () => {
     vi.doMock('@isyuricunha/db', () => createDbModuleMock(db))
     vi.doMock('@isyuricunha/kv', () => ({ redis }))
 
-    const { GET } = await import('@/app/api/cron/alerts/route')
+    const { GET } = await import('@/routes/api/cron/alerts/+server')
 
     const res = await GET({
       headers: new Headers([['authorization', 'Bearer 0123456789abcdef']])
@@ -356,7 +356,7 @@ describe('/api/cron/alerts', () => {
     vi.doMock('@isyuricunha/db', () => createDbModuleMock(db))
     vi.doMock('@isyuricunha/kv', () => ({ redis }))
 
-    const { GET } = await import('@/app/api/cron/alerts/route')
+    const { GET } = await import('@/routes/api/cron/alerts/+server')
 
     const res = await GET({
       headers: new Headers([['authorization', 'Bearer 0123456789abcdef']])
@@ -417,7 +417,7 @@ describe('/api/cron/alerts', () => {
     vi.doMock('@isyuricunha/db', () => createDbModuleMock(db))
     vi.doMock('@isyuricunha/kv', () => ({ redis }))
 
-    const { GET } = await import('@/app/api/cron/alerts/route')
+    const { GET } = await import('@/routes/api/cron/alerts/+server')
 
     const headers = new Headers([['authorization', 'Bearer 0123456789abcdef']])
 

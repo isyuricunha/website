@@ -1,33 +1,18 @@
-import type { Auth } from '@/lib/auth'
-
-import { toast } from '@isyuricunha/yutheme'
+import { createAuthClient } from 'better-auth/svelte'
 import {
   adminClient,
   anonymousClient,
   inferAdditionalFields,
   usernameClient
 } from 'better-auth/client/plugins'
-import { createAuthClient } from 'better-auth/react'
+import type { Auth } from '@isyuricunha/trpc-server/auth'
 
-const authClient = createAuthClient({
-  plugins: [inferAdditionalFields<Auth>(), usernameClient(), adminClient(), anonymousClient()],
-  fetchOptions: {
-    onError(e) {
-      if (e.error.status === 429) {
-        toast.error('Too many requests. Please try again later.')
-      }
-    }
-  }
+/**
+ * Svelte-side Better Auth client. Mirrors the React client plugin set so
+ * custom fields (username, admin, anonymous) type the same way.
+ */
+export const authClient = createAuthClient({
+  plugins: [inferAdditionalFields<Auth>(), usernameClient(), adminClient(), anonymousClient()]
 })
 
-export const signIn: typeof authClient.signIn = authClient.signIn
-export const signUp: typeof authClient.signUp = authClient.signUp
-export const signOut: typeof authClient.signOut = authClient.signOut
-export const useSession: typeof authClient.useSession = authClient.useSession
-
-export const updateUser: typeof authClient.updateUser = authClient.updateUser
-export const deleteUser: typeof authClient.deleteUser = authClient.deleteUser
-export const changeEmail: typeof authClient.changeEmail = authClient.changeEmail
-export const changePassword: typeof authClient.changePassword = authClient.changePassword
-
-export type User = (typeof authClient.$Infer.Session)['user']
+export const { signIn, signUp, signOut, useSession } = authClient

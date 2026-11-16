@@ -4,7 +4,7 @@ import {
   getNotificationPageStats,
   getSelectionState,
   reconcileSelection
-} from '@/components/admin/admin-integrity'
+} from '#lib/components/admin/admin-integrity'
 
 describe('admin integrity helpers', () => {
   it('removes selected users that are no longer in the current result set', () => {

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { build_yue_openai_messages, type YueSiteContext } from '@/lib/ai/yue-context'
+import { build_yue_openai_messages, type YueSiteContext } from '#lib/ai/yue-context'
 import { i18n } from '@isyuricunha/i18n/config'
 
 const baseContext = (locale: string): YueSiteContext => ({

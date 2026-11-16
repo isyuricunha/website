@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 
-import { hashIpForAnalytics } from '@/lib/ip-hash'
+import { hashIpForAnalytics } from '#lib/ip-hash'
 
 vi.mock('@isyuricunha/env', () => ({
   env: {
