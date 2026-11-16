@@ -22,7 +22,11 @@ const contactFormSchema = z.object({
   turnstileToken: z.string().optional()
 })
 
-export async function contactPost(request: Request): Promise<Response> {
+export async function contactPost(
+  request: Request,
+  deps?: { resend?: { emails: { send: (payload: unknown) => Promise<unknown> } } }
+): Promise<Response> {
+  const activeResend = deps?.resend ?? resend
   try {
     const body = await request.json()
 
@@ -106,7 +110,7 @@ export async function contactPost(request: Request): Promise<Response> {
     const currentDate = new Date().toLocaleString()
 
     // Send email to yourself using the template
-    const emailResult = await resend.emails.send({
+    const emailResult = await activeResend.emails.send({
       from: 'Contact Form <noreply@yuricunha.com>',
       to: ['me@yuricunha.com'],
       replyTo: validatedData.email,
@@ -145,7 +149,7 @@ Sent at: ${currentDate}
 
     // Send confirmation email to the user using the template
     await sendBestEffortEmail(
-      resend,
+      activeResend,
       {
         from: 'Yuri Cunha <noreply@yuricunha.com>',
         to: [validatedData.email],

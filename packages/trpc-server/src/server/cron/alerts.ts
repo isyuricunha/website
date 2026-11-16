@@ -99,14 +99,19 @@ const get_time_range_start = (now: Date, minutes: number) => {
   return new Date(now.getTime() - minutes * 60_000)
 }
 
-const get_metric_value = async (metric: Metric, now: Date, timeRangeMinutes: number) => {
+const get_metric_value = async (
+  metric: Metric,
+  now: Date,
+  timeRangeMinutes: number,
+  dbInstance: typeof db
+) => {
   const start = get_time_range_start(now, timeRangeMinutes)
 
   if (metric === 'api_error_rate') {
     // Population note: rate-limit rejections (429) are no longer recorded in
     // api_usage, so this rate covers genuine failures only. A flood shows up
     // as a drop in recorded volume, not as a spike in error rate.
-    const rows = await activeDb.query.apiUsage.findMany({
+    const rows = await dbInstance.query.apiUsage.findMany({
       where: gte(apiUsage.createdAt, start),
       columns: { statusCode: true }
     })
@@ -123,7 +128,7 @@ const get_metric_value = async (metric: Metric, now: Date, timeRangeMinutes: num
     // recorder. NOTE: getMonitoringStats still averages performance_metrics,
     // so the admin card reflects AI-chat latency while this alert reflects
     // tRPC request latency. They are intentionally different populations.
-    const rows = await activeDb.query.apiUsage.findMany({
+    const rows = await dbInstance.query.apiUsage.findMany({
       where: gte(apiUsage.createdAt, start),
       columns: { responseTime: true }
     })
@@ -135,7 +140,7 @@ const get_metric_value = async (metric: Metric, now: Date, timeRangeMinutes: num
   }
 
   if (metric === 'unresolved_error_count') {
-    const rows = await activeDb.query.errorTracking.findMany({
+    const rows = await dbInstance.query.errorTracking.findMany({
       where: eq(errorTracking.resolved, false),
       columns: { lastSeen: true }
     })
@@ -144,7 +149,7 @@ const get_metric_value = async (metric: Metric, now: Date, timeRangeMinutes: num
   }
 
   if (metric === 'security_critical_events') {
-    const rows = await activeDb.query.securityEvents.findMany({
+    const rows = await dbInstance.query.securityEvents.findMany({
       where: eq(securityEvents.resolved, false),
       columns: { severity: true, createdAt: true }
     })
@@ -221,7 +226,12 @@ export async function runAlertsCron(
         const time_range_minutes = conditions.timeRangeMinutes ?? 10
         const cooldown_minutes = conditions.cooldownMinutes ?? 60
 
-        const metric_value = await get_metric_value(conditions.metric, now, time_range_minutes)
+        const metric_value = await get_metric_value(
+          conditions.metric,
+          now,
+          time_range_minutes,
+          activeDb
+        )
         const is_triggered = compare(metric_value, conditions.operator, conditions.threshold)
 
         if (!is_triggered) continue

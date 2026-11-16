@@ -2,10 +2,21 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 const send = vi.fn()
 
-vi.mock('resend', () => ({
-  Resend: class {
-    emails = { send }
-  }
+vi.mock('@/lib/transactional-email', () => ({
+  sendBestEffortEmail: vi.fn(
+    async (
+      resendLike: { emails: { send: typeof send } },
+      payload: unknown,
+      onError?: (error: Error) => void
+    ) => {
+      const result = (await resendLike.emails.send(payload)) as { error?: unknown }
+      if (result?.error) {
+        onError?.(new Error('Confirmation email failed'))
+        return { ok: false }
+      }
+      return { ok: true }
+    }
+  )
 }))
 
 vi.mock('@isyuricunha/env', () => ({
@@ -52,18 +63,21 @@ describe('/api/contact', () => {
     vi.mocked(contactRatelimit.limit).mockResolvedValue({ success: true } as never)
     send.mockResolvedValue({ data: { id: 'email-1' }, error: null })
 
-    const { POST } = await import('@/routes/api/contact/+server')
-    const request = {
-      headers: new Headers({ 'accept-language': 'en' }),
-      json: async () => ({
+    const { contactPost } = await import('@isyuricunha/trpc-server/server/contact')
+    const request = new Request('http://test/api/contact', {
+      method: 'POST',
+      headers: { 'accept-language': 'en', 'content-type': 'application/json' },
+      body: JSON.stringify({
         name: 'Marina',
         email: 'marina@example.com',
         subject: 'Project inquiry',
         message: 'I would like to discuss a project.'
       })
-    } as unknown as Parameters<typeof POST>[0]
+    })
 
-    const response = await POST(request)
+    const response = await contactPost(request, {
+      resend: { emails: { send } }
+    })
 
     expect(response.status).toBe(200)
     expect(send).toHaveBeenCalledTimes(2)
@@ -87,18 +101,21 @@ describe('/api/contact', () => {
       error: { message: 'Recipient is unavailable' }
     })
 
-    const { POST } = await import('@/routes/api/contact/+server')
-    const request = {
-      headers: new Headers({ 'accept-language': 'en' }),
-      json: async () => ({
+    const { contactPost } = await import('@isyuricunha/trpc-server/server/contact')
+    const request = new Request('http://test/api/contact', {
+      method: 'POST',
+      headers: { 'accept-language': 'en', 'content-type': 'application/json' },
+      body: JSON.stringify({
         name: 'Marina',
         email: 'marina@example.com',
         subject: 'Project inquiry',
         message: 'I would like to discuss a project.'
       })
-    } as unknown as Parameters<typeof POST>[0]
+    })
 
-    const response = await POST(request)
+    const response = await contactPost(request, {
+      resend: { emails: { send } }
+    })
 
     expect(response.status).toBe(200)
     expect(logger.error).toHaveBeenCalledWith(
@@ -116,18 +133,21 @@ describe('/api/contact', () => {
     vi.mocked(contactRatelimit.limit).mockResolvedValue({ success: true } as never)
     send.mockResolvedValue({ data: { id: 'email-1' }, error: null })
 
-    const { POST } = await import('@/routes/api/contact/+server')
-    const request = {
-      headers: new Headers({ 'accept-language': 'pt-BR,pt;q=0.9' }),
-      json: async () => ({
+    const { contactPost } = await import('@isyuricunha/trpc-server/server/contact')
+    const request = new Request('http://test/api/contact', {
+      method: 'POST',
+      headers: { 'accept-language': 'pt-BR,pt;q=0.9', 'content-type': 'application/json' },
+      body: JSON.stringify({
         name: 'Marina',
         email: 'marina@example.com',
         subject: 'Projeto',
         message: 'Gostaria de conversar sobre um projeto.'
       })
-    } as unknown as Parameters<typeof POST>[0]
+    })
 
-    await POST(request)
+    await contactPost(request, {
+      resend: { emails: { send } }
+    })
 
     expect(send.mock.calls[1]?.[0]).toMatchObject({
       text: expect.stringContaining('Olá Marina,')
