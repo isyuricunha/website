@@ -194,7 +194,7 @@
 				{/if}
 			</div>
 			<select bind:value={roleFilter} class="bg-bg-hover rounded-md border border-[var(--border-faint)] px-3 py-2 text-sm" aria-label={labels.role}>
-				<option value="all">{labels['filter-all-roles']}</option>
+				<option value="all">All roles</option>
 				<option value="user">{labels['roles.user']}</option>
 				<option value="admin">{labels['roles.admin']}</option>
 			</select>
@@ -302,16 +302,14 @@
 	</div>
 
 	<div class="text-muted-foreground flex items-center justify-between text-xs">
-		<span>
-			{formatMessage(labels['rows-count'], { count: sortedData.length }, locale)}
-		</span>
+		<span>{sortedData.length}</span>
 		<div class="flex items-center gap-2">
 			<button type="button" class="hover:bg-bg-hover rounded-md border border-[var(--border-faint)] px-2 py-1 transition-colors disabled:opacity-50" disabled={page <= 1} onclick={() => (page = page - 1)}>
-				{labels['prev-page']}
+				←
 			</button>
 			<span>{page} / {totalPages}</span>
 			<button type="button" class="hover:bg-bg-hover rounded-md border border-[var(--border-faint)] px-2 py-1 transition-colors disabled:opacity-50" disabled={page >= totalPages} onclick={() => (page = page + 1)}>
-				{labels['next-page']}
+				→
 			</button>
 		</div>
 	</div>
