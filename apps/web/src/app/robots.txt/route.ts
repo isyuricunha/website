@@ -34,3 +34,5 @@ export const GET = (): Response => {
     }
   })
 }
+
+export const dynamic = 'force-static'

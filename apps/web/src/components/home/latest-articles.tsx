@@ -81,13 +81,8 @@ const ArticleCard = (props: CardProps) => {
   const formattedDate = useFormattedDate(date)
   const t = useTranslations()
 
-  const viewsQuery = api.views.get.useQuery({
-    slug
-  })
-
-  const likesQuery = api.likes.get.useQuery({
-    slug
-  })
+  const statsQuery = api.postStats.getBatch.useQuery({ slugs: [slug] }, { staleTime: 60_000 })
+  const stats = statsQuery.data?.[slug]
 
   return (
     <Link href={`/blog/${slug}`} className='app-window yu-lift group block'>
@@ -109,16 +104,16 @@ const ArticleCard = (props: CardProps) => {
       </div>
       <div className='p-5'>
         <div className='text-text-tertiary mb-3 flex items-center gap-1.5 font-mono text-[11px]'>
-          {likesQuery.status === 'pending' ? <Skeleton className='h-3 w-10' /> : null}
-          {likesQuery.status === 'error' ? t('common.error') : null}
-          {likesQuery.status === 'success' ? (
-            <div>{t('common.likes', { count: likesQuery.data.likes })}</div>
+          {statsQuery.status === 'pending' ? <Skeleton className='h-3 w-10' /> : null}
+          {statsQuery.status === 'error' ? t('common.error') : null}
+          {statsQuery.status === 'success' ? (
+            <div>{t('common.likes', { count: stats?.likes ?? 0 })}</div>
           ) : null}
           <div>&middot;</div>
-          {viewsQuery.status === 'pending' ? <Skeleton className='h-3 w-10' /> : null}
-          {viewsQuery.status === 'error' ? t('common.error') : null}
-          {viewsQuery.status === 'success' ? (
-            <div>{t('common.views', { count: viewsQuery.data.views })}</div>
+          {statsQuery.status === 'pending' ? <Skeleton className='h-3 w-10' /> : null}
+          {statsQuery.status === 'error' ? t('common.error') : null}
+          {statsQuery.status === 'success' ? (
+            <div>{t('common.views', { count: stats?.views ?? 0 })}</div>
           ) : null}
         </div>
         <div className='flex items-start justify-between gap-4'>

@@ -1,8 +1,9 @@
 import { i18n } from '@isyuricunha/i18n/config'
 import { NextResponse } from 'next/server'
-import { BlogService } from '@/lib/blog/blog-service'
+import { allPosts } from 'content-collections'
 
 export const dynamic = 'force-dynamic'
+const cacheHeaders = { 'Cache-Control': 'public, s-maxage=600, stale-while-revalidate=3600' }
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
@@ -15,23 +16,22 @@ export async function GET(request: Request) {
     : i18n.defaultLocale
 
   try {
-    const posts = await BlogService.getPostsByLocale(locale)
+    const posts = allPosts
+      .filter((post) => post.locale === locale)
+      .toSorted((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     if (posts.length === 0) {
-      return NextResponse.json({ post: null })
+      return NextResponse.json({ post: null }, { headers: cacheHeaders })
     }
 
     const latest = posts[0]
     if (!latest) {
-      return NextResponse.json({ post: null })
+      return NextResponse.json({ post: null }, { headers: cacheHeaders })
     }
 
-    return NextResponse.json({
-      post: {
-        slug: latest.slug,
-        title: latest.title,
-        date: latest.date
-      }
-    })
+    return NextResponse.json(
+      { post: { slug: latest.slug, title: latest.title, date: latest.date } },
+      { headers: cacheHeaders }
+    )
   } catch {
     return NextResponse.json({ error: 'Failed to fetch latest post' }, { status: 500 })
   }

@@ -90,3 +90,5 @@ export const GET = () => {
     }
   })
 }
+
+export const dynamic = 'force-static'

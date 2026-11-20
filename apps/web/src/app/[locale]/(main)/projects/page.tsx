@@ -4,15 +4,13 @@ import type { CollectionPage, WithContext } from 'schema-dts'
 import { i18n } from '@isyuricunha/i18n/config'
 import { getTranslations, setRequestLocale } from '@isyuricunha/i18n/server'
 import { allProjects } from 'content-collections'
-import { headers } from 'next/headers'
 
 import GithubRepos from '@/components/github-repos'
 import PageTitle from '@/components/page-title'
 import ProjectCards from '@/components/project-cards'
 import { SITE_URL } from '@/lib/constants'
 import { build_alternates } from '@/lib/seo'
-import { appRouter } from '@/trpc/root'
-import { createTRPCContext } from '@/trpc/trpc'
+import { getPublicGithubRepos } from '@/lib/public-github-repos'
 import { getLocalizedPath } from '@/utils/get-localized-path'
 
 type PageProps = {
@@ -21,6 +19,8 @@ type PageProps = {
   }>
   searchParams: Promise<Record<string, string | string[] | undefined>>
 }
+
+export const revalidate = 3600
 
 export const generateStaticParams = (): Array<{ locale: string }> => {
   return i18n.locales.map((locale) => ({ locale }))
@@ -65,11 +65,7 @@ const Page = async (props: PageProps) => {
   const description = t('projects.description')
   const url = `${SITE_URL}${getLocalizedPath({ slug: '/projects', locale })}`
 
-  const reqHeaders = await headers()
-  const trpcContext = await createTRPCContext({ headers: reqHeaders })
-
-  const caller = appRouter.createCaller(trpcContext)
-  const repos = (await caller.github.getRepos()).map((repo) => ({
+  const repos = (await getPublicGithubRepos()).map((repo) => ({
     ...repo,
     stargazersCount: repo.stargazersCount ?? 0
   }))

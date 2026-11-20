@@ -11,25 +11,17 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 type CounterQuery = {
   status: 'pending' | 'success' | 'error'
-  data?: { views: number; likes: number; currentUserLikes: number }
+  data?: Record<string, { views: number; likes: number }>
 }
 
-const queryState = vi.hoisted((): { views: CounterQuery; likes: CounterQuery } => ({
-  views: { status: 'pending', data: undefined },
-  likes: { status: 'pending', data: undefined }
+const queryState = vi.hoisted((): { stats: CounterQuery } => ({
+  stats: { status: 'pending', data: undefined }
 }))
 
 vi.mock('@/trpc/react', () => ({
   api: {
-    views: {
-      get: {
-        useQuery: vi.fn(() => queryState.views)
-      }
-    },
-    likes: {
-      get: {
-        useQuery: vi.fn(() => queryState.likes)
-      }
+    postStats: {
+      getBatch: { useQuery: vi.fn(() => queryState.stats) }
     }
   }
 }))
@@ -81,8 +73,7 @@ const renderCard = async () => {
 
 describe('<PostCards /> loading states', () => {
   beforeEach(() => {
-    queryState.views = { status: 'pending', data: undefined }
-    queryState.likes = { status: 'pending', data: undefined }
+    queryState.stats = { status: 'pending', data: undefined }
   })
 
   it('shows canonical skeleton bars while likes and views are pending', async () => {
@@ -99,8 +90,10 @@ describe('<PostCards /> loading states', () => {
   })
 
   it('replaces the skeletons with real counters once queries succeed', async () => {
-    queryState.views = { status: 'success', data: { views: 120, likes: 3, currentUserLikes: 0 } }
-    queryState.likes = { status: 'success', data: { views: 120, likes: 3, currentUserLikes: 0 } }
+    queryState.stats = {
+      status: 'success',
+      data: { 'hello-world': { views: 120, likes: 3 } }
+    }
 
     await renderCard()
 

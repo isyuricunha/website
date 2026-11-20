@@ -4,6 +4,7 @@ import { env } from '@isyuricunha/env'
 import { ratelimit } from '@isyuricunha/kv'
 
 import { GITHUB_USERNAME } from '@/lib/constants'
+import { getPublicGithubRepos } from '@/lib/public-github-repos'
 import { getIp } from '@/utils/get-ip'
 
 import { createTRPCRouter, publicProcedure } from '../trpc'
@@ -42,14 +43,8 @@ export const githubRouter = createTRPCRouter({
     const { success } = await ratelimit.limit(getKey(ip))
     if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
 
-    const octokit = new Octokit({ auth: env.GITHUB_TOKEN })
-
-    const { data: repos } = await octokit.request('GET /users/{username}/repos', {
-      username: GITHUB_USERNAME,
-      per_page: 100
-    })
-
-    return repos.find((repo) => repo.name === 'website')?.stargazers_count ?? 0
+    const repos = await getPublicGithubRepos()
+    return repos.find((repo) => repo.name === 'website')?.stargazersCount ?? 0
   }),
 
   getRepos: publicProcedure.query(async ({ ctx }) => {
@@ -57,21 +52,6 @@ export const githubRouter = createTRPCRouter({
     const { success } = await ratelimit.limit(getKey(ip))
     if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
 
-    const octokit = new Octokit({ auth: env.GITHUB_TOKEN })
-
-    const { data: repos } = await octokit.request('GET /users/{username}/repos', {
-      username: GITHUB_USERNAME,
-      per_page: 100
-    })
-
-    return repos
-      .filter((repo) => !repo.private)
-      .map((repo) => ({
-        name: repo.name,
-        description: repo.description,
-        url: repo.html_url,
-        stargazersCount: repo.stargazers_count,
-        language: repo.language
-      }))
+    return getPublicGithubRepos()
   })
 })

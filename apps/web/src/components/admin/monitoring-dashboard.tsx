@@ -50,7 +50,7 @@ export default function MonitoringDashboard() {
     data: monitoringStats,
     isLoading: statsLoading,
     isError: statsError
-  } = api.monitoring.getMonitoringStats.useQuery(undefined, { refetchInterval: 30_000 })
+  } = api.monitoring.getMonitoringStats.useQuery(undefined, { refetchInterval: 120_000 })
 
   // Performance metrics query
   const {
@@ -61,7 +61,7 @@ export default function MonitoringDashboard() {
     {
       timeRange
     },
-    { refetchInterval: 30_000 }
+    { refetchInterval: 120_000 }
   )
 
   // API usage query
@@ -73,7 +73,7 @@ export default function MonitoringDashboard() {
     {
       timeRange
     },
-    { refetchInterval: 30_000 }
+    { refetchInterval: 120_000 }
   )
 
   // Error tracking query
@@ -85,7 +85,7 @@ export default function MonitoringDashboard() {
     {
       timeRange
     },
-    { refetchInterval: 30_000 }
+    { refetchInterval: 120_000 }
   )
 
   // Resource usage query
@@ -97,7 +97,7 @@ export default function MonitoringDashboard() {
     {
       timeRange
     },
-    { refetchInterval: 30_000 }
+    { refetchInterval: 120_000 }
   )
 
   // Analytics events query
@@ -109,7 +109,7 @@ export default function MonitoringDashboard() {
     {
       timeRange
     },
-    { refetchInterval: 30_000 }
+    { refetchInterval: 120_000 }
   )
 
   // Mutations
@@ -167,7 +167,7 @@ export default function MonitoringDashboard() {
 
   useEffect(() => {
     const record_snapshot = async () => {
-      if (snapshotInFlightRef.current) return
+      if (document.visibilityState !== 'visible' || snapshotInFlightRef.current) return
       snapshotInFlightRef.current = true
 
       try {
@@ -185,7 +185,7 @@ export default function MonitoringDashboard() {
 
     snapshotIntervalRef.current = setInterval(() => {
       void record_snapshot()
-    }, 60_000)
+    }, 300_000)
 
     return () => {
       if (!snapshotIntervalRef.current) return

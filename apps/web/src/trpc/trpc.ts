@@ -26,7 +26,14 @@ const safe_json_stringify = (value: unknown) => {
 }
 
 export const createTRPCContext = async (opts: trpc_context_opts) => {
-  const session = await getSession()
+  // Better Auth's default session cookie names are stable. Anonymous callers
+  // (including locale-only cookies) must not perform session DB lookups.
+  // Authenticated callers still pass through full Better Auth validation.
+  const cookieHeader = opts.headers.get('cookie') ?? ''
+  const hasSessionCookie = /(?:^|;\s*)(?:__Secure-|__Host-)?better-auth\.session_token=/.test(
+    cookieHeader
+  )
+  const session = hasSessionCookie ? await getSession(opts.headers) : null
 
   return {
     db,

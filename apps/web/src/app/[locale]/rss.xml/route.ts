@@ -60,3 +60,5 @@ export const generateStaticParams = () => {
     locale: lang.code
   }))
 }
+
+export const dynamic = 'force-static'

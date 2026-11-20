@@ -12,6 +12,7 @@ import { guestbookRouter } from './routers/guestbook'
 import { lastfmRouter } from './routers/lastfm'
 import { likesRouter } from './routers/likes'
 import { monitoringRouter } from './routers/monitoring'
+import { postStatsRouter } from './routers/post-stats'
 import { ratesRouter } from './routers/rates'
 import { recapRouter } from './routers/recap'
 import { resendEmailRouter } from './routers/resend-email'
@@ -39,6 +40,7 @@ export const appRouter = createTRPCRouter({
   wakatime: wakatimeRouter,
   views: viewsRouter,
   likes: likesRouter,
+  postStats: postStatsRouter,
   lastfm: lastfmRouter,
   comments: commentsRouter,
   guestbook: guestbookRouter,

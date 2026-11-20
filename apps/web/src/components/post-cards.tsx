@@ -15,32 +15,36 @@ type PostCardsProps = {
   posts: Post[]
 }
 
-type PostCardProps = Post
+type PostCardProps = Post & {
+  stats?: { views: number; likes: number }
+  statsStatus: 'pending' | 'error' | 'success'
+}
 
 const PostCards = (props: PostCardsProps) => {
   const { posts } = props
+  const statsQuery = api.postStats.getBatch.useQuery(
+    { slugs: posts.map((post) => post.slug) },
+    { enabled: posts.length > 0, staleTime: 60_000 }
+  )
 
   return (
     <div className='grid gap-4 md:grid-cols-2'>
       {posts.map((post) => (
-        <PostCard key={post.slug} {...post} />
+        <PostCard
+          key={post.slug}
+          {...post}
+          stats={statsQuery.data?.[post.slug]}
+          statsStatus={statsQuery.status}
+        />
       ))}
     </div>
   )
 }
 
 const PostCard = (props: PostCardProps) => {
-  const { slug, title, summary, date, featured } = props
+  const { slug, title, summary, date, featured, stats, statsStatus } = props
   const formattedDate = useFormattedDate(date)
   const t = useTranslations()
-
-  const viewsQuery = api.views.get.useQuery({
-    slug
-  })
-
-  const likesQuery = api.likes.get.useQuery({
-    slug
-  })
 
   return (
     <Link
@@ -72,20 +76,20 @@ const PostCard = (props: PostCardProps) => {
         <div className='text-text-tertiary mb-2 flex items-center justify-between gap-1.5 font-mono text-[10px]'>
           {formattedDate}
           <div className='flex gap-1.5'>
-            {likesQuery.status === 'pending' ? (
+            {statsStatus === 'pending' ? (
               <Skeleton data-testid='counter-skeleton' className='h-3 w-10' />
             ) : null}
-            {likesQuery.status === 'error' ? t('common.error') : null}
-            {likesQuery.status === 'success' ? (
-              <div>{t('common.likes', { count: likesQuery.data.likes })}</div>
+            {statsStatus === 'error' ? t('common.error') : null}
+            {statsStatus === 'success' ? (
+              <div>{t('common.likes', { count: stats?.likes ?? 0 })}</div>
             ) : null}
             <div>&middot;</div>
-            {viewsQuery.status === 'pending' ? (
+            {statsStatus === 'pending' ? (
               <Skeleton data-testid='counter-skeleton' className='h-3 w-10' />
             ) : null}
-            {viewsQuery.status === 'error' ? t('common.error') : null}
-            {viewsQuery.status === 'success' ? (
-              <div>{t('common.views', { count: viewsQuery.data.views })}</div>
+            {statsStatus === 'error' ? t('common.error') : null}
+            {statsStatus === 'success' ? (
+              <div>{t('common.views', { count: stats?.views ?? 0 })}</div>
             ) : null}
           </div>
         </div>
