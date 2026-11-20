@@ -78,6 +78,10 @@
         ".content-collections/**"
       ]
     },
+    "@isyuricunha/web#build": {
+      "dependsOn": ["^build", "build:mdx"],
+      "cache": false
+    },
     "build:apps": {
       "dependsOn": ["^build:apps"],
       "outputs": [".next/**", "!.next/cache/**", "!.next/dev/**", ".content-collections/**"]
