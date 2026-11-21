@@ -142,6 +142,11 @@ const config: NextConfig = {
         permanent: true
       },
       {
+        source: '/feed.xml',
+        destination: '/rss.xml',
+        permanent: true
+      },
+      {
         source: '/rss',
         destination: '/rss.xml',
         permanent: true

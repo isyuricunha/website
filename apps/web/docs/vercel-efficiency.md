@@ -85,4 +85,50 @@ References:
 - https://turborepo.com/docs/reference/configuration#cache
 - https://vercel.com/docs/monorepos/turborepo
 - https://vercel.com/docs/monorepos/remote-caching
-- https://vercel.com/docs/deployments/troubleshoot-a-build
+- https://vercel.com/docs/deployments/troubleshoot-a-build\n
+
+## Invalid-URL traffic and lightweight 404s
+
+The November 20–21 twelve-hour Bot Protection experiment recorded 933 function
+invocations on the catch-all route \`/[locale]/[...rest]\`. A retained
+112-minute sample of request logs exposed 73 catch-all HTTP 404 responses;
+56 resembled security scans for credentials, PHP/WordPress paths, or Vite
+development endpoints. All 73 had a cache MISS. The sample does not
+establish the cause of every invocation in the full twelve-hour period.
+
+The catch-all continues to call \`notFound()\` and retain the existing localized
+404 design. Recommended posts, snippets and projects are now sorted only
+once per locale per server instance (rather than for every missing URL).
+The observed legacy \`/feed.xml\` URL redirects permanently to \`/rss.xml\`.
+
+A narrowly scoped project-level Vercel WAF custom rule is managed separately
+from the repository for known security-scan paths, including sensitive dotfiles,
+WordPress directories, \`.php\` scripts, and Vite development endpoints. It
+must **not** block all 404 routes, all crawlers, \`/admin\`, or all unsupported
+locale paths. The existing Bot Protection managed rule remains in Challenge.
+Before any firewall publication, inspect the draft diff and verify that it
+only adds the intended rule. Keep an audit record with the exact rule ID and
+test blocked scanner paths alongside allowed public paths.
+
+Do not broadly redirect unsupported locales to a different language.
+Only redirect old links when their canonical destination is confirmed.
+A missing URL should still return 404 and a \`noindex\` robots tag.
+
+### Regression checks
+
+- \`/feed.xml\` redirects permanently to \`/rss.xml\`.
+- Valid localized blog/project URLs render as before.
+- Invalid routes return HTTP 404, not soft-404 HTTP 200.
+- The localized 404 displays the same recommendation cards.
+- WAF returns a deny response for sensitive scan paths without reaching the
+  Next.js function; \`/projects\`, \`/blog\`, \`/robots.txt\` and \`/rss.xml\`
+  remain reachable.
+- Compare catch-all CPU and invocation counts only over equivalent windows.
+
+Official references:
+
+- https://nextjs.org/docs/app/api-reference/file-conventions/not-found
+- https://nextjs.org/docs/app/api-reference/config/next-config-js/redirects
+- https://vercel.com/docs/vercel-firewall/vercel-waf/custom-rules
+- https://vercel.com/docs/vercel-firewall/vercel-waf/rule-configuration
+- https://vercel.com/docs/vercel-firewall/vercel-waf/usage-and-pricing

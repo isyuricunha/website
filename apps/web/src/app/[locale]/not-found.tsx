@@ -11,7 +11,7 @@ import {
   buttonVariants
 } from '@isyuricunha/yutheme/server'
 import { ArrowRight, FileText, Code, FolderGit2 } from 'lucide-react'
-import { allPosts, allProjects, allSnippets } from 'content-collections'
+import { getRecentNotFoundContent } from '@/lib/not-found-content'
 
 import GoToHomepage from '@/components/go-to-homepage'
 import Link from '@/components/link'
@@ -45,32 +45,11 @@ const NotFound = async (props: PageProps) => {
   const locale = (await props.params)?.locale ?? i18n.defaultLocale
   const t = await getTranslations({ locale })
 
-  const recent_posts = allPosts
-    .filter((p) => p.locale === locale)
-    .toSorted((a, b) => {
-      const da = new Date((a as unknown as { date?: string }).date ?? 0).getTime()
-      const db = new Date((b as unknown as { date?: string }).date ?? 0).getTime()
-      return db - da
-    })
-    .slice(0, 3)
-
-  const recent_snippets = allSnippets
-    .filter((s) => s.locale === locale)
-    .toSorted((a, b) => {
-      const da = new Date((a as unknown as { date?: string }).date ?? 0).getTime()
-      const db = new Date((b as unknown as { date?: string }).date ?? 0).getTime()
-      return db - da
-    })
-    .slice(0, 3)
-
-  const recent_projects = allProjects
-    .filter((p) => p.locale === locale)
-    .toSorted((a, b) => {
-      const da = new Date((a as unknown as { date?: string }).date ?? 0).getTime()
-      const db = new Date((b as unknown as { date?: string }).date ?? 0).getTime()
-      return db - da
-    })
-    .slice(0, 3)
+  const {
+    posts: recent_posts,
+    snippets: recent_snippets,
+    projects: recent_projects
+  } = getRecentNotFoundContent(locale)
 
   return (
     <MainLayout>
