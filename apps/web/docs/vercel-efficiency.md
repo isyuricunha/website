@@ -114,6 +114,13 @@ Do not broadly redirect unsupported locales to a different language.
 Only redirect old links when their canonical destination is confirmed.
 A missing URL should still return 404 and a \`noindex\` robots tag.
 
+The earlier Preview returned HTTP 404 for the root /sw.js file even though
+it is tracked under apps/web/public. The i18n Proxy matched this service-worker
+path and rewrote it as a localized route. The matcher now explicitly excludes
+this script, leaving its content unchanged. This is covered by the installed
+Next.js 16 version-compatible unstable_doesMiddlewareMatch test helper and
+a live Preview HTTP check. Locale routing and /admin remain matched.
+
 ### Regression checks
 
 - \`/feed.xml\` redirects permanently to \`/rss.xml\`.

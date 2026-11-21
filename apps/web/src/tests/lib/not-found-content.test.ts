@@ -35,6 +35,21 @@ describe('localized 404 recommendations', () => {
     expect(getRecentNotFoundContent('en')).toBe(getRecentNotFoundContent('en'))
   })
 
+  it('does not sort any content merely by importing the helper', async () => {
+    vi.resetModules()
+    const sortSpy = vi.spyOn(Array.prototype, 'toSorted')
+    try {
+      const { getRecentNotFoundContent: fresh } = await import('@/lib/not-found-content')
+      expect(sortSpy).not.toHaveBeenCalled()
+      fresh('en')
+      expect(sortSpy).toHaveBeenCalledTimes(3)
+      fresh('en')
+      expect(sortSpy).toHaveBeenCalledTimes(3)
+    } finally {
+      sortSpy.mockRestore()
+    }
+  })
+
   it('falls back to the default language for unexpected locale values', () => {
     expect(getRecentNotFoundContent('invalid-locale')).toBe(getRecentNotFoundContent('en'))
   })

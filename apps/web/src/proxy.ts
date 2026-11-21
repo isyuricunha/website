@@ -62,8 +62,9 @@ export const config = {
    * - robots.txt
    * - rss.xml
    * - llms.txt
+   * - sw.js (root service worker from /public, no locale rewrite)
    */
   matcher: [
-    '/((?!api|\\.well-known|_next/static|_next/image|_vercel|og|favicon|fonts|images|videos|favicon.ico|sitemap.xml|robots.txt|rss.xml|llms.txt).*)'
+    '/((?!api|\\.well-known|_next/static|_next/image|_vercel|og|favicon|fonts|images|videos|favicon.ico|sitemap.xml|robots.txt|rss.xml|llms.txt|sw\\.js).*)'
   ]
 }

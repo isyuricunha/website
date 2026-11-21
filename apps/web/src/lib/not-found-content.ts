@@ -13,17 +13,23 @@ const newestForLocale = <T extends { locale: string }>(entries: readonly T[], lo
     })
     .slice(0, 3)
 
-const contentByLocale = new Map(
-  i18n.locales.map((locale) => [
-    locale,
-    {
-      posts: newestForLocale(allPosts, locale),
-      snippets: newestForLocale(allSnippets, locale),
-      projects: newestForLocale(allProjects, locale)
-    }
-  ])
-)
+const createLocaleContent = (locale: string) => ({
+  posts: newestForLocale(allPosts, locale),
+  snippets: newestForLocale(allSnippets, locale),
+  projects: newestForLocale(allProjects, locale)
+})
+
+// not-found is bundled into the route tree. Do not sort all locales merely
+// because a regular page imports the same server bundle. Populate lazily on
+// the first 404 in each locale, then reuse for that worker's lifetime.
+const contentByLocale = new Map<string, ReturnType<typeof createLocaleContent>>()
 
 export const getRecentNotFoundContent = (locale: string) => {
-  return contentByLocale.get(locale) ?? contentByLocale.get(i18n.defaultLocale)!
+  const selectedLocale = i18n.locales.includes(locale) ? locale : i18n.defaultLocale
+  const cached = contentByLocale.get(selectedLocale)
+  if (cached) return cached
+
+  const content = createLocaleContent(selectedLocale)
+  contentByLocale.set(selectedLocale, content)
+  return content
 }
