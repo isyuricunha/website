@@ -139,3 +139,43 @@ Official references:
 - https://vercel.com/docs/vercel-firewall/vercel-waf/custom-rules
 - https://vercel.com/docs/vercel-firewall/vercel-waf/rule-configuration
 - https://vercel.com/docs/vercel-firewall/vercel-waf/usage-and-pricing
+
+## Build-time content Open Graph images (2026-11-23)
+
+Posts and snippets now use a finite set of localized, typed, content-versioned
+Open Graph paths under `/og/content/[locale]/[kind]/[key]`. Next.js
+`generateStaticParams` and `dynamicParams = false` enumerate all valid cards
+at build time. The previous ImageResponse JSX is shared without visual changes.
+The hash includes normalized card fields and an explicit renderer revision;
+bump the revision when changing image rendering or fallback translations.
+The legacy `/og/[id]` handler redirects known content to its canonical card
+and unknown content to the generic static site card. Arbitrary query text is
+ignored, and unknown canonical keys cannot trigger image rendering. A changed
+content hash produces a new URL; older canonical hash URLs are not retained
+across builds. Existing legacy URLs remain compatible.
+
+Validation on the isolated ARM worktree based on f3beb75:
+
+- 327 prerendered routes and 327 valid 1200x630 PNG response bodies (16,821,778 bytes).
+- Reference image matches the previous renderer byte-for-byte.
+- 16 repeated reference image requests, after warmup: 0.74s versus 0.13s local
+  Next.js process CPU; wall time 0.533s versus 0.077s. These are single local
+  benchmark runs, not Vercel billing or a production traffic experiment.
+- Legacy redirect, invalid canonical key, tampered query, Portuguese metadata,
+  RSS, service worker, projects and localized 404 were exercised over HTTP.
+- A candidate setting dynamicParams=false on the catch-all was rejected
+  because it served the framework's generic 404 instead of the localized UI.
+  The existing catch-all source remains unchanged.
+
+Preview must confirm Vercel cache behavior and production-like configuration
+before promotion. After publication compare CPU, invocations, ISR read units
+and transfer using comparable traffic windows.
+
+Official references:
+
+- https://nextjs.org/docs/app/api-reference/file-conventions/route
+- https://nextjs.org/docs/app/api-reference/functions/generate-static-params
+- https://nextjs.org/docs/app/api-reference/functions/image-response
+- https://nextjs.org/docs/app/api-reference/file-conventions/not-found
+- https://vercel.com/docs/caching/cdn-cache
+- https://vercel.com/docs/incremental-static-regeneration/limits-and-pricing

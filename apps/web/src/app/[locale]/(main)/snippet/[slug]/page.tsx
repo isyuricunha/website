@@ -7,6 +7,7 @@ import { notFound } from 'next/navigation'
 
 import Mdx from '@/components/mdx'
 import Recommendations from '@/components/ui/recommendations'
+import { getContentOgPath } from '@/lib/content-og'
 import { SITE_NAME, SITE_URL } from '@/lib/constants'
 import { getRecommendedSnippets } from '@/lib/recommendations'
 import { generateSEO } from '@/lib/seo'
@@ -48,14 +49,7 @@ export const generateMetadata = async (
     new Set(allSnippets.filter((s) => s.slug === slug && s.locale !== locale).map((s) => s.locale))
   )
 
-  const safeTitle = snippet.title ?? ''
-  const safeDescription = snippet.description ?? ''
-  const safeLocale = locale ?? ''
-  const safeDate = snippet.date?.split('T')[0] ?? new Date().toISOString().split('T')[0] ?? ''
-
-  const ogImageUrl = `/og/${slug}?title=${encodeURIComponent(safeTitle)}&date=${encodeURIComponent(
-    safeDate
-  )}&summary=${encodeURIComponent(safeDescription)}&locale=${safeLocale}&type=snippet`
+  const ogImageUrl = getContentOgPath(locale, 'snippet', slug)
 
   const url = getLocalizedPath({ slug: `/snippet/${slug}`, locale })
 

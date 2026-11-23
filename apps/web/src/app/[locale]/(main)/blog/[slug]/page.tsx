@@ -10,6 +10,7 @@ import { Suspense } from 'react'
 import Comments from '@/components/comments'
 import Mdx from '@/components/mdx'
 import Recommendations from '@/components/ui/recommendations'
+import { getContentOgPath } from '@/lib/content-og'
 import { SITE_NAME } from '@/lib/constants'
 import { getRecommendedPosts } from '@/lib/recommendations'
 import { generateBlogPostJsonLd, generateSEO } from '@/lib/seo'
@@ -58,12 +59,7 @@ export const generateMetadata = async (
     new Set(allPosts.filter((p) => p.slug === slug && p.locale !== locale).map((p) => p.locale))
   )
 
-  // Precompute safe values to avoid passing undefined to encodeURIComponent
-  const safeTitle = title ?? ''
-  const safeSummary = summary ?? ''
-  const safeLocale = locale ?? ''
-  const safeDate = (date ?? '').split('T')[0] ?? ''
-  const ogImageUrl = `/og/${slug}?title=${encodeURIComponent(safeTitle)}&date=${encodeURIComponent(safeDate)}&summary=${encodeURIComponent(safeSummary)}&locale=${safeLocale}&type=post`
+  const ogImageUrl = getContentOgPath(locale, 'post', slug)
 
   const seo = generateSEO({
     title,
@@ -105,12 +101,7 @@ const Page = async (props: PageProps) => {
   const { title, summary, date, modifiedTime, code, toc } = post
   const recommended_posts = getRecommendedPosts({ slug, locale })
 
-  // Precompute safe values for JSON-LD as well
-  const safeTitle = title ?? ''
-  const safeSummary = summary ?? ''
-  const safeLocale = locale ?? ''
-  const safeDate = (date ?? '').split('T')[0] ?? ''
-  const ogImageUrl = `/og/${slug}?title=${encodeURIComponent(safeTitle)}&date=${encodeURIComponent(safeDate)}&summary=${encodeURIComponent(safeSummary)}&locale=${safeLocale}&type=post`
+  const ogImageUrl = getContentOgPath(locale, 'post', slug)
 
   const jsonLd = generateBlogPostJsonLd({
     title: title,
