@@ -41,7 +41,7 @@
     "eslint-plugin-playwright": "^2.12.2",
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-simple-import-sort": "^14.0.0",
-    "eslint-plugin-sonarjs": "^4.2.0",
+    "eslint-plugin-sonarjs": "^4.2.3",
     "eslint-plugin-testing-library": "^7.16.3",
     "eslint-plugin-turbo": "^2.11.13",
     "eslint-plugin-unicorn": "^74.0.0",

@@ -6,7 +6,7 @@ import { access, mkdir, readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 
-import yaml from 'js-yaml'
+import * as yaml from 'js-yaml'
 
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url))
 const rootDirectory = path.resolve(scriptDirectory, '..')
