@@ -3,6 +3,19 @@ import { describe, expect, it } from 'vitest'
 import { is_safe_internal_path } from '@/components/mascot/ai-chat-interface'
 
 describe('is_safe_internal_path', () => {
+  it.each([
+    '/api/cron/alerts',
+    '/admin',
+    '/pt/admin/users',
+    '/settings',
+    '/en/notifications',
+    '/blog/../admin',
+    '/%61dmin',
+    '/pt/blog/%2fadmin'
+  ])('rejects non-public generated target %s', (path) => {
+    expect(is_safe_internal_path(path)).toBe(false)
+  })
+
   it('accepts same-origin absolute paths', () => {
     expect(is_safe_internal_path('/blog/hello')).toBe(true)
     expect(is_safe_internal_path('/')).toBe(true)

@@ -8,7 +8,9 @@ import { env, flags } from '@isyuricunha/env'
 import { aiService } from '@/lib/ai/ai-service'
 import { ASSISTANT_CONTENT_TYPE, type AssistantEvent } from '@/lib/ai/assistant-protocol'
 import { runSiteAssistant } from '@/lib/ai/assistant-runtime'
+import { is_simple_social_message } from '@/lib/ai/mascot-context'
 import { get_ai_runtime_config } from '@/lib/ai/runtime-config'
+import { is_safe_internal_path } from '@/components/mascot/chat-link-policy'
 import { estimate_tokens, record_ai_chat_observability } from '@/lib/ai/ai-observability'
 import {
   build_navigation_answer,
@@ -44,12 +46,12 @@ const requestContextSchema = z.object({
 })
 
 const requestSchema = z.object({
-  message: z.string().min(1).max(2000),
+  message: z.string().trim().min(1).max(2000),
   assistantVersion: z.literal(2).optional(),
   mode: z.enum(['chat', 'navigate', 'recommend']).optional(),
   model: z.string().max(100).optional(),
   stream: z.boolean().optional(),
-  locale: z.string().min(2).max(10).optional(),
+  locale: z.enum(['en', 'pt', 'es', 'fr', 'de', 'ja', 'zh-CN']).optional(),
   context: requestContextSchema.optional(),
   turnstileToken: z.string().optional()
 })
@@ -188,6 +190,13 @@ export async function POST(req: NextRequest) {
       )
     }
 
+    if (Number(req.headers.get('content-length')) > 256_000) {
+      return NextResponse.json(
+        { error: 'Request too large.', requestId: request_id },
+        { status: 413, headers: response_headers }
+      )
+    }
+
     const ip = getClientIp(req.headers)
     const { success } = await ratelimit.limit(rate_limit_keys.ai_chat(ip))
 
@@ -212,9 +221,23 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(payload, { status: 429, headers: response_headers })
     }
 
-    const body = await req.json()
-    const parsed = requestSchema.parse(body)
+    let body: unknown
+    try {
+      body = await req.json()
+    } catch {
+      return NextResponse.json(
+        { error: 'Invalid JSON.', requestId: request_id },
+        { status: 400, headers: response_headers }
+      )
+    }
     const request_size = byte_length(JSON.stringify(body))
+    if (request_size > 256_000) {
+      return NextResponse.json(
+        { error: 'Request too large.', requestId: request_id },
+        { status: 413, headers: response_headers }
+      )
+    }
+    const parsed = requestSchema.parse(body)
 
     if (flags.turnstile) {
       if (!parsed.turnstileToken) {
@@ -276,13 +299,19 @@ export async function POST(req: NextRequest) {
       }
       const message = parsed.message.trim()
       const locale = parsed.locale ?? 'en'
-      const pagePath = parsed.context?.pagePath
+      const candidatePath = parsed.context?.pagePath
+      const pagePath =
+        candidatePath && is_safe_internal_path(candidatePath) ? candidatePath : undefined
+      const pageContext =
+        pagePath && !is_simple_social_message(message) ? get_page_context(pagePath, locale) : null
       const context = {
-        currentPage: parsed.context?.currentPage ?? 'unknown',
+        currentPage: pageContext?.type ?? 'public site',
         pagePath,
         locale,
-        pageContext: pagePath ? get_page_context(pagePath, locale) : null,
-        citations: find_citations({ message, locale, page_path: pagePath, limit: 4 }),
+        pageContext,
+        citations: is_simple_social_message(message)
+          ? []
+          : find_citations({ message, locale, page_path: pagePath, limit: 4 }),
         conversation: parsed.context?.conversation
       }
       const encoder = new TextEncoder()

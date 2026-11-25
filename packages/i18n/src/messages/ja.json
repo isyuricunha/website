@@ -2200,6 +2200,7 @@
       "copyError": "メールアドレスのコピーに失敗しました。もう一度お試しください。"
     },
     "aiChat": {
+      "userLabel": "自分",
       "openSearch": "検索を開く",
       "expandChat": "チャットを拡大",
       "compactChat": "コンパクト表示",
@@ -2304,6 +2305,8 @@
       "status": {
         "checking": "Nery AI を確認中...",
         "ready": "Nery AI は準備完了",
+        "searching": "Nery が検索中…",
+        "reading": "Nery が読んでいます…",
         "responding": "Nery AI が応答中...",
         "unavailable": "Nery AI は利用できません",
         "offline": "オフライン"

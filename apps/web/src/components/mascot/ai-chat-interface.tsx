@@ -18,14 +18,12 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  CodeBlock,
   DotMatrixLoader,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-  Link,
   Select,
   SelectContent,
   SelectItem,
@@ -37,7 +35,6 @@ import {
   TooltipTrigger
 } from '@isyuricunha/yutheme'
 
-import MarkdownToJSX from 'markdown-to-jsx'
 import {
   Copy,
   Eraser,
@@ -57,7 +54,7 @@ import {
   RefreshCw,
   X
 } from 'lucide-react'
-import { Fragment, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { toast } from 'sonner'
 
 import { cn } from '@isyuricunha/utils'
@@ -80,6 +77,8 @@ import {
 } from '@/lib/ai/assistant-protocol'
 import { MASCOT_AVATAR_SRC } from './mascot-art'
 import { NeryChatComposer } from './components/nery-chat-composer'
+import { ChatMarkdown } from './components/chat-markdown'
+import { is_safe_internal_path } from './chat-link-policy'
 
 interface AIChatInterfaceProps {
   readonly isOpen: boolean
@@ -90,70 +89,7 @@ interface AIChatInterfaceProps {
   readonly onThinkingChange?: (isThinking: boolean) => void
 }
 
-type ChatMarkdownProps = {
-  children: string
-}
-
-const ChatMarkdown = memo((props: ChatMarkdownProps) => {
-  const { children } = props
-
-  return (
-    <div className='prose prose-sm dark:prose-invert max-w-none whitespace-normal [&_ol]:my-2 [&_p]:m-0 [&_pre]:my-2 [&_ul]:my-2'>
-      <MarkdownToJSX
-        options={{
-          overrides: {
-            a: Link,
-            pre: (preProps: any) => {
-              const code_props = preProps?.children?.props
-              const raw_code = code_props?.children
-              const code = typeof raw_code === 'string' ? raw_code : String(raw_code ?? '')
-              const class_name =
-                typeof code_props?.className === 'string' ? code_props.className : ''
-              const lang = class_name.startsWith('lang-')
-                ? class_name.replace('lang-', '')
-                : undefined
-
-              return (
-                <CodeBlock data-lang={lang} className='whitespace-pre-wrap' figureClassName='my-2'>
-                  <code>{code}</code>
-                </CodeBlock>
-              )
-            }
-          },
-          disableParsingRawHTML: true,
-          wrapper: Fragment
-        }}
-      >
-        {children}
-      </MarkdownToJSX>
-    </div>
-  )
-})
-
-ChatMarkdown.displayName = 'ChatMarkdown'
-
-/**
- * Allowlist for NAVIGATE: tokens emitted by the assistant. Only same-origin
- * absolute paths are accepted: a leading slash, no scheme (javascript:,
- * data:, etc.), and no protocol-relative or external URLs. Prompt injection
- * must never steer the client router onto an attacker-controlled origin.
- */
-export const is_safe_internal_path = (path: string): boolean => {
-  if (!path.startsWith('/')) return false
-  if (path.startsWith('//')) return false
-  // Reject any scheme prefix (e.g. javascript:alert(1)) even after a slash.
-  if (/^\/[a-zA-Z][a-zA-Z0-9+.-]*:/.test(path)) return false
-  // WHATWG parser quirks: a backslash enters the authority state and ASCII
-  // tab/newline are stripped before host detection, so inputs like
-  // '/\\evil.com' or '/\\t/evil.com' parse as EXTERNAL origins. Validate
-  // with the same parser the browser router uses and require same-origin.
-  try {
-    const parsed = new URL(path, 'https://local.invalid')
-    return parsed.origin === 'https://local.invalid'
-  } catch {
-    return false
-  }
-}
+export { is_safe_internal_path } from './chat-link-policy'
 
 type CitationType = 'post' | 'project' | 'page' | 'snippet'
 type ChatConnectionStatus = 'checking' | 'ready' | 'unavailable' | 'offline'
@@ -241,6 +177,7 @@ const createBrowserId = () => {
 const getInitialChatState = (input: {
   welcomeMessageText: string
   importedTitle: string
+  newChatTitle: string
 }): InitialChatState => {
   const loaded = loadMascotChatState()
   let conversations = loaded.conversations
@@ -284,6 +221,7 @@ const getInitialChatState = (input: {
 
     return {
       ...conversation,
+      title: conversation.title === 'New chat' ? input.newChatTitle : conversation.title,
       messages: [createWelcomeMessage(input.welcomeMessageText)],
       updatedAt: new Date().toISOString()
     }
@@ -308,13 +246,14 @@ export default function AIChatInterface({
 
   const mascot_avatar_src = MASCOT_AVATAR_SRC
 
-  const user_display_name = locale.startsWith('pt') ? 'Eu' : 'Me'
+  const user_display_name = t('mascot.aiChat.userLabel')
 
   const welcomeMessageText = t('mascot.aiChat.welcomeMessage')
   const [initialChatState] = useState(() =>
     getInitialChatState({
       welcomeMessageText,
-      importedTitle: t('mascot.aiChat.importedTitle')
+      importedTitle: t('mascot.aiChat.importedTitle'),
+      newChatTitle: t('mascot.aiChat.newChatTitle')
     })
   )
   const [conversations, setConversations] = useState<ChatConversation[]>(
@@ -328,6 +267,7 @@ export default function AIChatInterface({
   const [messageActions, setMessageActions] = useState<Record<string, AssistantAction[]>>({})
   const [inputValue, setInputValue] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [phase, setPhase] = useState<'searching' | 'reading' | 'responding'>('responding')
   const [isCancelling, setIsCancelling] = useState(false)
   const [connectionStatus, setConnectionStatus] = useState<ChatConnectionStatus>('checking')
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
@@ -346,28 +286,7 @@ export default function AIChatInterface({
   const messageListRef = useRef<HTMLDivElement>(null)
   const followBottomRef = useRef(true)
   const inputRef = useRef<HTMLTextAreaElement>(null)
-  const actionTimeoutsRef = useRef(new Set<ReturnType<typeof setTimeout>>())
   const abortControllerRef = useRef<AbortController | null>(null)
-
-  const scheduleActionTimeout = useCallback((callback: () => void, delay: number) => {
-    const timer = setTimeout(() => {
-      actionTimeoutsRef.current.delete(timer)
-      callback()
-    }, delay)
-
-    actionTimeoutsRef.current.add(timer)
-  }, [])
-
-  useEffect(() => {
-    const actionTimeouts = actionTimeoutsRef.current
-
-    return () => {
-      for (const timer of actionTimeouts) {
-        clearTimeout(timer)
-      }
-      actionTimeouts.clear()
-    }
-  }, [])
 
   const getWelcomeMessage = useCallback((): ChatMessage => {
     return createWelcomeMessage(welcomeMessageText)
@@ -381,7 +300,7 @@ export default function AIChatInterface({
     return activeConversation?.messages ?? []
   }, [activeConversation])
 
-  const chatStatusKey = isLoading ? 'responding' : connectionStatus
+  const chatStatusKey = isLoading ? phase : connectionStatus
   const canUseChat = connectionStatus === 'ready'
   const shouldShowQuickPrompts =
     canUseChat && !isLoading && messages.every((message) => !message.isUser)
@@ -394,7 +313,7 @@ export default function AIChatInterface({
   }, [currentPage, t])
   const statusDotClassName = (() => {
     if (chatStatusKey === 'ready') return 'bg-status-success'
-    if (chatStatusKey === 'responding' || chatStatusKey === 'checking') return 'bg-status-warning'
+    if (isLoading || chatStatusKey === 'checking') return 'bg-status-warning'
     return 'bg-status-danger'
   })()
 
@@ -455,7 +374,8 @@ export default function AIChatInterface({
       setConversations((prev) =>
         prev.map((c) => {
           if (c.id !== conversationId) return c
-          return updater(c)
+          const updated = updater(c)
+          return { ...updated, messages: updated.messages.slice(-200) }
         })
       )
     },
@@ -480,7 +400,8 @@ export default function AIChatInterface({
 
     try {
       const response = await fetch('/api/ai/chat/status', {
-        cache: 'no-store'
+        cache: 'no-store',
+        signal: AbortSignal.timeout(8000)
       })
 
       if (!response.ok) {
@@ -647,59 +568,21 @@ export default function AIChatInterface({
     if (!activeConversation) return
     if (globalThis.window === undefined) return
 
-    const payload = encodeConversationShare({
-      ...activeConversation,
-      messages: activeConversation.messages.slice(-50)
-    })
-
-    const url = new URL(location.href)
-    url.searchParams.delete('yue_chat')
-    url.searchParams.delete('nery_chat')
-    url.hash = new URLSearchParams({ nery_chat: payload }).toString()
-
     try {
+      const payload = encodeConversationShare({
+        ...activeConversation,
+        messages: activeConversation.messages.slice(-50)
+      })
+      const url = new URL(location.href)
+      url.searchParams.delete('yue_chat')
+      url.searchParams.delete('nery_chat')
+      url.hash = new URLSearchParams({ nery_chat: payload }).toString()
       await navigator.clipboard.writeText(url.href)
       toast.success(t('mascot.aiChat.shareCopied'))
     } catch {
       toast.error(t('mascot.aiChat.shareCopyFailed'))
     }
   }
-
-  const handleAutonomousActions = useCallback(
-    async (text: string) => {
-      // 1. Navigation
-      const navMatch = /\[\[NAVIGATE:([^\]]+)\]\]/.exec(text)
-      if (navMatch?.[1]) {
-        const targetPath = navMatch[1].trim()
-        if (is_safe_internal_path(targetPath)) {
-          scheduleActionTimeout(() => {
-            navigationPlay()
-            router.push(targetPath)
-          }, 1500)
-        }
-      }
-
-      // 2. Site Search
-      const searchMatch = /\[\[SEARCH:([^\]]+)\]\]/.exec(text)
-      if (searchMatch?.[1]) {
-        const query = searchMatch[1].trim()
-        scheduleActionTimeout(() => {
-          const event = new CustomEvent('mascot-open-search', { detail: { query } })
-          dispatchEvent(event)
-          clickPlay()
-        }, 800)
-      }
-
-      // 3. Scroll to Top
-      if (text.includes('[[SCROLL_TO_TOP]]')) {
-        scheduleActionTimeout(() => {
-          window.scrollTo({ top: 0, behavior: 'smooth' })
-          clickPlay()
-        }, 800)
-      }
-    },
-    [clickPlay, navigationPlay, router, scheduleActionTimeout]
-  )
 
   const sendMessage = async () => {
     const messageText = inputValue.trim()
@@ -792,12 +675,36 @@ export default function AIChatInterface({
         nextMessages = previousMessages.slice(0, previousMessages.indexOf(retryUser) + 1)
       }
 
-      updateConversationById(conversationId, (c) => ({
-        ...c,
-        messages: nextMessages,
-        updatedAt: new Date().toISOString()
-      }))
+      nextMessages = nextMessages.slice(-200)
+      const updatedAt = new Date().toISOString()
+      updateConversationById(conversationId, (c) => ({ ...c, messages: nextMessages, updatedAt }))
+      saveMascotChatState({
+        conversations: conversations.map((conversation) =>
+          conversation.id === conversationId
+            ? { ...conversation, messages: nextMessages, updatedAt }
+            : conversation
+        ),
+        activeConversationId: conversationId,
+        provider: 'auto'
+      })
+      const retained = new Set(
+        conversations.flatMap((conversation) =>
+          (conversation.id === conversationId ? nextMessages : conversation.messages).map(
+            (item) => item.id
+          )
+        )
+      )
+      setMessageActions((previous) =>
+        Object.fromEntries(Object.entries(previous).filter(([id]) => retained.has(id)))
+      )
+      setFeedbackDraftByMessageId((previous) =>
+        Object.fromEntries(Object.entries(previous).filter(([id]) => retained.has(id)))
+      )
+      setFeedbackIsSubmittingByMessageId((previous) =>
+        Object.fromEntries(Object.entries(previous).filter(([id]) => retained.has(id)))
+      )
       followBottomRef.current = true
+      setPhase('responding')
       setIsLoading(true)
       setIsCancelling(false)
       onMessageSent?.(messageText)
@@ -844,22 +751,6 @@ export default function AIChatInterface({
             timestamp: message.timestamp
           }))
 
-        const should_stream = (() => {
-          const lower = messageText.toLowerCase()
-          return !(
-            lower.includes('blog') ||
-            lower.includes('post') ||
-            lower.includes('postagem') ||
-            lower.includes('recomenda') ||
-            lower.includes('sugere') ||
-            lower.includes('link') ||
-            lower.includes('url') ||
-            lower.includes('direciona') ||
-            lower.includes('onde ') ||
-            lower.includes('where ')
-          )
-        })()
-
         const response = await fetch('/api/ai/chat', {
           method: 'POST',
           signal: abortController.signal,
@@ -869,7 +760,7 @@ export default function AIChatInterface({
           body: JSON.stringify({
             message: messageText,
             assistantVersion: 2,
-            stream: should_stream,
+            stream: true,
             locale,
             ...(isTurnstileEnabled && { turnstileToken }),
             context: {
@@ -921,7 +812,12 @@ export default function AIChatInterface({
           }))
           const applyEvent = (event: AssistantEvent) => {
             switch (event.type) {
+              case 'phase': {
+                setPhase(event.phase)
+                break
+              }
               case 'delta': {
+                setPhase('responding')
                 accumulated += event.text
                 if (performance.now() - lastRender >= 45) {
                   update(accumulated)
@@ -998,16 +894,22 @@ export default function AIChatInterface({
             updatedAt: new Date().toISOString()
           }))
 
-          while (true) {
-            const { value, done } = await reader.read()
-            if (done) break
-            accumulated += decoder.decode(value, { stream: true })
-            updateConversationById(conversationId, (c) => ({
-              ...c,
-              messages: c.messages.map((m) =>
-                m.id === messageId ? { ...m, text: accumulated } : m
-              )
-            }))
+          try {
+            while (true) {
+              const { value, done } = await reader.read()
+              if (done) break
+              accumulated += decoder.decode(value, { stream: true })
+              updateConversationById(conversationId, (c) => ({
+                ...c,
+                messages: c.messages.map((m) =>
+                  m.id === messageId ? { ...m, text: accumulated } : m
+                )
+              }))
+            }
+
+            accumulated += decoder.decode()
+          } finally {
+            reader.releaseLock()
           }
 
           const latency = Math.max(0, Math.round(performance.now() - startTime))
@@ -1024,10 +926,6 @@ export default function AIChatInterface({
             ),
             updatedAt: new Date().toISOString()
           }))
-
-          if (accumulated) {
-            handleAutonomousActions(accumulated)
-          }
 
           return true
         }
@@ -1070,10 +968,6 @@ export default function AIChatInterface({
           updatedAt: new Date().toISOString()
         }))
 
-        if (data.message) {
-          handleAutonomousActions(data.message)
-        }
-
         return true
       } catch (error) {
         if (is_abort_error(error)) {
@@ -1114,7 +1008,7 @@ export default function AIChatInterface({
       appendCancelledResponse,
       canUseChat,
       currentPage,
-      handleAutonomousActions,
+      conversations,
       isLoading,
       isTurnstileEnabled,
       locale,
@@ -1472,359 +1366,374 @@ export default function AIChatInterface({
           }}
           className='bg-bg-surface flex flex-1 flex-col gap-4 overflow-y-auto px-4 py-4'
         >
-          {messages.map((message) => (
-            <div
-              key={message.id}
-              className={`flex ${message.isUser ? 'justify-end' : 'justify-start'} animate-in slide-in-from-bottom-2 duration-300`}
-            >
+          {messages
+            .filter((message) => message.text.trim() || message.isUser)
+            .map((message) => (
               <div
-                className={`max-w-[90%] rounded-lg px-3.5 py-3 text-sm shadow-sm sm:max-w-[85%] ${get_bubble_class_name(message)}`}
+                key={message.id}
+                className={`flex ${message.isUser ? 'justify-end' : 'justify-start'} motion-safe:animate-in motion-safe:slide-in-from-bottom-2 duration-300`}
               >
-                {message.isUser && (
-                  <div className='mb-2 flex items-center gap-2 border-b border-[var(--border-subtle)] pb-2'>
-                    <span className='text-status-info/80 text-xs font-medium'>
-                      {user_display_name}
-                    </span>
-                    {message.id === lastUserId && !isLoading && (
-                      <button
-                        type='button'
-                        className='ml-auto rounded p-1'
-                        aria-label={t('mascot.aiChat.editMessage')}
-                        onClick={() => {
-                          setEditingMessageId(message.id)
-                          setInputValue(message.text)
-                          inputRef.current?.focus()
-                        }}
-                      >
-                        <Pencil className='size-3.5' />
-                      </button>
-                    )}
-                  </div>
-                )}
-                {!message.isUser && (
-                  <div className='mb-2 flex items-center gap-2 border-b border-[var(--border-subtle)] pb-2'>
-                    <Avatar className='h-6 w-6'>
-                      <AvatarImage src={mascot_avatar_src} alt='Nery' />
-                      <AvatarFallback className='text-status-agent bg-status-agent-soft text-[10px] font-medium'>
-                        N
-                      </AvatarFallback>
-                    </Avatar>
-                    <span className='text-muted-foreground text-xs font-medium'>Nery</span>
-                    {!message.isError &&
-                      message.id !== 'welcome' &&
-                      message.id === messages.at(-1)?.id &&
-                      !isLoading &&
-                      canUseChat && (
+                <div
+                  className={`max-w-[90%] min-w-0 rounded-lg px-3.5 py-3 text-sm [overflow-wrap:anywhere] break-words shadow-sm sm:max-w-[85%] ${get_bubble_class_name(message)}`}
+                >
+                  {message.isUser && (
+                    <div className='mb-2 flex items-center gap-2 border-b border-[var(--border-subtle)] pb-2'>
+                      <span className='text-status-info/80 text-xs font-medium'>
+                        {user_display_name}
+                      </span>
+                      {message.id === lastUserId && !isLoading && (
                         <button
                           type='button'
-                          className='text-muted-foreground hover:text-foreground ml-auto rounded p-1'
-                          aria-label={t('mascot.aiChat.regenerate')}
-                          onClick={() => void retry_message(message.id)}
+                          className='ml-auto rounded p-1'
+                          aria-label={t('mascot.aiChat.editMessage')}
+                          onClick={() => {
+                            setEditingMessageId(message.id)
+                            setInputValue(message.text)
+                            inputRef.current?.focus()
+                          }}
                         >
-                          <RefreshCw className='size-3.5' />
+                          <Pencil className='size-3.5' />
                         </button>
                       )}
-                    {!message.isError && (
-                      <button
-                        type='button'
-                        onClick={() =>
-                          copyMessage(
-                            message.text.replace(/\[\[[A-Z_]+(?::[^\]]+)?\]\]/g, '').trim()
-                          )
-                        }
-                        className='text-muted-foreground hover:text-foreground ml-auto rounded p-1 transition-colors'
-                        aria-label={t('mascot.aiChat.copyMessage')}
-                      >
-                        <Copy className='h-3.5 w-3.5' />
-                      </button>
-                    )}
-                  </div>
-                )}
-                {message.isUser ? (
-                  <p className='leading-relaxed whitespace-pre-wrap'>{message.text}</p>
-                ) : (
-                  <div className='flex flex-col gap-2'>
-                    <ChatMarkdown>
-                      {message.text.replace(/\[\[[A-Z_]+(?::[^\]]+)?\]\]/g, '').trim()}
-                    </ChatMarkdown>
-                    {message.isError && (
-                      <Button
-                        variant='outline'
-                        size='sm'
-                        onClick={() => void retry_message(message.id)}
-                        disabled={isLoading || !canUseChat}
-                        className='mt-1 flex w-fit items-center gap-2 rounded-full px-4 text-xs'
-                      >
-                        <RefreshCw className='h-3 w-3' />
-                        {t('mascot.aiChat.retry')}
-                      </Button>
-                    )}
-                  </div>
-                )}
-
-                {!message.isUser &&
-                  !message.isError &&
-                  !message.cancelled &&
-                  (messageActions[message.id]?.length ?? 0) > 0 && (
-                    <div className='mt-2 flex flex-wrap gap-2'>
-                      {messageActions[message.id]?.map((action, index) => {
-                        if (action.type === 'navigate' && is_safe_internal_path(action.href)) {
-                          return (
-                            <Button
-                              key={index}
-                              variant='outline'
-                              size='sm'
-                              onClick={() => {
-                                navigationPlay()
-                                router.push(action.href)
-                              }}
-                            >
-                              {t('mascot.aiChat.citations.actions.open')}: {action.title}
-                            </Button>
-                          )
-                        }
-                        if (action.type === 'search') {
-                          return (
-                            <Button
-                              key={index}
-                              variant='outline'
-                              size='sm'
-                              onClick={() => {
-                                dispatchEvent(
-                                  new CustomEvent('mascot-open-search', {
-                                    detail: { query: action.query }
-                                  })
-                                )
-                                clickPlay()
-                              }}
-                            >
-                              {t('mascot.aiChat.openSearch')}: {action.query}
-                            </Button>
-                          )
-                        }
-                        return null
-                      })}
                     </div>
                   )}
-                {!message.isUser && !message.isError && (message.citations?.length ?? 0) > 0 ? (
-                  <details className='mt-3 space-y-2 border-t border-[var(--border-subtle)] pt-2'>
-                    <summary className='text-muted-foreground hover:text-foreground cursor-pointer text-xs font-medium'>
-                      {t('mascot.aiChat.citations.title')} ({message.citations?.length})
-                    </summary>
-                    <div className='space-y-2'>
-                      {message.citations?.map((c) => (
-                        <Card
-                          key={c.id}
-                          className='bg-background/40 border-border/40 p-3 shadow-none'
+                  {!message.isUser && (
+                    <div className='mb-2 flex items-center gap-2 border-b border-[var(--border-subtle)] pb-2'>
+                      <Avatar className='h-6 w-6'>
+                        <AvatarImage src={mascot_avatar_src} alt='Nery' />
+                        <AvatarFallback className='text-status-agent bg-status-agent-soft text-[10px] font-medium'>
+                          N
+                        </AvatarFallback>
+                      </Avatar>
+                      <span className='text-muted-foreground text-xs font-medium'>Nery</span>
+                      {!message.isError &&
+                        message.id !== 'welcome' &&
+                        message.id === messages.at(-1)?.id &&
+                        !isLoading &&
+                        canUseChat && (
+                          <button
+                            type='button'
+                            className='text-muted-foreground hover:text-foreground ml-auto rounded p-1'
+                            aria-label={t('mascot.aiChat.regenerate')}
+                            onClick={() => void retry_message(message.id)}
+                          >
+                            <RefreshCw className='size-3.5' />
+                          </button>
+                        )}
+                      {!message.isError && (
+                        <button
+                          type='button'
+                          onClick={() =>
+                            copyMessage(
+                              message.text.replace(/\[\[[A-Z_]+(?::[^\]]+)?\]\]/g, '').trim()
+                            )
+                          }
+                          className='text-muted-foreground hover:text-foreground ml-auto rounded p-1 transition-colors'
+                          aria-label={t('mascot.aiChat.copyMessage')}
                         >
-                          <div className='flex items-start justify-between gap-3'>
-                            <div className='min-w-0'>
-                              <div className='mb-1 flex items-center gap-2'>
-                                <Badge
-                                  variant={get_citation_badge_variant(c.type)}
-                                  className='h-5 px-2 text-[10px]'
-                                >
-                                  {t(`mascot.aiChat.citations.types.${c.type}` as any)}
-                                </Badge>
-                              </div>
-                              <Link
-                                href={c.href}
-                                className='text-foreground block text-sm font-medium hover:underline'
+                          <Copy className='h-3.5 w-3.5' />
+                        </button>
+                      )}
+                    </div>
+                  )}
+                  {message.isUser ? (
+                    <p className='leading-relaxed whitespace-pre-wrap'>{message.text}</p>
+                  ) : (
+                    <div className='flex flex-col gap-2'>
+                      <ChatMarkdown
+                        allowedHrefs={
+                          message.citations?.map((citation) => citation.href) ??
+                          (isLoading && message.id === messages.at(-1)?.id ? [] : undefined)
+                        }
+                      >
+                        {message.text.replace(/\[\[[A-Z_]+(?::[^\]]+)?\]\]/g, '').trim()}
+                      </ChatMarkdown>
+                      {message.isError && (
+                        <Button
+                          variant='outline'
+                          size='sm'
+                          onClick={() => void retry_message(message.id)}
+                          disabled={isLoading || !canUseChat}
+                          className='mt-1 flex w-fit items-center gap-2 rounded-full px-4 text-xs'
+                        >
+                          <RefreshCw className='h-3 w-3' />
+                          {t('mascot.aiChat.retry')}
+                        </Button>
+                      )}
+                    </div>
+                  )}
+
+                  {!message.isUser &&
+                    !message.isError &&
+                    !message.cancelled &&
+                    (messageActions[message.id]?.length ?? 0) > 0 && (
+                      <div className='mt-2 flex flex-wrap gap-2'>
+                        {messageActions[message.id]?.map((action, index) => {
+                          if (action.type === 'navigate' && is_safe_internal_path(action.href)) {
+                            return (
+                              <Button
+                                key={index}
+                                variant='outline'
+                                size='sm'
+                                onClick={() => {
+                                  navigationPlay()
+                                  router.push(action.href)
+                                }}
                               >
-                                {c.title}
-                              </Link>
-                              {c.excerpt ? (
-                                <div className='text-muted-foreground mt-1 line-clamp-2 text-xs'>
-                                  {c.excerpt}
-                                </div>
-                              ) : null}
-
-                              <div className='mt-2 flex flex-wrap items-center gap-2'>
-                                <Tooltip>
-                                  <TooltipTrigger asChild>
-                                    <Link
-                                      href={c.href}
-                                      aria-label={t('mascot.aiChat.citations.actions.open')}
-                                      className={cn(
-                                        buttonVariants({ variant: 'outline', size: 'sm' }),
-                                        'h-8 w-8 justify-center px-0 text-xs sm:w-auto sm:px-2'
-                                      )}
+                                {t('mascot.aiChat.citations.actions.open')}: {action.title}
+                              </Button>
+                            )
+                          }
+                          if (action.type === 'search') {
+                            return (
+                              <Button
+                                key={index}
+                                variant='outline'
+                                size='sm'
+                                onClick={() => {
+                                  dispatchEvent(
+                                    new CustomEvent('mascot-open-search', {
+                                      detail: { query: action.query }
+                                    })
+                                  )
+                                  clickPlay()
+                                }}
+                              >
+                                {t('mascot.aiChat.openSearch')}: {action.query}
+                              </Button>
+                            )
+                          }
+                          return null
+                        })}
+                      </div>
+                    )}
+                  {!message.isUser && !message.isError && (message.citations?.length ?? 0) > 0 ? (
+                    <details className='mt-3 space-y-2 border-t border-[var(--border-subtle)] pt-2'>
+                      <summary className='text-muted-foreground hover:text-foreground cursor-pointer text-xs font-medium'>
+                        {t('mascot.aiChat.citations.title')} ({message.citations?.length})
+                      </summary>
+                      <div className='space-y-2'>
+                        {message.citations
+                          ?.filter((c) => is_safe_internal_path(c.href))
+                          .map((c) => (
+                            <Card
+                              key={c.id}
+                              className='bg-background/40 border-border/40 p-3 shadow-none'
+                            >
+                              <div className='flex items-start justify-between gap-3'>
+                                <div className='min-w-0'>
+                                  <div className='mb-1 flex items-center gap-2'>
+                                    <Badge
+                                      variant={get_citation_badge_variant(c.type)}
+                                      className='h-5 px-2 text-[10px]'
                                     >
-                                      <ExternalLink className='h-3.5 w-3.5 sm:mr-1' />
-                                      <span className='hidden sm:inline'>
+                                      {t(`mascot.aiChat.citations.types.${c.type}` as any)}
+                                    </Badge>
+                                  </div>
+                                  <a
+                                    href={c.href}
+                                    className='text-foreground block text-sm font-medium hover:underline'
+                                  >
+                                    {c.title}
+                                  </a>
+                                  {c.excerpt ? (
+                                    <div className='text-muted-foreground mt-1 line-clamp-2 text-xs'>
+                                      {c.excerpt}
+                                    </div>
+                                  ) : null}
+
+                                  <div className='mt-2 flex flex-wrap items-center gap-2'>
+                                    <Tooltip>
+                                      <TooltipTrigger asChild>
+                                        <a
+                                          href={c.href}
+                                          aria-label={t('mascot.aiChat.citations.actions.open')}
+                                          className={cn(
+                                            buttonVariants({ variant: 'outline', size: 'sm' }),
+                                            'h-8 w-8 justify-center px-0 text-xs sm:w-auto sm:px-2'
+                                          )}
+                                        >
+                                          <ExternalLink className='h-3.5 w-3.5 sm:mr-1' />
+                                          <span className='hidden sm:inline'>
+                                            {t('mascot.aiChat.citations.actions.open')}
+                                          </span>
+                                        </a>
+                                      </TooltipTrigger>
+                                      <TooltipContent>
                                         {t('mascot.aiChat.citations.actions.open')}
-                                      </span>
-                                    </Link>
-                                  </TooltipTrigger>
-                                  <TooltipContent>
-                                    {t('mascot.aiChat.citations.actions.open')}
-                                  </TooltipContent>
-                                </Tooltip>
+                                      </TooltipContent>
+                                    </Tooltip>
 
-                                <Tooltip>
-                                  <TooltipTrigger asChild>
-                                    <Button
-                                      variant='ghost'
-                                      size='sm'
-                                      className='h-8 w-8 justify-center px-0 text-xs sm:w-auto sm:px-2'
-                                      onClick={() => void copyLink(c.href)}
-                                      aria-label={t('mascot.aiChat.citations.actions.copyLink')}
-                                    >
-                                      <Copy className='h-3.5 w-3.5 sm:mr-1' />
-                                      <span className='hidden sm:inline'>
+                                    <Tooltip>
+                                      <TooltipTrigger asChild>
+                                        <Button
+                                          variant='ghost'
+                                          size='sm'
+                                          className='h-8 w-8 justify-center px-0 text-xs sm:w-auto sm:px-2'
+                                          onClick={() => void copyLink(c.href)}
+                                          aria-label={t('mascot.aiChat.citations.actions.copyLink')}
+                                        >
+                                          <Copy className='h-3.5 w-3.5 sm:mr-1' />
+                                          <span className='hidden sm:inline'>
+                                            {t('mascot.aiChat.citations.actions.copyLink')}
+                                          </span>
+                                        </Button>
+                                      </TooltipTrigger>
+                                      <TooltipContent>
                                         {t('mascot.aiChat.citations.actions.copyLink')}
-                                      </span>
-                                    </Button>
-                                  </TooltipTrigger>
-                                  <TooltipContent>
-                                    {t('mascot.aiChat.citations.actions.copyLink')}
-                                  </TooltipContent>
-                                </Tooltip>
+                                      </TooltipContent>
+                                    </Tooltip>
 
-                                <Tooltip>
-                                  <TooltipTrigger asChild>
-                                    <Button
-                                      variant='ghost'
-                                      size='sm'
-                                      className='h-8 w-8 justify-center px-0 text-xs sm:w-auto sm:px-2'
-                                      disabled={isLoading}
-                                      onClick={() =>
-                                        void more_like_this({ title: c.title, type: c.type })
-                                      }
-                                      aria-label={t('mascot.aiChat.citations.actions.moreLikeThis')}
-                                    >
-                                      <Sparkles className='h-3.5 w-3.5 sm:mr-1' />
-                                      <span className='hidden sm:inline'>
+                                    <Tooltip>
+                                      <TooltipTrigger asChild>
+                                        <Button
+                                          variant='ghost'
+                                          size='sm'
+                                          className='h-8 w-8 justify-center px-0 text-xs sm:w-auto sm:px-2'
+                                          disabled={isLoading}
+                                          onClick={() =>
+                                            void more_like_this({ title: c.title, type: c.type })
+                                          }
+                                          aria-label={t(
+                                            'mascot.aiChat.citations.actions.moreLikeThis'
+                                          )}
+                                        >
+                                          <Sparkles className='h-3.5 w-3.5 sm:mr-1' />
+                                          <span className='hidden sm:inline'>
+                                            {t('mascot.aiChat.citations.actions.moreLikeThis')}
+                                          </span>
+                                        </Button>
+                                      </TooltipTrigger>
+                                      <TooltipContent>
                                         {t('mascot.aiChat.citations.actions.moreLikeThis')}
-                                      </span>
-                                    </Button>
-                                  </TooltipTrigger>
-                                  <TooltipContent>
-                                    {t('mascot.aiChat.citations.actions.moreLikeThis')}
-                                  </TooltipContent>
-                                </Tooltip>
+                                      </TooltipContent>
+                                    </Tooltip>
+                                  </div>
+                                </div>
                               </div>
-                            </div>
-                          </div>
-                        </Card>
-                      ))}
-                    </div>
-                  </details>
-                ) : null}
-                {!message.isUser && !message.isError && !message.cancelled && message.requestId && (
-                  <div className='mt-2 flex items-center justify-between'>
-                    <div className='flex items-center gap-1'>
-                      <button
-                        type='button'
-                        onClick={() => handleReaction(message.id, 'like')}
-                        aria-label={t('mascot.aiChat.feedback.like')}
+                            </Card>
+                          ))}
+                      </div>
+                    </details>
+                  ) : null}
+                  {!message.isUser &&
+                    !message.isError &&
+                    !message.cancelled &&
+                    message.requestId &&
+                    (!isLoading || message.id !== messages.at(-1)?.id) && (
+                      <div className='mt-2 flex items-center justify-between'>
+                        <div className='flex items-center gap-1'>
+                          <button
+                            type='button'
+                            onClick={() => handleReaction(message.id, 'like')}
+                            aria-label={t('mascot.aiChat.feedback.like')}
+                            disabled={feedbackIsSubmittingByMessageId[message.id] === true}
+                            className={`hover:bg-bg-hover flex items-center gap-1 rounded px-2 py-1 text-xs transition-all ${
+                              message.reactions?.userReaction === 'like'
+                                ? 'text-status-success bg-status-success-soft'
+                                : 'text-muted-foreground'
+                            }`}
+                          >
+                            <ThumbsUp className='h-3 w-3' />
+                            {message.reactions?.likes ?? 0}
+                          </button>
+                          <button
+                            type='button'
+                            onClick={() => handleReaction(message.id, 'dislike')}
+                            aria-label={t('mascot.aiChat.feedback.dislike')}
+                            disabled={feedbackIsSubmittingByMessageId[message.id] === true}
+                            className={`hover:bg-bg-hover flex items-center gap-1 rounded px-2 py-1 text-xs transition-all ${
+                              message.reactions?.userReaction === 'dislike'
+                                ? 'text-status-danger bg-status-danger-soft'
+                                : 'text-muted-foreground'
+                            }`}
+                          >
+                            <ThumbsDown className='h-3 w-3' />
+                            {message.reactions?.dislikes ?? 0}
+                          </button>
+                        </div>
+                        <div className='text-muted-foreground/60 text-xs'>
+                          {new Date(message.timestamp).toLocaleTimeString([], {
+                            hour: '2-digit',
+                            minute: '2-digit'
+                          })}
+                        </div>
+                      </div>
+                    )}
+                  {!message.isUser &&
+                  !message.isError &&
+                  message.requestId &&
+                  feedbackOpenForMessageId === message.id &&
+                  message.reactions?.userReaction === 'dislike' ? (
+                    <div className='mt-3 space-y-2 border-t border-[var(--border-subtle)] pt-2'>
+                      <textarea
+                        rows={2}
+                        value={feedbackDraftByMessageId[message.id] ?? ''}
+                        onChange={(e) =>
+                          setFeedbackDraftByMessageId((prev) => ({
+                            ...prev,
+                            [message.id]: e.target.value
+                          }))
+                        }
+                        placeholder={t('mascot.aiChat.feedback.commentPlaceholder')}
+                        className='placeholder:text-muted-foreground/60 w-full resize-none rounded-lg border border-[var(--border-subtle)] bg-[var(--yu-bg-input)] px-3 py-2 text-xs transition-all duration-200 focus:border-[var(--action-primary-border)] focus:ring-2 focus:ring-[var(--action-primary-border)] focus:outline-none'
                         disabled={feedbackIsSubmittingByMessageId[message.id] === true}
-                        className={`hover:bg-bg-hover flex items-center gap-1 rounded px-2 py-1 text-xs transition-all ${
-                          message.reactions?.userReaction === 'like'
-                            ? 'text-status-success bg-status-success-soft'
-                            : 'text-muted-foreground'
-                        }`}
-                      >
-                        <ThumbsUp className='h-3 w-3' />
-                        {message.reactions?.likes ?? 0}
-                      </button>
-                      <button
-                        type='button'
-                        onClick={() => handleReaction(message.id, 'dislike')}
-                        aria-label={t('mascot.aiChat.feedback.dislike')}
-                        disabled={feedbackIsSubmittingByMessageId[message.id] === true}
-                        className={`hover:bg-bg-hover flex items-center gap-1 rounded px-2 py-1 text-xs transition-all ${
-                          message.reactions?.userReaction === 'dislike'
-                            ? 'text-status-danger bg-status-danger-soft'
-                            : 'text-muted-foreground'
-                        }`}
-                      >
-                        <ThumbsDown className='h-3 w-3' />
-                        {message.reactions?.dislikes ?? 0}
-                      </button>
+                      />
+                      <div className='flex items-center justify-end gap-2'>
+                        <button
+                          type='button'
+                          onClick={() => setFeedbackOpenForMessageId(null)}
+                          className='text-muted-foreground hover:text-foreground rounded px-2 py-1 text-xs transition-colors'
+                          disabled={feedbackIsSubmittingByMessageId[message.id] === true}
+                        >
+                          {t('mascot.aiChat.feedback.cancel')}
+                        </button>
+                        <button
+                          type='button'
+                          onClick={() => {
+                            const raw = feedbackDraftByMessageId[message.id]
+                            const comment = raw?.trim() ? raw.trim() : undefined
+
+                            void submit_feedback({
+                              requestId: message.requestId!,
+                              messageId: message.id,
+                              rating: 'dislike',
+                              comment
+                            })
+
+                            setFeedbackOpenForMessageId(null)
+                            setFeedbackDraftByMessageId((prev) => ({ ...prev, [message.id]: '' }))
+                          }}
+                          className='bg-action-primary text-text-inverse hover:bg-action-primary-hover rounded px-3 py-1 text-xs transition-colors disabled:cursor-not-allowed disabled:opacity-60'
+                          disabled={feedbackIsSubmittingByMessageId[message.id] === true}
+                        >
+                          {feedbackIsSubmittingByMessageId[message.id] === true ? (
+                            <span className='flex items-center gap-2'>
+                              <Loader2 className='h-3 w-3 animate-spin' />
+                              {t('mascot.aiChat.feedback.send')}
+                            </span>
+                          ) : (
+                            t('mascot.aiChat.feedback.send')
+                          )}
+                        </button>
+                      </div>
                     </div>
-                    <div className='text-muted-foreground/60 text-xs'>
+                  ) : null}
+                  {!message.isUser && message.isError && (
+                    <div className='text-muted-foreground/60 mt-2 text-right text-xs'>
                       {new Date(message.timestamp).toLocaleTimeString([], {
                         hour: '2-digit',
                         minute: '2-digit'
                       })}
                     </div>
-                  </div>
-                )}
-                {!message.isUser &&
-                !message.isError &&
-                message.requestId &&
-                feedbackOpenForMessageId === message.id &&
-                message.reactions?.userReaction === 'dislike' ? (
-                  <div className='mt-3 space-y-2 border-t border-[var(--border-subtle)] pt-2'>
-                    <textarea
-                      rows={2}
-                      value={feedbackDraftByMessageId[message.id] ?? ''}
-                      onChange={(e) =>
-                        setFeedbackDraftByMessageId((prev) => ({
-                          ...prev,
-                          [message.id]: e.target.value
-                        }))
-                      }
-                      placeholder={t('mascot.aiChat.feedback.commentPlaceholder')}
-                      className='placeholder:text-muted-foreground/60 w-full resize-none rounded-lg border border-[var(--border-subtle)] bg-[var(--yu-bg-input)] px-3 py-2 text-xs transition-all duration-200 focus:border-[var(--action-primary-border)] focus:ring-2 focus:ring-[var(--action-primary-border)] focus:outline-none'
-                      disabled={feedbackIsSubmittingByMessageId[message.id] === true}
-                    />
-                    <div className='flex items-center justify-end gap-2'>
-                      <button
-                        type='button'
-                        onClick={() => setFeedbackOpenForMessageId(null)}
-                        className='text-muted-foreground hover:text-foreground rounded px-2 py-1 text-xs transition-colors'
-                        disabled={feedbackIsSubmittingByMessageId[message.id] === true}
-                      >
-                        {t('mascot.aiChat.feedback.cancel')}
-                      </button>
-                      <button
-                        type='button'
-                        onClick={() => {
-                          const raw = feedbackDraftByMessageId[message.id]
-                          const comment = raw?.trim() ? raw.trim() : undefined
-
-                          void submit_feedback({
-                            requestId: message.requestId!,
-                            messageId: message.id,
-                            rating: 'dislike',
-                            comment
-                          })
-
-                          setFeedbackOpenForMessageId(null)
-                          setFeedbackDraftByMessageId((prev) => ({ ...prev, [message.id]: '' }))
-                        }}
-                        className='bg-action-primary text-text-inverse hover:bg-action-primary-hover rounded px-3 py-1 text-xs transition-colors disabled:cursor-not-allowed disabled:opacity-60'
-                        disabled={feedbackIsSubmittingByMessageId[message.id] === true}
-                      >
-                        {feedbackIsSubmittingByMessageId[message.id] === true ? (
-                          <span className='flex items-center gap-2'>
-                            <Loader2 className='h-3 w-3 animate-spin' />
-                            {t('mascot.aiChat.feedback.send')}
-                          </span>
-                        ) : (
-                          t('mascot.aiChat.feedback.send')
-                        )}
-                      </button>
-                    </div>
-                  </div>
-                ) : null}
-                {!message.isUser && message.isError && (
-                  <div className='text-muted-foreground/60 mt-2 text-right text-xs'>
-                    {new Date(message.timestamp).toLocaleTimeString([], {
-                      hour: '2-digit',
-                      minute: '2-digit'
-                    })}
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
 
           {isLoading && (messages.at(-1)?.isUser || !messages.at(-1)?.text) && (
-            <div className='animate-in slide-in-from-bottom-2 flex justify-start duration-300'>
-              <div className='text-foreground bg-bg-surface flex items-center gap-2 rounded-lg rounded-bl-md border border-[var(--border-subtle)] p-3'>
+            <div className='motion-safe:animate-in motion-safe:slide-in-from-bottom-2 flex justify-start duration-300'>
+              <div className='text-foreground bg-bg-surface flex flex-col items-start gap-2 rounded-lg rounded-bl-md border border-[var(--border-subtle)] p-3'>
                 <div className='mb-2 flex w-full items-center gap-2 border-b border-[var(--border-subtle)] pb-2'>
                   <Avatar className='h-5 w-5'>
                     <AvatarImage src={mascot_avatar_src} alt='Nery' />
@@ -1835,8 +1744,10 @@ export default function AIChatInterface({
                   <span className='text-muted-foreground text-xs font-medium'>Nery</span>
                 </div>
                 <div className='flex items-center gap-2'>
-                  <DotMatrixLoader agent label={t('mascot.aiChat.thinking')} />
-                  <span className='yu-shimmer-agent text-xs'>{t('mascot.aiChat.thinking')}</span>
+                  <DotMatrixLoader agent label={t(`mascot.aiChat.status.${phase}`)} />
+                  <span className='yu-shimmer-agent text-xs'>
+                    {t(`mascot.aiChat.status.${phase}`)}
+                  </span>
                 </div>
               </div>
             </div>
@@ -1914,7 +1825,7 @@ export default function AIChatInterface({
           />
           <div className='mt-3 flex items-center justify-between'>
             <p className='text-muted-foreground/80 text-xs'>{t('mascot.aiChat.footer')}</p>
-            <div className='text-muted-foreground/60 flex items-center gap-1 text-xs'>
+            <div role='status' className='text-muted-foreground/60 flex items-center gap-1 text-xs'>
               <div className={cn('h-2 w-2 rounded-full', statusDotClassName)}></div>
               <span>{t(`mascot.aiChat.status.${chatStatusKey}` as any)}</span>
             </div>

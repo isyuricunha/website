@@ -275,7 +275,7 @@
 }
 
 .sprite[data-motion='review'][data-animated='true'] {
-  animation: nery-review 1620ms step-end infinite;
+  animation: nery-review 1620ms step-end 1 both;
 }
 
 @keyframes nery-review {

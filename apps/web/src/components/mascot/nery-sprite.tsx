@@ -1,5 +1,7 @@
 import type { NeryMotion } from './mascot-art'
 
+import { useState } from 'react'
+
 import styles from './nery-sprite.module.css'
 
 type NerySpriteProps = {
@@ -7,11 +9,20 @@ type NerySpriteProps = {
   animated: boolean
 }
 
-export const NerySprite = ({ motion, animated }: NerySpriteProps) => (
-  <span
-    aria-hidden='true'
-    className={styles.sprite}
-    data-motion={motion}
-    data-animated={animated ? 'true' : 'false'}
-  />
-)
+const MotionSprite = ({ motion, animated }: NerySpriteProps) => {
+  const [finished, setFinished] = useState(false)
+  const returnsToIdle = motion === 'waving' || motion === 'review'
+  return (
+    <span
+      aria-hidden='true'
+      className={styles.sprite}
+      data-motion={finished && returnsToIdle ? 'idle' : motion}
+      data-animated={animated ? 'true' : 'false'}
+      onAnimationEnd={() => {
+        if (returnsToIdle) setFinished(true)
+      }}
+    />
+  )
+}
+
+export const NerySprite = (props: NerySpriteProps) => <MotionSprite key={props.motion} {...props} />

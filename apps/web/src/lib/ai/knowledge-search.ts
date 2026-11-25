@@ -62,19 +62,21 @@ export const createKnowledgeIndex = <T extends KnowledgeEntry>(entries: T[]) => 
   }
   const weights = [5, 3, 2, 1]
   return (query: string) => {
-    const tokens = [...new Set(tokenizeKnowledge(query))]
+    const tokens = [...new Set(tokenizeKnowledge(query))].slice(0, 64)
     return indexed
       .map(({ entry, fields }) => {
         let score = 0
+        let matched = 0
         for (const token of tokens) {
           const idf = Math.log(1 + (indexed.length + 1) / ((frequency.get(token) ?? 0) + 1))
           const weight = fields.reduce(
             (sum, field, index) => sum + (field.has(token) ? (weights[index] ?? 0) : 0),
             0
           )
+          if (weight > 0) matched += 1
           score += weight * idf
         }
-        return { entry, score }
+        return { entry, score: score * (0.5 + (0.5 * matched) / Math.max(tokens.length, 1)) }
       })
       .filter((item) => item.score > 0)
       .toSorted((a, b) => b.score - a.score)

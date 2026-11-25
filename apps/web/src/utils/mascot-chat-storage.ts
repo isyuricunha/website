@@ -228,7 +228,10 @@ export const saveMascotChatState = (state: MascotChatState): void => {
 
   const toStore = {
     version: 3 as const,
-    conversations: normalized.conversations,
+    conversations: normalized.conversations.map((conversation) => ({
+      ...conversation,
+      messages: conversation.messages.slice(-200)
+    })),
     activeConversationId: normalized.activeConversationId,
     provider: normalized.provider
   }
@@ -246,11 +249,14 @@ export const encodeConversationShare = (conversation: ChatConversation): string 
     conversation
   })
 
-  return base64urlEncode(JSON.stringify(payload))
+  const encoded = base64urlEncode(JSON.stringify(payload))
+  if (encoded.length > 64_000) throw new Error('Shared conversation is too large')
+  return encoded
 }
 
 export const decodeConversationShare = (encoded: string): ChatConversation | null => {
   try {
+    if (encoded.length > 512_000) return null
     const json = base64urlDecodeToString(encoded)
     const payload = sharePayloadSchema.parse(JSON.parse(json))
     return payload.conversation

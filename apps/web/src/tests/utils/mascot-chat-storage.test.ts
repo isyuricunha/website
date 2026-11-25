@@ -103,6 +103,32 @@ describe('mascot-chat-storage', () => {
     expect(decoded).toEqual(conversation)
   })
 
+  it('preserves the latest 200 messages instead of writing unreadable storage', () => {
+    const state = loadMascotChatState()
+    const conversation = state.conversations[0]!
+    conversation.messages = Array.from({ length: 205 }, (_, index) => ({
+      id: String(index),
+      text: 'message ' + index,
+      isUser: true,
+      timestamp: new Date().toISOString()
+    }))
+    saveMascotChatState(state)
+    const saved = loadMascotChatState().conversations[0]!
+    expect(saved.messages).toHaveLength(200)
+    expect(saved.messages[0]?.id).toBe('5')
+    expect(saved.messages.at(-1)?.id).toBe('204')
+  })
+
+  it('rejects oversized shared payloads without replacing stored chat history', () => {
+    const state = loadMascotChatState()
+    const conversation = state.conversations[0]!
+    conversation.messages = [
+      { id: 'large', text: 'x'.repeat(64_000), timestamp: new Date().toISOString(), isUser: false }
+    ]
+    expect(() => encodeConversationShare(conversation)).toThrow('too large')
+    expect(decodeConversationShare('a'.repeat(512_001))).toBeNull()
+  })
+
   it('returns null when share payload is invalid', () => {
     expect(decodeConversationShare('not-valid')).toBeNull()
   })

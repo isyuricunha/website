@@ -2,7 +2,11 @@ import { z } from 'zod'
 
 import { type AssistantAction, type AssistantEvent } from './assistant-protocol'
 import { executeSiteTool, siteTools } from './assistant-tools'
-import { build_mascot_openai_messages, type MascotSiteContext } from './mascot-context'
+import {
+  build_mascot_openai_messages,
+  is_simple_social_message,
+  type MascotSiteContext
+} from './mascot-context'
 import { type AiRuntimeConfig } from './runtime-config'
 import { type Citation } from './site-index'
 
@@ -29,6 +33,7 @@ const streamChoice = z.object({
 const tokenCount = z.number().optional()
 const usageSchema = z.object({ prompt_tokens: tokenCount, completion_tokens: tokenCount })
 const deltaSchema = z.object({
+  error: z.unknown().optional(),
   choices: z.array(streamChoice).optional(),
   usage: usageSchema.nullable().optional()
 })
@@ -55,6 +60,7 @@ async function readRound(
   config: AiRuntimeConfig,
   messages: ProviderMessage[],
   tools: boolean,
+  exposeTools: boolean,
   signal: AbortSignal,
   emit: RunOptions['emit']
 ) {
@@ -72,7 +78,7 @@ async function readRound(
       temperature: 0.4,
       max_tokens: MAX_OUTPUT,
       stream: true,
-      ...(tools && { tools: siteTools, tool_choice: 'auto' })
+      ...(exposeTools && { tools: siteTools, tool_choice: tools ? 'auto' : 'none' })
     }),
     signal
   })
@@ -85,11 +91,18 @@ async function readRound(
       )
         throw new ToolSupportError('Provider does not support tools')
     }
+    try {
+      await response.body?.cancel()
+    } catch {
+      // An already closed response has no remaining data.
+    }
     throw new Error(`Assistant provider returned HTTP ${response.status}`)
   }
   if (!response.body) throw new Error('Assistant provider returned no stream')
-  if (!response.headers.get('content-type')?.includes('text/event-stream'))
+  if (!response.headers.get('content-type')?.includes('text/event-stream')) {
+    await response.body.cancel()
     throw new Error('Unexpected assistant provider response format')
+  }
   const reader = response.body.pipeThrough(new TextDecoderStream()).getReader()
   const calls = new Map<number, ToolCall>()
   let text = ''
@@ -109,6 +122,7 @@ async function readRound(
     const payload = deltaSchema.safeParse(JSON.parse(value))
     if (!payload.success) throw new Error('Invalid assistant stream event')
     const data = payload.data
+    if (data.error) throw new Error('Assistant provider returned a stream error')
     if (
       data.usage &&
       typeof data.usage.prompt_tokens === 'number' &&
@@ -169,6 +183,7 @@ async function readRound(
   if (!finishReason && !complete) throw new Error('Incomplete assistant response')
   if (finishReason === 'content_filter' || finishReason === 'error')
     throw new Error('Assistant provider stopped the response')
+  if (finishReason === 'tool_calls' && calls.size === 0) throw new Error('Missing tool calls')
   if (finishReason === 'length' && calls.size > 0) throw new Error('Incomplete tool arguments')
   const toolCalls = [...calls].toSorted(([a], [b]) => a - b).map(([, call]) => call)
   if (
@@ -189,19 +204,22 @@ export const runSiteAssistant = async (options: RunOptions) => {
   )
   const usage: Usage = { input: 0, output: 0, reported: true }
   const actions: AssistantAction[] = []
+  const toolCache = new Map<string, ReturnType<typeof executeSiteTool>>()
   let toolCount = 0
+  let executedTools = 0
   let rounds = 0
-  let toolsEnabled = true
+  let toolsEnabled = !is_simple_social_message(message)
   for (let round = 0; round < MAX_ROUNDS; round += 1) {
+    if (round === 0) emit({ type: 'phase', phase: 'responding' })
     const allowTools = toolsEnabled && round < MAX_ROUNDS - 1 && toolCount < MAX_TOOLS
     let result
     try {
-      result = await readRound(config, messages, allowTools, signal, emit)
+      result = await readRound(config, messages, allowTools, toolsEnabled, signal, emit)
     } catch (error) {
       if (round !== 0 || !(error instanceof ToolSupportError)) throw error
       toolsEnabled = false
       emit({ type: 'reset' })
-      result = await readRound(config, messages, false, signal, emit)
+      result = await readRound(config, messages, false, false, signal, emit)
     }
     rounds += 1
     usage.input += result.usage.input
@@ -210,9 +228,10 @@ export const runSiteAssistant = async (options: RunOptions) => {
     if (result.toolCalls.length === 0) {
       if (!result.text.trim()) throw new Error('Empty assistant response')
       const sources = Array.from(citations.values())
-      const linked = sources.filter(
-        (source) => source.href !== '/' && result.text.includes(source.href)
+      const hrefs = new Set(
+        Array.from(result.text.matchAll(/\]\(<?([^\s)>]+)>?\)/g), (match) => match[1])
       )
+      const linked = sources.filter((source) => hrefs.has(source.href))
       const titled = sources.filter((source) =>
         result.text.toLowerCase().includes(source.title.toLowerCase())
       )
@@ -224,24 +243,47 @@ export const runSiteAssistant = async (options: RunOptions) => {
         requestId,
         latencyMs: Date.now() - start,
         actions: actions.slice(0, 2),
-        toolCalls: toolCount,
+        toolCalls: executedTools,
         providerRounds: rounds
       })
-      return { usage, rounds, toolCount, model: config.model }
+      return { usage, rounds, toolCount: executedTools, model: config.model }
     }
     if (!allowTools || !toolsEnabled || toolCount + result.toolCalls.length > MAX_TOOLS)
       throw new Error('Assistant tool budget exceeded')
     emit({ type: 'reset' })
     messages.push({ role: 'assistant', content: result.text || null, tool_calls: result.toolCalls })
+    const reading = result.toolCalls.some((call) =>
+      ['read_site_content', 'get_current_page'].includes(call.function.name)
+    )
+    emit({ type: 'phase', phase: reading ? 'reading' : 'searching' })
     for (const call of result.toolCalls) {
       signal.throwIfAborted()
-      const output = executeSiteTool(call.function.name, call.function.arguments, {
-        locale: context.locale,
-        pagePath: context.pagePath,
-        history: context.conversation
-      })
+      let normalized = call.function.arguments
+      try {
+        const args = JSON.parse(normalized) as unknown
+        if (args && typeof args === 'object' && !Array.isArray(args)) {
+          normalized = JSON.stringify(
+            Object.fromEntries(
+              Object.entries(args).toSorted(([left], [right]) => left.localeCompare(right))
+            )
+          )
+        }
+      } catch {
+        // Invalid arguments still receive a tool error, not a crash.
+      }
+      const key = call.function.name + ':' + normalized
+      let output = toolCache.get(key)
+      if (!output) {
+        output = executeSiteTool(call.function.name, call.function.arguments, {
+          locale: context.locale,
+          pagePath: context.pagePath,
+          history: context.conversation
+        })
+        toolCache.set(key, output)
+        executedTools += 1
+        if (output.action && actions.length < 2) actions.push(output.action)
+      }
       for (const citation of output.citations) citations.set(citation.href, citation)
-      if (output.action && actions.length < 2) actions.push(output.action)
       messages.push({ role: 'tool', tool_call_id: call.id, content: JSON.stringify(output.result) })
       toolCount += 1
     }

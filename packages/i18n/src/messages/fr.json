@@ -2200,6 +2200,7 @@
       "copyError": "Échec de la copie de l'email. Veuillez réessayer."
     },
     "aiChat": {
+      "userLabel": "Moi",
       "openSearch": "Ouvrir la recherche",
       "expandChat": "Agrandir la discussion",
       "compactChat": "Mode compact",
@@ -2304,6 +2305,8 @@
       "status": {
         "checking": "Vérification de Nery AI...",
         "ready": "Nery AI est prête",
+        "searching": "Nery recherche…",
+        "reading": "Nery lit…",
         "responding": "Nery AI répond...",
         "unavailable": "Nery AI indisponible",
         "offline": "Hors ligne"

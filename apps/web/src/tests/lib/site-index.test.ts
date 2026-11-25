@@ -67,6 +67,16 @@ describe('site-index', () => {
     expect(entries.find((e) => e.type === 'snippet')?.href).toBe('/en/snippet/snippet-hello')
   })
 
+  it('resolves canonical homepage and public document aliases but never private paths', async () => {
+    const { read_site_content, get_site_overview } = await import('@/lib/ai/site-index')
+    // The test's localized-path mock prefixes even the default locale.
+    expect(read_site_content('/en', 'en')?.citation.href).toBe('/en/')
+    expect(read_site_content('/en/blog/hello', 'en')?.citation.href).toBe('/en/blog/hello')
+    expect(read_site_content('/pt/admin/users', 'pt')).toBeNull()
+    expect(get_site_overview('ja').some((item) => item.title === 'プロジェクト')).toBe(true)
+    expect(get_site_overview('zh-CN').some((item) => item.title === '项目')).toBe(true)
+  })
+
   it('get_page_context resolves blog post context using page_path', async () => {
     const { get_page_context } = await import('@/lib/ai/site-index')
 

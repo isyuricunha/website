@@ -2200,6 +2200,7 @@
       "copyError": "复制邮箱失败，请重试。"
     },
     "aiChat": {
+      "userLabel": "我",
       "openSearch": "打开搜索",
       "expandChat": "展开聊天",
       "compactChat": "紧凑模式",
@@ -2304,6 +2305,8 @@
       "status": {
         "checking": "正在检查 Nery AI...",
         "ready": "Nery AI 已就绪",
+        "searching": "Nery 正在搜索…",
+        "reading": "Nery 正在阅读…",
         "responding": "Nery AI 正在回复...",
         "unavailable": "Nery AI 不可用",
         "offline": "离线"

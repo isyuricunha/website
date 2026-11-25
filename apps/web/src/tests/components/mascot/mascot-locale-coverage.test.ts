@@ -52,6 +52,22 @@ describe('mascot system message locale coverage', () => {
     expect(messages[0]?.content).not.toContain('unique current')
   })
 
+  it('retains the newest bounded history and current user turn exactly once', () => {
+    const previous = Array.from({ length: 30 }, (_, index) => ({
+      role: index % 2 === 0 ? ('user' as const) : ('assistant' as const),
+      content: String(index).padStart(2, '0') + 'x'.repeat(2998)
+    }))
+    const messages = build_mascot_openai_messages(
+      { ...baseContext('en'), conversation: previous },
+      'new question'
+    )
+    const history = messages.slice(1, -1)
+    expect(history.map((turn) => turn.content)).toEqual(
+      previous.slice(-4).map((turn) => turn.content)
+    )
+    expect(messages.at(-1)).toEqual({ role: 'user', content: 'new question' })
+  })
+
   it('preserves genuine repeated questions across distinct turns', () => {
     const messages = build_mascot_openai_messages(
       {

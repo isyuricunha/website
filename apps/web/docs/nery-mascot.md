@@ -90,3 +90,38 @@ References:
 - https://github.com/maximhq/bifrost/blob/dev/docs/quickstart/gateway/tool-calling.mdx
 - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Segmenter
 - https://vercel.com/docs/functions/configuring-functions/duration
+
+## Release refinement
+
+The assistant uses exact localized public paths, localized overview labels,
+weighted retrieval with match coverage, and per-locale cached source entries.
+Standalone greetings and thanks omit retrieval and tools. Simple answers may
+reuse retrieved excerpts; detailed summaries still require document reads.
+Repeated tool arguments reuse per-request results while satisfying each call
+ID. The final generation round preserves tool definitions with tool_choice
+none; provider cache behavior is not guaranteed. The 45-second shared deadline
+and three-round/four-tool execution budget remain in place.
+
+NDJSON events are validated at runtime, including phase events for searching,
+reading and responding. Upstream error envelopes are rejected. Request locale,
+JSON and size are validated. The client no longer executes legacy text commands,
+even for legacy responses. New message links are limited to cited public paths;
+legacy/imported links are constrained to public same-origin route families.
+Raw HTML and remote images are disabled. Navigation proposals still require a
+visitor click. Citations do not prefetch routes. These controls reduce attack
+surface but do not establish complete resistance to prompt injection.
+
+The browser saves the accepted question before streaming, retains the latest
+200 messages per conversation (matching the storage schema), and keeps the
+existing 50-conversation limit. New share payloads are limited to 64000 encoded
+characters; older imports are limited to 512000. Sharing errors are surfaced
+without removing conversations. The most recent response may be regenerated;
+partial/cancelled/error text does not become model history. Wave and review
+animations return to idle after a single sequence; reduced motion is respected.
+
+References:
+
+- https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/mitigate-jailbreaks
+- https://developers.openai.com/api/docs/guides/function-calling
+- https://developers.openai.com/api/docs/guides/prompt-caching
+- https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream/cancel
