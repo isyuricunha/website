@@ -1,6 +1,6 @@
 export const MASCOT_AVATAR_SRC = '/images/nery/avatar.webp'
 
-export type NeryMotion = 'idle' | 'waving' | 'jumping' | 'failed' | 'waiting' | 'running' | 'review'
+export type NeryMotion = 'idle' | 'waving' | 'jumping' | 'failed' | 'running' | 'review'
 
 type MotionContext = {
   pageKey: string
@@ -21,7 +21,7 @@ export const getNeryMotion = (context: MotionContext): NeryMotion => {
   if (context.isTickled || context.isKonamiMode) return 'jumping'
   if (context.showMenu) return 'waving'
   if (context.showAIChat || context.showContact || context.showSettings || context.showGame)
-    return 'waiting'
+    return 'idle'
   if (context.pageKey === '404') return 'failed'
   if (context.pageKey === 'projects' || context.pageKey === 'projectsDetail') return 'review'
   return 'idle'

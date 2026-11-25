@@ -5,10 +5,10 @@ commit 4d132e27a18c2e911251283666bf1ec2c67f7d72. See
 public/images/nery/LICENSE.md. Artwork is not covered by the code license.
 
 The floating widget uses the official full-body motion atlas (motion.json v5).
-Seven relevant states are exported as separate transparent WebP strips at the
+Six relevant states are exported as separate transparent WebP strips at the
 native 192×208 cell resolution. Frame durations, cell boundaries and floor
 alignment are preserved. CSS keyframes with discrete frame changes implement
-idle, waving, jumping, failed, waiting, running and review. No canvas,
+idle, waving, jumping, failed, running and review. Open panels use idle; running is reserved for an active AI response. No canvas,
 animation dependency, server rendering of frames or image optimization API
 is needed. The browser requests each state only when used. The walking strips
 are not shipped because the widget stays anchored to the chosen corner.

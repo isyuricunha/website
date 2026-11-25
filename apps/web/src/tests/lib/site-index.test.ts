@@ -119,6 +119,27 @@ describe('site-index', () => {
     expect(result.citations.some((c) => c.id === 'post:hello')).toBe(true)
   })
 
+  it('formats titles as links for posts, snippets and navigation instead of printing raw slugs', async () => {
+    const {
+      build_post_recommendation_answer,
+      build_snippet_recommendation_answer,
+      build_navigation_answer
+    } = await import('@/lib/ai/site-index')
+
+    for (const build of [
+      build_post_recommendation_answer,
+      build_snippet_recommendation_answer,
+      build_navigation_answer
+    ]) {
+      const answer = build({ query: 'hello', locale: 'en' })
+      expect(answer.citations.length).toBeGreaterThan(0)
+      for (const citation of answer.citations) {
+        expect(answer.message).toContain(`- [${citation.title}](<${citation.href}>)`)
+        expect(answer.message).not.toContain(`${citation.title}: ${citation.href}`)
+      }
+    }
+  })
+
   it('build_post_recommendation_answer respects excludeIds', async () => {
     const { build_post_recommendation_answer } = await import('@/lib/ai/site-index')
 

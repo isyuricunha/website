@@ -28,10 +28,13 @@ describe('Nery motion selection', () => {
     [{ isTickled: true }, 'jumping'],
     [{ isKonamiMode: true }, 'jumping'],
     [{ isDizzy: true }, 'failed'],
-    [{ showAIChat: true }, 'waiting'],
-    [{ showContact: true }, 'waiting'],
-    [{ showSettings: true }, 'waiting'],
-    [{ showGame: true }, 'waiting'],
+    [{ showAIChat: true }, 'idle'],
+    [{ showContact: true }, 'idle'],
+    [{ showSettings: true }, 'idle'],
+    [{ showGame: true }, 'idle'],
+    [{ pageKey: 'projects', showAIChat: true }, 'idle'],
+    [{ pageKey: '404', showAIChat: true }, 'idle'],
+    [{ showAIChat: true, isThinking: true }, 'running'],
     [{ pageKey: '404', showAIChat: true, isThinking: true }, 'running']
   ] as const)('maps the interaction %j to %s', (context, motion) => {
     expect(getNeryMotion({ ...idle, ...context })).toBe(motion)

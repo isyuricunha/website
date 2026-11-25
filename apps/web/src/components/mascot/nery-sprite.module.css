@@ -216,58 +216,6 @@
   }
 }
 
-.sprite[data-motion='waiting'] {
-  background-image: url('/images/nery/motion/waiting.webp');
-  background-size: 1200% 100%;
-  background-position: 45.45454545% 0;
-}
-
-.sprite[data-motion='waiting'][data-animated='true'] {
-  animation: nery-waiting 2280ms step-end infinite;
-}
-
-@keyframes nery-waiting {
-  0.00000000% {
-    background-position: 0% 0;
-  }
-  15.35087719% {
-    background-position: 9.09090909% 0;
-  }
-  20.61403509% {
-    background-position: 18.18181818% 0;
-  }
-  25.87719298% {
-    background-position: 27.27272727% 0;
-  }
-  32.01754386% {
-    background-position: 36.36363636% 0;
-  }
-  39.03508772% {
-    background-position: 45.45454545% 0;
-  }
-  46.92982456% {
-    background-position: 54.54545455% 0;
-  }
-  58.33333333% {
-    background-position: 63.63636364% 0;
-  }
-  66.22807018% {
-    background-position: 72.72727273% 0;
-  }
-  73.24561404% {
-    background-position: 81.81818182% 0;
-  }
-  79.38596491% {
-    background-position: 90.90909091% 0;
-  }
-  84.64912281% {
-    background-position: 100% 0;
-  }
-  100% {
-    background-position: 0% 0;
-  }
-}
-
 .sprite[data-motion='running'] {
   background-image: url('/images/nery/motion/running.webp');
   background-size: 1200% 100%;

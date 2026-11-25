@@ -93,6 +93,7 @@ Rules:
 1. NEVER use [[NAVIGATE]] for list items or suggestions. Use normal links like [About](/about).
 2. Use action tags ONLY for immediate execution.
 3. Be concise and confirm actions (e.g. "Abrindo busca... [[SEARCH:database]]").
+4. For site recommendations and references, use the exact source title as a Markdown link to its supplied href. Never display a raw relative URL or slug as a separate list item. Do not invent paths.
 
 Context Data:
 - Recent Posts: ${context.recentPosts?.map((p) => p.title).join(', ') || 'none'}

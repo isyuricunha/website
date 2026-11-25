@@ -14,6 +14,14 @@ type SiteEntry = {
   locale: string
 }
 
+const format_citation_link = (citation: Citation): string => {
+  const title = citation.title
+    .replaceAll('\\', '\\\\')
+    .replaceAll('[', '\\[')
+    .replaceAll(']', '\\]')
+  return `- [${title}](<${citation.href}>)`
+}
+
 function recommend_snippets(params: {
   query: string
   locale: string
@@ -96,7 +104,7 @@ export const build_snippet_recommendation_answer = (params: {
     ? 'Aqui vão alguns snippets que você pode curtir:'
     : 'Here are a few snippets you might enjoy:'
 
-  const lines = citations.map((c) => `- ${c.title}: ${c.href}`)
+  const lines = citations.map((citation) => format_citation_link(citation))
 
   return {
     message: [intro, '', ...lines].join('\n'),
@@ -438,7 +446,7 @@ export const build_navigation_answer = (params: {
     ? 'Encontrei estas páginas que podem ajudar:'
     : 'Here are some pages that may help:'
 
-  const lines = citations.map((c) => `- ${c.title}: ${c.href}`)
+  const lines = citations.map((citation) => format_citation_link(citation))
 
   return {
     message: [intro, '', ...lines].join('\n'),
@@ -527,7 +535,7 @@ export const build_post_recommendation_answer = (params: {
     ? 'Aqui vão algumas postagens que você pode curtir:'
     : 'Here are a few posts you might enjoy:'
 
-  const lines = citations.map((c) => `- ${c.title}: ${c.href}`)
+  const lines = citations.map((citation) => format_citation_link(citation))
 
   return {
     message: [intro, '', ...lines].join('\n'),
