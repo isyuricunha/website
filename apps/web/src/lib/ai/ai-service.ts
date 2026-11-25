@@ -31,6 +31,7 @@ Tags:`
 
     const context: SiteContext = {
       currentPage: '/blog',
+      purpose: 'editorial',
       locale: 'en'
     }
 
@@ -64,6 +65,7 @@ Summary:`
 
     const context: SiteContext = {
       currentPage: '/blog',
+      purpose: 'editorial',
       locale: 'en'
     }
 
@@ -89,6 +91,7 @@ Meta description:`
 
     const context: SiteContext = {
       currentPage: '/blog',
+      purpose: 'editorial',
       locale: 'en'
     }
 
@@ -127,6 +130,7 @@ Translation:`
 
     const context: SiteContext = {
       currentPage: '/blog',
+      purpose: 'editorial',
       locale: toLang
     }
 

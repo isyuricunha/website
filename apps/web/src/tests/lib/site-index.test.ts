@@ -95,7 +95,7 @@ describe('site-index', () => {
       limit: 5
     })
     expect(citations[0]?.id).toBe('page')
-    expect(citations.some((c) => c.id === 'post:hello')).toBe(true)
+    expect(citations.filter((c) => c.href === '/en/blog/hello')).toHaveLength(1)
   })
 
   it('build_navigation_answer returns a deterministic list of links', async () => {
@@ -116,7 +116,7 @@ describe('site-index', () => {
     })
 
     expect(result.citations.some((c) => c.id === 'post:art-of-starting-over')).toBe(false)
-    expect(result.citations.some((c) => c.id === 'post:hello')).toBe(true)
+    expect(result.citations).toHaveLength(0)
   })
 
   it('formats titles as links for posts, snippets and navigation instead of printing raw slugs', async () => {

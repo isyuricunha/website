@@ -8,6 +8,7 @@ export type ChatMessage = {
   isUser: boolean
   timestamp: string
   isError?: boolean
+  cancelled?: boolean
   type?: 'text'
   requestId?: string
   latencyMs?: number
@@ -57,6 +58,7 @@ const legacyMessagesSchema = z
       isUser: z.boolean(),
       timestamp: z.string(),
       isError: z.boolean().optional(),
+      cancelled: z.boolean().optional(),
       type: z.literal('text').optional(),
       requestId: z.string().optional(),
       latencyMs: z.number().int().min(0).optional(),

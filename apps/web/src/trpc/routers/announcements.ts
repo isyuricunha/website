@@ -162,6 +162,7 @@ ${input.content}
 
       const context = {
         currentPage: '/admin/announcements',
+        purpose: 'editorial' as const,
         locale: input.toLang
       }
 

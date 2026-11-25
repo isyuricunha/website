@@ -2200,6 +2200,11 @@
       "copyError": "Fehler beim Kopieren der E-Mail. Bitte versuche es erneut."
     },
     "aiChat": {
+      "openSearch": "Suche öffnen",
+      "expandChat": "Chat vergrößern",
+      "compactChat": "Kompakter Chat",
+      "editMessage": "Nachricht bearbeiten",
+      "regenerate": "Antwort neu generieren",
       "title": "Chat mit Nery",
       "clear": "Leeren",
       "close": "Schließen",

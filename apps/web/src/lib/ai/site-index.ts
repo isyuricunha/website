@@ -1,9 +1,11 @@
 import { i18n } from '@isyuricunha/i18n/config'
 import { allPages, allPosts, allProjects, allSnippets } from 'content-collections'
 
+import { createKnowledgeIndex, tokenizeKnowledge } from './knowledge-search'
+
 import { getLocalizedPath } from '@/utils/get-localized-path'
 
-type SiteEntryType = 'post' | 'project' | 'page' | 'snippet'
+export type SiteEntryType = 'post' | 'project' | 'page' | 'snippet'
 
 type SiteEntry = {
   type: SiteEntryType
@@ -12,6 +14,7 @@ type SiteEntry = {
   href: string
   slug: string
   locale: string
+  content?: string
 }
 
 const format_citation_link = (citation: Citation): string => {
@@ -42,37 +45,25 @@ function recommend_snippets(params: {
     unique([...excludeSlugs, ...excluded_slugs_by_id, ...excluded_slugs_by_query])
   )
 
-  const scored = allSnippets
-    .filter((s) => s.locale === locale)
-    .filter((s) => !excluded_slugs.has(s.slug))
-    .map((snippet) => {
-      const haystack_title = snippet.title.toLowerCase()
-      const haystack_desc = snippet.description.toLowerCase()
-      const haystack_slug = snippet.slug.toLowerCase()
-
-      let score = 0
-      for (const token of tokens) {
-        if (haystack_title.includes(token)) score += 3
-        if (haystack_desc.includes(token)) score += 2
-        if (haystack_slug.includes(token)) score += 1
-      }
-
-      const date = new Date((snippet as unknown as { date?: string }).date ?? 0).getTime()
-      return { snippet, score, date: Number.isFinite(date) ? date : 0 }
-    })
-    .toSorted((a, b) => {
-      if (b.score !== a.score) return b.score - a.score
-      return b.date - a.date
-    })
-
-  const matched = scored
-    .filter((r) => (tokens.length === 0 ? true : r.score > 0))
+  const ranked = searchKnowledge(query, locale).filter(
+    ({ entry }) => entry.type === 'snippet' && !excluded_slugs.has(entry.slug)
+  )
+  const available = allSnippets
+    .filter((entry) => entry.locale === locale && !excluded_slugs.has(entry.slug))
+    .toSorted(
+      (a, b) =>
+        new Date((b as unknown as { date?: string }).date ?? 0).getTime() -
+        new Date((a as unknown as { date?: string }).date ?? 0).getTime()
+    )
+  const picks = (
+    tokens.length === 0
+      ? available
+      : ranked.flatMap(({ entry }) =>
+          available.filter((candidate) => candidate.slug === entry.slug)
+        )
+  )
     .slice(0, Math.max(0, limit))
-
-  const picks =
-    matched.length > 0
-      ? matched
-      : scored.toSorted((a, b) => b.date - a.date).slice(0, Math.max(0, limit))
+    .map((snippet) => ({ snippet }))
 
   return picks.map(({ snippet }) => ({
     id: `snippet:${snippet.slug}`,
@@ -112,7 +103,7 @@ export const build_snippet_recommendation_answer = (params: {
   }
 }
 
-type PageContext = {
+export type PageContext = {
   type: SiteEntryType
   title: string
   description: string
@@ -120,7 +111,7 @@ type PageContext = {
   contentExcerpt: string
 }
 
-type Citation = {
+export type Citation = {
   id: string
   title: string
   href: string
@@ -142,6 +133,16 @@ type StaticRouteEntry = {
 const get_static_routes = (locale: string): StaticRouteEntry[] => {
   const is_pt = locale.startsWith('pt')
   return [
+    {
+      slug: '/',
+      title: is_pt ? 'Início' : 'Home',
+      description: is_pt ? 'Portfólio de Yuri Cunha' : 'Yuri Cunha’s portfolio'
+    },
+    {
+      slug: '/contact',
+      title: is_pt ? 'Contato' : 'Contact',
+      description: is_pt ? 'Como entrar em contato com Yuri' : 'How to contact Yuri'
+    },
     {
       slug: '/blog',
       title: is_pt ? 'Blog' : 'Blog',
@@ -190,14 +191,7 @@ function strip_locale_prefix(path: string): string {
   return path.replace(locale_pattern, '/').replace(/\/+/g, '/')
 }
 
-function tokenize(value: string): string[] {
-  return value
-    .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, ' ')
-    .split(/\s+/)
-    .map((t) => t.trim())
-    .filter(Boolean)
-}
+const tokenize = tokenizeKnowledge
 
 function unique<T>(items: T[]): T[] {
   return Array.from(new Set(items))
@@ -254,7 +248,8 @@ export const build_site_index = (locale: string): SiteEntry[] => {
       description: post.summary,
       href: getLocalizedPath({ slug: `/blog/${post.slug}`, locale }),
       slug: post.slug,
-      locale
+      locale,
+      content: post.content
     })
   }
 
@@ -266,7 +261,8 @@ export const build_site_index = (locale: string): SiteEntry[] => {
       description: snippet.description,
       href: getLocalizedPath({ slug: `/snippet/${snippet.slug}`, locale }),
       slug: snippet.slug,
-      locale
+      locale,
+      content: snippet.content
     })
   }
 
@@ -278,7 +274,8 @@ export const build_site_index = (locale: string): SiteEntry[] => {
       description: project.description,
       href: getLocalizedPath({ slug: `/projects/${project.slug}`, locale }),
       slug: project.slug,
-      locale
+      locale,
+      content: project.content
     })
   }
 
@@ -290,11 +287,20 @@ export const build_site_index = (locale: string): SiteEntry[] => {
       description: page.slug,
       href: getLocalizedPath({ slug: `/${page.slug}`, locale }),
       slug: page.slug,
-      locale
+      locale,
+      content: page.content
     })
   }
 
-  const unique_by_href = Array.from(new Map(entries.map((e) => [e.href, e])).values())
+  const byHref = new Map<string, SiteEntry>()
+  for (const entry of entries) {
+    const previous = byHref.get(entry.href)
+    byHref.set(
+      entry.href,
+      previous ? { ...previous, content: entry.content ?? previous.content } : entry
+    )
+  }
+  const unique_by_href = Array.from(byHref.values())
   return unique_by_href
 }
 
@@ -370,6 +376,32 @@ function extract_snippet_slugs_from_query(query: string): string[] {
   return unique(slugs)
 }
 
+const knowledgeIndexes = new Map<
+  string,
+  { entries: SiteEntry[]; rank: ReturnType<typeof createKnowledgeIndex<SiteEntry>> }
+>()
+
+const searchKnowledge = (query: string, locale: string) => {
+  if (i18n.locales.every((supported) => supported !== locale)) return []
+  let index = knowledgeIndexes.get(locale)
+  if (!index) {
+    const entries = build_site_index(locale)
+    index = { entries, rank: createKnowledgeIndex(entries) }
+    knowledgeIndexes.set(locale, index)
+  }
+  const exact = index.entries.filter((entry) =>
+    [entry.title, entry.slug, entry.href].some(
+      (value) => value.toLowerCase() === query.trim().toLowerCase()
+    )
+  )
+  const ranked = index.rank(query)
+  const exactHrefs = new Set(exact.map((entry) => entry.href))
+  return [
+    ...exact.map((entry) => ({ entry, score: Number.MAX_SAFE_INTEGER })),
+    ...ranked.filter(({ entry }) => !exactHrefs.has(entry.href))
+  ]
+}
+
 export const find_citations = (params: {
   message: string
   locale: string
@@ -377,26 +409,7 @@ export const find_citations = (params: {
   limit?: number
 }): Citation[] => {
   const { message, locale, page_path, limit = 5 } = params
-  const tokens = tokenize(message)
-  const index = build_site_index(locale)
-
-  const scored = index
-    .map((entry) => {
-      const haystack_title = entry.title.toLowerCase()
-      const haystack_desc = entry.description.toLowerCase()
-      const haystack_slug = entry.slug.toLowerCase()
-
-      let score = 0
-      for (const token of tokens) {
-        if (haystack_title.includes(token)) score += 3
-        if (haystack_desc.includes(token)) score += 2
-        if (haystack_slug.includes(token)) score += 1
-      }
-
-      return { entry, score }
-    })
-    .filter((r) => r.score > 0)
-    .toSorted((a, b) => b.score - a.score)
+  const scored = searchKnowledge(message, locale)
 
   const citations: Citation[] = []
 
@@ -411,7 +424,9 @@ export const find_citations = (params: {
     })
   }
 
-  const remainingItems = scored.slice(0, Math.max(0, limit - citations.length))
+  const remainingItems = scored
+    .filter(({ entry }) => citations.every((citation) => citation.href !== entry.href))
+    .slice(0, Math.max(0, limit - citations.length))
   for (const item of remainingItems) {
     citations.push({
       id: `${item.entry.type}:${item.entry.slug}`,
@@ -473,37 +488,25 @@ const recommend_posts = (params: {
     unique([...excludeSlugs, ...excluded_slugs_by_id, ...inferred_excluded_slugs])
   )
 
-  const scored = allPosts
-    .filter((p) => p.locale === locale)
-    .filter((p) => !excluded_slugs.has(p.slug))
-    .map((post) => {
-      const haystack_title = post.title.toLowerCase()
-      const haystack_summary = post.summary.toLowerCase()
-      const haystack_slug = post.slug.toLowerCase()
-
-      let score = 0
-      for (const token of tokens) {
-        if (haystack_title.includes(token)) score += 3
-        if (haystack_summary.includes(token)) score += 2
-        if (haystack_slug.includes(token)) score += 1
-      }
-
-      const date = new Date((post as unknown as { date?: string }).date ?? 0).getTime()
-      return { post, score, date: Number.isFinite(date) ? date : 0 }
-    })
-    .toSorted((a, b) => {
-      if (b.score !== a.score) return b.score - a.score
-      return b.date - a.date
-    })
-
-  const matched = scored
-    .filter((r) => (tokens.length === 0 ? true : r.score > 0))
+  const ranked = searchKnowledge(query, locale).filter(
+    ({ entry }) => entry.type === 'post' && !excluded_slugs.has(entry.slug)
+  )
+  const available = allPosts
+    .filter((entry) => entry.locale === locale && !excluded_slugs.has(entry.slug))
+    .toSorted(
+      (a, b) =>
+        new Date((b as unknown as { date?: string }).date ?? 0).getTime() -
+        new Date((a as unknown as { date?: string }).date ?? 0).getTime()
+    )
+  const picks = (
+    tokens.length === 0
+      ? available
+      : ranked.flatMap(({ entry }) =>
+          available.filter((candidate) => candidate.slug === entry.slug)
+        )
+  )
     .slice(0, Math.max(0, limit))
-
-  const picks =
-    matched.length > 0
-      ? matched
-      : scored.toSorted((a, b) => b.date - a.date).slice(0, Math.max(0, limit))
+    .map((post) => ({ post }))
 
   return picks.map(({ post }) => ({
     id: `post:${post.slug}`,
@@ -540,5 +543,32 @@ export const build_post_recommendation_answer = (params: {
   return {
     message: [intro, '', ...lines].join('\n'),
     citations
+  }
+}
+
+export const get_site_overview = (locale: string): Citation[] =>
+  get_static_routes(locale).map((route) => ({
+    id: `page:${route.slug}`,
+    title: route.title,
+    href: getLocalizedPath({ slug: route.slug, locale }),
+    excerpt: route.description,
+    type: 'page'
+  }))
+
+export const read_site_content = (href: string, locale: string, offset = 0) => {
+  const entry = build_site_index(locale).find((candidate) => candidate.href === href)
+  if (!entry) return null
+  const content = entry.content ?? entry.description
+  const end = Math.min(content.length, offset + 6000)
+  return {
+    citation: {
+      id: `${entry.type}:${entry.slug}`,
+      title: entry.title,
+      href: entry.href,
+      excerpt: entry.description,
+      type: entry.type
+    } satisfies Citation,
+    content: content.slice(offset, end),
+    nextOffset: end < content.length ? end : null
   }
 }

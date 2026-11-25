@@ -15,6 +15,10 @@ type AiChatObservabilityInput = {
   userAgent?: string
   requestSizeBytes?: number
   responseSizeBytes?: number
+  tokensInput?: number
+  tokensOutput?: number
+  toolCalls?: number
+  providerRounds?: number
   tokensEstimated?: number
   errorMessage?: string
 }
@@ -56,6 +60,10 @@ export async function record_ai_chat_observability(input: AiChatObservabilityInp
         mode: input.mode,
         model: input.model,
         tokensEstimated: input.tokensEstimated,
+        tokensInput: input.tokensInput,
+        tokensOutput: input.tokensOutput,
+        toolCalls: input.toolCalls,
+        providerRounds: input.providerRounds,
         statusCode: input.statusCode
       }),
       createdAt: now

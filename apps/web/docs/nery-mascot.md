@@ -43,3 +43,50 @@ The system prompt never embeds the conversation transcript. Legacy
 previousMessages is accepted only as a fallback for recommendation context.
 
 Reference: https://platform.claude.com/docs/en/build-with-claude/working-with-messages
+
+## Nery assistant v2
+
+New clients send assistantVersion: 2 and historyVersion: 2. The route retains
+the previous contract for old clients. The v2 API returns NDJSON events
+(delta, reset, done, error); completed text, citations, request ID, latency and
+confirmed-action proposals arrive together. A tool round can reset speculative
+text. The browser consumes the stream until completion and does not persist
+each token synchronously. Cancellation propagates upstream. The public chat
+never executes model-generated text commands in v2.
+
+Public content is compiled by Content Collections; a bounded locale-specific
+lexical index is built lazily and reused by the running instance. Unicode word
+segmentation, accent normalization, common-word filtering, document frequency
+and weighted title/description/slug/body terms improve retrieval. No new
+database, embedding service or runtime package is required. The index covers
+published collection entries and known public sections, not live private or
+account data. Read tools return bounded 6000-character slices.
+
+Native OpenAI-compatible tools: search_site, read_site_content,
+get_site_overview, get_current_page, get_related_content, navigate, open_search.
+The last two propose buttons only, never execute without a user click.
+The runtime validates arguments and public paths, caps tool rounds at three
+provider calls, four executed tools, 1800 output tokens per call, and a
+45-second shared deadline. Explicit unsupported-tool errors on the first
+request can fall back to a text-only response using initial retrieval.
+History is capped at 15 messages and 12000 characters, not a provider-specific
+tokenizer. Actual usage is recorded when upstream supplies it; missing usage
+is not invented. The prompt for editorial tasks is separate. Configuration
+is read once per new chat request.
+
+Chat UI: multiline composer, collapsed source cards, expansion, native rename,
+edit the last user message, regenerate the last response, explicit cancel,
+and a less intrusive scroll-follow policy. Editing replaces the last turn
+and regenerating replaces the last answer. Old shared links remain importable;
+new shares carry the transcript in the URL fragment instead of the HTTP query.
+Anyone with the shared link can still read its contents. Action proposals
+are transient and not exported with conversations. No new server-side history.
+
+References:
+
+- https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices
+- https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools
+- https://developers.openai.com/api/docs/guides/function-calling
+- https://github.com/maximhq/bifrost/blob/dev/docs/quickstart/gateway/tool-calling.mdx
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Segmenter
+- https://vercel.com/docs/functions/configuring-functions/duration

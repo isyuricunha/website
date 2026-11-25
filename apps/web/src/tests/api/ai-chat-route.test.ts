@@ -47,6 +47,8 @@ vi.mock('@/lib/ai/ai-observability', () => ({
   })
 }))
 
+vi.mock('@/lib/ai/runtime-config', () => ({ get_ai_runtime_config: vi.fn() }))
+
 vi.mock('@/lib/ai/ai-service', () => ({
   aiService: {
     getAvailableProviders: vi.fn(),

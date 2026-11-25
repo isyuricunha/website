@@ -12,6 +12,12 @@ import {
   Button,
   buttonVariants,
   Card,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
   CodeBlock,
   DotMatrixLoader,
   DropdownMenu,
@@ -39,10 +45,11 @@ import {
   Sparkles,
   Loader2,
   MessageCircle,
+  Maximize2,
+  Minimize2,
   MoreVertical,
   Pencil,
   Plus,
-  Send,
   Share2,
   ThumbsDown,
   ThumbsUp,
@@ -65,7 +72,14 @@ import {
 } from '@/utils/mascot-chat-storage'
 import ConfirmationDialog from '../admin/confirmation-dialog'
 import { useSound } from '../../hooks/use-sound'
+import {
+  type AssistantAction,
+  ASSISTANT_CONTENT_TYPE,
+  readAssistantEvents,
+  type AssistantEvent
+} from '@/lib/ai/assistant-protocol'
 import { MASCOT_AVATAR_SRC } from './mascot-art'
+import { NeryChatComposer } from './components/nery-chat-composer'
 
 interface AIChatInterfaceProps {
   readonly isOpen: boolean
@@ -235,7 +249,8 @@ const getInitialChatState = (input: {
 
   if (globalThis.window !== undefined) {
     const params = new URLSearchParams(location.search)
-    const shared = params.get('nery_chat') ?? params.get('yue_chat')
+    const fragment = new URLSearchParams(location.hash.slice(1))
+    const shared = fragment.get('nery_chat') ?? params.get('nery_chat') ?? params.get('yue_chat')
 
     if (shared) {
       const decoded = decodeConversationShare(shared)
@@ -254,7 +269,8 @@ const getInitialChatState = (input: {
 
         params.delete('nery_chat')
         params.delete('yue_chat')
-        const url = `${location.pathname}${params.size > 0 ? `?${params.toString()}` : ''}`
+        const hash = fragment.has('nery_chat') ? '' : location.hash
+        const url = `${location.pathname}${params.size > 0 ? `?${params.toString()}` : ''}${hash}`
         history.replaceState(null, '', url)
       } else {
         importStatus = 'failed'
@@ -309,6 +325,7 @@ export default function AIChatInterface({
   )
   const messageIdCounterRef = useRef(0)
   const importStatusToastShownRef = useRef(false)
+  const [messageActions, setMessageActions] = useState<Record<string, AssistantAction[]>>({})
   const [inputValue, setInputValue] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [isCancelling, setIsCancelling] = useState(false)
@@ -326,7 +343,9 @@ export default function AIChatInterface({
     Record<string, boolean>
   >({})
   const messagesEndRef = useRef<HTMLDivElement>(null)
-  const inputRef = useRef<HTMLInputElement>(null)
+  const messageListRef = useRef<HTMLDivElement>(null)
+  const followBottomRef = useRef(true)
+  const inputRef = useRef<HTMLTextAreaElement>(null)
   const actionTimeoutsRef = useRef(new Set<ReturnType<typeof setTimeout>>())
   const abortControllerRef = useRef<AbortController | null>(null)
 
@@ -389,13 +408,18 @@ export default function AIChatInterface({
     return 'text-foreground border-[var(--border-subtle)] rounded-bl-md border bg-bg-surface'
   }
 
-  // Auto-scroll to bottom when new messages arrive
+  // Follow new output only while the visitor is near the bottom.
   useEffect(() => {
-    const el = messagesEndRef.current
-    if (el && typeof (el as any).scrollIntoView === 'function') {
-      ;(el as any).scrollIntoView({ behavior: 'smooth' })
+    const element = messagesEndRef.current
+    if (followBottomRef.current && typeof element?.scrollIntoView === 'function') {
+      element.scrollIntoView({ behavior: 'instant' })
     }
   }, [messages])
+
+  useEffect(() => {
+    followBottomRef.current = true
+    messagesEndRef.current?.scrollIntoView?.({ behavior: 'instant' })
+  }, [activeConversationId, isOpen])
 
   // Focus input when opened
   useEffect(() => {
@@ -421,10 +445,10 @@ export default function AIChatInterface({
 
   useEffect(() => {
     if (!isOpen) return
-    if (!activeConversationId) return
+    if (!activeConversationId || isLoading) return
 
     saveMascotChatState({ conversations, activeConversationId, provider: 'auto' })
-  }, [activeConversationId, conversations, isOpen])
+  }, [activeConversationId, conversations, isOpen, isLoading])
 
   const updateConversationById = useCallback(
     (conversationId: string, updater: (conversation: ChatConversation) => ChatConversation) => {
@@ -530,7 +554,8 @@ export default function AIChatInterface({
               return {
                 ...message,
                 text: text ? `${text}\n\n${cancelledText}` : cancelledText,
-                isError: false
+                isError: false,
+                cancelled: true
               }
             }),
             updatedAt: new Date().toISOString()
@@ -539,6 +564,7 @@ export default function AIChatInterface({
 
         const cancelledMessage: ChatMessage = {
           id: `ai-cancelled-${messageIdCounterRef.current++}-${Date.now()}`,
+          cancelled: true,
           text: cancelledText,
           isUser: false,
           timestamp: new Date().toISOString(),
@@ -566,17 +592,29 @@ export default function AIChatInterface({
 
     setConversations((prev) => [withWelcome, ...prev].slice(0, 50))
     setActiveConversationId(withWelcome.id)
+    setEditingMessageId(null)
+    setInputValue('')
   }
 
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
+  const [renameValue, setRenameValue] = useState<string | null>(null)
+  const [expanded, setExpanded] = useState(false)
+  const [editingMessageId, setEditingMessageId] = useState<string | null>(null)
+  const lastUserId = messages.findLast((message) => message.isUser)?.id
 
   const renameChat = () => {
-    if (!activeConversation) return
-    const next = prompt(t('mascot.aiChat.renamePrompt'), activeConversation.title)
-    if (!next?.trim()) return
+    if (activeConversation) setRenameValue(activeConversation.title)
+  }
 
-    const title = next.trim().slice(0, 120)
-    updateActiveConversation((c) => ({ ...c, title, updatedAt: new Date().toISOString() }))
+  const saveChatName = () => {
+    const title = renameValue?.trim().slice(0, 120)
+    if (!title) return
+    updateActiveConversation((conversation) => ({
+      ...conversation,
+      title,
+      updatedAt: new Date().toISOString()
+    }))
+    setRenameValue(null)
   }
 
   const deleteChat = () => {
@@ -616,7 +654,8 @@ export default function AIChatInterface({
 
     const url = new URL(location.href)
     url.searchParams.delete('yue_chat')
-    url.searchParams.set('nery_chat', payload)
+    url.searchParams.delete('nery_chat')
+    url.hash = new URLSearchParams({ nery_chat: payload }).toString()
 
     try {
       await navigator.clipboard.writeText(url.href)
@@ -668,16 +707,18 @@ export default function AIChatInterface({
     if (!activeConversation) return
 
     setInputValue('')
-    const accepted = await send_chat_message(messageText)
+    const accepted = await send_chat_message(messageText, undefined, editingMessageId ?? undefined)
     // Restore the draft when the send was rejected (e.g. turnstile still
     // arming) so the user's text is never swallowed.
-    if (!accepted) {
+    if (accepted) {
+      setEditingMessageId(null)
+    } else {
       setInputValue(messageText)
     }
   }
 
   const send_chat_message = useCallback(
-    async (rawText: string, retryMessageId?: string): Promise<boolean> => {
+    async (rawText: string, retryMessageId?: string, editUserId?: string): Promise<boolean> => {
       if (isLoading || !canUseChat || abortControllerRef.current) return false
       if (!activeConversation) return false
 
@@ -720,7 +761,8 @@ export default function AIChatInterface({
 
       const retryIndex = retryMessageId
         ? activeConversation.messages.findIndex(
-            (message) => message.id === retryMessageId && message.isError
+            (message) =>
+              message.id === retryMessageId && !message.isUser && message.id !== 'welcome'
           )
         : -1
       if (retryMessageId && retryIndex < 0) return false
@@ -732,24 +774,30 @@ export default function AIChatInterface({
           : undefined
       if (retryMessageId && !retryUser) return false
 
-      const nextMessages = retryUser
-        ? previousMessages.slice(0, previousMessages.indexOf(retryUser) + 1)
-        : [
-            ...previousMessages,
-            {
-              id: `user-${messageIdCounterRef.current++}-${Date.now()}`,
-              text: messageText,
-              isUser: true,
-              timestamp: new Date().toISOString(),
-              type: 'text' as const
-            }
-          ]
+      const editIndex = editUserId
+        ? previousMessages.findIndex((item) => item.id === editUserId && item.isUser)
+        : -1
+      if (editUserId && editIndex < 0) return false
+      const userMessage: ChatMessage = {
+        id: `user-${messageIdCounterRef.current++}-${Date.now()}`,
+        text: messageText,
+        isUser: true,
+        timestamp: new Date().toISOString(),
+        type: 'text' as const
+      }
+      let nextMessages = [...previousMessages, userMessage]
+      if (editIndex >= 0) {
+        nextMessages = [...previousMessages.slice(0, editIndex), userMessage]
+      } else if (retryUser) {
+        nextMessages = previousMessages.slice(0, previousMessages.indexOf(retryUser) + 1)
+      }
 
       updateConversationById(conversationId, (c) => ({
         ...c,
         messages: nextMessages,
         updatedAt: new Date().toISOString()
       }))
+      followBottomRef.current = true
       setIsLoading(true)
       setIsCancelling(false)
       onMessageSent?.(messageText)
@@ -782,7 +830,13 @@ export default function AIChatInterface({
         // excluding UI-only welcome/error notices. Retry uses the same boundary.
         const recentMessages = nextMessages
           .slice(0, -1)
-          .filter((message) => message.id !== 'welcome' && !message.isError && message.text.trim())
+          .filter(
+            (message) =>
+              message.id !== 'welcome' &&
+              !message.isError &&
+              !message.cancelled &&
+              message.text.trim()
+          )
           .slice(-15)
           .map((message) => ({
             role: message.isUser ? 'user' : 'assistant',
@@ -814,6 +868,7 @@ export default function AIChatInterface({
           },
           body: JSON.stringify({
             message: messageText,
+            assistantVersion: 2,
             stream: should_stream,
             locale,
             ...(isTurnstileEnabled && { turnstileToken }),
@@ -831,6 +886,88 @@ export default function AIChatInterface({
         if (!response.ok) {
           appendError(response.headers.get('x-request-id') ?? undefined)
           if (response.status === 503) setConnectionStatus('unavailable')
+          return true
+        }
+
+        if (contentType.startsWith(ASSISTANT_CONTENT_TYPE) && response.body) {
+          const messageId = `ai-${messageIdCounterRef.current++}-${Date.now()}`
+          assistantMessageId = messageId
+          const requestId = response.headers.get('x-request-id') ?? undefined
+          let accumulated = ''
+          let completed = false
+          let lastRender = 0
+          const update = (text: string, extra: Partial<ChatMessage> = {}) => {
+            updateConversationById(conversationId, (conversation) => ({
+              ...conversation,
+              messages: conversation.messages.map((item) =>
+                item.id === messageId ? { ...item, text, ...extra } : item
+              ),
+              updatedAt: new Date().toISOString()
+            }))
+          }
+          updateConversationById(conversationId, (conversation) => ({
+            ...conversation,
+            messages: [
+              ...conversation.messages,
+              {
+                id: messageId,
+                text: '',
+                isUser: false,
+                timestamp: new Date().toISOString(),
+                type: 'text',
+                requestId
+              }
+            ]
+          }))
+          const applyEvent = (event: AssistantEvent) => {
+            switch (event.type) {
+              case 'delta': {
+                accumulated += event.text
+                if (performance.now() - lastRender >= 45) {
+                  update(accumulated)
+                  lastRender = performance.now()
+                }
+                break
+              }
+              case 'reset': {
+                accumulated = ''
+                update('')
+                break
+              }
+              case 'done': {
+                update(event.text, {
+                  requestId: event.requestId,
+                  latencyMs: event.latencyMs,
+                  citations: event.citations
+                })
+                if (event.actions?.length)
+                  setMessageActions((previous) => ({
+                    ...previous,
+                    [messageId]: event.actions ?? []
+                  }))
+                completed = true
+                break
+              }
+              case 'error': {
+                update(t('mascot.aiChat.errorMessage'), {
+                  isError: true,
+                  requestId: event.requestId
+                })
+                completed = true
+                break
+              }
+            }
+          }
+          for await (const event of readAssistantEvents(response.body)) {
+            if (!completed) applyEvent(event)
+          }
+          if (!completed) {
+            if (abortController.signal.aborted) {
+              appendCancelledResponse(conversationId, assistantMessageId)
+            } else {
+              update(t('mascot.aiChat.errorMessage'), { isError: true })
+            }
+          }
           return true
         }
 
@@ -854,7 +991,8 @@ export default function AIChatInterface({
                 isUser: false,
                 timestamp: new Date().toISOString(),
                 isError: false,
-                type: 'text'
+                type: 'text',
+                requestId: response.headers.get('x-request-id') ?? undefined
               }
             ],
             updatedAt: new Date().toISOString()
@@ -946,7 +1084,16 @@ export default function AIChatInterface({
         // Transport/parse failures have an explicit retryable message. The
         // server records HTTP failures with a request ID; do not leak upstream
         // error text to visitors.
-        appendError()
+        if (assistantMessageId) {
+          updateConversationById(conversationId, (conversation) => ({
+            ...conversation,
+            messages: conversation.messages.map((message) =>
+              message.id === assistantMessageId
+                ? { ...message, text: t('mascot.aiChat.errorMessage'), isError: true }
+                : message
+            )
+          }))
+        } else appendError()
         return true
       } finally {
         if (abortControllerRef.current === abortController) {
@@ -1022,12 +1169,6 @@ export default function AIChatInterface({
     })
 
     await send_chat_message(prompt)
-  }
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key !== 'Enter' || e.shiftKey) return
-    e.preventDefault()
-    sendMessage()
   }
 
   const sendButtonLabel = t(
@@ -1182,7 +1323,14 @@ export default function AIChatInterface({
 
   return (
     <TooltipProvider>
-      <div className='bg-bg-elevated shadow-feature-card flex h-[min(70dvh,calc(100dvh_-_13rem))] max-h-[720px] w-[420px] max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-lg border border-[var(--border-subtle)]'>
+      <div
+        className={cn(
+          'bg-bg-elevated shadow-feature-card flex max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-lg border border-[var(--border-subtle)]',
+          expanded
+            ? 'h-[calc(100dvh_-_13rem)] w-[680px]'
+            : 'h-[min(70dvh,calc(100dvh_-_13rem))] max-h-[720px] w-[420px]'
+        )}
+      >
         {/* Header */}
         <div className='bg-bg-surface flex items-center justify-between gap-3 border-b px-4 py-3'>
           <div className='flex min-w-0 items-center gap-2'>
@@ -1192,7 +1340,15 @@ export default function AIChatInterface({
             <div className='flex flex-col'>
               <span className='text-sm leading-none font-semibold'>{t('mascot.aiChat.title')}</span>
               <div className='text-muted-foreground mt-0.5 flex items-center gap-2 text-xs'>
-                <Select value={activeConversationId} onValueChange={setActiveConversationId}>
+                <Select
+                  value={activeConversationId}
+                  onValueChange={(id) => {
+                    setActiveConversationId(id)
+                    setEditingMessageId(null)
+                    setInputValue('')
+                  }}
+                  disabled={isLoading}
+                >
                   <SelectTrigger
                     className='bg-background/30 hover:bg-background/40 h-7 max-w-[200px] rounded-full border border-[var(--border-subtle)] px-2.5 text-xs shadow-none focus:ring-2 focus:ring-[var(--action-primary-border)] focus:outline-none'
                     aria-label={t('mascot.aiChat.conversations')}
@@ -1218,6 +1374,7 @@ export default function AIChatInterface({
                   size='icon'
                   className='size-8'
                   onClick={startNewChat}
+                  disabled={isLoading}
                   aria-label={t('mascot.aiChat.newChat')}
                 >
                   <Plus className='size-4' />
@@ -1233,6 +1390,7 @@ export default function AIChatInterface({
                   size='icon'
                   className='size-8'
                   onClick={shareChat}
+                  disabled={isLoading}
                   aria-label={t('mascot.aiChat.share')}
                 >
                   <Share2 className='size-4' />
@@ -1258,12 +1416,16 @@ export default function AIChatInterface({
                 <TooltipContent>{t('mascot.aiChat.more')}</TooltipContent>
               </Tooltip>
               <DropdownMenuContent align='end' className='w-48'>
-                <DropdownMenuItem onClick={renameChat} className='gap-2'>
+                <DropdownMenuItem onClick={() => setExpanded((value) => !value)} className='gap-2'>
+                  {expanded ? <Minimize2 className='size-4' /> : <Maximize2 className='size-4' />}
+                  {t(expanded ? 'mascot.aiChat.compactChat' : 'mascot.aiChat.expandChat')}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={renameChat} disabled={isLoading} className='gap-2'>
                   <Pencil className='size-4' />
                   {t('mascot.aiChat.rename')}
                 </DropdownMenuItem>
                 {messages.length > 1 ? (
-                  <DropdownMenuItem onClick={clearChat} className='gap-2'>
+                  <DropdownMenuItem onClick={clearChat} disabled={isLoading} className='gap-2'>
                     <Eraser className='size-4' />
                     {t('mascot.aiChat.clear')}
                   </DropdownMenuItem>
@@ -1271,6 +1433,7 @@ export default function AIChatInterface({
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                   onClick={deleteChat}
+                  disabled={isLoading}
                   className='text-status-info focus:text-accent-cyan-hover gap-2'
                 >
                   <Trash2 className='size-4' />
@@ -1297,7 +1460,18 @@ export default function AIChatInterface({
         </div>
 
         {/* Messages */}
-        <div className='bg-bg-surface flex flex-1 flex-col gap-4 overflow-y-auto px-4 py-4'>
+        <div
+          ref={messageListRef}
+          role='log'
+          aria-live='polite'
+          aria-busy={isLoading}
+          onScroll={() => {
+            const list = messageListRef.current
+            if (list)
+              followBottomRef.current = list.scrollHeight - list.scrollTop - list.clientHeight < 80
+          }}
+          className='bg-bg-surface flex flex-1 flex-col gap-4 overflow-y-auto px-4 py-4'
+        >
           {messages.map((message) => (
             <div
               key={message.id}
@@ -1311,6 +1485,20 @@ export default function AIChatInterface({
                     <span className='text-status-info/80 text-xs font-medium'>
                       {user_display_name}
                     </span>
+                    {message.id === lastUserId && !isLoading && (
+                      <button
+                        type='button'
+                        className='ml-auto rounded p-1'
+                        aria-label={t('mascot.aiChat.editMessage')}
+                        onClick={() => {
+                          setEditingMessageId(message.id)
+                          setInputValue(message.text)
+                          inputRef.current?.focus()
+                        }}
+                      >
+                        <Pencil className='size-3.5' />
+                      </button>
+                    )}
                   </div>
                 )}
                 {!message.isUser && (
@@ -1322,6 +1510,20 @@ export default function AIChatInterface({
                       </AvatarFallback>
                     </Avatar>
                     <span className='text-muted-foreground text-xs font-medium'>Nery</span>
+                    {!message.isError &&
+                      message.id !== 'welcome' &&
+                      message.id === messages.at(-1)?.id &&
+                      !isLoading &&
+                      canUseChat && (
+                        <button
+                          type='button'
+                          className='text-muted-foreground hover:text-foreground ml-auto rounded p-1'
+                          aria-label={t('mascot.aiChat.regenerate')}
+                          onClick={() => void retry_message(message.id)}
+                        >
+                          <RefreshCw className='size-3.5' />
+                        </button>
+                      )}
                     {!message.isError && (
                       <button
                         type='button'
@@ -1360,11 +1562,55 @@ export default function AIChatInterface({
                   </div>
                 )}
 
-                {!message.isUser && !message.isError && (message.citations?.length ?? 0) > 0 ? (
-                  <div className='mt-3 space-y-2 border-t border-[var(--border-subtle)] pt-2'>
-                    <div className='text-muted-foreground text-[11px] font-medium'>
-                      {t('mascot.aiChat.citations.title')}
+                {!message.isUser &&
+                  !message.isError &&
+                  !message.cancelled &&
+                  (messageActions[message.id]?.length ?? 0) > 0 && (
+                    <div className='mt-2 flex flex-wrap gap-2'>
+                      {messageActions[message.id]?.map((action, index) => {
+                        if (action.type === 'navigate' && is_safe_internal_path(action.href)) {
+                          return (
+                            <Button
+                              key={index}
+                              variant='outline'
+                              size='sm'
+                              onClick={() => {
+                                navigationPlay()
+                                router.push(action.href)
+                              }}
+                            >
+                              {t('mascot.aiChat.citations.actions.open')}: {action.title}
+                            </Button>
+                          )
+                        }
+                        if (action.type === 'search') {
+                          return (
+                            <Button
+                              key={index}
+                              variant='outline'
+                              size='sm'
+                              onClick={() => {
+                                dispatchEvent(
+                                  new CustomEvent('mascot-open-search', {
+                                    detail: { query: action.query }
+                                  })
+                                )
+                                clickPlay()
+                              }}
+                            >
+                              {t('mascot.aiChat.openSearch')}: {action.query}
+                            </Button>
+                          )
+                        }
+                        return null
+                      })}
                     </div>
+                  )}
+                {!message.isUser && !message.isError && (message.citations?.length ?? 0) > 0 ? (
+                  <details className='mt-3 space-y-2 border-t border-[var(--border-subtle)] pt-2'>
+                    <summary className='text-muted-foreground hover:text-foreground cursor-pointer text-xs font-medium'>
+                      {t('mascot.aiChat.citations.title')} ({message.citations?.length})
+                    </summary>
                     <div className='space-y-2'>
                       {message.citations?.map((c) => (
                         <Card
@@ -1463,9 +1709,9 @@ export default function AIChatInterface({
                         </Card>
                       ))}
                     </div>
-                  </div>
+                  </details>
                 ) : null}
-                {!message.isUser && !message.isError && message.requestId && (
+                {!message.isUser && !message.isError && !message.cancelled && message.requestId && (
                   <div className='mt-2 flex items-center justify-between'>
                     <div className='flex items-center gap-1'>
                       <button
@@ -1576,7 +1822,7 @@ export default function AIChatInterface({
             </div>
           ))}
 
-          {isLoading && (
+          {isLoading && (messages.at(-1)?.isUser || !messages.at(-1)?.text) && (
             <div className='animate-in slide-in-from-bottom-2 flex justify-start duration-300'>
               <div className='text-foreground bg-bg-surface flex items-center gap-2 rounded-lg rounded-bl-md border border-[var(--border-subtle)] p-3'>
                 <div className='mb-2 flex w-full items-center gap-2 border-b border-[var(--border-subtle)] pb-2'>
@@ -1639,33 +1885,33 @@ export default function AIChatInterface({
               />
             </div>
           )}
-          <div className='flex gap-2'>
-            <input
-              ref={inputRef}
-              type='text'
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              onKeyDown={handleKeyDown}
-              placeholder={t('mascot.aiChat.placeholder')}
-              className='placeholder:text-muted-foreground/60 flex-1 rounded-xl border border-[var(--border-subtle)] bg-[var(--yu-bg-input)] px-4 py-3 text-sm transition-all duration-200 hover:bg-[var(--yu-bg-input-hover)] focus:border-[var(--action-primary-border)] focus:ring-2 focus:ring-[var(--action-primary-border)] focus:outline-none'
-              disabled={isLoading || !canUseChat}
-            />
-            <button
-              type='button'
-              onClick={isLoading ? cancelCurrentResponse : sendMessage}
-              disabled={isLoading ? isCancelling : !inputValue.trim() || !canUseChat}
-              aria-label={sendButtonLabel}
-              title={sendButtonLabel}
-              className={cn(
-                'text-text-inverse rounded-lg px-4 py-3 shadow-sm transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none',
-                isLoading
-                  ? 'bg-status-danger hover:bg-status-danger/90'
-                  : 'bg-action-primary hover:bg-action-primary-hover'
-              )}
-            >
-              {isLoading ? <X className='h-4 w-4' /> : <Send className='h-4 w-4' />}
-            </button>
-          </div>
+          {editingMessageId && (
+            <div className='text-muted-foreground mb-2 flex items-center justify-between text-xs'>
+              <span>{t('mascot.aiChat.editMessage')}</span>
+              <Button
+                size='sm'
+                variant='ghost'
+                onClick={() => {
+                  setEditingMessageId(null)
+                  setInputValue('')
+                }}
+              >
+                {t('common.cancel')}
+              </Button>
+            </div>
+          )}
+          <NeryChatComposer
+            inputRef={inputRef}
+            value={inputValue}
+            onChange={setInputValue}
+            onSend={() => void sendMessage()}
+            onCancel={cancelCurrentResponse}
+            loading={isLoading}
+            cancelling={isCancelling}
+            disabled={!canUseChat}
+            placeholder={t('mascot.aiChat.placeholder')}
+            label={sendButtonLabel}
+          />
           <div className='mt-3 flex items-center justify-between'>
             <p className='text-muted-foreground/80 text-xs'>{t('mascot.aiChat.footer')}</p>
             <div className='text-muted-foreground/60 flex items-center gap-1 text-xs'>
@@ -1675,6 +1921,41 @@ export default function AIChatInterface({
           </div>
         </div>
       </div>
+      <Dialog
+        open={renameValue !== null}
+        onOpenChange={(open) => {
+          if (!open) setRenameValue(null)
+        }}
+      >
+        <DialogContent className='sm:max-w-md'>
+          <DialogHeader>
+            <DialogTitle>{t('mascot.aiChat.renamePrompt')}</DialogTitle>
+            <DialogDescription>{t('mascot.aiChat.renamePrompt')}</DialogDescription>
+          </DialogHeader>
+          <form
+            onSubmit={(event) => {
+              event.preventDefault()
+              saveChatName()
+            }}
+          >
+            <input
+              aria-label={t('mascot.aiChat.renamePrompt')}
+              value={renameValue ?? ''}
+              maxLength={120}
+              onChange={(event) => setRenameValue(event.target.value)}
+              className='bg-bg-surface w-full rounded-lg border px-3 py-2'
+            />
+            <DialogFooter className='mt-4'>
+              <Button type='button' variant='outline' onClick={() => setRenameValue(null)}>
+                {t('common.cancel')}
+              </Button>
+              <Button type='submit' disabled={!renameValue?.trim()}>
+                {t('mascot.aiChat.rename')}
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
       <ConfirmationDialog
         open={isDeleteDialogOpen}
         onOpenChange={setIsDeleteDialogOpen}

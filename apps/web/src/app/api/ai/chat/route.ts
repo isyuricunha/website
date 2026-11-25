@@ -6,6 +6,9 @@ import { z } from 'zod'
 import { env, flags } from '@isyuricunha/env'
 
 import { aiService } from '@/lib/ai/ai-service'
+import { ASSISTANT_CONTENT_TYPE, type AssistantEvent } from '@/lib/ai/assistant-protocol'
+import { runSiteAssistant } from '@/lib/ai/assistant-runtime'
+import { get_ai_runtime_config } from '@/lib/ai/runtime-config'
 import { estimate_tokens, record_ai_chat_observability } from '@/lib/ai/ai-observability'
 import {
   build_navigation_answer,
@@ -18,6 +21,8 @@ import { logger } from '@/lib/logger'
 import { ratelimit } from '@/lib/ratelimit'
 import { rate_limit_keys } from '@/lib/rate-limit-keys'
 import { getClientIp, is_bot_user_agent, verifyTurnstileToken } from '@/lib/spam-detection'
+
+export const maxDuration = 60
 
 const PUBLIC_ASSISTANT_PROVIDER = 'Nery AI'
 
@@ -40,6 +45,7 @@ const requestContextSchema = z.object({
 
 const requestSchema = z.object({
   message: z.string().min(1).max(2000),
+  assistantVersion: z.literal(2).optional(),
   mode: z.enum(['chat', 'navigate', 'recommend']).optional(),
   model: z.string().max(100).optional(),
   stream: z.boolean().optional(),
@@ -258,6 +264,95 @@ export async function POST(req: NextRequest) {
         })
         return NextResponse.json(payload, { status: 403, headers: response_headers })
       }
+    }
+
+    if (parsed.assistantVersion === 2) {
+      const config = await get_ai_runtime_config()
+      if (!config) {
+        return NextResponse.json(
+          { error: 'No AI providers are currently available.', requestId: request_id },
+          { status: 503, headers: response_headers }
+        )
+      }
+      const message = parsed.message.trim()
+      const locale = parsed.locale ?? 'en'
+      const pagePath = parsed.context?.pagePath
+      const context = {
+        currentPage: parsed.context?.currentPage ?? 'unknown',
+        pagePath,
+        locale,
+        pageContext: pagePath ? get_page_context(pagePath, locale) : null,
+        citations: find_citations({ message, locale, page_path: pagePath, limit: 4 }),
+        conversation: parsed.context?.conversation
+      }
+      const encoder = new TextEncoder()
+      const cancellation = new AbortController()
+      const signal = AbortSignal.any([req.signal, cancellation.signal])
+      const stream = new ReadableStream<Uint8Array>({
+        async start(controller) {
+          let statusCode = 200
+          let metrics: {
+            tokensInput?: number
+            tokensOutput?: number
+            toolCalls?: number
+            providerRounds?: number
+          } = {}
+          const emit = (event: AssistantEvent) => {
+            if (!signal.aborted) controller.enqueue(encoder.encode(JSON.stringify(event) + '\n'))
+          }
+          try {
+            const result = await runSiteAssistant({
+              config,
+              context,
+              message,
+              requestId: request_id,
+              signal,
+              emit
+            })
+            metrics = {
+              toolCalls: result.toolCount,
+              providerRounds: result.rounds,
+              ...(result.usage.reported && {
+                tokensInput: result.usage.input,
+                tokensOutput: result.usage.output
+              })
+            }
+          } catch (error) {
+            statusCode = signal.aborted ? 499 : 502
+            logger.warn('Site assistant stream failed', {
+              requestId: request_id,
+              errorName: error instanceof Error ? error.name : 'Unknown'
+            })
+            emit({ type: 'error', requestId: request_id })
+          } finally {
+            await record_ai_chat_observability({
+              requestId: request_id,
+              endpoint,
+              method,
+              statusCode,
+              responseTimeMs: Date.now() - started_at,
+              provider: 'runtime',
+              mode: 'assistant',
+              model: config.model,
+              ipAddress: ip,
+              userAgent: user_agent,
+              requestSizeBytes: request_size,
+              ...metrics
+            })
+            if (!cancellation.signal.aborted) controller.close()
+          }
+        },
+        cancel() {
+          cancellation.abort()
+        }
+      })
+      return new Response(stream, {
+        headers: {
+          ...response_headers,
+          'content-type': ASSISTANT_CONTENT_TYPE + '; charset=utf-8',
+          'cache-control': 'no-store'
+        }
+      })
     }
 
     const available_providers = await aiService.getAvailableProviders()
