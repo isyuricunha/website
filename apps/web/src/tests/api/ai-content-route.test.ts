@@ -85,7 +85,7 @@ describe('/api/ai/content', () => {
     const { aiService } = await import('@/lib/ai/ai-service')
 
     vi.mocked(requireAdmin).mockResolvedValue(null)
-    vi.mocked(aiService.getAvailableProviders).mockReturnValue(['runtime'])
+    vi.mocked(aiService.getAvailableProviders).mockResolvedValue(['runtime'])
 
     const { GET } = await import('@/app/api/ai/content/route')
 
@@ -129,7 +129,7 @@ describe('/api/ai/content', () => {
     vi.mocked(requireAdmin).mockResolvedValue(null)
     vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
     vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
-    vi.mocked(aiService.getAvailableProviders).mockReturnValue(['ollama'])
+    vi.mocked(aiService.getAvailableProviders).mockResolvedValue(['ollama'])
 
     const { POST } = await import('@/app/api/ai/content/route')
 

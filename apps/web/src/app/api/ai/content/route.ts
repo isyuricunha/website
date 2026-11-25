@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const availableProviders = aiService.getAvailableProviders()
+    const availableProviders = await aiService.getAvailableProviders()
     if (availableProviders.length === 0) {
       return NextResponse.json(
         { error: 'No AI providers are currently available' },
@@ -124,7 +124,7 @@ export async function GET() {
   const authResponse = await requireAdmin()
   if (authResponse) return authResponse
 
-  const availableProviders = aiService.getAvailableProviders()
+  const availableProviders = await aiService.getAvailableProviders()
 
   return NextResponse.json({
     message: 'AI Content Generation API',

@@ -363,7 +363,7 @@ export default function AIChatInterface({
   }, [activeConversation])
 
   const chatStatusKey = isLoading ? 'responding' : connectionStatus
-  const canUseChat = connectionStatus !== 'unavailable' && connectionStatus !== 'offline'
+  const canUseChat = connectionStatus === 'ready'
   const shouldShowQuickPrompts =
     canUseChat && !isLoading && messages.every((message) => !message.isUser)
   const quickPrompts = useMemo(() => {
@@ -677,8 +677,8 @@ export default function AIChatInterface({
   }
 
   const send_chat_message = useCallback(
-    async (rawText: string): Promise<boolean> => {
-      if (isLoading || !canUseChat) return false
+    async (rawText: string, retryMessageId?: string): Promise<boolean> => {
+      if (isLoading || !canUseChat || abortControllerRef.current) return false
       if (!activeConversation) return false
 
       const messageText = rawText.trim()
@@ -718,15 +718,32 @@ export default function AIChatInterface({
         return false
       }
 
-      const userMessage: ChatMessage = {
-        id: `user-${messageIdCounterRef.current++}-${Date.now()}`,
-        text: messageText,
-        isUser: true,
-        timestamp: new Date().toISOString(),
-        type: 'text'
-      }
+      const retryIndex = retryMessageId
+        ? activeConversation.messages.findIndex(
+            (message) => message.id === retryMessageId && message.isError
+          )
+        : -1
+      if (retryMessageId && retryIndex < 0) return false
 
-      const nextMessages = [...activeConversation.messages, userMessage]
+      const previousMessages = activeConversation.messages
+      const retryUser =
+        retryIndex >= 0
+          ? previousMessages.slice(0, retryIndex).findLast((message) => message.isUser)
+          : undefined
+      if (retryMessageId && !retryUser) return false
+
+      const nextMessages = retryUser
+        ? previousMessages.slice(0, previousMessages.indexOf(retryUser) + 1)
+        : [
+            ...previousMessages,
+            {
+              id: `user-${messageIdCounterRef.current++}-${Date.now()}`,
+              text: messageText,
+              isUser: true,
+              timestamp: new Date().toISOString(),
+              type: 'text' as const
+            }
+          ]
 
       updateConversationById(conversationId, (c) => ({
         ...c,
@@ -740,6 +757,24 @@ export default function AIChatInterface({
       const abortController = new AbortController()
       abortControllerRef.current = abortController
       let assistantMessageId: string | null = null
+
+      const appendError = (requestId?: string) => {
+        const errorMessage: ChatMessage = {
+          id: `ai-error-${messageIdCounterRef.current++}-${Date.now()}`,
+          text: t('mascot.aiChat.errorMessage'),
+          isUser: false,
+          timestamp: new Date().toISOString(),
+          isError: true,
+          type: 'text',
+          requestId
+        }
+
+        updateConversationById(conversationId, (c) => ({
+          ...c,
+          messages: [...c.messages, errorMessage],
+          updatedAt: new Date().toISOString()
+        }))
+      }
 
       try {
         // Enhanced context with more conversation history for better memory.
@@ -795,6 +830,12 @@ export default function AIChatInterface({
         })
 
         const contentType = response.headers.get('content-type') || ''
+
+        if (!response.ok) {
+          appendError(response.headers.get('x-request-id') ?? undefined)
+          if (response.status === 503) setConnectionStatus('unavailable')
+          return true
+        }
 
         // Streaming path
         if (contentType.startsWith('text/plain') && response.body) {
@@ -873,10 +914,6 @@ export default function AIChatInterface({
           }>
         } = await response.json()
 
-        if (!response.ok) {
-          throw new Error(data.error ?? 'Failed to get response')
-        }
-
         const safeTimestamp = data.timestamp ?? new Date().toISOString()
 
         const aiMessage: ChatMessage = {
@@ -909,24 +946,10 @@ export default function AIChatInterface({
           return true
         }
 
-        if (process.env.NODE_ENV === 'development') {
-          console.error('Chat error:', error)
-        }
-
-        const errorMessage: ChatMessage = {
-          id: `ai-error-${messageIdCounterRef.current++}-${Date.now()}`,
-          text: t('mascot.aiChat.errorMessage'),
-          isUser: false,
-          timestamp: new Date().toISOString(),
-          isError: true,
-          type: 'text'
-        }
-
-        updateConversationById(conversationId, (c) => ({
-          ...c,
-          messages: [...c.messages, errorMessage],
-          updatedAt: new Date().toISOString()
-        }))
+        // Transport/parse failures have an explicit retryable message. The
+        // server records HTTP failures with a request ID; do not leak upstream
+        // error text to visitors.
+        appendError()
         return true
       } finally {
         if (abortControllerRef.current === abortController) {
@@ -1026,15 +1049,8 @@ export default function AIChatInterface({
 
     if (!lastUserMessage) return
 
-    // Remove the error message and any trailing messages
-    updateActiveConversation((c) => ({
-      ...c,
-      messages: c.messages.slice(0, messageIndex),
-      updatedAt: new Date().toISOString()
-    }))
-
-    // Re-send the user message
-    await send_chat_message(lastUserMessage.text)
+    // Retry from the original user message in one state update.
+    await send_chat_message(lastUserMessage.text, messageId)
   }
 
   const clearChat = () => {
@@ -1337,6 +1353,7 @@ export default function AIChatInterface({
                         variant='outline'
                         size='sm'
                         onClick={() => void retry_message(message.id)}
+                        disabled={isLoading || !canUseChat}
                         className='mt-1 flex w-fit items-center gap-2 rounded-full px-4 text-xs'
                       >
                         <RefreshCw className='h-3 w-3' />

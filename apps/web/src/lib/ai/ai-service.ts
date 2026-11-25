@@ -1,4 +1,5 @@
 import { runtimeProvider } from './runtime-provider'
+import { get_ai_runtime_config } from './runtime-config'
 import { type MascotSiteContext } from './mascot-context'
 
 type SiteContext = MascotSiteContext
@@ -132,8 +133,8 @@ Translation:`
     return this.generateResponse(prompt, context)
   }
 
-  getAvailableProviders(): string[] {
-    return ['runtime']
+  async getAvailableProviders(): Promise<string[]> {
+    return (await get_ai_runtime_config()) ? ['runtime'] : []
   }
 }
 

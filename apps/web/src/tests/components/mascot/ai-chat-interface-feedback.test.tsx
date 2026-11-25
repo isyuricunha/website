@@ -221,6 +221,60 @@ describe('<AIChatInterface /> feedback', () => {
     expect(JSON.stringify(parsed)).not.toContain('mistral')
   })
 
+  it('blocks sends when the runtime configuration is unavailable', async () => {
+    const fetchMock = vi.fn(async () => Response.json({ available: false }))
+    vi.stubGlobal('fetch', fetchMock)
+
+    render(
+      <NextIntlClientProvider locale='en' messages={messages}>
+        <AIChatInterface isOpen onClose={vi.fn()} currentPage='home' pagePath='/en' />
+      </NextIntlClientProvider>
+    )
+
+    await waitFor(() =>
+      expect(fetchMock).toHaveBeenCalledWith('/api/ai/chat/status', expect.anything())
+    )
+    expect(screen.getByPlaceholderText('Ask me anything...')).toBeDisabled()
+    expect(screen.getByRole('button', { name: 'Send message' })).toBeDisabled()
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+  })
+
+  it('retries a failed HTTP request without duplicating the user message', async () => {
+    let requests = 0
+    const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
+      if (input === '/api/ai/chat/status') return Response.json({ available: true })
+      requests += 1
+      if (requests === 1) {
+        return Response.json(
+          { error: 'private provider error' },
+          {
+            status: 500,
+            headers: { 'x-request-id': 'retry-request' }
+          }
+        )
+      }
+      return Response.json({ message: 'retry succeeded' })
+    })
+    vi.stubGlobal('fetch', fetchMock)
+
+    render(
+      <NextIntlClientProvider locale='en' messages={messages}>
+        <AIChatInterface isOpen onClose={vi.fn()} currentPage='home' pagePath='/en' />
+      </NextIntlClientProvider>
+    )
+
+    expect(await screen.findByText('Nery AI ready')).toBeInTheDocument()
+    fireEvent.change(screen.getByPlaceholderText('Ask me anything...'), {
+      target: { value: 'retry this once' }
+    })
+    fireEvent.click(screen.getByRole('button', { name: 'Send message' }))
+    fireEvent.click(await screen.findByRole('button', { name: messages.mascot.aiChat.retry }))
+    expect(await screen.findByText('retry succeeded')).toBeInTheDocument()
+    expect(screen.getAllByText('retry this once')).toHaveLength(1)
+    expect(screen.queryByText('private provider error')).not.toBeInTheDocument()
+    expect(requests).toBe(2)
+  })
+
   it('cancels an in-flight chat response', async () => {
     let chatSignal: AbortSignal | null | undefined
 

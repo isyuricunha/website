@@ -66,7 +66,7 @@ describe('/api/ai/chat', () => {
 
     vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
     vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
-    vi.mocked(aiService.getAvailableProviders).mockReturnValue(['gemini'])
+    vi.mocked(aiService.getAvailableProviders).mockResolvedValue(['gemini'])
 
     const { POST } = await import('@/app/api/ai/chat/route')
 
@@ -98,7 +98,7 @@ describe('/api/ai/chat', () => {
 
     vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
     vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
-    vi.mocked(aiService.getAvailableProviders).mockReturnValue(['gemini'])
+    vi.mocked(aiService.getAvailableProviders).mockResolvedValue(['gemini'])
 
     const { POST } = await import('@/app/api/ai/chat/route')
 
@@ -209,7 +209,7 @@ describe('/api/ai/chat', () => {
 
     vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
     vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
-    vi.mocked(aiService.getAvailableProviders).mockReturnValue(['mistral'])
+    vi.mocked(aiService.getAvailableProviders).mockResolvedValue(['mistral'])
     vi.mocked(aiService.generateResponse).mockResolvedValue('ok')
 
     const { POST } = await import('@/app/api/ai/chat/route')
@@ -247,7 +247,7 @@ describe('/api/ai/chat', () => {
 
     vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
     vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
-    vi.mocked(aiService.getAvailableProviders).mockReturnValue([])
+    vi.mocked(aiService.getAvailableProviders).mockResolvedValue([])
 
     const { POST } = await import('@/app/api/ai/chat/route')
 
@@ -278,7 +278,7 @@ describe('/api/ai/chat', () => {
 
     vi.mocked(getClientIp).mockReturnValue('1.2.3.4')
     vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
-    vi.mocked(aiService.getAvailableProviders).mockReturnValue(['mistral'])
+    vi.mocked(aiService.getAvailableProviders).mockResolvedValue(['mistral'])
     vi.mocked(aiService.generateResponse).mockRejectedValue(new Error('Provider error'))
 
     const { POST } = await import('@/app/api/ai/chat/route')

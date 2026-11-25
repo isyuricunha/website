@@ -259,7 +259,7 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    const available_providers = aiService.getAvailableProviders()
+    const available_providers = await aiService.getAvailableProviders()
     if (available_providers.length === 0) {
       const payload = { error: 'No AI providers are currently available.', requestId: request_id }
       await record_ai_chat_observability({
@@ -449,7 +449,7 @@ export async function POST(req: NextRequest) {
           method,
           statusCode: 200,
           responseTimeMs: Date.now() - started_at,
-          provider: 'mistral',
+          provider: 'runtime',
           mode,
           model: parsed.model,
           ipAddress: ip,
@@ -470,7 +470,7 @@ export async function POST(req: NextRequest) {
     const response_text = await (async () => {
       try {
         logger.info('[AI Chat] Calling aiService.generateResponse', {
-          provider: 'mistral',
+          provider: 'runtime',
           messageLength: message.length
         })
         const text = await aiService.generateResponse(message, {
@@ -484,7 +484,7 @@ export async function POST(req: NextRequest) {
         logger.info('[AI Chat] aiService.generateResponse succeeded', {
           responseLength: text.length
         })
-        return { text, provider: PUBLIC_ASSISTANT_PROVIDER, internalProvider: 'mistral' }
+        return { text, provider: PUBLIC_ASSISTANT_PROVIDER, internalProvider: 'runtime' }
       } catch (error) {
         logger.error('[AI Chat] aiService.generateResponse failed', {
           errorName: error instanceof Error ? error.name : 'Unknown',
