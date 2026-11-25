@@ -29,3 +29,17 @@ included.
 
 References: https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Animations/Using
 and https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/%40media/prefers-reduced-motion
+
+## Chat history contract
+
+The request sends the current user text in message, and prior turns in
+context.conversation with historyVersion: 2. The client excludes welcome
+and error notices and limits history to 15 messages of at most 4000
+characters each. Old unversioned website requests with a trailing copy
+of the current user message are normalized at the API boundary. Version 2
+preserves genuinely repeated questions. The provider receives system
+instructions, structured history and the current user message exactly once.
+The system prompt never embeds the conversation transcript. Legacy
+previousMessages is accepted only as a fallback for recommendation context.
+
+Reference: https://platform.claude.com/docs/en/build-with-claude/working-with-messages

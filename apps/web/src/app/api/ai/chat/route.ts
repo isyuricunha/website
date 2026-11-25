@@ -32,6 +32,7 @@ const requestContextSchema = z.object({
   pagePath: z.string().max(500).optional(),
   previousMessages: z.array(z.string().max(4000)).max(20).optional(),
   conversation: z.array(conversationMessageSchema).max(30).optional(),
+  historyVersion: z.literal(2).optional(),
   conversationLength: z.number().int().min(0).max(5000).optional(),
   userPreferences: z.record(z.string(), z.unknown()).optional(),
   pageContext: z.record(z.string(), z.unknown()).optional()
@@ -302,6 +303,18 @@ export async function POST(req: NextRequest) {
     }
 
     const message = parsed.message.trim()
+    // Version 2 contains prior turns only. Older website clients included the
+    // current user message as the final history entry; remove that one entry
+    // at the request boundary without collapsing intentional repeated turns.
+    const raw_history = parsed.context?.conversation
+    const last_turn = raw_history?.at(-1)
+    const conversation =
+      parsed.context?.historyVersion !== 2 &&
+      last_turn?.role === 'user' &&
+      last_turn.content.trim() === message
+        ? raw_history?.slice(0, -1)
+        : raw_history
+
     const current_page = parsed.context?.currentPage ?? 'unknown'
     const page_path = parsed.context?.pagePath
     const locale = parsed.locale ?? parsed.context?.pageContext?.locale?.toString?.() ?? 'en'
@@ -309,7 +322,7 @@ export async function POST(req: NextRequest) {
     let mode = parsed.mode ?? infer_mode(message)
 
     const follow_up_intent = is_short_follow_up_navigation(message)
-      ? pick_last_user_intent(parsed.context?.conversation)
+      ? pick_last_user_intent(conversation)
       : null
     const navigation_query = follow_up_intent ?? message
 
@@ -323,16 +336,10 @@ export async function POST(req: NextRequest) {
 
         // Exclude posts already suggested in the conversation history.
         const texts: string[] = []
-        const conversationMessages = parsed.context?.conversation ?? []
-        for (const msg of conversationMessages) {
-          if (!msg?.content) continue
-          texts.push(msg.content)
-        }
-        const previousMessages = parsed.context?.previousMessages ?? []
-        for (const text of previousMessages) {
-          if (!text) continue
-          texts.push(text)
-        }
+        // Structured history supersedes the legacy text-only copy.
+        const history_texts =
+          conversation?.map((turn) => turn.content) ?? parsed.context?.previousMessages ?? []
+        texts.push(...history_texts)
 
         // Also exclude the current page if it is a blog page.
         if (page_path) texts.push(page_path)
@@ -428,7 +435,7 @@ export async function POST(req: NextRequest) {
         pagePath: page_path,
         pageContext: page_context,
         citations,
-        conversation: parsed.context?.conversation,
+        conversation,
         locale
       }
 
@@ -478,7 +485,7 @@ export async function POST(req: NextRequest) {
           pagePath: page_path,
           pageContext: page_context,
           citations,
-          conversation: parsed.context?.conversation,
+          conversation,
           locale
         })
         logger.info('[AI Chat] aiService.generateResponse succeeded', {

@@ -777,17 +777,18 @@ export default function AIChatInterface({
       }
 
       try {
-        // Enhanced context with more conversation history for better memory.
-        // The welcome bubble is UI chrome, not assistant speech: excluding it
-        // stops the model from echoing it verbatim ("who are you" -> welcome
-        // text) and keeps real turns only.
-        const conversationMessages = nextMessages.filter((message) => message.id !== 'welcome')
-        const recentMessages = conversationMessages.slice(-15).map((message) => ({
-          role: message.isUser ? 'user' : 'assistant',
-          content: message.text,
-          timestamp: message.timestamp,
-          reactions: message.reactions
-        }))
+        // The final message is sent separately in the request's message field.
+        // Preserve earlier turns (including intentional repeated questions),
+        // excluding UI-only welcome/error notices. Retry uses the same boundary.
+        const recentMessages = nextMessages
+          .slice(0, -1)
+          .filter((message) => message.id !== 'welcome' && !message.isError && message.text.trim())
+          .slice(-15)
+          .map((message) => ({
+            role: message.isUser ? 'user' : 'assistant',
+            content: message.text.slice(0, 4000),
+            timestamp: message.timestamp
+          }))
 
         const should_stream = (() => {
           const lower = messageText.toLowerCase()
@@ -819,12 +820,8 @@ export default function AIChatInterface({
             context: {
               currentPage,
               pagePath,
-              previousMessages: conversationMessages.slice(-8).map((m) => m.text),
-              conversation: recentMessages,
-              conversationLength: nextMessages.length,
-              userPreferences: {
-                hasReactedToMessages: nextMessages.some((m) => m.reactions?.userReaction)
-              }
+              historyVersion: 2,
+              conversation: recentMessages
             }
           })
         })

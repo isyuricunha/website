@@ -50,7 +50,8 @@ vi.mock('@/lib/ai/ai-observability', () => ({
 vi.mock('@/lib/ai/ai-service', () => ({
   aiService: {
     getAvailableProviders: vi.fn(),
-    generateResponse: vi.fn()
+    generateResponse: vi.fn(),
+    generateStream: vi.fn()
   }
 }))
 
@@ -238,6 +239,64 @@ describe('/api/ai/chat', () => {
     expect(typeof json.latencyMs).toBe('number')
     expect(typeof json.requestId).toBe('string')
     expect(json.citations).toBeTruthy()
+  })
+
+  it.each([false, true])(
+    'normalizes legacy history before the provider call (stream=%s)',
+    async (stream) => {
+      const { ratelimit } = await import('@/lib/ratelimit')
+      const { aiService } = await import('@/lib/ai/ai-service')
+      vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
+      vi.mocked(aiService.getAvailableProviders).mockResolvedValue(['runtime'])
+      vi.mocked(aiService.generateResponse).mockResolvedValue('ok')
+      vi.mocked(aiService.generateStream).mockResolvedValue(
+        new ReadableStream({
+          start(controller) {
+            controller.close()
+          }
+        })
+      )
+      const { POST } = await import('@/app/api/ai/chat/route')
+      const prior = [
+        { role: 'user', content: 'earlier question' },
+        { role: 'assistant', content: 'earlier answer' }
+      ]
+      const res = await POST({
+        headers: new Headers(),
+        json: async () => ({
+          message: 'current question',
+          stream,
+          context: { conversation: [...prior, { role: 'user', content: 'current question' }] }
+        })
+      } as unknown as Parameters<typeof POST>[0])
+      expect(res.status).toBe(200)
+      expect(stream ? aiService.generateStream : aiService.generateResponse).toHaveBeenCalledWith(
+        'current question',
+        expect.objectContaining({ conversation: prior })
+      )
+    }
+  )
+
+  it('preserves a legitimate repeated user message in version 2 history', async () => {
+    const { ratelimit } = await import('@/lib/ratelimit')
+    const { aiService } = await import('@/lib/ai/ai-service')
+    vi.mocked(ratelimit.limit).mockResolvedValue({ success: true } as never)
+    vi.mocked(aiService.getAvailableProviders).mockResolvedValue(['runtime'])
+    vi.mocked(aiService.generateResponse).mockResolvedValue('ok')
+    const { POST } = await import('@/app/api/ai/chat/route')
+    const prior = [{ role: 'user', content: 'same question' }]
+    const res = await POST({
+      headers: new Headers(),
+      json: async () => ({
+        message: 'same question',
+        context: { historyVersion: 2, conversation: prior }
+      })
+    } as unknown as Parameters<typeof POST>[0])
+    expect(res.status).toBe(200)
+    expect(aiService.generateResponse).toHaveBeenCalledWith(
+      'same question',
+      expect.objectContaining({ conversation: prior })
+    )
   })
 
   it('returns 503 when no providers are available', async () => {

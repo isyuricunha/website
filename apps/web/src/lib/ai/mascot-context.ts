@@ -49,18 +49,6 @@ const build_mascot_system_message = (context: MascotSiteContext): string => {
     de: 'Antworten Sie auf Deutsch'
   }
 
-  const conversationBlock = (() => {
-    const conversation = context.conversation?.slice(-10) ?? []
-    if (conversation.length === 0) return 'none'
-
-    return conversation
-      .map((m) => {
-        const role = m.role === 'user' ? 'User' : 'Assistant'
-        return `${role}: ${m.content}`
-      })
-      .join('\n')
-  })()
-
   const pageContextBlock = context.pageContext
     ? [
         `type: ${context.pageContext.type}`,
@@ -99,9 +87,6 @@ Context Data:
 - Recent Posts: ${context.recentPosts?.map((p) => p.title).join(', ') || 'none'}
 - Projects: ${context.projects?.map((p) => p.name).join(', ') || 'none'}
 ${pageContextBlock === 'none' ? '' : `\nPage Details:\n${pageContextBlock}`}
-
-Conversation history:
-${conversationBlock}
 
 Available Sources:
 ${sourcesBlock || 'none'}

@@ -217,6 +217,11 @@ describe('<AIChatInterface /> feedback', () => {
     const parsed = JSON.parse(init.body as string) as Record<string, unknown>
 
     expect(parsed.message).toBe('Summarize this page in a few bullet points.')
+    expect(parsed.context).toMatchObject({
+      historyVersion: 2,
+      conversation: [{ role: 'assistant', content: 'assistant message' }]
+    })
+    expect(parsed.context).not.toHaveProperty('previousMessages')
     expect(parsed.provider).toBeUndefined()
     expect(JSON.stringify(parsed)).not.toContain('mistral')
   })
@@ -241,8 +246,14 @@ describe('<AIChatInterface /> feedback', () => {
 
   it('retries a failed HTTP request without duplicating the user message', async () => {
     let requests = 0
-    const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
+    const fetchMock = vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
       if (input === '/api/ai/chat/status') return Response.json({ available: true })
+      const payload = JSON.parse(init?.body as string)
+      expect(payload.message).toBe('retry this once')
+      expect(payload.context.historyVersion).toBe(2)
+      expect(payload.context.conversation).toEqual([
+        expect.objectContaining({ role: 'assistant', content: 'assistant message' })
+      ])
       requests += 1
       if (requests === 1) {
         return Response.json(

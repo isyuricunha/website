@@ -32,6 +32,44 @@ describe('mascot system message locale coverage', () => {
     }
   })
 
+  it('sends the conversation as structured turns only, with the current question once', () => {
+    const messages = build_mascot_openai_messages(
+      {
+        ...baseContext('en'),
+        conversation: [
+          { role: 'user', content: 'unique previous question' },
+          { role: 'assistant', content: 'unique previous answer' }
+        ]
+      },
+      'unique current question'
+    )
+    expect(messages.slice(1)).toEqual([
+      { role: 'user', content: 'unique previous question' },
+      { role: 'assistant', content: 'unique previous answer' },
+      { role: 'user', content: 'unique current question' }
+    ])
+    expect(messages[0]?.content).not.toContain('unique previous')
+    expect(messages[0]?.content).not.toContain('unique current')
+  })
+
+  it('preserves genuine repeated questions across distinct turns', () => {
+    const messages = build_mascot_openai_messages(
+      {
+        ...baseContext('en'),
+        conversation: [
+          { role: 'user', content: 'same question' },
+          { role: 'assistant', content: 'first answer' }
+        ]
+      },
+      'same question'
+    )
+    expect(messages.slice(1)).toEqual([
+      { role: 'user', content: 'same question' },
+      { role: 'assistant', content: 'first answer' },
+      { role: 'user', content: 'same question' }
+    ])
+  })
+
   it('resolves the zh-CN locale (canonical website casing) to Chinese instructions', () => {
     expect(systemMessageFor('zh-CN')).toContain('请用中文回答')
   })
