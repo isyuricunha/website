@@ -86,12 +86,12 @@ describe('useMascotState', () => {
     await waitFor(() => expect(fetch).toHaveBeenCalledWith('/api/mascot/latest-post?locale=en'))
   })
 
-  it('recovers from an invalid cached image index', async () => {
+  it('retains saved preferences independently of the old static pose cache', async () => {
     sessionStorage.setItem('vc_mascot_current_image', '999')
+    localStorage.setItem('vc_mascot_preferences', JSON.stringify({ animations: false }))
     const { result } = renderHook(() => useMascotState(), { wrapper })
     await waitFor(() => expect(result.current.mounted).toBe(true))
-    expect(result.current.state.currentMascotImage).toBeGreaterThanOrEqual(1)
-    expect(result.current.state.currentMascotImage).toBeLessThanOrEqual(5)
+    expect(result.current.state.preferences.animations).toBe(false)
   })
 
   it('separates session dismiss from hide until restored', async () => {

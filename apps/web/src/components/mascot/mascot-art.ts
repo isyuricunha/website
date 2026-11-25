@@ -1,18 +1,28 @@
 export const MASCOT_AVATAR_SRC = '/images/nery/avatar.webp'
 
-const poses = [
-  MASCOT_AVATAR_SRC,
-  '/images/nery/happy.webp',
-  '/images/nery/coffee.webp',
-  '/images/nery/with-cat.webp',
-  '/images/nery/sleeping.webp',
-  '/images/nery/fullbody.webp',
-  '/images/nery/thinking.webp',
-  '/images/nery/coding.webp',
-  '/images/nery/thinking.webp'
-] as const
+export type NeryMotion = 'idle' | 'waving' | 'jumping' | 'failed' | 'waiting' | 'running' | 'review'
 
-export const getMascotImage = (index: number) => poses[index] ?? MASCOT_AVATAR_SRC
+type MotionContext = {
+  pageKey: string
+  isThinking: boolean
+  isTickled: boolean
+  isDizzy: boolean
+  isKonamiMode: boolean
+  showMenu: boolean
+  showAIChat: boolean
+  showContact: boolean
+  showSettings: boolean
+  showGame: boolean
+}
 
-export const isIdleMascotImage = (index: number) =>
-  Number.isSafeInteger(index) && index >= 1 && index <= 5
+export const getNeryMotion = (context: MotionContext): NeryMotion => {
+  if (context.isThinking) return 'running'
+  if (context.isDizzy) return 'failed'
+  if (context.isTickled || context.isKonamiMode) return 'jumping'
+  if (context.showMenu) return 'waving'
+  if (context.showAIChat || context.showContact || context.showSettings || context.showGame)
+    return 'waiting'
+  if (context.pageKey === '404') return 'failed'
+  if (context.pageKey === 'projects' || context.pageKey === 'projectsDetail') return 'review'
+  return 'idle'
+}

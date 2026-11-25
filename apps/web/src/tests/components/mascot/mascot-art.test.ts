@@ -1,29 +1,39 @@
 import { describe, expect, it } from 'vitest'
 
-import {
-  getMascotImage,
-  isIdleMascotImage,
-  MASCOT_AVATAR_SRC
-} from '@/components/mascot/mascot-art'
+import { getNeryMotion } from '@/components/mascot/mascot-art'
 
-describe('Nery artwork registry', () => {
-  it.each([1, 2, 3, 4, 5])('retains the stored idle pose %s', (index) => {
-    expect(isIdleMascotImage(index)).toBe(true)
-    expect(getMascotImage(index)).toMatch(/^\/images\/nery\/.+\.webp$/)
+const idle = {
+  pageKey: 'home',
+  isThinking: false,
+  isTickled: false,
+  isDizzy: false,
+  isKonamiMode: false,
+  showMenu: false,
+  showAIChat: false,
+  showContact: false,
+  showSettings: false,
+  showGame: false
+}
+
+describe('Nery motion selection', () => {
+  it('uses the official idle pose by default', () => {
+    expect(getNeryMotion(idle)).toBe('idle')
   })
 
-  it.each([0, -1, 1.5, 6, 8, 9, NaN, Infinity])(
-    'rejects non-idle or invalid stored values: %s',
-    (index) => {
-      expect(isIdleMascotImage(index)).toBe(false)
-    }
-  )
-
-  it('maps context-dependent poses and safely falls back to the portrait', () => {
-    expect(getMascotImage(6)).toBe('/images/nery/thinking.webp')
-    expect(getMascotImage(7)).toBe('/images/nery/coding.webp')
-    expect(getMascotImage(8)).toBe('/images/nery/thinking.webp')
-    expect(getMascotImage(999)).toBe(MASCOT_AVATAR_SRC)
-    expect(getMascotImage(NaN)).toBe(MASCOT_AVATAR_SRC)
+  it.each([
+    [{ pageKey: 'projects' }, 'review'],
+    [{ pageKey: 'projectsDetail' }, 'review'],
+    [{ pageKey: '404' }, 'failed'],
+    [{ showMenu: true }, 'waving'],
+    [{ isTickled: true }, 'jumping'],
+    [{ isKonamiMode: true }, 'jumping'],
+    [{ isDizzy: true }, 'failed'],
+    [{ showAIChat: true }, 'waiting'],
+    [{ showContact: true }, 'waiting'],
+    [{ showSettings: true }, 'waiting'],
+    [{ showGame: true }, 'waiting'],
+    [{ pageKey: '404', showAIChat: true, isThinking: true }, 'running']
+  ] as const)('maps the interaction %j to %s', (context, motion) => {
+    expect(getNeryMotion({ ...idle, ...context })).toBe(motion)
   })
 })

@@ -7,14 +7,12 @@ import { i18n } from '@isyuricunha/i18n/config'
 import { useSound } from '@/hooks/use-sound'
 import { getLocalizedPath } from '@/utils/get-localized-path'
 import { canExplainSelectionOnPage, getMascotPageKey } from '../mascot-routing'
-import { isIdleMascotImage } from '../mascot-art'
 
 const STORAGE_KEY = 'vc_mascot_dismissed'
 const HIDE_KEY = 'vc_mascot_hidden'
 const PREFERENCES_KEY = 'vc_mascot_preferences'
 const KONAMI_MODE_KEY = 'vc_mascot_konami_mode'
 const BLOG_POST_VISITED_KEY = 'vc_mascot_blog_posts_visited'
-const MASCOT_IMAGE_KEY = 'vc_mascot_current_image'
 const LATEST_POST_CHECK_KEY = 'vc_mascot_latest_post_checked'
 
 const DEFAULT_PREFERENCES: MascotPreferences = {
@@ -50,7 +48,6 @@ const createInitialState = () => ({
   isDismissed: false,
   isHiddenPref: false,
   isActive: false,
-  isBlinking: false,
   showSettings: false,
   showGame: false,
   showMenu: false,
@@ -61,9 +58,7 @@ const createInitialState = () => ({
   messageQueue: [] as Array<{ id: number; text: string; expiresAt: number }>,
   exitingIds: new Set<number>(),
   autoShowMessage: false,
-  currentMascotImage: 0,
   isThinking: false,
-  mousePosition: { x: 0, y: 0 },
   blogPostsVisited: new Set<string>(),
   clickCount: 0,
   lastClickTime: 0,
@@ -96,7 +91,6 @@ export function useMascotState() {
   const alertSound = useSound('alert', state.preferences.soundEffects)
 
   // Refs
-  const blinkTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const resetAutoShowTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const scheduledTimeoutsRef = useRef(new Set<ReturnType<typeof setTimeout>>())
   const konamiSequenceRef = useRef<string[]>([])
@@ -345,6 +339,7 @@ export function useMascotState() {
       showMenu: false,
       showGame: false,
       showAIChat: false,
+      isThinking: false,
       messageQueue: []
     })
     try {
@@ -365,6 +360,7 @@ export function useMascotState() {
       showMenu: false,
       showGame: false,
       showAIChat: false,
+      isThinking: false,
       messageQueue: []
     })
     try {
@@ -398,7 +394,8 @@ export function useMascotState() {
         showSettings: false,
         showMenu: false,
         showGame: false,
-        showAIChat: false
+        showAIChat: false,
+        isThinking: false
       })
 
       scheduleTimeout(() => {
@@ -489,7 +486,7 @@ export function useMascotState() {
       updateState({ isTickled: true })
       enqueueMessage(t('mascot.interactions.tickle'), 3000)
       notificationSoundRef.current()
-      scheduleTimeout(() => updateState({ isTickled: false }), 1000)
+      scheduleTimeout(() => updateState({ isTickled: false }), 1050)
       return
     }
 
@@ -507,7 +504,8 @@ export function useMascotState() {
       showContact: false,
       showSettings: false,
       showGame: false,
-      showAIChat: false
+      showAIChat: false,
+      isThinking: false
     })
     clickSoundRef.current()
   }, [
@@ -564,15 +562,6 @@ export function useMascotState() {
       }
 
       try {
-        const saved = sessionStorage.getItem(MASCOT_IMAGE_KEY)
-        if (saved && isIdleMascotImage(Number(saved))) {
-          updates.currentMascotImage = Number(saved)
-        } else {
-          const chosen = Math.floor(Math.random() * 5) + 1
-          sessionStorage.setItem(MASCOT_IMAGE_KEY, String(chosen))
-          updates.currentMascotImage = chosen
-        }
-
         const dismissed = sessionStorage.getItem(STORAGE_KEY)
         if (dismissed === '1') updates.isDismissed = true
 
@@ -654,87 +643,6 @@ export function useMascotState() {
     addEventListener('keydown', handleKeyDown)
     return () => removeEventListener('keydown', handleKeyDown)
   }, [restoreMascot, state.isKonamiMode, updateState])
-
-  // Blinking animation
-  useEffect(() => {
-    if (
-      prefersReducedMotion ||
-      state.isHiddenPref ||
-      state.isDismissed ||
-      !state.preferences.animations
-    )
-      return
-
-    const blinkInterval = setInterval(
-      () => {
-        updateState({ isBlinking: true })
-        if (blinkTimeoutRef.current) {
-          clearTimeout(blinkTimeoutRef.current)
-        }
-        blinkTimeoutRef.current = setTimeout(() => updateState({ isBlinking: false }), 150)
-      },
-      3000 + Math.random() * 2000
-    )
-
-    return () => {
-      clearInterval(blinkInterval)
-      if (blinkTimeoutRef.current) {
-        clearTimeout(blinkTimeoutRef.current)
-        blinkTimeoutRef.current = null
-      }
-    }
-  }, [
-    state.isHiddenPref,
-    state.isDismissed,
-    state.preferences.animations,
-    prefersReducedMotion,
-    updateState
-  ])
-
-  // Mouse follow effect
-  useEffect(() => {
-    if (prefersReducedMotion || !state.preferences.animations || !state.isActive) return
-
-    const handleMouseMove = (e: MouseEvent) => {
-      const x = (e.clientX / window.innerWidth) * 2 - 1
-      const y = (e.clientY / window.innerHeight) * 2 - 1
-      updateState({ mousePosition: { x, y } })
-    }
-
-    addEventListener('mousemove', handleMouseMove)
-    return () => removeEventListener('mousemove', handleMouseMove)
-  }, [state.preferences.animations, prefersReducedMotion, state.isActive, updateState])
-
-  // Contextual skin switching
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      let nextImage = state.currentMascotImage || 1
-
-      if (state.isThinking) {
-        nextImage = 8
-      } else if (pageKey === '404') {
-        nextImage = 6
-      } else if (pageKey === 'projects' || pageKey === 'projectsDetail') {
-        nextImage = 7
-      } else {
-        try {
-          const saved = sessionStorage.getItem(MASCOT_IMAGE_KEY)
-          const savedImage = saved ? Number(saved) : 0
-          if (isIdleMascotImage(savedImage)) {
-            nextImage = savedImage
-          }
-        } catch {
-          // ignore storage errors
-        }
-      }
-
-      if (nextImage !== state.currentMascotImage) {
-        updateState({ currentMascotImage: nextImage })
-      }
-    }, 0)
-
-    return () => clearTimeout(timer)
-  }, [pageKey, state.isThinking, state.currentMascotImage, updateState])
 
   // Idle timer for random messages
   useEffect(() => {

@@ -1,0 +1,379 @@
+/* Generated from Nery motion.json v5; original frame durations preserved.
+ * Keep the atlas cells aligned to the canonical floor. */
+.sprite {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  pointer-events: none;
+}
+
+.sprite[data-motion='idle'] {
+  background-image: url('/images/nery/motion/idle.webp');
+  background-size: 1200% 100%;
+  background-position: 0% 0;
+}
+
+.sprite[data-motion='idle'][data-animated='true'] {
+  animation: nery-idle 2340ms step-end infinite;
+}
+
+@keyframes nery-idle {
+  0.00000000% {
+    background-position: 0% 0;
+  }
+  26.49572650% {
+    background-position: 9.09090909% 0;
+  }
+  33.33333333% {
+    background-position: 18.18181818% 0;
+  }
+  39.74358974% {
+    background-position: 27.27272727% 0;
+  }
+  46.15384615% {
+    background-position: 36.36363636% 0;
+  }
+  50.00000000% {
+    background-position: 45.45454545% 0;
+  }
+  53.84615385% {
+    background-position: 54.54545455% 0;
+  }
+  58.11965812% {
+    background-position: 63.63636364% 0;
+  }
+  64.10256410% {
+    background-position: 72.72727273% 0;
+  }
+  71.36752137% {
+    background-position: 81.81818182% 0;
+  }
+  78.63247863% {
+    background-position: 90.90909091% 0;
+  }
+  85.89743590% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: 0% 0;
+  }
+}
+
+.sprite[data-motion='waving'] {
+  background-image: url('/images/nery/motion/waving.webp');
+  background-size: 1200% 100%;
+  background-position: 36.36363636% 0;
+}
+
+.sprite[data-motion='waving'][data-animated='true'] {
+  animation: nery-waving 1210ms step-end 1 both;
+}
+
+@keyframes nery-waving {
+  0.00000000% {
+    background-position: 0% 0;
+  }
+  8.26446281% {
+    background-position: 9.09090909% 0;
+  }
+  14.87603306% {
+    background-position: 18.18181818% 0;
+  }
+  21.48760331% {
+    background-position: 27.27272727% 0;
+  }
+  28.09917355% {
+    background-position: 36.36363636% 0;
+  }
+  37.19008264% {
+    background-position: 45.45454545% 0;
+  }
+  46.28099174% {
+    background-position: 54.54545455% 0;
+  }
+  55.37190083% {
+    background-position: 63.63636364% 0;
+  }
+  64.46280992% {
+    background-position: 72.72727273% 0;
+  }
+  73.55371901% {
+    background-position: 81.81818182% 0;
+  }
+  80.16528926% {
+    background-position: 90.90909091% 0;
+  }
+  86.77685950% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: 100% 0;
+  }
+}
+
+.sprite[data-motion='jumping'] {
+  background-image: url('/images/nery/motion/jumping.webp');
+  background-size: 1200% 100%;
+  background-position: 0% 0;
+}
+
+.sprite[data-motion='jumping'][data-animated='true'] {
+  animation: nery-jumping 1050ms step-end 1 both;
+}
+
+@keyframes nery-jumping {
+  0.00000000% {
+    background-position: 0% 0;
+  }
+  10.47619048% {
+    background-position: 9.09090909% 0;
+  }
+  18.09523810% {
+    background-position: 18.18181818% 0;
+  }
+  26.66666667% {
+    background-position: 27.27272727% 0;
+  }
+  32.38095238% {
+    background-position: 36.36363636% 0;
+  }
+  39.04761905% {
+    background-position: 45.45454545% 0;
+  }
+  48.57142857% {
+    background-position: 54.54545455% 0;
+  }
+  55.23809524% {
+    background-position: 63.63636364% 0;
+  }
+  60.95238095% {
+    background-position: 72.72727273% 0;
+  }
+  66.66666667% {
+    background-position: 81.81818182% 0;
+  }
+  75.23809524% {
+    background-position: 90.90909091% 0;
+  }
+  84.76190476% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: 100% 0;
+  }
+}
+
+.sprite[data-motion='failed'] {
+  background-image: url('/images/nery/motion/failed.webp');
+  background-size: 1200% 100%;
+  background-position: 100% 0;
+}
+
+.sprite[data-motion='failed'][data-animated='true'] {
+  animation: nery-failed 1770ms step-end 1 both;
+}
+
+@keyframes nery-failed {
+  0.00000000% {
+    background-position: 0% 0;
+  }
+  8.47457627% {
+    background-position: 9.09090909% 0;
+  }
+  14.12429379% {
+    background-position: 18.18181818% 0;
+  }
+  19.77401130% {
+    background-position: 27.27272727% 0;
+  }
+  25.42372881% {
+    background-position: 36.36363636% 0;
+  }
+  31.07344633% {
+    background-position: 45.45454545% 0;
+  }
+  36.72316384% {
+    background-position: 54.54545455% 0;
+  }
+  42.37288136% {
+    background-position: 63.63636364% 0;
+  }
+  48.02259887% {
+    background-position: 72.72727273% 0;
+  }
+  54.80225989% {
+    background-position: 81.81818182% 0;
+  }
+  62.71186441% {
+    background-position: 90.90909091% 0;
+  }
+  71.75141243% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: 100% 0;
+  }
+}
+
+.sprite[data-motion='waiting'] {
+  background-image: url('/images/nery/motion/waiting.webp');
+  background-size: 1200% 100%;
+  background-position: 45.45454545% 0;
+}
+
+.sprite[data-motion='waiting'][data-animated='true'] {
+  animation: nery-waiting 2280ms step-end infinite;
+}
+
+@keyframes nery-waiting {
+  0.00000000% {
+    background-position: 0% 0;
+  }
+  15.35087719% {
+    background-position: 9.09090909% 0;
+  }
+  20.61403509% {
+    background-position: 18.18181818% 0;
+  }
+  25.87719298% {
+    background-position: 27.27272727% 0;
+  }
+  32.01754386% {
+    background-position: 36.36363636% 0;
+  }
+  39.03508772% {
+    background-position: 45.45454545% 0;
+  }
+  46.92982456% {
+    background-position: 54.54545455% 0;
+  }
+  58.33333333% {
+    background-position: 63.63636364% 0;
+  }
+  66.22807018% {
+    background-position: 72.72727273% 0;
+  }
+  73.24561404% {
+    background-position: 81.81818182% 0;
+  }
+  79.38596491% {
+    background-position: 90.90909091% 0;
+  }
+  84.64912281% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: 0% 0;
+  }
+}
+
+.sprite[data-motion='running'] {
+  background-image: url('/images/nery/motion/running.webp');
+  background-size: 1200% 100%;
+  background-position: 0% 0;
+}
+
+.sprite[data-motion='running'][data-animated='true'] {
+  animation: nery-running 1320ms step-end infinite;
+}
+
+@keyframes nery-running {
+  0.00000000% {
+    background-position: 0% 0;
+  }
+  8.33333333% {
+    background-position: 9.09090909% 0;
+  }
+  16.66666667% {
+    background-position: 18.18181818% 0;
+  }
+  25.00000000% {
+    background-position: 27.27272727% 0;
+  }
+  33.33333333% {
+    background-position: 36.36363636% 0;
+  }
+  41.66666667% {
+    background-position: 45.45454545% 0;
+  }
+  50.00000000% {
+    background-position: 54.54545455% 0;
+  }
+  58.33333333% {
+    background-position: 63.63636364% 0;
+  }
+  66.66666667% {
+    background-position: 72.72727273% 0;
+  }
+  75.00000000% {
+    background-position: 81.81818182% 0;
+  }
+  83.33333333% {
+    background-position: 90.90909091% 0;
+  }
+  91.66666667% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: 0% 0;
+  }
+}
+
+.sprite[data-motion='review'] {
+  background-image: url('/images/nery/motion/review.webp');
+  background-size: 1200% 100%;
+  background-position: 0% 0;
+}
+
+.sprite[data-motion='review'][data-animated='true'] {
+  animation: nery-review 1620ms step-end infinite;
+}
+
+@keyframes nery-review {
+  0.00000000% {
+    background-position: 0% 0;
+  }
+  9.87654321% {
+    background-position: 9.09090909% 0;
+  }
+  18.51851852% {
+    background-position: 18.18181818% 0;
+  }
+  27.16049383% {
+    background-position: 27.27272727% 0;
+  }
+  34.56790123% {
+    background-position: 36.36363636% 0;
+  }
+  40.74074074% {
+    background-position: 45.45454545% 0;
+  }
+  46.91358025% {
+    background-position: 54.54545455% 0;
+  }
+  53.08641975% {
+    background-position: 63.63636364% 0;
+  }
+  60.49382716% {
+    background-position: 72.72727273% 0;
+  }
+  69.13580247% {
+    background-position: 81.81818182% 0;
+  }
+  77.77777778% {
+    background-position: 90.90909091% 0;
+  }
+  87.65432099% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: 0% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sprite[data-motion][data-animated='true'] {
+    animation: none;
+  }
+}

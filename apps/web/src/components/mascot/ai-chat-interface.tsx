@@ -1169,7 +1169,7 @@ export default function AIChatInterface({
 
   return (
     <TooltipProvider>
-      <div className='bg-bg-elevated shadow-feature-card absolute right-0 bottom-full mb-2 flex h-[70vh] max-h-[720px] min-h-[460px] w-[420px] max-w-[calc(100vw-1rem)] flex-col overflow-hidden rounded-lg border border-[var(--border-subtle)]'>
+      <div className='bg-bg-elevated shadow-feature-card flex h-[min(70dvh,calc(100dvh_-_13rem))] max-h-[720px] w-[420px] max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-lg border border-[var(--border-subtle)]'>
         {/* Header */}
         <div className='bg-bg-surface flex items-center justify-between gap-3 border-b px-4 py-3'>
           <div className='flex min-w-0 items-center gap-2'>

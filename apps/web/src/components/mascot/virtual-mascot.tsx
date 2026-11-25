@@ -1,11 +1,11 @@
 'use client'
 
 import * as React from 'react'
-import Image from 'next/image'
 import { Eye as EyeIcon } from 'lucide-react'
 
 import MascotGame from './mascot-game'
-import { getMascotImage } from './mascot-art'
+import { getNeryMotion } from './mascot-art'
+import { NerySprite } from './nery-sprite'
 import AIChatInterface from './ai-chat-interface'
 import { useMascotState } from './hooks/use-mascot-state'
 import { MascotSettingsPanel } from './components/mascot-settings-panel'
@@ -99,35 +99,14 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         <button
           type='button'
           aria-label={t('mascot.ariaLabel')}
-          className={`relative inline-flex h-12 w-12 items-center justify-center rounded-full border transition-colors focus-visible:ring-2 focus-visible:ring-[var(--accent-border)] focus-visible:outline-none sm:h-14 sm:w-14 lg:h-16 lg:w-16 ${state.isActive ? 'shadow-feature-card border-[var(--accent-border)] bg-[var(--accent-dim)]' : 'shadow-feature-card border-[var(--border-default)]'} ${state.preferences.animations ? 'hover:bg-bg-hover hover:border-[var(--accent-border)]' : ''} ${state.isKonamiMode ? 'border-[var(--accent-border)]' : ''} ${!prefersReducedMotion && state.preferences.animations && state.isTickled ? 'animate-bounce' : ''} ${!prefersReducedMotion && state.preferences.animations && state.isDizzy ? 'animate-spin' : ''}`}
+          aria-expanded={state.showMenu}
+          className='relative flex h-[104px] w-24 items-end justify-center rounded-xl border-0 bg-transparent transition-[filter] hover:brightness-110 focus-visible:ring-2 focus-visible:ring-[var(--accent-border)] focus-visible:outline-none motion-reduce:transition-none sm:h-[130px] sm:w-[120px]'
           onClick={handleMascotClick}
         >
-          {mounted && state.currentMascotImage > 0 ? (
-            <div
-              className='relative h-full w-full rounded-full transition-transform duration-500 ease-out'
-              style={
-                !prefersReducedMotion && state.preferences.animations
-                  ? {
-                      transform: `translate(${state.mousePosition.x * 5}px, ${state.mousePosition.y * 5}px) rotate(${state.mousePosition.x * 5}deg)`
-                    }
-                  : undefined
-              }
-            >
-              <Image
-                src={getMascotImage(state.currentMascotImage)}
-                unoptimized
-                alt=''
-                role='presentation'
-                width={64}
-                height={64}
-                className={`h-full w-full rounded-full object-contain transition-transform duration-500 ${!prefersReducedMotion && state.preferences.animations && state.isBlinking ? 'animate-pulse' : ''}`}
-                priority={state.isActive}
-                loading={state.isActive ? 'eager' : 'lazy'}
-              />
-            </div>
-          ) : (
-            <div aria-hidden className='bg-bg-surface h-full w-full rounded-full' />
-          )}
+          <NerySprite
+            motion={getNeryMotion({ ...state, pageKey })}
+            animated={mounted && !prefersReducedMotion && state.preferences.animations}
+          />
         </button>
       </div>
 
