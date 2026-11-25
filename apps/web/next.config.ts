@@ -31,6 +31,7 @@ const config: NextConfig = {
   agentRules: false,
 
   experimental: {
+    agentUpgrade: 'security',
     optimizePackageImports: ['shiki']
   },
 

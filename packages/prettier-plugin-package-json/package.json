@@ -28,7 +28,7 @@
   },
   "types": "./dist/index.d.ts",
   "dependencies": {
-    "sort-package-json": "^4.0.0"
+    "sort-package-json": "^4.1.0"
   },
   "peerDependencies": {
     "prettier": "3.x"

@@ -93,7 +93,9 @@ export const TRPCReactProvider = (props: TRPCReactProviderProps) => {
     <QueryClientProvider client={queryClient}>
       <api.Provider client={trpcClient} queryClient={queryClient}>
         {children}
-        <ReactQueryDevtools />
+        {env.NODE_ENV === 'development' && process.env.NEXT_PUBLIC_REACT_QUERY_DEVTOOLS === 'true' && (
+          <ReactQueryDevtools buttonPosition='top-left' />
+        )}
       </api.Provider>
     </QueryClientProvider>
   )
