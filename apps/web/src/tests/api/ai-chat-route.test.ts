@@ -202,7 +202,7 @@ describe('/api/ai/chat', () => {
     expect(json.details).toBeTruthy()
   })
 
-  it('returns Yue AI as the public provider label', async () => {
+  it('returns Nery AI as the public provider label', async () => {
     const { ratelimit } = await import('@/lib/ratelimit')
     const { getClientIp } = await import('@/lib/spam-detection')
     const { aiService } = await import('@/lib/ai/ai-service')
@@ -234,7 +234,7 @@ describe('/api/ai/chat', () => {
 
     expect(res.status).toBe(200)
     expect(json.message).toBe('ok')
-    expect(json.provider).toBe('Yue AI')
+    expect(json.provider).toBe('Nery AI')
     expect(typeof json.latencyMs).toBe('number')
     expect(typeof json.requestId).toBe('string')
     expect(json.citations).toBeTruthy()

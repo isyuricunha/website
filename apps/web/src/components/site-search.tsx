@@ -139,9 +139,9 @@ const SiteSearch = () => {
     }
   }, [])
 
-  // Listen for autonomous search commands from Yue
+  // Listen for autonomous search commands from the mascot
   useEffect(() => {
-    const handleYueSearch = (e: Event) => {
+    const handleMascotSearch = (e: Event) => {
       const customEvent = e as CustomEvent<{ query: string }>
       if (customEvent.detail?.query) {
         setQuery(customEvent.detail.query)
@@ -150,8 +150,8 @@ const SiteSearch = () => {
       }
     }
 
-    addEventListener('yue-open-search' as any, handleYueSearch)
-    return () => removeEventListener('yue-open-search' as any, handleYueSearch)
+    addEventListener('mascot-open-search' as any, handleMascotSearch)
+    return () => removeEventListener('mascot-open-search' as any, handleMascotSearch)
   }, [])
 
   // Save search to recent searches

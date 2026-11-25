@@ -826,7 +826,7 @@
       "messages": {
         "translate-failed": "Failed to translate: {message}",
         "title-content-required": "Title and content are required",
-        "pt-filled": "Filled pt-BR using Yue AI",
+        "pt-filled": "Filled pt-BR using Nery AI",
         "all-languages-filled": "Translated to {count} languages",
         "created": "Announcement created successfully",
         "create-failed": "Failed to create announcement: {message}",
@@ -2137,13 +2137,13 @@
     }
   },
   "mascot": {
-    "ariaLabel": "Yue - Virtual assistant",
+    "ariaLabel": "Nery - Virtual assistant",
     "close": "Close",
     "hide": "Hide",
     "hideForNow": "Hide for now",
-    "speechBubble": "Yue's message",
+    "speechBubble": "Nery's message",
     "settings": {
-      "title": "Yue's Settings",
+      "title": "Nery's Settings",
       "close": "Close settings",
       "open": "Open settings",
       "animations": "Animations",
@@ -2175,7 +2175,7 @@
       "explainButton": "Explain",
       "explainPrompt": "Can you explain this snippet of text I selected?\n\n\"{text}\""
     },
-    "restore": "Bring Yue back",
+    "restore": "Bring Nery back",
     "idle": {
       "tip1": "💡 Did you know? You can use Shift+Y to bring me back if I'm hidden!",
       "tip2": "🎮 Try the mini-game! Click the gamepad icon in my speech bubble.",
@@ -2200,7 +2200,7 @@
       "copyError": "Failed to copy email. Please try again."
     },
     "aiChat": {
-      "title": "Chat with Yue",
+      "title": "Chat with Nery",
       "clear": "Clear",
       "close": "Close",
       "conversations": "Conversations",
@@ -2238,18 +2238,18 @@
       "copyMessage": "Copy message",
       "messageCopied": "Message copied to clipboard",
       "messageCopyFailed": "Failed to copy message",
-      "welcomeMessage": "Hi! I'm Yue, your AI assistant! 🤖 Ask me anything about the website, tech topics, or just chat!",
+      "welcomeMessage": "Hi! I'm Nery, your AI assistant! ✨ Ask me anything about the website, tech topics, or just chat!",
       "errorMessage": "Sorry, I'm having trouble right now. Please try again later! 😅",
-      "thinking": "Yue is thinking...",
+      "thinking": "Nery is thinking...",
       "placeholder": "Ask me anything...",
       "connectionError": "Having trouble connecting. Please try again.",
-      "footer": "Yue AI by Yuri",
+      "footer": "Nery AI by Yuri",
       "providers": {
         "auto": "Auto",
-        "hf": "Yue (Medium)",
-        "hf_local": "Yue (Low)",
+        "hf": "Nery (Medium)",
+        "hf_local": "Nery (Low)",
         "gemini": "Gemini",
-        "groq": "Yue (High)",
+        "groq": "Nery (High)",
         "ollama": "Ollama"
       },
       "feedback": {
@@ -2297,10 +2297,10 @@
       "cancelResponse": "Cancel response",
       "cancelledMessage": "Response canceled.",
       "status": {
-        "checking": "Checking Yue AI...",
-        "ready": "Yue AI ready",
-        "responding": "Yue AI is responding...",
-        "unavailable": "Yue AI unavailable",
+        "checking": "Checking Nery AI...",
+        "ready": "Nery AI ready",
+        "responding": "Nery AI is responding...",
+        "unavailable": "Nery AI unavailable",
         "offline": "Offline"
       },
       "quickPrompts": {
@@ -2388,7 +2388,7 @@
       "turnstilePending": "Security verification pending - please retry in a moment."
     },
     "chatbot": {
-      "title": "Chat with Yue",
+      "title": "Chat with Nery",
       "close": "Close chat",
       "description": "Choose a topic to chat about:",
       "options": {
@@ -2409,13 +2409,13 @@
       }
     },
     "greetings": {
-      "morning": "Good morning! I'm Yue! ☀️",
-      "afternoon": "Good afternoon! I'm Yue! 🌤️",
-      "evening": "Good evening! I'm Yue! 🌅",
-      "night": "Good night! I'm Yue! 🌙"
+      "morning": "Good morning! I'm Nery! ☀️",
+      "afternoon": "Good afternoon! I'm Nery! 🌤️",
+      "evening": "Good evening! I'm Nery! 🌅",
+      "night": "Good night! I'm Nery! 🌙"
     },
     "game": {
-      "title": "Yue's Mini Game",
+      "title": "Nery's Mini Game",
       "close": "Close game",
       "open": "Open game",
       "score": "Score",
@@ -2446,7 +2446,7 @@
       }
     },
     "messages": {
-      "0": "Hi! I'm Yue, your virtual assistant! Need help navigating?",
+      "0": "Hi! I'm Nery, your virtual assistant! Need help navigating?",
       "1": "Did you know you can activate the retro mode with the Konami Code?",
       "2": "Time for a coffee break! ☕",
       "3": "Hey, I found a hidden easter egg! Want to see?",
@@ -2517,7 +2517,7 @@
         "15": "When in doubt, the homepage has links to everything important! 🏠"
       },
       "home": {
-        "0": "Welcome to the homepage! 👋 I'm Yue, your virtual assistant!",
+        "0": "Welcome to the homepage! 👋 I'm Nery, your virtual assistant!",
         "1": "This is where it all begins. Ready to explore?",
         "2": "My creator, Yuri, is an Infrastructure & Platform Engineer. Want to know more?",
         "3": "Check out the latest articles and projects below!",

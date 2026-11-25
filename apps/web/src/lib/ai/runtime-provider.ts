@@ -1,4 +1,4 @@
-import { build_yue_openai_messages, type YueSiteContext } from './yue-context'
+import { build_mascot_openai_messages, type MascotSiteContext } from './mascot-context'
 import { get_ai_runtime_config } from './runtime-config'
 
 const CHAT_REQUEST_TIMEOUT_MS = 60_000
@@ -70,7 +70,11 @@ const get_runtime_config = async () => {
   return config
 }
 
-const create_chat_request = async (message: string, context: YueSiteContext, stream: boolean) => {
+const create_chat_request = async (
+  message: string,
+  context: MascotSiteContext,
+  stream: boolean
+) => {
   const config = await get_runtime_config()
   const controller = new AbortController()
   const timeout = setTimeout(() => controller.abort(), CHAT_REQUEST_TIMEOUT_MS)
@@ -86,7 +90,7 @@ const create_chat_request = async (message: string, context: YueSiteContext, str
       },
       body: JSON.stringify({
         model: config.model,
-        messages: build_yue_openai_messages(context, message, 15),
+        messages: build_mascot_openai_messages(context, message, 15),
         temperature: 0.7,
         max_tokens: 16_353,
         stream
@@ -105,7 +109,7 @@ const create_chat_request = async (message: string, context: YueSiteContext, str
 }
 
 class RuntimeProvider {
-  async generateResponse(message: string, context: YueSiteContext): Promise<string> {
+  async generateResponse(message: string, context: MascotSiteContext): Promise<string> {
     const response = await create_chat_request(message, context, false)
     const payload = (await response.json()) as ChatCompletionPayload
     const content = extract_text_content(payload.choices?.[0]?.message?.content)
@@ -119,7 +123,7 @@ class RuntimeProvider {
 
   async generateStream(
     message: string,
-    context: YueSiteContext
+    context: MascotSiteContext
   ): Promise<ReadableStream<Uint8Array>> {
     const response = await create_chat_request(message, context, true)
     if (!response.body) {

@@ -823,7 +823,7 @@
       "messages": {
         "translate-failed": "翻訳に失敗しました: {message}",
         "title-content-required": "タイトルと本文は必須です",
-        "pt-filled": "Yue AI を使用して pt-BR を入力しました",
+        "pt-filled": "Nery AI を使用して pt-BR を入力しました",
         "created": "お知らせが正常に作成されました",
         "create-failed": "お知らせの作成に失敗しました: {message}",
         "updated": "お知らせが正常に更新されました",
@@ -2137,13 +2137,13 @@
     }
   },
   "mascot": {
-    "ariaLabel": "ユエ - バーチャルアシスタント",
+    "ariaLabel": "ネリ - バーチャルアシスタント",
     "close": "閉じる",
     "hide": "非表示",
     "hideForNow": "今は非表示",
-    "speechBubble": "ユエのメッセージ",
+    "speechBubble": "ネリのメッセージ",
     "settings": {
-      "title": "ユエの設定",
+      "title": "ネリの設定",
       "close": "設定を閉じる",
       "open": "設定を開く",
       "animations": "アニメーション",
@@ -2175,7 +2175,7 @@
       "explainButton": "説明",
       "explainPrompt": "選択したこのテキストの断片を説明してもらえますか？\n\n\"{text}\""
     },
-    "restore": "ユエを戻す",
+    "restore": "ネリを戻す",
     "idle": {
       "tip1": "💡 知ってましたか？Shift+Yを押すと、隠れているときでも私を呼び出せます！",
       "tip2": "🎮 ミニゲームに挑戦！私の吹き出し内のゲームパッドアイコンをクリックしてね。",
@@ -2200,7 +2200,7 @@
       "copyError": "メールアドレスのコピーに失敗しました。もう一度お試しください。"
     },
     "aiChat": {
-      "title": "ユエとチャット",
+      "title": "ネリとチャット",
       "clear": "クリア",
       "close": "閉じる",
       "conversations": "会話",
@@ -2238,18 +2238,18 @@
       "copyMessage": "メッセージをコピー",
       "messageCopied": "メッセージをクリップボードにコピーしました",
       "messageCopyFailed": "メッセージのコピーに失敗しました",
-      "welcomeMessage": "こんにちは！私はユエ、あなたのAIアシスタントです！🤖 ウェブサイトについて、テクノロジーの話題、または何でも質問してくださいね！",
+      "welcomeMessage": "こんにちは！私はネリ、あなたのAIアシスタントです！✨ ウェブサイトについて、テクノロジーの話題、または何でも質問してくださいね！",
       "errorMessage": "すみません、今ちょっと問題が起きています。しばらくしてからもう一度お試しください！😅",
-      "thinking": "ユエは考えています...",
+      "thinking": "ネリは考えています...",
       "placeholder": "何でも聞いてね...",
       "connectionError": "接続に問題が発生しました。もう一度お試しください。",
-      "footer": "由理によるYue AI",
+      "footer": "由理によるNery AI",
       "providers": {
         "auto": "自動",
-        "hf": "Yue（中）",
-        "hf_local": "Yue（低）",
+        "hf": "Nery（中）",
+        "hf_local": "Nery（低）",
         "gemini": "Gemini",
-        "groq": "Yue（高）",
+        "groq": "Nery（高）",
         "ollama": "Ollama"
       },
       "feedback": {
@@ -2297,10 +2297,10 @@
       "cancelResponse": "応答をキャンセル",
       "cancelledMessage": "応答をキャンセルしました。",
       "status": {
-        "checking": "Yue AI を確認中...",
-        "ready": "Yue AI は準備完了",
-        "responding": "Yue AI が応答中...",
-        "unavailable": "Yue AI は利用できません",
+        "checking": "Nery AI を確認中...",
+        "ready": "Nery AI は準備完了",
+        "responding": "Nery AI が応答中...",
+        "unavailable": "Nery AI は利用できません",
         "offline": "オフライン"
       },
       "quickPrompts": {
@@ -2388,7 +2388,7 @@
       "turnstilePending": "セキュリティ確認が完了していません。少し待ってから再試行してください。"
     },
     "chatbot": {
-      "title": "Yueとチャット",
+      "title": "Neryとチャット",
       "close": "チャットを閉じる",
       "description": "話したいトピックを選択:",
       "options": {
@@ -2409,13 +2409,13 @@
       }
     },
     "greetings": {
-      "morning": "おはようございます！ユエです！☀️",
-      "afternoon": "こんにちは！ユエです！🌤️",
-      "evening": "こんばんは！ユエです！🌅",
-      "night": "おやすみなさい！ユエです！🌙"
+      "morning": "おはようございます！ネリです！☀️",
+      "afternoon": "こんにちは！ネリです！🌤️",
+      "evening": "こんばんは！ネリです！🌅",
+      "night": "おやすみなさい！ネリです！🌙"
     },
     "game": {
-      "title": "ユエのミニゲーム",
+      "title": "ネリのミニゲーム",
       "close": "ゲームを閉じる",
       "open": "ゲームを開く",
       "score": "スコア",
@@ -2446,7 +2446,7 @@
       }
     },
     "messages": {
-      "0": "こんにちは！私はユエ、あなたのバーチャルアシスタントです！ナビゲーションのお手伝いが必要ですか？",
+      "0": "こんにちは！私はネリ、あなたのバーチャルアシスタントです！ナビゲーションのお手伝いが必要ですか？",
       "1": "コナミコマンドでレトロモードをアクティベートできるのをご存知ですか？",
       "2": "コーヒーブレイクの時間です！☕",
       "3": "こんにちは、隠しイースターエッグを見つけました！見たいですか？",
@@ -2517,7 +2517,7 @@
         "15": "迷ったら、ホームページに重要なリンクがすべてあります！ 🏠"
       },
       "home": {
-        "0": "ホームページへようこそ！ 👋 私はユエ、あなたのバーチャルアシスタントです！",
+        "0": "ホームページへようこそ！ 👋 私はネリ、あなたのバーチャルアシスタントです！",
         "1": "ここからすべてが始まります。探検の準備はできましたか？",
         "2": "私のクリエイター Yuri は Infrastructure & Platform Engineer です。もっと知りたいですか？",
         "3": "最新の記事とプロジェクトをチェックしてみてください！",

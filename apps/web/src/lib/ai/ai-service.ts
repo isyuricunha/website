@@ -1,7 +1,7 @@
 import { runtimeProvider } from './runtime-provider'
-import { type YueSiteContext } from './yue-context'
+import { type MascotSiteContext } from './mascot-context'
 
-type SiteContext = YueSiteContext
+type SiteContext = MascotSiteContext
 
 class AIService {
   async generateStream(message: string, context: SiteContext): Promise<ReadableStream<Uint8Array>> {

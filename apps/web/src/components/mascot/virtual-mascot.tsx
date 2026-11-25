@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { Eye as EyeIcon } from 'lucide-react'
 
 import MascotGame from './mascot-game'
+import { getMascotImage } from './mascot-art'
 import AIChatInterface from './ai-chat-interface'
 import { useMascotState } from './hooks/use-mascot-state'
 import { MascotSettingsPanel } from './components/mascot-settings-panel'
@@ -98,7 +99,7 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         <button
           type='button'
           aria-label={t('mascot.ariaLabel')}
-          className={`relative inline-flex h-12 w-12 items-center justify-center rounded-full border transition-colors focus-visible:ring-2 focus-visible:ring-[var(--accent-border)] focus-visible:outline-none sm:h-14 sm:w-14 lg:h-16 lg:w-16 ${state.isActive ? 'shadow-feature-card border-[var(--accent-border)] bg-[var(--accent-dim)]' : 'shadow-feature-card border-[var(--border-default)]'} ${state.preferences.animations ? 'hover:bg-bg-hover hover:border-[var(--accent-border)]' : ''} ${state.isKonamiMode ? 'animate-pulse border-[var(--accent-border)]' : ''} ${state.isTickled ? 'animate-bounce' : ''} ${state.isDizzy ? 'animate-spin' : ''}`}
+          className={`relative inline-flex h-12 w-12 items-center justify-center rounded-full border transition-colors focus-visible:ring-2 focus-visible:ring-[var(--accent-border)] focus-visible:outline-none sm:h-14 sm:w-14 lg:h-16 lg:w-16 ${state.isActive ? 'shadow-feature-card border-[var(--accent-border)] bg-[var(--accent-dim)]' : 'shadow-feature-card border-[var(--border-default)]'} ${state.preferences.animations ? 'hover:bg-bg-hover hover:border-[var(--accent-border)]' : ''} ${state.isKonamiMode ? 'border-[var(--accent-border)]' : ''} ${!prefersReducedMotion && state.preferences.animations && state.isTickled ? 'animate-bounce' : ''} ${!prefersReducedMotion && state.preferences.animations && state.isDizzy ? 'animate-spin' : ''}`}
           onClick={handleMascotClick}
         >
           {mounted && state.currentMascotImage > 0 ? (
@@ -113,12 +114,13 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
               }
             >
               <Image
-                src={`/images/mascote-${state.currentMascotImage}.png`}
+                src={getMascotImage(state.currentMascotImage)}
+                unoptimized
                 alt=''
                 role='presentation'
                 width={64}
                 height={64}
-                className={`h-full w-full rounded-full object-cover transition-all duration-500 ${state.isBlinking ? 'animate-pulse' : ''} ${state.isKonamiMode ? 'hue-rotate-180 sepia filter' : ''}`}
+                className={`h-full w-full rounded-full object-contain transition-transform duration-500 ${!prefersReducedMotion && state.preferences.animations && state.isBlinking ? 'animate-pulse' : ''}`}
                 priority={state.isActive}
                 loading={state.isActive ? 'eager' : 'lazy'}
               />

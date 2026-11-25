@@ -19,7 +19,7 @@ import { ratelimit } from '@/lib/ratelimit'
 import { rate_limit_keys } from '@/lib/rate-limit-keys'
 import { getClientIp, is_bot_user_agent, verifyTurnstileToken } from '@/lib/spam-detection'
 
-const PUBLIC_ASSISTANT_PROVIDER = 'Yue AI'
+const PUBLIC_ASSISTANT_PROVIDER = 'Nery AI'
 
 const conversationMessageSchema = z.object({
   role: z.enum(['user', 'assistant']),

@@ -12,9 +12,9 @@ vi.mock('sonner', () => ({
   }
 }))
 
-vi.mock('@/utils/yue-chat-storage', () => {
+vi.mock('@/utils/mascot-chat-storage', () => {
   return {
-    loadYueChatState: () => {
+    loadMascotChatState: () => {
       return {
         conversations: [
           {
@@ -50,7 +50,7 @@ vi.mock('@/utils/yue-chat-storage', () => {
         provider: 'auto'
       }
     },
-    saveYueChatState: vi.fn(),
+    saveMascotChatState: vi.fn(),
     createEmptyConversation: (title: string) => {
       const now = new Date().toISOString()
       return { id: 'new', title, createdAt: now, updatedAt: now, messages: [] }
@@ -180,7 +180,7 @@ describe('<AIChatInterface /> feedback', () => {
       return Response.json(
         {
           message: 'ok',
-          provider: 'Yue AI',
+          provider: 'Nery AI',
           timestamp: new Date().toISOString()
         },
         {
@@ -203,7 +203,7 @@ describe('<AIChatInterface /> feedback', () => {
       </NextIntlClientProvider>
     )
 
-    expect(await screen.findByText('Yue AI ready')).toBeInTheDocument()
+    expect(await screen.findByText('Nery AI ready')).toBeInTheDocument()
 
     fireEvent.click(screen.getByRole('button', { name: 'Summarize this' }))
 
@@ -255,7 +255,7 @@ describe('<AIChatInterface /> feedback', () => {
       </NextIntlClientProvider>
     )
 
-    expect(await screen.findByText('Yue AI ready')).toBeInTheDocument()
+    expect(await screen.findByText('Nery AI ready')).toBeInTheDocument()
 
     fireEvent.change(screen.getByPlaceholderText('Ask me anything...'), {
       target: { value: 'hello' }

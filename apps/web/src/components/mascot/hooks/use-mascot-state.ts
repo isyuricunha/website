@@ -7,6 +7,7 @@ import { i18n } from '@isyuricunha/i18n/config'
 import { useSound } from '@/hooks/use-sound'
 import { getLocalizedPath } from '@/utils/get-localized-path'
 import { canExplainSelectionOnPage, getMascotPageKey } from '../mascot-routing'
+import { isIdleMascotImage } from '../mascot-art'
 
 const STORAGE_KEY = 'vc_mascot_dismissed'
 const HIDE_KEY = 'vc_mascot_hidden'
@@ -564,7 +565,7 @@ export function useMascotState() {
 
       try {
         const saved = sessionStorage.getItem(MASCOT_IMAGE_KEY)
-        if (saved) {
+        if (saved && isIdleMascotImage(Number(saved))) {
           updates.currentMascotImage = Number(saved)
         } else {
           const chosen = Math.floor(Math.random() * 5) + 1
@@ -656,7 +657,13 @@ export function useMascotState() {
 
   // Blinking animation
   useEffect(() => {
-    if (prefersReducedMotion || !state.preferences.animations) return
+    if (
+      prefersReducedMotion ||
+      state.isHiddenPref ||
+      state.isDismissed ||
+      !state.preferences.animations
+    )
+      return
 
     const blinkInterval = setInterval(
       () => {
@@ -676,7 +683,13 @@ export function useMascotState() {
         blinkTimeoutRef.current = null
       }
     }
-  }, [state.preferences.animations, prefersReducedMotion, updateState])
+  }, [
+    state.isHiddenPref,
+    state.isDismissed,
+    state.preferences.animations,
+    prefersReducedMotion,
+    updateState
+  ])
 
   // Mouse follow effect
   useEffect(() => {
@@ -707,7 +720,7 @@ export function useMascotState() {
         try {
           const saved = sessionStorage.getItem(MASCOT_IMAGE_KEY)
           const savedImage = saved ? Number(saved) : 0
-          if (savedImage > 0) {
+          if (isIdleMascotImage(savedImage)) {
             nextImage = savedImage
           }
         } catch {
@@ -726,6 +739,8 @@ export function useMascotState() {
   // Idle timer for random messages
   useEffect(() => {
     if (
+      state.isHiddenPref ||
+      state.isDismissed ||
       !state.preferences.speechBubbles ||
       state.autoShowMessage ||
       state.showContact ||
@@ -753,6 +768,8 @@ export function useMascotState() {
       if (timer) clearTimeout(timer)
     }
   }, [
+    state.isHiddenPref,
+    state.isDismissed,
     state.preferences.speechBubbles,
     state.autoShowMessage,
     state.showContact,
@@ -766,7 +783,8 @@ export function useMascotState() {
 
   // Check for new blog posts
   useEffect(() => {
-    if (!mounted || !state.preferences.speechBubbles) return
+    if (!mounted || state.isHiddenPref || state.isDismissed || !state.preferences.speechBubbles)
+      return
 
     let notificationTimer: ReturnType<typeof setTimeout> | null = null
     let cancelled = false
@@ -806,6 +824,8 @@ export function useMascotState() {
   }, [
     mounted,
     locale,
+    state.isHiddenPref,
+    state.isDismissed,
     state.blogPostsVisited,
     state.preferences.speechBubbles,
     t,

@@ -823,7 +823,7 @@
       "messages": {
         "translate-failed": "翻译失败：{message}",
         "title-content-required": "标题和内容为必填项",
-        "pt-filled": "使用 Yue AI 填充了 pt-BR 语言内容",
+        "pt-filled": "使用 Nery AI 填充了 pt-BR 语言内容",
         "created": "公告创建成功",
         "create-failed": "创建公告失败：{message}",
         "updated": "公告更新成功",
@@ -2137,13 +2137,13 @@
     }
   },
   "mascot": {
-    "ariaLabel": "悦 - 虚拟助手",
+    "ariaLabel": "Nery - 虚拟助手",
     "close": "关闭",
     "hide": "隐藏",
     "hideForNow": "暂时隐藏",
-    "speechBubble": "悦的消息",
+    "speechBubble": "Nery 的消息",
     "settings": {
-      "title": "悦的设置",
+      "title": "Nery 的设置",
       "close": "关闭设置",
       "open": "打开设置",
       "animations": "动画",
@@ -2175,7 +2175,7 @@
       "explainButton": "解释",
       "explainPrompt": "能帮我解释一下我选中的这段文字吗？\n\n「{text}」"
     },
-    "restore": "让月归来",
+    "restore": "让 Nery 归来",
     "idle": {
       "tip1": "💡 你知道吗？如果我隐藏了，你可以用 Shift+Y 让我回来！",
       "tip2": "🎮 试试小游戏吧！点击我的对话框中的游戏手柄图标。",
@@ -2200,7 +2200,7 @@
       "copyError": "复制邮箱失败，请重试。"
     },
     "aiChat": {
-      "title": "与月聊天",
+      "title": "与 Nery 聊天",
       "clear": "清除",
       "close": "关闭",
       "conversations": "对话",
@@ -2238,12 +2238,12 @@
       "copyMessage": "复制消息",
       "messageCopied": "消息已复制到剪贴板",
       "messageCopyFailed": "复制消息失败",
-      "welcomeMessage": "嗨！我是月，你的 AI 助手！🤖 关于网站、技术话题或只是聊天，问我任何事吧！",
+      "welcomeMessage": "嗨！我是 Nery，你的 AI 助手！✨ 关于网站、技术话题或只是聊天，问我任何事吧！",
       "errorMessage": "抱歉，我现在遇到问题了。请稍后再试！😅",
-      "thinking": "月正在思考...",
+      "thinking": "Nery 正在思考...",
       "placeholder": "问我任何事...",
       "connectionError": "连接遇到问题，请重试。",
-      "footer": "由 Yuri 开发的 Yue AI",
+      "footer": "由 Yuri 开发的 Nery AI",
       "providers": {
         "auto": "自动",
         "hf": "岳（中等）",
@@ -2297,10 +2297,10 @@
       "cancelResponse": "取消回复",
       "cancelledMessage": "回复已取消。",
       "status": {
-        "checking": "正在检查 Yue AI...",
-        "ready": "Yue AI 已就绪",
-        "responding": "Yue AI 正在回复...",
-        "unavailable": "Yue AI 不可用",
+        "checking": "正在检查 Nery AI...",
+        "ready": "Nery AI 已就绪",
+        "responding": "Nery AI 正在回复...",
+        "unavailable": "Nery AI 不可用",
         "offline": "离线"
       },
       "quickPrompts": {
@@ -2409,13 +2409,13 @@
       }
     },
     "greetings": {
-      "morning": "早上好！我是悦！☀️",
-      "afternoon": "下午好！我是悦！🌤️",
-      "evening": "晚上好！我是悦！🌅",
-      "night": "晚安！我是悦！🌙"
+      "morning": "早上好！我是 Nery！☀️",
+      "afternoon": "下午好！我是 Nery！🌤️",
+      "evening": "晚上好！我是 Nery！🌅",
+      "night": "晚安！我是 Nery！🌙"
     },
     "game": {
-      "title": "悦的迷你游戏",
+      "title": "Nery 的迷你游戏",
       "close": "关闭游戏",
       "open": "打开游戏",
       "score": "得分",
@@ -2446,7 +2446,7 @@
       }
     },
     "messages": {
-      "0": "你好！我是悦，你的虚拟助手！需要帮助导航吗？",
+      "0": "你好！我是 Nery，你的虚拟助手！需要帮助导航吗？",
       "1": "你知道吗？可以用 Konami 密码激活复古模式！",
       "2": "是时候喝杯咖啡休息一下了！☕",
       "3": "嘿，我发现了一个隐藏的彩蛋！想看看吗？",
@@ -2517,7 +2517,7 @@
         "15": "不确定时，首页有所有重要内容的链接！🏠"
       },
       "home": {
-        "0": "欢迎来到首页！👋 我是 Yue，您的虚拟助手！",
+        "0": "欢迎来到首页！👋 我是 Nery，您的虚拟助手！",
         "1": "一切从这里开始。准备好探索了吗？",
         "2": "我的创造者 Yuri 是一名 Infrastructure & Platform Engineer。想了解更多吗？",
         "3": "查看下方的最新文章和项目！",

@@ -2,8 +2,8 @@ import { NextResponse } from 'next/server'
 
 import { aiService } from '@/lib/ai/ai-service'
 
-const PUBLIC_ASSISTANT_NAME = 'Yue AI'
-const PUBLIC_ASSISTANT_DISPLAY_NAME = 'Yue Mizuki'
+const PUBLIC_ASSISTANT_NAME = 'Nery AI'
+const PUBLIC_ASSISTANT_DISPLAY_NAME = 'Nery Mizuki'
 
 export function GET() {
   const available = aiService.getAvailableProviders().length > 0

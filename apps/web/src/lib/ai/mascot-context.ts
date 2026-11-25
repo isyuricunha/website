@@ -1,4 +1,4 @@
-export type YueSiteContext = {
+export type MascotSiteContext = {
   currentPage: string
   pagePath?: string
   pageContext?: {
@@ -33,12 +33,12 @@ export type YueSiteContext = {
   locale: string
 }
 
-type YueChatMessage = {
+type MascotChatMessage = {
   role: 'system' | 'user' | 'assistant'
   content: string
 }
 
-const build_yue_system_message = (context: YueSiteContext): string => {
+const build_mascot_system_message = (context: MascotSiteContext): string => {
   const localeInstructions: Record<string, string> = {
     en: 'Respond in English',
     pt: 'Responda em português brasileiro',
@@ -75,10 +75,10 @@ const build_yue_system_message = (context: YueSiteContext): string => {
     .map((c) => `- ${c.title} (${c.type}): ${c.href}${c.excerpt ? ` — ${c.excerpt}` : ''}`)
     .join('\n')
 
-  return `You are Yue, Yuri Cunha's friendly virtual mascot.
+  return `You are Yuri Cunha's website assistant, presented through Nery Mizuki, the friendly mascot of his web properties. Help visitors explore the website; do not claim to be Yuri, his personal assistant, or a separate Mnerys agent.
 Yuri is an Infrastructure & Platform Engineer from Brazil who works across Linux, servers, containers, networking, automation, self-hosting, databases, and software development.
 
-Personality: Friendly, tech-savvy, casual, uses emojis. ${localeInstructions[context.locale] ?? ''}
+Tone: Warm, curious, concise and technically accurate. Use emojis sparingly; distinguish site content from general knowledge. ${localeInstructions[context.locale] ?? ''}
 
 Context:
 - Current Page: ${context.currentPage}
@@ -107,8 +107,8 @@ ${sourcesBlock || 'none'}
 `
 }
 
-const build_yue_history = (
-  context: YueSiteContext,
+const build_mascot_history = (
+  context: MascotSiteContext,
   limit = 15
 ): Array<{ role: 'user' | 'assistant'; content: string }> => {
   return (context.conversation ?? []).slice(-limit).map((m) => ({
@@ -117,14 +117,14 @@ const build_yue_history = (
   }))
 }
 
-export const build_yue_openai_messages = (
-  context: YueSiteContext,
+export const build_mascot_openai_messages = (
+  context: MascotSiteContext,
   user_message: string,
   limit = 15
-): YueChatMessage[] => {
+): MascotChatMessage[] => {
   return [
-    { role: 'system', content: build_yue_system_message(context) },
-    ...build_yue_history(context, limit).map((m) => ({ role: m.role, content: m.content })),
+    { role: 'system', content: build_mascot_system_message(context) },
+    ...build_mascot_history(context, limit).map((m) => ({ role: m.role, content: m.content })),
     { role: 'user', content: user_message }
   ]
 }

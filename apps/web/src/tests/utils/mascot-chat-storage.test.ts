@@ -3,12 +3,13 @@ import { beforeEach, describe, expect, it } from 'vitest'
 import {
   decodeConversationShare,
   encodeConversationShare,
-  loadYueChatState,
+  loadMascotChatState,
+  saveMascotChatState,
   type ChatConversation,
   type ChatMessage
-} from '@/utils/yue-chat-storage'
+} from '@/utils/mascot-chat-storage'
 
-describe('yue-chat-storage', () => {
+describe('mascot-chat-storage', () => {
   beforeEach(() => {
     localStorage.clear()
   })
@@ -33,7 +34,7 @@ describe('yue-chat-storage', () => {
 
     localStorage.setItem('yue_chat_history_v1', JSON.stringify(legacy))
 
-    const state = loadYueChatState()
+    const state = loadMascotChatState()
 
     expect(state.conversations).toHaveLength(1)
     expect(state.activeConversationId).toBe(state.conversations[0]?.id)
@@ -45,6 +46,34 @@ describe('yue-chat-storage', () => {
 
     expect(localStorage.getItem('yue_chat_history_v1')).toBeNull()
     expect(localStorage.getItem('yue_chat_conversations_v2')).toBeTruthy()
+  })
+
+  it('preserves existing v3 Yue conversations and the active selection', () => {
+    const now = new Date().toISOString()
+    const conversations: ChatConversation[] = [
+      {
+        id: 'first',
+        title: 'Original',
+        createdAt: now,
+        updatedAt: now,
+        messages: [{ id: 'message', text: 'Hello Yue', isUser: true, timestamp: now }]
+      },
+      { id: 'second', title: 'Another', createdAt: now, updatedAt: now, messages: [] }
+    ]
+    localStorage.setItem(
+      'yue_chat_conversations_v2',
+      JSON.stringify({
+        version: 3,
+        conversations,
+        activeConversationId: 'second',
+        provider: 'auto'
+      })
+    )
+    const state = loadMascotChatState()
+    expect(state.conversations).toEqual(conversations)
+    expect(state.activeConversationId).toBe('second')
+    saveMascotChatState(state)
+    expect(loadMascotChatState()).toEqual(state)
   })
 
   it('encodes and decodes a share payload', () => {

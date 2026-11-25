@@ -33,7 +33,7 @@ export type ChatConversation = {
   messages: ChatMessage[]
 }
 
-type YueChatProvider = 'auto'
+type MascotChatProvider = 'auto'
 
 const legacyCitationSchema = z.object({
   id: z.string().min(1),
@@ -92,6 +92,7 @@ const sharePayloadSchema = z.object({
   conversation: conversationSchema
 })
 
+// Historical key names are retained to preserve existing conversations.
 const STORAGE_KEY_V2 = 'yue_chat_conversations_v2'
 const LEGACY_STORAGE_KEY_V1 = 'yue_chat_history_v1'
 
@@ -125,13 +126,13 @@ export const createEmptyConversation = (title: string): ChatConversation => {
   }
 }
 
-type YueChatState = {
+type MascotChatState = {
   conversations: ChatConversation[]
   activeConversationId: string
-  provider: YueChatProvider
+  provider: MascotChatProvider
 }
 
-const normalizeState = (input: YueChatState): YueChatState => {
+const normalizeState = (input: MascotChatState): MascotChatState => {
   const first = input.conversations[0]
   const active =
     input.conversations.find((c) => c.id === input.activeConversationId)?.id ?? first?.id
@@ -148,7 +149,7 @@ const normalizeState = (input: YueChatState): YueChatState => {
   }
 }
 
-export const loadYueChatState = (): YueChatState => {
+export const loadMascotChatState = (): MascotChatState => {
   const storage = safeGetLocalStorage()
   if (!storage) {
     const created = createEmptyConversation('New chat')
@@ -199,7 +200,7 @@ export const loadYueChatState = (): YueChatState => {
         provider: 'auto'
       })
 
-      saveYueChatState(next)
+      saveMascotChatState(next)
       storage.removeItem(LEGACY_STORAGE_KEY_V1)
       return next
     } catch {
@@ -208,16 +209,16 @@ export const loadYueChatState = (): YueChatState => {
   }
 
   const created = createEmptyConversation('New chat')
-  const initial: YueChatState = {
+  const initial: MascotChatState = {
     conversations: [created],
     activeConversationId: created.id,
     provider: 'auto'
   }
-  saveYueChatState(initial)
+  saveMascotChatState(initial)
   return initial
 }
 
-export const saveYueChatState = (state: YueChatState): void => {
+export const saveMascotChatState = (state: MascotChatState): void => {
   const storage = safeGetLocalStorage()
   if (!storage) return
 

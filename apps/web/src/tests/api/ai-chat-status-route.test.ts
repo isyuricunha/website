@@ -11,7 +11,7 @@ describe('/api/ai/chat/status', () => {
     vi.clearAllMocks()
   })
 
-  it('returns public Yue AI status when chat is available', async () => {
+  it('returns public Nery AI status when chat is available', async () => {
     const { aiService } = await import('@/lib/ai/ai-service')
     vi.mocked(aiService.getAvailableProviders).mockReturnValue(['internal'])
 
@@ -21,8 +21,8 @@ describe('/api/ai/chat/status', () => {
 
     expect(json.available).toBe(true)
     expect(json.status).toBe('ready')
-    expect(json.assistant).toBe('Yue AI')
-    expect(json.displayName).toBe('Yue Mizuki')
+    expect(json.assistant).toBe('Nery AI')
+    expect(json.displayName).toBe('Nery Mizuki')
     expect(JSON.stringify(json).toLowerCase()).not.toContain('mistral')
   })
 

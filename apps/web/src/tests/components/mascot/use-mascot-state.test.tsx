@@ -77,6 +77,23 @@ describe('useMascotState', () => {
     expect(sessionStorage.getItem(DISMISSED_KEY)).toBeNull()
   })
 
+  it('does not request new-post notifications when the mascot is hidden', async () => {
+    localStorage.setItem(HIDDEN_KEY, '1')
+    const { result } = renderHook(() => useMascotState(), { wrapper })
+    await waitFor(() => expect(result.current.mounted).toBe(true))
+    expect(fetch).not.toHaveBeenCalled()
+    act(() => result.current.restoreMascot())
+    await waitFor(() => expect(fetch).toHaveBeenCalledWith('/api/mascot/latest-post?locale=en'))
+  })
+
+  it('recovers from an invalid cached image index', async () => {
+    sessionStorage.setItem('vc_mascot_current_image', '999')
+    const { result } = renderHook(() => useMascotState(), { wrapper })
+    await waitFor(() => expect(result.current.mounted).toBe(true))
+    expect(result.current.state.currentMascotImage).toBeGreaterThanOrEqual(1)
+    expect(result.current.state.currentMascotImage).toBeLessThanOrEqual(5)
+  })
+
   it('separates session dismiss from hide until restored', async () => {
     const { result } = renderHook(() => useMascotState(), { wrapper })
 

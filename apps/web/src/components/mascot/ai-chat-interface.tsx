@@ -60,11 +60,12 @@ import {
   createEmptyConversation,
   decodeConversationShare,
   encodeConversationShare,
-  loadYueChatState,
-  saveYueChatState
-} from '@/utils/yue-chat-storage'
+  loadMascotChatState,
+  saveMascotChatState
+} from '@/utils/mascot-chat-storage'
 import ConfirmationDialog from '../admin/confirmation-dialog'
 import { useSound } from '../../hooks/use-sound'
+import { MASCOT_AVATAR_SRC } from './mascot-art'
 
 interface AIChatInterfaceProps {
   readonly isOpen: boolean
@@ -227,14 +228,14 @@ const getInitialChatState = (input: {
   welcomeMessageText: string
   importedTitle: string
 }): InitialChatState => {
-  const loaded = loadYueChatState()
+  const loaded = loadMascotChatState()
   let conversations = loaded.conversations
   let activeConversationId = loaded.activeConversationId
   let importStatus: InitialChatState['importStatus'] = 'none'
 
   if (globalThis.window !== undefined) {
     const params = new URLSearchParams(location.search)
-    const shared = params.get('yue_chat')
+    const shared = params.get('nery_chat') ?? params.get('yue_chat')
 
     if (shared) {
       const decoded = decodeConversationShare(shared)
@@ -251,6 +252,7 @@ const getInitialChatState = (input: {
         activeConversationId = imported.id
         importStatus = 'success'
 
+        params.delete('nery_chat')
         params.delete('yue_chat')
         const url = `${location.pathname}${params.size > 0 ? `?${params.toString()}` : ''}`
         history.replaceState(null, '', url)
@@ -288,7 +290,7 @@ export default function AIChatInterface({
   const { play: navigationPlay } = useSound('navigation')
   const { play: clickPlay } = useSound('click')
 
-  const yue_avatar_src = '/images/mascote-3.png'
+  const mascot_avatar_src = MASCOT_AVATAR_SRC
 
   const user_display_name = locale.startsWith('pt') ? 'Eu' : 'Me'
 
@@ -421,7 +423,7 @@ export default function AIChatInterface({
     if (!isOpen) return
     if (!activeConversationId) return
 
-    saveYueChatState({ conversations, activeConversationId, provider: 'auto' })
+    saveMascotChatState({ conversations, activeConversationId, provider: 'auto' })
   }, [activeConversationId, conversations, isOpen])
 
   const updateConversationById = useCallback(
@@ -613,7 +615,8 @@ export default function AIChatInterface({
     })
 
     const url = new URL(location.href)
-    url.searchParams.set('yue_chat', payload)
+    url.searchParams.delete('yue_chat')
+    url.searchParams.set('nery_chat', payload)
 
     try {
       await navigator.clipboard.writeText(url.href)
@@ -642,7 +645,7 @@ export default function AIChatInterface({
       if (searchMatch?.[1]) {
         const query = searchMatch[1].trim()
         scheduleActionTimeout(() => {
-          const event = new CustomEvent('yue-open-search', { detail: { query } })
+          const event = new CustomEvent('mascot-open-search', { detail: { query } })
           dispatchEvent(event)
           clickPlay()
         }, 800)
@@ -1300,12 +1303,12 @@ export default function AIChatInterface({
                 {!message.isUser && (
                   <div className='mb-2 flex items-center gap-2 border-b border-[var(--border-subtle)] pb-2'>
                     <Avatar className='h-6 w-6'>
-                      <AvatarImage src={yue_avatar_src} alt='Yue' />
+                      <AvatarImage src={mascot_avatar_src} alt='Nery' />
                       <AvatarFallback className='text-status-agent bg-status-agent-soft text-[10px] font-medium'>
-                        Y
+                        N
                       </AvatarFallback>
                     </Avatar>
-                    <span className='text-muted-foreground text-xs font-medium'>Yue</span>
+                    <span className='text-muted-foreground text-xs font-medium'>Nery</span>
                     {!message.isError && (
                       <button
                         type='button'
@@ -1564,12 +1567,12 @@ export default function AIChatInterface({
               <div className='text-foreground bg-bg-surface flex items-center gap-2 rounded-lg rounded-bl-md border border-[var(--border-subtle)] p-3'>
                 <div className='mb-2 flex w-full items-center gap-2 border-b border-[var(--border-subtle)] pb-2'>
                   <Avatar className='h-5 w-5'>
-                    <AvatarImage src={yue_avatar_src} alt='Yue' />
+                    <AvatarImage src={mascot_avatar_src} alt='Nery' />
                     <AvatarFallback className='text-status-agent bg-status-agent-soft text-[10px] font-medium'>
-                      Y
+                      N
                     </AvatarFallback>
                   </Avatar>
-                  <span className='text-muted-foreground text-xs font-medium'>Yue</span>
+                  <span className='text-muted-foreground text-xs font-medium'>Nery</span>
                 </div>
                 <div className='flex items-center gap-2'>
                   <DotMatrixLoader agent label={t('mascot.aiChat.thinking')} />
