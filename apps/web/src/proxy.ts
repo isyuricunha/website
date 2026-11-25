@@ -5,6 +5,10 @@ import { i18nMiddleware } from '@isyuricunha/i18n/middleware'
 import { env } from '@isyuricunha/env'
 import { i18n } from '@isyuricunha/i18n/config'
 
+import { getStaticNotFoundUrl } from '@/lib/static-not-found-routing'
+
+const localizedRouteRoots: string[] | null = JSON.parse(process.env.LOCALIZED_ROUTE_ROOTS ?? 'null')
+
 export default function proxy(request: NextRequest) {
   const is_production = env.NODE_ENV === 'production'
 
@@ -39,7 +43,12 @@ export default function proxy(request: NextRequest) {
     "worker-src blob: 'self'"
   ].join('; ')
 
-  const response = i18nMiddleware(request)
+  let response = i18nMiddleware(request)
+
+  const notFoundUrl = getStaticNotFoundUrl(request, response, i18n.locales, localizedRouteRoots)
+  if (notFoundUrl) {
+    response = NextResponse.rewrite(notFoundUrl, { headers: response.headers, status: 404 })
+  }
 
   if (is_production) {
     response.headers.set('Content-Security-Policy-Report-Only', csp)

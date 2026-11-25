@@ -5,16 +5,17 @@ import AnnouncementToast from './announcement-toast'
 
 type MainLayoutProps = {
   children: React.ReactNode
+  staticPathname?: string
 }
 
 const MainLayout = (props: MainLayoutProps) => {
-  const { children } = props
+  const { children, staticPathname } = props
 
   return (
     <>
       <Header />
       <main id='skip-nav' className='mx-auto w-full max-w-6xl flex-1 px-4 pt-28 pb-20 sm:px-8'>
-        <Breadcrumbs />
+        <Breadcrumbs staticPathname={staticPathname} />
         {children}
       </main>
       <Footer />

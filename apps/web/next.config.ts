@@ -1,4 +1,7 @@
 import type { NextConfig } from 'next'
+import path from 'node:path'
+
+import { discoverLocalizedRouteRoots } from './src/lib/localized-route-roots'
 
 import { env } from '@isyuricunha/env'
 
@@ -15,6 +18,12 @@ const withBundleAnalyzer = bundleAnalyzer({
 })
 
 const config: NextConfig = {
+  env: {
+    LOCALIZED_ROUTE_ROOTS: JSON.stringify(
+      discoverLocalizedRouteRoots(path.resolve('src/app'), path.resolve('public'))
+    )
+  },
+
   // dev server is reached over the tailnet IP (QA browser and Yuri's machine)
   allowedDevOrigins: ['100.78.106.99'],
 

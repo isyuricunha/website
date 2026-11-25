@@ -3,7 +3,7 @@
 import { useTranslations } from '@isyuricunha/i18n/client'
 import { usePathname } from '@isyuricunha/i18n/routing'
 import { ChevronRight, Home } from 'lucide-react'
-import { Fragment, type ReactElement } from 'react'
+import { Fragment, type ReactElement, useSyncExternalStore } from 'react'
 
 import Link from './link'
 
@@ -31,8 +31,18 @@ const getSegmentLabel = (segment: string, t: ReturnType<typeof useTranslations>)
   }
 }
 
-const Breadcrumbs = () => {
-  const pathname = usePathname()
+const subscribe = () => () => {
+  // There is no external event source; React switches snapshots after hydration.
+}
+const isClient = () => true
+const isServer = () => false
+
+const Breadcrumbs = ({ staticPathname }: { staticPathname?: string }) => {
+  const currentPathname = usePathname()
+  // Rewritten static HTML has the build-time pathname. Use it during
+  // hydration, then show the original URL's breadcrumbs.
+  const mounted = useSyncExternalStore(subscribe, isClient, isServer)
+  const pathname = !mounted && staticPathname ? staticPathname : currentPathname
   const t = useTranslations()
 
   // Don't show breadcrumbs on home page
