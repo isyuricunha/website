@@ -1,5 +1,7 @@
 'use client'
 
+import { publicContact } from '@/lib/public-contact'
+
 import { useCallback, useEffect, useRef, useState, useMemo } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import { useTranslations, useMessages, useLocale } from '@isyuricunha/i18n/client'
@@ -319,7 +321,7 @@ export function useMascotState() {
    */
   const copyEmail = useCallback(async (): Promise<void> => {
     try {
-      await navigator.clipboard.writeText('me@yuricunha.com')
+      await navigator.clipboard.writeText(publicContact.email)
       enqueueMessage(t('mascot.contact.copySuccess'), 2000)
       successSoundRef.current()
     } catch (error) {

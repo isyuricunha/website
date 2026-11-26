@@ -2,6 +2,7 @@
 
 import { X as XIcon, Copy as CopyIcon } from 'lucide-react'
 import { UseMascotStateReturn } from '../hooks/use-mascot-state'
+import { publicContact } from '@/lib/public-contact'
 
 type MascotContactPanelProps = {
   mascot: Pick<UseMascotStateReturn, 'state' | 't' | 'copyEmail' | 'updateState'>
@@ -29,7 +30,9 @@ export function MascotContactPanel({ mascot }: MascotContactPanelProps) {
       <div className='space-y-3'>
         <p className='text-sm'>{t('mascot.contact.description')}</p>
         <div className='flex items-center gap-2'>
-          <code className='bg-bg-surface flex-1 rounded px-2 py-1 text-xs'>me@yuricunha.com</code>
+          <code className='bg-bg-surface flex-1 rounded px-2 py-1 text-xs'>
+            {publicContact.email}
+          </code>
           <button
             type='button'
             aria-label={t('mascot.contact.copy')}

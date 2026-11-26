@@ -6,6 +6,9 @@ export type AssistantCitation = {
   href: string
   excerpt?: string
   type: 'post' | 'project' | 'page' | 'snippet'
+  publishedAt?: string
+  updatedAt?: string
+  repositoryHref?: string
 }
 
 export type AssistantAction =
@@ -32,7 +35,10 @@ const citationSchema = z.object({
   title: z.string().max(1000),
   href: z.string().max(500),
   excerpt: z.string().max(6000).optional(),
-  type: z.enum(['post', 'project', 'page', 'snippet'])
+  type: z.enum(['post', 'project', 'page', 'snippet']),
+  publishedAt: z.string().max(100).optional(),
+  updatedAt: z.string().max(100).optional(),
+  repositoryHref: z.string().max(500).optional()
 })
 const actionSchema = z.discriminatedUnion('type', [
   z.object({ type: z.literal('navigate'), href: z.string().max(500), title: z.string().max(1000) }),

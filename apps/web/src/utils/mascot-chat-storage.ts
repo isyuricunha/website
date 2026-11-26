@@ -18,6 +18,9 @@ export type ChatMessage = {
     href: string
     excerpt?: string
     type: 'post' | 'project' | 'page' | 'snippet'
+    publishedAt?: string
+    updatedAt?: string
+    repositoryHref?: string
   }>
   reactions?: {
     likes: number
@@ -41,7 +44,10 @@ const legacyCitationSchema = z.object({
   title: z.string().min(1),
   href: z.string().min(1),
   excerpt: z.string().optional(),
-  type: z.enum(['post', 'project', 'page', 'snippet'])
+  type: z.enum(['post', 'project', 'page', 'snippet']),
+  publishedAt: z.string().max(100).optional(),
+  updatedAt: z.string().max(100).optional(),
+  repositoryHref: z.string().max(500).optional()
 })
 
 const legacyReactionsSchema = z.object({

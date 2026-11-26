@@ -4,6 +4,7 @@ import { useTranslations } from '@isyuricunha/i18n/client'
 import { BlurImage } from '@isyuricunha/yutheme'
 import { motion, useInView } from 'motion/react'
 import { useRef } from 'react'
+import { publicContact } from '@/lib/public-contact'
 
 const me_image_src = '/images/me.png'
 
@@ -38,8 +39,8 @@ const GetInTouch = () => {
         <span className='label-mono'>{t('homepage.get-in-touch.label')}</span>
         <h2>{t('homepage.get-in-touch.title')}</h2>
         <p>{t('homepage.get-in-touch.description')}</p>
-        <a href='mailto:me@yuricunha.com' className='cta-link'>
-          me@yuricunha.com{' '}
+        <a href={`mailto:${publicContact.email}`} className='cta-link'>
+          {publicContact.email}{' '}
           <span className='yu-arrow' aria-hidden='true'>
             →
           </span>

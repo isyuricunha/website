@@ -1,5 +1,7 @@
 import { z } from 'zod'
 
+import { publicContact } from '@/lib/public-contact'
+
 import { AssistantOutputGuard } from './assistant-output-guard'
 import { type AssistantAction, type AssistantEvent } from './assistant-protocol'
 import { executeSiteTool, siteTools } from './assistant-tools'
@@ -262,15 +264,21 @@ export const runSiteAssistant = async (options: RunOptions) => {
       const hrefs = new Set(
         Array.from(result.text.matchAll(/\]\(<?([^\s)>]+)>?\)/g), (match) => match[1])
       )
-      const linked = sources.filter((source) => hrefs.has(source.href))
-      const titled = sources.filter((source) =>
-        result.text.toLowerCase().includes(source.title.toLowerCase())
+      const linked = sources.filter(
+        (source) =>
+          hrefs.has(source.href) || (source.repositoryHref && hrefs.has(source.repositoryHref))
+      )
+      const titled = sources.filter(
+        (source) =>
+          result.text.toLowerCase().includes(source.title.toLowerCase()) ||
+          (source.href.endsWith('/contact') &&
+            Object.values(publicContact).some((value) => result.text.includes(value)))
       )
       const relevant = linked.length > 0 ? linked : titled
       emit({
         type: 'done',
         text: result.text,
-        citations: relevant.slice(0, 6),
+        citations: relevant.slice(0, 6).map(({ evidence: _evidence, ...citation }) => citation),
         requestId,
         latencyMs: Date.now() - start,
         actions: actions.slice(0, 2),

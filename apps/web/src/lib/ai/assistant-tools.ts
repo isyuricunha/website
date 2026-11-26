@@ -2,7 +2,13 @@ import { z } from 'zod'
 
 import { type AssistantAction } from './assistant-protocol'
 
-import { find_citations, get_site_overview, read_site_content, type Citation } from './site-index'
+import {
+  find_citations,
+  get_site_overview,
+  list_site_content,
+  read_site_content,
+  type Citation
+} from './site-index'
 
 const query = z.object({ query: z.string().trim().min(1).max(300) }).strict()
 const read = z
@@ -12,6 +18,13 @@ const read = z
   })
   .strict()
 const empty = z.object({}).strict()
+const chronological = z
+  .object({
+    type: z.enum(['post', 'snippet']),
+    order: z.enum(['newest', 'oldest', 'updated']),
+    query: z.string().trim().min(1).max(300).optional()
+  })
+  .strict()
 
 const queryParameters = {
   type: 'object',
@@ -39,9 +52,30 @@ export const siteTools = [
   {
     type: 'function',
     function: {
+      name: 'list_site_content',
+      description:
+        'List published posts or snippets by actual publication or modification date. Required for latest, newest, oldest or recently updated content. Omit query for the whole collection; use a specific topic only if requested. Snippets have publication dates only.',
+      parameters: {
+        type: 'object',
+        properties: {
+          type: { type: 'string', enum: ['post', 'snippet'] },
+          order: { type: 'string', enum: ['newest', 'oldest', 'updated'] },
+          query: {
+            type: 'string',
+            description: 'Optional topic filter, not words such as latest or article.'
+          }
+        },
+        required: ['type', 'order'],
+        additionalProperties: false
+      }
+    }
+  },
+  {
+    type: 'function',
+    function: {
       name: 'search_site',
       description:
-        'Search published articles, snippets, projects and public pages. Returns relevant titles, excerpts and exact links. Use precise topic terms, not the entire conversation.',
+        'Search published articles, snippets, projects and public pages. Returns relevant titles, excerpts, available dates and public metadata, and exact links. Use precise topic terms, not the entire conversation.',
       parameters: queryParameters
     }
   },
@@ -128,6 +162,11 @@ export const executeSiteTool = (
         name === 'get_related_content'
           ? results.filter((item) => item.href !== context.pagePath && !seen.includes(item.href))
           : results
+      return { result: citations, citations }
+    }
+    if (name === 'list_site_content') {
+      const input = chronological.parse(args)
+      const citations = list_site_content({ ...input, locale: context.locale })
       return { result: citations, citations }
     }
     if (name === 'get_site_overview') {

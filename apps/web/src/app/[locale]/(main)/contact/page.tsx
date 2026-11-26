@@ -16,6 +16,7 @@ import PageTitle from '@/components/page-title'
 import Link from '@/components/link'
 import ContactForm from '@/components/contact-form'
 import { SITE_URL } from '@/lib/constants'
+import { publicContact } from '@/lib/public-contact'
 import { build_alternates } from '@/lib/seo'
 
 type PageProps = {
@@ -68,19 +69,19 @@ const ContactPage = async (props: PageProps) => {
   const socialLinks = [
     {
       name: t('contact.social.github.name'),
-      href: 'https://github.com/isyuricunha',
+      href: publicContact.github,
       icon: <SiGithub className='h-5 w-5' />,
       description: t('contact.social.github.description')
     },
     {
       name: t('contact.social.twitter.name'),
-      href: 'https://x.com/isyuricunha',
+      href: publicContact.twitter,
       icon: <SiX className='h-5 w-5' />,
       description: t('contact.social.twitter.description')
     },
     {
       name: t('contact.social.linkedin.name'),
-      href: 'https://linkedin.com/in/isyuricunha',
+      href: publicContact.linkedin,
       icon: (
         <svg
           viewBox='0 0 24 24'
@@ -122,10 +123,10 @@ const ContactPage = async (props: PageProps) => {
                   <div>
                     <p className='text-sm font-medium'>{t('contact.direct.email-label')}</p>
                     <Link
-                      href='mailto:me@yuricunha.com'
+                      href={`mailto:${publicContact.email}`}
                       className='text-accent-earth-text text-xs hover:underline sm:text-sm'
                     >
-                      me@yuricunha.com
+                      {publicContact.email}
                     </Link>
                   </div>
                 </div>

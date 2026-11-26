@@ -26,6 +26,22 @@ describe('Nery Markdown', () => {
     expect(screen.getByRole('link', { name: 'Known' })).toHaveAttribute('href', '/blog/hello')
     expect(screen.queryByRole('link', { name: 'Unknown' })).toBeNull()
   })
+  it('links public contacts and grounded owner repositories, not arbitrary external URLs', () => {
+    const repository = 'https://github.com/isyuricunha/gitflect'
+    render(
+      <ChatMarkdown allowedHrefs={[repository, 'https://example.invalid']}>
+        {`[Email](mailto:me@yuricunha.com) [Repo](${repository}) [Other](https://github.com/isyuricunha/other) [External](https://example.invalid) [Redirect](${repository}?next=https://example.invalid)`}
+      </ChatMarkdown>
+    )
+    expect(screen.getByRole('link', { name: 'Email' })).toHaveAttribute(
+      'href',
+      'mailto:me@yuricunha.com'
+    )
+    expect(screen.getByRole('link', { name: 'Repo' })).toHaveAttribute('href', repository)
+    expect(screen.queryByRole('link', { name: 'Other' })).toBeNull()
+    expect(screen.queryByRole('link', { name: 'External' })).toBeNull()
+    expect(screen.queryByRole('link', { name: 'Redirect' })).toBeNull()
+  })
   it('renders Markdown tables without allowing raw HTML', () => {
     render(
       <ChatMarkdown>

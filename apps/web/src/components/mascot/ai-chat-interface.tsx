@@ -1441,8 +1441,12 @@ export default function AIChatInterface({
                     <div className='flex flex-col gap-2'>
                       <ChatMarkdown
                         allowedHrefs={
-                          message.citations?.map((citation) => citation.href) ??
-                          (isLoading && message.id === messages.at(-1)?.id ? [] : undefined)
+                          message.citations?.flatMap((citation) => [
+                            citation.href,
+                            ...(citation.type === 'project' && citation.repositoryHref
+                              ? [citation.repositoryHref]
+                              : [])
+                          ]) ?? (isLoading && message.id === messages.at(-1)?.id ? [] : undefined)
                         }
                       >
                         {message.text.replace(/\[\[[A-Z_]+(?::[^\]]+)?\]\]/g, '').trim()}

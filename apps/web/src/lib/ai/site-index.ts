@@ -3,6 +3,7 @@ import { allPages, allPosts, allProjects, allSnippets } from 'content-collection
 
 import { createKnowledgeIndex, tokenizeKnowledge } from './knowledge-search'
 
+import { isPublicRepositoryHref, publicContact } from '@/lib/public-contact'
 import { getLocalizedPath } from '@/utils/get-localized-path'
 import { is_safe_internal_path } from '@/components/mascot/chat-link-policy'
 
@@ -16,6 +17,19 @@ type SiteEntry = {
   slug: string
   locale: string
   content?: string
+  publishedAt?: string
+  updatedAt?: string
+  tags?: string[]
+  category?: string
+  readingTime?: number
+  project?: {
+    repository: string
+    homepage?: string
+    techstack: string[]
+    status: string
+    startDate?: string
+    endDate?: string
+  }
 }
 
 const format_citation_link = (citation: Citation): string => {
@@ -71,7 +85,10 @@ function recommend_snippets(params: {
     title: snippet.title,
     href: getLocalizedPath({ slug: `/snippet/${snippet.slug}`, locale }),
     excerpt: snippet.description,
-    type: 'snippet'
+    type: 'snippet',
+    publishedAt: dateValue(snippet.date),
+    tags: snippet.tags,
+    readingTime: snippet.readingTime
   }))
 }
 
@@ -110,6 +127,8 @@ export type PageContext = {
   description: string
   href: string
   contentExcerpt: string
+  publishedAt?: string
+  updatedAt?: string
 }
 
 export type Citation = {
@@ -118,6 +137,14 @@ export type Citation = {
   href: string
   excerpt?: string
   type: SiteEntryType
+  publishedAt?: string
+  updatedAt?: string
+  tags?: string[]
+  category?: string
+  readingTime?: number
+  project?: SiteEntry['project']
+  repositoryHref?: string
+  evidence?: string
 }
 
 type RecommendationResult = {
@@ -141,7 +168,8 @@ const staticRouteSlugs = [
   '/about',
   '/now',
   '/uses',
-  '/music'
+  '/music',
+  '/privacy'
 ] as const
 const staticRouteLabels: Record<string, Array<[string, string]>> = {
   en: [
@@ -154,7 +182,8 @@ const staticRouteLabels: Record<string, Array<[string, string]>> = {
     ['About', 'About the author and the site'],
     ['Now', 'Current interests and work'],
     ['Uses', 'Tools and setup'],
-    ['Music', 'Music page and statistics']
+    ['Music', 'Music page and statistics'],
+    ['Privacy', 'Public privacy notice and data handling']
   ],
   pt: [
     ['Início', 'Portfólio de Yuri Cunha'],
@@ -166,7 +195,8 @@ const staticRouteLabels: Record<string, Array<[string, string]>> = {
     ['Sobre', 'Sobre o autor e o site'],
     ['Agora', 'Interesses e trabalho atuais'],
     ['Uses', 'Ferramentas e setup'],
-    ['Música', 'Página de música e estatísticas']
+    ['Música', 'Página de música e estatísticas'],
+    ['Privacidade', 'Aviso de privacidade e tratamento de dados']
   ],
   es: [
     ['Inicio', 'Portafolio de Yuri Cunha'],
@@ -178,7 +208,8 @@ const staticRouteLabels: Record<string, Array<[string, string]>> = {
     ['Acerca de', 'Sobre el autor y el sitio'],
     ['Ahora', 'Intereses y trabajo actuales'],
     ['Herramientas', 'Herramientas y configuración'],
-    ['Música', 'Música y estadísticas']
+    ['Música', 'Música y estadísticas'],
+    ['Privacidad', 'Aviso de privacidad y tratamiento de datos']
   ],
   fr: [
     ['Accueil', 'Portfolio de Yuri Cunha'],
@@ -190,7 +221,8 @@ const staticRouteLabels: Record<string, Array<[string, string]>> = {
     ['À propos', 'À propos de l’auteur et du site'],
     ['En ce moment', 'Intérêts et travaux actuels'],
     ['Outils', 'Outils et configuration'],
-    ['Musique', 'Musique et statistiques']
+    ['Musique', 'Musique et statistiques'],
+    ['Confidentialité', 'Politique de confidentialité']
   ],
   de: [
     ['Startseite', 'Portfolio von Yuri Cunha'],
@@ -202,7 +234,8 @@ const staticRouteLabels: Record<string, Array<[string, string]>> = {
     ['Über', 'Über den Autor und die Website'],
     ['Aktuell', 'Aktuelle Interessen und Arbeit'],
     ['Werkzeuge', 'Werkzeuge und Einrichtung'],
-    ['Musik', 'Musik und Statistiken']
+    ['Musik', 'Musik und Statistiken'],
+    ['Datenschutz', 'Öffentliche Datenschutzerklärung']
   ],
   ja: [
     ['ホーム', 'Yuri Cunha のポートフォリオ'],
@@ -214,7 +247,8 @@ const staticRouteLabels: Record<string, Array<[string, string]>> = {
     ['プロフィール', '著者とサイトについて'],
     ['近況', '現在の関心と活動'],
     ['使用ツール', 'ツールと環境'],
-    ['音楽', '音楽と統計']
+    ['音楽', '音楽と統計'],
+    ['プライバシー', 'プライバシーとデータの取り扱い']
   ],
   'zh-CN': [
     ['首页', 'Yuri Cunha 的个人网站'],
@@ -226,7 +260,8 @@ const staticRouteLabels: Record<string, Array<[string, string]>> = {
     ['关于', '关于作者与网站'],
     ['近况', '当前兴趣与工作'],
     ['工具', '工具与环境配置'],
-    ['音乐', '音乐与统计']
+    ['音乐', '音乐与统计'],
+    ['隐私', '隐私声明与数据处理']
   ]
 }
 
@@ -283,6 +318,44 @@ function infer_excluded_post_slugs_from_query(params: { query: string; locale: s
   return unique(slugs)
 }
 
+const dateValue = (value?: string) => {
+  if (!value || !Number.isFinite(Date.parse(value))) return
+  return value
+}
+
+const contactContent = () =>
+  [
+    'Public contact channels published on the contact page:',
+    `Email: ${publicContact.email}`,
+    `GitHub: ${publicContact.github}`,
+    `X (Twitter): ${publicContact.twitter}`,
+    `LinkedIn: ${publicContact.linkedin}`,
+    'A contact form is available on this page.'
+  ].join('\n')
+
+const toCitation = (entry: SiteEntry, includeEvidence = false): Citation => ({
+  id: `${entry.type}:${entry.slug}`,
+  title: entry.title,
+  href: entry.href,
+  excerpt: entry.slug === 'contact' && entry.type === 'page' ? entry.content : entry.description,
+  type: entry.type,
+  ...(includeEvidence &&
+    entry.type === 'page' &&
+    entry.content && {
+      evidence: entry.content.slice(0, entry.slug === 'privacy' ? 6000 : 1800)
+    }),
+  publishedAt: entry.publishedAt,
+  updatedAt: entry.updatedAt,
+  tags: entry.tags,
+  category: entry.category,
+  readingTime: entry.readingTime,
+  project: entry.project,
+  repositoryHref:
+    entry.project?.repository && isPublicRepositoryHref(entry.project.repository)
+      ? entry.project.repository
+      : undefined
+})
+
 const siteEntries = new Map<string, SiteEntry[]>()
 
 export const build_site_index = (locale: string): SiteEntry[] => {
@@ -295,7 +368,8 @@ export const build_site_index = (locale: string): SiteEntry[] => {
     description: route.description,
     href: getLocalizedPath({ slug: route.slug, locale }),
     slug: route.slug.replace(/^\//, ''),
-    locale
+    locale,
+    ...(route.slug === '/contact' && { content: contactContent() })
   }))
 
   for (const post of allPosts) {
@@ -307,7 +381,12 @@ export const build_site_index = (locale: string): SiteEntry[] => {
       href: getLocalizedPath({ slug: `/blog/${post.slug}`, locale }),
       slug: post.slug,
       locale,
-      content: post.content
+      content: post.content,
+      publishedAt: dateValue(post.date),
+      updatedAt: dateValue(post.modifiedTime),
+      tags: post.tags,
+      category: post.category,
+      readingTime: post.readingTime
     })
   }
 
@@ -320,7 +399,10 @@ export const build_site_index = (locale: string): SiteEntry[] => {
       href: getLocalizedPath({ slug: `/snippet/${snippet.slug}`, locale }),
       slug: snippet.slug,
       locale,
-      content: snippet.content
+      content: snippet.content,
+      publishedAt: dateValue(snippet.date),
+      tags: snippet.tags,
+      readingTime: snippet.readingTime
     })
   }
 
@@ -333,7 +415,16 @@ export const build_site_index = (locale: string): SiteEntry[] => {
       href: getLocalizedPath({ slug: `/projects/${project.slug}`, locale }),
       slug: project.slug,
       locale,
-      content: project.content
+      content: project.content,
+      category: project.category,
+      project: {
+        repository: project.github,
+        homepage: project.homepage,
+        techstack: project.techstack,
+        status: project.status,
+        startDate: dateValue(project.startDate),
+        endDate: dateValue(project.endDate)
+      }
     })
   }
 
@@ -382,7 +473,9 @@ export const get_page_context = (page_path: string, locale: string): PageContext
     title: entry.title,
     description: entry.description,
     href: entry.href,
-    contentExcerpt: entry.content.slice(0, 1200)
+    contentExcerpt: entry.content.slice(0, 1200),
+    publishedAt: entry.publishedAt,
+    updatedAt: entry.updatedAt
   }
 }
 
@@ -424,6 +517,31 @@ const searchKnowledge = (query: string, locale: string) => {
   ]
 }
 
+export type ContentOrder = 'newest' | 'oldest' | 'updated'
+
+export const list_site_content = (params: {
+  locale: string
+  type: 'post' | 'snippet'
+  order: ContentOrder
+  query?: string
+  limit?: number
+}): Citation[] => {
+  const { locale, type, order, query, limit = 5 } = params
+  const entries = query?.trim()
+    ? searchKnowledge(query, locale).map(({ entry }) => entry)
+    : build_site_index(locale)
+  const date = (entry: SiteEntry) =>
+    Date.parse((order === 'updated' ? entry.updatedAt : entry.publishedAt) ?? '')
+  return entries
+    .filter((entry) => entry.type === type && Number.isFinite(date(entry)))
+    .toSorted(
+      (a, b) =>
+        (order === 'oldest' ? date(a) - date(b) : date(b) - date(a)) || a.href.localeCompare(b.href)
+    )
+    .slice(0, limit)
+    .map((entry) => toCitation(entry))
+}
+
 export const find_citations = (params: {
   message: string
   locale: string
@@ -432,31 +550,44 @@ export const find_citations = (params: {
 }): Citation[] => {
   const { message, locale, page_path, limit = 5 } = params
   const scored = searchKnowledge(message, locale)
+  const channelQuery = message.toLowerCase()
+  const publicChannel =
+    /\b(?:e-?mail|github|linkedin|twitter|contact|contato|contacto|kontakt|correo|courriel)\b/u.test(
+      channelQuery
+    ) ||
+    /redes sociais|social media|social links|連絡|メール|联系方式|邮箱|社交/u.test(channelQuery)
+  const contact = publicChannel
+    ? build_site_index(locale).find((entry) => entry.type === 'page' && entry.slug === 'contact')
+    : undefined
 
+  const privacyQuestion =
+    /privacy (?:notice|policy)|aviso de privacidade|pol[ií]tica de privacidade|pol[ií]tica de privacidad|politique de confidentialit[eé]|datenschutzerkl[aä]rung|プライバシーポリシー|隐私政策/u.test(
+      channelQuery
+    )
+  const privacy = privacyQuestion
+    ? build_site_index(locale).find((entry) => entry.type === 'page' && entry.slug === 'privacy')
+    : undefined
   const citations: Citation[] = []
 
   const page_ctx = page_path ? get_page_context(page_path, locale) : null
   if (page_ctx) {
-    citations.push({
-      id: 'page',
-      title: page_ctx.title,
-      href: page_ctx.href,
-      excerpt: page_ctx.description,
-      type: page_ctx.type
-    })
+    const entry = resolve_site_entry(page_ctx.href, locale)
+    if (entry) citations.push({ ...toCitation(entry, true), id: 'page' })
+  }
+
+  if (contact && citations.every((citation) => citation.href !== contact.href)) {
+    citations.push({ ...toCitation(contact), excerpt: contactContent() })
+  }
+
+  if (privacy && citations.every((citation) => citation.href !== privacy.href)) {
+    citations.push(toCitation(privacy, true))
   }
 
   const remainingItems = scored
     .filter(({ entry }) => citations.every((citation) => citation.href !== entry.href))
     .slice(0, Math.max(0, limit - citations.length))
   for (const item of remainingItems) {
-    citations.push({
-      id: `${item.entry.type}:${item.entry.slug}`,
-      title: item.entry.title,
-      href: item.entry.href,
-      excerpt: item.entry.description,
-      type: item.entry.type
-    })
+    citations.push(toCitation(item.entry, true))
   }
 
   return citations.slice(0, limit)
@@ -535,7 +666,12 @@ const recommend_posts = (params: {
     title: post.title,
     href: getLocalizedPath({ slug: `/blog/${post.slug}`, locale }),
     excerpt: post.summary,
-    type: 'post'
+    type: 'post',
+    publishedAt: dateValue(post.date),
+    updatedAt: dateValue(post.modifiedTime),
+    tags: post.tags,
+    category: post.category,
+    readingTime: post.readingTime
   }))
 }
 
@@ -573,7 +709,7 @@ export const get_site_overview = (locale: string): Citation[] =>
     id: `page:${route.slug}`,
     title: route.title,
     href: getLocalizedPath({ slug: route.slug, locale }),
-    excerpt: route.description,
+    excerpt: route.slug === '/contact' ? contactContent() : route.description,
     type: 'page'
   }))
 
@@ -583,13 +719,7 @@ export const read_site_content = (href: string, locale: string, offset = 0) => {
   const content = entry.content ?? entry.description
   const end = Math.min(content.length, offset + 6000)
   return {
-    citation: {
-      id: `${entry.type}:${entry.slug}`,
-      title: entry.title,
-      href: entry.href,
-      excerpt: entry.description,
-      type: entry.type
-    } satisfies Citation,
+    citation: toCitation(entry),
     content: content.slice(offset, end),
     nextOffset: end < content.length ? end : null
   }

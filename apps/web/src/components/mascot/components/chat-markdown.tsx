@@ -5,6 +5,7 @@ import MarkdownToJSX from 'markdown-to-jsx'
 import { CodeBlock } from '@isyuricunha/yutheme'
 
 import { is_safe_internal_path } from '../chat-link-policy'
+import { isPublicRepositoryHref, publicContactHrefs } from '@/lib/public-contact'
 
 type MarkdownLinkProps = { href?: string; children?: ReactNode }
 type MarkdownImageProps = { alt?: string }
@@ -14,7 +15,10 @@ const MarkdownLink = ({
   children,
   allowedHrefs
 }: MarkdownLinkProps & { allowedHrefs?: string[] }) =>
-  href && is_safe_internal_path(href) && (!allowedHrefs || allowedHrefs.includes(href)) ? (
+  href &&
+  ((is_safe_internal_path(href) && (!allowedHrefs || allowedHrefs.includes(href))) ||
+    publicContactHrefs.has(href) ||
+    (isPublicRepositoryHref(href) && allowedHrefs?.includes(href))) ? (
     <a href={href} className='break-words underline underline-offset-2'>
       {children}
     </a>

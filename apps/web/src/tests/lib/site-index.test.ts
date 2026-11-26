@@ -13,6 +13,8 @@ vi.mock('content-collections', () => ({
       slug: 'hello',
       title: 'Hello World',
       summary: 'Intro post',
+      date: '2023-01-01',
+      modifiedTime: '2026-10-01',
       content: 'Hello content'
     },
     {
@@ -20,6 +22,8 @@ vi.mock('content-collections', () => ({
       slug: 'art-of-starting-over',
       title: 'The Art of Starting Over',
       summary: 'A post about starting over',
+      date: '2025-08-21',
+      modifiedTime: '2025-08-22',
       content: 'Content about starting over'
     }
   ],
@@ -162,5 +166,35 @@ describe('site-index', () => {
 
     expect(result.citations.some((c) => c.id === 'post:hello')).toBe(false)
     expect(result.citations.some((c) => c.id === 'post:art-of-starting-over')).toBe(true)
+  })
+})
+
+describe('public knowledge metadata', () => {
+  it('orders actual dates instead of relevance, and distinguishes publication from update', async () => {
+    const { list_site_content, read_site_content } = await import('@/lib/ai/site-index')
+    const input = { locale: 'en', type: 'post' as const }
+    expect(list_site_content({ ...input, order: 'newest' }).map((c) => c.publishedAt)).toEqual([
+      '2025-08-21',
+      '2023-01-01'
+    ])
+    expect(list_site_content({ ...input, order: 'oldest' })[0]?.href).toBe('/en/blog/hello')
+    expect(list_site_content({ ...input, order: 'updated' })[0]?.href).toBe('/en/blog/hello')
+    expect(read_site_content('/en/blog/hello', 'en')?.citation).toMatchObject({
+      publishedAt: '2023-01-01',
+      updatedAt: '2026-10-01'
+    })
+    expect(list_site_content({ ...input, order: 'newest', query: 'starting over' })[0]?.href).toBe(
+      '/en/blog/art-of-starting-over'
+    )
+  })
+
+  it('provides only the public contact channels from the contact page', async () => {
+    const { find_citations, read_site_content } = await import('@/lib/ai/site-index')
+    const { publicContact } = await import('@/lib/public-contact')
+    expect(find_citations({ message: 'What is the email?', locale: 'en' })[0]?.excerpt).toContain(
+      publicContact.email
+    )
+    expect(read_site_content('/en/contact', 'en')?.content).toContain(publicContact.linkedin)
+    expect(read_site_content('/en/admin', 'en')).toBeNull()
   })
 })

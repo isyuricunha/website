@@ -1,7 +1,7 @@
 ---
 ---
 
-_Last updated: September 6, 2026_
+_Last updated: November 26, 2026_
 
 This notice explains what data this site uses, why it is needed, and how long it is kept.
 
@@ -31,11 +31,11 @@ When you use the contact form, the site processes your name, email address, subj
 
 If you subscribe to the newsletter, your email address is stored with Resend until you unsubscribe. A record of the unsubscribe request may be kept so the site does not subscribe you again by mistake.
 
-## Yue AI
+## Nery AI
 
-Your Yue AI conversation history is stored in your browser's local storage. The site does not save the conversation text in its database.
+Your Nery AI conversation history is stored in your browser's local storage. The site does not save the conversation text in its database.
 
-When you send a message, the current message and the recent context needed to answer it pass through the site server to self-hosted AI models. The text is used only to produce the response. It is not used to train or fine-tune a model.
+When you send a message, the current message and recent context needed to answer it pass through the site server to the configured AI inference service. Depending on the selected model, this may involve an external AI provider. The site uses the text to generate the response and does not train or fine-tune models on it.
 
 The server keeps content-free operational records such as response time, status, model, estimated token count, endpoint, IP address, and user agent. These records do not contain your prompt or the generated answer.
 
@@ -43,7 +43,7 @@ If you send feedback about an answer, the site stores the rating, any comment yo
 
 ## Cookies and browser storage
 
-The site uses necessary cookies for language selection and signed-in sessions. Local and session storage may keep your Yue AI history, recent searches, interface preferences, dismissed announcements, and small local features such as game progress. This information stays in your browser unless a feature explicitly sends it to the server.
+The site uses necessary cookies for language selection and signed-in sessions. Local and session storage may keep your Nery AI history, recent searches, interface preferences, dismissed announcements, and small local features such as game progress. This information stays in your browser unless a feature explicitly sends it to the server.
 
 The site does not use advertising cookies.
 
@@ -54,7 +54,7 @@ Automated cleanup currently applies these limits:
 - internal analytics events: 180 days;
 - performance and AI operational metrics: 30 days;
 - login attempts: 90 days;
-- Yue AI feedback: 365 days;
+- Nery AI feedback: 365 days;
 - resolved security events: 180 days after resolution;
 - error logs and error tracking: 180 days, by age.
 
@@ -66,7 +66,7 @@ Backups may retain deleted data for a limited period until they rotate out.
 
 The site relies on a small number of services to operate: Vercel for hosting, Upstash for rate limiting and cache, Resend for email and newsletter delivery, Cloudflare for Turnstile and related infrastructure, and Google or GitHub when you choose social sign-in. These services receive only the information needed for their role and may process it in other countries under their own privacy and security terms.
 
-The AI models used by Yue AI are self-hosted. Chat messages are not sent to a third-party AI provider.
+AI inference may be provided through self-hosted infrastructure or an external AI provider, depending on the configured model. Processing and retention by external providers are subject to their applicable terms. Do not submit passwords, secrets, or sensitive personal information.
 
 ## Why data is processed
 
@@ -84,7 +84,7 @@ For restriction, objection, consent withdrawal, records not covered by the autom
 
 - It does not sell personal data.
 - It does not use personal data for targeted advertising.
-- It does not use Yue AI conversations to train models.
+- It does not use Nery AI conversations to train models.
 - It does not make decisions with legal or similarly significant effects about visitors through automated profiling.
 
 ## Changes to this notice
