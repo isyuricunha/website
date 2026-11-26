@@ -125,3 +125,9 @@ References:
 - https://developers.openai.com/api/docs/guides/function-calling
 - https://developers.openai.com/api/docs/guides/prompt-caching
 - https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream/cancel
+
+## Provider control-text boundary
+
+Agnes 3.0 Flash uses XML-style internal tool-call markers, but the public OpenAI-compatible API must transport tool calls in structured delta.tool_calls fields. Treat raw protocol markers in delta.content as a malformed provider response, not a tool invocation. The incremental output guard retains ambiguous marker prefixes across chunk boundaries, resets contaminated prose, cancels the upstream stream, and discards that round (including any concurrent structured calls). One text-only recovery is allowed within the existing three-round budget and shared deadline. If recovery fails or the budget is exhausted, the visitor gets the existing localized error state. Previously leaked assistant text is excluded from model history; stored conversations are not rewritten. Valid structured calls remain supported. This is a guard for known provider control markers, not a general-purpose XML or prompt-injection filter.
+
+References: https://huggingface.co/Agnes-AI/Agnes-3.0-Flash and https://developers.openai.com/api/docs/guides/function-calling and https://platform.claude.com/docs/en/agents-and-tools/tool-use/how-tool-use-works.

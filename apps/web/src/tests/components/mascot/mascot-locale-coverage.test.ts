@@ -52,6 +52,29 @@ describe('mascot system message locale coverage', () => {
     expect(messages[0]?.content).not.toContain('unique current')
   })
 
+  it('does not replay previously leaked assistant control text', () => {
+    const messages = build_mascot_openai_messages(
+      {
+        ...baseContext('en'),
+        conversation: [
+          { role: 'user', content: 'Find blog articles' },
+          {
+            role: 'assistant',
+            content:
+              '<tool_call><function=search_site><parameter=query>blog articles</parameter></function></tool_call>'
+          },
+          { role: 'user', content: 'Can you explain <tool_call> as a string?' }
+        ]
+      },
+      'Try again'
+    )
+    expect(messages.slice(1)).toEqual([
+      { role: 'user', content: 'Find blog articles' },
+      { role: 'user', content: 'Can you explain <tool_call> as a string?' },
+      { role: 'user', content: 'Try again' }
+    ])
+  })
+
   it('retains the newest bounded history and current user turn exactly once', () => {
     const previous = Array.from({ length: 30 }, (_, index) => ({
       role: index % 2 === 0 ? ('user' as const) : ('assistant' as const),

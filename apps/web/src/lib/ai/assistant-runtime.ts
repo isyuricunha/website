@@ -1,5 +1,6 @@
 import { z } from 'zod'
 
+import { AssistantOutputGuard } from './assistant-output-guard'
 import { type AssistantAction, type AssistantEvent } from './assistant-protocol'
 import { executeSiteTool, siteTools } from './assistant-tools'
 import {
@@ -106,6 +107,7 @@ async function readRound(
   const reader = response.body.pipeThrough(new TextDecoderStream()).getReader()
   const calls = new Map<number, ToolCall>()
   let text = ''
+  const guard = new AssistantOutputGuard()
   let buffer = ''
   let complete = false
   let finishReason: string | undefined
@@ -139,7 +141,10 @@ async function readRound(
     if (choice?.delta?.content) {
       text += choice.delta.content
       if (text.length > 60_000) throw new Error('Assistant response exceeds limit')
-      if (calls.size === 0) emit({ type: 'delta', text: choice.delta.content })
+      const wasBlocked = guard.blocked
+      const visible = guard.push(choice.delta.content)
+      if (!wasBlocked && guard.blocked) emit({ type: 'reset' })
+      if (visible && calls.size === 0) emit({ type: 'delta', text: visible })
     }
     const fragments = choice?.delta?.tool_calls ?? []
     for (const part of fragments) {
@@ -161,16 +166,18 @@ async function readRound(
     }
   }
   try {
-    while (!complete) {
+    while (!complete && !guard.blocked) {
       const { value, done } = await reader.read()
       if (done) break
       buffer += value
       if (buffer.length > 200_000) throw new Error('Assistant stream event exceeds limit')
       const lines = buffer.split('\n')
       buffer = lines.pop() ?? ''
-      for (const line of lines) consume(line)
+      for (const line of lines) {
+        if (!guard.blocked) consume(line)
+      }
     }
-    if (buffer.trim()) consume(buffer)
+    if (!guard.blocked && buffer.trim()) consume(buffer)
   } finally {
     try {
       await reader.cancel()
@@ -180,6 +187,15 @@ async function readRound(
       reader.releaseLock()
     }
   }
+  const previouslyBlocked = guard.blocked
+  const tail = guard.finish()
+  if (guard.blocked) {
+    if (!previouslyBlocked) emit({ type: 'reset' })
+    // Do not replay or execute anything from a contaminated round, even if
+    // the same upstream event also contained structured tool calls.
+    return { text: '', toolCalls: [], usage, malformed: true }
+  }
+  if (tail && calls.size === 0) emit({ type: 'delta', text: tail })
   if (!finishReason && !complete) throw new Error('Incomplete assistant response')
   if (finishReason === 'content_filter' || finishReason === 'error')
     throw new Error('Assistant provider stopped the response')
@@ -191,7 +207,7 @@ async function readRound(
     new Set(toolCalls.map((call) => call.id)).size !== toolCalls.length
   )
     throw new Error('Invalid tool call identifiers')
-  return { text, toolCalls, usage }
+  return { text, toolCalls, usage, malformed: false }
 }
 
 export const runSiteAssistant = async (options: RunOptions) => {
@@ -208,6 +224,7 @@ export const runSiteAssistant = async (options: RunOptions) => {
   let toolCount = 0
   let executedTools = 0
   let rounds = 0
+  let recovered = false
   let toolsEnabled = !is_simple_social_message(message)
   for (let round = 0; round < MAX_ROUNDS; round += 1) {
     if (round === 0) emit({ type: 'phase', phase: 'responding' })
@@ -225,6 +242,20 @@ export const runSiteAssistant = async (options: RunOptions) => {
     usage.input += result.usage.input
     usage.output += result.usage.output
     usage.reported &&= result.usage.reported
+    if (result.malformed) {
+      if (recovered || round >= MAX_ROUNDS - 1)
+        throw new Error('Assistant returned malformed tool output')
+      recovered = true
+      toolsEnabled = false
+      // Preserve the original visitor turn and valid tool results only.
+      // The failed model output is never added to conversation history.
+      const system = messages[0]
+      if (system?.role === 'system') {
+        system.content +=
+          '\n\nRecovery: tools are unavailable for the remaining answer. Respond with natural language and grounded links using only the supplied evidence. If information is missing, acknowledge it. Do not output tool protocol markup.'
+      }
+      continue
+    }
     if (result.toolCalls.length === 0) {
       if (!result.text.trim()) throw new Error('Empty assistant response')
       const sources = Array.from(citations.values())

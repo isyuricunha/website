@@ -138,6 +138,156 @@ describe('Nery assistant protocol', () => {
     expect(events.some((event) => event.type === 'done')).toBe(false)
   })
 
+  it('recovers from the observed XML tool output without emitting or executing it', async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(
+        sse(
+          chunk({ content: 'Let me check. ' }),
+          chunk({ content: '<tool_' }),
+          chunk({ content: 'call><function=search_site><parameter=query>blog articles' }),
+          chunk({ content: '</parameter></function></tool_call>' }, 'stop')
+        )
+      )
+      .mockResolvedValueOnce(sse(chunk({ content: 'Explore the blog.' }, 'stop')))
+    vi.stubGlobal('fetch', fetchMock)
+    const events: AssistantEvent[] = []
+    const result = await runSiteAssistant({
+      config,
+      context,
+      message: 'Show blog articles',
+      requestId: 'qa',
+      signal: new AbortController().signal,
+      emit: (event) => {
+        events.push(event)
+      }
+    })
+    expect(result.toolCount).toBe(0)
+    expect(result.rounds).toBe(2)
+    expect(events.some((event) => event.type === 'reset')).toBe(true)
+    expect(
+      events
+        .filter((event) => event.type === 'delta')
+        .map((event) => event.text)
+        .join('')
+    ).toBe('Let me check. Explore the blog.')
+    expect(events.at(-1)).toMatchObject({ type: 'done', text: 'Explore the blog.' })
+    const retry = JSON.parse(fetchMock.mock.calls[1]?.[1].body)
+    expect(retry).not.toHaveProperty('tools')
+    expect(JSON.stringify(retry.messages)).not.toContain('<tool_call>')
+    expect(retry.messages.filter((turn: { role: string }) => turn.role === 'user')).toHaveLength(1)
+  })
+
+  it('fails closed after one recovery if the model keeps leaking control text', async () => {
+    const fetchMock = vi
+      .fn()
+      .mockImplementation(async () =>
+        sse(chunk({ content: '<tool_call><function=search_site>' }, 'stop'))
+      )
+    vi.stubGlobal('fetch', fetchMock)
+    const events: AssistantEvent[] = []
+    await expect(
+      runSiteAssistant({
+        config,
+        context,
+        message: 'Search articles',
+        requestId: 'qa',
+        signal: new AbortController().signal,
+        emit: (event) => {
+          events.push(event)
+        }
+      })
+    ).rejects.toThrow('malformed tool output')
+    expect(fetchMock).toHaveBeenCalledTimes(2)
+    expect(events.some((event) => event.type === 'delta' || event.type === 'done')).toBe(false)
+  })
+
+  it('does not execute structured calls from a round contaminated by raw markup', async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(
+        sse(
+          chunk(
+            {
+              content: '<tool_call>',
+              tool_calls: [
+                {
+                  index: 0,
+                  id: 'call_1',
+                  function: { name: 'search_site', arguments: '{"query":"Docker"}' }
+                }
+              ]
+            },
+            'tool_calls'
+          )
+        )
+      )
+      .mockResolvedValueOnce(sse(chunk({ content: 'Please visit the blog.' }, 'stop')))
+    vi.stubGlobal('fetch', fetchMock)
+    const result = await runSiteAssistant({
+      config,
+      context,
+      message: 'Search Docker',
+      requestId: 'qa',
+      signal: new AbortController().signal,
+      emit: vi.fn()
+    })
+    expect(result.toolCount).toBe(0)
+    expect(JSON.stringify(JSON.parse(fetchMock.mock.calls[1]?.[1].body).messages)).not.toContain(
+      'call_1'
+    )
+  })
+
+  it('does not exceed the round budget when the last round is contaminated', async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(
+        sse(
+          chunk(
+            {
+              tool_calls: [
+                {
+                  index: 0,
+                  id: 'one',
+                  function: { name: 'search_site', arguments: '{"query":"Docker"}' }
+                }
+              ]
+            },
+            'tool_calls'
+          )
+        )
+      )
+      .mockResolvedValueOnce(
+        sse(
+          chunk(
+            {
+              tool_calls: [
+                { index: 0, id: 'two', function: { name: 'get_site_overview', arguments: '{}' } }
+              ]
+            },
+            'tool_calls'
+          )
+        )
+      )
+      .mockResolvedValueOnce(sse(chunk({ content: '<tool_ca' }, 'length')))
+    vi.stubGlobal('fetch', fetchMock)
+    const events: AssistantEvent[] = []
+    await expect(
+      runSiteAssistant({
+        config,
+        context,
+        message: 'Search Docker',
+        requestId: 'qa',
+        signal: new AbortController().signal,
+        emit: (event) => {
+          events.push(event)
+        }
+      })
+    ).rejects.toThrow('malformed tool output')
+    expect(fetchMock).toHaveBeenCalledTimes(3)
+    expect(events.some((event) => event.type === 'delta' || event.type === 'done')).toBe(false)
+  })
+
   it('rejects arbitrary tool names and malformed arguments', () => {
     expect(executeSiteTool('shell', '{}', context).result).toEqual({ error: 'Unknown tool.' })
     expect(executeSiteTool('search_site', '{"query":""}', context).result).toMatchObject({
