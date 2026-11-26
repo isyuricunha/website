@@ -37,8 +37,9 @@ describe('mascot system message locale coverage', () => {
       const system = systemMessageFor(locale)
       expect(system).toContain('Nery Small 3.0')
       expect(system).toContain('nery-small-3-0')
-      expect(system).toContain('product alias')
-      expect(system).toContain('not a separately trained model')
+      expect(system).toContain('Your model name is Nery Small 3.0')
+      expect(system).toContain('do not use a fixed introduction or canned response')
+      expect(system).toContain('never invent technical provenance or claim independent training')
     }
   })
 
