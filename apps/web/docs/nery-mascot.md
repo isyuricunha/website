@@ -139,3 +139,11 @@ Mascot panels use available dynamic viewport height based on the anchor position
 ## Public AI identity
 
 Nery Mizuki is Yuri Cunha's virtual mascot and public AI assistant. Nery Small 3.0 (nery-small-3-0) is the public profile alias, not a separately trained model or the upstream model identifier. The prompt, chat footer and status endpoint share the public identity constants. Ordinary model questions receive natural, varied answers using the Nery Small 3.0 name without unsolicited implementation details. Explicit base-model or training questions distinguish the assistant identity from the underlying engine. Runtime provider selection and editorial prompts are unchanged. The welcome message introduces the mascot in all seven locales. Existing conversation history is preserved.
+
+## Adversarial evaluation
+
+The deterministic regression suite (src/tests/lib/nery-redteam.test.ts) covers 84 cases: 20 denied read paths, 20 denied navigation targets, 20 invalid or unknown tools, 15 fragmented provider control markers (all split positions), and nine malformed client events. A synthetic public content fixture is used; no private data is accessed.
+
+A bounded live evaluation of the development endpoint used 12 adversarial prompts and four legitimate controls. Tests covered direct prompt extraction, false authority, model-identity manipulation in multiple languages and encoded form, forged conversation history and client metadata, private routes, unknown tools, and automatic external navigation. No tested attack achieved its intended objective; the model explicitly rejected the fake identity even when quoting it. Legitimate identity, technical Q&A, public search, and click-confirmed navigation remained functional. This is a small sample, not proof of prompt-injection immunity. The forged metadata case is not a test of a malicious published document. Turnstile, distributed abuse, legacy clients and adaptive multi-turn attacks were not evaluated live in this batch. Existing rate-limit and tool-budget regression tests remain relevant; provider requests and normal telemetry occur during live evaluations.
+
+References: https://platform.claude.com/docs/en/test-and-evaluate/develop-tests, https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/mitigate-jailbreaks, https://genai.owasp.org/llm2026/llm012026-prompt-injection/.
