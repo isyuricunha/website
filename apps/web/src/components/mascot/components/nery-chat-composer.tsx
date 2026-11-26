@@ -44,7 +44,7 @@ export const NeryChatComposer = ({
       }}
       placeholder={placeholder}
       aria-label={placeholder}
-      className='placeholder:text-muted-foreground/60 min-w-0 flex-1 resize-none rounded-xl border border-[var(--border-subtle)] bg-[var(--yu-bg-input)] px-4 py-3 text-sm transition-colors focus:border-[var(--action-primary-border)] focus:ring-2 focus:ring-[var(--action-primary-border)] focus:outline-none'
+      className='placeholder:text-muted-foreground/60 min-w-0 flex-1 resize-none rounded-xl border border-[var(--border-subtle)] bg-[var(--yu-bg-input)] px-4 py-3 text-sm transition-colors focus:border-[var(--action-primary-border)] focus:ring-2 focus:ring-[var(--action-primary-border)] focus:outline-none [@media(pointer:coarse)]:text-base'
       disabled={disabled || loading}
     />
     <button

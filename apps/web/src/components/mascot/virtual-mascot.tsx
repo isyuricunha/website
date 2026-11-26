@@ -1,6 +1,8 @@
 'use client'
 
 import * as React from 'react'
+
+import styles from './mascot-panels.module.css'
 import { Eye as EyeIcon } from 'lucide-react'
 
 import MascotGame from './mascot-game'
@@ -54,27 +56,32 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
     )
   }
 
+  const panelClass = `${getBubblePositionClasses()} ${styles.panel}`
+
   return (
     <>
-      <div className={`${getPositionClasses()} z-50`}>
+      <div
+        className={`${getPositionClasses()} ${styles.anchor} z-50`}
+        data-position={state.preferences.bubblePosition}
+      >
         {/* Settings Panel */}
-        <div className={getBubblePositionClasses()}>
+        <div className={panelClass}>
           <MascotSettingsPanel mascot={mascot} />
         </div>
 
         {/* Contact Panel */}
-        <div className={getBubblePositionClasses()}>
+        <div className={panelClass}>
           <MascotContactPanel mascot={mascot} />
         </div>
 
         {/* Menu Panel */}
-        <div className={getBubblePositionClasses()}>
+        <div className={panelClass}>
           <MascotMenuPanel mascot={mascot} />
         </div>
 
         {/* AI Chat Interface */}
         {state.showAIChat && (
-          <div className={getBubblePositionClasses()}>
+          <div className={`${panelClass} ${styles.chatPanel}`}>
             <AIChatInterface
               isOpen={state.showAIChat}
               onClose={handleAIClose}
@@ -86,12 +93,12 @@ const VirtualMascot = ({ hidden = false }: VirtualMascotProps) => {
         )}
 
         {/* Speech Bubbles */}
-        <div className={getBubblePositionClasses()}>
+        <div className={panelClass}>
           <MascotSpeechBubbles mascot={mascot} />
         </div>
 
         {/* Selection Explain Bubble */}
-        <div className={getBubblePositionClasses()}>
+        <div className={panelClass}>
           <MascotSelectionBubble mascot={mascot} />
         </div>
 

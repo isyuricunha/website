@@ -282,7 +282,6 @@ export default function AIChatInterface({
   const [feedbackIsSubmittingByMessageId, setFeedbackIsSubmittingByMessageId] = useState<
     Record<string, boolean>
   >({})
-  const messagesEndRef = useRef<HTMLDivElement>(null)
   const messageListRef = useRef<HTMLDivElement>(null)
   const followBottomRef = useRef(true)
   const inputRef = useRef<HTMLTextAreaElement>(null)
@@ -327,23 +326,22 @@ export default function AIChatInterface({
     return 'text-foreground border-[var(--border-subtle)] rounded-bl-md border bg-bg-surface'
   }
 
-  // Follow new output only while the visitor is near the bottom.
+  // Only scroll the message list, never its ancestors or the document.
   useEffect(() => {
-    const element = messagesEndRef.current
-    if (followBottomRef.current && typeof element?.scrollIntoView === 'function') {
-      element.scrollIntoView({ behavior: 'instant' })
-    }
+    const list = messageListRef.current
+    if (list && followBottomRef.current) list.scrollTop = list.scrollHeight
   }, [messages])
 
   useEffect(() => {
     followBottomRef.current = true
-    messagesEndRef.current?.scrollIntoView?.({ behavior: 'instant' })
+    const list = messageListRef.current
+    if (list) list.scrollTop = list.scrollHeight
   }, [activeConversationId, isOpen])
 
-  // Focus input when opened
+  // Touch visitors explicitly focus the composer to avoid opening the keyboard.
   useEffect(() => {
-    if (!isOpen) return
-    const timer = setTimeout(() => inputRef.current?.focus(), 100)
+    if (!isOpen || globalThis.matchMedia?.('(pointer: coarse)').matches) return
+    const timer = setTimeout(() => inputRef.current?.focus({ preventScroll: true }), 100)
     return () => clearTimeout(timer)
   }, [isOpen])
 
@@ -1219,14 +1217,14 @@ export default function AIChatInterface({
     <TooltipProvider>
       <div
         className={cn(
-          'bg-bg-elevated shadow-feature-card flex max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-lg border border-[var(--border-subtle)]',
+          'bg-bg-elevated shadow-feature-card flex max-w-[min(calc(100vw-2rem),var(--nery-panel-width,100vw))] flex-col overflow-hidden rounded-lg border border-[var(--border-subtle)]',
           expanded
-            ? 'h-[calc(100dvh_-_13rem)] w-[680px]'
-            : 'h-[min(70dvh,calc(100dvh_-_13rem))] max-h-[720px] w-[420px]'
+            ? 'h-[var(--nery-panel-height,calc(100dvh-13rem))] w-[680px]'
+            : 'h-[min(70dvh,var(--nery-panel-height,calc(100dvh-13rem)))] max-h-[720px] w-[420px]'
         )}
       >
         {/* Header */}
-        <div className='bg-bg-surface flex items-center justify-between gap-3 border-b px-4 py-3'>
+        <div className='bg-bg-surface flex shrink-0 items-center justify-between gap-3 border-b px-4 py-3'>
           <div className='flex min-w-0 items-center gap-2'>
             <div className='bg-status-agent-soft text-status-agent rounded-lg p-1.5'>
               <MessageCircle className='h-4 w-4' />
@@ -1364,7 +1362,7 @@ export default function AIChatInterface({
             if (list)
               followBottomRef.current = list.scrollHeight - list.scrollTop - list.clientHeight < 80
           }}
-          className='bg-bg-surface flex flex-1 flex-col gap-4 overflow-y-auto px-4 py-4'
+          className='bg-bg-surface flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto overscroll-contain px-4 py-4'
         >
           {messages
             .filter((message) => message.text.trim() || message.isUser)
@@ -1389,7 +1387,7 @@ export default function AIChatInterface({
                           onClick={() => {
                             setEditingMessageId(message.id)
                             setInputValue(message.text)
-                            inputRef.current?.focus()
+                            inputRef.current?.focus({ preventScroll: true })
                           }}
                         >
                           <Pencil className='size-3.5' />
@@ -1752,14 +1750,12 @@ export default function AIChatInterface({
               </div>
             </div>
           )}
-
-          <div ref={messagesEndRef} />
         </div>
 
         {/* Input */}
-        <div className='bg-bg-surface border-t px-4 py-4'>
+        <div className='bg-bg-surface shrink-0 border-t px-4 py-4'>
           {shouldShowQuickPrompts && (
-            <div className='mb-3 space-y-2'>
+            <div className='mb-3 max-h-[min(96px,20dvh)] space-y-2 overflow-y-auto overscroll-contain'>
               <div className='text-muted-foreground/80 flex items-center gap-1.5 text-xs font-medium'>
                 <Sparkles className='h-3.5 w-3.5' />
                 {t('mascot.aiChat.quickPrompts.title')}

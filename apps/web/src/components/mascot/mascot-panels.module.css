@@ -1,0 +1,58 @@
+/* Available panel space accounts for the fixed sprite, gap and viewport margins.
+ * In short landscape viewports, place panels alongside the sprite instead. */
+.anchor {
+  --nery-panel-height: max(0px, calc(100dvh - 136px));
+}
+
+.anchor[data-position='top-left'],
+.anchor[data-position='top-right'] {
+  --nery-panel-height: max(0px, calc(100dvh - 188px));
+}
+
+.panel {
+  max-height: var(--nery-panel-height);
+  max-width: calc(100vw - 2rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.chatPanel {
+  overflow: visible;
+}
+
+@media (min-width: 640px) {
+  .anchor,
+  .anchor[data-position='top-left'],
+  .anchor[data-position='top-right'] {
+    --nery-panel-height: max(0px, calc(100dvh - 178px));
+  }
+}
+
+@media (min-width: 640px) and (max-height: 480px) {
+  .anchor,
+  .anchor[data-position='top-left'],
+  .anchor[data-position='top-right'] {
+    --nery-panel-height: max(0px, calc(100dvh - 24px));
+    --nery-panel-width: calc(100vw - 160px);
+  }
+
+  .anchor .panel {
+    position: fixed;
+    top: 12px;
+    bottom: auto;
+    left: auto;
+    right: 148px;
+    margin: 0;
+    max-width: calc(100vw - 160px);
+  }
+
+  .anchor .chatPanel > :first-child {
+    height: var(--nery-panel-height);
+  }
+
+  .anchor[data-position='top-left'] .panel,
+  .anchor[data-position='bottom-left'] .panel {
+    right: auto;
+    left: 148px;
+  }
+}
