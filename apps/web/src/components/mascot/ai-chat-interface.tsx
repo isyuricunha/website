@@ -75,6 +75,7 @@ import {
   readAssistantEvents,
   type AssistantEvent
 } from '@/lib/ai/assistant-protocol'
+import { NERY_IDENTITY } from '@/lib/ai/nery-identity'
 import { MASCOT_AVATAR_SRC } from './mascot-art'
 import { NeryChatComposer } from './components/nery-chat-composer'
 import { ChatMarkdown } from './components/chat-markdown'
@@ -1820,7 +1821,12 @@ export default function AIChatInterface({
             label={sendButtonLabel}
           />
           <div className='mt-3 flex items-center justify-between'>
-            <p className='text-muted-foreground/80 text-xs'>{t('mascot.aiChat.footer')}</p>
+            <p
+              className='text-muted-foreground/80 text-xs'
+              title={`${t('mascot.aiChat.footer')} · ${NERY_IDENTITY.profileId}`}
+            >
+              {NERY_IDENTITY.profile}
+            </p>
             <div role='status' className='text-muted-foreground/60 flex items-center gap-1 text-xs'>
               <div className={cn('h-2 w-2 rounded-full', statusDotClassName)}></div>
               <span>{t(`mascot.aiChat.status.${chatStatusKey}` as any)}</span>

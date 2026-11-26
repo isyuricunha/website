@@ -32,6 +32,24 @@ describe('mascot system message locale coverage', () => {
     }
   })
 
+  it('defines the public profile consistently in every language without claiming model ownership', () => {
+    for (const locale of i18n.locales) {
+      const system = systemMessageFor(locale)
+      expect(system).toContain('Nery Small 3.0')
+      expect(system).toContain('nery-small-3-0')
+      expect(system).toContain('product alias')
+      expect(system).toContain('not a separately trained model')
+    }
+  })
+
+  it('keeps editorial prompts independent of the public mascot identity', () => {
+    const messages = build_mascot_openai_messages(
+      { ...baseContext('en'), purpose: 'editorial' },
+      'Summarize'
+    )
+    expect(messages[0]?.content).not.toContain('Nery Small 3.0')
+  })
+
   it('sends the conversation as structured turns only, with the current question once', () => {
     const messages = build_mascot_openai_messages(
       {

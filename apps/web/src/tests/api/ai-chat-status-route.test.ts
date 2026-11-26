@@ -25,6 +25,8 @@ describe('/api/ai/chat/status', () => {
     expect(json.status).toBe('ready')
     expect(json.assistant).toBe('Nery AI')
     expect(json.displayName).toBe('Nery Mizuki')
+    expect(json.profile).toBe('Nery Small 3.0')
+    expect(json.profileId).toBe('nery-small-3-0')
     expect(JSON.stringify(json).toLowerCase()).not.toContain('mistral')
   })
 

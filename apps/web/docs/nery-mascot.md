@@ -135,3 +135,7 @@ References: https://huggingface.co/Agnes-AI/Agnes-3.0-Flash and https://develope
 ## Viewport isolation
 
 Mascot panels use available dynamic viewport height based on the anchor position and sprite dimensions; short landscape viewports dock panels beside the sprite. Chat auto-scroll targets its own message list, with overscroll containment, instead of calling scrollIntoView on ancestors. Automatic composer focus is restricted to non-touch pointers and uses preventScroll. The main document stays scrollable. Initial home-page announcement insertion is an independent layout shift, not caused by opening the mascot.
+
+## Public AI identity
+
+Nery Mizuki is Yuri Cunha's virtual mascot and public AI assistant. Nery Small 3.0 (nery-small-3-0) is the public profile alias, not a separately trained model or the upstream model identifier. The prompt, chat footer and status endpoint share the public identity constants. Runtime provider selection and editorial prompts are unchanged. The welcome message introduces the mascot in all seven locales. Existing conversation history is preserved.

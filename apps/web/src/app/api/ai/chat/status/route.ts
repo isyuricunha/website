@@ -3,8 +3,7 @@ import { NextResponse } from 'next/server'
 import { aiService } from '@/lib/ai/ai-service'
 import { logger } from '@/lib/logger'
 
-const PUBLIC_ASSISTANT_NAME = 'Nery AI'
-const PUBLIC_ASSISTANT_DISPLAY_NAME = 'Nery Mizuki'
+import { NERY_IDENTITY } from '@/lib/ai/nery-identity'
 
 export const dynamic = 'force-dynamic'
 
@@ -20,8 +19,10 @@ export async function GET() {
     {
       available,
       status: available ? 'ready' : 'unavailable',
-      assistant: PUBLIC_ASSISTANT_NAME,
-      displayName: PUBLIC_ASSISTANT_DISPLAY_NAME,
+      assistant: NERY_IDENTITY.assistant,
+      displayName: NERY_IDENTITY.name,
+      profile: NERY_IDENTITY.profile,
+      profileId: NERY_IDENTITY.profileId,
       timestamp: new Date().toISOString()
     },
     { headers: { 'Cache-Control': 'no-store' } }
