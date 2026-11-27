@@ -17,6 +17,7 @@ import { AuditLogger, getIpFromHeaders, getUserAgentFromHeaders } from '@/lib/au
 import { getIp } from '@/utils/get-ip'
 import { aiService } from '@/lib/ai/ai-service'
 import { logger } from '@/lib/logger'
+import { enforceRateLimit } from '../rate-limit'
 import { adminProcedure, publicProcedure, createTRPCRouter } from '../trpc'
 
 const _ANNOUNCEMENT_LOCALES = ['en', 'pt', 'es', 'fr', 'de', 'ja', 'zh-CN'] as const
@@ -197,8 +198,7 @@ ${input.content}
       // Rate-limit keys must use the platform-trusted IP: x-forwarded-for is
       // client-forgeable, so keying on it lets callers rotate identities.
       const ip = getIp(ctx.headers)
-      const { success: rl_ok } = await ratelimit.limit(`announcements:list:${ip}`)
-      if (!rl_ok) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+      await enforceRateLimit(ratelimit, `announcements:list:${ip}`)
 
       try {
         const isAdmin = ctx.session?.user?.role === 'admin'
@@ -416,8 +416,7 @@ ${input.content}
     .input(announcementIdSchema)
     .mutation(async ({ ctx, input }) => {
       const ip = getIp(ctx.headers)
-      const { success: rl_ok } = await ratelimit.limit(`announcements:viewed:${ip}`)
-      if (!rl_ok) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+      await enforceRateLimit(ratelimit, `announcements:viewed:${ip}`)
 
       try {
         if (!ctx.session?.user) {
@@ -479,8 +478,7 @@ ${input.content}
     .input(announcementIdSchema)
     .mutation(async ({ ctx, input }) => {
       const dip = getIp(ctx.headers)
-      const { success: rl_ok } = await ratelimit.limit(`announcements:dismiss:${dip}`)
-      if (!rl_ok) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+      await enforceRateLimit(ratelimit, `announcements:dismiss:${dip}`)
 
       try {
         // For authenticated users, store dismissal in database

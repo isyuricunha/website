@@ -1,11 +1,11 @@
 import { inArray, posts } from '@isyuricunha/db'
 import { ratelimit } from '@isyuricunha/kv'
-import { TRPCError } from '@trpc/server'
 import { allPosts } from 'content-collections'
 import { z } from 'zod'
 
 import { getIp } from '@/utils/get-ip'
 
+import { enforceRateLimit } from '../rate-limit'
 import { createTRPCRouter, publicProcedure } from '../trpc'
 
 const knownSlugs = new Set(allPosts.map((post) => post.slug))
@@ -17,8 +17,7 @@ export const postStatsRouter = createTRPCRouter({
   // Only public, aggregate counts are returned. User-specific likes remain
   // on the existing likes.get endpoint used by the interactive post view.
   getBatch: publicProcedure.input(batchInputSchema).query(async ({ ctx, input }) => {
-    const { success } = await ratelimit.limit(`post-stats:batch:${getIp(ctx.headers)}`)
-    if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+    await enforceRateLimit(ratelimit, `post-stats:batch:${getIp(ctx.headers)}`)
 
     const uniqueSlugs = new Set(input.slugs)
     const slugs: string[] = []

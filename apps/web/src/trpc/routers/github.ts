@@ -1,5 +1,4 @@
 import { Octokit } from '@octokit/rest'
-import { TRPCError } from '@trpc/server'
 import { env } from '@isyuricunha/env'
 import { ratelimit } from '@isyuricunha/kv'
 
@@ -7,6 +6,7 @@ import { GITHUB_USERNAME } from '@/lib/constants'
 import { getPublicGithubRepos } from '@/lib/public-github-repos'
 import { getIp } from '@/utils/get-ip'
 
+import { enforceRateLimit } from '../rate-limit'
 import { createTRPCRouter, publicProcedure } from '../trpc'
 
 const getKey = (id: string) => `github:${id}`
@@ -15,8 +15,7 @@ const getKey = (id: string) => `github:${id}`
 export const githubRouter = createTRPCRouter({
   get: publicProcedure.query(async ({ ctx }) => {
     const ip = getIp(ctx.headers)
-    const { success } = await ratelimit.limit(getKey(ip))
-    if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+    await enforceRateLimit(ratelimit, getKey(ip))
 
     const octokit = new Octokit({ auth: env.GITHUB_TOKEN })
 
@@ -40,8 +39,7 @@ export const githubRouter = createTRPCRouter({
 
   getRepoStars: publicProcedure.query(async ({ ctx }) => {
     const ip = getIp(ctx.headers)
-    const { success } = await ratelimit.limit(getKey(ip))
-    if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+    await enforceRateLimit(ratelimit, getKey(ip))
 
     const repos = await getPublicGithubRepos()
     return repos.find((repo) => repo.name === 'website')?.stargazersCount ?? 0
@@ -49,8 +47,7 @@ export const githubRouter = createTRPCRouter({
 
   getRepos: publicProcedure.query(async ({ ctx }) => {
     const ip = getIp(ctx.headers)
-    const { success } = await ratelimit.limit(getKey(ip))
-    if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+    await enforceRateLimit(ratelimit, getKey(ip))
 
     return getPublicGithubRepos()
   })

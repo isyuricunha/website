@@ -103,17 +103,20 @@ const ArticleCard = (props: CardProps) => {
         />
       </div>
       <div className='p-5'>
-        <div className='text-text-tertiary mb-3 flex items-center gap-1.5 font-mono text-[11px]'>
-          {statsQuery.status === 'pending' ? <Skeleton className='h-3 w-10' /> : null}
-          {statsQuery.status === 'error' ? t('common.error') : null}
-          {statsQuery.status === 'success' ? (
-            <div>{t('common.likes', { count: stats?.likes ?? 0 })}</div>
+        <div className='text-text-tertiary mb-3 flex min-h-4 items-center gap-1.5 font-mono text-[11px]'>
+          {stats ? (
+            <>
+              <div>{t('common.likes', { count: stats.likes })}</div>
+              <div>&middot;</div>
+              <div>{t('common.views', { count: stats.views })}</div>
+            </>
           ) : null}
-          <div>&middot;</div>
-          {statsQuery.status === 'pending' ? <Skeleton className='h-3 w-10' /> : null}
-          {statsQuery.status === 'error' ? t('common.error') : null}
-          {statsQuery.status === 'success' ? (
-            <div>{t('common.views', { count: stats?.views ?? 0 })}</div>
+          {!stats && statsQuery.status === 'pending' ? (
+            <>
+              <Skeleton className='h-3 w-10' />
+              <div>&middot;</div>
+              <Skeleton className='h-3 w-10' />
+            </>
           ) : null}
         </div>
         <div className='flex items-start justify-between gap-4'>

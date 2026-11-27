@@ -8,6 +8,7 @@ import { z } from 'zod'
 import { getIp } from '@/utils/get-ip'
 import { is_bot_user_agent } from '@/lib/spam-detection'
 
+import { enforceRateLimit } from '../rate-limit'
 import { createTRPCRouter, publicProcedure } from '../trpc'
 
 const getKey = (id: string) => `views:${id}`
@@ -22,9 +23,7 @@ export const viewsRouter = createTRPCRouter({
   getCount: publicProcedure.query(async ({ ctx }) => {
     const ip = getIp(ctx.headers)
 
-    const { success } = await ratelimit.limit(getKey(`getCount:${ip}`))
-
-    if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+    await enforceRateLimit(ratelimit, getKey(`getCount:${ip}`))
 
     const cachedViewCount = await redis.get<number>(redisKeys.postViewCount)
 
@@ -51,9 +50,7 @@ export const viewsRouter = createTRPCRouter({
   get: publicProcedure.input(slugInputSchema).query(async ({ ctx, input }) => {
     const ip = getIp(ctx.headers)
 
-    const { success } = await ratelimit.limit(getKey(`get:${ip}`))
-
-    if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+    await enforceRateLimit(ratelimit, getKey(`get:${ip}`))
 
     const cachedViews = await redis.get<number>(redisKeys.postViews(input.slug))
 
@@ -91,9 +88,7 @@ export const viewsRouter = createTRPCRouter({
     // the rate-limit key to bypass it entirely.
     const ip = getIp(ctx.headers)
 
-    const { success } = await ratelimit.limit(getKey(`increment:${ip}`))
-
-    if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+    await enforceRateLimit(ratelimit, getKey(`increment:${ip}`))
 
     // Only count views for slugs that actually exist in the content collection;
     // otherwise public calls would create rows for arbitrary invented slugs.

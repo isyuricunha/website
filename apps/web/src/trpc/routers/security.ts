@@ -22,6 +22,7 @@ import { logger } from '@/lib/logger'
 import { securityRatelimit } from '@/lib/ratelimit'
 import { decrypt_2fa_value, encrypt_2fa_value } from '@/lib/two-factor-crypto'
 import { getIp } from '@/utils/get-ip'
+import { enforceRateLimit } from '../rate-limit'
 import { adminProcedure, protectedProcedure, createTRPCRouter } from '../trpc'
 
 const speakeasy = require('speakeasy')
@@ -288,16 +289,11 @@ export const securityRouter = createTRPCRouter({
       // code for OAuth-only accounts (which have no password to verify).
       // Keyed on the platform-trusted IP so callers cannot rotate
       // x-forwarded-for to escape the window.
-      const { success: rl_ok } = await securityRatelimit.limit(
-        `security:disable-2fa:${getIp(ctx.headers)}:${ctx.session.user.id}`
+      await enforceRateLimit(
+        securityRatelimit,
+        `security:disable-2fa:${getIp(ctx.headers)}:${ctx.session.user.id}`,
+        'Too many attempts. Please try again later.'
       )
-
-      if (!rl_ok) {
-        throw new TRPCError({
-          code: 'TOO_MANY_REQUESTS',
-          message: 'Too many attempts. Please try again later.'
-        })
-      }
 
       const twoFARecord = await ctx.db.query.twoFactorTokens.findFirst({
         where: eq(twoFactorTokens.userId, ctx.session.user.id)

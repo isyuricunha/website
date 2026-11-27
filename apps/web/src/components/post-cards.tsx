@@ -76,20 +76,19 @@ const PostCard = (props: PostCardProps) => {
         <div className='text-text-tertiary mb-2 flex items-center justify-between gap-1.5 font-mono text-[10px]'>
           {formattedDate}
           <div className='flex gap-1.5'>
-            {statsStatus === 'pending' ? (
-              <Skeleton data-testid='counter-skeleton' className='h-3 w-10' />
+            {stats ? (
+              <>
+                <div>{t('common.likes', { count: stats.likes })}</div>
+                <div>&middot;</div>
+                <div>{t('common.views', { count: stats.views })}</div>
+              </>
             ) : null}
-            {statsStatus === 'error' ? t('common.error') : null}
-            {statsStatus === 'success' ? (
-              <div>{t('common.likes', { count: stats?.likes ?? 0 })}</div>
-            ) : null}
-            <div>&middot;</div>
-            {statsStatus === 'pending' ? (
-              <Skeleton data-testid='counter-skeleton' className='h-3 w-10' />
-            ) : null}
-            {statsStatus === 'error' ? t('common.error') : null}
-            {statsStatus === 'success' ? (
-              <div>{t('common.views', { count: stats?.views ?? 0 })}</div>
+            {!stats && statsStatus === 'pending' ? (
+              <>
+                <Skeleton data-testid='counter-skeleton' className='h-3 w-10' />
+                <div>&middot;</div>
+                <Skeleton data-testid='counter-skeleton' className='h-3 w-10' />
+              </>
             ) : null}
           </div>
         </div>

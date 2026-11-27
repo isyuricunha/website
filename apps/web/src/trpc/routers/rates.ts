@@ -1,8 +1,8 @@
-import { TRPCError } from '@trpc/server'
 import { and, eq, rates } from '@isyuricunha/db'
 import { ratelimit } from '@isyuricunha/kv'
 import { z } from 'zod'
 
+import { enforceRateLimit } from '../rate-limit'
 import { createTRPCRouter, protectedProcedure } from '../trpc'
 
 const getKey = (id: string) => `rates:${id}`
@@ -16,9 +16,7 @@ export const ratesRouter = createTRPCRouter({
   set: protectedProcedure.input(rateSetSchema).mutation(async ({ ctx, input }) => {
     const user = ctx.session.user
 
-    const { success } = await ratelimit.limit(getKey(`set:${user.id}`))
-
-    if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+    await enforceRateLimit(ratelimit, getKey(`set:${user.id}`))
 
     if (input.like === null) {
       await ctx.db

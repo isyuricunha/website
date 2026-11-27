@@ -7,6 +7,7 @@ import { z } from 'zod'
 
 import { getIp } from '@/utils/get-ip'
 
+import { enforceRateLimit } from '../rate-limit'
 import { createTRPCRouter, publicProcedure } from '../trpc'
 
 const getSessionId = (slug: string, ip: string): string => {
@@ -30,9 +31,7 @@ export const likesRouter = createTRPCRouter({
   getCount: publicProcedure.query(async ({ ctx }) => {
     const ip = getIp(ctx.headers)
 
-    const { success } = await ratelimit.limit(getKey(`getCount:${ip}`))
-
-    if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+    await enforceRateLimit(ratelimit, getKey(`getCount:${ip}`))
 
     const cachedLikeCount = await redis.get<number>(redisKeys.postLikeCount)
 
@@ -63,9 +62,7 @@ export const likesRouter = createTRPCRouter({
     const ip = getIp(ctx.headers)
     const sessionId = getSessionId(input.slug, ip)
 
-    const { success } = await ratelimit.limit(getKey(`get:${sessionId}`))
-
-    if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+    await enforceRateLimit(ratelimit, getKey(`get:${sessionId}`))
 
     const cachedLikes = await redis.get<number>(redisKeys.postLikes(input.slug))
     const cachedCurrentUserLikes = await redis.get<number>(
@@ -108,9 +105,7 @@ export const likesRouter = createTRPCRouter({
     const ip = getIp(ctx.headers)
     const sessionId = getSessionId(input.slug, ip)
 
-    const { success } = await ratelimit.limit(getKey(`patch:${sessionId}`))
-
-    if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+    await enforceRateLimit(ratelimit, getKey(`patch:${sessionId}`))
 
     // The 3-like cap is enforced inside the upsert (setWhere) so concurrent
     // requests cannot both pass a read-then-write check; the transaction keeps

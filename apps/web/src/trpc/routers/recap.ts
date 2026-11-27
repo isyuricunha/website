@@ -1,11 +1,11 @@
 import { allPosts } from 'content-collections'
-import { TRPCError } from '@trpc/server'
 import { desc, gt, posts } from '@isyuricunha/db'
 import { ratelimit } from '@isyuricunha/kv'
 import { z } from 'zod'
 
 import { getIp } from '@/utils/get-ip'
 
+import { enforceRateLimit } from '../rate-limit'
 import { createTRPCRouter, publicProcedure } from '../trpc'
 
 const getKey = (id: string) => `recap:${id}`
@@ -51,9 +51,7 @@ export const recapRouter = createTRPCRouter({
    */
   summary: publicProcedure.query(async ({ ctx }) => {
     const ip = getIp(ctx.headers)
-    const { success } = await ratelimit.limit(getKey(`summary:${ip}`))
-
-    if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+    await enforceRateLimit(ratelimit, getKey(`summary:${ip}`))
 
     const publishedAtBySlug = new Map<string, number>()
 
@@ -78,9 +76,7 @@ export const recapRouter = createTRPCRouter({
 
   topViewed: publicProcedure.input(topInputSchema).query(async ({ ctx, input }) => {
     const ip = getIp(ctx.headers)
-    const { success } = await ratelimit.limit(getKey(`topViewed:${ip}`))
-
-    if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+    await enforceRateLimit(ratelimit, getKey(`topViewed:${ip}`))
 
     const rows = await ctx.db
       .select({
@@ -109,9 +105,7 @@ export const recapRouter = createTRPCRouter({
 
   topLiked: publicProcedure.input(topInputSchema).query(async ({ ctx, input }) => {
     const ip = getIp(ctx.headers)
-    const { success } = await ratelimit.limit(getKey(`topLiked:${ip}`))
-
-    if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+    await enforceRateLimit(ratelimit, getKey(`topLiked:${ip}`))
 
     const rows = await ctx.db
       .select({

@@ -10,6 +10,7 @@ import { getSession } from '@/lib/auth'
 import { telemetryRatelimit } from '@isyuricunha/kv'
 import { is_bot_user_agent } from '@/lib/spam-detection'
 import { getIp } from '@/utils/get-ip'
+import { isRateLimiterUnavailable } from './rate-limit'
 
 type trpc_context_opts = {
   headers: Headers
@@ -86,6 +87,8 @@ const map_trpc_error_to_status_code = (code: string | undefined): number => {
       return 429
     case 'NOT_IMPLEMENTED':
       return 501
+    case 'SERVICE_UNAVAILABLE':
+      return 503
     case 'TIMEOUT':
       return 504
     case 'CLIENT_CLOSED_REQUEST':
@@ -98,18 +101,18 @@ const map_trpc_error_to_status_code = (code: string | undefined): number => {
 const timingMiddleware = t.middleware(async ({ next, path, ctx }) => {
   const start = Date.now()
 
-  if (t._config.isDev) {
-    // artificial delay in dev
-    const waitMs = Math.floor(Math.random() * 400) + 100
-    await new Promise((resolve) => setTimeout(resolve, waitMs))
-  }
-
   const result = await next()
 
   const end = Date.now()
   const duration_ms = end - start
 
   logger.debug(`[TRPC] ${path} took ${duration_ms}ms to execute`)
+
+  if (!result.ok && isRateLimiterUnavailable(result.error)) {
+    // Do not amplify a Redis outage into unbounded database telemetry writes.
+    logger.warn(`[TRPC] ${path}: ${result.error.message}`)
+    return result
+  }
 
   if (env.NODE_ENV !== 'test' && process.env.NODE_ENV !== 'test') {
     try {

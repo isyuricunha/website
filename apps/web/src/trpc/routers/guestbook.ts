@@ -11,6 +11,7 @@ import { isProduction } from '@/lib/constants'
 import { getDefaultImage } from '@/utils/get-default-image'
 import { getIp } from '@/utils/get-ip'
 
+import { enforceRateLimit } from '../rate-limit'
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc'
 
 const getKey = (id: string) => `guestbook:${id}`
@@ -41,9 +42,7 @@ export const guestbookRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       const ip = getIp(ctx.headers)
 
-      const { success } = await ratelimit.limit(getKey(`get:${ip}`))
-
-      if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+      await enforceRateLimit(ratelimit, getKey(`get:${ip}`))
 
       const query = await ctx.db.query.guestbook.findMany({
         where: and(input.cursor ? lt(guestbook.createdAt, input.cursor) : undefined),
@@ -84,9 +83,7 @@ export const guestbookRouter = createTRPCRouter({
   create: protectedProcedure.input(messageCreateSchema).mutation(async ({ ctx, input }) => {
     const user = ctx.session.user
 
-    const { success } = await ratelimit.limit(getKey(`create:${user.id}`))
-
-    if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+    await enforceRateLimit(ratelimit, getKey(`create:${user.id}`))
 
     await ctx.db.insert(guestbook).values({
       id: createId(),
@@ -126,9 +123,7 @@ export const guestbookRouter = createTRPCRouter({
   delete: protectedProcedure.input(messageIdSchema).mutation(async ({ ctx, input }) => {
     const user = ctx.session.user
 
-    const { success } = await ratelimit.limit(getKey(`delete:${user.id}`))
-
-    if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+    await enforceRateLimit(ratelimit, getKey(`delete:${user.id}`))
 
     const message = await ctx.db.query.guestbook.findFirst({
       where: and(eq(guestbook.id, input.id), eq(guestbook.userId, user.id))

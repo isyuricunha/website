@@ -5,17 +5,20 @@ import type { inferRouterInputs, inferRouterOutputs } from '@trpc/server'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import { loggerLink, unstable_httpBatchStreamLink } from '@trpc/client'
+import { TRPCClientError, loggerLink, unstable_httpBatchStreamLink } from '@trpc/client'
 import { createTRPCReact } from '@trpc/react-query'
 import { env } from '@isyuricunha/env'
 import { useMemo } from 'react'
 import { SuperJSON } from 'superjson'
 
+import { shouldRetryQuery } from './query-policy'
+
 const createQueryClient = () =>
   new QueryClient({
     defaultOptions: {
       queries: {
-        staleTime: 1000 * 60 * 5
+        staleTime: 1000 * 60 * 5,
+        retry: shouldRetryQuery
       }
     }
   })
@@ -65,7 +68,21 @@ export const TRPCReactProvider = (props: TRPCReactProviderProps) => {
           loggerLink({
             enabled: (op) =>
               env.NODE_ENV === 'development' ||
-              (op.direction === 'down' && op.result instanceof Error)
+              (op.direction === 'down' && op.result instanceof Error),
+            logger: (op) => {
+              const label = `[tRPC] ${op.type} ${op.path}`
+              if (op.direction === 'down' && op.result instanceof Error) {
+                const status =
+                  op.result instanceof TRPCClientError ? op.result.data?.httpStatus : undefined
+                if (status === 429 || status === 503) {
+                  console.warn(label, status, op.result.message)
+                } else {
+                  console.error(label, op.result)
+                }
+              } else if (env.NODE_ENV === 'development') {
+                console.debug(label, op.direction)
+              }
+            }
           }),
           unstable_httpBatchStreamLink({
             transformer: SuperJSON,
@@ -93,9 +110,10 @@ export const TRPCReactProvider = (props: TRPCReactProviderProps) => {
     <QueryClientProvider client={queryClient}>
       <api.Provider client={trpcClient} queryClient={queryClient}>
         {children}
-        {env.NODE_ENV === 'development' && process.env.NEXT_PUBLIC_REACT_QUERY_DEVTOOLS === 'true' && (
-          <ReactQueryDevtools buttonPosition='top-left' />
-        )}
+        {env.NODE_ENV === 'development' &&
+          process.env.NEXT_PUBLIC_REACT_QUERY_DEVTOOLS === 'true' && (
+            <ReactQueryDevtools buttonPosition='top-left' />
+          )}
       </api.Provider>
     </QueryClientProvider>
   )

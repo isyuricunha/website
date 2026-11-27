@@ -1,9 +1,9 @@
-import { TRPCError } from '@trpc/server'
 import { env } from '@isyuricunha/env'
 import { ratelimit } from '@isyuricunha/kv'
 
 import { getIp } from '@/utils/get-ip'
 
+import { enforceRateLimit } from '../rate-limit'
 import { createTRPCRouter, publicProcedure } from '../trpc'
 
 const getKey = (id: string) => `wakatime:${id}`
@@ -12,9 +12,7 @@ export const wakatimeRouter = createTRPCRouter({
   get: publicProcedure.query(async ({ ctx }) => {
     const ip = getIp(ctx.headers)
 
-    const { success } = await ratelimit.limit(getKey(ip))
-
-    if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+    await enforceRateLimit(ratelimit, getKey(ip))
 
     // Same resilience contract as the lastfm/github routers: bounded request
     // and graceful degradation instead of an unhandled 500.
@@ -47,9 +45,7 @@ export const wakatimeRouter = createTRPCRouter({
   // docs; the older `last_12_months` range no longer exists).
   getStats: publicProcedure.query(async ({ ctx }) => {
     const ip = getIp(ctx.headers)
-    const { success } = await ratelimit.limit(getKey(`${ip}:stats`))
-
-    if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+    await enforceRateLimit(ratelimit, getKey(`${ip}:stats`))
 
     try {
       const res = await fetch('https://api.wakatime.com/api/v1/users/current/stats/last_year', {

@@ -7,6 +7,7 @@ export { ratelimit } from '@isyuricunha/kv'
 export const contactRatelimit = withFailClosed(
   new Ratelimit({
     redis,
+    ...(process.env.NODE_ENV === 'development' && { prefix: '@upstash/ratelimit:dev' }),
     limiter: Ratelimit.slidingWindow(3, '1 h'),
     analytics: true,
     timeout: 2000
@@ -19,6 +20,7 @@ export const contactRatelimit = withFailClosed(
 export const newsletterRatelimit = withFailClosed(
   new Ratelimit({
     redis,
+    ...(process.env.NODE_ENV === 'development' && { prefix: '@upstash/ratelimit:dev' }),
     limiter: Ratelimit.slidingWindow(3, '1 h'),
     analytics: true,
     timeout: 2000
@@ -30,6 +32,7 @@ export const newsletterRatelimit = withFailClosed(
 export const securityRatelimit = withFailClosed(
   new Ratelimit({
     redis,
+    ...(process.env.NODE_ENV === 'development' && { prefix: '@upstash/ratelimit:dev' }),
     limiter: Ratelimit.slidingWindow(5, '15 m'),
     analytics: true,
     timeout: 2000

@@ -32,6 +32,7 @@ import { getDefaultImage } from '@/utils/get-default-image'
 import { getIp } from '@/utils/get-ip'
 import { getLocalizedPath } from '@/utils/get-localized-path'
 
+import { enforceRateLimit } from '../rate-limit'
 import { adminProcedure, createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc'
 
 const getKey = (id: string) => `comments:${id}`
@@ -99,9 +100,7 @@ export const commentsRouter = createTRPCRouter({
 
       const ip = getIp(ctx.headers)
 
-      const { success } = await ratelimit.limit(getKey(`getInfiniteComments:${ip}`))
-
-      if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+      await enforceRateLimit(ratelimit, getKey(`getInfiniteComments:${ip}`))
 
       const getCursorFilter = () => {
         if (!input.cursor) return
@@ -235,9 +234,7 @@ export const commentsRouter = createTRPCRouter({
   getTotalCommentsCount: publicProcedure.input(slugSchema).query(async ({ ctx, input }) => {
     const ip = getIp(ctx.headers)
 
-    const { success } = await ratelimit.limit(getKey(`getTotalCommentsCount:${ip}`))
-
-    if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+    await enforceRateLimit(ratelimit, getKey(`getTotalCommentsCount:${ip}`))
 
     const value = await ctx.db
       .select({
@@ -253,9 +250,7 @@ export const commentsRouter = createTRPCRouter({
   getCommentsCount: publicProcedure.input(slugSchema).query(async ({ ctx, input }) => {
     const ip = getIp(ctx.headers)
 
-    const { success } = await ratelimit.limit(getKey(`getCommentsCount:${ip}`))
-
-    if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+    await enforceRateLimit(ratelimit, getKey(`getCommentsCount:${ip}`))
 
     const value = await ctx.db
       .select({
@@ -271,9 +266,7 @@ export const commentsRouter = createTRPCRouter({
   getRepliesCount: publicProcedure.input(slugSchema).query(async ({ ctx, input }) => {
     const ip = getIp(ctx.headers)
 
-    const { success } = await ratelimit.limit(getKey(`getRepliesCount:${ip}`))
-
-    if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+    await enforceRateLimit(ratelimit, getKey(`getRepliesCount:${ip}`))
 
     const value = await ctx.db
       .select({
@@ -290,9 +283,7 @@ export const commentsRouter = createTRPCRouter({
     const user = ctx.session.user
     const locale = get_request_locale(ctx.headers)
 
-    const { success } = await ratelimit.limit(getKey(`post:${user.id}`))
-
-    if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+    await enforceRateLimit(ratelimit, getKey(`post:${user.id}`))
 
     const commentId = createId()
 
@@ -404,9 +395,7 @@ export const commentsRouter = createTRPCRouter({
   delete: protectedProcedure.input(commentIdSchema).mutation(async ({ ctx, input }) => {
     const user = ctx.session.user
 
-    const { success } = await ratelimit.limit(getKey(`delete:${user.id}`))
-
-    if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+    await enforceRateLimit(ratelimit, getKey(`delete:${user.id}`))
 
     const email = ctx.session.user.email
 

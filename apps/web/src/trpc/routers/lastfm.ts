@@ -1,4 +1,3 @@
-import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 import { env } from '@isyuricunha/env'
 import { ratelimit } from '@isyuricunha/kv'
@@ -6,6 +5,7 @@ import { logger } from '@/lib/logger'
 
 import { getIp } from '@/utils/get-ip'
 
+import { enforceRateLimit } from '../rate-limit'
 import { createTRPCRouter, publicProcedure } from '../trpc'
 
 const API_KEY = env.LASTFM_API_KEY
@@ -231,9 +231,7 @@ const timeRangeInputSchema = z.object({
 export const lastfmRouter = createTRPCRouter({
   get: publicProcedure.query(async ({ ctx }) => {
     const ip = getIp(ctx.headers)
-    const { success } = await ratelimit.limit(getKey(ip, 'get'))
-
-    if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+    await enforceRateLimit(ratelimit, getKey(ip, 'get'))
 
     try {
       const data = await lastfmFetch('user.getrecenttracks', { limit: '1' })
@@ -269,9 +267,7 @@ export const lastfmRouter = createTRPCRouter({
 
   getCurrentlyPlaying: publicProcedure.query(async ({ ctx }) => {
     const ip = getIp(ctx.headers)
-    const { success } = await ratelimit.limit(getKey(ip, 'getCurrentlyPlaying'))
-
-    if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+    await enforceRateLimit(ratelimit, getKey(ip, 'getCurrentlyPlaying'))
 
     try {
       const data = await lastfmFetch('user.getrecenttracks', { limit: '1' })
@@ -305,9 +301,7 @@ export const lastfmRouter = createTRPCRouter({
 
   getTopArtists: publicProcedure.query(async ({ ctx }) => {
     const ip = getIp(ctx.headers)
-    const { success } = await ratelimit.limit(getKey(ip, 'getTopArtists'))
-
-    if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+    await enforceRateLimit(ratelimit, getKey(ip, 'getTopArtists'))
 
     try {
       const data = await lastfmFetch('user.gettopartists', { limit: '20', period: '7day' })
@@ -342,9 +336,7 @@ export const lastfmRouter = createTRPCRouter({
 
   getTopTracks: publicProcedure.query(async ({ ctx }) => {
     const ip = getIp(ctx.headers)
-    const { success } = await ratelimit.limit(getKey(ip, 'getTopTracks'))
-
-    if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+    await enforceRateLimit(ratelimit, getKey(ip, 'getTopTracks'))
 
     try {
       const data = await lastfmFetch('user.gettoptracks', { limit: '20', period: '7day' })
@@ -401,9 +393,7 @@ export const lastfmRouter = createTRPCRouter({
 
   getRecentlyPlayed: publicProcedure.query(async ({ ctx }) => {
     const ip = getIp(ctx.headers)
-    const { success } = await ratelimit.limit(getKey(ip, 'getRecentlyPlayed'))
-
-    if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+    await enforceRateLimit(ratelimit, getKey(ip, 'getRecentlyPlayed'))
 
     try {
       const data = await lastfmFetch('user.getrecenttracks', { limit: '20' })
@@ -431,9 +421,7 @@ export const lastfmRouter = createTRPCRouter({
     .input(timeRangeInputSchema)
     .query(async ({ ctx, input }) => {
       const ip = getIp(ctx.headers)
-      const { success } = await ratelimit.limit(getKey(ip, 'getTopArtistsByRange'))
-
-      if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+      await enforceRateLimit(ratelimit, getKey(ip, 'getTopArtistsByRange'))
 
       try {
         const period = mapTimeRangeToPeriod(input.time_range)
@@ -469,9 +457,7 @@ export const lastfmRouter = createTRPCRouter({
 
   getTopTracksByRange: publicProcedure.input(timeRangeInputSchema).query(async ({ ctx, input }) => {
     const ip = getIp(ctx.headers)
-    const { success } = await ratelimit.limit(getKey(ip, 'getTopTracksByRange'))
-
-    if (!success) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+    await enforceRateLimit(ratelimit, getKey(ip, 'getTopTracksByRange'))
 
     try {
       const period = mapTimeRangeToPeriod(input.time_range)

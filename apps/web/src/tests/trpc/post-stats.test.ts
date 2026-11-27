@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { postStatsRouter } from '@/trpc/routers/post-stats'
 
 const mocks = vi.hoisted(() => ({
-  limit: vi.fn(async () => ({ success: true })),
+  limit: vi.fn(async (): Promise<{ success: boolean; reason?: string }> => ({ success: true })),
   select: vi.fn(),
   where: vi.fn()
 }))
@@ -41,7 +41,8 @@ const caller = () =>
 
 describe('postStats.getBatch', () => {
   beforeEach(() => {
-    mocks.limit.mockClear()
+    mocks.limit.mockReset()
+    mocks.limit.mockResolvedValue({ success: true })
     mocks.select.mockClear()
     mocks.where.mockReset()
     mocks.where.mockResolvedValue([{ slug: 'hello', views: 12, likes: 3 }])
@@ -68,5 +69,40 @@ describe('postStats.getBatch', () => {
       caller().getBatch({ slugs: Array.from({ length: 33 }, () => 'hello') })
     ).rejects.toThrow()
     expect(mocks.select).not.toHaveBeenCalled()
+  })
+
+  it('returns 503 on Redis timeout without querying Postgres', async () => {
+    mocks.limit.mockResolvedValueOnce({ success: false, reason: 'timeout' })
+    await expect(caller().getBatch({ slugs: ['hello'] })).rejects.toMatchObject({
+      code: 'SERVICE_UNAVAILABLE'
+    })
+    expect(mocks.select).not.toHaveBeenCalled()
+  })
+
+  it('returns 503 on Redis transport failure without exposing details', async () => {
+    mocks.limit.mockRejectedValueOnce(new Error('private transport details'))
+    await expect(caller().getBatch({ slugs: ['hello'] })).rejects.toMatchObject({
+      code: 'SERVICE_UNAVAILABLE',
+      message: 'Rate limiter unavailable'
+    })
+    expect(mocks.select).not.toHaveBeenCalled()
+  })
+
+  it('returns 429 for an exhausted window without querying Postgres', async () => {
+    mocks.limit.mockResolvedValueOnce({ success: false })
+    await expect(caller().getBatch({ slugs: ['hello'] })).rejects.toMatchObject({
+      code: 'TOO_MANY_REQUESTS'
+    })
+    expect(mocks.select).not.toHaveBeenCalled()
+  })
+
+  it('recovers on the next permitted request', async () => {
+    mocks.limit.mockResolvedValueOnce({ success: false, reason: 'timeout' })
+    await expect(caller().getBatch({ slugs: ['hello'] })).rejects.toMatchObject({
+      code: 'SERVICE_UNAVAILABLE'
+    })
+    await expect(caller().getBatch({ slugs: ['hello'] })).resolves.toEqual({
+      hello: { views: 12, likes: 3 }
+    })
   })
 })

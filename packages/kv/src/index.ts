@@ -35,6 +35,7 @@ export const withFailClosed = (limiter: Ratelimit): Ratelimit => {
 export const ratelimit = withFailClosed(
   new Ratelimit({
     redis,
+    ...(process.env.NODE_ENV === 'development' && { prefix: '@upstash/ratelimit:dev' }),
     limiter: Ratelimit.slidingWindow(50, '10 s'),
     analytics: true,
     timeout: 2000
@@ -56,6 +57,7 @@ export const ratelimit = withFailClosed(
  */
 export const telemetryRatelimit = new Ratelimit({
   redis,
+  ...(process.env.NODE_ENV === 'development' && { prefix: '@upstash/ratelimit:dev' }),
   limiter: Ratelimit.slidingWindow(50, '10 s'),
   analytics: false,
   timeout: 400

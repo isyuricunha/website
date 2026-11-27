@@ -101,4 +101,22 @@ describe('<PostCards /> loading states', () => {
     expect(screen.getByText('3 likes')).toBeInTheDocument()
     expect(screen.queryByTestId('counter-skeleton')).not.toBeInTheDocument()
   })
+
+  it('keeps the article usable without inventing counters when the query fails', async () => {
+    queryState.stats = { status: 'error' }
+    await renderCard()
+    expect(screen.getByText('Hello world')).toBeInTheDocument()
+    expect(screen.queryByText(/likes|views|error/i)).not.toBeInTheDocument()
+    expect(screen.queryByTestId('counter-skeleton')).not.toBeInTheDocument()
+  })
+
+  it('preserves the last successful counters during a failed refetch', async () => {
+    queryState.stats = {
+      status: 'error',
+      data: { 'hello-world': { views: 120, likes: 3 } }
+    }
+    await renderCard()
+    expect(screen.getByText('120 views')).toBeInTheDocument()
+    expect(screen.getByText('3 likes')).toBeInTheDocument()
+  })
 })

@@ -213,3 +213,7 @@ workload. Static HTML is larger than the old streamed error response;
 the tradeoff is pre-rendered content and lower server computation.
 Validate on Preview for real 404 status, localized HTML, cache hits,
 browser hydration, navigation and unchanged valid routes before production.
+
+### Rate limit degradation
+
+The tRPC rate-limit guard denies protected operations when Redis times out or fails (503), while exhausted windows remain 429. Development uses a distinct Upstash prefix; production retains its original prefix and thresholds. Queries do not retry 4xx responses and retry 503 once. Optional post counters preserve cached values or remain absent on failure; no synthetic zero counts are rendered. Expected 429/503 client failures are logged as warnings without request payloads.

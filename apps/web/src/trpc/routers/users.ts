@@ -14,6 +14,7 @@ import { getLocalizedPath } from '@/utils/get-localized-path'
 import { getDefaultImage } from '@/utils/get-default-image'
 import { getIp } from '@/utils/get-ip'
 import { auth } from '@/lib/auth'
+import { enforceRateLimit } from '../rate-limit'
 import { adminProcedure, createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc'
 import { randomUUID } from 'node:crypto'
 
@@ -145,8 +146,7 @@ export const usersRouter = createTRPCRouter({
       // getIp trusts only platform headers; getIpFromHeaders honours the
       // client-forgeable x-forwarded-for.
       const ip = getIp(ctx.headers)
-      const { success: rl_ok } = await ratelimit.limit(`users:public-profile:${ip}`)
-      if (!rl_ok) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+      await enforceRateLimit(ratelimit, `users:public-profile:${ip}`)
 
       const handle_lower = input.handle.toLowerCase()
 
@@ -208,8 +208,7 @@ export const usersRouter = createTRPCRouter({
       // getIp trusts only platform headers; getIpFromHeaders honours the
       // client-forgeable x-forwarded-for and would let callers rotate keys.
       const ip = getIp(ctx.headers)
-      const { success: rl_ok } = await ratelimit.limit(`users:public-comments:${ip}`)
-      if (!rl_ok) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+      await enforceRateLimit(ratelimit, `users:public-comments:${ip}`)
 
       const profile = await ctx.db.query.users.findFirst({
         where: (users, { and, eq }) =>
@@ -566,8 +565,7 @@ export const usersRouter = createTRPCRouter({
     // This endpoint sends real email: the limit must not key on a header the
     // client can rotate (x-forwarded-for). getIp uses platform headers only.
     const ip = getIp(ctx.headers)
-    const { success: rl_ok } = await ratelimit.limit(`users:password-reset:${ip}`)
-    if (!rl_ok) throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
+    await enforceRateLimit(ratelimit, `users:password-reset:${ip}`)
 
     try {
       const locale = get_request_locale(ctx.headers)
