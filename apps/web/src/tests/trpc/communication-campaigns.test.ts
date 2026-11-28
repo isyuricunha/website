@@ -94,33 +94,31 @@ vi.mock('crypto', async (importOriginal) => {
   }
 })
 
-type EmailCampaignRow = {
-  id: string
-  subject: string
-  status: 'draft' | 'scheduled' | 'sending' | 'sent' | 'paused' | 'cancelled' | 'failed'
-  targetAudience: string | null
-  htmlContent: string | null
-  textContent: string | null
-  template: { htmlContent: string; textContent: string | null } | null
-  totalRecipients: number
-  sentCount: number
-  deliveredCount: number
-  completedAt: Date | null
-  startedAt: Date | null
-  updatedAt: Date
-}
-
-type EmailCampaignRecipientRow = {
-  id: string
-  campaignId: string
-  userId: string | null
-  email: string
-  status: string
-  sentAt: Date | null
-  errorMessage: string | null
-}
-
 const createDbMock = () => {
+  type EmailCampaignRecipientRow = {
+    id: string
+    campaignId: string
+    userId: string | null
+    email: string
+    status: string
+    sentAt: Date | null
+    errorMessage: string | null
+  }
+  type EmailCampaignRow = {
+    id: string
+    subject: string
+    status: 'draft' | 'scheduled' | 'sending' | 'sent' | 'paused' | 'cancelled' | 'failed'
+    targetAudience: string | null
+    htmlContent: string | null
+    textContent: string | null
+    template: { htmlContent: string; textContent: string | null } | null
+    totalRecipients: number
+    sentCount: number
+    deliveredCount: number
+    completedAt: Date | null
+    startedAt: Date | null
+    updatedAt: Date
+  }
   const campaign: EmailCampaignRow = {
     id: 'c-1',
     subject: 'Hello',

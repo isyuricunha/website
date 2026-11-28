@@ -38,12 +38,11 @@ export type KnowledgeEntry = {
   content?: string
 }
 
-type IndexedEntry<T> = {
-  entry: T
-  fields: Array<Set<string>>
-}
-
 export const createKnowledgeIndex = <T extends KnowledgeEntry>(entries: T[]) => {
+  type IndexedEntry<T> = {
+    entry: T
+    fields: Array<Set<string>>
+  }
   const indexed: Array<IndexedEntry<T>> = entries.map((entry) => ({
     entry,
     fields: [

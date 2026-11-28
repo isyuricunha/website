@@ -54,8 +54,8 @@ import { api } from '@/trpc/react'
 import ConfirmationDialog from './confirmation-dialog'
 
 // Helper function for broadcast status colors
-const getBroadcastStatusColor = (status: string | undefined) => {
-  switch (status ?? 'draft') {
+const getBroadcastStatusColor = (status = 'draft') => {
+  switch (status) {
     case 'sent':
       return 'border border-[var(--status-success-border)] bg-status-success-soft text-status-success'
     case 'scheduled':

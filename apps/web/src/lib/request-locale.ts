@@ -25,8 +25,7 @@ const get_cookie_value = (cookie_header: string | null, name: string): string | 
   for (const pair of pairs) {
     const [raw_key, ...raw_value] = pair.split('=')
     const key = raw_key?.trim()
-    if (!key) continue
-    if (key !== name) continue
+    if (!key || key !== name) continue
 
     const value = raw_value.join('=').trim()
     if (!value) return ''

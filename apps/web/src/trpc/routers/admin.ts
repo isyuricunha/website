@@ -149,7 +149,7 @@ export const adminRouter = createTRPCRouter({
         }))
       }
     } catch (error) {
-      logger.error('Error fetching admin stats', error)
+      logger.error('Error fetching admin stats', { error: error })
       return {
         totals: {
           users: 0,
@@ -212,7 +212,7 @@ export const adminRouter = createTRPCRouter({
         }))
       }
     } catch (error) {
-      logger.error('Error fetching audit logs', error)
+      logger.error('Error fetching audit logs', { error: error })
       return { logs: [] }
     }
   })

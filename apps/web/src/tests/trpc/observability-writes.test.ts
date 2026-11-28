@@ -69,9 +69,8 @@ vi.mock('@isyuricunha/db', () => ({
   sum: (value: unknown) => value
 }))
 
-type InsertedRow = { table: string; values: Record<string, unknown> }
-
 const makeCtx = (user_agent?: string, ip = '203.0.113.7') => {
+  type InsertedRow = { table: string; values: Record<string, unknown> }
   const headers = new Headers()
   if (ip) headers.set('x-vercel-forwarded-for', ip)
   if (user_agent) headers.set('user-agent', user_agent)

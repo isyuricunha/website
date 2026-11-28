@@ -103,39 +103,36 @@ vi.mock('crypto', async (importOriginal) => {
   }
 })
 
-type SystemHealthLogRow = {
-  id: string
-  checkType: string
-  status: 'healthy' | 'warning' | 'critical' | 'unknown'
-  responseTime: number | null
-  message: string | null
-  details: string | null
-  createdAt: Date
-}
-
-type ErrorLogRow = {
-  id: string
-  level: 'error' | 'warning' | 'info'
-  message: string
-  resolved: boolean
-  resolvedBy: string | null
-  resolvedAt: Date | null
-  createdAt: Date
-}
-
-type SiteConfigRow = {
-  id: string
-  key: string
-  value: string | null
-  type: string
-  description: string | null
-  isPublic: boolean
-  updatedBy: string
-  createdAt: Date
-  updatedAt: Date
-}
-
 const createDbMock = () => {
+  type SiteConfigRow = {
+    id: string
+    key: string
+    value: string | null
+    type: string
+    description: string | null
+    isPublic: boolean
+    updatedBy: string
+    createdAt: Date
+    updatedAt: Date
+  }
+  type ErrorLogRow = {
+    id: string
+    level: 'error' | 'warning' | 'info'
+    message: string
+    resolved: boolean
+    resolvedBy: string | null
+    resolvedAt: Date | null
+    createdAt: Date
+  }
+  type SystemHealthLogRow = {
+    id: string
+    checkType: string
+    status: 'healthy' | 'warning' | 'critical' | 'unknown'
+    responseTime: number | null
+    message: string | null
+    details: string | null
+    createdAt: Date
+  }
   const health_logs: SystemHealthLogRow[] = []
   const error_logs: ErrorLogRow[] = [
     {

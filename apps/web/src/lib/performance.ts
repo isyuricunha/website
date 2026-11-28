@@ -1,10 +1,10 @@
 /**
- * Performance optimization utilities
- */
+Performance optimization utilities
+*/
 
 /**
- * Optimize image loading with proper sizing
- */
+Optimize image loading with proper sizing
+*/
 export function getOptimizedImageProps(
   src: string,
   width: number,

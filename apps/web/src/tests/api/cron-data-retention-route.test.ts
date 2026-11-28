@@ -1,7 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-type Table = Record<string | symbol, unknown>
-
 vi.mock('@/lib/logger', () => ({
   logger: {
     error: vi.fn(),
@@ -28,9 +26,9 @@ const createRedisMock = () => {
   }
 }
 
-type DeleteCall = { table: string; rowCount: number }
-
 const createDbMock = (rowCountsByTable: Record<string, number> = {}) => {
+  type DeleteCall = { table: string; rowCount: number }
+  type Table = Record<string | symbol, unknown>
   const removalHistory: DeleteCall[] = []
 
   const analytics_events_table: Table = { [Symbol.for('drizzle:Name')]: 'analytics_events' }

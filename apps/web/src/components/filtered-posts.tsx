@@ -32,8 +32,6 @@ type FilteredPostsProps = {
   posts: Post[]
 }
 
-type SortOption = 'date-desc' | 'date-asc' | 'title-asc' | 'title-desc' | 'reading-time'
-
 const compareStrings = (a: string, b: string) => {
   if (a < b) return -1
   if (a > b) return 1
@@ -41,6 +39,7 @@ const compareStrings = (a: string, b: string) => {
 }
 
 const FilteredPosts = (props: FilteredPostsProps) => {
+  type SortOption = 'date-desc' | 'date-asc' | 'title-asc' | 'title-desc' | 'reading-time'
   const { posts } = props
   const [searchValue, setSearchValue] = useState('')
   const [selectedCategory, setSelectedCategory] = useState<string>('all')

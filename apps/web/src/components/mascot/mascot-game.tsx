@@ -82,17 +82,15 @@ const MascotGame = ({ isOpen, onClose }: MascotGameProps) => {
 
     // Challenge mode: occasional multiplier boost
     const boostRoll = Math.random()
-    if (boostRoll < 0.05) {
-      if (gameMode !== 'challenge') return
-      setMultiplier(2)
-      if (multiplierTimeoutRef.current) {
-        clearTimeout(multiplierTimeoutRef.current)
-      }
-      multiplierTimeoutRef.current = setTimeout(() => {
-        setMultiplier(1)
-        multiplierTimeoutRef.current = null
-      }, 3000)
+    if (gameMode !== 'challenge' || boostRoll >= 0.05) return
+    setMultiplier(2)
+    if (multiplierTimeoutRef.current) {
+      clearTimeout(multiplierTimeoutRef.current)
     }
+    multiplierTimeoutRef.current = setTimeout(() => {
+      setMultiplier(1)
+      multiplierTimeoutRef.current = null
+    }, 3000)
   }, [gameMode])
 
   useEffect(() => {

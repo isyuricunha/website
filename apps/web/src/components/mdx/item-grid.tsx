@@ -1,6 +1,6 @@
 /**
- * Inspired by: https://jahir.dev/uses
- */
+Inspired by: https://jahir.dev/uses
+*/
 import { BlurImage } from '@isyuricunha/yutheme'
 import { ExternalLink } from 'lucide-react'
 

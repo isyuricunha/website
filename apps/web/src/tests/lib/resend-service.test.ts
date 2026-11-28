@@ -32,7 +32,9 @@ describe('ResendService broadcasts', () => {
     })
 
     await expect(new ResendService().sendBroadcast('broadcast-1')).resolves.toBe(false)
-    expect(logger.error).toHaveBeenCalledWith('Error sending Resend broadcast', expect.any(Error))
+    expect(logger.error).toHaveBeenCalledWith('Error sending Resend broadcast', {
+      error: expect.any(Error)
+    })
   })
 
   it('returns false when Resend returns an error for a scheduled broadcast', async () => {
@@ -46,9 +48,8 @@ describe('ResendService broadcasts', () => {
     await expect(
       new ResendService().scheduleBroadcast('broadcast-1', '2026-09-10T10:00:00.000Z')
     ).resolves.toBe(false)
-    expect(logger.error).toHaveBeenCalledWith(
-      'Error scheduling Resend broadcast',
-      expect.any(Error)
-    )
+    expect(logger.error).toHaveBeenCalledWith('Error scheduling Resend broadcast', {
+      error: expect.any(Error)
+    })
   })
 })

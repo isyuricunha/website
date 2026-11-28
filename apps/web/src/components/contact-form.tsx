@@ -35,8 +35,7 @@ const isValidEmailFormat = (value: string): boolean => {
   if (/\s/.test(value)) return false
 
   const atIndex = value.indexOf('@')
-  if (atIndex <= 0 || atIndex === value.length - 1) return false
-  if (value.includes('@', atIndex + 1)) return false
+  if (atIndex <= 0 || atIndex === value.length - 1 || value.includes('@', atIndex + 1)) return false
 
   const domain = value.slice(atIndex + 1)
   const dotIndex = domain.lastIndexOf('.')
@@ -169,10 +168,12 @@ export default function ContactForm() {
       setErrors((prev) => ({ ...prev, [field]: undefined }))
     }
     // Clear submit status when user makes changes
-    if (submitStatus !== 'idle') {
-      setSubmitStatus('idle')
-      setSubmitMessage('')
+    if (submitStatus === 'idle') {
+      return
     }
+
+    setSubmitStatus('idle')
+    setSubmitMessage('')
   }
 
   return (

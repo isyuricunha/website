@@ -57,13 +57,12 @@ vi.mock('@/lib/audit-logger', () => {
   }
 })
 
-type InsertedRows = {
-  analytics_events: any[]
-  resource_usage: any[]
-  error_tracking: any[]
-}
-
 const createDbMock = () => {
+  type InsertedRows = {
+    analytics_events: any[]
+    resource_usage: any[]
+    error_tracking: any[]
+  }
   const state: InsertedRows = {
     analytics_events: [],
     resource_usage: [],

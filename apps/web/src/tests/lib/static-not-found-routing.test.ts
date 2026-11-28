@@ -9,8 +9,13 @@ const origin = 'https://yuricunha.com'
 
 const route = (
   path: string,
-  internalPath = path,
-  init?: ConstructorParameters<typeof NextRequest>[1]
+  {
+    internalPath = path,
+    init
+  }: {
+    internalPath?: string
+    init?: ConstructorParameters<typeof NextRequest>[1]
+  } = {}
 ) => {
   const request = new NextRequest(origin + path, init)
   return getStaticNotFoundUrl(
@@ -25,7 +30,9 @@ describe('localized static 404 routing', () => {
   it.each(locales)(
     'rewrites an unknown path in %s without redirecting or losing query parameters',
     (locale) => {
-      const url = route('/missing/path?a=1', '/' + locale + '/missing/path?a=1')
+      const url = route('/missing/path?a=1', {
+        internalPath: '/' + locale + '/missing/path?a=1'
+      })
       expect(url?.pathname).toBe('/' + locale + '/404')
       expect(url?.search).toBe('?a=1')
     }
@@ -59,12 +66,16 @@ describe('localized static 404 routing', () => {
     'next-router-prefetch',
     'next-router-segment-prefetch'
   ])('keeps %s traffic on the original App Router catch-all', (header) =>
-    expect(route('/pt/missing', '/pt/missing', { headers: { [header]: '1' } })).toBeNull()
+    expect(
+      route('/pt/missing', { internalPath: '/pt/missing', init: { headers: { [header]: '1' } } })
+    ).toBeNull()
   )
 
   it('keeps RSC query traffic and non-GET requests on the existing router', () => {
     expect(route('/pt/missing?_rsc=abc')).toBeNull()
-    expect(route('/pt/missing', '/pt/missing', { method: 'POST' })).toBeNull()
+    expect(
+      route('/pt/missing', { internalPath: '/pt/missing', init: { method: 'POST' } })
+    ).toBeNull()
   })
 
   it('respects locale redirects before serving errors', () => {
@@ -86,6 +97,8 @@ describe('localized static 404 routing', () => {
   })
 
   it('supports HEAD without redirecting', () => {
-    expect(route('/pt/missing', '/pt/missing', { method: 'HEAD' })?.pathname).toBe('/pt/404')
+    expect(
+      route('/pt/missing', { internalPath: '/pt/missing', init: { method: 'HEAD' } })?.pathname
+    ).toBe('/pt/404')
   })
 })

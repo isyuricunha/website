@@ -227,8 +227,7 @@ ${input.content}
         const getStringArray = (value: unknown, key: string): string[] | null => {
           if (!isRecord(value)) return null
           const raw = value[key]
-          if (!Array.isArray(raw)) return null
-          if (raw.some((item) => typeof item !== 'string')) return null
+          if (!Array.isArray(raw) || raw.some((item) => typeof item !== 'string')) return null
           return raw
         }
 
@@ -289,8 +288,8 @@ ${input.content}
             if (!user) {
               return false
             }
-            const matchesRole = roleTargets ? roleTargets.includes(user.role) : false
-            const matchesUser = userTargets ? userTargets.includes(user.id) : false
+            const matchesRole = roleTargets?.includes(user.role) ?? false
+            const matchesUser = userTargets?.includes(user.id) ?? false
             return matchesRole || matchesUser
           }
 
@@ -327,8 +326,7 @@ ${input.content}
             targetAudience: announcement.targetAudience
               ? (() => {
                   const parsed = parseTargetAudience(announcement.targetAudience)
-                  if (!parsed) return null
-                  if (!isRecord(parsed)) return null
+                  if (!parsed || !isRecord(parsed)) return null
                   const userRoles =
                     getStringArray(parsed, 'userRoles') ??
                     getStringArray(parsed, 'roles') ??
@@ -343,7 +341,7 @@ ${input.content}
           }))
         }
       } catch (error) {
-        logger.error('Error fetching announcements', error)
+        logger.error('Error fetching announcements', { error: error })
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to fetch announcements'
@@ -404,7 +402,7 @@ ${input.content}
 
         return { success: true, announcementId }
       } catch (error) {
-        logger.error('Error creating announcement', error)
+        logger.error('Error creating announcement', { error: error })
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to create announcement'
@@ -465,7 +463,7 @@ ${input.content}
           })
           return { success: true }
         }
-        logger.error('Error marking announcement viewed', error)
+        logger.error('Error marking announcement viewed', { error: error })
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to mark announcement viewed'
@@ -526,7 +524,7 @@ ${input.content}
           })
           return { success: true }
         }
-        logger.error('Error dismissing announcement', error)
+        logger.error('Error dismissing announcement', { error: error })
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to dismiss announcement'
@@ -572,7 +570,7 @@ ${input.content}
 
         return { success: true }
       } catch (error) {
-        logger.error('Error updating announcement', error)
+        logger.error('Error updating announcement', { error: error })
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to update announcement'
@@ -606,7 +604,7 @@ ${input.content}
 
         return { success: true }
       } catch (error) {
-        logger.error('Error deleting announcement', error)
+        logger.error('Error deleting announcement', { error: error })
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to delete announcement'
@@ -688,7 +686,7 @@ ${input.content}
 
         return analytics
       } catch (error) {
-        logger.error('Error fetching announcement analytics', error)
+        logger.error('Error fetching announcement analytics', { error: error })
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to fetch announcement analytics'

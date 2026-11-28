@@ -8,7 +8,7 @@ type Props = {
   className?: string
 }
 
-const TimeRangeToggle = ({ value, onChange, className }: Props) => {
+const TimeRangeToggle = ({ value, onChange, className = '' }: Props) => {
   const t = useTranslations()
   const opts: Array<{ key: 'short_term' | 'medium_term' | 'long_term'; label: string }> = [
     { key: 'short_term', label: t('spotify.range.short') },
@@ -17,7 +17,7 @@ const TimeRangeToggle = ({ value, onChange, className }: Props) => {
   ]
   return (
     <div
-      className={`bg-bg-hover inline-flex items-center gap-1 rounded-md p-1 text-xs ${className ?? ''}`}
+      className={`bg-bg-hover inline-flex items-center gap-1 rounded-md p-1 text-xs ${className}`}
     >
       {opts.map((o) => (
         <button

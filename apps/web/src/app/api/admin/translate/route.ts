@@ -33,8 +33,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const parsed = requestSchema.parse(body)
-    const { slug, sourceLocale, targetLocales } = parsed
+    const { slug, sourceLocale, targetLocales } = requestSchema.parse(body)
 
     // Get source post
     const sourcePost = await BlogService.getPost(slug, sourceLocale)
@@ -96,7 +95,7 @@ export async function POST(request: NextRequest) {
           error: settledResult.value.success ? undefined : 'Failed to save translation'
         })
       } else {
-        logger.error('Translation error', settledResult.reason, { locale })
+        logger.error('Translation error', { error: settledResult.reason, context: { locale } })
         results.push({
           locale,
           success: false,
@@ -123,7 +122,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    logger.error('Error in translation', error)
+    logger.error('Error in translation', { error: error })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

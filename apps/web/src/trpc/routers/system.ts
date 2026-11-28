@@ -296,7 +296,7 @@ export const systemRouter = createTRPCRouter({
         })
       }
     } catch (error) {
-      logger.error('Error getting system health', error)
+      logger.error('Error getting system health', { error: error })
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Failed to get system health'
@@ -356,7 +356,7 @@ export const systemRouter = createTRPCRouter({
         hasMore: totalCount.length > input.offset + input.limit
       }
     } catch (error) {
-      logger.error('Error fetching error logs', error)
+      logger.error('Error fetching error logs', { error: error })
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Failed to fetch error logs'
@@ -386,7 +386,7 @@ export const systemRouter = createTRPCRouter({
 
       return { success: true, errorId }
     } catch (error) {
-      logger.error('Error logging error', error)
+      logger.error('Error logging error', { error: error })
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Failed to log error'
@@ -423,7 +423,7 @@ export const systemRouter = createTRPCRouter({
 
       return { success: true }
     } catch (error) {
-      logger.error('Error resolving error', error)
+      logger.error('Error resolving error', { error: error })
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Failed to resolve error'
@@ -458,7 +458,7 @@ export const systemRouter = createTRPCRouter({
 
       return { success: true }
     } catch (error) {
-      logger.error('Error resolving all errors', error)
+      logger.error('Error resolving all errors', { error: error })
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Failed to resolve all errors'
@@ -514,7 +514,7 @@ export const systemRouter = createTRPCRouter({
 
       return { config: groupedConfig }
     } catch (error) {
-      logger.error('Error fetching site config', error)
+      logger.error('Error fetching site config', { error: error })
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Failed to fetch site configuration'
@@ -583,7 +583,7 @@ export const systemRouter = createTRPCRouter({
 
         return { success: true }
       } catch (error) {
-        logger.error('Error updating site config', error)
+        logger.error('Error updating site config', { error: error })
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to update site configuration'
@@ -643,7 +643,7 @@ export const systemRouter = createTRPCRouter({
         }
       }
     } catch (error) {
-      logger.error('Error fetching system stats', error)
+      logger.error('Error fetching system stats', { error: error })
       return {
         errors: {
           total: 0,

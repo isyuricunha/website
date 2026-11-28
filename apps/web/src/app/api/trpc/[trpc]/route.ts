@@ -26,8 +26,8 @@ const handler = async (req: NextRequest) =>
     createContext: () => create_trpc_context(req),
     onError:
       env.NODE_ENV === 'development'
-        ? ({ path, error }) => {
-            logger.error(`tRPC failed on ${path ?? '<no-path>'}`, error)
+        ? ({ path = '<no-path>', error }) => {
+            logger.error(`tRPC failed on ${path}`, { error: error })
           }
         : undefined
   })

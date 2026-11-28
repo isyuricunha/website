@@ -19,8 +19,7 @@ const parsePersonString = (value: string): Record<string, string> | string => {
   if (!trimmed) return value
 
   const removeSegment = (input: string, start: number, end: number) => {
-    if (!input || typeof input !== 'string') return input
-    if (start < 0 || end < 0 || end <= start) return input
+    if (!input || typeof input !== 'string' || start < 0 || end < 0 || end <= start) return input
     return (input?.slice?.(0, start) + input?.slice?.(end))?.trim?.() ?? ''
   }
 

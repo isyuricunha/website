@@ -66,11 +66,7 @@ export default function AnnouncementBanner() {
     viewedAnnouncementsRef.current = nextViewed
   }, [activeAnnouncements, markViewedMutation])
 
-  if (!announcementsData?.announcements) {
-    return null
-  }
-
-  if (activeAnnouncements.length === 0) {
+  if (!announcementsData?.announcements || activeAnnouncements.length === 0) {
     return null
   }
 

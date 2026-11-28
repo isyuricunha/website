@@ -1,10 +1,10 @@
 /**
- * Email locale registry and shared copy.
- *
- * Mirrors the website's supported locales (@isyuricunha/i18n/config). Every
- * template resolves its strings through `resolve_email_locale` + the per-
- * template copy dictionaries, so a new locale only needs to be added here.
- */
+Email locale registry and shared copy.
+
+Mirrors the website's supported locales (@isyuricunha/i18n/config). Every
+template resolves its strings through `resolve_email_locale` + the per-
+template copy dictionaries, so a new locale only needs to be added here.
+*/
 
 export const EMAIL_LOCALES = ['en', 'pt', 'es', 'ja', 'zh-CN', 'fr', 'de'] as const
 
@@ -15,10 +15,10 @@ export const DEFAULT_EMAIL_LOCALE: EmailLocale = 'en'
 const EMAIL_LOCALE_SET = new Set<string>(EMAIL_LOCALES)
 
 /**
- * Normalizes any locale-ish string (BCP-47 tag, cookie value, query param) to
- * a supported email locale, falling back to the default. `zh-*` variants all
- * resolve to `zh-CN`; unknown or unsupported bases fall back to `en`.
- */
+Normalizes any locale-ish string (BCP-47 tag, cookie value, query param) to
+a supported email locale, falling back to the default. `zh-*` variants all
+resolve to `zh-CN`; unknown or unsupported bases fall back to `en`.
+*/
 export const resolve_email_locale = (value: string | null | undefined): EmailLocale => {
   if (!value) return DEFAULT_EMAIL_LOCALE
 

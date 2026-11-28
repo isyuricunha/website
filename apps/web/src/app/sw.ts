@@ -4,8 +4,6 @@ import { logger } from '@/lib/logger'
 
 declare const self: ServiceWorkerGlobalScope
 
-type BackgroundSyncEvent = ExtendableEvent & { tag: string }
-
 const CACHE_NAME = 'yuri-cunha-v1'
 const STATIC_CACHE = 'static-v1'
 const DYNAMIC_CACHE = 'dynamic-v1'
@@ -63,14 +61,13 @@ self.addEventListener('fetch', (event: FetchEvent) => {
   const { request } = event
   const url = new URL(request.url)
 
-  // Skip non-GET requests
-  if (request.method !== 'GET') return
-
-  // Skip external requests
-  if (!url.origin.includes(self.location.origin)) return
-
-  // Skip API requests (let them fail gracefully)
-  if (url.pathname.startsWith('/api/') || url.pathname.startsWith('/trpc/')) {
+  // Skip non-GET, cross-origin, and API requests (API requests fail gracefully on their own)
+  if (
+    request.method !== 'GET' ||
+    !url.origin.includes(self.location.origin) ||
+    url.pathname.startsWith('/api/') ||
+    url.pathname.startsWith('/trpc/')
+  ) {
     return
   }
 
@@ -156,6 +153,7 @@ self.addEventListener('fetch', (event: FetchEvent) => {
 
 // Background sync for when connection is restored
 self.addEventListener('sync', (event) => {
+  type BackgroundSyncEvent = ExtendableEvent & { tag: string }
   const syncEvent = event as unknown as BackgroundSyncEvent
   if (syncEvent.tag === 'background-sync') {
     syncEvent.waitUntil(

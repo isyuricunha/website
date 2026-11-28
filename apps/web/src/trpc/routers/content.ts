@@ -15,8 +15,6 @@ function generateSlug(title: string): string {
     .replace(/(^-|-$)/g, '')
 }
 
-type PostUpdate = Partial<typeof posts.$inferInsert>
-
 const postsQuerySchema = z.object({
   search: z.string().optional(),
   status: z.enum(['draft', 'published', 'archived']).optional(),
@@ -119,7 +117,7 @@ export const contentRouter = createTRPCRouter({
         hasMore: totalPosts > input.offset + input.limit
       }
     } catch (error) {
-      logger.error('Error fetching posts', error)
+      logger.error('Error fetching posts', { error: error })
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Failed to fetch posts'
@@ -159,7 +157,7 @@ export const contentRouter = createTRPCRouter({
       if (error instanceof TRPCError) {
         throw error
       }
-      logger.error('Error fetching post', error)
+      logger.error('Error fetching post', { error: error })
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Failed to fetch post'
@@ -230,7 +228,7 @@ export const contentRouter = createTRPCRouter({
       if (error instanceof TRPCError) {
         throw error
       }
-      logger.error('Error creating post', error)
+      logger.error('Error creating post', { error: error })
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Failed to create post'
@@ -273,6 +271,7 @@ export const contentRouter = createTRPCRouter({
         }
       }
 
+      type PostUpdate = Partial<typeof posts.$inferInsert>
       const filteredUpdateData: PostUpdate = {}
 
       if (updateData.title !== undefined) filteredUpdateData.title = updateData.title
@@ -314,7 +313,7 @@ export const contentRouter = createTRPCRouter({
       if (error instanceof TRPCError) {
         throw error
       }
-      logger.error('Error updating post', error)
+      logger.error('Error updating post', { error: error })
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Failed to update post'
@@ -366,7 +365,7 @@ export const contentRouter = createTRPCRouter({
       if (error instanceof TRPCError) {
         throw error
       }
-      logger.error('Error deleting post', error)
+      logger.error('Error deleting post', { error: error })
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Failed to delete post'
@@ -420,7 +419,7 @@ export const contentRouter = createTRPCRouter({
           updatedCount: updated.length
         }
       } catch (error) {
-        logger.error('Error updating posts in bulk', error)
+        logger.error('Error updating posts in bulk', { error: error })
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to update posts'
@@ -458,7 +457,7 @@ export const contentRouter = createTRPCRouter({
         deletedCount: deleted.length
       }
     } catch (error) {
-      logger.error('Error deleting posts in bulk', error)
+      logger.error('Error deleting posts in bulk', { error: error })
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Failed to delete posts'
@@ -509,7 +508,7 @@ export const contentRouter = createTRPCRouter({
         }
       }
     } catch (error) {
-      logger.error('Error fetching content stats', error)
+      logger.error('Error fetching content stats', { error: error })
       return {
         totals: {
           posts: 0,

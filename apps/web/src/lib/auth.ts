@@ -113,7 +113,7 @@ export const auth = betterAuth({
           html
         })
       } catch (error) {
-        logger.error('Failed to send password reset email', error)
+        logger.error('Failed to send password reset email', { error: error })
         throw error
       }
     },
@@ -151,7 +151,7 @@ export const auth = betterAuth({
           html
         })
       } catch (error) {
-        logger.error('Failed to send verification email', error)
+        logger.error('Failed to send verification email', { error: error })
         throw error
       }
     }
@@ -214,7 +214,7 @@ export const auth = betterAuth({
             html
           })
         } catch (error) {
-          logger.error('Failed to send account deletion confirmation email', error)
+          logger.error('Failed to send account deletion confirmation email', { error: error })
           throw new APIError('INTERNAL_SERVER_ERROR', {
             message: 'Unable to send account deletion confirmation.'
           })

@@ -582,7 +582,7 @@ export const usersRouter = createTRPCRouter({
 
       return { success: true }
     } catch (error) {
-      logger.error('Request password reset error', error)
+      logger.error('Request password reset error', { error: error })
       // Always return success to prevent email enumeration
       return { success: true }
     }
@@ -637,7 +637,7 @@ export const usersRouter = createTRPCRouter({
 
       return { success: true }
     } catch (error) {
-      logger.error('Password reset error', error)
+      logger.error('Password reset error', { error: error })
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Failed to send password reset email'
@@ -656,7 +656,7 @@ export const usersRouter = createTRPCRouter({
 
       return { success: true }
     } catch (error) {
-      logger.error('Reset password error', error)
+      logger.error('Reset password error', { error: error })
       if (error instanceof TRPCError) throw error
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',

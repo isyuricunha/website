@@ -3,22 +3,6 @@ import { get_ai_runtime_config } from './runtime-config'
 
 const CHAT_REQUEST_TIMEOUT_MS = 60_000
 
-type ChatCompletionPayload = {
-  choices?: Array<{
-    message?: {
-      content?: unknown
-    }
-  }>
-}
-
-type ChatStreamPayload = {
-  choices?: Array<{
-    delta?: {
-      content?: unknown
-    }
-  }>
-}
-
 const extract_text_content = (content: unknown): string | null => {
   if (typeof content === 'string') return content
 
@@ -51,6 +35,13 @@ const enqueue_stream_lines = (
     if (data === '[DONE]') return true
 
     try {
+      type ChatStreamPayload = {
+        choices?: Array<{
+          delta?: {
+            content?: unknown
+          }
+        }>
+      }
       const payload = JSON.parse(data) as ChatStreamPayload
       const content = extract_text_content(payload.choices?.[0]?.delta?.content)
       if (content) controller.enqueue(encoder.encode(content))
@@ -110,6 +101,13 @@ const create_chat_request = async (
 
 class RuntimeProvider {
   async generateResponse(message: string, context: MascotSiteContext): Promise<string> {
+    type ChatCompletionPayload = {
+      choices?: Array<{
+        message?: {
+          content?: unknown
+        }
+      }>
+    }
     const response = await create_chat_request(message, context, false)
     const payload = (await response.json()) as ChatCompletionPayload
     const content = extract_text_content(payload.choices?.[0]?.message?.content)

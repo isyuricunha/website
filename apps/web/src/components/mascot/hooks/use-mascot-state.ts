@@ -71,8 +71,6 @@ const createInitialState = () => ({
   preferences: { ...DEFAULT_PREFERENCES }
 })
 
-type MascotState = ReturnType<typeof createInitialState>
-
 export function useMascotState() {
   const t = useTranslations()
   const locale = useLocale()
@@ -113,9 +111,10 @@ export function useMascotState() {
     notificationSoundRef.current = notificationSound.play
   }, [notificationSound.play])
 
+  type MascotState = ReturnType<typeof createInitialState>
   /**
-   * Safely update state with partial updates
-   */
+  Safely update state with partial updates
+  */
   const updateState = useCallback((updates: Partial<MascotState>) => {
     setState((prev) => ({ ...prev, ...updates }))
   }, [])
@@ -142,8 +141,8 @@ export function useMascotState() {
   }, [])
 
   /**
-   * Mark message for exit animation and remove it afterwards
-   */
+  Mark message for exit animation and remove it afterwards
+  */
   const startExit = useCallback(
     (id: number) => {
       setState((prev) => {
@@ -173,8 +172,8 @@ export function useMascotState() {
   )
 
   /**
-   * Add a new message to the display queue
-   */
+  Add a new message to the display queue
+  */
   const enqueueMessage = useCallback(
     (text: string, duration?: number) => {
       if (!text) return
@@ -195,8 +194,8 @@ export function useMascotState() {
   )
 
   /**
-   * Update preferences and persist to localStorage
-   */
+  Update preferences and persist to localStorage
+  */
   const updatePreferences = useCallback(
     (updates: Partial<MascotPreferences>) => {
       setState((prev) => {
@@ -213,8 +212,8 @@ export function useMascotState() {
   )
 
   /**
-   * Load saved preferences from localStorage
-   */
+  Load saved preferences from localStorage
+  */
   const loadPreferences = useCallback((): MascotPreferences => {
     if (globalThis.window === undefined) return { ...DEFAULT_PREFERENCES }
 
@@ -232,8 +231,8 @@ export function useMascotState() {
   const pageKey = getMascotPageKey(pathname || '/')
 
   /**
-   * Get time based greeting message
-   */
+  Get time based greeting message
+  */
   const getTimeBasedGreeting = useCallback(() => {
     if (!mounted) return ''
     const hour = new Date().getHours()
@@ -244,8 +243,8 @@ export function useMascotState() {
   }, [mounted, t])
 
   /**
-   * Generic helper to fetch numbered messages from i18n structure
-   */
+  Generic helper to fetch numbered messages from i18n structure
+  */
   const fetchMessageList = useCallback((base: Record<string, unknown>): string[] => {
     const res: string[] = []
     try {
@@ -265,8 +264,8 @@ export function useMascotState() {
   }, [])
 
   /**
-   * Fetch page specific messages with proper fallbacks
-   */
+  Fetch page specific messages with proper fallbacks
+  */
   const fetchPageMessages = useCallback(
     (key: string): string[] => {
       const tryKey = (k: string): string[] => {
@@ -295,8 +294,8 @@ export function useMascotState() {
   )
 
   /**
-   * Get random idle message
-   */
+  Get random idle message
+  */
   const getIdleMessage = useCallback(() => {
     const base = (allMessages?.mascot?.messages ?? {}) as Record<string, unknown>
     const list = fetchMessageList(base)
@@ -306,8 +305,8 @@ export function useMascotState() {
   }, [allMessages, fetchMessageList, t])
 
   /**
-   * Get random blog post specific message
-   */
+  Get random blog post specific message
+  */
   const getBlogPostMessage = useCallback(() => {
     const base = (allMessages?.mascot?.pageMessages?.blogPost ?? {}) as Record<string, unknown>
     const list = fetchMessageList(base)
@@ -317,8 +316,8 @@ export function useMascotState() {
   }, [allMessages, fetchMessageList, t])
 
   /**
-   * Copy contact email to clipboard
-   */
+  Copy contact email to clipboard
+  */
   const copyEmail = useCallback(async (): Promise<void> => {
     try {
       await navigator.clipboard.writeText(publicContact.email)
@@ -331,8 +330,8 @@ export function useMascotState() {
   }, [enqueueMessage, isProduction, t])
 
   /**
-   * Hide mascot for the current browser session
-   */
+  Hide mascot for the current browser session
+  */
   const handleDismissMascot = useCallback(() => {
     updateState({
       isDismissed: true,
@@ -352,8 +351,8 @@ export function useMascotState() {
   }, [updateState, isProduction])
 
   /**
-   * Hide mascot until the user restores it
-   */
+  Hide mascot until the user restores it
+  */
   const handleHideMascot = useCallback(() => {
     updateState({
       isHiddenPref: true,
@@ -373,8 +372,8 @@ export function useMascotState() {
   }, [updateState, isProduction])
 
   /**
-   * Restore mascot and clear persisted hidden/dismissed flags
-   */
+  Restore mascot and clear persisted hidden/dismissed flags
+  */
   const restoreMascot = useCallback(() => {
     updateState({ isDismissed: false, isHiddenPref: false })
 
@@ -387,8 +386,8 @@ export function useMascotState() {
   }, [isProduction, updateState])
 
   /**
-   * Handle menu actions
-   */
+  Handle menu actions
+  */
   const handleMenuAction = useCallback(
     (action: string) => {
       updateState({
@@ -437,15 +436,15 @@ export function useMascotState() {
   )
 
   /**
-   * Handle AI Chat close
-   */
+  Handle AI Chat close
+  */
   const handleAIClose = useCallback(() => {
     updateState({ showAIChat: false, isThinking: false })
   }, [updateState])
 
   /**
-   * Handle AI thinking state changes
-   */
+  Handle AI thinking state changes
+  */
   const handleThinkingChange = useCallback(
     (thinking: boolean) => {
       updateState({ isThinking: thinking })
@@ -454,8 +453,8 @@ export function useMascotState() {
   )
 
   /**
-   * Explain selected text with AI
-   */
+  Explain selected text with AI
+  */
   const explainSelection = useCallback(() => {
     const text = state.selectedText
     if (!text) return
@@ -472,8 +471,8 @@ export function useMascotState() {
   }, [state.selectedText, t, updateState])
 
   /**
-   * Handle mascot click events
-   */
+  Handle mascot click events
+  */
   const handleMascotClick = useCallback(() => {
     const now = Date.now()
     const isRapid = now - state.lastClickTime < 1000
@@ -523,8 +522,8 @@ export function useMascotState() {
   ])
 
   /**
-   * Get position classes based on user preference
-   */
+  Get position classes based on user preference
+  */
   const getPositionClasses = useCallback((): string => {
     switch (state.preferences.bubblePosition) {
       case 'bottom-left':
@@ -540,8 +539,8 @@ export function useMascotState() {
   }, [state.preferences.bubblePosition])
 
   /**
-   * Get bubble positioning classes relative to mascot
-   */
+  Get bubble positioning classes relative to mascot
+  */
   const getBubblePositionClasses = useCallback((): string => {
     switch (state.preferences.bubblePosition) {
       case 'bottom-left':
@@ -790,10 +789,12 @@ export function useMascotState() {
 
       return () => {
         clearTimeout(timer)
-        if (resetAutoShowTimeoutRef.current) {
-          clearTimeout(resetAutoShowTimeoutRef.current)
-          resetAutoShowTimeoutRef.current = null
+        if (!resetAutoShowTimeoutRef.current) {
+          return
         }
+
+        clearTimeout(resetAutoShowTimeoutRef.current)
+        resetAutoShowTimeoutRef.current = null
       }
     }
 

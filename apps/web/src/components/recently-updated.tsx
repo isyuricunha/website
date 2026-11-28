@@ -10,16 +10,6 @@ import { allPosts, allProjects } from 'content-collections'
 
 import Link from './link'
 
-type UpdatedItem = {
-  id: string
-  title: string
-  description: string
-  href: string
-  type: 'post' | 'project'
-  date: string
-  icon: ReactNode
-}
-
 const RecentlyUpdated = () => {
   const t = useTranslations()
   const locale = useLocale()
@@ -33,6 +23,15 @@ const RecentlyUpdated = () => {
   }, [locale])
 
   const recentlyUpdated = useMemo(() => {
+    type UpdatedItem = {
+      id: string
+      title: string
+      description: string
+      href: string
+      type: 'post' | 'project'
+      date: string
+      icon: ReactNode
+    }
     const items: UpdatedItem[] = []
     const seenIds = new Set<string>()
 
@@ -40,36 +39,40 @@ const RecentlyUpdated = () => {
     for (const post of allPosts) {
       if (post.locale !== resolvedLocale) continue
       const id = `post-${post.slug}`
-      if (!seenIds.has(id)) {
-        seenIds.add(id)
-        items.push({
-          id,
-          title: post.title,
-          description: post.summary,
-          href: `/blog/${post.slug}`,
-          type: 'post',
-          date: post.modifiedTime || post.date,
-          icon: <FileText className='h-4 w-4' />
-        })
+      if (seenIds.has(id)) {
+        continue
       }
+
+      seenIds.add(id)
+      items.push({
+        id,
+        title: post.title,
+        description: post.summary,
+        href: `/blog/${post.slug}`,
+        type: 'post',
+        date: post.modifiedTime || post.date,
+        icon: <FileText className='h-4 w-4' />
+      })
     }
 
     // Add projects filtered by current locale (using a fallback date if no modified time)
     for (const project of allProjects) {
       if (project.locale !== resolvedLocale) continue
       const id = `project-${project.slug}`
-      if (!seenIds.has(id)) {
-        seenIds.add(id)
-        items.push({
-          id,
-          title: project.name,
-          description: project.description,
-          href: `/projects#${project.slug}`,
-          type: 'project',
-          date: project.endDate || project.startDate || new Date('2024-01-01').toISOString(),
-          icon: <Code className='h-4 w-4' />
-        })
+      if (seenIds.has(id)) {
+        continue
       }
+
+      seenIds.add(id)
+      items.push({
+        id,
+        title: project.name,
+        description: project.description,
+        href: `/projects#${project.slug}`,
+        type: 'project',
+        date: project.endDate || project.startDate || new Date('2024-01-01').toISOString(),
+        icon: <Code className='h-4 w-4' />
+      })
     }
 
     // Sort by date and take top 3

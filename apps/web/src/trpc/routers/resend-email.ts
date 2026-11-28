@@ -52,8 +52,8 @@ const updateBroadcastSchema = z.object({
 
 export const resendEmailRouter = createTRPCRouter({
   /**
-   * Audience Management
-   */
+  Audience Management
+  */
 
   // List all Resend audiences
   getAudiences: adminProcedure.query(async () => {
@@ -61,7 +61,7 @@ export const resendEmailRouter = createTRPCRouter({
       const audiences = await resendService.listAudiences()
       return { audiences }
     } catch (error) {
-      logger.error('Error fetching Resend audiences', error)
+      logger.error('Error fetching Resend audiences', { error: error })
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Failed to fetch audiences'
@@ -98,7 +98,7 @@ export const resendEmailRouter = createTRPCRouter({
 
       return { success: true, audience }
     } catch (error) {
-      logger.error('Error creating Resend audience', error)
+      logger.error('Error creating Resend audience', { error: error })
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Failed to create audience'
@@ -134,7 +134,7 @@ export const resendEmailRouter = createTRPCRouter({
 
       return { success: true }
     } catch (error) {
-      logger.error('Error deleting Resend audience', error)
+      logger.error('Error deleting Resend audience', { error: error })
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Failed to delete audience'
@@ -143,8 +143,8 @@ export const resendEmailRouter = createTRPCRouter({
   }),
 
   /**
-   * Contact Management
-   */
+  Contact Management
+  */
 
   // Get contacts in audience
   getAudienceContacts: adminProcedure.input(audienceIdSchema).query(async ({ input }) => {
@@ -152,7 +152,7 @@ export const resendEmailRouter = createTRPCRouter({
       const contacts = await resendService.listContacts(input.audienceId)
       return { contacts }
     } catch (error) {
-      logger.error('Error fetching audience contacts', error)
+      logger.error('Error fetching audience contacts', { error: error })
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Failed to fetch contacts'
@@ -211,7 +211,7 @@ export const resendEmailRouter = createTRPCRouter({
           total: usersToSync.length
         }
       } catch (error) {
-        logger.error('Error syncing users to Resend audience', error)
+        logger.error('Error syncing users to Resend audience', { error: error })
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to sync users to audience'
@@ -252,7 +252,7 @@ export const resendEmailRouter = createTRPCRouter({
 
         return { success: true }
       } catch (error) {
-        logger.error('Error adding contact to Resend audience', error)
+        logger.error('Error adding contact to Resend audience', { error: error })
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to add contact to audience'
@@ -290,7 +290,7 @@ export const resendEmailRouter = createTRPCRouter({
 
         return { success: true }
       } catch (error) {
-        logger.error('Error removing contact from Resend audience', error)
+        logger.error('Error removing contact from Resend audience', { error: error })
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to remove contact from audience'
@@ -299,8 +299,8 @@ export const resendEmailRouter = createTRPCRouter({
     }),
 
   /**
-   * Broadcast Management
-   */
+  Broadcast Management
+  */
 
   // List all Resend broadcasts
   getBroadcasts: adminProcedure.query(async () => {
@@ -308,7 +308,7 @@ export const resendEmailRouter = createTRPCRouter({
       const broadcasts = await resendService.listBroadcasts()
       return { broadcasts }
     } catch (error) {
-      logger.error('Error fetching Resend broadcasts', error)
+      logger.error('Error fetching Resend broadcasts', { error: error })
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Failed to fetch broadcasts'
@@ -354,7 +354,7 @@ export const resendEmailRouter = createTRPCRouter({
 
       return { success: true, broadcast }
     } catch (error) {
-      logger.error('Error creating Resend broadcast', error)
+      logger.error('Error creating Resend broadcast', { error: error })
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Failed to create broadcast'
@@ -389,7 +389,7 @@ export const resendEmailRouter = createTRPCRouter({
 
       return { success: true }
     } catch (error) {
-      logger.error('Error sending Resend broadcast', error)
+      logger.error('Error sending Resend broadcast', { error: error })
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Failed to send broadcast'
@@ -427,7 +427,7 @@ export const resendEmailRouter = createTRPCRouter({
 
         return { success: true }
       } catch (error) {
-        logger.error('Error scheduling Resend broadcast', error)
+        logger.error('Error scheduling Resend broadcast', { error: error })
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to schedule broadcast'
@@ -462,7 +462,7 @@ export const resendEmailRouter = createTRPCRouter({
 
       return { success: true }
     } catch (error) {
-      logger.error('Error cancelling Resend broadcast', error)
+      logger.error('Error cancelling Resend broadcast', { error: error })
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Failed to cancel broadcast'
@@ -484,7 +484,7 @@ export const resendEmailRouter = createTRPCRouter({
 
       return { broadcast }
     } catch (error) {
-      logger.error('Error fetching Resend broadcast', error)
+      logger.error('Error fetching Resend broadcast', { error: error })
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Failed to fetch broadcast'
@@ -526,7 +526,7 @@ export const resendEmailRouter = createTRPCRouter({
 
       return { success: true, broadcast }
     } catch (error) {
-      logger.error('Error updating Resend broadcast', error)
+      logger.error('Error updating Resend broadcast', { error: error })
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Failed to update broadcast'
@@ -561,7 +561,7 @@ export const resendEmailRouter = createTRPCRouter({
 
       return { success: true }
     } catch (error) {
-      logger.error('Error deleting Resend broadcast', error)
+      logger.error('Error deleting Resend broadcast', { error: error })
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Failed to delete broadcast'
@@ -570,8 +570,8 @@ export const resendEmailRouter = createTRPCRouter({
   }),
 
   /**
-   * Analytics & Stats
-   */
+  Analytics & Stats
+  */
 
   // Get email marketing stats
   getEmailStats: adminProcedure.query(async ({ ctx }) => {
@@ -617,7 +617,7 @@ export const resendEmailRouter = createTRPCRouter({
         }
       }
     } catch (error) {
-      logger.error('Error fetching email stats', error)
+      logger.error('Error fetching email stats', { error: error })
       return {
         audiences: { total: 0, list: [] },
         broadcasts: { total: 0, sent: 0, scheduled: 0, drafts: 0 },
@@ -685,7 +685,7 @@ export const resendEmailRouter = createTRPCRouter({
         }
       }
     } catch (error) {
-      logger.error('Error fetching analytics', error)
+      logger.error('Error fetching analytics', { error: error })
       return {
         totalAudiences: 0,
         totalBroadcasts: 0,
@@ -699,8 +699,8 @@ export const resendEmailRouter = createTRPCRouter({
   }),
 
   /**
-   * User Subscription Management
-   */
+  User Subscription Management
+  */
 
   // Subscribe user to email marketing
   subscribeUser: protectedProcedure.mutation(async ({ ctx }) => {
@@ -735,7 +735,7 @@ export const resendEmailRouter = createTRPCRouter({
 
       return { success: true }
     } catch (error) {
-      logger.error('Error subscribing user', error)
+      logger.error('Error subscribing user', { error: error })
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Failed to subscribe to emails'
@@ -757,7 +757,7 @@ export const resendEmailRouter = createTRPCRouter({
 
       return { success: true }
     } catch (error) {
-      logger.error('Error unsubscribing user', error)
+      logger.error('Error unsubscribing user', { error: error })
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Failed to unsubscribe from emails'
@@ -778,7 +778,7 @@ export const resendEmailRouter = createTRPCRouter({
         unsubscribedAt: subscription?.unsubscribedAt
       }
     } catch (error) {
-      logger.error('Error getting user subscription status', error)
+      logger.error('Error getting user subscription status', { error: error })
       return { subscribed: true }
     }
   })

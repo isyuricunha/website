@@ -54,41 +54,40 @@ const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>, command:
     return
   }
 
-  if (event.key === 'Enter') {
-    const currentLine = value.slice(0, Math.max(0, selectionStart)).split('\n').pop()
+  if (event.key !== 'Enter') return
+  const currentLine = value.slice(0, Math.max(0, selectionStart)).split('\n').pop()
 
-    const unorderedListNoContent = currentLine?.match(/^(\s*)([*-])\s$/)
-    const orderedListNoContent = currentLine?.match(/^(\d+)\.\s$/)
+  const unorderedListNoContent = currentLine?.match(/^(\s*)([*-])\s$/)
+  const orderedListNoContent = currentLine?.match(/^(\d+)\.\s$/)
 
-    if (!!unorderedListNoContent || !!orderedListNoContent) {
-      event.preventDefault()
+  if (!!unorderedListNoContent || !!orderedListNoContent) {
+    event.preventDefault()
 
-      const lineStart = value.lastIndexOf('\n', selectionStart - 1) + 1
-      const lineEnd = selectionStart
-      setRangeText(textarea, '', lineStart, lineEnd, 'start')
+    const lineStart = value.lastIndexOf('\n', selectionStart - 1) + 1
+    const lineEnd = selectionStart
+    setRangeText(textarea, '', lineStart, lineEnd, 'start')
 
-      return
-    }
-
-    const orderedList = currentLine?.match(/^(\d+)\.\s/)
-
-    if (orderedList?.[1]) {
-      const number = Number(orderedList[1]) + 1
-      const insertText = `\n${number}. `
-
-      event.preventDefault()
-      setRangeText(textarea, insertText, selectionStart, selectionEnd, 'end')
-    }
-
-    const unorderedList = currentLine?.match(/^(\s*)([*-])\s/)
-
-    if (unorderedList) {
-      const insertText = `\n${unorderedList[1]}${unorderedList[2]} `
-
-      event.preventDefault()
-      setRangeText(textarea, insertText, selectionStart, selectionEnd, 'end')
-    }
+    return
   }
+
+  const orderedList = currentLine?.match(/^(\d+)\.\s/)
+
+  if (orderedList?.[1]) {
+    const number = Number(orderedList[1]) + 1
+    const insertText = `\n${number}. `
+
+    event.preventDefault()
+    setRangeText(textarea, insertText, selectionStart, selectionEnd, 'end')
+  }
+
+  const unorderedList = currentLine?.match(/^(\s*)([*-])\s/)
+
+  if (!unorderedList) return
+
+  const insertText = `\n${unorderedList[1]}${unorderedList[2]} `
+
+  event.preventDefault()
+  setRangeText(textarea, insertText, selectionStart, selectionEnd, 'end')
 }
 
 const decorateText = (

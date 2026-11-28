@@ -38,8 +38,8 @@ const stable_pick_by_seed = <T extends { id: string }>(
 }
 
 /**
- * Calculate similarity score between two items based on tags and categories
- */
+Calculate similarity score between two items based on tags and categories
+*/
 function calculateSimilarity(
   item1: { tags?: string[]; category?: string },
   item2: { tags?: string[]; category?: string }
@@ -61,8 +61,8 @@ function calculateSimilarity(
 }
 
 /**
- * Get recommended posts based on current post
- */
+Get recommended posts based on current post
+*/
 export function getRecommendedPosts(params: {
   slug: string
   locale: string

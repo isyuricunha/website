@@ -81,49 +81,45 @@ vi.mock('crypto', async (importOriginal) => {
   }
 })
 
-type SecurityEventRow = {
-  id: string
-  eventType: string
-  severity: string
-  userId: string | null
-  ipAddress: string | null
-  userAgent: string | null
-  location: string | null
-  details: string | null
-  resolved: boolean
-  resolvedBy: string | null
-  resolvedAt: Date | null
-  createdAt: Date
-}
-
-type IpAccessControlRow = {
-  id: string
-  ipAddress: string
-  ipRange?: string
-  type: 'whitelist' | 'blacklist'
-  description?: string
-  createdBy: string
-}
-
-type AccountLockoutRow = {
-  id: string
-  userId: string
-  reason: string
-  lockedBy: string
-  lockedUntil: Date | null
-}
-
-type SecuritySettingRow = {
-  id: string
-  key: string
-  value: string
-  description: string | null
-  category: string
-  updatedBy: string
-  updatedAt: Date
-}
-
 const createDbMock = () => {
+  type SecuritySettingRow = {
+    id: string
+    key: string
+    value: string
+    description: string | null
+    category: string
+    updatedBy: string
+    updatedAt: Date
+  }
+  type AccountLockoutRow = {
+    id: string
+    userId: string
+    reason: string
+    lockedBy: string
+    lockedUntil: Date | null
+  }
+  type IpAccessControlRow = {
+    id: string
+    ipAddress: string
+    ipRange?: string
+    type: 'whitelist' | 'blacklist'
+    description?: string
+    createdBy: string
+  }
+  type SecurityEventRow = {
+    id: string
+    eventType: string
+    severity: string
+    userId: string | null
+    ipAddress: string | null
+    userAgent: string | null
+    location: string | null
+    details: string | null
+    resolved: boolean
+    resolvedBy: string | null
+    resolvedAt: Date | null
+    createdAt: Date
+  }
   const security_events: SecurityEventRow[] = []
   const ip_rules: IpAccessControlRow[] = []
   const lockouts: AccountLockoutRow[] = []

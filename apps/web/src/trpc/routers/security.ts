@@ -197,7 +197,7 @@ export const securityRouter = createTRPCRouter({
       if (error instanceof TRPCError) {
         throw error
       }
-      logger.error('Error enabling 2FA', error)
+      logger.error('Error enabling 2FA', { error: error })
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Failed to enable 2FA'
@@ -269,7 +269,7 @@ export const securityRouter = createTRPCRouter({
       if (error instanceof TRPCError) {
         throw error
       }
-      logger.error('Error verifying 2FA', error)
+      logger.error('Error verifying 2FA', { error: error })
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Failed to verify 2FA'
@@ -384,7 +384,7 @@ export const securityRouter = createTRPCRouter({
       if (error instanceof TRPCError) {
         throw error
       }
-      logger.error('Error disabling 2FA', error)
+      logger.error('Error disabling 2FA', { error: error })
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Failed to disable 2FA'
@@ -410,7 +410,7 @@ export const securityRouter = createTRPCRouter({
 
       return { rules }
     } catch (error) {
-      logger.error('Error fetching IP access rules', error)
+      logger.error('Error fetching IP access rules', { error: error })
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Failed to fetch IP access rules'
@@ -464,7 +464,7 @@ export const securityRouter = createTRPCRouter({
 
         return { success: true, ruleId }
       } catch (error) {
-        logger.error('Error adding IP access rule', error)
+        logger.error('Error adding IP access rule', { error: error })
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to add IP access rule'
@@ -503,7 +503,7 @@ export const securityRouter = createTRPCRouter({
 
       return { success: true }
     } catch (error) {
-      logger.error('Error removing IP access rule', error)
+      logger.error('Error removing IP access rule', { error: error })
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Failed to remove IP access rule'
@@ -565,7 +565,7 @@ export const securityRouter = createTRPCRouter({
           hasMore: totalCount.length > input.offset + input.limit
         }
       } catch (error) {
-        logger.error('Error fetching security events', error)
+        logger.error('Error fetching security events', { error: error })
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to fetch security events'
@@ -603,7 +603,7 @@ export const securityRouter = createTRPCRouter({
 
         return { success: true }
       } catch (error) {
-        logger.error('Error resolving security event', error)
+        logger.error('Error resolving security event', { error: error })
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to resolve security event'
@@ -640,7 +640,7 @@ export const securityRouter = createTRPCRouter({
         }
       }
     } catch (error) {
-      logger.error('Error fetching login attempts', error)
+      logger.error('Error fetching login attempts', { error: error })
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Failed to fetch login attempts'
@@ -670,7 +670,7 @@ export const securityRouter = createTRPCRouter({
 
         return { lockouts }
       } catch (error) {
-        logger.error('Error fetching account lockouts', error)
+        logger.error('Error fetching account lockouts', { error: error })
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to fetch account lockouts'
@@ -716,7 +716,7 @@ export const securityRouter = createTRPCRouter({
 
       return { success: true }
     } catch (error) {
-      logger.error('Error locking account', error)
+      logger.error('Error locking account', { error: error })
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Failed to lock account'
@@ -773,7 +773,7 @@ export const securityRouter = createTRPCRouter({
 
       return { success: true }
     } catch (error) {
-      logger.error('Error unlocking account', error)
+      logger.error('Error unlocking account', { error: error })
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Failed to unlock account'
@@ -810,7 +810,7 @@ export const securityRouter = createTRPCRouter({
 
       return { settings: groupedSettings }
     } catch (error) {
-      logger.error('Error fetching security settings', error)
+      logger.error('Error fetching security settings', { error: error })
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Failed to fetch security settings'
@@ -890,7 +890,7 @@ export const securityRouter = createTRPCRouter({
 
         return { success: true }
       } catch (error) {
-        logger.error('Error updating security setting', error)
+        logger.error('Error updating security setting', { error: error })
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to update security setting'
@@ -955,7 +955,7 @@ export const securityRouter = createTRPCRouter({
         }
       }
     } catch (error) {
-      logger.error('Error fetching security stats', error)
+      logger.error('Error fetching security stats', { error: error })
       return {
         events: { total: 0, critical: 0, high: 0, medium: 0, low: 0 },
         loginAttempts: { total: 0, successful: 0, failed: 0 },

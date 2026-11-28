@@ -52,7 +52,7 @@ export const GET = async (request: Request) => {
       }
     })
   } catch (error) {
-    logger.error('Failed to create privacy data export', error)
+    logger.error('Failed to create privacy data export', { error: error })
     return NextResponse.json(
       { error: 'Unable to create data export' },
       { status: 500, headers: privateHeaders }

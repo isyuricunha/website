@@ -109,31 +109,18 @@ vi.mock('@/lib/logger', () => ({
   }
 }))
 
-type UserRow = {
-  id: string
-  username: string | null
-  name: string
-  image: string | null
-  bio: string | null
-  isPublic: boolean
-  nameColor: string | null
-  nameEffect: 'none' | 'rays' | 'glow'
-  role: 'user' | 'admin'
-}
-
-type CommentRow = {
-  id: string
-  body: string
-  createdAt: Date
-  postId: string
-  parentId: string | null
-  post?: {
-    title: string | null
-    slug: string
-  } | null
-}
-
 describe('usersRouter public profile', () => {
+  type UserRow = {
+    id: string
+    username: string | null
+    name: string
+    image: string | null
+    bio: string | null
+    isPublic: boolean
+    nameColor: string | null
+    nameEffect: 'none' | 'rays' | 'glow'
+    role: 'user' | 'admin'
+  }
   it('getPublicProfile resolves by username (case-insensitive) and returns image fallback', async () => {
     const { usersRouter } = await import('@/trpc/routers/users')
 
@@ -221,6 +208,17 @@ describe('usersRouter public profile', () => {
         },
         comments: {
           findMany: vi.fn(async () => {
+            type CommentRow = {
+              id: string
+              body: string
+              createdAt: Date
+              postId: string
+              parentId: string | null
+              post?: {
+                title: string | null
+                slug: string
+              } | null
+            }
             const rows: CommentRow[] = [
               {
                 id: 'c1',
