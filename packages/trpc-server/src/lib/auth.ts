@@ -247,10 +247,10 @@ export const auth = betterAuth({
 export type Auth = typeof auth
 
 /**
- * Request-scoped session lookup. The caller supplies the request headers, so
- * no framework-specific request API is used here: Next.js passes
- * `await headers()`, SvelteKit passes `event.request.headers`.
- */
+Request-scoped session lookup. The caller supplies the request headers, so
+no framework-specific request API is used here: Next.js passes
+`await headers()`, SvelteKit passes `event.request.headers`.
+*/
 export const getSession = async (requestHeaders: Headers) => {
   return await auth.api.getSession({
     headers: requestHeaders

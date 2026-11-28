@@ -40,9 +40,8 @@ export async function contactPost(
     const clientIp = getClientIp(request.headers)
 
     // Additional in-memory rate limit safeguard (defense-in-depth)
-    const { allowed: isAllowed, retryAfter } = checkRateLimit(clientIp)
+    const { allowed: isAllowed, retryAfter: retryAfterSeconds = 3600 } = checkRateLimit(clientIp)
     if (!isAllowed) {
-      const retryAfterSeconds = retryAfter ?? 3600
       logger.warn('In-memory rate limit exceeded', { ip: clientIp })
       return Response.json(
         {

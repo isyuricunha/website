@@ -15,8 +15,6 @@ function generateSlug(title: string): string {
     .replace(/(^-|-$)/g, '')
 }
 
-type PostUpdate = Partial<typeof posts.$inferInsert>
-
 const postsQuerySchema = z.object({
   search: z.string().optional(),
   status: z.enum(['draft', 'published', 'archived']).optional(),
@@ -273,6 +271,7 @@ export const contentRouter = createTRPCRouter({
         }
       }
 
+      type PostUpdate = Partial<typeof posts.$inferInsert>
       const filteredUpdateData: PostUpdate = {}
 
       if (updateData.title !== undefined) filteredUpdateData.title = updateData.title

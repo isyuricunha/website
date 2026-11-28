@@ -187,17 +187,17 @@ export const commentsRouter = createTRPCRouter({
           .where(inArray(comments.parentId, ids))
           .groupBy(comments.parentId)
 
-      const count_rates = (ids: string[], like: boolean) =>
+      const count_rates = (like: boolean) =>
         ctx.db
           .select({ commentId: rates.commentId, value: count().mapWith(Number) })
           .from(rates)
-          .where(and(inArray(rates.commentId, ids), eq(rates.like, like)))
+          .where(and(inArray(rates.commentId, commentIds), eq(rates.like, like)))
           .groupBy(rates.commentId)
 
       const [replyCounts, likeCounts, dislikeCounts] = await Promise.all([
         commentIds.length > 0 ? count_replies(commentIds) : Promise.resolve([]),
-        commentIds.length > 0 ? count_rates(commentIds, true) : Promise.resolve([]),
-        commentIds.length > 0 ? count_rates(commentIds, false) : Promise.resolve([])
+        commentIds.length > 0 ? count_rates(true) : Promise.resolve([]),
+        commentIds.length > 0 ? count_rates(false) : Promise.resolve([])
       ])
 
       const replyCountBy = new Map(replyCounts.map((row) => [row.commentId, row.value] as const))
@@ -355,47 +355,45 @@ export const commentsRouter = createTRPCRouter({
       }
 
       // Notify the parent comment owner via email
-      if (input.parentId) {
-        if (!isProduction || !resend) return
+      if (!isProduction || !resend || !input.parentId) return
 
-        const parentComment = await tx.query.comments.findFirst({
-          where: eq(comments.id, input.parentId),
-          with: {
-            user: true
-          }
-        })
-
-        if (parentComment && parentComment.user.email !== user.email) {
-          await sendBestEffortEmail(
-            resend,
-            {
-              from: 'yuricunha.com <me@yuricunha.com>',
-              to: parentComment.user.email,
-              subject:
-                (
-                  {
-                    en: 'New reply to your comment',
-                    pt: 'Nova resposta ao seu comentário',
-                    es: 'Nueva respuesta a tu comentario',
-                    ja: 'コメントに新しい返信',
-                    'zh-CN': '您的评论有新回复',
-                    fr: 'Nouvelle réponse à votre commentaire',
-                    de: 'Neue Antwort auf deinen Kommentar'
-                  } as Record<string, string>
-                )[locale] ?? 'New reply to your comment',
-              react: Reply({
-                reply: input.content,
-                replier: userProfile,
-                comment: parentComment.body,
-                id: `comment=${input.parentId}&reply=${commentId}`,
-                date: input.date,
-                post,
-                locale
-              })
-            },
-            (error) => logger.error('Failed to send comment reply notification email', error)
-          )
+      const parentComment = await tx.query.comments.findFirst({
+        where: eq(comments.id, input.parentId),
+        with: {
+          user: true
         }
+      })
+
+      if (parentComment && parentComment.user.email !== user.email) {
+        await sendBestEffortEmail(
+          resend,
+          {
+            from: 'yuricunha.com <me@yuricunha.com>',
+            to: parentComment.user.email,
+            subject:
+              (
+                {
+                  en: 'New reply to your comment',
+                  pt: 'Nova resposta ao seu comentário',
+                  es: 'Nueva respuesta a tu comentario',
+                  ja: 'コメントに新しい返信',
+                  'zh-CN': '您的评论有新回复',
+                  fr: 'Nouvelle réponse à votre commentaire',
+                  de: 'Neue Antwort auf deinen Kommentar'
+                } as Record<string, string>
+              )[locale] ?? 'New reply to your comment',
+            react: Reply({
+              reply: input.content,
+              replier: userProfile,
+              comment: parentComment.body,
+              id: `comment=${input.parentId}&reply=${commentId}`,
+              date: input.date,
+              post,
+              locale
+            })
+          },
+          (error) => logger.error('Failed to send comment reply notification email', error)
+        )
       }
     })
   }),
@@ -443,18 +441,18 @@ export const commentsRouter = createTRPCRouter({
     await ctx.db.delete(comments).where(eq(comments.id, input.id))
 
     // Case: deleting a reply
-    if (comment.parentId) {
-      const parentComment = await ctx.db.query.comments.findFirst({
-        where: and(eq(comments.id, comment.parentId), eq(comments.isDeleted, true)),
-        with: {
-          replies: true
-        }
-      })
+    if (!comment.parentId) return
 
-      // If the parent comment (which is marked as deleted) has no replies, delete it also.
-      if (parentComment?.replies.length === 0) {
-        await ctx.db.delete(comments).where(eq(comments.id, comment.parentId))
+    const parentComment = await ctx.db.query.comments.findFirst({
+      where: and(eq(comments.id, comment.parentId), eq(comments.isDeleted, true)),
+      with: {
+        replies: true
       }
+    })
+
+    // If the parent comment (which is marked as deleted) has no replies, delete it also.
+    if (parentComment?.replies.length === 0) {
+      await ctx.db.delete(comments).where(eq(comments.id, comment.parentId))
     }
   })
 })

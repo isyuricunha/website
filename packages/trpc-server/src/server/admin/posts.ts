@@ -35,8 +35,7 @@ export async function adminPostsPost(request: Request): Promise<Response> {
     }
 
     const body = await request.json()
-    const parsed = postBodySchema.parse(body)
-    const { slug, title, summary, content, locale, date, modifiedTime } = parsed
+    const { slug, title, summary, content, locale, date, modifiedTime } = postBodySchema.parse(body)
 
     // Check if post already exists
     const exists = await BlogService.postExists(slug, locale)
@@ -92,8 +91,7 @@ export async function adminPostsPut(request: Request): Promise<Response> {
     }
 
     const body = await request.json()
-    const parsed = postBodySchema.parse(body)
-    const { slug, title, summary, content, locale, modifiedTime } = parsed
+    const { slug, title, summary, content, locale, modifiedTime } = postBodySchema.parse(body)
 
     // Check if post exists
     const existingPost = await BlogService.getPost(slug, locale)

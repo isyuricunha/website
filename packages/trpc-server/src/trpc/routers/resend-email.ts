@@ -52,8 +52,8 @@ const updateBroadcastSchema = z.object({
 
 export const resendEmailRouter = createTRPCRouter({
   /**
-   * Audience Management
-   */
+  Audience Management
+  */
 
   // List all Resend audiences
   getAudiences: adminProcedure.query(async () => {
@@ -143,8 +143,8 @@ export const resendEmailRouter = createTRPCRouter({
   }),
 
   /**
-   * Contact Management
-   */
+  Contact Management
+  */
 
   // Get contacts in audience
   getAudienceContacts: adminProcedure.input(audienceIdSchema).query(async ({ input }) => {
@@ -299,8 +299,8 @@ export const resendEmailRouter = createTRPCRouter({
     }),
 
   /**
-   * Broadcast Management
-   */
+  Broadcast Management
+  */
 
   // List all Resend broadcasts
   getBroadcasts: adminProcedure.query(async () => {
@@ -570,8 +570,8 @@ export const resendEmailRouter = createTRPCRouter({
   }),
 
   /**
-   * Analytics & Stats
-   */
+  Analytics & Stats
+  */
 
   // Get email marketing stats
   getEmailStats: adminProcedure.query(async ({ ctx }) => {
@@ -699,8 +699,8 @@ export const resendEmailRouter = createTRPCRouter({
   }),
 
   /**
-   * User Subscription Management
-   */
+  User Subscription Management
+  */
 
   // Subscribe user to email marketing
   subscribeUser: protectedProcedure.mutation(async ({ ctx }) => {

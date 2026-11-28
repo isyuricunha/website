@@ -963,10 +963,11 @@ const escapeQuotedStringValue = (value, quote) => {
 
 const isTranslatableMdxJsxValue = (value) => {
   const trimmed = value.trim()
-  if (!trimmed) return false
-  if (trimmed.includes('@@SITE_TRANSLATION_')) return false
-  if (/^(?:https?:|\/|#|[A-Z]:\\)/i.test(trimmed)) return false
-  return true
+  return (
+    Boolean(trimmed) &&
+    !trimmed.includes('@@SITE_TRANSLATION_') &&
+    !/^(?:https?:|\/|#|[A-Z]:\\)/i.test(trimmed)
+  )
 }
 
 const collectAttributeFields = (block) => {

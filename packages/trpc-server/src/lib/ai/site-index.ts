@@ -58,7 +58,7 @@ function recommend_snippets(params: {
     })
 
   const matched = scored
-    .filter((r) => (tokens.length === 0 ? true : r.score > 0))
+    .filter((r) => tokens.length === 0 || r.score > 0)
     .slice(0, Math.max(0, limit))
 
   const picks =
@@ -489,7 +489,7 @@ const recommend_posts = (params: {
     })
 
   const matched = scored
-    .filter((r) => (tokens.length === 0 ? true : r.score > 0))
+    .filter((r) => tokens.length === 0 || r.score > 0)
     .slice(0, Math.max(0, limit))
 
   const picks =

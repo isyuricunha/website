@@ -26,11 +26,11 @@ type PostDocument = {
 }
 
 /**
- * Resolves the best document for a stats row: prefer the requested locale,
- * then the default locale, then any existing translation. Views and likes
- * are tracked per slug in the database, so a slug is the join key between
- * stats rows and content documents.
- */
+Resolves the best document for a stats row: prefer the requested locale,
+then the default locale, then any existing translation. Views and likes
+are tracked per slug in the database, so a slug is the join key between
+stats rows and content documents.
+*/
 const pickDocument = (slug: string, locale: string): PostDocument | null => {
   const candidates = allPosts.filter((post) => post.slug === slug)
 
@@ -46,9 +46,9 @@ const pickDocument = (slug: string, locale: string): PostDocument | null => {
 
 export const recapRouter = createTRPCRouter({
   /**
-   * Distinct post counts. Posts exist as one document per translation, so
-   * counts must dedupe by slug instead of by document.
-   */
+  Distinct post counts. Posts exist as one document per translation, so
+  counts must dedupe by slug instead of by document.
+  */
   summary: publicProcedure.query(async ({ ctx }) => {
     const ip = getIp(ctx.headers)
     const { success } = await ratelimit.limit(getKey(`summary:${ip}`))
@@ -96,14 +96,12 @@ export const recapRouter = createTRPCRouter({
       const document = pickDocument(row.slug, input.locale)
       if (!document) return []
 
-      return [
-        {
-          slug: document.slug,
-          locale: document.locale,
-          title: document.title,
-          views: row.views
-        }
-      ]
+      return {
+        slug: document.slug,
+        locale: document.locale,
+        title: document.title,
+        views: row.views
+      }
     })
   }),
 
@@ -127,14 +125,12 @@ export const recapRouter = createTRPCRouter({
       const document = pickDocument(row.slug, input.locale)
       if (!document) return []
 
-      return [
-        {
-          slug: document.slug,
-          locale: document.locale,
-          title: document.title,
-          likes: row.likes
-        }
-      ]
+      return {
+        slug: document.slug,
+        locale: document.locale,
+        title: document.title,
+        likes: row.likes
+      }
     })
   })
 })

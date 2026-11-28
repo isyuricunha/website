@@ -1,12 +1,12 @@
 /**
- * avatar (MIT License)
- * Copyright (c) Vercel
- * Source: https://github.com/vercel/avatar/blob/410bc1e438ef26a7456b037bbdd44d5aec49031a/pages/api/avatar/%5Bname%5D.tsx
- *
- * Modified by: isyuricunha
- * SvelteKit port: renders the same deterministic shapes as plain SVG instead
- * of ImageResponse (satori PNG), which removes the OG renderer dependency.
- */
+avatar (MIT License)
+Copyright (c) Vercel
+Source: https://github.com/vercel/avatar/blob/410bc1e438ef26a7456b037bbdd44d5aec49031a/pages/api/avatar/%5Bname%5D.tsx
+
+Modified by: isyuricunha
+SvelteKit port: renders the same deterministic shapes as plain SVG instead
+of ImageResponse (satori PNG), which removes the OG renderer dependency.
+*/
 export async function avatarGet(request: Request, path_params: { id: string }): Promise<Response> {
   const params = new URL(request.url)
   const rawSize = params.searchParams.get('size') ?? '40'

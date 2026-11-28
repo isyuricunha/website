@@ -1,6 +1,6 @@
 /**
- * Anti-spam utilities for contact form
- */
+Anti-spam utilities for contact form
+*/
 
 // In-memory rate limiter (em produção, considere usar Redis ou similar)
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>()
@@ -9,8 +9,8 @@ const RATE_LIMIT_WINDOW = 60 * 60 * 1000 // 1 hour
 const MAX_REQUESTS_PER_WINDOW = 3 // Max 3 emails por hora por IP
 
 /**
- * Check if IP has exceeded rate limit
- */
+Check if IP has exceeded rate limit
+*/
 export function checkRateLimit(ip: string): { allowed: boolean; retryAfter?: number } {
   const now = Date.now()
   const record = rateLimitMap.get(ip)
@@ -44,21 +44,21 @@ export function checkRateLimit(ip: string): { allowed: boolean; retryAfter?: num
 }
 
 /**
- * Crawler / automation user-agent detection.
- *
- * Bare substring matching is NOT safe here: 'sogou' also matches the real
- * Sogou Mobile Browser and Sogou Explorer (human users), and a bare 'bot'
- * matches Android device models such as 'CUBOT_NOTE_S'. Each marker below is
- * therefore either a string that cannot appear in a shipping browser, or a
- * regex anchored on the punctuation real crawlers use ('Googlebot/2.1',
- * 'TelegramBot (like ...)').
- *
- * Deliberately ABSENT: generic HTTP client stacks ('okhttp',
- * 'apache-httpclient', plain 'httpclient'). Native mobile apps and RSS
- * readers ship OkHttp's default user agent, so matching it would 403 real
- * people. A crawler that hides behind a bare client UA gets counted; a human
- * being blocked is the worse failure.
- */
+Crawler / automation user-agent detection.
+
+Bare substring matching is NOT safe here: 'sogou' also matches the real
+Sogou Mobile Browser and Sogou Explorer (human users), and a bare 'bot'
+matches Android device models such as 'CUBOT_NOTE_S'. Each marker below is
+therefore either a string that cannot appear in a shipping browser, or a
+regex anchored on the punctuation real crawlers use ('Googlebot/2.1',
+'TelegramBot (like ...)').
+
+Deliberately ABSENT: generic HTTP client stacks ('okhttp',
+'apache-httpclient', plain 'httpclient'). Native mobile apps and RSS
+readers ship OkHttp's default user agent, so matching it would 403 real
+people. A crawler that hides behind a bare client UA gets counted; a human
+being blocked is the worse failure.
+*/
 const BOT_UA_PATTERNS: readonly RegExp[] = [
   // 'bot' only at a token boundary: matches Googlebot/2.1, bingbot;,
   // Googlebot-Image/1.0 and a trailing 'bot', but not Android device models
@@ -102,11 +102,11 @@ const BOT_UA_PATTERNS: readonly RegExp[] = [
 ] as const
 
 /**
- * True when the user agent matches a known crawler/automation marker.
- * A MISSING user agent is NOT considered a bot here (some privacy browsers
- * strip it); call sites that want to treat missing UA as noise check that
- * themselves.
- */
+True when the user agent matches a known crawler/automation marker.
+A MISSING user agent is NOT considered a bot here (some privacy browsers
+strip it); call sites that want to treat missing UA as noise check that
+themselves.
+*/
 export function is_bot_user_agent(userAgent?: string | null): boolean {
   if (!userAgent) return false
   const lowered = userAgent.toLowerCase()
@@ -114,8 +114,8 @@ export function is_bot_user_agent(userAgent?: string | null): boolean {
 }
 
 /**
- * Get client IP from request headers
- */
+Get client IP from request headers
+*/
 export function getClientIp(headers: Headers): string {
   const normalizeIp = (value: string | null): string | null => {
     const trimmed = value?.trim()
@@ -170,9 +170,9 @@ export function getClientIp(headers: Headers): string {
 }
 
 /**
- * Verify Cloudflare Turnstile token
- * @see https://developers.cloudflare.com/turnstile/get-started/server-side-validation/
- */
+Verify Cloudflare Turnstile token
+@see https://developers.cloudflare.com/turnstile/get-started/server-side-validation/
+*/
 export async function verifyTurnstileToken(
   token: string,
   secretKey: string,

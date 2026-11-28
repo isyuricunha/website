@@ -26,19 +26,19 @@ const lock_key = 'cron:data-retention:lock'
 const DAY_MS = 24 * 60 * 60 * 1000
 
 /**
- * Retention windows per table. See the Privacy Notice (/privacy) for the
- * user-facing summary of why these exist: IP addresses and related request
- * metadata are collected for rate-limiting, abuse prevention, and debugging,
- * not for indefinite storage.
- *
- * `security_events` is pruned only when RESOLVED: an unresolved security event
- * is kept regardless of age, since an admin may still need to act on it.
- *
- * `error_logs` and `error_tracking` are pruned by AGE alone past the hard cap.
- * Resolution state buys an error time, not immortality: a Dec 2025 incident
- * left 908 unresolved rows sitting in the tables for nine months after the
- * underlying bug was fixed, which is noise, not signal.
- */
+Retention windows per table. See the Privacy Notice (/privacy) for the
+user-facing summary of why these exist: IP addresses and related request
+metadata are collected for rate-limiting, abuse prevention, and debugging,
+not for indefinite storage.
+
+`security_events` is pruned only when RESOLVED: an unresolved security event
+is kept regardless of age, since an admin may still need to act on it.
+
+`error_logs` and `error_tracking` are pruned by AGE alone past the hard cap.
+Resolution state buys an error time, not immortality: a Dec 2025 incident
+left 908 unresolved rows sitting in the tables for nine months after the
+underlying bug was fixed, which is noise, not signal.
+*/
 const RETENTION = {
   analyticsEventsDays: 180,
   performanceMetricsDays: 30,

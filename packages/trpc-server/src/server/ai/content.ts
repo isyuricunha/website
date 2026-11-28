@@ -16,10 +16,10 @@ const ContentGenerationSchema = z.object({
   toLang: z.string().optional().default('pt'),
   maxLength: z.number().min(50).max(500).optional().default(200)
 })
-type ContentResult = string | string[]
-
 export async function aiContentPost(request: Request): Promise<Response> {
   try {
+    type ContentResult = string | string[]
+
     // This endpoint generates AI content at real provider cost and has no
     // public caller; gate it to admins like the other AI routes.
     const authResponse = await requireAdmin(request)

@@ -1,10 +1,7 @@
-import type en from '../messages/en.json'
-
 import { describe, expect, it } from 'vitest'
 
 import { i18n } from '../config'
 
-type Messages = typeof en
 type DeepObject = {
   [key: string]: string | DeepObject
 }
@@ -26,6 +23,8 @@ const flattenKeys = (obj: DeepObject, prefix = ''): string[] => {
 
 describe('i18n messages', () => {
   it('should have matching keys across all languages', async () => {
+    type Messages = typeof import('../messages/en.json')
+
     const defaultMessages: Messages = (await import(`../messages/${i18n.defaultLocale}.json`))
       .default
 

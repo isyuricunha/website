@@ -49,8 +49,8 @@ export class ResendService {
   }
 
   /**
-   * Audience Management
-   */
+  Audience Management
+  */
 
   // Create a new audience
   async createAudience(name: string): Promise<ResendAudience> {
@@ -105,8 +105,8 @@ export class ResendService {
   }
 
   /**
-   * Contact Management
-   */
+  Contact Management
+  */
 
   // Add contact to audience
   async addContact(
@@ -210,8 +210,8 @@ export class ResendService {
   }
 
   /**
-   * Broadcast Management
-   */
+  Broadcast Management
+  */
 
   // Create broadcast
   async createBroadcast(broadcast: {
@@ -334,8 +334,8 @@ export class ResendService {
   }
 
   /**
-   * User Sync Utilities
-   */
+  User Sync Utilities
+  */
 
   // Sync user to Resend audience
   async syncUserToAudience(

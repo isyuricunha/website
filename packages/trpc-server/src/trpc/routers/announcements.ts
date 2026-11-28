@@ -226,8 +226,7 @@ ${input.content}
         const getStringArray = (value: unknown, key: string): string[] | null => {
           if (!isRecord(value)) return null
           const raw = value[key]
-          if (!Array.isArray(raw)) return null
-          if (raw.some((item) => typeof item !== 'string')) return null
+          if (!Array.isArray(raw) || raw.some((item) => typeof item !== 'string')) return null
           return raw
         }
 
@@ -288,8 +287,8 @@ ${input.content}
             if (!user) {
               return false
             }
-            const matchesRole = roleTargets ? roleTargets.includes(user.role) : false
-            const matchesUser = userTargets ? userTargets.includes(user.id) : false
+            const matchesRole = roleTargets?.includes(user.role) ?? false
+            const matchesUser = userTargets?.includes(user.id) ?? false
             return matchesRole || matchesUser
           }
 
@@ -326,8 +325,7 @@ ${input.content}
             targetAudience: announcement.targetAudience
               ? (() => {
                   const parsed = parseTargetAudience(announcement.targetAudience)
-                  if (!parsed) return null
-                  if (!isRecord(parsed)) return null
+                  if (!parsed || !isRecord(parsed)) return null
                   const userRoles =
                     getStringArray(parsed, 'userRoles') ??
                     getStringArray(parsed, 'roles') ??

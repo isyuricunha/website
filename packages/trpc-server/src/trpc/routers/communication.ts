@@ -772,7 +772,7 @@ export const communicationRouter = createTRPCRouter({
           return items.filter((notification) => {
             const sameUser = notification.userId === ctx.session.user.id
             const notExpired = !notification.expiresAt || notification.expiresAt >= now
-            const matchesUnread = input.unreadOnly ? notification.read === false : true
+            const matchesUnread = !input.unreadOnly || notification.read === false
             return sameUser && notExpired && matchesUnread
           })
         }

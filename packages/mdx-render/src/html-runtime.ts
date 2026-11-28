@@ -1,16 +1,16 @@
 /**
- * Build-time JSX runtime that renders MDX to static HTML.
- *
- * Used by the content pipeline (`content-collections.ts`) through
- * `evaluate()` from @mdx-js/mdx: the compiled MDX body calls `jsx`/`jsxs`
- * with element tags and component functions, and this module turns those
- * calls into HTML. React is intentionally not involved anywhere in the
- * content render path.
- *
- * Runtime values are `HtmlNode` wrappers, never bare HTML strings: raw text
- * children (from markdown prose) are escaped exactly once, while rendered
- * element results pass through unescaped.
- */
+Build-time JSX runtime that renders MDX to static HTML.
+
+Used by the content pipeline (`content-collections.ts`) through
+`evaluate()` from @mdx-js/mdx: the compiled MDX body calls `jsx`/`jsxs`
+with element tags and component functions, and this module turns those
+calls into HTML. React is intentionally not involved anywhere in the
+content render path.
+
+Runtime values are `HtmlNode` wrappers, never bare HTML strings: raw text
+children (from markdown prose) are escaped exactly once, while rendered
+element results pass through unescaped.
+*/
 
 export const Fragment = Symbol('mdx-html-fragment')
 
@@ -72,11 +72,13 @@ function attrsToString(props: Record<string, unknown>): string {
   let result = ''
 
   for (const [name, value] of Object.entries(props)) {
-    if (name === 'children' || name === 'key' || value === undefined || value === null) {
-      continue
-    }
-
-    if (value === false) {
+    if (
+      name === 'children' ||
+      name === 'key' ||
+      value === undefined ||
+      value === null ||
+      value === false
+    ) {
       continue
     }
 

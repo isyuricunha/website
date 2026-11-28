@@ -41,9 +41,9 @@ export const createTRPCContext = async (opts: trpc_context_opts) => {
 
 const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: SuperJSON,
-  errorFormatter({ shape, error, path }) {
+  errorFormatter({ shape, error, path = '<no-path>' }) {
     if (env.NODE_ENV === 'development') {
-      logger.error(`tRPC failed on ${path ?? '<no-path>'}`, error)
+      logger.error(`tRPC failed on ${path}`, error)
     }
 
     return {

@@ -30,8 +30,7 @@ export async function adminTranslatePost(request: Request): Promise<Response> {
     }
 
     const body = await request.json()
-    const parsed = requestSchema.parse(body)
-    const { slug, sourceLocale, targetLocales } = parsed
+    const { slug, sourceLocale, targetLocales } = requestSchema.parse(body)
 
     // Get source post
     const sourcePost = await BlogService.getPost(slug, sourceLocale)

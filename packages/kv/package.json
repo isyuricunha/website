@@ -13,14 +13,14 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@upstash/ratelimit": "^2.2.0",
-    "@upstash/redis": "^1.39.0"
+    "@upstash/ratelimit": "^2.2.3",
+    "@upstash/redis": "^1.41.1"
   },
   "devDependencies": {
     "@isyuricunha/env": "workspace:*",
     "@isyuricunha/eslint-config": "workspace:*",
     "@isyuricunha/tsconfig": "workspace:*",
-    "@types/node": "26.6.4"
+    "@types/node": "26.6.11"
   },
   "lint-staged": {
     "*.{cjs,mjs,js,jsx,cts,mts,ts,tsx}": "eslint --fix --max-warnings 999"

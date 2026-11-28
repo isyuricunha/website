@@ -108,16 +108,17 @@ const removeTrailingParenthesizedText = (name: string): string => {
 }
 
 /**
- * Cleans track and artist names to improve matching hit rate.
- * Removes common suffixes like (feat. ...), (ft. ...), - Remastered, etc.
- */
+Cleans track and artist names to improve matching hit rate.
+Removes common suffixes like (feat. ...), (ft. ...), - Remastered, etc.
+*/
 const cleanName = (name: string): string => {
   const withoutFeatureCredit = truncateAtFeatureCredit(name)
   const withoutVersionSuffix = truncateAtVersionSuffix(withoutFeatureCredit)
   return removeTrailingParenthesizedText(withoutVersionSuffix).trim() || name
 }
 
-const fetchRecentTracksImageMap = async (limit = 200): Promise<Map<string, string>> => {
+const fetchRecentTracksImageMap = async (): Promise<Map<string, string>> => {
+  const limit = 200
   const imageMap = new Map<string, string>()
   try {
     const data = await lastfmFetch('user.getrecenttracks', { limit: String(limit) })
@@ -351,7 +352,7 @@ export const lastfmRouter = createTRPCRouter({
       const tracks = data.toptracks?.track || []
 
       // Enrichment: Fetch recent tracks to use as a primary image source
-      const recentImageMap = await fetchRecentTracksImageMap(200)
+      const recentImageMap = await fetchRecentTracksImageMap()
 
       const trackList = tracks.map((track: any) => ({
         id: track.mbid || `${track.artist.name}-${track.name}`,
@@ -479,7 +480,7 @@ export const lastfmRouter = createTRPCRouter({
       const tracks = data.toptracks?.track || []
 
       // Enrichment: Fetch recent tracks to use as a primary image source
-      const recentImageMap = await fetchRecentTracksImageMap(200)
+      const recentImageMap = await fetchRecentTracksImageMap()
 
       const trackList = tracks.map((track: any) => ({
         id: track.mbid || `${track.artist.name}-${track.name}`,

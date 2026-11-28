@@ -1,6 +1,6 @@
 import type en from '@isyuricunha/i18n/messages/en.json'
 
-import { DEFAULT_LOCALE, isLocale } from './config'
+import { DEFAULT_LOCALE } from './config'
 
 export type Messages = typeof en
 
@@ -30,8 +30,4 @@ export async function loadMessages(locale: string): Promise<Messages> {
   loaded.set(locale, messages)
 
   return messages
-}
-
-export function hasMessagesFor(locale: string): boolean {
-  return isLocale(locale)
 }

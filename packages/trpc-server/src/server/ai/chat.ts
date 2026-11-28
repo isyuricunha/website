@@ -78,11 +78,10 @@ const infer_mode = (message: string): 'chat' | 'navigate' | 'recommend' => {
     m.includes('me manda') ||
     m.includes('manda o link') ||
     m.includes('link') ||
-    m.includes('url')
+    m.includes('url') ||
+    m.startsWith('onde ') ||
+    m.startsWith('where ')
   ) {
-    return 'navigate'
-  }
-  if (m.startsWith('onde ') || m.startsWith('where ')) {
     return 'navigate'
   }
   return 'chat'
@@ -118,8 +117,7 @@ const pick_last_user_intent = (
     const msg = msgs[i]
     if (!msg || msg.role !== 'user') continue
     const text = msg.content.trim()
-    if (!text) continue
-    if (is_short_follow_up_navigation(text)) continue
+    if (!text || is_short_follow_up_navigation(text)) continue
     return text
   }
   return null
