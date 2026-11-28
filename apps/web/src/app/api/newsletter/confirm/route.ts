@@ -78,7 +78,7 @@ export async function GET(request: NextRequest) {
       message: 'Successfully subscribed to newsletter'
     })
   } catch (error) {
-    logger.error('Newsletter confirmation error', error)
+    logger.error('Newsletter confirmation error', { error: error })
     return NextResponse.json({ error: 'Failed to confirm subscription' }, { status: 500 })
   }
 }

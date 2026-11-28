@@ -25,23 +25,20 @@ import { api } from '@/trpc/react'
 import { getAvatarAbbreviation } from '@/utils/get-avatar-abbreviation'
 import { getDefaultImage } from '@/utils/get-default-image'
 
-type ProfileForm = {
-  image: string
-  bio: string
-  username: string
-  isPublic: boolean
-  nameColor: string
-  nameEffect: string
-}
-
-type ProfileFormState = {
-  sourceKey: string
-  form: ProfileForm
-}
-
-type ProfileFormUpdater = ProfileForm | ((previous: ProfileForm) => ProfileForm)
-
 const SettingsForm = () => {
+  type ProfileForm = {
+    image: string
+    bio: string
+    username: string
+    isPublic: boolean
+    nameColor: string
+    nameEffect: string
+  }
+  type ProfileFormUpdater = ProfileForm | ((previous: ProfileForm) => ProfileForm)
+  type ProfileFormState = {
+    sourceKey: string
+    form: ProfileForm
+  }
   const { data: session, isPending } = useSession()
   const t = useTranslations()
   const router = useRouter()

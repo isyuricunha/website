@@ -8,7 +8,7 @@ Personal website, documentation site and shared package workspace.
 [![Node](https://img.shields.io/badge/Node.js-%3E%3D24-339933?logo=node.js&logoColor=white)](.nvmrc)
 [![pnpm](https://img.shields.io/badge/pnpm-12.3.4-F69220?logo=pnpm&logoColor=white)](package.json)
 [![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js&logoColor=white)](apps/web)
-[![TypeScript](https://img.shields.io/badge/TypeScript-6-3178C6?logo=typescript&logoColor=white)](tsconfig.json)
+[![TypeScript](https://img.shields.io/badge/TypeScript-7-3178C6?logo=typescript&logoColor=white)](tsconfig.json)
 [![Vercel](https://img.shields.io/badge/deployed%20on-Vercel-black?logo=vercel&logoColor=white)](https://yuricunha.com)
 
 **[Website](https://yuricunha.com)** · **[Docs](https://docs.yuricunha.com)**
@@ -107,21 +107,21 @@ Core tooling:
 
 - Node.js: `>=24` (see `package.json#engines.node` and `.nvmrc`)
 - pnpm: `12.3.4` (see `package.json#packageManager`)
-- TypeScript: `^6.0.3`
-- Turbo: `^2.11.7`
-- Vitest: `^5.0.3`
-- ESLint: `^10.12.0`
-- Prettier: `^3.9.9`
+- TypeScript: `7.0.2` compiler via the official side-by-side aliases (`tsc` from `@typescript/native`, while the `typescript` module serves the 6.0.x API that typescript-eslint and Next build-time checking consume)
+- Turbo: `^2.11.13`
+- Vitest: `^5.1.2`
+- ESLint: `^10.15.0`
+- Prettier: `^3.10.1`
 
 Web apps:
 
-- Next.js: `16.4.0`
-- React: `19.3.0`
-- Zod: `4.6.5`
-- tRPC: `11.19.0`
-- TanStack React Query: `^5.104.1`
-- better-auth: `1.7.7`
-- TailwindCSS: `^4.3.3`
+- Next.js: `16.4.6`
+- React: `19.3.1`
+- Zod: `4.6.7`
+- tRPC: `11.31.6` (client/server; `@trpc/react-query` stays at 11.28.5, the newest non-deprecated release)
+- TanStack React Query: `^5.108.4`
+- better-auth: `1.7.28`
+- TailwindCSS: `^4.3.5`
 
 To list all installed versions in the workspace:
 

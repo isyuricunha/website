@@ -90,11 +90,10 @@ const infer_mode = (message: string): 'chat' | 'navigate' | 'recommend' => {
     m.includes('me manda') ||
     m.includes('manda o link') ||
     m.includes('link') ||
-    m.includes('url')
+    m.includes('url') ||
+    m.startsWith('onde ') ||
+    m.startsWith('where ')
   ) {
-    return 'navigate'
-  }
-  if (m.startsWith('onde ') || m.startsWith('where ')) {
     return 'navigate'
   }
   return 'chat'
@@ -130,8 +129,7 @@ const pick_last_user_intent = (
     const msg = msgs[i]
     if (!msg || msg.role !== 'user') continue
     const text = msg.content.trim()
-    if (!text) continue
-    if (is_short_follow_up_navigation(text)) continue
+    if (!text || is_short_follow_up_navigation(text)) continue
     return text
   }
   return null
@@ -591,8 +589,10 @@ export async function POST(req: NextRequest) {
         return new Response(stream, { status: 200, headers: response_headers_stream })
       } catch (error) {
         logger.error('[AI Chat] aiService.generateStream failed - falling back to JSON', {
-          errorName: error instanceof Error ? error.name : 'Unknown',
-          errorMessage: error instanceof Error ? error.message : String(error)
+          error: {
+            errorName: error instanceof Error ? error.name : 'Unknown',
+            errorMessage: error instanceof Error ? error.message : String(error)
+          }
         })
         // fallback to JSON
       }
@@ -618,10 +618,12 @@ export async function POST(req: NextRequest) {
         return { text, provider: PUBLIC_ASSISTANT_PROVIDER, internalProvider: 'runtime' }
       } catch (error) {
         logger.error('[AI Chat] aiService.generateResponse failed', {
-          errorName: error instanceof Error ? error.name : 'Unknown',
-          errorMessage: error instanceof Error ? error.message : String(error),
-          errorStack: error instanceof Error ? error.stack : undefined,
-          cause: error instanceof Error ? error.cause : undefined
+          error: {
+            errorName: error instanceof Error ? error.name : 'Unknown',
+            errorMessage: error instanceof Error ? error.message : String(error),
+            errorStack: error instanceof Error ? error.stack : undefined,
+            cause: error instanceof Error ? error.cause : undefined
+          }
         })
         throw error instanceof Error ? error : new Error('AI provider failed')
       }
@@ -665,7 +667,7 @@ export async function POST(req: NextRequest) {
       hasCode: error instanceof Error && 'code' in error
     }
 
-    logger.error('AI chat error', error, errorDetails)
+    logger.error('AI chat error', { error: error, context: errorDetails })
 
     if (error instanceof z.ZodError) {
       const payload = {

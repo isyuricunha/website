@@ -17,7 +17,6 @@ const ContentGenerationSchema = z.object({
   toLang: z.string().optional().default('pt'),
   maxLength: z.number().min(50).max(500).optional().default(200)
 })
-type ContentResult = string | string[]
 
 export async function POST(request: NextRequest) {
   try {
@@ -50,7 +49,7 @@ export async function POST(request: NextRequest) {
 
     switch (action) {
       case 'tags': {
-        const result: ContentResult = await aiService.generateTags(content, existingTags)
+        const result = await aiService.generateTags(content, existingTags)
         return NextResponse.json({
           action,
           result,
@@ -59,7 +58,7 @@ export async function POST(request: NextRequest) {
       }
 
       case 'summary': {
-        const result: ContentResult = await aiService.generateSummary(content, maxLength)
+        const result = await aiService.generateSummary(content, maxLength)
         return NextResponse.json({
           action,
           result,
@@ -74,7 +73,7 @@ export async function POST(request: NextRequest) {
             { status: 400 }
           )
         }
-        const result: ContentResult = await aiService.generateMetaDescription(title, content)
+        const result = await aiService.generateMetaDescription(title, content)
         return NextResponse.json({
           action,
           result,
@@ -83,7 +82,7 @@ export async function POST(request: NextRequest) {
       }
 
       case 'translate': {
-        const result: ContentResult = await aiService.translateContent(content, fromLang, toLang)
+        const result = await aiService.translateContent(content, fromLang, toLang)
         return NextResponse.json({
           action,
           result,
@@ -92,7 +91,7 @@ export async function POST(request: NextRequest) {
       }
     }
   } catch (error) {
-    logger.error('Content generation API error', error)
+    logger.error('Content generation API error', { error: error })
 
     if (error instanceof z.ZodError) {
       return NextResponse.json(

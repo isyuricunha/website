@@ -34,19 +34,18 @@ export async function POST(request: NextRequest) {
     const clientIp = getClientIp(request.headers)
 
     // Additional in-memory rate limit safeguard (defense-in-depth)
-    const { allowed: isAllowed, retryAfter } = checkRateLimit(clientIp)
+    const { allowed: isAllowed, retryAfter = 3600 } = checkRateLimit(clientIp)
     if (!isAllowed) {
-      const retryAfterSeconds = retryAfter ?? 3600
       logger.warn('In-memory rate limit exceeded', { ip: clientIp })
       return Response.json(
         {
           error: 'Too many requests. Please try again later.',
-          retryAfter: retryAfterSeconds
+          retryAfter
         },
         {
           status: 429,
           headers: {
-            'Retry-After': String(retryAfterSeconds)
+            'Retry-After': String(retryAfter)
           }
         }
       )
@@ -138,7 +137,7 @@ Sent at: ${currentDate}
     })
 
     if (emailResult.error) {
-      logger.error('Email sending error', emailResult.error)
+      logger.error('Email sending error', { error: emailResult.error })
       return Response.json(
         { error: 'Failed to send email. Please try again later.' },
         { status: 500 }
@@ -190,7 +189,7 @@ Yuri Cunha
 This is an automated confirmation email. Please do not reply to this email.
       `
       },
-      (error) => logger.error('Contact confirmation email failed', error)
+      (error) => logger.error('Contact confirmation email failed', { error: error })
     )
 
     return Response.json({
@@ -201,7 +200,7 @@ This is an automated confirmation email. Please do not reply to this email.
           : 'Message sent successfully! You should receive a confirmation email shortly.'
     })
   } catch (error) {
-    logger.error('Contact form error', error)
+    logger.error('Contact form error', { error: error })
 
     if (error instanceof z.ZodError) {
       return Response.json({ error: 'Invalid form data', details: error.issues }, { status: 400 })

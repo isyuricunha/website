@@ -52,16 +52,16 @@ class Logger {
     console.warn(this.formatMessage('warn', message, context))
   }
 
-  error(message: string, error?: unknown, context?: LogContext): void {
+  error(message: string, options?: { error?: unknown; context?: LogContext }): void {
     const errorContext = {
-      ...context,
+      ...options?.context,
       error:
-        error instanceof Error
+        options?.error instanceof Error
           ? {
-              message: error.message,
-              stack: this.isDevelopment ? error.stack : undefined
+              message: options.error.message,
+              stack: this.isDevelopment ? options.error.stack : undefined
             }
-          : error
+          : options?.error
     }
     console.error(this.formatMessage('error', message, errorContext))
   }

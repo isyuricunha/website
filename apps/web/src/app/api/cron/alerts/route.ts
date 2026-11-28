@@ -321,7 +321,7 @@ export async function GET(request: NextRequest) {
       }
     }
   } catch (error) {
-    logger.error('Cron alerts job failed', error)
+    logger.error('Cron alerts job failed', { error: error })
     return Response.json(
       { success: false, error: 'Internal server error', durationMs: Date.now() - started_at },
       { status: 500 }

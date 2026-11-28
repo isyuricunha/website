@@ -36,8 +36,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const parsed = postBodySchema.parse(body)
-    const { slug, title, summary, content, locale, date, modifiedTime } = parsed
+    const { slug, title, summary, content, locale, date, modifiedTime } = postBodySchema.parse(body)
 
     // Check if post already exists
     const exists = await BlogService.postExists(slug, locale)
@@ -74,7 +73,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    logger.error('Error creating post', error)
+    logger.error('Error creating post', { error: error })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
@@ -93,8 +92,7 @@ export async function PUT(request: NextRequest) {
     }
 
     const body = await request.json()
-    const parsed = postBodySchema.parse(body)
-    const { slug, title, summary, content, locale, modifiedTime } = parsed
+    const { slug, title, summary, content, locale, modifiedTime } = postBodySchema.parse(body)
 
     // Check if post exists
     const existingPost = await BlogService.getPost(slug, locale)
@@ -131,7 +129,7 @@ export async function PUT(request: NextRequest) {
       )
     }
 
-    logger.error('Error updating post', error)
+    logger.error('Error updating post', { error: error })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
@@ -182,7 +180,7 @@ export async function DELETE(request: NextRequest) {
       )
     }
 
-    logger.error('Error deleting post', error)
+    logger.error('Error deleting post', { error: error })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

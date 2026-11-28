@@ -88,35 +88,33 @@ vi.mock('crypto', async (importOriginal) => {
   }
 })
 
-type AnnouncementRow = {
-  id: string
-  title: string
-  content: string
-  titlePt: string | null
-  contentPt: string | null
-  type: string
-  priority: number
-  isActive: boolean
-  isDismissible: boolean
-  targetAudience: string | null
-  startDate: Date | null
-  endDate: Date | null
-  createdBy: string
-  createdAt: Date
-  updatedAt: Date
-}
-
-type AnnouncementInteractionRow = {
-  id: string
-  announcementId: string
-  userId: string
-  viewed: boolean
-  dismissed: boolean
-  viewedAt: Date | null
-  dismissedAt: Date | null
-}
-
 const createDbMock = () => {
+  type AnnouncementInteractionRow = {
+    id: string
+    announcementId: string
+    userId: string
+    viewed: boolean
+    dismissed: boolean
+    viewedAt: Date | null
+    dismissedAt: Date | null
+  }
+  type AnnouncementRow = {
+    id: string
+    title: string
+    content: string
+    titlePt: string | null
+    contentPt: string | null
+    type: string
+    priority: number
+    isActive: boolean
+    isDismissible: boolean
+    targetAudience: string | null
+    startDate: Date | null
+    endDate: Date | null
+    createdBy: string
+    createdAt: Date
+    updatedAt: Date
+  }
   const now = new Date()
   const oneYearFromNow = new Date(now.getTime() + 365 * 24 * 60 * 60 * 1000)
 

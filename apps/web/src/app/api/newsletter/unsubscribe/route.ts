@@ -58,7 +58,7 @@ export async function POST(request: NextRequest) {
       message: 'Successfully unsubscribed from newsletter'
     })
   } catch (error) {
-    logger.error('Newsletter unsubscribe error', error)
+    logger.error('Newsletter unsubscribe error', { error: error })
 
     if (error instanceof z.ZodError) {
       return NextResponse.json({ error: 'Invalid email address' }, { status: 400 })

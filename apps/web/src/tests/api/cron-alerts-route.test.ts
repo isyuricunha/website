@@ -1,12 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-type Table = Record<string | symbol, unknown>
-
-type Inserted = {
-  alert_instances: any[]
-  notifications: any[]
-}
-
 vi.mock('@/lib/logger', () => ({
   logger: {
     error: vi.fn(),
@@ -36,6 +29,11 @@ const createRedisMock = () => {
 type DbMock = ReturnType<typeof createDbMock>
 
 const createDbMock = () => {
+  type Inserted = {
+    alert_instances: any[]
+    notifications: any[]
+  }
+  type Table = Record<string | symbol, unknown>
   const inserted: Inserted = {
     alert_instances: [],
     notifications: []

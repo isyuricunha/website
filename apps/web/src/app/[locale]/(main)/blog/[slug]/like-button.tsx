@@ -1,8 +1,8 @@
 'use client'
 
 /**
- * Inspired by: https://framer.university/resources/like-button-component
- */
+Inspired by: https://framer.university/resources/like-button-component
+*/
 import NumberFlow, { continuous } from '@number-flow/react'
 import { useTranslations } from '@isyuricunha/i18n/client'
 import { Separator, toast } from '@isyuricunha/yutheme'

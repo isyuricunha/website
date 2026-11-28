@@ -391,7 +391,7 @@ export const bulkRouter = createTRPCRouter({
           }
         }
       } catch (error) {
-        logger.error('Bulk operation error:', error)
+        logger.error('Bulk operation error:', { error: error })
 
         // Try to update operation status to failed
         try {
@@ -404,7 +404,7 @@ export const bulkRouter = createTRPCRouter({
             })
             .where(eq(bulkOperations.id, operationId))
         } catch (updateError) {
-          logger.error('Failed to update bulk operation status:', updateError)
+          logger.error('Failed to update bulk operation status:', { error: updateError })
         }
 
         throw new TRPCError({
@@ -561,7 +561,7 @@ export const bulkRouter = createTRPCRouter({
           }
         }
       } catch (error) {
-        logger.error('Bulk post operation error:', error)
+        logger.error('Bulk post operation error:', { error: error })
 
         try {
           await ctx.db
@@ -573,7 +573,7 @@ export const bulkRouter = createTRPCRouter({
             })
             .where(eq(bulkOperations.id, operationId))
         } catch (updateError) {
-          logger.error('Failed to update bulk operation status:', updateError)
+          logger.error('Failed to update bulk operation status:', { error: updateError })
         }
 
         throw new TRPCError({
@@ -627,7 +627,7 @@ export const bulkRouter = createTRPCRouter({
           total: targetUsers.length
         }
       } catch (error) {
-        logger.error('Error fetching users for bulk operation:', error)
+        logger.error('Error fetching users for bulk operation:', { error: error })
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to fetch users'
@@ -687,7 +687,7 @@ export const bulkRouter = createTRPCRouter({
         if (error instanceof TRPCError) {
           throw error
         }
-        logger.error('Error cancelling bulk operation:', error)
+        logger.error('Error cancelling bulk operation:', { error: error })
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to cancel bulk operation'
@@ -733,7 +733,7 @@ export const bulkRouter = createTRPCRouter({
         if (error instanceof TRPCError) {
           throw error
         }
-        logger.error('Error fetching bulk operation status:', error)
+        logger.error('Error fetching bulk operation status:', { error: error })
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to fetch bulk operation status'

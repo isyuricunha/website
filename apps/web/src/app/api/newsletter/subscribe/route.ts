@@ -89,7 +89,7 @@ export async function POST(request: NextRequest) {
     })
 
     if (error) {
-      logger.error('Failed to send newsletter confirmation email', error)
+      logger.error('Failed to send newsletter confirmation email', { error: error })
       return NextResponse.json({ error: 'Failed to subscribe to newsletter' }, { status: 500 })
     }
 
@@ -100,7 +100,7 @@ export async function POST(request: NextRequest) {
       message: 'Check your inbox to confirm your subscription'
     })
   } catch (error) {
-    logger.error('Newsletter subscription error', error)
+    logger.error('Newsletter subscription error', { error: error })
 
     if (error instanceof z.ZodError) {
       return NextResponse.json({ error: 'Invalid email address' }, { status: 400 })

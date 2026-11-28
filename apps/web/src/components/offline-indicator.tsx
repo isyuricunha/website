@@ -49,10 +49,12 @@ export default function OfflineIndicator() {
       removeEventListener('online', handleOnline)
       removeEventListener('offline', handleOffline)
 
-      if (hideTimeoutRef.current) {
-        clearTimeout(hideTimeoutRef.current)
-        hideTimeoutRef.current = null
+      if (!hideTimeoutRef.current) {
+        return
       }
+
+      clearTimeout(hideTimeoutRef.current)
+      hideTimeoutRef.current = null
     }
   }, [t])
 

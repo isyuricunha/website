@@ -93,7 +93,6 @@ interface AIChatInterfaceProps {
 export { is_safe_internal_path } from './chat-link-policy'
 
 type CitationType = 'post' | 'project' | 'page' | 'snippet'
-type ChatConnectionStatus = 'checking' | 'ready' | 'unavailable' | 'offline'
 type QuickPromptId =
   | 'siteGuide'
   | 'projects'
@@ -217,8 +216,8 @@ const getInitialChatState = (input: {
   }
 
   conversations = conversations.map((conversation) => {
-    if (conversation.id !== activeConversationId) return conversation
-    if (conversation.messages.length > 0) return conversation
+    if (conversation.id !== activeConversationId || conversation.messages.length > 0)
+      return conversation
 
     return {
       ...conversation,
@@ -239,6 +238,7 @@ export default function AIChatInterface({
   onMessageSent,
   onThinkingChange
 }: AIChatInterfaceProps) {
+  type ChatConnectionStatus = 'checking' | 'ready' | 'unavailable' | 'offline'
   const t = useTranslations()
   const locale = useLocale()
   const router = useRouter()
@@ -348,9 +348,8 @@ export default function AIChatInterface({
 
   // Notify the user when a shared conversation was imported from the URL.
   useEffect(() => {
-    if (!isOpen) return
-    if (initialChatState.importStatus === 'none') return
-    if (importStatusToastShownRef.current) return
+    if (!isOpen || initialChatState.importStatus === 'none' || importStatusToastShownRef.current)
+      return
 
     importStatusToastShownRef.current = true
 
@@ -362,8 +361,7 @@ export default function AIChatInterface({
   }, [initialChatState.importStatus, isOpen, t])
 
   useEffect(() => {
-    if (!isOpen) return
-    if (!activeConversationId || isLoading) return
+    if (!isOpen || !activeConversationId || isLoading) return
 
     saveMascotChatState({ conversations, activeConversationId, provider: 'auto' })
   }, [activeConversationId, conversations, isOpen, isLoading])
@@ -564,8 +562,7 @@ export default function AIChatInterface({
   }
 
   const shareChat = async () => {
-    if (!activeConversation) return
-    if (globalThis.window === undefined) return
+    if (!activeConversation || globalThis.window === undefined) return
 
     try {
       const payload = encodeConversationShare({
@@ -585,8 +582,7 @@ export default function AIChatInterface({
 
   const sendMessage = async () => {
     const messageText = inputValue.trim()
-    if (!messageText || isLoading || !canUseChat) return
-    if (!activeConversation) return
+    if (!messageText || isLoading || !canUseChat || !activeConversation) return
 
     setInputValue('')
     const accepted = await send_chat_message(messageText, undefined, editingMessageId ?? undefined)
@@ -601,8 +597,8 @@ export default function AIChatInterface({
 
   const send_chat_message = useCallback(
     async (rawText: string, retryMessageId?: string, editUserId?: string): Promise<boolean> => {
-      if (isLoading || !canUseChat || abortControllerRef.current) return false
-      if (!activeConversation) return false
+      if (!activeConversation || isLoading || !canUseChat || abortControllerRef.current)
+        return false
 
       const messageText = rawText.trim()
       if (!messageText) return false
@@ -1134,8 +1130,7 @@ export default function AIChatInterface({
 
   const handleReaction = (messageId: string, reaction: 'like' | 'dislike') => {
     const message = messages.find((m) => m.id === messageId)
-    if (!message || message.isUser || message.isError) return
-    if (!message.requestId) return
+    if (!message || message.isUser || message.isError || !message.requestId) return
 
     let nextUserReaction: 'like' | 'dislike' | null = reaction
 

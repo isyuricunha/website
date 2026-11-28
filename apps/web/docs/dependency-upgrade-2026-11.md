@@ -30,3 +30,15 @@ References:
 - Both pnpm audit and pnpm audit --prod report zero advisories with the preexisting audit exception for braces GHSA-vfj7-8cjw-p6xm. The installed braces 3.0.3 comes through the Next ESLint plugin, fast-glob, and micromatch. No patched release is available; retain the documented exception pending upstream remediation. No new audit exclusions.
 
 References: https://github.com/advisories/GHSA-w5hq-g745-h8pq, https://github.com/advisories/GHSA-g3hv-75wg-m249, https://github.com/advisories/GHSA-4qx8-w7c3-pj3p, https://github.com/advisories/GHSA-vfj7-8cjw-p6xm, https://github.com/jonschlinkert/gray-matter/issues/178, https://github.com/nodeca/js-yaml/blob/master/CHANGELOG.md.
+
+## 2026-11-28 full stable refresh
+
+All direct dependencies across the workspace were updated to the newest stable registry releases (`pnpm -r up --latest`), including the majors TypeScript 7.0.2 (compiler), jsdom 31, tsup 9, @hookform/resolvers 7, @mistralai/mistralai 3.5, framer-motion 14, @testing-library/jest-dom 8, eslint-plugin-unicorn 80 and local-pkg 2, plus minor and patch waves (tRPC 11.31.6 client/server, @aws-sdk 3.1178, lucide-react 1.82, resend 6.40.1, react-email 6.11.17, next-intl 4.16.2, Playwright 1.65.1 and @types bumps).
+
+The TypeScript compiler moved to the native tsc 7 while the `typescript` module keeps serving the 6.0.x API through the official side-by-side alias pair (`"typescript": "npm:@typescript/typescript6"` and `"@typescript/native": "npm:typescript@^7.0.2"`), because typescript-eslint 8.74 and Next build-time checking consume the JavaScript API that TypeScript 7.0 does not ship. The app and package tsconfigs dropped the removed `baseUrl` and `ignoreDeprecations` options, switched paths to project-root-relative form, and now declare `types: ["node"]` explicitly to match the TypeScript 7 default of an empty ambient type list.
+
+Intentionally not upgraded: @tanstack/react-table stays on 8.21.3 because @isyuricunha/yutheme 0.2.1 (the newest published release) declares a `^8` peer and its DataTable consumes the v8 table instance; adopting v9 waits for a v9-compatible YuTheme release. The drizzle-kit workspace override stays at 0.31.10, so `pnpm -r outdated` intentionally reports only these two packages.
+
+Code adjustments required by the new rules and APIs: `Logger.error` now takes a single options object (`{ error, context }`) with all call sites and logger assertions migrated; unicorn 80 rule fallout (combined guards, smaller-scope type declarations, early returns, documentation comment style) was fixed in place; the drizzle `db` export gained an explicit `NodePgDatabase<typeof schema>` annotation required by the TypeScript 7 declaration portability check; two unused exports and the unused `@types/js-yaml` dependency that predated this wave were removed separately.
+
+Validation: content-collections build, 625 unit tests across 97 files green, turbo lint and type-check green under the tsc 7 compiler, prettier check, knip, and production builds of both apps (1180 and 72 static pages) on Node 24.

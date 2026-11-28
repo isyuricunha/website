@@ -55,7 +55,7 @@ export const emailManagementRouter = createTRPCRouter({
 
         return { templates }
       } catch (error) {
-        logger.error('Error fetching email templates', error)
+        logger.error('Error fetching email templates', { error: error })
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to fetch email templates'
@@ -97,7 +97,7 @@ export const emailManagementRouter = createTRPCRouter({
 
         return { success: true, templateId }
       } catch (error) {
-        logger.error('Error creating email template', error)
+        logger.error('Error creating email template', { error: error })
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to create email template'
@@ -136,7 +136,7 @@ export const emailManagementRouter = createTRPCRouter({
 
         return { subscriptions }
       } catch (error) {
-        logger.error('Error fetching email subscriptions', error)
+        logger.error('Error fetching email subscriptions', { error: error })
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to fetch email subscriptions'

@@ -204,7 +204,7 @@ export const communicationRouter = createTRPCRouter({
           }))
         }
       } catch (error) {
-        logger.error('Error fetching email templates', error)
+        logger.error('Error fetching email templates', { error: error })
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to fetch email templates'
@@ -259,7 +259,7 @@ export const communicationRouter = createTRPCRouter({
           hasMore: totalCount.length > input.offset + input.limit
         }
       } catch (error) {
-        logger.error('Error fetching all notifications', error)
+        logger.error('Error fetching all notifications', { error: error })
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to fetch notifications'
@@ -304,7 +304,7 @@ export const communicationRouter = createTRPCRouter({
 
         return { success: true, templateId }
       } catch (error) {
-        logger.error('Error creating email template', error)
+        logger.error('Error creating email template', { error: error })
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to create email template'
@@ -354,7 +354,7 @@ export const communicationRouter = createTRPCRouter({
 
         return { success: true }
       } catch (error) {
-        logger.error('Error updating email template', error)
+        logger.error('Error updating email template', { error: error })
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to update email template'
@@ -404,7 +404,7 @@ export const communicationRouter = createTRPCRouter({
           }))
         }
       } catch (error) {
-        logger.error('Error fetching email campaigns', error)
+        logger.error('Error fetching email campaigns', { error: error })
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to fetch email campaigns'
@@ -474,7 +474,7 @@ export const communicationRouter = createTRPCRouter({
 
         return { success: true, campaignId }
       } catch (error) {
-        logger.error('Error creating email campaign', error)
+        logger.error('Error creating email campaign', { error: error })
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to create email campaign'
@@ -726,7 +726,7 @@ export const communicationRouter = createTRPCRouter({
         if (error instanceof TRPCError) {
           throw error
         }
-        logger.error('Error sending email campaign', error)
+        logger.error('Error sending email campaign', { error: error })
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to send email campaign'
@@ -769,7 +769,7 @@ export const communicationRouter = createTRPCRouter({
           return items.filter((notification) => {
             const sameUser = notification.userId === ctx.session.user.id
             const notExpired = !notification.expiresAt || notification.expiresAt >= now
-            const matchesUnread = input.unreadOnly ? notification.read === false : true
+            const matchesUnread = !input.unreadOnly || notification.read === false
             return sameUser && notExpired && matchesUnread
           })
         }
@@ -787,7 +787,7 @@ export const communicationRouter = createTRPCRouter({
           hasMore: visibleTotalCount > input.offset + input.limit
         }
       } catch (error) {
-        logger.error('Error fetching notifications', error)
+        logger.error('Error fetching notifications', { error: error })
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to fetch notifications'
@@ -814,7 +814,7 @@ export const communicationRouter = createTRPCRouter({
 
         return { success: true }
       } catch (error) {
-        logger.error('Error marking notification as read', error)
+        logger.error('Error marking notification as read', { error: error })
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to mark notification as read'
@@ -836,7 +836,7 @@ export const communicationRouter = createTRPCRouter({
 
         return { success: true }
       } catch (error) {
-        logger.error('Error marking notification as read (admin)', error)
+        logger.error('Error marking notification as read (admin)', { error: error })
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to mark notification as read'
@@ -856,7 +856,7 @@ export const communicationRouter = createTRPCRouter({
 
       return { success: true }
     } catch (error) {
-      logger.error('Error marking all notifications as read', error)
+      logger.error('Error marking all notifications as read', { error: error })
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Failed to mark all notifications as read'
@@ -926,7 +926,7 @@ export const communicationRouter = createTRPCRouter({
 
         return { success: true, notificationId }
       } catch (error) {
-        logger.error('Error creating notification', error)
+        logger.error('Error creating notification', { error: error })
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to create notification'

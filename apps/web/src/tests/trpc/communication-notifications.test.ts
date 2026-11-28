@@ -69,21 +69,20 @@ vi.mock('crypto', async (importOriginal) => {
   }
 })
 
-type NotificationRow = {
-  id: string
-  userId: string
-  title: string
-  message: string
-  type: 'system' | 'user_action' | 'content' | 'security' | 'marketing' | 'reminder'
-  data: string | null
-  read: boolean
-  readAt: Date | null
-  actionUrl: string | null
-  expiresAt: Date | null
-  createdAt: Date
-}
-
 const createDbMock = () => {
+  type NotificationRow = {
+    id: string
+    userId: string
+    title: string
+    message: string
+    type: 'system' | 'user_action' | 'content' | 'security' | 'marketing' | 'reminder'
+    data: string | null
+    read: boolean
+    readAt: Date | null
+    actionUrl: string | null
+    expiresAt: Date | null
+    createdAt: Date
+  }
   const now = new Date()
 
   const notification_rows: NotificationRow[] = [

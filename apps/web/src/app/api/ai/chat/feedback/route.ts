@@ -75,7 +75,10 @@ export async function POST(req: NextRequest) {
       { status: 200 }
     )
   } catch (error) {
-    logger.error('AI chat feedback error', error, { responseTimeMs: Date.now() - started_at })
+    logger.error('AI chat feedback error', {
+      error: error,
+      context: { responseTimeMs: Date.now() - started_at }
+    })
 
     if (error instanceof z.ZodError) {
       return NextResponse.json(

@@ -59,74 +59,70 @@ export default function AnnouncementToast() {
       // Check if this toast was already shown in this session
       const shownToasts = getShownAnnouncementToastIds()
 
-      if (!shownToasts.includes(announcement.id)) {
-        const ui = getAnnouncementUi(announcement.type, { iconSize: 'md' })
-        toast.custom(
-          (t: string | number) => (
-            <div className='animate-in slide-in-from-top-5 fade-in group bg-bg-elevated shadow-feature-card relative max-w-md overflow-hidden rounded-lg border border-[var(--border-subtle)]'>
-              <div className='relative p-5'>
-                <div className='flex items-start gap-4'>
-                  <div className={`shrink-0 transition-transform duration-300 ${ui.iconClassName}`}>
-                    {ui.icon}
-                  </div>
+      if (shownToasts.includes(announcement.id)) continue
+      const ui = getAnnouncementUi(announcement.type, { iconSize: 'md' })
+      toast.custom(
+        (t: string | number) => (
+          <div className='animate-in slide-in-from-top-5 fade-in group bg-bg-elevated shadow-feature-card relative max-w-md overflow-hidden rounded-lg border border-[var(--border-subtle)]'>
+            <div className='relative p-5'>
+              <div className='flex items-start gap-4'>
+                <div className={`shrink-0 transition-transform duration-300 ${ui.iconClassName}`}>
+                  {ui.icon}
+                </div>
 
-                  <div className='min-w-0 flex-1 space-y-2'>
-                    <h4 className={`text-base leading-tight font-medium ${ui.titleClassName}`}>
-                      {announcement.title}
-                    </h4>
-                    <p className={`text-sm leading-relaxed ${ui.contentClassName}`}>
-                      {announcement.content}
-                    </p>
+                <div className='min-w-0 flex-1 space-y-2'>
+                  <h4 className={`text-base leading-tight font-medium ${ui.titleClassName}`}>
+                    {announcement.title}
+                  </h4>
+                  <p className={`text-sm leading-relaxed ${ui.contentClassName}`}>
+                    {announcement.content}
+                  </p>
 
-                    <div className='flex items-center gap-3 pt-1'>
-                      {announcement.isDismissible && (
-                        <button
-                          type='button'
-                          onClick={() => {
-                            dismissMutation.mutate({ announcementId: announcement.id })
-                            addDismissedAnnouncementId(
-                              getDismissedAnnouncementIds(),
-                              announcement.id
-                            )
-                            toast.dismiss(t)
-                          }}
-                          className={`text-xs font-medium transition-colors ${ui.buttonClassName}`}
-                        >
-                          {t_announcement('dont-show-again')}
-                        </button>
-                      )}
+                  <div className='flex items-center gap-3 pt-1'>
+                    {announcement.isDismissible && (
                       <button
                         type='button'
-                        onClick={() => toast.dismiss(t)}
+                        onClick={() => {
+                          dismissMutation.mutate({ announcementId: announcement.id })
+                          addDismissedAnnouncementId(getDismissedAnnouncementIds(), announcement.id)
+                          toast.dismiss(t)
+                        }}
                         className={`text-xs font-medium transition-colors ${ui.buttonClassName}`}
                       >
-                        {t_announcement('dismiss')}
+                        {t_announcement('dont-show-again')}
                       </button>
-                    </div>
+                    )}
+                    <button
+                      type='button'
+                      onClick={() => toast.dismiss(t)}
+                      className={`text-xs font-medium transition-colors ${ui.buttonClassName}`}
+                    >
+                      {t_announcement('dismiss')}
+                    </button>
                   </div>
-
-                  <button
-                    type='button'
-                    onClick={() => toast.dismiss(t)}
-                    className='hover:bg-bg-hover shrink-0 rounded-md p-1.5 transition-colors'
-                    aria-label={t_announcement('close')}
-                  >
-                    <X className='h-4 w-4 opacity-50 transition-opacity hover:opacity-100' />
-                  </button>
                 </div>
+
+                <button
+                  type='button'
+                  onClick={() => toast.dismiss(t)}
+                  className='hover:bg-bg-hover shrink-0 rounded-md p-1.5 transition-colors'
+                  aria-label={t_announcement('close')}
+                >
+                  <X className='h-4 w-4 opacity-50 transition-opacity hover:opacity-100' />
+                </button>
               </div>
             </div>
-          ),
-          {
-            id: toastId,
-            duration: getAnnouncementToastDurationMs(announcement.priority), // Critical announcements stay until dismissed
-            position: 'top-right'
-          }
-        )
+          </div>
+        ),
+        {
+          id: toastId,
+          duration: getAnnouncementToastDurationMs(announcement.priority), // Critical announcements stay until dismissed
+          position: 'top-right'
+        }
+      )
 
-        // Mark as shown in this session
-        addShownAnnouncementToastId(shownToasts, announcement.id)
-      }
+      // Mark as shown in this session
+      addShownAnnouncementToastId(shownToasts, announcement.id)
     }
   }, [announcementsData, dismissMutation, markViewedMutation, t_announcement])
 

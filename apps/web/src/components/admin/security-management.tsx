@@ -32,37 +32,23 @@ import ConfirmationDialog from './confirmation-dialog'
 
 /* eslint-disable unicorn/no-nested-ternary -- Prettier removes the parentheses this rule requires; colocated loading/error/data branches keep each query state explicit. */
 
-type SecurityLockout = {
-  id: string
-  userId: string
-  reason: string
-  lockedAt: Date
-  lockedUntil: Date | null
-  lockedBy: string | null
-  unlocked: boolean
-  unlockedAt: Date | null
-  unlockedBy: string | null
-}
-
-type BadgeVariant = 'default' | 'secondary' | 'destructive' | 'outline'
-
-type SecuritySetting = {
-  id: string
-  key: string
-  value: string
-  description: string | null
-  category: string
-  updatedAt: Date | string
-  updatedByUser?: {
-    id: string
-    name: string
-    email: string
-  }
-}
-
 const all_categories_value = 'all'
 
 export default function SecurityManagement() {
+  type SecuritySetting = {
+    id: string
+    key: string
+    value: string
+    description: string | null
+    category: string
+    updatedAt: Date | string
+    updatedByUser?: {
+      id: string
+      name: string
+      email: string
+    }
+  }
+  type BadgeVariant = 'default' | 'secondary' | 'destructive' | 'outline'
   const t = useTranslations('admin.security-management')
   const commonT = useTranslations('common')
   const [selectedTab, setSelectedTab] = useState('overview')
@@ -661,7 +647,7 @@ export default function SecurityManagement() {
               ) : (
                 <div className='space-y-4'>
                   {(lockouts?.lockouts?.length ?? 0) > 0 ? (
-                    lockouts?.lockouts.map((lockout: SecurityLockout) => (
+                    lockouts?.lockouts.map((lockout) => (
                       <div key={lockout.id} className='rounded-lg border p-4'>
                         <div className='flex items-center justify-between'>
                           <div>

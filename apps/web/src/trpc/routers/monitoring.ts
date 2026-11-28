@@ -158,7 +158,7 @@ export const monitoringRouter = createTRPCRouter({
 
         return { success: true, eventId }
       } catch (error) {
-        logger.error('Error recording analytics event', error)
+        logger.error('Error recording analytics event', { error: error })
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to record analytics event'
@@ -208,7 +208,7 @@ export const monitoringRouter = createTRPCRouter({
 
       return { success: true }
     } catch (error) {
-      logger.error('Error recording resource snapshot', error)
+      logger.error('Error recording resource snapshot', { error: error })
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Failed to record resource snapshot'
@@ -277,7 +277,7 @@ export const monitoringRouter = createTRPCRouter({
           totalDataPoints: metrics.length
         }
       } catch (error) {
-        logger.error('Error fetching performance metrics', error)
+        logger.error('Error fetching performance metrics', { error: error })
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to fetch performance metrics'
@@ -302,7 +302,7 @@ export const monitoringRouter = createTRPCRouter({
 
         return { success: true, metricId }
       } catch (error) {
-        logger.error('Error recording performance metric', error)
+        logger.error('Error recording performance metric', { error: error })
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to record performance metric'
@@ -352,7 +352,7 @@ export const monitoringRouter = createTRPCRouter({
           totalEvents: events.length
         }
       } catch (error) {
-        logger.error('Error fetching analytics events', error)
+        logger.error('Error fetching analytics events', { error: error })
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to fetch analytics events'
@@ -415,7 +415,7 @@ export const monitoringRouter = createTRPCRouter({
         timeRange: input.timeRange
       }
     } catch (error) {
-      logger.error('Error fetching resource usage', error)
+      logger.error('Error fetching resource usage', { error: error })
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Failed to fetch resource usage'
@@ -481,7 +481,7 @@ export const monitoringRouter = createTRPCRouter({
         timeRange: input.timeRange
       }
     } catch (error) {
-      logger.error('Error fetching API usage', error)
+      logger.error('Error fetching API usage', { error: error })
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Failed to fetch API usage'
@@ -535,7 +535,7 @@ export const monitoringRouter = createTRPCRouter({
           timeRange: input.timeRange
         }
       } catch (error) {
-        logger.error('Error fetching query performance', error)
+        logger.error('Error fetching query performance', { error: error })
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to fetch query performance'
@@ -619,7 +619,7 @@ export const monitoringRouter = createTRPCRouter({
         totalErrors: errors.length
       }
     } catch (error) {
-      logger.error('Error fetching error tracking', error)
+      logger.error('Error fetching error tracking', { error: error })
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Failed to fetch error tracking'
@@ -654,7 +654,7 @@ export const monitoringRouter = createTRPCRouter({
 
       return { success: true }
     } catch (error) {
-      logger.error('Error resolving error', error)
+      logger.error('Error resolving error', { error: error })
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Failed to resolve error'
@@ -688,7 +688,7 @@ export const monitoringRouter = createTRPCRouter({
 
       return { success: true }
     } catch (error) {
-      logger.error('Error resolving all errors', error)
+      logger.error('Error resolving all errors', { error: error })
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Failed to resolve all errors'
@@ -733,7 +733,7 @@ export const monitoringRouter = createTRPCRouter({
         }))
       }
     } catch (error) {
-      logger.error('Error fetching alerts', error)
+      logger.error('Error fetching alerts', { error: error })
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Failed to fetch alerts'
@@ -778,7 +778,7 @@ export const monitoringRouter = createTRPCRouter({
           }))
         }
       } catch (error) {
-        logger.error('Error fetching alert instances', error)
+        logger.error('Error fetching alert instances', { error: error })
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to fetch alert instances'
@@ -838,7 +838,7 @@ export const monitoringRouter = createTRPCRouter({
         stats
       }
     } catch (error) {
-      logger.error('Error fetching user activity', error)
+      logger.error('Error fetching user activity', { error: error })
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Failed to fetch user activity'
@@ -942,7 +942,7 @@ export const monitoringRouter = createTRPCRouter({
         }
       }
     } catch (error) {
-      logger.error('Error fetching monitoring stats', error)
+      logger.error('Error fetching monitoring stats', { error: error })
       return {
         performance: { totalMetrics: 0, avgResponseTime: 0, throughput: 0 },
         errors: { total: 0, unresolved: 0, critical: 0, javascript: 0, database: 0, server: 0 },

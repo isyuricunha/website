@@ -13,7 +13,7 @@ export const useCopyToClipboard = (): [(options: CopyOptions) => Promise<void>, 
   const [isCopied, setIsCopied] = useState(false)
   const t = useTranslations()
 
-  const copy = async ({ text, timeout, successMessage, errorMessage }: CopyOptions) => {
+  const copy = async ({ text, timeout = 2000, successMessage, errorMessage }: CopyOptions) => {
     if (isCopied) return
 
     try {
@@ -21,7 +21,7 @@ export const useCopyToClipboard = (): [(options: CopyOptions) => Promise<void>, 
       setIsCopied(true)
       toast.success(successMessage ?? t('hook.copy-to-clipboard.copied'))
 
-      setTimeout(() => setIsCopied(false), timeout ?? 2000)
+      setTimeout(() => setIsCopied(false), timeout)
     } catch {
       toast.error(errorMessage ?? t('hook.copy-to-clipboard.error'))
     }

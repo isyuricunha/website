@@ -76,7 +76,7 @@ export const dataManagementRouter = createTRPCRouter({
           }))
         }
       } catch (error) {
-        logger.error('Error fetching database backups', error)
+        logger.error('Error fetching database backups', { error: error })
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to fetch database backups'
@@ -129,7 +129,7 @@ export const dataManagementRouter = createTRPCRouter({
 
         return { success: true, backupId }
       } catch (error) {
-        logger.error('Error creating database backup', error)
+        logger.error('Error creating database backup', { error: error })
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to create database backup'
@@ -163,7 +163,7 @@ export const dataManagementRouter = createTRPCRouter({
         }))
       }
     } catch (error) {
-      logger.error('Error fetching data exports', error)
+      logger.error('Error fetching data exports', { error: error })
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Failed to fetch data exports'
@@ -220,7 +220,7 @@ export const dataManagementRouter = createTRPCRouter({
 
         return { success: true, exportId }
       } catch (error) {
-        logger.error('Error creating data export', error)
+        logger.error('Error creating data export', { error: error })
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to create data export'
@@ -271,7 +271,7 @@ export const dataManagementRouter = createTRPCRouter({
 
         return { success: true, checkId }
       } catch (error) {
-        logger.error('Error running data quality check', error)
+        logger.error('Error running data quality check', { error: error })
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to run data quality check'
@@ -306,7 +306,7 @@ export const dataManagementRouter = createTRPCRouter({
         }
       }
     } catch (error) {
-      logger.error('Error fetching data management stats', error)
+      logger.error('Error fetching data management stats', { error: error })
       return {
         backups: { total: 0, completed: 0, totalSize: 0 },
         exports: { total: 0, completed: 0, totalRecords: 0 }

@@ -16,9 +16,9 @@ const protectedRoots = new Set([
 ])
 
 /** Only rewrite HTML requests whose first localized segment cannot be a route.
- * RSC requests, known route families and ambiguous encodings use Next's
- * existing catch-all so the normal App Router semantics remain intact.
- */
+RSC requests, known route families and ambiguous encodings use Next's
+existing catch-all so the normal App Router semantics remain intact.
+*/
 export function getStaticNotFoundUrl(
   request: NextRequest,
   response: NextResponse,
@@ -40,17 +40,18 @@ export function getStaticNotFoundUrl(
   if (root === '.' || root === '..' || root.includes('/') || root.includes('\\')) return null
 
   const isInternalPage = root === STATIC_NOT_FOUND_SEGMENT
-  if (!isInternalPage) {
-    if (!routeRoots || protectedRoots.has(root) || routeRoots.includes(root)) return null
-    if (
+  if (
+    !isInternalPage &&
+    (!routeRoots ||
+      protectedRoots.has(root) ||
+      routeRoots.includes(root) ||
       request.headers.has('rsc') ||
       request.headers.has('next-router-state-tree') ||
       request.headers.has('next-router-prefetch') ||
       request.headers.has('next-router-segment-prefetch') ||
-      url.searchParams.has('_rsc')
-    )
-      return null
-  }
+      url.searchParams.has('_rsc'))
+  )
+    return null
   url.pathname = `/${locale}/${STATIC_NOT_FOUND_SEGMENT}`
   return url
 }

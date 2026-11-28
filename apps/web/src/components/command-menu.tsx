@@ -37,16 +37,15 @@ import { signOut, useSession } from '@/lib/auth-client'
 import { SITE_GITHUB_URL, SITE_X_URL } from '@/lib/constants'
 import { useDialogsStore } from '@/store/dialogs'
 
-type Groups = Array<{
-  name: string
-  actions: Array<{
-    title: string
-    icon: React.ReactNode
-    onSelect: () => void | Promise<void>
-  }>
-}>
-
 const CommandMenu = () => {
+  type Groups = Array<{
+    name: string
+    actions: Array<{
+      title: string
+      icon: React.ReactNode
+      onSelect: () => void | Promise<void>
+    }>
+  }>
   const [isOpen, setIsOpen] = useState(false)
   const [selectingValue, setSelectingValue] = useState('')
   const [copy] = useCopyToClipboard()

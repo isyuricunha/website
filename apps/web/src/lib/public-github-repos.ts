@@ -2,15 +2,6 @@ import { env } from '@isyuricunha/env'
 
 import { GITHUB_USERNAME } from '@/lib/constants'
 
-type GithubRepo = {
-  name: string
-  description: string | null
-  html_url: string
-  stargazers_count: number | null
-  language: string | null
-  private: boolean
-}
-
 // Public GitHub data is the same for every visitor. The Next.js Data Cache
 // prevents a server-side GitHub request for every page view / tRPC query.
 export const getPublicGithubRepos = async () => {
@@ -29,6 +20,15 @@ export const getPublicGithubRepos = async () => {
 
     if (!response.ok) {
       throw new Error(`GitHub returned HTTP ${response.status}`)
+    }
+
+    type GithubRepo = {
+      name: string
+      description: string | null
+      html_url: string
+      stargazers_count: number | null
+      language: string | null
+      private: boolean
     }
 
     const data = (await response.json()) as GithubRepo[]

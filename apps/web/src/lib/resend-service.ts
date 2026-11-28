@@ -49,8 +49,8 @@ export class ResendService {
   }
 
   /**
-   * Audience Management
-   */
+  Audience Management
+  */
 
   // Create a new audience
   async createAudience(name: string): Promise<ResendAudience> {
@@ -58,7 +58,7 @@ export class ResendService {
       const response = await resend.audiences.create({ name })
       return response.data as unknown as ResendAudience
     } catch (error) {
-      logger.error('Error creating Resend audience', error)
+      logger.error('Error creating Resend audience', { error: error })
       throw new Error('Failed to create audience', { cause: error })
     }
   }
@@ -71,7 +71,7 @@ export class ResendService {
       const audiences = response.data?.data || []
       return audiences
     } catch (error) {
-      logger.error('Error listing Resend audiences', error)
+      logger.error('Error listing Resend audiences', { error: error })
       throw new Error('Failed to list audiences', { cause: error })
     }
   }
@@ -88,7 +88,7 @@ export class ResendService {
       const response = await resend.audiences.get(audienceId)
       return response.data
     } catch (error) {
-      logger.error('Error getting Resend audience', error)
+      logger.error('Error getting Resend audience', { error: error })
       return null
     }
   }
@@ -99,14 +99,14 @@ export class ResendService {
       await resend.audiences.remove(audienceId)
       return true
     } catch (error) {
-      logger.error('Error deleting Resend audience', error)
+      logger.error('Error deleting Resend audience', { error: error })
       return false
     }
   }
 
   /**
-   * Contact Management
-   */
+  Contact Management
+  */
 
   // Add contact to audience
   async addContact(
@@ -128,7 +128,7 @@ export class ResendService {
       })
       return response.data
     } catch (error) {
-      logger.error('Error adding contact to Resend audience', error)
+      logger.error('Error adding contact to Resend audience', { error: error })
       return null
     }
   }
@@ -153,7 +153,7 @@ export class ResendService {
       })
       return response.data
     } catch (error) {
-      logger.error('Error updating contact in Resend audience', error)
+      logger.error('Error updating contact in Resend audience', { error: error })
       return null
     }
   }
@@ -167,7 +167,7 @@ export class ResendService {
       })
       return true
     } catch (error) {
-      logger.error('Error removing contact from Resend audience', error)
+      logger.error('Error removing contact from Resend audience', { error: error })
       return false
     }
   }
@@ -180,7 +180,7 @@ export class ResendService {
       const contacts: ResendContact[] = response.data?.data || []
       return contacts
     } catch (error) {
-      logger.error('Error listing contacts in Resend audience', error)
+      logger.error('Error listing contacts in Resend audience', { error: error })
       return []
     }
   }
@@ -193,7 +193,7 @@ export class ResendService {
       const activeSubscribers = contacts.filter((contact) => !contact.unsubscribed)
       return activeSubscribers.length
     } catch (error) {
-      logger.error('Error getting subscriber count for audience', error)
+      logger.error('Error getting subscriber count for audience', { error: error })
       return 0
     }
   }
@@ -204,14 +204,14 @@ export class ResendService {
       const contacts = await this.listContacts(audienceId)
       return contacts.find((contact) => contact.email === email) || null
     } catch (error) {
-      logger.error('Error finding contact by email', error)
+      logger.error('Error finding contact by email', { error: error })
       return null
     }
   }
 
   /**
-   * Broadcast Management
-   */
+  Broadcast Management
+  */
 
   // Create broadcast
   async createBroadcast(broadcast: {
@@ -236,7 +236,7 @@ export class ResendService {
 
       return response.data as unknown as ResendBroadcast
     } catch (error) {
-      logger.error('Error creating Resend broadcast', error)
+      logger.error('Error creating Resend broadcast', { error: error })
       return null
     }
   }
@@ -248,7 +248,7 @@ export class ResendService {
       if (error) throw new Error(error.message || 'Broadcast delivery failed')
       return true
     } catch (error) {
-      logger.error('Error sending Resend broadcast', error)
+      logger.error('Error sending Resend broadcast', { error: error })
       return false
     }
   }
@@ -260,7 +260,7 @@ export class ResendService {
       if (error) throw new Error(error.message || 'Broadcast scheduling failed')
       return true
     } catch (error) {
-      logger.error('Error scheduling Resend broadcast', error)
+      logger.error('Error scheduling Resend broadcast', { error: error })
       return false
     }
   }
@@ -272,7 +272,7 @@ export class ResendService {
       const response = await resend.broadcasts.get(broadcastId)
       return response.data as unknown as ResendBroadcast
     } catch (error) {
-      logger.error('Error getting Resend broadcast', error)
+      logger.error('Error getting Resend broadcast', { error: error })
       return null
     }
   }
@@ -293,7 +293,7 @@ export class ResendService {
       })
       return response.data
     } catch (error) {
-      logger.error('Error updating Resend broadcast', error)
+      logger.error('Error updating Resend broadcast', { error: error })
       return null
     }
   }
@@ -306,7 +306,7 @@ export class ResendService {
       const broadcasts = response.data?.data || []
       return broadcasts as unknown as ResendBroadcast[]
     } catch (error) {
-      logger.error('Error listing Resend broadcasts', error)
+      logger.error('Error listing Resend broadcasts', { error: error })
       return []
     }
   }
@@ -317,7 +317,7 @@ export class ResendService {
       await (resend.broadcasts as any).cancel(broadcastId)
       return true
     } catch (error) {
-      logger.error('Error cancelling Resend broadcast', error)
+      logger.error('Error cancelling Resend broadcast', { error: error })
       return false
     }
   }
@@ -328,14 +328,14 @@ export class ResendService {
       await resend.broadcasts.remove(broadcastId)
       return true
     } catch (error) {
-      logger.error('Error deleting Resend broadcast', error)
+      logger.error('Error deleting Resend broadcast', { error: error })
       return false
     }
   }
 
   /**
-   * User Sync Utilities
-   */
+  User Sync Utilities
+  */
 
   // Sync user to Resend audience
   async syncUserToAudience(
@@ -367,7 +367,7 @@ export class ResendService {
         unsubscribed: !user.subscribed
       })
     } catch (error) {
-      logger.error('Error syncing user to Resend audience', error)
+      logger.error('Error syncing user to Resend audience', { error: error })
       return null
     }
   }

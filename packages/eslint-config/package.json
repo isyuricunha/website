@@ -29,7 +29,7 @@
   },
   "types": "./dist/index.d.ts",
   "dependencies": {
-    "@eslint-community/eslint-plugin-eslint-comments": "^4.7.2",
+    "@eslint-community/eslint-plugin-eslint-comments": "^4.8.1",
     "@eslint-react/eslint-plugin": "^5.30.6",
     "@eslint/js": "^10.0.1",
     "@next/eslint-plugin-next": "^16.4.6",
@@ -44,18 +44,18 @@
     "eslint-plugin-sonarjs": "^4.2.3",
     "eslint-plugin-testing-library": "^7.16.3",
     "eslint-plugin-turbo": "^2.11.13",
-    "eslint-plugin-unicorn": "^74.0.0",
+    "eslint-plugin-unicorn": "^80.0.0",
     "eslint-plugin-unused-imports": "^4.4.1",
     "globals": "^17.14.0",
-    "local-pkg": "^1.2.1"
+    "local-pkg": "^2.0.0"
   },
   "peerDependencies": {
     "eslint": "^9.20.0 || ^10"
   },
   "devDependencies": {
-    "@eslint/config-inspector": "^3.3.0",
+    "@eslint/config-inspector": "^3.5.0",
     "@isyuricunha/tsconfig": "workspace:*",
-    "@types/node": "^26.6.6",
+    "@types/node": "^26.6.11",
     "concurrently": "^10.0.7",
     "eslint": "^10.15.0"
   },

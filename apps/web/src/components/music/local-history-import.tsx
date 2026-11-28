@@ -20,14 +20,6 @@ import {
 // Spotify history exports do not need to exceed this size in practice.
 const MAX_IMPORT_BYTES = 100 * 1024 * 1024
 
-type LocalPlay = {
-  ts: string
-  master_metadata_track_name?: string
-  master_metadata_album_artist_name?: string
-  master_metadata_album_album_name?: string
-  ms_played?: number
-}
-
 const LocalHistoryImport = () => {
   const t = useTranslations()
   const [count, setCount] = useState<number | null>(null)
@@ -37,6 +29,13 @@ const LocalHistoryImport = () => {
 
   const onFile = async (file?: File) => {
     try {
+      type LocalPlay = {
+        ts: string
+        master_metadata_track_name?: string
+        master_metadata_album_artist_name?: string
+        master_metadata_album_album_name?: string
+        ms_played?: number
+      }
       setError(null)
       if (!file) return
       if (file.size > MAX_IMPORT_BYTES) {
@@ -44,7 +43,7 @@ const LocalHistoryImport = () => {
       }
       const text = await file.text()
       const data: unknown = JSON.parse(text)
-      if (!Array.isArray(data)) throw new Error(t('spotify.import.invalid-file'))
+      if (!Array.isArray(data)) throw new TypeError(t('spotify.import.invalid-file'))
       const list = data as LocalPlay[]
       setCount(list.length)
       const artistSet = new Set<string>()

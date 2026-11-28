@@ -76,37 +76,35 @@ vi.mock('crypto', async (importOriginal) => {
   }
 })
 
-type BulkOperationRow = {
-  id: string
-  type: string
-  status: 'pending' | 'running' | 'completed' | 'failed' | 'cancelled'
-  totalItems: number
-  processedItems: number
-  successfulItems: number
-  failedItems: number
-  parameters: string | null
-  results: string | null
-  errorMessage: string | null
-  startedAt: Date | null
-  completedAt: Date | null
-  createdBy: string
-  createdAt: Date
-  createdByUser?: {
-    id: string
-    name: string
-    email: string
-  }
-}
-
-type PostRow = {
-  id: string
-  title: string
-  status: 'draft' | 'published' | 'archived'
-  publishedAt: Date | null
-  updatedAt: Date
-}
-
 const createDbMock = () => {
+  type PostRow = {
+    id: string
+    title: string
+    status: 'draft' | 'published' | 'archived'
+    publishedAt: Date | null
+    updatedAt: Date
+  }
+  type BulkOperationRow = {
+    id: string
+    type: string
+    status: 'pending' | 'running' | 'completed' | 'failed' | 'cancelled'
+    totalItems: number
+    processedItems: number
+    successfulItems: number
+    failedItems: number
+    parameters: string | null
+    results: string | null
+    errorMessage: string | null
+    startedAt: Date | null
+    completedAt: Date | null
+    createdBy: string
+    createdAt: Date
+    createdByUser?: {
+      id: string
+      name: string
+      email: string
+    }
+  }
   const operations: BulkOperationRow[] = []
   const posts: PostRow[] = []
 

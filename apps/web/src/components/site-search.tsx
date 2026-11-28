@@ -10,16 +10,6 @@ import { allPosts, allProjects } from 'content-collections'
 
 import { HighlightText } from './ui/highlight-text'
 
-type SearchResult = {
-  id: string
-  title: string
-  description: string
-  href: string
-  type: 'post' | 'project' | 'page'
-  icon: React.ReactNode
-  date?: string
-}
-
 const RECENT_SEARCHES_KEY = 'site_search_recent'
 const MAX_RECENT_SEARCHES = 5
 
@@ -42,6 +32,15 @@ const SiteSearch = () => {
   // hold every locale and hrefs are locale-neutral, so unfiltered results mix
   // languages and land on the wrong locale variant).
   const searchableContent = useMemo(() => {
+    type SearchResult = {
+      id: string
+      title: string
+      description: string
+      href: string
+      type: 'post' | 'project' | 'page'
+      icon: React.ReactNode
+      date?: string
+    }
     const results: SearchResult[] = []
 
     // Add blog posts
@@ -143,11 +142,13 @@ const SiteSearch = () => {
   useEffect(() => {
     const handleMascotSearch = (e: Event) => {
       const customEvent = e as CustomEvent<{ query: string }>
-      if (customEvent.detail?.query) {
-        setQuery(customEvent.detail.query)
-        setIsOpen(true)
-        setSelectedIndex(-1)
+      if (!customEvent.detail?.query) {
+        return
       }
+
+      setQuery(customEvent.detail.query)
+      setIsOpen(true)
+      setSelectedIndex(-1)
     }
 
     addEventListener('mascot-open-search' as any, handleMascotSearch)
@@ -232,18 +233,20 @@ const SiteSearch = () => {
         setSelectedIndex((prev) => (prev > -1 ? prev - 1 : -1))
       }
 
-      if (e.key === 'Enter' && selectedIndex >= 0) {
-        e.preventDefault()
-        if (showRecentSearches) {
-          const term = recentSearches[selectedIndex]
-          if (term) {
-            handleRecentSearchClick(term)
-          }
-        } else {
-          const result = allResults[selectedIndex]
-          if (result) {
-            handleResultClick(result.href, query)
-          }
+      if (!(e.key === 'Enter' && selectedIndex >= 0)) {
+        return
+      }
+
+      e.preventDefault()
+      if (showRecentSearches) {
+        const term = recentSearches[selectedIndex]
+        if (term) {
+          handleRecentSearchClick(term)
+        }
+      } else {
+        const result = allResults[selectedIndex]
+        if (result) {
+          handleResultClick(result.href, query)
         }
       }
     },

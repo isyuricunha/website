@@ -101,10 +101,9 @@ describe('/api/contact', () => {
     const response = await POST(request)
 
     expect(response.status).toBe(200)
-    expect(logger.error).toHaveBeenCalledWith(
-      'Contact confirmation email failed',
-      expect.any(Error)
-    )
+    expect(logger.error).toHaveBeenCalledWith('Contact confirmation email failed', {
+      error: expect.any(Error)
+    })
   })
 
   it('uses Portuguese text fallback for Portuguese contact confirmations', async () => {

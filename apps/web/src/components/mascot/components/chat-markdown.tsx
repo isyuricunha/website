@@ -26,7 +26,7 @@ const MarkdownLink = ({
     <span>{children}</span>
   )
 
-const MarkdownImage = ({ alt }: MarkdownImageProps) => <span>{alt ?? ''}</span>
+const MarkdownImage = ({ alt = '' }: MarkdownImageProps) => <span>{alt}</span>
 
 export const ChatMarkdown = memo(
   ({ children, allowedHrefs }: { children: string; allowedHrefs?: string[] }) => (

@@ -49,11 +49,10 @@ const MusicTimeline = () => {
     setIsRefreshing(false)
   }
 
-  type RecentTrack = NonNullable<typeof recentTracks>[number]
-  type Period = 'last-hour' | 'today' | 'yesterday' | 'this-week' | 'earlier'
-
   // Group tracks by time periods
   const timelineData = useMemo(() => {
+    type RecentTrack = NonNullable<typeof recentTracks>[number]
+    type Period = 'last-hour' | 'today' | 'yesterday' | 'this-week' | 'earlier'
     if (!recentTracks) return []
 
     const now = new Date()

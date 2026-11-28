@@ -21,8 +21,6 @@ import { useDialogsStore } from '@/store/dialogs'
 import { logger } from '@/lib/logger'
 import ForgotPasswordDialog from '@/components/forgot-password-dialog'
 
-type Provider = 'github' | 'google'
-
 const GoogleIcon = () => {
   return (
     <svg
@@ -70,6 +68,7 @@ const AnonIcon = () => {
 }
 
 const SignInDialog = () => {
+  type Provider = 'github' | 'google'
   const { isSignInOpen, setIsSignInOpen } = useDialogsStore()
   const [isPending, setIsPending] = useState(false)
   const [lastUsedProvider, setLastUsedProvider] = useState<Provider | null>(null)

@@ -56,8 +56,8 @@ const is_enoent = (error: unknown): boolean => {
 
 export const BlogService = {
   /**
-   * Get all blog posts for a specific locale
-   */
+  Get all blog posts for a specific locale
+  */
   async getPostsByLocale(locale: string): Promise<BlogPostMetadata[]> {
     const localeDir = path.join(CONTENT_DIR, locale)
 
@@ -90,14 +90,14 @@ export const BlogService = {
       return posts.toSorted((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     } catch (error) {
       if (is_enoent(error)) return []
-      logger.error('Error reading posts for locale', error, { locale })
+      logger.error('Error reading posts for locale', { error: error, context: { locale } })
       return []
     }
   },
 
   /**
-   * Get all blog posts across all locales
-   */
+  Get all blog posts across all locales
+  */
   async getAllPosts(): Promise<BlogPostMetadata[]> {
     const allPosts: BlogPostMetadata[] = []
 
@@ -110,8 +110,8 @@ export const BlogService = {
   },
 
   /**
-   * Get a specific blog post by slug and locale
-   */
+  Get a specific blog post by slug and locale
+  */
   async getPost(slug: string, locale: string): Promise<BlogPost | null> {
     assert_safe_path_piece(slug, SAFE_SLUG, 'slug')
     assert_safe_path_piece(locale, SAFE_LOCALE, 'locale')
@@ -138,14 +138,14 @@ export const BlogService = {
       }
     } catch (error) {
       if (is_enoent(error)) return null
-      logger.error('Error reading post', error, { slug, locale })
+      logger.error('Error reading post', { error: error, context: { slug, locale } })
       return null
     }
   },
 
   /**
-   * Save a blog post to file system
-   */
+  Save a blog post to file system
+  */
   async savePost(post: Omit<BlogPost, 'filePath'>): Promise<boolean> {
     const { slug, title, date, modifiedTime, summary, content, locale } = post
     assert_safe_path_piece(slug, SAFE_SLUG, 'slug')
@@ -175,14 +175,14 @@ export const BlogService = {
       await fs.writeFile(filePath, fileContent, 'utf8')
       return true
     } catch (error) {
-      logger.error('Error saving post', error, { slug, locale })
+      logger.error('Error saving post', { error: error, context: { slug, locale } })
       return false
     }
   },
 
   /**
-   * Delete a blog post
-   */
+  Delete a blog post
+  */
   async deletePost(slug: string, locale: string): Promise<boolean> {
     assert_safe_path_piece(slug, SAFE_SLUG, 'slug')
     assert_safe_path_piece(locale, SAFE_LOCALE, 'locale')
@@ -192,14 +192,14 @@ export const BlogService = {
       await fs.unlink(filePath)
       return true
     } catch (error) {
-      logger.error('Error deleting post', error, { slug, locale })
+      logger.error('Error deleting post', { error: error, context: { slug, locale } })
       return false
     }
   },
 
   /**
-   * Check if a post exists in a specific locale
-   */
+  Check if a post exists in a specific locale
+  */
   async postExists(slug: string, locale: string): Promise<boolean> {
     assert_safe_path_piece(slug, SAFE_SLUG, 'slug')
     assert_safe_path_piece(locale, SAFE_LOCALE, 'locale')
@@ -214,8 +214,8 @@ export const BlogService = {
   },
 
   /**
-   * Get posts grouped by slug (for translation management)
-   */
+  Get posts grouped by slug (for translation management)
+  */
   async getPostsBySlug(): Promise<Record<string, BlogPostMetadata[]>> {
     const allPosts = await this.getAllPosts()
     const groupedPosts: Record<string, BlogPostMetadata[]> = {}
@@ -233,8 +233,8 @@ export const BlogService = {
   },
 
   /**
-   * Generate a unique slug from title
-   */
+  Generate a unique slug from title
+  */
   generateSlug(title: string): string {
     return title
       .toLowerCase()

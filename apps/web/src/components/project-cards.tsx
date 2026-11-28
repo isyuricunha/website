@@ -36,13 +36,6 @@ type ProjectCardsProps = {
   projects: Project[]
 }
 
-type FilterOptions = {
-  search: string
-  category: string
-  status: string
-  techStack: string
-}
-
 const statusConfig = {
   active: {
     labelKey: 'projects.status.active',
@@ -73,6 +66,12 @@ const compareStrings = (a: string, b: string) => {
 }
 
 const ProjectCards = (props: ProjectCardsProps) => {
+  type FilterOptions = {
+    search: string
+    category: string
+    status: string
+    techStack: string
+  }
   const { projects } = props
   const t = useTranslations()
   const [filters, setFilters] = useState<FilterOptions>({
