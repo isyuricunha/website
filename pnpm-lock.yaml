@@ -734,9 +734,6 @@ importers:
       '@testing-library/react':
         specifier: ^16.3.3
         version: 16.3.3(@testing-library/dom@10.4.2)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
-      '@types/js-yaml':
-        specifier: ^4.0.9
-        version: 4.0.9
       '@types/node':
         specifier: ^26.6.6
         version: 26.6.6
@@ -4969,9 +4966,6 @@ packages:
 
   '@types/hast@3.0.5':
     resolution: {integrity: sha512-rp/ezSWaD1m44dPKICGhiskI13nVr7qTloFwDa/IYkhhf5nzwP+zIQcIJh3WIFSBOy/H1PzB40jPjMDksN4F+g==}
-
-  '@types/js-yaml@4.0.9':
-    resolution: {integrity: sha512-k4MGaQl5TGo/iipqb2UDG2UwjXziSWkh0uysQelTlJpX1qGlpUZYm8PnO4DxG1qBomtJUdYJ6qR6xdIah10JLg==}
 
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
@@ -13083,8 +13077,6 @@ snapshots:
   '@types/hast@3.0.5':
     dependencies:
       '@types/unist': 3.0.3
-
-  '@types/js-yaml@4.0.9': {}
 
   '@types/json-schema@7.0.15': {}
 
