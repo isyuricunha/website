@@ -7,7 +7,7 @@ import { isPublicRepositoryHref, publicContact } from '@/lib/public-contact'
 import { getLocalizedPath } from '@/utils/get-localized-path'
 import { is_safe_internal_path } from '@/components/mascot/chat-link-policy'
 
-export type SiteEntryType = 'post' | 'project' | 'page' | 'snippet'
+type SiteEntryType = 'post' | 'project' | 'page' | 'snippet'
 
 type SiteEntry = {
   type: SiteEntryType

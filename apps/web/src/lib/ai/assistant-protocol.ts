@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-export type AssistantCitation = {
+type AssistantCitation = {
   id: string
   title: string
   href: string

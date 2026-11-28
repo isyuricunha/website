@@ -1,6 +1,6 @@
 import type { NextRequest, NextResponse } from 'next/server'
 
-export const STATIC_NOT_FOUND_SEGMENT = '404'
+const STATIC_NOT_FOUND_SEGMENT = '404'
 
 const protectedRoots = new Set([
   '_next',
