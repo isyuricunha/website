@@ -1,6 +1,6 @@
 import path from 'node:path'
 
-import type { NextRequest } from 'next/server'
+import { NextRequest } from 'next/server'
 import sharp from 'sharp'
 import { describe, expect, it } from 'vitest'
 
@@ -16,7 +16,7 @@ describe('site Open Graph image', () => {
 
   it('redirects legacy dynamic image URLs to the static card', async () => {
     const { GET } = await import('@/app/og/route')
-    const request = new Request('https://example.com/og?locale=en') as NextRequest
+    const request = new NextRequest('https://example.com/og?locale=en')
     const response = GET(request)
 
     expect(response.status).toBe(308)
