@@ -21,7 +21,7 @@ const AboutMe = () => {
           {t('homepage.get-in-touch.title')}
         </h2>
       </div>
-      <div className='grid gap-4 md:grid-cols-2 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-10 motion-safe:duration-300'>
+      <div className='motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-10 grid gap-4 motion-safe:duration-300 md:grid-cols-2'>
         <div className='grid gap-4'>
           <LocationCard />
           <StacksCard />
